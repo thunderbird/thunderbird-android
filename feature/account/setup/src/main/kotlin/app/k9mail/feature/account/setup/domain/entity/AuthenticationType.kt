@@ -4,21 +4,27 @@ import com.fsck.k9.mail.AuthType
 import kotlinx.collections.immutable.toImmutableList
 
 enum class AuthenticationType(
+    val isUsernameRequired: Boolean,
     val isPasswordRequired: Boolean,
 ) {
     None(
+        isUsernameRequired = false,
         isPasswordRequired = false,
     ),
     PasswordCleartext(
+        isUsernameRequired = true,
         isPasswordRequired = true,
     ),
     PasswordEncrypted(
+        isUsernameRequired = true,
         isPasswordRequired = true,
     ),
     ClientCertificate(
+        isUsernameRequired = true,
         isPasswordRequired = false,
     ),
     OAuth2(
+        isUsernameRequired = true,
         isPasswordRequired = false,
     ),
     ;

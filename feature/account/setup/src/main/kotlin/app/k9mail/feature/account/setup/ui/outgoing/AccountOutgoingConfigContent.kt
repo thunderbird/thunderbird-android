@@ -134,25 +134,29 @@ internal fun AccountOutgoingConfigContent(
                     )
                 }
 
-                item {
-                    TextInput(
-                        text = state.username.value,
-                        errorMessage = state.username.error?.toResourceString(resources),
-                        onTextChange = { onEvent(Event.UsernameChanged(it)) },
-                        label = stringResource(id = R.string.account_setup_outgoing_config_username_label),
-                        isRequired = true,
-                        contentPadding = defaultItemPadding(),
-                    )
+                if (state.isUsernameFieldVisible) {
+                    item {
+                        TextInput(
+                            text = state.username.value,
+                            errorMessage = state.username.error?.toResourceString(resources),
+                            onTextChange = { onEvent(Event.UsernameChanged(it)) },
+                            label = stringResource(id = R.string.account_setup_outgoing_config_username_label),
+                            isRequired = true,
+                            contentPadding = defaultItemPadding(),
+                        )
+                    }
                 }
 
-                item {
-                    PasswordInput(
-                        password = state.password.value,
-                        errorMessage = state.password.error?.toResourceString(resources),
-                        onPasswordChange = { onEvent(Event.PasswordChanged(it)) },
-                        isRequired = true,
-                        contentPadding = defaultItemPadding(),
-                    )
+                if (state.isPasswordFieldVisible) {
+                    item {
+                        PasswordInput(
+                            password = state.password.value,
+                            errorMessage = state.password.error?.toResourceString(resources),
+                            onPasswordChange = { onEvent(Event.PasswordChanged(it)) },
+                            isRequired = true,
+                            contentPadding = defaultItemPadding(),
+                        )
+                    }
                 }
 
                 item {
