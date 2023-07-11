@@ -157,7 +157,7 @@ class MessageListFragment :
         }
 
     val isShowAccountChip: Boolean
-        get() = !isSingleAccountMode
+        get() = isUnifiedInbox || !isSingleAccountMode
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

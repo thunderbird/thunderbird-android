@@ -1100,6 +1100,7 @@ open class MessageList :
         showMessageViewPlaceHolder()
 
         val tmpSearch = LocalSearch().apply {
+            setId(search?.id)
             addAccountUuid(account.uuid)
             and(SearchField.THREAD_ID, threadRootId.toString(), SearchSpecification.Attribute.EQUALS)
         }
