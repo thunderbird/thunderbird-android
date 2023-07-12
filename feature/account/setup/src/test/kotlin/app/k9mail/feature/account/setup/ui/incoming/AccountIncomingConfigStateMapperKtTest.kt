@@ -29,6 +29,7 @@ class AccountIncomingConfigStateMapperKtTest {
             imapAutodetectNamespaceEnabled = true,
             imapPrefix = StringInputField(value = "prefix"),
             imapUseCompression = true,
+            imapSendClientId = true,
         )
 
         val result = incomingState.toServerSettings()

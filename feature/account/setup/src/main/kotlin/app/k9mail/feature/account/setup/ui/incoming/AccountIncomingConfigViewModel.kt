@@ -52,6 +52,7 @@ internal class AccountIncomingConfigViewModel(
             }
 
             is Event.ImapUseCompressionChanged -> updateState { it.copy(imapUseCompression = event.useCompression) }
+            is Event.ImapSendClientIdChanged -> updateState { it.copy(imapSendClientId = event.sendClientId) }
 
             Event.OnNextClicked -> onNext()
             Event.OnBackClicked -> onBack()

@@ -29,6 +29,7 @@ class AccountIncomingConfigStateTest {
                 clientCertificate = "",
                 imapAutodetectNamespaceEnabled = true,
                 imapUseCompression = true,
+                imapSendClientId = true,
             ),
         )
     }

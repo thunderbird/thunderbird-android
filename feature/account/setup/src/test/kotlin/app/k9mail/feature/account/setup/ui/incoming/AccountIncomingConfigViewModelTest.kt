@@ -175,6 +175,17 @@ class AccountIncomingConfigViewModelTest {
     }
 
     @Test
+    fun `should change state when ImapSendClientIdChanged event is received`() = runTest {
+        eventStateTest(
+            viewModel = testSubject,
+            initialState = State(imapSendClientId = true),
+            event = Event.ImapSendClientIdChanged(false),
+            expectedState = State(imapSendClientId = false),
+            coroutineScope = backgroundScope,
+        )
+    }
+
+    @Test
     fun `should emit effect NavigateNext when OnNextClicked is received in success state`() = runTest {
         val initialState = State(isSuccess = true)
         testSubject.initState(initialState)
