@@ -35,7 +35,7 @@
         android:ellipsize="end"
         android:gravity="right"
         android:maxLines="1"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textAppearance="?attr/textAppearanceBody2"
         android:textColor="?attr/messageListSwipeIconTint"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
