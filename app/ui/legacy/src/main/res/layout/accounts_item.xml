@@ -35,7 +35,7 @@
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:textColor="?android:attr/textColorPrimary"
-                android:textAppearance="@style/TextAppearance.K9.Medium"
+                android:textSize="@dimen/appTextSizeMedium"
                 tools:text="@sample/accounts.json/data/name"/>
 
         <TextView
@@ -45,7 +45,7 @@
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:textColor="?android:attr/textColorSecondary"
-                android:textAppearance="@style/TextAppearance.K9.Small"
+                android:textSize="@dimen/appTextSizeSmaller"
                 tools:text="@sample/accounts.json/data/email"/>
 
     </LinearLayout>
