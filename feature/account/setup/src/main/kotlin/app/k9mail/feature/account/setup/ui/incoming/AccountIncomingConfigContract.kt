@@ -31,6 +31,7 @@ interface AccountIncomingConfigContract {
         val imapAutodetectNamespaceEnabled: Boolean = true,
         val imapPrefix: StringInputField = StringInputField(),
         val imapUseCompression: Boolean = true,
+        val imapSendClientId: Boolean = true,
 
         val isSuccess: Boolean = false,
         val error: Error? = null,
@@ -49,6 +50,7 @@ interface AccountIncomingConfigContract {
         data class ImapAutoDetectNamespaceChanged(val enabled: Boolean) : Event()
         data class ImapPrefixChanged(val imapPrefix: String) : Event()
         data class ImapUseCompressionChanged(val useCompression: Boolean) : Event()
+        data class ImapSendClientIdChanged(val sendClientId: Boolean) : Event()
 
         object OnNextClicked : Event()
         object OnBackClicked : Event()

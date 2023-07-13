@@ -211,6 +211,15 @@ internal fun AccountIncomingConfigContent(
                             contentPadding = defaultItemPadding(),
                         )
                     }
+
+                    item {
+                        CheckboxInput(
+                            text = stringResource(R.string.account_setup_incoming_config_imap_send_client_id_label),
+                            checked = state.imapSendClientId,
+                            onCheckedChange = { onEvent(Event.ImapSendClientIdChanged(it)) },
+                            contentPadding = defaultItemPadding(),
+                        )
+                    }
                 }
             }
         }
