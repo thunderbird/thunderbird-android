@@ -75,26 +75,6 @@
         <item name="materialDrawerHeaderSelectionSubtext">?android:textColorSecondary</item>
     </style>
 
-    <style name="TextAppearance.K9.Small" parent="TextAppearance.AppCompat.Small">
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="TextAppearance.K9.MediumSmall" parent="TextAppearance.AppCompat.Medium">
-        <item name="android:textSize">16sp</item>
-    </style>
-
-    <style name="TextAppearance.K9.Medium" parent="TextAppearance.AppCompat.Medium">
-        <item name="android:textSize">18sp</item>
-    </style>
-
-    <style name="TextAppearance.K9.MediumLarge" parent="TextAppearance.AppCompat.Medium">
-        <item name="android:textSize">20sp</item>
-    </style>
-
-    <style name="TextAppearance.K9.Large" parent="TextAppearance.AppCompat.Large">
-        <item name="android:textSize">22sp</item>
-    </style>
-
     <style name="AttachmentView" parent="">
         <item name="android:layout_width">match_parent</item>
     </style>
