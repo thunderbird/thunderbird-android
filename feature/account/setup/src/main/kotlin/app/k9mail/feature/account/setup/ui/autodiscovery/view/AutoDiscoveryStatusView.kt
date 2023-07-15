@@ -88,6 +88,7 @@ internal fun AutoDiscoveryStatusViewTrustedPreview() {
                     username = "",
                 ),
                 isTrusted = true,
+                source = "preview",
             ),
             onEditConfigurationClick = {},
         )
@@ -115,6 +116,7 @@ internal fun AutoDiscoveryStatusViewUntrustedPreview() {
                     username = "",
                 ),
                 isTrusted = false,
+                source = "preview",
             ),
             onEditConfigurationClick = {},
         )

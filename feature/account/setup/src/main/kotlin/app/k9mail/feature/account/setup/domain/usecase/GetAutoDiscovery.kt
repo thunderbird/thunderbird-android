@@ -73,6 +73,7 @@ internal class GetAutoDiscovery(
                 username = "username",
             ),
             isTrusted = isTrusted,
+            source = "fake",
         )
     }
 

@@ -126,6 +126,7 @@ internal fun AutoDiscoveryStatusBodyViewPreview() {
                     username = "",
                 ),
                 isTrusted = true,
+                source = "preview",
             ),
             onEditConfigurationClick = {},
         )

@@ -176,6 +176,7 @@ class AccountAutoDiscoveryStateMapperKtTest {
                     username = AUTO_DISCOVERY_USERNAME,
                 ),
                 isTrusted = true,
+                source = "test",
             ),
         )
 
