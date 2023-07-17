@@ -23,6 +23,11 @@ sealed interface AutoDiscoveryResult {
          * the user has given consent.
          */
         val isTrusted: Boolean,
+
+        /**
+         * String describing the source of the server settings. Use a URI if possible.
+         */
+        val source: String,
     ) : AutoDiscoveryResult
 
     /**

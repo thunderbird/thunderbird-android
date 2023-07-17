@@ -10,6 +10,8 @@ internal class AutoDiscoveryResultFormatter(private val echo: (String) -> Unit) 
         val outgoingServer = requireNotNull(settings.outgoingServerSettings as? SmtpServerSettings)
 
         echo("------------------------------")
+        echo("Source: ${settings.source}")
+        echo("")
         echo("Incoming server:")
         echo("  Hostname:            ${incomingServer.hostname.value}")
         echo("  Port:                ${incomingServer.port.value}")

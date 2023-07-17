@@ -156,6 +156,7 @@ class PriorityParallelRunnerTest {
                 username = "user@domain.example",
             ),
             isTrusted = true,
+            source = "result 1",
         )
 
         private val DISCOVERY_RESULT_TWO = AutoDiscoveryResult.Settings(
@@ -174,6 +175,7 @@ class PriorityParallelRunnerTest {
                 username = "user@domain.example",
             ),
             isTrusted = true,
+            source = "result 2",
         )
     }
 }

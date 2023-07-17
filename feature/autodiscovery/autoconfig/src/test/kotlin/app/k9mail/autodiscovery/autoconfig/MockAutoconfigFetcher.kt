@@ -50,6 +50,7 @@ internal class MockAutoconfigFetcher : AutoconfigFetcher {
                 username = "irrelevant@domain.example",
             ),
             isTrusted = true,
+            source = "result 1",
         )
         val RESULT_TWO = AutoDiscoveryResult.Settings(
             incomingServerSettings = ImapServerSettings(
@@ -67,6 +68,7 @@ internal class MockAutoconfigFetcher : AutoconfigFetcher {
                 username = "irrelevant@company.example",
             ),
             isTrusted = true,
+            source = "result 2",
         )
     }
 }

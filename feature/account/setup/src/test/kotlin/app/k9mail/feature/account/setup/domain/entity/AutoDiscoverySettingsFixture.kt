@@ -26,5 +26,6 @@ object AutoDiscoverySettingsFixture {
             username = "outgoing_username",
         ),
         isTrusted = true,
+        source = "test",
     )
 }
