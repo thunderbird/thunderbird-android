@@ -37,8 +37,8 @@ class AccountCreator(
         newAccount.incomingServerSettings = account.incomingServerSettings
         newAccount.outgoingServerSettings = account.outgoingServerSettings
 
-        newAccount.name = account.options.displayName
-        newAccount.senderName = account.options.accountName
+        newAccount.name = account.options.accountName
+        newAccount.senderName = account.options.displayName
         if (account.options.emailSignature != null) {
             newAccount.signatureUse = true
             newAccount.signature = account.options.emailSignature
