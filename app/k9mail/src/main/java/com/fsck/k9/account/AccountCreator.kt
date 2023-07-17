@@ -46,7 +46,7 @@ class AccountCreator(
         newAccount.automaticCheckIntervalMinutes = account.options.checkFrequencyInMinutes
         newAccount.displayCount = account.options.messageDisplayCount
 
-        newAccount.folderPushMode = FolderMode.ALL
+        newAccount.folderPushMode = FolderMode.NONE
         newAccount.deletePolicy = accountCreatorHelper.getDefaultDeletePolicy(
             newAccount.incomingServerSettings.type,
         )
