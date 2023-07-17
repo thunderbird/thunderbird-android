@@ -194,13 +194,22 @@ internal fun AccountIncomingConfigContent(
                     }
 
                     item {
-                        TextInput(
-                            text = state.imapPrefix.value,
-                            errorMessage = state.imapPrefix.error?.toResourceString(resources),
-                            onTextChange = { onEvent(Event.ImapPrefixChanged(it)) },
-                            label = stringResource(id = R.string.account_setup_incoming_config_imap_prefix_label),
-                            contentPadding = defaultItemPadding(),
-                        )
+                        if (state.imapAutodetectNamespaceEnabled) {
+                            TextInput(
+                                onTextChange = {},
+                                label = stringResource(id = R.string.account_setup_incoming_config_imap_prefix_label),
+                                contentPadding = defaultItemPadding(),
+                                isEnabled = false,
+                            )
+                        } else {
+                            TextInput(
+                                text = state.imapPrefix.value,
+                                errorMessage = state.imapPrefix.error?.toResourceString(resources),
+                                onTextChange = { onEvent(Event.ImapPrefixChanged(it)) },
+                                label = stringResource(id = R.string.account_setup_incoming_config_imap_prefix_label),
+                                contentPadding = defaultItemPadding(),
+                            )
+                        }
                     }
 
                     item {
