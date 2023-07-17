@@ -7,6 +7,7 @@ import app.k9mail.feature.account.setup.domain.entity.Account
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.Core
 import com.fsck.k9.Preferences
+import com.fsck.k9.logging.Timber
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +26,8 @@ class AccountCreator(
         return try {
             withContext(coroutineDispatcher) { AccountCreatorResult.Success(create(account)) }
         } catch (e: Exception) {
+            Timber.e(e, "Error while creating new account")
+
             AccountCreatorResult.Error(e.message ?: "Unknown create account error")
         }
     }
