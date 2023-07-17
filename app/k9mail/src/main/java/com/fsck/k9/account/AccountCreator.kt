@@ -40,6 +40,7 @@ class AccountCreator(
         newAccount.name = account.options.displayName
         newAccount.senderName = account.options.accountName
         if (account.options.emailSignature != null) {
+            newAccount.signatureUse = true
             newAccount.signature = account.options.emailSignature
         }
         newAccount.isNotifyNewMail = account.options.showNotification
