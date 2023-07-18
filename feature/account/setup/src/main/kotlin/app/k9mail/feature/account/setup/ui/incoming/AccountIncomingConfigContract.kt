@@ -27,7 +27,7 @@ interface AccountIncomingConfigContract {
         val authenticationType: AuthenticationType = AuthenticationType.PasswordCleartext,
         val username: StringInputField = StringInputField(),
         val password: StringInputField = StringInputField(),
-        val clientCertificate: String = "",
+        val clientCertificateAlias: String? = null,
         val imapAutodetectNamespaceEnabled: Boolean = true,
         val imapPrefix: StringInputField = StringInputField(),
         val imapUseCompression: Boolean = true,
@@ -46,7 +46,7 @@ interface AccountIncomingConfigContract {
         data class AuthenticationTypeChanged(val authenticationType: AuthenticationType) : Event
         data class UsernameChanged(val username: String) : Event
         data class PasswordChanged(val password: String) : Event
-        data class ClientCertificateChanged(val clientCertificate: String) : Event
+        data class ClientCertificateChanged(val clientCertificateAlias: String?) : Event
         data class ImapAutoDetectNamespaceChanged(val enabled: Boolean) : Event
         data class ImapPrefixChanged(val imapPrefix: String) : Event
         data class ImapUseCompressionChanged(val useCompression: Boolean) : Event

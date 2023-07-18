@@ -23,7 +23,7 @@ class AccountOutgoingConfigStateMapperKtTest {
             authenticationType = AuthenticationType.PasswordCleartext,
             username = StringInputField(value = "user"),
             password = StringInputField(value = "password"),
-            clientCertificate = "",
+            clientCertificateAlias = "",
         )
 
         val result = outgoingState.toServerSettings()

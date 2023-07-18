@@ -26,7 +26,7 @@ class AccountIncomingConfigStateTest {
                 authenticationType = AuthenticationType.PasswordCleartext,
                 username = StringInputField(),
                 password = StringInputField(),
-                clientCertificate = "",
+                clientCertificateAlias = null,
                 imapAutodetectNamespaceEnabled = true,
                 imapUseCompression = true,
                 imapSendClientId = true,

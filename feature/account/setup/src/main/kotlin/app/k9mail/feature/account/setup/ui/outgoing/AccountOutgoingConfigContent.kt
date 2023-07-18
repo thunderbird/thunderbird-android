@@ -31,11 +31,11 @@ import app.k9mail.feature.account.common.ui.item.defaultItemPadding
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.domain.entity.AuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
+import app.k9mail.feature.account.setup.ui.clientcertificate.ClientCertificateInput
 import app.k9mail.feature.account.setup.ui.common.mapper.toResourceString
 import app.k9mail.feature.account.setup.ui.common.toResourceString
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Event
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.State
-import kotlinx.collections.immutable.persistentListOf
 
 @Suppress("LongMethod")
 @Composable
@@ -160,19 +160,10 @@ internal fun AccountOutgoingConfigContent(
                 }
 
                 item {
-                    // TODO add client certificate support
-                    SelectInput(
-                        options = persistentListOf(
-                            stringResource(
-                                id = R.string.account_setup_client_certificate_none_available,
-                            ),
-                        ),
-                        optionToStringTransformation = { it },
-                        selectedOption = stringResource(
-                            id = R.string.account_setup_client_certificate_none_available,
-                        ),
-                        onOptionChange = { onEvent(Event.ClientCertificateChanged(it)) },
-                        label = stringResource(id = R.string.account_setup_outgoing_config_client_certificate_label),
+                    ClientCertificateInput(
+                        alias = state.clientCertificateAlias,
+                        onValueChange = { onEvent(Event.ClientCertificateChanged(it)) },
+                        label = stringResource(id = R.string.account_setup_client_certificate_label),
                         contentPadding = defaultItemPadding(),
                     )
                 }

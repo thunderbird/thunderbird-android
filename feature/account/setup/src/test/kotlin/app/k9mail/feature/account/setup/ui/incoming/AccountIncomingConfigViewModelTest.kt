@@ -136,7 +136,7 @@ class AccountIncomingConfigViewModelTest {
             viewModel = testSubject,
             initialState = State(),
             event = Event.ClientCertificateChanged("clientCertificate"),
-            expectedState = State(clientCertificate = "clientCertificate"),
+            expectedState = State(clientCertificateAlias = "clientCertificate"),
             coroutineScope = backgroundScope,
         )
     }
