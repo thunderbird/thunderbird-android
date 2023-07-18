@@ -4,9 +4,13 @@ import android.content.Intent
 import app.k9mail.core.common.oauth.OAuthConfiguration
 import app.k9mail.feature.account.oauth.domain.DomainContract
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationIntentResult
+import app.k9mail.feature.account.oauth.domain.entity.AuthorizationResult
+import app.k9mail.feature.account.oauth.domain.entity.AuthorizationState
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
+import net.openid.appauth.AuthorizationException
+import net.openid.appauth.AuthorizationResponse
 import org.junit.Test
 
 class GetOAuthRequestIntentTest {
@@ -71,6 +75,21 @@ class GetOAuthRequestIntentTest {
             recordedEmailAddress = emailAddress
 
             return AuthorizationIntentResult.Success(intent)
+        }
+
+        override suspend fun getAuthorizationResponse(intent: Intent): AuthorizationResponse? {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun getAuthorizationException(intent: Intent): AuthorizationException? {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun getExchangeToken(
+            authorizationState: AuthorizationState,
+            response: AuthorizationResponse,
+        ): AuthorizationResult {
+            TODO("Not yet implemented")
         }
     }
 }

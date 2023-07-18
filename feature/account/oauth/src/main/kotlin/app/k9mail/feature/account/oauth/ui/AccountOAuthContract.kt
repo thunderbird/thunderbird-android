@@ -24,6 +24,11 @@ interface AccountOAuthContract {
     )
 
     sealed interface Event {
+        data class OnOAuthResult(
+            val resultCode: Int,
+            val data: Intent?,
+        ) : Event
+
         object SignInClicked : Event
         object OnNextClicked : Event
         object OnBackClicked : Event
@@ -43,7 +48,9 @@ interface AccountOAuthContract {
 
     sealed interface Error {
         object NotSupported : Error
-        object NetworkError : Error
-        object UnknownError : Error
+        object Cancelled : Error
+
+        object BrowserNotAvailable : Error
+        data class Unknown(val error: Exception) : Error
     }
 }

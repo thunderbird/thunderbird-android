@@ -1,6 +1,5 @@
 package app.k9mail.feature.account.oauth.ui
 
-import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -27,10 +26,7 @@ fun AccountOAuthScreen(
     val oAuthLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
     ) {
-        if (it.resultCode == Activity.RESULT_OK && it.data != null) {
-            // TODO handle success
-        }
-        // TODO handle error
+        viewModel.event(Event.OnOAuthResult(it.resultCode, it.data))
     }
 
     val (state, dispatch) = viewModel.observe { effect ->
