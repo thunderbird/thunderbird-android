@@ -19,6 +19,7 @@ fun TextInput(
     errorMessage: String? = null,
     contentPadding: PaddingValues = inputContentPadding(),
     isSingleLine: Boolean = true,
+    isEnabled: Boolean = true,
 ) {
     InputLayout(
         modifier = modifier,
@@ -29,6 +30,7 @@ fun TextInput(
             value = text,
             onValueChange = onTextChange,
             label = label,
+            isEnabled = isEnabled,
             isRequired = isRequired,
             hasError = errorMessage != null,
             isSingleLine = isSingleLine,
