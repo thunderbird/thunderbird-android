@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_oauth_sign_in_with_google_button">Sign in with Google</string>
+    <string name="account_oauth_sign_in_with_google_button_loading">Signing in with Google …</string>
+</resources>

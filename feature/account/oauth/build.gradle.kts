@@ -21,6 +21,7 @@ dependencies {
     implementation(projects.core.common)
 
     implementation(libs.appauth)
+    implementation(libs.androidx.compose.material)
 
     testImplementation(projects.core.ui.compose.testing)
 }
