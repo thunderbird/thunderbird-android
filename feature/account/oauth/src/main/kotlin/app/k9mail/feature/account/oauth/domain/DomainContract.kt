@@ -1,6 +1,7 @@
 package app.k9mail.feature.account.oauth.domain
 
-import android.content.Intent
+import app.k9mail.core.common.oauth.OAuthConfiguration
+import app.k9mail.feature.account.oauth.domain.entity.AuthorizationIntentResult
 
 interface DomainContract {
 
@@ -10,15 +11,14 @@ interface DomainContract {
         }
 
         fun interface GetOAuthRequestIntent {
-            suspend fun execute(hostname: String, emailAddress: String): GetOAuthRequestIntentResult
-
-            sealed interface GetOAuthRequestIntentResult {
-                object NotSupported : GetOAuthRequestIntentResult
-
-                data class Success(
-                    val intent: Intent,
-                ) : GetOAuthRequestIntentResult
-            }
+            fun execute(hostname: String, emailAddress: String): AuthorizationIntentResult
         }
+    }
+
+    interface AuthorizationRepository {
+        fun getAuthorizationRequestIntent(
+            configuration: OAuthConfiguration,
+            emailAddress: String,
+        ): AuthorizationIntentResult
     }
 }

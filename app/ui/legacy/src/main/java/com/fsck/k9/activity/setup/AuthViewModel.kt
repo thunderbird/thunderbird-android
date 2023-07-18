@@ -14,7 +14,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
 import app.k9mail.feature.account.oauth.domain.DomainContract.UseCase.GetOAuthRequestIntent
-import app.k9mail.feature.account.oauth.domain.DomainContract.UseCase.GetOAuthRequestIntent.GetOAuthRequestIntentResult
+import app.k9mail.feature.account.oauth.domain.entity.AuthorizationIntentResult
 import com.fsck.k9.Account
 import com.fsck.k9.preferences.AccountManager
 import kotlinx.coroutines.Dispatchers
@@ -98,11 +98,11 @@ class AuthViewModel(
         }
 
         when (authRequestIntentResult) {
-            GetOAuthRequestIntentResult.NotSupported -> {
+            AuthorizationIntentResult.NotSupported -> {
                 _uiState.update { AuthFlowState.NotSupported }
             }
 
-            is GetOAuthRequestIntentResult.Success -> resultObserver.login(authRequestIntentResult.intent)
+            is AuthorizationIntentResult.Success -> resultObserver.login(authRequestIntentResult.intent)
         }
     }
 
