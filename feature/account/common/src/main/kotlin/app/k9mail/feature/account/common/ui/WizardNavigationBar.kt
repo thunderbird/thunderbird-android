@@ -12,7 +12,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonOutlined
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
-import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 
 @Composable
 fun WizardNavigationBar(
@@ -21,6 +21,7 @@ fun WizardNavigationBar(
     onNextClick: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
+    state: WizardNavigationBarState = WizardNavigationBarState(),
 ) {
     ResponsiveWidthContainer(
         modifier = Modifier
@@ -41,10 +42,12 @@ fun WizardNavigationBar(
             ButtonOutlined(
                 text = backButtonText,
                 onClick = onBackClick,
+                enabled = state.isBackEnabled,
             )
             Button(
                 text = nextButtonText,
                 onClick = onNextClick,
+                enabled = state.isNextEnabled,
             )
         }
     }
@@ -65,13 +68,30 @@ internal fun WizardNavigationBarK9Preview() {
 
 @DevicePreviews
 @Composable
-internal fun WizardNavigationBarThunderbirdPreview() {
-    ThunderbirdTheme {
+internal fun WizardNavigationBarPreview() {
+    PreviewWithThemes {
         WizardNavigationBar(
             nextButtonText = "Next",
             backButtonText = "Back",
             onNextClick = {},
             onBackClick = {},
+        )
+    }
+}
+
+@DevicePreviews
+@Composable
+internal fun WizardNavigationBarDisabledPreview() {
+    PreviewWithThemes {
+        WizardNavigationBar(
+            nextButtonText = "Next",
+            backButtonText = "Back",
+            onNextClick = {},
+            onBackClick = {},
+            state = WizardNavigationBarState(
+                isNextEnabled = false,
+                isBackEnabled = false,
+            ),
         )
     }
 }
