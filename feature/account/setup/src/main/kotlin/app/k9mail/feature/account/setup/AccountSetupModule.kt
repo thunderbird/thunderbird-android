@@ -2,6 +2,7 @@ package app.k9mail.feature.account.setup
 
 import app.k9mail.autodiscovery.api.AutoDiscoveryService
 import app.k9mail.autodiscovery.service.RealAutoDiscoveryService
+import app.k9mail.core.common.coreCommonModule
 import app.k9mail.feature.account.setup.domain.DomainContract
 import app.k9mail.feature.account.setup.domain.usecase.CheckIncomingServerConfig
 import app.k9mail.feature.account.setup.domain.usecase.CheckOutgoingServerConfig
@@ -29,6 +30,7 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 val featureAccountSetupModule: Module = module {
+    includes(coreCommonModule)
 
     single<OkHttpClient> {
         OkHttpClient()
@@ -43,6 +45,7 @@ val featureAccountSetupModule: Module = module {
     single<DomainContract.UseCase.GetAutoDiscovery> {
         GetAutoDiscovery(
             service = get(),
+            oauthProvider = get(),
         )
     }
 

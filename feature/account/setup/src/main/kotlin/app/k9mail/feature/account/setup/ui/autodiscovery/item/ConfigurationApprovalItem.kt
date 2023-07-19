@@ -3,9 +3,9 @@ package app.k9mail.feature.account.setup.ui.autodiscovery.item
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import app.k9mail.feature.account.common.ui.item.ListItem
 import app.k9mail.feature.account.setup.domain.input.BooleanInputField
 import app.k9mail.feature.account.setup.ui.autodiscovery.view.ConfigurationApprovalView
-import app.k9mail.feature.account.setup.ui.common.item.ListItem
 
 @Composable
 internal fun LazyItemScope.ConfigurationApprovalItem(

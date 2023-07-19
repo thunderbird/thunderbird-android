@@ -9,8 +9,8 @@ import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.setup.R
-import app.k9mail.feature.account.setup.ui.common.AccountSetupBottomBar
 import app.k9mail.feature.account.setup.ui.common.AccountSetupTopAppBar
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Effect
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Event
@@ -42,7 +42,7 @@ internal fun AccountOutgoingConfigScreen(
             )
         },
         bottomBar = {
-            AccountSetupBottomBar(
+            WizardNavigationBar(
                 nextButtonText = stringResource(id = R.string.account_setup_button_next),
                 backButtonText = stringResource(id = R.string.account_setup_button_back),
                 onNextClick = { dispatch(Event.OnNextClicked) },

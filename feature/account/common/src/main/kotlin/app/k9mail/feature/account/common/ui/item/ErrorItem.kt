@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.setup.ui.common.item
+package app.k9mail.feature.account.common.ui.item
 
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.runtime.Composable
@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
 
 @Composable
-internal fun LazyItemScope.ErrorItem(
+fun LazyItemScope.ErrorItem(
     title: String,
     modifier: Modifier = Modifier,
     message: String? = null,

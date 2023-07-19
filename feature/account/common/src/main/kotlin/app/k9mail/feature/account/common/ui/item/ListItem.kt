@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.setup.ui.common.item
+package app.k9mail.feature.account.common.ui.item
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun LazyItemScope.ListItem(
+fun LazyItemScope.ListItem(
     modifier: Modifier = Modifier,
     contentPaddingValues: PaddingValues = defaultItemPadding(),
     content: @Composable () -> Unit,
