@@ -4,6 +4,7 @@ import app.cash.turbine.testIn
 import app.k9mail.core.common.domain.usecase.validation.ValidationError
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
+import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
 import app.k9mail.feature.account.setup.domain.entity.AuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
@@ -11,7 +12,6 @@ import app.k9mail.feature.account.setup.domain.entity.toImapDefaultPort
 import app.k9mail.feature.account.setup.domain.entity.toPop3DefaultPort
 import app.k9mail.feature.account.setup.domain.input.NumberInputField
 import app.k9mail.feature.account.setup.domain.input.StringInputField
-import app.k9mail.feature.account.setup.testing.eventStateTest
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Effect
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Error
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event
