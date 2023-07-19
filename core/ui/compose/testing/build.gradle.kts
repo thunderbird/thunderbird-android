@@ -8,6 +8,8 @@ android {
 
 dependencies {
     api(projects.core.testing)
+    api(libs.turbine)
+    api(libs.assertk)
 
     implementation(projects.core.ui.compose.theme)
     implementation(libs.androidx.compose.material)
