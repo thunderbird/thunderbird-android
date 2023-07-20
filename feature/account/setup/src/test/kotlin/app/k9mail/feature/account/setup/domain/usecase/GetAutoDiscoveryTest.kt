@@ -90,7 +90,7 @@ class GetAutoDiscoveryTest {
     }
 
     @Test
-    fun `should check for oauth support and change auth type to password when not supported`() = runTest {
+    fun `should check for OAuth support and drop OAuth when not supported`() = runTest {
         val useCase = GetAutoDiscovery(
             service = FakeAutoDiscoveryService(SETTINGS_WITH_OAUTH),
             oauthProvider = FakeOAuthConfigurationProvider(),
@@ -103,10 +103,10 @@ class GetAutoDiscoveryTest {
             .isEqualTo(
                 SETTINGS_WITH_OAUTH.copy(
                     incomingServerSettings = (SETTINGS_WITH_OAUTH.incomingServerSettings as ImapServerSettings).copy(
-                        authenticationType = AuthenticationType.PasswordCleartext,
+                        authenticationTypes = listOf(AuthenticationType.PasswordCleartext),
                     ),
                     outgoingServerSettings = (SETTINGS_WITH_OAUTH.outgoingServerSettings as SmtpServerSettings).copy(
-                        authenticationType = AuthenticationType.PasswordCleartext,
+                        authenticationTypes = listOf(AuthenticationType.PasswordCleartext),
                     ),
                 ),
             )
@@ -132,14 +132,14 @@ class GetAutoDiscoveryTest {
                 hostname = "imap.example.com".toHostname(),
                 port = 993.toPort(),
                 connectionSecurity = ConnectionSecurity.TLS,
-                authenticationType = AuthenticationType.OAuth2,
+                authenticationTypes = listOf(AuthenticationType.OAuth2, AuthenticationType.PasswordCleartext),
                 username = "user",
             ),
             outgoingServerSettings = SmtpServerSettings(
                 hostname = "smtp.example.com".toHostname(),
                 port = 465.toPort(),
                 connectionSecurity = ConnectionSecurity.TLS,
-                authenticationType = AuthenticationType.OAuth2,
+                authenticationTypes = listOf(AuthenticationType.OAuth2, AuthenticationType.PasswordCleartext),
                 username = "user",
             ),
             isTrusted = true,
@@ -152,7 +152,7 @@ class GetAutoDiscoveryTest {
                 hostname = "smtp.example.com".toHostname(),
                 port = 465.toPort(),
                 connectionSecurity = ConnectionSecurity.TLS,
-                authenticationType = AuthenticationType.OAuth2,
+                authenticationTypes = listOf(AuthenticationType.OAuth2),
                 username = "user",
             ),
             isTrusted = true,
@@ -164,14 +164,14 @@ class GetAutoDiscoveryTest {
                 hostname = "imap.example.com".toHostname(),
                 port = 993.toPort(),
                 connectionSecurity = ConnectionSecurity.TLS,
-                authenticationType = AuthenticationType.PasswordCleartext,
+                authenticationTypes = listOf(AuthenticationType.PasswordCleartext),
                 username = "user",
             ),
             outgoingServerSettings = SmtpServerSettings(
                 hostname = "smtp.example.com".toHostname(),
                 port = 465.toPort(),
                 connectionSecurity = ConnectionSecurity.TLS,
-                authenticationType = AuthenticationType.PasswordCleartext,
+                authenticationTypes = listOf(AuthenticationType.PasswordCleartext),
                 username = "user",
             ),
             isTrusted = true,

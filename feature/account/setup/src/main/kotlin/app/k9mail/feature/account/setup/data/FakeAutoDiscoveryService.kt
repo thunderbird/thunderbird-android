@@ -57,10 +57,10 @@ class FakeAutoDiscoveryService : AutoDiscoveryService {
                 hostname = "imap.${emailAddress.domain}".toHostname(),
                 port = 993.toPort(),
                 connectionSecurity = ConnectionSecurity.TLS,
-                authenticationType = if (hasIncomingOauth) {
-                    AuthenticationType.OAuth2
+                authenticationTypes = if (hasIncomingOauth) {
+                    listOf(AuthenticationType.OAuth2)
                 } else {
-                    AuthenticationType.PasswordEncrypted
+                    listOf(AuthenticationType.PasswordEncrypted)
                 },
                 username = "username",
             ),
@@ -68,10 +68,10 @@ class FakeAutoDiscoveryService : AutoDiscoveryService {
                 hostname = "smtp.${emailAddress.domain}".toHostname(),
                 port = 993.toPort(),
                 connectionSecurity = ConnectionSecurity.TLS,
-                authenticationType = if (hasOutgoingOauth) {
-                    AuthenticationType.OAuth2
+                authenticationTypes = if (hasOutgoingOauth) {
+                    listOf(AuthenticationType.OAuth2)
                 } else {
-                    AuthenticationType.PasswordEncrypted
+                    listOf(AuthenticationType.PasswordEncrypted)
                 },
                 username = "username",
             ),

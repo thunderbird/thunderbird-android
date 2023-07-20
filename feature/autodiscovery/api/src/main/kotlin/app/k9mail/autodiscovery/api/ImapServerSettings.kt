@@ -7,6 +7,6 @@ data class ImapServerSettings(
     val hostname: Hostname,
     val port: Port,
     val connectionSecurity: ConnectionSecurity,
-    val authenticationType: AuthenticationType,
+    val authenticationTypes: List<AuthenticationType>,
     val username: String,
 ) : IncomingServerSettings

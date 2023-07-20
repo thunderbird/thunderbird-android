@@ -5,6 +5,7 @@ import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
 import app.k9mail.core.common.net.toHostname
 import app.k9mail.core.common.net.toPort
+import app.k9mail.feature.account.setup.domain.entity.AuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.AutoDiscoveryAuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.AutoDiscoveryConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
@@ -50,6 +51,7 @@ class AccountAutoDiscoveryStateMapperKtTest {
                 server = StringInputField(value = AUTO_DISCOVERY_HOSTNAME.value),
                 security = AUTO_DISCOVERY_SECURITY.toConnectionSecurity(),
                 port = NumberInputField(value = AUTO_DISCOVERY_PORT_IMAP.value.toLong()),
+                authenticationType = AuthenticationType.PasswordEncrypted,
                 username = StringInputField(value = AUTO_DISCOVERY_USERNAME),
                 password = StringInputField(value = PASSWORD),
             ),
@@ -57,7 +59,7 @@ class AccountAutoDiscoveryStateMapperKtTest {
     }
 
     @Test
-    fun `should map to email username IncomingConfigState when AutoDiscovery empty username`() {
+    fun `should map to empty username IncomingConfigState when AutoDiscovery empty username`() {
         val incomingConfigState = AUTO_DISCOVERY_STATE_USERNAME_EMPTY.toIncomingConfigState()
 
         assertThat(incomingConfigState).isEqualTo(
@@ -66,7 +68,8 @@ class AccountAutoDiscoveryStateMapperKtTest {
                 server = StringInputField(value = AUTO_DISCOVERY_HOSTNAME.value),
                 security = AUTO_DISCOVERY_SECURITY.toConnectionSecurity(),
                 port = NumberInputField(value = AUTO_DISCOVERY_PORT_IMAP.value.toLong()),
-                username = StringInputField(value = EMAIL_ADDRESS),
+                authenticationType = AuthenticationType.PasswordEncrypted,
+                username = StringInputField(value = ""),
                 password = StringInputField(value = PASSWORD),
             ),
         )
@@ -100,6 +103,7 @@ class AccountAutoDiscoveryStateMapperKtTest {
                 server = StringInputField(value = AUTO_DISCOVERY_HOSTNAME.value),
                 security = AUTO_DISCOVERY_SECURITY.toConnectionSecurity(),
                 port = NumberInputField(value = AUTO_DISCOVERY_PORT_SMTP.value.toLong()),
+                authenticationType = AuthenticationType.PasswordEncrypted,
                 username = StringInputField(value = AUTO_DISCOVERY_USERNAME),
                 password = StringInputField(value = PASSWORD),
             ),
@@ -107,7 +111,7 @@ class AccountAutoDiscoveryStateMapperKtTest {
     }
 
     @Test
-    fun `should map to email username OutgoingConfigState when AutoDiscovery empty username`() {
+    fun `should map to empty username OutgoingConfigState when AutoDiscovery empty username`() {
         val outgoingConfigState = AUTO_DISCOVERY_STATE_USERNAME_EMPTY.toOutgoingConfigState()
 
         assertThat(outgoingConfigState).isEqualTo(
@@ -115,7 +119,8 @@ class AccountAutoDiscoveryStateMapperKtTest {
                 server = StringInputField(value = AUTO_DISCOVERY_HOSTNAME.value),
                 security = AUTO_DISCOVERY_SECURITY.toConnectionSecurity(),
                 port = NumberInputField(value = AUTO_DISCOVERY_PORT_SMTP.value.toLong()),
-                username = StringInputField(value = EMAIL_ADDRESS),
+                authenticationType = AuthenticationType.PasswordEncrypted,
+                username = StringInputField(value = ""),
                 password = StringInputField(value = PASSWORD),
             ),
         )
@@ -165,14 +170,14 @@ class AccountAutoDiscoveryStateMapperKtTest {
                     hostname = AUTO_DISCOVERY_HOSTNAME,
                     port = AUTO_DISCOVERY_PORT_IMAP,
                     connectionSecurity = AUTO_DISCOVERY_SECURITY,
-                    authenticationType = AUTO_DISCOVERY_AUTHENTICATION,
+                    authenticationTypes = listOf(AUTO_DISCOVERY_AUTHENTICATION),
                     username = AUTO_DISCOVERY_USERNAME,
                 ),
                 outgoingServerSettings = SmtpServerSettings(
                     hostname = AUTO_DISCOVERY_HOSTNAME,
                     port = AUTO_DISCOVERY_PORT_SMTP,
                     connectionSecurity = AUTO_DISCOVERY_SECURITY,
-                    authenticationType = AUTO_DISCOVERY_AUTHENTICATION,
+                    authenticationTypes = listOf(AUTO_DISCOVERY_AUTHENTICATION),
                     username = AUTO_DISCOVERY_USERNAME,
                 ),
                 isTrusted = true,

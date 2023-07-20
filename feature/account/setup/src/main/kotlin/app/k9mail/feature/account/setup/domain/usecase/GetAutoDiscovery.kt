@@ -39,35 +39,38 @@ internal class GetAutoDiscovery(
         val incomingServerSettings = settings.incomingServerSettings as ImapServerSettings
         val outgoingServerSettings = settings.outgoingServerSettings as SmtpServerSettings
 
-        val incomingAuthenticationType = updateAuthenticationType(
-            authenticationType = incomingServerSettings.authenticationType,
+        val incomingAuthenticationTypes = cleanAuthenticationTypes(
+            authenticationTypes = incomingServerSettings.authenticationTypes,
             hostname = incomingServerSettings.hostname.value,
         )
-        val outgoingAuthenticationType = updateAuthenticationType(
-            authenticationType = outgoingServerSettings.authenticationType,
+        val outgoingAuthenticationTypes = cleanAuthenticationTypes(
+            authenticationTypes = outgoingServerSettings.authenticationTypes,
             hostname = outgoingServerSettings.hostname.value,
         )
 
-        return settings.copy(
-            incomingServerSettings = incomingServerSettings.copy(
-                authenticationType = incomingAuthenticationType,
-            ),
-            outgoingServerSettings = outgoingServerSettings.copy(
-                authenticationType = outgoingAuthenticationType,
-            ),
-        )
+        return if (incomingAuthenticationTypes.isNotEmpty() && outgoingAuthenticationTypes.isNotEmpty()) {
+            settings.copy(
+                incomingServerSettings = incomingServerSettings.copy(
+                    authenticationTypes = incomingAuthenticationTypes,
+                ),
+                outgoingServerSettings = outgoingServerSettings.copy(
+                    authenticationTypes = outgoingAuthenticationTypes,
+                ),
+            )
+        } else {
+            AutoDiscoveryResult.NoUsableSettingsFound
+        }
     }
 
-    private fun updateAuthenticationType(
-        authenticationType: AuthenticationType,
+    private fun cleanAuthenticationTypes(
+        authenticationTypes: List<AuthenticationType>,
         hostname: String,
-    ): AuthenticationType {
-        return if (authenticationType == AuthenticationType.OAuth2 && !isOAuthSupportedFor(hostname)) {
-            // OAuth2 is not supported for this hostname, downgrade to password cleartext
-            // TODO replace with next supported authentication type, once populated by autodiscovery
-            AuthenticationType.PasswordCleartext
+    ): List<AuthenticationType> {
+        return if (AuthenticationType.OAuth2 in authenticationTypes && !isOAuthSupportedFor(hostname)) {
+            // OAuth2 is not supported for this hostname; remove it from the list of supported authentication types
+            authenticationTypes.filter { it != AuthenticationType.OAuth2 }
         } else {
-            authenticationType
+            authenticationTypes
         }
     }
 
