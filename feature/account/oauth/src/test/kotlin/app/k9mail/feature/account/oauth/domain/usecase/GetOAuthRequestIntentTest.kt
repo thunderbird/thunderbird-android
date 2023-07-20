@@ -2,15 +2,11 @@ package app.k9mail.feature.account.oauth.domain.usecase
 
 import android.content.Intent
 import app.k9mail.core.common.oauth.OAuthConfiguration
-import app.k9mail.feature.account.oauth.domain.DomainContract
+import app.k9mail.feature.account.oauth.domain.FakeAuthorizationRepository
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationIntentResult
-import app.k9mail.feature.account.oauth.domain.entity.AuthorizationResult
-import app.k9mail.feature.account.oauth.domain.entity.AuthorizationState
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
-import net.openid.appauth.AuthorizationException
-import net.openid.appauth.AuthorizationResponse
 import org.junit.Test
 
 class GetOAuthRequestIntentTest {
@@ -32,7 +28,9 @@ class GetOAuthRequestIntentTest {
     @Test
     fun `should return Success when repository has intent`() = runTest {
         val intent = Intent()
-        val repository = FakeAuthorizationRepository(intent)
+        val repository = FakeAuthorizationRepository(
+            answerGetAuthorizationRequestIntent = AuthorizationIntentResult.Success(intent),
+        )
         val testSubject = GetOAuthRequestIntent(
             repository = repository,
             configurationProvider = { oAuthConfiguration },
@@ -47,8 +45,8 @@ class GetOAuthRequestIntentTest {
                 intent = intent,
             ),
         )
-        assertThat(repository.recordedConfiguration).isEqualTo(oAuthConfiguration)
-        assertThat(repository.recordedEmailAddress).isEqualTo(emailAddress)
+        assertThat(repository.recordedGetAuthorizationRequestIntentConfiguration).isEqualTo(oAuthConfiguration)
+        assertThat(repository.recordedGetAuthorizationRequestIntentEmailAddress).isEqualTo(emailAddress)
     }
 
     private companion object {
@@ -59,37 +57,5 @@ class GetOAuthRequestIntentTest {
             tokenEndpoint = "token.example.com",
             redirectUri = "redirect.example.com",
         )
-    }
-
-    private class FakeAuthorizationRepository(
-        private val intent: Intent = Intent(),
-    ) : DomainContract.AuthorizationRepository {
-
-        var recordedConfiguration: OAuthConfiguration? = null
-        var recordedEmailAddress: String? = null
-        override fun getAuthorizationRequestIntent(
-            configuration: OAuthConfiguration,
-            emailAddress: String,
-        ): AuthorizationIntentResult {
-            recordedConfiguration = configuration
-            recordedEmailAddress = emailAddress
-
-            return AuthorizationIntentResult.Success(intent)
-        }
-
-        override suspend fun getAuthorizationResponse(intent: Intent): AuthorizationResponse? {
-            TODO("Not yet implemented")
-        }
-
-        override suspend fun getAuthorizationException(intent: Intent): AuthorizationException? {
-            TODO("Not yet implemented")
-        }
-
-        override suspend fun getExchangeToken(
-            authorizationState: AuthorizationState,
-            response: AuthorizationResponse,
-        ): AuthorizationResult {
-            TODO("Not yet implemented")
-        }
     }
 }
