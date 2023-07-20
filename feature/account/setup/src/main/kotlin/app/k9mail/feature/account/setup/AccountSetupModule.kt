@@ -8,6 +8,7 @@ import app.k9mail.feature.account.setup.domain.usecase.CheckIncomingServerConfig
 import app.k9mail.feature.account.setup.domain.usecase.CheckOutgoingServerConfig
 import app.k9mail.feature.account.setup.domain.usecase.CreateAccount
 import app.k9mail.feature.account.setup.domain.usecase.GetAutoDiscovery
+import app.k9mail.feature.account.setup.domain.usecase.ValidateServerSettings
 import app.k9mail.feature.account.setup.ui.AccountSetupViewModel
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryValidator
@@ -21,6 +22,7 @@ import app.k9mail.feature.account.setup.ui.options.AccountOptionsViewModel
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigValidator
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigViewModel
+import app.k9mail.feature.account.setup.ui.validation.AccountValidationViewModel
 import com.fsck.k9.mail.store.imap.ImapServerSettingsValidator
 import com.fsck.k9.mail.store.pop3.Pop3ServerSettingsValidator
 import com.fsck.k9.mail.transport.smtp.SmtpServerSettingsValidator
@@ -46,6 +48,23 @@ val featureAccountSetupModule: Module = module {
         GetAutoDiscovery(
             service = get(),
             oauthProvider = get(),
+        )
+    }
+
+    factory<DomainContract.UseCase.ValidateServerSettings> {
+        ValidateServerSettings(
+            imapValidator = ImapServerSettingsValidator(
+                trustedSocketFactory = get(),
+                oAuth2TokenProvider = null, // TODO
+                clientIdAppName = "null",
+            ),
+            pop3Validator = Pop3ServerSettingsValidator(
+                trustedSocketFactory = get(),
+            ),
+            smtpValidator = SmtpServerSettingsValidator(
+                trustedSocketFactory = get(),
+                oAuth2TokenProvider = null, // TODO
+            ),
         )
     }
 
@@ -89,6 +108,11 @@ val featureAccountSetupModule: Module = module {
         AccountAutoDiscoveryViewModel(
             validator = get(),
             getAutoDiscovery = get(),
+        )
+    }
+    viewModel {
+        AccountValidationViewModel(
+            validateServerSettings = get(),
         )
     }
     viewModel {

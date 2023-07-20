@@ -8,6 +8,7 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryCon
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
+import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import okhttp3.OkHttpClient
 import org.junit.Test
@@ -44,6 +45,7 @@ class AccountSetupModuleKtTest : KoinTest {
             extraTypes = listOf(
                 AccountSetupContract.State::class,
                 AccountAutoDiscoveryContract.State::class,
+                AccountValidationContract.State::class,
                 AccountIncomingConfigContract.State::class,
                 AccountOutgoingConfigContract.State::class,
                 AccountOptionsContract.State::class,
