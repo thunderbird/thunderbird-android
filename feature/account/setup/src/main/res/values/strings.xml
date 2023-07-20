@@ -12,7 +12,8 @@
     <string name="account_setup_authentication_password_encrypted">Encrypted password</string>
     <string name="account_setup_authentication_client_certificate">Client certificate</string>
     <string name="account_setup_authentication_client_oauth">OAuth 2.0</string>
-    <string name="account_setup_client_certificate_none_available">None available</string>
+    <string name="account_setup_client_certificate_label">Client certificate</string>
+    <string name="account_setup_client_certificate_none_selected">None</string>
 
     <string name="account_setup_error_network">Network </string>
     <string name="account_setup_error_unknown">Unknown error</string>
@@ -63,7 +64,6 @@
     <string name="account_setup_outgoing_config_port_label">Port</string>
     <string name="account_setup_outgoing_config_authentication_label">Authentication</string>
     <string name="account_setup_outgoing_config_username_label">Username</string>
-    <string name="account_setup_outgoing_config_client_certificate_label">Client certificate</string>
     <string name="account_setup_outgoing_config_loading_message">Checking outgoing server settings…</string>
     <string name="account_setup_outgoing_config_loading_error">Outgoing server settings are not valid</string>
     <string name="account_setup_outgoing_config_success">Outgoing server settings are valid!</string>

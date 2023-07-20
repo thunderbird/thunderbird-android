@@ -4,8 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
+import app.k9mail.core.ui.compose.common.activity.setActivityContent
 import app.k9mail.feature.account.setup.navigation.NAVIGATION_ROUTE_ACCOUNT_SETUP
 import app.k9mail.feature.launcher.ui.FeatureLauncherApp
 import app.k9mail.feature.onboarding.navigation.NAVIGATION_ROUTE_ONBOARDING
@@ -19,7 +19,7 @@ class FeatureLauncherActivity : ComponentActivity() {
 
         val destination = intent.getStringExtra(EXTRA_DESTINATION)
 
-        setContent {
+        setActivityContent {
             FeatureLauncherApp(startDestination = destination)
         }
     }

@@ -23,7 +23,7 @@ interface AccountOutgoingConfigContract {
         val authenticationType: AuthenticationType = AuthenticationType.PasswordCleartext,
         val username: StringInputField = StringInputField(),
         val password: StringInputField = StringInputField(),
-        val clientCertificate: String = "",
+        val clientCertificateAlias: String? = null,
 
         val isSuccess: Boolean = false,
         val error: Error? = null,
@@ -37,7 +37,7 @@ interface AccountOutgoingConfigContract {
         data class AuthenticationTypeChanged(val authenticationType: AuthenticationType) : Event
         data class UsernameChanged(val username: String) : Event
         data class PasswordChanged(val password: String) : Event
-        data class ClientCertificateChanged(val clientCertificate: String) : Event
+        data class ClientCertificateChanged(val clientCertificateAlias: String?) : Event
 
         object OnNextClicked : Event
         object OnBackClicked : Event

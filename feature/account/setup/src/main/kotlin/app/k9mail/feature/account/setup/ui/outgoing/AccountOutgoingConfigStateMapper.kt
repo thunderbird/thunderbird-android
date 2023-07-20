@@ -4,8 +4,6 @@ import app.k9mail.feature.account.setup.domain.entity.toAuthType
 import app.k9mail.feature.account.setup.domain.entity.toMailConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 
-// TODO map extras
-// TODO map clientCertificateAlias
 internal fun AccountOutgoingConfigContract.State.toServerSettings(): ServerSettings {
     return ServerSettings(
         type = "smtp",
@@ -15,6 +13,6 @@ internal fun AccountOutgoingConfigContract.State.toServerSettings(): ServerSetti
         authenticationType = authenticationType.toAuthType(),
         username = if (authenticationType.isUsernameRequired) username.value else "",
         password = if (authenticationType.isPasswordRequired) password.value else null,
-        clientCertificateAlias = null, // TODO replace by actual client certificate alias
+        clientCertificateAlias = clientCertificateAlias,
     )
 }

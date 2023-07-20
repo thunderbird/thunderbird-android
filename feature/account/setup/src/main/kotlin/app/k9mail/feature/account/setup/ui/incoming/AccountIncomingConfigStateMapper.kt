@@ -6,7 +6,6 @@ import app.k9mail.feature.account.setup.domain.entity.toMailConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings
 
-// TODO map clientCertificateAlias
 internal fun AccountIncomingConfigContract.State.toServerSettings(): ServerSettings {
     return ServerSettings(
         type = protocolType.defaultName,
@@ -16,7 +15,7 @@ internal fun AccountIncomingConfigContract.State.toServerSettings(): ServerSetti
         authenticationType = authenticationType.toAuthType(),
         username = username.value,
         password = if (authenticationType.isPasswordRequired) password.value else null,
-        clientCertificateAlias = null, // TODO replace by actual client certificate alias
+        clientCertificateAlias = clientCertificateAlias,
         extra = createExtras(),
     )
 }
