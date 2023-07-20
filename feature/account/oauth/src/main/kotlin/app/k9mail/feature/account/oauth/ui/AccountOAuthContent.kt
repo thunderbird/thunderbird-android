@@ -46,7 +46,7 @@ internal fun AccountOAuthContent(
             item(key = "error") {
                 ErrorItem(
                     title = stringResource(id = R.string.account_oauth_loading_error),
-//                    message = state.error.toResourceString(resources),
+                    message = state.error.toResourceString(resources),
                     onRetry = { onEvent(Event.OnRetryClicked) },
                 )
             }

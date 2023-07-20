@@ -232,7 +232,7 @@ class AccountOAuthViewModelTest {
         testSubject.event(Event.OnOAuthResult(resultCode = Activity.RESULT_CANCELED, data = intent))
 
         val failureState = initialState.copy(
-            error = Error.Cancelled,
+            error = Error.Canceled,
         )
 
         assertThatAndTurbinesConsumed(
@@ -275,7 +275,7 @@ class AccountOAuthViewModelTest {
 
             val failureState = loadingState.copy(
                 isLoading = false,
-                error = Error.Cancelled,
+                error = Error.Canceled,
             )
 
             assertThatAndTurbinesConsumed(

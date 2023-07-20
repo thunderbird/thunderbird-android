@@ -80,7 +80,7 @@ class AccountOAuthViewModel(
             finishSignIn(data)
         } else {
             updateState { state ->
-                state.copy(error = Error.Cancelled)
+                state.copy(error = Error.Canceled)
             }
         }
     }
@@ -94,7 +94,7 @@ class AccountOAuthViewModel(
         viewModelScope.launch {
             when (val result = finishOAuthSignIn.execute(state.value.authorizationState, data)) {
                 AuthorizationResult.BrowserNotAvailable -> updateErrorState(Error.BrowserNotAvailable)
-                AuthorizationResult.Canceled -> updateErrorState(Error.Cancelled)
+                AuthorizationResult.Canceled -> updateErrorState(Error.Canceled)
                 is AuthorizationResult.Failure -> updateErrorState(Error.Unknown(result.error))
                 is AuthorizationResult.Success -> {
                     updateState { state ->

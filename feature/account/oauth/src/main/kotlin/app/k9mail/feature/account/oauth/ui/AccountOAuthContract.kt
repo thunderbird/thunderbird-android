@@ -48,7 +48,7 @@ interface AccountOAuthContract {
 
     sealed interface Error {
         object NotSupported : Error
-        object Cancelled : Error
+        object Canceled : Error
 
         object BrowserNotAvailable : Error
         data class Unknown(val error: Exception) : Error
