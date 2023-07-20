@@ -37,8 +37,6 @@ class AccountOAuthViewModel(
 
             Event.SignInClicked -> onSignIn()
 
-            Event.OnNextClicked -> TODO()
-
             Event.OnBackClicked -> navigateBack()
 
             Event.OnRetryClicked -> onRetry()

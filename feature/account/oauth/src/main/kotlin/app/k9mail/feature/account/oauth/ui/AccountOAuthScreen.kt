@@ -49,7 +49,7 @@ fun AccountOAuthScreen(
                 state = state.value.wizardNavigationBarState,
                 nextButtonText = stringResource(id = R.string.account_oauth_button_next),
                 backButtonText = stringResource(id = R.string.account_oauth_button_back),
-                onNextClick = { dispatch(Event.OnNextClicked) },
+                onNextClick = { },
                 onBackClick = { dispatch(Event.OnBackClicked) },
             )
         },

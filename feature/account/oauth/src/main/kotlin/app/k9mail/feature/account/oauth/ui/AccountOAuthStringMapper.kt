@@ -2,7 +2,6 @@ package app.k9mail.feature.account.oauth.ui
 
 import android.content.res.Resources
 import app.k9mail.feature.account.oauth.R
-
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.Error
 
 internal fun Error.toResourceString(resources: Resources): String {

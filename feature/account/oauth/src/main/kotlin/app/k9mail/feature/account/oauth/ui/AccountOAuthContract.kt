@@ -30,7 +30,6 @@ interface AccountOAuthContract {
         ) : Event
 
         object SignInClicked : Event
-        object OnNextClicked : Event
         object OnBackClicked : Event
         object OnRetryClicked : Event
     }
