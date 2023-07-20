@@ -55,6 +55,7 @@ internal fun AccountOAuthContent(
                 SignInItem(
                     emailAddress = state.emailAddress,
                     onSignInClick = { onEvent(Event.SignInClicked) },
+                    isGoogleSignIn = state.isGoogleSignIn,
                 )
             }
         }

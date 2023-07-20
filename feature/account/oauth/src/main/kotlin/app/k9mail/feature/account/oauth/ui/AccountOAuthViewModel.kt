@@ -18,11 +18,16 @@ class AccountOAuthViewModel(
     initialState: State = State(),
     private val getOAuthRequestIntent: UseCase.GetOAuthRequestIntent,
     private val finishOAuthSignIn: UseCase.FinishOAuthSignIn,
+    private val checkIsGoogleSignIn: UseCase.CheckIsGoogleSignIn,
 ) : BaseViewModel<State, Event, Effect>(initialState), ViewModel {
 
     override fun initState(state: State) {
+        val isGoogleSignIn = checkIsGoogleSignIn.execute(state.hostname)
+
         updateState {
-            state.copy()
+            state.copy(
+                isGoogleSignIn = isGoogleSignIn,
+            )
         }
     }
 

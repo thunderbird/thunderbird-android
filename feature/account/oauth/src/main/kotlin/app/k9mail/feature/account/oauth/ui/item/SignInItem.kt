@@ -10,6 +10,7 @@ import app.k9mail.feature.account.oauth.ui.view.SignInView
 internal fun LazyItemScope.SignInItem(
     emailAddress: String,
     onSignInClick: () -> Unit,
+    isGoogleSignIn: Boolean,
     modifier: Modifier = Modifier,
 ) {
     ListItem(
@@ -18,6 +19,7 @@ internal fun LazyItemScope.SignInItem(
         SignInView(
             emailAddress = emailAddress,
             onSignInClick = onSignInClick,
+            isGoogleSignIn = isGoogleSignIn,
         )
     }
 }

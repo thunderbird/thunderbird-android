@@ -26,6 +26,10 @@ interface DomainContract {
         fun interface CheckIsAuthorized {
             suspend fun execute(authorizationState: AuthorizationState): Boolean
         }
+
+        fun interface CheckIsGoogleSignIn {
+            fun execute(hostname: String): Boolean
+        }
     }
 
     interface AuthorizationRepository {

@@ -28,6 +28,60 @@ class AccountOAuthViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     @Test
+    fun `should change state when google hostname found on initState`() = runTest {
+        val testSubject = createTestSubject(
+            isGoogleSignIn = true,
+        )
+
+        val stateTurbine = testSubject.state.testIn(backgroundScope)
+        val effectTurbine = testSubject.effect.testIn(backgroundScope)
+        val turbines = listOf(stateTurbine, effectTurbine)
+
+        assertThatAndTurbinesConsumed(
+            actual = stateTurbine.awaitItem(),
+            turbines = turbines,
+        ) {
+            isEqualTo(State())
+        }
+
+        testSubject.initState(defaultState)
+
+        assertThatAndTurbinesConsumed(
+            actual = stateTurbine.awaitItem(),
+            turbines = turbines,
+        ) {
+            isEqualTo(defaultState.copy(isGoogleSignIn = true))
+        }
+    }
+
+    @Test
+    fun `should not change state when no google hostname found on initState`() = runTest {
+        val testSubject = createTestSubject(
+            isGoogleSignIn = false,
+        )
+
+        val stateTurbine = testSubject.state.testIn(backgroundScope)
+        val effectTurbine = testSubject.effect.testIn(backgroundScope)
+        val turbines = listOf(stateTurbine, effectTurbine)
+
+        assertThatAndTurbinesConsumed(
+            actual = stateTurbine.awaitItem(),
+            turbines = turbines,
+        ) {
+            isEqualTo(State())
+        }
+
+        testSubject.initState(defaultState)
+
+        assertThatAndTurbinesConsumed(
+            actual = stateTurbine.awaitItem(),
+            turbines = turbines,
+        ) {
+            isEqualTo(defaultState.copy(isGoogleSignIn = false))
+        }
+    }
+
+    @Test
     fun `should launch OAuth when SignInClicked event received`() = runTest {
         val initialState = defaultState
         val testSubject = createTestSubject(initialState = initialState)
@@ -118,7 +172,7 @@ class AccountOAuthViewModelTest {
         val authorizationState = AuthorizationState(state = "state")
         val testSubject = createTestSubject(
             authorizationResult = AuthorizationResult.Success(authorizationState),
-            initialState = initialState
+            initialState = initialState,
         )
         val stateTurbine = testSubject.state.testIn(backgroundScope)
         val effectTurbine = testSubject.effect.testIn(backgroundScope)
@@ -162,7 +216,7 @@ class AccountOAuthViewModelTest {
         val initialState = defaultState
         val testSubject = createTestSubject(
             authorizationResult = AuthorizationResult.Canceled,
-            initialState = initialState
+            initialState = initialState,
         )
         val stateTurbine = testSubject.state.testIn(backgroundScope)
         val effectTurbine = testSubject.effect.testIn(backgroundScope)
@@ -190,89 +244,91 @@ class AccountOAuthViewModelTest {
     }
 
     @Test
-    fun `should finish OAuth sign in when onOAuthResult received with success but authorization result is cancelled`() = runTest {
-        val initialState = defaultState
-        val testSubject = createTestSubject(
-            authorizationResult = AuthorizationResult.Canceled,
-            initialState = initialState
-        )
-        val stateTurbine = testSubject.state.testIn(backgroundScope)
-        val effectTurbine = testSubject.effect.testIn(backgroundScope)
-        val turbines = listOf(stateTurbine, effectTurbine)
+    fun `should finish OAuth sign in when onOAuthResult received with success but authorization result is cancelled`() =
+        runTest {
+            val initialState = defaultState
+            val testSubject = createTestSubject(
+                authorizationResult = AuthorizationResult.Canceled,
+                initialState = initialState,
+            )
+            val stateTurbine = testSubject.state.testIn(backgroundScope)
+            val effectTurbine = testSubject.effect.testIn(backgroundScope)
+            val turbines = listOf(stateTurbine, effectTurbine)
 
-        assertThatAndTurbinesConsumed(
-            actual = stateTurbine.awaitItem(),
-            turbines = turbines,
-        ) {
-            isEqualTo(initialState)
+            assertThatAndTurbinesConsumed(
+                actual = stateTurbine.awaitItem(),
+                turbines = turbines,
+            ) {
+                isEqualTo(initialState)
+            }
+
+            testSubject.event(Event.OnOAuthResult(resultCode = Activity.RESULT_OK, data = intent))
+
+            val loadingState = initialState.copy(isLoading = true)
+
+            assertThatAndTurbinesConsumed(
+                actual = stateTurbine.awaitItem(),
+                turbines = turbines,
+            ) {
+                isEqualTo(loadingState)
+            }
+
+            val failureState = loadingState.copy(
+                isLoading = false,
+                error = Error.Cancelled,
+            )
+
+            assertThatAndTurbinesConsumed(
+                actual = stateTurbine.awaitItem(),
+                turbines = turbines,
+            ) {
+                isEqualTo(failureState)
+            }
         }
-
-        testSubject.event(Event.OnOAuthResult(resultCode = Activity.RESULT_OK, data = intent))
-
-        val loadingState = initialState.copy(isLoading = true)
-
-        assertThatAndTurbinesConsumed(
-            actual = stateTurbine.awaitItem(),
-            turbines = turbines,
-        ) {
-            isEqualTo(loadingState)
-        }
-
-        val failureState = loadingState.copy(
-            isLoading = false,
-            error = Error.Cancelled,
-        )
-
-        assertThatAndTurbinesConsumed(
-            actual = stateTurbine.awaitItem(),
-            turbines = turbines,
-        ) {
-            isEqualTo(failureState)
-        }
-    }
 
     @Test
-    fun `should finish OAuth sign in when onOAuthResult received with success but authorization result is failure`() = runTest {
-        val initialState = defaultState
-        val failure = Exception("failure")
-        val testSubject = createTestSubject(
-            authorizationResult = AuthorizationResult.Failure(failure),
-            initialState = initialState
-        )
-        val stateTurbine = testSubject.state.testIn(backgroundScope)
-        val effectTurbine = testSubject.effect.testIn(backgroundScope)
-        val turbines = listOf(stateTurbine, effectTurbine)
+    fun `should finish OAuth sign in when onOAuthResult received with success but authorization result is failure`() =
+        runTest {
+            val initialState = defaultState
+            val failure = Exception("failure")
+            val testSubject = createTestSubject(
+                authorizationResult = AuthorizationResult.Failure(failure),
+                initialState = initialState,
+            )
+            val stateTurbine = testSubject.state.testIn(backgroundScope)
+            val effectTurbine = testSubject.effect.testIn(backgroundScope)
+            val turbines = listOf(stateTurbine, effectTurbine)
 
-        assertThatAndTurbinesConsumed(
-            actual = stateTurbine.awaitItem(),
-            turbines = turbines,
-        ) {
-            isEqualTo(initialState)
+            assertThatAndTurbinesConsumed(
+                actual = stateTurbine.awaitItem(),
+                turbines = turbines,
+            ) {
+                isEqualTo(initialState)
+            }
+
+            testSubject.event(Event.OnOAuthResult(resultCode = Activity.RESULT_OK, data = intent))
+
+            val loadingState = initialState.copy(isLoading = true)
+
+            assertThatAndTurbinesConsumed(
+                actual = stateTurbine.awaitItem(),
+                turbines = turbines,
+            ) {
+                isEqualTo(loadingState)
+            }
+
+            val failureState = loadingState.copy(
+                isLoading = false,
+                error = Error.Unknown(failure),
+            )
+
+            assertThatAndTurbinesConsumed(
+                actual = stateTurbine.awaitItem(),
+                turbines = turbines,
+            ) {
+                isEqualTo(failureState)
+            }
         }
-
-        testSubject.event(Event.OnOAuthResult(resultCode = Activity.RESULT_OK, data = intent))
-
-        val loadingState = initialState.copy(isLoading = true)
-
-        assertThatAndTurbinesConsumed(
-            actual = stateTurbine.awaitItem(),
-            turbines = turbines,
-        ) {
-            isEqualTo(loadingState)
-        }
-
-        val failureState = loadingState.copy(
-            isLoading = false,
-            error = Error.Unknown(failure),
-        )
-
-        assertThatAndTurbinesConsumed(
-            actual = stateTurbine.awaitItem(),
-            turbines = turbines,
-        ) {
-            isEqualTo(failureState)
-        }
-    }
 
     @Test
     fun `should emit NavigateBack effect when OnBackClicked event received`() = runTest {
