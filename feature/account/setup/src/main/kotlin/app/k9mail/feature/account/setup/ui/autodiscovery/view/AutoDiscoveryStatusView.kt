@@ -37,7 +37,11 @@ internal fun AutoDiscoveryStatusView(
         Surface(
             shape = MainTheme.shapes.small,
             modifier = Modifier
-                .border(1.dp, Color.Gray.copy(alpha = 0.5f))
+                .border(
+                    width = 1.dp,
+                    color = Color.Gray.copy(alpha = 0.5f),
+                    shape = MainTheme.shapes.small,
+                )
                 .clickable { expanded.value = !expanded.value },
         ) {
             Column(
