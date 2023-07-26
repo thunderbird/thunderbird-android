@@ -14,6 +14,10 @@ interface DomainContract {
             suspend fun execute(emailAddress: String): AutoDiscoveryResult
         }
 
+        fun interface ValidateServerSettings {
+            suspend fun execute(settings: ServerSettings): ServerSettingsValidationResult
+        }
+
         fun interface CheckIncomingServerConfig {
             suspend fun execute(
                 protocolType: IncomingProtocolType,
