@@ -1,10 +1,9 @@
 package com.fsck.k9.backends
 
 import android.content.Context
-import com.fsck.k9.Account
 import com.fsck.k9.mail.AuthenticationFailedException
+import com.fsck.k9.mail.oauth.AuthStateStorage
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
-import com.fsck.k9.preferences.AccountManager
 import java.io.IOException
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -16,8 +15,7 @@ import net.openid.appauth.AuthorizationService
 
 class RealOAuth2TokenProvider(
     context: Context,
-    private val accountManager: AccountManager,
-    private val account: Account,
+    private val authStateStorage: AuthStateStorage,
 ) : OAuth2TokenProvider {
     private val authService = AuthorizationService(context)
     private var requestFreshToken = false
@@ -27,7 +25,7 @@ class RealOAuth2TokenProvider(
         var token: String? = null
         var exception: AuthorizationException? = null
 
-        val authState = account.oAuthState?.let { AuthState.jsonDeserialize(it) }
+        val authState = authStateStorage.getAuthorizationState()?.let { AuthState.jsonDeserialize(it) }
             ?: throw AuthenticationFailedException("Login required")
 
         if (requestFreshToken) {
@@ -53,8 +51,7 @@ class RealOAuth2TokenProvider(
         ) {
             throw IOException("Error while fetching an access token", authException)
         } else if (authException != null) {
-            account.oAuthState = null
-            accountManager.saveAccount(account)
+            authStateStorage.updateAuthorizationState(authorizationState = null)
 
             throw AuthenticationFailedException(
                 message = "Failed to fetch an access token",
@@ -63,8 +60,7 @@ class RealOAuth2TokenProvider(
             )
         } else if (token != oldAccessToken) {
             requestFreshToken = false
-            account.oAuthState = authState.jsonSerializeString()
-            accountManager.saveAccount(account)
+            authStateStorage.updateAuthorizationState(authorizationState = authState.jsonSerializeString())
         }
 
         return token ?: throw AuthenticationFailedException("Failed to fetch an access token")
