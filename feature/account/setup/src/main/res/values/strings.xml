@@ -66,9 +66,6 @@
     <string name="account_setup_outgoing_config_port_label">Port</string>
     <string name="account_setup_outgoing_config_authentication_label">Authentication</string>
     <string name="account_setup_outgoing_config_username_label">Username</string>
-    <string name="account_setup_outgoing_config_loading_message">Checking outgoing server settings…</string>
-    <string name="account_setup_outgoing_config_loading_error">Outgoing server settings are not valid</string>
-    <string name="account_setup_outgoing_config_success">Outgoing server settings are valid!</string>
 
     <string name="account_setup_options_top_bar_title">Account options</string>
     <string name="account_setup_options_section_display_options">Display options</string>
