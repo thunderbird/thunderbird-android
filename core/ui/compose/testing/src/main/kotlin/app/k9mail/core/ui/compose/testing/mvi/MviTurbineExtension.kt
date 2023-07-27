@@ -7,17 +7,17 @@ import assertk.Assert
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.test.TestScope
 
 /**
  * The `turbines` extension function creates a MviTurbines instance for the given MVI ViewModel.
  */
-inline fun <reified STATE, EVENT, EFFECT> UnidirectionalViewModel<STATE, EVENT, EFFECT>.turbines(
-    coroutineScope: CoroutineScope,
+inline fun <reified STATE, EVENT, EFFECT> TestScope.turbines(
+    viewModel: UnidirectionalViewModel<STATE, EVENT, EFFECT>,
 ): MviTurbines<STATE, EFFECT> {
     return MviTurbines(
-        stateTurbine = state.testIn(coroutineScope),
-        effectTurbine = effect.testIn(coroutineScope),
+        stateTurbine = viewModel.state.testIn(backgroundScope),
+        effectTurbine = viewModel.effect.testIn(backgroundScope),
     )
 }
 
@@ -25,15 +25,11 @@ inline fun <reified STATE, EVENT, EFFECT> UnidirectionalViewModel<STATE, EVENT, 
  * The `turbinesWithInitialStateCheck` extension function creates a MviTurbines instance for the given MVI ViewModel
  * and ensures that the initial state is emitted.
  */
-suspend inline fun <reified STATE, EVENT, EFFECT>
-    UnidirectionalViewModel<STATE, EVENT, EFFECT>.turbinesWithInitialStateCheck(
-        coroutineScope: CoroutineScope,
-        initialState: STATE,
-    ): MviTurbines<STATE, EFFECT> {
-    val turbines = MviTurbines(
-        stateTurbine = state.testIn(coroutineScope),
-        effectTurbine = effect.testIn(coroutineScope),
-    )
+suspend inline fun <reified STATE, EVENT, EFFECT> TestScope.turbinesWithInitialStateCheck(
+    viewModel: UnidirectionalViewModel<STATE, EVENT, EFFECT>,
+    initialState: STATE,
+): MviTurbines<STATE, EFFECT> {
+    val turbines = turbines(viewModel)
 
     assertThatAndMviTurbinesConsumed(
         actual = turbines.stateTurbine.awaitItem(),
