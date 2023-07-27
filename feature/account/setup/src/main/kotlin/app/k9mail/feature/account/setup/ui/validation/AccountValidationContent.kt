@@ -57,7 +57,13 @@ internal fun AccountValidationContent(
                 item(key = "error") {
                     // TODO add raw error message
                     ErrorItem(
-                        title = stringResource(id = R.string.account_setup_settings_validation_loading_error),
+                        title = stringResource(
+                            id = if (state.isIncomingValidation) {
+                                R.string.account_setup_settings_validation_incoming_loading_error
+                            } else {
+                                R.string.account_setup_settings_validation_outgoing_loading_error
+                            },
+                        ),
                         message = state.error.toResourceString(resources),
                         onRetry = { onEvent(Event.OnRetryClicked) },
                     )
@@ -65,13 +71,25 @@ internal fun AccountValidationContent(
             } else if (state.isSuccess) {
                 item(key = "success") {
                     SuccessItem(
-                        message = stringResource(id = R.string.account_setup_settings_validation_success),
+                        message = stringResource(
+                            id = if (state.isIncomingValidation) {
+                                R.string.account_setup_settings_validation_incoming_success
+                            } else {
+                                R.string.account_setup_settings_validation_outgoing_success
+                            },
+                        ),
                     )
                 }
             } else {
                 item(key = "loading") {
                     LoadingItem(
-                        message = stringResource(id = R.string.account_setup_settings_validation_loading_message),
+                        message = stringResource(
+                            id = if (state.isIncomingValidation) {
+                                R.string.account_setup_settings_validation_incoming_loading_message
+                            } else {
+                                R.string.account_setup_settings_validation_outgoing_loading_message
+                            },
+                        ),
                     )
                 }
             }

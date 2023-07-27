@@ -13,6 +13,7 @@ interface AccountValidationContract {
     }
 
     data class State(
+        val isIncomingValidation: Boolean = false,
         val serverSettings: ServerSettings? = null,
         val authorizationState: AuthorizationState? = null,
         val isSuccess: Boolean = false,
