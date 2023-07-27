@@ -50,7 +50,7 @@ class ImapBackendFactory(
         val serverSettings = account.toImapServerSettings()
 
         val oAuth2TokenProvider = if (serverSettings.authenticationType == AuthType.XOAUTH2) {
-            RealOAuth2TokenProvider(context, accountManager, account)
+            createOAuth2TokenProvider(account)
         } else {
             null
         }
@@ -78,12 +78,17 @@ class ImapBackendFactory(
     private fun createSmtpTransport(account: Account): SmtpTransport {
         val serverSettings = account.outgoingServerSettings
         val oauth2TokenProvider = if (serverSettings.authenticationType == AuthType.XOAUTH2) {
-            RealOAuth2TokenProvider(context, accountManager, account)
+            createOAuth2TokenProvider(account)
         } else {
             null
         }
 
         return SmtpTransport(serverSettings, trustedSocketFactory, oauth2TokenProvider)
+    }
+
+    private fun createOAuth2TokenProvider(account: Account): RealOAuth2TokenProvider {
+        val authStateStorage = AccountAuthStateStorage(accountManager, account)
+        return RealOAuth2TokenProvider(context, authStateStorage)
     }
 
     private fun createPushConfigProvider(account: Account) = object : ImapPushConfigProvider {
