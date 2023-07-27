@@ -57,14 +57,14 @@ internal fun AccountValidationContent(
             if (state.isLoading) {
                 item(key = "loading") {
                     LoadingItem(
-                        message = stringResource(id = R.string.account_setup_incoming_config_loading_message),
+                        message = stringResource(id = R.string.account_setup_settings_validation_loading_message),
                     )
                 }
             } else if (state.error != null) {
                 item(key = "error") {
                     // TODO add raw error message
                     ErrorItem(
-                        title = stringResource(id = R.string.account_setup_incoming_config_loading_error),
+                        title = stringResource(id = R.string.account_setup_settings_validation_loading_error),
                         message = state.error.toResourceString(resources),
                         onRetry = { onEvent(Event.OnRetryClicked) },
                     )
@@ -72,7 +72,7 @@ internal fun AccountValidationContent(
             } else if (state.isSuccess) {
                 item(key = "success") {
                     SuccessItem(
-                        message = stringResource(id = R.string.account_setup_incoming_config_success),
+                        message = stringResource(id = R.string.account_setup_settings_validation_success),
                     )
                 }
             } else {
