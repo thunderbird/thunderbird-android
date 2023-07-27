@@ -37,19 +37,33 @@ fun WizardNavigationBar(
                     bottom = MainTheme.spacings.double,
                 )
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = getHorizontalArrangement(state),
         ) {
-            ButtonOutlined(
-                text = backButtonText,
-                onClick = onBackClick,
-                enabled = state.isBackEnabled,
-            )
-            Button(
-                text = nextButtonText,
-                onClick = onNextClick,
-                enabled = state.isNextEnabled,
-            )
+            if (state.showBack) {
+                ButtonOutlined(
+                    text = backButtonText,
+                    onClick = onBackClick,
+                    enabled = state.isBackEnabled,
+                )
+            }
+            if (state.showNext) {
+                Button(
+                    text = nextButtonText,
+                    onClick = onNextClick,
+                    enabled = state.isNextEnabled,
+                )
+            }
         }
+    }
+}
+
+private fun getHorizontalArrangement(state: WizardNavigationBarState): Arrangement.Horizontal {
+    return if (state.showNext && state.showBack) {
+        Arrangement.SpaceBetween
+    } else if (state.showNext) {
+        Arrangement.End
+    } else {
+        Arrangement.Start
     }
 }
 
@@ -91,6 +105,38 @@ internal fun WizardNavigationBarDisabledPreview() {
             state = WizardNavigationBarState(
                 isNextEnabled = false,
                 isBackEnabled = false,
+            ),
+        )
+    }
+}
+
+@DevicePreviews
+@Composable
+internal fun WizardNavigationBarHideNextPreview() {
+    PreviewWithThemes {
+        WizardNavigationBar(
+            nextButtonText = "Next",
+            backButtonText = "Back",
+            onNextClick = {},
+            onBackClick = {},
+            state = WizardNavigationBarState(
+                showNext = false,
+            ),
+        )
+    }
+}
+
+@DevicePreviews
+@Composable
+internal fun WizardNavigationBarHideBackPreview() {
+    PreviewWithThemes {
+        WizardNavigationBar(
+            nextButtonText = "Next",
+            backButtonText = "Back",
+            onNextClick = {},
+            onBackClick = {},
+            state = WizardNavigationBarState(
+                showBack = false,
             ),
         )
     }
