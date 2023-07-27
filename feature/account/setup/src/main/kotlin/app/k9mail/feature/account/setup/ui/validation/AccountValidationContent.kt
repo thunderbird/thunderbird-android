@@ -14,7 +14,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.common.DevicePreviews
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle1
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
@@ -54,13 +53,7 @@ internal fun AccountValidationContent(
                 Arrangement.spacedBy(MainTheme.spacings.default)
             },
         ) {
-            if (state.isLoading) {
-                item(key = "loading") {
-                    LoadingItem(
-                        message = stringResource(id = R.string.account_setup_settings_validation_loading_message),
-                    )
-                }
-            } else if (state.error != null) {
+            if (state.error != null) {
                 item(key = "error") {
                     // TODO add raw error message
                     ErrorItem(
@@ -76,8 +69,10 @@ internal fun AccountValidationContent(
                     )
                 }
             } else {
-                item {
-                    TextSubtitle1(text = "Should not happen")
+                item(key = "loading") {
+                    LoadingItem(
+                        message = stringResource(id = R.string.account_setup_settings_validation_loading_message),
+                    )
                 }
             }
         }
