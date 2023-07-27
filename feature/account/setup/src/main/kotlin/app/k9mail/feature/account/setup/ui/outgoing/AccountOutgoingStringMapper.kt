@@ -7,23 +7,23 @@ import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContrac
 internal fun Error.toResourceString(resources: Resources): String {
     return when (this) {
         is Error.AuthenticationError -> resources.getString(
-            R.string.account_setup_check_config_error_authentication,
+            R.string.account_setup_settings_validation_error_authentication,
         )
 
         is Error.CertificateError -> resources.getString(
-            R.string.account_setup_check_config_error_certificate,
+            R.string.account_setup_settings_validation_error_certificate,
         )
 
         is Error.NetworkError -> resources.getString(
-            R.string.account_setup_check_config_error_network,
+            R.string.account_setup_settings_validation_error_network,
         )
 
         is Error.ServerError -> resources.getString(
-            R.string.account_setup_check_config_error_server,
+            R.string.account_setup_settings_validation_error_server,
         )
 
         is Error.UnknownError -> resources.getString(
-            R.string.account_setup_check_config_error_unknown,
+            R.string.account_setup_settings_validation_error_unknown,
         )
     }
 }

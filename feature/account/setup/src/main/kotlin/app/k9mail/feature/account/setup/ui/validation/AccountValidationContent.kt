@@ -65,7 +65,7 @@ internal fun AccountValidationContent(
                     // TODO add raw error message
                     ErrorItem(
                         title = stringResource(id = R.string.account_setup_incoming_config_loading_error),
-//                        message = state.error.toResourceString(resources),
+                        message = state.error.toResourceString(resources),
                         onRetry = { onEvent(Event.OnRetryClicked) },
                     )
                 }
