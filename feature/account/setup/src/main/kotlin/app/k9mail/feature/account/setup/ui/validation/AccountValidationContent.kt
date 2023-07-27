@@ -37,7 +37,7 @@ internal fun AccountValidationContent(
 
     ResponsiveWidthContainer(
         modifier = Modifier
-            .testTag("AccountIncomingConfigContent")
+            .testTag("AccountValidationContent")
             .padding(contentPadding)
             .fillMaxWidth()
             .then(modifier),

@@ -40,7 +40,9 @@ interface AccountAutoDiscoveryContract {
     }
 
     sealed class Effect {
-        object NavigateNext : Effect()
+        data class NavigateNext(
+            val isAutomaticConfig: Boolean,
+        ) : Effect()
         object NavigateBack : Effect()
     }
 

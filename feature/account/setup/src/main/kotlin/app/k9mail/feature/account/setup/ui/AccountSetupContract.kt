@@ -11,7 +11,9 @@ interface AccountSetupContract {
     enum class SetupStep {
         AUTO_CONFIG,
         INCOMING_CONFIG,
+        INCOMING_VALIDATION,
         OUTGOING_CONFIG,
+        OUTGOING_VALIDATION,
         OPTIONS,
     }
 
@@ -19,6 +21,7 @@ interface AccountSetupContract {
 
     data class State(
         val setupStep: SetupStep = SetupStep.AUTO_CONFIG,
+        val isAutomaticConfig: Boolean = false,
     )
 
     sealed interface Event {
@@ -26,6 +29,7 @@ interface AccountSetupContract {
 
         data class OnAutoDiscoveryFinished(
             val state: AccountAutoDiscoveryContract.State,
+            val isAutomaticConfig: Boolean,
         ) : Event
 
         data class OnStateCollected(
@@ -44,9 +48,13 @@ interface AccountSetupContract {
             val state: AccountIncomingConfigContract.State,
         ) : Effect
 
+        object UpdateIncomingConfigValidation : Effect
+
         data class UpdateOutgoingConfig(
             val state: AccountOutgoingConfigContract.State,
         ) : Effect
+
+        object UpdateOutgoingConfigValidation : Effect
 
         data class UpdateOptions(
             val state: AccountOptionsContract.State,

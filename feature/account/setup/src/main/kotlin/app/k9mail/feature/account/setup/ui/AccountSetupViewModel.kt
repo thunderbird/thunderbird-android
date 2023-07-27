@@ -27,7 +27,15 @@ class AccountSetupViewModel(
 
     override fun event(event: Event) {
         when (event) {
-            is Event.OnAutoDiscoveryFinished -> onAutoDiscoveryFinished(event.state)
+            is Event.OnAutoDiscoveryFinished -> {
+                updateState {
+                    it.copy(
+                        isAutomaticConfig = event.isAutomaticConfig,
+                    )
+                }
+                onAutoDiscoveryFinished(event.state)
+            }
+
             is Event.OnStateCollected -> onStateCollected(
                 autoDiscoveryState = event.autoDiscoveryState,
                 incomingState = event.incomingState,
@@ -40,7 +48,9 @@ class AccountSetupViewModel(
         }
     }
 
-    private fun onAutoDiscoveryFinished(autoDiscoveryState: AccountAutoDiscoveryContract.State) {
+    private fun onAutoDiscoveryFinished(
+        autoDiscoveryState: AccountAutoDiscoveryContract.State,
+    ) {
         emitEffect(Effect.UpdateIncomingConfig(autoDiscoveryState.toIncomingConfigState()))
         emitEffect(Effect.UpdateOutgoingConfig(autoDiscoveryState.toOutgoingConfigState()))
         emitEffect(Effect.UpdateOptions(autoDiscoveryState.toOptionsState()))
@@ -51,16 +61,61 @@ class AccountSetupViewModel(
         when (state.value.setupStep) {
             SetupStep.AUTO_CONFIG -> navigateBack()
             SetupStep.INCOMING_CONFIG -> changeToSetupStep(SetupStep.AUTO_CONFIG)
-            SetupStep.OUTGOING_CONFIG -> changeToSetupStep(SetupStep.INCOMING_CONFIG)
-            SetupStep.OPTIONS -> changeToSetupStep(SetupStep.OUTGOING_CONFIG)
+            SetupStep.INCOMING_VALIDATION -> {
+                if (state.value.isAutomaticConfig) {
+                    changeToSetupStep(SetupStep.AUTO_CONFIG)
+                } else {
+                    changeToSetupStep(SetupStep.INCOMING_CONFIG)
+                }
+            }
+
+            SetupStep.OUTGOING_CONFIG -> changeToSetupStep(SetupStep.INCOMING_VALIDATION)
+            SetupStep.OUTGOING_VALIDATION -> {
+                if (state.value.isAutomaticConfig) {
+                    changeToSetupStep(SetupStep.AUTO_CONFIG)
+                } else {
+                    changeToSetupStep(SetupStep.OUTGOING_CONFIG)
+                }
+            }
+
+            SetupStep.OPTIONS -> changeToSetupStep(SetupStep.OUTGOING_VALIDATION)
         }
     }
 
     private fun onNext() {
         when (state.value.setupStep) {
-            SetupStep.AUTO_CONFIG -> changeToSetupStep(SetupStep.INCOMING_CONFIG)
-            SetupStep.INCOMING_CONFIG -> changeToSetupStep(SetupStep.OUTGOING_CONFIG)
-            SetupStep.OUTGOING_CONFIG -> changeToSetupStep(SetupStep.OPTIONS)
+            SetupStep.AUTO_CONFIG -> {
+                if (state.value.isAutomaticConfig) {
+                    emitEffect(Effect.UpdateIncomingConfigValidation)
+                    emitEffect(Effect.UpdateOutgoingConfigValidation)
+                    changeToSetupStep(SetupStep.INCOMING_VALIDATION)
+                } else {
+                    changeToSetupStep(SetupStep.INCOMING_CONFIG)
+                }
+            }
+
+            SetupStep.INCOMING_CONFIG -> {
+                emitEffect(Effect.UpdateIncomingConfigValidation)
+                changeToSetupStep(SetupStep.INCOMING_VALIDATION)
+            }
+
+            SetupStep.INCOMING_VALIDATION -> {
+                if (state.value.isAutomaticConfig) {
+                    changeToSetupStep(SetupStep.OUTGOING_VALIDATION)
+                } else {
+                    changeToSetupStep(SetupStep.OUTGOING_CONFIG)
+                }
+            }
+
+            SetupStep.OUTGOING_CONFIG -> {
+                emitEffect(Effect.UpdateOutgoingConfigValidation)
+                changeToSetupStep(SetupStep.OUTGOING_VALIDATION)
+            }
+
+            SetupStep.OUTGOING_VALIDATION -> {
+                changeToSetupStep(SetupStep.OPTIONS)
+            }
+
             SetupStep.OPTIONS -> onFinish()
         }
     }

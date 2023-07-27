@@ -300,7 +300,7 @@ class AccountAutoDiscoveryViewModelTest {
                 actual = effectTurbine.awaitItem(),
                 turbines = turbines,
             ) {
-                isEqualTo(Effect.NavigateNext)
+                isEqualTo(Effect.NavigateNext(isAutomaticConfig = false))
             }
         }
 
@@ -468,7 +468,7 @@ class AccountAutoDiscoveryViewModelTest {
             actual = effectTurbine.awaitItem(),
             turbines = turbines,
         ) {
-            isEqualTo(Effect.NavigateNext)
+            isEqualTo(Effect.NavigateNext(isAutomaticConfig = false))
         }
     }
 

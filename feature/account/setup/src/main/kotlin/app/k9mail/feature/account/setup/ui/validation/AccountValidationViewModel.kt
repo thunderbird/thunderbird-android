@@ -22,6 +22,7 @@ internal class AccountValidationViewModel(
     override fun initState(state: State) {
         updateState {
             state.copy(
+                isIncomingValidation = it.isIncomingValidation,
                 isLoading = false,
                 error = null,
                 isSuccess = false,
