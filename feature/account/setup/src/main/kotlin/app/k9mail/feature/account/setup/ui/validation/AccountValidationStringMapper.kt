@@ -1,8 +1,8 @@
-package app.k9mail.feature.account.setup.ui.incoming
+package app.k9mail.feature.account.setup.ui.validation
 
 import android.content.res.Resources
 import app.k9mail.feature.account.setup.R
-import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Error
+import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Error
 
 internal fun Error.toResourceString(resources: Resources): String {
     return when (this) {
