@@ -7,20 +7,14 @@ import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
 import app.k9mail.core.common.mail.toUserEmailAddress
 import app.k9mail.core.common.oauth.OAuthConfigurationProvider
-import app.k9mail.feature.account.setup.data.FakeAutoDiscoveryService
 import app.k9mail.feature.account.setup.domain.DomainContract
 
 internal class GetAutoDiscovery(
     private val service: AutoDiscoveryService,
     private val oauthProvider: OAuthConfigurationProvider,
-    private val fakeService: FakeAutoDiscoveryService = FakeAutoDiscoveryService(),
 ) : DomainContract.UseCase.GetAutoDiscovery {
     override suspend fun execute(emailAddress: String): AutoDiscoveryResult {
         val email = emailAddress.toUserEmailAddress()
-        val fakeResult = fakeService.discover(email)
-        if (fakeResult !is AutoDiscoveryResult.UnexpectedException) {
-            return fakeResult
-        }
 
         val result = service.discover(email)
 
