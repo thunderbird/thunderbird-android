@@ -12,7 +12,7 @@ import com.fsck.k9.mail.server.ServerSettingsValidationResult
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-private const val CONTINUE_NEXT_DELAY = 1000L
+private const val CONTINUE_NEXT_DELAY = 2000L
 
 internal class AccountValidationViewModel(
     initialState: State = State(),
@@ -22,6 +22,7 @@ internal class AccountValidationViewModel(
     override fun initState(state: State) {
         updateState {
             state.copy(
+                isIncomingValidation = it.isIncomingValidation,
                 isLoading = false,
                 error = null,
                 isSuccess = false,
@@ -32,7 +33,7 @@ internal class AccountValidationViewModel(
     override fun event(event: Event) {
         when (event) {
             Event.ValidateServerSettings -> onValidateConfig()
-            Event.OnNextClicked -> TODO()
+            Event.OnNextClicked -> navigateNext()
             Event.OnBackClicked -> onBack()
             Event.OnRetryClicked -> onRetry()
         }

@@ -22,6 +22,7 @@ import app.k9mail.feature.account.setup.ui.options.AccountOptionsViewModel
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigValidator
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigViewModel
+import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationViewModel
 import com.fsck.k9.mail.store.imap.ImapServerSettingsValidator
 import com.fsck.k9.mail.store.pop3.Pop3ServerSettingsValidator
@@ -29,6 +30,7 @@ import com.fsck.k9.mail.transport.smtp.SmtpServerSettingsValidator
 import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val featureAccountSetupModule: Module = module {
@@ -111,20 +113,29 @@ val featureAccountSetupModule: Module = module {
         )
     }
     viewModel {
-        AccountValidationViewModel(
-            validateServerSettings = get(),
-        )
-    }
-    viewModel {
         AccountIncomingConfigViewModel(
             validator = get(),
-            checkIncomingServerConfig = get(),
+        )
+    }
+    viewModel(named(NAME_INCOMING_VALIDATION)) {
+        AccountValidationViewModel(
+            validateServerSettings = get(),
+            initialState = AccountValidationContract.State(
+                isIncomingValidation = true,
+            ),
         )
     }
     viewModel {
         AccountOutgoingConfigViewModel(
             validator = get(),
-            checkOutgoingServerConfig = get(),
+        )
+    }
+    viewModel(named(NAME_OUTGOING_VALIDATION)) {
+        AccountValidationViewModel(
+            validateServerSettings = get(),
+            initialState = AccountValidationContract.State(
+                isIncomingValidation = false,
+            ),
         )
     }
     viewModel {
@@ -133,3 +144,6 @@ val featureAccountSetupModule: Module = module {
         )
     }
 }
+
+internal const val NAME_INCOMING_VALIDATION = "incoming_validation"
+internal const val NAME_OUTGOING_VALIDATION = "outgoing_validation"

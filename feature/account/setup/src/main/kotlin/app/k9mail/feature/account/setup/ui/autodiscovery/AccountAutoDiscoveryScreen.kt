@@ -20,7 +20,7 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryCon
 
 @Composable
 internal fun AccountAutoDiscoveryScreen(
-    onNext: (State) -> Unit,
+    onNext: (state: State, isAutomaticConfig: Boolean) -> Unit,
     onBack: () -> Unit,
     viewModel: ViewModel,
     modifier: Modifier = Modifier,
@@ -28,7 +28,7 @@ internal fun AccountAutoDiscoveryScreen(
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
             Effect.NavigateBack -> onBack()
-            Effect.NavigateNext -> onNext(viewModel.state.value)
+            is Effect.NavigateNext -> onNext(viewModel.state.value, effect.isAutomaticConfig)
         }
     }
 
@@ -65,7 +65,7 @@ internal fun AccountAutoDiscoveryScreen(
 internal fun AccountAutoDiscoveryScreenK9Preview() {
     K9Theme {
         AccountAutoDiscoveryScreen(
-            onNext = {},
+            onNext = { _, _ -> },
             onBack = {},
             viewModel = AccountAutoDiscoveryViewModel(
                 validator = AccountAutoDiscoveryValidator(),
@@ -80,7 +80,7 @@ internal fun AccountAutoDiscoveryScreenK9Preview() {
 internal fun AccountAutoDiscoveryScreenThunderbirdPreview() {
     ThunderbirdTheme {
         AccountAutoDiscoveryScreen(
-            onNext = {},
+            onNext = { _, _ -> },
             onBack = {},
             viewModel = AccountAutoDiscoveryViewModel(
                 validator = AccountAutoDiscoveryValidator(),

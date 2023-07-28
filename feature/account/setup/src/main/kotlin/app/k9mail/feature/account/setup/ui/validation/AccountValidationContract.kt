@@ -1,7 +1,6 @@
 package app.k9mail.feature.account.setup.ui.validation
 
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
-import app.k9mail.feature.account.common.ui.WizardNavigationBarState
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationState
 import com.fsck.k9.mail.ServerSettings
 import java.io.IOException
@@ -14,11 +13,9 @@ interface AccountValidationContract {
     }
 
     data class State(
+        val isIncomingValidation: Boolean = false,
         val serverSettings: ServerSettings? = null,
         val authorizationState: AuthorizationState? = null,
-        val wizardNavigationBarState: WizardNavigationBarState = WizardNavigationBarState(
-            showNext = false,
-        ),
         val isSuccess: Boolean = false,
         val error: Error? = null,
         val isLoading: Boolean = false,

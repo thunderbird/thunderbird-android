@@ -37,7 +37,9 @@ internal class AccountAutoDiscoveryViewModel(
             Event.OnNextClicked -> onNext()
             Event.OnBackClicked -> onBack()
             Event.OnRetryClicked -> onRetry()
-            Event.OnEditConfigurationClicked -> navigateNext()
+            Event.OnEditConfigurationClicked -> {
+                navigateNext(isAutomaticConfig = false)
+            }
         }
     }
 
@@ -170,7 +172,7 @@ internal class AccountAutoDiscoveryViewModel(
             }
 
             if (!hasError) {
-                navigateNext()
+                navigateNext(state.value.autoDiscoverySettings != null)
             }
         }
     }
@@ -200,5 +202,7 @@ internal class AccountAutoDiscoveryViewModel(
 
     private fun navigateBack() = emitEffect(Effect.NavigateBack)
 
-    private fun navigateNext() = emitEffect(Effect.NavigateNext)
+    private fun navigateNext(isAutomaticConfig: Boolean) {
+        emitEffect(Effect.NavigateNext(isAutomaticConfig))
+    }
 }

@@ -11,6 +11,7 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.FakeAccountAutoDiscover
 import app.k9mail.feature.account.setup.ui.incoming.FakeAccountIncomingConfigViewModel
 import app.k9mail.feature.account.setup.ui.options.FakeAccountOptionsViewModel
 import app.k9mail.feature.account.setup.ui.outgoing.FakeAccountOutgoingConfigViewModel
+import app.k9mail.feature.account.setup.ui.validation.FakeAccountValidationViewModel
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
@@ -23,7 +24,9 @@ class AccountSetupScreenKtTest : ComposeTest() {
         val viewModel = FakeAccountSetupViewModel()
         val autoDiscoveryViewModel = FakeAccountAutoDiscoveryViewModel()
         val incomingViewModel = FakeAccountIncomingConfigViewModel()
+        val incomingValidationViewModel = FakeAccountValidationViewModel()
         val outgoingViewModel = FakeAccountOutgoingConfigViewModel()
+        val outgoingValidationViewModel = FakeAccountValidationViewModel()
         val optionsViewModel = FakeAccountOptionsViewModel()
 
         setContent {
@@ -34,7 +37,9 @@ class AccountSetupScreenKtTest : ComposeTest() {
                     viewModel = viewModel,
                     autoDiscoveryViewModel = autoDiscoveryViewModel,
                     incomingViewModel = incomingViewModel,
+                    incomingValidationViewModel = incomingValidationViewModel,
                     outgoingViewModel = outgoingViewModel,
+                    outgoingValidationViewModel = outgoingValidationViewModel,
                     optionsViewModel = optionsViewModel,
                 )
             }
@@ -52,7 +57,9 @@ class AccountSetupScreenKtTest : ComposeTest() {
         val viewModel = FakeAccountSetupViewModel(initialState)
         val autoDiscoveryViewModel = FakeAccountAutoDiscoveryViewModel()
         val incomingViewModel = FakeAccountIncomingConfigViewModel()
+        val incomingValidationViewModel = FakeAccountValidationViewModel()
         val outgoingViewModel = FakeAccountOutgoingConfigViewModel()
+        val outgoingValidationViewModel = FakeAccountValidationViewModel()
         val optionsViewModel = FakeAccountOptionsViewModel()
         var onFinishCounter = 0
         var onBackCounter = 0
@@ -65,7 +72,9 @@ class AccountSetupScreenKtTest : ComposeTest() {
                     viewModel = viewModel,
                     autoDiscoveryViewModel = autoDiscoveryViewModel,
                     incomingViewModel = incomingViewModel,
+                    incomingValidationViewModel = incomingValidationViewModel,
                     outgoingViewModel = outgoingViewModel,
+                    outgoingValidationViewModel = outgoingValidationViewModel,
                     optionsViewModel = optionsViewModel,
                 )
             }
@@ -88,7 +97,9 @@ class AccountSetupScreenKtTest : ComposeTest() {
     private fun getTagForStep(step: SetupStep): String = when (step) {
         SetupStep.AUTO_CONFIG -> "AccountAutoDiscoveryContent"
         SetupStep.INCOMING_CONFIG -> "AccountIncomingConfigContent"
+        SetupStep.INCOMING_VALIDATION -> "AccountValidationContent"
         SetupStep.OUTGOING_CONFIG -> "AccountOutgoingConfigContent"
+        SetupStep.OUTGOING_VALIDATION -> "AccountValidationContent"
         SetupStep.OPTIONS -> "AccountOptionsContent"
     }
 }

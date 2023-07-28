@@ -40,7 +40,12 @@ class AccountSetupViewModelTest {
             prop(State::setupStep).isEqualTo(SetupStep.AUTO_CONFIG)
         }
 
-        viewModel.event(AccountSetupContract.Event.OnAutoDiscoveryFinished(AccountAutoDiscoveryContract.State()))
+        viewModel.event(
+            AccountSetupContract.Event.OnAutoDiscoveryFinished(
+                state = AccountAutoDiscoveryContract.State(),
+                isAutomaticConfig = false,
+            ),
+        )
 
         assertThat(effectTurbine.awaitItem())
             .isEqualTo(Effect.UpdateIncomingConfig(AccountIncomingConfigContract.State()))
@@ -60,11 +65,33 @@ class AccountSetupViewModelTest {
 
         viewModel.event(AccountSetupContract.Event.OnNext)
 
+        assertThat(effectTurbine.awaitItem()).isEqualTo(Effect.UpdateIncomingConfigValidation)
+
+        assertThatAndTurbinesConsumed(
+            actual = stateTurbine.awaitItem(),
+            turbines = turbines,
+        ) {
+            prop(State::setupStep).isEqualTo(SetupStep.INCOMING_VALIDATION)
+        }
+
+        viewModel.event(AccountSetupContract.Event.OnNext)
+
         assertThatAndTurbinesConsumed(
             actual = stateTurbine.awaitItem(),
             turbines = turbines,
         ) {
             prop(State::setupStep).isEqualTo(SetupStep.OUTGOING_CONFIG)
+        }
+
+        viewModel.event(AccountSetupContract.Event.OnNext)
+
+        assertThat(effectTurbine.awaitItem()).isEqualTo(Effect.UpdateOutgoingConfigValidation)
+
+        assertThatAndTurbinesConsumed(
+            actual = stateTurbine.awaitItem(),
+            turbines = turbines,
+        ) {
+            prop(State::setupStep).isEqualTo(SetupStep.OUTGOING_VALIDATION)
         }
 
         viewModel.event(AccountSetupContract.Event.OnNext)
@@ -127,7 +154,25 @@ class AccountSetupViewModelTest {
             actual = stateTurbine.awaitItem(),
             turbines = turbines,
         ) {
+            prop(State::setupStep).isEqualTo(SetupStep.OUTGOING_VALIDATION)
+        }
+
+        viewModel.event(AccountSetupContract.Event.OnBack)
+
+        assertThatAndTurbinesConsumed(
+            actual = stateTurbine.awaitItem(),
+            turbines = turbines,
+        ) {
             prop(State::setupStep).isEqualTo(SetupStep.OUTGOING_CONFIG)
+        }
+
+        viewModel.event(AccountSetupContract.Event.OnBack)
+
+        assertThatAndTurbinesConsumed(
+            actual = stateTurbine.awaitItem(),
+            turbines = turbines,
+        ) {
+            prop(State::setupStep).isEqualTo(SetupStep.INCOMING_VALIDATION)
         }
 
         viewModel.event(AccountSetupContract.Event.OnBack)
