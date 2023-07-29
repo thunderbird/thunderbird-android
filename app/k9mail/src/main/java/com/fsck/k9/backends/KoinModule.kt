@@ -6,6 +6,7 @@ import com.fsck.k9.BuildConfig
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.backend.imap.BackendIdleRefreshManager
 import com.fsck.k9.backend.imap.SystemAlarmManager
+import com.fsck.k9.mail.oauth.OAuth2TokenProviderFactory
 import com.fsck.k9.mail.store.imap.IdleRefreshManager
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -34,6 +35,7 @@ val backendsModule = module {
     single<IdleRefreshManager> { BackendIdleRefreshManager(alarmManager = get()) }
     single { Pop3BackendFactory(get(), get()) }
     single(named("ClientIdAppName")) { BuildConfig.CLIENT_ID_APP_NAME }
+    single<OAuth2TokenProviderFactory> { RealOAuth2TokenProviderFactory(context = get()) }
 
     developmentModuleAdditions()
 }
