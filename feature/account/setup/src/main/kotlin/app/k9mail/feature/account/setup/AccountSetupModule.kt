@@ -82,20 +82,26 @@ val featureAccountSetupModule: Module = module {
     viewModel {
         AccountSetupViewModel(
             createAccount = get(),
+            autoDiscoveryViewModel = get(),
+            incomingViewModel = get(),
+            incomingValidationViewModel = get(named(NAME_INCOMING_VALIDATION)),
+            outgoingViewModel = get(),
+            outgoingValidationViewModel = get(named(NAME_OUTGOING_VALIDATION)),
+            optionsViewModel = get(),
         )
     }
-    viewModel {
+    factory<AccountAutoDiscoveryContract.ViewModel> {
         AccountAutoDiscoveryViewModel(
             validator = get(),
             getAutoDiscovery = get(),
         )
     }
-    viewModel {
+    factory<AccountIncomingConfigContract.ViewModel> {
         AccountIncomingConfigViewModel(
             validator = get(),
         )
     }
-    viewModel(named(NAME_INCOMING_VALIDATION)) {
+    factory<AccountValidationContract.ViewModel>(named(NAME_INCOMING_VALIDATION)) {
         AccountValidationViewModel(
             validateServerSettings = get(),
             initialState = AccountValidationContract.State(
@@ -103,12 +109,12 @@ val featureAccountSetupModule: Module = module {
             ),
         )
     }
-    viewModel {
+    factory<AccountOutgoingConfigContract.ViewModel> {
         AccountOutgoingConfigViewModel(
             validator = get(),
         )
     }
-    viewModel(named(NAME_OUTGOING_VALIDATION)) {
+    factory<AccountValidationContract.ViewModel>(named(NAME_OUTGOING_VALIDATION)) {
         AccountValidationViewModel(
             validateServerSettings = get(),
             initialState = AccountValidationContract.State(
@@ -116,7 +122,7 @@ val featureAccountSetupModule: Module = module {
             ),
         )
     }
-    viewModel {
+    factory<AccountOptionsContract.ViewModel> {
         AccountOptionsViewModel(
             validator = get(),
         )

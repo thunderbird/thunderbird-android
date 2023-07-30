@@ -5,6 +5,7 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryCon
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
+import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract
 
 interface AccountSetupContract {
 
@@ -17,7 +18,14 @@ interface AccountSetupContract {
         OPTIONS,
     }
 
-    interface ViewModel : UnidirectionalViewModel<State, Event, Effect>
+    interface ViewModel : UnidirectionalViewModel<State, Event, Effect> {
+        val autoDiscoveryViewModel: AccountAutoDiscoveryContract.ViewModel
+        val incomingViewModel: AccountIncomingConfigContract.ViewModel
+        val incomingValidationViewModel: AccountValidationContract.ViewModel
+        val outgoingViewModel: AccountOutgoingConfigContract.ViewModel
+        val outgoingValidationViewModel: AccountValidationContract.ViewModel
+        val optionsViewModel: AccountOptionsContract.ViewModel
+    }
 
     data class State(
         val setupStep: SetupStep = SetupStep.AUTO_CONFIG,
@@ -32,35 +40,10 @@ interface AccountSetupContract {
             val isAutomaticConfig: Boolean,
         ) : Event
 
-        data class OnStateCollected(
-            val autoDiscoveryState: AccountAutoDiscoveryContract.State,
-            val incomingState: AccountIncomingConfigContract.State,
-            val outgoingState: AccountOutgoingConfigContract.State,
-            val optionsState: AccountOptionsContract.State,
-        ) : Event
-
         object OnBack : Event
     }
 
     sealed interface Effect {
-
-        data class UpdateIncomingConfig(
-            val state: AccountIncomingConfigContract.State,
-        ) : Effect
-
-        object UpdateIncomingConfigValidation : Effect
-
-        data class UpdateOutgoingConfig(
-            val state: AccountOutgoingConfigContract.State,
-        ) : Effect
-
-        object UpdateOutgoingConfigValidation : Effect
-
-        data class UpdateOptions(
-            val state: AccountOptionsContract.State,
-        ) : Effect
-
-        object CollectExternalStates : Effect
 
         data class NavigateNext(
             val accountUuid: String,

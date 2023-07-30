@@ -7,11 +7,6 @@ import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.State
-import app.k9mail.feature.account.setup.ui.autodiscovery.FakeAccountAutoDiscoveryViewModel
-import app.k9mail.feature.account.setup.ui.incoming.FakeAccountIncomingConfigViewModel
-import app.k9mail.feature.account.setup.ui.options.FakeAccountOptionsViewModel
-import app.k9mail.feature.account.setup.ui.outgoing.FakeAccountOutgoingConfigViewModel
-import app.k9mail.feature.account.setup.ui.validation.FakeAccountValidationViewModel
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
@@ -22,12 +17,6 @@ class AccountSetupScreenKtTest : ComposeTest() {
     @Test
     fun `should display correct screen for every setup step`() = runTest {
         val viewModel = FakeAccountSetupViewModel()
-        val autoDiscoveryViewModel = FakeAccountAutoDiscoveryViewModel()
-        val incomingViewModel = FakeAccountIncomingConfigViewModel()
-        val incomingValidationViewModel = FakeAccountValidationViewModel()
-        val outgoingViewModel = FakeAccountOutgoingConfigViewModel()
-        val outgoingValidationViewModel = FakeAccountValidationViewModel()
-        val optionsViewModel = FakeAccountOptionsViewModel()
 
         setContent {
             ThunderbirdTheme {
@@ -35,12 +24,6 @@ class AccountSetupScreenKtTest : ComposeTest() {
                     onFinish = { },
                     onBack = { },
                     viewModel = viewModel,
-                    autoDiscoveryViewModel = autoDiscoveryViewModel,
-                    incomingViewModel = incomingViewModel,
-                    incomingValidationViewModel = incomingValidationViewModel,
-                    outgoingViewModel = outgoingViewModel,
-                    outgoingValidationViewModel = outgoingValidationViewModel,
-                    optionsViewModel = optionsViewModel,
                 )
             }
         }
@@ -54,13 +37,7 @@ class AccountSetupScreenKtTest : ComposeTest() {
     @Test
     fun `should delegate navigation effects`() = runTest {
         val initialState = State()
-        val viewModel = FakeAccountSetupViewModel(initialState)
-        val autoDiscoveryViewModel = FakeAccountAutoDiscoveryViewModel()
-        val incomingViewModel = FakeAccountIncomingConfigViewModel()
-        val incomingValidationViewModel = FakeAccountValidationViewModel()
-        val outgoingViewModel = FakeAccountOutgoingConfigViewModel()
-        val outgoingValidationViewModel = FakeAccountValidationViewModel()
-        val optionsViewModel = FakeAccountOptionsViewModel()
+        val viewModel = FakeAccountSetupViewModel(initialState = initialState)
         var onFinishCounter = 0
         var onBackCounter = 0
 
@@ -70,12 +47,6 @@ class AccountSetupScreenKtTest : ComposeTest() {
                     onFinish = { onFinishCounter++ },
                     onBack = { onBackCounter++ },
                     viewModel = viewModel,
-                    autoDiscoveryViewModel = autoDiscoveryViewModel,
-                    incomingViewModel = incomingViewModel,
-                    incomingValidationViewModel = incomingValidationViewModel,
-                    outgoingViewModel = outgoingViewModel,
-                    outgoingValidationViewModel = outgoingValidationViewModel,
-                    optionsViewModel = optionsViewModel,
                 )
             }
         }
