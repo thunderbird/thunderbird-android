@@ -1,7 +1,6 @@
 package app.k9mail.feature.account.oauth.ui
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,7 +23,6 @@ import app.k9mail.feature.account.oauth.ui.item.SignInItem
 internal fun AccountOAuthContent(
     state: State,
     onEvent: (Event) -> Unit,
-    contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
     val resources = LocalContext.current.resources
@@ -33,7 +31,6 @@ internal fun AccountOAuthContent(
         modifier = Modifier
             .testTag("AccountOAuthContent")
             .then(modifier),
-        contentPadding = contentPadding,
         verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double, Alignment.CenterVertically),
     ) {
         if (state.isLoading) {
@@ -53,7 +50,6 @@ internal fun AccountOAuthContent(
         } else {
             item(key = "sign_in") {
                 SignInItem(
-                    emailAddress = state.emailAddress,
                     onSignInClick = { onEvent(Event.SignInClicked) },
                     isGoogleSignIn = state.isGoogleSignIn,
                 )
@@ -69,7 +65,6 @@ internal fun AccountOAuthContentK9Preview() {
         AccountOAuthContent(
             state = State(),
             onEvent = {},
-            contentPadding = PaddingValues(),
         )
     }
 }
@@ -81,7 +76,6 @@ internal fun AccountOAuthContentThunderbirdPreview() {
         AccountOAuthContent(
             state = State(),
             onEvent = {},
-            contentPadding = PaddingValues(),
         )
     }
 }
