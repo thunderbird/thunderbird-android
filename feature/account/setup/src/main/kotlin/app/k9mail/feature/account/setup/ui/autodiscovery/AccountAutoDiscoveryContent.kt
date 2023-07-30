@@ -20,6 +20,8 @@ import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.account.common.ui.item.ErrorItem
 import app.k9mail.feature.account.common.ui.item.LoadingItem
+import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
+import app.k9mail.feature.account.oauth.ui.DummyAccountOAuthViewModel
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Event
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.State
@@ -29,6 +31,7 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.item.contentItems
 internal fun AccountAutoDiscoveryContent(
     state: State,
     onEvent: (Event) -> Unit,
+    oAuthViewModel: AccountOAuthContract.ViewModel,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
@@ -65,6 +68,7 @@ internal fun AccountAutoDiscoveryContent(
                 contentItems(
                     state = state,
                     onEvent = onEvent,
+                    oAuthViewModel = oAuthViewModel,
                 )
             }
         }
@@ -79,6 +83,7 @@ internal fun AccountAutoDiscoveryContentK9Preview() {
             state = State(),
             onEvent = {},
             contentPadding = PaddingValues(),
+            oAuthViewModel = DummyAccountOAuthViewModel(),
         )
     }
 }
@@ -91,6 +96,7 @@ internal fun AccountAutoDiscoveryContentThunderbirdPreview() {
             state = State(),
             onEvent = {},
             contentPadding = PaddingValues(),
+            oAuthViewModel = DummyAccountOAuthViewModel(),
         )
     }
 }

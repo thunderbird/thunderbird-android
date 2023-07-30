@@ -31,9 +31,11 @@ import app.k9mail.feature.account.setup.ui.outgoing.FakeAccountOutgoingConfigVie
 import app.k9mail.feature.account.setup.ui.outgoing.toServerSettings
 import app.k9mail.feature.account.setup.ui.outgoing.toValidationState
 import app.k9mail.feature.account.setup.ui.validation.FakeAccountValidationViewModel
+import app.k9mail.feature.account.setup.ui.validation.InMemoryAuthStateStorage
 import assertk.assertThat
 import assertk.assertions.assertThatAndTurbinesConsumed
 import assertk.assertions.isEqualTo
+import assertk.assertions.isNull
 import assertk.assertions.prop
 import com.fsck.k9.mail.ServerSettings
 import kotlinx.coroutines.test.runTest
@@ -54,18 +56,21 @@ class AccountSetupViewModelTest {
     private val outgoingViewModel = FakeAccountOutgoingConfigViewModel()
     private val outgoingValidationViewModel = FakeAccountValidationViewModel()
     private val optionsViewModel = FakeAccountOptionsViewModel()
+    private val authStateStorage = InMemoryAuthStateStorage()
 
     @Test
     fun `should forward step state on next event`() = runTest {
         var createAccountEmailAddress: String? = null
         var createAccountIncomingServerSettings: ServerSettings? = null
         var createAccountOutgoingServerSettings: ServerSettings? = null
+        var createAccountAuthorizationState: String? = null
         var createAccountOptions: AccountOptions? = null
         val viewModel = AccountSetupViewModel(
-            createAccount = { emailAddress, incomingServerSettings, outgoingServerSettings, options ->
+            createAccount = { emailAddress, incomingServerSettings, outgoingServerSettings, authState, options ->
                 createAccountEmailAddress = emailAddress
                 createAccountIncomingServerSettings = incomingServerSettings
                 createAccountOutgoingServerSettings = outgoingServerSettings
+                createAccountAuthorizationState = authState
                 createAccountOptions = options
 
                 "accountUuid"
@@ -76,6 +81,7 @@ class AccountSetupViewModelTest {
             outgoingViewModel = outgoingViewModel,
             outgoingValidationViewModel = outgoingValidationViewModel,
             optionsViewModel = optionsViewModel,
+            authStateStorage = authStateStorage,
         )
         val stateTurbine = viewModel.state.testIn(backgroundScope)
         val effectTurbine = viewModel.effect.testIn(backgroundScope)
@@ -194,6 +200,7 @@ class AccountSetupViewModelTest {
         assertThat(createAccountEmailAddress).isEqualTo(EMAIL_ADDRESS)
         assertThat(createAccountIncomingServerSettings).isEqualTo(expectedIncomingConfigState.toServerSettings())
         assertThat(createAccountOutgoingServerSettings).isEqualTo(expectedOutgoingConfigState.toServerSettings())
+        assertThat(createAccountAuthorizationState).isNull()
         assertThat(createAccountOptions).isEqualTo(
             AccountOptions(
                 accountName = "account name",
@@ -210,13 +217,14 @@ class AccountSetupViewModelTest {
     fun `should rewind step state on back event`() = runTest {
         val initialState = State(setupStep = SetupStep.OPTIONS)
         val viewModel = AccountSetupViewModel(
-            createAccount = { _, _, _, _ -> "accountUuid" },
+            createAccount = { _, _, _, _, _ -> "accountUuid" },
             autoDiscoveryViewModel = autoDiscoveryViewModel,
             incomingViewModel = FakeAccountIncomingConfigViewModel(),
             incomingValidationViewModel = FakeAccountValidationViewModel(),
             outgoingViewModel = FakeAccountOutgoingConfigViewModel(),
             outgoingValidationViewModel = FakeAccountValidationViewModel(),
             optionsViewModel = FakeAccountOptionsViewModel(),
+            authStateStorage = authStateStorage,
             initialState = initialState,
         )
         val stateTurbine = viewModel.state.testIn(backgroundScope)

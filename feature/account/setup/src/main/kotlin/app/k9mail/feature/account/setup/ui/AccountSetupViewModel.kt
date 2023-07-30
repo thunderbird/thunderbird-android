@@ -20,8 +20,10 @@ import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContrac
 import app.k9mail.feature.account.setup.ui.outgoing.toServerSettings
 import app.k9mail.feature.account.setup.ui.outgoing.toValidationState
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract
+import com.fsck.k9.mail.oauth.AuthStateStorage
 import kotlinx.coroutines.launch
 
+@Suppress("LongParameterList")
 class AccountSetupViewModel(
     private val createAccount: UseCase.CreateAccount,
     override val autoDiscoveryViewModel: AccountAutoDiscoveryContract.ViewModel,
@@ -30,6 +32,7 @@ class AccountSetupViewModel(
     override val outgoingViewModel: AccountOutgoingConfigContract.ViewModel,
     override val outgoingValidationViewModel: AccountValidationContract.ViewModel,
     override val optionsViewModel: AccountOptionsContract.ViewModel,
+    private val authStateStorage: AuthStateStorage,
     initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(initialState), AccountSetupContract.ViewModel {
 
@@ -52,6 +55,7 @@ class AccountSetupViewModel(
     private fun onAutoDiscoveryFinished(
         autoDiscoveryState: AccountAutoDiscoveryContract.State,
     ) {
+        authStateStorage.updateAuthorizationState(autoDiscoveryState.authorizationState?.state)
         incomingViewModel.initState(autoDiscoveryState.toIncomingConfigState())
         outgoingViewModel.initState(autoDiscoveryState.toOutgoingConfigState())
         optionsViewModel.initState(autoDiscoveryState.toOptionsState())
@@ -122,6 +126,10 @@ class AccountSetupViewModel(
     }
 
     private fun changeToSetupStep(setupStep: SetupStep) {
+        if (setupStep == SetupStep.AUTO_CONFIG) {
+            authStateStorage.updateAuthorizationState(authorizationState = null)
+        }
+
         updateState {
             it.copy(
                 setupStep = setupStep,
@@ -140,6 +148,7 @@ class AccountSetupViewModel(
                 emailAddress = autoDiscoveryState.emailAddress.value,
                 incomingServerSettings = incomingState.toServerSettings(),
                 outgoingServerSettings = outgoingState.toServerSettings(),
+                authorizationState = authStateStorage.getAuthorizationState(),
                 options = optionsState.toAccountOptions(),
             )
 

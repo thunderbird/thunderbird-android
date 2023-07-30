@@ -6,5 +6,6 @@ data class Account(
     val emailAddress: String,
     val incomingServerSettings: ServerSettings,
     val outgoingServerSettings: ServerSettings,
+    val authorizationState: String?,
     val options: AccountOptions,
 )

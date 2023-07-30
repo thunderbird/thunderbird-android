@@ -22,6 +22,7 @@ interface DomainContract {
                 emailAddress: String,
                 incomingServerSettings: ServerSettings,
                 outgoingServerSettings: ServerSettings,
+                authorizationState: String?,
                 options: AccountOptions,
             ): String
         }

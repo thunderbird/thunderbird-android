@@ -3,6 +3,7 @@ package app.k9mail.feature.account.setup
 import app.k9mail.autodiscovery.api.AutoDiscoveryService
 import app.k9mail.autodiscovery.service.RealAutoDiscoveryService
 import app.k9mail.core.common.coreCommonModule
+import app.k9mail.feature.account.oauth.featureAccountOAuthModule
 import app.k9mail.feature.account.setup.domain.DomainContract
 import app.k9mail.feature.account.setup.domain.usecase.CreateAccount
 import app.k9mail.feature.account.setup.domain.usecase.GetAutoDiscovery
@@ -22,17 +23,20 @@ import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigValidat
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigViewModel
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationViewModel
+import app.k9mail.feature.account.setup.ui.validation.InMemoryAuthStateStorage
+import com.fsck.k9.mail.oauth.AuthStateStorage
 import com.fsck.k9.mail.store.imap.ImapServerSettingsValidator
 import com.fsck.k9.mail.store.pop3.Pop3ServerSettingsValidator
 import com.fsck.k9.mail.transport.smtp.SmtpServerSettingsValidator
 import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
+import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val featureAccountSetupModule: Module = module {
-    includes(coreCommonModule)
+    includes(coreCommonModule, featureAccountOAuthModule)
 
     single<OkHttpClient> {
         OkHttpClient()
@@ -51,8 +55,9 @@ val featureAccountSetupModule: Module = module {
         )
     }
 
-    factory<DomainContract.UseCase.ValidateServerSettings> {
+    factory<DomainContract.UseCase.ValidateServerSettings> { (authStateStorage: AuthStateStorage) ->
         ValidateServerSettings(
+            authStateStorage = authStateStorage,
             imapValidator = ImapServerSettingsValidator(
                 trustedSocketFactory = get(),
                 oAuth2TokenProviderFactory = get(),
@@ -80,20 +85,24 @@ val featureAccountSetupModule: Module = module {
     factory<AccountOptionsContract.Validator> { AccountOptionsValidator() }
 
     viewModel {
+        val authStateStorage = InMemoryAuthStateStorage()
+
         AccountSetupViewModel(
             createAccount = get(),
             autoDiscoveryViewModel = get(),
             incomingViewModel = get(),
-            incomingValidationViewModel = get(named(NAME_INCOMING_VALIDATION)),
+            incomingValidationViewModel = get(named(NAME_INCOMING_VALIDATION)) { parametersOf(authStateStorage) },
             outgoingViewModel = get(),
-            outgoingValidationViewModel = get(named(NAME_OUTGOING_VALIDATION)),
+            outgoingValidationViewModel = get(named(NAME_OUTGOING_VALIDATION)) { parametersOf(authStateStorage) },
             optionsViewModel = get(),
+            authStateStorage = authStateStorage,
         )
     }
     factory<AccountAutoDiscoveryContract.ViewModel> {
         AccountAutoDiscoveryViewModel(
             validator = get(),
             getAutoDiscovery = get(),
+            oAuthViewModel = get(),
         )
     }
     factory<AccountIncomingConfigContract.ViewModel> {
@@ -102,8 +111,10 @@ val featureAccountSetupModule: Module = module {
         )
     }
     factory<AccountValidationContract.ViewModel>(named(NAME_INCOMING_VALIDATION)) {
+            (authStateStorage: AuthStateStorage) ->
+
         AccountValidationViewModel(
-            validateServerSettings = get(),
+            validateServerSettings = get { parametersOf(authStateStorage) },
             initialState = AccountValidationContract.State(
                 isIncomingValidation = true,
             ),
@@ -115,8 +126,10 @@ val featureAccountSetupModule: Module = module {
         )
     }
     factory<AccountValidationContract.ViewModel>(named(NAME_OUTGOING_VALIDATION)) {
+            (authStateStorage: AuthStateStorage) ->
+
         AccountValidationViewModel(
-            validateServerSettings = get(),
+            validateServerSettings = get { parametersOf(authStateStorage) },
             initialState = AccountValidationContract.State(
                 isIncomingValidation = false,
             ),

@@ -9,10 +9,10 @@ import app.k9mail.feature.account.oauth.domain.usecase.CheckIsGoogleSignIn
 import app.k9mail.feature.account.oauth.domain.usecase.FinishOAuthSignIn
 import app.k9mail.feature.account.oauth.domain.usecase.GetOAuthRequestIntent
 import app.k9mail.feature.account.oauth.domain.usecase.SuggestServerName
+import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
 import app.k9mail.feature.account.oauth.ui.AccountOAuthViewModel
 import net.openid.appauth.AuthorizationService
 import org.koin.android.ext.koin.androidApplication
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
@@ -48,7 +48,7 @@ val featureAccountOAuthModule: Module = module {
 
     factory<UseCase.CheckIsGoogleSignIn> { CheckIsGoogleSignIn() }
 
-    viewModel {
+    factory<AccountOAuthContract.ViewModel> {
         AccountOAuthViewModel(
             getOAuthRequestIntent = get(),
             finishOAuthSignIn = get(),
