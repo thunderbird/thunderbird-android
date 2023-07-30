@@ -17,9 +17,9 @@ internal class ValidateServerSettings(
     override suspend fun execute(settings: ServerSettings): ServerSettingsValidationResult =
         withContext(coroutineDispatcher) {
             return@withContext when (settings.type) {
-                "imap" -> imapValidator.checkServerSettings(settings)
-                "pop3" -> pop3Validator.checkServerSettings(settings)
-                "smtp" -> smtpValidator.checkServerSettings(settings)
+                "imap" -> imapValidator.checkServerSettings(settings, authStateStorage = null)
+                "pop3" -> pop3Validator.checkServerSettings(settings, authStateStorage = null)
+                "smtp" -> smtpValidator.checkServerSettings(settings, authStateStorage = null)
                 else -> {
                     throw IllegalArgumentException("Unsupported server type: ${settings.type}")
                 }

@@ -4,6 +4,7 @@ import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.CertificateValidationException
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.ServerSettings
+import com.fsck.k9.mail.oauth.AuthStateStorage
 import com.fsck.k9.mail.server.ServerSettingsValidationResult
 import com.fsck.k9.mail.server.ServerSettingsValidator
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
@@ -14,7 +15,10 @@ class Pop3ServerSettingsValidator(
 ) : ServerSettingsValidator {
 
     @Suppress("TooGenericExceptionCaught")
-    override fun checkServerSettings(serverSettings: ServerSettings): ServerSettingsValidationResult {
+    override fun checkServerSettings(
+        serverSettings: ServerSettings,
+        authStateStorage: AuthStateStorage?,
+    ): ServerSettingsValidationResult {
         val store = Pop3Store(serverSettings, trustedSocketFactory)
 
         return try {

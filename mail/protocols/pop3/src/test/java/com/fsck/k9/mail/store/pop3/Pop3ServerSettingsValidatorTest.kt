@@ -54,7 +54,7 @@ class Pop3ServerSettingsValidatorTest {
             clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
         )
 
-        val result = serverSettingsValidator.checkServerSettings(serverSettings)
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
 
         assertThat(result).isInstanceOf<ServerSettingsValidationResult.Success>()
         server.verifyConnectionClosed()
@@ -90,7 +90,7 @@ class Pop3ServerSettingsValidatorTest {
             clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
         )
 
-        val result = serverSettingsValidator.checkServerSettings(serverSettings)
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
 
         assertThat(result).isInstanceOf<ServerSettingsValidationResult.AuthenticationError>()
             .prop(ServerSettingsValidationResult.AuthenticationError::serverMessage)
@@ -116,7 +116,7 @@ class Pop3ServerSettingsValidatorTest {
             clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
         )
 
-        val result = serverSettingsValidator.checkServerSettings(serverSettings)
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
 
         assertThat(result).isInstanceOf<ServerSettingsValidationResult.ServerError>()
             .prop(ServerSettingsValidationResult.ServerError::serverMessage)
@@ -151,7 +151,7 @@ class Pop3ServerSettingsValidatorTest {
             clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
         )
 
-        val result = serverSettingsValidator.checkServerSettings(serverSettings)
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
 
         assertThat(result).isInstanceOf<ServerSettingsValidationResult.CertificateError>()
             .prop(ServerSettingsValidationResult.CertificateError::certificateChain).hasSize(1)
@@ -172,7 +172,7 @@ class Pop3ServerSettingsValidatorTest {
             clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
         )
 
-        val result = serverSettingsValidator.checkServerSettings(serverSettings)
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
 
         assertThat(result).isInstanceOf<ServerSettingsValidationResult.NetworkError>()
             .prop(ServerSettingsValidationResult.NetworkError::exception)
@@ -193,7 +193,7 @@ class Pop3ServerSettingsValidatorTest {
         )
 
         assertFailure {
-            serverSettingsValidator.checkServerSettings(serverSettings)
+            serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
         }.isInstanceOf<IllegalArgumentException>()
     }
 

@@ -9,6 +9,8 @@ import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContrac
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract
+import com.fsck.k9.mail.oauth.OAuth2TokenProvider
+import com.fsck.k9.mail.oauth.OAuth2TokenProviderFactory
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import okhttp3.OkHttpClient
 import org.junit.Test
@@ -37,6 +39,14 @@ class AccountSetupModuleKtTest : KoinTest {
             AccountCreator { _ -> AccountCreatorResult.Success("accountUuid") }
         }
         single<OAuthConfigurationFactory> { OAuthConfigurationFactory { emptyMap() } }
+        single<OAuth2TokenProviderFactory> {
+            OAuth2TokenProviderFactory { _ ->
+                object : OAuth2TokenProvider {
+                    override fun getToken(timeoutMillis: Long) = TODO()
+                    override fun invalidateToken() = TODO()
+                }
+            }
+        }
     }
 
     @Test

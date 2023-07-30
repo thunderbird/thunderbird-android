@@ -11,6 +11,8 @@ import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.helpers.FakeTrustManager
 import com.fsck.k9.mail.helpers.SimpleTrustedSocketFactory
+import com.fsck.k9.mail.oauth.AuthStateStorage
+import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.server.ServerSettingsValidationResult
 import com.fsck.k9.mail.transport.mockServer.MockSmtpServer
 import java.net.UnknownHostException
@@ -18,17 +20,20 @@ import kotlin.test.Test
 
 private const val USERNAME = "user"
 private const val PASSWORD = "password"
+private const val AUTHORIZATION_STATE = "auth state"
+private const val AUTHORIZATION_TOKEN = "auth-token"
 private val CLIENT_CERTIFICATE_ALIAS: String? = null
 
 class SmtpServerSettingsValidatorTest {
     private val fakeTrustManager = FakeTrustManager()
+    private val trustedSocketFactory = SimpleTrustedSocketFactory(fakeTrustManager)
     private val serverSettingsValidator = SmtpServerSettingsValidator(
-        trustedSocketFactory = SimpleTrustedSocketFactory(fakeTrustManager),
-        oAuth2TokenProvider = null,
+        trustedSocketFactory = trustedSocketFactory,
+        oAuth2TokenProviderFactory = null,
     )
 
     @Test
-    fun `valid server settings should return Success`() {
+    fun `valid server settings with password should return Success`() {
         val server = MockSmtpServer().apply {
             output("220 localhost Simple Mail Transfer Service Ready")
             expect("EHLO [127.0.0.1]")
@@ -53,7 +58,48 @@ class SmtpServerSettingsValidatorTest {
             clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
         )
 
-        val result = serverSettingsValidator.checkServerSettings(serverSettings)
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
+
+        assertThat(result).isInstanceOf<ServerSettingsValidationResult.Success>()
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `valid server settings with OAuth should return Success`() {
+        val serverSettingsValidator = SmtpServerSettingsValidator(
+            trustedSocketFactory = trustedSocketFactory,
+            oAuth2TokenProviderFactory = { authStateStorage ->
+                assertThat(authStateStorage.getAuthorizationState()).isEqualTo(AUTHORIZATION_STATE)
+                FakeOAuth2TokenProvider()
+            },
+        )
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello client.localhost")
+            output("250-ENHANCEDSTATUSCODES")
+            output("250-AUTH PLAIN LOGIN OAUTHBEARER")
+            output("250 HELP")
+            expect("AUTH OAUTHBEARER bixhPXVzZXIsAWF1dGg9QmVhcmVyIGF1dGgtdG9rZW4BAQ==")
+            output("235 2.7.0 Authentication successful")
+            expect("QUIT")
+            closeConnection()
+        }
+        server.start()
+        val serverSettings = ServerSettings(
+            type = "smtp",
+            host = server.host,
+            port = server.port,
+            connectionSecurity = ConnectionSecurity.NONE,
+            authenticationType = AuthType.XOAUTH2,
+            username = USERNAME,
+            password = null,
+            clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
+        )
+        val authStateStorage = FakeAuthStateStorage(authorizationState = AUTHORIZATION_STATE)
+
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage)
 
         assertThat(result).isInstanceOf<ServerSettingsValidationResult.Success>()
         server.verifyConnectionClosed()
@@ -86,7 +132,7 @@ class SmtpServerSettingsValidatorTest {
             clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
         )
 
-        val result = serverSettingsValidator.checkServerSettings(serverSettings)
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
 
         assertThat(result).isInstanceOf<ServerSettingsValidationResult.AuthenticationError>()
             .prop(ServerSettingsValidationResult.AuthenticationError::serverMessage).isEqualTo("Authentication failed")
@@ -112,7 +158,7 @@ class SmtpServerSettingsValidatorTest {
             clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
         )
 
-        val result = serverSettingsValidator.checkServerSettings(serverSettings)
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
 
         assertThat(result).isInstanceOf<ServerSettingsValidationResult.ServerError>()
         server.verifyConnectionClosed()
@@ -144,7 +190,7 @@ class SmtpServerSettingsValidatorTest {
             clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
         )
 
-        val result = serverSettingsValidator.checkServerSettings(serverSettings)
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
 
         assertThat(result).isInstanceOf<ServerSettingsValidationResult.CertificateError>()
             .prop(ServerSettingsValidationResult.CertificateError::certificateChain).hasSize(1)
@@ -165,7 +211,7 @@ class SmtpServerSettingsValidatorTest {
             clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
         )
 
-        val result = serverSettingsValidator.checkServerSettings(serverSettings)
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
 
         assertThat(result).isInstanceOf<ServerSettingsValidationResult.NetworkError>()
             .prop(ServerSettingsValidationResult.NetworkError::exception)
@@ -186,7 +232,29 @@ class SmtpServerSettingsValidatorTest {
         )
 
         assertFailure {
-            serverSettingsValidator.checkServerSettings(serverSettings)
+            serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
         }.isInstanceOf<IllegalArgumentException>()
+    }
+}
+
+class FakeOAuth2TokenProvider : OAuth2TokenProvider {
+    override fun getToken(timeoutMillis: Long): String {
+        return AUTHORIZATION_TOKEN
+    }
+
+    override fun invalidateToken() {
+        throw UnsupportedOperationException("not implemented")
+    }
+}
+
+class FakeAuthStateStorage(
+    private var authorizationState: String? = null,
+) : AuthStateStorage {
+    override fun getAuthorizationState(): String? {
+        return authorizationState
+    }
+
+    override fun updateAuthorizationState(authorizationState: String?) {
+        this.authorizationState = authorizationState
     }
 }

@@ -55,7 +55,7 @@ val featureAccountSetupModule: Module = module {
         ValidateServerSettings(
             imapValidator = ImapServerSettingsValidator(
                 trustedSocketFactory = get(),
-                oAuth2TokenProvider = null, // TODO
+                oAuth2TokenProviderFactory = get(),
                 clientIdAppName = "null",
             ),
             pop3Validator = Pop3ServerSettingsValidator(
@@ -63,7 +63,7 @@ val featureAccountSetupModule: Module = module {
             ),
             smtpValidator = SmtpServerSettingsValidator(
                 trustedSocketFactory = get(),
-                oAuth2TokenProvider = null, // TODO
+                oAuth2TokenProviderFactory = get(),
             ),
         )
     }
