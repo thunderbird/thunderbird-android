@@ -8,6 +8,7 @@ import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Event
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.State
 import com.fsck.k9.mail.server.ServerSettingsValidationResult
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -135,9 +136,13 @@ internal class AccountValidationViewModel(
         onValidateConfig()
     }
 
-    private fun navigateBack() = emitEffect(Effect.NavigateBack)
+    private fun navigateBack() {
+        viewModelScope.coroutineContext.cancelChildren()
+        emitEffect(Effect.NavigateBack)
+    }
 
     private fun navigateNext() {
+        viewModelScope.coroutineContext.cancelChildren()
         emitEffect(Effect.NavigateNext)
     }
 }
