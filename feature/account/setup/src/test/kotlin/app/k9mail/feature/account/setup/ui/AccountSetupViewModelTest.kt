@@ -1,6 +1,5 @@
 package app.k9mail.feature.account.setup.ui
 
-import app.cash.turbine.testIn
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
@@ -218,7 +217,7 @@ class AccountSetupViewModelTest {
             authStateStorage = authStateStorage,
             initialState = initialState,
         )
-        val turbines = turbinesWithInitialStateCheck(viewModel, initialState,)
+        val turbines = turbinesWithInitialStateCheck(viewModel, initialState)
 
         viewModel.event(AccountSetupContract.Event.OnBack)
 
