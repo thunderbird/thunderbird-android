@@ -35,7 +35,6 @@ import app.k9mail.feature.account.setup.ui.outgoing.toValidationState
 import app.k9mail.feature.account.setup.ui.validation.FakeAccountValidationViewModel
 import app.k9mail.feature.account.setup.ui.validation.InMemoryAuthStateStorage
 import assertk.assertThat
-import assertk.assertions.assertThatAndTurbinesConsumed
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
 import assertk.assertions.prop
@@ -85,17 +84,7 @@ class AccountSetupViewModelTest {
             optionsViewModel = optionsViewModel,
             authStateStorage = authStateStorage,
         )
-        val stateTurbine = viewModel.state.testIn(backgroundScope)
-        val effectTurbine = viewModel.effect.testIn(backgroundScope)
-        val turbines = listOf(stateTurbine, effectTurbine)
-
-        // Initial state
-        assertThatAndTurbinesConsumed(
-            actual = stateTurbine.awaitItem(),
-            turbines = turbines,
-        ) {
-            prop(State::setupStep).isEqualTo(SetupStep.AUTO_CONFIG)
-        }
+        val turbines = turbinesWithInitialStateCheck(viewModel, State(setupStep = SetupStep.AUTO_CONFIG))
 
         autoDiscoveryViewModel.initState(AUTODISCOVERY_STATE)
         viewModel.event(
@@ -132,8 +121,8 @@ class AccountSetupViewModelTest {
             ),
         )
 
-        assertThatAndTurbinesConsumed(
-            actual = stateTurbine.awaitItem(),
+        assertThatAndMviTurbinesConsumed(
+            actual = turbines.stateTurbine.awaitItem(),
             turbines = turbines,
         ) {
             prop(State::setupStep).isEqualTo(SetupStep.INCOMING_CONFIG)
@@ -143,8 +132,8 @@ class AccountSetupViewModelTest {
 
         assertThat(incomingValidationViewModel.state.value).isEqualTo(expectedIncomingConfigState.toValidationState())
 
-        assertThatAndTurbinesConsumed(
-            actual = stateTurbine.awaitItem(),
+        assertThatAndMviTurbinesConsumed(
+            actual = turbines.stateTurbine.awaitItem(),
             turbines = turbines,
         ) {
             prop(State::setupStep).isEqualTo(SetupStep.INCOMING_VALIDATION)
@@ -152,8 +141,8 @@ class AccountSetupViewModelTest {
 
         viewModel.event(AccountSetupContract.Event.OnNext)
 
-        assertThatAndTurbinesConsumed(
-            actual = stateTurbine.awaitItem(),
+        assertThatAndMviTurbinesConsumed(
+            actual = turbines.stateTurbine.awaitItem(),
             turbines = turbines,
         ) {
             prop(State::setupStep).isEqualTo(SetupStep.OUTGOING_CONFIG)
@@ -163,8 +152,8 @@ class AccountSetupViewModelTest {
 
         assertThat(outgoingValidationViewModel.state.value).isEqualTo(expectedOutgoingConfigState.toValidationState())
 
-        assertThatAndTurbinesConsumed(
-            actual = stateTurbine.awaitItem(),
+        assertThatAndMviTurbinesConsumed(
+            actual = turbines.stateTurbine.awaitItem(),
             turbines = turbines,
         ) {
             prop(State::setupStep).isEqualTo(SetupStep.OUTGOING_VALIDATION)
@@ -172,8 +161,8 @@ class AccountSetupViewModelTest {
 
         viewModel.event(AccountSetupContract.Event.OnNext)
 
-        assertThatAndTurbinesConsumed(
-            actual = stateTurbine.awaitItem(),
+        assertThatAndMviTurbinesConsumed(
+            actual = turbines.stateTurbine.awaitItem(),
             turbines = turbines,
         ) {
             prop(State::setupStep).isEqualTo(SetupStep.OPTIONS)
@@ -192,8 +181,8 @@ class AccountSetupViewModelTest {
 
         viewModel.event(AccountSetupContract.Event.OnNext)
 
-        assertThatAndTurbinesConsumed(
-            actual = effectTurbine.awaitItem(),
+        assertThatAndMviTurbinesConsumed(
+            actual = turbines.effectTurbine.awaitItem(),
             turbines = turbines,
         ) {
             isEqualTo(Effect.NavigateNext("accountUuid"))
