@@ -59,6 +59,8 @@ class AccountCreator(
 
         newAccount.outgoingServerSettings = account.outgoingServerSettings
 
+        newAccount.oAuthState = account.authorizationState
+
         newAccount.name = account.options.accountName
         newAccount.senderName = account.options.displayName
         if (account.options.emailSignature != null) {

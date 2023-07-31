@@ -7,7 +7,6 @@ import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Error
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Event
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.State
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.ViewModel
 import com.fsck.k9.mail.server.ServerSettingsValidationResult
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -17,7 +16,7 @@ private const val CONTINUE_NEXT_DELAY = 2000L
 internal class AccountValidationViewModel(
     initialState: State = State(),
     private val validateServerSettings: DomainContract.UseCase.ValidateServerSettings,
-) : BaseViewModel<State, Event, Effect>(initialState), ViewModel {
+) : BaseViewModel<State, Event, Effect>(initialState), AccountValidationContract.ViewModel {
 
     override fun initState(state: State) {
         updateState {

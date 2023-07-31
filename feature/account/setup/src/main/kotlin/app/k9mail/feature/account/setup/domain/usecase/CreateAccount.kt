@@ -14,12 +14,14 @@ class CreateAccount(
         emailAddress: String,
         incomingServerSettings: ServerSettings,
         outgoingServerSettings: ServerSettings,
+        authorizationState: String?,
         options: AccountOptions,
     ): String {
         val account = Account(
             emailAddress = emailAddress,
             incomingServerSettings = incomingServerSettings,
             outgoingServerSettings = outgoingServerSettings,
+            authorizationState = authorizationState,
             options = options,
         )
 

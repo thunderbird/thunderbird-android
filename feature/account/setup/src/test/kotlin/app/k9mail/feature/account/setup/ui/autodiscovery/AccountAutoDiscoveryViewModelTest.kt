@@ -33,6 +33,7 @@ class AccountAutoDiscoveryViewModelTest {
             delay(50)
             AutoDiscoveryResult.NoUsableSettingsFound
         },
+        oAuthViewModel = FakeAccountOAuthViewModel(),
     )
 
     @Test
@@ -97,6 +98,7 @@ class AccountAutoDiscoveryViewModelTest {
                     delay(50)
                     autoDiscoverySettings
                 },
+                oAuthViewModel = FakeAccountOAuthViewModel(),
                 initialState = initialState,
             )
             val stateTurbine = viewModel.state.testIn(backgroundScope)
@@ -153,6 +155,7 @@ class AccountAutoDiscoveryViewModelTest {
                     delay(50)
                     AutoDiscoveryResult.UnexpectedException(discoveryError)
                 },
+                oAuthViewModel = FakeAccountOAuthViewModel(),
                 initialState = initialState,
             )
             val stateTurbine = viewModel.state.testIn(backgroundScope)
@@ -234,6 +237,7 @@ class AccountAutoDiscoveryViewModelTest {
                 emailAddressAnswer = ValidationResult.Failure(TestError),
             ),
             getAutoDiscovery = { AutoDiscoveryResult.NoUsableSettingsFound },
+            oAuthViewModel = FakeAccountOAuthViewModel(),
             initialState = initialState,
         )
 
@@ -317,6 +321,7 @@ class AccountAutoDiscoveryViewModelTest {
                     passwordAnswer = ValidationResult.Failure(TestError),
                 ),
                 getAutoDiscovery = { AutoDiscoveryResult.NoUsableSettingsFound },
+                oAuthViewModel = FakeAccountOAuthViewModel(),
                 initialState = initialState,
             )
             val stateTurbine = viewModel.state.testIn(backgroundScope)

@@ -44,6 +44,7 @@ class CreateAccountTest {
             password = "password",
             clientCertificateAlias = null,
         )
+        val authorizationState = "authorization state"
         val options = AccountOptions(
             accountName = "accountName",
             displayName = "displayName",
@@ -53,7 +54,13 @@ class CreateAccountTest {
             showNotification = true,
         )
 
-        val result = createAccount.execute(emailAddress, incomingServerSettings, outgoingServerSettings, options)
+        val result = createAccount.execute(
+            emailAddress,
+            incomingServerSettings,
+            outgoingServerSettings,
+            authorizationState,
+            options,
+        )
 
         assertThat(result).isEqualTo("uuid")
         assertThat(recordedAccount).isEqualTo(
@@ -61,6 +68,7 @@ class CreateAccountTest {
                 emailAddress = emailAddress,
                 incomingServerSettings = incomingServerSettings,
                 outgoingServerSettings = outgoingServerSettings,
+                authorizationState = authorizationState,
                 options = options,
             ),
         )
