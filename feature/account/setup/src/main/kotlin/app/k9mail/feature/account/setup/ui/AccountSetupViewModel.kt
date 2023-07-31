@@ -74,7 +74,7 @@ class AccountSetupViewModel(
                 }
             }
 
-            SetupStep.OUTGOING_CONFIG -> changeToSetupStep(SetupStep.INCOMING_VALIDATION)
+            SetupStep.OUTGOING_CONFIG -> changeToSetupStep(SetupStep.INCOMING_CONFIG)
             SetupStep.OUTGOING_VALIDATION -> {
                 if (state.value.isAutomaticConfig) {
                     changeToSetupStep(SetupStep.AUTO_CONFIG)
@@ -83,7 +83,11 @@ class AccountSetupViewModel(
                 }
             }
 
-            SetupStep.OPTIONS -> changeToSetupStep(SetupStep.OUTGOING_VALIDATION)
+            SetupStep.OPTIONS -> if (state.value.isAutomaticConfig) {
+                changeToSetupStep(SetupStep.AUTO_CONFIG)
+            } else {
+                changeToSetupStep(SetupStep.OUTGOING_CONFIG)
+            }
         }
     }
 
