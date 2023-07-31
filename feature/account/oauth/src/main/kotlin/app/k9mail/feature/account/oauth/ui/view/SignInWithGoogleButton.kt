@@ -3,20 +3,16 @@ package app.k9mail.feature.account.oauth.ui.view
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.ButtonElevation
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -42,24 +38,25 @@ import app.k9mail.feature.account.oauth.R
  * @see [Google Branding Guidelines](https://developers.google.com/identity/branding-guidelines)
  */
 @Suppress("LongMethod")
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SignInWithGoogleButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    isLoading: Boolean = false,
+    isLight: Boolean = MaterialTheme.colors.isLight,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     elevation: ButtonElevation? = ButtonDefaults.elevation(),
 ) {
     Surface(
-        modifier = modifier,
-        onClick = onClick,
-        shape = RoundedCornerShape(2.dp),
-        border = BorderStroke(
-            width = 1.dp,
-            color = getSurfaceColor(MaterialTheme.colors.isLight),
-        ),
-        color = getSurfaceColor(MaterialTheme.colors.isLight),
+        modifier = Modifier
+            .border(
+                width = 1.dp,
+                color = getBorderColor(isLight),
+                shape = RoundedCornerShape(8.dp),
+            )
+            .clickable { onClick() }
+            .then(modifier),
+        shape = RoundedCornerShape(8.dp),
+        color = getSurfaceColor(isLight),
         elevation = elevation?.elevation(true, interactionSource)?.value ?: 0.dp,
     ) {
         Row(
@@ -69,9 +66,12 @@ fun SignInWithGoogleButton(
                         durationMillis = 300,
                         easing = LinearOutSlowInEasing,
                     ),
+                )
+                .padding(
+                    end = 8.dp,
                 ),
+
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
         ) {
             Surface(
                 shape = RoundedCornerShape(2.dp),
@@ -79,8 +79,7 @@ fun SignInWithGoogleButton(
             ) {
                 Icon(
                     modifier = Modifier
-                        .padding(8.dp)
-                        .size(18.dp),
+                        .padding(8.dp),
                     painter = painterResource(
                         id = R.drawable.account_oauth_ic_google_logo,
                     ),
@@ -88,34 +87,28 @@ fun SignInWithGoogleButton(
                     tint = Color.Unspecified,
                 )
             }
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.requiredWidth(8.dp))
             Text(
                 text = stringResource(
-                    id = if (isLoading) {
-                        R.string.account_oauth_sign_in_with_google_button_loading
-                    } else {
-                        R.string.account_oauth_sign_in_with_google_button
-                    },
+                    id = R.string.account_oauth_sign_in_with_google_button,
                 ),
                 style = TextStyle(
-                    color = getTextColor(MaterialTheme.colors.isLight),
+                    color = getTextColor(isLight),
                     fontWeight = FontWeight.Medium,
                     fontSize = 14.sp,
                     letterSpacing = 1.25.sp,
                 ),
             )
-            if (isLoading) {
-                Spacer(modifier = Modifier.width(8.dp))
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .width(16.dp)
-                        .height(16.dp),
-                    strokeWidth = 2.dp,
-                    color = MaterialTheme.colors.primary,
-                )
-            }
-            Spacer(modifier = Modifier.width(8.dp))
         }
+    }
+}
+
+@Suppress("MagicNumber")
+private fun getBorderColor(isLight: Boolean): Color {
+    return if (isLight) {
+        Color(0x87000000)
+    } else {
+        Color(0xFF4285F4)
     }
 }
 
@@ -143,17 +136,6 @@ internal fun SignInWithGoogleButtonPreview() {
     PreviewWithThemes {
         SignInWithGoogleButton(
             onClick = {},
-        )
-    }
-}
-
-@DevicePreviews
-@Composable
-internal fun SignInWithGoogleButtonLoadingPreview() {
-    PreviewWithThemes {
-        SignInWithGoogleButton(
-            onClick = {},
-            isLoading = true,
         )
     }
 }
