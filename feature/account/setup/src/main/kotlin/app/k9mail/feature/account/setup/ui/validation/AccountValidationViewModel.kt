@@ -110,21 +110,7 @@ internal class AccountValidationViewModel(
     }
 
     private fun onBack() {
-        if (state.value.isSuccess) {
-            updateState {
-                it.copy(
-                    isSuccess = false,
-                )
-            }
-        } else if (state.value.error != null) {
-            updateState {
-                it.copy(
-                    error = null,
-                )
-            }
-        } else {
-            navigateBack()
-        }
+        navigateBack()
     }
 
     private fun onRetry() {

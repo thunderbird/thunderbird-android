@@ -164,38 +164,6 @@ class AccountValidationViewModelTest {
     }
 
     @Test
-    fun `should clear isSuccess when OnBackClicked event received when in success state`() = runTest {
-        val initialState = State(isSuccess = true)
-        val testSubject = createTestSubject(initialState = initialState)
-        val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
-
-        testSubject.event(Event.OnBackClicked)
-
-        assertThatAndMviTurbinesConsumed(
-            actual = turbines.stateTurbine.awaitItem(),
-            turbines = turbines,
-        ) {
-            isEqualTo(initialState.copy(isSuccess = false))
-        }
-    }
-
-    @Test
-    fun `should clear error when OnBackClicked event received when in error state`() = runTest {
-        val initialState = State(error = Error.ServerError("server error"))
-        val testSubject = createTestSubject(initialState = initialState)
-        val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
-
-        testSubject.event(Event.OnBackClicked)
-
-        assertThatAndMviTurbinesConsumed(
-            actual = turbines.stateTurbine.awaitItem(),
-            turbines = turbines,
-        ) {
-            isEqualTo(initialState.copy(error = null))
-        }
-    }
-
-    @Test
     fun `should clear error and trigger check settings when OnRetryClicked event received`() = runTest {
         val initialState = State(
             serverSettings = IMAP_SERVER_SETTINGS,
