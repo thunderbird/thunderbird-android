@@ -62,31 +62,6 @@ class AccountSetupViewModel(
         onNext()
     }
 
-    private fun onBack() {
-        when (state.value.setupStep) {
-            SetupStep.AUTO_CONFIG -> navigateBack()
-            SetupStep.INCOMING_CONFIG -> changeToSetupStep(SetupStep.AUTO_CONFIG)
-            SetupStep.INCOMING_VALIDATION -> {
-                if (state.value.isAutomaticConfig) {
-                    changeToSetupStep(SetupStep.AUTO_CONFIG)
-                } else {
-                    changeToSetupStep(SetupStep.INCOMING_CONFIG)
-                }
-            }
-
-            SetupStep.OUTGOING_CONFIG -> changeToSetupStep(SetupStep.INCOMING_VALIDATION)
-            SetupStep.OUTGOING_VALIDATION -> {
-                if (state.value.isAutomaticConfig) {
-                    changeToSetupStep(SetupStep.AUTO_CONFIG)
-                } else {
-                    changeToSetupStep(SetupStep.OUTGOING_CONFIG)
-                }
-            }
-
-            SetupStep.OPTIONS -> changeToSetupStep(SetupStep.OUTGOING_VALIDATION)
-        }
-    }
-
     private fun onNext() {
         when (state.value.setupStep) {
             SetupStep.AUTO_CONFIG -> {
@@ -122,6 +97,35 @@ class AccountSetupViewModel(
             }
 
             SetupStep.OPTIONS -> onFinish()
+        }
+    }
+
+    private fun onBack() {
+        when (state.value.setupStep) {
+            SetupStep.AUTO_CONFIG -> navigateBack()
+            SetupStep.INCOMING_CONFIG -> changeToSetupStep(SetupStep.AUTO_CONFIG)
+            SetupStep.INCOMING_VALIDATION -> {
+                if (state.value.isAutomaticConfig) {
+                    changeToSetupStep(SetupStep.AUTO_CONFIG)
+                } else {
+                    changeToSetupStep(SetupStep.INCOMING_CONFIG)
+                }
+            }
+
+            SetupStep.OUTGOING_CONFIG -> changeToSetupStep(SetupStep.INCOMING_CONFIG)
+            SetupStep.OUTGOING_VALIDATION -> {
+                if (state.value.isAutomaticConfig) {
+                    changeToSetupStep(SetupStep.AUTO_CONFIG)
+                } else {
+                    changeToSetupStep(SetupStep.OUTGOING_CONFIG)
+                }
+            }
+
+            SetupStep.OPTIONS -> if (state.value.isAutomaticConfig) {
+                changeToSetupStep(SetupStep.AUTO_CONFIG)
+            } else {
+                changeToSetupStep(SetupStep.OUTGOING_CONFIG)
+            }
         }
     }
 
