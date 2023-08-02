@@ -8,9 +8,9 @@ import app.k9mail.feature.account.setup.ui.AccountSetupContract.Event
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.State
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
-import app.k9mail.feature.account.setup.ui.common.mapper.toIncomingConfigState
-import app.k9mail.feature.account.setup.ui.common.mapper.toOptionsState
-import app.k9mail.feature.account.setup.ui.common.mapper.toOutgoingConfigState
+import app.k9mail.feature.account.setup.ui.autodiscovery.toIncomingConfigState
+import app.k9mail.feature.account.setup.ui.autodiscovery.toOptionsState
+import app.k9mail.feature.account.setup.ui.autodiscovery.toOutgoingConfigState
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
 import app.k9mail.feature.account.setup.ui.incoming.toServerSettings
 import app.k9mail.feature.account.setup.ui.incoming.toValidationState
