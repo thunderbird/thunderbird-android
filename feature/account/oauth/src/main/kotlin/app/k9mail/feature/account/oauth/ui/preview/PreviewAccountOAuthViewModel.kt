@@ -1,9 +1,12 @@
-package app.k9mail.feature.account.oauth.ui
+package app.k9mail.feature.account.oauth.ui.preview
 
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
+import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
 
-// Only used by @DevicePreviews functions
-class DummyAccountOAuthViewModel :
+/**
+ * Only for previewing the UI.
+ */
+class PreviewAccountOAuthViewModel :
     BaseViewModel<AccountOAuthContract.State, AccountOAuthContract.Event, AccountOAuthContract.Effect>(
         AccountOAuthContract.State(),
     ),
