@@ -4,6 +4,7 @@ import app.k9mail.autodiscovery.api.AutoDiscoveryService
 import app.k9mail.autodiscovery.service.RealAutoDiscoveryService
 import app.k9mail.core.common.coreCommonModule
 import app.k9mail.feature.account.oauth.featureAccountOAuthModule
+import app.k9mail.feature.account.setup.data.InMemoryAccountSetupStateRepository
 import app.k9mail.feature.account.setup.domain.DomainContract
 import app.k9mail.feature.account.setup.domain.usecase.CreateAccount
 import app.k9mail.feature.account.setup.domain.usecase.GetAutoDiscovery
@@ -55,6 +56,8 @@ val featureAccountSetupModule: Module = module {
         )
     }
 
+    single<DomainContract.AccountSetupStateRepository> { InMemoryAccountSetupStateRepository() }
+
     factory<DomainContract.UseCase.ValidateServerSettings> { (authStateStorage: AuthStateStorage) ->
         ValidateServerSettings(
             authStateStorage = authStateStorage,
@@ -89,16 +92,16 @@ val featureAccountSetupModule: Module = module {
 
         AccountSetupViewModel(
             createAccount = get(),
-            autoDiscoveryViewModel = get(),
             incomingViewModel = get(),
             incomingValidationViewModel = get(named(NAME_INCOMING_VALIDATION)) { parametersOf(authStateStorage) },
             outgoingViewModel = get(),
             outgoingValidationViewModel = get(named(NAME_OUTGOING_VALIDATION)) { parametersOf(authStateStorage) },
             optionsViewModel = get(),
             authStateStorage = authStateStorage,
+            accountSetupStateRepository = get(),
         )
     }
-    factory<AccountAutoDiscoveryContract.ViewModel> {
+    viewModel {
         AccountAutoDiscoveryViewModel(
             validator = get(),
             getAutoDiscovery = get(),

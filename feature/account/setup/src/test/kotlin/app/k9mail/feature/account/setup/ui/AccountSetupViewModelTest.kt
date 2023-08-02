@@ -8,6 +8,7 @@ import app.k9mail.core.common.net.toPort
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndMviTurbinesConsumed
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
+import app.k9mail.feature.account.setup.data.InMemoryAccountSetupStateRepository
 import app.k9mail.feature.account.setup.domain.entity.AccountOptions
 import app.k9mail.feature.account.setup.domain.entity.AuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
@@ -20,7 +21,6 @@ import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.State
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
-import app.k9mail.feature.account.setup.ui.autodiscovery.FakeAccountAutoDiscoveryViewModel
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
 import app.k9mail.feature.account.setup.ui.incoming.FakeAccountIncomingConfigViewModel
 import app.k9mail.feature.account.setup.ui.incoming.toServerSettings
@@ -50,7 +50,6 @@ class AccountSetupViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val autoDiscoveryViewModel = FakeAccountAutoDiscoveryViewModel()
     private val incomingViewModel = FakeAccountIncomingConfigViewModel()
     private val incomingValidationViewModel = FakeAccountValidationViewModel()
     private val outgoingViewModel = FakeAccountOutgoingConfigViewModel()
@@ -75,17 +74,17 @@ class AccountSetupViewModelTest {
 
                 "accountUuid"
             },
-            autoDiscoveryViewModel = autoDiscoveryViewModel,
             incomingViewModel = incomingViewModel,
             incomingValidationViewModel = incomingValidationViewModel,
             outgoingViewModel = outgoingViewModel,
             outgoingValidationViewModel = outgoingValidationViewModel,
             optionsViewModel = optionsViewModel,
             authStateStorage = authStateStorage,
+            accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
         )
         val turbines = turbinesWithInitialStateCheck(viewModel, State(setupStep = SetupStep.AUTO_CONFIG))
 
-        autoDiscoveryViewModel.initState(AUTODISCOVERY_STATE)
+        // FIXME autoDiscoveryViewModel.initState(AUTODISCOVERY_STATE)
         viewModel.event(
             AccountSetupContract.Event.OnAutoDiscoveryFinished(
                 state = AUTODISCOVERY_STATE,
@@ -208,13 +207,13 @@ class AccountSetupViewModelTest {
         val initialState = State(setupStep = SetupStep.OPTIONS)
         val viewModel = AccountSetupViewModel(
             createAccount = { _, _, _, _, _ -> "accountUuid" },
-            autoDiscoveryViewModel = autoDiscoveryViewModel,
             incomingViewModel = FakeAccountIncomingConfigViewModel(),
             incomingValidationViewModel = FakeAccountValidationViewModel(),
             outgoingViewModel = FakeAccountOutgoingConfigViewModel(),
             outgoingValidationViewModel = FakeAccountValidationViewModel(),
             optionsViewModel = FakeAccountOptionsViewModel(),
             authStateStorage = authStateStorage,
+            accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
             initialState = initialState,
         )
         val turbines = turbinesWithInitialStateCheck(viewModel, initialState)
@@ -264,13 +263,13 @@ class AccountSetupViewModelTest {
         )
         val viewModel = AccountSetupViewModel(
             createAccount = { _, _, _, _, _ -> "accountUuid" },
-            autoDiscoveryViewModel = autoDiscoveryViewModel,
             incomingViewModel = FakeAccountIncomingConfigViewModel(),
             incomingValidationViewModel = FakeAccountValidationViewModel(),
             outgoingViewModel = FakeAccountOutgoingConfigViewModel(),
             outgoingValidationViewModel = FakeAccountValidationViewModel(),
             optionsViewModel = FakeAccountOptionsViewModel(),
             authStateStorage = authStateStorage,
+            accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
             initialState = initialState,
         )
         val turbines = turbinesWithInitialStateCheck(viewModel, initialState)
@@ -302,13 +301,13 @@ class AccountSetupViewModelTest {
         )
         val viewModel = AccountSetupViewModel(
             createAccount = { _, _, _, _, _ -> "accountUuid" },
-            autoDiscoveryViewModel = autoDiscoveryViewModel,
             incomingViewModel = FakeAccountIncomingConfigViewModel(),
             incomingValidationViewModel = FakeAccountValidationViewModel(),
             outgoingViewModel = FakeAccountOutgoingConfigViewModel(),
             outgoingValidationViewModel = FakeAccountValidationViewModel(),
             optionsViewModel = FakeAccountOptionsViewModel(),
             authStateStorage = authStateStorage,
+            accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
             initialState = initialState,
         )
         val turbines = turbinesWithInitialStateCheck(viewModel, initialState)
@@ -340,13 +339,13 @@ class AccountSetupViewModelTest {
         )
         val viewModel = AccountSetupViewModel(
             createAccount = { _, _, _, _, _ -> "accountUuid" },
-            autoDiscoveryViewModel = autoDiscoveryViewModel,
             incomingViewModel = FakeAccountIncomingConfigViewModel(),
             incomingValidationViewModel = FakeAccountValidationViewModel(),
             outgoingViewModel = FakeAccountOutgoingConfigViewModel(),
             outgoingValidationViewModel = FakeAccountValidationViewModel(),
             optionsViewModel = FakeAccountOptionsViewModel(),
             authStateStorage = authStateStorage,
+            accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
             initialState = initialState,
         )
         val turbines = turbinesWithInitialStateCheck(viewModel, initialState)

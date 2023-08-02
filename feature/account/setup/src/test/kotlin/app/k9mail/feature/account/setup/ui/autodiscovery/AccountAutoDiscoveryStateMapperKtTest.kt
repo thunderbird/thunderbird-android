@@ -22,6 +22,15 @@ import org.junit.Test
 class AccountAutoDiscoveryStateMapperKtTest {
 
     @Test
+    fun `should map to empty AccountSetupState when empty`() {
+        val accountSetupState = EMPTY_STATE.toAccountSetupState()
+
+        assertThat(accountSetupState).isEqualTo(
+            AccountAutoDiscoveryContract.State().toAccountSetupState(),
+        )
+    }
+
+    @Test
     fun `should map to default IncomingConfigState when empty`() {
         val incomingConfigState = EMPTY_STATE.toIncomingConfigState()
 

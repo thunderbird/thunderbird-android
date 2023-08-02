@@ -2,15 +2,14 @@ package app.k9mail.feature.account.setup.ui
 
 import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
+import app.k9mail.feature.account.setup.domain.DomainContract
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Event
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.State
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
-import app.k9mail.feature.account.setup.ui.autodiscovery.toIncomingConfigState
-import app.k9mail.feature.account.setup.ui.autodiscovery.toOptionsState
-import app.k9mail.feature.account.setup.ui.autodiscovery.toOutgoingConfigState
+import app.k9mail.feature.account.setup.ui.autodiscovery.toAccountSetupState
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
 import app.k9mail.feature.account.setup.ui.incoming.toServerSettings
 import app.k9mail.feature.account.setup.ui.incoming.toValidationState
@@ -26,26 +25,19 @@ import kotlinx.coroutines.launch
 @Suppress("LongParameterList")
 class AccountSetupViewModel(
     private val createAccount: UseCase.CreateAccount,
-    override val autoDiscoveryViewModel: AccountAutoDiscoveryContract.ViewModel,
     override val incomingViewModel: AccountIncomingConfigContract.ViewModel,
     override val incomingValidationViewModel: AccountValidationContract.ViewModel,
     override val outgoingViewModel: AccountOutgoingConfigContract.ViewModel,
     override val outgoingValidationViewModel: AccountValidationContract.ViewModel,
     override val optionsViewModel: AccountOptionsContract.ViewModel,
     private val authStateStorage: AuthStateStorage,
+    private val accountSetupStateRepository: DomainContract.AccountSetupStateRepository,
     initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(initialState), AccountSetupContract.ViewModel {
 
     override fun event(event: Event) {
         when (event) {
-            is Event.OnAutoDiscoveryFinished -> {
-                updateState {
-                    it.copy(
-                        isAutomaticConfig = event.isAutomaticConfig,
-                    )
-                }
-                onAutoDiscoveryFinished(event.state)
-            }
+            is Event.OnAutoDiscoveryFinished -> onAutoDiscoveryFinished(event.state, event.isAutomaticConfig)
 
             Event.OnBack -> onBack()
             Event.OnNext -> onNext()
@@ -54,11 +46,17 @@ class AccountSetupViewModel(
 
     private fun onAutoDiscoveryFinished(
         autoDiscoveryState: AccountAutoDiscoveryContract.State,
+        isAutomaticConfig: Boolean,
     ) {
-        authStateStorage.updateAuthorizationState(autoDiscoveryState.authorizationState?.state)
-        incomingViewModel.initState(autoDiscoveryState.toIncomingConfigState())
-        outgoingViewModel.initState(autoDiscoveryState.toOutgoingConfigState())
-        optionsViewModel.initState(autoDiscoveryState.toOptionsState())
+        updateState {
+            it.copy(
+                isAutomaticConfig = isAutomaticConfig,
+            )
+        }
+
+        accountSetupStateRepository.save(autoDiscoveryState.toAccountSetupState())
+        authStateStorage.updateAuthorizationState(autoDiscoveryState.authorizationState?.state) //TODO use account setup state?
+
         onNext()
     }
 
@@ -142,14 +140,15 @@ class AccountSetupViewModel(
     }
 
     private fun onFinish() {
-        val autoDiscoveryState = autoDiscoveryViewModel.state.value
         val incomingState = incomingViewModel.state.value
         val outgoingState = outgoingViewModel.state.value
         val optionsState = optionsViewModel.state.value
 
+        val accountSetupState = accountSetupStateRepository.getState()
+
         viewModelScope.launch {
             val result = createAccount.execute(
-                emailAddress = autoDiscoveryState.emailAddress.value,
+                emailAddress = accountSetupState.emailAddress!!,
                 incomingServerSettings = incomingState.toServerSettings(),
                 outgoingServerSettings = outgoingState.toServerSettings(),
                 authorizationState = authStateStorage.getAuthorizationState(),

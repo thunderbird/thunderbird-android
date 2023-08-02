@@ -15,7 +15,6 @@ import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract
 import app.k9mail.feature.account.setup.ui.validation.FakeAccountValidationViewModel
 
 internal class FakeAccountSetupViewModel(
-    override val autoDiscoveryViewModel: FakeAccountAutoDiscoveryViewModel = FakeAccountAutoDiscoveryViewModel(),
     override val incomingViewModel: AccountIncomingConfigContract.ViewModel = FakeAccountIncomingConfigViewModel(),
     override val incomingValidationViewModel: AccountValidationContract.ViewModel = FakeAccountValidationViewModel(),
     override val outgoingViewModel: AccountOutgoingConfigContract.ViewModel = FakeAccountOutgoingConfigViewModel(),
