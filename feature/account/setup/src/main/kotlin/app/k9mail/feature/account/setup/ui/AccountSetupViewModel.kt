@@ -25,7 +25,6 @@ import kotlinx.coroutines.launch
 @Suppress("LongParameterList")
 class AccountSetupViewModel(
     private val createAccount: UseCase.CreateAccount,
-    override val incomingViewModel: AccountIncomingConfigContract.ViewModel,
     override val incomingValidationViewModel: AccountValidationContract.ViewModel,
     override val outgoingViewModel: AccountOutgoingConfigContract.ViewModel,
     override val outgoingValidationViewModel: AccountValidationContract.ViewModel,
@@ -55,7 +54,8 @@ class AccountSetupViewModel(
         }
 
         accountSetupStateRepository.save(autoDiscoveryState.toAccountSetupState())
-        authStateStorage.updateAuthorizationState(autoDiscoveryState.authorizationState?.state) //TODO use account setup state?
+        //TODO use account setup state?
+        authStateStorage.updateAuthorizationState(autoDiscoveryState.authorizationState?.state)
 
         onNext()
     }
@@ -64,7 +64,8 @@ class AccountSetupViewModel(
         when (state.value.setupStep) {
             SetupStep.AUTO_CONFIG -> {
                 if (state.value.isAutomaticConfig) {
-                    incomingValidationViewModel.initState(incomingViewModel.state.value.toValidationState())
+                    // TODO add state for incoming server settings
+//                    incomingValidationViewModel.initState(incomingViewModel.state.value.toValidationState())
                     outgoingValidationViewModel.initState(outgoingViewModel.state.value.toValidationState())
                     changeToSetupStep(SetupStep.INCOMING_VALIDATION)
                 } else {
@@ -73,7 +74,8 @@ class AccountSetupViewModel(
             }
 
             SetupStep.INCOMING_CONFIG -> {
-                incomingValidationViewModel.initState(incomingViewModel.state.value.toValidationState())
+                // TODO add state for incoming server settings
+//                incomingValidationViewModel.initState(incomingViewModel.state.value.toValidationState())
                 changeToSetupStep(SetupStep.INCOMING_VALIDATION)
             }
 
@@ -140,7 +142,6 @@ class AccountSetupViewModel(
     }
 
     private fun onFinish() {
-        val incomingState = incomingViewModel.state.value
         val outgoingState = outgoingViewModel.state.value
         val optionsState = optionsViewModel.state.value
 
@@ -148,8 +149,8 @@ class AccountSetupViewModel(
 
         viewModelScope.launch {
             val result = createAccount.execute(
-                emailAddress = accountSetupState.emailAddress!!,
-                incomingServerSettings = incomingState.toServerSettings(),
+                emailAddress = accountSetupState.emailAddress ?: "",
+                incomingServerSettings = accountSetupState.incomingServerSettings!!,
                 outgoingServerSettings = outgoingState.toServerSettings(),
                 authorizationState = authStateStorage.getAuthorizationState(),
                 options = optionsState.toAccountOptions(),

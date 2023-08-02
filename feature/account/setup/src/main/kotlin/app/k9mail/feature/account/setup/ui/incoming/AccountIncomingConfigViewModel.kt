@@ -2,6 +2,7 @@ package app.k9mail.feature.account.setup.ui.incoming
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
+import app.k9mail.feature.account.setup.domain.DomainContract
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.setup.domain.entity.toDefaultPort
@@ -11,21 +12,20 @@ import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContrac
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Validator
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.ViewModel
 
-@Suppress("TooManyFunctions")
 internal class AccountIncomingConfigViewModel(
-    initialState: State = State(),
     private val validator: Validator,
-) : BaseViewModel<State, Event, Effect>(initialState), ViewModel {
-
-    override fun initState(state: State) {
-        updateState {
-            state.copy()
-        }
-    }
+    private val accountSetupStateRepository: DomainContract.AccountSetupStateRepository,
+    initialState: State? = null,
+) : BaseViewModel<State, Event, Effect>(
+    initialState = initialState ?: accountSetupStateRepository.getState().toIncomingConfigState(),
+),
+    ViewModel {
 
     @Suppress("CyclomaticComplexMethod")
     override fun event(event: Event) {
         when (event) {
+            Event.LoadAccountSetupState -> loadAccountSetupState()
+
             is Event.ProtocolTypeChanged -> updateProtocolType(event.protocolType)
             is Event.ServerChanged -> updateState { it.copy(server = it.server.updateValue(event.server)) }
             is Event.SecurityChanged -> updateSecurity(event.security)
@@ -50,6 +50,12 @@ internal class AccountIncomingConfigViewModel(
 
             Event.OnNextClicked -> onNext()
             Event.OnBackClicked -> onBack()
+        }
+    }
+
+    private fun loadAccountSetupState() {
+        updateState {
+            accountSetupStateRepository.getState().toIncomingConfigState()
         }
     }
 
@@ -90,7 +96,11 @@ internal class AccountIncomingConfigViewModel(
         val serverResult = validator.validateServer(server.value)
         val portResult = validator.validatePort(port.value)
         val usernameResult = validator.validateUsername(username.value)
-        val passwordResult = validator.validatePassword(password.value)
+        val passwordResult = if (authenticationType.isPasswordRequired) {
+            validator.validatePassword(password.value)
+        } else {
+            ValidationResult.Success
+        }
         val imapPrefixResult = validator.validateImapPrefix(imapPrefix.value)
 
         val hasError = listOf(serverResult, portResult, usernameResult, passwordResult, imapPrefixResult)
@@ -107,6 +117,7 @@ internal class AccountIncomingConfigViewModel(
         }
 
         if (!hasError) {
+            accountSetupStateRepository.saveIncomingServerSettings(state.value.toServerSettings())
             navigateNext()
         }
     }

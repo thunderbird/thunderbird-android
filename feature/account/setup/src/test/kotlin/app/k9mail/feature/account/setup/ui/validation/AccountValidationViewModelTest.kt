@@ -3,6 +3,7 @@ package app.k9mail.feature.account.setup.ui.validation
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndMviTurbinesConsumed
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
+import app.k9mail.feature.account.setup.ui.FakeAccountOAuthViewModel
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Effect
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Error
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Event
@@ -176,6 +177,8 @@ class AccountValidationViewModelTest {
                 checkSettingsCalled = true
                 ServerSettingsValidationResult.Success
             },
+            authorizationStateRepository = { true },
+            oAuthViewModel = FakeAccountOAuthViewModel(),
             initialState = initialState,
         )
         val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
@@ -210,6 +213,8 @@ class AccountValidationViewModelTest {
                     delay(50)
                     serverSettingsValidationResult
                 },
+                authorizationStateRepository = { true },
+                oAuthViewModel = FakeAccountOAuthViewModel(),
                 initialState = initialState,
             )
         }

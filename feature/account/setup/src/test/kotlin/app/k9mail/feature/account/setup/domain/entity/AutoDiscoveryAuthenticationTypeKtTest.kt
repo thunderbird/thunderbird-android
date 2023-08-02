@@ -2,6 +2,7 @@ package app.k9mail.feature.account.setup.domain.entity
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import com.fsck.k9.mail.AuthType
 import org.junit.Test
 
 class AutoDiscoveryAuthenticationTypeKtTest {

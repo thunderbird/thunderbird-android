@@ -46,3 +46,13 @@ fun AuthenticationType.toAuthType(): AuthType {
         AuthenticationType.OAuth2 -> AuthType.XOAUTH2
     }
 }
+
+fun AuthType.toAuthenticationType(): AuthenticationType {
+    return when (this) {
+        AuthType.PLAIN -> AuthenticationType.PasswordCleartext
+        AuthType.CRAM_MD5 -> AuthenticationType.PasswordEncrypted
+        AuthType.EXTERNAL -> AuthenticationType.ClientCertificate
+        AuthType.XOAUTH2 -> AuthenticationType.OAuth2
+        else -> AuthenticationType.None
+    }
+}

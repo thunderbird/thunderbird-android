@@ -10,6 +10,7 @@ import app.k9mail.feature.account.setup.ui.AccountSetupContract.ViewModel
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryScreen
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryViewModel
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigScreen
+import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigViewModel
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsScreen
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigScreen
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationScreen
@@ -49,7 +50,7 @@ fun AccountSetupScreen(
             AccountIncomingConfigScreen(
                 onNext = { dispatch(Event.OnNext) },
                 onBack = { dispatch(Event.OnBack) },
-                viewModel = viewModel.incomingViewModel,
+                viewModel = koinViewModel<AccountIncomingConfigViewModel>(),
             )
         }
 

@@ -2,6 +2,7 @@ package app.k9mail.feature.account.setup.domain.entity
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import kotlin.test.assertFailsWith
 import org.junit.Test
 
 class IncomingProtocolTypeTest {
@@ -13,6 +14,18 @@ class IncomingProtocolTypeTest {
         assertThat(protocolTypes).isEqualTo(
             IncomingProtocolType.values().toList(),
         )
+    }
+
+    @Test
+    fun `fromName should return right protocol type`() {
+        val protocolType = IncomingProtocolType.fromName("imap")
+
+        assertThat(protocolType).isEqualTo(IncomingProtocolType.IMAP)
+    }
+
+    @Test
+    fun `fromName should throw IllegalArgumentException`() {
+        assertFailsWith(IllegalArgumentException::class) { IncomingProtocolType.fromName("unknown") }
     }
 
     @Test

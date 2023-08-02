@@ -92,7 +92,6 @@ val featureAccountSetupModule: Module = module {
 
         AccountSetupViewModel(
             createAccount = get(),
-            incomingViewModel = get(),
             incomingValidationViewModel = get(named(NAME_INCOMING_VALIDATION)) { parametersOf(authStateStorage) },
             outgoingViewModel = get(),
             outgoingValidationViewModel = get(named(NAME_OUTGOING_VALIDATION)) { parametersOf(authStateStorage) },
@@ -108,9 +107,10 @@ val featureAccountSetupModule: Module = module {
             oAuthViewModel = get(),
         )
     }
-    factory<AccountIncomingConfigContract.ViewModel> {
+    viewModel {
         AccountIncomingConfigViewModel(
             validator = get(),
+            accountSetupStateRepository = get(),
         )
     }
     factory<AccountValidationContract.ViewModel>(named(NAME_INCOMING_VALIDATION)) {
