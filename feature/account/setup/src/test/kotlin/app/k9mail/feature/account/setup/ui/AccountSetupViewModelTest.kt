@@ -11,20 +11,12 @@ import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.account.setup.data.InMemoryAccountSetupStateRepository
 import app.k9mail.feature.account.setup.domain.entity.AccountOptions
 import app.k9mail.feature.account.setup.domain.entity.AccountSetupState
-import app.k9mail.feature.account.setup.domain.entity.EmailCheckFrequency
-import app.k9mail.feature.account.setup.domain.entity.EmailDisplayCount
 import app.k9mail.feature.account.setup.domain.entity.MailConnectionSecurity
 import app.k9mail.feature.account.setup.domain.input.StringInputField
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.State
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
-import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
-import app.k9mail.feature.account.setup.ui.options.FakeAccountOptionsViewModel
-import app.k9mail.feature.account.setup.ui.outgoing.toServerSettings
-import app.k9mail.feature.account.setup.ui.outgoing.toValidationState
-import app.k9mail.feature.account.setup.ui.validation.FakeAccountValidationViewModel
-import app.k9mail.feature.account.setup.ui.validation.InMemoryAuthStateStorage
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
@@ -42,10 +34,6 @@ class AccountSetupViewModelTest {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
-
-    private val outgoingValidationViewModel = FakeAccountValidationViewModel()
-    private val optionsViewModel = FakeAccountOptionsViewModel()
-    private val authStateStorage = InMemoryAuthStateStorage()
 
     @Test
     fun `should forward step state on next event`() = runTest {
@@ -65,13 +53,10 @@ class AccountSetupViewModelTest {
 
                 "accountUuid"
             },
-            optionsViewModel = optionsViewModel,
-            authStateStorage = authStateStorage,
             accountSetupStateRepository = accountSetupStateRepository,
         )
         val turbines = turbinesWithInitialStateCheck(viewModel, State(setupStep = SetupStep.AUTO_CONFIG))
 
-        // FIXME autoDiscoveryViewModel.initState(AUTODISCOVERY_STATE)
         viewModel.event(
             AccountSetupContract.Event.OnAutoDiscoveryFinished(
                 state = AUTODISCOVERY_STATE,
@@ -104,16 +89,17 @@ class AccountSetupViewModelTest {
                 extra = emptyMap(),
             ),
             authorizationState = null,
-            options = null,
+            options = AccountOptions(
+                accountName = "account name",
+                displayName = "display name",
+                emailSignature = "signature",
+                checkFrequencyInMinutes = 15,
+                messageDisplayCount = 25,
+                showNotification = true,
+            ),
         )
 
         assertThat(accountSetupStateRepository.getState()).isEqualTo(expectedAccountSetupState)
-
-        assertThat(optionsViewModel.state.value).isEqualTo(
-            AccountOptionsContract.State(
-                accountName = StringInputField(EMAIL_ADDRESS),
-            ),
-        )
 
         assertThatAndMviTurbinesConsumed(
             actual = turbines.stateTurbine.awaitItem(),
@@ -123,9 +109,6 @@ class AccountSetupViewModelTest {
         }
 
         viewModel.event(AccountSetupContract.Event.OnNext)
-
-        // FIXME
-//        assertThat(incomingValidationViewModel.state.value).isEqualTo(expectedIncomingConfigState.toValidationState())
 
         assertThatAndMviTurbinesConsumed(
             actual = turbines.stateTurbine.awaitItem(),
@@ -145,8 +128,6 @@ class AccountSetupViewModelTest {
 
         viewModel.event(AccountSetupContract.Event.OnNext)
 
-        assertThat(outgoingValidationViewModel.state.value).isEqualTo(expectedOutgoingConfigState.toValidationState())
-
         assertThatAndMviTurbinesConsumed(
             actual = turbines.stateTurbine.awaitItem(),
             turbines = turbines,
@@ -163,17 +144,6 @@ class AccountSetupViewModelTest {
             prop(State::setupStep).isEqualTo(SetupStep.OPTIONS)
         }
 
-        optionsViewModel.initState(
-            optionsViewModel.state.value.copy(
-                accountName = StringInputField("account name"),
-                displayName = StringInputField("display name"),
-                emailSignature = StringInputField("signature"),
-                checkFrequency = EmailCheckFrequency.EVERY_15_MINUTES,
-                messageDisplayCount = EmailDisplayCount.MESSAGES_100,
-                showNotification = true,
-            ),
-        )
-
         viewModel.event(AccountSetupContract.Event.OnNext)
 
         assertThatAndMviTurbinesConsumed(
@@ -184,20 +154,10 @@ class AccountSetupViewModelTest {
         }
 
         assertThat(createAccountEmailAddress).isEqualTo(EMAIL_ADDRESS)
-        // FIXME
-//        assertThat(createAccountIncomingServerSettings).isEqualTo(expectedIncomingConfigState.toServerSettings())
-        assertThat(createAccountOutgoingServerSettings).isEqualTo(expectedOutgoingConfigState.toServerSettings())
+        assertThat(createAccountIncomingServerSettings).isEqualTo(expectedAccountSetupState.incomingServerSettings)
+        assertThat(createAccountOutgoingServerSettings).isEqualTo(expectedAccountSetupState.outgoingServerSettings)
         assertThat(createAccountAuthorizationState).isNull()
-        assertThat(createAccountOptions).isEqualTo(
-            AccountOptions(
-                accountName = "account name",
-                displayName = "display name",
-                emailSignature = "signature",
-                checkFrequencyInMinutes = 15,
-                messageDisplayCount = 100,
-                showNotification = true,
-            ),
-        )
+        assertThat(createAccountOptions).isEqualTo(expectedAccountSetupState.options)
     }
 
     @Test
@@ -205,8 +165,6 @@ class AccountSetupViewModelTest {
         val initialState = State(setupStep = SetupStep.OPTIONS)
         val viewModel = AccountSetupViewModel(
             createAccount = { _, _, _, _, _ -> "accountUuid" },
-            optionsViewModel = FakeAccountOptionsViewModel(),
-            authStateStorage = authStateStorage,
             accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
             initialState = initialState,
         )
@@ -257,8 +215,6 @@ class AccountSetupViewModelTest {
         )
         val viewModel = AccountSetupViewModel(
             createAccount = { _, _, _, _, _ -> "accountUuid" },
-            optionsViewModel = FakeAccountOptionsViewModel(),
-            authStateStorage = authStateStorage,
             accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
             initialState = initialState,
         )
@@ -291,8 +247,6 @@ class AccountSetupViewModelTest {
         )
         val viewModel = AccountSetupViewModel(
             createAccount = { _, _, _, _, _ -> "accountUuid" },
-            optionsViewModel = FakeAccountOptionsViewModel(),
-            authStateStorage = authStateStorage,
             accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
             initialState = initialState,
         )
@@ -325,8 +279,6 @@ class AccountSetupViewModelTest {
         )
         val viewModel = AccountSetupViewModel(
             createAccount = { _, _, _, _, _ -> "accountUuid" },
-            optionsViewModel = FakeAccountOptionsViewModel(),
-            authStateStorage = authStateStorage,
             accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
             initialState = initialState,
         )

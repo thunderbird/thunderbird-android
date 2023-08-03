@@ -2,6 +2,7 @@ package app.k9mail.feature.account.setup.ui
 
 import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
+import app.k9mail.feature.account.oauth.domain.entity.AuthorizationState
 import app.k9mail.feature.account.setup.domain.DomainContract
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
@@ -10,16 +11,11 @@ import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.State
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
 import app.k9mail.feature.account.setup.ui.autodiscovery.toAccountSetupState
-import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
-import app.k9mail.feature.account.setup.ui.options.toAccountOptions
-import com.fsck.k9.mail.oauth.AuthStateStorage
 import kotlinx.coroutines.launch
 
 @Suppress("LongParameterList")
 class AccountSetupViewModel(
     private val createAccount: UseCase.CreateAccount,
-    override val optionsViewModel: AccountOptionsContract.ViewModel,
-    private val authStateStorage: AuthStateStorage,
     private val accountSetupStateRepository: DomainContract.AccountSetupStateRepository,
     initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(initialState), AccountSetupContract.ViewModel {
@@ -44,8 +40,6 @@ class AccountSetupViewModel(
         }
 
         accountSetupStateRepository.save(autoDiscoveryState.toAccountSetupState())
-        //TODO use account setup state?
-        authStateStorage.updateAuthorizationState(autoDiscoveryState.authorizationState?.state)
 
         onNext()
     }
@@ -118,7 +112,7 @@ class AccountSetupViewModel(
 
     private fun changeToSetupStep(setupStep: SetupStep) {
         if (setupStep == SetupStep.AUTO_CONFIG) {
-            authStateStorage.updateAuthorizationState(authorizationState = null)
+            accountSetupStateRepository.saveAuthorizationState(AuthorizationState(null))
         }
 
         updateState {
@@ -129,8 +123,6 @@ class AccountSetupViewModel(
     }
 
     private fun onFinish() {
-        val optionsState = optionsViewModel.state.value
-
         val accountSetupState = accountSetupStateRepository.getState()
 
         viewModelScope.launch {
@@ -138,8 +130,8 @@ class AccountSetupViewModel(
                 emailAddress = accountSetupState.emailAddress ?: "",
                 incomingServerSettings = accountSetupState.incomingServerSettings!!,
                 outgoingServerSettings = accountSetupState.outgoingServerSettings!!,
-                authorizationState = authStateStorage.getAuthorizationState(),
-                options = optionsState.toAccountOptions(),
+                authorizationState = accountSetupState.authorizationState?.state,
+                options = accountSetupState.options!!,
             )
 
             navigateNext(result)

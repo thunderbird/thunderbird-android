@@ -90,8 +90,6 @@ val featureAccountSetupModule: Module = module {
     viewModel {
         AccountSetupViewModel(
             createAccount = get(),
-            optionsViewModel = get(),
-            authStateStorage = get(),
             accountSetupStateRepository = get(),
         )
     }
@@ -128,9 +126,10 @@ val featureAccountSetupModule: Module = module {
             isIncomingValidation = false,
         )
     }
-    factory<AccountOptionsContract.ViewModel> {
+    viewModel {
         AccountOptionsViewModel(
             validator = get(),
+            accountSetupStateRepository = get(),
         )
     }
 }

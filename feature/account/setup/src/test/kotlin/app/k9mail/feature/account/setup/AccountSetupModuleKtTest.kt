@@ -5,15 +5,13 @@ import app.k9mail.core.common.oauth.OAuthConfigurationFactory
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
-import app.k9mail.feature.account.setup.domain.DomainContract.UseCase.ValidateServerSettings
+import app.k9mail.feature.account.setup.domain.entity.AccountSetupState
 import app.k9mail.feature.account.setup.ui.AccountSetupContract
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationViewModel
-import app.k9mail.feature.account.setup.ui.validation.InMemoryAuthStateStorage
 import com.fsck.k9.mail.oauth.AuthStateStorage
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.oauth.OAuth2TokenProviderFactory
@@ -24,7 +22,6 @@ import org.junit.runner.RunWith
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.module.Module
-import org.koin.core.qualifier.named
 import org.koin.dsl.koinApplication
 import org.koin.dsl.module
 import org.koin.test.KoinTest
@@ -67,6 +64,7 @@ class AccountSetupModuleKtTest : KoinTest {
                 AccountIncomingConfigContract.State::class,
                 AccountOutgoingConfigContract.State::class,
                 AccountOptionsContract.State::class,
+                AccountSetupState::class,
                 AuthStateStorage::class,
                 Context::class,
                 Boolean::class,
@@ -77,12 +75,7 @@ class AccountSetupModuleKtTest : KoinTest {
         koinApplication {
             modules(externalModule, featureAccountSetupModule)
             androidContext(RuntimeEnvironment.getApplication())
-            checkModules {
-                val authStateStorage = InMemoryAuthStateStorage()
-                withParameter<AccountValidationViewModel>(named(NAME_INCOMING_VALIDATION)) { authStateStorage }
-                withParameter<AccountValidationViewModel>(named(NAME_OUTGOING_VALIDATION)) { authStateStorage }
-                withParameter<ValidateServerSettings> { authStateStorage }
-            }
+            checkModules()
         }
     }
 }

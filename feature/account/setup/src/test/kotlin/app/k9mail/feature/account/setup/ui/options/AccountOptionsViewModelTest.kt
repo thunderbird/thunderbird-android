@@ -5,6 +5,7 @@ import app.k9mail.core.common.domain.usecase.validation.ValidationError
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
+import app.k9mail.feature.account.setup.data.InMemoryAccountSetupStateRepository
 import app.k9mail.feature.account.setup.domain.entity.EmailCheckFrequency
 import app.k9mail.feature.account.setup.domain.entity.EmailDisplayCount
 import app.k9mail.feature.account.setup.domain.input.StringInputField
@@ -27,6 +28,7 @@ class AccountOptionsViewModelTest {
 
     private val testSubject = AccountOptionsViewModel(
         validator = FakeAccountOptionsValidator(),
+        accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
     )
 
     @Test
@@ -135,6 +137,7 @@ class AccountOptionsViewModelTest {
                 validator = FakeAccountOptionsValidator(
                     accountNameAnswer = ValidationResult.Failure(TestError),
                 ),
+                accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
             )
             val stateTurbine = viewModel.state.testIn(backgroundScope)
             val effectTurbine = viewModel.effect.testIn(backgroundScope)
