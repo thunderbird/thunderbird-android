@@ -9,11 +9,10 @@ import java.security.cert.X509Certificate
 interface AccountValidationContract {
 
     interface ViewModel : UnidirectionalViewModel<State, Event, Effect> {
-        fun initState(state: State)
+        val isIncomingValidation: Boolean
     }
 
     data class State(
-        val isIncomingValidation: Boolean = false,
         val serverSettings: ServerSettings? = null,
         val authorizationState: AuthorizationState? = null,
         val isSuccess: Boolean = false,
@@ -22,6 +21,8 @@ interface AccountValidationContract {
     )
 
     sealed interface Event {
+        object LoadAccountSetupStateAndValidate : Event
+
         object ValidateServerSettings : Event
         object OnNextClicked : Event
         object OnBackClicked : Event

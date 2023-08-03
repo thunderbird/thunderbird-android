@@ -19,9 +19,7 @@ interface AccountSetupContract {
     }
 
     interface ViewModel : UnidirectionalViewModel<State, Event, Effect> {
-        val incomingValidationViewModel: AccountValidationContract.ViewModel
         val outgoingViewModel: AccountOutgoingConfigContract.ViewModel
-        val outgoingValidationViewModel: AccountValidationContract.ViewModel
         val optionsViewModel: AccountOptionsContract.ViewModel
     }
 

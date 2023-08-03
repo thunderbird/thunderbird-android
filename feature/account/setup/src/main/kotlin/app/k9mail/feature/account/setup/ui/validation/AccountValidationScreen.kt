@@ -14,6 +14,7 @@ import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.common.ui.WizardNavigationBarState
 import app.k9mail.feature.account.setup.R
+import app.k9mail.feature.account.setup.ui.preview.PreviewAccountSetupStateRepository
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Effect
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Event
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.ViewModel
@@ -34,7 +35,7 @@ internal fun AccountValidationScreen(
     }
 
     LaunchedEffect(key1 = Unit) {
-        dispatch(Event.ValidateServerSettings)
+        dispatch(Event.LoadAccountSetupStateAndValidate)
     }
 
     BackHandler {
@@ -61,6 +62,7 @@ internal fun AccountValidationScreen(
         AccountValidationContent(
             onEvent = { dispatch(it) },
             state = state.value,
+            isIncomingValidation = viewModel.isIncomingValidation,
             contentPadding = innerPadding,
         )
     }
@@ -68,7 +70,7 @@ internal fun AccountValidationScreen(
 
 @Composable
 @DevicePreviews
-internal fun AccountIncomingConfigScreenK9Preview() {
+internal fun AccountIncomingValidationScreenK9Preview() {
     K9Theme {
         AccountValidationScreen(
             onNext = {},
@@ -77,6 +79,8 @@ internal fun AccountIncomingConfigScreenK9Preview() {
                 validateServerSettings = {
                     ServerSettingsValidationResult.Success
                 },
+                accountSetupStateRepository = PreviewAccountSetupStateRepository(),
+                isIncomingValidation = true,
             ),
         )
     }
@@ -84,7 +88,7 @@ internal fun AccountIncomingConfigScreenK9Preview() {
 
 @Composable
 @DevicePreviews
-internal fun AccountIncomingConfigScreenThunderbirdPreview() {
+internal fun AccountIncomingValidationScreenThunderbirdPreview() {
     ThunderbirdTheme {
         AccountValidationScreen(
             onNext = {},
@@ -93,6 +97,44 @@ internal fun AccountIncomingConfigScreenThunderbirdPreview() {
                 validateServerSettings = {
                     ServerSettingsValidationResult.Success
                 },
+                accountSetupStateRepository = PreviewAccountSetupStateRepository(),
+                isIncomingValidation = true,
+            ),
+        )
+    }
+}
+
+@Composable
+@DevicePreviews
+internal fun AccountOutgoingValidationScreenK9Preview() {
+    K9Theme {
+        AccountValidationScreen(
+            onNext = {},
+            onBack = {},
+            viewModel = AccountValidationViewModel(
+                validateServerSettings = {
+                    ServerSettingsValidationResult.Success
+                },
+                accountSetupStateRepository = PreviewAccountSetupStateRepository(),
+                isIncomingValidation = false,
+            ),
+        )
+    }
+}
+
+@Composable
+@DevicePreviews
+internal fun AccountOutgoingValidationScreenThunderbirdPreview() {
+    ThunderbirdTheme {
+        AccountValidationScreen(
+            onNext = {},
+            onBack = {},
+            viewModel = AccountValidationViewModel(
+                validateServerSettings = {
+                    ServerSettingsValidationResult.Success
+                },
+                accountSetupStateRepository = PreviewAccountSetupStateRepository(),
+                isIncomingValidation = false,
             ),
         )
     }

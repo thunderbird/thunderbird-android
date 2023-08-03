@@ -15,9 +15,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.common.DevicePreviews
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
-import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
-import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 import app.k9mail.feature.account.common.ui.item.ErrorItem
 import app.k9mail.feature.account.common.ui.item.LoadingItem
 import app.k9mail.feature.account.common.ui.item.SuccessItem
@@ -29,6 +28,7 @@ import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.
 @Composable
 internal fun AccountValidationContent(
     state: State,
+    isIncomingValidation: Boolean,
     onEvent: (Event) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
@@ -58,7 +58,7 @@ internal fun AccountValidationContent(
                     // TODO add raw error message
                     ErrorItem(
                         title = stringResource(
-                            id = if (state.isIncomingValidation) {
+                            id = if (isIncomingValidation) {
                                 R.string.account_setup_settings_validation_incoming_loading_error
                             } else {
                                 R.string.account_setup_settings_validation_outgoing_loading_error
@@ -72,7 +72,7 @@ internal fun AccountValidationContent(
                 item(key = "success") {
                     SuccessItem(
                         message = stringResource(
-                            id = if (state.isIncomingValidation) {
+                            id = if (isIncomingValidation) {
                                 R.string.account_setup_settings_validation_incoming_success
                             } else {
                                 R.string.account_setup_settings_validation_outgoing_success
@@ -84,7 +84,7 @@ internal fun AccountValidationContent(
                 item(key = "loading") {
                     LoadingItem(
                         message = stringResource(
-                            id = if (state.isIncomingValidation) {
+                            id = if (isIncomingValidation) {
                                 R.string.account_setup_settings_validation_incoming_loading_message
                             } else {
                                 R.string.account_setup_settings_validation_outgoing_loading_message
@@ -99,11 +99,12 @@ internal fun AccountValidationContent(
 
 @Composable
 @DevicePreviews
-internal fun AccountIncomingConfigContentK9Preview() {
-    K9Theme {
+internal fun AccountIncomingValidationContentPreview() {
+    PreviewWithThemes {
         AccountValidationContent(
             onEvent = { },
             state = State(),
+            isIncomingValidation = true,
             contentPadding = PaddingValues(),
         )
     }
@@ -111,11 +112,12 @@ internal fun AccountIncomingConfigContentK9Preview() {
 
 @Composable
 @DevicePreviews
-internal fun AccountIncomingConfigContentThunderbirdPreview() {
-    ThunderbirdTheme {
+internal fun AccountOutgoingValidationContentPreview() {
+    PreviewWithThemes {
         AccountValidationContent(
             onEvent = { },
             state = State(),
+            isIncomingValidation = false,
             contentPadding = PaddingValues(),
         )
     }

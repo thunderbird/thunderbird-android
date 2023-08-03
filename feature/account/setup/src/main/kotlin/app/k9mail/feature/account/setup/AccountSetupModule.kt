@@ -92,9 +92,7 @@ val featureAccountSetupModule: Module = module {
 
         AccountSetupViewModel(
             createAccount = get(),
-            incomingValidationViewModel = get(named(NAME_INCOMING_VALIDATION)) { parametersOf(authStateStorage) },
             outgoingViewModel = get(),
-            outgoingValidationViewModel = get(named(NAME_OUTGOING_VALIDATION)) { parametersOf(authStateStorage) },
             optionsViewModel = get(),
             authStateStorage = authStateStorage,
             accountSetupStateRepository = get(),
@@ -113,14 +111,13 @@ val featureAccountSetupModule: Module = module {
             accountSetupStateRepository = get(),
         )
     }
-    factory<AccountValidationContract.ViewModel>(named(NAME_INCOMING_VALIDATION)) {
-            (authStateStorage: AuthStateStorage) ->
-
+    viewModel(named(NAME_INCOMING_VALIDATION)) { (authStateStorage: AuthStateStorage) ->
         AccountValidationViewModel(
             validateServerSettings = get { parametersOf(authStateStorage) },
-            initialState = AccountValidationContract.State(
-                isIncomingValidation = true,
-            ),
+            accountSetupStateRepository = get(),
+            authorizationStateRepository = get(),
+            oAuthViewModel = get(),
+            isIncomingValidation = true,
         )
     }
     factory<AccountOutgoingConfigContract.ViewModel> {
@@ -128,14 +125,11 @@ val featureAccountSetupModule: Module = module {
             validator = get(),
         )
     }
-    factory<AccountValidationContract.ViewModel>(named(NAME_OUTGOING_VALIDATION)) {
-            (authStateStorage: AuthStateStorage) ->
-
+    viewModel(named(NAME_OUTGOING_VALIDATION)) { (authStateStorage: AuthStateStorage) ->
         AccountValidationViewModel(
             validateServerSettings = get { parametersOf(authStateStorage) },
-            initialState = AccountValidationContract.State(
-                isIncomingValidation = false,
-            ),
+            accountSetupStateRepository = get(),
+            isIncomingValidation = false,
         )
     }
     factory<AccountOptionsContract.ViewModel> {

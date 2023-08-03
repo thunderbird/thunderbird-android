@@ -3,7 +3,8 @@ package app.k9mail.feature.account.setup.ui.validation
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndMviTurbinesConsumed
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
-import app.k9mail.feature.account.setup.ui.FakeAccountOAuthViewModel
+import app.k9mail.feature.account.setup.data.InMemoryAccountSetupStateRepository
+import app.k9mail.feature.account.setup.domain.entity.AccountSetupState
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Effect
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Error
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Event
@@ -26,28 +27,45 @@ class AccountValidationViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     @Test
-    fun `should reset state when InitState event received`() = runTest {
-        val testSubject = createTestSubject()
-        val turbines = turbinesWithInitialStateCheck(testSubject, State())
-        val newState = State(
-            serverSettings = IMAP_SERVER_SETTINGS,
+    fun `should update state when LoadAccountSetupStateAndValidate event received and validate`() = runTest {
+        val accountSetupState = AccountSetupState(
+            incomingServerSettings = IMAP_SERVER_SETTINGS,
+        )
+        val initialState = State(
+            serverSettings = null,
             isLoading = true,
             error = Error.ServerError("server error"),
             isSuccess = true,
         )
-        val expectedState = newState.copy(
+        val testSubject = createTestSubject(
+            accountSetupState = accountSetupState,
+            initialState = initialState,
+        )
+
+        val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
+
+        val expectedState = State(
+            serverSettings = IMAP_SERVER_SETTINGS,
             isLoading = false,
             error = null,
             isSuccess = false,
         )
 
-        testSubject.initState(newState)
+        testSubject.event(Event.LoadAccountSetupStateAndValidate)
+
+        assertThat(turbines.awaitStateItem()).isEqualTo(expectedState)
+
+        val loadingState = expectedState.copy(isLoading = true)
+
+        assertThat(turbines.awaitStateItem()).isEqualTo(loadingState)
+
+        val successState = loadingState.copy(isLoading = false, isSuccess = true)
 
         assertThatAndMviTurbinesConsumed(
             actual = turbines.stateTurbine.awaitItem(),
             turbines = turbines,
         ) {
-            isEqualTo(expectedState)
+            isEqualTo(successState)
         }
     }
 
@@ -177,8 +195,7 @@ class AccountValidationViewModelTest {
                 checkSettingsCalled = true
                 ServerSettingsValidationResult.Success
             },
-            authorizationStateRepository = { true },
-            oAuthViewModel = FakeAccountOAuthViewModel(),
+            accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
             initialState = initialState,
         )
         val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
@@ -206,6 +223,7 @@ class AccountValidationViewModelTest {
     private companion object {
         fun createTestSubject(
             serverSettingsValidationResult: ServerSettingsValidationResult = ServerSettingsValidationResult.Success,
+            accountSetupState: AccountSetupState = AccountSetupState(),
             initialState: State = State(),
         ): AccountValidationViewModel {
             return AccountValidationViewModel(
@@ -213,8 +231,7 @@ class AccountValidationViewModelTest {
                     delay(50)
                     serverSettingsValidationResult
                 },
-                authorizationStateRepository = { true },
-                oAuthViewModel = FakeAccountOAuthViewModel(),
+                accountSetupStateRepository = InMemoryAccountSetupStateRepository(accountSetupState),
                 initialState = initialState,
             )
         }

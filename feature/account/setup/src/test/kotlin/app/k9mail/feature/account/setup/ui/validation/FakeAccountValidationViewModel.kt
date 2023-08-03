@@ -7,14 +7,11 @@ import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.ViewModel
 
 class FakeAccountValidationViewModel(
+    override val isIncomingValidation: Boolean = true,
     initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(initialState), ViewModel {
 
     val events = mutableListOf<Event>()
-
-    override fun initState(state: State) {
-        updateState { state }
-    }
 
     override fun event(event: Event) {
         events.add(event)

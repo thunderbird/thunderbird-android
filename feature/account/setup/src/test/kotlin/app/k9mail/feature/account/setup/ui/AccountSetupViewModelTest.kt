@@ -48,7 +48,6 @@ class AccountSetupViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val incomingValidationViewModel = FakeAccountValidationViewModel()
     private val outgoingViewModel = FakeAccountOutgoingConfigViewModel()
     private val outgoingValidationViewModel = FakeAccountValidationViewModel()
     private val optionsViewModel = FakeAccountOptionsViewModel()
@@ -72,9 +71,7 @@ class AccountSetupViewModelTest {
 
                 "accountUuid"
             },
-            incomingValidationViewModel = incomingValidationViewModel,
             outgoingViewModel = outgoingViewModel,
-            outgoingValidationViewModel = outgoingValidationViewModel,
             optionsViewModel = optionsViewModel,
             authStateStorage = authStateStorage,
             accountSetupStateRepository = accountSetupStateRepository,
@@ -226,9 +223,7 @@ class AccountSetupViewModelTest {
         val initialState = State(setupStep = SetupStep.OPTIONS)
         val viewModel = AccountSetupViewModel(
             createAccount = { _, _, _, _, _ -> "accountUuid" },
-            incomingValidationViewModel = FakeAccountValidationViewModel(),
             outgoingViewModel = FakeAccountOutgoingConfigViewModel(),
-            outgoingValidationViewModel = FakeAccountValidationViewModel(),
             optionsViewModel = FakeAccountOptionsViewModel(),
             authStateStorage = authStateStorage,
             accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
@@ -281,9 +276,7 @@ class AccountSetupViewModelTest {
         )
         val viewModel = AccountSetupViewModel(
             createAccount = { _, _, _, _, _ -> "accountUuid" },
-            incomingValidationViewModel = FakeAccountValidationViewModel(),
             outgoingViewModel = FakeAccountOutgoingConfigViewModel(),
-            outgoingValidationViewModel = FakeAccountValidationViewModel(),
             optionsViewModel = FakeAccountOptionsViewModel(),
             authStateStorage = authStateStorage,
             accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
@@ -318,9 +311,7 @@ class AccountSetupViewModelTest {
         )
         val viewModel = AccountSetupViewModel(
             createAccount = { _, _, _, _, _ -> "accountUuid" },
-            incomingValidationViewModel = FakeAccountValidationViewModel(),
             outgoingViewModel = FakeAccountOutgoingConfigViewModel(),
-            outgoingValidationViewModel = FakeAccountValidationViewModel(),
             optionsViewModel = FakeAccountOptionsViewModel(),
             authStateStorage = authStateStorage,
             accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
@@ -355,9 +346,7 @@ class AccountSetupViewModelTest {
         )
         val viewModel = AccountSetupViewModel(
             createAccount = { _, _, _, _, _ -> "accountUuid" },
-            incomingValidationViewModel = FakeAccountValidationViewModel(),
             outgoingViewModel = FakeAccountOutgoingConfigViewModel(),
-            outgoingValidationViewModel = FakeAccountValidationViewModel(),
             optionsViewModel = FakeAccountOptionsViewModel(),
             authStateStorage = authStateStorage,
             accountSetupStateRepository = InMemoryAccountSetupStateRepository(),

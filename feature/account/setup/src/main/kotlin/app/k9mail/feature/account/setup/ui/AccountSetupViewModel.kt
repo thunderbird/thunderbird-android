@@ -10,14 +10,10 @@ import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.State
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
 import app.k9mail.feature.account.setup.ui.autodiscovery.toAccountSetupState
-import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
-import app.k9mail.feature.account.setup.ui.incoming.toServerSettings
-import app.k9mail.feature.account.setup.ui.incoming.toValidationState
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
 import app.k9mail.feature.account.setup.ui.options.toAccountOptions
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
 import app.k9mail.feature.account.setup.ui.outgoing.toServerSettings
-import app.k9mail.feature.account.setup.ui.outgoing.toValidationState
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract
 import com.fsck.k9.mail.oauth.AuthStateStorage
 import kotlinx.coroutines.launch
@@ -25,9 +21,7 @@ import kotlinx.coroutines.launch
 @Suppress("LongParameterList")
 class AccountSetupViewModel(
     private val createAccount: UseCase.CreateAccount,
-    override val incomingValidationViewModel: AccountValidationContract.ViewModel,
     override val outgoingViewModel: AccountOutgoingConfigContract.ViewModel,
-    override val outgoingValidationViewModel: AccountValidationContract.ViewModel,
     override val optionsViewModel: AccountOptionsContract.ViewModel,
     private val authStateStorage: AuthStateStorage,
     private val accountSetupStateRepository: DomainContract.AccountSetupStateRepository,
@@ -64,9 +58,7 @@ class AccountSetupViewModel(
         when (state.value.setupStep) {
             SetupStep.AUTO_CONFIG -> {
                 if (state.value.isAutomaticConfig) {
-                    // TODO add state for incoming server settings
-//                    incomingValidationViewModel.initState(incomingViewModel.state.value.toValidationState())
-                    outgoingValidationViewModel.initState(outgoingViewModel.state.value.toValidationState())
+                    // TODO save state for incoming/outgoing server settings
                     changeToSetupStep(SetupStep.INCOMING_VALIDATION)
                 } else {
                     changeToSetupStep(SetupStep.INCOMING_CONFIG)
@@ -74,8 +66,7 @@ class AccountSetupViewModel(
             }
 
             SetupStep.INCOMING_CONFIG -> {
-                // TODO add state for incoming server settings
-//                incomingValidationViewModel.initState(incomingViewModel.state.value.toValidationState())
+                // TODO save state for incoming server settings
                 changeToSetupStep(SetupStep.INCOMING_VALIDATION)
             }
 
@@ -88,7 +79,7 @@ class AccountSetupViewModel(
             }
 
             SetupStep.OUTGOING_CONFIG -> {
-                outgoingValidationViewModel.initState(outgoingViewModel.state.value.toValidationState())
+                // TODO save state for outgoing server settings
                 changeToSetupStep(SetupStep.OUTGOING_VALIDATION)
             }
 

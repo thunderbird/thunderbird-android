@@ -15,7 +15,7 @@ class AccountValidationScreenKtTest : ComposeTest() {
     @Test
     fun `should delegate navigation effects`() = runTest {
         val initialState = State()
-        val viewModel = FakeAccountValidationViewModel(initialState)
+        val viewModel = FakeAccountValidationViewModel(initialState = initialState)
         var onNextCounter = 0
         var onBackCounter = 0
 

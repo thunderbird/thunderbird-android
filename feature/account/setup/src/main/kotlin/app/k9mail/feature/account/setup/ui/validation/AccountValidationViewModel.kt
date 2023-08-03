@@ -14,29 +14,33 @@ import kotlinx.coroutines.launch
 
 private const val CONTINUE_NEXT_DELAY = 2000L
 
+@Suppress("TooManyFunctions")
 internal class AccountValidationViewModel(
-    initialState: State = State(),
     private val validateServerSettings: DomainContract.UseCase.ValidateServerSettings,
-) : BaseViewModel<State, Event, Effect>(initialState), AccountValidationContract.ViewModel {
-
-    override fun initState(state: State) {
-        updateState {
-            state.copy(
-                isIncomingValidation = it.isIncomingValidation,
-                isLoading = false,
-                error = null,
-                isSuccess = false,
-            )
-        }
-    }
+    private val accountSetupStateRepository: DomainContract.AccountSetupStateRepository,
+    override val isIncomingValidation: Boolean = true,
+    initialState: State? = null,
+) : BaseViewModel<State, Event, Effect>(
+    initialState = initialState ?: accountSetupStateRepository.getState()
+        .toValidationState(isIncomingValidation),
+),
+    AccountValidationContract.ViewModel {
 
     override fun event(event: Event) {
         when (event) {
+            Event.LoadAccountSetupStateAndValidate -> loadAccountSetupStateAndValidate()
             Event.ValidateServerSettings -> onValidateConfig()
             Event.OnNextClicked -> navigateNext()
             Event.OnBackClicked -> onBack()
             Event.OnRetryClicked -> onRetry()
         }
+    }
+
+    private fun loadAccountSetupStateAndValidate() {
+        updateState {
+            accountSetupStateRepository.getState().toValidationState(isIncomingValidation)
+        }
+        onValidateConfig()
     }
 
     private fun onValidateConfig() {

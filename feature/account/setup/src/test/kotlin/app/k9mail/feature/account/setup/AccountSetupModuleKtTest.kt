@@ -12,6 +12,7 @@ import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContrac
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract
+import app.k9mail.feature.account.setup.ui.validation.AccountValidationViewModel
 import app.k9mail.feature.account.setup.ui.validation.InMemoryAuthStateStorage
 import com.fsck.k9.mail.oauth.AuthStateStorage
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
@@ -68,6 +69,7 @@ class AccountSetupModuleKtTest : KoinTest {
                 AccountOptionsContract.State::class,
                 AuthStateStorage::class,
                 Context::class,
+                Boolean::class,
                 Class.forName("net.openid.appauth.AppAuthConfiguration").kotlin,
             ),
         )
@@ -77,8 +79,8 @@ class AccountSetupModuleKtTest : KoinTest {
             androidContext(RuntimeEnvironment.getApplication())
             checkModules {
                 val authStateStorage = InMemoryAuthStateStorage()
-                withParameter<AccountValidationContract.ViewModel>(named(NAME_INCOMING_VALIDATION)) { authStateStorage }
-                withParameter<AccountValidationContract.ViewModel>(named(NAME_OUTGOING_VALIDATION)) { authStateStorage }
+                withParameter<AccountValidationViewModel>(named(NAME_INCOMING_VALIDATION)) { authStateStorage }
+                withParameter<AccountValidationViewModel>(named(NAME_OUTGOING_VALIDATION)) { authStateStorage }
                 withParameter<ValidateServerSettings> { authStateStorage }
             }
         }

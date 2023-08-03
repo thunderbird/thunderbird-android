@@ -3,6 +3,8 @@ package app.k9mail.feature.account.setup.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.common.mvi.observe
+import app.k9mail.feature.account.setup.NAME_INCOMING_VALIDATION
+import app.k9mail.feature.account.setup.NAME_OUTGOING_VALIDATION
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Event
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
@@ -14,7 +16,9 @@ import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigViewMod
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsScreen
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigScreen
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationScreen
+import app.k9mail.feature.account.setup.ui.validation.AccountValidationViewModel
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.qualifier.named
 
 @Suppress("LongMethod")
 @Composable
@@ -58,7 +62,7 @@ fun AccountSetupScreen(
             AccountValidationScreen(
                 onNext = { dispatch(Event.OnNext) },
                 onBack = { dispatch(Event.OnBack) },
-                viewModel = viewModel.incomingValidationViewModel,
+                viewModel = koinViewModel<AccountValidationViewModel>(named(NAME_INCOMING_VALIDATION)),
             )
         }
 
@@ -74,7 +78,7 @@ fun AccountSetupScreen(
             AccountValidationScreen(
                 onNext = { dispatch(Event.OnNext) },
                 onBack = { dispatch(Event.OnBack) },
-                viewModel = viewModel.outgoingValidationViewModel,
+                viewModel = koinViewModel<AccountValidationViewModel>(named(NAME_OUTGOING_VALIDATION)),
             )
         }
 
