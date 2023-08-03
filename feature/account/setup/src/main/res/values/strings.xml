@@ -38,6 +38,7 @@
     <string name="account_setup_settings_validation_outgoing_loading_message">Checking outgoing server settings…</string>
     <string name="account_setup_settings_validation_outgoing_loading_error">Checking outgoing server settings failed!</string>
     <string name="account_setup_settings_validation_outgoing_success">Outgoing server settings are valid!</string>
+    <string name="account_setup_settings_validation_sign_in">Please sign in</string>
 
     <string name="account_setup_auto_config_loading_message">Finding email details</string>
     <string name="account_setup_auto_config_loading_error">Failed to load email configuration</string>

@@ -1,7 +1,9 @@
 package app.k9mail.feature.account.setup.ui.validation
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
@@ -14,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.common.DevicePreviews
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle1
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
@@ -84,10 +87,22 @@ internal fun AccountValidationContent(
             } else if (state.needsAuthorization) {
                 item(key = "oauth") {
                     ListItem {
-                        AccountOAuthView(
-                            onOAuthResult = { result -> onEvent(Event.OnOAuthResult(result)) },
-                            viewModel = oAuthViewModel,
-                        )
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                        ) {
+                            TextSubtitle1(
+                                text = stringResource(
+                                    id = R.string.account_setup_settings_validation_sign_in,
+                                ),
+                            )
+                            Spacer(modifier = Modifier.padding(MainTheme.spacings.default))
+                            AccountOAuthView(
+                                onOAuthResult = { result -> onEvent(Event.OnOAuthResult(result)) },
+                                viewModel = oAuthViewModel,
+                            )
+                        }
                     }
                 }
             } else {
