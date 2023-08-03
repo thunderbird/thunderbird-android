@@ -1,10 +1,5 @@
 package app.k9mail.feature.account.setup.ui
 
-import app.k9mail.autodiscovery.api.AutoDiscoveryResult
-import app.k9mail.autodiscovery.api.ImapServerSettings
-import app.k9mail.autodiscovery.api.SmtpServerSettings
-import app.k9mail.core.common.net.toHostname
-import app.k9mail.core.common.net.toPort
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndMviTurbinesConsumed
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
@@ -12,11 +7,9 @@ import app.k9mail.feature.account.setup.data.InMemoryAccountSetupStateRepository
 import app.k9mail.feature.account.setup.domain.entity.AccountOptions
 import app.k9mail.feature.account.setup.domain.entity.AccountSetupState
 import app.k9mail.feature.account.setup.domain.entity.MailConnectionSecurity
-import app.k9mail.feature.account.setup.domain.input.StringInputField
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.State
-import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
@@ -26,8 +19,6 @@ import com.fsck.k9.mail.ServerSettings
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
-import app.k9mail.autodiscovery.api.AuthenticationType as AutoDiscoveryAuthenticationType
-import app.k9mail.autodiscovery.api.ConnectionSecurity as AutoDiscoveryConnectionSecurity
 
 @Suppress("LongMethod")
 class AccountSetupViewModelTest {
@@ -59,7 +50,6 @@ class AccountSetupViewModelTest {
 
         viewModel.event(
             AccountSetupContract.Event.OnAutoDiscoveryFinished(
-                state = AUTODISCOVERY_STATE,
                 isAutomaticConfig = false,
             ),
         )
@@ -89,10 +79,15 @@ class AccountSetupViewModelTest {
                 extra = emptyMap(),
             ),
             authorizationState = null,
-            options = null,
+            options = AccountOptions(
+                accountName = "account name",
+                displayName = "display name",
+                emailSignature = "signature",
+                checkFrequencyInMinutes = 15,
+                messageDisplayCount = 25,
+                showNotification = true,
+            ),
         )
-
-        assertThat(accountSetupStateRepository.getState()).isEqualTo(expectedAccountSetupState)
 
         assertThatAndMviTurbinesConsumed(
             actual = turbines.stateTurbine.awaitItem(),
@@ -137,17 +132,7 @@ class AccountSetupViewModelTest {
             prop(State::setupStep).isEqualTo(SetupStep.OPTIONS)
         }
 
-        val finalAccountSetupState = expectedAccountSetupState.copy(
-            options = AccountOptions(
-                accountName = "account name",
-                displayName = "display name",
-                emailSignature = "signature",
-                checkFrequencyInMinutes = 15,
-                messageDisplayCount = 25,
-                showNotification = true,
-            ),
-        )
-        accountSetupStateRepository.save(finalAccountSetupState)
+        accountSetupStateRepository.save(expectedAccountSetupState)
 
         viewModel.event(AccountSetupContract.Event.OnNext)
 
@@ -159,10 +144,10 @@ class AccountSetupViewModelTest {
         }
 
         assertThat(createAccountEmailAddress).isEqualTo(EMAIL_ADDRESS)
-        assertThat(createAccountIncomingServerSettings).isEqualTo(finalAccountSetupState.incomingServerSettings)
-        assertThat(createAccountOutgoingServerSettings).isEqualTo(finalAccountSetupState.outgoingServerSettings)
+        assertThat(createAccountIncomingServerSettings).isEqualTo(expectedAccountSetupState.incomingServerSettings)
+        assertThat(createAccountOutgoingServerSettings).isEqualTo(expectedAccountSetupState.outgoingServerSettings)
         assertThat(createAccountAuthorizationState).isNull()
-        assertThat(createAccountOptions).isEqualTo(finalAccountSetupState.options)
+        assertThat(createAccountOptions).isEqualTo(expectedAccountSetupState.options)
     }
 
     @Test
@@ -316,35 +301,5 @@ class AccountSetupViewModelTest {
         private const val INCOMING_SERVER_PORT = 993
         private const val OUTGOING_SERVER_NAME = "smtp.domain.example"
         private const val OUTGOING_SERVER_PORT = 465
-
-        private val INCOMING_SERVER_SETTINGS = ImapServerSettings(
-            hostname = INCOMING_SERVER_NAME.toHostname(),
-            port = INCOMING_SERVER_PORT.toPort(),
-            connectionSecurity = AutoDiscoveryConnectionSecurity.TLS,
-            authenticationTypes = listOf(AutoDiscoveryAuthenticationType.PasswordEncrypted),
-            username = USERNAME,
-        )
-
-        private val OUTGOING_SERVER_SETTINGS = SmtpServerSettings(
-            hostname = OUTGOING_SERVER_NAME.toHostname(),
-            port = OUTGOING_SERVER_PORT.toPort(),
-            connectionSecurity = AutoDiscoveryConnectionSecurity.TLS,
-            authenticationTypes = listOf(AutoDiscoveryAuthenticationType.PasswordEncrypted),
-            username = USERNAME,
-        )
-
-        private val AUTODISCOVERY_RESULT = AutoDiscoveryResult.Settings(
-            incomingServerSettings = INCOMING_SERVER_SETTINGS,
-            outgoingServerSettings = OUTGOING_SERVER_SETTINGS,
-            isTrusted = true,
-            source = "test",
-        )
-
-        private val AUTODISCOVERY_STATE = AccountAutoDiscoveryContract.State(
-            configStep = AccountAutoDiscoveryContract.ConfigStep.PASSWORD,
-            emailAddress = StringInputField(EMAIL_ADDRESS),
-            password = StringInputField(PASSWORD),
-            autoDiscoverySettings = AUTODISCOVERY_RESULT,
-        )
     }
 }

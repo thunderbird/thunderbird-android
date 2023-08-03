@@ -97,6 +97,7 @@ val featureAccountSetupModule: Module = module {
         AccountAutoDiscoveryViewModel(
             validator = get(),
             getAutoDiscovery = get(),
+            accountSetupStateRepository = get(),
             oAuthViewModel = get(),
         )
     }

@@ -9,8 +9,6 @@ import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Event
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.State
-import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
-import app.k9mail.feature.account.setup.ui.autodiscovery.toAccountSetupState
 import kotlinx.coroutines.launch
 
 @Suppress("LongParameterList")
@@ -22,7 +20,7 @@ class AccountSetupViewModel(
 
     override fun event(event: Event) {
         when (event) {
-            is Event.OnAutoDiscoveryFinished -> onAutoDiscoveryFinished(event.state, event.isAutomaticConfig)
+            is Event.OnAutoDiscoveryFinished -> onAutoDiscoveryFinished(event.isAutomaticConfig)
 
             Event.OnBack -> onBack()
             Event.OnNext -> onNext()
@@ -30,7 +28,6 @@ class AccountSetupViewModel(
     }
 
     private fun onAutoDiscoveryFinished(
-        autoDiscoveryState: AccountAutoDiscoveryContract.State,
         isAutomaticConfig: Boolean,
     ) {
         updateState {
@@ -39,8 +36,6 @@ class AccountSetupViewModel(
             )
         }
 
-        accountSetupStateRepository.save(autoDiscoveryState.toAccountSetupState())
-
         onNext()
     }
 
@@ -48,7 +43,6 @@ class AccountSetupViewModel(
         when (state.value.setupStep) {
             SetupStep.AUTO_CONFIG -> {
                 if (state.value.isAutomaticConfig) {
-                    // TODO save state for incoming/outgoing server settings
                     changeToSetupStep(SetupStep.INCOMING_VALIDATION)
                 } else {
                     changeToSetupStep(SetupStep.INCOMING_CONFIG)
@@ -56,7 +50,6 @@ class AccountSetupViewModel(
             }
 
             SetupStep.INCOMING_CONFIG -> {
-                // TODO save state for incoming server settings
                 changeToSetupStep(SetupStep.INCOMING_VALIDATION)
             }
 
@@ -69,7 +62,6 @@ class AccountSetupViewModel(
             }
 
             SetupStep.OUTGOING_CONFIG -> {
-                // TODO save state for outgoing server settings
                 changeToSetupStep(SetupStep.OUTGOING_VALIDATION)
             }
 

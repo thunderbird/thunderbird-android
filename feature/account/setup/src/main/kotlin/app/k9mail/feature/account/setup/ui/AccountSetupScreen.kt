@@ -54,10 +54,9 @@ fun AccountSetupScreen(
     when (state.value.setupStep) {
         SetupStep.AUTO_CONFIG -> {
             AccountAutoDiscoveryScreen(
-                onNext = { autoDiscoveryState, isAutomaticConfig ->
+                onNext = { isAutomaticConfig ->
                     dispatch(
                         Event.OnAutoDiscoveryFinished(
-                            autoDiscoveryState,
                             isAutomaticConfig,
                         ),
                     )

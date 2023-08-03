@@ -1,7 +1,6 @@
 package app.k9mail.feature.account.setup.ui
 
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
-import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
 
 interface AccountSetupContract {
 
@@ -25,7 +24,6 @@ interface AccountSetupContract {
         object OnNext : Event
 
         data class OnAutoDiscoveryFinished(
-            val state: AccountAutoDiscoveryContract.State,
             val isAutomaticConfig: Boolean,
         ) : Event
 
