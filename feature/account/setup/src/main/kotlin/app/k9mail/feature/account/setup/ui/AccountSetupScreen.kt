@@ -9,13 +9,19 @@ import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Event
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.ViewModel
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryScreen
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryViewModel
+import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigScreen
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigViewModel
+import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsScreen
+import app.k9mail.feature.account.setup.ui.options.AccountOptionsViewModel
+import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigScreen
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigViewModel
+import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationScreen
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -27,6 +33,16 @@ fun AccountSetupScreen(
     onFinish: (String) -> Unit,
     onBack: () -> Unit,
     viewModel: ViewModel = koinViewModel<AccountSetupViewModel>(),
+    autoDiscoveryViewModel: AccountAutoDiscoveryContract.ViewModel = koinViewModel<AccountAutoDiscoveryViewModel>(),
+    incomingViewModel: AccountIncomingConfigContract.ViewModel = koinViewModel<AccountIncomingConfigViewModel>(),
+    incomingValidationViewModel: AccountValidationContract.ViewModel = koinViewModel<AccountValidationViewModel>(
+        named(NAME_INCOMING_VALIDATION),
+    ),
+    outgoingViewModel: AccountOutgoingConfigContract.ViewModel = koinViewModel<AccountOutgoingConfigViewModel>(),
+    outgoingValidationViewModel: AccountValidationContract.ViewModel = koinViewModel<AccountValidationViewModel>(
+        named(NAME_OUTGOING_VALIDATION),
+    ),
+    optionsViewModel: AccountOptionsContract.ViewModel = koinViewModel<AccountOptionsViewModel>(),
 ) {
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
@@ -47,7 +63,7 @@ fun AccountSetupScreen(
                     )
                 },
                 onBack = { dispatch(Event.OnBack) },
-                viewModel = koinViewModel<AccountAutoDiscoveryViewModel>(),
+                viewModel = autoDiscoveryViewModel,
             )
         }
 
@@ -55,7 +71,7 @@ fun AccountSetupScreen(
             AccountIncomingConfigScreen(
                 onNext = { dispatch(Event.OnNext) },
                 onBack = { dispatch(Event.OnBack) },
-                viewModel = koinViewModel<AccountIncomingConfigViewModel>(),
+                viewModel = incomingViewModel,
             )
         }
 
@@ -63,7 +79,7 @@ fun AccountSetupScreen(
             AccountValidationScreen(
                 onNext = { dispatch(Event.OnNext) },
                 onBack = { dispatch(Event.OnBack) },
-                viewModel = koinViewModel<AccountValidationViewModel>(named(NAME_INCOMING_VALIDATION)),
+                viewModel = incomingValidationViewModel,
             )
         }
 
@@ -71,7 +87,7 @@ fun AccountSetupScreen(
             AccountOutgoingConfigScreen(
                 onNext = { dispatch(Event.OnNext) },
                 onBack = { dispatch(Event.OnBack) },
-                viewModel = koinViewModel<AccountOutgoingConfigViewModel>(),
+                viewModel = outgoingViewModel,
             )
         }
 
@@ -79,7 +95,7 @@ fun AccountSetupScreen(
             AccountValidationScreen(
                 onNext = { dispatch(Event.OnNext) },
                 onBack = { dispatch(Event.OnBack) },
-                viewModel = koinViewModel<AccountValidationViewModel>(named(NAME_OUTGOING_VALIDATION)),
+                viewModel = outgoingValidationViewModel,
             )
         }
 
@@ -87,7 +103,7 @@ fun AccountSetupScreen(
             AccountOptionsScreen(
                 onNext = { dispatch(Event.OnNext) },
                 onBack = { dispatch(Event.OnBack) },
-                viewModel = viewModel.optionsViewModel,
+                viewModel = optionsViewModel,
             )
         }
     }
