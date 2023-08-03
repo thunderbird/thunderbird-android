@@ -2,10 +2,7 @@ package app.k9mail.feature.account.setup.ui
 
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
-import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
-import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract
 
 interface AccountSetupContract {
 
@@ -19,7 +16,6 @@ interface AccountSetupContract {
     }
 
     interface ViewModel : UnidirectionalViewModel<State, Event, Effect> {
-        val outgoingViewModel: AccountOutgoingConfigContract.ViewModel
         val optionsViewModel: AccountOptionsContract.ViewModel
     }
 

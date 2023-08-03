@@ -22,9 +22,7 @@ import app.k9mail.feature.account.setup.ui.options.AccountOptionsViewModel
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigValidator
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigViewModel
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationViewModel
-import app.k9mail.feature.account.setup.ui.validation.InMemoryAuthStateStorage
 import com.fsck.k9.mail.oauth.AuthStateStorage
 import com.fsck.k9.mail.store.imap.ImapServerSettingsValidator
 import com.fsck.k9.mail.store.pop3.Pop3ServerSettingsValidator
@@ -32,8 +30,8 @@ import com.fsck.k9.mail.transport.smtp.SmtpServerSettingsValidator
 import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
-import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
+import org.koin.dsl.binds
 import org.koin.dsl.module
 
 val featureAccountSetupModule: Module = module {
@@ -56,11 +54,13 @@ val featureAccountSetupModule: Module = module {
         )
     }
 
-    single<DomainContract.AccountSetupStateRepository> { InMemoryAccountSetupStateRepository() }
+    single {
+        InMemoryAccountSetupStateRepository()
+    }.binds(arrayOf(DomainContract.AccountSetupStateRepository::class, AuthStateStorage::class))
 
-    factory<DomainContract.UseCase.ValidateServerSettings> { (authStateStorage: AuthStateStorage) ->
+    factory<DomainContract.UseCase.ValidateServerSettings> {
         ValidateServerSettings(
-            authStateStorage = authStateStorage,
+            authStateStorage = get(),
             imapValidator = ImapServerSettingsValidator(
                 trustedSocketFactory = get(),
                 oAuth2TokenProviderFactory = get(),
@@ -88,13 +88,10 @@ val featureAccountSetupModule: Module = module {
     factory<AccountOptionsContract.Validator> { AccountOptionsValidator() }
 
     viewModel {
-        val authStateStorage = InMemoryAuthStateStorage()
-
         AccountSetupViewModel(
             createAccount = get(),
-            outgoingViewModel = get(),
             optionsViewModel = get(),
-            authStateStorage = authStateStorage,
+            authStateStorage = get(),
             accountSetupStateRepository = get(),
         )
     }
@@ -111,23 +108,22 @@ val featureAccountSetupModule: Module = module {
             accountSetupStateRepository = get(),
         )
     }
-    viewModel(named(NAME_INCOMING_VALIDATION)) { (authStateStorage: AuthStateStorage) ->
+    viewModel(named(NAME_INCOMING_VALIDATION)) {
         AccountValidationViewModel(
-            validateServerSettings = get { parametersOf(authStateStorage) },
+            validateServerSettings = get(),
             accountSetupStateRepository = get(),
-            authorizationStateRepository = get(),
-            oAuthViewModel = get(),
             isIncomingValidation = true,
         )
     }
-    factory<AccountOutgoingConfigContract.ViewModel> {
+    viewModel {
         AccountOutgoingConfigViewModel(
             validator = get(),
+            accountSetupStateRepository = get(),
         )
     }
-    viewModel(named(NAME_OUTGOING_VALIDATION)) { (authStateStorage: AuthStateStorage) ->
+    viewModel(named(NAME_OUTGOING_VALIDATION)) {
         AccountValidationViewModel(
-            validateServerSettings = get { parametersOf(authStateStorage) },
+            validateServerSettings = get(),
             accountSetupStateRepository = get(),
             isIncomingValidation = false,
         )

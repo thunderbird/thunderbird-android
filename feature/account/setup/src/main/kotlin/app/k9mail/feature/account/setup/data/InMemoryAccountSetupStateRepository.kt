@@ -5,10 +5,11 @@ import app.k9mail.feature.account.setup.domain.DomainContract
 import app.k9mail.feature.account.setup.domain.entity.AccountOptions
 import app.k9mail.feature.account.setup.domain.entity.AccountSetupState
 import com.fsck.k9.mail.ServerSettings
+import com.fsck.k9.mail.oauth.AuthStateStorage
 
 class InMemoryAccountSetupStateRepository(
     private var state: AccountSetupState = AccountSetupState(),
-) : DomainContract.AccountSetupStateRepository {
+) : DomainContract.AccountSetupStateRepository, AuthStateStorage {
 
     override fun getState(): AccountSetupState {
         return state
@@ -40,5 +41,13 @@ class InMemoryAccountSetupStateRepository(
 
     override fun clear() {
         state = AccountSetupState()
+    }
+
+    override fun getAuthorizationState(): String? {
+        return state.authorizationState?.state
+    }
+
+    override fun updateAuthorizationState(authorizationState: String?) {
+        state = state.copy(authorizationState = AuthorizationState(authorizationState))
     }
 }

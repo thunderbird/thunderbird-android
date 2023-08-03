@@ -15,6 +15,7 @@ import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigScreen
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigViewModel
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsScreen
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigScreen
+import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigViewModel
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationScreen
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -70,7 +71,7 @@ fun AccountSetupScreen(
             AccountOutgoingConfigScreen(
                 onNext = { dispatch(Event.OnNext) },
                 onBack = { dispatch(Event.OnBack) },
-                viewModel = viewModel.outgoingViewModel,
+                viewModel = koinViewModel<AccountOutgoingConfigViewModel>(),
             )
         }
 

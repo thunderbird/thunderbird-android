@@ -12,16 +12,12 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryCon
 import app.k9mail.feature.account.setup.ui.autodiscovery.toAccountSetupState
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
 import app.k9mail.feature.account.setup.ui.options.toAccountOptions
-import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
-import app.k9mail.feature.account.setup.ui.outgoing.toServerSettings
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract
 import com.fsck.k9.mail.oauth.AuthStateStorage
 import kotlinx.coroutines.launch
 
 @Suppress("LongParameterList")
 class AccountSetupViewModel(
     private val createAccount: UseCase.CreateAccount,
-    override val outgoingViewModel: AccountOutgoingConfigContract.ViewModel,
     override val optionsViewModel: AccountOptionsContract.ViewModel,
     private val authStateStorage: AuthStateStorage,
     private val accountSetupStateRepository: DomainContract.AccountSetupStateRepository,
@@ -133,7 +129,6 @@ class AccountSetupViewModel(
     }
 
     private fun onFinish() {
-        val outgoingState = outgoingViewModel.state.value
         val optionsState = optionsViewModel.state.value
 
         val accountSetupState = accountSetupStateRepository.getState()
@@ -142,7 +137,7 @@ class AccountSetupViewModel(
             val result = createAccount.execute(
                 emailAddress = accountSetupState.emailAddress ?: "",
                 incomingServerSettings = accountSetupState.incomingServerSettings!!,
-                outgoingServerSettings = outgoingState.toServerSettings(),
+                outgoingServerSettings = accountSetupState.outgoingServerSettings!!,
                 authorizationState = authStateStorage.getAuthorizationState(),
                 options = optionsState.toAccountOptions(),
             )

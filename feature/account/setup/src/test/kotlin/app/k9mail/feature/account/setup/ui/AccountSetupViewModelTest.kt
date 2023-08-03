@@ -11,12 +11,9 @@ import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.account.setup.data.InMemoryAccountSetupStateRepository
 import app.k9mail.feature.account.setup.domain.entity.AccountOptions
 import app.k9mail.feature.account.setup.domain.entity.AccountSetupState
-import app.k9mail.feature.account.setup.domain.entity.AuthenticationType
-import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.EmailCheckFrequency
 import app.k9mail.feature.account.setup.domain.entity.EmailDisplayCount
 import app.k9mail.feature.account.setup.domain.entity.MailConnectionSecurity
-import app.k9mail.feature.account.setup.domain.input.NumberInputField
 import app.k9mail.feature.account.setup.domain.input.StringInputField
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
@@ -24,8 +21,6 @@ import app.k9mail.feature.account.setup.ui.AccountSetupContract.State
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
 import app.k9mail.feature.account.setup.ui.options.FakeAccountOptionsViewModel
-import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
-import app.k9mail.feature.account.setup.ui.outgoing.FakeAccountOutgoingConfigViewModel
 import app.k9mail.feature.account.setup.ui.outgoing.toServerSettings
 import app.k9mail.feature.account.setup.ui.outgoing.toValidationState
 import app.k9mail.feature.account.setup.ui.validation.FakeAccountValidationViewModel
@@ -48,7 +43,6 @@ class AccountSetupViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val outgoingViewModel = FakeAccountOutgoingConfigViewModel()
     private val outgoingValidationViewModel = FakeAccountValidationViewModel()
     private val optionsViewModel = FakeAccountOptionsViewModel()
     private val authStateStorage = InMemoryAuthStateStorage()
@@ -71,7 +65,6 @@ class AccountSetupViewModelTest {
 
                 "accountUuid"
             },
-            outgoingViewModel = outgoingViewModel,
             optionsViewModel = optionsViewModel,
             authStateStorage = authStateStorage,
             accountSetupStateRepository = accountSetupStateRepository,
@@ -115,17 +108,6 @@ class AccountSetupViewModelTest {
         )
 
         assertThat(accountSetupStateRepository.getState()).isEqualTo(expectedAccountSetupState)
-
-        val expectedOutgoingConfigState = AccountOutgoingConfigContract.State(
-            server = StringInputField(OUTGOING_SERVER_NAME),
-            security = ConnectionSecurity.TLS,
-            port = NumberInputField(OUTGOING_SERVER_PORT.toLong()),
-            authenticationType = AuthenticationType.PasswordEncrypted,
-            username = StringInputField(USERNAME),
-            password = StringInputField(PASSWORD),
-        )
-
-        assertThat(outgoingViewModel.state.value).isEqualTo(expectedOutgoingConfigState)
 
         assertThat(optionsViewModel.state.value).isEqualTo(
             AccountOptionsContract.State(
@@ -223,7 +205,6 @@ class AccountSetupViewModelTest {
         val initialState = State(setupStep = SetupStep.OPTIONS)
         val viewModel = AccountSetupViewModel(
             createAccount = { _, _, _, _, _ -> "accountUuid" },
-            outgoingViewModel = FakeAccountOutgoingConfigViewModel(),
             optionsViewModel = FakeAccountOptionsViewModel(),
             authStateStorage = authStateStorage,
             accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
@@ -276,7 +257,6 @@ class AccountSetupViewModelTest {
         )
         val viewModel = AccountSetupViewModel(
             createAccount = { _, _, _, _, _ -> "accountUuid" },
-            outgoingViewModel = FakeAccountOutgoingConfigViewModel(),
             optionsViewModel = FakeAccountOptionsViewModel(),
             authStateStorage = authStateStorage,
             accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
@@ -311,7 +291,6 @@ class AccountSetupViewModelTest {
         )
         val viewModel = AccountSetupViewModel(
             createAccount = { _, _, _, _, _ -> "accountUuid" },
-            outgoingViewModel = FakeAccountOutgoingConfigViewModel(),
             optionsViewModel = FakeAccountOptionsViewModel(),
             authStateStorage = authStateStorage,
             accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
@@ -346,7 +325,6 @@ class AccountSetupViewModelTest {
         )
         val viewModel = AccountSetupViewModel(
             createAccount = { _, _, _, _, _ -> "accountUuid" },
-            outgoingViewModel = FakeAccountOutgoingConfigViewModel(),
             optionsViewModel = FakeAccountOptionsViewModel(),
             authStateStorage = authStateStorage,
             accountSetupStateRepository = InMemoryAccountSetupStateRepository(),

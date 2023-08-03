@@ -1,12 +1,18 @@
 package app.k9mail.feature.account.setup.ui.outgoing
 
-import app.cash.turbine.testIn
 import app.k9mail.core.common.domain.usecase.validation.ValidationError
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
+import app.k9mail.core.ui.compose.testing.mvi.assertThatAndMviTurbinesConsumed
 import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
+import app.k9mail.core.ui.compose.testing.mvi.turbines
+import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
+import app.k9mail.feature.account.setup.data.InMemoryAccountSetupStateRepository
+import app.k9mail.feature.account.setup.domain.DomainContract
+import app.k9mail.feature.account.setup.domain.entity.AccountSetupState
 import app.k9mail.feature.account.setup.domain.entity.AuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
+import app.k9mail.feature.account.setup.domain.entity.MailConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.toSmtpDefaultPort
 import app.k9mail.feature.account.setup.domain.input.NumberInputField
 import app.k9mail.feature.account.setup.domain.input.StringInputField
@@ -14,8 +20,9 @@ import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContrac
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Event
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.State
 import assertk.assertThat
-import assertk.assertions.assertThatAndTurbinesConsumed
 import assertk.assertions.isEqualTo
+import com.fsck.k9.mail.AuthType
+import com.fsck.k9.mail.ServerSettings
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
@@ -25,14 +32,93 @@ class AccountOutgoingConfigViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val testSubject = AccountOutgoingConfigViewModel(
-        validator = FakeAccountOutgoingConfigValidator(),
-    )
+    @Test
+    fun `should take initial state from repository when no initial state is provided`() = runTest {
+        val accountSetupState = AccountSetupState(
+            emailAddress = "test@example.com",
+            outgoingServerSettings = ServerSettings(
+                "smtp",
+                "smtp.example.com",
+                123,
+                MailConnectionSecurity.SSL_TLS_REQUIRED,
+                AuthType.PLAIN,
+                "username",
+                "password",
+                clientCertificateAlias = null,
+                extra = emptyMap(),
+            ),
+        )
+        val testSubject = createTestSubject(
+            initialState = null,
+            repository = InMemoryAccountSetupStateRepository(accountSetupState),
+        )
+        val turbines = turbines(testSubject)
+
+        assertThatAndMviTurbinesConsumed(
+            actual = turbines.awaitStateItem(),
+            turbines = turbines,
+        ) {
+            isEqualTo(
+                State(
+                    server = StringInputField(value = "smtp.example.com"),
+                    security = ConnectionSecurity.TLS,
+                    port = NumberInputField(value = 123L),
+                    authenticationType = AuthenticationType.PasswordCleartext,
+                    username = StringInputField(value = "username"),
+                    password = StringInputField(value = "password"),
+                ),
+            )
+        }
+    }
+
+    @Test
+    fun `should load account setup state when LoadAccountSetupState event is received`() = runTest {
+        val accountSetupState = AccountSetupState(
+            emailAddress = "test@example.com",
+            outgoingServerSettings = ServerSettings(
+                "smtp",
+                "smtp.example.com",
+                123,
+                MailConnectionSecurity.SSL_TLS_REQUIRED,
+                AuthType.PLAIN,
+                "username",
+                "password",
+                clientCertificateAlias = null,
+                extra = emptyMap(),
+            ),
+        )
+        val repository = InMemoryAccountSetupStateRepository(AccountSetupState())
+        val testSubject = createTestSubject(
+            initialState = null,
+            repository = repository,
+        )
+        val turbines = turbinesWithInitialStateCheck(testSubject, State())
+
+        repository.save(accountSetupState)
+
+        testSubject.event(Event.LoadAccountSetupState)
+
+        assertThatAndMviTurbinesConsumed(
+            actual = turbines.awaitStateItem(),
+            turbines = turbines,
+        ) {
+            isEqualTo(
+                State(
+                    server = StringInputField(value = "smtp.example.com"),
+                    security = ConnectionSecurity.TLS,
+                    port = NumberInputField(value = 123L),
+                    authenticationType = AuthenticationType.PasswordCleartext,
+                    username = StringInputField(value = "username"),
+                    password = StringInputField(value = "password"),
+                ),
+            )
+        }
+    }
 
     @Test
     fun `should change state when ServerChanged event is received`() = runTest {
         eventStateTest(
-            viewModel = testSubject,
+            viewModel = createTestSubject(State()),
             initialState = State(),
             event = Event.ServerChanged("server"),
             expectedState = State(server = StringInputField(value = "server")),
@@ -43,7 +129,7 @@ class AccountOutgoingConfigViewModelTest {
     @Test
     fun `should change security and port when SecurityChanged event is received`() = runTest {
         eventStateTest(
-            viewModel = testSubject,
+            viewModel = createTestSubject(State()),
             initialState = State(),
             event = Event.SecurityChanged(ConnectionSecurity.StartTLS),
             expectedState = State(
@@ -57,7 +143,7 @@ class AccountOutgoingConfigViewModelTest {
     @Test
     fun `should change state when PortChanged event is received`() = runTest {
         eventStateTest(
-            viewModel = testSubject,
+            viewModel = createTestSubject(State()),
             initialState = State(),
             event = Event.PortChanged(456L),
             expectedState = State(port = NumberInputField(value = 456L)),
@@ -68,7 +154,7 @@ class AccountOutgoingConfigViewModelTest {
     @Test
     fun `should change state when AuthenticationTypeChanged event is received`() = runTest {
         eventStateTest(
-            viewModel = testSubject,
+            viewModel = createTestSubject(State()),
             initialState = State(),
             event = Event.AuthenticationTypeChanged(AuthenticationType.PasswordEncrypted),
             expectedState = State(authenticationType = AuthenticationType.PasswordEncrypted),
@@ -79,7 +165,7 @@ class AccountOutgoingConfigViewModelTest {
     @Test
     fun `should change state when UsernameChanged event is received`() = runTest {
         eventStateTest(
-            viewModel = testSubject,
+            viewModel = createTestSubject(State()),
             initialState = State(),
             event = Event.UsernameChanged("username"),
             expectedState = State(username = StringInputField(value = "username")),
@@ -90,7 +176,7 @@ class AccountOutgoingConfigViewModelTest {
     @Test
     fun `should change state when PasswordChanged event is received`() = runTest {
         eventStateTest(
-            viewModel = testSubject,
+            viewModel = createTestSubject(State()),
             initialState = State(),
             event = Event.PasswordChanged("password"),
             expectedState = State(password = StringInputField(value = "password")),
@@ -101,7 +187,7 @@ class AccountOutgoingConfigViewModelTest {
     @Test
     fun `should change state when ClientCertificateChanged event is received`() = runTest {
         eventStateTest(
-            viewModel = testSubject,
+            viewModel = createTestSubject(State()),
             initialState = State(),
             event = Event.ClientCertificateChanged("clientCertificate"),
             expectedState = State(clientCertificateAlias = "clientCertificate"),
@@ -110,33 +196,45 @@ class AccountOutgoingConfigViewModelTest {
     }
 
     @Test
-    fun `should emit effect NavigateNext when OnNextClicked is received and input valid`() = runTest {
+    fun `should save state and emit effect NavigateNext when OnNextClicked is received and input valid`() = runTest {
         val initialState = State()
-        testSubject.initState(initialState)
-        val stateTurbine = testSubject.state.testIn(backgroundScope)
-        val effectTurbine = testSubject.effect.testIn(backgroundScope)
-        val turbines = listOf(stateTurbine, effectTurbine)
-
-        assertThatAndTurbinesConsumed(
-            actual = stateTurbine.awaitItem(),
-            turbines = turbines,
-        ) {
-            isEqualTo(initialState)
-        }
+        val repository = InMemoryAccountSetupStateRepository()
+        val testSubject = createTestSubject(
+            initialState = initialState,
+            repository = repository,
+        )
+        val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
 
         testSubject.event(Event.OnNextClicked)
 
-        assertThat(stateTurbine.awaitItem()).isEqualTo(
+        assertThat(turbines.awaitStateItem()).isEqualTo(
             State(
                 server = StringInputField(value = "", isValid = true),
                 port = NumberInputField(value = 465L, isValid = true),
+                authenticationType = AuthenticationType.PasswordCleartext,
                 username = StringInputField(value = "", isValid = true),
                 password = StringInputField(value = "", isValid = true),
             ),
         )
 
-        assertThatAndTurbinesConsumed(
-            actual = effectTurbine.awaitItem(),
+        assertThat(repository.getState()).isEqualTo(
+            AccountSetupState(
+                outgoingServerSettings = ServerSettings(
+                    type = "smtp",
+                    host = "",
+                    port = 465,
+                    connectionSecurity = MailConnectionSecurity.SSL_TLS_REQUIRED,
+                    authenticationType = AuthType.PLAIN,
+                    username = "",
+                    password = "",
+                    clientCertificateAlias = null,
+                    extra = emptyMap(),
+                ),
+            ),
+        )
+
+        assertThatAndMviTurbinesConsumed(
+            actual = turbines.awaitEffectItem(),
             turbines = turbines,
         ) {
             isEqualTo(Effect.NavigateNext)
@@ -144,28 +242,70 @@ class AccountOutgoingConfigViewModelTest {
     }
 
     @Test
+    fun `should save state and emit effect NavigateNext when OnNextClicked is received and input valid with OAuth`() =
+        runTest {
+            val initialState = State(
+                authenticationType = AuthenticationType.OAuth2,
+            )
+            val repository = InMemoryAccountSetupStateRepository()
+            val testSubject = createTestSubject(
+                initialState = initialState,
+                repository = repository,
+            )
+            val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
+
+            testSubject.event(Event.OnNextClicked)
+
+            assertThat(turbines.awaitStateItem()).isEqualTo(
+                State(
+                    server = StringInputField(value = "", isValid = true),
+                    port = NumberInputField(value = 465L, isValid = true),
+                    authenticationType = AuthenticationType.OAuth2,
+                    username = StringInputField(value = "", isValid = true),
+                    password = StringInputField(value = "", isValid = true),
+                ),
+            )
+
+            assertThat(repository.getState()).isEqualTo(
+                AccountSetupState(
+                    outgoingServerSettings = ServerSettings(
+                        type = "smtp",
+                        host = "",
+                        port = 465,
+                        connectionSecurity = MailConnectionSecurity.SSL_TLS_REQUIRED,
+                        authenticationType = AuthType.XOAUTH2,
+                        username = "",
+                        password = null,
+                        clientCertificateAlias = null,
+                        extra = emptyMap(),
+                    ),
+                ),
+            )
+
+            assertThatAndMviTurbinesConsumed(
+                actual = turbines.awaitEffectItem(),
+                turbines = turbines,
+            ) {
+                isEqualTo(Effect.NavigateNext)
+            }
+        }
+
+    @Test
     fun `should change state and not emit NavigateNext effect when OnNextClicked event received and input invalid`() =
         runTest {
-            val viewModel = AccountOutgoingConfigViewModel(
+            val initialState = State()
+            val testSubject = createTestSubject(
                 validator = FakeAccountOutgoingConfigValidator(
                     serverAnswer = ValidationResult.Failure(TestError),
                 ),
+                initialState = initialState,
             )
-            val stateTurbine = viewModel.state.testIn(backgroundScope)
-            val effectTurbine = viewModel.effect.testIn(backgroundScope)
-            val turbines = listOf(stateTurbine, effectTurbine)
+            val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
 
-            assertThatAndTurbinesConsumed(
-                actual = stateTurbine.awaitItem(),
-                turbines = turbines,
-            ) {
-                isEqualTo(State())
-            }
+            testSubject.event(Event.OnNextClicked)
 
-            viewModel.event(Event.OnNextClicked)
-
-            assertThatAndTurbinesConsumed(
-                actual = stateTurbine.awaitItem(),
+            assertThatAndMviTurbinesConsumed(
+                actual = turbines.awaitStateItem(),
                 turbines = turbines,
             ) {
                 isEqualTo(
@@ -181,22 +321,14 @@ class AccountOutgoingConfigViewModelTest {
 
     @Test
     fun `should emit NavigateBack effect when OnBackClicked event received`() = runTest {
-        val viewModel = testSubject
-        val stateTurbine = viewModel.state.testIn(backgroundScope)
-        val effectTurbine = viewModel.effect.testIn(backgroundScope)
-        val turbines = listOf(stateTurbine, effectTurbine)
+        val initialState = State()
+        val testSubject = createTestSubject(initialState)
+        val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
 
-        assertThatAndTurbinesConsumed(
-            actual = stateTurbine.awaitItem(),
-            turbines = turbines,
-        ) {
-            isEqualTo(State())
-        }
+        testSubject.event(Event.OnBackClicked)
 
-        viewModel.event(Event.OnBackClicked)
-
-        assertThatAndTurbinesConsumed(
-            actual = effectTurbine.awaitItem(),
+        assertThatAndMviTurbinesConsumed(
+            actual = turbines.awaitEffectItem(),
             turbines = turbines,
         ) {
             isEqualTo(Effect.NavigateBack)
@@ -204,4 +336,16 @@ class AccountOutgoingConfigViewModelTest {
     }
 
     private object TestError : ValidationError
+
+    private companion object {
+        fun createTestSubject(
+            initialState: State? = null,
+            validator: AccountOutgoingConfigContract.Validator = FakeAccountOutgoingConfigValidator(),
+            repository: DomainContract.AccountSetupStateRepository = InMemoryAccountSetupStateRepository(),
+        ) = AccountOutgoingConfigViewModel(
+            validator = validator,
+            accountSetupStateRepository = repository,
+            initialState = initialState,
+        )
+    }
 }

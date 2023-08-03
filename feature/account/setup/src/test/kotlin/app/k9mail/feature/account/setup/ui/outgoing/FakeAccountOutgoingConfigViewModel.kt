@@ -12,10 +12,6 @@ class FakeAccountOutgoingConfigViewModel(
 
     val events = mutableListOf<Event>()
 
-    override fun initState(state: State) {
-        updateState { state }
-    }
-
     override fun event(event: Event) {
         events.add(event)
     }
