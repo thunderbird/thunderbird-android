@@ -13,6 +13,7 @@ import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.common.ui.WizardNavigationBarState
+import app.k9mail.feature.account.oauth.ui.preview.PreviewAccountOAuthViewModel
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.ui.preview.PreviewAccountSetupStateRepository
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Effect
@@ -63,6 +64,7 @@ internal fun AccountValidationScreen(
             onEvent = { dispatch(it) },
             state = state.value,
             isIncomingValidation = viewModel.isIncomingValidation,
+            oAuthViewModel = viewModel.oAuthViewModel,
             contentPadding = innerPadding,
         )
     }
@@ -80,6 +82,8 @@ internal fun AccountIncomingValidationScreenK9Preview() {
                     ServerSettingsValidationResult.Success
                 },
                 accountSetupStateRepository = PreviewAccountSetupStateRepository(),
+                authorizationStateRepository = { true },
+                oAuthViewModel = PreviewAccountOAuthViewModel(),
                 isIncomingValidation = true,
             ),
         )
@@ -98,6 +102,8 @@ internal fun AccountIncomingValidationScreenThunderbirdPreview() {
                     ServerSettingsValidationResult.Success
                 },
                 accountSetupStateRepository = PreviewAccountSetupStateRepository(),
+                authorizationStateRepository = { true },
+                oAuthViewModel = PreviewAccountOAuthViewModel(),
                 isIncomingValidation = true,
             ),
         )
@@ -116,6 +122,8 @@ internal fun AccountOutgoingValidationScreenK9Preview() {
                     ServerSettingsValidationResult.Success
                 },
                 accountSetupStateRepository = PreviewAccountSetupStateRepository(),
+                authorizationStateRepository = { true },
+                oAuthViewModel = PreviewAccountOAuthViewModel(),
                 isIncomingValidation = false,
             ),
         )
@@ -134,6 +142,8 @@ internal fun AccountOutgoingValidationScreenThunderbirdPreview() {
                     ServerSettingsValidationResult.Success
                 },
                 accountSetupStateRepository = PreviewAccountSetupStateRepository(),
+                authorizationStateRepository = { true },
+                oAuthViewModel = PreviewAccountOAuthViewModel(),
                 isIncomingValidation = false,
             ),
         )

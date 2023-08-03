@@ -14,7 +14,6 @@ class AccountValidationStateTest {
         assertThat(state).isEqualTo(
             State(
                 serverSettings = null,
-                authorizationState = null,
                 isSuccess = false,
                 error = null,
                 isLoading = false,

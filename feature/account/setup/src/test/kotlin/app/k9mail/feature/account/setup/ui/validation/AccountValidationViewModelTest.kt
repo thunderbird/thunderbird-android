@@ -5,6 +5,7 @@ import app.k9mail.core.ui.compose.testing.mvi.assertThatAndMviTurbinesConsumed
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.account.setup.data.InMemoryAccountSetupStateRepository
 import app.k9mail.feature.account.setup.domain.entity.AccountSetupState
+import app.k9mail.feature.account.setup.ui.FakeAccountOAuthViewModel
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Effect
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Error
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Event
@@ -196,6 +197,8 @@ class AccountValidationViewModelTest {
                 ServerSettingsValidationResult.Success
             },
             accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
+            authorizationStateRepository = { true },
+            oAuthViewModel = FakeAccountOAuthViewModel(),
             initialState = initialState,
         )
         val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
@@ -232,6 +235,8 @@ class AccountValidationViewModelTest {
                     serverSettingsValidationResult
                 },
                 accountSetupStateRepository = InMemoryAccountSetupStateRepository(accountSetupState),
+                authorizationStateRepository = { true },
+                oAuthViewModel = FakeAccountOAuthViewModel(),
                 initialState = initialState,
             )
         }

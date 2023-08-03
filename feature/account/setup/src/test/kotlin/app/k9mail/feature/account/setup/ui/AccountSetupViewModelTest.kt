@@ -89,14 +89,7 @@ class AccountSetupViewModelTest {
                 extra = emptyMap(),
             ),
             authorizationState = null,
-            options = AccountOptions(
-                accountName = "account name",
-                displayName = "display name",
-                emailSignature = "signature",
-                checkFrequencyInMinutes = 15,
-                messageDisplayCount = 25,
-                showNotification = true,
-            ),
+            options = null,
         )
 
         assertThat(accountSetupStateRepository.getState()).isEqualTo(expectedAccountSetupState)
@@ -144,6 +137,18 @@ class AccountSetupViewModelTest {
             prop(State::setupStep).isEqualTo(SetupStep.OPTIONS)
         }
 
+        val finalAccountSetupState = expectedAccountSetupState.copy(
+            options = AccountOptions(
+                accountName = "account name",
+                displayName = "display name",
+                emailSignature = "signature",
+                checkFrequencyInMinutes = 15,
+                messageDisplayCount = 25,
+                showNotification = true,
+            ),
+        )
+        accountSetupStateRepository.save(finalAccountSetupState)
+
         viewModel.event(AccountSetupContract.Event.OnNext)
 
         assertThatAndMviTurbinesConsumed(
@@ -154,10 +159,10 @@ class AccountSetupViewModelTest {
         }
 
         assertThat(createAccountEmailAddress).isEqualTo(EMAIL_ADDRESS)
-        assertThat(createAccountIncomingServerSettings).isEqualTo(expectedAccountSetupState.incomingServerSettings)
-        assertThat(createAccountOutgoingServerSettings).isEqualTo(expectedAccountSetupState.outgoingServerSettings)
+        assertThat(createAccountIncomingServerSettings).isEqualTo(finalAccountSetupState.incomingServerSettings)
+        assertThat(createAccountOutgoingServerSettings).isEqualTo(finalAccountSetupState.outgoingServerSettings)
         assertThat(createAccountAuthorizationState).isNull()
-        assertThat(createAccountOptions).isEqualTo(expectedAccountSetupState.options)
+        assertThat(createAccountOptions).isEqualTo(finalAccountSetupState.options)
     }
 
     @Test

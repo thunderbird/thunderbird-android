@@ -2,7 +2,10 @@ package app.k9mail.feature.account.setup.ui.validation
 
 import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
+import app.k9mail.feature.account.oauth.domain.entity.OAuthResult
+import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
 import app.k9mail.feature.account.setup.domain.DomainContract
+import app.k9mail.feature.account.setup.domain.entity.isOAuth
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Effect
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Error
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Event
@@ -11,6 +14,7 @@ import com.fsck.k9.mail.server.ServerSettingsValidationResult
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import app.k9mail.feature.account.oauth.domain.DomainContract as OAuthDomainContract
 
 private const val CONTINUE_NEXT_DELAY = 2000L
 
@@ -18,17 +22,19 @@ private const val CONTINUE_NEXT_DELAY = 2000L
 internal class AccountValidationViewModel(
     private val validateServerSettings: DomainContract.UseCase.ValidateServerSettings,
     private val accountSetupStateRepository: DomainContract.AccountSetupStateRepository,
+    private val authorizationStateRepository: OAuthDomainContract.AuthorizationStateRepository,
+    override val oAuthViewModel: AccountOAuthContract.ViewModel,
     override val isIncomingValidation: Boolean = true,
     initialState: State? = null,
 ) : BaseViewModel<State, Event, Effect>(
-    initialState = initialState ?: accountSetupStateRepository.getState()
-        .toValidationState(isIncomingValidation),
+    initialState = initialState ?: accountSetupStateRepository.getState().toValidationState(isIncomingValidation),
 ),
     AccountValidationContract.ViewModel {
 
     override fun event(event: Event) {
         when (event) {
             Event.LoadAccountSetupStateAndValidate -> loadAccountSetupStateAndValidate()
+            is Event.OnOAuthResult -> onOAuthResult(event.result)
             Event.ValidateServerSettings -> onValidateConfig()
             Event.OnNextClicked -> navigateNext()
             Event.OnBackClicked -> onBack()
@@ -46,7 +52,58 @@ internal class AccountValidationViewModel(
     private fun onValidateConfig() {
         if (state.value.isSuccess) {
             navigateNext()
+        } else if (state.value.serverSettings.isOAuth()) {
+            checkOAuthState()
         } else {
+            validateServerSettings()
+        }
+    }
+
+    private fun checkOAuthState() {
+        val authorizationState = accountSetupStateRepository.getState().authorizationState
+        if (authorizationState != null) {
+            if (authorizationStateRepository.isAuthorized(authorizationState)) {
+                validateServerSettings()
+            } else {
+                startOAuthSignIn()
+            }
+        } else {
+            startOAuthSignIn()
+        }
+    }
+
+    private fun startOAuthSignIn() {
+        val hostname = state.value.serverSettings?.host
+        val emailAddress = state.value.emailAddress
+
+        if (hostname == null || emailAddress == null) {
+            updateError(Error.UnknownError("Hostname or email address not set"))
+            return
+        } else {
+            updateState { state ->
+                state.copy(
+                    needsAuthorization = true,
+                )
+            }
+
+            oAuthViewModel.initState(
+                AccountOAuthContract.State(
+                    hostname = hostname,
+                    emailAddress = emailAddress,
+                ),
+            )
+        }
+    }
+
+    private fun onOAuthResult(result: OAuthResult) {
+        if (result is OAuthResult.Success) {
+            accountSetupStateRepository.saveAuthorizationState(result.authorizationState)
+            updateState {
+                it.copy(
+                    needsAuthorization = false,
+                )
+            }
+
             validateServerSettings()
         }
     }

@@ -110,6 +110,8 @@ val featureAccountSetupModule: Module = module {
         AccountValidationViewModel(
             validateServerSettings = get(),
             accountSetupStateRepository = get(),
+            authorizationStateRepository = get(),
+            oAuthViewModel = get(),
             isIncomingValidation = true,
         )
     }
@@ -123,6 +125,8 @@ val featureAccountSetupModule: Module = module {
         AccountValidationViewModel(
             validateServerSettings = get(),
             accountSetupStateRepository = get(),
+            authorizationStateRepository = get(),
+            oAuthViewModel = get(),
             isIncomingValidation = false,
         )
     }
