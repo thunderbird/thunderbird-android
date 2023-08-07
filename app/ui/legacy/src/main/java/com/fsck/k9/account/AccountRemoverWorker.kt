@@ -2,17 +2,21 @@ package com.fsck.k9.account
 
 import android.content.Context
 import androidx.work.Data
+import androidx.work.ForegroundInfo
 import androidx.work.OneTimeWorkRequest
 import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.fsck.k9.notification.BackgroundWorkNotificationController
+import com.fsck.k9.ui.R
 
 /**
  * A [Worker] to remove an account in the background.
  */
 class AccountRemoverWorker(
     private val accountRemover: AccountRemover,
+    private val notificationController: BackgroundWorkNotificationController,
     context: Context,
     workerParams: WorkerParameters,
 ) : Worker(context, workerParams) {
@@ -23,6 +27,13 @@ class AccountRemoverWorker(
         accountRemover.removeAccount(accountUuid)
 
         return Result.success()
+    }
+
+    override fun getForegroundInfo(): ForegroundInfo {
+        val notificationText = applicationContext.getString(R.string.background_work_notification_remove_account)
+        val notificationId = notificationController.notificationId
+        val notification = notificationController.createNotification(notificationText)
+        return ForegroundInfo(notificationId, notification)
     }
 
     companion object {

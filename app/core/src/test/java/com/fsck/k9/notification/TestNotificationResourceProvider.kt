@@ -13,6 +13,7 @@ class TestNotificationResourceProvider : NotificationResourceProvider {
     override val wearIconArchive: Int = 10
     override val wearIconReplyAll: Int = 11
     override val wearIconMarkAsSpam: Int = 12
+    override val iconBackgroundWorkNotification: Int = 13
 
     override val pushChannelName = "Synchronize (Push)"
     override val pushChannelDescription = "Displayed while waiting for new messages"

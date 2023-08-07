@@ -16,6 +16,6 @@ val accountModule = module {
     factory { BackgroundAccountRemover(get()) }
     factory { AccountCreatorHelper(get(), get()) }
     factory { (parameters: WorkerParameters) ->
-        AccountRemoverWorker(accountRemover = get(), context = get(), parameters)
+        AccountRemoverWorker(accountRemover = get(), notificationController = get(), context = get(), parameters)
     }
 }
