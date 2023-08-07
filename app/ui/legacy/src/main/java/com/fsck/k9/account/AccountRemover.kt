@@ -20,11 +20,11 @@ class AccountRemover(
     private val preferences: Preferences,
 ) {
 
-    fun removeAccount(accountUuid: String): Boolean {
+    fun removeAccount(accountUuid: String) {
         val account = preferences.getAccount(accountUuid)
         if (account == null) {
             Timber.w("Can't remove account with UUID %s because it doesn't exist.", accountUuid)
-            return false
+            return
         }
 
         val accountName = account.toString()
@@ -40,7 +40,6 @@ class AccountRemover(
         Core.setServicesEnabled()
 
         Timber.v("Finished removing account '%s'.", accountName)
-        return true
     }
 
     private fun removeLocalStore(account: Account) {

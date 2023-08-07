@@ -9,7 +9,7 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 
 /**
- * A [Worker] to remove account in the background.
+ * A [Worker] to remove an account in the background.
  */
 class AccountRemoverWorker(
     private val accountRemover: AccountRemover,
@@ -18,12 +18,11 @@ class AccountRemoverWorker(
 ) : Worker(context, workerParams) {
 
     override fun doWork(): Result {
-        val accountUuid = inputData.getString(ARG_ACCOUNT_UUID)
-            ?: throw IllegalArgumentException("No account UUID provided")
+        val accountUuid = requireNotNull(inputData.getString(ARG_ACCOUNT_UUID)) { "No account UUID provided" }
 
-        val success = accountRemover.removeAccount(accountUuid)
+        accountRemover.removeAccount(accountUuid)
 
-        return if (success) Result.success() else Result.retry()
+        return Result.success()
     }
 
     companion object {
