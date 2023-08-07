@@ -5,6 +5,7 @@ import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
 import app.k9mail.core.common.net.toHostname
 import app.k9mail.core.common.net.toPort
+import app.k9mail.feature.account.setup.domain.entity.AccountSetupState
 import app.k9mail.feature.account.setup.domain.entity.AuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.AutoDiscoveryAuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.AutoDiscoveryConnectionSecurity
@@ -26,7 +27,13 @@ class AccountAutoDiscoveryStateMapperKtTest {
         val accountSetupState = EMPTY_STATE.toAccountSetupState()
 
         assertThat(accountSetupState).isEqualTo(
-            AccountAutoDiscoveryContract.State().toAccountSetupState(),
+            AccountSetupState(
+                emailAddress = "",
+                incomingServerSettings = null,
+                outgoingServerSettings = null,
+                authorizationState = null,
+                options = null,
+            ),
         )
     }
 
