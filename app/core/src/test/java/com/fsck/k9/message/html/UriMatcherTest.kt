@@ -1,10 +1,13 @@
 package com.fsck.k9.message.html
 
+import assertk.Assert
 import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
 import assertk.assertions.isNotEqualTo
+import assertk.assertions.isTrue
 import org.junit.Test
 
 class UriMatcherTest {
@@ -82,6 +85,27 @@ class UriMatcherTest {
         )
     }
 
+    @Test
+    fun `valid URIs`() {
+        assertThat("http://domain.example").isValidUri()
+        assertThat("https://domain.example/").isValidUri()
+        assertThat("mailto:user@domain.example").isValidUri()
+    }
+
+    @Test
+    fun `not URIs`() {
+        assertThat("some text here").isNotValidUri()
+        assertThat("some text including the string http:").isNotValidUri()
+        assertThat("some text including an email address without URI scheme: user@domain.example").isNotValidUri()
+    }
+
+    @Test
+    fun `valid URIs surrounded by other characters`() {
+        assertThat("text https://domain.example/").isNotValidUri()
+        assertThat("https://domain.example/ text").isNotValidUri()
+        assertThat("<https://domain.example/>").isNotValidUri()
+    }
+
     private fun assertNoMatch(text: String) {
         val uriMatches = UriMatcher.findUris(text)
         assertThat(uriMatches).isEmpty()
@@ -103,4 +127,12 @@ class UriMatcherTest {
             i++
         }
     }
+}
+
+private fun Assert<String>.isValidUri() = given { actual ->
+    assertThat(UriMatcher.isValidUri(actual)).isTrue()
+}
+
+private fun Assert<String>.isNotValidUri() = given { actual ->
+    assertThat(UriMatcher.isValidUri(actual)).isFalse()
 }

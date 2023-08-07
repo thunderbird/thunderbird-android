@@ -31,4 +31,20 @@ object UriMatcher {
             parser.parseUri(text, startIndex)
         }.filterNotNull().toList()
     }
+
+    @Suppress("ReturnCount")
+    fun isValidUri(text: CharSequence): Boolean {
+        val matchResult = URI_SCHEME.matchAt(text, 0) ?: return false
+
+        val matchGroup = matchResult.groups[1]!!
+        if (matchGroup.range.first != 0) {
+            return false
+        }
+
+        val scheme = matchGroup.value.lowercase()
+        val parser = SUPPORTED_URIS[scheme] ?: throw AssertionError("Scheme not found: $scheme")
+        val uriMatch = parser.parseUri(text, startPos = 0) ?: return false
+
+        return uriMatch.startIndex == 0 && uriMatch.endIndex == text.length
+    }
 }
