@@ -2,6 +2,7 @@ package app.k9mail.feature.account.setup.ui.options
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.common.DevicePreviews
@@ -15,6 +16,7 @@ import app.k9mail.feature.account.setup.ui.common.AccountSetupTopAppBar
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Effect
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Event
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.ViewModel
+import app.k9mail.feature.account.setup.ui.preview.PreviewAccountSetupStateRepository
 
 @Composable
 internal fun AccountOptionsScreen(
@@ -28,6 +30,10 @@ internal fun AccountOptionsScreen(
             Effect.NavigateBack -> onBack()
             Effect.NavigateNext -> onNext()
         }
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        dispatch(Event.LoadAccountSetupState)
     }
 
     BackHandler {
@@ -67,6 +73,7 @@ internal fun AccountOptionsScreenK9Preview() {
             onBack = {},
             viewModel = AccountOptionsViewModel(
                 validator = AccountOptionsValidator(),
+                accountSetupStateRepository = PreviewAccountSetupStateRepository(),
             ),
         )
     }
@@ -81,6 +88,7 @@ internal fun AccountOptionsScreenThunderbirdPreview() {
             onBack = {},
             viewModel = AccountOptionsViewModel(
                 validator = AccountOptionsValidator(),
+                accountSetupStateRepository = PreviewAccountSetupStateRepository(),
             ),
         )
     }

@@ -36,16 +36,16 @@ interface AccountAutoDiscoveryContract {
         val isLoading: Boolean = false,
     )
 
-    sealed class Event {
-        data class EmailAddressChanged(val emailAddress: String) : Event()
-        data class PasswordChanged(val password: String) : Event()
-        data class ConfigurationApprovalChanged(val confirmed: Boolean) : Event()
-        data class OnOAuthResult(val result: OAuthResult) : Event()
+    sealed interface Event {
+        data class EmailAddressChanged(val emailAddress: String) : Event
+        data class PasswordChanged(val password: String) : Event
+        data class ConfigurationApprovalChanged(val confirmed: Boolean) : Event
+        data class OnOAuthResult(val result: OAuthResult) : Event
 
-        object OnNextClicked : Event()
-        object OnBackClicked : Event()
-        object OnRetryClicked : Event()
-        object OnEditConfigurationClicked : Event()
+        object OnNextClicked : Event
+        object OnBackClicked : Event
+        object OnRetryClicked : Event
+        object OnEditConfigurationClicked : Event
     }
 
     sealed class Effect {

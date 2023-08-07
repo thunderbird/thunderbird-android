@@ -1,7 +1,9 @@
 package app.k9mail.feature.account.setup.ui.validation
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
@@ -14,13 +16,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.common.DevicePreviews
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle1
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
-import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
-import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 import app.k9mail.feature.account.common.ui.item.ErrorItem
+import app.k9mail.feature.account.common.ui.item.ListItem
 import app.k9mail.feature.account.common.ui.item.LoadingItem
 import app.k9mail.feature.account.common.ui.item.SuccessItem
+import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
+import app.k9mail.feature.account.oauth.ui.AccountOAuthView
+import app.k9mail.feature.account.oauth.ui.preview.PreviewAccountOAuthViewModel
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Event
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.State
@@ -29,6 +35,8 @@ import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.
 @Composable
 internal fun AccountValidationContent(
     state: State,
+    isIncomingValidation: Boolean,
+    oAuthViewModel: AccountOAuthContract.ViewModel,
     onEvent: (Event) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
@@ -47,18 +55,14 @@ internal fun AccountValidationContent(
                 .fillMaxSize()
                 .imePadding(),
             horizontalAlignment = Alignment.Start,
-            verticalArrangement = if (state.isLoading || state.error != null || state.isSuccess) {
-                Arrangement.spacedBy(MainTheme.spacings.double, Alignment.CenterVertically)
-            } else {
-                Arrangement.spacedBy(MainTheme.spacings.default)
-            },
+            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double, Alignment.CenterVertically),
         ) {
             if (state.error != null) {
                 item(key = "error") {
                     // TODO add raw error message
                     ErrorItem(
                         title = stringResource(
-                            id = if (state.isIncomingValidation) {
+                            id = if (isIncomingValidation) {
                                 R.string.account_setup_settings_validation_incoming_loading_error
                             } else {
                                 R.string.account_setup_settings_validation_outgoing_loading_error
@@ -72,7 +76,7 @@ internal fun AccountValidationContent(
                 item(key = "success") {
                     SuccessItem(
                         message = stringResource(
-                            id = if (state.isIncomingValidation) {
+                            id = if (isIncomingValidation) {
                                 R.string.account_setup_settings_validation_incoming_success
                             } else {
                                 R.string.account_setup_settings_validation_outgoing_success
@@ -80,11 +84,32 @@ internal fun AccountValidationContent(
                         ),
                     )
                 }
+            } else if (state.needsAuthorization) {
+                item(key = "oauth") {
+                    ListItem {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                        ) {
+                            TextSubtitle1(
+                                text = stringResource(
+                                    id = R.string.account_setup_settings_validation_sign_in,
+                                ),
+                            )
+                            Spacer(modifier = Modifier.padding(MainTheme.spacings.default))
+                            AccountOAuthView(
+                                onOAuthResult = { result -> onEvent(Event.OnOAuthResult(result)) },
+                                viewModel = oAuthViewModel,
+                            )
+                        }
+                    }
+                }
             } else {
                 item(key = "loading") {
                     LoadingItem(
                         message = stringResource(
-                            id = if (state.isIncomingValidation) {
+                            id = if (isIncomingValidation) {
                                 R.string.account_setup_settings_validation_incoming_loading_message
                             } else {
                                 R.string.account_setup_settings_validation_outgoing_loading_message
@@ -99,11 +124,13 @@ internal fun AccountValidationContent(
 
 @Composable
 @DevicePreviews
-internal fun AccountIncomingConfigContentK9Preview() {
-    K9Theme {
+internal fun AccountIncomingValidationContentPreview() {
+    PreviewWithThemes {
         AccountValidationContent(
             onEvent = { },
             state = State(),
+            isIncomingValidation = true,
+            oAuthViewModel = PreviewAccountOAuthViewModel(),
             contentPadding = PaddingValues(),
         )
     }
@@ -111,11 +138,13 @@ internal fun AccountIncomingConfigContentK9Preview() {
 
 @Composable
 @DevicePreviews
-internal fun AccountIncomingConfigContentThunderbirdPreview() {
-    ThunderbirdTheme {
+internal fun AccountOutgoingValidationContentPreview() {
+    PreviewWithThemes {
         AccountValidationContent(
             onEvent = { },
             state = State(),
+            isIncomingValidation = false,
+            oAuthViewModel = PreviewAccountOAuthViewModel(),
             contentPadding = PaddingValues(),
         )
     }

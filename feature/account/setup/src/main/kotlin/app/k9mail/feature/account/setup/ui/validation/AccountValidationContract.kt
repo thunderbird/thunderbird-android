@@ -1,7 +1,8 @@
 package app.k9mail.feature.account.setup.ui.validation
 
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
-import app.k9mail.feature.account.oauth.domain.entity.AuthorizationState
+import app.k9mail.feature.account.oauth.domain.entity.OAuthResult
+import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
 import com.fsck.k9.mail.ServerSettings
 import java.io.IOException
 import java.security.cert.X509Certificate
@@ -9,19 +10,24 @@ import java.security.cert.X509Certificate
 interface AccountValidationContract {
 
     interface ViewModel : UnidirectionalViewModel<State, Event, Effect> {
-        fun initState(state: State)
+        val isIncomingValidation: Boolean
+        val oAuthViewModel: AccountOAuthContract.ViewModel
     }
 
     data class State(
-        val isIncomingValidation: Boolean = false,
+        val emailAddress: String? = null,
         val serverSettings: ServerSettings? = null,
-        val authorizationState: AuthorizationState? = null,
+        val needsAuthorization: Boolean = false,
         val isSuccess: Boolean = false,
         val error: Error? = null,
         val isLoading: Boolean = false,
     )
 
     sealed interface Event {
+        object LoadAccountSetupStateAndValidate : Event
+
+        data class OnOAuthResult(val result: OAuthResult) : Event
+
         object ValidateServerSettings : Event
         object OnNextClicked : Event
         object OnBackClicked : Event

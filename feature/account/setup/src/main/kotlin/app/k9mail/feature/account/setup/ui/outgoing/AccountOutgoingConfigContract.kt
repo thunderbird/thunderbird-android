@@ -10,9 +10,7 @@ import app.k9mail.feature.account.setup.domain.input.StringInputField
 
 interface AccountOutgoingConfigContract {
 
-    interface ViewModel : UnidirectionalViewModel<State, Event, Effect> {
-        fun initState(state: State)
-    }
+    interface ViewModel : UnidirectionalViewModel<State, Event, Effect>
 
     data class State(
         val server: StringInputField = StringInputField(),
@@ -32,6 +30,8 @@ interface AccountOutgoingConfigContract {
         data class UsernameChanged(val username: String) : Event
         data class PasswordChanged(val password: String) : Event
         data class ClientCertificateChanged(val clientCertificateAlias: String?) : Event
+
+        object LoadAccountSetupState : Event
 
         object OnNextClicked : Event
         object OnBackClicked : Event

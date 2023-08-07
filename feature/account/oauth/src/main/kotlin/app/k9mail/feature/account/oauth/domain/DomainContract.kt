@@ -43,7 +43,7 @@ interface DomainContract {
         ): AuthorizationResult
     }
 
-    interface AuthorizationStateRepository {
-        suspend fun isAuthorized(authorizationState: AuthorizationState): Boolean
+    fun interface AuthorizationStateRepository {
+        fun isAuthorized(authorizationState: AuthorizationState): Boolean
     }
 }

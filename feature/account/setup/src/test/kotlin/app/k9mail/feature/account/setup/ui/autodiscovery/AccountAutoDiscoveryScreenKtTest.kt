@@ -22,7 +22,7 @@ class AccountAutoDiscoveryScreenKtTest : ComposeTest() {
         setContent {
             ThunderbirdTheme {
                 AccountAutoDiscoveryScreen(
-                    onNext = { _, _ -> onNextCounter++ },
+                    onNext = { onNextCounter++ },
                     onBack = { onBackCounter++ },
                     viewModel = viewModel,
                 )

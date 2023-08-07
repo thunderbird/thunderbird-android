@@ -11,9 +11,7 @@ import app.k9mail.feature.account.setup.domain.input.StringInputField
 
 interface AccountIncomingConfigContract {
 
-    interface ViewModel : UnidirectionalViewModel<State, Event, Effect> {
-        fun initState(state: State)
-    }
+    interface ViewModel : UnidirectionalViewModel<State, Event, Effect>
 
     data class State(
         val protocolType: IncomingProtocolType = IncomingProtocolType.DEFAULT,
@@ -45,6 +43,8 @@ interface AccountIncomingConfigContract {
         data class ImapPrefixChanged(val imapPrefix: String) : Event
         data class ImapUseCompressionChanged(val useCompression: Boolean) : Event
         data class ImapSendClientIdChanged(val sendClientId: Boolean) : Event
+
+        object LoadAccountSetupState : Event
 
         object OnNextClicked : Event
         object OnBackClicked : Event

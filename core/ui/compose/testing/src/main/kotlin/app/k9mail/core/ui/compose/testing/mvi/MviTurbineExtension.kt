@@ -78,4 +78,8 @@ fun <T, STATE, EFFECT> assertThatAndMviTurbinesConsumed(
 data class MviTurbines<STATE, EFFECT>(
     val stateTurbine: ReceiveTurbine<STATE>,
     val effectTurbine: ReceiveTurbine<EFFECT>,
-)
+) {
+    suspend fun awaitStateItem() = stateTurbine.awaitItem()
+
+    suspend fun awaitEffectItem() = effectTurbine.awaitItem()
+}

@@ -7,6 +7,11 @@ import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.State
+import app.k9mail.feature.account.setup.ui.autodiscovery.FakeAccountAutoDiscoveryViewModel
+import app.k9mail.feature.account.setup.ui.incoming.FakeAccountIncomingConfigViewModel
+import app.k9mail.feature.account.setup.ui.options.FakeAccountOptionsViewModel
+import app.k9mail.feature.account.setup.ui.outgoing.FakeAccountOutgoingConfigViewModel
+import app.k9mail.feature.account.setup.ui.validation.FakeAccountValidationViewModel
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
@@ -24,6 +29,12 @@ class AccountSetupScreenKtTest : ComposeTest() {
                     onFinish = { },
                     onBack = { },
                     viewModel = viewModel,
+                    autoDiscoveryViewModel = FakeAccountAutoDiscoveryViewModel(),
+                    incomingViewModel = FakeAccountIncomingConfigViewModel(),
+                    incomingValidationViewModel = FakeAccountValidationViewModel(),
+                    outgoingViewModel = FakeAccountOutgoingConfigViewModel(),
+                    outgoingValidationViewModel = FakeAccountValidationViewModel(),
+                    optionsViewModel = FakeAccountOptionsViewModel(),
                 )
             }
         }
@@ -47,6 +58,12 @@ class AccountSetupScreenKtTest : ComposeTest() {
                     onFinish = { onFinishCounter++ },
                     onBack = { onBackCounter++ },
                     viewModel = viewModel,
+                    autoDiscoveryViewModel = FakeAccountAutoDiscoveryViewModel(),
+                    incomingViewModel = FakeAccountIncomingConfigViewModel(),
+                    incomingValidationViewModel = FakeAccountValidationViewModel(),
+                    outgoingViewModel = FakeAccountOutgoingConfigViewModel(),
+                    outgoingValidationViewModel = FakeAccountValidationViewModel(),
+                    optionsViewModel = FakeAccountOptionsViewModel(),
                 )
             }
         }

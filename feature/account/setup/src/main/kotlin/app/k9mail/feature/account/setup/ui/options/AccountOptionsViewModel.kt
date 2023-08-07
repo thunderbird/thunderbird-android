@@ -2,6 +2,7 @@ package app.k9mail.feature.account.setup.ui.options
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
+import app.k9mail.feature.account.setup.domain.DomainContract
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Effect
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Event
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.State
@@ -10,17 +11,17 @@ import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.ViewMo
 
 internal class AccountOptionsViewModel(
     private val validator: Validator,
-    initialState: State = State(),
-) : BaseViewModel<State, Event, Effect>(initialState), ViewModel {
-
-    override fun initState(state: State) {
-        updateState {
-            state.copy()
-        }
-    }
+    private val accountSetupStateRepository: DomainContract.AccountSetupStateRepository,
+    initialState: State? = null,
+) : BaseViewModel<State, Event, Effect>(
+    initialState = initialState ?: accountSetupStateRepository.getState().toAccountOptionsState(),
+),
+    ViewModel {
 
     override fun event(event: Event) {
         when (event) {
+            Event.LoadAccountSetupState -> loadAccountSetupState()
+
             is Event.OnAccountNameChanged -> updateState { state ->
                 state.copy(
                     accountName = state.accountName.updateValue(event.accountName),
@@ -62,6 +63,12 @@ internal class AccountOptionsViewModel(
         }
     }
 
+    private fun loadAccountSetupState() {
+        updateState {
+            accountSetupStateRepository.getState().toAccountOptionsState()
+        }
+    }
+
     private fun submit() = with(state.value) {
         val accountNameResult = validator.validateAccountName(accountName.value)
         val displayNameResult = validator.validateDisplayName(displayName.value)
@@ -82,6 +89,7 @@ internal class AccountOptionsViewModel(
         }
 
         if (!hasError) {
+            accountSetupStateRepository.saveOptions(state.value.toAccountOptions())
             navigateNext()
         }
     }

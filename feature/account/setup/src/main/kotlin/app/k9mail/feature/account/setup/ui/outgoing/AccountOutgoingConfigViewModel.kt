@@ -2,6 +2,7 @@ package app.k9mail.feature.account.setup.ui.outgoing
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
+import app.k9mail.feature.account.setup.domain.DomainContract
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.toSmtpDefaultPort
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Effect
@@ -11,18 +12,18 @@ import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContrac
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.ViewModel
 
 internal class AccountOutgoingConfigViewModel(
-    initialState: State = State(),
     private val validator: Validator,
-) : BaseViewModel<State, Event, Effect>(initialState), ViewModel {
-
-    override fun initState(state: State) {
-        updateState {
-            state.copy()
-        }
-    }
+    private val accountSetupStateRepository: DomainContract.AccountSetupStateRepository,
+    initialState: State? = State(),
+) : BaseViewModel<State, Event, Effect>(
+    initialState = initialState ?: accountSetupStateRepository.getState().toOutgoingConfigState(),
+),
+    ViewModel {
 
     override fun event(event: Event) {
         when (event) {
+            Event.LoadAccountSetupState -> loadAccountSetupState()
+
             is Event.ServerChanged -> updateState { it.copy(server = it.server.updateValue(event.server)) }
             is Event.SecurityChanged -> updateSecurity(event.security)
             is Event.PortChanged -> updateState { it.copy(port = it.port.updateValue(event.port)) }
@@ -35,6 +36,12 @@ internal class AccountOutgoingConfigViewModel(
 
             Event.OnNextClicked -> onNext()
             Event.OnBackClicked -> onBack()
+        }
+    }
+
+    private fun loadAccountSetupState() {
+        updateState {
+            accountSetupStateRepository.getState().toOutgoingConfigState()
         }
     }
 
@@ -55,7 +62,11 @@ internal class AccountOutgoingConfigViewModel(
         val serverResult = validator.validateServer(server.value)
         val portResult = validator.validatePort(port.value)
         val usernameResult = validator.validateUsername(username.value)
-        val passwordResult = validator.validatePassword(password.value)
+        val passwordResult = if (authenticationType.isPasswordRequired) {
+            validator.validatePassword(password.value)
+        } else {
+            ValidationResult.Success
+        }
 
         val hasError = listOf(serverResult, portResult, usernameResult, passwordResult)
             .any { it is ValidationResult.Failure }
@@ -70,6 +81,7 @@ internal class AccountOutgoingConfigViewModel(
         }
 
         if (!hasError) {
+            accountSetupStateRepository.saveOutgoingServerSettings(state.value.toServerSettings())
             navigateNext()
         }
     }

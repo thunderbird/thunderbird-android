@@ -1,10 +1,11 @@
-package app.k9mail.feature.account.setup.ui.common.mapper
+package app.k9mail.feature.account.setup.ui.autodiscovery
 
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
 import app.k9mail.core.common.net.toHostname
 import app.k9mail.core.common.net.toPort
+import app.k9mail.feature.account.setup.domain.entity.AccountSetupState
 import app.k9mail.feature.account.setup.domain.entity.AuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.AutoDiscoveryAuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.AutoDiscoveryConnectionSecurity
@@ -12,7 +13,6 @@ import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.setup.domain.entity.toConnectionSecurity
 import app.k9mail.feature.account.setup.domain.input.NumberInputField
 import app.k9mail.feature.account.setup.domain.input.StringInputField
-import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
@@ -21,6 +21,21 @@ import assertk.assertions.isEqualTo
 import org.junit.Test
 
 class AccountAutoDiscoveryStateMapperKtTest {
+
+    @Test
+    fun `should map to empty AccountSetupState when empty`() {
+        val accountSetupState = EMPTY_STATE.toAccountSetupState()
+
+        assertThat(accountSetupState).isEqualTo(
+            AccountSetupState(
+                emailAddress = "",
+                incomingServerSettings = null,
+                outgoingServerSettings = null,
+                authorizationState = null,
+                options = null,
+            ),
+        )
+    }
 
     @Test
     fun `should map to default IncomingConfigState when empty`() {

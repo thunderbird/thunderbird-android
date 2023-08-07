@@ -8,9 +8,7 @@ import app.k9mail.feature.account.setup.domain.input.StringInputField
 
 interface AccountOptionsContract {
 
-    interface ViewModel : UnidirectionalViewModel<State, Event, Effect> {
-        fun initState(state: State)
-    }
+    interface ViewModel : UnidirectionalViewModel<State, Event, Effect>
 
     data class State(
         val accountName: StringInputField = StringInputField(),
@@ -28,6 +26,8 @@ interface AccountOptionsContract {
         data class OnCheckFrequencyChanged(val checkFrequency: EmailCheckFrequency) : Event
         data class OnMessageDisplayCountChanged(val messageDisplayCount: EmailDisplayCount) : Event
         data class OnShowNotificationChanged(val showNotification: Boolean) : Event
+
+        object LoadAccountSetupState : Event
 
         object OnNextClicked : Event
         object OnBackClicked : Event

@@ -35,7 +35,6 @@ internal fun LazyListScope.contentItems(
             emailAddress = state.emailAddress.value,
             error = state.emailAddress.error,
             onEmailAddressChange = { onEvent(Event.EmailAddressChanged(it)) },
-            isEnabled = state.configStep == ConfigStep.EMAIL_ADDRESS,
         )
     }
 

@@ -12,16 +12,16 @@ import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
-import app.k9mail.feature.account.oauth.ui.DummyAccountOAuthViewModel
+import app.k9mail.feature.account.oauth.ui.preview.PreviewAccountOAuthViewModel
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Effect
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Event
-import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.State
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.ViewModel
+import app.k9mail.feature.account.setup.ui.preview.PreviewAccountSetupStateRepository
 
 @Composable
 internal fun AccountAutoDiscoveryScreen(
-    onNext: (state: State, isAutomaticConfig: Boolean) -> Unit,
+    onNext: (isAutomaticConfig: Boolean) -> Unit,
     onBack: () -> Unit,
     viewModel: ViewModel,
     modifier: Modifier = Modifier,
@@ -29,7 +29,7 @@ internal fun AccountAutoDiscoveryScreen(
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
             Effect.NavigateBack -> onBack()
-            is Effect.NavigateNext -> onNext(viewModel.state.value, effect.isAutomaticConfig)
+            is Effect.NavigateNext -> onNext(effect.isAutomaticConfig)
         }
     }
 
@@ -67,12 +67,13 @@ internal fun AccountAutoDiscoveryScreen(
 internal fun AccountAutoDiscoveryScreenK9Preview() {
     K9Theme {
         AccountAutoDiscoveryScreen(
-            onNext = { _, _ -> },
+            onNext = {},
             onBack = {},
             viewModel = AccountAutoDiscoveryViewModel(
                 validator = AccountAutoDiscoveryValidator(),
                 getAutoDiscovery = { AutoDiscoveryResult.NoUsableSettingsFound },
-                oAuthViewModel = DummyAccountOAuthViewModel(),
+                accountSetupStateRepository = PreviewAccountSetupStateRepository(),
+                oAuthViewModel = PreviewAccountOAuthViewModel(),
             ),
         )
     }
@@ -83,12 +84,13 @@ internal fun AccountAutoDiscoveryScreenK9Preview() {
 internal fun AccountAutoDiscoveryScreenThunderbirdPreview() {
     ThunderbirdTheme {
         AccountAutoDiscoveryScreen(
-            onNext = { _, _ -> },
+            onNext = { },
             onBack = {},
             viewModel = AccountAutoDiscoveryViewModel(
                 validator = AccountAutoDiscoveryValidator(),
                 getAutoDiscovery = { AutoDiscoveryResult.NoUsableSettingsFound },
-                oAuthViewModel = DummyAccountOAuthViewModel(),
+                accountSetupStateRepository = PreviewAccountSetupStateRepository(),
+                oAuthViewModel = PreviewAccountOAuthViewModel(),
             ),
         )
     }

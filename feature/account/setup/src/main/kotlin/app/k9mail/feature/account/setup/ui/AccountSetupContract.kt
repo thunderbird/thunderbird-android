@@ -1,11 +1,6 @@
 package app.k9mail.feature.account.setup.ui
 
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
-import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
-import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
-import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
-import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract
 
 interface AccountSetupContract {
 
@@ -18,14 +13,7 @@ interface AccountSetupContract {
         OPTIONS,
     }
 
-    interface ViewModel : UnidirectionalViewModel<State, Event, Effect> {
-        val autoDiscoveryViewModel: AccountAutoDiscoveryContract.ViewModel
-        val incomingViewModel: AccountIncomingConfigContract.ViewModel
-        val incomingValidationViewModel: AccountValidationContract.ViewModel
-        val outgoingViewModel: AccountOutgoingConfigContract.ViewModel
-        val outgoingValidationViewModel: AccountValidationContract.ViewModel
-        val optionsViewModel: AccountOptionsContract.ViewModel
-    }
+    interface ViewModel : UnidirectionalViewModel<State, Event, Effect>
 
     data class State(
         val setupStep: SetupStep = SetupStep.AUTO_CONFIG,
@@ -36,7 +24,6 @@ interface AccountSetupContract {
         object OnNext : Event
 
         data class OnAutoDiscoveryFinished(
-            val state: AccountAutoDiscoveryContract.State,
             val isAutomaticConfig: Boolean,
         ) : Event
 
