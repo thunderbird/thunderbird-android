@@ -965,4 +965,5 @@ Gallout a rit mirout ar gemennadenn-mañ hag implij anezhi evel un enrolladenn e
   <!--A user visible label for the email address copied to the clipboard-->
   <string name="clipboard_label_email_address">Chomlec’h postel</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>

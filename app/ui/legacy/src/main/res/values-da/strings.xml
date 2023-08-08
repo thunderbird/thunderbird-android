@@ -27,6 +27,7 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Find ud af hvad der er nyt i denne version</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+  <string name="changelog_snackbar_button_text">Vis</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Velkommen til K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -117,6 +118,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="flag_action">Tilføj stjernemarkering</string>
   <string name="unflag_action">Fjern stjernemarkering</string>
   <string name="copy_action">Kopier</string>
+  <string name="unsubscribe_action">Afmeld</string>
   <string name="show_headers_action">Vis headers</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Adresse kopieret til udklipsholder</item>
@@ -225,6 +227,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
   <string name="message_view_me_text">mig</string>
   <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+  <string name="message_view_show_remote_images_action">Vis eksterne billeder</string>
   <string name="message_view_no_viewer">Kan ikke finde program som kan vise <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Hent hele meddelelsen</string>
   <string name="message_view_sender_label">via %1$s</string>
@@ -282,7 +285,9 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Flyt</string>
   <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_ui_density_compact">Kompakt</string>
   <string name="general_settings_ui_density_default">Standard</string>
+  <string name="general_settings_ui_density_relaxed">Afslappet</string>
   <string name="global_settings_privacy_hide_useragent">Skjul mail klient</string>
   <string name="global_settings_privacy_hide_useragent_detail">Fjern K-9 Bruger-Agent fra mail headers</string>
   <string name="global_settings_privacy_hide_timezone">Skjul tidszone</string>
@@ -436,6 +441,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_settings_mark_message_as_read_on_view_summary">Marker som læst når meddelses åbnes for læsning</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marker som læst ved sletning</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Marker en besked som læst når den bliver slettet</string>
+  <string name="account_settings_notification_channels_label">Notifikation kategorier</string>
   <string name="account_settings_show_pictures_label">Vis altid billeder</string>
   <string name="account_settings_show_pictures_never">Aldrig</string>
   <string name="account_settings_show_pictures_only_from_contacts">Kun når afsender findes i Kontakter</string>
@@ -710,6 +716,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
   <string name="font_size_message_view_account">Kontonavn</string>
   <string name="font_size_message_view_sender">Afsender</string>
+  <string name="font_size_message_view_recipients">Modtagere</string>
   <string name="font_size_message_view_subject">Emne</string>
   <string name="font_size_message_view_date">Tid og dato</string>
   <string name="font_size_message_view_content">Indhold</string>
@@ -743,8 +750,8 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="dialog_confirm_delete_cancel_button">Slet ikke</string>
   <string name="dialog_confirm_mark_all_as_read_title">Bekræft at alle skal markeres som læst</string>
   <string name="dialog_confirm_mark_all_as_read_message">Vil du markere alle meddelelser som læst?</string>
-  <string name="dialog_confirm_empty_trash_title">Bekræfte tømning af papirkurv</string>
-  <string name="dialog_confirm_empty_trash_message">Tømme papirkurv mappe?</string>
+  <string name="dialog_confirm_empty_trash_title">Bekræft tømning af papirkurv</string>
+  <string name="dialog_confirm_empty_trash_message">Ønsker du at tømme papirkurven?</string>
   <string name="dialog_confirm_mark_all_as_read_confirm_button">Ja</string>
   <string name="dialog_confirm_mark_all_as_read_cancel_button">Nej</string>
   <string name="dialog_confirm_spam_title">Bekræft flytning til spam mappe</string>
@@ -1083,6 +1090,7 @@ Beskeden kan beholdes og bruges som sikkerhedskopi til den hemmelige nøgle. Hvi
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_add_to_contacts">Tilføj til kontakter</string>
   <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_compose_message_to">Skriv meddelelse til</string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_copy_email_address">Kopiér email-adresse</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
@@ -1091,4 +1099,5 @@ Beskeden kan beholdes og bruges som sikkerhedskopi til den hemmelige nøgle. Hvi
   <string name="clipboard_label_email_address">Mail addresse</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Navn og email-adresse</string>
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>

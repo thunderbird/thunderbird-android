@@ -1111,4 +1111,5 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="clipboard_label_email_address">邮件地址</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">姓名和电子邮箱地址</string>
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>

@@ -29,7 +29,7 @@
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Megtekintés</string>
   <!--Welcome message-->
-  <string name="welcome_message_title">Üdvözlet a K-9 Mail alkalmazásban.</string>
+  <string name="welcome_message_title">Üdvözli a K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
 <p>
 A K-9 Mail egy hatékony, ingyenes e-mail alkalmazás Androidra.
@@ -66,7 +66,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="authors">Szerzők</string>
   <string name="about_title">A K-9 Mail névjegye</string>
   <string name="accounts_title">Fiókok</string>
-  <string name="advanced">Bővített</string>
+  <string name="advanced">Speciális</string>
   <string name="compose_title_compose">Írás</string>
   <string name="compose_title_reply">Válasz</string>
   <string name="compose_title_reply_all">Válasz mindenkinek</string>
@@ -82,7 +82,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="okay_action">OK</string>
   <string name="cancel_action">Mégse</string>
   <string name="send_action">Küldés</string>
-  <string name="empty_subject">A tárgy üres. Kattintás újra a küldés erőltetéséhez.</string>
+  <string name="empty_subject">A tárgy üres, kattintson újra, ha mindenképp elküldi</string>
   <string name="reply_action">Válasz</string>
   <string name="reply_all_action">Válasz mindenkinek</string>
   <string name="delete_action">Törlés</string>
@@ -120,7 +120,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="unsubscribe_action">Leiratkozás</string>
   <string name="show_headers_action">Fejlécek megjelenítése</string>
   <plurals name="copy_address_to_clipboard">
-    <item quantity="one">Cím a vágólapra másolva</item>
+    <item quantity="one">A cím a vágólapra került.</item>
     <item quantity="other">A címek a vágólapra kerültek.</item>
   </plurals>
   <string name="copy_subject_to_clipboard">Tárgy szöveg a vágólapra másolva</string>
@@ -139,8 +139,8 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="general_no_subject">(Nincs tárgy)</string>
   <string name="general_no_sender">Nincs feladó</string>
   <string name="status_loading_more">Üzenetek betöltése\u2026</string>
-  <string name="status_network_error">Kapcsolódási hiba történt.</string>
-  <string name="status_invalid_id_error">Az üzenet nem található.</string>
+  <string name="status_network_error">Kapcsolódási hiba</string>
+  <string name="status_invalid_id_error">Az üzenet nem található</string>
   <string name="status_loading_error">Üzenetbetöltési hiba történt</string>
   <string name="load_more_messages_fmt">Legfeljebb <xliff:g id="messages_to_load">%d</xliff:g> további betöltése</string>
   <string name="size_format_gigabytes">%.1f GB</string>
@@ -163,7 +163,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="notification_certificate_error_public">Tanúsítványhiba</string>
   <string name="notification_certificate_error_title">Tanúsítványhiba: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Ellenőrizze a kiszolgálóbeállításokat.</string>
-  <string name="notification_authentication_error_title">A hitelesítés sikertelen.</string>
+  <string name="notification_authentication_error_title">A hitelesítés sikertelen</string>
   <string name="notification_authentication_error_text">A hitelesítés sikertelen: <xliff:g id="account">%s</xliff:g>. Frissítse a kiszolgálóbeállításokat.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
   <string name="notification_notify_error_title">Értesítési hiba</string>
@@ -251,13 +251,13 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="global_settings_messageview_autofit_width_label">Üzenetek automatikus méretezése</string>
   <string name="global_settings_messageview_autofit_width_summary">Üzenetek összehúzása és képernyőhöz igazítása</string>
   <string name="global_settings_messageview_return_to_list_label">Visszatérés a listához törlés után</string>
-  <string name="global_settings_messageview_return_to_list_summary">Visszatérés az üzenet listához az üzenet törlése után</string>
+  <string name="global_settings_messageview_return_to_list_summary">Visszatérés az üzenetekhez az üzenet törlése után</string>
   <string name="global_settings_messageview_show_next_label">Következő üzenet megjelenítése törlés után</string>
   <string name="global_settings_messageview_show_next_summary">A következő üzenet alapértelmezett megjelenítése az üzenet törlése után</string>
   <string name="global_settings_confirm_actions_title">Műveletek megerősítése</string>
   <string name="global_settings_confirm_actions_summary">Párbeszédablak megjelenítése a kiválasztott műveletek végrehajtásakor</string>
   <string name="global_settings_confirm_action_delete">Törlés</string>
-  <string name="global_settings_confirm_action_delete_starred">Csillagozottak törlése (üzenet nézetben)</string>
+  <string name="global_settings_confirm_action_delete_starred">Csillagozottak törlése (üzenetnézetben)</string>
   <string name="global_settings_confirm_action_spam">Levélszemét</string>
   <string name="global_settings_confirm_menu_discard">Üzenet elvetése</string>
   <string name="global_settings_confirm_menu_mark_all_read">Összes üzenet megjelölése olvasottként</string>
@@ -271,9 +271,9 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <!--The list item users select to not use a swipe action for a particular direction-->
   <string name="general_settings_swipe_action_none">Nincs</string>
   <!--Name of the swipe action to select/deselect a message-->
-  <string name="general_settings_swipe_action_toggle_selection">Kiválasztottak ki/bekapcsolása&lt;br&gt;</string>
+  <string name="general_settings_swipe_action_toggle_selection">Kiválasztás be/ki</string>
   <!--Name of the swipe action to mark as message as read/unread-->
-  <string name="general_settings_swipe_action_toggle_read">Olvasottnak/olvasatlannak jelölés</string>
+  <string name="general_settings_swipe_action_toggle_read">Megjelölés olvasottként/olvasatlanként</string>
   <!--Name of the swipe action to add/remove a star-->
   <string name="general_settings_swipe_action_toggle_star">Csillag hozzáadása/eltávolítása</string>
   <!--Name of the swipe action to archive a message-->
@@ -301,7 +301,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="global_settings_lock_screen_notification_visibility_nothing">Nincsenek képernyőzár értesítések</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Alkalmazás neve</string>
   <string name="global_settings_lock_screen_notification_visibility_message_count">Új üzenetek száma</string>
-  <string name="global_settings_lock_screen_notification_visibility_senders">Üzenet számlálók és feladók</string>
+  <string name="global_settings_lock_screen_notification_visibility_senders">Üzenetszámlálók és feladók</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Ugyanaz, mint feloldott képernyőnél</string>
   <string name="quiet_time">Csendes idő</string>
   <string name="quiet_time_description">Csörgés, rezgés és villogás letiltása éjszakára</string>
@@ -706,7 +706,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_push_limit_1000">1000 mappa</string>
   <string name="animations_title">Animációk</string>
   <string name="animations_summary">Rikító látható hatások használata</string>
-  <string name="volume_navigation_title">Hangerőgomb navigáció az üzenet nézetben</string>
+  <string name="volume_navigation_title">Hangerőgombos navigáció üzenetnézetben</string>
   <string name="show_unified_inbox_title">Egységes beérkezett üzenetek megjelenítése</string>
   <string name="show_starred_count_title">Csillagszámláló megjelenítése</string>
   <string name="integrated_inbox_title">Egységes beérkezett üzenetek</string>
@@ -818,7 +818,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="unread_widget_account_title">Fiók</string>
   <string name="unread_widget_account_summary">Az a fiók, amelynél az olvasatlanok számlálóját meg kell jeleníteni</string>
   <string name="unread_widget_unified_inbox_account_summary">Egységes beérkezett üzenetek</string>
-  <string name="unread_widget_folder_enabled_title">Mappa számláló</string>
+  <string name="unread_widget_folder_enabled_title">Mappaszámláló</string>
   <string name="unread_widget_folder_enabled_summary">Az olvasatlan számláló megjelenítése csak egy önálló mappára</string>
   <string name="unread_widget_folder_title">Mappa</string>
   <string name="unread_widget_folder_summary">Az a mappa, amelynél az olvasatlanok számlálóját meg kell jeleníteni</string>
@@ -1003,7 +1003,7 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="openpgp_enabled_error_msg">Néhány kiválasztott címzett nem támogatja ezt a funkciót!</string>
   <string name="enable_encryption">Titkosítás engedélyezése</string>
   <string name="disable_encryption">Titkosítás letiltása</string>
-  <string name="openpgp_description_text1">Az üzenetek titkosítása biztosítja, hogy azokat csak a címzett olvashatja lel és senki más.</string>
+  <string name="openpgp_description_text1">Az üzenetek titkosítása biztosítja, hogy azokat csak a címzett olvashatja el, és senki más.</string>
   <string name="openpgp_description_text3">A titkosítás csak akkor jelenik meg, ha az összes címzett támogatja, és korábban már küldtek e-mailt önnek.</string>
   <string name="openpgp_description_text2">Titkosítási be- és kikapcsolása erre az ikonra kattintva.</string>
   <string name="openpgp_enabled_error_gotit">Értem</string>
@@ -1065,7 +1065,7 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
   <!--Name of the swipe action to deselect a message. Try to keep it short.-->
   <string name="swipe_action_deselect">Kijelölés törlése</string>
   <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-  <string name="swipe_action_mark_as_read">Olvassotnak jeölés</string>
+  <string name="swipe_action_mark_as_read">Megjelölés olvasottként</string>
   <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
   <string name="swipe_action_mark_as_unread">Megjelölés olvasatlanként</string>
   <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
@@ -1079,7 +1079,7 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
   <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
   <string name="swipe_action_spam">Levélszemét</string>
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-  <string name="swipe_action_move">Áthelyezés...</string>
+  <string name="swipe_action_move">Áthelyezés…</string>
   <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
   <string name="general_settings_show_compose_button_title">Lebegő levélírás-gomb megjelenítése</string>
   <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -1116,4 +1116,5 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
   <string name="clipboard_label_email_address">E-mail-cím</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Név és e-mail cím</string>
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>

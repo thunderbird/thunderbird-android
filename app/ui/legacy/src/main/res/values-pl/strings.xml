@@ -1132,4 +1132,5 @@ Tą wiadomość można zachować i użyć w formie kopii zapasowej twojego klucz
   <string name="clipboard_label_email_address">Adres e-mail</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Nazwa oraz adres e-mail</string>
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>

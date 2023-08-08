@@ -1121,4 +1121,5 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="clipboard_label_email_address">Adresse courriel</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Nom et adresse courriel</string>
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>

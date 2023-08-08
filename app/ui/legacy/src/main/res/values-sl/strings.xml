@@ -1126,4 +1126,5 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
   <string name="clipboard_label_email_address">Naslov elektronske pošte</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Ime in e-poštni naslov</string>
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>

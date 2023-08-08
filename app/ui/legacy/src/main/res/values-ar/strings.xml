@@ -12,12 +12,22 @@
   <string name="app_license">Apache License, Version 2.0</string>
   <string name="about_project_title">مشروع مفتوح المصدر</string>
   <string name="about_website_title">الموقع الإلكتروني</string>
+  <string name="user_manual_title">دليل المستخدم</string>
+  <string name="get_help_title">الحصول علي مساعدة</string>
+  <string name="user_forum_title">منتدى المستخدم </string>
+  <string name="about_fediverse_title">Fediverse </string>
+  <string name="about_twitter_title">تويتر</string>
   <string name="about_libraries">المكتبات</string>
   <string name="license">الرخصة</string>
   <string name="changelog_title">سجل التغييرات</string>
+  <string name="changelog_loading_error">تعذر تحميل سجل التغيير</string>
+  <string name="changelog_version_title">الإصدار %s</string>
   <string name="changelog_recent_changes_title">مالجديد</string>
+  <string name="changelog_show_recent_changes">إظهار التغييرات الأخيرة عندما تم تحديث التطبيق</string>
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
+  <string name="changelog_snackbar_text">اكتشف الجديد في هذا الإصدار</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+  <string name="changelog_snackbar_button_text">عرض</string>
   <!--Welcome message-->
   <string name="welcome_message_title">أهلا بكم في بريد K-9</string>
   <string name="accounts_welcome"><![CDATA[
@@ -65,6 +75,8 @@
   <string name="compose_title_forward_as_attachment">إعادة توجيه كمُرفَقات</string>
   <string name="choose_account_title">إختر حساب</string>
   <string name="choose_folder_title">إختر مجلد</string>
+  <string name="choose_folder_move_title">نقل إلي</string>
+  <string name="choose_folder_copy_title">نسخ إلي</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> محدد</string>
   <string name="next_action">التالي</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
@@ -95,6 +107,7 @@
   <string name="search_action">ابحث</string>
   <string name="search_everywhere_action">البحث في كل مكان</string>
   <string name="search_results">نتائج البحث</string>
+  <string name="new_messages_title">الرسائل الجديدة</string>
   <string name="preferences_action">الإعدادات</string>
   <string name="folders_action">إدارة المجلدات</string>
   <string name="account_settings_action">إعدادات الحساب</string>
@@ -105,6 +118,7 @@
   <string name="flag_action">أضف نجمة</string>
   <string name="unflag_action">احذف النجمة</string>
   <string name="copy_action">انسخ</string>
+  <string name="unsubscribe_action">إلغاء الاشتراك</string>
   <string name="show_headers_action">أظهر الرؤوس</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="zero">ﻻ عناوين نُسخت إلى الحافظة</item>
@@ -114,6 +128,7 @@
     <item quantity="many">عنوانًا نُسخوا إلى الحافظة</item>
     <item quantity="other">عنوان نُسخوا إلى الحافظة</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">تم نسخ نص الموضوع إلى الحافظة</string>
   <string name="message_view_theme_action_dark">تحوّل إلى النسق الداكن</string>
   <string name="message_view_theme_action_light">تحوّل إلى النسق الفاتح</string>
   <string name="mark_as_unread_action">علامة غير مقروء</string>
@@ -146,6 +161,7 @@
     <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> رسالة</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> رسالة جديدة</item>
   </plurals>
+  <string name="notification_additional_messages">+<xliff:g id="additional_messages">%1$d</xliff:g> المزيد علي <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">رُد</string>
   <string name="notification_action_mark_as_read">إعتبارها مقروءة</string>
   <string name="notification_action_mark_all_as_read">إعتبار الكل كمقروء</string>
@@ -154,17 +170,22 @@
   <string name="notification_action_archive">أرشيف</string>
   <string name="notification_action_archive_all">أرشفة الكل</string>
   <string name="notification_action_spam">بريد مُزعج</string>
+  <string name="notification_certificate_error_public">خطأ في الشهادة</string>
   <string name="notification_certificate_error_title">خطأ في شهادة <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">تأكد من إعدادات الخادم</string>
   <string name="notification_authentication_error_title">فشل المصادقة</string>
   <string name="notification_authentication_error_text">فشل مصادقة <xliff:g id="account">%s</xliff:g>. يرجى تحديث إعدادات الخادم.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_title">إشعار خطأ</string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+  <string name="notification_notify_error_text">حدث خطأ أثناء محاولة إنشاء إشعار نظام برسالة جديدة. السبب على الأرجح هو فقدان صوت الإشعار. \ n \ n انقر لفتح إعدادات الإشعارات.</string>
   <string name="notification_bg_sync_ticker">تفقد البريد: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">التحقق من البريد</string>
   <string name="notification_bg_send_ticker">إرسال البريد: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">إرسال البريد</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">تزامن (إرسال)</string>
+  <string name="notification_channel_push_description">يتم عرضها أثناء انتظار رسائل جديدة</string>
   <string name="notification_channel_messages_title">الرسائل</string>
   <string name="notification_channel_messages_description">إشعارات ذات علاقة بالرسائل</string>
   <string name="notification_channel_miscellaneous_title">مُتنوع</string>
@@ -180,6 +201,9 @@
   <string name="debug_enable_debug_logging_summary">عمل سجل ببيانات تشخيصية إضافية</string>
   <string name="debug_enable_sensitive_logging_title">إضافة البيانات الحساسة إلى السجل</string>
   <string name="debug_enable_sensitive_logging_summary">يمكن أن يُظهر الكلمات السرية في السجلّات.</string>
+  <string name="debug_export_logs_title">سجلات التصدير</string>
+  <string name="debug_export_logs_success">تم التصدير بنجاح. قد تحتوي السجلات على معلومات حساسة. كن حذرًا لمن ترسلهم إليه.</string>
+  <string name="debug_export_logs_failure">فشل التصدير.</string>
   <string name="message_list_load_more_messages_action">تحميل رسائل إضافية</string>
   <string name="message_to_fmt">إلى:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">الموضوع</string>
@@ -194,6 +218,7 @@
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> كَتَب :</string>
   <string name="message_compose_reply_header_fmt_with_date">بتاريخ <xliff:g id="sent_date">%1$s</xliff:g>، <xliff:g id="sender">%2$s</xliff:g> الرسالة:</string>
   <string name="message_compose_error_no_recipients">يجب إضافة عنوان مُتَلقٍ واحد على الأقل.</string>
+  <string name="compose_error_incomplete_recipient">يحتوي حقل المستلم على إدخال غير مكتمل!</string>
   <string name="error_contact_address_not_found">لم نتمكن من العثور على أي عنوان بريد إلكتروني لجهة الإتصال هذه.</string>
   <string name="message_compose_attachments_skipped_toast">لا يمكن إعادة توجيه بعض المُرفَقات لأنه لم يتم تنزيلها بعد.</string>
   <string name="message_compose_attachments_forward_toast">لا يمكن إعادة توجيه الرسالة لوجود بعض المُرفَقات التي يتم تنزيلها.</string>
@@ -206,9 +231,13 @@
   <string name="message_view_bcc_label">نسخة مخفية:</string>
   <string name="message_view_status_attachment_not_saved">غير قادر على حفظ المُرفَق.</string>
   <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <string name="message_view_recipient_prefix">إلي</string>
   <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <string name="message_view_additional_recipient_prefix">+</string>
   <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <string name="message_view_me_text">انا</string>
   <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+  <string name="message_view_show_remote_images_action">عرض الصور البعيدة</string>
   <string name="message_view_no_viewer">يتعذر إيجاب تطبيق لعرض <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">تنزيل الرسالة كاملةً</string>
   <string name="message_view_sender_label">عبر %1$s</string>
@@ -216,14 +245,19 @@
   <string name="message_discarded_toast">تم إلغاء الرسالة</string>
   <string name="message_saved_toast">تم الإحتفاظ بالرسالة كمسودة</string>
   <string name="global_settings_flag_label">إظهار النجوم</string>
+  <string name="global_settings_flag_summary">تشير النجوم إلى الرسائل التي تم وضع علامة عليها</string>
   <string name="global_settings_preview_lines_label">معاينة الخطوط</string>
   <string name="global_settings_show_correspondent_names_label">أظهر أسماء مُراسِليك</string>
   <string name="global_settings_show_correspondent_names_summary">إظهار أسماء المُراسلين بدلًا مِن عناوين بريدهم الإلكترونية</string>
   <string name="global_settings_sender_above_subject_label">المُراسل فوق موضوع الرسالة</string>
+  <string name="global_settings_sender_above_subject_summary">اعرض أسماء المراسلين فوق سطر الموضوع وليس تحته</string>
   <string name="global_settings_show_contact_name_label">اظهر أسماء المتراسيلن</string>
+  <string name="global_settings_show_contact_name_summary">استخدم أسماء المستلمين من جهات الاتصال عند توفرها</string>
   <string name="global_settings_registered_name_color_label">تلوين المُتراسِلين</string>
   <string name="global_settings_registered_name_color_changed">تلوين أسماء جهات الإتصال</string>
+  <string name="general_settings_contact_name_color_label">Contact name color</string>
   <string name="global_settings_messageview_fixedwidth_label">حجم خط ثابت</string>
+  <string name="global_settings_messageview_fixedwidth_summary">استخدم خطًا ذا عرض ثابت عند إظهار رسائل نصية عادية</string>
   <string name="global_settings_messageview_autofit_width_label">ﻻئم الرسالة تلقائيًا</string>
   <string name="global_settings_messageview_autofit_width_summary">تقليص الرسالة لتناسب الشاشة</string>
   <string name="global_settings_messageview_return_to_list_label">عودة إلى اللائحة بعد الحذف</string>
@@ -231,6 +265,7 @@
   <string name="global_settings_messageview_show_next_label">إظهار الرسالة التالية بعد الحذف</string>
   <string name="global_settings_messageview_show_next_summary">إظهار الرسالة التالية دائمًا بعد حذف الرسالة</string>
   <string name="global_settings_confirm_actions_title">أكّد الإجاءات</string>
+  <string name="global_settings_confirm_actions_summary">إظهار مربع حوار كلما قمت بتنفيذ الإجراءات المحددة</string>
   <string name="global_settings_confirm_action_delete">احذف</string>
   <string name="global_settings_confirm_action_delete_starred">احذف الرسائل المميزة بنجمة (في لائحة الرسائل)</string>
   <string name="global_settings_confirm_action_spam">بريد مُزعج</string>
@@ -238,13 +273,19 @@
   <string name="global_settings_confirm_menu_mark_all_read">جعل كل الرسائل مقروءة</string>
   <string name="global_settings_confirm_action_delete_notif">احذف (من الإشعارات)</string>
   <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">Swipe actions </string>
   <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">Right swipe </string>
   <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">Left swipe</string>
   <!--The list item users select to not use a swipe action for a particular direction-->
   <string name="general_settings_swipe_action_none">بدون</string>
   <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">تبديل التحديد </string>
   <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">وضع علامة مقروء / غير مقروء </string>
   <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Add/remove star</string>
   <!--Name of the swipe action to archive a message-->
   <string name="general_settings_swipe_action_archive">أرشيف</string>
   <!--Name of the swipe action to delete a message-->
@@ -254,10 +295,14 @@
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">حَرِّكْ</string>
   <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_message_list_density_title">كثافة </string>
+  <string name="general_settings_ui_density_compact">المدمج </string>
   <string name="general_settings_ui_density_default">الإفتراضي</string>
+  <string name="general_settings_ui_density_relaxed">استرخاء </string>
   <string name="global_settings_privacy_hide_useragent">إخفاء عميل البريد</string>
   <string name="global_settings_privacy_hide_useragent_detail">احذف مُعرف بريد كية-9 من ترويسات الرسالة</string>
   <string name="global_settings_privacy_hide_timezone">احذف التوقيت</string>
+  <string name="global_settings_privacy_hide_timezone_detail">استخدم التوقيت العالمي المنسق (UTC) بدلاً من المنطقة الزمنية المحلية في رؤوس البريد ورأس الرد </string>
   <string name="global_settings_notification_quick_delete_title">إظهار زر ’الحذف‘</string>
   <string name="global_settings_notification_quick_delete_never">أبدًا</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">للإشعارات ذات الرسالة الواحدة</string>
@@ -265,9 +310,11 @@
   <string name="global_settings_lock_screen_notification_visibility_title">إشعارات الشاشة المقفلة</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">لا إشعارات في قفل الشاشة</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">اسم التطبيق</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">عدد الرسائل الجديدة </string>
   <string name="global_settings_lock_screen_notification_visibility_senders">تعداد الرسائل و المُرسِلين</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">الشيء نفسه عندما تكون الشاشة غير مقفلة</string>
   <string name="quiet_time">وقت الهدوء</string>
+  <string name="quiet_time_description">تعطيل الرنين والطنين والوميض في الليل </string>
   <string name="quiet_time_notification">عطل التنبيهات</string>
   <string name="quiet_time_notification_description">عطل التنبيهات بشكل كلي أثناء وقت الهدوء</string>
   <string name="quiet_time_starts">وقت الهدوء يبدأ من</string>
@@ -275,12 +322,22 @@
   <string name="account_setup_basics_title">إعداد حساب جديد</string>
   <string name="account_setup_basics_email_hint">عنوان البريد الإليكتروني</string>
   <string name="account_setup_basics_password_hint">كلمة السِّر</string>
+  <string name="account_setup_oauth_description">لاستخدام حساب البريد الإلكتروني هذا مع K-9 Mail ، تحتاج إلى تسجيل الدخول ومنح التطبيق حق الوصول إلى رسائل البريد الإلكتروني الخاصة بك. </string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in">تسجيل الدخول</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
+  <string name="account_setup_oauth_sign_in_with_google">تسجيل الدخول بأستخدام جوجل</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+  <string name="account_setup_basics_show_password_need_lock">لعرض كلمة المرور الخاصة بك هنا ، قم بتمكين قفل الشاشة على هذا الجهاز. </string>
+  <string name="account_setup_basics_show_password_biometrics_title">تحقق من هويتك </string>
+  <string name="account_setup_basics_show_password_biometrics_subtitle">افتح القفل لعرض كلمة المرور الخاصة بك </string>
   <string name="account_setup_basics_manual_setup_action">الإعداد يدويا</string>
   <string name="account_setup_check_settings_title"/>
+  <string name="account_setup_check_settings_retr_info_msg">استرداد معلومات الحساب \ u2026 </string>
+  <string name="account_setup_check_settings_check_incoming_msg">التحقق من إعدادات الخادم الوارد \ u2026 </string>
+  <string name="account_setup_check_settings_check_outgoing_msg">التحقق من إعدادات خادم الصادر… </string>
   <string name="account_setup_check_settings_authenticate">المصادقة \u2026</string>
+  <string name="account_setup_check_settings_fetch">إحضار إعدادات الحساب ... </string>
   <string name="account_setup_check_settings_canceling_msg">جارٍ الإلغاء\u2026</string>
   <string name="account_setup_names_title">لقد انتهيت تقريبًا</string>
   <string name="account_setup_names_account_name_label">اَعطِ هذا الحساب اسمًا (اختياري):</string>
@@ -293,6 +350,7 @@
   <string name="account_setup_auth_type_insecure_password">كلمة السر، مُرسَلَة بشكل غير آمن</string>
   <string name="account_setup_auth_type_encrypted_password">كلمة سِّر مُعماة</string>
   <string name="account_setup_auth_type_tls_client_certificate">شهادة العميل</string>
+  <string name="account_setup_auth_type_oauth2">OAuth 2.0 </string>
   <string name="account_setup_incoming_title">إعدادات الخادم الوارد</string>
   <string name="account_setup_incoming_username_label">اسم المُستخدم</string>
   <string name="account_setup_incoming_password_label">كلمة السِّر</string>
@@ -309,16 +367,20 @@
   <string name="account_setup_incoming_delete_policy_never_label">ﻻ تحذفها على الخادم</string>
   <string name="account_setup_incoming_delete_policy_delete_label">احذفها على الخادم</string>
   <string name="account_setup_incoming_delete_policy_markread_label">إعتبارها كمقروءة على السيرفر</string>
+  <string name="account_setup_incoming_use_compression">استخدم الضغط </string>
+  <string name="account_setup_incoming_send_client_id">أرسل معرّف العميل </string>
   <string name="account_setup_expunge_policy_label">إزالة الرسائل المحذوفة من الخادوم أيضا</string>
   <string name="account_setup_expunge_policy_immediately">فورًا</string>
   <string name="account_setup_expunge_policy_on_poll">عند الإستجواب</string>
   <string name="account_setup_expunge_policy_manual">يدوي</string>
+  <string name="account_setup_incoming_autodetect_namespace_label">اكتشاف مساحة اسم IMAP تلقائيًا </string>
   <string name="account_setup_incoming_imap_path_prefix_label">بادئة مسار IMAP</string>
   <string name="drafts_folder_label">مجلد المسودات</string>
   <string name="sent_folder_label">مجلد الرسائل المرسَلة</string>
   <string name="trash_folder_label">مجلد المهملات</string>
   <string name="archive_folder_label">مجلد الأرشيف</string>
   <string name="spam_folder_label">مجلد البريد المزعج</string>
+  <string name="account_setup_incoming_subscribed_folders_only_label">إظهار المجلدات المشتركة فقط </string>
   <string name="account_setup_auto_expand_folder">توسيع المجلد تلقائيا</string>
   <string name="account_setup_outgoing_title">إعدادات الخادم الخارج</string>
   <string name="account_setup_outgoing_smtp_server_label">خادم SMTP</string>
@@ -328,7 +390,9 @@
   <string name="account_setup_outgoing_username_label">اسم المُستخدم</string>
   <string name="account_setup_outgoing_password_label">كلمة السِّر</string>
   <string name="account_setup_outgoing_authentication_label">المصادقة</string>
+  <string name="account_setup_bad_uri">إعداد غير صالح: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">خيارات الحساب</string>
+  <string name="account_setup_options_mail_check_frequency_label">تردد استطلاع المجلد </string>
   <string name="account_setup_options_mail_check_frequency_never">أبدًا</string>
   <string name="account_setup_options_mail_check_frequency_15min">كل 15 دقيقة</string>
   <string name="account_setup_options_mail_check_frequency_30min">كل 30 دقيقة</string>
@@ -338,6 +402,7 @@
   <string name="account_setup_options_mail_check_frequency_6hour">كل 6 ساعات</string>
   <string name="account_setup_options_mail_check_frequency_12hour">كل 12 ساعة</string>
   <string name="account_setup_options_mail_check_frequency_24hour">كل 24 ساعة</string>
+  <string name="idle_refresh_period_label">تحديث اتصال IDLE </string>
   <string name="idle_refresh_period_2min">كل دقيقتين</string>
   <string name="idle_refresh_period_3min">كل 3 دقائق</string>
   <string name="idle_refresh_period_6min">كل 6 دقائق</string>
@@ -359,8 +424,15 @@
   <string name="account_setup_options_mail_display_count_5000">5000 رسالة</string>
   <string name="account_setup_options_mail_display_count_10000">10000 رسالة</string>
   <string name="account_setup_options_mail_display_count_all">كل الرسائل</string>
+  <string name="move_copy_cannot_copy_unsynced_message">لا يمكن نسخ أو نقل رسالة غير متزامنة مع الخادم </string>
   <string name="account_setup_failed_dlg_title">تعذرت مواصلة عملية إتمام الإعداد</string>
   <string name="account_setup_failed_dlg_auth_message_fmt">إسم المستخدم أو كلمة السر خاطئة.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">قدم الخادم شهادة SSL غير صالحة. في بعض الأحيان ، يكون هذا بسبب خطأ في تهيئة الخادم. في بعض الأحيان يكون ذلك بسبب محاولة شخص ما مهاجمتك أو مهاجمة خادم البريد الخاص بك. إذا لم تكن متأكدًا من الأمر ، فانقر فوق رفض واتصل بالأشخاص الذين يديرون خادم البريد الخاص بك. \ n \ n (<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">لا يمكن الاتصال بالسيرفر. \ n (<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">تم إلغاء التفويض </string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">فشل التفويض مع الخطأ التالي: <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 غير مدعوم حاليًا مع هذا الموفر. </string>
+  <string name="account_setup_failed_dlg_browser_not_found">تعذر على التطبيق العثور على متصفح لاستخدامه لمنح حق الوصول إلى حسابك </string>
   <string name="account_setup_failed_dlg_edit_details_action">تعديل التفاصيل</string>
   <string name="account_setup_failed_dlg_continue_action">مواصلة</string>
   <string name="account_settings_push_advanced_title">متقدمة</string>
@@ -375,12 +447,20 @@
   <string name="account_settings_notify_sync_label">إخطارات المزامنة</string>
   <string name="account_settings_email_label">بريدك الإليكتروني</string>
   <string name="account_settings_notify_summary">إظهار إشعارات على شريط الحالة عند تلقي بريد جديد</string>
+  <string name="account_settings_notify_sync_summary">إعلام في شريط الحالة أثناء فحص البريد </string>
   <string name="account_settings_notify_self_label">إضافة البريد الصادر</string>
   <string name="account_settings_notify_self_summary">إظهار إشعارات للرسائل التي أبعثُها</string>
   <string name="account_notify_contacts_mail_only_label">جهات الإتصال فقط</string>
   <string name="account_notify_contacts_mail_only_summary">إظهار الإشعارات فقط عند تلقي رسائل مِن طرف مراسلين معروفين</string>
+  <string name="account_settings_ignore_chat_messages_label">تجاهل رسائل الدردشة </string>
+  <string name="account_settings_ignore_chat_messages_summary">لا تعرض إشعارات للرسائل التي تنتمي إلى محادثة عبر البريد الإلكتروني </string>
   <string name="account_settings_mark_message_as_read_on_view_label">تحديد الرسالة كمقروءة بعد فتحها</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">تحديد الرسالة كمقروءة بعد فتحها الإطلاع عليها</string>
+  <string name="account_settings_mark_message_as_read_on_delete_label">وضع علامة كمقروءة عند الحذف </string>
+  <string name="account_settings_mark_message_as_read_on_delete_summary">وضع علامة على رسالة كمقروءة عند حذفها </string>
+  <string name="account_settings_notification_channels_label">فئات الإشعارات</string>
+  <string name="account_settings_open_notification_settings_messages_summary">تكوين الإخطارات للرسائل الجديدة </string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">تكوين إخطارات الخطأ والحالة </string>
   <string name="account_settings_show_pictures_label">دائمًا اظهر الصور</string>
   <string name="account_settings_show_pictures_never">لا</string>
   <string name="account_settings_show_pictures_only_from_contacts">من المُتراسِلين</string>
@@ -396,11 +476,14 @@
   <string name="account_settings_message_format_text">نص صِرفْ (احذف الصُور و التنسيقات)</string>
   <string name="account_settings_message_format_html">HTML (ابقي على الصُور و التنسيقات)</string>
   <string name="account_settings_message_format_auto">آلي</string>
+  <string name="account_settings_always_show_cc_bcc_label">اعرض دائمًا نسخة إلى / نسخة مخفية الوجهة </string>
   <string name="account_settings_message_read_receipt_label">اشعار قراءة</string>
   <string name="account_settings_message_read_receipt_summary">أطلب دائما إشعارا عند القراءة</string>
   <string name="account_settings_quote_style_label">أسلوب الإقتباس عند الإجابة</string>
   <string name="account_settings_quote_style_prefix">البادئة (مثلَ بريد جي مايل)</string>
   <string name="account_settings_quote_style_header">الرأسية (مِثل آوتلوك)</string>
+  <string name="account_settings_upload_sent_messages_label">تحميل الرسائل المرسلة </string>
+  <string name="account_settings_upload_sent_messages_summary">تحميل الرسائل إلى مجلد المرسل بعد الإرسال </string>
   <string name="account_settings_general_title">الإعدادات العامة</string>
   <string name="account_settings_reading_mail">قراءة البريد</string>
   <string name="account_settings_sync">جلب البريد</string>
@@ -409,10 +492,18 @@
   <string name="account_settings_crypto">التعمية مِن الطرف إلى نهاية الطرف</string>
   <string name="account_settings_crypto_app">تنشيط دعم أوبن بي جي بي</string>
   <string name="account_settings_crypto_app_select_title">إختيار تطبيق أوبن بي جي بي</string>
+  <string name="account_settings_crypto_key">تكوين مفتاح من طرف إلى طرف </string>
+  <string name="account_settings_crypto_summary_off">لم يتم تكوين تطبيق OpenPGP </string>
   <string name="account_settings_crypto_summary_on">متصل بـ %s</string>
   <string name="account_settings_crypto_summary_config">الضبط جارٍ…</string>
+  <string name="account_settings_crypto_encrypt_all_drafts">تخزين جميع المسودات مشفرة </string>
+  <string name="account_settings_crypto_encrypt_all_drafts_on">سيتم تخزين جميع المسودات مشفرة </string>
+  <string name="account_settings_crypto_encrypt_all_drafts_off">تشفير المسودات فقط إذا تم تمكين التشفير </string>
+  <string name="account_settings_mail_check_frequency_label">تردد استطلاع المجلد </string>
   <string name="account_settings_color_label">لون الحساب</string>
+  <string name="account_settings_color_summary">لون التمييز لهذا الحساب المستخدم في قائمة المجلدات والحسابات </string>
   <string name="account_settings_mail_display_count_label">حجم المجلد المحلي</string>
+  <string name="account_settings_autodownload_message_size_label">إحضار الرسائل حتى </string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
   <string name="account_settings_autodownload_message_size_2">2 KiB</string>
   <string name="account_settings_autodownload_message_size_4">4 KiB</string>
@@ -452,32 +543,42 @@
   <string name="account_settings_folder_sync_mode_first_and_second_class">المجلدات من الفئة الأولى و الثانية</string>
   <string name="account_settings_folder_sync_mode_not_second_class">الكل عدا مجلدات الفئة الثانية</string>
   <string name="account_settings_folder_sync_mode_none">بدون</string>
+  <string name="account_settings_folder_push_mode_label">دفع المجلدات </string>
   <string name="account_settings_folder_push_mode_all">الكل</string>
   <string name="account_settings_folder_push_mode_first_class">المجلدات من الفئة الأولى فقط</string>
   <string name="account_settings_folder_push_mode_first_and_second_class">المجلدات من الفئة الأولى و الثانية</string>
   <string name="account_settings_folder_push_mode_not_second_class">الكل عدا مجلدات الفئة الثانية</string>
   <string name="account_settings_folder_push_mode_none">بدون</string>
+  <string name="account_settings_folder_target_mode_label">نقل / نسخ مجلدات الوجهة </string>
   <string name="account_settings_folder_target_mode_all">الكل</string>
   <string name="account_settings_folder_target_mode_first_class">المجلدات من الفئة الأولى فقط</string>
   <string name="account_settings_folder_target_mode_first_and_second_class">المجلدات من الفئة الأولى و الثانية</string>
   <string name="account_settings_folder_target_mode_not_second_class">الكل عدا مجلدات الفئة الثانية</string>
+  <string name="account_settings_sync_remote_deletetions_label">مزامنة عمليات حذف الخادم </string>
   <string name="account_settings_sync_remote_deletetions_summary">احذف الرسائل عند حذفها على الخادم</string>
+  <string name="account_settings_openpgp_missing">تطبيق OpenPGP مفقود - هل تم إلغاء تثبيته؟ </string>
   <string name="folder_settings_title">إعدادات المجلد</string>
   <string name="folder_settings_in_top_group_label">العرض في قمة المجموعة</string>
+  <string name="folder_settings_in_top_group_summary">اعرض بالقرب من أعلى قائمة المجلدات </string>
   <string name="folder_settings_folder_display_mode_label">فئة عرض المجلد</string>
   <string name="folder_settings_folder_display_mode_normal">دون تصنيف</string>
   <string name="folder_settings_folder_display_mode_first_class">الفئة الأولى</string>
   <string name="folder_settings_folder_display_mode_second_class">الفئة الثانية</string>
+  <string name="folder_settings_folder_sync_mode_label">Folder poll class</string>
   <string name="folder_settings_folder_sync_mode_normal">بدون</string>
   <string name="folder_settings_folder_sync_mode_first_class">الفئة الأولى</string>
   <string name="folder_settings_folder_sync_mode_second_class">الفئة الثانية</string>
+  <string name="folder_settings_folder_sync_mode_inherited">نفس فئة العرض </string>
+  <string name="folder_settings_folder_push_mode_label">فئة دفع المجلد </string>
   <string name="folder_settings_folder_push_mode_normal">دون تصنيف</string>
   <string name="folder_settings_folder_push_mode_first_class">الفئة الأولى</string>
   <string name="folder_settings_folder_push_mode_second_class">الفئة الثانية</string>
+  <string name="folder_settings_folder_push_mode_inherited">نفس فئة الاستطلاع </string>
   <string name="folder_settings_folder_notify_mode_label">فئة تنبيهات المجلد</string>
   <string name="folder_settings_folder_notify_mode_normal">دون تصنيف</string>
   <string name="folder_settings_folder_notify_mode_first_class">الفئة الأولى</string>
   <string name="folder_settings_folder_notify_mode_second_class">الفئة الثانية</string>
+  <string name="folder_settings_folder_notify_mode_inherited">نفس فئة الدفع </string>
   <string name="folder_settings_clear_local_folder_action">امحوا الرسائل المحلية</string>
   <string name="account_settings_incoming_label">خادم الوارد</string>
   <string name="account_settings_incoming_summary">إعداد خادم البريد الوارد</string>
@@ -486,22 +587,44 @@
   <string name="account_settings_description_label">اسم الحساب</string>
   <string name="account_settings_name_label">اسمك</string>
   <string name="notifications_title">التنبيهات</string>
+  <string name="account_settings_vibration">اهتزاز </string>
   <string name="account_settings_vibrate_enable">الاهتزاز</string>
+  <string name="account_settings_vibrate_pattern_label">نمط الاهتزاز </string>
   <string name="account_settings_vibrate_pattern_default">الإفتراضي</string>
+  <string name="account_settings_vibrate_pattern_1">النمط 1 </string>
+  <string name="account_settings_vibrate_pattern_2">النمط 2 </string>
+  <string name="account_settings_vibrate_pattern_3">النمط 3 </string>
+  <string name="account_settings_vibrate_pattern_4">النمط 4 </string>
+  <string name="account_settings_vibrate_pattern_5">النمط 5 </string>
   <string name="account_settings_vibrate_times">مُعاودة الإهتزاز</string>
+  <string name="account_settings_vibrate_summary_disabled">معطل </string>
   <string name="account_settings_ringtone">نغمة البريد الجديد</string>
+  <string name="account_settings_notification_light_label">ضوء الإشعارات</string>
+  <string name="account_settings_notification_light_disabled">معطل</string>
   <string name="account_settings_notification_light_account_color">لون الحساب</string>
+  <string name="account_settings_notification_light_default_color">اللون الافتراضي للنظام </string>
+  <string name="account_settings_notification_light_white">أبيض</string>
+  <string name="account_settings_notification_light_red">أحمر</string>
+  <string name="account_settings_notification_light_green">أخضر</string>
+  <string name="account_settings_notification_light_blue">أزرق</string>
+  <string name="account_settings_notification_light_yellow">أصفر</string>
+  <string name="account_settings_notification_light_cyan">ازرق سماوي </string>
+  <string name="account_settings_notification_light_magenta">أرجواني </string>
   <string name="account_settings_composition_title">خيارات تحرير الرسائل</string>
   <string name="account_settings_composition_label">الخيارات الإفتراضية للتحرير</string>
+  <string name="account_settings_composition_summary">تعيين الافتراضي الخاص بك من ، مخفية الوجهة والتوقيع </string>
   <string name="account_settings_identities_label">إدارة الهويات</string>
+  <string name="account_settings_identities_summary">قم بإعداد عناوين وتوقيعات بديلة في \"من\" </string>
   <string name="manage_identities_title">إدارة الهويات</string>
   <string name="manage_identities_context_menu_title">إدارة الهوية</string>
   <string name="edit_identity_title">تعديل الهوية</string>
   <string name="edit_identity_save">احفظ</string>
   <string name="new_identity_action">هوية جديدة</string>
+  <string name="account_settings_always_bcc_label">جميع الرسائل المخفية إلى </string>
   <string name="manage_identities_edit_action">حرر</string>
   <string name="manage_identities_move_up_action">إلى الأعلى</string>
   <string name="manage_identities_move_down_action">إلى الأسفل</string>
+  <string name="manage_identities_move_top_action">الانتقال إلى الأعلى / جعله افتراضيًا </string>
   <string name="manage_identities_remove_action">احذف</string>
   <string name="edit_identity_description_label">وصف الهوية</string>
   <string name="edit_identity_description_hint">(اختياري)</string>
@@ -525,6 +648,7 @@
   <string name="sort_subject_alpha">حسب المواضيع أبجديا</string>
   <string name="sort_subject_re_alpha">حسب الأبجدية العكسية للمواضيع</string>
   <string name="sort_sender_alpha">حسب المرسلون أبجديا</string>
+  <string name="sort_sender_re_alpha">المرسل عكس الترتيب الأبجدي </string>
   <string name="sort_flagged_first">الرسائل المحددة بنجمة أولا</string>
   <string name="sort_flagged_last">الرسائل غير المحددة بنجمة أولا</string>
   <string name="sort_unread_first">الرسائل غير المقروءة أولا</string>
@@ -533,6 +657,7 @@
   <string name="sort_unattached_first">الرسائل التي لا تحتوي على مُرفَقات أولاً</string>
   <string name="sort_by">رتب مستخدمًا…</string>
   <string name="sort_by_date">التاريخ</string>
+  <string name="sort_by_arrival">وصول </string>
   <string name="sort_by_subject">العنوان</string>
   <string name="sort_by_sender">المُرسِل</string>
   <string name="sort_by_flag">نجمة</string>
@@ -554,6 +679,7 @@
   <string name="setting_theme_global">إستخدم سمة التطبيق</string>
   <string name="setting_theme_dark">مظلِم</string>
   <string name="setting_theme_light">مضيئ</string>
+  <string name="setting_theme_follow_system">استخدم النظام الافتراضي </string>
   <string name="display_preferences">المظهر</string>
   <string name="global_preferences">العامة</string>
   <string name="debug_preferences">التنقيح</string>
@@ -564,13 +690,20 @@
   <string name="messagelist_preferences">قوائم الرسالة</string>
   <string name="messageview_preferences">الرسائل</string>
   <string name="settings_theme_label">السمة</string>
+  <string name="settings_message_theme_label">موضوع عرض الرسالة </string>
   <string name="settings_compose_theme_label">سمة المحرر</string>
   <string name="settings_language_label">اللغة</string>
+  <string name="preference_search_no_results">لم يتم العثور على إعدادات </string>
+  <string name="settings_message_theme_selection_label">موضوع الرسالة الثابتة </string>
+  <string name="settings_message_theme_selection_summary_off">حدد موضوع عرض الرسالة أثناء عرض الرسالة </string>
+  <string name="settings_message_theme_selection_summary_on">استخدم سمة عرض رسالة ثابتة </string>
   <string name="setting_language_system">الإفتراضي في النظام</string>
   <string name="background_ops_label">المزامنة في الخلفية</string>
   <string name="background_ops_never">أبدًا</string>
   <string name="background_ops_always">دائمًا</string>
+  <string name="background_ops_auto_sync_only">عند تحديد \"المزامنة التلقائية\" </string>
   <string name="batch_select_all">حدد الكل</string>
+  <string name="account_setup_push_limit_label">أقصى عدد من المجلدات للتحقق مع الدفع </string>
   <string name="account_setup_push_limit_5">5 مجلدات</string>
   <string name="account_setup_push_limit_10">10 مجلدات</string>
   <string name="account_setup_push_limit_25">25 مجلدا</string>
@@ -580,13 +713,20 @@
   <string name="account_setup_push_limit_500">500 مجلد</string>
   <string name="account_setup_push_limit_1000">1000 مجلد</string>
   <string name="animations_title">الحركة</string>
+  <string name="animations_summary">استخدم تأثيرات بصرية مبهرجة </string>
+  <string name="volume_navigation_title">حجم مفتاح التنقل في عرض الرسالة </string>
+  <string name="show_unified_inbox_title">إظهار علبة الوارد الموحدة </string>
+  <string name="show_starred_count_title">إظهار العدد المميّز بنجمة </string>
   <string name="integrated_inbox_title">البريد الوارد الموحَّد</string>
   <string name="integrated_inbox_detail">كل الرسائل في مجلدات موحَّدة</string>
   <string name="folder_settings_include_in_integrated_inbox_label">التوحيد</string>
+  <string name="folder_settings_include_in_integrated_inbox_summary">يتم عرض جميع الرسائل في صندوق الوارد الموحد </string>
   <string name="account_settings_searchable_label">حسابات البحث</string>
   <string name="account_settings_searchable_all">الكل</string>
+  <string name="account_settings_searchable_displayable">للعرض </string>
   <string name="account_settings_searchable_none">بدون</string>
   <string name="account_settings_no_folder_selected">بدون</string>
+  <string name="account_settings_automatic_special_folder">تلقائي (%s)</string>
   <string name="font_size_settings_title">حجم الخط</string>
   <string name="font_size_settings_description">إختيار حجم الخط</string>
   <string name="font_size_message_list">قوائم الرسالة</string>
@@ -598,6 +738,7 @@
   <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
   <string name="font_size_message_view_account">اسم الحساب</string>
   <string name="font_size_message_view_sender">مُرسِل</string>
+  <string name="font_size_message_view_recipients">المستلمون </string>
   <string name="font_size_message_view_subject">العنوان</string>
   <string name="font_size_message_view_date">الوقت والتاريخ</string>
   <string name="font_size_message_view_content">نصّ الرسالة</string>
@@ -611,15 +752,21 @@
   <string name="font_size_medium">وسط</string>
   <string name="font_size_large">كبير</string>
   <string name="font_size_larger">أكبر</string>
+  <string name="error_activity_not_found">لم يتم العثور على تطبيق مناسب لهذا الإجراء. </string>
   <string name="send_failed_reason">فشل الإرسال : %s</string>
   <string name="save_or_discard_draft_message_dlg_title">احفظ مسودة الرسالة؟</string>
   <string name="save_or_discard_draft_message_instructions_fmt">احفظ أو إلغ الرسالة؟</string>
+  <string name="save_or_discard_draft_message_changes">حفظ أو تجاهل التغييرات؟ </string>
   <string name="confirm_discard_draft_message_title">هل تريد إلغاء الرسالة ؟</string>
   <string name="confirm_discard_draft_message">هل أنت متأكد من أنك تود إلغاء هذه الرسالة ؟</string>
+  <string name="dialog_confirm_clear_local_folder_title">مسح الرسائل المحلية؟ </string>
+  <string name="dialog_confirm_clear_local_folder_message">سيؤدي هذا إلى إزالة جميع الرسائل المحلية من المجلد. لن يتم حذف أي رسائل من الخادم. </string>
+  <string name="dialog_confirm_clear_local_folder_action">رسائل واضحة </string>
   <string name="dialog_confirm_delete_title">تأكيد الحذف</string>
   <string name="dialog_confirm_delete_message">أتريد حذف هذه الرسالة؟</string>
   <string name="dialog_confirm_delete_confirm_button">نعم</string>
   <string name="dialog_confirm_delete_cancel_button">لا</string>
+  <string name="dialog_confirm_mark_all_as_read_title">تأكيد وضع علامة على الكل كمقروء </string>
   <string name="dialog_confirm_mark_all_as_read_message">أتريد جعل كل الرسائل مقروءة؟</string>
   <string name="dialog_confirm_empty_trash_title">تأكيد إفراغ المهملات</string>
   <string name="dialog_confirm_empty_trash_message">أتريد إفراغ مجلد المهملات؟</string>
@@ -640,19 +787,39 @@
   <string name="settings_import_title">استيراد الإعدادات</string>
   <string name="settings_import_pick_document_button">اختيار ملف</string>
   <string name="settings_import_button">استيراد</string>
+  <string name="settings_import_success_generic">تم استيراد الإعدادات بنجاح </string>
   <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+  <string name="settings_import_password_required">الرجاء إدخال كلمات المرور </string>
   <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_required">الرجاء تسجيل الدخول </string>
   <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+  <string name="settings_import_authorization_and_password_required">الرجاء تسجيل الدخول وإدخال كلمات المرور </string>
+  <string name="settings_import_failure">فشل استيراد الإعدادات </string>
+  <string name="settings_import_read_failure">فشلت قراءة ملف الإعدادات </string>
+  <string name="settings_import_partial_failure">فشل استيراد بعض الإعدادات </string>
+  <string name="settings_import_status_success">تم الاستيراد بنجاح </string>
+  <string name="settings_import_status_password_required">كلمة المرور مطلوبة </string>
   <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+  <string name="settings_import_status_log_in_required">تسجيل الدخول مطلوب </string>
+  <string name="settings_import_status_not_imported">غير مستورد </string>
+  <string name="settings_import_status_error">فشل الاستيراد </string>
   <string name="settings_import_later_button">لاحقًا</string>
   <string name="settings_import">استيراد الإعدادات</string>
   <string name="settings_importing">استيراد الإعدادات…</string>
+  <string name="settings_import_incoming_server_password_hint">كلمة مرور الخادم الواردة </string>
+  <string name="settings_import_outgoing_server_password_hint">كلمة مرور خادم البريد الصادر </string>
+  <string name="settings_import_use_same_password_for_outgoing_server">استخدم نفس كلمة المرور لخادم البريد الصادر </string>
   <string name="server_name_format">اسم الخادم: <xliff:g id="hostname">%s</xliff:g></string>
+  <string name="unread_widget_select_account">إظهار العدد غير المقروء لـ ... </string>
   <string name="unread_widget_account_title">الحساب</string>
+  <string name="unread_widget_account_summary">الحساب الذي يجب عرض العدد غير المقروء له </string>
   <string name="unread_widget_unified_inbox_account_summary">البريد الوارد الموحَّد</string>
   <string name="unread_widget_folder_enabled_title">تعداد المجلدات</string>
+  <string name="unread_widget_folder_enabled_summary">عرض العدد غير المقروء لمجلد واحد فقط </string>
   <string name="unread_widget_folder_title">مجلد</string>
+  <string name="unread_widget_folder_summary">المجلد الذي يجب عرض العدد غير المقروء له </string>
   <string name="unread_widget_action_done">تم</string>
+  <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
   <string name="unread_widget_account_not_selected">لم يتم اختيار أي حساب</string>
   <string name="unread_widget_folder_not_selected">لم يتم اختيار أي مجلد</string>
   <string name="webview_empty_message">دون نص</string>
@@ -660,6 +827,8 @@
   <string name="webview_contextmenu_link_share_action">شارك الرابط</string>
   <string name="webview_contextmenu_link_copy_action">انسخ الرابط إلى الحافظة</string>
   <string name="webview_contextmenu_link_clipboard_label">الرابط</string>
+  <string name="webview_contextmenu_link_text_copy_action">انسخ نص الارتباط إلى الحافظة </string>
+  <string name="webview_contextmenu_link_text_clipboard_label">نص الارتباط </string>
   <string name="webview_contextmenu_image_title">صورة</string>
   <string name="webview_contextmenu_image_view_action">أظهر الصورة</string>
   <string name="webview_contextmenu_image_save_action">احفظ الصورة</string>
@@ -682,37 +851,71 @@
   <string name="account_settings_remote_search_num_results_entries_250">250</string>
   <string name="account_settings_remote_search_num_results_entries_500">500</string>
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
+  <string name="account_settings_remote_search_num_label">حد بحث الخادم </string>
   <string name="remote_search_sending_query">إرسال الطلب إلى الخادوم</string>
+  <string name="remote_search_error">فشل البحث عن بعد </string>
   <string name="account_settings_search">ابحث</string>
   <string name="action_remote_search">ابحث عن الرسائل في الخادم</string>
+  <string name="remote_search_unavailable_no_network">مطلوب اتصال شبكة للبحث عن الخادم. </string>
   <string name="global_settings_background_as_unread_indicator_label">تغيير لون الرسالة بعد قراءتها</string>
+  <string name="global_settings_background_as_unread_indicator_summary">ستظهر خلفية مختلفة أن الرسالة قد تمت قراءتها </string>
+  <string name="global_settings_threaded_view_label">عرض مترابطة </string>
   <string name="global_settings_threaded_view_summary">إجمع الرسائل في محادثات</string>
   <string name="upgrade_databases_title">تحديث قواعد البيانات</string>
   <string name="upgrade_databases_unspecified">يُحدث قواعد البيانات…</string>
   <string name="upgrade_database_format">تحديث قاعدة بيانات الحساب \"<xliff:g id="account">%s</xliff:g>\"</string>
+  <string name="global_settings_splitview_mode_label">عرض تقسيم الشاشة </string>
   <string name="global_settings_splitview_always">دائمًا</string>
   <string name="global_settings_splitview_never">أبدًا</string>
+  <string name="global_settings_splitview_when_in_landscape">عندما تكون في الاتجاه الأفقي </string>
+  <string name="message_view_empty">الرجاء تحديد رسالة على اليسار </string>
   <string name="global_settings_show_contact_picture_label">اظهر صورة المُتراسل</string>
+  <string name="global_settings_show_contact_picture_summary">إظهار صور جهات الاتصال في قائمة الرسائل </string>
   <string name="mark_all_as_read">علم الكل كمقروئين</string>
   <string name="global_settings_colorize_missing_contact_pictures_label">تلوين صور جهات الاتصال</string>
   <string name="global_settings_colorize_missing_contact_pictures_summary">تلوين صور الناقصة لجهات الاتصال</string>
+  <string name="global_settings_messageview_visible_refile_actions_title">إجراءات الرسائل المرئية </string>
+  <string name="global_settings_messageview_visible_refile_actions_summary">إظهار الإجراءات المحددة في قائمة عرض الرسالة </string>
   <string name="loading_attachment">يتم تحميل المُرفَقات…</string>
   <string name="fetching_attachment_dialog_title_send">يُرسل رسالة</string>
   <string name="fetching_attachment_dialog_title_save">جارٍ حفظ المسودّة</string>
   <string name="fetching_attachment_dialog_message">يتم جلب المُرفَقات…</string>
+  <string name="auth_external_error">غير قادر على مصادقة. لا يعلن الخادم عن إمكانية SASL EXTERNAL. قد يكون هذا بسبب مشكلة في شهادة العميل (منتهية الصلاحية ، مرجع مصدق غير معروف) أو مشكلة تكوين أخرى. </string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">إستخدم شهادة عميل</string>
   <string name="client_certificate_spinner_empty">بدون شهادة عميل</string>
+  <string name="client_certificate_spinner_delete">إزالة اختيار شهادة العميل </string>
+  <string name="client_certificate_retrieval_failure">فشل استرداد شهادة العميل للاسم المستعار \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">خيارات متقدمة</string>
+  <string name="client_certificate_expired">شهادة العميل \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" منتهية الصلاحية أو غير صالحة بعد (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
   <!--Note: This references message_view_download_remainder-->
   <string name="preview_encrypted">*مشفّرة*</string>
+  <string name="add_from_contacts">إضافة من جهات الاتصال </string>
   <string name="recipient_cc">نسخة</string>
+  <string name="recipient_bcc">BCC</string>
   <string name="recipient_to">إلى</string>
   <string name="recipient_from">مِن</string>
+  <string name="reply_to_label">الرد على </string>
+  <string name="unknown_recipient">&lt;مستلم غير معروف&gt; </string>
+  <string name="unknown_sender">&lt;مرسل غير معروف&gt; </string>
   <string name="address_type_home">المنزل</string>
   <string name="address_type_work">العمل</string>
   <string name="address_type_other">أخرى</string>
   <string name="address_type_mobile">الجوال</string>
+  <string name="compose_error_no_draft_folder">لم يتم تكوين مجلد مسودات لهذا الحساب! </string>
+  <string name="compose_error_no_key_configured">لم يتم تكوين مفتاح لهذا الحساب! تحقق من الإعدادات الخاصة بك. </string>
+  <string name="error_crypto_provider_incompatible">يستخدم موفر التشفير إصدارًا غير متوافق. يرجى التحقق من الإعدادات الخاصة بك! </string>
+  <string name="error_crypto_provider_connect">لا يمكن الاتصال بموفر التشفير ، تحقق من الإعدادات أو انقر فوق رمز التشفير لإعادة المحاولة! </string>
+  <string name="error_crypto_provider_ui_required">فشل في تهيئة التشفير من طرف إلى طرف ، يرجى التحقق من إعداداتك </string>
+  <string name="error_crypto_inline_attach">لا يدعم وضع PGP / INLINE المرفقات! </string>
+  <string name="enable_inline_pgp">تفعيل PGP / INLINE </string>
+  <string name="disable_inline_pgp">تعطيل PGP / INLINE </string>
+  <string name="enable_sign_only">تفعيل تسجيل PGP فقط </string>
+  <string name="disable_sign_only">تعطيل تسجيل PGP فقط </string>
+  <string name="openpgp_inline_title">وضع PGP / INLINE </string>
+  <string name="openpgp_inline_text">تم إرسال البريد الإلكتروني بتنسيق PGP / INLINE. \ n يجب استخدام هذا فقط من أجل التوافق: </string>
+  <string name="openpgp_inline_plus_compat">يدعم بعض العملاء هذا التنسيق فقط </string>
+  <string name="openpgp_inline_minus_transit">التوقيعات قد تنكسر أثناء العبور </string>
   <string name="openpgp_inline_minus_attach">الملفات المُرفقة غير مدعومة</string>
   <string name="openpgp_inline_ok">حسنًا !</string>
   <string name="openpgp_inline_disable">إلغ التفعيل</string>
@@ -720,55 +923,132 @@
   <string name="openpgp_sign_only_ok">حسنًا !</string>
   <string name="openpgp_sign_only_disable">إلغ التفعيل</string>
   <string name="openpgp_sign_only_keep_enabled">إتركها مُفعلة</string>
+  <string name="openpgp_dialog_sign_only_title">وضع تسجيل PGP فقط </string>
+  <string name="openpgp_dialog_sign_only_text">في هذا الوضع ، سيتم استخدام مفتاح PGP الخاص بك لإنشاء توقيع مشفر لبريد إلكتروني غير مشفر. </string>
+  <string name="openpgp_dialog_sign_only_plus_verified">لا يؤدي هذا إلى تشفير البريد الإلكتروني ، ولكنه يتحقق من أنه تم إرساله من مفتاحك. </string>
+  <string name="openpgp_dialog_sign_only_minus_break">قد تنقطع التوقيعات عند إرسالها إلى القوائم البريدية. </string>
   <string name="openpgp_dialog_sign_only_minus_attach">التواقيع قد تظهر كمرفقات  \'signature.asc\' في بعض برامج البريد.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">الرسالة المُعماة \"المشفرة\" دائمًا ما تحتوي على توقيع.</string>
   <string name="crypto_msg_title_plaintext">نص مُجرّد</string>
+  <string name="crypto_msg_unencrypted_sign_error">احتوى التوقيع الشامل على خطأ </string>
   <string name="crypto_msg_incomplete_signed">يجب تنزيل الرسالة كاملة ليتم معالجة التوقيع</string>
+  <string name="crypto_msg_unsupported_signed">يحتوي على توقيع غير معتمد من طرف إلى طرف </string>
+  <string name="crypto_msg_unsupported_encrypted">الرسالة مشفرة ولكن بتنسيق غير مدعوم. </string>
+  <string name="crypto_msg_cancelled">تم تشفير الرسالة ، ولكن تم إلغاء فك التشفير. </string>
+  <string name="crypto_msg_title_unencrypted_signed_e2e">نص عادي موقع من طرف إلى طرف </string>
   <string name="crypto_msg_unencrypted_sign_verified">مِن طرف مُوقِّع مُؤكَّد</string>
   <string name="crypto_msg_title_unencrypted_signed">نص مُجرَّد مُوَقَّع</string>
-  <string name="crypto_msg_title_encrypted_unknown">مُعَمّى</string>
-  <string name="crypto_msg_title_encrypted_unsigned">مُعَمّى</string>
-  <string name="crypto_msg_title_encrypted_signed">مُعَمّى</string>
+  <string name="crypto_msg_unencrypted_sign_mismatch">لكن المفتاح من طرف إلى طرف لا يتطابق مع المرسل </string>
+  <string name="crypto_msg_unencrypted_sign_expired">لكن مفتاح النهاية إلى النهاية منتهي الصلاحية </string>
+  <string name="crypto_msg_unencrypted_sign_revoked">ولكن تم إبطال المفتاح من طرف إلى طرف </string>
+  <string name="crypto_msg_unencrypted_sign_insecure">لكن المفتاح من طرف إلى طرف لا يعتبر آمنًا </string>
+  <string name="crypto_msg_unencrypted_sign_unknown">من مفتاح طرف إلى طرف غير معروف </string>
+  <string name="crypto_msg_title_encrypted_unknown">مشفر </string>
+  <string name="crypto_msg_encrypted_error">ولكن كان هناك خطأ في فك التشفير </string>
+  <string name="crypto_msg_encrypted_incomplete">يجب تنزيل الرسالة بالكامل لفك التشفير </string>
+  <string name="crypto_msg_encrypted_no_provider">ولكن لم يتم تكوين تطبيق تشفير </string>
+  <string name="crypto_msg_title_encrypted_unsigned">مُشفر</string>
+  <string name="crypto_msg_encrypted_unsigned">ولكن ليس من طرف إلى طرف </string>
+  <string name="crypto_msg_title_encrypted_signed_e2e">تشفير من طرف إلى طرف </string>
+  <string name="crypto_msg_encrypted_sign_verified">من مرسل تم التحقق منه </string>
+  <string name="crypto_msg_title_encrypted_signed">مشفر</string>
+  <string name="crypto_msg_encrypted_sign_unknown">من مفتاح طرف إلى طرف غير معروف </string>
+  <string name="crypto_msg_encrypted_sign_mismatch">لكن المفتاح من طرف إلى طرف لا يتطابق مع المرسل </string>
+  <string name="crypto_msg_encrypted_sign_expired">لكن مفتاح النهاية إلى النهاية منتهي الصلاحية</string>
+  <string name="crypto_msg_encrypted_sign_revoked">ولكن تم إبطال المفتاح من طرف إلى طرف </string>
+  <string name="crypto_msg_encrypted_sign_insecure">لكن المفتاح من طرف إلى طرف لا يعتبر آمنًا</string>
+  <string name="crypto_msg_encrypted_sign_error">لكن البيانات الشاملة بها أخطاء </string>
+  <string name="crypto_msg_encrypted_insecure">لكن التشفير لا يعتبر آمنًا </string>
   <string name="crypto_info_ok">حسنًا</string>
   <string name="crypto_info_search_key">البحث عن مفتاح</string>
   <string name="crypto_info_view_signer">إظهار المُوَقِّع</string>
   <string name="crypto_info_view_sender">إظهار المُرسِل</string>
   <string name="crypto_info_view_security_warning">التفاصيل</string>
   <string name="locked_attach_unlock">فك القفل</string>
+  <string name="locked_attach_unencrypted">لم يتم تشفير هذا الجزء ، وربما يكون غير آمن. </string>
   <string name="locked_attach_title">مُرفق غير محمي</string>
   <string name="message_progress_text">يُحمل…</string>
   <string name="messageview_decrypt_cancelled">تم إلغاء فك التعمية.</string>
   <string name="messageview_decrypt_retry">إعادة المحاولة</string>
+  <string name="messageview_decrypt_incomplete">يجب تنزيل الرسالة المشفرة لفك التشفير. </string>
   <string name="messageview_crypto_error_title">خطأ أنثاء عملية فك تعمية الرسالة الإلكترونية</string>
+  <string name="recipient_error_non_ascii">الشخصيات الخاصة غير مدعومة حاليًا! </string>
+  <string name="recipient_error_parse_failed">خطأ في تحليل العنوان! </string>
+  <string name="account_settings_crypto_hide_sign_only">إخفاء التوقيعات غير المشفرة </string>
+  <string name="account_settings_crypto_hide_sign_only_on">سيتم عرض التوقيعات المشفرة فقط </string>
+  <string name="account_settings_crypto_hide_sign_only_off">سيتم عرض جميع التوقيعات </string>
+  <string name="error_sign_only_no_encryption">التشفير غير متوفر في وضع التسجيل فقط! </string>
   <string name="unsigned_text_divider_label">نص غير مُوَقَّع</string>
   <string name="crypto_no_provider_title">هذه الرسالة مُعماة</string>
+  <string name="crypto_no_provider_message">تم تشفير هذا البريد الإلكتروني باستخدام OpenPGP. \ n لقراءته ، تحتاج إلى تثبيت وتكوين تطبيق OpenPGP متوافق. </string>
+  <string name="crypto_no_provider_button">اذهب للاعدادات </string>
   <string name="mail_list_widget_text">قائمة رسائل K-9</string>
   <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
   <string name="message_list_widget_initializing">يُحمل…</string>
   <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
   <string name="message_list_widget_list_item_loading">يُحمل…</string>
   <string name="openpgp_enabled_error_title">التعمية غير ممكنة</string>
+  <string name="openpgp_enabled_error_msg">بعض المستلمين المحددين لا يدعمون هذه الميزة! </string>
   <string name="enable_encryption">تنشيط التعمية</string>
   <string name="disable_encryption">تعطيل التعمية</string>
+  <string name="openpgp_description_text1">يضمن تشفير الرسائل إمكانية قراءتها من قبل المستلم ولا يمكن لأي شخص آخر قراءتها. </string>
+  <string name="openpgp_description_text3">سيظهر التشفير فقط إذا كان يدعمه جميع المستلمين ، ويجب أن يكونوا قد أرسلوا إليك بريدًا إلكترونيًا من قبل. </string>
+  <string name="openpgp_description_text2">تبديل التشفير عن طريق النقر فوق هذا الرمز. </string>
   <string name="openpgp_enabled_error_gotit">حسناً</string>
   <string name="openpgp_enabled_error_back">العودة</string>
   <string name="openpgp_enabled_error_disable">تعطيل التعمية</string>
   <string name="openpgp_encryption">تعمية أوبن بي جي بي OpenPGP</string>
+  <string name="account_settings_crypto_prefer_encrypt">وضع التشفير التلقائي المتبادل </string>
+  <string name="dialog_autocrypt_mutual_title">وضع التشفير التلقائي المتبادل</string>
+  <string name="dialog_autocrypt_mutual_description_1">عادةً ما يتم تشفير الرسائل عن طريق الاختيار ، أو عند الرد على رسالة مشفرة. </string>
+  <string name="dialog_autocrypt_mutual_description_2">إذا قام كل من المرسل والمستلم بتمكين الوضع المتبادل ، فسيتم تمكين التشفير افتراضيًا. </string>
   <string name="dialog_autocrypt_mutual_learn_more">لمعرفة المزيد يمكنك <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">النقر هنا</a>.</string>
   <string name="general_settings_title">الإعدادات العامة</string>
   <string name="dialog_openkeychain_info_title">ليس هناك أي تطبيق أوبن بي جي بي مُثبّت</string>
   <string name="dialog_openkeychain_info_install">تثبيت</string>
+  <string name="dialog_openkeychain_info_text">يتطلب K-9 Mail OpenKeychain للتشفير من طرف إلى طرف. </string>
   <string name="encrypted_subject">رسالة مشفّرة</string>
+  <string name="account_settings_crypto_encrypt_subject">تشفير مواضيع الرسالة </string>
+  <string name="account_settings_crypto_encrypt_subject_subtitle">قد لا تكون مدعومة من قبل بعض المستلمين </string>
+  <string name="toast_account_not_found">خطأ داخلي: حساب غير صالح! </string>
+  <string name="toast_openpgp_provider_error">خطأ في الاتصال بـ %s!</string>
+  <string name="ac_transfer_setting_title">إرسال رسالة إعداد تشفير تلقائي </string>
+  <string name="ac_transfer_setting_summary">مشاركة الإعداد الشامل بأمان مع الأجهزة الأخرى </string>
+  <string name="ac_transfer_title">تشفير تلقائي لرسالة الإعداد </string>
+  <string name="ac_transfer_intro">تقوم رسالة إعداد Autocrypt بمشاركة الإعداد الشامل الخاص بك بأمان مع الأجهزة الأخرى. </string>
+  <string name="ac_transfer_button_send">إرسال رسالة الإعداد </string>
+  <string name="ac_transfer_will_be_sent">سيتم إرسال الرسالة إلى عنوانك: </string>
+  <string name="ac_transfer_generating">جاري إنشاء رسالة الإعداد ... </string>
   <string name="ac_transfer_sending_to">إرسال رسالة إلى:</string>
+  <string name="ac_transfer_finish">للإنهاء ، افتح الرسالة على جهازك الآخر وأدخل رمز الإعداد. </string>
+  <string name="ac_transfer_show_code">إظهار كود الإعداد </string>
+  <string name="ac_transfer_msg_subject">تشفير تلقائي لرسالة الإعداد</string>
+  <string name="ac_transfer_msg_body">تحتوي هذه الرسالة على جميع المعلومات اللازمة لنقل إعدادات التشفير التلقائي إلى جانب مفتاحك السري بأمان من جهازك الأصلي. لإعداد جهازك الجديد لـ Autocrypt ، يرجى اتباع الإرشادات التي يجب أن يقدمها جهازك الجديد.  يمكنك الاحتفاظ هذه الرسالة واستخدامها كنسخة احتياطية لمفتاحك السري. إذا كنت ترغب في القيام بذلك ، يجب عليك كتابة كلمة المرور وتخزينها بشكل آمن </string>
+  <string name="ac_transfer_error_send">حدث خطأ أثناء إرسال الرسالة. يرجى التحقق من اتصال الشبكة وتكوين خادم البريد الصادر. </string>
   <string name="switch_on">مُفعّل</string>
   <string name="switch_off">مُوقّف</string>
   <!--permissions-->
+  <string name="permission_contacts_rationale_title">السماح بالوصول إلى جهات الاتصال </string>
+  <string name="permission_contacts_rationale_message">لتتمكن من تقديم اقتراحات جهات الاتصال وعرض أسماء جهات الاتصال والصور ، يحتاج التطبيق إلى الوصول إلى جهات الاتصال الخاصة بك. </string>
+  <string name="generic_loading_error">حدث خطأ أثناء تحميل البيانات </string>
+  <string name="push_notification_state_initializing">جار تهيئة… </string>
+  <string name="push_notification_state_listening">في انتظار رسائل البريد الإلكتروني الجديدة </string>
+  <string name="push_notification_state_wait_background_sync">السكون حتى يتم السماح بالمزامنة في الخلفية </string>
+  <string name="push_notification_state_wait_network">السكون حتى تتوفر الشبكة </string>
+  <string name="push_notification_info">انقر لمعرفة المزيد. </string>
+  <string name="push_info_title">دفع المعلومات </string>
+  <string name="push_info_notification_explanation_text">عند استخدام Push ، يحتفظ K-9 Mail بالاتصال بخادم البريد. يتطلب Android عرض إشعار مستمر عندما يكون التطبيق نشطًا في الخلفية. %s</string>
+  <string name="push_info_configure_notification_text">ومع ذلك ، يسمح لك Android أيضًا بإخفاء الإشعار. </string>
   <string name="push_info_learn_more_text">لمعرفة المزيد</string>
+  <string name="push_info_configure_notification_action">تكوين الإشعارات</string>
+  <string name="push_info_disable_push_text">إذا لم تكن بحاجة إلى إشعارات فورية حول الرسائل الجديدة ، فيجب عليك تعطيل ميزة Push and Use Polling. يتحقق الاقتراع من البريد الجديد على فترات منتظمة ولا يحتاج إلى الإشعارات. </string>
+  <string name="push_info_disable_push_action">تعطيل الدفع </string>
   <!--Name of the swipe action to select a message. Try to keep it short.-->
   <string name="swipe_action_select">حدد</string>
   <!--Name of the swipe action to deselect a message. Try to keep it short.-->
   <string name="swipe_action_deselect">إلغ التحديد</string>
   <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <string name="swipe_action_mark_as_read">علامة القراءة </string>
   <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
   <string name="swipe_action_mark_as_unread">علامة غير مقروء</string>
   <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
@@ -782,27 +1062,42 @@
   <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
   <string name="swipe_action_spam">بريد مُزعج</string>
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+  <string name="swipe_action_move">يتحرك… </string>
   <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+  <string name="general_settings_show_compose_button_title">إظهار زر الإنشاء العائم </string>
   <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+  <string name="message_list_error_title">خطأ </string>
   <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+  <string name="message_list_error_folder_not_found">المجلد غير موجود</string>
   <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <string name="message_details_toolbar_title">تفاصيل الرسالة </string>
   <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+  <string name="message_details_missing_date">رأس \"التاريخ\" مفقود </string>
   <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
   <string name="message_details_from_section_title">مِن</string>
   <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
   <string name="message_details_sender_section_title">المُرسِل</string>
   <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
+  <string name="message_details_replyto_section_title">الرد على </string>
   <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
   <string name="message_details_to_section_title">إلى</string>
   <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
   <string name="message_details_cc_section_title">نسخة</string>
   <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
+  <string name="message_details_bcc_section_title">BCC</string>
   <!--Displayed when loading the message details has failed-->
+  <string name="message_details_loading_error">حدث خطأ أثناء تحميل تفاصيل الرسالة. </string>
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_add_to_contacts">أضف إلى جهات الاتصال </string>
   <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_compose_message_to">إنشاء رسالة إلى </string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_email_address">انسخ عنوان البريد الإلكتروني </string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_name_and_email_address">انسخ الاسم وعنوان البريد الإلكتروني </string>
   <!--A user visible label for the email address copied to the clipboard-->
   <string name="clipboard_label_email_address">عناوين البريد</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
+  <string name="clipboard_label_name_and_email_address">الاسم وعنوان البريد الإلكتروني </string>
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>

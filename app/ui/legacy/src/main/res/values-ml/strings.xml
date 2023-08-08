@@ -1037,4 +1037,5 @@
   <!--A user visible label for the email address copied to the clipboard-->
   <string name="clipboard_label_email_address">ഇമെയിൽ വിലാസം</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>

@@ -1118,4 +1118,5 @@ Til að setja Autocrypt upp á nýju tæki, farðu þá eftir leiðbeiningunum s
   <string name="clipboard_label_email_address">Tölvupóstfang</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Nafn og tölvupóstfang</string>
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>

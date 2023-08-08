@@ -1125,4 +1125,5 @@ Lai jaunajā ierīcē iestatītu automātisko šifrēšanu, lūdzu sekojiet nor�
   <string name="clipboard_label_email_address">E-pasta adrese</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Vārds un e-pasta adrese</string>
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>

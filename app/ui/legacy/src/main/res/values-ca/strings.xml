@@ -1118,4 +1118,5 @@ Podeu desar aquest missatge i fer-lo servir com a còpia de seguretat per a la v
   <string name="clipboard_label_email_address">Envia un correu electrònic a aquesta adreça</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Nom i adreça de correu</string>
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>
