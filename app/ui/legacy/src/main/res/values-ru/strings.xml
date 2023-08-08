@@ -364,6 +364,7 @@ K-9 Mail — почтовик для Android.
   <string name="account_setup_incoming_delete_policy_delete_label">Удалить</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Прочитано</string>
   <string name="account_setup_incoming_use_compression">Использовать сжатие</string>
+  <string name="account_setup_incoming_send_client_id">Отправить client ID</string>
   <string name="account_setup_expunge_policy_label">Стирать удалённые с сервера</string>
   <string name="account_setup_expunge_policy_immediately">Немедленно</string>
   <string name="account_setup_expunge_policy_on_poll">При проверке</string>
@@ -1130,4 +1131,5 @@ K-9 Mail — почтовик для Android.
   <string name="clipboard_label_email_address">Адрес электронной почты</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Имя и адрес эл. почты</string>
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>

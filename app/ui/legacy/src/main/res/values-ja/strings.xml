@@ -1111,4 +1111,5 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="clipboard_label_email_address">メールアドレス</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">名前とメールアドレス</string>
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>

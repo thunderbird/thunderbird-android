@@ -27,6 +27,7 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">از تازه‌های این نسخه باخبر شوید</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+  <string name="changelog_snackbar_button_text">نما</string>
   <!--Welcome message-->
   <string name="welcome_message_title">به «K-9 Mail» خوش آمدید</string>
   <string name="accounts_welcome"><![CDATA[
@@ -222,9 +223,12 @@
   <string name="message_view_bcc_label">مخفیانه به:</string>
   <string name="message_view_status_attachment_not_saved">نمی‌توان پیوست را ذخیره کرد.</string>
   <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <string name="message_view_recipient_prefix">به</string>
   <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
   <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <string name="message_view_me_text">من</string>
   <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+  <string name="message_view_show_remote_images_action">نمایش تصاویر خارجی</string>
   <string name="message_view_no_viewer">نمایش‌دهنده‌ای برای <xliff:g id="mimetype">%s</xliff:g> پیدا نشد.</string>
   <string name="message_view_download_remainder">دانلود پیام کامل</string>
   <string name="message_view_sender_label">از طریق %1$s</string>
@@ -260,13 +264,19 @@
   <string name="global_settings_confirm_menu_mark_all_read">همهٔ پیام‌ها خوانده شد</string>
   <string name="global_settings_confirm_action_delete_notif">حذف (از اعلان)</string>
   <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">عملکردهای کشیدن</string>
   <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">کشیدن به راست</string>
   <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">کشیدن به چپ</string>
   <!--The list item users select to not use a swipe action for a particular direction-->
   <string name="general_settings_swipe_action_none">هیچ‌کدام</string>
   <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">فعال/غیرفعال کردن انتخاب</string>
   <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">برچسب زدن خوانده شده/خوانده نشده</string>
   <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">افزودن/حذف ستاره</string>
   <!--Name of the swipe action to archive a message-->
   <string name="general_settings_swipe_action_archive">بایگانی</string>
   <!--Name of the swipe action to delete a message-->
@@ -276,7 +286,10 @@
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">انتقال</string>
   <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_message_list_density_title">تراکم</string>
+  <string name="general_settings_ui_density_compact">فشرده</string>
   <string name="general_settings_ui_density_default">پیش‌فرض</string>
+  <string name="general_settings_ui_density_relaxed">راحت</string>
   <string name="global_settings_privacy_hide_useragent">کارخواه رایانامه را مخفی کن</string>
   <string name="global_settings_privacy_hide_useragent_detail">شناسهٔ K-9 User-Agent را از سرایند رایانامه‌ها بردار</string>
   <string name="global_settings_privacy_hide_timezone">منطقهٔ زمانی را مخفی کن</string>
@@ -347,6 +360,7 @@
   <string name="account_setup_incoming_delete_policy_delete_label">در کارساز نیز پاک شود</string>
   <string name="account_setup_incoming_delete_policy_markread_label">در کارساز نشان بزن که خواندم</string>
   <string name="account_setup_incoming_use_compression">استفاده از فشرده سازی</string>
+  <string name="account_setup_incoming_send_client_id">ارسال Client ID</string>
   <string name="account_setup_expunge_policy_label">پیام‌های حذف‌شده را در کارساز پاک کن</string>
   <string name="account_setup_expunge_policy_immediately">فوراً</string>
   <string name="account_setup_expunge_policy_on_poll">در زمان سرکشی</string>
@@ -693,6 +707,7 @@
   <string name="account_setup_push_limit_1000">۱۰۰۰ پوشه</string>
   <string name="animations_title">پویانمایی</string>
   <string name="animations_summary">استفاده از جلوه‌های پُرزرق‌وبرق</string>
+  <string name="volume_navigation_title">جابه‌جایی با کلیدهای تنظیم صدا</string>
   <string name="show_unified_inbox_title">نمایش صندوق یکپارچه</string>
   <string name="show_starred_count_title">نمایش تعداد ستاره‌دارها</string>
   <string name="integrated_inbox_title">صندوق ورودی یکپارچه</string>
@@ -716,6 +731,7 @@
   <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
   <string name="font_size_message_view_account">نام حساب</string>
   <string name="font_size_message_view_sender">فرستنده</string>
+  <string name="font_size_message_view_recipients">گیرنده‌ها</string>
   <string name="font_size_message_view_subject">موضوع</string>
   <string name="font_size_message_view_date">ساعت و تاریخ</string>
   <string name="font_size_message_view_content">متن پیام</string>
@@ -1046,9 +1062,11 @@
   <string name="push_info_disable_push_text">اگر برای پیام‌های جدید نیاز به اعلان آنی ندارید، بهتر است پیشرانی را غیرفعال کنید و سرکشی را به کار ببرید. روش سرکشی در فواصل زمانی منظم آمدن نامه‌های جدید را بررسی می‌کند و به آن اعلان نیاز ندارد.</string>
   <string name="push_info_disable_push_action">غیرفعال‌سازی پیشرانی</string>
   <!--Name of the swipe action to select a message. Try to keep it short.-->
+  <string name="swipe_action_select">انتخاب</string>
   <!--Name of the swipe action to deselect a message. Try to keep it short.-->
   <string name="swipe_action_deselect">بی‌انتخاب</string>
   <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <string name="swipe_action_mark_as_read">علامت‌گذاری به‌عنوان خوانده شده</string>
   <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
   <string name="swipe_action_mark_as_unread">خوانده نشد</string>
   <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
@@ -1062,11 +1080,17 @@
   <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
   <string name="swipe_action_spam">هرزنامه</string>
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+  <string name="swipe_action_move">انتقال</string>
   <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+  <string name="general_settings_show_compose_button_title">نمایش دکمه نوشتن شناور</string>
   <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+  <string name="message_list_error_title">خطا</string>
   <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+  <string name="message_list_error_folder_not_found">پوشه پیدا نشد</string>
   <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <string name="message_details_toolbar_title">جزییات پیام</string>
   <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+  <string name="message_details_missing_date">سرآیند تاریخ فراموش شده</string>
   <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
   <string name="message_details_from_section_title">از</string>
   <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
@@ -1080,11 +1104,18 @@
   <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
   <string name="message_details_bcc_section_title">مخفیانه به</string>
   <!--Displayed when loading the message details has failed-->
+  <string name="message_details_loading_error">هنگام بارگیری جزییات پیام خطایی رخ داد.</string>
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_add_to_contacts">افزودن به مخاطبان</string>
   <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_compose_message_to">نوشتن پیام به</string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_email_address">کپی آدرس ایمیل</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_name_and_email_address">کپی نام و آدرس ایمیل</string>
   <!--A user visible label for the email address copied to the clipboard-->
   <string name="clipboard_label_email_address">نشانی رایانامه </string>
   <!--A user visible label for the name and email address copied to the clipboard-->
+  <string name="clipboard_label_name_and_email_address">نام و آدرس ایمیل</string>
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>

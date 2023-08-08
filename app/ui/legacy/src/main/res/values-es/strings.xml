@@ -1123,4 +1123,5 @@ Puedes guardar este mensaje y usarlo como copia de seguridad de tu clave secreta
   <string name="clipboard_label_email_address">Dirección de correo</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Nombre y dirección de correo</string>
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>

@@ -1126,4 +1126,5 @@ Pode manter esta mensagem e usá-la como uma cópia de segurança para a sua cha
   <string name="clipboard_label_email_address">Endereço de email</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Nome e endereço de email</string>
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>

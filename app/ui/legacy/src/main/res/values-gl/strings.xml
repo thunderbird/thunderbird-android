@@ -1051,4 +1051,5 @@ Podes conservar esta mensaxe e usala como copia de seguridade da túa chave secr
   <!--A user visible label for the email address copied to the clipboard-->
   <string name="clipboard_label_email_address">Enderezo electrónico</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>

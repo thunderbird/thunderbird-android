@@ -1118,4 +1118,5 @@ Norėdami nustatyti automatinį šifravimą naujajame prietaise, vadovaukitės i
   <string name="clipboard_label_email_address">El. pašto adresas</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Vardas ir el. pašto adresas</string>
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>

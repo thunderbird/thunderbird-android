@@ -1104,4 +1104,5 @@ Mae\'n bosib i ti gadw\'r neges hon a\'i ddefnyddio wrth gefn fel dy allwedd gyf
   <!--A user visible label for the email address copied to the clipboard-->
   <string name="clipboard_label_email_address">Cyfeiriad e-bost</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>

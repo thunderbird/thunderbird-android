@@ -365,6 +365,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_setup_incoming_delete_policy_delete_label">Smazat na serveru</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Označit jako přečtenou na serveru</string>
   <string name="account_setup_incoming_use_compression">Komprimovat</string>
+  <string name="account_setup_incoming_send_client_id">Odeslat ID klienta</string>
   <string name="account_setup_expunge_policy_label">Odstranit smazané zprávy</string>
   <string name="account_setup_expunge_policy_immediately">Ihned</string>
   <string name="account_setup_expunge_policy_on_poll">Při dotazování</string>
@@ -1130,4 +1131,5 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
   <string name="clipboard_label_email_address">E-mailová adresa</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Jméno a adresa</string>
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>

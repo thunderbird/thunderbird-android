@@ -27,6 +27,7 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Δείτε τι έχει αλλάξει σε αυτή την έκδοση</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+  <string name="changelog_snackbar_button_text">Προβολή</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Καλώς ορίσατε στο K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -223,9 +224,12 @@
   <string name="message_view_bcc_label">Κρυφή κοιν:</string>
   <string name="message_view_status_attachment_not_saved">Αδυναμία αποθήκευσης συνημμένου.</string>
   <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <string name="message_view_recipient_prefix">σε</string>
   <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <string name="message_view_additional_recipient_prefix">+</string>
   <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
   <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+  <string name="message_view_show_remote_images_action">Εμφάνιση αποκρυμμένων εικόνων</string>
   <string name="message_view_no_viewer">Δεν υπάρχει πρόγραμμα προβολής για <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Λήψη πλήρους μηνύματος</string>
   <string name="message_view_sender_label">μέσω %1$s</string>
@@ -261,13 +265,19 @@
   <string name="global_settings_confirm_menu_mark_all_read">Μαρκάρισμα όλων των μηνυμάτων ως αναγνωσμένων</string>
   <string name="global_settings_confirm_action_delete_notif">Διαγραφή (από ειδοποίηση)</string>
   <!--Title of the screen to configure swipe actions-->
+  <string name="general_settings_swipe_actions_title">Ενέργειες ολίσθησης</string>
   <!--Name of the setting to configure the right swipe action-->
+  <string name="general_settings_right_swipe_title">Ολίσθηση δεξιά</string>
   <!--Name of the setting to configure the left swipe action-->
+  <string name="general_settings_left_swipe_title">Ολίσθηση αριστερά</string>
   <!--The list item users select to not use a swipe action for a particular direction-->
   <string name="general_settings_swipe_action_none">Κανένας</string>
   <!--Name of the swipe action to select/deselect a message-->
+  <string name="general_settings_swipe_action_toggle_selection">Πολλαπλή επιλογή</string>
   <!--Name of the swipe action to mark as message as read/unread-->
+  <string name="general_settings_swipe_action_toggle_read">Επισήμανση ως Αναγνωσμένο/Μη αναγν.</string>
   <!--Name of the swipe action to add/remove a star-->
+  <string name="general_settings_swipe_action_toggle_star">Προσθήκη/Αφαίρεση αστεριού</string>
   <!--Name of the swipe action to archive a message-->
   <string name="general_settings_swipe_action_archive">Αρχειοθέτηση</string>
   <!--Name of the swipe action to delete a message-->
@@ -277,6 +287,7 @@
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Μετακίνηση</string>
   <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_message_list_density_title">Κενό μεταξύ στοιχείων</string>
   <string name="general_settings_ui_density_default">Εξ ορισμού</string>
   <string name="global_settings_privacy_hide_useragent">Απόκρυψη προγράμματος-πελάτη αλληλογραφίας</string>
   <string name="global_settings_privacy_hide_useragent_detail">Αφαίρεση του Πράκτορα-χρήστη K-9 από την επικεφαλίδα του μηνύματος</string>
@@ -718,6 +729,7 @@
   <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
   <string name="font_size_message_view_account">Όνομα λογαριασμού</string>
   <string name="font_size_message_view_sender">Αποστολέας</string>
+  <string name="font_size_message_view_recipients">Αποδέκτες</string>
   <string name="font_size_message_view_subject">Θέμα</string>
   <string name="font_size_message_view_date">Ώρα και Ημερομηνία</string>
   <string name="font_size_message_view_content">Σώμα μηνύματος</string>
@@ -1052,6 +1064,7 @@
   <!--Name of the swipe action to deselect a message. Try to keep it short.-->
   <string name="swipe_action_deselect">Απο-επιλογή</string>
   <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+  <string name="swipe_action_mark_as_read">Επισήμανση ως αναγνωσμένο</string>
   <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
   <string name="swipe_action_mark_as_unread">Σήμανση ως μη αναγνωσμένο</string>
   <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
@@ -1065,11 +1078,17 @@
   <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
   <string name="swipe_action_spam">Ανεπιθύμητα</string>
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+  <string name="swipe_action_move">Μετακίνηση...</string>
   <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+  <string name="general_settings_show_compose_button_title">Εμφάνιση εικονιδίου σύνθεσης</string>
   <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+  <string name="message_list_error_title">Σφάλμα</string>
   <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+  <string name="message_list_error_folder_not_found">Ο φάκελος δεν βρέθηκε</string>
   <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <string name="message_details_toolbar_title">Λεπτομέρειες μηνύματος</string>
   <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+  <string name="message_details_missing_date">Λείπει η κεφαλίδα \'Ημερομηνία\'</string>
   <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
   <string name="message_details_from_section_title">Από:</string>
   <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
@@ -1083,11 +1102,18 @@
   <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
   <string name="message_details_bcc_section_title">Κρυφή Κοιν:</string>
   <!--Displayed when loading the message details has failed-->
+  <string name="message_details_loading_error">Προέκυψε σφάλμα κατά τη φόρτωση των λεπτομερειών του μηνύματος.</string>
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_add_to_contacts">Προσθήκη στις Επαφές</string>
   <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_compose_message_to">Σύνθεση μηνύματος σε</string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_email_address">Αντιγραφή διεύθυνσης ηλ. ταχυδρομείου</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_name_and_email_address">\'Αντιγραφή ονόματος και διεύθυνσης ηλ. ταχυδρομείου</string>
   <!--A user visible label for the email address copied to the clipboard-->
   <string name="clipboard_label_email_address">Διεύθυνση ηλ. ταχυδρομείου </string>
   <!--A user visible label for the name and email address copied to the clipboard-->
+  <string name="clipboard_label_name_and_email_address">\'Ονομα και διεύθυνση ηλ. ταχυδρομείου</string>
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>
