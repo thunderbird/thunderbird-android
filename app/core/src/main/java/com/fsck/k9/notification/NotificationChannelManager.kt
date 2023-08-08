@@ -23,6 +23,7 @@ class NotificationChannelManager(
     private val notificationLightDecoder: NotificationLightDecoder,
 ) {
     val pushChannelId = "push"
+    val miscellaneousChannelId = "misc"
 
     enum class ChannelType {
         MESSAGES, MISCELLANEOUS
@@ -50,6 +51,7 @@ class NotificationChannelManager(
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun addGeneralChannels() {
         notificationManager.createNotificationChannel(getChannelPush())
+        notificationManager.createNotificationChannel(getChannelMiscellaneous())
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -93,6 +95,21 @@ class NotificationChannelManager(
         val importance = NotificationManager.IMPORTANCE_LOW
 
         return NotificationChannel(pushChannelId, channelName, importance).apply {
+            description = channelDescription
+            setShowBadge(false)
+            enableLights(false)
+            enableVibration(false)
+            setSound(null, null)
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private fun getChannelMiscellaneous(): NotificationChannel {
+        val channelName = resourceProvider.miscellaneousChannelName
+        val channelDescription = resourceProvider.miscellaneousChannelDescription
+        val importance = NotificationManager.IMPORTANCE_LOW
+
+        return NotificationChannel(miscellaneousChannelId, channelName, importance).apply {
             description = channelDescription
             setShowBadge(false)
             enableLights(false)

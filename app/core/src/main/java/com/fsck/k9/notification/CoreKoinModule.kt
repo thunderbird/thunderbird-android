@@ -130,4 +130,11 @@ val coreNotificationModule = module {
             notificationConfigurationConverter = get(),
         )
     }
+    factory<BackgroundWorkNotificationController> {
+        RealBackgroundWorkNotificationController(
+            context = get(),
+            resourceProvider = get(),
+            notificationChannelManager = get(),
+        )
+    }
 }

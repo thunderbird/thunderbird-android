@@ -5,6 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.work.WorkerParameters
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase.ValidateServerSettings
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract
+import com.fsck.k9.account.AccountRemoverWorker
 import com.fsck.k9.job.MailSyncWorker
 import com.fsck.k9.mail.oauth.AuthStateStorage
 import com.fsck.k9.ui.R
@@ -61,6 +62,7 @@ class DependencyInjectionTest : AutoCloseKoinTest() {
             withParameter<AccountValidationContract.ViewModel>(named("incoming_validation")) { authStateStorage }
             withParameter<AccountValidationContract.ViewModel>(named("outgoing_validation")) { authStateStorage }
             withParameter<ValidateServerSettings> { authStateStorage }
+            withParameter<AccountRemoverWorker> { mock<WorkerParameters>() }
         }
     }
 }
