@@ -5,6 +5,18 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.708" versioncode="37008" date="2023-08-08">
+        <change>Changed compose icon in the message list widget to match the icon inside the app</change>
+        <change>Added information about the read state of a message to the data read by screen readers</change>
+        <change>A URI pasted when composing a message will now be surrounded by angle brackets</change>
+        <change>Improved error handling in many situations</change>
+        <change>Fixed bug where account name wasn't displayed in the message view when it should</change>
+        <change>Fixed inconsistent behavior when replying to messages</change>
+        <change>Fixed bug when saving a draft message using an identity without a display name</change>
+        <change>Fixed display issue when removing an account</change>
+        <change>Quite a few internal changes</change>
+        <change>Updated translations</change>
+    </release>
     <release version="6.707" versioncode="37007" date="2023-06-19">
         <change>Fixed bug where navigating to a different screen after using the system back button/gesture could crash the app</change>
     </release>
