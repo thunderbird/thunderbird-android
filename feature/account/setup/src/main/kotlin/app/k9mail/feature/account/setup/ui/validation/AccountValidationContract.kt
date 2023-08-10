@@ -32,6 +32,7 @@ interface AccountValidationContract {
         object OnNextClicked : Event
         object OnBackClicked : Event
         object OnRetryClicked : Event
+        object OnCertificateAccepted : Event
     }
 
     sealed interface Effect {

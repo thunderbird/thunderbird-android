@@ -5,7 +5,9 @@ import app.k9mail.autodiscovery.service.RealAutoDiscoveryService
 import app.k9mail.core.common.coreCommonModule
 import app.k9mail.feature.account.oauth.featureAccountOAuthModule
 import app.k9mail.feature.account.setup.data.InMemoryAccountSetupStateRepository
+import app.k9mail.feature.account.setup.data.InMemoryCertificateErrorRepository
 import app.k9mail.feature.account.setup.domain.DomainContract
+import app.k9mail.feature.account.setup.domain.usecase.AddServerCertificateException
 import app.k9mail.feature.account.setup.domain.usecase.CreateAccount
 import app.k9mail.feature.account.setup.domain.usecase.GetAutoDiscovery
 import app.k9mail.feature.account.setup.domain.usecase.ValidateServerSettings
@@ -22,6 +24,7 @@ import app.k9mail.feature.account.setup.ui.options.AccountOptionsViewModel
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigValidator
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigViewModel
+import app.k9mail.feature.account.setup.ui.servercertificate.CertificateErrorViewModel
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationViewModel
 import com.fsck.k9.mail.oauth.AuthStateStorage
 import com.fsck.k9.mail.store.imap.ImapServerSettingsValidator
@@ -58,6 +61,8 @@ val featureAccountSetupModule: Module = module {
         InMemoryAccountSetupStateRepository()
     }.binds(arrayOf(DomainContract.AccountSetupStateRepository::class, AuthStateStorage::class))
 
+    single<DomainContract.CertificateErrorRepository> { InMemoryCertificateErrorRepository() }
+
     factory<DomainContract.UseCase.ValidateServerSettings> {
         ValidateServerSettings(
             authStateStorage = get(),
@@ -73,6 +78,12 @@ val featureAccountSetupModule: Module = module {
                 trustedSocketFactory = get(),
                 oAuth2TokenProviderFactory = get(),
             ),
+        )
+    }
+
+    factory<DomainContract.UseCase.AddServerCertificateException> {
+        AddServerCertificateException(
+            localKeyStore = get(),
         )
     }
 
@@ -112,6 +123,7 @@ val featureAccountSetupModule: Module = module {
             validateServerSettings = get(),
             accountSetupStateRepository = get(),
             authorizationStateRepository = get(),
+            certificateErrorRepository = get(),
             oAuthViewModel = get(),
             isIncomingValidation = true,
         )
@@ -127,6 +139,7 @@ val featureAccountSetupModule: Module = module {
             validateServerSettings = get(),
             accountSetupStateRepository = get(),
             authorizationStateRepository = get(),
+            certificateErrorRepository = get(),
             oAuthViewModel = get(),
             isIncomingValidation = false,
         )
@@ -135,6 +148,12 @@ val featureAccountSetupModule: Module = module {
         AccountOptionsViewModel(
             validator = get(),
             accountSetupStateRepository = get(),
+        )
+    }
+    viewModel {
+        CertificateErrorViewModel(
+            certificateErrorRepository = get(),
+            addServerCertificateException = get(),
         )
     }
 }

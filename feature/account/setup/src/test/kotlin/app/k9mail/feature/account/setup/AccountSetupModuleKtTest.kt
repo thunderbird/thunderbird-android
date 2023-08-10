@@ -11,10 +11,12 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryCon
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
+import app.k9mail.feature.account.setup.ui.servercertificate.CertificateErrorContract
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract
 import com.fsck.k9.mail.oauth.AuthStateStorage
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.oauth.OAuth2TokenProviderFactory
+import com.fsck.k9.mail.ssl.LocalKeyStore
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import okhttp3.OkHttpClient
 import org.junit.Test
@@ -27,6 +29,7 @@ import org.koin.dsl.module
 import org.koin.test.KoinTest
 import org.koin.test.check.checkModules
 import org.koin.test.verify.verify
+import org.mockito.Mockito.mock
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
@@ -51,6 +54,7 @@ class AccountSetupModuleKtTest : KoinTest {
                 }
             }
         }
+        single<LocalKeyStore> { mock() }
     }
 
     @Test
@@ -65,6 +69,7 @@ class AccountSetupModuleKtTest : KoinTest {
                 AccountOutgoingConfigContract.State::class,
                 AccountOptionsContract.State::class,
                 AccountSetupState::class,
+                CertificateErrorContract.State::class,
                 AuthStateStorage::class,
                 Context::class,
                 Boolean::class,

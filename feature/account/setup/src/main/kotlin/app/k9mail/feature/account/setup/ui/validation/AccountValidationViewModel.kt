@@ -5,6 +5,7 @@ import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.oauth.domain.entity.OAuthResult
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
 import app.k9mail.feature.account.setup.domain.DomainContract
+import app.k9mail.feature.account.setup.domain.entity.CertificateError
 import app.k9mail.feature.account.setup.domain.entity.isOAuth
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Effect
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Error
@@ -23,6 +24,7 @@ internal class AccountValidationViewModel(
     private val validateServerSettings: DomainContract.UseCase.ValidateServerSettings,
     private val accountSetupStateRepository: DomainContract.AccountSetupStateRepository,
     private val authorizationStateRepository: OAuthDomainContract.AuthorizationStateRepository,
+    private val certificateErrorRepository: DomainContract.CertificateErrorRepository,
     override val oAuthViewModel: AccountOAuthContract.ViewModel,
     override val isIncomingValidation: Boolean = true,
     initialState: State? = null,
@@ -39,6 +41,7 @@ internal class AccountValidationViewModel(
             Event.OnNextClicked -> navigateNext()
             Event.OnBackClicked -> onBack()
             Event.OnRetryClicked -> onRetry()
+            Event.OnCertificateAccepted -> onRetry()
         }
     }
 
@@ -161,6 +164,18 @@ internal class AccountValidationViewModel(
     }
 
     private fun updateError(error: Error) {
+        if (error is Error.CertificateError) {
+            val serverSettings = checkNotNull(state.value.serverSettings)
+
+            certificateErrorRepository.setCertificateError(
+                CertificateError(
+                    hostname = serverSettings.host!!,
+                    port = serverSettings.port,
+                    certificateChain = error.certificateChain,
+                ),
+            )
+        }
+
         updateState {
             it.copy(
                 error = error,
