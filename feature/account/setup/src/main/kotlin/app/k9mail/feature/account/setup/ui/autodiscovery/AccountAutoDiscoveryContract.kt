@@ -34,6 +34,8 @@ interface AccountAutoDiscoveryContract {
         val isSuccess: Boolean = false,
         val error: Error? = null,
         val isLoading: Boolean = false,
+
+        val isNextButtonVisible: Boolean = true,
     )
 
     sealed interface Event {

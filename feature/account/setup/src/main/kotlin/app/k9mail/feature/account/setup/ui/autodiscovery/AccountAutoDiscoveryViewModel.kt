@@ -55,6 +55,7 @@ internal class AccountAutoDiscoveryViewModel(
         updateState {
             State(
                 emailAddress = StringInputField(value = emailAddress),
+                isNextButtonVisible = true,
             )
         }
     }
@@ -90,7 +91,7 @@ internal class AccountAutoDiscoveryViewModel(
                 }
 
             ConfigStep.PASSWORD -> submitPassword()
-            ConfigStep.OAUTH -> TODO()
+            ConfigStep.OAUTH -> Unit
         }
     }
 
@@ -159,13 +160,12 @@ internal class AccountAutoDiscoveryViewModel(
             )
         }
 
-        // TODO: disable next button if isOAuth = true
-
         updateState {
             it.copy(
                 isLoading = false,
                 autoDiscoverySettings = settings,
                 configStep = if (isOAuth) ConfigStep.OAUTH else ConfigStep.PASSWORD,
+                isNextButtonVisible = !isOAuth,
             )
         }
     }
@@ -227,6 +227,7 @@ internal class AccountAutoDiscoveryViewModel(
                 it.copy(
                     configStep = ConfigStep.EMAIL_ADDRESS,
                     password = StringInputField(),
+                    isNextButtonVisible = true,
                 )
             }
         }
