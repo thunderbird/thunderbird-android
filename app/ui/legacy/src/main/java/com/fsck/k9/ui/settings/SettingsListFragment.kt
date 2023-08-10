@@ -15,6 +15,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import app.k9mail.core.featureflag.FeatureFlagKey
+import app.k9mail.core.featureflag.FeatureFlagProvider
+import app.k9mail.core.featureflag.FeatureFlagResult
+import app.k9mail.feature.launcher.FeatureLauncherActivity
 import com.fsck.k9.Account
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.helper.RecyclerViewBackgroundDrawable
@@ -28,10 +32,13 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.drag.ItemTouchCallback
 import com.mikepenz.fastadapter.drag.SimpleDragCallback
 import com.mikepenz.fastadapter.utils.DragDropUtil
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class SettingsListFragment : Fragment(), ItemTouchCallback {
     private val viewModel: SettingsViewModel by viewModel()
+    private val featureFlagProvider: FeatureFlagProvider by inject()
 
     private lateinit var itemAdapter: ItemAdapter<GenericItem>
 
@@ -148,7 +155,16 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
         when (item) {
             is AccountItem -> launchAccountSettings(item.account)
             is UrlActionItem -> openUrl(item.url)
-            is SettingsActionItem -> findNavController().navigate(item.navigationAction)
+            is SettingsActionItem -> {
+                if (
+                    item.navigationAction == R.id.action_settingsListScreen_to_addAccountScreen &&
+                    featureFlagProvider.provide(FeatureFlagKey("new_onboarding")) is FeatureFlagResult.Enabled
+                ) {
+                    FeatureLauncherActivity.launchSetupAccount(requireActivity())
+                } else {
+                    findNavController().navigate(item.navigationAction)
+                }
+            }
         }
     }
 
@@ -166,8 +182,19 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
     }
 
     private fun launchOnboarding() {
-        findNavController().navigate(R.id.action_settingsListScreen_to_onboardingScreen)
+        featureFlagProvider.provide(FeatureFlagKey("new_onboarding")).onEnabled {
+            FeatureLauncherActivity.launchOnboarding(requireActivity())
+        }.onDisabled {
+            launchOldOnboarding()
+        }.onUnavailable {
+            Timber.d("Feature flag 'new_onboarding' is unavailable, falling back to old onboarding")
+            launchOldOnboarding()
+        }
         requireActivity().finishAffinity()
+    }
+
+    private fun launchOldOnboarding() {
+        findNavController().navigate(R.id.action_settingsListScreen_to_onboardingScreen)
     }
 
     private fun buildSettingsList(block: SettingsListBuilder.() -> Unit): List<GenericItem> {
