@@ -33,12 +33,12 @@ internal fun AccountValidationMainScreen(
         },
         bottomBar = {
             WizardNavigationBar(
-                nextButtonText = stringResource(id = R.string.account_setup_button_next),
+                nextButtonText = "",
                 backButtonText = stringResource(id = R.string.account_setup_button_back),
-                onNextClick = { dispatch(Event.OnNextClicked) },
+                onNextClick = {},
                 onBackClick = { dispatch(Event.OnBackClicked) },
                 state = WizardNavigationBarState(
-                    showNext = state.value.isSuccess,
+                    showNext = false,
                 ),
             )
         },
