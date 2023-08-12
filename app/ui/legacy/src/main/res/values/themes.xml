@@ -129,7 +129,6 @@
         <item name="messageListSwipeMoveBackgroundColor">@color/material_purple_500</item>
 
         <item name="messageStarColor">#fbbc04</item>
-        <item name="messageViewBackgroundColor">#ffffffff</item>
         <item name="messageDetailsAddContactIcon">@drawable/ic_person_add</item>
         <item name="messageDetailsDividerColor">#ffcccccc</item>
         <item name="attachmentCardBackground">#e8e8e8</item>
@@ -296,7 +295,6 @@
         <item name="messageListSwipeMoveBackgroundColor">@color/material_purple_600</item>
 
         <item name="messageStarColor">#fdd663</item>
-        <item name="messageViewBackgroundColor">#000000</item>
         <item name="messageDetailsAddContactIcon">@drawable/ic_person_add</item>
         <item name="messageDetailsDividerColor">#ff555555</item>
         <item name="attachmentCardBackground">#313131</item>

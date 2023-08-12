@@ -107,7 +107,6 @@
         <attr name="messageListSwipeMoveIcon" format="reference"/>
         <attr name="messageListSwipeMoveBackgroundColor" format="reference|color"/>
         <attr name="messageStarColor" format="color"/>
-        <attr name="messageViewBackgroundColor" format="reference|color"/>
         <attr name="messageDetailsAddContactIcon" format="reference"/>
         <attr name="messageDetailsDividerColor" format="reference|color"/>
         <attr name="attachmentCardBackground" format="reference|color"/>
