@@ -3,6 +3,7 @@ package com.fsck.k9.view
 import android.content.Context
 import android.content.pm.PackageManager
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.webkit.WebSettings.LayoutAlgorithm
 import android.webkit.WebSettings.RenderPriority
 import android.webkit.WebView
@@ -34,7 +35,10 @@ class MessageWebView : WebView, KoinComponent {
         isLongClickable = true
 
         if (config.useDarkMode) {
-            setBackgroundColor(0xff000000L.toInt())
+            val typedValue = TypedValue()
+            context.theme.resolveAttribute(android.R.attr.windowBackground, typedValue, true)
+            val backgroundColor = typedValue.data
+            setBackgroundColor(backgroundColor)
         }
 
         with(settings) {
