@@ -271,7 +271,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         // background color needs to be forced
         //TODO: Change themes to use appropriate background colors that don't need overriding.
         TypedValue outValue = new TypedValue();
-        themeContext.getTheme().resolveAttribute(R.attr.messageViewBackgroundColor, outValue, true);
+        themeContext.getTheme().resolveAttribute(android.R.attr.windowBackground, outValue, true);
 
         contentView.setBackgroundColor(outValue.data);
 
