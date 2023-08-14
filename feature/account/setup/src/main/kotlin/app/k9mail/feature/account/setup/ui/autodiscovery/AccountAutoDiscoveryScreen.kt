@@ -12,6 +12,7 @@ import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
+import app.k9mail.feature.account.common.ui.WizardNavigationBarState
 import app.k9mail.feature.account.oauth.ui.preview.PreviewAccountOAuthViewModel
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Effect
@@ -49,6 +50,7 @@ internal fun AccountAutoDiscoveryScreen(
                 backButtonText = stringResource(id = R.string.account_setup_button_back),
                 onNextClick = { dispatch(Event.OnNextClicked) },
                 onBackClick = { dispatch(Event.OnBackClicked) },
+                state = WizardNavigationBarState(showNext = state.value.isNextButtonVisible),
             )
         },
         modifier = modifier,
