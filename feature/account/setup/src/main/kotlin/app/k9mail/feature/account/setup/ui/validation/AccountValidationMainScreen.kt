@@ -33,12 +33,12 @@ internal fun AccountValidationMainScreen(
         },
         bottomBar = {
             WizardNavigationBar(
-                nextButtonText = stringResource(id = R.string.account_setup_button_next),
+                nextButtonText = "",
                 backButtonText = stringResource(id = R.string.account_setup_button_back),
-                onNextClick = { dispatch(Event.OnNextClicked) },
+                onNextClick = {},
                 onBackClick = { dispatch(Event.OnBackClicked) },
                 state = WizardNavigationBarState(
-                    showNext = state.value.isSuccess,
+                    showNext = false,
                 ),
             )
         },
@@ -58,9 +58,7 @@ internal fun AccountValidationMainScreen(
 @DevicePreviews
 internal fun AccountIncomingValidationScreenK9Preview() {
     K9Theme {
-        AccountValidationScreen(
-            onNext = {},
-            onBack = {},
+        AccountValidationMainScreen(
             viewModel = AccountValidationViewModel(
                 validateServerSettings = {
                     ServerSettingsValidationResult.Success
@@ -79,9 +77,7 @@ internal fun AccountIncomingValidationScreenK9Preview() {
 @DevicePreviews
 internal fun AccountIncomingValidationScreenThunderbirdPreview() {
     ThunderbirdTheme {
-        AccountValidationScreen(
-            onNext = {},
-            onBack = {},
+        AccountValidationMainScreen(
             viewModel = AccountValidationViewModel(
                 validateServerSettings = {
                     ServerSettingsValidationResult.Success
@@ -100,9 +96,7 @@ internal fun AccountIncomingValidationScreenThunderbirdPreview() {
 @DevicePreviews
 internal fun AccountOutgoingValidationScreenK9Preview() {
     K9Theme {
-        AccountValidationScreen(
-            onNext = {},
-            onBack = {},
+        AccountValidationMainScreen(
             viewModel = AccountValidationViewModel(
                 validateServerSettings = {
                     ServerSettingsValidationResult.Success
@@ -121,9 +115,7 @@ internal fun AccountOutgoingValidationScreenK9Preview() {
 @DevicePreviews
 internal fun AccountOutgoingValidationScreenThunderbirdPreview() {
     ThunderbirdTheme {
-        AccountValidationScreen(
-            onNext = {},
-            onBack = {},
+        AccountValidationMainScreen(
             viewModel = AccountValidationViewModel(
                 validateServerSettings = {
                     ServerSettingsValidationResult.Success
