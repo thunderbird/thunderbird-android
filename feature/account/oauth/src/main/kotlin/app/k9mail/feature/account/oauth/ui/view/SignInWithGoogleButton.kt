@@ -3,22 +3,20 @@ package app.k9mail.feature.account.oauth.ui.view
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.ButtonElevation
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,21 +41,19 @@ fun SignInWithGoogleButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isLight: Boolean = MaterialTheme.colors.isLight,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    elevation: ButtonElevation? = ButtonDefaults.elevation(),
 ) {
-    Surface(
-        modifier = Modifier
-            .border(
-                width = 1.dp,
-                color = getBorderColor(isLight),
-                shape = RoundedCornerShape(8.dp),
-            )
-            .clickable { onClick() }
-            .then(modifier),
-        shape = RoundedCornerShape(8.dp),
-        color = getSurfaceColor(isLight),
-        elevation = elevation?.elevation(true, interactionSource)?.value ?: 0.dp,
+    OutlinedButton(
+        onClick = onClick,
+        modifier = modifier,
+        colors = ButtonDefaults.outlinedButtonColors(
+            contentColor = getTextColor(isLight),
+            backgroundColor = getSurfaceColor(isLight),
+        ),
+        border = BorderStroke(
+            width = 1.dp,
+            color = getBorderColor(isLight),
+        ),
+        contentPadding = PaddingValues(all = 0.dp),
     ) {
         Row(
             modifier = Modifier
