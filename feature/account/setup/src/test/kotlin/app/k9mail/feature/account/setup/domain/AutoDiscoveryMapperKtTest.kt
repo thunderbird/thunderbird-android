@@ -50,7 +50,7 @@ class AutoDiscoveryMapperKtTest {
     fun `should throw error when IncomingServerSettings not known`() {
         val incomingServerSettings = object : IncomingServerSettings {}
 
-        assertFailsWith(IllegalArgumentException::class) {
+        assertFailsWith<IllegalArgumentException> {
             incomingServerSettings.toServerSettings("password")
         }
     }
@@ -87,7 +87,7 @@ class AutoDiscoveryMapperKtTest {
     fun `should throw error when OutgoingServerSettings not known`() {
         val outgoingServerSettings = object : OutgoingServerSettings {}
 
-        assertFailsWith(IllegalArgumentException::class) {
+        assertFailsWith<IllegalArgumentException> {
             outgoingServerSettings.toServerSettings("password")
         }
     }

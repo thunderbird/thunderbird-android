@@ -25,7 +25,7 @@ class IncomingProtocolTypeTest {
 
     @Test
     fun `fromName should throw IllegalArgumentException`() {
-        assertFailsWith(IllegalArgumentException::class) { IncomingProtocolType.fromName("unknown") }
+        assertFailsWith<IllegalArgumentException> { IncomingProtocolType.fromName("unknown") }
     }
 
     @Test

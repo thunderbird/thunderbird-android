@@ -15,24 +15,24 @@ class ValidateDisplayNameTest {
     fun `should succeed when display name is set`() {
         val result = testSubject.execute("display name")
 
-        assertThat(result).isInstanceOf(ValidationResult.Success::class)
+        assertThat(result).isInstanceOf<ValidationResult.Success>()
     }
 
     @Test
     fun `should fail when display name is empty`() {
         val result = testSubject.execute("")
 
-        assertThat(result).isInstanceOf(ValidationResult.Failure::class)
+        assertThat(result).isInstanceOf<ValidationResult.Failure>()
             .prop(ValidationResult.Failure::error)
-            .isInstanceOf(ValidateDisplayNameError.EmptyDisplayName::class)
+            .isInstanceOf<ValidateDisplayNameError.EmptyDisplayName>()
     }
 
     @Test
     fun `should fail when display name is blank`() {
         val result = testSubject.execute(" ")
 
-        assertThat(result).isInstanceOf(ValidationResult.Failure::class)
+        assertThat(result).isInstanceOf<ValidationResult.Failure>()
             .prop(ValidationResult.Failure::error)
-            .isInstanceOf(ValidateDisplayNameError.EmptyDisplayName::class)
+            .isInstanceOf<ValidateDisplayNameError.EmptyDisplayName>()
     }
 }

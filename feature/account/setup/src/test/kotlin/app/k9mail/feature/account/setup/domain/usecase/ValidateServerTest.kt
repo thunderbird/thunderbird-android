@@ -14,24 +14,24 @@ class ValidateServerTest {
     fun `should succeed when server is set`() {
         val result = testSubject.execute("server")
 
-        assertThat(result).isInstanceOf(ValidationResult.Success::class)
+        assertThat(result).isInstanceOf<ValidationResult.Success>()
     }
 
     @Test
     fun `should fail when server is empty`() {
         val result = testSubject.execute("")
 
-        assertThat(result).isInstanceOf(ValidationResult.Failure::class)
+        assertThat(result).isInstanceOf<ValidationResult.Failure>()
             .prop(ValidationResult.Failure::error)
-            .isInstanceOf(ValidateServer.ValidateServerError.EmptyServer::class)
+            .isInstanceOf<ValidateServer.ValidateServerError.EmptyServer>()
     }
 
     @Test
     fun `should fail when server is blank`() {
         val result = testSubject.execute(" ")
 
-        assertThat(result).isInstanceOf(ValidationResult.Failure::class)
+        assertThat(result).isInstanceOf<ValidationResult.Failure>()
             .prop(ValidationResult.Failure::error)
-            .isInstanceOf(ValidateServer.ValidateServerError.EmptyServer::class)
+            .isInstanceOf<ValidateServer.ValidateServerError.EmptyServer>()
     }
 }

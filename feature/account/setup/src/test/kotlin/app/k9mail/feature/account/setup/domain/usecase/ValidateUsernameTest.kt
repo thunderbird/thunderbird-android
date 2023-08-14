@@ -14,24 +14,24 @@ class ValidateUsernameTest {
     fun `should succeed when username is set`() {
         val result = testSubject.execute("username")
 
-        assertThat(result).isInstanceOf(ValidationResult.Success::class)
+        assertThat(result).isInstanceOf<ValidationResult.Success>()
     }
 
     @Test
     fun `should fail when username is empty`() {
         val result = testSubject.execute("")
 
-        assertThat(result).isInstanceOf(ValidationResult.Failure::class)
+        assertThat(result).isInstanceOf<ValidationResult.Failure>()
             .prop(ValidationResult.Failure::error)
-            .isInstanceOf(ValidateUsername.ValidateUsernameError.EmptyUsername::class)
+            .isInstanceOf<ValidateUsername.ValidateUsernameError.EmptyUsername>()
     }
 
     @Test
     fun `should fail when username is blank`() {
         val result = testSubject.execute(" ")
 
-        assertThat(result).isInstanceOf(ValidationResult.Failure::class)
+        assertThat(result).isInstanceOf<ValidationResult.Failure>()
             .prop(ValidationResult.Failure::error)
-            .isInstanceOf(ValidateUsername.ValidateUsernameError.EmptyUsername::class)
+            .isInstanceOf<ValidateUsername.ValidateUsernameError.EmptyUsername>()
     }
 }
