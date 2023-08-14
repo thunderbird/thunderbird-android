@@ -5,6 +5,9 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.709" versioncode="37009" date="2023-08-14">
+        <change>Enabled the new and improved account setup flow</change>
+    </release>
     <release version="6.708" versioncode="37008" date="2023-08-08">
         <change>Changed compose icon in the message list widget to match the icon inside the app</change>
         <change>Added information about the read state of a message to the data read by screen readers</change>
