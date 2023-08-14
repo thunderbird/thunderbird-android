@@ -30,7 +30,7 @@ class GetAutoDiscoveryTest {
         val result = useCase.execute("user@example.com")
 
         assertThat(result)
-            .isInstanceOf(AutoDiscoveryResult.Settings::class)
+            .isInstanceOf<AutoDiscoveryResult.Settings>()
             .isEqualTo(SETTINGS_WITH_PASSWORD)
     }
 
@@ -44,7 +44,7 @@ class GetAutoDiscoveryTest {
         val result = useCase.execute("user@example.com")
 
         assertThat(result)
-            .isInstanceOf(AutoDiscoveryResult.NoUsableSettingsFound::class)
+            .isInstanceOf<AutoDiscoveryResult.NoUsableSettingsFound>()
     }
 
     @Test
@@ -57,7 +57,7 @@ class GetAutoDiscoveryTest {
         val result = useCase.execute("user@example.com")
 
         assertThat(result)
-            .isInstanceOf(AutoDiscoveryResult.NoUsableSettingsFound::class)
+            .isInstanceOf<AutoDiscoveryResult.NoUsableSettingsFound>()
     }
 
     @Test
@@ -71,7 +71,7 @@ class GetAutoDiscoveryTest {
         val result = useCase.execute("user@example.com")
 
         assertThat(result)
-            .isInstanceOf(AutoDiscoveryResult.UnexpectedException::class)
+            .isInstanceOf<AutoDiscoveryResult.UnexpectedException>()
             .isEqualTo(autoDiscoveryResult)
     }
 
@@ -85,7 +85,7 @@ class GetAutoDiscoveryTest {
         val result = useCase.execute("user@example.com")
 
         assertThat(result)
-            .isInstanceOf(AutoDiscoveryResult.Settings::class)
+            .isInstanceOf<AutoDiscoveryResult.Settings>()
             .isEqualTo(SETTINGS_WITH_OAUTH)
     }
 
@@ -99,7 +99,7 @@ class GetAutoDiscoveryTest {
         val result = useCase.execute("user@example.com")
 
         assertThat(result)
-            .isInstanceOf(AutoDiscoveryResult.Settings::class)
+            .isInstanceOf<AutoDiscoveryResult.Settings>()
             .isEqualTo(
                 SETTINGS_WITH_OAUTH.copy(
                     incomingServerSettings = (SETTINGS_WITH_OAUTH.incomingServerSettings as ImapServerSettings).copy(

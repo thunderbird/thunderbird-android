@@ -15,42 +15,42 @@ class ValidatePortTest {
     fun `should succeed when port is set`() {
         val result = testSubject.execute(123L)
 
-        assertThat(result).isInstanceOf(ValidationResult.Success::class)
+        assertThat(result).isInstanceOf<ValidationResult.Success>()
     }
 
     @Test
     fun `should fail when port is negative`() {
         val result = testSubject.execute(-1L)
 
-        assertThat(result).isInstanceOf(ValidationResult.Failure::class)
+        assertThat(result).isInstanceOf<ValidationResult.Failure>()
             .prop(ValidationResult.Failure::error)
-            .isInstanceOf(ValidatePortError.InvalidPort::class)
+            .isInstanceOf<ValidatePortError.InvalidPort>()
     }
 
     @Test
     fun `should fail when port is zero`() {
         val result = testSubject.execute(0)
 
-        assertThat(result).isInstanceOf(ValidationResult.Failure::class)
+        assertThat(result).isInstanceOf<ValidationResult.Failure>()
             .prop(ValidationResult.Failure::error)
-            .isInstanceOf(ValidatePortError.InvalidPort::class)
+            .isInstanceOf<ValidatePortError.InvalidPort>()
     }
 
     @Test
     fun `should fail when port exceeds maximum`() {
         val result = testSubject.execute(65536L)
 
-        assertThat(result).isInstanceOf(ValidationResult.Failure::class)
+        assertThat(result).isInstanceOf<ValidationResult.Failure>()
             .prop(ValidationResult.Failure::error)
-            .isInstanceOf(ValidatePortError.InvalidPort::class)
+            .isInstanceOf<ValidatePortError.InvalidPort>()
     }
 
     @Test
     fun `should fail when port is null`() {
         val result = testSubject.execute(null)
 
-        assertThat(result).isInstanceOf(ValidationResult.Failure::class)
+        assertThat(result).isInstanceOf<ValidationResult.Failure>()
             .prop(ValidationResult.Failure::error)
-            .isInstanceOf(ValidatePortError.EmptyPort::class)
+            .isInstanceOf<ValidatePortError.EmptyPort>()
     }
 }

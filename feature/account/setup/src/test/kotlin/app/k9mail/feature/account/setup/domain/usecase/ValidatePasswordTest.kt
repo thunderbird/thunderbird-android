@@ -14,24 +14,24 @@ class ValidatePasswordTest {
     fun `should succeed when password is set`() {
         val result = testSubject.execute("password")
 
-        assertThat(result).isInstanceOf(ValidationResult.Success::class)
+        assertThat(result).isInstanceOf<ValidationResult.Success>()
     }
 
     @Test
     fun `should fail when password is empty`() {
         val result = testSubject.execute("")
 
-        assertThat(result).isInstanceOf(ValidationResult.Failure::class)
+        assertThat(result).isInstanceOf<ValidationResult.Failure>()
             .prop(ValidationResult.Failure::error)
-            .isInstanceOf(ValidatePassword.ValidatePasswordError.EmptyPassword::class)
+            .isInstanceOf<ValidatePassword.ValidatePasswordError.EmptyPassword>()
     }
 
     @Test
     fun `should fail when password is blank`() {
         val result = testSubject.execute(" ")
 
-        assertThat(result).isInstanceOf(ValidationResult.Failure::class)
+        assertThat(result).isInstanceOf<ValidationResult.Failure>()
             .prop(ValidationResult.Failure::error)
-            .isInstanceOf(ValidatePassword.ValidatePasswordError.EmptyPassword::class)
+            .isInstanceOf<ValidatePassword.ValidatePasswordError.EmptyPassword>()
     }
 }
