@@ -29,7 +29,7 @@ internal fun State.toAccountOptions(): AccountOptions {
     return AccountOptions(
         accountName = accountName.value,
         displayName = displayName.value,
-        emailSignature = emailSignature.value,
+        emailSignature = emailSignature.value.takeIf { it.isNotEmpty() },
         checkFrequencyInMinutes = checkFrequency.minutes,
         messageDisplayCount = messageDisplayCount.count,
         showNotification = showNotification,
