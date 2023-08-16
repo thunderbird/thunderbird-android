@@ -31,6 +31,7 @@ class Pop3Backend(
     override val supportsUpload = false
     override val supportsTrashFolder = false
     override val supportsSearchByDate = false
+    override val supportsFolderSubscriptions = false
     override val isPushCapable = false
 
     override fun refreshFolderList() {

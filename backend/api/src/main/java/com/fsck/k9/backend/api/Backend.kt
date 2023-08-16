@@ -14,6 +14,7 @@ interface Backend {
     val supportsUpload: Boolean
     val supportsTrashFolder: Boolean
     val supportsSearchByDate: Boolean
+    val supportsFolderSubscriptions: Boolean
     val isPushCapable: Boolean
 
     @Throws(MessagingException::class)
