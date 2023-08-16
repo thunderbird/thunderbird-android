@@ -78,7 +78,6 @@ class FinishOAuthSignInTest {
         assertThat(result).isEqualTo(AuthorizationResult.Success(authorizationState))
         assertThat(repository.recordedGetAuthorizationResponseIntent).isEqualTo(intent)
         assertThat(repository.recordedGetAuthorizationExceptionIntent).isEqualTo(intent)
-        assertThat(repository.recordedGetExchangeTokenAuthorizationState).isEqualTo(authorizationState)
         assertThat(repository.recordedGetExchangeTokenResponse).isEqualTo(response)
     }
 }

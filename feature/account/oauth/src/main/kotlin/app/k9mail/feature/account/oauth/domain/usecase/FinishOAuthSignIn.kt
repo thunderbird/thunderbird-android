@@ -4,7 +4,6 @@ import android.content.Intent
 import app.k9mail.feature.account.oauth.domain.DomainContract
 import app.k9mail.feature.account.oauth.domain.DomainContract.UseCase
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationResult
-import app.k9mail.feature.account.oauth.domain.entity.AuthorizationState
 
 class FinishOAuthSignIn(
     private val repository: DomainContract.AuthorizationRepository,
@@ -14,7 +13,7 @@ class FinishOAuthSignIn(
         val exception = repository.getAuthorizationException(intent)
 
         return if (response != null) {
-            repository.getExchangeToken(AuthorizationState(), response)
+            repository.getExchangeToken(response)
         } else if (exception != null) {
             AuthorizationResult.Failure(exception)
         } else {

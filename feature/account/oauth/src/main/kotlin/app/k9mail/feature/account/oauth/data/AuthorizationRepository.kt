@@ -6,9 +6,9 @@ import app.k9mail.core.common.oauth.OAuthConfiguration
 import app.k9mail.feature.account.oauth.domain.DomainContract
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationIntentResult
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationResult
-import app.k9mail.feature.account.oauth.domain.entity.AuthorizationState
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+import net.openid.appauth.AuthState
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationRequest
 import net.openid.appauth.AuthorizationResponse
@@ -49,18 +49,15 @@ class AuthorizationRepository(
     }
 
     override suspend fun getExchangeToken(
-        authorizationState: AuthorizationState,
         response: AuthorizationResponse,
     ): AuthorizationResult = suspendCoroutine { continuation ->
         val tokenRequest = response.createTokenExchangeRequest()
-        val authState = authorizationState.toAuthState()
 
         service.performTokenRequest(tokenRequest) { tokenResponse, authorizationException ->
-            authState.update(tokenResponse, authorizationException)
-
             val result = if (authorizationException != null) {
                 AuthorizationResult.Failure(authorizationException)
             } else if (tokenResponse != null) {
+                val authState = AuthState(response, tokenResponse, null)
                 AuthorizationResult.Success(authState.toAuthorizationState())
             } else {
                 AuthorizationResult.Failure(Exception("Unknown error"))

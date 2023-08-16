@@ -4,7 +4,6 @@ import android.content.Intent
 import app.k9mail.core.common.oauth.OAuthConfiguration
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationIntentResult
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationResult
-import app.k9mail.feature.account.oauth.domain.entity.AuthorizationState
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
 
@@ -40,14 +39,11 @@ class FakeAuthorizationRepository(
         return answerGetAuthorizationException
     }
 
-    var recordedGetExchangeTokenAuthorizationState: AuthorizationState? = null
     var recordedGetExchangeTokenResponse: AuthorizationResponse? = null
 
     override suspend fun getExchangeToken(
-        authorizationState: AuthorizationState,
         response: AuthorizationResponse,
     ): AuthorizationResult {
-        recordedGetExchangeTokenAuthorizationState = authorizationState
         recordedGetExchangeTokenResponse = response
         return answerGetExchangeToken
     }
