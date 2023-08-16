@@ -14,7 +14,6 @@ interface AccountOAuthContract {
     data class State(
         val hostname: String = "",
         val emailAddress: String = "",
-        val authorizationState: AuthorizationState = AuthorizationState(),
         val wizardNavigationBarState: WizardNavigationBarState = WizardNavigationBarState(
             isNextEnabled = false,
         ),

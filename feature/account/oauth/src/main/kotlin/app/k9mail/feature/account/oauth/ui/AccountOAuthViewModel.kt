@@ -7,6 +7,7 @@ import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.oauth.domain.DomainContract.UseCase
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationIntentResult
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationResult
+import app.k9mail.feature.account.oauth.domain.entity.AuthorizationState
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.Effect
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.Error
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.Event
@@ -90,18 +91,15 @@ class AccountOAuthViewModel(
             )
         }
         viewModelScope.launch {
-            when (val result = finishOAuthSignIn.execute(state.value.authorizationState, data)) {
+            when (val result = finishOAuthSignIn.execute(data)) {
                 AuthorizationResult.BrowserNotAvailable -> updateErrorState(Error.BrowserNotAvailable)
                 AuthorizationResult.Canceled -> updateErrorState(Error.Canceled)
                 is AuthorizationResult.Failure -> updateErrorState(Error.Unknown(result.error))
                 is AuthorizationResult.Success -> {
                     updateState { state ->
-                        state.copy(
-                            authorizationState = result.state,
-                            isLoading = false,
-                        )
+                        state.copy(isLoading = false)
                     }
-                    navigateNext()
+                    navigateNext(authorizationState = result.state)
                 }
             }
         }
@@ -116,5 +114,7 @@ class AccountOAuthViewModel(
 
     private fun navigateBack() = emitEffect(Effect.NavigateBack)
 
-    private fun navigateNext() = emitEffect(Effect.NavigateNext(state.value.authorizationState))
+    private fun navigateNext(authorizationState: AuthorizationState) {
+        emitEffect(Effect.NavigateNext(authorizationState))
+    }
 }
