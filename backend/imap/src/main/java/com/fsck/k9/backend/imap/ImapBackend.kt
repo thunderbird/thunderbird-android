@@ -44,6 +44,7 @@ class ImapBackend(
     override val supportsUpload = true
     override val supportsTrashFolder = true
     override val supportsSearchByDate = true
+    override val supportsFolderSubscriptions = true
     override val isPushCapable = true
 
     override fun refreshFolderList() {

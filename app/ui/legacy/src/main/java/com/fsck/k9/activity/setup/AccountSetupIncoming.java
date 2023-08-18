@@ -82,7 +82,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private boolean mMakeDefault;
     private CheckBox useCompressionCheckBox;
     private CheckBox isSendClientIdEnabledCheckBox;
-    private CheckBox mSubscribedFoldersOnly;
     private AuthTypeAdapter mAuthTypeAdapter;
     private ConnectionSecurity[] mConnectionSecurityChoices = ConnectionSecurity.values();
     private boolean editSettings;
@@ -128,7 +127,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         mNextButton = findViewById(R.id.next);
         useCompressionCheckBox = findViewById(R.id.use_compression);
         isSendClientIdEnabledCheckBox = findViewById(R.id.is_send_client_id_enabled);
-        mSubscribedFoldersOnly = findViewById(R.id.subscribed_folders_only);
         mAllowClientCertificateView = findViewById(R.id.account_allow_client_certificate);
 
         TextInputLayout serverLayoutView = findViewById(R.id.account_server_layout);
@@ -204,7 +202,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
                 useCompressionCheckBox.setVisibility(View.GONE);
                 isSendClientIdEnabledCheckBox.setVisibility(View.GONE);
-                mSubscribedFoldersOnly.setVisibility(View.GONE);
             } else if (settings.type.equals(Protocols.IMAP)) {
                 serverLayoutView.setHint(getString(R.string.account_setup_incoming_imap_server_label));
 
@@ -214,10 +211,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 mImapAutoDetectNamespaceView.setChecked(autoDetectNamespace);
                 if (pathPrefix != null) {
                     mImapPathPrefixView.setText(pathPrefix);
-                }
-
-                if (!editSettings) {
-                    findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
                 }
             } else {
                 throw new Exception("Unknown account type: " + settings.type);
@@ -265,8 +258,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 updatePortFromSecurityType();
             }
             mCurrentPortViewSetting = mPortView.getText().toString();
-
-            mSubscribedFoldersOnly.setChecked(mAccount.isSubscribedFoldersOnly());
         } catch (Exception e) {
             failure(e);
         }
@@ -579,7 +570,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
             mAccount.setUseCompression(useCompressionCheckBox.isChecked());
             mAccount.setSendClientIdEnabled(isSendClientIdEnabledCheckBox.isChecked());
-            mAccount.setSubscribedFoldersOnly(mSubscribedFoldersOnly.isChecked());
 
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);
         } catch (Exception e) {

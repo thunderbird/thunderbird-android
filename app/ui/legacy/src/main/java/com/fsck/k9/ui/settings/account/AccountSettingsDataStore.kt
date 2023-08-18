@@ -6,6 +6,7 @@ import com.fsck.k9.Account.SpecialFolderSelection
 import com.fsck.k9.NotificationLight
 import com.fsck.k9.NotificationVibration
 import com.fsck.k9.Preferences
+import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.notification.NotificationController
@@ -18,6 +19,7 @@ class AccountSettingsDataStore(
     private val jobManager: K9JobManager,
     private val notificationChannelManager: NotificationChannelManager,
     private val notificationController: NotificationController,
+    private val messagingController: MessagingController,
 ) : PreferenceDataStore() {
     private var notificationSettingsChanged = false
 
@@ -41,6 +43,7 @@ class AccountSettingsDataStore(
             "autocrypt_prefer_encrypt" -> account.autocryptPreferEncryptMutual
             "upload_sent_messages" -> account.isUploadSentMessages
             "ignore_chat_messages" -> account.isIgnoreChatMessages
+            "subscribed_folders_only" -> account.isSubscribedFoldersOnly
             else -> defValue
         }
     }
@@ -65,6 +68,7 @@ class AccountSettingsDataStore(
             "autocrypt_prefer_encrypt" -> account.autocryptPreferEncryptMutual = value
             "upload_sent_messages" -> account.isUploadSentMessages = value
             "ignore_chat_messages" -> account.isIgnoreChatMessages = value
+            "subscribed_folders_only" -> updateSubscribedFoldersOnly(value)
             else -> return
         }
 
@@ -285,5 +289,13 @@ class AccountSettingsDataStore(
             )
         }
         notificationSettingsChanged = true
+    }
+
+    private fun updateSubscribedFoldersOnly(value: Boolean) {
+        if (account.isSubscribedFoldersOnly != value) {
+            account.isSubscribedFoldersOnly = value
+
+            messagingController.refreshFolderList(account)
+        }
     }
 }

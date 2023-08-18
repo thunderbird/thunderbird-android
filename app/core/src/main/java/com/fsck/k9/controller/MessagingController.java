@@ -1672,6 +1672,10 @@ public class MessagingController {
         return getBackend(account).getSupportsUpload();
     }
 
+    public boolean supportsFolderSubscriptions(Account account) {
+        return getBackend(account).getSupportsFolderSubscriptions();
+    }
+
     public void checkIncomingServerSettings(Account account) throws MessagingException {
         getBackend(account).checkIncomingServerSettings();
     }

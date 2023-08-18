@@ -349,6 +349,10 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
     private fun initializeFolderSettings(account: Account) {
         findPreference<Preference>(PREFERENCE_FOLDERS)?.let {
+            if (!messagingController.supportsFolderSubscriptions(account)) {
+                findPreference<Preference>(PREFERENCE_SUBSCRIBED_FOLDERS_ONLY).remove()
+            }
+
             if (!messagingController.isMoveCapable(account)) {
                 findPreference<Preference>(PREFERENCE_ARCHIVE_FOLDER).remove()
                 findPreference<Preference>(PREFERENCE_DRAFTS_FOLDER).remove()
@@ -453,6 +457,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_AUTOCRYPT_TRANSFER = "autocrypt_transfer"
         private const val PREFERENCE_FOLDERS = "folders"
         private const val PREFERENCE_AUTO_EXPAND_FOLDER = "account_setup_auto_expand_folder"
+        private const val PREFERENCE_SUBSCRIBED_FOLDERS_ONLY = "subscribed_folders_only"
         private const val PREFERENCE_ARCHIVE_FOLDER = "archive_folder"
         private const val PREFERENCE_DRAFTS_FOLDER = "drafts_folder"
         private const val PREFERENCE_SENT_FOLDER = "sent_folder"
