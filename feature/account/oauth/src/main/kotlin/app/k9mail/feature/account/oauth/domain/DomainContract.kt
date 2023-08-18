@@ -20,7 +20,7 @@ interface DomainContract {
         }
 
         fun interface FinishOAuthSignIn {
-            suspend fun execute(authorizationState: AuthorizationState, intent: Intent): AuthorizationResult
+            suspend fun execute(intent: Intent): AuthorizationResult
         }
 
         fun interface CheckIsGoogleSignIn {
@@ -37,10 +37,7 @@ interface DomainContract {
         suspend fun getAuthorizationResponse(intent: Intent): AuthorizationResponse?
         suspend fun getAuthorizationException(intent: Intent): AuthorizationException?
 
-        suspend fun getExchangeToken(
-            authorizationState: AuthorizationState,
-            response: AuthorizationResponse,
-        ): AuthorizationResult
+        suspend fun getExchangeToken(response: AuthorizationResponse): AuthorizationResult
     }
 
     fun interface AuthorizationStateRepository {

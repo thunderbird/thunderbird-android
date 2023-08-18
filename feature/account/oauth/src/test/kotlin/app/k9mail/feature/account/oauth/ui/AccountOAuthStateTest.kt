@@ -1,7 +1,6 @@
 package app.k9mail.feature.account.oauth.ui
 
 import app.k9mail.feature.account.common.ui.WizardNavigationBarState
-import app.k9mail.feature.account.oauth.domain.entity.AuthorizationState
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.State
 import assertk.all
 import assertk.assertThat
@@ -18,7 +17,6 @@ class AccountOAuthStateTest {
         assertThat(state).all {
             prop(State::hostname).isEqualTo("")
             prop(State::emailAddress).isEqualTo("")
-            prop(State::authorizationState).isEqualTo(AuthorizationState())
             prop(State::wizardNavigationBarState).isEqualTo(
                 WizardNavigationBarState(
                     isNextEnabled = false,

@@ -198,7 +198,6 @@ class AccountOAuthViewModelTest {
 
         val successState = loadingState.copy(
             isLoading = false,
-            authorizationState = authorizationState,
         )
 
         assertThat(stateTurbine.awaitItem()).isEqualTo(successState)
@@ -371,7 +370,7 @@ class AccountOAuthViewModelTest {
             getOAuthRequestIntent = { _, _ ->
                 authorizationIntentResult
             },
-            finishOAuthSignIn = { _, _ ->
+            finishOAuthSignIn = { _ ->
                 delay(50)
                 authorizationResult
             },

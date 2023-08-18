@@ -19,7 +19,6 @@ class FinishOAuthSignInTest {
 
     @Test
     fun `should return failure when intent has encoded exception`() = runTest {
-        val authorizationState = AuthorizationState()
         val intent = Intent()
         val exception = AuthorizationException(
             AuthorizationException.TYPE_GENERAL_ERROR,
@@ -36,10 +35,7 @@ class FinishOAuthSignInTest {
             repository = repository,
         )
 
-        val result = testSubject.execute(
-            authorizationState = authorizationState,
-            intent = intent,
-        )
+        val result = testSubject.execute(intent)
 
         assertThat(result).isEqualTo(AuthorizationResult.Failure(exception))
         assertThat(repository.recordedGetAuthorizationExceptionIntent).isEqualTo(intent)
@@ -47,16 +43,7 @@ class FinishOAuthSignInTest {
 
     @Test
     fun `should return canceled when intent has no response and no exception`() = runTest {
-        val authorizationState = AuthorizationState()
         val intent = Intent()
-        val exception = AuthorizationException(
-            AuthorizationException.TYPE_GENERAL_ERROR,
-            1,
-            "error",
-            "error_description",
-            null,
-            null,
-        )
         val repository = FakeAuthorizationRepository(
             answerGetAuthorizationResponse = null,
             answerGetAuthorizationException = null,
@@ -65,10 +52,7 @@ class FinishOAuthSignInTest {
             repository = repository,
         )
 
-        val result = testSubject.execute(
-            authorizationState = authorizationState,
-            intent = intent,
-        )
+        val result = testSubject.execute(intent)
 
         assertThat(result).isEqualTo(AuthorizationResult.Canceled)
         assertThat(repository.recordedGetAuthorizationResponseIntent).isEqualTo(intent)
@@ -89,15 +73,11 @@ class FinishOAuthSignInTest {
             repository = repository,
         )
 
-        val result = testSubject.execute(
-            authorizationState = authorizationState,
-            intent = intent,
-        )
+        val result = testSubject.execute(intent)
 
         assertThat(result).isEqualTo(AuthorizationResult.Success(authorizationState))
         assertThat(repository.recordedGetAuthorizationResponseIntent).isEqualTo(intent)
         assertThat(repository.recordedGetAuthorizationExceptionIntent).isEqualTo(intent)
-        assertThat(repository.recordedGetExchangeTokenAuthorizationState).isEqualTo(authorizationState)
         assertThat(repository.recordedGetExchangeTokenResponse).isEqualTo(response)
     }
 }

@@ -6,7 +6,6 @@ import androidx.core.net.toUri
 import app.k9mail.core.common.oauth.OAuthConfiguration
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationIntentResult
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationResult
-import app.k9mail.feature.account.oauth.domain.entity.AuthorizationState
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -14,6 +13,7 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.prop
 import kotlinx.coroutines.test.runTest
+import net.openid.appauth.AuthState
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationRequest
 import net.openid.appauth.AuthorizationResponse
@@ -179,13 +179,11 @@ class AuthorizationRepositoryTest {
                 callback.onTokenRequestCompleted(tokenResponse, null)
             }
         }
-        val authorizationState = AuthorizationState()
 
-        val result = testSubject.getExchangeToken(authorizationState, authorizationResponse)
+        val result = testSubject.getExchangeToken(authorizationResponse)
 
-        val authState = authorizationState.toAuthState()
-        authState.update(tokenResponse, null)
-        val successAuthorizationState = authState.toAuthorizationState()
+        val expectedAuthState = AuthState(authorizationResponse, tokenResponse, null)
+        val successAuthorizationState = expectedAuthState.toAuthorizationState()
 
         assertThat(result).isEqualTo(AuthorizationResult.Success(successAuthorizationState))
     }
@@ -208,9 +206,8 @@ class AuthorizationRepositoryTest {
                 callback.onTokenRequestCompleted(null, authorizationException)
             }
         }
-        val authorizationState = AuthorizationState()
 
-        val result = testSubject.getExchangeToken(authorizationState, authorizationResponse)
+        val result = testSubject.getExchangeToken(authorizationResponse)
 
         assertThat(result).isEqualTo(AuthorizationResult.Failure(authorizationException))
     }
@@ -226,9 +223,8 @@ class AuthorizationRepositoryTest {
                 callback.onTokenRequestCompleted(null, null)
             }
         }
-        val authorizationState = AuthorizationState()
 
-        val result = testSubject.getExchangeToken(authorizationState, authorizationResponse)
+        val result = testSubject.getExchangeToken(authorizationResponse)
 
         assertThat(result).isEqualTo(AuthorizationResult.Failure(exception))
     }
