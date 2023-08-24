@@ -305,6 +305,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_messageview_return_to_list_summary">Return to message list after message deletion</string>
     <string name="global_settings_messageview_show_next_label">Show next message after delete</string>
     <string name="global_settings_messageview_show_next_summary">Show next message by default after message deletion</string>
+    <string name="global_settings_messageview_return_to_list_label_after_unread">Return to list after message is marked as unread</string>
+    <string name="global_settings_messageview_return_to_list_after_unread_summary">Return to message list after message is marked as unread</string>
+    <string name="global_settings_messageview_show_next_label_after_unread">Show next message after message is marked as unread</string>
+    <string name="global_settings_messageview_show_next_after_unread_summary">Show next message by default after message is marked as unread</string>
 
     <string name="global_settings_confirm_actions_title">Confirm actions</string>
     <string name="global_settings_confirm_actions_summary">Show a dialog whenever you perform selected actions</string>

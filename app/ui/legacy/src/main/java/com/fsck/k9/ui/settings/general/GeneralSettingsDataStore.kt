@@ -38,6 +38,8 @@ class GeneralSettingsDataStore(
             "messageview_autofit_width" -> K9.isAutoFitWidth
             "messageview_return_to_list" -> K9.isMessageViewReturnToList
             "messageview_show_next" -> K9.isMessageViewShowNext
+            "messageview_return_to_list_after_unread" -> K9.isMessageViewReturnToList
+            "messageview_show_next_after_unread" -> K9.isMessageViewShowNext
             "quiet_time_enabled" -> K9.isQuietTimeEnabled
             "disable_notifications_during_quiet_time" -> !K9.isNotificationDuringQuietTimeEnabled
             "privacy_hide_useragent" -> K9.isHideUserAgent
@@ -69,6 +71,8 @@ class GeneralSettingsDataStore(
             "messageview_autofit_width" -> K9.isAutoFitWidth = value
             "messageview_return_to_list" -> K9.isMessageViewReturnToList = value
             "messageview_show_next" -> K9.isMessageViewShowNext = value
+            "messageview_return_to_list_after_unread" -> K9.isMessageViewReturnToList = value
+            "messageview_show_next_after_unread" -> K9.isMessageViewShowNext = value
             "quiet_time_enabled" -> K9.isQuietTimeEnabled = value
             "disable_notifications_during_quiet_time" -> K9.isNotificationDuringQuietTimeEnabled = !value
             "privacy_hide_useragent" -> K9.isHideUserAgent = value

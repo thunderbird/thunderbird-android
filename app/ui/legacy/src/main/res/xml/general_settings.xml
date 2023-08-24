@@ -326,6 +326,18 @@
             android:summary="@string/global_settings_messageview_show_next_summary"
             android:title="@string/global_settings_messageview_show_next_label" />
 
+        <CheckBoxPreference
+            android:disableDependentsState="true"
+            android:key="messageview_return_to_list_after_unread"
+            android:summary="@string/global_settings_messageview_return_to_list_after_unread_summary"
+            android:title="@string/global_settings_messageview_return_to_list_label_after_unread" />
+
+        <CheckBoxPreference
+            android:dependency="messageview_return_to_list_after_unread"
+            android:key="messageview_show_next_after_unread"
+            android:summary="@string/global_settings_messageview_show_next_after_unread_summary"
+            android:title="@string/global_settings_messageview_show_next_label_after_unread" />
+
         <MultiSelectListPreference
             android:dialogTitle="@string/global_settings_confirm_actions_title"
             android:entries="@array/confirm_action_entries"

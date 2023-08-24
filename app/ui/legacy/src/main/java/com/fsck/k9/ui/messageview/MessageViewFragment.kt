@@ -642,6 +642,7 @@ class MessageViewFragment :
     }
 
     fun onToggleRead() {
+        fragmentListener.showNextMessageOrReturn()
         toggleFlag(Flag.SEEN)
     }
 
