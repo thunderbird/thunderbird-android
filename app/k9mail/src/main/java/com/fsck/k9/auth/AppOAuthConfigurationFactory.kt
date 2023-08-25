@@ -41,8 +41,8 @@ class AppOAuthConfigurationFactory : OAuthConfigurationFactory {
 
     private fun createMicrosoftConfiguration(): Pair<List<String>, OAuthConfiguration> {
         return listOf(
-            "imap.mail.yahoo.com",
-            "smtp.mail.yahoo.com",
+            "outlook.office365.com",
+            "smtp.office365.com",
         ) to OAuthConfiguration(
             clientId = BuildConfig.OAUTH_MICROSOFT_CLIENT_ID,
             scopes = listOf(

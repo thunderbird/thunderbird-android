@@ -13,7 +13,7 @@
   <string name="about_project_title">Progetto Open Source</string>
   <string name="about_website_title">Sito web</string>
   <string name="user_manual_title">Manuale utente</string>
-  <string name="get_help_title">Hai bisogno d\'aiuto? </string>
+  <string name="get_help_title">Supporto</string>
   <string name="user_forum_title">Forum utenti</string>
   <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
@@ -95,7 +95,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="edit_as_new_message_action">Modifica come nuovo messaggio</string>
   <string name="move_action">Sposta</string>
   <string name="move_to_drafts_action">Sposta in Bozze</string>
-  <string name="refile_action">Riarchivia…</string>
+  <string name="refile_action">Riclassifica…</string>
   <string name="done_action">Fatto</string>
   <string name="discard_action">Ignora</string>
   <string name="save_draft_action">Salva come bozza</string>
@@ -119,12 +119,12 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="flag_action">Aggiungi stella</string>
   <string name="unflag_action">Rimuovi stella</string>
   <string name="copy_action">Copia</string>
-  <string name="unsubscribe_action">Annulla l\'iscrizione</string>
+  <string name="unsubscribe_action">Disiscriviti</string>
   <string name="show_headers_action">Mostra intestazioni</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Indirizzo copiato negli appunti </item>
-    <item quantity="many">IndirizzI copiati negli appunti</item>
-    <item quantity="other">IndirizzI copiati negli appunti</item>
+    <item quantity="many">Indirizzi copiati negli appunti</item>
+    <item quantity="other">Indirizzi copiati negli appunti</item>
   </plurals>
   <string name="copy_subject_to_clipboard">Testo dell\'oggetto copiato negli appunti</string>
   <string name="message_view_theme_action_dark">Passa al tema scuro</string>
@@ -171,16 +171,16 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="notification_authentication_error_title">Autenticazione non riuscita</string>
   <string name="notification_authentication_error_text">Autenticazione non riuscita per <xliff:g id="account">%s</xliff:g>. Aggiorna le impostazioni del server.</string>
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
-  <string name="notification_notify_error_title">Errore su notifica </string>
+  <string name="notification_notify_error_title">Errore di notifica </string>
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-  <string name="notification_notify_error_text">È avvenuto un errore durante la creazione di un avviso di ricezione di un nuovo messaggio. Questo errore è probabilmente dovuto all\'avviso sonoro di ricezione messaggio, che può non essere indicato, oppure non è stato trovato. \n\nClicca qui per esaminare i parametri di notifica.</string>
+  <string name="notification_notify_error_text">Errore nella generazione di una notifica di ricezione di un nuovo messaggio. Questo errore è probabilmente dovuto alla mancanza di un suono di notifica.\n\nTocca per le impostazioni di notifica.</string>
   <string name="notification_bg_sync_ticker">Controllo posta: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
   <string name="notification_bg_sync_title">Controllo posta</string>
   <string name="notification_bg_send_ticker">Invio posta: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Invio posta</string>
   <string name="notification_bg_title_separator">:</string>
   <string name="notification_channel_push_title">Sincronizza (Push)</string>
-  <string name="notification_channel_push_description">Visualizzato in attesa di nuovi messaggi</string>
+  <string name="notification_channel_push_description">Visualizzato nell\'attesa di nuovi messaggi</string>
   <string name="notification_channel_messages_title">Messaggi</string>
   <string name="notification_channel_messages_description">Notifiche relative ai messaggi</string>
   <string name="notification_channel_miscellaneous_title">Varie</string>
@@ -198,7 +198,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="debug_enable_sensitive_logging_summary">Può mostrare le password nei file di log.</string>
   <string name="debug_export_logs_title">Esporta log</string>
   <string name="debug_export_logs_success">Esportazione riuscita. I log potrebbero contenere informazioni sensibili. Fai attenzione a chi li invii.</string>
-  <string name="debug_export_logs_failure">Esportazione fallita</string>
+  <string name="debug_export_logs_failure">Esportazione non riuscita.</string>
   <string name="message_list_load_more_messages_action">Carica altri messaggi</string>
   <string name="message_to_fmt">A:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Oggetto</string>
@@ -240,19 +240,19 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="message_discarded_toast">Messaggio scartato</string>
   <string name="message_saved_toast">Messaggio salvato come bozza</string>
   <string name="global_settings_flag_label">Mostra stelle</string>
-  <string name="global_settings_flag_summary">Le stelle indicano i messaggi evidenziati</string>
+  <string name="global_settings_flag_summary">Le stelle indicano i messaggi contrassegnati</string>
   <string name="global_settings_preview_lines_label">Righe di anteprima</string>
   <string name="global_settings_show_correspondent_names_label">Mostra nomi dei corrispondenti</string>
   <string name="global_settings_show_correspondent_names_summary">Mostra i nomi dei corrispondenti al posto degli indirizzi email</string>
   <string name="global_settings_sender_above_subject_label">Corrispondenti sopra l\'oggetto</string>
   <string name="global_settings_sender_above_subject_summary">Mostra i nomi dei corrispondenti sopra la riga dell\'oggetto, invece che sotto</string>
   <string name="global_settings_show_contact_name_label">Mostra nomi dei contatti</string>
-  <string name="global_settings_show_contact_name_summary">Utilizza i nomi dei destinatari dalla rubrica se disponibili</string>
+  <string name="global_settings_show_contact_name_summary">Utilizza i nomi dei destinatari in rubrica se disponibili</string>
   <string name="global_settings_registered_name_color_label">Colora i contatti</string>
   <string name="global_settings_registered_name_color_changed">Colora i nomi nel tuo elenco dei contatti</string>
-  <string name="general_settings_contact_name_color_label">Colore del nome di contatto</string>
+  <string name="general_settings_contact_name_color_label">Colore del nome del contatto</string>
   <string name="global_settings_messageview_fixedwidth_label">Caratteri a larghezza fissa</string>
-  <string name="global_settings_messageview_fixedwidth_summary">Usa carattere a larghezza fissa quando mostri i messaggi di testo</string>
+  <string name="global_settings_messageview_fixedwidth_summary">Usa carattere a larghezza fissa nei messaggi di testo</string>
   <string name="global_settings_messageview_autofit_width_label">Adattamento automatico messaggi</string>
   <string name="global_settings_messageview_autofit_width_summary">Riduci i messaggi per adattarli allo schermo</string>
   <string name="global_settings_messageview_return_to_list_label">Torna all\'elenco dopo l\'eliminazione</string>
@@ -260,9 +260,9 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="global_settings_messageview_show_next_label">Mostra messaggio successivo dopo l\'eliminazione</string>
   <string name="global_settings_messageview_show_next_summary">Mostra messaggio successivo in modo predefinito dopo l\'eliminazione di un messaggio</string>
   <string name="global_settings_confirm_actions_title">Conferma azioni</string>
-  <string name="global_settings_confirm_actions_summary">Mostra una finestra di dialogo ogni volta che si eseguono le azioni selezionate</string>
+  <string name="global_settings_confirm_actions_summary">Mostra una finestra ogni volta che esegui le azioni selezionate</string>
   <string name="global_settings_confirm_action_delete">Elimina</string>
-  <string name="global_settings_confirm_action_delete_starred">Elimina messaggi con la stella (solo messaggi visualizzati)</string>
+  <string name="global_settings_confirm_action_delete_starred">Elimina Speciale (nella vista dei messaggi)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
   <string name="global_settings_confirm_menu_discard">Scarta messaggio</string>
   <string name="global_settings_confirm_menu_mark_all_read">Marca tutti i messaggi come letti</string>
@@ -270,15 +270,15 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <!--Title of the screen to configure swipe actions-->
   <string name="general_settings_swipe_actions_title">Azioni di scorrimento</string>
   <!--Name of the setting to configure the right swipe action-->
-  <string name="general_settings_right_swipe_title">Scorrimento a destra</string>
+  <string name="general_settings_right_swipe_title">Scorri a destra</string>
   <!--Name of the setting to configure the left swipe action-->
-  <string name="general_settings_left_swipe_title">Scorrimento a sinistra</string>
+  <string name="general_settings_left_swipe_title">Scorri a sinistra</string>
   <!--The list item users select to not use a swipe action for a particular direction-->
   <string name="general_settings_swipe_action_none">Nessuna</string>
   <!--Name of the swipe action to select/deselect a message-->
-  <string name="general_settings_swipe_action_toggle_selection">Commuta la selezione</string>
+  <string name="general_settings_swipe_action_toggle_selection">Seleziona/Deseleziona</string>
   <!--Name of the swipe action to mark as message as read/unread-->
-  <string name="general_settings_swipe_action_toggle_read">Marca come letto/da leggere</string>
+  <string name="general_settings_swipe_action_toggle_read">Letto/Da leggere</string>
   <!--Name of the swipe action to add/remove a star-->
   <string name="general_settings_swipe_action_toggle_star">Aggiungi/rimuovi stella</string>
   <!--Name of the swipe action to archive a message-->
@@ -292,8 +292,8 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <!--Title of the setting to specify the density of the message list-->
   <string name="general_settings_message_list_density_title">Densità</string>
   <string name="general_settings_ui_density_compact">Compatta</string>
-  <string name="general_settings_ui_density_default">Predefinito</string>
-  <string name="general_settings_ui_density_relaxed">Ampia</string>
+  <string name="general_settings_ui_density_default">Predefinita</string>
+  <string name="general_settings_ui_density_relaxed">Rilassata</string>
   <string name="global_settings_privacy_hide_useragent">Nascondi User-Agent</string>
   <string name="global_settings_privacy_hide_useragent_detail">Rimuove lo User-Agent di K-9 dalle intestazioni dei messaggi</string>
   <string name="global_settings_privacy_hide_timezone">Nascondi fuso orario</string>
@@ -305,23 +305,23 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="global_settings_lock_screen_notification_visibility_title">Notifiche schermata di blocco</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Nessuna notifica sulla schermata di blocco</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Nome applicazione</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Numero nuovi messaggi</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Conteggio nuovi messaggi</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Numero messaggi e mittenti</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Come quando lo schermo è sbloccato</string>
-  <string name="quiet_time">Modalità silenziosa</string>
+  <string name="quiet_time">Tempo di riposo</string>
   <string name="quiet_time_description">Disabilita suoneria, vibrazione e lampeggi di notte</string>
   <string name="quiet_time_notification">Disabilita notifiche</string>
-  <string name="quiet_time_notification_description">Disabilita completamente le notifiche quando in Modalità silenziosa</string>
-  <string name="quiet_time_starts">Attiva alle</string>
-  <string name="quiet_time_ends">Disattiva alle</string>
+  <string name="quiet_time_notification_description">Disabilita completamente le notifiche nel tempo di riposo</string>
+  <string name="quiet_time_starts">Attiva tempo di riposo alle</string>
+  <string name="quiet_time_ends">Disattiva tempo di riposo alle</string>
   <string name="account_setup_basics_title">Configura un nuovo account</string>
   <string name="account_setup_basics_email_hint">Indirizzo email</string>
   <string name="account_setup_basics_password_hint">Password</string>
-  <string name="account_setup_oauth_description">Per usare un account email con K-9 Mail, tu devi registrarti e permettere l\'accesso dell\' app alla tua posta.</string>
+  <string name="account_setup_oauth_description">Per poter usare questo account email con K-9 Mail, devi accedere e autorizzare l\'accesso dell\'applicazione alla tua posta.</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
-  <string name="account_setup_oauth_sign_in">Registrati</string>
+  <string name="account_setup_oauth_sign_in">Accedi</string>
   <!--Displayed below the 'account_setup_oauth_description' text-->
-  <string name="account_setup_oauth_sign_in_with_google">Registrati con Google</string>
+  <string name="account_setup_oauth_sign_in_with_google">Accedi con Google</string>
   <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
   <string name="account_setup_basics_show_password_need_lock">Per visualizzare la tua password qui, abilita il blocco dello schermo su questo dispositivo.</string>
   <string name="account_setup_basics_show_password_biometrics_title">Verifica la tua identità</string>
@@ -329,7 +329,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_setup_basics_manual_setup_action">Configurazione manuale</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Recupero delle informazioni dell\'account\u2026</string>
-  <string name="account_setup_check_settings_check_incoming_msg">Verifica delle impostazioni del server della posta in arrivo\u2026</string>
+  <string name="account_setup_check_settings_check_incoming_msg">Verifica impostazioni server posta in entrata\u2026</string>
   <string name="account_setup_check_settings_check_outgoing_msg">Verifica delle impostazioni del server della posta in uscita\u2026</string>
   <string name="account_setup_check_settings_authenticate">Autenticazione\u2026</string>
   <string name="account_setup_check_settings_fetch">Recupero delle impostazioni dell\'account in corso\u2026</string>
@@ -367,7 +367,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_setup_incoming_send_client_id">Invia ID del client</string>
   <string name="account_setup_expunge_policy_label">Cancella i messaggi eliminati sul server</string>
   <string name="account_setup_expunge_policy_immediately">Immediatamente</string>
-  <string name="account_setup_expunge_policy_on_poll">Durante ogni recupero</string>
+  <string name="account_setup_expunge_policy_on_poll">Durante la sincronizzazione</string>
   <string name="account_setup_expunge_policy_manual">Manualmente</string>
   <string name="account_setup_incoming_autodetect_namespace_label">Rileva automaticamente lo spazio dei nomi IMAP</string>
   <string name="account_setup_incoming_imap_path_prefix_label">Prefisso percorso IMAP</string>
@@ -382,7 +382,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_setup_outgoing_smtp_server_label">Server SMTP</string>
   <string name="account_setup_outgoing_port_label">Porta</string>
   <string name="account_setup_outgoing_security_label">Protezione</string>
-  <string name="account_setup_outgoing_require_login_label">Richiedi accesso.</string>
+  <string name="account_setup_outgoing_require_login_label">Richiedi accesso</string>
   <string name="account_setup_outgoing_username_label">Nome utente</string>
   <string name="account_setup_outgoing_password_label">Password</string>
   <string name="account_setup_outgoing_authentication_label">Autenticazione</string>
@@ -421,15 +421,15 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_setup_options_mail_display_count_5000">5000 messaggi</string>
   <string name="account_setup_options_mail_display_count_10000">10000 messaggi</string>
   <string name="account_setup_options_mail_display_count_all">tutti i messaggi</string>
-  <string name="move_copy_cannot_copy_unsynced_message">Impossibile copiare o spostare un messaggio che non sia sincronizzato con il server</string>
+  <string name="move_copy_cannot_copy_unsynced_message">Impossibile copiare o spostare un messaggio non sincronizzato con il server</string>
   <string name="account_setup_failed_dlg_title">Impossibile completare la configurazione</string>
   <string name="account_setup_failed_dlg_auth_message_fmt">Nome utente o password errata.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">Il server ha fornito un certificato SSL non valido. A volte ciò è dovuto a problemi di configurazione del server. In altri casi potrebbe dipendere da un tentativo di attacco a te o al tuo server di posta. Se non sei sicuro delle cause, fai clic su Rifiuta e contatta gli amministratori del tuo server di posta.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Impossibile connettersi al server.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_oauth_flow_canceled">Autorizzazione cancellata</string>
-  <string name="account_setup_failed_dlg_oauth_flow_failed">Autorizzazione fallita con il seguente errore <xliff:g id="error">%s</xliff:g></string>
+  <string name="account_setup_failed_dlg_oauth_flow_canceled">Autorizzazione annullata</string>
+  <string name="account_setup_failed_dlg_oauth_flow_failed">Autorizzazione non riuscita con il seguente errore: <xliff:g id="error">%s</xliff:g></string>
   <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 non è attualmente supportato da questo provider di posta.</string>
-  <string name="account_setup_failed_dlg_browser_not_found">L\' applicazione non può trovare il browser da usare per richiedere l\' accesso al tuo account.</string>
+  <string name="account_setup_failed_dlg_browser_not_found">L\' applicazione non trova un browser per richiedere l\'accesso al tuo account.</string>
   <string name="account_setup_failed_dlg_edit_details_action">Modifica i dettagli</string>
   <string name="account_setup_failed_dlg_continue_action">Continua</string>
   <string name="account_settings_push_advanced_title">Avanzate</string>
@@ -444,15 +444,15 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_settings_notify_sync_label">Notifiche di sincronizzazione</string>
   <string name="account_settings_email_label">Il tuo indirizzo email</string>
   <string name="account_settings_notify_summary">Notifica nella barra di stato l\'arrivo di un nuovo messaggio</string>
-  <string name="account_settings_notify_sync_summary">Notifica nella barra di stato mentre la posta viene controllata</string>
+  <string name="account_settings_notify_sync_summary">Notifica nella barra di stato il controllo della posta</string>
   <string name="account_settings_notify_self_label">Includi la posta in uscita</string>
   <string name="account_settings_notify_self_summary">Mostra una notifica per i messaggi che ho inviato</string>
   <string name="account_notify_contacts_mail_only_label">Solo contatti</string>
   <string name="account_notify_contacts_mail_only_summary">Mostra notifiche solo per i messaggi da contatti conosciuti</string>
   <string name="account_settings_ignore_chat_messages_label">Ignora i messaggi di chat</string>
-  <string name="account_settings_ignore_chat_messages_summary">Non visualizzare notifiche per i messaggi appartenenti ad una chat</string>
+  <string name="account_settings_ignore_chat_messages_summary">Non notificare messaggi da una chat</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marca come letto all\'apertura</string>
-  <string name="account_settings_mark_message_as_read_on_view_summary">Marca un messaggio come letto quando viene aperto per la visualizzazione</string>
+  <string name="account_settings_mark_message_as_read_on_view_summary">Segna un messaggio come letto dopo la visualizzazione</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marca come letto all\'eliminazione </string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Marca un messaggio come letto quando viene eliminato</string>
   <string name="account_settings_notification_channels_label">Categorie di notifiche</string>
@@ -496,9 +496,9 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_settings_crypto_encrypt_all_drafts">Memorizza tutte le bozze con cifratura</string>
   <string name="account_settings_crypto_encrypt_all_drafts_on">Tutte le bozze saranno memorizzate con cifratura</string>
   <string name="account_settings_crypto_encrypt_all_drafts_off">Cifra le bozze solo se la cifratura è abilitata</string>
-  <string name="account_settings_mail_check_frequency_label">Frequenza di recupero della cartella</string>
+  <string name="account_settings_mail_check_frequency_label">Frequenza sincronizzazione cartella</string>
   <string name="account_settings_color_label">Colore dell\'account</string>
-  <string name="account_settings_color_summary">Scegli il colore dell\'account utilizzato nell\'elenco delle cartelle e degli account</string>
+  <string name="account_settings_color_summary">Colore account per cartelle e lista account</string>
   <string name="account_settings_mail_display_count_label">Dimensione cartelle locali</string>
   <string name="account_settings_autodownload_message_size_label">Scarica messaggi di dimensione fino a</string>
   <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -553,7 +553,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_settings_folder_target_mode_not_second_class">Tutte eccetto le cartelle di 2a classe</string>
   <string name="account_settings_sync_remote_deletetions_label">Sincronizza eliminazioni sul server</string>
   <string name="account_settings_sync_remote_deletetions_summary">Rimuovi i messaggi una volta eliminati sul server</string>
-  <string name="account_settings_openpgp_missing">Applicazione OpenPGP mancante - è stata disinstallata?</string>
+  <string name="account_settings_openpgp_missing">Applicazione OpenPGP mancante, è stata disinstallata?</string>
   <string name="folder_settings_title">Impostazioni cartella</string>
   <string name="folder_settings_in_top_group_label">Mostra nel gruppo superiore</string>
   <string name="folder_settings_in_top_group_summary">Mostra nella parte superiore dell\'elenco delle cartelle</string>
@@ -561,7 +561,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="folder_settings_folder_display_mode_normal">Nessuna classe</string>
   <string name="folder_settings_folder_display_mode_first_class">1a classe</string>
   <string name="folder_settings_folder_display_mode_second_class">2a classe</string>
-  <string name="folder_settings_folder_sync_mode_label">Classe di recupero della cartella</string>
+  <string name="folder_settings_folder_sync_mode_label">Classe di sincronizzazione della cartella</string>
   <string name="folder_settings_folder_sync_mode_normal">Nessuna</string>
   <string name="folder_settings_folder_sync_mode_first_class">1a classe</string>
   <string name="folder_settings_folder_sync_mode_second_class">2a classe</string>
@@ -586,24 +586,24 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="notifications_title">Notifiche</string>
   <string name="account_settings_vibration">Vibrazione</string>
   <string name="account_settings_vibrate_enable">Vibrazione</string>
-  <string name="account_settings_vibrate_pattern_label">Tipo di vibrazione</string>
+  <string name="account_settings_vibrate_pattern_label">Modello vibrazione</string>
   <string name="account_settings_vibrate_pattern_default">Predefinito</string>
-  <string name="account_settings_vibrate_pattern_1">Tipo 1</string>
-  <string name="account_settings_vibrate_pattern_2">Tipo 2</string>
-  <string name="account_settings_vibrate_pattern_3">Tipo 3</string>
-  <string name="account_settings_vibrate_pattern_4">Tipo 4</string>
-  <string name="account_settings_vibrate_pattern_5">Tipo 5</string>
+  <string name="account_settings_vibrate_pattern_1">Modello 1</string>
+  <string name="account_settings_vibrate_pattern_2">Modello 2</string>
+  <string name="account_settings_vibrate_pattern_3">Modello 3</string>
+  <string name="account_settings_vibrate_pattern_4">Modello 4</string>
+  <string name="account_settings_vibrate_pattern_5">Modello 5</string>
   <string name="account_settings_vibrate_times">Ripeti vibrazione</string>
-  <string name="account_settings_vibrate_summary_disabled">Disabilitato</string>
+  <string name="account_settings_vibrate_summary_disabled">Disabilitata</string>
   <string name="account_settings_ringtone">Suoneria nuovo messaggio</string>
-  <string name="account_settings_notification_light_label">Luce di notifica</string>
-  <string name="account_settings_notification_light_disabled">Disabilitato</string>
-  <string name="account_settings_notification_light_account_color">Colore dell\'account</string>
-  <string name="account_settings_notification_light_default_color">Colori di sistema</string>
+  <string name="account_settings_notification_light_label">Luce notifica</string>
+  <string name="account_settings_notification_light_disabled">Disabilitata</string>
+  <string name="account_settings_notification_light_account_color">Colore account</string>
+  <string name="account_settings_notification_light_default_color">Colore predefinito di sistema</string>
   <string name="account_settings_notification_light_white">Bianco</string>
   <string name="account_settings_notification_light_red">Rosso</string>
   <string name="account_settings_notification_light_green">Verde</string>
-  <string name="account_settings_notification_light_blue">Blù</string>
+  <string name="account_settings_notification_light_blue">Blu</string>
   <string name="account_settings_notification_light_yellow">Giallo</string>
   <string name="account_settings_notification_light_cyan">Ciano</string>
   <string name="account_settings_notification_light_magenta">Magenta</string>
@@ -690,15 +690,15 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="settings_message_theme_label">Tema della vista dei messaggi</string>
   <string name="settings_compose_theme_label">Tema del compositore</string>
   <string name="settings_language_label">Lingua</string>
-  <string name="preference_search_no_results">Nessuna impostazionie trovata</string>
+  <string name="preference_search_no_results">Nessuna impostazione trovata</string>
   <string name="settings_message_theme_selection_label">Tema fisso del messaggio</string>
   <string name="settings_message_theme_selection_summary_off">Seleziona il tema della vista dei messaggi durante la visualizzazione del messaggio</string>
-  <string name="settings_message_theme_selection_summary_on">Usa un tema fisso nella vista dei messaggi</string>
+  <string name="settings_message_theme_selection_summary_on">Usa un tema fisso per la vista dei messaggi</string>
   <string name="setting_language_system">Predefinita di sistema</string>
   <string name="background_ops_label">Sincronizzazione in background</string>
   <string name="background_ops_never">Mai</string>
   <string name="background_ops_always">Sempre</string>
-  <string name="background_ops_auto_sync_only">Quando \'Sincronizzazione automatica\' è selezionato</string>
+  <string name="background_ops_auto_sync_only">Se \'Sincronizzazione automatica\' è abilitata</string>
   <string name="batch_select_all">Seleziona tutto</string>
   <string name="account_setup_push_limit_label">Limite di cartelle da sincronizzare in push</string>
   <string name="account_setup_push_limit_5">5 cartelle</string>
@@ -710,9 +710,9 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_setup_push_limit_500">500 cartelle</string>
   <string name="account_setup_push_limit_1000">1000 cartelle</string>
   <string name="animations_title">Animazione</string>
-  <string name="animations_summary">Utilizza effetti visivi vistosi</string>
-  <string name="volume_navigation_title">Navigazione mediante tasto del volume nella vista dei messaggi</string>
-  <string name="show_unified_inbox_title">Mosta posta in arrivo combinata</string>
+  <string name="animations_summary">Usa effetti visivi</string>
+  <string name="volume_navigation_title">Naviga con il tasto volume nella vista dei messaggi</string>
+  <string name="show_unified_inbox_title">Mostra posta in arrivo combinata</string>
   <string name="show_starred_count_title">Mostra il numero dei messaggi con stella</string>
   <string name="integrated_inbox_title">Posta in arrivo combinata</string>
   <string name="integrated_inbox_detail">Tutti i messaggi nella Posta in arrivo combinata</string>
@@ -768,7 +768,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Sì</string>
   <string name="dialog_confirm_delete_cancel_button">No</string>
-  <string name="dialog_confirm_mark_all_as_read_title">Conferma di marcare tutti come letti</string>
+  <string name="dialog_confirm_mark_all_as_read_title">Conferma di segnare tutti come letti</string>
   <string name="dialog_confirm_mark_all_as_read_message">Vuoi marcare tutti i messaggi come letti?</string>
   <string name="dialog_confirm_empty_trash_title">Conferma lo svuotamento del cestino</string>
   <string name="dialog_confirm_empty_trash_message">Vuoi svuotare la cartella del cestino?</string>
@@ -802,9 +802,9 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
   <string name="settings_import_authorization_and_password_required">Accedi e inserisci le password</string>
   <string name="settings_import_failure">Importazione impostazioni non riuscita</string>
-  <string name="settings_import_read_failure">Lettura file delle impostazioni non riuscita</string>
+  <string name="settings_import_read_failure">Lettura file impostazioni non riuscita</string>
   <string name="settings_import_partial_failure">Importazione di alcune impostazioni non riuscita</string>
-  <string name="settings_import_status_success">Importate correttamente</string>
+  <string name="settings_import_status_success">Importati correttamente</string>
   <string name="settings_import_status_password_required">Password richiesta</string>
   <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
   <string name="settings_import_status_log_in_required">Accesso richiesto</string>
@@ -824,12 +824,12 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="server_name_format">Nome server: <xliff:g id="hostname">%s</xliff:g></string>
   <string name="unread_widget_select_account">Mostra numero messaggi non letti per…</string>
   <string name="unread_widget_account_title">Account</string>
-  <string name="unread_widget_account_summary">L\'account per il quale dovrebbe essere visualizzato il contatore non letti</string>
+  <string name="unread_widget_account_summary">Account per il quale visualizzare il contatore non letti</string>
   <string name="unread_widget_unified_inbox_account_summary">Posta in arrivo combinata</string>
-  <string name="unread_widget_folder_enabled_title">Conteggio cartella</string>
-  <string name="unread_widget_folder_enabled_summary">Visualizza il contatore non letti solo di una singola cartella</string>
+  <string name="unread_widget_folder_enabled_title">Contatore cartella</string>
+  <string name="unread_widget_folder_enabled_summary">Visualizza il contatore non letti per una singola cartella</string>
   <string name="unread_widget_folder_title">Cartella</string>
-  <string name="unread_widget_folder_summary">La cartella per la quale dovrebbe essere visualizzato il contatore non letti</string>
+  <string name="unread_widget_folder_summary">Cartella per la quale visualizzare il contatore non letti</string>
   <string name="unread_widget_action_done">Fatto</string>
   <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
   <string name="unread_widget_account_not_selected">Nessun account selezionato</string>
@@ -879,7 +879,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_settings_search">Cerca</string>
   <string name="action_remote_search">Cerca messaggi sul server</string>
   <string name="remote_search_unavailable_no_network">Le ricerche sul server richiedono una connessione alla rete.</string>
-  <string name="global_settings_background_as_unread_indicator_label">Cambia colore dopo la lettura</string>
+  <string name="global_settings_background_as_unread_indicator_label">Cambia colore quando letto</string>
   <string name="global_settings_background_as_unread_indicator_summary">Uno sfondo diverso mostrerà che il messaggio è stato letto</string>
   <string name="global_settings_threaded_view_label">Vista di conversazione</string>
   <string name="global_settings_threaded_view_summary">Raggruppa i messaggi per conversazione</string>
@@ -927,7 +927,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="compose_error_no_draft_folder">Non è stata configurata una cartella Bozze per questo account!</string>
   <string name="compose_error_no_key_configured">Nessuna chiave configurata per questo account! Controlla le impostazioni.</string>
   <string name="error_crypto_provider_incompatible">Il fornitore della cifratura utilizza una versione incompatibile. Controlla le tue impostazioni!</string>
-  <string name="error_crypto_provider_connect">Impossibile connettersi al fornitore della crittografia, controlla le impostazioni oppure fai clic sull\'icona di cifratura per riprovare!</string>
+  <string name="error_crypto_provider_connect">Impossibile connettersi al fornitore di crittografia, controlla le impostazioni oppure tocca l\'icona di cifratura per riprovare!</string>
   <string name="error_crypto_provider_ui_required">Inizializzazione della cifratura end-to-end non riuscita, controlla le tue impostazioni</string>
   <string name="error_crypto_inline_attach">La modalità PGP/INLINE non supporta gli allegati!</string>
   <string name="enable_inline_pgp">Abilita PGP/INLINE</string>
@@ -945,7 +945,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="openpgp_sign_only_ok">Ricevuto!</string>
   <string name="openpgp_sign_only_disable">Disabilita</string>
   <string name="openpgp_sign_only_keep_enabled">Lascia abilitato</string>
-  <string name="openpgp_dialog_sign_only_title">Modailità PGP solo firma</string>
+  <string name="openpgp_dialog_sign_only_title">Modalità PGP solo firma</string>
   <string name="openpgp_dialog_sign_only_text">In questa modalità, la tua chiave PGP sarà utilizzata per creare una firma di cifratura di un messaggio di posta non cifrato.</string>
   <string name="openpgp_dialog_sign_only_plus_verified">Ciò non cifra il messaggio di posta, ma verifica che sia stato inviato dalla tua chiave.</string>
   <string name="openpgp_dialog_sign_only_minus_break">Le firme potrebbero danneggiarsi in caso di invio a liste di distribuzione.</string>
@@ -956,8 +956,8 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="crypto_msg_incomplete_signed">devi scaricare completamente il messaggio per verificare la firma</string>
   <string name="crypto_msg_unsupported_signed">contiene una firma end-to-end non supportata</string>
   <string name="crypto_msg_unsupported_encrypted">Il messaggio è cifrato, ma in un formato non supportato.</string>
-  <string name="crypto_msg_cancelled">Il messaggio è cifrato, ma la decifratura è stata annullata.</string>
-  <string name="crypto_msg_title_unencrypted_signed_e2e">Testo semplice firmato End-to-End</string>
+  <string name="crypto_msg_cancelled">Il messaggio è cifrato, ma la cifrato è stata annullata.</string>
+  <string name="crypto_msg_title_unencrypted_signed_e2e">Testo semplice firmato end-to-end</string>
   <string name="crypto_msg_unencrypted_sign_verified">da firmatario verificato</string>
   <string name="crypto_msg_title_unencrypted_signed">Testo semplice firmato</string>
   <string name="crypto_msg_unencrypted_sign_mismatch">ma la chiave end-to-end non corrisponde al mittente</string>
@@ -967,7 +967,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="crypto_msg_unencrypted_sign_unknown">da una chiave end-to-end sconosciuta</string>
   <string name="crypto_msg_title_encrypted_unknown">Cifrato</string>
   <string name="crypto_msg_encrypted_error">ma si è verificato un errore di decifratura</string>
-  <string name="crypto_msg_encrypted_incomplete">devi scaricare completamente per la decifratura</string>
+  <string name="crypto_msg_encrypted_incomplete">devi scaricare completamente il messaggio per decifrarlo</string>
   <string name="crypto_msg_encrypted_no_provider">ma nessuna applicazione di cifratura è configurata</string>
   <string name="crypto_msg_title_encrypted_unsigned">Cifrato</string>
   <string name="crypto_msg_encrypted_unsigned">ma non end-to-end</string>
@@ -1006,35 +1006,35 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="crypto_no_provider_button">Vai alle impostazioni</string>
   <string name="mail_list_widget_text">Elenco messaggi di K-9</string>
   <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
-  <string name="message_list_widget_initializing">Caricamento in corso…</string>
+  <string name="message_list_widget_initializing">Caricamento…</string>
   <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
-  <string name="message_list_widget_list_item_loading">Caricamento in corso…</string>
+  <string name="message_list_widget_list_item_loading">Caricamento…</string>
   <string name="openpgp_enabled_error_title">Cifratura non possibile</string>
   <string name="openpgp_enabled_error_msg">Alcuni dei destinatari selezionati non supportano questa funzionalità!</string>
   <string name="enable_encryption">Abilita cifratura</string>
   <string name="disable_encryption">Disabilita cifratura</string>
-  <string name="openpgp_description_text1">La cifratura dei messaggi assicura che possano essere letti dal destinatario e da nessun altro.</string>
-  <string name="openpgp_description_text3">La cifratura sarà mostrata solo se supportata da tutti i destinatari, e devono averti inviato un\'email in precendenza.</string>
-  <string name="openpgp_description_text2">Commuta la cifratura facendo clic su questa icona.</string>
+  <string name="openpgp_description_text1">La cifratura dei messaggi assicura che possano essere letti solo dal destinatario</string>
+  <string name="openpgp_description_text3">La cifratura sarà mostrata solo se supportata da tutti i destinatari, che devono averti inviato un\'email in precedenza.</string>
+  <string name="openpgp_description_text2">Abilita/disabilita la cifratura toccando questa icona</string>
   <string name="openpgp_enabled_error_gotit">Ricevuto</string>
   <string name="openpgp_enabled_error_back">Indietro</string>
   <string name="openpgp_enabled_error_disable">Disabilita cifratura</string>
   <string name="openpgp_encryption">Cifratura OpenPGP</string>
   <string name="account_settings_crypto_prefer_encrypt">Modalità di cifratura reciproca automatica</string>
   <string name="dialog_autocrypt_mutual_title">Modalità di cifratura reciproca automatica</string>
-  <string name="dialog_autocrypt_mutual_description_1">I messaggi saranno normalmente cifrati per scelta o quando si risponde a un messaggio cifrato.</string>
-  <string name="dialog_autocrypt_mutual_description_2">Se il mittente e i destinatari abilitano la modalità reciproca, la cifratura sarà abilitata in modo predefinito.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Puoi fare <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">clic qui</a> per ulteriori informazioni.</string>
+  <string name="dialog_autocrypt_mutual_description_1">I messaggi saranno cifrato per scelta o quando si risponde a un messaggio cifrato</string>
+  <string name="dialog_autocrypt_mutual_description_2">Se il mittente e i destinatari abilitano la modalità reciproca, la cifratura sarà abilitata in modo predefinito</string>
+  <string name="dialog_autocrypt_mutual_learn_more"><a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">Tocca qui</a> per ulteriori informazioni.</string>
   <string name="general_settings_title">Impostazioni generali</string>
   <string name="dialog_openkeychain_info_title">Nessuna applicazione OpenPGP installata</string>
   <string name="dialog_openkeychain_info_install">Installa</string>
-  <string name="dialog_openkeychain_info_text">K-9 Mail richiede OpenKeychain la cifratura end-to-end.</string>
+  <string name="dialog_openkeychain_info_text">K-9 Mail richiede OpenKeychain per la cifratura end-to-end</string>
   <string name="encrypted_subject">Messaggio cifrato</string>
   <string name="account_settings_crypto_encrypt_subject">Cifra l\'oggetto dei messaggi</string>
   <string name="account_settings_crypto_encrypt_subject_subtitle">Potrebbe non essere supportato da alcuni destinatari</string>
   <string name="toast_account_not_found">Errore interno: account non valido!</string>
   <string name="toast_openpgp_provider_error">Errore durante la connessione a %s!</string>
-  <string name="ac_transfer_setting_title">Invio messaggio di configurazione di Autocrypt</string>
+  <string name="ac_transfer_setting_title">Invia messaggio di configurazione di Autocrypt</string>
   <string name="ac_transfer_setting_summary">Condividi in modo sicuro la configurazione end-to-end con altri dispositivi</string>
   <string name="ac_transfer_title">Messaggio di configurazione di Autocrypt</string>
   <string name="ac_transfer_intro">Un messaggio di configurazione di Autocrypt condivide in modo sicuro la tua configurazione end-to-end con altri dispositivi.</string>
@@ -1075,9 +1075,9 @@ Puoi conservare questo messaggio e utilizza come una copia di sicurezza della tu
   <!--Name of the swipe action to deselect a message. Try to keep it short.-->
   <string name="swipe_action_deselect">Deseleziona</string>
   <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-  <string name="swipe_action_mark_as_read">Segna come letto</string>
+  <string name="swipe_action_mark_as_read">Letto</string>
   <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-  <string name="swipe_action_mark_as_unread">Segna come da leggere</string>
+  <string name="swipe_action_mark_as_unread">Marca come non letto</string>
   <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
   <string name="swipe_action_add_star">Aggiungi stella</string>
   <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
@@ -1091,7 +1091,7 @@ Puoi conservare questo messaggio e utilizza come una copia di sicurezza della tu
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
   <string name="swipe_action_move">Sposta...</string>
   <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
-  <string name="general_settings_show_compose_button_title">Mostra pulsante componi in sovraimpressione</string>
+  <string name="general_settings_show_compose_button_title">Mostra pulsante flottante Componi</string>
   <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
   <string name="message_list_error_title">Errore</string>
   <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
@@ -1113,7 +1113,7 @@ Puoi conservare questo messaggio e utilizza come una copia di sicurezza della tu
   <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
   <string name="message_details_bcc_section_title">Ccn</string>
   <!--Displayed when loading the message details has failed-->
-  <string name="message_details_loading_error">Errore nel caricare i dettagli del messaggio.</string>
+  <string name="message_details_loading_error">Si è verificato un errore durante il caricamento dei dettagli del messaggio.</string>
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
   <string name="action_add_to_contacts">Aggiungi ai contatti</string>
   <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
@@ -1126,4 +1126,5 @@ Puoi conservare questo messaggio e utilizza come una copia di sicurezza della tu
   <string name="clipboard_label_email_address">Indirizzo email</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Nome e indirizzo email</string>
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>

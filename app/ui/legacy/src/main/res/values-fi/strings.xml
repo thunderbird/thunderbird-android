@@ -1117,4 +1117,5 @@ Voit säilyttää tämän viestin ja käyttää sitä varmuuskopioina salausavai
   <string name="clipboard_label_email_address">Sähköpostiosoite</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Nimi ja sähköpostiosoitteet</string>
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>

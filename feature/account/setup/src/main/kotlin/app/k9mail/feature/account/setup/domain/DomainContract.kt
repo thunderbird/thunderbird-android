@@ -2,27 +2,53 @@ package app.k9mail.feature.account.setup.domain
 
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
+import app.k9mail.feature.account.oauth.domain.entity.AuthorizationState
 import app.k9mail.feature.account.setup.domain.entity.AccountOptions
-import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
+import app.k9mail.feature.account.setup.domain.entity.AccountSetupState
+import app.k9mail.feature.account.setup.domain.entity.CertificateError
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.server.ServerSettingsValidationResult
+import java.security.cert.X509Certificate
 
 interface DomainContract {
+
+    interface AccountSetupStateRepository {
+        fun getState(): AccountSetupState
+
+        fun save(accountSetupState: AccountSetupState)
+
+        fun saveEmailAddress(emailAddress: String)
+
+        fun saveIncomingServerSettings(serverSettings: ServerSettings)
+
+        fun saveOutgoingServerSettings(serverSettings: ServerSettings)
+
+        fun saveAuthorizationState(authorizationState: AuthorizationState)
+
+        fun saveOptions(options: AccountOptions)
+
+        fun clear()
+    }
+
+    interface CertificateErrorRepository {
+        fun getCertificateError(): CertificateError?
+
+        fun setCertificateError(certificateError: CertificateError)
+
+        fun clearCertificateError()
+    }
 
     interface UseCase {
         fun interface GetAutoDiscovery {
             suspend fun execute(emailAddress: String): AutoDiscoveryResult
         }
 
-        fun interface CheckIncomingServerConfig {
-            suspend fun execute(
-                protocolType: IncomingProtocolType,
-                settings: ServerSettings,
-            ): ServerSettingsValidationResult
+        fun interface ValidateServerSettings {
+            suspend fun execute(settings: ServerSettings): ServerSettingsValidationResult
         }
 
-        fun interface CheckOutgoingServerConfig {
-            suspend fun execute(settings: ServerSettings): ServerSettingsValidationResult
+        fun interface AddServerCertificateException {
+            suspend fun addCertificate(hostname: String, port: Int, certificate: X509Certificate?)
         }
 
         fun interface CreateAccount {
@@ -30,6 +56,7 @@ interface DomainContract {
                 emailAddress: String,
                 incomingServerSettings: ServerSettings,
                 outgoingServerSettings: ServerSettings,
+                authorizationState: String?,
                 options: AccountOptions,
             ): String
         }

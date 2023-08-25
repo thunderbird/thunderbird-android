@@ -109,6 +109,7 @@ import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.ui.base.ThemeManager;
+import com.fsck.k9.ui.compose.WrapUriTextWatcher;
 import com.fsck.k9.ui.compose.QuotedMessageMvpView;
 import com.fsck.k9.ui.compose.QuotedMessagePresenter;
 import com.fsck.k9.ui.helper.SizeFormatter;
@@ -360,10 +361,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         replyToView.addTextChangedListener(draftNeedsChangingTextWatcher);
         recipientMvpView.addTextChangedListener(draftNeedsChangingTextWatcher);
         quotedMessageMvpView.addTextChangedListener(draftNeedsChangingTextWatcher);
+        quotedMessageMvpView.addTextChangedListener(new WrapUriTextWatcher());
 
         subjectView.addTextChangedListener(draftNeedsChangingTextWatcher);
 
         messageContentView.addTextChangedListener(draftNeedsChangingTextWatcher);
+        messageContentView.addTextChangedListener(new WrapUriTextWatcher());
 
         /*
          * We set this to invisible by default. Other methods will turn it back on if it's

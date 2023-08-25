@@ -1,10 +1,10 @@
 package com.fsck.k9.backends
 
 import android.content.Context
-import com.fsck.k9.Account
+import com.fsck.k9.BuildConfig
 import com.fsck.k9.mail.AuthenticationFailedException
+import com.fsck.k9.mail.oauth.AuthStateStorage
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
-import com.fsck.k9.preferences.AccountManager
 import java.io.IOException
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -13,21 +13,22 @@ import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationException.AuthorizationRequestErrors
 import net.openid.appauth.AuthorizationException.GeneralErrors
 import net.openid.appauth.AuthorizationService
+import timber.log.Timber
 
 class RealOAuth2TokenProvider(
     context: Context,
-    private val accountManager: AccountManager,
-    private val account: Account,
+    private val authStateStorage: AuthStateStorage,
 ) : OAuth2TokenProvider {
     private val authService = AuthorizationService(context)
     private var requestFreshToken = false
 
+    @Suppress("TooGenericExceptionCaught")
     override fun getToken(timeoutMillis: Long): String {
         val latch = CountDownLatch(1)
         var token: String? = null
         var exception: AuthorizationException? = null
 
-        val authState = account.oAuthState?.let { AuthState.jsonDeserialize(it) }
+        val authState = authStateStorage.getAuthorizationState()?.let { AuthState.jsonDeserialize(it) }
             ?: throw AuthenticationFailedException("Login required")
 
         if (requestFreshToken) {
@@ -36,14 +37,30 @@ class RealOAuth2TokenProvider(
 
         val oldAccessToken = authState.accessToken
 
-        authState.performActionWithFreshTokens(authService) { accessToken: String?, _, authException: AuthorizationException? ->
-            token = accessToken
-            exception = authException
+        try {
+            authState.performActionWithFreshTokens(authService) { accessToken: String?, _, authException: AuthorizationException? ->
+                token = accessToken
+                exception = authException
 
-            latch.countDown()
+                latch.countDown()
+            }
+
+            latch.await(timeoutMillis, TimeUnit.MILLISECONDS)
+        } catch (e: Exception) {
+            // OAuth errors are communicated via the callback. If we end up here, it's probably a programming error.
+            if (BuildConfig.DEBUG) {
+                throw AssertionError("Wrong usage of AuthState.performActionWithFreshTokens()?", e)
+            }
+
+            Timber.w(e, "Failed to fetch an access token. Clearing authorization state.")
+
+            authStateStorage.updateAuthorizationState(authorizationState = null)
+
+            throw AuthenticationFailedException(
+                message = "Failed to fetch an access token",
+                throwable = e,
+            )
         }
-
-        latch.await(timeoutMillis, TimeUnit.MILLISECONDS)
 
         val authException = exception
         if (authException == GeneralErrors.NETWORK_ERROR ||
@@ -53,8 +70,7 @@ class RealOAuth2TokenProvider(
         ) {
             throw IOException("Error while fetching an access token", authException)
         } else if (authException != null) {
-            account.oAuthState = null
-            accountManager.saveAccount(account)
+            authStateStorage.updateAuthorizationState(authorizationState = null)
 
             throw AuthenticationFailedException(
                 message = "Failed to fetch an access token",
@@ -63,8 +79,7 @@ class RealOAuth2TokenProvider(
             )
         } else if (token != oldAccessToken) {
             requestFreshToken = false
-            account.oAuthState = authState.jsonSerializeString()
-            accountManager.saveAccount(account)
+            authStateStorage.updateAuthorizationState(authorizationState = authState.jsonSerializeString())
         }
 
         return token ?: throw AuthenticationFailedException("Failed to fetch an access token")

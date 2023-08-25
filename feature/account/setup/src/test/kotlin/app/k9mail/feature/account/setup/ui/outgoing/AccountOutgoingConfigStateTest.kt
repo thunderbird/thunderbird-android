@@ -24,7 +24,7 @@ class AccountOutgoingConfigStateTest {
                 authenticationType = AuthenticationType.PasswordCleartext,
                 username = StringInputField(),
                 password = StringInputField(),
-                clientCertificate = "",
+                clientCertificateAlias = null,
             ),
         )
     }

@@ -16,6 +16,7 @@ import org.koin.compose.koinInject
 fun FeatureLauncherNavHost(
     navController: NavHostController,
     startDestination: String?,
+    onBack: () -> Unit,
     modifier: Modifier = Modifier,
     importSettingsLauncher: ImportSettingsLauncher = koinInject(),
     accountSetupFinishedLauncher: AccountSetupFinishedLauncher = koinInject(),
@@ -30,7 +31,7 @@ fun FeatureLauncherNavHost(
             onImport = { importSettingsLauncher.launch() },
         )
         accountSetupRoute(
-            onBack = navController::popBackStack,
+            onBack = onBack,
             onFinish = { accountSetupFinishedLauncher.launch(it) },
         )
     }

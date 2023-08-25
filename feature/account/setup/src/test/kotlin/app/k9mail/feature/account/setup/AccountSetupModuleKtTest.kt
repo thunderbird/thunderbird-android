@@ -1,12 +1,22 @@
 package app.k9mail.feature.account.setup
 
+import android.content.Context
+import app.k9mail.core.common.oauth.OAuthConfigurationFactory
+import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
+import app.k9mail.feature.account.setup.domain.entity.AccountSetupState
 import app.k9mail.feature.account.setup.ui.AccountSetupContract
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
+import app.k9mail.feature.account.setup.ui.servercertificate.CertificateErrorContract
+import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract
+import com.fsck.k9.mail.oauth.AuthStateStorage
+import com.fsck.k9.mail.oauth.OAuth2TokenProvider
+import com.fsck.k9.mail.oauth.OAuth2TokenProviderFactory
+import com.fsck.k9.mail.ssl.LocalKeyStore
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import okhttp3.OkHttpClient
 import org.junit.Test
@@ -19,6 +29,7 @@ import org.koin.dsl.module
 import org.koin.test.KoinTest
 import org.koin.test.check.checkModules
 import org.koin.test.verify.verify
+import org.mockito.Mockito.mock
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
@@ -34,6 +45,16 @@ class AccountSetupModuleKtTest : KoinTest {
         single<AccountCreator> {
             AccountCreator { _ -> AccountCreatorResult.Success("accountUuid") }
         }
+        single<OAuthConfigurationFactory> { OAuthConfigurationFactory { emptyMap() } }
+        single<OAuth2TokenProviderFactory> {
+            OAuth2TokenProviderFactory { _ ->
+                object : OAuth2TokenProvider {
+                    override fun getToken(timeoutMillis: Long) = TODO()
+                    override fun invalidateToken() = TODO()
+                }
+            }
+        }
+        single<LocalKeyStore> { mock() }
     }
 
     @Test
@@ -42,9 +63,17 @@ class AccountSetupModuleKtTest : KoinTest {
             extraTypes = listOf(
                 AccountSetupContract.State::class,
                 AccountAutoDiscoveryContract.State::class,
+                AccountOAuthContract.State::class,
+                AccountValidationContract.State::class,
                 AccountIncomingConfigContract.State::class,
                 AccountOutgoingConfigContract.State::class,
                 AccountOptionsContract.State::class,
+                AccountSetupState::class,
+                CertificateErrorContract.State::class,
+                AuthStateStorage::class,
+                Context::class,
+                Boolean::class,
+                Class.forName("net.openid.appauth.AppAuthConfiguration").kotlin,
             ),
         )
 

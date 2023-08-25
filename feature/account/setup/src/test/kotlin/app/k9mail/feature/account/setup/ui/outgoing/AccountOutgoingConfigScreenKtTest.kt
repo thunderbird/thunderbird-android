@@ -6,11 +6,9 @@ import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContrac
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.State
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class AccountOutgoingConfigScreenKtTest : ComposeTest() {
 
     @Test

@@ -12,7 +12,8 @@
     <string name="account_setup_authentication_password_encrypted">Encrypted password</string>
     <string name="account_setup_authentication_client_certificate">Client certificate</string>
     <string name="account_setup_authentication_client_oauth">OAuth 2.0</string>
-    <string name="account_setup_client_certificate_none_available">None available</string>
+    <string name="account_setup_client_certificate_label">Client certificate</string>
+    <string name="account_setup_client_certificate_none_selected">None</string>
 
     <string name="account_setup_error_network">Network </string>
     <string name="account_setup_error_unknown">Unknown error</string>
@@ -26,11 +27,18 @@
     <string name="account_setup_validation_error_password_required">Password is required.</string>
     <string name="account_setup_validation_error_imap_prefix_blank">Imap prefix can\'t be blank.</string>
 
-    <string name="account_setup_check_config_error_authentication">Authentication error</string>
-    <string name="account_setup_check_config_error_certificate">Certificate error</string>
-    <string name="account_setup_check_config_error_network">Network error</string>
-    <string name="account_setup_check_config_error_server">Server error</string>
-    <string name="account_setup_check_config_error_unknown">Unknown error</string>
+    <string name="account_setup_settings_validation_error_authentication">Authentication error</string>
+    <string name="account_setup_settings_validation_error_certificate">Certificate error</string>
+    <string name="account_setup_settings_validation_error_network">Network error</string>
+    <string name="account_setup_settings_validation_error_server">Server error</string>
+    <string name="account_setup_settings_validation_error_unknown">Unknown error</string>
+    <string name="account_setup_settings_validation_incoming_loading_message">Checking incoming server settings…</string>
+    <string name="account_setup_settings_validation_incoming_loading_error">Checking incoming server settings failed!</string>
+    <string name="account_setup_settings_validation_incoming_success">Incoming server settings are valid!</string>
+    <string name="account_setup_settings_validation_outgoing_loading_message">Checking outgoing server settings…</string>
+    <string name="account_setup_settings_validation_outgoing_loading_error">Checking outgoing server settings failed!</string>
+    <string name="account_setup_settings_validation_outgoing_success">Outgoing server settings are valid!</string>
+    <string name="account_setup_settings_validation_sign_in">Please sign in</string>
 
     <string name="account_setup_auto_config_loading_message">Finding email details</string>
     <string name="account_setup_auto_config_loading_error">Failed to load email configuration</string>
@@ -52,9 +60,7 @@
     <string name="account_setup_incoming_config_imap_namespace_label">Auto-detect IMAP namespace</string>
     <string name="account_setup_incoming_config_imap_prefix_label">IMAP path prefix</string>
     <string name="account_setup_incoming_config_imap_compression_label">Use compression</string>
-    <string name="account_setup_incoming_config_loading_message">Checking incoming server settings…</string>
-    <string name="account_setup_incoming_config_loading_error">Checking incoming server settings failed!</string>
-    <string name="account_setup_incoming_config_success">Incoming server settings are valid!</string>
+    <string name="account_setup_incoming_config_imap_send_client_id_label">Send client ID</string>
 
     <string name="account_setup_outgoing_config_top_bar_title">Outgoing server settings</string>
     <string name="account_setup_outgoing_config_server_label">Server</string>
@@ -62,10 +68,6 @@
     <string name="account_setup_outgoing_config_port_label">Port</string>
     <string name="account_setup_outgoing_config_authentication_label">Authentication</string>
     <string name="account_setup_outgoing_config_username_label">Username</string>
-    <string name="account_setup_outgoing_config_client_certificate_label">Client certificate</string>
-    <string name="account_setup_outgoing_config_loading_message">Checking outgoing server settings…</string>
-    <string name="account_setup_outgoing_config_loading_error">Outgoing server settings are not valid</string>
-    <string name="account_setup_outgoing_config_success">Outgoing server settings are valid!</string>
 
     <string name="account_setup_options_top_bar_title">Account options</string>
     <string name="account_setup_options_section_display_options">Display options</string>

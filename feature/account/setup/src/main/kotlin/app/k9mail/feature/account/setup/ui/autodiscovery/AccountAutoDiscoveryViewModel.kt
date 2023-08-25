@@ -2,9 +2,14 @@ package app.k9mail.feature.account.setup.ui.autodiscovery
 
 import androidx.lifecycle.viewModelScope
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
+import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
+import app.k9mail.feature.account.oauth.domain.entity.OAuthResult
+import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
+import app.k9mail.feature.account.setup.domain.DomainContract
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
+import app.k9mail.feature.account.setup.domain.entity.AutoDiscoveryAuthenticationType
 import app.k9mail.feature.account.setup.domain.input.StringInputField
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.ConfigStep
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Effect
@@ -12,7 +17,6 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryCon
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Event
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.State
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Validator
-import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.ViewModel
 import kotlinx.coroutines.launch
 
 @Suppress("TooManyFunctions")
@@ -20,7 +24,9 @@ internal class AccountAutoDiscoveryViewModel(
     initialState: State = State(),
     private val validator: Validator,
     private val getAutoDiscovery: UseCase.GetAutoDiscovery,
-) : BaseViewModel<State, Event, Effect>(initialState), ViewModel {
+    private val accountSetupStateRepository: DomainContract.AccountSetupStateRepository,
+    override val oAuthViewModel: AccountOAuthContract.ViewModel,
+) : BaseViewModel<State, Event, Effect>(initialState), AccountAutoDiscoveryContract.ViewModel {
 
     override fun initState(state: State) {
         updateState {
@@ -33,18 +39,23 @@ internal class AccountAutoDiscoveryViewModel(
             is Event.EmailAddressChanged -> changeEmailAddress(event.emailAddress)
             is Event.PasswordChanged -> changePassword(event.password)
             is Event.ConfigurationApprovalChanged -> changeConfigurationApproval(event.confirmed)
+            is Event.OnOAuthResult -> onOAuthResult(event.result)
 
             Event.OnNextClicked -> onNext()
             Event.OnBackClicked -> onBack()
             Event.OnRetryClicked -> onRetry()
-            Event.OnEditConfigurationClicked -> navigateNext()
+            Event.OnEditConfigurationClicked -> {
+                navigateNext(isAutomaticConfig = false)
+            }
         }
     }
 
     private fun changeEmailAddress(emailAddress: String) {
+        accountSetupStateRepository.clear()
         updateState {
             State(
                 emailAddress = StringInputField(value = emailAddress),
+                isNextButtonVisible = true,
             )
         }
     }
@@ -80,7 +91,7 @@ internal class AccountAutoDiscoveryViewModel(
                 }
 
             ConfigStep.PASSWORD -> submitPassword()
-            ConfigStep.OAUTH -> TODO()
+            ConfigStep.OAUTH -> Unit
         }
     }
 
@@ -118,7 +129,7 @@ internal class AccountAutoDiscoveryViewModel(
 
             val result = getAutoDiscovery.execute(state.value.emailAddress.value)
             when (result) {
-                AutoDiscoveryResult.NoUsableSettingsFound -> updateAutoDiscoverySettings(null)
+                AutoDiscoveryResult.NoUsableSettingsFound -> updateNoSettingsFound()
                 is AutoDiscoveryResult.Settings -> updateAutoDiscoverySettings(result)
                 is AutoDiscoveryResult.NetworkError -> updateError(Error.NetworkError)
                 is AutoDiscoveryResult.UnexpectedException -> updateError(Error.UnknownError)
@@ -126,12 +137,35 @@ internal class AccountAutoDiscoveryViewModel(
         }
     }
 
-    private fun updateAutoDiscoverySettings(settings: AutoDiscoveryResult.Settings?) {
+    private fun updateNoSettingsFound() {
+        updateState {
+            it.copy(
+                isLoading = false,
+                autoDiscoverySettings = null,
+                configStep = ConfigStep.PASSWORD,
+            )
+        }
+    }
+
+    private fun updateAutoDiscoverySettings(settings: AutoDiscoveryResult.Settings) {
+        val imapServerSettings = settings.incomingServerSettings as ImapServerSettings
+        val isOAuth = imapServerSettings.authenticationTypes.first() == AutoDiscoveryAuthenticationType.OAuth2
+
+        if (isOAuth) {
+            oAuthViewModel.initState(
+                AccountOAuthContract.State(
+                    hostname = imapServerSettings.hostname.value,
+                    emailAddress = state.value.emailAddress.value,
+                ),
+            )
+        }
+
         updateState {
             it.copy(
                 isLoading = false,
                 autoDiscoverySettings = settings,
-                configStep = ConfigStep.PASSWORD, // TODO use oauth if applicable
+                configStep = if (isOAuth) ConfigStep.OAUTH else ConfigStep.PASSWORD,
+                isNextButtonVisible = !isOAuth,
             )
         }
     }
@@ -170,7 +204,7 @@ internal class AccountAutoDiscoveryViewModel(
             }
 
             if (!hasError) {
-                navigateNext()
+                navigateNext(state.value.autoDiscoverySettings != null)
             }
         }
     }
@@ -187,18 +221,37 @@ internal class AccountAutoDiscoveryViewModel(
                 }
             }
 
-            ConfigStep.PASSWORD -> updateState {
+            ConfigStep.OAUTH,
+            ConfigStep.PASSWORD,
+            -> updateState {
                 it.copy(
                     configStep = ConfigStep.EMAIL_ADDRESS,
                     password = StringInputField(),
+                    isNextButtonVisible = true,
                 )
             }
+        }
+    }
 
-            ConfigStep.OAUTH -> TODO()
+    private fun onOAuthResult(result: OAuthResult) {
+        if (result is OAuthResult.Success) {
+            updateState {
+                it.copy(authorizationState = result.authorizationState)
+            }
+
+            navigateNext(isAutomaticConfig = true)
+        } else {
+            updateState {
+                it.copy(authorizationState = null)
+            }
         }
     }
 
     private fun navigateBack() = emitEffect(Effect.NavigateBack)
 
-    private fun navigateNext() = emitEffect(Effect.NavigateNext)
+    private fun navigateNext(isAutomaticConfig: Boolean) {
+        accountSetupStateRepository.save(state.value.toAccountSetupState())
+
+        emitEffect(Effect.NavigateNext(isAutomaticConfig))
+    }
 }

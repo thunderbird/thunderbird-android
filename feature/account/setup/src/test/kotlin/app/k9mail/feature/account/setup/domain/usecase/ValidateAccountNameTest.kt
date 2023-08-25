@@ -15,22 +15,22 @@ class ValidateAccountNameTest {
     fun `should succeed when account name is set`() {
         val result = testSubject.execute("account name")
 
-        assertThat(result).isInstanceOf(ValidationResult.Success::class)
+        assertThat(result).isInstanceOf<ValidationResult.Success>()
     }
 
     @Test
     fun `should succeed when account name is empty`() {
         val result = testSubject.execute("")
 
-        assertThat(result).isInstanceOf(ValidationResult.Success::class)
+        assertThat(result).isInstanceOf<ValidationResult.Success>()
     }
 
     @Test
     fun `should fail when account name is blank`() {
         val result = testSubject.execute(" ")
 
-        assertThat(result).isInstanceOf(ValidationResult.Failure::class)
+        assertThat(result).isInstanceOf<ValidationResult.Failure>()
             .prop(ValidationResult.Failure::error)
-            .isInstanceOf(ValidateAccountNameError.BlankAccountName::class)
+            .isInstanceOf<ValidateAccountNameError.BlankAccountName>()
     }
 }

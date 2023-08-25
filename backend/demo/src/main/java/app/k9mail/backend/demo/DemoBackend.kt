@@ -35,6 +35,7 @@ class DemoBackend(private val backendStorage: BackendStorage) : Backend {
     override val supportsUpload: Boolean = true
     override val supportsTrashFolder: Boolean = true
     override val supportsSearchByDate: Boolean = false
+    override val supportsFolderSubscriptions: Boolean = false
     override val isPushCapable: Boolean = false
 
     override fun refreshFolderList() {

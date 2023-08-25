@@ -1,6 +1,8 @@
 package com.fsck.k9.message;
 
 
+import java.util.Objects;
+
 import android.net.Uri;
 import android.net.Uri.Builder;
 
@@ -87,7 +89,7 @@ public class IdentityHeaderBuilder {
         }
 
         if (identityChanged) {
-            appendValue(IdentityField.NAME, identity.getName());
+            appendValue(IdentityField.NAME, Objects.requireNonNullElse(identity.getName(), ""));
             appendValue(IdentityField.EMAIL, identity.getEmail());
         }
 

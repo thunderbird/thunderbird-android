@@ -10,17 +10,19 @@ import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.feature.account.common.ui.AppTitleTopHeader
+import app.k9mail.feature.account.common.ui.WizardNavigationBar
+import app.k9mail.feature.account.common.ui.WizardNavigationBarState
+import app.k9mail.feature.account.oauth.ui.preview.PreviewAccountOAuthViewModel
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Effect
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Event
-import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.State
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.ViewModel
-import app.k9mail.feature.account.setup.ui.common.AccountSetupBottomBar
-import app.k9mail.feature.account.setup.ui.common.AccountSetupTopHeader
+import app.k9mail.feature.account.setup.ui.preview.PreviewAccountSetupStateRepository
 
 @Composable
 internal fun AccountAutoDiscoveryScreen(
-    onNext: (State) -> Unit,
+    onNext: (isAutomaticConfig: Boolean) -> Unit,
     onBack: () -> Unit,
     viewModel: ViewModel,
     modifier: Modifier = Modifier,
@@ -28,7 +30,7 @@ internal fun AccountAutoDiscoveryScreen(
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
             Effect.NavigateBack -> onBack()
-            Effect.NavigateNext -> onNext(viewModel.state.value)
+            is Effect.NavigateNext -> onNext(effect.isAutomaticConfig)
         }
     }
 
@@ -38,14 +40,17 @@ internal fun AccountAutoDiscoveryScreen(
 
     Scaffold(
         topBar = {
-            AccountSetupTopHeader()
+            AppTitleTopHeader(
+                title = stringResource(id = R.string.account_setup_title),
+            )
         },
         bottomBar = {
-            AccountSetupBottomBar(
+            WizardNavigationBar(
                 nextButtonText = stringResource(id = R.string.account_setup_button_next),
                 backButtonText = stringResource(id = R.string.account_setup_button_back),
                 onNextClick = { dispatch(Event.OnNextClicked) },
                 onBackClick = { dispatch(Event.OnBackClicked) },
+                state = WizardNavigationBarState(showNext = state.value.isNextButtonVisible),
             )
         },
         modifier = modifier,
@@ -53,6 +58,7 @@ internal fun AccountAutoDiscoveryScreen(
         AccountAutoDiscoveryContent(
             state = state.value,
             onEvent = { dispatch(it) },
+            oAuthViewModel = viewModel.oAuthViewModel,
             contentPadding = innerPadding,
         )
     }
@@ -68,6 +74,8 @@ internal fun AccountAutoDiscoveryScreenK9Preview() {
             viewModel = AccountAutoDiscoveryViewModel(
                 validator = AccountAutoDiscoveryValidator(),
                 getAutoDiscovery = { AutoDiscoveryResult.NoUsableSettingsFound },
+                accountSetupStateRepository = PreviewAccountSetupStateRepository(),
+                oAuthViewModel = PreviewAccountOAuthViewModel(),
             ),
         )
     }
@@ -78,11 +86,13 @@ internal fun AccountAutoDiscoveryScreenK9Preview() {
 internal fun AccountAutoDiscoveryScreenThunderbirdPreview() {
     ThunderbirdTheme {
         AccountAutoDiscoveryScreen(
-            onNext = {},
+            onNext = { },
             onBack = {},
             viewModel = AccountAutoDiscoveryViewModel(
                 validator = AccountAutoDiscoveryValidator(),
                 getAutoDiscovery = { AutoDiscoveryResult.NoUsableSettingsFound },
+                accountSetupStateRepository = PreviewAccountSetupStateRepository(),
+                oAuthViewModel = PreviewAccountOAuthViewModel(),
             ),
         )
     }

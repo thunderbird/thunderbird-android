@@ -28,7 +28,7 @@
 
     <ProgressBar
         android:id="@+id/message_headers_loading"
-        style="@style/Widget.AppCompat.ProgressBar"
+        style="?attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

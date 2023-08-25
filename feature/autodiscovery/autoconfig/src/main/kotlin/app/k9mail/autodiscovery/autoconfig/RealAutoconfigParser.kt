@@ -28,7 +28,7 @@ private typealias ServerSettingsFactory<T> = (
     hostname: Hostname,
     port: Port,
     connectionSecurity: ConnectionSecurity,
-    authenticationType: AuthenticationType,
+    authenticationTypes: List<AuthenticationType>,
     username: String,
 ) -> T
 
@@ -161,7 +161,7 @@ private class ClientConfigParser(
         var hostname: String? = null
         var port: Int? = null
         var userName: String? = null
-        var authenticationType: AuthenticationType? = null
+        val authenticationTypes = mutableListOf<AuthenticationType>()
         var connectionSecurity: ConnectionSecurity? = null
 
         readElement { eventType ->
@@ -170,7 +170,7 @@ private class ClientConfigParser(
                     "hostname" -> hostname = readHostname()
                     "port" -> port = readPort()
                     "username" -> userName = readUsername()
-                    "authentication" -> authenticationType = readAuthentication(authenticationType)
+                    "authentication" -> readAuthentication(authenticationTypes)
                     "socketType" -> connectionSecurity = readSocketType()
                 }
             }
@@ -179,14 +179,18 @@ private class ClientConfigParser(
         val finalHostname = hostname ?: parserError("Missing 'hostname' element")
         val finalPort = port ?: parserError("Missing 'port' element")
         val finalUserName = userName ?: parserError("Missing 'username' element")
-        val finalAuthenticationType = authenticationType ?: parserError("No usable 'authentication' element found")
+        val finalAuthenticationTypes = if (authenticationTypes.isNotEmpty()) {
+            authenticationTypes.toList()
+        } else {
+            parserError("No usable 'authentication' element found")
+        }
         val finalConnectionSecurity = connectionSecurity ?: parserError("Missing 'socketType' element")
 
         return createServerSettings(
             finalHostname.toHostname(),
             finalPort.toPort(),
             finalConnectionSecurity,
-            finalAuthenticationType,
+            finalAuthenticationTypes,
             finalUserName,
         )
     }
@@ -206,8 +210,9 @@ private class ClientConfigParser(
 
     private fun readUsername(): String = readText().replaceVariables()
 
-    private fun readAuthentication(authenticationType: AuthenticationType?): AuthenticationType? {
-        return authenticationType ?: readText().toAuthenticationType()
+    private fun readAuthentication(authenticationTypes: MutableList<AuthenticationType>) {
+        val authenticationType = readText().toAuthenticationType() ?: return
+        authenticationTypes.add(authenticationType)
     }
 
     private fun readSocketType() = readText().toConnectionSecurity()
@@ -295,19 +300,19 @@ private class ClientConfigParser(
         hostname: Hostname,
         port: Port,
         connectionSecurity: ConnectionSecurity,
-        authenticationType: AuthenticationType,
+        authenticationTypes: List<AuthenticationType>,
         username: String,
     ): ImapServerSettings {
-        return ImapServerSettings(hostname, port, connectionSecurity, authenticationType, username)
+        return ImapServerSettings(hostname, port, connectionSecurity, authenticationTypes, username)
     }
 
     private fun createSmtpServerSettings(
         hostname: Hostname,
         port: Port,
         connectionSecurity: ConnectionSecurity,
-        authenticationType: AuthenticationType,
+        authenticationTypes: List<AuthenticationType>,
         username: String,
     ): SmtpServerSettings {
-        return SmtpServerSettings(hostname, port, connectionSecurity, authenticationType, username)
+        return SmtpServerSettings(hostname, port, connectionSecurity, authenticationTypes, username)
     }
 }

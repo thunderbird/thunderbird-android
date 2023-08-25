@@ -16,7 +16,7 @@ class IncomingServerSettingsExtensionKtTest {
             hostname = "example.com".toHostname(),
             port = 993.toPort(),
             connectionSecurity = AutoDiscoveryConnectionSecurity.TLS,
-            authenticationType = AuthenticationType.PasswordCleartext,
+            authenticationTypes = listOf(AuthenticationType.PasswordCleartext),
             username = "username",
         )
 

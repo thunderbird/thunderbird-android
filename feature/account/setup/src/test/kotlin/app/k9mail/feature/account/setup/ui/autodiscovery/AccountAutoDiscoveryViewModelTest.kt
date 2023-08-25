@@ -1,21 +1,25 @@
 package app.k9mail.feature.account.setup.ui.autodiscovery
 
-import app.cash.turbine.testIn
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.core.common.domain.usecase.validation.ValidationError
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
+import app.k9mail.core.ui.compose.testing.mvi.assertThatAndMviTurbinesConsumed
+import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
+import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
+import app.k9mail.feature.account.setup.data.InMemoryAccountSetupStateRepository
+import app.k9mail.feature.account.setup.domain.DomainContract
+import app.k9mail.feature.account.setup.domain.entity.AccountSetupState
 import app.k9mail.feature.account.setup.domain.entity.AutoDiscoverySettingsFixture
 import app.k9mail.feature.account.setup.domain.input.BooleanInputField
 import app.k9mail.feature.account.setup.domain.input.StringInputField
-import app.k9mail.feature.account.setup.testing.eventStateTest
+import app.k9mail.feature.account.setup.ui.FakeAccountOAuthViewModel
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.ConfigStep
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Effect
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Error
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Event
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.State
 import assertk.assertThat
-import assertk.assertions.assertThatAndTurbinesConsumed
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
@@ -27,14 +31,6 @@ class AccountAutoDiscoveryViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val testSubject = AccountAutoDiscoveryViewModel(
-        validator = FakeAccountAutoDiscoveryValidator(),
-        getAutoDiscovery = {
-            delay(50)
-            AutoDiscoveryResult.NoUsableSettingsFound
-        },
-    )
-
     @Test
     fun `should reset state when EmailAddressChanged event is received`() = runTest {
         val initialState = State(
@@ -42,7 +38,7 @@ class AccountAutoDiscoveryViewModelTest {
             emailAddress = StringInputField(value = "email"),
             password = StringInputField(value = "password"),
         )
-        testSubject.initState(initialState)
+        val testSubject = createTestSubject(initialState)
 
         eventStateTest(
             viewModel = testSubject,
@@ -60,7 +56,7 @@ class AccountAutoDiscoveryViewModelTest {
     @Test
     fun `should change state when PasswordChanged event is received`() = runTest {
         eventStateTest(
-            viewModel = testSubject,
+            viewModel = createTestSubject(),
             initialState = State(),
             event = Event.PasswordChanged("password"),
             expectedState = State(
@@ -73,7 +69,7 @@ class AccountAutoDiscoveryViewModelTest {
     @Test
     fun `should change state when ConfigurationApprovalChanged event is received`() = runTest {
         eventStateTest(
-            viewModel = testSubject,
+            viewModel = createTestSubject(),
             initialState = State(),
             event = Event.ConfigurationApprovalChanged(true),
             expectedState = State(
@@ -91,26 +87,19 @@ class AccountAutoDiscoveryViewModelTest {
                 configStep = ConfigStep.EMAIL_ADDRESS,
                 emailAddress = StringInputField(value = "email"),
             )
-            val viewModel = AccountAutoDiscoveryViewModel(
+            val testSubject = AccountAutoDiscoveryViewModel(
                 validator = FakeAccountAutoDiscoveryValidator(),
                 getAutoDiscovery = {
                     delay(50)
                     autoDiscoverySettings
                 },
+                oAuthViewModel = FakeAccountOAuthViewModel(),
+                accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
                 initialState = initialState,
             )
-            val stateTurbine = viewModel.state.testIn(backgroundScope)
-            val effectTurbine = viewModel.effect.testIn(backgroundScope)
-            val turbines = listOf(stateTurbine, effectTurbine)
+            val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
 
-            assertThatAndTurbinesConsumed(
-                actual = stateTurbine.awaitItem(),
-                turbines = turbines,
-            ) {
-                isEqualTo(initialState)
-            }
-
-            viewModel.event(Event.OnNextClicked)
+            testSubject.event(Event.OnNextClicked)
 
             val validatedState = initialState.copy(
                 emailAddress = StringInputField(
@@ -119,20 +108,20 @@ class AccountAutoDiscoveryViewModelTest {
                     isValid = true,
                 ),
             )
-            assertThat(stateTurbine.awaitItem()).isEqualTo(validatedState)
+            assertThat(turbines.stateTurbine.awaitItem()).isEqualTo(validatedState)
 
             val loadingState = validatedState.copy(
                 isLoading = true,
             )
-            assertThat(stateTurbine.awaitItem()).isEqualTo(loadingState)
+            assertThat(turbines.stateTurbine.awaitItem()).isEqualTo(loadingState)
 
             val successState = validatedState.copy(
                 autoDiscoverySettings = autoDiscoverySettings,
                 configStep = ConfigStep.PASSWORD,
                 isLoading = false,
             )
-            assertThatAndTurbinesConsumed(
-                actual = stateTurbine.awaitItem(),
+            assertThatAndMviTurbinesConsumed(
+                actual = turbines.stateTurbine.awaitItem(),
                 turbines = turbines,
             ) {
                 isEqualTo(successState)
@@ -147,26 +136,19 @@ class AccountAutoDiscoveryViewModelTest {
                 emailAddress = StringInputField(value = "email"),
             )
             val discoveryError = Exception("discovery error")
-            val viewModel = AccountAutoDiscoveryViewModel(
+            val testSubject = AccountAutoDiscoveryViewModel(
                 validator = FakeAccountAutoDiscoveryValidator(),
                 getAutoDiscovery = {
                     delay(50)
                     AutoDiscoveryResult.UnexpectedException(discoveryError)
                 },
+                oAuthViewModel = FakeAccountOAuthViewModel(),
+                accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
                 initialState = initialState,
             )
-            val stateTurbine = viewModel.state.testIn(backgroundScope)
-            val effectTurbine = viewModel.effect.testIn(backgroundScope)
-            val turbines = listOf(stateTurbine, effectTurbine)
+            val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
 
-            assertThatAndTurbinesConsumed(
-                actual = stateTurbine.awaitItem(),
-                turbines = turbines,
-            ) {
-                isEqualTo(initialState)
-            }
-
-            viewModel.event(Event.OnNextClicked)
+            testSubject.event(Event.OnNextClicked)
 
             val validatedState = initialState.copy(
                 emailAddress = StringInputField(
@@ -175,19 +157,19 @@ class AccountAutoDiscoveryViewModelTest {
                     isValid = true,
                 ),
             )
-            assertThat(stateTurbine.awaitItem()).isEqualTo(validatedState)
+            assertThat(turbines.stateTurbine.awaitItem()).isEqualTo(validatedState)
 
             val loadingState = validatedState.copy(
                 isLoading = true,
             )
-            assertThat(stateTurbine.awaitItem()).isEqualTo(loadingState)
+            assertThat(turbines.stateTurbine.awaitItem()).isEqualTo(loadingState)
 
             val failureState = validatedState.copy(
                 isLoading = false,
-                error = AccountAutoDiscoveryContract.Error.UnknownError,
+                error = Error.UnknownError,
             )
-            assertThatAndTurbinesConsumed(
-                actual = stateTurbine.awaitItem(),
+            assertThatAndMviTurbinesConsumed(
+                actual = turbines.stateTurbine.awaitItem(),
                 turbines = turbines,
             ) {
                 isEqualTo(failureState)
@@ -205,7 +187,7 @@ class AccountAutoDiscoveryViewModelTest {
                 ),
                 error = Error.UnknownError,
             )
-            testSubject.initState(initialState)
+            val testSubject = createTestSubject(initialState)
 
             eventStateTest(
                 viewModel = testSubject,
@@ -229,16 +211,18 @@ class AccountAutoDiscoveryViewModelTest {
             configStep = ConfigStep.EMAIL_ADDRESS,
             emailAddress = StringInputField(value = "invalid email"),
         )
-        val viewModel = AccountAutoDiscoveryViewModel(
+        val testSubject = AccountAutoDiscoveryViewModel(
             validator = FakeAccountAutoDiscoveryValidator(
                 emailAddressAnswer = ValidationResult.Failure(TestError),
             ),
             getAutoDiscovery = { AutoDiscoveryResult.NoUsableSettingsFound },
+            oAuthViewModel = FakeAccountOAuthViewModel(),
+            accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
             initialState = initialState,
         )
 
         eventStateTest(
-            viewModel = viewModel,
+            viewModel = testSubject,
             initialState = initialState,
             event = Event.OnNextClicked,
             expectedState = State(
@@ -254,28 +238,23 @@ class AccountAutoDiscoveryViewModelTest {
     }
 
     @Test
-    fun `should emit NavigateNext when OnNextClicked received in password step with valid input`() =
+    fun `should save state and emit NavigateNext when OnNextClicked received in password step with valid input`() =
         runTest {
             val initialState = State(
                 configStep = ConfigStep.PASSWORD,
                 emailAddress = StringInputField(value = "email"),
                 password = StringInputField(value = "password"),
             )
-            testSubject.initState(initialState)
-            val stateTurbine = testSubject.state.testIn(backgroundScope)
-            val effectTurbine = testSubject.effect.testIn(backgroundScope)
-            val turbines = listOf(stateTurbine, effectTurbine)
-
-            assertThatAndTurbinesConsumed(
-                actual = stateTurbine.awaitItem(),
-                turbines = turbines,
-            ) {
-                isEqualTo(initialState)
-            }
+            val repository = InMemoryAccountSetupStateRepository()
+            val testSubject = createTestSubject(
+                initialState = initialState,
+                repository = repository,
+            )
+            val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
 
             testSubject.event(Event.OnNextClicked)
 
-            assertThat(stateTurbine.awaitItem()).isEqualTo(
+            assertThat(turbines.stateTurbine.awaitItem()).isEqualTo(
                 State(
                     configStep = ConfigStep.PASSWORD,
                     emailAddress = StringInputField(
@@ -296,12 +275,22 @@ class AccountAutoDiscoveryViewModelTest {
                 ),
             )
 
-            assertThatAndTurbinesConsumed(
-                actual = effectTurbine.awaitItem(),
+            assertThatAndMviTurbinesConsumed(
+                actual = turbines.effectTurbine.awaitItem(),
                 turbines = turbines,
             ) {
-                isEqualTo(Effect.NavigateNext)
+                isEqualTo(Effect.NavigateNext(isAutomaticConfig = false))
             }
+
+            assertThat(repository.getState()).isEqualTo(
+                AccountSetupState(
+                    emailAddress = "email",
+                    incomingServerSettings = null,
+                    outgoingServerSettings = null,
+                    authorizationState = null,
+                    options = null,
+                ),
+            )
         }
 
     @Test
@@ -317,23 +306,16 @@ class AccountAutoDiscoveryViewModelTest {
                     passwordAnswer = ValidationResult.Failure(TestError),
                 ),
                 getAutoDiscovery = { AutoDiscoveryResult.NoUsableSettingsFound },
+                oAuthViewModel = FakeAccountOAuthViewModel(),
+                accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
                 initialState = initialState,
             )
-            val stateTurbine = viewModel.state.testIn(backgroundScope)
-            val effectTurbine = viewModel.effect.testIn(backgroundScope)
-            val turbines = listOf(stateTurbine, effectTurbine)
-
-            assertThatAndTurbinesConsumed(
-                actual = stateTurbine.awaitItem(),
-                turbines = turbines,
-            ) {
-                isEqualTo(initialState)
-            }
+            val turbines = turbinesWithInitialStateCheck(viewModel, initialState)
 
             viewModel.event(Event.OnNextClicked)
 
-            assertThatAndTurbinesConsumed(
-                actual = stateTurbine.awaitItem(),
+            assertThatAndMviTurbinesConsumed(
+                actual = turbines.stateTurbine.awaitItem(),
                 turbines = turbines,
             ) {
                 isEqualTo(
@@ -361,22 +343,13 @@ class AccountAutoDiscoveryViewModelTest {
 
     @Test
     fun `should emit NavigateBack effect when OnBackClicked event is received`() = runTest {
-        val viewModel = testSubject
-        val stateTurbine = viewModel.state.testIn(backgroundScope)
-        val effectTurbine = viewModel.effect.testIn(backgroundScope)
-        val turbines = listOf(stateTurbine, effectTurbine)
+        val testSubject = createTestSubject()
+        val turbines = turbinesWithInitialStateCheck(testSubject, State())
 
-        assertThatAndTurbinesConsumed(
-            actual = stateTurbine.awaitItem(),
-            turbines = turbines,
-        ) {
-            isEqualTo(State())
-        }
+        testSubject.event(Event.OnBackClicked)
 
-        viewModel.event(Event.OnBackClicked)
-
-        assertThatAndTurbinesConsumed(
-            actual = effectTurbine.awaitItem(),
+        assertThatAndMviTurbinesConsumed(
+            actual = turbines.effectTurbine.awaitItem(),
             turbines = turbines,
         ) {
             isEqualTo(Effect.NavigateBack)
@@ -391,23 +364,13 @@ class AccountAutoDiscoveryViewModelTest {
                 emailAddress = StringInputField(value = "email"),
                 password = StringInputField(value = "password"),
             )
-            val viewModel = testSubject
-            viewModel.initState(initialState)
-            val stateTurbine = viewModel.state.testIn(backgroundScope)
-            val effectTurbine = viewModel.effect.testIn(backgroundScope)
-            val turbines = listOf(stateTurbine, effectTurbine)
+            val testSubject = createTestSubject(initialState)
+            val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
 
-            assertThatAndTurbinesConsumed(
-                actual = stateTurbine.awaitItem(),
-                turbines = turbines,
-            ) {
-                isEqualTo(initialState)
-            }
+            testSubject.event(Event.OnBackClicked)
 
-            viewModel.event(Event.OnBackClicked)
-
-            assertThatAndTurbinesConsumed(
-                actual = stateTurbine.awaitItem(),
+            assertThatAndMviTurbinesConsumed(
+                actual = turbines.stateTurbine.awaitItem(),
                 turbines = turbines,
             ) {
                 isEqualTo(
@@ -430,7 +393,7 @@ class AccountAutoDiscoveryViewModelTest {
                 ),
                 error = Error.UnknownError,
             )
-            testSubject.initState(initialState)
+            val testSubject = createTestSubject(initialState)
 
             eventStateTest(
                 viewModel = testSubject,
@@ -450,27 +413,36 @@ class AccountAutoDiscoveryViewModelTest {
 
     @Test
     fun `should emit NavigateNext effect when OnEditConfigurationClicked event is received`() = runTest {
-        val viewModel = testSubject
-        val stateTurbine = viewModel.state.testIn(backgroundScope)
-        val effectTurbine = viewModel.effect.testIn(backgroundScope)
-        val turbines = listOf(stateTurbine, effectTurbine)
+        val testSubject = createTestSubject()
+        val turbines = turbinesWithInitialStateCheck(testSubject, State())
 
-        assertThatAndTurbinesConsumed(
-            actual = stateTurbine.awaitItem(),
+        testSubject.event(Event.OnEditConfigurationClicked)
+
+        assertThatAndMviTurbinesConsumed(
+            actual = turbines.effectTurbine.awaitItem(),
             turbines = turbines,
         ) {
-            isEqualTo(State())
-        }
-
-        viewModel.event(Event.OnEditConfigurationClicked)
-
-        assertThatAndTurbinesConsumed(
-            actual = effectTurbine.awaitItem(),
-            turbines = turbines,
-        ) {
-            isEqualTo(Effect.NavigateNext)
+            isEqualTo(Effect.NavigateNext(isAutomaticConfig = false))
         }
     }
 
     private object TestError : ValidationError
+
+    private companion object {
+        fun createTestSubject(
+            initialState: State = State(),
+            repository: DomainContract.AccountSetupStateRepository = InMemoryAccountSetupStateRepository(),
+        ): AccountAutoDiscoveryViewModel {
+            return AccountAutoDiscoveryViewModel(
+                validator = FakeAccountAutoDiscoveryValidator(),
+                getAutoDiscovery = {
+                    delay(50)
+                    AutoDiscoveryResult.NoUsableSettingsFound
+                },
+                accountSetupStateRepository = repository,
+                oAuthViewModel = FakeAccountOAuthViewModel(),
+                initialState = initialState,
+            )
+        }
+    }
 }

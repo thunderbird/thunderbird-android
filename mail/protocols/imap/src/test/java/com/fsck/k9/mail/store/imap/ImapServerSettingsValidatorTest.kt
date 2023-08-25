@@ -11,6 +11,8 @@ import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.helpers.FakeTrustManager
 import com.fsck.k9.mail.helpers.SimpleTrustedSocketFactory
+import com.fsck.k9.mail.oauth.AuthStateStorage
+import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.server.ServerSettingsValidationResult
 import com.fsck.k9.mail.store.imap.mockserver.MockImapServer
 import java.net.UnknownHostException
@@ -18,19 +20,22 @@ import kotlin.test.Test
 
 private const val USERNAME = "user"
 private const val PASSWORD = "password"
+private const val AUTHORIZATION_STATE = "auth state"
+private const val AUTHORIZATION_TOKEN = "auth-token"
 private val CLIENT_CERTIFICATE_ALIAS: String? = null
 private const val CLIENT_ID = "clientId"
 
 class ImapServerSettingsValidatorTest {
     private val fakeTrustManager = FakeTrustManager()
+    private val trustedSocketFactory = SimpleTrustedSocketFactory(fakeTrustManager)
     private val serverSettingsValidator = ImapServerSettingsValidator(
-        trustedSocketFactory = SimpleTrustedSocketFactory(fakeTrustManager),
-        oAuth2TokenProvider = null,
+        trustedSocketFactory = trustedSocketFactory,
+        oAuth2TokenProviderFactory = null,
         clientIdAppName = CLIENT_ID,
     )
 
     @Test
-    fun `valid server settings should return Success`() {
+    fun `valid server settings with password should return Success`() {
         val server = startServer {
             output("* OK IMAP4rev1 server ready")
             expect("1 CAPABILITY")
@@ -64,7 +69,56 @@ class ImapServerSettingsValidatorTest {
             ),
         )
 
-        val result = serverSettingsValidator.checkServerSettings(serverSettings)
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
+
+        assertThat(result).isInstanceOf<ServerSettingsValidationResult.Success>()
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `valid server settings with OAuth should return Success`() {
+        val serverSettingsValidator = ImapServerSettingsValidator(
+            trustedSocketFactory = trustedSocketFactory,
+            oAuth2TokenProviderFactory = { authStateStorage ->
+                assertThat(authStateStorage.getAuthorizationState()).isEqualTo(AUTHORIZATION_STATE)
+                FakeOAuth2TokenProvider()
+            },
+            clientIdAppName = CLIENT_ID,
+        )
+        val server = startServer {
+            output("* OK IMAP4rev1 server ready")
+            expect("1 CAPABILITY")
+            output("* CAPABILITY IMAP4rev1 SASL-IR AUTH=PLAIN AUTH=OAUTHBEARER")
+            output("1 OK CAPABILITY Completed")
+            expect("2 AUTHENTICATE OAUTHBEARER bixhPXVzZXIsAWF1dGg9QmVhcmVyIGF1dGgtdG9rZW4BAQ==")
+            output("2 OK [CAPABILITY IMAP4rev1 SASL-IR AUTH=PLAIN AUTH=OAUTHBEARER NAMESPACE ID] LOGIN completed")
+            expect("3 ID (\"name\" \"$CLIENT_ID\")")
+            output("* ID NIL")
+            output("3 OK ID completed")
+            expect("4 NAMESPACE")
+            output("* NAMESPACE ((\"\" \"/\")) NIL NIL")
+            output("4 OK command completed")
+        }
+        val serverSettings = ServerSettings(
+            type = "imap",
+            host = server.host,
+            port = server.port,
+            connectionSecurity = ConnectionSecurity.NONE,
+            authenticationType = AuthType.XOAUTH2,
+            username = USERNAME,
+            password = PASSWORD,
+            clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
+            extra = ImapStoreSettings.createExtra(
+                autoDetectNamespace = true,
+                pathPrefix = null,
+                useCompression = false,
+                sendClientId = true,
+            ),
+        )
+        val authStateStorage = FakeAuthStateStorage(authorizationState = AUTHORIZATION_STATE)
+
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage)
 
         assertThat(result).isInstanceOf<ServerSettingsValidationResult.Success>()
         server.verifyConnectionClosed()
@@ -93,7 +147,7 @@ class ImapServerSettingsValidatorTest {
             clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
         )
 
-        val result = serverSettingsValidator.checkServerSettings(serverSettings)
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
 
         assertThat(result).isInstanceOf<ServerSettingsValidationResult.AuthenticationError>()
             .prop(ServerSettingsValidationResult.AuthenticationError::serverMessage).isEqualTo("Authentication failed")
@@ -120,7 +174,7 @@ class ImapServerSettingsValidatorTest {
             clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
         )
 
-        val result = serverSettingsValidator.checkServerSettings(serverSettings)
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
 
         assertThat(result).isInstanceOf<ServerSettingsValidationResult.ServerError>()
         server.verifyConnectionClosed()
@@ -150,7 +204,7 @@ class ImapServerSettingsValidatorTest {
             clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
         )
 
-        val result = serverSettingsValidator.checkServerSettings(serverSettings)
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
 
         assertThat(result).isInstanceOf<ServerSettingsValidationResult.CertificateError>()
             .prop(ServerSettingsValidationResult.CertificateError::certificateChain).hasSize(1)
@@ -171,7 +225,7 @@ class ImapServerSettingsValidatorTest {
             clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
         )
 
-        val result = serverSettingsValidator.checkServerSettings(serverSettings)
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
 
         assertThat(result).isInstanceOf<ServerSettingsValidationResult.NetworkError>()
             .prop(ServerSettingsValidationResult.NetworkError::exception)
@@ -192,7 +246,7 @@ class ImapServerSettingsValidatorTest {
         )
 
         assertFailure {
-            serverSettingsValidator.checkServerSettings(serverSettings)
+            serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
         }.isInstanceOf<IllegalArgumentException>()
     }
 
@@ -201,5 +255,27 @@ class ImapServerSettingsValidatorTest {
             block()
             start()
         }
+    }
+}
+
+class FakeOAuth2TokenProvider : OAuth2TokenProvider {
+    override fun getToken(timeoutMillis: Long): String {
+        return AUTHORIZATION_TOKEN
+    }
+
+    override fun invalidateToken() {
+        throw UnsupportedOperationException("not implemented")
+    }
+}
+
+class FakeAuthStateStorage(
+    private var authorizationState: String? = null,
+) : AuthStateStorage {
+    override fun getAuthorizationState(): String? {
+        return authorizationState
+    }
+
+    override fun updateAuthorizationState(authorizationState: String?) {
+        this.authorizationState = authorizationState
     }
 }

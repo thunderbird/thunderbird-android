@@ -14,6 +14,10 @@ enum class IncomingProtocolType(
         val DEFAULT = IMAP
 
         fun all() = values().toList().toImmutableList()
+
+        fun fromName(name: String): IncomingProtocolType {
+            return values().find { it.defaultName == name } ?: throw IllegalArgumentException("Unknown protocol: $name")
+        }
     }
 }
 

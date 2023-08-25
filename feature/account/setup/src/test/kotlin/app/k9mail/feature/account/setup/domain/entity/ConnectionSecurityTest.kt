@@ -58,7 +58,24 @@ class ConnectionSecurityTest {
     }
 
     @Test
-    fun `should map to all MailConnectionSecurities`() {
+    fun `should map all MailConnectionSecurities to ConnectionSecurities`() {
+        val securities = MailConnectionSecurity.values()
+
+        for (security in securities) {
+            val connectionSecurity = security.toConnectionSecurity()
+
+            assertThat(connectionSecurity).isEqualTo(
+                when (security) {
+                    MailConnectionSecurity.NONE -> ConnectionSecurity.None
+                    MailConnectionSecurity.STARTTLS_REQUIRED -> ConnectionSecurity.StartTLS
+                    MailConnectionSecurity.SSL_TLS_REQUIRED -> ConnectionSecurity.TLS
+                },
+            )
+        }
+    }
+
+    @Test
+    fun `should map to all ConnectionSecurities to MailConnectionSecurities`() {
         val connectionSecurities = ConnectionSecurity.values()
 
         for (security in connectionSecurities) {

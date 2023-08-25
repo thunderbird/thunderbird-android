@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package app.k9mail.core.ui.compose.testing
 
 import androidx.annotation.StringRes
@@ -54,6 +56,25 @@ fun ComposeTest.onNodeWithText(
     ignoreCase: Boolean = false,
     useUnmergedTree: Boolean = false,
 ) = composeTestRule.onNodeWithText(text, substring, ignoreCase, useUnmergedTree)
+
+fun ComposeTest.onNodeWithText(
+    @StringRes resourceId: Int,
+    substring: Boolean = false,
+    ignoreCase: Boolean = false,
+    useUnmergedTree: Boolean = false,
+) = composeTestRule.onNodeWithText(getString(resourceId), substring, ignoreCase, useUnmergedTree)
+
+fun ComposeTest.onNodeWithTextIgnoreCase(
+    text: String,
+    substring: Boolean = false,
+    useUnmergedTree: Boolean = false,
+) = composeTestRule.onNodeWithText(text, substring, true, useUnmergedTree)
+
+fun ComposeTest.onNodeWithTextIgnoreCase(
+    @StringRes resourceId: Int,
+    substring: Boolean = false,
+    useUnmergedTree: Boolean = false,
+) = composeTestRule.onNodeWithText(getString(resourceId), substring, true, useUnmergedTree)
 
 fun ComposeTest.onAllNodesWithText(
     text: String,

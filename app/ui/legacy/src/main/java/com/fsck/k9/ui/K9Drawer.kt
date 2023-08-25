@@ -221,6 +221,11 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private fun setAccounts(displayAccounts: List<DisplayAccount>) {
         val oldSelectedBackgroundColor = selectedBackgroundColor
 
+        val isOpenedAccountStillAvailable = displayAccounts.any { it.account.uuid == openedAccountUuid }
+        if (!isOpenedAccountStillAvailable) {
+            openedAccountUuid = displayAccounts.first().account.uuid
+        }
+
         var newActiveProfile: IProfile? = null
         val accountItems = displayAccounts.map { displayAccount ->
             val account = displayAccount.account

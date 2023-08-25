@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import app.k9mail.core.common.domain.usecase.validation.ValidationError
 import app.k9mail.core.ui.compose.designsystem.molecule.input.EmailAddressInput
-import app.k9mail.feature.account.setup.ui.common.item.ListItem
+import app.k9mail.feature.account.common.ui.item.ListItem
 import app.k9mail.feature.account.setup.ui.common.toResourceString
 
 @Composable

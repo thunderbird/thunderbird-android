@@ -26,7 +26,7 @@
             android:paddingTop="16dp"
             android:paddingBottom="8dp"
             android:text="@string/about_title"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textAppearance="?attr/textAppearanceSubtitle2"
             android:textColor="?attr/colorAccent" />
 
         <LinearLayout
@@ -197,7 +197,7 @@
             android:paddingTop="16dp"
             android:paddingBottom="8dp"
             android:text="@string/about_project_title"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textAppearance="?attr/textAppearanceSubtitle2"
             android:textColor="?attr/colorAccent" />
 
         <LinearLayout
@@ -368,7 +368,7 @@
             android:paddingTop="16dp"
             android:paddingBottom="8dp"
             android:text="@string/about_libraries"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textAppearance="?attr/textAppearanceSubtitle2"
             android:textColor="?attr/colorAccent" />
 
         <androidx.recyclerview.widget.RecyclerView

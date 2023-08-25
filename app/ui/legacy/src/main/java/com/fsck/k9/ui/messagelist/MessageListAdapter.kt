@@ -409,10 +409,14 @@ class MessageListAdapter internal constructor(
 
             holder.subject.typeface = Typeface.create(holder.subject.typeface, maybeBoldTypeface)
             holder.subject.setTextColor(textColor)
-            if (appearance.senderAboveSubject) {
-                holder.subject.text = displayName
+
+            val firstLineText = if (appearance.senderAboveSubject) displayName else subject
+            holder.subject.text = firstLineText
+
+            holder.subject.contentDescription = if (isRead) {
+                null
             } else {
-                holder.subject.text = subject
+                res.getString(R.string.message_list_content_description_unread_prefix, firstLineText)
             }
 
             holder.date.typeface = Typeface.create(holder.date.typeface, maybeBoldTypeface)

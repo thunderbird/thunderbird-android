@@ -40,6 +40,7 @@ include(
 
 include(
     ":feature:launcher",
+    ":feature:account:common",
     ":feature:account:setup",
     ":feature:account:oauth",
     ":feature:onboarding",

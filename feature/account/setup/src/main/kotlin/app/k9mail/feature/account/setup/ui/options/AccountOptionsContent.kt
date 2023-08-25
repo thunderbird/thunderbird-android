@@ -26,11 +26,11 @@ import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.feature.account.common.ui.item.defaultHeadlineItemPadding
+import app.k9mail.feature.account.common.ui.item.defaultItemPadding
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.domain.entity.EmailCheckFrequency
 import app.k9mail.feature.account.setup.domain.entity.EmailDisplayCount
-import app.k9mail.feature.account.setup.ui.common.item.defaultHeadlineItemPadding
-import app.k9mail.feature.account.setup.ui.common.item.defaultItemPadding
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Event
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.State
 

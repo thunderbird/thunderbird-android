@@ -39,34 +39,36 @@ internal class MockAutoconfigFetcher : AutoconfigFetcher {
                 hostname = "imap.domain.example".toHostname(),
                 port = 993.toPort(),
                 connectionSecurity = TLS,
-                authenticationType = PasswordCleartext,
+                authenticationTypes = listOf(PasswordCleartext),
                 username = "irrelevant@domain.example",
             ),
             outgoingServerSettings = SmtpServerSettings(
                 hostname = "smtp.domain.example".toHostname(),
                 port = 465.toPort(),
                 connectionSecurity = TLS,
-                authenticationType = PasswordCleartext,
+                authenticationTypes = listOf(PasswordCleartext),
                 username = "irrelevant@domain.example",
             ),
             isTrusted = true,
+            source = "result 1",
         )
         val RESULT_TWO = AutoDiscoveryResult.Settings(
             incomingServerSettings = ImapServerSettings(
                 hostname = "imap.company.example".toHostname(),
                 port = 143.toPort(),
                 connectionSecurity = StartTLS,
-                authenticationType = PasswordEncrypted,
+                authenticationTypes = listOf(PasswordEncrypted),
                 username = "irrelevant@company.example",
             ),
             outgoingServerSettings = SmtpServerSettings(
                 hostname = "smtp.company.example".toHostname(),
                 port = 587.toPort(),
                 connectionSecurity = StartTLS,
-                authenticationType = PasswordEncrypted,
+                authenticationTypes = listOf(PasswordEncrypted),
                 username = "irrelevant@company.example",
             ),
             isTrusted = true,
+            source = "result 2",
         )
     }
 }

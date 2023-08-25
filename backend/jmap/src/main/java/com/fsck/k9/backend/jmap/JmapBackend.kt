@@ -38,6 +38,7 @@ class JmapBackend(
     override val supportsUpload = true
     override val supportsTrashFolder = true
     override val supportsSearchByDate = true
+    override val supportsFolderSubscriptions = false // TODO: add support
     override val isPushCapable = false // FIXME
 
     override fun refreshFolderList() {

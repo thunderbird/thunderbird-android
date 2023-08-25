@@ -2,70 +2,111 @@ package app.k9mail.feature.account.setup.ui
 
 import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
+import app.k9mail.feature.account.oauth.domain.entity.AuthorizationState
+import app.k9mail.feature.account.setup.domain.DomainContract
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Event
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.State
-import app.k9mail.feature.account.setup.ui.AccountSetupContract.ViewModel
-import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
-import app.k9mail.feature.account.setup.ui.common.mapper.toIncomingConfigState
-import app.k9mail.feature.account.setup.ui.common.mapper.toOptionsState
-import app.k9mail.feature.account.setup.ui.common.mapper.toOutgoingConfigState
-import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
-import app.k9mail.feature.account.setup.ui.incoming.toServerSettings
-import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
-import app.k9mail.feature.account.setup.ui.options.toAccountOptions
-import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
-import app.k9mail.feature.account.setup.ui.outgoing.toServerSettings
 import kotlinx.coroutines.launch
 
+@Suppress("LongParameterList")
 class AccountSetupViewModel(
     private val createAccount: UseCase.CreateAccount,
+    private val accountSetupStateRepository: DomainContract.AccountSetupStateRepository,
     initialState: State = State(),
-) : BaseViewModel<State, Event, Effect>(initialState), ViewModel {
+) : BaseViewModel<State, Event, Effect>(initialState), AccountSetupContract.ViewModel {
 
     override fun event(event: Event) {
         when (event) {
-            is Event.OnAutoDiscoveryFinished -> onAutoDiscoveryFinished(event.state)
-            is Event.OnStateCollected -> onStateCollected(
-                autoDiscoveryState = event.autoDiscoveryState,
-                incomingState = event.incomingState,
-                outgoingState = event.outgoingState,
-                optionsState = event.optionsState,
-            )
+            is Event.OnAutoDiscoveryFinished -> onAutoDiscoveryFinished(event.isAutomaticConfig)
 
             Event.OnBack -> onBack()
             Event.OnNext -> onNext()
         }
     }
 
-    private fun onAutoDiscoveryFinished(autoDiscoveryState: AccountAutoDiscoveryContract.State) {
-        emitEffect(Effect.UpdateIncomingConfig(autoDiscoveryState.toIncomingConfigState()))
-        emitEffect(Effect.UpdateOutgoingConfig(autoDiscoveryState.toOutgoingConfigState()))
-        emitEffect(Effect.UpdateOptions(autoDiscoveryState.toOptionsState()))
+    private fun onAutoDiscoveryFinished(
+        isAutomaticConfig: Boolean,
+    ) {
+        updateState {
+            it.copy(
+                isAutomaticConfig = isAutomaticConfig,
+            )
+        }
+
         onNext()
+    }
+
+    private fun onNext() {
+        when (state.value.setupStep) {
+            SetupStep.AUTO_CONFIG -> {
+                if (state.value.isAutomaticConfig) {
+                    changeToSetupStep(SetupStep.INCOMING_VALIDATION)
+                } else {
+                    changeToSetupStep(SetupStep.INCOMING_CONFIG)
+                }
+            }
+
+            SetupStep.INCOMING_CONFIG -> {
+                changeToSetupStep(SetupStep.INCOMING_VALIDATION)
+            }
+
+            SetupStep.INCOMING_VALIDATION -> {
+                if (state.value.isAutomaticConfig) {
+                    changeToSetupStep(SetupStep.OUTGOING_VALIDATION)
+                } else {
+                    changeToSetupStep(SetupStep.OUTGOING_CONFIG)
+                }
+            }
+
+            SetupStep.OUTGOING_CONFIG -> {
+                changeToSetupStep(SetupStep.OUTGOING_VALIDATION)
+            }
+
+            SetupStep.OUTGOING_VALIDATION -> {
+                changeToSetupStep(SetupStep.OPTIONS)
+            }
+
+            SetupStep.OPTIONS -> onFinish()
+        }
     }
 
     private fun onBack() {
         when (state.value.setupStep) {
             SetupStep.AUTO_CONFIG -> navigateBack()
             SetupStep.INCOMING_CONFIG -> changeToSetupStep(SetupStep.AUTO_CONFIG)
-            SetupStep.OUTGOING_CONFIG -> changeToSetupStep(SetupStep.INCOMING_CONFIG)
-            SetupStep.OPTIONS -> changeToSetupStep(SetupStep.OUTGOING_CONFIG)
-        }
-    }
+            SetupStep.INCOMING_VALIDATION -> {
+                if (state.value.isAutomaticConfig) {
+                    changeToSetupStep(SetupStep.AUTO_CONFIG)
+                } else {
+                    changeToSetupStep(SetupStep.INCOMING_CONFIG)
+                }
+            }
 
-    private fun onNext() {
-        when (state.value.setupStep) {
-            SetupStep.AUTO_CONFIG -> changeToSetupStep(SetupStep.INCOMING_CONFIG)
-            SetupStep.INCOMING_CONFIG -> changeToSetupStep(SetupStep.OUTGOING_CONFIG)
-            SetupStep.OUTGOING_CONFIG -> changeToSetupStep(SetupStep.OPTIONS)
-            SetupStep.OPTIONS -> onFinish()
+            SetupStep.OUTGOING_CONFIG -> changeToSetupStep(SetupStep.INCOMING_CONFIG)
+            SetupStep.OUTGOING_VALIDATION -> {
+                if (state.value.isAutomaticConfig) {
+                    changeToSetupStep(SetupStep.AUTO_CONFIG)
+                } else {
+                    changeToSetupStep(SetupStep.OUTGOING_CONFIG)
+                }
+            }
+
+            SetupStep.OPTIONS -> if (state.value.isAutomaticConfig) {
+                changeToSetupStep(SetupStep.AUTO_CONFIG)
+            } else {
+                changeToSetupStep(SetupStep.OUTGOING_CONFIG)
+            }
         }
     }
 
     private fun changeToSetupStep(setupStep: SetupStep) {
+        if (setupStep == SetupStep.AUTO_CONFIG) {
+            accountSetupStateRepository.saveAuthorizationState(AuthorizationState(null))
+        }
+
         updateState {
             it.copy(
                 setupStep = setupStep,
@@ -74,21 +115,15 @@ class AccountSetupViewModel(
     }
 
     private fun onFinish() {
-        emitEffect(Effect.CollectExternalStates)
-    }
+        val accountSetupState = accountSetupStateRepository.getState()
 
-    private fun onStateCollected(
-        autoDiscoveryState: AccountAutoDiscoveryContract.State,
-        incomingState: AccountIncomingConfigContract.State,
-        outgoingState: AccountOutgoingConfigContract.State,
-        optionsState: AccountOptionsContract.State,
-    ) {
         viewModelScope.launch {
             val result = createAccount.execute(
-                emailAddress = autoDiscoveryState.emailAddress.value,
-                incomingServerSettings = incomingState.toServerSettings(),
-                outgoingServerSettings = outgoingState.toServerSettings(),
-                options = optionsState.toAccountOptions(),
+                emailAddress = accountSetupState.emailAddress ?: "",
+                incomingServerSettings = accountSetupState.incomingServerSettings!!,
+                outgoingServerSettings = accountSetupState.outgoingServerSettings!!,
+                authorizationState = accountSetupState.authorizationState?.state,
+                options = accountSetupState.options!!,
             )
 
             navigateNext(result)

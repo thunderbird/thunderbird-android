@@ -1,5 +1,6 @@
 package com.fsck.k9.account
 
+import androidx.work.WorkerParameters
 import org.koin.dsl.module
 
 val accountModule = module {
@@ -14,4 +15,7 @@ val accountModule = module {
     }
     factory { BackgroundAccountRemover(get()) }
     factory { AccountCreatorHelper(get(), get()) }
+    factory { (parameters: WorkerParameters) ->
+        AccountRemoverWorker(accountRemover = get(), notificationController = get(), context = get(), parameters)
+    }
 }

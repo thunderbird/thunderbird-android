@@ -32,6 +32,7 @@ val settingsUiModule = module {
             executorService = get(named("SaveSettingsExecutorService")),
             notificationChannelManager = get(),
             notificationController = get(),
+            messagingController = get(),
         )
     }
     factory { getSystemVibrator(context = get()) }

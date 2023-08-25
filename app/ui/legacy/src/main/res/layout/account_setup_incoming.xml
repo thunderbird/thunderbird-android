@@ -158,20 +158,6 @@
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/imap_folder_setup_section"
-                    android:orientation="vertical">
-
-                <CheckBox
-                        android:id="@+id/subscribed_folders_only"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:text="@string/account_setup_incoming_subscribed_folders_only_label"
-                        />
-            </LinearLayout>
-
             <CheckBox
                     android:id="@+id/use_compression"
                     android:layout_height="wrap_content"

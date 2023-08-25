@@ -4,8 +4,9 @@ import com.fsck.k9.Account
 
 internal object NotificationIds {
     const val PUSH_NOTIFICATION_ID = 1
+    const val BACKGROUND_WORK_NOTIFICATION_ID = 2
 
-    private const val NUMBER_OF_GENERAL_NOTIFICATIONS = 1
+    private const val NUMBER_OF_GENERAL_NOTIFICATIONS = 2
     private const val OFFSET_SEND_FAILED_NOTIFICATION = 0
     private const val OFFSET_CERTIFICATE_ERROR_INCOMING = 1
     private const val OFFSET_CERTIFICATE_ERROR_OUTGOING = 2

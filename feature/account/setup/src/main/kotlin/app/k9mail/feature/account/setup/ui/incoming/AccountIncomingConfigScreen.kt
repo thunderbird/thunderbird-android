@@ -2,6 +2,7 @@ package app.k9mail.feature.account.setup.ui.incoming
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.common.DevicePreviews
@@ -9,26 +10,30 @@ import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.setup.R
-import app.k9mail.feature.account.setup.ui.common.AccountSetupBottomBar
 import app.k9mail.feature.account.setup.ui.common.AccountSetupTopAppBar
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Effect
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.ViewModel
-import com.fsck.k9.mail.server.ServerSettingsValidationResult
+import app.k9mail.feature.account.setup.ui.preview.PreviewAccountSetupStateRepository
 
 @Composable
 internal fun AccountIncomingConfigScreen(
-    onNext: () -> Unit,
+    onNext: (AccountIncomingConfigContract.State) -> Unit,
     onBack: () -> Unit,
     viewModel: ViewModel,
     modifier: Modifier = Modifier,
 ) {
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
-            is Effect.NavigateNext -> onNext()
+            is Effect.NavigateNext -> onNext(viewModel.state.value)
             is Effect.NavigateBack -> onBack()
         }
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        dispatch(Event.LoadAccountSetupState)
     }
 
     BackHandler {
@@ -42,7 +47,7 @@ internal fun AccountIncomingConfigScreen(
             )
         },
         bottomBar = {
-            AccountSetupBottomBar(
+            WizardNavigationBar(
                 nextButtonText = stringResource(id = R.string.account_setup_button_next),
                 backButtonText = stringResource(id = R.string.account_setup_button_back),
                 onNextClick = { dispatch(Event.OnNextClicked) },
@@ -68,9 +73,7 @@ internal fun AccountIncomingConfigScreenK9Preview() {
             onBack = {},
             viewModel = AccountIncomingConfigViewModel(
                 validator = AccountIncomingConfigValidator(),
-                checkIncomingServerConfig = { _, _ ->
-                    ServerSettingsValidationResult.Success
-                },
+                accountSetupStateRepository = PreviewAccountSetupStateRepository(),
             ),
         )
     }
@@ -85,9 +88,7 @@ internal fun AccountIncomingConfigScreenThunderbirdPreview() {
             onBack = {},
             viewModel = AccountIncomingConfigViewModel(
                 validator = AccountIncomingConfigValidator(),
-                checkIncomingServerConfig = { _, _ ->
-                    ServerSettingsValidationResult.Success
-                },
+                accountSetupStateRepository = PreviewAccountSetupStateRepository(),
             ),
         )
     }

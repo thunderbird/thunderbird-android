@@ -1121,4 +1121,5 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
   <string name="clipboard_label_email_address">E-posti aadress</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Nimi ja e-posti aadress</string>
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>

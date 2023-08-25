@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_oauth_sign_in_description">We\'ll redirect you to your email provider to sign in. You need to grant the app access to your email account.</string>
+    <string name="account_oauth_sign_in_button">Sign in</string>
+    <string name="account_oauth_sign_in_with_google_button">Sign in with Google</string>
+    <string name="account_oauth_loading_message">Signing in using OAuth</string>
+    <string name="account_oauth_loading_error">OAuth sign in failed</string>
+
+    <string name="account_oauth_error_canceled">Authorization canceled</string>
+    <string name="account_oauth_error_failed">Authorization failed with the following error: <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_error_not_supported">OAuth 2.0 is currently not supported with this provider.</string>
+    <string name="account_oauth_error_browser_not_available">The app couldn\'t find a browser to use for granting access to your account.</string>
+
+</resources>

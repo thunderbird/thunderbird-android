@@ -25,6 +25,14 @@ internal fun ConnectionSecurity.toMailConnectionSecurity(): MailConnectionSecuri
     }
 }
 
+internal fun MailConnectionSecurity.toConnectionSecurity(): ConnectionSecurity {
+    return when (this) {
+        MailConnectionSecurity.NONE -> None
+        MailConnectionSecurity.STARTTLS_REQUIRED -> StartTLS
+        MailConnectionSecurity.SSL_TLS_REQUIRED -> TLS
+    }
+}
+
 @Suppress("MagicNumber")
 internal fun ConnectionSecurity.toSmtpDefaultPort(): Long {
     return when (this) {

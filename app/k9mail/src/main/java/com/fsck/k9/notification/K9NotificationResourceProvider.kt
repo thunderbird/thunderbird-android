@@ -11,6 +11,7 @@ class K9NotificationResourceProvider(private val context: Context) : Notificatio
     override val iconNewMail: Int = R.drawable.notification_icon_new_mail
     override val iconSendingMail: Int = R.drawable.notification_icon_check_mail
     override val iconCheckingMail: Int = R.drawable.notification_icon_check_mail
+    override val iconBackgroundWorkNotification: Int = R.drawable.notification_icon_background_work
     override val wearIconMarkAsRead: Int = R.drawable.notification_action_mark_as_read
     override val wearIconDelete: Int = R.drawable.notification_action_delete
     override val wearIconArchive: Int = R.drawable.notification_action_archive

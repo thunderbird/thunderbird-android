@@ -8,14 +8,10 @@ import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.setup.domain.entity.toDefaultPort
 import app.k9mail.feature.account.setup.domain.input.NumberInputField
 import app.k9mail.feature.account.setup.domain.input.StringInputField
-import java.io.IOException
-import java.security.cert.X509Certificate
 
 interface AccountIncomingConfigContract {
 
-    interface ViewModel : UnidirectionalViewModel<State, Event, Effect> {
-        fun initState(state: State)
-    }
+    interface ViewModel : UnidirectionalViewModel<State, Event, Effect>
 
     data class State(
         val protocolType: IncomingProtocolType = IncomingProtocolType.DEFAULT,
@@ -27,37 +23,36 @@ interface AccountIncomingConfigContract {
         val authenticationType: AuthenticationType = AuthenticationType.PasswordCleartext,
         val username: StringInputField = StringInputField(),
         val password: StringInputField = StringInputField(),
-        val clientCertificate: String = "",
+        val clientCertificateAlias: String? = null,
         val imapAutodetectNamespaceEnabled: Boolean = true,
         val imapPrefix: StringInputField = StringInputField(),
         val imapUseCompression: Boolean = true,
-
-        val isSuccess: Boolean = false,
-        val error: Error? = null,
-        val isLoading: Boolean = false,
+        val imapSendClientId: Boolean = true,
     )
 
-    sealed class Event {
-        data class ProtocolTypeChanged(val protocolType: IncomingProtocolType) : Event()
-        data class ServerChanged(val server: String) : Event()
-        data class SecurityChanged(val security: ConnectionSecurity) : Event()
-        data class PortChanged(val port: Long?) : Event()
-        data class AuthenticationTypeChanged(val authenticationType: AuthenticationType) : Event()
-        data class UsernameChanged(val username: String) : Event()
-        data class PasswordChanged(val password: String) : Event()
-        data class ClientCertificateChanged(val clientCertificate: String) : Event()
-        data class ImapAutoDetectNamespaceChanged(val enabled: Boolean) : Event()
-        data class ImapPrefixChanged(val imapPrefix: String) : Event()
-        data class ImapUseCompressionChanged(val useCompression: Boolean) : Event()
+    sealed interface Event {
+        data class ProtocolTypeChanged(val protocolType: IncomingProtocolType) : Event
+        data class ServerChanged(val server: String) : Event
+        data class SecurityChanged(val security: ConnectionSecurity) : Event
+        data class PortChanged(val port: Long?) : Event
+        data class AuthenticationTypeChanged(val authenticationType: AuthenticationType) : Event
+        data class UsernameChanged(val username: String) : Event
+        data class PasswordChanged(val password: String) : Event
+        data class ClientCertificateChanged(val clientCertificateAlias: String?) : Event
+        data class ImapAutoDetectNamespaceChanged(val enabled: Boolean) : Event
+        data class ImapPrefixChanged(val imapPrefix: String) : Event
+        data class ImapUseCompressionChanged(val useCompression: Boolean) : Event
+        data class ImapSendClientIdChanged(val sendClientId: Boolean) : Event
 
-        object OnNextClicked : Event()
-        object OnBackClicked : Event()
-        object OnRetryClicked : Event()
+        object LoadAccountSetupState : Event
+
+        object OnNextClicked : Event
+        object OnBackClicked : Event
     }
 
-    sealed class Effect {
-        object NavigateNext : Effect()
-        object NavigateBack : Effect()
+    sealed interface Effect {
+        object NavigateNext : Effect
+        object NavigateBack : Effect
     }
 
     interface Validator {
@@ -66,13 +61,5 @@ interface AccountIncomingConfigContract {
         fun validateUsername(username: String): ValidationResult
         fun validatePassword(password: String): ValidationResult
         fun validateImapPrefix(imapPrefix: String): ValidationResult
-    }
-
-    sealed interface Error {
-        data class NetworkError(val exception: IOException) : Error
-        data class CertificateError(val certificateChain: List<X509Certificate>) : Error
-        data class AuthenticationError(val serverMessage: String?) : Error
-        data class ServerError(val serverMessage: String?) : Error
-        data class UnknownError(val exception: Exception) : Error
     }
 }

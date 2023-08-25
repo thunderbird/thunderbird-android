@@ -232,7 +232,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
   <string name="message_view_me_text">я</string>
   <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
-  <string name="message_view_show_remote_images_action">Паказаць выдаленныя выявы</string>
+  <string name="message_view_show_remote_images_action">Паказваць адлеглыя выявы</string>
   <string name="message_view_no_viewer">Няма праграмы для прагляду <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Спампаваць ліст цалкам</string>
   <string name="message_view_sender_label">ад %1$s</string>
@@ -364,6 +364,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_setup_incoming_delete_policy_delete_label">Выдаліць з сервера</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Пазначыць на серверы як прачытанае</string>
   <string name="account_setup_incoming_use_compression">Выкарыстоўваць сцісканне</string>
+  <string name="account_setup_incoming_send_client_id">Адправіць ідэнтыфікатар кліента</string>
   <string name="account_setup_expunge_policy_label">Сціранне выдаленых лістоў з сервера</string>
   <string name="account_setup_expunge_policy_immediately">Неадкладна</string>
   <string name="account_setup_expunge_policy_on_poll">Падчас апытання</string>
@@ -1096,15 +1097,15 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
   <string name="swipe_action_move">Перамясціць…</string>
   <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
-  <string name="general_settings_show_compose_button_title">Паказваць яшчэ адну кнопку \"Ставарыць паведамленне\"</string>
+  <string name="general_settings_show_compose_button_title">Паказваць рухомую кнопку напісання ліста</string>
   <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
   <string name="message_list_error_title">Памылка</string>
   <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
   <string name="message_list_error_folder_not_found">Каталог не знойдзены</string>
   <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
-  <string name="message_details_toolbar_title">Дэталі паведамлення</string>
+  <string name="message_details_toolbar_title">Падрабязнасці ліста</string>
   <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
-  <string name="message_details_missing_date">Прапушчаны загаловак \'Дадзеныя\'</string>
+  <string name="message_details_missing_date">Адсутнічае загаловак \"Дата\"</string>
   <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
   <string name="message_details_from_section_title">Ад</string>
   <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
@@ -1118,17 +1119,18 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
   <string name="message_details_bcc_section_title">Схаваная копія</string>
   <!--Displayed when loading the message details has failed-->
-  <string name="message_details_loading_error">Адбылася памылка пад час загрузкі дэталяў паведамлення.</string>
+  <string name="message_details_loading_error">Падчас загрузкі падрабязнасцяў ліста адбылася памылка.</string>
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-  <string name="action_add_to_contacts">Дабавіць у кантакты</string>
+  <string name="action_add_to_contacts">Дадаць у кантакты</string>
   <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-  <string name="action_compose_message_to">Стварыць паведамленне да</string>
+  <string name="action_compose_message_to">Напісаць ліст да</string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-  <string name="action_copy_email_address">Скапіяваць email адрас</string>
+  <string name="action_copy_email_address">Скапіяваць адрас электроннай пошты</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-  <string name="action_copy_name_and_email_address">Скапіяваць імя і email адрас</string>
+  <string name="action_copy_name_and_email_address">Скапіяваць імя і адрас электроннай пошты</string>
   <!--A user visible label for the email address copied to the clipboard-->
   <string name="clipboard_label_email_address">Адрас электроннай пошты</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
-  <string name="clipboard_label_name_and_email_address">Імя і email адрас</string>
+  <string name="clipboard_label_name_and_email_address">Імя і адрас электроннай пошты</string>
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>

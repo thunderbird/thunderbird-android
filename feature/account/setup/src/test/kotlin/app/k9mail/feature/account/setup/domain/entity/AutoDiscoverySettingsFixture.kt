@@ -15,16 +15,17 @@ object AutoDiscoverySettingsFixture {
             hostname = "incoming.example.com".toHostname(),
             port = 123.toPort(),
             connectionSecurity = ConnectionSecurity.TLS,
-            authenticationType = AuthenticationType.PasswordEncrypted,
+            authenticationTypes = listOf(AuthenticationType.PasswordEncrypted),
             username = "incoming_username",
         ),
         outgoingServerSettings = SmtpServerSettings(
             hostname = "outgoing.example.com".toHostname(),
             port = 456.toPort(),
             connectionSecurity = ConnectionSecurity.TLS,
-            authenticationType = AuthenticationType.PasswordEncrypted,
+            authenticationTypes = listOf(AuthenticationType.PasswordEncrypted),
             username = "outgoing_username",
         ),
         isTrusted = true,
+        source = "test",
     )
 }

@@ -1113,4 +1113,5 @@ Jo kinne dit berjocht bewarje as reservekopy foar jo geheime kaai. As jo dit dwa
   <string name="clipboard_label_email_address">E-mailadres</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Namme en e-mailadres</string>
+  <!--Might be displayed in a notification when deleting an account (in the background)-->
 </resources>

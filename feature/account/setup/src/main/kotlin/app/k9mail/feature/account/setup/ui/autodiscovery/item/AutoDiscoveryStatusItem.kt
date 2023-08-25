@@ -4,8 +4,8 @@ import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
+import app.k9mail.feature.account.common.ui.item.ListItem
 import app.k9mail.feature.account.setup.ui.autodiscovery.view.AutoDiscoveryStatusView
-import app.k9mail.feature.account.setup.ui.common.item.ListItem
 
 @Composable
 internal fun LazyItemScope.AutoDiscoveryStatusItem(

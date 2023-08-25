@@ -6,6 +6,7 @@ import app.k9mail.feature.account.setup.domain.entity.EmailDisplayCount
 import app.k9mail.feature.account.setup.domain.input.StringInputField
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isNull
 import org.junit.Test
 
 class AccountOptionsStateMapperKtTest {
@@ -33,5 +34,14 @@ class AccountOptionsStateMapperKtTest {
                 showNotification = true,
             ),
         )
+    }
+
+    @Test
+    fun `empty signature should map to null`() {
+        val state = AccountOptionsContract.State(emailSignature = StringInputField(""))
+
+        val result = state.toAccountOptions()
+
+        assertThat(result.emailSignature).isNull()
     }
 }

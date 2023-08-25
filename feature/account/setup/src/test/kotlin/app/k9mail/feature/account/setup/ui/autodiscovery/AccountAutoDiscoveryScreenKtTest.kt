@@ -32,7 +32,7 @@ class AccountAutoDiscoveryScreenKtTest : ComposeTest() {
         assertThat(onNextCounter).isEqualTo(0)
         assertThat(onBackCounter).isEqualTo(0)
 
-        viewModel.effect(Effect.NavigateNext)
+        viewModel.effect(Effect.NavigateNext(isAutomaticConfig = false))
 
         assertThat(onNextCounter).isEqualTo(1)
         assertThat(onBackCounter).isEqualTo(0)

@@ -8,9 +8,7 @@ import app.k9mail.feature.account.setup.domain.input.StringInputField
 
 interface AccountOptionsContract {
 
-    interface ViewModel : UnidirectionalViewModel<State, Event, Effect> {
-        fun initState(state: State)
-    }
+    interface ViewModel : UnidirectionalViewModel<State, Event, Effect>
 
     data class State(
         val accountName: StringInputField = StringInputField(),
@@ -21,21 +19,23 @@ interface AccountOptionsContract {
         val showNotification: Boolean = false,
     )
 
-    sealed class Event {
-        data class OnAccountNameChanged(val accountName: String) : Event()
-        data class OnDisplayNameChanged(val displayName: String) : Event()
-        data class OnEmailSignatureChanged(val emailSignature: String) : Event()
-        data class OnCheckFrequencyChanged(val checkFrequency: EmailCheckFrequency) : Event()
-        data class OnMessageDisplayCountChanged(val messageDisplayCount: EmailDisplayCount) : Event()
-        data class OnShowNotificationChanged(val showNotification: Boolean) : Event()
+    sealed interface Event {
+        data class OnAccountNameChanged(val accountName: String) : Event
+        data class OnDisplayNameChanged(val displayName: String) : Event
+        data class OnEmailSignatureChanged(val emailSignature: String) : Event
+        data class OnCheckFrequencyChanged(val checkFrequency: EmailCheckFrequency) : Event
+        data class OnMessageDisplayCountChanged(val messageDisplayCount: EmailDisplayCount) : Event
+        data class OnShowNotificationChanged(val showNotification: Boolean) : Event
 
-        object OnNextClicked : Event()
-        object OnBackClicked : Event()
+        object LoadAccountSetupState : Event
+
+        object OnNextClicked : Event
+        object OnBackClicked : Event
     }
 
-    sealed class Effect {
-        object NavigateNext : Effect()
-        object NavigateBack : Effect()
+    sealed interface Effect {
+        object NavigateNext : Effect
+        object NavigateBack : Effect
     }
 
     interface Validator {

@@ -15,24 +15,24 @@ class ValidateEmailAddressTest {
     fun `should succeed when email address is valid`() {
         val result = testSubject.execute("test@example.com")
 
-        assertThat(result).isInstanceOf(ValidationResult.Success::class)
+        assertThat(result).isInstanceOf<ValidationResult.Success>()
     }
 
     @Test
     fun `should fail when email address is blank`() {
         val result = testSubject.execute(" ")
 
-        assertThat(result).isInstanceOf(ValidationResult.Failure::class)
+        assertThat(result).isInstanceOf<ValidationResult.Failure>()
             .prop(ValidationResult.Failure::error)
-            .isInstanceOf(ValidateEmailAddressError.EmptyEmailAddress::class)
+            .isInstanceOf<ValidateEmailAddressError.EmptyEmailAddress>()
     }
 
     @Test
     fun `should fail when email address is invalid`() {
         val result = testSubject.execute("test")
 
-        assertThat(result).isInstanceOf(ValidationResult.Failure::class)
+        assertThat(result).isInstanceOf<ValidationResult.Failure>()
             .prop(ValidationResult.Failure::error)
-            .isInstanceOf(ValidateEmailAddressError.InvalidEmailAddress::class)
+            .isInstanceOf<ValidateEmailAddressError.InvalidEmailAddress>()
     }
 }

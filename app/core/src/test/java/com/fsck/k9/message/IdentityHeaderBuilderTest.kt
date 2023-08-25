@@ -1,7 +1,10 @@
 package com.fsck.k9.message
 
+import android.net.Uri
 import app.k9mail.core.android.testing.RobolectricTest
+import assertk.Assert
 import assertk.assertThat
+import assertk.assertions.contains
 import assertk.assertions.isGreaterThan
 import com.fsck.k9.Account.QuoteStyle
 import com.fsck.k9.Identity
@@ -35,6 +38,21 @@ class IdentityHeaderBuilderTest : RobolectricTest() {
         assertIsValidHeader(identityHeader)
     }
 
+    @Test
+    fun `identity header without identity name`() {
+        val identityHeader = IdentityHeaderBuilder()
+            .setIdentity(createIdentity(email = "test@domain.example", name = null))
+            .setIdentityChanged(true)
+            .setBody(TextBody("irrelevant"))
+            .setQuoteStyle(QuoteStyle.PREFIX)
+            .setMessageFormat(SimpleMessageFormat.TEXT)
+            .setQuoteTextMode(QuotedTextMode.NONE)
+            .build()
+
+        assertThat(identityHeader).containsParameter(IdentityField.EMAIL, "test@domain.example")
+        assertThat(identityHeader).containsParameter(IdentityField.NAME, "")
+    }
+
     private fun assertIsValidHeader(identityHeader: String) {
         try {
             MimeHeaderChecker.checkHeader(IDENTITY_HEADER, identityHeader)
@@ -54,4 +72,12 @@ class IdentityHeaderBuilderTest : RobolectricTest() {
     ): Identity {
         return Identity(description, name, email, signature, signatureUse, replyTo)
     }
+}
+
+private fun Assert<String>.containsParameter(identityField: IdentityField, value: String) = given { actual ->
+    assertThat("&${unfold(actual)}&").contains("&${identityField.value()}=${Uri.encode(value)}&")
+}
+
+private fun unfold(headerValue: String): String {
+    return headerValue.replace(Regex("\r?\n "), "")
 }

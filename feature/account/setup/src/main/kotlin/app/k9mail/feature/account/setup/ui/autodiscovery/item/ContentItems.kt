@@ -1,6 +1,9 @@
 package app.k9mail.feature.account.setup.ui.autodiscovery.item
 
 import androidx.compose.foundation.lazy.LazyListScope
+import app.k9mail.feature.account.common.ui.item.ListItem
+import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
+import app.k9mail.feature.account.oauth.ui.AccountOAuthView
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.ConfigStep
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Event
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.State
@@ -8,8 +11,9 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryCon
 internal fun LazyListScope.contentItems(
     state: State,
     onEvent: (Event) -> Unit,
+    oAuthViewModel: AccountOAuthContract.ViewModel,
 ) {
-    if (state.configStep == ConfigStep.PASSWORD) {
+    if (state.configStep != ConfigStep.EMAIL_ADDRESS) {
         item(key = "autodiscovery") {
             AutoDiscoveryStatusItem(
                 autoDiscoverySettings = state.autoDiscoverySettings,
@@ -31,7 +35,6 @@ internal fun LazyListScope.contentItems(
             emailAddress = state.emailAddress.value,
             error = state.emailAddress.error,
             onEmailAddressChange = { onEvent(Event.EmailAddressChanged(it)) },
-            isEnabled = state.configStep == ConfigStep.EMAIL_ADDRESS,
         )
     }
 
@@ -42,6 +45,15 @@ internal fun LazyListScope.contentItems(
                 error = state.password.error,
                 onPasswordChange = { onEvent(Event.PasswordChanged(it)) },
             )
+        }
+    } else if (state.configStep == ConfigStep.OAUTH) {
+        item(key = "oauth") {
+            ListItem {
+                AccountOAuthView(
+                    onOAuthResult = { result -> onEvent(Event.OnOAuthResult(result)) },
+                    viewModel = oAuthViewModel,
+                )
+            }
         }
     }
 }

@@ -15,22 +15,22 @@ class ValidateEmailSignatureTest {
     fun `should succeed when email signature is set`() {
         val result = testSubject.execute("email signature")
 
-        assertThat(result).isInstanceOf(ValidationResult.Success::class)
+        assertThat(result).isInstanceOf<ValidationResult.Success>()
     }
 
     @Test
     fun `should succeed when email signature is empty`() {
         val result = testSubject.execute("")
 
-        assertThat(result).isInstanceOf(ValidationResult.Success::class)
+        assertThat(result).isInstanceOf<ValidationResult.Success>()
     }
 
     @Test
     fun `should fail when email signature is blank`() {
         val result = testSubject.execute(" ")
 
-        assertThat(result).isInstanceOf(ValidationResult.Failure::class)
+        assertThat(result).isInstanceOf<ValidationResult.Failure>()
             .prop(ValidationResult.Failure::error)
-            .isInstanceOf(ValidateEmailSignatureError.BlankEmailSignature::class)
+            .isInstanceOf<ValidateEmailSignatureError.BlankEmailSignature>()
     }
 }

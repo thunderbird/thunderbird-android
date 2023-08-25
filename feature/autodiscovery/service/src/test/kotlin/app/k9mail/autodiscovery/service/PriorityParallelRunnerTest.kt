@@ -145,17 +145,18 @@ class PriorityParallelRunnerTest {
                 hostname = "imap.domain.example".toHostname(),
                 port = 993.toPort(),
                 connectionSecurity = TLS,
-                authenticationType = PasswordCleartext,
+                authenticationTypes = listOf(PasswordCleartext),
                 username = "user@domain.example",
             ),
             SmtpServerSettings(
                 hostname = "smtp.domain.example".toHostname(),
                 port = 587.toPort(),
                 connectionSecurity = StartTLS,
-                authenticationType = PasswordCleartext,
+                authenticationTypes = listOf(PasswordCleartext),
                 username = "user@domain.example",
             ),
             isTrusted = true,
+            source = "result 1",
         )
 
         private val DISCOVERY_RESULT_TWO = AutoDiscoveryResult.Settings(
@@ -163,17 +164,18 @@ class PriorityParallelRunnerTest {
                 hostname = "imap.domain.example".toHostname(),
                 port = 143.toPort(),
                 connectionSecurity = StartTLS,
-                authenticationType = PasswordCleartext,
+                authenticationTypes = listOf(PasswordCleartext),
                 username = "user@domain.example",
             ),
             SmtpServerSettings(
                 hostname = "smtp.domain.example".toHostname(),
                 port = 465.toPort(),
                 connectionSecurity = TLS,
-                authenticationType = PasswordCleartext,
+                authenticationTypes = listOf(PasswordCleartext),
                 username = "user@domain.example",
             ),
             isTrusted = true,
+            source = "result 2",
         )
     }
 }

@@ -37,7 +37,11 @@ internal fun AutoDiscoveryStatusView(
         Surface(
             shape = MainTheme.shapes.small,
             modifier = Modifier
-                .border(1.dp, Color.Gray.copy(alpha = 0.5f))
+                .border(
+                    width = 1.dp,
+                    color = Color.Gray.copy(alpha = 0.5f),
+                    shape = MainTheme.shapes.small,
+                )
                 .clickable { expanded.value = !expanded.value },
         ) {
             Column(
@@ -77,17 +81,18 @@ internal fun AutoDiscoveryStatusViewTrustedPreview() {
                     hostname = "imap.example.com".toHostname(),
                     port = 993.toPort(),
                     connectionSecurity = ConnectionSecurity.TLS,
-                    authenticationType = AuthenticationType.PasswordEncrypted,
+                    authenticationTypes = listOf(AuthenticationType.PasswordEncrypted),
                     username = "",
                 ),
                 outgoingServerSettings = SmtpServerSettings(
                     hostname = "smtp.example.com".toHostname(),
                     port = 465.toPort(),
                     connectionSecurity = ConnectionSecurity.TLS,
-                    authenticationType = AuthenticationType.PasswordEncrypted,
+                    authenticationTypes = listOf(AuthenticationType.PasswordEncrypted),
                     username = "",
                 ),
                 isTrusted = true,
+                source = "preview",
             ),
             onEditConfigurationClick = {},
         )
@@ -104,17 +109,18 @@ internal fun AutoDiscoveryStatusViewUntrustedPreview() {
                     hostname = "imap.example.com".toHostname(),
                     port = 993.toPort(),
                     connectionSecurity = ConnectionSecurity.TLS,
-                    authenticationType = AuthenticationType.PasswordEncrypted,
+                    authenticationTypes = listOf(AuthenticationType.PasswordEncrypted),
                     username = "",
                 ),
                 outgoingServerSettings = SmtpServerSettings(
                     hostname = "smtp.example.com".toHostname(),
                     port = 465.toPort(),
                     connectionSecurity = ConnectionSecurity.TLS,
-                    authenticationType = AuthenticationType.PasswordEncrypted,
+                    authenticationTypes = listOf(AuthenticationType.PasswordEncrypted),
                     username = "",
                 ),
                 isTrusted = false,
+                source = "preview",
             ),
             onEditConfigurationClick = {},
         )

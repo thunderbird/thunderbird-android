@@ -11,6 +11,7 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.FakeAccountAutoDiscover
 import app.k9mail.feature.account.setup.ui.incoming.FakeAccountIncomingConfigViewModel
 import app.k9mail.feature.account.setup.ui.options.FakeAccountOptionsViewModel
 import app.k9mail.feature.account.setup.ui.outgoing.FakeAccountOutgoingConfigViewModel
+import app.k9mail.feature.account.setup.ui.validation.FakeAccountValidationViewModel
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
@@ -21,10 +22,6 @@ class AccountSetupScreenKtTest : ComposeTest() {
     @Test
     fun `should display correct screen for every setup step`() = runTest {
         val viewModel = FakeAccountSetupViewModel()
-        val autoDiscoveryViewModel = FakeAccountAutoDiscoveryViewModel()
-        val incomingViewModel = FakeAccountIncomingConfigViewModel()
-        val outgoingViewModel = FakeAccountOutgoingConfigViewModel()
-        val optionsViewModel = FakeAccountOptionsViewModel()
 
         setContent {
             ThunderbirdTheme {
@@ -32,10 +29,12 @@ class AccountSetupScreenKtTest : ComposeTest() {
                     onFinish = { },
                     onBack = { },
                     viewModel = viewModel,
-                    autoDiscoveryViewModel = autoDiscoveryViewModel,
-                    incomingViewModel = incomingViewModel,
-                    outgoingViewModel = outgoingViewModel,
-                    optionsViewModel = optionsViewModel,
+                    autoDiscoveryViewModel = FakeAccountAutoDiscoveryViewModel(),
+                    incomingViewModel = FakeAccountIncomingConfigViewModel(),
+                    incomingValidationViewModel = FakeAccountValidationViewModel(),
+                    outgoingViewModel = FakeAccountOutgoingConfigViewModel(),
+                    outgoingValidationViewModel = FakeAccountValidationViewModel(),
+                    optionsViewModel = FakeAccountOptionsViewModel(),
                 )
             }
         }
@@ -49,11 +48,7 @@ class AccountSetupScreenKtTest : ComposeTest() {
     @Test
     fun `should delegate navigation effects`() = runTest {
         val initialState = State()
-        val viewModel = FakeAccountSetupViewModel(initialState)
-        val autoDiscoveryViewModel = FakeAccountAutoDiscoveryViewModel()
-        val incomingViewModel = FakeAccountIncomingConfigViewModel()
-        val outgoingViewModel = FakeAccountOutgoingConfigViewModel()
-        val optionsViewModel = FakeAccountOptionsViewModel()
+        val viewModel = FakeAccountSetupViewModel(initialState = initialState)
         var onFinishCounter = 0
         var onBackCounter = 0
 
@@ -63,10 +58,12 @@ class AccountSetupScreenKtTest : ComposeTest() {
                     onFinish = { onFinishCounter++ },
                     onBack = { onBackCounter++ },
                     viewModel = viewModel,
-                    autoDiscoveryViewModel = autoDiscoveryViewModel,
-                    incomingViewModel = incomingViewModel,
-                    outgoingViewModel = outgoingViewModel,
-                    optionsViewModel = optionsViewModel,
+                    autoDiscoveryViewModel = FakeAccountAutoDiscoveryViewModel(),
+                    incomingViewModel = FakeAccountIncomingConfigViewModel(),
+                    incomingValidationViewModel = FakeAccountValidationViewModel(),
+                    outgoingViewModel = FakeAccountOutgoingConfigViewModel(),
+                    outgoingValidationViewModel = FakeAccountValidationViewModel(),
+                    optionsViewModel = FakeAccountOptionsViewModel(),
                 )
             }
         }
@@ -88,7 +85,9 @@ class AccountSetupScreenKtTest : ComposeTest() {
     private fun getTagForStep(step: SetupStep): String = when (step) {
         SetupStep.AUTO_CONFIG -> "AccountAutoDiscoveryContent"
         SetupStep.INCOMING_CONFIG -> "AccountIncomingConfigContent"
+        SetupStep.INCOMING_VALIDATION -> "AccountValidationContent"
         SetupStep.OUTGOING_CONFIG -> "AccountOutgoingConfigContent"
+        SetupStep.OUTGOING_VALIDATION -> "AccountValidationContent"
         SetupStep.OPTIONS -> "AccountOptionsContent"
     }
 }

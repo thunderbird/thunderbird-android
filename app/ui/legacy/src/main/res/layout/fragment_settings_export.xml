@@ -29,7 +29,6 @@
 
         <Button
             android:id="@+id/exportButton"
-            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -43,7 +42,6 @@
 
         <Button
             android:id="@+id/shareButton"
-            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"

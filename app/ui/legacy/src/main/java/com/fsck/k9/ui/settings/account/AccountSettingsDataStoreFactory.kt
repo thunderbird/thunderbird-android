@@ -2,6 +2,7 @@ package com.fsck.k9.ui.settings.account
 
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
+import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.notification.NotificationController
@@ -13,6 +14,7 @@ class AccountSettingsDataStoreFactory(
     private val executorService: ExecutorService,
     private val notificationChannelManager: NotificationChannelManager,
     private val notificationController: NotificationController,
+    private val messagingController: MessagingController,
 ) {
     fun create(account: Account): AccountSettingsDataStore {
         return AccountSettingsDataStore(
@@ -22,6 +24,7 @@ class AccountSettingsDataStoreFactory(
             jobManager,
             notificationChannelManager,
             notificationController,
+            messagingController,
         )
     }
 }

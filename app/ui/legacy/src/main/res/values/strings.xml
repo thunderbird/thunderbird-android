@@ -1338,4 +1338,10 @@ You can keep this message and use it as a backup for your secret key. If you wan
     <string name="clipboard_label_email_address">Email address</string>
     <!-- A user visible label for the name and email address copied to the clipboard -->
     <string name="clipboard_label_name_and_email_address">Name and email address</string>
+
+    <!-- Might be displayed in a notification when deleting an account (in the background) -->
+    <string name="background_work_notification_remove_account">Removing account…</string>
+
+    <!-- For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers. -->
+    <string name="message_list_content_description_unread_prefix">unread, %s</string>
 </resources>

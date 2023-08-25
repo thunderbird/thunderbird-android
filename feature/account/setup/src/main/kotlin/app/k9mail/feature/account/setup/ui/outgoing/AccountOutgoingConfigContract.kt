@@ -7,14 +7,10 @@ import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.toSmtpDefaultPort
 import app.k9mail.feature.account.setup.domain.input.NumberInputField
 import app.k9mail.feature.account.setup.domain.input.StringInputField
-import java.io.IOException
-import java.security.cert.X509Certificate
 
 interface AccountOutgoingConfigContract {
 
-    interface ViewModel : UnidirectionalViewModel<State, Event, Effect> {
-        fun initState(state: State)
-    }
+    interface ViewModel : UnidirectionalViewModel<State, Event, Effect>
 
     data class State(
         val server: StringInputField = StringInputField(),
@@ -23,30 +19,27 @@ interface AccountOutgoingConfigContract {
         val authenticationType: AuthenticationType = AuthenticationType.PasswordCleartext,
         val username: StringInputField = StringInputField(),
         val password: StringInputField = StringInputField(),
-        val clientCertificate: String = "",
-
-        val isSuccess: Boolean = false,
-        val error: Error? = null,
-        val isLoading: Boolean = false,
+        val clientCertificateAlias: String? = null,
     )
 
-    sealed class Event {
-        data class ServerChanged(val server: String) : Event()
-        data class SecurityChanged(val security: ConnectionSecurity) : Event()
-        data class PortChanged(val port: Long?) : Event()
-        data class AuthenticationTypeChanged(val authenticationType: AuthenticationType) : Event()
-        data class UsernameChanged(val username: String) : Event()
-        data class PasswordChanged(val password: String) : Event()
-        data class ClientCertificateChanged(val clientCertificate: String) : Event()
+    sealed interface Event {
+        data class ServerChanged(val server: String) : Event
+        data class SecurityChanged(val security: ConnectionSecurity) : Event
+        data class PortChanged(val port: Long?) : Event
+        data class AuthenticationTypeChanged(val authenticationType: AuthenticationType) : Event
+        data class UsernameChanged(val username: String) : Event
+        data class PasswordChanged(val password: String) : Event
+        data class ClientCertificateChanged(val clientCertificateAlias: String?) : Event
 
-        object OnNextClicked : Event()
-        object OnBackClicked : Event()
-        object OnRetryClicked : Event()
+        object LoadAccountSetupState : Event
+
+        object OnNextClicked : Event
+        object OnBackClicked : Event
     }
 
-    sealed class Effect {
-        object NavigateNext : Effect()
-        object NavigateBack : Effect()
+    sealed interface Effect {
+        object NavigateNext : Effect
+        object NavigateBack : Effect
     }
 
     interface Validator {
@@ -54,13 +47,5 @@ interface AccountOutgoingConfigContract {
         fun validatePort(port: Long?): ValidationResult
         fun validateUsername(username: String): ValidationResult
         fun validatePassword(password: String): ValidationResult
-    }
-
-    sealed interface Error {
-        data class NetworkError(val exception: IOException) : Error
-        data class CertificateError(val certificateChain: List<X509Certificate>) : Error
-        data class AuthenticationError(val serverMessage: String?) : Error
-        data class ServerError(val serverMessage: String?) : Error
-        data class UnknownError(val exception: Exception) : Error
     }
 }
