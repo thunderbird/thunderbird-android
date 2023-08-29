@@ -243,6 +243,13 @@ public class Settings {
 
     static class InvalidSettingValueException extends Exception {
         private static final long serialVersionUID = 1L;
+
+        public InvalidSettingValueException() {
+        }
+
+        public InvalidSettingValueException(String message) {
+            super(message);
+        }
     }
 
     /**

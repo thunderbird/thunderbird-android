@@ -253,8 +253,12 @@ public class SettingsImporter {
                                     erroneousAccounts.add(importResult.original);
                                 }
                             } catch (InvalidSettingValueException e) {
-                                Timber.e(e, "Encountered invalid setting while importing account \"%s\"",
-                                        account.name);
+                                String reason = e.getMessage();
+                                if (TextUtils.isEmpty(reason)) {
+                                    reason = "Unknown";
+                                }
+                                Timber.e(e, "Encountered invalid setting while importing account \"%s\", reason: \"%s\"",
+                                        account.name, reason);
 
                                 erroneousAccounts.add(new AccountDescription(account.name, account.uuid));
                             } catch (Exception e) {
@@ -363,7 +367,7 @@ public class SettingsImporter {
 
         if (account.incoming == null) {
             // We don't import accounts without incoming server settings
-            throw new InvalidSettingValueException();
+            throw new InvalidSettingValueException("Missing incoming server settings");
         }
 
         // Write incoming server settings
@@ -380,7 +384,7 @@ public class SettingsImporter {
         boolean authorizationNeeded = incoming.authenticationType == AuthType.XOAUTH2;
 
         if (account.outgoing == null) {
-            throw new InvalidSettingValueException();
+            throw new InvalidSettingValueException("Missing outgoing server settings");
         }
 
         String outgoingServerName = null;
@@ -448,7 +452,7 @@ public class SettingsImporter {
             importIdentities(editor, contentVersion, uuid, account, overwrite, existingAccount, prefs);
         } else if (!mergeImportedAccount) {
             // Require accounts to at least have one identity
-            throw new InvalidSettingValueException();
+            throw new InvalidSettingValueException("Missing identities, there should be at least one.");
         }
 
         // Write folder settings
@@ -541,7 +545,7 @@ public class SettingsImporter {
 
             // Validate email address
             if (!IdentitySettingsDescriptions.isEmailAddressValid(identity.email)) {
-                throw new InvalidSettingValueException();
+                throw new InvalidSettingValueException("Invalid email address: " + identity.email);
             }
 
             // Write email address
