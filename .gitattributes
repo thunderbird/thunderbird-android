@@ -1,4 +1,4 @@
-* text=auto eol=lf
+* text=auto
 
-*.bat text eol=crlf
+*.bat eol=crlf
 *.jar binary
