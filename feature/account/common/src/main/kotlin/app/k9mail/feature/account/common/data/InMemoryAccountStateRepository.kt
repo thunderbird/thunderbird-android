@@ -1,22 +1,22 @@
-package app.k9mail.feature.account.setup.data
+package app.k9mail.feature.account.common.data
 
-import app.k9mail.feature.account.oauth.domain.entity.AuthorizationState
-import app.k9mail.feature.account.setup.domain.DomainContract
-import app.k9mail.feature.account.setup.domain.entity.AccountOptions
-import app.k9mail.feature.account.setup.domain.entity.AccountSetupState
+import app.k9mail.feature.account.common.domain.AccountDomainContract
+import app.k9mail.feature.account.common.domain.entity.AccountOptions
+import app.k9mail.feature.account.common.domain.entity.AccountState
+import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.oauth.AuthStateStorage
 
-class InMemoryAccountSetupStateRepository(
-    private var state: AccountSetupState = AccountSetupState(),
-) : DomainContract.AccountSetupStateRepository, AuthStateStorage {
+class InMemoryAccountStateRepository(
+    private var state: AccountState = AccountState(),
+) : AccountDomainContract.AccountStateRepository, AuthStateStorage {
 
-    override fun getState(): AccountSetupState {
+    override fun getState(): AccountState {
         return state
     }
 
-    override fun save(accountSetupState: AccountSetupState) {
-        state = accountSetupState
+    override fun save(accountState: AccountState) {
+        state = accountState
     }
 
     override fun saveEmailAddress(emailAddress: String) {
@@ -40,7 +40,7 @@ class InMemoryAccountSetupStateRepository(
     }
 
     override fun clear() {
-        state = AccountSetupState()
+        state = AccountState()
     }
 
     override fun getAuthorizationState(): String? {

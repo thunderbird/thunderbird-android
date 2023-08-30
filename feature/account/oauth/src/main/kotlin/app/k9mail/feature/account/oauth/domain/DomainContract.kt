@@ -2,9 +2,9 @@ package app.k9mail.feature.account.oauth.domain
 
 import android.content.Intent
 import app.k9mail.core.common.oauth.OAuthConfiguration
+import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationIntentResult
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationResult
-import app.k9mail.feature.account.oauth.domain.entity.AuthorizationState
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
 

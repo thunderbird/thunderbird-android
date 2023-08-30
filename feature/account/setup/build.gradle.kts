@@ -25,7 +25,7 @@ dependencies {
     implementation(projects.mail.protocols.smtp)
 
     implementation(projects.feature.autodiscovery.service)
-    implementation(projects.feature.account.common)
+    api(projects.feature.account.common)
     implementation(projects.feature.account.oauth)
 
     testImplementation(projects.core.ui.compose.testing)

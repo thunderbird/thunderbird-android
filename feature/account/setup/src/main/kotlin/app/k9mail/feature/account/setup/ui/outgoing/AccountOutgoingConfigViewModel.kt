@@ -2,7 +2,7 @@ package app.k9mail.feature.account.setup.ui.outgoing
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
-import app.k9mail.feature.account.setup.domain.DomainContract
+import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.toSmtpDefaultPort
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Effect
@@ -13,16 +13,16 @@ import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContrac
 
 internal class AccountOutgoingConfigViewModel(
     private val validator: Validator,
-    private val accountSetupStateRepository: DomainContract.AccountSetupStateRepository,
+    private val accountStateRepository: AccountDomainContract.AccountStateRepository,
     initialState: State? = State(),
 ) : BaseViewModel<State, Event, Effect>(
-    initialState = initialState ?: accountSetupStateRepository.getState().toOutgoingConfigState(),
+    initialState = initialState ?: accountStateRepository.getState().toOutgoingConfigState(),
 ),
     ViewModel {
 
     override fun event(event: Event) {
         when (event) {
-            Event.LoadAccountSetupState -> loadAccountSetupState()
+            Event.LoadAccountState -> loadAccountState()
 
             is Event.ServerChanged -> updateState { it.copy(server = it.server.updateValue(event.server)) }
             is Event.SecurityChanged -> updateSecurity(event.security)
@@ -39,9 +39,9 @@ internal class AccountOutgoingConfigViewModel(
         }
     }
 
-    private fun loadAccountSetupState() {
+    private fun loadAccountState() {
         updateState {
-            accountSetupStateRepository.getState().toOutgoingConfigState()
+            accountStateRepository.getState().toOutgoingConfigState()
         }
     }
 
@@ -81,7 +81,7 @@ internal class AccountOutgoingConfigViewModel(
         }
 
         if (!hasError) {
-            accountSetupStateRepository.saveOutgoingServerSettings(state.value.toServerSettings())
+            accountStateRepository.saveOutgoingServerSettings(state.value.toServerSettings())
             navigateNext()
         }
     }

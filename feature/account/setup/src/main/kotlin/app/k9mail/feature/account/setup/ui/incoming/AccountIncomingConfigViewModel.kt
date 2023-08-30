@@ -2,7 +2,7 @@ package app.k9mail.feature.account.setup.ui.incoming
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
-import app.k9mail.feature.account.setup.domain.DomainContract
+import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.setup.domain.entity.toDefaultPort
@@ -14,17 +14,17 @@ import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContrac
 
 internal class AccountIncomingConfigViewModel(
     private val validator: Validator,
-    private val accountSetupStateRepository: DomainContract.AccountSetupStateRepository,
+    private val accountStateRepository: AccountDomainContract.AccountStateRepository,
     initialState: State? = null,
 ) : BaseViewModel<State, Event, Effect>(
-    initialState = initialState ?: accountSetupStateRepository.getState().toIncomingConfigState(),
+    initialState = initialState ?: accountStateRepository.getState().toIncomingConfigState(),
 ),
     ViewModel {
 
     @Suppress("CyclomaticComplexMethod")
     override fun event(event: Event) {
         when (event) {
-            Event.LoadAccountSetupState -> loadAccountSetupState()
+            Event.LoadAccountState -> loadAccountState()
 
             is Event.ProtocolTypeChanged -> updateProtocolType(event.protocolType)
             is Event.ServerChanged -> updateState { it.copy(server = it.server.updateValue(event.server)) }
@@ -53,9 +53,9 @@ internal class AccountIncomingConfigViewModel(
         }
     }
 
-    private fun loadAccountSetupState() {
+    private fun loadAccountState() {
         updateState {
-            accountSetupStateRepository.getState().toIncomingConfigState()
+            accountStateRepository.getState().toIncomingConfigState()
         }
     }
 
@@ -117,7 +117,7 @@ internal class AccountIncomingConfigViewModel(
         }
 
         if (!hasError) {
-            accountSetupStateRepository.saveIncomingServerSettings(state.value.toServerSettings())
+            accountStateRepository.saveIncomingServerSettings(state.value.toServerSettings())
             navigateNext()
         }
     }

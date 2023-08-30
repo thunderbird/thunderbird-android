@@ -1,8 +1,8 @@
-package app.k9mail.feature.account.setup.data
+package app.k9mail.feature.account.common.data
 
-import app.k9mail.feature.account.oauth.domain.entity.AuthorizationState
-import app.k9mail.feature.account.setup.domain.entity.AccountOptions
-import app.k9mail.feature.account.setup.domain.entity.AccountSetupState
+import app.k9mail.feature.account.common.domain.entity.AccountOptions
+import app.k9mail.feature.account.common.domain.entity.AccountState
+import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.AuthType
@@ -10,16 +10,16 @@ import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import org.junit.Test
 
-class InMemoryAccountSetupStateRepositoryTest {
+class InMemoryAccountStateRepositoryTest {
 
     @Test
     fun `should initialize with empty state`() {
-        val testSubject = InMemoryAccountSetupStateRepository()
+        val testSubject = InMemoryAccountStateRepository()
 
         val result = testSubject.getState()
 
         assertThat(result).isEqualTo(
-            AccountSetupState(
+            AccountState(
                 emailAddress = null,
                 incomingServerSettings = null,
                 outgoingServerSettings = null,
@@ -31,8 +31,8 @@ class InMemoryAccountSetupStateRepositoryTest {
 
     @Test
     fun `should save state`() {
-        val testSubject = InMemoryAccountSetupStateRepository(
-            AccountSetupState(
+        val testSubject = InMemoryAccountStateRepository(
+            AccountState(
                 emailAddress = "emailAddress",
                 incomingServerSettings = INCOMING_SERVER_SETTINGS,
                 outgoingServerSettings = OUTGOING_SERVER_SETTINGS,
@@ -40,7 +40,7 @@ class InMemoryAccountSetupStateRepositoryTest {
                 options = OPTIONS,
             ),
         )
-        val newState = AccountSetupState(
+        val newState = AccountState(
             emailAddress = "emailAddress2",
             incomingServerSettings = INCOMING_SERVER_SETTINGS.copy(host = "imap2.example.org"),
             outgoingServerSettings = OUTGOING_SERVER_SETTINGS.copy(host = "smtp2.example.org"),
@@ -62,7 +62,7 @@ class InMemoryAccountSetupStateRepositoryTest {
 
     @Test
     fun `should save email address`() {
-        val testSubject = InMemoryAccountSetupStateRepository()
+        val testSubject = InMemoryAccountStateRepository()
 
         testSubject.saveEmailAddress("emailAddress")
 
@@ -72,7 +72,7 @@ class InMemoryAccountSetupStateRepositoryTest {
 
     @Test
     fun `should save incoming server settings`() {
-        val testSubject = InMemoryAccountSetupStateRepository()
+        val testSubject = InMemoryAccountStateRepository()
 
         testSubject.saveIncomingServerSettings(INCOMING_SERVER_SETTINGS)
 
@@ -82,7 +82,7 @@ class InMemoryAccountSetupStateRepositoryTest {
 
     @Test
     fun `should save outgoing server settings`() {
-        val testSubject = InMemoryAccountSetupStateRepository()
+        val testSubject = InMemoryAccountStateRepository()
 
         testSubject.saveOutgoingServerSettings(OUTGOING_SERVER_SETTINGS)
 
@@ -92,7 +92,7 @@ class InMemoryAccountSetupStateRepositoryTest {
 
     @Test
     fun `should save authorization state`() {
-        val testSubject = InMemoryAccountSetupStateRepository()
+        val testSubject = InMemoryAccountStateRepository()
 
         testSubject.saveAuthorizationState(AuthorizationState("authorizationState"))
 
@@ -102,7 +102,7 @@ class InMemoryAccountSetupStateRepositoryTest {
 
     @Test
     fun `should save options`() {
-        val testSubject = InMemoryAccountSetupStateRepository()
+        val testSubject = InMemoryAccountStateRepository()
 
         testSubject.saveOptions(OPTIONS)
 
@@ -112,8 +112,8 @@ class InMemoryAccountSetupStateRepositoryTest {
 
     @Test
     fun `should clear state`() {
-        val testSubject = InMemoryAccountSetupStateRepository(
-            AccountSetupState(
+        val testSubject = InMemoryAccountStateRepository(
+            AccountState(
                 emailAddress = "emailAddress",
                 incomingServerSettings = INCOMING_SERVER_SETTINGS,
                 outgoingServerSettings = OUTGOING_SERVER_SETTINGS,
@@ -125,7 +125,7 @@ class InMemoryAccountSetupStateRepositoryTest {
         testSubject.clear()
 
         assertThat(testSubject.getState()).isEqualTo(
-            AccountSetupState(
+            AccountState(
                 emailAddress = null,
                 incomingServerSettings = null,
                 outgoingServerSettings = null,

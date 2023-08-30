@@ -1,9 +1,9 @@
 package app.k9mail.feature.account.setup.ui.incoming
 
+import app.k9mail.feature.account.common.domain.entity.MailConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.AuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
-import app.k9mail.feature.account.setup.domain.entity.MailConnectionSecurity
 import app.k9mail.feature.account.setup.domain.input.NumberInputField
 import app.k9mail.feature.account.setup.domain.input.StringInputField
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.State

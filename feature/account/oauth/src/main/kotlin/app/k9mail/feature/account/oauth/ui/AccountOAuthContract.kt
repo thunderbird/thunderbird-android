@@ -2,8 +2,8 @@ package app.k9mail.feature.account.oauth.ui
 
 import android.content.Intent
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
+import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import app.k9mail.feature.account.common.ui.WizardNavigationBarState
-import app.k9mail.feature.account.oauth.domain.entity.AuthorizationState
 
 interface AccountOAuthContract {
 

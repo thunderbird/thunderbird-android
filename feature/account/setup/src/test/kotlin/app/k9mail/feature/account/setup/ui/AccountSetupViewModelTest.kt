@@ -3,10 +3,10 @@ package app.k9mail.feature.account.setup.ui
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndMviTurbinesConsumed
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
-import app.k9mail.feature.account.setup.data.InMemoryAccountSetupStateRepository
-import app.k9mail.feature.account.setup.domain.entity.AccountOptions
-import app.k9mail.feature.account.setup.domain.entity.AccountSetupState
-import app.k9mail.feature.account.setup.domain.entity.MailConnectionSecurity
+import app.k9mail.feature.account.common.data.InMemoryAccountStateRepository
+import app.k9mail.feature.account.common.domain.entity.AccountOptions
+import app.k9mail.feature.account.common.domain.entity.AccountState
+import app.k9mail.feature.account.common.domain.entity.MailConnectionSecurity
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.State
@@ -33,7 +33,7 @@ class AccountSetupViewModelTest {
         var createAccountOutgoingServerSettings: ServerSettings? = null
         var createAccountAuthorizationState: String? = null
         var createAccountOptions: AccountOptions? = null
-        val accountSetupStateRepository = InMemoryAccountSetupStateRepository()
+        val accountStateRepository = InMemoryAccountStateRepository()
         val viewModel = AccountSetupViewModel(
             createAccount = { emailAddress, incomingServerSettings, outgoingServerSettings, authState, options ->
                 createAccountEmailAddress = emailAddress
@@ -44,7 +44,7 @@ class AccountSetupViewModelTest {
 
                 "accountUuid"
             },
-            accountSetupStateRepository = accountSetupStateRepository,
+            accountStateRepository = accountStateRepository,
         )
         val turbines = turbinesWithInitialStateCheck(viewModel, State(setupStep = SetupStep.AUTO_CONFIG))
 
@@ -54,7 +54,7 @@ class AccountSetupViewModelTest {
             ),
         )
 
-        val expectedAccountSetupState = AccountSetupState(
+        val expectedAccountState = AccountState(
             emailAddress = "test@domain.example",
             incomingServerSettings = ServerSettings(
                 type = "imap",
@@ -132,7 +132,7 @@ class AccountSetupViewModelTest {
             prop(State::setupStep).isEqualTo(SetupStep.OPTIONS)
         }
 
-        accountSetupStateRepository.save(expectedAccountSetupState)
+        accountStateRepository.save(expectedAccountState)
 
         viewModel.event(AccountSetupContract.Event.OnNext)
 
@@ -144,10 +144,10 @@ class AccountSetupViewModelTest {
         }
 
         assertThat(createAccountEmailAddress).isEqualTo(EMAIL_ADDRESS)
-        assertThat(createAccountIncomingServerSettings).isEqualTo(expectedAccountSetupState.incomingServerSettings)
-        assertThat(createAccountOutgoingServerSettings).isEqualTo(expectedAccountSetupState.outgoingServerSettings)
+        assertThat(createAccountIncomingServerSettings).isEqualTo(expectedAccountState.incomingServerSettings)
+        assertThat(createAccountOutgoingServerSettings).isEqualTo(expectedAccountState.outgoingServerSettings)
         assertThat(createAccountAuthorizationState).isNull()
-        assertThat(createAccountOptions).isEqualTo(expectedAccountSetupState.options)
+        assertThat(createAccountOptions).isEqualTo(expectedAccountState.options)
     }
 
     @Test
@@ -155,7 +155,7 @@ class AccountSetupViewModelTest {
         val initialState = State(setupStep = SetupStep.OPTIONS)
         val viewModel = AccountSetupViewModel(
             createAccount = { _, _, _, _, _ -> "accountUuid" },
-            accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
+            accountStateRepository = InMemoryAccountStateRepository(),
             initialState = initialState,
         )
         val turbines = turbinesWithInitialStateCheck(viewModel, initialState)
@@ -205,7 +205,7 @@ class AccountSetupViewModelTest {
         )
         val viewModel = AccountSetupViewModel(
             createAccount = { _, _, _, _, _ -> "accountUuid" },
-            accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
+            accountStateRepository = InMemoryAccountStateRepository(),
             initialState = initialState,
         )
         val turbines = turbinesWithInitialStateCheck(viewModel, initialState)
@@ -237,7 +237,7 @@ class AccountSetupViewModelTest {
         )
         val viewModel = AccountSetupViewModel(
             createAccount = { _, _, _, _, _ -> "accountUuid" },
-            accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
+            accountStateRepository = InMemoryAccountStateRepository(),
             initialState = initialState,
         )
         val turbines = turbinesWithInitialStateCheck(viewModel, initialState)
@@ -269,7 +269,7 @@ class AccountSetupViewModelTest {
         )
         val viewModel = AccountSetupViewModel(
             createAccount = { _, _, _, _, _ -> "accountUuid" },
-            accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
+            accountStateRepository = InMemoryAccountStateRepository(),
             initialState = initialState,
         )
         val turbines = turbinesWithInitialStateCheck(viewModel, initialState)

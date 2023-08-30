@@ -1,15 +1,15 @@
-package app.k9mail.feature.account.setup.ui.preview
+package app.k9mail.feature.account.common.ui.preview
 
-import app.k9mail.feature.account.oauth.domain.entity.AuthorizationState
-import app.k9mail.feature.account.setup.domain.DomainContract
-import app.k9mail.feature.account.setup.domain.entity.AccountOptions
-import app.k9mail.feature.account.setup.domain.entity.AccountSetupState
-import app.k9mail.feature.account.setup.domain.entity.MailConnectionSecurity
+import app.k9mail.feature.account.common.domain.AccountDomainContract
+import app.k9mail.feature.account.common.domain.entity.AccountOptions
+import app.k9mail.feature.account.common.domain.entity.AccountState
+import app.k9mail.feature.account.common.domain.entity.AuthorizationState
+import app.k9mail.feature.account.common.domain.entity.MailConnectionSecurity
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ServerSettings
 
-class PreviewAccountSetupStateRepository : DomainContract.AccountSetupStateRepository {
-    override fun getState(): AccountSetupState = AccountSetupState(
+class PreviewAccountStateRepository : AccountDomainContract.AccountStateRepository {
+    override fun getState(): AccountState = AccountState(
         emailAddress = "test@example.com",
         incomingServerSettings = ServerSettings(
             type = "imap",
@@ -33,7 +33,7 @@ class PreviewAccountSetupStateRepository : DomainContract.AccountSetupStateRepos
         ),
     )
 
-    override fun save(accountSetupState: AccountSetupState) = Unit
+    override fun save(accountState: AccountState) = Unit
 
     override fun saveEmailAddress(emailAddress: String) = Unit
 

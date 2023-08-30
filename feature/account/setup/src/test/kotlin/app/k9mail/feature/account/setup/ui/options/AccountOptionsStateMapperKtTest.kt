@@ -1,6 +1,6 @@
 package app.k9mail.feature.account.setup.ui.options
 
-import app.k9mail.feature.account.setup.domain.entity.AccountOptions
+import app.k9mail.feature.account.common.domain.entity.AccountOptions
 import app.k9mail.feature.account.setup.domain.entity.EmailCheckFrequency
 import app.k9mail.feature.account.setup.domain.entity.EmailDisplayCount
 import app.k9mail.feature.account.setup.domain.input.StringInputField

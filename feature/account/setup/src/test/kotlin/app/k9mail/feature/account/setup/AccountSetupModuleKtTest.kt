@@ -2,10 +2,10 @@ package app.k9mail.feature.account.setup
 
 import android.content.Context
 import app.k9mail.core.common.oauth.OAuthConfigurationFactory
+import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
-import app.k9mail.feature.account.setup.domain.entity.AccountSetupState
 import app.k9mail.feature.account.setup.ui.AccountSetupContract
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
@@ -68,7 +68,7 @@ class AccountSetupModuleKtTest : KoinTest {
                 AccountIncomingConfigContract.State::class,
                 AccountOutgoingConfigContract.State::class,
                 AccountOptionsContract.State::class,
-                AccountSetupState::class,
+                AccountState::class,
                 CertificateErrorContract.State::class,
                 AuthStateStorage::class,
                 Context::class,

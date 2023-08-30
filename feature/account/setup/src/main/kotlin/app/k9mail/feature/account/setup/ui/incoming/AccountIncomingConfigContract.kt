@@ -44,7 +44,7 @@ interface AccountIncomingConfigContract {
         data class ImapUseCompressionChanged(val useCompression: Boolean) : Event
         data class ImapSendClientIdChanged(val sendClientId: Boolean) : Event
 
-        object LoadAccountSetupState : Event
+        object LoadAccountState : Event
 
         object OnNextClicked : Event
         object OnBackClicked : Event

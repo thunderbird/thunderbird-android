@@ -11,12 +11,12 @@ import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
+import app.k9mail.feature.account.common.ui.preview.PreviewAccountStateRepository
 import app.k9mail.feature.account.setup.R.string
 import app.k9mail.feature.account.setup.ui.common.AccountSetupTopAppBar
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Effect
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Event
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.ViewModel
-import app.k9mail.feature.account.setup.ui.preview.PreviewAccountSetupStateRepository
 
 @Composable
 internal fun AccountOptionsScreen(
@@ -33,7 +33,7 @@ internal fun AccountOptionsScreen(
     }
 
     LaunchedEffect(key1 = Unit) {
-        dispatch(Event.LoadAccountSetupState)
+        dispatch(Event.LoadAccountState)
     }
 
     BackHandler {
@@ -73,7 +73,7 @@ internal fun AccountOptionsScreenK9Preview() {
             onBack = {},
             viewModel = AccountOptionsViewModel(
                 validator = AccountOptionsValidator(),
-                accountSetupStateRepository = PreviewAccountSetupStateRepository(),
+                accountStateRepository = PreviewAccountStateRepository(),
             ),
         )
     }
@@ -88,7 +88,7 @@ internal fun AccountOptionsScreenThunderbirdPreview() {
             onBack = {},
             viewModel = AccountOptionsViewModel(
                 validator = AccountOptionsValidator(),
-                accountSetupStateRepository = PreviewAccountSetupStateRepository(),
+                accountStateRepository = PreviewAccountStateRepository(),
             ),
         )
     }

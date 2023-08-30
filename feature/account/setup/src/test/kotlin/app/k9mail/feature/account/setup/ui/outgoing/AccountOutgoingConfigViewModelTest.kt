@@ -7,12 +7,12 @@ import app.k9mail.core.ui.compose.testing.mvi.assertThatAndMviTurbinesConsumed
 import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
 import app.k9mail.core.ui.compose.testing.mvi.turbines
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
-import app.k9mail.feature.account.setup.data.InMemoryAccountSetupStateRepository
-import app.k9mail.feature.account.setup.domain.DomainContract
-import app.k9mail.feature.account.setup.domain.entity.AccountSetupState
+import app.k9mail.feature.account.common.data.InMemoryAccountStateRepository
+import app.k9mail.feature.account.common.domain.AccountDomainContract
+import app.k9mail.feature.account.common.domain.entity.AccountState
+import app.k9mail.feature.account.common.domain.entity.MailConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.AuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
-import app.k9mail.feature.account.setup.domain.entity.MailConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.toSmtpDefaultPort
 import app.k9mail.feature.account.setup.domain.input.NumberInputField
 import app.k9mail.feature.account.setup.domain.input.StringInputField
@@ -34,7 +34,7 @@ class AccountOutgoingConfigViewModelTest {
 
     @Test
     fun `should take initial state from repository when no initial state is provided`() = runTest {
-        val accountSetupState = AccountSetupState(
+        val accountState = AccountState(
             emailAddress = "test@example.com",
             outgoingServerSettings = ServerSettings(
                 "smtp",
@@ -50,7 +50,7 @@ class AccountOutgoingConfigViewModelTest {
         )
         val testSubject = createTestSubject(
             initialState = null,
-            repository = InMemoryAccountSetupStateRepository(accountSetupState),
+            repository = InMemoryAccountStateRepository(accountState),
         )
         val turbines = turbines(testSubject)
 
@@ -72,8 +72,8 @@ class AccountOutgoingConfigViewModelTest {
     }
 
     @Test
-    fun `should load account setup state when LoadAccountSetupState event is received`() = runTest {
-        val accountSetupState = AccountSetupState(
+    fun `should load account setup state when LoadAccountState event is received`() = runTest {
+        val accountState = AccountState(
             emailAddress = "test@example.com",
             outgoingServerSettings = ServerSettings(
                 "smtp",
@@ -87,16 +87,16 @@ class AccountOutgoingConfigViewModelTest {
                 extra = emptyMap(),
             ),
         )
-        val repository = InMemoryAccountSetupStateRepository(AccountSetupState())
+        val repository = InMemoryAccountStateRepository(AccountState())
         val testSubject = createTestSubject(
             initialState = null,
             repository = repository,
         )
         val turbines = turbinesWithInitialStateCheck(testSubject, State())
 
-        repository.save(accountSetupState)
+        repository.save(accountState)
 
-        testSubject.event(Event.LoadAccountSetupState)
+        testSubject.event(Event.LoadAccountState)
 
         assertThatAndMviTurbinesConsumed(
             actual = turbines.awaitStateItem(),
@@ -198,7 +198,7 @@ class AccountOutgoingConfigViewModelTest {
     @Test
     fun `should save state and emit effect NavigateNext when OnNextClicked is received and input valid`() = runTest {
         val initialState = State()
-        val repository = InMemoryAccountSetupStateRepository()
+        val repository = InMemoryAccountStateRepository()
         val testSubject = createTestSubject(
             initialState = initialState,
             repository = repository,
@@ -218,7 +218,7 @@ class AccountOutgoingConfigViewModelTest {
         )
 
         assertThat(repository.getState()).isEqualTo(
-            AccountSetupState(
+            AccountState(
                 outgoingServerSettings = ServerSettings(
                     type = "smtp",
                     host = "",
@@ -247,7 +247,7 @@ class AccountOutgoingConfigViewModelTest {
             val initialState = State(
                 authenticationType = AuthenticationType.OAuth2,
             )
-            val repository = InMemoryAccountSetupStateRepository()
+            val repository = InMemoryAccountStateRepository()
             val testSubject = createTestSubject(
                 initialState = initialState,
                 repository = repository,
@@ -267,7 +267,7 @@ class AccountOutgoingConfigViewModelTest {
             )
 
             assertThat(repository.getState()).isEqualTo(
-                AccountSetupState(
+                AccountState(
                     outgoingServerSettings = ServerSettings(
                         type = "smtp",
                         host = "",
@@ -341,10 +341,10 @@ class AccountOutgoingConfigViewModelTest {
         fun createTestSubject(
             initialState: State? = null,
             validator: AccountOutgoingConfigContract.Validator = FakeAccountOutgoingConfigValidator(),
-            repository: DomainContract.AccountSetupStateRepository = InMemoryAccountSetupStateRepository(),
+            repository: AccountDomainContract.AccountStateRepository = InMemoryAccountStateRepository(),
         ) = AccountOutgoingConfigViewModel(
             validator = validator,
-            accountSetupStateRepository = repository,
+            accountStateRepository = repository,
             initialState = initialState,
         )
     }

@@ -7,9 +7,9 @@ import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndMviTurbinesConsumed
 import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
-import app.k9mail.feature.account.setup.data.InMemoryAccountSetupStateRepository
-import app.k9mail.feature.account.setup.domain.DomainContract
-import app.k9mail.feature.account.setup.domain.entity.AccountSetupState
+import app.k9mail.feature.account.common.data.InMemoryAccountStateRepository
+import app.k9mail.feature.account.common.domain.AccountDomainContract
+import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.setup.domain.entity.AutoDiscoverySettingsFixture
 import app.k9mail.feature.account.setup.domain.input.BooleanInputField
 import app.k9mail.feature.account.setup.domain.input.StringInputField
@@ -94,7 +94,7 @@ class AccountAutoDiscoveryViewModelTest {
                     autoDiscoverySettings
                 },
                 oAuthViewModel = FakeAccountOAuthViewModel(),
-                accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
+                accountStateRepository = InMemoryAccountStateRepository(),
                 initialState = initialState,
             )
             val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
@@ -143,7 +143,7 @@ class AccountAutoDiscoveryViewModelTest {
                     AutoDiscoveryResult.UnexpectedException(discoveryError)
                 },
                 oAuthViewModel = FakeAccountOAuthViewModel(),
-                accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
+                accountStateRepository = InMemoryAccountStateRepository(),
                 initialState = initialState,
             )
             val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
@@ -217,7 +217,7 @@ class AccountAutoDiscoveryViewModelTest {
             ),
             getAutoDiscovery = { AutoDiscoveryResult.NoUsableSettingsFound },
             oAuthViewModel = FakeAccountOAuthViewModel(),
-            accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
+            accountStateRepository = InMemoryAccountStateRepository(),
             initialState = initialState,
         )
 
@@ -245,7 +245,7 @@ class AccountAutoDiscoveryViewModelTest {
                 emailAddress = StringInputField(value = "email"),
                 password = StringInputField(value = "password"),
             )
-            val repository = InMemoryAccountSetupStateRepository()
+            val repository = InMemoryAccountStateRepository()
             val testSubject = createTestSubject(
                 initialState = initialState,
                 repository = repository,
@@ -283,7 +283,7 @@ class AccountAutoDiscoveryViewModelTest {
             }
 
             assertThat(repository.getState()).isEqualTo(
-                AccountSetupState(
+                AccountState(
                     emailAddress = "email",
                     incomingServerSettings = null,
                     outgoingServerSettings = null,
@@ -307,7 +307,7 @@ class AccountAutoDiscoveryViewModelTest {
                 ),
                 getAutoDiscovery = { AutoDiscoveryResult.NoUsableSettingsFound },
                 oAuthViewModel = FakeAccountOAuthViewModel(),
-                accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
+                accountStateRepository = InMemoryAccountStateRepository(),
                 initialState = initialState,
             )
             val turbines = turbinesWithInitialStateCheck(viewModel, initialState)
@@ -431,7 +431,7 @@ class AccountAutoDiscoveryViewModelTest {
     private companion object {
         fun createTestSubject(
             initialState: State = State(),
-            repository: DomainContract.AccountSetupStateRepository = InMemoryAccountSetupStateRepository(),
+            repository: AccountDomainContract.AccountStateRepository = InMemoryAccountStateRepository(),
         ): AccountAutoDiscoveryViewModel {
             return AccountAutoDiscoveryViewModel(
                 validator = FakeAccountAutoDiscoveryValidator(),
@@ -439,7 +439,7 @@ class AccountAutoDiscoveryViewModelTest {
                     delay(50)
                     AutoDiscoveryResult.NoUsableSettingsFound
                 },
-                accountSetupStateRepository = repository,
+                accountStateRepository = repository,
                 oAuthViewModel = FakeAccountOAuthViewModel(),
                 initialState = initialState,
             )

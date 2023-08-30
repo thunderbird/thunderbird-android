@@ -1,9 +1,9 @@
 package app.k9mail.feature.account.oauth.domain.usecase
 
 import android.content.Intent
+import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import app.k9mail.feature.account.oauth.domain.FakeAuthorizationRepository
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationResult
-import app.k9mail.feature.account.oauth.domain.entity.AuthorizationState
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest

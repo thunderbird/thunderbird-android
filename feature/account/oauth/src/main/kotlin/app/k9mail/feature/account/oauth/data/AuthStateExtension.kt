@@ -1,6 +1,6 @@
 package app.k9mail.feature.account.oauth.data
 
-import app.k9mail.feature.account.oauth.domain.entity.AuthorizationState
+import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import net.openid.appauth.AuthState
 import org.json.JSONException
 import timber.log.Timber

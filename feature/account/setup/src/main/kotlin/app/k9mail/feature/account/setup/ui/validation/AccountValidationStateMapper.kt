@@ -1,8 +1,8 @@
 package app.k9mail.feature.account.setup.ui.validation
 
-import app.k9mail.feature.account.setup.domain.entity.AccountSetupState
+import app.k9mail.feature.account.common.domain.entity.AccountState
 
-internal fun AccountSetupState.toValidationState(isIncomingValidation: Boolean): AccountValidationContract.State {
+internal fun AccountState.toValidationState(isIncomingValidation: Boolean): AccountValidationContract.State {
     return AccountValidationContract.State(
         emailAddress = emailAddress,
         serverSettings = if (isIncomingValidation) incomingServerSettings else outgoingServerSettings,

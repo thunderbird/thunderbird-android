@@ -2,8 +2,8 @@ package app.k9mail.feature.account.setup.ui
 
 import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
-import app.k9mail.feature.account.oauth.domain.entity.AuthorizationState
-import app.k9mail.feature.account.setup.domain.DomainContract
+import app.k9mail.feature.account.common.domain.AccountDomainContract
+import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Event
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 @Suppress("LongParameterList")
 class AccountSetupViewModel(
     private val createAccount: UseCase.CreateAccount,
-    private val accountSetupStateRepository: DomainContract.AccountSetupStateRepository,
+    private val accountStateRepository: AccountDomainContract.AccountStateRepository,
     initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(initialState), AccountSetupContract.ViewModel {
 
@@ -104,7 +104,7 @@ class AccountSetupViewModel(
 
     private fun changeToSetupStep(setupStep: SetupStep) {
         if (setupStep == SetupStep.AUTO_CONFIG) {
-            accountSetupStateRepository.saveAuthorizationState(AuthorizationState(null))
+            accountStateRepository.saveAuthorizationState(AuthorizationState(null))
         }
 
         updateState {
@@ -115,15 +115,15 @@ class AccountSetupViewModel(
     }
 
     private fun onFinish() {
-        val accountSetupState = accountSetupStateRepository.getState()
+        val accountState = accountStateRepository.getState()
 
         viewModelScope.launch {
             val result = createAccount.execute(
-                emailAddress = accountSetupState.emailAddress ?: "",
-                incomingServerSettings = accountSetupState.incomingServerSettings!!,
-                outgoingServerSettings = accountSetupState.outgoingServerSettings!!,
-                authorizationState = accountSetupState.authorizationState?.state,
-                options = accountSetupState.options!!,
+                emailAddress = accountState.emailAddress ?: "",
+                incomingServerSettings = accountState.incomingServerSettings!!,
+                outgoingServerSettings = accountState.outgoingServerSettings!!,
+                authorizationState = accountState.authorizationState?.state,
+                options = accountState.options!!,
             )
 
             navigateNext(result)
