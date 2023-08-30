@@ -1,4 +1,5 @@
 * text=auto
 
 *.bat eol=crlf
+*.eml eol=crlf
 *.jar binary
