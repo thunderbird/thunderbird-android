@@ -27,7 +27,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import app.k9mail.core.common.mail.Protocols;
-import app.k9mail.feature.account.oauth.domain.DomainContract.UseCase.SuggestServerName;
+import app.k9mail.feature.account.oauth.domain.AccountOAuthDomainContract.UseCase.SuggestServerName;
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.LocalKeyStoreManager;

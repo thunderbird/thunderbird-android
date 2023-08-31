@@ -12,7 +12,7 @@ class FakeAuthorizationRepository(
     private val answerGetAuthorizationResponse: AuthorizationResponse? = null,
     private val answerGetAuthorizationException: AuthorizationException? = null,
     private val answerGetExchangeToken: AuthorizationResult = AuthorizationResult.Canceled,
-) : DomainContract.AuthorizationRepository {
+) : AccountOAuthDomainContract.AuthorizationRepository {
 
     var recordedGetAuthorizationRequestIntentConfiguration: OAuthConfiguration? = null
     var recordedGetAuthorizationRequestIntentEmailAddress: String? = null

@@ -3,6 +3,7 @@ package app.k9mail.feature.account.setup.ui.validation
 import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.domain.AccountDomainContract
+import app.k9mail.feature.account.oauth.domain.AccountOAuthDomainContract
 import app.k9mail.feature.account.oauth.domain.entity.OAuthResult
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
 import app.k9mail.feature.account.setup.domain.DomainContract
@@ -16,7 +17,6 @@ import com.fsck.k9.mail.server.ServerSettingsValidationResult
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import app.k9mail.feature.account.oauth.domain.DomainContract as OAuthDomainContract
 
 private const val CONTINUE_NEXT_DELAY = 2000L
 
@@ -24,7 +24,7 @@ private const val CONTINUE_NEXT_DELAY = 2000L
 internal class AccountValidationViewModel(
     private val validateServerSettings: DomainContract.UseCase.ValidateServerSettings,
     private val accountStateRepository: AccountDomainContract.AccountStateRepository,
-    private val authorizationStateRepository: OAuthDomainContract.AuthorizationStateRepository,
+    private val authorizationStateRepository: AccountOAuthDomainContract.AuthorizationStateRepository,
     private val certificateErrorRepository: DomainContract.CertificateErrorRepository,
     override val oAuthViewModel: AccountOAuthContract.ViewModel,
     override val isIncomingValidation: Boolean = true,

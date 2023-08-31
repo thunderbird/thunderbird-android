@@ -8,7 +8,7 @@ import app.k9mail.feature.account.oauth.domain.entity.AuthorizationResult
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
 
-interface DomainContract {
+interface AccountOAuthDomainContract {
 
     interface UseCase {
         fun interface SuggestServerName {

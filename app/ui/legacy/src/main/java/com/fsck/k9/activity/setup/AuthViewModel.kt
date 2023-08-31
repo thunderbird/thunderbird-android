@@ -13,7 +13,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
-import app.k9mail.feature.account.oauth.domain.DomainContract.UseCase.GetOAuthRequestIntent
+import app.k9mail.feature.account.oauth.domain.AccountOAuthDomainContract.UseCase.GetOAuthRequestIntent
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationIntentResult
 import com.fsck.k9.Account
 import com.fsck.k9.preferences.AccountManager

@@ -3,7 +3,7 @@ package app.k9mail.feature.account.oauth.data
 import android.content.Intent
 import androidx.core.net.toUri
 import app.k9mail.core.common.oauth.OAuthConfiguration
-import app.k9mail.feature.account.oauth.domain.DomainContract
+import app.k9mail.feature.account.oauth.domain.AccountOAuthDomainContract
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationIntentResult
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationResult
 import kotlin.coroutines.resume
@@ -19,7 +19,7 @@ import timber.log.Timber
 
 class AuthorizationRepository(
     private val service: AuthorizationService,
-) : DomainContract.AuthorizationRepository {
+) : AccountOAuthDomainContract.AuthorizationRepository {
 
     override fun getAuthorizationRequestIntent(
         configuration: OAuthConfiguration,
