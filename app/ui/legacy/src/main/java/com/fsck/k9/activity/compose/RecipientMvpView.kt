@@ -265,6 +265,10 @@ class RecipientMvpView(private val activity: MessageCompose) : View.OnFocusChang
         return toView.hasUncompletedText()
     }
 
+    fun recipientToIsValid(): Boolean {
+        return toView.hasValidEmail(toView.text.toString())
+    }
+
     fun recipientCcHasUncompletedText(): Boolean {
         return ccView.hasUncompletedText()
     }
@@ -287,6 +291,10 @@ class RecipientMvpView(private val activity: MessageCompose) : View.OnFocusChang
 
     fun showToUncompletedError() {
         toView.error = toView.context.getString(R.string.compose_error_incomplete_recipient)
+    }
+
+    fun showToInvalidError() {
+        toView.error = toView.context.getString(R.string.message_compose_error_invalid_recipient)
     }
 
     fun showCcUncompletedError() {
