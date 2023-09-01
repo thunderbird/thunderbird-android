@@ -6,8 +6,9 @@ import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.oauth.domain.AccountOAuthDomainContract
 import app.k9mail.feature.account.oauth.domain.entity.OAuthResult
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
+import app.k9mail.feature.account.servercertificate.domain.AccountServerCertificateDomainContract
+import app.k9mail.feature.account.servercertificate.domain.entity.ServerCertificateError
 import app.k9mail.feature.account.setup.domain.DomainContract
-import app.k9mail.feature.account.setup.domain.entity.CertificateError
 import app.k9mail.feature.account.setup.domain.entity.isOAuth
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Effect
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Error
@@ -25,7 +26,7 @@ internal class AccountValidationViewModel(
     private val validateServerSettings: DomainContract.UseCase.ValidateServerSettings,
     private val accountStateRepository: AccountDomainContract.AccountStateRepository,
     private val authorizationStateRepository: AccountOAuthDomainContract.AuthorizationStateRepository,
-    private val certificateErrorRepository: DomainContract.CertificateErrorRepository,
+    private val certificateErrorRepository: AccountServerCertificateDomainContract.ServerCertificateErrorRepository,
     override val oAuthViewModel: AccountOAuthContract.ViewModel,
     override val isIncomingValidation: Boolean = true,
     initialState: State? = null,
@@ -169,7 +170,7 @@ internal class AccountValidationViewModel(
             val serverSettings = checkNotNull(state.value.serverSettings)
 
             certificateErrorRepository.setCertificateError(
-                CertificateError(
+                ServerCertificateError(
                     hostname = serverSettings.host!!,
                     port = serverSettings.port,
                     certificateChain = error.certificateChain,

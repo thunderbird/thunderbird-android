@@ -5,7 +5,7 @@ import app.k9mail.core.ui.compose.testing.mvi.assertThatAndMviTurbinesConsumed
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.account.common.data.InMemoryAccountStateRepository
 import app.k9mail.feature.account.common.domain.entity.AccountState
-import app.k9mail.feature.account.setup.data.InMemoryCertificateErrorRepository
+import app.k9mail.feature.account.servercertificate.data.InMemoryServerCertificateErrorRepository
 import app.k9mail.feature.account.setup.ui.FakeAccountOAuthViewModel
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Effect
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Error
@@ -199,7 +199,7 @@ class AccountValidationViewModelTest {
             },
             accountStateRepository = InMemoryAccountStateRepository(),
             authorizationStateRepository = { true },
-            certificateErrorRepository = InMemoryCertificateErrorRepository(),
+            certificateErrorRepository = InMemoryServerCertificateErrorRepository(),
             oAuthViewModel = FakeAccountOAuthViewModel(),
             initialState = initialState,
         )
@@ -238,7 +238,7 @@ class AccountValidationViewModelTest {
                 },
                 accountStateRepository = InMemoryAccountStateRepository(accountState),
                 authorizationStateRepository = { true },
-                certificateErrorRepository = InMemoryCertificateErrorRepository(),
+                certificateErrorRepository = InMemoryServerCertificateErrorRepository(),
                 oAuthViewModel = FakeAccountOAuthViewModel(),
                 initialState = initialState,
             )

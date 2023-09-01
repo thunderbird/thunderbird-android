@@ -19,14 +19,17 @@ android {
 dependencies {
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.common)
+
     implementation(projects.mail.common)
     implementation(projects.mail.protocols.imap)
     implementation(projects.mail.protocols.pop3)
     implementation(projects.mail.protocols.smtp)
 
     implementation(projects.feature.autodiscovery.service)
+
     api(projects.feature.account.common)
     implementation(projects.feature.account.oauth)
+    implementation(projects.feature.account.servercertificate)
 
     testImplementation(projects.core.ui.compose.testing)
 }

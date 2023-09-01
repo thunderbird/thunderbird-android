@@ -3,20 +3,11 @@ package app.k9mail.feature.account.setup.domain
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.feature.account.common.domain.entity.AccountOptions
-import app.k9mail.feature.account.setup.domain.entity.CertificateError
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.server.ServerSettingsValidationResult
 import java.security.cert.X509Certificate
 
 interface DomainContract {
-
-    interface CertificateErrorRepository {
-        fun getCertificateError(): CertificateError?
-
-        fun setCertificateError(certificateError: CertificateError)
-
-        fun clearCertificateError()
-    }
 
     interface UseCase {
         fun interface GetAutoDiscovery {
