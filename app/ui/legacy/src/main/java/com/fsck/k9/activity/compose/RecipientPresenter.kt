@@ -125,11 +125,6 @@ class RecipientPresenter(
             return true
         }
 
-        if (!recipientMvpView.recipientToIsValid()) {
-            recipientMvpView.showToInvalidError()
-            return true
-        }
-
         if (recipientMvpView.recipientCcHasUncompletedText()) {
             recipientMvpView.showCcUncompletedError()
             return true
