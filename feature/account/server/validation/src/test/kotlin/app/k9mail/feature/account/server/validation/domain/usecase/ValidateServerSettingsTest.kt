@@ -1,6 +1,5 @@
-package app.k9mail.feature.account.setup.domain.usecase
+package app.k9mail.feature.account.server.validation.domain.usecase
 
-import app.k9mail.feature.account.setup.ui.validation.InMemoryAuthStateStorage
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.AuthType
@@ -12,7 +11,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 class ValidateServerSettingsTest {
-    private val authStateStorage = InMemoryAuthStateStorage()
+    private val authStateStorage = FakeAuthStateStorage()
 
     @Test
     fun `should check with imap validator when protocol is imap`() = runTest {

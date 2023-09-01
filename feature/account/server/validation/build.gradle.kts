@@ -3,8 +3,8 @@ plugins {
 }
 
 android {
-    namespace = "app.k9mail.feature.account.setup"
-    resourcePrefix = "account_setup_"
+    namespace = "app.k9mail.feature.account.server.validation"
+    resourcePrefix = "account_server_validation_"
 
     buildTypes {
         debug {
@@ -25,12 +25,9 @@ dependencies {
     implementation(projects.mail.protocols.pop3)
     implementation(projects.mail.protocols.smtp)
 
-    implementation(projects.feature.autodiscovery.service)
-
-    api(projects.feature.account.common)
+    implementation(projects.feature.account.common)
     implementation(projects.feature.account.oauth)
     implementation(projects.feature.account.servercertificate)
-    api(projects.feature.account.server.validation)
 
     testImplementation(projects.core.ui.compose.testing)
 }

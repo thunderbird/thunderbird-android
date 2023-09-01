@@ -1,8 +1,7 @@
-package app.k9mail.feature.account.setup.ui.validation
+package app.k9mail.feature.account.server.validation.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.k9mail.core.ui.compose.common.DevicePreviews
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
@@ -13,14 +12,13 @@ import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.common.ui.WizardNavigationBarState
 import app.k9mail.feature.account.common.ui.preview.PreviewAccountStateRepository
 import app.k9mail.feature.account.oauth.ui.preview.PreviewAccountOAuthViewModel
+import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Event
+import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.ViewModel
 import app.k9mail.feature.account.servercertificate.data.InMemoryServerCertificateErrorRepository
-import app.k9mail.feature.account.setup.R
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Event
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.ViewModel
 import com.fsck.k9.mail.server.ServerSettingsValidationResult
 
 @Composable
-internal fun AccountValidationMainScreen(
+internal fun ServerValidationMainScreen(
     viewModel: ViewModel,
     modifier: Modifier = Modifier,
 ) {
@@ -29,12 +27,10 @@ internal fun AccountValidationMainScreen(
 
     Scaffold(
         topBar = {
-            AppTitleTopHeader(title = stringResource(id = R.string.account_setup_title))
+            AppTitleTopHeader()
         },
         bottomBar = {
             WizardNavigationBar(
-                nextButtonText = "",
-                backButtonText = stringResource(id = R.string.account_setup_button_back),
                 onNextClick = {},
                 onBackClick = { dispatch(Event.OnBackClicked) },
                 state = WizardNavigationBarState(
@@ -44,7 +40,7 @@ internal fun AccountValidationMainScreen(
         },
         modifier = modifier,
     ) { innerPadding ->
-        AccountValidationContent(
+        ServerValidationContent(
             onEvent = { dispatch(it) },
             state = state.value,
             isIncomingValidation = viewModel.isIncomingValidation,
@@ -56,10 +52,10 @@ internal fun AccountValidationMainScreen(
 
 @Composable
 @DevicePreviews
-internal fun AccountIncomingValidationScreenK9Preview() {
+internal fun IncomingServerValidationScreenK9Preview() {
     K9Theme {
-        AccountValidationMainScreen(
-            viewModel = AccountValidationViewModel(
+        ServerValidationMainScreen(
+            viewModel = ServerValidationViewModel(
                 validateServerSettings = {
                     ServerSettingsValidationResult.Success
                 },
@@ -75,10 +71,10 @@ internal fun AccountIncomingValidationScreenK9Preview() {
 
 @Composable
 @DevicePreviews
-internal fun AccountIncomingValidationScreenThunderbirdPreview() {
+internal fun IncomingServerValidationScreenThunderbirdPreview() {
     ThunderbirdTheme {
-        AccountValidationMainScreen(
-            viewModel = AccountValidationViewModel(
+        ServerValidationMainScreen(
+            viewModel = ServerValidationViewModel(
                 validateServerSettings = {
                     ServerSettingsValidationResult.Success
                 },
@@ -96,8 +92,8 @@ internal fun AccountIncomingValidationScreenThunderbirdPreview() {
 @DevicePreviews
 internal fun AccountOutgoingValidationScreenK9Preview() {
     K9Theme {
-        AccountValidationMainScreen(
-            viewModel = AccountValidationViewModel(
+        ServerValidationMainScreen(
+            viewModel = ServerValidationViewModel(
                 validateServerSettings = {
                     ServerSettingsValidationResult.Success
                 },
@@ -115,8 +111,8 @@ internal fun AccountOutgoingValidationScreenK9Preview() {
 @DevicePreviews
 internal fun AccountOutgoingValidationScreenThunderbirdPreview() {
     ThunderbirdTheme {
-        AccountValidationMainScreen(
-            viewModel = AccountValidationViewModel(
+        ServerValidationMainScreen(
+            viewModel = ServerValidationViewModel(
                 validateServerSettings = {
                     ServerSettingsValidationResult.Success
                 },

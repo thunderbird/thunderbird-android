@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.common.DevicePreviews
 import app.k9mail.core.ui.compose.designsystem.atom.button.Button
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonOutlined
@@ -13,14 +14,15 @@ import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
+import app.k9mail.feature.account.common.R
 
 @Composable
 fun WizardNavigationBar(
-    nextButtonText: String,
-    backButtonText: String,
     onNextClick: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
+    nextButtonText: String = stringResource(id = R.string.account_common_button_next),
+    backButtonText: String = stringResource(id = R.string.account_common_button_back),
     state: WizardNavigationBarState = WizardNavigationBarState(),
 ) {
     ResponsiveWidthContainer(

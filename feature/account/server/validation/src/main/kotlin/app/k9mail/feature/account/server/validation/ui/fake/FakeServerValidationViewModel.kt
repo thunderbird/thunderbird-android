@@ -1,14 +1,14 @@
-package app.k9mail.feature.account.setup.ui.validation
+package app.k9mail.feature.account.server.validation.ui.fake
 
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
-import app.k9mail.feature.account.setup.ui.FakeAccountOAuthViewModel
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Effect
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Event
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.State
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.ViewModel
+import app.k9mail.feature.account.oauth.ui.fake.FakeAccountOAuthViewModel
+import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Effect
+import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Event
+import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.State
+import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.ViewModel
 
-class FakeAccountValidationViewModel(
+class FakeServerValidationViewModel(
     override val oAuthViewModel: AccountOAuthContract.ViewModel = FakeAccountOAuthViewModel(),
     override val isIncomingValidation: Boolean = true,
     initialState: State = State(),

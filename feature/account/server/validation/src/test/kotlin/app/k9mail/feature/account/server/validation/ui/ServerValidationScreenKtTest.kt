@@ -1,27 +1,28 @@
-package app.k9mail.feature.account.setup.ui.validation
+package app.k9mail.feature.account.server.validation.ui
 
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContent
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Effect
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.State
+import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Effect
+import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.State
+import app.k9mail.feature.account.server.validation.ui.fake.FakeServerValidationViewModel
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
-class AccountValidationScreenKtTest : ComposeTest() {
+class ServerValidationScreenKtTest : ComposeTest() {
 
     @Test
     fun `should delegate navigation effects`() = runTest {
         val initialState = State()
-        val viewModel = FakeAccountValidationViewModel(initialState = initialState)
+        val viewModel = FakeServerValidationViewModel(initialState = initialState)
         var onNextCounter = 0
         var onBackCounter = 0
 
         setContent {
             ThunderbirdTheme {
-                AccountValidationScreen(
+                ServerValidationScreen(
                     onNext = { onNextCounter++ },
                     onBack = { onBackCounter++ },
                     viewModel = viewModel,

@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.setup.ui.validation
+package app.k9mail.feature.account.server.validation.ui
 
 import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
@@ -7,13 +7,13 @@ import app.k9mail.feature.account.oauth.domain.AccountOAuthDomainContract
 import app.k9mail.feature.account.oauth.domain.entity.OAuthResult
 import app.k9mail.feature.account.oauth.domain.entity.isOAuth
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
+import app.k9mail.feature.account.server.validation.domain.ServerValidationDomainContract
+import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Effect
+import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Error
+import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Event
+import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.State
 import app.k9mail.feature.account.servercertificate.domain.AccountServerCertificateDomainContract
 import app.k9mail.feature.account.servercertificate.domain.entity.ServerCertificateError
-import app.k9mail.feature.account.setup.domain.DomainContract
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Effect
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Error
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Event
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.State
 import com.fsck.k9.mail.server.ServerSettingsValidationResult
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
@@ -22,18 +22,18 @@ import kotlinx.coroutines.launch
 private const val CONTINUE_NEXT_DELAY = 2000L
 
 @Suppress("TooManyFunctions")
-internal class AccountValidationViewModel(
-    private val validateServerSettings: DomainContract.UseCase.ValidateServerSettings,
+class ServerValidationViewModel(
     private val accountStateRepository: AccountDomainContract.AccountStateRepository,
+    private val validateServerSettings: ServerValidationDomainContract.UseCase.ValidateServerSettings,
     private val authorizationStateRepository: AccountOAuthDomainContract.AuthorizationStateRepository,
     private val certificateErrorRepository: AccountServerCertificateDomainContract.ServerCertificateErrorRepository,
     override val oAuthViewModel: AccountOAuthContract.ViewModel,
     override val isIncomingValidation: Boolean = true,
     initialState: State? = null,
 ) : BaseViewModel<State, Event, Effect>(
-    initialState = initialState ?: accountStateRepository.getState().toValidationState(isIncomingValidation),
+    initialState = initialState ?: accountStateRepository.getState().toServerValidationState(isIncomingValidation),
 ),
-    AccountValidationContract.ViewModel {
+    ServerValidationContract.ViewModel {
 
     override fun event(event: Event) {
         when (event) {
@@ -49,7 +49,7 @@ internal class AccountValidationViewModel(
 
     private fun loadAccountStateAndValidate() {
         updateState {
-            accountStateRepository.getState().toValidationState(isIncomingValidation)
+            accountStateRepository.getState().toServerValidationState(isIncomingValidation)
         }
         onValidateConfig()
     }

@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.setup.ui.validation
+package app.k9mail.feature.account.server.validation.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,13 +27,13 @@ import app.k9mail.feature.account.common.ui.item.SuccessItem
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
 import app.k9mail.feature.account.oauth.ui.AccountOAuthView
 import app.k9mail.feature.account.oauth.ui.preview.PreviewAccountOAuthViewModel
-import app.k9mail.feature.account.setup.R
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Event
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.State
+import app.k9mail.feature.account.server.validation.R
+import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Event
+import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.State
 
 @Suppress("LongMethod")
 @Composable
-internal fun AccountValidationContent(
+internal fun ServerValidationContent(
     state: State,
     isIncomingValidation: Boolean,
     oAuthViewModel: AccountOAuthContract.ViewModel,
@@ -63,9 +63,9 @@ internal fun AccountValidationContent(
                     ErrorItem(
                         title = stringResource(
                             id = if (isIncomingValidation) {
-                                R.string.account_setup_settings_validation_incoming_loading_error
+                                R.string.account_server_validation_incoming_loading_error
                             } else {
-                                R.string.account_setup_settings_validation_outgoing_loading_error
+                                R.string.account_server_validation_outgoing_loading_error
                             },
                         ),
                         message = state.error.toResourceString(resources),
@@ -77,9 +77,9 @@ internal fun AccountValidationContent(
                     SuccessItem(
                         message = stringResource(
                             id = if (isIncomingValidation) {
-                                R.string.account_setup_settings_validation_incoming_success
+                                R.string.account_server_validation_incoming_success
                             } else {
-                                R.string.account_setup_settings_validation_outgoing_success
+                                R.string.account_server_validation_outgoing_success
                             },
                         ),
                     )
@@ -94,7 +94,7 @@ internal fun AccountValidationContent(
                         ) {
                             TextSubtitle1(
                                 text = stringResource(
-                                    id = R.string.account_setup_settings_validation_sign_in,
+                                    id = R.string.account_server_validation_sign_in,
                                 ),
                             )
                             Spacer(modifier = Modifier.padding(MainTheme.spacings.default))
@@ -110,9 +110,9 @@ internal fun AccountValidationContent(
                     LoadingItem(
                         message = stringResource(
                             id = if (isIncomingValidation) {
-                                R.string.account_setup_settings_validation_incoming_loading_message
+                                R.string.account_server_validation_incoming_loading_message
                             } else {
-                                R.string.account_setup_settings_validation_outgoing_loading_message
+                                R.string.account_server_validation_outgoing_loading_message
                             },
                         ),
                     )
@@ -124,9 +124,9 @@ internal fun AccountValidationContent(
 
 @Composable
 @DevicePreviews
-internal fun AccountIncomingValidationContentPreview() {
+internal fun IncomingServerValidationContentPreview() {
     PreviewWithThemes {
-        AccountValidationContent(
+        ServerValidationContent(
             onEvent = { },
             state = State(),
             isIncomingValidation = true,
@@ -138,9 +138,9 @@ internal fun AccountIncomingValidationContentPreview() {
 
 @Composable
 @DevicePreviews
-internal fun AccountOutgoingValidationContentPreview() {
+internal fun OutgoingServerValidationContentPreview() {
     PreviewWithThemes {
-        AccountValidationContent(
+        ServerValidationContent(
             onEvent = { },
             state = State(),
             isIncomingValidation = false,

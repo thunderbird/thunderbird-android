@@ -48,6 +48,7 @@ include(
     ":feature:account:oauth",
     ":feature:account:servercertificate",
     ":feature:account:setup",
+    ":feature:account:server:validation",
 )
 
 include(

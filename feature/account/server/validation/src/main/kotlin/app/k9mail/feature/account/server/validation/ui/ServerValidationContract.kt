@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.setup.ui.validation
+package app.k9mail.feature.account.server.validation.ui
 
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.feature.account.oauth.domain.entity.OAuthResult
@@ -7,7 +7,7 @@ import com.fsck.k9.mail.ServerSettings
 import java.io.IOException
 import java.security.cert.X509Certificate
 
-interface AccountValidationContract {
+interface ServerValidationContract {
 
     interface ViewModel : UnidirectionalViewModel<State, Event, Effect> {
         val isIncomingValidation: Boolean

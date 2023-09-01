@@ -4,11 +4,10 @@ import app.k9mail.autodiscovery.api.AutoDiscoveryService
 import app.k9mail.autodiscovery.service.RealAutoDiscoveryService
 import app.k9mail.feature.account.common.featureAccountCommonModule
 import app.k9mail.feature.account.oauth.featureAccountOAuthModule
-import app.k9mail.feature.account.servercertificate.featureAccountServerCertificateModule
+import app.k9mail.feature.account.server.validation.featureAccountServerValidationModule
 import app.k9mail.feature.account.setup.domain.DomainContract
 import app.k9mail.feature.account.setup.domain.usecase.CreateAccount
 import app.k9mail.feature.account.setup.domain.usecase.GetAutoDiscovery
-import app.k9mail.feature.account.setup.domain.usecase.ValidateServerSettings
 import app.k9mail.feature.account.setup.ui.AccountSetupViewModel
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryValidator
@@ -22,18 +21,17 @@ import app.k9mail.feature.account.setup.ui.options.AccountOptionsViewModel
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigValidator
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigViewModel
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationViewModel
-import com.fsck.k9.mail.store.imap.ImapServerSettingsValidator
-import com.fsck.k9.mail.store.pop3.Pop3ServerSettingsValidator
-import com.fsck.k9.mail.transport.smtp.SmtpServerSettingsValidator
 import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val featureAccountSetupModule: Module = module {
-    includes(featureAccountCommonModule, featureAccountOAuthModule, featureAccountServerCertificateModule)
+    includes(
+        featureAccountCommonModule,
+        featureAccountOAuthModule,
+        featureAccountServerValidationModule,
+    )
 
     single<OkHttpClient> {
         OkHttpClient()
@@ -49,24 +47,6 @@ val featureAccountSetupModule: Module = module {
         GetAutoDiscovery(
             service = get(),
             oauthProvider = get(),
-        )
-    }
-
-    factory<DomainContract.UseCase.ValidateServerSettings> {
-        ValidateServerSettings(
-            authStateStorage = get(),
-            imapValidator = ImapServerSettingsValidator(
-                trustedSocketFactory = get(),
-                oAuth2TokenProviderFactory = get(),
-                clientIdAppName = "null",
-            ),
-            pop3Validator = Pop3ServerSettingsValidator(
-                trustedSocketFactory = get(),
-            ),
-            smtpValidator = SmtpServerSettingsValidator(
-                trustedSocketFactory = get(),
-                oAuth2TokenProviderFactory = get(),
-            ),
         )
     }
 
@@ -101,32 +81,14 @@ val featureAccountSetupModule: Module = module {
             accountStateRepository = get(),
         )
     }
-    viewModel(named(NAME_INCOMING_VALIDATION)) {
-        AccountValidationViewModel(
-            validateServerSettings = get(),
-            accountStateRepository = get(),
-            authorizationStateRepository = get(),
-            certificateErrorRepository = get(),
-            oAuthViewModel = get(),
-            isIncomingValidation = true,
-        )
-    }
+
     viewModel {
         AccountOutgoingConfigViewModel(
             validator = get(),
             accountStateRepository = get(),
         )
     }
-    viewModel(named(NAME_OUTGOING_VALIDATION)) {
-        AccountValidationViewModel(
-            validateServerSettings = get(),
-            accountStateRepository = get(),
-            authorizationStateRepository = get(),
-            certificateErrorRepository = get(),
-            oAuthViewModel = get(),
-            isIncomingValidation = false,
-        )
-    }
+
     viewModel {
         AccountOptionsViewModel(
             validator = get(),
@@ -134,6 +96,3 @@ val featureAccountSetupModule: Module = module {
         )
     }
 }
-
-internal const val NAME_INCOMING_VALIDATION = "incoming_validation"
-internal const val NAME_OUTGOING_VALIDATION = "outgoing_validation"

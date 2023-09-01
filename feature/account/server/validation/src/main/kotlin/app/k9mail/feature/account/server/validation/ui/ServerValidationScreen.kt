@@ -1,17 +1,17 @@
-package app.k9mail.feature.account.setup.ui.validation
+package app.k9mail.feature.account.server.validation.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.common.mvi.observe
+import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Effect
+import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Event
+import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.ViewModel
 import app.k9mail.feature.account.servercertificate.ui.CertificateErrorScreen
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Effect
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Event
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.ViewModel
 
 @Composable
-internal fun AccountValidationScreen(
+fun ServerValidationScreen(
     onNext: () -> Unit,
     onBack: () -> Unit,
     viewModel: ViewModel,
@@ -32,14 +32,14 @@ internal fun AccountValidationScreen(
         dispatch(Event.OnBackClicked)
     }
 
-    if (state.value.error is AccountValidationContract.Error.CertificateError) {
+    if (state.value.error is ServerValidationContract.Error.CertificateError) {
         CertificateErrorScreen(
             onCertificateAccepted = { dispatch(Event.OnCertificateAccepted) },
             onBack = { dispatch(Event.OnBackClicked) },
             modifier = modifier,
         )
     } else {
-        AccountValidationMainScreen(
+        ServerValidationMainScreen(
             viewModel = viewModel,
             modifier = modifier,
         )

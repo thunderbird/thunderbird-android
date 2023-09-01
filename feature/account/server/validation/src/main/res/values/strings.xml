@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_server_validation_error_authentication">Authentication error</string>
+    <string name="account_server_validation_error_certificate">Certificate error</string>
+    <string name="account_server_validation_error_network">Network error</string>
+    <string name="account_server_validation_error_server">Server error</string>
+    <string name="account_server_validation_error_unknown">Unknown error</string>
+    <string name="account_server_validation_incoming_loading_message">Checking incoming server settings…</string>
+    <string name="account_server_validation_incoming_loading_error">Checking incoming server settings failed!</string>
+    <string name="account_server_validation_incoming_success">Incoming server settings are valid!</string>
+    <string name="account_server_validation_outgoing_loading_message">Checking outgoing server settings…</string>
+    <string name="account_server_validation_outgoing_loading_error">Checking outgoing server settings failed!</string>
+    <string name="account_server_validation_outgoing_success">Outgoing server settings are valid!</string>
+    <string name="account_server_validation_sign_in">Please sign in</string>
+</resources>

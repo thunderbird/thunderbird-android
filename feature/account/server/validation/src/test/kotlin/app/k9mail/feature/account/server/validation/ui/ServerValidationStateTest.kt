@@ -1,11 +1,11 @@
-package app.k9mail.feature.account.setup.ui.validation
+package app.k9mail.feature.account.server.validation.ui
 
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.State
+import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.State
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import org.junit.Test
 
-class AccountValidationStateTest {
+class ServerValidationStateTest {
 
     @Test
     fun `should set default values`() {

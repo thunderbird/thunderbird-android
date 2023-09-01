@@ -1,16 +1,16 @@
-package app.k9mail.feature.account.setup.ui.validation
+package app.k9mail.feature.account.server.validation.ui
 
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndMviTurbinesConsumed
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.account.common.data.InMemoryAccountStateRepository
 import app.k9mail.feature.account.common.domain.entity.AccountState
+import app.k9mail.feature.account.oauth.ui.fake.FakeAccountOAuthViewModel
+import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Effect
+import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Error
+import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Event
+import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.State
 import app.k9mail.feature.account.servercertificate.data.InMemoryServerCertificateErrorRepository
-import app.k9mail.feature.account.setup.ui.FakeAccountOAuthViewModel
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Effect
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Error
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Event
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.State
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isTrue
@@ -23,7 +23,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
-class AccountValidationViewModelTest {
+class ServerValidationViewModelTest {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
@@ -191,7 +191,7 @@ class AccountValidationViewModelTest {
             error = Error.ServerError("server error"),
         )
         var checkSettingsCalled = false
-        val testSubject = AccountValidationViewModel(
+        val testSubject = ServerValidationViewModel(
             validateServerSettings = {
                 delay(50)
                 checkSettingsCalled = true
@@ -230,8 +230,8 @@ class AccountValidationViewModelTest {
             serverSettingsValidationResult: ServerSettingsValidationResult = ServerSettingsValidationResult.Success,
             accountState: AccountState = AccountState(),
             initialState: State = State(),
-        ): AccountValidationViewModel {
-            return AccountValidationViewModel(
+        ): ServerValidationViewModel {
+            return ServerValidationViewModel(
                 validateServerSettings = {
                     delay(50)
                     serverSettingsValidationResult
