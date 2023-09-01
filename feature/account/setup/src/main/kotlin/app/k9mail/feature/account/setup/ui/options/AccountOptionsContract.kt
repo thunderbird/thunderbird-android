@@ -27,7 +27,7 @@ interface AccountOptionsContract {
         data class OnMessageDisplayCountChanged(val messageDisplayCount: EmailDisplayCount) : Event
         data class OnShowNotificationChanged(val showNotification: Boolean) : Event
 
-        object LoadAccountSetupState : Event
+        object LoadAccountState : Event
 
         object OnNextClicked : Event
         object OnBackClicked : Event

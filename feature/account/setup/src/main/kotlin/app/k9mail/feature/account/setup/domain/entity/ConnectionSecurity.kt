@@ -1,5 +1,6 @@
 package app.k9mail.feature.account.setup.domain.entity
 
+import app.k9mail.feature.account.common.domain.entity.MailConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity.None
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity.StartTLS
 import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity.TLS

@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import app.k9mail.core.common.mail.Protocols
-import app.k9mail.feature.account.oauth.domain.DomainContract.UseCase.SuggestServerName
+import app.k9mail.feature.account.oauth.domain.AccountOAuthDomainContract.UseCase.SuggestServerName
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import com.fsck.k9.helper.EmailHelper.getDomainFromEmailAddress

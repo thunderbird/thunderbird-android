@@ -3,7 +3,7 @@ package app.k9mail.feature.account.oauth.ui
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContent
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
-import app.k9mail.feature.account.oauth.domain.entity.AuthorizationState
+import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import app.k9mail.feature.account.oauth.domain.entity.OAuthResult
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.Effect
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.State

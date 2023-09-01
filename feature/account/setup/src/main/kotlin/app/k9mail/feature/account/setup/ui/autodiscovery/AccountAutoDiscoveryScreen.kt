@@ -13,12 +13,12 @@ import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.common.ui.WizardNavigationBarState
+import app.k9mail.feature.account.common.ui.preview.PreviewAccountStateRepository
 import app.k9mail.feature.account.oauth.ui.preview.PreviewAccountOAuthViewModel
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Effect
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Event
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.ViewModel
-import app.k9mail.feature.account.setup.ui.preview.PreviewAccountSetupStateRepository
 
 @Composable
 internal fun AccountAutoDiscoveryScreen(
@@ -74,7 +74,7 @@ internal fun AccountAutoDiscoveryScreenK9Preview() {
             viewModel = AccountAutoDiscoveryViewModel(
                 validator = AccountAutoDiscoveryValidator(),
                 getAutoDiscovery = { AutoDiscoveryResult.NoUsableSettingsFound },
-                accountSetupStateRepository = PreviewAccountSetupStateRepository(),
+                accountStateRepository = PreviewAccountStateRepository(),
                 oAuthViewModel = PreviewAccountOAuthViewModel(),
             ),
         )
@@ -91,7 +91,7 @@ internal fun AccountAutoDiscoveryScreenThunderbirdPreview() {
             viewModel = AccountAutoDiscoveryViewModel(
                 validator = AccountAutoDiscoveryValidator(),
                 getAutoDiscovery = { AutoDiscoveryResult.NoUsableSettingsFound },
-                accountSetupStateRepository = PreviewAccountSetupStateRepository(),
+                accountStateRepository = PreviewAccountStateRepository(),
                 oAuthViewModel = PreviewAccountOAuthViewModel(),
             ),
         )

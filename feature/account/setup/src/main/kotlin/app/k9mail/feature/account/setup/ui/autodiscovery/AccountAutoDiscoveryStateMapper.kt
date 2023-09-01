@@ -2,7 +2,7 @@ package app.k9mail.feature.account.setup.ui.autodiscovery
 
 import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
-import app.k9mail.feature.account.setup.domain.entity.AccountSetupState
+import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.setup.domain.entity.toAuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.toConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.toIncomingProtocolType
@@ -13,8 +13,8 @@ import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContrac
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
 
-internal fun AccountAutoDiscoveryContract.State.toAccountSetupState(): AccountSetupState {
-    return AccountSetupState(
+internal fun AccountAutoDiscoveryContract.State.toAccountState(): AccountState {
+    return AccountState(
         emailAddress = emailAddress.value,
         incomingServerSettings = autoDiscoverySettings?.incomingServerSettings?.toServerSettings(password.value),
         outgoingServerSettings = autoDiscoverySettings?.outgoingServerSettings?.toServerSettings(password.value),

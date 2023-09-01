@@ -1,6 +1,6 @@
 package app.k9mail.feature.account.setup.ui.incoming
 
-import app.k9mail.feature.account.setup.domain.entity.AccountSetupState
+import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.setup.domain.entity.toAuthType
 import app.k9mail.feature.account.setup.domain.entity.toAuthenticationType
@@ -13,7 +13,7 @@ import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings
 
-internal fun AccountSetupState.toIncomingConfigState(): State {
+internal fun AccountState.toIncomingConfigState(): State {
     val incomingServerSettings = incomingServerSettings
     return if (incomingServerSettings == null) {
         State(

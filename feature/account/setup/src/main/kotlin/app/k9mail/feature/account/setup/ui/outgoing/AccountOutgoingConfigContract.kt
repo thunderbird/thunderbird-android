@@ -31,7 +31,7 @@ interface AccountOutgoingConfigContract {
         data class PasswordChanged(val password: String) : Event
         data class ClientCertificateChanged(val clientCertificateAlias: String?) : Event
 
-        object LoadAccountSetupState : Event
+        object LoadAccountState : Event
 
         object OnNextClicked : Event
         object OnBackClicked : Event

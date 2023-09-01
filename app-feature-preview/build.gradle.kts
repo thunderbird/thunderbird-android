@@ -70,6 +70,8 @@ dependencies {
 
     implementation(projects.feature.onboarding)
     implementation(projects.feature.account.setup)
+
+    implementation(libs.appauth)
     implementation(libs.okhttp)
     implementation(libs.timber)
 }

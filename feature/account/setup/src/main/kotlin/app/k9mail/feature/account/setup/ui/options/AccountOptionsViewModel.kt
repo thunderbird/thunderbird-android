@@ -2,7 +2,7 @@ package app.k9mail.feature.account.setup.ui.options
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
-import app.k9mail.feature.account.setup.domain.DomainContract
+import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Effect
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Event
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.State
@@ -11,16 +11,16 @@ import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.ViewMo
 
 internal class AccountOptionsViewModel(
     private val validator: Validator,
-    private val accountSetupStateRepository: DomainContract.AccountSetupStateRepository,
+    private val accountStateRepository: AccountDomainContract.AccountStateRepository,
     initialState: State? = null,
 ) : BaseViewModel<State, Event, Effect>(
-    initialState = initialState ?: accountSetupStateRepository.getState().toAccountOptionsState(),
+    initialState = initialState ?: accountStateRepository.getState().toAccountOptionsState(),
 ),
     ViewModel {
 
     override fun event(event: Event) {
         when (event) {
-            Event.LoadAccountSetupState -> loadAccountSetupState()
+            Event.LoadAccountState -> loadAccountState()
 
             is Event.OnAccountNameChanged -> updateState { state ->
                 state.copy(
@@ -63,9 +63,9 @@ internal class AccountOptionsViewModel(
         }
     }
 
-    private fun loadAccountSetupState() {
+    private fun loadAccountState() {
         updateState {
-            accountSetupStateRepository.getState().toAccountOptionsState()
+            accountStateRepository.getState().toAccountOptionsState()
         }
     }
 
@@ -89,7 +89,7 @@ internal class AccountOptionsViewModel(
         }
 
         if (!hasError) {
-            accountSetupStateRepository.saveOptions(state.value.toAccountOptions())
+            accountStateRepository.saveOptions(state.value.toAccountOptions())
             navigateNext()
         }
     }

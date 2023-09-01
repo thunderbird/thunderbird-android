@@ -11,12 +11,12 @@ import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
+import app.k9mail.feature.account.common.ui.preview.PreviewAccountStateRepository
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.ui.common.AccountSetupTopAppBar
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Effect
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.Event
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.ViewModel
-import app.k9mail.feature.account.setup.ui.preview.PreviewAccountSetupStateRepository
 
 @Composable
 internal fun AccountIncomingConfigScreen(
@@ -33,7 +33,7 @@ internal fun AccountIncomingConfigScreen(
     }
 
     LaunchedEffect(key1 = Unit) {
-        dispatch(Event.LoadAccountSetupState)
+        dispatch(Event.LoadAccountState)
     }
 
     BackHandler {
@@ -73,7 +73,7 @@ internal fun AccountIncomingConfigScreenK9Preview() {
             onBack = {},
             viewModel = AccountIncomingConfigViewModel(
                 validator = AccountIncomingConfigValidator(),
-                accountSetupStateRepository = PreviewAccountSetupStateRepository(),
+                accountStateRepository = PreviewAccountStateRepository(),
             ),
         )
     }
@@ -88,7 +88,7 @@ internal fun AccountIncomingConfigScreenThunderbirdPreview() {
             onBack = {},
             viewModel = AccountIncomingConfigViewModel(
                 validator = AccountIncomingConfigValidator(),
-                accountSetupStateRepository = PreviewAccountSetupStateRepository(),
+                accountStateRepository = PreviewAccountStateRepository(),
             ),
         )
     }

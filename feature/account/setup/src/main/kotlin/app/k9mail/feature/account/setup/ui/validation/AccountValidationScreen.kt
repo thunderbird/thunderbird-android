@@ -25,7 +25,7 @@ internal fun AccountValidationScreen(
     }
 
     LaunchedEffect(key1 = Unit) {
-        dispatch(Event.LoadAccountSetupStateAndValidate)
+        dispatch(Event.LoadAccountStateAndValidate)
     }
 
     BackHandler {

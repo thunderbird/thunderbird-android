@@ -1,9 +1,8 @@
-package app.k9mail.feature.account.setup.domain.entity
+package app.k9mail.feature.account.common.domain.entity
 
-import app.k9mail.feature.account.oauth.domain.entity.AuthorizationState
 import com.fsck.k9.mail.ServerSettings
 
-data class AccountSetupState(
+data class AccountState(
     val emailAddress: String? = null,
     val incomingServerSettings: ServerSettings? = null,
     val outgoingServerSettings: ServerSettings? = null,

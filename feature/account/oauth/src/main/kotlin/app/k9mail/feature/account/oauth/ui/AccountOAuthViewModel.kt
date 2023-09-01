@@ -4,10 +4,10 @@ import android.app.Activity
 import android.content.Intent
 import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
-import app.k9mail.feature.account.oauth.domain.DomainContract.UseCase
+import app.k9mail.feature.account.common.domain.entity.AuthorizationState
+import app.k9mail.feature.account.oauth.domain.AccountOAuthDomainContract.UseCase
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationIntentResult
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationResult
-import app.k9mail.feature.account.oauth.domain.entity.AuthorizationState
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.Effect
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.Error
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.Event

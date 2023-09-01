@@ -20,7 +20,6 @@ dependencies {
     implementation(projects.core.featureflags)
     implementation(projects.feature.launcher)
 
-    // TODO remove account setup dependency
     implementation(projects.feature.account.setup)
 
     implementation(libs.androidx.appcompat)

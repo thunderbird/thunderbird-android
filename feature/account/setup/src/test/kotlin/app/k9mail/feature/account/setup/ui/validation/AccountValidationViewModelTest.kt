@@ -3,9 +3,9 @@ package app.k9mail.feature.account.setup.ui.validation
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndMviTurbinesConsumed
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
-import app.k9mail.feature.account.setup.data.InMemoryAccountSetupStateRepository
+import app.k9mail.feature.account.common.data.InMemoryAccountStateRepository
+import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.setup.data.InMemoryCertificateErrorRepository
-import app.k9mail.feature.account.setup.domain.entity.AccountSetupState
 import app.k9mail.feature.account.setup.ui.FakeAccountOAuthViewModel
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Effect
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Error
@@ -29,8 +29,8 @@ class AccountValidationViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     @Test
-    fun `should update state when LoadAccountSetupStateAndValidate event received and validate`() = runTest {
-        val accountSetupState = AccountSetupState(
+    fun `should update state when LoadAccountStateAndValidate event received and validate`() = runTest {
+        val accountState = AccountState(
             incomingServerSettings = IMAP_SERVER_SETTINGS,
         )
         val initialState = State(
@@ -40,7 +40,7 @@ class AccountValidationViewModelTest {
             isSuccess = true,
         )
         val testSubject = createTestSubject(
-            accountSetupState = accountSetupState,
+            accountState = accountState,
             initialState = initialState,
         )
 
@@ -53,7 +53,7 @@ class AccountValidationViewModelTest {
             isSuccess = false,
         )
 
-        testSubject.event(Event.LoadAccountSetupStateAndValidate)
+        testSubject.event(Event.LoadAccountStateAndValidate)
 
         assertThat(turbines.awaitStateItem()).isEqualTo(expectedState)
 
@@ -197,7 +197,7 @@ class AccountValidationViewModelTest {
                 checkSettingsCalled = true
                 ServerSettingsValidationResult.Success
             },
-            accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
+            accountStateRepository = InMemoryAccountStateRepository(),
             authorizationStateRepository = { true },
             certificateErrorRepository = InMemoryCertificateErrorRepository(),
             oAuthViewModel = FakeAccountOAuthViewModel(),
@@ -228,7 +228,7 @@ class AccountValidationViewModelTest {
     private companion object {
         fun createTestSubject(
             serverSettingsValidationResult: ServerSettingsValidationResult = ServerSettingsValidationResult.Success,
-            accountSetupState: AccountSetupState = AccountSetupState(),
+            accountState: AccountState = AccountState(),
             initialState: State = State(),
         ): AccountValidationViewModel {
             return AccountValidationViewModel(
@@ -236,7 +236,7 @@ class AccountValidationViewModelTest {
                     delay(50)
                     serverSettingsValidationResult
                 },
-                accountSetupStateRepository = InMemoryAccountSetupStateRepository(accountSetupState),
+                accountStateRepository = InMemoryAccountStateRepository(accountState),
                 authorizationStateRepository = { true },
                 certificateErrorRepository = InMemoryCertificateErrorRepository(),
                 oAuthViewModel = FakeAccountOAuthViewModel(),

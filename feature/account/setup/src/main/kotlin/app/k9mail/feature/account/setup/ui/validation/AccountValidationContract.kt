@@ -24,7 +24,7 @@ interface AccountValidationContract {
     )
 
     sealed interface Event {
-        object LoadAccountSetupStateAndValidate : Event
+        object LoadAccountStateAndValidate : Event
 
         data class OnOAuthResult(val result: OAuthResult) : Event
 

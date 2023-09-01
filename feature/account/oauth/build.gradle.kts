@@ -19,7 +19,9 @@ android {
 dependencies {
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.common)
+
     implementation(projects.mail.common)
+
     implementation(projects.feature.account.common)
 
     implementation(libs.appauth)
