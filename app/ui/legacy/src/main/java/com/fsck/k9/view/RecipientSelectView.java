@@ -34,6 +34,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fsck.k9.DI;
+import com.fsck.k9.EmailAddressValidator;
 import com.fsck.k9.K9;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.activity.AlternateRecipientAdapter;
@@ -61,6 +62,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     private static final int LOADER_ID_ALTERNATES = 1;
 
 
+    private EmailAddressValidator validator = new EmailAddressValidator();
     private final UserInputEmailAddressParser emailAddressParser = DI.get(UserInputEmailAddressParser.class);
 
     private RecipientAdapter adapter;
@@ -441,6 +443,16 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     public boolean hasUncompletedText() {
         String currentCompletionText = currentCompletionText();
         return !TextUtils.isEmpty(currentCompletionText) && !isPlaceholderText(currentCompletionText);
+    }
+
+    public boolean hasValidEmail(String emailString) {
+        String[] emails = emailString.split(",\\s*");
+        for (String email: emails){
+            if (!validator.isValidAddressOnly(email)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     static private boolean isPlaceholderText(String currentCompletionText) {

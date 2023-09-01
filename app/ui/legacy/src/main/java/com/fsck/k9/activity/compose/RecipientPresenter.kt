@@ -130,6 +130,11 @@ class RecipientPresenter(
             return true
         }
 
+        if (!recipientMvpView.recipientToIsValid()) {
+            recipientMvpView.showToInvalidError()
+            return true
+        }
+
         if (recipientMvpView.recipientBccHasUncompletedText()) {
             recipientMvpView.showBccUncompletedError()
             return true
