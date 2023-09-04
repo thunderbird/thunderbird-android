@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.common.mvi.observe
-import app.k9mail.feature.account.setup.ui.servercertificate.CertificateErrorScreen
+import app.k9mail.feature.account.servercertificate.ui.CertificateErrorScreen
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Effect
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Event
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.ViewModel

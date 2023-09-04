@@ -1,8 +1,8 @@
-package app.k9mail.feature.account.setup.ui.servercertificate
+package app.k9mail.feature.account.servercertificate.ui
 
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 
-interface CertificateErrorContract {
+interface AccountServerCertificateErrorContract {
 
     interface ViewModel : UnidirectionalViewModel<State, Event, Effect>
 

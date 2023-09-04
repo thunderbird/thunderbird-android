@@ -1,13 +1,13 @@
-package app.k9mail.feature.account.setup.ui.servercertificate
+package app.k9mail.feature.account.servercertificate.ui
 
 import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
-import app.k9mail.feature.account.setup.domain.DomainContract.CertificateErrorRepository
-import app.k9mail.feature.account.setup.domain.DomainContract.UseCase.AddServerCertificateException
-import app.k9mail.feature.account.setup.domain.entity.CertificateError
-import app.k9mail.feature.account.setup.ui.servercertificate.CertificateErrorContract.Effect
-import app.k9mail.feature.account.setup.ui.servercertificate.CertificateErrorContract.Event
-import app.k9mail.feature.account.setup.ui.servercertificate.CertificateErrorContract.State
+import app.k9mail.feature.account.servercertificate.domain.AccountServerCertificateDomainContract
+import app.k9mail.feature.account.servercertificate.domain.AccountServerCertificateDomainContract.UseCase
+import app.k9mail.feature.account.servercertificate.domain.entity.ServerCertificateError
+import app.k9mail.feature.account.servercertificate.ui.AccountServerCertificateErrorContract.Effect
+import app.k9mail.feature.account.servercertificate.ui.AccountServerCertificateErrorContract.Event
+import app.k9mail.feature.account.servercertificate.ui.AccountServerCertificateErrorContract.State
 import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.filter.Hex
 import java.security.MessageDigest
@@ -15,15 +15,15 @@ import java.security.NoSuchAlgorithmException
 import java.security.cert.CertificateEncodingException
 import kotlinx.coroutines.launch
 
-class CertificateErrorViewModel(
-    private val certificateErrorRepository: CertificateErrorRepository,
-    private val addServerCertificateException: AddServerCertificateException,
+class AccountServerCertificateErrorViewModel(
+    private val certificateErrorRepository: AccountServerCertificateDomainContract.ServerCertificateErrorRepository,
+    private val addServerCertificateException: UseCase.AddServerCertificateException,
     initialState: State = State(),
-) : BaseViewModel<State, Event, Effect>(initialState), CertificateErrorContract.ViewModel {
-    private val certificateError: CertificateError? = certificateErrorRepository.getCertificateError()
+) : BaseViewModel<State, Event, Effect>(initialState), AccountServerCertificateErrorContract.ViewModel {
+    private val serverCertificateError: ServerCertificateError? = certificateErrorRepository.getCertificateError()
 
     init {
-        setErrorMessage(buildErrorMessage(certificateError))
+        setErrorMessage(buildErrorMessage(serverCertificateError))
     }
 
     override fun event(event: Event) {
@@ -34,7 +34,7 @@ class CertificateErrorViewModel(
     }
 
     private fun acceptCertificate() {
-        val certificateError = requireNotNull(certificateError)
+        val certificateError = requireNotNull(serverCertificateError)
 
         viewModelScope.launch {
             addServerCertificateException.addCertificate(
@@ -56,8 +56,8 @@ class CertificateErrorViewModel(
         emitEffect(Effect.NavigateCertificateAccepted)
     }
 
-    private fun buildErrorMessage(certificateError: CertificateError?): String {
-        val certificate = certificateError?.certificateChain?.firstOrNull() ?: return ""
+    private fun buildErrorMessage(serverCertificateError: ServerCertificateError?): String {
+        val certificate = serverCertificateError?.certificateChain?.firstOrNull() ?: return ""
 
         return buildString {
             certificate.subjectAlternativeNames?.let { subjectAlternativeNames ->

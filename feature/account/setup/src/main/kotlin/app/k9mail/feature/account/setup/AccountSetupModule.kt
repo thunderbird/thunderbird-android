@@ -4,9 +4,8 @@ import app.k9mail.autodiscovery.api.AutoDiscoveryService
 import app.k9mail.autodiscovery.service.RealAutoDiscoveryService
 import app.k9mail.feature.account.common.featureAccountCommonModule
 import app.k9mail.feature.account.oauth.featureAccountOAuthModule
-import app.k9mail.feature.account.setup.data.InMemoryCertificateErrorRepository
+import app.k9mail.feature.account.servercertificate.featureAccountServerCertificateModule
 import app.k9mail.feature.account.setup.domain.DomainContract
-import app.k9mail.feature.account.setup.domain.usecase.AddServerCertificateException
 import app.k9mail.feature.account.setup.domain.usecase.CreateAccount
 import app.k9mail.feature.account.setup.domain.usecase.GetAutoDiscovery
 import app.k9mail.feature.account.setup.domain.usecase.ValidateServerSettings
@@ -23,7 +22,6 @@ import app.k9mail.feature.account.setup.ui.options.AccountOptionsViewModel
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigValidator
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigViewModel
-import app.k9mail.feature.account.setup.ui.servercertificate.CertificateErrorViewModel
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationViewModel
 import com.fsck.k9.mail.store.imap.ImapServerSettingsValidator
 import com.fsck.k9.mail.store.pop3.Pop3ServerSettingsValidator
@@ -35,7 +33,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val featureAccountSetupModule: Module = module {
-    includes(featureAccountCommonModule, featureAccountOAuthModule)
+    includes(featureAccountCommonModule, featureAccountOAuthModule, featureAccountServerCertificateModule)
 
     single<OkHttpClient> {
         OkHttpClient()
@@ -54,8 +52,6 @@ val featureAccountSetupModule: Module = module {
         )
     }
 
-    single<DomainContract.CertificateErrorRepository> { InMemoryCertificateErrorRepository() }
-
     factory<DomainContract.UseCase.ValidateServerSettings> {
         ValidateServerSettings(
             authStateStorage = get(),
@@ -71,12 +67,6 @@ val featureAccountSetupModule: Module = module {
                 trustedSocketFactory = get(),
                 oAuth2TokenProviderFactory = get(),
             ),
-        )
-    }
-
-    factory<DomainContract.UseCase.AddServerCertificateException> {
-        AddServerCertificateException(
-            localKeyStore = get(),
         )
     }
 
@@ -141,12 +131,6 @@ val featureAccountSetupModule: Module = module {
         AccountOptionsViewModel(
             validator = get(),
             accountStateRepository = get(),
-        )
-    }
-    viewModel {
-        CertificateErrorViewModel(
-            certificateErrorRepository = get(),
-            addServerCertificateException = get(),
         )
     }
 }

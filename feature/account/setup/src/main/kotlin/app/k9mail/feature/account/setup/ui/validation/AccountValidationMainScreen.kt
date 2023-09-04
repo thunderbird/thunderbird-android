@@ -13,8 +13,8 @@ import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.common.ui.WizardNavigationBarState
 import app.k9mail.feature.account.common.ui.preview.PreviewAccountStateRepository
 import app.k9mail.feature.account.oauth.ui.preview.PreviewAccountOAuthViewModel
+import app.k9mail.feature.account.servercertificate.data.InMemoryServerCertificateErrorRepository
 import app.k9mail.feature.account.setup.R
-import app.k9mail.feature.account.setup.data.InMemoryCertificateErrorRepository
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.Event
 import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract.ViewModel
 import com.fsck.k9.mail.server.ServerSettingsValidationResult
@@ -65,7 +65,7 @@ internal fun AccountIncomingValidationScreenK9Preview() {
                 },
                 accountStateRepository = PreviewAccountStateRepository(),
                 authorizationStateRepository = { true },
-                certificateErrorRepository = InMemoryCertificateErrorRepository(),
+                certificateErrorRepository = InMemoryServerCertificateErrorRepository(),
                 oAuthViewModel = PreviewAccountOAuthViewModel(),
                 isIncomingValidation = true,
             ),
@@ -84,7 +84,7 @@ internal fun AccountIncomingValidationScreenThunderbirdPreview() {
                 },
                 accountStateRepository = PreviewAccountStateRepository(),
                 authorizationStateRepository = { true },
-                certificateErrorRepository = InMemoryCertificateErrorRepository(),
+                certificateErrorRepository = InMemoryServerCertificateErrorRepository(),
                 oAuthViewModel = PreviewAccountOAuthViewModel(),
                 isIncomingValidation = true,
             ),
@@ -103,7 +103,7 @@ internal fun AccountOutgoingValidationScreenK9Preview() {
                 },
                 accountStateRepository = PreviewAccountStateRepository(),
                 authorizationStateRepository = { true },
-                certificateErrorRepository = InMemoryCertificateErrorRepository(),
+                certificateErrorRepository = InMemoryServerCertificateErrorRepository(),
                 oAuthViewModel = PreviewAccountOAuthViewModel(),
                 isIncomingValidation = false,
             ),
@@ -122,7 +122,7 @@ internal fun AccountOutgoingValidationScreenThunderbirdPreview() {
                 },
                 accountStateRepository = PreviewAccountStateRepository(),
                 authorizationStateRepository = { true },
-                certificateErrorRepository = InMemoryCertificateErrorRepository(),
+                certificateErrorRepository = InMemoryServerCertificateErrorRepository(),
                 oAuthViewModel = PreviewAccountOAuthViewModel(),
                 isIncomingValidation = false,
             ),

@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.setup.ui.servercertificate
+package app.k9mail.feature.account.servercertificate.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
@@ -21,11 +21,11 @@ import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
-import app.k9mail.feature.account.setup.data.InMemoryCertificateErrorRepository
-import app.k9mail.feature.account.setup.domain.entity.CertificateError
-import app.k9mail.feature.account.setup.ui.servercertificate.CertificateErrorContract.Effect
-import app.k9mail.feature.account.setup.ui.servercertificate.CertificateErrorContract.Event
-import app.k9mail.feature.account.setup.ui.servercertificate.CertificateErrorContract.ViewModel
+import app.k9mail.feature.account.servercertificate.data.InMemoryServerCertificateErrorRepository
+import app.k9mail.feature.account.servercertificate.domain.entity.ServerCertificateError
+import app.k9mail.feature.account.servercertificate.ui.AccountServerCertificateErrorContract.Effect
+import app.k9mail.feature.account.servercertificate.ui.AccountServerCertificateErrorContract.Event
+import app.k9mail.feature.account.servercertificate.ui.AccountServerCertificateErrorContract.ViewModel
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import org.koin.androidx.compose.koinViewModel
@@ -33,11 +33,11 @@ import org.koin.androidx.compose.koinViewModel
 // Note: This is a placeholder with mostly hardcoded text.
 // TODO: Replace with final design.
 @Composable
-internal fun CertificateErrorScreen(
+fun CertificateErrorScreen(
     onCertificateAccepted: () -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ViewModel = koinViewModel<CertificateErrorViewModel>(),
+    viewModel: ViewModel = koinViewModel<AccountServerCertificateErrorViewModel>(),
 ) {
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
@@ -138,7 +138,7 @@ internal fun CertificateErrorScreenK9Preview() {
     val certificateFactory = CertificateFactory.getInstance("X.509")
     val certificate = certificateFactory.generateCertificate(inputStream) as X509Certificate
 
-    val certificateError = CertificateError(
+    val serverCertificateError = ServerCertificateError(
         hostname = "mail.domain.example",
         port = 143,
         certificateChain = listOf(certificate),
@@ -148,9 +148,9 @@ internal fun CertificateErrorScreenK9Preview() {
         CertificateErrorScreen(
             onCertificateAccepted = {},
             onBack = {},
-            viewModel = CertificateErrorViewModel(
+            viewModel = AccountServerCertificateErrorViewModel(
                 addServerCertificateException = { _, _, _ -> },
-                certificateErrorRepository = InMemoryCertificateErrorRepository(certificateError),
+                certificateErrorRepository = InMemoryServerCertificateErrorRepository(serverCertificateError),
             ),
         )
     }

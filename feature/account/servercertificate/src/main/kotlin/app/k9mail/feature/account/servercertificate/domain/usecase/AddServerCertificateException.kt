@@ -1,6 +1,6 @@
-package app.k9mail.feature.account.setup.domain.usecase
+package app.k9mail.feature.account.servercertificate.domain.usecase
 
-import app.k9mail.feature.account.setup.domain.DomainContract
+import app.k9mail.feature.account.servercertificate.domain.AccountServerCertificateDomainContract.UseCase
 import com.fsck.k9.mail.ssl.LocalKeyStore
 import java.security.cert.X509Certificate
 import kotlinx.coroutines.CoroutineDispatcher
@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 internal class AddServerCertificateException(
     private val localKeyStore: LocalKeyStore,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
-) : DomainContract.UseCase.AddServerCertificateException {
+) : UseCase.AddServerCertificateException {
     override suspend fun addCertificate(hostname: String, port: Int, certificate: X509Certificate?) {
         withContext(coroutineDispatcher) {
             localKeyStore.addCertificate(hostname, port, certificate)
