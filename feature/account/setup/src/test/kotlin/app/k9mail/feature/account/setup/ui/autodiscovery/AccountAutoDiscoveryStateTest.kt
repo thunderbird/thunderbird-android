@@ -1,7 +1,7 @@
 package app.k9mail.feature.account.setup.ui.autodiscovery
 
-import app.k9mail.feature.account.setup.domain.input.BooleanInputField
-import app.k9mail.feature.account.setup.domain.input.StringInputField
+import app.k9mail.feature.account.common.domain.input.BooleanInputField
+import app.k9mail.feature.account.common.domain.input.StringInputField
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.ConfigStep
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.State
 import assertk.assertThat

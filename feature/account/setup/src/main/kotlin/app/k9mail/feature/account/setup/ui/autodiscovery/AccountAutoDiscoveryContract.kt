@@ -4,10 +4,10 @@ import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
+import app.k9mail.feature.account.common.domain.input.BooleanInputField
+import app.k9mail.feature.account.common.domain.input.StringInputField
 import app.k9mail.feature.account.oauth.domain.entity.OAuthResult
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
-import app.k9mail.feature.account.setup.domain.input.BooleanInputField
-import app.k9mail.feature.account.setup.domain.input.StringInputField
 
 interface AccountAutoDiscoveryContract {
 
