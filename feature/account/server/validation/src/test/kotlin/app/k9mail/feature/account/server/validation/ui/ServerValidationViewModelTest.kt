@@ -6,11 +6,11 @@ import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.account.common.data.InMemoryAccountStateRepository
 import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.oauth.ui.fake.FakeAccountOAuthViewModel
+import app.k9mail.feature.account.server.certificate.data.InMemoryServerCertificateErrorRepository
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Effect
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Error
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Event
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.State
-import app.k9mail.feature.account.servercertificate.data.InMemoryServerCertificateErrorRepository
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isTrue

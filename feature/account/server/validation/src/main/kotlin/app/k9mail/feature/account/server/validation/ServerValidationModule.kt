@@ -3,10 +3,10 @@ package app.k9mail.feature.account.server.validation
 import app.k9mail.core.common.coreCommonModule
 import app.k9mail.feature.account.common.featureAccountCommonModule
 import app.k9mail.feature.account.oauth.featureAccountOAuthModule
+import app.k9mail.feature.account.server.certificate.featureAccountServerCertificateModule
 import app.k9mail.feature.account.server.validation.domain.ServerValidationDomainContract
 import app.k9mail.feature.account.server.validation.domain.usecase.ValidateServerSettings
 import app.k9mail.feature.account.server.validation.ui.ServerValidationViewModel
-import app.k9mail.feature.account.servercertificate.featureAccountServerCertificateModule
 import com.fsck.k9.mail.store.imap.ImapServerSettingsValidator
 import com.fsck.k9.mail.store.pop3.Pop3ServerSettingsValidator
 import com.fsck.k9.mail.transport.smtp.SmtpServerSettingsValidator

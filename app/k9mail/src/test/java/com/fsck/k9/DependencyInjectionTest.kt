@@ -61,8 +61,12 @@ class DependencyInjectionTest : AutoCloseKoinTest() {
             withParameters(clazz = Class.forName("com.fsck.k9.view.K9WebViewClient").kotlin) {
                 parametersOf(null, null)
             }
-            withParameter<ServerValidationContract.ViewModel>(named(KOIN_NAME_INCOMING_SERVER_VALIDATION)) { authStateStorage }
-            withParameter<ServerValidationContract.ViewModel>(named(KOIN_NAME_OUTGOING_SERVER_VALIDATION)) { authStateStorage }
+            withParameter<ServerValidationContract.ViewModel>(
+                named(KOIN_NAME_INCOMING_SERVER_VALIDATION),
+            ) { authStateStorage }
+            withParameter<ServerValidationContract.ViewModel>(
+                named(KOIN_NAME_OUTGOING_SERVER_VALIDATION),
+            ) { authStateStorage }
             withParameter<ServerValidationDomainContract.UseCase.ValidateServerSettings> { authStateStorage }
             withParameter<AccountRemoverWorker> { mock<WorkerParameters>() }
         }

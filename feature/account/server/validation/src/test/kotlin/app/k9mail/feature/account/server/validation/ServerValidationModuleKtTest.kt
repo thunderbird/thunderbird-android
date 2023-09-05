@@ -4,9 +4,9 @@ import android.content.Context
 import app.k9mail.core.common.oauth.OAuthConfigurationFactory
 import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.common.domain.entity.AccountState
+import app.k9mail.feature.account.server.certificate.domain.ServerCertificateDomainContract
+import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract
-import app.k9mail.feature.account.servercertificate.domain.AccountServerCertificateDomainContract
-import app.k9mail.feature.account.servercertificate.ui.AccountServerCertificateErrorContract
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.oauth.OAuth2TokenProviderFactory
 import com.fsck.k9.mail.ssl.LocalKeyStore
@@ -51,8 +51,8 @@ class ServerValidationModuleKtTest : KoinTest {
             extraTypes = listOf(
                 ServerValidationContract.State::class,
                 AccountDomainContract.AccountStateRepository::class,
-                AccountServerCertificateDomainContract.ServerCertificateErrorRepository::class,
-                AccountServerCertificateErrorContract.State::class,
+                ServerCertificateDomainContract.ServerCertificateErrorRepository::class,
+                ServerCertificateErrorContract.State::class,
                 AccountState::class,
                 Context::class,
                 Boolean::class,

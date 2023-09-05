@@ -5,10 +5,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.common.mvi.observe
+import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorScreen
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Effect
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Event
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.ViewModel
-import app.k9mail.feature.account.servercertificate.ui.CertificateErrorScreen
 
 @Composable
 fun ServerValidationScreen(
@@ -33,7 +33,7 @@ fun ServerValidationScreen(
     }
 
     if (state.value.error is ServerValidationContract.Error.CertificateError) {
-        CertificateErrorScreen(
+        ServerCertificateErrorScreen(
             onCertificateAccepted = { dispatch(Event.OnCertificateAccepted) },
             onBack = { dispatch(Event.OnBackClicked) },
             modifier = modifier,

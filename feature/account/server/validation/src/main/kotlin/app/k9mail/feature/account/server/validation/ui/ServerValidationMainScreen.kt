@@ -12,9 +12,9 @@ import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.common.ui.WizardNavigationBarState
 import app.k9mail.feature.account.common.ui.preview.PreviewAccountStateRepository
 import app.k9mail.feature.account.oauth.ui.preview.PreviewAccountOAuthViewModel
+import app.k9mail.feature.account.server.certificate.data.InMemoryServerCertificateErrorRepository
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Event
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.ViewModel
-import app.k9mail.feature.account.servercertificate.data.InMemoryServerCertificateErrorRepository
 import com.fsck.k9.mail.server.ServerSettingsValidationResult
 
 @Composable

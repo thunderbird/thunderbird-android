@@ -7,13 +7,13 @@ import app.k9mail.feature.account.oauth.domain.AccountOAuthDomainContract
 import app.k9mail.feature.account.oauth.domain.entity.OAuthResult
 import app.k9mail.feature.account.oauth.domain.entity.isOAuth
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
+import app.k9mail.feature.account.server.certificate.domain.ServerCertificateDomainContract
+import app.k9mail.feature.account.server.certificate.domain.entity.ServerCertificateError
 import app.k9mail.feature.account.server.validation.domain.ServerValidationDomainContract
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Effect
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Error
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Event
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.State
-import app.k9mail.feature.account.servercertificate.domain.AccountServerCertificateDomainContract
-import app.k9mail.feature.account.servercertificate.domain.entity.ServerCertificateError
 import com.fsck.k9.mail.server.ServerSettingsValidationResult
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
@@ -26,7 +26,7 @@ class ServerValidationViewModel(
     private val accountStateRepository: AccountDomainContract.AccountStateRepository,
     private val validateServerSettings: ServerValidationDomainContract.UseCase.ValidateServerSettings,
     private val authorizationStateRepository: AccountOAuthDomainContract.AuthorizationStateRepository,
-    private val certificateErrorRepository: AccountServerCertificateDomainContract.ServerCertificateErrorRepository,
+    private val certificateErrorRepository: ServerCertificateDomainContract.ServerCertificateErrorRepository,
     override val oAuthViewModel: AccountOAuthContract.ViewModel,
     override val isIncomingValidation: Boolean = true,
     initialState: State? = null,
