@@ -67,11 +67,11 @@ class AccountAutoDiscoveryViewModelTest {
     }
 
     @Test
-    fun `should change state when ConfigurationApprovalChanged event is received`() = runTest {
+    fun `should change state when ResultApprovalChanged event is received`() = runTest {
         eventStateTest(
             viewModel = createTestSubject(),
             initialState = State(),
-            event = Event.ConfigurationApprovalChanged(true),
+            event = Event.ResultApprovalChanged(true),
             expectedState = State(
                 configurationApproved = BooleanInputField(value = true),
             ),

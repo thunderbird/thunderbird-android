@@ -5,10 +5,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.feature.account.common.ui.item.ListItem
-import app.k9mail.feature.account.setup.ui.autodiscovery.view.AutoDiscoveryStatusView
+import app.k9mail.feature.account.setup.ui.autodiscovery.view.AutoDiscoveryResultView
 
 @Composable
-internal fun LazyItemScope.AutoDiscoveryStatusItem(
+internal fun LazyItemScope.AutoDiscoveryResultItem(
     autoDiscoverySettings: AutoDiscoveryResult.Settings?,
     onEditConfigurationClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -16,7 +16,7 @@ internal fun LazyItemScope.AutoDiscoveryStatusItem(
     ListItem(
         modifier = modifier,
     ) {
-        AutoDiscoveryStatusView(
+        AutoDiscoveryResultView(
             settings = autoDiscoverySettings,
             onEditConfigurationClick = onEditConfigurationClick,
         )

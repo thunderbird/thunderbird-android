@@ -26,7 +26,7 @@ import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 import app.k9mail.feature.account.setup.R
 
 @Composable
-internal fun AutoDiscoveryStatusBodyView(
+internal fun AutoDiscoveryResultBodyView(
     settings: AutoDiscoveryResult.Settings,
     onEditConfigurationClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -42,7 +42,7 @@ internal fun AutoDiscoveryStatusBodyView(
             Spacer(modifier = Modifier.height(MainTheme.sizes.smaller))
             TextBody2(
                 text = stringResource(
-                    id = R.string.account_setup_auto_discovery_status_disclaimer_untrusted_configuration,
+                    id = R.string.account_setup_auto_discovery_result_disclaimer_untrusted_configuration,
                 ),
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -94,7 +94,7 @@ internal fun EditConfigurationButton(
             .then(modifier),
     ) {
         ButtonText(
-            text = stringResource(id = R.string.account_setup_auto_discovery_status_edit_configuration_button_label),
+            text = stringResource(id = R.string.account_setup_auto_discovery_result_edit_configuration_button_label),
             onClick = onEditConfigurationClick,
             color = MainTheme.colors.warning,
             contentPadding = buttonContentPadding(
@@ -107,9 +107,9 @@ internal fun EditConfigurationButton(
 
 @Preview
 @Composable
-internal fun AutoDiscoveryStatusBodyViewPreview() {
+internal fun AutoDiscoveryResultBodyViewPreview() {
     PreviewWithThemes {
-        AutoDiscoveryStatusBodyView(
+        AutoDiscoveryResultBodyView(
             settings = AutoDiscoveryResult.Settings(
                 incomingServerSettings = ImapServerSettings(
                     hostname = "imap.example.com".toHostname(),

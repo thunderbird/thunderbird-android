@@ -5,20 +5,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import app.k9mail.feature.account.common.domain.input.BooleanInputField
 import app.k9mail.feature.account.common.ui.item.ListItem
-import app.k9mail.feature.account.setup.ui.autodiscovery.view.ConfigurationApprovalView
+import app.k9mail.feature.account.setup.ui.autodiscovery.view.AutoDiscoveryResultApprovalView
 
 @Composable
-internal fun LazyItemScope.ConfigurationApprovalItem(
+internal fun LazyItemScope.AutoDiscoveryResultApprovalItem(
     approvalState: BooleanInputField,
-    onConfigurationApprovalChange: (Boolean) -> Unit,
+    onApprovalChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     ListItem(
         modifier = modifier,
     ) {
-        ConfigurationApprovalView(
+        AutoDiscoveryResultApprovalView(
             approvalState = approvalState,
-            onConfigurationApprovalChange = onConfigurationApprovalChange,
+            onApprovalChange = onApprovalChange,
         )
     }
 }

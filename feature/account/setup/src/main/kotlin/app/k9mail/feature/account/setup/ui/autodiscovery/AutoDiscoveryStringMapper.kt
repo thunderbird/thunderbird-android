@@ -40,7 +40,7 @@ private fun ValidateConfigurationApproval.ValidateConfigurationApprovalError.toC
 ): String {
     return when (this) {
         ValidateConfigurationApproval.ValidateConfigurationApprovalError.ApprovalRequired -> resources.getString(
-            R.string.account_setup_auto_discovery_error_configuration_approval_required,
+            R.string.account_setup_auto_discovery_result_approval_error_approval_required,
         )
     }
 }

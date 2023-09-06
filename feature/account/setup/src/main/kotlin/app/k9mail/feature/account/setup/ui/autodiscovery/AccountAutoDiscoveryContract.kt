@@ -41,7 +41,7 @@ interface AccountAutoDiscoveryContract {
     sealed interface Event {
         data class EmailAddressChanged(val emailAddress: String) : Event
         data class PasswordChanged(val password: String) : Event
-        data class ConfigurationApprovalChanged(val confirmed: Boolean) : Event
+        data class ResultApprovalChanged(val confirmed: Boolean) : Event
         data class OnOAuthResult(val result: OAuthResult) : Event
 
         object OnNextClicked : Event

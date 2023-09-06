@@ -38,7 +38,7 @@ internal class AccountAutoDiscoveryViewModel(
         when (event) {
             is Event.EmailAddressChanged -> changeEmailAddress(event.emailAddress)
             is Event.PasswordChanged -> changePassword(event.password)
-            is Event.ConfigurationApprovalChanged -> changeConfigurationApproval(event.confirmed)
+            is Event.ResultApprovalChanged -> changeConfigurationApproval(event.confirmed)
             is Event.OnOAuthResult -> onOAuthResult(event.result)
 
             Event.OnNextClicked -> onNext()

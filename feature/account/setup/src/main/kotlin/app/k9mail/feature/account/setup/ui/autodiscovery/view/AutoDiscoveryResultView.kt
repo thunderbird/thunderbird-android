@@ -24,7 +24,7 @@ import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 
 @Composable
-internal fun AutoDiscoveryStatusView(
+internal fun AutoDiscoveryResultView(
     settings: AutoDiscoveryResult.Settings?,
     onEditConfigurationClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -47,20 +47,20 @@ internal fun AutoDiscoveryStatusView(
             Column(
                 modifier = Modifier.padding(MainTheme.spacings.default),
             ) {
-                AutoDiscoveryStatusHeaderView(
+                AutoDiscoveryResultHeaderView(
                     state = if (settings == null) {
-                        AutoDiscoveryStatusHeaderState.NoSettings
+                        AutoDiscoveryResultHeaderState.NoSettings
                     } else if (settings.isTrusted) {
-                        AutoDiscoveryStatusHeaderState.Trusted
+                        AutoDiscoveryResultHeaderState.Trusted
                     } else {
-                        AutoDiscoveryStatusHeaderState.Untrusted
+                        AutoDiscoveryResultHeaderState.Untrusted
                     },
                     isExpanded = expanded.value,
                 )
 
                 if (settings != null) {
                     AnimatedVisibility(visible = expanded.value) {
-                        AutoDiscoveryStatusBodyView(
+                        AutoDiscoveryResultBodyView(
                             settings = settings,
                             onEditConfigurationClick = onEditConfigurationClick,
                         )
@@ -73,9 +73,9 @@ internal fun AutoDiscoveryStatusView(
 
 @Preview(showBackground = true)
 @Composable
-internal fun AutoDiscoveryStatusViewTrustedPreview() {
+internal fun AutoDiscoveryResultViewTrustedPreview() {
     PreviewWithThemes {
-        AutoDiscoveryStatusView(
+        AutoDiscoveryResultView(
             settings = AutoDiscoveryResult.Settings(
                 incomingServerSettings = ImapServerSettings(
                     hostname = "imap.example.com".toHostname(),
@@ -101,9 +101,9 @@ internal fun AutoDiscoveryStatusViewTrustedPreview() {
 
 @Preview(showBackground = true)
 @Composable
-internal fun AutoDiscoveryStatusViewUntrustedPreview() {
+internal fun AutoDiscoveryResultViewUntrustedPreview() {
     PreviewWithThemes {
-        AutoDiscoveryStatusView(
+        AutoDiscoveryResultView(
             settings = AutoDiscoveryResult.Settings(
                 incomingServerSettings = ImapServerSettings(
                     hostname = "imap.example.com".toHostname(),

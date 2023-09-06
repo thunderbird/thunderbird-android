@@ -20,8 +20,8 @@ import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 
 @Suppress("LongMethod")
 @Composable
-internal fun AutoDiscoveryStatusHeaderView(
-    state: AutoDiscoveryStatusHeaderState,
+internal fun AutoDiscoveryResultHeaderView(
+    state: AutoDiscoveryResultHeaderState,
     isExpanded: Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -65,20 +65,20 @@ internal fun AutoDiscoveryStatusHeaderView(
 }
 
 @Composable
-private fun selectColor(state: AutoDiscoveryStatusHeaderState): Color {
+private fun selectColor(state: AutoDiscoveryResultHeaderState): Color {
     return when (state) {
-        AutoDiscoveryStatusHeaderState.NoSettings -> MainTheme.colors.primary
-        AutoDiscoveryStatusHeaderState.Trusted -> MainTheme.colors.success
-        AutoDiscoveryStatusHeaderState.Untrusted -> MainTheme.colors.warning
+        AutoDiscoveryResultHeaderState.NoSettings -> MainTheme.colors.primary
+        AutoDiscoveryResultHeaderState.Trusted -> MainTheme.colors.success
+        AutoDiscoveryResultHeaderState.Untrusted -> MainTheme.colors.warning
     }
 }
 
 @Preview
 @Composable
-internal fun AutoDiscoveryStatusHeaderViewTrustedCollapsedPreview() {
+internal fun AutoDiscoveryResultHeaderViewTrustedCollapsedPreview() {
     PreviewWithThemes {
-        AutoDiscoveryStatusHeaderView(
-            state = AutoDiscoveryStatusHeaderState.Trusted,
+        AutoDiscoveryResultHeaderView(
+            state = AutoDiscoveryResultHeaderState.Trusted,
             isExpanded = true,
         )
     }
@@ -86,10 +86,10 @@ internal fun AutoDiscoveryStatusHeaderViewTrustedCollapsedPreview() {
 
 @Preview
 @Composable
-internal fun AutoDiscoveryStatusHeaderViewTrustedExpandedPreview() {
+internal fun AutoDiscoveryResultHeaderViewTrustedExpandedPreview() {
     PreviewWithThemes {
-        AutoDiscoveryStatusHeaderView(
-            state = AutoDiscoveryStatusHeaderState.Trusted,
+        AutoDiscoveryResultHeaderView(
+            state = AutoDiscoveryResultHeaderState.Trusted,
             isExpanded = false,
         )
     }
@@ -97,10 +97,10 @@ internal fun AutoDiscoveryStatusHeaderViewTrustedExpandedPreview() {
 
 @Preview
 @Composable
-internal fun AutoDiscoveryStatusHeaderViewUntrustedCollapsedPreview() {
+internal fun AutoDiscoveryResultHeaderViewUntrustedCollapsedPreview() {
     PreviewWithThemes {
-        AutoDiscoveryStatusHeaderView(
-            state = AutoDiscoveryStatusHeaderState.Untrusted,
+        AutoDiscoveryResultHeaderView(
+            state = AutoDiscoveryResultHeaderState.Untrusted,
             isExpanded = true,
         )
     }
@@ -108,10 +108,10 @@ internal fun AutoDiscoveryStatusHeaderViewUntrustedCollapsedPreview() {
 
 @Preview
 @Composable
-internal fun AutoDiscoveryStatusHeaderViewUntrustedExpandedPreview() {
+internal fun AutoDiscoveryResultHeaderViewUntrustedExpandedPreview() {
     PreviewWithThemes {
-        AutoDiscoveryStatusHeaderView(
-            state = AutoDiscoveryStatusHeaderState.Untrusted,
+        AutoDiscoveryResultHeaderView(
+            state = AutoDiscoveryResultHeaderState.Untrusted,
             isExpanded = false,
         )
     }
@@ -119,10 +119,10 @@ internal fun AutoDiscoveryStatusHeaderViewUntrustedExpandedPreview() {
 
 @Preview
 @Composable
-internal fun AutoDiscoveryStatusHeaderNoSettingsPreview() {
+internal fun AutoDiscoveryResultHeaderNoSettingsPreview() {
     PreviewWithThemes {
-        AutoDiscoveryStatusHeaderView(
-            state = AutoDiscoveryStatusHeaderState.NoSettings,
+        AutoDiscoveryResultHeaderView(
+            state = AutoDiscoveryResultHeaderState.NoSettings,
             isExpanded = false,
         )
     }
