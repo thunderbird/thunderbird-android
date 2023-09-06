@@ -37,7 +37,7 @@ mime4j = "0.8.9"
 okhttp = "4.11.0"
 glide = "4.16.0"
 moshi = "1.15.0"
-mockito = "5.3.1"
+mockito = "5.4.0"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -144,7 +144,7 @@ kxml2 = "com.github.cketti:kxml2-extracted-from-android:1.0"
 junit = "junit:junit:4.13.2"
 robolectric = "org.robolectric:robolectric:4.9.2"
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
-mockito-kotlin = "org.mockito.kotlin:mockito-kotlin:4.1.0"
+mockito-kotlin = "org.mockito.kotlin:mockito-kotlin:5.1.0"
 turbine = "app.cash.turbine:turbine:0.13.0"
 jdom2 = "org.jdom:jdom2:2.0.6.1"
 icu4j-charset = "com.ibm.icu:icu4j-charset:72.1"

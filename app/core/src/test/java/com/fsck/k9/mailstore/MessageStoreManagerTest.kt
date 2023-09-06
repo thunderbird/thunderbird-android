@@ -45,7 +45,7 @@ class MessageStoreManagerTest {
         assertThat(messageStoreManager.getMessageStore(account)).isSameAs(messageStore2)
     }
 
-    private fun <T> KStubbing<T>.doNothingOn(block: T.() -> Any) {
+    private fun <T : Any> KStubbing<T>.doNothingOn(block: T.() -> Any) {
         doNothing().whenever(mock).block()
     }
 }
