@@ -152,7 +152,7 @@ assertk = "com.willowtreeapps.assertk:assertk-jvm:0.26.1"
 
 leakcanary-android = "com.squareup.leakcanary:leakcanary-android:2.9.1"
 
-detekt-plugin-compose = "io.nlopez.compose.rules:detekt:0.1.7"
+detekt-plugin-compose = "io.nlopez.compose.rules:detekt:0.1.11"
 
 [bundles]
 shared-jvm-main = [

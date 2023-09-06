@@ -35,7 +35,7 @@ fun DrawerHeaderItem(
 
 @Preview
 @Composable
-fun DrawerHeaderItemPreview() {
+internal fun DrawerHeaderItemPreview() {
     PreviewWithThemes {
         DrawerHeaderItem(
             text = "Category",
