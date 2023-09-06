@@ -6,9 +6,9 @@ import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
 import app.k9mail.feature.account.common.data.InMemoryAccountStateRepository
+import app.k9mail.feature.account.common.domain.input.StringInputField
 import app.k9mail.feature.account.setup.domain.entity.EmailCheckFrequency
 import app.k9mail.feature.account.setup.domain.entity.EmailDisplayCount
-import app.k9mail.feature.account.setup.domain.input.StringInputField
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Effect
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Event
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.State

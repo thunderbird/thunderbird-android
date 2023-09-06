@@ -1,5 +1,6 @@
 package app.k9mail.feature.account.setup.domain.entity
 
+import app.k9mail.feature.account.common.domain.entity.AuthenticationType
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import org.junit.Test

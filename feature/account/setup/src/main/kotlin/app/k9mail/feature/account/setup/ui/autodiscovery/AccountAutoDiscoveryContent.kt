@@ -53,13 +53,13 @@ internal fun AccountAutoDiscoveryContent(
             if (state.isLoading) {
                 item(key = "loading") {
                     LoadingItem(
-                        message = stringResource(id = R.string.account_setup_auto_config_loading_message),
+                        message = stringResource(id = R.string.account_setup_auto_discovery_loading_message),
                     )
                 }
             } else if (state.error != null) {
                 item(key = "error") {
                     ErrorItem(
-                        title = stringResource(id = R.string.account_setup_auto_config_loading_error),
+                        title = stringResource(id = R.string.account_setup_auto_discovery_loading_error),
                         message = state.error.toResourceString(resources),
                         onRetry = { onEvent(Event.OnRetryClicked) },
                     )

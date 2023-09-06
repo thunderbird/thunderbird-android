@@ -9,11 +9,11 @@ import app.k9mail.feature.account.setup.domain.usecase.ValidateConfigurationAppr
 internal fun AutoDiscoveryConnectionSecurity.toResourceString(resources: Resources): String {
     return when (this) {
         AutoDiscoveryConnectionSecurity.StartTLS -> resources.getString(
-            R.string.account_setup_connection_security_start_tls,
+            R.string.account_setup_auto_discovery_connection_security_start_tls,
         )
 
         AutoDiscoveryConnectionSecurity.TLS -> resources.getString(
-            R.string.account_setup_connection_security_ssl,
+            R.string.account_setup_auto_discovery_connection_security_ssl,
         )
     }
 }
@@ -40,7 +40,7 @@ private fun ValidateConfigurationApproval.ValidateConfigurationApprovalError.toC
 ): String {
     return when (this) {
         ValidateConfigurationApproval.ValidateConfigurationApprovalError.ApprovalRequired -> resources.getString(
-            R.string.account_setup_error_configuration_approval_required,
+            R.string.account_setup_auto_discovery_result_approval_error_approval_required,
         )
     }
 }
