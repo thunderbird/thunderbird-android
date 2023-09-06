@@ -25,6 +25,7 @@ androidxComposeCompiler = "1.4.8"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
 androidxComposeBom = "2023.06.01"
 androidxComposeMaterial = "1.4.3"
+androidxComposeMaterial3 = "1.1.1"
 accompanist = "0.30.1"
 fastAdapter = "5.7.0"
 preferencesFix = "1.1.0"
@@ -94,6 +95,8 @@ androidx-compose-activity = { module = "androidx.activity:activity-compose", ver
 androidx-compose-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 androidx-compose-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
 androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "androidxComposeMaterial" }
+androidx-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "androidxComposeMaterial3" }
+androidx-compose-material3-windowSizeClass = { module = "androidx.compose.material3:material3-window-size-class", version.ref = "androidxComposeMaterial3" }
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "androidxComposeMaterial" }
 androidx-compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "androidxNavigation" }
 androidx-test-core = "androidx.test:core:1.5.0"
