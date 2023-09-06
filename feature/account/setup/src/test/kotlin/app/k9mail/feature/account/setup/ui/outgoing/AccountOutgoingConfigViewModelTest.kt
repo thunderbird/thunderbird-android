@@ -10,12 +10,12 @@ import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.account.common.data.InMemoryAccountStateRepository
 import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.common.domain.entity.AccountState
+import app.k9mail.feature.account.common.domain.entity.AuthenticationType
+import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.MailConnectionSecurity
+import app.k9mail.feature.account.common.domain.entity.toSmtpDefaultPort
 import app.k9mail.feature.account.common.domain.input.NumberInputField
 import app.k9mail.feature.account.common.domain.input.StringInputField
-import app.k9mail.feature.account.setup.domain.entity.AuthenticationType
-import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
-import app.k9mail.feature.account.setup.domain.entity.toSmtpDefaultPort
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Effect
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Event
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.State

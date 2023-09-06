@@ -2,8 +2,8 @@ package app.k9mail.feature.account.setup.ui.common
 
 import android.content.res.Resources
 import app.k9mail.core.common.domain.usecase.validation.ValidationError
+import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.R
-import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.domain.usecase.ValidateEmailAddress.ValidateEmailAddressError
 import app.k9mail.feature.account.setup.domain.usecase.ValidateImapPrefix.ValidateImapPrefixError
 import app.k9mail.feature.account.setup.domain.usecase.ValidatePassword.ValidatePasswordError

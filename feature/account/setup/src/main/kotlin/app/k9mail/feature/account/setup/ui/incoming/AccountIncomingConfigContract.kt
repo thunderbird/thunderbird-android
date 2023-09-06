@@ -2,12 +2,12 @@ package app.k9mail.feature.account.setup.ui.incoming
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
+import app.k9mail.feature.account.common.domain.entity.AuthenticationType
+import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity
+import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
+import app.k9mail.feature.account.common.domain.entity.toDefaultPort
 import app.k9mail.feature.account.common.domain.input.NumberInputField
 import app.k9mail.feature.account.common.domain.input.StringInputField
-import app.k9mail.feature.account.setup.domain.entity.AuthenticationType
-import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
-import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
-import app.k9mail.feature.account.setup.domain.entity.toDefaultPort
 
 interface AccountIncomingConfigContract {
 

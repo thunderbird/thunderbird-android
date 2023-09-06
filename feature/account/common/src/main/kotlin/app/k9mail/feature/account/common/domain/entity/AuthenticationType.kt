@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.setup.domain.entity
+package app.k9mail.feature.account.common.domain.entity
 
 import com.fsck.k9.mail.AuthType
 import kotlinx.collections.immutable.toImmutableList

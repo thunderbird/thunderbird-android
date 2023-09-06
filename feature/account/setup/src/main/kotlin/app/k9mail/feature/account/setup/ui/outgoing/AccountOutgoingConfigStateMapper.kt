@@ -1,12 +1,12 @@
 package app.k9mail.feature.account.setup.ui.outgoing
 
 import app.k9mail.feature.account.common.domain.entity.AccountState
+import app.k9mail.feature.account.common.domain.entity.toAuthType
+import app.k9mail.feature.account.common.domain.entity.toAuthenticationType
+import app.k9mail.feature.account.common.domain.entity.toConnectionSecurity
+import app.k9mail.feature.account.common.domain.entity.toMailConnectionSecurity
 import app.k9mail.feature.account.common.domain.input.NumberInputField
 import app.k9mail.feature.account.common.domain.input.StringInputField
-import app.k9mail.feature.account.setup.domain.entity.toAuthType
-import app.k9mail.feature.account.setup.domain.entity.toAuthenticationType
-import app.k9mail.feature.account.setup.domain.entity.toConnectionSecurity
-import app.k9mail.feature.account.setup.domain.entity.toMailConnectionSecurity
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.State
 import com.fsck.k9.mail.ServerSettings
 

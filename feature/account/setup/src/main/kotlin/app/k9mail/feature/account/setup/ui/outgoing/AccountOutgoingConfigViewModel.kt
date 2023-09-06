@@ -3,8 +3,8 @@ package app.k9mail.feature.account.setup.ui.outgoing
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.domain.AccountDomainContract
-import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
-import app.k9mail.feature.account.setup.domain.entity.toSmtpDefaultPort
+import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity
+import app.k9mail.feature.account.common.domain.entity.toSmtpDefaultPort
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Effect
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Event
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.State

@@ -1,8 +1,8 @@
 package app.k9mail.feature.account.setup.ui.common.mapper
 
 import android.content.res.Resources
+import app.k9mail.feature.account.common.domain.entity.AuthenticationType
 import app.k9mail.feature.account.setup.R
-import app.k9mail.feature.account.setup.domain.entity.AuthenticationType
 
 internal fun AuthenticationType.toResourceString(resources: Resources): String {
     return when (this) {

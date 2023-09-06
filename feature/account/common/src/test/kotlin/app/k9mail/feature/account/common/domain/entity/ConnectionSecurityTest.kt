@@ -1,6 +1,5 @@
-package app.k9mail.feature.account.setup.domain.entity
+package app.k9mail.feature.account.common.domain.entity
 
-import app.k9mail.feature.account.common.domain.entity.MailConnectionSecurity
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import org.junit.Test

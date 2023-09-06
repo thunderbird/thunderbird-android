@@ -1,10 +1,10 @@
 package app.k9mail.feature.account.setup.ui.outgoing
 
+import app.k9mail.feature.account.common.domain.entity.AuthenticationType
+import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.MailConnectionSecurity
 import app.k9mail.feature.account.common.domain.input.NumberInputField
 import app.k9mail.feature.account.common.domain.input.StringInputField
-import app.k9mail.feature.account.setup.domain.entity.AuthenticationType
-import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.State
 import assertk.assertThat
 import assertk.assertions.isEqualTo

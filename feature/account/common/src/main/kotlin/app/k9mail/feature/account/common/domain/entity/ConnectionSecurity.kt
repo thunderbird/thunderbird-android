@@ -1,9 +1,8 @@
-package app.k9mail.feature.account.setup.domain.entity
+package app.k9mail.feature.account.common.domain.entity
 
-import app.k9mail.feature.account.common.domain.entity.MailConnectionSecurity
-import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity.None
-import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity.StartTLS
-import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity.TLS
+import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity.None
+import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity.StartTLS
+import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity.TLS
 import kotlinx.collections.immutable.toImmutableList
 
 enum class ConnectionSecurity {
@@ -18,7 +17,7 @@ enum class ConnectionSecurity {
     }
 }
 
-internal fun ConnectionSecurity.toMailConnectionSecurity(): MailConnectionSecurity {
+fun ConnectionSecurity.toMailConnectionSecurity(): MailConnectionSecurity {
     return when (this) {
         None -> MailConnectionSecurity.NONE
         StartTLS -> MailConnectionSecurity.STARTTLS_REQUIRED
@@ -26,7 +25,7 @@ internal fun ConnectionSecurity.toMailConnectionSecurity(): MailConnectionSecuri
     }
 }
 
-internal fun MailConnectionSecurity.toConnectionSecurity(): ConnectionSecurity {
+fun MailConnectionSecurity.toConnectionSecurity(): ConnectionSecurity {
     return when (this) {
         MailConnectionSecurity.NONE -> None
         MailConnectionSecurity.STARTTLS_REQUIRED -> StartTLS
@@ -35,7 +34,7 @@ internal fun MailConnectionSecurity.toConnectionSecurity(): ConnectionSecurity {
 }
 
 @Suppress("MagicNumber")
-internal fun ConnectionSecurity.toSmtpDefaultPort(): Long {
+fun ConnectionSecurity.toSmtpDefaultPort(): Long {
     return when (this) {
         None -> 587
         StartTLS -> 587
@@ -44,7 +43,7 @@ internal fun ConnectionSecurity.toSmtpDefaultPort(): Long {
 }
 
 @Suppress("MagicNumber")
-internal fun ConnectionSecurity.toImapDefaultPort(): Long {
+fun ConnectionSecurity.toImapDefaultPort(): Long {
     return when (this) {
         None -> 143
         StartTLS -> 143
@@ -53,7 +52,7 @@ internal fun ConnectionSecurity.toImapDefaultPort(): Long {
 }
 
 @Suppress("MagicNumber")
-internal fun ConnectionSecurity.toPop3DefaultPort(): Long {
+fun ConnectionSecurity.toPop3DefaultPort(): Long {
     return when (this) {
         None -> 110
         StartTLS -> 110

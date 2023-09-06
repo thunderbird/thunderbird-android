@@ -24,10 +24,10 @@ import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.feature.account.common.domain.entity.AuthenticationType
+import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.common.ui.item.defaultItemPadding
 import app.k9mail.feature.account.setup.R
-import app.k9mail.feature.account.setup.domain.entity.AuthenticationType
-import app.k9mail.feature.account.setup.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.setup.ui.clientcertificate.ClientCertificateInput
 import app.k9mail.feature.account.setup.ui.common.mapper.toResourceString
 import app.k9mail.feature.account.setup.ui.common.toResourceString
