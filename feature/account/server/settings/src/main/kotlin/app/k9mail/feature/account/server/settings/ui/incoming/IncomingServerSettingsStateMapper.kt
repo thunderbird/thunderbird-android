@@ -12,7 +12,7 @@ import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSett
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings
 
-internal fun AccountState.toIncomingConfigState(): State {
+fun AccountState.toIncomingConfigState(): State {
     val incomingServerSettings = incomingServerSettings
     return if (incomingServerSettings == null) {
         State(

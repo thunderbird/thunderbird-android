@@ -10,7 +10,7 @@ import app.k9mail.feature.account.common.domain.input.StringInputField
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.State
 import com.fsck.k9.mail.ServerSettings
 
-internal fun AccountState.toOutgoingConfigState(): State {
+fun AccountState.toOutgoingConfigState(): State {
     val outgoingServerSettings = outgoingServerSettings
     return if (outgoingServerSettings == null) {
         State(
