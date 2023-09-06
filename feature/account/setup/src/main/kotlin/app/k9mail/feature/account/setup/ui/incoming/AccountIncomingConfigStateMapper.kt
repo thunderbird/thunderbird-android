@@ -9,7 +9,6 @@ import app.k9mail.feature.account.setup.domain.entity.toMailConnectionSecurity
 import app.k9mail.feature.account.setup.domain.input.NumberInputField
 import app.k9mail.feature.account.setup.domain.input.StringInputField
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract.State
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings
 
@@ -57,11 +56,4 @@ private fun State.createExtras(): Map<String, String?> {
     } else {
         emptyMap()
     }
-}
-
-internal fun State.toValidationState(): AccountValidationContract.State {
-    return AccountValidationContract.State(
-        serverSettings = toServerSettings(),
-        // TODO add authorization state
-    )
 }

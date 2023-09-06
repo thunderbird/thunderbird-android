@@ -4,7 +4,8 @@ import android.content.Context
 import app.k9mail.core.common.oauth.OAuthConfigurationFactory
 import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
-import app.k9mail.feature.account.servercertificate.ui.AccountServerCertificateErrorContract
+import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract
+import app.k9mail.feature.account.server.validation.ui.ServerValidationContract
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
 import app.k9mail.feature.account.setup.ui.AccountSetupContract
@@ -12,7 +13,6 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryCon
 import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract
 import com.fsck.k9.mail.oauth.AuthStateStorage
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.oauth.OAuth2TokenProviderFactory
@@ -64,12 +64,12 @@ class AccountSetupModuleKtTest : KoinTest {
                 AccountSetupContract.State::class,
                 AccountAutoDiscoveryContract.State::class,
                 AccountOAuthContract.State::class,
-                AccountValidationContract.State::class,
+                ServerValidationContract.State::class,
                 AccountIncomingConfigContract.State::class,
                 AccountOutgoingConfigContract.State::class,
                 AccountOptionsContract.State::class,
                 AccountState::class,
-                AccountServerCertificateErrorContract.State::class,
+                ServerCertificateErrorContract.State::class,
                 AuthStateStorage::class,
                 Context::class,
                 Boolean::class,

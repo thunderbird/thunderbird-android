@@ -4,6 +4,7 @@ import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.onNodeWithTag
 import app.k9mail.core.ui.compose.testing.setContent
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.feature.account.server.validation.ui.fake.FakeServerValidationViewModel
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.State
@@ -11,7 +12,6 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.FakeAccountAutoDiscover
 import app.k9mail.feature.account.setup.ui.incoming.FakeAccountIncomingConfigViewModel
 import app.k9mail.feature.account.setup.ui.options.FakeAccountOptionsViewModel
 import app.k9mail.feature.account.setup.ui.outgoing.FakeAccountOutgoingConfigViewModel
-import app.k9mail.feature.account.setup.ui.validation.FakeAccountValidationViewModel
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
@@ -31,9 +31,9 @@ class AccountSetupScreenKtTest : ComposeTest() {
                     viewModel = viewModel,
                     autoDiscoveryViewModel = FakeAccountAutoDiscoveryViewModel(),
                     incomingViewModel = FakeAccountIncomingConfigViewModel(),
-                    incomingValidationViewModel = FakeAccountValidationViewModel(),
+                    incomingValidationViewModel = FakeServerValidationViewModel(),
                     outgoingViewModel = FakeAccountOutgoingConfigViewModel(),
-                    outgoingValidationViewModel = FakeAccountValidationViewModel(),
+                    outgoingValidationViewModel = FakeServerValidationViewModel(),
                     optionsViewModel = FakeAccountOptionsViewModel(),
                 )
             }
@@ -60,9 +60,9 @@ class AccountSetupScreenKtTest : ComposeTest() {
                     viewModel = viewModel,
                     autoDiscoveryViewModel = FakeAccountAutoDiscoveryViewModel(),
                     incomingViewModel = FakeAccountIncomingConfigViewModel(),
-                    incomingValidationViewModel = FakeAccountValidationViewModel(),
+                    incomingValidationViewModel = FakeServerValidationViewModel(),
                     outgoingViewModel = FakeAccountOutgoingConfigViewModel(),
-                    outgoingValidationViewModel = FakeAccountValidationViewModel(),
+                    outgoingValidationViewModel = FakeServerValidationViewModel(),
                     optionsViewModel = FakeAccountOptionsViewModel(),
                 )
             }

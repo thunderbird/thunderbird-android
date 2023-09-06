@@ -8,7 +8,6 @@ import app.k9mail.feature.account.setup.domain.entity.toMailConnectionSecurity
 import app.k9mail.feature.account.setup.domain.input.NumberInputField
 import app.k9mail.feature.account.setup.domain.input.StringInputField
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.State
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract
 import com.fsck.k9.mail.ServerSettings
 
 internal fun AccountState.toOutgoingConfigState(): State {
@@ -39,12 +38,5 @@ internal fun State.toServerSettings(): ServerSettings {
         username = if (authenticationType.isUsernameRequired) username.value else "",
         password = if (authenticationType.isPasswordRequired) password.value else null,
         clientCertificateAlias = clientCertificateAlias,
-    )
-}
-
-internal fun State.toValidationState(): AccountValidationContract.State {
-    return AccountValidationContract.State(
-        serverSettings = toServerSettings(),
-        // TODO add authorization state
     )
 }
