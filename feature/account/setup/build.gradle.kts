@@ -29,6 +29,7 @@ dependencies {
 
     api(projects.feature.account.common)
     implementation(projects.feature.account.oauth)
+    implementation(projects.feature.account.server.config)
     implementation(projects.feature.account.server.certificate)
     api(projects.feature.account.server.validation)
 

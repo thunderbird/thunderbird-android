@@ -42,7 +42,7 @@ internal fun AutoDiscoveryStatusBodyView(
             Spacer(modifier = Modifier.height(MainTheme.sizes.smaller))
             TextBody2(
                 text = stringResource(
-                    id = R.string.account_setup_auto_config_status_disclaimer_untrusted_configuration,
+                    id = R.string.account_setup_auto_discovery_status_disclaimer_untrusted_configuration,
                 ),
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -94,7 +94,7 @@ internal fun EditConfigurationButton(
             .then(modifier),
     ) {
         ButtonText(
-            text = stringResource(id = R.string.account_setup_auto_config_status_edit_configuration_button_label),
+            text = stringResource(id = R.string.account_setup_auto_discovery_status_edit_configuration_button_label),
             onClick = onEditConfigurationClick,
             color = MainTheme.colors.warning,
             contentPadding = buttonContentPadding(

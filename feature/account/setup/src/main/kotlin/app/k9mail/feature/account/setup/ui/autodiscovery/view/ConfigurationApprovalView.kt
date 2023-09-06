@@ -24,7 +24,7 @@ internal fun ConfigurationApprovalView(
 
     CheckboxInput(
         text = stringResource(
-            id = R.string.account_setup_auto_config_status_checkbox_configuration_untrusted_confirmation_label,
+            id = R.string.account_setup_auto_discovery_status_checkbox_configuration_untrusted_confirmation_label,
         ),
         checked = approvalState.value ?: false,
         onCheckedChange = onConfigurationApprovalChange,
