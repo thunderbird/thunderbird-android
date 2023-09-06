@@ -10,10 +10,10 @@ import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.feature.account.common.ui.AccountTopAppBar
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.common.ui.preview.PreviewAccountStateRepository
 import app.k9mail.feature.account.setup.R
-import app.k9mail.feature.account.setup.ui.common.AccountSetupTopAppBar
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Effect
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.Event
 import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract.ViewModel
@@ -42,7 +42,7 @@ internal fun AccountOutgoingConfigScreen(
 
     Scaffold(
         topBar = {
-            AccountSetupTopAppBar(
+            AccountTopAppBar(
                 title = stringResource(id = R.string.account_setup_outgoing_config_top_bar_title),
             )
         },

@@ -1,22 +1,25 @@
-package app.k9mail.feature.account.setup.ui.common
+package app.k9mail.feature.account.common.ui
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.common.DevicePreviews
 import app.k9mail.core.ui.compose.designsystem.organism.TopAppBar
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
-import app.k9mail.feature.account.setup.R.string
+import app.k9mail.feature.account.common.R
 
 @Composable
-internal fun AccountSetupTopAppBar(
+fun AccountTopAppBar(
     title: String,
+    modifier: Modifier = Modifier,
 ) {
     TopAppBar(
         title = title,
-        subtitle = stringResource(id = string.account_setup_title),
+        modifier = modifier,
+        subtitle = stringResource(id = R.string.account_common_title),
         titleContentPadding = PaddingValues(
             start = MainTheme.spacings.double,
         ),
@@ -25,9 +28,9 @@ internal fun AccountSetupTopAppBar(
 
 @DevicePreviews
 @Composable
-internal fun AccountSetupTopAppBarK9Preview() {
+internal fun AccountTopAppBarK9Preview() {
     K9Theme {
-        AccountSetupTopAppBar(
+        AccountTopAppBar(
             title = "Title",
         )
     }
@@ -35,9 +38,9 @@ internal fun AccountSetupTopAppBarK9Preview() {
 
 @DevicePreviews
 @Composable
-internal fun AccountSetupTopAppBarThunderbirdPreview() {
+internal fun AccountTopAppBarThunderbirdPreview() {
     ThunderbirdTheme {
-        AccountSetupTopAppBar(
+        AccountTopAppBar(
             title = "Title",
         )
     }
