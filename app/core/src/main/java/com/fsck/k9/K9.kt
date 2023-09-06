@@ -505,6 +505,7 @@ object K9 : EarlyInit {
     const val MAIL_SERVICE_WAKE_LOCK_TIMEOUT = 60000
     const val BOOT_RECEIVER_WAKE_LOCK_TIMEOUT = 60000
 
+    @Suppress("ktlint:standard:class-naming")
     enum class BACKGROUND_OPS {
         ALWAYS, NEVER, WHEN_CHECKED_AUTO_SYNC
     }

@@ -24,7 +24,7 @@ object HostNameUtils {
          address in dotted-decimal ("#.#.#.#") form.  The host SHOULD check
          the string syntactically for a dotted-decimal number before
          looking it up in the Domain Name System.
-        */
+         */
 
         return isLegalIPAddress(hostName) ?: isLegalHostName(hostName)
     }
@@ -204,7 +204,7 @@ object HostNameUtils {
 
          Since a complete domain name ends with the root label, this leads to
          a printed form which ends in a dot.
-        */
+         */
 
         return hostName.takeIf { hostName.length <= 255 && HOST_PATTERN.matches(hostName) }
     }
