@@ -74,8 +74,6 @@ private fun getHorizontalArrangement(state: WizardNavigationBarState): Arrangeme
 internal fun WizardNavigationBarK9Preview() {
     K9Theme {
         WizardNavigationBar(
-            nextButtonText = "Next",
-            backButtonText = "Back",
             onNextClick = {},
             onBackClick = {},
         )
@@ -87,8 +85,6 @@ internal fun WizardNavigationBarK9Preview() {
 internal fun WizardNavigationBarPreview() {
     PreviewWithThemes {
         WizardNavigationBar(
-            nextButtonText = "Next",
-            backButtonText = "Back",
             onNextClick = {},
             onBackClick = {},
         )
@@ -100,8 +96,6 @@ internal fun WizardNavigationBarPreview() {
 internal fun WizardNavigationBarDisabledPreview() {
     PreviewWithThemes {
         WizardNavigationBar(
-            nextButtonText = "Next",
-            backButtonText = "Back",
             onNextClick = {},
             onBackClick = {},
             state = WizardNavigationBarState(
@@ -117,8 +111,6 @@ internal fun WizardNavigationBarDisabledPreview() {
 internal fun WizardNavigationBarHideNextPreview() {
     PreviewWithThemes {
         WizardNavigationBar(
-            nextButtonText = "Next",
-            backButtonText = "Back",
             onNextClick = {},
             onBackClick = {},
             state = WizardNavigationBarState(
@@ -133,8 +125,6 @@ internal fun WizardNavigationBarHideNextPreview() {
 internal fun WizardNavigationBarHideBackPreview() {
     PreviewWithThemes {
         WizardNavigationBar(
-            nextButtonText = "Next",
-            backButtonText = "Back",
             onNextClick = {},
             onBackClick = {},
             state = WizardNavigationBarState(
