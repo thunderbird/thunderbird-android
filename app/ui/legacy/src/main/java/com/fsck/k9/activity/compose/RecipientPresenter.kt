@@ -144,7 +144,7 @@ class RecipientPresenter(
             recipientMvpView.showBccInvalidError()
             return true
         }
-        
+
         if (recipientMvpView.recipientBccHasUncompletedText()) {
             recipientMvpView.showBccUncompletedError()
             return true
