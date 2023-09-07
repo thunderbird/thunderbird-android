@@ -135,6 +135,16 @@ class RecipientPresenter(
             return true
         }
 
+        if (!recipientMvpView.recipientCcIsValid()) {
+            recipientMvpView.showCcInvalidError()
+            return true
+        }
+
+        if (!recipientMvpView.recipientBccIsValid()) {
+            recipientMvpView.showBccInvalidError()
+            return true
+        }
+        
         if (recipientMvpView.recipientBccHasUncompletedText()) {
             recipientMvpView.showBccUncompletedError()
             return true
