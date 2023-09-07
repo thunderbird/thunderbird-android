@@ -312,7 +312,7 @@ class RecipientMvpView(private val activity: MessageCompose) : View.OnFocusChang
     fun showBccInvalidError() {
         bccView.error = toView.context.getString(R.string.message_compose_error_invalid_recipient)
     }
-    
+
     fun showCcUncompletedError() {
         ccView.error = ccView.context.getString(R.string.compose_error_incomplete_recipient)
     }
