@@ -15,16 +15,16 @@ internal fun LazyListScope.contentItems(
 ) {
     if (state.configStep != ConfigStep.EMAIL_ADDRESS) {
         item(key = "autodiscovery") {
-            AutoDiscoveryStatusItem(
+            AutoDiscoveryResultItem(
                 autoDiscoverySettings = state.autoDiscoverySettings,
                 onEditConfigurationClick = { onEvent(Event.OnEditConfigurationClicked) },
             )
         }
         if (state.autoDiscoverySettings != null && state.autoDiscoverySettings.isTrusted.not()) {
-            item(key = "config_approval") {
-                ConfigurationApprovalItem(
+            item(key = "result_approval") {
+                AutoDiscoveryResultApprovalItem(
                     approvalState = state.configurationApproved,
-                    onConfigurationApprovalChange = { onEvent(Event.ConfigurationApprovalChanged(it)) },
+                    onApprovalChange = { onEvent(Event.ResultApprovalChanged(it)) },
                 )
             }
         }

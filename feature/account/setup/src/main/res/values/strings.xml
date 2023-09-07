@@ -1,73 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_setup_title">K-9 Mail</string>
-    <string name="account_setup_button_next">Next</string>
-    <string name="account_setup_button_back">Back</string>
     <string name="account_setup_button_finish">Finish</string>
-    <string name="account_setup_connection_security_none">None</string>
-    <string name="account_setup_connection_security_ssl">SSL/TLS</string>
-    <string name="account_setup_connection_security_start_tls">StartTLS</string>
-    <string name="account_setup_authentication_none">None</string>
-    <string name="account_setup_authentication_password_cleartext">Normal password</string>
-    <string name="account_setup_authentication_password_encrypted">Encrypted password</string>
-    <string name="account_setup_authentication_client_certificate">Client certificate</string>
-    <string name="account_setup_authentication_client_oauth">OAuth 2.0</string>
-    <string name="account_setup_client_certificate_label">Client certificate</string>
-    <string name="account_setup_client_certificate_none_selected">None</string>
 
     <string name="account_setup_error_network">Network </string>
     <string name="account_setup_error_unknown">Unknown error</string>
 
-    <string name="account_setup_validation_error_email_address_required">Email address is required.</string>
-    <string name="account_setup_validation_error_email_address_invalid">Email address is invalid.</string>
-    <string name="account_setup_validation_error_server_required">Server name is required.</string>
-    <string name="account_setup_validation_error_port_required">Port is required.</string>
-    <string name="account_setup_validation_error_port_invalid">Port is invalid (must be 1–65535).</string>
-    <string name="account_setup_validation_error_username_required">Username is required.</string>
-    <string name="account_setup_validation_error_password_required">Password is required.</string>
-    <string name="account_setup_validation_error_imap_prefix_blank">Imap prefix can\'t be blank.</string>
-
-    <string name="account_setup_settings_validation_error_authentication">Authentication error</string>
-    <string name="account_setup_settings_validation_error_certificate">Certificate error</string>
-    <string name="account_setup_settings_validation_error_network">Network error</string>
-    <string name="account_setup_settings_validation_error_server">Server error</string>
-    <string name="account_setup_settings_validation_error_unknown">Unknown error</string>
-    <string name="account_setup_settings_validation_incoming_loading_message">Checking incoming server settings…</string>
-    <string name="account_setup_settings_validation_incoming_loading_error">Checking incoming server settings failed!</string>
-    <string name="account_setup_settings_validation_incoming_success">Incoming server settings are valid!</string>
-    <string name="account_setup_settings_validation_outgoing_loading_message">Checking outgoing server settings…</string>
-    <string name="account_setup_settings_validation_outgoing_loading_error">Checking outgoing server settings failed!</string>
-    <string name="account_setup_settings_validation_outgoing_success">Outgoing server settings are valid!</string>
-    <string name="account_setup_settings_validation_sign_in">Please sign in</string>
-
-    <string name="account_setup_auto_config_loading_message">Finding email details</string>
-    <string name="account_setup_auto_config_loading_error">Failed to load email configuration</string>
-    <string name="account_setup_auto_config_status_header_title_configuration_found">Configuration Found</string>
-    <string name="account_setup_auto_config_status_header_title_configuration_not_found">Configuration Not Found</string>
-    <string name="account_setup_auto_config_status_header_subtitle_configuration_trusted">Configure automatically</string>
-    <string name="account_setup_auto_config_status_header_subtitle_configuration_untrusted">This configuration is not trusted</string>
-    <string name="account_setup_auto_config_status_disclaimer_untrusted_configuration">We received the configuration for your email server over a connection that isn\'t as secure as we\'d like. This means that there is a tiny chance that someone could have altered it. Could you please double-check the provided configuration to make sure it\'s as it should be?</string>
-    <string name="account_setup_auto_config_status_header_subtitle_configuration_not_found">Configure manually</string>
-    <string name="account_setup_auto_config_status_edit_configuration_button_label">Edit configuration</string>
-    <string name="account_setup_auto_config_status_checkbox_configuration_untrusted_confirmation_label">I trust this configuration</string>
-    <string name="account_setup_error_configuration_approval_required">It is required to approve the configuration.</string>
-
-    <string name="account_setup_incoming_config_top_bar_title">Incoming server settings</string>
-    <string name="account_setup_incoming_config_protocol_type_label">Protocol</string>
-    <string name="account_setup_incoming_config_server_label">Server</string>
-    <string name="account_setup_incoming_config_security_label">Security</string>
-    <string name="account_setup_incoming_config_authentication_label">Authentication</string>
-    <string name="account_setup_incoming_config_imap_namespace_label">Auto-detect IMAP namespace</string>
-    <string name="account_setup_incoming_config_imap_prefix_label">IMAP path prefix</string>
-    <string name="account_setup_incoming_config_imap_compression_label">Use compression</string>
-    <string name="account_setup_incoming_config_imap_send_client_id_label">Send client ID</string>
-
-    <string name="account_setup_outgoing_config_top_bar_title">Outgoing server settings</string>
-    <string name="account_setup_outgoing_config_server_label">Server</string>
-    <string name="account_setup_outgoing_config_security_label">Security</string>
-    <string name="account_setup_outgoing_config_port_label">Port</string>
-    <string name="account_setup_outgoing_config_authentication_label">Authentication</string>
-    <string name="account_setup_outgoing_config_username_label">Username</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_loading_message">Finding email details</string>
+    <string name="account_setup_auto_discovery_loading_error">Failed to load email configuration</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Configuration Found</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Configuration Not Found</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Configure automatically</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">This configuration is not trusted</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">We received the configuration for your email server over a connection that isn\'t as secure as we\'d like. This means that there is a tiny chance that someone could have altered it. Could you please double-check the provided configuration to make sure it\'s as it should be?</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Configure manually</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Edit configuration</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">I trust this configuration</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">It is required to approve the configuration.</string>
 
     <string name="account_setup_options_top_bar_title">Account options</string>
     <string name="account_setup_options_section_display_options">Display options</string>

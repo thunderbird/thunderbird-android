@@ -4,15 +4,15 @@ import android.content.Context
 import app.k9mail.core.common.oauth.OAuthConfigurationFactory
 import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
+import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract
+import app.k9mail.feature.account.server.config.ui.incoming.AccountIncomingConfigContract
+import app.k9mail.feature.account.server.config.ui.outgoing.AccountOutgoingConfigContract
+import app.k9mail.feature.account.server.validation.ui.ServerValidationContract
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
 import app.k9mail.feature.account.setup.ui.AccountSetupContract
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
-import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
-import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
-import app.k9mail.feature.account.setup.ui.servercertificate.CertificateErrorContract
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract
 import com.fsck.k9.mail.oauth.AuthStateStorage
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.oauth.OAuth2TokenProviderFactory
@@ -64,12 +64,12 @@ class AccountSetupModuleKtTest : KoinTest {
                 AccountSetupContract.State::class,
                 AccountAutoDiscoveryContract.State::class,
                 AccountOAuthContract.State::class,
-                AccountValidationContract.State::class,
+                ServerValidationContract.State::class,
                 AccountIncomingConfigContract.State::class,
                 AccountOutgoingConfigContract.State::class,
                 AccountOptionsContract.State::class,
                 AccountState::class,
-                CertificateErrorContract.State::class,
+                ServerCertificateErrorContract.State::class,
                 AuthStateStorage::class,
                 Context::class,
                 Boolean::class,

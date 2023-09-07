@@ -10,10 +10,10 @@ import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.feature.account.common.ui.AccountTopAppBar
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.common.ui.preview.PreviewAccountStateRepository
 import app.k9mail.feature.account.setup.R.string
-import app.k9mail.feature.account.setup.ui.common.AccountSetupTopAppBar
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Effect
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Event
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.ViewModel
@@ -42,14 +42,13 @@ internal fun AccountOptionsScreen(
 
     Scaffold(
         topBar = {
-            AccountSetupTopAppBar(
+            AccountTopAppBar(
                 title = stringResource(id = string.account_setup_options_top_bar_title),
             )
         },
         bottomBar = {
             WizardNavigationBar(
                 nextButtonText = stringResource(id = string.account_setup_button_finish),
-                backButtonText = stringResource(id = string.account_setup_button_back),
                 onNextClick = { dispatch(Event.OnNextClicked) },
                 onBackClick = { dispatch(Event.OnBackClicked) },
             )

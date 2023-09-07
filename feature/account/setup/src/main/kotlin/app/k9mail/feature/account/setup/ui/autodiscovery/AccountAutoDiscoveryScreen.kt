@@ -46,8 +46,6 @@ internal fun AccountAutoDiscoveryScreen(
         },
         bottomBar = {
             WizardNavigationBar(
-                nextButtonText = stringResource(id = R.string.account_setup_button_next),
-                backButtonText = stringResource(id = R.string.account_setup_button_back),
                 onNextClick = { dispatch(Event.OnNextClicked) },
                 onBackClick = { dispatch(Event.OnBackClicked) },
                 state = WizardNavigationBarState(showNext = state.value.isNextButtonVisible),

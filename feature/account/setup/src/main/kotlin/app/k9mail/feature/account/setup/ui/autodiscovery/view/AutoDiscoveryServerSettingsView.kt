@@ -27,7 +27,6 @@ import app.k9mail.core.ui.compose.theme.Icons
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 import app.k9mail.feature.account.setup.ui.autodiscovery.toResourceString
-import app.k9mail.feature.account.setup.ui.common.toResourceString
 
 @Composable
 internal fun AutoDiscoveryServerSettingsView(

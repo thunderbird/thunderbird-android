@@ -2,9 +2,9 @@ package app.k9mail.feature.account.setup.ui.options
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
+import app.k9mail.feature.account.common.domain.input.StringInputField
 import app.k9mail.feature.account.setup.domain.entity.EmailCheckFrequency
 import app.k9mail.feature.account.setup.domain.entity.EmailDisplayCount
-import app.k9mail.feature.account.setup.domain.input.StringInputField
 
 interface AccountOptionsContract {
 
