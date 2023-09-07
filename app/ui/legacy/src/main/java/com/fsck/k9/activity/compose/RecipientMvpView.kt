@@ -268,7 +268,7 @@ class RecipientMvpView(private val activity: MessageCompose) : View.OnFocusChang
     fun recipientToIsValid(): Boolean {
         return toView.hasValidEmail(toView.text.toString())
     }
-    
+
     fun recipientCcIsValid(): Boolean {
         return ccView.hasValidEmail(ccView.text.toString())
     }
@@ -276,7 +276,7 @@ class RecipientMvpView(private val activity: MessageCompose) : View.OnFocusChang
     fun recipientBccIsValid(): Boolean {
         return bccView.hasValidEmail(bccView.text.toString())
     }
-    
+
     fun recipientCcHasUncompletedText(): Boolean {
         return ccView.hasUncompletedText()
     }
