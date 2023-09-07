@@ -5,12 +5,12 @@ import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
+import app.k9mail.feature.account.common.domain.AccountDomainContract
+import app.k9mail.feature.account.common.domain.input.StringInputField
 import app.k9mail.feature.account.oauth.domain.entity.OAuthResult
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
-import app.k9mail.feature.account.setup.domain.DomainContract
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
 import app.k9mail.feature.account.setup.domain.entity.AutoDiscoveryAuthenticationType
-import app.k9mail.feature.account.setup.domain.input.StringInputField
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.ConfigStep
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Effect
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Error
@@ -24,7 +24,7 @@ internal class AccountAutoDiscoveryViewModel(
     initialState: State = State(),
     private val validator: Validator,
     private val getAutoDiscovery: UseCase.GetAutoDiscovery,
-    private val accountSetupStateRepository: DomainContract.AccountSetupStateRepository,
+    private val accountStateRepository: AccountDomainContract.AccountStateRepository,
     override val oAuthViewModel: AccountOAuthContract.ViewModel,
 ) : BaseViewModel<State, Event, Effect>(initialState), AccountAutoDiscoveryContract.ViewModel {
 
@@ -38,7 +38,7 @@ internal class AccountAutoDiscoveryViewModel(
         when (event) {
             is Event.EmailAddressChanged -> changeEmailAddress(event.emailAddress)
             is Event.PasswordChanged -> changePassword(event.password)
-            is Event.ConfigurationApprovalChanged -> changeConfigurationApproval(event.confirmed)
+            is Event.ResultApprovalChanged -> changeConfigurationApproval(event.confirmed)
             is Event.OnOAuthResult -> onOAuthResult(event.result)
 
             Event.OnNextClicked -> onNext()
@@ -51,7 +51,7 @@ internal class AccountAutoDiscoveryViewModel(
     }
 
     private fun changeEmailAddress(emailAddress: String) {
-        accountSetupStateRepository.clear()
+        accountStateRepository.clear()
         updateState {
             State(
                 emailAddress = StringInputField(value = emailAddress),
@@ -250,7 +250,7 @@ internal class AccountAutoDiscoveryViewModel(
     private fun navigateBack() = emitEffect(Effect.NavigateBack)
 
     private fun navigateNext(isAutomaticConfig: Boolean) {
-        accountSetupStateRepository.save(state.value.toAccountSetupState())
+        accountStateRepository.save(state.value.toAccountState())
 
         emitEffect(Effect.NavigateNext(isAutomaticConfig))
     }

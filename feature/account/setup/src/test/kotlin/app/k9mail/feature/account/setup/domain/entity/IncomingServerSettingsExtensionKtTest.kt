@@ -4,6 +4,7 @@ import app.k9mail.autodiscovery.api.AuthenticationType
 import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.core.common.net.toHostname
 import app.k9mail.core.common.net.toPort
+import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import org.junit.Test

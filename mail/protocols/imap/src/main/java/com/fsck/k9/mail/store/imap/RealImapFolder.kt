@@ -100,7 +100,8 @@ internal class RealImapFolder(
             try {
                 return executeSimpleCommand(Commands.NOOP)
             } catch (ioe: IOException) {
-                /* don't throw */ ioExceptionHandler(connection, ioe)
+                /* don't throw */
+                ioExceptionHandler(connection, ioe)
             }
         }
 

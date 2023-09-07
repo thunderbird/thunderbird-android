@@ -1,6 +1,6 @@
 package app.k9mail.feature.account.setup
 
-import app.k9mail.feature.account.setup.domain.entity.Account
+import app.k9mail.feature.account.common.domain.entity.Account
 
 interface AccountSetupExternalContract {
 

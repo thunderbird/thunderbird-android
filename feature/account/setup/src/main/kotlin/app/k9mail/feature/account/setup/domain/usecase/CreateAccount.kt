@@ -1,10 +1,10 @@
 package app.k9mail.feature.account.setup.domain.usecase
 
+import app.k9mail.feature.account.common.domain.entity.Account
+import app.k9mail.feature.account.common.domain.entity.AccountOptions
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
-import app.k9mail.feature.account.setup.domain.entity.Account
-import app.k9mail.feature.account.setup.domain.entity.AccountOptions
 import com.fsck.k9.mail.ServerSettings
 
 class CreateAccount(

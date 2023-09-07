@@ -17,10 +17,12 @@ object MimeHeaderEncoder {
     }
 
     private fun exceedsRecommendedLineLength(name: String, value: String): Boolean {
-        return name.length + 2 /* colon + space */ + value.length > RECOMMENDED_MAX_LINE_LENGTH
+        return name.length + COLON_PLUS_SPACE_LENGTH + value.length > RECOMMENDED_MAX_LINE_LENGTH
     }
 
     private fun charactersNeedEncoding(text: String): Boolean {
         return text.any { !it.isVChar() && !it.isWspOrCrlf() }
     }
+
+    private const val COLON_PLUS_SPACE_LENGTH = 2
 }

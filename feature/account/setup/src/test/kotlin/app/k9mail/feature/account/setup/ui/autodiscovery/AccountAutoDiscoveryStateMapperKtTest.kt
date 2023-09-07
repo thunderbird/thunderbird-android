@@ -5,17 +5,17 @@ import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
 import app.k9mail.core.common.net.toHostname
 import app.k9mail.core.common.net.toPort
-import app.k9mail.feature.account.setup.domain.entity.AccountSetupState
-import app.k9mail.feature.account.setup.domain.entity.AuthenticationType
+import app.k9mail.feature.account.common.domain.entity.AccountState
+import app.k9mail.feature.account.common.domain.entity.AuthenticationType
+import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
+import app.k9mail.feature.account.common.domain.input.NumberInputField
+import app.k9mail.feature.account.common.domain.input.StringInputField
+import app.k9mail.feature.account.server.config.ui.incoming.AccountIncomingConfigContract
+import app.k9mail.feature.account.server.config.ui.outgoing.AccountOutgoingConfigContract
 import app.k9mail.feature.account.setup.domain.entity.AutoDiscoveryAuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.AutoDiscoveryConnectionSecurity
-import app.k9mail.feature.account.setup.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.setup.domain.entity.toConnectionSecurity
-import app.k9mail.feature.account.setup.domain.input.NumberInputField
-import app.k9mail.feature.account.setup.domain.input.StringInputField
-import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
-import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import org.junit.Test
@@ -23,11 +23,11 @@ import org.junit.Test
 class AccountAutoDiscoveryStateMapperKtTest {
 
     @Test
-    fun `should map to empty AccountSetupState when empty`() {
-        val accountSetupState = EMPTY_STATE.toAccountSetupState()
+    fun `should map to empty AccountState when empty`() {
+        val accountState = EMPTY_STATE.toAccountState()
 
-        assertThat(accountSetupState).isEqualTo(
-            AccountSetupState(
+        assertThat(accountState).isEqualTo(
+            AccountState(
                 emailAddress = "",
                 incomingServerSettings = null,
                 outgoingServerSettings = null,

@@ -3,8 +3,17 @@ package app.k9mail.feature.account.setup.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.common.mvi.observe
-import app.k9mail.feature.account.setup.NAME_INCOMING_VALIDATION
-import app.k9mail.feature.account.setup.NAME_OUTGOING_VALIDATION
+import app.k9mail.feature.account.server.config.ui.incoming.AccountIncomingConfigContract
+import app.k9mail.feature.account.server.config.ui.incoming.AccountIncomingConfigScreen
+import app.k9mail.feature.account.server.config.ui.incoming.AccountIncomingConfigViewModel
+import app.k9mail.feature.account.server.config.ui.outgoing.AccountOutgoingConfigContract
+import app.k9mail.feature.account.server.config.ui.outgoing.AccountOutgoingConfigScreen
+import app.k9mail.feature.account.server.config.ui.outgoing.AccountOutgoingConfigViewModel
+import app.k9mail.feature.account.server.validation.KOIN_NAME_INCOMING_SERVER_VALIDATION
+import app.k9mail.feature.account.server.validation.KOIN_NAME_OUTGOING_SERVER_VALIDATION
+import app.k9mail.feature.account.server.validation.ui.ServerValidationContract
+import app.k9mail.feature.account.server.validation.ui.ServerValidationScreen
+import app.k9mail.feature.account.server.validation.ui.ServerValidationViewModel
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Event
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
@@ -12,18 +21,9 @@ import app.k9mail.feature.account.setup.ui.AccountSetupContract.ViewModel
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryScreen
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryViewModel
-import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigContract
-import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigScreen
-import app.k9mail.feature.account.setup.ui.incoming.AccountIncomingConfigViewModel
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsScreen
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsViewModel
-import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigContract
-import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigScreen
-import app.k9mail.feature.account.setup.ui.outgoing.AccountOutgoingConfigViewModel
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationContract
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationScreen
-import app.k9mail.feature.account.setup.ui.validation.AccountValidationViewModel
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.qualifier.named
 
@@ -35,12 +35,12 @@ fun AccountSetupScreen(
     viewModel: ViewModel = koinViewModel<AccountSetupViewModel>(),
     autoDiscoveryViewModel: AccountAutoDiscoveryContract.ViewModel = koinViewModel<AccountAutoDiscoveryViewModel>(),
     incomingViewModel: AccountIncomingConfigContract.ViewModel = koinViewModel<AccountIncomingConfigViewModel>(),
-    incomingValidationViewModel: AccountValidationContract.ViewModel = koinViewModel<AccountValidationViewModel>(
-        named(NAME_INCOMING_VALIDATION),
+    incomingValidationViewModel: ServerValidationContract.ViewModel = koinViewModel<ServerValidationViewModel>(
+        named(KOIN_NAME_INCOMING_SERVER_VALIDATION),
     ),
     outgoingViewModel: AccountOutgoingConfigContract.ViewModel = koinViewModel<AccountOutgoingConfigViewModel>(),
-    outgoingValidationViewModel: AccountValidationContract.ViewModel = koinViewModel<AccountValidationViewModel>(
-        named(NAME_OUTGOING_VALIDATION),
+    outgoingValidationViewModel: ServerValidationContract.ViewModel = koinViewModel<ServerValidationViewModel>(
+        named(KOIN_NAME_OUTGOING_SERVER_VALIDATION),
     ),
     optionsViewModel: AccountOptionsContract.ViewModel = koinViewModel<AccountOptionsViewModel>(),
 ) {
@@ -75,7 +75,7 @@ fun AccountSetupScreen(
         }
 
         SetupStep.INCOMING_VALIDATION -> {
-            AccountValidationScreen(
+            ServerValidationScreen(
                 onNext = { dispatch(Event.OnNext) },
                 onBack = { dispatch(Event.OnBack) },
                 viewModel = incomingValidationViewModel,
@@ -91,7 +91,7 @@ fun AccountSetupScreen(
         }
 
         SetupStep.OUTGOING_VALIDATION -> {
-            AccountValidationScreen(
+            ServerValidationScreen(
                 onNext = { dispatch(Event.OnNext) },
                 onBack = { dispatch(Event.OnBack) },
                 viewModel = outgoingValidationViewModel,

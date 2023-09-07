@@ -1,6 +1,6 @@
 package app.k9mail.feature.account.oauth.domain.usecase
 
-import app.k9mail.feature.account.oauth.domain.DomainContract.UseCase
+import app.k9mail.feature.account.oauth.domain.AccountOAuthDomainContract.UseCase
 
 internal class CheckIsGoogleSignIn : UseCase.CheckIsGoogleSignIn {
     override fun execute(hostname: String): Boolean {

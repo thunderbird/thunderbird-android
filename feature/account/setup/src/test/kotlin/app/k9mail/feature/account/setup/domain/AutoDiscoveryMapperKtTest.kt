@@ -8,7 +8,7 @@ import app.k9mail.autodiscovery.api.OutgoingServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
 import app.k9mail.core.common.net.Hostname
 import app.k9mail.core.common.net.Port
-import app.k9mail.feature.account.setup.domain.entity.MailConnectionSecurity
+import app.k9mail.feature.account.common.domain.entity.MailConnectionSecurity
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.AuthType

@@ -1,9 +1,9 @@
 package app.k9mail.feature.account.oauth.data
 
-import app.k9mail.feature.account.oauth.domain.DomainContract
-import app.k9mail.feature.account.oauth.domain.entity.AuthorizationState
+import app.k9mail.feature.account.common.domain.entity.AuthorizationState
+import app.k9mail.feature.account.oauth.domain.AccountOAuthDomainContract
 
-class AuthorizationStateRepository : DomainContract.AuthorizationStateRepository {
+class AuthorizationStateRepository : AccountOAuthDomainContract.AuthorizationStateRepository {
     override fun isAuthorized(authorizationState: AuthorizationState): Boolean {
         val authState = authorizationState.toAuthState()
 

@@ -5,22 +5,20 @@ import app.k9mail.core.common.domain.usecase.validation.ValidationError
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
-import app.k9mail.feature.account.setup.data.InMemoryAccountSetupStateRepository
+import app.k9mail.feature.account.common.data.InMemoryAccountStateRepository
+import app.k9mail.feature.account.common.domain.input.StringInputField
 import app.k9mail.feature.account.setup.domain.entity.EmailCheckFrequency
 import app.k9mail.feature.account.setup.domain.entity.EmailDisplayCount
-import app.k9mail.feature.account.setup.domain.input.StringInputField
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Effect
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Event
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.State
 import assertk.assertThat
 import assertk.assertions.assertThatAndTurbinesConsumed
 import assertk.assertions.isEqualTo
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class AccountOptionsViewModelTest {
 
     @get:Rule
@@ -28,7 +26,7 @@ class AccountOptionsViewModelTest {
 
     private val testSubject = AccountOptionsViewModel(
         validator = FakeAccountOptionsValidator(),
-        accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
+        accountStateRepository = InMemoryAccountStateRepository(),
     )
 
     @Test
@@ -137,7 +135,7 @@ class AccountOptionsViewModelTest {
                 validator = FakeAccountOptionsValidator(
                     accountNameAnswer = ValidationResult.Failure(TestError),
                 ),
-                accountSetupStateRepository = InMemoryAccountSetupStateRepository(),
+                accountStateRepository = InMemoryAccountStateRepository(),
             )
             val stateTurbine = viewModel.state.testIn(backgroundScope)
             val effectTurbine = viewModel.effect.testIn(backgroundScope)

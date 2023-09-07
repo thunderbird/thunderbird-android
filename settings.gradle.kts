@@ -40,10 +40,19 @@ include(
 
 include(
     ":feature:launcher",
-    ":feature:account:common",
-    ":feature:account:setup",
-    ":feature:account:oauth",
     ":feature:onboarding",
+)
+
+include(
+    ":feature:account:common",
+    ":feature:account:oauth",
+    ":feature:account:setup",
+    ":feature:account:server:certificate",
+    ":feature:account:server:config",
+    ":feature:account:server:validation",
+)
+
+include(
     ":feature:autodiscovery:api",
     ":feature:autodiscovery:providersxml",
     ":feature:autodiscovery:srvrecords",

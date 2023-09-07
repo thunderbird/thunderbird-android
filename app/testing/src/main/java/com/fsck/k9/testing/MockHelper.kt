@@ -17,7 +17,7 @@ object MockHelper {
         }
     }
 
-    inline fun <reified T> mockBuilder(stubbing: KStubbing<T>.(T) -> Unit = {}): T {
+    inline fun <reified T : Any> mockBuilder(stubbing: KStubbing<T>.(T) -> Unit = {}): T {
         return mockBuilder(T::class.java).apply { KStubbing(this).stubbing(this) }
     }
 }

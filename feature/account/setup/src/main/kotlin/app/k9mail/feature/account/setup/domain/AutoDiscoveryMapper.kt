@@ -4,10 +4,10 @@ import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.IncomingServerSettings
 import app.k9mail.autodiscovery.api.OutgoingServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
-import app.k9mail.feature.account.setup.domain.entity.toAuthType
+import app.k9mail.feature.account.common.domain.entity.toAuthType
+import app.k9mail.feature.account.common.domain.entity.toMailConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.toAuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.toConnectionSecurity
-import app.k9mail.feature.account.setup.domain.entity.toMailConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 
 internal fun IncomingServerSettings.toServerSettings(password: String?): ServerSettings {

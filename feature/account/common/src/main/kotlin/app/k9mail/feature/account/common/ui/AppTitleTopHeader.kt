@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -18,11 +19,12 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline2
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
+import app.k9mail.feature.account.common.R
 
 @Composable
 fun AppTitleTopHeader(
-    title: String,
     modifier: Modifier = Modifier,
+    title: String = stringResource(id = R.string.account_common_title),
 ) {
     ResponsiveWidthContainer(
         modifier = Modifier
@@ -64,6 +66,6 @@ fun AppTitleTopHeader(
 @Composable
 internal fun AppTitleTopHeaderPreview() {
     PreviewWithThemes {
-        AppTitleTopHeader("Title")
+        AppTitleTopHeader(title = "Title")
     }
 }

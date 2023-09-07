@@ -7,6 +7,7 @@ plugins {
 configure<SpotlessExtension> {
     kotlin {
         ktlint(libs.versions.ktlint.get())
+            .userData(mapOf("android" to "true"))
         target("**/*.kt")
         targetExclude("**/build/", "**/resources/", "plugins/openpgp-api-lib/")
     }
