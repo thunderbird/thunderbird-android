@@ -150,7 +150,7 @@ android {
         }
     }
 
-    packagingOptions {
+    packaging {
         jniLibs {
             excludes += listOf("kotlin/**")
         }

@@ -36,7 +36,7 @@ private const val ASTERISK = "*"
 
 @Preview(showBackground = true)
 @Composable
-fun TextFieldLabelPreview() {
+internal fun TextFieldLabelPreview() {
     PreviewWithThemes {
         TextFieldLabel(
             label = "Label",
@@ -47,7 +47,7 @@ fun TextFieldLabelPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun TextFieldLabelRequiredPreview() {
+internal fun TextFieldLabelRequiredPreview() {
     PreviewWithThemes {
         TextFieldLabel(
             label = "Label",
@@ -58,7 +58,7 @@ fun TextFieldLabelRequiredPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun TextFieldLabelRequiredEmptyLabelPreview() {
+internal fun TextFieldLabelRequiredEmptyLabelPreview() {
     PreviewWithThemes {
         TextFieldLabel(
             label = "",

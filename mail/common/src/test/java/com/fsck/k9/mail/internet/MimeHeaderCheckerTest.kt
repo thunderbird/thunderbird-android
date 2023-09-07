@@ -58,25 +58,27 @@ class MimeHeaderCheckerTest {
 
     @Test
     fun singleLineAtMaximumLineLength() {
-        val longText = "x".repeat(998 /* text limit */ - 4 /* Test */ - 2 /* colon, space */)
+        val test = 4
+        val longText = "x".repeat(MAXIMUM_LINE_LENGTH - test - COLON_PLUS_SPACE_LENGTH)
         assertValidHeader("Test: $longText")
     }
 
     @Test
     fun firstLineAtMaximumLineLength() {
-        val longText = "x".repeat(998 /* text limit */ - 4 /* Test */ - 2 /* colon, space */)
+        val test = 4
+        val longText = "x".repeat(MAXIMUM_LINE_LENGTH - test - COLON_PLUS_SPACE_LENGTH)
         assertValidHeader("Test: $longText\r\n Text")
     }
 
     @Test
     fun middleLineAtMaximumLineLength() {
-        val longText = "x".repeat(998 - 1 /* space */)
+        val longText = "x".repeat(MAXIMUM_LINE_LENGTH - SPACE_LENGTH)
         assertValidHeader("Test: One\r\n $longText\r\n Three")
     }
 
     @Test
     fun lastLineAtMaximumLineLength() {
-        val longText = "x".repeat(998 - 1 /* space */)
+        val longText = "x".repeat(MAXIMUM_LINE_LENGTH - SPACE_LENGTH)
         assertValidHeader("Test: One\r\n $longText")
     }
 
@@ -92,7 +94,7 @@ class MimeHeaderCheckerTest {
 
     @Test
     fun headerNameExceedingLineLimit() {
-        val longName = "x".repeat(998 - 2 /* space, colon */ + 1)
+        val longName = "x".repeat(MAXIMUM_LINE_LENGTH - COLON_PLUS_SPACE_LENGTH + 1)
         assertInvalidHeader("$longName: ")
     }
 
@@ -173,25 +175,28 @@ class MimeHeaderCheckerTest {
 
     @Test
     fun singleLineExceedingLineLength() {
-        val longText = "x".repeat(998 /* text limit */ - 4 /* Test */ - 2 /* colon, space */ + 1)
+        val test = 4
+
+        val longText = "x".repeat(MAXIMUM_LINE_LENGTH - test - COLON_PLUS_SPACE_LENGTH + 1)
         assertInvalidHeader("Test: $longText")
     }
 
     @Test
     fun firstLineExceedingLineLength() {
-        val longText = "x".repeat(998 /* text limit */ - 4 /* Test */ - 2 /* colon, space */ + 1)
+        val test = 4
+        val longText = "x".repeat(MAXIMUM_LINE_LENGTH - test - COLON_PLUS_SPACE_LENGTH + 1)
         assertInvalidHeader("Test: $longText\r\n Text")
     }
 
     @Test
     fun middleLineExceedingLineLength() {
-        val longText = "x".repeat(998 - 1 /* space */ + 1)
+        val longText = "x".repeat(MAXIMUM_LINE_LENGTH - SPACE_LENGTH + 1)
         assertInvalidHeader("Test: One\r\n $longText\r\n Three")
     }
 
     @Test
     fun lastLineExceedingLineLength() {
-        val longText = "x".repeat(998 - 1 /* space */ + 1)
+        val longText = "x".repeat(MAXIMUM_LINE_LENGTH - SPACE_LENGTH + 1)
         assertInvalidHeader("Test: One\r\n $longText")
     }
 
@@ -207,5 +212,11 @@ class MimeHeaderCheckerTest {
         assertFailure {
             MimeHeaderChecker.checkHeader(name, value)
         }.isInstanceOf<MimeHeaderParserException>()
+    }
+
+    private companion object {
+        private const val MAXIMUM_LINE_LENGTH = 998
+        private const val COLON_PLUS_SPACE_LENGTH = 2
+        private const val SPACE_LENGTH = 1
     }
 }

@@ -35,7 +35,7 @@ fun DrawerCategoryItem(
 
 @Preview
 @Composable
-fun DrawerCategoryItemPreview() {
+internal fun DrawerCategoryItemPreview() {
     PreviewWithThemes {
         DrawerCategoryItem(
             text = "Text",

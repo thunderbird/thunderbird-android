@@ -59,7 +59,8 @@ internal object NotificationIds {
     }
 
     private fun getBaseNotificationId(account: Account): Int {
-        return 1 /* skip notification ID 0 */ + NUMBER_OF_GENERAL_NOTIFICATIONS +
+        /* skip notification ID 0 */
+        return 1 + NUMBER_OF_GENERAL_NOTIFICATIONS +
             account.accountNumber * NUMBER_OF_NOTIFICATIONS_PER_ACCOUNT
     }
 }

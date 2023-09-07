@@ -13,6 +13,12 @@ object MimeParameterEncoder {
 
     private const val ENCODED_VALUE_PREFIX = "UTF-8''"
 
+    private const val FOLDING_SPACE_LENGTH = 1
+    private const val EQUAL_SIGN_LENGTH = 1
+    private const val SEMICOLON_LENGTH = 1
+    private const val QUOTES_LENGTH = 2
+    private const val ASTERISK_LENGTH = 1
+
     /**
      * Create header field value with parameters encoded if necessary.
      */
@@ -35,9 +41,9 @@ object MimeParameterEncoder {
     }
 
     private fun StringBuilder.encodeAndAppendParameter(name: String, value: String) {
-        val fixedCostLength = 1 /* folding space */ + name.length + 1 /* equals sign */ + 1 /* semicolon */
+        val fixedCostLength = FOLDING_SPACE_LENGTH + name.length + EQUAL_SIGN_LENGTH + SEMICOLON_LENGTH
         val unencodedValueFitsOnSingleLine = fixedCostLength + value.length <= MAX_LINE_LENGTH
-        val quotedValueMightFitOnSingleLine = fixedCostLength + value.length + 2 /* quotes */ <= MAX_LINE_LENGTH
+        val quotedValueMightFitOnSingleLine = fixedCostLength + value.length + QUOTES_LENGTH <= MAX_LINE_LENGTH
 
         if (unencodedValueFitsOnSingleLine && value.isToken()) {
             appendParameter(name, value)
@@ -56,8 +62,8 @@ object MimeParameterEncoder {
     }
 
     private fun StringBuilder.rfc2231EncodeAndAppendParameter(name: String, value: String) {
-        val encodedValueLength = 1 /* folding space */ + name.length + 1 /* asterisk */ + 1 /* equal sign */ +
-            ENCODED_VALUE_PREFIX.length + value.rfc2231EncodedLength() + 1 /* semicolon */
+        val encodedValueLength = FOLDING_SPACE_LENGTH + name.length + ASTERISK_LENGTH + EQUAL_SIGN_LENGTH +
+            ENCODED_VALUE_PREFIX.length + value.rfc2231EncodedLength() + SEMICOLON_LENGTH
 
         if (encodedValueLength <= MAX_LINE_LENGTH) {
             appendRfc2231SingleLineParameter(name, value.rfc2231Encoded())
@@ -88,7 +94,7 @@ object MimeParameterEncoder {
                     append(ENCODED_VALUE_PREFIX)
                 }
 
-                remainingSpaceInLine = MAX_LINE_LENGTH - (length - lineStartIndex) - 1 /* semicolon */
+                remainingSpaceInLine = MAX_LINE_LENGTH - (length - lineStartIndex) - SEMICOLON_LENGTH
                 if (remainingSpaceInLine < 3) {
                     throw UnsupportedOperationException("Parameter name too long")
                 }
@@ -182,7 +188,7 @@ object MimeParameterEncoder {
     }
 
     private fun String.quotedLength(): Int {
-        var length = 2 /* start and end quote */
+        var length = QUOTES_LENGTH
         for (c in this) {
             if (c.isQText() || c.isWsp()) {
                 length++
