@@ -2,6 +2,7 @@ package app.k9mail.feature.account.edit.ui
 
 import androidx.lifecycle.viewModelScope
 import app.k9mail.feature.account.common.domain.AccountDomainContract
+import app.k9mail.feature.account.common.domain.entity.InteractionMode
 import app.k9mail.feature.account.edit.domain.AccountEditDomainContract
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsViewModel
@@ -15,6 +16,7 @@ class EditOutgoingServerSettingsViewModel(
     accountStateRepository: AccountDomainContract.AccountStateRepository,
     initialState: OutgoingServerSettingsContract.State = OutgoingServerSettingsContract.State(),
 ) : OutgoingServerSettingsViewModel(
+    mode = InteractionMode.Edit,
     validator = validator,
     accountStateRepository = accountStateRepository,
     initialState = initialState,

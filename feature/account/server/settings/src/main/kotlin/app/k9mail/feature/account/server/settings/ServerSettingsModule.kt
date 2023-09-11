@@ -1,5 +1,6 @@
 package app.k9mail.feature.account.server.settings
 
+import app.k9mail.feature.account.common.domain.entity.InteractionMode
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsValidator
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsViewModel
@@ -16,6 +17,7 @@ val featureAccountServerSettingsModule: Module = module {
 
     viewModel {
         IncomingServerSettingsViewModel(
+            mode = InteractionMode.Create,
             validator = get(),
             accountStateRepository = get(),
         )
@@ -23,6 +25,7 @@ val featureAccountServerSettingsModule: Module = module {
 
     viewModel {
         OutgoingServerSettingsViewModel(
+            mode = InteractionMode.Create,
             validator = get(),
             accountStateRepository = get(),
         )

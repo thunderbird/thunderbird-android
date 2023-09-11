@@ -15,7 +15,7 @@ class OutgoingServerSettingsScreenKtTest : ComposeTest() {
     @Test
     fun `should delegate navigation effects`() = runTest {
         val initialState = State()
-        val viewModel = FakeOutgoingServerSettingsViewModel(initialState)
+        val viewModel = FakeOutgoingServerSettingsViewModel(initialState = initialState)
         var onNextCounter = 0
         var onBackCounter = 0
 

@@ -10,6 +10,7 @@ import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.feature.account.common.domain.entity.InteractionMode
 import app.k9mail.feature.account.common.ui.AccountTopAppBar
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.common.ui.preview.PreviewAccountStateRepository
@@ -70,6 +71,7 @@ internal fun OutgoingServerSettingsScreenK9Preview() {
             onNext = {},
             onBack = {},
             viewModel = OutgoingServerSettingsViewModel(
+                mode = InteractionMode.Create,
                 validator = OutgoingServerSettingsValidator(),
                 accountStateRepository = PreviewAccountStateRepository(),
             ),
@@ -85,6 +87,7 @@ internal fun OutgoingServerSettingsScreenThunderbirdPreview() {
             onNext = {},
             onBack = {},
             viewModel = OutgoingServerSettingsViewModel(
+                mode = InteractionMode.Create,
                 validator = OutgoingServerSettingsValidator(),
                 accountStateRepository = PreviewAccountStateRepository(),
             ),

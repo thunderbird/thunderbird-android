@@ -11,6 +11,7 @@ import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.common.domain.entity.AuthenticationType
 import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity
+import app.k9mail.feature.account.common.domain.entity.InteractionMode
 import app.k9mail.feature.account.common.domain.entity.MailConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.toSmtpDefaultPort
 import app.k9mail.feature.account.common.domain.input.NumberInputField
@@ -305,6 +306,7 @@ class OutgoingServerSettingsViewModelTest {
             validator: OutgoingServerSettingsContract.Validator = FakeOutgoingServerSettingsValidator(),
             repository: AccountDomainContract.AccountStateRepository = InMemoryAccountStateRepository(),
         ) = OutgoingServerSettingsViewModel(
+            mode = InteractionMode.Create,
             validator = validator,
             accountStateRepository = repository,
             initialState = initialState,

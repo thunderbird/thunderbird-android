@@ -4,6 +4,7 @@ import android.content.Context
 import app.k9mail.core.common.oauth.OAuthConfigurationFactory
 import app.k9mail.feature.account.common.AccountCommonExternalContract
 import app.k9mail.feature.account.common.domain.entity.AccountState
+import app.k9mail.feature.account.common.domain.entity.InteractionMode
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract
@@ -77,6 +78,7 @@ class AccountSetupModuleKtTest : KoinTest {
                 Context::class,
                 Boolean::class,
                 Class.forName("net.openid.appauth.AppAuthConfiguration").kotlin,
+                InteractionMode::class,
             ),
         )
 

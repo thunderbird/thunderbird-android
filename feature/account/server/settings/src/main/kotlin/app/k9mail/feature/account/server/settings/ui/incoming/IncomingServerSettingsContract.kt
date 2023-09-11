@@ -8,10 +8,11 @@ import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.common.domain.entity.toDefaultPort
 import app.k9mail.feature.account.common.domain.input.NumberInputField
 import app.k9mail.feature.account.common.domain.input.StringInputField
+import app.k9mail.feature.account.common.ui.WithInteractionMode
 
 interface IncomingServerSettingsContract {
 
-    interface ViewModel : UnidirectionalViewModel<State, Event, Effect>
+    interface ViewModel : UnidirectionalViewModel<State, Event, Effect>, WithInteractionMode
 
     data class State(
         val protocolType: IncomingProtocolType = IncomingProtocolType.DEFAULT,
