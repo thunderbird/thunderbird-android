@@ -48,7 +48,9 @@ class OutgoingServerSettingsViewModelTest {
                 extra = emptyMap(),
             ),
         )
-        val repository = InMemoryAccountStateRepository(AccountState())
+        val repository = InMemoryAccountStateRepository(
+            state = AccountState(),
+        )
         val testSubject = createTestSubject(
             repository = repository,
         )
