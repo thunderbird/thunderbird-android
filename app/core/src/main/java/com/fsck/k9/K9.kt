@@ -13,7 +13,7 @@ import kotlinx.datetime.Clock
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
-@Deprecated("Use GeneralSettingsManager and GeneralSettings instead")
+// TODO "Use GeneralSettingsManager and GeneralSettings instead"
 object K9 : EarlyInit {
     private val generalSettingsManager: RealGeneralSettingsManager by inject()
 
