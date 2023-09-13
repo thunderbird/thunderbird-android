@@ -10,8 +10,8 @@ import app.k9mail.feature.account.common.domain.entity.AuthenticationType
 import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.common.domain.input.NumberInputField
 import app.k9mail.feature.account.common.domain.input.StringInputField
-import app.k9mail.feature.account.server.config.ui.incoming.AccountIncomingConfigContract
-import app.k9mail.feature.account.server.config.ui.outgoing.AccountOutgoingConfigContract
+import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract
+import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract
 import app.k9mail.feature.account.setup.domain.entity.AutoDiscoveryAuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.AutoDiscoveryConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.toConnectionSecurity
@@ -41,7 +41,7 @@ class AccountAutoDiscoveryStateMapperKtTest {
     fun `should map to default IncomingConfigState when empty`() {
         val incomingConfigState = EMPTY_STATE.toIncomingConfigState()
 
-        assertThat(incomingConfigState).isEqualTo(AccountIncomingConfigContract.State())
+        assertThat(incomingConfigState).isEqualTo(IncomingServerSettingsContract.State())
     }
 
     @Test
@@ -49,7 +49,7 @@ class AccountAutoDiscoveryStateMapperKtTest {
         val incomingConfigState = EMAIL_PASSWORD_STATE.toIncomingConfigState()
 
         assertThat(incomingConfigState).isEqualTo(
-            AccountIncomingConfigContract.State(
+            IncomingServerSettingsContract.State(
                 username = StringInputField(value = EMAIL_ADDRESS),
                 password = StringInputField(value = PASSWORD),
             ),
@@ -61,7 +61,7 @@ class AccountAutoDiscoveryStateMapperKtTest {
         val incomingConfigState = AUTO_DISCOVERY_STATE.toIncomingConfigState()
 
         assertThat(incomingConfigState).isEqualTo(
-            AccountIncomingConfigContract.State(
+            IncomingServerSettingsContract.State(
                 protocolType = IncomingProtocolType.IMAP,
                 server = StringInputField(value = AUTO_DISCOVERY_HOSTNAME.value),
                 security = AUTO_DISCOVERY_SECURITY.toConnectionSecurity(),
@@ -78,7 +78,7 @@ class AccountAutoDiscoveryStateMapperKtTest {
         val incomingConfigState = AUTO_DISCOVERY_STATE_USERNAME_EMPTY.toIncomingConfigState()
 
         assertThat(incomingConfigState).isEqualTo(
-            AccountIncomingConfigContract.State(
+            IncomingServerSettingsContract.State(
                 protocolType = IncomingProtocolType.IMAP,
                 server = StringInputField(value = AUTO_DISCOVERY_HOSTNAME.value),
                 security = AUTO_DISCOVERY_SECURITY.toConnectionSecurity(),
@@ -94,7 +94,7 @@ class AccountAutoDiscoveryStateMapperKtTest {
     fun `should map to OutgoingConfigState when empty`() {
         val outgoingConfigState = EMPTY_STATE.toOutgoingConfigState()
 
-        assertThat(outgoingConfigState).isEqualTo(AccountOutgoingConfigContract.State())
+        assertThat(outgoingConfigState).isEqualTo(OutgoingServerSettingsContract.State())
     }
 
     @Test
@@ -102,7 +102,7 @@ class AccountAutoDiscoveryStateMapperKtTest {
         val outgoingConfigState = EMAIL_PASSWORD_STATE.toOutgoingConfigState()
 
         assertThat(outgoingConfigState).isEqualTo(
-            AccountOutgoingConfigContract.State(
+            OutgoingServerSettingsContract.State(
                 username = StringInputField(value = EMAIL_ADDRESS),
                 password = StringInputField(value = PASSWORD),
             ),
@@ -114,7 +114,7 @@ class AccountAutoDiscoveryStateMapperKtTest {
         val outgoingConfigState = AUTO_DISCOVERY_STATE.toOutgoingConfigState()
 
         assertThat(outgoingConfigState).isEqualTo(
-            AccountOutgoingConfigContract.State(
+            OutgoingServerSettingsContract.State(
                 server = StringInputField(value = AUTO_DISCOVERY_HOSTNAME.value),
                 security = AUTO_DISCOVERY_SECURITY.toConnectionSecurity(),
                 port = NumberInputField(value = AUTO_DISCOVERY_PORT_SMTP.value.toLong()),
@@ -130,7 +130,7 @@ class AccountAutoDiscoveryStateMapperKtTest {
         val outgoingConfigState = AUTO_DISCOVERY_STATE_USERNAME_EMPTY.toOutgoingConfigState()
 
         assertThat(outgoingConfigState).isEqualTo(
-            AccountOutgoingConfigContract.State(
+            OutgoingServerSettingsContract.State(
                 server = StringInputField(value = AUTO_DISCOVERY_HOSTNAME.value),
                 security = AUTO_DISCOVERY_SECURITY.toConnectionSecurity(),
                 port = NumberInputField(value = AUTO_DISCOVERY_PORT_SMTP.value.toLong()),

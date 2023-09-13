@@ -5,8 +5,8 @@ import app.k9mail.core.common.oauth.OAuthConfigurationFactory
 import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract
-import app.k9mail.feature.account.server.config.ui.incoming.AccountIncomingConfigContract
-import app.k9mail.feature.account.server.config.ui.outgoing.AccountOutgoingConfigContract
+import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract
+import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
@@ -65,8 +65,8 @@ class AccountSetupModuleKtTest : KoinTest {
                 AccountAutoDiscoveryContract.State::class,
                 AccountOAuthContract.State::class,
                 ServerValidationContract.State::class,
-                AccountIncomingConfigContract.State::class,
-                AccountOutgoingConfigContract.State::class,
+                IncomingServerSettingsContract.State::class,
+                OutgoingServerSettingsContract.State::class,
                 AccountOptionsContract.State::class,
                 AccountState::class,
                 ServerCertificateErrorContract.State::class,

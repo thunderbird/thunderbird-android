@@ -8,7 +8,7 @@ import androidx.compose.ui.platform.LocalContext
 import app.k9mail.core.common.domain.usecase.validation.ValidationError
 import app.k9mail.core.ui.compose.designsystem.molecule.input.PasswordInput
 import app.k9mail.feature.account.common.ui.item.ListItem
-import app.k9mail.feature.account.server.config.ui.common.mapper.toResourceString
+import app.k9mail.feature.account.server.settings.ui.common.mapper.toResourceString
 
 @Composable
 internal fun LazyItemScope.PasswordItem(
