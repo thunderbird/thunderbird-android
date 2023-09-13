@@ -14,11 +14,8 @@ import app.k9mail.feature.account.server.config.ui.outgoing.AccountOutgoingConfi
 class AccountOutgoingConfigViewModel(
     private val validator: Validator,
     private val accountStateRepository: AccountDomainContract.AccountStateRepository,
-    initialState: State? = State(),
-) : BaseViewModel<State, Event, Effect>(
-    initialState = initialState ?: accountStateRepository.getState().toOutgoingConfigState(),
-),
-    ViewModel {
+    initialState: State = State(),
+) : BaseViewModel<State, Event, Effect>(initialState = initialState), ViewModel {
 
     override fun event(event: Event) {
         when (event) {

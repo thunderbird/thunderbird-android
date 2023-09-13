@@ -15,11 +15,8 @@ import app.k9mail.feature.account.server.config.ui.incoming.AccountIncomingConfi
 class AccountIncomingConfigViewModel(
     private val validator: Validator,
     private val accountStateRepository: AccountDomainContract.AccountStateRepository,
-    initialState: State? = null,
-) : BaseViewModel<State, Event, Effect>(
-    initialState = initialState ?: accountStateRepository.getState().toIncomingConfigState(),
-),
-    ViewModel {
+    initialState: State = State(),
+) : BaseViewModel<State, Event, Effect>(initialState = initialState), ViewModel {
 
     @Suppress("CyclomaticComplexMethod")
     override fun event(event: Event) {

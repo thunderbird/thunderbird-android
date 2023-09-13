@@ -36,46 +36,6 @@ class AccountIncomingConfigViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     @Test
-    fun `should take initial state from repository when no initial state is provided`() = runTest {
-        val accountState = AccountState(
-            emailAddress = "test@example.com",
-            incomingServerSettings = ServerSettings(
-                "imap",
-                "imap.example.com",
-                123,
-                MailConnectionSecurity.SSL_TLS_REQUIRED,
-                AuthType.PLAIN,
-                "username",
-                "password",
-                clientCertificateAlias = null,
-                extra = emptyMap(),
-            ),
-        )
-        val testSubject = createTestSubject(
-            initialState = null,
-            repository = InMemoryAccountStateRepository(accountState),
-        )
-        val turbines = turbines(testSubject)
-
-        assertThatAndMviTurbinesConsumed(
-            actual = turbines.awaitStateItem(),
-            turbines = turbines,
-        ) {
-            isEqualTo(
-                State(
-                    protocolType = IncomingProtocolType.IMAP,
-                    server = StringInputField(value = "imap.example.com"),
-                    security = ConnectionSecurity.TLS,
-                    port = NumberInputField(value = 123L),
-                    authenticationType = AuthenticationType.PasswordCleartext,
-                    username = StringInputField(value = "username"),
-                    password = StringInputField(value = "password"),
-                ),
-            )
-        }
-    }
-
-    @Test
     fun `should load account setup state when LoadAccountState event is received`() = runTest {
         val accountState = AccountState(
             emailAddress = "test@example.com",
@@ -93,7 +53,6 @@ class AccountIncomingConfigViewModelTest {
         )
         val repository = InMemoryAccountStateRepository(AccountState())
         val testSubject = createTestSubject(
-            initialState = null,
             repository = repository,
         )
         val turbines = turbinesWithInitialStateCheck(testSubject, State())
@@ -434,7 +393,7 @@ class AccountIncomingConfigViewModelTest {
 
     private companion object {
         fun createTestSubject(
-            initialState: State? = null,
+            initialState: State = State(),
             validator: AccountIncomingConfigContract.Validator = FakeAccountIncomingConfigValidator(),
             repository: AccountDomainContract.AccountStateRepository = InMemoryAccountStateRepository(),
         ) = AccountIncomingConfigViewModel(
