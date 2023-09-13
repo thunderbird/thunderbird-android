@@ -1,8 +1,8 @@
 package app.k9mail.feature.account.server.settings
 
-import app.k9mail.feature.account.server.settings.ui.incoming.AccountIncomingConfigContract
-import app.k9mail.feature.account.server.settings.ui.incoming.AccountIncomingConfigValidator
-import app.k9mail.feature.account.server.settings.ui.incoming.AccountIncomingConfigViewModel
+import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract
+import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsValidator
+import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsViewModel
 import app.k9mail.feature.account.server.settings.ui.outgoing.AccountOutgoingConfigContract
 import app.k9mail.feature.account.server.settings.ui.outgoing.AccountOutgoingConfigValidator
 import app.k9mail.feature.account.server.settings.ui.outgoing.AccountOutgoingConfigViewModel
@@ -11,11 +11,11 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 val featureAccountServerConfigModule: Module = module {
-    factory<AccountIncomingConfigContract.Validator> { AccountIncomingConfigValidator() }
+    factory<IncomingServerSettingsContract.Validator> { IncomingServerSettingsValidator() }
     factory<AccountOutgoingConfigContract.Validator> { AccountOutgoingConfigValidator() }
 
     viewModel {
-        AccountIncomingConfigViewModel(
+        IncomingServerSettingsViewModel(
             validator = get(),
             accountStateRepository = get(),
         )

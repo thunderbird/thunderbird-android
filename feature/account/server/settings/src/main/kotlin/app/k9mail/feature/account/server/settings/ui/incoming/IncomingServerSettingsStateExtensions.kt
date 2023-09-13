@@ -5,10 +5,10 @@ import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
-internal val AccountIncomingConfigContract.State.isPasswordFieldVisible: Boolean
+internal val IncomingServerSettingsContract.State.isPasswordFieldVisible: Boolean
     get() = authenticationType.isPasswordRequired
 
-internal val AccountIncomingConfigContract.State.allowedAuthenticationTypes: ImmutableList<AuthenticationType>
+internal val IncomingServerSettingsContract.State.allowedAuthenticationTypes: ImmutableList<AuthenticationType>
     get() = protocolType.allowedAuthenticationTypes.toImmutableList()
 
 internal val IncomingProtocolType.allowedAuthenticationTypes: List<AuthenticationType>

@@ -8,13 +8,13 @@ import app.k9mail.feature.account.server.settings.domain.usecase.ValidatePort
 import app.k9mail.feature.account.server.settings.domain.usecase.ValidateServer
 import app.k9mail.feature.account.server.settings.domain.usecase.ValidateUsername
 
-internal class AccountIncomingConfigValidator(
+internal class IncomingServerSettingsValidator(
     private val serverValidator: UseCase.ValidateServer = ValidateServer(),
     private val portValidator: UseCase.ValidatePort = ValidatePort(),
     private val usernameValidator: UseCase.ValidateUsername = ValidateUsername(),
     private val passwordValidator: UseCase.ValidatePassword = ValidatePassword(),
     private val imapPrefixValidator: UseCase.ValidateImapPrefix = ValidateImapPrefix(),
-) : AccountIncomingConfigContract.Validator {
+) : IncomingServerSettingsContract.Validator {
     override fun validateServer(server: String): ValidationResult {
         return serverValidator.execute(server)
     }

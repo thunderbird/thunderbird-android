@@ -2,25 +2,25 @@ package app.k9mail.feature.account.server.settings.ui.incoming
 
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContent
-import app.k9mail.feature.account.server.settings.ui.incoming.AccountIncomingConfigContract.Effect
-import app.k9mail.feature.account.server.settings.ui.incoming.AccountIncomingConfigContract.State
-import app.k9mail.feature.account.server.settings.ui.incoming.fake.FakeAccountIncomingConfigViewModel
+import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.Effect
+import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.State
+import app.k9mail.feature.account.server.settings.ui.incoming.fake.FakeIncomingServerSettingsViewModel
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
-class AccountIncomingConfigScreenKtTest : ComposeTest() {
+class IncomingServerSettingsScreenKtTest : ComposeTest() {
 
     @Test
     fun `should delegate navigation effects`() = runTest {
         val initialState = State()
-        val viewModel = FakeAccountIncomingConfigViewModel(initialState)
+        val viewModel = FakeIncomingServerSettingsViewModel(initialState)
         var onNextCounter = 0
         var onBackCounter = 0
 
         setContent {
-            AccountIncomingConfigScreen(
+            IncomingServerSettingsScreen(
                 onNext = { onNextCounter++ },
                 onBack = { onBackCounter++ },
                 viewModel = viewModel,

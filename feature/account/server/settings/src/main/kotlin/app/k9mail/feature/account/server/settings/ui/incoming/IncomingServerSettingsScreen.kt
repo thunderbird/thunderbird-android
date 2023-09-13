@@ -14,13 +14,13 @@ import app.k9mail.feature.account.common.ui.AccountTopAppBar
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.common.ui.preview.PreviewAccountStateRepository
 import app.k9mail.feature.account.server.settings.R
-import app.k9mail.feature.account.server.settings.ui.incoming.AccountIncomingConfigContract.Effect
-import app.k9mail.feature.account.server.settings.ui.incoming.AccountIncomingConfigContract.Event
-import app.k9mail.feature.account.server.settings.ui.incoming.AccountIncomingConfigContract.ViewModel
+import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.Effect
+import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.Event
+import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.ViewModel
 
 @Composable
-fun AccountIncomingConfigScreen(
-    onNext: (AccountIncomingConfigContract.State) -> Unit,
+fun IncomingServerSettingsScreen(
+    onNext: (IncomingServerSettingsContract.State) -> Unit,
     onBack: () -> Unit,
     viewModel: ViewModel,
     modifier: Modifier = Modifier,
@@ -54,7 +54,7 @@ fun AccountIncomingConfigScreen(
         },
         modifier = modifier,
     ) { innerPadding ->
-        AccountIncomingConfigContent(
+        IncomingServerSettingsContent(
             onEvent = { dispatch(it) },
             state = state.value,
             contentPadding = innerPadding,
@@ -64,13 +64,13 @@ fun AccountIncomingConfigScreen(
 
 @Composable
 @DevicePreviews
-internal fun AccountIncomingConfigScreenK9Preview() {
+internal fun IncomingServerSettingsScreenK9Preview() {
     K9Theme {
-        AccountIncomingConfigScreen(
+        IncomingServerSettingsScreen(
             onNext = {},
             onBack = {},
-            viewModel = AccountIncomingConfigViewModel(
-                validator = AccountIncomingConfigValidator(),
+            viewModel = IncomingServerSettingsViewModel(
+                validator = IncomingServerSettingsValidator(),
                 accountStateRepository = PreviewAccountStateRepository(),
             ),
         )
@@ -79,13 +79,13 @@ internal fun AccountIncomingConfigScreenK9Preview() {
 
 @Composable
 @DevicePreviews
-internal fun AccountIncomingConfigScreenThunderbirdPreview() {
+internal fun IncomingServerSettingsScreenThunderbirdPreview() {
     ThunderbirdTheme {
-        AccountIncomingConfigScreen(
+        IncomingServerSettingsScreen(
             onNext = {},
             onBack = {},
-            viewModel = AccountIncomingConfigViewModel(
-                validator = AccountIncomingConfigValidator(),
+            viewModel = IncomingServerSettingsViewModel(
+                validator = IncomingServerSettingsValidator(),
                 accountStateRepository = PreviewAccountStateRepository(),
             ),
         )

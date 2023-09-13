@@ -4,7 +4,7 @@ import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.onNodeWithTag
 import app.k9mail.core.ui.compose.testing.setContent
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
-import app.k9mail.feature.account.server.settings.ui.incoming.fake.FakeAccountIncomingConfigViewModel
+import app.k9mail.feature.account.server.settings.ui.incoming.fake.FakeIncomingServerSettingsViewModel
 import app.k9mail.feature.account.server.settings.ui.outgoing.fake.FakeAccountOutgoingConfigViewModel
 import app.k9mail.feature.account.server.validation.ui.fake.FakeServerValidationViewModel
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
@@ -30,7 +30,7 @@ class AccountSetupScreenKtTest : ComposeTest() {
                     onBack = { },
                     viewModel = viewModel,
                     autoDiscoveryViewModel = FakeAccountAutoDiscoveryViewModel(),
-                    incomingViewModel = FakeAccountIncomingConfigViewModel(),
+                    incomingViewModel = FakeIncomingServerSettingsViewModel(),
                     incomingValidationViewModel = FakeServerValidationViewModel(),
                     outgoingViewModel = FakeAccountOutgoingConfigViewModel(),
                     outgoingValidationViewModel = FakeServerValidationViewModel(),
@@ -59,7 +59,7 @@ class AccountSetupScreenKtTest : ComposeTest() {
                     onBack = { onBackCounter++ },
                     viewModel = viewModel,
                     autoDiscoveryViewModel = FakeAccountAutoDiscoveryViewModel(),
-                    incomingViewModel = FakeAccountIncomingConfigViewModel(),
+                    incomingViewModel = FakeIncomingServerSettingsViewModel(),
                     incomingValidationViewModel = FakeServerValidationViewModel(),
                     outgoingViewModel = FakeAccountOutgoingConfigViewModel(),
                     outgoingValidationViewModel = FakeServerValidationViewModel(),
@@ -84,7 +84,7 @@ class AccountSetupScreenKtTest : ComposeTest() {
 
     private fun getTagForStep(step: SetupStep): String = when (step) {
         SetupStep.AUTO_CONFIG -> "AccountAutoDiscoveryContent"
-        SetupStep.INCOMING_CONFIG -> "AccountIncomingConfigContent"
+        SetupStep.INCOMING_CONFIG -> "IncomingServerSettingsContent"
         SetupStep.INCOMING_VALIDATION -> "AccountValidationContent"
         SetupStep.OUTGOING_CONFIG -> "AccountOutgoingConfigContent"
         SetupStep.OUTGOING_VALIDATION -> "AccountValidationContent"

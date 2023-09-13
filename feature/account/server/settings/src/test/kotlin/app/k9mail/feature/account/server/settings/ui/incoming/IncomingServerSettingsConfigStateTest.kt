@@ -6,12 +6,12 @@ import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.common.domain.entity.toImapDefaultPort
 import app.k9mail.feature.account.common.domain.input.NumberInputField
 import app.k9mail.feature.account.common.domain.input.StringInputField
-import app.k9mail.feature.account.server.settings.ui.incoming.AccountIncomingConfigContract.State
+import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.State
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import org.junit.Test
 
-class AccountIncomingConfigStateTest {
+class IncomingServerSettingsConfigStateTest {
 
     @Test
     fun `should set default values`() {

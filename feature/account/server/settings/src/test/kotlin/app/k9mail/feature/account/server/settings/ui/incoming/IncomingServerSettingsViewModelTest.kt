@@ -5,7 +5,6 @@ import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndMviTurbinesConsumed
 import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
-import app.k9mail.core.ui.compose.testing.mvi.turbines
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.account.common.data.InMemoryAccountStateRepository
 import app.k9mail.feature.account.common.domain.AccountDomainContract
@@ -18,10 +17,10 @@ import app.k9mail.feature.account.common.domain.entity.toImapDefaultPort
 import app.k9mail.feature.account.common.domain.entity.toPop3DefaultPort
 import app.k9mail.feature.account.common.domain.input.NumberInputField
 import app.k9mail.feature.account.common.domain.input.StringInputField
-import app.k9mail.feature.account.server.settings.ui.incoming.AccountIncomingConfigContract.Effect
-import app.k9mail.feature.account.server.settings.ui.incoming.AccountIncomingConfigContract.Event
-import app.k9mail.feature.account.server.settings.ui.incoming.AccountIncomingConfigContract.State
-import app.k9mail.feature.account.server.settings.ui.incoming.fake.FakeAccountIncomingConfigValidator
+import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.Effect
+import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.Event
+import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.State
+import app.k9mail.feature.account.server.settings.ui.incoming.fake.FakeIncomingServerSettingsValidator
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.AuthType
@@ -30,7 +29,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
-class AccountIncomingConfigViewModelTest {
+class IncomingServerSettingsViewModelTest {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
@@ -348,8 +347,8 @@ class AccountIncomingConfigViewModelTest {
     @Test
     fun `should change state and not emit NavigateNext effect when OnNextClicked event received and input invalid`() =
         runTest {
-            val testSubject = AccountIncomingConfigViewModel(
-                validator = FakeAccountIncomingConfigValidator(
+            val testSubject = IncomingServerSettingsViewModel(
+                validator = FakeIncomingServerSettingsValidator(
                     serverAnswer = ValidationResult.Failure(TestError),
                 ),
                 accountStateRepository = InMemoryAccountStateRepository(),
@@ -394,9 +393,9 @@ class AccountIncomingConfigViewModelTest {
     private companion object {
         fun createTestSubject(
             initialState: State = State(),
-            validator: AccountIncomingConfigContract.Validator = FakeAccountIncomingConfigValidator(),
+            validator: IncomingServerSettingsContract.Validator = FakeIncomingServerSettingsValidator(),
             repository: AccountDomainContract.AccountStateRepository = InMemoryAccountStateRepository(),
-        ) = AccountIncomingConfigViewModel(
+        ) = IncomingServerSettingsViewModel(
             validator = validator,
             accountStateRepository = repository,
             initialState = initialState,

@@ -8,7 +8,7 @@ import app.k9mail.feature.account.common.domain.entity.toConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.toMailConnectionSecurity
 import app.k9mail.feature.account.common.domain.input.NumberInputField
 import app.k9mail.feature.account.common.domain.input.StringInputField
-import app.k9mail.feature.account.server.settings.ui.incoming.AccountIncomingConfigContract.State
+import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.State
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings
 

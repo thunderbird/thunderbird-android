@@ -3,9 +3,9 @@ package app.k9mail.feature.account.setup.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.common.mvi.observe
-import app.k9mail.feature.account.server.settings.ui.incoming.AccountIncomingConfigContract
-import app.k9mail.feature.account.server.settings.ui.incoming.AccountIncomingConfigScreen
-import app.k9mail.feature.account.server.settings.ui.incoming.AccountIncomingConfigViewModel
+import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract
+import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsScreen
+import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsViewModel
 import app.k9mail.feature.account.server.settings.ui.outgoing.AccountOutgoingConfigContract
 import app.k9mail.feature.account.server.settings.ui.outgoing.AccountOutgoingConfigScreen
 import app.k9mail.feature.account.server.settings.ui.outgoing.AccountOutgoingConfigViewModel
@@ -34,7 +34,7 @@ fun AccountSetupScreen(
     onBack: () -> Unit,
     viewModel: ViewModel = koinViewModel<AccountSetupViewModel>(),
     autoDiscoveryViewModel: AccountAutoDiscoveryContract.ViewModel = koinViewModel<AccountAutoDiscoveryViewModel>(),
-    incomingViewModel: AccountIncomingConfigContract.ViewModel = koinViewModel<AccountIncomingConfigViewModel>(),
+    incomingViewModel: IncomingServerSettingsContract.ViewModel = koinViewModel<IncomingServerSettingsViewModel>(),
     incomingValidationViewModel: ServerValidationContract.ViewModel = koinViewModel<ServerValidationViewModel>(
         named(KOIN_NAME_INCOMING_SERVER_VALIDATION),
     ),
@@ -67,7 +67,7 @@ fun AccountSetupScreen(
         }
 
         SetupStep.INCOMING_CONFIG -> {
-            AccountIncomingConfigScreen(
+            IncomingServerSettingsScreen(
                 onNext = { dispatch(Event.OnNext) },
                 onBack = { dispatch(Event.OnBack) },
                 viewModel = incomingViewModel,

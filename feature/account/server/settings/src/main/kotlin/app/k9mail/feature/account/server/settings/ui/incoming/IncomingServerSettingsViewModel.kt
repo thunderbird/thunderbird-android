@@ -6,13 +6,13 @@ import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.common.domain.entity.toDefaultPort
-import app.k9mail.feature.account.server.settings.ui.incoming.AccountIncomingConfigContract.Effect
-import app.k9mail.feature.account.server.settings.ui.incoming.AccountIncomingConfigContract.Event
-import app.k9mail.feature.account.server.settings.ui.incoming.AccountIncomingConfigContract.State
-import app.k9mail.feature.account.server.settings.ui.incoming.AccountIncomingConfigContract.Validator
-import app.k9mail.feature.account.server.settings.ui.incoming.AccountIncomingConfigContract.ViewModel
+import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.Effect
+import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.Event
+import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.State
+import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.Validator
+import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.ViewModel
 
-class AccountIncomingConfigViewModel(
+class IncomingServerSettingsViewModel(
     private val validator: Validator,
 //    private val serverSettingsRepository: ServerConfigDomainContract.ServerSettingsRepository,
     private val accountStateRepository: AccountDomainContract.AccountStateRepository,
