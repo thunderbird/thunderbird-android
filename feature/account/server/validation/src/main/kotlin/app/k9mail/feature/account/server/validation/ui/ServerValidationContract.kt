@@ -14,6 +14,9 @@ interface ServerValidationContract {
         val oAuthViewModel: AccountOAuthContract.ViewModel
     }
 
+    interface OutgoingViewModel : ViewModel
+    interface IncomingViewModel : ViewModel
+
     data class State(
         val emailAddress: String? = null,
         val serverSettings: ServerSettings? = null,

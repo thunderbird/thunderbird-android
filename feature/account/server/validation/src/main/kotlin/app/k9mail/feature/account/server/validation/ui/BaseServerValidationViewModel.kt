@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 private const val CONTINUE_NEXT_DELAY = 2000L
 
 @Suppress("TooManyFunctions")
-class ServerValidationViewModel(
+abstract class BaseServerValidationViewModel(
     private val accountStateRepository: AccountDomainContract.AccountStateRepository,
     private val validateServerSettings: ServerValidationDomainContract.UseCase.ValidateServerSettings,
     private val authorizationStateRepository: AccountOAuthDomainContract.AuthorizationStateRepository,

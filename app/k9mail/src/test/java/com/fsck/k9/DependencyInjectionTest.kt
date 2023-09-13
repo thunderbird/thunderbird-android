@@ -3,8 +3,6 @@ package com.fsck.k9
 import android.view.ContextThemeWrapper
 import androidx.lifecycle.LifecycleOwner
 import androidx.work.WorkerParameters
-import app.k9mail.feature.account.server.validation.KOIN_NAME_INCOMING_SERVER_VALIDATION
-import app.k9mail.feature.account.server.validation.KOIN_NAME_OUTGOING_SERVER_VALIDATION
 import app.k9mail.feature.account.server.validation.domain.ServerValidationDomainContract
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract
 import com.fsck.k9.account.AccountRemoverWorker
@@ -23,7 +21,6 @@ import org.junit.runner.RunWith
 import org.koin.core.annotation.KoinInternalApi
 import org.koin.core.logger.PrintLogger
 import org.koin.core.parameter.parametersOf
-import org.koin.core.qualifier.named
 import org.koin.java.KoinJavaComponent
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.check.checkModules
@@ -61,12 +58,8 @@ class DependencyInjectionTest : AutoCloseKoinTest() {
             withParameters(clazz = Class.forName("com.fsck.k9.view.K9WebViewClient").kotlin) {
                 parametersOf(null, null)
             }
-            withParameter<ServerValidationContract.ViewModel>(
-                named(KOIN_NAME_INCOMING_SERVER_VALIDATION),
-            ) { authStateStorage }
-            withParameter<ServerValidationContract.ViewModel>(
-                named(KOIN_NAME_OUTGOING_SERVER_VALIDATION),
-            ) { authStateStorage }
+            withParameter<ServerValidationContract.IncomingViewModel> { authStateStorage }
+            withParameter<ServerValidationContract.OutgoingViewModel> { authStateStorage }
             withParameter<ServerValidationDomainContract.UseCase.ValidateServerSettings> { authStateStorage }
             withParameter<AccountRemoverWorker> { mock<WorkerParameters>() }
         }

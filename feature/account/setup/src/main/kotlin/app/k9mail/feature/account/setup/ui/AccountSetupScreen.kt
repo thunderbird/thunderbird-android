@@ -9,11 +9,10 @@ import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSett
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsScreen
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsViewModel
-import app.k9mail.feature.account.server.validation.KOIN_NAME_INCOMING_SERVER_VALIDATION
-import app.k9mail.feature.account.server.validation.KOIN_NAME_OUTGOING_SERVER_VALIDATION
+import app.k9mail.feature.account.server.validation.ui.IncomingServerValidationViewModel
+import app.k9mail.feature.account.server.validation.ui.OutgoingServerValidationViewModel
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract
 import app.k9mail.feature.account.server.validation.ui.ServerValidationScreen
-import app.k9mail.feature.account.server.validation.ui.ServerValidationViewModel
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Event
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
@@ -25,7 +24,6 @@ import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsScreen
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsViewModel
 import org.koin.androidx.compose.koinViewModel
-import org.koin.core.qualifier.named
 
 @Suppress("LongMethod")
 @Composable
@@ -35,13 +33,11 @@ fun AccountSetupScreen(
     viewModel: ViewModel = koinViewModel<AccountSetupViewModel>(),
     autoDiscoveryViewModel: AccountAutoDiscoveryContract.ViewModel = koinViewModel<AccountAutoDiscoveryViewModel>(),
     incomingViewModel: IncomingServerSettingsContract.ViewModel = koinViewModel<IncomingServerSettingsViewModel>(),
-    incomingValidationViewModel: ServerValidationContract.ViewModel = koinViewModel<ServerValidationViewModel>(
-        named(KOIN_NAME_INCOMING_SERVER_VALIDATION),
-    ),
+    incomingValidationViewModel: ServerValidationContract.ViewModel =
+        koinViewModel<IncomingServerValidationViewModel>(),
     outgoingViewModel: OutgoingServerSettingsContract.ViewModel = koinViewModel<OutgoingServerSettingsViewModel>(),
-    outgoingValidationViewModel: ServerValidationContract.ViewModel = koinViewModel<ServerValidationViewModel>(
-        named(KOIN_NAME_OUTGOING_SERVER_VALIDATION),
-    ),
+    outgoingValidationViewModel: ServerValidationContract.ViewModel =
+        koinViewModel<OutgoingServerValidationViewModel>(),
     optionsViewModel: AccountOptionsContract.ViewModel = koinViewModel<AccountOptionsViewModel>(),
 ) {
     val (state, dispatch) = viewModel.observe { effect ->
