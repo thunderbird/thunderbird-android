@@ -22,6 +22,10 @@ interface DomainContract {
             ): String
         }
 
+        fun interface ValidateEmailAddress {
+            fun execute(emailAddress: String): ValidationResult
+        }
+
         fun interface ValidateConfigurationApproval {
             fun execute(isApproved: Boolean?, isAutoDiscoveryTrusted: Boolean?): ValidationResult
         }

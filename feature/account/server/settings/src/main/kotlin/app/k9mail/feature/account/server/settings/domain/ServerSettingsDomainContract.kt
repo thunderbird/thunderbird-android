@@ -6,10 +6,6 @@ interface ServerSettingsDomainContract {
 
     interface UseCase {
 
-        fun interface ValidateEmailAddress {
-            fun execute(emailAddress: String): ValidationResult
-        }
-
         fun interface ValidatePassword {
             fun execute(password: String): ValidationResult
         }

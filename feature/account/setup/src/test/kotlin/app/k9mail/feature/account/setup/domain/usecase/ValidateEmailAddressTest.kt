@@ -1,7 +1,7 @@
-package app.k9mail.feature.account.server.settings.domain.usecase
+package app.k9mail.feature.account.setup.domain.usecase
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
-import app.k9mail.feature.account.server.settings.domain.usecase.ValidateEmailAddress.ValidateEmailAddressError
+import app.k9mail.feature.account.setup.domain.usecase.ValidateEmailAddress.ValidateEmailAddressError
 import assertk.assertThat
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
