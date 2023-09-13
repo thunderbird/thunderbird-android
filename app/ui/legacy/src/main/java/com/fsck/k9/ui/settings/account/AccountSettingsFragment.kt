@@ -13,6 +13,9 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.SwitchPreference
+import app.k9mail.core.featureflag.FeatureFlagProvider
+import app.k9mail.core.featureflag.toFeatureFlagKey
+import app.k9mail.feature.launcher.FeatureLauncherActivity
 import com.fsck.k9.Account
 import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.activity.ManageIdentities
@@ -52,6 +55,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     private val notificationChannelManager: NotificationChannelManager by inject()
     private val notificationSettingsUpdater: NotificationSettingsUpdater by inject()
     private val vibrator: Vibrator by inject()
+    private val featureFlagProvider: FeatureFlagProvider by inject()
 
     private lateinit var dataStore: AccountSettingsDataStore
 
@@ -123,13 +127,16 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
                 onDeleteAccount()
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
 
     private fun initializeIncomingServer() {
         findPreference<Preference>(PREFERENCE_INCOMING_SERVER)?.onClick {
-            AccountSetupIncoming.actionEditIncomingSettings(requireActivity(), accountUuid)
+            featureFlagProvider.provide("new_account_edit".toFeatureFlagKey())
+                .onEnabled { FeatureLauncherActivity.launchEditIncomingSettings(requireActivity(), accountUuid) }
+                .onDisabled { AccountSetupIncoming.actionEditIncomingSettings(requireActivity(), accountUuid) }
         }
     }
 
@@ -155,7 +162,9 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
     private fun initializeOutgoingServer() {
         findPreference<Preference>(PREFERENCE_OUTGOING_SERVER)?.onClick {
-            AccountSetupOutgoing.actionEditOutgoingSettings(requireActivity(), accountUuid)
+            featureFlagProvider.provide("new_account_edit".toFeatureFlagKey())
+                .onEnabled { FeatureLauncherActivity.launchEditOutgoingSettings(requireActivity(), accountUuid) }
+                .onDisabled { AccountSetupOutgoing.actionEditOutgoingSettings(requireActivity(), accountUuid) }
         }
     }
 
