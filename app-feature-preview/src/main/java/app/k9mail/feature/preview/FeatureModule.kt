@@ -1,10 +1,11 @@
 package app.k9mail.feature.preview
 
 import app.k9mail.core.common.oauth.OAuthConfigurationFactory
+import app.k9mail.feature.account.edit.AccountEditExternalContract
 import app.k9mail.feature.account.setup.AccountSetupExternalContract
 import app.k9mail.feature.account.setup.featureAccountSetupModule
-import app.k9mail.feature.preview.account.AccountCreator
 import app.k9mail.feature.preview.account.AccountOwnerNameProvider
+import app.k9mail.feature.preview.account.InMemoryAccountStore
 import app.k9mail.feature.preview.auth.AndroidKeyStoreDirectoryProvider
 import app.k9mail.feature.preview.auth.AppOAuthConfigurationFactory
 import app.k9mail.feature.preview.auth.DefaultTrustedSocketFactory
@@ -15,11 +16,18 @@ import com.fsck.k9.mail.ssl.LocalKeyStore
 import com.fsck.k9.mail.ssl.TrustManagerFactory
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import org.koin.core.module.Module
+import org.koin.dsl.binds
 import org.koin.dsl.module
 
 val accountModule: Module = module {
+    single { InMemoryAccountStore() }
+        .binds(
+            arrayOf(
+                AccountSetupExternalContract.AccountCreator::class,
+                AccountEditExternalContract.AccountUpdater::class,
+            ),
+        )
     factory<AccountSetupExternalContract.AccountOwnerNameProvider> { AccountOwnerNameProvider() }
-    factory<AccountSetupExternalContract.AccountCreator> { AccountCreator() }
 }
 
 val featureModule: Module = module {
@@ -31,5 +39,8 @@ val featureModule: Module = module {
     single<TrustedSocketFactory> { DefaultTrustedSocketFactory(get(), get()) }
     single<OAuth2TokenProviderFactory> { RealOAuth2TokenProviderFactory(context = get()) }
 
-    includes(featureAccountSetupModule, accountModule)
+    includes(
+        accountModule,
+        featureAccountSetupModule,
+    )
 }
