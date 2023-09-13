@@ -2,8 +2,8 @@ package app.k9mail.feature.account.server.validation.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.k9mail.core.ui.compose.common.DevicePreviews
+import app.k9mail.core.ui.compose.common.mvi.observeWithoutEffect
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
@@ -21,8 +21,7 @@ internal fun ServerValidationMainScreen(
     viewModel: ViewModel,
     modifier: Modifier = Modifier,
 ) {
-    val state = viewModel.state.collectAsStateWithLifecycle()
-    val dispatch = { event: Event -> viewModel.event(event) }
+    val (state, dispatch) = viewModel.observeWithoutEffect()
 
     Scaffold(
         topBar = {
