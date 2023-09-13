@@ -6,9 +6,9 @@ import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsScreen
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsViewModel
-import app.k9mail.feature.account.server.settings.ui.outgoing.AccountOutgoingConfigContract
-import app.k9mail.feature.account.server.settings.ui.outgoing.AccountOutgoingConfigScreen
-import app.k9mail.feature.account.server.settings.ui.outgoing.AccountOutgoingConfigViewModel
+import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract
+import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsScreen
+import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsViewModel
 import app.k9mail.feature.account.server.validation.KOIN_NAME_INCOMING_SERVER_VALIDATION
 import app.k9mail.feature.account.server.validation.KOIN_NAME_OUTGOING_SERVER_VALIDATION
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract
@@ -38,7 +38,7 @@ fun AccountSetupScreen(
     incomingValidationViewModel: ServerValidationContract.ViewModel = koinViewModel<ServerValidationViewModel>(
         named(KOIN_NAME_INCOMING_SERVER_VALIDATION),
     ),
-    outgoingViewModel: AccountOutgoingConfigContract.ViewModel = koinViewModel<AccountOutgoingConfigViewModel>(),
+    outgoingViewModel: OutgoingServerSettingsContract.ViewModel = koinViewModel<OutgoingServerSettingsViewModel>(),
     outgoingValidationViewModel: ServerValidationContract.ViewModel = koinViewModel<ServerValidationViewModel>(
         named(KOIN_NAME_OUTGOING_SERVER_VALIDATION),
     ),
@@ -83,7 +83,7 @@ fun AccountSetupScreen(
         }
 
         SetupStep.OUTGOING_CONFIG -> {
-            AccountOutgoingConfigScreen(
+            OutgoingServerSettingsScreen(
                 onNext = { dispatch(Event.OnNext) },
                 onBack = { dispatch(Event.OnBack) },
                 viewModel = outgoingViewModel,

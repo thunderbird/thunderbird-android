@@ -30,12 +30,12 @@ import app.k9mail.feature.account.common.ui.item.defaultItemPadding
 import app.k9mail.feature.account.server.settings.R
 import app.k9mail.feature.account.server.settings.ui.common.ClientCertificateInput
 import app.k9mail.feature.account.server.settings.ui.common.mapper.toResourceString
-import app.k9mail.feature.account.server.settings.ui.outgoing.AccountOutgoingConfigContract.Event
-import app.k9mail.feature.account.server.settings.ui.outgoing.AccountOutgoingConfigContract.State
+import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.Event
+import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.State
 
 @Suppress("LongMethod")
 @Composable
-internal fun AccountOutgoingConfigContent(
+internal fun OutgoingServerSettingsContent(
     state: State,
     onEvent: (Event) -> Unit,
     contentPadding: PaddingValues,
@@ -45,7 +45,7 @@ internal fun AccountOutgoingConfigContent(
 
     ResponsiveWidthContainer(
         modifier = Modifier
-            .testTag("AccountOutgoingConfigContent")
+            .testTag("OutgoingServerSettingsContent")
             .padding(contentPadding)
             .fillMaxWidth()
             .then(modifier),
@@ -144,9 +144,9 @@ internal fun AccountOutgoingConfigContent(
 
 @Composable
 @DevicePreviews
-internal fun AccountOutgoingConfigContentK9Preview() {
+internal fun OutgoingServerSettingsContentK9Preview() {
     K9Theme {
-        AccountOutgoingConfigContent(
+        OutgoingServerSettingsContent(
             onEvent = { },
             state = State(),
             contentPadding = PaddingValues(),
@@ -156,9 +156,9 @@ internal fun AccountOutgoingConfigContentK9Preview() {
 
 @Composable
 @DevicePreviews
-internal fun AccountOutgoingConfigContentThunderbirdPreview() {
+internal fun OutgoingServerSettingsContentThunderbirdPreview() {
     ThunderbirdTheme {
-        AccountOutgoingConfigContent(
+        OutgoingServerSettingsContent(
             onEvent = { },
             state = State(),
             contentPadding = PaddingValues(),

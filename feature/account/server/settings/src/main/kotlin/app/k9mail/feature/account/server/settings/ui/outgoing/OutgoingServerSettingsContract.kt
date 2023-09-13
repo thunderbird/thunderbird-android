@@ -8,7 +8,7 @@ import app.k9mail.feature.account.common.domain.entity.toSmtpDefaultPort
 import app.k9mail.feature.account.common.domain.input.NumberInputField
 import app.k9mail.feature.account.common.domain.input.StringInputField
 
-interface AccountOutgoingConfigContract {
+interface OutgoingServerSettingsContract {
 
     interface ViewModel : UnidirectionalViewModel<State, Event, Effect>
 

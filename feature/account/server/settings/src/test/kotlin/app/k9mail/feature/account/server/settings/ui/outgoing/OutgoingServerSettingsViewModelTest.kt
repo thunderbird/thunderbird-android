@@ -5,7 +5,6 @@ import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndMviTurbinesConsumed
 import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
-import app.k9mail.core.ui.compose.testing.mvi.turbines
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.account.common.data.InMemoryAccountStateRepository
 import app.k9mail.feature.account.common.domain.AccountDomainContract
@@ -16,10 +15,10 @@ import app.k9mail.feature.account.common.domain.entity.MailConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.toSmtpDefaultPort
 import app.k9mail.feature.account.common.domain.input.NumberInputField
 import app.k9mail.feature.account.common.domain.input.StringInputField
-import app.k9mail.feature.account.server.settings.ui.outgoing.AccountOutgoingConfigContract.Effect
-import app.k9mail.feature.account.server.settings.ui.outgoing.AccountOutgoingConfigContract.Event
-import app.k9mail.feature.account.server.settings.ui.outgoing.AccountOutgoingConfigContract.State
-import app.k9mail.feature.account.server.settings.ui.outgoing.fake.FakeAccountOutgoingConfigValidator
+import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.Effect
+import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.Event
+import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.State
+import app.k9mail.feature.account.server.settings.ui.outgoing.fake.FakeOutgoingServerSettingsValidator
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.AuthType
@@ -28,7 +27,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
-class AccountOutgoingConfigViewModelTest {
+class OutgoingServerSettingsViewModelTest {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
@@ -256,7 +255,7 @@ class AccountOutgoingConfigViewModelTest {
         runTest {
             val initialState = State()
             val testSubject = createTestSubject(
-                validator = FakeAccountOutgoingConfigValidator(
+                validator = FakeOutgoingServerSettingsValidator(
                     serverAnswer = ValidationResult.Failure(TestError),
                 ),
                 initialState = initialState,
@@ -301,9 +300,9 @@ class AccountOutgoingConfigViewModelTest {
     private companion object {
         fun createTestSubject(
             initialState: State = State(),
-            validator: AccountOutgoingConfigContract.Validator = FakeAccountOutgoingConfigValidator(),
+            validator: OutgoingServerSettingsContract.Validator = FakeOutgoingServerSettingsValidator(),
             repository: AccountDomainContract.AccountStateRepository = InMemoryAccountStateRepository(),
-        ) = AccountOutgoingConfigViewModel(
+        ) = OutgoingServerSettingsViewModel(
             validator = validator,
             accountStateRepository = repository,
             initialState = initialState,

@@ -6,7 +6,7 @@ import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.common.domain.input.NumberInputField
 import app.k9mail.feature.account.common.domain.input.StringInputField
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract
-import app.k9mail.feature.account.server.settings.ui.outgoing.AccountOutgoingConfigContract
+import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract
 import app.k9mail.feature.account.setup.domain.entity.toAuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.toConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.toIncomingProtocolType
@@ -43,15 +43,15 @@ internal fun AccountAutoDiscoveryContract.State.toIncomingConfigState(): Incomin
     }
 }
 
-internal fun AccountAutoDiscoveryContract.State.toOutgoingConfigState(): AccountOutgoingConfigContract.State {
+internal fun AccountAutoDiscoveryContract.State.toOutgoingConfigState(): OutgoingServerSettingsContract.State {
     val outgoingSettings = autoDiscoverySettings?.outgoingServerSettings as? SmtpServerSettings?
     return if (outgoingSettings == null) {
-        AccountOutgoingConfigContract.State(
+        OutgoingServerSettingsContract.State(
             username = StringInputField(value = emailAddress.value),
             password = StringInputField(value = password.value),
         )
     } else {
-        AccountOutgoingConfigContract.State(
+        OutgoingServerSettingsContract.State(
             server = StringInputField(value = outgoingSettings.hostname.value),
             security = outgoingSettings.connectionSecurity.toConnectionSecurity(),
             port = NumberInputField(value = outgoingSettings.port.value.toLong()),

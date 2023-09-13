@@ -5,13 +5,13 @@ import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.toSmtpDefaultPort
-import app.k9mail.feature.account.server.settings.ui.outgoing.AccountOutgoingConfigContract.Effect
-import app.k9mail.feature.account.server.settings.ui.outgoing.AccountOutgoingConfigContract.Event
-import app.k9mail.feature.account.server.settings.ui.outgoing.AccountOutgoingConfigContract.State
-import app.k9mail.feature.account.server.settings.ui.outgoing.AccountOutgoingConfigContract.Validator
-import app.k9mail.feature.account.server.settings.ui.outgoing.AccountOutgoingConfigContract.ViewModel
+import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.Effect
+import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.Event
+import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.State
+import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.Validator
+import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.ViewModel
 
-class AccountOutgoingConfigViewModel(
+class OutgoingServerSettingsViewModel(
     private val validator: Validator,
     private val accountStateRepository: AccountDomainContract.AccountStateRepository,
     initialState: State = State(),

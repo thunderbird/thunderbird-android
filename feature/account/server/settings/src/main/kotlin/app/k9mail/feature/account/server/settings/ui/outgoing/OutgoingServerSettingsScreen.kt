@@ -14,12 +14,12 @@ import app.k9mail.feature.account.common.ui.AccountTopAppBar
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.common.ui.preview.PreviewAccountStateRepository
 import app.k9mail.feature.account.server.settings.R
-import app.k9mail.feature.account.server.settings.ui.outgoing.AccountOutgoingConfigContract.Effect
-import app.k9mail.feature.account.server.settings.ui.outgoing.AccountOutgoingConfigContract.Event
-import app.k9mail.feature.account.server.settings.ui.outgoing.AccountOutgoingConfigContract.ViewModel
+import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.Effect
+import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.Event
+import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.ViewModel
 
 @Composable
-fun AccountOutgoingConfigScreen(
+fun OutgoingServerSettingsScreen(
     onNext: () -> Unit,
     onBack: () -> Unit,
     viewModel: ViewModel,
@@ -54,7 +54,7 @@ fun AccountOutgoingConfigScreen(
         },
         modifier = modifier,
     ) { innerPadding ->
-        AccountOutgoingConfigContent(
+        OutgoingServerSettingsContent(
             state = state.value,
             onEvent = { dispatch(it) },
             contentPadding = innerPadding,
@@ -64,13 +64,13 @@ fun AccountOutgoingConfigScreen(
 
 @Composable
 @DevicePreviews
-internal fun AccountOutgoingConfigScreenK9Preview() {
+internal fun OutgoingServerSettingsScreenK9Preview() {
     K9Theme {
-        AccountOutgoingConfigScreen(
+        OutgoingServerSettingsScreen(
             onNext = {},
             onBack = {},
-            viewModel = AccountOutgoingConfigViewModel(
-                validator = AccountOutgoingConfigValidator(),
+            viewModel = OutgoingServerSettingsViewModel(
+                validator = OutgoingServerSettingsValidator(),
                 accountStateRepository = PreviewAccountStateRepository(),
             ),
         )
@@ -79,13 +79,13 @@ internal fun AccountOutgoingConfigScreenK9Preview() {
 
 @Composable
 @DevicePreviews
-internal fun AccountOutgoingConfigScreenThunderbirdPreview() {
+internal fun OutgoingServerSettingsScreenThunderbirdPreview() {
     ThunderbirdTheme {
-        AccountOutgoingConfigScreen(
+        OutgoingServerSettingsScreen(
             onNext = {},
             onBack = {},
-            viewModel = AccountOutgoingConfigViewModel(
-                validator = AccountOutgoingConfigValidator(),
+            viewModel = OutgoingServerSettingsViewModel(
+                validator = OutgoingServerSettingsValidator(),
                 accountStateRepository = PreviewAccountStateRepository(),
             ),
         )

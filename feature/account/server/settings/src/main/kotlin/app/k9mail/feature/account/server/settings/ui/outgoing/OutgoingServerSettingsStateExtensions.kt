@@ -1,7 +1,7 @@
 package app.k9mail.feature.account.server.settings.ui.outgoing
 
-internal val AccountOutgoingConfigContract.State.isUsernameFieldVisible: Boolean
+internal val OutgoingServerSettingsContract.State.isUsernameFieldVisible: Boolean
     get() = authenticationType.isUsernameRequired
 
-internal val AccountOutgoingConfigContract.State.isPasswordFieldVisible: Boolean
+internal val OutgoingServerSettingsContract.State.isPasswordFieldVisible: Boolean
     get() = authenticationType.isPasswordRequired

@@ -6,12 +6,12 @@ import app.k9mail.feature.account.server.settings.domain.usecase.ValidatePort
 import app.k9mail.feature.account.server.settings.domain.usecase.ValidateServer
 import app.k9mail.feature.account.server.settings.domain.usecase.ValidateUsername
 
-internal class AccountOutgoingConfigValidator(
+internal class OutgoingServerSettingsValidator(
     private val serverValidator: ValidateServer = ValidateServer(),
     private val portValidator: ValidatePort = ValidatePort(),
     private val usernameValidator: ValidateUsername = ValidateUsername(),
     private val passwordValidator: ValidatePassword = ValidatePassword(),
-) : AccountOutgoingConfigContract.Validator {
+) : OutgoingServerSettingsContract.Validator {
     override fun validateServer(server: String): ValidationResult {
         return serverValidator.execute(server)
     }
