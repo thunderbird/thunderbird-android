@@ -1,9 +1,9 @@
 package app.k9mail.feature.account.setup.ui.autodiscovery
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
-import app.k9mail.feature.account.server.config.domain.ServerConfigDomainContract
-import app.k9mail.feature.account.server.config.domain.usecase.ValidateEmailAddress
-import app.k9mail.feature.account.server.config.domain.usecase.ValidatePassword
+import app.k9mail.feature.account.server.settings.domain.ServerConfigDomainContract
+import app.k9mail.feature.account.server.settings.domain.usecase.ValidateEmailAddress
+import app.k9mail.feature.account.server.settings.domain.usecase.ValidatePassword
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
 import app.k9mail.feature.account.setup.domain.usecase.ValidateConfigurationApproval
 

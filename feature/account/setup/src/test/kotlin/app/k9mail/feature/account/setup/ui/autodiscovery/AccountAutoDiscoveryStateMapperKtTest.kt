@@ -10,8 +10,8 @@ import app.k9mail.feature.account.common.domain.entity.AuthenticationType
 import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.common.domain.input.NumberInputField
 import app.k9mail.feature.account.common.domain.input.StringInputField
-import app.k9mail.feature.account.server.config.ui.incoming.AccountIncomingConfigContract
-import app.k9mail.feature.account.server.config.ui.outgoing.AccountOutgoingConfigContract
+import app.k9mail.feature.account.server.settings.ui.incoming.AccountIncomingConfigContract
+import app.k9mail.feature.account.server.settings.ui.outgoing.AccountOutgoingConfigContract
 import app.k9mail.feature.account.setup.domain.entity.AutoDiscoveryAuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.AutoDiscoveryConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.toConnectionSecurity

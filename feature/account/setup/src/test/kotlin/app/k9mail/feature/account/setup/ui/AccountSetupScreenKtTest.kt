@@ -4,8 +4,8 @@ import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.onNodeWithTag
 import app.k9mail.core.ui.compose.testing.setContent
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
-import app.k9mail.feature.account.server.config.ui.incoming.fake.FakeAccountIncomingConfigViewModel
-import app.k9mail.feature.account.server.config.ui.outgoing.fake.FakeAccountOutgoingConfigViewModel
+import app.k9mail.feature.account.server.settings.ui.incoming.fake.FakeAccountIncomingConfigViewModel
+import app.k9mail.feature.account.server.settings.ui.outgoing.fake.FakeAccountOutgoingConfigViewModel
 import app.k9mail.feature.account.server.validation.ui.fake.FakeServerValidationViewModel
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep

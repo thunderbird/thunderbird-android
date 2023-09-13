@@ -4,7 +4,7 @@ import app.k9mail.autodiscovery.api.AutoDiscoveryService
 import app.k9mail.autodiscovery.service.RealAutoDiscoveryService
 import app.k9mail.feature.account.common.featureAccountCommonModule
 import app.k9mail.feature.account.oauth.featureAccountOAuthModule
-import app.k9mail.feature.account.server.config.featureAccountServerConfigModule
+import app.k9mail.feature.account.server.settings.featureAccountServerConfigModule
 import app.k9mail.feature.account.server.validation.featureAccountServerValidationModule
 import app.k9mail.feature.account.setup.domain.DomainContract
 import app.k9mail.feature.account.setup.domain.usecase.CreateAccount
