@@ -2,7 +2,7 @@ package app.k9mail.feature.account.server.settings.domain
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 
-interface ServerConfigDomainContract {
+interface ServerSettingsDomainContract {
 
     interface UseCase {
 

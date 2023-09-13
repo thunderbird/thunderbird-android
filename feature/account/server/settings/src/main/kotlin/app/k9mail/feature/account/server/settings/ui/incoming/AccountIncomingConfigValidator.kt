@@ -1,7 +1,7 @@
 package app.k9mail.feature.account.server.settings.ui.incoming
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
-import app.k9mail.feature.account.server.settings.domain.ServerConfigDomainContract.UseCase
+import app.k9mail.feature.account.server.settings.domain.ServerSettingsDomainContract.UseCase
 import app.k9mail.feature.account.server.settings.domain.usecase.ValidateImapPrefix
 import app.k9mail.feature.account.server.settings.domain.usecase.ValidatePassword
 import app.k9mail.feature.account.server.settings.domain.usecase.ValidatePort
