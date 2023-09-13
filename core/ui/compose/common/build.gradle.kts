@@ -8,5 +8,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.compose.activity)
+
     testImplementation(projects.core.ui.compose.testing)
 }
