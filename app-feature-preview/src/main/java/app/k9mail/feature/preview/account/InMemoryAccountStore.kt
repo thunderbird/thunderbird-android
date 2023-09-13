@@ -4,14 +4,16 @@ import app.k9mail.feature.account.common.AccountCommonExternalContract.AccountSt
 import app.k9mail.feature.account.common.domain.entity.Account
 import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
-import app.k9mail.feature.account.edit.AccountEditExternalContract.AccountUpdater
-import app.k9mail.feature.account.edit.AccountEditExternalContract.AccountUpdater.AccountUpdaterResult
+import app.k9mail.feature.account.edit.AccountEditExternalContract.AccountServerSettingsUpdater
+import app.k9mail.feature.account.edit.AccountEditExternalContract.AccountUpdaterFailure
+import app.k9mail.feature.account.edit.AccountEditExternalContract.AccountUpdaterResult
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
+import com.fsck.k9.mail.ServerSettings
 
 class InMemoryAccountStore(
     private val accountMap: MutableMap<String, Account> = mutableMapOf(),
-) : AccountCreator, AccountUpdater, AccountStateLoader {
+) : AccountCreator, AccountServerSettingsUpdater, AccountStateLoader {
 
     suspend fun load(accountUuid: String): Account? {
         return accountMap[accountUuid]
@@ -27,11 +29,21 @@ class InMemoryAccountStore(
         return AccountCreatorResult.Success(account.uuid)
     }
 
-    override suspend fun updateAccount(account: Account): AccountUpdaterResult {
-        return if (!accountMap.containsKey(account.uuid)) {
-            AccountUpdaterResult.Error("Account not found")
+    override suspend fun updateServerSettings(
+        accountUuid: String,
+        isIncoming: Boolean,
+        serverSettings: ServerSettings,
+    ): AccountUpdaterResult {
+        return if (!accountMap.containsKey(accountUuid)) {
+            AccountUpdaterResult.Failure(AccountUpdaterFailure.AccountNotFound(accountUuid))
         } else {
-            accountMap[account.uuid] = account
+            val account = accountMap[accountUuid]!!
+
+            accountMap[account.uuid] = if (isIncoming) {
+                account.copy(incomingServerSettings = serverSettings)
+            } else {
+                account.copy(outgoingServerSettings = serverSettings)
+            }
 
             AccountUpdaterResult.Success(account.uuid)
         }

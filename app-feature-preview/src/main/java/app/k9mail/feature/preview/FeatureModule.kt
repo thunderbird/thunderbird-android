@@ -27,7 +27,7 @@ val accountModule: Module = module {
             arrayOf(
                 AccountCommonExternalContract.AccountStateLoader::class,
                 AccountSetupExternalContract.AccountCreator::class,
-                AccountEditExternalContract.AccountUpdater::class,
+                AccountEditExternalContract.AccountServerSettingsUpdater::class,
             ),
         )
     factory<AccountSetupExternalContract.AccountOwnerNameProvider> { AccountOwnerNameProvider() }

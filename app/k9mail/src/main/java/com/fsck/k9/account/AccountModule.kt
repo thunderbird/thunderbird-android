@@ -28,9 +28,9 @@ val newAccountModule = module {
         )
     }
 
-    factory<AccountEditExternalContract.AccountUpdater> {
-        AccountUpdater(
-            preferences = get(),
+    factory<AccountEditExternalContract.AccountServerSettingsUpdater> {
+        AccountServerSettingsUpdater(
+            accountManager = get(),
         )
     }
 }
