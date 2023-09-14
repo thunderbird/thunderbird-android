@@ -102,3 +102,45 @@ inline fun <reified STATE, EVENT, EFFECT> UnidirectionalViewModel<STATE, EVENT, 
         dispatch = dispatch,
     )
 }
+
+/**
+ * Composable function that observes a UnidirectionalViewModel without handling side effects.
+ *
+ * Example usage:
+ * ```
+ * @Composable
+ * fun MyScreen(
+ *   viewModel: MyUnidirectionalViewModel<MyState, MyEvent, MyEffect>,
+ *   onNavigateNext: () -> Unit,
+ *   onNavigateBack: () -> Unit,
+ * ) {
+ *   val (state, dispatch) = viewModel.observeWithoutEffect()
+ *
+ *   MyContent(
+ *     onNextClick = {
+ *       dispatch(MyEvent.OnNext)
+ *     },
+ *     onBackClick = {
+ *       dispatch(MyEvent.OnBack)
+ *     },
+ *     state = state.value,
+ *   )
+ * }
+ * ```
+ *
+ * @param STATE The type that represents the state of the ViewModel.
+ * @param EVENT The type that represents user actions that can occur and should be handled by the ViewModel.
+ *
+ * @return A [StateDispatch] containing the state and a dispatch function.
+ */
+@Suppress("MaxLineLength")
+@Composable
+inline fun <reified STATE, EVENT, EFFECT> UnidirectionalViewModel<STATE, EVENT, EFFECT>.observeWithoutEffect(): StateDispatch<STATE, EVENT> {
+    val collectedState = state.collectAsStateWithLifecycle()
+    val dispatch: (EVENT) -> Unit = { event(it) }
+
+    return StateDispatch(
+        state = collectedState,
+        dispatch = dispatch,
+    )
+}

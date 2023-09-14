@@ -4,9 +4,14 @@ import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndMviTurbinesConsumed
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.account.common.data.InMemoryAccountStateRepository
+import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.common.domain.entity.AccountState
+import app.k9mail.feature.account.oauth.domain.AccountOAuthDomainContract
+import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
 import app.k9mail.feature.account.oauth.ui.fake.FakeAccountOAuthViewModel
 import app.k9mail.feature.account.server.certificate.data.InMemoryServerCertificateErrorRepository
+import app.k9mail.feature.account.server.certificate.domain.ServerCertificateDomainContract
+import app.k9mail.feature.account.server.validation.domain.ServerValidationDomainContract
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Effect
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Error
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Event
@@ -23,16 +28,22 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
-class ServerValidationViewModelTest {
+abstract class BaseServerValidationViewModelTest<T : BaseServerValidationViewModel> {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
     @Test
     fun `should update state when LoadAccountStateAndValidate event received and validate`() = runTest {
-        val accountState = AccountState(
-            incomingServerSettings = IMAP_SERVER_SETTINGS,
-        )
+        val accountState = if (isIncomingValidation) {
+            AccountState(
+                incomingServerSettings = SERVER_SETTINGS,
+            )
+        } else {
+            AccountState(
+                outgoingServerSettings = SERVER_SETTINGS,
+            )
+        }
         val initialState = State(
             serverSettings = null,
             isLoading = true,
@@ -47,7 +58,7 @@ class ServerValidationViewModelTest {
         val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
 
         val expectedState = State(
-            serverSettings = IMAP_SERVER_SETTINGS,
+            serverSettings = SERVER_SETTINGS,
             isLoading = false,
             error = null,
             isSuccess = false,
@@ -93,7 +104,7 @@ class ServerValidationViewModelTest {
     @Test
     fun `should validate server settings when ValidateServerSettings event received`() = runTest {
         val initialState = State(
-            serverSettings = IMAP_SERVER_SETTINGS,
+            serverSettings = SERVER_SETTINGS,
         )
         val testSubject = createTestSubject(
             serverSettingsValidationResult = ServerSettingsValidationResult.Success,
@@ -123,7 +134,7 @@ class ServerValidationViewModelTest {
     @Test
     fun `should set error state when ValidateServerSettings received and check settings failed`() = runTest {
         val initialState = State(
-            serverSettings = IMAP_SERVER_SETTINGS,
+            serverSettings = SERVER_SETTINGS,
         )
         val testSubject = createTestSubject(
             serverSettingsValidationResult = ServerSettingsValidationResult.ServerError("server error"),
@@ -151,7 +162,7 @@ class ServerValidationViewModelTest {
     @Test
     fun `should emit effect NavigateNext when ValidateConfig is successful`() = runTest {
         val initialState = State(
-            serverSettings = IMAP_SERVER_SETTINGS,
+            serverSettings = SERVER_SETTINGS,
             isSuccess = true,
         )
         val testSubject = createTestSubject(
@@ -187,11 +198,12 @@ class ServerValidationViewModelTest {
     @Test
     fun `should clear error and trigger check settings when OnRetryClicked event received`() = runTest {
         val initialState = State(
-            serverSettings = IMAP_SERVER_SETTINGS,
+            serverSettings = SERVER_SETTINGS,
             error = Error.ServerError("server error"),
         )
         var checkSettingsCalled = false
-        val testSubject = ServerValidationViewModel(
+
+        val testSubject = createTestSubject(
             validateServerSettings = {
                 delay(50)
                 checkSettingsCalled = true
@@ -225,26 +237,25 @@ class ServerValidationViewModelTest {
         }
     }
 
-    private companion object {
-        fun createTestSubject(
-            serverSettingsValidationResult: ServerSettingsValidationResult = ServerSettingsValidationResult.Success,
-            accountState: AccountState = AccountState(),
-            initialState: State = State(),
-        ): ServerValidationViewModel {
-            return ServerValidationViewModel(
-                validateServerSettings = {
-                    delay(50)
-                    serverSettingsValidationResult
-                },
-                accountStateRepository = InMemoryAccountStateRepository(accountState),
-                authorizationStateRepository = { true },
-                certificateErrorRepository = InMemoryServerCertificateErrorRepository(),
-                oAuthViewModel = FakeAccountOAuthViewModel(),
-                initialState = initialState,
-            )
-        }
+    abstract fun createTestSubject(
+        serverSettingsValidationResult: ServerSettingsValidationResult = ServerSettingsValidationResult.Success,
+        accountState: AccountState = AccountState(),
+        initialState: State = State(),
+    ): T
 
-        val IMAP_SERVER_SETTINGS = ServerSettings(
+    abstract fun createTestSubject(
+        accountStateRepository: AccountDomainContract.AccountStateRepository,
+        validateServerSettings: ServerValidationDomainContract.UseCase.ValidateServerSettings,
+        authorizationStateRepository: AccountOAuthDomainContract.AuthorizationStateRepository,
+        certificateErrorRepository: ServerCertificateDomainContract.ServerCertificateErrorRepository,
+        oAuthViewModel: AccountOAuthContract.ViewModel,
+        initialState: State,
+    ): T
+
+    abstract val isIncomingValidation: Boolean
+
+    protected companion object {
+        val SERVER_SETTINGS = ServerSettings(
             type = "imap",
             host = "imap.example.com",
             port = 465,
