@@ -133,9 +133,9 @@ inline fun <reified STATE, EVENT, EFFECT> UnidirectionalViewModel<STATE, EVENT, 
  *
  * @return A [StateDispatch] containing the state and a dispatch function.
  */
+@Suppress("MaxLineLength")
 @Composable
-inline fun <reified STATE, EVENT, EFFECT> UnidirectionalViewModel<STATE, EVENT, EFFECT>
-    .observeWithoutEffect(): StateDispatch<STATE, EVENT> {
+inline fun <reified STATE, EVENT, EFFECT> UnidirectionalViewModel<STATE, EVENT, EFFECT>.observeWithoutEffect(): StateDispatch<STATE, EVENT> {
     val collectedState = state.collectAsStateWithLifecycle()
     val dispatch: (EVENT) -> Unit = { event(it) }
 
