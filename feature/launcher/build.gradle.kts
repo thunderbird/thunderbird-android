@@ -20,6 +20,7 @@ dependencies {
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.feature.onboarding)
     implementation(projects.feature.account.setup)
+    implementation(projects.feature.account.edit)
 
     testImplementation(projects.core.ui.compose.testing)
 }
