@@ -21,12 +21,11 @@ interface AccountSetupContract {
     )
 
     sealed interface Event {
-        object OnNext : Event
-
         data class OnAutoDiscoveryFinished(
             val isAutomaticConfig: Boolean,
         ) : Event
 
+        object OnNext : Event
         object OnBack : Event
     }
 
