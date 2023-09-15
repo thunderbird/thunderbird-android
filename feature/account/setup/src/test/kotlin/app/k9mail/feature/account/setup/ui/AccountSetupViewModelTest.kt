@@ -132,7 +132,7 @@ class AccountSetupViewModelTest {
             prop(State::setupStep).isEqualTo(SetupStep.OPTIONS)
         }
 
-        accountStateRepository.save(expectedAccountState)
+        accountStateRepository.setState(expectedAccountState)
 
         viewModel.event(AccountSetupContract.Event.OnNext)
 

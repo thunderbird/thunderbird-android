@@ -15,27 +15,27 @@ class InMemoryAccountStateRepository(
         return state
     }
 
-    override fun save(accountState: AccountState) {
+    override fun setState(accountState: AccountState) {
         state = accountState
     }
 
-    override fun saveEmailAddress(emailAddress: String) {
+    override fun setEmailAddress(emailAddress: String) {
         state = state.copy(emailAddress = emailAddress)
     }
 
-    override fun saveIncomingServerSettings(serverSettings: ServerSettings) {
+    override fun setIncomingServerSettings(serverSettings: ServerSettings) {
         state = state.copy(incomingServerSettings = serverSettings)
     }
 
-    override fun saveOutgoingServerSettings(serverSettings: ServerSettings) {
+    override fun setOutgoingServerSettings(serverSettings: ServerSettings) {
         state = state.copy(outgoingServerSettings = serverSettings)
     }
 
-    override fun saveAuthorizationState(authorizationState: AuthorizationState) {
+    override fun setAuthorizationState(authorizationState: AuthorizationState) {
         state = state.copy(authorizationState = authorizationState)
     }
 
-    override fun saveOptions(options: AccountOptions) {
+    override fun setOptions(options: AccountOptions) {
         state = state.copy(options = options)
     }
 

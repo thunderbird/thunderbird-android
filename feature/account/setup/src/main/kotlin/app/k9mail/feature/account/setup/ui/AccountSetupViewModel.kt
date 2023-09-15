@@ -104,7 +104,7 @@ class AccountSetupViewModel(
 
     private fun changeToSetupStep(setupStep: SetupStep) {
         if (setupStep == SetupStep.AUTO_CONFIG) {
-            accountStateRepository.saveAuthorizationState(AuthorizationState(null))
+            accountStateRepository.setAuthorizationState(AuthorizationState(null))
         }
 
         updateState {

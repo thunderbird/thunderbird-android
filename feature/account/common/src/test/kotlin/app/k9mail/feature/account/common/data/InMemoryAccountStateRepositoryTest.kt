@@ -31,7 +31,7 @@ class InMemoryAccountStateRepositoryTest {
     }
 
     @Test
-    fun `should save state`() {
+    fun `should set state`() {
         val testSubject = InMemoryAccountStateRepository(
             AccountState(
                 uuid = "uuid",
@@ -58,56 +58,56 @@ class InMemoryAccountStateRepositoryTest {
             ),
         )
 
-        testSubject.save(newState)
+        testSubject.setState(newState)
 
         assertThat(testSubject.getState()).isEqualTo(newState)
     }
 
     @Test
-    fun `should save email address`() {
+    fun `should set email address`() {
         val testSubject = InMemoryAccountStateRepository()
 
-        testSubject.saveEmailAddress("emailAddress")
+        testSubject.setEmailAddress("emailAddress")
 
         assertThat(testSubject.getState().emailAddress)
             .isEqualTo("emailAddress")
     }
 
     @Test
-    fun `should save incoming server settings`() {
+    fun `should set incoming server settings`() {
         val testSubject = InMemoryAccountStateRepository()
 
-        testSubject.saveIncomingServerSettings(INCOMING_SERVER_SETTINGS)
+        testSubject.setIncomingServerSettings(INCOMING_SERVER_SETTINGS)
 
         assertThat(testSubject.getState().incomingServerSettings)
             .isEqualTo(INCOMING_SERVER_SETTINGS)
     }
 
     @Test
-    fun `should save outgoing server settings`() {
+    fun `should set outgoing server settings`() {
         val testSubject = InMemoryAccountStateRepository()
 
-        testSubject.saveOutgoingServerSettings(OUTGOING_SERVER_SETTINGS)
+        testSubject.setOutgoingServerSettings(OUTGOING_SERVER_SETTINGS)
 
         assertThat(testSubject.getState().outgoingServerSettings)
             .isEqualTo(OUTGOING_SERVER_SETTINGS)
     }
 
     @Test
-    fun `should save authorization state`() {
+    fun `should set authorization state`() {
         val testSubject = InMemoryAccountStateRepository()
 
-        testSubject.saveAuthorizationState(AuthorizationState("authorizationState"))
+        testSubject.setAuthorizationState(AuthorizationState("authorizationState"))
 
         assertThat(testSubject.getState().authorizationState)
             .isEqualTo(AuthorizationState("authorizationState"))
     }
 
     @Test
-    fun `should save options`() {
+    fun `should set options`() {
         val testSubject = InMemoryAccountStateRepository()
 
-        testSubject.saveOptions(OPTIONS)
+        testSubject.setOptions(OPTIONS)
 
         assertThat(testSubject.getState().options)
             .isEqualTo(OPTIONS)

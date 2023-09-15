@@ -102,7 +102,7 @@ abstract class BaseServerValidationViewModel(
 
     private fun onOAuthResult(result: OAuthResult) {
         if (result is OAuthResult.Success) {
-            accountStateRepository.saveAuthorizationState(result.authorizationState)
+            accountStateRepository.setAuthorizationState(result.authorizationState)
             updateState {
                 it.copy(
                     needsAuthorization = false,

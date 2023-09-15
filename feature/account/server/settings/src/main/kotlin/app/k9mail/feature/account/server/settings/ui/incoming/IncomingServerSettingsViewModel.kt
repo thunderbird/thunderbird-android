@@ -115,7 +115,7 @@ class IncomingServerSettingsViewModel(
         }
 
         if (!hasError) {
-            accountStateRepository.saveIncomingServerSettings(state.value.toServerSettings())
+            accountStateRepository.setIncomingServerSettings(state.value.toServerSettings())
             navigateNext()
         }
     }
