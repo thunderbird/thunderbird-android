@@ -250,7 +250,7 @@ internal class AccountAutoDiscoveryViewModel(
     private fun navigateBack() = emitEffect(Effect.NavigateBack)
 
     private fun navigateNext(isAutomaticConfig: Boolean) {
-        accountStateRepository.save(state.value.toAccountState())
+        accountStateRepository.setState(state.value.toAccountState())
 
         emitEffect(Effect.NavigateNext(isAutomaticConfig))
     }

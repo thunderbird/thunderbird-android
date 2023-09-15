@@ -10,17 +10,17 @@ interface AccountDomainContract {
     interface AccountStateRepository {
         fun getState(): AccountState
 
-        fun save(accountState: AccountState)
+        fun setState(accountState: AccountState)
 
-        fun saveEmailAddress(emailAddress: String)
+        fun setEmailAddress(emailAddress: String)
 
-        fun saveIncomingServerSettings(serverSettings: ServerSettings)
+        fun setIncomingServerSettings(serverSettings: ServerSettings)
 
-        fun saveOutgoingServerSettings(serverSettings: ServerSettings)
+        fun setOutgoingServerSettings(serverSettings: ServerSettings)
 
-        fun saveAuthorizationState(authorizationState: AuthorizationState)
+        fun setAuthorizationState(authorizationState: AuthorizationState)
 
-        fun saveOptions(options: AccountOptions)
+        fun setOptions(options: AccountOptions)
 
         fun clear()
     }

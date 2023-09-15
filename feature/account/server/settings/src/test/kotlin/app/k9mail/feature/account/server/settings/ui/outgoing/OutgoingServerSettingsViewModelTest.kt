@@ -54,7 +54,7 @@ class OutgoingServerSettingsViewModelTest {
         )
         val turbines = turbinesWithInitialStateCheck(testSubject, State())
 
-        repository.save(accountState)
+        repository.setState(accountState)
 
         testSubject.event(Event.LoadAccountState)
 

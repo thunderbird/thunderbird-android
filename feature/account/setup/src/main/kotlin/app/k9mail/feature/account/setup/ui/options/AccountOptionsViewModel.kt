@@ -89,7 +89,7 @@ internal class AccountOptionsViewModel(
         }
 
         if (!hasError) {
-            accountStateRepository.saveOptions(state.value.toAccountOptions())
+            accountStateRepository.setOptions(state.value.toAccountOptions())
             navigateNext()
         }
     }

@@ -9,6 +9,7 @@ import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ServerSettings
 
 class PreviewAccountStateRepository : AccountDomainContract.AccountStateRepository {
+
     override fun getState(): AccountState = AccountState(
         emailAddress = "test@example.com",
         incomingServerSettings = ServerSettings(
@@ -33,17 +34,17 @@ class PreviewAccountStateRepository : AccountDomainContract.AccountStateReposito
         ),
     )
 
-    override fun save(accountState: AccountState) = Unit
+    override fun setState(accountState: AccountState) = Unit
 
-    override fun saveEmailAddress(emailAddress: String) = Unit
+    override fun setEmailAddress(emailAddress: String) = Unit
 
-    override fun saveIncomingServerSettings(serverSettings: ServerSettings) = Unit
+    override fun setIncomingServerSettings(serverSettings: ServerSettings) = Unit
 
-    override fun saveOutgoingServerSettings(serverSettings: ServerSettings) = Unit
+    override fun setOutgoingServerSettings(serverSettings: ServerSettings) = Unit
 
-    override fun saveAuthorizationState(authorizationState: AuthorizationState) = Unit
+    override fun setAuthorizationState(authorizationState: AuthorizationState) = Unit
 
-    override fun saveOptions(options: AccountOptions) = Unit
+    override fun setOptions(options: AccountOptions) = Unit
 
     override fun clear() = Unit
 }

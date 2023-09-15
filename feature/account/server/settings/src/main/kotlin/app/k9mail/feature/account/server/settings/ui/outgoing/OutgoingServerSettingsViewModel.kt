@@ -78,7 +78,7 @@ class OutgoingServerSettingsViewModel(
         }
 
         if (!hasError) {
-            accountStateRepository.saveOutgoingServerSettings(state.value.toServerSettings())
+            accountStateRepository.setOutgoingServerSettings(state.value.toServerSettings())
             navigateNext()
         }
     }
