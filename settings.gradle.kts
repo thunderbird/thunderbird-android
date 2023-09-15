@@ -45,6 +45,7 @@ include(
 
 include(
     ":feature:account:common",
+    ":feature:account:edit",
     ":feature:account:oauth",
     ":feature:account:setup",
     ":feature:account:server:certificate",

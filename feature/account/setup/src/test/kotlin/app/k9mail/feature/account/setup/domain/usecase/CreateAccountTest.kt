@@ -21,6 +21,7 @@ class CreateAccountTest {
                 recordedAccount = account
                 AccountCreatorResult.Success(accountUuid = "uuid")
             },
+            uuidGenerator = { "uuid" },
         )
 
         val emailAddress = "user@example.com"
@@ -65,6 +66,7 @@ class CreateAccountTest {
         assertThat(result).isEqualTo("uuid")
         assertThat(recordedAccount).isEqualTo(
             Account(
+                uuid = "uuid",
                 emailAddress = emailAddress,
                 incomingServerSettings = incomingServerSettings,
                 outgoingServerSettings = outgoingServerSettings,

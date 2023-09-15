@@ -40,7 +40,7 @@ class AccountCreator(
     }
 
     private fun create(account: Account): String {
-        val newAccount = preferences.newAccount()
+        val newAccount = preferences.newAccount(account.uuid)
 
         newAccount.email = account.emailAddress
 

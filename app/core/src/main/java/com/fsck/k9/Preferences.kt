@@ -122,7 +122,6 @@ class Preferences internal constructor(
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     override fun getAccountFlow(accountUuid: String): Flow<Account> {
         return callbackFlow {
             val initialAccount = getAccount(accountUuid)
@@ -169,6 +168,10 @@ class Preferences internal constructor(
 
     fun newAccount(): Account {
         val accountUuid = UUID.randomUUID().toString()
+        return newAccount(accountUuid)
+    }
+
+    fun newAccount(accountUuid: String): Account {
         val account = Account(accountUuid)
         accountPreferenceSerializer.loadDefaults(account)
 
