@@ -6,9 +6,11 @@ import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCrea
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
 import com.fsck.k9.mail.ServerSettings
+import java.util.UUID
 
 class CreateAccount(
     private val accountCreator: AccountCreator,
+    private val uuidGenerator: () -> String = { UUID.randomUUID().toString() },
 ) : UseCase.CreateAccount {
     override suspend fun execute(
         emailAddress: String,
@@ -18,6 +20,7 @@ class CreateAccount(
         options: AccountOptions,
     ): String {
         val account = Account(
+            uuid = uuidGenerator(),
             emailAddress = emailAddress,
             incomingServerSettings = incomingServerSettings,
             outgoingServerSettings = outgoingServerSettings,

@@ -20,6 +20,7 @@ class InMemoryAccountStateRepositoryTest {
 
         assertThat(result).isEqualTo(
             AccountState(
+                uuid = null,
                 emailAddress = null,
                 incomingServerSettings = null,
                 outgoingServerSettings = null,
@@ -33,6 +34,7 @@ class InMemoryAccountStateRepositoryTest {
     fun `should save state`() {
         val testSubject = InMemoryAccountStateRepository(
             AccountState(
+                uuid = "uuid",
                 emailAddress = "emailAddress",
                 incomingServerSettings = INCOMING_SERVER_SETTINGS,
                 outgoingServerSettings = OUTGOING_SERVER_SETTINGS,
@@ -41,6 +43,7 @@ class InMemoryAccountStateRepositoryTest {
             ),
         )
         val newState = AccountState(
+            uuid = "uuid2",
             emailAddress = "emailAddress2",
             incomingServerSettings = INCOMING_SERVER_SETTINGS.copy(host = "imap2.example.org"),
             outgoingServerSettings = OUTGOING_SERVER_SETTINGS.copy(host = "smtp2.example.org"),
@@ -114,6 +117,7 @@ class InMemoryAccountStateRepositoryTest {
     fun `should clear state`() {
         val testSubject = InMemoryAccountStateRepository(
             AccountState(
+                uuid = "uuid",
                 emailAddress = "emailAddress",
                 incomingServerSettings = INCOMING_SERVER_SETTINGS,
                 outgoingServerSettings = OUTGOING_SERVER_SETTINGS,
@@ -126,6 +130,7 @@ class InMemoryAccountStateRepositoryTest {
 
         assertThat(testSubject.getState()).isEqualTo(
             AccountState(
+                uuid = null,
                 emailAddress = null,
                 incomingServerSettings = null,
                 outgoingServerSettings = null,
