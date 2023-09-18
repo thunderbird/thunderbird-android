@@ -13,7 +13,7 @@ internal class BodyCleaner {
 
     init {
         val allowList = Safelist.relaxed()
-            .addTags("font", "hr", "ins", "del", "center", "map", "area", "title", "tt", "kbd", "samp", "var")
+            .addTags("font", "hr", "ins", "del", "center", "map", "area", "title", "tt", "kbd", "samp", "var", "style")
             .addAttributes("font", "color", "face", "size")
             .addAttributes("a", "name")
             .addAttributes("div", "align")
