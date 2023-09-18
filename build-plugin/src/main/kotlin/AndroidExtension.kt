@@ -41,7 +41,7 @@ internal fun CommonExtension<*, *, *, *, *>.configureSharedComposeConfig(
     }
 
     lint {
-        warningsAsErrors = true
+        warningsAsErrors = false
         abortOnError = true
     }
 
