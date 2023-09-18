@@ -50,7 +50,7 @@ kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref =
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 spotless = "com.diffplug.spotless:6.21.0"
 detekt = "io.gitlab.arturbosch.detekt:1.23.0"
-dependency-check = "com.github.ben-manes.versions:0.46.0"
+dependency-check = "com.github.ben-manes.versions:0.48.0"
 
 [libraries]
 desugar = "com.android.tools:desugar_jdk_libs:2.0.3"
