@@ -32,7 +32,12 @@ fun <T> PagedContent(
     modifier: Modifier = Modifier,
     onRenderPage: LazyGridScope.(T) -> Unit,
 ) {
-    val pagerState = rememberPagerState(initialPage = pages.indexOf(initialPage))
+    val pagerState = rememberPagerState(
+        initialPage = pages.indexOf(initialPage),
+        initialPageOffsetFraction = 0f,
+    ) {
+        pages.size
+    }
     val coroutineScope = rememberCoroutineScope()
 
     Column(
@@ -55,14 +60,14 @@ fun <T> PagedContent(
         }
         ResponsiveContentWithBackground {
             HorizontalPager(
-                pageCount = pages.size,
                 state = pagerState,
                 modifier = Modifier
                     .fillMaxSize(),
             ) { page ->
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(300.dp),
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxSize()
                         .imePadding(),
                     horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
                     verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
