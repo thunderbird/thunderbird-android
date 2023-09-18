@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import android.text.TextUtils;
+
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.annotation.WorkerThread;
@@ -347,7 +349,7 @@ public class MessageViewInfoExtractor {
             String filename = getPartName(part);
 
             html.append("<p style=\"margin-top: 2.5em; margin-bottom: 1em; border-bottom: 1px solid #000\">");
-            html.append(filename);
+            html.append(TextUtils.htmlEncode(filename));
             html.append("</p>");
         }
     }
@@ -540,10 +542,10 @@ public class MessageViewInfoExtractor {
      */
     private static void addTableRow(StringBuilder html, String header, String value) {
         html.append("<tr><th style=\"text-align: left; vertical-align: top;\">");
-        html.append(header);
+        html.append(TextUtils.htmlEncode(header));
         html.append("</th>");
         html.append("<td>");
-        html.append(value);
+        html.append(TextUtils.htmlEncode(value));
         html.append("</td></tr>");
     }
 
