@@ -21,11 +21,29 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 90
+
     steps:
       - uses: actions/checkout@v4
+
+      - name: Copy CI gradle.properties
+        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
+
       - uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: 17
+
       - uses: gradle/gradle-build-action@v2
-      - run: ./gradlew assembleDebug detekt spotlessCheck testsOnCi
+
+      - name: Quality - Spotless
+        run: ./gradlew spotlessCheck
+
+      - name: Quality - Detekt
+        run: ./gradlew detekt
+
+      - name: Build
+        run: ./gradlew assembleDebug
+
+      - name: Test
+        run: ./gradlew testsOnCi
