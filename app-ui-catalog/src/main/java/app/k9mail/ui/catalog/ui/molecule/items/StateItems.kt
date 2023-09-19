@@ -61,7 +61,7 @@ fun LazyGridScope.stateItems() {
 @Composable
 private fun StatefulContentLoadingErrorState() {
     val state = remember {
-        mutableStateOf<ContentLoadingErrorState>(ContentLoadingErrorState.Loading)
+        mutableStateOf(ContentLoadingErrorState.Loading)
     }
 
     ContentLoadingErrorView(

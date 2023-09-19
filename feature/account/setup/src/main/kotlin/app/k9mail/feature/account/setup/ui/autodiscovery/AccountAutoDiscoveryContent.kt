@@ -46,7 +46,7 @@ internal fun AccountAutoDiscoveryContent(
             .then(modifier),
     ) {
         val resources = LocalContext.current.resources
-        val cleState = remember(key1 = state.isLoading, key2 = state.error) {
+        val viewState = remember(key1 = state.isLoading, key2 = state.error) {
             when {
                 state.isLoading -> ContentLoadingErrorState.Loading
                 state.error != null -> ContentLoadingErrorState.Error
@@ -55,7 +55,7 @@ internal fun AccountAutoDiscoveryContent(
         }
 
         ContentLoadingErrorView(
-            state = cleState,
+            state = viewState,
             loading = {
                 LoadingView(
                     message = stringResource(id = R.string.account_setup_auto_discovery_loading_message),

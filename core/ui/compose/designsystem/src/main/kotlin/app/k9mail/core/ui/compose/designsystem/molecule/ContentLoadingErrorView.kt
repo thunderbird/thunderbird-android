@@ -30,7 +30,7 @@ fun ContentLoadingErrorView(
     ) {
         AnimatedContent(
             targetState = state,
-            label = "CleView",
+            label = "ContentLoadingErrorView",
         ) { targetState ->
             when (targetState) {
                 ContentLoadingErrorState.Loading -> loading()
@@ -41,10 +41,8 @@ fun ContentLoadingErrorView(
     }
 }
 
-sealed interface ContentLoadingErrorState {
-    object Loading : ContentLoadingErrorState
-    object Content : ContentLoadingErrorState
-    object Error : ContentLoadingErrorState
+enum class ContentLoadingErrorState {
+    Loading, Content, Error
 }
 
 @Composable
@@ -52,7 +50,7 @@ sealed interface ContentLoadingErrorState {
 internal fun ContentLoadingErrorViewPreview() {
     PreviewWithThemes {
         val state = remember {
-            mutableStateOf<ContentLoadingErrorState>(ContentLoadingErrorState.Loading)
+            mutableStateOf(ContentLoadingErrorState.Loading)
         }
 
         ContentLoadingErrorView(
