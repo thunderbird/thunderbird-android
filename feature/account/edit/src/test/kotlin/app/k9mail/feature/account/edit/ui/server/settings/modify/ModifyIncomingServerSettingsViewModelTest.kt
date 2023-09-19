@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.edit.ui
+package app.k9mail.feature.account.edit.ui.server.settings.modify
 
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndMviTurbinesConsumed
@@ -21,7 +21,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
-class EditIncomingServerSettingsViewModelTest {
+class ModifyIncomingServerSettingsViewModelTest {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
@@ -45,7 +45,7 @@ class EditIncomingServerSettingsViewModelTest {
             ),
         )
 
-        val testSubject = EditIncomingServerSettingsViewModel(
+        val testSubject = ModifyIncomingServerSettingsViewModel(
             accountUuid = accountUuid,
             accountStateLoader = { _ ->
                 delay(50)

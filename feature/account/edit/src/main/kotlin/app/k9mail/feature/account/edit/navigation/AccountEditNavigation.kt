@@ -6,23 +6,23 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import app.k9mail.core.ui.compose.common.navigation.deepLinkComposable
 import app.k9mail.core.ui.compose.common.navigation.getStringArgument
-import app.k9mail.feature.account.edit.ui.EditIncomingServerSettingsNavHost
-import app.k9mail.feature.account.edit.ui.EditOutgoingServerSettingsNavHost
+import app.k9mail.feature.account.edit.ui.server.settings.EditIncomingServerSettingsNavHost
+import app.k9mail.feature.account.edit.ui.server.settings.EditOutgoingServerSettingsNavHost
 
 internal const val ARGUMENT_ACCOUNT_UUID = "accountUuid"
 
-const val NAVIGATION_ROUTE_ACCOUNT_EDIT_CONFIG_INCOMING = "account/edit/config/incoming/{accountUuid}"
-const val NAVIGATION_ROUTE_ACCOUNT_EDIT_CONFIG_OUTGOING = "account/edit/config/outgoing/{accountUuid}"
+const val NAVIGATION_ROUTE_ACCOUNT_EDIT_SERVER_SETTINGS_INCOMING = "account/edit/server/settings/incoming/{accountUuid}"
+const val NAVIGATION_ROUTE_ACCOUNT_EDIT_SERVER_SETTINGS_OUTGOING = "account/edit/server/settings/outgoing/{accountUuid}"
 
-fun NavController.navigateToAccountEditConfigIncoming(accountUuid: String) {
+fun NavController.navigateToAccountEditIncomingServerSettings(accountUuid: String) {
     navigate(
-        route = NAVIGATION_ROUTE_ACCOUNT_EDIT_CONFIG_INCOMING.withAccountUuid(accountUuid),
+        route = NAVIGATION_ROUTE_ACCOUNT_EDIT_SERVER_SETTINGS_INCOMING.withAccountUuid(accountUuid),
     )
 }
 
-fun NavController.navigateToAccountEditConfigOutgoing(accountUuid: String) {
+fun NavController.navigateToAccountEditOutgoingServerSettings(accountUuid: String) {
     navigate(
-        route = NAVIGATION_ROUTE_ACCOUNT_EDIT_CONFIG_OUTGOING.withAccountUuid(accountUuid),
+        route = NAVIGATION_ROUTE_ACCOUNT_EDIT_SERVER_SETTINGS_OUTGOING.withAccountUuid(accountUuid),
     )
 }
 
@@ -31,7 +31,7 @@ fun NavGraphBuilder.accountEditRoute(
     onFinish: () -> Unit,
 ) {
     deepLinkComposable(
-        route = NAVIGATION_ROUTE_ACCOUNT_EDIT_CONFIG_INCOMING,
+        route = NAVIGATION_ROUTE_ACCOUNT_EDIT_SERVER_SETTINGS_INCOMING,
         arguments = listOf(
             navArgument(ARGUMENT_ACCOUNT_UUID) {
                 type = NavType.StringType
@@ -46,7 +46,7 @@ fun NavGraphBuilder.accountEditRoute(
         )
     }
     deepLinkComposable(
-        route = NAVIGATION_ROUTE_ACCOUNT_EDIT_CONFIG_OUTGOING,
+        route = NAVIGATION_ROUTE_ACCOUNT_EDIT_SERVER_SETTINGS_OUTGOING,
         arguments = listOf(
             navArgument(ARGUMENT_ACCOUNT_UUID) {
                 type = NavType.StringType

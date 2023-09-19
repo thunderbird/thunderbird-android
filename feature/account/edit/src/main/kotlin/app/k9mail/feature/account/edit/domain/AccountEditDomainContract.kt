@@ -9,5 +9,13 @@ interface AccountEditDomainContract {
         fun interface LoadAccountState {
             suspend fun execute(accountUuid: String): AccountState
         }
+
+        fun interface GetAccountState {
+            suspend fun execute(accountUuid: String): AccountState
+        }
+
+        fun interface SaveServerSettings {
+            suspend fun execute(accountUuid: String, isIncoming: Boolean)
+        }
     }
 }

@@ -7,8 +7,8 @@ import androidx.activity.ComponentActivity
 import androidx.core.view.WindowCompat
 import app.k9mail.core.ui.compose.common.activity.setActivityContent
 import app.k9mail.core.ui.compose.common.navigation.toDeepLinkUri
-import app.k9mail.feature.account.edit.navigation.NAVIGATION_ROUTE_ACCOUNT_EDIT_CONFIG_INCOMING
-import app.k9mail.feature.account.edit.navigation.NAVIGATION_ROUTE_ACCOUNT_EDIT_CONFIG_OUTGOING
+import app.k9mail.feature.account.edit.navigation.NAVIGATION_ROUTE_ACCOUNT_EDIT_SERVER_SETTINGS_INCOMING
+import app.k9mail.feature.account.edit.navigation.NAVIGATION_ROUTE_ACCOUNT_EDIT_SERVER_SETTINGS_OUTGOING
 import app.k9mail.feature.account.edit.navigation.withAccountUuid
 import app.k9mail.feature.account.setup.navigation.NAVIGATION_ROUTE_ACCOUNT_SETUP
 import app.k9mail.feature.launcher.ui.FeatureLauncherApp
@@ -47,7 +47,8 @@ class FeatureLauncherActivity : ComponentActivity() {
         @JvmStatic
         fun launchEditIncomingSettings(context: Context, accountUuid: String) {
             val intent = Intent(context, FeatureLauncherActivity::class.java).apply {
-                data = NAVIGATION_ROUTE_ACCOUNT_EDIT_CONFIG_INCOMING.withAccountUuid(accountUuid).toDeepLinkUri()
+                data = NAVIGATION_ROUTE_ACCOUNT_EDIT_SERVER_SETTINGS_INCOMING
+                    .withAccountUuid(accountUuid).toDeepLinkUri()
             }
             context.startActivity(intent)
         }
@@ -55,7 +56,8 @@ class FeatureLauncherActivity : ComponentActivity() {
         @JvmStatic
         fun launchEditOutgoingSettings(context: Context, accountUuid: String) {
             val intent = Intent(context, FeatureLauncherActivity::class.java).apply {
-                data = NAVIGATION_ROUTE_ACCOUNT_EDIT_CONFIG_OUTGOING.withAccountUuid(accountUuid).toDeepLinkUri()
+                data = NAVIGATION_ROUTE_ACCOUNT_EDIT_SERVER_SETTINGS_OUTGOING
+                    .withAccountUuid(accountUuid).toDeepLinkUri()
             }
             context.startActivity(intent)
         }

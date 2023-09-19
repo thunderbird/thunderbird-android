@@ -15,29 +15,25 @@ import com.fsck.k9.mail.ServerSettings
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
-class LoadAccountStateTest {
+class GetAccountStateTest {
 
     @Test
-    fun `should load account state and update account state repository`() = runTest {
-        val accountStateRepository = InMemoryAccountStateRepository()
-        val testSubject = LoadAccountState(
-            accountStateLoader = { _ ->
-                ACCOUNT_STATE
-            },
-            accountStateRepository = accountStateRepository,
+    fun `should get account state from repository`() = runTest {
+        val testSubject = GetAccountState(
+            accountStateRepository = InMemoryAccountStateRepository(state = ACCOUNT_STATE),
         )
 
         val result = testSubject.execute(ACCOUNT_UUID)
 
         assertThat(result).isEqualTo(ACCOUNT_STATE)
-        assertThat(accountStateRepository.getState()).isEqualTo(ACCOUNT_STATE)
     }
 
     @Test
-    fun `should throw exception WHEN account loader returns null`() = runTest {
-        val testSubject = LoadAccountState(
-            accountStateLoader = { null },
-            accountStateRepository = InMemoryAccountStateRepository(),
+    fun `should throw exception WHEN account state repository contains state for different account uuid`() = runTest {
+        val testSubject = GetAccountState(
+            accountStateRepository = InMemoryAccountStateRepository(
+                state = ACCOUNT_STATE.copy(uuid = "differentAccountUuid"),
+            ),
         )
 
         assertFailure {

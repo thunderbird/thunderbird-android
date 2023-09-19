@@ -5,7 +5,7 @@ import com.fsck.k9.mail.ServerSettings
 interface AccountEditExternalContract {
 
     sealed interface AccountUpdaterResult {
-        data class Success(val message: String) : AccountUpdaterResult
+        data class Success(val accountUuid: String) : AccountUpdaterResult
         data class Failure(val error: AccountUpdaterFailure) : AccountUpdaterResult
     }
 
