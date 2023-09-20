@@ -485,6 +485,23 @@ class HtmlSanitizerTest {
         assertThat(result.toCompactString()).isEqualTo(html)
     }
 
+    @Test
+    fun `should keep 'style' element in body`() {
+        val html =
+            """
+            <html>
+              <head></head>
+              <body>
+                <style>.test { color: #000 }</style>
+              </body>
+            </html>
+            """.compactHtml()
+
+        val result = htmlSanitizer.sanitize(html)
+
+        assertThat(result.toCompactString()).isEqualTo(html)
+    }
+
     private fun assertTagsNotStripped(element: String) {
         val html = """<$element>some text</$element>"""
 
