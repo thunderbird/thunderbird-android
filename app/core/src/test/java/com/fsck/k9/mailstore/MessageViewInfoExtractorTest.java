@@ -251,16 +251,16 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
         // Create message/rfc822 body
         MimeMessage innerMessage = new MimeMessage();
         innerMessage.addSentDate(new Date(112, 2, 17), false);
-        innerMessage.setHeader("To", "to@example.com");
-        innerMessage.setSubject("Subject");
-        innerMessage.setFrom(new Address("from@example.com"));
+        innerMessage.setHeader("To", "Recipient <to@example.com>");
+        innerMessage.setSubject("Subject with characters that need HTML encoding: \"&<>");
+        innerMessage.setFrom(new Address("from@example.com", "Display name & email address"));
         MimeMessageHelper.setBody(innerMessage, innerBody);
 
         // Create multipart/mixed part
         MimeMultipart multipart = MimeMultipart.newInstance();
         MimeBodyPart bodyPart1 = new MimeBodyPart(textBody, "text/plain");
         MimeBodyPart bodyPart2 = new MimeBodyPart(innerMessage, "message/rfc822");
-        bodyPart2.setHeader("Content-Disposition", "inline; filename=\"message.eml\"");
+        bodyPart2.setHeader("Content-Disposition", "inline; filename=\"message&special_char.eml\"");
         multipart.addBodyPart(bodyPart1);
         multipart.addBodyPart(bodyPart2);
 
@@ -277,12 +277,12 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
         String expectedText =
                 BODY_TEXT +
                 "\r\n\r\n" +
-                "----- message.eml ------------------------------------------------------" +
+                "----- message&special_char.eml -----------------------------------------" +
                 "\r\n\r\n" +
-                "From: from@example.com" + "\r\n" +
-                "To: to@example.com" + "\r\n" +
+                "From: Display name & email address <from@example.com>" + "\r\n" +
+                "To: Recipient <to@example.com>" + "\r\n" +
                 "Sent: Sat Mar 17 00:00:00 GMT+01:00 2012" + "\r\n" +
-                "Subject: Subject" + "\r\n" +
+                "Subject: Subject with characters that need HTML encoding: \"&<>" + "\r\n" +
                 "\r\n" +
                 innerBodyText;
         String expectedHtml =
@@ -290,20 +290,20 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
                         BODY_TEXT_HTML +
                 "</pre>" +
                 "<p style=\"margin-top: 2.5em; margin-bottom: 1em; border-bottom: " +
-                        "1px solid #000\">message.eml</p>" +
+                        "1px solid #000\">message&amp;special_char.eml</p>" +
                 "<table style=\"border: 0\">" +
                 "<tr>" +
                 "<th style=\"text-align: left; vertical-align: top;\">From:</th>" +
-                "<td>from@example.com</td>" +
+                "<td>Display name &amp; email address &lt;from@example.com&gt;</td>" +
                 "</tr><tr>" +
                 "<th style=\"text-align: left; vertical-align: top;\">To:</th>" +
-                "<td>to@example.com</td>" +
+                "<td>Recipient &lt;to@example.com&gt;</td>" +
                 "</tr><tr>" +
                 "<th style=\"text-align: left; vertical-align: top;\">Sent:</th>" +
                 "<td>Sat Mar 17 00:00:00 GMT+01:00 2012</td>" +
                 "</tr><tr>" +
                 "<th style=\"text-align: left; vertical-align: top;\">Subject:</th>" +
-                "<td>Subject</td>" +
+                "<td>Subject with characters that need HTML encoding: &quot;&amp;&lt;&gt;</td>" +
                 "</tr>" +
                 "</table>" +
                 "<pre class=\"k9mail\">" +
