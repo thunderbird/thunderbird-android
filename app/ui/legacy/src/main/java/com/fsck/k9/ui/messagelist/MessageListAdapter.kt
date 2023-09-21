@@ -206,6 +206,11 @@ class MessageListAdapter internal constructor(
     private val starClickListener = OnClickListener { view: View ->
         val parentView = view.parent as View
         val messageListItem = getItemFromView(parentView) ?: return@OnClickListener
+        view.contentDescription = if (messageListItem.isStarred) {
+            res.getString(R.string.flag_action)
+        } else {
+            res.getString(R.string.unflag_action)
+        }
         listItemListener.onToggleMessageFlag(messageListItem)
     }
 
@@ -387,6 +392,11 @@ class MessageListAdapter internal constructor(
 
             if (appearance.stars) {
                 holder.star.isSelected = isStarred
+                holder.starClickArea.contentDescription = if (holder.star.isSelected) {
+                    res.getString(R.string.unflag_action)
+                } else {
+                    res.getString(R.string.flag_action)
+                }
             }
             holder.uniqueId = uniqueId
             if (appearance.showContactPicture && holder.contactPicture.isVisible) {
