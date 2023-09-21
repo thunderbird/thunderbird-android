@@ -12,7 +12,6 @@ import app.k9mail.feature.launcher.navigation.FeatureLauncherNavHost
 
 @Composable
 fun FeatureLauncherApp(
-    startDestination: String?,
     modifier: Modifier = Modifier,
 ) {
     val navController = rememberNavController()
@@ -28,7 +27,6 @@ fun FeatureLauncherApp(
 
             FeatureLauncherNavHost(
                 navController = navController,
-                startDestination = startDestination,
                 onBack = { activity.finish() },
             )
         }
