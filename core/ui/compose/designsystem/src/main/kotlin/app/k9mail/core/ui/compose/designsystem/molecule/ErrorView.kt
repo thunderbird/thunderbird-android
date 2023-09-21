@@ -1,6 +1,7 @@
 package app.k9mail.core.ui.compose.designsystem.molecule
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,49 +27,56 @@ fun ErrorView(
     modifier: Modifier = Modifier,
     message: String? = null,
     onRetry: () -> Unit = { },
+    contentAlignment: Alignment = Alignment.Center,
 ) {
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(
-                vertical = MainTheme.spacings.default,
-                horizontal = MainTheme.spacings.double,
-            )
             .then(modifier),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+        contentAlignment = contentAlignment,
     ) {
-        Icon(
-            imageVector = Icons.Filled.error,
-            contentDescription = null,
-            tint = MainTheme.colors.error,
-            modifier = Modifier.padding(top = MainTheme.spacings.default),
-        )
-        TextSubtitle1(
-            text = title,
-            modifier = Modifier.padding(bottom = MainTheme.spacings.default),
-        )
-        if (message != null) {
-            TextBody2(
-                text = message,
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    vertical = MainTheme.spacings.default,
+                    horizontal = MainTheme.spacings.double,
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+        ) {
+            Icon(
+                imageVector = Icons.Filled.error,
+                contentDescription = null,
+                tint = MainTheme.colors.error,
+                modifier = Modifier.padding(top = MainTheme.spacings.default),
+            )
+            TextSubtitle1(
+                text = title,
+                modifier = Modifier.padding(bottom = MainTheme.spacings.default),
+            )
+            if (message != null) {
+                TextBody2(
+                    text = message,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                )
+            }
+            Row(
                 modifier = Modifier
                     .fillMaxWidth(),
-            )
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.End,
-        ) {
-            ButtonText(
-                text = stringResource(id = R.string.designsystem_molecule_error_view_button_retry),
-                onClick = onRetry,
-                contentPadding = buttonContentPadding(
-                    start = MainTheme.spacings.double,
-                    end = MainTheme.spacings.double,
-                ),
-            )
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End,
+            ) {
+                ButtonText(
+                    text = stringResource(id = R.string.designsystem_molecule_error_view_button_retry),
+                    onClick = onRetry,
+                    contentPadding = buttonContentPadding(
+                        start = MainTheme.spacings.double,
+                        end = MainTheme.spacings.double,
+                    ),
+                )
+            }
         }
     }
 }

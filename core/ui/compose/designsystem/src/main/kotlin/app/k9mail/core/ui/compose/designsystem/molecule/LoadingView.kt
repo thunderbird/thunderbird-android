@@ -1,5 +1,7 @@
 package app.k9mail.core.ui.compose.designsystem.molecule
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,22 +20,31 @@ import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 fun LoadingView(
     modifier: Modifier = Modifier,
     message: String? = null,
+    contentAlignment: Alignment = Alignment.Center,
 ) {
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(MainTheme.spacings.default)
             .then(modifier),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        contentAlignment = contentAlignment,
     ) {
-        if (message != null) {
-            TextSubtitle1(text = message)
-        }
-        Row(
-            modifier = Modifier.height(MainTheme.sizes.larger),
-            verticalAlignment = Alignment.CenterVertically,
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(MainTheme.spacings.default)
+                .then(modifier),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
         ) {
-            CircularProgressIndicator()
+            if (message != null) {
+                TextSubtitle1(text = message)
+            }
+            Row(
+                modifier = Modifier.height(MainTheme.sizes.larger),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                CircularProgressIndicator()
+            }
         }
     }
 }
