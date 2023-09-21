@@ -152,6 +152,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="?attr/controlBackground"
+            android:contentDescription="@string/reply_action"
             android:paddingHorizontal="12dp"
             app:layout_constraintEnd_toStartOf="@id/menu_overflow"
             app:layout_constraintTop_toTopOf="@+id/menu_overflow"
