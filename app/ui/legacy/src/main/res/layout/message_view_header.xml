@@ -165,6 +165,7 @@
             android:layout_marginBottom="16dp"
             android:background="?attr/controlBackground"
             android:clickable="true"
+            android:contentDescription="@string/abc_action_menu_overflow_description"
             android:focusable="true"
             android:paddingStart="6dp"
             android:paddingEnd="10dp"
