@@ -6,5 +6,5 @@ object ThunderbirdProjectConfig {
 
     const val androidSdkMin = 21
     const val androidSdkTarget = 31
-    const val androidSdkCompile = 33
+    const val androidSdkCompile = 34
 }
