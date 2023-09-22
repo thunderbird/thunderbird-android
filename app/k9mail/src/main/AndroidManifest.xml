@@ -61,10 +61,6 @@
             android:value="true" />
 
         <activity
-            android:name=".ui.onboarding.OnboardingActivity"
-            android:label="@string/welcome_message_title" />
-
-        <activity
             android:name=".ui.settings.account.OpenPgpAppSelectDialog"
             android:configChanges="locale"
             android:theme="@style/Theme.K9.Dialog.Translucent.DayNight"
