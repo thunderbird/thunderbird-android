@@ -27,38 +27,7 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Bu sürümdeki yenilikleri öğrenin </string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-  <!--Welcome message-->
-  <string name="welcome_message_title">K-9 Posta\'ya Hoşgeldiniz</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Posta, Android için güçlü ve özgür bir e-posta istemcisidir.
-</p><p>
-Geliştirilmiş özellikler içerir:
-</p>
-<ul>
-<li>IMAP IDLE kullanılarak gelen posta anında gösteriliyor</li>
-<li>Daha iyi başarım</li>
-<li>İletiye tekrar işlem</li>
-<li>E-posta imzaları</li>
-<li>Bcc-to-self</li>
-<li>Klasör kayıtları</li>
-<li>Tüm klasörler eşzamanlanır</li>
-<li>Yanıt adresi yapılandırması</li>
-<li>Klavye kısayolları</li>
-<li>Daha iyi IMAP desteği</li>
-<li>Eklentileri SD karta kaydetme</li>
-<li>Çöpü Boşalt</li>
-<li>İleti sıralama</li>
-<li>…ve daha fazlası</li>
-</ul>
-<p>
-K-9\'un çoğu ücretsiz Hotmail hesabını desteklemediğini ve pek çok e-posta istemcisi gibi
-Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen aklınızın bir köşesine yazın.
-</p><p>Lütfen yeni özelliklere katkıda bulunmak ve soru sormak için hata raporu bildiriniz
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
- ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nAndroid için K-9 Posta\'dan gönderildi. Lütfen bu kısa notumu mazur görün.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Hesap \"<xliff:g id="account">%s</xliff:g>\" K-9 Mail\'den kaldırılacak.</string>

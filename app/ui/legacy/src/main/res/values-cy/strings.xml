@@ -27,39 +27,7 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Darganfod beth sy\'n newydd yn y diweddariad hwn</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-  <!--Welcome message-->
-  <string name="welcome_message_title">Croeso i K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-Mae K-9 Mail yn gleient e-bost pwerus ar gyfer Android.
-</p><p>
-Mae ei nodweddion gwell yn cynnwys:
-</p><ul>
-  <li>Gwthio negeseuon gydag IMAP IDLE</li>
-  <li>Gwell perfformiad</li>
-  <li>Ail-drefnu negeseuon</li>
-  <li>Llofnodion e-bost</li>
-  <li>BCC i dy hun</li>
-  <li>Tanysgrifio fesul ffolder</li>
-  <li>Cysoni pob ffolder</li>
-  <li>Ffufweddu cyfeiriad ateb</li>
-  <li>Bysellau brys</li>
-  <li>Gwell cefnogaeth IMAP</li>
-  <li>Cadw atodiadau i SD</li>
-  <li>Gwagio\'r sbwriel</li>
-  <li>Trefnu negeseuon</li>
-  <li>…a mwy</li>
-</ul>
-<p>
-Noder nad yw K-9 yn cyd-fynd a mwyafrif cyfrifon am ddim Hotmail ac, fel nifer o gleientiaid e-bost, mae rhai pethau\'n gweithio\'n od wrth drafod â Microsoft Exchange.
-
-Mae\'r ap yn dibynnu ar Android ei hun ar gyfer peth cynnwys. Yn anffodus, nid yw fersiynau swyddogol o Android yn cefnogi\'r Gymraeg ac felly fe weli rywfaint o Saesneg yn yr ap, e.e. \"5 minutes ago\" yn lle \"5 munud yn ôl\", \"Dec\" yn lle \"Rhag\".
-</p><p>
-Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwestiynnau yma:
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
-    ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nAnfonwyd gyda K-9 Mail ar Android\n - yr ap ebost cyntaf yn y Gymraeg.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Caiff y cyfrif \"<xliff:g id="account">%s</xliff:g>\" ei dynnu o K-9 Mail.</string>

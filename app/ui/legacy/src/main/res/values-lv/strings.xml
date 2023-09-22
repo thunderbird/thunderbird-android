@@ -28,38 +28,7 @@
   <string name="changelog_snackbar_text">Uzzināt, kas jauns šajā versijā</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Skatīt</string>
-  <!--Welcome message-->
-  <string name="welcome_message_title">Laipni lūdzam K-9 Pastā</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail ir spēcīga bezmaksas e-pasta programma Android operētājsistēmai.
-</p><p>
-Tās uzlaboto iespēju skaitā ir:
-</p>
-<ul>
-  <li>Pasta lejupielādēšana, izmantojot IMAP IDLE</li>
-  <li>Labāka veiktspēja</li>
-  <li>Vēstuļu arhivēšana</li>
-  <li>E-pasta paraksti</li>
-  <li>Bcc-pašam sev</li>
-  <li>Pieteikšanās mapēm</li>
-  <li>Visu mapju sinhronizēšana</li>
-  <li>Atpakaļsūtīšanas adreses iestatīšana</li>
-  <li>Tastatūras īsceļi</li>
-  <li>Labāks IMAP atbalsts</li>
-  <li>Pielikumu saglabāšana uz SD kartes</li>
-  <li>Miskastes iztukšošana</li>
-  <li>Vēstuļu kārtošana</li>
-  <li>…un daudz kas cits</li>
-</ul>
-<p>
-Lūdzu, ņemiet vērā, kā K-9 neatbalsta lielāko daļu bezmaksas Hotmail kontu, un tāpat kā daudzām citām e-pasta programmām tai mēdz būt problēmas ar Microsoft Exchange.
-</p><p>
-Lūdzu, iesniedziet kļūdu ziņojumus, ierosiniet jaunas iespējas un uzdodiet jautājumus
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
-    ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nNosūtīts ar K-9 Pastu no manas Android ierīces. Atvainojiet, ka esmu tik kodolīgs.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Konts \"<xliff:g id="account">%s</xliff:g>\" tiks noņemts no K-9 Pasta.</string>

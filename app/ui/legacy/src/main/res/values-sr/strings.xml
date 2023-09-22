@@ -22,38 +22,7 @@
   <string name="changelog_version_title">Верзија %s</string>
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-  <!--Welcome message-->
-  <string name="welcome_message_title">Добро дошли у К-9 Пошту</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-К-9 Пошта је моћан слободни клијент е-поште за Андроид.
-</p><p>
-Побољшане могућности укључују:
-</p>
-<ul>
-  <li>Прослеђивање поште користећи IMAP IDLE</li>
-  <li>Боље преформансе</li>
-  <li>Реархивисање порука</li>
-  <li>Потписи е-порука</li>
-  <li>Бцц себи</li>
-  <li>Претплате на фасцикле</li>
-  <li>Синхронизација свих фасцикли</li>
-  <li>Подешавање повратне адресе</li>
-  <li>Пречице тастатуре</li>
-  <li>Боља подршка за IMAP</li>
-  <li>Упис прилога на СД картицу</li>
-  <li>Пражњење отпада</li>
-  <li>Ређање порука</li>
-  <li>…и још тога</li>
-</ul>
-<p>
-Имајте на уму да К-9 не подржава већину бесплатних Хотмејл налога и, као и многи клијенти, има проблема при контакту са Мајкрософтовом Разменом.
-</p><p>
-Пријављујте грешке, доприносите нове могућности и постављајте питања на
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
-]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nПослато К-9 Поштом са мог Андроид уређаја. Извините због сажетости.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Налог „<xliff:g id="account">%s</xliff:g>“ ће бити уклоњен из К-9 Поште.</string>

@@ -28,38 +28,7 @@
   <string name="changelog_snackbar_text">از تازه‌های این نسخه باخبر شوید</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">نما</string>
-  <!--Welcome message-->
-  <string name="welcome_message_title">به «K-9 Mail» خوش آمدید</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-‏K-9 Mail برنامه‌ای رایگان برای مدیریت رایانامه در اندروید است.
-</p><p>
-برخی از قابلیت‌های بهبودیافتهٔ آن:
-</p>
-<ul>
-  <li>پیشرانی رایانامه (Push Mail) با استفاده از IMAP IDLE</li>
-  <li>عملکرد بهتر</li>
-  <li>سامان‌دهی پیام‌ها</li>
-  <li>امضاهای رایانامه</li>
-  <li>ارسال مخفیانه به خود (Bcc-to-self)</li>
-  <li>اشتراک به پوشه‌های خاص با IMAP</li>
-  <li>همگام‌سازی همهٔ پوشه‌ها</li>
-  <li>تنظیماتی برای نشانی «پاسخ به»</li>
-  <li>میانبرهای صفحه‌کلید</li>
-  <li>پشتیبانی بهتر از IMAP</li>
-  <li>ذخیرهٔ پیوست‌ها در کارت SD</li>
-  <li>خالی‌کردن زباله‌دان</li>
-  <li>مرتب‌سازی پیام‌ها</li>
-  <li>و خیلی قابلیت‌های دیگر…</li>
-</ul>
-<p>
-لطفاً توجه کنید که K-9، مانند بسیاری از برنامه‌های مدیریت رایانامه، از بیشتر حساب‌های رایگان Hotmail پشتیبانی نمی‌کند و هنگام برقراری ارتباط‌ با Microsoft Exchange مشکلاتی وجود دارد.
-</p><p>
-لطفاً گزارش‌های خطا، همکاری برای قابلیت جدید و پرسش‌هایتان را در اینجا مطرح کنید:
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
-    ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nاز دستگاه اندرویدی‌ام و به‌وسیلهٔ K-9 Mail ارسال شد.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">حساب «<xliff:g id="account">%s</xliff:g>» از K-9 Mail حذف خواهد شد.</string>

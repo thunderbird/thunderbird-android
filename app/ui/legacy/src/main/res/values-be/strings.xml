@@ -28,37 +28,7 @@
   <string name="changelog_snackbar_text">Даведайцеся, што новага ў гэтым выпуску</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Праглядзець</string>
-  <!--Welcome message-->
-  <string name="welcome_message_title">Вітаем у K-9</string>
-  <string name="accounts_welcome"><![CDATA[<p>
-K-9 Mail - шматфункцыянальны свабодны паштовы кліент для Android.
-</p><p>
-Магчымасці:
-</p>
-<ul>
-  <li>рush-апавяшчэнні</li>
-  <li>хуткая праца</li>
-  <li>перасылка лістоў</li>
-  <li>подпісы</li>
-  <li>схаваная копія для сябе</li>
-  <li>падпіска на каталогі</li>
-  <li>сінхранізацыя ўсіх каталогаў</li>
-  <li>адрас для адказу</li>
-  <li>гарачыя клавішы</li>
-  <li>палепшаная падтрымка IMAP</li>
-  <li>захаванне ўкладзеных файлаў</li>
-  <li>ачыстка сметніцы</li>
-  <li>сартаванне лістоў</li>
-  <li>…і іншае</li>
-</ul>
-<p>
-Калі ласка, звярніце ўвагу, што K-9 не падтрымлівае бясплатныя акаўнты Hotmail і не цалкам падтрымлівае Microsoft Exchange.
-</p><p>
-Пляцоўка распрацоўвання:
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
-    ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nАдпраўлена з маёй прылады праз K-9 Mail. Выбачайце за сцісласць.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Акаўнт \"<xliff:g id="account">%s</xliff:g>\" будзе выдалены з K-9 Mail.</string>

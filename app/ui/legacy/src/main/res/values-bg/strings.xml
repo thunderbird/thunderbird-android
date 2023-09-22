@@ -24,38 +24,7 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Разбери какво ново в тази варсия</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-  <!--Welcome message-->
-  <string name="welcome_message_title">Добре дошли в K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail е мощен, безплатен имейл клиент за Андроид.
-</p><p>
-Подобрените функции включват:
-</p>
-<ul>
-  <li>Push mail използвайки IMAP IDLE</li>
-  <li>По-добра производителност</li>
-  <li>Преместване на съобщения</li>
-  <li>Имейл подписи</li>
-  <li>Bcc до себе си</li>
-  <li>Абонамент за папки</li>
-  <li>Синхронизиране на всички папки</li>
-  <li>Конфигурация на адреса за връщане</li>
-  <li>Кратки клавишни комбинации</li>
-  <li>По-добра подръжка на IMAP</li>
-  <li>Запазване на прикачени файлове на SD</li>
-  <li>Изпразване на кошчето</li>
-  <li>Сортиране на съобщения</li>
-  <li>…и още</li>
-</ul>
-<p>
-Моля знайте, че K-9 не подържа повечето безплатни Hotmail профили и, че както повечето имейл приложения има няколко странности, когато говори с Microsoft Exchange.
-</p><p>
-Моля изпращайте доклади за бъгове, допринасяйте за нови функции и задавайте въпроси на
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
-    ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nИзпратено от моето Андроид у-во чрез K-9 Mail. Моля да ме извините за краткия ми изказ.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Акаунтът \"<xliff:g id="account">%s</xliff:g>\" ще бъде премахнат от K-9 Mail.</string>

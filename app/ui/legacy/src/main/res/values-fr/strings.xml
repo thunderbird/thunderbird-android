@@ -28,38 +28,7 @@
   <string name="changelog_snackbar_text">Découvrez les nouveautés de cette version</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Afficher</string>
-  <!--Welcome message-->
-  <string name="welcome_message_title">Bienvenue sur Courriel K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-Courriel K-9 Mail est un client de courriel puissant et ouvert pour Android.
-</p><p>
-Ses fonctions améliorées incluent :
-</p>
-<ul>
-  <li>Courriel poussé utilisant IMAP IDLE</li>
-  <li>Meilleures performances</li>
-  <li>Réarchivage des courriels</li>
-  <li>Signatures des courriels</li>
-  <li>Cci-à-soi</li>
-  <li>Abonnement aux dossiers</li>
-  <li>Synchronisation de tous les dossiers </li>
-  <li>Configuration de l’adresse de retour</li>
-  <li>Raccourcis-clavier</li>
-  <li>Meilleure prise en charge IMAP</li>
-  <li>Enregistrement des fichiers joints sur la carte SD</li>
-  <li>Vidage de la corbeille</li>
-  <li>Tri des courriels</li>
-  <li>et plus…</li>
-</ul>
-<p>
-Veuillez noter que K-9 ne prend pas en charge la plupart des comptes Hotmail gratuits et que, comme pour beaucoup de clients de courriel, la communication avec Microsoft Exchange est capricieuse.
-</p><p>
-Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions sur
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
-]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nEnvoyé de mon appareil Android avec Courriel K-9 Mail. Veuillez excuser ma brièveté.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Le compte « <xliff:g id="account">%s</xliff:g> » sera supprimé de Courriel K-9 Mail.</string>

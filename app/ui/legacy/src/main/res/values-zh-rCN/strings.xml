@@ -28,39 +28,7 @@
   <string name="changelog_snackbar_text">了解此版本的新增功能</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">查看</string>
-  <!--Welcome message-->
-  <string name="welcome_message_title">欢迎使用 K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
-</p><p>
-其改进的功能包括：
-</p>
-<ul>
-  <li>支持通过 IMAP IDLE 推送邮件</li>
-  <li>更好的性能</li>
-  <li>消息归档</li>
-  <li>邮件签名</li>
-  <li>密送自己</li>
-  <li>邮件夹订阅</li>
-  <li>同步所有邮件夹</li>
-  <li>回复地址配置</li>
-  <li>快捷键</li>
-  <li>更好的 IMAP 支持</li>
-  <li>保存附件到 SD 卡</li>
-  <li>清空回收站</li>
-  <li>消息排序</li>
-  <li>以及更多…</li>
-</ul>
-<p>
-请注意 K-9 不支持大部分免费 Hotmail 账户，而且和其他大部分邮件客户端一样，
-在使用 Microsoft Exchange 协议时会有一些问题。
-</p><p>
-请到下述网址提交问题报告，新功能建议或者提问：
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>。
-</p>
-    ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \n使用 K-9 Mail 发送自我的Android设备。</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">即将从 K-9 Mail 中移除账户“<xliff:g id="account">%s</xliff:g>”。</string>

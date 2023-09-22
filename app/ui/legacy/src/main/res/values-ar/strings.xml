@@ -28,38 +28,7 @@
   <string name="changelog_snackbar_text">اكتشف الجديد في هذا الإصدار</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">عرض</string>
-  <!--Welcome message-->
-  <string name="welcome_message_title">أهلا بكم في بريد K-9</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-تطبيق K-9 عبارة عن تطبيق بريد متقدم لنظام أندرويد
-</p><p>
-حصائصة المُحسّنة تشمل:
-</p>
-<ul>
-<li>دفع البريد من خلال IMAP IDLE</li>
-<li>أداء أفضل</li>
-<li>إعادة تعبئة الرسائل</li>
-<li>توقيع البريد</li>
-<li>نسخة مخفية لنفسك</li>
-<li>الإشتراك في المجلدات</li>
-<li>مزامنة جميع المجلدات</li>
-<li>إعدادات عنوان الرد</li>
-<li>اختصارات لوحة المفاتيح</li>
-<li>دعم أفضل لبروتوكول IMAP</li>
-<li>حفظ المرفقات الى بطاقة الذاكرة</li>
-<li>تفريغ المحذوفات</li>
-<li>تصنيف الرسائل</li>
-<li>… والمزيد</li>
-</ul>
-<p>
-يرجى الملاحظة أن K-9 لا يدعم معظم حسابات Hotmail المجانية وكما هو الحال في معظم برامج البريد، هذا البرنامج يعاني من مشاكل غريبة مع Microsoft Exchange.
-</p><p>
-يرجى التبليغ عن الأخطاء، المساهمة في الكود، أو طرح الأسئلة على الرابط:
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>
-</p>
- ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nتم الإرسال من هاتفي الأندرويد بواسطة برنامج K-9. أعتذر عن الإيجاز.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">سيُحذف الحساب \"<xliff:g id="account">%s</xliff:g>\" من الحسابات في K-9.</string>

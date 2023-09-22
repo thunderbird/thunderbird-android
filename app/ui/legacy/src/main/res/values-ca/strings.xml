@@ -28,38 +28,7 @@
   <string name="changelog_snackbar_text">Esbrineu les novetats d’aquesta versió.</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Vista</string>
-  <!--Welcome message-->
-  <string name="welcome_message_title">Us donem la benvinguda al K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-El K-9 Mail és un potent client de correu de codi lliure per a Android.
-</p><p>
-Les característiques més destacables són les següents:
-</p>
-<ul>
-<li>Tramet correu fent servir IMAP IDLE</li>
-<li>Millor rendiment</li>
-<li>Rearxivament de missatges</li>
-<li>Signatures de correu</li>
-<li>Còpia oculta a un mateix</li>
-<li>Subscripció a carpetes</li>
-<li>Sincronització de totes les carpetes</li>
-<li>Configuració de l\'adreça de resposta</li>
-<li>Dreceres de teclat</li>
-<li>Millor suport per a IMAP</li>
-<li>Possibilitat de desar els adjunts a la SD</li>
-<li>Buidatge de la paperera</li>
-<li>Ordenació de missatges</li>
-<li>… i molt més</li>
-</ul>
-<p>
-Si us plau, tingueu en compte que el K-9 no admet la majoria de comptes gratuïts de Hotmail i que, com la majoria d\'altres clients de correu, té alguns problemes per interactuar amb el Microsoft Exchange.
-</p><p>
-Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu preguntes a
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
-]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nEnviat des del meu dispositiu Android amb el K-9 Mail. Disculpeu la brevetat.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">El compte \"<xliff:g id="account">%s</xliff:g>\" s\'eliminarà del K-9 Mail.</string>

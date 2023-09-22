@@ -28,39 +28,7 @@
   <string name="changelog_snackbar_text">このリリースは何が新しいのかを知る</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">表示</string>
-  <!--Welcome message-->
-  <string name="welcome_message_title">K-9 Mailへようこそ</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail は Android 向けの強力なフリーのメールクライアントです。
-</p><p>
-改良された機能:
-</p>
-<ul>
-  <li>IMAP IDLE を利用したプッシュメール</li>
-  <li>パフォーマンス改善</li>
-  <li>メッセージ整理</li>
-  <li>電子メール署名</li>
-  <li>Bcc-to-self</li>
-  <li>フォルダ購読</li>
-  <li>全フォルダ同期</li>
-  <li>返信先の設定</li>
-  <li>キーボードショートカット</li>
-  <li>IMAP サポート改善</li>
-  <li>添付ファイルをSDカードに保存</li>
-  <li>ゴミ箱を空にする機能</li>
-  <li>メッセージのソート</li>
-  <li>…他にもたくさんあります</li>
-</ul>
-<p>
-K-9 は大多数のメールクライアントと同様に、ほとんどのフリー Hotmail アカウントをサポートしていません。
-また、 Microsoft Exchange との通信において少し癖があることに注意してください。 
-</p><p>
-バグレポートや新機能の貢献、質問は <a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a> にお願いします。
-日本語で質問などがある場合は <a href="http://groups.google.co.jp/group/k9mail_ja/">https://groups.google.co.jp/group/k9mail_ja/</a> を参照してください。
-</p>
-]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nK-9 Mail で Android デバイスから送信しました。簡単で申し訳ありません。</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" はK-9 Mailから削除されます。</string>

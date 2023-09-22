@@ -28,38 +28,7 @@
   <string name="changelog_snackbar_text">Skoðaðu hvað sé nýtt við þessa útgáfu</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Skoða</string>
-  <!--Welcome message-->
-  <string name="welcome_message_title">Velkomin í K-9 póstinn</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail er öflugt, frjálst tölvupóstforrit fyrir Android.
-</p><p>
-Meðal bættra eiginleika þess eru:
-</p>
-<ul>
-  <li>Ýtipóstur með IMAP IDLE</li>
-  <li>Betri afköst</li>
-  <li>Endurflokkun skilaboða</li>
-  <li>Meðhöndlun undirskrifta</li>
-  <li>Bcc-til-sjálfs</li>
-  <li>Áskriftir að möppum</li>
-  <li>Samstilling allra mappa</li>
-  <li>Uppsetning svarpóstfangs</li>
-  <li>Flýtilyklar</li>
-  <li>Betri IMAP-stuðningur</li>
-  <li>Vistun viðhengja á SD</li>
-  <li>Tæming á rusli</li>
-  <li>Röðun skilaboða</li>
-  <li>…og margt fleira</li>
-</ul>
-<p>
-Taktu eftir því að K-9 gengur ekki með flestum Hotmail aðgöngum og, rétt eins og mörg önnur tölvupóstforrit, á í nokkrum erfiðleikum með að hafa samskipti við Microsoft Exchange.
-</p><p>
-Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
-    ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nSent úr Android tækinu mínu með K-9 póstforritinu. Afsakaðu hvað ég stytti mál mitt mikið.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Aðgangurinn \"<xliff:g id="account">%s</xliff:g>\" verður fjarlægður úr K-9 póstinum.</string>

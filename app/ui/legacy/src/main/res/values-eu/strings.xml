@@ -27,38 +27,7 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Ikusi zer den berria bertsio honetan</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-  <!--Welcome message-->
-  <string name="welcome_message_title">Ongi etorri K-9 Mail-era</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail Androiderako posta elektroniko bezero libre ahaltsu bat da.
-</p><p>
-Ondorengo eginbide hobetuak ditu:
-</p>
-<ul>
-  <li>\"Push\" posta IMAP IDLE erabiliz</li>
-  <li>Errendimendu hobea</li>
-  <li>Mezu artxibatzea</li>
-  <li>Posta elektronikoen sinadurak</li>
-  <li>Bcc-bere-buruari</li>
-  <li>Harpidetza karpetetara</li>
-  <li>Karpeta guztien sinkronizazioa</li>
-  <li>Erantzuteko helbidearen konfigurazioa</li>
-  <li>Laster-teklak</li>
-  <li>Bateragarritasun hobea IMAPekin</li>
-  <li>Eranskinak SD txartelean gordetzea</li>
-  <li>Hustu Zakarrontzia</li>
-  <li>Mezuen ordenatzea</li>
-  <li>…eta gehiago</li>
-</ul>
-<p>
-Mesedez kontuan hartu K-9 Mail ez dela bateragarria Hotmail-en doako kontu gehienekin eta, posta bezero askok bezala, bitxikeria batzuk ditu Microsoft Exchange-rekin komunikatzerakoan.
-</p><p>
-Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a> erabili.
-</p>
-    ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nAndroid gailutik bidalia K-9 Mail erabiliz. Barka laburtasuna.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" kontua K-9 Mail-etik kenduko da.</string>

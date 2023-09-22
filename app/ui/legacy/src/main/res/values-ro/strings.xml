@@ -27,38 +27,7 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Aflați ce este nou în această versiune</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-  <!--Welcome message-->
-  <string name="welcome_message_title">Bun venit la K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail este un client puternic și gratuit de email pentru Android.
-</p><p>
-Facilitățile sale îmbunătățite includ:
-</p>
-<ul>
-<li>Push mail folosind IMAP IDLE</li>
-<li>Performanță mai bună</li>
-<li>Reciclare mesaje</li>
-<li>Semnături email</li>
-<li>Bcc-către-sine</li>
-<li>Abonare dosare</li>
-<li>Sincronizarea tuturor dosarelor</li>
-<li>Adrese de răspuns configurabile</li>
-<li>Scurtături tastatură</li>
-<li>Suport IMAP mai bun</li>
-<li>Salvare atașamente pe cardul SD</li>
-<li>Golire Coș de gunoi</li>
-<li>Sortare mesaje</li>
-<li>…și multe altele</li>
-</ul>
-<p>
-Rețineți, K-9 nu oferă suport pentru mare parte din conturile gratuite de Hotmail și, precum alți clienți de email, poate avea dificultăți cînd se conectează la Microsoft Exchange.
-</p><p>
-Vă rugăm să ne raportați defecte, să contribuiți cu funcționalități noi sau să puneți întrebări la
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
-]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nTrimis de pe dispozitivul meu Android cu K-9 Mail. Rog scuzați mesajul scurt.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Contul \"<xliff:g id="account">%s</xliff:g>\" va fi șters din K-9 Mail.</string>

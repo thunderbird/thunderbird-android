@@ -13,8 +13,6 @@
   <string name="license">Licenca</string>
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-  <!--Welcome message-->
-  <string name="welcome_message_title">Dobrodošli u K-9 Mail</string>
   <!--Default signature-->
   <string name="default_signature">-- \nPoslano sa mog Android uređaja sa K-9 Mail. Molim vas oprostite na mojoj sažetosti.</string>
   <!--General strings that include the app name-->

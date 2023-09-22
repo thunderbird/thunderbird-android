@@ -25,39 +25,7 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Mira as novidades deste lanzamento</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-  <!--Welcome message-->
-  <string name="welcome_message_title">Benvido/a a K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail é un potente cliente de correo para Android.
-</p><p>
-As características melloradas inclúen:
-</p>
-<ul>
-  <li>Push mail utilizando IMAP IDLE</li>
-  <li>Mellor rendemento</li>
-  <li>Autocompletado de mensaxe</li>
-  <li>Firmas de correo</li>
-  <li>Bcc ao remitente</li>
-  <li>Suscrición de cartafoles</li>
-  <li>Sincronización de todos os cartafoles</li>
-  <li>Configuración da conta de resposta</li>
-  <li>Atallos de teclado</li>
-  <li>Melloras no xestión IMAP</li>
-  <li>Gardar anexos en tarxeta SD</li>
-  <li>Baldeirar o lixo</li>
-  <li>Ordenar mensaxes</li>
-  <li>…e máis</li>
-</ul>
-<p>
-Por favor teña en conta que K-9 non soporta a maioría das contas gratuítas Hotmail e, como moitos clientes, ten
-problemiñas ao utilizar Microsoft Exchange.
-</p><p>
-Por favor envíen informes de fallos, contribúa con novas características e consulte dúbidas en
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
-    ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nEnviado dende o meu teléfono Android con K-9 Mail. Desculpa a miña brevedade</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\" será eliminada de K-9 Mail.</string>

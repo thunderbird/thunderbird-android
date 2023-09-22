@@ -28,39 +28,7 @@
   <string name="changelog_snackbar_text">了解此版本的新增功能</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">檢視</string>
-  <!--Welcome message-->
-  <string name="welcome_message_title">歡迎使用 K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail 是 Android 上一款功能強大，免費的電子郵件用戶端。
-</p><p>
-其改進的功能包括：
-</p>
-<ul>
-  <li>支援 IMAP IDLE 指令推送郵件</li>
-  <li>更好的性能</li>
-  <li>訊息重新轉寄封存</li>
-  <li>郵件簽名</li>
-  <li>密件副本寄送給自己</li>
-  <li>信件匣訂閱</li>
-  <li>同步所有信件匣</li>
-  <li>回覆地址設定</li>
-  <li>快速鍵</li>
-  <li>更好的 IMAP 支援</li>
-  <li>儲存附件至 SD 卡</li>
-  <li>清空垃圾桶</li>
-  <li>訊息排序</li>
-  <li>…以及更多</li>
-</ul>
-<p>
-請注意 K-9 不支援大部分免費 Hotmail 帳號，而且和其他大部分郵件客戶端一樣，
-在使用 Microsoft Exchange 協定時會有一些問題。
-</p><p>
-請到下述網址提交問題報告，新功能建議或者提問：
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
-    ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \n使用 K-9 Mail 寄送。來自我的 Android 裝置。</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">帳號「<xliff:g id="account">%s</xliff:g>」將從 K-9 Mail 中刪除。</string>

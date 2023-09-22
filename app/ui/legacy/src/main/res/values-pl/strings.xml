@@ -28,38 +28,7 @@
   <string name="changelog_snackbar_text">Dowiedz się, co nowego w tej wersji</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Wyświetl</string>
-  <!--Welcome message-->
-  <string name="welcome_message_title">Witaj w K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail to darmowy zaawansowany program pocztowy dla systemu Android.
-</p><p>
-Oto niektóre z jego istotnych funkcji:
-</p>
-<ul>
-  <li>Obsługa Push mail z użyciem IMAP IDLE</li>
-  <li>Lepsza wydajność</li>
-  <li>Reorganizowanie wiadomości</li>
-  <li>Podpisy wiadomości e-mail</li>
-  <li>Kopia UDW-do-siebie</li>
-  <li>Subskrybowanie folderów</li>
-  <li>Synchronizowanie wszystkich folderów</li>
-  <li>Konfigurowanie adresu zwrotnego</li>
-  <li>Skróty klawiszowe</li>
-  <li>Lepsza obsługa protokołu IMAP</li>
-  <li>Zapisywanie załączników na karcie SD</li>
-  <li>Opróżnianie kosza</li>
-  <li>Sortowanie wiadomości</li>
-  <li>…i wiele innych</li>
-</ul>
-<p>
-K-9 nie obsługuje większości darmowych kont Hotmail oraz, jak wiele innych programów pocztowych, może być kapryśny przy połączeniach z serwerami Microsoft Exchange.
-</p><p>
-Wszelkie zgłoszenia usterek, zapytania oraz pomysły na nowe funkcje prosimy przesyłać za pośrednictwem strony projektu
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
-    ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- 
 Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwięzłość.</string>
   <!--General strings that include the app name-->

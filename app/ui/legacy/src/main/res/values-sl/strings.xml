@@ -27,38 +27,7 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Kaj je novega v tej izdaji</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-  <!--Welcome message-->
-  <string name="welcome_message_title">Dobrodošli v K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail je zmogljiv brezplačni odjemalec elektronske pošte za okolje Android.
-</p><p>
-Podpira različne storitve, kot so:
-</p>
-<ul>
-  <li>potisno pošiljanje pošte z uporabo IMAP IDLE</li>
-  <li>hitro in odzivno delovanje</li>
-  <li>prerazporejanje sporočil</li>
-  <li>podpora različnim podpisom sporočila</li>
-  <li>slepa povratnica poslanega sporočila</li>
-  <li>prilagajanje prikazovanja map</li>
-  <li>izbirno usklajevanje</li>
-  <li>nastavljanje poljubnega povratnega naslova</li>
-  <li>tipkovne bližnjice</li>
-  <li>izboljšana podpora protokolu IMAP</li>
-  <li>podpora shranjevanja prilog na kartico SD</li>
-  <li>prilagojeno praznjenje smeti</li>
-  <li>različne možnosti razvrščanja sporočil</li>
-  <li>… in še mnogo več.</li>
-</ul>
-<p>
-Program K-9 Mail ne podpira brezplačnih računov Hotmail in ima (kot tudi mnogo drugih odjemalcev) nekaj težav s podporo Microsoft Exchange.
-</p><p>
-Poročila o napakah, predloge za nove funkcije in vprašanja lahko pošljete na
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
-    ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nPoslano s programom K-9 Mail.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Račun »<xliff:g id="account">%s</xliff:g>« bo odstranjen iz programa.</string>

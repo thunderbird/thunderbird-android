@@ -28,38 +28,7 @@
   <string name="changelog_snackbar_text">Find ud af hvad der er nyt i denne version</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Vis</string>
-  <!--Welcome message-->
-  <string name="welcome_message_title">Velkommen til K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail er en slagkraftig gratis mail-klient til Android.
-</p><p>
-Dens forbedrede funktioner omfatter:
-</p>
-<ul>
-  <li>\"Push mail\" ved hjælp af IMAP IDLE</li>
-  <li>Bedre ydeevne</li>
-  <li>Genarkivering af meddelelser</li>
-  <li>Signaturer</li>
-  <li>Bcc-til-dig-selv</li>
-  <li>Mappeabonnementer</li>
-  <li>Synkronisering af alle mapper</li>
-  <li>Konfiguration af Retur-adresse</li>
-  <li>Tastaturgenveje</li>
-  <li>Bedre IMAP-understøttelse</li>
-  <li>Gemning af vedhæftninger på SD-kort</li>
-  <li>Tømning af papirkurv</li>
-  <li>Sortering af meddelelser</li>
-  <li>…og mere</li>
-</ul>
-<p>
-Bemærk, at K-9 ikke understøtter de fleste gratis Hotmail-konti, og ligesom mange mail-klienter, har nogle uhensigtsmæssigheder, når den kommunikerer med Microsoft Exchange.
-</p><p>
-Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
-    ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nDette er sendt fra min mobiltelefon. Undskyld at jeg fatter mig i korthed.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Kontoen  \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet fra K-9 Mail.</string>

@@ -28,38 +28,7 @@
   <string name="changelog_snackbar_text">Zjistěte, co je v tomto vydání nového</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Zobrazit</string>
-  <!--Welcome message-->
-  <string name="welcome_message_title">Vítejte v K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail je všestranný e-mailový klient pro Android.
-</p><p>
-Vylepšené funkce zahrnují:
-</p>
-<ul>
-  <li>Push mail pomocí IMAP IDLE</li>
-  <li>Lepší výkon</li>
-  <li>Vyplňování zpráv</li>
-  <li>Podpisy zpráv</li>
-  <li>Skryté kopie sobě</li>
-  <li>Odebírané složky</li>
-  <li>Synchronizace všech složek</li>
-  <li>Nastavení zpáteční adresy</li>
-  <li>Klávesové zkratky</li>
-  <li>Lepší podpora IMAP</li>
-  <li>Ukládání příloh na SD kartu</li>
-  <li>Vysypání koše</li>
-  <li>Řazení zpráv</li>
-  <li>…a další</li>
-</ul>
-<p>
-K-9 nepodporuje většinu bezplatných účtů u Hotmail a jako mnoho poštovních klientů vykazuje zvláštnosti při komunikaci s Microsoft Exchange.
-</p><p>
-Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictvím
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
-    ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nOdesláno aplikací K-9 Mail ze systému Android. Omluvte prosím moji stručnost.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Účet \"<xliff:g id="account">%s</xliff:g>\" bude odstraněn z K-9 Mail.</string>

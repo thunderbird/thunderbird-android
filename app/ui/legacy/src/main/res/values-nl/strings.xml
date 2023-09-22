@@ -28,34 +28,7 @@
   <string name="changelog_snackbar_text">Ontdek wat er nieuw is in deze versie</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Bekijken</string>
-  <!--Welcome message-->
-  <string name="welcome_message_title">Welkom bij K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[ <p> K-9 Mail is een gratis krachtige e-mailclient voor Android. </p><p> De verbeterde mogelijkheden bestaan ondermeer uit:
-</p>
-<ul>
-<li>Pushmail middels IMAP IDLE</li> 
-<li>Betere prestaties</li> 
-<li>Berichtherclassificatie</li> 
-<li>E-mailhandtekeningen</li> 
-<li>Bcc naar jezelf</li> 
-<li>Mapabonnementen</li> 
-<li>Synchronisatie van alle mappen</li> 
-<li>Antwoordadres instellen</li> 
-<li>Toetsenbordsnelkoppelingen</li> 
-<li>Betere IMAP-ondersteuning</li> 
-<li>Bijlage opslaan naar SD</li> 
-<li>Prullenbak legen</li> 
-<li>Berichten sorteren</li> 
-<li>en meer…</li> 
-</ul> 
-<p> 
-Houd er rekening mee dat K-9 de meeste gratis Hotmail-accounts niet ondersteund, en net als veel e-mailclients, problemen kan hebben om te verbinden met Microsoft Exchange. 
-</p><p> 
-Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op 
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>. 
-</p> 
-]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nVerstuurd vanaf mijn Android-apparaat met K-9 Mail.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">De account ‘<xliff:g id="account">%s</xliff:g>’ wordt uit K-9 Mail verwijderd.</string>

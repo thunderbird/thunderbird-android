@@ -13,38 +13,7 @@
   <string name="license">Lañvaz</string>
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-  <!--Welcome message-->
-  <string name="welcome_message_title">Donemat war K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail a zo un arval posteloù digoust galloudus evit Android
-</p><p>
-Kavet e vez e-touez e geweriusterioù:
-</p>
-<ul>
-  <li>Bountañ posteloù gant IMAP IDLE</li>
-  <li>Digonusted gwelloc’h</li>
-  <li>Adleuniadenn kemennadennoù</li>
-  <li>Sinadurioù postel</li>
-  <li>Bcc-to-self</li>
-  <li>Koumanant da deuliadoù</li>
-  <li>Goubredañ d’an holl deuliadoù</li>
-  <li>Kefluniadur ar chomlec’h daskor</li>
-  <li>Berradennoù klavier</li>
-  <li>Skor IMAP gwelloc’h</li>
-  <li>Enrollañ kenstagadennoù d’ar gartenn SD</li>
-  <li>Goullonderiñ ar c’hest</li>
-  <li>Urzhiañ ar c’hemennadennoù</li>
-  <li>…ha muioc’h c’hoazh</li>
-</ul>
-<p>
-K- ne skor ket lodenn vrasañ ar c’hontoù Hotmail digoust hag evel loden vrasañ an arvaloù postel eo diaes dezhañ eskemm gant Microsoft Exchange.
-</p><p>
-Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù war
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
-    ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nKaset eus ma fellgomzer Android gant K-9 Mail.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Dilamet e vo ar gont \"<xliff:g id="account">%s</xliff:g>\" eus K-9 Mail.</string>

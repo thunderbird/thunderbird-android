@@ -20,39 +20,7 @@
   <string name="changelog_recent_changes_title">Hva er nytt?</string>
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-  <!--Welcome message-->
-  <string name="welcome_message_title">Velkommen til K-9 e-post</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 E-post er en kraftig og fri e-postklient for Android.
-</p><p>
-Dets forbedrede funksjoner inkluderer:
-</p>
-<ul>
-  <li>Push-mail ved bruk av IMAP IDLE</li>
-  <li>Bedre ytelse</li>
-  <li>Rearkivering av meldinger</li>
-  <li>E-postsignaturer</li>
-  <li>Blindkopi ti deg selv</li>
-  <li>Mappeabonnement</li>
-  <li>Synkronisering av alle mapper</li>
-  <li>Returadressekonfigurasjon</li>
-  <li>Tastatursnarveier</li>
-  <li>Bedre IMAP-støtte</li>
-  <li>Lagre vedlegg til SD-kort</li>
-  <li>Tøm søppel</li>
-  <li>Meldingssortering</li>
-  <li>…med mer</li>
-</ul>
-<p>
-Merk at K-9 ikke støtter de fleste gratis Hotmail-kontoer, og har, som mange andre
-e-postklienter, noen problemer med å snakke med Microsoft Exchange.
-</p><p>
-Send feilmeldinger, bidra med nye funksjoner og still spørsmål her:
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
-    ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nSendt fra min Android-enhet med K-9 e-post. Unnskyld min kortfattethet.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Kontoen \"<xliff:g id="account">%s</xliff:g>\" vil bli fjernet fra K-9 e-post</string>

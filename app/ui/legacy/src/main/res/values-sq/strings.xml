@@ -28,39 +28,7 @@
   <string name="changelog_snackbar_text">Mësoni ç\’ka të re në këtë hedhje në qarkullim</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Shiheni</string>
-  <!--Welcome message-->
-  <string name="welcome_message_title">Mirë se vini te K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail është një klient email-esh i lirë, për Android.
-</p><p>
-Në veçoritë e tij të përmirësuara përfshihen:
-</p>
-<ul>
-  <li>Dërgim push duke përdorur IMAP IDLE</li>
-  <li>Punim më i mirë</li>
-  <li>Riskedarizim mesazhesh</li>
-  <li>Nënshkrime email-esh</li>
-  <li>Bcc-për vetveten</li>
-  <li>Pajtime në dosje</li>
-  <li>Njëkohësim për krejt dosjet</li>
-  <li>Formësim adrese për kthime</li>
-  <li>Shkurtore tastiere</li>
-  <li>Mbulim më të mirë të IMAP-it</li>
-  <li>Ruajtje bashkëngjitjesh në SD</li>
-  <li>Zbrazje Hedhurinash</li>
-  <li>Renditje mesazhesh</li>
-  <li>…dhe të tjera</li>
-</ul>
-<p>
-Ju lutemi, mbani parasysh që K-9 nuk mbulon shumicën e llogarive falas Hotmail dhe, ashtu si mjaft klientë email-i, ka disa yçkla
-kur komunikon me një shërbyes Microsoft Exchange.
-</p><p>
-Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj dhe pyetjet bëjini te
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
-    ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nDërguar nga pajisja ime Android, me K-9 Mail. Ju lutem, më ndjeni për shkurtësinë.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Llogaria \“<xliff:g id="account">%s</xliff:g>\” do të hiqet që nga K-9 Mail.</string>

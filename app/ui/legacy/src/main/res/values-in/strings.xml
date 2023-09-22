@@ -25,38 +25,7 @@
   <string name="changelog_recent_changes_title">Apa yang baru</string>
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-  <!--Welcome message-->
-  <string name="welcome_message_title">Selamat datang di K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail adalah klien email gratis yang hebat untuk Android.
-</p><p>
-Fitur yang disempurnakan meliputi:
-</p>
-<ul>
-<li>Push mail menggunakan IMAP IDLE</li>
-<li>Kinerja yang lebih baik</li>
-<li>Penyempurnaan pesan</li>
-<li>Tanda tangan email</li>
-<li>Bcc-untuk-diri</li>
-<li>Langganan folder</li>
-<li>Semua sinkronisasi folder</li>
-<li>Konfigurasi alamat kembali</li>
-<li>Pintasan keyboard</li>
-<li>Dukungan IMAP lebih baik</li>
-<li>Menyimpan lampiran ke SD</li>
-<li>Sampah kosong</li>
-<li>Penyortiran pesan</li>
-<li>… dan banyak lagi</li>
-</ul>
-<p>
-Harap dicatat bahwa K-9 tidak mendukung sebagian besar akun Hotmail gratis dan, seperti banyak klien email lainnya
-beberapa kebiasaan saat berbicara dengan Microsoft Exchange.
-</p><p>
-Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
-<a href="https://github.com/k9mail/k-9/">https:/github.com/k9mail/k-9/</a>.</p>
-]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nDikirim dari perangkat Android saya menggunakan K-9 Mail.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Akun \"<xliff:g id="account">%s</xliff:g>\" akan dibuang dari K-9 Mail.</string>
