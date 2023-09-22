@@ -368,7 +368,6 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="account_setup_outgoing_authentication_label">Kimlik Doğrulama </string>
   <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" bununla uyuşmuyor \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_bad_uri">Geçersiz kurulum: <xliff:g id="err_mess">%s</xliff:g></string>
-  <string name="account_setup_options_title">Hesap seçenekleri</string>
   <string name="account_setup_options_mail_check_frequency_label">Klasör bilgi toplama sıklığı</string>
   <string name="account_setup_options_mail_check_frequency_never">Asla</string>
   <string name="account_setup_options_mail_check_frequency_15min">Her 15 dakikada bir</string>
@@ -388,7 +387,6 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="idle_refresh_period_36min">Her 36 dakikada bir</string>
   <string name="idle_refresh_period_48min">Her 48 dakikada bir</string>
   <string name="idle_refresh_period_60min">Her 60 dakikada bir</string>
-  <string name="account_setup_options_notify_label">Posta ulaştığında beni uyar</string>
   <string name="account_setup_options_mail_display_count_label">Görüntülenecek ileti sayısı</string>
   <string name="account_setup_options_mail_display_count_10">10 ileti</string>
   <string name="account_setup_options_mail_display_count_25">25 ileti</string>

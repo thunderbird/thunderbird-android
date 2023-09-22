@@ -293,7 +293,6 @@
   <string name="account_setup_outgoing_password_label">סיסמא</string>
   <string name="account_setup_outgoing_authentication_label">סו אימות</string>
   <string name="account_setup_bad_uri">הגדרה לא חוקית: <xliff:g id="err_mess">%s</xliff:g></string>
-  <string name="account_setup_options_title">אפשרויות חשבון</string>
   <string name="account_setup_options_mail_check_frequency_never">אפ פעם</string>
   <string name="account_setup_options_mail_check_frequency_15min">כל רבע שעה</string>
   <string name="account_setup_options_mail_check_frequency_30min">כל 30 דקות</string>
@@ -312,7 +311,6 @@
   <string name="idle_refresh_period_36min">כל 36 דקות</string>
   <string name="idle_refresh_period_48min">כל 48 דקות</string>
   <string name="idle_refresh_period_60min">כל 60 דקות</string>
-  <string name="account_setup_options_notify_label">הודע לי כאשר מגיע דואר</string>
   <string name="account_setup_options_mail_display_count_label">מספר הודעות להצגה</string>
   <string name="account_setup_options_mail_display_count_10">10 הודעות</string>
   <string name="account_setup_options_mail_display_count_25">25 הודעות</string>

@@ -314,7 +314,6 @@
   <string name="account_setup_outgoing_password_label">비밀번호</string>
   <string name="account_setup_outgoing_authentication_label">인증 유형</string>
   <string name="account_setup_bad_uri">잘못된 설정: <xliff:g id="err_mess">%s</xliff:g></string>
-  <string name="account_setup_options_title">계정 옵션</string>
   <string name="account_setup_options_mail_check_frequency_label">폴더 수신 빈도</string>
   <string name="account_setup_options_mail_check_frequency_never">하지 않음</string>
   <string name="account_setup_options_mail_check_frequency_15min">15분마다</string>
@@ -334,7 +333,6 @@
   <string name="idle_refresh_period_36min">36분마다</string>
   <string name="idle_refresh_period_48min">48분마다</string>
   <string name="idle_refresh_period_60min">60분마다</string>
-  <string name="account_setup_options_notify_label">메일 도착시 알림</string>
   <string name="account_setup_options_mail_display_count_label">화면에 보여질 메시지 수</string>
   <string name="account_setup_options_mail_display_count_10">10 메시지</string>
   <string name="account_setup_options_mail_display_count_25">25 메시지</string>
