@@ -114,7 +114,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
 
         Preferences.getPreferences().saveAccount(mAccount);
         Core.setServicesEnabled(this);
-        AccountSetupNames.actionSetNames(this, mAccount);
+//        AccountSetupNames.actionSetNames(this, mAccount);
     }
 
     public void onClick(View v) {

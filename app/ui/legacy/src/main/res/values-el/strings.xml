@@ -329,9 +329,6 @@
   <string name="account_setup_check_settings_authenticate">Διακρίβωση στοιχείων\u2026</string>
   <string name="account_setup_check_settings_fetch">Μετάκληση πληροφοριών λογαριασμού\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">Ακύρωση\u2026</string>
-  <string name="account_setup_names_title">Σχεδόν έτοιμο!</string>
-  <string name="account_setup_names_account_name_label">Ονομασία λογαριασμού (Προαιρετικό):</string>
-  <string name="account_setup_names_user_name_label">Όνομα αποστολέα (προβάλλεται στα εξερχόμενα μηνύματα):</string>
   <string name="account_setup_account_type_title">Τύπος λογαριασμού</string>
   <string name="account_setup_account_type_instructions">Τι λογαριασμός είναι αυτός;</string>
   <string name="account_setup_account_type_pop_action">POP3</string>

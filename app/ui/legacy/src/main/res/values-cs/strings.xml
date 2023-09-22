@@ -335,9 +335,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_setup_check_settings_authenticate">Přihlašuji se\u2026</string>
   <string name="account_setup_check_settings_fetch">Stahuji nastavení účtu\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">Rušení\u2026</string>
-  <string name="account_setup_names_title">Téměř hotovo!</string>
-  <string name="account_setup_names_account_name_label">Pojmenujte tento účet (volitelné):</string>
-  <string name="account_setup_names_user_name_label">Zadejte své jméno (zobrazuje se v odchozích zprávách):</string>
   <string name="account_setup_account_type_title">Typ účtu</string>
   <string name="account_setup_account_type_instructions">O jaký typ účtu jde?</string>
   <string name="account_setup_account_type_pop_action">POP3</string>

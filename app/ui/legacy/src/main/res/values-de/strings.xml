@@ -330,9 +330,6 @@ Bitte sende Fehlerberichte, Ideen für neue Funktionen und stelle Fragen an
   <string name="account_setup_check_settings_authenticate">Authentifizierung\u2026</string>
   <string name="account_setup_check_settings_fetch">Kontoeinstellungen werden geladen\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">Aktion wird abgebrochen\u2026</string>
-  <string name="account_setup_names_title">Fast fertig!</string>
-  <string name="account_setup_names_account_name_label">Kontoname (optional):</string>
-  <string name="account_setup_names_user_name_label">Dein Name (Anzeige bei ausgehenden Nachrichten):</string>
   <string name="account_setup_account_type_title">Kontotyp</string>
   <string name="account_setup_account_type_instructions">Art des Kontos?</string>
   <string name="account_setup_account_type_pop_action">POP3-Konto</string>

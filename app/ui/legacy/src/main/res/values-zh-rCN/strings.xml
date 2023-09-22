@@ -329,9 +329,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_setup_check_settings_authenticate">正在验证用户\u2026</string>
   <string name="account_setup_check_settings_fetch">正在获取账户设置\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">正在取消\u2026</string>
-  <string name="account_setup_names_title">快要完成了！</string>
-  <string name="account_setup_names_account_name_label">为这个账户选择一个名称（可选项）：</string>
-  <string name="account_setup_names_user_name_label">输入你的名字（将显示在发出的邮件中）：</string>
   <string name="account_setup_account_type_title">账户类型</string>
   <string name="account_setup_account_type_instructions">这个账户是什么类型的？</string>
   <string name="account_setup_account_type_pop_action">POP3</string>

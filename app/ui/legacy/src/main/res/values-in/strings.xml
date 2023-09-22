@@ -291,9 +291,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_setup_check_settings_authenticate">Otentikasi\u2026</string>
   <string name="account_setup_check_settings_fetch">Mengambil pengaturan akun\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">Membatalkan\u2026</string>
-  <string name="account_setup_names_title">Anda hampir selesai!</string>
-  <string name="account_setup_names_account_name_label">Berikan akun ini sebuah nama (opsional):</string>
-  <string name="account_setup_names_user_name_label">Ketik nama Anda (ditampilkan pada pesan keluar):</string>
   <string name="account_setup_account_type_title">Tipe akun</string>
   <string name="account_setup_account_type_instructions">Akun apa ini?</string>
   <string name="account_setup_account_type_pop_action">POP3</string>

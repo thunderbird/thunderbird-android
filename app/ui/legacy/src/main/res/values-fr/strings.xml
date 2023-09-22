@@ -334,9 +334,6 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="account_setup_check_settings_authenticate">Authentification\u2026</string>
   <string name="account_setup_check_settings_fetch">Récupération des paramètres du compte\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">Annulation\u2026</string>
-  <string name="account_setup_names_title">Vous avez presque terminé !</string>
-  <string name="account_setup_names_account_name_label">Donner un nom à ce compte (facultatif) :</string>
-  <string name="account_setup_names_user_name_label">Saisissez votre nom (s’affiche dans les courriels sortants) :</string>
   <string name="account_setup_account_type_title">Type de compte</string>
   <string name="account_setup_account_type_instructions">Quel type de compte est-ce ?</string>
   <string name="account_setup_account_type_pop_action">POP3</string>

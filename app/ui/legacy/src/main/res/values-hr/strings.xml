@@ -253,9 +253,6 @@
   <string name="account_setup_check_settings_authenticate">Identifikacija\u2026</string>
   <string name="account_setup_check_settings_fetch">Dohvaćam postavke računa\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">Otkazujem\u2026</string>
-  <string name="account_setup_names_title">Uskoro ste gotovi!</string>
-  <string name="account_setup_names_account_name_label">Dajte naziv ovom računu (opcionalno):</string>
-  <string name="account_setup_names_user_name_label">Unesite vaše ime (prikazuje se na odlaznim porukama):</string>
   <string name="account_setup_account_type_title">Vrsta računa</string>
   <string name="account_setup_account_type_instructions">Kakav je to račun?</string>
   <string name="account_setup_account_type_pop_action">POP3</string>

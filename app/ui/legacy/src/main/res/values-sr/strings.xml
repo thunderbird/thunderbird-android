@@ -292,9 +292,6 @@
   <string name="account_setup_check_settings_authenticate">Аутентификујем\u2026</string>
   <string name="account_setup_check_settings_fetch">Добављам поставке налога\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">Одустајем\u2026</string>
-  <string name="account_setup_names_title">Скоро сте завршили!</string>
-  <string name="account_setup_names_account_name_label">Именујте овај налог (необавезно):</string>
-  <string name="account_setup_names_user_name_label">Унесите своје име (приказано на одлазним порукама):</string>
   <string name="account_setup_account_type_title">Тип налога</string>
   <string name="account_setup_account_type_instructions">Какав је ово налог?</string>
   <string name="account_setup_account_type_pop_action">ПОП3</string>

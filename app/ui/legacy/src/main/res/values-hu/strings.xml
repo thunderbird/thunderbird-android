@@ -329,9 +329,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_check_settings_authenticate">Hitelesítés\u2026</string>
   <string name="account_setup_check_settings_fetch">Fiókbeállítások beolvasása\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">Megszakítás\u2026</string>
-  <string name="account_setup_names_title">Már majdnem kész.</string>
-  <string name="account_setup_names_account_name_label">Fiók elnevezése (nem kötelező):</string>
-  <string name="account_setup_names_user_name_label">Név megadása (kimenő üzeneteknél jelenik meg):</string>
   <string name="account_setup_account_type_title">Fióktípus</string>
   <string name="account_setup_account_type_instructions">Milyen fajta fiók ez?</string>
   <string name="account_setup_account_type_pop_action">POP3</string>

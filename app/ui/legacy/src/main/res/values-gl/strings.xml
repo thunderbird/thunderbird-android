@@ -307,9 +307,6 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="account_setup_check_settings_authenticate">Autentificando\u2026</string>
   <string name="account_setup_check_settings_fetch">Obtendo Configuración da conta\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">Cancelando\u2026</string>
-  <string name="account_setup_names_title">Feito!</string>
-  <string name="account_setup_names_account_name_label">Dalle un nome a esta conta (opcional):</string>
-  <string name="account_setup_names_user_name_label">Introduce o teu nome (visualizarase na mensaxe de saída):</string>
   <string name="account_setup_account_type_title">Tipo de conta</string>
   <string name="account_setup_account_type_instructions">Qué tipo de conta é?</string>
   <string name="account_setup_account_type_pop_action">POP3</string>

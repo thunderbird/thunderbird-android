@@ -331,9 +331,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_setup_check_settings_authenticate">Po kryhet mirëfilltësimi\u2026</string>
   <string name="account_setup_check_settings_fetch">Po sillen rregullime llogarie\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">Po anulohet\u2026</string>
-  <string name="account_setup_names_title">Thuajse mbaruat!</string>
-  <string name="account_setup_names_account_name_label">Jepini një emër kësaj llogarie (në daçi):</string>
-  <string name="account_setup_names_user_name_label">Shtypni emrin tuaj (shfaqet në mesazhet e dërguara):</string>
   <string name="account_setup_account_type_title">Lloj llogarie</string>
   <string name="account_setup_account_type_instructions">Ç\’lloj llogarie është kjo?</string>
   <string name="account_setup_account_type_pop_action">POP3</string>

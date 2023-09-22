@@ -331,9 +331,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_setup_check_settings_authenticate">S\'està autenticant\u2026</string>
   <string name="account_setup_check_settings_fetch">S\'està recuperant la configuració del compte\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">S\'està cancel·lant\u2026</string>
-  <string name="account_setup_names_title">Ja gairebé hem acabat!</string>
-  <string name="account_setup_names_account_name_label">Dóna un nom a aquest compte (opcional):</string>
-  <string name="account_setup_names_user_name_label">Escriviu el nom (és el que es mostrarà als missatges sortints):</string>
   <string name="account_setup_account_type_title">Tipus de compte</string>
   <string name="account_setup_account_type_instructions">Quin tipus de compte és?</string>
   <string name="account_setup_account_type_pop_action">POP3</string>

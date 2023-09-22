@@ -343,7 +343,7 @@ class AccountSetupBasics : K9Activity() {
             preferences.saveAccount(account)
             Core.setServicesEnabled(applicationContext)
 
-            AccountSetupNames.actionSetNames(this, account)
+            // AccountSetupNames.actionSetNames(this, account)
         }
     }
 

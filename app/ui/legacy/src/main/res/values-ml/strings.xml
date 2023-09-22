@@ -308,9 +308,6 @@
   <string name="account_setup_check_settings_authenticate">പ്രാമാണീകരിക്കുന്നു\u2026</string>
   <string name="account_setup_check_settings_fetch">അക്കൗണ്ട് ക്രമീകരണങ്ങൾ ലഭ്യമാക്കുന്നു\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">റദ്ദാക്കുന്നു\u2026</string>
-  <string name="account_setup_names_title">നിങ്ങൾ ഏകദേശം പൂർത്തിയാക്കി!</string>
-  <string name="account_setup_names_account_name_label">ഈ അക്കൗണ്ടിന് ഒരു പേര് നൽകുക (ഐച്ഛികം):</string>
-  <string name="account_setup_names_user_name_label">നിങ്ങളുടെ പേര് ടൈപ്പുചെയ്യുക (ഔട്ട്‌ഗോയിംഗ് സന്ദേശങ്ങളിൽ പ്രദർശിപ്പിക്കുന്നു):</string>
   <string name="account_setup_account_type_title">അക്കൗണ്ട് തരം</string>
   <string name="account_setup_account_type_instructions">ഇത് ഏത് തരത്തിലുള്ള അക്കൗണ്ടാണ്?</string>
   <string name="account_setup_account_type_pop_action">POP3</string>

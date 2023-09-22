@@ -322,9 +322,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_setup_check_settings_authenticate">Autentifikatzen\u2026</string>
   <string name="account_setup_check_settings_fetch">Kontuaren ezarpenak eskuratzen\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">Bertan behera uzten\u2026</string>
-  <string name="account_setup_names_title">Ia amaitu duzu!</string>
-  <string name="account_setup_names_account_name_label">Eman izen bat kontu honi (aukerakoa):</string>
-  <string name="account_setup_names_user_name_label">Idatzi zure izena (irteerako mezuetan bistaratuko da):</string>
   <string name="account_setup_account_type_title">Kontu mota</string>
   <string name="account_setup_account_type_instructions">Zein kontu mota da hau?</string>
   <string name="account_setup_account_type_pop_action">POP3</string>

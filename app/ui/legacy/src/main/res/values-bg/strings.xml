@@ -299,9 +299,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_setup_check_settings_authenticate">Идентифициране\u2026</string>
   <string name="account_setup_check_settings_fetch">Получава настройките на профила\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">Отказва\u2026</string>
-  <string name="account_setup_names_title">Почти проключихте!</string>
-  <string name="account_setup_names_account_name_label">Дайте име на профила (незадължително):</string>
-  <string name="account_setup_names_user_name_label">Въведете вашето име (ще се показва в изходящите съобщения):</string>
   <string name="account_setup_account_type_title">Тип на профила</string>
   <string name="account_setup_account_type_instructions">Какъв тип профил е това?</string>
   <string name="account_setup_account_type_pop_action">POP3</string>

@@ -339,9 +339,6 @@
   <string name="account_setup_check_settings_authenticate">المصادقة \u2026</string>
   <string name="account_setup_check_settings_fetch">إحضار إعدادات الحساب ... </string>
   <string name="account_setup_check_settings_canceling_msg">جارٍ الإلغاء\u2026</string>
-  <string name="account_setup_names_title">لقد انتهيت تقريبًا</string>
-  <string name="account_setup_names_account_name_label">اَعطِ هذا الحساب اسمًا (اختياري):</string>
-  <string name="account_setup_names_user_name_label">اكتب اسمك (تظهر في الرسائل الصادرة):</string>
   <string name="account_setup_account_type_title">نوع الحساب</string>
   <string name="account_setup_account_type_instructions">ما نوع هذا الحساب؟</string>
   <string name="account_setup_account_type_pop_action">POP3</string>
