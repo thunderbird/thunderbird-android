@@ -14,6 +14,7 @@ import net.openid.appauth.AuthorizationRequest
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
 import net.openid.appauth.AuthorizationServiceConfiguration
+import net.openid.appauth.CodeVerifierUtil
 import net.openid.appauth.ResponseTypeValues
 import timber.log.Timber
 
@@ -80,9 +81,11 @@ class AuthorizationRepository(
             configuration.redirectUri.toUri(),
         )
 
+        val codeVerifier = CodeVerifierUtil.generateRandomCodeVerifier()
+
         val authRequest = authRequestBuilder
             .setScope(configuration.scopes.joinToString(" "))
-            .setCodeVerifier(null)
+            .setCodeVerifier(codeVerifier)
             .setLoginHint(emailAddress)
             .build()
 

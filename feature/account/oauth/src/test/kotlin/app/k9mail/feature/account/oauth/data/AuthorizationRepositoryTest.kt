@@ -9,6 +9,7 @@ import app.k9mail.feature.account.oauth.domain.entity.AuthorizationResult
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.prop
@@ -72,8 +73,10 @@ class AuthorizationRepositoryTest {
                 prop(AuthorizationRequest::responseType).isEqualTo(ResponseTypeValues.CODE)
                 prop(AuthorizationRequest::redirectUri).isEqualTo(oAuthConfiguration.redirectUri.toUri())
                 prop(AuthorizationRequest::scope).isEqualTo("scope scope2")
-                prop(AuthorizationRequest::codeVerifier).isNull()
                 prop(AuthorizationRequest::loginHint).isEqualTo(emailAddress)
+                prop(AuthorizationRequest::codeVerifier).isNotNull()
+                prop(AuthorizationRequest::codeVerifierChallengeMethod).isEqualTo("S256")
+                prop(AuthorizationRequest::codeVerifierChallenge).isNotNull().isNotEmpty()
             }
         }
 
