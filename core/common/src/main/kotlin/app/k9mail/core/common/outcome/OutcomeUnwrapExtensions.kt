@@ -32,3 +32,18 @@ fun <V, E> Outcome<V, E>.unwrapError(): E {
         is Failure -> error
     }
 }
+
+/**
+ * Unwrap the cause of a failed [Outcome].
+ */
+@OptIn(ExperimentalContracts::class)
+fun <V, E> Outcome<V, E>.unwrapCause(): Any? {
+    contract {
+        returns() implies (this@unwrapCause is Failure<E>)
+    }
+
+    return when (this) {
+        is Success -> error("Calling Outcome.unwrapCause on a Success is not possible")
+        is Failure -> cause
+    }
+}

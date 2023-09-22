@@ -12,11 +12,11 @@ import kotlin.contracts.contract
  */
 fun <IN_SUCCESS, IN_FAILURE, OUT_SUCCESS, OUT_FAILURE> Outcome<IN_SUCCESS, IN_FAILURE>.map(
     transformSuccess: (IN_SUCCESS) -> OUT_SUCCESS,
-    transformFailure: (IN_FAILURE) -> OUT_FAILURE,
+    transformFailure: (IN_FAILURE, Any?) -> OUT_FAILURE,
 ): Outcome<OUT_SUCCESS, OUT_FAILURE> {
     return when (this) {
         is Success -> Success(transformSuccess(value))
-        is Failure -> Failure(transformFailure(error))
+        is Failure -> Failure(transformFailure(error, cause))
     }
 }
 
@@ -46,7 +46,7 @@ inline infix fun <V, E, O> Outcome<V, E>.mapValue(
  */
 @OptIn(ExperimentalContracts::class)
 inline infix fun <V, E, O> Outcome<V, E>.mapError(
-    transform: (E) -> O,
+    transform: (E, Any?) -> O,
 ): Outcome<V, O> {
     contract {
         callsInPlace(transform, InvocationKind.AT_MOST_ONCE)
@@ -54,6 +54,6 @@ inline infix fun <V, E, O> Outcome<V, E>.mapError(
 
     return when (this) {
         is Success -> this
-        is Failure -> Failure(transform(error))
+        is Failure -> Failure(transform(error, cause))
     }
 }

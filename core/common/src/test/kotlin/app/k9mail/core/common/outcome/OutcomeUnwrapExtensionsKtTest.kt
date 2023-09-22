@@ -37,4 +37,20 @@ class OutcomeUnwrapExtensionsKtTest {
 
         outcome.unwrapError()
     }
+
+    @Test
+    fun `should unwrap cause of a failure outcome`() {
+        val failure = Failure("failure", "cause") as Outcome<String, String>
+
+        val unwrappedCause = failure.unwrapCause()
+
+        assertThat(unwrappedCause).isEqualTo("cause")
+    }
+
+    @Test(expected = IllegalStateException::class)
+    fun `should throw error when unwrapping cause of a success outcome`() {
+        val outcome = Success("success") as Outcome<String, String>
+
+        outcome.unwrapCause()
+    }
 }

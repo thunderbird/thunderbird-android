@@ -32,8 +32,12 @@ data class Success<out V>(val value: V) : Outcome<V, Nothing>
  * Represents a failed [Outcome] with an error of type [E]..
  *
  * @param error The error of the failed [Outcome].
+ * @param cause The cause of the failed [Outcome].
  */
-data class Failure<out E>(val error: E) : Outcome<Nothing, E>
+data class Failure<out E>(
+    val error: E,
+    val cause: Any? = null,
+) : Outcome<Nothing, E>
 
 /**
  * Convert a Result of type [T] to an Outcome of type [T] and [Throwable].

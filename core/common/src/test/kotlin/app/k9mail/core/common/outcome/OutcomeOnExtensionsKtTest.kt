@@ -10,12 +10,15 @@ class OutcomeOnExtensionsKtTest {
     fun `should invoke onSuccess action when success`() {
         val success = Success("success")
         var invoked = false
+        var value: String? = null
 
         success onSuccess {
             invoked = true
+            value = it
         }
 
         assertThat(invoked).isEqualTo(true)
+        assertThat(value).isEqualTo("success")
     }
 
     @Test
@@ -32,14 +35,20 @@ class OutcomeOnExtensionsKtTest {
 
     @Test
     fun `should invoke onFailure action when failure`() {
-        val failure = Failure("failure")
+        val failure = Failure("failure", "cause")
         var invoked = false
+        var failureError: String? = null
+        var failureCause: Any? = null
 
-        failure onFailure {
+        failure onFailure { error, cause ->
             invoked = true
+            failureError = error
+            failureCause = cause
         }
 
         assertThat(invoked).isEqualTo(true)
+        assertThat(failureError).isEqualTo("failure")
+        assertThat(failureCause).isEqualTo("cause")
     }
 
     @Test
@@ -47,7 +56,7 @@ class OutcomeOnExtensionsKtTest {
         val success = Success("success")
         var invoked = false
 
-        success onFailure {
+        success onFailure { _, _ ->
             invoked = true
         }
 

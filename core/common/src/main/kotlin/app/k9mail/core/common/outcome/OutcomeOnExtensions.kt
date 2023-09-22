@@ -25,14 +25,14 @@ inline infix fun <V, E> Outcome<V, E>.onSuccess(action: (V) -> Unit): Outcome<V,
  */
 @OptIn(ExperimentalContracts::class)
 inline infix fun <V, E> Outcome<V, E>.onFailure(
-    action: (E) -> Unit,
+    action: (E, Any?) -> Unit,
 ): Outcome<V, E> {
     contract {
         callsInPlace(action, InvocationKind.AT_MOST_ONCE)
     }
 
     if (this is Failure) {
-        action(error)
+        action(error, cause)
     }
 
     return this
