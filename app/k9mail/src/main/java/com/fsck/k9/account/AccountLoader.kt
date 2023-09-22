@@ -1,17 +1,17 @@
 package com.fsck.k9.account
 
 import app.k9mail.feature.account.common.AccountCommonExternalContract
-import app.k9mail.feature.account.common.domain.entity.Account
-import app.k9mail.feature.account.common.domain.entity.AccountOptions
-import com.fsck.k9.Preferences
+import app.k9mail.feature.account.common.domain.entity.AccountState
+import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import com.fsck.k9.logging.Timber
+import com.fsck.k9.preferences.AccountManager
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import com.fsck.k9.Account as K9Account
 
 class AccountLoader(
-    private val preferences: Preferences,
+    private val accountManager: AccountManager,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : AccountCommonExternalContract.AccountLoader {
 
@@ -28,14 +28,8 @@ class AccountLoader(
         }
     }
 
-        val existingAccount = preferences.getAccount(accountUuid)
     private fun load(accountUuid: String): AccountState? {
-
-        return if (existingAccount != null) {
-            mapToAccount(existingAccount)
-        } else {
-            null
-        }
+        return accountManager.getAccount(accountUuid)?.let { mapToAccount(it) }
     }
 
     private fun mapToAccount(account: K9Account): AccountState {

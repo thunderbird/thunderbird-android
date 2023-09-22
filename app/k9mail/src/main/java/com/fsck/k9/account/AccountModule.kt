@@ -24,7 +24,7 @@ val newAccountModule = module {
 
     factory<AccountCommonExternalContract.AccountLoader> {
         AccountLoader(
-            preferences = get(),
+            accountManager = get(),
         )
     }
 
