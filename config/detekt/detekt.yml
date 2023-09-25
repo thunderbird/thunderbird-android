@@ -790,7 +790,22 @@ style:
 Compose:
   CompositionLocalAllowlist:
     active: true
-    allowedCompositionLocals: [LocalColors, LocalElevations, LocalImages, LocalShapes, LocalSizes, LocalSpacings, LocalActivity]
+    allowedCompositionLocals: [
+      LocalColors,
+      LocalElevations,
+      LocalImages,
+      LocalShapes,
+      LocalSizes,
+      LocalSpacings,
+      LocalActivity,
+      LocalThemeColorScheme,
+      LocalThemeElevations,
+      LocalThemeImages,
+      LocalThemeShapes,
+      LocalThemeSizes,
+      LocalThemeSpacings,
+      LocalThemeTypography
+    ]
   ContentEmitterReturningValues:
     active: true
   ModifierComposable:
