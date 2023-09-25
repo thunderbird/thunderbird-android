@@ -22,8 +22,8 @@ val newAccountModule = module {
         )
     }
 
-    factory<AccountCommonExternalContract.AccountLoader> {
-        AccountLoader(
+    factory<AccountCommonExternalContract.AccountStateLoader> {
+        AccountStateLoader(
             accountManager = get(),
         )
     }

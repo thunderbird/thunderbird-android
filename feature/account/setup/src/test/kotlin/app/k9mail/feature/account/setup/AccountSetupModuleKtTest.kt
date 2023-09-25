@@ -56,14 +56,14 @@ class AccountSetupModuleKtTest : KoinTest {
             }
         }
         single<LocalKeyStore> { mock() }
-        single<AccountCommonExternalContract.AccountLoader> { mock() }
+        single<AccountCommonExternalContract.AccountStateLoader> { mock() }
     }
 
     @Test
     fun `should have a valid di module`() {
         featureAccountSetupModule.verify(
             extraTypes = listOf(
-                AccountCommonExternalContract.AccountLoader::class,
+                AccountCommonExternalContract.AccountStateLoader::class,
                 AccountSetupContract.State::class,
                 AccountAutoDiscoveryContract.State::class,
                 AccountOAuthContract.State::class,

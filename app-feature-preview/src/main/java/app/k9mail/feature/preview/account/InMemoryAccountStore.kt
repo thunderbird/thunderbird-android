@@ -1,6 +1,6 @@
 package app.k9mail.feature.preview.account
 
-import app.k9mail.feature.account.common.AccountCommonExternalContract.AccountLoader
+import app.k9mail.feature.account.common.AccountCommonExternalContract.AccountStateLoader
 import app.k9mail.feature.account.common.domain.entity.Account
 import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
@@ -11,13 +11,13 @@ import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCrea
 
 class InMemoryAccountStore(
     private val accountMap: MutableMap<String, Account> = mutableMapOf(),
-) : AccountCreator, AccountUpdater, AccountLoader {
+) : AccountCreator, AccountUpdater, AccountStateLoader {
 
     suspend fun load(accountUuid: String): Account? {
         return accountMap[accountUuid]
     }
 
-    override suspend fun loadAccount(accountUuid: String): AccountState? {
+    override suspend fun loadAccountState(accountUuid: String): AccountState? {
         return accountMap[accountUuid]?.let { mapToAccountState(it) }
     }
 

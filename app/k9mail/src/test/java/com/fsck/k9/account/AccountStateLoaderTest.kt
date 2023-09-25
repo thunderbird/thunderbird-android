@@ -5,43 +5,41 @@ import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
+import com.fsck.k9.Account
 import com.fsck.k9.Identity
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
-import com.fsck.k9.Account as K9Account
 
-class AccountLoaderTest {
+class AccountStateLoaderTest {
 
     @Test
-    fun `loadAccount() should return null when accountManager returns null`() = runTest {
+    fun `loadAccountState() should return null when accountManager returns null`() = runTest {
         val accountManager = FakeAccountManager()
-        val accountLoader = AccountLoader(accountManager)
+        val accountLoader = AccountStateLoader(accountManager)
 
-        val result = accountLoader.loadAccount("accountUuid")
+        val result = accountLoader.loadAccountState("accountUuid")
 
         assertThat(result).isNull()
     }
 
     @Test
-    fun `loadAccount() should return account when present in accountManager`() = runTest {
+    fun `loadAccountState() should return account when present in accountManager`() = runTest {
         val accounts = mapOf(
-            "accountUuid" to K9Account(
-                uuid = "accountUuid",
-            ).also {
-                it.identities = mutableListOf(Identity())
-                it.email = "emailAddress"
-                it.incomingServerSettings = INCOMING_SERVER_SETTINGS
-                it.outgoingServerSettings = OUTGOING_SERVER_SETTINGS
-                it.oAuthState = "oAuthState"
+            "accountUuid" to Account(uuid = "accountUuid").apply {
+                identities = mutableListOf(Identity())
+                email = "emailAddress"
+                incomingServerSettings = INCOMING_SERVER_SETTINGS
+                outgoingServerSettings = OUTGOING_SERVER_SETTINGS
+                oAuthState = "oAuthState"
             },
         )
         val accountManager = FakeAccountManager(accounts = accounts)
-        val accountLoader = AccountLoader(accountManager)
+        val accountLoader = AccountStateLoader(accountManager)
 
-        val result = accountLoader.loadAccount("accountUuid")
+        val result = accountLoader.loadAccountState("accountUuid")
 
         assertThat(result).isEqualTo(
             AccountState(

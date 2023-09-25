@@ -44,7 +44,7 @@ class ServerValidationModuleKtTest : KoinTest {
             }
         }
         single<LocalKeyStore> { mock() }
-        factory<AccountCommonExternalContract.AccountLoader> { mock() }
+        factory<AccountCommonExternalContract.AccountStateLoader> { mock() }
         single(named("ClientIdAppName")) { "App Name" }
     }
 
@@ -55,7 +55,7 @@ class ServerValidationModuleKtTest : KoinTest {
             extraTypes = listOf(
                 ServerValidationContract.State::class,
                 AccountDomainContract.AccountStateRepository::class,
-                AccountCommonExternalContract.AccountLoader::class,
+                AccountCommonExternalContract.AccountStateLoader::class,
                 ServerCertificateDomainContract.ServerCertificateErrorRepository::class,
                 ServerCertificateErrorContract.State::class,
                 AccountState::class,

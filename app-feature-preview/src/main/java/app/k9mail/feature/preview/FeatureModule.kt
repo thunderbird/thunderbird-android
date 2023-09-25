@@ -24,7 +24,7 @@ val accountModule: Module = module {
     single { InMemoryAccountStore() }
         .binds(
             arrayOf(
-                AccountCommonExternalContract.AccountLoader::class,
+                AccountCommonExternalContract.AccountStateLoader::class,
                 AccountSetupExternalContract.AccountCreator::class,
                 AccountEditExternalContract.AccountUpdater::class,
             ),

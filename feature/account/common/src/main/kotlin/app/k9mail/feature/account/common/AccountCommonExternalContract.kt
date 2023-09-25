@@ -4,7 +4,7 @@ import app.k9mail.feature.account.common.domain.entity.AccountState
 
 interface AccountCommonExternalContract {
 
-    fun interface AccountLoader {
-        suspend fun loadAccount(accountUuid: String): AccountState?
+    fun interface AccountStateLoader {
+        suspend fun loadAccountState(accountUuid: String): AccountState?
     }
 }

@@ -10,13 +10,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import com.fsck.k9.Account as K9Account
 
-class AccountLoader(
+class AccountStateLoader(
     private val accountManager: AccountManager,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
-) : AccountCommonExternalContract.AccountLoader {
+) : AccountCommonExternalContract.AccountStateLoader {
 
     @Suppress("TooGenericExceptionCaught")
-    override suspend fun loadAccount(accountUuid: String): AccountState? {
+    override suspend fun loadAccountState(accountUuid: String): AccountState? {
         return try {
             withContext(coroutineDispatcher) {
                 load(accountUuid)
@@ -29,10 +29,10 @@ class AccountLoader(
     }
 
     private fun load(accountUuid: String): AccountState? {
-        return accountManager.getAccount(accountUuid)?.let { mapToAccount(it) }
+        return accountManager.getAccount(accountUuid)?.let { mapToAccountState(it) }
     }
 
-    private fun mapToAccount(account: K9Account): AccountState {
+    private fun mapToAccountState(account: K9Account): AccountState {
         return AccountState(
             uuid = account.uuid,
             emailAddress = account.email,
