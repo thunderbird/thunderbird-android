@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.theme.MainTheme
+import app.k9mail.core.ui.compose.theme.material2.MainTheme
 import app.k9mail.ui.catalog.ui.CatalogContract.Theme
 import app.k9mail.ui.catalog.ui.CatalogContract.ThemeVariant
 import app.k9mail.ui.catalog.ui.common.theme.ThemeSelector

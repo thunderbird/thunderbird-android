@@ -10,8 +10,8 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.theme.MainTheme
-import app.k9mail.core.ui.compose.theme.PreviewWithThemes
+import app.k9mail.core.ui.compose.theme.material2.MainTheme
+import app.k9mail.core.ui.compose.theme.material2.PreviewWithThemes
 import androidx.compose.material.Surface as MaterialSurface
 
 @Composable

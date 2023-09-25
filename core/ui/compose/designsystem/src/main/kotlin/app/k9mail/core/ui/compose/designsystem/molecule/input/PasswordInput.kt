@@ -8,7 +8,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.R
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedPassword
-import app.k9mail.core.ui.compose.theme.PreviewWithThemes
+import app.k9mail.core.ui.compose.theme.material2.PreviewWithThemes
 
 @Composable
 fun PasswordInput(

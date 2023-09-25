@@ -3,7 +3,7 @@ package app.k9mail.core.ui.compose.designsystem.atom.textfield
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import app.k9mail.core.ui.compose.theme.PreviewWithThemes
+import app.k9mail.core.ui.compose.theme.material2.PreviewWithThemes
 
 internal fun selectLabel(
     label: String?,

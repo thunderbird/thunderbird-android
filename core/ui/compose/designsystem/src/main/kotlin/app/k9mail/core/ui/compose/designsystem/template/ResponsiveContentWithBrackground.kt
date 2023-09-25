@@ -7,8 +7,8 @@ import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.common.DevicePreviews
 import app.k9mail.core.ui.compose.designsystem.atom.Background
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import app.k9mail.core.ui.compose.theme.K9Theme
-import app.k9mail.core.ui.compose.theme.MainTheme
+import app.k9mail.core.ui.compose.theme.material2.K9Theme
+import app.k9mail.core.ui.compose.theme.material2.MainTheme
 
 /**
  * The [ResponsiveContentWithBackground] composable embeds its content in [ResponsiveContent] with [Background].

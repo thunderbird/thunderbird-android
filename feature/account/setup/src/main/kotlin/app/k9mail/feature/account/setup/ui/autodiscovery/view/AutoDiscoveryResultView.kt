@@ -20,8 +20,8 @@ import app.k9mail.autodiscovery.api.SmtpServerSettings
 import app.k9mail.core.common.net.toHostname
 import app.k9mail.core.common.net.toPort
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import app.k9mail.core.ui.compose.theme.MainTheme
-import app.k9mail.core.ui.compose.theme.PreviewWithThemes
+import app.k9mail.core.ui.compose.theme.material2.MainTheme
+import app.k9mail.core.ui.compose.theme.material2.PreviewWithThemes
 
 @Composable
 internal fun AutoDiscoveryResultView(

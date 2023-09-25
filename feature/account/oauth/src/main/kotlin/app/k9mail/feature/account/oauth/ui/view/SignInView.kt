@@ -10,7 +10,7 @@ import androidx.compose.ui.text.style.TextAlign
 import app.k9mail.core.ui.compose.common.DevicePreviews
 import app.k9mail.core.ui.compose.designsystem.atom.button.Button
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextCaption
-import app.k9mail.core.ui.compose.theme.MainTheme
+import app.k9mail.core.ui.compose.theme.material2.MainTheme
 import app.k9mail.feature.account.oauth.R
 
 @Composable

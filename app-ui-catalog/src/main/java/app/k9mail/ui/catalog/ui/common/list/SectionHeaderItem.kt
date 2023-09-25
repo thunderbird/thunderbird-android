@@ -8,7 +8,7 @@ import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.atom.Divider
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline6
-import app.k9mail.core.ui.compose.theme.MainTheme
+import app.k9mail.core.ui.compose.theme.material2.MainTheme
 
 fun LazyGridScope.sectionHeaderItem(
     text: String,

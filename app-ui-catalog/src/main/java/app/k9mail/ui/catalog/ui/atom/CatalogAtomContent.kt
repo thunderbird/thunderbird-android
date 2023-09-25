@@ -3,8 +3,8 @@ package app.k9mail.ui.catalog.ui.atom
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.common.DevicePreviews
-import app.k9mail.core.ui.compose.theme.K9Theme
-import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.core.ui.compose.theme.material2.K9Theme
+import app.k9mail.core.ui.compose.theme.material2.ThunderbirdTheme
 import app.k9mail.ui.catalog.ui.atom.CatalogAtomPage.BUTTON
 import app.k9mail.ui.catalog.ui.atom.CatalogAtomPage.COLOR
 import app.k9mail.ui.catalog.ui.atom.CatalogAtomPage.ICON

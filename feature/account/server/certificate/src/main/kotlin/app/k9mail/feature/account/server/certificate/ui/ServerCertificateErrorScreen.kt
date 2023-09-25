@@ -19,8 +19,8 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline4
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle1
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
-import app.k9mail.core.ui.compose.theme.K9Theme
-import app.k9mail.core.ui.compose.theme.MainTheme
+import app.k9mail.core.ui.compose.theme.material2.K9Theme
+import app.k9mail.core.ui.compose.theme.material2.MainTheme
 import app.k9mail.feature.account.server.certificate.data.InMemoryServerCertificateErrorRepository
 import app.k9mail.feature.account.server.certificate.domain.entity.ServerCertificateError
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.Effect

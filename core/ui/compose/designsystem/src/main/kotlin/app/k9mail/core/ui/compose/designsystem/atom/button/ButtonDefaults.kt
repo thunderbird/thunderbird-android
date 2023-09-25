@@ -3,7 +3,7 @@ package app.k9mail.core.ui.compose.designsystem.atom.button
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.Dp
-import app.k9mail.core.ui.compose.theme.MainTheme
+import app.k9mail.core.ui.compose.theme.material2.MainTheme
 
 @Composable
 fun buttonContentPadding(

@@ -27,7 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.k9mail.core.ui.compose.common.DevicePreviews
-import app.k9mail.core.ui.compose.theme.PreviewWithThemes
+import app.k9mail.core.ui.compose.theme.material2.PreviewWithThemes
 import app.k9mail.feature.account.oauth.R
 
 /**

@@ -25,7 +25,7 @@ fun ThunderbirdTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
-    val images = Images(logo = R.drawable.core_ui_theme_thunderbird_logo)
+    val images = Images(logo = R.drawable.core_ui_theme_material2_thunderbird_logo)
 
     MainTheme(
         lightColorPalette = thunderbirdLightColorPalette,

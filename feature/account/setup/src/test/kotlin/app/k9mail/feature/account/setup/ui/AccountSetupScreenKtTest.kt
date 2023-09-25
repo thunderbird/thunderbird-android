@@ -3,7 +3,7 @@ package app.k9mail.feature.account.setup.ui
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.onNodeWithTag
 import app.k9mail.core.ui.compose.testing.setContent
-import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.core.ui.compose.theme.material2.ThunderbirdTheme
 import app.k9mail.feature.account.server.settings.ui.incoming.fake.FakeIncomingServerSettingsViewModel
 import app.k9mail.feature.account.server.settings.ui.outgoing.fake.FakeOutgoingServerSettingsViewModel
 import app.k9mail.feature.account.server.validation.ui.fake.FakeServerValidationViewModel

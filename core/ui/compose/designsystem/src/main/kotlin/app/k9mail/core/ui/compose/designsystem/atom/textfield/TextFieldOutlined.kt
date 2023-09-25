@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.atom.Icon
-import app.k9mail.core.ui.compose.theme.Icons
-import app.k9mail.core.ui.compose.theme.PreviewWithThemes
+import app.k9mail.core.ui.compose.theme.material2.Icons
+import app.k9mail.core.ui.compose.theme.material2.PreviewWithThemes
 import androidx.compose.material.OutlinedTextField as MaterialOutlinedTextField
 
 @Suppress("LongParameterList")

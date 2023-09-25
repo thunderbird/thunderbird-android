@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import app.k9mail.core.ui.compose.designsystem.atom.Background
-import app.k9mail.core.ui.compose.theme.K9Theme
+import app.k9mail.core.ui.compose.theme.material2.K9Theme
 import app.k9mail.feature.preview.navigation.FeatureNavHost
 
 @Composable
