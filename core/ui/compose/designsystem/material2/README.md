@@ -1,6 +1,6 @@
 ## Core - UI - Compose - Design system
 
-Uses [`:core:ui:compose:theme`](../theme/README.md)
+Uses [`:core:ui:compose:theme:material2`](../../theme/material2/README.md)
 
 ## Background
 

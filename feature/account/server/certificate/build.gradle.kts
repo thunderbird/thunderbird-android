@@ -8,7 +8,7 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.ui.compose.designsystem)
+    implementation(projects.core.ui.compose.designsystem.material2)
     implementation(projects.core.common)
     implementation(projects.feature.account.common)
 

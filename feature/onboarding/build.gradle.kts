@@ -8,5 +8,5 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.ui.compose.designsystem)
+    implementation(projects.core.ui.compose.designsystem.material2)
 }

@@ -17,7 +17,7 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.ui.compose.designsystem)
+    implementation(projects.core.ui.compose.designsystem.material2)
     implementation(projects.feature.onboarding)
     implementation(projects.feature.account.setup)
 

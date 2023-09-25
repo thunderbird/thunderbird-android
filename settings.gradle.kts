@@ -68,7 +68,7 @@ include(
     ":core:android:common",
     ":core:android:testing",
     ":core:ui:compose:common",
-    ":core:ui:compose:designsystem",
+    ":core:ui:compose:designsystem:material2",
     ":core:ui:compose:theme:material2",
     ":core:ui:compose:testing",
 )
