@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package app.k9mail.core.ui.compose.theme.color
+package app.k9mail.core.ui.compose.theme.material2.color
 
 import androidx.compose.ui.graphics.Color
 

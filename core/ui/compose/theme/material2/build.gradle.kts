@@ -3,8 +3,8 @@ plugins {
 }
 
 android {
-    namespace = "app.k9mail.core.ui.compose.theme"
-    resourcePrefix = "core_ui_theme_"
+    namespace = "app.k9mail.core.ui.compose.theme.material2"
+    resourcePrefix = "core_ui_theme_material2_"
 }
 
 dependencies {

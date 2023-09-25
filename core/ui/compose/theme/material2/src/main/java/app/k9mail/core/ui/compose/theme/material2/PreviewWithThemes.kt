@@ -1,4 +1,4 @@
-package app.k9mail.core.ui.compose.theme
+package app.k9mail.core.ui.compose.theme.material2
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding

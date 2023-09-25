@@ -1,4 +1,4 @@
-package app.k9mail.core.ui.compose.theme
+package app.k9mail.core.ui.compose.theme.material2
 
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Immutable
