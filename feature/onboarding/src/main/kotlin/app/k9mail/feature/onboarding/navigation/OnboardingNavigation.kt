@@ -3,7 +3,7 @@ package app.k9mail.feature.onboarding.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
-import androidx.navigation.compose.composable
+import app.k9mail.core.ui.compose.common.navigation.deepLinkComposable
 import app.k9mail.feature.onboarding.ui.OnboardingScreen
 
 const val NAVIGATION_ROUTE_ONBOARDING = "/onboarding"
@@ -18,7 +18,7 @@ fun NavGraphBuilder.onboardingRoute(
     onStart: () -> Unit,
     onImport: () -> Unit,
 ) {
-    composable(route = NAVIGATION_ROUTE_ONBOARDING) {
+    deepLinkComposable(route = NAVIGATION_ROUTE_ONBOARDING) {
         OnboardingScreen(
             onStartClick = onStart,
             onImportClick = onImport,

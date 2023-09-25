@@ -15,7 +15,6 @@ import org.koin.compose.koinInject
 @Composable
 fun FeatureLauncherNavHost(
     navController: NavHostController,
-    startDestination: String?,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
     importSettingsLauncher: ImportSettingsLauncher = koinInject(),
@@ -23,7 +22,7 @@ fun FeatureLauncherNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = startDestination ?: NAVIGATION_ROUTE_ONBOARDING,
+        startDestination = NAVIGATION_ROUTE_ONBOARDING,
         modifier = modifier,
     ) {
         onboardingRoute(
