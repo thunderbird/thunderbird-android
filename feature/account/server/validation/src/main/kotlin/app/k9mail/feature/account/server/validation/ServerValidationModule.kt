@@ -12,6 +12,7 @@ import com.fsck.k9.mail.store.imap.ImapServerSettingsValidator
 import com.fsck.k9.mail.store.pop3.Pop3ServerSettingsValidator
 import com.fsck.k9.mail.transport.smtp.SmtpServerSettingsValidator
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val featureAccountServerValidationModule = module {
@@ -28,7 +29,7 @@ val featureAccountServerValidationModule = module {
             imapValidator = ImapServerSettingsValidator(
                 trustedSocketFactory = get(),
                 oAuth2TokenProviderFactory = get(),
-                clientIdAppName = "null", // TODO get real value
+                clientIdAppName = get(named("ClientIdAppName")),
             ),
             pop3Validator = Pop3ServerSettingsValidator(
                 trustedSocketFactory = get(),

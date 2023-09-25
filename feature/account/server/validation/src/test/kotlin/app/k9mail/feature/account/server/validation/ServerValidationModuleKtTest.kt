@@ -16,6 +16,7 @@ import org.junit.runner.RunWith
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.module.Module
+import org.koin.core.qualifier.named
 import org.koin.dsl.koinApplication
 import org.koin.dsl.module
 import org.koin.test.KoinTest
@@ -42,6 +43,7 @@ class ServerValidationModuleKtTest : KoinTest {
             }
         }
         single<LocalKeyStore> { Mockito.mock() }
+        single(named("ClientIdAppName")) { "App Name" }
     }
 
     @OptIn(KoinExperimentalAPI::class)
