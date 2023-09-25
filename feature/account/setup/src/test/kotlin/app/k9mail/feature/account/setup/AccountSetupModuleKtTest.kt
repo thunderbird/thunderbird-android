@@ -2,6 +2,7 @@ package app.k9mail.feature.account.setup
 
 import android.content.Context
 import app.k9mail.core.common.oauth.OAuthConfigurationFactory
+import app.k9mail.feature.account.common.AccountCommonExternalContract
 import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract
@@ -55,12 +56,14 @@ class AccountSetupModuleKtTest : KoinTest {
             }
         }
         single<LocalKeyStore> { mock() }
+        single<AccountCommonExternalContract.AccountStateLoader> { mock() }
     }
 
     @Test
     fun `should have a valid di module`() {
         featureAccountSetupModule.verify(
             extraTypes = listOf(
+                AccountCommonExternalContract.AccountStateLoader::class,
                 AccountSetupContract.State::class,
                 AccountAutoDiscoveryContract.State::class,
                 AccountOAuthContract.State::class,

@@ -47,7 +47,9 @@ class OutgoingServerValidationViewModelTest : BaseServerValidationViewModelTest<
                 delay(50)
                 serverSettingsValidationResult
             },
-            accountStateRepository = InMemoryAccountStateRepository(accountState),
+            accountStateRepository = InMemoryAccountStateRepository(
+                state = accountState,
+            ),
             authorizationStateRepository = { true },
             certificateErrorRepository = InMemoryServerCertificateErrorRepository(),
             oAuthViewModel = FakeAccountOAuthViewModel(),

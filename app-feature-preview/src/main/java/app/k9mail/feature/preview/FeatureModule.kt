@@ -1,6 +1,7 @@
 package app.k9mail.feature.preview
 
 import app.k9mail.core.common.oauth.OAuthConfigurationFactory
+import app.k9mail.feature.account.common.AccountCommonExternalContract
 import app.k9mail.feature.account.edit.AccountEditExternalContract
 import app.k9mail.feature.account.setup.AccountSetupExternalContract
 import app.k9mail.feature.account.setup.featureAccountSetupModule
@@ -23,6 +24,7 @@ val accountModule: Module = module {
     single { InMemoryAccountStore() }
         .binds(
             arrayOf(
+                AccountCommonExternalContract.AccountStateLoader::class,
                 AccountSetupExternalContract.AccountCreator::class,
                 AccountEditExternalContract.AccountUpdater::class,
             ),

@@ -161,6 +161,7 @@ detekt-plugin-compose = "io.nlopez.compose.rules:detekt:0.1.11"
 shared-jvm-main = [
   "koin-core",
   "kotlinx-datetime",
+  "kotlinx-coroutines-core",
 ]
 shared-jvm-android = [
   "androidx-core",
@@ -190,6 +191,7 @@ shared-jvm-androidtest-compose = [
 ]
 shared-jvm-test = [
   "kotlin-test",
+  "kotlinx-coroutines-test",
   "junit",
   "assertk",
   "mockito-core",

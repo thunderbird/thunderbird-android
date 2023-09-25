@@ -1,5 +1,6 @@
 package com.fsck.k9.account
 
+import app.k9mail.feature.account.common.AccountCommonExternalContract
 import app.k9mail.feature.account.edit.AccountEditExternalContract
 import app.k9mail.feature.account.setup.AccountSetupExternalContract
 import org.koin.android.ext.koin.androidApplication
@@ -18,6 +19,12 @@ val newAccountModule = module {
             localFoldersCreator = get(),
             preferences = get(),
             context = androidApplication(),
+        )
+    }
+
+    factory<AccountCommonExternalContract.AccountStateLoader> {
+        AccountStateLoader(
+            accountManager = get(),
         )
     }
 

@@ -11,7 +11,6 @@ import org.koin.dsl.module
 val featureAccountCommonModule: Module = module {
     includes(coreCommonModule)
 
-    // TODO: we need to provide one for setup and edit later on
     single {
         InMemoryAccountStateRepository()
     }.binds(arrayOf(AccountDomainContract.AccountStateRepository::class, AuthStateStorage::class))
