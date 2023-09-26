@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.annotation.AttrRes
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -149,10 +150,10 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
             is AccountItem -> launchAccountSettings(item.account)
             is UrlActionItem -> openUrl(item.url)
             is SettingsActionItem -> {
-                if (
-                    item.navigationAction == R.id.action_settingsListScreen_to_addAccountScreen
-                ) {
+                if (item.navigationAction == R.id.action_settingsListScreen_to_addAccountScreen) {
                     FeatureLauncherActivity.launchSetupAccount(requireActivity())
+                } else {
+                    findNavController().navigate(item.navigationAction)
                 }
             }
         }
