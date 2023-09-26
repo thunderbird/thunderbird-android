@@ -23,7 +23,7 @@ val featureAccountEditModule = module {
 
     factory<AccountEditDomainContract.UseCase.LoadAccountState> {
         LoadAccountState(
-            accountLoader = get(),
+            accountStateLoader = get(),
             accountStateRepository = get(),
         )
     }

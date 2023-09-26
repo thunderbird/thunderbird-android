@@ -31,7 +31,7 @@ import org.robolectric.RuntimeEnvironment
 class AccountEditModuleKtTest : KoinTest {
 
     private val externalModule: Module = module {
-        single<AccountCommonExternalContract.AccountLoader> { Mockito.mock() }
+        single<AccountCommonExternalContract.AccountStateLoader> { Mockito.mock() }
         single<LocalKeyStore> { Mockito.mock() }
         single<TrustedSocketFactory> {
             TrustedSocketFactory { _, _, _, _ -> null }
