@@ -3,18 +3,16 @@ package app.k9mail.feature.account.edit.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
-import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import app.k9mail.core.ui.compose.common.navigation.getArgument
+import app.k9mail.core.ui.compose.common.navigation.deepLinkComposable
+import app.k9mail.core.ui.compose.common.navigation.getStringArgument
 import app.k9mail.feature.account.edit.ui.EditIncomingServerSettingsNavHost
 import app.k9mail.feature.account.edit.ui.EditOutgoingServerSettingsNavHost
-import kotlinx.collections.immutable.ImmutableMap
-import kotlinx.collections.immutable.persistentMapOf
 
 internal const val ARGUMENT_ACCOUNT_UUID = "accountUuid"
 
-const val NAVIGATION_ROUTE_ACCOUNT_EDIT_CONFIG_INCOMING = "/account/edit/config/incoming/{accountUuid}"
-const val NAVIGATION_ROUTE_ACCOUNT_EDIT_CONFIG_OUTGOING = "/account/edit/config/outgoing/{accountUuid}"
+const val NAVIGATION_ROUTE_ACCOUNT_EDIT_CONFIG_INCOMING = "account/edit/config/incoming/{accountUuid}"
+const val NAVIGATION_ROUTE_ACCOUNT_EDIT_CONFIG_OUTGOING = "account/edit/config/outgoing/{accountUuid}"
 
 fun NavController.navigateToAccountEditConfigIncoming(accountUuid: String) {
     navigate(
@@ -29,36 +27,33 @@ fun NavController.navigateToAccountEditConfigOutgoing(accountUuid: String) {
 }
 
 fun NavGraphBuilder.accountEditRoute(
-    startDestinationArguments: ImmutableMap<String, String> = persistentMapOf(),
     onBack: () -> Unit,
     onFinish: () -> Unit,
 ) {
-    composable(
+    deepLinkComposable(
         route = NAVIGATION_ROUTE_ACCOUNT_EDIT_CONFIG_INCOMING,
         arguments = listOf(
             navArgument(ARGUMENT_ACCOUNT_UUID) {
                 type = NavType.StringType
-                defaultValue = startDestinationArguments[ARGUMENT_ACCOUNT_UUID] ?: ""
             },
         ),
     ) { backStackEntry ->
-        val accountUuid = backStackEntry.getArgument(ARGUMENT_ACCOUNT_UUID)
+        val accountUuid = backStackEntry.getStringArgument(ARGUMENT_ACCOUNT_UUID)
         EditIncomingServerSettingsNavHost(
             accountUuid = accountUuid,
             onFinish = { onFinish() },
             onBack = onBack,
         )
     }
-    composable(
+    deepLinkComposable(
         route = NAVIGATION_ROUTE_ACCOUNT_EDIT_CONFIG_OUTGOING,
         arguments = listOf(
             navArgument(ARGUMENT_ACCOUNT_UUID) {
                 type = NavType.StringType
-                defaultValue = startDestinationArguments[ARGUMENT_ACCOUNT_UUID] ?: ""
             },
         ),
     ) { backStackEntry ->
-        val accountUuid = backStackEntry.getArgument(ARGUMENT_ACCOUNT_UUID)
+        val accountUuid = backStackEntry.getStringArgument(ARGUMENT_ACCOUNT_UUID)
         EditOutgoingServerSettingsNavHost(
             accountUuid = accountUuid,
             onFinish = { onFinish() },
