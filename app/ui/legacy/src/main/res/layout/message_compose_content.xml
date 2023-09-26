@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+We explicitly set the background color in case this layout is inflated using a theme different from the app theme (via
+the 'composer theme' setting).
+-->
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:attr/windowBackground"
     android:scrollbarStyle="insideOverlay"
     android:fillViewport="true">
 
