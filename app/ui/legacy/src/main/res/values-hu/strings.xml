@@ -28,37 +28,7 @@
   <string name="changelog_snackbar_text">Tudja meg, hogy mik az újdonságok ebben a kiadásban</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Megtekintés</string>
-  <!--Welcome message-->
-  <string name="welcome_message_title">Üdvözli a K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-A K-9 Mail egy hatékony, ingyenes e-mail alkalmazás Androidra.
-</p><p>
-Továbbfejlesztett funkciók:
-</p>
-<ul>
-  <li>E-mail küldés IMAP IDLE segítségével</li>
-  <li>Jobb működés</li>
-  <li>Üzenet iktatás</li>
-  <li>E-mail aláírások</li>
-  <li>Titkos másolat saját részre</li>
-  <li>Mappa váltogatások</li>
-  <li>Összes mappa szinkronizálása</li>
-  <li>Visszatérési cím konfiguráció</li>
-  <li>Gyorsbillentyűk</li>
-  <li>Jobb IMAP-támogatás</li>
-  <li>Mellékletek mentése SD-kártyára</li>
-  <li>Lomtár ürítése</li>
-  <li>Üzenetek rendezése</li>
-  <li>…és egyebek</li>
-</ul>
-<p>A K-9 nem támogatja a legtöbb Hotmail-fiókot, és sok e-mail alkalmazáshoz hasonlóan, vannak furcsaságok a Microsoft Exchange kezelésében.
-</p><p>
-Hibajelentések beküldésével közreműködhet az új funkciókban, és kérdéseket tehet fel a
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a> webcímen.
-</p>
-    ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nAndroidos készülékről küldve K-9 Mail használatával. Elnézést a rövidségért.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">A(z) „<xliff:g id="account">%s</xliff:g>” fiók eltávolításra kerül a K-9 Mail alkalmazásból.</string>
@@ -329,9 +299,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_check_settings_authenticate">Hitelesítés\u2026</string>
   <string name="account_setup_check_settings_fetch">Fiókbeállítások beolvasása\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">Megszakítás\u2026</string>
-  <string name="account_setup_names_title">Már majdnem kész.</string>
-  <string name="account_setup_names_account_name_label">Fiók elnevezése (nem kötelező):</string>
-  <string name="account_setup_names_user_name_label">Név megadása (kimenő üzeneteknél jelenik meg):</string>
   <string name="account_setup_account_type_title">Fióktípus</string>
   <string name="account_setup_account_type_instructions">Milyen fajta fiók ez?</string>
   <string name="account_setup_account_type_pop_action">POP3</string>
@@ -383,7 +350,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="account_setup_outgoing_authentication_label">Hitelesítés</string>
   <string name="account_setup_outgoing_invalid_setting_combo_notice">„<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>” nem érvényes ezzel: „<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>”</string>
   <string name="account_setup_bad_uri">Érvénytelen beállítás: <xliff:g id="err_mess">%s</xliff:g></string>
-  <string name="account_setup_options_title">Fiók beállításai</string>
   <string name="account_setup_options_mail_check_frequency_label">Mappa lekérdezésének gyakorisága</string>
   <string name="account_setup_options_mail_check_frequency_never">Soha</string>
   <string name="account_setup_options_mail_check_frequency_15min">15 percenként</string>
@@ -403,7 +369,6 @@ Hibajelentések beküldésével közreműködhet az új funkciókban, és kérd�
   <string name="idle_refresh_period_36min">36 percenként</string>
   <string name="idle_refresh_period_48min">48 percenként</string>
   <string name="idle_refresh_period_60min">60 percenként</string>
-  <string name="account_setup_options_notify_label">Értesítés, amikor levél érkezik</string>
   <string name="account_setup_options_mail_display_count_label">Megjelenítendő üzenetek száma</string>
   <string name="account_setup_options_mail_display_count_10">10 üzenet</string>
   <string name="account_setup_options_mail_display_count_25">25 üzenet</string>

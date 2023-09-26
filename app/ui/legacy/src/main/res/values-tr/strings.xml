@@ -27,38 +27,7 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Bu sürümdeki yenilikleri öğrenin </string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-  <!--Welcome message-->
-  <string name="welcome_message_title">K-9 Posta\'ya Hoşgeldiniz</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Posta, Android için güçlü ve özgür bir e-posta istemcisidir.
-</p><p>
-Geliştirilmiş özellikler içerir:
-</p>
-<ul>
-<li>IMAP IDLE kullanılarak gelen posta anında gösteriliyor</li>
-<li>Daha iyi başarım</li>
-<li>İletiye tekrar işlem</li>
-<li>E-posta imzaları</li>
-<li>Bcc-to-self</li>
-<li>Klasör kayıtları</li>
-<li>Tüm klasörler eşzamanlanır</li>
-<li>Yanıt adresi yapılandırması</li>
-<li>Klavye kısayolları</li>
-<li>Daha iyi IMAP desteği</li>
-<li>Eklentileri SD karta kaydetme</li>
-<li>Çöpü Boşalt</li>
-<li>İleti sıralama</li>
-<li>…ve daha fazlası</li>
-</ul>
-<p>
-K-9\'un çoğu ücretsiz Hotmail hesabını desteklemediğini ve pek çok e-posta istemcisi gibi
-Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen aklınızın bir köşesine yazın.
-</p><p>Lütfen yeni özelliklere katkıda bulunmak ve soru sormak için hata raporu bildiriniz
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
- ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nAndroid için K-9 Posta\'dan gönderildi. Lütfen bu kısa notumu mazur görün.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Hesap \"<xliff:g id="account">%s</xliff:g>\" K-9 Mail\'den kaldırılacak.</string>
@@ -319,9 +288,6 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="account_setup_check_settings_authenticate">Kimlik Doğrulaması\u2026</string>
   <string name="account_setup_check_settings_fetch">Hesap ayarları alınıyor\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">İptal ediliyor\u2026</string>
-  <string name="account_setup_names_title">Hemen hemen tamam!</string>
-  <string name="account_setup_names_account_name_label">Bu hesaba bir isim verin (isteğe bağlı):</string>
-  <string name="account_setup_names_user_name_label">İsminizi yazın (Giden mesajlarda görüntülenir):</string>
   <string name="account_setup_account_type_title">Hesap türü</string>
   <string name="account_setup_account_type_instructions">Bu ne tür bir hesaptır?</string>
   <string name="account_setup_account_type_pop_action">POP3</string>
@@ -371,7 +337,6 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="account_setup_outgoing_authentication_label">Kimlik Doğrulama </string>
   <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" bununla uyuşmuyor \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_bad_uri">Geçersiz kurulum: <xliff:g id="err_mess">%s</xliff:g></string>
-  <string name="account_setup_options_title">Hesap seçenekleri</string>
   <string name="account_setup_options_mail_check_frequency_label">Klasör bilgi toplama sıklığı</string>
   <string name="account_setup_options_mail_check_frequency_never">Asla</string>
   <string name="account_setup_options_mail_check_frequency_15min">Her 15 dakikada bir</string>
@@ -391,7 +356,6 @@ Microsoft Exchange ile konuşurken kimi tuhaflıklar yaşadığını lütfen akl
   <string name="idle_refresh_period_36min">Her 36 dakikada bir</string>
   <string name="idle_refresh_period_48min">Her 48 dakikada bir</string>
   <string name="idle_refresh_period_60min">Her 60 dakikada bir</string>
-  <string name="account_setup_options_notify_label">Posta ulaştığında beni uyar</string>
   <string name="account_setup_options_mail_display_count_label">Görüntülenecek ileti sayısı</string>
   <string name="account_setup_options_mail_display_count_10">10 ileti</string>
   <string name="account_setup_options_mail_display_count_25">25 ileti</string>

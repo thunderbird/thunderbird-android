@@ -61,10 +61,6 @@
             android:value="true" />
 
         <activity
-            android:name=".ui.onboarding.OnboardingActivity"
-            android:label="@string/welcome_message_title" />
-
-        <activity
             android:name=".ui.settings.account.OpenPgpAppSelectDialog"
             android:configChanges="locale"
             android:theme="@style/Theme.K9.Dialog.Translucent.DayNight"
@@ -94,16 +90,6 @@
             android:name=".activity.setup.AccountSetupOutgoing"
             android:configChanges="locale"
             android:label="@string/account_setup_outgoing_title"/>
-
-        <activity
-            android:name=".activity.setup.AccountSetupOptions"
-            android:configChanges="locale"
-            android:label="@string/account_setup_options_title"/>
-
-        <activity
-            android:name=".activity.setup.AccountSetupNames"
-            android:configChanges="locale"
-            android:label="@string/account_setup_names_title"/>
 
         <activity
             android:name=".activity.ChooseAccount"

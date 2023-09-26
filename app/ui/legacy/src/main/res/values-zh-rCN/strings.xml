@@ -28,39 +28,7 @@
   <string name="changelog_snackbar_text">了解此版本的新增功能</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">查看</string>
-  <!--Welcome message-->
-  <string name="welcome_message_title">欢迎使用 K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
-</p><p>
-其改进的功能包括：
-</p>
-<ul>
-  <li>支持通过 IMAP IDLE 推送邮件</li>
-  <li>更好的性能</li>
-  <li>消息归档</li>
-  <li>邮件签名</li>
-  <li>密送自己</li>
-  <li>邮件夹订阅</li>
-  <li>同步所有邮件夹</li>
-  <li>回复地址配置</li>
-  <li>快捷键</li>
-  <li>更好的 IMAP 支持</li>
-  <li>保存附件到 SD 卡</li>
-  <li>清空回收站</li>
-  <li>消息排序</li>
-  <li>以及更多…</li>
-</ul>
-<p>
-请注意 K-9 不支持大部分免费 Hotmail 账户，而且和其他大部分邮件客户端一样，
-在使用 Microsoft Exchange 协议时会有一些问题。
-</p><p>
-请到下述网址提交问题报告，新功能建议或者提问：
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>。
-</p>
-    ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \n使用 K-9 Mail 发送自我的Android设备。</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">即将从 K-9 Mail 中移除账户“<xliff:g id="account">%s</xliff:g>”。</string>
@@ -329,9 +297,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_setup_check_settings_authenticate">正在验证用户\u2026</string>
   <string name="account_setup_check_settings_fetch">正在获取账户设置\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">正在取消\u2026</string>
-  <string name="account_setup_names_title">快要完成了！</string>
-  <string name="account_setup_names_account_name_label">为这个账户选择一个名称（可选项）：</string>
-  <string name="account_setup_names_user_name_label">输入你的名字（将显示在发出的邮件中）：</string>
   <string name="account_setup_account_type_title">账户类型</string>
   <string name="account_setup_account_type_instructions">这个账户是什么类型的？</string>
   <string name="account_setup_account_type_pop_action">POP3</string>
@@ -383,7 +348,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_setup_outgoing_authentication_label">身份验证方法</string>
   <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" 对于 \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\" 无效</string>
   <string name="account_setup_bad_uri">无效的设置：<xliff:g id="err_mess">%s</xliff:g></string>
-  <string name="account_setup_options_title">账户选项</string>
   <string name="account_setup_options_mail_check_frequency_label">文件夹检查频率</string>
   <string name="account_setup_options_mail_check_frequency_never">从不</string>
   <string name="account_setup_options_mail_check_frequency_15min">15 分钟一次</string>
@@ -403,7 +367,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="idle_refresh_period_36min">36 分钟一次</string>
   <string name="idle_refresh_period_48min">48 分钟一次</string>
   <string name="idle_refresh_period_60min">60 分钟一次</string>
-  <string name="account_setup_options_notify_label">有新邮件时通知我</string>
   <string name="account_setup_options_mail_display_count_label">邮件显示数量</string>
   <string name="account_setup_options_mail_display_count_10">10 封</string>
   <string name="account_setup_options_mail_display_count_25">25 封</string>

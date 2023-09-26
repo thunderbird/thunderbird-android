@@ -496,7 +496,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
                 Preferences.getPreferences().saveAccount(mAccount);
                 finish();
             } else {
-                AccountSetupOptions.actionOptions(this, mAccount);
+//                AccountSetupOptions.actionOptions(this, mAccount);
             }
         }
     }

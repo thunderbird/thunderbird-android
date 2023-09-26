@@ -28,34 +28,7 @@
   <string name="changelog_snackbar_text">Ontdek wat er nieuw is in deze versie</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Bekijken</string>
-  <!--Welcome message-->
-  <string name="welcome_message_title">Welkom bij K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[ <p> K-9 Mail is een gratis krachtige e-mailclient voor Android. </p><p> De verbeterde mogelijkheden bestaan ondermeer uit:
-</p>
-<ul>
-<li>Pushmail middels IMAP IDLE</li> 
-<li>Betere prestaties</li> 
-<li>Berichtherclassificatie</li> 
-<li>E-mailhandtekeningen</li> 
-<li>Bcc naar jezelf</li> 
-<li>Mapabonnementen</li> 
-<li>Synchronisatie van alle mappen</li> 
-<li>Antwoordadres instellen</li> 
-<li>Toetsenbordsnelkoppelingen</li> 
-<li>Betere IMAP-ondersteuning</li> 
-<li>Bijlage opslaan naar SD</li> 
-<li>Prullenbak legen</li> 
-<li>Berichten sorteren</li> 
-<li>en meer…</li> 
-</ul> 
-<p> 
-Houd er rekening mee dat K-9 de meeste gratis Hotmail-accounts niet ondersteund, en net als veel e-mailclients, problemen kan hebben om te verbinden met Microsoft Exchange. 
-</p><p> 
-Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op 
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>. 
-</p> 
-]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nVerstuurd vanaf mijn Android-apparaat met K-9 Mail.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">De account ‘<xliff:g id="account">%s</xliff:g>’ wordt uit K-9 Mail verwijderd.</string>
@@ -326,9 +299,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_setup_check_settings_authenticate">Authenticatie\u2026</string>
   <string name="account_setup_check_settings_fetch">Accountinstellingen worden opgehaald\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">Annuleren\u2026</string>
-  <string name="account_setup_names_title">Bijna klaar!</string>
-  <string name="account_setup_names_account_name_label">Geef dit account een naam (optioneel):</string>
-  <string name="account_setup_names_user_name_label">Typ je naam (zichtbaar bij uitgaande berichten):</string>
   <string name="account_setup_account_type_title">Accounttype</string>
   <string name="account_setup_account_type_instructions">Welk type account is dit?</string>
   <string name="account_setup_account_type_pop_action">POP3</string>
@@ -380,7 +350,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_setup_outgoing_authentication_label">Authenticatietype</string>
   <string name="account_setup_outgoing_invalid_setting_combo_notice">‘<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>’ is niet geldig met ‘<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>’</string>
   <string name="account_setup_bad_uri">Ongeldige instelling: <xliff:g id="err_mess">%s</xliff:g></string>
-  <string name="account_setup_options_title">Accountopties</string>
   <string name="account_setup_options_mail_check_frequency_label">Map-peiling-frequentie</string>
   <string name="account_setup_options_mail_check_frequency_never">Nooit</string>
   <string name="account_setup_options_mail_check_frequency_15min">Elke 15 minuten</string>
@@ -400,7 +369,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="idle_refresh_period_36min">Elke 36 minuten</string>
   <string name="idle_refresh_period_48min">Elke 48 minuten</string>
   <string name="idle_refresh_period_60min">Elke 60 minuten</string>
-  <string name="account_setup_options_notify_label">Waarschuw wanneer nieuw e-mailbericht binnenkomt</string>
   <string name="account_setup_options_mail_display_count_label">Aantal berichten om te tonen</string>
   <string name="account_setup_options_mail_display_count_10">10 berichten</string>
   <string name="account_setup_options_mail_display_count_25">25 berichten</string>

@@ -28,38 +28,7 @@
   <string name="changelog_snackbar_text">Finde heraus, was es Neues in diesem Release gibt</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Ansehen</string>
-  <!--Welcome message-->
-  <string name="welcome_message_title">Willkommen bei K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail ist ein leistungsstarker, freier E-Mail-Client für Android.
-</p><p>
-Seine verbesserten Funktionen beinhalten:
-</p>
-<ul>
-  <li>Push-Mail unter Verwendung von IMAP IDLE</li>
-  <li>Bessere Leistung</li>
-  <li>Nachrichtenneuordnung</li>
-  <li>E-Mail-Signaturen</li>
-  <li>BCC an sich selbst</li>
-  <li>Ordnerabonnements</li>
-  <li>Synchronisation aller Ordner</li>
-  <li>Rücksendeadresskonfiguration</li>
-  <li>Tastaturkürzel</li>
-  <li>Bessere IMAP-Unterstützung</li>
-  <li>Speichern von Anhängen auf SD</li>
-  <li>Papierkorb leeren</li>
-  <li>Nachrichtensortierung</li>
-  <li>…und weitere</li>
-</ul>
-<p>
-Bitte beachte, dass K-9 die meisten kostenlosen Hotmail-Konten nicht unterstützt und, wie viele andere E-Mail-Clients, einige Macken bei der Kommunikation mit Microsoft Exchange hat.
-</p><p>
-Bitte sende Fehlerberichte, Ideen für neue Funktionen und stelle Fragen an
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
-    ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nDiese Nachricht wurde von meinem Android-Gerät mit K-9 Mail gesendet.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Das Konto \"<xliff:g id="account">%s</xliff:g>\" wird aus K-9 Mail entfernt.</string>
@@ -330,9 +299,6 @@ Bitte sende Fehlerberichte, Ideen für neue Funktionen und stelle Fragen an
   <string name="account_setup_check_settings_authenticate">Authentifizierung\u2026</string>
   <string name="account_setup_check_settings_fetch">Kontoeinstellungen werden geladen\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">Aktion wird abgebrochen\u2026</string>
-  <string name="account_setup_names_title">Fast fertig!</string>
-  <string name="account_setup_names_account_name_label">Kontoname (optional):</string>
-  <string name="account_setup_names_user_name_label">Dein Name (Anzeige bei ausgehenden Nachrichten):</string>
   <string name="account_setup_account_type_title">Kontotyp</string>
   <string name="account_setup_account_type_instructions">Art des Kontos?</string>
   <string name="account_setup_account_type_pop_action">POP3-Konto</string>
@@ -384,7 +350,6 @@ Bitte sende Fehlerberichte, Ideen für neue Funktionen und stelle Fragen an
   <string name="account_setup_outgoing_authentication_label">Authentifizierungsmethode</string>
   <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" ist nicht gültig mit \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_bad_uri">Ungültige Einstellung: <xliff:g id="err_mess">%s</xliff:g></string>
-  <string name="account_setup_options_title">Kontooptionen</string>
   <string name="account_setup_options_mail_check_frequency_label">E-Mail-Abfrage</string>
   <string name="account_setup_options_mail_check_frequency_never">Nie (nur manuell)</string>
   <string name="account_setup_options_mail_check_frequency_15min">Alle 15 Minuten</string>
@@ -404,7 +369,6 @@ Bitte sende Fehlerberichte, Ideen für neue Funktionen und stelle Fragen an
   <string name="idle_refresh_period_36min">Alle 36 Minuten</string>
   <string name="idle_refresh_period_48min">Alle 48 Minuten</string>
   <string name="idle_refresh_period_60min">Jede Stunde</string>
-  <string name="account_setup_options_notify_label">Benachrichtigen, wenn Nachrichten eingehen</string>
   <string name="account_setup_options_mail_display_count_label">Anzahl sichtbarer Nachrichten</string>
   <string name="account_setup_options_mail_display_count_10">10 Nachrichten</string>
   <string name="account_setup_options_mail_display_count_25">25 Nachrichten</string>

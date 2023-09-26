@@ -35,40 +35,6 @@
     <string name="changelog_snackbar_button_text">View</string>
 
 
-    <!-- Welcome message -->
-    <string name="welcome_message_title">Welcome to K-9 Mail</string>
-    <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail is a powerful free email client for Android.
-</p><p>
-Its improved features include:
-</p>
-<ul>
-  <li>Push mail using IMAP IDLE</li>
-  <li>Better performance</li>
-  <li>Message refiling</li>
-  <li>Email signatures</li>
-  <li>Bcc-to-self</li>
-  <li>Folder subscriptions</li>
-  <li>All folder synchronization</li>
-  <li>Return-address configuration</li>
-  <li>Keyboard shortcuts</li>
-  <li>Better IMAP support</li>
-  <li>Saving attachments to SD</li>
-  <li>Empty Trash</li>
-  <li>Message sorting</li>
-  <li>…and more</li>
-</ul>
-<p>
-Please note that K-9 does not support most free Hotmail accounts and, like many mail clients, has
-some quirks when talking to Microsoft Exchange.
-</p><p>
-Please submit bug reports, contribute new features and ask questions at
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
-    ]]></string>
-
-
     <!-- Default signature -->
     <string name="default_signature">-- \nSent from my Android device with K-9 Mail. Please excuse my brevity.</string>
 
@@ -393,10 +359,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_check_settings_fetch">Fetching account settings\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Canceling\u2026</string>
 
-    <string name="account_setup_names_title">You\'re almost done!</string>
-    <string name="account_setup_names_account_name_label">Give this account a name (optional):</string>
-    <string name="account_setup_names_user_name_label">Type your name (displays on outgoing messages):</string>
-
     <string name="account_setup_account_type_title">Account type</string>
     <string name="account_setup_account_type_instructions">What kind of account is this?</string>
     <string name="account_setup_account_type_pop_action">POP3</string>
@@ -459,7 +421,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="account_setup_bad_uri">Invalid setup: <xliff:g id="err_mess">%s</xliff:g></string>
 
-    <string name="account_setup_options_title">Account options</string>
 
     <string name="account_setup_options_mail_check_frequency_label">Folder poll frequency</string>
     <string name="account_setup_options_mail_check_frequency_never">Never</string>
@@ -482,7 +443,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="idle_refresh_period_48min">Every 48 minutes</string>
     <string name="idle_refresh_period_60min">Every 60 minutes</string>
 
-    <string name="account_setup_options_notify_label">Notify me when mail arrives</string>
 
     <string name="account_setup_options_mail_display_count_label">Number of messages to display</string>
     <string name="account_setup_options_mail_display_count_10">10 messages</string>

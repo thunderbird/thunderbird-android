@@ -28,37 +28,7 @@
   <string name="changelog_snackbar_text">Даведайцеся, што новага ў гэтым выпуску</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Праглядзець</string>
-  <!--Welcome message-->
-  <string name="welcome_message_title">Вітаем у K-9</string>
-  <string name="accounts_welcome"><![CDATA[<p>
-K-9 Mail - шматфункцыянальны свабодны паштовы кліент для Android.
-</p><p>
-Магчымасці:
-</p>
-<ul>
-  <li>рush-апавяшчэнні</li>
-  <li>хуткая праца</li>
-  <li>перасылка лістоў</li>
-  <li>подпісы</li>
-  <li>схаваная копія для сябе</li>
-  <li>падпіска на каталогі</li>
-  <li>сінхранізацыя ўсіх каталогаў</li>
-  <li>адрас для адказу</li>
-  <li>гарачыя клавішы</li>
-  <li>палепшаная падтрымка IMAP</li>
-  <li>захаванне ўкладзеных файлаў</li>
-  <li>ачыстка сметніцы</li>
-  <li>сартаванне лістоў</li>
-  <li>…і іншае</li>
-</ul>
-<p>
-Калі ласка, звярніце ўвагу, што K-9 не падтрымлівае бясплатныя акаўнты Hotmail і не цалкам падтрымлівае Microsoft Exchange.
-</p><p>
-Пляцоўка распрацоўвання:
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
-    ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nАдпраўлена з маёй прылады праз K-9 Mail. Выбачайце за сцісласць.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Акаўнт \"<xliff:g id="account">%s</xliff:g>\" будзе выдалены з K-9 Mail.</string>
@@ -334,9 +304,6 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_setup_check_settings_authenticate">Аўтэнтыфікацыя\u2026</string>
   <string name="account_setup_check_settings_fetch">Атрыманне налад акаўнта\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">Скасаванне\u2026</string>
-  <string name="account_setup_names_title">Амаль завершана!</string>
-  <string name="account_setup_names_account_name_label">Даць акаўнту назву (неабавязкова):</string>
-  <string name="account_setup_names_user_name_label">Ваша імя (бачна адрасату):</string>
   <string name="account_setup_account_type_title">Тып акаўнта</string>
   <string name="account_setup_account_type_instructions">Што гэта за акаўнт?</string>
   <string name="account_setup_account_type_pop_action">POP3</string>
@@ -388,7 +355,6 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_setup_outgoing_authentication_label">Аўтэнтыфікацыя</string>
   <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" непрыдатны для \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_bad_uri">Хібнае наладжванне: <xliff:g id="err_mess">%s</xliff:g></string>
-  <string name="account_setup_options_title">Параметры акаўнта</string>
   <string name="account_setup_options_mail_check_frequency_label">Частата апытання</string>
   <string name="account_setup_options_mail_check_frequency_never">Ніколі</string>
   <string name="account_setup_options_mail_check_frequency_15min">Кожныя 15 хвілін</string>
@@ -408,7 +374,6 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="idle_refresh_period_36min">Кожныя 36 хвілін</string>
   <string name="idle_refresh_period_48min">Кожныя 48 хвілін</string>
   <string name="idle_refresh_period_60min">Кожныя 60 хвілін</string>
-  <string name="account_setup_options_notify_label">Апавяшчаць пра новую пошту</string>
   <string name="account_setup_options_mail_display_count_label">Колькасць лістоў для паказу</string>
   <string name="account_setup_options_mail_display_count_10">10 лістоў</string>
   <string name="account_setup_options_mail_display_count_25">25 лістоў</string>

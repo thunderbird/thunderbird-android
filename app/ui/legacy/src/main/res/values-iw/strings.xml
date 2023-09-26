@@ -20,9 +20,7 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">גלה מה חדש בגירסא זו</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-  <!--Welcome message-->
-  <string name="welcome_message_title">ברוך הבא אל דואר K-9</string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nנשלח ממכשיר האנדרואיד שלי בעזרת אפליקציית הדואר K-9. סלח לי על הקצרנות.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">החשבון \"<xliff:g id="account">%s</xliff:g>\" יימחק מדואר K-9 .</string>
@@ -254,9 +252,6 @@
   <string name="account_setup_check_settings_authenticate">מאמת …</string>
   <string name="account_setup_check_settings_fetch">מייבא הגדרות החשבון …</string>
   <string name="account_setup_check_settings_canceling_msg">מבטל…</string>
-  <string name="account_setup_names_title">כמעט מוכן!</string>
-  <string name="account_setup_names_account_name_label">תן שם לחשבון זה (לא חובה):</string>
-  <string name="account_setup_names_user_name_label">הקלד את שמך (מוצג בהודעות יוצאות):</string>
   <string name="account_setup_account_type_title">סוג חשבון</string>
   <string name="account_setup_account_type_instructions">איזה סוג חשבון זה?</string>
   <string name="account_setup_account_type_pop_action">POP3</string>
@@ -296,7 +291,6 @@
   <string name="account_setup_outgoing_password_label">סיסמא</string>
   <string name="account_setup_outgoing_authentication_label">סו אימות</string>
   <string name="account_setup_bad_uri">הגדרה לא חוקית: <xliff:g id="err_mess">%s</xliff:g></string>
-  <string name="account_setup_options_title">אפשרויות חשבון</string>
   <string name="account_setup_options_mail_check_frequency_never">אפ פעם</string>
   <string name="account_setup_options_mail_check_frequency_15min">כל רבע שעה</string>
   <string name="account_setup_options_mail_check_frequency_30min">כל 30 דקות</string>
@@ -315,7 +309,6 @@
   <string name="idle_refresh_period_36min">כל 36 דקות</string>
   <string name="idle_refresh_period_48min">כל 48 דקות</string>
   <string name="idle_refresh_period_60min">כל 60 דקות</string>
-  <string name="account_setup_options_notify_label">הודע לי כאשר מגיע דואר</string>
   <string name="account_setup_options_mail_display_count_label">מספר הודעות להצגה</string>
   <string name="account_setup_options_mail_display_count_10">10 הודעות</string>
   <string name="account_setup_options_mail_display_count_25">25 הודעות</string>

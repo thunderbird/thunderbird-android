@@ -28,39 +28,7 @@
   <string name="changelog_snackbar_text">Δείτε τι έχει αλλάξει σε αυτή την έκδοση</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Προβολή</string>
-  <!--Welcome message-->
-  <string name="welcome_message_title">Καλώς ορίσατε στο K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-Το K-9 Mail είναι μία ισχυρή δωρεάν εφαρμογή ηλεκτρονικού ταχυδρομείου για το Android.
-</p><p>
-Τα βελτιωμένα χαρακτηριστικά του περιλαμβάνουν:
-</p>
-<ul>
-  <li>Ταχυδρομείο με σπρώξιμο (push mail) με χρήση IMAP IDLE</li>
-  <li>Καλύτερες επιδόσεις</li>
-  <li>Επαναταξινόμηση μηνύματος</li>
-  <li>Υπογραφές ηλεκτρονικού ταχυδρομείου</li>
-  <li>Ιδιωτική κοινοποίηση (bcc) προς εαυτό</li>
-  <li>Συνδρομές σε φακέλους</li>
-  <li>Συγχρονισμός όλων των φακέλων</li>
-  <li>Ρύθμιση διεύθυνσης επιστροφής</li>
-  <li>Συντομεύσεις πληκτρολογίου</li>
-  <li>Καλύτερη υποστήριξη IMAP</li>
-  <li>Αποθήκευση συνημμένων στην κάρτα αποθήκευσης</li>
-  <li>Άδειασμα απορριμάτων</li>
-  <li>Ταξινόμηση μηνυμάτων</li>
-  <li>…και άλλα</li>
-</ul>
-<p>
-Να σημειωθεί ότι το K-9 δεν υποστηρίζει τους περισσότερους δωρεάν λογαριασμούς Hotmail και,
-όπως οι περισσότερες εφαρμογές ηλεκτρονικού ταχυδρομείου, έχει θεματάκια με το Microsoft Exchange.
-</p><p>
-Παρακαλώ υποβάλετε αναφορές σφαλμάτων, συμβάλλετε νέα χαρακτηριστικά και θέστε ερωτήσεις στο
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
-    ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nΣταλμένο από τη συσκευή μου Android με το K-9 Mail. Παρακαλώ συγχωρήστε την ολιγολογία μου.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Ο λογαριασμός \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφεί από το K-9 Mail.</string>
@@ -329,9 +297,6 @@
   <string name="account_setup_check_settings_authenticate">Διακρίβωση στοιχείων\u2026</string>
   <string name="account_setup_check_settings_fetch">Μετάκληση πληροφοριών λογαριασμού\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">Ακύρωση\u2026</string>
-  <string name="account_setup_names_title">Σχεδόν έτοιμο!</string>
-  <string name="account_setup_names_account_name_label">Ονομασία λογαριασμού (Προαιρετικό):</string>
-  <string name="account_setup_names_user_name_label">Όνομα αποστολέα (προβάλλεται στα εξερχόμενα μηνύματα):</string>
   <string name="account_setup_account_type_title">Τύπος λογαριασμού</string>
   <string name="account_setup_account_type_instructions">Τι λογαριασμός είναι αυτός;</string>
   <string name="account_setup_account_type_pop_action">POP3</string>
@@ -382,7 +347,6 @@
   <string name="account_setup_outgoing_authentication_label">Πιστοποίηση</string>
   <string name="account_setup_outgoing_invalid_setting_combo_notice">Το «<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>» δεν είναι έγκυρο με «<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>»</string>
   <string name="account_setup_bad_uri">Άκυρη ρύθμιση: <xliff:g id="err_mess">%s</xliff:g></string>
-  <string name="account_setup_options_title">Επιλογές λογαριασμού</string>
   <string name="account_setup_options_mail_check_frequency_label">Συχνότητα ενημέρωσης φακέλων</string>
   <string name="account_setup_options_mail_check_frequency_never">Ποτέ</string>
   <string name="account_setup_options_mail_check_frequency_15min">Κάθε 15 λεπτά</string>
@@ -402,7 +366,6 @@
   <string name="idle_refresh_period_36min">Κάθε 36 λεπτά</string>
   <string name="idle_refresh_period_48min">Κάθε 48 λεπτά</string>
   <string name="idle_refresh_period_60min">Κάθε 60 λεπτά</string>
-  <string name="account_setup_options_notify_label">Ειδοποίηση κατά την άφιξη μηνύματος</string>
   <string name="account_setup_options_mail_display_count_label">Πλήθος μηνυμάτων που προβάλλονται</string>
   <string name="account_setup_options_mail_display_count_10">10 μηνύματα</string>
   <string name="account_setup_options_mail_display_count_25">25 μηνύματα</string>

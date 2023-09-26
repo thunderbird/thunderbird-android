@@ -28,8 +28,6 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.commitNow
 import app.k9mail.core.android.common.contact.CachingRepository
 import app.k9mail.core.android.common.contact.ContactRepository
-import app.k9mail.core.featureflag.FeatureFlagKey
-import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import com.fsck.k9.Account
 import com.fsck.k9.K9
@@ -61,7 +59,6 @@ import com.fsck.k9.ui.messageview.MessageViewContainerFragment
 import com.fsck.k9.ui.messageview.MessageViewContainerFragment.MessageViewContainerListener
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener
 import com.fsck.k9.ui.messageview.PlaceholderFragment
-import com.fsck.k9.ui.onboarding.OnboardingActivity
 import com.fsck.k9.ui.permissions.K9PermissionUiHelper
 import com.fsck.k9.ui.permissions.Permission
 import com.fsck.k9.ui.permissions.PermissionUiHelper
@@ -94,7 +91,6 @@ open class MessageList :
     private val generalSettingsManager: GeneralSettingsManager by inject()
     private val messagingController: MessagingController by inject()
     private val contactRepository: ContactRepository by inject()
-    private val featureFlagProvider: FeatureFlagProvider by inject()
 
     private val permissionUiHelper: PermissionUiHelper = K9PermissionUiHelper(this)
 
@@ -157,14 +153,7 @@ open class MessageList :
         deleteIncompleteAccounts(accounts)
         val hasAccountSetup = accounts.any { it.isFinishedSetup }
         if (!hasAccountSetup) {
-            featureFlagProvider.provide(FeatureFlagKey("new_onboarding")).onEnabled {
-                FeatureLauncherActivity.launchOnboarding(this)
-            }.onDisabled {
-                OnboardingActivity.launch(this)
-            }.onUnavailable {
-                Timber.d("Feature flag 'new_onboarding' is unavailable, falling back to old onboarding")
-                OnboardingActivity.launch(this)
-            }
+            FeatureLauncherActivity.launchOnboarding(this)
             finish()
             return
         }

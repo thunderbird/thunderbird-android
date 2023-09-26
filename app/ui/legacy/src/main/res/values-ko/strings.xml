@@ -26,8 +26,6 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">이 릴리즈의 새로운 기능 알아보기</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-  <!--Welcome message-->
-  <string name="welcome_message_title">K-9 메일을 사용하시게 된 것을 환영합니다</string>
   <!--Default signature-->
   <string name="default_signature">-- \n안드로이드 기기에서 K-9 메일을 사용해 보낸 메일입니다.</string>
   <!--General strings that include the app name-->
@@ -268,9 +266,6 @@
   <string name="account_setup_check_settings_authenticate">인증 중\u2026</string>
   <string name="account_setup_check_settings_fetch">계정 설정 가져 오기\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">취소 중\u2026</string>
-  <string name="account_setup_names_title">설정이 거의 완료되었습니다!</string>
-  <string name="account_setup_names_account_name_label">이 계정의 이름을 입력 (옵션):</string>
-  <string name="account_setup_names_user_name_label">이름 입력 (보내는 메시지에 표시 될 이름):</string>
   <string name="account_setup_account_type_title">계정 종류</string>
   <string name="account_setup_account_type_instructions">계정 유형을 선택하시오.</string>
   <string name="account_setup_account_type_pop_action">POP3</string>
@@ -317,7 +312,6 @@
   <string name="account_setup_outgoing_password_label">비밀번호</string>
   <string name="account_setup_outgoing_authentication_label">인증 유형</string>
   <string name="account_setup_bad_uri">잘못된 설정: <xliff:g id="err_mess">%s</xliff:g></string>
-  <string name="account_setup_options_title">계정 옵션</string>
   <string name="account_setup_options_mail_check_frequency_label">폴더 수신 빈도</string>
   <string name="account_setup_options_mail_check_frequency_never">하지 않음</string>
   <string name="account_setup_options_mail_check_frequency_15min">15분마다</string>
@@ -337,7 +331,6 @@
   <string name="idle_refresh_period_36min">36분마다</string>
   <string name="idle_refresh_period_48min">48분마다</string>
   <string name="idle_refresh_period_60min">60분마다</string>
-  <string name="account_setup_options_notify_label">메일 도착시 알림</string>
   <string name="account_setup_options_mail_display_count_label">화면에 보여질 메시지 수</string>
   <string name="account_setup_options_mail_display_count_10">10 메시지</string>
   <string name="account_setup_options_mail_display_count_25">25 메시지</string>

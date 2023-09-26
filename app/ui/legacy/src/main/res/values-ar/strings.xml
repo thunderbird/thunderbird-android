@@ -28,38 +28,7 @@
   <string name="changelog_snackbar_text">اكتشف الجديد في هذا الإصدار</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">عرض</string>
-  <!--Welcome message-->
-  <string name="welcome_message_title">أهلا بكم في بريد K-9</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-تطبيق K-9 عبارة عن تطبيق بريد متقدم لنظام أندرويد
-</p><p>
-حصائصة المُحسّنة تشمل:
-</p>
-<ul>
-<li>دفع البريد من خلال IMAP IDLE</li>
-<li>أداء أفضل</li>
-<li>إعادة تعبئة الرسائل</li>
-<li>توقيع البريد</li>
-<li>نسخة مخفية لنفسك</li>
-<li>الإشتراك في المجلدات</li>
-<li>مزامنة جميع المجلدات</li>
-<li>إعدادات عنوان الرد</li>
-<li>اختصارات لوحة المفاتيح</li>
-<li>دعم أفضل لبروتوكول IMAP</li>
-<li>حفظ المرفقات الى بطاقة الذاكرة</li>
-<li>تفريغ المحذوفات</li>
-<li>تصنيف الرسائل</li>
-<li>… والمزيد</li>
-</ul>
-<p>
-يرجى الملاحظة أن K-9 لا يدعم معظم حسابات Hotmail المجانية وكما هو الحال في معظم برامج البريد، هذا البرنامج يعاني من مشاكل غريبة مع Microsoft Exchange.
-</p><p>
-يرجى التبليغ عن الأخطاء، المساهمة في الكود، أو طرح الأسئلة على الرابط:
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>
-</p>
- ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nتم الإرسال من هاتفي الأندرويد بواسطة برنامج K-9. أعتذر عن الإيجاز.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">سيُحذف الحساب \"<xliff:g id="account">%s</xliff:g>\" من الحسابات في K-9.</string>
@@ -339,9 +308,6 @@
   <string name="account_setup_check_settings_authenticate">المصادقة \u2026</string>
   <string name="account_setup_check_settings_fetch">إحضار إعدادات الحساب ... </string>
   <string name="account_setup_check_settings_canceling_msg">جارٍ الإلغاء\u2026</string>
-  <string name="account_setup_names_title">لقد انتهيت تقريبًا</string>
-  <string name="account_setup_names_account_name_label">اَعطِ هذا الحساب اسمًا (اختياري):</string>
-  <string name="account_setup_names_user_name_label">اكتب اسمك (تظهر في الرسائل الصادرة):</string>
   <string name="account_setup_account_type_title">نوع الحساب</string>
   <string name="account_setup_account_type_instructions">ما نوع هذا الحساب؟</string>
   <string name="account_setup_account_type_pop_action">POP3</string>
@@ -391,7 +357,6 @@
   <string name="account_setup_outgoing_password_label">كلمة السِّر</string>
   <string name="account_setup_outgoing_authentication_label">المصادقة</string>
   <string name="account_setup_bad_uri">إعداد غير صالح: <xliff:g id="err_mess">%s</xliff:g></string>
-  <string name="account_setup_options_title">خيارات الحساب</string>
   <string name="account_setup_options_mail_check_frequency_label">تردد استطلاع المجلد </string>
   <string name="account_setup_options_mail_check_frequency_never">أبدًا</string>
   <string name="account_setup_options_mail_check_frequency_15min">كل 15 دقيقة</string>
@@ -411,7 +376,6 @@
   <string name="idle_refresh_period_36min">كل 36 دقيقة</string>
   <string name="idle_refresh_period_48min">كل 48 دقيقة</string>
   <string name="idle_refresh_period_60min">كل 60 دقيقة</string>
-  <string name="account_setup_options_notify_label">نبهني عند وصول رسالة</string>
   <string name="account_setup_options_mail_display_count_label">عدد الرسائل التي ستظهر</string>
   <string name="account_setup_options_mail_display_count_10">10 رسائل</string>
   <string name="account_setup_options_mail_display_count_25">25 رسالة</string>

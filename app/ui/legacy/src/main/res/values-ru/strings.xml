@@ -28,38 +28,7 @@
   <string name="changelog_snackbar_text">Узнайте, что нового в этом выпуске</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Показать</string>
-  <!--Welcome message-->
-  <string name="welcome_message_title">Добро пожаловать!</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail — почтовик для Android.
-</p><p>
-Возможности:
-</p>
-<ul>
-  <li>всплывающие уведомления,</li>
-  <li>быстрая работа,</li>
-  <li>перемещение сообщений,</li>
-  <li>несколько подписей,</li>
-  <li>скрытая копия себе,</li>
-  <li>подписка на папки,</li>
-  <li>синхронизация всех папок,</li>
-  <li>адрес для ответа,</li>
-  <li>горячие клавиши,</li>
-  <li>улучшенная поддержка IMAP,</li>
-  <li>сохранение вложений,</li>
-  <li>очистка корзины,</li>
-  <li>упорядочивание сообщений,</li>
-  <li>…и многие другие!</li>
-</ul>
-<p>
-Пожалуйста, обратите внимание, что K-9 Mail не поддерживает большинство бесплатных учётных записей Hotmail также, как и большинство почтовиков, и имеет некоторые ограничения при работе с MS Exchange .
-</p><p>
-Вопросы, сообщения об ошибках и участие в разработке:
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
-    ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nПростите за краткость, создано в K-9 Mail.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Учётная запись «<xliff:g id="account">%s</xliff:g>» будет удалена из приложения K-9 Mail.</string>
@@ -334,9 +303,6 @@ K-9 Mail — почтовик для Android.
   <string name="account_setup_check_settings_authenticate">Аутентификация\u2026</string>
   <string name="account_setup_check_settings_fetch">Получение настроек\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">Отмена\u2026</string>
-  <string name="account_setup_names_title">Всё почти готово!</string>
-  <string name="account_setup_names_account_name_label">Название учётной записи (необязательно):</string>
-  <string name="account_setup_names_user_name_label">Ваше имя (видно адресату в сообщениях):</string>
   <string name="account_setup_account_type_title">Тип учётной записи</string>
   <string name="account_setup_account_type_instructions">Доступные протоколы</string>
   <string name="account_setup_account_type_pop_action">POP3</string>
@@ -388,7 +354,6 @@ K-9 Mail — почтовик для Android.
   <string name="account_setup_outgoing_authentication_label">Аутентификация</string>
   <string name="account_setup_outgoing_invalid_setting_combo_notice">«<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>» недействителен для «<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>»</string>
   <string name="account_setup_bad_uri">Неверная настройка: <xliff:g id="err_mess">%s</xliff:g></string>
-  <string name="account_setup_options_title">Настройки учётной записи</string>
   <string name="account_setup_options_mail_check_frequency_label">Промежуток проверки</string>
   <string name="account_setup_options_mail_check_frequency_never">Вручную</string>
   <string name="account_setup_options_mail_check_frequency_15min">15 минут</string>
@@ -408,7 +373,6 @@ K-9 Mail — почтовик для Android.
   <string name="idle_refresh_period_36min">36 минут</string>
   <string name="idle_refresh_period_48min">48 минут</string>
   <string name="idle_refresh_period_60min">1 час</string>
-  <string name="account_setup_options_notify_label">Уведомлять о новой почте</string>
   <string name="account_setup_options_mail_display_count_label">Загружать сообщений</string>
   <string name="account_setup_options_mail_display_count_10">10 сообщений</string>
   <string name="account_setup_options_mail_display_count_25">25 сообщений</string>

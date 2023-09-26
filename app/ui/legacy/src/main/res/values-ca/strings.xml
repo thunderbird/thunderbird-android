@@ -28,38 +28,7 @@
   <string name="changelog_snackbar_text">Esbrineu les novetats d’aquesta versió.</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Vista</string>
-  <!--Welcome message-->
-  <string name="welcome_message_title">Us donem la benvinguda al K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-El K-9 Mail és un potent client de correu de codi lliure per a Android.
-</p><p>
-Les característiques més destacables són les següents:
-</p>
-<ul>
-<li>Tramet correu fent servir IMAP IDLE</li>
-<li>Millor rendiment</li>
-<li>Rearxivament de missatges</li>
-<li>Signatures de correu</li>
-<li>Còpia oculta a un mateix</li>
-<li>Subscripció a carpetes</li>
-<li>Sincronització de totes les carpetes</li>
-<li>Configuració de l\'adreça de resposta</li>
-<li>Dreceres de teclat</li>
-<li>Millor suport per a IMAP</li>
-<li>Possibilitat de desar els adjunts a la SD</li>
-<li>Buidatge de la paperera</li>
-<li>Ordenació de missatges</li>
-<li>… i molt més</li>
-</ul>
-<p>
-Si us plau, tingueu en compte que el K-9 no admet la majoria de comptes gratuïts de Hotmail i que, com la majoria d\'altres clients de correu, té alguns problemes per interactuar amb el Microsoft Exchange.
-</p><p>
-Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu preguntes a
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
-]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nEnviat des del meu dispositiu Android amb el K-9 Mail. Disculpeu la brevetat.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">El compte \"<xliff:g id="account">%s</xliff:g>\" s\'eliminarà del K-9 Mail.</string>
@@ -331,9 +300,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_setup_check_settings_authenticate">S\'està autenticant\u2026</string>
   <string name="account_setup_check_settings_fetch">S\'està recuperant la configuració del compte\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">S\'està cancel·lant\u2026</string>
-  <string name="account_setup_names_title">Ja gairebé hem acabat!</string>
-  <string name="account_setup_names_account_name_label">Dóna un nom a aquest compte (opcional):</string>
-  <string name="account_setup_names_user_name_label">Escriviu el nom (és el que es mostrarà als missatges sortints):</string>
   <string name="account_setup_account_type_title">Tipus de compte</string>
   <string name="account_setup_account_type_instructions">Quin tipus de compte és?</string>
   <string name="account_setup_account_type_pop_action">POP3</string>
@@ -385,7 +351,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_setup_outgoing_authentication_label">Tipus d\'autenticació</string>
   <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" no és vàlid amb \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_bad_uri">Configuració no vàlida: <xliff:g id="err_mess">%s</xliff:g></string>
-  <string name="account_setup_options_title">Opcions del compte</string>
   <string name="account_setup_options_mail_check_frequency_label">Freqüència de comprovació</string>
   <string name="account_setup_options_mail_check_frequency_never">Mai</string>
   <string name="account_setup_options_mail_check_frequency_15min">Cada 15 minuts</string>
@@ -405,7 +370,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="idle_refresh_period_36min">Cada 36 minuts</string>
   <string name="idle_refresh_period_48min">Cada 48 minuts</string>
   <string name="idle_refresh_period_60min">Cada 60 minuts</string>
-  <string name="account_setup_options_notify_label">Avisa\'m quan arribi correu</string>
   <string name="account_setup_options_mail_display_count_label">Nombre de missatges a mostrar</string>
   <string name="account_setup_options_mail_display_count_10">10 missatges</string>
   <string name="account_setup_options_mail_display_count_25">25 missatges</string>

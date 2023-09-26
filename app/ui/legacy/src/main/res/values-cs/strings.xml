@@ -28,38 +28,7 @@
   <string name="changelog_snackbar_text">Zjistěte, co je v tomto vydání nového</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Zobrazit</string>
-  <!--Welcome message-->
-  <string name="welcome_message_title">Vítejte v K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail je všestranný e-mailový klient pro Android.
-</p><p>
-Vylepšené funkce zahrnují:
-</p>
-<ul>
-  <li>Push mail pomocí IMAP IDLE</li>
-  <li>Lepší výkon</li>
-  <li>Vyplňování zpráv</li>
-  <li>Podpisy zpráv</li>
-  <li>Skryté kopie sobě</li>
-  <li>Odebírané složky</li>
-  <li>Synchronizace všech složek</li>
-  <li>Nastavení zpáteční adresy</li>
-  <li>Klávesové zkratky</li>
-  <li>Lepší podpora IMAP</li>
-  <li>Ukládání příloh na SD kartu</li>
-  <li>Vysypání koše</li>
-  <li>Řazení zpráv</li>
-  <li>…a další</li>
-</ul>
-<p>
-K-9 nepodporuje většinu bezplatných účtů u Hotmail a jako mnoho poštovních klientů vykazuje zvláštnosti při komunikaci s Microsoft Exchange.
-</p><p>
-Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictvím
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
-</p>
-    ]]></string>
-  <!--Default signature-->
+    <!--Default signature-->
   <string name="default_signature">-- \nOdesláno aplikací K-9 Mail ze systému Android. Omluvte prosím moji stručnost.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Účet \"<xliff:g id="account">%s</xliff:g>\" bude odstraněn z K-9 Mail.</string>
@@ -335,9 +304,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_setup_check_settings_authenticate">Přihlašuji se\u2026</string>
   <string name="account_setup_check_settings_fetch">Stahuji nastavení účtu\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">Rušení\u2026</string>
-  <string name="account_setup_names_title">Téměř hotovo!</string>
-  <string name="account_setup_names_account_name_label">Pojmenujte tento účet (volitelné):</string>
-  <string name="account_setup_names_user_name_label">Zadejte své jméno (zobrazuje se v odchozích zprávách):</string>
   <string name="account_setup_account_type_title">Typ účtu</string>
   <string name="account_setup_account_type_instructions">O jaký typ účtu jde?</string>
   <string name="account_setup_account_type_pop_action">POP3</string>
@@ -389,7 +355,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_setup_outgoing_authentication_label">Typ ověření</string>
   <string name="account_setup_outgoing_invalid_setting_combo_notice">„<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>“ není platný s „<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>“</string>
   <string name="account_setup_bad_uri">Neplatné nastavení: <xliff:g id="err_mess">%s</xliff:g></string>
-  <string name="account_setup_options_title">Možnosti účtu</string>
   <string name="account_setup_options_mail_check_frequency_label">Frekvence dotazování složky</string>
   <string name="account_setup_options_mail_check_frequency_never">Nikdy</string>
   <string name="account_setup_options_mail_check_frequency_15min">Každých 15 minut</string>
@@ -409,7 +374,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="idle_refresh_period_36min">Každých 36 minut</string>
   <string name="idle_refresh_period_48min">Každých 48 minut</string>
   <string name="idle_refresh_period_60min">Každých 60 minut</string>
-  <string name="account_setup_options_notify_label">Oznamuj mi příchod nové pošty</string>
   <string name="account_setup_options_mail_display_count_label">Počet zobrazených zpráv</string>
   <string name="account_setup_options_mail_display_count_10">10 zpráv</string>
   <string name="account_setup_options_mail_display_count_25">25 zpráv</string>
