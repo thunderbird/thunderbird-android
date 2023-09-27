@@ -15,6 +15,7 @@ internal fun InputLayout(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = inputContentPadding(),
     errorMessage: String? = null,
+    warningMessage: String? = null,
     content: @Composable () -> Unit,
 ) {
     Column(
@@ -30,6 +31,14 @@ internal fun InputLayout(
                 text = errorMessage ?: "",
                 modifier = Modifier.padding(start = MainTheme.spacings.double, top = MainTheme.spacings.half),
                 color = MainTheme.colors.error,
+            )
+        }
+
+        AnimatedVisibility(visible = warningMessage != null) {
+            TextCaption(
+                text = warningMessage ?: "",
+                modifier = Modifier.padding(start = MainTheme.spacings.double, top = MainTheme.spacings.half),
+                color = MainTheme.colors.warning,
             )
         }
     }
