@@ -26,6 +26,7 @@ internal fun LazyItemScope.PasswordItem(
             password = password,
             errorMessage = error?.toResourceString(resources),
             onPasswordChange = onPasswordChange,
+            checkRevealPasswordPermission = { true },
             contentPadding = PaddingValues(),
         )
     }

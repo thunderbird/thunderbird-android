@@ -130,6 +130,7 @@ internal fun IncomingServerSettingsContent(
                         password = state.password.value,
                         errorMessage = state.password.error?.toResourceString(resources),
                         onPasswordChange = { onEvent(Event.PasswordChanged(it)) },
+                        checkRevealPasswordPermission = { true },
                         contentPadding = defaultItemPadding(),
                     )
                 }
