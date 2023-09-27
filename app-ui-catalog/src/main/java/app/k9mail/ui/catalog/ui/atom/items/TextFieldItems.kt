@@ -54,6 +54,7 @@ data class TextFieldState<T>(
     val isRequired: Boolean = false,
     val hasError: Boolean = false,
     val isSingleLine: Boolean = false,
+    val hasRevealPasswordPermission: Boolean = false,
 )
 
 @Suppress("LongMethod")
@@ -63,6 +64,7 @@ fun <T> TextFieldDemo(
     modifier: Modifier = Modifier,
     hasTrailingIcon: Boolean = false,
     hasSingleLine: Boolean = false,
+    hasRevealPasswordPermission: Boolean = false,
     content: @Composable (state: MutableState<TextFieldState<T>>) -> Unit,
 ) {
     WithRememberedState(input = initialState) { state ->
@@ -140,6 +142,15 @@ fun <T> TextFieldDemo(
                         contentPadding = defaultPadding,
                     )
                 }
+
+                if (hasRevealPasswordPermission) {
+                    CheckboxInput(
+                        text = "Has reveal password permission",
+                        checked = state.value.hasRevealPasswordPermission,
+                        onCheckedChange = { state.value = state.value.copy(hasRevealPasswordPermission = it) },
+                        contentPadding = defaultPadding,
+                    )
+                }
             }
         }
     }
@@ -181,6 +192,7 @@ private fun LazyGridScope.passwordTextFieldOutlinedItems() {
                 input = "",
                 label = "Password",
             ),
+            hasRevealPasswordPermission = true,
         ) { state ->
             TextFieldOutlinedPassword(
                 value = state.value.input,
@@ -190,6 +202,9 @@ private fun LazyGridScope.passwordTextFieldOutlinedItems() {
                 isReadOnly = state.value.isReadOnly,
                 isRequired = state.value.isRequired,
                 hasError = state.value.hasError,
+                checkRevealPasswordPermission = {
+                    state.value.hasRevealPasswordPermission
+                },
                 modifier = Modifier.fillMaxWidth(),
             )
         }

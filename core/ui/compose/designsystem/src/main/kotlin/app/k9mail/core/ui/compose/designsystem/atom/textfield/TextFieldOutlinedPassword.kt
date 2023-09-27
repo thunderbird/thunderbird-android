@@ -29,6 +29,7 @@ fun TextFieldOutlinedPassword(
     isEnabled: Boolean = true,
     isReadOnly: Boolean = false,
     isRequired: Boolean = false,
+    checkRevealPasswordPermission: () -> Boolean = { false },
     hasError: Boolean = false,
 ) {
     var passwordVisibilityState by rememberSaveable { mutableStateOf(false) }
@@ -42,7 +43,11 @@ fun TextFieldOutlinedPassword(
         trailingIcon = selectTrailingIcon(
             isEnabled = isEnabled,
             isPasswordVisible = passwordVisibilityState,
-            onClick = { passwordVisibilityState = !passwordVisibilityState },
+            onClick = {
+                if (checkRevealPasswordPermission()) {
+                    passwordVisibilityState = !passwordVisibilityState
+                }
+            },
         ),
         readOnly = isReadOnly,
         isError = hasError,

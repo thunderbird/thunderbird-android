@@ -8,6 +8,8 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import app.k9mail.core.ui.compose.designsystem.R
 import app.k9mail.core.ui.compose.testing.ComposeTest
+import app.k9mail.core.ui.compose.testing.onNodeWithText
+import app.k9mail.core.ui.compose.testing.setContent
 import org.junit.Test
 
 private const val PASSWORD = "Password input"
@@ -27,11 +29,41 @@ class TextFieldOutlinedPasswordKtTest : ComposeTest() {
     }
 
     @Test
-    fun `should display password when show password is clicked`() = runComposeTest {
+    fun `should not reveal password by default`() = runComposeTest {
         setContent {
             TextFieldOutlinedPassword(
                 value = PASSWORD,
                 onValueChange = {},
+            )
+        }
+
+        onShowPasswordNode().performClick()
+
+        onNodeWithText(PASSWORD).assertDoesNotExist()
+    }
+
+    @Test
+    fun `should not reveal password if permission is not granted`() = runComposeTest {
+        setContent {
+            TextFieldOutlinedPassword(
+                value = PASSWORD,
+                onValueChange = {},
+                checkRevealPasswordPermission = { false },
+            )
+        }
+
+        onShowPasswordNode().performClick()
+
+        onNodeWithText(PASSWORD).assertDoesNotExist()
+    }
+
+    @Test
+    fun `should show password when show password is clicked`() = runComposeTest {
+        setContent {
+            TextFieldOutlinedPassword(
+                value = PASSWORD,
+                onValueChange = {},
+                checkRevealPasswordPermission = { true },
             )
         }
 
@@ -46,6 +78,7 @@ class TextFieldOutlinedPasswordKtTest : ComposeTest() {
             TextFieldOutlinedPassword(
                 value = PASSWORD,
                 onValueChange = {},
+                checkRevealPasswordPermission = { true },
             )
         }
         onShowPasswordNode().performClick()
@@ -61,6 +94,7 @@ class TextFieldOutlinedPasswordKtTest : ComposeTest() {
             TextFieldOutlinedPassword(
                 value = PASSWORD,
                 onValueChange = {},
+                checkRevealPasswordPermission = { true },
             )
         }
 
@@ -75,6 +109,7 @@ class TextFieldOutlinedPasswordKtTest : ComposeTest() {
             TextFieldOutlinedPassword(
                 value = PASSWORD,
                 onValueChange = {},
+                checkRevealPasswordPermission = { true },
             )
         }
         onShowPasswordNode().performClick()

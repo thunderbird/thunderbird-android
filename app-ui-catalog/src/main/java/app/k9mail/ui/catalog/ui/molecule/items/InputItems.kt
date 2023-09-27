@@ -115,6 +115,18 @@ fun LazyGridScope.inputItems() {
             }
         }
     }
+    sectionSubtitleItem(text = "With password reveal permission")
+    item {
+        ItemOutlined {
+            WithRememberedState(input = "my password") { state ->
+                PasswordInput(
+                    password = state.value,
+                    onPasswordChange = { state.value = it },
+                    checkRevealPasswordPermission = { true },
+                )
+            }
+        }
+    }
 
     sectionHeaderItem(text = "SelectInput")
     item {
