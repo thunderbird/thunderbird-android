@@ -266,15 +266,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         LayoutInflater themedLayoutInflater = LayoutInflater.from(themeContext);
         contentContainer.setLayoutInflater(themedLayoutInflater);
-
-        View contentView = contentContainer.inflate();
-
-        // background color needs to be forced
-        //TODO: Change themes to use appropriate background colors that don't need overriding.
-        TypedValue outValue = new TypedValue();
-        themeContext.getTheme().resolveAttribute(R.attr.messageViewBackgroundColor, outValue, true);
-
-        contentView.setBackgroundColor(outValue.data);
+        contentContainer.inflate();
 
         initializeActionBar();
 

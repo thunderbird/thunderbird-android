@@ -27,8 +27,9 @@ class DisplayHtml(private val settings: HtmlSettings) : HtmlHeadProvider {
 
     private fun cssStyleTheme(): String {
         return if (settings.useDarkMode) {
+            // TODO: Don't hardcode these values. Inject them via HtmlSettings.
             "<style type=\"text/css\">" +
-                "* { background: black ! important; color: #F3F3F3 !important }" +
+                "* { background: #121212 ! important; color: #F3F3F3 !important }" +
                 ":link, :link * { color: #CCFF33 !important }" +
                 ":visited, :visited * { color: #551A8B !important }</style> "
         } else {
