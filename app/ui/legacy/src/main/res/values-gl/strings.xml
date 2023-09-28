@@ -25,7 +25,7 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Mira as novidades deste lanzamento</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-    <!--Default signature-->
+  <!--Default signature-->
   <string name="default_signature">-- \nEnviado dende o meu teléfono Android con K-9 Mail. Desculpa a miña brevedade</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\" será eliminada de K-9 Mail.</string>
@@ -941,7 +941,7 @@
   <string name="ac_transfer_intro">Unha mensaxe de configuración de Autocrypt comparte de forma segura a túa configuración de extremo a extremo con outros dispositivos.</string>
   <string name="ac_transfer_button_send">Enviar mensaxe de configuración</string>
   <string name="ac_transfer_will_be_sent">Esta mensaxe enviarase ao seguinte enderezo:</string>
-  <string name="ac_transfer_generating">Xerando unha configuración da mensaxe...</string>
+  <string name="ac_transfer_generating">Xerando unha configuración da mensaxe…</string>
   <string name="ac_transfer_sending_to">Enviando a mensaxe a:</string>
   <string name="ac_transfer_finish">Para rematar, abra a mensaxe noutro dispositivo e insira a ocnfiguración do código.</string>
   <string name="ac_transfer_show_code">Amosar a configuración do código</string>
@@ -959,7 +959,7 @@ Podes conservar esta mensaxe e usala como copia de seguridade da túa chave secr
   <string name="permission_contacts_rationale_title">Permitir acceso aos contactos</string>
   <string name="permission_contacts_rationale_message">Para poder proporcionar suxestións de contactos e amosar os nomes e as fotos dos contactos, o aplicativo precisa acceder aos teus contactos.</string>
   <string name="generic_loading_error">Ocorreu un erro mentres se estaban cargando os datos</string>
-  <string name="push_notification_state_initializing">Iniciando...</string>
+  <string name="push_notification_state_initializing">Iniciando…</string>
   <string name="push_notification_state_listening">Agardando por novos correos</string>
   <string name="push_notification_state_wait_background_sync">Suspender ata que sexa permitida a sincronización de fondo </string>
   <string name="push_notification_state_wait_network">Suspender ata que estea dispoñible a rede</string>
@@ -1015,4 +1015,5 @@ Podes conservar esta mensaxe e usala como copia de seguridade da túa chave secr
   <string name="clipboard_label_email_address">Enderezo electrónico</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
   <!--Might be displayed in a notification when deleting an account (in the background)-->
+  <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
 </resources>

@@ -28,7 +28,7 @@
   <string name="changelog_snackbar_text">Scopri le novità di questa versione </string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Vedi</string>
-    <!--Default signature-->
+  <!--Default signature-->
   <string name="default_signature">-- \nInviato dal mio dispositivo Android con K-9 Mail. Perdonate la brevità.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">L\'account \"<xliff:g id="account">%s</xliff:g>\" sarà rimosso da K-9 Mail.</string>
@@ -1052,7 +1052,7 @@ Puoi conservare questo messaggio e utilizza come una copia di sicurezza della tu
   <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
   <string name="swipe_action_spam">Spam</string>
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-  <string name="swipe_action_move">Sposta...</string>
+  <string name="swipe_action_move">Sposta…</string>
   <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
   <string name="general_settings_show_compose_button_title">Mostra pulsante flottante Componi</string>
   <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -1090,4 +1090,7 @@ Puoi conservare questo messaggio e utilizza come una copia di sicurezza della tu
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Nome e indirizzo email</string>
   <!--Might be displayed in a notification when deleting an account (in the background)-->
+  <string name="background_work_notification_remove_account">Rimozione account…</string>
+  <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+  <string name="message_list_content_description_unread_prefix">nuovi messaggi, %s</string>
 </resources>

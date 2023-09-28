@@ -27,7 +27,8 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Ikusi zer den berria bertsio honetan</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-    <!--Default signature-->
+  <string name="changelog_snackbar_button_text">Ikusi</string>
+  <!--Default signature-->
   <string name="default_signature">-- \nAndroid gailutik bidalia K-9 Mail erabiliz. Barka laburtasuna.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" kontua K-9 Mail-etik kenduko da.</string>
@@ -190,9 +191,13 @@
   <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_status_attachment_not_saved">Ezin izan da eranskina gorde.</string>
   <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <string name="message_view_recipient_prefix">"honi: "</string>
   <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <string name="message_view_additional_recipient_prefix">+</string>
   <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <string name="message_view_me_text">niri</string>
   <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+  <string name="message_view_show_remote_images_action">Erakutsi urruneko irudiak</string>
   <string name="message_view_no_viewer">Ezin da <xliff:g id="mimetype">%s</xliff:g>-(r)entzako ikustailerik aurkitu.</string>
   <string name="message_view_download_remainder">Deskargatu mezu osoa</string>
   <string name="message_view_sender_label">%1$s-(r)en bidez</string>
@@ -250,7 +255,10 @@
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Mugitu</string>
   <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_message_list_density_title">Dentsitatea</string>
+  <string name="general_settings_ui_density_compact">Trinkoa</string>
   <string name="general_settings_ui_density_default">Lehenetsia</string>
+  <string name="general_settings_ui_density_relaxed">Erlaxatua</string>
   <string name="global_settings_privacy_hide_useragent">Ezkutatu posta bezeroa</string>
   <string name="global_settings_privacy_hide_useragent_detail">Kendu K-9 erabiltzaile-agentea posta goiburuetatik</string>
   <string name="global_settings_privacy_hide_timezone">Ezkutatu ordu-zona</string>
@@ -318,6 +326,7 @@
   <string name="account_setup_incoming_delete_policy_delete_label">Zerbitzarian ezabatu</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Zerbitzarian irakurritako gisa markatu</string>
   <string name="account_setup_incoming_use_compression">Erabili konpresioa</string>
+  <string name="account_setup_incoming_send_client_id">Bidaltzaile bezero IDa</string>
   <string name="account_setup_expunge_policy_label">Ezabatu hemen ere zerbitzaritik ezabatutako mezuak</string>
   <string name="account_setup_expunge_policy_immediately">Berehala</string>
   <string name="account_setup_expunge_policy_on_poll">Atzitzean</string>
@@ -686,6 +695,7 @@
   <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
   <string name="font_size_message_view_account">Kontu izena</string>
   <string name="font_size_message_view_sender">Bidaltzailea</string>
+  <string name="font_size_message_view_recipients">Hartzaileak</string>
   <string name="font_size_message_view_subject">Gaia</string>
   <string name="font_size_message_view_date">Ordua eta data</string>
   <string name="font_size_message_view_content">Mezuaren gorputza</string>
@@ -938,7 +948,7 @@
   <string name="messageview_decrypt_cancelled">Deszifratzea bertan behera utzi da.</string>
   <string name="messageview_decrypt_retry">Saiatu berriro</string>
   <string name="messageview_decrypt_incomplete">Zifratutako mezua deskargatu behar da deszifratzeko.</string>
-  <string name="messageview_crypto_error_title">Errorea posta deszifratzean</string>
+  <string name="messageview_crypto_error_title">Errorea e-posta deszifratzean</string>
   <string name="recipient_error_non_ascii">Une honetan karaktere bereziak ez dira onartzen!</string>
   <string name="recipient_error_parse_failed">Errorea helbidea analizatzean!</string>
   <string name="account_settings_crypto_hide_sign_only">Ezkutatu zifratu gabeko sinadurak</string>
@@ -1033,7 +1043,7 @@ Mezu hau gorde dezakezu eta zure gako sekretuaren babes-kopia gisa erabili. Hau 
   <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
   <string name="swipe_action_spam">Zabor-posta</string>
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-  <string name="swipe_action_move">Mugitu...</string>
+  <string name="swipe_action_move">Mugitu…</string>
   <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
   <string name="general_settings_show_compose_button_title">Erakutsi idazteko botoi flotagarria</string>
   <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -1041,7 +1051,9 @@ Mezu hau gorde dezakezu eta zure gako sekretuaren babes-kopia gisa erabili. Hau 
   <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
   <string name="message_list_error_folder_not_found">Karpeta ez da aurkitu</string>
   <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+  <string name="message_details_toolbar_title">Mezuaren xehetasunak</string>
   <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+  <string name="message_details_missing_date">\'Data\' goiburua falta da</string>
   <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
   <string name="message_details_from_section_title">Nork</string>
   <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
@@ -1055,12 +1067,21 @@ Mezu hau gorde dezakezu eta zure gako sekretuaren babes-kopia gisa erabili. Hau 
   <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
   <string name="message_details_bcc_section_title">Bcc</string>
   <!--Displayed when loading the message details has failed-->
+  <string name="message_details_loading_error">Errorea gertatu da mezuaren xehetasunak kargatzean.</string>
   <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_add_to_contacts">Gehitu kontaktuetara</string>
   <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_compose_message_to">Idatzi mezua honi:</string>
   <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_email_address">Kopiatu e-posta helbidea</string>
   <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+  <string name="action_copy_name_and_email_address">Kopiatu izena eta e-posta helbidea</string>
   <!--A user visible label for the email address copied to the clipboard-->
   <string name="clipboard_label_email_address">Posta helbidea</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
+  <string name="clipboard_label_name_and_email_address">Izena eta e-posta helbidea</string>
   <!--Might be displayed in a notification when deleting an account (in the background)-->
+  <string name="background_work_notification_remove_account">Kontua ezabatzen…</string>
+  <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+  <string name="message_list_content_description_unread_prefix">irakurri gabea, %s</string>
 </resources>

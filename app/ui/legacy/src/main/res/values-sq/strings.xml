@@ -28,7 +28,7 @@
   <string name="changelog_snackbar_text">Mësoni ç\’ka të re në këtë hedhje në qarkullim</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Shiheni</string>
-    <!--Default signature-->
+  <!--Default signature-->
   <string name="default_signature">-- \nDërguar nga pajisja ime Android, me K-9 Mail. Ju lutem, më ndjeni për shkurtësinë.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Llogaria \“<xliff:g id="account">%s</xliff:g>\” do të hiqet që nga K-9 Mail.</string>
@@ -1082,4 +1082,7 @@ Mund ta mbani këtë mesazh dhe ta përdorni si një kopjeruatje të kyçit tuaj
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Emër dhe adresë email</string>
   <!--Might be displayed in a notification when deleting an account (in the background)-->
+  <string name="background_work_notification_remove_account">Po hiqet llogaria…</string>
+  <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+  <string name="message_list_content_description_unread_prefix">të palexuar, %s</string>
 </resources>

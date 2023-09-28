@@ -28,7 +28,7 @@
   <string name="changelog_snackbar_text">了解此版本的新增功能</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">檢視</string>
-    <!--Default signature-->
+  <!--Default signature-->
   <string name="default_signature">-- \n使用 K-9 Mail 寄送。來自我的 Android 裝置。</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">帳號「<xliff:g id="account">%s</xliff:g>」將從 K-9 Mail 中刪除。</string>
@@ -1075,4 +1075,5 @@
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">姓名和電子郵件地址</string>
   <!--Might be displayed in a notification when deleting an account (in the background)-->
+  <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
 </resources>

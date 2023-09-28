@@ -27,7 +27,7 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">Bu sürümdeki yenilikleri öğrenin </string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-    <!--Default signature-->
+  <!--Default signature-->
   <string name="default_signature">-- \nAndroid için K-9 Posta\'dan gönderildi. Lütfen bu kısa notumu mazur görün.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Hesap \"<xliff:g id="account">%s</xliff:g>\" K-9 Mail\'den kaldırılacak.</string>
@@ -43,8 +43,8 @@
   <string name="compose_title_forward_as_attachment">Ek olarak ilet</string>
   <string name="choose_account_title">Hesap Seçin</string>
   <string name="choose_folder_title">Klasör Seç</string>
-  <string name="choose_folder_move_title">Şuraya taşı...</string>
-  <string name="choose_folder_copy_title">Şuraya kopyala...</string>
+  <string name="choose_folder_move_title">Şuraya taşı…</string>
+  <string name="choose_folder_copy_title">Şuraya kopyala…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seçildi</string>
   <string name="next_action">Sonraki</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
@@ -1018,7 +1018,7 @@ Bu iletiyi saklayabilir ve gizli anahtarınız için bir yedekleme olarak kullan
   <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
   <string name="swipe_action_spam">Gereksiz posta</string>
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-  <string name="swipe_action_move">Taşı...</string>
+  <string name="swipe_action_move">Taşı…</string>
   <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
   <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
   <string name="message_list_error_title">Hata</string>
@@ -1047,4 +1047,5 @@ Bu iletiyi saklayabilir ve gizli anahtarınız için bir yedekleme olarak kullan
   <string name="clipboard_label_email_address">E-posta adresi</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
   <!--Might be displayed in a notification when deleting an account (in the background)-->
+  <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
 </resources>

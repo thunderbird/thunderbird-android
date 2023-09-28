@@ -28,7 +28,7 @@
   <string name="changelog_snackbar_text">Даведайцеся, што новага ў гэтым выпуску</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Праглядзець</string>
-    <!--Default signature-->
+  <!--Default signature-->
   <string name="default_signature">-- \nАдпраўлена з маёй прылады праз K-9 Mail. Выбачайце за сцісласць.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Акаўнт \"<xliff:g id="account">%s</xliff:g>\" будзе выдалены з K-9 Mail.</string>
@@ -959,7 +959,7 @@
   <string name="locked_attach_unlock">Разблакаваць</string>
   <string name="locked_attach_unencrypted">Гэтая частка незашыфраваная, таму небяспечная.</string>
   <string name="locked_attach_title">Неабароненыя ўкладзеныя файлы</string>
-  <string name="message_progress_text">Загрузка...</string>
+  <string name="message_progress_text">Загрузка…</string>
   <string name="messageview_decrypt_cancelled">Расшыфроўка скасаваная.</string>
   <string name="messageview_decrypt_retry">Паўтарыць</string>
   <string name="messageview_decrypt_incomplete">Для расшыфроўкі зашыфраваны ліст патрэбна спампаваць.</string>
@@ -1098,4 +1098,5 @@
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Імя і адрас электроннай пошты</string>
   <!--Might be displayed in a notification when deleting an account (in the background)-->
+  <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
 </resources>

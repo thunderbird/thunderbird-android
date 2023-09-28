@@ -13,7 +13,7 @@
   <string name="about_project_title">オープンソースプロジェクト</string>
   <string name="about_website_title">ウェブサイト</string>
   <string name="user_manual_title">ユーザーマニュアル</string>
-  <string name="get_help_title">助けを得る</string>
+  <string name="get_help_title">ヘルプ</string>
   <string name="user_forum_title">ユーザーフォーラム</string>
   <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
@@ -25,10 +25,10 @@
   <string name="changelog_recent_changes_title">新着</string>
   <string name="changelog_show_recent_changes">アプリの更新後に更新内容を表示</string>
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
-  <string name="changelog_snackbar_text">このリリースは何が新しいのかを知る</string>
+  <string name="changelog_snackbar_text">このリリースの更新内容を確認する</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">表示</string>
-    <!--Default signature-->
+  <!--Default signature-->
   <string name="default_signature">-- \nK-9 Mail で Android デバイスから送信しました。簡単で申し訳ありません。</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" はK-9 Mailから削除されます。</string>
@@ -1075,4 +1075,7 @@
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">名前とメールアドレス</string>
   <!--Might be displayed in a notification when deleting an account (in the background)-->
+  <string name="background_work_notification_remove_account">アカウントを削除しています…</string>
+  <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+  <string name="message_list_content_description_unread_prefix">未読、%s</string>
 </resources>

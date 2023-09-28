@@ -25,7 +25,7 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">ഈ റിലീസിൽ പുതിയത് എന്താണെന്ന് കണ്ടെത്തുക</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-    <!--Default signature-->
+  <!--Default signature-->
   <string name="default_signature">-- \nകെ-9 മെയിൽ ഉപയോഗിച്ച് എന്റെ ആൻഡ്രോയിഡിൽ നിന്നും അയച്ചത്. ദയവായി എന്റെ പദപ്രയോഗമിതത്വം ക്ഷമിക്കുക.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">കെ-9 മെയിലിൽ നിന്ന്  \"<xliff:g id="account">%s</xliff:g>\" അക്കൗണ്ട് നീക്കംചെയ്യും. </string>
@@ -41,8 +41,8 @@
   <string name="compose_title_forward_as_attachment">അറ്റാച്ചുമെന്റായി ഫോർവേഡ് ചെയ്യുക</string>
   <string name="choose_account_title">അക്കൗണ്ട് തിരഞ്ഞെടുക്കുക</string>
   <string name="choose_folder_title">ഫോൾഡർ തിരഞ്ഞെടുക്കുക</string>
-  <string name="choose_folder_move_title">ഇതിലേക്ക് നീക്കുക...</string>
-  <string name="choose_folder_copy_title">ഇതിലേക്ക് പകർത്തുക...</string>
+  <string name="choose_folder_move_title">ഇതിലേക്ക് നീക്കുക…</string>
+  <string name="choose_folder_copy_title">ഇതിലേക്ക് പകർത്തുക…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> തിരഞ്ഞെടുത്തു</string>
   <string name="next_action">അടുത്തത്</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
@@ -1002,4 +1002,5 @@
   <string name="clipboard_label_email_address">ഇമെയിൽ വിലാസം</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
   <!--Might be displayed in a notification when deleting an account (in the background)-->
+  <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
 </resources>

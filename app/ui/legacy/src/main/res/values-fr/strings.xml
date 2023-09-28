@@ -28,7 +28,7 @@
   <string name="changelog_snackbar_text">Découvrez les nouveautés de cette version</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Afficher</string>
-    <!--Default signature-->
+  <!--Default signature-->
   <string name="default_signature">-- \nEnvoyé de mon appareil Android avec Courriel K-9 Mail. Veuillez excuser ma brièveté.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Le compte « <xliff:g id="account">%s</xliff:g> » sera supprimé de Courriel K-9 Mail.</string>
@@ -1086,4 +1086,7 @@
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Nom et adresse courriel</string>
   <!--Might be displayed in a notification when deleting an account (in the background)-->
+  <string name="background_work_notification_remove_account">Suppression du compte…</string>
+  <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+  <string name="message_list_content_description_unread_prefix">non lus, %s</string>
 </resources>

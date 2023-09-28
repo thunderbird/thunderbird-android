@@ -28,7 +28,7 @@
   <string name="changelog_snackbar_text">Find ud af hvad der er nyt i denne version</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Vis</string>
-    <!--Default signature-->
+  <!--Default signature-->
   <string name="default_signature">-- \nDette er sendt fra min mobiltelefon. Undskyld at jeg fatter mig i korthed.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Kontoen  \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet fra K-9 Mail.</string>
@@ -44,8 +44,8 @@
   <string name="compose_title_forward_as_attachment">Videresend som vedhæftet</string>
   <string name="choose_account_title">Vælg konto</string>
   <string name="choose_folder_title">Vælg mappe</string>
-  <string name="choose_folder_move_title">Flyt til...</string>
-  <string name="choose_folder_copy_title">Kopier til...</string>
+  <string name="choose_folder_move_title">Flyt til…</string>
+  <string name="choose_folder_copy_title">Kopier til…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valgt</string>
   <string name="next_action">Næste</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
@@ -254,6 +254,7 @@
   <!--Name of the swipe action to move a message to another folder-->
   <string name="general_settings_swipe_action_move">Flyt</string>
   <!--Title of the setting to specify the density of the message list-->
+  <string name="general_settings_message_list_density_title">Tæthed</string>
   <string name="general_settings_ui_density_compact">Kompakt</string>
   <string name="general_settings_ui_density_default">Standard</string>
   <string name="general_settings_ui_density_relaxed">Afslappet</string>
@@ -322,6 +323,7 @@
   <string name="account_setup_incoming_delete_policy_delete_label">Slet på server</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Markér som læst på server</string>
   <string name="account_setup_incoming_use_compression">Brug komprimering</string>
+  <string name="account_setup_incoming_send_client_id">Send klient ID</string>
   <string name="account_setup_expunge_policy_label">Ryd slettede mails</string>
   <string name="account_setup_expunge_policy_immediately">Umiddelbart efter sletning</string>
   <string name="account_setup_expunge_policy_on_poll">I forbindelse med hentning af mails</string>
@@ -406,6 +408,8 @@
   <string name="account_settings_mark_message_as_read_on_delete_label">Marker som læst ved sletning</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Marker en besked som læst når den bliver slettet</string>
   <string name="account_settings_notification_channels_label">Notifikation kategorier</string>
+  <string name="account_settings_open_notification_settings_messages_summary">Konfiguér notifikationer for nye beskeder</string>
+  <string name="account_settings_open_notification_settings_miscellaneous_summary">Konfiguér fejl og status notifikationer</string>
   <string name="account_settings_show_pictures_label">Vis altid billeder</string>
   <string name="account_settings_show_pictures_never">Aldrig</string>
   <string name="account_settings_show_pictures_only_from_contacts">Kun når afsender findes i Kontakter</string>
@@ -659,6 +663,7 @@
   <string name="animations_title">Animation</string>
   <string name="animations_summary">Anvend visuelle effekter</string>
   <string name="show_unified_inbox_title">Vis Fælles Indbakke</string>
+  <string name="show_starred_count_title">Vis antal af stjernemarkeret</string>
   <string name="integrated_inbox_title">Fælles indbakke</string>
   <string name="integrated_inbox_detail">Alle mails i fælles mapper</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Inkluder i fælles indbakke</string>
@@ -1029,7 +1034,7 @@ Beskeden kan beholdes og bruges som sikkerhedskopi til den hemmelige nøgle. Hvi
   <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
   <string name="swipe_action_spam">Spam</string>
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-  <string name="swipe_action_move">Flyt...</string>
+  <string name="swipe_action_move">Flyt…</string>
   <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
   <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
   <string name="message_list_error_title">Fejl</string>
@@ -1064,4 +1069,5 @@ Beskeden kan beholdes og bruges som sikkerhedskopi til den hemmelige nøgle. Hvi
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Navn og email-adresse</string>
   <!--Might be displayed in a notification when deleting an account (in the background)-->
+  <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
 </resources>

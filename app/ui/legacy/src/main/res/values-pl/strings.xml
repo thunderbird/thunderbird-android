@@ -28,7 +28,7 @@
   <string name="changelog_snackbar_text">Dowiedz się, co nowego w tej wersji</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Wyświetl</string>
-    <!--Default signature-->
+  <!--Default signature-->
   <string name="default_signature">-- 
 Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwięzłość.</string>
   <!--General strings that include the app name-->
@@ -1097,4 +1097,7 @@ Tą wiadomość można zachować i użyć w formie kopii zapasowej twojego klucz
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Nazwa oraz adres e-mail</string>
   <!--Might be displayed in a notification when deleting an account (in the background)-->
+  <string name="background_work_notification_remove_account">Usuwanie konta…</string>
+  <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+  <string name="message_list_content_description_unread_prefix">nieprzeczytane, %s</string>
 </resources>

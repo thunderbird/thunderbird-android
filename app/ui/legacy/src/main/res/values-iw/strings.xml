@@ -20,7 +20,7 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">גלה מה חדש בגירסא זו</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-    <!--Default signature-->
+  <!--Default signature-->
   <string name="default_signature">-- \nנשלח ממכשיר האנדרואיד שלי בעזרת אפליקציית הדואר K-9. סלח לי על הקצרנות.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">החשבון \"<xliff:g id="account">%s</xliff:g>\" יימחק מדואר K-9 .</string>
@@ -35,8 +35,8 @@
   <string name="compose_title_forward_as_attachment">העבר כקובץ מצורף</string>
   <string name="choose_account_title">בחר חשבון</string>
   <string name="choose_folder_title">בחר תיקייה</string>
-  <string name="choose_folder_move_title">העבר אל...</string>
-  <string name="choose_folder_copy_title">העתק אל...</string>
+  <string name="choose_folder_move_title">העבר אל…</string>
+  <string name="choose_folder_copy_title">העתק אל…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> נבחרו</string>
   <string name="next_action">הבא</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
@@ -641,4 +641,5 @@
   <string name="clipboard_label_email_address">כתובת דוא\"ל</string>
   <!--A user visible label for the name and email address copied to the clipboard-->
   <!--Might be displayed in a notification when deleting an account (in the background)-->
+  <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
 </resources>
