@@ -36,14 +36,9 @@ class MessageViewContainerFragment : Fragment() {
 
     private var activeMessageReference: MessageReference? = null
 
-    var lastDirection: Direction? = null
-        private set
-
     private lateinit var fragmentListener: MessageViewContainerListener
     private lateinit var viewPager: ViewPager2
     private lateinit var adapter: MessageViewContainerAdapter
-
-    private var currentPosition: Int? = null
 
     private val messageViewFragment: MessageViewFragment
         get() {
@@ -64,14 +59,12 @@ class MessageViewContainerFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
-        if (savedInstanceState == null) {
-            messageReference = MessageReference.parse(arguments?.getString(ARG_REFERENCE))
+        messageReference = if (savedInstanceState == null) {
+            MessageReference.parse(arguments?.getString(ARG_REFERENCE))
                 ?: error("Missing argument $ARG_REFERENCE")
         } else {
-            messageReference = MessageReference.parse(savedInstanceState.getString(STATE_MESSAGE_REFERENCE))
+            MessageReference.parse(savedInstanceState.getString(STATE_MESSAGE_REFERENCE))
                 ?: error("Missing state $STATE_MESSAGE_REFERENCE")
-
-            lastDirection = savedInstanceState.getSerializable(STATE_LAST_DIRECTION) as Direction?
         }
 
         showAccountChip = arguments?.getBoolean(ARG_SHOW_ACCOUNT_CHIP) ?: showAccountChip
@@ -123,7 +116,6 @@ class MessageViewContainerFragment : Fragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(STATE_MESSAGE_REFERENCE, messageReference.toIdentityString())
-        outState.putSerializable(STATE_LAST_DIRECTION, lastDirection)
     }
 
     fun setViewModel(viewModel: MessageListViewModel) {
@@ -161,23 +153,13 @@ class MessageViewContainerFragment : Fragment() {
         val newMessageReference = adapter.getMessageReference(position) ?: return
         if (newMessageReference == activeMessageReference) {
             // If the position of current message changes (e.g. because messages were added or removed from the list),
-            // we keep track of the new position but otherwise ignore the event.
-            currentPosition = position
+            // we ignore the event.
             return
         }
-
-        rememberNavigationDirection(position)
 
         messageReference = newMessageReference
         activeMessageReference = newMessageReference
         fragmentListener.setActiveMessage(newMessageReference)
-    }
-
-    private fun rememberNavigationDirection(newPosition: Int) {
-        currentPosition?.let { currentPosition ->
-            lastDirection = if (newPosition < currentPosition) Direction.PREVIOUS else Direction.NEXT
-        }
-        currentPosition = newPosition
     }
 
     fun showPreviousMessage(): Boolean {
@@ -318,7 +300,6 @@ class MessageViewContainerFragment : Fragment() {
         private const val ARG_SHOW_ACCOUNT_CHIP = "showAccountChip"
 
         private const val STATE_MESSAGE_REFERENCE = "messageReference"
-        private const val STATE_LAST_DIRECTION = "lastDirection"
 
         fun newInstance(reference: MessageReference, showAccountChip: Boolean): MessageViewContainerFragment {
             return MessageViewContainerFragment().withArguments(
