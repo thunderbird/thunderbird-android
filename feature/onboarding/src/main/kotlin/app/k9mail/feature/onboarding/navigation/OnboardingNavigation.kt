@@ -6,7 +6,7 @@ import androidx.navigation.NavOptions
 import app.k9mail.core.ui.compose.common.navigation.deepLinkComposable
 import app.k9mail.feature.onboarding.ui.OnboardingScreen
 
-const val NAVIGATION_ROUTE_ONBOARDING = "/onboarding"
+const val NAVIGATION_ROUTE_ONBOARDING = "onboarding"
 
 fun NavController.navigateToOnboarding(
     navOptions: NavOptions? = null,

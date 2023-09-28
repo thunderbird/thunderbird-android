@@ -12,9 +12,8 @@ import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSett
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.Validator
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.ViewModel
 
-class IncomingServerSettingsViewModel(
+open class IncomingServerSettingsViewModel(
     private val validator: Validator,
-//    private val serverSettingsRepository: ServerConfigDomainContract.ServerSettingsRepository,
     private val accountStateRepository: AccountDomainContract.AccountStateRepository,
     initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(initialState = initialState), ViewModel {
@@ -51,7 +50,7 @@ class IncomingServerSettingsViewModel(
         }
     }
 
-    private fun loadAccountState() {
+    protected open fun loadAccountState() {
         updateState {
             accountStateRepository.getState().toIncomingConfigState()
         }

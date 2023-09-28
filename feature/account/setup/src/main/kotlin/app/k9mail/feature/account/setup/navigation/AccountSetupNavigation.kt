@@ -6,7 +6,7 @@ import androidx.navigation.NavOptions
 import app.k9mail.core.ui.compose.common.navigation.deepLinkComposable
 import app.k9mail.feature.account.setup.ui.AccountSetupScreen
 
-const val NAVIGATION_ROUTE_ACCOUNT_SETUP = "/account/setup"
+const val NAVIGATION_ROUTE_ACCOUNT_SETUP = "account/setup"
 
 fun NavController.navigateToAccountSetup(navOptions: NavOptions? = null) {
     navigate(NAVIGATION_ROUTE_ACCOUNT_SETUP, navOptions)

@@ -10,7 +10,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-val featureAccountServerConfigModule: Module = module {
+val featureAccountServerSettingsModule: Module = module {
     factory<IncomingServerSettingsContract.Validator> { IncomingServerSettingsValidator() }
     factory<OutgoingServerSettingsContract.Validator> { OutgoingServerSettingsValidator() }
 
