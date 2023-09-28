@@ -41,7 +41,7 @@ public class LauncherShortcuts extends AccountList {
             displayName = account.getEmail();
         }
         intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, displayName);
-        Parcelable iconResource = Intent.ShortcutIconResource.fromContext(this, R.mipmap.icon);
+        Parcelable iconResource = Intent.ShortcutIconResource.fromContext(this, R.drawable.ic_launcher);
         intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconResource);
 
         setResult(RESULT_OK, intent);

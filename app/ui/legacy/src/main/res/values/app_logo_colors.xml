@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="app_logo_main">#ff1744</color>
+    <color name="app_logo_highlight_light">#ff4569</color>
+    <color name="app_logo_highlight_dark">#d81a3d</color>
+
+    <color name="launcher_icon_background">#ffdae1</color>
+</resources>
