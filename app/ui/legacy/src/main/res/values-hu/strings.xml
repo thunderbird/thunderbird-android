@@ -28,7 +28,7 @@
   <string name="changelog_snackbar_text">Tudja meg, hogy mik az újdonságok ebben a kiadásban</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Megtekintés</string>
-    <!--Default signature-->
+  <!--Default signature-->
   <string name="default_signature">-- \nAndroidos készülékről küldve K-9 Mail használatával. Elnézést a rövidségért.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">A(z) „<xliff:g id="account">%s</xliff:g>” fiók eltávolításra kerül a K-9 Mail alkalmazásból.</string>
@@ -1082,4 +1082,7 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Név és e-mail cím</string>
   <!--Might be displayed in a notification when deleting an account (in the background)-->
+  <string name="background_work_notification_remove_account">Fiók eltávolítása…</string>
+  <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+  <string name="message_list_content_description_unread_prefix">olvasatlan, %s</string>
 </resources>

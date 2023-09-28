@@ -28,7 +28,7 @@
   <string name="changelog_snackbar_text">Δείτε τι έχει αλλάξει σε αυτή την έκδοση</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Προβολή</string>
-    <!--Default signature-->
+  <!--Default signature-->
   <string name="default_signature">-- \nΣταλμένο από τη συσκευή μου Android με το K-9 Mail. Παρακαλώ συγχωρήστε την ολιγολογία μου.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Ο λογαριασμός \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφεί από το K-9 Mail.</string>
@@ -196,6 +196,7 @@
   <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
   <string name="message_view_additional_recipient_prefix">+</string>
   <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+  <string name="message_view_me_text">εγώ</string>
   <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
   <string name="message_view_show_remote_images_action">Εμφάνιση αποκρυμμένων εικόνων</string>
   <string name="message_view_no_viewer">Δεν υπάρχει πρόγραμμα προβολής για <xliff:g id="mimetype">%s</xliff:g>.</string>
@@ -256,7 +257,9 @@
   <string name="general_settings_swipe_action_move">Μετακίνηση</string>
   <!--Title of the setting to specify the density of the message list-->
   <string name="general_settings_message_list_density_title">Κενό μεταξύ στοιχείων</string>
+  <string name="general_settings_ui_density_compact">Συμπαγή</string>
   <string name="general_settings_ui_density_default">Εξ ορισμού</string>
+  <string name="general_settings_ui_density_relaxed">Χαλαρό</string>
   <string name="global_settings_privacy_hide_useragent">Απόκρυψη προγράμματος-πελάτη αλληλογραφίας</string>
   <string name="global_settings_privacy_hide_useragent_detail">Αφαίρεση του Πράκτορα-χρήστη K-9 από την επικεφαλίδα του μηνύματος</string>
   <string name="global_settings_privacy_hide_timezone">Απόκρυψη ζώνης ώρας</string>
@@ -324,6 +327,7 @@
   <string name="account_setup_incoming_delete_policy_delete_label">Να διαγράφεται άμεσα από τον εξυπηρετητή</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Επισήμανση ως αναγνωσμένο στον εξυπηρετητή</string>
   <string name="account_setup_incoming_use_compression">Χρήση συμπίεσης</string>
+  <string name="account_setup_incoming_send_client_id">Αποστολή ID πελάτη</string>
   <string name="account_setup_expunge_policy_label">Εξάλειψη διαγραμμένων μηνυμάτων</string>
   <string name="account_setup_expunge_policy_immediately">Αμέσως</string>
   <string name="account_setup_expunge_policy_on_poll">Κατά την ενημέρωση</string>
@@ -1079,4 +1083,7 @@
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">\'Ονομα και διεύθυνση ηλ. ταχυδρομείου</string>
   <!--Might be displayed in a notification when deleting an account (in the background)-->
+  <string name="background_work_notification_remove_account">Αφαίρεση λογαριασμού...</string>
+  <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+  <string name="message_list_content_description_unread_prefix">αδιάβαστα, %s</string>
 </resources>

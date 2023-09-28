@@ -28,7 +28,7 @@
   <string name="changelog_snackbar_text">Esbrineu les novetats d’aquesta versió.</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Vista</string>
-    <!--Default signature-->
+  <!--Default signature-->
   <string name="default_signature">-- \nEnviat des del meu dispositiu Android amb el K-9 Mail. Disculpeu la brevetat.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">El compte \"<xliff:g id="account">%s</xliff:g>\" s\'eliminarà del K-9 Mail.</string>
@@ -1083,4 +1083,7 @@ Podeu desar aquest missatge i fer-lo servir com a còpia de seguretat per a la v
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Nom i adreça de correu</string>
   <!--Might be displayed in a notification when deleting an account (in the background)-->
+  <string name="background_work_notification_remove_account">Se suprimeix el compte...</string>
+  <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+  <string name="message_list_content_description_unread_prefix">sense llegir, %s</string>
 </resources>

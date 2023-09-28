@@ -28,7 +28,7 @@
   <string name="changelog_snackbar_text">Узнайте, что нового в этом выпуске</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Показать</string>
-    <!--Default signature-->
+  <!--Default signature-->
   <string name="default_signature">-- \nПростите за краткость, создано в K-9 Mail.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Учётная запись «<xliff:g id="account">%s</xliff:g>» будет удалена из приложения K-9 Mail.</string>
@@ -1096,4 +1096,5 @@
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Имя и адрес эл. почты</string>
   <!--Might be displayed in a notification when deleting an account (in the background)-->
+  <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
 </resources>

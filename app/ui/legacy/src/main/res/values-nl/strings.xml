@@ -28,7 +28,7 @@
   <string name="changelog_snackbar_text">Ontdek wat er nieuw is in deze versie</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
   <string name="changelog_snackbar_button_text">Bekijken</string>
-    <!--Default signature-->
+  <!--Default signature-->
   <string name="default_signature">-- \nVerstuurd vanaf mijn Android-apparaat met K-9 Mail.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">De account ‘<xliff:g id="account">%s</xliff:g>’ wordt uit K-9 Mail verwijderd.</string>
@@ -1082,4 +1082,7 @@ Je kunt dit bericht bewaren als back-up voor de geheime sleutel. Als je dit wilt
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Naam en e-mailadres</string>
   <!--Might be displayed in a notification when deleting an account (in the background)-->
+  <string name="background_work_notification_remove_account">Account verwijderen…</string>
+  <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+  <string name="message_list_content_description_unread_prefix">ongelezen, %s</string>
 </resources>

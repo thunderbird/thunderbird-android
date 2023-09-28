@@ -9,7 +9,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="source_code">کد منبع</string>
-  <string name="app_license">مجوز آپاچی، نسخهٔ ۲٫۰</string>
+  <string name="app_license">مجوز آپاچی، نسخهٔ 2.0</string>
   <string name="about_project_title">پروژهٔ متن‌باز</string>
   <string name="about_website_title">وبگاه</string>
   <string name="user_manual_title">راهنمای کاربر</string>
@@ -27,8 +27,8 @@
   <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
   <string name="changelog_snackbar_text">از تازه‌های این نسخه باخبر شوید</string>
   <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-  <string name="changelog_snackbar_button_text">نما</string>
-    <!--Default signature-->
+  <string name="changelog_snackbar_button_text">مشاهده</string>
+  <!--Default signature-->
   <string name="default_signature">-- \nاز دستگاه اندرویدی‌ام و به‌وسیلهٔ K-9 Mail ارسال شد.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">حساب «<xliff:g id="account">%s</xliff:g>» از K-9 Mail حذف خواهد شد.</string>
@@ -192,8 +192,9 @@
   <string name="message_view_bcc_label">مخفیانه به:</string>
   <string name="message_view_status_attachment_not_saved">نمی‌توان پیوست را ذخیره کرد.</string>
   <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
-  <string name="message_view_recipient_prefix">به</string>
+  <string name="message_view_recipient_prefix">به </string>
   <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+  <string name="message_view_additional_recipient_prefix">+</string>
   <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
   <string name="message_view_me_text">من</string>
   <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
@@ -1082,4 +1083,7 @@
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">نام و آدرس ایمیل</string>
   <!--Might be displayed in a notification when deleting an account (in the background)-->
+  <string name="background_work_notification_remove_account">در حال حذف حساب…</string>
+  <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+  <string name="message_list_content_description_unread_prefix">خوانده نشده، %s</string>
 </resources>
