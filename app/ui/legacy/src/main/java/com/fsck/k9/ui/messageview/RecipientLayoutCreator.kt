@@ -1,7 +1,5 @@
 package com.fsck.k9.ui.messageview
 
-import android.text.SpannableStringBuilder
-
 private const val LIST_SEPARATOR = ", "
 
 /**
@@ -19,7 +17,7 @@ private const val LIST_SEPARATOR = ", "
 internal class RecipientLayoutCreator(
     private val textMeasure: TextMeasure,
     private val maxNumberOfRecipientNames: Int,
-    private val recipientsPrefix: String,
+    private val recipientsFormat: String,
     private val additionalRecipientSpacing: Int,
     private val additionalRecipientsPrefix: String,
 ) {
@@ -30,14 +28,9 @@ internal class RecipientLayoutCreator(
     ): RecipientLayoutData {
         require(recipientNames.isNotEmpty())
 
-        val displayRecipientsBuilder = SpannableStringBuilder()
-
         if (recipientNames.size == 1) {
-            displayRecipientsBuilder.append(recipientsPrefix)
-            displayRecipientsBuilder.append(recipientNames.first())
-
             return RecipientLayoutData(
-                recipientNames = displayRecipientsBuilder,
+                recipientNames = recipientsFormat.format(recipientNames.first()),
                 additionalRecipients = null,
             )
         }
@@ -46,12 +39,11 @@ internal class RecipientLayoutCreator(
 
         val maxRecipientNames = recipientNames.size.coerceAtMost(maxNumberOfRecipientNames)
         for (numberOfDisplayRecipients in maxRecipientNames downTo 2) {
-            displayRecipientsBuilder.clear()
-            displayRecipientsBuilder.append(recipientsPrefix)
-
-            recipientNames.asSequence()
+            val recipientNamesString = recipientNames.asSequence()
                 .take(numberOfDisplayRecipients)
-                .joinTo(displayRecipientsBuilder, separator = LIST_SEPARATOR)
+                .joinToString(separator = LIST_SEPARATOR)
+
+            val displayRecipients = recipientsFormat.format(recipientNamesString)
 
             additionalRecipientsBuilder.setLength(0)
             val numberOfAdditionalRecipients = totalNumberOfRecipients - numberOfDisplayRecipients
@@ -60,20 +52,16 @@ internal class RecipientLayoutCreator(
                 additionalRecipientsBuilder.append(numberOfAdditionalRecipients)
             }
 
-            if (doesTextFitAvailableWidth(displayRecipientsBuilder, additionalRecipientsBuilder, availableWidth)) {
+            if (doesTextFitAvailableWidth(displayRecipients, additionalRecipientsBuilder, availableWidth)) {
                 return RecipientLayoutData(
-                    recipientNames = displayRecipientsBuilder,
+                    recipientNames = displayRecipients,
                     additionalRecipients = additionalRecipientsBuilder.toStringOrNull(),
                 )
             }
         }
 
-        displayRecipientsBuilder.clear()
-        displayRecipientsBuilder.append(recipientsPrefix)
-        displayRecipientsBuilder.append(recipientNames.first())
-
         return RecipientLayoutData(
-            recipientNames = displayRecipientsBuilder,
+            recipientNames = recipientsFormat.format(recipientNames.first()),
             additionalRecipients = "$additionalRecipientsPrefix${totalNumberOfRecipients - 1}",
         )
     }

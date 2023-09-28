@@ -177,7 +177,7 @@
   <string name="remove_attachment_action">מחק קובץ מצורף</string>
   <string name="message_to_label">ל:</string>
   <string name="message_view_cc_label">עותק:</string>
-  <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <!--Used to display the recipient list in the message view screen.-->
   <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
   <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
   <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->

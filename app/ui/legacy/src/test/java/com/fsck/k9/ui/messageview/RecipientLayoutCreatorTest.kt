@@ -24,7 +24,7 @@ class RecipientLayoutCreatorTest : RobolectricTest() {
     private val recipientLayoutCreator = RecipientLayoutCreator(
         textMeasure = textMeasure,
         maxNumberOfRecipientNames = 5,
-        recipientsPrefix = "to ",
+        recipientsFormat = "to %s",
         additionalRecipientSpacing = 1,
         additionalRecipientsPrefix = "+",
     )

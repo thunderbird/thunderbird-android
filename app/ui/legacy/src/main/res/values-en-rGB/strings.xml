@@ -16,7 +16,7 @@
   <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
   <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
   <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-  <!--Displayed in the message view screen in front of the recipient list. For most languages this should end with a space.-->
+  <!--Used to display the recipient list in the message view screen.-->
   <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
   <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
   <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
