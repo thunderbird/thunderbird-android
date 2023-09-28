@@ -43,8 +43,8 @@
   <string name="compose_title_forward_as_attachment">Persiųsti kaip priedą</string>
   <string name="choose_account_title">Pasirinkti Paskyrą</string>
   <string name="choose_folder_title">Pasirinkti aplanką</string>
-  <string name="choose_folder_move_title">Perkelti į...</string>
-  <string name="choose_folder_copy_title">Kopijuoti į...</string>
+  <string name="choose_folder_move_title">Perkelti į…</string>
+  <string name="choose_folder_copy_title">Kopijuoti į…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> pasirinkta</string>
   <string name="next_action">Kitas</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
@@ -447,7 +447,7 @@
   <string name="account_settings_crypto_key">Konfiguruoti visapusišką raktą</string>
   <string name="account_settings_crypto_summary_off">Nesukonfigūruota OpenPGP programa</string>
   <string name="account_settings_crypto_summary_on">Prisijungta prie %s</string>
-  <string name="account_settings_crypto_summary_config">Konfiguruojama...</string>
+  <string name="account_settings_crypto_summary_config">Konfiguruojama…</string>
   <string name="account_settings_crypto_encrypt_all_drafts">Laikyti visus juodraščius užšifruotus</string>
   <string name="account_settings_crypto_encrypt_all_drafts_on">Visi juodraščiai bus saugomi užšifruoti</string>
   <string name="account_settings_crypto_encrypt_all_drafts_off">Šifruoti juodraščius tik tada, jei įjungtas šifravimas</string>
@@ -999,7 +999,7 @@
   <string name="ac_transfer_intro">Automatinio šifravimo sąrankos laiške saugiai bendrinama visapuse sąranka su kitais prietaisais.</string>
   <string name="ac_transfer_button_send">Siųsti sąrankos laišką</string>
   <string name="ac_transfer_will_be_sent">Šis laiškas bus išsiųstas jūsų adresu:</string>
-  <string name="ac_transfer_generating">Generuojamas sąrankos laiškas...</string>
+  <string name="ac_transfer_generating">Generuojamas sąrankos laiškas…</string>
   <string name="ac_transfer_sending_to">Siunčiamas laiškas į:</string>
   <string name="ac_transfer_finish">Kad baigti, atidarykite laišką kitame prietaise ir įveskite sąrankos kodą.</string>
   <string name="ac_transfer_show_code">Rodyti sąrankos kodą</string>
@@ -1017,7 +1017,7 @@ Norėdami nustatyti automatinį šifravimą naujajame prietaise, vadovaukitės i
   <string name="permission_contacts_rationale_title">Leisti prieigą prie kontaktų</string>
   <string name="permission_contacts_rationale_message">Kad galėtų teikti kontaktų pasiūlymus ir rodyti kontaktų vardus bei nuotraukas, programėlei reikia prieigos prie jūsų kontaktų.</string>
   <string name="generic_loading_error">Įkeliant duomenis įvyko klaida</string>
-  <string name="push_notification_state_initializing">Inicializuojama...</string>
+  <string name="push_notification_state_initializing">Inicializuojama…</string>
   <string name="push_notification_state_listening">Laukiama naujų laiškų</string>
   <string name="push_notification_state_wait_background_sync">Miegama iki kol fono sinchronizacija bus leidžiama</string>
   <string name="push_notification_state_wait_network">Miegama, kol bus prieinamas tinklas</string>

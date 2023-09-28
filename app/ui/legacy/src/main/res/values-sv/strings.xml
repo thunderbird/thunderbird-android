@@ -1083,7 +1083,7 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Namn och e-postadress</string>
   <!--Might be displayed in a notification when deleting an account (in the background)-->
-  <string name="background_work_notification_remove_account">Tar bort konto...</string>
+  <string name="background_work_notification_remove_account">Tar bort konto…</string>
   <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
   <string name="message_list_content_description_unread_prefix">oläst, %s</string>
 </resources>

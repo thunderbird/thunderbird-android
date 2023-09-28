@@ -306,7 +306,7 @@
   <string name="account_setup_check_settings_check_incoming_msg">التحقق من إعدادات الخادم الوارد \ u2026 </string>
   <string name="account_setup_check_settings_check_outgoing_msg">التحقق من إعدادات خادم الصادر… </string>
   <string name="account_setup_check_settings_authenticate">المصادقة \u2026</string>
-  <string name="account_setup_check_settings_fetch">إحضار إعدادات الحساب ... </string>
+  <string name="account_setup_check_settings_fetch">إحضار إعدادات الحساب … </string>
   <string name="account_setup_check_settings_canceling_msg">جارٍ الإلغاء\u2026</string>
   <string name="account_setup_account_type_title">نوع الحساب</string>
   <string name="account_setup_account_type_instructions">ما نوع هذا الحساب؟</string>
@@ -774,7 +774,7 @@
   <string name="settings_import_outgoing_server_password_hint">كلمة مرور خادم البريد الصادر </string>
   <string name="settings_import_use_same_password_for_outgoing_server">استخدم نفس كلمة المرور لخادم البريد الصادر </string>
   <string name="server_name_format">اسم الخادم: <xliff:g id="hostname">%s</xliff:g></string>
-  <string name="unread_widget_select_account">إظهار العدد غير المقروء لـ ... </string>
+  <string name="unread_widget_select_account">إظهار العدد غير المقروء لـ … </string>
   <string name="unread_widget_account_title">الحساب</string>
   <string name="unread_widget_account_summary">الحساب الذي يجب عرض العدد غير المقروء له </string>
   <string name="unread_widget_unified_inbox_account_summary">البريد الوارد الموحَّد</string>
@@ -982,7 +982,7 @@
   <string name="ac_transfer_intro">تقوم رسالة إعداد Autocrypt بمشاركة الإعداد الشامل الخاص بك بأمان مع الأجهزة الأخرى. </string>
   <string name="ac_transfer_button_send">إرسال رسالة الإعداد </string>
   <string name="ac_transfer_will_be_sent">سيتم إرسال الرسالة إلى عنوانك: </string>
-  <string name="ac_transfer_generating">جاري إنشاء رسالة الإعداد ... </string>
+  <string name="ac_transfer_generating">جاري إنشاء رسالة الإعداد … </string>
   <string name="ac_transfer_sending_to">إرسال رسالة إلى:</string>
   <string name="ac_transfer_finish">للإنهاء ، افتح الرسالة على جهازك الآخر وأدخل رمز الإعداد. </string>
   <string name="ac_transfer_show_code">إظهار كود الإعداد </string>

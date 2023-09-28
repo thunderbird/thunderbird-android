@@ -1045,7 +1045,7 @@
   <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
   <string name="swipe_action_spam">Ανεπιθύμητα</string>
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-  <string name="swipe_action_move">Μετακίνηση...</string>
+  <string name="swipe_action_move">Μετακίνηση…</string>
   <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
   <string name="general_settings_show_compose_button_title">Εμφάνιση εικονιδίου σύνθεσης</string>
   <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -1083,7 +1083,7 @@
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">\'Ονομα και διεύθυνση ηλ. ταχυδρομείου</string>
   <!--Might be displayed in a notification when deleting an account (in the background)-->
-  <string name="background_work_notification_remove_account">Αφαίρεση λογαριασμού...</string>
+  <string name="background_work_notification_remove_account">Αφαίρεση λογαριασμού…</string>
   <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
   <string name="message_list_content_description_unread_prefix">αδιάβαστα, %s</string>
 </resources>

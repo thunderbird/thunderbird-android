@@ -1089,7 +1089,7 @@ Você pode guardar esta mensagem e usá-la como um backup da sua chave secreta. 
   <!--A user visible label for the name and email address copied to the clipboard-->
   <string name="clipboard_label_name_and_email_address">Nome e endereço de e-mail</string>
   <!--Might be displayed in a notification when deleting an account (in the background)-->
-  <string name="background_work_notification_remove_account">Removendo a conta...</string>
+  <string name="background_work_notification_remove_account">Removendo a conta…</string>
   <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
   <string name="message_list_content_description_unread_prefix">não lidas, 1 %s</string>
 </resources>

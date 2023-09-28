@@ -1058,7 +1058,7 @@
   <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
   <string name="swipe_action_spam">Отправить в спам</string>
   <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-  <string name="swipe_action_move">Переместить в...</string>
+  <string name="swipe_action_move">Переместить в…</string>
   <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
   <string name="general_settings_show_compose_button_title">Показать плавающую кнопку создания сообщения</string>
   <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->

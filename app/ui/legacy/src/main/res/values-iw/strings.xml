@@ -35,8 +35,8 @@
   <string name="compose_title_forward_as_attachment">העבר כקובץ מצורף</string>
   <string name="choose_account_title">בחר חשבון</string>
   <string name="choose_folder_title">בחר תיקייה</string>
-  <string name="choose_folder_move_title">העבר אל...</string>
-  <string name="choose_folder_copy_title">העתק אל...</string>
+  <string name="choose_folder_move_title">העבר אל…</string>
+  <string name="choose_folder_copy_title">העתק אל…</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> נבחרו</string>
   <string name="next_action">הבא</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
