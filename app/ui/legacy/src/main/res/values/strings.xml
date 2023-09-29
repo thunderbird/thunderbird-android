@@ -229,8 +229,8 @@
     <string name="message_view_bcc_label">Bcc:</string>
     <string name="message_view_status_attachment_not_saved">Unable to save attachment.</string>
 
-    <!-- Displayed in the message view screen in front of the recipient list. For most languages this should end with a space. -->
-    <string name="message_view_recipient_prefix">"to "</string>
+    <!-- Used to display the recipient list in the message view screen. -->
+    <string name="message_view_recipients_format">to <xliff:g id="recipients">%s</xliff:g></string>
     <!-- Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed). -->
     <string name="message_view_additional_recipient_prefix">+</string>
     <!-- Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me". -->

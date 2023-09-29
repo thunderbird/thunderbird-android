@@ -68,7 +68,7 @@ class RecipientNamesView(context: Context, attrs: AttributeSet?) : ViewGroup(con
         recipientLayoutCreator = RecipientLayoutCreator(
             textMeasure = textMeasure,
             maxNumberOfRecipientNames = MAX_NUMBER_OF_RECIPIENT_NAMES,
-            recipientsPrefix = context.getString(R.string.message_view_recipient_prefix),
+            recipientsFormat = context.getString(R.string.message_view_recipients_format),
             additionalRecipientSpacing = additionRecipientSpacing,
             additionalRecipientsPrefix = context.getString(R.string.message_view_additional_recipient_prefix),
         )
