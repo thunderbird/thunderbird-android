@@ -198,10 +198,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Користи фонт фиксне ширине за приказ обичних текстуалних порука</string>
   <string name="global_settings_messageview_autofit_width_label">Уклопи поруке</string>
   <string name="global_settings_messageview_autofit_width_summary">Скупи поруке да стану на екран</string>
-  <string name="global_settings_messageview_return_to_list_label">Врати на листу након брисања</string>
-  <string name="global_settings_messageview_return_to_list_summary">Враћа се на листу порука након брисања поруке</string>
-  <string name="global_settings_messageview_show_next_label">Приказ следеће након брисања</string>
-  <string name="global_settings_messageview_show_next_summary">Приказаће следећу поруку након брисања поруке</string>
   <string name="global_settings_confirm_actions_title">Потврде за радње</string>
   <string name="global_settings_confirm_actions_summary">Приказује дијалог за потврду изабраних радњи</string>
   <string name="global_settings_confirm_action_delete">брисања</string>

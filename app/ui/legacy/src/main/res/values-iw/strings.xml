@@ -198,10 +198,6 @@
   <string name="global_settings_registered_name_color_changed">צבע שמות ברשימת אנשי הקשר שלך</string>
   <string name="global_settings_messageview_fixedwidth_label">גופנים ברוחב קבוע</string>
   <string name="global_settings_messageview_fixedwidth_summary">השתמש בגופן ברוחב קבוע בעת הצגת הודעות טקסט רגילות</string>
-  <string name="global_settings_messageview_return_to_list_label">חזור לרשימה לאחר המחיקה</string>
-  <string name="global_settings_messageview_return_to_list_summary">חזור אל רשימת ההודעות לאחר מחיקת הודעה</string>
-  <string name="global_settings_messageview_show_next_label">הצג את ההודעה הבאה אחרי מחיקה</string>
-  <string name="global_settings_messageview_show_next_summary">הצג את הודעה הבאה כברירת מחדל לאחר מחיקת הודעה</string>
   <string name="global_settings_confirm_actions_title">אישור פעולות</string>
   <string name="global_settings_confirm_actions_summary">הצג דו שיח בכל פעם שאתה מבצע את פעולות הנבחרות</string>
   <string name="global_settings_confirm_action_delete">מחק</string>

@@ -199,10 +199,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Používať písmo s pevnou šírkou pri zobrazovaní textových správ</string>
   <string name="global_settings_messageview_autofit_width_label">Automaticky prispôsobiť správy</string>
   <string name="global_settings_messageview_autofit_width_summary">Zmenšiť správy, aby sa zmestili na obrazovku</string>
-  <string name="global_settings_messageview_return_to_list_label">Návrat do zoznamu po zmazaní</string>
-  <string name="global_settings_messageview_return_to_list_summary">Návrat do zoznamu správ po zmazaní správy</string>
-  <string name="global_settings_messageview_show_next_label">Zobraziť ďalšiu správu po zmazaní</string>
-  <string name="global_settings_messageview_show_next_summary">Zobraziť ďalšiu správu automaticky po zmazaní správy</string>
   <string name="global_settings_confirm_actions_title">Potvrdzovanie akcií</string>
   <string name="global_settings_confirm_actions_summary">Zobraziť dialógové okno pri vykonávaní vybraných akcií</string>
   <string name="global_settings_confirm_action_delete">Vymazať</string>

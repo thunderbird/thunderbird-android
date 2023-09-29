@@ -218,10 +218,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">使用等宽字体显示纯文本邮件</string>
   <string name="global_settings_messageview_autofit_width_label">自适应邮件</string>
   <string name="global_settings_messageview_autofit_width_summary">缩小邮件以适应屏幕</string>
-  <string name="global_settings_messageview_return_to_list_label">删除后回到自动返回到列表</string>
-  <string name="global_settings_messageview_return_to_list_summary">邮件删除后自动返回到邮件列表</string>
-  <string name="global_settings_messageview_show_next_label">删除后显示下一封邮件</string>
-  <string name="global_settings_messageview_show_next_summary">邮件删除后自动显示下一封邮件</string>
   <string name="global_settings_confirm_actions_title">确认操作</string>
   <string name="global_settings_confirm_actions_summary">进行选择操作时总是显示一个对话框进行确认</string>
   <string name="global_settings_confirm_action_delete">删除</string>

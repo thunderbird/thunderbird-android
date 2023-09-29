@@ -224,10 +224,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Показать сообщения в формате «Только текст» моноширинным шрифтом</string>
   <string name="global_settings_messageview_autofit_width_label">Вписать по ширине</string>
   <string name="global_settings_messageview_autofit_width_summary">Подогнать текст сообщения по ширине экрана</string>
-  <string name="global_settings_messageview_return_to_list_label">В список после удаления</string>
-  <string name="global_settings_messageview_return_to_list_summary">Перейти в список сообщений после удаления сообщения</string>
-  <string name="global_settings_messageview_show_next_label">В следующее после удаления</string>
-  <string name="global_settings_messageview_show_next_summary">Открыть следующее сообщение после удаления сообщения</string>
   <string name="global_settings_confirm_actions_title">Подтверждать действия</string>
   <string name="global_settings_confirm_actions_summary">Запросить подтверждение действий</string>
   <string name="global_settings_confirm_action_delete">Удалить</string>

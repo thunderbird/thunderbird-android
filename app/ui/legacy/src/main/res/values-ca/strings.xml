@@ -221,10 +221,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Utilitza un tipus de lletra d\'amplada fixa quan es mostrin missatges de text pla.</string>
   <string name="global_settings_messageview_autofit_width_label">Ajusta l\'amplada dels missatges automàticament</string>
   <string name="global_settings_messageview_autofit_width_summary">Retalla els missatges per adaptar la seva amplada a la pantalla.</string>
-  <string name="global_settings_messageview_return_to_list_label">Torna a la llista després de l\'eliminació</string>
-  <string name="global_settings_messageview_return_to_list_summary">Torna a la llista de missatges després d\'eliminar missatges.</string>
-  <string name="global_settings_messageview_show_next_label">Mostra el missatge següent després de l\'eliminació</string>
-  <string name="global_settings_messageview_show_next_summary">Mostra el missatge següent per defecte després d\'eliminar-ne un.</string>
   <string name="global_settings_confirm_actions_title">Confirma accions</string>
   <string name="global_settings_confirm_actions_summary">Mostra un diàleg cada vegada que executis accions seleccionades</string>
   <string name="global_settings_confirm_action_delete">Elimina</string>

@@ -200,10 +200,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">평문 메시지를 보여줄때 고정폭 폰트를 사용합니다</string>
   <string name="global_settings_messageview_autofit_width_label">너비 자동 맞춤</string>
   <string name="global_settings_messageview_autofit_width_summary">화면에 맞도록 메시지를 줄입니다</string>
-  <string name="global_settings_messageview_return_to_list_label">삭제 후 목록으로</string>
-  <string name="global_settings_messageview_return_to_list_summary">메시지 삭제 후에 메시지 목록으로 돌아갑니다</string>
-  <string name="global_settings_messageview_show_next_label">삭제 후 다음 메시지 보기</string>
-  <string name="global_settings_messageview_show_next_summary">메시지 삭제 후 다음 메시지를 보도록 기본값으로 설정합니다</string>
   <string name="global_settings_confirm_actions_title">동작시 행동</string>
   <string name="global_settings_confirm_actions_summary">설정한 행동을 할 경우 대화 상자를 보여 줍니다</string>
   <string name="global_settings_confirm_action_delete">삭제</string>

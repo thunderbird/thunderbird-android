@@ -225,10 +225,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="global_settings_messageview_fixedwidth_summary">Użyj czcionki o stałej szerokości do wyświetlania wiadomości tekstowych</string>
   <string name="global_settings_messageview_autofit_width_label">Dopasuj wiadomość do rozmiaru ekranu</string>
   <string name="global_settings_messageview_autofit_width_summary">Zmniejsza wiadomości, aby mieściły się na ekranie</string>
-  <string name="global_settings_messageview_return_to_list_label">Skasuj i wróć do listy</string>
-  <string name="global_settings_messageview_return_to_list_summary">Wraca do listy wiadomości po usunięciu danej wiadomości</string>
-  <string name="global_settings_messageview_show_next_label">Pokaż następną wiadomość po usunięciu</string>
-  <string name="global_settings_messageview_show_next_summary">Pokaż domyślnie następną wiadomość po usunięciu</string>
   <string name="global_settings_confirm_actions_title">Potwierdź czynności</string>
   <string name="global_settings_confirm_actions_summary">Pokaż potwierdzające okno dialogowe, gdy wykonujesz wybrane czynności</string>
   <string name="global_settings_confirm_action_delete">Usuń</string>

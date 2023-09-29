@@ -223,10 +223,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Usar uma fonte de largura fixa quando forem visualizadas mensagens em texto simples</string>
   <string name="global_settings_messageview_autofit_width_label">Ajustar automaticamente as mensagens</string>
   <string name="global_settings_messageview_autofit_width_summary">Encolher as mensagens para caberem no ecrã</string>
-  <string name="global_settings_messageview_return_to_list_label">Voltar à lista depois de eliminar</string>
-  <string name="global_settings_messageview_return_to_list_summary">Voltar à lista de mensagens depois da eliminação de mensagens</string>
-  <string name="global_settings_messageview_show_next_label">Mostrar a mensagem seguinte depois de eliminar</string>
-  <string name="global_settings_messageview_show_next_summary">Mostrar por predefinição a seguinte mensagem depois da eliminação de mensagens</string>
   <string name="global_settings_confirm_actions_title">Confirmar ações</string>
   <string name="global_settings_confirm_actions_summary">Mostrar um diálogo sempre que executa as ações selecionadas</string>
   <string name="global_settings_confirm_action_delete">Eliminar</string>

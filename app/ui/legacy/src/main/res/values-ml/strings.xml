@@ -210,10 +210,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">പ്ലെയിൻ-ടെക്സ്റ്റ് സന്ദേശങ്ങൾ കാണിക്കുമ്പോൾ ഒരു നിശ്ചിത-വീതിയുള്ള ഫോണ്ട് ഉപയോഗിക്കുക</string>
   <string name="global_settings_messageview_autofit_width_label">യാന്ത്രികയോജക സന്ദേശങ്ങൾ</string>
   <string name="global_settings_messageview_autofit_width_summary">സ്‌ക്രീനിന് അനുയോജ്യമായ രീതിയിൽ സന്ദേശങ്ങൾ ചുരുക്കുക</string>
-  <string name="global_settings_messageview_return_to_list_label">ഇല്ലാതാക്കിയതിന് ശേഷം ലിസ്റ്റിലേക്ക് മടങ്ങുക</string>
-  <string name="global_settings_messageview_return_to_list_summary">സന്ദേശം ഇല്ലാതാക്കിയതിനുശേഷം സന്ദേശ ലിസ്റ്റിലേക്ക് മടങ്ങുക</string>
-  <string name="global_settings_messageview_show_next_label">ഇല്ലാതാക്കിയതിനുശേഷം അടുത്ത സന്ദേശം കാണിക്കുക</string>
-  <string name="global_settings_messageview_show_next_summary">സന്ദേശം ഇല്ലാതാക്കിയതിനുശേഷം സ്ഥിരമായി അടുത്ത സന്ദേശം കാണിക്കുക</string>
   <string name="global_settings_confirm_actions_title">പ്രവർത്തനങ്ങൾ സ്ഥിരീകരിക്കുക</string>
   <string name="global_settings_confirm_actions_summary">നിങ്ങൾ തിരഞ്ഞെടുത്ത പ്രവർത്തനങ്ങൾ നടത്തുമ്പോഴെല്ലാം ഒരു ഡയലോഗ് കാണിക്കുക</string>
   <string name="global_settings_confirm_action_delete">ഇല്ലാതാക്കുക</string>

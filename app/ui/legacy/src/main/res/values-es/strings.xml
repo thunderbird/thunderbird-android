@@ -222,10 +222,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Utilizar tipos de letra de ancho fijo al mostrar mensajes en formato texto</string>
   <string name="global_settings_messageview_autofit_width_label">Auto-ajustar los mensajes</string>
   <string name="global_settings_messageview_autofit_width_summary">Encoger los mensajes para que quepan en la pantalla</string>
-  <string name="global_settings_messageview_return_to_list_label">Volver a la lista después de borrar</string>
-  <string name="global_settings_messageview_return_to_list_summary">Volver a la lista después de borrar un mensaje</string>
-  <string name="global_settings_messageview_show_next_label">Mostrar siguiente mensaje después de borrar</string>
-  <string name="global_settings_messageview_show_next_summary">Mostrar de manera predeterminada el siguiente mensaje después de borrar</string>
   <string name="global_settings_confirm_actions_title">Confirmar acciones</string>
   <string name="global_settings_confirm_actions_summary">Mostrar un diálogo cuando se realice una de estas acciones</string>
   <string name="global_settings_confirm_action_delete">Borrar</string>

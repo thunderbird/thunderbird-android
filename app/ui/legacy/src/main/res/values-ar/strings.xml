@@ -229,10 +229,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">استخدم خطًا ذا عرض ثابت عند إظهار رسائل نصية عادية</string>
   <string name="global_settings_messageview_autofit_width_label">ﻻئم الرسالة تلقائيًا</string>
   <string name="global_settings_messageview_autofit_width_summary">تقليص الرسالة لتناسب الشاشة</string>
-  <string name="global_settings_messageview_return_to_list_label">عودة إلى اللائحة بعد الحذف</string>
-  <string name="global_settings_messageview_return_to_list_summary">عودة إلى لائحة الرسائل بعد حذف الرسالة</string>
-  <string name="global_settings_messageview_show_next_label">إظهار الرسالة التالية بعد الحذف</string>
-  <string name="global_settings_messageview_show_next_summary">إظهار الرسالة التالية دائمًا بعد حذف الرسالة</string>
   <string name="global_settings_confirm_actions_title">أكّد الإجاءات</string>
   <string name="global_settings_confirm_actions_summary">إظهار مربع حوار كلما قمت بتنفيذ الإجراءات المحددة</string>
   <string name="global_settings_confirm_action_delete">احذف</string>

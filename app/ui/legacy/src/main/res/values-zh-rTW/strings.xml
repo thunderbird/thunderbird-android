@@ -218,10 +218,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">使用固定寬度字體顯示純文字郵件</string>
   <string name="global_settings_messageview_autofit_width_label">自動調整訊息</string>
   <string name="global_settings_messageview_autofit_width_summary">調整訊息內容符合螢幕大小</string>
-  <string name="global_settings_messageview_return_to_list_label">刪除後自動返回到列表</string>
-  <string name="global_settings_messageview_return_to_list_summary">郵件刪除後自動返回到郵件列表</string>
-  <string name="global_settings_messageview_show_next_label">刪除並顯示下一郵件</string>
-  <string name="global_settings_messageview_show_next_summary">刪除郵件後自動顯示下一郵件</string>
   <string name="global_settings_confirm_actions_title">確認操作</string>
   <string name="global_settings_confirm_actions_summary">進行選擇操作時總是顯示一個對話框進行確認</string>
   <string name="global_settings_confirm_action_delete">刪除</string>
