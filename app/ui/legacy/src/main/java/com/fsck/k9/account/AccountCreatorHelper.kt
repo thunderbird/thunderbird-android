@@ -10,7 +10,7 @@ import com.fsck.k9.mail.ConnectionSecurity
 /**
  * Deals with logic surrounding account creation.
  *
- * TODO Move much of the code from com.fsck.k9.activity.setup.* into here
+ * TODO move this close to account creator
  */
 class AccountCreatorHelper(private val preferences: Preferences, private val resources: Resources) {
 

@@ -12,6 +12,8 @@ internal fun AccountState.toAccountOptionsState(): State {
     return if (options == null) {
         State(
             accountName = StringInputField(emailAddress ?: ""),
+            // displayName = StringInputField(""),
+            // TODO: get display name from: preferences.defaultAccount?.senderName ?: ""
         )
     } else {
         State(
