@@ -387,6 +387,11 @@ class MessageListAdapter internal constructor(
 
             if (appearance.stars) {
                 holder.star.isSelected = isStarred
+                holder.starClickArea.contentDescription = if (isStarred) {
+                    res.getString(R.string.unflag_action)
+                } else {
+                    res.getString(R.string.flag_action)
+                }
             }
             holder.uniqueId = uniqueId
             if (appearance.showContactPicture && holder.contactPicture.isVisible) {
