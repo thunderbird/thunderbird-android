@@ -1,229 +1,318 @@
-package com.fsck.k9.preferences;
+package com.fsck.k9.preferences
 
+import android.content.Context
+import assertk.all
+import assertk.assertFailure
+import assertk.assertThat
+import assertk.assertions.containsExactly
+import assertk.assertions.extracting
+import assertk.assertions.first
+import assertk.assertions.hasSize
+import assertk.assertions.isEmpty
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
+import assertk.assertions.isInstanceOf
+import assertk.assertions.isTrue
+import assertk.assertions.key
+import assertk.assertions.prop
+import com.fsck.k9.K9RobolectricTest
+import com.fsck.k9.Preferences
+import com.fsck.k9.mail.AuthType
+import com.fsck.k9.preferences.SettingsImporter.AccountDescription
+import com.fsck.k9.preferences.SettingsImporter.AccountDescriptionPair
+import com.fsck.k9.preferences.SettingsImporter.ImportContents
+import com.fsck.k9.preferences.SettingsImporter.ImportResults
+import com.fsck.k9.preferences.SettingsImporter.ImportedAccount
+import com.fsck.k9.preferences.SettingsImporter.ImportedIdentity
+import com.fsck.k9.preferences.SettingsImporter.ImportedServer
+import java.util.UUID
+import org.junit.Before
+import org.junit.Test
+import org.robolectric.RuntimeEnvironment
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import android.content.Context;
-
-import com.fsck.k9.K9RobolectricTest;
-import com.fsck.k9.Preferences;
-import com.fsck.k9.mail.AuthType;
-import kotlin.text.Charsets;
-import okio.Buffer;
-import org.junit.Before;
-import org.junit.Test;
-import org.robolectric.RuntimeEnvironment;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-
-public class SettingsImporterTest extends K9RobolectricTest {
-    private final Context context = RuntimeEnvironment.getApplication();
+class SettingsImporterTest : K9RobolectricTest() {
+    private val context: Context = RuntimeEnvironment.getApplication()
 
     @Before
-    public void before() {
-        deletePreExistingAccounts();
+    fun before() {
+        deletePreExistingAccounts()
     }
 
-    private void deletePreExistingAccounts() {
-        Preferences preferences = Preferences.getPreferences();
-        preferences.clearAccounts();
-    }
-
-    @Test(expected = SettingsImportExportException.class)
-    public void importSettings_throwsExceptionOnBlankFile() throws SettingsImportExportException {
-        InputStream inputStream = inputStreamOf("");
-        List<String> accountUuids = new ArrayList<>();
-
-        SettingsImporter.importSettings(context, inputStream, true, accountUuids, true);
-    }
-
-    @Test(expected = SettingsImportExportException.class)
-    public void importSettings_throwsExceptionOnMissingFormat() throws SettingsImportExportException {
-        InputStream inputStream = inputStreamOf("<k9settings version=\"1\"></k9settings>");
-        List<String> accountUuids = new ArrayList<>();
-
-        SettingsImporter.importSettings(context, inputStream, true, accountUuids, true);
-    }
-
-    @Test(expected = SettingsImportExportException.class)
-    public void importSettings_throwsExceptionOnInvalidFormat() throws SettingsImportExportException {
-        InputStream inputStream = inputStreamOf("<k9settings version=\"1\" format=\"A\"></k9settings>");
-        List<String> accountUuids = new ArrayList<>();
-
-        SettingsImporter.importSettings(context, inputStream, true, accountUuids, true);
-    }
-
-    @Test(expected = SettingsImportExportException.class)
-    public void importSettings_throwsExceptionOnNonPositiveFormat() throws SettingsImportExportException {
-        InputStream inputStream = inputStreamOf("<k9settings version=\"1\" format=\"0\"></k9settings>");
-        List<String> accountUuids = new ArrayList<>();
-
-        SettingsImporter.importSettings(context, inputStream, true, accountUuids, true);
-    }
-
-    @Test(expected = SettingsImportExportException.class)
-    public void importSettings_throwsExceptionOnMissingVersion() throws SettingsImportExportException {
-        InputStream inputStream = inputStreamOf("<k9settings format=\"1\"></k9settings>");
-        List<String> accountUuids = new ArrayList<>();
-
-        SettingsImporter.importSettings(context, inputStream, true, accountUuids, true);
-    }
-
-    @Test(expected = SettingsImportExportException.class)
-    public void importSettings_throwsExceptionOnInvalidVersion() throws SettingsImportExportException {
-        InputStream inputStream = inputStreamOf("<k9settings format=\"1\" version=\"A\"></k9settings>");
-        List<String> accountUuids = new ArrayList<>();
-
-        SettingsImporter.importSettings(context, inputStream, true, accountUuids, true);
-    }
-
-    @Test(expected = SettingsImportExportException.class)
-    public void importSettings_throwsExceptionOnNonPositiveVersion() throws SettingsImportExportException {
-        InputStream inputStream = inputStreamOf("<k9settings format=\"1\" version=\"0\"></k9settings>");
-        List<String> accountUuids = new ArrayList<>();
-
-        SettingsImporter.importSettings(context, inputStream, true, accountUuids, true);
+    private fun deletePreExistingAccounts() {
+        val preferences = Preferences.getPreferences()
+        preferences.clearAccounts()
     }
 
     @Test
-    public void parseSettings_account() throws SettingsImportExportException {
-        String validUUID = UUID.randomUUID().toString();
-        InputStream inputStream = inputStreamOf("<k9settings format=\"1\" version=\"1\">" +
-                "<accounts><account uuid=\"" + validUUID + "\"><name>Account</name></account></accounts></k9settings>");
-        List<String> accountUuids = new ArrayList<>();
-        accountUuids.add("1");
+    fun `importSettings() should throw on empty file`() {
+        val inputStream = "".byteInputStream()
+        val accountUuids = emptyList<String>()
 
-        SettingsImporter.Imported results = SettingsImporter.parseSettings(inputStream, true, accountUuids, true);
-
-        assertEquals(1, results.accounts.size());
-        assertEquals("Account", results.accounts.get(validUUID).name);
-        assertEquals(validUUID, results.accounts.get(validUUID).uuid);
+        assertFailure {
+            SettingsImporter.importSettings(context, inputStream, true, accountUuids, true)
+        }.isInstanceOf<SettingsImportExportException>()
     }
 
     @Test
-    public void parseSettings_account_identities() throws SettingsImportExportException {
-        String validUUID = UUID.randomUUID().toString();
-        InputStream inputStream = inputStreamOf("<k9settings format=\"1\" version=\"1\">" +
-                "<accounts><account uuid=\"" + validUUID + "\"><name>Account</name>" +
-                "<identities><identity><email>user@gmail.com</email></identity></identities>" +
-                "</account></accounts></k9settings>");
-        List<String> accountUuids = new ArrayList<>();
-        accountUuids.add("1");
+    fun `importSettings() should throw on missing format attribute`() {
+        val inputStream = """<k9settings version="1"></k9settings>""".byteInputStream()
+        val accountUuids = emptyList<String>()
 
-        SettingsImporter.Imported results = SettingsImporter.parseSettings(inputStream, true, accountUuids, true);
-
-        assertEquals(1, results.accounts.size());
-        assertEquals(validUUID, results.accounts.get(validUUID).uuid);
-        assertEquals(1, results.accounts.get(validUUID).identities.size());
-        assertEquals("user@gmail.com", results.accounts.get(validUUID).identities.get(0).email);
-    }
-
-
-    @Test
-    public void parseSettings_account_cram_md5() throws SettingsImportExportException {
-        String validUUID = UUID.randomUUID().toString();
-        InputStream inputStream = inputStreamOf("<k9settings format=\"1\" version=\"1\">" +
-                "<accounts><account uuid=\"" + validUUID + "\"><name>Account</name>" +
-                "<incoming-server><authentication-type>CRAM_MD5</authentication-type></incoming-server>" +
-                "</account></accounts></k9settings>");
-        List<String> accountUuids = new ArrayList<>();
-        accountUuids.add(validUUID);
-
-        SettingsImporter.Imported results = SettingsImporter.parseSettings(inputStream, true, accountUuids, false);
-
-        assertEquals("Account", results.accounts.get(validUUID).name);
-        assertEquals(validUUID, results.accounts.get(validUUID).uuid);
-        assertEquals(AuthType.CRAM_MD5, results.accounts.get(validUUID).incoming.authenticationType);
+        assertFailure {
+            SettingsImporter.importSettings(context, inputStream, true, accountUuids, true)
+        }.isInstanceOf<SettingsImportExportException>()
     }
 
     @Test
-    public void importSettings_disablesAccountsNeedingPasswords() throws SettingsImportExportException {
-        String validUUID = UUID.randomUUID().toString();
-        InputStream inputStream = inputStreamOf("<k9settings format=\"1\" version=\"1\">" +
-                "<accounts><account uuid=\"" + validUUID + "\"><name>Account</name>" +
-                "<incoming-server type=\"IMAP\">" +
-                    "<connection-security>SSL_TLS_REQUIRED</connection-security>" +
-                    "<username>user@gmail.com</username>" +
-                    "<authentication-type>CRAM_MD5</authentication-type>" +
-                    "<host>googlemail.com</host>" +
-                "</incoming-server>" +
-                "<outgoing-server type=\"SMTP\">" +
-                    "<connection-security>SSL_TLS_REQUIRED</connection-security>" +
-                    "<username>user@googlemail.com</username>" +
-                    "<authentication-type>CRAM_MD5</authentication-type>" +
-                    "<host>googlemail.com</host>" +
-                "</outgoing-server>" +
-                "<settings><value key=\"a\">b</value></settings>" +
-                "<identities><identity><email>user@gmail.com</email></identity></identities>" +
-                "</account></accounts></k9settings>");
-        List<String> accountUuids = new ArrayList<>();
-        accountUuids.add(validUUID);
+    fun `importSettings() should throw on invalid format attribute value`() {
+        val inputStream = """<k9settings version="1" format="A"></k9settings>""".byteInputStream()
+        val accountUuids = emptyList<String>()
 
-        SettingsImporter.ImportResults results = SettingsImporter.importSettings(
-                context, inputStream, true, accountUuids, false);
-
-        assertEquals(0, results.erroneousAccounts.size());
-        assertEquals(1, results.importedAccounts.size());
-        assertEquals("Account", results.importedAccounts.get(0).imported.name);
-        assertEquals(validUUID, results.importedAccounts.get(0).imported.uuid);
-        assertTrue(results.importedAccounts.get(0).incomingPasswordNeeded);
-        assertTrue(results.importedAccounts.get(0).outgoingPasswordNeeded);
+        assertFailure {
+            SettingsImporter.importSettings(context, inputStream, true, accountUuids, true)
+        }.isInstanceOf<SettingsImportExportException>()
     }
 
     @Test
-    public void getImportStreamContents_account() throws SettingsImportExportException {
-        String validUUID = UUID.randomUUID().toString();
-        InputStream inputStream = inputStreamOf("<k9settings format=\"1\" version=\"1\">" +
-                "<accounts>" +
-                    "<account uuid=\"" + validUUID + "\">" +
-                        "<name>Account</name>" +
-                        "<identities>" +
-                            "<identity>" +
-                                "<email>user@gmail.com</email>" +
-                            "</identity>" +
-                        "</identities>" +
-                    "</account>" +
-                "</accounts></k9settings>");
+    fun `importSettings() should throw on invalid format version`() {
+        val inputStream = """<k9settings version="1" format="0"></k9settings>""".byteInputStream()
+        val accountUuids = emptyList<String>()
 
-        SettingsImporter.ImportContents results = SettingsImporter.getImportStreamContents(inputStream);
-
-        assertEquals(false, results.globalSettings);
-        assertEquals(1, results.accounts.size());
-        assertEquals("Account", results.accounts.get(0).name);
-        assertEquals(validUUID, results.accounts.get(0).uuid);
+        assertFailure {
+            SettingsImporter.importSettings(context, inputStream, true, accountUuids, true)
+        }.isInstanceOf<SettingsImportExportException>()
     }
 
     @Test
-    public void getImportStreamContents_alternativeName() throws SettingsImportExportException {
-        String validUUID = UUID.randomUUID().toString();
-        InputStream inputStream = inputStreamOf("<k9settings format=\"1\" version=\"1\">" +
-                "<accounts>" +
-                    "<account uuid=\"" + validUUID + "\">" +
-                        "<name></name>" +
-                        "<identities>" +
-                            "<identity>" +
-                                "<email>user@gmail.com</email>" +
-                            "</identity>" +
-                        "</identities>" +
-                    "</account>" +
-                "</accounts></k9settings>");
+    fun `importSettings() should throw on missing version attribute`() {
+        val inputStream = """<k9settings format="1"></k9settings>""".byteInputStream()
+        val accountUuids = emptyList<String>()
 
-        SettingsImporter.ImportContents results = SettingsImporter.getImportStreamContents(inputStream);
-
-        assertEquals(false, results.globalSettings);
-        assertEquals(1, results.accounts.size());
-        assertEquals("user@gmail.com", results.accounts.get(0).name);
-        assertEquals(validUUID, results.accounts.get(0).uuid);
+        assertFailure {
+            SettingsImporter.importSettings(context, inputStream, true, accountUuids, true)
+        }.isInstanceOf<SettingsImportExportException>()
     }
 
-    private InputStream inputStreamOf(String data) {
-        return new Buffer()
-                .writeString(data, Charsets.UTF_8)
-                .inputStream();
+    @Test
+    fun `importSettings() should throws on invalid version attribute value`() {
+        val inputStream = """<k9settings format="1" version="A"></k9settings>""".byteInputStream()
+        val accountUuids = emptyList<String>()
+
+        assertFailure {
+            SettingsImporter.importSettings(context, inputStream, true, accountUuids, true)
+        }.isInstanceOf<SettingsImportExportException>()
+    }
+
+    @Test
+    fun `importSettings() should throw on invalid version`() {
+        val inputStream = """<k9settings format="1" version="0"></k9settings>""".byteInputStream()
+        val accountUuids = emptyList<String>()
+
+        assertFailure {
+            SettingsImporter.importSettings(context, inputStream, true, accountUuids, true)
+        }.isInstanceOf<SettingsImportExportException>()
+    }
+
+    @Test
+    fun `parseSettings() should return accounts`() {
+        val accountUuid = UUID.randomUUID().toString()
+        val inputStream =
+            """
+            <k9settings format="1" version="1">
+              <accounts>
+                <account uuid="$accountUuid">
+                  <name>Account</name>
+                </account>
+              </accounts>
+            </k9settings>
+            """.trimIndent().byteInputStream()
+        val accountUuids = listOf("1")
+
+        val results = SettingsImporter.parseSettings(inputStream, true, accountUuids, true)
+
+        assertThat(results.accounts).all {
+            hasSize(1)
+            key(accountUuid).all {
+                prop(ImportedAccount::uuid).isEqualTo(accountUuid)
+                prop(ImportedAccount::name).isEqualTo("Account")
+            }
+        }
+    }
+
+    @Test
+    fun `parseSettings() should return identities`() {
+        val accountUuid = UUID.randomUUID().toString()
+        val inputStream =
+            """
+            <k9settings format="1" version="1">
+              <accounts>
+                <account uuid="$accountUuid">
+                  <name>Account</name>
+                  <identities>
+                    <identity>
+                      <email>user@gmail.com</email>
+                    </identity>
+                  </identities>
+                </account>
+              </accounts>
+            </k9settings>
+            """.trimIndent().byteInputStream()
+        val accountUuids = listOf("1")
+
+        val results = SettingsImporter.parseSettings(inputStream, true, accountUuids, true)
+
+        assertThat(results.accounts).all {
+            hasSize(1)
+            key(accountUuid).all {
+                prop(ImportedAccount::uuid).isEqualTo(accountUuid)
+                prop(ImportedAccount::identities).extracting(ImportedIdentity::email).containsExactly("user@gmail.com")
+            }
+        }
+    }
+
+    @Test
+    fun `parseSettings() should parse incoming server authentication type`() {
+        val accountUuid = UUID.randomUUID().toString()
+        val inputStream =
+            """
+            <k9settings format="1" version="1">
+              <accounts>
+                <account uuid="$accountUuid">
+                  <name>Account</name>
+                  <incoming-server>
+                    <authentication-type>CRAM_MD5</authentication-type>
+                  </incoming-server>
+                </account>
+              </accounts>
+            </k9settings>
+            """.trimIndent().byteInputStream()
+        val accountUuids = listOf(accountUuid)
+
+        val results = SettingsImporter.parseSettings(inputStream, true, accountUuids, false)
+
+        assertThat(results.accounts)
+            .key(accountUuid)
+            .prop(ImportedAccount::incoming)
+            .prop(ImportedServer::authenticationType)
+            .isEqualTo(AuthType.CRAM_MD5)
+    }
+
+    @Test
+    fun `importSettings() should disable accounts needing passwords`() {
+        val accountUuid = UUID.randomUUID().toString()
+        val inputStream =
+            """
+            <k9settings format="1" version="1">
+              <accounts>
+                <account uuid="$accountUuid">
+                  <name>Account</name>
+                  <incoming-server type="IMAP">
+                    <connection-security>SSL_TLS_REQUIRED</connection-security>
+                    <username>user@gmail.com</username>
+                    <authentication-type>CRAM_MD5</authentication-type>
+                    <host>googlemail.com</host>
+                  </incoming-server>
+                  <outgoing-server type="SMTP">
+                    <connection-security>SSL_TLS_REQUIRED</connection-security>
+                    <username>user@googlemail.com</username>
+                    <authentication-type>CRAM_MD5</authentication-type>
+                    <host>googlemail.com</host>
+                  </outgoing-server>
+                  <settings>
+                    <value key="a">b</value>
+                  </settings>
+                  <identities>
+                    <identity>
+                      <email>user@gmail.com</email>
+                    </identity>
+                  </identities>
+                </account>
+              </accounts>
+            </k9settings>
+            """.trimIndent().byteInputStream()
+        val accountUuids = listOf(accountUuid)
+
+        val results = SettingsImporter.importSettings(context, inputStream, true, accountUuids, false)
+
+        assertThat(results).all {
+            prop(ImportResults::erroneousAccounts).isEmpty()
+            prop(ImportResults::importedAccounts).all {
+                hasSize(1)
+                first().all {
+                    prop(AccountDescriptionPair::imported).all {
+                        prop(AccountDescription::uuid).isEqualTo(accountUuid)
+                        prop(AccountDescription::name).isEqualTo("Account")
+                    }
+                    prop(AccountDescriptionPair::incomingPasswordNeeded).isTrue()
+                    prop(AccountDescriptionPair::outgoingPasswordNeeded).isTrue()
+                }
+            }
+        }
+    }
+
+    @Test
+    fun `getImportStreamContents() should return list of accounts`() {
+        val accountUuid = UUID.randomUUID().toString()
+        val inputStream =
+            """
+            <k9settings format="1" version="1">
+              <accounts>
+                <account uuid="$accountUuid">
+                  <name>Account</name>
+                  <identities>
+                    <identity>
+                      <email>user@gmail.com</email>
+                    </identity>
+                  </identities>
+                </account>
+              </accounts>
+            </k9settings>
+            """.trimIndent().byteInputStream()
+
+        val results = SettingsImporter.getImportStreamContents(inputStream)
+
+        assertThat(results).all {
+            prop(ImportContents::globalSettings).isFalse()
+            prop(ImportContents::accounts).all {
+                hasSize(1)
+                first().all {
+                    prop(AccountDescription::uuid).isEqualTo(accountUuid)
+                    prop(AccountDescription::name).isEqualTo("Account")
+                }
+            }
+        }
+    }
+
+    @Test
+    fun `getImportStreamContents() should return email address as account name when no account name provided`() {
+        val accountUuid = UUID.randomUUID().toString()
+        val inputStream =
+            """
+            <k9settings format="1" version="1">
+              <accounts>
+                <account uuid="$accountUuid">
+                  <name></name>
+                  <identities>
+                    <identity>
+                      <email>user@gmail.com</email>
+                    </identity>
+                  </identities>
+                </account>
+              </accounts>
+            </k9settings>
+            """.trimIndent().byteInputStream()
+
+        val results = SettingsImporter.getImportStreamContents(inputStream)
+
+        assertThat(results).all {
+            prop(ImportContents::globalSettings).isFalse()
+            prop(ImportContents::accounts).all {
+                hasSize(1)
+                first().all {
+                    prop(AccountDescription::uuid).isEqualTo(accountUuid)
+                    prop(AccountDescription::name).isEqualTo("user@gmail.com")
+                }
+            }
+        }
     }
 }
