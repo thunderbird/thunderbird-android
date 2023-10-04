@@ -84,7 +84,9 @@ android {
     buildTypes {
         release {
             signingConfigs.findByName("release")?.let { releaseSigningConfig ->
-                signingConfig = releaseSigningConfig
+                // The comment in the line below is necessary to prevent F-Droid's build tools from breaking our Gradle
+                // config when stripping the signing config.
+                signingConfig = releaseSigningConfig // F-Droid hack
             }
 
             isMinifyEnabled = true
