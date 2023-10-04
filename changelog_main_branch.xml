@@ -5,6 +5,16 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.711" versioncode="37011" date="2023-10-04">
+        <change>Simplified the app icon so it can be a vector drawable</change>
+        <change>Improved screen reader experience in various places</change>
+        <change>Improved logging on failing settings import</change>
+        <change>Improved display of some HTML messages</change>
+        <change>Changed background color in message view and compose screens when using dark theme</change>
+        <change>Fixed OAuth 2.0 with Yahoo and AOL</change>
+        <change>Fixed display issues when rendering a message/rfc822 inline part</change>
+        <change>Updated translations</change>
+    </release>
     <release version="6.710" versioncode="37010" date="2023-08-18">
         <change>Fixed bug where accounts using OAuth weren't set up properly in K-9 Mail 6.709</change>
         <change>Moved "Show only subscribed folders" setting to "Folders" section</change>
