@@ -16,18 +16,18 @@ import org.junit.Test
 class AccountStateLoaderTest {
 
     @Test
-    fun `loadAccountState() should return null when accountManager returns null`() = runTest {
+    fun `loadAccountState() SHOULD return null when accountManager returns null`() = runTest {
         val accountManager = FakeAccountManager()
-        val accountLoader = AccountStateLoader(accountManager)
+        val testSubject = AccountStateLoader(accountManager)
 
-        val result = accountLoader.loadAccountState("accountUuid")
+        val result = testSubject.loadAccountState("accountUuid")
 
         assertThat(result).isNull()
     }
 
     @Test
-    fun `loadAccountState() should return account when present in accountManager`() = runTest {
-        val accounts = mapOf(
+    fun `loadAccountState() SHOULD return account when present in accountManager`() = runTest {
+        val accounts = mutableMapOf(
             "accountUuid" to Account(uuid = "accountUuid").apply {
                 identities = mutableListOf(Identity())
                 email = "emailAddress"
@@ -37,9 +37,9 @@ class AccountStateLoaderTest {
             },
         )
         val accountManager = FakeAccountManager(accounts = accounts)
-        val accountLoader = AccountStateLoader(accountManager)
+        val testSubject = AccountStateLoader(accountManager)
 
-        val result = accountLoader.loadAccountState("accountUuid")
+        val result = testSubject.loadAccountState("accountUuid")
 
         assertThat(result).isEqualTo(
             AccountState(

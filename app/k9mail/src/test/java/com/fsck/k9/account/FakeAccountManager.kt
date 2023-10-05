@@ -7,7 +7,8 @@ import com.fsck.k9.preferences.AccountManager
 import kotlinx.coroutines.flow.Flow
 
 class FakeAccountManager(
-    private val accounts: Map<String, Account> = emptyMap(),
+    private val accounts: MutableMap<String, Account> = mutableMapOf(),
+    private val isFailureOnSave: Boolean = false,
 ) : AccountManager {
 
     override fun getAccountsFlow(): Flow<List<Account>> {
@@ -36,7 +37,11 @@ class FakeAccountManager(
         TODO("Not yet implemented")
     }
 
+    @Suppress("TooGenericExceptionThrown")
     override fun saveAccount(account: Account) {
-        TODO("Not yet implemented")
+        if (isFailureOnSave) {
+            throw Exception("FakeAccountManager.saveAccount() failed")
+        }
+        accounts[account.uuid] = account
     }
 }
