@@ -3,7 +3,6 @@ package com.fsck.k9.preferences;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -33,6 +32,11 @@ import com.fsck.k9.preferences.Settings.SettingsDescription;
 import com.fsck.k9.preferences.Settings.SettingsUpgrader;
 import com.fsck.k9.preferences.Settings.V;
 import com.fsck.k9.preferences.Settings.WebFontSizeSetting;
+import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo24;
+import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo31;
+import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo58;
+import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo69;
+import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo79;
 
 import static com.fsck.k9.K9.LockScreenNotificationVisibility;
 
@@ -285,11 +289,11 @@ public class GeneralSettingsDescriptions {
         SETTINGS = Collections.unmodifiableMap(s);
 
         Map<Integer, SettingsUpgrader> u = new HashMap<>();
-        u.put(24, new SettingsUpgraderV24());
-        u.put(31, new SettingsUpgraderV31());
-        u.put(58, new SettingsUpgraderV58());
-        u.put(69, new SettingsUpgraderV69());
-        u.put(79, new SettingsUpgraderV79());
+        u.put(24, new GeneralSettingsUpgraderTo24());
+        u.put(31, new GeneralSettingsUpgraderTo31());
+        u.put(58, new GeneralSettingsUpgraderTo58());
+        u.put(69, new GeneralSettingsUpgraderTo69());
+        u.put(79, new GeneralSettingsUpgraderTo79());
 
         UPGRADERS = Collections.unmodifiableMap(u);
     }
@@ -315,132 +319,6 @@ public class GeneralSettingsDescriptions {
             }
         }
         return result;
-    }
-
-    /**
-     * Upgrades the settings from version 23 to 24.
-     *
-     * <p>
-     * Set <em>messageViewTheme</em> to {@link SubTheme#USE_GLOBAL} if <em>messageViewTheme</em> has
-     * the same value as <em>theme</em>.
-     * </p>
-     */
-    private static class SettingsUpgraderV24 implements SettingsUpgrader {
-
-        @Override
-        public Set<String> upgrade(Map<String, Object> settings) {
-            SubTheme messageViewTheme = (SubTheme) settings.get("messageViewTheme");
-            AppTheme theme = (AppTheme) settings.get("theme");
-            if ((theme == AppTheme.LIGHT && messageViewTheme == SubTheme.LIGHT) ||
-                    (theme == AppTheme.DARK && messageViewTheme == SubTheme.DARK)) {
-                settings.put("messageViewTheme", SubTheme.USE_GLOBAL);
-            }
-
-            return null;
-        }
-    }
-
-    /**
-     * Upgrades the settings from version 30 to 31.
-     *
-     * <p>
-     * Convert value from <em>fontSizeMessageViewContent</em> to
-     * <em>fontSizeMessageViewContentPercent</em>.
-     * </p>
-     */
-    public static class SettingsUpgraderV31 implements SettingsUpgrader {
-
-        @Override
-        public Set<String> upgrade(Map<String, Object> settings) {
-            int oldSize = (Integer) settings.get("fontSizeMessageViewContent");
-
-            int newSize = convertFromOldSize(oldSize);
-
-            settings.put("fontSizeMessageViewContentPercent", newSize);
-
-            return new HashSet<>(Collections.singletonList("fontSizeMessageViewContent"));
-        }
-
-        public static int convertFromOldSize(int oldSize) {
-            switch (oldSize) {
-                case 1: {
-                    return 40;
-                }
-                case 2: {
-                    return 75;
-                }
-                case 4: {
-                    return 175;
-                }
-                case 5: {
-                    return 250;
-                }
-                case 3:
-                default: {
-                    return 100;
-                }
-            }
-        }
-    }
-
-    /**
-     * Upgrades the settings from version 57 to 58.
-     *
-     * <p>
-     * Set <em>theme</em> to {@link AppTheme#FOLLOW_SYSTEM} if <em>theme</em> has the value {@link AppTheme#LIGHT}.
-     * </p>
-     */
-    private static class SettingsUpgraderV58 implements SettingsUpgrader {
-
-        @Override
-        public Set<String> upgrade(Map<String, Object> settings) {
-            AppTheme theme = (AppTheme) settings.get("theme");
-            if (theme == AppTheme.LIGHT) {
-                settings.put("theme", AppTheme.FOLLOW_SYSTEM);
-            }
-
-            return null;
-        }
-    }
-
-    /**
-     * Upgrades the settings from version 68 to 69.
-     *
-     * <p>
-     * Renames {@code hideSpecialAccounts} to {@code showUnifiedInbox}.
-     * </p>
-     */
-    private static class SettingsUpgraderV69 implements SettingsUpgrader {
-
-        @Override
-        public Set<String> upgrade(Map<String, Object> settings) {
-            Boolean hideSpecialAccounts = (Boolean) settings.get("hideSpecialAccounts");
-            boolean showUnifiedInbox = hideSpecialAccounts == null || !hideSpecialAccounts;
-            settings.put("showUnifiedInbox", showUnifiedInbox);
-
-            return new HashSet<>(Collections.singleton("hideSpecialAccounts"));
-        }
-    }
-
-    /**
-     * Upgrades the settings from version 78 to 79.
-     *
-     * <p>
-     * Change default value of {@code registeredNameColor} to have enough contrast in both the light and dark theme.
-     * </p>
-     */
-    private static class SettingsUpgraderV79 implements SettingsUpgrader {
-
-        @Override
-        public Set<String> upgrade(Map<String, Object> settings) {
-            final Integer registeredNameColorValue = (Integer) settings.get("registeredNameColor");
-
-            if (registeredNameColorValue != null && registeredNameColorValue == 0xFF00008F) {
-                settings.put("registeredNameColor", 0xFF1093F5);
-            }
-
-            return null;
-        }
     }
 
     private static class LanguageSetting extends PseudoEnumSetting<String> {
