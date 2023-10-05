@@ -13,9 +13,9 @@
 
 ## One-time setup for F-Droid builds
 
-1. Install *fdroidserver* by following the [installation instructions](https://f-droid.org/docs/Installing_the_Server_and_Repo_Tools).
-2. [Sign up for a Gitlab account](https://gitlab.com/users/sign_up) and fork the [fdroiddata](https://gitlab.com/fdroid/fdroiddata) repository. 
-3. Clone your fork of the *fdroiddata* repository.
+1. Install _fdroidserver_ by following the [installation instructions](https://f-droid.org/docs/Installing_the_Server_and_Repo_Tools).
+2. [Sign up for a Gitlab account](https://gitlab.com/users/sign_up) and fork the [fdroiddata](https://gitlab.com/fdroid/fdroiddata) repository.
+3. Clone your fork of the _fdroiddata_ repository.
 
 ## Release a beta version
 
@@ -55,14 +55,14 @@
 
 ### Create release on F-Droid
 
-1. Fetch the latest changes from the *fdroiddata* repository.
-2. Switch to a new branch in your copy of the *fdroiddata* repository.
+1. Fetch the latest changes from the _fdroiddata_ repository.
+2. Switch to a new branch in your copy of the _fdroiddata_ repository.
 3. Edit `metadata/com.fsck.k9.yml` to create a new entry for the version you want to release. Usually it's copy & paste of the previous entry and adjusting `versionName`, `versionCode`, and `commit` (use the tag name). Leave `CurrentVersion` and `CurrentVersionCode` unchanged. Those specify which version is the stable/recommended build.
 4. Commit the changes. Message: "Update K-9 Mail to $newVersionName"
-5. Run `fdroid build --latest com.fsck.k9` to build the project using F-Droid's toolchain. 
-6. Push the changes to your fork of the *fdroiddata* repository.
+5. Run `fdroid build --latest com.fsck.k9` to build the project using F-Droid's toolchain.
+6. Push the changes to your fork of the _fdroiddata_ repository.
 7. Open a merge request on Gitlab. (The message from the server after the push in the previous step should contain a URL)
-8. Select the *App update* template and fill it out.
+8. Select the _App update_ template and fill it out.
 9. Create merge request and the F-Droid team will do the rest.
 
 ### Create release on Google Play
