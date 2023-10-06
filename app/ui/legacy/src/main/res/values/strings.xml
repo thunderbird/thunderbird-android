@@ -272,6 +272,12 @@
     <string name="global_settings_messageview_show_next_label">Show next message after delete</string>
     <string name="global_settings_messageview_show_next_summary">Show next message by default after message deletion</string>
 
+    <!-- Name of the setting to configure the navigation action to perform after the user has deleted or moved a message from the message view screen -->
+    <string name="general_settings_post_remove_action_title">After deleting or moving a message</string>
+    <string name="general_settings_post_remove_action_return_to_list">Return to message list</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Show previous message</string>
+    <string name="general_settings_post_remove_action_show_next_message">Show next message</string>
+
     <string name="global_settings_confirm_actions_title">Confirm actions</string>
     <string name="global_settings_confirm_actions_summary">Show a dialog whenever you perform selected actions</string>
     <string name="global_settings_confirm_action_delete">Delete</string>

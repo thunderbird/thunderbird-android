@@ -174,4 +174,10 @@
         <item>@string/general_settings_ui_density_relaxed</item>
     </string-array>
 
+    <string-array name="post_remove_navigation_entries">
+        <item>@string/general_settings_post_remove_action_return_to_list</item>
+        <item>@string/general_settings_post_remove_action_show_previous_message</item>
+        <item>@string/general_settings_post_remove_action_show_next_message</item>
+    </string-array>
+
 </resources>

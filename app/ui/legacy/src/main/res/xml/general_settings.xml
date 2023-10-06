@@ -314,17 +314,13 @@
             android:key="volume_navigation"
             android:title="@string/volume_navigation_title" />
 
-        <CheckBoxPreference
-            android:disableDependentsState="true"
-            android:key="messageview_return_to_list"
-            android:summary="@string/global_settings_messageview_return_to_list_summary"
-            android:title="@string/global_settings_messageview_return_to_list_label" />
-
-        <CheckBoxPreference
-            android:dependency="messageview_return_to_list"
-            android:key="messageview_show_next"
-            android:summary="@string/global_settings_messageview_show_next_summary"
-            android:title="@string/global_settings_messageview_show_next_label" />
+        <ListPreference
+            android:dialogTitle="@string/general_settings_post_remove_action_title"
+            android:entries="@array/post_remove_navigation_entries"
+            android:entryValues="@array/post_remove_navigation_values"
+            android:key="post_remove_navigation"
+            android:title="@string/general_settings_post_remove_action_title"
+            app:useSimpleSummaryProvider="true" />
 
         <MultiSelectListPreference
             android:dialogTitle="@string/global_settings_confirm_actions_title"

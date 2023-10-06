@@ -425,7 +425,7 @@ class MessageViewFragment :
     private fun delete() {
         disableDeleteMenuItem()
 
-        fragmentListener.showNextMessageOrReturn()
+        fragmentListener.performNavigationAfterMessageRemoval()
 
         messagingController.deleteMessage(messageReference)
     }
@@ -454,7 +454,7 @@ class MessageViewFragment :
     }
 
     private fun refileMessage(destinationFolderId: Long) {
-        fragmentListener.showNextMessageOrReturn()
+        fragmentListener.performNavigationAfterMessageRemoval()
 
         val sourceFolderId = messageReference.folderId
         messagingController.moveMessage(account, sourceFolderId, messageReference, destinationFolderId)
@@ -527,7 +527,7 @@ class MessageViewFragment :
     }
 
     private fun onMoveToDrafts() {
-        fragmentListener.showNextMessageOrReturn()
+        fragmentListener.performNavigationAfterMessageRemoval()
 
         val account = account
         val folderId = messageReference.folderId
@@ -613,7 +613,7 @@ class MessageViewFragment :
 
         account.setLastSelectedFolderId(destinationFolderId)
 
-        fragmentListener.showNextMessageOrReturn()
+        fragmentListener.performNavigationAfterMessageRemoval()
 
         moveMessage(messageReference, destinationFolderId)
     }
@@ -863,7 +863,7 @@ class MessageViewFragment :
         fun onReplyAll(messageReference: MessageReference, decryptionResultForReply: Parcelable?)
         fun onReply(messageReference: MessageReference, decryptionResultForReply: Parcelable?)
         fun setProgress(enable: Boolean)
-        fun showNextMessageOrReturn()
+        fun performNavigationAfterMessageRemoval()
     }
 
     private val messageLoaderCallbacks: MessageLoaderCallbacks = object : MessageLoaderCallbacks {

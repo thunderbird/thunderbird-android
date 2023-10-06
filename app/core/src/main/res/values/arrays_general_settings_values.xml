@@ -221,4 +221,10 @@
         <item>move</item>
     </string-array>
 
+    <string-array name="post_remove_navigation_values" translatable="false">
+        <item>ReturnToMessageList</item>
+        <item>ShowPreviousMessage</item>
+        <item>ShowNextMessage</item>
+    </string-array>
+
 </resources>

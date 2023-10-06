@@ -3,6 +3,7 @@ package com.fsck.k9.preferences.migrations
 import android.database.sqlite.SQLiteDatabase
 
 internal object StorageMigrations {
+    @Suppress("MagicNumber", "CyclomaticComplexMethod")
     @JvmStatic
     fun upgradeDatabase(db: SQLiteDatabase, migrationsHelper: StorageMigrationsHelper) {
         val oldVersion = db.version
@@ -26,5 +27,6 @@ internal object StorageMigrations {
         if (oldVersion < 18) StorageMigrationTo18(db, migrationsHelper).rewriteImapCompressionSettings()
         if (oldVersion < 19) StorageMigrationTo19(db, migrationsHelper).markGmailAccounts()
         if (oldVersion < 20) StorageMigrationTo20(db, migrationsHelper).fixIdentities()
+        if (oldVersion < 21) StorageMigrationTo21(db, migrationsHelper).createPostRemoveNavigationSetting()
     }
 }
