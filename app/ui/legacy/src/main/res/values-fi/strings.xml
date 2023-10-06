@@ -1,1084 +1,1084 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <!--=== App-specific strings =============================================================-->
-  <!--This should make it easier for forks to change the branding-->
-  <!--Used in AndroidManifest.xml-->
-  <string name="app_name">K-9 Mail</string>
-  <string name="shortcuts_title">K-9-tilit</string>
-  <string name="unread_widget_label">K-9-lukematon</string>
-  <!--Used in the about dialog-->
-  <string name="app_authors">The K-9 Dog Walkers</string>
-  <string name="source_code">Lähdekoodi</string>
-  <string name="app_license">Apache-lisenssi, versio 2.0</string>
-  <string name="about_project_title">Avoimen lähdekoodin projekti</string>
-  <string name="about_website_title">Verkkosivusto</string>
-  <string name="user_manual_title">Käyttäjäopas</string>
-  <string name="get_help_title">Tuki</string>
-  <string name="user_forum_title">Käyttäjäfoorumi</string>
-  <string name="about_fediverse_title">Fediverse</string>
-  <string name="about_twitter_title">Twitter</string>
-  <string name="about_libraries">Kirjastot</string>
-  <string name="license">Lisenssi</string>
-  <string name="changelog_title">Muutosloki</string>
-  <string name="changelog_loading_error">Muutoslokia ei voitu ladata.</string>
-  <string name="changelog_version_title">Versio %s</string>
-  <string name="changelog_recent_changes_title">Mitä uutta</string>
-  <string name="changelog_show_recent_changes">Näytä viimeisimmät muutokset kun sovellus päivitettiin</string>
-  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
-  <string name="changelog_snackbar_text">Selvitä mitä uutta tämä julkaisu sisältää</string>
-  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-  <string name="changelog_snackbar_button_text">Näytä</string>
-  <!--Default signature-->
-  <string name="default_signature">-- \nLähetetty Android-laitteestani K-9 Maililla. Pahoittelut vähäsanaisuudestani.</string>
-  <!--General strings that include the app name-->
-  <string name="account_delete_dlg_instructions_fmt">Tili \"<xliff:g id="account">%s</xliff:g>\" poistetaan K-9 Mailista.</string>
-  <!--=== General strings ==================================================================-->
-  <string name="authors">Tekijät</string>
-  <string name="about_title">Tietoja K-9 Mailista</string>
-  <string name="accounts_title">Tilit</string>
-  <string name="advanced">Lisäasetukset</string>
-  <string name="compose_title_compose">Kirjoita</string>
-  <string name="compose_title_reply">Vastaa</string>
-  <string name="compose_title_reply_all">Vastaa kaikille</string>
-  <string name="compose_title_forward">Välitä</string>
-  <string name="compose_title_forward_as_attachment">Välitä liitteenä</string>
-  <string name="choose_account_title">Valitse tili</string>
-  <string name="choose_folder_title">Valitse kansio</string>
-  <string name="choose_folder_move_title">Siirrä…</string>
-  <string name="choose_folder_copy_title">Kopioi…</string>
-  <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valittu</string>
-  <string name="next_action">Seuraava</string>
-  <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-  <string name="okay_action">OK</string>
-  <string name="cancel_action">Peruuta</string>
-  <string name="send_action">Lähetä</string>
-  <string name="empty_subject">Aihe on tyhjä, napsauta uudelleen lähettääksesi silti</string>
-  <string name="reply_action">Vastaa</string>
-  <string name="reply_all_action">Vastaa kaikille</string>
-  <string name="delete_action">Poista</string>
-  <string name="archive_action">Arkistoi</string>
-  <string name="spam_action">Roskaposti</string>
-  <string name="forward_action">Välitä</string>
-  <string name="forward_as_attachment_action">Välitä liitteenä</string>
-  <string name="edit_as_new_message_action">Muokkaa uutena viestinä</string>
-  <string name="move_action">Siirrä</string>
-  <string name="move_to_drafts_action">Siirrä luonnoksiin</string>
-  <string name="refile_action">Siirrä kansioon…</string>
-  <string name="done_action">Valmis</string>
-  <string name="discard_action">Hylkää</string>
-  <string name="save_draft_action">Tallenna luonnoksena</string>
-  <string name="check_mail_action">Tarkista sähköposti</string>
-  <string name="send_messages_action">Lähetä viestit</string>
-  <string name="refresh_folders_action">Päivitä kansiot</string>
-  <string name="filter_folders_action">Etsi kansio</string>
-  <string name="add_account_action">Lisää tili</string>
-  <string name="compose_action">Kirjoita</string>
-  <string name="search_action">Etsi</string>
-  <string name="search_everywhere_action">Etsi kaikkialta</string>
-  <string name="search_results">Hakutulokset</string>
-  <string name="new_messages_title">Uudet viestit</string>
-  <string name="preferences_action">Asetukset</string>
-  <string name="folders_action">Hallitse kansioita</string>
-  <string name="account_settings_action">Tilin asetukset</string>
-  <string name="remove_account_action">Poista tili</string>
-  <string name="mark_as_read_action">Merkitse luetuksi</string>
-  <string name="send_alternate_action">Jaa</string>
-  <string name="send_alternate_chooser_title">Valitse lähettäjä</string>
-  <string name="flag_action">Lisää tähti</string>
-  <string name="unflag_action">Poista tähti</string>
-  <string name="copy_action">Kopioi</string>
-  <string name="unsubscribe_action">Lopeta tilaus</string>
-  <string name="show_headers_action">Näytä otsikot</string>
-  <plurals name="copy_address_to_clipboard">
-    <item quantity="one">Osoite kopioitu leikepöydälle</item>
-    <item quantity="other">Osoitteet kopioitu leikepöydälle</item>
-  </plurals>
-  <string name="copy_subject_to_clipboard">Aiheen teksti kopioitu leikepöydälle</string>
-  <string name="message_view_theme_action_dark">Vaihda tummaan teemaan</string>
-  <string name="message_view_theme_action_light">Vaihda vaaleaan teemaan</string>
-  <string name="mark_as_unread_action">Merkitse lukemattomaksi</string>
-  <string name="read_receipt">Lukukuittaus</string>
-  <string name="read_receipt_enabled">Lukukuittaus pyydetään</string>
-  <string name="read_receipt_disabled">Lukukuittausta ei pyydetä</string>
-  <string name="add_attachment_action">Lisää liite</string>
-  <string name="empty_trash_action">Tyhjennä roskakori</string>
-  <string name="expunge_action">Poista pysyvästi</string>
-  <string name="about_action">Tietoja</string>
-  <string name="prefs_title">Asetukset</string>
-  <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
-  <string name="general_no_subject">(Ei aihetta)</string>
-  <string name="general_no_sender">Ei lähettäjää</string>
-  <string name="status_loading_more">Ladataan viestejä\u2026</string>
-  <string name="status_network_error">Yhteysvirhe</string>
-  <string name="status_invalid_id_error">Viestiä ei löytynyt</string>
-  <string name="status_loading_error">Viestin lataamisvirhe</string>
-  <string name="load_more_messages_fmt">Lataa <xliff:g id="messages_to_load">%d</xliff:g> lisää</string>
-  <string name="size_format_gigabytes">%.1f Gt</string>
-  <string name="size_format_megabytes">%.1f Mt</string>
-  <string name="size_format_kilobytes">%.1f kt</string>
-  <string name="size_format_bytes">%d t</string>
-  <plurals name="notification_new_messages_title">
-    <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> uusi viesti</item>
-    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> uutta viestiä</item>
-  </plurals>
-  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> lisää tilillä <xliff:g id="account">%2$s</xliff:g></string>
-  <string name="notification_action_reply">Vastaa</string>
-  <string name="notification_action_mark_as_read">Merkitse luetuksi</string>
-  <string name="notification_action_mark_all_as_read">Merkitse kaikki luetuiksi</string>
-  <string name="notification_action_delete">Poista</string>
-  <string name="notification_action_delete_all">Poista kaikki</string>
-  <string name="notification_action_archive">Arkistoi</string>
-  <string name="notification_action_archive_all">Arkistoi kaikki</string>
-  <string name="notification_action_spam">Roskaposti</string>
-  <string name="notification_certificate_error_public">Varmennevirhe</string>
-  <string name="notification_certificate_error_title">Varmennevirhe tilissä <xliff:g id="account">%s</xliff:g></string>
-  <string name="notification_certificate_error_text">Tarkista palvelinasetuksesi</string>
-  <string name="notification_authentication_error_title">Tunnistautuminen epäonnistui</string>
-  <string name="notification_authentication_error_text">Tilin <xliff:g id="account">%s</xliff:g> tunnistautuminen epäonnistui. Päivitä palvelinasetuksesi.</string>
-  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
-  <string name="notification_notify_error_title">Ilmoitusvirhe</string>
-  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-  <string name="notification_notify_error_text">Uuteen viestiin liittyvää järjestelmäilmoitusta luotaessa tapahtui virhe. Syy on mitä luultavimmin puuttuva ilmoitusääni.\n\nNapauta avataksesi ilmoitusasetukset.</string>
-  <string name="notification_bg_sync_ticker">Tarkistetaan viestejä: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
-  <string name="notification_bg_sync_title">Tarkistetaan viestejä</string>
-  <string name="notification_bg_send_ticker">Lähetetään viestejä: <xliff:g id="account">%s</xliff:g></string>
-  <string name="notification_bg_send_title">Lähetetään viestejä</string>
-  <string name="notification_bg_title_separator">:</string>
-  <string name="notification_channel_push_title">Synkronoi (Push)</string>
-  <string name="notification_channel_push_description">Näytetään kun odotetaan uusia viestejä</string>
-  <string name="notification_channel_messages_title">Viestit</string>
-  <string name="notification_channel_messages_description">Viesteihin liittyvät ilmoitukset</string>
-  <string name="notification_channel_miscellaneous_title">Muut</string>
-  <string name="notification_channel_miscellaneous_description">Virheet ja muut sekalaiset ilmoitukset</string>
-  <string name="special_mailbox_name_inbox">Saapuneet</string>
-  <string name="special_mailbox_name_outbox">Lähtevät</string>
-  <string name="special_mailbox_name_drafts">Luonnokset</string>
-  <string name="special_mailbox_name_trash">Roskakori</string>
-  <string name="special_mailbox_name_sent">Lähetetyt</string>
-  <string name="send_failure_subject">Joidenkin viestien lähettäminen epäonnistui</string>
-  <string name="version">Versio</string>
-  <string name="debug_enable_debug_logging_title">Käytä virheenkorjaustietojen lokiinkirjausta</string>
-  <string name="debug_enable_debug_logging_summary">Kirjoita lokiin laajempi kuvaus ongelmista</string>
-  <string name="debug_enable_sensitive_logging_title">Kirjaa lokiin arkaluontoisia tietoja</string>
-  <string name="debug_enable_sensitive_logging_summary">Salasanat saattavat näkyä lokeissa.</string>
-  <string name="debug_export_logs_title">Vie lokit</string>
-  <string name="debug_export_logs_success">Vienti onnistui. Lokit saattavat sisältää arkaluonteista tietoa. Pidä ne tallessa ja ole varovainen sen suhteen, kenelle ne lähetät.</string>
-  <string name="debug_export_logs_failure">Vienti epäonnistui.</string>
-  <string name="message_list_load_more_messages_action">Lataa lisää viestejä</string>
-  <string name="message_to_fmt">Vastaanottaja: <xliff:g id="counterParty"> %s </xliff:g></string>
-  <string name="message_compose_subject_hint">Aihe</string>
-  <string name="message_compose_content_hint">Viesti</string>
-  <string name="message_compose_signature_hint">Allekirjoitus</string>
-  <string name="message_compose_quote_header_separator">-------- Alkuperäinen viesti --------</string>
-  <string name="message_compose_quote_header_subject">Aihe:</string>
-  <string name="message_compose_quote_header_send_date">Lähetetty:</string>
-  <string name="message_compose_quote_header_from">Lähettäjä:</string>
-  <string name="message_compose_quote_header_to">Vastaanottaja:</string>
-  <string name="message_compose_quote_header_cc">Kopio:</string>
-  <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> kirjoitti:</string>
-  <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sent_date">%1$s</xliff:g> <xliff:g id="sender">%2$s</xliff:g> kirjoitti:</string>
-  <string name="message_compose_error_no_recipients">Valitse vähintään yksi vastaanottaja.</string>
-  <string name="compose_error_incomplete_recipient">Vastaanottajakenttä sisältää virheellistä syötettä!</string>
-  <string name="error_contact_address_not_found">Tämän henkilön sähköpostiosoitetta ei löytynyt.</string>
-  <string name="message_compose_attachments_skipped_toast">Joitakin liitteitä ei voida lähettää edelleen, koska niitä ei ole ladattu.</string>
-  <string name="message_compose_attachments_forward_toast">Viestiä ei voida välittää, koska joitain liitteitä ei ole ladattu.</string>
-  <string name="message_compose_show_quoted_text_action">Sisällytä lainattu viesti</string>
-  <string name="message_compose_description_delete_quoted_text">Poista lainattu teksti</string>
-  <string name="message_compose_description_edit_quoted_text">Muokkaa lainattua tekstiä</string>
-  <string name="remove_attachment_action">Poista liite</string>
-  <string name="message_to_label">Vast.ottaja:</string>
-  <string name="message_view_cc_label">Kopio:</string>
-  <string name="message_view_bcc_label">Piilokopio:</string>
-  <string name="message_view_status_attachment_not_saved">Liitteen tallentaminen epäonnistui.</string>
-  <!--Used to display the recipient list in the message view screen.-->
-  <string name="message_view_recipients_format">vastaanottaja <xliff:g id="recipients">%s</xliff:g></string>
-  <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
-  <string name="message_view_additional_recipient_prefix">+</string>
-  <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
-  <string name="message_view_me_text">minä</string>
-  <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
-  <string name="message_view_show_remote_images_action">Näytä etäkuvat</string>
-  <string name="message_view_no_viewer">Tiedostotyypille <xliff:g id="mimetype">%s</xliff:g> ei löydy katseluohjelmaa.</string>
-  <string name="message_view_download_remainder">Lataa koko viesti</string>
-  <string name="message_view_sender_label">%1$s kautta</string>
-  <string name="from_same_sender">Lisää samalta lähettäjältä</string>
-  <string name="message_discarded_toast">Viesti peruutettu</string>
-  <string name="message_saved_toast">Viesti tallennettu luonnoksena</string>
-  <string name="global_settings_flag_label">Näytä tähdet</string>
-  <string name="global_settings_flag_summary">Tähdet ilmaisevat merkityt viestit</string>
-  <string name="global_settings_preview_lines_label">Rivien esikatselu</string>
-  <string name="global_settings_show_correspondent_names_label">Näytä yhteyshenkilöiden nimet</string>
-  <string name="global_settings_show_correspondent_names_summary">Näytä yhteyshenkilöiden nimet sähköpostiosoitteen sijaan</string>
-  <string name="global_settings_sender_above_subject_label">Yhteyshenkilö aiheen yläpuolella</string>
-  <string name="global_settings_sender_above_subject_summary">Näytä yhteyshenkilöiden nimet aiherivin yläpuolella</string>
-  <string name="global_settings_show_contact_name_label">Näytä yhteystietojen nimet</string>
-  <string name="global_settings_show_contact_name_summary">Käytä vastaanottajien nimiä osoitekirjasta, kun käytettävissä</string>
-  <string name="global_settings_registered_name_color_label">Väritä yhteystiedot</string>
-  <string name="global_settings_registered_name_color_changed">Väritä nimet yhteystiedoissa</string>
-  <string name="general_settings_contact_name_color_label">Yhteystiedon nimen väri</string>
-  <string name="global_settings_messageview_fixedwidth_label">Kiinteä kirjasinleveys</string>
-  <string name="global_settings_messageview_fixedwidth_summary">Käytä kiinteää kirjasinleveyttä muotoilemattomille viesteille</string>
-  <string name="global_settings_messageview_autofit_width_label">Sovita viestit automaattisesti</string>
-  <string name="global_settings_messageview_autofit_width_summary">Kutista viestit sopimaan näytölle</string>
-  <string name="global_settings_confirm_actions_title">Vahvista toiminnot</string>
-  <string name="global_settings_confirm_actions_summary">Näytä valintaikkuna valitun toiminnon suorittamisesta</string>
-  <string name="global_settings_confirm_action_delete">Poista</string>
-  <string name="global_settings_confirm_action_delete_starred">Poista tähdellä merkityt (viestinäkymässä)</string>
-  <string name="global_settings_confirm_action_spam">Roskaposti</string>
-  <string name="global_settings_confirm_menu_discard">Hylkää viesti</string>
-  <string name="global_settings_confirm_menu_mark_all_read">Merkitse kaikki viestit luetuiksi</string>
-  <string name="global_settings_confirm_action_delete_notif">Poista (ilmoituksessa)</string>
-  <!--Title of the screen to configure swipe actions-->
-  <string name="general_settings_swipe_actions_title">Vetotoiminnot</string>
-  <!--Name of the setting to configure the right swipe action-->
-  <string name="general_settings_right_swipe_title">Veto oikealle</string>
-  <!--Name of the setting to configure the left swipe action-->
-  <string name="general_settings_left_swipe_title">Veto vasemmalle</string>
-  <!--The list item users select to not use a swipe action for a particular direction-->
-  <string name="general_settings_swipe_action_none">Ei mitään</string>
-  <!--Name of the swipe action to select/deselect a message-->
-  <string name="general_settings_swipe_action_toggle_selection">Valitse viesti tai poista valinta viestin kohdalta</string>
-  <!--Name of the swipe action to mark as message as read/unread-->
-  <string name="general_settings_swipe_action_toggle_read">Merkitse luetuksi/lukemattomaksi</string>
-  <!--Name of the swipe action to add/remove a star-->
-  <string name="general_settings_swipe_action_toggle_star">Lisää tai poista tähti</string>
-  <!--Name of the swipe action to archive a message-->
-  <string name="general_settings_swipe_action_archive">Arkistoi</string>
-  <!--Name of the swipe action to delete a message-->
-  <string name="general_settings_swipe_action_delete">Poista</string>
-  <!--Name of the swipe action to move a message to the spam folder-->
-  <string name="general_settings_swipe_action_spam">Roskaposti</string>
-  <!--Name of the swipe action to move a message to another folder-->
-  <string name="general_settings_swipe_action_move">Siirrä</string>
-  <!--Title of the setting to specify the density of the message list-->
-  <string name="general_settings_message_list_density_title">Tiheys</string>
-  <string name="general_settings_ui_density_compact">Kompakti</string>
-  <string name="general_settings_ui_density_default">Oletus</string>
-  <string name="general_settings_ui_density_relaxed">Rento</string>
-  <string name="global_settings_privacy_hide_useragent">Piilota sähköpostisovellus</string>
-  <string name="global_settings_privacy_hide_useragent_detail">Poista K-9-tunnistetiedot viestin otsaketiedoista</string>
-  <string name="global_settings_privacy_hide_timezone">Piilota aikavyöhyke</string>
-  <string name="global_settings_privacy_hide_timezone_detail">Käytä UTC-aikaa paikallisen aikavyöhykkeen sijaan sähköpostin otsakkeissa</string>
-  <string name="global_settings_notification_quick_delete_title">Näytä Poista-painike</string>
-  <string name="global_settings_notification_quick_delete_never">Ei koskaan</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Yksittäisen viestin ilmoituksessa</string>
-  <string name="global_settings_notification_quick_delete_always">Aina</string>
-  <string name="global_settings_lock_screen_notification_visibility_title">Lukitusnäytön ilmoitukset</string>
-  <string name="global_settings_lock_screen_notification_visibility_nothing">Ei lukitusnäytön ilmoituksia</string>
-  <string name="global_settings_lock_screen_notification_visibility_app_name">Sovelluksen nimi</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Uusien viestien määrä</string>
-  <string name="global_settings_lock_screen_notification_visibility_senders">Viestien määrä ja lähettäjät</string>
-  <string name="global_settings_lock_screen_notification_visibility_everything">Sama kuin näytön ollessa lukittuna</string>
-  <string name="quiet_time">Hiljainen aika</string>
-  <string name="quiet_time_description">Poista käytöstä soittoäänen pirinä, pärinä ja vilkkuminen yöllä</string>
-  <string name="quiet_time_notification">Poista ilmoitukset käytöstä</string>
-  <string name="quiet_time_notification_description">Poista ilmoitukset kokonaan käytöstä hiljaisena aikana</string>
-  <string name="quiet_time_starts">Hiljainen aika alkaa</string>
-  <string name="quiet_time_ends">Hiljainen aika päättyy</string>
-  <string name="account_setup_basics_title">Lisää uusi tili</string>
-  <string name="account_setup_basics_email_hint">Sähköpostiosoite</string>
-  <string name="account_setup_basics_password_hint">Salasana</string>
-  <string name="account_setup_oauth_description">Jotta voit käyttää tätä tiliä K-9 Mailin kanssa, sinun tulee kirjautua sisään ja antaa sovellukselle oikeus päästä sähköposteihisi.</string>
-  <!--Displayed below the 'account_setup_oauth_description' text-->
-  <string name="account_setup_oauth_sign_in">Kirjaudu sisään</string>
-  <!--Displayed below the 'account_setup_oauth_description' text-->
-  <string name="account_setup_oauth_sign_in_with_google">Kirjaudu sisään Googlella</string>
-  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-  <string name="account_setup_basics_show_password_need_lock">Jotta näet salasanasi tässä, ota käyttöön laitteen näytön lukitus.</string>
-  <string name="account_setup_basics_show_password_biometrics_title">Vahvista henkilöllisyytesi</string>
-  <string name="account_setup_basics_show_password_biometrics_subtitle">Avaa lukitus nähdäksesi salasanasi</string>
-  <string name="account_setup_basics_manual_setup_action">Määritä asetukset käsin</string>
-  <string name="account_setup_check_settings_title"/>
-  <string name="account_setup_check_settings_retr_info_msg">Haetaan tilin tietoja\u2026</string>
-  <string name="account_setup_check_settings_check_incoming_msg">Tarkistetaan saapuvan postin palvelimen asetuksia\u2026</string>
-  <string name="account_setup_check_settings_check_outgoing_msg">Tarkistetaan lähtevän postin palvelimen asetuksia\u2026</string>
-  <string name="account_setup_check_settings_authenticate">Varmistetaan\u2026</string>
-  <string name="account_setup_check_settings_fetch">Haetaan tilin asetuksia\u2026</string>
-  <string name="account_setup_check_settings_canceling_msg">Peruutetaan\u2026</string>
-  <string name="account_setup_account_type_title">Tilin tyyppi</string>
-  <string name="account_setup_account_type_instructions">Mikä tämän tilin tyyppi on?</string>
-  <string name="account_setup_account_type_pop_action">POP3</string>
-  <string name="account_setup_account_type_imap_action">IMAP</string>
-  <string name="account_setup_auth_type_normal_password">Tavallinen salasana</string>
-  <string name="account_setup_auth_type_insecure_password">Salasana, välitetään turvattomasti</string>
-  <string name="account_setup_auth_type_encrypted_password">Salattu salasana</string>
-  <string name="account_setup_auth_type_tls_client_certificate">Asiakasvarmenne</string>
-  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
-  <string name="account_setup_incoming_title">Saapuvan postin palvelimen asetukset</string>
-  <string name="account_setup_incoming_username_label">Käyttäjätunnus</string>
-  <string name="account_setup_incoming_password_label">Salasana</string>
-  <string name="account_setup_incoming_client_certificate_label">Asiakasvarmenne</string>
-  <string name="account_setup_incoming_pop_server_label">POP3-palvelin</string>
-  <string name="account_setup_incoming_imap_server_label">IMAP-palvelin</string>
-  <string name="account_setup_incoming_port_label">Portti</string>
-  <string name="account_setup_incoming_security_label">Suojauksen tyyppi</string>
-  <string name="account_setup_incoming_auth_type_label">Todennuksen tyyppi</string>
-  <string name="account_setup_incoming_security_none_label">Ei mitään</string>
-  <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
-  <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
-  <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" ei ole kelvollinen asetuksen \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\" kanssa</string>
-  <string name="account_setup_incoming_delete_policy_label">Kun viesti poistetaan</string>
-  <string name="account_setup_incoming_delete_policy_never_label">Älä poista palvelimelta</string>
-  <string name="account_setup_incoming_delete_policy_delete_label">Poista palvelimelta</string>
-  <string name="account_setup_incoming_delete_policy_markread_label">Merkitse luetuksi palvelimella</string>
-  <string name="account_setup_incoming_use_compression">Käytä pakkausta</string>
-  <string name="account_setup_incoming_send_client_id">Lähetä asiakasohjelmiston ID-tunniste</string>
-  <string name="account_setup_expunge_policy_label">Poista viestit</string>
-  <string name="account_setup_expunge_policy_immediately">Heti</string>
-  <string name="account_setup_expunge_policy_on_poll">Tarkistettaessa</string>
-  <string name="account_setup_expunge_policy_manual">Vain manuaalisesti</string>
-  <string name="account_setup_incoming_autodetect_namespace_label">Tunnista IMAP-nimiavaruus automaattisesti</string>
-  <string name="account_setup_incoming_imap_path_prefix_label">IMAP-polun etuliite</string>
-  <string name="drafts_folder_label">Luonnokset-kansio</string>
-  <string name="sent_folder_label">Lähetetyt-kansio</string>
-  <string name="trash_folder_label">Roskakori-kansio</string>
-  <string name="archive_folder_label">Arkisto-kansio</string>
-  <string name="spam_folder_label">Roskapostikansio</string>
-  <string name="account_setup_incoming_subscribed_folders_only_label">Näytä vain tilatut kansiot</string>
-  <string name="account_setup_auto_expand_folder">Avaa kansio automaattisesti</string>
-  <string name="account_setup_outgoing_title">Lähtevän postin palvelimen asetukset</string>
-  <string name="account_setup_outgoing_smtp_server_label">SMTP-palvelin</string>
-  <string name="account_setup_outgoing_port_label">Portti</string>
-  <string name="account_setup_outgoing_security_label">Suojaus</string>
-  <string name="account_setup_outgoing_require_login_label">Edellytä kirjautumista.</string>
-  <string name="account_setup_outgoing_username_label">Käyttäjätunnus</string>
-  <string name="account_setup_outgoing_password_label">Salasana</string>
-  <string name="account_setup_outgoing_authentication_label">Todennustapa</string>
-  <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" ei ole kelvollinen asetuksen \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\" kanssa</string>
-  <string name="account_setup_bad_uri">Virheellinen asetus: <xliff:g id="err_mess">%s</xliff:g></string>
-  <string name="account_setup_options_mail_check_frequency_label">Viestien tarkistus</string>
-  <string name="account_setup_options_mail_check_frequency_never">Ei koskaan</string>
-  <string name="account_setup_options_mail_check_frequency_15min">Joka 15 minuutti</string>
-  <string name="account_setup_options_mail_check_frequency_30min">Joka 30 minuutti</string>
-  <string name="account_setup_options_mail_check_frequency_1hour">Joka tunti</string>
-  <string name="account_setup_options_mail_check_frequency_2hour">Joka 2 tunti</string>
-  <string name="account_setup_options_mail_check_frequency_3hour">Joka 3 tunti</string>
-  <string name="account_setup_options_mail_check_frequency_6hour">Joka 6 tunti</string>
-  <string name="account_setup_options_mail_check_frequency_12hour">Joka 12 tunti</string>
-  <string name="account_setup_options_mail_check_frequency_24hour">Joka 24 tunti</string>
-  <string name="idle_refresh_period_label">Päivitä IDLE-yhteys</string>
-  <string name="idle_refresh_period_2min">Joka 2 minuutti</string>
-  <string name="idle_refresh_period_3min">Joka 3 minuutti</string>
-  <string name="idle_refresh_period_6min">Joka 6 minuutti</string>
-  <string name="idle_refresh_period_12min">Joka 12 minuutti</string>
-  <string name="idle_refresh_period_24min">Joka 24 minuutti</string>
-  <string name="idle_refresh_period_36min">Joka 36 minuutti</string>
-  <string name="idle_refresh_period_48min">Joka 48 minuutti</string>
-  <string name="idle_refresh_period_60min">Joka 60 minuutti</string>
-  <string name="account_setup_options_mail_display_count_label">Näytettävien viestien lukumäärä</string>
-  <string name="account_setup_options_mail_display_count_10">10 kansiota</string>
-  <string name="account_setup_options_mail_display_count_25">25 kansiota</string>
-  <string name="account_setup_options_mail_display_count_50">50 kansiota</string>
-  <string name="account_setup_options_mail_display_count_100">100 viestiä</string>
-  <string name="account_setup_options_mail_display_count_250">250 viestiä</string>
-  <string name="account_setup_options_mail_display_count_500">500 viestiä</string>
-  <string name="account_setup_options_mail_display_count_1000">1000 viestiä</string>
-  <string name="account_setup_options_mail_display_count_2500">2500 viestiä</string>
-  <string name="account_setup_options_mail_display_count_5000">5000 viestiä</string>
-  <string name="account_setup_options_mail_display_count_10000">10000 viestiä</string>
-  <string name="account_setup_options_mail_display_count_all">Kaikki viestit</string>
-  <string name="move_copy_cannot_copy_unsynced_message">Viestiä ei voi kopioida tai siirtää, koska sitä ei ole synkronoitu palvelimelle</string>
-  <string name="account_setup_failed_dlg_title">Asennus ei onnistunut</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Käyttäjätunnus tai salasana väärin.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Palvelin esitti virheellisen SSL-varmenteen. Joskus tämä johtuu palvelimen vääristä asetuksista. Toisinaan syynä on se, että joku koettaa hyökätä sinua tai sähköpostipalvelinta vastaan. Jos et ole varma mistä on kyse, napsauta Hylkää ja ole yhteydessä sähköpostipalvelinta hallinoivaan tahoon.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Yhteys palvelimeen ei onnistu.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_oauth_flow_canceled">Valtuutus peruttu</string>
-  <string name="account_setup_failed_dlg_oauth_flow_failed">Valtuutus epäonnistui, virhe: <xliff:g id="error">%s</xliff:g></string>
-  <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 ei ole tällä hetkellä tuettu tämän palvelutarjoajan kohdalla.</string>
-  <string name="account_setup_failed_dlg_browser_not_found">Sovellus ei löytänyt selainta käytettäväksi pääsyn antamiseksi tälle tilille.</string>
-  <string name="account_setup_failed_dlg_edit_details_action">Muokkaa tietoja</string>
-  <string name="account_setup_failed_dlg_continue_action">Jatka</string>
-  <string name="account_settings_push_advanced_title">Lisäasetukset</string>
-  <string name="account_settings_title_fmt">Yleiset</string>
-  <string name="account_settings_notify_label">Saapuneiden viestien ilmoitukset</string>
-  <string name="account_settings_folder_notify_new_mail_mode_label">Ilmoitukset kansioista</string>
-  <string name="account_settings_folder_notify_new_mail_mode_all">Kaikki</string>
-  <string name="account_settings_folder_notify_new_mail_mode_first_class">Vain 1. luokan kansiot</string>
-  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1. ja 2. luokan kansiot</string>
-  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Kaikki paitsi 2. luokan kansiot</string>
-  <string name="account_settings_folder_notify_new_mail_mode_none">Ei mitään</string>
-  <string name="account_settings_notify_sync_label">Synkronointi-ilmoitukset</string>
-  <string name="account_settings_email_label">Sähköpostiosoite</string>
-  <string name="account_settings_notify_summary">Näytä tilapalkissa ilmoitus uusista viesteistä</string>
-  <string name="account_settings_notify_sync_summary">Näytä tilapalkissa ilmoitus viestien tarkistamisesta</string>
-  <string name="account_settings_notify_self_label">Ilmoita lähetetyistä viesteistä</string>
-  <string name="account_settings_notify_self_summary">Näytä ilmoitus lähettämistäni viesteistä</string>
-  <string name="account_notify_contacts_mail_only_label">Vain yhteystiedot</string>
-  <string name="account_notify_contacts_mail_only_summary">Näytä ilmoitukset vain niistä viesteistä, jotka tulevat tunnetuilta yhteystiedoilta</string>
-  <string name="account_settings_ignore_chat_messages_label">Älä huomioi keskusteluviestejä</string>
-  <string name="account_settings_ignore_chat_messages_summary">Älä näytä ilmoituksia viesteistä, jotka kuuluvat sähköpostikeskusteluun</string>
-  <string name="account_settings_mark_message_as_read_on_view_label">Merkitse viesti luetuksi avattaessa</string>
-  <string name="account_settings_mark_message_as_read_on_view_summary">Merkitse viesti luetuksi, kun se avataan katseltavaksi</string>
-  <string name="account_settings_mark_message_as_read_on_delete_label">Merkitse luetuksi poistettaessa</string>
-  <string name="account_settings_mark_message_as_read_on_delete_summary">Merkitse viesti luetuksi, kun se poistetaan</string>
-  <string name="account_settings_notification_channels_label">Ilmoitusten luokat</string>
-  <string name="account_settings_open_notification_settings_messages_summary">Määritä uusien viestien ilmoitukset</string>
-  <string name="account_settings_open_notification_settings_miscellaneous_summary">Määritä virhe- ja tilailmoitukset</string>
-  <string name="account_settings_show_pictures_label">Näytä aina kuvat</string>
-  <string name="account_settings_show_pictures_never">Ei koskaan</string>
-  <string name="account_settings_show_pictures_only_from_contacts">Vain yhteystiedoissa olevilta lähettäjiltä</string>
-  <string name="account_settings_show_pictures_always">Keneltä tahansa</string>
-  <string name="account_settings_composition">Viestien lähettäminen</string>
-  <string name="account_settings_default_quoted_text_shown_label">Lainaa alkuperäistä viestiä vastattaessa  </string>
-  <string name="account_settings_default_quoted_text_shown_summary">Alkuperäinen viesti on vastauksessa viesteihin vastattaessa.</string>
-  <string name="account_settings_reply_after_quote_label">Vastaa lainauksen jälkeen</string>
-  <string name="account_settings_reply_after_quote_summary">Kun viestiin vastataan, alkuperäinen viesti on vastauksesi yläpuolella.</string>
-  <string name="account_settings_strip_signature_label">Poista allekirjoitus lainatusta vastauksesta</string>
-  <string name="account_settings_strip_signature_summary">Lainatun tekstin allekirjoitus poistetaan viesteihin vastattaessa</string>
-  <string name="account_settings_message_format_label">Viestin muoto</string>
-  <string name="account_settings_message_format_text">Pelkkä teksti (kuvat ja muotoilu poistetaan)</string>
-  <string name="account_settings_message_format_html">HTML (kuvat ja muotoilu säilytetään)</string>
-  <string name="account_settings_message_format_auto">Automaattinen (pelkkä teksti, ellei vastata HTML-viestiin)</string>
-  <string name="account_settings_always_show_cc_bcc_label">Näytä aina Kopio/Piilokopio</string>
-  <string name="account_settings_message_read_receipt_label">Vastaanottokuittaus</string>
-  <string name="account_settings_message_read_receipt_summary">Pyydä aina vastaanottokuittaus</string>
-  <string name="account_settings_quote_style_label">Lainauksen tyyli vastattaessa</string>
-  <string name="account_settings_quote_style_prefix">Etuliite (kuten Gmail, Pine)</string>
-  <string name="account_settings_quote_style_header">Otsikko (kuten Outlook, Yahoo!, Hotmail)</string>
-  <string name="account_settings_upload_sent_messages_label">Lähetä lähetetyt viestit</string>
-  <string name="account_settings_upload_sent_messages_summary">Lähetä viestit Lähetetyt-kansioon lähettämisen jälkeen</string>
-  <string name="account_settings_general_title">Yleiset asetukset</string>
-  <string name="account_settings_reading_mail">Viestien lukeminen</string>
-  <string name="account_settings_sync">Viestien hakeminen</string>
-  <string name="account_settings_folders">Kansiot</string>
-  <string name="account_settings_quote_prefix_label">Lainauksen etuliite</string>
-  <string name="account_settings_crypto">Päästä päähän -salaus</string>
-  <string name="account_settings_crypto_app">Ota käyttöön OpenPGP-tuki</string>
-  <string name="account_settings_crypto_app_select_title">Valitse OpenPGP-sovellus</string>
-  <string name="account_settings_crypto_key">Määritä päästä päähän -avain</string>
-  <string name="account_settings_crypto_summary_off">OpenPGP-sovellusta ei ole määritetty</string>
-  <string name="account_settings_crypto_summary_on">Yhdistetty kohteeseen %s</string>
-  <string name="account_settings_crypto_summary_config">Tehdään asetuksia…</string>
-  <string name="account_settings_crypto_encrypt_all_drafts">Talleta kaikki luonnokset salattuina</string>
-  <string name="account_settings_crypto_encrypt_all_drafts_on">Kaikki luonnokset talletetaan salattuina</string>
-  <string name="account_settings_crypto_encrypt_all_drafts_off">Salaa luonnokset vain jos salaus on käytössä</string>
-  <string name="account_settings_mail_check_frequency_label">Kansioiden tarkistus</string>
-  <string name="account_settings_color_label">Tilin väri</string>
-  <string name="account_settings_color_summary">Valitse väri tilin kansio- ja tililistaan</string>
-  <string name="account_settings_mail_display_count_label">Paikallisen kansion koko</string>
-  <string name="account_settings_autodownload_message_size_label">Hae viestit, joiden koko on enintään</string>
-  <string name="account_settings_autodownload_message_size_1">1 KiB</string>
-  <string name="account_settings_autodownload_message_size_2">2 KiB</string>
-  <string name="account_settings_autodownload_message_size_4">4 KiB</string>
-  <string name="account_settings_autodownload_message_size_8">8 KiB</string>
-  <string name="account_settings_autodownload_message_size_16">16 KiB</string>
-  <string name="account_settings_autodownload_message_size_32">32 KiB</string>
-  <string name="account_settings_autodownload_message_size_64">64 KiB</string>
-  <string name="account_settings_autodownload_message_size_128">128 KiB</string>
-  <string name="account_settings_autodownload_message_size_256">256 KiB</string>
-  <string name="account_settings_autodownload_message_size_512">512 KiB</string>
-  <string name="account_settings_autodownload_message_size_1024">1 MiB</string>
-  <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
-  <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
-  <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
-  <string name="account_settings_autodownload_message_size_any">mikä tahansa (ei rajoitusta)</string>
-  <string name="account_settings_message_age_label">Synkronoi viestit ajalta</string>
-  <string name="account_settings_message_age_any">milloin vain (ei rajoitusta)</string>
-  <string name="account_settings_message_age_0">tänään</string>
-  <string name="account_settings_message_age_1">viimeiset 2 päivää</string>
-  <string name="account_settings_message_age_2">viimeiset 3 päivää</string>
-  <string name="account_settings_message_age_7">viime viikko</string>
-  <string name="account_settings_message_age_14">viimeiset 2 viikkoa</string>
-  <string name="account_settings_message_age_21">viimeiset 3 viikkoa</string>
-  <string name="account_settings_message_age_1_month">viime kuun</string>
-  <string name="account_settings_message_age_2_months">viimeiset 2 kuukautta</string>
-  <string name="account_settings_message_age_3_months">viimeiset 3 kuukautta</string>
-  <string name="account_settings_message_age_6_months">viimeiset 6 kuukautta</string>
-  <string name="account_settings_message_age_1_year">viime vuosi</string>
-  <string name="account_settings_folder_display_mode_label">Näytä kansiot</string>
-  <string name="account_settings_folder_display_mode_all">Kaikki</string>
-  <string name="account_settings_folder_display_mode_first_class">Vain 1. luokan kansiot</string>
-  <string name="account_settings_folder_display_mode_first_and_second_class">1. ja 2. luokan kansiot</string>
-  <string name="account_settings_folder_display_mode_not_second_class">Kaikki paitsi 2. luokan kansiot</string>
-  <string name="account_settings_folder_sync_mode_label">Tarkistettavat kansiot</string>
-  <string name="account_settings_folder_sync_mode_all">Kaikki</string>
-  <string name="account_settings_folder_sync_mode_first_class">Vain 1. luokan kansiot</string>
-  <string name="account_settings_folder_sync_mode_first_and_second_class">1. ja 2. luokan kansiot</string>
-  <string name="account_settings_folder_sync_mode_not_second_class">Kaikki paitsi 2. luokan kansiot</string>
-  <string name="account_settings_folder_sync_mode_none">Ei mitään</string>
-  <string name="account_settings_folder_push_mode_label">Push-kysely</string>
-  <string name="account_settings_folder_push_mode_all">Kaikki</string>
-  <string name="account_settings_folder_push_mode_first_class">Vain 1. luokan kansiot</string>
-  <string name="account_settings_folder_push_mode_first_and_second_class">1. ja 2. luokan kansiot</string>
-  <string name="account_settings_folder_push_mode_not_second_class">Kaikki paitsi 2. luokan kansiot</string>
-  <string name="account_settings_folder_push_mode_none">Ei mitään</string>
-  <string name="account_settings_folder_target_mode_label">Siirrä/kopioi kohdekansiot</string>
-  <string name="account_settings_folder_target_mode_all">Kaikki</string>
-  <string name="account_settings_folder_target_mode_first_class">Vain 1. luokan kansiot</string>
-  <string name="account_settings_folder_target_mode_first_and_second_class">1. ja 2. luokan kansiot</string>
-  <string name="account_settings_folder_target_mode_not_second_class">Kaikki paitsi 2. luokan kansiot</string>
-  <string name="account_settings_sync_remote_deletetions_label">Synkronoi etäpoistot</string>
-  <string name="account_settings_sync_remote_deletetions_summary">Poista viestit, kun ne poistetaan palvelimelta</string>
-  <string name="account_settings_openpgp_missing">OpenPGP-sovellus puuttuu - poistettiinko se?</string>
-  <string name="folder_settings_title">Kansioiden asetukset</string>
-  <string name="folder_settings_in_top_group_label">Näytä yläryhmässä</string>
-  <string name="folder_settings_in_top_group_summary">Näytä yläosassa lähellä kansiolistaa</string>
-  <string name="folder_settings_folder_display_mode_label">Näytettävän kansion luokka</string>
-  <string name="folder_settings_folder_display_mode_normal">Ei luokkaa</string>
-  <string name="folder_settings_folder_display_mode_first_class">1. luokka</string>
-  <string name="folder_settings_folder_display_mode_second_class">2. luokka</string>
-  <string name="folder_settings_folder_sync_mode_label">Poll-luokka</string>
-  <string name="folder_settings_folder_sync_mode_normal">Ei mitään</string>
-  <string name="folder_settings_folder_sync_mode_first_class">1. luokka</string>
-  <string name="folder_settings_folder_sync_mode_second_class">2. luokka</string>
-  <string name="folder_settings_folder_sync_mode_inherited">Sama kuin näytettävällä kansiolla</string>
-  <string name="folder_settings_folder_push_mode_label">Push-luokka</string>
-  <string name="folder_settings_folder_push_mode_normal">Ei luokkaa</string>
-  <string name="folder_settings_folder_push_mode_first_class">1. luokka</string>
-  <string name="folder_settings_folder_push_mode_second_class">2. luokka</string>
-  <string name="folder_settings_folder_push_mode_inherited">Sama kuin poll-luokka</string>
-  <string name="folder_settings_folder_notify_mode_label">Kansion ilmoitusluokka</string>
-  <string name="folder_settings_folder_notify_mode_normal">Ei luokkaa</string>
-  <string name="folder_settings_folder_notify_mode_first_class">1. luokka</string>
-  <string name="folder_settings_folder_notify_mode_second_class">2. luokka</string>
-  <string name="folder_settings_folder_notify_mode_inherited">Sama kuin push-luokka</string>
-  <string name="folder_settings_clear_local_folder_action">Poista paikalliset viestit</string>
-  <string name="account_settings_incoming_label">Saapuvan postin palvelin</string>
-  <string name="account_settings_incoming_summary">Määritä saapuvan postin palvelin</string>
-  <string name="account_settings_outgoing_label">Lähtevän postin palvelin</string>
-  <string name="account_settings_outgoing_summary">Määritä lähtevän postin palvelin (SMTP)</string>
-  <string name="account_settings_description_label">Tilin nimi</string>
-  <string name="account_settings_name_label">Nimesi</string>
-  <string name="notifications_title">Ilmoitukset</string>
-  <string name="account_settings_vibration">Värinä</string>
-  <string name="account_settings_vibrate_enable">Värinä</string>
-  <string name="account_settings_vibrate_pattern_label">Värinän malli</string>
-  <string name="account_settings_vibrate_pattern_default">Oletus</string>
-  <string name="account_settings_vibrate_pattern_1">Malli 1</string>
-  <string name="account_settings_vibrate_pattern_2">Malli 2</string>
-  <string name="account_settings_vibrate_pattern_3">Malli 3</string>
-  <string name="account_settings_vibrate_pattern_4">Malli 4</string>
-  <string name="account_settings_vibrate_pattern_5">Malli 5</string>
-  <string name="account_settings_vibrate_times">Värinöiden lukumäärä</string>
-  <string name="account_settings_vibrate_summary_disabled">Ei käytössä</string>
-  <string name="account_settings_ringtone">Uuden viestin ilmoitusääni</string>
-  <string name="account_settings_notification_light_label">Ilmoituksen valo</string>
-  <string name="account_settings_notification_light_disabled">Ei käytössä</string>
-  <string name="account_settings_notification_light_account_color">Tilin väri</string>
-  <string name="account_settings_notification_light_default_color">Järjestelmän oletusväri</string>
-  <string name="account_settings_notification_light_white">Valkoinen</string>
-  <string name="account_settings_notification_light_red">Punainen</string>
-  <string name="account_settings_notification_light_green">Vihreä</string>
-  <string name="account_settings_notification_light_blue">Sininen</string>
-  <string name="account_settings_notification_light_yellow">Keltainen</string>
-  <string name="account_settings_notification_light_cyan">Syaani</string>
-  <string name="account_settings_notification_light_magenta">Magenta</string>
-  <string name="account_settings_composition_title">Viestin kirjoituksen asetukset</string>
-  <string name="account_settings_composition_label">Kirjoituksen oletusasetukset</string>
-  <string name="account_settings_composition_summary">Aseta oletusarvot: lähettäjä, piilokopio ja allekirjoitus</string>
-  <string name="account_settings_identities_label">Identiteettien hallinta</string>
-  <string name="account_settings_identities_summary">Määritä vaihtoehtoiset lähettäjän osoitteet ja allekirjoitukset</string>
-  <string name="manage_identities_title">Identiteettien hallinta</string>
-  <string name="manage_identities_context_menu_title">Identiteetin hallinta</string>
-  <string name="edit_identity_title">Muokkaa identiteettiä</string>
-  <string name="edit_identity_save">Tallenna</string>
-  <string name="new_identity_action">Uusi identiteetti</string>
-  <string name="account_settings_always_bcc_label">Piilokopio kaikista viesteistä osoitteeseen</string>
-  <string name="manage_identities_edit_action">Muokkaa</string>
-  <string name="manage_identities_move_up_action">Siirrä ylös</string>
-  <string name="manage_identities_move_down_action">Siirrä alas</string>
-  <string name="manage_identities_move_top_action">Siirrä ylimmäiseksi / aseta oletukseksi</string>
-  <string name="manage_identities_remove_action">Poista</string>
-  <string name="edit_identity_description_label">Identiteetin kuvaus</string>
-  <string name="edit_identity_description_hint">(Valinnainen)</string>
-  <string name="edit_identity_name_label">Nimesi</string>
-  <string name="edit_identity_name_hint">(Valinnainen)</string>
-  <string name="edit_identity_email_label">Sähköpostiosoite</string>
-  <string name="edit_identity_email_hint">(Pakollinen)</string>
-  <string name="edit_identity_reply_to_label">Vastausosoite</string>
-  <string name="edit_identity_reply_to_hint">(Valinnainen)</string>
-  <string name="edit_identity_signature_label">Allekirjoitus</string>
-  <string name="edit_identity_signature_hint">(Valinnainen)</string>
-  <string name="account_settings_signature_use_label">Käytä allekirjoitusta</string>
-  <string name="account_settings_signature_label">Allekirjoitus</string>
-  <string name="default_identity_description">Oletusidentiteetti</string>
-  <string name="choose_identity_title">Valitse identiteetti</string>
-  <string name="send_as">Lähetä nimellä</string>
-  <string name="no_removable_identity">Et voi poistaa ainoaa identiteettiäsi</string>
-  <string name="identity_has_no_email">Identiteettiä ei voi käyttää ilman sähköpostiosoitetta</string>
-  <string name="sort_earliest_first">Vanhemmat viestit ensin</string>
-  <string name="sort_latest_first">Uusimmat viestit ensin</string>
-  <string name="sort_subject_alpha">Aiheen mukaan aakkosjärjestyksessä</string>
-  <string name="sort_subject_re_alpha">Aiheen mukaan käänteisessä aakkosjärjestyksessä</string>
-  <string name="sort_sender_alpha">Lähettäjän mukaan aakkosjärjestyksessä</string>
-  <string name="sort_sender_re_alpha">Lähettäjän mukaan käänteisessä aakkosjärjestyksessä</string>
-  <string name="sort_flagged_first">Tähdellä merkityt ensin</string>
-  <string name="sort_flagged_last">Merkitsemättömät ensin</string>
-  <string name="sort_unread_first">Lukemattomat ensin</string>
-  <string name="sort_unread_last">Luetut ensin</string>
-  <string name="sort_attach_first">Liitteelliset viestit ensin</string>
-  <string name="sort_unattached_first">Liitteettömät viestit ensin</string>
-  <string name="sort_by">Lajittele…</string>
-  <string name="sort_by_date">Päivämäärän mukaan</string>
-  <string name="sort_by_arrival">Saapumisajan mukaan</string>
-  <string name="sort_by_subject">Aiheen mukaan</string>
-  <string name="sort_by_sender">Lähettäjän mukaan</string>
-  <string name="sort_by_flag">Tähden mukaan</string>
-  <string name="sort_by_unread">Luettujen/lukemattomien mukaan</string>
-  <string name="sort_by_attach">Liitteiden mukaan</string>
-  <string name="account_delete_dlg_title">Poista tili</string>
-  <string name="account_setup_failed_dlg_invalid_certificate_title">Tunnistamaton varmenne</string>
-  <string name="account_setup_failed_dlg_invalid_certificate_accept">Hyväksy-avain</string>
-  <string name="account_setup_failed_dlg_invalid_certificate_reject">Hylkää-avain</string>
-  <string name="folder_list_filter_hint">Kansion nimi sisältää</string>
-  <string name="folder_list_display_mode_label">Kansiot</string>
-  <string name="folder_list_display_mode_all">Näytä kaikki</string>
-  <string name="folder_list_display_mode_first_class">Näytä vain 1. luokan kansiot</string>
-  <string name="folder_list_display_mode_first_and_second_class">Näytä 1. ja 2. luokan kansiot</string>
-  <string name="folder_list_display_mode_not_second_class">Näytä kaikki paitsi 2. luokan kansiot</string>
-  <string name="account_settings_signature__location_label">Allekirjoituksen sijainti</string>
-  <string name="account_settings_signature__location_before_quoted_text">Ennen lainattua viestiä</string>
-  <string name="account_settings_signature__location_after_quoted_text">Lainatun viestin jälkeen</string>
-  <string name="setting_theme_global">Käytä sovellusteemaa</string>
-  <string name="setting_theme_dark">Tumma</string>
-  <string name="setting_theme_light">Vaalea</string>
-  <string name="setting_theme_follow_system">Käytä järjestelmän oletusta</string>
-  <string name="display_preferences">Näyttö</string>
-  <string name="global_preferences">Yleiset</string>
-  <string name="debug_preferences">Virheenkorjaus</string>
-  <string name="privacy_preferences">Tietosuoja</string>
-  <string name="network_preferences">Verkko</string>
-  <string name="interaction_preferences">Toimintoasetukset</string>
-  <string name="accountlist_preferences">Tililista</string>
-  <string name="messagelist_preferences">Viestilistat</string>
-  <string name="messageview_preferences">Viestit</string>
-  <string name="settings_theme_label">Teema</string>
-  <string name="settings_message_theme_label">Viestinäkymän teema</string>
-  <string name="settings_compose_theme_label">Viestimuokkaimen teema</string>
-  <string name="settings_language_label">Kieli</string>
-  <string name="preference_search_no_results">Asetuksia ei löytynyt</string>
-  <string name="settings_message_theme_selection_label">Kiinteä viestiteema</string>
-  <string name="settings_message_theme_selection_summary_off">Valitse viestinäkymän teema viestiä luettaessa</string>
-  <string name="settings_message_theme_selection_summary_on">Käytä kiinteää viestinäkymän teemaa</string>
-  <string name="setting_language_system">Järjestelmän oletus</string>
-  <string name="background_ops_label">Synkronointi taustalla</string>
-  <string name="background_ops_never">Ei koskaan</string>
-  <string name="background_ops_always">Aina</string>
-  <string name="background_ops_auto_sync_only">Kun Automaattinen synkronointi on valittu</string>
-  <string name="batch_select_all">Valitse kaikki</string>
-  <string name="account_setup_push_limit_label">Push-tilassa tarkistettavien kansioiden enimmäismäärä</string>
-  <string name="account_setup_push_limit_5">5 kansiota</string>
-  <string name="account_setup_push_limit_10">10 kansiota</string>
-  <string name="account_setup_push_limit_25">25 kansiota</string>
-  <string name="account_setup_push_limit_50">50 kansiota</string>
-  <string name="account_setup_push_limit_100">100 kansiota</string>
-  <string name="account_setup_push_limit_250">250 kansiota</string>
-  <string name="account_setup_push_limit_500">500 kansiota</string>
-  <string name="account_setup_push_limit_1000">1000 kansiota</string>
-  <string name="animations_title">Animaatio</string>
-  <string name="animations_summary">Käytä koreita visuaalisia tehosteita</string>
-  <string name="volume_navigation_title">Liikkuminen äänipainikkeilla viestinäkymässä</string>
-  <string name="show_unified_inbox_title">Näytä \"Yhdistetty saapuneet\"</string>
-  <string name="show_starred_count_title">Näytä tähdellä merkittyjen viestien määrä</string>
-  <string name="integrated_inbox_title">Yhdistetty saapuneet</string>
-  <string name="integrated_inbox_detail">Kaikki viestit Yhdistetty saapuneet -kansiossa</string>
-  <string name="folder_settings_include_in_integrated_inbox_label">Yhdistä</string>
-  <string name="folder_settings_include_in_integrated_inbox_summary">Kaikki viestit näytetään Yhdistetty saapuneet -kansiossa</string>
-  <string name="account_settings_searchable_label">Etsi kansioista</string>
-  <string name="account_settings_searchable_all">Kaikki</string>
-  <string name="account_settings_searchable_displayable">Näytettävissä olevat</string>
-  <string name="account_settings_searchable_none">Ei mitään</string>
-  <string name="account_settings_no_folder_selected">Ei mitään</string>
-  <string name="account_settings_automatic_special_folder">Automaattinen (%s)</string>
-  <string name="font_size_settings_title">Kirjasinkoko</string>
-  <string name="font_size_settings_description">Määritä kirjasimen koko</string>
-  <string name="font_size_message_list">Viestilistat</string>
-  <string name="font_size_message_list_subject">Viestin aihe</string>
-  <string name="font_size_message_list_sender">Lähettäjä</string>
-  <string name="font_size_message_list_date">Päiväys</string>
-  <string name="font_size_message_list_preview">Esikatselu</string>
-  <string name="font_size_message_view">Viestinäkymä</string>
-  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
-  <string name="font_size_message_view_account">Tilin nimi</string>
-  <string name="font_size_message_view_sender">Lähettäjä</string>
-  <string name="font_size_message_view_recipients">Vastaanottajat</string>
-  <string name="font_size_message_view_subject">Viestin aihe</string>
-  <string name="font_size_message_view_date">Aika ja päivämäärä</string>
-  <string name="font_size_message_view_content">Viestin sisältö</string>
-  <string name="font_size_message_compose">Viestin kirjoitus</string>
-  <string name="font_size_message_compose_input">Tekstinsyöttökentät</string>
-  <string name="font_size_default">Oletus</string>
-  <string name="font_size_tiniest">Pienin</string>
-  <string name="font_size_tiny">Erittäin pieni</string>
-  <string name="font_size_smaller">Pienempi</string>
-  <string name="font_size_small">Pieni</string>
-  <string name="font_size_medium">Keskikoko</string>
-  <string name="font_size_large">Suuri</string>
-  <string name="font_size_larger">Suurin</string>
-  <string name="error_activity_not_found">Toiminnolle ei löytynyt sopivaa ohjelmaa.</string>
-  <string name="send_failed_reason">Lähetys epäonnistui: %s</string>
-  <string name="save_or_discard_draft_message_dlg_title">Tallennetaanko luonnos?</string>
-  <string name="save_or_discard_draft_message_instructions_fmt">Tallennetaanko vai hylätäänkö tämä viesti?</string>
-  <string name="save_or_discard_draft_message_changes">Tallennetaanko vai hylätäänkö muutokset?</string>
-  <string name="confirm_discard_draft_message_title">Hylkää viesti?</string>
-  <string name="confirm_discard_draft_message">Haluatko varmasti hylätä tämän viestin?</string>
-  <string name="dialog_confirm_clear_local_folder_title">Poistetaanko paikalliset viestit?</string>
-  <string name="dialog_confirm_clear_local_folder_message">Tämä poistaa kaikki paikalliset viestit kansiosta. Viestejä ei poisteta palvelimelta.</string>
-  <string name="dialog_confirm_clear_local_folder_action">Poista viestit</string>
-  <string name="dialog_confirm_delete_title">Vahvista poisto</string>
-  <string name="dialog_confirm_delete_message">Haluatko poistaa tämän viestin?</string>
-  <plurals name="dialog_confirm_delete_messages">
-    <item quantity="one">Haluatko varmasti poistaa tämän viestin?</item>
-    <item quantity="other">Haluatko varmasti poistaa <xliff:g id="message_count">%1$d</xliff:g> viestiä?</item>
-  </plurals>
-  <string name="dialog_confirm_delete_confirm_button">Kyllä</string>
-  <string name="dialog_confirm_delete_cancel_button">Ei</string>
-  <string name="dialog_confirm_mark_all_as_read_title">Vahvista kaikki luetuiksi</string>
-  <string name="dialog_confirm_mark_all_as_read_message">Haluatko merkitä kaikki viestit luetuiksi?</string>
-  <string name="dialog_confirm_empty_trash_title">Vahvista roskakorin tyhjentäminen</string>
-  <string name="dialog_confirm_empty_trash_message">Haluatko tyhjentää roskakorikansion?</string>
-  <string name="dialog_confirm_mark_all_as_read_confirm_button">Kyllä</string>
-  <string name="dialog_confirm_mark_all_as_read_cancel_button">Ei</string>
-  <string name="dialog_confirm_spam_title">Vahvista roskapostikansioon siirtäminen</string>
-  <plurals name="dialog_confirm_spam_message">
-    <item quantity="one">Haluatko todella siirtää tämän viestin roskapostikansioon?</item>
-    <item quantity="other">Haluatko todella siirtää <xliff:g id="message_count">%1$d</xliff:g> viestiä roskapostikansioon?</item>
-  </plurals>
-  <string name="dialog_confirm_spam_confirm_button">Kyllä</string>
-  <string name="dialog_confirm_spam_cancel_button">Ei</string>
-  <string name="dialog_attachment_progress_title">Ladataan liitettä</string>
-  <string name="settings_list_backup_category">Varmuuskopio</string>
-  <string name="settings_list_miscellaneous_category">Muut</string>
-  <string name="settings_export_title">Vie asetukset</string>
-  <string name="settings_export_button">Vie</string>
-  <string name="settings_export_share_button">Jaa</string>
-  <string name="settings_export_progress_text">Viedään asetuksia…</string>
-  <string name="settings_export_success_generic">Asetukset vietiin onnistuneesti</string>
-  <string name="settings_export_failure">Asetusten vienti epäonnistui</string>
-  <string name="settings_import_title">Tuo asetukset</string>
-  <string name="settings_import_pick_document_button">Valitse tiedosto</string>
-  <string name="settings_import_button">Tuo</string>
-  <string name="settings_import_success_generic">Asetusten tuonti onnistui</string>
-  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-  <string name="settings_import_password_required">Anna salasanat</string>
-  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-  <string name="settings_import_authorization_required">Kirjaudu sisään</string>
-  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-  <string name="settings_import_authorization_and_password_required">Kirjaudu sisään ja anna salasanat</string>
-  <string name="settings_import_failure">Asetusten tuonti epäonnistui</string>
-  <string name="settings_import_read_failure">Asetustiedoston lukeminen epäonnistui</string>
-  <string name="settings_import_partial_failure">Joidenkin asetusten tuonti epäonnistui</string>
-  <string name="settings_import_status_success">Tuonti onnistui</string>
-  <string name="settings_import_status_password_required">Salasana vaaditaan</string>
-  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-  <string name="settings_import_status_log_in_required">Sisäänkirjautuminen vaaditaan</string>
-  <string name="settings_import_status_not_imported">Ei tuotu</string>
-  <string name="settings_import_status_error">Tuontivirhe</string>
-  <string name="settings_import_later_button">Myöhemmin</string>
-  <string name="settings_import">Tuo asetukset</string>
-  <string name="settings_importing">Tuodaan asetuksia…</string>
-  <plurals name="settings_import_password_prompt">
-    <item quantity="one">Jotta voit käyttää tiliä \"<xliff:g id="account">%s</xliff:g>\", sinun on annettava palvelimen salasana.</item>
-    <item quantity="other">Jotta voit käyttää tiliä \"<xliff:g id="account">%s</xliff:g>\", sinun on annettava palvelimien salasanat.</item>
-  </plurals>
-  <string name="settings_import_incoming_server_password_hint">Saapuvan postin palvelimen salasana</string>
-  <string name="settings_import_outgoing_server_password_hint">Lähtevän postin palvelimen salasana</string>
-  <string name="settings_import_use_same_password_for_outgoing_server">Käytä samaa salasanaa lähtevälle palvelimelle</string>
-  <string name="server_name_format">Palvelimen nimi: <xliff:g id="hostname">%s</xliff:g></string>
-  <string name="unread_widget_select_account">Näytä tilin lukemattomien viestien määrä…</string>
-  <string name="unread_widget_account_title">Tili</string>
-  <string name="unread_widget_account_summary">Tili, jonka osalta näytetään lukemattomien viestien määrä</string>
-  <string name="unread_widget_unified_inbox_account_summary">Yhdistetty saapuneet</string>
-  <string name="unread_widget_folder_enabled_title">Kansion määrä</string>
-  <string name="unread_widget_folder_enabled_summary">Näytä lukemattomien määrä vain yksittäisen kansion osalta</string>
-  <string name="unread_widget_folder_title">Kansio</string>
-  <string name="unread_widget_folder_summary">Kansio, jonka osalta näytetään lukemattomien viestien määrä</string>
-  <string name="unread_widget_action_done">Valmis</string>
-  <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
-  <string name="unread_widget_account_not_selected">Tiliä ei ole valittu</string>
-  <string name="unread_widget_folder_not_selected">Kansiota ei ole valittu</string>
-  <string name="webview_empty_message">Ei tekstiä</string>
-  <string name="webview_contextmenu_link_view_action">Avaa katseltavaksi</string>
-  <string name="webview_contextmenu_link_share_action">Jaa linkki</string>
-  <string name="webview_contextmenu_link_copy_action">Kopioi linkki leikepöydälle</string>
-  <string name="webview_contextmenu_link_clipboard_label">Linkki</string>
-  <string name="webview_contextmenu_link_text_copy_action">Kopioi linkin teksti leikepöydälle</string>
-  <string name="webview_contextmenu_link_text_clipboard_label">Linkin teksti</string>
-  <string name="webview_contextmenu_image_title">Kuva</string>
-  <string name="webview_contextmenu_image_view_action">Näytä kuva</string>
-  <string name="webview_contextmenu_image_save_action">Tallenna kuva</string>
-  <string name="webview_contextmenu_image_download_action">Lataa kuva</string>
-  <string name="webview_contextmenu_image_copy_action">Kopioi kuvan osoite leikepöydälle</string>
-  <string name="webview_contextmenu_image_clipboard_label">Kuvan osoite</string>
-  <string name="webview_contextmenu_phone_call_action">Soita numeroon</string>
-  <string name="webview_contextmenu_phone_save_action">Tallenna yhteystietoihin</string>
-  <string name="webview_contextmenu_phone_copy_action">Kopioi puhelinnumero leikepöydälle</string>
-  <string name="webview_contextmenu_phone_clipboard_label">Puhelinnumero</string>
-  <string name="webview_contextmenu_email_send_action">Lähetä sähköpostia</string>
-  <string name="webview_contextmenu_email_save_action">Tallenna yhteystietoihin</string>
-  <string name="webview_contextmenu_email_copy_action">Kopioi sähköpostiosoite leikepöydälle</string>
-  <string name="webview_contextmenu_email_clipboard_label">Sähköpostiosoite</string>
-  <string name="account_settings_remote_search_num_results_entries_all">Kaikki</string>
-  <string name="account_settings_remote_search_num_results_entries_10">10</string>
-  <string name="account_settings_remote_search_num_results_entries_25">25</string>
-  <string name="account_settings_remote_search_num_results_entries_50">50</string>
-  <string name="account_settings_remote_search_num_results_entries_100">100</string>
-  <string name="account_settings_remote_search_num_results_entries_250">250</string>
-  <string name="account_settings_remote_search_num_results_entries_500">500</string>
-  <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-  <string name="account_settings_remote_search_num_label">Etähaun tulosten rajoitus</string>
-  <string name="remote_search_sending_query">Lähetetään pyyntöä palvelimelle</string>
-  <plurals name="remote_search_downloading">
-    <item quantity="one">Noudetaan %d tulos</item>
-    <item quantity="other">Noudetaan %d tulosta</item>
-  </plurals>
-  <plurals name="remote_search_downloading_limited">
-    <item quantity="one">Noudetaan %1$d / %2$d tulos</item>
-    <item quantity="other">Noudetaan %1$d / %2$d tulosta</item>
-  </plurals>
-  <string name="remote_search_error">Etähaku epäonnistui</string>
-  <string name="account_settings_search">Hae</string>
-  <string name="action_remote_search">Etsi viestejä palvelimelta</string>
-  <string name="remote_search_unavailable_no_network">Etähaku ei ole käytettävissä ilman verkkoyhteyttä.</string>
-  <string name="global_settings_background_as_unread_indicator_label">Vaihda väriä kun luettu</string>
-  <string name="global_settings_background_as_unread_indicator_summary">Eri tausta osoittaa viestin olevan luettu</string>
-  <string name="global_settings_threaded_view_label">Ketjunäkymä</string>
-  <string name="global_settings_threaded_view_summary">Kutista samaan ketjuun kuuluvat viestit</string>
-  <string name="upgrade_databases_title">Päivitetään tietokantoja</string>
-  <string name="upgrade_databases_unspecified">Päivitetään tietokantoja…</string>
-  <string name="upgrade_database_format">Päivitetään tilin \"<xliff:g id="account">%s</xliff:g>\" tietokantaa</string>
-  <string name="global_settings_splitview_mode_label">Näytä jaettu näyttö</string>
-  <string name="global_settings_splitview_always">Aina</string>
-  <string name="global_settings_splitview_never">Ei koskaan</string>
-  <string name="global_settings_splitview_when_in_landscape">Kun laite on vaaka-asennossa</string>
-  <string name="message_view_empty">Valitse viesti vasemmalta</string>
-  <string name="global_settings_show_contact_picture_label">Näytä yhteystietojen kuvat</string>
-  <string name="global_settings_show_contact_picture_summary">Näytä yhteystietojen kuvat viestilistassa</string>
-  <string name="mark_all_as_read">Merkitse kaikki luetuiksi</string>
-  <string name="global_settings_colorize_missing_contact_pictures_label">Väritä yhteystietojen kuvat</string>
-  <string name="global_settings_colorize_missing_contact_pictures_summary">Väritä yhteystietojen puuttuvat kuvat</string>
-  <string name="global_settings_messageview_visible_refile_actions_title">Näytettävät viestitoiminnot</string>
-  <string name="global_settings_messageview_visible_refile_actions_summary">Näytä valitut toiminnot viestin Näytä-valikossa</string>
-  <string name="loading_attachment">Ladataan liitettä…</string>
-  <string name="fetching_attachment_dialog_title_send">Lähetetään viestiä</string>
-  <string name="fetching_attachment_dialog_title_save">Tallennetaan luonnosta</string>
-  <string name="fetching_attachment_dialog_message">Noudetaan liitettä…</string>
-  <string name="auth_external_error">Autentikointi ei onnistu.  Palvelin ei ilmoita SASL EXTERNAL -kelpoisuudesta.  Tämä saattaa johtua vanhentuneesta asiakasvarmenteesta, tuntemattomasta varmentajasta tai jostakin muusta asetusongelmasta.</string>
-  <!--=== Client certificates specific ==================================================================-->
-  <string name="account_setup_basics_client_certificate">Käytä asiakasvarmennetta</string>
-  <string name="client_certificate_spinner_empty">Ei asiakasvarmennetta</string>
-  <string name="client_certificate_spinner_delete">Poista asiakasvarmenteen valinta</string>
-  <string name="client_certificate_retrieval_failure">Asiakasvarmenteen noutaminen epäonnistui aliakselle \"<xliff:g id="alias">%s</xliff:g>\"</string>
-  <string name="client_certificate_advanced_options">Lisäasetukset</string>
-  <string name="client_certificate_expired">Asiakasvarmenne \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" on vanhentunut tai ei ole vielä voimassa (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <!--Note: This references message_view_download_remainder-->
-  <string name="preview_encrypted">*Salattu*</string>
-  <string name="add_from_contacts">Lisää yhteystiedoista</string>
-  <string name="recipient_cc">Kopio</string>
-  <string name="recipient_bcc">Piilokopio</string>
-  <string name="recipient_to">Vastaanottaja</string>
-  <string name="recipient_from">Lähettäjä</string>
-  <string name="reply_to_label">Vastausosoite</string>
-  <string name="unknown_recipient">&lt;Tuntematon vastaanottaja&gt;</string>
-  <string name="unknown_sender">&lt;Tuntematon lähettäjä&gt;</string>
-  <string name="address_type_home">Koti</string>
-  <string name="address_type_work">Työ</string>
-  <string name="address_type_other">Muu</string>
-  <string name="address_type_mobile">Mobiili</string>
-  <string name="compose_error_no_draft_folder">Tälle tilille ei ole määritelty luonnoskansiota!</string>
-  <string name="compose_error_no_key_configured">Tälle tilille ei ole määritetty avainta! Tarkista asetukset.</string>
-  <string name="error_crypto_provider_incompatible">Salauksen tarjoaja käyttää yhteensopimatonta versiota. Tarkista asetuksesi!</string>
-  <string name="error_crypto_provider_connect">Yhteyttä salaussovellukseen ei voitu muodostaa: tarkista asetukset tai yritä napsauttaa salauskuvaketta uudestaan!</string>
-  <string name="error_crypto_provider_ui_required">Päästä päähän -salauksen alustaminen epäonnistui, tarkista asetukset</string>
-  <string name="error_crypto_inline_attach">PGP/INLINE-tila ei tue liitteitä!</string>
-  <string name="enable_inline_pgp">Käytä PGP/INLINE-tilaa</string>
-  <string name="disable_inline_pgp">Poista PGP/INLINE käytöstä</string>
-  <string name="enable_sign_only">Käytä PGP:n pelkkää allekirjoitusta</string>
-  <string name="disable_sign_only">Poista käytöstä PGP:n pelkkä allekirjoitus</string>
-  <string name="openpgp_inline_title">PGP/INLINE-tila</string>
-  <string name="openpgp_inline_text">Viesti lähetetään PGP/INLINE-muodossa.\nTätä tulisi käyttää vain yhteensopivuutta varten:</string>
-  <string name="openpgp_inline_plus_compat">Jotkin sovellukset tukevat vain tätä muotoa</string>
-  <string name="openpgp_inline_minus_transit">Allekirjoitukset saattavat rikkontua siirron aikana</string>
-  <string name="openpgp_inline_minus_attach">Liitteet eivät ole tuettuja</string>
-  <string name="openpgp_inline_ok">Selvä!</string>
-  <string name="openpgp_inline_disable">Poista käytöstä</string>
-  <string name="openpgp_inline_keep_enabled">Pidä käytössä</string>
-  <string name="openpgp_sign_only_ok">Selvä!</string>
-  <string name="openpgp_sign_only_disable">Poista käytöstä</string>
-  <string name="openpgp_sign_only_keep_enabled">Pidä käytössä</string>
-  <string name="openpgp_dialog_sign_only_title">PGP:n pelkkä allekirjoitustila</string>
-  <string name="openpgp_dialog_sign_only_text">Tässä tilassa PGP-avaintasi käytetään salakirjoitetun allekirjoituksen luomiseen, mutta sähköpostiviestiä ei salata.</string>
-  <string name="openpgp_dialog_sign_only_plus_verified">Tämä ei salaa sähköpostiviestiä, mutta vahvistaa sen olevan lähetetty käyttäen sinun avainta.</string>
-  <string name="openpgp_dialog_sign_only_minus_break">Allekirjoitukset saattavat rikkoontua postituslistoille lähettäessä.</string>
-  <string name="openpgp_dialog_sign_only_minus_attach">Allekirjoitukset saatetaan näyttää \"signature.asc\"-liitteinä joissain sovelluksissa.</string>
-  <string name="openpgp_dialog_sign_only_neutral_encsigned">Salatut viestit sisältävät aina allekirjoituksen.</string>
-  <string name="crypto_msg_title_plaintext">Raakateksti</string>
-  <string name="crypto_msg_unencrypted_sign_error">päästä päähän -allekirjoitus sisälsi virheen</string>
-  <string name="crypto_msg_incomplete_signed">viesti täytyy ladata kokonaan, jotta allekirjoitus voidaan käsitellä</string>
-  <string name="crypto_msg_unsupported_signed">sisältää ei-tuetun päästä päähän -allekirjoituksen</string>
-  <string name="crypto_msg_unsupported_encrypted">Viesti on salattu, mutta sen muoto ei ole tuettu.</string>
-  <string name="crypto_msg_cancelled">Viesti on salattu, mutta viestin salauksen purkaminen peruttiin.</string>
-  <string name="crypto_msg_title_unencrypted_signed_e2e">Päästä päähän -allekirjoitettu raakateksti</string>
-  <string name="crypto_msg_unencrypted_sign_verified">vahvistetulta allekirjoittajalta</string>
-  <string name="crypto_msg_title_unencrypted_signed">Allekirjoitettu raakateksti</string>
-  <string name="crypto_msg_unencrypted_sign_mismatch">mutta päästä päähän -avain ei vastannut lähettäjää</string>
-  <string name="crypto_msg_unencrypted_sign_expired">mutta päästä päähän -avain on vanhentunut</string>
-  <string name="crypto_msg_unencrypted_sign_revoked">mutta päästä päähän -avain on kumottu</string>
-  <string name="crypto_msg_unencrypted_sign_insecure">mutta päästä päähän -avainta ei mielletä turvalliseksi</string>
-  <string name="crypto_msg_unencrypted_sign_unknown">tuntemattomalta päästä päähän -avaimelta</string>
-  <string name="crypto_msg_title_encrypted_unknown">Salattu</string>
-  <string name="crypto_msg_encrypted_error">mutta salausta purkaessa tapahtui virhe</string>
-  <string name="crypto_msg_encrypted_incomplete">täytyy ladata viesti kokonaan salauksen purkamista varten</string>
-  <string name="crypto_msg_encrypted_no_provider">mutta salaussovellusta ei ole määritetty</string>
-  <string name="crypto_msg_title_encrypted_unsigned">Salattu</string>
-  <string name="crypto_msg_encrypted_unsigned">mutta ei päästä päähän</string>
-  <string name="crypto_msg_title_encrypted_signed_e2e">Päästä päähän salattu</string>
-  <string name="crypto_msg_encrypted_sign_verified">vahvistetulta lähettäjältä</string>
-  <string name="crypto_msg_title_encrypted_signed">Salattu</string>
-  <string name="crypto_msg_encrypted_sign_unknown">tuntemattomalta päästä päähän -avaimelta</string>
-  <string name="crypto_msg_encrypted_sign_mismatch">mutta päästä päähän -avain ei vastannut lähettäjää</string>
-  <string name="crypto_msg_encrypted_sign_expired">mutta päästä päähän -avain on vanhentunut</string>
-  <string name="crypto_msg_encrypted_sign_revoked">mutta päästä päähän -avain on kumottu</string>
-  <string name="crypto_msg_encrypted_sign_insecure">mutta päästä päähän -avainta ei mielletä turvalliseksi</string>
-  <string name="crypto_msg_encrypted_sign_error">mutta päästä päähän -tiedot sisältävät virheitä</string>
-  <string name="crypto_msg_encrypted_insecure">mutta salausta ei mielletä turvalliseksi</string>
-  <string name="crypto_info_ok">OK</string>
-  <string name="crypto_info_search_key">Etsi avainta</string>
-  <string name="crypto_info_view_signer">Näytä allekirjoittaja</string>
-  <string name="crypto_info_view_sender">Näytä lähettäjä</string>
-  <string name="crypto_info_view_security_warning">Yksityiskohdat</string>
-  <string name="locked_attach_unlock">Avaa lukitus</string>
-  <string name="locked_attach_unencrypted">Tätä osaa ei salattu, joten se saattaa olla epäluotettava.</string>
-  <string name="locked_attach_title">Suojaamaton liite</string>
-  <string name="message_progress_text">Ladataan…</string>
-  <string name="messageview_decrypt_cancelled">Salauksen purkaminen peruttiin.</string>
-  <string name="messageview_decrypt_retry">Yritä uudelleen</string>
-  <string name="messageview_decrypt_incomplete">Salattu viesti tulee ladata, jotta sen salaus voidaan avata.</string>
-  <string name="messageview_crypto_error_title">Virhe sähköpostin salausta avatessa</string>
-  <string name="recipient_error_non_ascii">Erikoismerkit eivät ole tällä hetkellä tuettuja!</string>
-  <string name="recipient_error_parse_failed">Virhe osoitetta jäsennettäessä!</string>
-  <string name="account_settings_crypto_hide_sign_only">Piilota salaamattomat allekirjoitukset</string>
-  <string name="account_settings_crypto_hide_sign_only_on">Vain salatut allekirjoitukset näytetään</string>
-  <string name="account_settings_crypto_hide_sign_only_off">Kaikki allekirjoitukset näytetään</string>
-  <string name="error_sign_only_no_encryption">Salaus ei ole käytettävissä pelkässä allekirjoitustilassa!</string>
-  <string name="unsigned_text_divider_label">Allekirjoittamaton teksti</string>
-  <string name="crypto_no_provider_title">Tämä sähköpostiviesti on salattu</string>
-  <string name="crypto_no_provider_message">Tämä viesti on salattu OpenPGP:llä.\nLukeaksesi viestin sinun tulee asentaa ja määrittää yhteensopiva OpenPGP-sovellus.</string>
-  <string name="crypto_no_provider_button">Siirry asetuksiin</string>
-  <string name="mail_list_widget_text">K-9-viestiluettelo</string>
-  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
-  <string name="message_list_widget_initializing">Ladataan…</string>
-  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
-  <string name="message_list_widget_list_item_loading">Ladataan…</string>
-  <string name="openpgp_enabled_error_title">Salaus ei ole mahdollista</string>
-  <string name="openpgp_enabled_error_msg">Jotkut valitut vastaanottajat eivät tue tätä ominaisuutta!</string>
-  <string name="enable_encryption">Käytä salausta</string>
-  <string name="disable_encryption">Poista salaus käytöstä</string>
-  <string name="openpgp_description_text1">Viestin salaus takaa, ettei niitä voi lukea kukaan muu kuin vastaanottaja.</string>
-  <string name="openpgp_description_text3">Salaus ilmestyy näkyviin vain jos kaikki vastaanottajat tukevat sitä, ja kyseiset tahot ovat lähettäneet sinulle sähköpostia aiemmin.</string>
-  <string name="openpgp_description_text2">Ota salaus käyttöön tai poista käytöstä napauttamalla tätä kuvaketta.</string>
-  <string name="openpgp_enabled_error_gotit">Selvä</string>
-  <string name="openpgp_enabled_error_back">Takaisin</string>
-  <string name="openpgp_enabled_error_disable">Poista salaus käytöstä</string>
-  <string name="openpgp_encryption">OpenPGP-salaus</string>
-  <string name="account_settings_crypto_prefer_encrypt">Automattisen salauksen kahdenkeskeinen tila</string>
-  <string name="dialog_autocrypt_mutual_title">Automattisen salauksen kahdenkeskeinen tila</string>
-  <string name="dialog_autocrypt_mutual_description_1">Viestit salataan normaalisti valinnan mukaan, tai kun vastataan salattuun viestiin.</string>
-  <string name="dialog_autocrypt_mutual_description_2">Jos sekä lähettäjä että vastaanottaja ottavat käyttöön kahdenkeskeisen tilan, salaus otetaan käyttöön oletusarvoisesti.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Voit <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">napauttaa tästä</a> saadaksesi lisätietoja.</string>
-  <string name="general_settings_title">Yleiset asetukset</string>
-  <string name="dialog_openkeychain_info_title">OpenPGP-sovellusta ei ole asennettu</string>
-  <string name="dialog_openkeychain_info_install">Asenna</string>
-  <string name="dialog_openkeychain_info_text">K-9 Mail vaatii OpenKeychainin päästä päähän -salausta varten.</string>
-  <string name="encrypted_subject">Salattu viesti</string>
-  <string name="account_settings_crypto_encrypt_subject">Salaa viestien aiheet</string>
-  <string name="account_settings_crypto_encrypt_subject_subtitle">Ei välttämättä tuettu kaikkien vastaanottajien osalta</string>
-  <string name="toast_account_not_found">Sisäinen virhe: virheellinen tili!</string>
-  <string name="toast_openpgp_provider_error">Virhe yhdistäessä kohteeseen %s!</string>
-  <string name="ac_transfer_setting_title">Lähetä Autocrypt-asetusviesti</string>
-  <string name="ac_transfer_setting_summary">Jaa päästä päähän -salauksen asetukset turvallisesti muiden laitteiden kanssa</string>
-  <string name="ac_transfer_title">Autocrypt-asetusviesti</string>
-  <string name="ac_transfer_intro">Autocrypt-asetusviesti jakaa päästä päähän -salauksen asetukset turvallisesti muiden laitteidesi kanssa.</string>
-  <string name="ac_transfer_button_send">Lähetä asetusviesti</string>
-  <string name="ac_transfer_will_be_sent">Viesti lähetetään osoitteeseesi:</string>
-  <string name="ac_transfer_generating">Luodaan asetusviestiä…</string>
-  <string name="ac_transfer_sending_to">Lähetetään viesti:</string>
-  <string name="ac_transfer_finish">Viimeistelläksesi avaa viesti toisella laitteellasi ja kirjoita asetuskoodi.</string>
-  <string name="ac_transfer_show_code">Näytä asetuskoodi</string>
-  <string name="ac_transfer_msg_subject">Autocrypt-asetusviesti</string>
-  <string name="ac_transfer_msg_body">Tämä viesti sisältää kaikki tiedot Autocryptin asetusten sekä salausavaimesi siirtämiseksi turvallisesti alkuperäisestä laitteestasi.
+    <!--=== App-specific strings =============================================================-->
+    <!--This should make it easier for forks to change the branding-->
+    <!--Used in AndroidManifest.xml-->
+    <string name="app_name">K-9 Mail</string>
+    <string name="shortcuts_title">K-9-tilit</string>
+    <string name="unread_widget_label">K-9-lukematon</string>
+    <!--Used in the about dialog-->
+    <string name="app_authors">The K-9 Dog Walkers</string>
+    <string name="source_code">Lähdekoodi</string>
+    <string name="app_license">Apache-lisenssi, versio 2.0</string>
+    <string name="about_project_title">Avoimen lähdekoodin projekti</string>
+    <string name="about_website_title">Verkkosivusto</string>
+    <string name="user_manual_title">Käyttäjäopas</string>
+    <string name="get_help_title">Tuki</string>
+    <string name="user_forum_title">Käyttäjäfoorumi</string>
+    <string name="about_fediverse_title">Fediverse</string>
+    <string name="about_twitter_title">Twitter</string>
+    <string name="about_libraries">Kirjastot</string>
+    <string name="license">Lisenssi</string>
+    <string name="changelog_title">Muutosloki</string>
+    <string name="changelog_loading_error">Muutoslokia ei voitu ladata.</string>
+    <string name="changelog_version_title">Versio %s</string>
+    <string name="changelog_recent_changes_title">Mitä uutta</string>
+    <string name="changelog_show_recent_changes">Näytä viimeisimmät muutokset kun sovellus päivitettiin</string>
+    <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
+    <string name="changelog_snackbar_text">Selvitä mitä uutta tämä julkaisu sisältää</string>
+    <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+    <string name="changelog_snackbar_button_text">Näytä</string>
+    <!--Default signature-->
+    <string name="default_signature">-- \nLähetetty Android-laitteestani K-9 Maililla. Pahoittelut vähäsanaisuudestani.</string>
+    <!--General strings that include the app name-->
+    <string name="account_delete_dlg_instructions_fmt">Tili \"<xliff:g id="account">%s</xliff:g>\" poistetaan K-9 Mailista.</string>
+    <!--=== General strings ==================================================================-->
+    <string name="authors">Tekijät</string>
+    <string name="about_title">Tietoja K-9 Mailista</string>
+    <string name="accounts_title">Tilit</string>
+    <string name="advanced">Lisäasetukset</string>
+    <string name="compose_title_compose">Kirjoita</string>
+    <string name="compose_title_reply">Vastaa</string>
+    <string name="compose_title_reply_all">Vastaa kaikille</string>
+    <string name="compose_title_forward">Välitä</string>
+    <string name="compose_title_forward_as_attachment">Välitä liitteenä</string>
+    <string name="choose_account_title">Valitse tili</string>
+    <string name="choose_folder_title">Valitse kansio</string>
+    <string name="choose_folder_move_title">Siirrä…</string>
+    <string name="choose_folder_copy_title">Kopioi…</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valittu</string>
+    <string name="next_action">Seuraava</string>
+    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
+    <string name="okay_action">OK</string>
+    <string name="cancel_action">Peruuta</string>
+    <string name="send_action">Lähetä</string>
+    <string name="empty_subject">Aihe on tyhjä, napsauta uudelleen lähettääksesi silti</string>
+    <string name="reply_action">Vastaa</string>
+    <string name="reply_all_action">Vastaa kaikille</string>
+    <string name="delete_action">Poista</string>
+    <string name="archive_action">Arkistoi</string>
+    <string name="spam_action">Roskaposti</string>
+    <string name="forward_action">Välitä</string>
+    <string name="forward_as_attachment_action">Välitä liitteenä</string>
+    <string name="edit_as_new_message_action">Muokkaa uutena viestinä</string>
+    <string name="move_action">Siirrä</string>
+    <string name="move_to_drafts_action">Siirrä luonnoksiin</string>
+    <string name="refile_action">Siirrä kansioon…</string>
+    <string name="done_action">Valmis</string>
+    <string name="discard_action">Hylkää</string>
+    <string name="save_draft_action">Tallenna luonnoksena</string>
+    <string name="check_mail_action">Tarkista sähköposti</string>
+    <string name="send_messages_action">Lähetä viestit</string>
+    <string name="refresh_folders_action">Päivitä kansiot</string>
+    <string name="filter_folders_action">Etsi kansio</string>
+    <string name="add_account_action">Lisää tili</string>
+    <string name="compose_action">Kirjoita</string>
+    <string name="search_action">Etsi</string>
+    <string name="search_everywhere_action">Etsi kaikkialta</string>
+    <string name="search_results">Hakutulokset</string>
+    <string name="new_messages_title">Uudet viestit</string>
+    <string name="preferences_action">Asetukset</string>
+    <string name="folders_action">Hallitse kansioita</string>
+    <string name="account_settings_action">Tilin asetukset</string>
+    <string name="remove_account_action">Poista tili</string>
+    <string name="mark_as_read_action">Merkitse luetuksi</string>
+    <string name="send_alternate_action">Jaa</string>
+    <string name="send_alternate_chooser_title">Valitse lähettäjä</string>
+    <string name="flag_action">Lisää tähti</string>
+    <string name="unflag_action">Poista tähti</string>
+    <string name="copy_action">Kopioi</string>
+    <string name="unsubscribe_action">Lopeta tilaus</string>
+    <string name="show_headers_action">Näytä otsikot</string>
+    <plurals name="copy_address_to_clipboard">
+        <item quantity="one">Osoite kopioitu leikepöydälle</item>
+        <item quantity="other">Osoitteet kopioitu leikepöydälle</item>
+    </plurals>
+    <string name="copy_subject_to_clipboard">Aiheen teksti kopioitu leikepöydälle</string>
+    <string name="message_view_theme_action_dark">Vaihda tummaan teemaan</string>
+    <string name="message_view_theme_action_light">Vaihda vaaleaan teemaan</string>
+    <string name="mark_as_unread_action">Merkitse lukemattomaksi</string>
+    <string name="read_receipt">Lukukuittaus</string>
+    <string name="read_receipt_enabled">Lukukuittaus pyydetään</string>
+    <string name="read_receipt_disabled">Lukukuittausta ei pyydetä</string>
+    <string name="add_attachment_action">Lisää liite</string>
+    <string name="empty_trash_action">Tyhjennä roskakori</string>
+    <string name="expunge_action">Poista pysyvästi</string>
+    <string name="about_action">Tietoja</string>
+    <string name="prefs_title">Asetukset</string>
+    <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
+    <string name="general_no_subject">(Ei aihetta)</string>
+    <string name="general_no_sender">Ei lähettäjää</string>
+    <string name="status_loading_more">Ladataan viestejä\u2026</string>
+    <string name="status_network_error">Yhteysvirhe</string>
+    <string name="status_invalid_id_error">Viestiä ei löytynyt</string>
+    <string name="status_loading_error">Viestin lataamisvirhe</string>
+    <string name="load_more_messages_fmt">Lataa <xliff:g id="messages_to_load">%d</xliff:g> lisää</string>
+    <string name="size_format_gigabytes">%.1f Gt</string>
+    <string name="size_format_megabytes">%.1f Mt</string>
+    <string name="size_format_kilobytes">%.1f kt</string>
+    <string name="size_format_bytes">%d t</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> uusi viesti</item>
+        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> uutta viestiä</item>
+    </plurals>
+    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> lisää tilillä <xliff:g id="account">%2$s</xliff:g></string>
+    <string name="notification_action_reply">Vastaa</string>
+    <string name="notification_action_mark_as_read">Merkitse luetuksi</string>
+    <string name="notification_action_mark_all_as_read">Merkitse kaikki luetuiksi</string>
+    <string name="notification_action_delete">Poista</string>
+    <string name="notification_action_delete_all">Poista kaikki</string>
+    <string name="notification_action_archive">Arkistoi</string>
+    <string name="notification_action_archive_all">Arkistoi kaikki</string>
+    <string name="notification_action_spam">Roskaposti</string>
+    <string name="notification_certificate_error_public">Varmennevirhe</string>
+    <string name="notification_certificate_error_title">Varmennevirhe tilissä <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_certificate_error_text">Tarkista palvelinasetuksesi</string>
+    <string name="notification_authentication_error_title">Tunnistautuminen epäonnistui</string>
+    <string name="notification_authentication_error_text">Tilin <xliff:g id="account">%s</xliff:g> tunnistautuminen epäonnistui. Päivitä palvelinasetuksesi.</string>
+    <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+    <string name="notification_notify_error_title">Ilmoitusvirhe</string>
+    <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+    <string name="notification_notify_error_text">Uuteen viestiin liittyvää järjestelmäilmoitusta luotaessa tapahtui virhe. Syy on mitä luultavimmin puuttuva ilmoitusääni.\n\nNapauta avataksesi ilmoitusasetukset.</string>
+    <string name="notification_bg_sync_ticker">Tarkistetaan viestejä: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
+    <string name="notification_bg_sync_title">Tarkistetaan viestejä</string>
+    <string name="notification_bg_send_ticker">Lähetetään viestejä: <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_bg_send_title">Lähetetään viestejä</string>
+    <string name="notification_bg_title_separator">:</string>
+    <string name="notification_channel_push_title">Synkronoi (Push)</string>
+    <string name="notification_channel_push_description">Näytetään kun odotetaan uusia viestejä</string>
+    <string name="notification_channel_messages_title">Viestit</string>
+    <string name="notification_channel_messages_description">Viesteihin liittyvät ilmoitukset</string>
+    <string name="notification_channel_miscellaneous_title">Muut</string>
+    <string name="notification_channel_miscellaneous_description">Virheet ja muut sekalaiset ilmoitukset</string>
+    <string name="special_mailbox_name_inbox">Saapuneet</string>
+    <string name="special_mailbox_name_outbox">Lähtevät</string>
+    <string name="special_mailbox_name_drafts">Luonnokset</string>
+    <string name="special_mailbox_name_trash">Roskakori</string>
+    <string name="special_mailbox_name_sent">Lähetetyt</string>
+    <string name="send_failure_subject">Joidenkin viestien lähettäminen epäonnistui</string>
+    <string name="version">Versio</string>
+    <string name="debug_enable_debug_logging_title">Käytä virheenkorjaustietojen lokiinkirjausta</string>
+    <string name="debug_enable_debug_logging_summary">Kirjoita lokiin laajempi kuvaus ongelmista</string>
+    <string name="debug_enable_sensitive_logging_title">Kirjaa lokiin arkaluontoisia tietoja</string>
+    <string name="debug_enable_sensitive_logging_summary">Salasanat saattavat näkyä lokeissa.</string>
+    <string name="debug_export_logs_title">Vie lokit</string>
+    <string name="debug_export_logs_success">Vienti onnistui. Lokit saattavat sisältää arkaluonteista tietoa. Pidä ne tallessa ja ole varovainen sen suhteen, kenelle ne lähetät.</string>
+    <string name="debug_export_logs_failure">Vienti epäonnistui.</string>
+    <string name="message_list_load_more_messages_action">Lataa lisää viestejä</string>
+    <string name="message_to_fmt">Vastaanottaja: <xliff:g id="counterParty"> %s </xliff:g></string>
+    <string name="message_compose_subject_hint">Aihe</string>
+    <string name="message_compose_content_hint">Viesti</string>
+    <string name="message_compose_signature_hint">Allekirjoitus</string>
+    <string name="message_compose_quote_header_separator">-------- Alkuperäinen viesti --------</string>
+    <string name="message_compose_quote_header_subject">Aihe:</string>
+    <string name="message_compose_quote_header_send_date">Lähetetty:</string>
+    <string name="message_compose_quote_header_from">Lähettäjä:</string>
+    <string name="message_compose_quote_header_to">Vastaanottaja:</string>
+    <string name="message_compose_quote_header_cc">Kopio:</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> kirjoitti:</string>
+    <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sent_date">%1$s</xliff:g> <xliff:g id="sender">%2$s</xliff:g> kirjoitti:</string>
+    <string name="message_compose_error_no_recipients">Valitse vähintään yksi vastaanottaja.</string>
+    <string name="compose_error_incomplete_recipient">Vastaanottajakenttä sisältää virheellistä syötettä!</string>
+    <string name="error_contact_address_not_found">Tämän henkilön sähköpostiosoitetta ei löytynyt.</string>
+    <string name="message_compose_attachments_skipped_toast">Joitakin liitteitä ei voida lähettää edelleen, koska niitä ei ole ladattu.</string>
+    <string name="message_compose_attachments_forward_toast">Viestiä ei voida välittää, koska joitain liitteitä ei ole ladattu.</string>
+    <string name="message_compose_show_quoted_text_action">Sisällytä lainattu viesti</string>
+    <string name="message_compose_description_delete_quoted_text">Poista lainattu teksti</string>
+    <string name="message_compose_description_edit_quoted_text">Muokkaa lainattua tekstiä</string>
+    <string name="remove_attachment_action">Poista liite</string>
+    <string name="message_to_label">Vast.ottaja:</string>
+    <string name="message_view_cc_label">Kopio:</string>
+    <string name="message_view_bcc_label">Piilokopio:</string>
+    <string name="message_view_status_attachment_not_saved">Liitteen tallentaminen epäonnistui.</string>
+    <!--Used to display the recipient list in the message view screen.-->
+    <string name="message_view_recipients_format">vastaanottaja <xliff:g id="recipients">%s</xliff:g></string>
+    <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+    <string name="message_view_additional_recipient_prefix">+</string>
+    <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+    <string name="message_view_me_text">minä</string>
+    <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+    <string name="message_view_show_remote_images_action">Näytä etäkuvat</string>
+    <string name="message_view_no_viewer">Tiedostotyypille <xliff:g id="mimetype">%s</xliff:g> ei löydy katseluohjelmaa.</string>
+    <string name="message_view_download_remainder">Lataa koko viesti</string>
+    <string name="message_view_sender_label">%1$s kautta</string>
+    <string name="from_same_sender">Lisää samalta lähettäjältä</string>
+    <string name="message_discarded_toast">Viesti peruutettu</string>
+    <string name="message_saved_toast">Viesti tallennettu luonnoksena</string>
+    <string name="global_settings_flag_label">Näytä tähdet</string>
+    <string name="global_settings_flag_summary">Tähdet ilmaisevat merkityt viestit</string>
+    <string name="global_settings_preview_lines_label">Rivien esikatselu</string>
+    <string name="global_settings_show_correspondent_names_label">Näytä yhteyshenkilöiden nimet</string>
+    <string name="global_settings_show_correspondent_names_summary">Näytä yhteyshenkilöiden nimet sähköpostiosoitteen sijaan</string>
+    <string name="global_settings_sender_above_subject_label">Yhteyshenkilö aiheen yläpuolella</string>
+    <string name="global_settings_sender_above_subject_summary">Näytä yhteyshenkilöiden nimet aiherivin yläpuolella</string>
+    <string name="global_settings_show_contact_name_label">Näytä yhteystietojen nimet</string>
+    <string name="global_settings_show_contact_name_summary">Käytä vastaanottajien nimiä osoitekirjasta, kun käytettävissä</string>
+    <string name="global_settings_registered_name_color_label">Väritä yhteystiedot</string>
+    <string name="global_settings_registered_name_color_changed">Väritä nimet yhteystiedoissa</string>
+    <string name="general_settings_contact_name_color_label">Yhteystiedon nimen väri</string>
+    <string name="global_settings_messageview_fixedwidth_label">Kiinteä kirjasinleveys</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Käytä kiinteää kirjasinleveyttä muotoilemattomille viesteille</string>
+    <string name="global_settings_messageview_autofit_width_label">Sovita viestit automaattisesti</string>
+    <string name="global_settings_messageview_autofit_width_summary">Kutista viestit sopimaan näytölle</string>
+    <string name="global_settings_confirm_actions_title">Vahvista toiminnot</string>
+    <string name="global_settings_confirm_actions_summary">Näytä valintaikkuna valitun toiminnon suorittamisesta</string>
+    <string name="global_settings_confirm_action_delete">Poista</string>
+    <string name="global_settings_confirm_action_delete_starred">Poista tähdellä merkityt (viestinäkymässä)</string>
+    <string name="global_settings_confirm_action_spam">Roskaposti</string>
+    <string name="global_settings_confirm_menu_discard">Hylkää viesti</string>
+    <string name="global_settings_confirm_menu_mark_all_read">Merkitse kaikki viestit luetuiksi</string>
+    <string name="global_settings_confirm_action_delete_notif">Poista (ilmoituksessa)</string>
+    <!--Title of the screen to configure swipe actions-->
+    <string name="general_settings_swipe_actions_title">Vetotoiminnot</string>
+    <!--Name of the setting to configure the right swipe action-->
+    <string name="general_settings_right_swipe_title">Veto oikealle</string>
+    <!--Name of the setting to configure the left swipe action-->
+    <string name="general_settings_left_swipe_title">Veto vasemmalle</string>
+    <!--The list item users select to not use a swipe action for a particular direction-->
+    <string name="general_settings_swipe_action_none">Ei mitään</string>
+    <!--Name of the swipe action to select/deselect a message-->
+    <string name="general_settings_swipe_action_toggle_selection">Valitse viesti tai poista valinta viestin kohdalta</string>
+    <!--Name of the swipe action to mark as message as read/unread-->
+    <string name="general_settings_swipe_action_toggle_read">Merkitse luetuksi/lukemattomaksi</string>
+    <!--Name of the swipe action to add/remove a star-->
+    <string name="general_settings_swipe_action_toggle_star">Lisää tai poista tähti</string>
+    <!--Name of the swipe action to archive a message-->
+    <string name="general_settings_swipe_action_archive">Arkistoi</string>
+    <!--Name of the swipe action to delete a message-->
+    <string name="general_settings_swipe_action_delete">Poista</string>
+    <!--Name of the swipe action to move a message to the spam folder-->
+    <string name="general_settings_swipe_action_spam">Roskaposti</string>
+    <!--Name of the swipe action to move a message to another folder-->
+    <string name="general_settings_swipe_action_move">Siirrä</string>
+    <!--Title of the setting to specify the density of the message list-->
+    <string name="general_settings_message_list_density_title">Tiheys</string>
+    <string name="general_settings_ui_density_compact">Kompakti</string>
+    <string name="general_settings_ui_density_default">Oletus</string>
+    <string name="general_settings_ui_density_relaxed">Rento</string>
+    <string name="global_settings_privacy_hide_useragent">Piilota sähköpostisovellus</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Poista K-9-tunnistetiedot viestin otsaketiedoista</string>
+    <string name="global_settings_privacy_hide_timezone">Piilota aikavyöhyke</string>
+    <string name="global_settings_privacy_hide_timezone_detail">Käytä UTC-aikaa paikallisen aikavyöhykkeen sijaan sähköpostin otsakkeissa</string>
+    <string name="global_settings_notification_quick_delete_title">Näytä Poista-painike</string>
+    <string name="global_settings_notification_quick_delete_never">Ei koskaan</string>
+    <string name="global_settings_notification_quick_delete_when_single_msg">Yksittäisen viestin ilmoituksessa</string>
+    <string name="global_settings_notification_quick_delete_always">Aina</string>
+    <string name="global_settings_lock_screen_notification_visibility_title">Lukitusnäytön ilmoitukset</string>
+    <string name="global_settings_lock_screen_notification_visibility_nothing">Ei lukitusnäytön ilmoituksia</string>
+    <string name="global_settings_lock_screen_notification_visibility_app_name">Sovelluksen nimi</string>
+    <string name="global_settings_lock_screen_notification_visibility_message_count">Uusien viestien määrä</string>
+    <string name="global_settings_lock_screen_notification_visibility_senders">Viestien määrä ja lähettäjät</string>
+    <string name="global_settings_lock_screen_notification_visibility_everything">Sama kuin näytön ollessa lukittuna</string>
+    <string name="quiet_time">Hiljainen aika</string>
+    <string name="quiet_time_description">Poista käytöstä soittoäänen pirinä, pärinä ja vilkkuminen yöllä</string>
+    <string name="quiet_time_notification">Poista ilmoitukset käytöstä</string>
+    <string name="quiet_time_notification_description">Poista ilmoitukset kokonaan käytöstä hiljaisena aikana</string>
+    <string name="quiet_time_starts">Hiljainen aika alkaa</string>
+    <string name="quiet_time_ends">Hiljainen aika päättyy</string>
+    <string name="account_setup_basics_title">Lisää uusi tili</string>
+    <string name="account_setup_basics_email_hint">Sähköpostiosoite</string>
+    <string name="account_setup_basics_password_hint">Salasana</string>
+    <string name="account_setup_oauth_description">Jotta voit käyttää tätä tiliä K-9 Mailin kanssa, sinun tulee kirjautua sisään ja antaa sovellukselle oikeus päästä sähköposteihisi.</string>
+    <!--Displayed below the 'account_setup_oauth_description' text-->
+    <string name="account_setup_oauth_sign_in">Kirjaudu sisään</string>
+    <!--Displayed below the 'account_setup_oauth_description' text-->
+    <string name="account_setup_oauth_sign_in_with_google">Kirjaudu sisään Googlella</string>
+    <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+    <string name="account_setup_basics_show_password_need_lock">Jotta näet salasanasi tässä, ota käyttöön laitteen näytön lukitus.</string>
+    <string name="account_setup_basics_show_password_biometrics_title">Vahvista henkilöllisyytesi</string>
+    <string name="account_setup_basics_show_password_biometrics_subtitle">Avaa lukitus nähdäksesi salasanasi</string>
+    <string name="account_setup_basics_manual_setup_action">Määritä asetukset käsin</string>
+    <string name="account_setup_check_settings_title" />
+    <string name="account_setup_check_settings_retr_info_msg">Haetaan tilin tietoja\u2026</string>
+    <string name="account_setup_check_settings_check_incoming_msg">Tarkistetaan saapuvan postin palvelimen asetuksia\u2026</string>
+    <string name="account_setup_check_settings_check_outgoing_msg">Tarkistetaan lähtevän postin palvelimen asetuksia\u2026</string>
+    <string name="account_setup_check_settings_authenticate">Varmistetaan\u2026</string>
+    <string name="account_setup_check_settings_fetch">Haetaan tilin asetuksia\u2026</string>
+    <string name="account_setup_check_settings_canceling_msg">Peruutetaan\u2026</string>
+    <string name="account_setup_account_type_title">Tilin tyyppi</string>
+    <string name="account_setup_account_type_instructions">Mikä tämän tilin tyyppi on?</string>
+    <string name="account_setup_account_type_pop_action">POP3</string>
+    <string name="account_setup_account_type_imap_action">IMAP</string>
+    <string name="account_setup_auth_type_normal_password">Tavallinen salasana</string>
+    <string name="account_setup_auth_type_insecure_password">Salasana, välitetään turvattomasti</string>
+    <string name="account_setup_auth_type_encrypted_password">Salattu salasana</string>
+    <string name="account_setup_auth_type_tls_client_certificate">Asiakasvarmenne</string>
+    <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
+    <string name="account_setup_incoming_title">Saapuvan postin palvelimen asetukset</string>
+    <string name="account_setup_incoming_username_label">Käyttäjätunnus</string>
+    <string name="account_setup_incoming_password_label">Salasana</string>
+    <string name="account_setup_incoming_client_certificate_label">Asiakasvarmenne</string>
+    <string name="account_setup_incoming_pop_server_label">POP3-palvelin</string>
+    <string name="account_setup_incoming_imap_server_label">IMAP-palvelin</string>
+    <string name="account_setup_incoming_port_label">Portti</string>
+    <string name="account_setup_incoming_security_label">Suojauksen tyyppi</string>
+    <string name="account_setup_incoming_auth_type_label">Todennuksen tyyppi</string>
+    <string name="account_setup_incoming_security_none_label">Ei mitään</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
+    <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" ei ole kelvollinen asetuksen \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\" kanssa</string>
+    <string name="account_setup_incoming_delete_policy_label">Kun viesti poistetaan</string>
+    <string name="account_setup_incoming_delete_policy_never_label">Älä poista palvelimelta</string>
+    <string name="account_setup_incoming_delete_policy_delete_label">Poista palvelimelta</string>
+    <string name="account_setup_incoming_delete_policy_markread_label">Merkitse luetuksi palvelimella</string>
+    <string name="account_setup_incoming_use_compression">Käytä pakkausta</string>
+    <string name="account_setup_incoming_send_client_id">Lähetä asiakasohjelmiston ID-tunniste</string>
+    <string name="account_setup_expunge_policy_label">Poista viestit</string>
+    <string name="account_setup_expunge_policy_immediately">Heti</string>
+    <string name="account_setup_expunge_policy_on_poll">Tarkistettaessa</string>
+    <string name="account_setup_expunge_policy_manual">Vain manuaalisesti</string>
+    <string name="account_setup_incoming_autodetect_namespace_label">Tunnista IMAP-nimiavaruus automaattisesti</string>
+    <string name="account_setup_incoming_imap_path_prefix_label">IMAP-polun etuliite</string>
+    <string name="drafts_folder_label">Luonnokset-kansio</string>
+    <string name="sent_folder_label">Lähetetyt-kansio</string>
+    <string name="trash_folder_label">Roskakori-kansio</string>
+    <string name="archive_folder_label">Arkisto-kansio</string>
+    <string name="spam_folder_label">Roskapostikansio</string>
+    <string name="account_setup_incoming_subscribed_folders_only_label">Näytä vain tilatut kansiot</string>
+    <string name="account_setup_auto_expand_folder">Avaa kansio automaattisesti</string>
+    <string name="account_setup_outgoing_title">Lähtevän postin palvelimen asetukset</string>
+    <string name="account_setup_outgoing_smtp_server_label">SMTP-palvelin</string>
+    <string name="account_setup_outgoing_port_label">Portti</string>
+    <string name="account_setup_outgoing_security_label">Suojaus</string>
+    <string name="account_setup_outgoing_require_login_label">Edellytä kirjautumista.</string>
+    <string name="account_setup_outgoing_username_label">Käyttäjätunnus</string>
+    <string name="account_setup_outgoing_password_label">Salasana</string>
+    <string name="account_setup_outgoing_authentication_label">Todennustapa</string>
+    <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" ei ole kelvollinen asetuksen \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\" kanssa</string>
+    <string name="account_setup_bad_uri">Virheellinen asetus: <xliff:g id="err_mess">%s</xliff:g></string>
+    <string name="account_setup_options_mail_check_frequency_label">Viestien tarkistus</string>
+    <string name="account_setup_options_mail_check_frequency_never">Ei koskaan</string>
+    <string name="account_setup_options_mail_check_frequency_15min">Joka 15 minuutti</string>
+    <string name="account_setup_options_mail_check_frequency_30min">Joka 30 minuutti</string>
+    <string name="account_setup_options_mail_check_frequency_1hour">Joka tunti</string>
+    <string name="account_setup_options_mail_check_frequency_2hour">Joka 2 tunti</string>
+    <string name="account_setup_options_mail_check_frequency_3hour">Joka 3 tunti</string>
+    <string name="account_setup_options_mail_check_frequency_6hour">Joka 6 tunti</string>
+    <string name="account_setup_options_mail_check_frequency_12hour">Joka 12 tunti</string>
+    <string name="account_setup_options_mail_check_frequency_24hour">Joka 24 tunti</string>
+    <string name="idle_refresh_period_label">Päivitä IDLE-yhteys</string>
+    <string name="idle_refresh_period_2min">Joka 2 minuutti</string>
+    <string name="idle_refresh_period_3min">Joka 3 minuutti</string>
+    <string name="idle_refresh_period_6min">Joka 6 minuutti</string>
+    <string name="idle_refresh_period_12min">Joka 12 minuutti</string>
+    <string name="idle_refresh_period_24min">Joka 24 minuutti</string>
+    <string name="idle_refresh_period_36min">Joka 36 minuutti</string>
+    <string name="idle_refresh_period_48min">Joka 48 minuutti</string>
+    <string name="idle_refresh_period_60min">Joka 60 minuutti</string>
+    <string name="account_setup_options_mail_display_count_label">Näytettävien viestien lukumäärä</string>
+    <string name="account_setup_options_mail_display_count_10">10 kansiota</string>
+    <string name="account_setup_options_mail_display_count_25">25 kansiota</string>
+    <string name="account_setup_options_mail_display_count_50">50 kansiota</string>
+    <string name="account_setup_options_mail_display_count_100">100 viestiä</string>
+    <string name="account_setup_options_mail_display_count_250">250 viestiä</string>
+    <string name="account_setup_options_mail_display_count_500">500 viestiä</string>
+    <string name="account_setup_options_mail_display_count_1000">1000 viestiä</string>
+    <string name="account_setup_options_mail_display_count_2500">2500 viestiä</string>
+    <string name="account_setup_options_mail_display_count_5000">5000 viestiä</string>
+    <string name="account_setup_options_mail_display_count_10000">10000 viestiä</string>
+    <string name="account_setup_options_mail_display_count_all">Kaikki viestit</string>
+    <string name="move_copy_cannot_copy_unsynced_message">Viestiä ei voi kopioida tai siirtää, koska sitä ei ole synkronoitu palvelimelle</string>
+    <string name="account_setup_failed_dlg_title">Asennus ei onnistunut</string>
+    <string name="account_setup_failed_dlg_auth_message_fmt">Käyttäjätunnus tai salasana väärin.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_certificate_message_fmt">Palvelin esitti virheellisen SSL-varmenteen. Joskus tämä johtuu palvelimen vääristä asetuksista. Toisinaan syynä on se, että joku koettaa hyökätä sinua tai sähköpostipalvelinta vastaan. Jos et ole varma mistä on kyse, napsauta Hylkää ja ole yhteydessä sähköpostipalvelinta hallinoivaan tahoon.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_server_message_fmt">Yhteys palvelimeen ei onnistu.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_oauth_flow_canceled">Valtuutus peruttu</string>
+    <string name="account_setup_failed_dlg_oauth_flow_failed">Valtuutus epäonnistui, virhe: <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 ei ole tällä hetkellä tuettu tämän palvelutarjoajan kohdalla.</string>
+    <string name="account_setup_failed_dlg_browser_not_found">Sovellus ei löytänyt selainta käytettäväksi pääsyn antamiseksi tälle tilille.</string>
+    <string name="account_setup_failed_dlg_edit_details_action">Muokkaa tietoja</string>
+    <string name="account_setup_failed_dlg_continue_action">Jatka</string>
+    <string name="account_settings_push_advanced_title">Lisäasetukset</string>
+    <string name="account_settings_title_fmt">Yleiset</string>
+    <string name="account_settings_notify_label">Saapuneiden viestien ilmoitukset</string>
+    <string name="account_settings_folder_notify_new_mail_mode_label">Ilmoitukset kansioista</string>
+    <string name="account_settings_folder_notify_new_mail_mode_all">Kaikki</string>
+    <string name="account_settings_folder_notify_new_mail_mode_first_class">Vain 1. luokan kansiot</string>
+    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1. ja 2. luokan kansiot</string>
+    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Kaikki paitsi 2. luokan kansiot</string>
+    <string name="account_settings_folder_notify_new_mail_mode_none">Ei mitään</string>
+    <string name="account_settings_notify_sync_label">Synkronointi-ilmoitukset</string>
+    <string name="account_settings_email_label">Sähköpostiosoite</string>
+    <string name="account_settings_notify_summary">Näytä tilapalkissa ilmoitus uusista viesteistä</string>
+    <string name="account_settings_notify_sync_summary">Näytä tilapalkissa ilmoitus viestien tarkistamisesta</string>
+    <string name="account_settings_notify_self_label">Ilmoita lähetetyistä viesteistä</string>
+    <string name="account_settings_notify_self_summary">Näytä ilmoitus lähettämistäni viesteistä</string>
+    <string name="account_notify_contacts_mail_only_label">Vain yhteystiedot</string>
+    <string name="account_notify_contacts_mail_only_summary">Näytä ilmoitukset vain niistä viesteistä, jotka tulevat tunnetuilta yhteystiedoilta</string>
+    <string name="account_settings_ignore_chat_messages_label">Älä huomioi keskusteluviestejä</string>
+    <string name="account_settings_ignore_chat_messages_summary">Älä näytä ilmoituksia viesteistä, jotka kuuluvat sähköpostikeskusteluun</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Merkitse viesti luetuksi avattaessa</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Merkitse viesti luetuksi, kun se avataan katseltavaksi</string>
+    <string name="account_settings_mark_message_as_read_on_delete_label">Merkitse luetuksi poistettaessa</string>
+    <string name="account_settings_mark_message_as_read_on_delete_summary">Merkitse viesti luetuksi, kun se poistetaan</string>
+    <string name="account_settings_notification_channels_label">Ilmoitusten luokat</string>
+    <string name="account_settings_open_notification_settings_messages_summary">Määritä uusien viestien ilmoitukset</string>
+    <string name="account_settings_open_notification_settings_miscellaneous_summary">Määritä virhe- ja tilailmoitukset</string>
+    <string name="account_settings_show_pictures_label">Näytä aina kuvat</string>
+    <string name="account_settings_show_pictures_never">Ei koskaan</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Vain yhteystiedoissa olevilta lähettäjiltä</string>
+    <string name="account_settings_show_pictures_always">Keneltä tahansa</string>
+    <string name="account_settings_composition">Viestien lähettäminen</string>
+    <string name="account_settings_default_quoted_text_shown_label">Lainaa alkuperäistä viestiä vastattaessa  </string>
+    <string name="account_settings_default_quoted_text_shown_summary">Alkuperäinen viesti on vastauksessa viesteihin vastattaessa.</string>
+    <string name="account_settings_reply_after_quote_label">Vastaa lainauksen jälkeen</string>
+    <string name="account_settings_reply_after_quote_summary">Kun viestiin vastataan, alkuperäinen viesti on vastauksesi yläpuolella.</string>
+    <string name="account_settings_strip_signature_label">Poista allekirjoitus lainatusta vastauksesta</string>
+    <string name="account_settings_strip_signature_summary">Lainatun tekstin allekirjoitus poistetaan viesteihin vastattaessa</string>
+    <string name="account_settings_message_format_label">Viestin muoto</string>
+    <string name="account_settings_message_format_text">Pelkkä teksti (kuvat ja muotoilu poistetaan)</string>
+    <string name="account_settings_message_format_html">HTML (kuvat ja muotoilu säilytetään)</string>
+    <string name="account_settings_message_format_auto">Automaattinen (pelkkä teksti, ellei vastata HTML-viestiin)</string>
+    <string name="account_settings_always_show_cc_bcc_label">Näytä aina Kopio/Piilokopio</string>
+    <string name="account_settings_message_read_receipt_label">Vastaanottokuittaus</string>
+    <string name="account_settings_message_read_receipt_summary">Pyydä aina vastaanottokuittaus</string>
+    <string name="account_settings_quote_style_label">Lainauksen tyyli vastattaessa</string>
+    <string name="account_settings_quote_style_prefix">Etuliite (kuten Gmail, Pine)</string>
+    <string name="account_settings_quote_style_header">Otsikko (kuten Outlook, Yahoo!, Hotmail)</string>
+    <string name="account_settings_upload_sent_messages_label">Lähetä lähetetyt viestit</string>
+    <string name="account_settings_upload_sent_messages_summary">Lähetä viestit Lähetetyt-kansioon lähettämisen jälkeen</string>
+    <string name="account_settings_general_title">Yleiset asetukset</string>
+    <string name="account_settings_reading_mail">Viestien lukeminen</string>
+    <string name="account_settings_sync">Viestien hakeminen</string>
+    <string name="account_settings_folders">Kansiot</string>
+    <string name="account_settings_quote_prefix_label">Lainauksen etuliite</string>
+    <string name="account_settings_crypto">Päästä päähän -salaus</string>
+    <string name="account_settings_crypto_app">Ota käyttöön OpenPGP-tuki</string>
+    <string name="account_settings_crypto_app_select_title">Valitse OpenPGP-sovellus</string>
+    <string name="account_settings_crypto_key">Määritä päästä päähän -avain</string>
+    <string name="account_settings_crypto_summary_off">OpenPGP-sovellusta ei ole määritetty</string>
+    <string name="account_settings_crypto_summary_on">Yhdistetty kohteeseen %s</string>
+    <string name="account_settings_crypto_summary_config">Tehdään asetuksia…</string>
+    <string name="account_settings_crypto_encrypt_all_drafts">Talleta kaikki luonnokset salattuina</string>
+    <string name="account_settings_crypto_encrypt_all_drafts_on">Kaikki luonnokset talletetaan salattuina</string>
+    <string name="account_settings_crypto_encrypt_all_drafts_off">Salaa luonnokset vain jos salaus on käytössä</string>
+    <string name="account_settings_mail_check_frequency_label">Kansioiden tarkistus</string>
+    <string name="account_settings_color_label">Tilin väri</string>
+    <string name="account_settings_color_summary">Valitse väri tilin kansio- ja tililistaan</string>
+    <string name="account_settings_mail_display_count_label">Paikallisen kansion koko</string>
+    <string name="account_settings_autodownload_message_size_label">Hae viestit, joiden koko on enintään</string>
+    <string name="account_settings_autodownload_message_size_1">1 KiB</string>
+    <string name="account_settings_autodownload_message_size_2">2 KiB</string>
+    <string name="account_settings_autodownload_message_size_4">4 KiB</string>
+    <string name="account_settings_autodownload_message_size_8">8 KiB</string>
+    <string name="account_settings_autodownload_message_size_16">16 KiB</string>
+    <string name="account_settings_autodownload_message_size_32">32 KiB</string>
+    <string name="account_settings_autodownload_message_size_64">64 KiB</string>
+    <string name="account_settings_autodownload_message_size_128">128 KiB</string>
+    <string name="account_settings_autodownload_message_size_256">256 KiB</string>
+    <string name="account_settings_autodownload_message_size_512">512 KiB</string>
+    <string name="account_settings_autodownload_message_size_1024">1 MiB</string>
+    <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
+    <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
+    <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
+    <string name="account_settings_autodownload_message_size_any">mikä tahansa (ei rajoitusta)</string>
+    <string name="account_settings_message_age_label">Synkronoi viestit ajalta</string>
+    <string name="account_settings_message_age_any">milloin vain (ei rajoitusta)</string>
+    <string name="account_settings_message_age_0">tänään</string>
+    <string name="account_settings_message_age_1">viimeiset 2 päivää</string>
+    <string name="account_settings_message_age_2">viimeiset 3 päivää</string>
+    <string name="account_settings_message_age_7">viime viikko</string>
+    <string name="account_settings_message_age_14">viimeiset 2 viikkoa</string>
+    <string name="account_settings_message_age_21">viimeiset 3 viikkoa</string>
+    <string name="account_settings_message_age_1_month">viime kuun</string>
+    <string name="account_settings_message_age_2_months">viimeiset 2 kuukautta</string>
+    <string name="account_settings_message_age_3_months">viimeiset 3 kuukautta</string>
+    <string name="account_settings_message_age_6_months">viimeiset 6 kuukautta</string>
+    <string name="account_settings_message_age_1_year">viime vuosi</string>
+    <string name="account_settings_folder_display_mode_label">Näytä kansiot</string>
+    <string name="account_settings_folder_display_mode_all">Kaikki</string>
+    <string name="account_settings_folder_display_mode_first_class">Vain 1. luokan kansiot</string>
+    <string name="account_settings_folder_display_mode_first_and_second_class">1. ja 2. luokan kansiot</string>
+    <string name="account_settings_folder_display_mode_not_second_class">Kaikki paitsi 2. luokan kansiot</string>
+    <string name="account_settings_folder_sync_mode_label">Tarkistettavat kansiot</string>
+    <string name="account_settings_folder_sync_mode_all">Kaikki</string>
+    <string name="account_settings_folder_sync_mode_first_class">Vain 1. luokan kansiot</string>
+    <string name="account_settings_folder_sync_mode_first_and_second_class">1. ja 2. luokan kansiot</string>
+    <string name="account_settings_folder_sync_mode_not_second_class">Kaikki paitsi 2. luokan kansiot</string>
+    <string name="account_settings_folder_sync_mode_none">Ei mitään</string>
+    <string name="account_settings_folder_push_mode_label">Push-kysely</string>
+    <string name="account_settings_folder_push_mode_all">Kaikki</string>
+    <string name="account_settings_folder_push_mode_first_class">Vain 1. luokan kansiot</string>
+    <string name="account_settings_folder_push_mode_first_and_second_class">1. ja 2. luokan kansiot</string>
+    <string name="account_settings_folder_push_mode_not_second_class">Kaikki paitsi 2. luokan kansiot</string>
+    <string name="account_settings_folder_push_mode_none">Ei mitään</string>
+    <string name="account_settings_folder_target_mode_label">Siirrä/kopioi kohdekansiot</string>
+    <string name="account_settings_folder_target_mode_all">Kaikki</string>
+    <string name="account_settings_folder_target_mode_first_class">Vain 1. luokan kansiot</string>
+    <string name="account_settings_folder_target_mode_first_and_second_class">1. ja 2. luokan kansiot</string>
+    <string name="account_settings_folder_target_mode_not_second_class">Kaikki paitsi 2. luokan kansiot</string>
+    <string name="account_settings_sync_remote_deletetions_label">Synkronoi etäpoistot</string>
+    <string name="account_settings_sync_remote_deletetions_summary">Poista viestit, kun ne poistetaan palvelimelta</string>
+    <string name="account_settings_openpgp_missing">OpenPGP-sovellus puuttuu - poistettiinko se?</string>
+    <string name="folder_settings_title">Kansioiden asetukset</string>
+    <string name="folder_settings_in_top_group_label">Näytä yläryhmässä</string>
+    <string name="folder_settings_in_top_group_summary">Näytä yläosassa lähellä kansiolistaa</string>
+    <string name="folder_settings_folder_display_mode_label">Näytettävän kansion luokka</string>
+    <string name="folder_settings_folder_display_mode_normal">Ei luokkaa</string>
+    <string name="folder_settings_folder_display_mode_first_class">1. luokka</string>
+    <string name="folder_settings_folder_display_mode_second_class">2. luokka</string>
+    <string name="folder_settings_folder_sync_mode_label">Poll-luokka</string>
+    <string name="folder_settings_folder_sync_mode_normal">Ei mitään</string>
+    <string name="folder_settings_folder_sync_mode_first_class">1. luokka</string>
+    <string name="folder_settings_folder_sync_mode_second_class">2. luokka</string>
+    <string name="folder_settings_folder_sync_mode_inherited">Sama kuin näytettävällä kansiolla</string>
+    <string name="folder_settings_folder_push_mode_label">Push-luokka</string>
+    <string name="folder_settings_folder_push_mode_normal">Ei luokkaa</string>
+    <string name="folder_settings_folder_push_mode_first_class">1. luokka</string>
+    <string name="folder_settings_folder_push_mode_second_class">2. luokka</string>
+    <string name="folder_settings_folder_push_mode_inherited">Sama kuin poll-luokka</string>
+    <string name="folder_settings_folder_notify_mode_label">Kansion ilmoitusluokka</string>
+    <string name="folder_settings_folder_notify_mode_normal">Ei luokkaa</string>
+    <string name="folder_settings_folder_notify_mode_first_class">1. luokka</string>
+    <string name="folder_settings_folder_notify_mode_second_class">2. luokka</string>
+    <string name="folder_settings_folder_notify_mode_inherited">Sama kuin push-luokka</string>
+    <string name="folder_settings_clear_local_folder_action">Poista paikalliset viestit</string>
+    <string name="account_settings_incoming_label">Saapuvan postin palvelin</string>
+    <string name="account_settings_incoming_summary">Määritä saapuvan postin palvelin</string>
+    <string name="account_settings_outgoing_label">Lähtevän postin palvelin</string>
+    <string name="account_settings_outgoing_summary">Määritä lähtevän postin palvelin (SMTP)</string>
+    <string name="account_settings_description_label">Tilin nimi</string>
+    <string name="account_settings_name_label">Nimesi</string>
+    <string name="notifications_title">Ilmoitukset</string>
+    <string name="account_settings_vibration">Värinä</string>
+    <string name="account_settings_vibrate_enable">Värinä</string>
+    <string name="account_settings_vibrate_pattern_label">Värinän malli</string>
+    <string name="account_settings_vibrate_pattern_default">Oletus</string>
+    <string name="account_settings_vibrate_pattern_1">Malli 1</string>
+    <string name="account_settings_vibrate_pattern_2">Malli 2</string>
+    <string name="account_settings_vibrate_pattern_3">Malli 3</string>
+    <string name="account_settings_vibrate_pattern_4">Malli 4</string>
+    <string name="account_settings_vibrate_pattern_5">Malli 5</string>
+    <string name="account_settings_vibrate_times">Värinöiden lukumäärä</string>
+    <string name="account_settings_vibrate_summary_disabled">Ei käytössä</string>
+    <string name="account_settings_ringtone">Uuden viestin ilmoitusääni</string>
+    <string name="account_settings_notification_light_label">Ilmoituksen valo</string>
+    <string name="account_settings_notification_light_disabled">Ei käytössä</string>
+    <string name="account_settings_notification_light_account_color">Tilin väri</string>
+    <string name="account_settings_notification_light_default_color">Järjestelmän oletusväri</string>
+    <string name="account_settings_notification_light_white">Valkoinen</string>
+    <string name="account_settings_notification_light_red">Punainen</string>
+    <string name="account_settings_notification_light_green">Vihreä</string>
+    <string name="account_settings_notification_light_blue">Sininen</string>
+    <string name="account_settings_notification_light_yellow">Keltainen</string>
+    <string name="account_settings_notification_light_cyan">Syaani</string>
+    <string name="account_settings_notification_light_magenta">Magenta</string>
+    <string name="account_settings_composition_title">Viestin kirjoituksen asetukset</string>
+    <string name="account_settings_composition_label">Kirjoituksen oletusasetukset</string>
+    <string name="account_settings_composition_summary">Aseta oletusarvot: lähettäjä, piilokopio ja allekirjoitus</string>
+    <string name="account_settings_identities_label">Identiteettien hallinta</string>
+    <string name="account_settings_identities_summary">Määritä vaihtoehtoiset lähettäjän osoitteet ja allekirjoitukset</string>
+    <string name="manage_identities_title">Identiteettien hallinta</string>
+    <string name="manage_identities_context_menu_title">Identiteetin hallinta</string>
+    <string name="edit_identity_title">Muokkaa identiteettiä</string>
+    <string name="edit_identity_save">Tallenna</string>
+    <string name="new_identity_action">Uusi identiteetti</string>
+    <string name="account_settings_always_bcc_label">Piilokopio kaikista viesteistä osoitteeseen</string>
+    <string name="manage_identities_edit_action">Muokkaa</string>
+    <string name="manage_identities_move_up_action">Siirrä ylös</string>
+    <string name="manage_identities_move_down_action">Siirrä alas</string>
+    <string name="manage_identities_move_top_action">Siirrä ylimmäiseksi / aseta oletukseksi</string>
+    <string name="manage_identities_remove_action">Poista</string>
+    <string name="edit_identity_description_label">Identiteetin kuvaus</string>
+    <string name="edit_identity_description_hint">(Valinnainen)</string>
+    <string name="edit_identity_name_label">Nimesi</string>
+    <string name="edit_identity_name_hint">(Valinnainen)</string>
+    <string name="edit_identity_email_label">Sähköpostiosoite</string>
+    <string name="edit_identity_email_hint">(Pakollinen)</string>
+    <string name="edit_identity_reply_to_label">Vastausosoite</string>
+    <string name="edit_identity_reply_to_hint">(Valinnainen)</string>
+    <string name="edit_identity_signature_label">Allekirjoitus</string>
+    <string name="edit_identity_signature_hint">(Valinnainen)</string>
+    <string name="account_settings_signature_use_label">Käytä allekirjoitusta</string>
+    <string name="account_settings_signature_label">Allekirjoitus</string>
+    <string name="default_identity_description">Oletusidentiteetti</string>
+    <string name="choose_identity_title">Valitse identiteetti</string>
+    <string name="send_as">Lähetä nimellä</string>
+    <string name="no_removable_identity">Et voi poistaa ainoaa identiteettiäsi</string>
+    <string name="identity_has_no_email">Identiteettiä ei voi käyttää ilman sähköpostiosoitetta</string>
+    <string name="sort_earliest_first">Vanhemmat viestit ensin</string>
+    <string name="sort_latest_first">Uusimmat viestit ensin</string>
+    <string name="sort_subject_alpha">Aiheen mukaan aakkosjärjestyksessä</string>
+    <string name="sort_subject_re_alpha">Aiheen mukaan käänteisessä aakkosjärjestyksessä</string>
+    <string name="sort_sender_alpha">Lähettäjän mukaan aakkosjärjestyksessä</string>
+    <string name="sort_sender_re_alpha">Lähettäjän mukaan käänteisessä aakkosjärjestyksessä</string>
+    <string name="sort_flagged_first">Tähdellä merkityt ensin</string>
+    <string name="sort_flagged_last">Merkitsemättömät ensin</string>
+    <string name="sort_unread_first">Lukemattomat ensin</string>
+    <string name="sort_unread_last">Luetut ensin</string>
+    <string name="sort_attach_first">Liitteelliset viestit ensin</string>
+    <string name="sort_unattached_first">Liitteettömät viestit ensin</string>
+    <string name="sort_by">Lajittele…</string>
+    <string name="sort_by_date">Päivämäärän mukaan</string>
+    <string name="sort_by_arrival">Saapumisajan mukaan</string>
+    <string name="sort_by_subject">Aiheen mukaan</string>
+    <string name="sort_by_sender">Lähettäjän mukaan</string>
+    <string name="sort_by_flag">Tähden mukaan</string>
+    <string name="sort_by_unread">Luettujen/lukemattomien mukaan</string>
+    <string name="sort_by_attach">Liitteiden mukaan</string>
+    <string name="account_delete_dlg_title">Poista tili</string>
+    <string name="account_setup_failed_dlg_invalid_certificate_title">Tunnistamaton varmenne</string>
+    <string name="account_setup_failed_dlg_invalid_certificate_accept">Hyväksy-avain</string>
+    <string name="account_setup_failed_dlg_invalid_certificate_reject">Hylkää-avain</string>
+    <string name="folder_list_filter_hint">Kansion nimi sisältää</string>
+    <string name="folder_list_display_mode_label">Kansiot</string>
+    <string name="folder_list_display_mode_all">Näytä kaikki</string>
+    <string name="folder_list_display_mode_first_class">Näytä vain 1. luokan kansiot</string>
+    <string name="folder_list_display_mode_first_and_second_class">Näytä 1. ja 2. luokan kansiot</string>
+    <string name="folder_list_display_mode_not_second_class">Näytä kaikki paitsi 2. luokan kansiot</string>
+    <string name="account_settings_signature__location_label">Allekirjoituksen sijainti</string>
+    <string name="account_settings_signature__location_before_quoted_text">Ennen lainattua viestiä</string>
+    <string name="account_settings_signature__location_after_quoted_text">Lainatun viestin jälkeen</string>
+    <string name="setting_theme_global">Käytä sovellusteemaa</string>
+    <string name="setting_theme_dark">Tumma</string>
+    <string name="setting_theme_light">Vaalea</string>
+    <string name="setting_theme_follow_system">Käytä järjestelmän oletusta</string>
+    <string name="display_preferences">Näyttö</string>
+    <string name="global_preferences">Yleiset</string>
+    <string name="debug_preferences">Virheenkorjaus</string>
+    <string name="privacy_preferences">Tietosuoja</string>
+    <string name="network_preferences">Verkko</string>
+    <string name="interaction_preferences">Toimintoasetukset</string>
+    <string name="accountlist_preferences">Tililista</string>
+    <string name="messagelist_preferences">Viestilistat</string>
+    <string name="messageview_preferences">Viestit</string>
+    <string name="settings_theme_label">Teema</string>
+    <string name="settings_message_theme_label">Viestinäkymän teema</string>
+    <string name="settings_compose_theme_label">Viestimuokkaimen teema</string>
+    <string name="settings_language_label">Kieli</string>
+    <string name="preference_search_no_results">Asetuksia ei löytynyt</string>
+    <string name="settings_message_theme_selection_label">Kiinteä viestiteema</string>
+    <string name="settings_message_theme_selection_summary_off">Valitse viestinäkymän teema viestiä luettaessa</string>
+    <string name="settings_message_theme_selection_summary_on">Käytä kiinteää viestinäkymän teemaa</string>
+    <string name="setting_language_system">Järjestelmän oletus</string>
+    <string name="background_ops_label">Synkronointi taustalla</string>
+    <string name="background_ops_never">Ei koskaan</string>
+    <string name="background_ops_always">Aina</string>
+    <string name="background_ops_auto_sync_only">Kun Automaattinen synkronointi on valittu</string>
+    <string name="batch_select_all">Valitse kaikki</string>
+    <string name="account_setup_push_limit_label">Push-tilassa tarkistettavien kansioiden enimmäismäärä</string>
+    <string name="account_setup_push_limit_5">5 kansiota</string>
+    <string name="account_setup_push_limit_10">10 kansiota</string>
+    <string name="account_setup_push_limit_25">25 kansiota</string>
+    <string name="account_setup_push_limit_50">50 kansiota</string>
+    <string name="account_setup_push_limit_100">100 kansiota</string>
+    <string name="account_setup_push_limit_250">250 kansiota</string>
+    <string name="account_setup_push_limit_500">500 kansiota</string>
+    <string name="account_setup_push_limit_1000">1000 kansiota</string>
+    <string name="animations_title">Animaatio</string>
+    <string name="animations_summary">Käytä koreita visuaalisia tehosteita</string>
+    <string name="volume_navigation_title">Liikkuminen äänipainikkeilla viestinäkymässä</string>
+    <string name="show_unified_inbox_title">Näytä \"Yhdistetty saapuneet\"</string>
+    <string name="show_starred_count_title">Näytä tähdellä merkittyjen viestien määrä</string>
+    <string name="integrated_inbox_title">Yhdistetty saapuneet</string>
+    <string name="integrated_inbox_detail">Kaikki viestit Yhdistetty saapuneet -kansiossa</string>
+    <string name="folder_settings_include_in_integrated_inbox_label">Yhdistä</string>
+    <string name="folder_settings_include_in_integrated_inbox_summary">Kaikki viestit näytetään Yhdistetty saapuneet -kansiossa</string>
+    <string name="account_settings_searchable_label">Etsi kansioista</string>
+    <string name="account_settings_searchable_all">Kaikki</string>
+    <string name="account_settings_searchable_displayable">Näytettävissä olevat</string>
+    <string name="account_settings_searchable_none">Ei mitään</string>
+    <string name="account_settings_no_folder_selected">Ei mitään</string>
+    <string name="account_settings_automatic_special_folder">Automaattinen (%s)</string>
+    <string name="font_size_settings_title">Kirjasinkoko</string>
+    <string name="font_size_settings_description">Määritä kirjasimen koko</string>
+    <string name="font_size_message_list">Viestilistat</string>
+    <string name="font_size_message_list_subject">Viestin aihe</string>
+    <string name="font_size_message_list_sender">Lähettäjä</string>
+    <string name="font_size_message_list_date">Päiväys</string>
+    <string name="font_size_message_list_preview">Esikatselu</string>
+    <string name="font_size_message_view">Viestinäkymä</string>
+    <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+    <string name="font_size_message_view_account">Tilin nimi</string>
+    <string name="font_size_message_view_sender">Lähettäjä</string>
+    <string name="font_size_message_view_recipients">Vastaanottajat</string>
+    <string name="font_size_message_view_subject">Viestin aihe</string>
+    <string name="font_size_message_view_date">Aika ja päivämäärä</string>
+    <string name="font_size_message_view_content">Viestin sisältö</string>
+    <string name="font_size_message_compose">Viestin kirjoitus</string>
+    <string name="font_size_message_compose_input">Tekstinsyöttökentät</string>
+    <string name="font_size_default">Oletus</string>
+    <string name="font_size_tiniest">Pienin</string>
+    <string name="font_size_tiny">Erittäin pieni</string>
+    <string name="font_size_smaller">Pienempi</string>
+    <string name="font_size_small">Pieni</string>
+    <string name="font_size_medium">Keskikoko</string>
+    <string name="font_size_large">Suuri</string>
+    <string name="font_size_larger">Suurin</string>
+    <string name="error_activity_not_found">Toiminnolle ei löytynyt sopivaa ohjelmaa.</string>
+    <string name="send_failed_reason">Lähetys epäonnistui: %s</string>
+    <string name="save_or_discard_draft_message_dlg_title">Tallennetaanko luonnos?</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">Tallennetaanko vai hylätäänkö tämä viesti?</string>
+    <string name="save_or_discard_draft_message_changes">Tallennetaanko vai hylätäänkö muutokset?</string>
+    <string name="confirm_discard_draft_message_title">Hylkää viesti?</string>
+    <string name="confirm_discard_draft_message">Haluatko varmasti hylätä tämän viestin?</string>
+    <string name="dialog_confirm_clear_local_folder_title">Poistetaanko paikalliset viestit?</string>
+    <string name="dialog_confirm_clear_local_folder_message">Tämä poistaa kaikki paikalliset viestit kansiosta. Viestejä ei poisteta palvelimelta.</string>
+    <string name="dialog_confirm_clear_local_folder_action">Poista viestit</string>
+    <string name="dialog_confirm_delete_title">Vahvista poisto</string>
+    <string name="dialog_confirm_delete_message">Haluatko poistaa tämän viestin?</string>
+    <plurals name="dialog_confirm_delete_messages">
+        <item quantity="one">Haluatko varmasti poistaa tämän viestin?</item>
+        <item quantity="other">Haluatko varmasti poistaa <xliff:g id="message_count">%1$d</xliff:g> viestiä?</item>
+    </plurals>
+    <string name="dialog_confirm_delete_confirm_button">Kyllä</string>
+    <string name="dialog_confirm_delete_cancel_button">Ei</string>
+    <string name="dialog_confirm_mark_all_as_read_title">Vahvista kaikki luetuiksi</string>
+    <string name="dialog_confirm_mark_all_as_read_message">Haluatko merkitä kaikki viestit luetuiksi?</string>
+    <string name="dialog_confirm_empty_trash_title">Vahvista roskakorin tyhjentäminen</string>
+    <string name="dialog_confirm_empty_trash_message">Haluatko tyhjentää roskakorikansion?</string>
+    <string name="dialog_confirm_mark_all_as_read_confirm_button">Kyllä</string>
+    <string name="dialog_confirm_mark_all_as_read_cancel_button">Ei</string>
+    <string name="dialog_confirm_spam_title">Vahvista roskapostikansioon siirtäminen</string>
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">Haluatko todella siirtää tämän viestin roskapostikansioon?</item>
+        <item quantity="other">Haluatko todella siirtää <xliff:g id="message_count">%1$d</xliff:g> viestiä roskapostikansioon?</item>
+    </plurals>
+    <string name="dialog_confirm_spam_confirm_button">Kyllä</string>
+    <string name="dialog_confirm_spam_cancel_button">Ei</string>
+    <string name="dialog_attachment_progress_title">Ladataan liitettä</string>
+    <string name="settings_list_backup_category">Varmuuskopio</string>
+    <string name="settings_list_miscellaneous_category">Muut</string>
+    <string name="settings_export_title">Vie asetukset</string>
+    <string name="settings_export_button">Vie</string>
+    <string name="settings_export_share_button">Jaa</string>
+    <string name="settings_export_progress_text">Viedään asetuksia…</string>
+    <string name="settings_export_success_generic">Asetukset vietiin onnistuneesti</string>
+    <string name="settings_export_failure">Asetusten vienti epäonnistui</string>
+    <string name="settings_import_title">Tuo asetukset</string>
+    <string name="settings_import_pick_document_button">Valitse tiedosto</string>
+    <string name="settings_import_button">Tuo</string>
+    <string name="settings_import_success_generic">Asetusten tuonti onnistui</string>
+    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+    <string name="settings_import_password_required">Anna salasanat</string>
+    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_required">Kirjaudu sisään</string>
+    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_and_password_required">Kirjaudu sisään ja anna salasanat</string>
+    <string name="settings_import_failure">Asetusten tuonti epäonnistui</string>
+    <string name="settings_import_read_failure">Asetustiedoston lukeminen epäonnistui</string>
+    <string name="settings_import_partial_failure">Joidenkin asetusten tuonti epäonnistui</string>
+    <string name="settings_import_status_success">Tuonti onnistui</string>
+    <string name="settings_import_status_password_required">Salasana vaaditaan</string>
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="settings_import_status_log_in_required">Sisäänkirjautuminen vaaditaan</string>
+    <string name="settings_import_status_not_imported">Ei tuotu</string>
+    <string name="settings_import_status_error">Tuontivirhe</string>
+    <string name="settings_import_later_button">Myöhemmin</string>
+    <string name="settings_import">Tuo asetukset</string>
+    <string name="settings_importing">Tuodaan asetuksia…</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">Jotta voit käyttää tiliä \"<xliff:g id="account">%s</xliff:g>\", sinun on annettava palvelimen salasana.</item>
+        <item quantity="other">Jotta voit käyttää tiliä \"<xliff:g id="account">%s</xliff:g>\", sinun on annettava palvelimien salasanat.</item>
+    </plurals>
+    <string name="settings_import_incoming_server_password_hint">Saapuvan postin palvelimen salasana</string>
+    <string name="settings_import_outgoing_server_password_hint">Lähtevän postin palvelimen salasana</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Käytä samaa salasanaa lähtevälle palvelimelle</string>
+    <string name="server_name_format">Palvelimen nimi: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="unread_widget_select_account">Näytä tilin lukemattomien viestien määrä…</string>
+    <string name="unread_widget_account_title">Tili</string>
+    <string name="unread_widget_account_summary">Tili, jonka osalta näytetään lukemattomien viestien määrä</string>
+    <string name="unread_widget_unified_inbox_account_summary">Yhdistetty saapuneet</string>
+    <string name="unread_widget_folder_enabled_title">Kansion määrä</string>
+    <string name="unread_widget_folder_enabled_summary">Näytä lukemattomien määrä vain yksittäisen kansion osalta</string>
+    <string name="unread_widget_folder_title">Kansio</string>
+    <string name="unread_widget_folder_summary">Kansio, jonka osalta näytetään lukemattomien viestien määrä</string>
+    <string name="unread_widget_action_done">Valmis</string>
+    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+    <string name="unread_widget_account_not_selected">Tiliä ei ole valittu</string>
+    <string name="unread_widget_folder_not_selected">Kansiota ei ole valittu</string>
+    <string name="webview_empty_message">Ei tekstiä</string>
+    <string name="webview_contextmenu_link_view_action">Avaa katseltavaksi</string>
+    <string name="webview_contextmenu_link_share_action">Jaa linkki</string>
+    <string name="webview_contextmenu_link_copy_action">Kopioi linkki leikepöydälle</string>
+    <string name="webview_contextmenu_link_clipboard_label">Linkki</string>
+    <string name="webview_contextmenu_link_text_copy_action">Kopioi linkin teksti leikepöydälle</string>
+    <string name="webview_contextmenu_link_text_clipboard_label">Linkin teksti</string>
+    <string name="webview_contextmenu_image_title">Kuva</string>
+    <string name="webview_contextmenu_image_view_action">Näytä kuva</string>
+    <string name="webview_contextmenu_image_save_action">Tallenna kuva</string>
+    <string name="webview_contextmenu_image_download_action">Lataa kuva</string>
+    <string name="webview_contextmenu_image_copy_action">Kopioi kuvan osoite leikepöydälle</string>
+    <string name="webview_contextmenu_image_clipboard_label">Kuvan osoite</string>
+    <string name="webview_contextmenu_phone_call_action">Soita numeroon</string>
+    <string name="webview_contextmenu_phone_save_action">Tallenna yhteystietoihin</string>
+    <string name="webview_contextmenu_phone_copy_action">Kopioi puhelinnumero leikepöydälle</string>
+    <string name="webview_contextmenu_phone_clipboard_label">Puhelinnumero</string>
+    <string name="webview_contextmenu_email_send_action">Lähetä sähköpostia</string>
+    <string name="webview_contextmenu_email_save_action">Tallenna yhteystietoihin</string>
+    <string name="webview_contextmenu_email_copy_action">Kopioi sähköpostiosoite leikepöydälle</string>
+    <string name="webview_contextmenu_email_clipboard_label">Sähköpostiosoite</string>
+    <string name="account_settings_remote_search_num_results_entries_all">Kaikki</string>
+    <string name="account_settings_remote_search_num_results_entries_10">10</string>
+    <string name="account_settings_remote_search_num_results_entries_25">25</string>
+    <string name="account_settings_remote_search_num_results_entries_50">50</string>
+    <string name="account_settings_remote_search_num_results_entries_100">100</string>
+    <string name="account_settings_remote_search_num_results_entries_250">250</string>
+    <string name="account_settings_remote_search_num_results_entries_500">500</string>
+    <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
+    <string name="account_settings_remote_search_num_label">Etähaun tulosten rajoitus</string>
+    <string name="remote_search_sending_query">Lähetetään pyyntöä palvelimelle</string>
+    <plurals name="remote_search_downloading">
+        <item quantity="one">Noudetaan %d tulos</item>
+        <item quantity="other">Noudetaan %d tulosta</item>
+    </plurals>
+    <plurals name="remote_search_downloading_limited">
+        <item quantity="one">Noudetaan %1$d / %2$d tulos</item>
+        <item quantity="other">Noudetaan %1$d / %2$d tulosta</item>
+    </plurals>
+    <string name="remote_search_error">Etähaku epäonnistui</string>
+    <string name="account_settings_search">Hae</string>
+    <string name="action_remote_search">Etsi viestejä palvelimelta</string>
+    <string name="remote_search_unavailable_no_network">Etähaku ei ole käytettävissä ilman verkkoyhteyttä.</string>
+    <string name="global_settings_background_as_unread_indicator_label">Vaihda väriä kun luettu</string>
+    <string name="global_settings_background_as_unread_indicator_summary">Eri tausta osoittaa viestin olevan luettu</string>
+    <string name="global_settings_threaded_view_label">Ketjunäkymä</string>
+    <string name="global_settings_threaded_view_summary">Kutista samaan ketjuun kuuluvat viestit</string>
+    <string name="upgrade_databases_title">Päivitetään tietokantoja</string>
+    <string name="upgrade_databases_unspecified">Päivitetään tietokantoja…</string>
+    <string name="upgrade_database_format">Päivitetään tilin \"<xliff:g id="account">%s</xliff:g>\" tietokantaa</string>
+    <string name="global_settings_splitview_mode_label">Näytä jaettu näyttö</string>
+    <string name="global_settings_splitview_always">Aina</string>
+    <string name="global_settings_splitview_never">Ei koskaan</string>
+    <string name="global_settings_splitview_when_in_landscape">Kun laite on vaaka-asennossa</string>
+    <string name="message_view_empty">Valitse viesti vasemmalta</string>
+    <string name="global_settings_show_contact_picture_label">Näytä yhteystietojen kuvat</string>
+    <string name="global_settings_show_contact_picture_summary">Näytä yhteystietojen kuvat viestilistassa</string>
+    <string name="mark_all_as_read">Merkitse kaikki luetuiksi</string>
+    <string name="global_settings_colorize_missing_contact_pictures_label">Väritä yhteystietojen kuvat</string>
+    <string name="global_settings_colorize_missing_contact_pictures_summary">Väritä yhteystietojen puuttuvat kuvat</string>
+    <string name="global_settings_messageview_visible_refile_actions_title">Näytettävät viestitoiminnot</string>
+    <string name="global_settings_messageview_visible_refile_actions_summary">Näytä valitut toiminnot viestin Näytä-valikossa</string>
+    <string name="loading_attachment">Ladataan liitettä…</string>
+    <string name="fetching_attachment_dialog_title_send">Lähetetään viestiä</string>
+    <string name="fetching_attachment_dialog_title_save">Tallennetaan luonnosta</string>
+    <string name="fetching_attachment_dialog_message">Noudetaan liitettä…</string>
+    <string name="auth_external_error">Autentikointi ei onnistu.  Palvelin ei ilmoita SASL EXTERNAL -kelpoisuudesta.  Tämä saattaa johtua vanhentuneesta asiakasvarmenteesta, tuntemattomasta varmentajasta tai jostakin muusta asetusongelmasta.</string>
+    <!--=== Client certificates specific ==================================================================-->
+    <string name="account_setup_basics_client_certificate">Käytä asiakasvarmennetta</string>
+    <string name="client_certificate_spinner_empty">Ei asiakasvarmennetta</string>
+    <string name="client_certificate_spinner_delete">Poista asiakasvarmenteen valinta</string>
+    <string name="client_certificate_retrieval_failure">Asiakasvarmenteen noutaminen epäonnistui aliakselle \"<xliff:g id="alias">%s</xliff:g>\"</string>
+    <string name="client_certificate_advanced_options">Lisäasetukset</string>
+    <string name="client_certificate_expired">Asiakasvarmenne \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" on vanhentunut tai ei ole vielä voimassa (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+    <!--Note: This references message_view_download_remainder-->
+    <string name="preview_encrypted">*Salattu*</string>
+    <string name="add_from_contacts">Lisää yhteystiedoista</string>
+    <string name="recipient_cc">Kopio</string>
+    <string name="recipient_bcc">Piilokopio</string>
+    <string name="recipient_to">Vastaanottaja</string>
+    <string name="recipient_from">Lähettäjä</string>
+    <string name="reply_to_label">Vastausosoite</string>
+    <string name="unknown_recipient">&lt;Tuntematon vastaanottaja&gt;</string>
+    <string name="unknown_sender">&lt;Tuntematon lähettäjä&gt;</string>
+    <string name="address_type_home">Koti</string>
+    <string name="address_type_work">Työ</string>
+    <string name="address_type_other">Muu</string>
+    <string name="address_type_mobile">Mobiili</string>
+    <string name="compose_error_no_draft_folder">Tälle tilille ei ole määritelty luonnoskansiota!</string>
+    <string name="compose_error_no_key_configured">Tälle tilille ei ole määritetty avainta! Tarkista asetukset.</string>
+    <string name="error_crypto_provider_incompatible">Salauksen tarjoaja käyttää yhteensopimatonta versiota. Tarkista asetuksesi!</string>
+    <string name="error_crypto_provider_connect">Yhteyttä salaussovellukseen ei voitu muodostaa: tarkista asetukset tai yritä napsauttaa salauskuvaketta uudestaan!</string>
+    <string name="error_crypto_provider_ui_required">Päästä päähän -salauksen alustaminen epäonnistui, tarkista asetukset</string>
+    <string name="error_crypto_inline_attach">PGP/INLINE-tila ei tue liitteitä!</string>
+    <string name="enable_inline_pgp">Käytä PGP/INLINE-tilaa</string>
+    <string name="disable_inline_pgp">Poista PGP/INLINE käytöstä</string>
+    <string name="enable_sign_only">Käytä PGP:n pelkkää allekirjoitusta</string>
+    <string name="disable_sign_only">Poista käytöstä PGP:n pelkkä allekirjoitus</string>
+    <string name="openpgp_inline_title">PGP/INLINE-tila</string>
+    <string name="openpgp_inline_text">Viesti lähetetään PGP/INLINE-muodossa.\nTätä tulisi käyttää vain yhteensopivuutta varten:</string>
+    <string name="openpgp_inline_plus_compat">Jotkin sovellukset tukevat vain tätä muotoa</string>
+    <string name="openpgp_inline_minus_transit">Allekirjoitukset saattavat rikkontua siirron aikana</string>
+    <string name="openpgp_inline_minus_attach">Liitteet eivät ole tuettuja</string>
+    <string name="openpgp_inline_ok">Selvä!</string>
+    <string name="openpgp_inline_disable">Poista käytöstä</string>
+    <string name="openpgp_inline_keep_enabled">Pidä käytössä</string>
+    <string name="openpgp_sign_only_ok">Selvä!</string>
+    <string name="openpgp_sign_only_disable">Poista käytöstä</string>
+    <string name="openpgp_sign_only_keep_enabled">Pidä käytössä</string>
+    <string name="openpgp_dialog_sign_only_title">PGP:n pelkkä allekirjoitustila</string>
+    <string name="openpgp_dialog_sign_only_text">Tässä tilassa PGP-avaintasi käytetään salakirjoitetun allekirjoituksen luomiseen, mutta sähköpostiviestiä ei salata.</string>
+    <string name="openpgp_dialog_sign_only_plus_verified">Tämä ei salaa sähköpostiviestiä, mutta vahvistaa sen olevan lähetetty käyttäen sinun avainta.</string>
+    <string name="openpgp_dialog_sign_only_minus_break">Allekirjoitukset saattavat rikkoontua postituslistoille lähettäessä.</string>
+    <string name="openpgp_dialog_sign_only_minus_attach">Allekirjoitukset saatetaan näyttää \"signature.asc\"-liitteinä joissain sovelluksissa.</string>
+    <string name="openpgp_dialog_sign_only_neutral_encsigned">Salatut viestit sisältävät aina allekirjoituksen.</string>
+    <string name="crypto_msg_title_plaintext">Raakateksti</string>
+    <string name="crypto_msg_unencrypted_sign_error">päästä päähän -allekirjoitus sisälsi virheen</string>
+    <string name="crypto_msg_incomplete_signed">viesti täytyy ladata kokonaan, jotta allekirjoitus voidaan käsitellä</string>
+    <string name="crypto_msg_unsupported_signed">sisältää ei-tuetun päästä päähän -allekirjoituksen</string>
+    <string name="crypto_msg_unsupported_encrypted">Viesti on salattu, mutta sen muoto ei ole tuettu.</string>
+    <string name="crypto_msg_cancelled">Viesti on salattu, mutta viestin salauksen purkaminen peruttiin.</string>
+    <string name="crypto_msg_title_unencrypted_signed_e2e">Päästä päähän -allekirjoitettu raakateksti</string>
+    <string name="crypto_msg_unencrypted_sign_verified">vahvistetulta allekirjoittajalta</string>
+    <string name="crypto_msg_title_unencrypted_signed">Allekirjoitettu raakateksti</string>
+    <string name="crypto_msg_unencrypted_sign_mismatch">mutta päästä päähän -avain ei vastannut lähettäjää</string>
+    <string name="crypto_msg_unencrypted_sign_expired">mutta päästä päähän -avain on vanhentunut</string>
+    <string name="crypto_msg_unencrypted_sign_revoked">mutta päästä päähän -avain on kumottu</string>
+    <string name="crypto_msg_unencrypted_sign_insecure">mutta päästä päähän -avainta ei mielletä turvalliseksi</string>
+    <string name="crypto_msg_unencrypted_sign_unknown">tuntemattomalta päästä päähän -avaimelta</string>
+    <string name="crypto_msg_title_encrypted_unknown">Salattu</string>
+    <string name="crypto_msg_encrypted_error">mutta salausta purkaessa tapahtui virhe</string>
+    <string name="crypto_msg_encrypted_incomplete">täytyy ladata viesti kokonaan salauksen purkamista varten</string>
+    <string name="crypto_msg_encrypted_no_provider">mutta salaussovellusta ei ole määritetty</string>
+    <string name="crypto_msg_title_encrypted_unsigned">Salattu</string>
+    <string name="crypto_msg_encrypted_unsigned">mutta ei päästä päähän</string>
+    <string name="crypto_msg_title_encrypted_signed_e2e">Päästä päähän salattu</string>
+    <string name="crypto_msg_encrypted_sign_verified">vahvistetulta lähettäjältä</string>
+    <string name="crypto_msg_title_encrypted_signed">Salattu</string>
+    <string name="crypto_msg_encrypted_sign_unknown">tuntemattomalta päästä päähän -avaimelta</string>
+    <string name="crypto_msg_encrypted_sign_mismatch">mutta päästä päähän -avain ei vastannut lähettäjää</string>
+    <string name="crypto_msg_encrypted_sign_expired">mutta päästä päähän -avain on vanhentunut</string>
+    <string name="crypto_msg_encrypted_sign_revoked">mutta päästä päähän -avain on kumottu</string>
+    <string name="crypto_msg_encrypted_sign_insecure">mutta päästä päähän -avainta ei mielletä turvalliseksi</string>
+    <string name="crypto_msg_encrypted_sign_error">mutta päästä päähän -tiedot sisältävät virheitä</string>
+    <string name="crypto_msg_encrypted_insecure">mutta salausta ei mielletä turvalliseksi</string>
+    <string name="crypto_info_ok">OK</string>
+    <string name="crypto_info_search_key">Etsi avainta</string>
+    <string name="crypto_info_view_signer">Näytä allekirjoittaja</string>
+    <string name="crypto_info_view_sender">Näytä lähettäjä</string>
+    <string name="crypto_info_view_security_warning">Yksityiskohdat</string>
+    <string name="locked_attach_unlock">Avaa lukitus</string>
+    <string name="locked_attach_unencrypted">Tätä osaa ei salattu, joten se saattaa olla epäluotettava.</string>
+    <string name="locked_attach_title">Suojaamaton liite</string>
+    <string name="message_progress_text">Ladataan…</string>
+    <string name="messageview_decrypt_cancelled">Salauksen purkaminen peruttiin.</string>
+    <string name="messageview_decrypt_retry">Yritä uudelleen</string>
+    <string name="messageview_decrypt_incomplete">Salattu viesti tulee ladata, jotta sen salaus voidaan avata.</string>
+    <string name="messageview_crypto_error_title">Virhe sähköpostin salausta avatessa</string>
+    <string name="recipient_error_non_ascii">Erikoismerkit eivät ole tällä hetkellä tuettuja!</string>
+    <string name="recipient_error_parse_failed">Virhe osoitetta jäsennettäessä!</string>
+    <string name="account_settings_crypto_hide_sign_only">Piilota salaamattomat allekirjoitukset</string>
+    <string name="account_settings_crypto_hide_sign_only_on">Vain salatut allekirjoitukset näytetään</string>
+    <string name="account_settings_crypto_hide_sign_only_off">Kaikki allekirjoitukset näytetään</string>
+    <string name="error_sign_only_no_encryption">Salaus ei ole käytettävissä pelkässä allekirjoitustilassa!</string>
+    <string name="unsigned_text_divider_label">Allekirjoittamaton teksti</string>
+    <string name="crypto_no_provider_title">Tämä sähköpostiviesti on salattu</string>
+    <string name="crypto_no_provider_message">Tämä viesti on salattu OpenPGP:llä.\nLukeaksesi viestin sinun tulee asentaa ja määrittää yhteensopiva OpenPGP-sovellus.</string>
+    <string name="crypto_no_provider_button">Siirry asetuksiin</string>
+    <string name="mail_list_widget_text">K-9-viestiluettelo</string>
+    <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+    <string name="message_list_widget_initializing">Ladataan…</string>
+    <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+    <string name="message_list_widget_list_item_loading">Ladataan…</string>
+    <string name="openpgp_enabled_error_title">Salaus ei ole mahdollista</string>
+    <string name="openpgp_enabled_error_msg">Jotkut valitut vastaanottajat eivät tue tätä ominaisuutta!</string>
+    <string name="enable_encryption">Käytä salausta</string>
+    <string name="disable_encryption">Poista salaus käytöstä</string>
+    <string name="openpgp_description_text1">Viestin salaus takaa, ettei niitä voi lukea kukaan muu kuin vastaanottaja.</string>
+    <string name="openpgp_description_text3">Salaus ilmestyy näkyviin vain jos kaikki vastaanottajat tukevat sitä, ja kyseiset tahot ovat lähettäneet sinulle sähköpostia aiemmin.</string>
+    <string name="openpgp_description_text2">Ota salaus käyttöön tai poista käytöstä napauttamalla tätä kuvaketta.</string>
+    <string name="openpgp_enabled_error_gotit">Selvä</string>
+    <string name="openpgp_enabled_error_back">Takaisin</string>
+    <string name="openpgp_enabled_error_disable">Poista salaus käytöstä</string>
+    <string name="openpgp_encryption">OpenPGP-salaus</string>
+    <string name="account_settings_crypto_prefer_encrypt">Automattisen salauksen kahdenkeskeinen tila</string>
+    <string name="dialog_autocrypt_mutual_title">Automattisen salauksen kahdenkeskeinen tila</string>
+    <string name="dialog_autocrypt_mutual_description_1">Viestit salataan normaalisti valinnan mukaan, tai kun vastataan salattuun viestiin.</string>
+    <string name="dialog_autocrypt_mutual_description_2">Jos sekä lähettäjä että vastaanottaja ottavat käyttöön kahdenkeskeisen tilan, salaus otetaan käyttöön oletusarvoisesti.</string>
+    <string name="dialog_autocrypt_mutual_learn_more">Voit <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">napauttaa tästä</a> saadaksesi lisätietoja.</string>
+    <string name="general_settings_title">Yleiset asetukset</string>
+    <string name="dialog_openkeychain_info_title">OpenPGP-sovellusta ei ole asennettu</string>
+    <string name="dialog_openkeychain_info_install">Asenna</string>
+    <string name="dialog_openkeychain_info_text">K-9 Mail vaatii OpenKeychainin päästä päähän -salausta varten.</string>
+    <string name="encrypted_subject">Salattu viesti</string>
+    <string name="account_settings_crypto_encrypt_subject">Salaa viestien aiheet</string>
+    <string name="account_settings_crypto_encrypt_subject_subtitle">Ei välttämättä tuettu kaikkien vastaanottajien osalta</string>
+    <string name="toast_account_not_found">Sisäinen virhe: virheellinen tili!</string>
+    <string name="toast_openpgp_provider_error">Virhe yhdistäessä kohteeseen %s!</string>
+    <string name="ac_transfer_setting_title">Lähetä Autocrypt-asetusviesti</string>
+    <string name="ac_transfer_setting_summary">Jaa päästä päähän -salauksen asetukset turvallisesti muiden laitteiden kanssa</string>
+    <string name="ac_transfer_title">Autocrypt-asetusviesti</string>
+    <string name="ac_transfer_intro">Autocrypt-asetusviesti jakaa päästä päähän -salauksen asetukset turvallisesti muiden laitteidesi kanssa.</string>
+    <string name="ac_transfer_button_send">Lähetä asetusviesti</string>
+    <string name="ac_transfer_will_be_sent">Viesti lähetetään osoitteeseesi:</string>
+    <string name="ac_transfer_generating">Luodaan asetusviestiä…</string>
+    <string name="ac_transfer_sending_to">Lähetetään viesti:</string>
+    <string name="ac_transfer_finish">Viimeistelläksesi avaa viesti toisella laitteellasi ja kirjoita asetuskoodi.</string>
+    <string name="ac_transfer_show_code">Näytä asetuskoodi</string>
+    <string name="ac_transfer_msg_subject">Autocrypt-asetusviesti</string>
+    <string name="ac_transfer_msg_body">Tämä viesti sisältää kaikki tiedot Autocryptin asetusten sekä salausavaimesi siirtämiseksi turvallisesti alkuperäisestä laitteestasi.
 
 Aseta uusi laitteesi käyttämään Autocryptiä noudattamalla ohjeita, jotka uusi laitteesi näyttää.
 
 Voit säilyttää tämän viestin ja käyttää sitä varmuuskopioina salausavaimellesi. Jos haluat tehdä tämän, kirjoita salasana muistiin ja säilytä se turvallisesti.
 </string>
-  <string name="ac_transfer_error_send">Viestiä lähettäessä tapahtui virhe. Tarkista verkkoyhteyden tila ja lähtevän postin palvelimen asetukset.</string>
-  <string name="switch_on">Päällä</string>
-  <string name="switch_off">Pois</string>
-  <!--permissions-->
-  <string name="permission_contacts_rationale_title">Salli pääsy yhteystietoihin</string>
-  <string name="permission_contacts_rationale_message">Tämä sovellus vaatii käyttöoikeuden yhteystietoihisi, jotta sovellus voi tehdä ehdotuksia yhteystietoihin liittyen ja näyttää yhteystietojen nimiä sekä kuvia.</string>
-  <string name="generic_loading_error">Tietoja ladatessa tapahtui virhe</string>
-  <string name="push_notification_state_initializing">Alustetaan…</string>
-  <string name="push_notification_state_listening">Odotetaan uusia viestejä</string>
-  <string name="push_notification_state_wait_background_sync">Nukutaan kunnes taustasynkronointi on sallittu</string>
-  <string name="push_notification_state_wait_network">Nukutaan kunnes verkko on käytettävissä</string>
-  <string name="push_notification_info">Napauta saadaksesi lisätietoja.</string>
-  <string name="push_info_title">Push-tietoa</string>
-  <string name="push_info_notification_explanation_text">Kun push on käytössä, K-9 Mail ylläpitää yhteyden sähköpostipalvelimeen. Android vaatii ilmoituksen näyttämisen, kun sovellus on aktiivinen taustalla. %s</string>
-  <string name="push_info_configure_notification_text">Android kuitenkin mahdollistaa ilmoituksen piilottamisen.</string>
-  <string name="push_info_learn_more_text">Lisätietoja</string>
-  <string name="push_info_configure_notification_action">Ilmoitusten asetukset</string>
-  <string name="push_info_disable_push_text">Jos et tarvitse välitöntä ilmoitusta uudesta viestistä, pushin sijaan on suositeltavaa käyttää pollausta. Pollaus tarkistaa uudet viestit määrätyin aikavälein, eikä tämä vaadi ilmoituksen näyttämistä.</string>
-  <string name="push_info_disable_push_action">Poista push käytöstä</string>
-  <!--Name of the swipe action to select a message. Try to keep it short.-->
-  <string name="swipe_action_select">Valitse</string>
-  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-  <string name="swipe_action_deselect">Poista valinta</string>
-  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-  <string name="swipe_action_mark_as_read">Merkitse luetuksi</string>
-  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-  <string name="swipe_action_mark_as_unread">Merkitse lukemattomaksi</string>
-  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-  <string name="swipe_action_add_star">Lisää tähti</string>
-  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-  <string name="swipe_action_remove_star">Poista tähti</string>
-  <!--Name of the swipe action to archive a message. Try to keep it short.-->
-  <string name="swipe_action_archive">Arkistoi</string>
-  <!--Name of the swipe action to delete a message. Try to keep it short.-->
-  <string name="swipe_action_delete">Poista</string>
-  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-  <string name="swipe_action_spam">Roskaposti</string>
-  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-  <string name="swipe_action_move">Siirrä…</string>
-  <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
-  <string name="general_settings_show_compose_button_title">Näytä kelluva kirjoituspainike</string>
-  <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
-  <string name="message_list_error_title">Virhe</string>
-  <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
-  <string name="message_list_error_folder_not_found">Kansiota ei löytynyt</string>
-  <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
-  <string name="message_details_toolbar_title">Viestin tiedot</string>
-  <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
-  <string name="message_details_missing_date">Puuttuva \'Date\'-otsake</string>
-  <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
-  <string name="message_details_from_section_title">Lähettäjä</string>
-  <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
-  <string name="message_details_sender_section_title">Lähettäjä</string>
-  <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
-  <string name="message_details_replyto_section_title">Vastausosoite</string>
-  <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
-  <string name="message_details_to_section_title">Vastaanottaja</string>
-  <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
-  <string name="message_details_cc_section_title">Kopio</string>
-  <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
-  <string name="message_details_bcc_section_title">Piilokopio</string>
-  <!--Displayed when loading the message details has failed-->
-  <string name="message_details_loading_error">Viestin tietoja ladatessa tapahtui virhe.</string>
-  <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-  <string name="action_add_to_contacts">Lisää yhteystietoihin</string>
-  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-  <string name="action_compose_message_to">Kirjoita viesti osoitteeseen</string>
-  <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-  <string name="action_copy_email_address">Kopioi sähköpostiosoite</string>
-  <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-  <string name="action_copy_name_and_email_address">Kopioi nimi ja sähköpostiosoitteet</string>
-  <!--A user visible label for the email address copied to the clipboard-->
-  <string name="clipboard_label_email_address">Sähköpostiosoite</string>
-  <!--A user visible label for the name and email address copied to the clipboard-->
-  <string name="clipboard_label_name_and_email_address">Nimi ja sähköpostiosoitteet</string>
-  <!--Might be displayed in a notification when deleting an account (in the background)-->
-  <string name="background_work_notification_remove_account">Poistetaan tili…</string>
-  <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
-  <string name="message_list_content_description_unread_prefix">lukematon, %s</string>
+    <string name="ac_transfer_error_send">Viestiä lähettäessä tapahtui virhe. Tarkista verkkoyhteyden tila ja lähtevän postin palvelimen asetukset.</string>
+    <string name="switch_on">Päällä</string>
+    <string name="switch_off">Pois</string>
+    <!--permissions-->
+    <string name="permission_contacts_rationale_title">Salli pääsy yhteystietoihin</string>
+    <string name="permission_contacts_rationale_message">Tämä sovellus vaatii käyttöoikeuden yhteystietoihisi, jotta sovellus voi tehdä ehdotuksia yhteystietoihin liittyen ja näyttää yhteystietojen nimiä sekä kuvia.</string>
+    <string name="generic_loading_error">Tietoja ladatessa tapahtui virhe</string>
+    <string name="push_notification_state_initializing">Alustetaan…</string>
+    <string name="push_notification_state_listening">Odotetaan uusia viestejä</string>
+    <string name="push_notification_state_wait_background_sync">Nukutaan kunnes taustasynkronointi on sallittu</string>
+    <string name="push_notification_state_wait_network">Nukutaan kunnes verkko on käytettävissä</string>
+    <string name="push_notification_info">Napauta saadaksesi lisätietoja.</string>
+    <string name="push_info_title">Push-tietoa</string>
+    <string name="push_info_notification_explanation_text">Kun push on käytössä, K-9 Mail ylläpitää yhteyden sähköpostipalvelimeen. Android vaatii ilmoituksen näyttämisen, kun sovellus on aktiivinen taustalla. %s</string>
+    <string name="push_info_configure_notification_text">Android kuitenkin mahdollistaa ilmoituksen piilottamisen.</string>
+    <string name="push_info_learn_more_text">Lisätietoja</string>
+    <string name="push_info_configure_notification_action">Ilmoitusten asetukset</string>
+    <string name="push_info_disable_push_text">Jos et tarvitse välitöntä ilmoitusta uudesta viestistä, pushin sijaan on suositeltavaa käyttää pollausta. Pollaus tarkistaa uudet viestit määrätyin aikavälein, eikä tämä vaadi ilmoituksen näyttämistä.</string>
+    <string name="push_info_disable_push_action">Poista push käytöstä</string>
+    <!--Name of the swipe action to select a message. Try to keep it short.-->
+    <string name="swipe_action_select">Valitse</string>
+    <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+    <string name="swipe_action_deselect">Poista valinta</string>
+    <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+    <string name="swipe_action_mark_as_read">Merkitse luetuksi</string>
+    <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+    <string name="swipe_action_mark_as_unread">Merkitse lukemattomaksi</string>
+    <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+    <string name="swipe_action_add_star">Lisää tähti</string>
+    <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+    <string name="swipe_action_remove_star">Poista tähti</string>
+    <!--Name of the swipe action to archive a message. Try to keep it short.-->
+    <string name="swipe_action_archive">Arkistoi</string>
+    <!--Name of the swipe action to delete a message. Try to keep it short.-->
+    <string name="swipe_action_delete">Poista</string>
+    <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+    <string name="swipe_action_spam">Roskaposti</string>
+    <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+    <string name="swipe_action_move">Siirrä…</string>
+    <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+    <string name="general_settings_show_compose_button_title">Näytä kelluva kirjoituspainike</string>
+    <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+    <string name="message_list_error_title">Virhe</string>
+    <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+    <string name="message_list_error_folder_not_found">Kansiota ei löytynyt</string>
+    <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+    <string name="message_details_toolbar_title">Viestin tiedot</string>
+    <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+    <string name="message_details_missing_date">Puuttuva \'Date\'-otsake</string>
+    <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
+    <string name="message_details_from_section_title">Lähettäjä</string>
+    <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
+    <string name="message_details_sender_section_title">Lähettäjä</string>
+    <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
+    <string name="message_details_replyto_section_title">Vastausosoite</string>
+    <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
+    <string name="message_details_to_section_title">Vastaanottaja</string>
+    <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
+    <string name="message_details_cc_section_title">Kopio</string>
+    <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
+    <string name="message_details_bcc_section_title">Piilokopio</string>
+    <!--Displayed when loading the message details has failed-->
+    <string name="message_details_loading_error">Viestin tietoja ladatessa tapahtui virhe.</string>
+    <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    <string name="action_add_to_contacts">Lisää yhteystietoihin</string>
+    <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    <string name="action_compose_message_to">Kirjoita viesti osoitteeseen</string>
+    <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    <string name="action_copy_email_address">Kopioi sähköpostiosoite</string>
+    <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    <string name="action_copy_name_and_email_address">Kopioi nimi ja sähköpostiosoitteet</string>
+    <!--A user visible label for the email address copied to the clipboard-->
+    <string name="clipboard_label_email_address">Sähköpostiosoite</string>
+    <!--A user visible label for the name and email address copied to the clipboard-->
+    <string name="clipboard_label_name_and_email_address">Nimi ja sähköpostiosoitteet</string>
+    <!--Might be displayed in a notification when deleting an account (in the background)-->
+    <string name="background_work_notification_remove_account">Poistetaan tili…</string>
+    <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+    <string name="message_list_content_description_unread_prefix">lukematon, %s</string>
 </resources>
