@@ -2,31 +2,30 @@
 
 ## Status
 
-- **Proposed**
+- **Accepted**
 
 ## Context
 
-As we continue developing our Jetpack Compose application, we find a need to increase the consistency, reusability,
-and maintainability of our UI components. Currently, we are using Material components directly throughout our
-application. This leads to a lack of uniformity and increases the complexity of changes as the same modifications
-must be implemented multiple times across different screens.
+As we continued developing our Jetpack Compose application, we found a need to increase the consistency, reusability,
+and maintainability of our user interface (UI) components. We have been using Material components directly throughout our
+application. This lead to a lack of uniformity and increases the complexity of changes as the same modifications had to
+be implemented multiple times across different screens.
 
 ## Decision
 
-We are proposing to create a new atomic design system where Material components are wrapped into our own 'atomic'
-components. For instance, we would have components such as `AtomicButton`, `AtomicText`, etc. These atomic components
-will encapsulate Material components with predefined styles and behaviors.
-
-This approach will be taken further to develop more complex 'molecule' and 'organism' components by combining these
-atomic components. We will also define 'templates' as layout structures and 'pages' as specific instances of these
-templates to build a complete user interface.
+To address these challenges, we've decided to adopt an
+[Atomic Design System](../../../core/ui/compose/designsystem/README.md) as a foundation for our application UI.
+This system encapsulates Material components within our [own components](../../../core/ui/compose/designsystem/),
+organized into categories of _atoms_, _molecules_, and _organisms_. We also defined _templates_ as layout structures
+that can be flexibly combined to construct _pages_. These components collectively form the building blocks that we are
+using to construct our application's UI.
 
 ## Consequences
 
 - **Positive Consequences**
 
   - Increased reusability of components across the application, reducing code duplication.
-  - More consistent UI across the entire application.
+  - More consistent UI and uniform styling across the entire application.
   - Improved maintainability, as changes to a component only need to be made in one place.
 
 - **Negative Consequences**
