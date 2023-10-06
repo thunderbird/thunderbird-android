@@ -220,10 +220,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Käytä kiinteää kirjasinleveyttä muotoilemattomille viesteille</string>
   <string name="global_settings_messageview_autofit_width_label">Sovita viestit automaattisesti</string>
   <string name="global_settings_messageview_autofit_width_summary">Kutista viestit sopimaan näytölle</string>
-  <string name="global_settings_messageview_return_to_list_label">Palaa poiston jälkeen listanäkymään</string>
-  <string name="global_settings_messageview_return_to_list_summary">Palaa viestilistaan viestin poiston jälkeen</string>
-  <string name="global_settings_messageview_show_next_label">Näytä poiston jälkeen seuraava viesti</string>
-  <string name="global_settings_messageview_show_next_summary">Näytä viestin poiston jälkeen oletusarvoisesti seuraava viesti</string>
   <string name="global_settings_confirm_actions_title">Vahvista toiminnot</string>
   <string name="global_settings_confirm_actions_summary">Näytä valintaikkuna valitun toiminnon suorittamisesta</string>
   <string name="global_settings_confirm_action_delete">Poista</string>

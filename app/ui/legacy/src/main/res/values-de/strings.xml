@@ -220,10 +220,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Schriftart mit gleicher Zeichenbreite für Nur-Text-Nachrichten verwenden</string>
   <string name="global_settings_messageview_autofit_width_label">Nachrichtendarstellung</string>
   <string name="global_settings_messageview_autofit_width_summary">Nachrichten auf Displaygröße verkleinern</string>
-  <string name="global_settings_messageview_return_to_list_label">Nach Löschen zurück</string>
-  <string name="global_settings_messageview_return_to_list_summary">Nach Löschen zur Nachrichtenliste zurückkehren</string>
-  <string name="global_settings_messageview_show_next_label">Nach Löschen nächste Nachricht</string>
-  <string name="global_settings_messageview_show_next_summary">Nach Löschen standardmäßig die nächste Nachricht anzeigen</string>
   <string name="global_settings_confirm_actions_title">Bestätigungsdialog</string>
   <string name="global_settings_confirm_actions_summary">Bei Ausführung der ausgewählten Aktionen einen Bestätigungsdialog anzeigen</string>
   <string name="global_settings_confirm_action_delete">Löschen</string>

@@ -17,6 +17,7 @@ import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.BACKGROUND_OPS;
 import com.fsck.k9.K9.NotificationQuickDelete;
+import com.fsck.k9.K9.PostRemoveNavigation;
 import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.SwipeAction;
 import com.fsck.k9.UiDensity;
@@ -37,6 +38,7 @@ import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo31;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo58;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo69;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo79;
+import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo89;
 
 import static com.fsck.k9.K9.LockScreenNotificationVisibility;
 
@@ -138,10 +140,12 @@ public class GeneralSettingsDescriptions {
                 new V(1, new BooleanSetting(false))
         ));
         s.put("messageViewReturnToList", Settings.versions(
-                new V(1, new BooleanSetting(false))
+                new V(1, new BooleanSetting(false)),
+                new V(89, null)
         ));
         s.put("messageViewShowNext", Settings.versions(
-                new V(1, new BooleanSetting(false))
+                new V(1, new BooleanSetting(false)),
+                new V(89, null)
         ));
         s.put("quietTimeEnabled", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -285,6 +289,9 @@ public class GeneralSettingsDescriptions {
         s.put("fontSizeMessageViewAccountName", Settings.versions(
             new V(87, new FontSizeSetting(FontSizes.FONT_DEFAULT))
         ));
+        s.put("messageViewPostDeleteAction", Settings.versions(
+            new V(89, new EnumSetting<>(PostRemoveNavigation.class, PostRemoveNavigation.ReturnToMessageList))
+        ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
@@ -294,6 +301,7 @@ public class GeneralSettingsDescriptions {
         u.put(58, new GeneralSettingsUpgraderTo58());
         u.put(69, new GeneralSettingsUpgraderTo69());
         u.put(79, new GeneralSettingsUpgraderTo79());
+        u.put(89, new GeneralSettingsUpgraderTo89());
 
         UPGRADERS = Collections.unmodifiableMap(u);
     }

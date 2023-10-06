@@ -221,10 +221,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Kur shfaqen mesazhe tekst i thjeshtë, përdor shkronja me gjerësi të fiksuar.</string>
   <string name="global_settings_messageview_autofit_width_label">Rregulloje vetvetiu nxënien e mesazhit</string>
   <string name="global_settings_messageview_autofit_width_summary">Tkurri mesazhet t\’i nxërë ekrani</string>
-  <string name="global_settings_messageview_return_to_list_label">Pas fshirjes, kthehu te lista</string>
-  <string name="global_settings_messageview_return_to_list_summary">Kthehuni te lista e mesazheve pas fshirjes së mesazheve</string>
-  <string name="global_settings_messageview_show_next_label">Pas fshirjes shfaq mesazhin pasues</string>
-  <string name="global_settings_messageview_show_next_summary">Si parazgjedhje, shfaq mesazhin pasues, pas fshirjes së mesazhit</string>
   <string name="global_settings_confirm_actions_title">Ripohoni veprimet</string>
   <string name="global_settings_confirm_actions_summary">Shfaq një dialog kurdo që kryeni veprime që keni përzgjedhur</string>
   <string name="global_settings_confirm_action_delete">Fshije</string>

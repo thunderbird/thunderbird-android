@@ -221,10 +221,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Nota jafnbreitt letur til að birta skilaboð með hreinum texta</string>
   <string name="global_settings_messageview_autofit_width_label">Skilaboð passi sjálfvirkt</string>
   <string name="global_settings_messageview_autofit_width_summary">Breyta stærð skilaboða svo þau passi á skjáinn</string>
-  <string name="global_settings_messageview_return_to_list_label">Fara aftur í lista eftir eyðingu</string>
-  <string name="global_settings_messageview_return_to_list_summary">Fara aftur í skilaboðalista eftir að skilaboðum er eytt</string>
-  <string name="global_settings_messageview_show_next_label">Sýna næstu skilaboð eftir eyðingu</string>
-  <string name="global_settings_messageview_show_next_summary">Sýna næstu skilaboð eftir að skilaboðum er eytt</string>
   <string name="global_settings_confirm_actions_title">Staðfesta aðgerðir</string>
   <string name="global_settings_confirm_actions_summary">Alltaf birta samskiptaglugga þegar þú framkvæmir valdar aðgerðir</string>
   <string name="global_settings_confirm_action_delete">Fjarlægja</string>

@@ -219,10 +219,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Benyt tegnsæt med fast bredde til visning af mails med ren tekst</string>
   <string name="global_settings_messageview_autofit_width_label">Auto tilpas størrelse på meddelelser</string>
   <string name="global_settings_messageview_autofit_width_summary">Afkort meddelser så de passer til skærm</string>
-  <string name="global_settings_messageview_return_to_list_label">Retur til liste efter sletning</string>
-  <string name="global_settings_messageview_return_to_list_summary">Returner til mailliste efter sletning af mail</string>
-  <string name="global_settings_messageview_show_next_label">Vis næste mail efter sletning</string>
-  <string name="global_settings_messageview_show_next_summary">Vis som standard næste mail efter sletning af mail</string>
   <string name="global_settings_confirm_actions_title">Bekræft handlinger</string>
   <string name="global_settings_confirm_actions_summary">Vis dialogvindue når du udfører valgte handlinger</string>
   <string name="global_settings_confirm_action_delete">Slet</string>

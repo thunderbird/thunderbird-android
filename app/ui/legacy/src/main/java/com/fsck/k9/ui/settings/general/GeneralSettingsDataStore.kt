@@ -2,6 +2,7 @@ package com.fsck.k9.ui.settings.general
 
 import androidx.preference.PreferenceDataStore
 import com.fsck.k9.K9
+import com.fsck.k9.K9.PostRemoveNavigation
 import com.fsck.k9.SwipeAction
 import com.fsck.k9.UiDensity
 import com.fsck.k9.job.K9JobManager
@@ -36,8 +37,6 @@ class GeneralSettingsDataStore(
             "threaded_view" -> K9.isThreadedViewEnabled
             "messageview_fixedwidth_font" -> K9.isUseMessageViewFixedWidthFont
             "messageview_autofit_width" -> K9.isAutoFitWidth
-            "messageview_return_to_list" -> K9.isMessageViewReturnToList
-            "messageview_show_next" -> K9.isMessageViewShowNext
             "quiet_time_enabled" -> K9.isQuietTimeEnabled
             "disable_notifications_during_quiet_time" -> !K9.isNotificationDuringQuietTimeEnabled
             "privacy_hide_useragent" -> K9.isHideUserAgent
@@ -67,8 +66,6 @@ class GeneralSettingsDataStore(
             "threaded_view" -> K9.isThreadedViewEnabled = value
             "messageview_fixedwidth_font" -> K9.isUseMessageViewFixedWidthFont = value
             "messageview_autofit_width" -> K9.isAutoFitWidth = value
-            "messageview_return_to_list" -> K9.isMessageViewReturnToList = value
-            "messageview_show_next" -> K9.isMessageViewShowNext = value
             "quiet_time_enabled" -> K9.isQuietTimeEnabled = value
             "disable_notifications_during_quiet_time" -> K9.isNotificationDuringQuietTimeEnabled = !value
             "privacy_hide_useragent" -> K9.isHideUserAgent = value
@@ -126,6 +123,7 @@ class GeneralSettingsDataStore(
             "swipe_action_right" -> swipeActionToString(K9.swipeRightAction)
             "swipe_action_left" -> swipeActionToString(K9.swipeLeftAction)
             "message_list_density" -> K9.messageListDensity.toString()
+            "post_remove_navigation" -> K9.messageViewPostRemoveNavigation.name
             else -> defValue
         }
     }
@@ -162,6 +160,7 @@ class GeneralSettingsDataStore(
             "swipe_action_right" -> K9.swipeRightAction = stringToSwipeAction(value)
             "swipe_action_left" -> K9.swipeLeftAction = stringToSwipeAction(value)
             "message_list_density" -> K9.messageListDensity = UiDensity.valueOf(value)
+            "post_remove_navigation" -> K9.messageViewPostRemoveNavigation = PostRemoveNavigation.valueOf(value)
             else -> return
         }
 

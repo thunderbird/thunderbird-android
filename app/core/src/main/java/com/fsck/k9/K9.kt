@@ -183,11 +183,7 @@ object K9 : EarlyInit {
     @JvmStatic
     var isUseMessageViewFixedWidthFont = false
 
-    @JvmStatic
-    var isMessageViewReturnToList = false
-
-    @JvmStatic
-    var isMessageViewShowNext = false
+    var messageViewPostRemoveNavigation: PostRemoveNavigation = PostRemoveNavigation.ReturnToMessageList
 
     @JvmStatic
     var isUseVolumeKeysForNavigation = false
@@ -331,8 +327,8 @@ object K9 : EarlyInit {
         isChangeContactNameColor = storage.getBoolean("changeRegisteredNameColor", false)
         contactNameColor = storage.getInt("registeredNameColor", 0xFF1093F5.toInt())
         isUseMessageViewFixedWidthFont = storage.getBoolean("messageViewFixedWidthFont", false)
-        isMessageViewReturnToList = storage.getBoolean("messageViewReturnToList", false)
-        isMessageViewShowNext = storage.getBoolean("messageViewShowNext", false)
+        messageViewPostRemoveNavigation =
+            storage.getEnum("messageViewPostDeleteAction", PostRemoveNavigation.ReturnToMessageList)
         isHideUserAgent = storage.getBoolean("hideUserAgent", false)
         isHideTimeZone = storage.getBoolean("hideTimeZone", false)
 
@@ -405,8 +401,7 @@ object K9 : EarlyInit {
         editor.putBoolean("changeRegisteredNameColor", isChangeContactNameColor)
         editor.putInt("registeredNameColor", contactNameColor)
         editor.putBoolean("messageViewFixedWidthFont", isUseMessageViewFixedWidthFont)
-        editor.putBoolean("messageViewReturnToList", isMessageViewReturnToList)
-        editor.putBoolean("messageViewShowNext", isMessageViewShowNext)
+        editor.putEnum("messageViewPostDeleteAction", messageViewPostRemoveNavigation)
         editor.putBoolean("hideUserAgent", isHideUserAgent)
         editor.putBoolean("hideTimeZone", isHideTimeZone)
 
@@ -534,5 +529,15 @@ object K9 : EarlyInit {
         ALWAYS,
         NEVER,
         WHEN_IN_LANDSCAPE,
+    }
+
+    /**
+     * The navigation actions that can be to performed after the user has deleted or moved a message from the message
+     * view screen.
+     */
+    enum class PostRemoveNavigation {
+        ReturnToMessageList,
+        ShowPreviousMessage,
+        ShowNextMessage,
     }
 }

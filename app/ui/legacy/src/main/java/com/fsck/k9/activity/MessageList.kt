@@ -31,6 +31,7 @@ import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import com.fsck.k9.Account
 import com.fsck.k9.K9
+import com.fsck.k9.K9.PostRemoveNavigation
 import com.fsck.k9.K9.SplitViewMode
 import com.fsck.k9.Preferences
 import com.fsck.k9.account.BackgroundAccountRemover
@@ -54,7 +55,6 @@ import com.fsck.k9.ui.managefolders.ManageFoldersActivity
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import com.fsck.k9.ui.messagelist.MessageListFragment
 import com.fsck.k9.ui.messagelist.MessageListFragment.MessageListFragmentListener
-import com.fsck.k9.ui.messageview.Direction
 import com.fsck.k9.ui.messageview.MessageViewContainerFragment
 import com.fsck.k9.ui.messageview.MessageViewContainerFragment.MessageViewContainerListener
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener
@@ -108,12 +108,6 @@ open class MessageList :
     private var account: Account? = null
     private var search: LocalSearch? = null
     private var singleFolderMode = false
-
-    private val lastDirection: Direction
-        get() {
-            return messageViewContainerFragment?.lastDirection
-                ?: if (K9.isMessageViewShowNext) Direction.NEXT else Direction.PREVIOUS
-        }
 
     private var messageListActivityConfig: MessageListActivityConfig? = null
 
@@ -1151,9 +1145,11 @@ open class MessageList :
         messageListFragment.setActiveMessage(messageReference)
     }
 
-    override fun showNextMessageOrReturn() {
-        if (K9.isMessageViewReturnToList || !showLogicalNextMessage()) {
-            returnToMessageList()
+    override fun performNavigationAfterMessageRemoval() {
+        when (K9.messageViewPostRemoveNavigation) {
+            PostRemoveNavigation.ReturnToMessageList -> returnToMessageList()
+            PostRemoveNavigation.ShowPreviousMessage -> showPreviousMessageOrReturn()
+            PostRemoveNavigation.ShowNextMessage -> showNextMessageOrReturn()
         }
     }
 
@@ -1165,16 +1161,15 @@ open class MessageList :
         }
     }
 
-    private fun showLogicalNextMessage(): Boolean {
-        val couldMoveInLastDirection = when (lastDirection) {
-            Direction.NEXT -> showNextMessage()
-            Direction.PREVIOUS -> showPreviousMessage()
+    private fun showPreviousMessageOrReturn() {
+        if (!showPreviousMessage()) {
+            returnToMessageList()
         }
+    }
 
-        return if (couldMoveInLastDirection) {
-            true
-        } else {
-            showNextMessage() || showPreviousMessage()
+    private fun showNextMessageOrReturn() {
+        if (!showNextMessage()) {
+            returnToMessageList()
         }
     }
 

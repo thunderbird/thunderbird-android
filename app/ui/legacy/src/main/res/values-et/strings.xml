@@ -221,10 +221,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Kasuta lihtteksti kirjades fikseeritud laiusega fonti</string>
   <string name="global_settings_messageview_autofit_width_label">Sobita kirjad automaatselt</string>
   <string name="global_settings_messageview_autofit_width_summary">Kahanda kirju ekraanile mahutamiseks</string>
-  <string name="global_settings_messageview_return_to_list_label">Peale kustutamist pöördu tagasi nimekirja</string>
-  <string name="global_settings_messageview_return_to_list_summary">Pöördu tagasi kirjade loendisse kui oled mõne kustutanud</string>
-  <string name="global_settings_messageview_show_next_label">Peale kustutamist näita järgmist kirja</string>
-  <string name="global_settings_messageview_show_next_summary">Peale mõne kirja kustutamist näita järgmist kirja</string>
   <string name="global_settings_confirm_actions_title">Kinnita toiming</string>
   <string name="global_settings_confirm_actions_summary">Näita alati dialoogiakent kui teed valitud toiminguid</string>
   <string name="global_settings_confirm_action_delete">Kustuta</string>

@@ -225,10 +225,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Pro zobrazování neformátovaných textových zpráv použít písmo s pevnou šířkou</string>
   <string name="global_settings_messageview_autofit_width_label">Automatické přizpůsobení zpráv</string>
   <string name="global_settings_messageview_autofit_width_summary">Zmenšit zprávy aby se vešly na obrazovku</string>
-  <string name="global_settings_messageview_return_to_list_label">Návrat do seznamu po smazání</string>
-  <string name="global_settings_messageview_return_to_list_summary">Vrátit se do seznamu zpráv po smazání zprávy</string>
-  <string name="global_settings_messageview_show_next_label">Zobraz další zprávu po smazání</string>
-  <string name="global_settings_messageview_show_next_summary">Zobraz další zprávu automaticky po smazání</string>
   <string name="global_settings_confirm_actions_title">Potvrzování akcí</string>
   <string name="global_settings_confirm_actions_summary">Zobrazit dialog, když provádíte zvolené akce</string>
   <string name="global_settings_confirm_action_delete">Smazat</string>

@@ -220,10 +220,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Defnyddio ffont gyda lled sefydlog wrth ddangos negeseuon testun plaen</string>
   <string name="global_settings_messageview_autofit_width_label">Awto-ffitio negeseuon</string>
   <string name="global_settings_messageview_autofit_width_summary">Lleihau negeseuon i ffitio\'r sgrin.</string>
-  <string name="global_settings_messageview_return_to_list_label">Nôl i\'r rhestr ar ôl dileu</string>
-  <string name="global_settings_messageview_return_to_list_summary">Dychwelyd i\'r rhestr negeseuon ar ôl dileu neges</string>
-  <string name="global_settings_messageview_show_next_label">Ymlaen i\'r neges nesaf ar ôl dileu</string>
-  <string name="global_settings_messageview_show_next_summary">Symud ymlaen i\'r neges nesaf ar ôl dileu neges</string>
   <string name="global_settings_confirm_actions_title">Cadarnhau gweithredoedd</string>
   <string name="global_settings_confirm_actions_summary">Dewis pryd i ofyn am gadarnhad cyn gwneud rhywbeth</string>
   <string name="global_settings_confirm_action_delete">Dileu</string>

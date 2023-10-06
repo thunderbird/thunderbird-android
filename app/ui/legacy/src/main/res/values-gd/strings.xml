@@ -199,10 +199,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Cleachd cruth-clò le leud socraichte nuair a thèid teachdaireachd ann an teacsa lom a shealltainn</string>
   <string name="global_settings_messageview_autofit_width_label">Fèin-fhreagair teachdaireachdan</string>
   <string name="global_settings_messageview_autofit_width_summary">Crùb teachdaireachdan ach am freagair iad ris an sgrìn</string>
-  <string name="global_settings_messageview_return_to_list_label">Till gun liosta an dèidh sguabaidh às</string>
-  <string name="global_settings_messageview_return_to_list_summary">Till gun liosta an dèidh teachdaireachd a sguabadh às</string>
-  <string name="global_settings_messageview_show_next_label">Seall an ath-theachdaireachd an dèidh sguabaidh às</string>
-  <string name="global_settings_messageview_show_next_summary">Seall an ath-theachdaireachd a ghnàth an dèidh teachdaireachd a sguabadh às</string>
   <string name="global_settings_confirm_actions_title">Dearbh gnìomhan</string>
   <string name="global_settings_confirm_actions_summary">Seall còmhradh uair sam bith a nì thu gnìomh sònraichte</string>
   <string name="global_settings_confirm_action_delete">Sguab às</string>

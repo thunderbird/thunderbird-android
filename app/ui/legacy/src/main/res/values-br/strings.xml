@@ -186,10 +186,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Arverañ un nodrezh digemm e ledander pa vez skrammet kemennadennoù e testenn blaen </string>
   <string name="global_settings_messageview_autofit_width_label">Klotañ ar c’hemennadennoù</string>
   <string name="global_settings_messageview_autofit_width_summary">Krennat ar c’hemennadennoù evit klotañ ouzh ar skramm</string>
-  <string name="global_settings_messageview_return_to_list_label">Distreiñ d’ar roll goude an dilamadur</string>
-  <string name="global_settings_messageview_return_to_list_summary">Distreiñ d’ar roll kemennadennoù goude dilamadur ar gemennadenn</string>
-  <string name="global_settings_messageview_show_next_label">Kemennadenn da-heul goude an dilamadur</string>
-  <string name="global_settings_messageview_show_next_summary">Diskouez ar gemennadenn da-heul dre ziouer goude dilamadur ar gemennadenn</string>
   <string name="global_settings_confirm_actions_title">Kadarnat ar gwezhioù</string>
   <string name="global_settings_confirm_actions_summary">Diskouez un diflugell bewech ma rit ar gwezhioù diuzet</string>
   <string name="global_settings_confirm_action_delete">Dilemel</string>

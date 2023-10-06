@@ -220,10 +220,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Erabili zabalera finkoko letra-tipoak testu arrunteko mezuak erakustean</string>
   <string name="global_settings_messageview_autofit_width_label">Doitu mezuak automatikoki</string>
   <string name="global_settings_messageview_autofit_width_summary">Txikiagotu mezuak pantailan sar daitezen</string>
-  <string name="global_settings_messageview_return_to_list_label">Itzuli zerrendara ezabatu ondoren</string>
-  <string name="global_settings_messageview_return_to_list_summary">Itzuli mezuen zerrendara mezu bat ezabatzean</string>
-  <string name="global_settings_messageview_show_next_label">Erakutsi hurrengo mezua ezabatu ondoren</string>
-  <string name="global_settings_messageview_show_next_summary">Erakutsi hurrengo mezua lehenespenez mezua ezabatzean</string>
   <string name="global_settings_confirm_actions_title">Berretsi ekintzak</string>
   <string name="global_settings_confirm_actions_summary">Erakutsi elkarrizketa bat hautatutako ekintzak egitean</string>
   <string name="global_settings_confirm_action_delete">Ezabatu</string>

@@ -205,10 +205,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Използва шрифт с фиксирана широчина за показване на съобщения съдържащи само текст</string>
   <string name="global_settings_messageview_autofit_width_label">Автоматично мащабиране</string>
   <string name="global_settings_messageview_autofit_width_summary">Смалява съобщението за да се събере на екрана</string>
-  <string name="global_settings_messageview_return_to_list_label">Върни се в списъка след изтриване</string>
-  <string name="global_settings_messageview_return_to_list_summary">Връща в списъка със съобщение след изтриване</string>
-  <string name="global_settings_messageview_show_next_label">Покажи следващо съобщение след изтриване</string>
-  <string name="global_settings_messageview_show_next_summary">Покажи следващото съобщение по подразбиране след изтриване на съобщение</string>
   <string name="global_settings_confirm_actions_title">Потвърди операциите</string>
   <string name="global_settings_confirm_actions_summary">Показва прозорец за потвърждение при действие</string>
   <string name="global_settings_confirm_action_delete">Изтрий</string>

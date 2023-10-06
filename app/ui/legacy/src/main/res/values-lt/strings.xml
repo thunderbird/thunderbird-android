@@ -224,10 +224,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Atvaizduojant gryno teksto laiškus naudoti lygiaplotį šriftą</string>
   <string name="global_settings_messageview_autofit_width_label">Automatiškai pritaikyti laiškus</string>
   <string name="global_settings_messageview_autofit_width_summary">Sutrumpinti žinutes, kad tilptų ekrane</string>
-  <string name="global_settings_messageview_return_to_list_label">Pašalinus grįžti į sąrašą</string>
-  <string name="global_settings_messageview_return_to_list_summary">Pašalinus laišką, grįžti į laiškų sąrašą</string>
-  <string name="global_settings_messageview_show_next_label">Pašalinus laišką pereiti prie kito</string>
-  <string name="global_settings_messageview_show_next_summary">Pašalinus laišką, pagal nutylėjimą pereiti prie sekančio</string>
   <string name="global_settings_confirm_actions_title">Patvirtinti veiksmus</string>
   <string name="global_settings_confirm_actions_summary">Atliekant pasirinktus veiksmus rodyti dialogą</string>
   <string name="global_settings_confirm_action_delete">Šalinti</string>

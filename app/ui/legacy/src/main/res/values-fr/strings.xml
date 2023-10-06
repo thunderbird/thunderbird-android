@@ -224,10 +224,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Utiliser une police à largeur fixe pour les courriels en texte brut</string>
   <string name="global_settings_messageview_autofit_width_label">Ajustement automatique des courriels</string>
   <string name="global_settings_messageview_autofit_width_summary">Rétrécir les courriels pour les adapter à l’écran</string>
-  <string name="global_settings_messageview_return_to_list_label">Retourner à la liste après suppression</string>
-  <string name="global_settings_messageview_return_to_list_summary">Retourner à la liste de courriels après suppression d’un courriel</string>
-  <string name="global_settings_messageview_show_next_label">Afficher le courriel suivant après suppression</string>
-  <string name="global_settings_messageview_show_next_summary">Afficher le courriel suivant par défaut après suppression d’un courriel</string>
   <string name="global_settings_confirm_actions_title">Confirmer les actions</string>
   <string name="global_settings_confirm_actions_summary">Afficher une fenêtre de dialogue lors de certaines actions</string>
   <string name="global_settings_confirm_action_delete">Supprimer</string>

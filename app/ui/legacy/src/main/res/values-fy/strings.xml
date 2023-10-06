@@ -220,10 +220,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Brûk in lettertype mei fêste breedte by it werjaan fan platte-tekstberjochten</string>
   <string name="global_settings_messageview_autofit_width_label">Berjochten auto-passe</string>
   <string name="global_settings_messageview_autofit_width_summary">Berjochten passend meitsje op it skerm</string>
-  <string name="global_settings_messageview_return_to_list_label">Werom nei list nei fuortsmiten</string>
-  <string name="global_settings_messageview_return_to_list_summary">Werom nei berjochtelist nei fuortsmiten berjocht</string>
-  <string name="global_settings_messageview_show_next_label">Folgjend berjocht toane nei fuortsmiten</string>
-  <string name="global_settings_messageview_show_next_summary">Standert folgjend berjocht toane nei fuortsmiten</string>
   <string name="global_settings_confirm_actions_title">Aksjes befêstigje</string>
   <string name="global_settings_confirm_actions_summary">Altyd in dialoochfinster toane wannear’t jo de selektearre aksjes útfiere</string>
   <string name="global_settings_confirm_action_delete">Fuortsmite</string>

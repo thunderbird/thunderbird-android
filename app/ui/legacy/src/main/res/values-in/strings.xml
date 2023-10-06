@@ -197,10 +197,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Gunakan font lebar tetap saat menampilkan pesan teks biasa</string>
   <string name="global_settings_messageview_autofit_width_label">Pesan pas otomatis</string>
   <string name="global_settings_messageview_autofit_width_summary">Kecilkan pesan agar sesuai dengan layar</string>
-  <string name="global_settings_messageview_return_to_list_label">Kembali ke daftar setelah menghapus</string>
-  <string name="global_settings_messageview_return_to_list_summary">Kembali ke daftar pesan setelah menghapus pesan</string>
-  <string name="global_settings_messageview_show_next_label">Tampilkan pesan selanjutnya setelah menghapus</string>
-  <string name="global_settings_messageview_show_next_summary">Secara bawaan menampilkan pesan selanjutnya setelah menghapus pesan</string>
   <string name="global_settings_confirm_actions_title">Konfirmasi tindakan</string>
   <string name="global_settings_confirm_actions_summary">Tampilkan dialog setiap kali Anda melakukan tindakan yang dipilih</string>
   <string name="global_settings_confirm_action_delete">Hapus</string>

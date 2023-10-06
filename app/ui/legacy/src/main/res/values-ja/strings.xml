@@ -217,10 +217,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">プレーンテキストメッセージの表示に固定幅フォントを利用</string>
   <string name="global_settings_messageview_autofit_width_label">メッセージサイズ自動調整</string>
   <string name="global_settings_messageview_autofit_width_summary">画面サイズに合うようにメッセージを縮小する</string>
-  <string name="global_settings_messageview_return_to_list_label">削除後メッセージ一覧に戻る</string>
-  <string name="global_settings_messageview_return_to_list_summary">メッセージの削除後、メッセージ一覧に戻る</string>
-  <string name="global_settings_messageview_show_next_label">削除後次のメッセージを表示</string>
-  <string name="global_settings_messageview_show_next_summary">メッセージの削除後、次のメッセージを表示する</string>
   <string name="global_settings_confirm_actions_title">確認</string>
   <string name="global_settings_confirm_actions_summary">選択した動作を実行するときに常にダイアログを表示する</string>
   <string name="global_settings_confirm_action_delete">削除</string>

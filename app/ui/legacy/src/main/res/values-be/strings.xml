@@ -225,10 +225,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Выкарыстоўваць шрыфты з фіксаванай шырынёй для адлюстравання лістоў з простым тэкстам</string>
   <string name="global_settings_messageview_autofit_width_label">Аўтазапаўненне лістоў</string>
   <string name="global_settings_messageview_autofit_width_summary">Падладжваць тэкст лістоў да шырыні экрана</string>
-  <string name="global_settings_messageview_return_to_list_label">Вяртацца да спіса пасля выдалення</string>
-  <string name="global_settings_messageview_return_to_list_summary">Вяртацца да спіса лістоў пасля выдалення ліста</string>
-  <string name="global_settings_messageview_show_next_label">Паказваць наступны ліст пасля выдалення</string>
-  <string name="global_settings_messageview_show_next_summary">Паказваць наступны ліст пасля выдалення ліста</string>
   <string name="global_settings_confirm_actions_title">Пацвярджаць дзеянні</string>
   <string name="global_settings_confirm_actions_summary">Паказваць дыялог пацвярджэння дзеянняў</string>
   <string name="global_settings_confirm_action_delete">Выдаліць</string>

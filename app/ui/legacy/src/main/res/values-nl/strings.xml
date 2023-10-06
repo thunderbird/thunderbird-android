@@ -220,10 +220,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Gebruik een lettertype met vaste breedte bij het weergeven van plain-tekstberichten</string>
   <string name="global_settings_messageview_autofit_width_label">Berichten auto-passen</string>
   <string name="global_settings_messageview_autofit_width_summary">Berichten passend maken op het scherm</string>
-  <string name="global_settings_messageview_return_to_list_label">Terug naar lijst na verwijderen</string>
-  <string name="global_settings_messageview_return_to_list_summary">Terug naar berichtenlijst na bericht verwijderen</string>
-  <string name="global_settings_messageview_show_next_label">Volgend bericht laten zien na verwijderen</string>
-  <string name="global_settings_messageview_show_next_summary">Standaard volgend bericht laten zien na verwijderen</string>
   <string name="global_settings_confirm_actions_title">Acties bevestigen</string>
   <string name="global_settings_confirm_actions_summary">Toon een dialoogvenster altijd wanneer je de geselecteerde acties uitvoert</string>
   <string name="global_settings_confirm_action_delete">Verwijderen</string>

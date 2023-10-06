@@ -222,10 +222,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Usa uma fonte monoespaçada ao exibir mensagens que contenham somente texto</string>
   <string name="global_settings_messageview_autofit_width_label">Ajustar mensagens automaticamente</string>
   <string name="global_settings_messageview_autofit_width_summary">Ajusta as mensagens para que caibam na tela</string>
-  <string name="global_settings_messageview_return_to_list_label">Retornar para lista após excluir</string>
-  <string name="global_settings_messageview_return_to_list_summary">Retorna para a lista de mensagens após excluir mensagens</string>
-  <string name="global_settings_messageview_show_next_label">Exibir a próxima mensagem após excluir</string>
-  <string name="global_settings_messageview_show_next_summary">Exibe, por padrão, a próxima mensagem, após excluir mensagens</string>
   <string name="global_settings_confirm_actions_title">Confirmar ações</string>
   <string name="global_settings_confirm_actions_summary">Exibe um diálogo sempre que você efetuar determinada ação</string>
   <string name="global_settings_confirm_action_delete">Excluir</string>

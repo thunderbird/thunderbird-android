@@ -225,10 +225,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Використовувати моноширинний шрифт для відображення звичайних текстових повідомлень</string>
   <string name="global_settings_messageview_autofit_width_label">Припасовувати текст повідомлень до ширини екрану</string>
   <string name="global_settings_messageview_autofit_width_summary">Стискати повідомлення до ширини екрану</string>
-  <string name="global_settings_messageview_return_to_list_label">Повернутися до списку після видалення</string>
-  <string name="global_settings_messageview_return_to_list_summary">Повернутися до списку повідомлень після видалення поточного повідомлення</string>
-  <string name="global_settings_messageview_show_next_label">Показувати наступне повідомлення після видалення</string>
-  <string name="global_settings_messageview_show_next_summary">Показувати наступне повідомлення після видалення поточного повідомлення</string>
   <string name="global_settings_confirm_actions_title">Підтвердження дій</string>
   <string name="global_settings_confirm_actions_summary">Показати діалогове вікно щоразу, коли ви виконуєте вибрані дії</string>
   <string name="global_settings_confirm_action_delete">Видалити</string>

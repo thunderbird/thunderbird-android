@@ -208,10 +208,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Usar tamaño fixo de fonte nas mensaxes en texto plano</string>
   <string name="global_settings_messageview_autofit_width_label">Auto axustar mensaxes</string>
   <string name="global_settings_messageview_autofit_width_summary">Recortar mensaxes para axustar na pantalla</string>
-  <string name="global_settings_messageview_return_to_list_label">Voltar á lista despois de borrar</string>
-  <string name="global_settings_messageview_return_to_list_summary">Voltar á lista despois da acción de borrado</string>
-  <string name="global_settings_messageview_show_next_label">Mostrar a seguinte mensaxe tras eliminar</string>
-  <string name="global_settings_messageview_show_next_summary">Por omisión mostrar a seguinte mensaxe tras borrar unha mensaxe</string>
   <string name="global_settings_confirm_actions_title">Confirmar acción</string>
   <string name="global_settings_confirm_actions_summary">Amosar un diálogo cuando se realice una de estas acciones</string>
   <string name="global_settings_confirm_action_delete">Eliminar</string>

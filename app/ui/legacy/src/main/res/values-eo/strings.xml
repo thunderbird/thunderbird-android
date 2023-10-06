@@ -204,10 +204,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Uzas egallarĝan tiparon por vidigi plattekstajn mesaĝojn</string>
   <string name="global_settings_messageview_autofit_width_label">Aŭtomate adapti mesaĝojn al ekrana larĝo</string>
   <string name="global_settings_messageview_autofit_width_summary">Etigas mesaĝojn por enspaci en la ekrano</string>
-  <string name="global_settings_messageview_return_to_list_label">Forigi kaj reveni listen</string>
-  <string name="global_settings_messageview_return_to_list_summary">Revenas al listo de mesaĝoj post forigado de mesaĝo</string>
-  <string name="global_settings_messageview_show_next_label">Forigi kaj montri sekvan</string>
-  <string name="global_settings_messageview_show_next_summary">Montras sekvan mesaĝon por forigado de mesaĝo</string>
   <string name="global_settings_confirm_actions_title">Konfirmi agojn</string>
   <string name="global_settings_confirm_actions_summary">Montras averton kiam vi faras elektitajn agojn</string>
   <string name="global_settings_confirm_action_delete">Forigi</string>

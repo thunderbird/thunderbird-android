@@ -188,10 +188,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Koristi popravljenu širinu fonta prilikom prikaza običnog teksta poruke</string>
   <string name="global_settings_messageview_autofit_width_label">Automatska prilstajanje poruke</string>
   <string name="global_settings_messageview_autofit_width_summary">Stisni poruke kako bi pristajale zaslonu</string>
-  <string name="global_settings_messageview_return_to_list_label">Vraćanje na popis nakon brisanja</string>
-  <string name="global_settings_messageview_return_to_list_summary">Vraćanje na popis poruka nakon brisanja poruke</string>
-  <string name="global_settings_messageview_show_next_label">Prikaži slijedeću poruku nakon brisanja</string>
-  <string name="global_settings_messageview_show_next_summary">Prikaži slijedeću poruku po zadanom nakon brisanja poruke</string>
   <string name="global_settings_confirm_actions_title">Potvrdi radnje</string>
   <string name="global_settings_confirm_actions_summary">Prikazuje dijalog prilikom izvođenja odabranih radnji</string>
   <string name="global_settings_confirm_action_delete">Obriši</string>

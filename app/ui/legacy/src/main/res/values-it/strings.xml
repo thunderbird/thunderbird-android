@@ -223,10 +223,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Usa carattere a larghezza fissa nei messaggi di testo</string>
   <string name="global_settings_messageview_autofit_width_label">Adattamento automatico messaggi</string>
   <string name="global_settings_messageview_autofit_width_summary">Riduci i messaggi per adattarli allo schermo</string>
-  <string name="global_settings_messageview_return_to_list_label">Torna all\'elenco dopo l\'eliminazione</string>
-  <string name="global_settings_messageview_return_to_list_summary">Ritorna all\'elenco dei messaggi dopo l\'eliminazione di un messaggio</string>
-  <string name="global_settings_messageview_show_next_label">Mostra messaggio successivo dopo l\'eliminazione</string>
-  <string name="global_settings_messageview_show_next_summary">Mostra messaggio successivo in modo predefinito dopo l\'eliminazione di un messaggio</string>
   <string name="global_settings_confirm_actions_title">Conferma azioni</string>
   <string name="global_settings_confirm_actions_summary">Mostra una finestra ogni volta che esegui le azioni selezionate</string>
   <string name="global_settings_confirm_action_delete">Elimina</string>

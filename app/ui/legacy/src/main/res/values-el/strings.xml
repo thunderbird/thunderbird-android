@@ -221,10 +221,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Να χρησιμοποιείται γραμματοσειρά σταθερού πλάτους όταν προβάλλονται μηνύματα απλού κειμένου</string>
   <string name="global_settings_messageview_autofit_width_label">Αυτόματη προσαρμογή</string>
   <string name="global_settings_messageview_autofit_width_summary">Ρύθμιση μεγέθους μηνύματος για να χωρά στην οθόνη</string>
-  <string name="global_settings_messageview_return_to_list_label">Επιστροφή στη λίστα</string>
-  <string name="global_settings_messageview_return_to_list_summary">Επιστροφή στη λίστα μηνυμάτων μετά τη διαγραφή ενός μηνύματος</string>
-  <string name="global_settings_messageview_show_next_label">Εμφάνιση επόμενου μηνύματος μετά τη διαγραφή</string>
-  <string name="global_settings_messageview_show_next_summary">Εμφάνιση επόμενου μηνύματος μετά τη διαγραφή ενός μηνύματος</string>
   <string name="global_settings_confirm_actions_title">Επιβεβαίωση ενεργειών</string>
   <string name="global_settings_confirm_actions_summary">Προβολή διαλόγου όποτε εκτελούνται επιλεγμένες ενέργειες</string>
   <string name="global_settings_confirm_action_delete">Διαγραφή</string>

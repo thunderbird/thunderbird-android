@@ -213,10 +213,6 @@
   <string name="global_settings_messageview_fixedwidth_summary">Düz metin mesajları gösterdiğinde sabit genişlikli yazı tipi kullan</string>
   <string name="global_settings_messageview_autofit_width_label">Mesajları otomatik sığdır</string>
   <string name="global_settings_messageview_autofit_width_summary">İletileri ekrana sığacak şekilde küçült</string>
-  <string name="global_settings_messageview_return_to_list_label">Sildikten sonra listeye dön</string>
-  <string name="global_settings_messageview_return_to_list_summary">Mesajı sildikten sonra mesaj listesine döner</string>
-  <string name="global_settings_messageview_show_next_label">Sildikten sonra sonraki mesajı göster</string>
-  <string name="global_settings_messageview_show_next_summary">Mesaj siliminden sonra varsayılan olarak sonraki mesajı gösterir</string>
   <string name="global_settings_confirm_actions_title">Eylemleri onaylayın</string>
   <string name="global_settings_confirm_actions_summary">Seçilmiş eylemleri yaptığınız zaman bir diyalog göster</string>
   <string name="global_settings_confirm_action_delete">Sil</string>
