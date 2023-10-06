@@ -44,6 +44,16 @@ Any contributions, large or small, major features, bug fixes, unit/integration t
 but will be thoroughly reviewed and discussed.
 Please make sure you read the [Code Style Guidelines](https://github.com/thundernest/k-9/wiki/CodeStyle).
 
+### Architecture Decision Records (ADR)
+
+We use [Architecture Decision Records](https://adr.github.io/) to document the architectural decisions made in the
+development of K-9 Mail. You can find them in the [`docs/architecture/adr`](docs/architecture/adr) directory.
+
+For more information about our ADRs, please see the [ADRs README](docs/architecture/adr/README.md).
+
+We encourage team members and contributors to read through our ADRs to understand the architectural decisions that
+have shaped this project so far. Feel free to propose new ADRs or suggest modifications to existing ones as needed.
+
 ## Communication
 
 Aside from discussing changes in [pull requests](https://github.com/thundernest/k-9/pulls) and
