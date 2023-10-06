@@ -1,7 +1,7 @@
 package com.fsck.k9.preferences.migrations
 
 import android.database.sqlite.SQLiteDatabase
-import com.fsck.k9.preferences.GeneralSettingsDescriptions
+import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo31
 
 /**
  * Convert old value for message view content font size to new format.
@@ -19,7 +19,7 @@ class StorageMigrationTo11(
         if (newFontSizeValue != null) return
 
         val oldFontSizeValue = migrationsHelper.readValue(db, "fontSizeMessageViewContent")?.toIntOrNull() ?: 3
-        val fontSizeValue = GeneralSettingsDescriptions.SettingsUpgraderV31.convertFromOldSize(oldFontSizeValue)
+        val fontSizeValue = GeneralSettingsUpgraderTo31.convertFromOldSize(oldFontSizeValue)
         migrationsHelper.writeValue(db, "fontSizeMessageViewContentPercent", fontSizeValue.toString())
         migrationsHelper.writeValue(db, "fontSizeMessageViewContent", null)
     }

@@ -26,7 +26,6 @@ import com.fsck.k9.K9;
 import com.fsck.k9.NotificationLight;
 import com.fsck.k9.core.R;
 import com.fsck.k9.mailstore.StorageManager;
-import com.fsck.k9.notification.NotificationLightDecoder;
 import com.fsck.k9.preferences.Settings.BooleanSetting;
 import com.fsck.k9.preferences.Settings.ColorSetting;
 import com.fsck.k9.preferences.Settings.EnumSetting;
@@ -37,7 +36,13 @@ import com.fsck.k9.preferences.Settings.SettingsDescription;
 import com.fsck.k9.preferences.Settings.SettingsUpgrader;
 import com.fsck.k9.preferences.Settings.StringSetting;
 import com.fsck.k9.preferences.Settings.V;
-import kotlin.collections.SetsKt;
+import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo53;
+import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo54;
+import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo74;
+import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo80;
+import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo81;
+
+import static com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo53.FOLDER_NONE;
 
 
 public class AccountSettingsDescriptions {
@@ -59,7 +64,7 @@ public class AccountSettingsDescriptions {
                 new V(13, new BooleanSetting(false))
         ));
         s.put("archiveFolderName", Settings.versions(
-                new V(1, new StringSetting(SettingsUpgraderV53.FOLDER_NONE)),
+                new V(1, new StringSetting(FOLDER_NONE)),
                 new V(53, new StringSetting(null))
         ));
         s.put("autoExpandFolderName", Settings.versions(
@@ -84,7 +89,7 @@ public class AccountSettingsDescriptions {
                         R.array.display_count_values))
         ));
         s.put("draftsFolderName", Settings.versions(
-                new V(1, new StringSetting(SettingsUpgraderV53.FOLDER_NONE)),
+                new V(1, new StringSetting(FOLDER_NONE)),
                 new V(53, new StringSetting(null))
         ));
         s.put("expungePolicy", Settings.versions(
@@ -174,7 +179,7 @@ public class AccountSettingsDescriptions {
                 new V(1, new EnumSetting<>(Searchable.class, Searchable.ALL))
         ));
         s.put("sentFolderName", Settings.versions(
-                new V(1, new StringSetting(SettingsUpgraderV53.FOLDER_NONE)),
+                new V(1, new StringSetting(FOLDER_NONE)),
                 new V(53, new StringSetting(null))
         ));
         s.put("sortTypeEnum", Settings.versions(
@@ -190,7 +195,7 @@ public class AccountSettingsDescriptions {
                 new V(1, new BooleanSetting(false))
         ));
         s.put("spamFolderName", Settings.versions(
-                new V(1, new StringSetting(SettingsUpgraderV53.FOLDER_NONE)),
+                new V(1, new StringSetting(FOLDER_NONE)),
                 new V(53, new StringSetting(null))
         ));
         s.put("stripSignature", Settings.versions(
@@ -203,7 +208,7 @@ public class AccountSettingsDescriptions {
                 new V(1, new BooleanSetting(true))
         ));
         s.put("trashFolderName", Settings.versions(
-                new V(1, new StringSetting(SettingsUpgraderV53.FOLDER_NONE)),
+                new V(1, new StringSetting(FOLDER_NONE)),
                 new V(53, new StringSetting(null))
         ));
         s.put("useCompression.MOBILE", Settings.versions(
@@ -285,11 +290,11 @@ public class AccountSettingsDescriptions {
         SETTINGS = Collections.unmodifiableMap(s);
 
         Map<Integer, SettingsUpgrader> u = new HashMap<>();
-        u.put(53, new SettingsUpgraderV53());
-        u.put(54, new SettingsUpgraderV54());
-        u.put(74, new SettingsUpgraderV74());
-        u.put(80, new SettingsUpgraderV80());
-        u.put(81, new SettingsUpgraderV81());
+        u.put(53, new AccountSettingsUpgraderTo53());
+        u.put(54, new AccountSettingsUpgraderTo54());
+        u.put(74, new AccountSettingsUpgraderTo74());
+        u.put(80, new AccountSettingsUpgraderTo80());
+        u.put(81, new AccountSettingsUpgraderTo81());
 
         UPGRADERS = Collections.unmodifiableMap(u);
     }
@@ -468,110 +473,4 @@ public class AccountSettingsDescriptions {
         }
     }
 
-    /**
-     * Upgrades settings from version 52 to 53
-     *
-     * Replace folder entries of "-NONE-" with {@code null}.
-     */
-    private static class SettingsUpgraderV53 implements SettingsUpgrader {
-        private static final String FOLDER_NONE = "-NONE-";
-
-        @Override
-        public Set<String> upgrade(Map<String, Object> settings) {
-            upgradeFolderEntry(settings, "archiveFolderName");
-            upgradeFolderEntry(settings, "autoExpandFolderName");
-            upgradeFolderEntry(settings, "draftsFolderName");
-            upgradeFolderEntry(settings, "sentFolderName");
-            upgradeFolderEntry(settings, "spamFolderName");
-            upgradeFolderEntry(settings, "trashFolderName");
-
-            return null;
-        }
-
-        private void upgradeFolderEntry(Map<String, Object> settings, String key) {
-            String archiveFolderName = (String) settings.get(key);
-            if (FOLDER_NONE.equals(archiveFolderName)) {
-                settings.put(key, null);
-            }
-        }
-    }
-
-    /**
-     * Upgrades settings from version 53 to 54
-     *
-     * Inserts folder selection entries with a value of "MANUAL"
-     */
-    private static class SettingsUpgraderV54 implements SettingsUpgrader {
-        private static final String FOLDER_SELECTION_MANUAL = "MANUAL";
-
-        @Override
-        public Set<String> upgrade(Map<String, Object> settings) {
-            settings.put("archiveFolderSelection", FOLDER_SELECTION_MANUAL);
-            settings.put("draftsFolderSelection", FOLDER_SELECTION_MANUAL);
-            settings.put("sentFolderSelection", FOLDER_SELECTION_MANUAL);
-            settings.put("spamFolderSelection", FOLDER_SELECTION_MANUAL);
-            settings.put("trashFolderSelection", FOLDER_SELECTION_MANUAL);
-
-            return null;
-        }
-    }
-
-    /**
-     * Upgrades settings from version 73 to 74
-     *
-     * Rewrites 'idleRefreshMinutes' from '1' to '2' if necessary
-     */
-    private static class SettingsUpgraderV74 implements SettingsUpgrader {
-        @Override
-        public Set<String> upgrade(Map<String, Object> settings) {
-            Integer idleRefreshMinutes = (Integer) settings.get("idleRefreshMinutes");
-            if (idleRefreshMinutes == 1) {
-                settings.put("idleRefreshMinutes", 2);
-            }
-
-            return null;
-        }
-    }
-
-    /**
-     * Upgrades settings from version 79 to 80
-     *
-     * Rewrites 'led' and 'lecColor' to 'notificationLight'.
-     */
-    private static class SettingsUpgraderV80 implements SettingsUpgrader {
-        private final NotificationLightDecoder notificationLightDecoder = DI.get(NotificationLightDecoder.class);
-
-        @Override
-        public Set<String> upgrade(Map<String, Object> settings) {
-            Boolean isLedEnabled = (Boolean) settings.get("led");
-            Integer ledColor = (Integer) settings.get("ledColor");
-            Integer chipColor = (Integer) settings.get("chipColor");
-
-            if (isLedEnabled != null && ledColor != null) {
-                int accountColor = chipColor != null ? chipColor : 0;
-                NotificationLight light = notificationLightDecoder.decode(isLedEnabled, ledColor, accountColor);
-                settings.put("notificationLight", light.name());
-            }
-
-            return SetsKt.setOf("led", "ledColor");
-        }
-    }
-
-    /**
-     * Rewrite the per-network type IMAP compression settings to a single setting.
-     */
-    private static class SettingsUpgraderV81 implements SettingsUpgrader {
-        @Override
-        public Set<String> upgrade(Map<String, Object> settings) {
-            Boolean useCompressionWifi = (Boolean) settings.get("useCompression.WIFI");
-            Boolean useCompressionMobile = (Boolean) settings.get("useCompression.MOBILE");
-            Boolean useCompressionOther = (Boolean) settings.get("useCompression.OTHER");
-
-            boolean useCompression = useCompressionWifi != null && useCompressionMobile != null &&
-                    useCompressionOther != null && useCompressionWifi && useCompressionMobile && useCompressionOther;
-            settings.put("useCompression", useCompression);
-
-            return SetsKt.setOf("useCompression.WIFI", "useCompression.MOBILE", "useCompression.OTHER");
-        }
-    }
 }

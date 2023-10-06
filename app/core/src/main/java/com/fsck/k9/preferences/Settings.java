@@ -367,7 +367,7 @@ public class Settings {
      *
      * @see Settings#upgrade(int, Map, Map, Map)
      */
-    interface SettingsUpgrader {
+    public interface SettingsUpgrader {
         /**
          * Upgrade the provided settings.
          *
