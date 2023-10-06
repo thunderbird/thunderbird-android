@@ -11,7 +11,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextCaption
 import app.k9mail.core.ui.compose.theme.MainTheme
 
 @Composable
-internal fun InputLayout(
+fun InputLayout(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = inputContentPadding(),
     errorMessage: String? = null,

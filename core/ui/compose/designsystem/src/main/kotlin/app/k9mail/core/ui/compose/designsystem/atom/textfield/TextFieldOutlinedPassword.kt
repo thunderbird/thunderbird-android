@@ -55,6 +55,41 @@ fun TextFieldOutlinedPassword(
     )
 }
 
+@Composable
+fun TextFieldOutlinedPassword(
+    value: String,
+    onValueChange: (String) -> Unit,
+    isPasswordVisible: Boolean,
+    onPasswordVisibilityToggleClicked: () -> Unit,
+    modifier: Modifier = Modifier,
+    label: String? = null,
+    isEnabled: Boolean = true,
+    isReadOnly: Boolean = false,
+    isRequired: Boolean = false,
+    hasError: Boolean = false,
+) {
+    MaterialOutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        modifier = modifier,
+        enabled = isEnabled,
+        label = selectLabel(label, isRequired),
+        trailingIcon = selectTrailingIcon(
+            isEnabled = isEnabled,
+            isPasswordVisible = isPasswordVisible,
+            onClick = onPasswordVisibilityToggleClicked,
+        ),
+        readOnly = isReadOnly,
+        isError = hasError,
+        visualTransformation = selectVisualTransformation(
+            isEnabled = isEnabled,
+            isPasswordVisible = isPasswordVisible,
+        ),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        singleLine = true,
+    )
+}
+
 private fun selectTrailingIcon(
     isEnabled: Boolean,
     isPasswordVisible: Boolean,
