@@ -1,1094 +1,1094 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <!--=== App-specific strings =============================================================-->
-  <!--This should make it easier for forks to change the branding-->
-  <!--Used in AndroidManifest.xml-->
-  <string name="app_name">K-9 Mail</string>
-  <string name="shortcuts_title">Conturi K-9</string>
-  <string name="unread_widget_label">K-9 Necitite</string>
-  <!--Used in the about dialog-->
-  <string name="app_authors">K-9 Dog Walkers</string>
-  <string name="source_code">Codul sursă</string>
-  <string name="app_license">Licență Apache, Versiunea 2.0</string>
-  <string name="about_project_title">Proiect Open Source</string>
-  <string name="about_website_title">Website</string>
-  <string name="user_manual_title">Manualul utilizatorului</string>
-  <string name="get_help_title">Obține ajutor</string>
-  <string name="user_forum_title">Forum utilizatori</string>
-  <string name="about_fediverse_title">Fediverse</string>
-  <string name="about_twitter_title">Twitter</string>
-  <string name="about_libraries">Biblioteci</string>
-  <string name="license">Licență</string>
-  <string name="changelog_title">Jurnal de modificări</string>
-  <string name="changelog_loading_error">Nu s-a putut încărca jurnalul de modificări.</string>
-  <string name="changelog_version_title">Versiune %s</string>
-  <string name="changelog_recent_changes_title">Ce este nou</string>
-  <string name="changelog_show_recent_changes">Afișează modificările recente atunci când aplicația a fost actualizată</string>
-  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
-  <string name="changelog_snackbar_text">Află ce este nou în această versiune</string>
-  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-  <string name="changelog_snackbar_button_text">Vizualizare</string>
-  <!--Default signature-->
-  <string name="default_signature">-- \nTrimis de pe dispozitivul meu Android cu K-9 Mail. Rog scuzați concizia mea.</string>
-  <!--General strings that include the app name-->
-  <string name="account_delete_dlg_instructions_fmt">Contul \"<xliff:g id="account">%s</xliff:g>\" va fi șters din K-9 Mail.</string>
-  <!--=== General strings ==================================================================-->
-  <string name="authors">Autori</string>
-  <string name="about_title">Despre K-9 Mail</string>
-  <string name="accounts_title">Conturi</string>
-  <string name="advanced">Avansat</string>
-  <string name="compose_title_compose">Scrie</string>
-  <string name="compose_title_reply">Răspunde</string>
-  <string name="compose_title_reply_all">Răspunde tuturor</string>
-  <string name="compose_title_forward">Redirecționează</string>
-  <string name="compose_title_forward_as_attachment">Trimite atașat</string>
-  <string name="choose_account_title">Alege contul</string>
-  <string name="choose_folder_title">Alege dosar</string>
-  <string name="choose_folder_move_title">Mută la…</string>
-  <string name="choose_folder_copy_title">Copiază la…</string>
-  <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selectate</string>
-  <string name="next_action">Înainte</string>
-  <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-  <string name="okay_action">OK</string>
-  <string name="cancel_action">Renunță</string>
-  <string name="send_action">Trimite</string>
-  <string name="empty_subject">Subiectul nu este completat, clic din nou pentru a trimite oricum</string>
-  <string name="reply_action">Răspunde</string>
-  <string name="reply_all_action">Răspunde tuturor</string>
-  <string name="delete_action">Șterge</string>
-  <string name="archive_action">Arhivează</string>
-  <string name="spam_action">Spam</string>
-  <string name="forward_action">Redirecționează</string>
-  <string name="forward_as_attachment_action">Trimite atașat</string>
-  <string name="edit_as_new_message_action">Editează ca și mesaj nou</string>
-  <string name="move_action">Mută</string>
-  <string name="move_to_drafts_action">Mutarea în proiecte</string>
-  <string name="refile_action">Reîndosariază…</string>
-  <string name="done_action">Realizat</string>
-  <string name="discard_action">Renunță</string>
-  <string name="save_draft_action">Salvează ca ciornă</string>
-  <string name="check_mail_action">Verifică email</string>
-  <string name="send_messages_action">Trimite mesaje</string>
-  <string name="refresh_folders_action">Reîmprospătează lista de dosare</string>
-  <string name="filter_folders_action">Găsește dosar</string>
-  <string name="add_account_action">Adaugă cont</string>
-  <string name="compose_action">Compune</string>
-  <string name="search_action">Caută</string>
-  <string name="search_everywhere_action">Caută peste tot</string>
-  <string name="search_results">Rezultate căutare</string>
-  <string name="new_messages_title">Mesaje noi</string>
-  <string name="preferences_action">Opțiuni</string>
-  <string name="folders_action">Gestionează dosarele</string>
-  <string name="account_settings_action">Opțiuni cont</string>
-  <string name="remove_account_action">Șterge contul</string>
-  <string name="mark_as_read_action">Marchează ca citit</string>
-  <string name="send_alternate_action">Distribuie</string>
-  <string name="send_alternate_chooser_title">Alege expeditor</string>
-  <string name="flag_action">Adaugă steluță</string>
-  <string name="unflag_action">Șterge steluța</string>
-  <string name="copy_action">Copiază</string>
-  <string name="unsubscribe_action">Dezabonare</string>
-  <string name="show_headers_action">Arată antete</string>
-  <plurals name="copy_address_to_clipboard">
-    <item quantity="one">Adresa a fost copiată în clipboard</item>
-    <item quantity="few">Adresele au fost copiate în clipboard</item>
-    <item quantity="other">Adresele au fost copiate în clipboard</item>
-  </plurals>
-  <string name="copy_subject_to_clipboard">Textul subiectului copiat în clipboard</string>
-  <string name="message_view_theme_action_dark">Comută la tema închisă</string>
-  <string name="message_view_theme_action_light">Comută la tema deschisă</string>
-  <string name="mark_as_unread_action">Marchează ca necitit</string>
-  <string name="read_receipt">Raport de citire</string>
-  <string name="read_receipt_enabled">Se va cere un raport de citire</string>
-  <string name="read_receipt_disabled">Nu se va cere un raport de citire</string>
-  <string name="add_attachment_action">Adaugă atașament</string>
-  <string name="empty_trash_action">Golește coșul de gunoi</string>
-  <string name="expunge_action">Şterge</string>
-  <string name="about_action">Despre</string>
-  <string name="prefs_title">Setări</string>
-  <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
-  <string name="general_no_subject">(Fără subiect)</string>
-  <string name="general_no_sender">Fără expeditor</string>
-  <string name="status_loading_more">Se încarcă mesajele\u2026</string>
-  <string name="status_network_error">Eroare de conectare</string>
-  <string name="status_invalid_id_error">Mesajul nu a fost găsit</string>
-  <string name="status_loading_error">Eroare la încărcarea mesajului</string>
-  <string name="load_more_messages_fmt">Încarcă
+    <!--=== App-specific strings =============================================================-->
+    <!--This should make it easier for forks to change the branding-->
+    <!--Used in AndroidManifest.xml-->
+    <string name="app_name">K-9 Mail</string>
+    <string name="shortcuts_title">Conturi K-9</string>
+    <string name="unread_widget_label">K-9 Necitite</string>
+    <!--Used in the about dialog-->
+    <string name="app_authors">K-9 Dog Walkers</string>
+    <string name="source_code">Codul sursă</string>
+    <string name="app_license">Licență Apache, Versiunea 2.0</string>
+    <string name="about_project_title">Proiect Open Source</string>
+    <string name="about_website_title">Website</string>
+    <string name="user_manual_title">Manualul utilizatorului</string>
+    <string name="get_help_title">Obține ajutor</string>
+    <string name="user_forum_title">Forum utilizatori</string>
+    <string name="about_fediverse_title">Fediverse</string>
+    <string name="about_twitter_title">Twitter</string>
+    <string name="about_libraries">Biblioteci</string>
+    <string name="license">Licență</string>
+    <string name="changelog_title">Jurnal de modificări</string>
+    <string name="changelog_loading_error">Nu s-a putut încărca jurnalul de modificări.</string>
+    <string name="changelog_version_title">Versiune %s</string>
+    <string name="changelog_recent_changes_title">Ce este nou</string>
+    <string name="changelog_show_recent_changes">Afișează modificările recente atunci când aplicația a fost actualizată</string>
+    <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
+    <string name="changelog_snackbar_text">Află ce este nou în această versiune</string>
+    <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+    <string name="changelog_snackbar_button_text">Vizualizare</string>
+    <!--Default signature-->
+    <string name="default_signature">-- \nTrimis de pe dispozitivul meu Android cu K-9 Mail. Rog scuzați concizia mea.</string>
+    <!--General strings that include the app name-->
+    <string name="account_delete_dlg_instructions_fmt">Contul \"<xliff:g id="account">%s</xliff:g>\" va fi șters din K-9 Mail.</string>
+    <!--=== General strings ==================================================================-->
+    <string name="authors">Autori</string>
+    <string name="about_title">Despre K-9 Mail</string>
+    <string name="accounts_title">Conturi</string>
+    <string name="advanced">Avansat</string>
+    <string name="compose_title_compose">Scrie</string>
+    <string name="compose_title_reply">Răspunde</string>
+    <string name="compose_title_reply_all">Răspunde tuturor</string>
+    <string name="compose_title_forward">Redirecționează</string>
+    <string name="compose_title_forward_as_attachment">Trimite atașat</string>
+    <string name="choose_account_title">Alege contul</string>
+    <string name="choose_folder_title">Alege dosar</string>
+    <string name="choose_folder_move_title">Mută la…</string>
+    <string name="choose_folder_copy_title">Copiază la…</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selectate</string>
+    <string name="next_action">Înainte</string>
+    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
+    <string name="okay_action">OK</string>
+    <string name="cancel_action">Renunță</string>
+    <string name="send_action">Trimite</string>
+    <string name="empty_subject">Subiectul nu este completat, clic din nou pentru a trimite oricum</string>
+    <string name="reply_action">Răspunde</string>
+    <string name="reply_all_action">Răspunde tuturor</string>
+    <string name="delete_action">Șterge</string>
+    <string name="archive_action">Arhivează</string>
+    <string name="spam_action">Spam</string>
+    <string name="forward_action">Redirecționează</string>
+    <string name="forward_as_attachment_action">Trimite atașat</string>
+    <string name="edit_as_new_message_action">Editează ca și mesaj nou</string>
+    <string name="move_action">Mută</string>
+    <string name="move_to_drafts_action">Mutarea în proiecte</string>
+    <string name="refile_action">Reîndosariază…</string>
+    <string name="done_action">Realizat</string>
+    <string name="discard_action">Renunță</string>
+    <string name="save_draft_action">Salvează ca ciornă</string>
+    <string name="check_mail_action">Verifică email</string>
+    <string name="send_messages_action">Trimite mesaje</string>
+    <string name="refresh_folders_action">Reîmprospătează lista de dosare</string>
+    <string name="filter_folders_action">Găsește dosar</string>
+    <string name="add_account_action">Adaugă cont</string>
+    <string name="compose_action">Compune</string>
+    <string name="search_action">Caută</string>
+    <string name="search_everywhere_action">Caută peste tot</string>
+    <string name="search_results">Rezultate căutare</string>
+    <string name="new_messages_title">Mesaje noi</string>
+    <string name="preferences_action">Opțiuni</string>
+    <string name="folders_action">Gestionează dosarele</string>
+    <string name="account_settings_action">Opțiuni cont</string>
+    <string name="remove_account_action">Șterge contul</string>
+    <string name="mark_as_read_action">Marchează ca citit</string>
+    <string name="send_alternate_action">Distribuie</string>
+    <string name="send_alternate_chooser_title">Alege expeditor</string>
+    <string name="flag_action">Adaugă steluță</string>
+    <string name="unflag_action">Șterge steluța</string>
+    <string name="copy_action">Copiază</string>
+    <string name="unsubscribe_action">Dezabonare</string>
+    <string name="show_headers_action">Arată antete</string>
+    <plurals name="copy_address_to_clipboard">
+        <item quantity="one">Adresa a fost copiată în clipboard</item>
+        <item quantity="few">Adresele au fost copiate în clipboard</item>
+        <item quantity="other">Adresele au fost copiate în clipboard</item>
+    </plurals>
+    <string name="copy_subject_to_clipboard">Textul subiectului copiat în clipboard</string>
+    <string name="message_view_theme_action_dark">Comută la tema închisă</string>
+    <string name="message_view_theme_action_light">Comută la tema deschisă</string>
+    <string name="mark_as_unread_action">Marchează ca necitit</string>
+    <string name="read_receipt">Raport de citire</string>
+    <string name="read_receipt_enabled">Se va cere un raport de citire</string>
+    <string name="read_receipt_disabled">Nu se va cere un raport de citire</string>
+    <string name="add_attachment_action">Adaugă atașament</string>
+    <string name="empty_trash_action">Golește coșul de gunoi</string>
+    <string name="expunge_action">Şterge</string>
+    <string name="about_action">Despre</string>
+    <string name="prefs_title">Setări</string>
+    <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
+    <string name="general_no_subject">(Fără subiect)</string>
+    <string name="general_no_sender">Fără expeditor</string>
+    <string name="status_loading_more">Se încarcă mesajele\u2026</string>
+    <string name="status_network_error">Eroare de conectare</string>
+    <string name="status_invalid_id_error">Mesajul nu a fost găsit</string>
+    <string name="status_loading_error">Eroare la încărcarea mesajului</string>
+    <string name="load_more_messages_fmt">Încarcă
 cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
-  <string name="size_format_gigabytes">%.1f GB</string>
-  <string name="size_format_megabytes">%.1f MB</string>
-  <string name="size_format_kilobytes">%.1f kB</string>
-  <string name="size_format_bytes">%d B</string>
-  <plurals name="notification_new_messages_title">
-    <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> mesaj nou</item>
-    <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> mesaje noi</item>
-    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> mesaje noi</item>
-  </plurals>
-  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> mai multe <xliff:g id="account">%2$s</xliff:g></string>
-  <string name="notification_action_reply">Răspunde</string>
-  <string name="notification_action_mark_as_read">Marchează ca citit</string>
-  <string name="notification_action_mark_all_as_read">Marchează totul ca citit</string>
-  <string name="notification_action_delete">Șterge</string>
-  <string name="notification_action_delete_all">Șterge tot</string>
-  <string name="notification_action_archive">Arhivă</string>
-  <string name="notification_action_archive_all">Arhivează tot</string>
-  <string name="notification_action_spam">Spam</string>
-  <string name="notification_certificate_error_public">Eroare de certificat</string>
-  <string name="notification_certificate_error_title">Eroare de certificat pentru <xliff:g id="account">%s</xliff:g></string>
-  <string name="notification_certificate_error_text">Verifică setările serverului</string>
-  <string name="notification_authentication_error_title">Autentificarea a eșuat</string>
-  <string name="notification_authentication_error_text">Authentificare eșuată pentru <xliff:g id="account">%s</xliff:g>. Actualizează setările serverului.</string>
-  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
-  <string name="notification_notify_error_title">Eroare de notificare</string>
-  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-  <string name="notification_notify_error_text">S-a produs o eroare în timpul încercării de a crea o notificare de sistem pentru un mesaj nou. Motivul este cel mai probabil lipsa unui sunet de notificare.\n\nApasă pentru a deschide setările de notificare.</string>
-  <string name="notification_bg_sync_ticker">Se verifică emailul: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
-  <string name="notification_bg_sync_title">Se verifică emailul</string>
-  <string name="notification_bg_send_ticker">Se trimite emailul: <xliff:g id="account">%s</xliff:g></string>
-  <string name="notification_bg_send_title">Se trimite emailul</string>
-  <string name="notification_bg_title_separator">:</string>
-  <string name="notification_channel_push_title">Sincronizare (Push)</string>
-  <string name="notification_channel_push_description">Afișat când se așteaptă mesaje noi</string>
-  <string name="notification_channel_messages_title">Mesaje</string>
-  <string name="notification_channel_messages_description">Notificări asociate cu mesaje</string>
-  <string name="notification_channel_miscellaneous_title">Diverse</string>
-  <string name="notification_channel_miscellaneous_description">Notificări diverse ca erori etc.</string>
-  <string name="special_mailbox_name_inbox">Mesaje primite</string>
-  <string name="special_mailbox_name_outbox">De trimis</string>
-  <string name="special_mailbox_name_drafts">Ciorne</string>
-  <string name="special_mailbox_name_trash">Coș de gunoi</string>
-  <string name="special_mailbox_name_sent">Trimise</string>
-  <string name="send_failure_subject">Eșuare la trimiterea unor mesaje</string>
-  <string name="version">Versiune</string>
-  <string name="debug_enable_debug_logging_title">Activează jurnalizarea depanării</string>
-  <string name="debug_enable_debug_logging_summary">Jurnal informații suplimentare diagnostic</string>
-  <string name="debug_enable_sensitive_logging_title">Jurnalizează informații sensibile</string>
-  <string name="debug_enable_sensitive_logging_summary">Poate include parole în jurnale.</string>
-  <string name="debug_export_logs_title">Jurnalele de export</string>
-  <string name="debug_export_logs_success">Exportul a avut succes. Jurnalele pot conține informații sensibile. Ai grijă cui le trimiți.</string>
-  <string name="debug_export_logs_failure">Exportul a eșuat.</string>
-  <string name="message_list_load_more_messages_action">Încarcă mai multe mesaje</string>
-  <string name="message_to_fmt">Către:<xliff:g id="counterParty">%s</xliff:g></string>
-  <string name="message_compose_subject_hint">Subiect</string>
-  <string name="message_compose_content_hint">Text mesaj</string>
-  <string name="message_compose_signature_hint">Semnătură</string>
-  <string name="message_compose_quote_header_separator">-------- Mesaj Original --------</string>
-  <string name="message_compose_quote_header_subject">Subiect:</string>
-  <string name="message_compose_quote_header_send_date">Trimis:</string>
-  <string name="message_compose_quote_header_from">De la:</string>
-  <string name="message_compose_quote_header_to">La:</string>
-  <string name="message_compose_quote_header_cc">Cc:</string>
-  <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> a scris:</string>
-  <string name="message_compose_reply_header_fmt_with_date">În <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> a scris:</string>
-  <string name="message_compose_error_no_recipients">Trebuie să adaugi cel puțin un destinatar.</string>
-  <string name="compose_error_incomplete_recipient">Câmpul Destinatar conține date incomplete!</string>
-  <string name="error_contact_address_not_found">Nu a putut fi găsită adresa de e-mail pentru acest contact.</string>
-  <string name="message_compose_attachments_skipped_toast">Unele atașamente nu pot fi redirecționate pentru că nu au fost descărcate.</string>
-  <string name="message_compose_attachments_forward_toast">Mesajul nu poate fi redirecționat pentru că unele atașamente nu au fost descărcate.</string>
-  <string name="message_compose_show_quoted_text_action">Include mesajul citat</string>
-  <string name="message_compose_description_delete_quoted_text">Elimină textul citat</string>
-  <string name="message_compose_description_edit_quoted_text">Editează textul citat</string>
-  <string name="remove_attachment_action">Elimină atașamentul</string>
-  <string name="message_to_label">La:</string>
-  <string name="message_view_cc_label">Cc:</string>
-  <string name="message_view_bcc_label">Bcc:</string>
-  <string name="message_view_status_attachment_not_saved">Nu se poate salva atașamentul.</string>
-  <!--Used to display the recipient list in the message view screen.-->
-  <string name="message_view_recipients_format">la <xliff:g id="recipients">%s</xliff:g></string>
-  <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
-  <string name="message_view_additional_recipient_prefix">+</string>
-  <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
-  <string name="message_view_me_text">eu</string>
-  <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
-  <string name="message_view_show_remote_images_action">Afișează imagini de la distanță</string>
-  <string name="message_view_no_viewer">Nu se poate găsi vizualizator pentru <xliff:g id="mimetype">%s</xliff:g>.</string>
-  <string name="message_view_download_remainder">Descarcă mesajul complet</string>
-  <string name="message_view_sender_label">prin %1$s</string>
-  <string name="from_same_sender">Mai multe de la acest expeditor</string>
-  <string name="message_discarded_toast">Mesaj aruncat</string>
-  <string name="message_saved_toast">Mesaj salvat ca ciornă</string>
-  <string name="global_settings_flag_label">Arată stele</string>
-  <string name="global_settings_flag_summary">Stele indică mesaje marcate</string>
-  <string name="global_settings_preview_lines_label">Linii previzualizare</string>
-  <string name="global_settings_show_correspondent_names_label"> Arată numele corespondentului</string>
-  <string name="global_settings_show_correspondent_names_summary">Arată numele corespondentului în loc de adresele lui de e-mail</string>
-  <string name="global_settings_sender_above_subject_label">Corespondent deasupra subiect</string>
-  <string name="global_settings_sender_above_subject_summary">Arată numele corespondentului deasupra liniei de subiect, mai degrabă decât sub ea</string>
-  <string name="global_settings_show_contact_name_label">Arată numele contactului</string>
-  <string name="global_settings_show_contact_name_summary">Foloseşte numele destinatarilor din Contacte atunci când sunt disponibile</string>
-  <string name="global_settings_registered_name_color_label">Colorează contactele</string>
-  <string name="global_settings_registered_name_color_changed">Colorează numele în lista de contacte</string>
-  <string name="general_settings_contact_name_color_label">Culoare nume de contact</string>
-  <string name="global_settings_messageview_fixedwidth_label">Fonturi cu lățime fixă</string>
-  <string name="global_settings_messageview_fixedwidth_summary">Utilizează un font cu lățime fixă când mesajele sunt afișate ca text simplu</string>
-  <string name="global_settings_messageview_autofit_width_label">Auto-dimensionează mesajele</string>
-  <string name="global_settings_messageview_autofit_width_summary">Micșorează mesajele pentru a se potrivi pe ecran</string>
-  <string name="global_settings_confirm_actions_title">Confirmă acţiuni</string>
-  <string name="global_settings_confirm_actions_summary">Afișează un dialog de fiecare dată când efectuați acțiuni selectate</string>
-  <string name="global_settings_confirm_action_delete">Şterge</string>
-  <string name="global_settings_confirm_action_delete_starred">Șterge marcat cu stea (în fereastra mesaj)</string>
-  <string name="global_settings_confirm_action_spam">Spam</string>
-  <string name="global_settings_confirm_menu_discard">Renunță la mesaj</string>
-  <string name="global_settings_confirm_menu_mark_all_read">Marchează toate mesajele ca citite</string>
-  <string name="global_settings_confirm_action_delete_notif">Șterge (din notificare)</string>
-  <!--Title of the screen to configure swipe actions-->
-  <string name="general_settings_swipe_actions_title">Acțiuni la glisare</string>
-  <!--Name of the setting to configure the right swipe action-->
-  <string name="general_settings_right_swipe_title">Glisarea spre dreapta</string>
-  <!--Name of the setting to configure the left swipe action-->
-  <string name="general_settings_left_swipe_title">Glisare spre stânga</string>
-  <!--The list item users select to not use a swipe action for a particular direction-->
-  <string name="general_settings_swipe_action_none">Fără</string>
-  <!--Name of the swipe action to select/deselect a message-->
-  <string name="general_settings_swipe_action_toggle_selection">Comutarea selecției</string>
-  <!--Name of the swipe action to mark as message as read/unread-->
-  <string name="general_settings_swipe_action_toggle_read">Marcați ca citit/necitit</string>
-  <!--Name of the swipe action to add/remove a star-->
-  <string name="general_settings_swipe_action_toggle_star">Adăugare/eliminare stea</string>
-  <!--Name of the swipe action to archive a message-->
-  <string name="general_settings_swipe_action_archive">Arhivare</string>
-  <!--Name of the swipe action to delete a message-->
-  <string name="general_settings_swipe_action_delete">Şterge</string>
-  <!--Name of the swipe action to move a message to the spam folder-->
-  <string name="general_settings_swipe_action_spam">Spam</string>
-  <!--Name of the swipe action to move a message to another folder-->
-  <string name="general_settings_swipe_action_move">Mută</string>
-  <!--Title of the setting to specify the density of the message list-->
-  <string name="general_settings_message_list_density_title">Densitate</string>
-  <string name="general_settings_ui_density_compact">Compact</string>
-  <string name="general_settings_ui_density_default">Implicit</string>
-  <string name="general_settings_ui_density_relaxed">Relaxat</string>
-  <string name="global_settings_privacy_hide_useragent">Ascunde clientul de mail</string>
-  <string name="global_settings_privacy_hide_useragent_detail">Elimină K-9 User-Agent din anteturile mesajelor</string>
-  <string name="global_settings_privacy_hide_timezone">Ascunde fusul orar</string>
-  <string name="global_settings_privacy_hide_timezone_detail">Folosește UTC în locul fusului orar local în antetul mesajelor și al răspunsurilor</string>
-  <string name="global_settings_notification_quick_delete_title">Arată butonul \'Ştergere\'</string>
-  <string name="global_settings_notification_quick_delete_never">Niciodată</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Pentru notificarea unui singur mesaj</string>
-  <string name="global_settings_notification_quick_delete_always">Întotdeauna</string>
-  <string name="global_settings_lock_screen_notification_visibility_title">Notificări în ecranul de blocare</string>
-  <string name="global_settings_lock_screen_notification_visibility_nothing">Nici o notificare în ecranul de blocare</string>
-  <string name="global_settings_lock_screen_notification_visibility_app_name">Numele aplicaţiei</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">Număr de mesaje noi</string>
-  <string name="global_settings_lock_screen_notification_visibility_senders">Contor mesaje și expeditori</string>
-  <string name="global_settings_lock_screen_notification_visibility_everything">La fel ca atunci când ecranul este deblocat</string>
-  <string name="quiet_time">Perioadă de liniște</string>
-  <string name="quiet_time_description">Dezactivează sunetul, vibrarea și lumina pe timp de noapte</string>
-  <string name="quiet_time_notification">Dezactivează notificările</string>
-  <string name="quiet_time_notification_description">Dezactivează complet notificările pe Perioada de liniște</string>
-  <string name="quiet_time_starts">Perioada de liniște începe</string>
-  <string name="quiet_time_ends">Perioada de liniște se sfârşeşte</string>
-  <string name="account_setup_basics_title">Configurarează un cont nou</string>
-  <string name="account_setup_basics_email_hint">Adresa e-mail</string>
-  <string name="account_setup_basics_password_hint">Parolă</string>
-  <string name="account_setup_oauth_description">Pentru a utiliza acest cont de e-mail cu K-9 Mail, trebuie să te conectezi și să acorzi aplicației acces la e-mailuri.</string>
-  <!--Displayed below the 'account_setup_oauth_description' text-->
-  <string name="account_setup_oauth_sign_in">Conectează-te</string>
-  <!--Displayed below the 'account_setup_oauth_description' text-->
-  <string name="account_setup_oauth_sign_in_with_google">Conectează-te cu Google</string>
-  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-  <string name="account_setup_basics_show_password_need_lock">Pentru a vedea parola aici, activează blocarea ecranului pe acest dispozitiv.</string>
-  <string name="account_setup_basics_show_password_biometrics_title">Verifică-ți identitatea</string>
-  <string name="account_setup_basics_show_password_biometrics_subtitle">Deblochează pentru a-ți vedea parola</string>
-  <string name="account_setup_basics_manual_setup_action">Setare manuală</string>
-  <string name="account_setup_check_settings_title"/>
-  <string name="account_setup_check_settings_retr_info_msg">Preluarea informațiilor contului\u2026</string>
-  <string name="account_setup_check_settings_check_incoming_msg">Verificarea setărilor serverului de intrare\u2026</string>
-  <string name="account_setup_check_settings_check_outgoing_msg">Verificarea setărilor serverului de expediere\u2026</string>
-  <string name="account_setup_check_settings_authenticate">Autentificare\u2026</string>
-  <string name="account_setup_check_settings_fetch">Preluarea setărilor contului\u2026</string>
-  <string name="account_setup_check_settings_canceling_msg">Se anulează\u2026</string>
-  <string name="account_setup_account_type_title">Tipul contului</string>
-  <string name="account_setup_account_type_instructions">Ce fel de cont este acesta?</string>
-  <string name="account_setup_account_type_pop_action">POP3</string>
-  <string name="account_setup_account_type_imap_action">IMAP</string>
-  <string name="account_setup_auth_type_normal_password">Parolă normală</string>
-  <string name="account_setup_auth_type_insecure_password">Parolă, transmisă nesecurizat</string>
-  <string name="account_setup_auth_type_encrypted_password">Parolă criptată</string>
-  <string name="account_setup_auth_type_tls_client_certificate">Certificat client</string>
-  <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
-  <string name="account_setup_incoming_title">Setări server de primire</string>
-  <string name="account_setup_incoming_username_label">Utilizator</string>
-  <string name="account_setup_incoming_password_label">Parolă</string>
-  <string name="account_setup_incoming_client_certificate_label">Certificat client</string>
-  <string name="account_setup_incoming_pop_server_label">Server POP3</string>
-  <string name="account_setup_incoming_imap_server_label">Server IMAP</string>
-  <string name="account_setup_incoming_port_label">Port</string>
-  <string name="account_setup_incoming_security_label">Securitate</string>
-  <string name="account_setup_incoming_auth_type_label">Autentificare</string>
-  <string name="account_setup_incoming_security_none_label">Fără</string>
-  <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
-  <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
-  <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" nu este valabilă cu \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
-  <string name="account_setup_incoming_delete_policy_label">Când şterg un mesaj</string>
-  <string name="account_setup_incoming_delete_policy_never_label">Nu se șterge de pe server</string>
-  <string name="account_setup_incoming_delete_policy_delete_label">Şterge de pe server</string>
-  <string name="account_setup_incoming_delete_policy_markread_label">Marchează ca citit pe server</string>
-  <string name="account_setup_incoming_use_compression">Utilizează comprimarea</string>
-  <string name="account_setup_incoming_send_client_id">Trimite ID-ul clientului</string>
-  <string name="account_setup_expunge_policy_label">Elimină mesajele şterse de pe server</string>
-  <string name="account_setup_expunge_policy_immediately">Imediat</string>
-  <string name="account_setup_expunge_policy_on_poll">La interogare</string>
-  <string name="account_setup_expunge_policy_manual">Manual</string>
-  <string name="account_setup_incoming_autodetect_namespace_label">Auto-detectare IMAP namespace</string>
-  <string name="account_setup_incoming_imap_path_prefix_label">Prefix cale IMAP</string>
-  <string name="drafts_folder_label">Dosar ciorne</string>
-  <string name="sent_folder_label">Dosar trimise</string>
-  <string name="trash_folder_label">Dosar gunoi</string>
-  <string name="archive_folder_label">Dosar arhive</string>
-  <string name="spam_folder_label">Dosar spam</string>
-  <string name="account_setup_incoming_subscribed_folders_only_label">Arată doar dosarele înregistrate</string>
-  <string name="account_setup_auto_expand_folder">Auto-extinde dosar</string>
-  <string name="account_setup_outgoing_title">Setări server de expediere</string>
-  <string name="account_setup_outgoing_smtp_server_label">Server SMTP</string>
-  <string name="account_setup_outgoing_port_label">Port</string>
-  <string name="account_setup_outgoing_security_label">Securitate</string>
-  <string name="account_setup_outgoing_require_login_label">Solicită autentificare.</string>
-  <string name="account_setup_outgoing_username_label">Utilizator</string>
-  <string name="account_setup_outgoing_password_label">Parola</string>
-  <string name="account_setup_outgoing_authentication_label">Autentificare</string>
-  <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" nu este valabil cu \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g></string>
-  <string name="account_setup_bad_uri">Configurare greşită : <xliff:g id="err_mess">%s</xliff:g></string>
-  <string name="account_setup_options_mail_check_frequency_label">Frecvență interogare dosar</string>
-  <string name="account_setup_options_mail_check_frequency_never">Niciodată</string>
-  <string name="account_setup_options_mail_check_frequency_15min">La fiecare 15 minute</string>
-  <string name="account_setup_options_mail_check_frequency_30min">La fiecare 30 de minute</string>
-  <string name="account_setup_options_mail_check_frequency_1hour">La fiecare oră</string>
-  <string name="account_setup_options_mail_check_frequency_2hour">La fiecare 2 ore</string>
-  <string name="account_setup_options_mail_check_frequency_3hour">La fiecare 3 ore</string>
-  <string name="account_setup_options_mail_check_frequency_6hour">La fiecare 6 ore</string>
-  <string name="account_setup_options_mail_check_frequency_12hour">La fiecare 12 ore</string>
-  <string name="account_setup_options_mail_check_frequency_24hour">La fiecare 24 de ore</string>
-  <string name="idle_refresh_period_label">Împrospătează conexiune IDLE</string>
-  <string name="idle_refresh_period_2min">La fiecare 2 minute</string>
-  <string name="idle_refresh_period_3min">La fiecare 3 minute</string>
-  <string name="idle_refresh_period_6min">La fiecare 6 minute</string>
-  <string name="idle_refresh_period_12min">La fiecare 12 minute</string>
-  <string name="idle_refresh_period_24min">La fiecare 24 de minute</string>
-  <string name="idle_refresh_period_36min">La fiecare 36 de minute</string>
-  <string name="idle_refresh_period_48min">La fiecare 48 de minute</string>
-  <string name="idle_refresh_period_60min">La fiecare 60 de minute</string>
-  <string name="account_setup_options_mail_display_count_label">Numărul de mesaje afișate</string>
-  <string name="account_setup_options_mail_display_count_10">10 mesaje</string>
-  <string name="account_setup_options_mail_display_count_25">25 mesaje</string>
-  <string name="account_setup_options_mail_display_count_50">50 mesaje</string>
-  <string name="account_setup_options_mail_display_count_100">100 mesaje</string>
-  <string name="account_setup_options_mail_display_count_250">250 mesaje</string>
-  <string name="account_setup_options_mail_display_count_500">500 mesaje</string>
-  <string name="account_setup_options_mail_display_count_1000">1000 mesaje</string>
-  <string name="account_setup_options_mail_display_count_2500">2500 mesaje</string>
-  <string name="account_setup_options_mail_display_count_5000">5000 mesaje</string>
-  <string name="account_setup_options_mail_display_count_10000">10000 mesaje</string>
-  <string name="account_setup_options_mail_display_count_all">toate mesajele</string>
-  <string name="move_copy_cannot_copy_unsynced_message">Nu se poate copia sau muta un mesaj care nu e sincronizat cu serverul</string>
-  <string name="account_setup_failed_dlg_title">Configurarea nu s-a putut finaliza</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">Utilizator sau parolă incorecte.(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Serverul a prezentat un certificat SSL invalid.
+    <string name="size_format_gigabytes">%.1f GB</string>
+    <string name="size_format_megabytes">%.1f MB</string>
+    <string name="size_format_kilobytes">%.1f kB</string>
+    <string name="size_format_bytes">%d B</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> mesaj nou</item>
+        <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> mesaje noi</item>
+        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> mesaje noi</item>
+    </plurals>
+    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> mai multe <xliff:g id="account">%2$s</xliff:g></string>
+    <string name="notification_action_reply">Răspunde</string>
+    <string name="notification_action_mark_as_read">Marchează ca citit</string>
+    <string name="notification_action_mark_all_as_read">Marchează totul ca citit</string>
+    <string name="notification_action_delete">Șterge</string>
+    <string name="notification_action_delete_all">Șterge tot</string>
+    <string name="notification_action_archive">Arhivă</string>
+    <string name="notification_action_archive_all">Arhivează tot</string>
+    <string name="notification_action_spam">Spam</string>
+    <string name="notification_certificate_error_public">Eroare de certificat</string>
+    <string name="notification_certificate_error_title">Eroare de certificat pentru <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_certificate_error_text">Verifică setările serverului</string>
+    <string name="notification_authentication_error_title">Autentificarea a eșuat</string>
+    <string name="notification_authentication_error_text">Authentificare eșuată pentru <xliff:g id="account">%s</xliff:g>. Actualizează setările serverului.</string>
+    <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+    <string name="notification_notify_error_title">Eroare de notificare</string>
+    <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+    <string name="notification_notify_error_text">S-a produs o eroare în timpul încercării de a crea o notificare de sistem pentru un mesaj nou. Motivul este cel mai probabil lipsa unui sunet de notificare.\n\nApasă pentru a deschide setările de notificare.</string>
+    <string name="notification_bg_sync_ticker">Se verifică emailul: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
+    <string name="notification_bg_sync_title">Se verifică emailul</string>
+    <string name="notification_bg_send_ticker">Se trimite emailul: <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_bg_send_title">Se trimite emailul</string>
+    <string name="notification_bg_title_separator">:</string>
+    <string name="notification_channel_push_title">Sincronizare (Push)</string>
+    <string name="notification_channel_push_description">Afișat când se așteaptă mesaje noi</string>
+    <string name="notification_channel_messages_title">Mesaje</string>
+    <string name="notification_channel_messages_description">Notificări asociate cu mesaje</string>
+    <string name="notification_channel_miscellaneous_title">Diverse</string>
+    <string name="notification_channel_miscellaneous_description">Notificări diverse ca erori etc.</string>
+    <string name="special_mailbox_name_inbox">Mesaje primite</string>
+    <string name="special_mailbox_name_outbox">De trimis</string>
+    <string name="special_mailbox_name_drafts">Ciorne</string>
+    <string name="special_mailbox_name_trash">Coș de gunoi</string>
+    <string name="special_mailbox_name_sent">Trimise</string>
+    <string name="send_failure_subject">Eșuare la trimiterea unor mesaje</string>
+    <string name="version">Versiune</string>
+    <string name="debug_enable_debug_logging_title">Activează jurnalizarea depanării</string>
+    <string name="debug_enable_debug_logging_summary">Jurnal informații suplimentare diagnostic</string>
+    <string name="debug_enable_sensitive_logging_title">Jurnalizează informații sensibile</string>
+    <string name="debug_enable_sensitive_logging_summary">Poate include parole în jurnale.</string>
+    <string name="debug_export_logs_title">Jurnalele de export</string>
+    <string name="debug_export_logs_success">Exportul a avut succes. Jurnalele pot conține informații sensibile. Ai grijă cui le trimiți.</string>
+    <string name="debug_export_logs_failure">Exportul a eșuat.</string>
+    <string name="message_list_load_more_messages_action">Încarcă mai multe mesaje</string>
+    <string name="message_to_fmt">Către:<xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_compose_subject_hint">Subiect</string>
+    <string name="message_compose_content_hint">Text mesaj</string>
+    <string name="message_compose_signature_hint">Semnătură</string>
+    <string name="message_compose_quote_header_separator">-------- Mesaj Original --------</string>
+    <string name="message_compose_quote_header_subject">Subiect:</string>
+    <string name="message_compose_quote_header_send_date">Trimis:</string>
+    <string name="message_compose_quote_header_from">De la:</string>
+    <string name="message_compose_quote_header_to">La:</string>
+    <string name="message_compose_quote_header_cc">Cc:</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> a scris:</string>
+    <string name="message_compose_reply_header_fmt_with_date">În <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> a scris:</string>
+    <string name="message_compose_error_no_recipients">Trebuie să adaugi cel puțin un destinatar.</string>
+    <string name="compose_error_incomplete_recipient">Câmpul Destinatar conține date incomplete!</string>
+    <string name="error_contact_address_not_found">Nu a putut fi găsită adresa de e-mail pentru acest contact.</string>
+    <string name="message_compose_attachments_skipped_toast">Unele atașamente nu pot fi redirecționate pentru că nu au fost descărcate.</string>
+    <string name="message_compose_attachments_forward_toast">Mesajul nu poate fi redirecționat pentru că unele atașamente nu au fost descărcate.</string>
+    <string name="message_compose_show_quoted_text_action">Include mesajul citat</string>
+    <string name="message_compose_description_delete_quoted_text">Elimină textul citat</string>
+    <string name="message_compose_description_edit_quoted_text">Editează textul citat</string>
+    <string name="remove_attachment_action">Elimină atașamentul</string>
+    <string name="message_to_label">La:</string>
+    <string name="message_view_cc_label">Cc:</string>
+    <string name="message_view_bcc_label">Bcc:</string>
+    <string name="message_view_status_attachment_not_saved">Nu se poate salva atașamentul.</string>
+    <!--Used to display the recipient list in the message view screen.-->
+    <string name="message_view_recipients_format">la <xliff:g id="recipients">%s</xliff:g></string>
+    <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+    <string name="message_view_additional_recipient_prefix">+</string>
+    <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+    <string name="message_view_me_text">eu</string>
+    <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+    <string name="message_view_show_remote_images_action">Afișează imagini de la distanță</string>
+    <string name="message_view_no_viewer">Nu se poate găsi vizualizator pentru <xliff:g id="mimetype">%s</xliff:g>.</string>
+    <string name="message_view_download_remainder">Descarcă mesajul complet</string>
+    <string name="message_view_sender_label">prin %1$s</string>
+    <string name="from_same_sender">Mai multe de la acest expeditor</string>
+    <string name="message_discarded_toast">Mesaj aruncat</string>
+    <string name="message_saved_toast">Mesaj salvat ca ciornă</string>
+    <string name="global_settings_flag_label">Arată stele</string>
+    <string name="global_settings_flag_summary">Stele indică mesaje marcate</string>
+    <string name="global_settings_preview_lines_label">Linii previzualizare</string>
+    <string name="global_settings_show_correspondent_names_label"> Arată numele corespondentului</string>
+    <string name="global_settings_show_correspondent_names_summary">Arată numele corespondentului în loc de adresele lui de e-mail</string>
+    <string name="global_settings_sender_above_subject_label">Corespondent deasupra subiect</string>
+    <string name="global_settings_sender_above_subject_summary">Arată numele corespondentului deasupra liniei de subiect, mai degrabă decât sub ea</string>
+    <string name="global_settings_show_contact_name_label">Arată numele contactului</string>
+    <string name="global_settings_show_contact_name_summary">Foloseşte numele destinatarilor din Contacte atunci când sunt disponibile</string>
+    <string name="global_settings_registered_name_color_label">Colorează contactele</string>
+    <string name="global_settings_registered_name_color_changed">Colorează numele în lista de contacte</string>
+    <string name="general_settings_contact_name_color_label">Culoare nume de contact</string>
+    <string name="global_settings_messageview_fixedwidth_label">Fonturi cu lățime fixă</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Utilizează un font cu lățime fixă când mesajele sunt afișate ca text simplu</string>
+    <string name="global_settings_messageview_autofit_width_label">Auto-dimensionează mesajele</string>
+    <string name="global_settings_messageview_autofit_width_summary">Micșorează mesajele pentru a se potrivi pe ecran</string>
+    <string name="global_settings_confirm_actions_title">Confirmă acţiuni</string>
+    <string name="global_settings_confirm_actions_summary">Afișează un dialog de fiecare dată când efectuați acțiuni selectate</string>
+    <string name="global_settings_confirm_action_delete">Şterge</string>
+    <string name="global_settings_confirm_action_delete_starred">Șterge marcat cu stea (în fereastra mesaj)</string>
+    <string name="global_settings_confirm_action_spam">Spam</string>
+    <string name="global_settings_confirm_menu_discard">Renunță la mesaj</string>
+    <string name="global_settings_confirm_menu_mark_all_read">Marchează toate mesajele ca citite</string>
+    <string name="global_settings_confirm_action_delete_notif">Șterge (din notificare)</string>
+    <!--Title of the screen to configure swipe actions-->
+    <string name="general_settings_swipe_actions_title">Acțiuni la glisare</string>
+    <!--Name of the setting to configure the right swipe action-->
+    <string name="general_settings_right_swipe_title">Glisarea spre dreapta</string>
+    <!--Name of the setting to configure the left swipe action-->
+    <string name="general_settings_left_swipe_title">Glisare spre stânga</string>
+    <!--The list item users select to not use a swipe action for a particular direction-->
+    <string name="general_settings_swipe_action_none">Fără</string>
+    <!--Name of the swipe action to select/deselect a message-->
+    <string name="general_settings_swipe_action_toggle_selection">Comutarea selecției</string>
+    <!--Name of the swipe action to mark as message as read/unread-->
+    <string name="general_settings_swipe_action_toggle_read">Marcați ca citit/necitit</string>
+    <!--Name of the swipe action to add/remove a star-->
+    <string name="general_settings_swipe_action_toggle_star">Adăugare/eliminare stea</string>
+    <!--Name of the swipe action to archive a message-->
+    <string name="general_settings_swipe_action_archive">Arhivare</string>
+    <!--Name of the swipe action to delete a message-->
+    <string name="general_settings_swipe_action_delete">Şterge</string>
+    <!--Name of the swipe action to move a message to the spam folder-->
+    <string name="general_settings_swipe_action_spam">Spam</string>
+    <!--Name of the swipe action to move a message to another folder-->
+    <string name="general_settings_swipe_action_move">Mută</string>
+    <!--Title of the setting to specify the density of the message list-->
+    <string name="general_settings_message_list_density_title">Densitate</string>
+    <string name="general_settings_ui_density_compact">Compact</string>
+    <string name="general_settings_ui_density_default">Implicit</string>
+    <string name="general_settings_ui_density_relaxed">Relaxat</string>
+    <string name="global_settings_privacy_hide_useragent">Ascunde clientul de mail</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Elimină K-9 User-Agent din anteturile mesajelor</string>
+    <string name="global_settings_privacy_hide_timezone">Ascunde fusul orar</string>
+    <string name="global_settings_privacy_hide_timezone_detail">Folosește UTC în locul fusului orar local în antetul mesajelor și al răspunsurilor</string>
+    <string name="global_settings_notification_quick_delete_title">Arată butonul \'Ştergere\'</string>
+    <string name="global_settings_notification_quick_delete_never">Niciodată</string>
+    <string name="global_settings_notification_quick_delete_when_single_msg">Pentru notificarea unui singur mesaj</string>
+    <string name="global_settings_notification_quick_delete_always">Întotdeauna</string>
+    <string name="global_settings_lock_screen_notification_visibility_title">Notificări în ecranul de blocare</string>
+    <string name="global_settings_lock_screen_notification_visibility_nothing">Nici o notificare în ecranul de blocare</string>
+    <string name="global_settings_lock_screen_notification_visibility_app_name">Numele aplicaţiei</string>
+    <string name="global_settings_lock_screen_notification_visibility_message_count">Număr de mesaje noi</string>
+    <string name="global_settings_lock_screen_notification_visibility_senders">Contor mesaje și expeditori</string>
+    <string name="global_settings_lock_screen_notification_visibility_everything">La fel ca atunci când ecranul este deblocat</string>
+    <string name="quiet_time">Perioadă de liniște</string>
+    <string name="quiet_time_description">Dezactivează sunetul, vibrarea și lumina pe timp de noapte</string>
+    <string name="quiet_time_notification">Dezactivează notificările</string>
+    <string name="quiet_time_notification_description">Dezactivează complet notificările pe Perioada de liniște</string>
+    <string name="quiet_time_starts">Perioada de liniște începe</string>
+    <string name="quiet_time_ends">Perioada de liniște se sfârşeşte</string>
+    <string name="account_setup_basics_title">Configurarează un cont nou</string>
+    <string name="account_setup_basics_email_hint">Adresa e-mail</string>
+    <string name="account_setup_basics_password_hint">Parolă</string>
+    <string name="account_setup_oauth_description">Pentru a utiliza acest cont de e-mail cu K-9 Mail, trebuie să te conectezi și să acorzi aplicației acces la e-mailuri.</string>
+    <!--Displayed below the 'account_setup_oauth_description' text-->
+    <string name="account_setup_oauth_sign_in">Conectează-te</string>
+    <!--Displayed below the 'account_setup_oauth_description' text-->
+    <string name="account_setup_oauth_sign_in_with_google">Conectează-te cu Google</string>
+    <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+    <string name="account_setup_basics_show_password_need_lock">Pentru a vedea parola aici, activează blocarea ecranului pe acest dispozitiv.</string>
+    <string name="account_setup_basics_show_password_biometrics_title">Verifică-ți identitatea</string>
+    <string name="account_setup_basics_show_password_biometrics_subtitle">Deblochează pentru a-ți vedea parola</string>
+    <string name="account_setup_basics_manual_setup_action">Setare manuală</string>
+    <string name="account_setup_check_settings_title" />
+    <string name="account_setup_check_settings_retr_info_msg">Preluarea informațiilor contului\u2026</string>
+    <string name="account_setup_check_settings_check_incoming_msg">Verificarea setărilor serverului de intrare\u2026</string>
+    <string name="account_setup_check_settings_check_outgoing_msg">Verificarea setărilor serverului de expediere\u2026</string>
+    <string name="account_setup_check_settings_authenticate">Autentificare\u2026</string>
+    <string name="account_setup_check_settings_fetch">Preluarea setărilor contului\u2026</string>
+    <string name="account_setup_check_settings_canceling_msg">Se anulează\u2026</string>
+    <string name="account_setup_account_type_title">Tipul contului</string>
+    <string name="account_setup_account_type_instructions">Ce fel de cont este acesta?</string>
+    <string name="account_setup_account_type_pop_action">POP3</string>
+    <string name="account_setup_account_type_imap_action">IMAP</string>
+    <string name="account_setup_auth_type_normal_password">Parolă normală</string>
+    <string name="account_setup_auth_type_insecure_password">Parolă, transmisă nesecurizat</string>
+    <string name="account_setup_auth_type_encrypted_password">Parolă criptată</string>
+    <string name="account_setup_auth_type_tls_client_certificate">Certificat client</string>
+    <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
+    <string name="account_setup_incoming_title">Setări server de primire</string>
+    <string name="account_setup_incoming_username_label">Utilizator</string>
+    <string name="account_setup_incoming_password_label">Parolă</string>
+    <string name="account_setup_incoming_client_certificate_label">Certificat client</string>
+    <string name="account_setup_incoming_pop_server_label">Server POP3</string>
+    <string name="account_setup_incoming_imap_server_label">Server IMAP</string>
+    <string name="account_setup_incoming_port_label">Port</string>
+    <string name="account_setup_incoming_security_label">Securitate</string>
+    <string name="account_setup_incoming_auth_type_label">Autentificare</string>
+    <string name="account_setup_incoming_security_none_label">Fără</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
+    <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" nu este valabilă cu \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
+    <string name="account_setup_incoming_delete_policy_label">Când şterg un mesaj</string>
+    <string name="account_setup_incoming_delete_policy_never_label">Nu se șterge de pe server</string>
+    <string name="account_setup_incoming_delete_policy_delete_label">Şterge de pe server</string>
+    <string name="account_setup_incoming_delete_policy_markread_label">Marchează ca citit pe server</string>
+    <string name="account_setup_incoming_use_compression">Utilizează comprimarea</string>
+    <string name="account_setup_incoming_send_client_id">Trimite ID-ul clientului</string>
+    <string name="account_setup_expunge_policy_label">Elimină mesajele şterse de pe server</string>
+    <string name="account_setup_expunge_policy_immediately">Imediat</string>
+    <string name="account_setup_expunge_policy_on_poll">La interogare</string>
+    <string name="account_setup_expunge_policy_manual">Manual</string>
+    <string name="account_setup_incoming_autodetect_namespace_label">Auto-detectare IMAP namespace</string>
+    <string name="account_setup_incoming_imap_path_prefix_label">Prefix cale IMAP</string>
+    <string name="drafts_folder_label">Dosar ciorne</string>
+    <string name="sent_folder_label">Dosar trimise</string>
+    <string name="trash_folder_label">Dosar gunoi</string>
+    <string name="archive_folder_label">Dosar arhive</string>
+    <string name="spam_folder_label">Dosar spam</string>
+    <string name="account_setup_incoming_subscribed_folders_only_label">Arată doar dosarele înregistrate</string>
+    <string name="account_setup_auto_expand_folder">Auto-extinde dosar</string>
+    <string name="account_setup_outgoing_title">Setări server de expediere</string>
+    <string name="account_setup_outgoing_smtp_server_label">Server SMTP</string>
+    <string name="account_setup_outgoing_port_label">Port</string>
+    <string name="account_setup_outgoing_security_label">Securitate</string>
+    <string name="account_setup_outgoing_require_login_label">Solicită autentificare.</string>
+    <string name="account_setup_outgoing_username_label">Utilizator</string>
+    <string name="account_setup_outgoing_password_label">Parola</string>
+    <string name="account_setup_outgoing_authentication_label">Autentificare</string>
+    <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" nu este valabil cu \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g></string>
+    <string name="account_setup_bad_uri">Configurare greşită : <xliff:g id="err_mess">%s</xliff:g></string>
+    <string name="account_setup_options_mail_check_frequency_label">Frecvență interogare dosar</string>
+    <string name="account_setup_options_mail_check_frequency_never">Niciodată</string>
+    <string name="account_setup_options_mail_check_frequency_15min">La fiecare 15 minute</string>
+    <string name="account_setup_options_mail_check_frequency_30min">La fiecare 30 de minute</string>
+    <string name="account_setup_options_mail_check_frequency_1hour">La fiecare oră</string>
+    <string name="account_setup_options_mail_check_frequency_2hour">La fiecare 2 ore</string>
+    <string name="account_setup_options_mail_check_frequency_3hour">La fiecare 3 ore</string>
+    <string name="account_setup_options_mail_check_frequency_6hour">La fiecare 6 ore</string>
+    <string name="account_setup_options_mail_check_frequency_12hour">La fiecare 12 ore</string>
+    <string name="account_setup_options_mail_check_frequency_24hour">La fiecare 24 de ore</string>
+    <string name="idle_refresh_period_label">Împrospătează conexiune IDLE</string>
+    <string name="idle_refresh_period_2min">La fiecare 2 minute</string>
+    <string name="idle_refresh_period_3min">La fiecare 3 minute</string>
+    <string name="idle_refresh_period_6min">La fiecare 6 minute</string>
+    <string name="idle_refresh_period_12min">La fiecare 12 minute</string>
+    <string name="idle_refresh_period_24min">La fiecare 24 de minute</string>
+    <string name="idle_refresh_period_36min">La fiecare 36 de minute</string>
+    <string name="idle_refresh_period_48min">La fiecare 48 de minute</string>
+    <string name="idle_refresh_period_60min">La fiecare 60 de minute</string>
+    <string name="account_setup_options_mail_display_count_label">Numărul de mesaje afișate</string>
+    <string name="account_setup_options_mail_display_count_10">10 mesaje</string>
+    <string name="account_setup_options_mail_display_count_25">25 mesaje</string>
+    <string name="account_setup_options_mail_display_count_50">50 mesaje</string>
+    <string name="account_setup_options_mail_display_count_100">100 mesaje</string>
+    <string name="account_setup_options_mail_display_count_250">250 mesaje</string>
+    <string name="account_setup_options_mail_display_count_500">500 mesaje</string>
+    <string name="account_setup_options_mail_display_count_1000">1000 mesaje</string>
+    <string name="account_setup_options_mail_display_count_2500">2500 mesaje</string>
+    <string name="account_setup_options_mail_display_count_5000">5000 mesaje</string>
+    <string name="account_setup_options_mail_display_count_10000">10000 mesaje</string>
+    <string name="account_setup_options_mail_display_count_all">toate mesajele</string>
+    <string name="move_copy_cannot_copy_unsynced_message">Nu se poate copia sau muta un mesaj care nu e sincronizat cu serverul</string>
+    <string name="account_setup_failed_dlg_title">Configurarea nu s-a putut finaliza</string>
+    <string name="account_setup_failed_dlg_auth_message_fmt">Utilizator sau parolă incorecte.(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_certificate_message_fmt">Serverul a prezentat un certificat SSL invalid.
 Uneori acest lucru se întâmplă din cauza unei erori de configurare pe sever.
 Uneori datorită faptului că cineva încearcă să te atace pe tine sau serverul tău de mail. Dacă nu ești sigur ce se întâmplă, apasă Respinge și contactează-i pe cei care iți administrează serverul de mail.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Nu se poate conecta cu serverul.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_oauth_flow_canceled">Autorizație anulată</string>
-  <string name="account_setup_failed_dlg_oauth_flow_failed">Autorizarea a eșuat cu următoarea eroare: <xliff:g id="error">%s</xliff:g></string>
-  <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 nu este acceptat în prezent cu acest furnizor.</string>
-  <string name="account_setup_failed_dlg_browser_not_found">Aplicația nu a putut găsi un browser pe care să îl folosească pentru a vă acorda acces la cont.</string>
-  <string name="account_setup_failed_dlg_edit_details_action">Modifică detalii</string>
-  <string name="account_setup_failed_dlg_continue_action">Continuă</string>
-  <string name="account_settings_push_advanced_title">Avansat</string>
-  <string name="account_settings_title_fmt">Setări cont</string>
-  <string name="account_settings_notify_label">Notificări mail noi</string>
-  <string name="account_settings_folder_notify_new_mail_mode_label">Dosare notificări</string>
-  <string name="account_settings_folder_notify_new_mail_mode_all">Toate</string>
-  <string name="account_settings_folder_notify_new_mail_mode_first_class">Doar dosare de Nivel 1</string>
-  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Dosare de Nivel 1 și 2</string>
-  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Toate mai puțin dosarele de Nivel 2</string>
-  <string name="account_settings_folder_notify_new_mail_mode_none">Fără</string>
-  <string name="account_settings_notify_sync_label">Sincronizare notificări</string>
-  <string name="account_settings_email_label">Adresa ta de email</string>
-  <string name="account_settings_notify_summary">Notifică în bara de stare când sosește mail</string>
-  <string name="account_settings_notify_sync_summary">Notifică în bara de stare când se verifică mailul</string>
-  <string name="account_settings_notify_self_label">Include mailuri de trimis</string>
-  <string name="account_settings_notify_self_summary">Arată o notificare pentru mesajele pe care le-am trimis</string>
-  <string name="account_notify_contacts_mail_only_label">Doar contacte</string>
-  <string name="account_notify_contacts_mail_only_summary">Arată notificări doar pentru mesaje de la persoane cunoscute</string>
-  <string name="account_settings_ignore_chat_messages_label">Ignoră mesajele de chat</string>
-  <string name="account_settings_ignore_chat_messages_summary">Nu afișa notificări pentru mesajele aparținând unui chat prin e-mail</string>
-  <string name="account_settings_mark_message_as_read_on_view_label">Marchează ca citit la deschidere</string>
-  <string name="account_settings_mark_message_as_read_on_view_summary">Marchează mesajul ca citit când e deschis pentru vizualizare</string>
-  <string name="account_settings_mark_message_as_read_on_delete_label">Marchează ca citit la ștergere</string>
-  <string name="account_settings_mark_message_as_read_on_delete_summary">Marchează un mesaj ca citit când este șters</string>
-  <string name="account_settings_notification_channels_label">Categorii de notificări</string>
-  <string name="account_settings_open_notification_settings_messages_summary">Configurează notificările pentru mesaje noi</string>
-  <string name="account_settings_open_notification_settings_miscellaneous_summary">Configurează notificările de eroare și de stare</string>
-  <string name="account_settings_show_pictures_label">Arată întotdeauna imaginile</string>
-  <string name="account_settings_show_pictures_never">Nu</string>
-  <string name="account_settings_show_pictures_only_from_contacts">De la contacte</string>
-  <string name="account_settings_show_pictures_always">De la oricine</string>
-  <string name="account_settings_composition">Expediere mail</string>
-  <string name="account_settings_default_quoted_text_shown_label">Citează mesajul când se răspunde</string>
-  <string name="account_settings_default_quoted_text_shown_summary">Include mesajul original în răspuns.</string>
-  <string name="account_settings_reply_after_quote_label">Răspunde după textul citat</string>
-  <string name="account_settings_reply_after_quote_summary">Mesajul original va apărea deasupra mesajului tău.</string>
-  <string name="account_settings_strip_signature_label">Elimină semnături în răspunsuri</string>
-  <string name="account_settings_strip_signature_summary">Semnăturile vor fi eliminate din mesajele citate</string>
-  <string name="account_settings_message_format_label">Format mesaj</string>
-  <string name="account_settings_message_format_text">Text simplu (elimină imagini și formatări)</string>
-  <string name="account_settings_message_format_html">HTML (păstrează imagini și formatări)</string>
-  <string name="account_settings_message_format_auto">Automat</string>
-  <string name="account_settings_always_show_cc_bcc_label">Arată întotdeauna Cc/Bcc</string>
-  <string name="account_settings_message_read_receipt_label">Raport de citire</string>
-  <string name="account_settings_message_read_receipt_summary">Cere întotdeauna un raport de citire</string>
-  <string name="account_settings_quote_style_label">Stilul de citare la răspuns</string>
-  <string name="account_settings_quote_style_prefix">Prefix (ca Gmail)</string>
-  <string name="account_settings_quote_style_header">Antet (ca Outlook)</string>
-  <string name="account_settings_upload_sent_messages_label">Încarcă mesajele trimise</string>
-  <string name="account_settings_upload_sent_messages_summary">Încarcă mesajele în dosarul Trimise după trimitere</string>
-  <string name="account_settings_general_title">Preferințe generale</string>
-  <string name="account_settings_reading_mail">Citire mail</string>
-  <string name="account_settings_sync">Descărcare mail</string>
-  <string name="account_settings_folders">Dosare</string>
-  <string name="account_settings_quote_prefix_label">Prefixul pentru textul citat</string>
-  <string name="account_settings_crypto">Criptare punct-la-punct</string>
-  <string name="account_settings_crypto_app">Activare suport OpenPGP</string>
-  <string name="account_settings_crypto_app_select_title">Selectare aplicatie OpenPGP</string>
-  <string name="account_settings_crypto_key">Configurare cheie punct-la-punct</string>
-  <string name="account_settings_crypto_summary_off">Nicio aplicație OpenPGP instalată</string>
-  <string name="account_settings_crypto_summary_on">Conectat la %s</string>
-  <string name="account_settings_crypto_summary_config">Configurare…</string>
-  <string name="account_settings_crypto_encrypt_all_drafts">Stochează toate ciornele criptate</string>
-  <string name="account_settings_crypto_encrypt_all_drafts_on">Toate ciornele vor fi stocate criptate</string>
-  <string name="account_settings_crypto_encrypt_all_drafts_off">Criptează ciornele doar dacă criptarea este activată</string>
-  <string name="account_settings_mail_check_frequency_label">Frecvență interogare dosar</string>
-  <string name="account_settings_color_label">Culoarea contului</string>
-  <string name="account_settings_color_summary">Culoarea contului folosită în lista de dosare și conturi</string>
-  <string name="account_settings_mail_display_count_label">Mărimea dosarului local</string>
-  <string name="account_settings_autodownload_message_size_label">Preia mesaje până la</string>
-  <string name="account_settings_autodownload_message_size_1">1 KiB</string>
-  <string name="account_settings_autodownload_message_size_2">2 KiB</string>
-  <string name="account_settings_autodownload_message_size_4">4 KiB</string>
-  <string name="account_settings_autodownload_message_size_8">8 KiB</string>
-  <string name="account_settings_autodownload_message_size_16">16 KiB</string>
-  <string name="account_settings_autodownload_message_size_32">32 KiB</string>
-  <string name="account_settings_autodownload_message_size_64">64 KiB</string>
-  <string name="account_settings_autodownload_message_size_128">128 KiB</string>
-  <string name="account_settings_autodownload_message_size_256">256 KiB</string>
-  <string name="account_settings_autodownload_message_size_512">512 KiB</string>
-  <string name="account_settings_autodownload_message_size_1024">1 MiB</string>
-  <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
-  <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
-  <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
-  <string name="account_settings_autodownload_message_size_any">orice mărime (fără limită)</string>
-  <string name="account_settings_message_age_label">Sincronizează mesaje de</string>
-  <string name="account_settings_message_age_any">oricând (fără limită)</string>
-  <string name="account_settings_message_age_0">azi</string>
-  <string name="account_settings_message_age_1">ultimele 2 zile</string>
-  <string name="account_settings_message_age_2">ultimele 3 zile</string>
-  <string name="account_settings_message_age_7">ultima săptămână</string>
-  <string name="account_settings_message_age_14">ultimele 2 săptămâni</string>
-  <string name="account_settings_message_age_21">ultimele 3 săptămâni</string>
-  <string name="account_settings_message_age_1_month">ultima lună</string>
-  <string name="account_settings_message_age_2_months">ultimele 2 luni</string>
-  <string name="account_settings_message_age_3_months">ultimele 3 luni</string>
-  <string name="account_settings_message_age_6_months">ultimele 6 luni</string>
-  <string name="account_settings_message_age_1_year">ultimul an</string>
-  <string name="account_settings_folder_display_mode_label">Dosare de afișat</string>
-  <string name="account_settings_folder_display_mode_all">Toate</string>
-  <string name="account_settings_folder_display_mode_first_class">Doar dosare de Nivel 1</string>
-  <string name="account_settings_folder_display_mode_first_and_second_class">Dosare de Nivel 1 și 2</string>
-  <string name="account_settings_folder_display_mode_not_second_class">Toate mai puțin dosarele de Nivel 2</string>
-  <string name="account_settings_folder_sync_mode_label">Dosare interogate</string>
-  <string name="account_settings_folder_sync_mode_all">Toate</string>
-  <string name="account_settings_folder_sync_mode_first_class">Doar dosare de Nivel 1</string>
-  <string name="account_settings_folder_sync_mode_first_and_second_class">Dosare de Nivel 1 și 2</string>
-  <string name="account_settings_folder_sync_mode_not_second_class">Toate mai puțin dosarele de Nivel 2</string>
-  <string name="account_settings_folder_sync_mode_none">Niciunul</string>
-  <string name="account_settings_folder_push_mode_label">Dosare Push</string>
-  <string name="account_settings_folder_push_mode_all">Toate</string>
-  <string name="account_settings_folder_push_mode_first_class">Doar dosare de Nivel 1</string>
-  <string name="account_settings_folder_push_mode_first_and_second_class">Dosare de Nivel 1 și 2</string>
-  <string name="account_settings_folder_push_mode_not_second_class">Toate mai puțin dosarele de Nivel 2</string>
-  <string name="account_settings_folder_push_mode_none">Niciunul</string>
-  <string name="account_settings_folder_target_mode_label">Mută/Copiază dosare destinație</string>
-  <string name="account_settings_folder_target_mode_all">Toate</string>
-  <string name="account_settings_folder_target_mode_first_class">Doar dosare de Nivel 1</string>
-  <string name="account_settings_folder_target_mode_first_and_second_class">Dosare de Nivel 1 și 2</string>
-  <string name="account_settings_folder_target_mode_not_second_class">Toate mai puțin dosarele de Nivel 2</string>
-  <string name="account_settings_sync_remote_deletetions_label">Sincronizare mesaje șterse pe server</string>
-  <string name="account_settings_sync_remote_deletetions_summary">Elimină mesajele șterse pe server</string>
-  <string name="account_settings_openpgp_missing">Aplicație OpenPGP lipsă - a fost dezinstalată?</string>
-  <string name="folder_settings_title">Setări dosar</string>
-  <string name="folder_settings_in_top_group_label">Arată în grupul de sus</string>
-  <string name="folder_settings_in_top_group_summary">Arată aproape de partea de sus a listei de dosare</string>
-  <string name="folder_settings_folder_display_mode_label">Nivel de afișare dosar</string>
-  <string name="folder_settings_folder_display_mode_normal">Niciunul</string>
-  <string name="folder_settings_folder_display_mode_first_class">Nivel 1</string>
-  <string name="folder_settings_folder_display_mode_second_class">Nivel 2</string>
-  <string name="folder_settings_folder_sync_mode_label">Nivel sincronizare dosar</string>
-  <string name="folder_settings_folder_sync_mode_normal">Niciunul</string>
-  <string name="folder_settings_folder_sync_mode_first_class">Nivel 1</string>
-  <string name="folder_settings_folder_sync_mode_second_class">Nivel 2</string>
-  <string name="folder_settings_folder_sync_mode_inherited">Același cu nivelul afișat</string>
-  <string name="folder_settings_folder_push_mode_label">Nivel dosar Push</string>
-  <string name="folder_settings_folder_push_mode_normal">Niciunul</string>
-  <string name="folder_settings_folder_push_mode_first_class">Nivel 1</string>
-  <string name="folder_settings_folder_push_mode_second_class">Nivel 2</string>
-  <string name="folder_settings_folder_push_mode_inherited">La fel ca clasa de sondaj</string>
-  <string name="folder_settings_folder_notify_mode_label">Nivel notificare dosar</string>
-  <string name="folder_settings_folder_notify_mode_normal">Niciunul</string>
-  <string name="folder_settings_folder_notify_mode_first_class">Nivel 1</string>
-  <string name="folder_settings_folder_notify_mode_second_class">Nivel 2</string>
-  <string name="folder_settings_folder_notify_mode_inherited">Același cu nivelul Push</string>
-  <string name="folder_settings_clear_local_folder_action">Curăță mesajele locale</string>
-  <string name="account_settings_incoming_label">Server primire</string>
-  <string name="account_settings_incoming_summary">Configurare server primire</string>
-  <string name="account_settings_outgoing_label">Server trimitere</string>
-  <string name="account_settings_outgoing_summary">Configurare server trimitere (SMTP)</string>
-  <string name="account_settings_description_label">Nume cont</string>
-  <string name="account_settings_name_label">Nume</string>
-  <string name="notifications_title">Notificări</string>
-  <string name="account_settings_vibration">Vibrație</string>
-  <string name="account_settings_vibrate_enable">Vibrație</string>
-  <string name="account_settings_vibrate_pattern_label">Model de vibrații</string>
-  <string name="account_settings_vibrate_pattern_default">Implicit</string>
-  <string name="account_settings_vibrate_pattern_1">Modelul 1</string>
-  <string name="account_settings_vibrate_pattern_2">Modelul 2</string>
-  <string name="account_settings_vibrate_pattern_3">Modelul 3</string>
-  <string name="account_settings_vibrate_pattern_4">Modelul 4</string>
-  <string name="account_settings_vibrate_pattern_5">Modelul 5</string>
-  <string name="account_settings_vibrate_times">Repetă vibrație</string>
-  <string name="account_settings_vibrate_summary_disabled">Dezactivat</string>
-  <string name="account_settings_ringtone">Ton mesaje noi</string>
-  <string name="account_settings_notification_light_label">Lumină de notificare</string>
-  <string name="account_settings_notification_light_disabled">Dezactivat</string>
-  <string name="account_settings_notification_light_account_color">Culoarea contului</string>
-  <string name="account_settings_notification_light_default_color">Culoarea implicită a sistemului</string>
-  <string name="account_settings_notification_light_white">Alb</string>
-  <string name="account_settings_notification_light_red">Roșu</string>
-  <string name="account_settings_notification_light_green">Verde</string>
-  <string name="account_settings_notification_light_blue">Albastru</string>
-  <string name="account_settings_notification_light_yellow">Galben</string>
-  <string name="account_settings_notification_light_cyan">Cian</string>
-  <string name="account_settings_notification_light_magenta">Magenta</string>
-  <string name="account_settings_composition_title">Opțiuni compunere mesaj</string>
-  <string name="account_settings_composition_label">Setări implicite compunere mesaj</string>
-  <string name="account_settings_composition_summary">Setează ”De la”, Bcc și semnătură</string>
-  <string name="account_settings_identities_label">Administrează identitățile</string>
-  <string name="account_settings_identities_summary">Setează adrese și semnături alternative pentru ”De la”</string>
-  <string name="manage_identities_title">Gestionează identitățile</string>
-  <string name="manage_identities_context_menu_title">Gestionează identitate</string>
-  <string name="edit_identity_title">Modifică identitate</string>
-  <string name="edit_identity_save">Salvează</string>
-  <string name="new_identity_action">Identitate nouă</string>
-  <string name="account_settings_always_bcc_label">BCC toate mesajele către</string>
-  <string name="manage_identities_edit_action">Modifică</string>
-  <string name="manage_identities_move_up_action">Mută sus</string>
-  <string name="manage_identities_move_down_action">Mută jos</string>
-  <string name="manage_identities_move_top_action">Mută deasupra / fă implicit</string>
-  <string name="manage_identities_remove_action">Elimină</string>
-  <string name="edit_identity_description_label">Descriere Identitate</string>
-  <string name="edit_identity_description_hint">(Opțional)</string>
-  <string name="edit_identity_name_label">Numele tău</string>
-  <string name="edit_identity_name_hint">(Opțional)</string>
-  <string name="edit_identity_email_label">Adresă email</string>
-  <string name="edit_identity_email_hint">(Obligatoriu)</string>
-  <string name="edit_identity_reply_to_label">Adresă de ”Răspuns-la”</string>
-  <string name="edit_identity_reply_to_hint">(Opțional)</string>
-  <string name="edit_identity_signature_label">Semnătură</string>
-  <string name="edit_identity_signature_hint">(Opțional)</string>
-  <string name="account_settings_signature_use_label">Folosește semnătură</string>
-  <string name="account_settings_signature_label">Semnătură</string>
-  <string name="default_identity_description">Identitate inițială</string>
-  <string name="choose_identity_title">Alege identitate</string>
-  <string name="send_as">Trimite ca</string>
-  <string name="no_removable_identity">Nu poți elimina singura ta identitate</string>
-  <string name="identity_has_no_email">Nu poți folosi o identitate fără o adresă de mail</string>
-  <string name="sort_earliest_first">Mesajele mai vechi primele</string>
-  <string name="sort_latest_first">Mesajele noi primele</string>
-  <string name="sort_subject_alpha">Subiect alfabetic</string>
-  <string name="sort_subject_re_alpha">Subiect în sens invers alfabetic</string>
-  <string name="sort_sender_alpha">Expeditor alfabetic</string>
-  <string name="sort_sender_re_alpha">Expeditor în sens invers alfabetic</string>
-  <string name="sort_flagged_first">Mesaje marcate cu stea primele</string>
-  <string name="sort_flagged_last">Mesaje nemarcate cu stea primele</string>
-  <string name="sort_unread_first">Mesaje necitite primele</string>
-  <string name="sort_unread_last">Mesaje citite primele</string>
-  <string name="sort_attach_first">Mesaje cu anexe primele</string>
-  <string name="sort_unattached_first">Mesaje fără anexe primele</string>
-  <string name="sort_by">Sortează după…</string>
-  <string name="sort_by_date">Dată</string>
-  <string name="sort_by_arrival">Sosire</string>
-  <string name="sort_by_subject">Subiect</string>
-  <string name="sort_by_sender">Expeditor</string>
-  <string name="sort_by_flag">Stea</string>
-  <string name="sort_by_unread">Citit/necitit</string>
-  <string name="sort_by_attach">Anexe</string>
-  <string name="account_delete_dlg_title">Elimină Cont</string>
-  <string name="account_setup_failed_dlg_invalid_certificate_title">Certificat nerecunoscut</string>
-  <string name="account_setup_failed_dlg_invalid_certificate_accept">Tastă Accept</string>
-  <string name="account_setup_failed_dlg_invalid_certificate_reject">Tastă Refuz</string>
-  <string name="folder_list_filter_hint">Numele dosarului conține</string>
-  <string name="folder_list_display_mode_label">Afișează dosare…</string>
-  <string name="folder_list_display_mode_all">Toate dosarele</string>
-  <string name="folder_list_display_mode_first_class">Dosare de Nivel 1</string>
-  <string name="folder_list_display_mode_first_and_second_class">Dosare de Nivel 1 și 2</string>
-  <string name="folder_list_display_mode_not_second_class">Ascunde dosarele de Nivel 2</string>
-  <string name="account_settings_signature__location_label">Poziție semnătură</string>
-  <string name="account_settings_signature__location_before_quoted_text">Înainte de mesajul citat</string>
-  <string name="account_settings_signature__location_after_quoted_text">După mesajul citat</string>
-  <string name="setting_theme_global">Folosește tema aplicației</string>
-  <string name="setting_theme_dark">Închisă</string>
-  <string name="setting_theme_light">Deschisă</string>
-  <string name="setting_theme_follow_system">Folosește setările implicite ale sistemului</string>
-  <string name="display_preferences">Afișaj</string>
-  <string name="global_preferences">Global</string>
-  <string name="debug_preferences">Depanare</string>
-  <string name="privacy_preferences">Confidențialitate</string>
-  <string name="network_preferences">Rețea</string>
-  <string name="interaction_preferences">Interacțiune</string>
-  <string name="accountlist_preferences">Listă conturi</string>
-  <string name="messagelist_preferences">Listă mesaje</string>
-  <string name="messageview_preferences">Mesaje</string>
-  <string name="settings_theme_label">Temă</string>
-  <string name="settings_message_theme_label">Temă vizualizare mesaje</string>
-  <string name="settings_compose_theme_label">Temă compunere</string>
-  <string name="settings_language_label">Limbă</string>
-  <string name="preference_search_no_results">Nici o setare găsită</string>
-  <string name="settings_message_theme_selection_label">Temă fixă pt. mesaje</string>
-  <string name="settings_message_theme_selection_summary_off">Alege tema în timpul vizualizării mesajelor</string>
-  <string name="settings_message_theme_selection_summary_on">Folosește o temă fixă pentru vizualizarea mesajelor</string>
-  <string name="setting_language_system">Setări implicite</string>
-  <string name="background_ops_label">Sincronizare în fundal</string>
-  <string name="background_ops_never">Niciodată</string>
-  <string name="background_ops_always">Întotdeauna</string>
-  <string name="background_ops_auto_sync_only">Când \'Sincronizarea automată\' este bifată</string>
-  <string name="batch_select_all">Selectează tot</string>
-  <string name="account_setup_push_limit_label">Maxim de dosare de verificat prin push</string>
-  <string name="account_setup_push_limit_5">5 dosare</string>
-  <string name="account_setup_push_limit_10">10 dosare</string>
-  <string name="account_setup_push_limit_25">25 de dosare</string>
-  <string name="account_setup_push_limit_50">50 de dosare</string>
-  <string name="account_setup_push_limit_100">100 de dosare</string>
-  <string name="account_setup_push_limit_250">250 de dosare</string>
-  <string name="account_setup_push_limit_500">500 de dosare</string>
-  <string name="account_setup_push_limit_1000">1000 de dosare</string>
-  <string name="animations_title">Animații</string>
-  <string name="animations_summary">Folosește efecte vizuale gaudi</string>
-  <string name="volume_navigation_title">Navigarea prin butoanele de volum in afișarea tip mesaj</string>
-  <string name="show_unified_inbox_title">Afișează Cutia poștală de intrare unificată</string>
-  <string name="show_starred_count_title">Afișează numărul de stele</string>
-  <string name="integrated_inbox_title">Căsuță poștală unificată</string>
-  <string name="integrated_inbox_detail">Toate mesajele în dosare unificate</string>
-  <string name="folder_settings_include_in_integrated_inbox_label">Unifică</string>
-  <string name="folder_settings_include_in_integrated_inbox_summary">Toate mesajele sunt în Căsuța poștală unificată</string>
-  <string name="account_settings_searchable_label">Dosare căutabile</string>
-  <string name="account_settings_searchable_all">Toate</string>
-  <string name="account_settings_searchable_displayable">Afișabil</string>
-  <string name="account_settings_searchable_none">Niciunul</string>
-  <string name="account_settings_no_folder_selected">Niciunul</string>
-  <string name="account_settings_automatic_special_folder">Automat (%s)</string>
-  <string name="font_size_settings_title">Mărime font</string>
-  <string name="font_size_settings_description">Configurează dimensiunea fontului</string>
-  <string name="font_size_message_list">Liste de mesaje</string>
-  <string name="font_size_message_list_subject">Subiect</string>
-  <string name="font_size_message_list_sender">Expeditor</string>
-  <string name="font_size_message_list_date">Dată</string>
-  <string name="font_size_message_list_preview">Previzualizare</string>
-  <string name="font_size_message_view">Mesaje</string>
-  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
-  <string name="font_size_message_view_account">Nume cont</string>
-  <string name="font_size_message_view_sender">Expeditor</string>
-  <string name="font_size_message_view_recipients">Recipiente</string>
-  <string name="font_size_message_view_subject">Subiect</string>
-  <string name="font_size_message_view_date">Timp și dată</string>
-  <string name="font_size_message_view_content">Conținut mesaj</string>
-  <string name="font_size_message_compose">Compunere mesaj</string>
-  <string name="font_size_message_compose_input">Câmpuri introducere text</string>
-  <string name="font_size_default">Implicit</string>
-  <string name="font_size_tiniest">Mai minuscul</string>
-  <string name="font_size_tiny">Minuscul</string>
-  <string name="font_size_smaller">Mai mic</string>
-  <string name="font_size_small">Mic</string>
-  <string name="font_size_medium">Mediu</string>
-  <string name="font_size_large">Mare</string>
-  <string name="font_size_larger">Mai mare</string>
-  <string name="error_activity_not_found">Nu s-a găsit o aplicație potrivită pentru această acțiune.</string>
-  <string name="send_failed_reason">Trimitere eșuată: %s</string>
-  <string name="save_or_discard_draft_message_dlg_title">Salvezi ca ciornă?</string>
-  <string name="save_or_discard_draft_message_instructions_fmt">Salvezi sau renunți la mesaj?</string>
-  <string name="save_or_discard_draft_message_changes">Salvezi sau renunți la modificări?</string>
-  <string name="confirm_discard_draft_message_title">Renunți la mesaj?</string>
-  <string name="confirm_discard_draft_message">Sigur dorești să renunți la mesaj?</string>
-  <string name="dialog_confirm_clear_local_folder_title">Elimini mesajele locale?</string>
-  <string name="dialog_confirm_clear_local_folder_message">Această acțiune va elimina toate mesejele locale din dosar. Niciun mesaj nu va fi șters de pe server.</string>
-  <string name="dialog_confirm_clear_local_folder_action">Elimină mesajele</string>
-  <string name="dialog_confirm_delete_title">Confirmă ștergerea</string>
-  <string name="dialog_confirm_delete_message">Dorești să ștergi mesajul?</string>
-  <plurals name="dialog_confirm_delete_messages">
-    <item quantity="one">Sigur doriți ștergerea mesajului?</item>
-    <item quantity="few">Sigur doriți ștergerea a <xliff:g id="message_count">%1$d</xliff:g> mesaje?</item>
-    <item quantity="other">Sigur dorești ștergerea a <xliff:g id="message_count">%1$d</xliff:g> mesaje?</item>
-  </plurals>
-  <string name="dialog_confirm_delete_confirm_button">Da</string>
-  <string name="dialog_confirm_delete_cancel_button">Nu</string>
-  <string name="dialog_confirm_mark_all_as_read_title">Confirmă marcarea tuturor ca citite</string>
-  <string name="dialog_confirm_mark_all_as_read_message">Dorești marcarea tuturor mesajelor ca citite?</string>
-  <string name="dialog_confirm_empty_trash_title">Confirmă golirea coșului de gunoi</string>
-  <string name="dialog_confirm_empty_trash_message">Dorești să golești dosarul coș de gunoi?</string>
-  <string name="dialog_confirm_mark_all_as_read_confirm_button">Da</string>
-  <string name="dialog_confirm_mark_all_as_read_cancel_button">Nu</string>
-  <string name="dialog_confirm_spam_title">Confirmă mutare în dosarul spam</string>
-  <plurals name="dialog_confirm_spam_message">
-    <item quantity="one">Sigur doriți mutarea mesajului în dosarul spam?</item>
-    <item quantity="few">Sigur doriți mutarea a <xliff:g id="message_count">%1$d</xliff:g> mesaje în dosarul spam?</item>
-    <item quantity="other">Sigur dorești mutarea a <xliff:g id="message_count">%1$d</xliff:g> mesaje în dosarul spam?</item>
-  </plurals>
-  <string name="dialog_confirm_spam_confirm_button">Da</string>
-  <string name="dialog_confirm_spam_cancel_button">Nu</string>
-  <string name="dialog_attachment_progress_title">Se descarcă anexa</string>
-  <string name="settings_list_backup_category">Copie de rezervă</string>
-  <string name="settings_list_miscellaneous_category">Diverse</string>
-  <string name="settings_export_title">Exportă setările</string>
-  <string name="settings_export_button">Exportă</string>
-  <string name="settings_export_share_button">Distribuie</string>
-  <string name="settings_export_progress_text">Se exportă setările…</string>
-  <string name="settings_export_success_generic">Setările au fost exportate cu succes</string>
-  <string name="settings_export_failure">Export setări eșuat</string>
-  <string name="settings_import_title">Setări importare</string>
-  <string name="settings_import_pick_document_button">Selectează fișier</string>
-  <string name="settings_import_button">Importă</string>
-  <string name="settings_import_success_generic">Setările au fost importate cu succes</string>
-  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-  <string name="settings_import_password_required">Te rog introduce parolele</string>
-  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-  <string name="settings_import_authorization_required">Conectează-te</string>
-  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-  <string name="settings_import_authorization_and_password_required">Conectează-te și introdu parolele</string>
-  <string name="settings_import_failure">Importarea setărilor a eșuat</string>
-  <string name="settings_import_read_failure">Citirea fișierului cu setări a eșuat</string>
-  <string name="settings_import_partial_failure">Importarea unor setări a eșuat</string>
-  <string name="settings_import_status_success">Importat cu succes</string>
-  <string name="settings_import_status_password_required">Parola necesară</string>
-  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-  <string name="settings_import_status_log_in_required">Înregistrare necesară</string>
-  <string name="settings_import_status_not_imported">Nu a fost importat</string>
-  <string name="settings_import_status_error">Eșuare la import</string>
-  <string name="settings_import_later_button">Mai târziu</string>
-  <string name="settings_import">Setări importare</string>
-  <string name="settings_importing">Se importă setările…</string>
-  <plurals name="settings_import_password_prompt">
-    <item quantity="one">Pentru a putea folosi contul \"<xliff:g id="account">%s</xliff:g>\" trebuie să specifici parola de server.</item>
-    <item quantity="few">Pentru a putea folosi contul \"<xliff:g id="account">%s</xliff:g>\" trebuie să specifici parolele de server.</item>
-    <item quantity="other">Pentru a putea folosi contul \"<xliff:g id="account">%s</xliff:g>\" trebuie să specifici parolele de server.</item>
-  </plurals>
-  <string name="settings_import_incoming_server_password_hint">Parola serverului de primire</string>
-  <string name="settings_import_outgoing_server_password_hint">Parola serverului de expediere</string>
-  <string name="settings_import_use_same_password_for_outgoing_server">Folosește aceeași parolă pentru serverul de expediere</string>
-  <string name="server_name_format">Nume server: <xliff:g id="hostname">%s</xliff:g></string>
-  <string name="unread_widget_select_account">Arată număr necitite pentru…</string>
-  <string name="unread_widget_account_title">Cont</string>
-  <string name="unread_widget_account_summary">Contul pentru care trebuie afișat totalul mesajelor necitite</string>
-  <string name="unread_widget_unified_inbox_account_summary">Căsuță poștală unificată</string>
-  <string name="unread_widget_folder_enabled_title">Total dosare</string>
-  <string name="unread_widget_folder_enabled_summary">Afișează total necitite pentru un singur dosar</string>
-  <string name="unread_widget_folder_title">Dosar</string>
-  <string name="unread_widget_folder_summary">Dosarul pentru care trebuie afișat total mesaje necitite</string>
-  <string name="unread_widget_action_done">Realizat</string>
-  <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
-  <string name="unread_widget_account_not_selected">Niciun cont selectat</string>
-  <string name="unread_widget_folder_not_selected">Niciun dosar selectat</string>
-  <string name="webview_empty_message">Fără text</string>
-  <string name="webview_contextmenu_link_view_action">Deschide legătură</string>
-  <string name="webview_contextmenu_link_share_action">Distribuie legătură</string>
-  <string name="webview_contextmenu_link_copy_action">Copiază legătura în clipboard</string>
-  <string name="webview_contextmenu_link_clipboard_label">Legătură</string>
-  <string name="webview_contextmenu_link_text_copy_action">Copiați textul legăturii în clipboard</string>
-  <string name="webview_contextmenu_link_text_clipboard_label">Textul linkului</string>
-  <string name="webview_contextmenu_image_title">Imagine</string>
-  <string name="webview_contextmenu_image_view_action">Vezi imaginea</string>
-  <string name="webview_contextmenu_image_save_action">Salvează imaginea</string>
-  <string name="webview_contextmenu_image_download_action">Descarcă imaginea</string>
-  <string name="webview_contextmenu_image_copy_action">Copiază URL imagine în clipboard</string>
-  <string name="webview_contextmenu_image_clipboard_label">URL imagine</string>
-  <string name="webview_contextmenu_phone_call_action">Apelează număr</string>
-  <string name="webview_contextmenu_phone_save_action">Salvează în Contacte</string>
-  <string name="webview_contextmenu_phone_copy_action">Copiază numărul în clipboard</string>
-  <string name="webview_contextmenu_phone_clipboard_label">Număr de telefon</string>
-  <string name="webview_contextmenu_email_send_action">Trimite mail</string>
-  <string name="webview_contextmenu_email_save_action">Salvează în Contacte</string>
-  <string name="webview_contextmenu_email_copy_action">Copiază adresa în clipboard</string>
-  <string name="webview_contextmenu_email_clipboard_label">Adresă email</string>
-  <string name="account_settings_remote_search_num_results_entries_all">Toate</string>
-  <string name="account_settings_remote_search_num_results_entries_10">10</string>
-  <string name="account_settings_remote_search_num_results_entries_25">25</string>
-  <string name="account_settings_remote_search_num_results_entries_50">50</string>
-  <string name="account_settings_remote_search_num_results_entries_100">100</string>
-  <string name="account_settings_remote_search_num_results_entries_250">250</string>
-  <string name="account_settings_remote_search_num_results_entries_500">500</string>
-  <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-  <string name="account_settings_remote_search_num_label">Limită căutare server</string>
-  <string name="remote_search_sending_query">Se trimite cererea la server</string>
-  <plurals name="remote_search_downloading">
-    <item quantity="one">Preluare %d rezultat</item>
-    <item quantity="few">Preluare %d rezultate</item>
-    <item quantity="other">Preluare %d rezultate</item>
-  </plurals>
-  <plurals name="remote_search_downloading_limited">
-    <item quantity="one">Preluare %1$d din %2$d rezultate</item>
-    <item quantity="few">Preluare %1$d din %2$d rezultate</item>
-    <item quantity="other">Preluare %1$d din %2$d rezultate</item>
-  </plurals>
-  <string name="remote_search_error">Căutare la distanță eșuată</string>
-  <string name="account_settings_search">Căutare</string>
-  <string name="action_remote_search">Caută în mesajele de pe server</string>
-  <string name="remote_search_unavailable_no_network">Este necesară conexiunea la rețea pentru căutarea pe server.</string>
-  <string name="global_settings_background_as_unread_indicator_label">Schimbă culoarea după citire</string>
-  <string name="global_settings_background_as_unread_indicator_summary">O culoare diferită de fundal va arăta că mesajul a fost citit</string>
-  <string name="global_settings_threaded_view_label">Vizualizare grupată</string>
-  <string name="global_settings_threaded_view_summary">Grupează mesajele în conversații</string>
-  <string name="upgrade_databases_title">Se actualizează bazele de date</string>
-  <string name="upgrade_databases_unspecified">Se actualizează bazele de date…</string>
-  <string name="upgrade_database_format">Se actualizează baza de date a contului \"<xliff:g id="account">%s</xliff:g>\"</string>
-  <string name="global_settings_splitview_mode_label">Arată ecranul împărțit</string>
-  <string name="global_settings_splitview_always">Întotdeauna</string>
-  <string name="global_settings_splitview_never">Niciodată</string>
-  <string name="global_settings_splitview_when_in_landscape">În orientarea peisaj</string>
-  <string name="message_view_empty">Alege un mesaj din stânga</string>
-  <string name="global_settings_show_contact_picture_label">Arată pozele contactelor</string>
-  <string name="global_settings_show_contact_picture_summary">Arată pozele contactelor în lista de mesaje</string>
-  <string name="mark_all_as_read">Marchează toate ca citite</string>
-  <string name="global_settings_colorize_missing_contact_pictures_label">Colorează pozele contactelor</string>
-  <string name="global_settings_colorize_missing_contact_pictures_summary">Colorează pozele contactelor lipsă</string>
-  <string name="global_settings_messageview_visible_refile_actions_title">Acțiuni pentru mesaj vizibile</string>
-  <string name="global_settings_messageview_visible_refile_actions_summary">Arată acțiunile selectate în meniul de vizualizare mesaj</string>
-  <string name="loading_attachment">Se încarcă anexa…</string>
-  <string name="fetching_attachment_dialog_title_send">Se trimite mesajul</string>
-  <string name="fetching_attachment_dialog_title_save">Se salvează ciorna</string>
-  <string name="fetching_attachment_dialog_message">Se preia anexa…</string>
-  <string name="auth_external_error">Autentificare imposibilă. Serverul nu publică funcția SASL EXTERNAL. Aceasta se poate datora unei probleme cu certificatul clientului (expirat, autoritate de certificare necunoscută) sau a unei alte probleme de configurare.</string>
-  <!--=== Client certificates specific ==================================================================-->
-  <string name="account_setup_basics_client_certificate">Folosește certificat client</string>
-  <string name="client_certificate_spinner_empty">Fără certificat client</string>
-  <string name="client_certificate_spinner_delete">Elimină selecția certificatului client</string>
-  <string name="client_certificate_retrieval_failure">Eșuare recuperare certificat client pentru alias-ul \"<xliff:g id="alias">%s</xliff:g>\"</string>
-  <string name="client_certificate_advanced_options">Opțiuni avansate</string>
-  <string name="client_certificate_expired">Certificatul clientului \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" a expirat sau nu este încă valid (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <!--Note: This references message_view_download_remainder-->
-  <string name="preview_encrypted">*Criptat*</string>
-  <string name="add_from_contacts">Adaugă din Contacte</string>
-  <string name="recipient_cc">Cc</string>
-  <string name="recipient_bcc">Bcc</string>
-  <string name="recipient_to">Către</string>
-  <string name="recipient_from">De la</string>
-  <string name="reply_to_label">Răspunde la</string>
-  <string name="unknown_recipient">&lt;Unknown Recipient&gt;</string>
-  <string name="unknown_sender">&lt;Unknown Sender&gt;</string>
-  <string name="address_type_home">Acasă</string>
-  <string name="address_type_work">Birou</string>
-  <string name="address_type_other">Alta</string>
-  <string name="address_type_mobile">Mobil</string>
-  <string name="compose_error_no_draft_folder">Nu este configurat Dosarul de ciorne pentru acest cont</string>
-  <string name="compose_error_no_key_configured">Nicio cheie configurată pentru acest cont! Verifică setările.</string>
-  <string name="error_crypto_provider_incompatible">Furnizorul de criptare folosește o versiune incompatibilă. Te rugăm să verifici setările!</string>
-  <string name="error_crypto_provider_connect">Conexiune nereușită la serviciul criptografic, verifică setările sau apasă pe Criptare pentru a reîncerca!</string>
-  <string name="error_crypto_provider_ui_required">Eroare de inițializare a criptării punct-la-punct, verifică setările</string>
-  <string name="error_crypto_inline_attach">Modul PGP/INLINE nu permite anexe!</string>
-  <string name="enable_inline_pgp">Activează PGP/INLINE</string>
-  <string name="disable_inline_pgp">Dezactivează PGP/INLINE</string>
-  <string name="enable_sign_only">Activează „Doar semnare” PGP</string>
-  <string name="disable_sign_only">Dezactivează „Doar semnare” PGP</string>
-  <string name="openpgp_inline_title">Modul PGP/INLINE</string>
-  <string name="openpgp_inline_text">Mesajul este trimis în formatul PGP/INLINE.\nAcesta ar trebui folosit doar pentru compatibilitate:</string>
-  <string name="openpgp_inline_plus_compat">Unele aplicații suportă doar acest format</string>
-  <string name="openpgp_inline_minus_transit">Semnăturile se pot strica în tranzit</string>
-  <string name="openpgp_inline_minus_attach">Anexele nu sunt suportate</string>
-  <string name="openpgp_inline_ok">Am înțeles!</string>
-  <string name="openpgp_inline_disable">Dezactivează</string>
-  <string name="openpgp_inline_keep_enabled">Păstrează activat</string>
-  <string name="openpgp_sign_only_ok">Am înțeles!</string>
-  <string name="openpgp_sign_only_disable">Dezactivează</string>
-  <string name="openpgp_sign_only_keep_enabled">Păstrează activat</string>
-  <string name="openpgp_dialog_sign_only_title">Mod PGP „Doar semnare”</string>
-  <string name="openpgp_dialog_sign_only_text">În acest mod, cheia ta PGP va fi folosită pentru a crea o semnătură criptografică a unui mesaj necriptat.</string>
-  <string name="openpgp_dialog_sign_only_plus_verified">Aceasta nu criptează mesajul, dar certifică că a fost trimis folosind cheia ta.</string>
-  <string name="openpgp_dialog_sign_only_minus_break">Semnăturile se pot strica atunci când sunt trimise listelor de mesaje.</string>
-  <string name="openpgp_dialog_sign_only_minus_attach">Semnăturile pot fi afișate ca anexă „signature.asc” de către unele aplicații.</string>
-  <string name="openpgp_dialog_sign_only_neutral_encsigned">Mesajele criptate conțin întotdeauna o semnătură.</string>
-  <string name="crypto_msg_title_plaintext">Text simplu</string>
-  <string name="crypto_msg_unencrypted_sign_error">semnătura punct-la-punct conține o eroare</string>
-  <string name="crypto_msg_incomplete_signed">trebuie descărcat mesajul complet pentru a procesa semnătura</string>
-  <string name="crypto_msg_unsupported_signed">conține o semnătură punct-la-punct invalidă</string>
-  <string name="crypto_msg_unsupported_encrypted">Mesajul este criptat, dar este într-un format nesuportat.</string>
-  <string name="crypto_msg_cancelled">Mesajul este criptat, dar decriptarea a fost anulată.</string>
-  <string name="crypto_msg_title_unencrypted_signed_e2e">Text semnat Punct-la-Punct</string>
-  <string name="crypto_msg_unencrypted_sign_verified">de la semnatar verificat</string>
-  <string name="crypto_msg_title_unencrypted_signed">Text semnat</string>
-  <string name="crypto_msg_unencrypted_sign_mismatch">dar cheia punct-la-punct nu se potrivește cu expeditorul</string>
-  <string name="crypto_msg_unencrypted_sign_expired">dar cheia punct-la-punct a expirat</string>
-  <string name="crypto_msg_unencrypted_sign_revoked">dar cheia punct-la-punct a fost revocată</string>
-  <string name="crypto_msg_unencrypted_sign_insecure">dar cheia punct-la-punct nu e considerată sigură</string>
-  <string name="crypto_msg_unencrypted_sign_unknown">de la o cheie punct-la-punct necunoscută</string>
-  <string name="crypto_msg_title_encrypted_unknown">Criptat</string>
-  <string name="crypto_msg_encrypted_error">dar a apărut o eroare la decriptare</string>
-  <string name="crypto_msg_encrypted_incomplete">trebuie descărcat complet mesajul pentru decriptare</string>
-  <string name="crypto_msg_encrypted_no_provider">dar nu este configurată o aplicație de criptare</string>
-  <string name="crypto_msg_title_encrypted_unsigned">Criptat</string>
-  <string name="crypto_msg_encrypted_unsigned">dar nu punct-la-punct</string>
-  <string name="crypto_msg_title_encrypted_signed_e2e">Criptat Punct-la-Punct</string>
-  <string name="crypto_msg_encrypted_sign_verified">de la expeditor verificat</string>
-  <string name="crypto_msg_title_encrypted_signed">Criptat</string>
-  <string name="crypto_msg_encrypted_sign_unknown">de la o cheie punct-la-punct necunoscută</string>
-  <string name="crypto_msg_encrypted_sign_mismatch">dar cheia punct-la-punct nu se potrivește cu expeditorul</string>
-  <string name="crypto_msg_encrypted_sign_expired">dar cheia punct-la-punct a expirat</string>
-  <string name="crypto_msg_encrypted_sign_revoked">dar cheia punct-la-punct a fost revocată</string>
-  <string name="crypto_msg_encrypted_sign_insecure">dar cheia punct-la-punct nu e considerată sigură</string>
-  <string name="crypto_msg_encrypted_sign_error">dar datele punct-la-punct sunt eronate</string>
-  <string name="crypto_msg_encrypted_insecure">dar criptarea nu e considerată sigură</string>
-  <string name="crypto_info_ok">OK</string>
-  <string name="crypto_info_search_key">Caută Cheie</string>
-  <string name="crypto_info_view_signer">Vezi Semnatarul</string>
-  <string name="crypto_info_view_sender">Vezi Expeditorul</string>
-  <string name="crypto_info_view_security_warning">Detalii</string>
-  <string name="locked_attach_unlock">Deblochează</string>
-  <string name="locked_attach_unencrypted">Această parte nu a fost criptată și poate fi nesigură.</string>
-  <string name="locked_attach_title">Anexă neprotejată</string>
-  <string name="message_progress_text">Se încarcă…</string>
-  <string name="messageview_decrypt_cancelled">Decriptarea a fost întreruptă.</string>
-  <string name="messageview_decrypt_retry">Reîncearcă</string>
-  <string name="messageview_decrypt_incomplete">Mesajul criptat trebuie descărcat pentru decriptare.</string>
-  <string name="messageview_crypto_error_title">Eroare la decriptarea email-ului</string>
-  <string name="recipient_error_non_ascii">Caracterele speciale nu sunt suportate deocamdată!</string>
-  <string name="recipient_error_parse_failed">Eroare la citirea adresei!</string>
-  <string name="account_settings_crypto_hide_sign_only">Ascunde semnături necriptate</string>
-  <string name="account_settings_crypto_hide_sign_only_on">Doar semnăturile criptate vor fi afișate</string>
-  <string name="account_settings_crypto_hide_sign_only_off">Toate semnăturile vor fi afișate</string>
-  <string name="error_sign_only_no_encryption">Criptare indisponibilă în modul „Doar semnare”!</string>
-  <string name="unsigned_text_divider_label">Text nesemnat</string>
-  <string name="crypto_no_provider_title">Acest mesaj este criptat</string>
-  <string name="crypto_no_provider_message">Acest mesaj a fost criptat cu OpenPGP.\nPentru a-l citi trebuie să instalezi și să configurezi o aplicație OpenPGP compatibilă.</string>
-  <string name="crypto_no_provider_button">Mergi la Setări</string>
-  <string name="mail_list_widget_text">Listă mesaje K-9</string>
-  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
-  <string name="message_list_widget_initializing">Se încarcă…</string>
-  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
-  <string name="message_list_widget_list_item_loading">Se încarcă…</string>
-  <string name="openpgp_enabled_error_title">Criptarea nu este posibilă</string>
-  <string name="openpgp_enabled_error_msg">Unii dintre destinatarii selectați nu suportă această facilitate!</string>
-  <string name="enable_encryption">Activează criptarea</string>
-  <string name="disable_encryption">Dezactivează criptarea</string>
-  <string name="openpgp_description_text1">Criptarea mesajelor asigură că acestea pot fi citite doar de către destinatar, și nimeni altcineva.</string>
-  <string name="openpgp_description_text3">Criptarea va fi disponibilă doar dacă este suportată de toți destinatarii, iar ei trebuie să îți fi trimis un email anterior</string>
-  <string name="openpgp_description_text2">Schimbă criptarea apăsînd iconița</string>
-  <string name="openpgp_enabled_error_gotit">Am înțeles</string>
-  <string name="openpgp_enabled_error_back">Înapoi</string>
-  <string name="openpgp_enabled_error_disable">Dezactivează criptarea</string>
-  <string name="openpgp_encryption">Criptare OpenPGP</string>
-  <string name="account_settings_crypto_prefer_encrypt">Criptare automată în mod mutual</string>
-  <string name="dialog_autocrypt_mutual_title">Criptare automată în mod mutual</string>
-  <string name="dialog_autocrypt_mutual_description_1">Mesajele vor fi criptate la alegere, sau drept răspuns la un mesaj criptat</string>
-  <string name="dialog_autocrypt_mutual_description_2">Dacă atât expeditorul cât și destinatarul activează modul mutual, criptarea va fi activată implicit</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Poți <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">apăsa aici</a> pentru mai multe informații.</string>
-  <string name="general_settings_title">Preferințe generale</string>
-  <string name="dialog_openkeychain_info_title">Nicio aplicație OpenPGP instalată</string>
-  <string name="dialog_openkeychain_info_install">Instalare</string>
-  <string name="dialog_openkeychain_info_text">K-9 Mail necesită OpenKeychain pentru criptarea punct-la-punct</string>
-  <string name="encrypted_subject">Mesaj Criptat</string>
-  <string name="account_settings_crypto_encrypt_subject">Criptează subiectele mesajelor</string>
-  <string name="account_settings_crypto_encrypt_subject_subtitle">Posibil să nu fie suportat la anumiți destinatari</string>
-  <string name="toast_account_not_found">Eroare internă: Cont invalid!</string>
-  <string name="toast_openpgp_provider_error">Eroare la conectarea la %s!</string>
-  <string name="ac_transfer_setting_title">Trimite Mesaj Setare Autocriptare</string>
-  <string name="ac_transfer_setting_summary">Distribuie în siguranță setarea punct-la-punct cu alte dispozitive</string>
-  <string name="ac_transfer_title">Mesaj Setare Autocriptare</string>
-  <string name="ac_transfer_intro">Un Mesaj Setare Autocriptare împarte în siguranță setările tale punct-la-punct cu alte dispozitive.</string>
-  <string name="ac_transfer_button_send">Trimite Mesaj Setare</string>
-  <string name="ac_transfer_will_be_sent">Mesajul va fi trimis la adresa ta:</string>
-  <string name="ac_transfer_generating">Generare mesaj setare…</string>
-  <string name="ac_transfer_sending_to">Se trimite mesaj la:</string>
-  <string name="ac_transfer_finish">Pentru a încheia, deschide mesajul pe celălalt dispozitiv și introdu codul de setare.</string>
-  <string name="ac_transfer_show_code">Arată Codul de Setare</string>
-  <string name="ac_transfer_msg_subject">Mesaj Setare Autocriptare</string>
-  <string name="ac_transfer_msg_body">Acest mesaj conține toată informația pentru transferul setărilor tale de Autocrypt împreună cu cheia ta secretă de la dispozitivul original.
+    <string name="account_setup_failed_dlg_server_message_fmt">Nu se poate conecta cu serverul.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_oauth_flow_canceled">Autorizație anulată</string>
+    <string name="account_setup_failed_dlg_oauth_flow_failed">Autorizarea a eșuat cu următoarea eroare: <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 nu este acceptat în prezent cu acest furnizor.</string>
+    <string name="account_setup_failed_dlg_browser_not_found">Aplicația nu a putut găsi un browser pe care să îl folosească pentru a vă acorda acces la cont.</string>
+    <string name="account_setup_failed_dlg_edit_details_action">Modifică detalii</string>
+    <string name="account_setup_failed_dlg_continue_action">Continuă</string>
+    <string name="account_settings_push_advanced_title">Avansat</string>
+    <string name="account_settings_title_fmt">Setări cont</string>
+    <string name="account_settings_notify_label">Notificări mail noi</string>
+    <string name="account_settings_folder_notify_new_mail_mode_label">Dosare notificări</string>
+    <string name="account_settings_folder_notify_new_mail_mode_all">Toate</string>
+    <string name="account_settings_folder_notify_new_mail_mode_first_class">Doar dosare de Nivel 1</string>
+    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Dosare de Nivel 1 și 2</string>
+    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Toate mai puțin dosarele de Nivel 2</string>
+    <string name="account_settings_folder_notify_new_mail_mode_none">Fără</string>
+    <string name="account_settings_notify_sync_label">Sincronizare notificări</string>
+    <string name="account_settings_email_label">Adresa ta de email</string>
+    <string name="account_settings_notify_summary">Notifică în bara de stare când sosește mail</string>
+    <string name="account_settings_notify_sync_summary">Notifică în bara de stare când se verifică mailul</string>
+    <string name="account_settings_notify_self_label">Include mailuri de trimis</string>
+    <string name="account_settings_notify_self_summary">Arată o notificare pentru mesajele pe care le-am trimis</string>
+    <string name="account_notify_contacts_mail_only_label">Doar contacte</string>
+    <string name="account_notify_contacts_mail_only_summary">Arată notificări doar pentru mesaje de la persoane cunoscute</string>
+    <string name="account_settings_ignore_chat_messages_label">Ignoră mesajele de chat</string>
+    <string name="account_settings_ignore_chat_messages_summary">Nu afișa notificări pentru mesajele aparținând unui chat prin e-mail</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Marchează ca citit la deschidere</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Marchează mesajul ca citit când e deschis pentru vizualizare</string>
+    <string name="account_settings_mark_message_as_read_on_delete_label">Marchează ca citit la ștergere</string>
+    <string name="account_settings_mark_message_as_read_on_delete_summary">Marchează un mesaj ca citit când este șters</string>
+    <string name="account_settings_notification_channels_label">Categorii de notificări</string>
+    <string name="account_settings_open_notification_settings_messages_summary">Configurează notificările pentru mesaje noi</string>
+    <string name="account_settings_open_notification_settings_miscellaneous_summary">Configurează notificările de eroare și de stare</string>
+    <string name="account_settings_show_pictures_label">Arată întotdeauna imaginile</string>
+    <string name="account_settings_show_pictures_never">Nu</string>
+    <string name="account_settings_show_pictures_only_from_contacts">De la contacte</string>
+    <string name="account_settings_show_pictures_always">De la oricine</string>
+    <string name="account_settings_composition">Expediere mail</string>
+    <string name="account_settings_default_quoted_text_shown_label">Citează mesajul când se răspunde</string>
+    <string name="account_settings_default_quoted_text_shown_summary">Include mesajul original în răspuns.</string>
+    <string name="account_settings_reply_after_quote_label">Răspunde după textul citat</string>
+    <string name="account_settings_reply_after_quote_summary">Mesajul original va apărea deasupra mesajului tău.</string>
+    <string name="account_settings_strip_signature_label">Elimină semnături în răspunsuri</string>
+    <string name="account_settings_strip_signature_summary">Semnăturile vor fi eliminate din mesajele citate</string>
+    <string name="account_settings_message_format_label">Format mesaj</string>
+    <string name="account_settings_message_format_text">Text simplu (elimină imagini și formatări)</string>
+    <string name="account_settings_message_format_html">HTML (păstrează imagini și formatări)</string>
+    <string name="account_settings_message_format_auto">Automat</string>
+    <string name="account_settings_always_show_cc_bcc_label">Arată întotdeauna Cc/Bcc</string>
+    <string name="account_settings_message_read_receipt_label">Raport de citire</string>
+    <string name="account_settings_message_read_receipt_summary">Cere întotdeauna un raport de citire</string>
+    <string name="account_settings_quote_style_label">Stilul de citare la răspuns</string>
+    <string name="account_settings_quote_style_prefix">Prefix (ca Gmail)</string>
+    <string name="account_settings_quote_style_header">Antet (ca Outlook)</string>
+    <string name="account_settings_upload_sent_messages_label">Încarcă mesajele trimise</string>
+    <string name="account_settings_upload_sent_messages_summary">Încarcă mesajele în dosarul Trimise după trimitere</string>
+    <string name="account_settings_general_title">Preferințe generale</string>
+    <string name="account_settings_reading_mail">Citire mail</string>
+    <string name="account_settings_sync">Descărcare mail</string>
+    <string name="account_settings_folders">Dosare</string>
+    <string name="account_settings_quote_prefix_label">Prefixul pentru textul citat</string>
+    <string name="account_settings_crypto">Criptare punct-la-punct</string>
+    <string name="account_settings_crypto_app">Activare suport OpenPGP</string>
+    <string name="account_settings_crypto_app_select_title">Selectare aplicatie OpenPGP</string>
+    <string name="account_settings_crypto_key">Configurare cheie punct-la-punct</string>
+    <string name="account_settings_crypto_summary_off">Nicio aplicație OpenPGP instalată</string>
+    <string name="account_settings_crypto_summary_on">Conectat la %s</string>
+    <string name="account_settings_crypto_summary_config">Configurare…</string>
+    <string name="account_settings_crypto_encrypt_all_drafts">Stochează toate ciornele criptate</string>
+    <string name="account_settings_crypto_encrypt_all_drafts_on">Toate ciornele vor fi stocate criptate</string>
+    <string name="account_settings_crypto_encrypt_all_drafts_off">Criptează ciornele doar dacă criptarea este activată</string>
+    <string name="account_settings_mail_check_frequency_label">Frecvență interogare dosar</string>
+    <string name="account_settings_color_label">Culoarea contului</string>
+    <string name="account_settings_color_summary">Culoarea contului folosită în lista de dosare și conturi</string>
+    <string name="account_settings_mail_display_count_label">Mărimea dosarului local</string>
+    <string name="account_settings_autodownload_message_size_label">Preia mesaje până la</string>
+    <string name="account_settings_autodownload_message_size_1">1 KiB</string>
+    <string name="account_settings_autodownload_message_size_2">2 KiB</string>
+    <string name="account_settings_autodownload_message_size_4">4 KiB</string>
+    <string name="account_settings_autodownload_message_size_8">8 KiB</string>
+    <string name="account_settings_autodownload_message_size_16">16 KiB</string>
+    <string name="account_settings_autodownload_message_size_32">32 KiB</string>
+    <string name="account_settings_autodownload_message_size_64">64 KiB</string>
+    <string name="account_settings_autodownload_message_size_128">128 KiB</string>
+    <string name="account_settings_autodownload_message_size_256">256 KiB</string>
+    <string name="account_settings_autodownload_message_size_512">512 KiB</string>
+    <string name="account_settings_autodownload_message_size_1024">1 MiB</string>
+    <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
+    <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
+    <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
+    <string name="account_settings_autodownload_message_size_any">orice mărime (fără limită)</string>
+    <string name="account_settings_message_age_label">Sincronizează mesaje de</string>
+    <string name="account_settings_message_age_any">oricând (fără limită)</string>
+    <string name="account_settings_message_age_0">azi</string>
+    <string name="account_settings_message_age_1">ultimele 2 zile</string>
+    <string name="account_settings_message_age_2">ultimele 3 zile</string>
+    <string name="account_settings_message_age_7">ultima săptămână</string>
+    <string name="account_settings_message_age_14">ultimele 2 săptămâni</string>
+    <string name="account_settings_message_age_21">ultimele 3 săptămâni</string>
+    <string name="account_settings_message_age_1_month">ultima lună</string>
+    <string name="account_settings_message_age_2_months">ultimele 2 luni</string>
+    <string name="account_settings_message_age_3_months">ultimele 3 luni</string>
+    <string name="account_settings_message_age_6_months">ultimele 6 luni</string>
+    <string name="account_settings_message_age_1_year">ultimul an</string>
+    <string name="account_settings_folder_display_mode_label">Dosare de afișat</string>
+    <string name="account_settings_folder_display_mode_all">Toate</string>
+    <string name="account_settings_folder_display_mode_first_class">Doar dosare de Nivel 1</string>
+    <string name="account_settings_folder_display_mode_first_and_second_class">Dosare de Nivel 1 și 2</string>
+    <string name="account_settings_folder_display_mode_not_second_class">Toate mai puțin dosarele de Nivel 2</string>
+    <string name="account_settings_folder_sync_mode_label">Dosare interogate</string>
+    <string name="account_settings_folder_sync_mode_all">Toate</string>
+    <string name="account_settings_folder_sync_mode_first_class">Doar dosare de Nivel 1</string>
+    <string name="account_settings_folder_sync_mode_first_and_second_class">Dosare de Nivel 1 și 2</string>
+    <string name="account_settings_folder_sync_mode_not_second_class">Toate mai puțin dosarele de Nivel 2</string>
+    <string name="account_settings_folder_sync_mode_none">Niciunul</string>
+    <string name="account_settings_folder_push_mode_label">Dosare Push</string>
+    <string name="account_settings_folder_push_mode_all">Toate</string>
+    <string name="account_settings_folder_push_mode_first_class">Doar dosare de Nivel 1</string>
+    <string name="account_settings_folder_push_mode_first_and_second_class">Dosare de Nivel 1 și 2</string>
+    <string name="account_settings_folder_push_mode_not_second_class">Toate mai puțin dosarele de Nivel 2</string>
+    <string name="account_settings_folder_push_mode_none">Niciunul</string>
+    <string name="account_settings_folder_target_mode_label">Mută/Copiază dosare destinație</string>
+    <string name="account_settings_folder_target_mode_all">Toate</string>
+    <string name="account_settings_folder_target_mode_first_class">Doar dosare de Nivel 1</string>
+    <string name="account_settings_folder_target_mode_first_and_second_class">Dosare de Nivel 1 și 2</string>
+    <string name="account_settings_folder_target_mode_not_second_class">Toate mai puțin dosarele de Nivel 2</string>
+    <string name="account_settings_sync_remote_deletetions_label">Sincronizare mesaje șterse pe server</string>
+    <string name="account_settings_sync_remote_deletetions_summary">Elimină mesajele șterse pe server</string>
+    <string name="account_settings_openpgp_missing">Aplicație OpenPGP lipsă - a fost dezinstalată?</string>
+    <string name="folder_settings_title">Setări dosar</string>
+    <string name="folder_settings_in_top_group_label">Arată în grupul de sus</string>
+    <string name="folder_settings_in_top_group_summary">Arată aproape de partea de sus a listei de dosare</string>
+    <string name="folder_settings_folder_display_mode_label">Nivel de afișare dosar</string>
+    <string name="folder_settings_folder_display_mode_normal">Niciunul</string>
+    <string name="folder_settings_folder_display_mode_first_class">Nivel 1</string>
+    <string name="folder_settings_folder_display_mode_second_class">Nivel 2</string>
+    <string name="folder_settings_folder_sync_mode_label">Nivel sincronizare dosar</string>
+    <string name="folder_settings_folder_sync_mode_normal">Niciunul</string>
+    <string name="folder_settings_folder_sync_mode_first_class">Nivel 1</string>
+    <string name="folder_settings_folder_sync_mode_second_class">Nivel 2</string>
+    <string name="folder_settings_folder_sync_mode_inherited">Același cu nivelul afișat</string>
+    <string name="folder_settings_folder_push_mode_label">Nivel dosar Push</string>
+    <string name="folder_settings_folder_push_mode_normal">Niciunul</string>
+    <string name="folder_settings_folder_push_mode_first_class">Nivel 1</string>
+    <string name="folder_settings_folder_push_mode_second_class">Nivel 2</string>
+    <string name="folder_settings_folder_push_mode_inherited">La fel ca clasa de sondaj</string>
+    <string name="folder_settings_folder_notify_mode_label">Nivel notificare dosar</string>
+    <string name="folder_settings_folder_notify_mode_normal">Niciunul</string>
+    <string name="folder_settings_folder_notify_mode_first_class">Nivel 1</string>
+    <string name="folder_settings_folder_notify_mode_second_class">Nivel 2</string>
+    <string name="folder_settings_folder_notify_mode_inherited">Același cu nivelul Push</string>
+    <string name="folder_settings_clear_local_folder_action">Curăță mesajele locale</string>
+    <string name="account_settings_incoming_label">Server primire</string>
+    <string name="account_settings_incoming_summary">Configurare server primire</string>
+    <string name="account_settings_outgoing_label">Server trimitere</string>
+    <string name="account_settings_outgoing_summary">Configurare server trimitere (SMTP)</string>
+    <string name="account_settings_description_label">Nume cont</string>
+    <string name="account_settings_name_label">Nume</string>
+    <string name="notifications_title">Notificări</string>
+    <string name="account_settings_vibration">Vibrație</string>
+    <string name="account_settings_vibrate_enable">Vibrație</string>
+    <string name="account_settings_vibrate_pattern_label">Model de vibrații</string>
+    <string name="account_settings_vibrate_pattern_default">Implicit</string>
+    <string name="account_settings_vibrate_pattern_1">Modelul 1</string>
+    <string name="account_settings_vibrate_pattern_2">Modelul 2</string>
+    <string name="account_settings_vibrate_pattern_3">Modelul 3</string>
+    <string name="account_settings_vibrate_pattern_4">Modelul 4</string>
+    <string name="account_settings_vibrate_pattern_5">Modelul 5</string>
+    <string name="account_settings_vibrate_times">Repetă vibrație</string>
+    <string name="account_settings_vibrate_summary_disabled">Dezactivat</string>
+    <string name="account_settings_ringtone">Ton mesaje noi</string>
+    <string name="account_settings_notification_light_label">Lumină de notificare</string>
+    <string name="account_settings_notification_light_disabled">Dezactivat</string>
+    <string name="account_settings_notification_light_account_color">Culoarea contului</string>
+    <string name="account_settings_notification_light_default_color">Culoarea implicită a sistemului</string>
+    <string name="account_settings_notification_light_white">Alb</string>
+    <string name="account_settings_notification_light_red">Roșu</string>
+    <string name="account_settings_notification_light_green">Verde</string>
+    <string name="account_settings_notification_light_blue">Albastru</string>
+    <string name="account_settings_notification_light_yellow">Galben</string>
+    <string name="account_settings_notification_light_cyan">Cian</string>
+    <string name="account_settings_notification_light_magenta">Magenta</string>
+    <string name="account_settings_composition_title">Opțiuni compunere mesaj</string>
+    <string name="account_settings_composition_label">Setări implicite compunere mesaj</string>
+    <string name="account_settings_composition_summary">Setează ”De la”, Bcc și semnătură</string>
+    <string name="account_settings_identities_label">Administrează identitățile</string>
+    <string name="account_settings_identities_summary">Setează adrese și semnături alternative pentru ”De la”</string>
+    <string name="manage_identities_title">Gestionează identitățile</string>
+    <string name="manage_identities_context_menu_title">Gestionează identitate</string>
+    <string name="edit_identity_title">Modifică identitate</string>
+    <string name="edit_identity_save">Salvează</string>
+    <string name="new_identity_action">Identitate nouă</string>
+    <string name="account_settings_always_bcc_label">BCC toate mesajele către</string>
+    <string name="manage_identities_edit_action">Modifică</string>
+    <string name="manage_identities_move_up_action">Mută sus</string>
+    <string name="manage_identities_move_down_action">Mută jos</string>
+    <string name="manage_identities_move_top_action">Mută deasupra / fă implicit</string>
+    <string name="manage_identities_remove_action">Elimină</string>
+    <string name="edit_identity_description_label">Descriere Identitate</string>
+    <string name="edit_identity_description_hint">(Opțional)</string>
+    <string name="edit_identity_name_label">Numele tău</string>
+    <string name="edit_identity_name_hint">(Opțional)</string>
+    <string name="edit_identity_email_label">Adresă email</string>
+    <string name="edit_identity_email_hint">(Obligatoriu)</string>
+    <string name="edit_identity_reply_to_label">Adresă de ”Răspuns-la”</string>
+    <string name="edit_identity_reply_to_hint">(Opțional)</string>
+    <string name="edit_identity_signature_label">Semnătură</string>
+    <string name="edit_identity_signature_hint">(Opțional)</string>
+    <string name="account_settings_signature_use_label">Folosește semnătură</string>
+    <string name="account_settings_signature_label">Semnătură</string>
+    <string name="default_identity_description">Identitate inițială</string>
+    <string name="choose_identity_title">Alege identitate</string>
+    <string name="send_as">Trimite ca</string>
+    <string name="no_removable_identity">Nu poți elimina singura ta identitate</string>
+    <string name="identity_has_no_email">Nu poți folosi o identitate fără o adresă de mail</string>
+    <string name="sort_earliest_first">Mesajele mai vechi primele</string>
+    <string name="sort_latest_first">Mesajele noi primele</string>
+    <string name="sort_subject_alpha">Subiect alfabetic</string>
+    <string name="sort_subject_re_alpha">Subiect în sens invers alfabetic</string>
+    <string name="sort_sender_alpha">Expeditor alfabetic</string>
+    <string name="sort_sender_re_alpha">Expeditor în sens invers alfabetic</string>
+    <string name="sort_flagged_first">Mesaje marcate cu stea primele</string>
+    <string name="sort_flagged_last">Mesaje nemarcate cu stea primele</string>
+    <string name="sort_unread_first">Mesaje necitite primele</string>
+    <string name="sort_unread_last">Mesaje citite primele</string>
+    <string name="sort_attach_first">Mesaje cu anexe primele</string>
+    <string name="sort_unattached_first">Mesaje fără anexe primele</string>
+    <string name="sort_by">Sortează după…</string>
+    <string name="sort_by_date">Dată</string>
+    <string name="sort_by_arrival">Sosire</string>
+    <string name="sort_by_subject">Subiect</string>
+    <string name="sort_by_sender">Expeditor</string>
+    <string name="sort_by_flag">Stea</string>
+    <string name="sort_by_unread">Citit/necitit</string>
+    <string name="sort_by_attach">Anexe</string>
+    <string name="account_delete_dlg_title">Elimină Cont</string>
+    <string name="account_setup_failed_dlg_invalid_certificate_title">Certificat nerecunoscut</string>
+    <string name="account_setup_failed_dlg_invalid_certificate_accept">Tastă Accept</string>
+    <string name="account_setup_failed_dlg_invalid_certificate_reject">Tastă Refuz</string>
+    <string name="folder_list_filter_hint">Numele dosarului conține</string>
+    <string name="folder_list_display_mode_label">Afișează dosare…</string>
+    <string name="folder_list_display_mode_all">Toate dosarele</string>
+    <string name="folder_list_display_mode_first_class">Dosare de Nivel 1</string>
+    <string name="folder_list_display_mode_first_and_second_class">Dosare de Nivel 1 și 2</string>
+    <string name="folder_list_display_mode_not_second_class">Ascunde dosarele de Nivel 2</string>
+    <string name="account_settings_signature__location_label">Poziție semnătură</string>
+    <string name="account_settings_signature__location_before_quoted_text">Înainte de mesajul citat</string>
+    <string name="account_settings_signature__location_after_quoted_text">După mesajul citat</string>
+    <string name="setting_theme_global">Folosește tema aplicației</string>
+    <string name="setting_theme_dark">Închisă</string>
+    <string name="setting_theme_light">Deschisă</string>
+    <string name="setting_theme_follow_system">Folosește setările implicite ale sistemului</string>
+    <string name="display_preferences">Afișaj</string>
+    <string name="global_preferences">Global</string>
+    <string name="debug_preferences">Depanare</string>
+    <string name="privacy_preferences">Confidențialitate</string>
+    <string name="network_preferences">Rețea</string>
+    <string name="interaction_preferences">Interacțiune</string>
+    <string name="accountlist_preferences">Listă conturi</string>
+    <string name="messagelist_preferences">Listă mesaje</string>
+    <string name="messageview_preferences">Mesaje</string>
+    <string name="settings_theme_label">Temă</string>
+    <string name="settings_message_theme_label">Temă vizualizare mesaje</string>
+    <string name="settings_compose_theme_label">Temă compunere</string>
+    <string name="settings_language_label">Limbă</string>
+    <string name="preference_search_no_results">Nici o setare găsită</string>
+    <string name="settings_message_theme_selection_label">Temă fixă pt. mesaje</string>
+    <string name="settings_message_theme_selection_summary_off">Alege tema în timpul vizualizării mesajelor</string>
+    <string name="settings_message_theme_selection_summary_on">Folosește o temă fixă pentru vizualizarea mesajelor</string>
+    <string name="setting_language_system">Setări implicite</string>
+    <string name="background_ops_label">Sincronizare în fundal</string>
+    <string name="background_ops_never">Niciodată</string>
+    <string name="background_ops_always">Întotdeauna</string>
+    <string name="background_ops_auto_sync_only">Când \'Sincronizarea automată\' este bifată</string>
+    <string name="batch_select_all">Selectează tot</string>
+    <string name="account_setup_push_limit_label">Maxim de dosare de verificat prin push</string>
+    <string name="account_setup_push_limit_5">5 dosare</string>
+    <string name="account_setup_push_limit_10">10 dosare</string>
+    <string name="account_setup_push_limit_25">25 de dosare</string>
+    <string name="account_setup_push_limit_50">50 de dosare</string>
+    <string name="account_setup_push_limit_100">100 de dosare</string>
+    <string name="account_setup_push_limit_250">250 de dosare</string>
+    <string name="account_setup_push_limit_500">500 de dosare</string>
+    <string name="account_setup_push_limit_1000">1000 de dosare</string>
+    <string name="animations_title">Animații</string>
+    <string name="animations_summary">Folosește efecte vizuale gaudi</string>
+    <string name="volume_navigation_title">Navigarea prin butoanele de volum in afișarea tip mesaj</string>
+    <string name="show_unified_inbox_title">Afișează Cutia poștală de intrare unificată</string>
+    <string name="show_starred_count_title">Afișează numărul de stele</string>
+    <string name="integrated_inbox_title">Căsuță poștală unificată</string>
+    <string name="integrated_inbox_detail">Toate mesajele în dosare unificate</string>
+    <string name="folder_settings_include_in_integrated_inbox_label">Unifică</string>
+    <string name="folder_settings_include_in_integrated_inbox_summary">Toate mesajele sunt în Căsuța poștală unificată</string>
+    <string name="account_settings_searchable_label">Dosare căutabile</string>
+    <string name="account_settings_searchable_all">Toate</string>
+    <string name="account_settings_searchable_displayable">Afișabil</string>
+    <string name="account_settings_searchable_none">Niciunul</string>
+    <string name="account_settings_no_folder_selected">Niciunul</string>
+    <string name="account_settings_automatic_special_folder">Automat (%s)</string>
+    <string name="font_size_settings_title">Mărime font</string>
+    <string name="font_size_settings_description">Configurează dimensiunea fontului</string>
+    <string name="font_size_message_list">Liste de mesaje</string>
+    <string name="font_size_message_list_subject">Subiect</string>
+    <string name="font_size_message_list_sender">Expeditor</string>
+    <string name="font_size_message_list_date">Dată</string>
+    <string name="font_size_message_list_preview">Previzualizare</string>
+    <string name="font_size_message_view">Mesaje</string>
+    <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+    <string name="font_size_message_view_account">Nume cont</string>
+    <string name="font_size_message_view_sender">Expeditor</string>
+    <string name="font_size_message_view_recipients">Recipiente</string>
+    <string name="font_size_message_view_subject">Subiect</string>
+    <string name="font_size_message_view_date">Timp și dată</string>
+    <string name="font_size_message_view_content">Conținut mesaj</string>
+    <string name="font_size_message_compose">Compunere mesaj</string>
+    <string name="font_size_message_compose_input">Câmpuri introducere text</string>
+    <string name="font_size_default">Implicit</string>
+    <string name="font_size_tiniest">Mai minuscul</string>
+    <string name="font_size_tiny">Minuscul</string>
+    <string name="font_size_smaller">Mai mic</string>
+    <string name="font_size_small">Mic</string>
+    <string name="font_size_medium">Mediu</string>
+    <string name="font_size_large">Mare</string>
+    <string name="font_size_larger">Mai mare</string>
+    <string name="error_activity_not_found">Nu s-a găsit o aplicație potrivită pentru această acțiune.</string>
+    <string name="send_failed_reason">Trimitere eșuată: %s</string>
+    <string name="save_or_discard_draft_message_dlg_title">Salvezi ca ciornă?</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">Salvezi sau renunți la mesaj?</string>
+    <string name="save_or_discard_draft_message_changes">Salvezi sau renunți la modificări?</string>
+    <string name="confirm_discard_draft_message_title">Renunți la mesaj?</string>
+    <string name="confirm_discard_draft_message">Sigur dorești să renunți la mesaj?</string>
+    <string name="dialog_confirm_clear_local_folder_title">Elimini mesajele locale?</string>
+    <string name="dialog_confirm_clear_local_folder_message">Această acțiune va elimina toate mesejele locale din dosar. Niciun mesaj nu va fi șters de pe server.</string>
+    <string name="dialog_confirm_clear_local_folder_action">Elimină mesajele</string>
+    <string name="dialog_confirm_delete_title">Confirmă ștergerea</string>
+    <string name="dialog_confirm_delete_message">Dorești să ștergi mesajul?</string>
+    <plurals name="dialog_confirm_delete_messages">
+        <item quantity="one">Sigur doriți ștergerea mesajului?</item>
+        <item quantity="few">Sigur doriți ștergerea a <xliff:g id="message_count">%1$d</xliff:g> mesaje?</item>
+        <item quantity="other">Sigur dorești ștergerea a <xliff:g id="message_count">%1$d</xliff:g> mesaje?</item>
+    </plurals>
+    <string name="dialog_confirm_delete_confirm_button">Da</string>
+    <string name="dialog_confirm_delete_cancel_button">Nu</string>
+    <string name="dialog_confirm_mark_all_as_read_title">Confirmă marcarea tuturor ca citite</string>
+    <string name="dialog_confirm_mark_all_as_read_message">Dorești marcarea tuturor mesajelor ca citite?</string>
+    <string name="dialog_confirm_empty_trash_title">Confirmă golirea coșului de gunoi</string>
+    <string name="dialog_confirm_empty_trash_message">Dorești să golești dosarul coș de gunoi?</string>
+    <string name="dialog_confirm_mark_all_as_read_confirm_button">Da</string>
+    <string name="dialog_confirm_mark_all_as_read_cancel_button">Nu</string>
+    <string name="dialog_confirm_spam_title">Confirmă mutare în dosarul spam</string>
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">Sigur doriți mutarea mesajului în dosarul spam?</item>
+        <item quantity="few">Sigur doriți mutarea a <xliff:g id="message_count">%1$d</xliff:g> mesaje în dosarul spam?</item>
+        <item quantity="other">Sigur dorești mutarea a <xliff:g id="message_count">%1$d</xliff:g> mesaje în dosarul spam?</item>
+    </plurals>
+    <string name="dialog_confirm_spam_confirm_button">Da</string>
+    <string name="dialog_confirm_spam_cancel_button">Nu</string>
+    <string name="dialog_attachment_progress_title">Se descarcă anexa</string>
+    <string name="settings_list_backup_category">Copie de rezervă</string>
+    <string name="settings_list_miscellaneous_category">Diverse</string>
+    <string name="settings_export_title">Exportă setările</string>
+    <string name="settings_export_button">Exportă</string>
+    <string name="settings_export_share_button">Distribuie</string>
+    <string name="settings_export_progress_text">Se exportă setările…</string>
+    <string name="settings_export_success_generic">Setările au fost exportate cu succes</string>
+    <string name="settings_export_failure">Export setări eșuat</string>
+    <string name="settings_import_title">Setări importare</string>
+    <string name="settings_import_pick_document_button">Selectează fișier</string>
+    <string name="settings_import_button">Importă</string>
+    <string name="settings_import_success_generic">Setările au fost importate cu succes</string>
+    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+    <string name="settings_import_password_required">Te rog introduce parolele</string>
+    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_required">Conectează-te</string>
+    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_and_password_required">Conectează-te și introdu parolele</string>
+    <string name="settings_import_failure">Importarea setărilor a eșuat</string>
+    <string name="settings_import_read_failure">Citirea fișierului cu setări a eșuat</string>
+    <string name="settings_import_partial_failure">Importarea unor setări a eșuat</string>
+    <string name="settings_import_status_success">Importat cu succes</string>
+    <string name="settings_import_status_password_required">Parola necesară</string>
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="settings_import_status_log_in_required">Înregistrare necesară</string>
+    <string name="settings_import_status_not_imported">Nu a fost importat</string>
+    <string name="settings_import_status_error">Eșuare la import</string>
+    <string name="settings_import_later_button">Mai târziu</string>
+    <string name="settings_import">Setări importare</string>
+    <string name="settings_importing">Se importă setările…</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">Pentru a putea folosi contul \"<xliff:g id="account">%s</xliff:g>\" trebuie să specifici parola de server.</item>
+        <item quantity="few">Pentru a putea folosi contul \"<xliff:g id="account">%s</xliff:g>\" trebuie să specifici parolele de server.</item>
+        <item quantity="other">Pentru a putea folosi contul \"<xliff:g id="account">%s</xliff:g>\" trebuie să specifici parolele de server.</item>
+    </plurals>
+    <string name="settings_import_incoming_server_password_hint">Parola serverului de primire</string>
+    <string name="settings_import_outgoing_server_password_hint">Parola serverului de expediere</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Folosește aceeași parolă pentru serverul de expediere</string>
+    <string name="server_name_format">Nume server: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="unread_widget_select_account">Arată număr necitite pentru…</string>
+    <string name="unread_widget_account_title">Cont</string>
+    <string name="unread_widget_account_summary">Contul pentru care trebuie afișat totalul mesajelor necitite</string>
+    <string name="unread_widget_unified_inbox_account_summary">Căsuță poștală unificată</string>
+    <string name="unread_widget_folder_enabled_title">Total dosare</string>
+    <string name="unread_widget_folder_enabled_summary">Afișează total necitite pentru un singur dosar</string>
+    <string name="unread_widget_folder_title">Dosar</string>
+    <string name="unread_widget_folder_summary">Dosarul pentru care trebuie afișat total mesaje necitite</string>
+    <string name="unread_widget_action_done">Realizat</string>
+    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+    <string name="unread_widget_account_not_selected">Niciun cont selectat</string>
+    <string name="unread_widget_folder_not_selected">Niciun dosar selectat</string>
+    <string name="webview_empty_message">Fără text</string>
+    <string name="webview_contextmenu_link_view_action">Deschide legătură</string>
+    <string name="webview_contextmenu_link_share_action">Distribuie legătură</string>
+    <string name="webview_contextmenu_link_copy_action">Copiază legătura în clipboard</string>
+    <string name="webview_contextmenu_link_clipboard_label">Legătură</string>
+    <string name="webview_contextmenu_link_text_copy_action">Copiați textul legăturii în clipboard</string>
+    <string name="webview_contextmenu_link_text_clipboard_label">Textul linkului</string>
+    <string name="webview_contextmenu_image_title">Imagine</string>
+    <string name="webview_contextmenu_image_view_action">Vezi imaginea</string>
+    <string name="webview_contextmenu_image_save_action">Salvează imaginea</string>
+    <string name="webview_contextmenu_image_download_action">Descarcă imaginea</string>
+    <string name="webview_contextmenu_image_copy_action">Copiază URL imagine în clipboard</string>
+    <string name="webview_contextmenu_image_clipboard_label">URL imagine</string>
+    <string name="webview_contextmenu_phone_call_action">Apelează număr</string>
+    <string name="webview_contextmenu_phone_save_action">Salvează în Contacte</string>
+    <string name="webview_contextmenu_phone_copy_action">Copiază numărul în clipboard</string>
+    <string name="webview_contextmenu_phone_clipboard_label">Număr de telefon</string>
+    <string name="webview_contextmenu_email_send_action">Trimite mail</string>
+    <string name="webview_contextmenu_email_save_action">Salvează în Contacte</string>
+    <string name="webview_contextmenu_email_copy_action">Copiază adresa în clipboard</string>
+    <string name="webview_contextmenu_email_clipboard_label">Adresă email</string>
+    <string name="account_settings_remote_search_num_results_entries_all">Toate</string>
+    <string name="account_settings_remote_search_num_results_entries_10">10</string>
+    <string name="account_settings_remote_search_num_results_entries_25">25</string>
+    <string name="account_settings_remote_search_num_results_entries_50">50</string>
+    <string name="account_settings_remote_search_num_results_entries_100">100</string>
+    <string name="account_settings_remote_search_num_results_entries_250">250</string>
+    <string name="account_settings_remote_search_num_results_entries_500">500</string>
+    <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
+    <string name="account_settings_remote_search_num_label">Limită căutare server</string>
+    <string name="remote_search_sending_query">Se trimite cererea la server</string>
+    <plurals name="remote_search_downloading">
+        <item quantity="one">Preluare %d rezultat</item>
+        <item quantity="few">Preluare %d rezultate</item>
+        <item quantity="other">Preluare %d rezultate</item>
+    </plurals>
+    <plurals name="remote_search_downloading_limited">
+        <item quantity="one">Preluare %1$d din %2$d rezultate</item>
+        <item quantity="few">Preluare %1$d din %2$d rezultate</item>
+        <item quantity="other">Preluare %1$d din %2$d rezultate</item>
+    </plurals>
+    <string name="remote_search_error">Căutare la distanță eșuată</string>
+    <string name="account_settings_search">Căutare</string>
+    <string name="action_remote_search">Caută în mesajele de pe server</string>
+    <string name="remote_search_unavailable_no_network">Este necesară conexiunea la rețea pentru căutarea pe server.</string>
+    <string name="global_settings_background_as_unread_indicator_label">Schimbă culoarea după citire</string>
+    <string name="global_settings_background_as_unread_indicator_summary">O culoare diferită de fundal va arăta că mesajul a fost citit</string>
+    <string name="global_settings_threaded_view_label">Vizualizare grupată</string>
+    <string name="global_settings_threaded_view_summary">Grupează mesajele în conversații</string>
+    <string name="upgrade_databases_title">Se actualizează bazele de date</string>
+    <string name="upgrade_databases_unspecified">Se actualizează bazele de date…</string>
+    <string name="upgrade_database_format">Se actualizează baza de date a contului \"<xliff:g id="account">%s</xliff:g>\"</string>
+    <string name="global_settings_splitview_mode_label">Arată ecranul împărțit</string>
+    <string name="global_settings_splitview_always">Întotdeauna</string>
+    <string name="global_settings_splitview_never">Niciodată</string>
+    <string name="global_settings_splitview_when_in_landscape">În orientarea peisaj</string>
+    <string name="message_view_empty">Alege un mesaj din stânga</string>
+    <string name="global_settings_show_contact_picture_label">Arată pozele contactelor</string>
+    <string name="global_settings_show_contact_picture_summary">Arată pozele contactelor în lista de mesaje</string>
+    <string name="mark_all_as_read">Marchează toate ca citite</string>
+    <string name="global_settings_colorize_missing_contact_pictures_label">Colorează pozele contactelor</string>
+    <string name="global_settings_colorize_missing_contact_pictures_summary">Colorează pozele contactelor lipsă</string>
+    <string name="global_settings_messageview_visible_refile_actions_title">Acțiuni pentru mesaj vizibile</string>
+    <string name="global_settings_messageview_visible_refile_actions_summary">Arată acțiunile selectate în meniul de vizualizare mesaj</string>
+    <string name="loading_attachment">Se încarcă anexa…</string>
+    <string name="fetching_attachment_dialog_title_send">Se trimite mesajul</string>
+    <string name="fetching_attachment_dialog_title_save">Se salvează ciorna</string>
+    <string name="fetching_attachment_dialog_message">Se preia anexa…</string>
+    <string name="auth_external_error">Autentificare imposibilă. Serverul nu publică funcția SASL EXTERNAL. Aceasta se poate datora unei probleme cu certificatul clientului (expirat, autoritate de certificare necunoscută) sau a unei alte probleme de configurare.</string>
+    <!--=== Client certificates specific ==================================================================-->
+    <string name="account_setup_basics_client_certificate">Folosește certificat client</string>
+    <string name="client_certificate_spinner_empty">Fără certificat client</string>
+    <string name="client_certificate_spinner_delete">Elimină selecția certificatului client</string>
+    <string name="client_certificate_retrieval_failure">Eșuare recuperare certificat client pentru alias-ul \"<xliff:g id="alias">%s</xliff:g>\"</string>
+    <string name="client_certificate_advanced_options">Opțiuni avansate</string>
+    <string name="client_certificate_expired">Certificatul clientului \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" a expirat sau nu este încă valid (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+    <!--Note: This references message_view_download_remainder-->
+    <string name="preview_encrypted">*Criptat*</string>
+    <string name="add_from_contacts">Adaugă din Contacte</string>
+    <string name="recipient_cc">Cc</string>
+    <string name="recipient_bcc">Bcc</string>
+    <string name="recipient_to">Către</string>
+    <string name="recipient_from">De la</string>
+    <string name="reply_to_label">Răspunde la</string>
+    <string name="unknown_recipient">&lt;Unknown Recipient&gt;</string>
+    <string name="unknown_sender">&lt;Unknown Sender&gt;</string>
+    <string name="address_type_home">Acasă</string>
+    <string name="address_type_work">Birou</string>
+    <string name="address_type_other">Alta</string>
+    <string name="address_type_mobile">Mobil</string>
+    <string name="compose_error_no_draft_folder">Nu este configurat Dosarul de ciorne pentru acest cont</string>
+    <string name="compose_error_no_key_configured">Nicio cheie configurată pentru acest cont! Verifică setările.</string>
+    <string name="error_crypto_provider_incompatible">Furnizorul de criptare folosește o versiune incompatibilă. Te rugăm să verifici setările!</string>
+    <string name="error_crypto_provider_connect">Conexiune nereușită la serviciul criptografic, verifică setările sau apasă pe Criptare pentru a reîncerca!</string>
+    <string name="error_crypto_provider_ui_required">Eroare de inițializare a criptării punct-la-punct, verifică setările</string>
+    <string name="error_crypto_inline_attach">Modul PGP/INLINE nu permite anexe!</string>
+    <string name="enable_inline_pgp">Activează PGP/INLINE</string>
+    <string name="disable_inline_pgp">Dezactivează PGP/INLINE</string>
+    <string name="enable_sign_only">Activează „Doar semnare” PGP</string>
+    <string name="disable_sign_only">Dezactivează „Doar semnare” PGP</string>
+    <string name="openpgp_inline_title">Modul PGP/INLINE</string>
+    <string name="openpgp_inline_text">Mesajul este trimis în formatul PGP/INLINE.\nAcesta ar trebui folosit doar pentru compatibilitate:</string>
+    <string name="openpgp_inline_plus_compat">Unele aplicații suportă doar acest format</string>
+    <string name="openpgp_inline_minus_transit">Semnăturile se pot strica în tranzit</string>
+    <string name="openpgp_inline_minus_attach">Anexele nu sunt suportate</string>
+    <string name="openpgp_inline_ok">Am înțeles!</string>
+    <string name="openpgp_inline_disable">Dezactivează</string>
+    <string name="openpgp_inline_keep_enabled">Păstrează activat</string>
+    <string name="openpgp_sign_only_ok">Am înțeles!</string>
+    <string name="openpgp_sign_only_disable">Dezactivează</string>
+    <string name="openpgp_sign_only_keep_enabled">Păstrează activat</string>
+    <string name="openpgp_dialog_sign_only_title">Mod PGP „Doar semnare”</string>
+    <string name="openpgp_dialog_sign_only_text">În acest mod, cheia ta PGP va fi folosită pentru a crea o semnătură criptografică a unui mesaj necriptat.</string>
+    <string name="openpgp_dialog_sign_only_plus_verified">Aceasta nu criptează mesajul, dar certifică că a fost trimis folosind cheia ta.</string>
+    <string name="openpgp_dialog_sign_only_minus_break">Semnăturile se pot strica atunci când sunt trimise listelor de mesaje.</string>
+    <string name="openpgp_dialog_sign_only_minus_attach">Semnăturile pot fi afișate ca anexă „signature.asc” de către unele aplicații.</string>
+    <string name="openpgp_dialog_sign_only_neutral_encsigned">Mesajele criptate conțin întotdeauna o semnătură.</string>
+    <string name="crypto_msg_title_plaintext">Text simplu</string>
+    <string name="crypto_msg_unencrypted_sign_error">semnătura punct-la-punct conține o eroare</string>
+    <string name="crypto_msg_incomplete_signed">trebuie descărcat mesajul complet pentru a procesa semnătura</string>
+    <string name="crypto_msg_unsupported_signed">conține o semnătură punct-la-punct invalidă</string>
+    <string name="crypto_msg_unsupported_encrypted">Mesajul este criptat, dar este într-un format nesuportat.</string>
+    <string name="crypto_msg_cancelled">Mesajul este criptat, dar decriptarea a fost anulată.</string>
+    <string name="crypto_msg_title_unencrypted_signed_e2e">Text semnat Punct-la-Punct</string>
+    <string name="crypto_msg_unencrypted_sign_verified">de la semnatar verificat</string>
+    <string name="crypto_msg_title_unencrypted_signed">Text semnat</string>
+    <string name="crypto_msg_unencrypted_sign_mismatch">dar cheia punct-la-punct nu se potrivește cu expeditorul</string>
+    <string name="crypto_msg_unencrypted_sign_expired">dar cheia punct-la-punct a expirat</string>
+    <string name="crypto_msg_unencrypted_sign_revoked">dar cheia punct-la-punct a fost revocată</string>
+    <string name="crypto_msg_unencrypted_sign_insecure">dar cheia punct-la-punct nu e considerată sigură</string>
+    <string name="crypto_msg_unencrypted_sign_unknown">de la o cheie punct-la-punct necunoscută</string>
+    <string name="crypto_msg_title_encrypted_unknown">Criptat</string>
+    <string name="crypto_msg_encrypted_error">dar a apărut o eroare la decriptare</string>
+    <string name="crypto_msg_encrypted_incomplete">trebuie descărcat complet mesajul pentru decriptare</string>
+    <string name="crypto_msg_encrypted_no_provider">dar nu este configurată o aplicație de criptare</string>
+    <string name="crypto_msg_title_encrypted_unsigned">Criptat</string>
+    <string name="crypto_msg_encrypted_unsigned">dar nu punct-la-punct</string>
+    <string name="crypto_msg_title_encrypted_signed_e2e">Criptat Punct-la-Punct</string>
+    <string name="crypto_msg_encrypted_sign_verified">de la expeditor verificat</string>
+    <string name="crypto_msg_title_encrypted_signed">Criptat</string>
+    <string name="crypto_msg_encrypted_sign_unknown">de la o cheie punct-la-punct necunoscută</string>
+    <string name="crypto_msg_encrypted_sign_mismatch">dar cheia punct-la-punct nu se potrivește cu expeditorul</string>
+    <string name="crypto_msg_encrypted_sign_expired">dar cheia punct-la-punct a expirat</string>
+    <string name="crypto_msg_encrypted_sign_revoked">dar cheia punct-la-punct a fost revocată</string>
+    <string name="crypto_msg_encrypted_sign_insecure">dar cheia punct-la-punct nu e considerată sigură</string>
+    <string name="crypto_msg_encrypted_sign_error">dar datele punct-la-punct sunt eronate</string>
+    <string name="crypto_msg_encrypted_insecure">dar criptarea nu e considerată sigură</string>
+    <string name="crypto_info_ok">OK</string>
+    <string name="crypto_info_search_key">Caută Cheie</string>
+    <string name="crypto_info_view_signer">Vezi Semnatarul</string>
+    <string name="crypto_info_view_sender">Vezi Expeditorul</string>
+    <string name="crypto_info_view_security_warning">Detalii</string>
+    <string name="locked_attach_unlock">Deblochează</string>
+    <string name="locked_attach_unencrypted">Această parte nu a fost criptată și poate fi nesigură.</string>
+    <string name="locked_attach_title">Anexă neprotejată</string>
+    <string name="message_progress_text">Se încarcă…</string>
+    <string name="messageview_decrypt_cancelled">Decriptarea a fost întreruptă.</string>
+    <string name="messageview_decrypt_retry">Reîncearcă</string>
+    <string name="messageview_decrypt_incomplete">Mesajul criptat trebuie descărcat pentru decriptare.</string>
+    <string name="messageview_crypto_error_title">Eroare la decriptarea email-ului</string>
+    <string name="recipient_error_non_ascii">Caracterele speciale nu sunt suportate deocamdată!</string>
+    <string name="recipient_error_parse_failed">Eroare la citirea adresei!</string>
+    <string name="account_settings_crypto_hide_sign_only">Ascunde semnături necriptate</string>
+    <string name="account_settings_crypto_hide_sign_only_on">Doar semnăturile criptate vor fi afișate</string>
+    <string name="account_settings_crypto_hide_sign_only_off">Toate semnăturile vor fi afișate</string>
+    <string name="error_sign_only_no_encryption">Criptare indisponibilă în modul „Doar semnare”!</string>
+    <string name="unsigned_text_divider_label">Text nesemnat</string>
+    <string name="crypto_no_provider_title">Acest mesaj este criptat</string>
+    <string name="crypto_no_provider_message">Acest mesaj a fost criptat cu OpenPGP.\nPentru a-l citi trebuie să instalezi și să configurezi o aplicație OpenPGP compatibilă.</string>
+    <string name="crypto_no_provider_button">Mergi la Setări</string>
+    <string name="mail_list_widget_text">Listă mesaje K-9</string>
+    <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+    <string name="message_list_widget_initializing">Se încarcă…</string>
+    <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+    <string name="message_list_widget_list_item_loading">Se încarcă…</string>
+    <string name="openpgp_enabled_error_title">Criptarea nu este posibilă</string>
+    <string name="openpgp_enabled_error_msg">Unii dintre destinatarii selectați nu suportă această facilitate!</string>
+    <string name="enable_encryption">Activează criptarea</string>
+    <string name="disable_encryption">Dezactivează criptarea</string>
+    <string name="openpgp_description_text1">Criptarea mesajelor asigură că acestea pot fi citite doar de către destinatar, și nimeni altcineva.</string>
+    <string name="openpgp_description_text3">Criptarea va fi disponibilă doar dacă este suportată de toți destinatarii, iar ei trebuie să îți fi trimis un email anterior</string>
+    <string name="openpgp_description_text2">Schimbă criptarea apăsînd iconița</string>
+    <string name="openpgp_enabled_error_gotit">Am înțeles</string>
+    <string name="openpgp_enabled_error_back">Înapoi</string>
+    <string name="openpgp_enabled_error_disable">Dezactivează criptarea</string>
+    <string name="openpgp_encryption">Criptare OpenPGP</string>
+    <string name="account_settings_crypto_prefer_encrypt">Criptare automată în mod mutual</string>
+    <string name="dialog_autocrypt_mutual_title">Criptare automată în mod mutual</string>
+    <string name="dialog_autocrypt_mutual_description_1">Mesajele vor fi criptate la alegere, sau drept răspuns la un mesaj criptat</string>
+    <string name="dialog_autocrypt_mutual_description_2">Dacă atât expeditorul cât și destinatarul activează modul mutual, criptarea va fi activată implicit</string>
+    <string name="dialog_autocrypt_mutual_learn_more">Poți <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">apăsa aici</a> pentru mai multe informații.</string>
+    <string name="general_settings_title">Preferințe generale</string>
+    <string name="dialog_openkeychain_info_title">Nicio aplicație OpenPGP instalată</string>
+    <string name="dialog_openkeychain_info_install">Instalare</string>
+    <string name="dialog_openkeychain_info_text">K-9 Mail necesită OpenKeychain pentru criptarea punct-la-punct</string>
+    <string name="encrypted_subject">Mesaj Criptat</string>
+    <string name="account_settings_crypto_encrypt_subject">Criptează subiectele mesajelor</string>
+    <string name="account_settings_crypto_encrypt_subject_subtitle">Posibil să nu fie suportat la anumiți destinatari</string>
+    <string name="toast_account_not_found">Eroare internă: Cont invalid!</string>
+    <string name="toast_openpgp_provider_error">Eroare la conectarea la %s!</string>
+    <string name="ac_transfer_setting_title">Trimite Mesaj Setare Autocriptare</string>
+    <string name="ac_transfer_setting_summary">Distribuie în siguranță setarea punct-la-punct cu alte dispozitive</string>
+    <string name="ac_transfer_title">Mesaj Setare Autocriptare</string>
+    <string name="ac_transfer_intro">Un Mesaj Setare Autocriptare împarte în siguranță setările tale punct-la-punct cu alte dispozitive.</string>
+    <string name="ac_transfer_button_send">Trimite Mesaj Setare</string>
+    <string name="ac_transfer_will_be_sent">Mesajul va fi trimis la adresa ta:</string>
+    <string name="ac_transfer_generating">Generare mesaj setare…</string>
+    <string name="ac_transfer_sending_to">Se trimite mesaj la:</string>
+    <string name="ac_transfer_finish">Pentru a încheia, deschide mesajul pe celălalt dispozitiv și introdu codul de setare.</string>
+    <string name="ac_transfer_show_code">Arată Codul de Setare</string>
+    <string name="ac_transfer_msg_subject">Mesaj Setare Autocriptare</string>
+    <string name="ac_transfer_msg_body">Acest mesaj conține toată informația pentru transferul setărilor tale de Autocrypt împreună cu cheia ta secretă de la dispozitivul original.
 
 Pentru a seta noul dispozitiv cu Autocript, te rog urmărește indicațiile afișate de dispozitivul tău nou.
 
 Poți păstra acest mesaj și să îl folosești drept copie de siguranță a cheii tale secrete. Dacă vrei să faci asta, va trebui să-ți notezi o copie a parolei pe care să o păstrezi undeva în siguranță.
 </string>
-  <string name="ac_transfer_error_send">A apărut o eroare la trimiterea mesajului. Te rog verifică conexiunea la rețea și setările serverului de trimitere.</string>
-  <string name="switch_on">Pornit</string>
-  <string name="switch_off">Oprit</string>
-  <!--permissions-->
-  <string name="permission_contacts_rationale_title">Permite accesul contactelor</string>
-  <string name="permission_contacts_rationale_message">Pentru a putea oferi sugestii de contacte și a afișa numele și pozele contactelor, aplicația are nevoie de acces la contactele tale.</string>
-  <string name="generic_loading_error">A apărut o eroare la încărcarea datelor</string>
-  <string name="push_notification_state_initializing">Inițializare…</string>
-  <string name="push_notification_state_listening">Așteptând noi e-mailuri</string>
-  <string name="push_notification_state_wait_background_sync">Adormire până când este permisă sincronizarea în fundal</string>
-  <string name="push_notification_state_wait_network">În așteptare până când rețeaua este disponibilă</string>
-  <string name="push_notification_info">Apasă pentru a afla mai multe.</string>
-  <string name="push_info_title">Informații despre Push </string>
-  <string name="push_info_notification_explanation_text">Atunci când se utilizează Push, K-9 Mail menține o conexiune cu serverul de e-mail. Android necesită afișarea unei notificări în curs de desfășurare în timp ce aplicația este activă în fundal. %s</string>
-  <string name="push_info_configure_notification_text">Cu toate acestea, Android permite, de asemenea, ascunderea notificării.</string>
-  <string name="push_info_learn_more_text">Află mai multe</string>
-  <string name="push_info_configure_notification_action">Configurează notificarea</string>
-  <string name="push_info_disable_push_text">Dacă nu ai nevoie de notificări instantanee cu privire la mesajele noi, dezactivează funcția Push și utilizează funcția Sondaj. Sondaj verifică dacă există mesaje noi la intervale regulate și nu are nevoie de notificare.</string>
-  <string name="push_info_disable_push_action">Dezactivare Push</string>
-  <!--Name of the swipe action to select a message. Try to keep it short.-->
-  <string name="swipe_action_select">Selectează</string>
-  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-  <string name="swipe_action_deselect">Deselectează</string>
-  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-  <string name="swipe_action_mark_as_read">Marchează ca citit</string>
-  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-  <string name="swipe_action_mark_as_unread">Marchează ca necitit</string>
-  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-  <string name="swipe_action_add_star">Adaugă steluță</string>
-  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-  <string name="swipe_action_remove_star">Șterge steluță</string>
-  <!--Name of the swipe action to archive a message. Try to keep it short.-->
-  <string name="swipe_action_archive">Arhivă</string>
-  <!--Name of the swipe action to delete a message. Try to keep it short.-->
-  <string name="swipe_action_delete">Şterge</string>
-  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-  <string name="swipe_action_spam">Spam</string>
-  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-  <string name="swipe_action_move">Mutare…</string>
-  <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
-  <string name="general_settings_show_compose_button_title">Afișează butonul flotant de compunere</string>
-  <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
-  <string name="message_list_error_title">Eroare</string>
-  <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
-  <string name="message_list_error_folder_not_found">Nu s-a găsit dosarul</string>
-  <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
-  <string name="message_details_toolbar_title">Detalii despre mesaj</string>
-  <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
-  <string name="message_details_missing_date">Lipsește antetul \'Data\'</string>
-  <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
-  <string name="message_details_from_section_title">De la</string>
-  <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
-  <string name="message_details_sender_section_title">Expeditor</string>
-  <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
-  <string name="message_details_replyto_section_title">Răspunde la</string>
-  <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
-  <string name="message_details_to_section_title">Către</string>
-  <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
-  <string name="message_details_cc_section_title">Cc</string>
-  <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
-  <string name="message_details_bcc_section_title">Bcc</string>
-  <!--Displayed when loading the message details has failed-->
-  <string name="message_details_loading_error">S-a produs o eroare la încărcarea detaliilor mesajului.</string>
-  <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-  <string name="action_add_to_contacts">Adaugă din contacte</string>
-  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-  <string name="action_compose_message_to">Compune mesaj pentru</string>
-  <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-  <string name="action_copy_email_address">Copiază adresa de e-mail</string>
-  <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-  <string name="action_copy_name_and_email_address">Copiază numele și adresa de e-mail</string>
-  <!--A user visible label for the email address copied to the clipboard-->
-  <string name="clipboard_label_email_address">Adresa e-mail</string>
-  <!--A user visible label for the name and email address copied to the clipboard-->
-  <string name="clipboard_label_name_and_email_address">Numele și adresa de e-mail</string>
-  <!--Might be displayed in a notification when deleting an account (in the background)-->
-  <string name="background_work_notification_remove_account">Se elimină contul…</string>
-  <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
-  <string name="message_list_content_description_unread_prefix">necitit, %s</string>
+    <string name="ac_transfer_error_send">A apărut o eroare la trimiterea mesajului. Te rog verifică conexiunea la rețea și setările serverului de trimitere.</string>
+    <string name="switch_on">Pornit</string>
+    <string name="switch_off">Oprit</string>
+    <!--permissions-->
+    <string name="permission_contacts_rationale_title">Permite accesul contactelor</string>
+    <string name="permission_contacts_rationale_message">Pentru a putea oferi sugestii de contacte și a afișa numele și pozele contactelor, aplicația are nevoie de acces la contactele tale.</string>
+    <string name="generic_loading_error">A apărut o eroare la încărcarea datelor</string>
+    <string name="push_notification_state_initializing">Inițializare…</string>
+    <string name="push_notification_state_listening">Așteptând noi e-mailuri</string>
+    <string name="push_notification_state_wait_background_sync">Adormire până când este permisă sincronizarea în fundal</string>
+    <string name="push_notification_state_wait_network">În așteptare până când rețeaua este disponibilă</string>
+    <string name="push_notification_info">Apasă pentru a afla mai multe.</string>
+    <string name="push_info_title">Informații despre Push </string>
+    <string name="push_info_notification_explanation_text">Atunci când se utilizează Push, K-9 Mail menține o conexiune cu serverul de e-mail. Android necesită afișarea unei notificări în curs de desfășurare în timp ce aplicația este activă în fundal. %s</string>
+    <string name="push_info_configure_notification_text">Cu toate acestea, Android permite, de asemenea, ascunderea notificării.</string>
+    <string name="push_info_learn_more_text">Află mai multe</string>
+    <string name="push_info_configure_notification_action">Configurează notificarea</string>
+    <string name="push_info_disable_push_text">Dacă nu ai nevoie de notificări instantanee cu privire la mesajele noi, dezactivează funcția Push și utilizează funcția Sondaj. Sondaj verifică dacă există mesaje noi la intervale regulate și nu are nevoie de notificare.</string>
+    <string name="push_info_disable_push_action">Dezactivare Push</string>
+    <!--Name of the swipe action to select a message. Try to keep it short.-->
+    <string name="swipe_action_select">Selectează</string>
+    <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+    <string name="swipe_action_deselect">Deselectează</string>
+    <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+    <string name="swipe_action_mark_as_read">Marchează ca citit</string>
+    <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+    <string name="swipe_action_mark_as_unread">Marchează ca necitit</string>
+    <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+    <string name="swipe_action_add_star">Adaugă steluță</string>
+    <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+    <string name="swipe_action_remove_star">Șterge steluță</string>
+    <!--Name of the swipe action to archive a message. Try to keep it short.-->
+    <string name="swipe_action_archive">Arhivă</string>
+    <!--Name of the swipe action to delete a message. Try to keep it short.-->
+    <string name="swipe_action_delete">Şterge</string>
+    <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+    <string name="swipe_action_spam">Spam</string>
+    <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+    <string name="swipe_action_move">Mutare…</string>
+    <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+    <string name="general_settings_show_compose_button_title">Afișează butonul flotant de compunere</string>
+    <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+    <string name="message_list_error_title">Eroare</string>
+    <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+    <string name="message_list_error_folder_not_found">Nu s-a găsit dosarul</string>
+    <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+    <string name="message_details_toolbar_title">Detalii despre mesaj</string>
+    <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+    <string name="message_details_missing_date">Lipsește antetul \'Data\'</string>
+    <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
+    <string name="message_details_from_section_title">De la</string>
+    <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
+    <string name="message_details_sender_section_title">Expeditor</string>
+    <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
+    <string name="message_details_replyto_section_title">Răspunde la</string>
+    <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
+    <string name="message_details_to_section_title">Către</string>
+    <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
+    <string name="message_details_cc_section_title">Cc</string>
+    <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
+    <string name="message_details_bcc_section_title">Bcc</string>
+    <!--Displayed when loading the message details has failed-->
+    <string name="message_details_loading_error">S-a produs o eroare la încărcarea detaliilor mesajului.</string>
+    <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    <string name="action_add_to_contacts">Adaugă din contacte</string>
+    <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    <string name="action_compose_message_to">Compune mesaj pentru</string>
+    <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    <string name="action_copy_email_address">Copiază adresa de e-mail</string>
+    <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    <string name="action_copy_name_and_email_address">Copiază numele și adresa de e-mail</string>
+    <!--A user visible label for the email address copied to the clipboard-->
+    <string name="clipboard_label_email_address">Adresa e-mail</string>
+    <!--A user visible label for the name and email address copied to the clipboard-->
+    <string name="clipboard_label_name_and_email_address">Numele și adresa de e-mail</string>
+    <!--Might be displayed in a notification when deleting an account (in the background)-->
+    <string name="background_work_notification_remove_account">Se elimină contul…</string>
+    <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+    <string name="message_list_content_description_unread_prefix">necitit, %s</string>
 </resources>

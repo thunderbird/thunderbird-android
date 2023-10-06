@@ -1,1002 +1,1002 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <!--=== App-specific strings =============================================================-->
-  <!--This should make it easier for forks to change the branding-->
-  <!--Used in AndroidManifest.xml-->
-  <string name="app_name">K-9 Mail</string>
-  <string name="shortcuts_title">കെ-9 അക്കൗണ്ടുകൾ</string>
-  <string name="unread_widget_label">കെ-9 വായിക്കാത്തവ</string>
-  <!--Used in the about dialog-->
-  <string name="app_authors">The K-9 Dog Walkers</string>
-  <string name="source_code">സോഴ്സ് കോഡ്</string>
-  <string name="app_license">അപ്പാച്ചെ ലൈസൻസ്, പതിപ്പ് 2.0</string>
-  <string name="about_project_title">ഓപ്പൺ സോഴ്സ് പ്രോജക്റ്റ്</string>
-  <string name="about_website_title">വെബ്സൈറ്റ്</string>
-  <string name="user_forum_title">ഉപയോക്തൃ ഫോറം</string>
-  <string name="about_fediverse_title">ഫെഡിവേഴ്സ്</string>
-  <string name="about_twitter_title">ട്വിറ്റർ</string>
-  <string name="about_libraries">ലൈബ്രറികൾ</string>
-  <string name="license">ലൈസൻസ്</string>
-  <string name="changelog_title">ചെയ്ഞ്ച്‍ലോഗ്</string>
-  <string name="changelog_loading_error">ചെയ്ഞ്ച്‍ലോഗ് ലോഡു ചെയ്യാനായില്ല.</string>
-  <string name="changelog_version_title">പതിപ്പ് %s</string>
-  <string name="changelog_recent_changes_title">എന്താണ് പുതിയത്</string>
-  <string name="changelog_show_recent_changes">ആപ്പ് അപ്‌ഡേറ്റ് ചെയ്യുമ്പോൾ സമീപകാല മാറ്റങ്ങൾ കാണിക്കുക</string>
-  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
-  <string name="changelog_snackbar_text">ഈ റിലീസിൽ പുതിയത് എന്താണെന്ന് കണ്ടെത്തുക</string>
-  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-  <!--Default signature-->
-  <string name="default_signature">-- \nകെ-9 മെയിൽ ഉപയോഗിച്ച് എന്റെ ആൻഡ്രോയിഡിൽ നിന്നും അയച്ചത്. ദയവായി എന്റെ പദപ്രയോഗമിതത്വം ക്ഷമിക്കുക.</string>
-  <!--General strings that include the app name-->
-  <string name="account_delete_dlg_instructions_fmt">കെ-9 മെയിലിൽ നിന്ന്  \"<xliff:g id="account">%s</xliff:g>\" അക്കൗണ്ട് നീക്കംചെയ്യും. </string>
-  <!--=== General strings ==================================================================-->
-  <string name="authors">രചയിതാക്കൾ</string>
-  <string name="about_title">കെ-9 മെയിലിനെക്കുറിച്ച്</string>
-  <string name="accounts_title">അക്കൗണ്ടുകൾ</string>
-  <string name="advanced">വിപുലമായത്</string>
-  <string name="compose_title_compose">രചിക്കുക</string>
-  <string name="compose_title_reply">മറുപടി പറയുക</string>
-  <string name="compose_title_reply_all">എല്ലാത്തിനും മറുപടി പറയുക</string>
-  <string name="compose_title_forward">ഫോർവേഡ് ചെയ്യുക</string>
-  <string name="compose_title_forward_as_attachment">അറ്റാച്ചുമെന്റായി ഫോർവേഡ് ചെയ്യുക</string>
-  <string name="choose_account_title">അക്കൗണ്ട് തിരഞ്ഞെടുക്കുക</string>
-  <string name="choose_folder_title">ഫോൾഡർ തിരഞ്ഞെടുക്കുക</string>
-  <string name="choose_folder_move_title">ഇതിലേക്ക് നീക്കുക…</string>
-  <string name="choose_folder_copy_title">ഇതിലേക്ക് പകർത്തുക…</string>
-  <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> തിരഞ്ഞെടുത്തു</string>
-  <string name="next_action">അടുത്തത്</string>
-  <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-  <string name="okay_action">ശരി</string>
-  <string name="cancel_action">റദ്ദാക്കുക</string>
-  <string name="send_action">അയയ്ക്കുക</string>
-  <string name="empty_subject">വിഷയം ശൂന്യമാണ്, ഏതുവിധേനയും അയയ്‌ക്കാൻ വീണ്ടും ക്ലിക്കുചെയ്യുക</string>
-  <string name="reply_action">മറുപടി പറയുക</string>
-  <string name="reply_all_action">എല്ലാത്തിനും മറുപടി പറയുക</string>
-  <string name="delete_action">ഇല്ലാതാക്കുക</string>
-  <string name="archive_action">ശേഖരം</string>
-  <string name="spam_action">സ്പാം</string>
-  <string name="forward_action">ഫോർവേഡ് ചെയ്യുക</string>
-  <string name="forward_as_attachment_action">അറ്റാച്ചുമെന്റായി ഫോർവേഡ് ചെയ്യുക</string>
-  <string name="edit_as_new_message_action">പുതിയ സന്ദേശമായി എഡിറ്റ് ചെയ്യുക</string>
-  <string name="move_action">നീക്കുക</string>
-  <string name="move_to_drafts_action">ഡ്രാഫ്റ്റുകളിലേക്ക് നീക്കുക</string>
-  <string name="refile_action">പുതുക്കുക…</string>
-  <string name="done_action">ചെയ്തു</string>
-  <string name="discard_action">നിരസിക്കുക</string>
-  <string name="save_draft_action">ഡ്രാഫ്റ്റായി സേവ് ചെയ്യുക</string>
-  <string name="check_mail_action">മെയിൽ പരിശോധിക്കുക</string>
-  <string name="send_messages_action">സന്ദേശങ്ങൾ അയയ്ക്കുക</string>
-  <string name="refresh_folders_action">ഫോൾഡർ ലിസ്റ്റ് പുതുക്കുക</string>
-  <string name="filter_folders_action">ഫോൾഡർ തിരയുക</string>
-  <string name="add_account_action">അക്കൗണ്ട് ചേർക്കുക</string>
-  <string name="compose_action">രചിക്കുക</string>
-  <string name="search_action">തിരയുക</string>
-  <string name="search_everywhere_action">എല്ലായിടത്തും തിരയുക</string>
-  <string name="search_results">ഫലങ്ങൾ തിരയുക</string>
-  <string name="new_messages_title">പുതിയ സന്ദേശങ്ങൾ</string>
-  <string name="preferences_action">സജ്ജീകരണങ്ങൾ</string>
-  <string name="folders_action">ഫോൾഡറുകൾ നിയന്ത്രിക്കുക</string>
-  <string name="account_settings_action">അക്കൗണ്ട് സജ്ജീകരണങ്ങൾ</string>
-  <string name="remove_account_action">അക്കൗണ്ട് നീക്കംചെയ്യുക</string>
-  <string name="mark_as_read_action">വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
-  <string name="send_alternate_action">പങ്കിടുക</string>
-  <string name="send_alternate_chooser_title">പ്രേക്ഷകനെ തിരഞ്ഞെടുക്കുക</string>
-  <string name="flag_action">നക്ഷത്രം ചേർക്കുക</string>
-  <string name="unflag_action">നക്ഷത്രം കളയുക</string>
-  <string name="copy_action">പകർത്തുക</string>
-  <string name="show_headers_action">തലക്കെട്ടുകൾ പ്രദർശിപ്പിക്കുക</string>
-  <plurals name="copy_address_to_clipboard">
-    <item quantity="one">വിലാസം ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തി</item>
-    <item quantity="other">വിലാസങ്ങൾ ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തി</item>
-  </plurals>
-  <string name="copy_subject_to_clipboard">വിഷയ വാചകം ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തി</string>
-  <string name="message_view_theme_action_dark">ഇരുണ്ട തീമിലേക്ക് മാറുക</string>
-  <string name="message_view_theme_action_light">ലൈറ്റ് തീമിലേക്ക് മാറുക</string>
-  <string name="mark_as_unread_action">വായിക്കാത്തതായി അടയാളപ്പെടുത്തുക</string>
-  <string name="read_receipt">വായിച്ചു എന്ന അറിയിപ്പ്</string>
-  <string name="read_receipt_enabled">വായിച്ചു എന്ന അറിയിപ്പിനായി അപേക്ഷിക്കും</string>
-  <string name="read_receipt_disabled">വായിച്ചു എന്ന അറിയിപ്പിനായി അപേക്ഷിക്കില്ല</string>
-  <string name="add_attachment_action">അറ്റാച്ചുമെന്റ് ചേർക്കുക</string>
-  <string name="empty_trash_action">ചവറ്റുകുട്ട ശൂന്യമാക്കുക</string>
-  <string name="expunge_action">വിപുലീകരിക്കുക</string>
-  <string name="about_action">കുറിച്ച്</string>
-  <string name="prefs_title">സജ്ജീകരണങ്ങൾ</string>
-  <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
-  <string name="general_no_subject">(No subject)</string>
-  <string name="general_no_sender">പ്രക്ഷകൻ ഇല്ല</string>
-  <string name="status_loading_more">സന്ദേശങ്ങൾ ലോഡുചെയ്യുന്നു\u2026</string>
-  <string name="status_network_error">കണക്ഷൻ തകരാറ്</string>
-  <string name="status_invalid_id_error">സന്ദേശം കണ്ടെത്താനായില്ല</string>
-  <string name="status_loading_error">സന്ദേശം ലോഡുചെയ്യുന്നതിൽ പിശക്</string>
-  <string name="load_more_messages_fmt"><xliff:g id="messages_to_load">%d</xliff:g> വരെ ലോഡുചെയ്യുക</string>
-  <string name="size_format_gigabytes">%.1f GB</string>
-  <string name="size_format_megabytes">%.1f MB</string>
-  <string name="size_format_kilobytes">%.1f kB</string>
-  <string name="size_format_bytes">%d B</string>
-  <plurals name="notification_new_messages_title">
-    <item quantity="one">പുതിയ <xliff:g id="new_message_count">%d</xliff:g> സന്ദേശം</item>
-    <item quantity="other">പുതിയ <xliff:g id="new_message_count">%d</xliff:g> സന്ദേശങ്ങൾ</item>
-  </plurals>
-  <string name="notification_additional_messages">+<xliff:g id="additional_messages">%1$d</xliff:g> <xliff:g id="account">%2$s</xliff:g> ൽ കൂടുതൽ</string>
-  <string name="notification_action_reply">മറുപടി പറയുക</string>
-  <string name="notification_action_mark_as_read">വായന അടയാളപ്പെടുത്തുക</string>
-  <string name="notification_action_mark_all_as_read">എല്ലാത്തിലും വായന അടയാളപ്പെടുത്തുക</string>
-  <string name="notification_action_delete">ഇല്ലാതാക്കുക</string>
-  <string name="notification_action_delete_all">എല്ലാം ഇല്ലാതാക്കുക</string>
-  <string name="notification_action_archive">ശേഖരം</string>
-  <string name="notification_action_archive_all">എല്ലാം ശേഖരത്തിൽ ചേർക്കുക</string>
-  <string name="notification_action_spam">സ്പാം</string>
-  <string name="notification_certificate_error_public">സർട്ടിഫിക്കറ്റ് പിശക്</string>
-  <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g>നുള്ള സർട്ടിഫിക്കറ്റ് പിശക്</string>
-  <string name="notification_certificate_error_text">നിങ്ങളുടെ സെർവർ ക്രമീകരണങ്ങൾ പരിശോധിക്കുക</string>
-  <string name="notification_authentication_error_title">പ്രാമാണീകരണം പരാജയപ്പെട്ടു</string>
-  <string name="notification_authentication_error_text"><xliff:g id="account">%s</xliff:g> നായുള്ള പ്രാമാണീകരണം പരാജയപ്പെട്ടു. നിങ്ങളുടെ സെർവർ ക്രമീകരണങ്ങൾ പുതുക്കുക.</string>
-  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
-  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-  <string name="notification_bg_sync_ticker">മെയിൽ പരിശോധിക്കുന്നു: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
-  <string name="notification_bg_sync_title">മെയിൽ പരിശോധിക്കുന്നു</string>
-  <string name="notification_bg_send_ticker">മെയിൽ അയയ്ക്കുന്നു: <xliff:g id="account">%s</xliff:g></string>
-  <string name="notification_bg_send_title">മെയിൽ അയയ്ക്കുന്നു</string>
-  <string name="notification_bg_title_separator">:</string>
-  <string name="notification_channel_push_title">സമന്വയിപ്പിക്കുക (പുഷ്)</string>
-  <string name="notification_channel_push_description">പുതിയ സന്ദേശങ്ങൾക്കായി കാത്തിരിക്കുമ്പോൾ പ്രദർശിപ്പിക്കുന്നു</string>
-  <string name="notification_channel_messages_title">സന്ദേശങ്ങൾ</string>
-  <string name="notification_channel_messages_description">സന്ദേശങ്ങളുമായി ബന്ധപ്പെട്ട അറിയിപ്പുകൾ</string>
-  <string name="notification_channel_miscellaneous_title">പലവക</string>
-  <string name="notification_channel_miscellaneous_description">പിശകുകൾ പോലുള്ള പലവിധ അറിയിപ്പുകൾ.</string>
-  <string name="special_mailbox_name_inbox">ഇൻബോക്സ്</string>
-  <string name="special_mailbox_name_outbox">ഔട്ട്ബോക്സ്</string>
-  <string name="special_mailbox_name_drafts">ഡ്രാഫ്റ്റുകൾ</string>
-  <string name="special_mailbox_name_trash">ചവറ്റുകുട്ട</string>
-  <string name="special_mailbox_name_sent">അയച്ചവ</string>
-  <string name="send_failure_subject">ചില സന്ദേശങ്ങൾ അയയ്ക്കുന്നതിൽ പരാജയപ്പെട്ടു</string>
-  <string name="version">പതിപ്പ്</string>
-  <string name="debug_enable_debug_logging_title">ഡീബഗ് ലോഗിംഗ് പ്രാപ്തമാക്കുക</string>
-  <string name="debug_enable_debug_logging_summary">അധിക ഡയഗ്നോസ്റ്റിക് വിവരങ്ങൾ ലോഗ് ചെയ്യുക </string>
-  <string name="debug_enable_sensitive_logging_title">തന്ത്രപ്രധാനമായ വിവരങ്ങൾ ലോഗ് ചെയ്യുക</string>
-  <string name="debug_enable_sensitive_logging_summary">പാസ്‌വേഡുകൾ ലോഗുകളിൽ കാണിച്ചേക്കാം.</string>
-  <string name="debug_export_logs_title">ലോഗുകൾ എക്സ്പോർട്ട് ചെയ്യുക</string>
-  <string name="debug_export_logs_success">എക്സ്പോർട്ട് പൂർത്തിയായി. ലോഗുകളിൽ തന്ത്രപ്രധാനമായ വിവരങ്ങൾ അടങ്ങിയിരിക്കാം. നിങ്ങൾ അവ ആർക്കാണ് അയയ്ക്കുന്നത് എന്ന് ശ്രദ്ധിക്കുക.</string>
-  <string name="debug_export_logs_failure">എക്സ്പോർട്ട് പരാജയപ്പെട്ടു.</string>
-  <string name="message_list_load_more_messages_action">കൂടുതൽ സന്ദേശങ്ങൾ ലോഡുചെയ്യുക</string>
-  <string name="message_to_fmt">സ്വീകർത്താവ്:<xliff:g id="counterParty">%s</xliff:g></string>
-  <string name="message_compose_subject_hint">വിഷയം</string>
-  <string name="message_compose_content_hint">സന്ദേശ വാചകം</string>
-  <string name="message_compose_signature_hint">ഒപ്പ്</string>
-  <string name="message_compose_quote_header_separator">-------- യഥാർത്ഥ സന്ദേശം --------</string>
-  <string name="message_compose_quote_header_subject">വിഷയം:</string>
-  <string name="message_compose_quote_header_send_date">അയച്ചു:</string>
-  <string name="message_compose_quote_header_from">പ്രേഷിതാവ്:</string>
-  <string name="message_compose_quote_header_to">സ്വീകർത്താവ്:</string>
-  <string name="message_compose_quote_header_cc">Cc:</string>
-  <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> എഴുതി</string>
-  <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g>ൽ എഴുതി</string>
-  <string name="message_compose_error_no_recipients">നിങ്ങൾ ഒരു സ്വീകർത്താവിനെയെങ്കിലും ചേർക്കണം.</string>
-  <string name="compose_error_incomplete_recipient">സ്വീകർത്താവ് ഫീൽഡിൽ അപൂർണ്ണമായ ഇൻപുട്ട് അടങ്ങിയിരിക്കുന്നു!</string>
-  <string name="error_contact_address_not_found">ഈ കോൺ‌ടാക്റ്റിനായി ഒരു ഇമെയിൽ വിലാസവും കണ്ടെത്താനായില്ല.</string>
-  <string name="message_compose_attachments_skipped_toast">ചില അറ്റാച്ചുമെന്റുകൾ ഡൗൺലോഡ് ചെയ്യാത്തതിനാൽ അവ കൈമാറാൻ കഴിയില്ല.</string>
-  <string name="message_compose_attachments_forward_toast">ചില അറ്റാച്ചുമെന്റുകൾ ഡൗൺലോഡ് ചെയ്യാത്തതിനാൽ സന്ദേശം കൈമാറാൻ കഴിയില്ല.</string>
-  <string name="message_compose_show_quoted_text_action">ഉദ്ധരിച്ച സന്ദേശം ഉൾപ്പെടുത്തുക</string>
-  <string name="message_compose_description_delete_quoted_text">ഉദ്ധരിച്ച വാചകം നീക്കംചെയ്യുക</string>
-  <string name="message_compose_description_edit_quoted_text">ഉദ്ധരിച്ച വാചകം എഡിറ്റുചെയ്യുക</string>
-  <string name="remove_attachment_action">അറ്റാച്ചുമെന്റ് നീക്കംചെയ്യുക</string>
-  <string name="message_to_label">സ്വീകർത്താവ്:</string>
-  <string name="message_view_cc_label">Cc:</string>
-  <string name="message_view_bcc_label">Bcc:</string>
-  <string name="message_view_status_attachment_not_saved">അറ്റാച്ചുമെന്റ് സേവ് ചെയ്യാനായില്ല.</string>
-  <!--Used to display the recipient list in the message view screen.-->
-  <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
-  <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
-  <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
-  <string name="message_view_no_viewer"><xliff:g id="mimetype">%s</xliff:g> എന്നതിനുള്ള വീക്ഷണസഹായസാമഗ്രി കണ്ടെത്താനായില്ല.</string>
-  <string name="message_view_download_remainder">പൂർണ്ണ സന്ദേശം ഡൗൺ‌ലോഡു ചെയ്യുക</string>
-  <string name="message_view_sender_label">%1$s വഴി</string>
-  <string name="from_same_sender">ഈ അയച്ചയാളിൽ നിന്ന് കൂടുതൽ</string>
-  <string name="message_discarded_toast">സന്ദേശം നിരസിച്ചു</string>
-  <string name="message_saved_toast">സന്ദേശം ഡ്രാഫ്റ്റായി സംരക്ഷിച്ചു</string>
-  <string name="global_settings_flag_label">നക്ഷത്രങ്ങൾ കാണിക്കുക</string>
-  <string name="global_settings_flag_summary">ഫ്ലാഗുചെയ്‌ത സന്ദേശങ്ങളെ നക്ഷത്രങ്ങൾ സൂചിപ്പിക്കുന്നു</string>
-  <string name="global_settings_preview_lines_label">വരികൾ പ്രദർശിപ്പിക്കുക</string>
-  <string name="global_settings_show_correspondent_names_label">ലേഖകരുടെ പേരുകൾ പ്രദർശിപ്പിക്കുക</string>
-  <string name="global_settings_show_correspondent_names_summary">ലേഖകരുടെ പേരുകൾ അവരുടെ ഇമെയിൽ വിലാസങ്ങളേക്കാൾ കാണിക്കുക</string>
-  <string name="global_settings_sender_above_subject_label">വിഷയത്തിന് മുകളിൽ ലേഖകൻ</string>
-  <string name="global_settings_sender_above_subject_summary">വിഷയവരിക്ക് താഴെയല്ല, പകരം ലേഖകന്റെ പേരുകൾ മുകളിൽ കാണിക്കുക</string>
-  <string name="global_settings_show_contact_name_label">കോൺ‌ടാക്റ്റ് പേരുകൾ കാണിക്കുക</string>
-  <string name="global_settings_show_contact_name_summary">ലഭ്യമാകുമ്പോൾ കോൺടാക്റ്റുകളിൽ നിന്ന് സ്വീകർത്താവിന്റെ പേരുകൾ ഉപയോഗിക്കുക</string>
-  <string name="global_settings_registered_name_color_label">കോൺ‌ടാക്റ്റുകൾ‌ വർണ്ണിക്കുക</string>
-  <string name="global_settings_registered_name_color_changed">നിങ്ങളുടെ കോൺ‌ടാക്റ്റ് പട്ടികയിൽ‌ പേരുകൾ‌ വർ‌ണ്ണമാക്കുക</string>
-  <string name="general_settings_contact_name_color_label">കോൺടാക്റ്റ് പേരിന്റെ നിറം</string>
-  <string name="global_settings_messageview_fixedwidth_label">നിശ്ചിത-വീതിയുള്ള ഫോണ്ടുകൾ</string>
-  <string name="global_settings_messageview_fixedwidth_summary">പ്ലെയിൻ-ടെക്സ്റ്റ് സന്ദേശങ്ങൾ കാണിക്കുമ്പോൾ ഒരു നിശ്ചിത-വീതിയുള്ള ഫോണ്ട് ഉപയോഗിക്കുക</string>
-  <string name="global_settings_messageview_autofit_width_label">യാന്ത്രികയോജക സന്ദേശങ്ങൾ</string>
-  <string name="global_settings_messageview_autofit_width_summary">സ്‌ക്രീനിന് അനുയോജ്യമായ രീതിയിൽ സന്ദേശങ്ങൾ ചുരുക്കുക</string>
-  <string name="global_settings_confirm_actions_title">പ്രവർത്തനങ്ങൾ സ്ഥിരീകരിക്കുക</string>
-  <string name="global_settings_confirm_actions_summary">നിങ്ങൾ തിരഞ്ഞെടുത്ത പ്രവർത്തനങ്ങൾ നടത്തുമ്പോഴെല്ലാം ഒരു ഡയലോഗ് കാണിക്കുക</string>
-  <string name="global_settings_confirm_action_delete">ഇല്ലാതാക്കുക</string>
-  <string name="global_settings_confirm_action_delete_starred">നക്ഷത്രമിട്ടത് ഇല്ലാതാക്കുക (സന്ദേശ കാഴ്‌ചയിൽ)</string>
-  <string name="global_settings_confirm_action_spam">സ്പാം</string>
-  <string name="global_settings_confirm_menu_discard">സന്ദേശം നിരസിക്കുക</string>
-  <string name="global_settings_confirm_menu_mark_all_read">എല്ലാ സന്ദേശങ്ങളും വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
-  <string name="global_settings_confirm_action_delete_notif">ഇല്ലാതാക്കുക (അറിയിപ്പിൽ നിന്ന്)</string>
-  <!--Title of the screen to configure swipe actions-->
-  <!--Name of the setting to configure the right swipe action-->
-  <!--Name of the setting to configure the left swipe action-->
-  <!--The list item users select to not use a swipe action for a particular direction-->
-  <string name="general_settings_swipe_action_none">ഒന്നുമില്ല</string>
-  <!--Name of the swipe action to select/deselect a message-->
-  <!--Name of the swipe action to mark as message as read/unread-->
-  <!--Name of the swipe action to add/remove a star-->
-  <!--Name of the swipe action to archive a message-->
-  <string name="general_settings_swipe_action_archive">ശേഖരം</string>
-  <!--Name of the swipe action to delete a message-->
-  <string name="general_settings_swipe_action_delete">ഇല്ലാതാക്കുക</string>
-  <!--Name of the swipe action to move a message to the spam folder-->
-  <string name="general_settings_swipe_action_spam">സ്പാം</string>
-  <!--Name of the swipe action to move a message to another folder-->
-  <string name="general_settings_swipe_action_move">നീക്കുക</string>
-  <!--Title of the setting to specify the density of the message list-->
-  <string name="general_settings_ui_density_default">സ്ഥിരസ്ഥിതി</string>
-  <string name="global_settings_privacy_hide_useragent">മെയിൽ ക്ലയന്റ് മറയ്‌ക്കുക</string>
-  <string name="global_settings_privacy_hide_useragent_detail">മെയിൽ തലക്കെട്ടുകളിൽ നിന്ന് കെ-9 യൂസർ-ഏജന്റിനെ നീക്കം ചെയ്യുക</string>
-  <string name="global_settings_privacy_hide_timezone">സമയ മേഖല മറയ്ക്കൂ</string>
-  <string name="global_settings_privacy_hide_timezone_detail">മെയിൽ‌ തലക്കെട്ടുകളിലും മറുപടി ശീർ‌ഷകത്തിലും പ്രാദേശിക സമയമേഖലയ്‌ക്ക് പകരം യു‌ടി‌സി ഉപയോഗിക്കുക, </string>
-  <string name="global_settings_notification_quick_delete_title">\'ഇല്ലാതാക്കുക\' ബട്ടൺ കാണിക്കുക</string>
-  <string name="global_settings_notification_quick_delete_never">ഒരിക്കലും</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">ഒരൊറ്റ സന്ദേശ അറിയിപ്പിനായി</string>
-  <string name="global_settings_notification_quick_delete_always">എല്ലായ്പ്പോഴും</string>
-  <string name="global_settings_lock_screen_notification_visibility_title">ലോക്ക് സ്ക്രീൻ അറിയിപ്പുകൾ</string>
-  <string name="global_settings_lock_screen_notification_visibility_nothing">ലോക്ക് സ്ക്രീൻ അറിയിപ്പുകളൊന്നുമില്ല</string>
-  <string name="global_settings_lock_screen_notification_visibility_app_name">അപ്ലിക്കേഷന്റെ പേര്</string>
-  <string name="global_settings_lock_screen_notification_visibility_message_count">പുതിയ സന്ദേശങ്ങളുടെ എണ്ണം</string>
-  <string name="global_settings_lock_screen_notification_visibility_senders">സന്ദേശങ്ങളുടെ എണ്ണവും അയച്ചവരും</string>
-  <string name="global_settings_lock_screen_notification_visibility_everything">സ്‌ക്രീൻ അൺലോക്കുചെയ്‌തതിന് സമാനമാണ്</string>
-  <string name="quiet_time">ശാന്തമായ സമയം</string>
-  <string name="quiet_time_description">രാത്രിയിൽ റിംഗുചെയ്യൽ, ശബ്‌ദം, മിന്നൽ എന്നിവ പ്രവർത്തനരഹിതമാക്കുക</string>
-  <string name="quiet_time_notification">അറിയിപ്പുകൾ പ്രവർത്തനരഹിതമാക്കുക</string>
-  <string name="quiet_time_notification_description">ശാന്തമായ സമയത്ത് അറിയിപ്പുകൾ പൂർണ്ണമായും അപ്രാപ്തമാക്കുക</string>
-  <string name="quiet_time_starts">ശാന്തമായ സമയം ആരംഭിക്കുന്നു</string>
-  <string name="quiet_time_ends">ശാന്തമായ സമയം അവസാനിക്കുന്നു</string>
-  <string name="account_setup_basics_title">ഒരു പുതിയ അക്കൗണ്ട് സജ്ജമാക്കുക</string>
-  <string name="account_setup_basics_email_hint">ഇമെയിൽ വിലാസം</string>
-  <string name="account_setup_basics_password_hint">രഹസ്യവാചകം</string>
-  <!--Displayed below the 'account_setup_oauth_description' text-->
-  <!--Displayed below the 'account_setup_oauth_description' text-->
-  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-  <string name="account_setup_basics_show_password_need_lock">നിങ്ങളുടെ പാസ്‌വേഡ് ഇവിടെ കാണുന്നതിന്, ഈ ഉപകരണത്തിൽ സ്‌ക്രീൻ ലോക്ക് പ്രവർത്തനക്ഷമമാക്കുക.</string>
-  <string name="account_setup_basics_show_password_biometrics_title">നിങ്ങളുടെ ഐഡന്റിറ്റി പരിശോധിച്ചുറപ്പിക്കുക</string>
-  <string name="account_setup_basics_show_password_biometrics_subtitle">നിങ്ങളുടെ പാസ്‌വേഡ് കാണുന്നതിന് അൺലോക്ക് ചെയ്യുക</string>
-  <string name="account_setup_basics_manual_setup_action">സ്വമേധയാലുള്ള സജ്ജീകരണം</string>
-  <string name="account_setup_check_settings_title"/>
-  <string name="account_setup_check_settings_retr_info_msg">അക്കൗണ്ട് വിവരങ്ങൾ വീണ്ടെടുക്കുന്നു\u2026</string>
-  <string name="account_setup_check_settings_check_incoming_msg">ഇൻകമിംഗ് സെർവർ ക്രമീകരണങ്ങൾ പരിശോധിക്കുന്നു\u2026</string>
-  <string name="account_setup_check_settings_check_outgoing_msg">ഔട്ട്‌ഗോയിംഗ് സെർവർ ക്രമീകരണങ്ങൾ പരിശോധിക്കുന്നു\u2026</string>
-  <string name="account_setup_check_settings_authenticate">പ്രാമാണീകരിക്കുന്നു\u2026</string>
-  <string name="account_setup_check_settings_fetch">അക്കൗണ്ട് ക്രമീകരണങ്ങൾ ലഭ്യമാക്കുന്നു\u2026</string>
-  <string name="account_setup_check_settings_canceling_msg">റദ്ദാക്കുന്നു\u2026</string>
-  <string name="account_setup_account_type_title">അക്കൗണ്ട് തരം</string>
-  <string name="account_setup_account_type_instructions">ഇത് ഏത് തരത്തിലുള്ള അക്കൗണ്ടാണ്?</string>
-  <string name="account_setup_account_type_pop_action">POP3</string>
-  <string name="account_setup_account_type_imap_action">IMAP</string>
-  <string name="account_setup_auth_type_normal_password">സാധാരണ രഹസ്യവാചകം</string>
-  <string name="account_setup_auth_type_insecure_password">രഹസ്യവാചകം, സുരക്ഷിതമല്ലാത്ത രീതിയിൽ കൈമാറി</string>
-  <string name="account_setup_auth_type_encrypted_password">എൻ‌ക്രിപ്റ്റ് ചെയ്ത പാസ്‌വേഡ്</string>
-  <string name="account_setup_auth_type_tls_client_certificate">ക്ലയൻറ് സർ‌ട്ടിഫിക്കറ്റ്</string>
-  <string name="account_setup_incoming_title">ഇൻകമിംഗ് സെർവർ ക്രമീകരണങ്ങൾ</string>
-  <string name="account_setup_incoming_username_label">ഉപയോക്തൃനാമം</string>
-  <string name="account_setup_incoming_password_label">രഹസ്യവാചകം</string>
-  <string name="account_setup_incoming_client_certificate_label">ക്ലയൻറ് സർ‌ട്ടിഫിക്കറ്റ്</string>
-  <string name="account_setup_incoming_pop_server_label">POP3 സെർവർ</string>
-  <string name="account_setup_incoming_imap_server_label">IMAP സെർവർ</string>
-  <string name="account_setup_incoming_port_label">പോർട്ട്</string>
-  <string name="account_setup_incoming_security_label">സുരക്ഷ</string>
-  <string name="account_setup_incoming_auth_type_label">പ്രമാണീകരണം</string>
-  <string name="account_setup_incoming_security_none_label">ഒന്നുമില്ല</string>
-  <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
-  <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
-  <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\" ഉപയോഗിച്ച് സാധുവല്ല</string>
-  <string name="account_setup_incoming_delete_policy_label">ഞാൻ ഒരു സന്ദേശം ഇല്ലാതാക്കുമ്പോൾ</string>
-  <string name="account_setup_incoming_delete_policy_never_label">സെർവറിൽ ഇല്ലാതാക്കരുത്</string>
-  <string name="account_setup_incoming_delete_policy_delete_label">സെർവറിൽ നിന്ന് ഇല്ലാതാക്കൂ</string>
-  <string name="account_setup_incoming_delete_policy_markread_label">സെർവറിൽ വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
-  <string name="account_setup_expunge_policy_label">സെർവറിൽ ഇല്ലാതാക്കിയ സന്ദേശങ്ങൾ മായ്‌ക്കുക</string>
-  <string name="account_setup_expunge_policy_immediately">ഉടനെ</string>
-  <string name="account_setup_expunge_policy_on_poll">പോളിംഗ് നടത്തുമ്പോൾ</string>
-  <string name="account_setup_expunge_policy_manual">സ്വമേധയാ</string>
-  <string name="account_setup_incoming_autodetect_namespace_label">IMAP നെയിംസ്‌പെയ്‌സ് യാന്ത്രികമായി കണ്ടെത്തുക</string>
-  <string name="account_setup_incoming_imap_path_prefix_label">IMAP പാതാ ഉപസർഗ്ഗം</string>
-  <string name="drafts_folder_label">ഡ്രാഫ്റ്റുകൾ ഫോൾഡർ</string>
-  <string name="sent_folder_label">അയച്ചവ ഫോൾഡർ</string>
-  <string name="trash_folder_label">ചവറ്റുകുട്ട ഫോൾഡർ</string>
-  <string name="archive_folder_label">ആർക്കൈവ് ഫോൾഡർ</string>
-  <string name="spam_folder_label">സ്പാം ഫോൾഡർ</string>
-  <string name="account_setup_incoming_subscribed_folders_only_label">സബ്‌സ്‌ക്രൈബുചെയ്‌ത ഫോൾഡറുകൾ മാത്രം കാണിക്കുക</string>
-  <string name="account_setup_auto_expand_folder">ഫോൾഡർ യാന്ത്രികമായി വികസിപ്പിക്കുക</string>
-  <string name="account_setup_outgoing_title">ഔട്ട്‌ഗോയിംഗ് സെർവർ ക്രമീകരണങ്ങൾ</string>
-  <string name="account_setup_outgoing_smtp_server_label">SMTP സെർവർ</string>
-  <string name="account_setup_outgoing_port_label">പോർട്ട്</string>
-  <string name="account_setup_outgoing_security_label">സുരക്ഷ</string>
-  <string name="account_setup_outgoing_require_login_label">സൈൻ-ഇൻ ആവശ്യമാണ്.</string>
-  <string name="account_setup_outgoing_username_label">ഉപയോക്തൃനാമം</string>
-  <string name="account_setup_outgoing_password_label">രഹസ്യവാചകം</string>
-  <string name="account_setup_outgoing_authentication_label">പ്രമാണീകരണം</string>
-  <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\" ഉപയോഗിച്ച് സാധുവല്ല</string>
-  <string name="account_setup_bad_uri">അസാധുവായ സജ്ജീകരണം: <xliff:g id="err_mess">%s</xliff:g></string>
-  <string name="account_setup_options_mail_check_frequency_label">ഫോൾഡർ വോട്ടെടുപ്പ് ആവൃത്തി</string>
-  <string name="account_setup_options_mail_check_frequency_never">ഒരിക്കലും</string>
-  <string name="account_setup_options_mail_check_frequency_15min">ഓരോ 15 മിനിറ്റിലും</string>
-  <string name="account_setup_options_mail_check_frequency_30min">ഓരോ 33 മിനിറ്റിലും</string>
-  <string name="account_setup_options_mail_check_frequency_1hour">ഓരോ മണിക്കൂറും</string>
-  <string name="account_setup_options_mail_check_frequency_2hour">ഓരോ 2 മണിക്കൂറിലും</string>
-  <string name="account_setup_options_mail_check_frequency_3hour">ഓരോ 3 മണിക്കൂറിലും</string>
-  <string name="account_setup_options_mail_check_frequency_6hour">ഓരോ 6 മണിക്കൂറിലും</string>
-  <string name="account_setup_options_mail_check_frequency_12hour">ഓരോ 12 മണിക്കൂറിലും</string>
-  <string name="account_setup_options_mail_check_frequency_24hour">ഓരോ 24 മണിക്കൂറിലും</string>
-  <string name="idle_refresh_period_label">IDLE കണക്ഷൻ പുതുക്കുക</string>
-  <string name="idle_refresh_period_2min">ഓരോ 2 മിനിറ്റിലും</string>
-  <string name="idle_refresh_period_3min">ഓരോ 3 മിനിറ്റിലും</string>
-  <string name="idle_refresh_period_6min">ഓരോ 6 മിനിറ്റിലും</string>
-  <string name="idle_refresh_period_12min">ഓരോ 12 മിനിറ്റിലും</string>
-  <string name="idle_refresh_period_24min">ഓരോ 24 മിനിറ്റിലും</string>
-  <string name="idle_refresh_period_36min">ഓരോ 36 മിനിറ്റിലും</string>
-  <string name="idle_refresh_period_48min">ഓരോ 48 മിനിറ്റിലും</string>
-  <string name="idle_refresh_period_60min">ഓരോ 60 മിനിറ്റിലും</string>
-  <string name="account_setup_options_mail_display_count_label">പ്രദർശിപ്പിക്കേണ്ട സന്ദേശങ്ങളുടെ എണ്ണം</string>
-  <string name="account_setup_options_mail_display_count_10">10 സന്ദേശങ്ങൾ</string>
-  <string name="account_setup_options_mail_display_count_25">25 സന്ദേശങ്ങൾ</string>
-  <string name="account_setup_options_mail_display_count_50">50 സന്ദേശങ്ങൾ</string>
-  <string name="account_setup_options_mail_display_count_100">100 സന്ദേശങ്ങൾ</string>
-  <string name="account_setup_options_mail_display_count_250">250 സന്ദേശങ്ങൾ</string>
-  <string name="account_setup_options_mail_display_count_500">500 സന്ദേശങ്ങൾ</string>
-  <string name="account_setup_options_mail_display_count_1000">1000 സന്ദേശങ്ങൾ</string>
-  <string name="account_setup_options_mail_display_count_2500">2500 സന്ദേശങ്ങൾ</string>
-  <string name="account_setup_options_mail_display_count_5000">5000 സന്ദേശങ്ങൾ</string>
-  <string name="account_setup_options_mail_display_count_10000">1000 സന്ദേശങ്ങൾ</string>
-  <string name="account_setup_options_mail_display_count_all">എല്ലാ സന്ദേശങ്ങളും</string>
-  <string name="move_copy_cannot_copy_unsynced_message">സെർവറുമായി സമന്വയിപ്പിക്കാത്ത ഒരു സന്ദേശം പകർത്താനോ നീക്കാനോ കഴിയില്ല</string>
-  <string name="account_setup_failed_dlg_title">സജ്ജീകരണം പൂർത്തിയാക്കാൻ കഴിഞ്ഞില്ല</string>
-  <string name="account_setup_failed_dlg_auth_message_fmt">ഉപയോക്തൃനാമം അല്ലെങ്കിൽ പാസ്‌വേഡ് തെറ്റാണ്.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">സെർവർ അസാധുവായ ഒരു SSL സർട്ടിഫിക്കറ്റ് അവതരിപ്പിച്ചു. ഒരു സെർവർ തെറ്റായ കോൺഫിഗറേഷൻ മൂലമോ അല്ലെങ്കിൽ ആരെങ്കിലും നിങ്ങളെയോ നിങ്ങളുടെ മെയിൽ സെർവറിനെയോ ആക്രമിക്കാൻ ശ്രമിക്കുന്നതിനാലാണിത്. എന്താണ് സംഭവിച്ചതെന്ന് നിങ്ങൾക്ക് ഉറപ്പില്ലെങ്കിൽ, നിരസിക്കുക ക്ലിക്കുചെയ്‌ത് നിങ്ങളുടെ മെയിൽ സെർവർ മാനേജുചെയ്യുന്ന ആളുകളുമായി ബന്ധപ്പെടുക.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">സെർവറിലേക്ക് ബന്ധപ്പെടാൻ കഴിയില്ല.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_edit_details_action">വിശദാംശങ്ങൾ എഡിറ്റുചെയ്യുക</string>
-  <string name="account_setup_failed_dlg_continue_action">തുടരുക</string>
-  <string name="account_settings_push_advanced_title">വിപുലമായത്</string>
-  <string name="account_settings_title_fmt">അക്കൗണ്ട് സജ്ജീകരണങ്ങൾ</string>
-  <string name="account_settings_notify_label">പുതിയ മെയിൽ അറിയിപ്പുകൾ</string>
-  <string name="account_settings_folder_notify_new_mail_mode_label">അറിയിപ്പുകൾ ഫോൾഡറുകൾ</string>
-  <string name="account_settings_folder_notify_new_mail_mode_all">എല്ലാം</string>
-  <string name="account_settings_folder_notify_new_mail_mode_first_class">ഒന്നാം ക്ലാസ് ഫോൾഡറുകൾ മാത്രം</string>
-  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1ഉം 2ഉം ക്ലാസ് ഫോൾഡറുകൾ</string>
-  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">2ആം ക്ലാസ് ഫോൾഡറുകൾ ഒഴികെ എല്ലാം</string>
-  <string name="account_settings_folder_notify_new_mail_mode_none">ഒന്നുമില്ല</string>
-  <string name="account_settings_notify_sync_label">അറിയിപ്പുകൾ സമന്വയിപ്പിക്കുക</string>
-  <string name="account_settings_email_label">നിങ്ങളുടെ ഇമെയിൽ വിലാസം</string>
-  <string name="account_settings_notify_summary">മെയിൽ വരുമ്പോൾ സ്റ്റാറ്റസ് ബാറിൽ അറിയിക്കുക</string>
-  <string name="account_settings_notify_sync_summary">മെയിൽ പരിശോധിക്കുമ്പോൾ സ്റ്റാറ്റസ് ബാറിൽ അറിയിക്കുക</string>
-  <string name="account_settings_notify_self_label">ഔട്ട്‌ഗോയിംഗ് മെയിൽ ഉൾപ്പെടുത്തുക</string>
-  <string name="account_settings_notify_self_summary">ഞാൻ അയച്ച സന്ദേശങ്ങൾക്കായി ഒരു അറിയിപ്പ് കാണിക്കുക</string>
-  <string name="account_notify_contacts_mail_only_label">കോൺ‌ടാക്റ്റുകൾ‌ മാത്രം</string>
-  <string name="account_notify_contacts_mail_only_summary">അറിയപ്പെടുന്ന കോൺടാക്റ്റുകളിൽ നിന്നുള്ള സന്ദേശങ്ങൾക്കായി മാത്രം അറിയിപ്പുകൾ കാണിക്കുക</string>
-  <string name="account_settings_ignore_chat_messages_label">ചാറ്റ് സന്ദേശങ്ങൾ അവഗണിക്കുക</string>
-  <string name="account_settings_ignore_chat_messages_summary">ഒരു ഇമെയിൽ ചാറ്റിൽ ഉൾപ്പെടുന്ന സന്ദേശങ്ങൾക്കുള്ള അറിയിപ്പുകൾ കാണിക്കരുത്</string>
-  <string name="account_settings_mark_message_as_read_on_view_label">തുറക്കുമ്പോൾ വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
-  <string name="account_settings_mark_message_as_read_on_view_summary">ഒരു സന്ദേശം കാണാനായി തുറക്കുമ്പോൾ വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
-  <string name="account_settings_mark_message_as_read_on_delete_label">ഇല്ലാതാക്കുമ്പോൾ വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
-  <string name="account_settings_mark_message_as_read_on_delete_summary">ഒരു സന്ദേശം ഇല്ലാതാക്കുമ്പോൾ വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
-  <string name="account_settings_notification_channels_label">അറിയിപ്പ് വിഭാഗങ്ങൾ</string>
-  <string name="account_settings_open_notification_settings_messages_summary">പുതിയ സന്ദേശങ്ങൾക്കായി അറിയിപ്പുകൾ ക്രമീകരിക്കുക</string>
-  <string name="account_settings_open_notification_settings_miscellaneous_summary">പിശകക്, സ്റ്റാറ്റസ് അറിയിപ്പുകളും ക്രമീകരിക്കുക</string>
-  <string name="account_settings_show_pictures_label">എല്ലായ്പ്പോഴും ചിത്രങ്ങൾ കാണിക്കുക</string>
-  <string name="account_settings_show_pictures_never">ഇല്ല</string>
-  <string name="account_settings_show_pictures_only_from_contacts">കോൺടാക്റ്റുകളിൽ നിന്ന്</string>
-  <string name="account_settings_show_pictures_always">ആരിൽ നിന്നും</string>
-  <string name="account_settings_composition">മെയിൽ അയയ്ക്കുന്നു</string>
-  <string name="account_settings_default_quoted_text_shown_label">മറുപടി നൽകുമ്പോൾ സന്ദേശം ഉദ്ധരിക്കുക</string>
-  <string name="account_settings_default_quoted_text_shown_summary">നിങ്ങളുടെ മറുപടിയിൽ യഥാർത്ഥ സന്ദേശം ഉൾപ്പെടുത്തുക.</string>
-  <string name="account_settings_reply_after_quote_label">ഉദ്ധരിച്ച വാചകത്തിന് ശേഷം മറുപടി നൽകുക</string>
-  <string name="account_settings_reply_after_quote_summary">നിങ്ങളുടെ മറുപടിക്ക് മുകളിൽ യഥാർത്ഥ സന്ദേശം ദൃശ്യമാകും.</string>
-  <string name="account_settings_strip_signature_label">മറുപടിയിൽ ഒപ്പ് സ്ട്രിപ്പ് ചെയ്യുക</string>
-  <string name="account_settings_strip_signature_summary">ഉദ്ധരിച്ച സന്ദേശങ്ങളിൽ നിന്ന് ഒപ്പുകൾ നീക്കംചെയ്യും</string>
-  <string name="account_settings_message_format_label">സന്ദേശ ഘടന</string>
-  <string name="account_settings_message_format_text">പ്ലെയിൻ ടെക്സ്റ്റ് (ഇമേജുകളും ഫോർമാറ്റിംഗും നീക്കംചെയ്യുക)</string>
-  <string name="account_settings_message_format_html">HTML (ഇമേജുകളും ഫോർമാറ്റിംഗും സൂക്ഷിക്കുക)</string>
-  <string name="account_settings_message_format_auto">സ്വയമേവ</string>
-  <string name="account_settings_always_show_cc_bcc_label">എല്ലായ്പ്പോഴും Cc/Bcc കാണിക്കുക</string>
-  <string name="account_settings_message_read_receipt_label">രസീത് വായിക്കൽ</string>
-  <string name="account_settings_message_read_receipt_summary">എല്ലായ്പ്പോഴും വായിച്ചു എന്ന അറിയിപ്പിനായി അപേക്ഷിക്കുക</string>
-  <string name="account_settings_quote_style_label">മറുപടി ഉദ്ധരിക്കുന്ന രീതി</string>
-  <string name="account_settings_quote_style_prefix">പൂര്‍വ്വപ്രത്യയം (Gmail പോലെ)</string>
-  <string name="account_settings_quote_style_header">തലക്കെട്ട് (ഔട്ട്‌ലുക്ക് പോലെ)</string>
-  <string name="account_settings_upload_sent_messages_label">അയച്ച സന്ദേശങ്ങൾ അപ്‌ലോഡുചെയ്യുക</string>
-  <string name="account_settings_upload_sent_messages_summary">അയച്ചതിനുശേഷം അയച്ച ഫോൾഡറിലേക്ക് സന്ദേശങ്ങൾ അപ്‌ലോഡുചെയ്യുക</string>
-  <string name="account_settings_general_title">പൊതുവായ ക്രമീകരണങ്ങൾ</string>
-  <string name="account_settings_reading_mail">മെയിൽ വായിക്കുന്നു</string>
-  <string name="account_settings_sync">മെയിൽ ലഭ്യമാക്കുന്നു</string>
-  <string name="account_settings_folders">ഫോൾഡറുകൾ</string>
-  <string name="account_settings_quote_prefix_label">ഉദ്ധരിച്ച വാചകത്തിന്റെ പൂര്‍വ്വപ്രത്യയം</string>
-  <string name="account_settings_crypto">എൻഡ്-ടു-എൻഡ് എൻ‌ക്രിപ്ഷൻ</string>
-  <string name="account_settings_crypto_app">OpenPGP പിന്തുണ പ്രവർത്തനക്ഷമമാക്കുക</string>
-  <string name="account_settings_crypto_app_select_title">OpenPGP അപ്ലിക്കേഷൻ തിരഞ്ഞെടുക്കുക</string>
-  <string name="account_settings_crypto_key">എൻഡ്-ടു-എൻഡ് കീ ക്രമീകരിക്കുക</string>
-  <string name="account_settings_crypto_summary_off">OpenPGP അപ്ലിക്കേഷനുകളൊന്നും ക്രമീകരിച്ചിട്ടില്ല</string>
-  <string name="account_settings_crypto_summary_on">%s ലേക്ക് കണക്റ്റുചെയ്‌തു</string>
-  <string name="account_settings_crypto_summary_config">ക്രമീകരിക്കുന്നു…</string>
-  <string name="account_settings_crypto_encrypt_all_drafts">എൻ‌ക്രിപ്റ്റ് ചെയ്ത എല്ലാ ഡ്രാഫ്റ്റുകളും സംഭരിക്കുക</string>
-  <string name="account_settings_crypto_encrypt_all_drafts_on">എല്ലാ ഡ്രാഫ്റ്റുകളും എൻ‌ക്രിപ്റ്റ് ചെയ്തതായി സൂക്ഷിക്കും</string>
-  <string name="account_settings_crypto_encrypt_all_drafts_off">എൻ‌ക്രിപ്ഷൻ പ്രാപ്തമാക്കിയിട്ടുണ്ടെങ്കിൽ മാത്രം ഡ്രാഫ്റ്റുകൾ എൻ‌ക്രിപ്റ്റ് ചെയ്യുക</string>
-  <string name="account_settings_mail_check_frequency_label">ഫോൾഡർ വോട്ടെടുപ്പ് ആവൃത്തി</string>
-  <string name="account_settings_color_label">അക്കൗണ്ട് നിറം</string>
-  <string name="account_settings_color_summary">ഫോൾഡറിലും അക്കൗണ്ട് ലിസ്റ്റിലും ഈ അക്കൗണ്ടിന്റെ ഊന്നിപ്പറഞ്ഞ നിറം ഉപയോഗിക്കുന്നു</string>
-  <string name="account_settings_mail_display_count_label">പ്രാദേശിക ഫോൾഡർ വലുപ്പം</string>
-  <string name="account_settings_autodownload_message_size_label">വരെ സന്ദേശങ്ങൾ നേടുക</string>
-  <string name="account_settings_autodownload_message_size_1">1 KiB</string>
-  <string name="account_settings_autodownload_message_size_2">2 KiB</string>
-  <string name="account_settings_autodownload_message_size_4">4 KiB</string>
-  <string name="account_settings_autodownload_message_size_8">8 KiB</string>
-  <string name="account_settings_autodownload_message_size_16">16 KiB</string>
-  <string name="account_settings_autodownload_message_size_32">32 KiB</string>
-  <string name="account_settings_autodownload_message_size_64">64 KiB</string>
-  <string name="account_settings_autodownload_message_size_128">128 KiB</string>
-  <string name="account_settings_autodownload_message_size_256">256 KiB</string>
-  <string name="account_settings_autodownload_message_size_512">512 KiB</string>
-  <string name="account_settings_autodownload_message_size_1024">1 MiB</string>
-  <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
-  <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
-  <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
-  <string name="account_settings_autodownload_message_size_any">ഏത് വലുപ്പവും (പരിധിയില്ല)</string>
-  <string name="account_settings_message_age_label">എന്നതിൽ നിന്ന് സന്ദേശങ്ങൾ സമന്വയിപ്പിക്കുക</string>
-  <string name="account_settings_message_age_any">ഏത് സമയത്തും (പരിധിയില്ല)</string>
-  <string name="account_settings_message_age_0">ഇന്ന്</string>
-  <string name="account_settings_message_age_1">അവസാന 2 ദിവസം</string>
-  <string name="account_settings_message_age_2">അവസാന 3 ദിവസം</string>
-  <string name="account_settings_message_age_7">കഴിഞ്ഞ ആഴ്ച</string>
-  <string name="account_settings_message_age_14">കഴിഞ്ഞ 2 ആഴ്ച</string>
-  <string name="account_settings_message_age_21">കഴിഞ്ഞ 3 ആഴ്ച</string>
-  <string name="account_settings_message_age_1_month">കഴിഞ്ഞ മാസം</string>
-  <string name="account_settings_message_age_2_months">കഴിഞ്ഞ 2 മാസം</string>
-  <string name="account_settings_message_age_3_months">കഴിഞ്ഞ 3 മാസം</string>
-  <string name="account_settings_message_age_6_months">കഴിഞ്ഞ 6 മാസം</string>
-  <string name="account_settings_message_age_1_year">കഴിഞ്ഞ 6 മാസം</string>
-  <string name="account_settings_folder_display_mode_label">പ്രദർശിപ്പിക്കുന്നതിനുള്ള ഫോൾഡറുകൾ</string>
-  <string name="account_settings_folder_display_mode_all">എല്ലാം</string>
-  <string name="account_settings_folder_display_mode_first_class">ഒന്നാം ക്ലാസ് ഫോൾഡറുകൾ മാത്രം</string>
-  <string name="account_settings_folder_display_mode_first_and_second_class">1ഉം 2ഉം ക്ലാസ് ഫോൾഡറുകൾ</string>
-  <string name="account_settings_folder_display_mode_not_second_class">2 ആം ക്ലാസ് ഫോൾഡറുകൾ ഒഴികെ എല്ലാം</string>
-  <string name="account_settings_folder_sync_mode_label">പോൾ ഫോൾഡറുകൾ</string>
-  <string name="account_settings_folder_sync_mode_all">എല്ലാം</string>
-  <string name="account_settings_folder_sync_mode_first_class">ഒന്നാം ക്ലാസ് ഫോൾഡറുകൾ മാത്രം</string>
-  <string name="account_settings_folder_sync_mode_first_and_second_class">1ഉം 2ഉം ക്ലാസ് ഫോൾഡറുകൾ</string>
-  <string name="account_settings_folder_sync_mode_not_second_class">2 ആം ക്ലാസ് ഫോൾഡറുകൾ ഒഴികെ എല്ലാം</string>
-  <string name="account_settings_folder_sync_mode_none">ഒന്നുമില്ല</string>
-  <string name="account_settings_folder_push_mode_label">ഫോൾഡറുകൾ പുഷ് ചെയ്യുക</string>
-  <string name="account_settings_folder_push_mode_all">എല്ലാം</string>
-  <string name="account_settings_folder_push_mode_first_class">ഒന്നാം ക്ലാസ് ഫോൾഡറുകൾ മാത്രം</string>
-  <string name="account_settings_folder_push_mode_first_and_second_class">1ഉം 2ഉം ക്ലാസ് ഫോൾഡറുകൾ</string>
-  <string name="account_settings_folder_push_mode_not_second_class">2 ആം ക്ലാസ് ഫോൾഡറുകൾ ഒഴികെ എല്ലാം</string>
-  <string name="account_settings_folder_push_mode_none">ഒന്നുമില്ല</string>
-  <string name="account_settings_folder_target_mode_label">ലക്ഷ്യസ്ഥാന ഫോൾഡറുകൾ നീക്കുക / പകർത്തുക</string>
-  <string name="account_settings_folder_target_mode_all">എല്ലാം</string>
-  <string name="account_settings_folder_target_mode_first_class">ഒന്നാം ക്ലാസ് ഫോൾഡറുകൾ മാത്രം</string>
-  <string name="account_settings_folder_target_mode_first_and_second_class">1ഉം 2ഉം ക്ലാസ് ഫോൾഡറുകൾ</string>
-  <string name="account_settings_folder_target_mode_not_second_class">2 ആം ക്ലാസ് ഫോൾഡറുകൾ ഒഴികെ എല്ലാം</string>
-  <string name="account_settings_sync_remote_deletetions_label">സെർവർ ഇല്ലാതാക്കലുകൾ സമന്വയിപ്പിക്കുക</string>
-  <string name="account_settings_sync_remote_deletetions_summary">സെർവറിൽ ഇല്ലാതാക്കുമ്പോൾ സന്ദേശങ്ങൾ നീക്കംചെയ്യുക</string>
-  <string name="account_settings_openpgp_missing">OpenPGP അപ്ലിക്കേഷൻ കാണുന്നില്ല - ഇത് അൺ‌ഇൻ‌സ്റ്റാൾ‌ ചെയ്‌തോ?</string>
-  <string name="folder_settings_title">ഫോൾഡർ ക്രമീകരണങ്ങൾ</string>
-  <string name="folder_settings_in_top_group_label">മുകളിലെ ഗ്രൂപ്പിൽ കാണിക്കുക</string>
-  <string name="folder_settings_in_top_group_summary">ഫോൾഡർ ലിസ്റ്റിന്റെ മുകളിൽ കാണിക്കുക</string>
-  <string name="folder_settings_folder_display_mode_label">ഫോൾഡർ പ്രദർശന ക്ലാസ്</string>
-  <string name="folder_settings_folder_display_mode_normal">ക്ലാസ് ഇല്ല</string>
-  <string name="folder_settings_folder_display_mode_first_class">1 ആം ക്ലാസ്</string>
-  <string name="folder_settings_folder_display_mode_second_class">2 ആം ക്ലാസ്സ്</string>
-  <string name="folder_settings_folder_sync_mode_label">ഫോൾഡർ പോൾ ക്ലാസ്</string>
-  <string name="folder_settings_folder_sync_mode_normal">ഒന്നുമില്ല</string>
-  <string name="folder_settings_folder_sync_mode_first_class">1 ആം ക്ലാസ്</string>
-  <string name="folder_settings_folder_sync_mode_second_class">2 ആം ക്ലാസ്സ്</string>
-  <string name="folder_settings_folder_sync_mode_inherited">ഡിസ്പ്ലേ ക്ലാസ്സിന് സമാനമാണ്</string>
-  <string name="folder_settings_folder_push_mode_label">ഫോൾഡർ പുഷ് ക്ലാസ്</string>
-  <string name="folder_settings_folder_push_mode_normal">ക്ലാസ് ഇല്ല</string>
-  <string name="folder_settings_folder_push_mode_first_class">1 ആം ക്ലാസ്</string>
-  <string name="folder_settings_folder_push_mode_second_class">2 ആം ക്ലാസ്സ്</string>
-  <string name="folder_settings_folder_push_mode_inherited">പോൾ ക്ലാസ് പോലെ തന്നെ</string>
-  <string name="folder_settings_folder_notify_mode_label">ഫോൾഡർ അറിയിപ്പ് ക്ലാസ്</string>
-  <string name="folder_settings_folder_notify_mode_normal">ക്ലാസ് ഇല്ല</string>
-  <string name="folder_settings_folder_notify_mode_first_class">1 ആം ക്ലാസ്</string>
-  <string name="folder_settings_folder_notify_mode_second_class">2 ആം ക്ലാസ്സ്</string>
-  <string name="folder_settings_folder_notify_mode_inherited">പുഷ് ക്ലാസ്സിന് സമാനമാണ്</string>
-  <string name="folder_settings_clear_local_folder_action">പ്രാദേശിക സന്ദേശങ്ങൾ മായ്‌ക്കുക</string>
-  <string name="account_settings_incoming_label">ഇൻകമിംഗ് സെർവർ</string>
-  <string name="account_settings_incoming_summary">ഇൻകമിംഗ് മെയിൽ സെർവർ ക്രമീകരിക്കുക</string>
-  <string name="account_settings_outgoing_label">ഔട്ട്‌ഗോയിംഗ് സെർവർ</string>
-  <string name="account_settings_outgoing_summary">ഔട്ട്‌ഗോയിംഗ് മെയിൽ (SMTP) സെർവർ ക്രമീകരിക്കുക</string>
-  <string name="account_settings_description_label">അക്കൗണ്ടിന്റെ പേര്</string>
-  <string name="account_settings_name_label">നിങ്ങളുടെ പേര്</string>
-  <string name="notifications_title">അറിയിപ്പുകൾ</string>
-  <string name="account_settings_vibrate_enable">വിറയ്ക്കുക</string>
-  <string name="account_settings_vibrate_pattern_label">വൈബ്രേഷൻ പാറ്റേൺ</string>
-  <string name="account_settings_vibrate_pattern_default">സ്ഥിരസ്ഥിതി</string>
-  <string name="account_settings_vibrate_pattern_1">പാറ്റേൺ 1</string>
-  <string name="account_settings_vibrate_times">വിറയ്ക്കൽ ആവർത്തിക്കുക</string>
-  <string name="account_settings_ringtone">പുതിയ മെയിൽ റിംഗ്‌ടോൺ</string>
-  <string name="account_settings_notification_light_account_color">അക്കൗണ്ട് നിറം</string>
-  <string name="account_settings_composition_title">സന്ദേശ രചനാ ഓപ്ഷനുകൾ</string>
-  <string name="account_settings_composition_label">രചനാ സ്ഥിരസ്ഥിതികൾ</string>
-  <string name="account_settings_composition_summary">നിങ്ങളുടെ സ്ഥിരസ്ഥിതി പ്രേഷിതൻ, ബിസിസി, ഒപ്പ് എന്നിവ സജ്ജമാക്കുക</string>
-  <string name="account_settings_identities_label">ഐഡന്റിറ്റികൾ നിയന്ത്രിക്കുക</string>
-  <string name="account_settings_identities_summary">ഇതര \'പ്രേഷിതൻ\' വിലാസങ്ങളും ഒപ്പുകളും സജ്ജമാക്കുക</string>
-  <string name="manage_identities_title">ഐഡന്റിറ്റികൾ നിയന്ത്രിക്കുക</string>
-  <string name="manage_identities_context_menu_title">ഐഡന്റിറ്റി നിയന്ത്രിക്കുക</string>
-  <string name="edit_identity_title">ഐഡന്റിറ്റി എഡിറ്റുചെയ്യുക</string>
-  <string name="edit_identity_save">സേവ്</string>
-  <string name="new_identity_action">പുതിയ ഐഡന്റിറ്റി</string>
-  <string name="account_settings_always_bcc_label">എല്ലാ സന്ദേശങ്ങളും Bcc ചെയ്യുക</string>
-  <string name="manage_identities_edit_action">തിരുത്തുക</string>
-  <string name="manage_identities_move_up_action">മുകളിലേക്ക് നീക്കുക</string>
-  <string name="manage_identities_move_down_action">താഴേക്ക് നീക്കുക</string>
-  <string name="manage_identities_move_top_action">മുകളിലേക്ക് നീക്കുക / സ്ഥിരസ്ഥിതിയാക്കുക</string>
-  <string name="manage_identities_remove_action">നീക്കംചെയ്യുക</string>
-  <string name="edit_identity_description_label">ഐഡന്റിറ്റി വിവരണം</string>
-  <string name="edit_identity_description_hint">(ഐച്ഛികം)</string>
-  <string name="edit_identity_name_label">നിങ്ങളുടെ പേര്</string>
-  <string name="edit_identity_name_hint">(ഐച്ഛികം)</string>
-  <string name="edit_identity_email_label">ഇമെയിൽ വിലാസം</string>
-  <string name="edit_identity_email_hint">(ആവശ്യമാണ്)</string>
-  <string name="edit_identity_reply_to_label">മറുപടി വിലാസം</string>
-  <string name="edit_identity_reply_to_hint">(ഐച്ഛികം)</string>
-  <string name="edit_identity_signature_label">ഒപ്പ്</string>
-  <string name="edit_identity_signature_hint">(ഐച്ഛികം)</string>
-  <string name="account_settings_signature_use_label">ഒപ്പ് ഉപയോഗിക്കുക</string>
-  <string name="account_settings_signature_label">ഒപ്പ്</string>
-  <string name="default_identity_description">പ്രാരംഭ ഐഡന്റിറ്റി</string>
-  <string name="choose_identity_title">ഐഡന്റിറ്റി തിരഞ്ഞെടുക്കുക</string>
-  <string name="send_as">എന്നപോലെ അയയ്‌ക്കുക</string>
-  <string name="no_removable_identity">നിങ്ങളുടെ ഏക ഐഡന്റിറ്റി നീക്കംചെയ്യാൻ കഴിയില്ല</string>
-  <string name="identity_has_no_email">ഒരു ഇമെയിൽ വിലാസമില്ലാതെ നിങ്ങൾക്ക് ഒരു ഐഡന്റിറ്റി ഉപയോഗിക്കാൻ കഴിയില്ല</string>
-  <string name="sort_earliest_first">ആദ്യ സന്ദേശങ്ങൾ ആദ്യം</string>
-  <string name="sort_latest_first">ഏറ്റവും പുതിയ സന്ദേശങ്ങൾ ആദ്യം</string>
-  <string name="sort_subject_alpha">വിഷയം അക്ഷരമാലാക്രമത്തിൽ</string>
-  <string name="sort_subject_re_alpha">വിഷയം വിപരീത അക്ഷരമാലാക്രമത്തിൽ</string>
-  <string name="sort_sender_alpha">അയച്ചയാൾ അക്ഷരമാലാക്രമത്തിൽ</string>
-  <string name="sort_sender_re_alpha">അയച്ചയാൾ വിപരീത അക്ഷരമാലാക്രമത്തിൽ</string>
-  <string name="sort_flagged_first">നക്ഷത്രമിട്ട സന്ദേശങ്ങൾ ആദ്യം</string>
-  <string name="sort_flagged_last">നക്ഷത്രമിടാത്ത സന്ദേശങ്ങൾ ആദ്യം</string>
-  <string name="sort_unread_first">വായിക്കാത്ത സന്ദേശങ്ങൾ ആദ്യം</string>
-  <string name="sort_unread_last">വായിച്ച സന്ദേശങ്ങൾ ആദ്യം</string>
-  <string name="sort_attach_first">അറ്റാച്ചുമെന്റുകളുള്ള സന്ദേശങ്ങൾ ആദ്യം</string>
-  <string name="sort_unattached_first">അറ്റാച്ചുമെന്റുകളില്ലാത്ത സന്ദേശങ്ങൾ ആദ്യം</string>
-  <string name="sort_by">ഇങ്ങനെ അടുക്കുക…</string>
-  <string name="sort_by_date">തീയതി</string>
-  <string name="sort_by_arrival">വരവ്</string>
-  <string name="sort_by_subject">വിഷയം</string>
-  <string name="sort_by_sender">അയച്ചയാൾ</string>
-  <string name="sort_by_flag">നക്ഷത്രം</string>
-  <string name="sort_by_unread">വായിച്ചവ / വായിക്കാത്തവ</string>
-  <string name="sort_by_attach">അറ്റാച്ചുമെന്റുകൾ</string>
-  <string name="account_delete_dlg_title">അക്കൗണ്ട് നീക്കംചെയ്യൂ</string>
-  <string name="account_setup_failed_dlg_invalid_certificate_title">തിരിച്ചറിയാത്ത സർട്ടിഫിക്കറ്റ്</string>
-  <string name="account_setup_failed_dlg_invalid_certificate_accept">കീ സ്വീകരിക്കുക</string>
-  <string name="account_setup_failed_dlg_invalid_certificate_reject">കീ നിരസിക്കുക</string>
-  <string name="folder_list_filter_hint">ഫോൾഡറിന്റെ പേരിൽ അടങ്ങിയിരിക്കുന്നു</string>
-  <string name="folder_list_display_mode_label">ഫോൾഡറുകൾ കാണിക്കൂ…</string>
-  <string name="folder_list_display_mode_all">എല്ലാ ഫോൾഡറുകളും</string>
-  <string name="folder_list_display_mode_first_class">1 ആം ക്ലാസ് ഫോൾഡറുകൾ</string>
-  <string name="folder_list_display_mode_first_and_second_class">1ആം &amp; 2ആം ക്ലാസ് ഫോൾഡറുകൾ</string>
-  <string name="folder_list_display_mode_not_second_class">2 ആം ക്ലാസ്സ് ഫോൾഡറുകൾ മറയ്ക്കുക</string>
-  <string name="account_settings_signature__location_label">ഒപ്പ് സ്ഥാനം</string>
-  <string name="account_settings_signature__location_before_quoted_text">ഉദ്ധരിച്ച സന്ദേശത്തിന് മുമ്പ്</string>
-  <string name="account_settings_signature__location_after_quoted_text">ഉദ്ധരിച്ച സന്ദേശത്തിന് ശേഷം</string>
-  <string name="setting_theme_global">അപ്ലിക്കേഷൻ തീം ഉപയോഗിക്കുക</string>
-  <string name="setting_theme_dark">ഇരുണ്ടത്</string>
-  <string name="setting_theme_light">പ്രകാശിച്ചത്</string>
-  <string name="setting_theme_follow_system">സിസ്റ്റം തനത് ഉപയോഗിക്കുക</string>
-  <string name="display_preferences">ഡിസ്പ്ലേ</string>
-  <string name="global_preferences">പൊതു</string>
-  <string name="debug_preferences">ഡീബഗ്ഗിംഗ്</string>
-  <string name="privacy_preferences">സ്വകാര്യത</string>
-  <string name="network_preferences">ശൃംഖല</string>
-  <string name="interaction_preferences">ഇടപെടൽ</string>
-  <string name="accountlist_preferences">അക്കൗണ്ട് പട്ടിക</string>
-  <string name="messagelist_preferences">സന്ദേശ ലിസ്റ്റുകൾ</string>
-  <string name="messageview_preferences">സന്ദേശങ്ങൾ</string>
-  <string name="settings_theme_label">തീം</string>
-  <string name="settings_message_theme_label">സന്ദേശ കാഴ്‌ച തീം</string>
-  <string name="settings_compose_theme_label">രചയിതാ തീം</string>
-  <string name="settings_language_label">ഭാഷ</string>
-  <string name="preference_search_no_results">ക്രമീകരണങ്ങളൊന്നും കണ്ടെത്തിയില്ല</string>
-  <string name="settings_message_theme_selection_label">സ്ഥിര സന്ദേശ തീം</string>
-  <string name="settings_message_theme_selection_summary_off">സന്ദേശം കാണുമ്പോൾ സന്ദേശ കാഴ്‌ച തീം തിരഞ്ഞെടുക്കുക</string>
-  <string name="settings_message_theme_selection_summary_on">ഒരു സ്ഥിര സന്ദേശ കാഴ്‌ച തീം ഉപയോഗിക്കുക</string>
-  <string name="setting_language_system">സിസ്റ്റം സ്ഥിരസ്ഥിതി</string>
-  <string name="background_ops_label">പശ്ചാത്തല സമന്വയം</string>
-  <string name="background_ops_never">ഒരിക്കലും</string>
-  <string name="background_ops_always">എല്ലായ്പ്പോഴും</string>
-  <string name="background_ops_auto_sync_only">\'യാന്ത്രിക സമന്വയം\' തിരഞ്ഞെടുക്കുമ്പോൾ</string>
-  <string name="batch_select_all">എല്ലാം തിരഞ്ഞെടുക്കുക</string>
-  <string name="account_setup_push_limit_label">പുഷ് ഉപയോഗിച്ച് പരിശോധിക്കാൻ പരമാവധി ഫോൾഡറുകൾ</string>
-  <string name="account_setup_push_limit_5">5 ഫോൾഡറുകൾ</string>
-  <string name="account_setup_push_limit_10">10 ഫോൾഡറുകൾ</string>
-  <string name="account_setup_push_limit_25">25 ഫോൾഡറുകൾ</string>
-  <string name="account_setup_push_limit_50">50 ഫോൾഡറുകൾ</string>
-  <string name="account_setup_push_limit_100">100 ഫോൾഡറുകൾ</string>
-  <string name="account_setup_push_limit_250">250 ഫോൾഡറുകൾ</string>
-  <string name="account_setup_push_limit_500">500 ഫോൾഡറുകൾ</string>
-  <string name="account_setup_push_limit_1000">1000 ഫോൾഡറുകൾ</string>
-  <string name="animations_title">ആനിമേഷൻ</string>
-  <string name="animations_summary">ഭംഗിയുള്ള വിഷ്വൽ ഇഫക്റ്റുകൾ ഉപയോഗിക്കുക</string>
-  <string name="show_unified_inbox_title">ഏകീകൃത ഇൻ‌ബോക്സ് കാണിക്കുക</string>
-  <string name="integrated_inbox_title">ഏകീകൃത ഇൻ‌ബോക്സ്</string>
-  <string name="integrated_inbox_detail">ഏകീകൃത ഫോൾഡറുകളിലെ എല്ലാ സന്ദേശങ്ങളും</string>
-  <string name="folder_settings_include_in_integrated_inbox_label">ഏകീകരിക്കുക</string>
-  <string name="folder_settings_include_in_integrated_inbox_summary">എല്ലാ സന്ദേശങ്ങളും ഏകീകൃത ഇൻ‌ബോക്സിൽ കാണിച്ചിരിക്കുന്നു</string>
-  <string name="account_settings_searchable_label">തിരയാനുള്ള ഫോൾഡറുകൾ</string>
-  <string name="account_settings_searchable_all">എല്ലാം</string>
-  <string name="account_settings_searchable_displayable">പ്രദർശിപ്പിക്കാവുന്ന</string>
-  <string name="account_settings_searchable_none">ഒന്നുമില്ല</string>
-  <string name="account_settings_no_folder_selected">ഒന്നുമില്ല</string>
-  <string name="account_settings_automatic_special_folder">യാന്ത്രിക (%s)</string>
-  <string name="font_size_settings_title">അക്ഷര വലിപ്പം</string>
-  <string name="font_size_settings_description">അക്ഷര വലിപ്പം ക്രമീകരിക്കുക</string>
-  <string name="font_size_message_list">സന്ദേശ ലിസ്റ്റുകൾ</string>
-  <string name="font_size_message_list_subject">വിഷയം</string>
-  <string name="font_size_message_list_sender">അയച്ചയാൾ</string>
-  <string name="font_size_message_list_date">തീയതി</string>
-  <string name="font_size_message_list_preview">പ്രിവ്യൂ</string>
-  <string name="font_size_message_view">സന്ദേശങ്ങൾ</string>
-  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
-  <string name="font_size_message_view_account">അക്കൗണ്ടിന്റെ പേര്</string>
-  <string name="font_size_message_view_sender">അയച്ചയാൾ</string>
-  <string name="font_size_message_view_subject">വിഷയം</string>
-  <string name="font_size_message_view_date">സമയവും തീയതിയും</string>
-  <string name="font_size_message_view_content">സന്ദേശ ബോഡി</string>
-  <string name="font_size_message_compose">സന്ദേശ ഘടന</string>
-  <string name="font_size_message_compose_input">ടെക്സ്റ്റ് ഇൻപുട്ട് ഫീൽഡുകൾ</string>
-  <string name="font_size_default">സ്ഥിരസ്ഥിതി</string>
-  <string name="font_size_tiniest">ഏറ്റവും ചെറിയ</string>
-  <string name="font_size_tiny">ഏറ്റവും ചെറുത്</string>
-  <string name="font_size_smaller">ചെറിയ</string>
-  <string name="font_size_small">ചെറുത്</string>
-  <string name="font_size_medium">ഇടത്തരം</string>
-  <string name="font_size_large">വലുത്</string>
-  <string name="font_size_larger">വലിയ</string>
-  <string name="error_activity_not_found">ഈ പ്രവർത്തനത്തിന് അനുയോജ്യമായ അപ്ലിക്കേഷനുകളൊന്നും കണ്ടെത്തിയില്ല.</string>
-  <string name="send_failed_reason">അയയ്‌ക്കുന്നത് പരാജയപ്പെട്ടു: %s</string>
-  <string name="save_or_discard_draft_message_dlg_title">ഡ്രാഫ്റ്റ് സന്ദേശം സംരക്ഷിക്കണോ?</string>
-  <string name="save_or_discard_draft_message_instructions_fmt">ഈ സന്ദേശം സംരക്ഷിക്കണോ അതോ നിരസിക്കണോ?</string>
-  <string name="confirm_discard_draft_message_title">സന്ദേശം നിരസിക്കണോ?</string>
-  <string name="confirm_discard_draft_message">ഈ സന്ദേശം നിരസിക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ?</string>
-  <string name="dialog_confirm_clear_local_folder_title">പ്രാദേശിക സന്ദേശങ്ങൾ മായ്‌ക്കണോ?</string>
-  <string name="dialog_confirm_clear_local_folder_message">ഇത് എല്ലാ പ്രാദേശിക സന്ദേശങ്ങളും ഫോൾഡറിൽ നിന്ന് നീക്കംചെയ്യും. സെർവറിൽ നിന്ന് സന്ദേശങ്ങളൊന്നും ഇല്ലാതാക്കില്ല.</string>
-  <string name="dialog_confirm_clear_local_folder_action">സന്ദേശങ്ങൾ മായ്‌ക്കുക</string>
-  <string name="dialog_confirm_delete_title">ഇല്ലാതാക്കൽ സ്ഥിരീകരിക്കുക</string>
-  <string name="dialog_confirm_delete_message">ഈ സന്ദേശം ഇല്ലാതാക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ?</string>
-  <plurals name="dialog_confirm_delete_messages">
-    <item quantity="one">ഈ സന്ദേശം ഇല്ലാതാക്കാൻ നിങ്ങൾ ശരിക്കും ആഗ്രഹിക്കുന്നുണ്ടോ?</item>
-    <item quantity="other"><xliff:g id="message_count">%1$d</xliff:g> സന്ദേശങ്ങൾ ഇല്ലാതാക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ? </item>
-  </plurals>
-  <string name="dialog_confirm_delete_confirm_button">അതെ</string>
-  <string name="dialog_confirm_delete_cancel_button">ഇല്ല</string>
-  <string name="dialog_confirm_mark_all_as_read_title">എല്ലാം വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
-  <string name="dialog_confirm_mark_all_as_read_message">എല്ലാ സന്ദേശങ്ങളും വായിച്ചതായി അടയാളപ്പെടുത്താൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ?</string>
-  <string name="dialog_confirm_empty_trash_title">ചവറ്റുകുട്ട ശൂന്യമാക്കൽ സ്ഥിരീകരിക്കുക</string>
-  <string name="dialog_confirm_empty_trash_message">ചവറ്റുകൂട്ട ഫോൾഡർ ശൂന്യമാക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ?</string>
-  <string name="dialog_confirm_mark_all_as_read_confirm_button">അതെ</string>
-  <string name="dialog_confirm_mark_all_as_read_cancel_button">ഇല്ല</string>
-  <string name="dialog_confirm_spam_title">സ്പാം ഫോൾഡറിലേക്കുള്ള നീക്കം സ്ഥിരീകരിക്കുക</string>
-  <plurals name="dialog_confirm_spam_message">
-    <item quantity="one">ഈ സന്ദേശം സ്പാം ഫോൾഡറിലേക്ക് നീക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ?</item>
-    <item quantity="other"><xliff:g id="message_count">%1$d</xliff:g>സന്ദേശങ്ങൾ സ്പാം ഫോൾഡറിലേക്ക് നീക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ?</item>
-  </plurals>
-  <string name="dialog_confirm_spam_confirm_button">അതെ</string>
-  <string name="dialog_confirm_spam_cancel_button">ഇല്ല</string>
-  <string name="dialog_attachment_progress_title">അറ്റാച്ചുമെന്റ് ഡൗൺലോഡുചെയ്യുന്നു</string>
-  <string name="settings_list_backup_category">ബാക്കപ്പ്</string>
-  <string name="settings_list_miscellaneous_category">പലവക</string>
-  <string name="settings_export_title">ക്രമീകരണങ്ങൾ എക്‌സ്‌പോർട്ടുചെയ്യുക</string>
-  <string name="settings_export_button">എക്സ്പോർട്ട്</string>
-  <string name="settings_export_share_button">പങ്കിടുക</string>
-  <string name="settings_export_progress_text">ക്രമീകരണങ്ങൾ എക്‌സ്‌പോർട്ടുചെയ്യുന്നു…</string>
-  <string name="settings_export_success_generic">ക്രമീകരണങ്ങൾ വിജയകരമായി എക്‌സ്‌പോർട്ടുചെയ്‌തു</string>
-  <string name="settings_export_failure">ക്രമീകരണങ്ങൾ എക്‌സ്‌പോർട്ടുചെയ്യുന്നതിൽ പരാജയപ്പെട്ടു</string>
-  <string name="settings_import_title">ക്രമീകരണങ്ങൾ ഇംപോർട്ട് ചെയ്യുക</string>
-  <string name="settings_import_pick_document_button">ഫയൽ തിരഞ്ഞെടുക്കുക</string>
-  <string name="settings_import_button">ഇംപോർട്ട്</string>
-  <string name="settings_import_success_generic">ക്രമീകരണങ്ങൾ വിജയകരമായി ഇംപോർട്ട് ചെയ്തു</string>
-  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-  <string name="settings_import_password_required">ദയവായി രഹസ്യവാക്കുകൾ നൽകുക</string>
-  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-  <string name="settings_import_failure">ക്രമീകരണങ്ങൾ ഇംപോർട്ടുചെയ്യുന്നതിൽ പരാജയപ്പെട്ടു</string>
-  <string name="settings_import_read_failure">ക്രമീകരണ ഫയൽ വായിക്കുന്നതിൽ പരാജയപ്പെട്ടു</string>
-  <string name="settings_import_partial_failure">ചില ക്രമീകരണങ്ങൾ ഇംപോർട്ട് ചെയ്യുന്നതിൽ പരാജയപ്പെട്ടു</string>
-  <string name="settings_import_status_success">വിജയകരമായി ഇംപോർട്ട് ചെയ്തു</string>
-  <string name="settings_import_status_password_required">രഹസ്യവാചകം ആവശ്യമാണ്</string>
-  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-  <string name="settings_import_status_not_imported">ഇംപോർട്ട് ചെയ്തിട്ടില്ല</string>
-  <string name="settings_import_status_error">ഇംപോർട്ട് തകരാർ</string>
-  <string name="settings_import_later_button">പിന്നീട്</string>
-  <string name="settings_import">ക്രമീകരണങ്ങൾ ഇംപോർട്ട് ചെയ്യുക</string>
-  <string name="settings_importing">ക്രമീകരണങ്ങൾ ഇംപോർട്ട് ചെയ്യുന്നു…</string>
-  <plurals name="settings_import_password_prompt">
-    <item quantity="one">\"<xliff:g id="account">%s</xliff:g>\" അക്കൗണ്ട് ഉപയോഗിക്കാൻ നിങ്ങൾ സെർവർ രഹസ്യവാചകം നൽകേണ്ടതുണ്ട്.</item>
-    <item quantity="other">\"<xliff:g id="account">%s</xliff:g>\" അക്കൗണ്ട് ഉപയോഗിക്കാൻ നിങ്ങൾ സെർവർ രഹസ്യവാചകങ്ങൾ നൽകേണ്ടതുണ്ട്.</item>
-  </plurals>
-  <string name="settings_import_incoming_server_password_hint">ഇൻകമിംഗ് സെർവർ രഹസ്യവാചകം</string>
-  <string name="settings_import_outgoing_server_password_hint">ഔട്ട്‌ഗോയിംഗ് സെർവർ രഹസ്യവാചകം</string>
-  <string name="settings_import_use_same_password_for_outgoing_server">ഔട്ട്‌ഗോയിംഗ് സെർവറിനായി സമാന രഹസ്യവാചകം ഉപയോഗിക്കുക</string>
-  <string name="server_name_format">സെർവർ നാമം: <xliff:g id="hostname">%s</xliff:g></string>
-  <string name="unread_widget_select_account">ഇതിനായി വായിക്കാത്ത എണ്ണം കാണിക്കുക…</string>
-  <string name="unread_widget_account_title">അക്കൗണ്ട്</string>
-  <string name="unread_widget_account_summary">വായിക്കാത്ത എണ്ണം പ്രദർശിപ്പിക്കേണ്ട അക്കൗണ്ട്</string>
-  <string name="unread_widget_unified_inbox_account_summary">ഏകീകൃത ഇൻ‌ബോക്സ്</string>
-  <string name="unread_widget_folder_enabled_title">ഫോൾഡറിന്റെ എണ്ണം</string>
-  <string name="unread_widget_folder_enabled_summary">ഒരൊറ്റ ഫോൾഡറിന്റെ മാത്രം വായിക്കാത്ത എണ്ണം പ്രദർശിപ്പിക്കുക</string>
-  <string name="unread_widget_folder_title">ഫോൾഡർ</string>
-  <string name="unread_widget_folder_summary">വായിക്കാത്ത എണ്ണം പ്രദർശിപ്പിക്കേണ്ട ഫോൾഡർ</string>
-  <string name="unread_widget_action_done">ചെയ്തു</string>
-  <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
-  <string name="unread_widget_account_not_selected">അക്കൗണ്ട് ഒന്നും തിരഞ്ഞെടുത്തിട്ടില്ല</string>
-  <string name="unread_widget_folder_not_selected">ഫോൾഡർ ഒന്നും തിരഞ്ഞെടുത്തിട്ടില്ല</string>
-  <string name="webview_empty_message">വാചകമൊന്നുമില്ല</string>
-  <string name="webview_contextmenu_link_view_action">കണ്ണി തുറക്കുക</string>
-  <string name="webview_contextmenu_link_share_action">കണ്ണി പങ്കിടുക</string>
-  <string name="webview_contextmenu_link_copy_action">ക്ലിപ്പ്ബോർഡിലേക്ക് കണ്ണി പകർത്തുക</string>
-  <string name="webview_contextmenu_link_clipboard_label">കണ്ണി</string>
-  <string name="webview_contextmenu_link_text_copy_action">കണ്ണി വാചകം ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തുക</string>
-  <string name="webview_contextmenu_link_text_clipboard_label">കണ്ണി വാചകം</string>
-  <string name="webview_contextmenu_image_title">ചിത്രം</string>
-  <string name="webview_contextmenu_image_view_action">ചിത്രം കാണുക</string>
-  <string name="webview_contextmenu_image_save_action">ചിത്രം സൂക്ഷിക്കുക</string>
-  <string name="webview_contextmenu_image_download_action">ചിത്രം ഡൗൺലോഡുചെയ്യുക</string>
-  <string name="webview_contextmenu_image_copy_action">ക്ലിപ്പ്ബോർഡിലേക്ക് ചിത്ര URL പകർത്തുക</string>
-  <string name="webview_contextmenu_image_clipboard_label">ചിത്ര URL</string>
-  <string name="webview_contextmenu_phone_call_action">വിളി നമ്പർ</string>
-  <string name="webview_contextmenu_phone_save_action">കോൺ‌ടാക്റ്റുകളിലേക്ക് സംരക്ഷിക്കുക</string>
-  <string name="webview_contextmenu_phone_copy_action">ക്ലിപ്പ്ബോർഡിലേക്ക് നമ്പർ പകർത്തുക</string>
-  <string name="webview_contextmenu_phone_clipboard_label">ഫോൺ നമ്പർ</string>
-  <string name="webview_contextmenu_email_send_action">മെയിൽ അയയ്ക്കുക</string>
-  <string name="webview_contextmenu_email_save_action">കോൺ‌ടാക്റ്റുകളിലേക്ക് സംരക്ഷിക്കുക</string>
-  <string name="webview_contextmenu_email_copy_action">ക്ലിപ്പ്ബോർഡിലേക്ക് വിലാസം പകർത്തുക</string>
-  <string name="webview_contextmenu_email_clipboard_label">ഇമെയിൽ വിലാസം</string>
-  <string name="account_settings_remote_search_num_results_entries_all">എല്ലാം</string>
-  <string name="account_settings_remote_search_num_results_entries_10">10</string>
-  <string name="account_settings_remote_search_num_results_entries_25">25</string>
-  <string name="account_settings_remote_search_num_results_entries_50">50</string>
-  <string name="account_settings_remote_search_num_results_entries_100">100</string>
-  <string name="account_settings_remote_search_num_results_entries_250">250</string>
-  <string name="account_settings_remote_search_num_results_entries_500">500</string>
-  <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-  <string name="account_settings_remote_search_num_label">സെർവർ തിരയൽ പരിധി</string>
-  <string name="remote_search_sending_query">സെർവറിലേക്ക് അന്വേഷണം അയയ്ക്കുന്നു</string>
-  <plurals name="remote_search_downloading">
-    <item quantity="one">%d ഫലം ലഭ്യമാക്കുന്നു </item>
-    <item quantity="other">%d ഫലങ്ങൾ ലഭ്യമാക്കുന്നു</item>
-  </plurals>
-  <plurals name="remote_search_downloading_limited">
-    <item quantity="one">%2$d ഫലങ്ങളിൽ %1$d ലഭ്യമാക്കുന്നു</item>
-    <item quantity="other">%2$d ഫലങ്ങളിൽ %1$d ലഭ്യമാക്കുന്നു</item>
-  </plurals>
-  <string name="remote_search_error">വിദൂര തിരയൽ പരാജയപ്പെട്ടു</string>
-  <string name="account_settings_search">തിരയുക</string>
-  <string name="action_remote_search">സെർവറിൽ സന്ദേശങ്ങൾ തിരയുക</string>
-  <string name="remote_search_unavailable_no_network">സെർവർ തിരയലിനായി ഒരു നെറ്റ്‌വർക്ക് കണക്ഷൻ ആവശ്യമാണ്.</string>
-  <string name="global_settings_background_as_unread_indicator_label">വായിക്കുമ്പോൾ നിറം മാറ്റുക</string>
-  <string name="global_settings_background_as_unread_indicator_summary">സന്ദേശം വായിച്ചാൽ മറ്റൊരു പശ്ചാത്തലം കാണിക്കും</string>
-  <string name="global_settings_threaded_view_label">ത്രെഡുചെയ്‌ത കാഴ്ച</string>
-  <string name="global_settings_threaded_view_summary">സംഭാഷണത്തിലൂടെ സന്ദേശങ്ങൾ ഗ്രൂപ്പ് ചെയ്യുക</string>
-  <string name="upgrade_databases_title">ഡാറ്റാബേസുകൾ‌ നവീകരിക്കുന്നു</string>
-  <string name="upgrade_databases_unspecified">ഡാറ്റാബേസുകൾ‌ നവീകരിക്കുന്നു…</string>
-  <string name="upgrade_database_format">\"<xliff:g id="account">%s</xliff:g>\" അക്കൗണ്ടിന്റെ ഡാറ്റാബേസ് നവീകരിക്കുന്നു</string>
-  <string name="global_settings_splitview_mode_label">പിളർ സ്ക്രീൻ കാണിക്കുക</string>
-  <string name="global_settings_splitview_always">എല്ലായ്പ്പോഴും</string>
-  <string name="global_settings_splitview_never">ഒരിക്കലും</string>
-  <string name="global_settings_splitview_when_in_landscape">ലാൻഡ്‌സ്‌കേപ്പ് ഓറിയന്റേഷനിൽ ആയിരിക്കുമ്പോൾ</string>
-  <string name="message_view_empty">ഇടതുവശത്ത് നിന്ന് ഒരു സന്ദേശം തിരഞ്ഞെടുക്കുക</string>
-  <string name="global_settings_show_contact_picture_label">കോൺ‌ടാക്റ്റ് ചിത്രങ്ങൾ‌ കാണിക്കുക</string>
-  <string name="global_settings_show_contact_picture_summary">സന്ദേശ ലിസ്റ്റിൽ കോൺടാക്റ്റ് ചിത്രങ്ങൾ കാണിക്കുക</string>
-  <string name="mark_all_as_read">എല്ലാം വായിച്ചതായി കാണിക്കൂ</string>
-  <string name="global_settings_colorize_missing_contact_pictures_label">കോൺ‌ടാക്റ്റ് ചിത്രങ്ങൾ‌ വർ‌ണ്ണമാക്കുക</string>
-  <string name="global_settings_colorize_missing_contact_pictures_summary">കോൺ‌ടാക്റ്റ് ചിത്രങ്ങൾ‌ ഇല്ലാത്തവയെ വർ‌ണ്ണമാക്കുക</string>
-  <string name="global_settings_messageview_visible_refile_actions_title">ദൃശ്യസന്ദേശ പ്രവർത്തനങ്ങൾ</string>
-  <string name="global_settings_messageview_visible_refile_actions_summary">തിരഞ്ഞെടുത്ത കാഴ്‌ച മെനുവിൽ തിരഞ്ഞെടുത്ത പ്രവർത്തനങ്ങൾ കാണിക്കുക</string>
-  <string name="loading_attachment">അറ്റാച്ചുമെന്റ് ലോഡുചെയ്യുന്നു…</string>
-  <string name="fetching_attachment_dialog_title_send">സന്ദേശം അയക്കുന്നു</string>
-  <string name="fetching_attachment_dialog_title_save">ഡ്രാഫ്റ്റ് സംരക്ഷിക്കുന്നു</string>
-  <string name="fetching_attachment_dialog_message">അറ്റാച്ചുമെന്റ് ലഭ്യമാക്കുന്നു…</string>
-  <string name="auth_external_error">പ്രാമാണീകരിക്കാൻ കഴിയില്ല. സെർവർ എസ്‌എ‌എസ്‌എൽ ബാഹ്യ ശേഷി പരസ്യപ്പെടുത്തുന്നില്ല. ക്ലയൻറ് സർ‌ട്ടിഫിക്കറ്റിലെ (കാലഹരണപ്പെട്ട, അജ്ഞാത സർ‌ട്ടിഫിക്കറ്റ് അതോറിറ്റി) അല്ലെങ്കിൽ‌ മറ്റേതെങ്കിലും ക്രമീകരണ പ്രശ്‌നം കാരണം ഇത് സംഭവിക്കാം.</string>
-  <!--=== Client certificates specific ==================================================================-->
-  <string name="account_setup_basics_client_certificate">ക്ലയൻറ് സർ‌ട്ടിഫിക്കറ്റ് ഉപയോഗിക്കുക</string>
-  <string name="client_certificate_spinner_empty">ക്ലയന്റ് സർട്ടിഫിക്കറ്റ് ഇല്ല</string>
-  <string name="client_certificate_spinner_delete">ക്ലയൻറ് സർ‌ട്ടിഫിക്കറ്റ് തിരഞ്ഞെടുക്കൽ നീക്കംചെയ്യുക</string>
-  <string name="client_certificate_retrieval_failure">\"<xliff:g id="alias">%s</xliff:g>\" എന്ന അപരനാമത്തിനായുള്ള ക്ലയൻറ് സർട്ടിഫിക്കറ്റ് വീണ്ടെടുക്കുന്നതിൽ പരാജയപ്പെട്ടു </string>
-  <string name="client_certificate_advanced_options">വിപുലമായ ക്രമീകരണങ്ങൾ</string>
-  <string name="client_certificate_expired">ക്ലയൻറ് സർ‌ട്ടിഫിക്കറ്റ്  \"<xliff:g id="certificate_alias">%1$s</xliff:g>\"\ കാലഹരണപ്പെട്ടു അല്ലെങ്കിൽ ഇതുവരെ സാധുവായിട്ടില്ല (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <!--Note: This references message_view_download_remainder-->
-  <string name="preview_encrypted">*എൻ‌ക്രിപ്റ്റുചെയ്‌തത്*</string>
-  <string name="add_from_contacts">കോൺ‌ടാക്റ്റുകളിൽ നിന്ന് ചേർക്കുക</string>
-  <string name="recipient_cc">Cc</string>
-  <string name="recipient_bcc">Bcc</string>
-  <string name="recipient_to">To</string>
-  <string name="recipient_from">മുതൽ</string>
-  <string name="unknown_recipient">&lt;അജ്ഞാത സ്വീകർത്താവ്&gt;</string>
-  <string name="unknown_sender">&lt;അജ്ഞാത പ്രേഷിതൻ&gt;</string>
-  <string name="address_type_home">വീട്</string>
-  <string name="address_type_work">ജോലി</string>
-  <string name="address_type_other">മറ്റുള്ളവ</string>
-  <string name="address_type_mobile">മൊബൈൽ</string>
-  <string name="compose_error_no_draft_folder">ഈ അക്കൗണ്ടിനായി ഡ്രാഫ്റ്റ്സ് ഫോൾഡറൊന്നും ക്രമീകരിച്ചിട്ടില്ല!</string>
-  <string name="compose_error_no_key_configured">ഈ അക്കൗണ്ടിനായി ഒരു കീയും ക്രമീകരിച്ചിട്ടില്ല! നിങ്ങളുടെ ക്രമീകരണങ്ങൾ പരിശോധിക്കുക.</string>
-  <string name="error_crypto_provider_incompatible">ക്രിപ്‌റ്റോ ദാതാവ് പൊരുത്തപ്പെടാത്ത പതിപ്പ് ഉപയോഗിക്കുന്നു. നിങ്ങളുടെ ക്രമീകരണങ്ങൾ പരിശോധിക്കുക!</string>
-  <string name="error_crypto_provider_connect">ക്രിപ്‌റ്റോ ദാതാവിലേക്ക് കണക്റ്റുചെയ്യാനായില്ല, നിങ്ങളുടെ ക്രമീകരണങ്ങൾ പരിശോധിക്കുകയോ  അല്ലെങ്കിൽ വീണ്ടും ശ്രമിക്കുന്നതിന് ക്രിപ്‌റ്റോ ഐക്കണിൽ ക്ലിക്കുചെയ്യുക!</string>
-  <string name="error_crypto_provider_ui_required">എൻഡ്-ടു-എൻഡ് എൻ‌ക്രിപ്ഷൻ സമാരംഭിക്കുന്നതിൽ പരാജയപ്പെട്ടു, ദയവായി നിങ്ങളുടെ ക്രമീകരണങ്ങൾ പരിശോധിക്കുക</string>
-  <string name="error_crypto_inline_attach">PGP/INLINE മോഡ് അറ്റാച്ചുമെന്റുകളെ പിന്തുണയ്‌ക്കുന്നില്ല!</string>
-  <string name="enable_inline_pgp">PGP/INLINE പ്രാപ്തമാക്കുക</string>
-  <string name="disable_inline_pgp">PGP / INLINE അപ്രാപ്‌തമാക്കുക</string>
-  <string name="enable_sign_only">പി‌ജി‌പി സൈൻ‌-മാത്രം പ്രാപ്‌തമാക്കുക</string>
-  <string name="disable_sign_only">പി‌ജി‌പി സൈൻ‌-മാത്രം അപ്രാപ്‌തമാക്കുക</string>
-  <string name="openpgp_inline_title">PGP/INLINE മോഡ്</string>
-  <string name="openpgp_inline_text">ഈ ഇമെയിൽ PGP/INLINE ഫോർമാറ്റിലാണ് അയച്ചിരിക്കുന്നത്. \nഇത് അനുയോജ്യതയ്ക്കായി മാത്രമേ ഉപയോഗിക്കാവൂ:</string>
-  <string name="openpgp_inline_plus_compat">ചില ക്ലയന്റുകൾ ഈ ഫോർമാറ്റിനെ മാത്രമേ പിന്തുണയ്ക്കൂ</string>
-  <string name="openpgp_inline_minus_transit">ട്രാൻസിറ്റ് സമയത്ത് ഒപ്പുകൾ തകർന്നേക്കാം</string>
-  <string name="openpgp_inline_minus_attach">അറ്റാച്ചുമെന്റുകൾ പിന്തുണയ്‌ക്കുന്നില്ല</string>
-  <string name="openpgp_inline_ok">മനസ്സിലായി!</string>
-  <string name="openpgp_inline_disable">അപ്രാപ്തമാക്കുക</string>
-  <string name="openpgp_inline_keep_enabled">പ്രാപ്തമാക്കി നിലനിർത്തുക</string>
-  <string name="openpgp_sign_only_ok">മനസ്സിലായി!</string>
-  <string name="openpgp_sign_only_disable">അപ്രാപ്തമാക്കുക</string>
-  <string name="openpgp_sign_only_keep_enabled">പ്രാപ്തമാക്കി നിലനിർത്തുക</string>
-  <string name="openpgp_dialog_sign_only_title">പി‌ജി‌പി സൈൻ-മാത്രം മോഡ്</string>
-  <string name="openpgp_dialog_sign_only_text">ഈ മോഡിൽ‌, എൻ‌ക്രിപ്റ്റ് ചെയ്യാത്ത ഇമെയിലിന്റെ ക്രിപ്റ്റോഗ്രാഫിക് സിഗ്നേച്ചർ സൃഷ്ടിക്കാൻ നിങ്ങളുടെ പി‌ജി‌പി കീ ഉപയോഗിക്കും.</string>
-  <string name="openpgp_dialog_sign_only_plus_verified">ഇത് ഇമെയിൽ എൻ‌ക്രിപ്റ്റ് ചെയ്യുന്നില്ല, പക്ഷേ ഇത് നിങ്ങളുടെ കീയിൽ നിന്നാണ് അയച്ചതെന്ന് സ്ഥിരീകരിക്കുന്നു.</string>
-  <string name="openpgp_dialog_sign_only_minus_break">മെയിലിംഗ് ലിസ്റ്റുകളിലേക്ക് അയയ്ക്കുമ്പോൾ ഒപ്പുകൾ തകർന്നേക്കാം.</string>
-  <string name="openpgp_dialog_sign_only_minus_attach">ചില ക്ലയന്റുകളിൽ ഒപ്പുകൾ \'signature.asc\' അറ്റാച്ചുമെന്റുകളായി പ്രദർശിപ്പിച്ചേക്കാം.</string>
-  <string name="openpgp_dialog_sign_only_neutral_encsigned">എൻ‌ക്രിപ്റ്റ് ചെയ്ത സന്ദേശങ്ങളിൽ എല്ലായ്പ്പോഴും ഒരു ഒപ്പ് ഉൾപ്പെടുന്നു.</string>
-  <string name="crypto_msg_title_plaintext">പ്ലെയിൻ‌ടെക്സ്റ്റ്</string>
-  <string name="crypto_msg_unencrypted_sign_error">എൻഡ്-ടു-എൻഡ് ഒപ്പിൽ ഒരു പിശക് അടങ്ങിയിരിക്കുന്നു</string>
-  <string name="crypto_msg_incomplete_signed">ഒപ്പ് പ്രോസസ്സ് ചെയ്യുന്നതിന് സന്ദേശം പൂർണ്ണമായും ഡൗൺലോഡ് ചെയ്യണം</string>
-  <string name="crypto_msg_unsupported_signed">പിന്തുണയ്‌ക്കാത്ത എൻഡ്-ടു-എൻഡ് ഒപ്പ് അടങ്ങിയിരിക്കുന്നു</string>
-  <string name="crypto_msg_unsupported_encrypted">സന്ദേശം എൻ‌ക്രിപ്റ്റ് ചെയ്തതാണ്, പക്ഷേ പിന്തുണയ്‌ക്കാത്ത ഫോർ‌മാറ്റിലാണ്.</string>
-  <string name="crypto_msg_cancelled">സന്ദേശം എൻ‌ക്രിപ്റ്റ് ചെയ്തു, പക്ഷേ ഡീക്രിപ്ഷൻ റദ്ദാക്കി.</string>
-  <string name="crypto_msg_title_unencrypted_signed_e2e">എൻഡ്-ടു-എൻഡ് ഒപ്പിട്ട പ്ലെയിൻ‌ടെക്സ്റ്റ്</string>
-  <string name="crypto_msg_unencrypted_sign_verified">പരിശോധിച്ച ഒപ്പുകാരനിൽ നിന്ന്</string>
-  <string name="crypto_msg_title_unencrypted_signed">ഒപ്പിട്ട പ്ലെയിൻ‌ടെക്സ്റ്റ്</string>
-  <string name="crypto_msg_unencrypted_sign_mismatch">പക്ഷെ എൻഡ്-ടു-എൻഡ് കീ അയച്ചയാളുമായി പൊരുത്തപ്പെടുന്നില്ല</string>
-  <string name="crypto_msg_unencrypted_sign_expired">പക്ഷെ എൻഡ്-ടു-എൻഡ് കീ കാലഹരണപ്പെട്ടു</string>
-  <string name="crypto_msg_unencrypted_sign_revoked">പക്ഷെ എൻഡ്-ടു-എൻഡ് കീ അസാധുവാക്കി</string>
-  <string name="crypto_msg_unencrypted_sign_insecure">പക്ഷെ എൻഡ്-ടു-എൻഡ് കീ സുരക്ഷിതമാണെന്ന് കണക്കാക്കില്ല</string>
-  <string name="crypto_msg_unencrypted_sign_unknown">അജ്ഞാത എൻഡ്-ടു-എൻഡ് കീയിൽ നിന്ന്</string>
-  <string name="crypto_msg_title_encrypted_unknown">എൻ‌ക്രിപ്റ്റുചെയ്‌തത്</string>
-  <string name="crypto_msg_encrypted_error">പക്ഷേ ഒരു ഡീക്രിപ്ഷൻ പിശക് ഉണ്ടായിരുന്നു</string>
-  <string name="crypto_msg_encrypted_incomplete">ഡീക്രിപ്ഷനായി സന്ദേശം പൂർണ്ണമായും ഡൗൺലോഡ് ചെയ്യണം</string>
-  <string name="crypto_msg_encrypted_no_provider">ക്രിപ്‌റ്റോ അപ്ലിക്കേഷനുകളൊന്നും കോൺഫിഗർ ചെയ്‌തിട്ടില്ല</string>
-  <string name="crypto_msg_title_encrypted_unsigned">എൻ‌ക്രിപ്റ്റുചെയ്‌തത്</string>
-  <string name="crypto_msg_encrypted_unsigned">പക്ഷെ എൻഡ്-ടു-എൻഡ് അല്ല</string>
-  <string name="crypto_msg_title_encrypted_signed_e2e">എൻഡ്-ടു-എൻഡ് എൻ‌ക്രിപ്റ്റ് ചെയ്തത്</string>
-  <string name="crypto_msg_encrypted_sign_verified">പരിശോധിച്ച അയച്ചയാളിൽ നിന്ന്</string>
-  <string name="crypto_msg_title_encrypted_signed">എൻ‌ക്രിപ്റ്റുചെയ്‌തത്</string>
-  <string name="crypto_msg_encrypted_sign_unknown">അജ്ഞാത എൻഡ്-ടു-എൻഡ് കീയിൽ നിന്ന്</string>
-  <string name="crypto_msg_encrypted_sign_mismatch">പക്ഷെ എൻഡ്-ടു-എൻഡ് കീ അയച്ചയാളുമായി പൊരുത്തപ്പെടുന്നില്ല</string>
-  <string name="crypto_msg_encrypted_sign_expired">പക്ഷെ എൻഡ്-ടു-എൻഡ് കീ കാലഹരണപ്പെട്ടു</string>
-  <string name="crypto_msg_encrypted_sign_revoked">പക്ഷെ എൻഡ്-ടു-എൻഡ് കീ അസാധുവാക്കി</string>
-  <string name="crypto_msg_encrypted_sign_insecure">പക്ഷെ എൻഡ്-ടു-എൻഡ് കീ സുരക്ഷിതമാണെന്ന് കണക്കാക്കില്ല</string>
-  <string name="crypto_msg_encrypted_sign_error">എൻഡ്-ടു-എൻഡ് ഡാറ്റയ്ക്ക് പിശകുകളുണ്ട്</string>
-  <string name="crypto_msg_encrypted_insecure">എന്നാൽ എൻ‌ക്രിപ്ഷൻ സുരക്ഷിതമാണെന്ന് കണക്കാക്കില്ല</string>
-  <string name="crypto_info_ok">ശരി</string>
-  <string name="crypto_info_search_key">കീ തിരയുക</string>
-  <string name="crypto_info_view_signer">ഒപ്പുകാരനെ കാണുക</string>
-  <string name="crypto_info_view_sender">അയച്ചയാളെ കാണുക</string>
-  <string name="crypto_info_view_security_warning">വിവരങ്ങൾ</string>
-  <string name="locked_attach_unlock">അൺലോക്കുചെയ്യുക</string>
-  <string name="locked_attach_unencrypted">ഈ ഭാഗം എൻ‌ക്രിപ്റ്റ് ചെയ്തിട്ടില്ല, മാത്രമല്ല സുരക്ഷിതമല്ലാത്തതാകാം.</string>
-  <string name="locked_attach_title">സുരക്ഷിതമല്ലാത്ത അറ്റാച്ചുമെന്റ്</string>
-  <string name="message_progress_text">ലോഡുചെയ്യുന്നു…</string>
-  <string name="messageview_decrypt_cancelled">ഡീക്രിപ്ഷൻ റദ്ദാക്കി.</string>
-  <string name="messageview_decrypt_retry">വീണ്ടും ശ്രമിക്കുക</string>
-  <string name="messageview_decrypt_incomplete">ഡീക്രിപ്ഷനായി എൻ‌ക്രിപ്റ്റ് ചെയ്ത സന്ദേശം ഡൗൺലോഡ് ചെയ്യണം.</string>
-  <string name="messageview_crypto_error_title">ഇമെയിൽ ഡീക്രിപ്റ്റ് ചെയ്യുന്നതിൽ പിശക്</string>
-  <string name="recipient_error_non_ascii">പ്രത്യേക പ്രതീകങ്ങൾ നിലവിൽ പിന്തുണയ്ക്കുന്നില്ല!</string>
-  <string name="recipient_error_parse_failed">വിലാസം പാഴ്‌സുചെയ്യുന്നതിൽ പിശക്!</string>
-  <string name="account_settings_crypto_hide_sign_only">എൻക്രിപ്റ്റ് ചെയ്യാത്ത ഒപ്പുകൾ മറയ്ക്കുക</string>
-  <string name="account_settings_crypto_hide_sign_only_on">എൻ‌ക്രിപ്റ്റ് ചെയ്ത ഒപ്പുകൾ മാത്രമേ പ്രദർശിപ്പിക്കുകയുള്ളൂ</string>
-  <string name="account_settings_crypto_hide_sign_only_off">എല്ലാ ഒപ്പുകളും പ്രദർശിപ്പിക്കും</string>
-  <string name="error_sign_only_no_encryption">ചിഹ്നം മാത്രമുള്ള മോഡിൽ എൻക്രിപ്ഷൻ ലഭ്യമല്ല!</string>
-  <string name="unsigned_text_divider_label">ഒപ്പിടാത്ത വാചകം</string>
-  <string name="crypto_no_provider_title">ഈ ഇമെയിൽ എൻ‌ക്രിപ്റ്റ് ചെയ്തതാണ്</string>
-  <string name="crypto_no_provider_message">ഈ ഇമെയിൽ ഓപ്പൺപിജിപി ഉപയോഗിച്ച് എൻക്രിപ്റ്റുചെയ്‌തതാണ്.\nഇത് വായിക്കാൻ, നിങ്ങൾ ഒരു അനുയോജ്യമായ ഓപ്പൺപിജിപി അപ്ലിക്കേഷൻ ഇൻസ്റ്റാളുചെയ്‌ത് ക്രമീകരിക്കേണ്ടതുണ്ട്. </string>
-  <string name="crypto_no_provider_button">ക്രമീകരണങ്ങളിലേക്ക് പോകുക</string>
-  <string name="mail_list_widget_text">കെ-9 സന്ദേശ പട്ടിക</string>
-  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
-  <string name="message_list_widget_initializing">ലോഡുചെയ്യുന്നു…</string>
-  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
-  <string name="message_list_widget_list_item_loading">ലോഡുചെയ്യുന്നു…</string>
-  <string name="openpgp_enabled_error_title">എൻക്രിപ്ഷൻ സാധ്യമല്ല</string>
-  <string name="openpgp_enabled_error_msg">തിരഞ്ഞെടുത്ത ചില സ്വീകർത്താക്കൾ ഈ സവിശേഷതയെ പിന്തുണയ്ക്കുന്നില്ല!</string>
-  <string name="enable_encryption">എൻക്രിപ്ഷൻ പ്രാപ്തമാക്കുക</string>
-  <string name="disable_encryption">എൻക്രിപ്ഷൻ അപ്രാപ്തമാക്കുക</string>
-  <string name="openpgp_description_text1">സന്ദേശങ്ങൾ‌ എൻ‌ക്രിപ്റ്റ് ചെയ്യുന്നത് മറ്റാർ‌ക്കും വായിക്കാതെ സ്വീകർ‌ത്താവിന് മാത്രം വായിക്കാൻ‌ കഴിയുമെന്ന് ഉറപ്പാക്കുന്നു. </string>
-  <string name="openpgp_description_text3">എല്ലാ സ്വീകർത്താക്കളുടെയും പിന്തുണയുണ്ടെങ്കിൽ മാത്രമേ എൻക്രിപ്ഷൻ ദൃശ്യമാകൂ, അവർ മുമ്പ് നിങ്ങൾക്ക് ഒരു ഇമെയിൽ അയച്ചിരിക്കണം.</string>
-  <string name="openpgp_description_text2">ഈ ഐക്കണിൽ ക്ലിക്കുചെയ്ത് എൻ‌ക്രിപ്ഷൻ മാറ്റുക.</string>
-  <string name="openpgp_enabled_error_gotit">മനസ്സിലായി</string>
-  <string name="openpgp_enabled_error_back">പിന്നിലേക്ക്</string>
-  <string name="openpgp_enabled_error_disable">എൻക്രിപ്ഷൻ അപ്രാപ്തമാക്കുക</string>
-  <string name="openpgp_encryption">OpenPGP എൻ‌ക്രിപ്ഷൻ</string>
-  <string name="account_settings_crypto_prefer_encrypt">പരസ്പര മോഡ് ഓട്ടോക്രിപ്റ്റ് ചെയ്യുക</string>
-  <string name="dialog_autocrypt_mutual_title">പരസ്പര മോഡ് ഓട്ടോക്രിപ്റ്റ് ചെയ്യുക</string>
-  <string name="dialog_autocrypt_mutual_description_1">സന്ദേശങ്ങൾ‌ സാധാരണയായി തിരഞ്ഞെടുത്ത സന്ദേശങ്ങൾക്ക് അല്ലെങ്കിൽ‌ എൻ‌ക്രിപ്റ്റ് ചെയ്ത സന്ദേശത്തിന് മറുപടി നൽകുമ്പോൾ എൻ‌ക്രിപ്റ്റ് ചെയ്യും.</string>
-  <string name="dialog_autocrypt_mutual_description_2">അയച്ചയാളും സ്വീകർത്താക്കളും പരസ്പര മോഡ് പ്രാപ്തമാക്കിയാൽ, സ്ഥിരസ്ഥിതിയായി എൻക്രിപ്ഷൻ പ്രാപ്തമാക്കും.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">കൂടുതലറിയാൻ നിങ്ങൾക്ക് <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">ഇവിടെ ക്ലിക്കു</a> ചെയ്യാം.</string>
-  <string name="general_settings_title">പൊതുവായ ക്രമീകരണങ്ങൾ</string>
-  <string name="dialog_openkeychain_info_title">OpenPGP അപ്ലിക്കേഷനുകളൊന്നും ഇൻസ്റ്റാളുചെയ്‌തിട്ടില്ല</string>
-  <string name="dialog_openkeychain_info_install">ഇൻസ്റ്റാൾ ചെയ്യുക</string>
-  <string name="dialog_openkeychain_info_text">കെ-9 മെയിലിന് എൻഡ്-ടു-എൻഡ് എൻ‌ക്രിപ്ഷനായി ഓപ്പൺ‌കീചെയിൻ ആവശ്യമാണ്.</string>
-  <string name="encrypted_subject">എൻക്രിപ്റ്റുചെയ്‌ത സന്ദേശം</string>
-  <string name="account_settings_crypto_encrypt_subject">സന്ദേശ വിഷയങ്ങൾ എൻ‌ക്രിപ്റ്റ് ചെയ്യുക</string>
-  <string name="account_settings_crypto_encrypt_subject_subtitle">ചില സ്വീകർത്താക്കൾ പിന്തുണച്ചേക്കില്ല</string>
-  <string name="toast_account_not_found">ആന്തരിക പിശക്: അക്കൗണ്ട് അസാധുവാണ്!</string>
-  <string name="toast_openpgp_provider_error">%sലേക്ക് കണക്റ്റുചെയ്യുന്നതിൽ പിശക്! </string>
-  <string name="ac_transfer_setting_title">ഓട്ടോക്രിപ്റ്റ് സജ്ജീകരണ സന്ദേശം അയയ്‌ക്കുക</string>
-  <string name="ac_transfer_setting_summary">മറ്റ് ഉപകരണങ്ങളുമായി എൻഡ്-ടു-എൻഡ് സജ്ജീകരണം സുരക്ഷിതമായി പങ്കിടുക</string>
-  <string name="ac_transfer_title">ഓട്ടോക്രിപ്റ്റ് സജ്ജീകരണ സന്ദേശം</string>
-  <string name="ac_transfer_intro">ഒരു ഓട്ടോക്രിപ്റ്റ് സജ്ജീകരണ സന്ദേശം നിങ്ങളുടെ എൻഡ്-ടു-എൻഡ് സജ്ജീകരണം മറ്റ് ഉപകരണങ്ങളുമായി സുരക്ഷിതമായി പങ്കിടുന്നു.</string>
-  <string name="ac_transfer_button_send">സജ്ജീകരണ സന്ദേശം അയയ്‌ക്കുക</string>
-  <string name="ac_transfer_will_be_sent">സന്ദേശം നിങ്ങളുടെ വിലാസത്തിലേക്ക് അയയ്ക്കും:</string>
-  <string name="ac_transfer_generating">സജ്ജീകരണ സന്ദേശം സൃഷ്ടിക്കുന്നു…</string>
-  <string name="ac_transfer_sending_to">ഇതിലേക്ക് സന്ദേശം അയയ്ക്കുന്നു:</string>
-  <string name="ac_transfer_finish">പൂർത്തിയാക്കാൻ, നിങ്ങളുടെ മറ്റൊരു ഉപകരണത്തിൽ സന്ദേശം തുറന്ന് സജ്ജീകരണ കോഡ് നൽകുക.</string>
-  <string name="ac_transfer_show_code">സജ്ജീകരണ കോഡ് കാണിക്കുക</string>
-  <string name="ac_transfer_msg_subject">ഓട്ടോക്രിപ്റ്റ് സജ്ജീകരണ സന്ദേശം</string>
-  <string name="ac_transfer_msg_body">നിങ്ങളുടെ രഹസ്യ ഉപകരണത്തിനൊപ്പം നിങ്ങളുടെ ഓട്ടോക്രിപ്റ്റ് ക്രമീകരണങ്ങളും നിങ്ങളുടെ യഥാർത്ഥ ഉപകരണത്തിൽ നിന്ന് സുരക്ഷിതമായി കൈമാറുന്നതിനുള്ള എല്ലാ വിവരങ്ങളും ഈ സന്ദേശത്തിൽ അടങ്ങിയിരിക്കുന്നു.
+    <!--=== App-specific strings =============================================================-->
+    <!--This should make it easier for forks to change the branding-->
+    <!--Used in AndroidManifest.xml-->
+    <string name="app_name">K-9 Mail</string>
+    <string name="shortcuts_title">കെ-9 അക്കൗണ്ടുകൾ</string>
+    <string name="unread_widget_label">കെ-9 വായിക്കാത്തവ</string>
+    <!--Used in the about dialog-->
+    <string name="app_authors">The K-9 Dog Walkers</string>
+    <string name="source_code">സോഴ്സ് കോഡ്</string>
+    <string name="app_license">അപ്പാച്ചെ ലൈസൻസ്, പതിപ്പ് 2.0</string>
+    <string name="about_project_title">ഓപ്പൺ സോഴ്സ് പ്രോജക്റ്റ്</string>
+    <string name="about_website_title">വെബ്സൈറ്റ്</string>
+    <string name="user_forum_title">ഉപയോക്തൃ ഫോറം</string>
+    <string name="about_fediverse_title">ഫെഡിവേഴ്സ്</string>
+    <string name="about_twitter_title">ട്വിറ്റർ</string>
+    <string name="about_libraries">ലൈബ്രറികൾ</string>
+    <string name="license">ലൈസൻസ്</string>
+    <string name="changelog_title">ചെയ്ഞ്ച്‍ലോഗ്</string>
+    <string name="changelog_loading_error">ചെയ്ഞ്ച്‍ലോഗ് ലോഡു ചെയ്യാനായില്ല.</string>
+    <string name="changelog_version_title">പതിപ്പ് %s</string>
+    <string name="changelog_recent_changes_title">എന്താണ് പുതിയത്</string>
+    <string name="changelog_show_recent_changes">ആപ്പ് അപ്‌ഡേറ്റ് ചെയ്യുമ്പോൾ സമീപകാല മാറ്റങ്ങൾ കാണിക്കുക</string>
+    <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
+    <string name="changelog_snackbar_text">ഈ റിലീസിൽ പുതിയത് എന്താണെന്ന് കണ്ടെത്തുക</string>
+    <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+    <!--Default signature-->
+    <string name="default_signature">-- \nകെ-9 മെയിൽ ഉപയോഗിച്ച് എന്റെ ആൻഡ്രോയിഡിൽ നിന്നും അയച്ചത്. ദയവായി എന്റെ പദപ്രയോഗമിതത്വം ക്ഷമിക്കുക.</string>
+    <!--General strings that include the app name-->
+    <string name="account_delete_dlg_instructions_fmt">കെ-9 മെയിലിൽ നിന്ന്  \"<xliff:g id="account">%s</xliff:g>\" അക്കൗണ്ട് നീക്കംചെയ്യും. </string>
+    <!--=== General strings ==================================================================-->
+    <string name="authors">രചയിതാക്കൾ</string>
+    <string name="about_title">കെ-9 മെയിലിനെക്കുറിച്ച്</string>
+    <string name="accounts_title">അക്കൗണ്ടുകൾ</string>
+    <string name="advanced">വിപുലമായത്</string>
+    <string name="compose_title_compose">രചിക്കുക</string>
+    <string name="compose_title_reply">മറുപടി പറയുക</string>
+    <string name="compose_title_reply_all">എല്ലാത്തിനും മറുപടി പറയുക</string>
+    <string name="compose_title_forward">ഫോർവേഡ് ചെയ്യുക</string>
+    <string name="compose_title_forward_as_attachment">അറ്റാച്ചുമെന്റായി ഫോർവേഡ് ചെയ്യുക</string>
+    <string name="choose_account_title">അക്കൗണ്ട് തിരഞ്ഞെടുക്കുക</string>
+    <string name="choose_folder_title">ഫോൾഡർ തിരഞ്ഞെടുക്കുക</string>
+    <string name="choose_folder_move_title">ഇതിലേക്ക് നീക്കുക…</string>
+    <string name="choose_folder_copy_title">ഇതിലേക്ക് പകർത്തുക…</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> തിരഞ്ഞെടുത്തു</string>
+    <string name="next_action">അടുത്തത്</string>
+    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
+    <string name="okay_action">ശരി</string>
+    <string name="cancel_action">റദ്ദാക്കുക</string>
+    <string name="send_action">അയയ്ക്കുക</string>
+    <string name="empty_subject">വിഷയം ശൂന്യമാണ്, ഏതുവിധേനയും അയയ്‌ക്കാൻ വീണ്ടും ക്ലിക്കുചെയ്യുക</string>
+    <string name="reply_action">മറുപടി പറയുക</string>
+    <string name="reply_all_action">എല്ലാത്തിനും മറുപടി പറയുക</string>
+    <string name="delete_action">ഇല്ലാതാക്കുക</string>
+    <string name="archive_action">ശേഖരം</string>
+    <string name="spam_action">സ്പാം</string>
+    <string name="forward_action">ഫോർവേഡ് ചെയ്യുക</string>
+    <string name="forward_as_attachment_action">അറ്റാച്ചുമെന്റായി ഫോർവേഡ് ചെയ്യുക</string>
+    <string name="edit_as_new_message_action">പുതിയ സന്ദേശമായി എഡിറ്റ് ചെയ്യുക</string>
+    <string name="move_action">നീക്കുക</string>
+    <string name="move_to_drafts_action">ഡ്രാഫ്റ്റുകളിലേക്ക് നീക്കുക</string>
+    <string name="refile_action">പുതുക്കുക…</string>
+    <string name="done_action">ചെയ്തു</string>
+    <string name="discard_action">നിരസിക്കുക</string>
+    <string name="save_draft_action">ഡ്രാഫ്റ്റായി സേവ് ചെയ്യുക</string>
+    <string name="check_mail_action">മെയിൽ പരിശോധിക്കുക</string>
+    <string name="send_messages_action">സന്ദേശങ്ങൾ അയയ്ക്കുക</string>
+    <string name="refresh_folders_action">ഫോൾഡർ ലിസ്റ്റ് പുതുക്കുക</string>
+    <string name="filter_folders_action">ഫോൾഡർ തിരയുക</string>
+    <string name="add_account_action">അക്കൗണ്ട് ചേർക്കുക</string>
+    <string name="compose_action">രചിക്കുക</string>
+    <string name="search_action">തിരയുക</string>
+    <string name="search_everywhere_action">എല്ലായിടത്തും തിരയുക</string>
+    <string name="search_results">ഫലങ്ങൾ തിരയുക</string>
+    <string name="new_messages_title">പുതിയ സന്ദേശങ്ങൾ</string>
+    <string name="preferences_action">സജ്ജീകരണങ്ങൾ</string>
+    <string name="folders_action">ഫോൾഡറുകൾ നിയന്ത്രിക്കുക</string>
+    <string name="account_settings_action">അക്കൗണ്ട് സജ്ജീകരണങ്ങൾ</string>
+    <string name="remove_account_action">അക്കൗണ്ട് നീക്കംചെയ്യുക</string>
+    <string name="mark_as_read_action">വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
+    <string name="send_alternate_action">പങ്കിടുക</string>
+    <string name="send_alternate_chooser_title">പ്രേക്ഷകനെ തിരഞ്ഞെടുക്കുക</string>
+    <string name="flag_action">നക്ഷത്രം ചേർക്കുക</string>
+    <string name="unflag_action">നക്ഷത്രം കളയുക</string>
+    <string name="copy_action">പകർത്തുക</string>
+    <string name="show_headers_action">തലക്കെട്ടുകൾ പ്രദർശിപ്പിക്കുക</string>
+    <plurals name="copy_address_to_clipboard">
+        <item quantity="one">വിലാസം ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തി</item>
+        <item quantity="other">വിലാസങ്ങൾ ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തി</item>
+    </plurals>
+    <string name="copy_subject_to_clipboard">വിഷയ വാചകം ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തി</string>
+    <string name="message_view_theme_action_dark">ഇരുണ്ട തീമിലേക്ക് മാറുക</string>
+    <string name="message_view_theme_action_light">ലൈറ്റ് തീമിലേക്ക് മാറുക</string>
+    <string name="mark_as_unread_action">വായിക്കാത്തതായി അടയാളപ്പെടുത്തുക</string>
+    <string name="read_receipt">വായിച്ചു എന്ന അറിയിപ്പ്</string>
+    <string name="read_receipt_enabled">വായിച്ചു എന്ന അറിയിപ്പിനായി അപേക്ഷിക്കും</string>
+    <string name="read_receipt_disabled">വായിച്ചു എന്ന അറിയിപ്പിനായി അപേക്ഷിക്കില്ല</string>
+    <string name="add_attachment_action">അറ്റാച്ചുമെന്റ് ചേർക്കുക</string>
+    <string name="empty_trash_action">ചവറ്റുകുട്ട ശൂന്യമാക്കുക</string>
+    <string name="expunge_action">വിപുലീകരിക്കുക</string>
+    <string name="about_action">കുറിച്ച്</string>
+    <string name="prefs_title">സജ്ജീകരണങ്ങൾ</string>
+    <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
+    <string name="general_no_subject">(No subject)</string>
+    <string name="general_no_sender">പ്രക്ഷകൻ ഇല്ല</string>
+    <string name="status_loading_more">സന്ദേശങ്ങൾ ലോഡുചെയ്യുന്നു\u2026</string>
+    <string name="status_network_error">കണക്ഷൻ തകരാറ്</string>
+    <string name="status_invalid_id_error">സന്ദേശം കണ്ടെത്താനായില്ല</string>
+    <string name="status_loading_error">സന്ദേശം ലോഡുചെയ്യുന്നതിൽ പിശക്</string>
+    <string name="load_more_messages_fmt"><xliff:g id="messages_to_load">%d</xliff:g> വരെ ലോഡുചെയ്യുക</string>
+    <string name="size_format_gigabytes">%.1f GB</string>
+    <string name="size_format_megabytes">%.1f MB</string>
+    <string name="size_format_kilobytes">%.1f kB</string>
+    <string name="size_format_bytes">%d B</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">പുതിയ <xliff:g id="new_message_count">%d</xliff:g> സന്ദേശം</item>
+        <item quantity="other">പുതിയ <xliff:g id="new_message_count">%d</xliff:g> സന്ദേശങ്ങൾ</item>
+    </plurals>
+    <string name="notification_additional_messages">+<xliff:g id="additional_messages">%1$d</xliff:g> <xliff:g id="account">%2$s</xliff:g> ൽ കൂടുതൽ</string>
+    <string name="notification_action_reply">മറുപടി പറയുക</string>
+    <string name="notification_action_mark_as_read">വായന അടയാളപ്പെടുത്തുക</string>
+    <string name="notification_action_mark_all_as_read">എല്ലാത്തിലും വായന അടയാളപ്പെടുത്തുക</string>
+    <string name="notification_action_delete">ഇല്ലാതാക്കുക</string>
+    <string name="notification_action_delete_all">എല്ലാം ഇല്ലാതാക്കുക</string>
+    <string name="notification_action_archive">ശേഖരം</string>
+    <string name="notification_action_archive_all">എല്ലാം ശേഖരത്തിൽ ചേർക്കുക</string>
+    <string name="notification_action_spam">സ്പാം</string>
+    <string name="notification_certificate_error_public">സർട്ടിഫിക്കറ്റ് പിശക്</string>
+    <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g>നുള്ള സർട്ടിഫിക്കറ്റ് പിശക്</string>
+    <string name="notification_certificate_error_text">നിങ്ങളുടെ സെർവർ ക്രമീകരണങ്ങൾ പരിശോധിക്കുക</string>
+    <string name="notification_authentication_error_title">പ്രാമാണീകരണം പരാജയപ്പെട്ടു</string>
+    <string name="notification_authentication_error_text"><xliff:g id="account">%s</xliff:g> നായുള്ള പ്രാമാണീകരണം പരാജയപ്പെട്ടു. നിങ്ങളുടെ സെർവർ ക്രമീകരണങ്ങൾ പുതുക്കുക.</string>
+    <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+    <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+    <string name="notification_bg_sync_ticker">മെയിൽ പരിശോധിക്കുന്നു: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
+    <string name="notification_bg_sync_title">മെയിൽ പരിശോധിക്കുന്നു</string>
+    <string name="notification_bg_send_ticker">മെയിൽ അയയ്ക്കുന്നു: <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_bg_send_title">മെയിൽ അയയ്ക്കുന്നു</string>
+    <string name="notification_bg_title_separator">:</string>
+    <string name="notification_channel_push_title">സമന്വയിപ്പിക്കുക (പുഷ്)</string>
+    <string name="notification_channel_push_description">പുതിയ സന്ദേശങ്ങൾക്കായി കാത്തിരിക്കുമ്പോൾ പ്രദർശിപ്പിക്കുന്നു</string>
+    <string name="notification_channel_messages_title">സന്ദേശങ്ങൾ</string>
+    <string name="notification_channel_messages_description">സന്ദേശങ്ങളുമായി ബന്ധപ്പെട്ട അറിയിപ്പുകൾ</string>
+    <string name="notification_channel_miscellaneous_title">പലവക</string>
+    <string name="notification_channel_miscellaneous_description">പിശകുകൾ പോലുള്ള പലവിധ അറിയിപ്പുകൾ.</string>
+    <string name="special_mailbox_name_inbox">ഇൻബോക്സ്</string>
+    <string name="special_mailbox_name_outbox">ഔട്ട്ബോക്സ്</string>
+    <string name="special_mailbox_name_drafts">ഡ്രാഫ്റ്റുകൾ</string>
+    <string name="special_mailbox_name_trash">ചവറ്റുകുട്ട</string>
+    <string name="special_mailbox_name_sent">അയച്ചവ</string>
+    <string name="send_failure_subject">ചില സന്ദേശങ്ങൾ അയയ്ക്കുന്നതിൽ പരാജയപ്പെട്ടു</string>
+    <string name="version">പതിപ്പ്</string>
+    <string name="debug_enable_debug_logging_title">ഡീബഗ് ലോഗിംഗ് പ്രാപ്തമാക്കുക</string>
+    <string name="debug_enable_debug_logging_summary">അധിക ഡയഗ്നോസ്റ്റിക് വിവരങ്ങൾ ലോഗ് ചെയ്യുക </string>
+    <string name="debug_enable_sensitive_logging_title">തന്ത്രപ്രധാനമായ വിവരങ്ങൾ ലോഗ് ചെയ്യുക</string>
+    <string name="debug_enable_sensitive_logging_summary">പാസ്‌വേഡുകൾ ലോഗുകളിൽ കാണിച്ചേക്കാം.</string>
+    <string name="debug_export_logs_title">ലോഗുകൾ എക്സ്പോർട്ട് ചെയ്യുക</string>
+    <string name="debug_export_logs_success">എക്സ്പോർട്ട് പൂർത്തിയായി. ലോഗുകളിൽ തന്ത്രപ്രധാനമായ വിവരങ്ങൾ അടങ്ങിയിരിക്കാം. നിങ്ങൾ അവ ആർക്കാണ് അയയ്ക്കുന്നത് എന്ന് ശ്രദ്ധിക്കുക.</string>
+    <string name="debug_export_logs_failure">എക്സ്പോർട്ട് പരാജയപ്പെട്ടു.</string>
+    <string name="message_list_load_more_messages_action">കൂടുതൽ സന്ദേശങ്ങൾ ലോഡുചെയ്യുക</string>
+    <string name="message_to_fmt">സ്വീകർത്താവ്:<xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_compose_subject_hint">വിഷയം</string>
+    <string name="message_compose_content_hint">സന്ദേശ വാചകം</string>
+    <string name="message_compose_signature_hint">ഒപ്പ്</string>
+    <string name="message_compose_quote_header_separator">-------- യഥാർത്ഥ സന്ദേശം --------</string>
+    <string name="message_compose_quote_header_subject">വിഷയം:</string>
+    <string name="message_compose_quote_header_send_date">അയച്ചു:</string>
+    <string name="message_compose_quote_header_from">പ്രേഷിതാവ്:</string>
+    <string name="message_compose_quote_header_to">സ്വീകർത്താവ്:</string>
+    <string name="message_compose_quote_header_cc">Cc:</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> എഴുതി</string>
+    <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g>ൽ എഴുതി</string>
+    <string name="message_compose_error_no_recipients">നിങ്ങൾ ഒരു സ്വീകർത്താവിനെയെങ്കിലും ചേർക്കണം.</string>
+    <string name="compose_error_incomplete_recipient">സ്വീകർത്താവ് ഫീൽഡിൽ അപൂർണ്ണമായ ഇൻപുട്ട് അടങ്ങിയിരിക്കുന്നു!</string>
+    <string name="error_contact_address_not_found">ഈ കോൺ‌ടാക്റ്റിനായി ഒരു ഇമെയിൽ വിലാസവും കണ്ടെത്താനായില്ല.</string>
+    <string name="message_compose_attachments_skipped_toast">ചില അറ്റാച്ചുമെന്റുകൾ ഡൗൺലോഡ് ചെയ്യാത്തതിനാൽ അവ കൈമാറാൻ കഴിയില്ല.</string>
+    <string name="message_compose_attachments_forward_toast">ചില അറ്റാച്ചുമെന്റുകൾ ഡൗൺലോഡ് ചെയ്യാത്തതിനാൽ സന്ദേശം കൈമാറാൻ കഴിയില്ല.</string>
+    <string name="message_compose_show_quoted_text_action">ഉദ്ധരിച്ച സന്ദേശം ഉൾപ്പെടുത്തുക</string>
+    <string name="message_compose_description_delete_quoted_text">ഉദ്ധരിച്ച വാചകം നീക്കംചെയ്യുക</string>
+    <string name="message_compose_description_edit_quoted_text">ഉദ്ധരിച്ച വാചകം എഡിറ്റുചെയ്യുക</string>
+    <string name="remove_attachment_action">അറ്റാച്ചുമെന്റ് നീക്കംചെയ്യുക</string>
+    <string name="message_to_label">സ്വീകർത്താവ്:</string>
+    <string name="message_view_cc_label">Cc:</string>
+    <string name="message_view_bcc_label">Bcc:</string>
+    <string name="message_view_status_attachment_not_saved">അറ്റാച്ചുമെന്റ് സേവ് ചെയ്യാനായില്ല.</string>
+    <!--Used to display the recipient list in the message view screen.-->
+    <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+    <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+    <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+    <string name="message_view_no_viewer"><xliff:g id="mimetype">%s</xliff:g> എന്നതിനുള്ള വീക്ഷണസഹായസാമഗ്രി കണ്ടെത്താനായില്ല.</string>
+    <string name="message_view_download_remainder">പൂർണ്ണ സന്ദേശം ഡൗൺ‌ലോഡു ചെയ്യുക</string>
+    <string name="message_view_sender_label">%1$s വഴി</string>
+    <string name="from_same_sender">ഈ അയച്ചയാളിൽ നിന്ന് കൂടുതൽ</string>
+    <string name="message_discarded_toast">സന്ദേശം നിരസിച്ചു</string>
+    <string name="message_saved_toast">സന്ദേശം ഡ്രാഫ്റ്റായി സംരക്ഷിച്ചു</string>
+    <string name="global_settings_flag_label">നക്ഷത്രങ്ങൾ കാണിക്കുക</string>
+    <string name="global_settings_flag_summary">ഫ്ലാഗുചെയ്‌ത സന്ദേശങ്ങളെ നക്ഷത്രങ്ങൾ സൂചിപ്പിക്കുന്നു</string>
+    <string name="global_settings_preview_lines_label">വരികൾ പ്രദർശിപ്പിക്കുക</string>
+    <string name="global_settings_show_correspondent_names_label">ലേഖകരുടെ പേരുകൾ പ്രദർശിപ്പിക്കുക</string>
+    <string name="global_settings_show_correspondent_names_summary">ലേഖകരുടെ പേരുകൾ അവരുടെ ഇമെയിൽ വിലാസങ്ങളേക്കാൾ കാണിക്കുക</string>
+    <string name="global_settings_sender_above_subject_label">വിഷയത്തിന് മുകളിൽ ലേഖകൻ</string>
+    <string name="global_settings_sender_above_subject_summary">വിഷയവരിക്ക് താഴെയല്ല, പകരം ലേഖകന്റെ പേരുകൾ മുകളിൽ കാണിക്കുക</string>
+    <string name="global_settings_show_contact_name_label">കോൺ‌ടാക്റ്റ് പേരുകൾ കാണിക്കുക</string>
+    <string name="global_settings_show_contact_name_summary">ലഭ്യമാകുമ്പോൾ കോൺടാക്റ്റുകളിൽ നിന്ന് സ്വീകർത്താവിന്റെ പേരുകൾ ഉപയോഗിക്കുക</string>
+    <string name="global_settings_registered_name_color_label">കോൺ‌ടാക്റ്റുകൾ‌ വർണ്ണിക്കുക</string>
+    <string name="global_settings_registered_name_color_changed">നിങ്ങളുടെ കോൺ‌ടാക്റ്റ് പട്ടികയിൽ‌ പേരുകൾ‌ വർ‌ണ്ണമാക്കുക</string>
+    <string name="general_settings_contact_name_color_label">കോൺടാക്റ്റ് പേരിന്റെ നിറം</string>
+    <string name="global_settings_messageview_fixedwidth_label">നിശ്ചിത-വീതിയുള്ള ഫോണ്ടുകൾ</string>
+    <string name="global_settings_messageview_fixedwidth_summary">പ്ലെയിൻ-ടെക്സ്റ്റ് സന്ദേശങ്ങൾ കാണിക്കുമ്പോൾ ഒരു നിശ്ചിത-വീതിയുള്ള ഫോണ്ട് ഉപയോഗിക്കുക</string>
+    <string name="global_settings_messageview_autofit_width_label">യാന്ത്രികയോജക സന്ദേശങ്ങൾ</string>
+    <string name="global_settings_messageview_autofit_width_summary">സ്‌ക്രീനിന് അനുയോജ്യമായ രീതിയിൽ സന്ദേശങ്ങൾ ചുരുക്കുക</string>
+    <string name="global_settings_confirm_actions_title">പ്രവർത്തനങ്ങൾ സ്ഥിരീകരിക്കുക</string>
+    <string name="global_settings_confirm_actions_summary">നിങ്ങൾ തിരഞ്ഞെടുത്ത പ്രവർത്തനങ്ങൾ നടത്തുമ്പോഴെല്ലാം ഒരു ഡയലോഗ് കാണിക്കുക</string>
+    <string name="global_settings_confirm_action_delete">ഇല്ലാതാക്കുക</string>
+    <string name="global_settings_confirm_action_delete_starred">നക്ഷത്രമിട്ടത് ഇല്ലാതാക്കുക (സന്ദേശ കാഴ്‌ചയിൽ)</string>
+    <string name="global_settings_confirm_action_spam">സ്പാം</string>
+    <string name="global_settings_confirm_menu_discard">സന്ദേശം നിരസിക്കുക</string>
+    <string name="global_settings_confirm_menu_mark_all_read">എല്ലാ സന്ദേശങ്ങളും വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
+    <string name="global_settings_confirm_action_delete_notif">ഇല്ലാതാക്കുക (അറിയിപ്പിൽ നിന്ന്)</string>
+    <!--Title of the screen to configure swipe actions-->
+    <!--Name of the setting to configure the right swipe action-->
+    <!--Name of the setting to configure the left swipe action-->
+    <!--The list item users select to not use a swipe action for a particular direction-->
+    <string name="general_settings_swipe_action_none">ഒന്നുമില്ല</string>
+    <!--Name of the swipe action to select/deselect a message-->
+    <!--Name of the swipe action to mark as message as read/unread-->
+    <!--Name of the swipe action to add/remove a star-->
+    <!--Name of the swipe action to archive a message-->
+    <string name="general_settings_swipe_action_archive">ശേഖരം</string>
+    <!--Name of the swipe action to delete a message-->
+    <string name="general_settings_swipe_action_delete">ഇല്ലാതാക്കുക</string>
+    <!--Name of the swipe action to move a message to the spam folder-->
+    <string name="general_settings_swipe_action_spam">സ്പാം</string>
+    <!--Name of the swipe action to move a message to another folder-->
+    <string name="general_settings_swipe_action_move">നീക്കുക</string>
+    <!--Title of the setting to specify the density of the message list-->
+    <string name="general_settings_ui_density_default">സ്ഥിരസ്ഥിതി</string>
+    <string name="global_settings_privacy_hide_useragent">മെയിൽ ക്ലയന്റ് മറയ്‌ക്കുക</string>
+    <string name="global_settings_privacy_hide_useragent_detail">മെയിൽ തലക്കെട്ടുകളിൽ നിന്ന് കെ-9 യൂസർ-ഏജന്റിനെ നീക്കം ചെയ്യുക</string>
+    <string name="global_settings_privacy_hide_timezone">സമയ മേഖല മറയ്ക്കൂ</string>
+    <string name="global_settings_privacy_hide_timezone_detail">മെയിൽ‌ തലക്കെട്ടുകളിലും മറുപടി ശീർ‌ഷകത്തിലും പ്രാദേശിക സമയമേഖലയ്‌ക്ക് പകരം യു‌ടി‌സി ഉപയോഗിക്കുക, </string>
+    <string name="global_settings_notification_quick_delete_title">\'ഇല്ലാതാക്കുക\' ബട്ടൺ കാണിക്കുക</string>
+    <string name="global_settings_notification_quick_delete_never">ഒരിക്കലും</string>
+    <string name="global_settings_notification_quick_delete_when_single_msg">ഒരൊറ്റ സന്ദേശ അറിയിപ്പിനായി</string>
+    <string name="global_settings_notification_quick_delete_always">എല്ലായ്പ്പോഴും</string>
+    <string name="global_settings_lock_screen_notification_visibility_title">ലോക്ക് സ്ക്രീൻ അറിയിപ്പുകൾ</string>
+    <string name="global_settings_lock_screen_notification_visibility_nothing">ലോക്ക് സ്ക്രീൻ അറിയിപ്പുകളൊന്നുമില്ല</string>
+    <string name="global_settings_lock_screen_notification_visibility_app_name">അപ്ലിക്കേഷന്റെ പേര്</string>
+    <string name="global_settings_lock_screen_notification_visibility_message_count">പുതിയ സന്ദേശങ്ങളുടെ എണ്ണം</string>
+    <string name="global_settings_lock_screen_notification_visibility_senders">സന്ദേശങ്ങളുടെ എണ്ണവും അയച്ചവരും</string>
+    <string name="global_settings_lock_screen_notification_visibility_everything">സ്‌ക്രീൻ അൺലോക്കുചെയ്‌തതിന് സമാനമാണ്</string>
+    <string name="quiet_time">ശാന്തമായ സമയം</string>
+    <string name="quiet_time_description">രാത്രിയിൽ റിംഗുചെയ്യൽ, ശബ്‌ദം, മിന്നൽ എന്നിവ പ്രവർത്തനരഹിതമാക്കുക</string>
+    <string name="quiet_time_notification">അറിയിപ്പുകൾ പ്രവർത്തനരഹിതമാക്കുക</string>
+    <string name="quiet_time_notification_description">ശാന്തമായ സമയത്ത് അറിയിപ്പുകൾ പൂർണ്ണമായും അപ്രാപ്തമാക്കുക</string>
+    <string name="quiet_time_starts">ശാന്തമായ സമയം ആരംഭിക്കുന്നു</string>
+    <string name="quiet_time_ends">ശാന്തമായ സമയം അവസാനിക്കുന്നു</string>
+    <string name="account_setup_basics_title">ഒരു പുതിയ അക്കൗണ്ട് സജ്ജമാക്കുക</string>
+    <string name="account_setup_basics_email_hint">ഇമെയിൽ വിലാസം</string>
+    <string name="account_setup_basics_password_hint">രഹസ്യവാചകം</string>
+    <!--Displayed below the 'account_setup_oauth_description' text-->
+    <!--Displayed below the 'account_setup_oauth_description' text-->
+    <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+    <string name="account_setup_basics_show_password_need_lock">നിങ്ങളുടെ പാസ്‌വേഡ് ഇവിടെ കാണുന്നതിന്, ഈ ഉപകരണത്തിൽ സ്‌ക്രീൻ ലോക്ക് പ്രവർത്തനക്ഷമമാക്കുക.</string>
+    <string name="account_setup_basics_show_password_biometrics_title">നിങ്ങളുടെ ഐഡന്റിറ്റി പരിശോധിച്ചുറപ്പിക്കുക</string>
+    <string name="account_setup_basics_show_password_biometrics_subtitle">നിങ്ങളുടെ പാസ്‌വേഡ് കാണുന്നതിന് അൺലോക്ക് ചെയ്യുക</string>
+    <string name="account_setup_basics_manual_setup_action">സ്വമേധയാലുള്ള സജ്ജീകരണം</string>
+    <string name="account_setup_check_settings_title" />
+    <string name="account_setup_check_settings_retr_info_msg">അക്കൗണ്ട് വിവരങ്ങൾ വീണ്ടെടുക്കുന്നു\u2026</string>
+    <string name="account_setup_check_settings_check_incoming_msg">ഇൻകമിംഗ് സെർവർ ക്രമീകരണങ്ങൾ പരിശോധിക്കുന്നു\u2026</string>
+    <string name="account_setup_check_settings_check_outgoing_msg">ഔട്ട്‌ഗോയിംഗ് സെർവർ ക്രമീകരണങ്ങൾ പരിശോധിക്കുന്നു\u2026</string>
+    <string name="account_setup_check_settings_authenticate">പ്രാമാണീകരിക്കുന്നു\u2026</string>
+    <string name="account_setup_check_settings_fetch">അക്കൗണ്ട് ക്രമീകരണങ്ങൾ ലഭ്യമാക്കുന്നു\u2026</string>
+    <string name="account_setup_check_settings_canceling_msg">റദ്ദാക്കുന്നു\u2026</string>
+    <string name="account_setup_account_type_title">അക്കൗണ്ട് തരം</string>
+    <string name="account_setup_account_type_instructions">ഇത് ഏത് തരത്തിലുള്ള അക്കൗണ്ടാണ്?</string>
+    <string name="account_setup_account_type_pop_action">POP3</string>
+    <string name="account_setup_account_type_imap_action">IMAP</string>
+    <string name="account_setup_auth_type_normal_password">സാധാരണ രഹസ്യവാചകം</string>
+    <string name="account_setup_auth_type_insecure_password">രഹസ്യവാചകം, സുരക്ഷിതമല്ലാത്ത രീതിയിൽ കൈമാറി</string>
+    <string name="account_setup_auth_type_encrypted_password">എൻ‌ക്രിപ്റ്റ് ചെയ്ത പാസ്‌വേഡ്</string>
+    <string name="account_setup_auth_type_tls_client_certificate">ക്ലയൻറ് സർ‌ട്ടിഫിക്കറ്റ്</string>
+    <string name="account_setup_incoming_title">ഇൻകമിംഗ് സെർവർ ക്രമീകരണങ്ങൾ</string>
+    <string name="account_setup_incoming_username_label">ഉപയോക്തൃനാമം</string>
+    <string name="account_setup_incoming_password_label">രഹസ്യവാചകം</string>
+    <string name="account_setup_incoming_client_certificate_label">ക്ലയൻറ് സർ‌ട്ടിഫിക്കറ്റ്</string>
+    <string name="account_setup_incoming_pop_server_label">POP3 സെർവർ</string>
+    <string name="account_setup_incoming_imap_server_label">IMAP സെർവർ</string>
+    <string name="account_setup_incoming_port_label">പോർട്ട്</string>
+    <string name="account_setup_incoming_security_label">സുരക്ഷ</string>
+    <string name="account_setup_incoming_auth_type_label">പ്രമാണീകരണം</string>
+    <string name="account_setup_incoming_security_none_label">ഒന്നുമില്ല</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
+    <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\" ഉപയോഗിച്ച് സാധുവല്ല</string>
+    <string name="account_setup_incoming_delete_policy_label">ഞാൻ ഒരു സന്ദേശം ഇല്ലാതാക്കുമ്പോൾ</string>
+    <string name="account_setup_incoming_delete_policy_never_label">സെർവറിൽ ഇല്ലാതാക്കരുത്</string>
+    <string name="account_setup_incoming_delete_policy_delete_label">സെർവറിൽ നിന്ന് ഇല്ലാതാക്കൂ</string>
+    <string name="account_setup_incoming_delete_policy_markread_label">സെർവറിൽ വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
+    <string name="account_setup_expunge_policy_label">സെർവറിൽ ഇല്ലാതാക്കിയ സന്ദേശങ്ങൾ മായ്‌ക്കുക</string>
+    <string name="account_setup_expunge_policy_immediately">ഉടനെ</string>
+    <string name="account_setup_expunge_policy_on_poll">പോളിംഗ് നടത്തുമ്പോൾ</string>
+    <string name="account_setup_expunge_policy_manual">സ്വമേധയാ</string>
+    <string name="account_setup_incoming_autodetect_namespace_label">IMAP നെയിംസ്‌പെയ്‌സ് യാന്ത്രികമായി കണ്ടെത്തുക</string>
+    <string name="account_setup_incoming_imap_path_prefix_label">IMAP പാതാ ഉപസർഗ്ഗം</string>
+    <string name="drafts_folder_label">ഡ്രാഫ്റ്റുകൾ ഫോൾഡർ</string>
+    <string name="sent_folder_label">അയച്ചവ ഫോൾഡർ</string>
+    <string name="trash_folder_label">ചവറ്റുകുട്ട ഫോൾഡർ</string>
+    <string name="archive_folder_label">ആർക്കൈവ് ഫോൾഡർ</string>
+    <string name="spam_folder_label">സ്പാം ഫോൾഡർ</string>
+    <string name="account_setup_incoming_subscribed_folders_only_label">സബ്‌സ്‌ക്രൈബുചെയ്‌ത ഫോൾഡറുകൾ മാത്രം കാണിക്കുക</string>
+    <string name="account_setup_auto_expand_folder">ഫോൾഡർ യാന്ത്രികമായി വികസിപ്പിക്കുക</string>
+    <string name="account_setup_outgoing_title">ഔട്ട്‌ഗോയിംഗ് സെർവർ ക്രമീകരണങ്ങൾ</string>
+    <string name="account_setup_outgoing_smtp_server_label">SMTP സെർവർ</string>
+    <string name="account_setup_outgoing_port_label">പോർട്ട്</string>
+    <string name="account_setup_outgoing_security_label">സുരക്ഷ</string>
+    <string name="account_setup_outgoing_require_login_label">സൈൻ-ഇൻ ആവശ്യമാണ്.</string>
+    <string name="account_setup_outgoing_username_label">ഉപയോക്തൃനാമം</string>
+    <string name="account_setup_outgoing_password_label">രഹസ്യവാചകം</string>
+    <string name="account_setup_outgoing_authentication_label">പ്രമാണീകരണം</string>
+    <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\" ഉപയോഗിച്ച് സാധുവല്ല</string>
+    <string name="account_setup_bad_uri">അസാധുവായ സജ്ജീകരണം: <xliff:g id="err_mess">%s</xliff:g></string>
+    <string name="account_setup_options_mail_check_frequency_label">ഫോൾഡർ വോട്ടെടുപ്പ് ആവൃത്തി</string>
+    <string name="account_setup_options_mail_check_frequency_never">ഒരിക്കലും</string>
+    <string name="account_setup_options_mail_check_frequency_15min">ഓരോ 15 മിനിറ്റിലും</string>
+    <string name="account_setup_options_mail_check_frequency_30min">ഓരോ 33 മിനിറ്റിലും</string>
+    <string name="account_setup_options_mail_check_frequency_1hour">ഓരോ മണിക്കൂറും</string>
+    <string name="account_setup_options_mail_check_frequency_2hour">ഓരോ 2 മണിക്കൂറിലും</string>
+    <string name="account_setup_options_mail_check_frequency_3hour">ഓരോ 3 മണിക്കൂറിലും</string>
+    <string name="account_setup_options_mail_check_frequency_6hour">ഓരോ 6 മണിക്കൂറിലും</string>
+    <string name="account_setup_options_mail_check_frequency_12hour">ഓരോ 12 മണിക്കൂറിലും</string>
+    <string name="account_setup_options_mail_check_frequency_24hour">ഓരോ 24 മണിക്കൂറിലും</string>
+    <string name="idle_refresh_period_label">IDLE കണക്ഷൻ പുതുക്കുക</string>
+    <string name="idle_refresh_period_2min">ഓരോ 2 മിനിറ്റിലും</string>
+    <string name="idle_refresh_period_3min">ഓരോ 3 മിനിറ്റിലും</string>
+    <string name="idle_refresh_period_6min">ഓരോ 6 മിനിറ്റിലും</string>
+    <string name="idle_refresh_period_12min">ഓരോ 12 മിനിറ്റിലും</string>
+    <string name="idle_refresh_period_24min">ഓരോ 24 മിനിറ്റിലും</string>
+    <string name="idle_refresh_period_36min">ഓരോ 36 മിനിറ്റിലും</string>
+    <string name="idle_refresh_period_48min">ഓരോ 48 മിനിറ്റിലും</string>
+    <string name="idle_refresh_period_60min">ഓരോ 60 മിനിറ്റിലും</string>
+    <string name="account_setup_options_mail_display_count_label">പ്രദർശിപ്പിക്കേണ്ട സന്ദേശങ്ങളുടെ എണ്ണം</string>
+    <string name="account_setup_options_mail_display_count_10">10 സന്ദേശങ്ങൾ</string>
+    <string name="account_setup_options_mail_display_count_25">25 സന്ദേശങ്ങൾ</string>
+    <string name="account_setup_options_mail_display_count_50">50 സന്ദേശങ്ങൾ</string>
+    <string name="account_setup_options_mail_display_count_100">100 സന്ദേശങ്ങൾ</string>
+    <string name="account_setup_options_mail_display_count_250">250 സന്ദേശങ്ങൾ</string>
+    <string name="account_setup_options_mail_display_count_500">500 സന്ദേശങ്ങൾ</string>
+    <string name="account_setup_options_mail_display_count_1000">1000 സന്ദേശങ്ങൾ</string>
+    <string name="account_setup_options_mail_display_count_2500">2500 സന്ദേശങ്ങൾ</string>
+    <string name="account_setup_options_mail_display_count_5000">5000 സന്ദേശങ്ങൾ</string>
+    <string name="account_setup_options_mail_display_count_10000">1000 സന്ദേശങ്ങൾ</string>
+    <string name="account_setup_options_mail_display_count_all">എല്ലാ സന്ദേശങ്ങളും</string>
+    <string name="move_copy_cannot_copy_unsynced_message">സെർവറുമായി സമന്വയിപ്പിക്കാത്ത ഒരു സന്ദേശം പകർത്താനോ നീക്കാനോ കഴിയില്ല</string>
+    <string name="account_setup_failed_dlg_title">സജ്ജീകരണം പൂർത്തിയാക്കാൻ കഴിഞ്ഞില്ല</string>
+    <string name="account_setup_failed_dlg_auth_message_fmt">ഉപയോക്തൃനാമം അല്ലെങ്കിൽ പാസ്‌വേഡ് തെറ്റാണ്.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_certificate_message_fmt">സെർവർ അസാധുവായ ഒരു SSL സർട്ടിഫിക്കറ്റ് അവതരിപ്പിച്ചു. ഒരു സെർവർ തെറ്റായ കോൺഫിഗറേഷൻ മൂലമോ അല്ലെങ്കിൽ ആരെങ്കിലും നിങ്ങളെയോ നിങ്ങളുടെ മെയിൽ സെർവറിനെയോ ആക്രമിക്കാൻ ശ്രമിക്കുന്നതിനാലാണിത്. എന്താണ് സംഭവിച്ചതെന്ന് നിങ്ങൾക്ക് ഉറപ്പില്ലെങ്കിൽ, നിരസിക്കുക ക്ലിക്കുചെയ്‌ത് നിങ്ങളുടെ മെയിൽ സെർവർ മാനേജുചെയ്യുന്ന ആളുകളുമായി ബന്ധപ്പെടുക.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_server_message_fmt">സെർവറിലേക്ക് ബന്ധപ്പെടാൻ കഴിയില്ല.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_edit_details_action">വിശദാംശങ്ങൾ എഡിറ്റുചെയ്യുക</string>
+    <string name="account_setup_failed_dlg_continue_action">തുടരുക</string>
+    <string name="account_settings_push_advanced_title">വിപുലമായത്</string>
+    <string name="account_settings_title_fmt">അക്കൗണ്ട് സജ്ജീകരണങ്ങൾ</string>
+    <string name="account_settings_notify_label">പുതിയ മെയിൽ അറിയിപ്പുകൾ</string>
+    <string name="account_settings_folder_notify_new_mail_mode_label">അറിയിപ്പുകൾ ഫോൾഡറുകൾ</string>
+    <string name="account_settings_folder_notify_new_mail_mode_all">എല്ലാം</string>
+    <string name="account_settings_folder_notify_new_mail_mode_first_class">ഒന്നാം ക്ലാസ് ഫോൾഡറുകൾ മാത്രം</string>
+    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1ഉം 2ഉം ക്ലാസ് ഫോൾഡറുകൾ</string>
+    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">2ആം ക്ലാസ് ഫോൾഡറുകൾ ഒഴികെ എല്ലാം</string>
+    <string name="account_settings_folder_notify_new_mail_mode_none">ഒന്നുമില്ല</string>
+    <string name="account_settings_notify_sync_label">അറിയിപ്പുകൾ സമന്വയിപ്പിക്കുക</string>
+    <string name="account_settings_email_label">നിങ്ങളുടെ ഇമെയിൽ വിലാസം</string>
+    <string name="account_settings_notify_summary">മെയിൽ വരുമ്പോൾ സ്റ്റാറ്റസ് ബാറിൽ അറിയിക്കുക</string>
+    <string name="account_settings_notify_sync_summary">മെയിൽ പരിശോധിക്കുമ്പോൾ സ്റ്റാറ്റസ് ബാറിൽ അറിയിക്കുക</string>
+    <string name="account_settings_notify_self_label">ഔട്ട്‌ഗോയിംഗ് മെയിൽ ഉൾപ്പെടുത്തുക</string>
+    <string name="account_settings_notify_self_summary">ഞാൻ അയച്ച സന്ദേശങ്ങൾക്കായി ഒരു അറിയിപ്പ് കാണിക്കുക</string>
+    <string name="account_notify_contacts_mail_only_label">കോൺ‌ടാക്റ്റുകൾ‌ മാത്രം</string>
+    <string name="account_notify_contacts_mail_only_summary">അറിയപ്പെടുന്ന കോൺടാക്റ്റുകളിൽ നിന്നുള്ള സന്ദേശങ്ങൾക്കായി മാത്രം അറിയിപ്പുകൾ കാണിക്കുക</string>
+    <string name="account_settings_ignore_chat_messages_label">ചാറ്റ് സന്ദേശങ്ങൾ അവഗണിക്കുക</string>
+    <string name="account_settings_ignore_chat_messages_summary">ഒരു ഇമെയിൽ ചാറ്റിൽ ഉൾപ്പെടുന്ന സന്ദേശങ്ങൾക്കുള്ള അറിയിപ്പുകൾ കാണിക്കരുത്</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">തുറക്കുമ്പോൾ വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">ഒരു സന്ദേശം കാണാനായി തുറക്കുമ്പോൾ വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
+    <string name="account_settings_mark_message_as_read_on_delete_label">ഇല്ലാതാക്കുമ്പോൾ വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
+    <string name="account_settings_mark_message_as_read_on_delete_summary">ഒരു സന്ദേശം ഇല്ലാതാക്കുമ്പോൾ വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
+    <string name="account_settings_notification_channels_label">അറിയിപ്പ് വിഭാഗങ്ങൾ</string>
+    <string name="account_settings_open_notification_settings_messages_summary">പുതിയ സന്ദേശങ്ങൾക്കായി അറിയിപ്പുകൾ ക്രമീകരിക്കുക</string>
+    <string name="account_settings_open_notification_settings_miscellaneous_summary">പിശകക്, സ്റ്റാറ്റസ് അറിയിപ്പുകളും ക്രമീകരിക്കുക</string>
+    <string name="account_settings_show_pictures_label">എല്ലായ്പ്പോഴും ചിത്രങ്ങൾ കാണിക്കുക</string>
+    <string name="account_settings_show_pictures_never">ഇല്ല</string>
+    <string name="account_settings_show_pictures_only_from_contacts">കോൺടാക്റ്റുകളിൽ നിന്ന്</string>
+    <string name="account_settings_show_pictures_always">ആരിൽ നിന്നും</string>
+    <string name="account_settings_composition">മെയിൽ അയയ്ക്കുന്നു</string>
+    <string name="account_settings_default_quoted_text_shown_label">മറുപടി നൽകുമ്പോൾ സന്ദേശം ഉദ്ധരിക്കുക</string>
+    <string name="account_settings_default_quoted_text_shown_summary">നിങ്ങളുടെ മറുപടിയിൽ യഥാർത്ഥ സന്ദേശം ഉൾപ്പെടുത്തുക.</string>
+    <string name="account_settings_reply_after_quote_label">ഉദ്ധരിച്ച വാചകത്തിന് ശേഷം മറുപടി നൽകുക</string>
+    <string name="account_settings_reply_after_quote_summary">നിങ്ങളുടെ മറുപടിക്ക് മുകളിൽ യഥാർത്ഥ സന്ദേശം ദൃശ്യമാകും.</string>
+    <string name="account_settings_strip_signature_label">മറുപടിയിൽ ഒപ്പ് സ്ട്രിപ്പ് ചെയ്യുക</string>
+    <string name="account_settings_strip_signature_summary">ഉദ്ധരിച്ച സന്ദേശങ്ങളിൽ നിന്ന് ഒപ്പുകൾ നീക്കംചെയ്യും</string>
+    <string name="account_settings_message_format_label">സന്ദേശ ഘടന</string>
+    <string name="account_settings_message_format_text">പ്ലെയിൻ ടെക്സ്റ്റ് (ഇമേജുകളും ഫോർമാറ്റിംഗും നീക്കംചെയ്യുക)</string>
+    <string name="account_settings_message_format_html">HTML (ഇമേജുകളും ഫോർമാറ്റിംഗും സൂക്ഷിക്കുക)</string>
+    <string name="account_settings_message_format_auto">സ്വയമേവ</string>
+    <string name="account_settings_always_show_cc_bcc_label">എല്ലായ്പ്പോഴും Cc/Bcc കാണിക്കുക</string>
+    <string name="account_settings_message_read_receipt_label">രസീത് വായിക്കൽ</string>
+    <string name="account_settings_message_read_receipt_summary">എല്ലായ്പ്പോഴും വായിച്ചു എന്ന അറിയിപ്പിനായി അപേക്ഷിക്കുക</string>
+    <string name="account_settings_quote_style_label">മറുപടി ഉദ്ധരിക്കുന്ന രീതി</string>
+    <string name="account_settings_quote_style_prefix">പൂര്‍വ്വപ്രത്യയം (Gmail പോലെ)</string>
+    <string name="account_settings_quote_style_header">തലക്കെട്ട് (ഔട്ട്‌ലുക്ക് പോലെ)</string>
+    <string name="account_settings_upload_sent_messages_label">അയച്ച സന്ദേശങ്ങൾ അപ്‌ലോഡുചെയ്യുക</string>
+    <string name="account_settings_upload_sent_messages_summary">അയച്ചതിനുശേഷം അയച്ച ഫോൾഡറിലേക്ക് സന്ദേശങ്ങൾ അപ്‌ലോഡുചെയ്യുക</string>
+    <string name="account_settings_general_title">പൊതുവായ ക്രമീകരണങ്ങൾ</string>
+    <string name="account_settings_reading_mail">മെയിൽ വായിക്കുന്നു</string>
+    <string name="account_settings_sync">മെയിൽ ലഭ്യമാക്കുന്നു</string>
+    <string name="account_settings_folders">ഫോൾഡറുകൾ</string>
+    <string name="account_settings_quote_prefix_label">ഉദ്ധരിച്ച വാചകത്തിന്റെ പൂര്‍വ്വപ്രത്യയം</string>
+    <string name="account_settings_crypto">എൻഡ്-ടു-എൻഡ് എൻ‌ക്രിപ്ഷൻ</string>
+    <string name="account_settings_crypto_app">OpenPGP പിന്തുണ പ്രവർത്തനക്ഷമമാക്കുക</string>
+    <string name="account_settings_crypto_app_select_title">OpenPGP അപ്ലിക്കേഷൻ തിരഞ്ഞെടുക്കുക</string>
+    <string name="account_settings_crypto_key">എൻഡ്-ടു-എൻഡ് കീ ക്രമീകരിക്കുക</string>
+    <string name="account_settings_crypto_summary_off">OpenPGP അപ്ലിക്കേഷനുകളൊന്നും ക്രമീകരിച്ചിട്ടില്ല</string>
+    <string name="account_settings_crypto_summary_on">%s ലേക്ക് കണക്റ്റുചെയ്‌തു</string>
+    <string name="account_settings_crypto_summary_config">ക്രമീകരിക്കുന്നു…</string>
+    <string name="account_settings_crypto_encrypt_all_drafts">എൻ‌ക്രിപ്റ്റ് ചെയ്ത എല്ലാ ഡ്രാഫ്റ്റുകളും സംഭരിക്കുക</string>
+    <string name="account_settings_crypto_encrypt_all_drafts_on">എല്ലാ ഡ്രാഫ്റ്റുകളും എൻ‌ക്രിപ്റ്റ് ചെയ്തതായി സൂക്ഷിക്കും</string>
+    <string name="account_settings_crypto_encrypt_all_drafts_off">എൻ‌ക്രിപ്ഷൻ പ്രാപ്തമാക്കിയിട്ടുണ്ടെങ്കിൽ മാത്രം ഡ്രാഫ്റ്റുകൾ എൻ‌ക്രിപ്റ്റ് ചെയ്യുക</string>
+    <string name="account_settings_mail_check_frequency_label">ഫോൾഡർ വോട്ടെടുപ്പ് ആവൃത്തി</string>
+    <string name="account_settings_color_label">അക്കൗണ്ട് നിറം</string>
+    <string name="account_settings_color_summary">ഫോൾഡറിലും അക്കൗണ്ട് ലിസ്റ്റിലും ഈ അക്കൗണ്ടിന്റെ ഊന്നിപ്പറഞ്ഞ നിറം ഉപയോഗിക്കുന്നു</string>
+    <string name="account_settings_mail_display_count_label">പ്രാദേശിക ഫോൾഡർ വലുപ്പം</string>
+    <string name="account_settings_autodownload_message_size_label">വരെ സന്ദേശങ്ങൾ നേടുക</string>
+    <string name="account_settings_autodownload_message_size_1">1 KiB</string>
+    <string name="account_settings_autodownload_message_size_2">2 KiB</string>
+    <string name="account_settings_autodownload_message_size_4">4 KiB</string>
+    <string name="account_settings_autodownload_message_size_8">8 KiB</string>
+    <string name="account_settings_autodownload_message_size_16">16 KiB</string>
+    <string name="account_settings_autodownload_message_size_32">32 KiB</string>
+    <string name="account_settings_autodownload_message_size_64">64 KiB</string>
+    <string name="account_settings_autodownload_message_size_128">128 KiB</string>
+    <string name="account_settings_autodownload_message_size_256">256 KiB</string>
+    <string name="account_settings_autodownload_message_size_512">512 KiB</string>
+    <string name="account_settings_autodownload_message_size_1024">1 MiB</string>
+    <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
+    <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
+    <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
+    <string name="account_settings_autodownload_message_size_any">ഏത് വലുപ്പവും (പരിധിയില്ല)</string>
+    <string name="account_settings_message_age_label">എന്നതിൽ നിന്ന് സന്ദേശങ്ങൾ സമന്വയിപ്പിക്കുക</string>
+    <string name="account_settings_message_age_any">ഏത് സമയത്തും (പരിധിയില്ല)</string>
+    <string name="account_settings_message_age_0">ഇന്ന്</string>
+    <string name="account_settings_message_age_1">അവസാന 2 ദിവസം</string>
+    <string name="account_settings_message_age_2">അവസാന 3 ദിവസം</string>
+    <string name="account_settings_message_age_7">കഴിഞ്ഞ ആഴ്ച</string>
+    <string name="account_settings_message_age_14">കഴിഞ്ഞ 2 ആഴ്ച</string>
+    <string name="account_settings_message_age_21">കഴിഞ്ഞ 3 ആഴ്ച</string>
+    <string name="account_settings_message_age_1_month">കഴിഞ്ഞ മാസം</string>
+    <string name="account_settings_message_age_2_months">കഴിഞ്ഞ 2 മാസം</string>
+    <string name="account_settings_message_age_3_months">കഴിഞ്ഞ 3 മാസം</string>
+    <string name="account_settings_message_age_6_months">കഴിഞ്ഞ 6 മാസം</string>
+    <string name="account_settings_message_age_1_year">കഴിഞ്ഞ 6 മാസം</string>
+    <string name="account_settings_folder_display_mode_label">പ്രദർശിപ്പിക്കുന്നതിനുള്ള ഫോൾഡറുകൾ</string>
+    <string name="account_settings_folder_display_mode_all">എല്ലാം</string>
+    <string name="account_settings_folder_display_mode_first_class">ഒന്നാം ക്ലാസ് ഫോൾഡറുകൾ മാത്രം</string>
+    <string name="account_settings_folder_display_mode_first_and_second_class">1ഉം 2ഉം ക്ലാസ് ഫോൾഡറുകൾ</string>
+    <string name="account_settings_folder_display_mode_not_second_class">2 ആം ക്ലാസ് ഫോൾഡറുകൾ ഒഴികെ എല്ലാം</string>
+    <string name="account_settings_folder_sync_mode_label">പോൾ ഫോൾഡറുകൾ</string>
+    <string name="account_settings_folder_sync_mode_all">എല്ലാം</string>
+    <string name="account_settings_folder_sync_mode_first_class">ഒന്നാം ക്ലാസ് ഫോൾഡറുകൾ മാത്രം</string>
+    <string name="account_settings_folder_sync_mode_first_and_second_class">1ഉം 2ഉം ക്ലാസ് ഫോൾഡറുകൾ</string>
+    <string name="account_settings_folder_sync_mode_not_second_class">2 ആം ക്ലാസ് ഫോൾഡറുകൾ ഒഴികെ എല്ലാം</string>
+    <string name="account_settings_folder_sync_mode_none">ഒന്നുമില്ല</string>
+    <string name="account_settings_folder_push_mode_label">ഫോൾഡറുകൾ പുഷ് ചെയ്യുക</string>
+    <string name="account_settings_folder_push_mode_all">എല്ലാം</string>
+    <string name="account_settings_folder_push_mode_first_class">ഒന്നാം ക്ലാസ് ഫോൾഡറുകൾ മാത്രം</string>
+    <string name="account_settings_folder_push_mode_first_and_second_class">1ഉം 2ഉം ക്ലാസ് ഫോൾഡറുകൾ</string>
+    <string name="account_settings_folder_push_mode_not_second_class">2 ആം ക്ലാസ് ഫോൾഡറുകൾ ഒഴികെ എല്ലാം</string>
+    <string name="account_settings_folder_push_mode_none">ഒന്നുമില്ല</string>
+    <string name="account_settings_folder_target_mode_label">ലക്ഷ്യസ്ഥാന ഫോൾഡറുകൾ നീക്കുക / പകർത്തുക</string>
+    <string name="account_settings_folder_target_mode_all">എല്ലാം</string>
+    <string name="account_settings_folder_target_mode_first_class">ഒന്നാം ക്ലാസ് ഫോൾഡറുകൾ മാത്രം</string>
+    <string name="account_settings_folder_target_mode_first_and_second_class">1ഉം 2ഉം ക്ലാസ് ഫോൾഡറുകൾ</string>
+    <string name="account_settings_folder_target_mode_not_second_class">2 ആം ക്ലാസ് ഫോൾഡറുകൾ ഒഴികെ എല്ലാം</string>
+    <string name="account_settings_sync_remote_deletetions_label">സെർവർ ഇല്ലാതാക്കലുകൾ സമന്വയിപ്പിക്കുക</string>
+    <string name="account_settings_sync_remote_deletetions_summary">സെർവറിൽ ഇല്ലാതാക്കുമ്പോൾ സന്ദേശങ്ങൾ നീക്കംചെയ്യുക</string>
+    <string name="account_settings_openpgp_missing">OpenPGP അപ്ലിക്കേഷൻ കാണുന്നില്ല - ഇത് അൺ‌ഇൻ‌സ്റ്റാൾ‌ ചെയ്‌തോ?</string>
+    <string name="folder_settings_title">ഫോൾഡർ ക്രമീകരണങ്ങൾ</string>
+    <string name="folder_settings_in_top_group_label">മുകളിലെ ഗ്രൂപ്പിൽ കാണിക്കുക</string>
+    <string name="folder_settings_in_top_group_summary">ഫോൾഡർ ലിസ്റ്റിന്റെ മുകളിൽ കാണിക്കുക</string>
+    <string name="folder_settings_folder_display_mode_label">ഫോൾഡർ പ്രദർശന ക്ലാസ്</string>
+    <string name="folder_settings_folder_display_mode_normal">ക്ലാസ് ഇല്ല</string>
+    <string name="folder_settings_folder_display_mode_first_class">1 ആം ക്ലാസ്</string>
+    <string name="folder_settings_folder_display_mode_second_class">2 ആം ക്ലാസ്സ്</string>
+    <string name="folder_settings_folder_sync_mode_label">ഫോൾഡർ പോൾ ക്ലാസ്</string>
+    <string name="folder_settings_folder_sync_mode_normal">ഒന്നുമില്ല</string>
+    <string name="folder_settings_folder_sync_mode_first_class">1 ആം ക്ലാസ്</string>
+    <string name="folder_settings_folder_sync_mode_second_class">2 ആം ക്ലാസ്സ്</string>
+    <string name="folder_settings_folder_sync_mode_inherited">ഡിസ്പ്ലേ ക്ലാസ്സിന് സമാനമാണ്</string>
+    <string name="folder_settings_folder_push_mode_label">ഫോൾഡർ പുഷ് ക്ലാസ്</string>
+    <string name="folder_settings_folder_push_mode_normal">ക്ലാസ് ഇല്ല</string>
+    <string name="folder_settings_folder_push_mode_first_class">1 ആം ക്ലാസ്</string>
+    <string name="folder_settings_folder_push_mode_second_class">2 ആം ക്ലാസ്സ്</string>
+    <string name="folder_settings_folder_push_mode_inherited">പോൾ ക്ലാസ് പോലെ തന്നെ</string>
+    <string name="folder_settings_folder_notify_mode_label">ഫോൾഡർ അറിയിപ്പ് ക്ലാസ്</string>
+    <string name="folder_settings_folder_notify_mode_normal">ക്ലാസ് ഇല്ല</string>
+    <string name="folder_settings_folder_notify_mode_first_class">1 ആം ക്ലാസ്</string>
+    <string name="folder_settings_folder_notify_mode_second_class">2 ആം ക്ലാസ്സ്</string>
+    <string name="folder_settings_folder_notify_mode_inherited">പുഷ് ക്ലാസ്സിന് സമാനമാണ്</string>
+    <string name="folder_settings_clear_local_folder_action">പ്രാദേശിക സന്ദേശങ്ങൾ മായ്‌ക്കുക</string>
+    <string name="account_settings_incoming_label">ഇൻകമിംഗ് സെർവർ</string>
+    <string name="account_settings_incoming_summary">ഇൻകമിംഗ് മെയിൽ സെർവർ ക്രമീകരിക്കുക</string>
+    <string name="account_settings_outgoing_label">ഔട്ട്‌ഗോയിംഗ് സെർവർ</string>
+    <string name="account_settings_outgoing_summary">ഔട്ട്‌ഗോയിംഗ് മെയിൽ (SMTP) സെർവർ ക്രമീകരിക്കുക</string>
+    <string name="account_settings_description_label">അക്കൗണ്ടിന്റെ പേര്</string>
+    <string name="account_settings_name_label">നിങ്ങളുടെ പേര്</string>
+    <string name="notifications_title">അറിയിപ്പുകൾ</string>
+    <string name="account_settings_vibrate_enable">വിറയ്ക്കുക</string>
+    <string name="account_settings_vibrate_pattern_label">വൈബ്രേഷൻ പാറ്റേൺ</string>
+    <string name="account_settings_vibrate_pattern_default">സ്ഥിരസ്ഥിതി</string>
+    <string name="account_settings_vibrate_pattern_1">പാറ്റേൺ 1</string>
+    <string name="account_settings_vibrate_times">വിറയ്ക്കൽ ആവർത്തിക്കുക</string>
+    <string name="account_settings_ringtone">പുതിയ മെയിൽ റിംഗ്‌ടോൺ</string>
+    <string name="account_settings_notification_light_account_color">അക്കൗണ്ട് നിറം</string>
+    <string name="account_settings_composition_title">സന്ദേശ രചനാ ഓപ്ഷനുകൾ</string>
+    <string name="account_settings_composition_label">രചനാ സ്ഥിരസ്ഥിതികൾ</string>
+    <string name="account_settings_composition_summary">നിങ്ങളുടെ സ്ഥിരസ്ഥിതി പ്രേഷിതൻ, ബിസിസി, ഒപ്പ് എന്നിവ സജ്ജമാക്കുക</string>
+    <string name="account_settings_identities_label">ഐഡന്റിറ്റികൾ നിയന്ത്രിക്കുക</string>
+    <string name="account_settings_identities_summary">ഇതര \'പ്രേഷിതൻ\' വിലാസങ്ങളും ഒപ്പുകളും സജ്ജമാക്കുക</string>
+    <string name="manage_identities_title">ഐഡന്റിറ്റികൾ നിയന്ത്രിക്കുക</string>
+    <string name="manage_identities_context_menu_title">ഐഡന്റിറ്റി നിയന്ത്രിക്കുക</string>
+    <string name="edit_identity_title">ഐഡന്റിറ്റി എഡിറ്റുചെയ്യുക</string>
+    <string name="edit_identity_save">സേവ്</string>
+    <string name="new_identity_action">പുതിയ ഐഡന്റിറ്റി</string>
+    <string name="account_settings_always_bcc_label">എല്ലാ സന്ദേശങ്ങളും Bcc ചെയ്യുക</string>
+    <string name="manage_identities_edit_action">തിരുത്തുക</string>
+    <string name="manage_identities_move_up_action">മുകളിലേക്ക് നീക്കുക</string>
+    <string name="manage_identities_move_down_action">താഴേക്ക് നീക്കുക</string>
+    <string name="manage_identities_move_top_action">മുകളിലേക്ക് നീക്കുക / സ്ഥിരസ്ഥിതിയാക്കുക</string>
+    <string name="manage_identities_remove_action">നീക്കംചെയ്യുക</string>
+    <string name="edit_identity_description_label">ഐഡന്റിറ്റി വിവരണം</string>
+    <string name="edit_identity_description_hint">(ഐച്ഛികം)</string>
+    <string name="edit_identity_name_label">നിങ്ങളുടെ പേര്</string>
+    <string name="edit_identity_name_hint">(ഐച്ഛികം)</string>
+    <string name="edit_identity_email_label">ഇമെയിൽ വിലാസം</string>
+    <string name="edit_identity_email_hint">(ആവശ്യമാണ്)</string>
+    <string name="edit_identity_reply_to_label">മറുപടി വിലാസം</string>
+    <string name="edit_identity_reply_to_hint">(ഐച്ഛികം)</string>
+    <string name="edit_identity_signature_label">ഒപ്പ്</string>
+    <string name="edit_identity_signature_hint">(ഐച്ഛികം)</string>
+    <string name="account_settings_signature_use_label">ഒപ്പ് ഉപയോഗിക്കുക</string>
+    <string name="account_settings_signature_label">ഒപ്പ്</string>
+    <string name="default_identity_description">പ്രാരംഭ ഐഡന്റിറ്റി</string>
+    <string name="choose_identity_title">ഐഡന്റിറ്റി തിരഞ്ഞെടുക്കുക</string>
+    <string name="send_as">എന്നപോലെ അയയ്‌ക്കുക</string>
+    <string name="no_removable_identity">നിങ്ങളുടെ ഏക ഐഡന്റിറ്റി നീക്കംചെയ്യാൻ കഴിയില്ല</string>
+    <string name="identity_has_no_email">ഒരു ഇമെയിൽ വിലാസമില്ലാതെ നിങ്ങൾക്ക് ഒരു ഐഡന്റിറ്റി ഉപയോഗിക്കാൻ കഴിയില്ല</string>
+    <string name="sort_earliest_first">ആദ്യ സന്ദേശങ്ങൾ ആദ്യം</string>
+    <string name="sort_latest_first">ഏറ്റവും പുതിയ സന്ദേശങ്ങൾ ആദ്യം</string>
+    <string name="sort_subject_alpha">വിഷയം അക്ഷരമാലാക്രമത്തിൽ</string>
+    <string name="sort_subject_re_alpha">വിഷയം വിപരീത അക്ഷരമാലാക്രമത്തിൽ</string>
+    <string name="sort_sender_alpha">അയച്ചയാൾ അക്ഷരമാലാക്രമത്തിൽ</string>
+    <string name="sort_sender_re_alpha">അയച്ചയാൾ വിപരീത അക്ഷരമാലാക്രമത്തിൽ</string>
+    <string name="sort_flagged_first">നക്ഷത്രമിട്ട സന്ദേശങ്ങൾ ആദ്യം</string>
+    <string name="sort_flagged_last">നക്ഷത്രമിടാത്ത സന്ദേശങ്ങൾ ആദ്യം</string>
+    <string name="sort_unread_first">വായിക്കാത്ത സന്ദേശങ്ങൾ ആദ്യം</string>
+    <string name="sort_unread_last">വായിച്ച സന്ദേശങ്ങൾ ആദ്യം</string>
+    <string name="sort_attach_first">അറ്റാച്ചുമെന്റുകളുള്ള സന്ദേശങ്ങൾ ആദ്യം</string>
+    <string name="sort_unattached_first">അറ്റാച്ചുമെന്റുകളില്ലാത്ത സന്ദേശങ്ങൾ ആദ്യം</string>
+    <string name="sort_by">ഇങ്ങനെ അടുക്കുക…</string>
+    <string name="sort_by_date">തീയതി</string>
+    <string name="sort_by_arrival">വരവ്</string>
+    <string name="sort_by_subject">വിഷയം</string>
+    <string name="sort_by_sender">അയച്ചയാൾ</string>
+    <string name="sort_by_flag">നക്ഷത്രം</string>
+    <string name="sort_by_unread">വായിച്ചവ / വായിക്കാത്തവ</string>
+    <string name="sort_by_attach">അറ്റാച്ചുമെന്റുകൾ</string>
+    <string name="account_delete_dlg_title">അക്കൗണ്ട് നീക്കംചെയ്യൂ</string>
+    <string name="account_setup_failed_dlg_invalid_certificate_title">തിരിച്ചറിയാത്ത സർട്ടിഫിക്കറ്റ്</string>
+    <string name="account_setup_failed_dlg_invalid_certificate_accept">കീ സ്വീകരിക്കുക</string>
+    <string name="account_setup_failed_dlg_invalid_certificate_reject">കീ നിരസിക്കുക</string>
+    <string name="folder_list_filter_hint">ഫോൾഡറിന്റെ പേരിൽ അടങ്ങിയിരിക്കുന്നു</string>
+    <string name="folder_list_display_mode_label">ഫോൾഡറുകൾ കാണിക്കൂ…</string>
+    <string name="folder_list_display_mode_all">എല്ലാ ഫോൾഡറുകളും</string>
+    <string name="folder_list_display_mode_first_class">1 ആം ക്ലാസ് ഫോൾഡറുകൾ</string>
+    <string name="folder_list_display_mode_first_and_second_class">1ആം &amp; 2ആം ക്ലാസ് ഫോൾഡറുകൾ</string>
+    <string name="folder_list_display_mode_not_second_class">2 ആം ക്ലാസ്സ് ഫോൾഡറുകൾ മറയ്ക്കുക</string>
+    <string name="account_settings_signature__location_label">ഒപ്പ് സ്ഥാനം</string>
+    <string name="account_settings_signature__location_before_quoted_text">ഉദ്ധരിച്ച സന്ദേശത്തിന് മുമ്പ്</string>
+    <string name="account_settings_signature__location_after_quoted_text">ഉദ്ധരിച്ച സന്ദേശത്തിന് ശേഷം</string>
+    <string name="setting_theme_global">അപ്ലിക്കേഷൻ തീം ഉപയോഗിക്കുക</string>
+    <string name="setting_theme_dark">ഇരുണ്ടത്</string>
+    <string name="setting_theme_light">പ്രകാശിച്ചത്</string>
+    <string name="setting_theme_follow_system">സിസ്റ്റം തനത് ഉപയോഗിക്കുക</string>
+    <string name="display_preferences">ഡിസ്പ്ലേ</string>
+    <string name="global_preferences">പൊതു</string>
+    <string name="debug_preferences">ഡീബഗ്ഗിംഗ്</string>
+    <string name="privacy_preferences">സ്വകാര്യത</string>
+    <string name="network_preferences">ശൃംഖല</string>
+    <string name="interaction_preferences">ഇടപെടൽ</string>
+    <string name="accountlist_preferences">അക്കൗണ്ട് പട്ടിക</string>
+    <string name="messagelist_preferences">സന്ദേശ ലിസ്റ്റുകൾ</string>
+    <string name="messageview_preferences">സന്ദേശങ്ങൾ</string>
+    <string name="settings_theme_label">തീം</string>
+    <string name="settings_message_theme_label">സന്ദേശ കാഴ്‌ച തീം</string>
+    <string name="settings_compose_theme_label">രചയിതാ തീം</string>
+    <string name="settings_language_label">ഭാഷ</string>
+    <string name="preference_search_no_results">ക്രമീകരണങ്ങളൊന്നും കണ്ടെത്തിയില്ല</string>
+    <string name="settings_message_theme_selection_label">സ്ഥിര സന്ദേശ തീം</string>
+    <string name="settings_message_theme_selection_summary_off">സന്ദേശം കാണുമ്പോൾ സന്ദേശ കാഴ്‌ച തീം തിരഞ്ഞെടുക്കുക</string>
+    <string name="settings_message_theme_selection_summary_on">ഒരു സ്ഥിര സന്ദേശ കാഴ്‌ച തീം ഉപയോഗിക്കുക</string>
+    <string name="setting_language_system">സിസ്റ്റം സ്ഥിരസ്ഥിതി</string>
+    <string name="background_ops_label">പശ്ചാത്തല സമന്വയം</string>
+    <string name="background_ops_never">ഒരിക്കലും</string>
+    <string name="background_ops_always">എല്ലായ്പ്പോഴും</string>
+    <string name="background_ops_auto_sync_only">\'യാന്ത്രിക സമന്വയം\' തിരഞ്ഞെടുക്കുമ്പോൾ</string>
+    <string name="batch_select_all">എല്ലാം തിരഞ്ഞെടുക്കുക</string>
+    <string name="account_setup_push_limit_label">പുഷ് ഉപയോഗിച്ച് പരിശോധിക്കാൻ പരമാവധി ഫോൾഡറുകൾ</string>
+    <string name="account_setup_push_limit_5">5 ഫോൾഡറുകൾ</string>
+    <string name="account_setup_push_limit_10">10 ഫോൾഡറുകൾ</string>
+    <string name="account_setup_push_limit_25">25 ഫോൾഡറുകൾ</string>
+    <string name="account_setup_push_limit_50">50 ഫോൾഡറുകൾ</string>
+    <string name="account_setup_push_limit_100">100 ഫോൾഡറുകൾ</string>
+    <string name="account_setup_push_limit_250">250 ഫോൾഡറുകൾ</string>
+    <string name="account_setup_push_limit_500">500 ഫോൾഡറുകൾ</string>
+    <string name="account_setup_push_limit_1000">1000 ഫോൾഡറുകൾ</string>
+    <string name="animations_title">ആനിമേഷൻ</string>
+    <string name="animations_summary">ഭംഗിയുള്ള വിഷ്വൽ ഇഫക്റ്റുകൾ ഉപയോഗിക്കുക</string>
+    <string name="show_unified_inbox_title">ഏകീകൃത ഇൻ‌ബോക്സ് കാണിക്കുക</string>
+    <string name="integrated_inbox_title">ഏകീകൃത ഇൻ‌ബോക്സ്</string>
+    <string name="integrated_inbox_detail">ഏകീകൃത ഫോൾഡറുകളിലെ എല്ലാ സന്ദേശങ്ങളും</string>
+    <string name="folder_settings_include_in_integrated_inbox_label">ഏകീകരിക്കുക</string>
+    <string name="folder_settings_include_in_integrated_inbox_summary">എല്ലാ സന്ദേശങ്ങളും ഏകീകൃത ഇൻ‌ബോക്സിൽ കാണിച്ചിരിക്കുന്നു</string>
+    <string name="account_settings_searchable_label">തിരയാനുള്ള ഫോൾഡറുകൾ</string>
+    <string name="account_settings_searchable_all">എല്ലാം</string>
+    <string name="account_settings_searchable_displayable">പ്രദർശിപ്പിക്കാവുന്ന</string>
+    <string name="account_settings_searchable_none">ഒന്നുമില്ല</string>
+    <string name="account_settings_no_folder_selected">ഒന്നുമില്ല</string>
+    <string name="account_settings_automatic_special_folder">യാന്ത്രിക (%s)</string>
+    <string name="font_size_settings_title">അക്ഷര വലിപ്പം</string>
+    <string name="font_size_settings_description">അക്ഷര വലിപ്പം ക്രമീകരിക്കുക</string>
+    <string name="font_size_message_list">സന്ദേശ ലിസ്റ്റുകൾ</string>
+    <string name="font_size_message_list_subject">വിഷയം</string>
+    <string name="font_size_message_list_sender">അയച്ചയാൾ</string>
+    <string name="font_size_message_list_date">തീയതി</string>
+    <string name="font_size_message_list_preview">പ്രിവ്യൂ</string>
+    <string name="font_size_message_view">സന്ദേശങ്ങൾ</string>
+    <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+    <string name="font_size_message_view_account">അക്കൗണ്ടിന്റെ പേര്</string>
+    <string name="font_size_message_view_sender">അയച്ചയാൾ</string>
+    <string name="font_size_message_view_subject">വിഷയം</string>
+    <string name="font_size_message_view_date">സമയവും തീയതിയും</string>
+    <string name="font_size_message_view_content">സന്ദേശ ബോഡി</string>
+    <string name="font_size_message_compose">സന്ദേശ ഘടന</string>
+    <string name="font_size_message_compose_input">ടെക്സ്റ്റ് ഇൻപുട്ട് ഫീൽഡുകൾ</string>
+    <string name="font_size_default">സ്ഥിരസ്ഥിതി</string>
+    <string name="font_size_tiniest">ഏറ്റവും ചെറിയ</string>
+    <string name="font_size_tiny">ഏറ്റവും ചെറുത്</string>
+    <string name="font_size_smaller">ചെറിയ</string>
+    <string name="font_size_small">ചെറുത്</string>
+    <string name="font_size_medium">ഇടത്തരം</string>
+    <string name="font_size_large">വലുത്</string>
+    <string name="font_size_larger">വലിയ</string>
+    <string name="error_activity_not_found">ഈ പ്രവർത്തനത്തിന് അനുയോജ്യമായ അപ്ലിക്കേഷനുകളൊന്നും കണ്ടെത്തിയില്ല.</string>
+    <string name="send_failed_reason">അയയ്‌ക്കുന്നത് പരാജയപ്പെട്ടു: %s</string>
+    <string name="save_or_discard_draft_message_dlg_title">ഡ്രാഫ്റ്റ് സന്ദേശം സംരക്ഷിക്കണോ?</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">ഈ സന്ദേശം സംരക്ഷിക്കണോ അതോ നിരസിക്കണോ?</string>
+    <string name="confirm_discard_draft_message_title">സന്ദേശം നിരസിക്കണോ?</string>
+    <string name="confirm_discard_draft_message">ഈ സന്ദേശം നിരസിക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ?</string>
+    <string name="dialog_confirm_clear_local_folder_title">പ്രാദേശിക സന്ദേശങ്ങൾ മായ്‌ക്കണോ?</string>
+    <string name="dialog_confirm_clear_local_folder_message">ഇത് എല്ലാ പ്രാദേശിക സന്ദേശങ്ങളും ഫോൾഡറിൽ നിന്ന് നീക്കംചെയ്യും. സെർവറിൽ നിന്ന് സന്ദേശങ്ങളൊന്നും ഇല്ലാതാക്കില്ല.</string>
+    <string name="dialog_confirm_clear_local_folder_action">സന്ദേശങ്ങൾ മായ്‌ക്കുക</string>
+    <string name="dialog_confirm_delete_title">ഇല്ലാതാക്കൽ സ്ഥിരീകരിക്കുക</string>
+    <string name="dialog_confirm_delete_message">ഈ സന്ദേശം ഇല്ലാതാക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ?</string>
+    <plurals name="dialog_confirm_delete_messages">
+        <item quantity="one">ഈ സന്ദേശം ഇല്ലാതാക്കാൻ നിങ്ങൾ ശരിക്കും ആഗ്രഹിക്കുന്നുണ്ടോ?</item>
+        <item quantity="other"><xliff:g id="message_count">%1$d</xliff:g> സന്ദേശങ്ങൾ ഇല്ലാതാക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ? </item>
+    </plurals>
+    <string name="dialog_confirm_delete_confirm_button">അതെ</string>
+    <string name="dialog_confirm_delete_cancel_button">ഇല്ല</string>
+    <string name="dialog_confirm_mark_all_as_read_title">എല്ലാം വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
+    <string name="dialog_confirm_mark_all_as_read_message">എല്ലാ സന്ദേശങ്ങളും വായിച്ചതായി അടയാളപ്പെടുത്താൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ?</string>
+    <string name="dialog_confirm_empty_trash_title">ചവറ്റുകുട്ട ശൂന്യമാക്കൽ സ്ഥിരീകരിക്കുക</string>
+    <string name="dialog_confirm_empty_trash_message">ചവറ്റുകൂട്ട ഫോൾഡർ ശൂന്യമാക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ?</string>
+    <string name="dialog_confirm_mark_all_as_read_confirm_button">അതെ</string>
+    <string name="dialog_confirm_mark_all_as_read_cancel_button">ഇല്ല</string>
+    <string name="dialog_confirm_spam_title">സ്പാം ഫോൾഡറിലേക്കുള്ള നീക്കം സ്ഥിരീകരിക്കുക</string>
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">ഈ സന്ദേശം സ്പാം ഫോൾഡറിലേക്ക് നീക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ?</item>
+        <item quantity="other"><xliff:g id="message_count">%1$d</xliff:g>സന്ദേശങ്ങൾ സ്പാം ഫോൾഡറിലേക്ക് നീക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ?</item>
+    </plurals>
+    <string name="dialog_confirm_spam_confirm_button">അതെ</string>
+    <string name="dialog_confirm_spam_cancel_button">ഇല്ല</string>
+    <string name="dialog_attachment_progress_title">അറ്റാച്ചുമെന്റ് ഡൗൺലോഡുചെയ്യുന്നു</string>
+    <string name="settings_list_backup_category">ബാക്കപ്പ്</string>
+    <string name="settings_list_miscellaneous_category">പലവക</string>
+    <string name="settings_export_title">ക്രമീകരണങ്ങൾ എക്‌സ്‌പോർട്ടുചെയ്യുക</string>
+    <string name="settings_export_button">എക്സ്പോർട്ട്</string>
+    <string name="settings_export_share_button">പങ്കിടുക</string>
+    <string name="settings_export_progress_text">ക്രമീകരണങ്ങൾ എക്‌സ്‌പോർട്ടുചെയ്യുന്നു…</string>
+    <string name="settings_export_success_generic">ക്രമീകരണങ്ങൾ വിജയകരമായി എക്‌സ്‌പോർട്ടുചെയ്‌തു</string>
+    <string name="settings_export_failure">ക്രമീകരണങ്ങൾ എക്‌സ്‌പോർട്ടുചെയ്യുന്നതിൽ പരാജയപ്പെട്ടു</string>
+    <string name="settings_import_title">ക്രമീകരണങ്ങൾ ഇംപോർട്ട് ചെയ്യുക</string>
+    <string name="settings_import_pick_document_button">ഫയൽ തിരഞ്ഞെടുക്കുക</string>
+    <string name="settings_import_button">ഇംപോർട്ട്</string>
+    <string name="settings_import_success_generic">ക്രമീകരണങ്ങൾ വിജയകരമായി ഇംപോർട്ട് ചെയ്തു</string>
+    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+    <string name="settings_import_password_required">ദയവായി രഹസ്യവാക്കുകൾ നൽകുക</string>
+    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+    <string name="settings_import_failure">ക്രമീകരണങ്ങൾ ഇംപോർട്ടുചെയ്യുന്നതിൽ പരാജയപ്പെട്ടു</string>
+    <string name="settings_import_read_failure">ക്രമീകരണ ഫയൽ വായിക്കുന്നതിൽ പരാജയപ്പെട്ടു</string>
+    <string name="settings_import_partial_failure">ചില ക്രമീകരണങ്ങൾ ഇംപോർട്ട് ചെയ്യുന്നതിൽ പരാജയപ്പെട്ടു</string>
+    <string name="settings_import_status_success">വിജയകരമായി ഇംപോർട്ട് ചെയ്തു</string>
+    <string name="settings_import_status_password_required">രഹസ്യവാചകം ആവശ്യമാണ്</string>
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="settings_import_status_not_imported">ഇംപോർട്ട് ചെയ്തിട്ടില്ല</string>
+    <string name="settings_import_status_error">ഇംപോർട്ട് തകരാർ</string>
+    <string name="settings_import_later_button">പിന്നീട്</string>
+    <string name="settings_import">ക്രമീകരണങ്ങൾ ഇംപോർട്ട് ചെയ്യുക</string>
+    <string name="settings_importing">ക്രമീകരണങ്ങൾ ഇംപോർട്ട് ചെയ്യുന്നു…</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">\"<xliff:g id="account">%s</xliff:g>\" അക്കൗണ്ട് ഉപയോഗിക്കാൻ നിങ്ങൾ സെർവർ രഹസ്യവാചകം നൽകേണ്ടതുണ്ട്.</item>
+        <item quantity="other">\"<xliff:g id="account">%s</xliff:g>\" അക്കൗണ്ട് ഉപയോഗിക്കാൻ നിങ്ങൾ സെർവർ രഹസ്യവാചകങ്ങൾ നൽകേണ്ടതുണ്ട്.</item>
+    </plurals>
+    <string name="settings_import_incoming_server_password_hint">ഇൻകമിംഗ് സെർവർ രഹസ്യവാചകം</string>
+    <string name="settings_import_outgoing_server_password_hint">ഔട്ട്‌ഗോയിംഗ് സെർവർ രഹസ്യവാചകം</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">ഔട്ട്‌ഗോയിംഗ് സെർവറിനായി സമാന രഹസ്യവാചകം ഉപയോഗിക്കുക</string>
+    <string name="server_name_format">സെർവർ നാമം: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="unread_widget_select_account">ഇതിനായി വായിക്കാത്ത എണ്ണം കാണിക്കുക…</string>
+    <string name="unread_widget_account_title">അക്കൗണ്ട്</string>
+    <string name="unread_widget_account_summary">വായിക്കാത്ത എണ്ണം പ്രദർശിപ്പിക്കേണ്ട അക്കൗണ്ട്</string>
+    <string name="unread_widget_unified_inbox_account_summary">ഏകീകൃത ഇൻ‌ബോക്സ്</string>
+    <string name="unread_widget_folder_enabled_title">ഫോൾഡറിന്റെ എണ്ണം</string>
+    <string name="unread_widget_folder_enabled_summary">ഒരൊറ്റ ഫോൾഡറിന്റെ മാത്രം വായിക്കാത്ത എണ്ണം പ്രദർശിപ്പിക്കുക</string>
+    <string name="unread_widget_folder_title">ഫോൾഡർ</string>
+    <string name="unread_widget_folder_summary">വായിക്കാത്ത എണ്ണം പ്രദർശിപ്പിക്കേണ്ട ഫോൾഡർ</string>
+    <string name="unread_widget_action_done">ചെയ്തു</string>
+    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+    <string name="unread_widget_account_not_selected">അക്കൗണ്ട് ഒന്നും തിരഞ്ഞെടുത്തിട്ടില്ല</string>
+    <string name="unread_widget_folder_not_selected">ഫോൾഡർ ഒന്നും തിരഞ്ഞെടുത്തിട്ടില്ല</string>
+    <string name="webview_empty_message">വാചകമൊന്നുമില്ല</string>
+    <string name="webview_contextmenu_link_view_action">കണ്ണി തുറക്കുക</string>
+    <string name="webview_contextmenu_link_share_action">കണ്ണി പങ്കിടുക</string>
+    <string name="webview_contextmenu_link_copy_action">ക്ലിപ്പ്ബോർഡിലേക്ക് കണ്ണി പകർത്തുക</string>
+    <string name="webview_contextmenu_link_clipboard_label">കണ്ണി</string>
+    <string name="webview_contextmenu_link_text_copy_action">കണ്ണി വാചകം ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തുക</string>
+    <string name="webview_contextmenu_link_text_clipboard_label">കണ്ണി വാചകം</string>
+    <string name="webview_contextmenu_image_title">ചിത്രം</string>
+    <string name="webview_contextmenu_image_view_action">ചിത്രം കാണുക</string>
+    <string name="webview_contextmenu_image_save_action">ചിത്രം സൂക്ഷിക്കുക</string>
+    <string name="webview_contextmenu_image_download_action">ചിത്രം ഡൗൺലോഡുചെയ്യുക</string>
+    <string name="webview_contextmenu_image_copy_action">ക്ലിപ്പ്ബോർഡിലേക്ക് ചിത്ര URL പകർത്തുക</string>
+    <string name="webview_contextmenu_image_clipboard_label">ചിത്ര URL</string>
+    <string name="webview_contextmenu_phone_call_action">വിളി നമ്പർ</string>
+    <string name="webview_contextmenu_phone_save_action">കോൺ‌ടാക്റ്റുകളിലേക്ക് സംരക്ഷിക്കുക</string>
+    <string name="webview_contextmenu_phone_copy_action">ക്ലിപ്പ്ബോർഡിലേക്ക് നമ്പർ പകർത്തുക</string>
+    <string name="webview_contextmenu_phone_clipboard_label">ഫോൺ നമ്പർ</string>
+    <string name="webview_contextmenu_email_send_action">മെയിൽ അയയ്ക്കുക</string>
+    <string name="webview_contextmenu_email_save_action">കോൺ‌ടാക്റ്റുകളിലേക്ക് സംരക്ഷിക്കുക</string>
+    <string name="webview_contextmenu_email_copy_action">ക്ലിപ്പ്ബോർഡിലേക്ക് വിലാസം പകർത്തുക</string>
+    <string name="webview_contextmenu_email_clipboard_label">ഇമെയിൽ വിലാസം</string>
+    <string name="account_settings_remote_search_num_results_entries_all">എല്ലാം</string>
+    <string name="account_settings_remote_search_num_results_entries_10">10</string>
+    <string name="account_settings_remote_search_num_results_entries_25">25</string>
+    <string name="account_settings_remote_search_num_results_entries_50">50</string>
+    <string name="account_settings_remote_search_num_results_entries_100">100</string>
+    <string name="account_settings_remote_search_num_results_entries_250">250</string>
+    <string name="account_settings_remote_search_num_results_entries_500">500</string>
+    <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
+    <string name="account_settings_remote_search_num_label">സെർവർ തിരയൽ പരിധി</string>
+    <string name="remote_search_sending_query">സെർവറിലേക്ക് അന്വേഷണം അയയ്ക്കുന്നു</string>
+    <plurals name="remote_search_downloading">
+        <item quantity="one">%d ഫലം ലഭ്യമാക്കുന്നു </item>
+        <item quantity="other">%d ഫലങ്ങൾ ലഭ്യമാക്കുന്നു</item>
+    </plurals>
+    <plurals name="remote_search_downloading_limited">
+        <item quantity="one">%2$d ഫലങ്ങളിൽ %1$d ലഭ്യമാക്കുന്നു</item>
+        <item quantity="other">%2$d ഫലങ്ങളിൽ %1$d ലഭ്യമാക്കുന്നു</item>
+    </plurals>
+    <string name="remote_search_error">വിദൂര തിരയൽ പരാജയപ്പെട്ടു</string>
+    <string name="account_settings_search">തിരയുക</string>
+    <string name="action_remote_search">സെർവറിൽ സന്ദേശങ്ങൾ തിരയുക</string>
+    <string name="remote_search_unavailable_no_network">സെർവർ തിരയലിനായി ഒരു നെറ്റ്‌വർക്ക് കണക്ഷൻ ആവശ്യമാണ്.</string>
+    <string name="global_settings_background_as_unread_indicator_label">വായിക്കുമ്പോൾ നിറം മാറ്റുക</string>
+    <string name="global_settings_background_as_unread_indicator_summary">സന്ദേശം വായിച്ചാൽ മറ്റൊരു പശ്ചാത്തലം കാണിക്കും</string>
+    <string name="global_settings_threaded_view_label">ത്രെഡുചെയ്‌ത കാഴ്ച</string>
+    <string name="global_settings_threaded_view_summary">സംഭാഷണത്തിലൂടെ സന്ദേശങ്ങൾ ഗ്രൂപ്പ് ചെയ്യുക</string>
+    <string name="upgrade_databases_title">ഡാറ്റാബേസുകൾ‌ നവീകരിക്കുന്നു</string>
+    <string name="upgrade_databases_unspecified">ഡാറ്റാബേസുകൾ‌ നവീകരിക്കുന്നു…</string>
+    <string name="upgrade_database_format">\"<xliff:g id="account">%s</xliff:g>\" അക്കൗണ്ടിന്റെ ഡാറ്റാബേസ് നവീകരിക്കുന്നു</string>
+    <string name="global_settings_splitview_mode_label">പിളർ സ്ക്രീൻ കാണിക്കുക</string>
+    <string name="global_settings_splitview_always">എല്ലായ്പ്പോഴും</string>
+    <string name="global_settings_splitview_never">ഒരിക്കലും</string>
+    <string name="global_settings_splitview_when_in_landscape">ലാൻഡ്‌സ്‌കേപ്പ് ഓറിയന്റേഷനിൽ ആയിരിക്കുമ്പോൾ</string>
+    <string name="message_view_empty">ഇടതുവശത്ത് നിന്ന് ഒരു സന്ദേശം തിരഞ്ഞെടുക്കുക</string>
+    <string name="global_settings_show_contact_picture_label">കോൺ‌ടാക്റ്റ് ചിത്രങ്ങൾ‌ കാണിക്കുക</string>
+    <string name="global_settings_show_contact_picture_summary">സന്ദേശ ലിസ്റ്റിൽ കോൺടാക്റ്റ് ചിത്രങ്ങൾ കാണിക്കുക</string>
+    <string name="mark_all_as_read">എല്ലാം വായിച്ചതായി കാണിക്കൂ</string>
+    <string name="global_settings_colorize_missing_contact_pictures_label">കോൺ‌ടാക്റ്റ് ചിത്രങ്ങൾ‌ വർ‌ണ്ണമാക്കുക</string>
+    <string name="global_settings_colorize_missing_contact_pictures_summary">കോൺ‌ടാക്റ്റ് ചിത്രങ്ങൾ‌ ഇല്ലാത്തവയെ വർ‌ണ്ണമാക്കുക</string>
+    <string name="global_settings_messageview_visible_refile_actions_title">ദൃശ്യസന്ദേശ പ്രവർത്തനങ്ങൾ</string>
+    <string name="global_settings_messageview_visible_refile_actions_summary">തിരഞ്ഞെടുത്ത കാഴ്‌ച മെനുവിൽ തിരഞ്ഞെടുത്ത പ്രവർത്തനങ്ങൾ കാണിക്കുക</string>
+    <string name="loading_attachment">അറ്റാച്ചുമെന്റ് ലോഡുചെയ്യുന്നു…</string>
+    <string name="fetching_attachment_dialog_title_send">സന്ദേശം അയക്കുന്നു</string>
+    <string name="fetching_attachment_dialog_title_save">ഡ്രാഫ്റ്റ് സംരക്ഷിക്കുന്നു</string>
+    <string name="fetching_attachment_dialog_message">അറ്റാച്ചുമെന്റ് ലഭ്യമാക്കുന്നു…</string>
+    <string name="auth_external_error">പ്രാമാണീകരിക്കാൻ കഴിയില്ല. സെർവർ എസ്‌എ‌എസ്‌എൽ ബാഹ്യ ശേഷി പരസ്യപ്പെടുത്തുന്നില്ല. ക്ലയൻറ് സർ‌ട്ടിഫിക്കറ്റിലെ (കാലഹരണപ്പെട്ട, അജ്ഞാത സർ‌ട്ടിഫിക്കറ്റ് അതോറിറ്റി) അല്ലെങ്കിൽ‌ മറ്റേതെങ്കിലും ക്രമീകരണ പ്രശ്‌നം കാരണം ഇത് സംഭവിക്കാം.</string>
+    <!--=== Client certificates specific ==================================================================-->
+    <string name="account_setup_basics_client_certificate">ക്ലയൻറ് സർ‌ട്ടിഫിക്കറ്റ് ഉപയോഗിക്കുക</string>
+    <string name="client_certificate_spinner_empty">ക്ലയന്റ് സർട്ടിഫിക്കറ്റ് ഇല്ല</string>
+    <string name="client_certificate_spinner_delete">ക്ലയൻറ് സർ‌ട്ടിഫിക്കറ്റ് തിരഞ്ഞെടുക്കൽ നീക്കംചെയ്യുക</string>
+    <string name="client_certificate_retrieval_failure">\"<xliff:g id="alias">%s</xliff:g>\" എന്ന അപരനാമത്തിനായുള്ള ക്ലയൻറ് സർട്ടിഫിക്കറ്റ് വീണ്ടെടുക്കുന്നതിൽ പരാജയപ്പെട്ടു </string>
+    <string name="client_certificate_advanced_options">വിപുലമായ ക്രമീകരണങ്ങൾ</string>
+    <string name="client_certificate_expired">ക്ലയൻറ് സർ‌ട്ടിഫിക്കറ്റ്  \"<xliff:g id="certificate_alias">%1$s</xliff:g>\"\ കാലഹരണപ്പെട്ടു അല്ലെങ്കിൽ ഇതുവരെ സാധുവായിട്ടില്ല (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+    <!--Note: This references message_view_download_remainder-->
+    <string name="preview_encrypted">*എൻ‌ക്രിപ്റ്റുചെയ്‌തത്*</string>
+    <string name="add_from_contacts">കോൺ‌ടാക്റ്റുകളിൽ നിന്ന് ചേർക്കുക</string>
+    <string name="recipient_cc">Cc</string>
+    <string name="recipient_bcc">Bcc</string>
+    <string name="recipient_to">To</string>
+    <string name="recipient_from">മുതൽ</string>
+    <string name="unknown_recipient">&lt;അജ്ഞാത സ്വീകർത്താവ്&gt;</string>
+    <string name="unknown_sender">&lt;അജ്ഞാത പ്രേഷിതൻ&gt;</string>
+    <string name="address_type_home">വീട്</string>
+    <string name="address_type_work">ജോലി</string>
+    <string name="address_type_other">മറ്റുള്ളവ</string>
+    <string name="address_type_mobile">മൊബൈൽ</string>
+    <string name="compose_error_no_draft_folder">ഈ അക്കൗണ്ടിനായി ഡ്രാഫ്റ്റ്സ് ഫോൾഡറൊന്നും ക്രമീകരിച്ചിട്ടില്ല!</string>
+    <string name="compose_error_no_key_configured">ഈ അക്കൗണ്ടിനായി ഒരു കീയും ക്രമീകരിച്ചിട്ടില്ല! നിങ്ങളുടെ ക്രമീകരണങ്ങൾ പരിശോധിക്കുക.</string>
+    <string name="error_crypto_provider_incompatible">ക്രിപ്‌റ്റോ ദാതാവ് പൊരുത്തപ്പെടാത്ത പതിപ്പ് ഉപയോഗിക്കുന്നു. നിങ്ങളുടെ ക്രമീകരണങ്ങൾ പരിശോധിക്കുക!</string>
+    <string name="error_crypto_provider_connect">ക്രിപ്‌റ്റോ ദാതാവിലേക്ക് കണക്റ്റുചെയ്യാനായില്ല, നിങ്ങളുടെ ക്രമീകരണങ്ങൾ പരിശോധിക്കുകയോ  അല്ലെങ്കിൽ വീണ്ടും ശ്രമിക്കുന്നതിന് ക്രിപ്‌റ്റോ ഐക്കണിൽ ക്ലിക്കുചെയ്യുക!</string>
+    <string name="error_crypto_provider_ui_required">എൻഡ്-ടു-എൻഡ് എൻ‌ക്രിപ്ഷൻ സമാരംഭിക്കുന്നതിൽ പരാജയപ്പെട്ടു, ദയവായി നിങ്ങളുടെ ക്രമീകരണങ്ങൾ പരിശോധിക്കുക</string>
+    <string name="error_crypto_inline_attach">PGP/INLINE മോഡ് അറ്റാച്ചുമെന്റുകളെ പിന്തുണയ്‌ക്കുന്നില്ല!</string>
+    <string name="enable_inline_pgp">PGP/INLINE പ്രാപ്തമാക്കുക</string>
+    <string name="disable_inline_pgp">PGP / INLINE അപ്രാപ്‌തമാക്കുക</string>
+    <string name="enable_sign_only">പി‌ജി‌പി സൈൻ‌-മാത്രം പ്രാപ്‌തമാക്കുക</string>
+    <string name="disable_sign_only">പി‌ജി‌പി സൈൻ‌-മാത്രം അപ്രാപ്‌തമാക്കുക</string>
+    <string name="openpgp_inline_title">PGP/INLINE മോഡ്</string>
+    <string name="openpgp_inline_text">ഈ ഇമെയിൽ PGP/INLINE ഫോർമാറ്റിലാണ് അയച്ചിരിക്കുന്നത്. \nഇത് അനുയോജ്യതയ്ക്കായി മാത്രമേ ഉപയോഗിക്കാവൂ:</string>
+    <string name="openpgp_inline_plus_compat">ചില ക്ലയന്റുകൾ ഈ ഫോർമാറ്റിനെ മാത്രമേ പിന്തുണയ്ക്കൂ</string>
+    <string name="openpgp_inline_minus_transit">ട്രാൻസിറ്റ് സമയത്ത് ഒപ്പുകൾ തകർന്നേക്കാം</string>
+    <string name="openpgp_inline_minus_attach">അറ്റാച്ചുമെന്റുകൾ പിന്തുണയ്‌ക്കുന്നില്ല</string>
+    <string name="openpgp_inline_ok">മനസ്സിലായി!</string>
+    <string name="openpgp_inline_disable">അപ്രാപ്തമാക്കുക</string>
+    <string name="openpgp_inline_keep_enabled">പ്രാപ്തമാക്കി നിലനിർത്തുക</string>
+    <string name="openpgp_sign_only_ok">മനസ്സിലായി!</string>
+    <string name="openpgp_sign_only_disable">അപ്രാപ്തമാക്കുക</string>
+    <string name="openpgp_sign_only_keep_enabled">പ്രാപ്തമാക്കി നിലനിർത്തുക</string>
+    <string name="openpgp_dialog_sign_only_title">പി‌ജി‌പി സൈൻ-മാത്രം മോഡ്</string>
+    <string name="openpgp_dialog_sign_only_text">ഈ മോഡിൽ‌, എൻ‌ക്രിപ്റ്റ് ചെയ്യാത്ത ഇമെയിലിന്റെ ക്രിപ്റ്റോഗ്രാഫിക് സിഗ്നേച്ചർ സൃഷ്ടിക്കാൻ നിങ്ങളുടെ പി‌ജി‌പി കീ ഉപയോഗിക്കും.</string>
+    <string name="openpgp_dialog_sign_only_plus_verified">ഇത് ഇമെയിൽ എൻ‌ക്രിപ്റ്റ് ചെയ്യുന്നില്ല, പക്ഷേ ഇത് നിങ്ങളുടെ കീയിൽ നിന്നാണ് അയച്ചതെന്ന് സ്ഥിരീകരിക്കുന്നു.</string>
+    <string name="openpgp_dialog_sign_only_minus_break">മെയിലിംഗ് ലിസ്റ്റുകളിലേക്ക് അയയ്ക്കുമ്പോൾ ഒപ്പുകൾ തകർന്നേക്കാം.</string>
+    <string name="openpgp_dialog_sign_only_minus_attach">ചില ക്ലയന്റുകളിൽ ഒപ്പുകൾ \'signature.asc\' അറ്റാച്ചുമെന്റുകളായി പ്രദർശിപ്പിച്ചേക്കാം.</string>
+    <string name="openpgp_dialog_sign_only_neutral_encsigned">എൻ‌ക്രിപ്റ്റ് ചെയ്ത സന്ദേശങ്ങളിൽ എല്ലായ്പ്പോഴും ഒരു ഒപ്പ് ഉൾപ്പെടുന്നു.</string>
+    <string name="crypto_msg_title_plaintext">പ്ലെയിൻ‌ടെക്സ്റ്റ്</string>
+    <string name="crypto_msg_unencrypted_sign_error">എൻഡ്-ടു-എൻഡ് ഒപ്പിൽ ഒരു പിശക് അടങ്ങിയിരിക്കുന്നു</string>
+    <string name="crypto_msg_incomplete_signed">ഒപ്പ് പ്രോസസ്സ് ചെയ്യുന്നതിന് സന്ദേശം പൂർണ്ണമായും ഡൗൺലോഡ് ചെയ്യണം</string>
+    <string name="crypto_msg_unsupported_signed">പിന്തുണയ്‌ക്കാത്ത എൻഡ്-ടു-എൻഡ് ഒപ്പ് അടങ്ങിയിരിക്കുന്നു</string>
+    <string name="crypto_msg_unsupported_encrypted">സന്ദേശം എൻ‌ക്രിപ്റ്റ് ചെയ്തതാണ്, പക്ഷേ പിന്തുണയ്‌ക്കാത്ത ഫോർ‌മാറ്റിലാണ്.</string>
+    <string name="crypto_msg_cancelled">സന്ദേശം എൻ‌ക്രിപ്റ്റ് ചെയ്തു, പക്ഷേ ഡീക്രിപ്ഷൻ റദ്ദാക്കി.</string>
+    <string name="crypto_msg_title_unencrypted_signed_e2e">എൻഡ്-ടു-എൻഡ് ഒപ്പിട്ട പ്ലെയിൻ‌ടെക്സ്റ്റ്</string>
+    <string name="crypto_msg_unencrypted_sign_verified">പരിശോധിച്ച ഒപ്പുകാരനിൽ നിന്ന്</string>
+    <string name="crypto_msg_title_unencrypted_signed">ഒപ്പിട്ട പ്ലെയിൻ‌ടെക്സ്റ്റ്</string>
+    <string name="crypto_msg_unencrypted_sign_mismatch">പക്ഷെ എൻഡ്-ടു-എൻഡ് കീ അയച്ചയാളുമായി പൊരുത്തപ്പെടുന്നില്ല</string>
+    <string name="crypto_msg_unencrypted_sign_expired">പക്ഷെ എൻഡ്-ടു-എൻഡ് കീ കാലഹരണപ്പെട്ടു</string>
+    <string name="crypto_msg_unencrypted_sign_revoked">പക്ഷെ എൻഡ്-ടു-എൻഡ് കീ അസാധുവാക്കി</string>
+    <string name="crypto_msg_unencrypted_sign_insecure">പക്ഷെ എൻഡ്-ടു-എൻഡ് കീ സുരക്ഷിതമാണെന്ന് കണക്കാക്കില്ല</string>
+    <string name="crypto_msg_unencrypted_sign_unknown">അജ്ഞാത എൻഡ്-ടു-എൻഡ് കീയിൽ നിന്ന്</string>
+    <string name="crypto_msg_title_encrypted_unknown">എൻ‌ക്രിപ്റ്റുചെയ്‌തത്</string>
+    <string name="crypto_msg_encrypted_error">പക്ഷേ ഒരു ഡീക്രിപ്ഷൻ പിശക് ഉണ്ടായിരുന്നു</string>
+    <string name="crypto_msg_encrypted_incomplete">ഡീക്രിപ്ഷനായി സന്ദേശം പൂർണ്ണമായും ഡൗൺലോഡ് ചെയ്യണം</string>
+    <string name="crypto_msg_encrypted_no_provider">ക്രിപ്‌റ്റോ അപ്ലിക്കേഷനുകളൊന്നും കോൺഫിഗർ ചെയ്‌തിട്ടില്ല</string>
+    <string name="crypto_msg_title_encrypted_unsigned">എൻ‌ക്രിപ്റ്റുചെയ്‌തത്</string>
+    <string name="crypto_msg_encrypted_unsigned">പക്ഷെ എൻഡ്-ടു-എൻഡ് അല്ല</string>
+    <string name="crypto_msg_title_encrypted_signed_e2e">എൻഡ്-ടു-എൻഡ് എൻ‌ക്രിപ്റ്റ് ചെയ്തത്</string>
+    <string name="crypto_msg_encrypted_sign_verified">പരിശോധിച്ച അയച്ചയാളിൽ നിന്ന്</string>
+    <string name="crypto_msg_title_encrypted_signed">എൻ‌ക്രിപ്റ്റുചെയ്‌തത്</string>
+    <string name="crypto_msg_encrypted_sign_unknown">അജ്ഞാത എൻഡ്-ടു-എൻഡ് കീയിൽ നിന്ന്</string>
+    <string name="crypto_msg_encrypted_sign_mismatch">പക്ഷെ എൻഡ്-ടു-എൻഡ് കീ അയച്ചയാളുമായി പൊരുത്തപ്പെടുന്നില്ല</string>
+    <string name="crypto_msg_encrypted_sign_expired">പക്ഷെ എൻഡ്-ടു-എൻഡ് കീ കാലഹരണപ്പെട്ടു</string>
+    <string name="crypto_msg_encrypted_sign_revoked">പക്ഷെ എൻഡ്-ടു-എൻഡ് കീ അസാധുവാക്കി</string>
+    <string name="crypto_msg_encrypted_sign_insecure">പക്ഷെ എൻഡ്-ടു-എൻഡ് കീ സുരക്ഷിതമാണെന്ന് കണക്കാക്കില്ല</string>
+    <string name="crypto_msg_encrypted_sign_error">എൻഡ്-ടു-എൻഡ് ഡാറ്റയ്ക്ക് പിശകുകളുണ്ട്</string>
+    <string name="crypto_msg_encrypted_insecure">എന്നാൽ എൻ‌ക്രിപ്ഷൻ സുരക്ഷിതമാണെന്ന് കണക്കാക്കില്ല</string>
+    <string name="crypto_info_ok">ശരി</string>
+    <string name="crypto_info_search_key">കീ തിരയുക</string>
+    <string name="crypto_info_view_signer">ഒപ്പുകാരനെ കാണുക</string>
+    <string name="crypto_info_view_sender">അയച്ചയാളെ കാണുക</string>
+    <string name="crypto_info_view_security_warning">വിവരങ്ങൾ</string>
+    <string name="locked_attach_unlock">അൺലോക്കുചെയ്യുക</string>
+    <string name="locked_attach_unencrypted">ഈ ഭാഗം എൻ‌ക്രിപ്റ്റ് ചെയ്തിട്ടില്ല, മാത്രമല്ല സുരക്ഷിതമല്ലാത്തതാകാം.</string>
+    <string name="locked_attach_title">സുരക്ഷിതമല്ലാത്ത അറ്റാച്ചുമെന്റ്</string>
+    <string name="message_progress_text">ലോഡുചെയ്യുന്നു…</string>
+    <string name="messageview_decrypt_cancelled">ഡീക്രിപ്ഷൻ റദ്ദാക്കി.</string>
+    <string name="messageview_decrypt_retry">വീണ്ടും ശ്രമിക്കുക</string>
+    <string name="messageview_decrypt_incomplete">ഡീക്രിപ്ഷനായി എൻ‌ക്രിപ്റ്റ് ചെയ്ത സന്ദേശം ഡൗൺലോഡ് ചെയ്യണം.</string>
+    <string name="messageview_crypto_error_title">ഇമെയിൽ ഡീക്രിപ്റ്റ് ചെയ്യുന്നതിൽ പിശക്</string>
+    <string name="recipient_error_non_ascii">പ്രത്യേക പ്രതീകങ്ങൾ നിലവിൽ പിന്തുണയ്ക്കുന്നില്ല!</string>
+    <string name="recipient_error_parse_failed">വിലാസം പാഴ്‌സുചെയ്യുന്നതിൽ പിശക്!</string>
+    <string name="account_settings_crypto_hide_sign_only">എൻക്രിപ്റ്റ് ചെയ്യാത്ത ഒപ്പുകൾ മറയ്ക്കുക</string>
+    <string name="account_settings_crypto_hide_sign_only_on">എൻ‌ക്രിപ്റ്റ് ചെയ്ത ഒപ്പുകൾ മാത്രമേ പ്രദർശിപ്പിക്കുകയുള്ളൂ</string>
+    <string name="account_settings_crypto_hide_sign_only_off">എല്ലാ ഒപ്പുകളും പ്രദർശിപ്പിക്കും</string>
+    <string name="error_sign_only_no_encryption">ചിഹ്നം മാത്രമുള്ള മോഡിൽ എൻക്രിപ്ഷൻ ലഭ്യമല്ല!</string>
+    <string name="unsigned_text_divider_label">ഒപ്പിടാത്ത വാചകം</string>
+    <string name="crypto_no_provider_title">ഈ ഇമെയിൽ എൻ‌ക്രിപ്റ്റ് ചെയ്തതാണ്</string>
+    <string name="crypto_no_provider_message">ഈ ഇമെയിൽ ഓപ്പൺപിജിപി ഉപയോഗിച്ച് എൻക്രിപ്റ്റുചെയ്‌തതാണ്.\nഇത് വായിക്കാൻ, നിങ്ങൾ ഒരു അനുയോജ്യമായ ഓപ്പൺപിജിപി അപ്ലിക്കേഷൻ ഇൻസ്റ്റാളുചെയ്‌ത് ക്രമീകരിക്കേണ്ടതുണ്ട്. </string>
+    <string name="crypto_no_provider_button">ക്രമീകരണങ്ങളിലേക്ക് പോകുക</string>
+    <string name="mail_list_widget_text">കെ-9 സന്ദേശ പട്ടിക</string>
+    <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+    <string name="message_list_widget_initializing">ലോഡുചെയ്യുന്നു…</string>
+    <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+    <string name="message_list_widget_list_item_loading">ലോഡുചെയ്യുന്നു…</string>
+    <string name="openpgp_enabled_error_title">എൻക്രിപ്ഷൻ സാധ്യമല്ല</string>
+    <string name="openpgp_enabled_error_msg">തിരഞ്ഞെടുത്ത ചില സ്വീകർത്താക്കൾ ഈ സവിശേഷതയെ പിന്തുണയ്ക്കുന്നില്ല!</string>
+    <string name="enable_encryption">എൻക്രിപ്ഷൻ പ്രാപ്തമാക്കുക</string>
+    <string name="disable_encryption">എൻക്രിപ്ഷൻ അപ്രാപ്തമാക്കുക</string>
+    <string name="openpgp_description_text1">സന്ദേശങ്ങൾ‌ എൻ‌ക്രിപ്റ്റ് ചെയ്യുന്നത് മറ്റാർ‌ക്കും വായിക്കാതെ സ്വീകർ‌ത്താവിന് മാത്രം വായിക്കാൻ‌ കഴിയുമെന്ന് ഉറപ്പാക്കുന്നു. </string>
+    <string name="openpgp_description_text3">എല്ലാ സ്വീകർത്താക്കളുടെയും പിന്തുണയുണ്ടെങ്കിൽ മാത്രമേ എൻക്രിപ്ഷൻ ദൃശ്യമാകൂ, അവർ മുമ്പ് നിങ്ങൾക്ക് ഒരു ഇമെയിൽ അയച്ചിരിക്കണം.</string>
+    <string name="openpgp_description_text2">ഈ ഐക്കണിൽ ക്ലിക്കുചെയ്ത് എൻ‌ക്രിപ്ഷൻ മാറ്റുക.</string>
+    <string name="openpgp_enabled_error_gotit">മനസ്സിലായി</string>
+    <string name="openpgp_enabled_error_back">പിന്നിലേക്ക്</string>
+    <string name="openpgp_enabled_error_disable">എൻക്രിപ്ഷൻ അപ്രാപ്തമാക്കുക</string>
+    <string name="openpgp_encryption">OpenPGP എൻ‌ക്രിപ്ഷൻ</string>
+    <string name="account_settings_crypto_prefer_encrypt">പരസ്പര മോഡ് ഓട്ടോക്രിപ്റ്റ് ചെയ്യുക</string>
+    <string name="dialog_autocrypt_mutual_title">പരസ്പര മോഡ് ഓട്ടോക്രിപ്റ്റ് ചെയ്യുക</string>
+    <string name="dialog_autocrypt_mutual_description_1">സന്ദേശങ്ങൾ‌ സാധാരണയായി തിരഞ്ഞെടുത്ത സന്ദേശങ്ങൾക്ക് അല്ലെങ്കിൽ‌ എൻ‌ക്രിപ്റ്റ് ചെയ്ത സന്ദേശത്തിന് മറുപടി നൽകുമ്പോൾ എൻ‌ക്രിപ്റ്റ് ചെയ്യും.</string>
+    <string name="dialog_autocrypt_mutual_description_2">അയച്ചയാളും സ്വീകർത്താക്കളും പരസ്പര മോഡ് പ്രാപ്തമാക്കിയാൽ, സ്ഥിരസ്ഥിതിയായി എൻക്രിപ്ഷൻ പ്രാപ്തമാക്കും.</string>
+    <string name="dialog_autocrypt_mutual_learn_more">കൂടുതലറിയാൻ നിങ്ങൾക്ക് <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">ഇവിടെ ക്ലിക്കു</a> ചെയ്യാം.</string>
+    <string name="general_settings_title">പൊതുവായ ക്രമീകരണങ്ങൾ</string>
+    <string name="dialog_openkeychain_info_title">OpenPGP അപ്ലിക്കേഷനുകളൊന്നും ഇൻസ്റ്റാളുചെയ്‌തിട്ടില്ല</string>
+    <string name="dialog_openkeychain_info_install">ഇൻസ്റ്റാൾ ചെയ്യുക</string>
+    <string name="dialog_openkeychain_info_text">കെ-9 മെയിലിന് എൻഡ്-ടു-എൻഡ് എൻ‌ക്രിപ്ഷനായി ഓപ്പൺ‌കീചെയിൻ ആവശ്യമാണ്.</string>
+    <string name="encrypted_subject">എൻക്രിപ്റ്റുചെയ്‌ത സന്ദേശം</string>
+    <string name="account_settings_crypto_encrypt_subject">സന്ദേശ വിഷയങ്ങൾ എൻ‌ക്രിപ്റ്റ് ചെയ്യുക</string>
+    <string name="account_settings_crypto_encrypt_subject_subtitle">ചില സ്വീകർത്താക്കൾ പിന്തുണച്ചേക്കില്ല</string>
+    <string name="toast_account_not_found">ആന്തരിക പിശക്: അക്കൗണ്ട് അസാധുവാണ്!</string>
+    <string name="toast_openpgp_provider_error">%sലേക്ക് കണക്റ്റുചെയ്യുന്നതിൽ പിശക്! </string>
+    <string name="ac_transfer_setting_title">ഓട്ടോക്രിപ്റ്റ് സജ്ജീകരണ സന്ദേശം അയയ്‌ക്കുക</string>
+    <string name="ac_transfer_setting_summary">മറ്റ് ഉപകരണങ്ങളുമായി എൻഡ്-ടു-എൻഡ് സജ്ജീകരണം സുരക്ഷിതമായി പങ്കിടുക</string>
+    <string name="ac_transfer_title">ഓട്ടോക്രിപ്റ്റ് സജ്ജീകരണ സന്ദേശം</string>
+    <string name="ac_transfer_intro">ഒരു ഓട്ടോക്രിപ്റ്റ് സജ്ജീകരണ സന്ദേശം നിങ്ങളുടെ എൻഡ്-ടു-എൻഡ് സജ്ജീകരണം മറ്റ് ഉപകരണങ്ങളുമായി സുരക്ഷിതമായി പങ്കിടുന്നു.</string>
+    <string name="ac_transfer_button_send">സജ്ജീകരണ സന്ദേശം അയയ്‌ക്കുക</string>
+    <string name="ac_transfer_will_be_sent">സന്ദേശം നിങ്ങളുടെ വിലാസത്തിലേക്ക് അയയ്ക്കും:</string>
+    <string name="ac_transfer_generating">സജ്ജീകരണ സന്ദേശം സൃഷ്ടിക്കുന്നു…</string>
+    <string name="ac_transfer_sending_to">ഇതിലേക്ക് സന്ദേശം അയയ്ക്കുന്നു:</string>
+    <string name="ac_transfer_finish">പൂർത്തിയാക്കാൻ, നിങ്ങളുടെ മറ്റൊരു ഉപകരണത്തിൽ സന്ദേശം തുറന്ന് സജ്ജീകരണ കോഡ് നൽകുക.</string>
+    <string name="ac_transfer_show_code">സജ്ജീകരണ കോഡ് കാണിക്കുക</string>
+    <string name="ac_transfer_msg_subject">ഓട്ടോക്രിപ്റ്റ് സജ്ജീകരണ സന്ദേശം</string>
+    <string name="ac_transfer_msg_body">നിങ്ങളുടെ രഹസ്യ ഉപകരണത്തിനൊപ്പം നിങ്ങളുടെ ഓട്ടോക്രിപ്റ്റ് ക്രമീകരണങ്ങളും നിങ്ങളുടെ യഥാർത്ഥ ഉപകരണത്തിൽ നിന്ന് സുരക്ഷിതമായി കൈമാറുന്നതിനുള്ള എല്ലാ വിവരങ്ങളും ഈ സന്ദേശത്തിൽ അടങ്ങിയിരിക്കുന്നു.
 
 ഓട്ടോക്രിപ്റ്റിനായി നിങ്ങളുടെ പുതിയ ഉപകരണം സജ്ജീകരിക്കുന്നതിന്, നിങ്ങളുടെ പുതിയ ഉപകരണത്തിൽ അവതരിപ്പിച്ചിരിക്കുന്ന നിർദ്ദേശങ്ങൾ പാലിക്കുക.
 
  നിങ്ങൾക്ക് ഈ സന്ദേശം സൂക്ഷിക്കാനും നിങ്ങളുടെ രഹസ്യ കീയുടെ ബാക്കപ്പായി ഉപയോഗിക്കാനും കഴിയും. ഇത് ചെയ്യാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുവെങ്കിൽ, നിങ്ങൾ പാസ്‌വേഡ് എഴുതി സുരക്ഷിതമായി സൂക്ഷിക്കണം.
 </string>
-  <string name="ac_transfer_error_send">സന്ദേശം അയയ്ക്കുമ്പോൾ ഒരു പിശക് സംഭവിച്ചു. നിങ്ങളുടെ നെറ്റ്‌വർക്ക് കണക്റ്റിവിറ്റിയും ഔട്ട്‌ഗോയിംഗ് സെർവർ സജ്ജീകരണങ്ങളും പരിശോധിക്കുക.</string>
-  <string name="switch_on">ഓൺ</string>
-  <string name="switch_off">ഓഫ്</string>
-  <!--permissions-->
-  <string name="permission_contacts_rationale_title">കോൺ‌ടാക്റ്റുകളിലേക്ക് പ്രവേശനം അനുവദിക്കുക</string>
-  <string name="permission_contacts_rationale_message">കോൺ‌ടാക്റ്റ് നിർദ്ദേശങ്ങൾ‌ നൽ‌കുന്നതിനും കോൺ‌ടാക്റ്റ് നാമങ്ങളും ഫോട്ടോകളും പ്രദർശിപ്പിക്കുന്നതിനും, അപ്ലിക്കേഷന് നിങ്ങളുടെ കോൺ‌ടാക്റ്റുകളിലേക്ക് പ്രവേശനം ആവശ്യമാണ്.</string>
-  <!--Name of the swipe action to select a message. Try to keep it short.-->
-  <string name="swipe_action_select">തിരഞ്ഞെടുക്കുക</string>
-  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-  <string name="swipe_action_deselect">തിരഞ്ഞെടുത്തത് മാറ്റുക</string>
-  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-  <string name="swipe_action_mark_as_unread">വായിക്കാത്തതായി അടയാളപ്പെടുത്തുക</string>
-  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-  <string name="swipe_action_add_star">നക്ഷത്രം ചേർക്കുക</string>
-  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-  <string name="swipe_action_remove_star">നക്ഷത്രം കളയുക</string>
-  <!--Name of the swipe action to archive a message. Try to keep it short.-->
-  <string name="swipe_action_archive">ശേഖരം</string>
-  <!--Name of the swipe action to delete a message. Try to keep it short.-->
-  <string name="swipe_action_delete">ഇല്ലാതാക്കുക</string>
-  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-  <string name="swipe_action_spam">സ്പാം</string>
-  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-  <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
-  <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
-  <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
-  <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
-  <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
-  <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
-  <string name="message_details_from_section_title">മുതൽ</string>
-  <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
-  <string name="message_details_sender_section_title">അയച്ചയാൾ</string>
-  <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
-  <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
-  <string name="message_details_to_section_title">To</string>
-  <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
-  <string name="message_details_cc_section_title">Cc</string>
-  <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
-  <string name="message_details_bcc_section_title">Bcc</string>
-  <!--Displayed when loading the message details has failed-->
-  <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-  <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-  <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-  <!--A user visible label for the email address copied to the clipboard-->
-  <string name="clipboard_label_email_address">ഇമെയിൽ വിലാസം</string>
-  <!--A user visible label for the name and email address copied to the clipboard-->
-  <!--Might be displayed in a notification when deleting an account (in the background)-->
-  <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+    <string name="ac_transfer_error_send">സന്ദേശം അയയ്ക്കുമ്പോൾ ഒരു പിശക് സംഭവിച്ചു. നിങ്ങളുടെ നെറ്റ്‌വർക്ക് കണക്റ്റിവിറ്റിയും ഔട്ട്‌ഗോയിംഗ് സെർവർ സജ്ജീകരണങ്ങളും പരിശോധിക്കുക.</string>
+    <string name="switch_on">ഓൺ</string>
+    <string name="switch_off">ഓഫ്</string>
+    <!--permissions-->
+    <string name="permission_contacts_rationale_title">കോൺ‌ടാക്റ്റുകളിലേക്ക് പ്രവേശനം അനുവദിക്കുക</string>
+    <string name="permission_contacts_rationale_message">കോൺ‌ടാക്റ്റ് നിർദ്ദേശങ്ങൾ‌ നൽ‌കുന്നതിനും കോൺ‌ടാക്റ്റ് നാമങ്ങളും ഫോട്ടോകളും പ്രദർശിപ്പിക്കുന്നതിനും, അപ്ലിക്കേഷന് നിങ്ങളുടെ കോൺ‌ടാക്റ്റുകളിലേക്ക് പ്രവേശനം ആവശ്യമാണ്.</string>
+    <!--Name of the swipe action to select a message. Try to keep it short.-->
+    <string name="swipe_action_select">തിരഞ്ഞെടുക്കുക</string>
+    <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+    <string name="swipe_action_deselect">തിരഞ്ഞെടുത്തത് മാറ്റുക</string>
+    <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+    <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+    <string name="swipe_action_mark_as_unread">വായിക്കാത്തതായി അടയാളപ്പെടുത്തുക</string>
+    <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+    <string name="swipe_action_add_star">നക്ഷത്രം ചേർക്കുക</string>
+    <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+    <string name="swipe_action_remove_star">നക്ഷത്രം കളയുക</string>
+    <!--Name of the swipe action to archive a message. Try to keep it short.-->
+    <string name="swipe_action_archive">ശേഖരം</string>
+    <!--Name of the swipe action to delete a message. Try to keep it short.-->
+    <string name="swipe_action_delete">ഇല്ലാതാക്കുക</string>
+    <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+    <string name="swipe_action_spam">സ്പാം</string>
+    <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+    <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+    <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+    <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+    <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+    <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+    <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
+    <string name="message_details_from_section_title">മുതൽ</string>
+    <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
+    <string name="message_details_sender_section_title">അയച്ചയാൾ</string>
+    <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
+    <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
+    <string name="message_details_to_section_title">To</string>
+    <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
+    <string name="message_details_cc_section_title">Cc</string>
+    <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
+    <string name="message_details_bcc_section_title">Bcc</string>
+    <!--Displayed when loading the message details has failed-->
+    <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    <!--A user visible label for the email address copied to the clipboard-->
+    <string name="clipboard_label_email_address">ഇമെയിൽ വിലാസം</string>
+    <!--A user visible label for the name and email address copied to the clipboard-->
+    <!--Might be displayed in a notification when deleting an account (in the background)-->
+    <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
 </resources>

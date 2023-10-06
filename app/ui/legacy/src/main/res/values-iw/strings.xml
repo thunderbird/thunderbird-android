@@ -1,641 +1,641 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <!--=== App-specific strings =============================================================-->
-  <!--This should make it easier for forks to change the branding-->
-  <!--Used in AndroidManifest.xml-->
-  <string name="app_name">K-9 Mail</string>
-  <string name="shortcuts_title">חשבונות K-9</string>
-  <string name="unread_widget_label">K-9 לא נקרא</string>
-  <!--Used in the about dialog-->
-  <string name="source_code">קוד מקור</string>
-  <string name="app_license">רישיון Apache, גירסא 2.0</string>
-  <string name="about_project_title">פרויקט קוד-פתוח</string>
-  <string name="about_twitter_title">טוויטר</string>
-  <string name="about_libraries">סיפריות</string>
-  <string name="license">רישיון</string>
-  <string name="changelog_title">יומן שינויים</string>
-  <string name="changelog_version_title">גירסא %s</string>
-  <string name="changelog_recent_changes_title">מה חדש</string>
-  <string name="changelog_show_recent_changes">הצג שינויים אחרונים לאחר עדכון האפליקצייה</string>
-  <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
-  <string name="changelog_snackbar_text">גלה מה חדש בגירסא זו</string>
-  <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-  <!--Default signature-->
-  <string name="default_signature">-- \nנשלח ממכשיר האנדרואיד שלי בעזרת אפליקציית הדואר K-9. סלח לי על הקצרנות.</string>
-  <!--General strings that include the app name-->
-  <string name="account_delete_dlg_instructions_fmt">החשבון \"<xliff:g id="account">%s</xliff:g>\" יימחק מדואר K-9 .</string>
-  <!--=== General strings ==================================================================-->
-  <string name="about_title">אודות דואר K-9</string>
-  <string name="accounts_title">חשבונות</string>
-  <string name="advanced">מתקדם</string>
-  <string name="compose_title_compose">חבר</string>
-  <string name="compose_title_reply">השב</string>
-  <string name="compose_title_reply_all">השב לכולם</string>
-  <string name="compose_title_forward">העבר</string>
-  <string name="compose_title_forward_as_attachment">העבר כקובץ מצורף</string>
-  <string name="choose_account_title">בחר חשבון</string>
-  <string name="choose_folder_title">בחר תיקייה</string>
-  <string name="choose_folder_move_title">העבר אל…</string>
-  <string name="choose_folder_copy_title">העתק אל…</string>
-  <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> נבחרו</string>
-  <string name="next_action">הבא</string>
-  <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-  <string name="okay_action">אישור</string>
-  <string name="cancel_action">ביטול</string>
-  <string name="send_action">שלח</string>
-  <string name="empty_subject">הנושא ריק, הקש שוב כדי לשלוח בכל זאת.</string>
-  <string name="reply_action">השב</string>
-  <string name="reply_all_action">השב על הכל</string>
-  <string name="delete_action">מחק</string>
-  <string name="archive_action">ארכיון</string>
-  <string name="spam_action">דואר זבל</string>
-  <string name="forward_action">קדימה</string>
-  <string name="forward_as_attachment_action">העבר כקובץ מצורף</string>
-  <string name="move_action">העבר</string>
-  <string name="move_to_drafts_action">העבר אל \'טיוטות\'</string>
-  <string name="refile_action">תייק מחדש…</string>
-  <string name="done_action">סיום</string>
-  <string name="discard_action">השלך</string>
-  <string name="save_draft_action">שמור כטיוטה</string>
-  <string name="check_mail_action">בדוק דואר</string>
-  <string name="send_messages_action">שלח הודעות</string>
-  <string name="refresh_folders_action">רענן תיקיות</string>
-  <string name="filter_folders_action">מצא תיקייה</string>
-  <string name="add_account_action">הוסף חשבון</string>
-  <string name="compose_action">חבר</string>
-  <string name="search_action">חפש</string>
-  <string name="search_everywhere_action">חפש בכל מקום</string>
-  <string name="search_results">תוצאות חיפוש</string>
-  <string name="new_messages_title">הודעות חדשות</string>
-  <string name="preferences_action">הגדרות</string>
-  <string name="folders_action">נהל תיקיות</string>
-  <string name="account_settings_action">הגדרות חשבון</string>
-  <string name="remove_account_action">מחק חשבון</string>
-  <string name="mark_as_read_action">סמן כנקרא</string>
-  <string name="send_alternate_action">שתף</string>
-  <string name="send_alternate_chooser_title">בחר את השולח</string>
-  <string name="flag_action">הוסף כוכב</string>
-  <string name="unflag_action">מחק כוכב</string>
-  <string name="copy_action">העתק</string>
-  <string name="show_headers_action">הצג כותרות</string>
-  <plurals name="copy_address_to_clipboard">
-    <item quantity="one">כתובת הועתקה ללוח ההעתקה</item>
-    <item quantity="two">כתובות הועתקו ללוח ההעתקה</item>
-    <item quantity="many">כתובות הועתקו ללוח ההעתקה</item>
-    <item quantity="other">כתובות הועתקו ללוח ההעתקה</item>
-  </plurals>
-  <string name="copy_subject_to_clipboard">טקסט ה\'נושא\' הועתק ללוח</string>
-  <string name="message_view_theme_action_dark">עבור לאערכת נושא אפלה</string>
-  <string name="message_view_theme_action_light">עבור לערכת נושא בהירה</string>
-  <string name="mark_as_unread_action">סמן כלא נקרא</string>
-  <string name="read_receipt">אישור קריאה</string>
-  <string name="read_receipt_enabled">נדרש אישור לקריאה</string>
-  <string name="read_receipt_disabled">לא נדרש אישור קריאה</string>
-  <string name="add_attachment_action">צרף קובץ</string>
-  <string name="empty_trash_action">רוקן אשפה</string>
-  <string name="expunge_action">רוקן</string>
-  <string name="about_action">אודות</string>
-  <string name="prefs_title">הגדרות</string>
-  <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
-  <string name="general_no_subject">(ללא כותרת)</string>
-  <string name="general_no_sender">ללא שולח</string>
-  <string name="status_loading_more">טוען הודעות</string>
-  <string name="status_network_error">שגיאת חיבור</string>
-  <string name="status_invalid_id_error">לא נמצאו הודעות</string>
-  <string name="load_more_messages_fmt">טען
+    <!--=== App-specific strings =============================================================-->
+    <!--This should make it easier for forks to change the branding-->
+    <!--Used in AndroidManifest.xml-->
+    <string name="app_name">K-9 Mail</string>
+    <string name="shortcuts_title">חשבונות K-9</string>
+    <string name="unread_widget_label">K-9 לא נקרא</string>
+    <!--Used in the about dialog-->
+    <string name="source_code">קוד מקור</string>
+    <string name="app_license">רישיון Apache, גירסא 2.0</string>
+    <string name="about_project_title">פרויקט קוד-פתוח</string>
+    <string name="about_twitter_title">טוויטר</string>
+    <string name="about_libraries">סיפריות</string>
+    <string name="license">רישיון</string>
+    <string name="changelog_title">יומן שינויים</string>
+    <string name="changelog_version_title">גירסא %s</string>
+    <string name="changelog_recent_changes_title">מה חדש</string>
+    <string name="changelog_show_recent_changes">הצג שינויים אחרונים לאחר עדכון האפליקצייה</string>
+    <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
+    <string name="changelog_snackbar_text">גלה מה חדש בגירסא זו</string>
+    <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+    <!--Default signature-->
+    <string name="default_signature">-- \nנשלח ממכשיר האנדרואיד שלי בעזרת אפליקציית הדואר K-9. סלח לי על הקצרנות.</string>
+    <!--General strings that include the app name-->
+    <string name="account_delete_dlg_instructions_fmt">החשבון \"<xliff:g id="account">%s</xliff:g>\" יימחק מדואר K-9 .</string>
+    <!--=== General strings ==================================================================-->
+    <string name="about_title">אודות דואר K-9</string>
+    <string name="accounts_title">חשבונות</string>
+    <string name="advanced">מתקדם</string>
+    <string name="compose_title_compose">חבר</string>
+    <string name="compose_title_reply">השב</string>
+    <string name="compose_title_reply_all">השב לכולם</string>
+    <string name="compose_title_forward">העבר</string>
+    <string name="compose_title_forward_as_attachment">העבר כקובץ מצורף</string>
+    <string name="choose_account_title">בחר חשבון</string>
+    <string name="choose_folder_title">בחר תיקייה</string>
+    <string name="choose_folder_move_title">העבר אל…</string>
+    <string name="choose_folder_copy_title">העתק אל…</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> נבחרו</string>
+    <string name="next_action">הבא</string>
+    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
+    <string name="okay_action">אישור</string>
+    <string name="cancel_action">ביטול</string>
+    <string name="send_action">שלח</string>
+    <string name="empty_subject">הנושא ריק, הקש שוב כדי לשלוח בכל זאת.</string>
+    <string name="reply_action">השב</string>
+    <string name="reply_all_action">השב על הכל</string>
+    <string name="delete_action">מחק</string>
+    <string name="archive_action">ארכיון</string>
+    <string name="spam_action">דואר זבל</string>
+    <string name="forward_action">קדימה</string>
+    <string name="forward_as_attachment_action">העבר כקובץ מצורף</string>
+    <string name="move_action">העבר</string>
+    <string name="move_to_drafts_action">העבר אל \'טיוטות\'</string>
+    <string name="refile_action">תייק מחדש…</string>
+    <string name="done_action">סיום</string>
+    <string name="discard_action">השלך</string>
+    <string name="save_draft_action">שמור כטיוטה</string>
+    <string name="check_mail_action">בדוק דואר</string>
+    <string name="send_messages_action">שלח הודעות</string>
+    <string name="refresh_folders_action">רענן תיקיות</string>
+    <string name="filter_folders_action">מצא תיקייה</string>
+    <string name="add_account_action">הוסף חשבון</string>
+    <string name="compose_action">חבר</string>
+    <string name="search_action">חפש</string>
+    <string name="search_everywhere_action">חפש בכל מקום</string>
+    <string name="search_results">תוצאות חיפוש</string>
+    <string name="new_messages_title">הודעות חדשות</string>
+    <string name="preferences_action">הגדרות</string>
+    <string name="folders_action">נהל תיקיות</string>
+    <string name="account_settings_action">הגדרות חשבון</string>
+    <string name="remove_account_action">מחק חשבון</string>
+    <string name="mark_as_read_action">סמן כנקרא</string>
+    <string name="send_alternate_action">שתף</string>
+    <string name="send_alternate_chooser_title">בחר את השולח</string>
+    <string name="flag_action">הוסף כוכב</string>
+    <string name="unflag_action">מחק כוכב</string>
+    <string name="copy_action">העתק</string>
+    <string name="show_headers_action">הצג כותרות</string>
+    <plurals name="copy_address_to_clipboard">
+        <item quantity="one">כתובת הועתקה ללוח ההעתקה</item>
+        <item quantity="two">כתובות הועתקו ללוח ההעתקה</item>
+        <item quantity="many">כתובות הועתקו ללוח ההעתקה</item>
+        <item quantity="other">כתובות הועתקו ללוח ההעתקה</item>
+    </plurals>
+    <string name="copy_subject_to_clipboard">טקסט ה\'נושא\' הועתק ללוח</string>
+    <string name="message_view_theme_action_dark">עבור לאערכת נושא אפלה</string>
+    <string name="message_view_theme_action_light">עבור לערכת נושא בהירה</string>
+    <string name="mark_as_unread_action">סמן כלא נקרא</string>
+    <string name="read_receipt">אישור קריאה</string>
+    <string name="read_receipt_enabled">נדרש אישור לקריאה</string>
+    <string name="read_receipt_disabled">לא נדרש אישור קריאה</string>
+    <string name="add_attachment_action">צרף קובץ</string>
+    <string name="empty_trash_action">רוקן אשפה</string>
+    <string name="expunge_action">רוקן</string>
+    <string name="about_action">אודות</string>
+    <string name="prefs_title">הגדרות</string>
+    <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
+    <string name="general_no_subject">(ללא כותרת)</string>
+    <string name="general_no_sender">ללא שולח</string>
+    <string name="status_loading_more">טוען הודעות</string>
+    <string name="status_network_error">שגיאת חיבור</string>
+    <string name="status_invalid_id_error">לא נמצאו הודעות</string>
+    <string name="load_more_messages_fmt">טען
 עד <xliff:g id="messages_to_load">%d</xliff:g> נוספים</string>
-  <string name="size_format_gigabytes">%.1f ג\"ב</string>
-  <string name="size_format_megabytes">%.1f מ\"ב</string>
-  <string name="size_format_kilobytes">%.1f ק\"ב</string>
-  <string name="size_format_bytes">%d בתים</string>
-  <plurals name="notification_new_messages_title">
+    <string name="size_format_gigabytes">%.1f ג\"ב</string>
+    <string name="size_format_megabytes">%.1f מ\"ב</string>
+    <string name="size_format_kilobytes">%.1f ק\"ב</string>
+    <string name="size_format_bytes">%d בתים</string>
+    <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> הודעה חדשה
 </item>
-    <item quantity="two"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
-    <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
-    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
-  </plurals>
-  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> עוד בקבוצה <xliff:g id="account">%2$s</xliff:g></string>
-  <string name="notification_action_reply">השב</string>
-  <string name="notification_action_mark_as_read">סמן כנקרא</string>
-  <string name="notification_action_mark_all_as_read">סמן הכל כנקרא</string>
-  <string name="notification_action_delete">מחק</string>
-  <string name="notification_action_delete_all">מחק הכל</string>
-  <string name="notification_action_archive">העבר לארכיון</string>
-  <string name="notification_action_archive_all">העבר הכל לארכיון</string>
-  <string name="notification_action_spam">דואר זבל</string>
-  <string name="notification_certificate_error_public">שגיאה בתעודה</string>
-  <string name="notification_certificate_error_title">בעיה בתעודה עבור <xliff:g id="account">%s</xliff:g></string>
-  <string name="notification_certificate_error_text">בדוק את הגדרות השרת</string>
-  <string name="notification_authentication_error_title">נכשל באימות</string>
-  <string name="notification_authentication_error_text">האימות נכשל עבור <xliff:g id="account">%s</xliff:g>. 
+        <item quantity="two"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
+        <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
+        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
+    </plurals>
+    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> עוד בקבוצה <xliff:g id="account">%2$s</xliff:g></string>
+    <string name="notification_action_reply">השב</string>
+    <string name="notification_action_mark_as_read">סמן כנקרא</string>
+    <string name="notification_action_mark_all_as_read">סמן הכל כנקרא</string>
+    <string name="notification_action_delete">מחק</string>
+    <string name="notification_action_delete_all">מחק הכל</string>
+    <string name="notification_action_archive">העבר לארכיון</string>
+    <string name="notification_action_archive_all">העבר הכל לארכיון</string>
+    <string name="notification_action_spam">דואר זבל</string>
+    <string name="notification_certificate_error_public">שגיאה בתעודה</string>
+    <string name="notification_certificate_error_title">בעיה בתעודה עבור <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_certificate_error_text">בדוק את הגדרות השרת</string>
+    <string name="notification_authentication_error_title">נכשל באימות</string>
+    <string name="notification_authentication_error_text">האימות נכשל עבור <xliff:g id="account">%s</xliff:g>.
 עדכן את הגדרות השרת.</string>
-  <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
-  <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-  <string name="notification_bg_sync_ticker">בודק דואל: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
-  <string name="notification_bg_sync_title">בודק דוא\"ל</string>
-  <string name="notification_bg_send_ticker">שולח דוא"ל: <xliff:g id="account">%s</xliff:g></string>
-  <string name="notification_bg_send_title">שולח דוא\"ל</string>
-  <string name="notification_bg_title_separator">:</string>
-  <string name="notification_channel_push_description">מוצג בעת המתנה להודעות חדשות</string>
-  <string name="notification_channel_messages_title">הודעות</string>
-  <string name="notification_channel_miscellaneous_title">שונות</string>
-  <string name="special_mailbox_name_inbox">דואר נכנס</string>
-  <string name="special_mailbox_name_outbox">דואר יוצא</string>
-  <string name="special_mailbox_name_drafts">טיוטות</string>
-  <string name="special_mailbox_name_trash">אשפה</string>
-  <string name="special_mailbox_name_sent">נשלחו</string>
-  <string name="send_failure_subject">נכשל בשליחת כמה הודעות</string>
-  <string name="version">גירסא</string>
-  <string name="debug_enable_debug_logging_title">אפשר רישום איתור באגים</string>
-  <string name="debug_enable_debug_logging_summary">יומן ניתוח מידע נוסף</string>
-  <string name="debug_enable_sensitive_logging_title">יומן מידע רגיש</string>
-  <string name="debug_enable_sensitive_logging_summary">עשוי להציג סיסמאות ביומן.</string>
-  <string name="debug_export_logs_title">ייצא לוגים</string>
-  <string name="debug_export_logs_success">ייצוא הושלם. היומנים עלולים להכיל מידע רגיש.
+    <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+    <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+    <string name="notification_bg_sync_ticker">בודק דואל: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
+    <string name="notification_bg_sync_title">בודק דוא\"ל</string>
+    <string name="notification_bg_send_ticker">שולח דוא"ל: <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_bg_send_title">שולח דוא\"ל</string>
+    <string name="notification_bg_title_separator">:</string>
+    <string name="notification_channel_push_description">מוצג בעת המתנה להודעות חדשות</string>
+    <string name="notification_channel_messages_title">הודעות</string>
+    <string name="notification_channel_miscellaneous_title">שונות</string>
+    <string name="special_mailbox_name_inbox">דואר נכנס</string>
+    <string name="special_mailbox_name_outbox">דואר יוצא</string>
+    <string name="special_mailbox_name_drafts">טיוטות</string>
+    <string name="special_mailbox_name_trash">אשפה</string>
+    <string name="special_mailbox_name_sent">נשלחו</string>
+    <string name="send_failure_subject">נכשל בשליחת כמה הודעות</string>
+    <string name="version">גירסא</string>
+    <string name="debug_enable_debug_logging_title">אפשר רישום איתור באגים</string>
+    <string name="debug_enable_debug_logging_summary">יומן ניתוח מידע נוסף</string>
+    <string name="debug_enable_sensitive_logging_title">יומן מידע רגיש</string>
+    <string name="debug_enable_sensitive_logging_summary">עשוי להציג סיסמאות ביומן.</string>
+    <string name="debug_export_logs_title">ייצא לוגים</string>
+    <string name="debug_export_logs_success">ייצוא הושלם. היומנים עלולים להכיל מידע רגיש.
 היזהרו עם מי שאתם משתפים אותם.</string>
-  <string name="debug_export_logs_failure">ייצוא נכשל.</string>
-  <string name="message_list_load_more_messages_action">טען עוד הודעות</string>
-  <string name="message_to_fmt">ל:<xliff:g id="counterParty">%s</xliff:g></string>
-  <string name="message_compose_subject_hint">נושא</string>
-  <string name="message_compose_content_hint">הודעת טקסט</string>
-  <string name="message_compose_signature_hint">חתימה</string>
-  <string name="message_compose_quote_header_separator">-------- ההודעה המקורית --------</string>
-  <string name="message_compose_quote_header_subject">נושא:</string>
-  <string name="message_compose_quote_header_send_date">נשלח:</string>
-  <string name="message_compose_quote_header_from">מ:</string>
-  <string name="message_compose_quote_header_to">ל:</string>
-  <string name="message_compose_quote_header_cc">Cc:</string>
-  <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> כתב:</string>
-  <string name="message_compose_reply_header_fmt_with_date">ב <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> כתב:</string>
-  <string name="message_compose_error_no_recipients">עליך להוסיף לפחות נמען אחד.</string>
-  <string name="error_contact_address_not_found">לא ניתן למצוא כתובת דוא\"ל.</string>
-  <string name="message_compose_attachments_skipped_toast">קבצים מסוימים אינם ניתנים להעברה בגלל שהם לא הורדו.</string>
-  <string name="message_compose_attachments_forward_toast">לא ניתן להעביר את ההודעה כי חלק מהקבצים המצורפים לא הורדו.</string>
-  <string name="message_compose_description_delete_quoted_text">מחק טקסט מצוטט</string>
-  <string name="message_compose_description_edit_quoted_text">ערוך טקסט מצוטט</string>
-  <string name="remove_attachment_action">מחק קובץ מצורף</string>
-  <string name="message_to_label">ל:</string>
-  <string name="message_view_cc_label">עותק:</string>
-  <!--Used to display the recipient list in the message view screen.-->
-  <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
-  <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
-  <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
-  <string name="message_view_no_viewer">לא ניתן למצוא את מציג בשביל <xliff:g id="mimetype">%s</xliff:g>.</string>
-  <string name="message_view_download_remainder">הורד את ההודעה המלאה</string>
-  <string name="message_view_sender_label">באמצעות %1$s</string>
-  <string name="from_same_sender">עוד מהשולח הזה</string>
-  <string name="message_discarded_toast">ההודעה נמחקה</string>
-  <string name="message_saved_toast">ההודעה נשמרה כטיוטה</string>
-  <string name="global_settings_flag_label">הצג כוכבים</string>
-  <string name="global_settings_flag_summary">הכוכבים מצביעים על ההודעות המסומנות</string>
-  <string name="global_settings_preview_lines_label">קווי תצוגה מקדימה</string>
-  <string name="global_settings_show_correspondent_names_label">הצג שמות תואמים</string>
-  <string name="global_settings_show_correspondent_names_summary">הצג שמות תואמים במקום כתובות הדוא\"ל שלהם</string>
-  <string name="global_settings_show_contact_name_label">הצג שמות אנשי קשר</string>
-  <string name="global_settings_show_contact_name_summary">השתמש בשמות נמענים מתוך אנשי הקשר שלך כאשר זמין</string>
-  <string name="global_settings_registered_name_color_label">לצבוע את אנשי הקשר</string>
-  <string name="global_settings_registered_name_color_changed">צבע שמות ברשימת אנשי הקשר שלך</string>
-  <string name="global_settings_messageview_fixedwidth_label">גופנים ברוחב קבוע</string>
-  <string name="global_settings_messageview_fixedwidth_summary">השתמש בגופן ברוחב קבוע בעת הצגת הודעות טקסט רגילות</string>
-  <string name="global_settings_confirm_actions_title">אישור פעולות</string>
-  <string name="global_settings_confirm_actions_summary">הצג דו שיח בכל פעם שאתה מבצע את פעולות הנבחרות</string>
-  <string name="global_settings_confirm_action_delete">מחק</string>
-  <string name="global_settings_confirm_action_delete_starred">מחק הודעות שמסומנות בכוכב (בתצוגת הודעה)</string>
-  <string name="global_settings_confirm_action_spam">דואר זבל</string>
-  <string name="global_settings_confirm_menu_discard">מחק הודעה</string>
-  <string name="global_settings_confirm_menu_mark_all_read">סמן את כל ההודעות כ\"נקראו\"</string>
-  <!--Title of the screen to configure swipe actions-->
-  <!--Name of the setting to configure the right swipe action-->
-  <!--Name of the setting to configure the left swipe action-->
-  <!--The list item users select to not use a swipe action for a particular direction-->
-  <string name="general_settings_swipe_action_none">כלום</string>
-  <!--Name of the swipe action to select/deselect a message-->
-  <!--Name of the swipe action to mark as message as read/unread-->
-  <!--Name of the swipe action to add/remove a star-->
-  <!--Name of the swipe action to archive a message-->
-  <string name="general_settings_swipe_action_archive">העבר לארכיון</string>
-  <!--Name of the swipe action to delete a message-->
-  <string name="general_settings_swipe_action_delete">מחק</string>
-  <!--Name of the swipe action to move a message to the spam folder-->
-  <string name="general_settings_swipe_action_spam">דואר זבל</string>
-  <!--Name of the swipe action to move a message to another folder-->
-  <string name="general_settings_swipe_action_move">העבר</string>
-  <!--Title of the setting to specify the density of the message list-->
-  <string name="general_settings_ui_density_default">ברירת מחדל</string>
-  <string name="global_settings_privacy_hide_timezone">הסתר איזור זמן</string>
-  <string name="global_settings_notification_quick_delete_title">הצג את הכפתור \'מחק\'</string>
-  <string name="global_settings_notification_quick_delete_never">אף פעם</string>
-  <string name="global_settings_notification_quick_delete_always">תמיד</string>
-  <string name="global_settings_lock_screen_notification_visibility_title">התראות מסך נעילה</string>
-  <string name="quiet_time">שעות שקט</string>
-  <string name="quiet_time_description">השבת צלצול, זמזום והבהוב בלילה</string>
-  <string name="quiet_time_notification">בטל התראות</string>
-  <string name="quiet_time_starts">התחלת שעות שקט</string>
-  <string name="quiet_time_ends">סוף זמן שקט</string>
-  <string name="account_setup_basics_title">הגדר חשבון חדש</string>
-  <string name="account_setup_basics_email_hint">כתובת דוא\"ל</string>
-  <string name="account_setup_basics_password_hint">סיסמא</string>
-  <!--Displayed below the 'account_setup_oauth_description' text-->
-  <!--Displayed below the 'account_setup_oauth_description' text-->
-  <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-  <string name="account_setup_basics_show_password_biometrics_title">אמת את זהותך</string>
-  <string name="account_setup_basics_manual_setup_action">הוראות הגדרה</string>
-  <string name="account_setup_check_settings_title"/>
-  <string name="account_setup_check_settings_retr_info_msg">מאחזר מידע חשבון …</string>
-  <string name="account_setup_check_settings_check_incoming_msg">בדיקת הגדרות שרת הדואר הנכנס …</string>
-  <string name="account_setup_check_settings_check_outgoing_msg">בדיקת הגדרות שרת הדואר היוצא …</string>
-  <string name="account_setup_check_settings_authenticate">מאמת …</string>
-  <string name="account_setup_check_settings_fetch">מייבא הגדרות החשבון …</string>
-  <string name="account_setup_check_settings_canceling_msg">מבטל…</string>
-  <string name="account_setup_account_type_title">סוג חשבון</string>
-  <string name="account_setup_account_type_instructions">איזה סוג חשבון זה?</string>
-  <string name="account_setup_account_type_pop_action">POP3</string>
-  <string name="account_setup_account_type_imap_action">IMAP</string>
-  <string name="account_setup_auth_type_tls_client_certificate">תעודת לקוח</string>
-  <string name="account_setup_incoming_title">הגדרות שרת דואר נכנס</string>
-  <string name="account_setup_incoming_username_label">שם משתמש</string>
-  <string name="account_setup_incoming_password_label">סיסמא</string>
-  <string name="account_setup_incoming_client_certificate_label">תעודת לקוח</string>
-  <string name="account_setup_incoming_pop_server_label">שרת POP3</string>
-  <string name="account_setup_incoming_imap_server_label">שרת IMAP</string>
-  <string name="account_setup_incoming_port_label">Port</string>
-  <string name="account_setup_incoming_security_label">סוג אבטחה</string>
-  <string name="account_setup_incoming_auth_type_label">הזדהות</string>
-  <string name="account_setup_incoming_security_none_label">כלום</string>
-  <string name="account_setup_incoming_delete_policy_label">כאשר אני מוחק הודעה</string>
-  <string name="account_setup_incoming_delete_policy_never_label">אל תמחוק בשרת</string>
-  <string name="account_setup_incoming_delete_policy_delete_label">מחק מהשרת</string>
-  <string name="account_setup_incoming_delete_policy_markread_label">סמן כנקרא בשרת</string>
-  <string name="account_setup_expunge_policy_label">למחוק הודעות שנמחקו</string>
-  <string name="account_setup_expunge_policy_immediately">מיד</string>
-  <string name="account_setup_expunge_policy_on_poll">When polling</string>
-  <string name="account_setup_expunge_policy_manual">רק באופן ידני</string>
-  <string name="drafts_folder_label">תיקיית טיוטות</string>
-  <string name="sent_folder_label">תיקיית הודעות שנשלחו</string>
-  <string name="trash_folder_label">תיקיית אשפה</string>
-  <string name="archive_folder_label">תיקיית ארכיון</string>
-  <string name="spam_folder_label">תיקיית דואר זבל</string>
-  <string name="account_setup_incoming_subscribed_folders_only_label">הצג רק תיקיות רשומות</string>
-  <string name="account_setup_auto_expand_folder">הרחב את התיקייה אוטומטית</string>
-  <string name="account_setup_outgoing_title">הגדרות שרת דואר יוצא</string>
-  <string name="account_setup_outgoing_smtp_server_label">שרת SMTP</string>
-  <string name="account_setup_outgoing_port_label">Port</string>
-  <string name="account_setup_outgoing_security_label">סוג אבטחה</string>
-  <string name="account_setup_outgoing_require_login_label">דרוש הרשמה.</string>
-  <string name="account_setup_outgoing_username_label">שם משתמש</string>
-  <string name="account_setup_outgoing_password_label">סיסמא</string>
-  <string name="account_setup_outgoing_authentication_label">סו אימות</string>
-  <string name="account_setup_bad_uri">הגדרה לא חוקית: <xliff:g id="err_mess">%s</xliff:g></string>
-  <string name="account_setup_options_mail_check_frequency_never">אפ פעם</string>
-  <string name="account_setup_options_mail_check_frequency_15min">כל רבע שעה</string>
-  <string name="account_setup_options_mail_check_frequency_30min">כל 30 דקות</string>
-  <string name="account_setup_options_mail_check_frequency_1hour">כל שעה</string>
-  <string name="account_setup_options_mail_check_frequency_2hour">כל שעתיים</string>
-  <string name="account_setup_options_mail_check_frequency_3hour">כל 3 שעות</string>
-  <string name="account_setup_options_mail_check_frequency_6hour">כל 6 שעות</string>
-  <string name="account_setup_options_mail_check_frequency_12hour">כל 12 שעות</string>
-  <string name="account_setup_options_mail_check_frequency_24hour">כל 24 שעות</string>
-  <string name="idle_refresh_period_label">רענן חיבור IDLE</string>
-  <string name="idle_refresh_period_2min">כל 2 דקות</string>
-  <string name="idle_refresh_period_3min">כל 3 דקות</string>
-  <string name="idle_refresh_period_6min">כל 6 דקות</string>
-  <string name="idle_refresh_period_12min">כל 12 דקות</string>
-  <string name="idle_refresh_period_24min">כל 24 דקות</string>
-  <string name="idle_refresh_period_36min">כל 36 דקות</string>
-  <string name="idle_refresh_period_48min">כל 48 דקות</string>
-  <string name="idle_refresh_period_60min">כל 60 דקות</string>
-  <string name="account_setup_options_mail_display_count_label">מספר הודעות להצגה</string>
-  <string name="account_setup_options_mail_display_count_10">10 הודעות</string>
-  <string name="account_setup_options_mail_display_count_25">25 הודעות</string>
-  <string name="account_setup_options_mail_display_count_50">50 הודעות</string>
-  <string name="account_setup_options_mail_display_count_100">100 הודעות</string>
-  <string name="account_setup_options_mail_display_count_250">250 הודעות</string>
-  <string name="account_setup_options_mail_display_count_500">500 הודעות</string>
-  <string name="account_setup_options_mail_display_count_1000">1000 הודעות</string>
-  <string name="account_setup_options_mail_display_count_2500">2500 הודעות</string>
-  <string name="account_setup_options_mail_display_count_5000">5000 הודעות</string>
-  <string name="account_setup_options_mail_display_count_10000">10000 הודעות</string>
-  <string name="account_setup_options_mail_display_count_all">כל ההודעות</string>
-  <string name="move_copy_cannot_copy_unsynced_message">לא ניתן להעתיק או להעביר הודעה שלא מסונכרנת עם השרת</string>
-  <string name="account_setup_failed_dlg_title">ההגדרה לא הסתיימה</string>
-  <string name="account_setup_failed_dlg_edit_details_action">ערוך פרטים</string>
-  <string name="account_setup_failed_dlg_continue_action">המשך</string>
-  <string name="account_settings_push_advanced_title">מתקדם</string>
-  <string name="account_settings_title_fmt">הגדרות חשבון</string>
-  <string name="account_settings_notify_label">התראות על הודעה חדשה</string>
-  <string name="account_settings_folder_notify_new_mail_mode_all">הכל</string>
-  <string name="account_settings_folder_notify_new_mail_mode_none">כלום</string>
-  <string name="account_settings_notify_sync_label">סינכרון התראות</string>
-  <string name="account_settings_email_label">כתובת הדוא\"ל שלך</string>
-  <string name="account_settings_notify_summary">נא הודע לי בשורת מצב כאשר מגיע דואר</string>
-  <string name="account_settings_notify_sync_summary">נא הודע לי בשורת המצב בזמן שהדואר נבדק</string>
-  <string name="account_settings_notify_self_label">כלול את הדואר היוצא</string>
-  <string name="account_settings_notify_self_summary">הצג התראה להודעות ששלחתי</string>
-  <string name="account_notify_contacts_mail_only_label">אנשי קשר בלבד</string>
-  <string name="account_settings_ignore_chat_messages_label">התעלם מהודעות צ\'אט</string>
-  <string name="account_settings_show_pictures_label">תמיד הצג תמונות</string>
-  <string name="account_settings_show_pictures_never">לא</string>
-  <string name="account_settings_show_pictures_only_from_contacts">מאנשי הקשר</string>
-  <string name="account_settings_show_pictures_always">מכל אחד</string>
-  <string name="account_settings_composition">שולח דואר</string>
-  <string name="account_settings_default_quoted_text_shown_label">צטט את ההודעה המקורית במענה</string>
-  <string name="account_settings_default_quoted_text_shown_summary">במענה להודעות, ההודעה המקורית תוצג בתגובה שלך.</string>
-  <string name="account_settings_reply_after_quote_label">השב לאחר הטקסט המצוטט</string>
-  <string name="account_settings_reply_after_quote_summary">במענה להודעות, ההודעה המקורית תופיע מעל התגובה שלך.</string>
-  <string name="account_settings_message_format_label">עיצוב הודעה</string>
-  <string name="account_settings_message_format_text">טקסט רגיל (תמונות ועיצובים יוסרו)</string>
-  <string name="account_settings_message_format_html">HTML (תמונות ועיצוב נשמרים)</string>
-  <string name="account_settings_message_read_receipt_label">אישור קריאה</string>
-  <string name="account_settings_message_read_receipt_summary">תמיד בקש אישור קריאה</string>
-  <string name="account_settings_quote_style_label">השב סגנון ציטוט</string>
-  <string name="account_settings_quote_style_prefix">קידומת (כגון Gmail, Pine)</string>
-  <string name="account_settings_quote_style_header">כותרת (כמו Yahoo! Outlook, Hotmail)</string>
-  <string name="account_settings_general_title">הגדרות כלליות</string>
-  <string name="account_settings_sync">שולף דואר</string>
-  <string name="account_settings_folders">תיקיות</string>
-  <string name="account_settings_quote_prefix_label">קידומת טקסט מצוטט</string>
-  <string name="account_settings_crypto_summary_on">מחובר ל %s</string>
-  <string name="account_settings_crypto_encrypt_all_drafts">שמור טיוטות באופן מוצפנת</string>
-  <string name="account_settings_crypto_encrypt_all_drafts_on">כל הטיוטות יישמרו באופן מוצפן</string>
-  <string name="account_settings_color_label">צבע חשבון</string>
-  <string name="account_settings_color_summary">בחר את הצבע של החשבון המשומש בתיקייה וברשימת החשבונות</string>
-  <string name="account_settings_mail_display_count_label">גודל תיקיה מקומית</string>
-  <string name="account_settings_autodownload_message_size_label">להביא הודעות בנפח של עד</string>
-  <string name="account_settings_autodownload_message_size_any">כל גודל(ללא הגבלה)</string>
-  <string name="account_settings_message_age_label">סנכרון הודעות מ</string>
-  <string name="account_settings_message_age_any">כל זמן (ללא הגבלה)</string>
-  <string name="account_settings_message_age_0">היום</string>
-  <string name="account_settings_message_age_1">מ 2 הימים האחרונים</string>
-  <string name="account_settings_message_age_2">מ 3 הימים האחרונים</string>
-  <string name="account_settings_message_age_7">מהשבוע האחרון</string>
-  <string name="account_settings_message_age_14">מהשבועיים האחרונים</string>
-  <string name="account_settings_message_age_21">מה 3 שבועות האחרונים</string>
-  <string name="account_settings_message_age_1_month">מהחודש האחרון</string>
-  <string name="account_settings_message_age_2_months">מהחודשיים האחרונים</string>
-  <string name="account_settings_message_age_3_months">מה 3 חודשים האחרונים</string>
-  <string name="account_settings_message_age_6_months">מהחצי שנה האחרונה</string>
-  <string name="account_settings_message_age_1_year">מהשנה האחרונה</string>
-  <string name="account_settings_folder_display_mode_label">תיקיות להצגה</string>
-  <string name="account_settings_folder_display_mode_all">הכל</string>
-  <string name="account_settings_folder_sync_mode_all">הכל</string>
-  <string name="account_settings_folder_sync_mode_none">כלום</string>
-  <string name="account_settings_folder_push_mode_label">דחף תיקיות</string>
-  <string name="account_settings_folder_push_mode_all">הכל</string>
-  <string name="account_settings_folder_push_mode_none">כלום</string>
-  <string name="account_settings_folder_target_mode_label">להעביר / להעתיק תיקיית יעד</string>
-  <string name="account_settings_folder_target_mode_all">הכל</string>
-  <string name="account_settings_sync_remote_deletetions_label">לסנכרן מחיקות שרת</string>
-  <string name="account_settings_sync_remote_deletetions_summary">הסר הודעות כאשר נמחק בשרת</string>
-  <string name="folder_settings_title">הגדרות תיקייה</string>
-  <string name="folder_settings_in_top_group_label">הצג בקבוצה העליונה</string>
-  <string name="folder_settings_in_top_group_summary">הצג בחלק העליון של רשימת התיקיות</string>
-  <string name="folder_settings_folder_sync_mode_normal">כלום</string>
-  <string name="folder_settings_clear_local_folder_action">נקה הודעות מקומיות</string>
-  <string name="account_settings_incoming_label">שרת הודעות נכנסות</string>
-  <string name="account_settings_incoming_summary">הגדר את שרת הדואר הנכנס</string>
-  <string name="account_settings_outgoing_label">שרת דואר יוצא</string>
-  <string name="account_settings_outgoing_summary">הגדר את שרת הדואר היוצא (SMTP) </string>
-  <string name="account_settings_description_label">שם חשבון</string>
-  <string name="account_settings_name_label">השם שלך</string>
-  <string name="notifications_title">התראות</string>
-  <string name="account_settings_vibration">רטט</string>
-  <string name="account_settings_vibrate_enable">רטט</string>
-  <string name="account_settings_vibrate_pattern_default">ברירת מחדל</string>
-  <string name="account_settings_vibrate_times">חזור על הרטט</string>
-  <string name="account_settings_vibrate_summary_disabled">מבוטל</string>
-  <string name="account_settings_ringtone">רינגטון מייל חדש</string>
-  <string name="account_settings_notification_light_label">נורית התראות</string>
-  <string name="account_settings_notification_light_disabled">מבוטל</string>
-  <string name="account_settings_notification_light_account_color">צבע חשבון</string>
-  <string name="account_settings_notification_light_default_color">צבע ברירת מחדל של המערכת</string>
-  <string name="account_settings_notification_light_white">לבן</string>
-  <string name="account_settings_notification_light_red">אדום</string>
-  <string name="account_settings_notification_light_green">ירוק</string>
-  <string name="account_settings_notification_light_blue">כחול</string>
-  <string name="account_settings_notification_light_yellow">צהוב</string>
-  <string name="account_settings_composition_title">אפשרויות הרכב הודעה</string>
-  <string name="account_settings_composition_label">הרכב ברירת המחדל</string>
-  <string name="account_settings_composition_summary">הגדר את ברירת המחדל שלך מ, עותק מוסתר וחתימה</string>
-  <string name="account_settings_identities_label">ניהול זהויות</string>
-  <string name="account_settings_identities_summary">הגדרה חלופית \' מ  \'כתובות וחתימות </string>
-  <string name="manage_identities_title">נהל זהויות</string>
-  <string name="manage_identities_context_menu_title">נהל זהות</string>
-  <string name="edit_identity_title">ערוך זהות</string>
-  <string name="edit_identity_save">שמור</string>
-  <string name="new_identity_action">זהות חדשה</string>
-  <string name="account_settings_always_bcc_label">עותק מוסתר לכל ההודעות אל</string>
-  <string name="manage_identities_edit_action">ערוך</string>
-  <string name="manage_identities_move_up_action">העבר למעלה</string>
-  <string name="manage_identities_move_down_action">העבר למטה</string>
-  <string name="manage_identities_move_top_action">העבר למעלה / להפוך לברירת המחדל</string>
-  <string name="manage_identities_remove_action">מחק</string>
-  <string name="edit_identity_description_label">תיאור זהות</string>
-  <string name="edit_identity_description_hint">(לא חובה)</string>
-  <string name="edit_identity_name_label">השם שלך</string>
-  <string name="edit_identity_name_hint">(לא חובה)</string>
-  <string name="edit_identity_email_label">כתובת דוא\"ל</string>
-  <string name="edit_identity_email_hint">(חובה)</string>
-  <string name="edit_identity_reply_to_label">כתובת דוא\"ל למענה</string>
-  <string name="edit_identity_reply_to_hint">(לא חובה)</string>
-  <string name="edit_identity_signature_label">חתימה</string>
-  <string name="edit_identity_signature_hint">(לא חובה)</string>
-  <string name="account_settings_signature_use_label">השתמש בחתימה</string>
-  <string name="account_settings_signature_label">חתימה</string>
-  <string name="default_identity_description">הזהות הראשונית</string>
-  <string name="choose_identity_title">בחר זהות</string>
-  <string name="send_as">שלח כ</string>
-  <string name="no_removable_identity">לא ניתן להסיר את הזהות היחידה שלך</string>
-  <string name="identity_has_no_email">אתה לא יכול להשתמש בזהות ללא כתובת דואר אלקטרוני</string>
-  <string name="sort_earliest_first">הודעות קודמות ראשונות</string>
-  <string name="sort_latest_first">הודעות אחרונות ראשונות</string>
-  <string name="sort_subject_alpha">נושא אלפביתי</string>
-  <string name="sort_subject_re_alpha">נושא אלפביתי הפוך</string>
-  <string name="sort_flagged_first">הודעות שמסומנות בכוכב ראשונות</string>
-  <string name="sort_flagged_last">הודעות שלא מסומנות בכוכב ראשונות</string>
-  <string name="sort_unread_first">הודעות שלא נקראו ראשונות</string>
-  <string name="sort_unread_last">הודעות שנקראו ראשונות</string>
-  <string name="sort_attach_first">הודעות עם קבצים מצורפים ראשונות</string>
-  <string name="sort_unattached_first">הודעות בלי קבצים מצורפים ראשונות</string>
-  <string name="sort_by">מיון לפי …</string>
-  <string name="sort_by_date">תאריך</string>
-  <string name="sort_by_subject">נושא</string>
-  <string name="sort_by_sender">שולח</string>
-  <string name="sort_by_flag">כוכב</string>
-  <string name="sort_by_unread">נקרא/לא נקרא</string>
-  <string name="sort_by_attach">קבצים מצורפים</string>
-  <string name="account_delete_dlg_title">מחק חשבון</string>
-  <string name="account_setup_failed_dlg_invalid_certificate_title">תעודה לא מזוהה</string>
-  <string name="account_setup_failed_dlg_invalid_certificate_accept">קבל מפתח</string>
-  <string name="account_setup_failed_dlg_invalid_certificate_reject">דחה מפתח</string>
-  <string name="folder_list_display_mode_label">תיקיות</string>
-  <string name="folder_list_display_mode_all">הצג את כל התיקיות</string>
-  <string name="account_settings_signature__location_label">מיקום חתימה</string>
-  <string name="account_settings_signature__location_before_quoted_text">לפני טקסט מצוטט</string>
-  <string name="account_settings_signature__location_after_quoted_text">אחרי טקסט מצוטט</string>
-  <string name="setting_theme_dark">חשוך</string>
-  <string name="setting_theme_light">בהיר</string>
-  <string name="display_preferences">תצוגה</string>
-  <string name="global_preferences">כללי</string>
-  <string name="debug_preferences">איתור באגים</string>
-  <string name="privacy_preferences">פרטיות</string>
-  <string name="network_preferences">רשת</string>
-  <string name="accountlist_preferences">רשימת חשבונות</string>
-  <string name="messagelist_preferences">רשימת הודעות</string>
-  <string name="messageview_preferences">הודעות</string>
-  <string name="settings_theme_label">ערכת נושא</string>
-  <string name="settings_language_label">שפה</string>
-  <string name="setting_language_system">ברירות מחדל מערכת</string>
-  <string name="background_ops_label">סנכרון ברקע</string>
-  <string name="background_ops_never">אף פעם</string>
-  <string name="background_ops_always">תמיד</string>
-  <string name="batch_select_all">בחר הכל</string>
-  <string name="account_setup_push_limit_label">מקסימום תיקיות כדי לבדוק עם דחיפה</string>
-  <string name="account_setup_push_limit_5">5 תיקיות</string>
-  <string name="account_setup_push_limit_10">10 תיקיות</string>
-  <string name="account_setup_push_limit_25">25 תיקיות</string>
-  <string name="account_setup_push_limit_50">50 תיקיות</string>
-  <string name="account_setup_push_limit_100">100 תיקיות</string>
-  <string name="account_setup_push_limit_250">250 תיקיות</string>
-  <string name="account_setup_push_limit_500">500 תיקיות</string>
-  <string name="account_setup_push_limit_1000">1000 תיקיות</string>
-  <string name="animations_title">אנימציה</string>
-  <string name="animations_summary">השתמש באפקטים חזותיים ססגונים</string>
-  <string name="integrated_inbox_title">תיבת דואר נכנס אחידה</string>
-  <string name="integrated_inbox_detail">כל ההודעות בתיקיות המאוחדות</string>
-  <string name="folder_settings_include_in_integrated_inbox_label">לאחד</string>
-  <string name="folder_settings_include_in_integrated_inbox_summary">כל ההדועות מוצגות בתיבת דואר נכנס אחידה</string>
-  <string name="account_settings_searchable_label">תיקיות לחיפוש</string>
-  <string name="account_settings_searchable_all">הכל</string>
-  <string name="account_settings_searchable_displayable">ניתנות להצגה</string>
-  <string name="account_settings_searchable_none">כלום</string>
-  <string name="account_settings_no_folder_selected">כלום</string>
-  <string name="font_size_settings_title">גודל גופן</string>
-  <string name="font_size_settings_description">הגדר גודל גופן</string>
-  <string name="font_size_message_list">רשימת הודעות</string>
-  <string name="font_size_message_list_subject">נושא</string>
-  <string name="font_size_message_list_sender">שולח</string>
-  <string name="font_size_message_list_date">תאריך</string>
-  <string name="font_size_message_list_preview">תצוגה מקדימה</string>
-  <string name="font_size_message_view">הודעות</string>
-  <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
-  <string name="font_size_message_view_account">שם חשבון</string>
-  <string name="font_size_message_view_sender">שולח</string>
-  <string name="font_size_message_view_subject">כותרת</string>
-  <string name="font_size_message_view_date">שעה ותאריך</string>
-  <string name="font_size_message_view_content">גוף ההודעה</string>
-  <string name="font_size_default">ברירת מחדל</string>
-  <string name="font_size_tiniest">הזעיר ביותר</string>
-  <string name="font_size_tiny">זעיר</string>
-  <string name="font_size_smaller">קטן יותר</string>
-  <string name="font_size_small">קטן</string>
-  <string name="font_size_medium">בינוני</string>
-  <string name="font_size_large">גדול</string>
-  <string name="font_size_larger">ענק</string>
-  <string name="error_activity_not_found">לא נמצא ישום שיכול לבצע פעולה זו.</string>
-  <string name="save_or_discard_draft_message_dlg_title">לשמור הודעה כטיוטה?</string>
-  <string name="save_or_discard_draft_message_instructions_fmt">לשמור או להשליך הודעה זו?</string>
-  <string name="save_or_discard_draft_message_changes">לשמור או לבטל שינויים?</string>
-  <string name="confirm_discard_draft_message_title">להשליך את ההודעה?</string>
-  <string name="dialog_confirm_delete_title">אשר מחיקה</string>
-  <string name="dialog_confirm_delete_message">אתה בטוח שאתה רוצה למחוק את ההודעה הזאת?</string>
-  <string name="dialog_confirm_delete_confirm_button">מחק</string>
-  <string name="dialog_confirm_delete_cancel_button">אל תמחק!</string>
-  <string name="dialog_confirm_mark_all_as_read_confirm_button">כן</string>
-  <string name="dialog_confirm_mark_all_as_read_cancel_button">לא</string>
-  <string name="dialog_confirm_spam_title">אשר העברה לתיקיית דואר זבל</string>
-  <plurals name="dialog_confirm_spam_message">
-    <item quantity="one">אתה בטוח שאתה רוצה להעביר את ההודעות האלו לתיקיית דואר הזבל?</item>
-    <item quantity="two">אתה בטוח שאתה רוצה להעביר <xliff:g id="message_count">%1$d</xliff:g> הודעות לתיקיית דואר הזבל?</item>
-    <item quantity="many">אתה בטוח שאתה רוצה להעביר <xliff:g id="message_count">%1$d</xliff:g> הודעות לתיקיית דואר הזבל?</item>
-    <item quantity="other">אתה בטוח שאתה רוצה להעביר <xliff:g id="message_count">%1$d</xliff:g> הודעות לתיקיית דואר הזבל?</item>
-  </plurals>
-  <string name="dialog_confirm_spam_confirm_button">כן</string>
-  <string name="dialog_confirm_spam_cancel_button">לא</string>
-  <string name="dialog_attachment_progress_title">מוריד קבצים</string>
-  <string name="settings_list_miscellaneous_category">שונות</string>
-  <string name="settings_export_button">יצא</string>
-  <string name="settings_export_share_button">שתף</string>
-  <string name="settings_export_progress_text">מייצא הגדרות…</string>
-  <string name="settings_export_failure">נכשל בייצוא הגדרות</string>
-  <string name="settings_import_title">יבא הגדרות</string>
-  <string name="settings_import_pick_document_button">בחר קובץ</string>
-  <string name="settings_import_button">יבא</string>
-  <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-  <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-  <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-  <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-  <string name="settings_import_later_button">מאוחר יותר</string>
-  <string name="settings_import">יבא הגדרות</string>
-  <string name="settings_importing">מייבא הגדרות…</string>
-  <string name="unread_widget_account_title">חשבון</string>
-  <string name="unread_widget_folder_title">תיקייה</string>
-  <string name="webview_contextmenu_link_view_action">פתח קישור</string>
-  <string name="webview_contextmenu_link_share_action">שתף קישור</string>
-  <string name="webview_contextmenu_link_clipboard_label">קישור</string>
-  <string name="webview_contextmenu_image_title">תמונה</string>
-  <string name="webview_contextmenu_image_view_action">הצג תמונה</string>
-  <string name="webview_contextmenu_image_save_action">שמור תמונה</string>
-  <string name="webview_contextmenu_image_download_action">הורד תמונה</string>
-  <string name="webview_contextmenu_phone_copy_action">העתק מספר ללוח</string>
-  <string name="webview_contextmenu_email_clipboard_label">כתובת דוא\"ל</string>
-  <string name="account_settings_remote_search_num_results_entries_all">הכל</string>
-  <string name="account_settings_search">חפש</string>
-  <string name="global_settings_splitview_always">תמיד</string>
-  <string name="global_settings_splitview_never">אף פעם</string>
-  <!--=== Client certificates specific ==================================================================-->
-  <!--Note: This references message_view_download_remainder-->
-  <string name="recipient_cc">עותק</string>
-  <string name="recipient_bcc">עותק מוסתר</string>
-  <string name="recipient_to">ל</string>
-  <string name="address_type_other">אחר</string>
-  <string name="address_type_mobile">סלולרי</string>
-  <string name="crypto_info_ok">אישור</string>
-  <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
-  <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
-  <string name="general_settings_title">הגדרות כלליות</string>
-  <!--permissions-->
-  <!--Name of the swipe action to select a message. Try to keep it short.-->
-  <string name="swipe_action_select">בחר</string>
-  <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-  <string name="swipe_action_deselect">בטל בחירה</string>
-  <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-  <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-  <string name="swipe_action_mark_as_unread">סמן כלא נקרא</string>
-  <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-  <string name="swipe_action_add_star">הוסף כוכב</string>
-  <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-  <string name="swipe_action_remove_star">מחק כוכב</string>
-  <!--Name of the swipe action to archive a message. Try to keep it short.-->
-  <string name="swipe_action_archive">העבר לארכיון</string>
-  <!--Name of the swipe action to delete a message. Try to keep it short.-->
-  <string name="swipe_action_delete">מחק</string>
-  <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-  <string name="swipe_action_spam">דואר זבל</string>
-  <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-  <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
-  <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
-  <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
-  <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
-  <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
-  <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
-  <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
-  <string name="message_details_sender_section_title">שולח</string>
-  <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
-  <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
-  <string name="message_details_to_section_title">ל</string>
-  <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
-  <string name="message_details_cc_section_title">עותק</string>
-  <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
-  <string name="message_details_bcc_section_title">עותק מוסתר</string>
-  <!--Displayed when loading the message details has failed-->
-  <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-  <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-  <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-  <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-  <!--A user visible label for the email address copied to the clipboard-->
-  <string name="clipboard_label_email_address">כתובת דוא\"ל</string>
-  <!--A user visible label for the name and email address copied to the clipboard-->
-  <!--Might be displayed in a notification when deleting an account (in the background)-->
-  <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+    <string name="debug_export_logs_failure">ייצוא נכשל.</string>
+    <string name="message_list_load_more_messages_action">טען עוד הודעות</string>
+    <string name="message_to_fmt">ל:<xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_compose_subject_hint">נושא</string>
+    <string name="message_compose_content_hint">הודעת טקסט</string>
+    <string name="message_compose_signature_hint">חתימה</string>
+    <string name="message_compose_quote_header_separator">-------- ההודעה המקורית --------</string>
+    <string name="message_compose_quote_header_subject">נושא:</string>
+    <string name="message_compose_quote_header_send_date">נשלח:</string>
+    <string name="message_compose_quote_header_from">מ:</string>
+    <string name="message_compose_quote_header_to">ל:</string>
+    <string name="message_compose_quote_header_cc">Cc:</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> כתב:</string>
+    <string name="message_compose_reply_header_fmt_with_date">ב <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> כתב:</string>
+    <string name="message_compose_error_no_recipients">עליך להוסיף לפחות נמען אחד.</string>
+    <string name="error_contact_address_not_found">לא ניתן למצוא כתובת דוא\"ל.</string>
+    <string name="message_compose_attachments_skipped_toast">קבצים מסוימים אינם ניתנים להעברה בגלל שהם לא הורדו.</string>
+    <string name="message_compose_attachments_forward_toast">לא ניתן להעביר את ההודעה כי חלק מהקבצים המצורפים לא הורדו.</string>
+    <string name="message_compose_description_delete_quoted_text">מחק טקסט מצוטט</string>
+    <string name="message_compose_description_edit_quoted_text">ערוך טקסט מצוטט</string>
+    <string name="remove_attachment_action">מחק קובץ מצורף</string>
+    <string name="message_to_label">ל:</string>
+    <string name="message_view_cc_label">עותק:</string>
+    <!--Used to display the recipient list in the message view screen.-->
+    <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+    <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+    <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+    <string name="message_view_no_viewer">לא ניתן למצוא את מציג בשביל <xliff:g id="mimetype">%s</xliff:g>.</string>
+    <string name="message_view_download_remainder">הורד את ההודעה המלאה</string>
+    <string name="message_view_sender_label">באמצעות %1$s</string>
+    <string name="from_same_sender">עוד מהשולח הזה</string>
+    <string name="message_discarded_toast">ההודעה נמחקה</string>
+    <string name="message_saved_toast">ההודעה נשמרה כטיוטה</string>
+    <string name="global_settings_flag_label">הצג כוכבים</string>
+    <string name="global_settings_flag_summary">הכוכבים מצביעים על ההודעות המסומנות</string>
+    <string name="global_settings_preview_lines_label">קווי תצוגה מקדימה</string>
+    <string name="global_settings_show_correspondent_names_label">הצג שמות תואמים</string>
+    <string name="global_settings_show_correspondent_names_summary">הצג שמות תואמים במקום כתובות הדוא\"ל שלהם</string>
+    <string name="global_settings_show_contact_name_label">הצג שמות אנשי קשר</string>
+    <string name="global_settings_show_contact_name_summary">השתמש בשמות נמענים מתוך אנשי הקשר שלך כאשר זמין</string>
+    <string name="global_settings_registered_name_color_label">לצבוע את אנשי הקשר</string>
+    <string name="global_settings_registered_name_color_changed">צבע שמות ברשימת אנשי הקשר שלך</string>
+    <string name="global_settings_messageview_fixedwidth_label">גופנים ברוחב קבוע</string>
+    <string name="global_settings_messageview_fixedwidth_summary">השתמש בגופן ברוחב קבוע בעת הצגת הודעות טקסט רגילות</string>
+    <string name="global_settings_confirm_actions_title">אישור פעולות</string>
+    <string name="global_settings_confirm_actions_summary">הצג דו שיח בכל פעם שאתה מבצע את פעולות הנבחרות</string>
+    <string name="global_settings_confirm_action_delete">מחק</string>
+    <string name="global_settings_confirm_action_delete_starred">מחק הודעות שמסומנות בכוכב (בתצוגת הודעה)</string>
+    <string name="global_settings_confirm_action_spam">דואר זבל</string>
+    <string name="global_settings_confirm_menu_discard">מחק הודעה</string>
+    <string name="global_settings_confirm_menu_mark_all_read">סמן את כל ההודעות כ\"נקראו\"</string>
+    <!--Title of the screen to configure swipe actions-->
+    <!--Name of the setting to configure the right swipe action-->
+    <!--Name of the setting to configure the left swipe action-->
+    <!--The list item users select to not use a swipe action for a particular direction-->
+    <string name="general_settings_swipe_action_none">כלום</string>
+    <!--Name of the swipe action to select/deselect a message-->
+    <!--Name of the swipe action to mark as message as read/unread-->
+    <!--Name of the swipe action to add/remove a star-->
+    <!--Name of the swipe action to archive a message-->
+    <string name="general_settings_swipe_action_archive">העבר לארכיון</string>
+    <!--Name of the swipe action to delete a message-->
+    <string name="general_settings_swipe_action_delete">מחק</string>
+    <!--Name of the swipe action to move a message to the spam folder-->
+    <string name="general_settings_swipe_action_spam">דואר זבל</string>
+    <!--Name of the swipe action to move a message to another folder-->
+    <string name="general_settings_swipe_action_move">העבר</string>
+    <!--Title of the setting to specify the density of the message list-->
+    <string name="general_settings_ui_density_default">ברירת מחדל</string>
+    <string name="global_settings_privacy_hide_timezone">הסתר איזור זמן</string>
+    <string name="global_settings_notification_quick_delete_title">הצג את הכפתור \'מחק\'</string>
+    <string name="global_settings_notification_quick_delete_never">אף פעם</string>
+    <string name="global_settings_notification_quick_delete_always">תמיד</string>
+    <string name="global_settings_lock_screen_notification_visibility_title">התראות מסך נעילה</string>
+    <string name="quiet_time">שעות שקט</string>
+    <string name="quiet_time_description">השבת צלצול, זמזום והבהוב בלילה</string>
+    <string name="quiet_time_notification">בטל התראות</string>
+    <string name="quiet_time_starts">התחלת שעות שקט</string>
+    <string name="quiet_time_ends">סוף זמן שקט</string>
+    <string name="account_setup_basics_title">הגדר חשבון חדש</string>
+    <string name="account_setup_basics_email_hint">כתובת דוא\"ל</string>
+    <string name="account_setup_basics_password_hint">סיסמא</string>
+    <!--Displayed below the 'account_setup_oauth_description' text-->
+    <!--Displayed below the 'account_setup_oauth_description' text-->
+    <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+    <string name="account_setup_basics_show_password_biometrics_title">אמת את זהותך</string>
+    <string name="account_setup_basics_manual_setup_action">הוראות הגדרה</string>
+    <string name="account_setup_check_settings_title" />
+    <string name="account_setup_check_settings_retr_info_msg">מאחזר מידע חשבון …</string>
+    <string name="account_setup_check_settings_check_incoming_msg">בדיקת הגדרות שרת הדואר הנכנס …</string>
+    <string name="account_setup_check_settings_check_outgoing_msg">בדיקת הגדרות שרת הדואר היוצא …</string>
+    <string name="account_setup_check_settings_authenticate">מאמת …</string>
+    <string name="account_setup_check_settings_fetch">מייבא הגדרות החשבון …</string>
+    <string name="account_setup_check_settings_canceling_msg">מבטל…</string>
+    <string name="account_setup_account_type_title">סוג חשבון</string>
+    <string name="account_setup_account_type_instructions">איזה סוג חשבון זה?</string>
+    <string name="account_setup_account_type_pop_action">POP3</string>
+    <string name="account_setup_account_type_imap_action">IMAP</string>
+    <string name="account_setup_auth_type_tls_client_certificate">תעודת לקוח</string>
+    <string name="account_setup_incoming_title">הגדרות שרת דואר נכנס</string>
+    <string name="account_setup_incoming_username_label">שם משתמש</string>
+    <string name="account_setup_incoming_password_label">סיסמא</string>
+    <string name="account_setup_incoming_client_certificate_label">תעודת לקוח</string>
+    <string name="account_setup_incoming_pop_server_label">שרת POP3</string>
+    <string name="account_setup_incoming_imap_server_label">שרת IMAP</string>
+    <string name="account_setup_incoming_port_label">Port</string>
+    <string name="account_setup_incoming_security_label">סוג אבטחה</string>
+    <string name="account_setup_incoming_auth_type_label">הזדהות</string>
+    <string name="account_setup_incoming_security_none_label">כלום</string>
+    <string name="account_setup_incoming_delete_policy_label">כאשר אני מוחק הודעה</string>
+    <string name="account_setup_incoming_delete_policy_never_label">אל תמחוק בשרת</string>
+    <string name="account_setup_incoming_delete_policy_delete_label">מחק מהשרת</string>
+    <string name="account_setup_incoming_delete_policy_markread_label">סמן כנקרא בשרת</string>
+    <string name="account_setup_expunge_policy_label">למחוק הודעות שנמחקו</string>
+    <string name="account_setup_expunge_policy_immediately">מיד</string>
+    <string name="account_setup_expunge_policy_on_poll">When polling</string>
+    <string name="account_setup_expunge_policy_manual">רק באופן ידני</string>
+    <string name="drafts_folder_label">תיקיית טיוטות</string>
+    <string name="sent_folder_label">תיקיית הודעות שנשלחו</string>
+    <string name="trash_folder_label">תיקיית אשפה</string>
+    <string name="archive_folder_label">תיקיית ארכיון</string>
+    <string name="spam_folder_label">תיקיית דואר זבל</string>
+    <string name="account_setup_incoming_subscribed_folders_only_label">הצג רק תיקיות רשומות</string>
+    <string name="account_setup_auto_expand_folder">הרחב את התיקייה אוטומטית</string>
+    <string name="account_setup_outgoing_title">הגדרות שרת דואר יוצא</string>
+    <string name="account_setup_outgoing_smtp_server_label">שרת SMTP</string>
+    <string name="account_setup_outgoing_port_label">Port</string>
+    <string name="account_setup_outgoing_security_label">סוג אבטחה</string>
+    <string name="account_setup_outgoing_require_login_label">דרוש הרשמה.</string>
+    <string name="account_setup_outgoing_username_label">שם משתמש</string>
+    <string name="account_setup_outgoing_password_label">סיסמא</string>
+    <string name="account_setup_outgoing_authentication_label">סו אימות</string>
+    <string name="account_setup_bad_uri">הגדרה לא חוקית: <xliff:g id="err_mess">%s</xliff:g></string>
+    <string name="account_setup_options_mail_check_frequency_never">אפ פעם</string>
+    <string name="account_setup_options_mail_check_frequency_15min">כל רבע שעה</string>
+    <string name="account_setup_options_mail_check_frequency_30min">כל 30 דקות</string>
+    <string name="account_setup_options_mail_check_frequency_1hour">כל שעה</string>
+    <string name="account_setup_options_mail_check_frequency_2hour">כל שעתיים</string>
+    <string name="account_setup_options_mail_check_frequency_3hour">כל 3 שעות</string>
+    <string name="account_setup_options_mail_check_frequency_6hour">כל 6 שעות</string>
+    <string name="account_setup_options_mail_check_frequency_12hour">כל 12 שעות</string>
+    <string name="account_setup_options_mail_check_frequency_24hour">כל 24 שעות</string>
+    <string name="idle_refresh_period_label">רענן חיבור IDLE</string>
+    <string name="idle_refresh_period_2min">כל 2 דקות</string>
+    <string name="idle_refresh_period_3min">כל 3 דקות</string>
+    <string name="idle_refresh_period_6min">כל 6 דקות</string>
+    <string name="idle_refresh_period_12min">כל 12 דקות</string>
+    <string name="idle_refresh_period_24min">כל 24 דקות</string>
+    <string name="idle_refresh_period_36min">כל 36 דקות</string>
+    <string name="idle_refresh_period_48min">כל 48 דקות</string>
+    <string name="idle_refresh_period_60min">כל 60 דקות</string>
+    <string name="account_setup_options_mail_display_count_label">מספר הודעות להצגה</string>
+    <string name="account_setup_options_mail_display_count_10">10 הודעות</string>
+    <string name="account_setup_options_mail_display_count_25">25 הודעות</string>
+    <string name="account_setup_options_mail_display_count_50">50 הודעות</string>
+    <string name="account_setup_options_mail_display_count_100">100 הודעות</string>
+    <string name="account_setup_options_mail_display_count_250">250 הודעות</string>
+    <string name="account_setup_options_mail_display_count_500">500 הודעות</string>
+    <string name="account_setup_options_mail_display_count_1000">1000 הודעות</string>
+    <string name="account_setup_options_mail_display_count_2500">2500 הודעות</string>
+    <string name="account_setup_options_mail_display_count_5000">5000 הודעות</string>
+    <string name="account_setup_options_mail_display_count_10000">10000 הודעות</string>
+    <string name="account_setup_options_mail_display_count_all">כל ההודעות</string>
+    <string name="move_copy_cannot_copy_unsynced_message">לא ניתן להעתיק או להעביר הודעה שלא מסונכרנת עם השרת</string>
+    <string name="account_setup_failed_dlg_title">ההגדרה לא הסתיימה</string>
+    <string name="account_setup_failed_dlg_edit_details_action">ערוך פרטים</string>
+    <string name="account_setup_failed_dlg_continue_action">המשך</string>
+    <string name="account_settings_push_advanced_title">מתקדם</string>
+    <string name="account_settings_title_fmt">הגדרות חשבון</string>
+    <string name="account_settings_notify_label">התראות על הודעה חדשה</string>
+    <string name="account_settings_folder_notify_new_mail_mode_all">הכל</string>
+    <string name="account_settings_folder_notify_new_mail_mode_none">כלום</string>
+    <string name="account_settings_notify_sync_label">סינכרון התראות</string>
+    <string name="account_settings_email_label">כתובת הדוא\"ל שלך</string>
+    <string name="account_settings_notify_summary">נא הודע לי בשורת מצב כאשר מגיע דואר</string>
+    <string name="account_settings_notify_sync_summary">נא הודע לי בשורת המצב בזמן שהדואר נבדק</string>
+    <string name="account_settings_notify_self_label">כלול את הדואר היוצא</string>
+    <string name="account_settings_notify_self_summary">הצג התראה להודעות ששלחתי</string>
+    <string name="account_notify_contacts_mail_only_label">אנשי קשר בלבד</string>
+    <string name="account_settings_ignore_chat_messages_label">התעלם מהודעות צ\'אט</string>
+    <string name="account_settings_show_pictures_label">תמיד הצג תמונות</string>
+    <string name="account_settings_show_pictures_never">לא</string>
+    <string name="account_settings_show_pictures_only_from_contacts">מאנשי הקשר</string>
+    <string name="account_settings_show_pictures_always">מכל אחד</string>
+    <string name="account_settings_composition">שולח דואר</string>
+    <string name="account_settings_default_quoted_text_shown_label">צטט את ההודעה המקורית במענה</string>
+    <string name="account_settings_default_quoted_text_shown_summary">במענה להודעות, ההודעה המקורית תוצג בתגובה שלך.</string>
+    <string name="account_settings_reply_after_quote_label">השב לאחר הטקסט המצוטט</string>
+    <string name="account_settings_reply_after_quote_summary">במענה להודעות, ההודעה המקורית תופיע מעל התגובה שלך.</string>
+    <string name="account_settings_message_format_label">עיצוב הודעה</string>
+    <string name="account_settings_message_format_text">טקסט רגיל (תמונות ועיצובים יוסרו)</string>
+    <string name="account_settings_message_format_html">HTML (תמונות ועיצוב נשמרים)</string>
+    <string name="account_settings_message_read_receipt_label">אישור קריאה</string>
+    <string name="account_settings_message_read_receipt_summary">תמיד בקש אישור קריאה</string>
+    <string name="account_settings_quote_style_label">השב סגנון ציטוט</string>
+    <string name="account_settings_quote_style_prefix">קידומת (כגון Gmail, Pine)</string>
+    <string name="account_settings_quote_style_header">כותרת (כמו Yahoo! Outlook, Hotmail)</string>
+    <string name="account_settings_general_title">הגדרות כלליות</string>
+    <string name="account_settings_sync">שולף דואר</string>
+    <string name="account_settings_folders">תיקיות</string>
+    <string name="account_settings_quote_prefix_label">קידומת טקסט מצוטט</string>
+    <string name="account_settings_crypto_summary_on">מחובר ל %s</string>
+    <string name="account_settings_crypto_encrypt_all_drafts">שמור טיוטות באופן מוצפנת</string>
+    <string name="account_settings_crypto_encrypt_all_drafts_on">כל הטיוטות יישמרו באופן מוצפן</string>
+    <string name="account_settings_color_label">צבע חשבון</string>
+    <string name="account_settings_color_summary">בחר את הצבע של החשבון המשומש בתיקייה וברשימת החשבונות</string>
+    <string name="account_settings_mail_display_count_label">גודל תיקיה מקומית</string>
+    <string name="account_settings_autodownload_message_size_label">להביא הודעות בנפח של עד</string>
+    <string name="account_settings_autodownload_message_size_any">כל גודל(ללא הגבלה)</string>
+    <string name="account_settings_message_age_label">סנכרון הודעות מ</string>
+    <string name="account_settings_message_age_any">כל זמן (ללא הגבלה)</string>
+    <string name="account_settings_message_age_0">היום</string>
+    <string name="account_settings_message_age_1">מ 2 הימים האחרונים</string>
+    <string name="account_settings_message_age_2">מ 3 הימים האחרונים</string>
+    <string name="account_settings_message_age_7">מהשבוע האחרון</string>
+    <string name="account_settings_message_age_14">מהשבועיים האחרונים</string>
+    <string name="account_settings_message_age_21">מה 3 שבועות האחרונים</string>
+    <string name="account_settings_message_age_1_month">מהחודש האחרון</string>
+    <string name="account_settings_message_age_2_months">מהחודשיים האחרונים</string>
+    <string name="account_settings_message_age_3_months">מה 3 חודשים האחרונים</string>
+    <string name="account_settings_message_age_6_months">מהחצי שנה האחרונה</string>
+    <string name="account_settings_message_age_1_year">מהשנה האחרונה</string>
+    <string name="account_settings_folder_display_mode_label">תיקיות להצגה</string>
+    <string name="account_settings_folder_display_mode_all">הכל</string>
+    <string name="account_settings_folder_sync_mode_all">הכל</string>
+    <string name="account_settings_folder_sync_mode_none">כלום</string>
+    <string name="account_settings_folder_push_mode_label">דחף תיקיות</string>
+    <string name="account_settings_folder_push_mode_all">הכל</string>
+    <string name="account_settings_folder_push_mode_none">כלום</string>
+    <string name="account_settings_folder_target_mode_label">להעביר / להעתיק תיקיית יעד</string>
+    <string name="account_settings_folder_target_mode_all">הכל</string>
+    <string name="account_settings_sync_remote_deletetions_label">לסנכרן מחיקות שרת</string>
+    <string name="account_settings_sync_remote_deletetions_summary">הסר הודעות כאשר נמחק בשרת</string>
+    <string name="folder_settings_title">הגדרות תיקייה</string>
+    <string name="folder_settings_in_top_group_label">הצג בקבוצה העליונה</string>
+    <string name="folder_settings_in_top_group_summary">הצג בחלק העליון של רשימת התיקיות</string>
+    <string name="folder_settings_folder_sync_mode_normal">כלום</string>
+    <string name="folder_settings_clear_local_folder_action">נקה הודעות מקומיות</string>
+    <string name="account_settings_incoming_label">שרת הודעות נכנסות</string>
+    <string name="account_settings_incoming_summary">הגדר את שרת הדואר הנכנס</string>
+    <string name="account_settings_outgoing_label">שרת דואר יוצא</string>
+    <string name="account_settings_outgoing_summary">הגדר את שרת הדואר היוצא (SMTP) </string>
+    <string name="account_settings_description_label">שם חשבון</string>
+    <string name="account_settings_name_label">השם שלך</string>
+    <string name="notifications_title">התראות</string>
+    <string name="account_settings_vibration">רטט</string>
+    <string name="account_settings_vibrate_enable">רטט</string>
+    <string name="account_settings_vibrate_pattern_default">ברירת מחדל</string>
+    <string name="account_settings_vibrate_times">חזור על הרטט</string>
+    <string name="account_settings_vibrate_summary_disabled">מבוטל</string>
+    <string name="account_settings_ringtone">רינגטון מייל חדש</string>
+    <string name="account_settings_notification_light_label">נורית התראות</string>
+    <string name="account_settings_notification_light_disabled">מבוטל</string>
+    <string name="account_settings_notification_light_account_color">צבע חשבון</string>
+    <string name="account_settings_notification_light_default_color">צבע ברירת מחדל של המערכת</string>
+    <string name="account_settings_notification_light_white">לבן</string>
+    <string name="account_settings_notification_light_red">אדום</string>
+    <string name="account_settings_notification_light_green">ירוק</string>
+    <string name="account_settings_notification_light_blue">כחול</string>
+    <string name="account_settings_notification_light_yellow">צהוב</string>
+    <string name="account_settings_composition_title">אפשרויות הרכב הודעה</string>
+    <string name="account_settings_composition_label">הרכב ברירת המחדל</string>
+    <string name="account_settings_composition_summary">הגדר את ברירת המחדל שלך מ, עותק מוסתר וחתימה</string>
+    <string name="account_settings_identities_label">ניהול זהויות</string>
+    <string name="account_settings_identities_summary">הגדרה חלופית \' מ  \'כתובות וחתימות </string>
+    <string name="manage_identities_title">נהל זהויות</string>
+    <string name="manage_identities_context_menu_title">נהל זהות</string>
+    <string name="edit_identity_title">ערוך זהות</string>
+    <string name="edit_identity_save">שמור</string>
+    <string name="new_identity_action">זהות חדשה</string>
+    <string name="account_settings_always_bcc_label">עותק מוסתר לכל ההודעות אל</string>
+    <string name="manage_identities_edit_action">ערוך</string>
+    <string name="manage_identities_move_up_action">העבר למעלה</string>
+    <string name="manage_identities_move_down_action">העבר למטה</string>
+    <string name="manage_identities_move_top_action">העבר למעלה / להפוך לברירת המחדל</string>
+    <string name="manage_identities_remove_action">מחק</string>
+    <string name="edit_identity_description_label">תיאור זהות</string>
+    <string name="edit_identity_description_hint">(לא חובה)</string>
+    <string name="edit_identity_name_label">השם שלך</string>
+    <string name="edit_identity_name_hint">(לא חובה)</string>
+    <string name="edit_identity_email_label">כתובת דוא\"ל</string>
+    <string name="edit_identity_email_hint">(חובה)</string>
+    <string name="edit_identity_reply_to_label">כתובת דוא\"ל למענה</string>
+    <string name="edit_identity_reply_to_hint">(לא חובה)</string>
+    <string name="edit_identity_signature_label">חתימה</string>
+    <string name="edit_identity_signature_hint">(לא חובה)</string>
+    <string name="account_settings_signature_use_label">השתמש בחתימה</string>
+    <string name="account_settings_signature_label">חתימה</string>
+    <string name="default_identity_description">הזהות הראשונית</string>
+    <string name="choose_identity_title">בחר זהות</string>
+    <string name="send_as">שלח כ</string>
+    <string name="no_removable_identity">לא ניתן להסיר את הזהות היחידה שלך</string>
+    <string name="identity_has_no_email">אתה לא יכול להשתמש בזהות ללא כתובת דואר אלקטרוני</string>
+    <string name="sort_earliest_first">הודעות קודמות ראשונות</string>
+    <string name="sort_latest_first">הודעות אחרונות ראשונות</string>
+    <string name="sort_subject_alpha">נושא אלפביתי</string>
+    <string name="sort_subject_re_alpha">נושא אלפביתי הפוך</string>
+    <string name="sort_flagged_first">הודעות שמסומנות בכוכב ראשונות</string>
+    <string name="sort_flagged_last">הודעות שלא מסומנות בכוכב ראשונות</string>
+    <string name="sort_unread_first">הודעות שלא נקראו ראשונות</string>
+    <string name="sort_unread_last">הודעות שנקראו ראשונות</string>
+    <string name="sort_attach_first">הודעות עם קבצים מצורפים ראשונות</string>
+    <string name="sort_unattached_first">הודעות בלי קבצים מצורפים ראשונות</string>
+    <string name="sort_by">מיון לפי …</string>
+    <string name="sort_by_date">תאריך</string>
+    <string name="sort_by_subject">נושא</string>
+    <string name="sort_by_sender">שולח</string>
+    <string name="sort_by_flag">כוכב</string>
+    <string name="sort_by_unread">נקרא/לא נקרא</string>
+    <string name="sort_by_attach">קבצים מצורפים</string>
+    <string name="account_delete_dlg_title">מחק חשבון</string>
+    <string name="account_setup_failed_dlg_invalid_certificate_title">תעודה לא מזוהה</string>
+    <string name="account_setup_failed_dlg_invalid_certificate_accept">קבל מפתח</string>
+    <string name="account_setup_failed_dlg_invalid_certificate_reject">דחה מפתח</string>
+    <string name="folder_list_display_mode_label">תיקיות</string>
+    <string name="folder_list_display_mode_all">הצג את כל התיקיות</string>
+    <string name="account_settings_signature__location_label">מיקום חתימה</string>
+    <string name="account_settings_signature__location_before_quoted_text">לפני טקסט מצוטט</string>
+    <string name="account_settings_signature__location_after_quoted_text">אחרי טקסט מצוטט</string>
+    <string name="setting_theme_dark">חשוך</string>
+    <string name="setting_theme_light">בהיר</string>
+    <string name="display_preferences">תצוגה</string>
+    <string name="global_preferences">כללי</string>
+    <string name="debug_preferences">איתור באגים</string>
+    <string name="privacy_preferences">פרטיות</string>
+    <string name="network_preferences">רשת</string>
+    <string name="accountlist_preferences">רשימת חשבונות</string>
+    <string name="messagelist_preferences">רשימת הודעות</string>
+    <string name="messageview_preferences">הודעות</string>
+    <string name="settings_theme_label">ערכת נושא</string>
+    <string name="settings_language_label">שפה</string>
+    <string name="setting_language_system">ברירות מחדל מערכת</string>
+    <string name="background_ops_label">סנכרון ברקע</string>
+    <string name="background_ops_never">אף פעם</string>
+    <string name="background_ops_always">תמיד</string>
+    <string name="batch_select_all">בחר הכל</string>
+    <string name="account_setup_push_limit_label">מקסימום תיקיות כדי לבדוק עם דחיפה</string>
+    <string name="account_setup_push_limit_5">5 תיקיות</string>
+    <string name="account_setup_push_limit_10">10 תיקיות</string>
+    <string name="account_setup_push_limit_25">25 תיקיות</string>
+    <string name="account_setup_push_limit_50">50 תיקיות</string>
+    <string name="account_setup_push_limit_100">100 תיקיות</string>
+    <string name="account_setup_push_limit_250">250 תיקיות</string>
+    <string name="account_setup_push_limit_500">500 תיקיות</string>
+    <string name="account_setup_push_limit_1000">1000 תיקיות</string>
+    <string name="animations_title">אנימציה</string>
+    <string name="animations_summary">השתמש באפקטים חזותיים ססגונים</string>
+    <string name="integrated_inbox_title">תיבת דואר נכנס אחידה</string>
+    <string name="integrated_inbox_detail">כל ההודעות בתיקיות המאוחדות</string>
+    <string name="folder_settings_include_in_integrated_inbox_label">לאחד</string>
+    <string name="folder_settings_include_in_integrated_inbox_summary">כל ההדועות מוצגות בתיבת דואר נכנס אחידה</string>
+    <string name="account_settings_searchable_label">תיקיות לחיפוש</string>
+    <string name="account_settings_searchable_all">הכל</string>
+    <string name="account_settings_searchable_displayable">ניתנות להצגה</string>
+    <string name="account_settings_searchable_none">כלום</string>
+    <string name="account_settings_no_folder_selected">כלום</string>
+    <string name="font_size_settings_title">גודל גופן</string>
+    <string name="font_size_settings_description">הגדר גודל גופן</string>
+    <string name="font_size_message_list">רשימת הודעות</string>
+    <string name="font_size_message_list_subject">נושא</string>
+    <string name="font_size_message_list_sender">שולח</string>
+    <string name="font_size_message_list_date">תאריך</string>
+    <string name="font_size_message_list_preview">תצוגה מקדימה</string>
+    <string name="font_size_message_view">הודעות</string>
+    <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+    <string name="font_size_message_view_account">שם חשבון</string>
+    <string name="font_size_message_view_sender">שולח</string>
+    <string name="font_size_message_view_subject">כותרת</string>
+    <string name="font_size_message_view_date">שעה ותאריך</string>
+    <string name="font_size_message_view_content">גוף ההודעה</string>
+    <string name="font_size_default">ברירת מחדל</string>
+    <string name="font_size_tiniest">הזעיר ביותר</string>
+    <string name="font_size_tiny">זעיר</string>
+    <string name="font_size_smaller">קטן יותר</string>
+    <string name="font_size_small">קטן</string>
+    <string name="font_size_medium">בינוני</string>
+    <string name="font_size_large">גדול</string>
+    <string name="font_size_larger">ענק</string>
+    <string name="error_activity_not_found">לא נמצא ישום שיכול לבצע פעולה זו.</string>
+    <string name="save_or_discard_draft_message_dlg_title">לשמור הודעה כטיוטה?</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">לשמור או להשליך הודעה זו?</string>
+    <string name="save_or_discard_draft_message_changes">לשמור או לבטל שינויים?</string>
+    <string name="confirm_discard_draft_message_title">להשליך את ההודעה?</string>
+    <string name="dialog_confirm_delete_title">אשר מחיקה</string>
+    <string name="dialog_confirm_delete_message">אתה בטוח שאתה רוצה למחוק את ההודעה הזאת?</string>
+    <string name="dialog_confirm_delete_confirm_button">מחק</string>
+    <string name="dialog_confirm_delete_cancel_button">אל תמחק!</string>
+    <string name="dialog_confirm_mark_all_as_read_confirm_button">כן</string>
+    <string name="dialog_confirm_mark_all_as_read_cancel_button">לא</string>
+    <string name="dialog_confirm_spam_title">אשר העברה לתיקיית דואר זבל</string>
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">אתה בטוח שאתה רוצה להעביר את ההודעות האלו לתיקיית דואר הזבל?</item>
+        <item quantity="two">אתה בטוח שאתה רוצה להעביר <xliff:g id="message_count">%1$d</xliff:g> הודעות לתיקיית דואר הזבל?</item>
+        <item quantity="many">אתה בטוח שאתה רוצה להעביר <xliff:g id="message_count">%1$d</xliff:g> הודעות לתיקיית דואר הזבל?</item>
+        <item quantity="other">אתה בטוח שאתה רוצה להעביר <xliff:g id="message_count">%1$d</xliff:g> הודעות לתיקיית דואר הזבל?</item>
+    </plurals>
+    <string name="dialog_confirm_spam_confirm_button">כן</string>
+    <string name="dialog_confirm_spam_cancel_button">לא</string>
+    <string name="dialog_attachment_progress_title">מוריד קבצים</string>
+    <string name="settings_list_miscellaneous_category">שונות</string>
+    <string name="settings_export_button">יצא</string>
+    <string name="settings_export_share_button">שתף</string>
+    <string name="settings_export_progress_text">מייצא הגדרות…</string>
+    <string name="settings_export_failure">נכשל בייצוא הגדרות</string>
+    <string name="settings_import_title">יבא הגדרות</string>
+    <string name="settings_import_pick_document_button">בחר קובץ</string>
+    <string name="settings_import_button">יבא</string>
+    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="settings_import_later_button">מאוחר יותר</string>
+    <string name="settings_import">יבא הגדרות</string>
+    <string name="settings_importing">מייבא הגדרות…</string>
+    <string name="unread_widget_account_title">חשבון</string>
+    <string name="unread_widget_folder_title">תיקייה</string>
+    <string name="webview_contextmenu_link_view_action">פתח קישור</string>
+    <string name="webview_contextmenu_link_share_action">שתף קישור</string>
+    <string name="webview_contextmenu_link_clipboard_label">קישור</string>
+    <string name="webview_contextmenu_image_title">תמונה</string>
+    <string name="webview_contextmenu_image_view_action">הצג תמונה</string>
+    <string name="webview_contextmenu_image_save_action">שמור תמונה</string>
+    <string name="webview_contextmenu_image_download_action">הורד תמונה</string>
+    <string name="webview_contextmenu_phone_copy_action">העתק מספר ללוח</string>
+    <string name="webview_contextmenu_email_clipboard_label">כתובת דוא\"ל</string>
+    <string name="account_settings_remote_search_num_results_entries_all">הכל</string>
+    <string name="account_settings_search">חפש</string>
+    <string name="global_settings_splitview_always">תמיד</string>
+    <string name="global_settings_splitview_never">אף פעם</string>
+    <!--=== Client certificates specific ==================================================================-->
+    <!--Note: This references message_view_download_remainder-->
+    <string name="recipient_cc">עותק</string>
+    <string name="recipient_bcc">עותק מוסתר</string>
+    <string name="recipient_to">ל</string>
+    <string name="address_type_other">אחר</string>
+    <string name="address_type_mobile">סלולרי</string>
+    <string name="crypto_info_ok">אישור</string>
+    <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+    <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+    <string name="general_settings_title">הגדרות כלליות</string>
+    <!--permissions-->
+    <!--Name of the swipe action to select a message. Try to keep it short.-->
+    <string name="swipe_action_select">בחר</string>
+    <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+    <string name="swipe_action_deselect">בטל בחירה</string>
+    <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+    <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+    <string name="swipe_action_mark_as_unread">סמן כלא נקרא</string>
+    <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+    <string name="swipe_action_add_star">הוסף כוכב</string>
+    <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+    <string name="swipe_action_remove_star">מחק כוכב</string>
+    <!--Name of the swipe action to archive a message. Try to keep it short.-->
+    <string name="swipe_action_archive">העבר לארכיון</string>
+    <!--Name of the swipe action to delete a message. Try to keep it short.-->
+    <string name="swipe_action_delete">מחק</string>
+    <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+    <string name="swipe_action_spam">דואר זבל</string>
+    <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+    <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+    <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+    <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+    <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+    <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+    <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
+    <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
+    <string name="message_details_sender_section_title">שולח</string>
+    <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
+    <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
+    <string name="message_details_to_section_title">ל</string>
+    <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
+    <string name="message_details_cc_section_title">עותק</string>
+    <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
+    <string name="message_details_bcc_section_title">עותק מוסתר</string>
+    <!--Displayed when loading the message details has failed-->
+    <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    <!--A user visible label for the email address copied to the clipboard-->
+    <string name="clipboard_label_email_address">כתובת דוא\"ל</string>
+    <!--A user visible label for the name and email address copied to the clipboard-->
+    <!--Might be displayed in a notification when deleting an account (in the background)-->
+    <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
 </resources>

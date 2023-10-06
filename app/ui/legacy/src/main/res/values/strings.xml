@@ -43,7 +43,6 @@
     <string name="account_delete_dlg_instructions_fmt">The account \"<xliff:g id="account">%s</xliff:g>\" will be removed from K-9 Mail.</string>
 
 
-
     <!-- === General strings ================================================================== -->
 
     <string name="authors">Authors</string>
@@ -353,7 +352,7 @@
     <string name="account_setup_basics_show_password_biometrics_subtitle">Unlock to view your password</string>
     <string name="account_setup_basics_manual_setup_action">Manual setup</string>
 
-    <string name="account_setup_check_settings_title"/>
+    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_retr_info_msg">Retrieving account information\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Checking incoming server settings\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Checking outgoing server settings\u2026</string>
