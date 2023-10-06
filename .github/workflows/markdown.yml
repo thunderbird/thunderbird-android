@@ -1,0 +1,26 @@
+name: Markdown CI
+
+on:
+  pull_request:
+    paths:
+      - '**.md'
+      - '.github/workflows/markdown.yml'
+
+jobs:
+    markdown_quality:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+
+        - name: Copy CI gradle.properties
+          run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
+
+        - uses: actions/setup-java@v3
+          with:
+            distribution: temurin
+            java-version: 17
+
+        - uses: gradle/gradle-build-action@v2
+
+        - name: Quality - Spotless Markdown Check
+          run: ./gradlew spotlessMarkdownCheck
