@@ -62,11 +62,6 @@ class AboutFragment : Fragment() {
             openUrl(getString(R.string.fediverse_url))
         }
 
-        val twitterLayout = view.findViewById<View>(R.id.twitterLayout)
-        twitterLayout.setOnClickListener {
-            openUrl(getString(R.string.twitter_url))
-        }
-
         val manager = LinearLayoutManager(view.context)
         val librariesRecyclerView = view.findViewById<RecyclerView>(R.id.libraries)
         librariesRecyclerView.apply {
