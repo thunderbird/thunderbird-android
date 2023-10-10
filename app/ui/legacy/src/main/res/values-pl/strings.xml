@@ -293,7 +293,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
     <string name="account_setup_basics_show_password_biometrics_title">Zweryfikuj swoją tożsamość</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Odblokuj, aby zobaczyć swoje hasło</string>
     <string name="account_setup_basics_manual_setup_action">Ustaw ręcznie</string>
-    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_retr_info_msg">Pobieram informacje…</string>
     <string name="account_setup_check_settings_check_incoming_msg">Sprawdzam ustawienia serwera…</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Sprawdzam ustawienia serwera…</string>

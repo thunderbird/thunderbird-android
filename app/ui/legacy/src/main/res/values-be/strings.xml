@@ -293,7 +293,6 @@
     <string name="account_setup_basics_show_password_biometrics_title">Праверце свае ўліковыя даныя</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Разблакаваць, каб паглядзець пароль</string>
     <string name="account_setup_basics_manual_setup_action">Уласнаручна</string>
-    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_retr_info_msg">Атрыманне звестак\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Правяранне налад сервера ўваходнай пошты\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Правяранне налад сервера выходнай пошты\u2026</string>

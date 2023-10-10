@@ -293,7 +293,6 @@
     <string name="account_setup_basics_show_password_biometrics_title">Звірте свою особу</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Розблокуйте, щоб переглянути пароль</string>
     <string name="account_setup_basics_manual_setup_action">Ручне налаштування</string>
-    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_retr_info_msg">Отримання інформації про обліковий запис\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Перевірка налаштувань вхідного сервера\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Перевірка налаштувань вихідного сервера\u2026</string>

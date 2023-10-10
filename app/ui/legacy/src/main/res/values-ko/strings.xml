@@ -255,7 +255,6 @@
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
     <string name="account_setup_basics_manual_setup_action">수동 설정</string>
-    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_retr_info_msg">계정 정보 복구\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">수신 서버 설정 확인 중\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">발신 서버 설정 확인 중\u2026</string>

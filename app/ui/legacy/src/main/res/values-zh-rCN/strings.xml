@@ -286,7 +286,6 @@
     <string name="account_setup_basics_show_password_biometrics_title">验证你的身份</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">解锁查看你的密码</string>
     <string name="account_setup_basics_manual_setup_action">手工设置</string>
-    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_retr_info_msg">正在获取账户信息\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">正在检查收件服务器设置\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">正在检查发件服务器设置\u2026</string>

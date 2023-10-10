@@ -285,7 +285,6 @@
     <string name="account_setup_basics_show_password_biometrics_title">あなたの本人確認</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">ロック解除してあなたのパスワードを表示する</string>
     <string name="account_setup_basics_manual_setup_action">手動設定</string>
-    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_retr_info_msg">アカウント情報を取得中\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">受信メールサーバを確認中\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">送信メールサーバを確認中\u2026</string>
@@ -715,7 +714,7 @@
     <string name="dialog_confirm_delete_title">削除の確認</string>
     <string name="dialog_confirm_delete_message">このメッセージを削除しますか？</string>
     <plurals name="dialog_confirm_delete_messages">
-    <item quantity="other">本当に<xliff:g id="message_count">%1$d</xliff:g>件のメッセージを削除
+        <item quantity="other">本当に<xliff:g id="message_count">%1$d</xliff:g>件のメッセージを削除
 しますか？</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">はい</string>

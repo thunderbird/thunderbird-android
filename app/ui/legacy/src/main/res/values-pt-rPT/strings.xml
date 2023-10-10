@@ -291,7 +291,6 @@
     <string name="account_setup_basics_show_password_biometrics_title">Verificar a sua identidade</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Desbloqueie para ver a sua palavra-passe</string>
     <string name="account_setup_basics_manual_setup_action">Configuração manual</string>
-    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_retr_info_msg">A obter informações da conta\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">A verificar configurações de entrada do servidor\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">A verificar configurações de saída do servidor\u2026</string>

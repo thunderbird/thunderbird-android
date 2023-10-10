@@ -109,7 +109,7 @@
     <string name="size_format_kilobytes">%.1f ק\"ב</string>
     <string name="size_format_bytes">%d בתים</string>
     <plurals name="notification_new_messages_title">
-    <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> הודעה חדשה
+        <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> הודעה חדשה
 </item>
         <item quantity="two"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
         <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
@@ -241,7 +241,6 @@
     <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
     <string name="account_setup_basics_show_password_biometrics_title">אמת את זהותך</string>
     <string name="account_setup_basics_manual_setup_action">הוראות הגדרה</string>
-    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_retr_info_msg">מאחזר מידע חשבון …</string>
     <string name="account_setup_check_settings_check_incoming_msg">בדיקת הגדרות שרת הדואר הנכנס …</string>
     <string name="account_setup_check_settings_check_outgoing_msg">בדיקת הגדרות שרת הדואר היוצא …</string>

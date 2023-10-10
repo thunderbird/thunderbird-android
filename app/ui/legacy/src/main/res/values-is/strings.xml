@@ -289,7 +289,6 @@
     <string name="account_setup_basics_show_password_biometrics_title">Sannreyndu auðkennin þín</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Aflæstu til að skoða lykilorðið þitt</string>
     <string name="account_setup_basics_manual_setup_action">Handvirk uppsetning</string>
-    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_retr_info_msg">Næ í upplýsingar um aðgang\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Athuga stillingar inn-póstþjónsins\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Athuga stillingar sendinga-póstþjónsins\u2026</string>

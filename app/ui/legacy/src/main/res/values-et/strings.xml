@@ -289,7 +289,6 @@
     <string name="account_setup_basics_show_password_biometrics_title">Tuvasta oma isik</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Oma salasõna vaatamiseks eemalda lukustus</string>
     <string name="account_setup_basics_manual_setup_action">Käsitsi seadistamine</string>
-    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_retr_info_msg">Konto info hankimine\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Kontrollib sissetuleva meiliserveri sätteid\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Kontrollib väljamineva meiliserveri sätteid\u2026</string>

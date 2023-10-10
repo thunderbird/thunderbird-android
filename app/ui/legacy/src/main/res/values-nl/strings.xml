@@ -288,7 +288,6 @@
     <string name="account_setup_basics_show_password_biometrics_title">Verifieer je identiteit</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Ontgrendel om je wachtwoord te zien</string>
     <string name="account_setup_basics_manual_setup_action">Handmatig instellen</string>
-    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_retr_info_msg">Ophalen accountinformatie\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Controleren van inkomende serverinstellingen\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Controleren van uitgaande serverinstellingen\u2026</string>
