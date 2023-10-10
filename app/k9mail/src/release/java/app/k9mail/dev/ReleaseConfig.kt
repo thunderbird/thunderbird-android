@@ -6,4 +6,6 @@ import org.koin.core.scope.Scope
 
 fun Scope.developmentBackends() = emptyMap<String, BackendFactory>()
 
-fun Module.developmentModuleAdditions() = Unit
+fun Module.developmentModuleAdditions() {
+    // No-op
+}

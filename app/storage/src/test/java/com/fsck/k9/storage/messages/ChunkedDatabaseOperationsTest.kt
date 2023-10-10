@@ -45,7 +45,6 @@ class ChunkedDatabaseOperationsTest {
             argumentTransformation = Int::toString,
         ) { selectionSet, selectionArguments ->
             chunks.add(selectionSet to selectionArguments)
-            Unit
         }
 
         assertThat(chunks).hasSize(1)
@@ -65,7 +64,6 @@ class ChunkedDatabaseOperationsTest {
             chunkSize = 1,
         ) { selectionSet, selectionArguments ->
             chunks.add(selectionSet to selectionArguments)
-            Unit
         }
 
         assertThat(chunks).hasSize(2)
@@ -89,7 +87,6 @@ class ChunkedDatabaseOperationsTest {
             chunkSize = 5,
         ) { selectionSet, selectionArguments ->
             chunks.add(selectionSet to selectionArguments)
-            Unit
         }
 
         assertThat(chunks).hasSize(3)

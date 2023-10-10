@@ -27,9 +27,7 @@ class SerialRunner(private val runnables: List<AutoDiscoveryRunnable>) {
                         networkError = discoveryResult
                     }
                 }
-                NoUsableSettingsFound -> {
-                    Unit
-                }
+                NoUsableSettingsFound -> { }
                 is UnexpectedException -> {
                     Timber.w(discoveryResult.exception, "Unexpected exception")
                 }
