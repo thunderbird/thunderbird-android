@@ -57,14 +57,12 @@ internal class DraftOperations(
 
         val messageId = messageStore.saveLocalMessage(folderId, message.toSaveMessageData(subject))
 
-        val previousDraftMessage = if (existingDraftId != null) {
+        val previousDraftMessage = existingDraftId?.let {
             val localStore = messagingController.getLocalStoreOrThrow(account)
             val localFolder = localStore.getFolder(folderId)
             localFolder.open()
 
             localFolder.getMessage(existingDraftId)
-        } else {
-            null
         }
 
         if (previousDraftMessage != null) {
