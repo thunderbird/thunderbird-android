@@ -274,7 +274,8 @@ class HtmlSanitizerTest {
 
         val result = htmlSanitizer.sanitize(html)
 
-        assertThat(result.toCompactString()).isEqualTo("<html><head><style>keep this</style></head><body></body></html>")
+        assertThat(result.toCompactString())
+            .isEqualTo("<html><head><style>keep this</style></head><body></body></html>")
     }
 
     @Test
