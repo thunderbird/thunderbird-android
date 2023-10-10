@@ -285,7 +285,6 @@
     <string name="account_setup_basics_show_password_biometrics_title">Verificer din identitet</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Lås op for at vise din adgangskode</string>
     <string name="account_setup_basics_manual_setup_action">Manuel opsætning</string>
-    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_retr_info_msg">Henter konto-information\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Kontrollerer indstillinger for indgående server\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Kontrollerer indstillinger for udgående server\u2026</string>

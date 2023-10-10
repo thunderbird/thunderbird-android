@@ -293,7 +293,6 @@
     <string name="account_setup_basics_show_password_biometrics_title">Ověřte svou identitu</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Pokud chcete vidět své heslo, odemkněte</string>
     <string name="account_setup_basics_manual_setup_action">Ruční nastavení</string>
-    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_retr_info_msg">Získávání informací o účtu\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Kontrola nastavení serveru příchozí pošty\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Kontrola nastavení serveru odchozí pošty\u2026</string>

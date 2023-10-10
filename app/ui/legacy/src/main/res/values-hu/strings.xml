@@ -288,7 +288,6 @@
     <string name="account_setup_basics_show_password_biometrics_title">Személyazonosság ellenőrzése</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Feloldás a jelszó megtekintéséhez</string>
     <string name="account_setup_basics_manual_setup_action">Kézi beállítás</string>
-    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_retr_info_msg">Fiókinformációk beolvasása\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Bejövő kiszolgálóbeállítások ellenőrzése\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Kimenő kiszolgálóbeállítások ellenőrzése\u2026</string>

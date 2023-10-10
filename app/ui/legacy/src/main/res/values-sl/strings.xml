@@ -289,7 +289,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="account_setup_basics_show_password_biometrics_title">Preverjanje istovetnosti</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Odkleni, za prikaz gesla</string>
     <string name="account_setup_basics_manual_setup_action">Ročna nastavitev</string>
-    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_retr_info_msg">Pridobivanje podrobnosti računa \u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Preverjanje nastavitev dohodnega strežnika \u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Preverjanje nastavitev odhodnega strežnika \u2026</string>

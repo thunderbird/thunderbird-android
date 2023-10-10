@@ -291,7 +291,6 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
     <string name="account_setup_basics_show_password_biometrics_title">Verifică-ți identitatea</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Deblochează pentru a-ți vedea parola</string>
     <string name="account_setup_basics_manual_setup_action">Setare manuală</string>
-    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_retr_info_msg">Preluarea informațiilor contului\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Verificarea setărilor serverului de intrare\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Verificarea setărilor serverului de expediere\u2026</string>

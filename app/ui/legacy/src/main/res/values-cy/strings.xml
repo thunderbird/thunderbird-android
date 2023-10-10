@@ -279,7 +279,6 @@
     <string name="account_setup_basics_show_password_biometrics_title">Cadarnhewch mai chi sydd yno</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Datgloi i weld eich cyfrifair</string>
     <string name="account_setup_basics_manual_setup_action">Gosod â llaw</string>
-    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_retr_info_msg">Yn nôl manylion y cyfrif\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Yn gwirio gosodiadau\'r gweinydd derbyn\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Yn gwirio gosodiadau\'r gweinydd anfon\u2026</string>

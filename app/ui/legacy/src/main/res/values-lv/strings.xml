@@ -291,7 +291,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
     <string name="account_setup_basics_show_password_biometrics_title">Apstiprināt savu identitāti</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Atbloķēt, lai varētu apskatīties savu paroli</string>
     <string name="account_setup_basics_manual_setup_action">Pašrocīga iestatīšana</string>
-    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_retr_info_msg">Saņem konta informāciju\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Pārbauda ienākošā servera iestatījumus\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Pārbauda izejošā servera iestatījumus\u2026</string>

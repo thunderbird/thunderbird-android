@@ -288,7 +288,6 @@
     <string name="account_setup_basics_show_password_biometrics_title">Jo identiteit ferifiearje</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Untskoattelje om jo wachtwurd te sjen</string>
     <string name="account_setup_basics_manual_setup_action">Hânmjittich ynstelle</string>
-    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_retr_info_msg">Accountynformaasje ophelje\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Kontrôle fan ynstellingen ynkommende server\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Kontrôle fan ynstellingen útgeande server\u2026</string>

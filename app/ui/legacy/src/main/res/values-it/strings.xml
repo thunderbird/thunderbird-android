@@ -291,7 +291,6 @@
     <string name="account_setup_basics_show_password_biometrics_title">Verifica la tua identità</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Sblocca per visualizzare la tua password</string>
     <string name="account_setup_basics_manual_setup_action">Configurazione manuale</string>
-    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_retr_info_msg">Recupero delle informazioni dell\'account\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Verifica impostazioni server posta in entrata\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Verifica delle impostazioni del server della posta in uscita\u2026</string>

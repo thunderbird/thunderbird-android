@@ -252,7 +252,6 @@
     <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
     <string name="account_setup_basics_show_password_biometrics_title">Dearbh cò thusa</string>
     <string name="account_setup_basics_manual_setup_action">Suidheachadh a làimh</string>
-    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_retr_info_msg">A’ faighinn fiosrachadh a’ chunntais…</string>
     <string name="account_setup_check_settings_check_incoming_msg">A’ sgrùdadh roghainnean an fhrithealaiche a-steach…</string>
     <string name="account_setup_check_settings_check_outgoing_msg">A’ sgrùdadh roghainnean an fhrithealaiche a-mach…</string>

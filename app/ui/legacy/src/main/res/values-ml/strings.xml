@@ -266,7 +266,6 @@
     <string name="account_setup_basics_show_password_biometrics_title">നിങ്ങളുടെ ഐഡന്റിറ്റി പരിശോധിച്ചുറപ്പിക്കുക</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">നിങ്ങളുടെ പാസ്‌വേഡ് കാണുന്നതിന് അൺലോക്ക് ചെയ്യുക</string>
     <string name="account_setup_basics_manual_setup_action">സ്വമേധയാലുള്ള സജ്ജീകരണം</string>
-    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_retr_info_msg">അക്കൗണ്ട് വിവരങ്ങൾ വീണ്ടെടുക്കുന്നു\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">ഇൻകമിംഗ് സെർവർ ക്രമീകരണങ്ങൾ പരിശോധിക്കുന്നു\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">ഔട്ട്‌ഗോയിംഗ് സെർവർ ക്രമീകരണങ്ങൾ പരിശോധിക്കുന്നു\u2026</string>
