@@ -85,8 +85,8 @@ class AuthorizationRepositoryTest {
         val testSubject = AuthorizationRepository(
             service = service,
         )
-        val intent = Intent().also {
-            it.putExtra(AuthorizationResponse.EXTRA_RESPONSE, authorizationResponse.jsonSerializeString())
+        val intent = Intent().apply {
+            putExtra(AuthorizationResponse.EXTRA_RESPONSE, authorizationResponse.jsonSerializeString())
         }
 
         // When
@@ -137,8 +137,8 @@ class AuthorizationRepositoryTest {
             Uri.parse("https://example.com/errorUri"),
             null,
         )
-        val intent = Intent().also {
-            it.putExtra(AuthorizationException.EXTRA_EXCEPTION, authorizationException.toJsonString())
+        val intent = Intent().apply {
+            putExtra(AuthorizationException.EXTRA_EXCEPTION, authorizationException.toJsonString())
         }
 
         // When

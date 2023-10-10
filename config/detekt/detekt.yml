@@ -506,7 +506,7 @@ potential-bugs:
 style:
   active: true
   AlsoCouldBeApply:
-    active: false
+    active: true
   BracesOnIfStatements:
     active: false
     singleLine: 'never'

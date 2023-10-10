@@ -395,7 +395,7 @@ class Pop3ConnectionTest {
     }
 
     private fun startServer(block: MockPop3Server.() -> Unit): MockPop3Server {
-        return MockPop3Server().apply(block).also { it.start() }
+        return MockPop3Server().apply(block).apply { start() }
     }
 
     companion object {
