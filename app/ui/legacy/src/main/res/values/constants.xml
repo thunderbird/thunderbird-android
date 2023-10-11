@@ -9,6 +9,4 @@
     <string name="app_license_url" translatable="false">https://www.apache.org/licenses/LICENSE-2.0</string>
     <string name="fediverse_handle" translatable="false">\@k9mail@fosstodon.org</string>
     <string name="fediverse_url" translatable="false">https://fosstodon.org/@k9mail</string>
-    <string name="twitter_handle" translatable="false">\@k9mail_app</string>
-    <string name="twitter_url" translatable="false">https://twitter.com/k9mail_app</string>
 </resources>
