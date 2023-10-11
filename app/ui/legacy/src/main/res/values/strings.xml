@@ -307,8 +307,11 @@
 
     <!-- Title of the setting to specify the density of the message list -->
     <string name="general_settings_message_list_density_title">Density</string>
+    <!-- Value for the message list density setting. Uses almost no whitespace to separate list items. -->
     <string name="general_settings_ui_density_compact">Compact</string>
+    <!-- The default value for the message list density setting. Uses a comfortable amount of whitespace to separate list items. -->
     <string name="general_settings_ui_density_default">Default</string>
+    <!-- Value for the message list density setting. Uses more whitespace than the default to separate list items. -->
     <string name="general_settings_ui_density_relaxed">Relaxed</string>
 
     <string name="global_settings_privacy_hide_useragent">Hide mail client</string>
