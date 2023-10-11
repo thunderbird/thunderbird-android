@@ -1,2 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_settings_validation_error_server_required">Emri i shërbyesit është i domosdoshëm.</string>
+    <string name="account_server_settings_validation_error_username_required">Emri i përdoruesit është i domosdoshëm.</string>
+    <string name="account_server_settings_outgoing_top_bar_title">Rregullime shërbyesi dërgimi mesazhesh</string>
+    <string name="account_server_settings_validation_error_password_required">Fjalëkalimi është i domosdoshëm.</string>
+    <string name="account_server_settings_incoming_imap_send_client_id_label">Dërgo ID klienti</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
+    <string name="account_server_settings_authentication_none">Asnjë</string>
+    <string name="account_server_settings_authentication_password_encrypted">Fjalëkalim të fshehtëzuar</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">Vetëpikas emërhapësirë IMAP</string>
+    <string name="account_server_settings_incoming_top_bar_title">Rregullime shërbyesi marrjeje mesazhesh</string>
+    <string name="account_server_settings_authentication_password_cleartext">Fjalëkalim normal</string>
+    <string name="account_server_settings_authentication_label">Mirëfilltësim</string>
+    <string name="account_server_settings_connection_security_none">Asnjë</string>
+    <string name="account_server_settings_port_label">Portë</string>
+    <string name="account_server_settings_incoming_imap_compression_label">Përdor ngjeshje</string>
+    <string name="account_server_settings_validation_error_port_required">Porta është e domosdoshme.</string>
+    <string name="account_server_settings_authentication_client_certificate">Dëshmi klienti</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">Parashtesë shtegu IMAP</string>
+    <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
+    <string name="account_server_settings_protocol_type_label">Protokoll</string>
+    <string name="account_server_settings_username_label">Emër përdoruesi</string>
+    <string name="account_server_settings_validation_error_port_invalid">Porta është e pavlefshme (duhet të jetë 1–65535).</string>
+    <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
+    <string name="account_server_settings_client_certificate_label">Dëshmi klienti</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">Parashtesa për IMAP s’mund të jetë e zbrazët.</string>
+    <string name="account_server_settings_client_certificate_none_selected">Asnjë</string>
+    <string name="account_server_settings_server_label">Shërbyes</string>
+    <string name="account_server_settings_security_label">Siguri</string>
+</resources>

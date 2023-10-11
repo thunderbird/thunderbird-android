@@ -16,7 +16,6 @@
     <string name="get_help_title">Fá aðstoð</string>
     <string name="user_forum_title">Spjallsvæði notenda</string>
     <string name="about_fediverse_title">Samfélagsmiðlun</string>
-    <string name="about_twitter_title">Twitter</string>
     <string name="about_libraries">Aðgerðasöfn</string>
     <string name="license">Notkunarleyfi</string>
     <string name="changelog_title">Breytingaskrá</string>
@@ -190,7 +189,7 @@
     <string name="message_to_label">Til:</string>
     <string name="message_view_cc_label">Afrit:</string>
     <string name="message_view_bcc_label">Falið afrit:</string>
-    <string name="message_view_status_attachment_not_saved">Tókst ekki að vista viðhengi</string>
+    <string name="message_view_status_attachment_not_saved">Tókst ekki að vista viðhengi.</string>
     <!--Used to display the recipient list in the message view screen.-->
     <string name="message_view_recipients_format">til <xliff:g id="recipients">%s</xliff:g></string>
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
@@ -285,7 +284,7 @@
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in_with_google">Skrá inn með Google</string>
     <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-    <string name="account_setup_basics_show_password_need_lock">Til að skoða lykilorðið þitt hér skaltu virkja skjálæsingu á þessu tæki</string>
+    <string name="account_setup_basics_show_password_need_lock">Til að skoða lykilorðið þitt hér skaltu virkja skjálæsingu á þessu tæki.</string>
     <string name="account_setup_basics_show_password_biometrics_title">Sannreyndu auðkennin þín</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Aflæstu til að skoða lykilorðið þitt</string>
     <string name="account_setup_basics_manual_setup_action">Handvirk uppsetning</string>
@@ -823,7 +822,7 @@
         <item quantity="other">Næ í %d niðurstöður</item>
     </plurals>
     <plurals name="remote_search_downloading_limited">
-        <item quantity="one">Næ í %1$d af %2$d niðurstöðum</item>
+        <item quantity="one">Næ í %1$d af %2$d niðurstöðu</item>
         <item quantity="other">Næ í %1$d af %2$d niðurstöðum</item>
     </plurals>
     <string name="remote_search_error">Fjartengd leit mistókst</string>
@@ -917,7 +916,7 @@
     <string name="crypto_msg_unencrypted_sign_insecure">en enda-í-enda dulritunarlykillinn er ekki álitinn öruggur</string>
     <string name="crypto_msg_unencrypted_sign_unknown">frá óþekktum enda-í-enda dulritunarlykli</string>
     <string name="crypto_msg_title_encrypted_unknown">Dulritað</string>
-    <string name="crypto_msg_encrypted_error">en villa kom upp við við afkóðun</string>
+    <string name="crypto_msg_encrypted_error">en villa kom upp við afkóðun</string>
     <string name="crypto_msg_encrypted_incomplete">en skilaboðin verður að hala niður að fullu svo hægt sé að afkóða þau</string>
     <string name="crypto_msg_encrypted_no_provider">en ekkert dulritunarforrit er uppsett</string>
     <string name="crypto_msg_title_encrypted_unsigned">Dulritað</string>
@@ -967,7 +966,7 @@
     <string name="openpgp_description_text1">Dulritun skilaboða tryggir að þau verða einungis lesin af viðtakandanum og engum öðrum.</string>
     <string name="openpgp_description_text3">Dulritun verður aðeins möguleg ef hún er studd af öllum viðtakendum, og ef þeir hafa áður sent þér póst.</string>
     <string name="openpgp_description_text2">Víxla dulritun af/á með því að smella á þetta tákn.</string>
-    <string name="openpgp_enabled_error_gotit">Náði því!</string>
+    <string name="openpgp_enabled_error_gotit">Náði því</string>
     <string name="openpgp_enabled_error_back">Til baka</string>
     <string name="openpgp_enabled_error_disable">Gera dulritun óvirka</string>
     <string name="openpgp_encryption">OpenPGP dulritun</string>
@@ -988,7 +987,7 @@
     <string name="ac_transfer_setting_title">Senda Autocrypt uppsetningarpóst</string>
     <string name="ac_transfer_setting_summary">Deila öruggt enda-í-enda uppsetningu með öðrum tækjum</string>
     <string name="ac_transfer_title">Autocrypt uppsetningarpóstur</string>
-    <string name="ac_transfer_intro">Autocrypt uppsetningarpóstur deilir á öruggan máta enda-í-enda uppsetningunni þinni með öðrum tækjum</string>
+    <string name="ac_transfer_intro">Autocrypt uppsetningarpóstur deilir á öruggan máta enda-í-enda uppsetningunni þinni með öðrum tækjum.</string>
     <string name="ac_transfer_button_send">Senda uppsetningarpóst</string>
     <string name="ac_transfer_will_be_sent">Skilaboðin verða send á póstfangið þitt:</string>
     <string name="ac_transfer_generating">Útbý uppsetningarpóst…</string>
@@ -1081,4 +1080,9 @@ Til að setja Autocrypt upp á nýju tæki, farðu þá eftir leiðbeiningunum s
     <string name="background_work_notification_remove_account">Fjarlægi aðgang…</string>
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="message_list_content_description_unread_prefix">ólesið, %s</string>
+    <string name="general_settings_post_remove_action_return_to_list">Fara aftur í skilaboðalista</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Birta fyrri skilaboð</string>
+    <string name="account_setup_check_settings_title">"   "</string>
+    <string name="general_settings_post_remove_action_show_next_message">Birta næstu skilaboð</string>
+    <string name="general_settings_post_remove_action_title">Eftir að skilaboðum hefur verið eytt eða þau færð</string>
 </resources>

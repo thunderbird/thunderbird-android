@@ -16,7 +16,6 @@
     <string name="get_help_title">Merrni ndihmë</string>
     <string name="user_forum_title">Forum përdoruesish</string>
     <string name="about_fediverse_title">Fedivers</string>
-    <string name="about_twitter_title">Twitter</string>
     <string name="about_libraries">Librari</string>
     <string name="license">Licencë</string>
     <string name="changelog_title">Regjistër ndryshimesh</string>
@@ -150,7 +149,7 @@
     <string name="notification_channel_messages_title">Mesazhe</string>
     <string name="notification_channel_messages_description">Njoftime lidhur me mesazhe</string>
     <string name="notification_channel_miscellaneous_title">Të ndryshme</string>
-    <string name="notification_channel_miscellaneous_description">Njoftime të ndryshme, si gabime, etj</string>
+    <string name="notification_channel_miscellaneous_description">Njoftime të ndryshme, si gabime, etj.</string>
     <string name="special_mailbox_name_inbox">Kuti Poste</string>
     <string name="special_mailbox_name_outbox">Për dërgim</string>
     <string name="special_mailbox_name_drafts">Skica</string>
@@ -161,7 +160,7 @@
     <string name="debug_enable_debug_logging_title">Aktivizo regjistrim diagnostikimesh</string>
     <string name="debug_enable_debug_logging_summary">Regjistro të dhëna ekstra diagnostikimesh</string>
     <string name="debug_enable_sensitive_logging_title">Regjistro të dhëna konfidenciale</string>
-    <string name="debug_enable_sensitive_logging_summary">Mund të shfaqë fjalëkalime te regjistrat </string>
+    <string name="debug_enable_sensitive_logging_summary">Mund të shfaqë fjalëkalime te regjistrat.</string>
     <string name="debug_export_logs_title">Eksportoni regjistra</string>
     <string name="debug_export_logs_success">Eksportim i suksesshëm. Regjistrat mund të përmbajnë të dhëna rezervat. Bëni kujdes kujt ia dërgoni.</string>
     <string name="debug_export_logs_failure">Eksportimi dështoi.</string>
@@ -190,7 +189,7 @@
     <string name="message_to_label">Për:</string>
     <string name="message_view_cc_label">Cc:</string>
     <string name="message_view_bcc_label">Bcc:</string>
-    <string name="message_view_status_attachment_not_saved">S\’arrihet të ruhet bashkëngjitje</string>
+    <string name="message_view_status_attachment_not_saved">S’arrihet të ruhet bashkëngjitje.</string>
     <!--Used to display the recipient list in the message view screen.-->
     <string name="message_view_recipients_format">për <xliff:g id="recipients">%s</xliff:g></string>
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
@@ -218,7 +217,7 @@
     <string name="global_settings_registered_name_color_changed">Ngjyrosi emrat te lista juaj e kontakteve</string>
     <string name="general_settings_contact_name_color_label">Ngjyrë emri kontakti</string>
     <string name="global_settings_messageview_fixedwidth_label">Shkronja me gjerësi të fiksuar</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Kur shfaqen mesazhe tekst i thjeshtë, përdor shkronja me gjerësi të fiksuar.</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Kur shfaqen mesazhe tekst i thjeshtë, përdor shkronja me gjerësi të fiksuar</string>
     <string name="global_settings_messageview_autofit_width_label">Rregulloje vetvetiu nxënien e mesazhit</string>
     <string name="global_settings_messageview_autofit_width_summary">Tkurri mesazhet t\’i nxërë ekrani</string>
     <string name="global_settings_confirm_actions_title">Ripohoni veprimet</string>
@@ -400,7 +399,7 @@
     <string name="account_settings_email_label">Adresa juaj email</string>
     <string name="account_settings_notify_summary">Njofto në shtyllë gjendjeje kur mbërrin postë</string>
     <string name="account_settings_notify_sync_summary">Njofto te shtylla e gjendjes, kur kontrollohet për email</string>
-    <string name="account_settings_notify_self_label">Include outgoing mail</string>
+    <string name="account_settings_notify_self_label">Përfshi email që dërgohet</string>
     <string name="account_settings_notify_self_summary">Shfaq një njoftim për mesazhet që dërgoj</string>
     <string name="account_notify_contacts_mail_only_label">Vetëm kontaktet</string>
     <string name="account_notify_contacts_mail_only_summary">Shfaq njoftime vetëm për mesazhe nga kontakte të njohur</string>
@@ -419,7 +418,7 @@
     <string name="account_settings_show_pictures_always">Prej cilitdo</string>
     <string name="account_settings_composition">Po dërgohet postë</string>
     <string name="account_settings_default_quoted_text_shown_label">Citoje mesazhin tek përgjigja</string>
-    <string name="account_settings_default_quoted_text_shown_summary">Përfshini te përgjigja juaj mesazhin origjinal</string>
+    <string name="account_settings_default_quoted_text_shown_summary">Përfshini te përgjigja juaj mesazhin origjinal.</string>
     <string name="account_settings_reply_after_quote_label">Përgjigju nën tekstin e cituar</string>
     <string name="account_settings_reply_after_quote_summary">Mesazhi origjinal do të shfaqet sipër përgjigjes tuaj.</string>
     <string name="account_settings_strip_signature_label">Hiqi nënshkrimet në përgjigje</string>
@@ -985,7 +984,7 @@
     <string name="toast_account_not_found">Gabim i brendshëm: Llogari e pavlefshme!</string>
     <string name="toast_openpgp_provider_error">Gabim në lidhjen me %s!</string>
     <string name="ac_transfer_setting_title">Dërgo Mesazh Rregullimi Autocrypt-i</string>
-    <string name="ac_transfer_setting_summary">Ndani në mënyrë të parrezik me pajisje të tjera rregullimin skaj-më-skaj.</string>
+    <string name="ac_transfer_setting_summary">Ndani në mënyrë të parrezik me pajisje të tjera rregullimin skaj-më-skaj</string>
     <string name="ac_transfer_title">Mesazh Rregullimi Autocrypt-i</string>
     <string name="ac_transfer_intro">Një Mesazh Rregullimi Autocrypt-i ndan në mënyrë të parrezik me pajisje të tjera rregullimin tuaj skaj-më-skaj.</string>
     <string name="ac_transfer_button_send">Dërgo Mesazh Rregullimi</string>
@@ -1012,7 +1011,7 @@ Mund ta mbani këtë mesazh dhe ta përdorni si një kopjeruatje të kyçit tuaj
     <string name="push_notification_state_listening">Po pritet për email-e të rinj</string>
     <string name="push_notification_state_wait_background_sync">Po dremitet, deri sa të lejohet njëkohësimi në prapaskenë</string>
     <string name="push_notification_state_wait_network">Po dremitet, deri sa të ketë rrjet</string>
-    <string name="push_notification_info">Që të mësoni më tepër, prekeni</string>
+    <string name="push_notification_info">Që të mësoni më tepër, prekeni.</string>
     <string name="push_info_title">Hollësi Push-i</string>
     <string name="push_info_notification_explanation_text">Kur përdoret Push, K-9 Mail mban një lidhje me shërbyesin e postës. Android-i lyp shfaqjen e një njoftimi të vazhdueshëm, teksa aplikacioni është aktiv në prapaskenë. %s</string>
     <string name="push_info_configure_notification_text">Megjithatë, Android-i ju lejon gjithashtu ta fshihni njoftimin.</string>
@@ -1080,4 +1079,8 @@ Mund ta mbani këtë mesazh dhe ta përdorni si një kopjeruatje të kyçit tuaj
     <string name="background_work_notification_remove_account">Po hiqet llogaria…</string>
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="message_list_content_description_unread_prefix">të palexuar, %s</string>
+    <string name="general_settings_post_remove_action_return_to_list">Kthehuni te lista e mesazheve</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Shfaq mesazhin e mëparshëm</string>
+    <string name="general_settings_post_remove_action_show_next_message">Shfaq mesazhin pasues</string>
+    <string name="general_settings_post_remove_action_title">Pas fshirjes, ose lëvizjes së një mesazhi</string>
 </resources>

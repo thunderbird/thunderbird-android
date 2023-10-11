@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_options_account_name_error_blank">账户名不能为空。</string>
+    <string name="account_setup_options_account_check_frequency_label">检查频率</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">自动配置</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">此配置不受信任</string>
+    <string name="account_setup_button_finish">完毕</string>
+    <string name="account_setup_options_email_signature_label">电子邮件签名</string>
+    <string name="account_setup_options_email_display_count_label">要显示的邮件数</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">手动配置</string>
+    <string name="account_setup_options_email_signature_error_blank">电子邮件签名的名称不能为空。</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">批准配置是必需的。</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">我们通过一个安全性不及我们期望的连接收到了你的电子邮箱配置。这意味着某人可能已经对其进行了改动，虽然发生这种情况的可能性并不大。可否请您复查下所提供的配置以确保其保持原样？</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">编辑配置</string>
+    <string name="account_setup_error_unknown">未知错误</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">未找到配置</string>
+    <string name="account_setup_options_top_bar_title">账户操作</string>
+    <string name="account_setup_options_account_name_label">账户名</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">找到了配置</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">需要电子邮件地址。</string>
+    <string name="account_setup_options_display_name_label">显示名</string>
+    <string name="account_setup_auto_discovery_loading_error">加载电子邮箱配置失败</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">我信任此配置</string>
+    <string name="account_setup_options_display_name_error_required">显示名是必需的。</string>
+    <string name="account_setup_error_network">网络</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">电子邮件地址无效。</string>
+    <string name="account_setup_options_email_check_frequency_never">从不</string>
+    <string name="account_setup_auto_discovery_loading_message">寻找电子邮件详情中</string>
+    <string name="account_setup_options_section_sync_options_">同步选项</string>
+    <string name="account_setup_options_show_notifications_label">显示通知</string>
+    <string name="account_setup_options_section_display_options">显示选项</string>
+    <string name="account_setup_title">K-9 Mail</string>
+</resources>

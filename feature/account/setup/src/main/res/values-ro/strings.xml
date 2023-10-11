@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_options_account_name_error_blank">Numele contului nu poate fi necompletat.</string>
+    <string name="account_setup_options_account_check_frequency_label">Frecvența de verificare</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Configurare automată</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Această configurație nu este de încredere</string>
+    <string name="account_setup_button_finish">Finalizare</string>
+    <string name="account_setup_options_email_signature_label">Semnătură e-mail</string>
+    <string name="account_setup_options_email_display_count_label">Numărul de mesaje afișate</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Configurare manuală</string>
+    <string name="account_setup_options_email_signature_error_blank">Numele semnăturii de e-mail nu poate fi necompletat.</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Este necesar să se aprobe configurația.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Am primit configurația pentru serverul de e-mail printr-o conexiune care nu este atât de sigură pe cât ne-am dori. Aceasta înseamnă că există o mică șansă ca cineva s-o fi modificat. Ai putea verifica din nou configurația furnizată pentru a te asigura că este așa cum ar trebui să fie\?</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Editare configurație</string>
+    <string name="account_setup_error_unknown">Eroare necunoscută</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Configurația nu a fost găsită</string>
+    <string name="account_setup_options_top_bar_title">Opţiuni cont</string>
+    <string name="account_setup_options_account_name_label">Nume cont</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Configurație găsită</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">Este necesară adresa de e-mail.</string>
+    <string name="account_setup_options_display_name_label">Numele afișat</string>
+    <string name="account_setup_auto_discovery_loading_error">Nu s-a putut încărca configurația e-mailului</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Am încredere în această configurație</string>
+    <string name="account_setup_options_display_name_error_required">Numele afișat este obligatoriu.</string>
+    <string name="account_setup_error_network">Rețea</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Adresa de e-mail este greșită.</string>
+    <string name="account_setup_options_email_check_frequency_never">Niciodată</string>
+    <string name="account_setup_auto_discovery_loading_message">Găsirea detaliilor de e-mail</string>
+    <string name="account_setup_options_section_sync_options_">Opțiuni de sincronizare</string>
+    <string name="account_setup_options_show_notifications_label">Afișare notificări</string>
+    <string name="account_setup_options_section_display_options">Opțiuni de afișare</string>
+    <string name="account_setup_title">K-9 Mail</string>
+</resources>

@@ -1,2 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_settings_validation_error_server_required">サーバー名は必須です。</string>
+    <string name="account_server_settings_validation_error_username_required">ユーザー名は必須です。</string>
+    <string name="account_server_settings_outgoing_top_bar_title">送信サーバー設定</string>
+    <string name="account_server_settings_validation_error_password_required">パスワードは必須です。</string>
+    <string name="account_server_settings_incoming_imap_send_client_id_label">クライアント ID を送信する</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
+    <string name="account_server_settings_authentication_none">なし</string>
+    <string name="account_server_settings_authentication_password_encrypted">暗号化されたパスワード認証</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">IMAP 名前空間を自動検出する</string>
+    <string name="account_server_settings_incoming_top_bar_title">受信サーバー設定</string>
+    <string name="account_server_settings_authentication_password_cleartext">通常のパスワード認証</string>
+    <string name="account_server_settings_authentication_label">認証方式</string>
+    <string name="account_server_settings_connection_security_none">なし</string>
+    <string name="account_server_settings_port_label">ポート番号</string>
+    <string name="account_server_settings_incoming_imap_compression_label">圧縮を使用する</string>
+    <string name="account_server_settings_validation_error_port_required">ポート番号は必須です。</string>
+    <string name="account_server_settings_authentication_client_certificate">クライアント証明書認証</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">IMAP パスのプリフェックス</string>
+    <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
+    <string name="account_server_settings_protocol_type_label">プロトコル</string>
+    <string name="account_server_settings_username_label">ユーザー名</string>
+    <string name="account_server_settings_validation_error_port_invalid">ポート番号が無効です (1-65535 の範囲内)。</string>
+    <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
+    <string name="account_server_settings_client_certificate_label">クライアント証明書</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">IMAP プレフィックスは空欄にはできません。</string>
+    <string name="account_server_settings_client_certificate_none_selected">なし</string>
+    <string name="account_server_settings_server_label">サーバー</string>
+    <string name="account_server_settings_security_label">セキュリティ</string>
+</resources>

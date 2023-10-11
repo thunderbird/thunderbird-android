@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_oauth_sign_in_with_google_button">Skrá inn með Google</string>
+    <string name="account_oauth_loading_error">Innskráning með OAuth mistókst</string>
+    <string name="account_oauth_error_failed">Auðkenning mistókst með eftirfarandi villuboðum: <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_error_browser_not_available">Forritið fann engan vafra til að nota til að fá aðgang að notandaaðgangnum þínum.</string>
+    <string name="account_oauth_error_not_supported">OAuth 2.0 er ekki stutt í augnablikinu hjá þessari þjónustuveitu.</string>
+    <string name="account_oauth_error_canceled">Hætt við auðkenningu</string>
+    <string name="account_oauth_loading_message">Skrái inn með OAuth</string>
+    <string name="account_oauth_sign_in_description">Við munum endurbeina þér til póstþjónustunnar þinnar til að skrá þig inn. Þú þarft að veita forritinu aðgang að tölvupóstreikningnum þínum.</string>
+    <string name="account_oauth_sign_in_button">Skrá inn</string>
+</resources>

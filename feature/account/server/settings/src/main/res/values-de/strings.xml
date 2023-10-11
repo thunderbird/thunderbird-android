@@ -1,2 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_settings_validation_error_server_required">Servername ist erforderlich.</string>
+    <string name="account_server_settings_validation_error_username_required">Benutzername ist erforderlich.</string>
+    <string name="account_server_settings_outgoing_top_bar_title">Einstellungen des Postausgangsservers</string>
+    <string name="account_server_settings_validation_error_password_required">Passwort ist erforderlich.</string>
+    <string name="account_server_settings_incoming_imap_send_client_id_label">Client-ID senden</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
+    <string name="account_server_settings_authentication_none">Keine</string>
+    <string name="account_server_settings_authentication_password_encrypted">Verschlüsseltes Passwort</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">IMAP-Namensraum automatisch ermitteln</string>
+    <string name="account_server_settings_incoming_top_bar_title">Einstellungen des Posteingangsservers</string>
+    <string name="account_server_settings_authentication_password_cleartext">Passwort, normal</string>
+    <string name="account_server_settings_authentication_label">Authentifizierung</string>
+    <string name="account_server_settings_connection_security_none">Keine</string>
+    <string name="account_server_settings_port_label">Port</string>
+    <string name="account_server_settings_incoming_imap_compression_label">Komprimierung verwenden</string>
+    <string name="account_server_settings_validation_error_port_required">Port ist erforderlich.</string>
+    <string name="account_server_settings_authentication_client_certificate">Client-Zertifikat</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">Präfix für IMAP-Pfad</string>
+    <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
+    <string name="account_server_settings_protocol_type_label">Protokoll</string>
+    <string name="account_server_settings_username_label">Benutzername</string>
+    <string name="account_server_settings_validation_error_port_invalid">Der Port ist ungültig (muss 1–65535 sein).</string>
+    <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
+    <string name="account_server_settings_client_certificate_label">Client-Zertifikat</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">Präfix für IMAP darf nicht leer sein.</string>
+    <string name="account_server_settings_client_certificate_none_selected">Keines</string>
+    <string name="account_server_settings_server_label">Server</string>
+    <string name="account_server_settings_security_label">Sicherheit</string>
+</resources>

@@ -11,12 +11,11 @@
     <string name="source_code">Forráskód</string>
     <string name="app_license">Apache licenc, 2.0-s verzió</string>
     <string name="about_project_title">Nyílt forráskódú projekt</string>
-    <string name="about_website_title">Weboldal</string>
+    <string name="about_website_title">Webhely</string>
     <string name="user_manual_title">Felhasználói kézikönyv</string>
     <string name="get_help_title">Segítségkérés</string>
     <string name="user_forum_title">Felhasználói fórum</string>
     <string name="about_fediverse_title">Födiverzum</string>
-    <string name="about_twitter_title">Twitter</string>
     <string name="about_libraries">Programkönyvtárak</string>
     <string name="license">Licenc</string>
     <string name="changelog_title">Változásnapló</string>
@@ -119,7 +118,7 @@
     <string name="size_format_bytes">%d B</string>
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> új üzenet</item>
-        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> új üzenet</item>
+        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> új üzenetek</item>
     </plurals>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> további: <xliff:g id="account">%2$s</xliff:g></string>
     <string name="notification_action_reply">Válasz</string>
@@ -132,7 +131,7 @@
     <string name="notification_action_spam">Levélszemét</string>
     <string name="notification_certificate_error_public">Tanúsítványhiba</string>
     <string name="notification_certificate_error_title">Tanúsítványhiba: <xliff:g id="account">%s</xliff:g></string>
-    <string name="notification_certificate_error_text">Ellenőrizze a kiszolgálóbeállításokat.</string>
+    <string name="notification_certificate_error_text">"Kiszolgáló beállítások  ellenőrzése"</string>
     <string name="notification_authentication_error_title">A hitelesítés sikertelen</string>
     <string name="notification_authentication_error_text">A hitelesítés sikertelen: <xliff:g id="account">%s</xliff:g>. Frissítse a kiszolgálóbeállításokat.</string>
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
@@ -178,7 +177,7 @@
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> írta:</string>
     <string name="message_compose_reply_header_fmt_with_date">Ekkor: <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> írta:</string>
     <string name="message_compose_error_no_recipients">Legalább egy címzettet hozzá kell adni.</string>
-    <string name="compose_error_incomplete_recipient">A címzett mező befejezetlen beviteli adatot tartalmaz.</string>
+    <string name="compose_error_incomplete_recipient">A címzett mező befejezetlen beviteli adatot tartalmaz!</string>
     <string name="error_contact_address_not_found">Nem található e-mail cím ehhez a partnerhez.</string>
     <string name="message_compose_attachments_skipped_toast">Néhány mellékletet nem lehet továbbítani, mert nem lettek letöltve.</string>
     <string name="message_compose_attachments_forward_toast">Az üzenet nem továbbítható, mert egyes mellékletek nem lettek letöltve.</string>
@@ -508,7 +507,7 @@
     <string name="account_settings_folder_target_mode_not_second_class">Összes, kivéve a 2. osztályú mappákat</string>
     <string name="account_settings_sync_remote_deletetions_label">Kiszolgáló törléseinek szinkronizálása</string>
     <string name="account_settings_sync_remote_deletetions_summary">Üzenetek eltávolítása a kiszolgálóról törléskor</string>
-    <string name="account_settings_openpgp_missing">Hiányzó OpenPGP alkalmazás – talán eltávolításra került.</string>
+    <string name="account_settings_openpgp_missing">Hiányzó OpenPGP alkalmazás – talán eltávolításra került\?</string>
     <string name="folder_settings_title">Mappa beállításai</string>
     <string name="folder_settings_in_top_group_label">Megjelenítés a felső csoportban</string>
     <string name="folder_settings_in_top_group_summary">Megjelenítés a mappalista teteje környékén</string>
@@ -711,7 +710,7 @@
     <string name="save_or_discard_draft_message_changes">Menti vagy elveti a változtatásokat?</string>
     <string name="confirm_discard_draft_message_title">Elveti az üzenet?</string>
     <string name="confirm_discard_draft_message">Biztosan el szeretné vetni ezt az üzenetet?</string>
-    <string name="dialog_confirm_clear_local_folder_title">Helyi üzenetek kiürítése</string>
+    <string name="dialog_confirm_clear_local_folder_title">Helyi üzenetek kiürítése\?</string>
     <string name="dialog_confirm_clear_local_folder_message">Ez eltávolítja az összes helyi üzenetet mappából.  Az üzenetek nem kerülnek törlésre a szerverről.</string>
     <string name="dialog_confirm_clear_local_folder_action">Üzenetek kiürítése</string>
     <string name="dialog_confirm_delete_title">Törlés megerősítése</string>
@@ -1080,4 +1079,8 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <string name="background_work_notification_remove_account">Fiók eltávolítása…</string>
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="message_list_content_description_unread_prefix">olvasatlan, %s</string>
+    <string name="general_settings_post_remove_action_return_to_list">Vissza az üzenetekhez</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Előző üzenet megjelenítése</string>
+    <string name="general_settings_post_remove_action_show_next_message">Következő üzenet megjelenítése</string>
+    <string name="general_settings_post_remove_action_title">Üzenet törlése vagy áthelyezése után</string>
 </resources>

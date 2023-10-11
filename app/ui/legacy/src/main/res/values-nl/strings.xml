@@ -16,7 +16,6 @@
     <string name="get_help_title">Hulp verkrijgen</string>
     <string name="user_forum_title">Gebruikersforum</string>
     <string name="about_fediverse_title">Fediverse</string>
-    <string name="about_twitter_title">Twitter</string>
     <string name="about_libraries">Bibliotheken</string>
     <string name="license">Licentie</string>
     <string name="changelog_title">Wijzigingslog</string>
@@ -31,7 +30,7 @@
     <!--Default signature-->
     <string name="default_signature">-- \nVerstuurd vanaf mijn Android-apparaat met K-9 Mail.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">De account ‘<xliff:g id="account">%s</xliff:g>’ wordt uit K-9 Mail verwijderd.</string>
+    <string name="account_delete_dlg_instructions_fmt">Het account ‘<xliff:g id="account">%s</xliff:g>’ wordt uit K-9 Mail verwijderd.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Auteurs</string>
     <string name="about_title">Over K-9 Mail</string>
@@ -384,7 +383,7 @@
     <string name="account_setup_failed_dlg_oauth_flow_canceled">Autorisatie is geannuleerd</string>
     <string name="account_setup_failed_dlg_oauth_flow_failed">Autorisatie is mislukt met de volgende foutmelding: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 wordt momenteel niet ondersteund door deze dienstverlener.</string>
-    <string name="account_setup_failed_dlg_browser_not_found">Deze app kan geen browser vinden. Een browser is nodig om toegang te geven tot de account.</string>
+    <string name="account_setup_failed_dlg_browser_not_found">Deze app kan geen browser vinden. Een browser is nodig om toegang te krijgen tot jouw account.</string>
     <string name="account_setup_failed_dlg_edit_details_action">Details aanpassen</string>
     <string name="account_setup_failed_dlg_continue_action">Doorgaan</string>
     <string name="account_settings_push_advanced_title">Geavanceerd</string>
@@ -397,7 +396,7 @@
     <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Alle behalve 2e klasse mappen</string>
     <string name="account_settings_folder_notify_new_mail_mode_none">Geen</string>
     <string name="account_settings_notify_sync_label">Synchronisatiemeldingen</string>
-    <string name="account_settings_email_label">Je e-mailadres</string>
+    <string name="account_settings_email_label">Jouw e-mailadres</string>
     <string name="account_settings_notify_summary">Notificatie in statusbalk wanneer nieuwe e-mail binnenkomt</string>
     <string name="account_settings_notify_sync_summary">Notificatie in statusbalk wanneer wordt gecontroleerd op nieuwe e-mail</string>
     <string name="account_settings_notify_self_label">Notificatie voor e-mailbericht welke ik verstuur</string>
@@ -419,7 +418,7 @@
     <string name="account_settings_show_pictures_always">Altijd</string>
     <string name="account_settings_composition">Berichten versturen</string>
     <string name="account_settings_default_quoted_text_shown_label">Citeer bericht bij antwoorden</string>
-    <string name="account_settings_default_quoted_text_shown_summary">Neem orginele bericht mee in het antwoord.</string>
+    <string name="account_settings_default_quoted_text_shown_summary">Neem het originele bericht mee in het antwoord.</string>
     <string name="account_settings_reply_after_quote_label">Antwoorden na citaat</string>
     <string name="account_settings_reply_after_quote_summary">Wanneer je antwoord op een bericht, zal het originele bericht boven jouw antwoord staan.</string>
     <string name="account_settings_strip_signature_label">Verwijder handtekening bij reactie</string>
@@ -768,7 +767,7 @@
     <string name="settings_importing">Instellingen importeren …</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">Om het account \"<xliff:g id="account">%s</xliff:g>\" te gebruiken moet je het wachtwoord van de server opgeven.</item>
-        <item quantity="other">Om de account ‘<xliff:g id="account">%s</xliff:g>’ te gebruiken moet je de wachtwoorden van de server opgeven.</item>
+        <item quantity="other">Om het account ‘<xliff:g id="account">%s</xliff:g>’ te gebruiken moet je de wachtwoorden van de server opgeven.</item>
     </plurals>
     <string name="settings_import_incoming_server_password_hint">Wachtwoord inkomende server</string>
     <string name="settings_import_outgoing_server_password_hint">Wachtwoord uitgaande server</string>
@@ -776,7 +775,7 @@
     <string name="server_name_format">Servernaam: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="unread_widget_select_account">Ongelezen aantal weergeven voor …</string>
     <string name="unread_widget_account_title">Account</string>
-    <string name="unread_widget_account_summary">De account waarvan het aantal ongelezen berichten wordt getoond</string>
+    <string name="unread_widget_account_summary">Het account waarvan het aantal ongelezen berichten wordt getoond</string>
     <string name="unread_widget_unified_inbox_account_summary">Gecombineerd postvak-in</string>
     <string name="unread_widget_folder_enabled_title">Mapaantal</string>
     <string name="unread_widget_folder_enabled_summary">Toon het aantal ongelezen berichten van een enkele map</string>
@@ -875,7 +874,7 @@
     <string name="address_type_other">Anders</string>
     <string name="address_type_mobile">Mobiel</string>
     <string name="compose_error_no_draft_folder">Geen conceptenmap ingesteld voor deze account!</string>
-    <string name="compose_error_no_key_configured">Geen sleutel ingesteld voor deze account! Controleer de instellingen.</string>
+    <string name="compose_error_no_key_configured">Geen sleutel ingesteld voor dit account! Controleer de instellingen.</string>
     <string name="error_crypto_provider_incompatible">Cryptoprovider gebruikt incompatibele versie. Controleer de instellingen!</string>
     <string name="error_crypto_provider_connect">Kan geen verbinding maken met de cryptoprovider. Controleer de instellingen of klik op het crypto-pictogram om nogmaals te proberen.</string>
     <string name="error_crypto_provider_ui_required">Initialisatie van eind-tot-eind-versleuteling is mislukt, controleer de instellingen</string>
@@ -897,7 +896,7 @@
     <string name="openpgp_sign_only_keep_enabled">Ingeschakeld houden</string>
     <string name="openpgp_dialog_sign_only_title">alleen PGP-handtekeningmodus</string>
     <string name="openpgp_dialog_sign_only_text">In deze modus wordt de PGP-sleutel gebruikt voor een cryptografische handtekening of een ongecodeerd e-mailbericht.</string>
-    <string name="openpgp_dialog_sign_only_plus_verified">Dit versleutelt niet het e-mailbericht, maar controleert of de eigen sleutel is gebruikt.</string>
+    <string name="openpgp_dialog_sign_only_plus_verified">Dit versleutelt niet het e-mailbericht, maar controleert of het is verstuurd was met jouw sleutel.</string>
     <string name="openpgp_dialog_sign_only_minus_break">Handtekening kan bij versturing naar verzendlijst breken</string>
     <string name="openpgp_dialog_sign_only_minus_attach">Handtekening kan bij sommige programma’s als ‘signature.asc’-bijlage worden weergegeven</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">Versleutelde berichten bevatten altijd een handtekening.</string>
@@ -987,7 +986,7 @@
     <string name="ac_transfer_setting_title">Verstuur Autocrypt Setup bericht</string>
     <string name="ac_transfer_setting_summary">Veilig delen van eind-tot-eind-instellingen met andere apparaten</string>
     <string name="ac_transfer_title">Autocrypt-instelbericht</string>
-    <string name="ac_transfer_intro">Een Autocrypt-instelbericht deelt uw eind-tot-eind-instellingen op een beveiligde manier met andere apparaten.</string>
+    <string name="ac_transfer_intro">Een Autocrypt-instelbericht deelt jouw eind-tot-eind-instellingen op een beveiligde manier met andere apparaten.</string>
     <string name="ac_transfer_button_send">Verstuur instelbericht</string>
     <string name="ac_transfer_will_be_sent">Het bericht wordt verstuurd naar jouw adres:</string>
     <string name="ac_transfer_generating">Instelbericht aan het genereren …</string>
@@ -1080,4 +1079,8 @@ Je kunt dit bericht bewaren als back-up voor de geheime sleutel. Als je dit wilt
     <string name="background_work_notification_remove_account">Account verwijderen…</string>
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="message_list_content_description_unread_prefix">ongelezen, %s</string>
+    <string name="general_settings_post_remove_action_return_to_list">Terug naar de berichten lijst</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Toon vorig bericht</string>
+    <string name="general_settings_post_remove_action_show_next_message">Toon volgende bericht</string>
+    <string name="general_settings_post_remove_action_title">Na het verwijderen of verplaatsen van een bericht</string>
 </resources>
