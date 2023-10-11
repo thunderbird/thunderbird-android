@@ -1,6 +1,6 @@
 package app.k9mail.feature.launcher
 
-import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -28,7 +28,7 @@ class FeatureLauncherActivity : ComponentActivity() {
 
     companion object {
         @JvmStatic
-        fun launchOnboarding(context: Activity) {
+        fun launchOnboarding(context: Context) {
             val intent = Intent(context, FeatureLauncherActivity::class.java).apply {
                 data = NAVIGATION_ROUTE_ONBOARDING.toDeepLinkUri()
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -37,7 +37,7 @@ class FeatureLauncherActivity : ComponentActivity() {
         }
 
         @JvmStatic
-        fun launchSetupAccount(context: Activity) {
+        fun launchSetupAccount(context: Context) {
             val intent = Intent(context, FeatureLauncherActivity::class.java).apply {
                 data = NAVIGATION_ROUTE_ACCOUNT_SETUP.toDeepLinkUri()
             }
@@ -45,7 +45,7 @@ class FeatureLauncherActivity : ComponentActivity() {
         }
 
         @JvmStatic
-        fun launchEditIncomingSettings(context: Activity, accountUuid: String) {
+        fun launchEditIncomingSettings(context: Context, accountUuid: String) {
             val intent = Intent(context, FeatureLauncherActivity::class.java).apply {
                 data = NAVIGATION_ROUTE_ACCOUNT_EDIT_CONFIG_INCOMING.withAccountUuid(accountUuid).toDeepLinkUri()
             }
@@ -53,7 +53,7 @@ class FeatureLauncherActivity : ComponentActivity() {
         }
 
         @JvmStatic
-        fun launchEditOutgoingSettings(context: Activity, accountUuid: String) {
+        fun launchEditOutgoingSettings(context: Context, accountUuid: String) {
             val intent = Intent(context, FeatureLauncherActivity::class.java).apply {
                 data = NAVIGATION_ROUTE_ACCOUNT_EDIT_CONFIG_OUTGOING.withAccountUuid(accountUuid).toDeepLinkUri()
             }

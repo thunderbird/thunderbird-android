@@ -67,11 +67,6 @@
             />
 
         <activity
-            android:name=".activity.setup.AccountSetupBasics"
-            android:configChanges="locale"
-            android:label="@string/account_setup_basics_title"/>
-
-        <activity
             android:name=".activity.setup.AccountSetupAccountType"
             android:configChanges="locale"
             android:label="@string/account_setup_account_type_title"/>

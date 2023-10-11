@@ -4,22 +4,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
 
+import app.k9mail.feature.launcher.FeatureLauncherActivity;
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.MessageCompose;
-import com.fsck.k9.activity.setup.AccountSetupBasics;
 import com.fsck.k9.controller.MessageReference;
 
 public class MessageActions {
     /**
      * Compose a new message using the given account. If account is null the default account
-     * will be used. If there is no default account set, user will be sent to AccountSetupBasics
+     * will be used. If there is no default account set, user will be sent to AccountSetup
      * activity.
      */
     public static void actionCompose(Context context, Account account) {
         Account defaultAccount = Preferences.getPreferences().getDefaultAccount();
         if (account == null && defaultAccount == null) {
-            AccountSetupBasics.actionNewAccount(context);
+            FeatureLauncherActivity.launchSetupAccount(context);
         } else {
             String accountUuid = (account == null) ?
                     defaultAccount.getUuid() :

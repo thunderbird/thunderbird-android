@@ -5,6 +5,7 @@ import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.ui.ConnectionSettings
 
+// TODO should be moved to autodiscovery
 object ExtraAccountDiscovery {
     @JvmStatic
     fun discover(email: String): ConnectionSettings? {
