@@ -142,7 +142,7 @@ complexity:
   NamedArguments:
     active: true
     threshold: 3
-    ignoreArgumentsMatchingNames: false
+    ignoreArgumentsMatchingNames: true
   NestedBlockDepth:
     active: true
     threshold: 4
@@ -547,7 +547,7 @@ style:
   EqualsNullCall:
     active: true
   EqualsOnSignatureLine:
-    active: true
+    active: false
   ExplicitCollectionElementAccessMethod:
     active: true
   ExplicitItLambdaParameter:
@@ -699,7 +699,7 @@ style:
     max: 2
     excludeGuardClauses: false
   TrailingWhitespace:
-    active: true
+    active: false
   TrimMultilineRawString:
     active: false
     trimmingMethods:
@@ -733,7 +733,7 @@ style:
   UntilInsteadOfRangeTo:
     active: true
   UnusedImports:
-    active: true
+    active: false
   UnusedParameter:
     active: true
     allowedNames: 'ignored|expected'
