@@ -1,2 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_settings_validation_error_server_required">El nom del servidor és obligatori.</string>
+    <string name="account_server_settings_validation_error_username_required">Cal el nom d\'usuari.</string>
+    <string name="account_server_settings_outgoing_top_bar_title">Configuració del servidor de sortida</string>
+    <string name="account_server_settings_validation_error_password_required">Cal la contrasenya.</string>
+    <string name="account_server_settings_incoming_imap_send_client_id_label">Envia l\'ID de client</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
+    <string name="account_server_settings_authentication_none">Cap</string>
+    <string name="account_server_settings_authentication_password_encrypted">Contrasenya encriptada</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">Detecció automàtica de l\'espai de noms IMAP</string>
+    <string name="account_server_settings_incoming_top_bar_title">Configuració del servidor d\'entrada</string>
+    <string name="account_server_settings_authentication_password_cleartext">Contrasenya normal</string>
+    <string name="account_server_settings_authentication_label">Autenticació</string>
+    <string name="account_server_settings_connection_security_none">Cap</string>
+    <string name="account_server_settings_port_label">Port</string>
+    <string name="account_server_settings_incoming_imap_compression_label">Utilitza compressió</string>
+    <string name="account_server_settings_validation_error_port_required">El port és obligatori.</string>
+    <string name="account_server_settings_authentication_client_certificate">Certificat del client</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">Prefix del camí IMAP</string>
+    <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
+    <string name="account_server_settings_protocol_type_label">Protocol</string>
+    <string name="account_server_settings_username_label">Nom d\'usuari</string>
+    <string name="account_server_settings_validation_error_port_invalid">El port no és vàlid (ha de ser 1–65535).</string>
+    <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
+    <string name="account_server_settings_client_certificate_label">Certificat del client</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">El prefix IMAP no pot estar en blanc.</string>
+    <string name="account_server_settings_client_certificate_none_selected">Cap</string>
+    <string name="account_server_settings_server_label">Servidor</string>
+    <string name="account_server_settings_security_label">Seguretat</string>
+</resources>

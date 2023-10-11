@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_title">K-9 Mail</string>
+    <string name="account_setup_options_account_name_error_blank">El nom del compte no pot estar en blanc.</string>
+    <string name="account_setup_options_account_check_frequency_label">Freqüència de comprovació</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Configura automàticament</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Aquesta configuració no és fiable</string>
+    <string name="account_setup_button_finish">Finalitza</string>
+    <string name="account_setup_options_email_signature_label">Signatura de correu electrònic</string>
+    <string name="account_setup_options_email_display_count_label">Nombre de missatges a mostrar</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Configureu manualment</string>
+    <string name="account_setup_options_email_signature_error_blank">El nom de la signatura de correu electrònic no pot estar en blanc.</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">És necessari aprovar la configuració.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Hem rebut la configuració del vostre servidor de correu electrònic a través d\'una connexió que no és tan segura com ens agradaria. Això significa que hi ha una petita possibilitat que algú la pugui haver modificat. Podríeu comprovar la configuració proporcionada per assegurar-vos que és com hauria de ser\?</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Edita la configuració</string>
+    <string name="account_setup_error_unknown">Error desconegut</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">No s\'ha trobat cap configuració</string>
+    <string name="account_setup_options_top_bar_title">Opcions del compte</string>
+    <string name="account_setup_options_account_name_label">Nom del compte</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">S\'ha trobat una configuració</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">Cal l\'adreça de correu electrònic.</string>
+    <string name="account_setup_options_display_name_label">Nom a mostrar</string>
+    <string name="account_setup_auto_discovery_loading_error">Ha fallat la càrrega de la configuració de correu electrònic</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Confio en aquesta configuració</string>
+    <string name="account_setup_options_display_name_error_required">Cal el nom a mostrar.</string>
+    <string name="account_setup_error_network">Xarxa</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">L\'adreça de correu electrònic no és vàlida.</string>
+    <string name="account_setup_options_email_check_frequency_never">Mai</string>
+    <string name="account_setup_auto_discovery_loading_message">Cercant els detalls del correu electrònic</string>
+    <string name="account_setup_options_section_sync_options_">Opcions de sincronització</string>
+    <string name="account_setup_options_show_notifications_label">Mostra les notificacions</string>
+    <string name="account_setup_options_section_display_options">Opcions de visualització</string>
+</resources>

@@ -1,2 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_oauth_sign_in_description">Vi kopplar vidare till din e-postoperatör för inloggning. Du behöver godkänna appåtkomst till ditt e-postkonto.</string>
+</resources>

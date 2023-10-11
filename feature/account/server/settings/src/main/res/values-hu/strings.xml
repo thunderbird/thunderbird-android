@@ -1,2 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_settings_validation_error_server_required">A kiszolgálónév megadása szükséges.</string>
+    <string name="account_server_settings_validation_error_username_required">A felhasználónév megadása szükséges.</string>
+    <string name="account_server_settings_outgoing_top_bar_title">Kimenő kiszolgáló beállításai</string>
+    <string name="account_server_settings_validation_error_password_required">A jelszó megadása szükséges.</string>
+    <string name="account_server_settings_incoming_imap_send_client_id_label">Ügyfél azonosító küldése</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
+    <string name="account_server_settings_authentication_none">Nincs</string>
+    <string name="account_server_settings_authentication_password_encrypted">Titkosított jelszó</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">IMAP névtér automatikus felismerése</string>
+    <string name="account_server_settings_incoming_top_bar_title">Bejövő kiszolgáló beállításai</string>
+    <string name="account_server_settings_authentication_password_cleartext">Normál jelszó</string>
+    <string name="account_server_settings_authentication_label">Hitelesítés</string>
+    <string name="account_server_settings_connection_security_none">Nincs</string>
+    <string name="account_server_settings_port_label">Port</string>
+    <string name="account_server_settings_incoming_imap_compression_label">Tömörítés használata</string>
+    <string name="account_server_settings_validation_error_port_required">A port megadása szükséges.</string>
+    <string name="account_server_settings_authentication_client_certificate">Ügyfél tanúsítvány</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">IMAP útvonal előtag</string>
+    <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
+    <string name="account_server_settings_protocol_type_label">Protokoll</string>
+    <string name="account_server_settings_username_label">Felhasználónév</string>
+    <string name="account_server_settings_validation_error_port_invalid">A port érvénytelen (legyen 1–65535 között).</string>
+    <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
+    <string name="account_server_settings_client_certificate_label">Ügyfél tanúsítvány</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">Az imap előtag nem lehet üres.</string>
+    <string name="account_server_settings_client_certificate_none_selected">Nincs</string>
+    <string name="account_server_settings_server_label">Kiszolgáló</string>
+    <string name="account_server_settings_security_label">Biztonság</string>
+</resources>

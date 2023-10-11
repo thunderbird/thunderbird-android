@@ -5,7 +5,7 @@
     <!--Used in AndroidManifest.xml-->
     <string name="app_name">K-9 Mail</string>
     <string name="shortcuts_title">K-9 アカウント</string>
-    <string name="unread_widget_label">未読件数</string>
+    <string name="unread_widget_label">K-9 未読</string>
     <!--Used in the about dialog-->
     <string name="app_authors">The K-9 Dog Walkers</string>
     <string name="source_code">ソースコード</string>
@@ -16,37 +16,37 @@
     <string name="get_help_title">ヘルプ</string>
     <string name="user_forum_title">ユーザーフォーラム</string>
     <string name="about_fediverse_title">Fediverse</string>
-    <string name="about_twitter_title">Twitter</string>
     <string name="about_libraries">ライブラリー</string>
     <string name="license">ライセンス</string>
     <string name="changelog_title">変更履歴</string>
     <string name="changelog_loading_error">変更履歴を読み込めませんでした。</string>
     <string name="changelog_version_title">バージョン %s</string>
-    <string name="changelog_recent_changes_title">新着</string>
-    <string name="changelog_show_recent_changes">アプリの更新後に更新内容を表示</string>
+    <string name="changelog_recent_changes_title">新着情報</string>
+    <string name="changelog_show_recent_changes">アプリの更新後に変更履歴を表示する</string>
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
-    <string name="changelog_snackbar_text">このリリースの更新内容を確認する</string>
+    <string name="changelog_snackbar_text">このリリースの新着情報を確認してください</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">表示</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nK-9 Mail で Android デバイスから送信しました。簡単で申し訳ありません。</string>
+    <string name="default_signature">--
+\nK-9 Mail で Android 端末から送信しました。簡単ではありますが、以上でご挨拶とさせていただきます。</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" はK-9 Mailから削除されます。</string>
+    <string name="account_delete_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" は K-9 Mail から削除されます。</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">作者</string>
     <string name="about_title">K-9 Mail について</string>
-    <string name="accounts_title">アカウント一覧</string>
-    <string name="advanced">拡張機能</string>
+    <string name="accounts_title">アカウント</string>
+    <string name="advanced">拡張</string>
     <string name="compose_title_compose">作成</string>
     <string name="compose_title_reply">返信</string>
     <string name="compose_title_reply_all">全員に返信</string>
     <string name="compose_title_forward">転送</string>
     <string name="compose_title_forward_as_attachment">添付として転送</string>
-    <string name="choose_account_title">アカウントの選択</string>
-    <string name="choose_folder_title">フォルダ選択</string>
+    <string name="choose_account_title">アカウントを選択</string>
+    <string name="choose_folder_title">フォルダーを選択</string>
     <string name="choose_folder_move_title">…へ移動</string>
     <string name="choose_folder_copy_title">…へコピー</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g>件選択しました</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 通を選択中</string>
     <string name="next_action">次へ</string>
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">OK</string>
@@ -69,18 +69,18 @@
     <string name="save_draft_action">下書きへ保存</string>
     <string name="check_mail_action">メール受信</string>
     <string name="send_messages_action">メール送信</string>
-    <string name="refresh_folders_action">フォルダ一覧を再読込</string>
-    <string name="filter_folders_action">フォルダを探す</string>
-    <string name="add_account_action">アカウント追加</string>
+    <string name="refresh_folders_action">フォルダー一覧を再読み込み</string>
+    <string name="filter_folders_action">フォルダーを探す</string>
+    <string name="add_account_action">アカウントを追加</string>
     <string name="compose_action">作成</string>
     <string name="search_action">検索</string>
     <string name="search_everywhere_action">あらゆる所を検索</string>
     <string name="search_results">検索結果</string>
     <string name="new_messages_title">新着メッセージ</string>
     <string name="preferences_action">設定</string>
-    <string name="folders_action">フォルダ管理</string>
+    <string name="folders_action">フォルダーを管理</string>
     <string name="account_settings_action">アカウント設定</string>
-    <string name="remove_account_action">アカウント削除</string>
+    <string name="remove_account_action">アカウントを削除</string>
     <string name="mark_as_read_action">既読にする</string>
     <string name="send_alternate_action">共有</string>
     <string name="send_alternate_chooser_title">アプリケーションを選択</string>
@@ -88,21 +88,21 @@
     <string name="unflag_action">スターをはずす</string>
     <string name="copy_action">コピー</string>
     <string name="unsubscribe_action">購読解除</string>
-    <string name="show_headers_action">ヘッダを表示</string>
+    <string name="show_headers_action">ヘッダーを表示</string>
     <plurals name="copy_address_to_clipboard">
-        <item quantity="other">アドレスをクリップボードにコピーしました</item>
+        <item quantity="other">メールアドレスをクリップボードにコピーしました</item>
     </plurals>
     <string name="copy_subject_to_clipboard">件名をクリップボードにコピーしました</string>
     <string name="message_view_theme_action_dark">ダークテーマに切り替え</string>
     <string name="message_view_theme_action_light">ライトテーマに切り替え</string>
     <string name="mark_as_unread_action">未読にする</string>
     <string name="read_receipt">開封確認</string>
-    <string name="read_receipt_enabled">開封確認を要求</string>
-    <string name="read_receipt_disabled">開封確認を要求しない</string>
-    <string name="add_attachment_action">添付追加</string>
-    <string name="empty_trash_action">ゴミ箱を空に</string>
-    <string name="expunge_action">完全削除(Expunge)</string>
-    <string name="about_action">k9mailについて</string>
+    <string name="read_receipt_enabled">開封確認を要求します</string>
+    <string name="read_receipt_disabled">開封確認を要求しません</string>
+    <string name="add_attachment_action">添付ファイルを追加</string>
+    <string name="empty_trash_action">ごみ箱を空にする</string>
+    <string name="expunge_action">完全削除 (Expunge)</string>
+    <string name="about_action">K-9 Mail について</string>
     <string name="prefs_title">グローバル設定</string>
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(件名なし)</string>
@@ -151,7 +151,7 @@
     <string name="special_mailbox_name_inbox">受信トレイ</string>
     <string name="special_mailbox_name_outbox">送信トレイ</string>
     <string name="special_mailbox_name_drafts">下書き</string>
-    <string name="special_mailbox_name_trash">ゴミ箱</string>
+    <string name="special_mailbox_name_trash">ごみ箱</string>
     <string name="special_mailbox_name_sent">送信済み</string>
     <string name="send_failure_subject">メール送信に失敗しました</string>
     <string name="version">バージョン</string>
@@ -324,12 +324,12 @@
     <string name="account_setup_expunge_policy_on_poll">同期のタイミングで</string>
     <string name="account_setup_expunge_policy_manual">手動</string>
     <string name="account_setup_incoming_autodetect_namespace_label">IMAP名前空間を自動検出</string>
-    <string name="account_setup_incoming_imap_path_prefix_label">IMAP ルートフォルダパス</string>
-    <string name="drafts_folder_label">下書きフォルダ名</string>
-    <string name="sent_folder_label">送信済みフォルダ名</string>
-    <string name="trash_folder_label">ゴミ箱フォルダ名</string>
-    <string name="archive_folder_label">アーカイブフォルダ名</string>
-    <string name="spam_folder_label">迷惑メールフォルダ名</string>
+    <string name="account_setup_incoming_imap_path_prefix_label">IMAP ルートフォルダーパス</string>
+    <string name="drafts_folder_label">下書きフォルダー</string>
+    <string name="sent_folder_label">送信済みトレイ</string>
+    <string name="trash_folder_label">ごみ箱フォルダー</string>
+    <string name="archive_folder_label">アーカイブフォルダー</string>
+    <string name="spam_folder_label">迷惑メールフォルダー</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">購読フォルダのみ表示</string>
     <string name="account_setup_auto_expand_folder">自動表示フォルダ</string>
     <string name="account_setup_outgoing_title">送信メールサーバ設定</string>
@@ -721,8 +721,8 @@
     <string name="dialog_confirm_delete_cancel_button">いいえ</string>
     <string name="dialog_confirm_mark_all_as_read_title">すべて既読にする確認</string>
     <string name="dialog_confirm_mark_all_as_read_message">すべてのメッセージを既読にしますか？</string>
-    <string name="dialog_confirm_empty_trash_title">ゴミ箱を空にする確認</string>
-    <string name="dialog_confirm_empty_trash_message">ゴミ箱を空にしてもよろしいですか?</string>
+    <string name="dialog_confirm_empty_trash_title">ごみ箱を空にするか確認してください</string>
+    <string name="dialog_confirm_empty_trash_message">ごみ箱フォルダーを空にしますか？</string>
     <string name="dialog_confirm_mark_all_as_read_confirm_button">はい</string>
     <string name="dialog_confirm_mark_all_as_read_cancel_button">しない</string>
     <string name="dialog_confirm_spam_title">迷惑メールフォルダへの移動の確認</string>

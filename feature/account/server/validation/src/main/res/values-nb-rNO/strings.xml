@@ -1,2 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_incoming_loading_message">Sjekker innstillinger for innkommende tjener …</string>
+    <string name="account_server_validation_error_authentication">Identitetbekreftelsesfeil</string>
+    <string name="account_server_validation_error_certificate">Sertifikatsfeil</string>
+    <string name="account_server_validation_outgoing_loading_message">Sjekker innstillinger for utgående tjener …</string>
+    <string name="account_server_validation_error_network">Nettverksfeil</string>
+    <string name="account_server_validation_outgoing_success">Ugyldige innstillinger for utgående tjener.</string>
+    <string name="account_server_validation_error_unknown">Ukjent feil</string>
+    <string name="account_server_validation_sign_in">Logg inn</string>
+    <string name="account_server_validation_outgoing_loading_error">Kunne ikke sjekke innstillinger for utgående tjener.</string>
+    <string name="account_server_validation_incoming_success">Innstillinger for innkommende tjener stemmer.</string>
+    <string name="account_server_validation_incoming_loading_error">Kunne ikke sjekke innstillinger for innkommende tjener.</string>
+    <string name="account_server_validation_error_server">Tjenerfeil</string>
+</resources>

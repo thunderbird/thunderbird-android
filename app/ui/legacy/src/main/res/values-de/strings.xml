@@ -16,10 +16,9 @@
     <string name="get_help_title">Hilfe erhalten</string>
     <string name="user_forum_title">Anwenderforum</string>
     <string name="about_fediverse_title">Fediverse</string>
-    <string name="about_twitter_title">Twitter</string>
     <string name="about_libraries">Bibliotheken</string>
     <string name="license">Lizenz</string>
-    <string name="changelog_title">Changelog</string>
+    <string name="changelog_title">Änderungsprotokoll</string>
     <string name="changelog_loading_error">Changelog konnte nicht geladen werden.</string>
     <string name="changelog_version_title">Version %s</string>
     <string name="changelog_recent_changes_title">Was gibt es Neues</string>
@@ -416,7 +415,7 @@
     <string name="account_settings_show_pictures_label">Bilder automatisch herunterladen</string>
     <string name="account_settings_show_pictures_never">Niemals</string>
     <string name="account_settings_show_pictures_only_from_contacts">Nur von Kontakten</string>
-    <string name="account_settings_show_pictures_always">Immer</string>
+    <string name="account_settings_show_pictures_always">Von jedem</string>
     <string name="account_settings_composition">E-Mail-Versand</string>
     <string name="account_settings_default_quoted_text_shown_label">Nachricht beim Antworten zitieren</string>
     <string name="account_settings_default_quoted_text_shown_summary">Ursprüngliche Nachricht als Zitat in die Antwort einfügen.</string>
@@ -720,8 +719,8 @@
         <item quantity="one">Möchtest du diese Nachricht wirklich löschen?</item>
         <item quantity="other">Möchtest du wirklich <xliff:g id="message_count">%1$d</xliff:g> Nachrichten löschen?</item>
     </plurals>
-    <string name="dialog_confirm_delete_confirm_button">Löschen</string>
-    <string name="dialog_confirm_delete_cancel_button">Nicht löschen</string>
+    <string name="dialog_confirm_delete_confirm_button">Ja</string>
+    <string name="dialog_confirm_delete_cancel_button">Nein</string>
     <string name="dialog_confirm_mark_all_as_read_title">Alle als gelesen markieren bestätigen</string>
     <string name="dialog_confirm_mark_all_as_read_message">Möchtest du alle Nachrichten als gelesen markieren?</string>
     <string name="dialog_confirm_empty_trash_title">Leeren des Papierkorbs bestätigen</string>
@@ -1080,4 +1079,8 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="background_work_notification_remove_account">Entfernen des Kontos…</string>
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="message_list_content_description_unread_prefix">ungelesen, %s</string>
+    <string name="general_settings_post_remove_action_return_to_list">Zurück zur Nachrichtenliste</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Vorherige Nachricht anzeigen</string>
+    <string name="general_settings_post_remove_action_show_next_message">Nächste Nachricht anzeigen</string>
+    <string name="general_settings_post_remove_action_title">Nach dem Löschen oder Verschieben einer Nachricht</string>
 </resources>

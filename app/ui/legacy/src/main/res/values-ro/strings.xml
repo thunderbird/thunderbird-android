@@ -16,7 +16,6 @@
     <string name="get_help_title">Obține ajutor</string>
     <string name="user_forum_title">Forum utilizatori</string>
     <string name="about_fediverse_title">Fediverse</string>
-    <string name="about_twitter_title">Twitter</string>
     <string name="about_libraries">Biblioteci</string>
     <string name="license">Licență</string>
     <string name="changelog_title">Jurnal de modificări</string>
@@ -1090,4 +1089,8 @@ Poți păstra acest mesaj și să îl folosești drept copie de siguranță a ch
     <string name="background_work_notification_remove_account">Se elimină contul…</string>
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="message_list_content_description_unread_prefix">necitit, %s</string>
+    <string name="general_settings_post_remove_action_return_to_list">Revenire la lista mesajelor</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Se afișează mesajul anterior</string>
+    <string name="general_settings_post_remove_action_show_next_message">Se afișează următorul mesaj</string>
+    <string name="general_settings_post_remove_action_title">După ștergerea sau mutarea unui mesaj</string>
 </resources>

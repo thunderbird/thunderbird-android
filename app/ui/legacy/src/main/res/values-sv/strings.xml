@@ -4,19 +4,18 @@
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
     <string name="app_name">K-9 Mail</string>
-    <string name="shortcuts_title">K-9 Konton</string>
-    <string name="unread_widget_label">K-9 Olästa</string>
+    <string name="shortcuts_title">K-9-konton</string>
+    <string name="unread_widget_label">K-9 olästa</string>
     <!--Used in the about dialog-->
     <string name="app_authors">The K-9 Dog Walkers</string>
     <string name="source_code">Källkod</string>
-    <string name="app_license">Apache License, Version 2.0</string>
+    <string name="app_license">Apachelicens, version 2.0</string>
     <string name="about_project_title">Projekt med öppen källkod</string>
     <string name="about_website_title">Webbplats</string>
     <string name="user_manual_title">Användarmanual</string>
     <string name="get_help_title">Få hjälp</string>
     <string name="user_forum_title">Användarforum</string>
     <string name="about_fediverse_title">Fediversum</string>
-    <string name="about_twitter_title">Twitter</string>
     <string name="about_libraries">Bibliotek</string>
     <string name="license">Licens</string>
     <string name="changelog_title">Ändringslogg</string>
@@ -1081,4 +1080,8 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="background_work_notification_remove_account">Tar bort konto…</string>
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="message_list_content_description_unread_prefix">oläst, %s</string>
+    <string name="general_settings_post_remove_action_return_to_list">Återgå till meddelandelista</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Visa förra meddelandet</string>
+    <string name="general_settings_post_remove_action_show_next_message">Visa nästa meddelande</string>
+    <string name="general_settings_post_remove_action_title">Efter radering eller flytt av ett meddelande</string>
 </resources>

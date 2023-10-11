@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_options_account_name_error_blank">Kontoname darf nicht leer sein.</string>
+    <string name="account_setup_options_account_check_frequency_label">Prüfintervall</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Automatisch konfigurieren</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Diese Konfiguration ist nicht vertrauenswürdig</string>
+    <string name="account_setup_button_finish">Fertigstellen</string>
+    <string name="account_setup_options_email_signature_label">E-Mail-Signatur</string>
+    <string name="account_setup_options_email_display_count_label">Anzahl der anzuzeigenden Nachrichten</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Manuell konfigurieren</string>
+    <string name="account_setup_options_email_signature_error_blank">Name der E-Mail-Signatur darf nicht leer sein.</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Es ist erforderlich, um die Konfiguration zu bestätigen.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Wir haben die Konfiguration für deinen E-Mail-Server über eine Verbindung erhalten, die nicht so sicher ist, wie es wünschenswert wäre. Das bedeutet, dass eine geringe Möglichkeit besteht, dass jemand sie verändert haben könnte. Könntest du bitte die bereitgestellte Konfiguration noch einmal überprüfen, um sicherzustellen, dass sie so ist, wie sie sein sollte\?</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Konfiguration bearbeiten</string>
+    <string name="account_setup_error_unknown">Unbekannter Fehler</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Konfiguration nicht gefunden</string>
+    <string name="account_setup_options_top_bar_title">Kontoeinstellungen</string>
+    <string name="account_setup_options_account_name_label">Kontoname</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Konfiguration gefunden</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">E-Mail-Adresse ist erforderlich.</string>
+    <string name="account_setup_options_display_name_label">Anzeigename</string>
+    <string name="account_setup_auto_discovery_loading_error">Die E-Mail-Konfiguration konnte nicht geladen werden</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Ich vertraue dieser Konfiguration</string>
+    <string name="account_setup_options_display_name_error_required">Anzeigename ist erforderlich.</string>
+    <string name="account_setup_error_network">Netzwerk</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">E-Mail-Adresse ist ungültig.</string>
+    <string name="account_setup_options_email_check_frequency_never">Niemals</string>
+    <string name="account_setup_auto_discovery_loading_message">E-Mail-Details finden</string>
+    <string name="account_setup_options_section_sync_options_">Synchronisierungsoptionen</string>
+    <string name="account_setup_options_show_notifications_label">Benachrichtigungen anzeigen</string>
+    <string name="account_setup_options_section_display_options">Anzeigeoptionen</string>
+    <string name="account_setup_title">K-9 Mail</string>
+</resources>

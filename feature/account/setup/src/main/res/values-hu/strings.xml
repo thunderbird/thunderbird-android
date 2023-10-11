@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_options_account_name_error_blank">A fióknév nem lehet üres.</string>
+    <string name="account_setup_options_account_check_frequency_label">Ellenőrzési gyakoriság</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Automatikus konfigurálás</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Ez a konfiguráció nem megbízható.</string>
+    <string name="account_setup_button_finish">Befejezés</string>
+    <string name="account_setup_options_email_signature_label">E-mail aláírás</string>
+    <string name="account_setup_options_email_display_count_label">Megjelenítendő üzenetek száma</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Manuális konfigurálás</string>
+    <string name="account_setup_options_email_signature_error_blank">Az e-mail aláírás név nem lehet üres.</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">A konfiguráció jóváhagyása szükséges.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Az e-mail kiszolgáló konfigurációját olyan kapcsolaton keresztül kaptuk meg, amely nem olyan biztonságos, mint szeretnénk. Ez azt jelenti, hogy kicsi az esélye annak, hogy valaki megváltoztatta. Ellenőrizzük még egyszer a megadott konfigurációt, hogy megbizonyosodjunk arról, hogy olyan, amilyennek lennie kell\?</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Konfiguráció szerkesztése</string>
+    <string name="account_setup_error_unknown">Ismeretlen hiba</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Nem található konfiguráció</string>
+    <string name="account_setup_options_top_bar_title">Fiók opciók</string>
+    <string name="account_setup_options_account_name_label">Fióknév</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Konfiguráció található</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">Az e-mail cím megadása szükséges.</string>
+    <string name="account_setup_options_display_name_label">Megjelenített név</string>
+    <string name="account_setup_auto_discovery_loading_error">Nem sikerült betölteni az e-mail konfigurációt.</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Megbízom a konfigurációban</string>
+    <string name="account_setup_options_display_name_error_required">A megjelenített név kötelező.</string>
+    <string name="account_setup_error_network">Hálózat</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Az e-mail cím érvénytelen.</string>
+    <string name="account_setup_options_email_check_frequency_never">Soha</string>
+    <string name="account_setup_auto_discovery_loading_message">E-mail adatok keresése</string>
+    <string name="account_setup_options_section_sync_options_">Szinkronizálási opciók</string>
+    <string name="account_setup_options_show_notifications_label">Értesítések megjelenítése</string>
+    <string name="account_setup_options_section_display_options">Megjelenítési opciók</string>
+    <string name="account_setup_title">K-9 Mail</string>
+</resources>

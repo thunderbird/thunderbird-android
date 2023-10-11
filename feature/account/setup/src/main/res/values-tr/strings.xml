@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_options_account_name_error_blank">Hesap adı boş olamaz.</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Otomatik olarak yapılandır</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Bu yapılandırma güvenilir değil</string>
+    <string name="account_setup_button_finish">Bitti</string>
+    <string name="account_setup_options_email_signature_label">E-posta imzası</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Elle yapılandır</string>
+    <string name="account_setup_options_email_signature_error_blank">E-posta imza adı boş olamaz.</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Yapılandırmanın onaylanması zorunludur.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">E-posta sunucunuzun yapılandırmasını istediğimiz kadar güvenli olmayan bir bağlantı üzerinden aldık. Bu, düşük de olsa birisinin bunu değiştirmiş olma ihtimalinin olduğu anlamına geliyor. Olması gerektiği gibi olduğundan emin olmak için lütfen sağlanan yapılandırmayı iki kez gözden geçirir misiniz\?</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Yapılandırmayı düzenle</string>
+    <string name="account_setup_error_unknown">Bilinmeyen hata</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Yapılandırma Bulunamadı</string>
+    <string name="account_setup_options_top_bar_title">Hesap seçenekleri</string>
+    <string name="account_setup_options_account_name_label">Hesap adı</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Yapılandırma Bulundu</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">E-posta adresi zorunludur.</string>
+    <string name="account_setup_options_display_name_label">Görünen ad</string>
+    <string name="account_setup_auto_discovery_loading_error">E-posta yapılandırması yüklenemedi</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Bu yapılandırmaya güveniyorum</string>
+    <string name="account_setup_options_display_name_error_required">Görünen ad zorunludur.</string>
+    <string name="account_setup_error_network">Ağ</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">E-posta adresi geçersiz.</string>
+    <string name="account_setup_auto_discovery_loading_message">E-posta bilgileri bulunuyor</string>
+    <string name="account_setup_options_section_sync_options_">Eşzamanlama seçenekleri</string>
+    <string name="account_setup_options_section_display_options">Görüntüleme seçenekleri</string>
+    <string name="account_setup_title">K-9 Posta</string>
+    <string name="account_setup_options_account_check_frequency_label">Denetleme sıklığı</string>
+    <string name="account_setup_options_email_display_count_label">Görüntülenecek ileti sayısı</string>
+    <string name="account_setup_options_email_check_frequency_never">Hiçbir zaman</string>
+    <string name="account_setup_options_show_notifications_label">Bildirimleri göster</string>
+</resources>

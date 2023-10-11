@@ -1,2 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_button_finish">Ljúka</string>
+    <string name="account_setup_error_network">Netkerfi</string>
+    <string name="account_setup_title">K-9 - Póstur</string>
+    <string name="account_setup_options_account_name_error_blank">Heiti notandaaðgangs má ekki vera tómt.</string>
+    <string name="account_setup_options_account_check_frequency_label">Tíðni athugana</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Stilla sjálfvirkt</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Þessari uppsetningu er ekki treyst</string>
+    <string name="account_setup_options_email_signature_label">Undirskrift tölvupósts</string>
+    <string name="account_setup_options_email_display_count_label">Fjöldi skilaboða sem á að birta</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Stilla handvirkt</string>
+    <string name="account_setup_options_email_signature_error_blank">Undirritun tölvupósts má ekki vera tóm.</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Þetta er nauðsynlegt til að samþykkja uppsetninguna.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Breyta uppsetningu</string>
+    <string name="account_setup_error_unknown">Óþekkt villa</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Uppsetning fannst ekki</string>
+    <string name="account_setup_options_top_bar_title">Valkostir aðgangs</string>
+    <string name="account_setup_options_account_name_label">Heiti notandaaðgangs</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Uppsetning fannst</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">Tölvupóstfang er nauðsynlegt.</string>
+    <string name="account_setup_options_display_name_label">Birtingarnafn</string>
+    <string name="account_setup_auto_discovery_loading_error">Mistókst að hlaða inn tölvupóststillingum</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Ég treysti þessari uppsetningu</string>
+    <string name="account_setup_options_display_name_error_required">Birtingarnafn er nauðsynlegt.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Tölvupóstfangið er ógilt.</string>
+    <string name="account_setup_options_email_check_frequency_never">Aldrei</string>
+    <string name="account_setup_auto_discovery_loading_message">Finna nánar um tölvupóst</string>
+    <string name="account_setup_options_section_sync_options_">Valkostir samstillinga</string>
+    <string name="account_setup_options_show_notifications_label">Birta tilkynningar</string>
+    <string name="account_setup_options_section_display_options">Valkostir birtingar</string>
+</resources>
