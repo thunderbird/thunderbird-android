@@ -1,6 +1,5 @@
 package com.fsck.k9
 
-import app.k9mail.autodiscovery.providersxml.autodiscoveryProvidersXmlModule
 import app.k9mail.feature.account.oauth.featureAccountOAuthModule
 import app.k9mail.feature.launcher.di.featureLauncherModule
 import com.fsck.k9.account.accountModule
@@ -35,7 +34,6 @@ val uiModules = listOf(
     chooseFolderUiModule,
     contactsModule,
     accountModule,
-    autodiscoveryProvidersXmlModule,
     viewModule,
     changelogUiModule,
     messageSourceModule,
