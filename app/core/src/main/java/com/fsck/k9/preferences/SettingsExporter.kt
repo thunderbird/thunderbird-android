@@ -329,9 +329,11 @@ class SettingsExporter(
 
         // Write name belonging to the identity
         val name = prefs[prefix + IDENTITY_NAME_KEY + suffix] as String?
-        serializer.startTag(null, NAME_ELEMENT)
-        serializer.text(name)
-        serializer.endTag(null, NAME_ELEMENT)
+        if (name != null) {
+            serializer.startTag(null, NAME_ELEMENT)
+            serializer.text(name)
+            serializer.endTag(null, NAME_ELEMENT)
+        }
 
         // Write email address belonging to the identity
         val email = prefs[prefix + IDENTITY_EMAIL_KEY + suffix] as String?
