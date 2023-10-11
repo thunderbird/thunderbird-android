@@ -1,0 +1,82 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>CyclomaticComplexMethod:FlowedMessageUtils.kt$FlowedMessageUtils$@JvmStatic fun deflow(text: String, delSp: Boolean): String</ID>
+    <ID>CyclomaticComplexMethod:MimeParameterDecoder.kt$MimeParameterDecoder$private fun convertToParameterSection(parameterName: String, parameterValue: ParameterValue): ParameterSection?</ID>
+    <ID>LongMethod:MessageTest.kt$MessageTest$@Test fun toBodyPart()</ID>
+    <ID>LongMethod:MessageTest.kt$MessageTest$@Test fun writeTo_withNestedMessage()</ID>
+    <ID>MagicNumber:BoundaryGenerator.kt$BoundaryGenerator$36</ID>
+    <ID>MagicNumber:BoundaryGenerator.kt$BoundaryGenerator$4</ID>
+    <ID>MagicNumber:DecoderUtil.kt$DecoderUtil$0x1B</ID>
+    <ID>MagicNumber:DecoderUtil.kt$DecoderUtil$0x28</ID>
+    <ID>MagicNumber:DecoderUtil.kt$DecoderUtil$0x42</ID>
+    <ID>MagicNumber:Hex.kt$Hex$4</ID>
+    <ID>MagicNumber:MimeExtensions.kt$126</ID>
+    <ID>MagicNumber:MimeExtensions.kt$33</ID>
+    <ID>MagicNumber:MimeExtensions.kt$39</ID>
+    <ID>MagicNumber:MimeExtensions.kt$42</ID>
+    <ID>MagicNumber:MimeExtensions.kt$90</ID>
+    <ID>MagicNumber:MimeExtensions.kt$91</ID>
+    <ID>MagicNumber:MimeExtensions.kt$93</ID>
+    <ID>MagicNumber:MimeExtensions.kt$94</ID>
+    <ID>MagicNumber:MimeHeader.kt$MimeHeader$1024</ID>
+    <ID>MagicNumber:MimeHeaderChecker.kt$UnstructuredHeaderChecker$1000</ID>
+    <ID>MagicNumber:MimeHeaderChecker.kt$UnstructuredHeaderChecker$998</ID>
+    <ID>MagicNumber:MimeHeaderParser.kt$MimeHeaderParser$10</ID>
+    <ID>MagicNumber:MimeHeaderParser.kt$MimeHeaderParser$4</ID>
+    <ID>MagicNumber:MimeParameterDecoder.kt$MimeParameterDecoder$3</ID>
+    <ID>MagicNumber:MimeParameterEncoder.kt$MimeParameterEncoder$126</ID>
+    <ID>MagicNumber:MimeParameterEncoder.kt$MimeParameterEncoder$3</ID>
+    <ID>MagicNumber:MimeParameterEncoder.kt$MimeParameterEncoder$33</ID>
+    <ID>MagicNumber:MimeParameterEncoder.kt$MimeParameterEncoder$35</ID>
+    <ID>MagicNumber:MimeParameterEncoder.kt$MimeParameterEncoder$91</ID>
+    <ID>MagicNumber:MimeParameterEncoder.kt$MimeParameterEncoder$93</ID>
+    <ID>MagicNumber:Utf8.kt$0x010000</ID>
+    <ID>MagicNumber:Utf8.kt$0x10000</ID>
+    <ID>MagicNumber:Utf8.kt$0x3f</ID>
+    <ID>MagicNumber:Utf8.kt$0x80</ID>
+    <ID>MagicNumber:Utf8.kt$0x800</ID>
+    <ID>MagicNumber:Utf8.kt$0xc0</ID>
+    <ID>MagicNumber:Utf8.kt$0xd800</ID>
+    <ID>MagicNumber:Utf8.kt$0xdbff</ID>
+    <ID>MagicNumber:Utf8.kt$0xdc00</ID>
+    <ID>MagicNumber:Utf8.kt$0xdfff</ID>
+    <ID>MagicNumber:Utf8.kt$0xe0</ID>
+    <ID>MagicNumber:Utf8.kt$0xe000</ID>
+    <ID>MagicNumber:Utf8.kt$0xf0</ID>
+    <ID>MagicNumber:Utf8.kt$10</ID>
+    <ID>MagicNumber:Utf8.kt$12</ID>
+    <ID>MagicNumber:Utf8.kt$18</ID>
+    <ID>MagicNumber:Utf8.kt$3</ID>
+    <ID>MagicNumber:Utf8.kt$4</ID>
+    <ID>MagicNumber:Utf8.kt$6</ID>
+    <ID>MaxLineLength:BoundaryGeneratorTest.kt$BoundaryGeneratorTest$0</ID>
+    <ID>ReturnCount:DecoderUtil.kt$DecoderUtil$@JvmStatic fun decodeEncodedWords(body: String, message: Message?): String</ID>
+    <ID>ReturnCount:DecoderUtil.kt$DecoderUtil$private fun extractEncodedWord(body: String, begin: Int, end: Int, message: Message?): EncodedWord?</ID>
+    <ID>ReturnCount:FormatFlowedHelper.kt$FormatFlowedHelper$@JvmStatic fun checkFormatFlowed(contentTypeHeaderValue: String?): FormatFlowedResult</ID>
+    <ID>ReturnCount:MimeParameterDecoder.kt$MimeParameterDecoder$private fun areParameterSectionsValid(parameterSections: MutableList&lt;ParameterSection&gt;): Boolean</ID>
+    <ID>ReturnCount:MimeParameterDecoder.kt$MimeParameterDecoder$private fun convertToParameterSection(parameterName: String, parameterValue: ParameterValue): ParameterSection?</ID>
+    <ID>SwallowedException:DecoderUtil.kt$DecoderUtil$e: IOException</ID>
+    <ID>SwallowedException:DecoderUtil.kt$DecoderUtil$e: MessagingException</ID>
+    <ID>SwallowedException:LocalKeyStore.kt$LocalKeyStore$e: FileNotFoundException</ID>
+    <ID>SwallowedException:LocalKeyStore.kt$LocalKeyStore$e: KeyStoreException</ID>
+    <ID>SwallowedException:MimeParameterDecoder.kt$MimeParameterDecoder$e: IllegalCharsetNameException</ID>
+    <ID>SwallowedException:MimeParameterDecoder.kt$MimeParameterDecoder$e: MimeHeaderParserException</ID>
+    <ID>SwallowedException:MimeType.kt$MimeType.Companion$e: IllegalArgumentException</ID>
+    <ID>ThrowsCount:LocalKeyStore.kt$LocalKeyStore$private fun writeCertificateFile()</ID>
+    <ID>ThrowsCount:MimeHeaderChecker.kt$UnstructuredHeaderChecker$fun checkHeaderValue()</ID>
+    <ID>TooGenericExceptionCaught:LocalKeyStore.kt$LocalKeyStore$e: Exception</ID>
+    <ID>TooManyFunctions:Logger.kt$Logger</ID>
+    <ID>TooManyFunctions:MessageIdParser.kt$MessageIdParser</ID>
+    <ID>TooManyFunctions:MimeExtensions.kt$com.fsck.k9.mail.internet.MimeExtensions.kt</ID>
+    <ID>TooManyFunctions:MimeHeader.kt$MimeHeader</ID>
+    <ID>TooManyFunctions:MimeHeaderChecker.kt$UnstructuredHeaderChecker</ID>
+    <ID>TooManyFunctions:MimeHeaderParser.kt$MimeHeaderParser</ID>
+    <ID>TooManyFunctions:MimeParameterDecoder.kt$MimeParameterDecoder</ID>
+    <ID>TooManyFunctions:MimeParameterEncoder.kt$MimeParameterEncoder</ID>
+    <ID>TooManyFunctions:NoOpLogger.kt$NoOpLogger : Logger</ID>
+    <ID>TooManyFunctions:Timber.kt$Timber</ID>
+    <ID>UseRequire:MimeParameterEncoder.kt$MimeParameterEncoder$throw IllegalArgumentException("Unsupported character: $c")</ID>
+  </CurrentIssues>
+</SmellBaseline>

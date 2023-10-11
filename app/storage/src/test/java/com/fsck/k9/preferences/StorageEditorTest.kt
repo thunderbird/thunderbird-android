@@ -181,8 +181,7 @@ class StorageEditorTest : K9RobolectricTest() {
             on { remove(any()) } doAnswer {
                 val key = it.getArgument<String>(0)
                 workingMap.remove(key)
-
-                Unit
+                return@doAnswer
             }
         }
 

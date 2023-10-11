@@ -9,8 +9,8 @@ private const val PERMISSIONS_REQUEST_READ_CONTACTS = 1
 enum class Permission(
     val permission: String,
     val requestCode: Int,
-    @param:StringRes val rationaleTitle: Int,
-    @param:StringRes val rationaleMessage: Int,
+    @StringRes val rationaleTitle: Int,
+    @StringRes val rationaleMessage: Int,
 ) {
     READ_CONTACTS(
         Manifest.permission.READ_CONTACTS,

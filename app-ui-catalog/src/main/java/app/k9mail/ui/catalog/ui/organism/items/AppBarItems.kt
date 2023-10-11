@@ -69,7 +69,7 @@ fun TopAppBarItem(
     TopAppBar(
         title = title,
         subtitle = subtitle,
-        navigationIcon = if (navIcon != null) {
+        navigationIcon = navIcon?.let {
             {
                 IconButton(onClick = {}) {
                     Icon(
@@ -78,8 +78,6 @@ fun TopAppBarItem(
                     )
                 }
             }
-        } else {
-            null
         },
         actions = {
             IconButton(onClick = {}) {

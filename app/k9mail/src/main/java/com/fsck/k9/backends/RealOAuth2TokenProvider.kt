@@ -38,7 +38,9 @@ class RealOAuth2TokenProvider(
         val oldAccessToken = authState.accessToken
 
         try {
-            authState.performActionWithFreshTokens(authService) { accessToken: String?, _, authException: AuthorizationException? ->
+            authState.performActionWithFreshTokens(
+                authService,
+            ) { accessToken: String?, _, authException: AuthorizationException? ->
                 token = accessToken
                 exception = authException
 

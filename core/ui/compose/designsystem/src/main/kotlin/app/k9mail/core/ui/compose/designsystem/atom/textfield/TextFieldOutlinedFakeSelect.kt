@@ -44,15 +44,7 @@ fun TextFieldOutlinedFakeSelect(
     )
 }
 
-private fun optionalLabel(label: String?): @Composable (() -> Unit)? {
-    return if (label != null) {
-        {
-            Text(label)
-        }
-    } else {
-        null
-    }
-}
+private fun optionalLabel(label: String?): @Composable (() -> Unit)? = label?.let { { Text(label) } }
 
 @Preview
 @Composable

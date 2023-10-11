@@ -26,7 +26,7 @@ open class ComposeTest {
 
     fun getString(@StringRes resourceId: Int): String = RuntimeEnvironment.getApplication().getString(resourceId)
 
-    fun runComposeTest(testContent: ComposeContentTestRule.() -> Unit): Unit = with(composeTestRule) {
+    fun runComposeTest(testContent: ComposeContentTestRule.() -> Unit) = with(composeTestRule) {
         testContent()
     }
 }

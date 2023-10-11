@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>MagicNumber:ProvidersXmlDiscovery.kt$ProvidersXmlDiscovery$143</ID>
+    <ID>MagicNumber:ProvidersXmlDiscovery.kt$ProvidersXmlDiscovery$465</ID>
+    <ID>MagicNumber:ProvidersXmlDiscovery.kt$ProvidersXmlDiscovery$587</ID>
+    <ID>MagicNumber:ProvidersXmlDiscovery.kt$ProvidersXmlDiscovery$993</ID>
+    <ID>NestedBlockDepth:ProvidersXmlDiscovery.kt$ProvidersXmlDiscovery$private fun parseProviders(xml: XmlResourceParser, domain: String): Provider?</ID>
+    <ID>ReturnCount:ProvidersXmlDiscovery.kt$ProvidersXmlDiscovery$override fun discover(email: String): DiscoveryResults?</ID>
+    <ID>ReturnCount:ProvidersXmlDiscovery.kt$ProvidersXmlDiscovery$private fun Provider.toIncomingServerSettings(email: String): DiscoveredServerSettings?</ID>
+    <ID>ReturnCount:ProvidersXmlDiscovery.kt$ProvidersXmlDiscovery$private fun Provider.toOutgoingServerSettings(email: String): DiscoveredServerSettings?</ID>
+    <ID>TooGenericExceptionCaught:ProvidersXmlDiscovery.kt$ProvidersXmlDiscovery$e: Exception</ID>
+  </CurrentIssues>
+</SmellBaseline>

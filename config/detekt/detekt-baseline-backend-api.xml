@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>ForbiddenComment:BackendFolder.kt$BackendFolder$// FIXME: add documentation</ID>
+    <ID>TooManyFunctions:Backend.kt$Backend</ID>
+    <ID>TooManyFunctions:BackendFolder.kt$BackendFolder</ID>
+    <ID>TooManyFunctions:SyncListener.kt$SyncListener</ID>
+  </CurrentIssues>
+</SmellBaseline>

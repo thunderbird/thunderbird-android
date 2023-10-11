@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>LongMethod:SrvServiceDiscoveryTest.kt$SrvServiceDiscoveryTest$@Test fun discover_withRequiredServices_shouldCorrectlyPrioritize()</ID>
+  </CurrentIssues>
+</SmellBaseline>

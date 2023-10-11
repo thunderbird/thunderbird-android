@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>TooManyFunctions:Pop3Backend.kt$Pop3Backend : Backend</ID>
+  </CurrentIssues>
+</SmellBaseline>
