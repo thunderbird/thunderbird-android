@@ -17,7 +17,7 @@
     <string name="account_server_settings_incoming_imap_compression_label">圧縮を使用する</string>
     <string name="account_server_settings_validation_error_port_required">ポート番号は必須です。</string>
     <string name="account_server_settings_authentication_client_certificate">クライアント証明書認証</string>
-    <string name="account_server_settings_incoming_imap_prefix_label">IMAP パスのプリフェックス</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">IMAP ルートフォルダーパス</string>
     <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
     <string name="account_server_settings_protocol_type_label">プロトコル</string>
     <string name="account_server_settings_username_label">ユーザー名</string>
