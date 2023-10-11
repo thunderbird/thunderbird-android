@@ -78,7 +78,7 @@
     <string name="search_results">Risultati ricerca</string>
     <string name="new_messages_title">Nuovi messaggi</string>
     <string name="preferences_action">Impostazioni</string>
-    <string name="folders_action">Gestisci cartelle</string>
+    <string name="folders_action">Gestione cartelle</string>
     <string name="account_settings_action">Impostazioni account</string>
     <string name="remove_account_action">Rimuovi account</string>
     <string name="mark_as_read_action">Segna come letto</string>
@@ -829,9 +829,9 @@
         <item quantity="other">Recupero di %d risultati</item>
     </plurals>
     <plurals name="remote_search_downloading_limited">
-        <item quantity="one">Recupero di %1$d di %2$d risultati</item>
-        <item quantity="many">Recupero di %1$d di %2$d risultati</item>
-        <item quantity="other">Recupero di %1$d di %2$d risultati</item>
+        <item quantity="one">Recupero di %1$d risultato su %2$d</item>
+        <item quantity="many">Recupero di %1$d risultati su %2$d</item>
+        <item quantity="other">Recupero di %1$d risultati su %2$d</item>
     </plurals>
     <string name="remote_search_error">Ricerca remota non riuscita</string>
     <string name="account_settings_search">Cerca</string>
