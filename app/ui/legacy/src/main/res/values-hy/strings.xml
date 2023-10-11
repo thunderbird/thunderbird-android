@@ -1,0 +1,488 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!--=== App-specific strings =============================================================-->
+    <!--This should make it easier for forks to change the branding-->
+    <!--Used in AndroidManifest.xml-->
+    <string name="app_name">K-9 Նամակ</string>
+    <string name="shortcuts_title">Կ֊9 հաշիւներ</string>
+    <string name="unread_widget_label">Կ֊9 Չընթերցուած</string>
+    <!--Used in the about dialog-->
+    <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
+    <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+    <!--Default signature-->
+    <string name="default_signature">-- \nՈւղարկուած է իմ Անդրոիդ սարքից Կ֊9 Մեյլ֊ով։ Ներեցէք հակիրճ լինելու համար։</string>
+    <!--General strings that include the app name-->
+    <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" հաշիւն հեռացուելու է Կ֊9 Մեյլ֊ից։</string>
+    <!--=== General strings ==================================================================-->
+    <string name="accounts_title">Հաշիւներ</string>
+    <string name="advanced">Առաջադէմ</string>
+    <string name="compose_title_compose">Գրել</string>
+    <string name="compose_title_reply">Պատասխանել</string>
+    <string name="compose_title_reply_all">Պատասխանել բոլորին</string>
+    <string name="compose_title_forward">Փոխանցել</string>
+    <string name="compose_title_forward_as_attachment">Փոխանցել ինչպես կցորդ</string>
+    <string name="choose_account_title">Ընտրեք հաշիվ</string>
+    <string name="choose_folder_title">Ընտրել պանակ</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> ընտրուած է</string>
+    <string name="next_action">Յաջորդ</string>
+    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
+    <string name="okay_action">Լաւ</string>
+    <string name="cancel_action">Չեղարկել</string>
+    <string name="send_action">Ուղարկել</string>
+    <string name="empty_subject">Վերնագիրը նշուած չէ․ սեղմէք եւս մի անգամ ուղարկելու համար</string>
+    <string name="reply_action">Պատասխանել</string>
+    <string name="reply_all_action">Պատասխանել բոլորին</string>
+    <string name="delete_action">Հեռացնել</string>
+    <string name="archive_action">Արխիւացնել</string>
+    <string name="spam_action">Լցօն</string>
+    <string name="forward_action">Փոխանցել</string>
+    <string name="forward_as_attachment_action">Փոխանցել ինչպես կցորդ</string>
+    <string name="move_action">Տեղափոխել</string>
+    <string name="done_action">Աւարտել</string>
+    <string name="discard_action">Նետել</string>
+    <string name="save_draft_action">Պահել որպէս սեւագիր</string>
+    <string name="check_mail_action">Ստուգել էլ․ փոստը</string>
+    <string name="send_messages_action">Ուղարկել հաղորդագրութիւններ</string>
+    <string name="refresh_folders_action">Թարմացնել պանակների ցանկը</string>
+    <string name="filter_folders_action">Գտնել պանակը</string>
+    <string name="add_account_action">Աւելացնել հաշիւ</string>
+    <string name="compose_action">Գրել</string>
+    <string name="search_action">Փնտրել</string>
+    <string name="search_results">Փնտրման արդիւնքները</string>
+    <string name="preferences_action">Կարգաւորումներ</string>
+    <string name="account_settings_action">Հաշուի կագրաւորումներ</string>
+    <string name="remove_account_action">Հեռացնել հաշիւը</string>
+    <string name="mark_as_read_action">Նշել որպէս ընթերցուած</string>
+    <string name="send_alternate_action">Տարածել</string>
+    <string name="send_alternate_chooser_title">Ընտրել ուղարկողին</string>
+    <string name="flag_action">Աւելացնել աստղ</string>
+    <string name="unflag_action">Հեռացնել աստղ</string>
+    <string name="copy_action">Պատճէնել</string>
+    <string name="show_headers_action">Ցոյց տալ խորագրերը</string>
+    <plurals name="copy_address_to_clipboard">
+        <item quantity="one">Հասցէն պատճէնուած է</item>
+        <item quantity="other">Հասցէները պատճէնուած են</item>
+    </plurals>
+    <string name="message_view_theme_action_dark">Անցնել մուգ թեմայի</string>
+    <string name="message_view_theme_action_light">Անցնել բաց թեմայի</string>
+    <string name="mark_as_unread_action">Նշել չընթերցուածները</string>
+    <string name="read_receipt">Ընթերցման ստացականը</string>
+    <string name="read_receipt_enabled">Պահանջելու է ընթերցուած լինելու ստացականը</string>
+    <string name="read_receipt_disabled">Չի պահանջելու ընթերցուած լինելու ստացականը</string>
+    <string name="add_attachment_action">Կցել նիշք</string>
+    <string name="empty_trash_action">Մաքրել աղբը</string>
+    <string name="expunge_action">Վերացնել</string>
+    <string name="about_action">Ծրագրի մասին</string>
+    <string name="prefs_title">Կարգաւորումներ</string>
+    <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
+    <string name="general_no_subject">(անվերնագիր)</string>
+    <string name="general_no_sender">Առանց ուղարկող</string>
+    <string name="status_loading_more">Բեռնւում են նամակները\u2026</string>
+    <string name="status_network_error">Կապի սխալ</string>
+    <string name="status_invalid_id_error">Նամակը գտնուած չէ</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> նոր իմակ</item>
+        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> նոր իմակ</item>
+    </plurals>
+    <string name="notification_action_reply">Պատասխանել</string>
+    <string name="notification_action_mark_as_read">Նշել ընթերցուածները</string>
+    <string name="notification_action_mark_all_as_read">Նշել բոլոր ընթերցուածները</string>
+    <string name="notification_action_delete">Հեռացնել</string>
+    <string name="notification_action_delete_all">Հեռացնել բոլորը</string>
+    <string name="notification_action_archive">Արխիւացնել</string>
+    <string name="notification_action_archive_all">Արխիւացնել բոլորը</string>
+    <string name="notification_action_spam">Լցօն</string>
+    <string name="notification_certificate_error_title">Արտոնագրի սխալ <xliff:g id="account">%s</xliff:g>֊ի համար</string>
+    <string name="notification_certificate_error_text">Վերանայէք սպասարկչի կարգաւորումները</string>
+    <string name="notification_authentication_error_title">Վաւերացումը խափանուել է</string>
+    <string name="notification_authentication_error_text">Վաւերացումը խափանուել է <xliff:g id="account">%s</xliff:g>֊ի համար։ Թարմացրէք ձեր սպասարկչի կարգաւորումները։</string>
+    <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+    <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+    <string name="notification_bg_sync_ticker">Ստուգւում է փոստը <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
+    <string name="notification_bg_sync_title">Ստուգել էլ․ փոստ</string>
+    <string name="notification_bg_send_ticker">Ուղարկւում է՝ <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_bg_send_title">Ուղարկւում է</string>
+    <string name="notification_bg_title_separator">․</string>
+    <string name="special_mailbox_name_inbox">Մուտքային</string>
+    <string name="special_mailbox_name_outbox">Ելքային</string>
+    <string name="special_mailbox_name_drafts">Սեւագրեր</string>
+    <string name="special_mailbox_name_trash">Աղբարկղ</string>
+    <string name="special_mailbox_name_sent">Ուղարկուած</string>
+    <string name="send_failure_subject">Որոշ հաղորդագրութիւնների ուղարկումը խափանուել է</string>
+    <string name="debug_enable_debug_logging_title">Գրել վրիպազերծման տեղեկատւութիւնը մատեանում</string>
+    <string name="debug_enable_debug_logging_summary">Պահել յաւելեալ ախտորոշման տեղեկատւութիւն</string>
+    <string name="debug_enable_sensitive_logging_title">Պահել զգայուն տեղեկատւութիւնը</string>
+    <string name="debug_enable_sensitive_logging_summary">Կարող է ցուցադրել ծածկագրերը մատեանում։</string>
+    <string name="message_list_load_more_messages_action">Բեռնել աւել հաղորդագրութիւններ</string>
+    <string name="message_to_fmt">Ում՝ <xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_compose_subject_hint">Վերնագիր</string>
+    <string name="message_compose_content_hint">Հաղորդագրութեան տեքստը</string>
+    <string name="message_compose_signature_hint">Ստորագրութիւն</string>
+    <string name="message_compose_quote_header_separator">-------- Նախորդ հաղորդագրութիւնը --------</string>
+    <string name="message_compose_quote_header_subject">Վերնագիր՝</string>
+    <string name="message_compose_quote_header_send_date">Ուղարկուած՝</string>
+    <string name="message_compose_quote_header_from">Ումից՝</string>
+    <string name="message_compose_quote_header_to">Ում՝</string>
+    <string name="message_compose_quote_header_cc">Cc՝</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> գրել է՝</string>
+    <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sent_date">%1$s</xliff:g>֊ին, <xliff:g id="sender">%2$s</xliff:g> գրել է՝</string>
+    <string name="message_compose_error_no_recipients">Անհրաժեշտ է աւելացնել գոնէ մէկ ստացող։</string>
+    <string name="compose_error_incomplete_recipient">Ստացողի դաշտը պարունակում է անաւարտ տուեալներ։</string>
+    <string name="error_contact_address_not_found">Այս անձի էլ․ փոստի հասցէն գտնուած չէ։</string>
+    <string name="message_compose_attachments_skipped_toast">Որոշ կից նիշքերը չեն կարող փոխանցուել, քանի որ ներբեռնուած չեն։</string>
+    <string name="message_compose_description_delete_quoted_text">Հեռացնել մէջբերուած տեքստը</string>
+    <string name="message_compose_description_edit_quoted_text">Խմբագրել մէջբերումը</string>
+    <string name="message_to_label">Ում՝</string>
+    <string name="message_view_cc_label">Cc՝</string>
+    <!--Used to display the recipient list in the message view screen.-->
+    <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+    <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+    <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+    <string name="message_view_no_viewer">Հնարաւոր չէ գտնել <xliff:g id="mimetype">%s</xliff:g>֊ի համար դիտարկիչ։</string>
+    <string name="message_view_download_remainder">Ներբեռնել ամբողջ նամակը</string>
+    <string name="from_same_sender">Աւելին այս հեղինակից</string>
+    <string name="message_discarded_toast">Հաղորդագրութիւնը պահուած չէ</string>
+    <string name="message_saved_toast">Հաղորդագրութիւնը պահուած է որպէս սեւագիր</string>
+    <string name="global_settings_flag_label">Ցուցադրել աստղերը</string>
+    <string name="global_settings_flag_summary">Աստղերով նշում են կարեւոր հաղորդագրութիւնները</string>
+    <string name="global_settings_preview_lines_label">Նախադիտել տողերը</string>
+    <string name="global_settings_show_correspondent_names_label">Ցուցադրել թղթակիցների անունները</string>
+    <string name="global_settings_show_correspondent_names_summary">Ցուցադրել թղթակիցների անունները, ոչ թէ իրենց էլ․ փոստի հասցէները։</string>
+    <string name="global_settings_sender_above_subject_label">Թղթակցի անունը վերնագրի վերեւից</string>
+    <string name="global_settings_sender_above_subject_summary">Ցուցադրել թղթակիցների անունները վերնագրի տողից վերեւ, ոչ թէ դրանից ներքեւ</string>
+    <string name="global_settings_show_contact_name_label">Ցուցադրել կոնտակտների անունները</string>
+    <string name="global_settings_show_contact_name_summary">Օգտագործել ստացողների անունները Հասցէագրքից երբ հնարաւոր է</string>
+    <string name="global_settings_registered_name_color_label">Գունաւորել կոնտակտները</string>
+    <string name="global_settings_registered_name_color_changed">Գունաւորել հասցէագրքի անունները</string>
+    <string name="global_settings_messageview_fixedwidth_label">Միալայնք տառատեսակներ</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Ցուցադրել միայն տեքստային հաղորդագրութիւնները միալայնք տառատեսակով</string>
+    <string name="global_settings_messageview_autofit_width_label">Աւտոմատ տեղաւորել հաղորդագրութիւնները</string>
+    <string name="global_settings_messageview_autofit_width_summary">Սեղմել հաղորդագրութիւններն այնպէս որ տեղաւորուեն էկրանին</string>
+    <!--Name of the setting to configure the navigation action to perform after the user has deleted or moved a message from the message view screen-->
+    <string name="global_settings_confirm_actions_title">Հաստատել գործողութիւնները</string>
+    <string name="global_settings_confirm_actions_summary">Ցուցադրել հարցում ամէն անգամ երբ կատարում էք ընտրուած գործողութիւնները</string>
+    <string name="global_settings_confirm_action_delete">Հեռացնել</string>
+    <string name="global_settings_confirm_action_delete_starred">Հեռացնել ատղերով նշածները</string>
+    <string name="global_settings_confirm_action_spam">Լցօն</string>
+    <string name="global_settings_confirm_menu_discard">Նետել հաղորդագրութիւնը</string>
+    <string name="global_settings_confirm_action_delete_notif">Հեռացնել (ծանուցումներից)</string>
+    <!--Title of the screen to configure swipe actions-->
+    <!--Name of the setting to configure the right swipe action-->
+    <!--Name of the setting to configure the left swipe action-->
+    <!--The list item users select to not use a swipe action for a particular direction-->
+    <string name="general_settings_swipe_action_none">Ոչ մի</string>
+    <!--Name of the swipe action to select/deselect a message-->
+    <!--Name of the swipe action to mark as message as read/unread-->
+    <!--Name of the swipe action to add/remove a star-->
+    <!--Name of the swipe action to archive a message-->
+    <string name="general_settings_swipe_action_archive">Արխիւ</string>
+    <!--Name of the swipe action to delete a message-->
+    <string name="general_settings_swipe_action_delete">Հեռացնել</string>
+    <!--Name of the swipe action to move a message to the spam folder-->
+    <string name="general_settings_swipe_action_spam">Լցօն</string>
+    <!--Name of the swipe action to move a message to another folder-->
+    <string name="general_settings_swipe_action_move">Տեղափոխել</string>
+    <!--Title of the setting to specify the density of the message list-->
+    <string name="global_settings_privacy_hide_useragent_detail">Հեռացնել Կ֊9 User-Agent նամակի խորագրերից</string>
+    <string name="global_settings_notification_quick_delete_title">Ցուցադրել «Հեռացնել» կոճակը</string>
+    <string name="global_settings_notification_quick_delete_never">Երբեք</string>
+    <string name="global_settings_notification_quick_delete_when_single_msg">Մի նամակի ծանուցման համար</string>
+    <string name="global_settings_notification_quick_delete_always">Միշտ</string>
+    <string name="global_settings_lock_screen_notification_visibility_title">Արգելափակուած էկրանի ծանուցումներ</string>
+    <string name="global_settings_lock_screen_notification_visibility_nothing">Չծանուցել երբ արգելափակուած է</string>
+    <string name="global_settings_lock_screen_notification_visibility_app_name">Ծրագրի անունը</string>
+    <string name="global_settings_lock_screen_notification_visibility_senders">Նամակների քանակն ու ուղարկողները</string>
+    <string name="global_settings_lock_screen_notification_visibility_everything">Նոյնն ինչպէս երբ էկրանն արգելափակուած է</string>
+    <string name="quiet_time">Հանգստի ժամանակ</string>
+    <string name="quiet_time_description">Անջատել զանգը, վիբրացիան եւ լոյսային ազդանշաները գիշերը։</string>
+    <string name="quiet_time_notification">Անջատել ծանուցումները</string>
+    <string name="quiet_time_notification_description">Բացառապէս անջատել ծանուցումները Հանգստի Ժամանակ</string>
+    <string name="quiet_time_starts">Հանգստի Ժամանակը սկսւում է</string>
+    <string name="quiet_time_ends">Հանգստի Ժամանակն աւարտւում է</string>
+    <string name="account_setup_basics_title">Աւելացնել նոր հաշիւ</string>
+    <string name="account_setup_basics_email_hint">Էլ․ փոստի հասցէ</string>
+    <string name="account_setup_basics_password_hint">Ծածկագիր</string>
+    <!--Displayed below the 'account_setup_oauth_description' text-->
+    <!--Displayed below the 'account_setup_oauth_description' text-->
+    <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+    <string name="account_setup_basics_manual_setup_action">Ձեռադիր կարգաւորումներ</string>
+    <string name="account_setup_check_settings_title" />
+    <string name="account_setup_check_settings_retr_info_msg">Ներբեռնւում է հաշուի տեղեկատւութիւնը\u2026</string>
+    <string name="account_setup_check_settings_check_incoming_msg">Ստուգւում են մուտքային սպասարկչի կարգաւորումները\u2026</string>
+    <string name="account_setup_check_settings_check_outgoing_msg">Ստուգւում են ելքային սպասարկչի կարգաւորումները\u2026</string>
+    <string name="account_setup_check_settings_authenticate">Վաւերացում\u2026</string>
+    <string name="account_setup_check_settings_fetch">Բեռնւում են հաշուի կարգաւորումները\u2026</string>
+    <string name="account_setup_check_settings_canceling_msg">Չեղարկւում է\u2026</string>
+    <string name="account_setup_account_type_title">Հաշուի տեսակը</string>
+    <string name="account_setup_account_type_instructions">Ի՞նչ տեսակի հաշիւ է</string>
+    <string name="account_setup_account_type_pop_action">POP3</string>
+    <string name="account_setup_account_type_imap_action">IMAP</string>
+    <string name="account_setup_auth_type_normal_password">Նորմալ ծածկագիր</string>
+    <string name="account_setup_auth_type_insecure_password">Ծածկագիր, որ ոչ անվտանգ է փոխանցւում</string>
+    <string name="account_setup_auth_type_encrypted_password">Կրիպտաւորուած ծածկագիր</string>
+    <string name="account_setup_auth_type_tls_client_certificate">Կլիենտի արտօնագիր</string>
+    <string name="account_setup_incoming_title">Մուտքային սպասարկչի կարգաւորումներ</string>
+    <string name="account_setup_incoming_username_label">Օգտանուն</string>
+    <string name="account_setup_incoming_password_label">Ծածկագիր</string>
+    <string name="account_setup_incoming_client_certificate_label">Կլիենտի արտօնագիր</string>
+    <string name="account_setup_incoming_pop_server_label">POP3 սպասարկիչ</string>
+    <string name="account_setup_incoming_imap_server_label">IMAP սպասարկիչ</string>
+    <string name="account_setup_incoming_port_label">Պորտ</string>
+    <string name="account_setup_incoming_security_label">Անվտանգութիւն</string>
+    <string name="account_setup_incoming_auth_type_label">Վաւերացում</string>
+    <string name="account_setup_incoming_security_none_label">Ոչ մի</string>
+    <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
+    <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
+    <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" վաւերական չէ \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"֊ի հետ</string>
+    <string name="account_setup_incoming_delete_policy_label">Հաղորդագրութիւն հեռացնելիս</string>
+    <string name="account_setup_incoming_delete_policy_never_label">Չհեռացնել սպասարկչից</string>
+    <string name="account_setup_incoming_delete_policy_delete_label">Հեռացնել սպասարկչից</string>
+    <string name="account_setup_incoming_delete_policy_markread_label">Նշել որպէս ընթերցուած սպասարկչում</string>
+    <string name="account_setup_expunge_policy_label">Ջնջել հեռացուած հաղորդագրութիւնները սպասարկչից</string>
+    <string name="account_setup_expunge_policy_immediately">Անմիջապէս</string>
+    <string name="account_setup_expunge_policy_manual">Ձեռադիր</string>
+    <string name="account_setup_incoming_autodetect_namespace_label">Ինքնաշխատ ճանաչել IMAP տիրոյթը</string>
+    <string name="drafts_folder_label">Սեւագրերի պանակ</string>
+    <string name="sent_folder_label">Ուղարկուածների պանակ</string>
+    <string name="trash_folder_label">Աղբարկղի պանակ</string>
+    <string name="archive_folder_label">Արխիւի պանակ</string>
+    <string name="spam_folder_label">Լցօնի պանակ</string>
+    <string name="account_setup_incoming_subscribed_folders_only_label">Ցուցադրել միայն բաժանորդագրուած պանակները</string>
+    <string name="account_setup_outgoing_title">Ելքային սպասարկչի կարգաւորումները</string>
+    <string name="account_setup_outgoing_smtp_server_label">SMTP սպասարկիչ</string>
+    <string name="account_setup_outgoing_port_label">Պորտ</string>
+    <string name="account_setup_outgoing_security_label">Անվտանգութիւն</string>
+    <string name="account_setup_outgoing_require_login_label">Պահանջել մուտք գործելը։</string>
+    <string name="account_setup_outgoing_username_label">Օգտանուն</string>
+    <string name="account_setup_outgoing_password_label">Ծածկագիր</string>
+    <string name="account_setup_outgoing_authentication_label">Վաւերացում</string>
+    <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" վաւերական չէ \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"֊ի հետ</string>
+    <string name="account_setup_bad_uri">Անուաւեր կարգաւորում՝ <xliff:g id="err_mess">%s</xliff:g></string>
+    <string name="account_setup_options_mail_check_frequency_label">Պանակ թարմացնելու յաճախականութիւն</string>
+    <string name="account_setup_options_mail_check_frequency_never">Երբեք</string>
+    <string name="account_setup_options_mail_check_frequency_15min">15 րոպէն մէկ</string>
+    <string name="account_setup_options_mail_check_frequency_30min">30 րոպէն մէկ</string>
+    <string name="account_setup_options_mail_check_frequency_1hour">Ժամը մէկ</string>
+    <string name="account_setup_options_mail_check_frequency_2hour">2 ժամը մէկ</string>
+    <string name="account_setup_options_mail_check_frequency_3hour">3 ժամը մէկ</string>
+    <string name="account_setup_options_mail_check_frequency_6hour">6 ժամը մէկ</string>
+    <string name="account_setup_options_mail_check_frequency_12hour">12 ժամը մէկ</string>
+    <string name="account_setup_options_mail_check_frequency_24hour">24 ժամը մէկ</string>
+    <string name="idle_refresh_period_label">Թարմացնել IDLE կապակցումը</string>
+    <string name="idle_refresh_period_2min">2 րոպէն մէկ</string>
+    <string name="idle_refresh_period_3min">3 րոպէն մէկ</string>
+    <string name="idle_refresh_period_6min">6 րոպէն մէկ</string>
+    <string name="idle_refresh_period_12min">12 րոպէն մէկ</string>
+    <string name="idle_refresh_period_24min">24 րոպէն մէկ</string>
+    <string name="idle_refresh_period_36min">36 րոպէն մէկ</string>
+    <string name="idle_refresh_period_48min">48 րոպէն մէկ</string>
+    <string name="idle_refresh_period_60min">60 րոպէն մէկ</string>
+    <string name="account_setup_options_mail_display_count_label">Ցուցադրուող իմակների քանակը</string>
+    <string name="account_setup_options_mail_display_count_10">10 իմակ</string>
+    <string name="account_setup_options_mail_display_count_25">25 իմակ</string>
+    <string name="account_setup_options_mail_display_count_50">50 իմակ</string>
+    <string name="account_setup_options_mail_display_count_100">100 իմակ</string>
+    <string name="account_setup_options_mail_display_count_250">250 իմակ</string>
+    <string name="account_setup_options_mail_display_count_500">500 իմակ</string>
+    <string name="account_setup_options_mail_display_count_1000">1000 իմակ</string>
+    <string name="account_setup_options_mail_display_count_2500">2500 իմակ</string>
+    <string name="account_setup_options_mail_display_count_5000">5000 իմակ</string>
+    <string name="account_setup_options_mail_display_count_10000">10000 իմակ</string>
+    <string name="account_setup_options_mail_display_count_all">բոլոր իմակները</string>
+    <string name="move_copy_cannot_copy_unsynced_message">հնարաւոր չէ պատճէնել կամ տեղափոխել իմակը, որը սինխրոնացուած չէ սպասարկչի հետ</string>
+    <string name="account_setup_failed_dlg_title">Կարգաւորման ծրագիրը չի կարողանում աւարտուել</string>
+    <string name="account_setup_failed_dlg_auth_message_fmt">Օգտանունը կամ ծածկագիրը սխալ են։\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_certificate_message_fmt">Սպասարկիչը ներկայացրել է անուաւեր SSL արտօնագիր։ Երբեմն դա պայմանաւորուած է սպասարկչի սխալ կարգաւորումներով։ Երբեմն էլ նրանով, որ որեւէ մէկը փորձում է գրոհել ձեր փոստի սպասարկիչը։ Եթէ համոզուած չէք, թէ ինչ է տեղի ունենում, կտացրէք «Մերժել» եւ կապուէք ձեր սպասարկիչը սպասարկողների հետ։\n\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_server_message_fmt">Հնարաւոր չէ կպնել սպասարկչին։\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_edit_details_action">Խմբագրել մանրամասները</string>
+    <string name="account_setup_failed_dlg_continue_action">Շարունակել</string>
+    <string name="account_settings_push_advanced_title">Առաջադէմ</string>
+    <string name="account_settings_title_fmt">Հաշուի կարգաւորումներ</string>
+    <string name="account_settings_notify_label">Նոր իմակների ծանուցումներ</string>
+    <string name="account_settings_folder_notify_new_mail_mode_label">Ծանուցումների պանակներ</string>
+    <string name="account_settings_folder_notify_new_mail_mode_all">Բոլորը</string>
+    <string name="account_settings_folder_notify_new_mail_mode_first_class">Միայն 1֊ին կարգի պանակներ</string>
+    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1֊ին եւ 2֊րդ կարգի պանակներ</string>
+    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Բոլորը բացի 2֊րդ կարգի պանակներից</string>
+    <string name="account_settings_folder_notify_new_mail_mode_none">Ոչ մէկը</string>
+    <string name="account_settings_notify_sync_label">Սինխրոնիզացիայի ծանուցումներ</string>
+    <string name="account_settings_email_label">Ձեր էլ․ փոստի հասցէն</string>
+    <string name="account_settings_notify_summary">Ծանուցել ստատուսի վահանակում, երբ իմակ է եկել</string>
+    <string name="account_settings_notify_sync_summary">Ծանուցել ստատուսի վահանակում երբ փոստարկղը ստուգւում է</string>
+    <string name="account_settings_notify_self_label">Ներառել ելքային փոստը</string>
+    <string name="account_settings_notify_self_summary">Ցուցադրել ծանուցումներ ուղարկուող հաղորդագրութիւնների համար</string>
+    <string name="account_notify_contacts_mail_only_label">Միայն կոնտակտները</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Նշել որպէս ընթերցուած բացելիս</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Նշել որպէս ընթերցուած երբ այն բացուած է դիտելու համար</string>
+    <string name="account_settings_show_pictures_label">Միշտ ցուցադրել նկարները</string>
+    <string name="account_settings_show_pictures_never">Ոչ</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Կոնտակտներից</string>
+    <string name="account_settings_show_pictures_always">Բոլորից</string>
+    <string name="account_settings_composition">Փոստ ուղարկելը</string>
+    <string name="account_settings_default_quoted_text_shown_label">Մէջբերել նախկին իմակն պատասխանելիս</string>
+    <string name="account_settings_default_quoted_text_shown_summary">Ներառել նախկին իմակը ձեր պատասխանի մէջ</string>
+    <string name="account_settings_reply_after_quote_label">Պատասխանել մէջբերուած տեքստից յետոյ</string>
+    <string name="account_settings_reply_after_quote_summary">Նախորդ հաղորդագրութիւնն երեւալու է ձեր պատասխանի վերեւից</string>
+    <string name="account_settings_strip_signature_label">Պատասխանելիս հանել ստորագրութիւնները</string>
+    <string name="account_settings_strip_signature_summary">Ստորագրութիւններն հեռացուելու են մէջբերուած նամակներից</string>
+    <string name="account_settings_message_format_label">Հաղորդագրութեան ֆորմատ</string>
+    <string name="account_settings_message_format_text">Մաքուր տեքստ (առանց նկարների կամ ձեւաւորման)</string>
+    <string name="account_settings_message_format_html">HTML (նկարներով եւ ձեւաւորուած)</string>
+    <string name="account_settings_message_format_auto">Ինքնաշխատ</string>
+    <string name="account_settings_always_show_cc_bcc_label">Միշտ ցուցադրել Cc/Bcc դաշտերը</string>
+    <string name="account_settings_message_read_receipt_label">Ստացական</string>
+    <string name="account_settings_message_read_receipt_summary">Միշտ պահանջել ընթերցուած լինելու ստացականը</string>
+    <string name="account_settings_quote_style_label">Պատասխանում քաղուածքի ձեւը</string>
+    <string name="account_settings_quote_style_prefix">Նախածանց (Gmail֊ի պէս)</string>
+    <string name="account_settings_quote_style_header">Վերնագիր (Outlook֊ի պէս)</string>
+    <string name="account_settings_general_title">Ընդհանուր կարգաւորումներ</string>
+    <string name="account_settings_reading_mail">Ընթերցում</string>
+    <string name="account_settings_sync">Ներբեռնում</string>
+    <string name="account_settings_folders">Պանակներ</string>
+    <string name="account_settings_quote_prefix_label">Քաղուածքի տեքստի նախածանցը</string>
+    <string name="account_settings_crypto_summary_on">Կապնվել %s-ին</string>
+    <string name="account_settings_mail_check_frequency_label">Պանակները թարմացնելու յաճախականութիւն</string>
+    <string name="account_settings_color_label">Հաշուի գոյնը</string>
+    <string name="account_settings_color_summary">Այս հաշուի գոյնը՝ օգտագործուելու է պանակում եւ հաշիւների ցանկի մէջ</string>
+    <string name="account_settings_mail_display_count_label">Պանակի չափսը սարքի մէջ</string>
+    <string name="account_settings_autodownload_message_size_label">Ներբեռնել նամակները մինչեւ</string>
+    <string name="account_settings_autodownload_message_size_any">ցանկացած չափսի (առանց սահմանափակում)</string>
+    <string name="account_settings_message_age_label">Որտեղից սինխրոնացնել նամակները</string>
+    <string name="account_settings_message_age_any">միշտ (առանց սահմանափակումների)</string>
+    <string name="account_settings_message_age_0">այսօր</string>
+    <string name="account_settings_message_age_1">վերջին 2 օրուայ</string>
+    <string name="account_settings_message_age_2">վերջին 3 օրուայ</string>
+    <string name="account_settings_message_age_7">վերջին շաբաթուայ</string>
+    <string name="account_settings_message_age_14">վերջին 2 շաբաթուայ</string>
+    <string name="account_settings_message_age_21">վերջին 3 շաբաթուայ</string>
+    <string name="account_settings_message_age_1_month">վերջին ամսուայ</string>
+    <string name="account_settings_message_age_2_months">վերջին 2 ամսուայ</string>
+    <string name="account_settings_message_age_3_months">վերջին 3 ամսուայ</string>
+    <string name="account_settings_message_age_6_months">վերջին 6 ամսուայ</string>
+    <string name="account_settings_message_age_1_year">վերջին տարուայ</string>
+    <string name="account_settings_folder_display_mode_label">ցուրադրուող պանակներ</string>
+    <string name="account_settings_folder_display_mode_all">Բոլորը</string>
+    <string name="account_settings_folder_display_mode_first_class">Միայն 1֊ին դասի պանակները</string>
+    <string name="account_settings_folder_display_mode_first_and_second_class">1֊ին եւ 2֊րդ դասի պանակները</string>
+    <string name="account_settings_folder_display_mode_not_second_class">Բոլորը, բացի 2֊րդ դասի պանակներից</string>
+    <string name="account_settings_folder_sync_mode_label">Պանակների թարմացում</string>
+    <string name="account_settings_folder_sync_mode_all">Բոլորը</string>
+    <string name="account_settings_folder_sync_mode_first_class">Միայն 1֊ին դասի պանակները</string>
+    <string name="account_settings_folder_sync_mode_first_and_second_class">1֊ին եւ 2֊րդ դասի պանակները</string>
+    <string name="account_settings_folder_sync_mode_not_second_class">Բոլորը բացի 2֊րդ դասի պանակներից</string>
+    <string name="account_settings_folder_sync_mode_none">Ոչ մէկը</string>
+    <string name="account_settings_folder_push_mode_all">Բոլորը</string>
+    <string name="account_settings_folder_push_mode_first_class">Միայն 1֊ին դասի պանակները</string>
+    <string name="account_settings_folder_push_mode_first_and_second_class">1֊ին եւ 2֊րդ դասի պանակները</string>
+    <string name="account_settings_folder_push_mode_not_second_class">Բոլորը, բացի 2֊րդ դասի պանակներից</string>
+    <string name="account_settings_folder_push_mode_none">Ոչ մի</string>
+    <string name="account_settings_folder_target_mode_label">Տեղափոխել/պատճենել նշանակէտային պանակները</string>
+    <string name="account_settings_folder_target_mode_all">Բոլորը</string>
+    <string name="account_settings_folder_target_mode_first_class">Միայն 1֊ին դասի պանակները</string>
+    <string name="account_settings_folder_target_mode_first_and_second_class">1֊ին եւ 2֊րդ դասի պանակները</string>
+    <string name="account_settings_folder_target_mode_not_second_class">Բոլորը, բացի 2֊րդ դասի պանակներից</string>
+    <string name="account_settings_sync_remote_deletetions_label">Սինխրոնացնել սերուերում հեռացածները</string>
+    <string name="account_settings_sync_remote_deletetions_summary">Ջնջել նամակները, եթէ սերուերից ջնջուել են։</string>
+    <string name="folder_settings_title">Պանակի կարգաւորումներ</string>
+    <string name="folder_settings_folder_display_mode_normal">Առանց Դասի</string>
+    <string name="folder_settings_folder_display_mode_first_class">1ին Դաս</string>
+    <string name="folder_settings_folder_display_mode_second_class">2րդ Դաս</string>
+    <string name="folder_settings_folder_sync_mode_normal">Ոչ մի</string>
+    <string name="folder_settings_folder_sync_mode_first_class">1ին Դաս</string>
+    <string name="folder_settings_folder_sync_mode_second_class">2րդ Դաս</string>
+    <string name="folder_settings_folder_push_mode_normal">Առանց Դասի</string>
+    <string name="folder_settings_folder_push_mode_first_class">1ին Դաս</string>
+    <string name="folder_settings_folder_push_mode_second_class">2րդ Դաս</string>
+    <string name="folder_settings_folder_notify_mode_normal">Առանց Դասի</string>
+    <string name="folder_settings_folder_notify_mode_first_class">1ին Դաս</string>
+    <string name="folder_settings_folder_notify_mode_second_class">2րդ Դաս</string>
+    <string name="folder_settings_clear_local_folder_action">Մաքրել լոկալ հաղորդագրութիւնները</string>
+    <string name="account_settings_outgoing_label">Դուրս տանող բանավար</string>
+    <string name="account_settings_description_label">Հաշվի անունը</string>
+    <string name="account_settings_name_label">Ձեր անունը</string>
+    <string name="account_settings_notification_light_account_color">Հաշուի գոյնը</string>
+    <string name="edit_identity_save">Պահել</string>
+    <string name="edit_identity_name_label">Ձեր անունը</string>
+    <string name="edit_identity_email_label">Էլ․ փոստի հասցէ</string>
+    <string name="edit_identity_signature_label">Ստորագրութիւն</string>
+    <string name="account_settings_signature_label">Ստորագրութիւն</string>
+    <string name="sort_by_subject">Վերնագիր</string>
+    <string name="background_ops_never">Երբեք</string>
+    <string name="background_ops_always">Միշտ</string>
+    <string name="account_settings_searchable_all">Բոլորը</string>
+    <string name="account_settings_searchable_none">Ոչ մի</string>
+    <string name="account_settings_no_folder_selected">Ոչ մի</string>
+    <string name="font_size_message_list_subject">Վերնագիր</string>
+    <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+    <string name="font_size_message_view_account">Հաշվի անունը</string>
+    <string name="font_size_message_view_subject">Վերնագիր</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">Պահե՞լ թէ Նետել այս իմակը։</string>
+    <string name="confirm_discard_draft_message_title">Նետե՞լ իմակը։</string>
+    <string name="confirm_discard_draft_message">Համոզո՞ւած էք որ ուզում էք նետել այս իմակը։</string>
+    <string name="dialog_confirm_delete_cancel_button">Ոչ</string>
+    <string name="dialog_confirm_mark_all_as_read_cancel_button">Ոչ</string>
+    <string name="dialog_confirm_spam_title">Հաստատել տեղափոխումը՝ լցօնների պանակ</string>
+    <plurals name="dialog_confirm_spam_message">
+        <item quantity="one">Համոզո՞ւած էք որ ուզում էք այս հաղորդագրութիւնը լցօնի պանակ տեղափոխել։</item>
+        <item quantity="other">Համոզո՞ւած էք <xliff:g id="message_count">%1$d</xliff:g> հաղորդագրութիւնները լցօնի պանակի մէջ տեղափոխել։</item>
+    </plurals>
+    <string name="dialog_confirm_spam_cancel_button">Ոչ</string>
+    <string name="settings_export_share_button">Տարածել</string>
+    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="webview_contextmenu_email_clipboard_label">Էլ․ փոստի հասցէ</string>
+    <string name="account_settings_remote_search_num_results_entries_all">Բոլորը</string>
+    <string name="account_settings_search">Փնտրել</string>
+    <string name="global_settings_splitview_always">Միշտ</string>
+    <string name="global_settings_splitview_never">Երբեք</string>
+    <!--=== Client certificates specific ==================================================================-->
+    <!--Note: This references message_view_download_remainder-->
+    <string name="address_type_other">Այլ</string>
+    <string name="address_type_mobile">Դիւրակիր</string>
+    <string name="crypto_info_ok">Լաւ</string>
+    <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+    <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+    <string name="general_settings_title">Ընդհանուր կարգաւորումներ</string>
+    <!--permissions-->
+    <!--Name of the swipe action to select a message. Try to keep it short.-->
+    <string name="swipe_action_select">Նշել</string>
+    <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+    <string name="swipe_action_deselect">Ապանշել</string>
+    <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+    <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+    <string name="swipe_action_mark_as_unread">Նշել չընթերցուածները</string>
+    <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+    <string name="swipe_action_add_star">Աւելացնել աստղ</string>
+    <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+    <string name="swipe_action_remove_star">Հեռացնել աստղ</string>
+    <!--Name of the swipe action to archive a message. Try to keep it short.-->
+    <string name="swipe_action_archive">Արխիւ</string>
+    <!--Name of the swipe action to delete a message. Try to keep it short.-->
+    <string name="swipe_action_delete">Հեռացնել</string>
+    <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+    <string name="swipe_action_spam">Լցօն</string>
+    <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+    <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+    <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+    <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+    <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+    <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+    <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
+    <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
+    <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
+    <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
+    <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
+    <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
+    <!--Displayed when loading the message details has failed-->
+    <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    <!--A user visible label for the email address copied to the clipboard-->
+    <string name="clipboard_label_email_address">Էլ․ փոստի հասցէ</string>
+    <!--A user visible label for the name and email address copied to the clipboard-->
+    <!--Might be displayed in a notification when deleting an account (in the background)-->
+    <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+</resources>

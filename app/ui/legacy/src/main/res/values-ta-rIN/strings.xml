@@ -1,0 +1,251 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!--=== App-specific strings =============================================================-->
+    <!--This should make it easier for forks to change the branding-->
+    <!--Used in AndroidManifest.xml-->
+    <string name="app_name">K-9 அஞ்சல்</string>
+    <string name="shortcuts_title">K-9 கணக்குகள்</string>
+    <string name="unread_widget_label">K-9 புதியவை</string>
+    <!--Used in the about dialog-->
+    <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
+    <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+    <!--Default signature-->
+    <!--General strings that include the app name-->
+    <string name="account_delete_dlg_instructions_fmt"> K-9 அஞ்சலிருந்து \"<xliff:g id="account">%s</xliff:g>\" கணக்கு அழிக்கப்படும்.</string>
+    <!--=== General strings ==================================================================-->
+    <string name="accounts_title">கணக்குகள்</string>
+    <string name="advanced">மேம்பட்ட</string>
+    <string name="compose_title_compose">எழுது</string>
+    <string name="compose_title_reply">பதில்</string>
+    <string name="compose_title_reply_all">அனைவருக்கும் பதில்</string>
+    <string name="compose_title_forward">பிறர்க்கு</string>
+    <string name="choose_folder_title">கோப்புறை தேர்ந்தெடு</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> தேர்வாகியுள்ளது</string>
+    <string name="next_action">அடுத்து</string>
+    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
+    <string name="okay_action">சரி</string>
+    <string name="cancel_action">வேண்டாம்</string>
+    <string name="send_action">அனுப்பு</string>
+    <string name="reply_action">பதில்</string>
+    <string name="reply_all_action">அனைவருக்கும் பதில்</string>
+    <string name="delete_action">அழி</string>
+    <string name="archive_action">காப்பகம் செலுத்து</string>
+    <string name="spam_action">பயனற்ற</string>
+    <string name="forward_action">முன் அனுப்பு</string>
+    <string name="move_action">அனுப்பு</string>
+    <string name="refile_action">மீண்டும் நிரப்பு</string>
+    <string name="done_action">முடி</string>
+    <string name="discard_action">வேண்டாம்</string>
+    <string name="save_draft_action">வரைவாக சேமி</string>
+    <string name="check_mail_action">புதியவை தேடு</string>
+    <string name="send_messages_action">அஞ்சல்கள் அனுப்பு</string>
+    <string name="refresh_folders_action">கோப்புறை புதுப்பி</string>
+    <string name="filter_folders_action">கோப்புறை தேடு</string>
+    <string name="add_account_action">புது கணக்கு</string>
+    <string name="compose_action">எழுது</string>
+    <string name="search_action">தேடு</string>
+    <string name="search_results">தேடல் முடிவுகள்</string>
+    <string name="preferences_action">அமைப்புகள்</string>
+    <string name="account_settings_action">கணக்கு அமைப்புகள்</string>
+    <string name="remove_account_action">கணக்கு நீக்கு</string>
+    <string name="mark_as_read_action">படித்ததாக குறி</string>
+    <string name="send_alternate_action">பகிர்</string>
+    <string name="send_alternate_chooser_title">பெறுநர் தேர்தெடு</string>
+    <string name="flag_action">நட்சத்திரம் சேர்</string>
+    <string name="unflag_action">நட்சத்திரம் கழி</string>
+    <string name="copy_action">நகல்</string>
+    <string name="show_headers_action">தலைப்புகள் காட்டு</string>
+    <string name="message_view_theme_action_dark">இருண்ட வர்ண வார்ப்புரு</string>
+    <string name="message_view_theme_action_light">வெளிர் வர்ண வார்ப்புரு</string>
+    <string name="mark_as_unread_action">படித்ததாக குறி</string>
+    <string name="read_receipt">படித்த இரசீது</string>
+    <string name="read_receipt_enabled">படித்த இரசீது கேள்</string>
+    <string name="read_receipt_disabled">படித்த இரசீது கேட்க வேண்டாம்</string>
+    <string name="add_attachment_action">இணைப்புகள் சேர்</string>
+    <string name="empty_trash_action">குப்பை கழி</string>
+    <string name="expunge_action">அகற்று</string>
+    <string name="about_action">மேலும்</string>
+    <string name="prefs_title">அமைப்புகள்</string>
+    <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
+    <string name="general_no_subject">(தலைப்பு இல்லை)</string>
+    <string name="general_no_sender">அனுப்புநர் இல்லை</string>
+    <string name="status_loading_more">அஞ்சல் ஏற்றப்படுகிறது \u2026</string>
+    <string name="status_network_error">இணைப்பு பிழை</string>
+    <string name="status_invalid_id_error">அஞ்சல் கிடைக்கவில்லை</string>
+    <string name="load_more_messages_fmt"><xliff:g id="messages_to_load">%d</xliff:g> வரை ஏற்று . மேலும்</string>
+    <string name="notification_action_reply">பதில்</string>
+    <string name="notification_action_mark_as_read">படித்ததாக குறி</string>
+    <string name="notification_action_delete">அழி</string>
+    <string name="notification_action_archive">காப்பகம்</string>
+    <string name="notification_action_spam">பயனற்றது</string>
+    <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g> சான்றிதழ் பிழை </string>
+    <string name="notification_certificate_error_text">வழங்கியை சோதி</string>
+    <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+    <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+    <string name="notification_bg_sync_ticker"><xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g> கணக்கு பார்க்கப்படுகிறது</string>
+    <string name="notification_bg_sync_title">கணக்கு பார்க்கப்படுகிறது</string>
+    <string name="notification_bg_send_ticker">அஞ்சல் அனுப்புதல்: <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_bg_send_title">அஞ்சல் அனுப்புதல்</string>
+    <string name="notification_bg_title_separator">:</string>
+    <string name="special_mailbox_name_inbox">பெற்ற அஞ்சல்</string>
+    <string name="special_mailbox_name_outbox">அனுப்பப்படுகின்ற அஞ்சல்</string>
+    <string name="special_mailbox_name_drafts">வரைவுகள்</string>
+    <string name="special_mailbox_name_trash">குப்பை</string>
+    <string name="special_mailbox_name_sent">அனுப்பிய அஞ்சல்</string>
+    <string name="send_failure_subject">அஞ்சல்கள் அனுப்புவதில் பிழை</string>
+    <string name="debug_enable_debug_logging_title">பிழை பதிவு இயக்கு</string>
+    <string name="debug_enable_debug_logging_summary">மேம்பட்ட பிழை பதிவு இயக்கு</string>
+    <string name="debug_enable_sensitive_logging_title">முக்கிய தகவல்களை பதிவுசெய்</string>
+    <string name="debug_enable_sensitive_logging_summary">பதிவுகளில் கடவுச்சொற்களை காட்டலாம்.</string>
+    <string name="message_list_load_more_messages_action">மேலும் செய்திகளை ஏற்றவும்</string>
+    <string name="message_to_fmt">பெறுநர்:<xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_compose_subject_hint">பொருள்</string>
+    <string name="message_compose_content_hint">தகவல்</string>
+    <string name="message_compose_signature_hint">கையொப்பம்</string>
+    <string name="message_compose_quote_header_separator">------- உண்மை தகவல் --------</string>
+    <string name="message_compose_quote_header_subject">பொருள்:</string>
+    <string name="message_compose_quote_header_send_date">அனுப்பியது:</string>
+    <string name="message_compose_quote_header_from">அனுப்புநர்:</string>
+    <string name="message_compose_quote_header_to">பெறுநர்:</string>
+    <string name="message_compose_quote_header_cc">நகல்:</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> எழுதியது:</string>
+    <string name="message_compose_error_no_recipients">ஒரு பெறுநராவது குறி.</string>
+    <string name="error_contact_address_not_found">இந்த தொடர்புக்கு அஞ்சல் இல்லை</string>
+    <string name="message_compose_attachments_skipped_toast">சில இணைப்புகள் பதிவிறக்கம் இல்லாததால், இணைக்க முடியாது.</string>
+    <string name="message_compose_description_delete_quoted_text">மேர்கோள் வரிகள் நீக்கு</string>
+    <string name="message_compose_description_edit_quoted_text">மேர்கோள் வரிகள் மாற்று</string>
+    <string name="message_to_label">பெறுநர்:</string>
+    <string name="message_view_cc_label">நகல்:</string>
+    <!--Used to display the recipient list in the message view screen.-->
+    <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+    <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+    <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+    <string name="message_view_download_remainder">முழு செய்தியும் பெறு</string>
+    <string name="message_discarded_toast">செய்தி கைவிடப்பட்டது</string>
+    <string name="message_saved_toast">செய்தி சேமிக்கப்பட்டது</string>
+    <string name="global_settings_flag_label">நட்சத்திரங்கள் காட்டு</string>
+    <!--Name of the setting to configure the navigation action to perform after the user has deleted or moved a message from the message view screen-->
+    <string name="global_settings_confirm_action_delete">நீக்கு</string>
+    <string name="global_settings_confirm_action_spam">பயனற்றது</string>
+    <!--Title of the screen to configure swipe actions-->
+    <!--Name of the setting to configure the right swipe action-->
+    <!--Name of the setting to configure the left swipe action-->
+    <!--The list item users select to not use a swipe action for a particular direction-->
+    <!--Name of the swipe action to select/deselect a message-->
+    <!--Name of the swipe action to mark as message as read/unread-->
+    <!--Name of the swipe action to add/remove a star-->
+    <!--Name of the swipe action to archive a message-->
+    <string name="general_settings_swipe_action_archive">காப்பகம்</string>
+    <!--Name of the swipe action to delete a message-->
+    <string name="general_settings_swipe_action_delete">நீக்கு</string>
+    <!--Name of the swipe action to move a message to the spam folder-->
+    <string name="general_settings_swipe_action_spam">பயனற்றது</string>
+    <!--Name of the swipe action to move a message to another folder-->
+    <string name="general_settings_swipe_action_move">அனுப்பு</string>
+    <!--Title of the setting to specify the density of the message list-->
+    <string name="global_settings_notification_quick_delete_never">ஒருபொழுதும்</string>
+    <string name="global_settings_notification_quick_delete_always">எப்பொழுதும்</string>
+    <!--Displayed below the 'account_setup_oauth_description' text-->
+    <!--Displayed below the 'account_setup_oauth_description' text-->
+    <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
+    <string name="account_setup_check_settings_title" />
+    <string name="account_setup_options_mail_check_frequency_never">ஒருபொழுதும்</string>
+    <string name="account_setup_failed_dlg_continue_action">தெடர்</string>
+    <string name="account_settings_push_advanced_title">மேம்பட்ட</string>
+    <string name="account_settings_title_fmt">கணக்கு அமைப்புகள்</string>
+    <string name="account_settings_folder_notify_new_mail_mode_all">அனைத்தும்</string>
+    <string name="account_settings_composition">அஞ்சல் அனுப்புதல்</string>
+    <string name="account_settings_message_read_receipt_label">படித்த இரசீது</string>
+    <string name="account_settings_folders">கோப்புறைகள்</string>
+    <string name="account_settings_folder_display_mode_all">அனைத்தும்</string>
+    <string name="account_settings_folder_sync_mode_all">அனைத்தும்</string>
+    <string name="account_settings_folder_push_mode_all">அனைத்தும்</string>
+    <string name="account_settings_folder_target_mode_all">அனைத்தும்</string>
+    <string name="folder_settings_title">கோப்புறை அமைப்பு</string>
+    <string name="folder_settings_clear_local_folder_action">தற்காலிக செய்திகள் நீக்கு</string>
+    <string name="edit_identity_save">சேமி</string>
+    <string name="edit_identity_signature_label">கையொப்பம்</string>
+    <string name="account_settings_signature_label">கையொப்பம்</string>
+    <string name="sort_by_subject">பொருள்</string>
+    <string name="background_ops_never">ஒருபொழுதும்</string>
+    <string name="background_ops_always">எப்பொழுதும்</string>
+    <string name="account_settings_searchable_all">அனைத்தும்</string>
+    <string name="font_size_message_list_subject">பொருள்</string>
+    <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+    <string name="font_size_message_view_subject">பொருள்</string>
+    <string name="settings_export_share_button">பகிர்</string>
+    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="account_settings_remote_search_num_results_entries_all">அனைத்தும்</string>
+    <string name="account_settings_remote_search_num_results_entries_10">10</string>
+    <string name="account_settings_remote_search_num_results_entries_25">25</string>
+    <string name="account_settings_remote_search_num_results_entries_50">50</string>
+    <string name="account_settings_remote_search_num_results_entries_100">100</string>
+    <string name="account_settings_remote_search_num_results_entries_250">250</string>
+    <string name="account_settings_remote_search_num_results_entries_500">500</string>
+    <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
+    <string name="account_settings_remote_search_num_label">வழங்கி தேடல் வரம்பு</string>
+    <string name="account_settings_search">தேடல்</string>
+    <string name="action_remote_search">வழங்கியில் தேடு</string>
+    <string name="upgrade_databases_title">தரவுத்தளங்கள் மேம்படுகிறது</string>
+    <string name="upgrade_databases_unspecified">தரவுத்தளங்கள் மேம்படுகிறது</string>
+    <string name="global_settings_splitview_mode_label">திரையை வெட்டிக்காட்டு</string>
+    <string name="global_settings_splitview_always">எப்பொழுதும்</string>
+    <string name="global_settings_splitview_never">ஒருபொழுதும்</string>
+    <string name="global_settings_splitview_when_in_landscape">அகலத்திரையி</string>
+    <string name="message_view_empty">வலப்புறம் ஒர் அஞ்சல் தெரிவு செய்</string>
+    <string name="global_settings_show_contact_picture_label">தொடர்பு படம் காட்டு</string>
+    <!--=== Client certificates specific ==================================================================-->
+    <!--Note: This references message_view_download_remainder-->
+    <string name="recipient_cc">நகல்</string>
+    <string name="recipient_bcc">மறை நகல்</string>
+    <string name="recipient_to">பெறுநர்</string>
+    <string name="crypto_info_ok">சரி</string>
+    <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
+    <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+    <string name="openpgp_enabled_error_back">பின்</string>
+    <!--permissions-->
+    <!--Name of the swipe action to select a message. Try to keep it short.-->
+    <string name="swipe_action_select">தேர்தெடு</string>
+    <!--Name of the swipe action to deselect a message. Try to keep it short.-->
+    <string name="swipe_action_deselect">தேர்வு நீக்கு</string>
+    <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
+    <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
+    <string name="swipe_action_mark_as_unread">படித்ததாக குறி</string>
+    <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
+    <string name="swipe_action_add_star">நட்சத்திரம் சேர்</string>
+    <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
+    <string name="swipe_action_remove_star">நட்சத்திரம் கழி</string>
+    <!--Name of the swipe action to archive a message. Try to keep it short.-->
+    <string name="swipe_action_archive">காப்பகம்</string>
+    <!--Name of the swipe action to delete a message. Try to keep it short.-->
+    <string name="swipe_action_delete">நீக்கு</string>
+    <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
+    <string name="swipe_action_spam">பயனற்றது</string>
+    <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
+    <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+    <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+    <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+    <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+    <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+    <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
+    <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
+    <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
+    <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
+    <string name="message_details_to_section_title">பெறுநர்</string>
+    <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
+    <string name="message_details_cc_section_title">நகல்</string>
+    <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
+    <string name="message_details_bcc_section_title">மறை நகல்</string>
+    <!--Displayed when loading the message details has failed-->
+    <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    <!--A user visible label for the email address copied to the clipboard-->
+    <!--A user visible label for the name and email address copied to the clipboard-->
+    <!--Might be displayed in a notification when deleting an account (in the background)-->
+    <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+</resources>
