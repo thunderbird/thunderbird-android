@@ -75,6 +75,9 @@
         <change>Fixed various crashes</change>
         <change>Updated translations</change>
     </release>
+    <release version="6.603" versioncode="36003" date="2023-10-12">
+        <change>Fixed settings import/export of identities without a name or description</change>
+    </release>
     <release version="6.602" versioncode="36002" date="2023-05-11">
         <change>Change primary action in message view header from "reply all" to "reply"</change>
     </release>
