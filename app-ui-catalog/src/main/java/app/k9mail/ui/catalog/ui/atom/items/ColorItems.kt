@@ -14,6 +14,7 @@ import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.ui.catalog.ui.common.list.itemDefaultPadding
 import app.k9mail.ui.catalog.ui.common.list.sectionHeaderItem
 
+@Suppress("LongMethod")
 fun LazyGridScope.colorItems() {
     sectionHeaderItem(text = "Material theme colors")
     item {
@@ -54,8 +55,26 @@ fun LazyGridScope.colorItems() {
     }
     item {
         ColorContent(
+            name = "Success",
+            color = MainTheme.colors.success,
+        )
+    }
+    item {
+        ColorContent(
             name = "Error",
             color = MainTheme.colors.error,
+        )
+    }
+    item {
+        ColorContent(
+            name = "Warning",
+            color = MainTheme.colors.warning,
+        )
+    }
+    item {
+        ColorContent(
+            name = "Info",
+            color = MainTheme.colors.info,
         )
     }
 }
