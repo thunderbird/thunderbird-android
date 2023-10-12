@@ -64,6 +64,7 @@ fun IncomingServerSettingsScreen(
         modifier = modifier,
     ) { innerPadding ->
         IncomingServerSettingsContent(
+            mode = viewModel.mode,
             onEvent = { dispatch(it) },
             state = state.value,
             contentPadding = innerPadding,

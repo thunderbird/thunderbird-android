@@ -13,6 +13,7 @@ import app.k9mail.core.ui.compose.designsystem.molecule.input.TextInput
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
+import app.k9mail.feature.account.common.domain.entity.InteractionMode
 import app.k9mail.feature.account.common.ui.item.defaultItemPadding
 import app.k9mail.feature.account.server.settings.R
 import app.k9mail.feature.account.server.settings.ui.common.ClientCertificateInput
@@ -24,6 +25,7 @@ import app.k9mail.feature.account.server.settings.ui.incoming.isPasswordFieldVis
 
 @Suppress("LongMethod")
 internal fun LazyListScope.incomingFormItems(
+    mode: InteractionMode,
     state: State,
     onEvent: (Event) -> Unit,
     resources: Resources,
@@ -32,14 +34,16 @@ internal fun LazyListScope.incomingFormItems(
         Spacer(modifier = Modifier.requiredHeight(MainTheme.sizes.smaller))
     }
 
-    item {
-        SelectInput(
-            options = IncomingProtocolType.all(),
-            selectedOption = state.protocolType,
-            onOptionChange = { onEvent(Event.ProtocolTypeChanged(it)) },
-            label = stringResource(id = R.string.account_server_settings_protocol_type_label),
-            contentPadding = defaultItemPadding(),
-        )
+    if (mode == InteractionMode.Create) {
+        item {
+            SelectInput(
+                options = IncomingProtocolType.all(),
+                selectedOption = state.protocolType,
+                onOptionChange = { onEvent(Event.ProtocolTypeChanged(it)) },
+                label = stringResource(id = R.string.account_server_settings_protocol_type_label),
+                contentPadding = defaultItemPadding(),
+            )
+        }
     }
 
     item {

@@ -17,12 +17,14 @@ import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.feature.account.common.domain.entity.InteractionMode
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.Event
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.State
 import app.k9mail.feature.account.server.settings.ui.incoming.content.incomingFormItems
 
 @Composable
 internal fun IncomingServerSettingsContent(
+    mode: InteractionMode,
     state: State,
     onEvent: (Event) -> Unit,
     contentPadding: PaddingValues,
@@ -45,6 +47,7 @@ internal fun IncomingServerSettingsContent(
             verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
         ) {
             incomingFormItems(
+                mode = mode,
                 state = state,
                 onEvent = onEvent,
                 resources = resources,
@@ -58,6 +61,7 @@ internal fun IncomingServerSettingsContent(
 internal fun IncomingServerSettingsContentK9Preview() {
     K9Theme {
         IncomingServerSettingsContent(
+            mode = InteractionMode.Create,
             onEvent = { },
             state = State(),
             contentPadding = PaddingValues(),
@@ -70,6 +74,7 @@ internal fun IncomingServerSettingsContentK9Preview() {
 internal fun IncomingServerSettingsContentThunderbirdPreview() {
     ThunderbirdTheme {
         IncomingServerSettingsContent(
+            mode = InteractionMode.Create,
             onEvent = { },
             state = State(),
             contentPadding = PaddingValues(),
