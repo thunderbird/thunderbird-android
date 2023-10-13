@@ -4,6 +4,7 @@ import android.content.Context
 import app.k9mail.core.common.oauth.OAuthConfigurationFactory
 import app.k9mail.feature.account.common.AccountCommonExternalContract
 import app.k9mail.feature.account.common.domain.entity.AccountState
+import app.k9mail.feature.account.common.domain.entity.InteractionMode
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract
@@ -58,6 +59,7 @@ class AccountEditModuleKtTest : KoinTest {
                 ServerCertificateErrorContract.State::class,
                 IncomingServerSettingsContract.State::class,
                 OutgoingServerSettingsContract.State::class,
+                InteractionMode::class,
             ),
         )
 

@@ -7,10 +7,11 @@ import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.toSmtpDefaultPort
 import app.k9mail.feature.account.common.domain.input.NumberInputField
 import app.k9mail.feature.account.common.domain.input.StringInputField
+import app.k9mail.feature.account.common.ui.WithInteractionMode
 
 interface OutgoingServerSettingsContract {
 
-    interface ViewModel : UnidirectionalViewModel<State, Event, Effect>
+    interface ViewModel : UnidirectionalViewModel<State, Event, Effect>, WithInteractionMode
 
     data class State(
         val server: StringInputField = StringInputField(),

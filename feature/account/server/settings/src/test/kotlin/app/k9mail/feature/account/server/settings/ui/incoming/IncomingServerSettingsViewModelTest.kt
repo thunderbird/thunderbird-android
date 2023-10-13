@@ -12,6 +12,7 @@ import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.common.domain.entity.AuthenticationType
 import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
+import app.k9mail.feature.account.common.domain.entity.InteractionMode
 import app.k9mail.feature.account.common.domain.entity.MailConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.toImapDefaultPort
 import app.k9mail.feature.account.common.domain.entity.toPop3DefaultPort
@@ -350,6 +351,7 @@ class IncomingServerSettingsViewModelTest {
     fun `should change state and not emit NavigateNext effect when OnNextClicked event received and input invalid`() =
         runTest {
             val testSubject = IncomingServerSettingsViewModel(
+                mode = InteractionMode.Create,
                 validator = FakeIncomingServerSettingsValidator(
                     serverAnswer = ValidationResult.Failure(TestError),
                 ),
@@ -398,6 +400,7 @@ class IncomingServerSettingsViewModelTest {
             validator: IncomingServerSettingsContract.Validator = FakeIncomingServerSettingsValidator(),
             repository: AccountDomainContract.AccountStateRepository = InMemoryAccountStateRepository(),
         ) = IncomingServerSettingsViewModel(
+            mode = InteractionMode.Create,
             validator = validator,
             accountStateRepository = repository,
             initialState = initialState,

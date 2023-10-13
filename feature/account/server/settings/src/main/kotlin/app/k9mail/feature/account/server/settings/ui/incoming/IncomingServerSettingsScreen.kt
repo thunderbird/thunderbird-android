@@ -10,7 +10,9 @@ import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.feature.account.common.domain.entity.InteractionMode
 import app.k9mail.feature.account.common.ui.AccountTopAppBar
+import app.k9mail.feature.account.common.ui.AccountTopAppBarWithBackButton
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.common.ui.preview.PreviewAccountStateRepository
 import app.k9mail.feature.account.server.settings.R
@@ -42,9 +44,16 @@ fun IncomingServerSettingsScreen(
 
     Scaffold(
         topBar = {
-            AccountTopAppBar(
-                title = stringResource(id = R.string.account_server_settings_incoming_top_bar_title),
-            )
+            if (viewModel.mode == InteractionMode.Edit) {
+                AccountTopAppBarWithBackButton(
+                    title = stringResource(id = R.string.account_server_settings_incoming_top_bar_title),
+                    onBackClicked = { dispatch(Event.OnBackClicked) },
+                )
+            } else {
+                AccountTopAppBar(
+                    title = stringResource(id = R.string.account_server_settings_incoming_top_bar_title),
+                )
+            }
         },
         bottomBar = {
             WizardNavigationBar(
@@ -55,6 +64,7 @@ fun IncomingServerSettingsScreen(
         modifier = modifier,
     ) { innerPadding ->
         IncomingServerSettingsContent(
+            mode = viewModel.mode,
             onEvent = { dispatch(it) },
             state = state.value,
             contentPadding = innerPadding,
@@ -70,6 +80,7 @@ internal fun IncomingServerSettingsScreenK9Preview() {
             onNext = {},
             onBack = {},
             viewModel = IncomingServerSettingsViewModel(
+                mode = InteractionMode.Create,
                 validator = IncomingServerSettingsValidator(),
                 accountStateRepository = PreviewAccountStateRepository(),
             ),
@@ -85,6 +96,7 @@ internal fun IncomingServerSettingsScreenThunderbirdPreview() {
             onNext = {},
             onBack = {},
             viewModel = IncomingServerSettingsViewModel(
+                mode = InteractionMode.Create,
                 validator = IncomingServerSettingsValidator(),
                 accountStateRepository = PreviewAccountStateRepository(),
             ),

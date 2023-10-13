@@ -5,6 +5,7 @@ import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
+import app.k9mail.feature.account.common.domain.entity.InteractionMode
 import app.k9mail.feature.account.common.domain.entity.toDefaultPort
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.Effect
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.Event
@@ -13,6 +14,7 @@ import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSett
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.ViewModel
 
 open class IncomingServerSettingsViewModel(
+    override val mode: InteractionMode,
     private val validator: Validator,
     private val accountStateRepository: AccountDomainContract.AccountStateRepository,
     initialState: State = State(),
