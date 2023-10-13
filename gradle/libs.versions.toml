@@ -39,6 +39,7 @@ okhttp = "4.12.0"
 glide = "4.16.0"
 moshi = "1.15.0"
 mockito = "5.8.0"
+forkhandlesBom = "2.10.2.0"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -143,6 +144,8 @@ tokenautocomplete = "com.splitwise:tokenautocomplete:4.0.0-beta01"
 ckchangelog-core = "de.cketti.library.changelog:ckchangelog-core:2.0.0-beta02"
 xmlpull = "com.github.cketti:xmlpull-extracted-from-android:1.0"
 kxml2 = "com.github.cketti:kxml2-extracted-from-android:1.0"
+forkhandles-bom = { module = "dev.forkhandles:forkhandles-bom", version.ref = "forkhandlesBom" }
+forkhandles-fabrikate4k = { module = "dev.forkhandles:fabrikate4k" }
 
 junit = "junit:junit:4.13.2"
 robolectric = "org.robolectric:robolectric:4.11.1"

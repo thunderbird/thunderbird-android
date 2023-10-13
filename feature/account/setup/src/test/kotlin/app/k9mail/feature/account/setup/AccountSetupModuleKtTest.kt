@@ -15,6 +15,7 @@ import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCrea
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
 import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountContract
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
+import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract
 import com.fsck.k9.mail.oauth.AuthStateStorage
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.oauth.OAuth2TokenProviderFactory
@@ -78,6 +79,7 @@ class AccountSetupModuleKtTest : KoinTest {
                 Boolean::class,
                 Class.forName("net.openid.appauth.AppAuthConfiguration").kotlin,
                 InteractionMode::class,
+                SpecialFoldersContract.State::class,
                 CreateAccountContract.State::class,
             ),
         )

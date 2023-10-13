@@ -8,5 +8,6 @@ data class Account(
     val incomingServerSettings: ServerSettings,
     val outgoingServerSettings: ServerSettings,
     val authorizationState: String?,
+    val specialFolderSettings: SpecialFolderSettings?,
     val options: AccountOptions,
 )

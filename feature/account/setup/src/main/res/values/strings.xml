@@ -25,6 +25,21 @@
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">I trust this configuration</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">It is required to approve the configuration.</string>
 
+    <string name="account_setup_special_folders_top_bar_title">Special folders</string>
+    <string name="account_setup_special_folders_form_description">Please specify the special folders for your account.</string>
+    <string name="account_setup_special_folders_form_description_automatic">The \"Automatic\" entry will follow changes made by the server automatically. The current server value is displayed in parentheses.</string>
+    <string name="account_setup_special_folders_loading_message">Fetching list of folders…</string>
+    <string name="account_setup_special_folders_error_message">Failed to fetch the list of folders from the server</string>
+    <string name="account_setup_special_folders_success_message">All special folders have been configured automatically by the server.</string>
+    <string name="account_setup_special_folders_archive_folder_label">Archive folder</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Drafts folder</string>
+    <string name="account_setup_special_folders_sent_folder_label">Sent folder</string>
+    <string name="account_setup_special_folders_spam_folder_label">Spam folder</string>
+    <string name="account_setup_special_folders_trash_folder_label">Trash folder</string>
+    <string name="account_setup_special_folders_folder_none">None</string>
+    <string name="account_setup_special_folders_folder_automatic">Automatic (%s)</string>
+    <string name="account_setup_special_folders_edit_folders_button_label">Edit special folders</string>
+
     <string name="account_setup_options_top_bar_title">Account options</string>
     <string name="account_setup_options_section_display_options">Display options</string>
     <string name="account_setup_options_account_name_label">Account name</string>

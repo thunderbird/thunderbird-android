@@ -8,5 +8,6 @@ data class AccountState(
     val incomingServerSettings: ServerSettings? = null,
     val outgoingServerSettings: ServerSettings? = null,
     val authorizationState: AuthorizationState? = null,
+    val specialFolderSettings: SpecialFolderSettings? = null,
     val options: AccountOptions? = null,
 )

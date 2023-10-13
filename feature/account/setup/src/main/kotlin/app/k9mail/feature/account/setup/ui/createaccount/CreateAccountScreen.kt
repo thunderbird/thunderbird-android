@@ -73,7 +73,7 @@ internal fun AccountOptionsScreenK9Preview() {
             onNext = {},
             onBack = {},
             viewModel = CreateAccountViewModel(
-                createAccount = { _, _, _, _, _ -> AccountCreatorResult.Success("irrelevant") },
+                createAccount = { _, _, _, _, _, _ -> AccountCreatorResult.Success("irrelevant") },
                 accountStateRepository = InMemoryAccountStateRepository(),
             ),
         )

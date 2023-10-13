@@ -5,6 +5,7 @@ import app.k9mail.feature.account.common.domain.entity.AccountOptions
 import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import app.k9mail.feature.account.common.domain.entity.MailConnectionSecurity
+import app.k9mail.feature.account.common.domain.entity.SpecialFolderSettings
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ServerSettings
 
@@ -43,6 +44,8 @@ class PreviewAccountStateRepository : AccountDomainContract.AccountStateReposito
     override fun setOutgoingServerSettings(serverSettings: ServerSettings) = Unit
 
     override fun setAuthorizationState(authorizationState: AuthorizationState) = Unit
+
+    override fun setSpecialFolderSettings(specialFolderSettings: SpecialFolderSettings) = Unit
 
     override fun setOptions(options: AccountOptions) = Unit
 

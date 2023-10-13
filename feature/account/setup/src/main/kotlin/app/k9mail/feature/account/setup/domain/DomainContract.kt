@@ -1,8 +1,11 @@
 package app.k9mail.feature.account.setup.domain
 
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
+import app.k9mail.core.common.domain.usecase.validation.ValidationError
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.feature.account.common.domain.entity.AccountOptions
+import app.k9mail.feature.account.common.domain.entity.SpecialFolderOptions
+import app.k9mail.feature.account.common.domain.entity.SpecialFolderSettings
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
 import com.fsck.k9.mail.ServerSettings
 
@@ -19,6 +22,7 @@ interface DomainContract {
                 incomingServerSettings: ServerSettings,
                 outgoingServerSettings: ServerSettings,
                 authorizationState: String?,
+                specialFolderSettings: SpecialFolderSettings?,
                 options: AccountOptions,
             ): AccountCreatorResult
         }
@@ -41,6 +45,18 @@ interface DomainContract {
 
         fun interface ValidateEmailSignature {
             fun execute(emailSignature: String): ValidationResult
+        }
+
+        fun interface GetSpecialFolderOptions {
+            suspend operator fun invoke(): SpecialFolderOptions
+        }
+
+        fun interface ValidateSpecialFolderOptions {
+            operator fun invoke(specialFolderOptions: SpecialFolderOptions): ValidationResult
+
+            sealed interface Failure : ValidationError {
+                data object MissingDefaultSpecialFolderOption : Failure
+            }
         }
     }
 }
