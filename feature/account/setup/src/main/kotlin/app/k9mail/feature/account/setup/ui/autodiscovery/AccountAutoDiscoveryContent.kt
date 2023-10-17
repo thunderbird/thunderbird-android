@@ -8,14 +8,12 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.common.DevicePreviews
-import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorState
 import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
@@ -23,6 +21,7 @@ import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.feature.account.common.ui.loadingerror.rememberContentLoadingErrorViewState
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
 import app.k9mail.feature.account.oauth.ui.preview.PreviewAccountOAuthViewModel
 import app.k9mail.feature.account.setup.R
@@ -46,16 +45,9 @@ internal fun AccountAutoDiscoveryContent(
             .then(modifier),
     ) {
         val resources = LocalContext.current.resources
-        val viewState = remember(key1 = state.isLoading, key2 = state.error) {
-            when {
-                state.isLoading -> ContentLoadingErrorState.Loading
-                state.error != null -> ContentLoadingErrorState.Error
-                else -> ContentLoadingErrorState.Content
-            }
-        }
 
         ContentLoadingErrorView(
-            state = viewState,
+            state = rememberContentLoadingErrorViewState(state),
             loading = {
                 LoadingView(
                     message = stringResource(id = R.string.account_setup_auto_discovery_loading_message),
