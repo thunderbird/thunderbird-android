@@ -2,16 +2,20 @@ package app.k9mail.feature.account.server.certificate.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.common.DevicePreviews
+import app.k9mail.core.ui.compose.common.baseline.withBaseline
 import app.k9mail.core.ui.compose.common.mvi.observe
+import app.k9mail.core.ui.compose.designsystem.atom.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.button.Button
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonOutlined
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody1
@@ -19,6 +23,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline4
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle1
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
+import app.k9mail.core.ui.compose.theme.IconsWithBaseline
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.feature.account.server.certificate.data.InMemoryServerCertificateErrorRepository
@@ -32,6 +37,7 @@ import org.koin.androidx.compose.koinViewModel
 
 // Note: This is a placeholder with mostly hardcoded text.
 // TODO: Replace with final design.
+@Suppress("LongMethod")
 @Composable
 fun ServerCertificateErrorScreen(
     onCertificateAccepted: () -> Unit,
@@ -79,7 +85,27 @@ fun ServerCertificateErrorScreen(
                     .verticalScroll(rememberScrollState())
                     .padding(all = MainTheme.spacings.double),
             ) {
-                TextHeadline4(text = "Warning")
+                Row {
+                    val warningIcon = IconsWithBaseline.Filled.warning
+                    val iconSize = MainTheme.sizes.medium
+                    val iconScalingFactor = iconSize / warningIcon.image.defaultHeight
+                    val iconBaseline = warningIcon.baseline * iconScalingFactor
+
+                    Icon(
+                        imageVector = warningIcon.image,
+                        tint = MainTheme.colors.warning,
+                        modifier = Modifier
+                            .padding(end = MainTheme.spacings.default)
+                            .requiredSize(iconSize)
+                            .withBaseline(iconBaseline)
+                            .alignByBaseline(),
+                    )
+                    TextHeadline4(
+                        text = "Warning",
+                        modifier = Modifier.alignByBaseline(),
+                    )
+                }
+
                 TextSubtitle1("Invalid certificate")
 
                 Spacer(modifier = Modifier.height(MainTheme.spacings.quadruple))
