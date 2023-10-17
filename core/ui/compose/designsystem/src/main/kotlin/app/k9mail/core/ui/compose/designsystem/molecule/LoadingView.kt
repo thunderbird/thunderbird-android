@@ -31,8 +31,7 @@ fun LoadingView(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(MainTheme.spacings.default)
-                .then(modifier),
+                .padding(MainTheme.spacings.double),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
