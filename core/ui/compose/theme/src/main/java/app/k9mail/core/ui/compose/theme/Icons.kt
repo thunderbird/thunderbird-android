@@ -1,9 +1,7 @@
 package app.k9mail.core.ui.compose.theme
 
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Error
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoveToInbox
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Outbox
@@ -15,38 +13,75 @@ import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.icons.outlined.ArrowDropUp
 import androidx.compose.material.icons.outlined.Celebration
 import androidx.compose.material.icons.outlined.Check
-import androidx.compose.material.icons.outlined.Error
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.ExpandLess
 import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.WarningAmber
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material.icons.Icons as MaterialIcons
 
+// We're using getters so not all icons are loaded into memory as soon as one of the nested objects is accessed.
 object Icons {
     object Filled {
-        val error = MaterialIcons.Filled.Error
-        val inbox = MaterialIcons.Filled.MoveToInbox
-        val notification = MaterialIcons.Filled.Notifications
-        val outbox = MaterialIcons.Filled.Outbox
-        val security = MaterialIcons.Filled.Security
-        val passwordVisibility = MaterialIcons.Filled.Visibility
-        val passwordVisibilityOff = MaterialIcons.Filled.VisibilityOff
-        val user = MaterialIcons.Filled.AccountCircle
+        val error: ImageVector
+            get() = MaterialIcons.Filled.Error
+
+        val inbox: ImageVector
+            get() = MaterialIcons.Filled.MoveToInbox
+
+        val notification: ImageVector
+            get() = MaterialIcons.Filled.Notifications
+
+        val outbox: ImageVector
+            get() = MaterialIcons.Filled.Outbox
+
+        val security: ImageVector
+            get() = MaterialIcons.Filled.Security
+
+        val passwordVisibility: ImageVector
+            get() = MaterialIcons.Filled.Visibility
+
+        val passwordVisibilityOff: ImageVector
+            get() = MaterialIcons.Filled.VisibilityOff
+
+        val user: ImageVector
+            get() = MaterialIcons.Filled.AccountCircle
     }
 
     object Outlined {
-        val arrowBack = MaterialIcons.Outlined.ArrowBack
-        val arrowDropDown = MaterialIcons.Outlined.ArrowDropDown
-        val arrowDropUp = MaterialIcons.Outlined.ArrowDropUp
-        val celebration = MaterialIcons.Outlined.Celebration
-        val menu = MaterialIcons.Outlined.Menu
-        val check = MaterialIcons.Outlined.Check
-        val info = MaterialIcons.Outlined.Info
-        val warning = MaterialIcons.Outlined.WarningAmber
-        val error = MaterialIcons.Outlined.ErrorOutline
-        val expandMore = MaterialIcons.Outlined.ExpandMore
-        val expandLess = MaterialIcons.Outlined.ExpandLess
+        val arrowBack: ImageVector
+            get() = MaterialIcons.Outlined.ArrowBack
+
+        val arrowDropDown: ImageVector
+            get() = MaterialIcons.Outlined.ArrowDropDown
+
+        val arrowDropUp: ImageVector
+            get() = MaterialIcons.Outlined.ArrowDropUp
+
+        val celebration: ImageVector
+            get() = MaterialIcons.Outlined.Celebration
+
+        val menu: ImageVector
+            get() = MaterialIcons.Outlined.Menu
+
+        val check: ImageVector
+            get() = MaterialIcons.Outlined.Check
+
+        val info: ImageVector
+            get() = MaterialIcons.Outlined.Info
+
+        val warning: ImageVector
+            get() = MaterialIcons.Outlined.WarningAmber
+
+        val error: ImageVector
+            get() = MaterialIcons.Outlined.ErrorOutline
+
+        val expandMore: ImageVector
+            get() = MaterialIcons.Outlined.ExpandMore
+
+        val expandLess: ImageVector
+            get() = MaterialIcons.Outlined.ExpandLess
     }
 }
