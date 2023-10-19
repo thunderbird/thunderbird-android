@@ -8,16 +8,12 @@ import app.k9mail.feature.account.server.certificate.domain.entity.ServerCertifi
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.Effect
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.Event
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.State
-import com.fsck.k9.logging.Timber
-import com.fsck.k9.mail.filter.Hex
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
-import java.security.cert.CertificateEncodingException
 import kotlinx.coroutines.launch
 
 class ServerCertificateErrorViewModel(
     private val certificateErrorRepository: ServerCertificateDomainContract.ServerCertificateErrorRepository,
     private val addServerCertificateException: UseCase.AddServerCertificateException,
+    private val formatServerCertificateError: UseCase.FormatServerCertificateError,
     initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(initialState), ServerCertificateErrorContract.ViewModel {
     private val serverCertificateError: ServerCertificateError? = certificateErrorRepository.getCertificateError()
@@ -70,44 +66,30 @@ class ServerCertificateErrorViewModel(
         emitEffect(Effect.NavigateCertificateAccepted)
     }
 
-    private fun buildErrorMessage(serverCertificateError: ServerCertificateError?): String {
-        val certificate = serverCertificateError?.certificateChain?.firstOrNull() ?: return ""
+    private fun buildErrorMessage(serverCertificateError: ServerCertificateError): String {
+        val formattedError = formatServerCertificateError(serverCertificateError)
+        val certificate = formattedError.serverCertificateProperties
 
         return buildString {
-            certificate.subjectAlternativeNames?.let { subjectAlternativeNames ->
+            if (certificate.subjectAlternativeNames.isNotEmpty()) {
                 append("Subject alternative names:\n")
-                for (subjectAlternativeName in subjectAlternativeNames) {
-                    append("- ").append(subjectAlternativeName[1]).append("\n")
+                for (subjectAlternativeName in certificate.subjectAlternativeNames) {
+                    append("- ").append(subjectAlternativeName).append("\n")
                 }
+                append("\n")
             }
+
+            append("Not valid before: ").append(certificate.notValidBefore).append("\n")
+            append("Not valid after: ").append(certificate.notValidAfter).append("\n")
             append("\n")
 
-            append("Not valid before: ").append(certificate.notBefore).append("\n")
-            append("Not valid after: ").append(certificate.notAfter).append("\n")
+            append("Subject: ").append(certificate.subject).append("\n")
+            append("Issuer: ").append(certificate.issuer).append("\n")
             append("\n")
 
-            append("Subject: ").append(certificate.subjectDN).append("\n")
-            append("Issuer: ").append(certificate.issuerX500Principal).append("\n")
-            append("\n")
-
-            for (algorithm in arrayOf("SHA-1", "SHA-256", "SHA-512")) {
-                val digest = try {
-                    MessageDigest.getInstance(algorithm)
-                } catch (e: NoSuchAlgorithmException) {
-                    Timber.e(e, "Error while initializing MessageDigest (%s)", algorithm)
-                    null
-                }
-
-                if (digest != null) {
-                    digest.reset()
-                    try {
-                        val hash = Hex.encodeHex(digest.digest(certificate.encoded))
-                        append("Fingerprint (").append(algorithm).append("): \n").append(hash).append("\n")
-                    } catch (e: CertificateEncodingException) {
-                        Timber.e(e, "Error while encoding certificate")
-                    }
-                }
-            }
+            append("Fingerprint (SHA-1): \n").append(certificate.fingerprintSha1).append("\n")
+            append("Fingerprint (SHA-256): \n").append(certificate.fingerprintSha256).append("\n")
+            append("Fingerprint (SHA-512): \n").append(certificate.fingerprintSha512).append("\n")
         }
     }
 }

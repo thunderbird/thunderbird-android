@@ -28,6 +28,7 @@ import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.feature.account.server.certificate.data.InMemoryServerCertificateErrorRepository
 import app.k9mail.feature.account.server.certificate.domain.entity.ServerCertificateError
+import app.k9mail.feature.account.server.certificate.domain.usecase.FormatServerCertificateError
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.Effect
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.Event
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.ViewModel
@@ -186,6 +187,7 @@ internal fun ServerCertificateErrorScreenK9Preview() {
             viewModel = ServerCertificateErrorViewModel(
                 addServerCertificateException = { _, _, _ -> },
                 certificateErrorRepository = InMemoryServerCertificateErrorRepository(serverCertificateError),
+                formatServerCertificateError = FormatServerCertificateError(),
             ),
         )
     }
