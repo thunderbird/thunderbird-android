@@ -9,6 +9,7 @@ import app.k9mail.feature.account.common.domain.entity.toMailConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.toAuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.toConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
+import com.fsck.k9.mail.store.imap.ImapStoreSettings
 
 internal fun IncomingServerSettings.toServerSettings(password: String?): ServerSettings {
     return when (this) {
@@ -27,7 +28,12 @@ private fun ImapServerSettings.toImapServerSettings(password: String?): ServerSe
         username = username,
         password = password,
         clientCertificateAlias = null,
-        extra = emptyMap(),
+        extra = ImapStoreSettings.createExtra(
+            autoDetectNamespace = true,
+            pathPrefix = null,
+            useCompression = true,
+            sendClientId = true,
+        ),
     )
 }
 

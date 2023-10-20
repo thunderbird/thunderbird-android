@@ -1,5 +1,6 @@
 package app.k9mail.feature.account.server.settings.ui.incoming
 
+import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.common.domain.entity.AuthenticationType
 import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
@@ -17,8 +18,48 @@ import org.junit.Test
 class IncomingServerSettingsStateMapperKtTest {
 
     @Test
-    fun `should map to IMAP server settings`() {
-        val incomingState = State(
+    fun `should map to state with email as username when server settings are null`() {
+        val accountState = AccountState(
+            emailAddress = "test@example.com",
+            incomingServerSettings = null,
+        )
+
+        val result = accountState.toIncomingServerSettingsState()
+
+        assertThat(result).isEqualTo(State(username = StringInputField(value = "test@example.com")))
+    }
+
+    @Test
+    fun `should map from IMAP server settings to state`() {
+        val serverSettings = AccountState(
+            incomingServerSettings = IMAP_SERVER_SETTINGS,
+        )
+
+        val result = serverSettings.toIncomingServerSettingsState()
+
+        assertThat(result).isEqualTo(INCOMING_IMAP_STATE)
+    }
+
+    @Test
+    fun `should map from state to IMAP server settings`() {
+        val incomingState = INCOMING_IMAP_STATE
+
+        val result = incomingState.toServerSettings()
+
+        assertThat(result).isEqualTo(IMAP_SERVER_SETTINGS)
+    }
+
+    @Test
+    fun `should map from state to POP3 server settings`() {
+        val incomingState = INCOMING_POP3_STATE
+
+        val result = incomingState.toServerSettings()
+
+        assertThat(result).isEqualTo(POP3_SERVER_SETTINGS)
+    }
+
+    private companion object {
+        private val INCOMING_IMAP_STATE = State(
             protocolType = IncomingProtocolType.IMAP,
             server = StringInputField(value = "imap.example.org"),
             port = NumberInputField(value = 993),
@@ -27,64 +68,49 @@ class IncomingServerSettingsStateMapperKtTest {
             username = StringInputField(value = "user"),
             password = StringInputField(value = "password"),
             clientCertificateAlias = null,
-            imapAutodetectNamespaceEnabled = true,
+            imapAutodetectNamespaceEnabled = false,
             imapPrefix = StringInputField(value = "prefix"),
             imapUseCompression = true,
             imapSendClientId = true,
         )
 
-        val result = incomingState.toServerSettings()
-
-        assertThat(result).isEqualTo(
-            ServerSettings(
-                type = "imap",
-                host = "imap.example.org",
-                port = 993,
-                connectionSecurity = MailConnectionSecurity.SSL_TLS_REQUIRED,
-                authenticationType = AuthType.PLAIN,
-                username = "user",
-                password = "password",
-                clientCertificateAlias = null,
-                extra = ImapStoreSettings.createExtra(
-                    autoDetectNamespace = true,
-                    pathPrefix = null,
-                    useCompression = true,
-                    sendClientId = true,
-                ),
+        private val IMAP_SERVER_SETTINGS = ServerSettings(
+            type = "imap",
+            host = "imap.example.org",
+            port = 993,
+            connectionSecurity = MailConnectionSecurity.SSL_TLS_REQUIRED,
+            authenticationType = AuthType.PLAIN,
+            username = "user",
+            password = "password",
+            clientCertificateAlias = null,
+            extra = ImapStoreSettings.createExtra(
+                autoDetectNamespace = false,
+                pathPrefix = "prefix",
+                useCompression = true,
+                sendClientId = true,
             ),
         )
-    }
 
-    @Test
-    fun `should map to POP3 server settings`() {
-        val incomingState = State(
+        private val INCOMING_POP3_STATE = State(
             protocolType = IncomingProtocolType.POP3,
-            server = StringInputField(value = "pop3.domain.example"),
+            server = StringInputField(value = "pop3.example.org"),
             port = NumberInputField(value = 995),
             security = ConnectionSecurity.TLS,
             authenticationType = AuthenticationType.PasswordCleartext,
             username = StringInputField(value = "user"),
             password = StringInputField(value = "password"),
             clientCertificateAlias = null,
-            imapAutodetectNamespaceEnabled = true,
-            imapPrefix = StringInputField(value = "prefix"),
-            imapUseCompression = true,
-            imapSendClientId = true,
         )
 
-        val result = incomingState.toServerSettings()
-
-        assertThat(result).isEqualTo(
-            ServerSettings(
-                type = "pop3",
-                host = "pop3.domain.example",
-                port = 995,
-                connectionSecurity = MailConnectionSecurity.SSL_TLS_REQUIRED,
-                authenticationType = AuthType.PLAIN,
-                username = "user",
-                password = "password",
-                clientCertificateAlias = null,
-            ),
+        private val POP3_SERVER_SETTINGS = ServerSettings(
+            type = "pop3",
+            host = "pop3.example.org",
+            port = 995,
+            connectionSecurity = MailConnectionSecurity.SSL_TLS_REQUIRED,
+            authenticationType = AuthType.PLAIN,
+            username = "user",
+            password = "password",
+            clientCertificateAlias = null,
         )
     }
 }

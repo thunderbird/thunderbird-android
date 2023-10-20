@@ -26,6 +26,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ServerSettings
+import com.fsck.k9.mail.store.imap.ImapStoreSettings
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
@@ -48,7 +49,12 @@ class IncomingServerSettingsViewModelTest {
                 "username",
                 "password",
                 clientCertificateAlias = null,
-                extra = emptyMap(),
+                extra = ImapStoreSettings.createExtra(
+                    autoDetectNamespace = true,
+                    pathPrefix = null,
+                    useCompression = true,
+                    sendClientId = true,
+                ),
             ),
         )
         val repository = InMemoryAccountStateRepository(
@@ -76,6 +82,10 @@ class IncomingServerSettingsViewModelTest {
                     authenticationType = AuthenticationType.PasswordCleartext,
                     username = StringInputField(value = "username"),
                     password = StringInputField(value = "password"),
+                    imapAutodetectNamespaceEnabled = true,
+                    imapPrefix = StringInputField(value = ""),
+                    imapUseCompression = true,
+                    imapSendClientId = true,
                 ),
             )
         }

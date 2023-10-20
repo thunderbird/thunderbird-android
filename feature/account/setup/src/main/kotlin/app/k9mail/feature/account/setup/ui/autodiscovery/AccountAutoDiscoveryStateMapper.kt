@@ -39,6 +39,10 @@ internal fun AccountAutoDiscoveryContract.State.toIncomingConfigState(): Incomin
             authenticationType = incomingSettings.authenticationTypes.first().toAuthenticationType(),
             username = StringInputField(value = incomingSettings.username),
             password = StringInputField(value = password.value),
+            imapAutodetectNamespaceEnabled = true,
+            imapPrefix = StringInputField(value = ""),
+            imapUseCompression = true,
+            imapSendClientId = true,
         )
     }
 }
