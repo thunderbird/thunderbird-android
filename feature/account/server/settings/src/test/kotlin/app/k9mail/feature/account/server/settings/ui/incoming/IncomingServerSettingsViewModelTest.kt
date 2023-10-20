@@ -76,6 +76,10 @@ class IncomingServerSettingsViewModelTest {
                     authenticationType = AuthenticationType.PasswordCleartext,
                     username = StringInputField(value = "username"),
                     password = StringInputField(value = "password"),
+                    imapAutodetectNamespaceEnabled = false,
+                    imapPrefix = StringInputField(value = ""),
+                    imapUseCompression = false,
+                    imapSendClientId = false,
                 ),
             )
         }

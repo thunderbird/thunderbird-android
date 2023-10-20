@@ -12,23 +12,24 @@ import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSett
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings
 
-fun AccountState.toIncomingConfigState(): State {
-    val incomingServerSettings = incomingServerSettings
-    return if (incomingServerSettings == null) {
-        State(
-            username = StringInputField(value = emailAddress ?: ""),
-        )
-    } else {
-        State(
-            protocolType = IncomingProtocolType.fromName(incomingServerSettings.type),
-            server = StringInputField(value = incomingServerSettings.host ?: ""),
-            security = incomingServerSettings.connectionSecurity.toConnectionSecurity(),
-            port = NumberInputField(value = incomingServerSettings.port.toLong()),
-            authenticationType = incomingServerSettings.authenticationType.toAuthenticationType(),
-            username = StringInputField(value = incomingServerSettings.username),
-            password = StringInputField(value = incomingServerSettings.password ?: ""),
-        )
-    }
+fun AccountState.toIncomingServerSettingsState() = incomingServerSettings?.toIncomingServerSettingsState()
+    ?: State(username = StringInputField(value = emailAddress ?: ""))
+
+private fun ServerSettings.toIncomingServerSettingsState(): State {
+    return State(
+        protocolType = IncomingProtocolType.fromName(type),
+        server = StringInputField(value = host ?: ""),
+        security = connectionSecurity.toConnectionSecurity(),
+        port = NumberInputField(value = port.toLong()),
+        authenticationType = authenticationType.toAuthenticationType(),
+        username = StringInputField(value = username),
+        password = StringInputField(value = password ?: ""),
+        clientCertificateAlias = clientCertificateAlias,
+        imapAutodetectNamespaceEnabled = extra[ImapStoreSettings.AUTODETECT_NAMESPACE_KEY] == "true",
+        imapPrefix = StringInputField(value = extra[ImapStoreSettings.PATH_PREFIX_KEY] ?: ""),
+        imapUseCompression = extra[ImapStoreSettings.USE_COMPRESSION] == "true",
+        imapSendClientId = extra[ImapStoreSettings.SEND_CLIENT_ID] == "true",
+    )
 }
 
 internal fun State.toServerSettings(): ServerSettings {

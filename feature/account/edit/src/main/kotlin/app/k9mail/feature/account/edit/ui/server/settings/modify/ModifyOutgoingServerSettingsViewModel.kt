@@ -6,7 +6,7 @@ import app.k9mail.feature.account.common.domain.entity.InteractionMode
 import app.k9mail.feature.account.edit.domain.AccountEditDomainContract
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsViewModel
-import app.k9mail.feature.account.server.settings.ui.outgoing.toOutgoingConfigState
+import app.k9mail.feature.account.server.settings.ui.outgoing.toOutgoingServerSettingsState
 import kotlinx.coroutines.launch
 
 class ModifyOutgoingServerSettingsViewModel(
@@ -26,7 +26,7 @@ class ModifyOutgoingServerSettingsViewModel(
             val state = accountStateLoader.execute(accountUuid)
 
             updateState {
-                state.toOutgoingConfigState()
+                state.toOutgoingServerSettingsState()
             }
         }
     }

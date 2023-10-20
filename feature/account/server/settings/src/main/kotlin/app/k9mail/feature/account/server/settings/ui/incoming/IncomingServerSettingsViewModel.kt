@@ -54,7 +54,7 @@ open class IncomingServerSettingsViewModel(
 
     protected open fun loadAccountState() {
         updateState {
-            accountStateRepository.getState().toIncomingConfigState()
+            accountStateRepository.getState().toIncomingServerSettingsState()
         }
     }
 

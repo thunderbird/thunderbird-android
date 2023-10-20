@@ -6,10 +6,10 @@ import com.fsck.k9.mail.ServerSettings
  * Extract IMAP-specific server settings from [ServerSettings]
  */
 object ImapStoreSettings {
-    private const val AUTODETECT_NAMESPACE_KEY = "autoDetectNamespace"
-    private const val PATH_PREFIX_KEY = "pathPrefix"
-    private const val SEND_CLIENT_ID = "sendClientId"
-    private const val USE_COMPRESSION = "useCompression"
+    const val AUTODETECT_NAMESPACE_KEY = "autoDetectNamespace"
+    const val PATH_PREFIX_KEY = "pathPrefix"
+    const val SEND_CLIENT_ID = "sendClientId"
+    const val USE_COMPRESSION = "useCompression"
 
     @JvmStatic
     val ServerSettings.autoDetectNamespace: Boolean
