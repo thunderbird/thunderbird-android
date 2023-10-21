@@ -32,7 +32,7 @@ If the app is not behaving like it should, you might find these resources helpfu
 
 Interested in helping to translate K-9 Mail? Contribute here:
 
-- [K-9 Mail localization](https://explore.transifex.com/k-9/k9mail/)
+- [K-9 Mail localization](https://hosted.weblate.org/projects/tb-android/)
 
 ## Contributing
 
