@@ -16,7 +16,7 @@ submitting a new issue.
 
 ## Translations
 
-We're using [Transifex](https://www.transifex.com/k-9/k9mail/) to manage translations.
+We're using [Weblate](https://hosted.weblate.org/projects/tb-android/) to manage translations.
 
 ## Contributing code
 
