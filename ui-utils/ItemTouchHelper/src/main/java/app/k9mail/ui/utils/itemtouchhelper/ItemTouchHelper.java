@@ -1299,7 +1299,7 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
     private int checkHorizontalSwipe(ViewHolder viewHolder, int flags) {
         if ((flags & (LEFT | RIGHT)) != 0) {
             final int dirFlag = mDx > 0 ? RIGHT : LEFT;
-            if (mVelocityTracker != null && mActivePointerId > -1) {
+            if (mCallback.isFlingEnabled() && mVelocityTracker != null && mActivePointerId > -1) {
                 mVelocityTracker.computeCurrentVelocity(PIXELS_PER_SECOND,
                         mCallback.getSwipeVelocityThreshold(mMaxSwipeVelocity));
                 final float xVelocity = mVelocityTracker.getXVelocity(mActivePointerId);
@@ -1326,7 +1326,7 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
     private int checkVerticalSwipe(ViewHolder viewHolder, int flags) {
         if ((flags & (UP | DOWN)) != 0) {
             final int dirFlag = mDy > 0 ? DOWN : UP;
-            if (mVelocityTracker != null && mActivePointerId > -1) {
+            if (mCallback.isFlingEnabled() && mVelocityTracker != null && mActivePointerId > -1)  {
                 mVelocityTracker.computeCurrentVelocity(PIXELS_PER_SECOND,
                         mCallback.getSwipeVelocityThreshold(mMaxSwipeVelocity));
                 final float xVelocity = mVelocityTracker.getXVelocity(mActivePointerId);
@@ -2280,6 +2280,11 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
 
         public void onSwipeEnded(@NonNull ViewHolder viewHolder) {
         }
+
+        public boolean isFlingEnabled() {
+            return true;
+        }
+
     }
 
     /**

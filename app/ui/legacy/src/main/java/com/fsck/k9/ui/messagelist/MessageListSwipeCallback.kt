@@ -44,6 +44,10 @@ class MessageListSwipeCallback(
         swipeLeftLayout = layoutInflater.inflate(R.layout.swipe_left_action, null, false)
     }
 
+    override fun isFlingEnabled(): Boolean {
+        return false
+    }
+
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: ViewHolder): Int {
         if (viewHolder !is MessageViewHolder) return 0
 
