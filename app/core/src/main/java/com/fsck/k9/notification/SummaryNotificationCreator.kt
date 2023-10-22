@@ -54,6 +54,7 @@ internal class SummaryNotificationCreator(
             .setCategory(NotificationCompat.CATEGORY_EMAIL)
             .setGroup(baseNotificationData.groupKey)
             .setGroupSummary(true)
+            .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY)
             .setSmallIcon(resourceProvider.iconNewMail)
             .setColor(baseNotificationData.color)
             .setWhen(notificationData.timestamp)
