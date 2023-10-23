@@ -25,6 +25,7 @@ internal class SingleMessageNotificationCreator(
             .setCategory(NotificationCompat.CATEGORY_EMAIL)
             .setGroup(baseNotificationData.groupKey)
             .setGroupSummary(isGroupSummary)
+            .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY)
             .setSmallIcon(resourceProvider.iconNewMail)
             .setColor(baseNotificationData.color)
             .setWhen(singleNotificationData.timestamp)
