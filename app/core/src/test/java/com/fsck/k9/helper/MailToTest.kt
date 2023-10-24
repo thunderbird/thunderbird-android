@@ -2,39 +2,46 @@ package com.fsck.k9.helper
 
 import android.net.Uri
 import app.k9mail.core.android.testing.RobolectricTest
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
+import assertk.assertions.isNull
+import assertk.assertions.isTrue
 import com.fsck.k9.helper.MailTo.CaseInsensitiveParamWrapper
-import junit.framework.Assert
-import org.hamcrest.CoreMatchers
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.ExpectedException
 
 class MailToTest : RobolectricTest() {
+
     @get:Rule
     val exception: ExpectedException = ExpectedException.none()
 
     @Test
     fun testIsMailTo_validMailToURI() {
         val uri = Uri.parse("mailto:nobody")
+
         val result = MailTo.isMailTo(uri)
 
-        Assert.assertTrue(result)
+        assertThat(result).isTrue()
     }
 
     @Test
     fun testIsMailTo_invalidMailToUri() {
         val uri = Uri.parse("http://example.org/")
+
         val result = MailTo.isMailTo(uri)
 
-        Assert.assertFalse(result)
+        assertThat(result).isFalse()
     }
 
     @Test
     fun testIsMailTo_nullArgument() {
         val uri: Uri? = null
+
         val result = MailTo.isMailTo(uri)
 
-        Assert.assertFalse(result)
+        assertThat(result).isFalse()
     }
 
     @Test
@@ -51,6 +58,7 @@ class MailToTest : RobolectricTest() {
     fun parse_withoutMailtoUri_shouldThrow() {
         exception.expect(IllegalArgumentException::class.java)
         exception.expectMessage("Not a mailto scheme")
+
         val uri = Uri.parse("http://example.org/")
 
         MailTo.parse(uri)
@@ -63,7 +71,7 @@ class MailToTest : RobolectricTest() {
 
         val emailAddressList = mailToHelper.to
 
-        Assert.assertEquals(emailAddressList[0].address, "test@abc.com")
+        assertThat(emailAddressList[0].address).isEqualTo("test@abc.com")
     }
 
     @Test
@@ -73,8 +81,8 @@ class MailToTest : RobolectricTest() {
 
         val emailAddressList = mailToHelper.to
 
-        Assert.assertEquals(emailAddressList[0].address, "test1@abc.com")
-        Assert.assertEquals(emailAddressList[1].address, "test2@abc.com")
+        assertThat(emailAddressList[0].address).isEqualTo("test1@abc.com")
+        assertThat(emailAddressList[1].address).isEqualTo("test2@abc.com")
     }
 
     @Test
@@ -84,7 +92,7 @@ class MailToTest : RobolectricTest() {
 
         val emailAddressList = mailToHelper.cc
 
-        Assert.assertEquals(emailAddressList[0].address, "test3@abc.com")
+        assertThat(emailAddressList[0].address).isEqualTo("test3@abc.com")
     }
 
     @Test
@@ -94,8 +102,8 @@ class MailToTest : RobolectricTest() {
 
         val emailAddressList = mailToHelper.cc
 
-        Assert.assertEquals(emailAddressList[0].address, "test3@abc.com")
-        Assert.assertEquals(emailAddressList[1].address, "test4@abc.com")
+        assertThat(emailAddressList[0].address).isEqualTo("test3@abc.com")
+        assertThat(emailAddressList[1].address).isEqualTo("test4@abc.com")
     }
 
     @Test
@@ -105,17 +113,18 @@ class MailToTest : RobolectricTest() {
 
         val emailAddressList = mailToHelper.bcc
 
-        Assert.assertEquals(emailAddressList[0].address, "test3@abc.com")
+        assertThat(emailAddressList[0].address).isEqualTo("test3@abc.com")
     }
 
     @Test
     fun testGetBcc_multipleEmailAddress() {
         val uri = Uri.parse("mailto:?bcc=test3@abc.com&bcc=test4@abc.com")
         val mailToHelper = MailTo.parse(uri)
+
         val emailAddressList = mailToHelper.bcc
 
-        Assert.assertEquals(emailAddressList[0].address, "test3@abc.com")
-        Assert.assertEquals(emailAddressList[1].address, "test4@abc.com")
+        assertThat(emailAddressList[0].address).isEqualTo("test3@abc.com")
+        assertThat(emailAddressList[1].address).isEqualTo("test4@abc.com")
     }
 
     @Test
@@ -125,7 +134,7 @@ class MailToTest : RobolectricTest() {
 
         val subject = mailToHelper.subject
 
-        Assert.assertEquals(subject, "Hello")
+        assertThat(subject).isEqualTo("Hello")
     }
 
     @Test
@@ -135,34 +144,37 @@ class MailToTest : RobolectricTest() {
 
         val subject = mailToHelper.body
 
-        Assert.assertEquals(subject, "Test Body")
+        assertThat(subject).isEqualTo("Test Body")
     }
 
     @Test
     fun testCaseInsensitiveParamWrapper() {
         val uri = Uri.parse("scheme://authority?a=one&b=two&c=three")
         val caseInsensitiveParamWrapper = CaseInsensitiveParamWrapper(uri)
+
         val result = caseInsensitiveParamWrapper.getQueryParameters("b")
 
-        org.junit.Assert.assertThat(listOf("two"), CoreMatchers.`is`(result))
+        assertThat(result).isEqualTo(listOf("two"))
     }
 
     @Test
     fun testCaseInsensitiveParamWrapper_multipleMatchingQueryParameters() {
         val uri = Uri.parse("scheme://authority?xname=one&name=two&Name=Three&NAME=FOUR")
         val caseInsensitiveParamWrapper = CaseInsensitiveParamWrapper(uri)
+
         val result = caseInsensitiveParamWrapper.getQueryParameters("name")
 
-        org.junit.Assert.assertThat<List<String>>(mutableListOf("two", "Three", "FOUR"), CoreMatchers.`is`(result))
+        assertThat(result).isEqualTo(listOf("two", "Three", "FOUR"))
     }
 
     @Test
     fun testCaseInsensitiveParamWrapper_withoutQueryParameters() {
         val uri = Uri.parse("scheme://authority")
         val caseInsensitiveParamWrapper = CaseInsensitiveParamWrapper(uri)
+
         val result = caseInsensitiveParamWrapper.getQueryParameters("name")
 
-        org.junit.Assert.assertThat(emptyList(), CoreMatchers.`is`(result))
+        assertThat(result.isEmpty()).isTrue()
     }
 
     @Test
@@ -170,7 +182,7 @@ class MailToTest : RobolectricTest() {
         val uri = Uri.parse("mailto:?in-reply-to=%3C7C72B202-73F3@somewhere%3E")
         val mailToHelper = MailTo.parse(uri)
 
-        Assert.assertEquals("<7C72B202-73F3@somewhere>", mailToHelper.inReplyTo)
+        assertThat(mailToHelper.inReplyTo).isEqualTo("<7C72B202-73F3@somewhere>")
     }
 
     @Test
@@ -179,7 +191,7 @@ class MailToTest : RobolectricTest() {
 
         val mailToHelper = MailTo.parse(uri)
 
-        Assert.assertEquals("<7C72B202-73F3@somewhere>", mailToHelper.inReplyTo)
+        assertThat(mailToHelper.inReplyTo).isEqualTo("<7C72B202-73F3@somewhere>")
     }
 
     @Test
@@ -188,7 +200,7 @@ class MailToTest : RobolectricTest() {
 
         val mailToHelper = MailTo.parse(uri)
 
-        Assert.assertEquals("<3469A91.D10AF4C@example.com>", mailToHelper.inReplyTo)
+        assertThat(mailToHelper.inReplyTo).isEqualTo("<3469A91.D10AF4C@example.com>")
     }
 
     @Test
@@ -197,7 +209,7 @@ class MailToTest : RobolectricTest() {
 
         val mailToHelper = MailTo.parse(uri)
 
-        Assert.assertEquals(null, mailToHelper.inReplyTo)
+        assertThat(mailToHelper.inReplyTo).isNull()
     }
 
     @Test
@@ -206,6 +218,6 @@ class MailToTest : RobolectricTest() {
 
         val mailToHelper = MailTo.parse(uri)
 
-        Assert.assertEquals(null, mailToHelper.inReplyTo)
+        assertThat(mailToHelper.inReplyTo).isNull()
     }
 }
