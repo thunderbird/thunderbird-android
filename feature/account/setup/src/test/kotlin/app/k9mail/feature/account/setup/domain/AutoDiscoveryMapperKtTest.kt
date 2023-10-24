@@ -42,11 +42,11 @@ class AutoDiscoveryMapperKtTest {
                 username = "user",
                 password = "password",
                 clientCertificateAlias = null,
-                extra = mapOf(
-                    ImapStoreSettings.AUTODETECT_NAMESPACE_KEY to "true",
-                    ImapStoreSettings.PATH_PREFIX_KEY to null,
-                    ImapStoreSettings.USE_COMPRESSION to "true",
-                    ImapStoreSettings.SEND_CLIENT_ID to "true",
+                extra = ImapStoreSettings.createExtra(
+                    autoDetectNamespace = true,
+                    pathPrefix = null,
+                    useCompression = true,
+                    sendClientId = true,
                 ),
             ),
         )

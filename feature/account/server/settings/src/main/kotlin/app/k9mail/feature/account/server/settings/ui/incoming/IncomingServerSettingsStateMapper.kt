@@ -11,6 +11,10 @@ import app.k9mail.feature.account.common.domain.input.StringInputField
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.State
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings
+import com.fsck.k9.mail.store.imap.ImapStoreSettings.autoDetectNamespace
+import com.fsck.k9.mail.store.imap.ImapStoreSettings.isSendClientId
+import com.fsck.k9.mail.store.imap.ImapStoreSettings.isUseCompression
+import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
 
 fun AccountState.toIncomingServerSettingsState() = incomingServerSettings?.toIncomingServerSettingsState()
     ?: State(username = StringInputField(value = emailAddress ?: ""))
@@ -25,10 +29,10 @@ private fun ServerSettings.toIncomingServerSettingsState(): State {
         username = StringInputField(value = username),
         password = StringInputField(value = password ?: ""),
         clientCertificateAlias = clientCertificateAlias,
-        imapAutodetectNamespaceEnabled = extra[ImapStoreSettings.AUTODETECT_NAMESPACE_KEY] == "true",
-        imapPrefix = StringInputField(value = extra[ImapStoreSettings.PATH_PREFIX_KEY] ?: ""),
-        imapUseCompression = extra[ImapStoreSettings.USE_COMPRESSION] == "true",
-        imapSendClientId = extra[ImapStoreSettings.SEND_CLIENT_ID] == "true",
+        imapAutodetectNamespaceEnabled = autoDetectNamespace,
+        imapPrefix = StringInputField(value = pathPrefix ?: ""),
+        imapUseCompression = isUseCompression,
+        imapSendClientId = isSendClientId,
     )
 }
 

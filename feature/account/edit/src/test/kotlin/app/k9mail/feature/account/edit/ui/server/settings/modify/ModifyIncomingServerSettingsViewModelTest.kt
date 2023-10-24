@@ -16,6 +16,7 @@ import app.k9mail.feature.account.server.settings.ui.incoming.fake.FakeIncomingS
 import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ServerSettings
+import com.fsck.k9.mail.store.imap.ImapStoreSettings
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -41,7 +42,12 @@ class ModifyIncomingServerSettingsViewModelTest {
                 "username",
                 "password",
                 clientCertificateAlias = null,
-                extra = emptyMap(),
+                extra = ImapStoreSettings.createExtra(
+                    autoDetectNamespace = true,
+                    pathPrefix = null,
+                    useCompression = true,
+                    sendClientId = true,
+                ),
             ),
         )
 
@@ -71,10 +77,10 @@ class ModifyIncomingServerSettingsViewModelTest {
                     authenticationType = AuthenticationType.PasswordCleartext,
                     username = StringInputField(value = "username"),
                     password = StringInputField(value = "password"),
-                    imapAutodetectNamespaceEnabled = false,
+                    imapAutodetectNamespaceEnabled = true,
                     imapPrefix = StringInputField(value = ""),
-                    imapUseCompression = false,
-                    imapSendClientId = false,
+                    imapUseCompression = true,
+                    imapSendClientId = true,
                 ),
             )
         }
