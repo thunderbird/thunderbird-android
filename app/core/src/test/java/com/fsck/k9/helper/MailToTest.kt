@@ -1,235 +1,211 @@
-package com.fsck.k9.helper;
+package com.fsck.k9.helper
 
+import android.net.Uri
+import app.k9mail.core.android.testing.RobolectricTest
+import com.fsck.k9.helper.MailTo.CaseInsensitiveParamWrapper
+import junit.framework.Assert
+import org.hamcrest.CoreMatchers
+import org.junit.Rule
+import org.junit.Test
+import org.junit.rules.ExpectedException
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import android.net.Uri;
-
-import app.k9mail.core.android.testing.RobolectricTest;
-import com.fsck.k9.helper.MailTo.CaseInsensitiveParamWrapper;
-import com.fsck.k9.mail.Address;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
-
-public class MailToTest extends RobolectricTest {
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
-
+class MailToTest : RobolectricTest() {
+    @get:Rule
+    val exception: ExpectedException = ExpectedException.none()
 
     @Test
-    public void testIsMailTo_validMailToURI() {
-        Uri uri = Uri.parse("mailto:nobody");
+    fun testIsMailTo_validMailToURI() {
+        val uri = Uri.parse("mailto:nobody")
+        val result = MailTo.isMailTo(uri)
 
-        boolean result = MailTo.isMailTo(uri);
-
-        assertTrue(result);
+        Assert.assertTrue(result)
     }
 
     @Test
-    public void testIsMailTo_invalidMailToUri() {
-        Uri uri = Uri.parse("http://example.org/");
+    fun testIsMailTo_invalidMailToUri() {
+        val uri = Uri.parse("http://example.org/")
+        val result = MailTo.isMailTo(uri)
 
-        boolean result = MailTo.isMailTo(uri);
-
-        assertFalse(result);
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    @Test
-    public void testIsMailTo_nullArgument() {
-        Uri uri = null;
-
-        boolean result = MailTo.isMailTo(uri);
-
-        assertFalse(result);
+        Assert.assertFalse(result)
     }
 
     @Test
-    public void parse_withNullArgument_shouldThrow() throws Exception {
-        exception.expect(NullPointerException.class);
-        exception.expectMessage("Argument 'uri' must not be null");
+    fun testIsMailTo_nullArgument() {
+        val uri: Uri? = null
+        val result = MailTo.isMailTo(uri)
 
-        MailTo.parse(null);
+        Assert.assertFalse(result)
     }
 
     @Test
-    public void parse_withoutMailtoUri_shouldThrow() throws Exception {
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("Not a mailto scheme");
+    @Throws(Exception::class)
+    fun parse_withNullArgument_shouldThrow() {
+        exception.expect(NullPointerException::class.java)
+        exception.expectMessage("Argument 'uri' must not be null")
 
-        Uri uri = Uri.parse("http://example.org/");
-
-        MailTo.parse(uri);
+        MailTo.parse(null)
     }
 
     @Test
-    public void testGetTo_singleEmailAddress() {
-        Uri uri = Uri.parse("mailto:test@abc.com");
-        MailTo mailToHelper = MailTo.parse(uri);
+    @Throws(Exception::class)
+    fun parse_withoutMailtoUri_shouldThrow() {
+        exception.expect(IllegalArgumentException::class.java)
+        exception.expectMessage("Not a mailto scheme")
+        val uri = Uri.parse("http://example.org/")
 
-        Address[] emailAddressList = mailToHelper.getTo();
-
-        assertEquals(emailAddressList[0].getAddress(), "test@abc.com");
+        MailTo.parse(uri)
     }
 
     @Test
-    public void testGetTo_multipleEmailAddress() {
-        Uri uri = Uri.parse("mailto:test1@abc.com?to=test2@abc.com");
-        MailTo mailToHelper = MailTo.parse(uri);
+    fun testGetTo_singleEmailAddress() {
+        val uri = Uri.parse("mailto:test@abc.com")
+        val mailToHelper = MailTo.parse(uri)
 
-        Address[] emailAddressList = mailToHelper.getTo();
+        val emailAddressList = mailToHelper.to
 
-        assertEquals(emailAddressList[0].getAddress(), "test1@abc.com");
-        assertEquals(emailAddressList[1].getAddress(), "test2@abc.com");
+        Assert.assertEquals(emailAddressList[0].address, "test@abc.com")
     }
 
     @Test
-    public void testGetCc_singleEmailAddress() {
-        Uri uri = Uri.parse("mailto:test1@abc.com?cc=test3@abc.com");
-        MailTo mailToHelper = MailTo.parse(uri);
+    fun testGetTo_multipleEmailAddress() {
+        val uri = Uri.parse("mailto:test1@abc.com?to=test2@abc.com")
+        val mailToHelper = MailTo.parse(uri)
 
-        Address[] emailAddressList = mailToHelper.getCc();
+        val emailAddressList = mailToHelper.to
 
-        assertEquals(emailAddressList[0].getAddress(), "test3@abc.com");
+        Assert.assertEquals(emailAddressList[0].address, "test1@abc.com")
+        Assert.assertEquals(emailAddressList[1].address, "test2@abc.com")
     }
 
     @Test
-    public void testGetCc_multipleEmailAddress() {
-        Uri uri = Uri.parse("mailto:test1@abc.com?cc=test3@abc.com,test4@abc.com");
-        MailTo mailToHelper = MailTo.parse(uri);
+    fun testGetCc_singleEmailAddress() {
+        val uri = Uri.parse("mailto:test1@abc.com?cc=test3@abc.com")
+        val mailToHelper = MailTo.parse(uri)
 
-        Address[] emailAddressList = mailToHelper.getCc();
+        val emailAddressList = mailToHelper.cc
 
-        assertEquals(emailAddressList[0].getAddress(), "test3@abc.com");
-        assertEquals(emailAddressList[1].getAddress(), "test4@abc.com");
+        Assert.assertEquals(emailAddressList[0].address, "test3@abc.com")
     }
 
     @Test
-    public void testGetBcc_singleEmailAddress() {
-        Uri uri = Uri.parse("mailto:?bcc=test3@abc.com");
-        MailTo mailToHelper = MailTo.parse(uri);
+    fun testGetCc_multipleEmailAddress() {
+        val uri = Uri.parse("mailto:test1@abc.com?cc=test3@abc.com,test4@abc.com")
+        val mailToHelper = MailTo.parse(uri)
 
-        Address[] emailAddressList = mailToHelper.getBcc();
+        val emailAddressList = mailToHelper.cc
 
-        assertEquals(emailAddressList[0].getAddress(), "test3@abc.com");
+        Assert.assertEquals(emailAddressList[0].address, "test3@abc.com")
+        Assert.assertEquals(emailAddressList[1].address, "test4@abc.com")
     }
 
     @Test
-    public void testGetBcc_multipleEmailAddress() {
-        Uri uri = Uri.parse("mailto:?bcc=test3@abc.com&bcc=test4@abc.com");
-        MailTo mailToHelper = MailTo.parse(uri);
+    fun testGetBcc_singleEmailAddress() {
+        val uri = Uri.parse("mailto:?bcc=test3@abc.com")
+        val mailToHelper = MailTo.parse(uri)
 
-        Address[] emailAddressList = mailToHelper.getBcc();
+        val emailAddressList = mailToHelper.bcc
 
-        assertEquals(emailAddressList[0].getAddress(), "test3@abc.com");
-        assertEquals(emailAddressList[1].getAddress(), "test4@abc.com");
+        Assert.assertEquals(emailAddressList[0].address, "test3@abc.com")
     }
 
     @Test
-    public void testGetSubject() {
-        Uri uri = Uri.parse("mailto:?subject=Hello");
-        MailTo mailToHelper = MailTo.parse(uri);
+    fun testGetBcc_multipleEmailAddress() {
+        val uri = Uri.parse("mailto:?bcc=test3@abc.com&bcc=test4@abc.com")
+        val mailToHelper = MailTo.parse(uri)
+        val emailAddressList = mailToHelper.bcc
 
-        String subject = mailToHelper.getSubject();
-
-        assertEquals(subject, "Hello");
+        Assert.assertEquals(emailAddressList[0].address, "test3@abc.com")
+        Assert.assertEquals(emailAddressList[1].address, "test4@abc.com")
     }
 
     @Test
-    public void testGetBody() {
-        Uri uri = Uri.parse("mailto:?body=Test%20Body&something=else");
-        MailTo mailToHelper = MailTo.parse(uri);
+    fun testGetSubject() {
+        val uri = Uri.parse("mailto:?subject=Hello")
+        val mailToHelper = MailTo.parse(uri)
 
-        String subject = mailToHelper.getBody();
+        val subject = mailToHelper.subject
 
-        assertEquals(subject, "Test Body");
+        Assert.assertEquals(subject, "Hello")
     }
 
     @Test
-    public void testCaseInsensitiveParamWrapper() {
-        Uri uri = Uri.parse("scheme://authority?a=one&b=two&c=three");
-        CaseInsensitiveParamWrapper caseInsensitiveParamWrapper = new CaseInsensitiveParamWrapper(uri);
+    fun testGetBody() {
+        val uri = Uri.parse("mailto:?body=Test%20Body&something=else")
+        val mailToHelper = MailTo.parse(uri)
 
-        List<String> result = caseInsensitiveParamWrapper.getQueryParameters("b");
+        val subject = mailToHelper.body
 
-        assertThat(Collections.singletonList("two"), is(result));
+        Assert.assertEquals(subject, "Test Body")
     }
 
     @Test
-    public void testCaseInsensitiveParamWrapper_multipleMatchingQueryParameters() {
-        Uri uri = Uri.parse("scheme://authority?xname=one&name=two&Name=Three&NAME=FOUR");
-        CaseInsensitiveParamWrapper caseInsensitiveParamWrapper = new CaseInsensitiveParamWrapper(uri);
+    fun testCaseInsensitiveParamWrapper() {
+        val uri = Uri.parse("scheme://authority?a=one&b=two&c=three")
+        val caseInsensitiveParamWrapper = CaseInsensitiveParamWrapper(uri)
+        val result = caseInsensitiveParamWrapper.getQueryParameters("b")
 
-        List<String> result = caseInsensitiveParamWrapper.getQueryParameters("name");
-
-        assertThat(Arrays.asList("two", "Three", "FOUR"), is(result));
+        org.junit.Assert.assertThat(listOf("two"), CoreMatchers.`is`(result))
     }
 
     @Test
-    public void testCaseInsensitiveParamWrapper_withoutQueryParameters() {
-        Uri uri = Uri.parse("scheme://authority");
-        CaseInsensitiveParamWrapper caseInsensitiveParamWrapper = new CaseInsensitiveParamWrapper(uri);
+    fun testCaseInsensitiveParamWrapper_multipleMatchingQueryParameters() {
+        val uri = Uri.parse("scheme://authority?xname=one&name=two&Name=Three&NAME=FOUR")
+        val caseInsensitiveParamWrapper = CaseInsensitiveParamWrapper(uri)
+        val result = caseInsensitiveParamWrapper.getQueryParameters("name")
 
-        List<String> result = caseInsensitiveParamWrapper.getQueryParameters("name");
-
-        assertThat(Collections.<String>emptyList(), is(result));
+        org.junit.Assert.assertThat<List<String>>(mutableListOf("two", "Three", "FOUR"), CoreMatchers.`is`(result))
     }
 
     @Test
-    public void testGetInReplyTo_singleMessageId() {
-        Uri uri = Uri.parse("mailto:?in-reply-to=%3C7C72B202-73F3@somewhere%3E");
+    fun testCaseInsensitiveParamWrapper_withoutQueryParameters() {
+        val uri = Uri.parse("scheme://authority")
+        val caseInsensitiveParamWrapper = CaseInsensitiveParamWrapper(uri)
+        val result = caseInsensitiveParamWrapper.getQueryParameters("name")
 
-        MailTo mailToHelper = MailTo.parse(uri);
-
-        assertEquals("<7C72B202-73F3@somewhere>", mailToHelper.getInReplyTo());
+        org.junit.Assert.assertThat(emptyList(), CoreMatchers.`is`(result))
     }
 
     @Test
-    public void testGetInReplyTo_multipleMessageIds() {
-        Uri uri = Uri.parse("mailto:?in-reply-to=%3C7C72B202-73F3@somewhere%3E%3C8A39-1A87CB40C114@somewhereelse%3E");
+    fun testGetInReplyTo_singleMessageId() {
+        val uri = Uri.parse("mailto:?in-reply-to=%3C7C72B202-73F3@somewhere%3E")
+        val mailToHelper = MailTo.parse(uri)
 
-        MailTo mailToHelper = MailTo.parse(uri);
-
-        assertEquals("<7C72B202-73F3@somewhere>", mailToHelper.getInReplyTo());
-    }
-
-
-    @Test
-    public void testGetInReplyTo_RFC6068Example() {
-        Uri uri = Uri.parse("mailto:list@example.org?In-Reply-To=%3C3469A91.D10AF4C@example.com%3E");
-
-        MailTo mailToHelper = MailTo.parse(uri);
-
-        assertEquals("<3469A91.D10AF4C@example.com>", mailToHelper.getInReplyTo());
+        Assert.assertEquals("<7C72B202-73F3@somewhere>", mailToHelper.inReplyTo)
     }
 
     @Test
-    public void testGetInReplyTo_invalid() {
-        Uri uri = Uri.parse("mailto:?in-reply-to=7C72B202-73F3somewhere");
+    fun testGetInReplyTo_multipleMessageIds() {
+        val uri = Uri.parse("mailto:?in-reply-to=%3C7C72B202-73F3@somewhere%3E%3C8A39-1A87CB40C114@somewhereelse%3E")
 
-        MailTo mailToHelper = MailTo.parse(uri);
+        val mailToHelper = MailTo.parse(uri)
 
-        assertEquals(null, mailToHelper.getInReplyTo());
+        Assert.assertEquals("<7C72B202-73F3@somewhere>", mailToHelper.inReplyTo)
     }
 
     @Test
-    public void testGetInReplyTo_empty() {
-        Uri uri = Uri.parse("mailto:?in-reply-to=");
+    fun testGetInReplyTo_RFC6068Example() {
+        val uri = Uri.parse("mailto:list@example.org?In-Reply-To=%3C3469A91.D10AF4C@example.com%3E")
 
-        MailTo mailToHelper = MailTo.parse(uri);
+        val mailToHelper = MailTo.parse(uri)
 
-        assertEquals(null, mailToHelper.getInReplyTo());
-
+        Assert.assertEquals("<3469A91.D10AF4C@example.com>", mailToHelper.inReplyTo)
     }
 
+    @Test
+    fun testGetInReplyTo_invalid() {
+        val uri = Uri.parse("mailto:?in-reply-to=7C72B202-73F3somewhere")
+
+        val mailToHelper = MailTo.parse(uri)
+
+        Assert.assertEquals(null, mailToHelper.inReplyTo)
+    }
+
+    @Test
+    fun testGetInReplyTo_empty() {
+        val uri = Uri.parse("mailto:?in-reply-to=")
+
+        val mailToHelper = MailTo.parse(uri)
+
+        Assert.assertEquals(null, mailToHelper.inReplyTo)
+    }
 }
