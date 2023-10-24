@@ -1,10 +1,16 @@
 package com.fsck.k9.account
 
+import app.k9mail.core.common.mail.Protocols
 import app.k9mail.feature.account.edit.AccountEditExternalContract
 import app.k9mail.feature.account.edit.AccountEditExternalContract.AccountUpdaterFailure
 import app.k9mail.feature.account.edit.AccountEditExternalContract.AccountUpdaterResult
 import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.ServerSettings
+import com.fsck.k9.mail.store.imap.ImapStoreSettings
+import com.fsck.k9.mail.store.imap.ImapStoreSettings.autoDetectNamespace
+import com.fsck.k9.mail.store.imap.ImapStoreSettings.isSendClientId
+import com.fsck.k9.mail.store.imap.ImapStoreSettings.isUseCompression
+import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
 import com.fsck.k9.preferences.AccountManager
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -42,7 +48,18 @@ class AccountServerSettingsUpdater(
         )
 
         if (isIncoming) {
-            account.incomingServerSettings = serverSettings
+            if (serverSettings.type == Protocols.IMAP) {
+                account.useCompression = serverSettings.isUseCompression
+                account.isSendClientIdEnabled = serverSettings.isSendClientId
+                account.incomingServerSettings = serverSettings.copy(
+                    extra = ImapStoreSettings.createExtra(
+                        autoDetectNamespace = serverSettings.autoDetectNamespace,
+                        pathPrefix = serverSettings.pathPrefix,
+                    ),
+                )
+            } else {
+                account.incomingServerSettings = serverSettings
+            }
         } else {
             account.outgoingServerSettings = serverSettings
         }

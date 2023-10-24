@@ -96,9 +96,9 @@ class AccountUpdaterTest {
         const val ACCOUNT_UUID = "uuid"
 
         val INCOMING_SERVER_SETTINGS = ServerSettings(
-            type = "imap",
-            host = "imap.example.org",
-            port = 143,
+            type = "pop3",
+            host = "pop.example.org",
+            port = 465,
             connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
             authenticationType = AuthType.PLAIN,
             username = "username",
