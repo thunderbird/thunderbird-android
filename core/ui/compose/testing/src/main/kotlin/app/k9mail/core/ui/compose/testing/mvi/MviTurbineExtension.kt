@@ -73,6 +73,36 @@ fun <T, STATE, EFFECT> assertThatAndMviTurbinesConsumed(
 }
 
 /**
+ * The `assertThatAndStateTurbineConsumed` function ensures that the assertion passed and
+ * all events in the state turbine have been consumed.
+ */
+suspend fun <STATE, EFFECT> MviTurbines<STATE, EFFECT>.assertThatAndStateTurbineConsumed(
+    assertion: Assert<STATE>.() -> Unit,
+) {
+    assertThat(stateTurbine.awaitItem()).all {
+        assertion()
+    }
+
+    stateTurbine.ensureAllEventsConsumed()
+    effectTurbine.ensureAllEventsConsumed()
+}
+
+/**
+ * The `assertThatAndEffectTurbineConsumed` function ensures that the assertion passed and
+ * all events in the effect turbine have been consumed.
+ */
+suspend fun <STATE, EFFECT> MviTurbines<STATE, EFFECT>.assertThatAndEffectTurbineConsumed(
+    assertion: Assert<EFFECT>.() -> Unit,
+) {
+    assertThat(effectTurbine.awaitItem()).all {
+        assertion()
+    }
+
+    stateTurbine.ensureAllEventsConsumed()
+    effectTurbine.ensureAllEventsConsumed()
+}
+
+/**
  * A container class for the state and effect turbines of an MVI ViewModel.
  */
 data class MviTurbines<STATE, EFFECT>(

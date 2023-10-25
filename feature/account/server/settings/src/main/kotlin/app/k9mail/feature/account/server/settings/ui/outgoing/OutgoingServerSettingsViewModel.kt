@@ -40,7 +40,7 @@ open class OutgoingServerSettingsViewModel(
 
     protected open fun loadAccountState() {
         updateState {
-            accountStateRepository.getState().toOutgoingConfigState()
+            accountStateRepository.getState().toOutgoingServerSettingsState()
         }
     }
 

@@ -17,7 +17,7 @@ import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 
 @Composable
-internal fun SuccessView(
+fun SuccessView(
     message: String,
     modifier: Modifier = Modifier,
 ) {

@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.edit.ui
+package app.k9mail.feature.account.edit.ui.server.settings.modify
 
 import androidx.lifecycle.viewModelScope
 import app.k9mail.feature.account.common.domain.AccountDomainContract
@@ -6,10 +6,10 @@ import app.k9mail.feature.account.common.domain.entity.InteractionMode
 import app.k9mail.feature.account.edit.domain.AccountEditDomainContract
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsViewModel
-import app.k9mail.feature.account.server.settings.ui.incoming.toIncomingConfigState
+import app.k9mail.feature.account.server.settings.ui.incoming.toIncomingServerSettingsState
 import kotlinx.coroutines.launch
 
-class EditIncomingServerSettingsViewModel(
+class ModifyIncomingServerSettingsViewModel(
     val accountUuid: String,
     private val accountStateLoader: AccountEditDomainContract.UseCase.LoadAccountState,
     validator: IncomingServerSettingsContract.Validator,
@@ -27,7 +27,7 @@ class EditIncomingServerSettingsViewModel(
             val state = accountStateLoader.execute(accountUuid)
 
             updateState {
-                state.toIncomingConfigState()
+                state.toIncomingServerSettingsState()
             }
         }
     }

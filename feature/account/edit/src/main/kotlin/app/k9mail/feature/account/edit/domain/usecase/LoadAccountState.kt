@@ -10,20 +10,14 @@ class LoadAccountState(
     private val accountStateRepository: AccountDomainContract.AccountStateRepository,
 ) : AccountEditDomainContract.UseCase.LoadAccountState {
     override suspend fun execute(accountUuid: String): AccountState {
-        val accountState = accountStateRepository.getState()
-        return if (accountState.uuid == accountUuid) {
-            accountState
-        } else {
-            loadState(accountUuid)
-        }
-    }
-
-    private suspend fun loadState(accountUuid: String): AccountState {
         val accountState = accountStateLoader.loadAccountState(accountUuid)
-        return if (accountState != null) {
-            accountState
+
+        if (accountState != null) {
+            accountStateRepository.setState(accountState)
         } else {
-            AccountState(uuid = accountUuid)
-        }.also { accountStateRepository.setState(it) }
+            error("Account state for $accountUuid not found")
+        }
+
+        return accountState
     }
 }

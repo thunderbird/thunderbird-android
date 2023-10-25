@@ -26,7 +26,31 @@ fun LazyGridScope.stateItems() {
         ItemOutlined {
             ErrorView(
                 title = "Error",
+            )
+        }
+    }
+    item {
+        ItemOutlined {
+            ErrorView(
+                title = "Error with message",
                 message = "Something went wrong",
+            )
+        }
+    }
+    item {
+        ItemOutlined {
+            ErrorView(
+                title = "Error with retry",
+                onRetry = {},
+            )
+        }
+    }
+    item {
+        ItemOutlined {
+            ErrorView(
+                title = "Error with retry and message",
+                message = "Something went wrong",
+                onRetry = {},
             )
         }
     }

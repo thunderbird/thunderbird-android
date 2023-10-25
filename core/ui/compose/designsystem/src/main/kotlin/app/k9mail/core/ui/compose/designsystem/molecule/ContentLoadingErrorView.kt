@@ -1,7 +1,6 @@
 package app.k9mail.core.ui.compose.designsystem.molecule
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +13,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle1
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun ContentLoadingErrorView(
     state: ContentLoadingErrorState,

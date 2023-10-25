@@ -11,7 +11,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import org.junit.Test
 
-class IncomingServerSettingsConfigStateTest {
+class IncomingServerSettingsStateTest {
 
     @Test
     fun `should set default values`() {

@@ -6,6 +6,7 @@ import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import app.k9mail.feature.account.common.domain.input.BooleanInputField
 import app.k9mail.feature.account.common.domain.input.StringInputField
+import app.k9mail.feature.account.common.ui.loadingerror.LoadingErrorState
 import app.k9mail.feature.account.oauth.domain.entity.OAuthResult
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
 
@@ -32,11 +33,11 @@ interface AccountAutoDiscoveryContract {
         val authorizationState: AuthorizationState? = null,
 
         val isSuccess: Boolean = false,
-        val error: Error? = null,
-        val isLoading: Boolean = false,
+        override val error: Error? = null,
+        override val isLoading: Boolean = false,
 
         val isNextButtonVisible: Boolean = true,
-    )
+    ) : LoadingErrorState<Error>
 
     sealed interface Event {
         data class EmailAddressChanged(val emailAddress: String) : Event
@@ -44,16 +45,16 @@ interface AccountAutoDiscoveryContract {
         data class ResultApprovalChanged(val confirmed: Boolean) : Event
         data class OnOAuthResult(val result: OAuthResult) : Event
 
-        object OnNextClicked : Event
-        object OnBackClicked : Event
-        object OnRetryClicked : Event
-        object OnEditConfigurationClicked : Event
+        data object OnNextClicked : Event
+        data object OnBackClicked : Event
+        data object OnRetryClicked : Event
+        data object OnEditConfigurationClicked : Event
     }
 
     sealed class Effect {
         data class NavigateNext(val isAutomaticConfig: Boolean) : Effect()
 
-        object NavigateBack : Effect()
+        data object NavigateBack : Effect()
     }
 
     interface Validator {
@@ -63,7 +64,7 @@ interface AccountAutoDiscoveryContract {
     }
 
     sealed interface Error {
-        object NetworkError : Error
-        object UnknownError : Error
+        data object NetworkError : Error
+        data object UnknownError : Error
     }
 }

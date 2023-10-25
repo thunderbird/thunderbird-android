@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.edit.ui
+package app.k9mail.feature.account.edit.ui.server.settings.modify
 
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndMviTurbinesConsumed
@@ -10,9 +10,9 @@ import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.MailConnectionSecurity
 import app.k9mail.feature.account.common.domain.input.NumberInputField
 import app.k9mail.feature.account.common.domain.input.StringInputField
-import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.Event
-import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.State
-import app.k9mail.feature.account.server.settings.ui.incoming.fake.FakeIncomingServerSettingsValidator
+import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.Event
+import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.State
+import app.k9mail.feature.account.server.settings.ui.outgoing.fake.FakeOutgoingServerSettingsValidator
 import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ServerSettings
@@ -21,7 +21,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
-class EditIncomingServerSettingsViewModelTest {
+class ModifyOutgoingServerSettingsViewModelTest {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
@@ -32,9 +32,9 @@ class EditIncomingServerSettingsViewModelTest {
         val accountState = AccountState(
             uuid = "accountUuid",
             emailAddress = "test@example.com",
-            incomingServerSettings = ServerSettings(
-                "imap",
-                "imap.example.com",
+            outgoingServerSettings = ServerSettings(
+                "smtp",
+                "smtp.example.com",
                 123,
                 MailConnectionSecurity.SSL_TLS_REQUIRED,
                 AuthType.PLAIN,
@@ -44,14 +44,13 @@ class EditIncomingServerSettingsViewModelTest {
                 extra = emptyMap(),
             ),
         )
-
-        val testSubject = EditIncomingServerSettingsViewModel(
+        val testSubject = ModifyOutgoingServerSettingsViewModel(
             accountUuid = accountUuid,
             accountStateLoader = { _ ->
                 delay(50)
                 accountState
             },
-            validator = FakeIncomingServerSettingsValidator(),
+            validator = FakeOutgoingServerSettingsValidator(),
             accountStateRepository = InMemoryAccountStateRepository(),
             initialState = State(),
         )
@@ -65,7 +64,7 @@ class EditIncomingServerSettingsViewModelTest {
         ) {
             isEqualTo(
                 State(
-                    server = StringInputField(value = "imap.example.com"),
+                    server = StringInputField(value = "smtp.example.com"),
                     security = ConnectionSecurity.TLS,
                     port = NumberInputField(value = 123L),
                     authenticationType = AuthenticationType.PasswordCleartext,

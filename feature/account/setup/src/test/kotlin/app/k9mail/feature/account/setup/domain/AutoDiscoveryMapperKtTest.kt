@@ -13,6 +13,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ServerSettings
+import com.fsck.k9.mail.store.imap.ImapStoreSettings
 import kotlin.test.assertFailsWith
 import org.junit.Test
 
@@ -41,7 +42,12 @@ class AutoDiscoveryMapperKtTest {
                 username = "user",
                 password = "password",
                 clientCertificateAlias = null,
-                extra = emptyMap(),
+                extra = ImapStoreSettings.createExtra(
+                    autoDetectNamespace = true,
+                    pathPrefix = null,
+                    useCompression = true,
+                    sendClientId = true,
+                ),
             ),
         )
     }

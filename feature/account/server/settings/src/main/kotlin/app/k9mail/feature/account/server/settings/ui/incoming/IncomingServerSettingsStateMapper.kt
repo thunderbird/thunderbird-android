@@ -11,24 +11,29 @@ import app.k9mail.feature.account.common.domain.input.StringInputField
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.State
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings
+import com.fsck.k9.mail.store.imap.ImapStoreSettings.autoDetectNamespace
+import com.fsck.k9.mail.store.imap.ImapStoreSettings.isSendClientId
+import com.fsck.k9.mail.store.imap.ImapStoreSettings.isUseCompression
+import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
 
-fun AccountState.toIncomingConfigState(): State {
-    val incomingServerSettings = incomingServerSettings
-    return if (incomingServerSettings == null) {
-        State(
-            username = StringInputField(value = emailAddress ?: ""),
-        )
-    } else {
-        State(
-            protocolType = IncomingProtocolType.fromName(incomingServerSettings.type),
-            server = StringInputField(value = incomingServerSettings.host ?: ""),
-            security = incomingServerSettings.connectionSecurity.toConnectionSecurity(),
-            port = NumberInputField(value = incomingServerSettings.port.toLong()),
-            authenticationType = incomingServerSettings.authenticationType.toAuthenticationType(),
-            username = StringInputField(value = incomingServerSettings.username),
-            password = StringInputField(value = incomingServerSettings.password ?: ""),
-        )
-    }
+fun AccountState.toIncomingServerSettingsState() = incomingServerSettings?.toIncomingServerSettingsState()
+    ?: State(username = StringInputField(value = emailAddress ?: ""))
+
+private fun ServerSettings.toIncomingServerSettingsState(): State {
+    return State(
+        protocolType = IncomingProtocolType.fromName(type),
+        server = StringInputField(value = host ?: ""),
+        security = connectionSecurity.toConnectionSecurity(),
+        port = NumberInputField(value = port.toLong()),
+        authenticationType = authenticationType.toAuthenticationType(),
+        username = StringInputField(value = username),
+        password = StringInputField(value = password ?: ""),
+        clientCertificateAlias = clientCertificateAlias,
+        imapAutodetectNamespaceEnabled = autoDetectNamespace,
+        imapPrefix = StringInputField(value = pathPrefix ?: ""),
+        imapUseCompression = isUseCompression,
+        imapSendClientId = isSendClientId,
+    )
 }
 
 internal fun State.toServerSettings(): ServerSettings {
