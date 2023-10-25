@@ -1,25 +1,25 @@
 package com.fsck.k9.helper
 
 import android.net.Uri
+import androidx.core.net.toUri
 import app.k9mail.core.android.testing.RobolectricTest
+import assertk.assertFailure
 import assertk.assertThat
+import assertk.assertions.containsExactly
+import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
+import assertk.assertions.isInstanceOf
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
-import com.fsck.k9.helper.MailTo.CaseInsensitiveParamWrapper
-import org.junit.Rule
+import com.fsck.k9.mail.Address
 import org.junit.Test
-import org.junit.rules.ExpectedException
 
 class MailToTest : RobolectricTest() {
 
-    @get:Rule
-    val exception: ExpectedException = ExpectedException.none()
-
     @Test
-    fun testIsMailTo_validMailToURI() {
-        val uri = Uri.parse("mailto:nobody")
+    fun `isMailTo() with mailto scheme should return true`() {
+        val uri = "mailto:nobody".toUri()
 
         val result = MailTo.isMailTo(uri)
 
@@ -27,8 +27,8 @@ class MailToTest : RobolectricTest() {
     }
 
     @Test
-    fun testIsMailTo_invalidMailToUri() {
-        val uri = Uri.parse("http://example.org/")
+    fun `isMailTo() with http scheme should return false`() {
+        val uri = "http://example.org/".toUri()
 
         val result = MailTo.isMailTo(uri)
 
@@ -36,7 +36,7 @@ class MailToTest : RobolectricTest() {
     }
 
     @Test
-    fun testIsMailTo_nullArgument() {
+    fun `isMailTo() with null argument should return false`() {
         val uri: Uri? = null
 
         val result = MailTo.isMailTo(uri)
@@ -45,179 +45,170 @@ class MailToTest : RobolectricTest() {
     }
 
     @Test
-    @Throws(Exception::class)
-    fun parse_withNullArgument_shouldThrow() {
-        exception.expect(NullPointerException::class.java)
-        exception.expectMessage("Argument 'uri' must not be null")
-
-        MailTo.parse(null)
+    fun `parse() with null argument should throw`() {
+        assertFailure {
+            MailTo.parse(null)
+        }.isInstanceOf<NullPointerException>()
+            .hasMessage("Argument 'uri' must not be null")
     }
 
     @Test
-    @Throws(Exception::class)
-    fun parse_withoutMailtoUri_shouldThrow() {
-        exception.expect(IllegalArgumentException::class.java)
-        exception.expectMessage("Not a mailto scheme")
+    fun `parse() without mailto URI should throw`() {
+        val uri = "http://example.org/".toUri()
 
-        val uri = Uri.parse("http://example.org/")
-
-        MailTo.parse(uri)
+        assertFailure {
+            MailTo.parse(uri)
+        }.isInstanceOf<IllegalArgumentException>()
+            .hasMessage("Not a mailto scheme")
     }
 
     @Test
-    fun testGetTo_singleEmailAddress() {
-        val uri = Uri.parse("mailto:test@abc.com")
-        val mailToHelper = MailTo.parse(uri)
+    fun `single To recipient`() {
+        val uri = "mailto:test@domain.example".toUri()
 
-        val emailAddressList = mailToHelper.to
+        val result = MailTo.parse(uri)
 
-        assertThat(emailAddressList[0].address).isEqualTo("test@abc.com")
+        assertThat(result.to).containsExactly("test@domain.example".toAddress())
     }
 
     @Test
-    fun testGetTo_multipleEmailAddress() {
-        val uri = Uri.parse("mailto:test1@abc.com?to=test2@abc.com")
-        val mailToHelper = MailTo.parse(uri)
+    fun `multiple To recipients`() {
+        val uri = "mailto:test1@domain.example?to=test2@domain.example".toUri()
 
-        val emailAddressList = mailToHelper.to
+        val result = MailTo.parse(uri)
 
-        assertThat(emailAddressList[0].address).isEqualTo("test1@abc.com")
-        assertThat(emailAddressList[1].address).isEqualTo("test2@abc.com")
+        assertThat(result.to).containsExactly(
+            "test1@domain.example".toAddress(),
+            "test2@domain.example".toAddress(),
+        )
     }
 
     @Test
-    fun testGetCc_singleEmailAddress() {
-        val uri = Uri.parse("mailto:test1@abc.com?cc=test3@abc.com")
-        val mailToHelper = MailTo.parse(uri)
+    fun `single Cc recipient`() {
+        val uri = "mailto:test1@domain.example?cc=test3@domain.example".toUri()
 
-        val emailAddressList = mailToHelper.cc
+        val result = MailTo.parse(uri)
 
-        assertThat(emailAddressList[0].address).isEqualTo("test3@abc.com")
+        assertThat(result.cc).containsExactly("test3@domain.example".toAddress())
     }
 
     @Test
-    fun testGetCc_multipleEmailAddress() {
-        val uri = Uri.parse("mailto:test1@abc.com?cc=test3@abc.com,test4@abc.com")
-        val mailToHelper = MailTo.parse(uri)
+    fun `multiple Cc recipients`() {
+        val uri = "mailto:test1@domain.example?cc=test3@domain.example,test4@domain.example".toUri()
 
-        val emailAddressList = mailToHelper.cc
+        val result = MailTo.parse(uri)
 
-        assertThat(emailAddressList[0].address).isEqualTo("test3@abc.com")
-        assertThat(emailAddressList[1].address).isEqualTo("test4@abc.com")
+        assertThat(result.cc).containsExactly(
+            "test3@domain.example".toAddress(),
+            "test4@domain.example".toAddress(),
+        )
     }
 
     @Test
-    fun testGetBcc_singleEmailAddress() {
-        val uri = Uri.parse("mailto:?bcc=test3@abc.com")
-        val mailToHelper = MailTo.parse(uri)
+    fun `single Bcc recipient`() {
+        val uri = "mailto:?bcc=test3@domain.example".toUri()
 
-        val emailAddressList = mailToHelper.bcc
+        val result = MailTo.parse(uri)
 
-        assertThat(emailAddressList[0].address).isEqualTo("test3@abc.com")
+        assertThat(result.bcc).containsExactly("test3@domain.example".toAddress())
     }
 
     @Test
-    fun testGetBcc_multipleEmailAddress() {
-        val uri = Uri.parse("mailto:?bcc=test3@abc.com&bcc=test4@abc.com")
-        val mailToHelper = MailTo.parse(uri)
+    fun `multiple Bcc recipients`() {
+        val uri = "mailto:?bcc=test3@domain.example&bcc=test4@domain.example".toUri()
 
-        val emailAddressList = mailToHelper.bcc
+        val result = MailTo.parse(uri)
 
-        assertThat(emailAddressList[0].address).isEqualTo("test3@abc.com")
-        assertThat(emailAddressList[1].address).isEqualTo("test4@abc.com")
+        assertThat(result.bcc).containsExactly(
+            "test3@domain.example".toAddress(),
+            "test4@domain.example".toAddress(),
+        )
     }
 
     @Test
-    fun testGetSubject() {
-        val uri = Uri.parse("mailto:?subject=Hello")
-        val mailToHelper = MailTo.parse(uri)
+    fun `mailto URI with subject`() {
+        val uri = "mailto:?subject=Hello".toUri()
 
-        val subject = mailToHelper.subject
+        val result = MailTo.parse(uri)
 
-        assertThat(subject).isEqualTo("Hello")
+        assertThat(result.subject).isEqualTo("Hello")
     }
 
     @Test
-    fun testGetBody() {
-        val uri = Uri.parse("mailto:?body=Test%20Body&something=else")
-        val mailToHelper = MailTo.parse(uri)
+    fun `mailto URI with body and additional parameter following`() {
+        val uri = "mailto:?body=Test%20Body&something=else".toUri()
 
-        val subject = mailToHelper.body
+        val result = MailTo.parse(uri)
 
-        assertThat(subject).isEqualTo("Test Body")
+        assertThat(result.body).isEqualTo("Test Body")
     }
 
     @Test
-    fun testCaseInsensitiveParamWrapper() {
-        val uri = Uri.parse("scheme://authority?a=one&b=two&c=three")
-        val caseInsensitiveParamWrapper = CaseInsensitiveParamWrapper(uri)
+    fun `In-Reply-To parameter`() {
+        val uri = "mailto:?in-reply-to=%3C7C72B202-73F3@somewhere%3E".toUri()
 
-        val result = caseInsensitiveParamWrapper.getQueryParameters("b")
+        val result = MailTo.parse(uri)
 
-        assertThat(result).isEqualTo(listOf("two"))
+        assertThat(result.inReplyTo).isEqualTo("<7C72B202-73F3@somewhere>")
     }
 
     @Test
-    fun testCaseInsensitiveParamWrapper_multipleMatchingQueryParameters() {
-        val uri = Uri.parse("scheme://authority?xname=one&name=two&Name=Three&NAME=FOUR")
-        val caseInsensitiveParamWrapper = CaseInsensitiveParamWrapper(uri)
+    fun `In-Reply-To parameter with multiple message IDs should only return first`() {
+        val uri = "mailto:?in-reply-to=%3C7C72B202-73F3@somewhere%3E%3C8A39-1A87CB40C114@somewhereelse%3E".toUri()
 
-        val result = caseInsensitiveParamWrapper.getQueryParameters("name")
+        val result = MailTo.parse(uri)
 
-        assertThat(result).isEqualTo(listOf("two", "Three", "FOUR"))
+        assertThat(result.inReplyTo).isEqualTo("<7C72B202-73F3@somewhere>")
     }
 
     @Test
-    fun testCaseInsensitiveParamWrapper_withoutQueryParameters() {
-        val uri = Uri.parse("scheme://authority")
-        val caseInsensitiveParamWrapper = CaseInsensitiveParamWrapper(uri)
+    fun `In-Reply-To example from RFC 6068`() {
+        val uri = "mailto:list@example.org?In-Reply-To=%3C3469A91.D10AF4C@example.com%3E".toUri()
 
-        val result = caseInsensitiveParamWrapper.getQueryParameters("name")
+        val result = MailTo.parse(uri)
 
-        assertThat(result.isEmpty()).isTrue()
+        assertThat(result.inReplyTo).isEqualTo("<3469A91.D10AF4C@example.com>")
     }
 
     @Test
-    fun testGetInReplyTo_singleMessageId() {
-        val uri = Uri.parse("mailto:?in-reply-to=%3C7C72B202-73F3@somewhere%3E")
-        val mailToHelper = MailTo.parse(uri)
+    fun `invalid In-Reply-To value should return null`() {
+        val uri = "mailto:?in-reply-to=7C72B202-73F3somewhere".toUri()
 
-        assertThat(mailToHelper.inReplyTo).isEqualTo("<7C72B202-73F3@somewhere>")
+        val result = MailTo.parse(uri)
+
+        assertThat(result.inReplyTo).isNull()
     }
 
     @Test
-    fun testGetInReplyTo_multipleMessageIds() {
-        val uri = Uri.parse("mailto:?in-reply-to=%3C7C72B202-73F3@somewhere%3E%3C8A39-1A87CB40C114@somewhereelse%3E")
+    fun `empty In-Reply-To value should return null`() {
+        val uri = "mailto:?in-reply-to=".toUri()
 
-        val mailToHelper = MailTo.parse(uri)
+        val result = MailTo.parse(uri)
 
-        assertThat(mailToHelper.inReplyTo).isEqualTo("<7C72B202-73F3@somewhere>")
+        assertThat(result.inReplyTo).isNull()
     }
 
     @Test
-    fun testGetInReplyTo_RFC6068Example() {
-        val uri = Uri.parse("mailto:list@example.org?In-Reply-To=%3C3469A91.D10AF4C@example.com%3E")
+    fun `mixed case parameter names should be treated case insensitive`() {
+        val uri = (
+            "mailto:" +
+                "?to=to@domain.example" +
+                "&CC=cc@domain.example" +
+                "&bCC=bcc@domain.example" +
+                "&SUBJECT=subject" +
+                "&BODY=body" +
+                "&IN-REPLY-TO=%3Cmsg@id%3E"
+            ).toUri()
 
-        val mailToHelper = MailTo.parse(uri)
+        val result = MailTo.parse(uri)
 
-        assertThat(mailToHelper.inReplyTo).isEqualTo("<3469A91.D10AF4C@example.com>")
-    }
-
-    @Test
-    fun testGetInReplyTo_invalid() {
-        val uri = Uri.parse("mailto:?in-reply-to=7C72B202-73F3somewhere")
-
-        val mailToHelper = MailTo.parse(uri)
-
-        assertThat(mailToHelper.inReplyTo).isNull()
-    }
-
-    @Test
-    fun testGetInReplyTo_empty() {
-        val uri = Uri.parse("mailto:?in-reply-to=")
-
-        val mailToHelper = MailTo.parse(uri)
-
-        assertThat(mailToHelper.inReplyTo).isNull()
+        assertThat(result.to).containsExactly("to@domain.example".toAddress())
+        assertThat(result.cc).containsExactly("cc@domain.example".toAddress())
+        assertThat(result.bcc).containsExactly("bcc@domain.example".toAddress())
+        assertThat(result.subject).isEqualTo("subject")
+        assertThat(result.body).isEqualTo("body")
+        assertThat(result.inReplyTo).isEqualTo("<msg@id>")
     }
 }
+
+private fun String.toAddress(): Address = Address(this)
