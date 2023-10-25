@@ -3,7 +3,6 @@ package app.k9mail.feature.launcher
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.core.view.WindowCompat
 import app.k9mail.core.ui.compose.common.activity.setActivityContent
 import app.k9mail.core.ui.compose.common.navigation.toDeepLinkUri
@@ -13,8 +12,9 @@ import app.k9mail.feature.account.edit.navigation.withAccountUuid
 import app.k9mail.feature.account.setup.navigation.NAVIGATION_ROUTE_ACCOUNT_SETUP
 import app.k9mail.feature.launcher.ui.FeatureLauncherApp
 import app.k9mail.feature.onboarding.navigation.NAVIGATION_ROUTE_ONBOARDING
+import com.fsck.k9.ui.base.K9Activity
 
-class FeatureLauncherActivity : ComponentActivity() {
+class FeatureLauncherActivity : K9Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
