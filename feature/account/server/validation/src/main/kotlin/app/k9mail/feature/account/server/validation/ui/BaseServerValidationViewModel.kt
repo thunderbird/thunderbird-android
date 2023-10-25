@@ -37,7 +37,7 @@ abstract class BaseServerValidationViewModel(
 
     override fun event(event: Event) {
         when (event) {
-            Event.LoadAccountStateAndValidate -> loadAccountStateAndValidate()
+            Event.LoadAccountStateAndValidate -> handleOneTimeEvent(event, ::loadAccountStateAndValidate)
             is Event.OnOAuthResult -> onOAuthResult(event.result)
             Event.ValidateServerSettings -> onValidateConfig()
             Event.OnNextClicked -> navigateNext()

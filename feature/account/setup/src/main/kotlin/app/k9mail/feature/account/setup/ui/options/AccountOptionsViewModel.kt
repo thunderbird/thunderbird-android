@@ -20,7 +20,7 @@ internal class AccountOptionsViewModel(
 
     override fun event(event: Event) {
         when (event) {
-            Event.LoadAccountState -> loadAccountState()
+            Event.LoadAccountState -> handleOneTimeEvent(event, ::loadAccountState)
 
             is Event.OnAccountNameChanged -> updateState { state ->
                 state.copy(

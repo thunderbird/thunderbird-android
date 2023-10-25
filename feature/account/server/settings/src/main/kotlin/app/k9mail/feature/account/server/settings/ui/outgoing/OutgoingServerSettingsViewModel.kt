@@ -21,7 +21,7 @@ open class OutgoingServerSettingsViewModel(
 
     override fun event(event: Event) {
         when (event) {
-            Event.LoadAccountState -> loadAccountState()
+            Event.LoadAccountState -> handleOneTimeEvent(event, ::loadAccountState)
 
             is Event.ServerChanged -> updateState { it.copy(server = it.server.updateValue(event.server)) }
             is Event.SecurityChanged -> updateSecurity(event.security)

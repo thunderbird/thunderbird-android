@@ -23,7 +23,7 @@ open class IncomingServerSettingsViewModel(
     @Suppress("CyclomaticComplexMethod")
     override fun event(event: Event) {
         when (event) {
-            Event.LoadAccountState -> loadAccountState()
+            Event.LoadAccountState -> handleOneTimeEvent(event, ::loadAccountState)
 
             is Event.ProtocolTypeChanged -> updateProtocolType(event.protocolType)
             is Event.ServerChanged -> updateState { it.copy(server = it.server.updateValue(event.server)) }
