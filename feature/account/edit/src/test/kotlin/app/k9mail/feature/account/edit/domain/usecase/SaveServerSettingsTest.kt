@@ -8,9 +8,9 @@ import app.k9mail.feature.account.edit.AccountEditExternalContract.AccountUpdate
 import app.k9mail.feature.account.edit.AccountEditExternalContract.AccountUpdaterResult
 import assertk.assertFailure
 import assertk.assertThat
+import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
-import assertk.assertions.prop
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ServerSettings
 import kotlinx.coroutines.test.runTest
@@ -53,8 +53,7 @@ class SaveServerSettingsTest {
         assertFailure {
             testSubject.execute(ACCOUNT_UUID, isIncoming = true)
         }.isInstanceOf<IllegalStateException>()
-            .prop(IllegalStateException::message)
-            .isEqualTo("Server settings not found")
+            .hasMessage("Server settings not found")
     }
 
     @Test
@@ -92,8 +91,7 @@ class SaveServerSettingsTest {
         assertFailure {
             testSubject.execute(ACCOUNT_UUID, isIncoming = false)
         }.isInstanceOf<IllegalStateException>()
-            .prop(IllegalStateException::message)
-            .isEqualTo("Server settings not found")
+            .hasMessage("Server settings not found")
     }
 
     @Test
@@ -110,8 +108,7 @@ class SaveServerSettingsTest {
         assertFailure {
             testSubject.execute(ACCOUNT_UUID, isIncoming = true)
         }.isInstanceOf<IllegalStateException>()
-            .prop(IllegalStateException::message)
-            .isEqualTo("Server settings update failed")
+            .hasMessage("Server settings update failed")
     }
 
     private companion object {
