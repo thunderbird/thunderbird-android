@@ -16,6 +16,7 @@ data class Sizes(
     val huger: Dp = 384.dp,
 
     val icon: Dp = 24.dp,
+    val largeIcon: Dp = 32.dp,
 
     val topBarHeight: Dp = 56.dp,
     val bottomBarHeight: Dp = 56.dp,
