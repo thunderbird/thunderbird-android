@@ -6,6 +6,7 @@ import app.k9mail.feature.account.edit.AccountEditExternalContract
 import app.k9mail.feature.account.edit.featureAccountEditModule
 import app.k9mail.feature.account.setup.AccountSetupExternalContract
 import app.k9mail.feature.account.setup.featureAccountSetupModule
+import app.k9mail.feature.onboarding.main.featureOnboardingModule
 import app.k9mail.feature.preview.account.AccountOwnerNameProvider
 import app.k9mail.feature.preview.account.InMemoryAccountStore
 import app.k9mail.feature.preview.auth.AndroidKeyStoreDirectoryProvider
@@ -18,6 +19,7 @@ import com.fsck.k9.mail.ssl.LocalKeyStore
 import com.fsck.k9.mail.ssl.TrustManagerFactory
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import org.koin.core.module.Module
+import org.koin.core.qualifier.named
 import org.koin.dsl.binds
 import org.koin.dsl.module
 
@@ -41,9 +43,12 @@ val featureModule: Module = module {
     single { TrustManagerFactory.createInstance(get()) }
     single<TrustedSocketFactory> { DefaultTrustedSocketFactory(get(), get()) }
     single<OAuth2TokenProviderFactory> { RealOAuth2TokenProviderFactory(context = get()) }
+    single(named("ClientIdAppName")) { "App Name" }
+    single(named("ClientIdAppVersion")) { "App Version" }
 
     includes(
         accountModule,
+        featureOnboardingModule,
         featureAccountSetupModule,
         featureAccountEditModule,
     )

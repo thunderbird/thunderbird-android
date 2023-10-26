@@ -19,4 +19,6 @@ android {
 dependencies {
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.feature.onboarding.welcome)
+    implementation(projects.feature.account.setup)
+    implementation(projects.feature.onboarding.permissions)
 }
