@@ -31,4 +31,5 @@
     <string name="account_setup_options_section_sync_options_">Valkostir samstillinga</string>
     <string name="account_setup_options_show_notifications_label">Birta tilkynningar</string>
     <string name="account_setup_options_section_display_options">Valkostir birtingar</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Við höfum tekið við uppsetningunni fyrir póstþjóninn um tengingu sem ekki er eins örugg og við myndum vilja. Þetta þýðir að það eru einhverjar líkur á að einhver hafi komist í upplýsingarnar og breytt þeim. Geturðu yfirfarið þessar upplýsingar og gengið úr skugga um að allt sé eins og það á að vera\?</string>
 </resources>

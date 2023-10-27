@@ -244,13 +244,10 @@
     <string name="quiet_time_starts">Tòisichidh an t-àm sàmhach</string>
     <string name="quiet_time_ends">Thig an t-àm sàmhach gu crìoch</string>
     <string name="account_setup_basics_title">Suidhich cunntas ùr</string>
-    <string name="account_setup_basics_email_hint">Seòladh puist-d</string>
-    <string name="account_setup_basics_password_hint">Facal-faire</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
     <string name="account_setup_basics_show_password_biometrics_title">Dearbh cò thusa</string>
-    <string name="account_setup_basics_manual_setup_action">Suidheachadh a làimh</string>
     <string name="account_setup_check_settings_retr_info_msg">A’ faighinn fiosrachadh a’ chunntais…</string>
     <string name="account_setup_check_settings_check_incoming_msg">A’ sgrùdadh roghainnean an fhrithealaiche a-steach…</string>
     <string name="account_setup_check_settings_check_outgoing_msg">A’ sgrùdadh roghainnean an fhrithealaiche a-mach…</string>
@@ -666,7 +663,6 @@
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
     <string name="settings_import_failure">Cha b’ urrainn dhuinn roghainn sam bith ion-phortadh o: <xliff:g id="filename">%s</xliff:g></string>
     <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import">Ion-phortaich na roghainnean</string>
     <string name="settings_importing">Ag ion-phortadh nan roghainnean…</string>
     <string name="unread_widget_select_account">Seall co mheud a tha gun leughadh ann an…</string>
     <string name="unread_widget_account_title">Cunntas</string>
@@ -750,11 +746,9 @@
     <string name="fetching_attachment_dialog_message">A’ faighinn a’ cheanglachain…</string>
     <string name="auth_external_error">Cha b’ urrainn dhuinn dearbhadh a dhèanamh. Chan eil am frithealaiche a’ leigeil ris a bheil e comasach air SASL EXTERNAL. Dh’fhaoidte gu bheil duilgheadas le teisteanas a’ chliant (ro aosta, ùghdarras neo-aithnichte) no duilgheadas eile leis an rèiteachadh.</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">Cleachd teisteanas a’ chliant</string>
     <string name="client_certificate_spinner_empty">Chan eil teisteanas aig a’ chliant</string>
     <string name="client_certificate_spinner_delete">Thoir air falbh taghadh teisteanas a’ chliant</string>
     <string name="client_certificate_retrieval_failure">Cha b’ urrainn dhuinn teisteanas a’ chliant fhaighinn dhan alias “<xliff:g id="alias">%s</xliff:g>”</string>
-    <string name="client_certificate_advanced_options">Roghainnean adhartach</string>
     <string name="client_certificate_expired">Dh’fhalbh an ùine air teisteanas a’ chliant “<xliff:g id="certificate_alias">%1$s</xliff:g>” no chan eil e dligheachd fhathast (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Crioptaichte*</string>

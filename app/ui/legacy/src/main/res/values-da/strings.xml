@@ -274,8 +274,6 @@
     <string name="quiet_time_starts">Start tid</string>
     <string name="quiet_time_ends">Slut tid</string>
     <string name="account_setup_basics_title">Opsætning af ny konto</string>
-    <string name="account_setup_basics_email_hint">Mail addresse</string>
-    <string name="account_setup_basics_password_hint">Password</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in">Log ind</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
@@ -283,7 +281,6 @@
     <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
     <string name="account_setup_basics_show_password_biometrics_title">Verificer din identitet</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Lås op for at vise din adgangskode</string>
-    <string name="account_setup_basics_manual_setup_action">Manuel opsætning</string>
     <string name="account_setup_check_settings_retr_info_msg">Henter konto-information\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Kontrollerer indstillinger for indgående server\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Kontrollerer indstillinger for udgående server\u2026</string>
@@ -753,7 +750,6 @@
     <string name="settings_import_status_not_imported">Ikke importeret</string>
     <string name="settings_import_status_error">Import fejlede</string>
     <string name="settings_import_later_button">Senere</string>
-    <string name="settings_import">Importér opsætning</string>
     <string name="settings_importing">Importerer opsætning…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">For at bruge kontoen \"<xliff:g id="account">%s</xliff:g>\" er du nødt til at angive adgangskoden for serveren.</item>
@@ -843,11 +839,9 @@
     <string name="fetching_attachment_dialog_message">Henter vedhæftning…</string>
     <string name="auth_external_error">Ikke i stand til at autentificere. Serveren annoncerer ikke at den er i stand til at udføre SASL EXTERNAL. Dette kan være et problem med klientcertifikatet (udløbet, ukendt certifikatudsteder) eller et andet konfigurationsproblem.</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">Brug klientcertifikat</string>
     <string name="client_certificate_spinner_empty">Intet klientcertifikat</string>
     <string name="client_certificate_spinner_delete">Fjern valget af klientcertifikat</string>
     <string name="client_certificate_retrieval_failure">Kunne ikke indlæse klientcertifikat for alias \"<xliff:g id="alias">%s</xliff:g>\"</string>
-    <string name="client_certificate_advanced_options">Avancerede indstillinger</string>
     <string name="client_certificate_expired">Klientcertifikat \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" er udløbet eller endnu ikke gyldigt (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Krypteret*</string>

@@ -276,8 +276,6 @@
     <string name="quiet_time_starts">آغاز زمان خاموشی</string>
     <string name="quiet_time_ends">پایان زمان خاموشی</string>
     <string name="account_setup_basics_title">راه‌اندازی حساب کاربری جدید</string>
-    <string name="account_setup_basics_email_hint">نشانی رایانامه </string>
-    <string name="account_setup_basics_password_hint">گذرواژه</string>
     <string name="account_setup_oauth_description">جهت استفاده‌ این حساب کاربری از K-9 Mail، نیاز است که وارد حساب کاربری خود شوید و اجازه دسترسی اپلیکیشن به ایمیل‌ها را صادر کنید.</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in">ورود</string>
@@ -287,7 +285,6 @@
     <string name="account_setup_basics_show_password_need_lock">برای دیدن گذرواژه‌تان در این قسمت، قفل صفحه در این دستگاه را فعال کنید.</string>
     <string name="account_setup_basics_show_password_biometrics_title">هویت‌تان را تایید کنید</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">برای دیدن گذرواژه، قفل را باز کنید</string>
-    <string name="account_setup_basics_manual_setup_action">تنظیم دستی</string>
     <string name="account_setup_check_settings_retr_info_msg">بازیابی اطلاعات حساب کاربری\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">بررسی تنظیمات کارساز ورودی\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">بررسی تنظیمات کارساز خروجی\u2026</string>
@@ -764,7 +761,6 @@
     <string name="settings_import_status_not_imported">درون‌برد نشده</string>
     <string name="settings_import_status_error">شکست درون‌برد</string>
     <string name="settings_import_later_button">بعداً</string>
-    <string name="settings_import">درون‌برد تنظیمات</string>
     <string name="settings_importing">در حال درون‌برد تنظیمات…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">برای اینکه بتوانید از حساب «<xliff:g id="account">%s</xliff:g>» استفاده کنید، باید گذرواژهٔ میزبان را ارائه نمایید.</item>
@@ -854,11 +850,9 @@
     <string name="fetching_attachment_dialog_message">واکشی پیوست…</string>
     <string name="auth_external_error">احراز هویت ناموفق بود. کارساز توانایی SASL EXTERNAL را از خود نشان نمی‌دهد. می‌تواند به‌سبب مشکلی با گواهی کارخواه (منقضی‌شده، گواهی ناشناخته) یا مشکلات دیگری در پیکربندی آن باشد.</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">از گواهی کارخواه استفاده کن</string>
     <string name="client_certificate_spinner_empty">گواهی کارخواه وجود ندارد</string>
     <string name="client_certificate_spinner_delete">انتخاب گواهی کارخواه را حذف کن</string>
     <string name="client_certificate_retrieval_failure">بازیابی گواهی کارخواه برای نام مستعار «<xliff:g id="alias">%s</xliff:g>» ناموفق بود</string>
-    <string name="client_certificate_advanced_options">گزینه‌های پیشرفته</string>
     <string name="client_certificate_expired">گواهی کارخواه «<xliff:g id="certificate_alias">%1$s</xliff:g>» منقضی شده یا فعلاً معتبر نیست (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*رمزنگاری‌شده*</string>

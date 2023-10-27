@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="account_common_button_next">Prossimo</string>
-    <string name="account_common_button_back">Indietro</string>
+    <string name="account_common_button_next">Successivo</string>
+    <string name="account_common_button_back">Precedente</string>
     <string name="account_common_title">K-9 Mail</string>
 </resources>

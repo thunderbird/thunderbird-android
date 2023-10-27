@@ -157,7 +157,7 @@
     <string name="debug_enable_debug_logging_title">Onarma günlüğünü etkinleştir</string>
     <string name="debug_enable_debug_logging_summary">Extra tanı bilgisini günlüğe kaydet</string>
     <string name="debug_enable_sensitive_logging_title">Hassas bilgi günlüğü tut</string>
-    <string name="debug_enable_sensitive_logging_summary">Günlüklerde şifreler görünebilir.</string>
+    <string name="debug_enable_sensitive_logging_summary">Günlüklerde parolalar görünebilir.</string>
     <string name="debug_export_logs_title">Dışa aktarım kayıtları</string>
     <string name="debug_export_logs_success">Dışa aktarım başarılı. Kayıtlar hassas bilgiler içerebilir. Kiminle paylaştığına dikkat et.</string>
     <string name="debug_export_logs_failure">Dışa aktarılamadı.</string>
@@ -265,17 +265,14 @@
     <string name="quiet_time_starts">Sessiz Zaman başlangıcı</string>
     <string name="quiet_time_ends">Sessiz Zaman bitişi</string>
     <string name="account_setup_basics_title">Bir yeni hesap kurun</string>
-    <string name="account_setup_basics_email_hint">E-posta adresi</string>
-    <string name="account_setup_basics_password_hint">Parola</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in">Giriş yap</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in_with_google">Google ile giriş yap</string>
     <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-    <string name="account_setup_basics_show_password_need_lock">Şifrenizi görmek için ekran kilidini etkinleştirin.</string>
+    <string name="account_setup_basics_show_password_need_lock">Parolanızı burada görmek için ekran kilidini etkinleştirin.</string>
     <string name="account_setup_basics_show_password_biometrics_title">Kimliğinizi doğrulayın</string>
-    <string name="account_setup_basics_show_password_biometrics_subtitle">Şifrenizi görmek için kilidi açın</string>
-    <string name="account_setup_basics_manual_setup_action">El ile ayar</string>
+    <string name="account_setup_basics_show_password_biometrics_subtitle">Parolanızı görmek için kilidi açın</string>
     <string name="account_setup_check_settings_retr_info_msg">Hesap bilgisi alınıyor\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Gelen sunucu ayarları denetleniyor…</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Giden sunucu ayarları denetleniyor…</string>
@@ -287,7 +284,7 @@
     <string name="account_setup_account_type_pop_action">POP3</string>
     <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">Normal parola</string>
-    <string name="account_setup_auth_type_insecure_password">Güvenlik olmadan gönderilen şifre</string>
+    <string name="account_setup_auth_type_insecure_password">Güvenlik olmadan gönderilen parola</string>
     <string name="account_setup_auth_type_encrypted_password">Şifreli parola</string>
     <string name="account_setup_auth_type_tls_client_certificate">İstemci sertifikası</string>
     <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
@@ -741,7 +738,6 @@
     <string name="settings_import_status_not_imported">İçe aktarılmadı</string>
     <string name="settings_import_status_error">İçe aktarma hatası</string>
     <string name="settings_import_later_button">Daha sonra</string>
-    <string name="settings_import">İçe Aktarma ayarları</string>
     <string name="settings_importing">İçe aktarma ayarları…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">\"<xliff:g id="account">%s</xliff:g>\" hesabını kullanabilmek için sunucu parolasını sağlamanız gerekir.</item>
@@ -831,11 +827,9 @@
     <string name="fetching_attachment_dialog_message">Ekler alınıyor…</string>
     <string name="auth_external_error">Yetkilendirme yapılamıyor. Sunucu SASL EXTERNAL kabiliyeti olduğunu bildirmedi. Bu istemci sertifikasıyla ilgili bir sorun (tarihi geçmiş, bilinmeyen sertifika otoritesi) veya yapılandırma sorunu olabilir.</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">İstemci sertifikası kullan</string>
     <string name="client_certificate_spinner_empty">İstemci sertifikası yok</string>
     <string name="client_certificate_spinner_delete">İstemci sertifikası seçimini kaldır</string>
     <string name="client_certificate_retrieval_failure">\"<xliff:g id="alias">%s</xliff:g>\" takma adı için istemci sertifikası alınamadı</string>
-    <string name="client_certificate_advanced_options">Gelişmiş seçenekler</string>
     <string name="client_certificate_expired">İstemci sertifikası \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" tarihi geçmiş veya artık geçerli değil (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Şifreli*</string>
@@ -974,12 +968,7 @@
     <string name="ac_transfer_finish">Bitirmek için, iletinizi diğer aygıtınızda açın ve kurulum kodunu girin.</string>
     <string name="ac_transfer_show_code">Kurulum Kodunu Göster</string>
     <string name="ac_transfer_msg_subject">Autocrypt Kurulum İletisi</string>
-    <string name="ac_transfer_msg_body">Bu ileti otomatik şifreleme ayarlarınızı gizli anahtarınızla birlikte orijinal aygıtınızdan güvenli bir şekilde aktarmak için tüm bilgileri içerir.
-
-Yeni aygıtınıza Autocrypt kurmak için, yeni aygıtınızın size sunması gereken yönergeleri izleyin.
-
-Bu iletiyi saklayabilir ve gizli anahtarınız için bir yedekleme olarak kullanabilirsiniz.Bunu yapmak istiyorsanız, şifreyi not edip güvenli bir şekilde saklamanız gerekir.
-</string>
+    <string name="ac_transfer_msg_body">Bu ileti otomatik şifreleme ayarlarınızı gizli anahtarınızla birlikte orijinal aygıtınızdan güvenli bir şekilde aktarmak için tüm bilgileri içerir. Yeni aygıtınıza Autocrypt kurmak için, yeni aygıtınızın size sunması gereken yönergeleri izleyin. Bu iletiyi saklayabilir ve gizli anahtarınız için bir yedekleme olarak kullanabilirsiniz.Bunu yapmak istiyorsanız, parolayı not edip güvenli bir şekilde saklamanız gerekir.</string>
     <string name="ac_transfer_error_send">İleti gönderilirken bir hata oluştu. Lütfen ağ bağlantınızı ve giden sunucu yapılandırmanızı gözden geçirin.</string>
     <string name="switch_on">Açık</string>
     <string name="switch_off">Kapalı</string>

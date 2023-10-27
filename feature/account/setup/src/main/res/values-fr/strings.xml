@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_options_account_name_error_blank">Le nom du compte ne peut pas être vide.</string>
+    <string name="account_setup_options_account_check_frequency_label">Fréquence de relève</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Configurer automatiquement</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Cette configuration n\'est pas fiable</string>
+    <string name="account_setup_button_finish">Terminer</string>
+    <string name="account_setup_options_email_signature_label">Signature du courriel</string>
+    <string name="account_setup_options_email_display_count_label">Nombre de messages à afficher</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Configurer manuellement</string>
+    <string name="account_setup_options_email_signature_error_blank">La signature du courriel ne peut pas être vide.</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Il est obligatoire d\'approuver la configuration.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Nous avons reçu la configuration de votre serveur de courriel par une connexion qui n’est pas aussi sécurisée que nous le souhaitions. Cela signifie qu’il y a une infime chance que quelqu’un ait pu la modifier. Pourriez-vous revérifier la configuration fournie pour vous assurer qu’elle est conforme à ce qu’elle devrait être \?</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Modifier la configuration</string>
+    <string name="account_setup_error_unknown">Erreur inconnue</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">La configuration n\'a pas été trouvée</string>
+    <string name="account_setup_options_top_bar_title">Options du compte</string>
+    <string name="account_setup_options_account_name_label">Nom du compte</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">La configuration a été trouvée</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">L\'adresse courriel est requise.</string>
+    <string name="account_setup_options_display_name_label">Nom d\'affichage</string>
+    <string name="account_setup_auto_discovery_loading_error">Échec de chargement de la configuration du compte de courriel</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Je fais confiance à cette configuration</string>
+    <string name="account_setup_options_display_name_error_required">Le nom d\'affichage est requis.</string>
+    <string name="account_setup_error_network">Réseau</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">L\'adresse courriel est invalide.</string>
+    <string name="account_setup_options_email_check_frequency_never">Jamais</string>
+    <string name="account_setup_auto_discovery_loading_message">Recherche des détails du compte de courriel</string>
+    <string name="account_setup_options_section_sync_options_">Options de synchronisation</string>
+    <string name="account_setup_options_show_notifications_label">Afficher les notifications</string>
+    <string name="account_setup_options_section_display_options">Options d\'affichages</string>
+    <string name="account_setup_title">Courriel K-9 Mail</string>
+</resources>

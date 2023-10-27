@@ -280,8 +280,6 @@
     <string name="quiet_time_starts">Початок Тихої Години</string>
     <string name="quiet_time_ends">Кінець Тихої Години</string>
     <string name="account_setup_basics_title">Налаштувати новий обліковий запис</string>
-    <string name="account_setup_basics_email_hint">Адреса електронної пошти</string>
-    <string name="account_setup_basics_password_hint">Пароль</string>
     <string name="account_setup_oauth_description">Для використання цього поштового облікового запису у K-9 Mail Вам потрібно увійти в обліковий запис та надати доступ до ел.листів.</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in">Увійти</string>
@@ -291,7 +289,6 @@
     <string name="account_setup_basics_show_password_need_lock">Щоб переглянути пароль, налаштуйте цьому пристрою блокування екрану.</string>
     <string name="account_setup_basics_show_password_biometrics_title">Звірте свою особу</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Розблокуйте, щоб переглянути пароль</string>
-    <string name="account_setup_basics_manual_setup_action">Ручне налаштування</string>
     <string name="account_setup_check_settings_retr_info_msg">Отримання інформації про обліковий запис\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Перевірка налаштувань вхідного сервера\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Перевірка налаштувань вихідного сервера\u2026</string>
@@ -772,7 +769,6 @@
     <string name="settings_import_status_not_imported">Не імпортовано</string>
     <string name="settings_import_status_error">Збій імпортування</string>
     <string name="settings_import_later_button">Пізніше</string>
-    <string name="settings_import">Імпортувати налаштування</string>
     <string name="settings_importing">Імпортуються налаштування…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">Щоб користуватися обліковим записом <xliff:g id="account">%s</xliff:g>, потрібно надати пароль сервера.</item>
@@ -868,11 +864,9 @@
     <string name="fetching_attachment_dialog_message">Отримання вкладення…</string>
     <string name="auth_external_error">Автентифікація неможлива. Сервер не декларує здатність працювати з SASL EXTERNAL. Це може бути спричинено проблемою з сертифікатом клієнта (сплив строк дії, невідомий центр сертифікації) або іншою проблемою налаштувань.</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">Використовувати сертифікат клієнта</string>
     <string name="client_certificate_spinner_empty">Сертифікат клієнта відсутній</string>
     <string name="client_certificate_spinner_delete">Прибрати вибір сертифіката клієнта</string>
     <string name="client_certificate_retrieval_failure">Не вдалося отримати сертифікат клієнта для \"<xliff:g id="alias">%s</xliff:g>\"</string>
-    <string name="client_certificate_advanced_options">Розширені налаштування</string>
     <string name="client_certificate_expired">Сертифікат клієнта \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" втратив чинність або ще не набрав чинності (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Зашифровано*</string>

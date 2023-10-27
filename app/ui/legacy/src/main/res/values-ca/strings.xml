@@ -43,7 +43,7 @@
     <string name="compose_title_forward">Reenvia</string>
     <string name="compose_title_forward_as_attachment">Reenvia com a adjunt</string>
     <string name="choose_account_title">Trieu un compte</string>
-    <string name="choose_folder_title">Tria carpeta</string>
+    <string name="choose_folder_title">Trieu una carpeta</string>
     <string name="choose_folder_move_title">Mou a…</string>
     <string name="choose_folder_copy_title">Copia a…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seleccionats</string>
@@ -55,7 +55,7 @@
     <string name="empty_subject">L\'assumpte és buit, feu clic un altre cop per enviar-lo així</string>
     <string name="reply_action">Respon</string>
     <string name="reply_all_action">Respon a tothom</string>
-    <string name="delete_action">Elimina</string>
+    <string name="delete_action">Suprimeix</string>
     <string name="archive_action">Arxiva</string>
     <string name="spam_action">Brossa</string>
     <string name="forward_action">Reenvia</string>
@@ -69,9 +69,9 @@
     <string name="save_draft_action">Desa com a esborrany</string>
     <string name="check_mail_action">Comprova el correu</string>
     <string name="send_messages_action">Envia missatges</string>
-    <string name="refresh_folders_action">Refresca carpetes</string>
-    <string name="filter_folders_action">Cerca carpetes</string>
-    <string name="add_account_action">Afegeix un compte nou</string>
+    <string name="refresh_folders_action">Actualitza la llista de carpetes</string>
+    <string name="filter_folders_action">Cerca carpeta</string>
+    <string name="add_account_action">Afegeix un compte</string>
     <string name="compose_action">Redacta</string>
     <string name="search_action">Cerca</string>
     <string name="search_everywhere_action">Cerca-ho per tot arreu</string>
@@ -80,24 +80,24 @@
     <string name="preferences_action">Configuració</string>
     <string name="folders_action">Gestioneu les carpetes</string>
     <string name="account_settings_action">Configuració del compte</string>
-    <string name="remove_account_action">Elimina el compte</string>
+    <string name="remove_account_action">Suprimeix el compte</string>
     <string name="mark_as_read_action">Marca com a llegit</string>
     <string name="send_alternate_action">Comparteix</string>
     <string name="send_alternate_chooser_title">Selecciona remitent</string>
     <string name="flag_action">Afegeix un estel</string>
-    <string name="unflag_action">Elimina l\'estel</string>
+    <string name="unflag_action">Suprimeix l\'estel</string>
     <string name="copy_action">Copia</string>
-    <string name="unsubscribe_action">No t\'hi subscriguis</string>
+    <string name="unsubscribe_action">Cancel·la subscripció</string>
     <string name="show_headers_action">Mostra les capçaleres</string>
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">Adreça copiada al porta-retalls</item>
         <item quantity="other">Adreces copiades al porta-retalls</item>
     </plurals>
     <string name="copy_subject_to_clipboard">Text de l\'assumpte copiat al porta-retalls</string>
-    <string name="message_view_theme_action_dark">Canvia a la vista fosca</string>
-    <string name="message_view_theme_action_light">Canvia a la vista clara</string>
+    <string name="message_view_theme_action_dark">Canvia al tema fosc</string>
+    <string name="message_view_theme_action_light">Canvia al tema clar</string>
     <string name="mark_as_unread_action">Marca com a no llegit</string>
-    <string name="read_receipt">Llegeix la confirmació de lectura</string>
+    <string name="read_receipt">Confirmació de lectura</string>
     <string name="read_receipt_enabled">Es demanarà confirmació de lectura</string>
     <string name="read_receipt_disabled">No es demanarà confirmació de lectura</string>
     <string name="add_attachment_action">Afegeix adjunt</string>
@@ -108,25 +108,24 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Sense assumpte)</string>
     <string name="general_no_sender">Sense remitent</string>
-    <string name="status_loading_more">S\'estan carregant missatges\u2026</string>
+    <string name="status_loading_more">S\'estan carregant missatges…</string>
     <string name="status_network_error">Error de connexió</string>
     <string name="status_invalid_id_error">No s\'ha trobat el missatge</string>
     <string name="status_loading_error">Hi ha hagut un error durant la càrrega del missatge</string>
-    <string name="load_more_messages_fmt">Carrega\'n
-    fins a <xliff:g id="messages_to_load">%d</xliff:g> més</string>
+    <string name="load_more_messages_fmt">Carrega\'n fins a <xliff:g id="messages_to_load">%d</xliff:g> més</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
     <string name="size_format_bytes">%d B</string>
     <plurals name="notification_new_messages_title">
-        <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> missatges nous</item>
+        <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> missatge nou</item>
         <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> missatges nous</item>
     </plurals>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> més sobre <xliff:g id="account">%2$s</xliff:g></string>
     <string name="notification_action_reply">Respon</string>
     <string name="notification_action_mark_as_read">Marca com a llegit</string>
     <string name="notification_action_mark_all_as_read">Marca\'ls tots com a llegits</string>
-    <string name="notification_action_delete">Elimina</string>
+    <string name="notification_action_delete">Suprimeix</string>
     <string name="notification_action_delete_all">Elimina-ho tot</string>
     <string name="notification_action_archive">Arxiva</string>
     <string name="notification_action_archive_all">Arxiva-ho tot</string>
@@ -139,7 +138,9 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Error de notificació</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">S\'ha produït un error en intentar crear una notificació del sistema per a un missatge nou. El motiu més probable és que falti un so de notificació.\n\nToqueu per obrir la configuració de notificació.</string>
+    <string name="notification_notify_error_text">S\'ha produït un error en intentar crear una notificació del sistema per a un missatge nou. El motiu més probable és que falti un so de notificació.
+\n
+\nToqueu per obrir la configuració de notificació.</string>
     <string name="notification_bg_sync_ticker">S\'està comprovant el correu: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">S\'està comprovant el correu</string>
     <string name="notification_bg_send_ticker">S\'està enviant correu: <xliff:g id="account">%s</xliff:g></string>
@@ -180,16 +181,16 @@
     <string name="message_compose_reply_header_fmt_with_date">El <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> ha escrit:</string>
     <string name="message_compose_error_no_recipients">Heu d\'afegir-hi, com a mínim, un destinatari.</string>
     <string name="compose_error_incomplete_recipient">El camp del destinatari conté una entrada incompleta!</string>
-    <string name="error_contact_address_not_found">No s\'ha trobat cap adreça de correu.</string>
-    <string name="message_compose_attachments_skipped_toast">Alguns adjunts no es poden reenviar perquè no s\'han baixat.</string>
-    <string name="message_compose_attachments_forward_toast">Aquest missatge no es pot reenviar perquè alguns adjunts no s\'han baixat.</string>
+    <string name="error_contact_address_not_found">No s\'ha trobat cap adreça de correu per aquest contacte.</string>
+    <string name="message_compose_attachments_skipped_toast">Alguns adjunts no es poden reenviar perquè no s\'han descarregat.</string>
+    <string name="message_compose_attachments_forward_toast">Aquest missatge no es pot reenviar perquè alguns adjunts no s\'han descarregat.</string>
     <string name="message_compose_show_quoted_text_action">Inclou el missatge citat</string>
-    <string name="message_compose_description_delete_quoted_text">Elimina el text citat</string>
+    <string name="message_compose_description_delete_quoted_text">Suprimeix el text citat</string>
     <string name="message_compose_description_edit_quoted_text">Edita el text citat</string>
-    <string name="remove_attachment_action">Elimina l\'adjunt</string>
+    <string name="remove_attachment_action">Suprimeix l\'adjunt</string>
     <string name="message_to_label">A:</string>
     <string name="message_view_cc_label">A/c:</string>
-    <string name="message_view_bcc_label">Bcc:</string>
+    <string name="message_view_bcc_label">Cco:</string>
     <string name="message_view_status_attachment_not_saved">No s\'ha pogut desar l\'adjunt.</string>
     <!--Used to display the recipient list in the message view screen.-->
     <string name="message_view_recipients_format">a <xliff:g id="recipients">%s</xliff:g></string>
@@ -200,7 +201,7 @@
     <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
     <string name="message_view_show_remote_images_action">Mostra les imatges remotes</string>
     <string name="message_view_no_viewer">No s\'ha pogut trobar un visualitzador per <xliff:g id="mimetype">%s</xliff:g>.</string>
-    <string name="message_view_download_remainder">Baixa el missatge complet</string>
+    <string name="message_view_download_remainder">Descarrega el missatge complet</string>
     <string name="message_view_sender_label">mitjançant %1$s</string>
     <string name="from_same_sender">Més d\'aquest remitent</string>
     <string name="message_discarded_toast">S\'ha descartat el missatge</string>
@@ -218,17 +219,17 @@
     <string name="global_settings_registered_name_color_changed">Acoloreix els noms de la llista de contactes</string>
     <string name="general_settings_contact_name_color_label">Color del nom del contacte</string>
     <string name="global_settings_messageview_fixedwidth_label">Tipus de lletra d\'amplada fixa</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Utilitza una lletra d\'amplada fixa quan es mostrin missatges de text pla</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Fes servir una lletra d\'amplada fixa quan es mostrin missatges de text pla</string>
     <string name="global_settings_messageview_autofit_width_label">Ajusta l\'amplada dels missatges automàticament</string>
     <string name="global_settings_messageview_autofit_width_summary">Retalla els missatges per adaptar la seva amplada a la pantalla</string>
     <string name="global_settings_confirm_actions_title">Confirma accions</string>
-    <string name="global_settings_confirm_actions_summary">Mostra un diàleg cada vegada que executis accions seleccionades</string>
-    <string name="global_settings_confirm_action_delete">Elimina</string>
-    <string name="global_settings_confirm_action_delete_starred">Elimina els missatges amb estel (a la vista de missatges)</string>
+    <string name="global_settings_confirm_actions_summary">Mostra un diàleg cada cop que executis accions seleccionades</string>
+    <string name="global_settings_confirm_action_delete">Suprimeix</string>
+    <string name="global_settings_confirm_action_delete_starred">Suprimeix els missatges amb estel (a la vista de missatges)</string>
     <string name="global_settings_confirm_action_spam">Brossa</string>
     <string name="global_settings_confirm_menu_discard">Descarta el missatge</string>
     <string name="global_settings_confirm_menu_mark_all_read">Marca tots els missatges com a llegits</string>
-    <string name="global_settings_confirm_action_delete_notif">Elimina (des de notificacions)</string>
+    <string name="global_settings_confirm_action_delete_notif">Suprimeix (des de notificacions)</string>
     <!--Title of the screen to configure swipe actions-->
     <string name="general_settings_swipe_actions_title">Accions lliscants</string>
     <!--Name of the setting to configure the right swipe action-->
@@ -246,7 +247,7 @@
     <!--Name of the swipe action to archive a message-->
     <string name="general_settings_swipe_action_archive">Arxiva</string>
     <!--Name of the swipe action to delete a message-->
-    <string name="general_settings_swipe_action_delete">Elimina</string>
+    <string name="general_settings_swipe_action_delete">Suprimeix</string>
     <!--Name of the swipe action to move a message to the spam folder-->
     <string name="general_settings_swipe_action_spam">Correu brossa</string>
     <!--Name of the swipe action to move a message to another folder-->
@@ -257,44 +258,41 @@
     <string name="general_settings_ui_density_default">Per defecte</string>
     <string name="general_settings_ui_density_relaxed">Relaxada</string>
     <string name="global_settings_privacy_hide_useragent">Amaga el client de correu</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Elimina el nom K-9 User-Agent de les capçaleres del missatge</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Suprimeix el nom K-9 User-Agent de les capçaleres del missatge</string>
     <string name="global_settings_privacy_hide_timezone">Amaga el fus horari</string>
-    <string name="global_settings_privacy_hide_timezone_detail">Fes servir UTC en comptes de l\'hora local a les capçaleres dels missatges i a la capçalera de resposta</string>
-    <string name="global_settings_notification_quick_delete_title">Mostra el botó de suprimir</string>
+    <string name="global_settings_privacy_hide_timezone_detail">Fes servir UTC en comptes del fus horari local a les capçaleres dels missatges i a la capçalera de resposta</string>
+    <string name="global_settings_notification_quick_delete_title">Mostra el botó de \'Suprimir\'</string>
     <string name="global_settings_notification_quick_delete_never">Mai</string>
     <string name="global_settings_notification_quick_delete_when_single_msg">Per a notificacions d\'un sol missatge</string>
     <string name="global_settings_notification_quick_delete_always">Sempre</string>
-    <string name="global_settings_lock_screen_notification_visibility_title">Bloqueja les notificacions de pantalla</string>
-    <string name="global_settings_lock_screen_notification_visibility_nothing">No bloquegis les notificacions de pantalla</string>
+    <string name="global_settings_lock_screen_notification_visibility_title">Bloca les notificacions de pantalla</string>
+    <string name="global_settings_lock_screen_notification_visibility_nothing">No bloquis les notificacions de pantalla</string>
     <string name="global_settings_lock_screen_notification_visibility_app_name">Nom de l\'aplicació</string>
     <string name="global_settings_lock_screen_notification_visibility_message_count">Compte de missatges nou</string>
     <string name="global_settings_lock_screen_notification_visibility_senders">Compte de missatges i remitents</string>
-    <string name="global_settings_lock_screen_notification_visibility_everything">El mateix que amb la pantalla desbloquejada</string>
-    <string name="quiet_time">Mode silenciós</string>
+    <string name="global_settings_lock_screen_notification_visibility_everything">El mateix que amb la pantalla desblocada</string>
+    <string name="quiet_time">Mode Silenciós</string>
     <string name="quiet_time_description">Inhabilita el so de trucada, brunzit i llums durant la nit</string>
     <string name="quiet_time_notification">Desactiva les notificacions</string>
-    <string name="quiet_time_notification_description">Desactiva completament les notificacions durant el mode silenciós</string>
-    <string name="quiet_time_starts">Comença el mode silenciós </string>
-    <string name="quiet_time_ends">El mode silenciós acaba</string>
+    <string name="quiet_time_notification_description">Desactiva completament les notificacions durant el Mode Silenciós</string>
+    <string name="quiet_time_starts">El Mode Silenciós comença</string>
+    <string name="quiet_time_ends">El Mode Silenciós acaba</string>
     <string name="account_setup_basics_title">Configura un compte nou</string>
-    <string name="account_setup_basics_email_hint">Adreça de correu electrònic</string>
-    <string name="account_setup_basics_password_hint">Contrasenya</string>
-    <string name="account_setup_oauth_description">Per usar aquest compte de correu electrònic amb el K-9 Mail, heu d\'iniciar-hi la sessió i concedir a l\'aplicació accés als vostres correus electrònics.</string>
+    <string name="account_setup_oauth_description">Per fer servir aquest compte de correu electrònic amb el K-9 Mail, heu d\'iniciar-hi la sessió i concedir a l\'aplicació accés als vostres correus electrònics.</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in">Inicia la sessió</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in_with_google">Inicia la sessió amb Google</string>
     <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
     <string name="account_setup_basics_show_password_need_lock">Per veure la contrasenya aquí, activeu el bloqueig de pantalla en aquest dispositiu.</string>
-    <string name="account_setup_basics_show_password_biometrics_title">Verifiqueu la identitat</string>
+    <string name="account_setup_basics_show_password_biometrics_title">Verifiqueu la vostra identitat</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Desbloqueu-ho per veure la contrasenya</string>
-    <string name="account_setup_basics_manual_setup_action">Configuració manual</string>
-    <string name="account_setup_check_settings_retr_info_msg">S\'està recuperant la informació del compte\u2026</string>
+    <string name="account_setup_check_settings_retr_info_msg">S\'està recuperant la informació del compte…</string>
     <string name="account_setup_check_settings_check_incoming_msg">S\'està comprovant la configuració del servidor d\'entrada\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">S\'està comprovant la configuració del servidor de sortida\u2026</string>
-    <string name="account_setup_check_settings_authenticate">S\'està autenticant\u2026</string>
+    <string name="account_setup_check_settings_authenticate">S\'està autenticant…</string>
     <string name="account_setup_check_settings_fetch">S\'està recuperant la configuració del compte\u2026</string>
-    <string name="account_setup_check_settings_canceling_msg">S\'està cancel·lant\u2026</string>
+    <string name="account_setup_check_settings_canceling_msg">S\'està cancel·lant…</string>
     <string name="account_setup_account_type_title">Tipus de compte</string>
     <string name="account_setup_account_type_instructions">Quin tipus de compte és?</string>
     <string name="account_setup_account_type_pop_action">POP3</string>
@@ -317,13 +315,13 @@
     <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
     <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
     <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" no és vàlid amb \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
-    <string name="account_setup_incoming_delete_policy_label">Quan elimino un missatge</string>
-    <string name="account_setup_incoming_delete_policy_never_label">No l\'eliminis del servidor</string>
-    <string name="account_setup_incoming_delete_policy_delete_label">Elimina\'l del servidor</string>
+    <string name="account_setup_incoming_delete_policy_label">Quan suprimeixo un missatge</string>
+    <string name="account_setup_incoming_delete_policy_never_label">No el suprimeixis del servidor</string>
+    <string name="account_setup_incoming_delete_policy_delete_label">Suprimeix-lo del servidor</string>
     <string name="account_setup_incoming_delete_policy_markread_label">Marca\'ls com a llegits al servidor</string>
-    <string name="account_setup_incoming_use_compression">Usa compressió</string>
+    <string name="account_setup_incoming_use_compression">Fes servir compressió</string>
     <string name="account_setup_incoming_send_client_id">Envia l\'ID de client</string>
-    <string name="account_setup_expunge_policy_label">Elimina missatges esborrats al servidor</string>
+    <string name="account_setup_expunge_policy_label">Elimina missatges suprimits al servidor</string>
     <string name="account_setup_expunge_policy_immediately">Immediatament</string>
     <string name="account_setup_expunge_policy_on_poll">Quan es comprova</string>
     <string name="account_setup_expunge_policy_manual">Només manualment</string>
@@ -334,7 +332,7 @@
     <string name="trash_folder_label">Carpeta paperera</string>
     <string name="archive_folder_label">Carpeta d\'arxiu</string>
     <string name="spam_folder_label">Carpeta brossa</string>
-    <string name="account_setup_incoming_subscribed_folders_only_label">Només mostra carpetes subscrites</string>
+    <string name="account_setup_incoming_subscribed_folders_only_label">Mostra només carpetes subscrites</string>
     <string name="account_setup_auto_expand_folder">Autoexpandeix la carpeta</string>
     <string name="account_setup_outgoing_title">Configuració del servidor de sortida</string>
     <string name="account_setup_outgoing_smtp_server_label">Servidor SMTP</string>
@@ -346,7 +344,7 @@
     <string name="account_setup_outgoing_authentication_label">Tipus d\'autenticació</string>
     <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" no és vàlid amb \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
     <string name="account_setup_bad_uri">Configuració no vàlida: <xliff:g id="err_mess">%s</xliff:g></string>
-    <string name="account_setup_options_mail_check_frequency_label">Freqüència de comprovació</string>
+    <string name="account_setup_options_mail_check_frequency_label">Freqüència de comprovació de la carpeta</string>
     <string name="account_setup_options_mail_check_frequency_never">Mai</string>
     <string name="account_setup_options_mail_check_frequency_15min">Cada 15 minuts</string>
     <string name="account_setup_options_mail_check_frequency_30min">Cada 30 minuts</string>
@@ -379,9 +377,13 @@
     <string name="account_setup_options_mail_display_count_all">Tots els missatges</string>
     <string name="move_copy_cannot_copy_unsynced_message">No es pot copiar o moure un missatge que no està sincronitzat amb el servidor</string>
     <string name="account_setup_failed_dlg_title">No s\'ha pogut acabar la configuració</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Nom d\'usuari o contrasenya incorrectes.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_certificate_message_fmt">El servidor ha mostrat un certificat SSL no vàlid. A vegades això és degut a una mala configuració del servidor. També pot ser degut que algú estigui intentant atacar-vos o al vostre servidor. Si no n\'esteu segurs feu clic a Rebutja i contacteu amb la gent que us administra el vostre servidor.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_server_message_fmt">No s\'ha pogut connectar amb el servidor.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_auth_message_fmt">Nom d\'usuari o contrasenya incorrectes.
+\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_certificate_message_fmt">El servidor ha mostrat un certificat SSL no vàlid. A vegades això és degut a una mala configuració del servidor. També pot ser degut que algú estigui intentant atacar-vos o al vostre servidor. Si no n\'esteu segurs feu clic a Rebutja i contacteu amb la gent que us administra el vostre servidor.
+\n
+\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_server_message_fmt">No s\'ha pogut connectar amb el servidor.
+\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_oauth_flow_canceled">Autorització cancel·lada</string>
     <string name="account_setup_failed_dlg_oauth_flow_failed">L\'autorització ha fallat amb l\'error següent: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_setup_failed_dlg_oauth_not_supported">Actualment, OAuth 2.0 no és compatible amb aquest proveïdor.</string>
@@ -393,16 +395,16 @@
     <string name="account_settings_notify_label">Notificacions noves de correu</string>
     <string name="account_settings_folder_notify_new_mail_mode_label">Carpetes de notificacions</string>
     <string name="account_settings_folder_notify_new_mail_mode_all">Tot</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Només carpetes de 1a classe</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Carpetes de 1a i 2a classe</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Totes les carpetes excepte de 2a classe</string>
+    <string name="account_settings_folder_notify_new_mail_mode_first_class">Només carpetes de 1a Classe</string>
+    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Carpetes de 1a i 2a Classe</string>
+    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Totes les carpetes excepte de 2a Classe</string>
     <string name="account_settings_folder_notify_new_mail_mode_none">Cap</string>
     <string name="account_settings_notify_sync_label">Notificacions de sincronització</string>
     <string name="account_settings_email_label">La vostra adreça de correu</string>
     <string name="account_settings_notify_summary">Notifica-ho a la barra d\'estat quan arribi correu</string>
     <string name="account_settings_notify_sync_summary">Notifica-ho a la barra d\'estat mentre es comprova el correu</string>
     <string name="account_settings_notify_self_label">Inclou correu de sortida</string>
-    <string name="account_settings_notify_self_summary">Mostra una notificació per als missatges que enviïs</string>
+    <string name="account_settings_notify_self_summary">Mostra una notificació per als missatges que envio</string>
     <string name="account_notify_contacts_mail_only_label">Només els contactes</string>
     <string name="account_notify_contacts_mail_only_summary">Mostra notificacions només per als missatges de contactes coneguts</string>
     <string name="account_settings_ignore_chat_messages_label">Ignora els missatges de conversa</string>
@@ -414,20 +416,20 @@
     <string name="account_settings_notification_channels_label">Categories de notificacions</string>
     <string name="account_settings_open_notification_settings_messages_summary">Configureu les notificacions per als missatges nous</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Configureu les notificacions per als errors i l\'estat</string>
-    <string name="account_settings_show_pictures_label">Sempre mostra les imatges</string>
+    <string name="account_settings_show_pictures_label">Mostra sempre les imatges</string>
     <string name="account_settings_show_pictures_never">No</string>
     <string name="account_settings_show_pictures_only_from_contacts">Dels contactes</string>
     <string name="account_settings_show_pictures_always">De qualsevol</string>
     <string name="account_settings_composition">S\'està enviant el correu</string>
     <string name="account_settings_default_quoted_text_shown_label">Cita el missatge original en respondre\'l</string>
-    <string name="account_settings_default_quoted_text_shown_summary">Afegeix el missatge original a les vostres respostes.</string>
+    <string name="account_settings_default_quoted_text_shown_summary">Inclou el missatge original a les vostres respostes.</string>
     <string name="account_settings_reply_after_quote_label">Contesta després del text citat</string>
     <string name="account_settings_reply_after_quote_summary">Quan contestis, el missatge original apareixerà abans de la contesta.</string>
     <string name="account_settings_strip_signature_label">Elimina la signatura en contestar</string>
     <string name="account_settings_strip_signature_summary">S\'eliminaran les signatures dels missatges citats a les respostes</string>
     <string name="account_settings_message_format_label">Format del missatge</string>
-    <string name="account_settings_message_format_text">Text pla (se\'n trauran el format i les imatges)</string>
-    <string name="account_settings_message_format_html">HTML (se\'n conservaran el format i les imatges)</string>
+    <string name="account_settings_message_format_text">Text pla (se suprimirà el format i les imatges)</string>
+    <string name="account_settings_message_format_html">HTML (es conservarà el format i les imatges)</string>
     <string name="account_settings_message_format_auto">Automàtic (text pla excepte per a missatges HTML)</string>
     <string name="account_settings_always_show_cc_bcc_label">Mostra sempre C/a i C/a ocults</string>
     <string name="account_settings_message_read_receipt_label">Confirmació de lectura</string>
@@ -448,11 +450,11 @@
     <string name="account_settings_crypto_key">Configureu la clau d\'extrem a extrem</string>
     <string name="account_settings_crypto_summary_off">No hi ha cap aplicació OpenPGP configurada</string>
     <string name="account_settings_crypto_summary_on">Connectat a %s</string>
-    <string name="account_settings_crypto_summary_config">Es configura…</string>
+    <string name="account_settings_crypto_summary_config">S\'està configurant…</string>
     <string name="account_settings_crypto_encrypt_all_drafts">Desa tots els esborranys encriptats</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">Tots els esborranys es desaran encriptats</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Encripta els esborranys només si l\'encriptació està habilitada</string>
-    <string name="account_settings_mail_check_frequency_label">Freqüència de comprovació de les carpetes</string>
+    <string name="account_settings_mail_check_frequency_label">Freqüència de comprovació de la carpeta</string>
     <string name="account_settings_color_label">Color del compte</string>
     <string name="account_settings_color_summary">Tria el color del compte utilitzat a la llista de carpetes i de comptes</string>
     <string name="account_settings_mail_display_count_label">Mida de la carpeta local</string>
@@ -487,50 +489,50 @@
     <string name="account_settings_message_age_1_year">del darrer any</string>
     <string name="account_settings_folder_display_mode_label">Carpetes a mostrar</string>
     <string name="account_settings_folder_display_mode_all">Tot</string>
-    <string name="account_settings_folder_display_mode_first_class">Només carpetes de 1a classe</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">Carpetes de 1a i 2a classe</string>
+    <string name="account_settings_folder_display_mode_first_class">Només carpetes de 1a Classe</string>
+    <string name="account_settings_folder_display_mode_first_and_second_class">Carpetes de 1a i 2a Classe</string>
     <string name="account_settings_folder_display_mode_not_second_class">Tot excepte carpetes de 2a classe</string>
     <string name="account_settings_folder_sync_mode_label">Comprova les carpetes</string>
     <string name="account_settings_folder_sync_mode_all">Tot</string>
-    <string name="account_settings_folder_sync_mode_first_class">Només carpetes de 1a classe</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">Carpetes de 1a i 2a classe</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">Tot excepte carpetes de 2a classe</string>
+    <string name="account_settings_folder_sync_mode_first_class">Només carpetes de 1a Classe</string>
+    <string name="account_settings_folder_sync_mode_first_and_second_class">Carpetes de 1a i 2a Classe</string>
+    <string name="account_settings_folder_sync_mode_not_second_class">Tot excepte carpetes de 2a Classe</string>
     <string name="account_settings_folder_sync_mode_none">Cap</string>
     <string name="account_settings_folder_push_mode_label">Tramet carpetes</string>
     <string name="account_settings_folder_push_mode_all">Tot</string>
-    <string name="account_settings_folder_push_mode_first_class">Només carpetes de 1a classe</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">Carpetes de 1a i 2a classe</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Tot excepte carpetes de 2a classe</string>
+    <string name="account_settings_folder_push_mode_first_class">Només carpetes de 1a Classe</string>
+    <string name="account_settings_folder_push_mode_first_and_second_class">Carpetes de 1a i 2a Classe</string>
+    <string name="account_settings_folder_push_mode_not_second_class">Tot excepte carpetes de 2a Classe</string>
     <string name="account_settings_folder_push_mode_none">Cap</string>
     <string name="account_settings_folder_target_mode_label">Mou / copia carpetes de destinació</string>
     <string name="account_settings_folder_target_mode_all">Tot</string>
-    <string name="account_settings_folder_target_mode_first_class">Només carpetes de 1a classe</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">Carpetes de 1a i 2a classe</string>
-    <string name="account_settings_folder_target_mode_not_second_class">Totes les carpetes excepte 2a classe</string>
-    <string name="account_settings_sync_remote_deletetions_label">Sincronitza els elements eliminats al servidor</string>
-    <string name="account_settings_sync_remote_deletetions_summary">Elimina els missatges quan s\'esborrin al servidor</string>
-    <string name="account_settings_openpgp_missing">Falta una aplicació d\'OpenPGP. S\'ha desinstal·lat?</string>
+    <string name="account_settings_folder_target_mode_first_class">Només carpetes de 1a Classe</string>
+    <string name="account_settings_folder_target_mode_first_and_second_class">Carpetes de 1a i 2a Classe</string>
+    <string name="account_settings_folder_target_mode_not_second_class">Totes les carpetes excepte 2a Classe</string>
+    <string name="account_settings_sync_remote_deletetions_label">Sincronitza els elements suprimits al servidor</string>
+    <string name="account_settings_sync_remote_deletetions_summary">Elimina els missatges quan se suprimeixin al servidor</string>
+    <string name="account_settings_openpgp_missing">Falta una aplicació d\'OpenPGP. S\'ha desinstal·lat\?</string>
     <string name="folder_settings_title">Configuració de les carpetes</string>
     <string name="folder_settings_in_top_group_label">Mostra al grup superior</string>
     <string name="folder_settings_in_top_group_summary">Mostra a prop del capdamunt de la llista de carpetes</string>
     <string name="folder_settings_folder_display_mode_label">Classe de vista de carpetes</string>
-    <string name="folder_settings_folder_display_mode_normal">Sense classe</string>
-    <string name="folder_settings_folder_display_mode_first_class">1a classe</string>
-    <string name="folder_settings_folder_display_mode_second_class">2a classe</string>
+    <string name="folder_settings_folder_display_mode_normal">Sense Classe</string>
+    <string name="folder_settings_folder_display_mode_first_class">1a Classe</string>
+    <string name="folder_settings_folder_display_mode_second_class">2a Classe</string>
     <string name="folder_settings_folder_sync_mode_label">Classe de comprovació de la carpeta</string>
     <string name="folder_settings_folder_sync_mode_normal">Cap</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1a classe</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2a classe</string>
+    <string name="folder_settings_folder_sync_mode_first_class">1a Classe</string>
+    <string name="folder_settings_folder_sync_mode_second_class">2a Classe</string>
     <string name="folder_settings_folder_sync_mode_inherited">El mateix que a la forma de vista</string>
     <string name="folder_settings_folder_push_mode_label">Classe de tramesa de la carpeta</string>
-    <string name="folder_settings_folder_push_mode_normal">Sense classe</string>
-    <string name="folder_settings_folder_push_mode_first_class">1a classe</string>
-    <string name="folder_settings_folder_push_mode_second_class">2a classe</string>
+    <string name="folder_settings_folder_push_mode_normal">Sense Classe</string>
+    <string name="folder_settings_folder_push_mode_first_class">1a Classe</string>
+    <string name="folder_settings_folder_push_mode_second_class">2a Classe</string>
     <string name="folder_settings_folder_push_mode_inherited">Igual que la classe de comprovació</string>
     <string name="folder_settings_folder_notify_mode_label">Classe de notificació de la carpeta</string>
-    <string name="folder_settings_folder_notify_mode_normal">Sense classe</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1a classe</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2a classe</string>
+    <string name="folder_settings_folder_notify_mode_normal">Sense Classe</string>
+    <string name="folder_settings_folder_notify_mode_first_class">1a Classe</string>
+    <string name="folder_settings_folder_notify_mode_second_class">2a Classe</string>
     <string name="folder_settings_folder_notify_mode_inherited">El mateix que la classe de tramesa</string>
     <string name="folder_settings_clear_local_folder_action">Neteja els missatges locals</string>
     <string name="account_settings_incoming_label">Servidor d\'entrada</string>
@@ -565,15 +567,15 @@
     <string name="account_settings_notification_light_magenta">Magenta</string>
     <string name="account_settings_composition_title">Opcions de composició del missatge</string>
     <string name="account_settings_composition_label">Composició per defecte</string>
-    <string name="account_settings_composition_summary">Configura per defecte De,  A/c i signatura</string>
+    <string name="account_settings_composition_summary">Configura per defecte De, CCo i signatura</string>
     <string name="account_settings_identities_label">Gestiona les identitats</string>
-    <string name="account_settings_identities_summary">Configura adreces i signatures \"From\" alternatives</string>
+    <string name="account_settings_identities_summary">Configura adreces i signatures \"De\" alternatives</string>
     <string name="manage_identities_title">Gestiona identitats</string>
     <string name="manage_identities_context_menu_title">Gestiona la identitat</string>
     <string name="edit_identity_title">Edita la identitat</string>
     <string name="edit_identity_save">Desa</string>
     <string name="new_identity_action">Nova identitat</string>
-    <string name="account_settings_always_bcc_label">A/c tots els missatges a</string>
+    <string name="account_settings_always_bcc_label">CCo tots els missatges a</string>
     <string name="manage_identities_edit_action">Edita</string>
     <string name="manage_identities_move_up_action">Mou amunt</string>
     <string name="manage_identities_move_down_action">Mou avall</string>
@@ -595,13 +597,13 @@
     <string name="choose_identity_title">Trieu la identitat</string>
     <string name="send_as">Envia com a</string>
     <string name="no_removable_identity">No podeu eliminar la vostra única identitat</string>
-    <string name="identity_has_no_email">No podeu utilitzar una identitat sense una adreça de correu</string>
+    <string name="identity_has_no_email">No podeu fer servir una identitat sense una adreça de correu</string>
     <string name="sort_earliest_first">Missatges més antics primer</string>
-    <string name="sort_latest_first">Darrers missatges primer</string>
+    <string name="sort_latest_first">Missatges més nous primer</string>
     <string name="sort_subject_alpha">Assumpte en ordre alfabètic</string>
     <string name="sort_subject_re_alpha">Assumpte en ordre alfabètic invers</string>
-    <string name="sort_sender_alpha">Remitent A-Z</string>
-    <string name="sort_sender_re_alpha">Remitent Z-A</string>
+    <string name="sort_sender_alpha">Remitent en ordre alfabètic</string>
+    <string name="sort_sender_re_alpha">Remitent en ordre alfabètic invers</string>
     <string name="sort_flagged_first">Missatges marcats primer</string>
     <string name="sort_flagged_last">Missatges no marcats primer</string>
     <string name="sort_unread_first">Missatges no llegits primer</string>
@@ -620,16 +622,16 @@
     <string name="account_setup_failed_dlg_invalid_certificate_title">Certificat no reconegut</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepta la clau</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Rebutja la clau</string>
-    <string name="folder_list_filter_hint">El nom de carpeta conté</string>
-    <string name="folder_list_display_mode_label">Carpetes…</string>
-    <string name="folder_list_display_mode_all">Mostra totes les carpetes</string>
-    <string name="folder_list_display_mode_first_class">Mostra només carpetes de 1a classe</string>
-    <string name="folder_list_display_mode_first_and_second_class">Mostra carpetes de 1a i 2a classe</string>
-    <string name="folder_list_display_mode_not_second_class">Mostra-ho tot excepte carpetes de 2a classe</string>
+    <string name="folder_list_filter_hint">El nom de la carpeta conté</string>
+    <string name="folder_list_display_mode_label">Mostra carpetes…</string>
+    <string name="folder_list_display_mode_all">Totes les carpetes</string>
+    <string name="folder_list_display_mode_first_class">Carpetes de 1a Classe</string>
+    <string name="folder_list_display_mode_first_and_second_class">Carpetes de 1a i 2a Classe</string>
+    <string name="folder_list_display_mode_not_second_class">Amaga carpetes de 2a Classe</string>
     <string name="account_settings_signature__location_label">Posició de la signatura</string>
     <string name="account_settings_signature__location_before_quoted_text">Abans del text citat</string>
     <string name="account_settings_signature__location_after_quoted_text">Després del text citat</string>
-    <string name="setting_theme_global">Utilitza el tema de l\'aplicació</string>
+    <string name="setting_theme_global">Fes servir el tema de l\'aplicació</string>
     <string name="setting_theme_dark">Fosc</string>
     <string name="setting_theme_light">Clar</string>
     <string name="setting_theme_follow_system">Fes servir el valor per defecte del sistema</string>
@@ -645,13 +647,13 @@
     <string name="settings_theme_label">Tema</string>
     <string name="settings_message_theme_label">Tema de vista de missatge</string>
     <string name="settings_compose_theme_label">Tema de vista del redactor</string>
-    <string name="settings_language_label">Llengua</string>
+    <string name="settings_language_label">Idioma</string>
     <string name="preference_search_no_results">No s\'ha trobat la configuració</string>
     <string name="settings_message_theme_selection_label">Tema de missatge fix</string>
     <string name="settings_message_theme_selection_summary_off">Selecciona el tema de la vista de missatge en mostrar-lo</string>
-    <string name="settings_message_theme_selection_summary_on">Utilitza un tema fix per a tots els missatges</string>
+    <string name="settings_message_theme_selection_summary_on">Fes servir un tema fix per a tots els missatges</string>
     <string name="setting_language_system">El predeterminat del sistema</string>
-    <string name="background_ops_label">Sincronització en 2n pla</string>
+    <string name="background_ops_label">Sincronització en segon pla</string>
     <string name="background_ops_never">Mai</string>
     <string name="background_ops_always">Sempre</string>
     <string name="background_ops_auto_sync_only">Quan la sincronització automàtica estigui activada</string>
@@ -666,21 +668,21 @@
     <string name="account_setup_push_limit_500">500 carpetes</string>
     <string name="account_setup_push_limit_1000">1000 carpetes</string>
     <string name="animations_title">Animació</string>
-    <string name="animations_summary">Utilitza efectes visuals cridaners</string>
+    <string name="animations_summary">Fes servir efectes visuals cridaners</string>
     <string name="volume_navigation_title">Navegació amb la tecla de volum a la vista de missatges</string>
     <string name="show_unified_inbox_title">Mostra la safata d\'entrada unificada</string>
     <string name="show_starred_count_title">Mostra el recompte de destacats</string>
-    <string name="integrated_inbox_title">Bústia unificada</string>
+    <string name="integrated_inbox_title">Bústia d\'entrada unificada</string>
     <string name="integrated_inbox_detail">Tots els missatges en carpetes unificades</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Unifica</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Tots els missatges es mostren a la bústia unificada</string>
+    <string name="folder_settings_include_in_integrated_inbox_summary">Tots els missatges es mostren a la bústia d\'entrada unificada</string>
     <string name="account_settings_searchable_label">Carpetes per cercar</string>
     <string name="account_settings_searchable_all">Tot</string>
     <string name="account_settings_searchable_displayable">Mostrable</string>
     <string name="account_settings_searchable_none">Cap</string>
     <string name="account_settings_no_folder_selected">Cap</string>
     <string name="account_settings_automatic_special_folder">Automàtic (%s)</string>
-    <string name="font_size_settings_title">Mida  de la lletra</string>
+    <string name="font_size_settings_title">Mida de la lletra</string>
     <string name="font_size_settings_description">Configura la mida de la lletra</string>
     <string name="font_size_message_list">Llista de missatges</string>
     <string name="font_size_message_list_subject">Assumpte</string>
@@ -707,36 +709,36 @@
     <string name="font_size_larger">Més gros</string>
     <string name="error_activity_not_found">No s\'ha trobat cap aplicació idònia per a aquesta acció.</string>
     <string name="send_failed_reason">Ha fallat l\'enviament: %s</string>
-    <string name="save_or_discard_draft_message_dlg_title">Deso l\'esborrany?</string>
-    <string name="save_or_discard_draft_message_instructions_fmt">Deso o descarto aquest missatge?</string>
-    <string name="save_or_discard_draft_message_changes">Voleu desar o descartar els canvis?</string>
-    <string name="confirm_discard_draft_message_title">Descarto el missatge?</string>
-    <string name="confirm_discard_draft_message">Segur que voleu descartar aquest missatge?</string>
+    <string name="save_or_discard_draft_message_dlg_title">Deso l\'esborrany\?</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">Deso o descarto aquest missatge\?</string>
+    <string name="save_or_discard_draft_message_changes">Voleu desar o descartar els canvis\?</string>
+    <string name="confirm_discard_draft_message_title">Descarto el missatge\?</string>
+    <string name="confirm_discard_draft_message">Segur que voleu descartar aquest missatge\?</string>
     <string name="dialog_confirm_clear_local_folder_title">Voleu netejar els missatges locals?</string>
-    <string name="dialog_confirm_clear_local_folder_message">Això eliminarà tots els missatges locals de la carpeta. No s\'eliminarà cap missatge del servidor.</string>
+    <string name="dialog_confirm_clear_local_folder_message">Això eliminarà tots els missatges locals de la carpeta. No se suprimirà cap missatge del servidor.</string>
     <string name="dialog_confirm_clear_local_folder_action">Neteja els missatges</string>
     <string name="dialog_confirm_delete_title">Confirmeu l\'eliminació</string>
-    <string name="dialog_confirm_delete_message">Voleu eliminar aquest missatge?</string>
+    <string name="dialog_confirm_delete_message">Voleu suprimir aquest missatge\?</string>
     <plurals name="dialog_confirm_delete_messages">
-        <item quantity="one">Voleu suprimir aquest missatge\?</item>
-        <item quantity="other">Voleu suprimir <xliff:g id="message_count">%1$d</xliff:g> missatges\?</item>
+        <item quantity="one">Realment voleu suprimir aquest missatge\?</item>
+        <item quantity="other">Realment voleu suprimir <xliff:g id="message_count">%1$d</xliff:g> missatges\?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Sí</string>
     <string name="dialog_confirm_delete_cancel_button">No</string>
     <string name="dialog_confirm_mark_all_as_read_title">Confirmeu marcar-ho tot com a llegit</string>
-    <string name="dialog_confirm_mark_all_as_read_message">Voleu marcar tots els missatges com a llegits?</string>
+    <string name="dialog_confirm_mark_all_as_read_message">Voleu marcar tots els missatges com a llegits\?</string>
     <string name="dialog_confirm_empty_trash_title">Confirmeu buidar la paperera</string>
-    <string name="dialog_confirm_empty_trash_message">Voleu buidar la carpeta de la paperera?</string>
+    <string name="dialog_confirm_empty_trash_message">Voleu buidar la carpeta de la paperera\?</string>
     <string name="dialog_confirm_mark_all_as_read_confirm_button">Sí</string>
     <string name="dialog_confirm_mark_all_as_read_cancel_button">No</string>
-    <string name="dialog_confirm_spam_title">Confirmeu moure\'l a la carpeta brossa</string>
+    <string name="dialog_confirm_spam_title">Confirmeu moure-ho a la carpeta brossa</string>
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Realment voleu moure aquest missatge a la carpeta brossa\?</item>
         <item quantity="other">Realment voleu moure <xliff:g id="message_count">%1$d</xliff:g> missatges a la carpeta brossa\?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Sí</string>
     <string name="dialog_confirm_spam_cancel_button">No</string>
-    <string name="dialog_attachment_progress_title">S\'està baixant l\'adjunt</string>
+    <string name="dialog_attachment_progress_title">S\'està descarregant l\'adjunt</string>
     <string name="settings_list_backup_category">Còpia de seguretat</string>
     <string name="settings_list_miscellaneous_category">Miscel·lània</string>
     <string name="settings_export_title">Exporta la configuració</string>
@@ -763,12 +765,11 @@
     <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
     <string name="settings_import_status_log_in_required">Cal iniciar la sessió</string>
     <string name="settings_import_status_not_imported">No importat</string>
-    <string name="settings_import_status_error">Fallada d\'importació</string>
+    <string name="settings_import_status_error">Ha fallat la importació</string>
     <string name="settings_import_later_button">Més tard</string>
-    <string name="settings_import">Importa la configuració</string>
     <string name="settings_importing">S\'està important la configuració…</string>
     <plurals name="settings_import_password_prompt">
-        <item quantity="one">Per poder usar el compte <xliff:g id="account">%s</xliff:g> heu de proporcionar la contrasenya del servidor.</item>
+        <item quantity="one">Per poder fer servir el compte <xliff:g id="account">%s</xliff:g> heu de proporcionar la contrasenya del servidor.</item>
         <item quantity="other">Per poder fer servir el compte <xliff:g id="account">%s</xliff:g> heu de proporcionar les contrasenyes del servidor.</item>
     </plurals>
     <string name="settings_import_incoming_server_password_hint">Contrasenya del servidor d\'entrada</string>
@@ -778,7 +779,7 @@
     <string name="unread_widget_select_account">Mostra el recompte de no llegits per a…</string>
     <string name="unread_widget_account_title">Compte</string>
     <string name="unread_widget_account_summary">El compte per al qual s\'ha de mostrar el nombre de missatges no llegits</string>
-    <string name="unread_widget_unified_inbox_account_summary">Bústia unificada</string>
+    <string name="unread_widget_unified_inbox_account_summary">Bústia d\'entrada unificada</string>
     <string name="unread_widget_folder_enabled_title">Compte de carpetes</string>
     <string name="unread_widget_folder_enabled_summary">Mostra el nombre de missatges no llegits de només una carpeta</string>
     <string name="unread_widget_folder_title">Carpeta</string>
@@ -797,11 +798,11 @@
     <string name="webview_contextmenu_image_title">Imatge</string>
     <string name="webview_contextmenu_image_view_action">Mostra la imatge</string>
     <string name="webview_contextmenu_image_save_action">Desa la imatge</string>
-    <string name="webview_contextmenu_image_download_action">Baixa la imatge</string>
+    <string name="webview_contextmenu_image_download_action">Descarrega la imatge</string>
     <string name="webview_contextmenu_image_copy_action">Copia l\'adreça de la imatge</string>
     <string name="webview_contextmenu_image_clipboard_label">Adreça de la imatge</string>
-    <string name="webview_contextmenu_phone_call_action">Marca aquest número</string>
-    <string name="webview_contextmenu_phone_save_action">Desa\'l a contactes</string>
+    <string name="webview_contextmenu_phone_call_action">Truca a aquest número</string>
+    <string name="webview_contextmenu_phone_save_action">Desa-ho a contactes</string>
     <string name="webview_contextmenu_phone_copy_action">Copia el número de telèfon</string>
     <string name="webview_contextmenu_phone_clipboard_label">Número de telèfon</string>
     <string name="webview_contextmenu_email_send_action">Envia un correu electrònic</string>
@@ -819,7 +820,7 @@
     <string name="account_settings_remote_search_num_label">Límit de resultats de la cerca del servidor</string>
     <string name="remote_search_sending_query">S\'està enviant la consulta al servidor</string>
     <plurals name="remote_search_downloading">
-        <item quantity="one">Recuperant %d resultat</item>
+        <item quantity="one">S\'està recuperant %d resultat</item>
         <item quantity="other">S\'estan recuperant %d resultats</item>
     </plurals>
     <plurals name="remote_search_downloading_limited">
@@ -833,7 +834,7 @@
     <string name="global_settings_background_as_unread_indicator_label">Canvia el color quan s\'hagi llegit</string>
     <string name="global_settings_background_as_unread_indicator_summary">Un fons diferent mostrarà que el missatge s\'ha llegit</string>
     <string name="global_settings_threaded_view_label">Vista de fil de discussió</string>
-    <string name="global_settings_threaded_view_summary">Recull els missatges del mateix fil de discussió</string>
+    <string name="global_settings_threaded_view_summary">Agrupa els missatges del mateix fil de discussió</string>
     <string name="upgrade_databases_title">Actualització de les bases de dades</string>
     <string name="upgrade_databases_unspecified">S\'estan actualitzant les bases de dades…</string>
     <string name="upgrade_database_format">S\'està actualitzant la base de dades del compte \"<xliff:g id="account">%s</xliff:g>\"</string>
@@ -841,7 +842,7 @@
     <string name="global_settings_splitview_always">Sempre</string>
     <string name="global_settings_splitview_never">Mai</string>
     <string name="global_settings_splitview_when_in_landscape">Només en mode horitzontal</string>
-    <string name="message_view_empty">Seleccioneu un misssatge a l\'esquerra</string>
+    <string name="message_view_empty">Seleccioneu un missatge a l\'esquerra</string>
     <string name="global_settings_show_contact_picture_label">Mostra les imatges dels contactes</string>
     <string name="global_settings_show_contact_picture_summary">Mostra les imatges dels contactes a la llista de missatges</string>
     <string name="mark_all_as_read">Marca\'ls tots com a llegits</string>
@@ -850,22 +851,20 @@
     <string name="global_settings_messageview_visible_refile_actions_title">Accions de missatge visibles</string>
     <string name="global_settings_messageview_visible_refile_actions_summary">Mostra les accions seleccionades al menú de vista de missatge</string>
     <string name="loading_attachment">S\'està carregant l\'adjunt…</string>
-    <string name="fetching_attachment_dialog_title_send">S\'està enviant el missatge</string>
-    <string name="fetching_attachment_dialog_title_save">S\'està desant l\'esborrany</string>
+    <string name="fetching_attachment_dialog_title_send">Enviament de missatges</string>
+    <string name="fetching_attachment_dialog_title_save">Desat d\'esborranys</string>
     <string name="fetching_attachment_dialog_message">S\'està recuperant l\'adjunt…</string>
     <string name="auth_external_error">No s\'ha pogut autenticar. El servidor no ha mostrat l\'opció SASL EXTERNAL. Això podria ser degut a un problema amb el certificat del client (caducat, o autoritat del certificat desconeguda) o algun altre problema de configuració.</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">Fes servir el certificat de client</string>
     <string name="client_certificate_spinner_empty">Sense certificat de client</string>
     <string name="client_certificate_spinner_delete">Elimina la selecció de certificat de client</string>
     <string name="client_certificate_retrieval_failure">No s\'ha pogut recuperar el certificat de client per a l\'àlies \"<xliff:g id="alias">%s</xliff:g>\"</string>
-    <string name="client_certificate_advanced_options">Opcions avançades</string>
     <string name="client_certificate_expired">El certificat de client \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" ha caducat o encara no és vàlid (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Encriptat*</string>
     <string name="add_from_contacts">Afegeix dels contactes</string>
     <string name="recipient_cc">A/c</string>
-    <string name="recipient_bcc">C/o</string>
+    <string name="recipient_bcc">CCo</string>
     <string name="recipient_to">A</string>
     <string name="recipient_from">De</string>
     <string name="reply_to_label">Respon a</string>
@@ -881,12 +880,13 @@
     <string name="error_crypto_provider_connect">No es pot connectar al proveïdor de criptografia, comproveu la configuració o cliqueu a la icona de criptografia per tornar-ho a provar!</string>
     <string name="error_crypto_provider_ui_required">Ha fallat iniciar l\'encriptació d\'extrem a extrem. Si us plau, comproveu-ne la configuració</string>
     <string name="error_crypto_inline_attach">El mode PGP/INLINE no admet adjunts!</string>
-    <string name="enable_inline_pgp">Habilita PGP/INLINE</string>
-    <string name="disable_inline_pgp">Inhabilita PGP/INLINE</string>
+    <string name="enable_inline_pgp">Activa PGP/INLINE</string>
+    <string name="disable_inline_pgp">Desactiva PGP/INLINE</string>
     <string name="enable_sign_only">Habilita PGP de només signar</string>
     <string name="disable_sign_only">Inhabilita PGP de només signar</string>
     <string name="openpgp_inline_title">Mode PGP/INLINE</string>
-    <string name="openpgp_inline_text">El missatge s\'envia en el format PGP/INLINE.\nAixò només s\'hauria de fer servir per a compatibilitat:</string>
+    <string name="openpgp_inline_text">El missatge s\'envia en format PGP/INLINE.
+\nAixò només s\'hauria de fer servir per compatibilitat:</string>
     <string name="openpgp_inline_plus_compat">Alguns clients només admeten aquest format</string>
     <string name="openpgp_inline_minus_transit">Les signatures es poden trencar durant el trànsit</string>
     <string name="openpgp_inline_minus_attach">Els adjunts no s\'admeten</string>
@@ -903,8 +903,8 @@
     <string name="openpgp_dialog_sign_only_minus_attach">Les signatures es poden mostrar com a adjunts \"signature.asc\" en alguns clients.</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">Els missatges encriptats sempre inclouen una signatura.</string>
     <string name="crypto_msg_title_plaintext">Text pla</string>
-    <string name="crypto_msg_unencrypted_sign_error">La signatura d\'extrem a extrem contenia un error</string>
-    <string name="crypto_msg_incomplete_signed">cal baixar completament el missatge per processar-ne la signatura</string>
+    <string name="crypto_msg_unencrypted_sign_error">la signatura d\'extrem a extrem contenia un error</string>
+    <string name="crypto_msg_incomplete_signed">cal descarregar completament el missatge per processar-ne la signatura</string>
     <string name="crypto_msg_unsupported_signed">conté una signatura d\'extrem a extrem no admesa</string>
     <string name="crypto_msg_unsupported_encrypted">El missatge està encriptat, però en un format no admès.</string>
     <string name="crypto_msg_cancelled">El missatge està encriptat, però se n\'ha cancel·lat la desencriptació.</string>
@@ -943,7 +943,7 @@
     <string name="message_progress_text">S\'està carregant…</string>
     <string name="messageview_decrypt_cancelled">S\'ha cancel·lat la desencriptació.</string>
     <string name="messageview_decrypt_retry">Torna-hi</string>
-    <string name="messageview_decrypt_incomplete">Cal baixar el missatge encriptat per desencriptar-lo.</string>
+    <string name="messageview_decrypt_incomplete">Cal descarregar el missatge encriptat per desencriptar-lo.</string>
     <string name="messageview_crypto_error_title">Error en desencriptar el correu</string>
     <string name="recipient_error_non_ascii">Els caràcters especials no s\'admeten actualment!</string>
     <string name="recipient_error_parse_failed">Error analitzant l\'adreça!</string>
@@ -953,7 +953,8 @@
     <string name="error_sign_only_no_encryption">Encriptació no disponible en mode de només signar!</string>
     <string name="unsigned_text_divider_label">Text no signat</string>
     <string name="crypto_no_provider_title">Aquest missatge està encriptat</string>
-    <string name="crypto_no_provider_message">Aquest missatge ha estat encriptat amb OpenPGP.\nPer llegir-lo, us caldrà instal·lar i configurar una aplicació d\'OpenPGP compatible.</string>
+    <string name="crypto_no_provider_message">Aquest missatge ha estat encriptat amb OpenPGP.
+\nPer llegir-lo, us caldrà instal·lar i configurar una aplicació d\'OpenPGP compatible.</string>
     <string name="crypto_no_provider_button">Ves a la configuració</string>
     <string name="mail_list_widget_text">Llista de missatges del K-9</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
@@ -971,11 +972,11 @@
     <string name="openpgp_enabled_error_back">Enrere</string>
     <string name="openpgp_enabled_error_disable">Inhabilita l\'encriptació</string>
     <string name="openpgp_encryption">Encriptació d\'OpenPGP</string>
-    <string name="account_settings_crypto_prefer_encrypt">Mode mutu d\'autoencriptació</string>
-    <string name="dialog_autocrypt_mutual_title">Mode mutu d\'autoencriptació</string>
-    <string name="dialog_autocrypt_mutual_description_1">Els missatges s\'encriptaran normalment per selecció o en respondre un missatge encriptat.</string>
-    <string name="dialog_autocrypt_mutual_description_2">Si tant el remitent com el destinatari habiliten el mode mutu, l\'encriptació s\'habilitarà per defecte.</string>
-    <string name="dialog_autocrypt_mutual_learn_more">Podeu <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">fer clic aquí</a> per saber-ne més.</string>
+    <string name="account_settings_crypto_prefer_encrypt">Mode mutu d\'auto-encriptació</string>
+    <string name="dialog_autocrypt_mutual_title">Mode mutu d\'auto-encriptació</string>
+    <string name="dialog_autocrypt_mutual_description_1">Els missatges s\'encriptaran normalment per selecció, o en respondre un missatge encriptat.</string>
+    <string name="dialog_autocrypt_mutual_description_2">Si tant el remitent com el destinatari activen el mode mutu, l\'encriptació s\'activarà per defecte.</string>
+    <string name="dialog_autocrypt_mutual_learn_more">Podeu <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">feu clic aquí</a> per saber-ne més.</string>
     <string name="general_settings_title">Configuració general</string>
     <string name="dialog_openkeychain_info_title">No hi ha cap aplicació OpenPGP instal·lada</string>
     <string name="dialog_openkeychain_info_install">Instal·la</string>
@@ -985,38 +986,33 @@
     <string name="account_settings_crypto_encrypt_subject_subtitle">Pot no ser admès per alguns destinataris</string>
     <string name="toast_account_not_found">Error intern: compte no vàlid!</string>
     <string name="toast_openpgp_provider_error">Error en connectar a %s!</string>
-    <string name="ac_transfer_setting_title">Envia un missatge de configuració d\'autoencriptació</string>
+    <string name="ac_transfer_setting_title">Envia un missatge de configuració d\'auto-encriptació</string>
     <string name="ac_transfer_setting_summary">Compartiu amb seguretat la configuració d\'extrem a extrem amb altres dispositius</string>
-    <string name="ac_transfer_title">Missatge de configuració d\'autoencriptació</string>
-    <string name="ac_transfer_intro">Un missatge de configuració d\'autoencriptació comparteix amb seguretat la configuració d\'extrem a extrem amb altres dispositius.</string>
+    <string name="ac_transfer_title">Missatge de configuració d\'auto-encriptació</string>
+    <string name="ac_transfer_intro">Un missatge de configuració d\'auto-encriptació comparteix amb seguretat la configuració d\'extrem a extrem amb altres dispositius.</string>
     <string name="ac_transfer_button_send">Envia un missatge de configuració</string>
     <string name="ac_transfer_will_be_sent">El missatge s\'enviarà a la vostra adreça:</string>
-    <string name="ac_transfer_generating">Es genera el missatge de configuració…</string>
+    <string name="ac_transfer_generating">S\'està generant el missatge de configuració…</string>
     <string name="ac_transfer_sending_to">S\'envia el missatge a:</string>
     <string name="ac_transfer_finish">Per acabar, obriu el missatge a l\'altre dispositiu i introduïu-hi el codi de configuració.</string>
     <string name="ac_transfer_show_code">Mostra el codi de configuració</string>
-    <string name="ac_transfer_msg_subject">Missatge de configuració d\'autoencriptació</string>
-    <string name="ac_transfer_msg_body">Aquest missatge conté tota la informació per transferir la configuració d\'autoencriptació i la vostra clau secreta amb seguretat des del dispositiu original.
-
-Per configurar el vostre dispositiu nou per a l\'autoencriptació, si us plau, seguiu les instruccions que es mostraran al dispositiu nou.
-
-Podeu desar aquest missatge i fer-lo servir com a còpia de seguretat per a la vostra clau secreta. Si ho voleu fer, hauríeu d\'anotar-vos la contrasenya i desar-la amb seguretat.
-</string>
+    <string name="ac_transfer_msg_subject">Missatge de configuració d\'auto-encriptació</string>
+    <string name="ac_transfer_msg_body">Aquest missatge conté tota la informació per transferir la configuració d\'auto-encriptació i la vostra clau secreta amb seguretat des del dispositiu original. Per configurar el vostre dispositiu nou per a l\'auto-encriptació, si us plau, seguiu les instruccions que es mostraran al dispositiu nou. Podeu desar aquest missatge i fer-lo servir com a còpia de seguretat per a la vostra clau secreta. Si ho voleu fer, hauríeu d\'anotar-vos la contrasenya i desar-la amb seguretat.</string>
     <string name="ac_transfer_error_send">Hi ha hagut un error mentre s\'enviava el missatge. Si us plau, comproveu la connexió de xarxa i la configuració del servidor de sortida.</string>
     <string name="switch_on">Actiu</string>
     <string name="switch_off">Inactiu</string>
     <!--permissions-->
     <string name="permission_contacts_rationale_title">Permet l\'accés als contactes</string>
     <string name="permission_contacts_rationale_message">Per poder proporcionar suggeriments de contactes i mostrar-ne els noms i fotografies, l\'aplicació necessita accés als vostres contactes.</string>
-    <string name="generic_loading_error">S\'ha produït un error en carregar les dades</string>
-    <string name="push_notification_state_initializing">S\'inicia…</string>
+    <string name="generic_loading_error">S\'ha produït un error mentre es carregaven les dades</string>
+    <string name="push_notification_state_initializing">S\'està iniciant…</string>
     <string name="push_notification_state_listening">S\'està esperant nous correus electrònics</string>
     <string name="push_notification_state_wait_background_sync">Inactiu fins que es permeti la sincronització</string>
     <string name="push_notification_state_wait_network">Inactiu fins que la xarxa estigui disponible</string>
     <string name="push_notification_info">Toca per obtenir més informació.</string>
     <string name="push_info_title">Informació de Tramesa</string>
     <string name="push_info_notification_explanation_text">Quan es fa servir Tramesa, K-9 Mail manté una connexió amb el servidor de correu. L\'Android requereix mostrar una notificació en curs mentre l’aplicació estigui activa en segon pla. %s</string>
-    <string name="push_info_configure_notification_text">Tot i això, l\'Android també us permet ocultar la notificació.</string>
+    <string name="push_info_configure_notification_text">Tot i això, l\'Android també us permet amagar la notificació.</string>
     <string name="push_info_learn_more_text">Apreneu-ne més</string>
     <string name="push_info_configure_notification_action">Configureu la notificació</string>
     <string name="push_info_disable_push_text">Si no necessiteu notificacions instantànies sobre missatges nous, haureu de desactivar Tramesa i utilitzar Sondeig. El sondeig comprova si hi ha correus nous a intervals regulars i no necessita la notificació.</string>
@@ -1036,7 +1032,7 @@ Podeu desar aquest missatge i fer-lo servir com a còpia de seguretat per a la v
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
     <string name="swipe_action_archive">Arxiva</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Elimina</string>
+    <string name="swipe_action_delete">Suprimeix</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
     <string name="swipe_action_spam">Correu brossa</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
@@ -1064,11 +1060,11 @@ Podeu desar aquest missatge i fer-lo servir com a còpia de seguretat per a la v
     <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
     <string name="message_details_bcc_section_title">C/o</string>
     <!--Displayed when loading the message details has failed-->
-    <string name="message_details_loading_error">S\'ha produït un error en carregar els detalls del missatge.</string>
+    <string name="message_details_loading_error">S\'ha produït un error mentre es carregaven els detalls del missatge.</string>
     <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
     <string name="action_add_to_contacts">Afegeix als contactes</string>
     <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-    <string name="action_compose_message_to">Escriure un missatge electrònic</string>
+    <string name="action_compose_message_to">Redacta un missatge a</string>
     <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
     <string name="action_copy_email_address">Copia l\'adreça de correu</string>
     <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
@@ -1078,12 +1074,12 @@ Podeu desar aquest missatge i fer-lo servir com a còpia de seguretat per a la v
     <!--A user visible label for the name and email address copied to the clipboard-->
     <string name="clipboard_label_name_and_email_address">Nom i adreça de correu</string>
     <!--Might be displayed in a notification when deleting an account (in the background)-->
-    <string name="background_work_notification_remove_account">Se suprimeix el compte…</string>
+    <string name="background_work_notification_remove_account">S\'està suprimint el compte…</string>
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="message_list_content_description_unread_prefix">sense llegir, %s</string>
     <string name="general_settings_post_remove_action_return_to_list">Torna a la llista de missatges</string>
     <string name="general_settings_post_remove_action_show_previous_message">Mostra el missatge anterior</string>
-    <string name="account_setup_check_settings_title">"  "</string>
+    <string name="account_setup_check_settings_title"> </string>
     <string name="general_settings_post_remove_action_show_next_message">Mostra el missatge següent</string>
     <string name="general_settings_post_remove_action_title">Després de suprimir o moure un missatge</string>
 </resources>

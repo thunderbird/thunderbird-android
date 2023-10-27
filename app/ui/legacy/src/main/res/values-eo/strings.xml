@@ -250,15 +250,12 @@
     <string name="quiet_time_starts">Silenta tempo ekas je</string>
     <string name="quiet_time_ends">Silenta tempo finiĝas je</string>
     <string name="account_setup_basics_title">Aldoni novan konton</string>
-    <string name="account_setup_basics_email_hint">Retpoŝtadreso</string>
-    <string name="account_setup_basics_password_hint">Pasvorto</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
     <string name="account_setup_basics_show_password_need_lock">Por vidigi vian pasvorton tie ĉi, aktivigu la ŝlos-ekranon ĉe via aparato.</string>
     <string name="account_setup_basics_show_password_biometrics_title">Verigi vian identigon</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Malŝlosu por vidi vian pasvorton</string>
-    <string name="account_setup_basics_manual_setup_action">Agordi permane</string>
     <string name="account_setup_check_settings_retr_info_msg">Elŝutado de informoj pri konto\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Kontrolado de agordoj de enira servilo\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Kontrolado de agordoj de elira servilo\u2026</string>
@@ -705,7 +702,6 @@
     <string name="settings_import_status_not_imported">Ne enportita</string>
     <string name="settings_import_status_error">Fiaskis enporti</string>
     <string name="settings_import_later_button">Poste</string>
-    <string name="settings_import">Enporti agordojn</string>
     <string name="settings_importing">Enportado de agordoj…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">Por uzi la konton “<xliff:g id="account">%s</xliff:g>” vi devas enigi pasvorton.</item>
@@ -795,11 +791,9 @@
     <string name="fetching_attachment_dialog_message">Elŝutado de kunsendaĵo…</string>
     <string name="auth_external_error">Ne povas aŭtentigi. La servilo ne anoncas eblon SASL EXTERNAL. Tio ĉi povas esti kaŭzita pro problemo kun klienta atestilo (senvalidiĝo, nekonata atestila aŭtoritato) aŭ ia alia misagordo.</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">Uzi klientan atestilon</string>
     <string name="client_certificate_spinner_empty">Neniu klienta atestilo</string>
     <string name="client_certificate_spinner_delete">Forviŝi elekton de klienta atestilo</string>
     <string name="client_certificate_retrieval_failure">Fiaskis elŝuti klientan atestilon por kromnomo \"<xliff:g id="alias">%s</xliff:g>\"</string>
-    <string name="client_certificate_advanced_options">Spertaj agordoj</string>
     <string name="client_certificate_expired">Klienta atestilo \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" senvalidiĝis aŭ ne estas ankoraŭ valida (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Ĉifrita*</string>

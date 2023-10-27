@@ -273,8 +273,6 @@
     <string name="quiet_time_starts">啟動靜音</string>
     <string name="quiet_time_ends">結束靜音</string>
     <string name="account_setup_basics_title">設定新帳號</string>
-    <string name="account_setup_basics_email_hint">電子郵件地址</string>
-    <string name="account_setup_basics_password_hint">密碼</string>
     <string name="account_setup_oauth_description">如要透過 K-9 Mail 使用這個電子郵件帳戶，您需要登入並授權應用程式取用您的電子郵件。</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in">登入</string>
@@ -284,7 +282,6 @@
     <string name="account_setup_basics_show_password_need_lock">要在這查看你的密碼請為這個裝置啟用螢幕上鎖。</string>
     <string name="account_setup_basics_show_password_biometrics_title">驗證你的身份</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">解所來查看你的密碼</string>
-    <string name="account_setup_basics_manual_setup_action">手動設定</string>
     <string name="account_setup_check_settings_retr_info_msg">正在汲取帳號訊息…</string>
     <string name="account_setup_check_settings_check_incoming_msg">正在檢查內送伺服器設定…</string>
     <string name="account_setup_check_settings_check_outgoing_msg">正在檢查外寄伺服器設定…</string>
@@ -759,7 +756,6 @@
     <string name="settings_import_status_not_imported">沒有匯入</string>
     <string name="settings_import_status_error">匯入失敗</string>
     <string name="settings_import_later_button">之後</string>
-    <string name="settings_import">匯入設定</string>
     <string name="settings_importing">正在匯入設定…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="other">您需要提供伺服器密碼才能夠使用帳號「<xliff:g id="account">%s</xliff:g>」</item>
@@ -846,11 +842,9 @@
     <string name="fetching_attachment_dialog_message">正在接收附件…</string>
     <string name="auth_external_error">無法認證。伺服器未公告 SASL EXTERNAL 的構架 。可能是由於伺服器憑證有問題（已過期，或者未知的認證機構），或者是由於其他的配置問題。</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">使用客戶端憑證</string>
     <string name="client_certificate_spinner_empty">無客戶端憑證</string>
     <string name="client_certificate_spinner_delete">移除客戶端憑證選擇</string>
     <string name="client_certificate_retrieval_failure">無法取得別名「<xliff:g id="alias">%s</xliff:g>」的客戶端憑證</string>
-    <string name="client_certificate_advanced_options">進階選項</string>
     <string name="client_certificate_expired">客戶端憑證 \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" 已經過期，或者尚未開始生效。(<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*已加密*</string>

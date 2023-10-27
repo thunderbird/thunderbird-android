@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_options_account_name_error_blank">Název účtu nemůže být prázdný.</string>
+    <string name="account_setup_options_account_check_frequency_label">Frekvence kontroly</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Konfigurovat automaticky</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Tato konfigurace není důvěryhodná</string>
+    <string name="account_setup_button_finish">Dokončit</string>
+    <string name="account_setup_options_email_signature_label">E-mailový podpis</string>
+    <string name="account_setup_options_email_display_count_label">Počet zobrazených zpráv</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Konfigurovat ručně</string>
+    <string name="account_setup_options_email_signature_error_blank">Název e-mailového podpisu nemůže být prázdný.</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Je potřeba konfiguraci schválit.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Získali jsme konfiguraci pro váš e-mailový server prostřednictvím spojení, které není tak zabezpečené, jak bychom si přáli. Existuje malá pravděpodobnost, že někdo ji změnil. Můžete prosím zkontrolovat, zda je nabízená konfigurace taková, jaká má být\?</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Upravit konfiguraci</string>
+    <string name="account_setup_error_unknown">Neznámá chyba</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Konfigurace nenalezena</string>
+    <string name="account_setup_options_top_bar_title">Možnosti účtu</string>
+    <string name="account_setup_options_account_name_label">Název účtu</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Konfigurace nalezena</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">E-mailová adresa je vyžadována.</string>
+    <string name="account_setup_options_display_name_label">Zobrazené jméno</string>
+    <string name="account_setup_auto_discovery_loading_error">E-mailovou konfiguraci se nepodařilo nahrát</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Důvěřuji této konfiguraci</string>
+    <string name="account_setup_options_display_name_error_required">Zobrazené jméno je vyžadováno.</string>
+    <string name="account_setup_error_network">Síť</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">E-mailová adresa je neplatná.</string>
+    <string name="account_setup_options_email_check_frequency_never">Nikdy</string>
+    <string name="account_setup_auto_discovery_loading_message">Zjišťování podrobností o e-mailu</string>
+    <string name="account_setup_options_section_sync_options_">Možnosti synchronizace</string>
+    <string name="account_setup_options_show_notifications_label">Zobrazovat upozornění</string>
+    <string name="account_setup_options_section_display_options">Možnosti zobrazení</string>
+    <string name="account_setup_title">K-9 Mail</string>
+</resources>

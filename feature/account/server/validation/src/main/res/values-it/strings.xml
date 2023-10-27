@@ -1,2 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_incoming_loading_message">Controllo impostazioni server posta in entrata…</string>
+    <string name="account_server_validation_error_authentication">Errore di autenticazione</string>
+    <string name="account_server_validation_error_certificate">Errore del certificato</string>
+    <string name="account_server_validation_outgoing_loading_message">Controllo impostazioni server in uscita…</string>
+    <string name="account_server_validation_error_network">Errore di rete</string>
+    <string name="account_server_validation_outgoing_success">impostazioni server in uscita valide!</string>
+    <string name="account_server_validation_error_unknown">Errore sconosciuto</string>
+    <string name="account_server_validation_sign_in">Accedi</string>
+    <string name="account_server_validation_outgoing_loading_error">Controllo impostazioni server in uscita non riuscito!</string>
+    <string name="account_server_validation_incoming_success">Impostazioni server in entrata valide!</string>
+    <string name="account_server_validation_incoming_loading_error">Controllo impostazioni server in entrata non riuscito!</string>
+    <string name="account_server_validation_error_server">Errore del server</string>
+</resources>

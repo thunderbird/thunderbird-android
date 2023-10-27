@@ -51,7 +51,7 @@
     <string name="okay_action">OK</string>
     <string name="cancel_action">Annulearje</string>
     <string name="send_action">Ferstjoere</string>
-    <string name="empty_subject">Der is gjin ûnderwerp ynfierd. Tik nochris om dochs te ferstjoeren.</string>
+    <string name="empty_subject">Der is gjin ûnderwerp ynfierd. Tik nochris om dochs te ferstjoeren</string>
     <string name="reply_action">Beäntwurdzje</string>
     <string name="reply_all_action">Allen beäntwurdzje</string>
     <string name="delete_action">Fuortsmite</string>
@@ -108,7 +108,7 @@
     <string name="general_no_subject">(Gjin ûnderwerp)</string>
     <string name="general_no_sender">Gjin ôfstjoerder</string>
     <string name="status_loading_more">Berjochten oan it laden\u2026</string>
-    <string name="status_network_error">Netwurkflater</string>
+    <string name="status_network_error">Ferbiningsflater</string>
     <string name="status_invalid_id_error">Berjocht net fûn</string>
     <string name="status_loading_error">Berjocht lade is mislearre</string>
     <string name="load_more_messages_fmt">Folgjende <xliff:g id="messages_to_load">%d</xliff:g> berjochten</string>
@@ -159,7 +159,7 @@
     <string name="debug_enable_debug_logging_title">Debuglochboek tastean</string>
     <string name="debug_enable_debug_logging_summary">Ekstra diagnostyske ynformaasje logge</string>
     <string name="debug_enable_sensitive_logging_title">Gefoelige ynformaasje logge</string>
-    <string name="debug_enable_sensitive_logging_summary">Kin wachtwurden yn lochboeken toane</string>
+    <string name="debug_enable_sensitive_logging_summary">Kin wachtwurden yn lochboeken toane.</string>
     <string name="debug_export_logs_title">Lochboeken eksportearje</string>
     <string name="debug_export_logs_success">Eksportearjen is slagge. Der sit mooglik persoanlike ynformaasje yn de lochboeken. Kies ferstannich nei wa’t jo jo lochboeken stjoere.</string>
     <string name="debug_export_logs_failure">Eksportearjen is mislearre.</string>
@@ -275,8 +275,6 @@
     <string name="quiet_time_starts">Stilteperioade start</string>
     <string name="quiet_time_ends">Stilteperioade einiget</string>
     <string name="account_setup_basics_title">In nij account ynstelle</string>
-    <string name="account_setup_basics_email_hint">E-mailadres</string>
-    <string name="account_setup_basics_password_hint">Wachtwurd</string>
     <string name="account_setup_oauth_description">Om mei K-9 Mail dit e-mailaccount te brûken moatte jo jo oanmelde om de app tagong te jaan ta jo e-mailberjochten.</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in">Oanmelde</string>
@@ -286,7 +284,6 @@
     <string name="account_setup_basics_show_password_need_lock">Skeakelje op dit apparaat in skermbeskoatteling yn om hjir jo wachtwurd sjen te kinnen.</string>
     <string name="account_setup_basics_show_password_biometrics_title">Jo identiteit ferifiearje</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Untskoattelje om jo wachtwurd te sjen</string>
-    <string name="account_setup_basics_manual_setup_action">Hânmjittich ynstelle</string>
     <string name="account_setup_check_settings_retr_info_msg">Accountynformaasje ophelje\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Kontrôle fan ynstellingen ynkommende server\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Kontrôle fan ynstellingen útgeande server\u2026</string>
@@ -338,7 +335,7 @@
     <string name="account_setup_outgoing_smtp_server_label">SMTP-server</string>
     <string name="account_setup_outgoing_port_label">Poarte</string>
     <string name="account_setup_outgoing_security_label">Befeiligingstype</string>
-    <string name="account_setup_outgoing_require_login_label">Oanmelden fereaske</string>
+    <string name="account_setup_outgoing_require_login_label">Oanmelden fereaske.</string>
     <string name="account_setup_outgoing_username_label">Brûkersnamme</string>
     <string name="account_setup_outgoing_password_label">Wachtwurd</string>
     <string name="account_setup_outgoing_authentication_label">Autentikaasjetype</string>
@@ -398,13 +395,13 @@
     <string name="account_settings_notify_sync_label">Syngronisaasjemeldingen</string>
     <string name="account_settings_email_label">Jo e-mailadres</string>
     <string name="account_settings_notify_summary">Melding yn steatbalke by in nij e-mailberjocht</string>
-    <string name="account_settings_notify_sync_summary">Yn steatbalke melding werjaan wannear’t op nije e-mailberjochten kontrolearre wurdt.</string>
+    <string name="account_settings_notify_sync_summary">Yn steatbalke melding werjaan wannear’t op nije e-mailberjochten kontrolearre wurdt</string>
     <string name="account_settings_notify_self_label">By eigen berjochten</string>
-    <string name="account_settings_notify_self_summary">Melding ek foar e-mailberjocht ferstjoerd fan in identiteit ôf.</string>
+    <string name="account_settings_notify_self_summary">Melding ek foar e-mailberjocht ferstjoerd fan in identiteit ôf</string>
     <string name="account_notify_contacts_mail_only_label">Allinnich kontakten</string>
-    <string name="account_notify_contacts_mail_only_summary">Meldingen allinnich werjaan foar bekende kontakten.</string>
+    <string name="account_notify_contacts_mail_only_summary">Meldingen allinnich werjaan foar bekende kontakten</string>
     <string name="account_settings_ignore_chat_messages_label">Petearberjochten negearje</string>
-    <string name="account_settings_ignore_chat_messages_summary">Gjin meldingen toane foar berjochten dy’t ûnderdiel binne fan in e-mailpetear.</string>
+    <string name="account_settings_ignore_chat_messages_summary">Gjin meldingen toane foar berjochten dy’t ûnderdiel binne fan in e-mailpetear</string>
     <string name="account_settings_mark_message_as_read_on_view_label">As lêzen markearje nei iepenjen</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">As lêzen markearje wannear besjoen</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">As lêzen markearje by wiskjen</string>
@@ -422,19 +419,19 @@
     <string name="account_settings_reply_after_quote_label">Beäntwurdzje nei sitaat</string>
     <string name="account_settings_reply_after_quote_summary">Wannear’t jo in berjocht beäntwurdzje , sil it orizjinele berjocht boppe jo antwurd stean.</string>
     <string name="account_settings_strip_signature_label">Hantekening by reaksje fuortsmite</string>
-    <string name="account_settings_strip_signature_summary">Hantekeningen wurde by sitearre berjochten fuortsmiten.</string>
+    <string name="account_settings_strip_signature_summary">Hantekeningen wurde by sitearre berjochten fuortsmiten</string>
     <string name="account_settings_message_format_label">Berjochtopmaak</string>
     <string name="account_settings_message_format_text">Platte tekst (ôfbyldingen en opmaak wurde fuortsmiten)</string>
     <string name="account_settings_message_format_html">HTML (ôfbyldingen en opmaak bliuwe behâlden)</string>
     <string name="account_settings_message_format_auto">Automatysk</string>
     <string name="account_settings_always_show_cc_bcc_label">Cc/Bcc altyd toane</string>
     <string name="account_settings_message_read_receipt_label">Untfangstbefêstiging</string>
-    <string name="account_settings_message_read_receipt_summary">Altyd in ûntfangstbefêstiging freegje.</string>
+    <string name="account_settings_message_read_receipt_summary">Altyd in ûntfangstbefêstiging freegje</string>
     <string name="account_settings_quote_style_label">Sitaatstyl by beäntwurdzjen</string>
     <string name="account_settings_quote_style_prefix">Prefix (lykas Gmail, Pine)</string>
     <string name="account_settings_quote_style_header">Kop (lykas Outlook)</string>
     <string name="account_settings_upload_sent_messages_label">Ferstjoerde berjochten oplade</string>
-    <string name="account_settings_upload_sent_messages_summary">Berjochten nei ferstjoeren nei ‘Ferstjoerd’-map oplade.</string>
+    <string name="account_settings_upload_sent_messages_summary">Berjochten nei ferstjoeren nei de map ‘Ferstjoerd’ oplade</string>
     <string name="account_settings_general_title">Algemiene ynstellingen</string>
     <string name="account_settings_reading_mail">Berjochten lêze</string>
     <string name="account_settings_sync">Berjochten ophelje</string>
@@ -447,7 +444,7 @@
     <string name="account_settings_crypto_summary_off">Gjin OpenPGP-app ynsteld</string>
     <string name="account_settings_crypto_summary_on">Ferbûn mei %s</string>
     <string name="account_settings_crypto_summary_config">Konfiguraasje dwaande…</string>
-    <string name="account_settings_crypto_encrypt_all_drafts">Alle konsepten fersifere bewarje.</string>
+    <string name="account_settings_crypto_encrypt_all_drafts">Alle konsepten fersifere bewarje</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">Alle konsepten sille fersifere bewarre wurde</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Konsepten allinnich fersiferje as fersifering ynskeakele is</string>
     <string name="account_settings_mail_check_frequency_label">Frekwinsje mapkontrôle</string>
@@ -538,7 +535,7 @@
     <string name="account_settings_description_label">Accountnamme</string>
     <string name="account_settings_name_label">Jo namme</string>
     <string name="notifications_title">Meldingen</string>
-    <string name="account_settings_vibration">Trille</string>
+    <string name="account_settings_vibration">Trilling</string>
     <string name="account_settings_vibrate_enable">Trille</string>
     <string name="account_settings_vibrate_pattern_label">Trilpatroan</string>
     <string name="account_settings_vibrate_pattern_default">Standert</string>
@@ -619,7 +616,7 @@
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Kaai akseptearje</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Kaai wegerje</string>
     <string name="folder_list_filter_hint">Mapnamme befettet</string>
-    <string name="folder_list_display_mode_label">Mappen</string>
+    <string name="folder_list_display_mode_label">Mappen toane…</string>
     <string name="folder_list_display_mode_all">Alle mappen</string>
     <string name="folder_list_display_mode_first_class">1e-klassemappen</string>
     <string name="folder_list_display_mode_first_and_second_class">1e- &amp; 2e-klassemappen</string>
@@ -709,7 +706,7 @@
     <string name="save_or_discard_draft_message_instructions_fmt">Dit berjocht bewarje of ferwerpe?</string>
     <string name="save_or_discard_draft_message_changes">Wizigingen bewarje of ferwerpe?</string>
     <string name="confirm_discard_draft_message_title">Berjocht ôfbrekke?</string>
-    <string name="confirm_discard_draft_message">Binne jo wis dat jo dit berjocht fuortsmite wolle</string>
+    <string name="confirm_discard_draft_message">Binne jo wis dat jo dit berjocht fuortsmite wolle\?</string>
     <string name="dialog_confirm_clear_local_folder_title">Lokale berjochten wiskje?</string>
     <string name="dialog_confirm_clear_local_folder_message">Dit sil alle lokale berjochten út dizze map wiskje. Der wurde gjin berjochten fan de server wiske.</string>
     <string name="dialog_confirm_clear_local_folder_action">Berjochten wiskje</string>
@@ -763,7 +760,6 @@
     <string name="settings_import_status_not_imported">Net ymportearre</string>
     <string name="settings_import_status_error">Ymportearjen mislearre</string>
     <string name="settings_import_later_button">Letter</string>
-    <string name="settings_import">Ymportynstellingen</string>
     <string name="settings_importing">Ynstellingen ymportearje…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">Om de account ‘<xliff:g id="account">%s</xliff:g>’ te brûken moatte jo it wachtwurd fan de server opjaan.</item>
@@ -853,11 +849,9 @@
     <string name="fetching_attachment_dialog_message">Bylage oan it opheljen…</string>
     <string name="auth_external_error">Kin net autentisearje. De server stipet gjin SASL EXTERNAL. Dit kin komme troch in probleem mei it clientsertifikaat (ferrûn of ûnbekende CA) of in oar konfiguraasjeprobleem.</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">Clientsertifikaat brûke</string>
     <string name="client_certificate_spinner_empty">Gjin clientsertifikaat</string>
     <string name="client_certificate_spinner_delete">Clientsertifikaatseleksje fuortsmite</string>
     <string name="client_certificate_retrieval_failure">Clientsertifikaat net ûntfongen foar alias \‘<xliff:g id="alias">%s</xliff:g>\’</string>
-    <string name="client_certificate_advanced_options">Avansearre opsjes</string>
     <string name="client_certificate_expired">Clientsertifikaat \‘<xliff:g id="certificate_alias">%1$s</xliff:g>\’ is ferrûn of net jildich (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Fersifere*</string>
@@ -876,7 +870,7 @@
     <string name="compose_error_no_draft_folder">Gjin konseptemap ynsteld foar dizze account!</string>
     <string name="compose_error_no_key_configured">Gjin kaai ynsteld foar dizze account! Kontrolearje jo ynstellingen.</string>
     <string name="error_crypto_provider_incompatible">Cryptoprovider brûkt ynkompatibele ferzje. Kontrolearje jo ynstellingen!</string>
-    <string name="error_crypto_provider_connect">Kin gjin ferbining meitsje mei de cryptoprovider. Kontrolearje de ynstellingen of klik op it cryptopiktogram om nochris te probearjen.</string>
+    <string name="error_crypto_provider_connect">Kin gjin ferbining meitsje mei de cryptoprovider. Kontrolearje de ynstellingen of klik op it cryptopiktogram om nochris te probearjen!</string>
     <string name="error_crypto_provider_ui_required">Inisjalisaasje fan ein-ta-einfersifering is mislearre, kontrolearje de ynstellingen</string>
     <string name="error_crypto_inline_attach">PGP/MIME-ynstelling stipet gjin bylagen!</string>
     <string name="enable_inline_pgp">PGP/INLINE tastean</string>
@@ -897,8 +891,8 @@
     <string name="openpgp_dialog_sign_only_title">allinnich PGP-hantekeningmodus</string>
     <string name="openpgp_dialog_sign_only_text">Yn dizze modus wurdt dyn PGP-kaai brûkt foar in kryptografyske hantekening of in net-kodearre e-mailberjocht.</string>
     <string name="openpgp_dialog_sign_only_plus_verified">Dit fersiferet net it e-mailberjocht, mar kontrolearret dat jo eigen kaai brûkt is.</string>
-    <string name="openpgp_dialog_sign_only_minus_break">Hantekeningen kinne by ferstjoeren nei mailinglist brekke</string>
-    <string name="openpgp_dialog_sign_only_minus_attach">Hantekeningen kinne by guon programma’s as ‘signature.asc’-bylage werjûn wurde</string>
+    <string name="openpgp_dialog_sign_only_minus_break">Hantekeningen kinne by ferstjoeren nei mailinglist brekke.</string>
+    <string name="openpgp_dialog_sign_only_minus_attach">Hantekeningen kinne by guon programma’s as ‘signature.asc’-bylage werjûn wurde.</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">Fersifere berjochten befetsje altyd in hantekening.</string>
     <string name="crypto_msg_title_plaintext">Platte tekst</string>
     <string name="crypto_msg_unencrypted_sign_error">ein-ta-einhantekening befettet in flater</string>
@@ -939,7 +933,7 @@
     <string name="locked_attach_unencrypted">Dit ûnderdiel is net fersifere en is miskien net feilich.</string>
     <string name="locked_attach_title">Unbefeilige bylage</string>
     <string name="message_progress_text">Lade…</string>
-    <string name="messageview_decrypt_cancelled">Untsifering is stoppe</string>
+    <string name="messageview_decrypt_cancelled">Untsifering is stoppe.</string>
     <string name="messageview_decrypt_retry">Opnij</string>
     <string name="messageview_decrypt_incomplete">Fersifere berjocht moat download wêze foar ûntsifering.</string>
     <string name="messageview_crypto_error_title">Flater wylst ûntsiferjen e-mailberjocht</string>
@@ -1001,7 +995,7 @@ Folgje de ynstruksjes op jo nije apparaat om dêrop Autocrypt yn te stellen.
 Jo kinne dit berjocht bewarje as reservekopy foar jo geheime kaai. As jo dit dwaan wolle, skriuw dan it wachtwurd op en bewarje it op in feilich plak.
 </string>
     <string name="ac_transfer_error_send">Der is in flater bard wylst it ferstjoeren fan it berjocht. Kontrolearje de netwurkferbining en útgeande-serverkonfiguraasje.</string>
-    <string name="switch_on">Oan</string>
+    <string name="switch_on">Op</string>
     <string name="switch_off">Ut</string>
     <!--permissions-->
     <string name="permission_contacts_rationale_title">Tagong ta kontakten tastean</string>
@@ -1079,4 +1073,8 @@ Jo kinne dit berjocht bewarje as reservekopy foar jo geheime kaai. As jo dit dwa
     <string name="background_work_notification_remove_account">Account fuortsmite…</string>
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="message_list_content_description_unread_prefix">net lêzen, %s</string>
+    <string name="general_settings_post_remove_action_return_to_list">Tebek nei berjochtelist</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Foarige berjocht toane</string>
+    <string name="general_settings_post_remove_action_show_next_message">Folgjende berjocht toane</string>
+    <string name="general_settings_post_remove_action_title">Nei it fuortsmiten of ferpleatsen fan in berjocht</string>
 </resources>

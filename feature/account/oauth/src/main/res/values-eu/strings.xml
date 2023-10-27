@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_oauth_sign_in_with_google_button">Googlerekin saioa hasi</string>
+    <string name="account_oauth_loading_error">Akatsa OAuth bidez saioa hasterakoan</string>
+    <string name="account_oauth_error_failed">Baimentzerakoan akatsa honako errorearekin: <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_error_browser_not_available">Aplikazioak ezin izan du aurkitu zure kontura sartzeko erabili beharreko nabigatzailerik.</string>
+    <string name="account_oauth_error_not_supported">OAuth 2.0 ez du onartzen hornitzaile honek.</string>
+    <string name="account_oauth_error_canceled">Baimentzea ezeztatuta</string>
+    <string name="account_oauth_loading_message">Saioa hasi OAuth erabiliaz</string>
+    <string name="account_oauth_sign_in_description">Posta elektronikoaren hornitzailearenera bidaliko zaitugu saioa hasteko. Aplikazioari sarbidea baimendu behar diozu zure e-mail kontuan.</string>
+    <string name="account_oauth_sign_in_button">Saioa hasi</string>
+</resources>

@@ -244,12 +244,9 @@
     <string name="quiet_time_starts">Čas ticha začína o</string>
     <string name="quiet_time_ends">Čas ticha končí o</string>
     <string name="account_setup_basics_title">Nastaviť nový účet</string>
-    <string name="account_setup_basics_email_hint">E-mailová adresa</string>
-    <string name="account_setup_basics_password_hint">Heslo</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-    <string name="account_setup_basics_manual_setup_action">Ručné nastavenie</string>
     <string name="account_setup_check_settings_retr_info_msg">Načítavanie informácií o účte\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Kontrola nastavení servera prichádzajúcej pošty\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Kontrola nastavení servera odchádzajúcej pošty\u2026</string>
@@ -692,7 +689,6 @@
     <string name="settings_import_status_not_imported">Nenaimportované</string>
     <string name="settings_import_status_error">Zlyhanie pri importe</string>
     <string name="settings_import_later_button">Neskôr</string>
-    <string name="settings_import">Importovať nastavenia</string>
     <string name="settings_importing">Importovanie nastavení…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">Pred používaním účtu \"<xliff:g id="account">%s</xliff:g>\"  je potrebné zadať heslo na server.</item>
@@ -771,11 +767,9 @@
     <string name="fetching_attachment_dialog_message">Sťahujem prílohu…</string>
     <string name="auth_external_error">Nie je možné overiť. Server nenaznačil schopnosť SASL EXTERNAL. To sa mohlo stať kvôli problému s klientským certifikátom (vypršal, neznáma certifikačná autorita), alebo kvôli nejakému inému problému konfigurácie.</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">Použiť klientsky certifikát</string>
     <string name="client_certificate_spinner_empty">Žiadny klientsky certifikát</string>
     <string name="client_certificate_spinner_delete">Odstrániť výber klientskeho certifikátu</string>
     <string name="client_certificate_retrieval_failure">Nepodarilo sa získať klientsky certifikát pre identitu \"<xliff:g id="alias">%s</xliff:g>\"</string>
-    <string name="client_certificate_advanced_options">Pokročilé možnosti</string>
     <string name="client_certificate_expired">Klientsky certifikát \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" vypršal alebo nie je zatiaľ platný (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Šifrované*</string>

@@ -280,8 +280,6 @@
     <string name="quiet_time_starts">Początek okresu ciszy</string>
     <string name="quiet_time_ends">Koniec okresu ciszy</string>
     <string name="account_setup_basics_title">Dodaj konto</string>
-    <string name="account_setup_basics_email_hint">Adres e-mail</string>
-    <string name="account_setup_basics_password_hint">Hasło</string>
     <string name="account_setup_oauth_description">Aby używać tego konta e-mail z K-9 Mail, musisz się zalogować i przyznać aplikacji dostęp do swoich e-maili.</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in">Zaloguj się</string>
@@ -291,10 +289,9 @@
     <string name="account_setup_basics_show_password_need_lock">Aby zobaczyć tutaj swoje hasło, ustaw blokadę ekranu na tym urządzeniu.</string>
     <string name="account_setup_basics_show_password_biometrics_title">Zweryfikuj swoją tożsamość</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Odblokuj, aby zobaczyć swoje hasło</string>
-    <string name="account_setup_basics_manual_setup_action">Ustaw ręcznie</string>
     <string name="account_setup_check_settings_retr_info_msg">Pobieram informacje…</string>
-    <string name="account_setup_check_settings_check_incoming_msg">Sprawdzam ustawienia serwera…</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">Sprawdzam ustawienia serwera…</string>
+    <string name="account_setup_check_settings_check_incoming_msg">Sprawdzanie ustawień serwera poczty przychodzącej…</string>
+    <string name="account_setup_check_settings_check_outgoing_msg">Sprawdzanie ustawień serwera poczty wychodzącej…</string>
     <string name="account_setup_check_settings_authenticate">Uwierzytelnianie…</string>
     <string name="account_setup_check_settings_fetch">Pobieram ustawienia konta…</string>
     <string name="account_setup_check_settings_canceling_msg">Anulowanie…</string>
@@ -307,7 +304,7 @@
     <string name="account_setup_auth_type_encrypted_password">Zaszyfrowane hasło</string>
     <string name="account_setup_auth_type_tls_client_certificate">Certyfikat klienta</string>
     <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
-    <string name="account_setup_incoming_title">Serwer poczty przychodzącej</string>
+    <string name="account_setup_incoming_title">Ustawienia serwera poczty przychodzącej</string>
     <string name="account_setup_incoming_username_label">Identyfikator</string>
     <string name="account_setup_incoming_password_label">Hasło</string>
     <string name="account_setup_incoming_client_certificate_label">Certyfikat klienta</string>
@@ -339,7 +336,7 @@
     <string name="spam_folder_label">Spam</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Pokaż tylko subskrybowane foldery</string>
     <string name="account_setup_auto_expand_folder">Zawsze rozwijaj folder</string>
-    <string name="account_setup_outgoing_title">Ustawienia poczty wychodzącej</string>
+    <string name="account_setup_outgoing_title">Ustawienia serwera poczty wychodzącej</string>
     <string name="account_setup_outgoing_smtp_server_label">Serwer SMTP</string>
     <string name="account_setup_outgoing_port_label">Port</string>
     <string name="account_setup_outgoing_security_label">Typ zabezpieczeń</string>
@@ -536,9 +533,9 @@
     <string name="folder_settings_folder_notify_mode_second_class">Klasa 2</string>
     <string name="folder_settings_folder_notify_mode_inherited">Taka jak klasa push</string>
     <string name="folder_settings_clear_local_folder_action">Wyczyść wiadomości lokalne</string>
-    <string name="account_settings_incoming_label">Poczta przychodząca</string>
+    <string name="account_settings_incoming_label">Serwer poczty przychodzącej</string>
     <string name="account_settings_incoming_summary">Ustawienia serwera poczty przychodzącej</string>
-    <string name="account_settings_outgoing_label">Poczta wychodząca</string>
+    <string name="account_settings_outgoing_label">Serwer poczty wychodzącej</string>
     <string name="account_settings_outgoing_summary">Ustawienia serwera poczty wychodzącej (SMTP)</string>
     <string name="account_settings_description_label">Nazwa konta</string>
     <string name="account_settings_name_label">Twoje imię i nazwisko</string>
@@ -772,7 +769,6 @@
     <string name="settings_import_status_not_imported">Niezaimportowane</string>
     <string name="settings_import_status_error">Import zakończony niepowodzeniem</string>
     <string name="settings_import_later_button">Później</string>
-    <string name="settings_import">Importuj ustawienia</string>
     <string name="settings_importing">Importowanie ustawień…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">Aby móc skorzystać z konta \"<xliff:g id="account">%s</xliff:g>\", trzeba podać hasło.</item>
@@ -782,7 +778,7 @@
     </plurals>
     <string name="settings_import_incoming_server_password_hint">Hasło serwera poczty przychodzącej</string>
     <string name="settings_import_outgoing_server_password_hint">Hasło serwera poczty wychodzącej</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Użyj tego samego hasła dla poczty wychodzącej</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Użyj tego samego hasła dla serwera poczty wychodzącej</string>
     <string name="server_name_format">Nazwa serwera: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="unread_widget_select_account">Pokaż licznik nieprzeczytanych dla…</string>
     <string name="unread_widget_account_title">Konto</string>
@@ -868,11 +864,9 @@
     <string name="fetching_attachment_dialog_message">Pobieranie załącznika…</string>
     <string name="auth_external_error">Nie można uwierzytelnić. Serwer nie ogłasza zdolności SASL EXTERNAL. Przyczyną może być problem z certyfikatem klienta (wygasł, nieznane CA) lub jakiś inny problem z konfiguracją.</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">Użyj certyfikatu klienta</string>
     <string name="client_certificate_spinner_empty">Brak certyfikatu klienta</string>
     <string name="client_certificate_spinner_delete">Usuń wybór certyfikatu klienta</string>
     <string name="client_certificate_retrieval_failure">Nieudane pobranie certyfikatu klienta dla aliasu \"<xliff:g id="alias">%s</xliff:g>\"</string>
-    <string name="client_certificate_advanced_options">Zaawansowane ustawienia</string>
     <string name="client_certificate_expired">Certyfikat klienta \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" wygasł lub nie jest jeszcze ważny (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Zaszyfrowane*</string>
@@ -1015,7 +1009,7 @@ Aby skonfigurować Autocrypt na nowym urządzeniu, należy podążać za wyświe
 
 Tą wiadomość można zachować i użyć w formie kopii zapasowej twojego klucza prywatnego, aby to uczynić należy zachować hasło i przechowywać je w bezpiecznym miejscu.
 </string>
-    <string name="ac_transfer_error_send">Podczas wysyłania wiadomości wystąpił błąd. Sprawdź połączenie sieciowe oraz adres i konfigurację serwera.</string>
+    <string name="ac_transfer_error_send">Podczas wysyłania wiadomości wystąpił błąd. Sprawdź połączenie sieciowe oraz adres i konfigurację serwera poczty wychodzącej.</string>
     <string name="switch_on">Włącz</string>
     <string name="switch_off">Wyłącz</string>
     <!--permissions-->

@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
@@ -162,13 +162,9 @@
     <string name="global_settings_lock_screen_notification_visibility_nothing">Ingen låseskjermvarsel</string>
     <string name="global_settings_lock_screen_notification_visibility_app_name">Applikasjonsnamn</string>
     <string name="account_setup_basics_title">Legg til ein ny konto</string>
-    <string name="account_setup_basics_email_hint">E-postadresse</string>
-    <string name="account_setup_basics_password_hint">Passord</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-    <string name="account_setup_basics_manual_setup_action">Manuelt oppsett</string>
-    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_retr_info_msg">Hentar kontoinformasjon\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Sjekkar innkomande tenarinnstillingar\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Sjekkar utgåande tenarinnstillingar\u2026</string>
@@ -429,7 +425,6 @@
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
     <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import">Importer innstillingar</string>
     <string name="settings_importing">Importerer innstillingar …</string>
     <string name="unread_widget_select_account">Syn talet på ulesne for …</string>
     <string name="webview_empty_message">Ingen tekst</string>
@@ -485,11 +480,9 @@
     <string name="fetching_attachment_dialog_title_save">Lagrar kladd</string>
     <string name="fetching_attachment_dialog_message">Hentar vedlegg …</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">Bruk klientsertifikat</string>
     <string name="client_certificate_spinner_empty">Inkje klientsertifikat</string>
     <string name="client_certificate_spinner_delete">Fjern utvalet av klientsertifikat</string>
     <string name="client_certificate_retrieval_failure">Fekk ikkje til å henta klientsertifikat for aliaset \"<xliff:g id="alias">%s</xliff:g>\" </string>
-    <string name="client_certificate_advanced_options">Innfløkte alternativ</string>
     <string name="client_certificate_expired">Klientsertifikatet \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" har gått ut på dato eller er ikkje gyldig enno (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Kryptert*</string>

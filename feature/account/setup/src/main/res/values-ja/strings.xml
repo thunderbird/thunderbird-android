@@ -6,7 +6,7 @@
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">この設定は信頼されていません</string>
     <string name="account_setup_button_finish">完了</string>
     <string name="account_setup_options_email_signature_label">メール署名</string>
-    <string name="account_setup_options_email_display_count_label">表示するメッセージの件数</string>
+    <string name="account_setup_options_email_display_count_label">表示するメッセージの数</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">手動設定</string>
     <string name="account_setup_options_email_signature_error_blank">メール署名は空白にはできません。</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">設定を承認する必要があります。</string>

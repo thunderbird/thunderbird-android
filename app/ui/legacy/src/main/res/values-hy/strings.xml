@@ -200,13 +200,9 @@
     <string name="quiet_time_starts">Հանգստի Ժամանակը սկսւում է</string>
     <string name="quiet_time_ends">Հանգստի Ժամանակն աւարտւում է</string>
     <string name="account_setup_basics_title">Աւելացնել նոր հաշիւ</string>
-    <string name="account_setup_basics_email_hint">Էլ․ փոստի հասցէ</string>
-    <string name="account_setup_basics_password_hint">Ծածկագիր</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-    <string name="account_setup_basics_manual_setup_action">Ձեռադիր կարգաւորումներ</string>
-    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_retr_info_msg">Ներբեռնւում է հաշուի տեղեկատւութիւնը\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Ստուգւում են մուտքային սպասարկչի կարգաւորումները\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Ստուգւում են ելքային սպասարկչի կարգաւորումները\u2026</string>

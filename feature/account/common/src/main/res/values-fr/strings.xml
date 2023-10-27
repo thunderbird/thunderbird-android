@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_common_button_next">Suivant</string>
+    <string name="account_common_button_back">Précédent</string>
+    <string name="account_common_title">Courriel K-9 Mail</string>
+</resources>

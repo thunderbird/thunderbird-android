@@ -256,15 +256,12 @@
     <string name="quiet_time_starts">ശാന്തമായ സമയം ആരംഭിക്കുന്നു</string>
     <string name="quiet_time_ends">ശാന്തമായ സമയം അവസാനിക്കുന്നു</string>
     <string name="account_setup_basics_title">ഒരു പുതിയ അക്കൗണ്ട് സജ്ജമാക്കുക</string>
-    <string name="account_setup_basics_email_hint">ഇമെയിൽ വിലാസം</string>
-    <string name="account_setup_basics_password_hint">രഹസ്യവാചകം</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
     <string name="account_setup_basics_show_password_need_lock">നിങ്ങളുടെ പാസ്‌വേഡ് ഇവിടെ കാണുന്നതിന്, ഈ ഉപകരണത്തിൽ സ്‌ക്രീൻ ലോക്ക് പ്രവർത്തനക്ഷമമാക്കുക.</string>
     <string name="account_setup_basics_show_password_biometrics_title">നിങ്ങളുടെ ഐഡന്റിറ്റി പരിശോധിച്ചുറപ്പിക്കുക</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">നിങ്ങളുടെ പാസ്‌വേഡ് കാണുന്നതിന് അൺലോക്ക് ചെയ്യുക</string>
-    <string name="account_setup_basics_manual_setup_action">സ്വമേധയാലുള്ള സജ്ജീകരണം</string>
     <string name="account_setup_check_settings_retr_info_msg">അക്കൗണ്ട് വിവരങ്ങൾ വീണ്ടെടുക്കുന്നു\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">ഇൻകമിംഗ് സെർവർ ക്രമീകരണങ്ങൾ പരിശോധിക്കുന്നു\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">ഔട്ട്‌ഗോയിംഗ് സെർവർ ക്രമീകരണങ്ങൾ പരിശോധിക്കുന്നു\u2026</string>
@@ -711,7 +708,6 @@
     <string name="settings_import_status_not_imported">ഇംപോർട്ട് ചെയ്തിട്ടില്ല</string>
     <string name="settings_import_status_error">ഇംപോർട്ട് തകരാർ</string>
     <string name="settings_import_later_button">പിന്നീട്</string>
-    <string name="settings_import">ക്രമീകരണങ്ങൾ ഇംപോർട്ട് ചെയ്യുക</string>
     <string name="settings_importing">ക്രമീകരണങ്ങൾ ഇംപോർട്ട് ചെയ്യുന്നു…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">\"<xliff:g id="account">%s</xliff:g>\" അക്കൗണ്ട് ഉപയോഗിക്കാൻ നിങ്ങൾ സെർവർ രഹസ്യവാചകം നൽകേണ്ടതുണ്ട്.</item>
@@ -801,11 +797,9 @@
     <string name="fetching_attachment_dialog_message">അറ്റാച്ചുമെന്റ് ലഭ്യമാക്കുന്നു…</string>
     <string name="auth_external_error">പ്രാമാണീകരിക്കാൻ കഴിയില്ല. സെർവർ എസ്‌എ‌എസ്‌എൽ ബാഹ്യ ശേഷി പരസ്യപ്പെടുത്തുന്നില്ല. ക്ലയൻറ് സർ‌ട്ടിഫിക്കറ്റിലെ (കാലഹരണപ്പെട്ട, അജ്ഞാത സർ‌ട്ടിഫിക്കറ്റ് അതോറിറ്റി) അല്ലെങ്കിൽ‌ മറ്റേതെങ്കിലും ക്രമീകരണ പ്രശ്‌നം കാരണം ഇത് സംഭവിക്കാം.</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">ക്ലയൻറ് സർ‌ട്ടിഫിക്കറ്റ് ഉപയോഗിക്കുക</string>
     <string name="client_certificate_spinner_empty">ക്ലയന്റ് സർട്ടിഫിക്കറ്റ് ഇല്ല</string>
     <string name="client_certificate_spinner_delete">ക്ലയൻറ് സർ‌ട്ടിഫിക്കറ്റ് തിരഞ്ഞെടുക്കൽ നീക്കംചെയ്യുക</string>
     <string name="client_certificate_retrieval_failure">\"<xliff:g id="alias">%s</xliff:g>\" എന്ന അപരനാമത്തിനായുള്ള ക്ലയൻറ് സർട്ടിഫിക്കറ്റ് വീണ്ടെടുക്കുന്നതിൽ പരാജയപ്പെട്ടു </string>
-    <string name="client_certificate_advanced_options">വിപുലമായ ക്രമീകരണങ്ങൾ</string>
     <string name="client_certificate_expired">ക്ലയൻറ് സർ‌ട്ടിഫിക്കറ്റ്  \"<xliff:g id="certificate_alias">%1$s</xliff:g>\"\ കാലഹരണപ്പെട്ടു അല്ലെങ്കിൽ ഇതുവരെ സാധുവായിട്ടില്ല (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*എൻ‌ക്രിപ്റ്റുചെയ്‌തത്*</string>

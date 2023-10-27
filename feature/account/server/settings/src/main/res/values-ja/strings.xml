@@ -28,4 +28,7 @@
     <string name="account_server_settings_client_certificate_none_selected">なし</string>
     <string name="account_server_settings_server_label">サーバー</string>
     <string name="account_server_settings_security_label">セキュリティ</string>
+    <string name="account_server_settings_password_authentication_title">本人確認</string>
+    <string name="account_server_settings_password_authentication_subtitle">ロック解除してパスワードを表示</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">ここでパスワードを表示するには、端末に画面ロックを設定してください。</string>
 </resources>

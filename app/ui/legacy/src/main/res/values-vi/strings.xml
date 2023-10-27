@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
@@ -271,8 +271,6 @@
     <string name="quiet_time_starts">Bắt đầu Không làm phiền</string>
     <string name="quiet_time_ends">Kết thúc Không làm phiền</string>
     <string name="account_setup_basics_title">Tạo tài khoản mới</string>
-    <string name="account_setup_basics_email_hint">Địa chỉ email</string>
-    <string name="account_setup_basics_password_hint">Mật khẩu</string>
     <string name="account_setup_oauth_description">Để dùng tài khoản email này với K-9 Mail, bạn cần đăng nhập và cho phép ứng dụng truy cập.</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in">Đăng nhập</string>
@@ -282,8 +280,6 @@
     <string name="account_setup_basics_show_password_need_lock">Để xem mật khẩu ở đây, bật tính năng khóa màn hình trên thiết bị.</string>
     <string name="account_setup_basics_show_password_biometrics_title">Xác định danh tính của bạn</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Mở khóa để xem mật khẩu của bạn</string>
-    <string name="account_setup_basics_manual_setup_action">Cài đặt thủ công</string>
-    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_retr_info_msg">Lấy thông tin tài khoản\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Đang kiểm tra cài đặt incoming server\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Đang kiểm tra cài đặt outgoing server\u2026</string>

@@ -5,11 +5,11 @@
     <string name="account_server_validation_error_certificate">证书错误</string>
     <string name="account_server_validation_outgoing_loading_message">正在检查发件服务器设置…</string>
     <string name="account_server_validation_error_network">网络错误</string>
-    <string name="account_server_validation_outgoing_success">发件服务器设置无效！</string>
+    <string name="account_server_validation_outgoing_success">发件服务器设置有效</string>
     <string name="account_server_validation_error_unknown">未知错误</string>
     <string name="account_server_validation_sign_in">请登录</string>
-    <string name="account_server_validation_outgoing_loading_error">检查发件服务器设置失败！</string>
-    <string name="account_server_validation_incoming_success">收件服务器设置无效！</string>
-    <string name="account_server_validation_incoming_loading_error">检查收件服务器设置失败！</string>
+    <string name="account_server_validation_outgoing_loading_error">检查发件服务器设置失败</string>
+    <string name="account_server_validation_incoming_success">收件服务器设置有效</string>
+    <string name="account_server_validation_incoming_loading_error">检查收件服务器设置失败</string>
     <string name="account_server_validation_error_server">服务器错误</string>
 </resources>

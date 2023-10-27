@@ -276,8 +276,6 @@
     <string name="quiet_time_starts">Kyrrðarstund hefst</string>
     <string name="quiet_time_ends">Kyrrðarstund endar</string>
     <string name="account_setup_basics_title">Setja upp nýjan aðgang</string>
-    <string name="account_setup_basics_email_hint">Tölvupóstfang</string>
-    <string name="account_setup_basics_password_hint">Lykilorð</string>
     <string name="account_setup_oauth_description">Til að nota þennan tölvupóstaðgang með K-9 póstinum, þarftu að skrá þig inn og veita forritinu heimild inn á tölvupóstinn þinn.</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in">Skrá inn</string>
@@ -287,7 +285,6 @@
     <string name="account_setup_basics_show_password_need_lock">Til að skoða lykilorðið þitt hér skaltu virkja skjálæsingu á þessu tæki.</string>
     <string name="account_setup_basics_show_password_biometrics_title">Sannreyndu auðkennin þín</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Aflæstu til að skoða lykilorðið þitt</string>
-    <string name="account_setup_basics_manual_setup_action">Handvirk uppsetning</string>
     <string name="account_setup_check_settings_retr_info_msg">Næ í upplýsingar um aðgang\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Athuga stillingar inn-póstþjónsins\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Athuga stillingar sendinga-póstþjónsins\u2026</string>
@@ -764,7 +761,6 @@
     <string name="settings_import_status_not_imported">Ekki flutt inn</string>
     <string name="settings_import_status_error">Innflutningur mistókst</string>
     <string name="settings_import_later_button">Síðar</string>
-    <string name="settings_import">Flytja inn stillingar</string>
     <string name="settings_importing">Flytja inn stillingar…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">Til að geta notað aðganginn \"<xliff:g id="account">%s</xliff:g>\" verður þú að gefa upp lykilorðið á þjóninum.</item>
@@ -854,11 +850,9 @@
     <string name="fetching_attachment_dialog_message">Næ í viðhengi…</string>
     <string name="auth_external_error">Tekst ekki að auðkenna.  Póstþjónninn gefur ekki upp SASL EXTERNAL getu sína.  Þetta gæti verið vandamál með skilríki forritsins (útrunnið, óþekktur útgefandi skilríkis) eða eitthvað annað vandamál með uppsetningu.</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">Nota skilríki forritsins</string>
     <string name="client_certificate_spinner_empty">Ekkert skilríki forrits</string>
     <string name="client_certificate_spinner_delete">Fjarlægja valin skilríki forrits</string>
     <string name="client_certificate_retrieval_failure">Mistókst á ná í skilríki forrits vegna samheitisins \"<xliff:g id="alias">%s</xliff:g>\"</string>
-    <string name="client_certificate_advanced_options">Ítarlegir valkostir</string>
     <string name="client_certificate_expired">Skilríki forrits \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" er útrunnið eða hefur ekki tekið gildi (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Dulritað*</string>

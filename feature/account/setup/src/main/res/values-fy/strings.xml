@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_options_account_name_error_blank">Accountnamme mei net leech wêze.</string>
+    <string name="account_setup_options_account_check_frequency_label">Kontrôlefrekwinsje</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Automatysk konfigurearje</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Dizze konfiguraasje is net fertroud</string>
+    <string name="account_setup_button_finish">Foltôgje</string>
+    <string name="account_setup_options_email_signature_label">E-mailhantekening</string>
+    <string name="account_setup_options_email_display_count_label">Oantal te toanen berjochten</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Hânmjittich konfigurearje</string>
+    <string name="account_setup_options_email_signature_error_blank">E-mailhantekeningsnamme mei net leech wêze.</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Goedkarring fan de konfiguraasje is fereaske.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Wy hawwe de konfiguraasje foar jo e-mailserver fia in ferbining ûntfongen dy’t net sa feilich is as wy graach wolle. Dit betsjut dat der in lytse kâns is dat ien it oanpast hat. Wille jo nochris de opjûne konfiguraasje kontrolearje om hjir wis fan te wêzen\?</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Konfiguraasje bewurkje</string>
+    <string name="account_setup_error_unknown">Unbekende flater</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Konfiguraasje net fûn</string>
+    <string name="account_setup_options_top_bar_title">Accountopsjes</string>
+    <string name="account_setup_options_account_name_label">Accountnamme</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Konfiguraasje fûn</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">E-mailadres is fereaske.</string>
+    <string name="account_setup_options_display_name_label">Werjeftenamme</string>
+    <string name="account_setup_auto_discovery_loading_error">Laden e-mailkonfiguraasje mislearre</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Ik fertrou dizze konfiguraasje</string>
+    <string name="account_setup_options_display_name_error_required">Werjeftenamme is fereaske.</string>
+    <string name="account_setup_error_network">Netwurk</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">E-mailadres is ûnjildich.</string>
+    <string name="account_setup_options_email_check_frequency_never">Nea</string>
+    <string name="account_setup_auto_discovery_loading_message">E-maildetails sykje</string>
+    <string name="account_setup_options_section_sync_options_">Syngronisaasjeopsjes</string>
+    <string name="account_setup_options_show_notifications_label">Meldingen toane</string>
+    <string name="account_setup_options_section_display_options">Werjefteopsjes</string>
+    <string name="account_setup_title">K-9 Mail</string>
+</resources>

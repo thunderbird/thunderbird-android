@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_options_account_name_error_blank">Accountnaam mag niet leeg zijn.</string>
+    <string name="account_setup_options_account_check_frequency_label">Controlefrequentie</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Automatisch configureren</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Deze configuratie is niet vertrouwd</string>
+    <string name="account_setup_button_finish">Voltooien</string>
+    <string name="account_setup_options_email_signature_label">E-mailhandtekening</string>
+    <string name="account_setup_options_email_display_count_label">Aantal te tonen berichten</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Handmatig configureren</string>
+    <string name="account_setup_options_email_signature_error_blank">E-mailhandtekening mag niet leeg zijn.</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Goedkeuring van de configuratie is vereist.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">We hebben de configuratie voor uw e-mailserver via een verbinding ontvangen die niet zo veilig is als we graag willen. Dit betekent dat er een kleine kans is dat iemand het heeft aangepast. Wilt u nogmaals de opgegeven configuratie controleren om hier zeker van te zijn\?</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Configuratie bewerken</string>
+    <string name="account_setup_error_unknown">Onbekende fout</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Configuratie niet gevonden</string>
+    <string name="account_setup_options_top_bar_title">Accountopties</string>
+    <string name="account_setup_options_account_name_label">Accountnaam</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Configuratie gevonden</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">E-mailadres is vereist.</string>
+    <string name="account_setup_options_display_name_label">Weergavenaam</string>
+    <string name="account_setup_auto_discovery_loading_error">Laden e-mailconfiguratie mislukt</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Ik vertrouw deze configuratie</string>
+    <string name="account_setup_options_display_name_error_required">Weergavenaam is vereist.</string>
+    <string name="account_setup_error_network">Netwerk</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">E-mailadres is ongeldig.</string>
+    <string name="account_setup_options_email_check_frequency_never">Nooit</string>
+    <string name="account_setup_auto_discovery_loading_message">E-maildetails zoeken</string>
+    <string name="account_setup_options_section_sync_options_">Synchronisatieopties</string>
+    <string name="account_setup_options_show_notifications_label">Meldingen tonen</string>
+    <string name="account_setup_options_section_display_options">Weergaveopties</string>
+    <string name="account_setup_title">K-9 Mail</string>
+</resources>

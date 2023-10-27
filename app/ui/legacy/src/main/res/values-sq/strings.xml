@@ -275,8 +275,6 @@
     <string name="quiet_time_starts">Qetësia fillon</string>
     <string name="quiet_time_ends">Qetësia mbaron</string>
     <string name="account_setup_basics_title">Ujdisni një llogari të re</string>
-    <string name="account_setup_basics_email_hint">Adresë email</string>
-    <string name="account_setup_basics_password_hint">Fjalëkalim</string>
     <string name="account_setup_oauth_description">Që të përdorni këtë llogari email me K-9 Mail, lypset të bëni hyrjen dhe t\’i akordoni aplikacionit hyrje te email-et tuaj.</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in">Hyni</string>
@@ -286,7 +284,6 @@
     <string name="account_setup_basics_show_password_need_lock">Që të shihni fjalëkalimin tuaj këtu, aktivizoni kyçje ekrani në këtë pajisje.</string>
     <string name="account_setup_basics_show_password_biometrics_title">Verifikoni identitetin tuaj</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Që të shihni fjalëkalimin tuaj, shkyçeni</string>
-    <string name="account_setup_basics_manual_setup_action">Rregullim dorazi</string>
     <string name="account_setup_check_settings_retr_info_msg">Po merren të dhëna llogarie\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Po kontrollohen rregullime shërbyesi marrjesh\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Po kontrollohen rregullime shërbyesi dërgimesh\u2026</string>
@@ -763,7 +760,6 @@
     <string name="settings_import_status_not_imported">I paimportuar</string>
     <string name="settings_import_status_error">Dështim importimi</string>
     <string name="settings_import_later_button">Më vonë</string>
-    <string name="settings_import">Importo rregullime</string>
     <string name="settings_importing">Po importohen rregullime…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">Që të mund të përdorni llogarinë \“<xliff:g id="account">%s</xliff:g>\” duhet të jepni fjalëkalimin e shërbyesit.</item>
@@ -853,11 +849,9 @@
     <string name="fetching_attachment_dialog_message">Po sillet bashkëngjitja…</string>
     <string name="auth_external_error">S\’arrihet të kryhet mirëfilltësimi.  Shërbyesi nuk shfaq aftësi SASL EXTERNAL.  Kjo mund të vijë nga një problem me dëshminë e klientit (e skaduar, autoritet i panjohur dëshmish) ose ndonjë tjetër problem formësimi.</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">Përdor dëshmi klienti</string>
     <string name="client_certificate_spinner_empty">S\’ka dëshmi klienti</string>
     <string name="client_certificate_spinner_delete">Hiqe përzgjedhjen për dëshmi klienti</string>
     <string name="client_certificate_retrieval_failure">Dështoi të merrej dëshmi klienti për aliasin \“<xliff:g id="alias">%s</xliff:g>\”</string>
-    <string name="client_certificate_advanced_options">Mundësi të mëtejshme</string>
     <string name="client_certificate_expired">Dëshmia e klientit \“<xliff:g id="certificate_alias">%1$s</xliff:g>\” ka skaduar ose s\’është ende e vlefshme (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*I fshehtëzuar*</string>
@@ -1083,4 +1077,5 @@ Mund ta mbani këtë mesazh dhe ta përdorni si një kopjeruatje të kyçit tuaj
     <string name="general_settings_post_remove_action_show_previous_message">Shfaq mesazhin e mëparshëm</string>
     <string name="general_settings_post_remove_action_show_next_message">Shfaq mesazhin pasues</string>
     <string name="general_settings_post_remove_action_title">Pas fshirjes, ose lëvizjes së një mesazhi</string>
+    <string name="general_settings_ui_density_relaxed">Rehatshëm</string>
 </resources>

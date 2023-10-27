@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_setup_options_account_name_error_blank">अकाउंट का नाम खाली नहीं हो सकता।</string>
+    <string name="account_setup_options_account_check_frequency_label">चेक करने की फ्रीक्वेंसी</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">अपनेआप सेट करें</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">इस सेटिंग पे भरोसा नहीं है</string>
+    <string name="account_setup_button_finish">खत्म करें</string>
+    <string name="account_setup_options_email_signature_label">ईमेल दस्तखत</string>
+    <string name="account_setup_options_email_display_count_label">मैसेज डिस्प्ले करें</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">खुद सेट करें</string>
+    <string name="account_setup_options_email_signature_error_blank">ईमेल दस्तखत नाम खाली नहीं हो सकता।</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">सेटिंग को मंज़ूरी देने के लिए ज़रूरी।</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">टीएलएस शुरू करें</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">हमें आपके ईमेल सर्वर के लिए सेटिंग एक ऐसे कनेक्शन पे मिली जो ज़्यादा सेफ नहीं थी। इसका ये मतलब है कि शायद किसी ने उसके साथ छेड़छाड़ की हो। आप दिए गए सेटिंग को वापस चेक कर लें ताकि ये पक्का कर सके कि सब कुछ सही है।</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">सेटिंग बदलें</string>
+    <string name="account_setup_error_unknown">अनजान गड़बड़</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">एसएसएल/टीएलएस</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">सेटिंग नहीं मिली</string>
+    <string name="account_setup_options_top_bar_title">अकाउंट ऑप्शन</string>
+    <string name="account_setup_options_account_name_label">अकाउंट का नाम</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">सेटिंग मिल गई</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">ईमेल पता ज़रूरी है।</string>
+    <string name="account_setup_options_display_name_label">डिस्प्ले नाम</string>
+    <string name="account_setup_auto_discovery_loading_error">ईमेल की सेटिंग लोड नहीं कर सके</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">हम इस सेटिंग पे भरोसा करते है</string>
+    <string name="account_setup_options_display_name_error_required">डिस्प्ले नाम ज़रूरी है।</string>
+    <string name="account_setup_error_network">नेटवर्क</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">ईमेल पता गलत है।</string>
+    <string name="account_setup_options_email_check_frequency_never">कभी नहीं</string>
+    <string name="account_setup_auto_discovery_loading_message">ईमेल की जानकारी खोज रहे</string>
+    <string name="account_setup_options_section_sync_options_">सिंक ऑप्शन</string>
+    <string name="account_setup_options_show_notifications_label">नोटिफिकेशन दिखाएं</string>
+    <string name="account_setup_options_section_display_options">डिस्प्ले ऑप्शन</string>
+    <string name="account_setup_title">के-9 मेल</string>
+</resources>

@@ -1,2 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_settings_validation_error_server_required">Nome server obbligatorio</string>
+    <string name="account_server_settings_validation_error_username_required">Nome utente obbligatorio</string>
+    <string name="account_server_settings_outgoing_top_bar_title">Impostazioni server in uscita</string>
+    <string name="account_server_settings_validation_error_password_required">Password obbligatoria</string>
+    <string name="account_server_settings_incoming_imap_send_client_id_label">Invia ID cliente</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
+    <string name="account_server_settings_authentication_none">Nessuno</string>
+    <string name="account_server_settings_authentication_password_encrypted">Password criptata</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">Rileva automaticamente namespace IMAP</string>
+    <string name="account_server_settings_incoming_top_bar_title">Impostazioni server in entrata</string>
+    <string name="account_server_settings_authentication_password_cleartext">Password normale</string>
+    <string name="account_server_settings_authentication_label">Autenticazione</string>
+    <string name="account_server_settings_connection_security_none">Nessuno</string>
+    <string name="account_server_settings_port_label">Porta</string>
+    <string name="account_server_settings_incoming_imap_compression_label">Usa la compressione</string>
+    <string name="account_server_settings_validation_error_port_required">Porta obbligatoria</string>
+    <string name="account_server_settings_authentication_client_certificate">Certificato del client</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">Prefisso del percorso IMAP</string>
+    <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
+    <string name="account_server_settings_protocol_type_label">Protocollo</string>
+    <string name="account_server_settings_username_label">Nome utente</string>
+    <string name="account_server_settings_validation_error_port_invalid">Porta non valida (compresa tra 1–65535)</string>
+    <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
+    <string name="account_server_settings_client_certificate_label">Certificato del client</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">Prefisso IMAP non può essere vuoto</string>
+    <string name="account_server_settings_client_certificate_none_selected">Nessuno</string>
+    <string name="account_server_settings_server_label">Server</string>
+    <string name="account_server_settings_security_label">Sicurezza</string>
+    <string name="account_server_settings_password_authentication_title">Verifica la tua identità</string>
+    <string name="account_server_settings_password_authentication_subtitle">Sblocca per visualizzare la password</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">Per visualizzare la password qui, attiva il blocco schermo su questo dispositivo</string>
+</resources>

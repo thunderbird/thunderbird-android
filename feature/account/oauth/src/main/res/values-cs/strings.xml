@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_oauth_sign_in_with_google_button">Přihlásit se prostřednictvím Google</string>
+    <string name="account_oauth_loading_error">Přihlášení pomocí OAuth se nezdařilo</string>
+    <string name="account_oauth_error_failed">Pověření se nezdařilo s následující chybou: <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_error_browser_not_available">Aplikaci se nepodařilo najít webový prohlížeč, který použít pro udělení přístupu k vašemu účtu.</string>
+    <string name="account_oauth_error_not_supported">OAuth 2.0 není v současnosti tímto poskytovatelem podporováno.</string>
+    <string name="account_oauth_error_canceled">Pověření zrušeno</string>
+    <string name="account_oauth_loading_message">Přihlašování pomocí OAuth</string>
+    <string name="account_oauth_sign_in_description">Přesměrujeme vás na vašeho e-mailového poskytovatele pro přihlášení. Budete muset aplikaci udělit oprávnění pro přístup ke svému e-mailovému účtu.</string>
+    <string name="account_oauth_sign_in_button">Přihlásit se</string>
+</resources>

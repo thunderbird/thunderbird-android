@@ -14,7 +14,7 @@
     <string name="about_website_title">Сайт</string>
     <string name="user_manual_title">Руководство пользователя</string>
     <string name="get_help_title">Получить помощь</string>
-    <string name="user_forum_title">Форум</string>
+    <string name="user_forum_title">Форум пользователей</string>
     <string name="about_fediverse_title">Федеративная сеть</string>
     <string name="about_libraries">Библиотеки</string>
     <string name="license">Лицензия</string>
@@ -279,8 +279,6 @@
     <string name="quiet_time_starts">Начало</string>
     <string name="quiet_time_ends">Конец</string>
     <string name="account_setup_basics_title">Создание учётной записи</string>
-    <string name="account_setup_basics_email_hint">Адрес электронной почты</string>
-    <string name="account_setup_basics_password_hint">Пароль</string>
     <string name="account_setup_oauth_description">Чтобы использовать эту учётную запись электронной почты с K-9 Mail, вам необходимо войти в систему и предоставить приложению доступ к вашим электронным письмам.</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in">Войти</string>
@@ -290,7 +288,6 @@
     <string name="account_setup_basics_show_password_need_lock">Чтобы увидеть свой пароль, включите блокировку экрана на этом устройстве.</string>
     <string name="account_setup_basics_show_password_biometrics_title">Проверка вашей роли</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Разблокировать для просмотра своего пароля</string>
-    <string name="account_setup_basics_manual_setup_action">Вручную</string>
     <string name="account_setup_check_settings_retr_info_msg">Получение сведений\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Проверка сервера входящей почты\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Проверка сервера исходящей почты\u2026</string>
@@ -771,7 +768,6 @@
     <string name="settings_import_status_not_imported">Не импортировано</string>
     <string name="settings_import_status_error">Импорт не удался</string>
     <string name="settings_import_later_button">Позже</string>
-    <string name="settings_import">Импорт</string>
     <string name="settings_importing">Импорт настроек…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">Чтобы использовать ящик «<xliff:g id="account">%s</xliff:g>» необходимо ввести пароль.</item>
@@ -867,11 +863,9 @@
     <string name="fetching_attachment_dialog_message">Получение вложений…</string>
     <string name="auth_external_error">Аутентификация не удалась. Сервер не сообщает о совместимости с SASL EXTERNAL. Причиной может служить неверный сертификат клиента (просрочен, неизвестен издатель) или проблемы с настройками</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">Использовать сертификат клиента</string>
     <string name="client_certificate_spinner_empty">Не использовать сертификат клиента</string>
     <string name="client_certificate_spinner_delete">Отключить выбор сертификата клиента</string>
     <string name="client_certificate_retrieval_failure">Не найден сертификат клиента для алиаса «<xliff:g id="alias">%s</xliff:g>»</string>
-    <string name="client_certificate_advanced_options">Дополнительно</string>
     <string name="client_certificate_expired">Срок действия сертификата клиента \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" истёк или ещё не наступил (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Зашифровано*</string>

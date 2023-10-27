@@ -278,8 +278,6 @@
     <string name="quiet_time_starts">Início do período de sossego</string>
     <string name="quiet_time_ends">Fim do período de sossego</string>
     <string name="account_setup_basics_title">Configurar uma nova conta</string>
-    <string name="account_setup_basics_email_hint">Endereço de email</string>
-    <string name="account_setup_basics_password_hint">Palavra-passe</string>
     <string name="account_setup_oauth_description">Para usar esta conta com o K-9 Mail, é necessário iniciar sessão e conceder permissão para aceder o seus emails.</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in">Iniciar sessão</string>
@@ -289,7 +287,6 @@
     <string name="account_setup_basics_show_password_need_lock">Para ver a sua palavra-passe aqui, ative o bloqueio de ecrã neste dispositivo.</string>
     <string name="account_setup_basics_show_password_biometrics_title">Verificar a sua identidade</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Desbloqueie para ver a sua palavra-passe</string>
-    <string name="account_setup_basics_manual_setup_action">Configuração manual</string>
     <string name="account_setup_check_settings_retr_info_msg">A obter informações da conta\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">A verificar configurações de entrada do servidor\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">A verificar configurações de saída do servidor\u2026</string>
@@ -768,7 +765,6 @@
     <string name="settings_import_status_not_imported">Não importado</string>
     <string name="settings_import_status_error">Falha na importação</string>
     <string name="settings_import_later_button">Posteriormente</string>
-    <string name="settings_import">Importar configurações</string>
     <string name="settings_importing">A importar configurações…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">Para poder utilizar a conta \"<xliff:g id="account">%s</xliff:g>\" tem de fornecer as senhas do servidor.</item>
@@ -861,11 +857,9 @@
     <string name="fetching_attachment_dialog_message">A obter anexo…</string>
     <string name="auth_external_error">Não foi possível autenticar. O servidor não anuncia a capacidade SASL EXTERNAL. Isto pode ser devido a um problema com o certificado de cliente (expirado, autoridade certificadora desconhecida) ou algum outro problema de configuração.</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">Usar certificado de cliente</string>
     <string name="client_certificate_spinner_empty">Sem certificado de cliente</string>
     <string name="client_certificate_spinner_delete">Remover seleção de certificados de cliente</string>
     <string name="client_certificate_retrieval_failure">Falha ao obter certificado de cliente para o alias \"<xliff:g id="alias">%s</xliff:g>\"</string>
-    <string name="client_certificate_advanced_options">Opções avançadas</string>
     <string name="client_certificate_expired">O certificado de cliente \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" expirou ou ainda não é válido (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Encriptado*</string>

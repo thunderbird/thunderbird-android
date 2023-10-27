@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_common_button_next">Seuraava</string>
+    <string name="account_common_button_back">Takaisin</string>
+    <string name="account_common_title">K-9 Mail</string>
+</resources>

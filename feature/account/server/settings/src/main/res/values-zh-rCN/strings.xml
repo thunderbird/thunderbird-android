@@ -28,4 +28,7 @@
     <string name="account_server_settings_client_certificate_none_selected">无</string>
     <string name="account_server_settings_server_label">服务器</string>
     <string name="account_server_settings_security_label">安全性</string>
+    <string name="account_server_settings_password_authentication_title">验证你的身份</string>
+    <string name="account_server_settings_password_authentication_subtitle">解锁以查看你的密码</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">要在此查看你的密码，请启用此设备的屏幕锁。</string>
 </resources>

@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_options_account_name_error_blank">El nombre de cuenta no puede quedar en blanco.</string>
+    <string name="account_setup_options_account_check_frequency_label">Frecuencia de comprobación</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Configurar de forma automática</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Estos ajustes no han sido validados</string>
+    <string name="account_setup_button_finish">Terminar</string>
+    <string name="account_setup_options_email_signature_label">Firma del correo</string>
+    <string name="account_setup_options_email_display_count_label">Cantidad de correos a mostrar</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Configurar a mano</string>
+    <string name="account_setup_options_email_signature_error_blank">La firma del correo no puede quedar en blanco.</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Es necesario que primero apruebes los ajustes recibidos.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Se han recibido unos ajustes para tu servidor de correo a través de una conexión no del todo segura. Lo que significa que hay una pequeña posibilidad de que alguien la haya podido alterar durante el trayecto. Lo ideal sería que la revisaras para asegurarte de que no haya nada raro.</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Editar los ajustes</string>
+    <string name="account_setup_error_unknown">Error desconocido</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Configuración no encontrada</string>
+    <string name="account_setup_options_top_bar_title">Ajustes de cuenta</string>
+    <string name="account_setup_options_account_name_label">Nombre de cuenta</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Configuración detectada</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">Es necesario proporcionar al menos una dirección de correo.</string>
+    <string name="account_setup_options_display_name_label">Nombre a mostrar</string>
+    <string name="account_setup_auto_discovery_loading_error">No se han podido encontrar ajustes para este servicio</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Me fío de los ajustes</string>
+    <string name="account_setup_options_display_name_error_required">Es necesario poner un nombre a mostrar.</string>
+    <string name="account_setup_error_network">Red</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">La dirección de correo no parece ser correcta.</string>
+    <string name="account_setup_options_email_check_frequency_never">Nunca</string>
+    <string name="account_setup_auto_discovery_loading_message">Buscando los ajustes oficiales del servicio de forma automática</string>
+    <string name="account_setup_options_section_sync_options_">Ajustes de sincronización</string>
+    <string name="account_setup_options_show_notifications_label">Mostrar notificaciones</string>
+    <string name="account_setup_options_section_display_options">Ajustes de pantalla</string>
+    <string name="account_setup_title">K-9 Mail</string>
+</resources>

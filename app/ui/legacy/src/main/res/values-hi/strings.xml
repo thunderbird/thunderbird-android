@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="empty_subject">सब्जेक्ट खाली है, फिर भी भेजने के लिए वापस दबाएं</string>
+    <string name="forward_as_attachment_action">अटैचमेंट के तरह फॉरवर्ड करें</string>
+    <string name="about_libraries">लाइब्ररी</string>
+    <string name="changelog_recent_changes_title">नया क्या है</string>
+    <string name="general_no_sender">भेजनेवाले नहीं है</string>
+    <string name="compose_title_forward_as_attachment">अटैचमेंट के तरह फॉरवर्ड करें</string>
+    <string name="copy_subject_to_clipboard">सब्जेक्ट क्लिपबोर्ड पे कॉपी किया गया</string>
+    <string name="edit_as_new_message_action">नए मैसेज के तरह बदलाव करें</string>
+    <string name="archive_action">आर्काइव</string>
+    <string name="check_mail_action">मेल चेक करें</string>
+    <string name="send_alternate_chooser_title">भेजनेवाले चुनें</string>
+    <string name="choose_folder_move_title">ले जाएं…</string>
+    <string name="mark_as_read_action">पढ़ा हुआ मार्क करें</string>
+    <string name="compose_title_reply_all">सबका जवाब दें</string>
+    <string name="compose_title_compose">बनाएं</string>
+    <string name="search_action">खोजें</string>
+    <string name="preferences_action">सेटिंग</string>
+    <string name="forward_action">फॉरवर्ड करें</string>
+    <string name="move_to_drafts_action">ड्राफ्ट में ले जाएं</string>
+    <string name="add_account_action">अकाउंट जोड़ें</string>
+    <string name="spam_action">स्पैम</string>
+    <string name="read_receipt_disabled">पढ़ा रसीद नहीं मांगेंगे</string>
+    <string name="unread_widget_label">के-9 नहीं पढ़ा</string>
+    <string name="shortcuts_title">के-9 अकाउंट</string>
+    <plurals name="copy_address_to_clipboard">
+        <item quantity="one">पता क्लिपबोर्ड पे कॉपी किया गया</item>
+        <item quantity="other">पते क्लिपबोर्ड पे कॉपी किए गए</item>
+    </plurals>
+    <string name="done_action">हो गया</string>
+    <string name="authors">डेवलपर</string>
+    <string name="message_view_theme_action_light">लाइट मोड इस्तेमाल करें</string>
+    <string name="send_messages_action">मैसेज भेजें</string>
+    <string name="save_draft_action">ड्राफ्ट के तरह सेव करें</string>
+    <string name="user_manual_title">यूज़र मैनुअल</string>
+    <string name="default_signature">--
+\nअपने एंड्रॉइड डिवाइस से के-9 मेल से भेजा। मेरे छोटे शब्दों में लिखने पे ध्यान ना दें।</string>
+    <string name="folders_action">फोल्डर मैनेज करें</string>
+    <string name="mark_as_unread_action">नहीं पढ़ा मार्क करें</string>
+    <string name="add_attachment_action">अटैचमेंट लगाएं</string>
+    <string name="next_action">अगला</string>
+    <string name="choose_folder_title">फोल्डर चुनें</string>
+    <string name="cancel_action">कैंसिल करें</string>
+    <string name="compose_action">बनाएं</string>
+    <string name="unflag_action">तारा हटाएं</string>
+    <string name="refile_action">रिकॉर्ड करें…</string>
+    <string name="source_code">सोर्स कोड</string>
+    <string name="changelog_snackbar_text">देखें इस रिलीज़ में नया क्या है</string>
+    <string name="advanced">एडवांस</string>
+    <string name="choose_account_title">अकाउंट चुनें</string>
+    <string name="flag_action">तारा जोड़ें</string>
+    <string name="move_action">ले जाएं</string>
+    <string name="compose_title_forward">फॉरवर्ड करें</string>
+    <string name="status_invalid_id_error">मैसेज नहीं मिला</string>
+    <string name="discard_action">फेंके</string>
+    <string name="empty_trash_action">कचरा खाली करें</string>
+    <string name="okay_action">ठीक है</string>
+    <string name="unsubscribe_action">अनसब्सक्राइब करें</string>
+    <string name="changelog_show_recent_changes">ऐप अपडेट होने पे हाल के बदलाव दिखाएं</string>
+    <string name="about_fediverse_title">फैडिवर्स</string>
+    <string name="changelog_snackbar_button_text">देखें</string>
+    <string name="about_project_title">ओपन सोर्स प्रोजेक्ट</string>
+    <string name="compose_title_reply">जवाब दें</string>
+    <string name="general_no_subject">(सब्जेक्ट नहीं है)</string>
+    <string name="prefs_title">सेटिंग</string>
+    <string name="license">लाइसेंस</string>
+    <string name="refresh_folders_action">फोल्डर लिस्ट रिफ्रेश करें</string>
+    <string name="changelog_title">चेंजलॉग</string>
+    <string name="status_loading_more">मैसेज लोड कर रहे…</string>
+    <string name="status_loading_error">मैसेज लोड करने में गड़बड़</string>
+    <string name="filter_folders_action">फोल्डर खोजें</string>
+    <string name="message_view_theme_action_dark">डार्क मोड इस्तेमाल करें</string>
+    <string name="load_more_messages_fmt"><xliff:g id="messages_to_load">%d</xliff:g> तक और लोड करें</string>
+    <string name="expunge_action">खाली करें</string>
+    <string name="account_settings_action">अकाउंट सेटिंग</string>
+    <string name="read_receipt_enabled">पढ़ा रसीद मांगेंगे</string>
+    <string name="reply_all_action">सबका जवाब दें</string>
+    <string name="copy_action">कॉपी करें</string>
+    <string name="choose_folder_copy_title">कॉपी ले जाएं…</string>
+    <string name="remove_account_action">अकाउंट हटाएं</string>
+    <string name="app_authors">के-9 डॉग वॉकर</string>
+    <string name="reply_action">जवाब दें</string>
+    <string name="account_delete_dlg_instructions_fmt">अकाउंट \"<xliff:g id="account">%s</xliff:g>\" के-9 मेल से हटा दिया जाएगा।</string>
+    <string name="show_headers_action">हैडर दिखाएं</string>
+    <string name="user_forum_title">यूज़र फॉरम</string>
+    <string name="app_license">अपाचे लाइसेंस 2.0</string>
+    <string name="about_website_title">वेबसाइट</string>
+    <string name="get_help_title">मदद मांगे</string>
+    <string name="changelog_loading_error">चेंजलॉग लोड नहीं कर सके।</string>
+    <string name="search_results">खोज के रिज़ल्ट</string>
+    <string name="send_action">भेजें</string>
+    <string name="read_receipt">पढ़ा रसीद</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> चुने गए</string>
+    <string name="search_everywhere_action">हर जगह खोजें</string>
+    <string name="send_alternate_action">शेयर करें</string>
+    <string name="accounts_title">अकाउंट</string>
+    <string name="app_name">के-9 मेल</string>
+    <string name="new_messages_title">नए मैसेज</string>
+    <string name="changelog_version_title">वर्ज़न %s</string>
+    <string name="status_network_error">कनेक्शन गड़बड़</string>
+    <string name="about_action">बारे में</string>
+    <string name="about_title">के-9 मेल के बारे में</string>
+    <string name="delete_action">हटाएं</string>
+    <string name="notification_certificate_error_public">सर्टिफिकेट गड़बड़</string>
+    <string name="message_compose_error_no_recipients">आपको कमसेकम एक लेनेवाला पता डालना होगा।</string>
+    <string name="notification_channel_messages_title">मैसेज</string>
+    <string name="message_to_fmt"><xliff:g id="counterParty">%s</xliff:g> को</string>
+    <string name="notification_channel_miscellaneous_title">बाकी</string>
+    <string name="notification_bg_sync_ticker">मेल चेक कर रहे: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
+    <string name="message_compose_quote_header_subject">सबजेक्ट:</string>
+    <string name="notification_action_archive_all">सब आर्काइव करें</string>
+    <string name="notification_channel_push_description">नए मैसेज का इंतज़ार करते टाइम दिखाया जाएगा</string>
+    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> और <xliff:g id="account">%2$s</xliff:g> पे</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> ने लिखा:</string>
+    <string name="special_mailbox_name_sent">भेजे गए</string>
+    <string name="send_failure_subject">कुछ मैसेज भेज नहीं सके</string>
+    <string name="special_mailbox_name_trash">कचरा</string>
+    <string name="message_view_status_attachment_not_saved">अटैचमेंट सेव नहीं कर सके।</string>
+    <string name="message_list_load_more_messages_action">और मैसेज लोड करें</string>
+    <string name="notification_action_mark_all_as_read">सब पढ़ा मार्क करें</string>
+    <string name="error_contact_address_not_found">इस ईमेल पते के लिए कोई कॉन्टैक्ट नहीं मिला।</string>
+    <string name="special_mailbox_name_inbox">इंबॉक्स</string>
+    <string name="notification_action_spam">स्पैम</string>
+    <string name="notification_action_reply">जवाब दें</string>
+    <string name="message_compose_quote_header_cc">सीसी:</string>
+    <string name="notification_notify_error_title">नोटिफिकेशन गड़बड़</string>
+    <string name="debug_export_logs_success">एक्सपोर्ट पूरा हुआ। लॉग में प्राइवेट जानकारी हो सकती है। सिर्फ भरोसेमंद लोगों को ही भेजें।</string>
+    <string name="notification_notify_error_text">एक नए मैसेज के लिए सिस्टम नोटिफिकेशन बनाते टाइम एक गड़बड़ हुई। इसका वजह किसी नोटिफिकेशन आवाज़ का गुम होना होना चाहिए।
+\n
+\nनोटिफिकेशन सेटिंग खोलने के लिए दबाएं।</string>
+    <string name="debug_export_logs_title">लॉग एक्सपोर्ट करें</string>
+    <string name="message_compose_content_hint">मैसेज टेक्सट</string>
+    <string name="message_compose_quote_header_separator">-------- पुराना मैसेज--------</string>
+    <string name="notification_bg_send_ticker">मेल भेज रहे: <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_certificate_error_text">अपनी सर्वर सेटिंग चेक करें</string>
+    <string name="debug_enable_debug_logging_summary">ज़्यादा डायग्नॉस्टिक जानकारी लॉग करें</string>
+    <string name="message_compose_subject_hint">सबजेक्ट</string>
+    <string name="notification_action_archive">आर्काइव करें</string>
+    <string name="notification_channel_miscellaneous_description">गड़बड़ वगैरह जैसे बाकी नोटिफिकेशन।</string>
+    <string name="version">वर्ज़न</string>
+    <string name="message_compose_signature_hint">साइन</string>
+    <string name="message_compose_description_edit_quoted_text">पहले लिखा मैसेज बदलें</string>
+    <string name="compose_error_incomplete_recipient">लेनेवाला पता सही नहीं है।</string>
+    <string name="message_compose_attachments_skipped_toast">कुछ अटैचमेंट फॉरवर्ड नहीं किए जा सकते क्योंकि वो डाउनलोड नहीं किए गए।</string>
+    <string name="notification_action_delete">मिटाएं</string>
+    <string name="notification_authentication_error_text"><xliff:g id="account">%s</xliff:g> के लिए ऑथेंटिकेशन नहीं हुआ। अपनी सर्वर सेटिंग अपडेट करें।</string>
+    <string name="size_format_megabytes">%.1f एमबी</string>
+    <string name="notification_authentication_error_title">ऑथेंटिकेशन नहीं हुआ</string>
+    <string name="notification_channel_messages_description">मैसेजवाले नोटिफिकेशन</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> नया मैसेज</item>
+        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> नए मैसेज</item>
+    </plurals>
+    <string name="debug_enable_sensitive_logging_summary">लॉग में पासवर्ड दिखा सकता है।</string>
+    <string name="message_compose_attachments_forward_toast">मैसेज फॉरवर्ड नहीं किया जा सकता क्योंकि कुछ अटैचमेंट डाउनलोड नहीं किए गए।</string>
+    <string name="notification_channel_push_title">सिंक (पुश)</string>
+    <string name="message_compose_quote_header_send_date">तारीख:</string>
+    <string name="size_format_kilobytes">%.1f केबी</string>
+    <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sent_date">%1$s</xliff:g> को, <xliff:g id="sender">%2$s</xliff:g> ने लिखा:</string>
+    <string name="message_compose_quote_header_to">को:</string>
+    <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g> पे सर्टिफिकेट गड़बड़</string>
+    <string name="size_format_bytes">%d बाइट</string>
+    <string name="debug_enable_debug_logging_title">डीबग लॉगिंग चालू करें</string>
+    <string name="message_view_cc_label">सीसी:</string>
+    <string name="notification_action_mark_as_read">पढ़ा मार्क करें</string>
+    <string name="notification_bg_title_separator">:</string>
+    <string name="message_compose_description_delete_quoted_text">पहले लिखा मैसेज हटाएं</string>
+    <string name="notification_bg_sync_title">मेल चेक कर रहे</string>
+    <string name="remove_attachment_action">अटैचमेंट हटाएं</string>
+    <string name="message_compose_quote_header_from">से:</string>
+    <string name="message_to_label">को:</string>
+    <string name="debug_enable_sensitive_logging_title">प्राइवेट जानकारी लॉग करें</string>
+    <string name="special_mailbox_name_outbox">आउटबॉक्स</string>
+    <string name="special_mailbox_name_drafts">ड्राफ्ट</string>
+    <string name="message_compose_show_quoted_text_action">पहले लिखा मैसेज शामिल करें</string>
+    <string name="notification_bg_send_title">मेल भेज रहे</string>
+    <string name="message_view_bcc_label">बीसीसी:</string>
+    <string name="size_format_gigabytes">%.1f जीबी</string>
+    <string name="debug_export_logs_failure">एक्सपोर्ट पूरा नहीं हुआ।</string>
+    <string name="notification_action_delete_all">सब मिटाएं</string>
+</resources>

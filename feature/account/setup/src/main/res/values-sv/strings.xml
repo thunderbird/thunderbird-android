@@ -1,4 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_setup_title">K-9 Mail</string>
+    <string name="account_setup_options_account_name_error_blank">Kontonamn kan inte vara tomt.</string>
+    <string name="account_setup_options_account_check_frequency_label">Kolla efter ny e-post frekvens</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Konfigurera automatiskt</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Denna konfiguration är inte pålitlig</string>
+    <string name="account_setup_button_finish">Slutför</string>
+    <string name="account_setup_options_email_signature_label">E-post signatur</string>
+    <string name="account_setup_options_email_display_count_label">Antal meddelanden att visa</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Konfigurera manuellt</string>
+    <string name="account_setup_options_email_signature_error_blank">E-postsignaturens namn får inte vara tomt.</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Det krävs för att godkänna konfigurationen.</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Vi fick konfigurationen för din e-postserver via en anslutning som inte är så säker som vi skulle vilja. Det betyder att det finns en liten chans att någon kunde ha ändrat den. Kan du dubbelkolla den medföljande konfigurationen för att se till att den är som den ska vara\?</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Redigera konfiguration</string>
+    <string name="account_setup_error_unknown">Okänt fel</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Konfiguration hittades inte</string>
+    <string name="account_setup_options_top_bar_title">Kontoinställningar</string>
+    <string name="account_setup_options_account_name_label">Kontonamn</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Konfiguration hittades</string>
+    <string name="account_setup_options_display_name_label">Visningsnamn</string>
+    <string name="account_setup_auto_discovery_loading_error">Misslyckades att ladda e-postkonfiguration</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Jag litar på denna konfiguration</string>
+    <string name="account_setup_options_display_name_error_required">Visningsnamn krävs.</string>
+    <string name="account_setup_error_network">Nätverk</string>
+    <string name="account_setup_options_email_check_frequency_never">Aldrig</string>
+    <string name="account_setup_auto_discovery_loading_message">Hitta e-postdetaljer</string>
+    <string name="account_setup_options_section_sync_options_">Synkroniseringsinställningar</string>
+    <string name="account_setup_options_show_notifications_label">Visa notiser</string>
+    <string name="account_setup_options_section_display_options">Visningsinställningar</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">E-postadress krävs.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">E-post adressen är ogiltig.</string>
 </resources>

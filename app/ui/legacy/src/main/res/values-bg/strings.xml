@@ -250,12 +250,9 @@
     <string name="quiet_time_starts">Тих режим започва</string>
     <string name="quiet_time_ends">Тих режим свършва</string>
     <string name="account_setup_basics_title">Настрой нов профил</string>
-    <string name="account_setup_basics_email_hint">Пощенски адрес</string>
-    <string name="account_setup_basics_password_hint">Парола</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-    <string name="account_setup_basics_manual_setup_action">Ръчни настройки</string>
     <string name="account_setup_check_settings_retr_info_msg">Получаване на информация за профила\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Проверява настройките на сървър за входяща поща\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Проверява настройките на сървър за изходяща поща\u2026</string>
@@ -686,7 +683,6 @@
     <string name="settings_import_status_not_imported">Не се импортира</string>
     <string name="settings_import_status_error">Неуспешно импортиране</string>
     <string name="settings_import_later_button">По късно</string>
-    <string name="settings_import">Внасяне настройки</string>
     <string name="settings_importing">Настройки на внасянето…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">За да можете да използвате профила \"<xliff:g id="account">%s</xliff:g>\" трябва да предоставите паролите на сървъра.</item>
@@ -776,11 +772,9 @@
     <string name="fetching_attachment_dialog_message">Изтегляне на прикачен файл…</string>
     <string name="auth_external_error">Неуспешна идентификация. Сървърът не предлага SASL EXTERNAL. Това може да е поради проблем с сертификатът на клиента (изтекъл,  непознат издател на сертификат) или някакъв друг конфигурационен проблем.</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">Използвай сертификата на клиента</string>
     <string name="client_certificate_spinner_empty">Няма сертификат на клиента</string>
     <string name="client_certificate_spinner_delete">Премахни избора на сертификат на клиента</string>
     <string name="client_certificate_retrieval_failure">Неуспешно изтегляне на сертификат на клиента за \"<xliff:g id="alias">%s</xliff:g>\"</string>
-    <string name="client_certificate_advanced_options">Други настройки</string>
     <string name="client_certificate_expired">Сертификат на клиента \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" е изтекъл или още не станал валиден (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Крипитиран*</string>

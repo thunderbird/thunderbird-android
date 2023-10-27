@@ -7,7 +7,7 @@
     <string name="shortcuts_title">K-9 fiókok</string>
     <string name="unread_widget_label">K-9 olvasatlan</string>
     <!--Used in the about dialog-->
-    <string name="app_authors">The K-9 Dog Walkers</string>
+    <string name="app_authors">A K-9 Kutyasétáltatók</string>
     <string name="source_code">Forráskód</string>
     <string name="app_license">Apache licenc, 2.0-s verzió</string>
     <string name="about_project_title">Nyílt forráskódú projekt</string>
@@ -131,7 +131,7 @@
     <string name="notification_action_spam">Levélszemét</string>
     <string name="notification_certificate_error_public">Tanúsítványhiba</string>
     <string name="notification_certificate_error_title">Tanúsítványhiba: <xliff:g id="account">%s</xliff:g></string>
-    <string name="notification_certificate_error_text">"Kiszolgáló beállítások  ellenőrzése"</string>
+    <string name="notification_certificate_error_text">Kiszolgáló beállítások ellenőrzése</string>
     <string name="notification_authentication_error_title">A hitelesítés sikertelen</string>
     <string name="notification_authentication_error_text">A hitelesítés sikertelen: <xliff:g id="account">%s</xliff:g>. Frissítse a kiszolgálóbeállításokat.</string>
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
@@ -253,7 +253,7 @@
     <string name="general_settings_message_list_density_title">Sűrűség</string>
     <string name="general_settings_ui_density_compact">Kompakt</string>
     <string name="general_settings_ui_density_default">Alapértelmezett</string>
-    <string name="general_settings_ui_density_relaxed">Relaxált</string>
+    <string name="general_settings_ui_density_relaxed">Tágas</string>
     <string name="global_settings_privacy_hide_useragent">Levelező alkalmazás elrejtése</string>
     <string name="global_settings_privacy_hide_useragent_detail">A K-9 azonosító eltávolítása a levél fejlécéből</string>
     <string name="global_settings_privacy_hide_timezone">Időzóna elrejtése</string>
@@ -275,8 +275,6 @@
     <string name="quiet_time_starts">Csendes idő kezdete</string>
     <string name="quiet_time_ends">Csendes idő vége</string>
     <string name="account_setup_basics_title">Új fiók beállítása</string>
-    <string name="account_setup_basics_email_hint">E-mail-cím</string>
-    <string name="account_setup_basics_password_hint">Jelszó</string>
     <string name="account_setup_oauth_description">Ezen e-mail-fiók K-9 Maillel történő használatához be kell jelentkeznie, és hozzáférést kell adnia az alkalmazásnak az e-mailjeihez.</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in">Bejelentkezés</string>
@@ -286,7 +284,6 @@
     <string name="account_setup_basics_show_password_need_lock">Ha itt szeretné megtekinteni jelszavát, engedélyezze a képernyőzárat ezen az eszközön.</string>
     <string name="account_setup_basics_show_password_biometrics_title">Személyazonosság ellenőrzése</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Feloldás a jelszó megtekintéséhez</string>
-    <string name="account_setup_basics_manual_setup_action">Kézi beállítás</string>
     <string name="account_setup_check_settings_retr_info_msg">Fiókinformációk beolvasása\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Bejövő kiszolgálóbeállítások ellenőrzése\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Kimenő kiszolgálóbeállítások ellenőrzése\u2026</string>
@@ -763,7 +760,6 @@
     <string name="settings_import_status_not_imported">Nincs importálva</string>
     <string name="settings_import_status_error">Importálási hiba</string>
     <string name="settings_import_later_button">Később</string>
-    <string name="settings_import">Beállítások importálása</string>
     <string name="settings_importing">Beállítások importálása…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">Ahhoz, hogy képes legyen használni a(z) „<xliff:g id="account">%s</xliff:g>” fiókot, meg kell adnia a kiszolgáló jelszavát.</item>
@@ -853,11 +849,9 @@
     <string name="fetching_attachment_dialog_message">Melléklet letöltése…</string>
     <string name="auth_external_error">Nem lehet hitelesíteni. A kiszolgáló nem teszi közzé a SASL EXTERNAL képességet. Ezt okozhatja egy probléma a kliens tanúsítványával (lejárt, ismeretlen hitelesítésszolgáltató) vagy bármilyen egyéb beállítási probléma.</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">Ügyféltanúsítvány használata</string>
     <string name="client_certificate_spinner_empty">Nincs ügyféltanúsítvány</string>
     <string name="client_certificate_spinner_delete">Ügyféltanúsítvány kiválasztásának eltávolítása</string>
     <string name="client_certificate_retrieval_failure">Nem sikerült lekérni az ügyféltanúsítványt a következő álnévhez: „<xliff:g id="alias">%s</xliff:g>”</string>
-    <string name="client_certificate_advanced_options">Speciális beállítások</string>
     <string name="client_certificate_expired">A(z) „<xliff:g id="certificate_alias">%1$s</xliff:g>” ügyféltanúsítvány lejárt vagy még nem érvényes (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Titkosított*</string>

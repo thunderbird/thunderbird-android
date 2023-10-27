@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
@@ -201,13 +201,9 @@
     <string name="quiet_time_starts">უხმაურობის დროის დასაწყისი</string>
     <string name="quiet_time_ends">უხმაურობის დროის დასასრული</string>
     <string name="account_setup_basics_title">ახალი ანგარიშის გამართვა</string>
-    <string name="account_setup_basics_email_hint">ელფოსტის მისამართი</string>
-    <string name="account_setup_basics_password_hint">პაროლი</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-    <string name="account_setup_basics_manual_setup_action">ხელით გამართვა</string>
-    <string name="account_setup_check_settings_title" />
     <string name="account_setup_check_settings_check_incoming_msg">შემავალი სერვერის პარამეტრების შემოწმება\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">გამავალი სერვერის პარამეტრების შემოწმება\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">გაუქმება\u2026</string>
@@ -469,7 +465,6 @@
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
     <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import">პარამეტრების იმპორტირება</string>
     <string name="settings_importing">პარამეტრების იმპორტირება...</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">ანგარიშის „<xliff:g id="account">%s</xliff:g>“ გამოსაყენებლად, საჭიროა სერვერის პაროლის მითითება.</item>
@@ -517,8 +512,6 @@
     <string name="mark_all_as_read">ყველას მონიშვნა წაკითხულად</string>
     <string name="fetching_attachment_dialog_title_save">მონახაზის შენახვა</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">კლიენტის სერტიფიკატის გამოყენება</string>
-    <string name="client_certificate_advanced_options">გაფართოებული პარამეტრები</string>
     <string name="client_certificate_expired">კლიენტის სერტიფიკატი \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" ვადაგასულია ან ჯერ არ არის ვალიდური (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*დაშიფრული*</string>

@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_options_account_name_error_blank">Nome account non può essere vuoto</string>
+    <string name="account_setup_options_account_check_frequency_label">Frequenza controllo</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Configura automaticamente</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Questa configurazione non è attendibile</string>
+    <string name="account_setup_button_finish">Finito</string>
+    <string name="account_setup_options_email_signature_label">Firma email</string>
+    <string name="account_setup_options_email_display_count_label">Numero di messaggi da visualizzare</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Configura manualmente</string>
+    <string name="account_setup_options_email_signature_error_blank">Il nome della firma email non può essere vuoto</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">È necessario approvare la configurazione</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Abbiamo ricevuto la configurazione del server di posta elettronica tramite una connessione non sicura come vorremmo. C\'è dunque una possibilità che qualcuno possa averla modificata. Potresti ricontrollare la configurazione per assicurarti che sia affidabile\?</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Modifica configurazione</string>
+    <string name="account_setup_error_unknown">Errore sconosciuto</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Configurazione non trovata</string>
+    <string name="account_setup_options_top_bar_title">Opzioni account</string>
+    <string name="account_setup_options_account_name_label">Nome account</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Configurazione trovata</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">Indirizzo email obbligatorio</string>
+    <string name="account_setup_options_display_name_label">Nome da visualizzare</string>
+    <string name="account_setup_auto_discovery_loading_error">Impossibile caricare configurazione email</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Mi fido di questa configurazione</string>
+    <string name="account_setup_options_display_name_error_required">Il nome da visualizzare è obbligatorio</string>
+    <string name="account_setup_error_network">Rete</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Indirizzo email non valido</string>
+    <string name="account_setup_options_email_check_frequency_never">Mai</string>
+    <string name="account_setup_auto_discovery_loading_message">Ricerca configurazione email</string>
+    <string name="account_setup_options_section_sync_options_">Opzioni di sincronizzazione</string>
+    <string name="account_setup_options_show_notifications_label">Mostra notifiche</string>
+    <string name="account_setup_options_section_display_options">Opzioni di visualizzazione</string>
+    <string name="account_setup_title">K-9 Mail</string>
+</resources>

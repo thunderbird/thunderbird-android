@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_settings_validation_error_username_required">사용자명이 필요합니다.</string>
+    <string name="account_server_settings_authentication_password_encrypted">암호화된 비밀번호</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">IMAP 네임스페이스 자동 탐지</string>
+    <string name="account_server_settings_incoming_top_bar_title">수신 서버 설정</string>
+    <string name="account_server_settings_authentication_label">인증</string>
+    <string name="account_server_settings_port_label">포트</string>
+    <string name="account_server_settings_authentication_client_certificate">클라이언트 인증서</string>
+    <string name="account_server_settings_protocol_type_label">프로토콜</string>
+    <string name="account_server_settings_username_label">사용자명</string>
+    <string name="account_server_settings_validation_error_port_invalid">포트가 유효하지 않음(1-65535 사이).</string>
+    <string name="account_server_settings_client_certificate_label">클라이언트 인증서</string>
+    <string name="account_server_settings_server_label">서버</string>
+    <string name="account_server_settings_security_label">보안</string>
+</resources>
