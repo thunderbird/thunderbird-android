@@ -28,4 +28,7 @@
     <string name="account_server_settings_client_certificate_none_selected">Cap</string>
     <string name="account_server_settings_server_label">Servidor</string>
     <string name="account_server_settings_security_label">Seguretat</string>
+    <string name="account_server_settings_password_authentication_title">Verifiqueu la vostra identitat</string>
+    <string name="account_server_settings_password_authentication_subtitle">Desbloqueu-ho per veure la contrasenya</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">Per veure la contrasenya aquí, activeu el bloqueig de pantalla en aquest dispositiu.</string>
 </resources>

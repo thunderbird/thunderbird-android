@@ -1,2 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_settings_validation_error_server_required">Le nom du serveur est requis.</string>
+    <string name="account_server_settings_validation_error_username_required">Le nom d\'utilisateur est requis.</string>
+    <string name="account_server_settings_outgoing_top_bar_title">Paramètres du serveur sortant</string>
+    <string name="account_server_settings_validation_error_password_required">Le mot de passe est requis.</string>
+    <string name="account_server_settings_incoming_imap_send_client_id_label">Envoyer l\'ID du client</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
+    <string name="account_server_settings_authentication_none">Aucune</string>
+    <string name="account_server_settings_authentication_password_encrypted">Mot de passe chiffré</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">Détection automatique de l\'espace de nommage IMAP</string>
+    <string name="account_server_settings_incoming_top_bar_title">Paramètres du serveur entrant</string>
+    <string name="account_server_settings_authentication_password_cleartext">Mot de passe normal</string>
+    <string name="account_server_settings_password_authentication_title">Confirmer votre identité</string>
+    <string name="account_server_settings_authentication_label">Authentification</string>
+    <string name="account_server_settings_connection_security_none">Aucune</string>
+    <string name="account_server_settings_port_label">Port</string>
+    <string name="account_server_settings_incoming_imap_compression_label">Utiliser la compression</string>
+    <string name="account_server_settings_validation_error_port_required">Le port est requis.</string>
+    <string name="account_server_settings_authentication_client_certificate">Certificat client</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">Préfixe du chemin IMAP</string>
+    <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
+    <string name="account_server_settings_protocol_type_label">Protocole</string>
+    <string name="account_server_settings_password_authentication_subtitle">Déverrouillez pour afficher votre mot de passe</string>
+    <string name="account_server_settings_username_label">Non d\'utilisateur</string>
+    <string name="account_server_settings_validation_error_port_invalid">Le port est invalide (entre 1 et 65535).</string>
+    <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
+    <string name="account_server_settings_client_certificate_label">Certificat client</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">Le préfixe IMAP ne peut pas être vide.</string>
+    <string name="account_server_settings_client_certificate_none_selected">Aucun</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">Pour afficher votre mot de passe ici, activez le verrouillage de l\'écran de votre appareil.</string>
+    <string name="account_server_settings_server_label">Serveur</string>
+    <string name="account_server_settings_security_label">Sécurité</string>
+</resources>

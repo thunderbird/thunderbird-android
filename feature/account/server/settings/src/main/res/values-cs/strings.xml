@@ -1,2 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_settings_validation_error_server_required">Název serveru je vyžadován.</string>
+    <string name="account_server_settings_validation_error_username_required">Uživatelské jméno je vyžadováno.</string>
+    <string name="account_server_settings_outgoing_top_bar_title">Nastavení serveru odchozí pošty</string>
+    <string name="account_server_settings_validation_error_password_required">Heslo je vyžadováno.</string>
+    <string name="account_server_settings_incoming_imap_send_client_id_label">Odeslat ID klienta</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
+    <string name="account_server_settings_authentication_none">Žádné</string>
+    <string name="account_server_settings_authentication_password_encrypted">Zašifrované heslo</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">Zjistit jmenný prostor IMAP automaticky</string>
+    <string name="account_server_settings_incoming_top_bar_title">Nastavení serveru příchozí pošty</string>
+    <string name="account_server_settings_authentication_password_cleartext">Normální heslo</string>
+    <string name="account_server_settings_password_authentication_title">Ověřte svou identitu</string>
+    <string name="account_server_settings_authentication_label">Typ ověření</string>
+    <string name="account_server_settings_connection_security_none">Žádné</string>
+    <string name="account_server_settings_port_label">Port</string>
+    <string name="account_server_settings_incoming_imap_compression_label">Komprimovat</string>
+    <string name="account_server_settings_validation_error_port_required">Port je vyžadován.</string>
+    <string name="account_server_settings_authentication_client_certificate">Klientský certifikát</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">Předpona cesty IMAP</string>
+    <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
+    <string name="account_server_settings_protocol_type_label">Protokol</string>
+    <string name="account_server_settings_password_authentication_subtitle">Pokud chcete vidět své heslo, odemkněte</string>
+    <string name="account_server_settings_username_label">Uživatelské jméno</string>
+    <string name="account_server_settings_validation_error_port_invalid">Port je neplatný (musí být 1–65535).</string>
+    <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
+    <string name="account_server_settings_client_certificate_label">Klientský certifikát</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">Předpona IMAP nemůže být prázdná.</string>
+    <string name="account_server_settings_client_certificate_none_selected">Žádný</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">Pokud si zde chcete zobrazit své heslo, zapněte zamykání obrazovky tohoto zařízení.</string>
+    <string name="account_server_settings_server_label">Server</string>
+    <string name="account_server_settings_security_label">Typ zabezpečení</string>
+</resources>

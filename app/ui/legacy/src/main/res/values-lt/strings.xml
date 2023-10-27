@@ -271,8 +271,6 @@
     <string name="quiet_time_starts">Tylos laikas prasideda</string>
     <string name="quiet_time_ends">Tylos laikas baigiasi</string>
     <string name="account_setup_basics_title">Nustatyti naują paskyrą</string>
-    <string name="account_setup_basics_email_hint">El. pašto adresas</string>
-    <string name="account_setup_basics_password_hint">Slaptažodis</string>
     <string name="account_setup_oauth_description">Norėdami naudoti šią el. pašto paskyrą su K-9 Mail, turite prisijungti ir suteikti programėlei prieigą prie savo el. laiškų.</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in">Prisijungti</string>
@@ -282,7 +280,6 @@
     <string name="account_setup_basics_show_password_need_lock">Norėdami čia peržiūrėti slaptažodį, įjunkite ekrano užraktą šiame prietaise.</string>
     <string name="account_setup_basics_show_password_biometrics_title">Patvirtinkite savo tapatybę</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Atrakinkite norint peržiūrėti savo slaptažodį</string>
-    <string name="account_setup_basics_manual_setup_action">Rankinis nustatymas</string>
     <string name="account_setup_check_settings_retr_info_msg">Gaunama paskyros informacija\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Tikrinami gaunamųjų serverio nustatymai\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Tikrinami siunčiamųjų serverio nustatymai\u2026</string>
@@ -761,7 +758,6 @@
     <string name="settings_import_status_not_imported">Neimportuota</string>
     <string name="settings_import_status_error">Importo sutrikimas</string>
     <string name="settings_import_later_button">Vėliau</string>
-    <string name="settings_import">Importuoti nustatymus</string>
     <string name="settings_importing">Importuojami nustatymai…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">Kad galėtumėte naudotis paskyra \"<xliff:g id="account">%s</xliff:g>\", turite nurodyti serverio slaptažodį.</item>
@@ -857,11 +853,9 @@
     <string name="fetching_attachment_dialog_message">Gaunamas priedas…</string>
     <string name="auth_external_error">Nepavyksta patvirtinti autentiškumo. Serveris nereklamuoja SASL EXTERNAL galimybės. Taip gali būti dėl kliento sertifikato problemos (pasibaigęs sertifikato galiojimo laikas, nežinoma sertifikato institucija) arba kitos konfigūracijos problemos.</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">Naudoti kliento sertifikatą</string>
     <string name="client_certificate_spinner_empty">Nėra kliento sertifikato</string>
     <string name="client_certificate_spinner_delete">Pašalinti kliento sertifikato pasirinkimą</string>
     <string name="client_certificate_retrieval_failure">Nepavyko gauti kliento sertifikato slapyvardžiui \"<xliff:g id="alias">%s</xliff:g>\"</string>
-    <string name="client_certificate_advanced_options">Išplėstinės parinktys</string>
     <string name="client_certificate_expired">Kliento sertifikato \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" galiojimo laikas baigėsi arba jis dar negalioja (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Užšifruotas*</string>

@@ -1,2 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_settings_validation_error_server_required">Servernaam is vereist.</string>
+    <string name="account_server_settings_validation_error_username_required">Gebruikersnaam is vereist.</string>
+    <string name="account_server_settings_outgoing_top_bar_title">Uitgaande serverinstellingen</string>
+    <string name="account_server_settings_validation_error_password_required">Wachtwoord is vereist.</string>
+    <string name="account_server_settings_incoming_imap_send_client_id_label">Client-ID versturen</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
+    <string name="account_server_settings_authentication_none">Geen</string>
+    <string name="account_server_settings_authentication_password_encrypted">Versleuteld wachtwoord</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">IMAP-namespace automatisch detecteren</string>
+    <string name="account_server_settings_incoming_top_bar_title">Inkomende serverinstellingen</string>
+    <string name="account_server_settings_authentication_password_cleartext">Normaal wachtwoord</string>
+    <string name="account_server_settings_password_authentication_title">Uw identiteit verifiëren</string>
+    <string name="account_server_settings_authentication_label">Authenticatie</string>
+    <string name="account_server_settings_connection_security_none">Geen</string>
+    <string name="account_server_settings_port_label">Poort</string>
+    <string name="account_server_settings_incoming_imap_compression_label">Compressie gebruiken</string>
+    <string name="account_server_settings_validation_error_port_required">Poort is vereist.</string>
+    <string name="account_server_settings_authentication_client_certificate">Clientcertificaat</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">Prefix IMAP-pad</string>
+    <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
+    <string name="account_server_settings_protocol_type_label">Protocol</string>
+    <string name="account_server_settings_password_authentication_subtitle">Ontgrendel om uw wachtwoord te zien</string>
+    <string name="account_server_settings_username_label">Gebruikersnaam</string>
+    <string name="account_server_settings_validation_error_port_invalid">Poort is ongeldig (moet liggen tussen 1-65535).</string>
+    <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
+    <string name="account_server_settings_client_certificate_label">Clientcertificaat</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">Imap-prefix mag niet leeg zijn.</string>
+    <string name="account_server_settings_client_certificate_none_selected">Geen</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">Schakel schermbeveiliging op dit apparaat in, om hier uw wachtwoord te zien.</string>
+    <string name="account_server_settings_server_label">Server</string>
+    <string name="account_server_settings_security_label">Beveiliging</string>
+</resources>

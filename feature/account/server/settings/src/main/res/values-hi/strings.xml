@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_server_settings_validation_error_server_required">सर्वर नाम ज़रूरी है।</string>
+    <string name="account_server_settings_validation_error_username_required">यूज़रनेम ज़रूरी है।</string>
+    <string name="account_server_settings_outgoing_top_bar_title">आउटगोइंग सर्वर सेटिंग</string>
+    <string name="account_server_settings_validation_error_password_required">पासवर्ड ज़रूरी है।</string>
+    <string name="account_server_settings_incoming_imap_send_client_id_label">क्लाइंट आईडी भेजें</string>
+    <string name="account_server_settings_authentication_client_oauth">ओऑथ 2.0</string>
+    <string name="account_server_settings_authentication_none">कुछ नहीं</string>
+    <string name="account_server_settings_authentication_password_encrypted">एंक्रिप्टेड पासवर्ड</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">आईमैप नेमस्पेस अपनेआप डिटेक्ट करें</string>
+    <string name="account_server_settings_incoming_top_bar_title">इनकमिंग सर्वर सेटिंग</string>
+    <string name="account_server_settings_authentication_password_cleartext">नॉर्मल पासवर्ड</string>
+    <string name="account_server_settings_password_authentication_title">अपनी आईडी वेरिफाइ करें</string>
+    <string name="account_server_settings_authentication_label">ऑथेंटिकेशन</string>
+    <string name="account_server_settings_connection_security_none">कुछ नहीं</string>
+    <string name="account_server_settings_port_label">पोर्ट</string>
+    <string name="account_server_settings_incoming_imap_compression_label">कम्प्रैशन इस्तेमाल करें</string>
+    <string name="account_server_settings_validation_error_port_required">पोर्ट ज़रूरी है।</string>
+    <string name="account_server_settings_authentication_client_certificate">क्लाइंट सर्टिफिकेट</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">आइमैप पाथ प्रीफिक्स</string>
+    <string name="account_server_settings_connection_security_ssl">एसएसएल/टीएलएस</string>
+    <string name="account_server_settings_protocol_type_label">प्रोटोकॉल</string>
+    <string name="account_server_settings_password_authentication_subtitle">अपना पासवर्ड देखने के लिए खोलें</string>
+    <string name="account_server_settings_username_label">यूज़रनेम</string>
+    <string name="account_server_settings_validation_error_port_invalid">पोर्ट गलत है (सिर्फ 1-65535 हो सकता है)।</string>
+    <string name="account_server_settings_connection_security_start_tls">टीएलएस शुरू करें</string>
+    <string name="account_server_settings_client_certificate_label">क्लाइंट सर्टिफिकेट</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">आईमैप प्रीफिक्स खाली नहीं हो सकता।</string>
+    <string name="account_server_settings_client_certificate_none_selected">कुछ नहीं</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">यहां अपना पासवर्ड देखने के लिए इस डिवाइस पे स्क्रीन लॉक लगाएं।</string>
+    <string name="account_server_settings_server_label">सर्वर</string>
+    <string name="account_server_settings_security_label">सेक्योरिटी</string>
+</resources>

@@ -1,2 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_incoming_loading_message">Controle inkomende serverinstellingen…</string>
+    <string name="account_server_validation_error_authentication">Authenticatiefout</string>
+    <string name="account_server_validation_error_certificate">Certificaatfout</string>
+    <string name="account_server_validation_outgoing_loading_message">Controle uitgaande serverinstellingen…</string>
+    <string name="account_server_validation_error_network">Netwerkfout</string>
+    <string name="account_server_validation_outgoing_success">Controle uitgaande serverinstellingen zijn geldig!</string>
+    <string name="account_server_validation_error_unknown">Onbekende fout</string>
+    <string name="account_server_validation_sign_in">Meld u aan</string>
+    <string name="account_server_validation_outgoing_loading_error">Controle uitgaande serverinstellingen mislukt!</string>
+    <string name="account_server_validation_incoming_success">Inkomende serverinstellingen zijn valide!</string>
+    <string name="account_server_validation_incoming_loading_error">Controle inkomende serverinstellingen mislukt!</string>
+    <string name="account_server_validation_error_server">Serverfout</string>
+</resources>

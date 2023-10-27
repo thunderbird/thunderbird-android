@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Seadista automaatselt</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">See seadistus ei ole usaldusväärne</string>
+    <string name="account_setup_button_finish">Lõpeta</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Seadista käsitsi</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Me laadisime sinu e-postikonto seadistused üle võrguühenduse, mis pole meie arvates piisavalt turvaline. See tähendab, et on pisikene võimalus, et väline osapool on neid muutnud. Palun topeltkontrolli, et näidatud seadistused on sellised, nagu nad peaksid olema, eksole\?</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Muuda seadistusi</string>
+    <string name="account_setup_error_unknown">Tundmatu viga</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Seadistusi ei õnnestunud leida</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Seadistused on tuvastatud</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">E-posti aadressi sisestamine on kohustuslik.</string>
+    <string name="account_setup_auto_discovery_loading_error">E-posti konto seadistuste tuvastamine ei õnnestunud</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Ma usaldan neid seadistusi</string>
+    <string name="account_setup_error_network">Võrk</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">E-posti aadress on vigane.</string>
+    <string name="account_setup_auto_discovery_loading_message">Tuvastame e-posti konto andmeid</string>
+    <string name="account_setup_title">K-9 Mail</string>
+    <string name="account_setup_options_account_name_error_blank">Kasutajakonto nimi ei saa olla tühi.</string>
+    <string name="account_setup_options_account_check_frequency_label">Kirjade kontrollimise sagedus</string>
+    <string name="account_setup_options_email_signature_label">E-kirja allkiri</string>
+    <string name="account_setup_options_email_display_count_label">Kuvatavate kirjade arv</string>
+    <string name="account_setup_options_email_signature_error_blank">E-kirja allkiri ei saa olla tühi.</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">On nõutav, et saa nõustud nende seadistustega.</string>
+    <string name="account_setup_options_top_bar_title">Konto valikud</string>
+    <string name="account_setup_options_account_name_label">Kasutajakonto nimi</string>
+    <string name="account_setup_options_display_name_label">Kuvatav nimi</string>
+    <string name="account_setup_options_display_name_error_required">Kuvatav nimi peab olema sisestatud.</string>
+    <string name="account_setup_options_email_check_frequency_never">Mitte kunagi</string>
+    <string name="account_setup_options_section_sync_options_">Sünkroniseerimisvalikud</string>
+    <string name="account_setup_options_show_notifications_label">Näita teavitusi</string>
+    <string name="account_setup_options_section_display_options">Kuvatavad valikud</string>
+</resources>

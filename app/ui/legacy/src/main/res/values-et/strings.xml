@@ -19,7 +19,7 @@
     <string name="about_libraries">Teegid</string>
     <string name="license">Litsents</string>
     <string name="changelog_title">Muudatuste logi</string>
-    <string name="changelog_loading_error">Muudatuste logi laadimine ei õnnestunud</string>
+    <string name="changelog_loading_error">Muudatuste logi laadimine ei õnnestunud.</string>
     <string name="changelog_version_title">Versioon %s</string>
     <string name="changelog_recent_changes_title">Rakenduse muudatused</string>
     <string name="changelog_show_recent_changes">Pärast rakenduse uuendamist näita viimaseid muudatusi</string>
@@ -149,7 +149,7 @@
     <string name="notification_channel_messages_title">E-kirjad</string>
     <string name="notification_channel_messages_description">E-kirjadega seotud teated</string>
     <string name="notification_channel_miscellaneous_title">Muu</string>
-    <string name="notification_channel_miscellaneous_description">Mitmesugused teated nagu vead jms</string>
+    <string name="notification_channel_miscellaneous_description">Mitmesugused teated nagu vead jms.</string>
     <string name="special_mailbox_name_inbox">Sisendkaust</string>
     <string name="special_mailbox_name_outbox">Väljundkast</string>
     <string name="special_mailbox_name_drafts">Mustandid</string>
@@ -179,8 +179,8 @@
     <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g>  kirjutas:</string>
     <string name="message_compose_error_no_recipients">Pead kirjale lisama vähemalt ühe saaja.</string>
     <string name="compose_error_incomplete_recipient">Kirja saaja väli on puudulikult täidetud!</string>
-    <string name="error_contact_address_not_found">Selle kontakti e-posti aadressi ei leita</string>
-    <string name="message_compose_attachments_skipped_toast">Mõnda manust ei saa edasi saata, kuna seda pole alla laaditud</string>
+    <string name="error_contact_address_not_found">Ei õnnestu leida selle e-posti aadressi kontaktkirjet.</string>
+    <string name="message_compose_attachments_skipped_toast">Mõnda manust ei saa edasi saata, kuna seda pole alla laaditud.</string>
     <string name="message_compose_attachments_forward_toast">Sõnumit ei saa edastada kuna mõnda manust pole alla laaditud.</string>
     <string name="message_compose_show_quoted_text_action">Kaasa osundatud kiri</string>
     <string name="message_compose_description_delete_quoted_text">Eemalda osundatud tekst</string>
@@ -189,7 +189,7 @@
     <string name="message_to_label">Kellele:</string>
     <string name="message_view_cc_label">Koopia:</string>
     <string name="message_view_bcc_label">Pimekoopia:</string>
-    <string name="message_view_status_attachment_not_saved">Manuse salvestamine ebaõnnestus</string>
+    <string name="message_view_status_attachment_not_saved">Manuse salvestamine ei õnnestunud.</string>
     <!--Used to display the recipient list in the message view screen.-->
     <string name="message_view_recipients_format">saajaks <xliff:g id="recipients">%s</xliff:g></string>
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
@@ -276,8 +276,6 @@
     <string name="quiet_time_starts">Vaikne aeg algab</string>
     <string name="quiet_time_ends">Vaikne aeg lõpeb</string>
     <string name="account_setup_basics_title">Seadista uus konto</string>
-    <string name="account_setup_basics_email_hint">E-posti aadress</string>
-    <string name="account_setup_basics_password_hint">Salasõna</string>
     <string name="account_setup_oauth_description">Kui soovid seda e-posti teenust kasutada K-9 e-postikliendiga, siis logi teenusesse ja anna rakendusele õigus e-kirju ligeda.</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in">Logi sisse</string>
@@ -287,7 +285,6 @@
     <string name="account_setup_basics_show_password_need_lock">Kui soovid siin näha salasõna, siis lülita sisse lukustuskuva kasutamine.</string>
     <string name="account_setup_basics_show_password_biometrics_title">Tuvasta oma isik</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Oma salasõna vaatamiseks eemalda lukustus</string>
-    <string name="account_setup_basics_manual_setup_action">Käsitsi seadistamine</string>
     <string name="account_setup_check_settings_retr_info_msg">Konto info hankimine\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Kontrollib sissetuleva meiliserveri sätteid\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Kontrollib väljamineva meiliserveri sätteid\u2026</string>
@@ -339,7 +336,7 @@
     <string name="account_setup_outgoing_smtp_server_label">SMTP server</string>
     <string name="account_setup_outgoing_port_label">Port</string>
     <string name="account_setup_outgoing_security_label">Turvalisus</string>
-    <string name="account_setup_outgoing_require_login_label">Nõuab sisselogimist</string>
+    <string name="account_setup_outgoing_require_login_label">Sisselogimine on nõutav.</string>
     <string name="account_setup_outgoing_username_label">Kasutajanimi</string>
     <string name="account_setup_outgoing_password_label">Salasõna</string>
     <string name="account_setup_outgoing_authentication_label">Autentimine</string>
@@ -380,8 +377,8 @@
     <string name="account_setup_failed_dlg_title">Seadistamist polnud võimalik lõpetada</string>
     <string name="account_setup_failed_dlg_auth_message_fmt">Vale kasutajanimi või salasõna.\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_certificate_message_fmt">Server esitles vigast SSL sertifikaati. Mõnikord juhtub see serveri vale konfiguratsiooni tõttu. Mõnikord seetõttu, et keegi proovib rünnata Sind või Sinu meiliserverit. Kui Sa ei ole kindel mis toimub, klõpsa Tühista ja võta ühendust tegelastega, kes haldavad su meiliserverit.
-
-(<xliff:g id="error">%s</xliff:g>)</string>
+\n
+\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_server_message_fmt">Ei saa serveriga ühendust.\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_oauth_flow_canceled">Autentimine on katkenud</string>
     <string name="account_setup_failed_dlg_oauth_flow_failed">Autentimine ei õnnestunud ja tekkis järgnev viga: <xliff:g id="error">%s</xliff:g></string>
@@ -766,7 +763,6 @@
     <string name="settings_import_status_not_imported">Ei imporditud</string>
     <string name="settings_import_status_error">Importimise viga</string>
     <string name="settings_import_later_button">Hiljem</string>
-    <string name="settings_import">Impordi sätted</string>
     <string name="settings_importing">Sätete importimine…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">„<xliff:g id="account">%s</xliff:g>“ konto kasutamiseks palun sisesta serveri salasõna.</item>
@@ -824,8 +820,8 @@
         <item quantity="other">Toon %d tulemust</item>
     </plurals>
     <plurals name="remote_search_downloading_limited">
-        <item quantity="one">Toon %1$d / %2$d tulemust</item>
-        <item quantity="other">Toon %1$d / %2$d tulemust</item>
+        <item quantity="one">Laadin %1$d / %2$d otsingutulemuse</item>
+        <item quantity="other">Laadin %1$d / %2$d otsingutulemust</item>
     </plurals>
     <string name="remote_search_error">Kaugotsing ebaõnnestus</string>
     <string name="account_settings_search">Otsi</string>
@@ -856,11 +852,9 @@
     <string name="fetching_attachment_dialog_message">Toob manust…</string>
     <string name="auth_external_error">Ei suuda autentida. Server ei kuuluta SASL EXTERNAL võimekust. See võib olla kliendi sertifikaadi (aegunud, võõras sertifitseerimisasutus) või mõne muu konfiguratsiooni probleemi tõttu.</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">Kasuta kliendi sertifikaati</string>
     <string name="client_certificate_spinner_empty">Kliendi sertifikaati ei ole</string>
     <string name="client_certificate_spinner_delete">Eemalda kliendi sertifikaadi valik</string>
     <string name="client_certificate_retrieval_failure">Sertifikaadi ei õnnestunud saada aliasele \"<xliff:g id="alias">%s</xliff:g>\"</string>
-    <string name="client_certificate_advanced_options">Täpsemad valikud</string>
     <string name="client_certificate_expired">Kliendi sertifikaat \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" ei ole veel kehtiv või on aegunud (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Krüpeeritud*</string>
@@ -907,7 +901,7 @@
     <string name="crypto_msg_unencrypted_sign_error">otspunkt-allkiri sisaldas viga</string>
     <string name="crypto_msg_incomplete_signed">krüptoallkirja töötlemiseks peab kiri olema tervikuna allalaaditud</string>
     <string name="crypto_msg_unsupported_signed">sisaldab läbiva krüptimise mittetoetatud allkirja</string>
-    <string name="crypto_msg_unsupported_encrypted">Sõnum on krüptitud, aga mittetoetatud vormingus</string>
+    <string name="crypto_msg_unsupported_encrypted">Sõnum on krüptitud, aga mittetoetatud vormingus.</string>
     <string name="crypto_msg_cancelled">Sõnum on krüptitud, kuid dekrüptimine katkes.</string>
     <string name="crypto_msg_title_unencrypted_signed_e2e">Läbivalt krüptitud tekstivormingus kiri</string>
     <string name="crypto_msg_unencrypted_sign_verified">kontrollitud saatjalt</string>
@@ -942,7 +936,7 @@
     <string name="locked_attach_unencrypted">See osa on krüptimata ja võib olla ebaturvaline.</string>
     <string name="locked_attach_title">Krüptimata manus</string>
     <string name="message_progress_text">Laeb…</string>
-    <string name="messageview_decrypt_cancelled">Dekrüptimine katkestati</string>
+    <string name="messageview_decrypt_cancelled">Dekrüptimine katkestati.</string>
     <string name="messageview_decrypt_retry">Korduskatse</string>
     <string name="messageview_decrypt_incomplete">Dekrüptimiseks peab krüptitud kiri olema tervikuna allalaaditud.</string>
     <string name="messageview_crypto_error_title">Viga meili dekrüptimisel</string>
@@ -968,7 +962,7 @@
     <string name="openpgp_description_text1">Kirja krüptimine tagab selle, et neid saab lugeda vaid saaja ning ei keegi teine.</string>
     <string name="openpgp_description_text3">Krüptimine on kasutusel, kui kõik saajad seda toetavad ning nad peavad olema varem sulle kirjutanud.</string>
     <string name="openpgp_description_text2">Ikooni klõpsimisel lülita krüptimine sisse/välja.</string>
-    <string name="openpgp_enabled_error_gotit">Arusaadav!</string>
+    <string name="openpgp_enabled_error_gotit">Arusaadav</string>
     <string name="openpgp_enabled_error_back">Tagasi</string>
     <string name="openpgp_enabled_error_disable">Blokeeri krüpteerimine</string>
     <string name="openpgp_encryption">OpenPGP krüpteerimine</string>
@@ -1014,7 +1008,7 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="push_notification_state_listening">Ootan uusi e-kirju</string>
     <string name="push_notification_state_wait_background_sync">Ootan taustal kuni sünkroniseerimine on lubatud</string>
     <string name="push_notification_state_wait_network">Ootan taustal kuni võrguühendus taastub</string>
-    <string name="push_notification_info">Lisateabe saamiseks klõpsi</string>
+    <string name="push_notification_info">Lisateabe saamiseks klõpsi.</string>
     <string name="push_info_title">Tõuketeenuste teave</string>
     <string name="push_info_notification_explanation_text">Tõuketeenuste kasutamiseks vajab K-9 Mail pidevat ühendust e-posti serveriga. Selleks eeldab Android K-9 Mail\'i taustatl töötamise ajal püsiteavituse kasutamist. %s</string>
     <string name="push_info_configure_notification_text">Siiski, Androidis saad sa ka teavituse peita.</string>
@@ -1065,7 +1059,7 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
     <string name="message_details_bcc_section_title">Pimekoopia</string>
     <!--Displayed when loading the message details has failed-->
-    <string name="message_details_loading_error">Kirja lisateabe laadimisel tekkis viga</string>
+    <string name="message_details_loading_error">Kirja lisateabe laadimisel tekkis viga.</string>
     <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
     <string name="action_add_to_contacts">Lisa kontaktide hulka</string>
     <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
@@ -1082,4 +1076,8 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="background_work_notification_remove_account">Eemaldame kontot…</string>
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="message_list_content_description_unread_prefix">lugemata, %s</string>
+    <string name="general_settings_post_remove_action_return_to_list">mine tagasi kirjade loendisse</string>
+    <string name="general_settings_post_remove_action_show_previous_message">näita eelmist kirja</string>
+    <string name="general_settings_post_remove_action_show_next_message">näita järgmist kirja</string>
+    <string name="general_settings_post_remove_action_title">Kirja kustutamisel või uued kohta tõstmisel</string>
 </resources>

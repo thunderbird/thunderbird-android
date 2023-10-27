@@ -1,2 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_options_account_name_error_blank">Tilin nimi ei voi olla tyhjä.</string>
+    <string name="account_setup_options_account_check_frequency_label">Tarkistusväli</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Määritä automaattisesti</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Tähän määritykseen ei luoteta</string>
+    <string name="account_setup_button_finish">Valmis</string>
+    <string name="account_setup_options_email_signature_label">Sähköpostin allekirjoitus</string>
+    <string name="account_setup_options_email_display_count_label">Näytettävien viestien määrä</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Määritä manuaalisesti</string>
+    <string name="account_setup_options_email_signature_error_blank">Sähköpostin allekirjoituksen nimi ei voi olla tyhjä.</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Vaaditaan tämän määrityksen hyväksymiseksi.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Muokkaa määritystä</string>
+    <string name="account_setup_error_unknown">Tuntematon virhe</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Määritystä ei löytynyt</string>
+    <string name="account_setup_options_top_bar_title">Tilin asetukset</string>
+    <string name="account_setup_options_account_name_label">Tilin nimi</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Määritys löytyi</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">Sähköpostiosoite vaaditaan.</string>
+    <string name="account_setup_options_display_name_label">Näyttönimi</string>
+    <string name="account_setup_auto_discovery_loading_error">Sähköpostin määrityksen lataaminen epäonnistui</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Luotan tähän määritykseen</string>
+    <string name="account_setup_options_display_name_error_required">Näyttönimi vaaditaan.</string>
+    <string name="account_setup_error_network">Verkko</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Sähköpostiosoite on virheellinen.</string>
+    <string name="account_setup_options_email_check_frequency_never">Ei koskaan</string>
+    <string name="account_setup_auto_discovery_loading_message">Etsitään sähköpostin tietoja</string>
+    <string name="account_setup_options_section_sync_options_">Synkronointiasetukset</string>
+    <string name="account_setup_options_show_notifications_label">Näytä ilmoitukset</string>
+    <string name="account_setup_options_section_display_options">Näkymäasetukset</string>
+    <string name="account_setup_title">K-9 Mail</string>
+</resources>

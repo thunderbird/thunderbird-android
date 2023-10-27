@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_options_account_name_error_blank">Kontu izenak ezin du hutsa egon.</string>
+    <string name="account_setup_options_account_check_frequency_label">Egiaztatze maiztasuna</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Konfiguratu automatikoki</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Konfigurazio hori ez da fidagarria</string>
+    <string name="account_setup_button_finish">Bukatu</string>
+    <string name="account_setup_options_email_signature_label">E-mail sinadura</string>
+    <string name="account_setup_options_email_display_count_label">Bistaratuko den mezu kopurua</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Eskuz konfiguratu</string>
+    <string name="account_setup_options_email_signature_error_blank">E-mail sinadura izenak ezin du hutsa izan.</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Konfigurazioa onartu egin behar da.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Erabat segurua ez den konexio baten bidez zure e-mail zerbitzariko ezarpenak jaso ditugu. Horrek esan nahi du aukera txiki bat eduki duela norbaitek ibilbidean zehar aldatzeko. Ziurta zenezake emandako konfigurazioa zuzena dela\?</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Editatu konfigurazioa</string>
+    <string name="account_setup_error_unknown">Errore ezezaguna</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Ez da ezarpenik aurkitu</string>
+    <string name="account_setup_options_top_bar_title">Kontu ezarpenak</string>
+    <string name="account_setup_options_account_name_label">Kontu izena</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Ezarpenak aurkitu dira</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">E-mail helbidea nahitaezkoa da.</string>
+    <string name="account_setup_options_display_name_label">Bistaratzeko izena</string>
+    <string name="account_setup_auto_discovery_loading_error">Akatsa e-mail konfigurazioa kargatzerakoan</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Konfigurazio honetan konfiantza dut</string>
+    <string name="account_setup_options_display_name_error_required">Bistaratzeko izena beharrezkoa da.</string>
+    <string name="account_setup_error_network">Sarea</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">E-mail helbidea ez da zuzena.</string>
+    <string name="account_setup_options_email_check_frequency_never">Inoiz ere ez</string>
+    <string name="account_setup_auto_discovery_loading_message">E-mail xehetasunak bilatzen</string>
+    <string name="account_setup_options_section_sync_options_">Sinkronizazio ezarpenak</string>
+    <string name="account_setup_options_show_notifications_label">Erakutsi jakinarazpenak</string>
+    <string name="account_setup_options_section_display_options">Pantaila ezarpenak</string>
+    <string name="account_setup_title">K-9 Mail</string>
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_oauth_sign_in_with_google_button">गूगल से साइनइन करें</string>
+    <string name="account_oauth_loading_error">ओऑथ साइनइन फेल</string>
+    <string name="account_oauth_error_failed">ऑथराइज़ेशन इस गड़बड़ के वजह से फेल हुआ: <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_error_browser_not_available">आपके अकाउंट का ऐक्सेस लेने के लिए ऐप को ब्राउज़र नहीं मिला।</string>
+    <string name="account_oauth_error_not_supported">ये प्रोवाइडर अभी ओऑथ 2.0 सपोर्ट नहीं करता।</string>
+    <string name="account_oauth_error_canceled">ऑथराइज़ेशन कैंसिल किया गया</string>
+    <string name="account_oauth_loading_message">ओऑथ से साइनइन कर रहे</string>
+    <string name="account_oauth_sign_in_description">हम आपको साइनइन करने के लिए आपके ईमेल प्रोवाइडर पे रीडायरेक्ट करेंगे। आपको ऐप को अपने ईमेल अकाउंट का ऐक्सेस देना होगा।</string>
+    <string name="account_oauth_sign_in_button">साइनइन करें</string>
+</resources>

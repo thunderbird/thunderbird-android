@@ -113,8 +113,7 @@
     <string name="status_network_error">Erreur de connexion</string>
     <string name="status_invalid_id_error">Courriel introuvable</string>
     <string name="status_loading_error">Erreur de chargement du courriel</string>
-    <string name="load_more_messages_fmt">Charger
-    jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
+    <string name="load_more_messages_fmt">Charger jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
     <string name="size_format_gigabytes">%.1f Go</string>
     <string name="size_format_megabytes">%.1f Mo</string>
     <string name="size_format_kilobytes">%.1f ko</string>
@@ -279,8 +278,6 @@
     <string name="quiet_time_starts">Début de la période calme</string>
     <string name="quiet_time_ends">Fin de la période calme</string>
     <string name="account_setup_basics_title">Configurer un nouveau compte</string>
-    <string name="account_setup_basics_email_hint">Adresse courriel</string>
-    <string name="account_setup_basics_password_hint">Mot de passe</string>
     <string name="account_setup_oauth_description">Pour utiliser ce compte de courriel avec Courriel K-9 Mail, vous devez vous connecter et accorder à l’appli l’accès à vos courriels.</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in">Connexion</string>
@@ -290,7 +287,6 @@
     <string name="account_setup_basics_show_password_need_lock">Pour visualiser votre mot de passe ici, activez le verrouillage de l’écran sur cet appareil.</string>
     <string name="account_setup_basics_show_password_biometrics_title">Confirmer votre identité</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Déverrouiller l’écran pour visualiser votre mot de passe</string>
-    <string name="account_setup_basics_manual_setup_action">Configuration manuelle</string>
     <string name="account_setup_check_settings_retr_info_msg">Récupération des renseignements de compte\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Vérification des paramètres du serveur entrant\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Vérification des paramètres du serveur sortant\u2026</string>
@@ -490,7 +486,7 @@
     <string name="account_settings_folder_display_mode_label">Dossiers à afficher</string>
     <string name="account_settings_folder_display_mode_all">Tous</string>
     <string name="account_settings_folder_display_mode_first_class">Seulement les dossiers de 1re classe</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">Les dossiers de 1re et 2e classes</string>
+    <string name="account_settings_folder_display_mode_first_and_second_class">Dossiers de 1re et 2e classes</string>
     <string name="account_settings_folder_display_mode_not_second_class">Tous sauf les dossiers de 2e classe</string>
     <string name="account_settings_folder_sync_mode_label">Dossiers à scruter</string>
     <string name="account_settings_folder_sync_mode_all">Tous</string>
@@ -501,7 +497,7 @@
     <string name="account_settings_folder_push_mode_label">Dossiers à pousser</string>
     <string name="account_settings_folder_push_mode_all">Tous</string>
     <string name="account_settings_folder_push_mode_first_class">Seulement les dossiers de 1re classe</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">Les dossiers de 1re et 2e classes</string>
+    <string name="account_settings_folder_push_mode_first_and_second_class">Dossiers de 1re et 2e classes</string>
     <string name="account_settings_folder_push_mode_not_second_class">Tous sauf les dossiers de 2e classe</string>
     <string name="account_settings_folder_push_mode_none">Aucun</string>
     <string name="account_settings_folder_target_mode_label">Dossiers de destination déplacer/copier</string>
@@ -720,9 +716,9 @@
     <string name="dialog_confirm_delete_title">Confirmer la suppression</string>
     <string name="dialog_confirm_delete_message">Voulez-vous supprimer ce courriel ?</string>
     <plurals name="dialog_confirm_delete_messages">
-        <item quantity="one">Voulez-vous vraiment supprimer ce courriel ?</item>
-        <item quantity="many">Voulez-vous vraiment supprimer les <xliff:g id="message_count">%1$d</xliff:g> courriels ?</item>
-        <item quantity="other">Voulez-vous vraiment supprimer les <xliff:g id="message_count">%1$d</xliff:g> courriels ?</item>
+        <item quantity="one">Voulez-vous vraiment supprimer ce courriel \?</item>
+        <item quantity="many">Voulez-vous vraiment supprimer les <xliff:g id="message_count">%1$d</xliff:g> de courriels \?</item>
+        <item quantity="other">Voulez-vous vraiment supprimer les <xliff:g id="message_count">%1$d</xliff:g> courriels \?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Oui</string>
     <string name="dialog_confirm_delete_cancel_button">Non</string>
@@ -734,9 +730,9 @@
     <string name="dialog_confirm_mark_all_as_read_cancel_button">Non</string>
     <string name="dialog_confirm_spam_title">Confirmer le déplacement vers le dossier des pourriels</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">Voulez-vous déplacer ce courriel vers le dossiers des pourriels\u00A0?</item>
-        <item quantity="many">Voulez-vous déplacer les <xliff:g id="message_count">%1$d</xliff:g> courriels vers le dossiers des pourriels ?</item>
-        <item quantity="other">Voulez-vous déplacer les <xliff:g id="message_count">%1$d</xliff:g> courriels vers le dossiers des pourriels ?</item>
+        <item quantity="one">Voulez-vous déplacer ce courriel vers le dossiers des pourriels \?</item>
+        <item quantity="many">Voulez-vous déplacer les <xliff:g id="message_count">%1$d</xliff:g> de courriels vers le dossiers des pourriels \?</item>
+        <item quantity="other">Voulez-vous déplacer les <xliff:g id="message_count">%1$d</xliff:g> courriels vers le dossiers des pourriels \?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Oui</string>
     <string name="dialog_confirm_spam_cancel_button">Non</string>
@@ -769,7 +765,6 @@
     <string name="settings_import_status_not_imported">N’a pas été importé</string>
     <string name="settings_import_status_error">Échec d’importation</string>
     <string name="settings_import_later_button">Plus tard</string>
-    <string name="settings_import">Importer les paramètres</string>
     <string name="settings_importing">Importation des paramètres…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">Pour utiliser le compte « <xliff:g id="account">%s</xliff:g> », vous devez indiquer le mot de passe du serveur.</item>
@@ -862,11 +857,9 @@
     <string name="fetching_attachment_dialog_message">Récupération du fichier joint…</string>
     <string name="auth_external_error">L’authentification est impossible. Le serveur n’annonce pas la fonction SASL EXTERNE. Cela pourrait être causé par un problème avec le certificat client (expiré, autorité de certification inconnue) ou quelque autre problème de configuration.</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">Utiliser le certificat client</string>
     <string name="client_certificate_spinner_empty">Aucun certificat client</string>
     <string name="client_certificate_spinner_delete">Supprimer le choix de certificat client</string>
     <string name="client_certificate_retrieval_failure">Échec de récupération du certificat client pour l’alias \« <xliff:g id="alias">%s</xliff:g>\ »</string>
-    <string name="client_certificate_advanced_options">Options avancées</string>
     <string name="client_certificate_expired">Le certificat client \« <xliff:g id="certificate_alias">%1$s</xliff:g>\ » est expiré ou n’est pas encore valide (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Chiffré*</string>
@@ -1083,4 +1076,8 @@
     <string name="background_work_notification_remove_account">Suppression du compte…</string>
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="message_list_content_description_unread_prefix">non lus, %s</string>
+    <string name="general_settings_post_remove_action_return_to_list">Retourner à la liste des messages</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Afficher le message précédent</string>
+    <string name="general_settings_post_remove_action_show_next_message">Afficher le message suivant</string>
+    <string name="general_settings_post_remove_action_title">Après avoir supprimé ou déplacé un message</string>
 </resources>

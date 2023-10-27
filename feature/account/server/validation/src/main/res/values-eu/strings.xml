@@ -1,2 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_incoming_loading_message">Sarrerako zerbitzariaren ezarpenak egiaztatzen…</string>
+    <string name="account_server_validation_error_authentication">Autentifikazio errorea</string>
+    <string name="account_server_validation_error_certificate">Ziurtagiri errorea</string>
+    <string name="account_server_validation_outgoing_loading_message">Irteerako zerbitzariaren ezarpenak egiaztatzen…</string>
+    <string name="account_server_validation_error_network">Sarearen errorea</string>
+    <string name="account_server_validation_outgoing_success">Irteerako zerbitzariaren ezarpenak zuzenak dira</string>
+    <string name="account_server_validation_error_unknown">Errore ezezaguna</string>
+    <string name="account_server_validation_sign_in">Mesedez hasi saioa</string>
+    <string name="account_server_validation_outgoing_loading_error">Akatsa irteerako zerbitzariaren ezarpenak egiaztatzerakoan</string>
+    <string name="account_server_validation_incoming_success">Sarrerako zerbitzariaren ezarpenak zuzenak dira</string>
+    <string name="account_server_validation_incoming_loading_error">Akatsa sarrerako zerbitzariaren ezarpenak egiaztatzean</string>
+    <string name="account_server_validation_error_server">Zerbitzariaren errorea</string>
+</resources>

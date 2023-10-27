@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="account_server_validation_incoming_loading_message">Sprawdzanie ustawień serwera przychodzącego…</string>
+    <string name="account_server_validation_incoming_loading_message">Sprawdzanie ustawień serwera poczty przychodzącej…</string>
     <string name="account_server_validation_error_authentication">Błąd autoryzacji</string>
     <string name="account_server_validation_error_certificate">Błąd certyfikatu</string>
-    <string name="account_server_validation_outgoing_loading_message">Sprawdzanie ustawień serwera wychodzącego…</string>
+    <string name="account_server_validation_outgoing_loading_message">Sprawdzanie ustawień serwera poczty wychodzącej…</string>
     <string name="account_server_validation_error_network">Błąd sieci</string>
-    <string name="account_server_validation_outgoing_success">Ustawienia serwera wychodzącego są prawidłowe!</string>
+    <string name="account_server_validation_outgoing_success">Ustawienia serwera poczty wychodzącej są prawidłowe</string>
     <string name="account_server_validation_error_unknown">Nieznany błąd</string>
     <string name="account_server_validation_sign_in">Zaloguj się</string>
-    <string name="account_server_validation_outgoing_loading_error">Sprawdzanie ustawień serwera wychodzącego nie powiodło się!</string>
-    <string name="account_server_validation_incoming_success">Ustawienia serwera przychodzącego są prawidłowe!</string>
-    <string name="account_server_validation_incoming_loading_error">Sprawdzanie ustawień serwera przychodzącego nie powiodło się!</string>
+    <string name="account_server_validation_outgoing_loading_error">Sprawdzanie ustawień serwera poczty wychodzącej nie powiodło się</string>
+    <string name="account_server_validation_incoming_success">Ustawienia serwera poczty przychodzącej są prawidłowe</string>
+    <string name="account_server_validation_incoming_loading_error">Sprawdzanie ustawień serwera poczty przychodzącej nie powiodło się</string>
     <string name="account_server_validation_error_server">Błąd serwera</string>
 </resources>

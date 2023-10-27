@@ -2,14 +2,14 @@
 <resources>
     <string name="account_server_settings_validation_error_server_required">A kiszolgálónév megadása szükséges.</string>
     <string name="account_server_settings_validation_error_username_required">A felhasználónév megadása szükséges.</string>
-    <string name="account_server_settings_outgoing_top_bar_title">Kimenő kiszolgáló beállításai</string>
+    <string name="account_server_settings_outgoing_top_bar_title">Kimenő kiszolgáló beállítások</string>
     <string name="account_server_settings_validation_error_password_required">A jelszó megadása szükséges.</string>
     <string name="account_server_settings_incoming_imap_send_client_id_label">Ügyfél azonosító küldése</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_authentication_none">Nincs</string>
     <string name="account_server_settings_authentication_password_encrypted">Titkosított jelszó</string>
     <string name="account_server_settings_incoming_imap_namespace_label">IMAP névtér automatikus felismerése</string>
-    <string name="account_server_settings_incoming_top_bar_title">Bejövő kiszolgáló beállításai</string>
+    <string name="account_server_settings_incoming_top_bar_title">Bejövő kiszolgáló beállítások</string>
     <string name="account_server_settings_authentication_password_cleartext">Normál jelszó</string>
     <string name="account_server_settings_authentication_label">Hitelesítés</string>
     <string name="account_server_settings_connection_security_none">Nincs</string>
@@ -24,8 +24,11 @@
     <string name="account_server_settings_validation_error_port_invalid">A port érvénytelen (legyen 1–65535 között).</string>
     <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
     <string name="account_server_settings_client_certificate_label">Ügyfél tanúsítvány</string>
-    <string name="account_server_settings_validation_error_imap_prefix_blank">Az imap előtag nem lehet üres.</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">Az IMAP előtag nem lehet üres.</string>
     <string name="account_server_settings_client_certificate_none_selected">Nincs</string>
     <string name="account_server_settings_server_label">Kiszolgáló</string>
     <string name="account_server_settings_security_label">Biztonság</string>
+    <string name="account_server_settings_password_authentication_title">Személyazonosság igazolása</string>
+    <string name="account_server_settings_password_authentication_subtitle">Feloldás a jelszó megtekintéséhez</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">A jelszó megtekintéséhez itt engedélyezzük a képernyőzárat ezen az eszközön.</string>
 </resources>

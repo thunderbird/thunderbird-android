@@ -275,8 +275,6 @@
     <string name="quiet_time_starts">免打扰时间开始</string>
     <string name="quiet_time_ends">免打扰时间结束</string>
     <string name="account_setup_basics_title">设置新账户</string>
-    <string name="account_setup_basics_email_hint">电子邮件地址</string>
-    <string name="account_setup_basics_password_hint">密码</string>
     <string name="account_setup_oauth_description">要通过 K-9 Mail 使用这个电子邮件账户，你需要登录并授予应用访问你电子邮件的权限。</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in">登录</string>
@@ -286,7 +284,6 @@
     <string name="account_setup_basics_show_password_need_lock">要查看您的密码，请在此设备上启用屏幕锁定。</string>
     <string name="account_setup_basics_show_password_biometrics_title">验证你的身份</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">解锁查看你的密码</string>
-    <string name="account_setup_basics_manual_setup_action">手工设置</string>
     <string name="account_setup_check_settings_retr_info_msg">正在获取账户信息\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">正在检查收件服务器设置\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">正在检查发件服务器设置\u2026</string>
@@ -761,7 +758,6 @@
     <string name="settings_import_status_not_imported">没有导入</string>
     <string name="settings_import_status_error">导入失败</string>
     <string name="settings_import_later_button">之后</string>
-    <string name="settings_import">导入设置</string>
     <string name="settings_importing">正在导入设置……</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="other">您需要提供服务器密码才能够使用账户 \"<xliff:g id="account">%s</xliff:g>\"。</item>
@@ -848,11 +844,9 @@
     <string name="fetching_attachment_dialog_message">正在获取附件…</string>
     <string name="auth_external_error">无法认证。服务器未公告 SASL EXTERNAL 。这可能是由于客户端证书有问题（已过期，或者未知的认证机构），或者是由于其它的配置问题。</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">使用客户端证书</string>
     <string name="client_certificate_spinner_empty">无客户端证书</string>
     <string name="client_certificate_spinner_delete">移客户端证书选择</string>
     <string name="client_certificate_retrieval_failure">无法获取别名 \"<xliff:g id="alias">%s</xliff:g>\" 的客户端证书</string>
-    <string name="client_certificate_advanced_options">高级选项</string>
     <string name="client_certificate_expired">客户端证书 \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" 已经过期，或者尚未开始生效。（<xliff:g id="exception_message">%2$s</xliff:g>）</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*已加密*</string>
@@ -1073,4 +1067,5 @@
     <string name="general_settings_post_remove_action_show_previous_message">显示前一封邮件</string>
     <string name="general_settings_post_remove_action_show_next_message">显示下一封邮件</string>
     <string name="general_settings_post_remove_action_title">删除或移动邮件之后</string>
+    <string name="account_setup_check_settings_title">"      "</string>
 </resources>

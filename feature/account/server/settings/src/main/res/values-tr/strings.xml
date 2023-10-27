@@ -28,4 +28,7 @@
     <string name="account_server_settings_client_certificate_none_selected">Yok</string>
     <string name="account_server_settings_server_label">Sunucu</string>
     <string name="account_server_settings_security_label">Güvenlik</string>
+    <string name="account_server_settings_password_authentication_title">Kimliğinizi doğrulayın</string>
+    <string name="account_server_settings_password_authentication_subtitle">Parolanızı görmek için kilidi açın</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">Parolanızı burada görmek için ekran kilidini etkinleştirin.</string>
 </resources>

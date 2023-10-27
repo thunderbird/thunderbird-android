@@ -28,4 +28,7 @@
     <string name="account_server_settings_client_certificate_none_selected">Ekkert</string>
     <string name="account_server_settings_server_label">Póstþjónn</string>
     <string name="account_server_settings_security_label">Öryggi</string>
+    <string name="account_server_settings_password_authentication_title">Sannreyndu auðkennin þín</string>
+    <string name="account_server_settings_password_authentication_subtitle">Aflæstu til að sjá lykilorðið þitt</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">Til að sjá lykilorðið þitt hér, skaltu virkja skjálæsingu á þessu tæki.</string>
 </resources>

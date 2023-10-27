@@ -280,18 +280,15 @@
     <string name="quiet_time_starts">Doba klidu začíná</string>
     <string name="quiet_time_ends">Doba klidu končí</string>
     <string name="account_setup_basics_title">Založit nový účet</string>
-    <string name="account_setup_basics_email_hint">Emailová adresa</string>
-    <string name="account_setup_basics_password_hint">Heslo</string>
     <string name="account_setup_oauth_description">Pokud chcete tento e-mailový účet používat v K-9 mail, je třeba se přihlásit a udělit přístup k e-mailům.</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in">Přihlásit se</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in_with_google">Přihlási se prostřednictvím Google</string>
+    <string name="account_setup_oauth_sign_in_with_google">Přihlásit se prostřednictvím Google</string>
     <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
     <string name="account_setup_basics_show_password_need_lock">Pokud si zde chcete zobrazit své heslo, zapněte zamykání obrazovky tohoto zařízení.</string>
     <string name="account_setup_basics_show_password_biometrics_title">Ověřte svou identitu</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Pokud chcete vidět své heslo, odemkněte</string>
-    <string name="account_setup_basics_manual_setup_action">Ruční nastavení</string>
     <string name="account_setup_check_settings_retr_info_msg">Získávání informací o účtu\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Kontrola nastavení serveru příchozí pošty\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Kontrola nastavení serveru odchozí pošty\u2026</string>
@@ -330,7 +327,7 @@
     <string name="account_setup_expunge_policy_immediately">Ihned</string>
     <string name="account_setup_expunge_policy_on_poll">Při dotazování</string>
     <string name="account_setup_expunge_policy_manual">Pouze ručně</string>
-    <string name="account_setup_incoming_autodetect_namespace_label">Zjistit automaticky IMAP namespace</string>
+    <string name="account_setup_incoming_autodetect_namespace_label">Zjistit jmenný prostor IMAP automaticky</string>
     <string name="account_setup_incoming_imap_path_prefix_label">Předpona cesty IMAP</string>
     <string name="drafts_folder_label">Název složky Koncepty</string>
     <string name="sent_folder_label">Název složky Odeslaná</string>
@@ -387,8 +384,8 @@
     <string name="account_setup_failed_dlg_server_message_fmt">Nedaří se připojit k serveru. (<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_oauth_flow_canceled">Pověření zrušeno</string>
     <string name="account_setup_failed_dlg_oauth_flow_failed">Pověření se nezdařilo s následující chybou: <xliff:g id="error">%s</xliff:g></string>
-    <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 v tuto chvíli pro tohoto poskytovatele není podporováno.</string>
-    <string name="account_setup_failed_dlg_browser_not_found">Aplikaci se nedaří najít webový prohlížeč, který použít pro udělení přístupu k vašemu účtu.</string>
+    <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 není v současnosti tímto poskytovatelem podporováno.</string>
+    <string name="account_setup_failed_dlg_browser_not_found">Aplikaci se nepodařilo najít webový prohlížeč, který použít pro udělení přístupu k vašemu účtu.</string>
     <string name="account_setup_failed_dlg_edit_details_action">Upravit podrobnosti</string>
     <string name="account_setup_failed_dlg_continue_action">Pokračovat</string>
     <string name="account_settings_push_advanced_title">Rozšířené</string>
@@ -772,7 +769,6 @@
     <string name="settings_import_status_not_imported">Nenaimportováno</string>
     <string name="settings_import_status_error">Nezdar při importu</string>
     <string name="settings_import_later_button">Později</string>
-    <string name="settings_import">Importovat nastavení</string>
     <string name="settings_importing">Importování nastavení…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">Abyste mohli používat účet „<xliff:g id="account">%s</xliff:g>“, je třeba zadat heslo k serveru.</item>
@@ -868,11 +864,9 @@
     <string name="fetching_attachment_dialog_message">Stahuji přílohu…</string>
     <string name="auth_external_error">Nelze ověřit. Server neuvádí možnost SASL EXTERNAL. To by mohlo být kvůli problému s klientským certifikátem (vypršel, neznámá certifikační autorita), nebo nějaký jiný problém konfigurace.</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">Použít klientský certifikát</string>
     <string name="client_certificate_spinner_empty">Žádný klientský certifikát</string>
     <string name="client_certificate_spinner_delete">Odstranit výběr klientského certifikátu</string>
     <string name="client_certificate_retrieval_failure">Chyba při získání klientského certifikátu pro alias \"<xliff:g id="alias">%s</xliff:g>\"</string>
-    <string name="client_certificate_advanced_options">Pokročilé možnosti</string>
     <string name="client_certificate_expired">Klientský certifikát \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" vypršel nebo ještě není platný (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Zašifrováno*</string>
@@ -1091,4 +1085,10 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <string name="clipboard_label_name_and_email_address">Jméno a adresa</string>
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+    <string name="message_list_content_description_unread_prefix">nepřečteno, %s</string>
+    <string name="general_settings_post_remove_action_return_to_list">Vrátit se na seznam zpráv</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Zobrazit předchozí zprávu</string>
+    <string name="general_settings_post_remove_action_show_next_message">Zobrazit následující zprávu</string>
+    <string name="general_settings_post_remove_action_title">Po smazání nebo přesunu zprávy</string>
+    <string name="background_work_notification_remove_account">Odstraňování účtu…</string>
 </resources>

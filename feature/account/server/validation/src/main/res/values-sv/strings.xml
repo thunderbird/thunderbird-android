@@ -1,2 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_incoming_loading_message">Kontrollerar inkommande serverinställningar…</string>
+    <string name="account_server_validation_error_unknown">Okänt fel</string>
+    <string name="account_server_validation_incoming_loading_error">Kontrollera inkommande serverinställningar misslyckades</string>
+    <string name="account_server_validation_error_server">Serverfel</string>
+    <string name="account_server_validation_error_authentication">Autentiseringsfel</string>
+    <string name="account_server_validation_error_certificate">Certifikatfel</string>
+    <string name="account_server_validation_outgoing_loading_message">Kontrollerar utgående serverinställningar…</string>
+    <string name="account_server_validation_error_network">Nätverksfel</string>
+    <string name="account_server_validation_outgoing_success">Utgående serverinställningar är giltiga</string>
+    <string name="account_server_validation_sign_in">Var god logga in</string>
+    <string name="account_server_validation_outgoing_loading_error">Misslyckades att kontrollera inställningarna för utgående server</string>
+    <string name="account_server_validation_incoming_success">Inkommande serverinställningar är giltiga</string>
+</resources>

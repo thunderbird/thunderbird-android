@@ -276,8 +276,6 @@
     <string name="quiet_time_starts">Tyst tid börjar</string>
     <string name="quiet_time_ends">Tyst tid slutar</string>
     <string name="account_setup_basics_title">Konfigurera ett nytt konto</string>
-    <string name="account_setup_basics_email_hint">E-postadress</string>
-    <string name="account_setup_basics_password_hint">Lösenord</string>
     <string name="account_setup_oauth_description">För att använda detta e-postkonto med K-9 Mail måste du logga in och ge appen åtkomst till dina e-postmeddelanden.</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in">Logga in</string>
@@ -287,7 +285,6 @@
     <string name="account_setup_basics_show_password_need_lock">För att se ditt lösenord här, aktivera skärmlåset på denna enhet.</string>
     <string name="account_setup_basics_show_password_biometrics_title">Verifiera din identitet</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Lås upp för att se ditt lösenord</string>
-    <string name="account_setup_basics_manual_setup_action">Konfigurera manuellt</string>
     <string name="account_setup_check_settings_retr_info_msg">Hämtar kontoinformation\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Kontrollerar inställningar för inkommande server\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Kontrollerar inställningar för utgående server\u2026</string>
@@ -764,7 +761,6 @@
     <string name="settings_import_status_not_imported">Inte importerad</string>
     <string name="settings_import_status_error">Importfel</string>
     <string name="settings_import_later_button">Senare</string>
-    <string name="settings_import">Importera inställningar</string>
     <string name="settings_importing">Importerar inställningar…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">För att kunna använda kontot \"<xliff:g id="account">%s</xliff:g>\" måste du ange serverlösenordet.</item>
@@ -854,11 +850,9 @@
     <string name="fetching_attachment_dialog_message">Hämtar bilaga…</string>
     <string name="auth_external_error">Misslyckades med att autentisera. Servern annonserar inte SASL EXTERNAL-förmågan. Det kan bero på ett problem med klientcertifikatet (utgånget, okänd certifikatutfärdare) eller något annat konfigurationsproblem.</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">Använd klientcertifikat</string>
     <string name="client_certificate_spinner_empty">Inget klientcertifikat</string>
     <string name="client_certificate_spinner_delete">Ta bort klientcertifikat val</string>
     <string name="client_certificate_retrieval_failure">Det gick inte att hitta klientcertifikat för alias \"<xliff:g id="alias">%s</xliff:g>\"</string>
-    <string name="client_certificate_advanced_options">Avancerade inställningar</string>
     <string name="client_certificate_expired">Klientcertifikatet \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" har gått ut eller är inte giltigt ännu (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Krypterad*</string>

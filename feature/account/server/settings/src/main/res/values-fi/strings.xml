@@ -1,2 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_settings_validation_error_server_required">Palvelimen nimi vaaditaan.</string>
+    <string name="account_server_settings_validation_error_username_required">Käyttäjätunnus vaaditaan.</string>
+    <string name="account_server_settings_outgoing_top_bar_title">Lähtevän postin palvelimen asetukset</string>
+    <string name="account_server_settings_validation_error_password_required">Salasana vaaditaan.</string>
+    <string name="account_server_settings_incoming_imap_send_client_id_label">Lähetä asiakastunniste</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
+    <string name="account_server_settings_authentication_none">Ei mitään</string>
+    <string name="account_server_settings_authentication_password_encrypted">Salattu salasana</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">Havaitse automaattisesti IMAP-nimiavaruus</string>
+    <string name="account_server_settings_incoming_top_bar_title">Saapuvan postin palvelimen asetukset</string>
+    <string name="account_server_settings_authentication_password_cleartext">Normaali salasana</string>
+    <string name="account_server_settings_password_authentication_title">Vahvista henkilöytesi</string>
+    <string name="account_server_settings_authentication_label">Todennus</string>
+    <string name="account_server_settings_connection_security_none">Ei mitään</string>
+    <string name="account_server_settings_port_label">Portti</string>
+    <string name="account_server_settings_incoming_imap_compression_label">Käytä pakkausta</string>
+    <string name="account_server_settings_validation_error_port_required">Portti vaaditaan.</string>
+    <string name="account_server_settings_authentication_client_certificate">Asiakasvarmenne</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">IMAP-polun etuliite</string>
+    <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
+    <string name="account_server_settings_protocol_type_label">Yhteyskäytäntö</string>
+    <string name="account_server_settings_password_authentication_subtitle">Avaa lukitus nähdäksesi salasanasi</string>
+    <string name="account_server_settings_username_label">Käyttäjätunnus</string>
+    <string name="account_server_settings_validation_error_port_invalid">Portti on virheellinen (pitää olla välillä 1–65535).</string>
+    <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
+    <string name="account_server_settings_client_certificate_label">Asiakasvarmenne</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">IMAP-etuliite ei voi olla tyhjä.</string>
+    <string name="account_server_settings_client_certificate_none_selected">Ei mitään</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">Nähdäksesi salasanasi tässä, ota näytön lukitus käyttöön tällä laitteella.</string>
+    <string name="account_server_settings_server_label">Palvelin</string>
+    <string name="account_server_settings_security_label">Suojaus</string>
+</resources>

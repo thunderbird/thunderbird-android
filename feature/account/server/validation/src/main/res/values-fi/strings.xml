@@ -1,2 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_incoming_loading_message">Tarkistetaan saapuvan postin palvelimen asetuksia…</string>
+    <string name="account_server_validation_error_authentication">Todennusvirhe</string>
+    <string name="account_server_validation_error_certificate">Varmennevirhe</string>
+    <string name="account_server_validation_outgoing_loading_message">Tarkistetaan lähtevän postin palvelimen asetuksia…</string>
+    <string name="account_server_validation_error_network">Verkkovirhe</string>
+    <string name="account_server_validation_outgoing_success">Lähtevän postin palvelimen asetukset ovat kelvolliset!</string>
+    <string name="account_server_validation_error_unknown">Tuntematon virhe</string>
+    <string name="account_server_validation_sign_in">Kirjaudu sisään</string>
+    <string name="account_server_validation_outgoing_loading_error">Lähtevän postin palvelimen asetusten tarkistaminen epäonnistui!</string>
+    <string name="account_server_validation_incoming_success">Saapuvan postin palvelimen asetukset ovat kelvolliset!</string>
+    <string name="account_server_validation_incoming_loading_error">Saapuvan postin palvelimen asetusten tarkistaminen epäonnistui!</string>
+    <string name="account_server_validation_error_server">Palvelinvirhe</string>
+</resources>

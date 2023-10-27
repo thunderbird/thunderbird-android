@@ -5,30 +5,31 @@
     <!--Used in AndroidManifest.xml-->
     <string name="app_name">K-9 Mail</string>
     <string name="shortcuts_title">Contas K-9</string>
-    <string name="unread_widget_label">Não lidos K-9</string>
+    <string name="unread_widget_label">K9 - Não lidos</string>
     <!--Used in the about dialog-->
     <string name="app_authors">Criadores do K-9</string>
     <string name="source_code">Código-fonte</string>
-    <string name="app_license">Apache License, Versão 2.0</string>
+    <string name="app_license">Licença Apache, Versão 2.0</string>
     <string name="about_project_title">Projeto de código aberto</string>
     <string name="about_website_title">Website</string>
     <string name="user_manual_title">Manual do usuário</string>
-    <string name="get_help_title">Obtenha ajuda</string>
+    <string name="get_help_title">Obter ajuda</string>
     <string name="user_forum_title">Fórum de usuários</string>
-    <string name="about_fediverse_title">Fediverse</string>
+    <string name="about_fediverse_title">Fediverso</string>
     <string name="about_libraries">Bibliotecas</string>
     <string name="license">Licença</string>
     <string name="changelog_title">Registro de mudanças</string>
-    <string name="changelog_loading_error">Não foi possível ler o registro de mudanças</string>
+    <string name="changelog_loading_error">Não foi possível carregar o registro de mudanças.</string>
     <string name="changelog_version_title">Versão %s</string>
     <string name="changelog_recent_changes_title">Novidades</string>
     <string name="changelog_show_recent_changes">Exibir as alterações recentes, quando o aplicativo for atualizado</string>
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
-    <string name="changelog_snackbar_text">Descubra as novidades dessa versão</string>
+    <string name="changelog_snackbar_text">Descubra as novidades desta versão</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Ver</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nEnviado de meu dispositivo Android com K-9 mail. Desculpe-me pela brevidade.</string>
+    <string name="default_signature">--
+\nEnviado do meu dispositivo Android com o K-9 Mail. Peço desculpa pela brevidade.</string>
     <!--General strings that include the app name-->
     <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\" será removida do K-9 Mail.</string>
     <!--=== General strings ==================================================================-->
@@ -42,7 +43,7 @@
     <string name="compose_title_forward">Encaminhar</string>
     <string name="compose_title_forward_as_attachment">Encaminhar como anexo</string>
     <string name="choose_account_title">Selecionar conta</string>
-    <string name="choose_folder_title">Escolher a pasta</string>
+    <string name="choose_folder_title">Selecionar pasta</string>
     <string name="choose_folder_move_title">Mover para…</string>
     <string name="choose_folder_copy_title">Copiar para…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selecionadas</string>
@@ -89,7 +90,7 @@
     <string name="unsubscribe_action">Cancelar inscrição</string>
     <string name="show_headers_action">Exibir cabeçalhos</string>
     <plurals name="copy_address_to_clipboard">
-        <item quantity="one">Endereço copiado para área de transferência</item>
+        <item quantity="one">Endereço copiado para a área de transferência</item>
         <item quantity="many">Endereços copiados para a área de transferência</item>
         <item quantity="other">Endereços copiados para a área de transferência</item>
     </plurals>
@@ -98,8 +99,8 @@
     <string name="message_view_theme_action_light">Mudar para o tema claro</string>
     <string name="mark_as_unread_action">Marcar como não lida</string>
     <string name="read_receipt">Confirmação de leitura</string>
-    <string name="read_receipt_enabled">Será requisitada uma confirmação de leitura</string>
-    <string name="read_receipt_disabled">Não será requisitada uma confirmação de leitura</string>
+    <string name="read_receipt_enabled">Será solicitada uma confirmação de leitura</string>
+    <string name="read_receipt_disabled">Não será solicitada uma confirmação de leitura</string>
     <string name="add_attachment_action">Adicionar anexo</string>
     <string name="empty_trash_action">Esvaziar a Lixeira</string>
     <string name="expunge_action">Expurgar</string>
@@ -112,7 +113,7 @@
     <string name="status_network_error">Erro de conexão</string>
     <string name="status_invalid_id_error">Mensagem não encontrada</string>
     <string name="status_loading_error">Erro no carregamento da mensagem</string>
-    <string name="load_more_messages_fmt">Toque para ver mais <xliff:g id="messages_to_load">%d</xliff:g> msgs.</string>
+    <string name="load_more_messages_fmt">Toque para ver mais <xliff:g id="messages_to_load">%d</xliff:g> mensagens</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f KB</string>
@@ -161,7 +162,7 @@
     <string name="debug_enable_debug_logging_title">Habilitar relatório de depuração</string>
     <string name="debug_enable_debug_logging_summary">Relatar informações de diagnósticos adicionais</string>
     <string name="debug_enable_sensitive_logging_title">Relatar informações confidencias</string>
-    <string name="debug_enable_sensitive_logging_summary">Pode exibir senhas nos relatórios</string>
+    <string name="debug_enable_sensitive_logging_summary">Pode exibir senhas nos relatórios.</string>
     <string name="debug_export_logs_title">Exportar relatórios</string>
     <string name="debug_export_logs_success">Exportado com sucesso. Os relatórios podem conter informação sensível. Tome cuidado ao enviá-los para alguém.</string>
     <string name="debug_export_logs_failure">Não foi possível exportar.</string>
@@ -277,8 +278,6 @@
     <string name="quiet_time_starts">Início do período de silêncio</string>
     <string name="quiet_time_ends">Término do período de silêncio</string>
     <string name="account_setup_basics_title">Configurar uma nova conta</string>
-    <string name="account_setup_basics_email_hint">Endereço de e-mail</string>
-    <string name="account_setup_basics_password_hint">Senha</string>
     <string name="account_setup_oauth_description">Para usar essa conta de e-mail com o K-9 Mail, você precisa autenticar-se e fornecer acesso do app aos seus e-mails.</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in">Autenticar-se</string>
@@ -288,7 +287,6 @@
     <string name="account_setup_basics_show_password_need_lock">Para ver a sua senha aqui, habilite o bloqueio de tela neste dispositivo.</string>
     <string name="account_setup_basics_show_password_biometrics_title">Verifique sua identidade</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Desbloqueie para ver a sua senha</string>
-    <string name="account_setup_basics_manual_setup_action">Configuração manual</string>
     <string name="account_setup_check_settings_retr_info_msg">Recuperando informações da conta\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Verificando as configurações do servidor de recebimento\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Verificando as configurações do servidor de envio\u2026</string>
@@ -420,7 +418,7 @@
     <string name="account_settings_show_pictures_always">De qualquer um</string>
     <string name="account_settings_composition">Enviando e-mails</string>
     <string name="account_settings_default_quoted_text_shown_label">Citar a mensagem ao responder</string>
-    <string name="account_settings_default_quoted_text_shown_summary">Inclui a mensagem original ao respondê-la</string>
+    <string name="account_settings_default_quoted_text_shown_summary">Incluir a mensagem original em sua resposta.</string>
     <string name="account_settings_reply_after_quote_label">Resposta após o texto citado</string>
     <string name="account_settings_reply_after_quote_summary">A mensagem original aparecerá acima da sua resposta.</string>
     <string name="account_settings_strip_signature_label">Remover assinaturas nas respostas</string>
@@ -767,7 +765,6 @@
     <string name="settings_import_status_not_imported">Não importado</string>
     <string name="settings_import_status_error">Falha na importação</string>
     <string name="settings_import_later_button">Mais tarde</string>
-    <string name="settings_import">Importar configurações</string>
     <string name="settings_importing">Importando configurações…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">Para usar a conta \"<xliff:g id="account">%s</xliff:g>\", você precisa fornecer a senha do servidor.</item>
@@ -860,11 +857,9 @@
     <string name="fetching_attachment_dialog_message">Buscando anexo…</string>
     <string name="auth_external_error">Não foi possível autenticar. O servidor não informa sobre a capacidade SASL EXTERNAL. Isto pode decorrer de um problema com o certificado do cliente (expirado, autoridade certificadora desconhecida) ou algum outro problema de configuração.</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">Usar certificado do cliente</string>
     <string name="client_certificate_spinner_empty">Nenhum certificado do cliente</string>
     <string name="client_certificate_spinner_delete">Remover seleção do certificado do cliente</string>
     <string name="client_certificate_retrieval_failure">Não foi possível obter o certificado do cliente para o apelido \"<xliff:g id="alias">%s</xliff:g>\"</string>
-    <string name="client_certificate_advanced_options">Opções avançadas</string>
     <string name="client_certificate_expired">O certificado do cliente \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" expirou ou ainda não é válido (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Criptografado*</string>
@@ -1009,7 +1004,7 @@ Você pode guardar esta mensagem e usá-la como um backup da sua chave secreta. 
 </string>
     <string name="ac_transfer_error_send">Ocorreu um erro durante o envio da mensagem. Por favor, verifique a conectividade da sua rede e as configurações de seu servidor de envio.</string>
     <string name="switch_on">On</string>
-    <string name="switch_off">Off</string>
+    <string name="switch_off">Desativado</string>
     <!--permissions-->
     <string name="permission_contacts_rationale_title">Permitir acesso aos contatos</string>
     <string name="permission_contacts_rationale_message">Para fornecer sugestões e exibir nomes e fotos de contatos, o app precisa de ter acesso aos seus contatos.</string>
@@ -1086,4 +1081,9 @@ Você pode guardar esta mensagem e usá-la como um backup da sua chave secreta. 
     <string name="background_work_notification_remove_account">Removendo a conta…</string>
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="message_list_content_description_unread_prefix">não lidas, 1 %s</string>
+    <string name="general_settings_post_remove_action_return_to_list">Voltar à lista de mensagens</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Exibir a mensagem anterior</string>
+    <string name="general_settings_post_remove_action_show_next_message">Exibir a próxima mensagem</string>
+    <string name="general_settings_post_remove_action_title">Após excluir ou mover uma mensagem</string>
+    <string name="account_setup_check_settings_title">"  "</string>
 </resources>

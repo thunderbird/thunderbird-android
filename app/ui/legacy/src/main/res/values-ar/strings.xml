@@ -284,8 +284,6 @@
     <string name="quiet_time_starts">وقت الهدوء يبدأ من</string>
     <string name="quiet_time_ends">وقت الهدوء ينتهي عند</string>
     <string name="account_setup_basics_title">إعداد حساب جديد</string>
-    <string name="account_setup_basics_email_hint">عنوان البريد الإليكتروني</string>
-    <string name="account_setup_basics_password_hint">كلمة السِّر</string>
     <string name="account_setup_oauth_description">لاستخدام حساب البريد الإلكتروني هذا مع K-9 Mail ، تحتاج إلى تسجيل الدخول ومنح التطبيق حق الوصول إلى رسائل البريد الإلكتروني الخاصة بك. </string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in">تسجيل الدخول</string>
@@ -295,7 +293,6 @@
     <string name="account_setup_basics_show_password_need_lock">لعرض كلمة المرور الخاصة بك هنا ، قم بتمكين قفل الشاشة على هذا الجهاز. </string>
     <string name="account_setup_basics_show_password_biometrics_title">تحقق من هويتك </string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">افتح القفل لعرض كلمة المرور الخاصة بك </string>
-    <string name="account_setup_basics_manual_setup_action">الإعداد يدويا</string>
     <string name="account_setup_check_settings_retr_info_msg">استرداد معلومات الحساب \ u2026 </string>
     <string name="account_setup_check_settings_check_incoming_msg">التحقق من إعدادات الخادم الوارد \ u2026 </string>
     <string name="account_setup_check_settings_check_outgoing_msg">التحقق من إعدادات خادم الصادر… </string>
@@ -762,7 +759,6 @@
     <string name="settings_import_status_not_imported">غير مستورد </string>
     <string name="settings_import_status_error">فشل الاستيراد </string>
     <string name="settings_import_later_button">لاحقًا</string>
-    <string name="settings_import">استيراد الإعدادات</string>
     <string name="settings_importing">استيراد الإعدادات…</string>
     <string name="settings_import_incoming_server_password_hint">كلمة مرور الخادم الواردة </string>
     <string name="settings_import_outgoing_server_password_hint">كلمة مرور خادم البريد الصادر </string>
@@ -840,11 +836,9 @@
     <string name="fetching_attachment_dialog_message">يتم جلب المُرفَقات…</string>
     <string name="auth_external_error">غير قادر على مصادقة. لا يعلن الخادم عن إمكانية SASL EXTERNAL. قد يكون هذا بسبب مشكلة في شهادة العميل (منتهية الصلاحية ، مرجع مصدق غير معروف) أو مشكلة تكوين أخرى. </string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">إستخدم شهادة عميل</string>
     <string name="client_certificate_spinner_empty">بدون شهادة عميل</string>
     <string name="client_certificate_spinner_delete">إزالة اختيار شهادة العميل </string>
     <string name="client_certificate_retrieval_failure">فشل استرداد شهادة العميل للاسم المستعار \"<xliff:g id="alias">%s</xliff:g>\"</string>
-    <string name="client_certificate_advanced_options">خيارات متقدمة</string>
     <string name="client_certificate_expired">شهادة العميل \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" منتهية الصلاحية أو غير صالحة بعد (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*مشفّرة*</string>

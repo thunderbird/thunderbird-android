@@ -1,2 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_incoming_loading_message">Kontrôle ynkommende serverynstellingen…</string>
+    <string name="account_server_validation_error_authentication">Autentikaasjeflater</string>
+    <string name="account_server_validation_error_certificate">Sertifikaatflater</string>
+    <string name="account_server_validation_outgoing_loading_message">Kontrôle útgeande serverynstellingen…</string>
+    <string name="account_server_validation_error_network">Netwurkflater</string>
+    <string name="account_server_validation_outgoing_success">Kontrôle útgeande serverynstellingen binne falide!</string>
+    <string name="account_server_validation_error_unknown">Unbekende flater</string>
+    <string name="account_server_validation_sign_in">Meld jo oan</string>
+    <string name="account_server_validation_outgoing_loading_error">Kontrôle útgeande serverynstellingen mislearre!</string>
+    <string name="account_server_validation_incoming_success">Ynkommende serverynstellingen binne falide!</string>
+    <string name="account_server_validation_incoming_loading_error">Kontrôle ynkommende serverynstellingen mislearre!</string>
+    <string name="account_server_validation_error_server">Serverflater</string>
+</resources>

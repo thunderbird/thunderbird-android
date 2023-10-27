@@ -3,10 +3,10 @@
     <string name="account_oauth_sign_in_with_google_button">Aanmelden met Google</string>
     <string name="account_oauth_loading_error">Aanmelden met OAuth mislukt</string>
     <string name="account_oauth_error_failed">Autorisatie is mislukt met de volgende foutmelding: <xliff:g id="error">%s</xliff:g></string>
-    <string name="account_oauth_error_browser_not_available">De app kan geen browser vinden. Een browser is nodig om toegang te krijgen tot jouw account.</string>
-    <string name="account_oauth_error_not_supported">OAuth 2.0 wordt nu niet ondersteund door deze dienstverlener.</string>
+    <string name="account_oauth_error_browser_not_available">De app kan geen browser vinden. Een browser is nodig om toegang tot uw account te krijgen.</string>
+    <string name="account_oauth_error_not_supported">OAuth 2.0 wordt nu niet ondersteund door deze provider.</string>
     <string name="account_oauth_error_canceled">Autorisatie is geannuleerd</string>
     <string name="account_oauth_loading_message">Aanmelden met OAuth</string>
-    <string name="account_oauth_sign_in_description">We sturen je door naar je e-mail provider om in te schrijven. Je moet de app toegang geven tot je e-mail account.</string>
+    <string name="account_oauth_sign_in_description">We sturen u door naar uw e-mailprovider om aan te melden. U moet de app toegang geven tot uw e-mailaccount.</string>
     <string name="account_oauth_sign_in_button">Aanmelden</string>
 </resources>

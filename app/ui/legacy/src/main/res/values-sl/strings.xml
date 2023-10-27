@@ -276,8 +276,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="quiet_time_starts">Čas začetka tihega delovanja</string>
     <string name="quiet_time_ends">Čas konca tihega delovanja</string>
     <string name="account_setup_basics_title">Nastavitev novega računa</string>
-    <string name="account_setup_basics_email_hint">Naslov elektronske pošte</string>
-    <string name="account_setup_basics_password_hint">Geslo</string>
     <string name="account_setup_oauth_description">Za uporabo poštnega računa s v programu K-9 Mail, je zahtevana prijava v programu in odobritev dostopa do sporočil.</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in">Prijava</string>
@@ -287,7 +285,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="account_setup_basics_show_password_need_lock">Za prikaz gesla je treba omogočiti zaklepanje zaslona na tej napravi.</string>
     <string name="account_setup_basics_show_password_biometrics_title">Preverjanje istovetnosti</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Odkleni, za prikaz gesla</string>
-    <string name="account_setup_basics_manual_setup_action">Ročna nastavitev</string>
     <string name="account_setup_check_settings_retr_info_msg">Pridobivanje podrobnosti računa \u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Preverjanje nastavitev dohodnega strežnika \u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Preverjanje nastavitev odhodnega strežnika \u2026</string>
@@ -767,7 +764,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="settings_import_status_not_imported">Ni uvoženo</string>
     <string name="settings_import_status_error">Napaka pri uvozu</string>
     <string name="settings_import_later_button">Kasneje</string>
-    <string name="settings_import">Uvozi nastavitve</string>
     <string name="settings_importing">Uvažanje nastavitev …</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">Za uporabo računa »<xliff:g id="account">%s</xliff:g>« morate navesti geslo strežnika.</item>
@@ -863,11 +859,9 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="fetching_attachment_dialog_message">Pridobivanje priloge …</string>
     <string name="auth_external_error">Overitev ni mogoča. Strežnik ne objavlja podpore SASL EXTERNAL. Napaka je lahko povezana s potrdilom odjemalca (lahko je poteklo, morda je neznan overitelj potrdila) ali pa je posredi druga neustrezna nastavitev.</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">Uporabi potrdilo odjemalca</string>
     <string name="client_certificate_spinner_empty">Ne uporabi potrdila odjemalca</string>
     <string name="client_certificate_spinner_delete">Odstrani možnost izbire potrdila odjemalca</string>
     <string name="client_certificate_retrieval_failure">Neuspešno pridobivanje potrdila odjemalca za \"<xliff:g id="alias">%s</xliff:g>\"</string>
-    <string name="client_certificate_advanced_options">Napredne možnosti</string>
     <string name="client_certificate_expired">Potrdilo odjemalca \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" je preteklo ali ni več veljavno (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Šifrirano*</string>

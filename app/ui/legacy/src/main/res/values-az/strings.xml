@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
@@ -89,7 +89,6 @@
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-    <string name="account_setup_check_settings_title" />
     <string name="account_settings_push_advanced_title">Qabaqcıl</string>
     <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->

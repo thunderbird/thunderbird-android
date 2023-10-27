@@ -19,7 +19,7 @@
     <string name="about_libraries">Liburutegiak</string>
     <string name="license">Lizentziak</string>
     <string name="changelog_title">Aldaketen egunkaria</string>
-    <string name="changelog_loading_error">Ezin izan aldaketen egunkaria kargatu</string>
+    <string name="changelog_loading_error">Ezin izan aldaketen egunkaria kargatu.</string>
     <string name="changelog_version_title">%s bertsioa</string>
     <string name="changelog_recent_changes_title">Zer berri</string>
     <string name="changelog_show_recent_changes">Erakutsi azken aldaketak aplikazioa eguneratu ostean</string>
@@ -117,7 +117,7 @@
     <string name="size_format_kilobytes">%.1f kB</string>
     <string name="size_format_bytes">%d B</string>
     <plurals name="notification_new_messages_title">
-        <item quantity="one"> Mezu berri <xliff:g id="new_message_count">%d</xliff:g></item>
+        <item quantity="one">Mezu berri <xliff:g id="new_message_count">%d</xliff:g></item>
         <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> mezu berri</item>
     </plurals>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> gehiago <xliff:g id="account">%2$s</xliff:g>-(e)n</string>
@@ -148,7 +148,7 @@
     <string name="notification_channel_messages_title">Mezuak</string>
     <string name="notification_channel_messages_description">Mezuekin erlazionatutako jakinarazpenak</string>
     <string name="notification_channel_miscellaneous_title">Denetarik</string>
-    <string name="notification_channel_miscellaneous_description">Denetariko jakinarazpenak, esaterako erroreak</string>
+    <string name="notification_channel_miscellaneous_description">Denetariko jakinarazpenak, esaterako erroreak.</string>
     <string name="special_mailbox_name_inbox">Sarrerako ontzia</string>
     <string name="special_mailbox_name_outbox">Irteerako ontzia</string>
     <string name="special_mailbox_name_drafts">Zirriborroak</string>
@@ -162,7 +162,7 @@
     <string name="debug_enable_sensitive_logging_summary">Log-etan pasahitzak erakuts daitezke.</string>
     <string name="debug_export_logs_title">Esportatu logak</string>
     <string name="debug_export_logs_success">Ongi esportatuta. Log-ek informazio sentikorra eduki dezakate. Kontuz nori bidaltzen diozun.</string>
-    <string name="debug_export_logs_failure">Esportazioak huts egin du</string>
+    <string name="debug_export_logs_failure">Esportazioak huts egin du.</string>
     <string name="message_list_load_more_messages_action">Kargatu mezu gehiago</string>
     <string name="message_to_fmt">Nori:<xliff:g id="counterParty">%s</xliff:g></string>
     <string name="message_compose_subject_hint">Gaia</string>
@@ -275,8 +275,6 @@
     <string name="quiet_time_starts">Alertarik gabeko aldiaren hasiera</string>
     <string name="quiet_time_ends">Alertarik gabeko aldiaren amaiera</string>
     <string name="account_setup_basics_title">Konfiguratu kontu berria</string>
-    <string name="account_setup_basics_email_hint">Posta helbidea</string>
-    <string name="account_setup_basics_password_hint">Pasahitza</string>
     <string name="account_setup_oauth_description">Posta elektronikoko kontu hau K-9 Mail-ekin erabiltzeko, saioa hasi eta aplikazioari zure mezu elektronikoetarako sarbidea eman behar diozu.</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in">Saioa hasi</string>
@@ -286,7 +284,6 @@
     <string name="account_setup_basics_show_password_need_lock">Pasahitza hemen ikusteko, gaitu pantailaren blokeoa gailu honetan.</string>
     <string name="account_setup_basics_show_password_biometrics_title">Egiaztatu zure identitatea</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Desblokeatu zure pasahitza ikusteko</string>
-    <string name="account_setup_basics_manual_setup_action">Eskuzko konfigurazioa</string>
     <string name="account_setup_check_settings_retr_info_msg">Kontuaren informazioa berreskuratzen\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Sarrerako zerbitzariaren ezarpenak egiaztatzen\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Irteerako zerbitzariaren ezarpenak egiaztatzen\u2026</string>
@@ -591,7 +588,7 @@
     <string name="account_settings_signature_label">Sinadura</string>
     <string name="default_identity_description">Hasierako identitatea</string>
     <string name="choose_identity_title">Aukeratu identitatea</string>
-    <string name="send_as">Bidali honela:</string>
+    <string name="send_as">Bidali honela</string>
     <string name="no_removable_identity">Ezin duzu kendu zure identitate bakarra</string>
     <string name="identity_has_no_email">Ezin duzu erabili posta helbiderik gabeko identitaterik</string>
     <string name="sort_earliest_first">Lehen mezuak lehenengo</string>
@@ -614,7 +611,7 @@
     <string name="sort_by_flag">Izarra</string>
     <string name="sort_by_unread">Irakurrita/irakurri gabe</string>
     <string name="sort_by_attach">Eranskinak</string>
-    <string name="account_delete_dlg_title">Kendu kontua</string>
+    <string name="account_delete_dlg_title">Kendu Kontua</string>
     <string name="account_setup_failed_dlg_invalid_certificate_title">Ziurtagiri ezezaguna</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Onartu gakoa</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Baztertu gakoa</string>
@@ -763,11 +760,10 @@
     <string name="settings_import_status_not_imported">Inportatu gabe</string>
     <string name="settings_import_status_error">Inportazio hutsegitea</string>
     <string name="settings_import_later_button">Geroago</string>
-    <string name="settings_import">Inportatu ezarpenak</string>
     <string name="settings_importing">Ezarpenak inportatzen…</string>
     <plurals name="settings_import_password_prompt">
-        <item quantity="one">\"<xliff:g id="account">%s</xliff:g>\" kontua erabili ahal izateko zerbitzari-pasahitza eman behar duzu</item>
-        <item quantity="other">\"<xliff:g id="account">%s</xliff:g>\" kontua erabili ahal izateko zerbitzari-pasahitzak eman behar dituzu</item>
+        <item quantity="one">\"<xliff:g id="account">%s</xliff:g>\" kontua erabili ahal izateko zerbitzari-pasahitza eman behar duzu.</item>
+        <item quantity="other">\"<xliff:g id="account">%s</xliff:g>\" kontua erabili ahal izateko zerbitzari-pasahitzak eman behar dituzu.</item>
     </plurals>
     <string name="settings_import_incoming_server_password_hint">Sarrerako zerbitzariaren pasahitza</string>
     <string name="settings_import_outgoing_server_password_hint">Irteerako zerbitzariaren pasahitza</string>
@@ -821,7 +817,7 @@
         <item quantity="other">%d emaitza eskuratzen</item>
     </plurals>
     <plurals name="remote_search_downloading_limited">
-        <item quantity="one">%1$d-(e)tik %2$d emaitza eskuratzen</item>
+        <item quantity="one">%1$d-(e)tik emaitza %2$d eskuratzen</item>
         <item quantity="other">%1$d-(e)tik %2$d emaitza eskuratzen</item>
     </plurals>
     <string name="remote_search_error">Urruneko bilaketak huts egin du</string>
@@ -853,11 +849,9 @@
     <string name="fetching_attachment_dialog_message">Eranskina eskuratzen…</string>
     <string name="auth_external_error">Ezin da autentifikatu. Zerbitzariak ez du iragartzen SASL EXTERNAL gaitasuna. Hau bezero ziurtagiriarekin duzun (iraungita, ziurtagiri-emaile ezezaguna) edo beste konfigurazio arazoren batengatik izan daiteke.</string>
     <!--=== Client certificates specific ==================================================================-->
-    <string name="account_setup_basics_client_certificate">Erabili bezero ziurtagiria</string>
     <string name="client_certificate_spinner_empty">Ez dago bezero ziurtagiririk</string>
     <string name="client_certificate_spinner_delete">Kendu bezero ziurtagiri hautapena</string>
     <string name="client_certificate_retrieval_failure">Ezin izan da \"<xliff:g id="alias">%s</xliff:g>\" aliasarentzako bezero ziurtagiria berreskuratu</string>
-    <string name="client_certificate_advanced_options">Aukera aurreratuak</string>
     <string name="client_certificate_expired">Client certificate \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" bezero ziurtagiria iraungi da edo ez da baliozkoa oraindik (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Zifratua*</string>
@@ -965,7 +959,7 @@
     <string name="openpgp_description_text1">Mezuak zifratzeak hauek hartzaileek irakurtzea ziurtatzen du, eta ez beste inork.</string>
     <string name="openpgp_description_text3">Zifratzeak hartzaile guztiek onartzen badute bakarrik funtzionatzen du, eta mezu bat bidali behar izan dizute lehen.</string>
     <string name="openpgp_description_text2">Txandakatu zifratzea ikono hau klikatuz.</string>
-    <string name="openpgp_enabled_error_gotit">Ados!</string>
+    <string name="openpgp_enabled_error_gotit">Ulertuta</string>
     <string name="openpgp_enabled_error_back">Atzera</string>
     <string name="openpgp_enabled_error_disable">Desgaitu zifratzea</string>
     <string name="openpgp_encryption">OpenPGP zifratzea</string>
@@ -1001,7 +995,7 @@ Zure gailu berrian Autocrypt ezartzeko, jarraitu gailu berrian agertuko zaizkizu
 Mezu hau gorde dezakezu eta zure gako sekretuaren babes-kopia gisa erabili. Hau egin nahi baduzu, pasahitza idatzi beharko zenuke eta toki seguruan gorde.</string>
     <string name="ac_transfer_error_send">Errore bat gertatu da mezua bidaltzean. Egiaztatu zure sare konexioa eta mezuak bidaltzeko zerbitzariaren konfigurazioa.</string>
     <string name="switch_on">Bai</string>
-    <string name="switch_off">Ez</string>
+    <string name="switch_off">Itzali</string>
     <!--permissions-->
     <string name="permission_contacts_rationale_title">Baimendu kontaktuak atzitzea</string>
     <string name="permission_contacts_rationale_message">Kontaktuak proposatu ahal izateko eta kontaktuen izenak eta argazkiak bistaratzeko, aplikazioak zure kontaktuak atzitzeko baimena behar du.</string>
@@ -1010,7 +1004,7 @@ Mezu hau gorde dezakezu eta zure gako sekretuaren babes-kopia gisa erabili. Hau 
     <string name="push_notification_state_listening">e-posta berrien zain</string>
     <string name="push_notification_state_wait_background_sync">Lo, atzeko planoko sinkronizazioa baimendu arte</string>
     <string name="push_notification_state_wait_network">Lo, sarea eskuragarri izan arte</string>
-    <string name="push_notification_info">Sakatu informazio gehiago lortzeko</string>
+    <string name="push_notification_info">Sakatu informazio gehiago lortzeko.</string>
     <string name="push_info_title">Push Informazioa</string>
     <string name="push_info_notification_explanation_text">Push erabiltzean, K-9 Mailek posta zerbitzariarekiko konexioa mantentzen du. Androidek jakinarazpen bat erakutsi behar du, aplikazioa atzeko planoan martxan dagoen bitartean. %s</string>
     <string name="push_info_configure_notification_text">Androidek ere jakinarazpena ezkutatzen uzten dizu.</string>
@@ -1078,4 +1072,9 @@ Mezu hau gorde dezakezu eta zure gako sekretuaren babes-kopia gisa erabili. Hau 
     <string name="background_work_notification_remove_account">Kontua ezabatzen…</string>
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="message_list_content_description_unread_prefix">irakurri gabea, %s</string>
+    <string name="general_settings_post_remove_action_return_to_list">Itzuli helbide zerrendara</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Erakutsi aurreko mezua</string>
+    <string name="account_setup_check_settings_title"> </string>
+    <string name="general_settings_post_remove_action_show_next_message">Erakutsi hurrengo mezua</string>
+    <string name="general_settings_post_remove_action_title">Mezua ezabatu edo mugitu ondoren</string>
 </resources>
