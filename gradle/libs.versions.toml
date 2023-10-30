@@ -4,7 +4,7 @@
 [versions]
 gradle = "8.4"
 androidGradlePlugin = "8.1.2"
-ktlint = "0.50.0"
+ktlint = "1.0.1"
 
 kotlin = "1.9.10"
 kotlinxCoroutines = "1.7.3"
@@ -48,9 +48,9 @@ ksp = "com.google.devtools.ksp:1.9.10-1.0.13"
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-spotless = "com.diffplug.spotless:6.21.0"
-detekt = "io.gitlab.arturbosch.detekt:1.23.0"
+spotless = "com.diffplug.spotless:6.22.0"
 dependency-check = "com.github.ben-manes.versions:0.48.0"
+detekt = "io.gitlab.arturbosch.detekt:1.23.2"
 
 [libraries]
 desugar = "com.android.tools:desugar_jdk_libs:2.0.3"
@@ -155,7 +155,7 @@ assertk = "com.willowtreeapps.assertk:assertk-jvm:0.27.0"
 
 leakcanary-android = "com.squareup.leakcanary:leakcanary-android:2.9.1"
 
-detekt-plugin-compose = "io.nlopez.compose.rules:detekt:0.1.11"
+detekt-plugin-compose = "io.nlopez.compose.rules:detekt:0.3.2"
 
 [bundles]
 shared-jvm-main = [
