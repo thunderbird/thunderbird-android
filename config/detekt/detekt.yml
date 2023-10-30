@@ -664,8 +664,6 @@ style:
     active: true
   OptionalUnit:
     active: true
-  OptionalWhenBraces:
-    active: false
   PreferToOverPairSyntax:
     active: true
   ProtectedMemberInFinalClass:
@@ -811,7 +809,7 @@ Compose:
     active: true
   ComposableParamOrder:
     active: true
-  PreviewNaming:
+  PreviewAnnotationNaming:
     active: true
   PreviewPublic:
     active: true
