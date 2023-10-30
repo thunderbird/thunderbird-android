@@ -7,9 +7,9 @@ import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import app.k9mail.feature.account.common.domain.entity.MailConnectionSecurity
 import assertk.assertFailure
 import assertk.assertThat
+import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
-import assertk.assertions.prop
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ServerSettings
 import kotlinx.coroutines.test.runTest
@@ -43,8 +43,7 @@ class LoadAccountStateTest {
         assertFailure {
             testSubject.execute(ACCOUNT_UUID)
         }.isInstanceOf<IllegalStateException>()
-            .prop(IllegalStateException::message)
-            .isEqualTo("Account state for $ACCOUNT_UUID not found")
+            .hasMessage("Account state for $ACCOUNT_UUID not found")
     }
 
     private companion object {
