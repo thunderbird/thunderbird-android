@@ -39,14 +39,6 @@ android {
         manifestPlaceholders["appAuthRedirectScheme"] = "com.fsck.k9.debug"
     }
 
-    packaging {
-        resources {
-            excludes += listOf(
-                "META-INF/DEPENDENCIES",
-            )
-        }
-    }
-
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false

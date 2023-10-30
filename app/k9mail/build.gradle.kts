@@ -156,15 +156,6 @@ android {
 
         resources {
             excludes += listOf(
-                "META-INF/DEPENDENCIES",
-                "META-INF/LICENSE",
-                "META-INF/LICENSE.txt",
-                "META-INF/NOTICE",
-                "META-INF/NOTICE.txt",
-                "META-INF/README",
-                "META-INF/README.md",
-                "META-INF/CHANGES",
-                "LICENSE.txt",
                 "META-INF/*.kotlin_module",
                 "META-INF/*.version",
                 "kotlin/**",

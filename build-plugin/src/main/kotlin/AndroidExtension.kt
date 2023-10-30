@@ -27,6 +27,23 @@ internal fun CommonExtension<*, *, *, *, *>.configureSharedConfig() {
             isIncludeAndroidResources = true
         }
     }
+
+    packaging {
+        resources {
+            excludes += listOf(
+                "/META-INF/{AL2.0,LGPL2.1}",
+                "/META-INF/DEPENDENCIES",
+                "/META-INF/LICENSE",
+                "/META-INF/LICENSE.txt",
+                "/META-INF/NOTICE",
+                "/META-INF/NOTICE.txt",
+                "/META-INF/README",
+                "/META-INF/README.md",
+                "/META-INF/CHANGES",
+                "/LICENSE.txt",
+            )
+        }
+    }
 }
 
 internal fun CommonExtension<*, *, *, *, *>.configureSharedComposeConfig(
@@ -43,12 +60,6 @@ internal fun CommonExtension<*, *, *, *, *>.configureSharedComposeConfig(
     lint {
         warningsAsErrors = false
         abortOnError = true
-    }
-
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
     }
 }
 
