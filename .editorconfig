@@ -15,6 +15,19 @@ max_line_length = 120
 ij_kotlin_imports_layout = *,^
 ij_kotlin_allow_trailing_comma = true
 ij_kotlin_allow_trailing_comma_on_call_site = true
+ktlint_code_style = intellij_idea
+ktlint_function_naming_ignore_when_annotated_with = Composable
+ktlint_ignore_back_ticked_identifier = true
+ktlint_standard_annotation = disabled
+ktlint_standard_function-signature = disabled
+ktlint_standard_blank-line-before-declaration = disabled
+ktlint_standard_no-blank-line-in-list = disabled
+ktlint_standard_context-receiver-wrapping = disabled
+ktlint_standard_parameter-list-wrapping = disabled
+ktlint_standard_no-empty-first-line-in-class-body = disabled
+ktlint_standard_if-else-wrapping = disabled
+ktlint_standard_multiline-expression-wrapping = disabled
+ktlint_standard_string-template-indent = disabled # depends on multiline-expression-wrapping
 
 [*.{yml,yaml,json,toml,md}]
 indent_size = 2
