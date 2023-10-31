@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.common.DevicePreviews
+import app.k9mail.core.ui.compose.common.PreviewDevices
 import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.theme.K9Theme
@@ -72,7 +72,7 @@ fun OutgoingServerSettingsScreen(
 }
 
 @Composable
-@DevicePreviews
+@PreviewDevices
 internal fun OutgoingServerSettingsScreenK9Preview() {
     K9Theme {
         OutgoingServerSettingsScreen(
@@ -88,7 +88,7 @@ internal fun OutgoingServerSettingsScreenK9Preview() {
 }
 
 @Composable
-@DevicePreviews
+@PreviewDevices
 internal fun OutgoingServerSettingsScreenThunderbirdPreview() {
     ThunderbirdTheme {
         OutgoingServerSettingsScreen(

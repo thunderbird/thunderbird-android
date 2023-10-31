@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.common.DevicePreviews
+import app.k9mail.core.ui.compose.common.PreviewDevices
 import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
@@ -80,7 +80,7 @@ internal fun AccountAutoDiscoveryContent(
 }
 
 @Composable
-@DevicePreviews
+@PreviewDevices
 internal fun AccountAutoDiscoveryContentK9Preview() {
     K9Theme {
         AccountAutoDiscoveryContent(
@@ -93,7 +93,7 @@ internal fun AccountAutoDiscoveryContentK9Preview() {
 }
 
 @Composable
-@DevicePreviews
+@PreviewDevices
 internal fun AccountAutoDiscoveryContentThunderbirdPreview() {
     ThunderbirdTheme {
         AccountAutoDiscoveryContent(
