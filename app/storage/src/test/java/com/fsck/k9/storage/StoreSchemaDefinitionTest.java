@@ -267,7 +267,9 @@ public class StoreSchemaDefinitionTest extends K9RobolectricTest {
                 "(id INTEGER PRIMARY KEY, command TEXT, data TEXT)");
 
         db.execSQL("DROP TRIGGER IF EXISTS delete_folder");
-        db.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN DELETE FROM messages WHERE old.id = folder_id; END;");
+        db.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN " +
+            "DELETE FROM messages WHERE old.id = folder_id; " +
+            "END;");
 
         db.execSQL("DROP TRIGGER IF EXISTS delete_message");
         db.execSQL("CREATE TRIGGER delete_message " +

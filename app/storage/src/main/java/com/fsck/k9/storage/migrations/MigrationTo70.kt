@@ -44,11 +44,11 @@ internal class MigrationTo70(private val db: SQLiteDatabase) {
     private fun copyFoldersData() {
         db.execSQL(
             """
-            INSERT INTO folders 
-            SELECT 
+            INSERT INTO folders
+            SELECT
                 id,
                 name,
-                last_updated, 
+                last_updated,
                 unread_count,
                 visible_limit,
                 status,
@@ -63,7 +63,7 @@ internal class MigrationTo70(private val db: SQLiteDatabase) {
                 server_id,
                 local_only,
                 type
-            FROM folders_old 
+            FROM folders_old
             """.trimIndent(),
         )
     }
@@ -79,7 +79,13 @@ internal class MigrationTo70(private val db: SQLiteDatabase) {
 
     private fun recreateFoldersTriggers() {
         db.execSQL("DROP TRIGGER IF EXISTS delete_folder")
-        db.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN DELETE FROM messages WHERE old.id = folder_id; END;")
+        db.execSQL(
+            """
+            CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN
+            DELETE FROM messages WHERE old.id = folder_id;
+            END;
+            """.trimIndent().replace("\n", " "),
+        )
 
         db.execSQL("DROP TRIGGER IF EXISTS delete_folder_extra_values")
         db.execSQL(
