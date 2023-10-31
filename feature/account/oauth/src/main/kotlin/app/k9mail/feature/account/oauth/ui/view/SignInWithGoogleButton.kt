@@ -26,7 +26,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import app.k9mail.core.ui.compose.common.DevicePreviews
+import app.k9mail.core.ui.compose.common.PreviewDevices
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 import app.k9mail.feature.account.oauth.R
 
@@ -66,7 +66,6 @@ fun SignInWithGoogleButton(
                 .padding(
                     end = 8.dp,
                 ),
-
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Surface(
@@ -126,7 +125,7 @@ private fun getTextColor(isLight: Boolean): Color {
     }
 }
 
-@DevicePreviews
+@PreviewDevices
 @Composable
 internal fun SignInWithGoogleButtonPreview() {
     PreviewWithThemes {

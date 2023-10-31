@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.common.DevicePreviews
+import app.k9mail.core.ui.compose.common.PreviewDevices
 import app.k9mail.core.ui.compose.common.window.WindowSizeClass
 import app.k9mail.core.ui.compose.common.window.WindowSizeClass.Compact
 import app.k9mail.core.ui.compose.common.window.WindowSizeClass.Expanded
@@ -69,7 +69,7 @@ fun ResponsiveWidthContainer(
 }
 
 @Composable
-@DevicePreviews
+@PreviewDevices
 internal fun ResponsiveWidthContainerK9Preview() {
     K9Theme {
         Background {
@@ -86,7 +86,7 @@ internal fun ResponsiveWidthContainerK9Preview() {
 }
 
 @Composable
-@DevicePreviews
+@PreviewDevices
 internal fun ResponsiveWidthContainerThunderbirdPreview() {
     K9Theme {
         Background {

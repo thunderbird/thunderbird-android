@@ -2,7 +2,7 @@ package app.k9mail.ui.catalog.ui.atom
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.common.DevicePreviews
+import app.k9mail.core.ui.compose.common.PreviewDevices
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.ui.catalog.ui.atom.CatalogAtomPage.BUTTON
@@ -46,7 +46,7 @@ fun CatalogContent(
     }
 }
 
-@DevicePreviews
+@PreviewDevices
 @Composable
 internal fun CatalogContentK9ThemePreview() {
     K9Theme {
@@ -57,7 +57,7 @@ internal fun CatalogContentK9ThemePreview() {
     }
 }
 
-@DevicePreviews
+@PreviewDevices
 @Composable
 internal fun CatalogContentThunderbirdThemePreview() {
     ThunderbirdTheme {
