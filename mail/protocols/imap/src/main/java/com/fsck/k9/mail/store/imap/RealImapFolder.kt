@@ -100,7 +100,7 @@ internal class RealImapFolder(
             try {
                 return executeSimpleCommand(Commands.NOOP)
             } catch (ioe: IOException) {
-                /* don't throw */
+                // don't throw
                 ioExceptionHandler(connection, ioe)
             }
         }
@@ -846,9 +846,9 @@ internal class RealImapFolder(
             }
             MimeMessageHelper.setBody(part, mp)
         } else {
-            // This is a body. We need to add as much information as we can find out about it to the Part.
-
             /*
+             * This is a body. We need to add as much information as we can find out about it to the Part.
+             *
              *  0| 0  body type
              *  1| 1  body subtype
              *  2| 2  body parameter parenthesized list
@@ -863,6 +863,7 @@ internal class RealImapFolder(
              *  9|10  body language (unused)
              * 10|11  body location (unused)
              */
+
             val type = bs.getString(0)
             val subType = bs.getString(1)
             val mimeType = "$type/$subType".lowercase()
@@ -880,6 +881,7 @@ internal class RealImapFolder(
 //                  envelope structure, body structure, and size in
 //                  text lines of the encapsulated message.
 //                    [MESSAGE, RFC822, [NAME, Fwd: [#HTR-517941]:  update plans at 1am Friday - Memory allocation - displayware.eml], NIL, NIL, 7BIT, 5974, NIL, [INLINE, [FILENAME*0, Fwd: [#HTR-517941]:  update plans at 1am Friday - Memory all, FILENAME*1, ocation - displayware.eml]], NIL]
+
                 /*
                  * This will be caught by fetch and handled appropriately.
                  */
@@ -970,9 +972,12 @@ internal class RealImapFolder(
 
                 val encodeFolderName = folderNameCodec.encode(prefixedName)
                 val escapedFolderName = ImapUtility.encodeString(encodeFolderName)
+                val canCreateForwardedFlag = canCreateKeywords ||
+                    internalImapStore.getPermanentFlagsIndex().contains(Flag.FORWARDED)
+
                 val combinedFlags = ImapUtility.combineFlags(
                     message.flags,
-                    canCreateKeywords || internalImapStore.getPermanentFlagsIndex().contains(Flag.FORWARDED),
+                    canCreateForwardedFlag,
                 )
                 val command = String.format(
                     Locale.US,
@@ -1101,7 +1106,9 @@ internal class RealImapFolder(
         open(OpenMode.READ_WRITE)
         checkOpen()
 
-        val canCreateForwardedFlag = canCreateKeywords || internalImapStore.getPermanentFlagsIndex().contains(Flag.FORWARDED)
+        val canCreateForwardedFlag = canCreateKeywords ||
+            internalImapStore.getPermanentFlagsIndex().contains(Flag.FORWARDED)
+
         try {
             val combinedFlags = ImapUtility.combineFlags(flags, canCreateForwardedFlag)
             val command = String.format(
@@ -1123,7 +1130,8 @@ internal class RealImapFolder(
         checkOpen()
 
         val uids = messages.map { it.uid.toLong() }.toSet()
-        val canCreateForwardedFlag = canCreateKeywords || internalImapStore.getPermanentFlagsIndex().contains(Flag.FORWARDED)
+        val canCreateForwardedFlag =
+            canCreateKeywords || internalImapStore.getPermanentFlagsIndex().contains(Flag.FORWARDED)
         val combinedFlags = ImapUtility.combineFlags(flags, canCreateForwardedFlag)
         val commandSuffix = String.format("%sFLAGS.SILENT (%s)", if (value) "+" else "-", combinedFlags)
         try {

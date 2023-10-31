@@ -11,8 +11,12 @@ class FakeIncomingServerSettingsValidator(
     private val imapPrefixAnswer: ValidationResult = ValidationResult.Success,
 ) : IncomingServerSettingsContract.Validator {
     override fun validateServer(server: String): ValidationResult = serverAnswer
+
     override fun validatePort(port: Long?): ValidationResult = portAnswer
+
     override fun validateUsername(username: String): ValidationResult = usernameAnswer
+
     override fun validatePassword(password: String): ValidationResult = passwordAnswer
+
     override fun validateImapPrefix(imapPrefix: String): ValidationResult = imapPrefixAnswer
 }

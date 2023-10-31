@@ -25,9 +25,7 @@ class NotificationChannelManager(
     val pushChannelId = "push"
     val miscellaneousChannelId = "misc"
 
-    enum class ChannelType {
-        MESSAGES, MISCELLANEOUS
-    }
+    enum class ChannelType { MESSAGES, MISCELLANEOUS }
 
     init {
         preferences.addOnAccountsChangeListener(this::updateChannels)

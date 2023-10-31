@@ -28,12 +28,15 @@ class AccountUpdaterTest {
             serverSettings = INCOMING_SERVER_SETTINGS,
         )
 
-        assertThat(result).isEqualTo(AccountUpdaterResult.Failure(AccountUpdaterFailure.AccountNotFound(ACCOUNT_UUID)))
+        assertThat(result)
+            .isEqualTo(AccountUpdaterResult.Failure(AccountUpdaterFailure.AccountNotFound(ACCOUNT_UUID)))
     }
 
     @Test
     fun `updateServerSettings() SHOULD return success with updated incoming settings WHEN is incoming`() = runTest {
-        val accountManager = FakeAccountManager(accounts = mutableMapOf(ACCOUNT_UUID to createAccount(ACCOUNT_UUID)))
+        val accountManager = FakeAccountManager(
+            accounts = mutableMapOf(ACCOUNT_UUID to createAccount(ACCOUNT_UUID)),
+        )
         val updatedIncomingServerSettings = INCOMING_SERVER_SETTINGS.copy(port = 123)
         val testSubject = AccountServerSettingsUpdater(accountManager)
 
@@ -54,7 +57,9 @@ class AccountUpdaterTest {
 
     @Test
     fun `updateServerSettings() SHOULD return success with updated outgoing settings WHEN is not incoming`() = runTest {
-        val accountManager = FakeAccountManager(accounts = mutableMapOf(ACCOUNT_UUID to createAccount(ACCOUNT_UUID)))
+        val accountManager = FakeAccountManager(
+            accounts = mutableMapOf(ACCOUNT_UUID to createAccount(ACCOUNT_UUID)),
+        )
         val updatedOutgoingServerSettings = OUTGOING_SERVER_SETTINGS.copy(port = 123)
         val testSubject = AccountServerSettingsUpdater(accountManager)
 

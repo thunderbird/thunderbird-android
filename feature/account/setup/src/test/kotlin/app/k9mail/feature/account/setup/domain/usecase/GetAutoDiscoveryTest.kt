@@ -102,12 +102,10 @@ class GetAutoDiscoveryTest {
             .isInstanceOf<AutoDiscoveryResult.Settings>()
             .isEqualTo(
                 SETTINGS_WITH_OAUTH.copy(
-                    incomingServerSettings = (SETTINGS_WITH_OAUTH.incomingServerSettings as ImapServerSettings).copy(
-                        authenticationTypes = listOf(AuthenticationType.PasswordCleartext),
-                    ),
-                    outgoingServerSettings = (SETTINGS_WITH_OAUTH.outgoingServerSettings as SmtpServerSettings).copy(
-                        authenticationTypes = listOf(AuthenticationType.PasswordCleartext),
-                    ),
+                    incomingServerSettings = (SETTINGS_WITH_OAUTH.incomingServerSettings as ImapServerSettings)
+                        .copy(authenticationTypes = listOf(AuthenticationType.PasswordCleartext)),
+                    outgoingServerSettings = (SETTINGS_WITH_OAUTH.outgoingServerSettings as SmtpServerSettings)
+                        .copy(authenticationTypes = listOf(AuthenticationType.PasswordCleartext)),
                 ),
             )
     }

@@ -5,8 +5,6 @@ import com.fsck.k9.mail.internet.MimeHeader.Field.NameValueField
 import com.fsck.k9.mail.internet.MimeHeader.Field.RawField
 import java.io.IOException
 import java.io.OutputStream
-import java.util.ArrayList
-import java.util.LinkedHashSet
 
 class MimeHeader {
     private val fields: MutableList<Field> = ArrayList()

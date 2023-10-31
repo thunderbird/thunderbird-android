@@ -30,7 +30,12 @@ constructor(
     private var summaryOff: String? = null
 
     init {
-        context.withStyledAttributes(attrs, R.styleable.AutocryptPreferEncryptPreference, defStyleAttr, defStyleRes) {
+        context.withStyledAttributes(
+            set = attrs,
+            attrs = R.styleable.AutocryptPreferEncryptPreference,
+            defStyleAttr = defStyleAttr,
+            defStyleRes = defStyleRes,
+        ) {
             summaryOn = getString(R.styleable.AutocryptPreferEncryptPreference_summaryOn)
             summaryOff = getString(R.styleable.AutocryptPreferEncryptPreference_summaryOff)
         }

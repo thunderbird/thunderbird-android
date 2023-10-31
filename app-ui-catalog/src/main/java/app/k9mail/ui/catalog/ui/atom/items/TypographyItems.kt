@@ -58,7 +58,6 @@ private fun LazyGridScope.textItems(
             text = annotatedString("Headline3", isAnnotated),
             modifier = Modifier.itemDefaultPadding(),
             color = color,
-
         )
     }
     item {

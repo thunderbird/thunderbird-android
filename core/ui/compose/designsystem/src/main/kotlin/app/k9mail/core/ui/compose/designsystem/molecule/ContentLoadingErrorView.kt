@@ -40,7 +40,9 @@ fun ContentLoadingErrorView(
 }
 
 enum class ContentLoadingErrorState {
-    Loading, Content, Error
+    Loading,
+    Content,
+    Error,
 }
 
 @Composable

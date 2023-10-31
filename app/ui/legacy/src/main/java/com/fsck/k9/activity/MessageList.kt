@@ -1370,7 +1370,9 @@ open class MessageList :
     }
 
     private enum class DisplayMode {
-        MESSAGE_LIST, MESSAGE_VIEW, SPLIT_VIEW
+        MESSAGE_LIST,
+        MESSAGE_VIEW,
+        SPLIT_VIEW,
     }
 
     private class LaunchData(

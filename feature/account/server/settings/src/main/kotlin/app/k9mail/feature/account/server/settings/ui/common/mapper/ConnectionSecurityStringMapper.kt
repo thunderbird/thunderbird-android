@@ -10,6 +10,7 @@ internal fun ConnectionSecurity.toResourceString(resources: Resources): String {
         ConnectionSecurity.StartTLS -> resources.getString(
             R.string.account_server_settings_connection_security_start_tls,
         )
+
         ConnectionSecurity.TLS -> resources.getString(R.string.account_server_settings_connection_security_ssl)
     }
 }

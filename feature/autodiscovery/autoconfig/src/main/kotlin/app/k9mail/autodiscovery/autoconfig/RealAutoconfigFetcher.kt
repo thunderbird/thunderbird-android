@@ -20,6 +20,7 @@ internal class RealAutoconfigFetcher(
                 is SuccessResponse -> {
                     parseSettings(fetchResult, email, autoconfigUrl)
                 }
+
                 is ErrorResponse -> AutoDiscoveryResult.NoUsableSettingsFound
             }
         } catch (e: IOException) {

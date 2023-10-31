@@ -6,11 +6,12 @@ import com.fsck.k9.Account.SpecialFolderSelection
 import com.fsck.k9.Preferences
 import com.fsck.k9.mail.FolderClass
 
+// TODO: Find a better way to deal with local-only special folders
+
 /**
  * Updates special folders in [Account] if they are marked as [SpecialFolderSelection.AUTOMATIC] or if they are marked
  * as [SpecialFolderSelection.MANUAL] but have been deleted from the server.
  */
-// TODO: Find a better way to deal with local-only special folders
 class SpecialFolderUpdater(
     private val preferences: Preferences,
     private val folderRepository: FolderRepository,

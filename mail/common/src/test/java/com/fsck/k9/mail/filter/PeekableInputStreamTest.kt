@@ -1,7 +1,6 @@
 package com.fsck.k9.mail.filter
 
 import assertk.assertThat
-import assertk.assertions.contains
 import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse

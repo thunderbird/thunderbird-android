@@ -16,6 +16,7 @@ class FakeAuthorizationRepository(
 
     var recordedGetAuthorizationRequestIntentConfiguration: OAuthConfiguration? = null
     var recordedGetAuthorizationRequestIntentEmailAddress: String? = null
+
     override fun getAuthorizationRequestIntent(
         configuration: OAuthConfiguration,
         emailAddress: String,

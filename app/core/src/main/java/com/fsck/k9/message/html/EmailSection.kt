@@ -13,7 +13,8 @@ class EmailSection private constructor(builder: Builder) : CharSequence {
     } else {
         builder.segments.map { segment ->
             val minLength = if (text[segment.endIndex - 1] == '\n') 1 else 0
-            val adjustedStartIndex = (segment.startIndex + builder.indent).coerceAtMost(segment.endIndex - minLength)
+            val adjustedStartIndex = (segment.startIndex + builder.indent)
+                .coerceAtMost(segment.endIndex - minLength)
             Segment(adjustedStartIndex, segment.endIndex)
         }
     }
@@ -51,14 +52,22 @@ class EmailSection private constructor(builder: Builder) : CharSequence {
         val startSegment = segments[startSegmentIndex]
 
         if (startSegmentIndex == endSegmentIndex) {
-            builder.addSegment(0, startSegment.startIndex + startOffset, startSegment.startIndex + endOffset)
+            builder.addSegment(
+                leadingSpaces = 0,
+                startIndex = startSegment.startIndex + startOffset,
+                endIndex = startSegment.startIndex + endOffset,
+            )
             return builder.build()
         }
 
         if (startOffset == 0) {
             builder.addSegment(startSegment)
         } else {
-            builder.addSegment(0, startSegment.startIndex + startOffset, startSegment.endIndex)
+            builder.addSegment(
+                leadingSpaces = 0,
+                startIndex = startSegment.startIndex + startOffset,
+                endIndex = startSegment.endIndex,
+            )
         }
 
         for (segmentIndex in startSegmentIndex + 1 until endSegmentIndex) {
@@ -69,7 +78,11 @@ class EmailSection private constructor(builder: Builder) : CharSequence {
         if (endSegment.startIndex + endOffset == endSegment.endIndex) {
             builder.addSegment(endSegment)
         } else {
-            builder.addSegment(0, endSegment.startIndex, endSegment.startIndex + endOffset)
+            builder.addSegment(
+                leadingSpaces = 0,
+                startIndex = endSegment.startIndex,
+                endIndex = endSegment.startIndex + endOffset,
+            )
         }
 
         return builder.build()

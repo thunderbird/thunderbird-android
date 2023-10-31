@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:property-naming")
+
 import org.gradle.api.JavaVersion
 
 object ThunderbirdProjectConfig {

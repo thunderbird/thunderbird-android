@@ -177,7 +177,11 @@ internal open class RealImapStore(
         val decodedFolderName = try {
             folderNameCodec.decode(serverId)
         } catch (e: CharacterCodingException) {
-            Timber.w(e, "Folder name not correctly encoded with the UTF-7 variant as defined by RFC 3501: %s", serverId)
+            Timber.w(
+                e,
+                "Folder name not correctly encoded with the UTF-7 variant as defined by RFC 3501: %s",
+                serverId,
+            )
             serverId
         }
 

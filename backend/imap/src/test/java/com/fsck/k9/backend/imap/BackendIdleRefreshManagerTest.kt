@@ -148,6 +148,7 @@ class RecordingCallback {
 }
 
 typealias Callback = () -> Unit
+
 private const val NO_TRIGGER_TIME = -1L
 
 class MockSystemAlarmManager(startTime: Long) : SystemAlarmManager {

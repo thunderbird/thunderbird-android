@@ -34,7 +34,11 @@ class SyncNotificationControllerTest : RobolectricTest() {
     private val account = createFakeAccount()
     private val contentIntent = mock<PendingIntent>()
     private val controller = SyncNotificationController(
-        notificationHelper = createFakeNotificationHelper(notificationManager, builder, lockScreenNotificationBuilder),
+        notificationHelper = createFakeNotificationHelper(
+            notificationManager = notificationManager,
+            notificationBuilder = builder,
+            lockScreenNotificationBuilder = lockScreenNotificationBuilder,
+        ),
         actionBuilder = createActionBuilder(contentIntent),
         resourceProvider = resourceProvider,
     )

@@ -39,7 +39,9 @@ class Pop3ConnectionTest {
         val server = startTlsServer()
         val settings = server.createSettings(connectionSecurity = SSL_TLS_REQUIRED)
         val mockSocketFactory = mock<TrustedSocketFactory> {
-            on { createSocket(null, settings.host, settings.port, null) } doThrow SSLException(CertificateException())
+            on {
+                createSocket(null, settings.host, settings.port, null)
+            } doThrow SSLException(CertificateException())
         }
 
         createAndOpenPop3Connection(settings, mockSocketFactory)
@@ -50,7 +52,9 @@ class Pop3ConnectionTest {
         val server = startTlsServer()
         val settings = server.createSettings(connectionSecurity = SSL_TLS_REQUIRED)
         val mockSocketFactory = mock<TrustedSocketFactory> {
-            on { createSocket(null, settings.host, settings.port, null) } doThrow SSLException("")
+            on {
+                createSocket(null, settings.host, settings.port, null)
+            } doThrow SSLException("")
         }
 
         createAndOpenPop3Connection(settings, mockSocketFactory)
@@ -61,7 +65,9 @@ class Pop3ConnectionTest {
         val server = startTlsServer()
         val settings = server.createSettings(connectionSecurity = SSL_TLS_REQUIRED)
         val mockSocketFactory = mock<TrustedSocketFactory> {
-            on { createSocket(null, settings.host, settings.port, null) } doThrow NoSuchAlgorithmException()
+            on {
+                createSocket(null, settings.host, settings.port, null)
+            } doThrow NoSuchAlgorithmException()
         }
 
         createAndOpenPop3Connection(settings, mockSocketFactory)
@@ -72,7 +78,9 @@ class Pop3ConnectionTest {
         val server = startTlsServer()
         val settings = server.createSettings(connectionSecurity = SSL_TLS_REQUIRED)
         val mockSocketFactory = mock<TrustedSocketFactory> {
-            on { createSocket(null, settings.host, settings.port, null) } doThrow IOException()
+            on {
+                createSocket(null, settings.host, settings.port, null)
+            } doThrow IOException()
         }
 
         createAndOpenPop3Connection(settings, mockSocketFactory)

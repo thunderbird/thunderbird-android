@@ -40,11 +40,21 @@ abstract class ImportListItem<VH : ImportCheckBoxViewHolder>(
             holder.statusIcon.setImageLevel(imageLevel)
 
             val contentDescriptionStringResId = when (importStatus) {
-                ImportStatus.IMPORT_SUCCESS -> R.string.settings_import_status_success
-                ImportStatus.IMPORT_SUCCESS_PASSWORD_REQUIRED -> R.string.settings_import_status_password_required
-                ImportStatus.IMPORT_SUCCESS_AUTHORIZATION_REQUIRED -> R.string.settings_import_status_log_in_required
-                ImportStatus.NOT_SELECTED -> R.string.settings_import_status_not_imported
-                ImportStatus.IMPORT_FAILURE -> R.string.settings_import_status_error
+                ImportStatus.IMPORT_SUCCESS ->
+                    R.string.settings_import_status_success
+
+                ImportStatus.IMPORT_SUCCESS_PASSWORD_REQUIRED ->
+                    R.string.settings_import_status_password_required
+
+                ImportStatus.IMPORT_SUCCESS_AUTHORIZATION_REQUIRED ->
+                    R.string.settings_import_status_log_in_required
+
+                ImportStatus.NOT_SELECTED ->
+                    R.string.settings_import_status_not_imported
+
+                ImportStatus.IMPORT_FAILURE ->
+                    R.string.settings_import_status_error
+
                 else -> error("Unexpected import status: $importStatus")
             }
             val context = holder.statusIcon.context
@@ -88,7 +98,10 @@ class AccountViewHolder(view: View) : ImportCheckBoxViewHolder(view) {
 }
 
 class AccountItem(account: SettingsListItem.Account) :
-    ImportListItem<AccountViewHolder>(account.accountIndex + ACCOUNT_ITEMS_ID_OFFSET, account.importStatus) {
+    ImportListItem<AccountViewHolder>(
+        account.accountIndex + ACCOUNT_ITEMS_ID_OFFSET,
+        account.importStatus,
+    ) {
 
     private val displayName = account.displayName
 

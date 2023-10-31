@@ -640,8 +640,8 @@ class MessageListFragment :
      * @param sortAscending Specifies the sort order. If this argument is `null` the default search order for the
      *   sort type is used.
      */
-    // FIXME: Don't save the changes in the UI thread
     private fun changeSort(sortType: SortType, sortAscending: Boolean?) {
+        // FIXME: Don't save the changes in the UI thread
         this.sortType = sortType
 
         val account = account
@@ -1258,11 +1258,23 @@ class MessageListFragment :
             messagingController.synchronizeMailbox(account, folderId, false, activityListener)
             messagingController.sendPendingMessages(account, activityListener)
         } else if (allAccounts) {
-            messagingController.checkMail(null, true, true, false, activityListener)
+            messagingController.checkMail(
+                null,
+                true,
+                true,
+                false,
+                activityListener,
+            )
         } else {
             for (accountUuid in accountUuids) {
                 val account = preferences.getAccount(accountUuid)
-                messagingController.checkMail(account, true, true, false, activityListener)
+                messagingController.checkMail(
+                    account,
+                    true,
+                    true,
+                    false,
+                    activityListener,
+                )
             }
         }
     }
@@ -1313,7 +1325,8 @@ class MessageListFragment :
         get() {
             val recyclerView = recyclerView ?: return null
             val focusedView = recyclerView.focusedChild ?: return null
-            val viewHolder = recyclerView.findContainingViewHolder(focusedView) as? MessageViewHolder ?: return null
+            val viewHolder = recyclerView
+                .findContainingViewHolder(focusedView) as? MessageViewHolder ?: return null
             return adapter.getItemById(viewHolder.uniqueId)
         }
 
@@ -1405,7 +1418,11 @@ class MessageListFragment :
         if (hasConnectivity == true) {
             onRemoteSearchRequested()
         } else {
-            Toast.makeText(activity, getText(R.string.remote_search_unavailable_no_network), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                activity,
+                getText(R.string.remote_search_unavailable_no_network),
+                Toast.LENGTH_SHORT,
+            ).show()
         }
     }
 
@@ -1674,7 +1691,9 @@ class MessageListFragment :
             }
             SwipeAction.Delete -> true
             SwipeAction.Move -> !isOutbox && messagingController.isMoveCapable(item.account)
-            SwipeAction.Spam -> !isOutbox && item.account.hasSpamFolder() && item.folderId != item.account.spamFolderId
+            SwipeAction.Spam -> {
+                !isOutbox && item.account.hasSpamFolder() && item.folderId != item.account.spamFolderId
+            }
         }
     }
 
@@ -2021,7 +2040,8 @@ class MessageListFragment :
     }
 
     private enum class FolderOperation {
-        COPY, MOVE
+        COPY,
+        MOVE,
     }
 
     private enum class Error(@StringRes val errorText: Int) {

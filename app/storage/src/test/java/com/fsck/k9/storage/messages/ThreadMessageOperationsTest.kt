@@ -17,7 +17,11 @@ class ThreadMessageOperationsTest : RobolectricTest() {
         val threadInfo = threadMessageOperations.doMessageThreading(
             sqliteDatabase,
             folderId = 1,
-            ThreadHeaders(messageIdHeader = "<msg001@domain.example>", inReplyToHeader = null, referencesHeader = null),
+            ThreadHeaders(
+                messageIdHeader = "<msg001@domain.example>",
+                inReplyToHeader = null,
+                referencesHeader = null,
+            ),
         )
 
         assertThat(threadInfo).isNull()

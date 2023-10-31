@@ -113,14 +113,15 @@ class MimeParameterEncoderTest {
 
     @Test
     fun mixedParameterValues() {
+        val parameters = mapOf(
+            "token" to "foobar",
+            "quoted" to "something containing spaces",
+            "non-ascii" to "Grüße",
+            "long" to "one~two~three~four~five~six~seven~eight~nine~ten~eleven~twelve~thirteen~fourteen~fifteen",
+        )
         val header = MimeParameterEncoder.encode(
-            "value",
-            mapOf(
-                "token" to "foobar",
-                "quoted" to "something containing spaces",
-                "non-ascii" to "Grüße",
-                "long" to "one~two~three~four~five~six~seven~eight~nine~ten~eleven~twelve~thirteen~fourteen~fifteen",
-            ),
+            value = "value",
+            parameters = parameters,
         )
 
         assertThat(header).isEqualTo(

@@ -13,5 +13,6 @@ class PreviewAccountOAuthViewModel :
     AccountOAuthContract.ViewModel {
 
     override fun initState(state: AccountOAuthContract.State) = Unit
+
     override fun event(event: AccountOAuthContract.Event) = Unit
 }

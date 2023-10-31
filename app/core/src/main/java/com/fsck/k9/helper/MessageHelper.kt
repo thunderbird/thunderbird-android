@@ -89,7 +89,7 @@ class MessageHelper(
             return stringBuilder
         }
 
-        /* package, for testing */
+        // package, for testing
         @JvmStatic
         fun toFriendly(
             address: Address,

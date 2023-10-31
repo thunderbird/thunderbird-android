@@ -6,8 +6,9 @@ import androidx.appcompat.widget.AppCompatTextView
 
 /**
  * Return the baseline of the last line of text, instead of TextView's default of the first line.
+ *
+ * Source: https://stackoverflow.com/a/62419876
  */
-// Source: https://stackoverflow.com/a/62419876
 class BottomBaselineTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

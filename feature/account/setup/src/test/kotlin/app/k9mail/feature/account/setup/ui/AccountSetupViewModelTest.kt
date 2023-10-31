@@ -35,10 +35,10 @@ class AccountSetupViewModelTest {
         var createAccountOptions: AccountOptions? = null
         val accountStateRepository = InMemoryAccountStateRepository()
         val viewModel = AccountSetupViewModel(
-            createAccount = { emailAddress, incomingServerSettings, outgoingServerSettings, authState, options ->
+            createAccount = { emailAddress, incomingSettings, outgoingSettings, authState, options ->
                 createAccountEmailAddress = emailAddress
-                createAccountIncomingServerSettings = incomingServerSettings
-                createAccountOutgoingServerSettings = outgoingServerSettings
+                createAccountIncomingServerSettings = incomingSettings
+                createAccountOutgoingServerSettings = outgoingSettings
                 createAccountAuthorizationState = authState
                 createAccountOptions = options
 

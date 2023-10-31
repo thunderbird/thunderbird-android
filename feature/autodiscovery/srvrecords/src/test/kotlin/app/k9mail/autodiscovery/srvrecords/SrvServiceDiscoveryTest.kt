@@ -31,7 +31,11 @@ class SrvServiceDiscoveryTest {
         val srvResolver = newMockSrvResolver(
             imapServices = listOf(newMailService(port = 143, srvType = SrvType.IMAP)),
             imapsServices = listOf(
-                newMailService(port = 993, srvType = SrvType.IMAPS, security = ConnectionSecurity.SSL_TLS_REQUIRED),
+                newMailService(
+                    port = 993,
+                    srvType = SrvType.IMAPS,
+                    security = ConnectionSecurity.SSL_TLS_REQUIRED,
+                ),
             ),
         )
 

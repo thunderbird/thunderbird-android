@@ -7,4 +7,5 @@ sealed interface UnsubscribeUri {
 }
 
 data class MailtoUnsubscribeUri(override val uri: Uri) : UnsubscribeUri
+
 data class HttpsUnsubscribeUri(override val uri: Uri) : UnsubscribeUri

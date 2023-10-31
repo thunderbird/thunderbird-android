@@ -5,15 +5,26 @@ import org.jsoup.safety.Cleaner
 import org.jsoup.safety.Safelist
 
 internal class BodyCleaner {
+
     private val cleaner: Cleaner
-    private val allowedBodyAttributes = setOf(
-        "id", "class", "dir", "lang", "style",
-        "alink", "background", "bgcolor", "link", "text", "vlink",
-    )
 
     init {
         val allowList = Safelist.relaxed()
-            .addTags("font", "hr", "ins", "del", "center", "map", "area", "title", "tt", "kbd", "samp", "var", "style")
+            .addTags(
+                "font",
+                "hr",
+                "ins",
+                "del",
+                "center",
+                "map",
+                "area",
+                "title",
+                "tt",
+                "kbd",
+                "samp",
+                "var",
+                "style",
+            )
             .addAttributes("font", "color", "face", "size")
             .addAttributes("a", "name")
             .addAttributes("div", "align")
@@ -27,25 +38,70 @@ internal class BodyCleaner {
                 "cellspacing",
                 "width",
             )
-            .addAttributes("tr", "align", "background", "bgcolor", "valign")
             .addAttributes(
                 "th",
-                "align", "background", "bgcolor", "colspan", "headers", "height", "nowrap", "rowspan", "scope",
-                "sorted", "valign", "width",
+                "align",
+                "background",
+                "bgcolor",
+                "colspan",
+                "headers",
+                "height",
+                "nowrap",
+                "rowspan",
+                "scope",
+                "sorted",
+                "valign",
+                "width",
+            )
+            .addAttributes(
+                "tr",
+                "align",
+                "background",
+                "bgcolor",
+                "valign",
             )
             .addAttributes(
                 "td",
-                "align", "background", "bgcolor", "colspan", "headers", "height", "nowrap", "rowspan", "scope",
-                "valign", "width",
+                "align",
+                "background",
+                "bgcolor",
+                "colspan",
+                "headers",
+                "height",
+                "nowrap",
+                "rowspan",
+                "scope",
+                "valign",
+                "width",
             )
             .addAttributes("map", "name")
             .addAttributes("area", "shape", "coords", "href", "alt")
             .addProtocols("area", "href", "http", "https")
             .addAttributes("img", "usemap")
-            .addAttributes(":all", "class", "style", "id", "dir")
-            .addProtocols("img", "src", "http", "https", "cid", "data")
+            .addAttributes(
+                ":all",
+                "class",
+                "style",
+                "id",
+                "dir",
+            )
+            .addProtocols(
+                "img",
+                "src",
+                "http",
+                "https",
+                "cid",
+                "data",
+            )
             // Allow all URI schemes in links
-            .removeProtocols("a", "href", "ftp", "http", "https", "mailto")
+            .removeProtocols(
+                "a",
+                "href",
+                "ftp",
+                "http",
+                "https",
+                "mailto",
+            )
 
         cleaner = Cleaner(allowList)
     }
@@ -74,5 +130,21 @@ internal class BodyCleaner {
                 cleanedBody.attr(attribute.key, true)
             }
         }
+    }
+
+    private companion object {
+        val allowedBodyAttributes = setOf(
+            "id",
+            "class",
+            "dir",
+            "lang",
+            "style",
+            "alink",
+            "background",
+            "bgcolor",
+            "link",
+            "text",
+            "vlink",
+        )
     }
 }

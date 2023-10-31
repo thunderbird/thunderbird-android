@@ -176,7 +176,8 @@ class ToolbarBottomSheetDialog internal constructor(context: Context, @StyleRes 
             this.container = container
 
             coordinator = container.findViewById(R.id.coordinator) ?: error("View not found")
-            val bottomSheet = container.findViewById<FrameLayout>(R.id.design_bottom_sheet) ?: error("View not found")
+            val bottomSheet = container.findViewById<FrameLayout>(R.id.design_bottom_sheet)
+                ?: error("View not found")
             this.bottomSheet = bottomSheet
 
             toolbar = bottomSheet.findViewById(R.id.toolbar)
@@ -192,8 +193,8 @@ class ToolbarBottomSheetDialog internal constructor(context: Context, @StyleRes 
             }
 
             bottomSheet.doOnLayout {
-                // Don't draw the toolbar underneath the status bar if the bottom sheet doesn't cover the whole screen
-                // anyway.
+                // Don't draw the toolbar underneath the status bar if the bottom sheet doesn't cover the whole
+                // screen anyway.
                 if (bottomSheet.width < container.width) {
                     container.fitsSystemWindows = true
                     coordinator?.fitsSystemWindows = true

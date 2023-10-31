@@ -263,7 +263,9 @@ class SummaryNotificationDataCreatorTest {
     )
 
     private fun createNotificationData(
-        contentList: List<NotificationContent> = listOf(createNotificationContent()),
+        contentList: List<NotificationContent> = listOf(
+            createNotificationContent(),
+        ),
     ): NotificationData {
         val activeNotifications = contentList.mapIndexed { index, content ->
             NotificationHolder(notificationId = index, TIMESTAMP, content)

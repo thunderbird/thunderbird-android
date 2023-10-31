@@ -195,7 +195,5 @@ internal object DecoderUtil {
         }
     }
 
-    private enum class Encoding {
-        Q, B
-    }
+    private enum class Encoding { Q, B }
 }

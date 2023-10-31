@@ -107,8 +107,8 @@ class MessageViewFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Hide the toolbar menu when first creating this fragment. The menu will be set to visible once this fragment
-        // becomes the active page of the view pager in MessageViewContainerFragment.
+        // Hide the toolbar menu when first creating this fragment. The menu will be set to visible once this
+        // fragment becomes the active page of the view pager in MessageViewContainerFragment.
         if (savedInstanceState == null) {
             setMenuVisibility(false)
         }
@@ -198,8 +198,8 @@ class MessageViewFragment :
         if (menuVisible) {
             messageLoaderHelper.resumeCryptoOperationIfNecessary()
         } else {
-            // When the menu is hidden, the message associated with this fragment is no longer active. If the user returns
-            // to it, we want to mark the message as opened again.
+            // When the menu is hidden, the message associated with this fragment is no longer active. If the user
+            // returns to it, we want to mark the message as opened again.
             wasMessageMarkedAsOpened = false
         }
     }
@@ -977,9 +977,7 @@ class MessageViewFragment :
         activity?.invalidateMenu()
     }
 
-    private enum class FolderOperation {
-        COPY, MOVE
-    }
+    private enum class FolderOperation { COPY, MOVE }
 
     companion object {
         const val REQUEST_MASK_LOADER_HELPER = 1 shl 8

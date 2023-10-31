@@ -1,7 +1,6 @@
 package com.fsck.k9.backend.imap
 
 import com.fsck.k9.mail.Message
-import java.util.Comparator
 
 internal class UidReverseComparator : Comparator<Message> {
     override fun compare(messageLeft: Message, messageRight: Message): Int {

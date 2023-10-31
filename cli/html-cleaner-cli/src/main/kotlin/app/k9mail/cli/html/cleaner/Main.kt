@@ -34,9 +34,11 @@ class HtmlCleaner : CliktCommand(
     }
 
     private fun cleanHtml(html: String): String {
-        val htmlProcessor = HtmlProcessor(object : HtmlHeadProvider {
-            override val headHtml = """<meta name="viewport" content="width=device-width"/>"""
-        })
+        val htmlProcessor = HtmlProcessor(
+            object : HtmlHeadProvider {
+                override val headHtml = """<meta name="viewport" content="width=device-width"/>"""
+            },
+        )
 
         return htmlProcessor.processForDisplay(html)
     }

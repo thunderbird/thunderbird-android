@@ -30,7 +30,11 @@ class SendFailedNotificationControllerTest : RobolectricTest() {
     private val contentIntent = mock<PendingIntent>()
     private val notificationId = NotificationIds.getSendFailedNotificationId(account)
     private val controller = SendFailedNotificationController(
-        notificationHelper = createFakeNotificationHelper(notificationManager, builder, lockScreenNotificationBuilder),
+        notificationHelper = createFakeNotificationHelper(
+            notificationManager = notificationManager,
+            notificationBuilder = builder,
+            lockScreenNotificationBuilder = lockScreenNotificationBuilder,
+        ),
         actionBuilder = createActionBuilder(contentIntent),
         resourceProvider = resourceProvider,
     )

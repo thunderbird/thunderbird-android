@@ -35,6 +35,7 @@ interface AccountOAuthDomainContract {
         ): AuthorizationIntentResult
 
         suspend fun getAuthorizationResponse(intent: Intent): AuthorizationResponse?
+
         suspend fun getAuthorizationException(intent: Intent): AuthorizationException?
 
         suspend fun getExchangeToken(response: AuthorizationResponse): AuthorizationResult

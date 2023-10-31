@@ -471,7 +471,9 @@ class AccountSetupCheckSettings : K9Activity(), ConfirmationDialogFragmentListen
     }
 
     enum class CheckDirection {
-        INCOMING, OUTGOING;
+        INCOMING,
+        OUTGOING,
+        ;
 
         fun toMailServerDirection(): MailServerDirection {
             return when (this) {

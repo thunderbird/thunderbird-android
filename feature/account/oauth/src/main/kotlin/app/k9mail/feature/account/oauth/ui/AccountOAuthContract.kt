@@ -41,14 +41,17 @@ interface AccountOAuthContract {
         data class NavigateNext(
             val state: AuthorizationState,
         ) : Effect
+
         object NavigateBack : Effect
     }
 
     sealed interface Error {
         object NotSupported : Error
+
         object Canceled : Error
 
         object BrowserNotAvailable : Error
+
         data class Unknown(val error: Exception) : Error
     }
 }

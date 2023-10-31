@@ -60,9 +60,10 @@ constructor(
             automaticFolderName,
         ).italicize()
 
-        entries = (listOf(automaticFolderOption) + noFolderSelectedName + getFolderDisplayNames(folders)).toTypedArray()
-        entryValues =
-            (listOf(automaticFolderValue) + NO_FOLDER_SELECTED_VALUE + getFolderValues(folders)).toTypedArray()
+        entries = (listOf(automaticFolderOption) + noFolderSelectedName + getFolderDisplayNames(folders))
+            .toTypedArray()
+        entryValues = (listOf(automaticFolderValue) + NO_FOLDER_SELECTED_VALUE + getFolderValues(folders))
+            .toTypedArray()
 
         isEnabled = true
     }
@@ -79,12 +80,16 @@ constructor(
         }
     }
 
-    private fun getFolderDisplayNames(folders: List<RemoteFolder>) = folders.map { folderNameFormatter.displayName(it) }
+    private fun getFolderDisplayNames(folders: List<RemoteFolder>) = folders.map {
+        folderNameFormatter.displayName(it)
+    }
 
     private fun getFolderValues(folders: List<RemoteFolder>) = folders.map { MANUAL_PREFIX + it.id.toString() }
 
     private fun String.italicize(): CharSequence {
-        return SpannableString(this).apply { setSpan(StyleSpan(Typeface.ITALIC), 0, this.length, 0) }
+        return SpannableString(this).apply {
+            setSpan(StyleSpan(Typeface.ITALIC), 0, this.length, 0)
+        }
     }
 
     companion object {

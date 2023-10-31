@@ -30,7 +30,8 @@ val coreNotificationModule = module {
         NotificationChannelManager(
             preferences = get(),
             backgroundExecutor = Executors.newSingleThreadExecutor(),
-            notificationManager = get<Context>().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager,
+            notificationManager = get<Context>()
+                .getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager,
             resourceProvider = get(),
             notificationLightDecoder = get(),
         )
@@ -57,10 +58,18 @@ val coreNotificationModule = module {
         )
     }
     single {
-        SyncNotificationController(notificationHelper = get(), actionBuilder = get(), resourceProvider = get())
+        SyncNotificationController(
+            notificationHelper = get(),
+            actionBuilder = get(),
+            resourceProvider = get(),
+        )
     }
     single {
-        SendFailedNotificationController(notificationHelper = get(), actionBuilder = get(), resourceProvider = get())
+        SendFailedNotificationController(
+            notificationHelper = get(),
+            actionBuilder = get(),
+            resourceProvider = get(),
+        )
     }
     single {
         NewMailNotificationController(
@@ -101,7 +110,12 @@ val coreNotificationModule = module {
             resourceProvider = get(),
         )
     }
-    factory { LockScreenNotificationCreator(notificationHelper = get(), resourceProvider = get()) }
+    factory {
+        LockScreenNotificationCreator(
+            notificationHelper = get(),
+            resourceProvider = get(),
+        )
+    }
     single {
         PushNotificationManager(
             context = get(),
@@ -121,7 +135,10 @@ val coreNotificationModule = module {
     factory { NotificationLightDecoder() }
     factory { NotificationVibrationDecoder() }
     factory {
-        NotificationConfigurationConverter(notificationLightDecoder = get(), notificationVibrationDecoder = get())
+        NotificationConfigurationConverter(
+            notificationLightDecoder = get(),
+            notificationVibrationDecoder = get(),
+        )
     }
     factory {
         NotificationSettingsUpdater(

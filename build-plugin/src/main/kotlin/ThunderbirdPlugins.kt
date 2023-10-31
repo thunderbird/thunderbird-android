@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:property-naming")
+
 object ThunderbirdPlugins {
 
     object App {
@@ -6,6 +8,7 @@ object ThunderbirdPlugins {
 
         const val jvm = "thunderbird.app.jvm"
     }
+
     object Library {
         const val android = "thunderbird.library.android"
         const val androidCompose = "thunderbird.library.android.compose"

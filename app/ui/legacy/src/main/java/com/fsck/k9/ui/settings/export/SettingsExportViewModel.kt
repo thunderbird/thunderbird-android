@@ -68,7 +68,11 @@ class SettingsExportViewModel(
                     }
 
                     val accountListItems = accounts.map { account ->
-                        SettingsListItem.Account(account.accountNumber, account.displayName, account.email).apply {
+                        SettingsListItem.Account(
+                            account.accountNumber,
+                            account.displayName,
+                            account.email,
+                        ).apply {
                             selected = savedState == null || account.uuid in savedState.selectedAccountUuids
                         }
                     }
@@ -88,7 +92,8 @@ class SettingsExportViewModel(
     fun initializeFromSavedState(savedInstanceState: Bundle) {
         savedSelection = SavedListItemSelection(
             includeGeneralSettings = savedInstanceState.getBoolean(STATE_INCLUDE_GENERAL_SETTINGS),
-            selectedAccountUuids = savedInstanceState.getStringArray(STATE_SELECTED_ACCOUNTS)?.toSet() ?: emptySet(),
+            selectedAccountUuids = savedInstanceState
+                .getStringArray(STATE_SELECTED_ACCOUNTS)?.toSet() ?: emptySet(),
         )
 
         uiModel.apply {
@@ -98,7 +103,9 @@ class SettingsExportViewModel(
             )
             isShareButtonVisible = savedInstanceState.getBoolean(STATE_SHARE_BUTTON_VISIBLE)
             isProgressVisible = savedInstanceState.getBoolean(STATE_PROGRESS_VISIBLE)
-            statusText = StatusText.valueOf(savedInstanceState.getString(STATE_STATUS_TEXT, StatusText.HIDDEN.name))
+            statusText = StatusText.valueOf(
+                savedInstanceState.getString(STATE_STATUS_TEXT, StatusText.HIDDEN.name),
+            )
         }
 
         contentUri = savedInstanceState.getParcelable(STATE_CONTENT_URI)

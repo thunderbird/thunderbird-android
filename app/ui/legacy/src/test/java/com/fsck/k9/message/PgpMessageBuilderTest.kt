@@ -87,8 +87,11 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
     private val resourceProvider: CoreResourceProvider by inject()
     private val openPgpApi = mock(OpenPgpApi::class.java)
     private val autocryptOpenPgpApiInteractor = mock(AutocryptOpenPgpApiInteractor::class.java)
-    private val pgpMessageBuilder =
-        createDefaultPgpMessageBuilder(openPgpApi, autocryptOpenPgpApiInteractor, resourceProvider)
+    private val pgpMessageBuilder = createDefaultPgpMessageBuilder(
+        openPgpApi,
+        autocryptOpenPgpApiInteractor,
+        resourceProvider,
+    )
 
     @Before
     @Throws(Exception::class)
@@ -181,9 +184,8 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val returnIntent = Intent()
         returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS)
-        `when`(openPgpApi.executeApi(any<Intent>(), any<OpenPgpDataSource>(), any<OutputStream>())).thenReturn(
-            returnIntent,
-        )
+        `when`(openPgpApi.executeApi(any<Intent>(), any<OpenPgpDataSource>(), any<OutputStream>()))
+            .thenReturn(returnIntent)
 
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
@@ -393,7 +395,8 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val mimeMessage = buildMessage()
 
-        assertThat(mimeMessage.getHeader("Autocrypt-Draft-State")).containsExactly("encrypt=yes; _by-choice=yes; ")
+        assertThat(mimeMessage.getHeader("Autocrypt-Draft-State"))
+            .containsExactly("encrypt=yes; _by-choice=yes; ")
     }
 
     @Test
@@ -453,8 +456,10 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
             .thenReturn(returnIntent)
         pgpMessageBuilder.buildAsync(mock(Callback::class.java))
 
-        verify(autocryptOpenPgpApiInteractor).getKeyMaterialForUserId(same(openPgpApi), eq("alice@example.org"))
-        verify(autocryptOpenPgpApiInteractor).getKeyMaterialForUserId(same(openPgpApi), eq("bob@example.org"))
+        verify(autocryptOpenPgpApiInteractor)
+            .getKeyMaterialForUserId(same(openPgpApi), eq("alice@example.org"))
+        verify(autocryptOpenPgpApiInteractor)
+            .getKeyMaterialForUserId(same(openPgpApi), eq("bob@example.org"))
     }
 
     @Test
@@ -484,8 +489,10 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
             eq(TEST_KEY_ID),
             eq(SENDER_EMAIL),
         )
-        verify(autocryptOpenPgpApiInteractor).getKeyMaterialForUserId(same(openPgpApi), eq("alice@example.org"))
-        verify(autocryptOpenPgpApiInteractor).getKeyMaterialForUserId(same(openPgpApi), eq("bob@example.org"))
+        verify(autocryptOpenPgpApiInteractor)
+            .getKeyMaterialForUserId(same(openPgpApi), eq("alice@example.org"))
+        verify(autocryptOpenPgpApiInteractor)
+            .getKeyMaterialForUserId(same(openPgpApi), eq("bob@example.org"))
     }
 
     @Test
@@ -671,10 +678,23 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
     @Test
     @Throws(MessagingException::class)
     fun buildSignWithAttach__withInlineEnabled__shouldThrow() {
-        val cryptoStatus = defaultCryptoStatus.copy(cryptoMode = CryptoMode.SIGN_ONLY, isPgpInlineModeEnabled = true)
+        val cryptoStatus = defaultCryptoStatus.copy(
+            cryptoMode = CryptoMode.SIGN_ONLY,
+            isPgpInlineModeEnabled = true,
+        )
 
         pgpMessageBuilder.setCryptoStatus(cryptoStatus)
-        pgpMessageBuilder.setAttachments(listOf(Attachment.createAttachment(null, 0, null, true, true)))
+        pgpMessageBuilder.setAttachments(
+            listOf(
+                Attachment.createAttachment(
+                    null,
+                    0,
+                    null,
+                    true,
+                    true,
+                ),
+            ),
+        )
 
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
@@ -691,7 +711,17 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
             defaultCryptoStatus.copy(cryptoMode = CryptoMode.CHOICE_ENABLED, isPgpInlineModeEnabled = true)
 
         pgpMessageBuilder.setCryptoStatus(cryptoStatus)
-        pgpMessageBuilder.setAttachments(listOf(Attachment.createAttachment(null, 0, null, true, true)))
+        pgpMessageBuilder.setAttachments(
+            listOf(
+                Attachment.createAttachment(
+                    null,
+                    0,
+                    null,
+                    true,
+                    true,
+                ),
+            ),
+        )
 
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
@@ -829,7 +859,9 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
                 when (intentExtra) {
                     is LongArray -> assertThat(intentExtra, name).isEqualTo(expectedExtra as LongArray)
-                    is Array<*> -> assertThat(intentExtra as Array<Any?>, name).isEqualTo(expectedExtra as Array<Any?>)
+                    is Array<*> -> assertThat(intentExtra as Array<Any?>, name)
+                        .isEqualTo(expectedExtra as Array<Any?>)
+
                     else -> assertThat(intentExtra, name).isEqualTo(expectedExtra)
                 }
             }

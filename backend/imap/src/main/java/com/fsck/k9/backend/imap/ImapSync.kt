@@ -53,25 +53,27 @@ internal class ImapSync(
             /*
              * Synchronization process:
              *
-            Open the folder
-            Upload any local messages that are marked as PENDING_UPLOAD (Drafts, Sent, Trash)
-            Get the message count
-            Get the list of the newest K9.DEFAULT_VISIBLE_LIMIT messages
-            getMessages(messageCount - K9.DEFAULT_VISIBLE_LIMIT, messageCount)
-            See if we have each message locally, if not fetch it's flags and envelope
-            Get and update the unread count for the folder
-            Update the remote flags of any messages we have locally with an internal date newer than the remote message.
-            Get the current flags for any messages we have locally but did not just download
-            Update local flags
-            For any message we have locally but not remotely, delete the local message to keep cache clean.
-            Download larger parts of any new messages.
-            (Optional) Download small attachments in the background.
+             * Open the folder
+             * Upload any local messages that are marked as PENDING_UPLOAD (Drafts, Sent, Trash)
+             * Get the message count
+             * Get the list of the newest K9.DEFAULT_VISIBLE_LIMIT messages
+             * getMessages(messageCount - K9.DEFAULT_VISIBLE_LIMIT, messageCount)
+             * See if we have each message locally, if not fetch it's flags and envelope
+             * Get and update the unread count for the folder
+             * Update the remote flags of any messages we have locally with an internal date newer than the remote
+             * message.
+             * Get the current flags for any messages we have locally but did not just download
+             * Update local flags
+             * For any message we have locally but not remotely, delete the local message to keep cache clean.
+             * Download larger parts of any new messages.
+             * (Optional) Download small attachments in the background.
              */
+
+            Timber.v("SYNC: About to open remote folder %s", folder)
 
             /*
              * Open the remote folder. This pre-loads certain metadata like message count.
              */
-            Timber.v("SYNC: About to open remote folder %s", folder)
 
             if (syncConfig.expungePolicy === ExpungePolicy.ON_POLL) {
                 Timber.d("SYNC: Expunging folder %s:%s", accountName, folder)
@@ -122,7 +124,7 @@ internal class ImapSync(
 
             var remoteStart = 1
             if (remoteMessageCount > 0) {
-                /* Message numbers start at 1.  */
+                // Message numbers start at 1.
                 remoteStart = if (visibleLimit > 0) {
                     max(0, remoteMessageCount - visibleLimit) + 1
                 } else {
@@ -208,7 +210,7 @@ internal class ImapSync(
 
             listener.folderStatusChanged(folder)
 
-            /* Notify listeners that we're finally done. */
+            // Notify listeners that we're finally done.
 
             backendFolder.setLastChecked(System.currentTimeMillis())
             backendFolder.setStatus(null)

@@ -222,7 +222,9 @@ class CommandSyncTest {
         backendFolder.setQueryState("10:0")
         val command = createCommandSync(
             responseBodyFromResource("/jmap_responses/session/valid_session.json"),
-            responseBodyFromResource("/jmap_responses/email/email_query_changes_cannot_calculate_changes_error.json"),
+            responseBodyFromResource(
+                "/jmap_responses/email/email_query_changes_cannot_calculate_changes_error.json",
+            ),
             responseBodyFromResource("/jmap_responses/email/email_query_M002_and_M003.json"),
             responseBodyFromResource("/jmap_responses/email/email_get_ids_M003.json"),
             responseBodyFromResource("/jmap_responses/blob/email/email_3.eml"),

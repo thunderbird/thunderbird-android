@@ -1,5 +1,7 @@
 package com.fsck.k9.preferences
 
+// TODO: Move over settings from K9
+
 /**
  * Stores a snapshot of the app's general settings.
  *
@@ -9,7 +11,6 @@ package com.fsck.k9.preferences
  * - [RealGeneralSettingsManager.writeSettings]
  * - [GeneralSettingsDescriptions]
  */
-// TODO: Move over settings from K9
 data class GeneralSettings(
     val backgroundSync: BackgroundSync,
     val showRecentChanges: Boolean,
