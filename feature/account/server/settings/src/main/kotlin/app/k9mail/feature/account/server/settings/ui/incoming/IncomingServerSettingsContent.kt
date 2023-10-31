@@ -12,7 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
-import app.k9mail.core.ui.compose.common.DevicePreviews
+import app.k9mail.core.ui.compose.common.PreviewDevices
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
@@ -57,7 +57,7 @@ internal fun IncomingServerSettingsContent(
 }
 
 @Composable
-@DevicePreviews
+@PreviewDevices
 internal fun IncomingServerSettingsContentK9Preview() {
     K9Theme {
         IncomingServerSettingsContent(
@@ -70,7 +70,7 @@ internal fun IncomingServerSettingsContentK9Preview() {
 }
 
 @Composable
-@DevicePreviews
+@PreviewDevices
 internal fun IncomingServerSettingsContentThunderbirdPreview() {
     ThunderbirdTheme {
         IncomingServerSettingsContent(

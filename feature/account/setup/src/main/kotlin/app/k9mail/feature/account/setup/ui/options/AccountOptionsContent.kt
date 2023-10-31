@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.common.DevicePreviews
+import app.k9mail.core.ui.compose.common.PreviewDevices
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextOverline
 import app.k9mail.core.ui.compose.designsystem.molecule.input.SelectInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.SwitchInput
@@ -148,7 +148,7 @@ internal fun AccountOptionsContent(
 }
 
 @Composable
-@DevicePreviews
+@PreviewDevices
 internal fun AccountOptionsContentK9Preview() {
     K9Theme {
         AccountOptionsContent(
@@ -160,7 +160,7 @@ internal fun AccountOptionsContentK9Preview() {
 }
 
 @Composable
-@DevicePreviews
+@PreviewDevices
 internal fun AccountOptionsContentThunderbirdPreview() {
     ThunderbirdTheme {
         AccountOptionsContent(
