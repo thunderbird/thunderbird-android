@@ -25,7 +25,7 @@ import app.k9mail.feature.account.setup.ui.options.AccountOptionsScreen
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsViewModel
 import org.koin.androidx.compose.koinViewModel
 
-@Suppress("LongMethod")
+@Suppress("LongMethod", "ViewModelForwarding")
 @Composable
 fun AccountSetupScreen(
     onFinish: (String) -> Unit,
