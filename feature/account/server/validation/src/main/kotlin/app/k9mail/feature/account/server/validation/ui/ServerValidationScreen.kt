@@ -10,6 +10,7 @@ import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Event
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.ViewModel
 
+@Suppress("ViewModelForwarding")
 @Composable
 fun ServerValidationScreen(
     onNext: () -> Unit,

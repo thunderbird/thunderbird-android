@@ -31,7 +31,7 @@ import app.k9mail.feature.account.server.validation.R
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Event
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.State
 
-@Suppress("LongMethod")
+@Suppress("LongMethod", "ViewModelForwarding")
 @Composable
 internal fun ServerValidationContent(
     state: State,
