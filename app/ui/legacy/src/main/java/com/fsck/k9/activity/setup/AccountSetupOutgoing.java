@@ -1,6 +1,4 @@
-
 package com.fsck.k9.activity.setup;
-
 
 import java.util.Locale;
 
@@ -45,6 +43,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import timber.log.Timber;
 
+@Deprecated(since = "Remove once the new account edit feature is the default")
 public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     OnCheckedChangeListener {
     private static final String EXTRA_ACCOUNT = "account";
@@ -73,13 +72,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     private AuthTypeAdapter mAuthTypeAdapter;
     private Button mNextButton;
     private Account mAccount;
-    private boolean editSettings;
-
-    public static void actionOutgoingSettings(Context context, Account account) {
-        Intent i = new Intent(context, AccountSetupOutgoing.class);
-        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        context.startActivity(i);
-    }
 
     public static Intent intentActionEditOutgoingSettings(Context context, Account account) {
         Intent i = new Intent(context, AccountSetupOutgoing.class);
@@ -145,11 +137,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             mAccount = Preferences.getPreferences().getAccount(accountUuid);
         }
 
-        editSettings = Intent.ACTION_EDIT.equals(getIntent().getAction());
-        if (editSettings) {
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            }
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         try {
@@ -310,15 +299,13 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         mServerView.addTextChangedListener(validationTextWatcher);
         mPortView.addTextChangedListener(validationTextWatcher);
 
-        if (editSettings) {
-            TextInputLayoutHelper.configureAuthenticatedPasswordToggle(
-                    mPasswordLayoutView,
-                    this,
-                    getString(R.string.account_setup_basics_show_password_biometrics_title),
-                    getString(R.string.account_setup_basics_show_password_biometrics_subtitle),
-                    getString(R.string.account_setup_basics_show_password_need_lock)
-            );
-        }
+        TextInputLayoutHelper.configureAuthenticatedPasswordToggle(
+            mPasswordLayoutView,
+            this,
+            getString(R.string.account_setup_basics_show_password_biometrics_title),
+            getString(R.string.account_setup_basics_show_password_biometrics_subtitle),
+            getString(R.string.account_setup_basics_show_password_need_lock)
+        );
     }
 
     @Override
@@ -492,12 +479,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         }
 
         if (resultCode == RESULT_OK) {
-            if (editSettings) {
-                Preferences.getPreferences().saveAccount(mAccount);
-                finish();
-            } else {
-//                AccountSetupOptions.actionOptions(this, mAccount);
-            }
+            Preferences.getPreferences().saveAccount(mAccount);
+            finish();
         }
     }
 
