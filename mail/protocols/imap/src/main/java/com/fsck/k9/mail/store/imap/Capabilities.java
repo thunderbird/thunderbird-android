@@ -18,4 +18,5 @@ class Capabilities {
     public static final String SPECIAL_USE = "SPECIAL-USE";
     public static final String UID_PLUS = "UIDPLUS";
     public static final String LIST_EXTENDED = "LIST-EXTENDED";
+    public static final String MOVE = "MOVE";
 }

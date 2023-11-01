@@ -300,6 +300,24 @@ class RealImapFolderTest {
     }
 
     @Test
+    fun `moveMessages() with MOVE extension`() {
+        val sourceFolder = createFolder("Folder")
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
+        imapConnection.stub {
+            on { hasCapability(Capabilities.MOVE) } doReturn true
+        }
+        val destinationFolder = createFolder("Destination")
+        val messages = listOf(createImapMessage("1"))
+        setupMoveResponse("x OK [COPYUID 23 1 101] Success")
+        sourceFolder.open(OpenMode.READ_WRITE)
+
+        val uidMapping = sourceFolder.moveMessages(messages, destinationFolder)
+
+        assertCommandWithIdsIssued("UID MOVE 1 \"Destination\"")
+        assertThat(uidMapping).isNotNull().containsOnly("1" to "101")
+    }
+
+    @Test
     fun moveMessages_shouldCopyMessages() {
         val sourceFolder = createFolder("Folder")
         prepareImapFolderForOpen(OpenMode.READ_WRITE)
@@ -1201,6 +1219,13 @@ class RealImapFolderTest {
     private fun setupCopyResponse(response: String) {
         val imapResponses = listOf(createImapResponse(response))
         whenever(imapConnection.executeCommandWithIdSet(eq(Commands.UID_COPY), anyString(), anySet()))
+            .thenReturn(imapResponses)
+    }
+
+    @Suppress("SameParameterValue")
+    private fun setupMoveResponse(response: String) {
+        val imapResponses = listOf(createImapResponse(response))
+        whenever(imapConnection.executeCommandWithIdSet(eq(Commands.UID_MOVE), anyString(), anySet()))
             .thenReturn(imapResponses)
     }
 
