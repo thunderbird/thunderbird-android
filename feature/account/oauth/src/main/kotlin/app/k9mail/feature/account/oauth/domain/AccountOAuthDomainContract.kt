@@ -11,10 +11,6 @@ import net.openid.appauth.AuthorizationResponse
 interface AccountOAuthDomainContract {
 
     interface UseCase {
-        fun interface SuggestServerName {
-            fun suggest(protocol: String, domain: String): String
-        }
-
         fun interface GetOAuthRequestIntent {
             fun execute(hostname: String, emailAddress: String): AuthorizationIntentResult
         }
