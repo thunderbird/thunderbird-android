@@ -103,8 +103,6 @@
     <ID>MagicNumber:StorageMigrationTo17.kt$StorageMigrationTo17$0xFFFF00</ID>
     <ID>MagicNumber:StorageMigrationTo17.kt$StorageMigrationTo17$0xFFFFFF</ID>
     <ID>MagicNumber:ThreadMessageOperations.kt$ThreadMessageOperations$3</ID>
-    <ID>MaxLineLength:MigrationTo70.kt$MigrationTo70$db.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN DELETE FROM messages WHERE old.id = folder_id; END;")</ID>
-    <ID>MaxLineLength:MigrationTo84.kt$MigrationTo84$"SELECT id, to_list, cc_list, bcc_list, reply_to_list, sender_list FROM messages WHERE empty = 0 AND deleted = 0"</ID>
     <ID>MaxLineLength:RetrieveMessageListOperationsTest.kt$RetrieveMessageListOperationsTest$fun</ID>
     <ID>ReturnCount:SaveMessageOperationsTest.kt$SaveMessageOperationsTest$private fun Message.getDownloadState(): MessageDownloadState</ID>
     <ID>ReturnCount:StorageMigrationTo19.kt$StorageMigrationTo19$private fun markIfGmailAccount(accountUuid: String)</ID>
