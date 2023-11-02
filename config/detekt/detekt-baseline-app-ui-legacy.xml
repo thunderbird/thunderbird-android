@@ -24,7 +24,7 @@
     <ID>CyclomaticComplexMethod:SettingsImportFragment.kt$SettingsImportFragment$private fun ViewHolder.updateUi(model: SettingsImportUiModel)</ID>
     <ID>CyclomaticComplexMethod:SortTypeToastProvider.kt$SortTypeToastProvider$fun getToast(sortType: SortType, ascending: Boolean): Int</ID>
     <ID>CyclomaticComplexMethod:TouchInterceptView.kt$TouchInterceptView$private fun handleOnInterceptTouchEvent(event: MotionEvent)</ID>
-    <ID>ForbiddenComment:AccountSetupCheckSettings.kt$AccountSetupCheckSettings.CheckAccountTask$* FIXME: Don't use an AsyncTask to perform network operations. * See also discussion in https://github.com/thundernest/k-9/pull/560</ID>
+    <ID>ForbiddenComment:AccountSetupCheckSettings.kt$AccountSetupCheckSettings.CheckAccountTask$* FIXME: Don't use an AsyncTask to perform network operations. * See also discussion in https://github.com/thunderbird/thunderbird-android/pull/560</ID>
     <ID>ForbiddenComment:MessageDetailsFragment.kt$MessageDetailsFragment$// FIXME: Replace this with a mechanism that survives process death</ID>
     <ID>ForbiddenComment:MessageListFragment.kt$MessageListFragment$// FIXME: Don't save the changes in the UI thread</ID>
     <ID>ImplicitDefaultLocale:MessageListAdapter.kt$MessageListAdapter$String.format("%d", threadCount)</ID>

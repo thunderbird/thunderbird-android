@@ -625,7 +625,7 @@ public class MessageCryptoHelper {
 
     private void onCryptoOperationCanceled() {
         // there are weird states that get us here when we're not actually processing any part. just skip in that case
-        // see https://github.com/thundernest/k-9/issues/1878
+        // see https://github.com/thunderbird/thunderbird-android/issues/1878
         if (currentCryptoPart != null) {
             CryptoResultAnnotation errorPart = CryptoResultAnnotation.createOpenPgpCanceledAnnotation();
             addCryptoResultAnnotationToMessage(errorPart);

@@ -41,7 +41,7 @@
 
 ### Create release on GitHub
 
-1. Go to https://github.com/thundernest/k-9/tags and select the appropriate tag
+1. Go to https://github.com/thunderbird/thunderbird-android/tags and select the appropriate tag
 2. Click "Create release from tag"
 3. Fill out the form
    - Click "Generate release notes"

@@ -297,7 +297,8 @@ class SmtpTransport(
     private fun buildHostnameToReport(): String {
         val localAddress = socket!!.localAddress
 
-        // We use local IP statically for privacy reasons, see https://github.com/thundernest/k-9/pull/3798
+        // We use local IP statically for privacy reasons,
+        // see https://github.com/thunderbird/thunderbird-android/pull/3798
         return if (localAddress is Inet6Address) {
             "[IPv6:::1]"
         } else {

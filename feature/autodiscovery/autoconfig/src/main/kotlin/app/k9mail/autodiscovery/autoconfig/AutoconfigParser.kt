@@ -6,7 +6,7 @@ import java.io.InputStream
 /**
  * Parser for Thunderbird's Autoconfig file format.
  *
- * See [https://github.com/thundernest/autoconfig](https://github.com/thundernest/autoconfig)
+ * See [https://github.com/thunderbird/autoconfig](https://github.com/thunderbird/autoconfig)
  */
 internal interface AutoconfigParser {
     fun parseSettings(inputStream: InputStream, email: EmailAddress): AutoconfigParserResult
