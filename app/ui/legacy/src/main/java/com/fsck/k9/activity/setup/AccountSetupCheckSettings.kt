@@ -387,7 +387,7 @@ class AccountSetupCheckSettings : K9Activity(), ConfirmationDialogFragmentListen
 
     /**
      * FIXME: Don't use an AsyncTask to perform network operations.
-     * See also discussion in https://github.com/thundernest/k-9/pull/560
+     * See also discussion in https://github.com/thunderbird/thunderbird-android/pull/560
      */
     private inner class CheckAccountTask(private val account: Account) : AsyncTask<CheckDirection, Int, Unit>() {
         override fun doInBackground(vararg params: CheckDirection) {
