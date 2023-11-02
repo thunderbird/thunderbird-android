@@ -29,12 +29,14 @@ val backendsModule = module {
             trustedSocketFactory = get(),
             context = get(),
             clientIdAppName = get(named("ClientIdAppName")),
+            clientIdAppVersion = get(named("ClientIdAppVersion")),
         )
     }
     single<SystemAlarmManager> { AndroidAlarmManager(context = get(), alarmManager = get()) }
     single<IdleRefreshManager> { BackendIdleRefreshManager(alarmManager = get()) }
     single { Pop3BackendFactory(get(), get()) }
     single(named("ClientIdAppName")) { BuildConfig.CLIENT_ID_APP_NAME }
+    single(named("ClientIdAppVersion")) { BuildConfig.VERSION_NAME }
     single<OAuth2TokenProviderFactory> { RealOAuth2TokenProviderFactory(context = get()) }
 
     developmentModuleAdditions()

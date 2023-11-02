@@ -563,10 +563,14 @@ internal class RealImapConnection(
     }
 
     private fun sendClientIdIfSupported() {
-        if (hasCapability(Capabilities.ID) && settings.clientIdAppName != null) {
-            val encodedAppName = ImapUtility.encodeString(settings.clientIdAppName)
+        val clientId = settings.clientId
+
+        if (hasCapability(Capabilities.ID) && clientId != null) {
+            val encodedAppName = ImapUtility.encodeString(clientId.appName)
+            val encodedAppVersion = ImapUtility.encodeString(clientId.appVersion)
+
             try {
-                executeSimpleCommand("""ID ("name" $encodedAppName)""")
+                executeSimpleCommand("""ID ("name" $encodedAppName "version" $encodedAppVersion)""")
             } catch (e: NegativeImapResponseException) {
                 Timber.d(e, "Ignoring negative response to ID command")
             }

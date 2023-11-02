@@ -302,7 +302,7 @@ internal open class RealImapStore(
 
         override val useCompression: Boolean = serverSettings.isUseCompression
 
-        override val clientIdAppName: String? = config.clientIdAppName().takeIf { serverSettings.isSendClientId }
+        override val clientId: ImapClientId? = config.clientId().takeIf { serverSettings.isSendClientId }
 
         override var pathPrefix: String?
             get() = this@RealImapStore.pathPrefix
