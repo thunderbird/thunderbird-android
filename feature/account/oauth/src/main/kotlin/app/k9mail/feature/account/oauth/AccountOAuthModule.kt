@@ -8,7 +8,6 @@ import app.k9mail.feature.account.oauth.domain.AccountOAuthDomainContract.UseCas
 import app.k9mail.feature.account.oauth.domain.usecase.CheckIsGoogleSignIn
 import app.k9mail.feature.account.oauth.domain.usecase.FinishOAuthSignIn
 import app.k9mail.feature.account.oauth.domain.usecase.GetOAuthRequestIntent
-import app.k9mail.feature.account.oauth.domain.usecase.SuggestServerName
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
 import app.k9mail.feature.account.oauth.ui.AccountOAuthViewModel
 import net.openid.appauth.AuthorizationService
@@ -34,8 +33,6 @@ val featureAccountOAuthModule: Module = module {
     factory<AccountOAuthDomainContract.AuthorizationStateRepository> {
         AuthorizationStateRepository()
     }
-
-    factory<UseCase.SuggestServerName> { SuggestServerName() }
 
     factory<UseCase.GetOAuthRequestIntent> {
         GetOAuthRequestIntent(

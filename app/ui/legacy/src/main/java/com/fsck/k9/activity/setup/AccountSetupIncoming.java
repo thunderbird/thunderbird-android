@@ -1,11 +1,8 @@
-
 package com.fsck.k9.activity.setup;
-
 
 import java.util.Locale;
 import java.util.Map;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,14 +24,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import app.k9mail.core.common.mail.Protocols;
-import app.k9mail.feature.account.oauth.domain.AccountOAuthDomainContract.UseCase.SuggestServerName;
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.LocalKeyStoreManager;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.account.AccountCreatorHelper;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
-import com.fsck.k9.helper.EmailHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
@@ -52,15 +47,13 @@ import timber.log.Timber;
 
 import static java.util.Collections.emptyMap;
 
-
+@Deprecated(since = "Remove once the new account edit feature is the default")
 public class AccountSetupIncoming extends K9Activity implements OnClickListener {
     private static final String EXTRA_ACCOUNT = "account";
-    private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
     private static final String STATE_SECURITY_TYPE_POSITION = "stateSecurityTypePosition";
     private static final String STATE_AUTH_TYPE_POSITION = "authTypePosition";
 
     private final AccountCreatorHelper accountCreatorHelper = DI.get(AccountCreatorHelper.class);
-    private final SuggestServerName serverNameSuggester = DI.get(SuggestServerName.class);
 
     private String mStoreType;
     private TextInputEditText mUsernameView;
@@ -79,19 +72,10 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private ViewGroup mAllowClientCertificateView;
     private Button mNextButton;
     private Account mAccount;
-    private boolean mMakeDefault;
     private CheckBox useCompressionCheckBox;
     private CheckBox isSendClientIdEnabledCheckBox;
     private AuthTypeAdapter mAuthTypeAdapter;
     private ConnectionSecurity[] mConnectionSecurityChoices = ConnectionSecurity.values();
-    private boolean editSettings;
-
-    public static void actionIncomingSettings(Activity context, Account account, boolean makeDefault) {
-        Intent i = new Intent(context, AccountSetupIncoming.class);
-        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        i.putExtra(EXTRA_MAKE_DEFAULT, makeDefault);
-        context.startActivity(i);
-    }
 
     public static void actionEditIncomingSettings(Context context, String accountUuid) {
         Intent intent = new Intent(context, AccountSetupIncoming.class);
@@ -152,7 +136,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences().getAccount(accountUuid);
-        mMakeDefault = getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false);
 
         /*
          * If we're being reloaded we override the original account with the one
@@ -167,11 +150,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         mAuthTypeAdapter = AuthTypeAdapter.get(this, oAuthSupported);
         mAuthTypeView.setAdapter(mAuthTypeAdapter);
 
-        editSettings = Intent.ACTION_EDIT.equals(getIntent().getAction());
-        if (editSettings) {
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            }
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         try {
@@ -214,10 +194,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 }
             } else {
                 throw new Exception("Unknown account type: " + settings.type);
-            }
-
-            if (!editSettings) {
-                mAccount.setDeletePolicy(accountCreatorHelper.getDefaultDeletePolicy(settings.type));
             }
 
             // Note that mConnectionSecurityChoices is configured above based on server type
@@ -331,15 +307,13 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         mServerView.addTextChangedListener(validationTextWatcher);
         mPortView.addTextChangedListener(validationTextWatcher);
 
-        if (editSettings) {
-            TextInputLayoutHelper.configureAuthenticatedPasswordToggle(
-                    mPasswordLayoutView,
-                    this,
-                    getString(R.string.account_setup_basics_show_password_biometrics_title),
-                    getString(R.string.account_setup_basics_show_password_biometrics_subtitle),
-                    getString(R.string.account_setup_basics_show_password_need_lock)
-            );
-        }
+        TextInputLayoutHelper.configureAuthenticatedPasswordToggle(
+            mPasswordLayoutView,
+            this,
+            getString(R.string.account_setup_basics_show_password_biometrics_title),
+            getString(R.string.account_setup_basics_show_password_biometrics_subtitle),
+            getString(R.string.account_setup_basics_show_password_need_lock)
+        );
     }
 
     @Override
@@ -492,36 +466,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         }
 
         if (resultCode == RESULT_OK) {
-            if (editSettings) {
-                Preferences.getPreferences().saveAccount(mAccount);
-                finish();
-            } else {
-                /*
-                 * Set the username and password for the outgoing settings to the username and
-                 * password the user just set for incoming.
-                 */
-                String username = mUsernameView.getText().toString().trim();
-
-                String password = null;
-                String clientCertificateAlias = null;
-                AuthType authType = getSelectedAuthType();
-                if ((ConnectionSecurity.SSL_TLS_REQUIRED == getSelectedSecurity()) ||
-                        (ConnectionSecurity.STARTTLS_REQUIRED == getSelectedSecurity()) ) {
-                    clientCertificateAlias = mClientCertificateSpinner.getAlias();
-                }
-                if (AuthType.EXTERNAL != authType) {
-                    password = mPasswordView.getText().toString();
-                }
-
-                String domain = EmailHelper.getDomainFromEmailAddress(mAccount.getEmail());
-                String host = serverNameSuggester.suggest(Protocols.SMTP, domain);
-                ServerSettings transportServer = new ServerSettings(Protocols.SMTP, host,
-                        -1, ConnectionSecurity.SSL_TLS_REQUIRED, authType, username, password,
-                        clientCertificateAlias);
-                mAccount.setOutgoingServerSettings(transportServer);
-
-                AccountSetupOutgoing.actionOutgoingSettings(this, mAccount);
-            }
+            Preferences.getPreferences().saveAccount(mAccount);
+            finish();
         }
     }
 
