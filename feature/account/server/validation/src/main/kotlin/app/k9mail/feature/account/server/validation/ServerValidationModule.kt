@@ -30,6 +30,7 @@ val featureAccountServerValidationModule = module {
                 trustedSocketFactory = get(),
                 oAuth2TokenProviderFactory = get(),
                 clientIdAppName = get(named("ClientIdAppName")),
+                clientIdAppVersion = get(named("ClientIdAppVersion")),
             ),
             pop3Validator = Pop3ServerSettingsValidator(
                 trustedSocketFactory = get(),

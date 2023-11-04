@@ -831,12 +831,15 @@ class RealImapConnectionTest {
     fun `open() with ID capability and clientIdAppName should send ID command`() {
         val server = MockImapServer().apply {
             simplePreAuthAndLoginDialog(postAuthCapabilities = "ID")
-            expect("""3 ID ("name" "AppName")""")
+            expect("""3 ID ("name" "AppName" "version" "AppVersion")""")
             output("""* ID ("name" "CustomImapServer" "vendor" "Company, Inc." "version" "0.1")""")
             output("3 OK ID completed")
             simplePostAuthenticationDialog(tag = 4)
         }
-        val imapConnection = startServerAndCreateImapConnection(server, clientIdAppName = "AppName")
+        val imapConnection = startServerAndCreateImapConnection(
+            server,
+            clientId = ImapClientId(appName = "AppName", appVersion = "AppVersion"),
+        )
 
         imapConnection.open()
 
@@ -850,7 +853,10 @@ class RealImapConnectionTest {
             simplePreAuthAndLoginDialog()
             simplePostAuthenticationDialog(tag = 3)
         }
-        val imapConnection = startServerAndCreateImapConnection(server, clientIdAppName = "AppName")
+        val imapConnection = startServerAndCreateImapConnection(
+            server,
+            clientId = ImapClientId(appName = "AppName", appVersion = "AppVersion"),
+        )
 
         imapConnection.open()
 
@@ -864,7 +870,7 @@ class RealImapConnectionTest {
             simplePreAuthAndLoginDialog(postAuthCapabilities = "ID")
             simplePostAuthenticationDialog(tag = 3)
         }
-        val imapConnection = startServerAndCreateImapConnection(server, clientIdAppName = null)
+        val imapConnection = startServerAndCreateImapConnection(server, clientId = null)
 
         imapConnection.open()
 
@@ -876,12 +882,15 @@ class RealImapConnectionTest {
     fun `open() with empty untagged ID response`() {
         val server = MockImapServer().apply {
             simplePreAuthAndLoginDialog(postAuthCapabilities = "ID")
-            expect("""3 ID ("name" "AppName")""")
+            expect("""3 ID ("name" "AppName" "version" "AppVersion")""")
             output("""* ID NIL""")
             output("3 OK ID completed")
             simplePostAuthenticationDialog(tag = 4)
         }
-        val imapConnection = startServerAndCreateImapConnection(server, clientIdAppName = "AppName")
+        val imapConnection = startServerAndCreateImapConnection(
+            server,
+            clientId = ImapClientId(appName = "AppName", appVersion = "AppVersion"),
+        )
 
         imapConnection.open()
 
@@ -893,11 +902,14 @@ class RealImapConnectionTest {
     fun `open() with missing untagged ID response`() {
         val server = MockImapServer().apply {
             simplePreAuthAndLoginDialog(postAuthCapabilities = "ID")
-            expect("""3 ID ("name" "AppName")""")
+            expect("""3 ID ("name" "AppName" "version" "AppVersion")""")
             output("3 OK ID completed")
             simplePostAuthenticationDialog(tag = 4)
         }
-        val imapConnection = startServerAndCreateImapConnection(server, clientIdAppName = "AppName")
+        val imapConnection = startServerAndCreateImapConnection(
+            server,
+            clientId = ImapClientId(appName = "AppName", appVersion = "AppVersion"),
+        )
 
         imapConnection.open()
 
@@ -909,11 +921,14 @@ class RealImapConnectionTest {
     fun `open() with BAD response to ID command should not throw`() {
         val server = MockImapServer().apply {
             simplePreAuthAndLoginDialog(postAuthCapabilities = "ID")
-            expect("""3 ID ("name" "AppName")""")
+            expect("""3 ID ("name" "AppName" "version" "AppVersion")""")
             output("3 BAD Server doesn't like the ID command")
             simplePostAuthenticationDialog(tag = 4)
         }
-        val imapConnection = startServerAndCreateImapConnection(server, clientIdAppName = "AppName")
+        val imapConnection = startServerAndCreateImapConnection(
+            server,
+            clientId = ImapClientId(appName = "AppName", appVersion = "AppVersion"),
+        )
 
         imapConnection.open()
 
@@ -1113,7 +1128,7 @@ class RealImapConnectionTest {
         connectionSecurity: ConnectionSecurity = ConnectionSecurity.NONE,
         authType: AuthType = AuthType.PLAIN,
         useCompression: Boolean = false,
-        clientIdAppName: String? = null,
+        clientId: ImapClientId? = null,
     ): ImapConnection {
         server.start()
 
@@ -1125,7 +1140,7 @@ class RealImapConnectionTest {
             username = USERNAME,
             password = PASSWORD,
             useCompression = useCompression,
-            clientIdAppName = clientIdAppName,
+            clientId = clientId,
         )
 
         return createImapConnection(settings, socketFactory, oAuth2TokenProvider)

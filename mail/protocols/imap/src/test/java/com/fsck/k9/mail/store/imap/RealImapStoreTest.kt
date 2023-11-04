@@ -413,7 +413,7 @@ class RealImapStoreTest {
         return object : ImapStoreConfig {
             override val logLabel: String = "irrelevant"
             override fun isSubscribedFoldersOnly(): Boolean = isSubscribedFoldersOnly
-            override fun clientIdAppName(): String = "irrelevant"
+            override fun clientId(): ImapClientId = ImapClientId(appName = "irrelevant", appVersion = "irrelevant")
         }
     }
 

@@ -10,6 +10,7 @@ import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.power.PowerManager
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import com.fsck.k9.mail.store.imap.IdleRefreshManager
+import com.fsck.k9.mail.store.imap.ImapClientId
 import com.fsck.k9.mail.store.imap.ImapStore
 import com.fsck.k9.mail.store.imap.ImapStoreConfig
 import com.fsck.k9.mail.transport.smtp.SmtpTransport
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
+@Suppress("LongParameterList")
 class ImapBackendFactory(
     private val accountManager: AccountManager,
     private val powerManager: PowerManager,
@@ -27,6 +29,7 @@ class ImapBackendFactory(
     private val trustedSocketFactory: TrustedSocketFactory,
     private val context: Context,
     private val clientIdAppName: String,
+    private val clientIdAppVersion: String,
 ) : BackendFactory {
     override fun createBackend(account: Account): Backend {
         val accountName = account.displayName
@@ -71,7 +74,7 @@ class ImapBackendFactory(
 
             override fun isSubscribedFoldersOnly() = account.isSubscribedFoldersOnly
 
-            override fun clientIdAppName() = clientIdAppName
+            override fun clientId() = ImapClientId(appName = clientIdAppName, appVersion = clientIdAppVersion)
         }
     }
 
