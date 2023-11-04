@@ -24,7 +24,7 @@ abstract class BaseSaveServerSettingsViewModel(
 
     override fun event(event: Event) {
         when (event) {
-            Event.SaveServerSettings -> onSaveServerSettings()
+            Event.SaveServerSettings -> handleOneTimeEvent(event, ::onSaveServerSettings)
             Event.OnNextClicked -> navigateNext()
             Event.OnBackClicked -> navigateBack()
         }
