@@ -13,7 +13,8 @@ internal class MigrationTo84(private val db: SQLiteDatabase) {
 
     fun rewriteAddresses() {
         val addressSets = db.rawQuery(
-            "SELECT id, to_list, cc_list, bcc_list, reply_to_list, sender_list FROM messages WHERE empty = 0 AND deleted = 0",
+            "SELECT id, to_list, cc_list, bcc_list, reply_to_list, sender_list " +
+                "FROM messages WHERE empty = 0 AND deleted = 0",
             null,
         ).use { cursor ->
             cursor.map {

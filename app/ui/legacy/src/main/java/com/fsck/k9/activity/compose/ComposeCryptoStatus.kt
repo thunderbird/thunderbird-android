@@ -7,7 +7,6 @@ import com.fsck.k9.message.AutocryptStatusInteractor
 import com.fsck.k9.message.AutocryptStatusInteractor.RecipientAutocryptStatus
 import com.fsck.k9.message.CryptoStatus
 import com.fsck.k9.view.RecipientSelectView.Recipient
-import org.openintents.openpgp.OpenPgpApiManager
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderState
 
 /** This is an immutable object which contains all relevant metadata entered
@@ -76,10 +75,10 @@ data class ComposeCryptoStatus(
     val recipientAddressesAsArray = recipientAddresses.toTypedArray()
 
     private val displayTypeFromProviderError = when (openPgpProviderState) {
-        OpenPgpApiManager.OpenPgpProviderState.OK -> null
-        OpenPgpApiManager.OpenPgpProviderState.UNCONFIGURED -> CryptoStatusDisplayType.UNCONFIGURED
-        OpenPgpApiManager.OpenPgpProviderState.UNINITIALIZED -> CryptoStatusDisplayType.UNINITIALIZED
-        OpenPgpApiManager.OpenPgpProviderState.ERROR, OpenPgpApiManager.OpenPgpProviderState.UI_REQUIRED -> CryptoStatusDisplayType.ERROR
+        OpenPgpProviderState.OK -> null
+        OpenPgpProviderState.UNCONFIGURED -> CryptoStatusDisplayType.UNCONFIGURED
+        OpenPgpProviderState.UNINITIALIZED -> CryptoStatusDisplayType.UNINITIALIZED
+        OpenPgpProviderState.ERROR, OpenPgpProviderState.UI_REQUIRED -> CryptoStatusDisplayType.ERROR
     }
 
     private val displayTypeFromAutocryptError = when (recipientAutocryptStatusType) {

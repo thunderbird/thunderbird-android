@@ -79,7 +79,13 @@ internal class MigrationTo70(private val db: SQLiteDatabase) {
 
     private fun recreateFoldersTriggers() {
         db.execSQL("DROP TRIGGER IF EXISTS delete_folder")
-        db.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN DELETE FROM messages WHERE old.id = folder_id; END;")
+        db.execSQL(
+            "CREATE TRIGGER delete_folder " +
+                "BEFORE DELETE ON folders " +
+                "BEGIN " +
+                "DELETE FROM messages WHERE old.id = folder_id; " +
+                "END;",
+        )
 
         db.execSQL("DROP TRIGGER IF EXISTS delete_folder_extra_values")
         db.execSQL(

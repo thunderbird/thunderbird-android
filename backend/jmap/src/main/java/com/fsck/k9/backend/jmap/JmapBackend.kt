@@ -94,7 +94,11 @@ class JmapBackend(
         return messageServerIds.associateWith { it }
     }
 
-    override fun moveMessagesAndMarkAsRead(sourceFolderServerId: String, targetFolderServerId: String, messageServerIds: List<String>): Map<String, String>? {
+    override fun moveMessagesAndMarkAsRead(
+        sourceFolderServerId: String,
+        targetFolderServerId: String,
+        messageServerIds: List<String>,
+    ): Map<String, String>? {
         commandMove.moveMessagesAndMarkAsRead(targetFolderServerId, messageServerIds)
         return messageServerIds.associateWith { it }
     }
