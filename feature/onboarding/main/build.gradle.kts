@@ -3,10 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "app.k9mail.feature.onboarding"
-    resourcePrefix = "onboarding_"
+    namespace = "app.k9mail.feature.onboarding.main"
+    resourcePrefix = "onboarding_main_"
 }
 
 dependencies {
     implementation(projects.core.ui.compose.designsystem)
+    implementation(projects.feature.onboarding.welcome)
 }

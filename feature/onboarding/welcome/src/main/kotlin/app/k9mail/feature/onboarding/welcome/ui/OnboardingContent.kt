@@ -1,4 +1,4 @@
-package app.k9mail.feature.onboarding.ui
+package app.k9mail.feature.onboarding.welcome.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -23,7 +23,7 @@ import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContent
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
-import app.k9mail.feature.onboarding.R
+import app.k9mail.feature.onboarding.welcome.R
 
 @Composable
 internal fun OnboardingContent(

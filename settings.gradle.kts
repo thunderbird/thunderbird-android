@@ -39,7 +39,11 @@ include(
 
 include(
     ":feature:launcher",
-    ":feature:onboarding",
+)
+
+include(
+    ":feature:onboarding:main",
+    ":feature:onboarding:welcome",
 )
 
 include(

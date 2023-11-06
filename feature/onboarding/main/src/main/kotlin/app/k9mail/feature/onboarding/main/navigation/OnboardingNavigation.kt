@@ -1,10 +1,10 @@
-package app.k9mail.feature.onboarding.navigation
+package app.k9mail.feature.onboarding.main.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import app.k9mail.core.ui.compose.common.navigation.deepLinkComposable
-import app.k9mail.feature.onboarding.ui.OnboardingScreen
+import app.k9mail.feature.onboarding.welcome.ui.OnboardingScreen
 
 const val NAVIGATION_ROUTE_ONBOARDING = "onboarding"
 

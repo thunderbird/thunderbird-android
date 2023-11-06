@@ -1,4 +1,4 @@
-package app.k9mail.feature.onboarding.ui
+package app.k9mail.feature.onboarding.welcome.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview

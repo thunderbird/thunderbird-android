@@ -60,7 +60,7 @@ dependencies {
     implementation(projects.core.common)
     implementation(projects.mail.common)
 
-    implementation(projects.feature.onboarding)
+    implementation(projects.feature.onboarding.main)
     implementation(projects.feature.account.setup)
     implementation(projects.feature.account.edit)
 

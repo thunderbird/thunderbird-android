@@ -19,7 +19,7 @@ android {
 dependencies {
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.app.ui.base)
-    implementation(projects.feature.onboarding)
+    implementation(projects.feature.onboarding.main)
     implementation(projects.feature.account.setup)
     implementation(projects.feature.account.edit)
 
