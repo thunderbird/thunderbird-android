@@ -24,19 +24,23 @@ fun LazyGridScope.iconItems() {
 }
 
 private inline fun <reified T> LazyGridScope.getIconsFor(icons: T) {
-    for (field in T::class.java.declaredFields) {
-        if (field.name in exclusions) continue
-        item {
-            field.isAccessible = true
-            IconItem(
-                name = field.name.replaceFirstChar { it.uppercase() },
-                imageVector = field.get(icons) as ImageVector,
-            )
+    for (method in T::class.java.methods) {
+        if (exclusions.contains(method.name)) {
+            continue
+        } else if (method.name.startsWith("get")) {
+            item {
+                method.isAccessible = true
+                val imageVector = method.invoke(icons) as ImageVector
+                IconItem(
+                    name = method.name.replaceFirst("get", ""),
+                    imageVector = imageVector,
+                )
+            }
         }
     }
 }
 
-private val exclusions = listOf("\$stable", "INSTANCE")
+private val exclusions = listOf("getClass")
 
 @Composable
 private fun IconItem(
