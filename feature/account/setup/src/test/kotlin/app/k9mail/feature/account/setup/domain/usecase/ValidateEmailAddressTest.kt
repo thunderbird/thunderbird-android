@@ -28,6 +28,69 @@ class ValidateEmailAddressTest {
     }
 
     @Test
+    fun `should fail when email address is using unnecessary quoting in local part`() {
+        val result = testSubject.execute("\"local-part\"@domain.example")
+
+        assertThat(result).isInstanceOf<ValidationResult.Failure>()
+            .prop(ValidationResult.Failure::error)
+            .isInstanceOf<ValidateEmailAddressError.NotAllowed>()
+    }
+
+    @Test
+    fun `should fail when email address requires quoted local part`() {
+        val result = testSubject.execute("\"local part\"@domain.example")
+
+        assertThat(result).isInstanceOf<ValidationResult.Failure>()
+            .prop(ValidationResult.Failure::error)
+            .isInstanceOf<ValidateEmailAddressError.NotAllowed>()
+    }
+
+    @Test
+    fun `should fail when local part is empty`() {
+        val result = testSubject.execute("\"\"@domain.example")
+
+        assertThat(result).isInstanceOf<ValidationResult.Failure>()
+            .prop(ValidationResult.Failure::error)
+            .isInstanceOf<ValidateEmailAddressError.NotAllowed>()
+    }
+
+    @Test
+    fun `should fail when domain part contains IPv4 literal`() {
+        val result = testSubject.execute("user@[255.0.100.23]")
+
+        assertThat(result).isInstanceOf<ValidationResult.Failure>()
+            .prop(ValidationResult.Failure::error)
+            .isInstanceOf<ValidateEmailAddressError.NotAllowed>()
+    }
+
+    @Test
+    fun `should fail when domain part contains IPv6 literal`() {
+        val result = testSubject.execute("user@[IPv6:2001:0db8:0000:0000:0000:ff00:0042:8329]")
+
+        assertThat(result).isInstanceOf<ValidationResult.Failure>()
+            .prop(ValidationResult.Failure::error)
+            .isInstanceOf<ValidateEmailAddressError.NotAllowed>()
+    }
+
+    @Test
+    fun `should fail when local part contains non-ASCII character`() {
+        val result = testSubject.execute("töst@domain.example")
+
+        assertThat(result).isInstanceOf<ValidationResult.Failure>()
+            .prop(ValidationResult.Failure::error)
+            .isInstanceOf<ValidateEmailAddressError.InvalidOrNotSupported>()
+    }
+
+    @Test
+    fun `should fail when domain contains non-ASCII character`() {
+        val result = testSubject.execute("test@dömain.example")
+
+        assertThat(result).isInstanceOf<ValidationResult.Failure>()
+            .prop(ValidationResult.Failure::error)
+            .isInstanceOf<ValidateEmailAddressError.InvalidOrNotSupported>()
+    }
+
+    @Test
     fun `should fail when email address is invalid`() {
         val result = testSubject.execute("test")
 

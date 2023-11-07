@@ -7,7 +7,9 @@
     <string name="account_setup_error_unknown">Unknown error</string>
 
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Email address is required.</string>
-    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Email address is invalid.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">This email address is not allowed.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">This email address is not supported.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">This is not recognized as a valid email address.</string>
 
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
