@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.common.DevicePreviews
+import app.k9mail.core.ui.compose.common.PreviewDevices
 import app.k9mail.core.ui.compose.designsystem.atom.button.Button
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonOutlined
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
@@ -69,7 +69,7 @@ private fun getHorizontalArrangement(state: WizardNavigationBarState): Arrangeme
     }
 }
 
-@DevicePreviews
+@PreviewDevices
 @Composable
 internal fun WizardNavigationBarK9Preview() {
     K9Theme {
@@ -80,7 +80,7 @@ internal fun WizardNavigationBarK9Preview() {
     }
 }
 
-@DevicePreviews
+@PreviewDevices
 @Composable
 internal fun WizardNavigationBarPreview() {
     PreviewWithThemes {
@@ -91,7 +91,7 @@ internal fun WizardNavigationBarPreview() {
     }
 }
 
-@DevicePreviews
+@PreviewDevices
 @Composable
 internal fun WizardNavigationBarDisabledPreview() {
     PreviewWithThemes {
@@ -106,7 +106,7 @@ internal fun WizardNavigationBarDisabledPreview() {
     }
 }
 
-@DevicePreviews
+@PreviewDevices
 @Composable
 internal fun WizardNavigationBarHideNextPreview() {
     PreviewWithThemes {
@@ -120,7 +120,7 @@ internal fun WizardNavigationBarHideNextPreview() {
     }
 }
 
-@DevicePreviews
+@PreviewDevices
 @Composable
 internal fun WizardNavigationBarHideBackPreview() {
     PreviewWithThemes {

@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.common.DevicePreviews
+import app.k9mail.core.ui.compose.common.PreviewDevices
 import app.k9mail.core.ui.compose.designsystem.atom.Background
 import app.k9mail.core.ui.compose.designsystem.atom.button.Button
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
@@ -143,7 +143,7 @@ private fun Modifier.defaultItemModifier() = composed {
 }
 
 @Composable
-@DevicePreviews
+@PreviewDevices
 internal fun OnboardingContentK9Preview() {
     K9Theme {
         OnboardingContent(
@@ -154,7 +154,7 @@ internal fun OnboardingContentK9Preview() {
 }
 
 @Composable
-@DevicePreviews
+@PreviewDevices
 internal fun OnboardingContentThunderbirdPreview() {
     ThunderbirdTheme {
         OnboardingContent(

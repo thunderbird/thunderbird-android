@@ -13,4 +13,4 @@ import androidx.compose.ui.tooling.preview.Preview
 @Preview(name = "Foldable", device = Devices.FOLDABLE)
 @Preview(name = "Tablet", device = Devices.TABLET)
 @Preview(name = "Desktop", device = Devices.DESKTOP)
-annotation class DevicePreviews
+annotation class PreviewDevices

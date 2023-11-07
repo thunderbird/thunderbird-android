@@ -12,7 +12,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.common.DevicePreviews
+import app.k9mail.core.ui.compose.common.PreviewDevices
 import app.k9mail.core.ui.compose.common.baseline.withBaseline
 import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.core.ui.compose.designsystem.atom.Icon
@@ -127,7 +127,7 @@ fun ServerCertificateErrorScreen(
 }
 
 @Composable
-@DevicePreviews
+@PreviewDevices
 internal fun ServerCertificateErrorScreenK9Preview() {
     val inputStream = """
         -----BEGIN CERTIFICATE-----
