@@ -51,7 +51,6 @@
     <ID>MagicNumber:Utf8.kt$3</ID>
     <ID>MagicNumber:Utf8.kt$4</ID>
     <ID>MagicNumber:Utf8.kt$6</ID>
-    <ID>MaxLineLength:BoundaryGeneratorTest.kt$BoundaryGeneratorTest$0</ID>
     <ID>ReturnCount:DecoderUtil.kt$DecoderUtil$@JvmStatic fun decodeEncodedWords(body: String, message: Message?): String</ID>
     <ID>ReturnCount:DecoderUtil.kt$DecoderUtil$private fun extractEncodedWord(body: String, begin: Int, end: Int, message: Message?): EncodedWord?</ID>
     <ID>ReturnCount:FormatFlowedHelper.kt$FormatFlowedHelper$@JvmStatic fun checkFormatFlowed(contentTypeHeaderValue: String?): FormatFlowedResult</ID>

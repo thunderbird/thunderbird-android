@@ -2,15 +2,25 @@ root = true
 
 [*]
 charset = utf-8
-indent_size = 4
 indent_style = space
+indent_size = 4
+ij_continuation_indent_size = 4
+tab_width = 4
 insert_final_newline = true
+trim_trailing_whitespace = true
 end_of_line = lf
+max_line_length = 120
 
 [*.{kt,kts}]
 ij_kotlin_imports_layout = *,^
 ij_kotlin_allow_trailing_comma = true
 ij_kotlin_allow_trailing_comma_on_call_site = true
+ktlint_ignore_back_ticked_identifier = true
 
-[*.{yml,yaml,json,toml}]
+[*.{yml,yaml,json,toml,md}]
 indent_size = 2
+tab_width = 2
+ij_continuation_indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false

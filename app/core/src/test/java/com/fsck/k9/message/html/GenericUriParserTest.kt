@@ -46,7 +46,10 @@ class GenericUriParserTest {
         assertUriValid("xmpp:example-node@example.com?message")
         assertUriValid("xmpp:example-node@example.com?message;subject=Hello%20World")
         assertUriValid("xmpp:nasty!%23\$%25()*+,-.;=%3F%5B%5C%5D%5E_%60%7B%7C%7D~node@example.com")
-        assertUriValid("xmpp:node@example.com/repulsive%20!%23%22\$%25&'()*+,-.%2F:;%3C=%3E%3F%40%5B%5C%5D%5E_%60%7B%7C%7D~resource")
+        assertUriValid(
+            "xmpp:node@example.com/repulsive" +
+                "%20!%23%22\$%25&'()*+,-.%2F:;%3C=%3E%3F%40%5B%5C%5D%5E_%60%7B%7C%7D~resource",
+        )
         assertUriValid("xmpp:ji%C5%99i@%C4%8Dechy.example/v%20Praze")
     }
 
