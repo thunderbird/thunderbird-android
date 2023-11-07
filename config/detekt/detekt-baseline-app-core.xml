@@ -84,8 +84,6 @@
     <ID>MagicNumber:ServerSettingsSerializer.kt$ServerSettingsAdapter$7</ID>
     <ID>MagicNumber:SettingsExporter.kt$SettingsExporter$3</ID>
     <ID>MagicNumber:TimberLogger.kt$TimberLogger$26</ID>
-    <ID>MaxLineLength:GenericUriParserTest.kt$GenericUriParserTest$assertUriValid("xmpp:node@example.com/repulsive%20!%23%22\$%25&amp;'()*+,-.%2F:;%3C=%3E%3F%40%5B%5C%5D%5E_%60%7B%7C%7D~resource")</ID>
-    <ID>MaxLineLength:NotificationHelper.kt$NotificationHelper$// UID 123 does not have permission to content://media/external_primary/audio/media/42?title=Coins&amp;canonical=1 [user 0]</ID>
     <ID>MayBeConst:SummaryNotificationDataCreatorTest.kt$private val TIMESTAMP = 0L</ID>
     <ID>MemberNameEqualsClassName:HtmlModification.kt$HtmlModification.Replace$abstract fun replace(textToHtml: TextToHtml)</ID>
     <ID>NestedBlockDepth:HttpUriParser.kt$HttpUriParser$private fun tryMatchIpv6Address(text: CharSequence, startPos: Int): Int</ID>

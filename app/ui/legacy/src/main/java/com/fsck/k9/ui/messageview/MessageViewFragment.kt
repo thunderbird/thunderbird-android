@@ -198,8 +198,8 @@ class MessageViewFragment :
         if (menuVisible) {
             messageLoaderHelper.resumeCryptoOperationIfNecessary()
         } else {
-            // When the menu is hidden, the message associated with this fragment is no longer active. If the user returns
-            // to it, we want to mark the message as opened again.
+            // When the menu is hidden, the message associated with this fragment is no longer active. If the user
+            // returns to it, we want to mark the message as opened again.
             wasMessageMarkedAsOpened = false
         }
     }

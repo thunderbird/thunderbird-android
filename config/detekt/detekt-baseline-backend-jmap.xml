@@ -3,7 +3,6 @@
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
     <ID>ForbiddenComment:CommandSync.kt$CommandSync$// FIXME: Add sort parameter</ID>
-    <ID>MaxLineLength:JmapBackend.kt$JmapBackend$override</ID>
     <ID>ReturnCount:JmapAccountDiscovery.kt$JmapAccountDiscovery$fun discover(emailAddress: String, password: String): JmapDiscoveryResult</ID>
     <ID>SwallowedException:JmapAccountDiscovery.kt$JmapAccountDiscovery$e: EndpointNotFoundException</ID>
     <ID>SwallowedException:JmapAccountDiscovery.kt$JmapAccountDiscovery$e: UnauthorizedException</ID>

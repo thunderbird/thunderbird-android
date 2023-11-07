@@ -38,10 +38,11 @@ class NotificationHelper(
         try {
             notificationManager.notify(notificationId, notification)
         } catch (e: SecurityException) {
-            // When importing settings from another device, we could end up with a NotificationChannel that references a
-            // non-existing notification sound. In that case, we end up with a SecurityException with a message similar
-            // to this:
-            // UID 123 does not have permission to content://media/external_primary/audio/media/42?title=Coins&canonical=1 [user 0]
+            // When importing settings from another device, we could end up with a NotificationChannel that references
+            // a non-existing notification sound. In that case, we end up with a SecurityException with a message
+            // similar to this:
+            // UID 123 does not have permission to
+            // content://media/external_primary/audio/media/42?title=Coins&canonical=1 [user 0]
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
                 e.message?.contains("does not have permission to") == true
             ) {

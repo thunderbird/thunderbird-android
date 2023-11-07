@@ -82,14 +82,10 @@
     <ID>MagicNumber:SizeFormatter.kt$SizeFormatter$1_000_000L</ID>
     <ID>MagicNumber:SizeFormatter.kt$SizeFormatter$999_950L</ID>
     <ID>MagicNumber:SizeFormatter.kt$SizeFormatter$999_950_000L</ID>
-    <ID>MaxLineLength:ComposeCryptoStatus.kt$ComposeCryptoStatus$OpenPgpApiManager.OpenPgpProviderState.ERROR, OpenPgpApiManager.OpenPgpProviderState.UI_REQUIRED -&gt; CryptoStatusDisplayType.ERROR</ID>
-    <ID>MaxLineLength:MessageViewFragment.kt$MessageViewFragment$// When the menu is hidden, the message associated with this fragment is no longer active. If the user returns</ID>
     <ID>MemberNameEqualsClassName:ReplyToView.kt$ReplyToView$private val replyToView: RecipientSelectView = activity.findViewById(R.id.reply_to)</ID>
     <ID>NestedBlockDepth:MessageList.kt$MessageList$override fun onBackPressed()</ID>
     <ID>NestedBlockDepth:MessageList.kt$MessageList$override fun onOptionsItemSelected(item: MenuItem): Boolean</ID>
     <ID>NestedBlockDepth:MessageList.kt$MessageList$private fun decodeExtrasToLaunchData(intent: Intent): LaunchData</ID>
-    <ID>ReturnCount:AccountSetupBasics.kt$AccountSetupBasics$private fun providersXmlDiscoveryDiscover(email: String): ConnectionSettings?</ID>
-    <ID>ReturnCount:AccountSetupBasics.kt$private fun DiscoveredServerSettings.toServerSettings(): ServerSettings?</ID>
     <ID>ReturnCount:AccountSetupCheckSettings.kt$AccountSetupCheckSettings.CheckAccountTask$private fun isCanceled(): Boolean</ID>
     <ID>ReturnCount:ChooseFolderActivity.kt$ChooseFolderActivity$private fun decodeArguments(savedInstanceState: Bundle?): Boolean</ID>
     <ID>ReturnCount:EditIdentity.kt$EditIdentity$override fun onOptionsItemSelected(item: MenuItem): Boolean</ID>
@@ -162,7 +158,6 @@
     <ID>TooGenericExceptionThrown:MessageViewFragment.kt$MessageViewFragment$throw RuntimeException("Called showDialog(int) with unknown dialog id.")</ID>
     <ID>TooManyFunctions:AccountSettingsDataStore.kt$AccountSettingsDataStore : PreferenceDataStore</ID>
     <ID>TooManyFunctions:AccountSettingsFragment.kt$AccountSettingsFragment : PreferenceFragmentCompatConfirmationDialogFragmentListener</ID>
-    <ID>TooManyFunctions:AccountSetupBasics.kt$AccountSetupBasics : K9Activity</ID>
     <ID>TooManyFunctions:AccountSetupCheckSettings.kt$AccountSetupCheckSettings : K9ActivityConfirmationDialogFragmentListener</ID>
     <ID>TooManyFunctions:AuthViewModel.kt$AuthViewModel : AndroidViewModel</ID>
     <ID>TooManyFunctions:AutocryptKeyTransferActivity.kt$AutocryptKeyTransferActivity : K9Activity</ID>

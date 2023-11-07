@@ -39,7 +39,6 @@
     <ID>MagicNumber:RealImapFolder.kt$RealImapFolder$9</ID>
     <ID>MagicNumber:UidValidityResponse.kt$UidValidityResponse.Companion$0xFFFFFFFFL</ID>
     <ID>MaxLineLength:RealImapFolder.kt$RealImapFolder$// [MESSAGE, RFC822, [NAME, Fwd: [#HTR-517941]: update plans at 1am Friday - Memory allocation - displayware.eml], NIL, NIL, 7BIT, 5974, NIL, [INLINE, [FILENAME*0, Fwd: [#HTR-517941]: update plans at 1am Friday - Memory all, FILENAME*1, ocation - displayware.eml]], NIL]</ID>
-    <ID>MaxLineLength:RealImapFolder.kt$RealImapFolder$val canCreateForwardedFlag = canCreateKeywords || internalImapStore.getPermanentFlagsIndex().contains(Flag.FORWARDED)</ID>
     <ID>MaxLineLength:RealImapStoreTest.kt$RealImapStoreTest$fun</ID>
     <ID>NestedBlockDepth:RealImapFolder.kt$RealImapFolder$@Throws(MessagingException::class) override fun appendMessages(messages: List&lt;Message&gt;): Map&lt;String, String&gt;?</ID>
     <ID>NestedBlockDepth:RealImapFolder.kt$RealImapFolder$@Throws(MessagingException::class) override fun fetch( messages: List&lt;ImapMessage&gt;, fetchProfile: FetchProfile, listener: FetchListener?, maxDownloadSize: Int, )</ID>
