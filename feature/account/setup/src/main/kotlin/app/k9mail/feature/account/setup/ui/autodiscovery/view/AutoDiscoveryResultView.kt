@@ -29,7 +29,9 @@ internal fun AutoDiscoveryResultView(
     onEditConfigurationClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val expanded = remember { mutableStateOf(false) }
+    val expanded = remember {
+        mutableStateOf(settings?.isTrusted?.not() ?: false)
+    }
 
     Column(
         modifier = modifier,
