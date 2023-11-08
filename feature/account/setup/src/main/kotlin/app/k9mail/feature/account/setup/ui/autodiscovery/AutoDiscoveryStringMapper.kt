@@ -39,13 +39,21 @@ internal fun ValidationError.toResourceString(resources: Resources): String {
 
 private fun ValidateEmailAddress.ValidateEmailAddressError.toEmailAddressErrorString(resources: Resources): String {
     return when (this) {
-        is ValidateEmailAddress.ValidateEmailAddressError.EmptyEmailAddress -> resources.getString(
-            R.string.account_setup_auto_discovery_validation_error_email_address_required,
-        )
+        ValidateEmailAddress.ValidateEmailAddressError.EmptyEmailAddress -> {
+            resources.getString(R.string.account_setup_auto_discovery_validation_error_email_address_required)
+        }
 
-        is ValidateEmailAddress.ValidateEmailAddressError.InvalidEmailAddress -> resources.getString(
-            R.string.account_setup_auto_discovery_validation_error_email_address_invalid,
-        )
+        ValidateEmailAddress.ValidateEmailAddressError.NotAllowed -> {
+            resources.getString(R.string.account_setup_auto_discovery_validation_error_email_address_not_allowed)
+        }
+
+        ValidateEmailAddress.ValidateEmailAddressError.InvalidOrNotSupported -> {
+            resources.getString(R.string.account_setup_auto_discovery_validation_error_email_address_not_supported)
+        }
+
+        ValidateEmailAddress.ValidateEmailAddressError.InvalidEmailAddress -> {
+            resources.getString(R.string.account_setup_auto_discovery_validation_error_email_address_invalid)
+        }
     }
 }
 
