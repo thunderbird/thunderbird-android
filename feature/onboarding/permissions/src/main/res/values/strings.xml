@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Title of the onboarding screen to ask for Android permissions -->
+    <string name="onboarding_permissions_screen_title">Improve the experience</string>
+    <!-- Title of the section asking for the permission to read contacts -->
+    <string name="onboarding_permissions_contacts_title">Contacts</string>
+    <!-- Description of why we ask for the permission to read contacts -->
+    <string name="onboarding_permissions_contacts_description">Allow access to be able to provide contact suggestions and to display contact names and photos.</string>
+    <!-- Title of the section asking for permission to post notifications -->
+    <string name="onboarding_permissions_notifications_title">Notifications</string>
+    <!-- Description of why we ask the permission to post notifications -->
+    <string name="onboarding_permissions_notifications_description">Turn on notifications so you don\'t miss any emails.</string>
+    <!-- Text of the button that will trigger the system dialog to ask for an Android permission -->
+    <string name="onboarding_permissions_allow_button">Allow</string>
+    <!-- Text of the button to skip the onboarding screen to ask for Android permissions -->
+    <string name="onboarding_permissions_skip_button">Skip</string>
+</resources>

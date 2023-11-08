@@ -3,8 +3,8 @@ plugins {
 }
 
 android {
-    namespace = "app.k9mail.feature.launcher"
-    resourcePrefix = "launcher_"
+    namespace = "app.k9mail.feature.onboarding.main"
+    resourcePrefix = "onboarding_main_"
 
     buildTypes {
         debug {
@@ -18,10 +18,7 @@ android {
 
 dependencies {
     implementation(projects.core.ui.compose.designsystem)
-    implementation(projects.app.ui.base)
-    implementation(projects.feature.onboarding.main)
+    implementation(projects.feature.onboarding.welcome)
     implementation(projects.feature.account.setup)
-    implementation(projects.feature.account.edit)
-
-    testImplementation(projects.core.ui.compose.testing)
+    implementation(projects.feature.onboarding.permissions)
 }

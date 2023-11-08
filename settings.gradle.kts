@@ -39,7 +39,12 @@ include(
 
 include(
     ":feature:launcher",
-    ":feature:onboarding",
+)
+
+include(
+    ":feature:onboarding:main",
+    ":feature:onboarding:welcome",
+    ":feature:onboarding:permissions",
 )
 
 include(
@@ -64,6 +69,7 @@ include(
     ":core:featureflags",
     ":core:testing",
     ":core:android:common",
+    ":core:android:permissions",
     ":core:android:testing",
     ":core:ui:compose:common",
     ":core:ui:compose:designsystem",

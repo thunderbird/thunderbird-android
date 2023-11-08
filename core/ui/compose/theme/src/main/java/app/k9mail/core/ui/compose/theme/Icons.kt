@@ -1,6 +1,9 @@
 package app.k9mail.core.ui.compose.theme
 
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Cancel
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.MoveToInbox
 import androidx.compose.material.icons.filled.Notifications
@@ -48,6 +51,12 @@ object Icons {
 
         val user: ImageVector
             get() = MaterialIcons.Filled.AccountCircle
+
+        val check: ImageVector
+            get() = MaterialIcons.Filled.CheckCircle
+
+        val cancel: ImageVector
+            get() = MaterialIcons.Filled.Cancel
     }
 
     object Outlined {
