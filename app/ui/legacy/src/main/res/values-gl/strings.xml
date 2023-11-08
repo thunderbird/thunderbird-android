@@ -266,10 +266,6 @@
     <string name="account_setup_check_settings_authenticate">Autentificando\u2026</string>
     <string name="account_setup_check_settings_fetch">Obtendo Configuración da conta\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Cancelando\u2026</string>
-    <string name="account_setup_account_type_title">Tipo de conta</string>
-    <string name="account_setup_account_type_instructions">Qué tipo de conta é?</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">Contrasinal normal</string>
     <string name="account_setup_auth_type_insecure_password">Contrasinal, transmitido de xeito non seguro</string>
     <string name="account_setup_auth_type_encrypted_password">Contrasinal cifrado</string>

@@ -1,2 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_incoming_loading_message">正在檢查收件伺服器設定…</string>
+    <string name="account_server_validation_error_authentication">身分認證錯誤</string>
+    <string name="account_server_validation_error_certificate">憑證錯誤</string>
+    <string name="account_server_validation_outgoing_loading_message">正在檢查寄件伺服器設定…</string>
+    <string name="account_server_validation_error_network">網路錯誤</string>
+    <string name="account_server_validation_outgoing_success">寄件伺服器設定有效</string>
+    <string name="account_server_validation_error_unknown">未知錯誤</string>
+    <string name="account_server_validation_sign_in">請登入</string>
+    <string name="account_server_validation_outgoing_loading_error">檢查寄件伺服器設定失敗</string>
+    <string name="account_server_validation_incoming_success">收件伺服器設定有效</string>
+    <string name="account_server_validation_incoming_loading_error">檢查收件伺服器設定失敗</string>
+    <string name="account_server_validation_error_server">伺服器錯誤</string>
+</resources>

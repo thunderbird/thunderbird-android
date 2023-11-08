@@ -295,10 +295,6 @@
     <string name="account_setup_check_settings_authenticate">Автентифікація\u2026</string>
     <string name="account_setup_check_settings_fetch">Отримання налаштувань облікового запису\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Скасування\u2026</string>
-    <string name="account_setup_account_type_title">Тип облікового запису</string>
-    <string name="account_setup_account_type_instructions">Виберіть тип поштової скриньки</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">Звичайний пароль</string>
     <string name="account_setup_auth_type_insecure_password">Пароль, що передається незахищено</string>
     <string name="account_setup_auth_type_encrypted_password">Зашифрований пароль</string>

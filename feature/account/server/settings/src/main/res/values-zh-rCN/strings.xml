@@ -24,7 +24,7 @@
     <string name="account_server_settings_validation_error_port_invalid">端口无效（必须是 1–65535 之间的正整数）。</string>
     <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
     <string name="account_server_settings_client_certificate_label">客户端证书</string>
-    <string name="account_server_settings_validation_error_imap_prefix_blank">Imap 前缀不能为空。</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">IMAP 前缀不能为空。</string>
     <string name="account_server_settings_client_certificate_none_selected">无</string>
     <string name="account_server_settings_server_label">服务器</string>
     <string name="account_server_settings_security_label">安全性</string>

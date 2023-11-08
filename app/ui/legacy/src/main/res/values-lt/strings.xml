@@ -286,10 +286,6 @@
     <string name="account_setup_check_settings_authenticate">Patvirtinama tapatybė\u2026</string>
     <string name="account_setup_check_settings_fetch">Gaunami paskyros nustatymai\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Atšaukiama\u2026</string>
-    <string name="account_setup_account_type_title">Paskyros tipas</string>
-    <string name="account_setup_account_type_instructions">Kokios rūšies ši paskyra?</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">Paprastas slaptažodis</string>
     <string name="account_setup_auth_type_insecure_password">Nesaugiai perduotas slaptažodis</string>
     <string name="account_setup_auth_type_encrypted_password">Šifruotas slaptažodis</string>

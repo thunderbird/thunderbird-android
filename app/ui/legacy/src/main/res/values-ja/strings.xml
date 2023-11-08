@@ -290,10 +290,6 @@
     <string name="account_setup_check_settings_authenticate">認証中\u2026</string>
     <string name="account_setup_check_settings_fetch">アカウント設定を取得中\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">中断中…</string>
-    <string name="account_setup_account_type_title">アカウントの種類</string>
-    <string name="account_setup_account_type_instructions">このアカウントの種類を選択してください</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">通常のパスワード認証</string>
     <string name="account_setup_auth_type_insecure_password">パスワード (危険な方法で送信される)</string>
     <string name="account_setup_auth_type_encrypted_password">暗号化されたパスワード認証</string>

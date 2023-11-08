@@ -273,11 +273,11 @@
     <string name="quiet_time_starts">啟動靜音</string>
     <string name="quiet_time_ends">結束靜音</string>
     <string name="account_setup_basics_title">設定新帳號</string>
-    <string name="account_setup_oauth_description">如要透過 K-9 Mail 使用這個電子郵件帳戶，您需要登入並授權應用程式取用您的電子郵件。</string>
+    <string name="account_setup_oauth_description">如要透過 K-9 Mail 使用這個電子郵件帳號，您需要登入並授權應用程式取用您的電子郵件。</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in">登入</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in_with_google">使用 Google 帳戶登入</string>
+    <string name="account_setup_oauth_sign_in_with_google">使用 Google 帳號登入</string>
     <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
     <string name="account_setup_basics_show_password_need_lock">要在這查看你的密碼請為這個裝置啟用螢幕上鎖。</string>
     <string name="account_setup_basics_show_password_biometrics_title">驗證你的身份</string>
@@ -288,10 +288,6 @@
     <string name="account_setup_check_settings_authenticate">驗證…</string>
     <string name="account_setup_check_settings_fetch">正在收取帳號設定…</string>
     <string name="account_setup_check_settings_canceling_msg">正在取消…</string>
-    <string name="account_setup_account_type_title">帳號類型</string>
-    <string name="account_setup_account_type_instructions">這個帳號是什麼類型的？</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">普通密碼</string>
     <string name="account_setup_auth_type_insecure_password">非安全傳輸的密碼</string>
     <string name="account_setup_auth_type_encrypted_password">已加密的密碼</string>
@@ -447,7 +443,7 @@
     <string name="account_settings_crypto_encrypt_all_drafts_off">僅在啟用加密時才加密草稿</string>
     <string name="account_settings_mail_check_frequency_label">上層信件匣檢查頻率</string>
     <string name="account_settings_color_label">帳號顏色</string>
-    <string name="account_settings_color_summary">選擇帳號在信件匣和帳戶列表中顯示時所使用的顏色</string>
+    <string name="account_settings_color_summary">選擇帳號在信件匣和帳號列表中顯示時所使用的顏色</string>
     <string name="account_settings_mail_display_count_label">本地信件匣大小</string>
     <string name="account_settings_autodownload_message_size_label">收取郵件的最大尺寸為</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -861,7 +857,7 @@
     <string name="address_type_other">其他</string>
     <string name="address_type_mobile">行動電話</string>
     <string name="compose_error_no_draft_folder">此帳號沒有設定草稿信件匣！</string>
-    <string name="compose_error_no_key_configured">沒有為此帳戶設定的金鑰！請檢查裝置。</string>
+    <string name="compose_error_no_key_configured">沒有為此帳號設定的金鑰！請檢查裝置。</string>
     <string name="error_crypto_provider_incompatible">加密服務提供者使用不相容版本。請檢查您的設定！</string>
     <string name="error_crypto_provider_connect">無法連線到加密服務提供者，請檢查您的設定或按一下加密圖示重試！</string>
     <string name="error_crypto_provider_ui_required">初始化端到端加密失敗，請檢查設定</string>
@@ -1064,4 +1060,11 @@
     <string name="clipboard_label_name_and_email_address">姓名和電子郵件地址</string>
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+    <string name="message_list_content_description_unread_prefix">未讀，%s</string>
+    <string name="general_settings_post_remove_action_return_to_list">返回郵件列表</string>
+    <string name="general_settings_post_remove_action_show_previous_message">顯示上一封郵件</string>
+    <string name="account_setup_check_settings_title">" "</string>
+    <string name="general_settings_post_remove_action_show_next_message">顯示下一封郵件</string>
+    <string name="general_settings_post_remove_action_title">刪除或移動郵件之後</string>
+    <string name="background_work_notification_remove_account">刪除帳號中…</string>
 </resources>

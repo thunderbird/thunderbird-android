@@ -243,10 +243,6 @@
     <string name="account_setup_check_settings_authenticate">מאמת …</string>
     <string name="account_setup_check_settings_fetch">מייבא הגדרות החשבון …</string>
     <string name="account_setup_check_settings_canceling_msg">מבטל…</string>
-    <string name="account_setup_account_type_title">סוג חשבון</string>
-    <string name="account_setup_account_type_instructions">איזה סוג חשבון זה?</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_tls_client_certificate">תעודת לקוח</string>
     <string name="account_setup_incoming_title">הגדרות שרת דואר נכנס</string>
     <string name="account_setup_incoming_username_label">שם משתמש</string>

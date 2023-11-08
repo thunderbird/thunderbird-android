@@ -254,10 +254,6 @@
     <string name="account_setup_check_settings_authenticate">’Ga dhearbhadh…</string>
     <string name="account_setup_check_settings_fetch">A’ faighinn roghainnean a’ chunntais…</string>
     <string name="account_setup_check_settings_canceling_msg">A’ sgur dheth…</string>
-    <string name="account_setup_account_type_title">Seòrsa a’ chunntais</string>
-    <string name="account_setup_account_type_instructions">Dè seòrsa cunntas a tha seo\?</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">Facal-faire àbhaisteach</string>
     <string name="account_setup_auth_type_insecure_password">Facal-faire, ’ga chur gun tèarainteachd</string>
     <string name="account_setup_auth_type_encrypted_password">Facal-faire crioptaichte</string>

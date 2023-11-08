@@ -5,11 +5,11 @@
     <string name="account_server_validation_error_certificate">Zertifikatsfehler</string>
     <string name="account_server_validation_outgoing_loading_message">Einstellungen des Postausgangsservers werden überprüft…</string>
     <string name="account_server_validation_error_network">Netzwerkfehler</string>
-    <string name="account_server_validation_outgoing_success">Einstellungen des Postausgangsservers sind gültig!</string>
+    <string name="account_server_validation_outgoing_success">Einstellungen des Postausgangsservers sind gültig</string>
     <string name="account_server_validation_error_unknown">Unbekannter Fehler</string>
     <string name="account_server_validation_sign_in">Bitte anmelden</string>
     <string name="account_server_validation_outgoing_loading_error">Prüfung der Einstellungen des Postausgangsservers fehlgeschlagen!</string>
-    <string name="account_server_validation_incoming_success">Einstellungen des Posteingangsservers sind gültig!</string>
+    <string name="account_server_validation_incoming_success">Einstellungen des Posteingangsservers sind gültig</string>
     <string name="account_server_validation_incoming_loading_error">Prüfung der Einstellungen des Posteingangservers fehlgeschlagen!</string>
     <string name="account_server_validation_error_server">Serverfehler</string>
 </resources>

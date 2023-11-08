@@ -171,10 +171,6 @@
     <string name="account_setup_check_settings_authenticate">Autentiserer\u2026</string>
     <string name="account_setup_check_settings_fetch">Hentar kontoinnstillingar\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Avbryt\u2026</string>
-    <string name="account_setup_account_type_title">Kontotype</string>
-    <string name="account_setup_account_type_instructions">Kva slags konto er dette?</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">Normalt passord</string>
     <string name="account_setup_auth_type_encrypted_password">Kryptert passord</string>
     <string name="account_setup_incoming_title">Innkomande tenarinnstillingar</string>

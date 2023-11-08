@@ -241,10 +241,6 @@
     <string name="account_setup_check_settings_authenticate">Dilesa\u2026</string>
     <string name="account_setup_check_settings_fetch">O kerc’hat arventennoù ar gont\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">O nullañ\u2026</string>
-    <string name="account_setup_account_type_title">Doare kont</string>
-    <string name="account_setup_account_type_instructions">Peseurt doare kont eo?</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">Ger-tremen ordinal</string>
     <string name="account_setup_auth_type_insecure_password">Ger-tremen, kaset en un doare diziogel</string>
     <string name="account_setup_auth_type_encrypted_password">Ger-tremen enrineget</string>

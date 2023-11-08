@@ -21,7 +21,7 @@
     <string name="changelog_title">Dnevnik sprememb</string>
     <string name="changelog_loading_error">Dnevnika sprememb ni bilo mogoče naložiti.</string>
     <string name="changelog_version_title">Različica %s</string>
-    <string name="changelog_recent_changes_title">Kaj je novega?</string>
+    <string name="changelog_recent_changes_title">Kaj je novega</string>
     <string name="changelog_show_recent_changes">Pokaže zadnje spremembe po posodobitvi programa</string>
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
     <string name="changelog_snackbar_text">Kaj je novega v tej izdaji</string>
@@ -50,7 +50,7 @@
     <string name="okay_action">V redu</string>
     <string name="cancel_action">Prekliči</string>
     <string name="send_action">Pošlji</string>
-    <string name="empty_subject">Zadeva sporočila ni vpisana. Pritisnite znova, če želite sporočilo vseeno poslati.</string>
+    <string name="empty_subject">Zadeva sporočila ni vpisana: pritisni znova, če želiš sporočilo vseeno poslati</string>
     <string name="reply_action">Odgovori</string>
     <string name="reply_all_action">Odgovori vsem</string>
     <string name="delete_action">Izbriši</string>
@@ -80,7 +80,7 @@
     <string name="account_settings_action">Nastavitve računa</string>
     <string name="remove_account_action">Odstrani račun</string>
     <string name="mark_as_read_action">Označi kot prebrano</string>
-    <string name="send_alternate_action">Objavi z …</string>
+    <string name="send_alternate_action">Deli</string>
     <string name="send_alternate_chooser_title">Izberi pošiljatelja</string>
     <string name="flag_action">Označi z zvezdico</string>
     <string name="unflag_action">Odstrani zvezdico</string>
@@ -158,7 +158,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="special_mailbox_name_drafts">Osnutki</string>
     <string name="special_mailbox_name_trash">Koš</string>
     <string name="special_mailbox_name_sent">Poslano</string>
-    <string name="send_failure_subject">Nekaterih sporočil ni bilo mogoče poslati!</string>
+    <string name="send_failure_subject">Nekaterih sporočil ni bilo mogoče poslati</string>
     <string name="version">Različica</string>
     <string name="debug_enable_debug_logging_title">Omogoči beleženje razhroščevanja</string>
     <string name="debug_enable_debug_logging_summary">Beleženje dodatnih podrobnosti diagnostike</string>
@@ -180,7 +180,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="message_compose_quote_header_cc">Kp:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> sporoča:</string>
     <string name="message_compose_reply_header_fmt_with_date">Dne, <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> sporoča:</string>
-    <string name="message_compose_error_no_recipients">Dodati je treba vsaj enega prejemnika!</string>
+    <string name="message_compose_error_no_recipients">Dodati moraš vsaj enega prejemnika!</string>
     <string name="compose_error_incomplete_recipient">Polje prejemnika vsebuje nepopoln naslov!</string>
     <string name="error_contact_address_not_found">Za ta stik ni mogoče najti nobenega elektronskega naslova.</string>
     <string name="message_compose_attachments_skipped_toast">Nekaterih prilog ni mogoče posredovati, ker še niso prejete na napravo.</string>
@@ -205,7 +205,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="message_view_download_remainder">Prejmi celotno sporočilo</string>
     <string name="message_view_sender_label">prek %1$s</string>
     <string name="from_same_sender">Poišči več sporočil tega pošiljatelja</string>
-    <string name="message_discarded_toast">Sporočilo je zavrženo.</string>
+    <string name="message_discarded_toast">Sporočilo je zavrženo</string>
     <string name="message_saved_toast">Sporočilo je shranjeno kot osnutek</string>
     <string name="global_settings_flag_label">Pokaži zvezdice sporočil</string>
     <string name="global_settings_flag_summary">Zvezdice označujejo izbrana posebna sporočila</string>
@@ -254,7 +254,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <!--Name of the swipe action to move a message to another folder-->
     <string name="general_settings_swipe_action_move">Premik</string>
     <!--Title of the setting to specify the density of the message list-->
-    <string name="general_settings_ui_density_default">privzeto</string>
+    <string name="general_settings_ui_density_default">Privzeto</string>
     <string name="global_settings_privacy_hide_useragent">Skrij program</string>
     <string name="global_settings_privacy_hide_useragent_detail">Odstrani podatke programa K-9 iz glave pošte</string>
     <string name="global_settings_privacy_hide_timezone">Skrij časovni pas</string>
@@ -291,10 +291,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="account_setup_check_settings_authenticate">Overjanje \u2026</string>
     <string name="account_setup_check_settings_fetch">Pridobivanje nastavitev računa \u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Poteka preklic \u2026</string>
-    <string name="account_setup_account_type_title">Vrsta računa</string>
-    <string name="account_setup_account_type_instructions">Kakšne vrste je račun?</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">Običajno geslo</string>
     <string name="account_setup_auth_type_insecure_password">Geslo, posredovano na ne-varen način</string>
     <string name="account_setup_auth_type_encrypted_password">Šifrirano geslo</string>
@@ -375,7 +371,9 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="move_copy_cannot_copy_unsynced_message">Ni mogoče kopirati oziroma premakniti sporočila, ki ni usklajeno s strežnikom.</string>
     <string name="account_setup_failed_dlg_title">Nastavitve ni mogoče končati</string>
     <string name="account_setup_failed_dlg_auth_message_fmt">Napačno uporabniško ime ali geslo\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_certificate_message_fmt">Strežnik je objavil neveljavno potrdilo SSL. To je lahko posledica napačne nastavitve strežnika ali pa poskusa napada na poštni strežnik. Če niste prepričani v nastavitve, zavrnite sprejem potrdila in stopite v stik s skrbnikom strežnika.\n\nNapaka:\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_certificate_message_fmt">Strežnik je objavil neveljavno potrdilo SSL. To je lahko posledica napačne nastavitve strežnika ali pa poskusa napada na poštni strežnik. Če nisi prepričan/a v nastavitve, zavrni sprejem potrdila in stopi v stik s skrbnikom strežnika.
+\n
+\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_server_message_fmt">S strežnikom ni mogoče vzpostaviti povezave.\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_oauth_flow_canceled">Overitev je preklicana</string>
     <string name="account_setup_failed_dlg_oauth_flow_failed">Overitev je spodletela z napako: <xliff:g id="error">%s</xliff:g></string>
@@ -713,10 +711,10 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="dialog_confirm_delete_title">Potrditev brisanja</string>
     <string name="dialog_confirm_delete_message">Ali želite izbrisati to sporočilo?</string>
     <plurals name="dialog_confirm_delete_messages">
-        <item quantity="one">Ali res želite izbrisati to sporočilo?</item>
-        <item quantity="two">Ali res želite izbrisati <xliff:g id="message_count">%1$d</xliff:g> sporočili?</item>
-        <item quantity="few">Ali res želite izbrisati <xliff:g id="message_count">%1$d</xliff:g> sporočila?</item>
-        <item quantity="other">Ali res želite izbrisati <xliff:g id="message_count">%1$d</xliff:g> sporočil?</item>
+        <item quantity="one">Ali res želiš izbrisati to sporočilo\?</item>
+        <item quantity="two">Ali res želiš izbrisati <xliff:g id="message_count">%1$d</xliff:g> sporočili\?</item>
+        <item quantity="few">Ali res želiš izbrisati <xliff:g id="message_count">%1$d</xliff:g> sporočila\?</item>
+        <item quantity="other">Ali res želiš izbrisati <xliff:g id="message_count">%1$d</xliff:g> sporočil\?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Da</string>
     <string name="dialog_confirm_delete_cancel_button">Ne</string>
@@ -728,10 +726,10 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="dialog_confirm_mark_all_as_read_cancel_button">Ne</string>
     <string name="dialog_confirm_spam_title">Potrditev premikanja v mapo neželene pošte</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">Ali zares želite premakniti to sporočilo v mapo neželene pošte?</item>
-        <item quantity="two">Ali zares želite premakniti <xliff:g id="message_count">%1$d</xliff:g> sporočili v mapo neželene pošte?</item>
-        <item quantity="few">Ali zares želite premakniti <xliff:g id="message_count">%1$d</xliff:g> sporočila v mapo neželene pošte?</item>
-        <item quantity="other">Ali zares želite premakniti <xliff:g id="message_count">%1$d</xliff:g> sporočil v mapo neželene pošte?</item>
+        <item quantity="one">Ali zares želiš premakniti to sporočilo v mapo neželene pošte\?</item>
+        <item quantity="two">Ali zares želiš premakniti <xliff:g id="message_count">%1$d</xliff:g> sporočili v mapo neželene pošte\?</item>
+        <item quantity="few">Ali zares želiš premakniti <xliff:g id="message_count">%1$d</xliff:g> sporočila v mapo neželene pošte\?</item>
+        <item quantity="other">Ali zares želiš premakniti <xliff:g id="message_count">%1$d</xliff:g> sporočil v mapo neželene pošte\?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Da</string>
     <string name="dialog_confirm_spam_cancel_button">Ne</string>
@@ -787,7 +785,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
     <string name="unread_widget_account_not_selected">Ni izbranega računa</string>
     <string name="unread_widget_folder_not_selected">Ni izbrane mape</string>
-    <string name="webview_empty_message">Ni vpisanega besedila …</string>
+    <string name="webview_empty_message">Ni vpisanega besedila</string>
     <string name="webview_contextmenu_link_view_action">Odpri povezavo</string>
     <string name="webview_contextmenu_link_share_action">Objavi povezavo</string>
     <string name="webview_contextmenu_link_copy_action">Kopiraj povezavo v odložišče</string>
@@ -845,7 +843,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="global_settings_splitview_always">Vedno</string>
     <string name="global_settings_splitview_never">Nikoli</string>
     <string name="global_settings_splitview_when_in_landscape">Le v ležečem načinu</string>
-    <string name="message_view_empty">Izberite sporočilo na levi.</string>
+    <string name="message_view_empty">Izberi sporočilo na levi</string>
     <string name="global_settings_show_contact_picture_label">Pokaži slike stikov</string>
     <string name="global_settings_show_contact_picture_summary">V seznamu sporočil prikaže slike stikov</string>
     <string name="mark_all_as_read">Označi vse kot prebrano</string>
@@ -878,10 +876,10 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="address_type_other">Drugi</string>
     <string name="address_type_mobile">Mobilni</string>
     <string name="compose_error_no_draft_folder">Za ta račun ni nastavljene mape za osnutke!</string>
-    <string name="compose_error_no_key_configured">Ni nastavljenega ključa za za ta račun! Preverite nastavitve.</string>
-    <string name="error_crypto_provider_incompatible">Ponudnik šifriranja uporablja neskladno različico! Preverite nastavitve.</string>
+    <string name="compose_error_no_key_configured">Ni nastavljenega ključa za za ta račun! Preveri nastavitve.</string>
+    <string name="error_crypto_provider_incompatible">Ponudnik šifriranja uporablja neskladno različico. Preveri nastavitve!</string>
     <string name="error_crypto_provider_connect">Ni mogoče vzpostaviti povezave s programom za šifriranje; preverite nastavitve in poskusite znova!</string>
-    <string name="error_crypto_provider_ui_required">Začenjanje celovitega šifriranja je spodletelo. Preverite nastavitve.</string>
+    <string name="error_crypto_provider_ui_required">Začenjanje celovitega šifriranja je spodletelo. Preveri nastavitve!</string>
     <string name="error_crypto_inline_attach">Način PGP/INLINE ne omogoča dodajanja prilog!</string>
     <string name="enable_inline_pgp">Omogoči PGP/INLINE</string>
     <string name="disable_inline_pgp">Onemogoči PGP/INLINE</string>
@@ -891,7 +889,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="openpgp_inline_text">Sporočilo se pošilja v obliki PGP/INLINE\nUporabite to obliko le zaradi združljivosti:</string>
     <string name="openpgp_inline_plus_compat">Nekateri odjemalci podpirajo le ta zapis</string>
     <string name="openpgp_inline_minus_transit">Med prenosom se podpisi lahko okvarijo</string>
-    <string name="openpgp_inline_minus_attach">Dodajanje prilog ni podprto.</string>
+    <string name="openpgp_inline_minus_attach">Dodajanje prilog ni podprto</string>
     <string name="openpgp_inline_ok">Razumem!</string>
     <string name="openpgp_inline_disable">Onemogoči</string>
     <string name="openpgp_inline_keep_enabled">Pusti omogočeno</string>
@@ -903,7 +901,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="openpgp_dialog_sign_only_plus_verified">Sporočilo ni šifrirano, je pa potrjeno, da je bilo poslano iz navedenega elektronskega naslova.</string>
     <string name="openpgp_dialog_sign_only_minus_break">Podpisi se lahko pri pošiljanju na dopisne sezname okvarijo.</string>
     <string name="openpgp_dialog_sign_only_minus_attach">Podpisi so v nekaterih odjemalcih prikazani kot priloge »signature.asc«.</string>
-    <string name="openpgp_dialog_sign_only_neutral_encsigned">Šifrirana sporočila vedno vključujejo tudi podpis</string>
+    <string name="openpgp_dialog_sign_only_neutral_encsigned">Šifrirana sporočila vedno vključujejo tudi podpis.</string>
     <string name="crypto_msg_title_plaintext">Golo besedilo</string>
     <string name="crypto_msg_unencrypted_sign_error">Podpis za celovito šifriranje je vseboval napako</string>
     <string name="crypto_msg_incomplete_signed">za obdelavo podpisa mora biti sporočilo prejeto v celoti</string>
@@ -966,7 +964,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="openpgp_enabled_error_msg">Nekateri izmed izbranih prejemnikov ne podpirajo te možnosti!</string>
     <string name="enable_encryption">Omogoči šifriranje</string>
     <string name="disable_encryption">Onemogoči šifriranje</string>
-    <string name="openpgp_description_text1">Šifriranje sporočil zagotavlja, da lahko sporočilo prebere izključno prejemnik!</string>
+    <string name="openpgp_description_text1">Šifriranje sporočil zagotavlja, da lahko sporočilo prebere izključno prejemnik.</string>
     <string name="openpgp_description_text3">Možnost šifriranja se pokaže le, če je podprto s strani vseh prejemnikov, ki so vam v preteklosti že poslali elektronsko sporočilo.</string>
     <string name="openpgp_description_text2">Možnost šifriranja se preklopi s pritiskom na ikono.</string>
     <string name="openpgp_enabled_error_gotit">Razumem!</string>
@@ -984,7 +982,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="dialog_openkeychain_info_text">Program K-9 Mail zahteva OpenKeychain za celovito šifriranje.</string>
     <string name="encrypted_subject">Šifrirano sporočilo</string>
     <string name="account_settings_crypto_encrypt_subject">Šifriraj zadeve sporočila</string>
-    <string name="account_settings_crypto_encrypt_subject_subtitle">Nekateri odjemalci funkcije morda ne podpirajo.</string>
+    <string name="account_settings_crypto_encrypt_subject_subtitle">Nekateri odjemalci funkcije morda ne podpirajo</string>
     <string name="toast_account_not_found">Notranja napaka: neveljaven račun!</string>
     <string name="toast_openpgp_provider_error">Napaka povezovanja z %s!</string>
     <string name="ac_transfer_setting_title">Pošlji nastavitveno sporočilo šifriranja AutoCrypt</string>
@@ -1056,7 +1054,7 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
     <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
     <string name="message_details_from_section_title">Od</string>
     <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
-    <string name="message_details_sender_section_title">po pošiljatelju</string>
+    <string name="message_details_sender_section_title">Pošiljatelj</string>
     <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
     <string name="message_details_replyto_section_title">Odgovori na</string>
     <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
@@ -1080,4 +1078,17 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
     <string name="clipboard_label_name_and_email_address">Ime in e-poštni naslov</string>
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+    <string name="action_compose_message_to">Napiši sporočilo za</string>
+    <string name="message_list_content_description_unread_prefix">neprebrano, %s</string>
+    <string name="general_settings_post_remove_action_return_to_list">Vrni se na seznam sporočil</string>
+    <string name="general_settings_message_list_density_title">Gostota</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Pokaži prejšnje sporočilo</string>
+    <string name="account_setup_check_settings_title">" "</string>
+    <string name="general_settings_ui_density_relaxed">Široko</string>
+    <string name="changelog_snackbar_button_text">Poglej</string>
+    <string name="general_settings_ui_density_compact">Strnjeno</string>
+    <string name="account_setup_incoming_send_client_id">Pošlji ID odjemalca</string>
+    <string name="general_settings_post_remove_action_show_next_message">Pokaži naslednje sporočilo</string>
+    <string name="general_settings_post_remove_action_title">Po brisanju ali premikanju sporočila</string>
+    <string name="background_work_notification_remove_account">Odstranjevanje računa …</string>
 </resources>

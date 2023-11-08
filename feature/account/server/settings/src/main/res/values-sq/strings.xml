@@ -28,4 +28,7 @@
     <string name="account_server_settings_client_certificate_none_selected">Asnjë</string>
     <string name="account_server_settings_server_label">Shërbyes</string>
     <string name="account_server_settings_security_label">Siguri</string>
+    <string name="account_server_settings_password_authentication_title">Verifikoni identitetin tuaj</string>
+    <string name="account_server_settings_password_authentication_subtitle">Që të shihni fjalëkalimin tuaj, shkyçeni</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">Që të shihni këtu fjalëkalimin tuaj, aktivizoni në këtë pajisje kyçje ekrani.</string>
 </resources>

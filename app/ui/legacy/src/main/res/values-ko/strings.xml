@@ -257,10 +257,6 @@
     <string name="account_setup_check_settings_authenticate">인증 중\u2026</string>
     <string name="account_setup_check_settings_fetch">계정 설정 가져 오기\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">취소 중\u2026</string>
-    <string name="account_setup_account_type_title">계정 종류</string>
-    <string name="account_setup_account_type_instructions">계정 유형을 선택하시오.</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">일반 암호</string>
     <string name="account_setup_auth_type_insecure_password">암호가 안전하지 않은 방법으로 전송됨</string>
     <string name="account_setup_auth_type_encrypted_password">암호화된 암호</string>

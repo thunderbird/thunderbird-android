@@ -207,10 +207,6 @@
     <string name="account_setup_check_settings_check_incoming_msg">შემავალი სერვერის პარამეტრების შემოწმება\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">გამავალი სერვერის პარამეტრების შემოწმება\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">გაუქმება\u2026</string>
-    <string name="account_setup_account_type_title">ანგარიშის ტიპი</string>
-    <string name="account_setup_account_type_instructions">რა სახის ანგარიშია ეს?</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">ჩვეულებრივი პაროლი</string>
     <string name="account_setup_auth_type_encrypted_password">დაშიფრული პაროლი</string>
     <string name="account_setup_auth_type_tls_client_certificate">კლიენტის სერტიფიკატი</string>

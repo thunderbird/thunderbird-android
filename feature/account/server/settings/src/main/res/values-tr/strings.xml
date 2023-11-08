@@ -24,7 +24,7 @@
     <string name="account_server_settings_validation_error_port_invalid">Bağlantı noktası geçersiz (1 ile 65535 arasında olmalıdır).</string>
     <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
     <string name="account_server_settings_client_certificate_label">İstemci sertifikası</string>
-    <string name="account_server_settings_validation_error_imap_prefix_blank">Imap ön eki boş olamaz.</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">IMAP ön eki boş olamaz.</string>
     <string name="account_server_settings_client_certificate_none_selected">Yok</string>
     <string name="account_server_settings_server_label">Sunucu</string>
     <string name="account_server_settings_security_label">Güvenlik</string>
