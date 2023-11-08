@@ -28,7 +28,7 @@
     <ID>ForbiddenComment:MessageDetailsFragment.kt$MessageDetailsFragment$// FIXME: Replace this with a mechanism that survives process death</ID>
     <ID>ForbiddenComment:MessageListFragment.kt$MessageListFragment$// FIXME: Don't save the changes in the UI thread</ID>
     <ID>ImplicitDefaultLocale:MessageListAdapter.kt$MessageListAdapter$String.format("%d", threadCount)</ID>
-    <ID>LargeClass:MessageList.kt$MessageList : K9ActivityMessageListFragmentListenerMessageViewFragmentListenerMessageViewContainerListenerOnBackStackChangedListenerOnSwitchCompleteListenerPermissionUiHelper</ID>
+    <ID>LargeClass:MessageList.kt$MessageList : K9ActivityMessageListFragmentListenerMessageViewFragmentListenerMessageViewContainerListenerOnBackStackChangedListenerOnSwitchCompleteListener</ID>
     <ID>LargeClass:MessageListFragment.kt$MessageListFragment : FragmentConfirmationDialogFragmentListenerMessageListItemActionListener</ID>
     <ID>LongMethod:AccountSetupCheckSettings.kt$AccountSetupCheckSettings$private fun acceptKeyDialog(msgResId: Int, exception: CertificateValidationException)</ID>
     <ID>LongMethod:MessageContainerView.kt$MessageContainerView$private fun createImageMenu(menu: ContextMenu, imageUrl: String?)</ID>
@@ -169,7 +169,7 @@
     <ID>TooManyFunctions:ManageFoldersFragment.kt$ManageFoldersFragment : Fragment</ID>
     <ID>TooManyFunctions:MessageContainerView.kt$MessageContainerView : LinearLayoutOnCreateContextMenuListenerKoinComponent</ID>
     <ID>TooManyFunctions:MessageDetailsFragment.kt$MessageDetailsFragment : ToolbarBottomSheetDialogFragment</ID>
-    <ID>TooManyFunctions:MessageList.kt$MessageList : K9ActivityMessageListFragmentListenerMessageViewFragmentListenerMessageViewContainerListenerOnBackStackChangedListenerOnSwitchCompleteListenerPermissionUiHelper</ID>
+    <ID>TooManyFunctions:MessageList.kt$MessageList : K9ActivityMessageListFragmentListenerMessageViewFragmentListenerMessageViewContainerListenerOnBackStackChangedListenerOnSwitchCompleteListener</ID>
     <ID>TooManyFunctions:MessageList.kt$MessageList$Companion : KoinComponent</ID>
     <ID>TooManyFunctions:MessageListAdapter.kt$MessageListAdapter : Adapter</ID>
     <ID>TooManyFunctions:MessageListFragment.kt$MessageListFragment : FragmentConfirmationDialogFragmentListenerMessageListItemActionListener</ID>
