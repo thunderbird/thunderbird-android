@@ -291,10 +291,6 @@
     <string name="account_setup_check_settings_authenticate">Διακρίβωση στοιχείων\u2026</string>
     <string name="account_setup_check_settings_fetch">Μετάκληση πληροφοριών λογαριασμού\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Ακύρωση\u2026</string>
-    <string name="account_setup_account_type_title">Τύπος λογαριασμού</string>
-    <string name="account_setup_account_type_instructions">Τι λογαριασμός είναι αυτός;</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">Απλό συνθηματικό</string>
     <string name="account_setup_auth_type_insecure_password">Συνθηματικό, μεταβιβασμένο χωρίς ασφάλεια</string>
     <string name="account_setup_auth_type_encrypted_password">Κρυπτογραφημένο συνθηματικό</string>

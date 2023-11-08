@@ -290,10 +290,6 @@
     <string name="account_setup_check_settings_authenticate">Hitelesítés\u2026</string>
     <string name="account_setup_check_settings_fetch">Fiókbeállítások beolvasása\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Megszakítás\u2026</string>
-    <string name="account_setup_account_type_title">Fióktípus</string>
-    <string name="account_setup_account_type_instructions">Milyen fajta fiók ez?</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">Normál jelszó</string>
     <string name="account_setup_auth_type_insecure_password">Nem biztonságosan átküldött jelszó</string>
     <string name="account_setup_auth_type_encrypted_password">Titkosított jelszó</string>

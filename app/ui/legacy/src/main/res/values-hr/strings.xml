@@ -243,10 +243,6 @@
     <string name="account_setup_check_settings_authenticate">Identifikacija\u2026</string>
     <string name="account_setup_check_settings_fetch">Dohvaćam postavke računa\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Otkazujem\u2026</string>
-    <string name="account_setup_account_type_title">Vrsta računa</string>
-    <string name="account_setup_account_type_instructions">Kakav je to račun?</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">Normalna lozinka</string>
     <string name="account_setup_auth_type_insecure_password">Loinka, nesigurno prenosiva</string>
     <string name="account_setup_auth_type_encrypted_password">Šifrirana lozinka</string>

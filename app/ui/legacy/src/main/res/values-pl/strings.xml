@@ -76,7 +76,7 @@
     <string name="search_action">Szukaj</string>
     <string name="search_everywhere_action">Szukaj wszędzie</string>
     <string name="search_results">Wyniki wyszukiwania</string>
-    <string name="new_messages_title">Nowa wiadomość</string>
+    <string name="new_messages_title">Nowe wiadomości</string>
     <string name="preferences_action">Ustawienia</string>
     <string name="folders_action">Zarządzaj folderami</string>
     <string name="account_settings_action">Ustawienia konta</string>
@@ -295,10 +295,6 @@
     <string name="account_setup_check_settings_authenticate">Uwierzytelnianie…</string>
     <string name="account_setup_check_settings_fetch">Pobieram ustawienia konta…</string>
     <string name="account_setup_check_settings_canceling_msg">Anulowanie…</string>
-    <string name="account_setup_account_type_title">Rodzaj konta</string>
-    <string name="account_setup_account_type_instructions">Jakiego typu serwer obsługuje to konto?</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">Normalne hasło</string>
     <string name="account_setup_auth_type_insecure_password">Hasło, przesyłane bez zabezpieczeń</string>
     <string name="account_setup_auth_type_encrypted_password">Zaszyfrowane hasło</string>
@@ -786,7 +782,7 @@
     <string name="unread_widget_unified_inbox_account_summary">Zintegrowana skrzynka odbiorcza</string>
     <string name="unread_widget_folder_enabled_title">Liczba folderów</string>
     <string name="unread_widget_folder_enabled_summary">Wyświetl licznik nieprzeczytanych wiadomości tylko dla pojedynczego folderu</string>
-    <string name="unread_widget_folder_title">Folder</string>
+    <string name="unread_widget_folder_title">Katalog</string>
     <string name="unread_widget_folder_summary">Folder, dla którego liczba nieprzeczytanych wiadomości powinna być wyświetlana</string>
     <string name="unread_widget_action_done">Wykonano</string>
     <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
@@ -830,10 +826,10 @@
         <item quantity="other">Pobieram %d wyników</item>
     </plurals>
     <plurals name="remote_search_downloading_limited">
-        <item quantity="one">Pobieram wynik %1$d/%2$d</item>
-        <item quantity="few">Pobieram wynik %1$d/%2$d</item>
-        <item quantity="many">Pobieram wynik %1$d/%2$d</item>
-        <item quantity="other">Pobieram wynik %1$d/%2$d</item>
+        <item quantity="one">Pobieram %1$d z %2$d wyników</item>
+        <item quantity="few">Pobieram %1$d z %2$d wyników</item>
+        <item quantity="many">Pobieram %1$d z %2$d wyników</item>
+        <item quantity="other">Pobieram %1$d z %2$d wyników</item>
     </plurals>
     <string name="remote_search_error">Wyszukiwanie na serwerze nie powiodło się</string>
     <string name="account_settings_search">Wyszukiwanie</string>
@@ -1092,4 +1088,5 @@ Tą wiadomość można zachować i użyć w formie kopii zapasowej twojego klucz
     <string name="general_settings_post_remove_action_show_previous_message">Pokaż poprzednią wiadomość</string>
     <string name="general_settings_post_remove_action_show_next_message">Pokaż następną wiadomość</string>
     <string name="general_settings_post_remove_action_title">Po usunięciu lub przeniesieniu wiadomości</string>
+    <string name="account_setup_check_settings_title">" "</string>
 </resources>

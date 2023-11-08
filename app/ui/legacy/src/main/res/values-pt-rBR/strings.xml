@@ -109,11 +109,11 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Sem assunto)</string>
     <string name="general_no_sender">Sem remetente</string>
-    <string name="status_loading_more">Carregando mensagens\u2026</string>
+    <string name="status_loading_more">Carregando mensagens…</string>
     <string name="status_network_error">Erro de conexão</string>
     <string name="status_invalid_id_error">Mensagem não encontrada</string>
     <string name="status_loading_error">Erro no carregamento da mensagem</string>
-    <string name="load_more_messages_fmt">Toque para ver mais <xliff:g id="messages_to_load">%d</xliff:g> mensagens</string>
+    <string name="load_more_messages_fmt">Carregar mais <xliff:g id="messages_to_load">%d</xliff:g> mensagens</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f KB</string>
@@ -132,22 +132,24 @@
     <string name="notification_action_archive">Arquivar</string>
     <string name="notification_action_archive_all">Arquivar todas</string>
     <string name="notification_action_spam">Spam</string>
-    <string name="notification_certificate_error_public">Erro de certificado</string>
+    <string name="notification_certificate_error_public">Erro no certificado</string>
     <string name="notification_certificate_error_title">Erro no certificado de <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Verifique suas configurações de servidor</string>
     <string name="notification_authentication_error_title">Falha na autenticação</string>
     <string name="notification_authentication_error_text">Falha na autenticação de <xliff:g id="account">%s</xliff:g>. Atualize suas configurações de servidor.</string>
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_title">Erro de notificação</string>
+    <string name="notification_notify_error_title">Notificação de erro</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">Ocorreu um erro ao tentar criar uma notificação de sistema para uma nova mensagem. O provável motivo é a ausência de um som de notificação.\n\nToque para abrir as configurações de notificação.</string>
+    <string name="notification_notify_error_text">Ocorreu um erro ao tentar criar uma notificação de sistema para uma nova mensagem. O provável motivo é a ausência de um som de notificação.
+\n
+\nToque para abrir as configurações de notificação.</string>
     <string name="notification_bg_sync_ticker">Verificando e-mail: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Verificando e-mail</string>
     <string name="notification_bg_send_ticker">Enviando mensagem: <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">Enviando mensagem</string>
     <string name="notification_bg_title_separator">:</string>
     <string name="notification_channel_push_title">Sincronizar (Push)</string>
-    <string name="notification_channel_push_description">Exibido enquanto se espera por novas mensagens</string>
+    <string name="notification_channel_push_description">Exibido enquanto aguarda por novas mensagens</string>
     <string name="notification_channel_messages_title">Mensagens</string>
     <string name="notification_channel_messages_description">Notificações relacionadas a mensagens</string>
     <string name="notification_channel_miscellaneous_title">Diversos</string>
@@ -293,10 +295,6 @@
     <string name="account_setup_check_settings_authenticate">Autenticando\u2026</string>
     <string name="account_setup_check_settings_fetch">Buscando as configurações da conta\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Cancelando\u2026</string>
-    <string name="account_setup_account_type_title">Tipo de conta</string>
-    <string name="account_setup_account_type_instructions">Esta conta é de que tipo?</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">Senha normal</string>
     <string name="account_setup_auth_type_insecure_password">Senha, transmitida de forma insegura</string>
     <string name="account_setup_auth_type_encrypted_password">Senha criptografada</string>

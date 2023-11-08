@@ -291,10 +291,6 @@
     <string name="account_setup_check_settings_authenticate">احراز هویت\u2026</string>
     <string name="account_setup_check_settings_fetch">واکشی تنظیمات حساب کاربری\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">لغوکردن\u2026</string>
-    <string name="account_setup_account_type_title">نوع حساب کاربری</string>
-    <string name="account_setup_account_type_instructions">نوع این حساب کاربری چیست؟</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">گذرواژهٔ عادی</string>
     <string name="account_setup_auth_type_insecure_password">گذرواژه، به‌شکل ناامن ارسال شد</string>
     <string name="account_setup_auth_type_encrypted_password">گذرواژهٔ رمزنگاری‌شده</string>

@@ -22,7 +22,7 @@
     <string name="account_server_settings_validation_error_port_invalid">Port är ogiltig (måste vara 1-65535).</string>
     <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
     <string name="account_server_settings_client_certificate_label">Klient certifikat</string>
-    <string name="account_server_settings_validation_error_imap_prefix_blank">Imap prefix får inte vara tomt.</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">IMAP prefix får inte vara tomt.</string>
     <string name="account_server_settings_client_certificate_none_selected">Ingen</string>
     <string name="account_server_settings_password_authentication_screen_lock_required">För att se ditt lösenord här, aktivera skärmlås på den här enheten.</string>
     <string name="account_server_settings_server_label">Server</string>

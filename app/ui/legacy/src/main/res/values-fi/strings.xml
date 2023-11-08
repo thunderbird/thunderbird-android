@@ -290,10 +290,6 @@
     <string name="account_setup_check_settings_authenticate">Varmistetaan\u2026</string>
     <string name="account_setup_check_settings_fetch">Haetaan tilin asetuksia\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Peruutetaan\u2026</string>
-    <string name="account_setup_account_type_title">Tilin tyyppi</string>
-    <string name="account_setup_account_type_instructions">Mikä tämän tilin tyyppi on?</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">Tavallinen salasana</string>
     <string name="account_setup_auth_type_insecure_password">Salasana, välitetään turvattomasti</string>
     <string name="account_setup_auth_type_encrypted_password">Salattu salasana</string>

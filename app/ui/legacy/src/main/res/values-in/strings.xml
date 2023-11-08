@@ -251,10 +251,6 @@
     <string name="account_setup_check_settings_authenticate">Otentikasi\u2026</string>
     <string name="account_setup_check_settings_fetch">Mengambil pengaturan akun\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Membatalkan\u2026</string>
-    <string name="account_setup_account_type_title">Tipe akun</string>
-    <string name="account_setup_account_type_instructions">Akun apa ini?</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">Sandi normal</string>
     <string name="account_setup_auth_type_insecure_password">Sandi, dikirim secara tidak aman</string>
     <string name="account_setup_auth_type_encrypted_password">Sandi terenkripsi</string>

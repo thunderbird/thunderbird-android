@@ -1,2 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_incoming_loading_message">Проверява настройките на сървър за входяща поща…</string>
+    <string name="account_server_validation_error_authentication">Грешка при автентикация</string>
+    <string name="account_server_validation_error_certificate">Грешка в сертификата</string>
+    <string name="account_server_validation_outgoing_loading_message">Проверява настройките на сървър за изходяща поща…</string>
+    <string name="account_server_validation_error_network">Мрежова грешка</string>
+    <string name="account_server_validation_outgoing_success">Настройките на сървър за изходяща поща са валидни</string>
+    <string name="account_server_validation_error_unknown">Непозната грешка</string>
+    <string name="account_server_validation_sign_in">Моля впишете се</string>
+    <string name="account_server_validation_outgoing_loading_error">Проверката на настройките на сървър за изходяща поща се провали</string>
+    <string name="account_server_validation_incoming_success">Настройките на сървър за входщя поща са валидни</string>
+    <string name="account_server_validation_incoming_loading_error">Проверката на настройките на сървъра за входяща поща се провали</string>
+    <string name="account_server_validation_error_server">Грешка на сървъра</string>
+</resources>

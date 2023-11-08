@@ -293,10 +293,6 @@
     <string name="account_setup_check_settings_authenticate">S\'està autenticant…</string>
     <string name="account_setup_check_settings_fetch">S\'està recuperant la configuració del compte\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">S\'està cancel·lant…</string>
-    <string name="account_setup_account_type_title">Tipus de compte</string>
-    <string name="account_setup_account_type_instructions">Quin tipus de compte és?</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">Contrasenya normal</string>
     <string name="account_setup_auth_type_insecure_password">Contrasenya, transmesa de forma no segura</string>
     <string name="account_setup_auth_type_encrypted_password">Contrasenya encriptada</string>

@@ -290,10 +290,6 @@
     <string name="account_setup_check_settings_authenticate">Po kryhet mirëfilltësimi\u2026</string>
     <string name="account_setup_check_settings_fetch">Po sillen rregullime llogarie\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Po anulohet\u2026</string>
-    <string name="account_setup_account_type_title">Lloj llogarie</string>
-    <string name="account_setup_account_type_instructions">Ç\’lloj llogarie është kjo?</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">Fjalëkalim normal</string>
     <string name="account_setup_auth_type_insecure_password">Fjalëkalim, i transmetuar në mënyrë të pasigurt</string>
     <string name="account_setup_auth_type_encrypted_password">Fjalëkalim i fshehtëzuar</string>

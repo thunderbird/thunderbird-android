@@ -290,10 +290,6 @@
     <string name="account_setup_check_settings_authenticate">Authenticatie\u2026</string>
     <string name="account_setup_check_settings_fetch">Accountinstellingen worden opgehaald\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Annuleren\u2026</string>
-    <string name="account_setup_account_type_title">Accounttype</string>
-    <string name="account_setup_account_type_instructions">Welk type account is dit?</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">Normaal wachtwoord</string>
     <string name="account_setup_auth_type_insecure_password">Wachtwoord, onveilig verzonden</string>
     <string name="account_setup_auth_type_encrypted_password">Versleuteld wachtwoord</string>

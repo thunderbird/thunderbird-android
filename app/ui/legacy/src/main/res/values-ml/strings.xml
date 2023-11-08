@@ -268,10 +268,6 @@
     <string name="account_setup_check_settings_authenticate">പ്രാമാണീകരിക്കുന്നു\u2026</string>
     <string name="account_setup_check_settings_fetch">അക്കൗണ്ട് ക്രമീകരണങ്ങൾ ലഭ്യമാക്കുന്നു\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">റദ്ദാക്കുന്നു\u2026</string>
-    <string name="account_setup_account_type_title">അക്കൗണ്ട് തരം</string>
-    <string name="account_setup_account_type_instructions">ഇത് ഏത് തരത്തിലുള്ള അക്കൗണ്ടാണ്?</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">സാധാരണ രഹസ്യവാചകം</string>
     <string name="account_setup_auth_type_insecure_password">രഹസ്യവാചകം, സുരക്ഷിതമല്ലാത്ത രീതിയിൽ കൈമാറി</string>
     <string name="account_setup_auth_type_encrypted_password">എൻ‌ക്രിപ്റ്റ് ചെയ്ത പാസ്‌വേഡ്</string>

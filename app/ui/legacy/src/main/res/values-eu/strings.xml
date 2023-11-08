@@ -290,10 +290,6 @@
     <string name="account_setup_check_settings_authenticate">Autentifikatzen\u2026</string>
     <string name="account_setup_check_settings_fetch">Kontuaren ezarpenak eskuratzen\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Bertan behera uzten\u2026</string>
-    <string name="account_setup_account_type_title">Kontu mota</string>
-    <string name="account_setup_account_type_instructions">Zein kontu mota da hau?</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">Pasahitz normala</string>
     <string name="account_setup_auth_type_insecure_password">Pasahitza, era ez seguruan transmitituta</string>
     <string name="account_setup_auth_type_encrypted_password">Zifratutako pasahitza</string>

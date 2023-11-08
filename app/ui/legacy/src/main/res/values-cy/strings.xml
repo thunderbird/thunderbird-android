@@ -281,10 +281,6 @@
     <string name="account_setup_check_settings_authenticate">Yn dilysu\u2026</string>
     <string name="account_setup_check_settings_fetch">Yn nôl gosodiadau\'r cyfrif\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Yn diddymu\u2026</string>
-    <string name="account_setup_account_type_title">Math o gyfrif</string>
-    <string name="account_setup_account_type_instructions">Pa fath o gyfrif ydy hwn?</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">Cyfrinair arferol</string>
     <string name="account_setup_auth_type_insecure_password">Cyfrinair, trosglwyddo\'n anniogel</string>
     <string name="account_setup_auth_type_encrypted_password">Cyfrinair wedi\'i hamgodio</string>

@@ -291,10 +291,6 @@
     <string name="account_setup_check_settings_authenticate">Autentimine\u2026</string>
     <string name="account_setup_check_settings_fetch">Toob konto sätteid\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Tühistamine\u2026</string>
-    <string name="account_setup_account_type_title">Konto liik</string>
-    <string name="account_setup_account_type_instructions">Mis tüüpi konto see on?</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">Tavaline salasõna</string>
     <string name="account_setup_auth_type_insecure_password">Salasõna, ebaturvaliselt edastatud</string>
     <string name="account_setup_auth_type_encrypted_password">Krüpteeritud salasõna</string>

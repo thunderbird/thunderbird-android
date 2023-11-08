@@ -259,10 +259,6 @@
     <string name="account_setup_check_settings_authenticate">Идентифициране\u2026</string>
     <string name="account_setup_check_settings_fetch">Получава настройките на профила\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Отказва\u2026</string>
-    <string name="account_setup_account_type_title">Тип на профила</string>
-    <string name="account_setup_account_type_instructions">Какъв тип профил е това?</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">Нормална парола</string>
     <string name="account_setup_auth_type_insecure_password">Парола, предавана несигурно</string>
     <string name="account_setup_auth_type_encrypted_password">Криптирана парола</string>

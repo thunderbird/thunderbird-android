@@ -13,10 +13,10 @@
     <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Yapılandırmayı düzenle</string>
     <string name="account_setup_error_unknown">Bilinmeyen hata</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
-    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Yapılandırma Bulunamadı</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Yapılandırma bulunamadı</string>
     <string name="account_setup_options_top_bar_title">Hesap seçenekleri</string>
     <string name="account_setup_options_account_name_label">Hesap adı</string>
-    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Yapılandırma Bulundu</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Yapılandırma bulundu</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">E-posta adresi zorunludur.</string>
     <string name="account_setup_options_display_name_label">Görünen ad</string>
     <string name="account_setup_auto_discovery_loading_error">E-posta yapılandırması yüklenemedi</string>

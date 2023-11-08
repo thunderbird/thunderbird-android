@@ -252,10 +252,6 @@
     <string name="account_setup_check_settings_authenticate">Аутентификујем\u2026</string>
     <string name="account_setup_check_settings_fetch">Добављам поставке налога\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Одустајем\u2026</string>
-    <string name="account_setup_account_type_title">Тип налога</string>
-    <string name="account_setup_account_type_instructions">Какав је ово налог?</string>
-    <string name="account_setup_account_type_pop_action">ПОП3</string>
-    <string name="account_setup_account_type_imap_action">ИМАП</string>
     <string name="account_setup_auth_type_normal_password">Нормална лозинка</string>
     <string name="account_setup_auth_type_insecure_password">Лозинка, небезбедно слање</string>
     <string name="account_setup_auth_type_encrypted_password">Шифрована лозинка</string>

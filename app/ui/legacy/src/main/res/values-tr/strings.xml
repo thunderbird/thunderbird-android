@@ -279,10 +279,6 @@
     <string name="account_setup_check_settings_authenticate">Kimlik Doğrulaması\u2026</string>
     <string name="account_setup_check_settings_fetch">Hesap ayarları alınıyor\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">İptal ediliyor\u2026</string>
-    <string name="account_setup_account_type_title">Hesap türü</string>
-    <string name="account_setup_account_type_instructions">Bu ne tür bir hesaptır?</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">Normal parola</string>
     <string name="account_setup_auth_type_insecure_password">Güvenlik olmadan gönderilen parola</string>
     <string name="account_setup_auth_type_encrypted_password">Şifreli parola</string>

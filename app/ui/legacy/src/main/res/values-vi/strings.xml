@@ -286,10 +286,6 @@
     <string name="account_setup_check_settings_authenticate">Đang xác thực\u2026</string>
     <string name="account_setup_check_settings_fetch">Đang lấy cài đặt tài khoản\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Đang hủy\u2026</string>
-    <string name="account_setup_account_type_title">Loại tài khoản</string>
-    <string name="account_setup_account_type_instructions">Loại tài khoản?</string>
-    <string name="account_setup_account_type_pop_action">POP3</string>
-    <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_auth_type_normal_password">Mật khẩu bình thường</string>
     <string name="account_setup_auth_type_insecure_password">Mật khẩu, truyền đi không bảo mật</string>
     <string name="account_setup_auth_type_encrypted_password">Mật khẩu được mã hóa</string>

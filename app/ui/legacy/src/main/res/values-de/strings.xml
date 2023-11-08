@@ -290,10 +290,6 @@
     <string name="account_setup_check_settings_authenticate">Authentifizierung\u2026</string>
     <string name="account_setup_check_settings_fetch">Kontoeinstellungen werden geladen\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Aktion wird abgebrochen\u2026</string>
-    <string name="account_setup_account_type_title">Kontotyp</string>
-    <string name="account_setup_account_type_instructions">Art des Kontos?</string>
-    <string name="account_setup_account_type_pop_action">POP3-Konto</string>
-    <string name="account_setup_account_type_imap_action">IMAP-Konto</string>
     <string name="account_setup_auth_type_normal_password">Normales Passwort</string>
     <string name="account_setup_auth_type_insecure_password">Passwort, unsicher übermittelt</string>
     <string name="account_setup_auth_type_encrypted_password">Verschlüsseltes Passwort</string>
@@ -630,7 +626,7 @@
     <string name="setting_theme_follow_system">Systemvorgabe verwenden</string>
     <string name="display_preferences">Anzeige</string>
     <string name="global_preferences">Globale Einstellungen</string>
-    <string name="debug_preferences">Debugging</string>
+    <string name="debug_preferences">Fehleranalyse</string>
     <string name="privacy_preferences">Datenschutz</string>
     <string name="network_preferences">Netzwerk</string>
     <string name="interaction_preferences">Interaktion</string>
@@ -817,7 +813,7 @@
         <item quantity="other">%d Resultate werden abgerufen</item>
     </plurals>
     <plurals name="remote_search_downloading_limited">
-        <item quantity="one">%1$d von %2$d Resultaten werden abgerufen</item>
+        <item quantity="one">%1$d von %2$d Resultaten wird abgerufen</item>
         <item quantity="other">%1$d von %2$d Resultaten werden abgerufen</item>
     </plurals>
     <string name="remote_search_error">Suche fehlgeschlagen</string>

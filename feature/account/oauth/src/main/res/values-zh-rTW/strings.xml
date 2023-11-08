@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_oauth_sign_in_with_google_button">使用 Google 登入</string>
+    <string name="account_oauth_loading_error">OAuth 登入失敗</string>
+    <string name="account_oauth_error_failed">授權失敗，出現以下錯誤：<xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_error_browser_not_available">此應用程式找不到用於授予帳號存取權限的瀏覽器。</string>
+    <string name="account_oauth_error_not_supported">此提供者目前不支援 OAuth 2.0。</string>
+    <string name="account_oauth_error_canceled">授權被取消</string>
+    <string name="account_oauth_loading_message">使用 OAuth 登入</string>
+    <string name="account_oauth_sign_in_description">我們會將您重新導向至您的電子郵件提供者頁面進行登入。您需要授予此應用程式存取您的電子郵件帳號的權限。</string>
+    <string name="account_oauth_sign_in_button">登入</string>
+</resources>
