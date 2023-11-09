@@ -112,6 +112,7 @@ class RealAutoconfigParserTest {
     @Test
     fun `replace variables`() {
         val inputStream = minimalConfig.withModifications {
+            element("domain").text("%EMAILDOMAIN%")
             element("incomingServer > hostname").text("%EMAILLOCALPART%.domain.example")
             element("outgoingServer > hostname").text("%EMAILLOCALPART%.outgoing.domain.example")
             element("outgoingServer > username").text("%EMAILDOMAIN%")
