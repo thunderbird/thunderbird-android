@@ -59,9 +59,6 @@ import com.fsck.k9.ui.messageview.MessageViewContainerFragment
 import com.fsck.k9.ui.messageview.MessageViewContainerFragment.MessageViewContainerListener
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener
 import com.fsck.k9.ui.messageview.PlaceholderFragment
-import com.fsck.k9.ui.permissions.K9PermissionUiHelper
-import com.fsck.k9.ui.permissions.Permission
-import com.fsck.k9.ui.permissions.PermissionUiHelper
 import com.fsck.k9.view.ViewSwitcher
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener
 import com.mikepenz.materialdrawer.util.getOptimalDrawerWidth
@@ -81,8 +78,7 @@ open class MessageList :
     MessageViewFragmentListener,
     MessageViewContainerListener,
     FragmentManager.OnBackStackChangedListener,
-    OnSwitchCompleteListener,
-    PermissionUiHelper {
+    OnSwitchCompleteListener {
 
     protected val searchStatusManager: SearchStatusManager by inject()
     private val preferences: Preferences by inject()
@@ -91,8 +87,6 @@ open class MessageList :
     private val generalSettingsManager: GeneralSettingsManager by inject()
     private val messagingController: MessagingController by inject()
     private val contactRepository: ContactRepository by inject()
-
-    private val permissionUiHelper: PermissionUiHelper = K9PermissionUiHelper(this)
 
     private lateinit var actionBar: ActionBar
     private var searchView: SearchView? = null
@@ -206,10 +200,6 @@ open class MessageList :
         initializeLayout()
         initializeFragments()
         displayViews()
-
-        if (savedInstanceState == null) {
-            checkAndRequestPermissions()
-        }
     }
 
     public override fun onNewIntent(intent: Intent) {
@@ -497,12 +487,6 @@ open class MessageList :
         return LocalSearch().apply {
             addAccountUuid(account.uuid)
             addAllowedFolder(defaultFolderProvider.getDefaultFolder(account))
-        }
-    }
-
-    private fun checkAndRequestPermissions() {
-        if (!hasPermission(Permission.READ_CONTACTS)) {
-            requestPermissionOrShowRationale(Permission.READ_CONTACTS)
         }
     }
 
@@ -1355,18 +1339,6 @@ open class MessageList :
             search!!.id == SearchAccount.UNIFIED_INBOX -> drawer.selectUnifiedInbox()
             else -> drawer.deselect()
         }
-    }
-
-    override fun hasPermission(permission: Permission): Boolean {
-        return permissionUiHelper.hasPermission(permission)
-    }
-
-    override fun requestPermissionOrShowRationale(permission: Permission) {
-        permissionUiHelper.requestPermissionOrShowRationale(permission)
-    }
-
-    override fun requestPermission(permission: Permission) {
-        permissionUiHelper.requestPermission(permission)
     }
 
     private enum class DisplayMode {
