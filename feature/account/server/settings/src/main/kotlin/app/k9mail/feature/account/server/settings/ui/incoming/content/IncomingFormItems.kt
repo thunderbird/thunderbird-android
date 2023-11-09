@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.designsystem.molecule.input.NumberInput
-import app.k9mail.core.ui.compose.designsystem.molecule.input.PasswordInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.SelectInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.TextInput
 import app.k9mail.core.ui.compose.theme.MainTheme
@@ -17,6 +16,7 @@ import app.k9mail.feature.account.common.domain.entity.InteractionMode
 import app.k9mail.feature.account.common.ui.item.defaultItemPadding
 import app.k9mail.feature.account.server.settings.R
 import app.k9mail.feature.account.server.settings.ui.common.ClientCertificateInput
+import app.k9mail.feature.account.server.settings.ui.common.ServerSettingsPasswordInput
 import app.k9mail.feature.account.server.settings.ui.common.mapper.toResourceString
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.Event
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.State
@@ -100,7 +100,8 @@ internal fun LazyListScope.incomingFormItems(
 
     if (state.isPasswordFieldVisible) {
         item {
-            PasswordInput(
+            ServerSettingsPasswordInput(
+                mode = mode,
                 password = state.password.value,
                 errorMessage = state.password.error?.toResourceString(resources),
                 onPasswordChange = { onEvent(Event.PasswordChanged(it)) },
