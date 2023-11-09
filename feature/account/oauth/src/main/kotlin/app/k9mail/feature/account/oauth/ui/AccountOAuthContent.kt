@@ -24,6 +24,7 @@ internal fun AccountOAuthContent(
     state: State,
     onEvent: (Event) -> Unit,
     modifier: Modifier = Modifier,
+    isEnabled: Boolean = true,
 ) {
     val resources = LocalContext.current.resources
 
@@ -47,6 +48,7 @@ internal fun AccountOAuthContent(
             SignInView(
                 onSignInClick = { onEvent(Event.SignInClicked) },
                 isGoogleSignIn = state.isGoogleSignIn,
+                isEnabled = isEnabled,
             )
         }
     }

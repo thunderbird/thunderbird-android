@@ -18,6 +18,7 @@ internal fun SignInView(
     onSignInClick: () -> Unit,
     isGoogleSignIn: Boolean,
     modifier: Modifier = Modifier,
+    isEnabled: Boolean = true,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -32,11 +33,13 @@ internal fun SignInView(
         if (isGoogleSignIn) {
             SignInWithGoogleButton(
                 onClick = onSignInClick,
+                enabled = isEnabled,
             )
         } else {
             Button(
                 text = stringResource(id = R.string.account_oauth_sign_in_button),
                 onClick = onSignInClick,
+                enabled = isEnabled,
             )
         }
     }

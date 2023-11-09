@@ -49,9 +49,13 @@ internal fun LazyListScope.contentItems(
     } else if (state.configStep == ConfigStep.OAUTH) {
         item(key = "oauth") {
             ListItem {
+                val isAutoDiscoverySettingsTrusted = state.autoDiscoverySettings?.isTrusted ?: false
+                val isConfigurationApproved = state.configurationApproved.value ?: false
+
                 AccountOAuthView(
                     onOAuthResult = { result -> onEvent(Event.OnOAuthResult(result)) },
                     viewModel = oAuthViewModel,
+                    isEnabled = isAutoDiscoverySettingsTrusted || isConfigurationApproved,
                 )
             }
         }

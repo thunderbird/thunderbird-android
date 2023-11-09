@@ -40,6 +40,7 @@ import app.k9mail.feature.account.oauth.R
 fun SignInWithGoogleButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     isLight: Boolean = MaterialTheme.colors.isLight,
 ) {
     OutlinedButton(
@@ -54,6 +55,7 @@ fun SignInWithGoogleButton(
             color = getBorderColor(isLight),
         ),
         contentPadding = PaddingValues(all = 0.dp),
+        enabled = enabled,
     ) {
         Row(
             modifier = Modifier
