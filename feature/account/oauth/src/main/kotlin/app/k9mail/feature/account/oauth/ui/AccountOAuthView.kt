@@ -15,6 +15,7 @@ fun AccountOAuthView(
     onOAuthResult: (OAuthResult) -> Unit,
     viewModel: ViewModel,
     modifier: Modifier = Modifier,
+    isEnabled: Boolean = true,
 ) {
     val oAuthLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
@@ -34,5 +35,6 @@ fun AccountOAuthView(
         state = state.value,
         onEvent = { dispatch(it) },
         modifier = modifier,
+        isEnabled = isEnabled,
     )
 }

@@ -13,7 +13,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -24,11 +23,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import app.k9mail.core.ui.compose.common.PreviewDevices
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 import app.k9mail.feature.account.oauth.R
+import androidx.compose.material.Button as MaterialButton
 
 /**
  * A sign in with Google button, following the Google Branding Guidelines.
@@ -40,12 +40,13 @@ import app.k9mail.feature.account.oauth.R
 fun SignInWithGoogleButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     isLight: Boolean = MaterialTheme.colors.isLight,
 ) {
-    OutlinedButton(
+    MaterialButton(
         onClick = onClick,
         modifier = modifier,
-        colors = ButtonDefaults.outlinedButtonColors(
+        colors = ButtonDefaults.buttonColors(
             contentColor = getTextColor(isLight),
             backgroundColor = getSurfaceColor(isLight),
         ),
@@ -54,6 +55,7 @@ fun SignInWithGoogleButton(
             color = getBorderColor(isLight),
         ),
         contentPadding = PaddingValues(all = 0.dp),
+        enabled = enabled,
     ) {
         Row(
             modifier = Modifier
@@ -88,7 +90,6 @@ fun SignInWithGoogleButton(
                     id = R.string.account_oauth_sign_in_with_google_button,
                 ),
                 style = TextStyle(
-                    color = getTextColor(isLight),
                     fontWeight = FontWeight.Medium,
                     fontSize = 14.sp,
                     letterSpacing = 1.25.sp,
@@ -125,12 +126,23 @@ private fun getTextColor(isLight: Boolean): Color {
     }
 }
 
-@PreviewDevices
+@Preview(showBackground = true)
 @Composable
 internal fun SignInWithGoogleButtonPreview() {
     PreviewWithThemes {
         SignInWithGoogleButton(
             onClick = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+internal fun SignInWithGoogleButtonDisabledPreview() {
+    PreviewWithThemes {
+        SignInWithGoogleButton(
+            onClick = {},
+            enabled = false,
         )
     }
 }
