@@ -11,6 +11,7 @@ class CatalogApplication : Application() {
         super.onCreate()
 
         startKoin {
+            allowOverride(false)
             androidContext(this@CatalogApplication)
             modules(catalogUiModule)
         }

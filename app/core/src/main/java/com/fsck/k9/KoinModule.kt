@@ -10,7 +10,6 @@ import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import com.fsck.k9.mailstore.LocalStoreProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
-import kotlinx.datetime.Clock
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -32,7 +31,6 @@ val mainModule = module {
     single { TrustManagerFactory.createInstance(get()) }
     single { LocalKeyStoreManager(get()) }
     single<TrustedSocketFactory> { DefaultTrustedSocketFactory(get(), get()) }
-    single<Clock> { Clock.System }
     factory { EmailAddressValidator() }
     factory { ServerSettingsSerializer() }
 }

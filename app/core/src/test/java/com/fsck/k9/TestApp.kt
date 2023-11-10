@@ -20,7 +20,11 @@ class TestApp : Application() {
         Core.earlyInit()
 
         super.onCreate()
-        DI.start(this, coreModules + storageModule + testModule)
+        DI.start(
+            application = this,
+            modules = coreModules + storageModule + testModule,
+            allowOverride = true,
+        )
 
         K9.init(this)
         Core.init(this)
