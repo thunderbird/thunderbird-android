@@ -112,7 +112,7 @@ private class ClientConfigParser(
             if (eventType == XmlPullParser.START_TAG) {
                 when (pullParser.name) {
                     "domain" -> {
-                        val domain = readText()
+                        val domain = readText().replaceVariables()
                         if (domain.isValidHostname()) {
                             domainFound = true
                         }
