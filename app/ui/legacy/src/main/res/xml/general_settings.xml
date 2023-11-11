@@ -322,6 +322,14 @@
             android:title="@string/general_settings_post_remove_action_title"
             app:useSimpleSummaryProvider="true" />
 
+        <ListPreference
+            android:dialogTitle="@string/general_settings_post_mark_as_unread_action_title"
+            android:entries="@array/post_mark_as_unread_navigation_entries"
+            android:entryValues="@array/post_mark_as_unread_navigation_values"
+            android:key="post_mark_as_unread_navigation"
+            android:title="@string/general_settings_post_mark_as_unread_action_title"
+            app:useSimpleSummaryProvider="true" />
+
         <MultiSelectListPreference
             android:dialogTitle="@string/global_settings_confirm_actions_title"
             android:entries="@array/confirm_action_entries"

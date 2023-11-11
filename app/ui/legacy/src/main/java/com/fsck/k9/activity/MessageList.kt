@@ -31,6 +31,7 @@ import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import com.fsck.k9.Account
 import com.fsck.k9.K9
+import com.fsck.k9.K9.PostMarkAsUnreadNavigation
 import com.fsck.k9.K9.PostRemoveNavigation
 import com.fsck.k9.K9.SplitViewMode
 import com.fsck.k9.Preferences
@@ -1134,6 +1135,13 @@ open class MessageList :
             PostRemoveNavigation.ReturnToMessageList -> returnToMessageList()
             PostRemoveNavigation.ShowPreviousMessage -> showPreviousMessageOrReturn()
             PostRemoveNavigation.ShowNextMessage -> showNextMessageOrReturn()
+        }
+    }
+
+    override fun performNavigationAfterMarkAsUnread() {
+        when (K9.messageViewPostMarkAsUnreadNavigation) {
+            PostMarkAsUnreadNavigation.StayOnCurrentMessage -> Unit
+            PostMarkAsUnreadNavigation.ReturnToMessageList -> returnToMessageList()
         }
     }
 
