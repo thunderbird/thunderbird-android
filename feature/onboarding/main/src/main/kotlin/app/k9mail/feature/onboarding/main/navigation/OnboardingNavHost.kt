@@ -9,7 +9,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import app.k9mail.feature.account.setup.navigation.nestedAccountSetupRoute
+import app.k9mail.feature.account.setup.navigation.AccountSetupNavHost
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsScreen
 import app.k9mail.feature.onboarding.welcome.ui.OnboardingScreen
 
@@ -45,14 +45,15 @@ fun OnboardingNavHost(
             )
         }
 
-        nestedAccountSetupRoute(
-            route = NESTED_NAVIGATION_ROUTE_ACCOUNT_SETUP,
-            onBack = onBack,
-            onFinish = { createdAccountUuid ->
-                accountUuid = createdAccountUuid
-                navController.navigateToPermissions()
-            },
-        )
+        composable(route = NESTED_NAVIGATION_ROUTE_ACCOUNT_SETUP) {
+            AccountSetupNavHost(
+                onBack = onBack,
+                onFinish = { createdAccountUuid: String ->
+                    accountUuid = createdAccountUuid
+                    navController.navigateToPermissions()
+                },
+            )
+        }
 
         composable(route = NESTED_NAVIGATION_ROUTE_PERMISSIONS) {
             PermissionsScreen(
