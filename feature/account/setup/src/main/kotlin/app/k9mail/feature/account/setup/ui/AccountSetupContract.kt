@@ -1,6 +1,7 @@
 package app.k9mail.feature.account.setup.ui
 
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
+import app.k9mail.feature.account.setup.domain.entity.AccountUuid
 
 interface AccountSetupContract {
 
@@ -11,6 +12,7 @@ interface AccountSetupContract {
         OUTGOING_CONFIG,
         OUTGOING_VALIDATION,
         OPTIONS,
+        CREATE_ACCOUNT,
     }
 
     interface ViewModel : UnidirectionalViewModel<State, Event, Effect>
@@ -27,6 +29,8 @@ interface AccountSetupContract {
 
         object OnNext : Event
         object OnBack : Event
+
+        data class OnAccountCreated(val accountUuid: AccountUuid) : Event
     }
 
     sealed interface Effect {

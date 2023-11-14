@@ -6,7 +6,7 @@ import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountContract.E
 import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountContract.State
 import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountContract.ViewModel
 
-class FakeCreateAccountViewModel(initialState: State) :
+class FakeCreateAccountViewModel(initialState: State = State()) :
     BaseViewModel<State, Event, Effect>(initialState), ViewModel {
 
     val events = mutableListOf<Event>()

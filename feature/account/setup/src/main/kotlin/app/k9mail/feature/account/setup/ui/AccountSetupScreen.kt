@@ -20,6 +20,9 @@ import app.k9mail.feature.account.setup.ui.AccountSetupContract.ViewModel
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryScreen
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryViewModel
+import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountContract
+import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountScreen
+import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountViewModel
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsScreen
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsViewModel
@@ -39,6 +42,7 @@ fun AccountSetupScreen(
     outgoingValidationViewModel: ServerValidationContract.ViewModel =
         koinViewModel<OutgoingServerValidationViewModel>(),
     optionsViewModel: AccountOptionsContract.ViewModel = koinViewModel<AccountOptionsViewModel>(),
+    createAccountViewModel: CreateAccountContract.ViewModel = koinViewModel<CreateAccountViewModel>(),
 ) {
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
@@ -99,6 +103,14 @@ fun AccountSetupScreen(
                 onNext = { dispatch(Event.OnNext) },
                 onBack = { dispatch(Event.OnBack) },
                 viewModel = optionsViewModel,
+            )
+        }
+
+        SetupStep.CREATE_ACCOUNT -> {
+            CreateAccountScreen(
+                onNext = { accountUuid -> dispatch(Event.OnAccountCreated(accountUuid)) },
+                onBack = { dispatch(Event.OnBack) },
+                viewModel = createAccountViewModel,
             )
         }
     }

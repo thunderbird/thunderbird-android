@@ -7,13 +7,11 @@ import app.k9mail.feature.account.common.data.InMemoryAccountStateRepository
 import app.k9mail.feature.account.common.domain.entity.AccountOptions
 import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.common.domain.entity.MailConnectionSecurity
-import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
+import app.k9mail.feature.account.setup.domain.entity.AccountUuid
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.State
-import assertk.assertThat
 import assertk.assertions.isEqualTo
-import assertk.assertions.isNull
 import assertk.assertions.prop
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ServerSettings
@@ -29,22 +27,8 @@ class AccountSetupViewModelTest {
 
     @Test
     fun `should forward step state on next event`() = runTest {
-        var createAccountEmailAddress: String? = null
-        var createAccountIncomingServerSettings: ServerSettings? = null
-        var createAccountOutgoingServerSettings: ServerSettings? = null
-        var createAccountAuthorizationState: String? = null
-        var createAccountOptions: AccountOptions? = null
         val accountStateRepository = InMemoryAccountStateRepository()
         val viewModel = AccountSetupViewModel(
-            createAccount = { emailAddress, incomingServerSettings, outgoingServerSettings, authState, options ->
-                createAccountEmailAddress = emailAddress
-                createAccountIncomingServerSettings = incomingServerSettings
-                createAccountOutgoingServerSettings = outgoingServerSettings
-                createAccountAuthorizationState = authState
-                createAccountOptions = options
-
-                AccountCreatorResult.Success("accountUuid")
-            },
             accountStateRepository = accountStateRepository,
         )
         val turbines = turbinesWithInitialStateCheck(viewModel, State(setupStep = SetupStep.AUTO_CONFIG))
@@ -133,9 +117,18 @@ class AccountSetupViewModelTest {
             prop(State::setupStep).isEqualTo(SetupStep.OPTIONS)
         }
 
+        viewModel.event(AccountSetupContract.Event.OnNext)
+
+        assertThatAndMviTurbinesConsumed(
+            actual = turbines.stateTurbine.awaitItem(),
+            turbines = turbines,
+        ) {
+            prop(State::setupStep).isEqualTo(SetupStep.CREATE_ACCOUNT)
+        }
+
         accountStateRepository.setState(expectedAccountState)
 
-        viewModel.event(AccountSetupContract.Event.OnNext)
+        viewModel.event(AccountSetupContract.Event.OnAccountCreated(AccountUuid("accountUuid")))
 
         assertThatAndMviTurbinesConsumed(
             actual = turbines.effectTurbine.awaitItem(),
@@ -143,19 +136,12 @@ class AccountSetupViewModelTest {
         ) {
             isEqualTo(Effect.NavigateNext("accountUuid"))
         }
-
-        assertThat(createAccountEmailAddress).isEqualTo(EMAIL_ADDRESS)
-        assertThat(createAccountIncomingServerSettings).isEqualTo(expectedAccountState.incomingServerSettings)
-        assertThat(createAccountOutgoingServerSettings).isEqualTo(expectedAccountState.outgoingServerSettings)
-        assertThat(createAccountAuthorizationState).isNull()
-        assertThat(createAccountOptions).isEqualTo(expectedAccountState.options)
     }
 
     @Test
     fun `should rewind step state on back event`() = runTest {
         val initialState = State(setupStep = SetupStep.OPTIONS)
         val viewModel = AccountSetupViewModel(
-            createAccount = { _, _, _, _, _ -> AccountCreatorResult.Success("accountUuid") },
             accountStateRepository = InMemoryAccountStateRepository(),
             initialState = initialState,
         )
@@ -205,7 +191,6 @@ class AccountSetupViewModelTest {
             isAutomaticConfig = true,
         )
         val viewModel = AccountSetupViewModel(
-            createAccount = { _, _, _, _, _ -> AccountCreatorResult.Success("accountUuid") },
             accountStateRepository = InMemoryAccountStateRepository(),
             initialState = initialState,
         )
@@ -237,7 +222,6 @@ class AccountSetupViewModelTest {
             isAutomaticConfig = true,
         )
         val viewModel = AccountSetupViewModel(
-            createAccount = { _, _, _, _, _ -> AccountCreatorResult.Success("accountUuid") },
             accountStateRepository = InMemoryAccountStateRepository(),
             initialState = initialState,
         )
@@ -269,7 +253,6 @@ class AccountSetupViewModelTest {
             isAutomaticConfig = true,
         )
         val viewModel = AccountSetupViewModel(
-            createAccount = { _, _, _, _, _ -> AccountCreatorResult.Success("accountUuid") },
             accountStateRepository = InMemoryAccountStateRepository(),
             initialState = initialState,
         )
