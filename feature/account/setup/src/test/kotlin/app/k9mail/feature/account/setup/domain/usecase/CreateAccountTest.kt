@@ -63,7 +63,7 @@ class CreateAccountTest {
             options,
         )
 
-        assertThat(result).isEqualTo("uuid")
+        assertThat(result).isEqualTo(AccountCreatorResult.Success("uuid"))
         assertThat(recordedAccount).isEqualTo(
             Account(
                 uuid = "uuid",

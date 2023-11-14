@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
+import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Event
@@ -126,7 +127,11 @@ class AccountSetupViewModel(
                 options = accountState.options!!,
             )
 
-            navigateNext(result)
+            if (result is AccountCreatorResult.Success) {
+                navigateNext(result.accountUuid)
+            } else {
+                error("Creating account failed")
+            }
         }
     }
 

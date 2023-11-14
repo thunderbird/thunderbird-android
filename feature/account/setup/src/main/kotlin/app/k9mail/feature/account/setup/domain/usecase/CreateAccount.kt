@@ -18,7 +18,7 @@ class CreateAccount(
         outgoingServerSettings: ServerSettings,
         authorizationState: String?,
         options: AccountOptions,
-    ): String {
+    ): AccountCreatorResult {
         val account = Account(
             uuid = uuidGenerator(),
             emailAddress = emailAddress,
@@ -28,9 +28,6 @@ class CreateAccount(
             options = options,
         )
 
-        return when (val result = accountCreator.createAccount(account)) {
-            is AccountCreatorResult.Success -> result.accountUuid
-            is AccountCreatorResult.Error -> "" // TODO change to meaningful error
-        }
+        return accountCreator.createAccount(account)
     }
 }
