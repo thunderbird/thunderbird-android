@@ -9,7 +9,6 @@ import app.k9mail.feature.account.server.validation.featureAccountServerValidati
 import app.k9mail.feature.account.setup.domain.DomainContract
 import app.k9mail.feature.account.setup.domain.usecase.CreateAccount
 import app.k9mail.feature.account.setup.domain.usecase.GetAutoDiscovery
-import app.k9mail.feature.account.setup.ui.AccountSetupViewModel
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryValidator
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryViewModel
@@ -56,11 +55,6 @@ val featureAccountSetupModule: Module = module {
     factory<AccountAutoDiscoveryContract.Validator> { AccountAutoDiscoveryValidator() }
     factory<AccountOptionsContract.Validator> { AccountOptionsValidator() }
 
-    viewModel {
-        AccountSetupViewModel(
-            accountStateRepository = get(),
-        )
-    }
     viewModel {
         AccountAutoDiscoveryViewModel(
             validator = get(),
