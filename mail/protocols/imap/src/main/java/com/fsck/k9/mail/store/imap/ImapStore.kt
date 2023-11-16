@@ -16,8 +16,8 @@ interface ImapStore {
 
     fun closeAllConnections()
 
-    companion object {
-        fun create(
+    companion object : ImapStoreFactory {
+        override fun create(
             serverSettings: ServerSettings,
             config: ImapStoreConfig,
             trustedSocketFactory: TrustedSocketFactory,
