@@ -185,6 +185,9 @@ object K9 : EarlyInit {
 
     var messageViewPostRemoveNavigation: PostRemoveNavigation = PostRemoveNavigation.ReturnToMessageList
 
+    var messageViewPostMarkAsUnreadNavigation: PostMarkAsUnreadNavigation =
+        PostMarkAsUnreadNavigation.ReturnToMessageList
+
     @JvmStatic
     var isUseVolumeKeysForNavigation = false
 
@@ -329,6 +332,8 @@ object K9 : EarlyInit {
         isUseMessageViewFixedWidthFont = storage.getBoolean("messageViewFixedWidthFont", false)
         messageViewPostRemoveNavigation =
             storage.getEnum("messageViewPostDeleteAction", PostRemoveNavigation.ReturnToMessageList)
+        messageViewPostMarkAsUnreadNavigation =
+            storage.getEnum("messageViewPostMarkAsUnreadAction", PostMarkAsUnreadNavigation.ReturnToMessageList)
         isHideUserAgent = storage.getBoolean("hideUserAgent", false)
         isHideTimeZone = storage.getBoolean("hideTimeZone", false)
 
@@ -402,6 +407,7 @@ object K9 : EarlyInit {
         editor.putInt("registeredNameColor", contactNameColor)
         editor.putBoolean("messageViewFixedWidthFont", isUseMessageViewFixedWidthFont)
         editor.putEnum("messageViewPostDeleteAction", messageViewPostRemoveNavigation)
+        editor.putEnum("messageViewPostMarkAsUnreadAction", messageViewPostMarkAsUnreadNavigation)
         editor.putBoolean("hideUserAgent", isHideUserAgent)
         editor.putBoolean("hideTimeZone", isHideTimeZone)
 
@@ -539,5 +545,14 @@ object K9 : EarlyInit {
         ReturnToMessageList,
         ShowPreviousMessage,
         ShowNextMessage,
+    }
+
+    /**
+     * The navigation actions that can be to performed after the user has marked a message as unread from the message
+     * view screen.
+     */
+    enum class PostMarkAsUnreadNavigation {
+        StayOnCurrentMessage,
+        ReturnToMessageList,
     }
 }

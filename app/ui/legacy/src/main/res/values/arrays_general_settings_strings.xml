@@ -180,4 +180,9 @@
         <item>@string/general_settings_post_remove_action_show_next_message</item>
     </string-array>
 
+    <string-array name="post_mark_as_unread_navigation_entries">
+        <item>@string/general_settings_post_mark_as_unread_action_stay</item>
+        <item>@string/general_settings_post_mark_as_unread_action_return_to_list</item>
+    </string-array>
+
 </resources>

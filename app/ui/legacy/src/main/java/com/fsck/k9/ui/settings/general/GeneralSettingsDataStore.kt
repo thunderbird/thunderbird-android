@@ -2,6 +2,7 @@ package com.fsck.k9.ui.settings.general
 
 import androidx.preference.PreferenceDataStore
 import com.fsck.k9.K9
+import com.fsck.k9.K9.PostMarkAsUnreadNavigation
 import com.fsck.k9.K9.PostRemoveNavigation
 import com.fsck.k9.SwipeAction
 import com.fsck.k9.UiDensity
@@ -124,6 +125,7 @@ class GeneralSettingsDataStore(
             "swipe_action_left" -> swipeActionToString(K9.swipeLeftAction)
             "message_list_density" -> K9.messageListDensity.toString()
             "post_remove_navigation" -> K9.messageViewPostRemoveNavigation.name
+            "post_mark_as_unread_navigation" -> K9.messageViewPostMarkAsUnreadNavigation.name
             else -> defValue
         }
     }
@@ -161,6 +163,9 @@ class GeneralSettingsDataStore(
             "swipe_action_left" -> K9.swipeLeftAction = stringToSwipeAction(value)
             "message_list_density" -> K9.messageListDensity = UiDensity.valueOf(value)
             "post_remove_navigation" -> K9.messageViewPostRemoveNavigation = PostRemoveNavigation.valueOf(value)
+            "post_mark_as_unread_navigation" -> {
+                K9.messageViewPostMarkAsUnreadNavigation = PostMarkAsUnreadNavigation.valueOf(value)
+            }
             else -> return
         }
 

@@ -14,6 +14,7 @@
     <ID>LongMethod:AccountPreferenceSerializer.kt$AccountPreferenceSerializer$@Synchronized fun loadAccount(account: Account, storage: Storage)</ID>
     <ID>LongMethod:AccountPreferenceSerializer.kt$AccountPreferenceSerializer$@Synchronized fun save(editor: StorageEditor, storage: Storage, account: Account)</ID>
     <ID>LongMethod:AccountPreferenceSerializer.kt$AccountPreferenceSerializer$fun loadDefaults(account: Account)</ID>
+    <ID>LongMethod:K9.kt$K9$@JvmStatic fun loadPrefs(storage: Storage)</ID>
     <ID>LongMethod:MessageListRepositoryTest.kt$MessageListRepositoryTest$@Test fun `getThread() should use flag values from the cache`()</ID>
     <ID>LongMethod:NotificationDataStore.kt$NotificationDataStore$@Synchronized fun removeNotifications( account: Account, selector: (List&lt;MessageReference&gt;) -&gt; List&lt;MessageReference&gt;, ): RemoveNotificationsResult?</ID>
     <ID>LongMethod:SettingsExporter.kt$SettingsExporter$private fun writeAccount(serializer: XmlSerializer, account: Account, prefs: Map&lt;String, Any&gt;)</ID>

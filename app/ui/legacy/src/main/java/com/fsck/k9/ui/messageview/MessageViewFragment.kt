@@ -642,7 +642,14 @@ class MessageViewFragment :
     }
 
     fun onToggleRead() {
+        val message = checkNotNull(this.message)
+        val isMarkAsUnreadAction = message.isSet(Flag.SEEN)
+
         toggleFlag(Flag.SEEN)
+
+        if (isMarkAsUnreadAction) {
+            fragmentListener.performNavigationAfterMarkAsUnread()
+        }
     }
 
     fun onToggleFlagged() {
@@ -864,6 +871,7 @@ class MessageViewFragment :
         fun onReply(messageReference: MessageReference, decryptionResultForReply: Parcelable?)
         fun setProgress(enable: Boolean)
         fun performNavigationAfterMessageRemoval()
+        fun performNavigationAfterMarkAsUnread()
     }
 
     private val messageLoaderCallbacks: MessageLoaderCallbacks = object : MessageLoaderCallbacks {

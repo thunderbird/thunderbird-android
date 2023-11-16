@@ -17,6 +17,7 @@ import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.BACKGROUND_OPS;
 import com.fsck.k9.K9.NotificationQuickDelete;
+import com.fsck.k9.K9.PostMarkAsUnreadNavigation;
 import com.fsck.k9.K9.PostRemoveNavigation;
 import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.SwipeAction;
@@ -291,6 +292,10 @@ public class GeneralSettingsDescriptions {
         ));
         s.put("messageViewPostDeleteAction", Settings.versions(
             new V(89, new EnumSetting<>(PostRemoveNavigation.class, PostRemoveNavigation.ReturnToMessageList))
+        ));
+        s.put("messageViewPostMarkAsUnreadAction", Settings.versions(
+            new V(90,
+                new EnumSetting<>(PostMarkAsUnreadNavigation.class, PostMarkAsUnreadNavigation.ReturnToMessageList))
         ));
 
         SETTINGS = Collections.unmodifiableMap(s);

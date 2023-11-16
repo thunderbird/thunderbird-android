@@ -272,6 +272,11 @@
     <string name="general_settings_post_remove_action_show_previous_message">Show previous message</string>
     <string name="general_settings_post_remove_action_show_next_message">Show next message</string>
 
+    <!-- Name of the setting to configure the navigation action to perform after the user has marked a message as unread from the message view screen -->
+    <string name="general_settings_post_mark_as_unread_action_title">After marking a message as unread</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">Stay on current message</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">Return to message list</string>
+
     <string name="global_settings_confirm_actions_title">Confirm actions</string>
     <string name="global_settings_confirm_actions_summary">Show a dialog whenever you perform selected actions</string>
     <string name="global_settings_confirm_action_delete">Delete</string>

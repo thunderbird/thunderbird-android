@@ -227,4 +227,9 @@
         <item>ShowNextMessage</item>
     </string-array>
 
+    <string-array name="post_mark_as_unread_navigation_values" translatable="false">
+        <item>StayOnCurrentMessage</item>
+        <item>ReturnToMessageList</item>
+    </string-array>
+
 </resources>
