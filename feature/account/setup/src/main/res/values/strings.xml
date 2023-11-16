@@ -38,4 +38,8 @@
     <string name="account_setup_options_email_check_frequency_never">Never</string>
     <string name="account_setup_options_email_display_count_label">Number of messages to display</string>
     <string name="account_setup_options_show_notifications_label">Show notifications</string>
+
+    <string name="account_setup_create_account_creating">Creating account…</string>
+    <string name="account_setup_create_account_error">An error occurred while trying to create the account</string>
+    <string name="account_setup_create_account_created">Account successfully created</string>
 </resources>

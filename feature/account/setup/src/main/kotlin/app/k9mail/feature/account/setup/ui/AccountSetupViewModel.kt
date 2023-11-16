@@ -1,19 +1,16 @@
 package app.k9mail.feature.account.setup.ui
 
-import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
-import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
+import app.k9mail.feature.account.setup.domain.entity.AccountUuid
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.Event
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.State
-import kotlinx.coroutines.launch
 
 @Suppress("LongParameterList")
 class AccountSetupViewModel(
-    private val createAccount: UseCase.CreateAccount,
     private val accountStateRepository: AccountDomainContract.AccountStateRepository,
     initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(initialState), AccountSetupContract.ViewModel {
@@ -24,6 +21,8 @@ class AccountSetupViewModel(
 
             Event.OnBack -> onBack()
             Event.OnNext -> onNext()
+
+            is Event.OnAccountCreated -> navigateNext(event.accountUuid)
         }
     }
 
@@ -69,7 +68,11 @@ class AccountSetupViewModel(
                 changeToSetupStep(SetupStep.OPTIONS)
             }
 
-            SetupStep.OPTIONS -> onFinish()
+            SetupStep.OPTIONS -> {
+                changeToSetupStep(SetupStep.CREATE_ACCOUNT)
+            }
+
+            SetupStep.CREATE_ACCOUNT -> Unit
         }
     }
 
@@ -99,6 +102,8 @@ class AccountSetupViewModel(
             } else {
                 changeToSetupStep(SetupStep.OUTGOING_CONFIG)
             }
+
+            SetupStep.CREATE_ACCOUNT -> changeToSetupStep(SetupStep.OPTIONS)
         }
     }
 
@@ -114,23 +119,7 @@ class AccountSetupViewModel(
         }
     }
 
-    private fun onFinish() {
-        val accountState = accountStateRepository.getState()
-
-        viewModelScope.launch {
-            val result = createAccount.execute(
-                emailAddress = accountState.emailAddress ?: "",
-                incomingServerSettings = accountState.incomingServerSettings!!,
-                outgoingServerSettings = accountState.outgoingServerSettings!!,
-                authorizationState = accountState.authorizationState?.state,
-                options = accountState.options!!,
-            )
-
-            navigateNext(result)
-        }
-    }
-
-    private fun navigateNext(accountUuid: String) = emitEffect(Effect.NavigateNext(accountUuid))
+    private fun navigateNext(accountUuid: AccountUuid) = emitEffect(Effect.NavigateNext(accountUuid.value))
 
     private fun navigateBack() = emitEffect(Effect.NavigateBack)
 }

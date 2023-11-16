@@ -11,6 +11,7 @@ import app.k9mail.feature.account.setup.ui.AccountSetupContract.Effect
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.SetupStep
 import app.k9mail.feature.account.setup.ui.AccountSetupContract.State
 import app.k9mail.feature.account.setup.ui.autodiscovery.FakeAccountAutoDiscoveryViewModel
+import app.k9mail.feature.account.setup.ui.createaccount.FakeCreateAccountViewModel
 import app.k9mail.feature.account.setup.ui.options.FakeAccountOptionsViewModel
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -35,6 +36,7 @@ class AccountSetupScreenKtTest : ComposeTest() {
                     outgoingViewModel = FakeOutgoingServerSettingsViewModel(),
                     outgoingValidationViewModel = FakeServerValidationViewModel(),
                     optionsViewModel = FakeAccountOptionsViewModel(),
+                    createAccountViewModel = FakeCreateAccountViewModel(),
                 )
             }
         }
@@ -64,6 +66,7 @@ class AccountSetupScreenKtTest : ComposeTest() {
                     outgoingViewModel = FakeOutgoingServerSettingsViewModel(),
                     outgoingValidationViewModel = FakeServerValidationViewModel(),
                     optionsViewModel = FakeAccountOptionsViewModel(),
+                    createAccountViewModel = FakeCreateAccountViewModel(),
                 )
             }
         }
@@ -89,5 +92,6 @@ class AccountSetupScreenKtTest : ComposeTest() {
         SetupStep.OUTGOING_CONFIG -> "OutgoingServerSettingsContent"
         SetupStep.OUTGOING_VALIDATION -> "AccountValidationContent"
         SetupStep.OPTIONS -> "AccountOptionsContent"
+        SetupStep.CREATE_ACCOUNT -> "CreateAccountContent"
     }
 }
