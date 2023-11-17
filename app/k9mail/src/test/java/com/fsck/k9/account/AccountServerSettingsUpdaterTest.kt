@@ -16,7 +16,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import com.fsck.k9.Account as K9Account
 
-class AccountUpdaterTest {
+class AccountServerSettingsUpdaterTest {
 
     @Test
     fun `updateServerSettings() SHOULD return account not found exception WHEN none present with uuid`() = runTest {
