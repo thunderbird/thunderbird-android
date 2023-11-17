@@ -15,10 +15,6 @@ class InMemoryAccountStore(
     private val accountMap: MutableMap<String, Account> = mutableMapOf(),
 ) : AccountCreator, AccountServerSettingsUpdater, AccountStateLoader {
 
-    suspend fun load(accountUuid: String): Account? {
-        return accountMap[accountUuid]
-    }
-
     override suspend fun loadAccountState(accountUuid: String): AccountState? {
         return accountMap[accountUuid]?.let { mapToAccountState(it) }
     }
@@ -33,6 +29,7 @@ class InMemoryAccountStore(
         accountUuid: String,
         isIncoming: Boolean,
         serverSettings: ServerSettings,
+        authorizationState: AuthorizationState?,
     ): AccountUpdaterResult {
         return if (!accountMap.containsKey(accountUuid)) {
             AccountUpdaterResult.Failure(AccountUpdaterFailure.AccountNotFound(accountUuid))
@@ -40,9 +37,15 @@ class InMemoryAccountStore(
             val account = accountMap[accountUuid]!!
 
             accountMap[account.uuid] = if (isIncoming) {
-                account.copy(incomingServerSettings = serverSettings)
+                account.copy(
+                    incomingServerSettings = serverSettings,
+                    authorizationState = authorizationState?.state,
+                )
             } else {
-                account.copy(outgoingServerSettings = serverSettings)
+                account.copy(
+                    outgoingServerSettings = serverSettings,
+                    authorizationState = authorizationState?.state,
+                )
             }
 
             AccountUpdaterResult.Success(account.uuid)
