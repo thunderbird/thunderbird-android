@@ -10,6 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.atom.Icon
 import app.k9mail.core.ui.compose.theme.Icons
@@ -35,7 +40,9 @@ fun <T> TextFieldOutlinedSelect(
     TextFieldDropDownWrapper(
         isReadOnlyOrDisabled = isReadOnly || !isEnabled,
         options = options,
-        optionToStringTransformation = optionToStringTransformation,
+        optionToAnnotatedStringTransformation = { option ->
+            transformOptionWithSelectionHighlight(option, optionToStringTransformation(option), selectedOption)
+        },
         onValueChange = onValueChange,
     ) { expanded ->
         MaterialOutlinedTextField(
@@ -57,6 +64,22 @@ fun <T> TextFieldOutlinedSelect(
     }
 }
 
+private fun <T> transformOptionWithSelectionHighlight(
+    option: T,
+    optionString: String,
+    selectedOption: T,
+): AnnotatedString {
+    return buildAnnotatedString {
+        if (option == selectedOption) {
+            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                append(optionString)
+            }
+        } else {
+            append(optionString)
+        }
+    }
+}
+
 private fun selectTrailingIcon(
     isExpanded: Boolean,
 ): @Composable () -> Unit {
@@ -71,7 +94,7 @@ private fun selectTrailingIcon(
 private fun <T> TextFieldDropDownWrapper(
     isReadOnlyOrDisabled: Boolean,
     options: ImmutableList<T>,
-    optionToStringTransformation: (T) -> String,
+    optionToAnnotatedStringTransformation: (T) -> AnnotatedString,
     onValueChange: (T) -> Unit,
     content: @Composable (expanded: Boolean) -> Unit,
 ) {
@@ -80,7 +103,7 @@ private fun <T> TextFieldDropDownWrapper(
     } else {
         DropDownMenu(
             options = options,
-            optionToStringTransformation = optionToStringTransformation,
+            optionToAnnotatedStringTransformation = optionToAnnotatedStringTransformation,
             onValueChange = onValueChange,
             content = content,
         )
@@ -92,7 +115,7 @@ private fun <T> TextFieldDropDownWrapper(
 private fun <T> DropDownMenu(
     options: ImmutableList<T>,
     onValueChange: (T) -> Unit,
-    optionToStringTransformation: (T) -> String,
+    optionToAnnotatedStringTransformation: (T) -> AnnotatedString,
     content: @Composable (expanded: Boolean) -> Unit,
 ) {
     var expanded = remember { mutableStateOf(false) }
@@ -118,7 +141,9 @@ private fun <T> DropDownMenu(
                         expanded.value = false
                     },
                 ) {
-                    Text(text = optionToStringTransformation(option))
+                    Text(
+                        text = optionToAnnotatedStringTransformation(option),
+                    )
                 }
             }
         }
