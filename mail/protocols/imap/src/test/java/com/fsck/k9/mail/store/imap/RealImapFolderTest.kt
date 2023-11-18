@@ -48,6 +48,8 @@ import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.stub
 import org.mockito.kotlin.whenever
 
 class RealImapFolderTest {
@@ -312,9 +314,12 @@ class RealImapFolderTest {
     }
 
     @Test
-    fun moveMessages_shouldDeleteMessagesFromSourceFolder() {
+    fun `moveMessages() should delete messages from source folder but not issue EXPUNGE command`() {
         val sourceFolder = createFolder("Folder")
         prepareImapFolderForOpen(OpenMode.READ_WRITE)
+        imapConnection.stub {
+            on { isUidPlusCapable } doReturn false
+        }
         val destinationFolder = createFolder("Destination")
         val messages = listOf(createImapMessage("1"))
         sourceFolder.open(OpenMode.READ_WRITE)
@@ -322,6 +327,24 @@ class RealImapFolderTest {
         sourceFolder.moveMessages(messages, destinationFolder)
 
         assertCommandWithIdsIssued("UID STORE 1 +FLAGS.SILENT (\\Deleted)")
+        verify(imapConnection, never()).executeSimpleCommand("EXPUNGE")
+    }
+
+    @Test
+    fun `moveMessages() should delete messages from source folder and issue UID EXPUNGE command when available`() {
+        val sourceFolder = createFolder("Folder")
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
+        imapConnection.stub {
+            on { isUidPlusCapable } doReturn true
+        }
+        val destinationFolder = createFolder("Destination")
+        val messages = listOf(createImapMessage("1"))
+        sourceFolder.open(OpenMode.READ_WRITE)
+
+        sourceFolder.moveMessages(messages, destinationFolder)
+
+        assertCommandWithIdsIssued("UID STORE 1 +FLAGS.SILENT (\\Deleted)")
+        assertCommandWithIdsIssued("UID EXPUNGE 1")
     }
 
     @Test

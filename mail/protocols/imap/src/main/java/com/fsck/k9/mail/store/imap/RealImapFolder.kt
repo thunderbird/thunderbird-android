@@ -320,8 +320,11 @@ internal class RealImapFolder(
             return null
         }
 
+        val uids = messages.map { it.uid }
+
         val uidMapping = copyMessages(messages, folder)
         setFlags(messages, setOf(Flag.DELETED), true)
+        expungeUidsOnly(uids)
 
         return uidMapping
     }
@@ -1080,8 +1083,15 @@ internal class RealImapFolder(
         }
     }
 
-    @Throws(MessagingException::class)
     override fun expungeUids(uids: List<String>) {
+        expungeUids(uids, fullExpungeFallback = true)
+    }
+
+    private fun expungeUidsOnly(uids: List<String>) {
+        expungeUids(uids, fullExpungeFallback = false)
+    }
+
+    private fun expungeUids(uids: List<String>, fullExpungeFallback: Boolean) {
         require(uids.isNotEmpty()) { "expungeUids() must be called with a non-empty set of UIDs" }
 
         open(OpenMode.READ_WRITE)
@@ -1091,8 +1101,10 @@ internal class RealImapFolder(
             if (connection!!.isUidPlusCapable) {
                 val longUids = uids.map { it.toLong() }.toSet()
                 connection!!.executeCommandWithIdSet(Commands.UID_EXPUNGE, "", longUids)
-            } else {
+            } else if (fullExpungeFallback) {
                 executeSimpleCommand("EXPUNGE")
+            } else {
+                Timber.v("Server doesn't support expunging individual messages: %s", uids)
             }
         } catch (ioe: IOException) {
             throw ioExceptionHandler(connection, ioe)

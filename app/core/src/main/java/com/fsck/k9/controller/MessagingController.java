@@ -893,11 +893,6 @@ public class MessagingController {
         }
 
         if (operation != MoveOrCopyFlavor.COPY) {
-            if (backend.getSupportsExpunge() && account.getExpungePolicy() == Expunge.EXPUNGE_IMMEDIATELY) {
-                Timber.i("processingPendingMoveOrCopy expunging folder %s:%s", account, srcFolderServerId);
-                backend.expungeMessages(srcFolderServerId, uids);
-            }
-
             destroyPlaceholderMessages(localSourceFolder, uids);
         }
 
