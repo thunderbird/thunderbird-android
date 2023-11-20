@@ -2,6 +2,7 @@ package app.k9mail.core.ui.compose.designsystem.molecule.input
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,6 +21,7 @@ fun TextInput(
     contentPadding: PaddingValues = inputContentPadding(),
     isSingleLine: Boolean = true,
     isEnabled: Boolean = true,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
     InputLayout(
         modifier = modifier,
@@ -35,6 +37,7 @@ fun TextInput(
             hasError = errorMessage != null,
             isSingleLine = isSingleLine,
             modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = keyboardOptions,
         )
     }
 }

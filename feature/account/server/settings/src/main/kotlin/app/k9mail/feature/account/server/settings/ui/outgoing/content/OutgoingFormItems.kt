@@ -4,6 +4,7 @@ import android.content.res.Resources
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.designsystem.molecule.input.NumberInput
@@ -42,6 +43,7 @@ internal fun LazyListScope.outgoingFormItems(
             label = stringResource(id = R.string.account_server_settings_server_label),
             isRequired = true,
             contentPadding = defaultItemPadding(),
+            keyboardOptions = KeyboardOptions(autoCorrect = false),
         )
     }
 
@@ -87,6 +89,7 @@ internal fun LazyListScope.outgoingFormItems(
                 label = stringResource(id = R.string.account_server_settings_username_label),
                 isRequired = true,
                 contentPadding = defaultItemPadding(),
+                keyboardOptions = KeyboardOptions(autoCorrect = false),
             )
         }
     }
