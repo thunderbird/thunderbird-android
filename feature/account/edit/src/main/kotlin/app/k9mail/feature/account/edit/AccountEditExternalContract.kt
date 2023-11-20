@@ -1,5 +1,6 @@
 package app.k9mail.feature.account.edit
 
+import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import com.fsck.k9.mail.ServerSettings
 
 interface AccountEditExternalContract {
@@ -19,6 +20,7 @@ interface AccountEditExternalContract {
             accountUuid: String,
             isIncoming: Boolean,
             serverSettings: ServerSettings,
+            authorizationState: AuthorizationState?,
         ): AccountUpdaterResult
     }
 }

@@ -1,6 +1,7 @@
 package com.fsck.k9.account
 
 import app.k9mail.core.common.mail.Protocols
+import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import app.k9mail.feature.account.edit.AccountEditExternalContract
 import app.k9mail.feature.account.edit.AccountEditExternalContract.AccountUpdaterFailure
 import app.k9mail.feature.account.edit.AccountEditExternalContract.AccountUpdaterResult
@@ -26,10 +27,11 @@ class AccountServerSettingsUpdater(
         accountUuid: String,
         isIncoming: Boolean,
         serverSettings: ServerSettings,
+        authorizationState: AuthorizationState?,
     ): AccountUpdaterResult {
         return try {
             withContext(coroutineDispatcher) {
-                updateSettings(accountUuid, isIncoming, serverSettings)
+                updateSettings(accountUuid, isIncoming, serverSettings, authorizationState)
             }
         } catch (error: Exception) {
             Timber.e(error, "Error while updating account server settings with UUID %s", accountUuid)
@@ -42,6 +44,7 @@ class AccountServerSettingsUpdater(
         accountUuid: String,
         isIncoming: Boolean,
         serverSettings: ServerSettings,
+        authorizationState: AuthorizationState?,
     ): AccountUpdaterResult {
         val account = accountManager.getAccount(accountUuid = accountUuid) ?: return AccountUpdaterResult.Failure(
             AccountUpdaterFailure.AccountNotFound(accountUuid),
@@ -63,6 +66,8 @@ class AccountServerSettingsUpdater(
         } else {
             account.outgoingServerSettings = serverSettings
         }
+
+        account.oAuthState = authorizationState?.state
 
         accountManager.saveAccount(account)
 

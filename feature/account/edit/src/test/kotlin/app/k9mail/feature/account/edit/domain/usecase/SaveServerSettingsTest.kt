@@ -23,12 +23,14 @@ class SaveServerSettingsTest {
         var recordedAccountUuid: String? = null
         var recordedIsIncoming: Boolean? = null
         var recordedServerSettings: ServerSettings? = null
+        var recordedAuthorizationState: AuthorizationState? = null
         val testSubject = SaveServerSettings(
             getAccountState = { _ -> ACCOUNT_STATE },
-            serverSettingsUpdater = { accountUuid, isIncoming, serverSettings ->
+            serverSettingsUpdater = { accountUuid, isIncoming, serverSettings, authorizationState ->
                 recordedAccountUuid = accountUuid
                 recordedIsIncoming = isIncoming
                 recordedServerSettings = serverSettings
+                recordedAuthorizationState = authorizationState
 
                 AccountUpdaterResult.Success(accountUuid)
             },
@@ -39,13 +41,14 @@ class SaveServerSettingsTest {
         assertThat(recordedAccountUuid).isEqualTo(ACCOUNT_UUID)
         assertThat(recordedIsIncoming).isEqualTo(true)
         assertThat(recordedServerSettings).isEqualTo(INCOMING_SERVER_SETTINGS)
+        assertThat(recordedAuthorizationState).isEqualTo(AUTHORIZATION_STATE)
     }
 
     @Test
     fun `should throw exception WHEN no incoming server settings present`() = runTest {
         val testSubject = SaveServerSettings(
             getAccountState = { _ -> ACCOUNT_STATE.copy(incomingServerSettings = null) },
-            serverSettingsUpdater = { accountUuid, _, _ ->
+            serverSettingsUpdater = { accountUuid, _, _, _ ->
                 AccountUpdaterResult.Success(accountUuid)
             },
         )
@@ -61,12 +64,14 @@ class SaveServerSettingsTest {
         var recordedAccountUuid: String? = null
         var recordedIsIncoming: Boolean? = null
         var recordedServerSettings: ServerSettings? = null
+        var recordedAuthorizationState: AuthorizationState? = null
         val testSubject = SaveServerSettings(
             getAccountState = { _ -> ACCOUNT_STATE },
-            serverSettingsUpdater = { accountUuid, isIncoming, serverSettings ->
+            serverSettingsUpdater = { accountUuid, isIncoming, serverSettings, authorizationState ->
                 recordedAccountUuid = accountUuid
                 recordedIsIncoming = isIncoming
                 recordedServerSettings = serverSettings
+                recordedAuthorizationState = authorizationState
 
                 AccountUpdaterResult.Success(accountUuid)
             },
@@ -77,13 +82,14 @@ class SaveServerSettingsTest {
         assertThat(recordedAccountUuid).isEqualTo(ACCOUNT_UUID)
         assertThat(recordedIsIncoming).isEqualTo(false)
         assertThat(recordedServerSettings).isEqualTo(OUTGOING_SERVER_SETTINGS)
+        assertThat(recordedAuthorizationState).isEqualTo(AUTHORIZATION_STATE)
     }
 
     @Test
     fun `should throw exception WHEN no outgoing server settings present`() = runTest {
         val testSubject = SaveServerSettings(
             getAccountState = { _ -> ACCOUNT_STATE.copy(outgoingServerSettings = null) },
-            serverSettingsUpdater = { accountUuid, _, _ ->
+            serverSettingsUpdater = { accountUuid, _, _, _ ->
                 AccountUpdaterResult.Success(accountUuid)
             },
         )
@@ -98,7 +104,7 @@ class SaveServerSettingsTest {
     fun `should throw exception WHEN update failed`() = runTest {
         val testSubject = SaveServerSettings(
             getAccountState = { _ -> ACCOUNT_STATE },
-            serverSettingsUpdater = { _, _, _ ->
+            serverSettingsUpdater = { _, _, _, _ ->
                 AccountUpdaterResult.Failure(
                     AccountUpdaterFailure.AccountNotFound(ACCOUNT_UUID),
                 )

@@ -1,5 +1,6 @@
 package com.fsck.k9.account
 
+import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import app.k9mail.feature.account.edit.AccountEditExternalContract.AccountUpdaterFailure
 import app.k9mail.feature.account.edit.AccountEditExternalContract.AccountUpdaterResult
 import assertk.all
@@ -15,7 +16,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import com.fsck.k9.Account as K9Account
 
-class AccountUpdaterTest {
+class AccountServerSettingsUpdaterTest {
 
     @Test
     fun `updateServerSettings() SHOULD return account not found exception WHEN none present with uuid`() = runTest {
@@ -26,6 +27,7 @@ class AccountUpdaterTest {
             accountUuid = ACCOUNT_UUID,
             isIncoming = true,
             serverSettings = INCOMING_SERVER_SETTINGS,
+            authorizationState = AUTHORIZATION_STATE,
         )
 
         assertThat(result).isEqualTo(AccountUpdaterResult.Failure(AccountUpdaterFailure.AccountNotFound(ACCOUNT_UUID)))
@@ -35,12 +37,14 @@ class AccountUpdaterTest {
     fun `updateServerSettings() SHOULD return success with updated incoming settings WHEN is incoming`() = runTest {
         val accountManager = FakeAccountManager(accounts = mutableMapOf(ACCOUNT_UUID to createAccount(ACCOUNT_UUID)))
         val updatedIncomingServerSettings = INCOMING_SERVER_SETTINGS.copy(port = 123)
+        val updatedAuthorizationState = AuthorizationState("new")
         val testSubject = AccountServerSettingsUpdater(accountManager)
 
         val result = testSubject.updateServerSettings(
             accountUuid = ACCOUNT_UUID,
             isIncoming = true,
             serverSettings = updatedIncomingServerSettings,
+            authorizationState = updatedAuthorizationState,
         )
 
         assertThat(result).isEqualTo(AccountUpdaterResult.Success(ACCOUNT_UUID))
@@ -49,6 +53,7 @@ class AccountUpdaterTest {
         assertThat(k9Account).isNotNull().all {
             prop(K9Account::incomingServerSettings).isEqualTo(updatedIncomingServerSettings)
             prop(K9Account::outgoingServerSettings).isEqualTo(OUTGOING_SERVER_SETTINGS)
+            prop(K9Account::oAuthState).isEqualTo(updatedAuthorizationState.state)
         }
     }
 
@@ -56,12 +61,14 @@ class AccountUpdaterTest {
     fun `updateServerSettings() SHOULD return success with updated outgoing settings WHEN is not incoming`() = runTest {
         val accountManager = FakeAccountManager(accounts = mutableMapOf(ACCOUNT_UUID to createAccount(ACCOUNT_UUID)))
         val updatedOutgoingServerSettings = OUTGOING_SERVER_SETTINGS.copy(port = 123)
+        val updatedAuthorizationState = AuthorizationState("new")
         val testSubject = AccountServerSettingsUpdater(accountManager)
 
         val result = testSubject.updateServerSettings(
             accountUuid = ACCOUNT_UUID,
             isIncoming = false,
             serverSettings = updatedOutgoingServerSettings,
+            authorizationState = updatedAuthorizationState,
         )
 
         assertThat(result).isEqualTo(AccountUpdaterResult.Success(ACCOUNT_UUID))
@@ -70,6 +77,7 @@ class AccountUpdaterTest {
         assertThat(k9Account).isNotNull().all {
             prop(K9Account::incomingServerSettings).isEqualTo(INCOMING_SERVER_SETTINGS)
             prop(K9Account::outgoingServerSettings).isEqualTo(updatedOutgoingServerSettings)
+            prop(K9Account::oAuthState).isEqualTo(updatedAuthorizationState.state)
         }
     }
 
@@ -85,6 +93,7 @@ class AccountUpdaterTest {
             accountUuid = ACCOUNT_UUID,
             isIncoming = true,
             serverSettings = INCOMING_SERVER_SETTINGS,
+            authorizationState = AUTHORIZATION_STATE,
         )
 
         assertThat(result).isInstanceOf<AccountUpdaterResult.Failure>()
@@ -119,12 +128,15 @@ class AccountUpdaterTest {
             extra = emptyMap(),
         )
 
+        val AUTHORIZATION_STATE = AuthorizationState("auth state")
+
         fun createAccount(accountUuid: String): K9Account {
             return K9Account(
                 uuid = accountUuid,
             ).apply {
                 incomingServerSettings = INCOMING_SERVER_SETTINGS
                 outgoingServerSettings = OUTGOING_SERVER_SETTINGS
+                oAuthState = AUTHORIZATION_STATE.state
             }
         }
     }
