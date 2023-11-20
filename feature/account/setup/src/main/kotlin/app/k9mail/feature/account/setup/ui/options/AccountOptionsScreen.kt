@@ -48,7 +48,6 @@ internal fun AccountOptionsScreen(
         },
         bottomBar = {
             WizardNavigationBar(
-                nextButtonText = stringResource(id = string.account_setup_button_finish),
                 onNextClick = { dispatch(Event.OnNextClicked) },
                 onBackClick = { dispatch(Event.OnBackClicked) },
             )
