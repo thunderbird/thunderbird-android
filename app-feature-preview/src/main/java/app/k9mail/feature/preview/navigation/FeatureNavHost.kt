@@ -24,11 +24,9 @@ fun FeatureNavHost(
     ) {
         onboardingRoute(
             onImport = { /* TODO */ },
-            onBack = navController::popBackStack,
-            onFinish = { accountUuid ->
-                navController.navigateToAccountEditIncomingServerSettings(accountUuid)
-            },
-        )
+        ) { accountUuid ->
+            navController.navigateToAccountEditIncomingServerSettings(accountUuid)
+        }
         accountSetupRoute(
             onBack = navController::popBackStack,
             onFinish = { accountUuid ->

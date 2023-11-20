@@ -30,7 +30,6 @@ private fun NavController.navigateToPermissions() {
 @Composable
 fun OnboardingNavHost(
     onImport: () -> Unit,
-    onBack: () -> Unit,
     onFinish: (String) -> Unit,
     hasRuntimePermissions: HasRuntimePermissions = koinInject(),
 ) {
@@ -50,7 +49,7 @@ fun OnboardingNavHost(
 
         composable(route = NESTED_NAVIGATION_ROUTE_ACCOUNT_SETUP) {
             AccountSetupNavHost(
-                onBack = onBack,
+                onBack = { navController.popBackStack() },
                 onFinish = { createdAccountUuid: String ->
                     accountUuid = createdAccountUuid
                     if (hasRuntimePermissions()) {
