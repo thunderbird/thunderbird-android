@@ -5,10 +5,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import app.k9mail.feature.account.edit.ui.server.settings.modify.ModifyOutgoingServerSettingsViewModel
 import app.k9mail.feature.account.edit.ui.server.settings.save.SaveOutgoingServerSettingsViewModel
 import app.k9mail.feature.account.edit.ui.server.settings.save.SaveServerSettingsScreen
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsScreen
-import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsViewModel
 import app.k9mail.feature.account.server.validation.ui.OutgoingServerValidationViewModel
 import app.k9mail.feature.account.server.validation.ui.ServerValidationScreen
 import org.koin.androidx.compose.koinViewModel
@@ -42,7 +42,7 @@ fun EditOutgoingServerSettingsNavHost(
             OutgoingServerSettingsScreen(
                 onBack = onBack,
                 onNext = { navController.navigateToValidate() },
-                viewModel = koinViewModel<OutgoingServerSettingsViewModel> {
+                viewModel = koinViewModel<ModifyOutgoingServerSettingsViewModel> {
                     parametersOf(accountUuid)
                 },
             )
