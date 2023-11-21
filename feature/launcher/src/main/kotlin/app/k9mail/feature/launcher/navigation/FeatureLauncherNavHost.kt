@@ -30,9 +30,7 @@ fun FeatureLauncherNavHost(
     ) {
         onboardingRoute(
             onImport = { importSettingsLauncher.launch() },
-            onBack = onBack,
-            onFinish = { accountUuid -> accountSetupFinishedLauncher.launch(accountUuid) },
-        )
+        ) { accountUuid -> accountSetupFinishedLauncher.launch(accountUuid) }
         accountSetupRoute(
             onBack = onBack,
             onFinish = { accountSetupFinishedLauncher.launch(it) },

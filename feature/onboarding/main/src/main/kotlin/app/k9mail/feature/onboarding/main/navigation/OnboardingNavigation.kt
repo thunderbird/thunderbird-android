@@ -15,13 +15,11 @@ fun NavController.navigateToOnboarding(
 
 fun NavGraphBuilder.onboardingRoute(
     onImport: () -> Unit,
-    onBack: () -> Unit,
     onFinish: (String) -> Unit,
 ) {
     deepLinkComposable(route = NAVIGATION_ROUTE_ONBOARDING) {
         OnboardingNavHost(
             onImport = onImport,
-            onBack = onBack,
             onFinish = onFinish,
         )
     }
