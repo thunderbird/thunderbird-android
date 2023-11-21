@@ -320,6 +320,36 @@ internal class RealImapFolder(
             return null
         }
 
+        checkOpen()
+
+        return if (connection.hasCapability(Capabilities.MOVE)) {
+            moveMessagesUsingMoveExtension(messages, folder)
+        } else {
+            moveMessagesUsingCopyAndDelete(messages, folder)
+        }
+    }
+
+    private fun moveMessagesUsingMoveExtension(messages: List<ImapMessage>, folder: ImapFolder): Map<String, String>? {
+        require(folder is RealImapFolder) { "'folder' needs to be a RealImapFolder instance" }
+
+        val uids = messages.map { it.uid.toLong() }.toSet()
+        val encodedDestinationFolderName = folderNameCodec.encode(folder.prefixedName)
+        val escapedDestinationFolderName = ImapUtility.encodeString(encodedDestinationFolderName)
+
+        return try {
+            val imapResponses = connection!!.executeCommandWithIdSet(
+                Commands.UID_MOVE,
+                escapedDestinationFolderName,
+                uids,
+            )
+
+            UidCopyResponse.parse(imapResponses)?.uidMapping
+        } catch (ioe: IOException) {
+            throw ioExceptionHandler(connection, ioe)
+        }
+    }
+
+    private fun moveMessagesUsingCopyAndDelete(messages: List<ImapMessage>, folder: ImapFolder): Map<String, String>? {
         val uids = messages.map { it.uid }
 
         val uidMapping = copyMessages(messages, folder)
@@ -1233,6 +1263,10 @@ internal class RealImapFolder(
             }
         }
     }
+}
+
+private fun ImapConnection?.hasCapability(capability: String): Boolean {
+    return this?.hasCapability(capability) == true
 }
 
 enum class OpenMode {
