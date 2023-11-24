@@ -76,10 +76,12 @@ allprojects {
 }
 
 tasks.register("testsOnCi") {
+    val skipTests = setOf("testReleaseUnitTest")
+
     dependsOn(
         subprojects.map { project -> project.tasks.withType(Test::class.java) }
             .flatten()
-            .filterNot { task -> task.name in arrayOf("testDebugUnitTest", "test") },
+            .filterNot { task -> task.name in skipTests },
     )
 }
 
