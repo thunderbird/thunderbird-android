@@ -16,6 +16,7 @@ interface AccountAutoDiscoveryContract {
         EMAIL_ADDRESS,
         OAUTH,
         PASSWORD,
+        MANUAL_SETUP,
     }
 
     interface ViewModel : UnidirectionalViewModel<State, Event, Effect> {

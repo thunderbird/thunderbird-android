@@ -92,6 +92,7 @@ internal class AccountAutoDiscoveryViewModel(
 
             ConfigStep.PASSWORD -> submitPassword()
             ConfigStep.OAUTH -> Unit
+            ConfigStep.MANUAL_SETUP -> navigateNext(isAutomaticConfig = false)
         }
     }
 
@@ -142,7 +143,7 @@ internal class AccountAutoDiscoveryViewModel(
             it.copy(
                 isLoading = false,
                 autoDiscoverySettings = null,
-                configStep = ConfigStep.PASSWORD,
+                configStep = ConfigStep.MANUAL_SETUP,
             )
         }
     }
@@ -223,6 +224,7 @@ internal class AccountAutoDiscoveryViewModel(
 
             ConfigStep.OAUTH,
             ConfigStep.PASSWORD,
+            ConfigStep.MANUAL_SETUP,
             -> updateState {
                 it.copy(
                     configStep = ConfigStep.EMAIL_ADDRESS,
