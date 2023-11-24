@@ -13,11 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import app.k9mail.core.ui.compose.common.PreviewDevices
+import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.account.common.domain.entity.InteractionMode
+import app.k9mail.feature.account.common.ui.loadingerror.rememberContentLoadingErrorViewState
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.Event
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.State
 import app.k9mail.feature.account.server.settings.ui.incoming.content.incomingFormItems
@@ -39,19 +41,25 @@ internal fun IncomingServerSettingsContent(
             .fillMaxWidth()
             .then(modifier),
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .imePadding(),
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+        ContentLoadingErrorView(
+            state = rememberContentLoadingErrorViewState(state = state),
+            loading = { /* no-op */ },
+            error = { /* no-op */ },
         ) {
-            incomingFormItems(
-                mode = mode,
-                state = state,
-                onEvent = onEvent,
-                resources = resources,
-            )
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .imePadding(),
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+            ) {
+                incomingFormItems(
+                    mode = mode,
+                    state = state,
+                    onEvent = onEvent,
+                    resources = resources,
+                )
+            }
         }
     }
 }

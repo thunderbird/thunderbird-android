@@ -32,6 +32,9 @@ private fun ServerSettings.toOutgoingServerSettingsState(password: String): Stat
         authenticationType = authenticationType.toAuthenticationType(),
         username = StringInputField(value = username),
         password = StringInputField(value = password),
+
+        isLoading = false,
+        error = null,
     )
 }
 

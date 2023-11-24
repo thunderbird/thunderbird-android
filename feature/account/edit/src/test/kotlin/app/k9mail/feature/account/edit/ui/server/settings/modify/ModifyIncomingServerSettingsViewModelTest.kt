@@ -81,6 +81,8 @@ class ModifyIncomingServerSettingsViewModelTest {
                     imapPrefix = StringInputField(value = ""),
                     imapUseCompression = true,
                     imapSendClientId = true,
+
+                    isLoading = false,
                 ),
             )
         }

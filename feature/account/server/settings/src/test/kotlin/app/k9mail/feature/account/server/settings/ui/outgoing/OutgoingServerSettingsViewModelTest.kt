@@ -73,6 +73,8 @@ class OutgoingServerSettingsViewModelTest {
                     authenticationType = AuthenticationType.PasswordCleartext,
                     username = StringInputField(value = "username"),
                     password = StringInputField(value = "password"),
+
+                    isLoading = false,
                 ),
             )
         }

@@ -37,7 +37,7 @@ class IncomingServerSettingsStateMapperKtTest {
 
         val result = serverSettings.toIncomingServerSettingsState()
 
-        assertThat(result).isEqualTo(INCOMING_IMAP_STATE)
+        assertThat(result).isEqualTo(INCOMING_IMAP_STATE.copy(isLoading = false))
     }
 
     @Test

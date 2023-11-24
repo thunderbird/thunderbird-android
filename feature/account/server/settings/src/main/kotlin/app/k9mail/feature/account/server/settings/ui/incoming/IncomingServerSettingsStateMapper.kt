@@ -33,6 +33,9 @@ private fun ServerSettings.toIncomingServerSettingsState(): State {
         imapPrefix = StringInputField(value = pathPrefix ?: ""),
         imapUseCompression = isUseCompression,
         imapSendClientId = isSendClientId,
+
+        isLoading = false,
+        error = null,
     )
 }
 
