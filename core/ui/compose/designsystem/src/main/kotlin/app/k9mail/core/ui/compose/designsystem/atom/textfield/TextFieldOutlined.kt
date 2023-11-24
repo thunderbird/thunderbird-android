@@ -1,5 +1,6 @@
 package app.k9mail.core.ui.compose.designsystem.atom.textfield
 
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,6 +22,7 @@ fun TextFieldOutlined(
     isRequired: Boolean = false,
     hasError: Boolean = false,
     isSingleLine: Boolean = true,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
     MaterialOutlinedTextField(
         value = value,
@@ -32,6 +34,7 @@ fun TextFieldOutlined(
         readOnly = isReadOnly,
         isError = hasError,
         singleLine = isSingleLine,
+        keyboardOptions = keyboardOptions,
     )
 }
 
@@ -52,8 +55,8 @@ internal fun TextFieldOutlinedWithLabelPreview() {
     PreviewWithThemes {
         TextFieldOutlined(
             value = "Input text",
-            label = "Label",
             onValueChange = {},
+            label = "Label",
         )
     }
 }
