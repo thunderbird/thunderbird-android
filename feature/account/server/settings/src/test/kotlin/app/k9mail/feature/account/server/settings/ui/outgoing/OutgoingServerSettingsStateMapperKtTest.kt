@@ -28,6 +28,24 @@ class OutgoingServerSettingsStateMapperKtTest {
     }
 
     @Test
+    fun `should map to state with password from incomingServerSettings when outgoingServerSettings is null`() {
+        val accountState = AccountState(
+            emailAddress = "test@domain.example",
+            incomingServerSettings = IMAP_SERVER_SETTINGS,
+            outgoingServerSettings = null,
+        )
+
+        val result = accountState.toOutgoingServerSettingsState()
+
+        assertThat(result).isEqualTo(
+            State(
+                username = StringInputField(value = "test@domain.example"),
+                password = StringInputField(value = INCOMING_SERVER_PASSWORD),
+            ),
+        )
+    }
+
+    @Test
     fun `should map from SMTP server settings to state`() {
         val accountState = AccountState(
             outgoingServerSettings = SMTP_SERVER_SETTINGS,
@@ -36,6 +54,37 @@ class OutgoingServerSettingsStateMapperKtTest {
         val result = accountState.toOutgoingServerSettingsState()
 
         assertThat(result).isEqualTo(OUTGOING_STATE)
+    }
+
+    @Test
+    fun `should use password from incomingServerSettings when outgoingServerSettings contains no password`() {
+        val accountState = AccountState(
+            incomingServerSettings = IMAP_SERVER_SETTINGS,
+            outgoingServerSettings = SMTP_SERVER_SETTINGS.copy(password = null),
+        )
+
+        val result = accountState.toOutgoingServerSettingsState()
+
+        assertThat(result).isEqualTo(
+            OUTGOING_STATE.copy(
+                password = StringInputField(value = INCOMING_SERVER_PASSWORD),
+            ),
+        )
+    }
+
+    @Test
+    fun `should use empty password if neither incomingServerSettings nor outgoingServerSettings contain passwords`() {
+        val accountState = AccountState(
+            outgoingServerSettings = SMTP_SERVER_SETTINGS.copy(password = null),
+        )
+
+        val result = accountState.toOutgoingServerSettingsState()
+
+        assertThat(result).isEqualTo(
+            OUTGOING_STATE.copy(
+                password = StringInputField(value = ""),
+            ),
+        )
     }
 
     @Test
@@ -66,6 +115,18 @@ class OutgoingServerSettingsStateMapperKtTest {
             authenticationType = AuthType.PLAIN,
             username = "user",
             password = "password",
+            clientCertificateAlias = null,
+        )
+
+        private const val INCOMING_SERVER_PASSWORD = "incoming-password"
+        private val IMAP_SERVER_SETTINGS = ServerSettings(
+            type = "imap",
+            host = "imap.domain.example",
+            port = 993,
+            connectionSecurity = MailConnectionSecurity.SSL_TLS_REQUIRED,
+            authenticationType = AuthType.PLAIN,
+            username = "user",
+            password = INCOMING_SERVER_PASSWORD,
             clientCertificateAlias = null,
         )
     }
