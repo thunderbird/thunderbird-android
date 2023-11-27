@@ -19,7 +19,7 @@ import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.CertificateValidationException
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.K9MailLib
-import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.mail.MissingCapabilityException
 import com.fsck.k9.mail.SystemOutLogger
 import com.fsck.k9.mail.XOAuth2ChallengeParserTest
 import com.fsck.k9.mail.helpers.TestTrustedSocketFactory
@@ -143,8 +143,8 @@ class RealImapConnectionTest {
 
         assertFailure {
             imapConnection.open()
-        }.isInstanceOf<MessagingException>()
-            .hasMessage("Server doesn't support unencrypted passwords using AUTH=PLAIN and LOGIN is disabled.")
+        }.isInstanceOf<MissingCapabilityException>()
+            .prop(MissingCapabilityException::capabilityName).isEqualTo("AUTH=PLAIN")
 
         server.verifyConnectionClosed()
         server.verifyInteractionCompleted()
@@ -302,8 +302,8 @@ class RealImapConnectionTest {
 
         assertFailure {
             imapConnection.open()
-        }.isInstanceOf<MessagingException>()
-            .hasMessage("Server doesn't support encrypted passwords using CRAM-MD5.")
+        }.isInstanceOf<MissingCapabilityException>()
+            .prop(MissingCapabilityException::capabilityName).isEqualTo("AUTH=CRAM-MD5")
 
         server.verifyConnectionClosed()
         server.verifyInteractionCompleted()
@@ -372,6 +372,38 @@ class RealImapConnectionTest {
 
         assertThat(imapConnection.hasCapability("X-GM-EXT-1")).isTrue()
         server.verifyConnectionStillOpen()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `open() AUTH OAUTHBEARER with SASL-IR capability missing`() {
+        val server = MockImapServer().apply {
+            preAuthenticationDialog(capabilities = "AUTH=OAUTHBEARER")
+        }
+        val imapConnection = startServerAndCreateImapConnection(server, authType = AuthType.XOAUTH2)
+
+        assertFailure {
+            imapConnection.open()
+        }.isInstanceOf<MissingCapabilityException>()
+            .prop(MissingCapabilityException::capabilityName).isEqualTo("SASL-IR")
+
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `open() AUTH OAUTHBEARER with AUTH=OAUTHBEARER capability missing`() {
+        val server = MockImapServer().apply {
+            preAuthenticationDialog(capabilities = "SASL-IR")
+        }
+        val imapConnection = startServerAndCreateImapConnection(server, authType = AuthType.XOAUTH2)
+
+        assertFailure {
+            imapConnection.open()
+        }.isInstanceOf<MissingCapabilityException>()
+            .prop(MissingCapabilityException::capabilityName).isEqualTo("AUTH=OAUTHBEARER")
+
+        server.verifyConnectionClosed()
         server.verifyInteractionCompleted()
     }
 
@@ -539,9 +571,8 @@ class RealImapConnectionTest {
 
         assertFailure {
             imapConnection.open()
-        }.isInstanceOf<CertificateValidationException>()
-            .prop(CertificateValidationException::getReason)
-            .isEqualTo(CertificateValidationException.Reason.MissingCapability)
+        }.isInstanceOf<MissingCapabilityException>()
+            .prop(MissingCapabilityException::capabilityName).isEqualTo("AUTH=EXTERNAL")
 
         server.verifyConnectionClosed()
         server.verifyInteractionCompleted()
@@ -686,11 +717,10 @@ class RealImapConnectionTest {
             connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED,
         )
 
-        // FIXME: CertificateValidationException seems wrong
         assertFailure {
             imapConnection.open()
-        }.isInstanceOf<CertificateValidationException>()
-            .hasMessage("STARTTLS connection security not available")
+        }.isInstanceOf<MissingCapabilityException>()
+            .prop(MissingCapabilityException::capabilityName).isEqualTo("STARTTLS")
 
         server.verifyConnectionClosed()
         server.verifyInteractionCompleted()

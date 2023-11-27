@@ -8,6 +8,7 @@ import com.fsck.k9.mail.CertificateValidationException
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.mail.MissingCapabilityException
 import com.fsck.k9.mail.NetworkTimeouts.SOCKET_CONNECT_TIMEOUT
 import com.fsck.k9.mail.NetworkTimeouts.SOCKET_READ_TIMEOUT
 import com.fsck.k9.mail.filter.Base64
@@ -260,14 +261,7 @@ internal class RealImapConnection(
 
     private fun upgradeToTls() {
         if (!hasCapability(Capabilities.STARTTLS)) {
-            /*
-             * This exception triggers a "Certificate error"
-             * notification that takes the user to the incoming
-             * server settings for review. This might be needed if
-             * the account was configured with an obsolete
-             * "STARTTLS (if available)" setting.
-             */
-            throw CertificateValidationException("STARTTLS connection security not available")
+            throw MissingCapabilityException(Capabilities.STARTTLS)
         }
 
         startTls()
@@ -298,20 +292,20 @@ internal class RealImapConnection(
                 if (oauthTokenProvider == null) {
                     throw MessagingException("No OAuthToken Provider available.")
                 } else if (!hasCapability(Capabilities.SASL_IR)) {
-                    throw MessagingException("SASL-IR capability is missing.")
+                    throw MissingCapabilityException(Capabilities.SASL_IR)
                 } else if (hasCapability(Capabilities.AUTH_OAUTHBEARER)) {
                     authWithOAuthToken(OAuthMethod.OAUTHBEARER)
                 } else if (hasCapability(Capabilities.AUTH_XOAUTH2)) {
                     authWithOAuthToken(OAuthMethod.XOAUTH2)
                 } else {
-                    throw MessagingException("Server doesn't support SASL OAUTHBEARER or XOAUTH2.")
+                    throw MissingCapabilityException(Capabilities.AUTH_OAUTHBEARER)
                 }
             }
             AuthType.CRAM_MD5 -> {
                 if (hasCapability(Capabilities.AUTH_CRAM_MD5)) {
                     authCramMD5()
                 } else {
-                    throw MessagingException("Server doesn't support encrypted passwords using CRAM-MD5.")
+                    throw MissingCapabilityException(Capabilities.AUTH_CRAM_MD5)
                 }
             }
             AuthType.PLAIN -> {
@@ -320,17 +314,14 @@ internal class RealImapConnection(
                 } else if (!hasCapability(Capabilities.LOGINDISABLED)) {
                     login()
                 } else {
-                    throw MessagingException(
-                        "Server doesn't support unencrypted passwords using AUTH=PLAIN and LOGIN is disabled.",
-                    )
+                    throw MissingCapabilityException(Capabilities.AUTH_PLAIN)
                 }
             }
             AuthType.EXTERNAL -> {
                 if (hasCapability(Capabilities.AUTH_EXTERNAL)) {
                     saslAuthExternal()
                 } else {
-                    // Provide notification to user of a problem authenticating using client certificates
-                    throw CertificateValidationException(CertificateValidationException.Reason.MissingCapability)
+                    throw MissingCapabilityException(Capabilities.AUTH_EXTERNAL)
                 }
             }
             else -> {

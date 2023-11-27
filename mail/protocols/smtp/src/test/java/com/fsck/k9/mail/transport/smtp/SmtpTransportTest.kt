@@ -10,10 +10,10 @@ import assertk.assertions.isTrue
 import assertk.assertions.prop
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.AuthenticationFailedException
-import com.fsck.k9.mail.CertificateValidationException
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.mail.MissingCapabilityException
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.XOAuth2ChallengeParserTest
 import com.fsck.k9.mail.filter.Base64
@@ -124,8 +124,8 @@ class SmtpTransportTest {
 
         assertFailure {
             transport.open()
-        }.isInstanceOf<MessagingException>()
-            .hasMessage("Authentication methods SASL PLAIN and LOGIN are unavailable.")
+        }.isInstanceOf<MissingCapabilityException>()
+            .prop(MissingCapabilityException::capabilityName).isEqualTo("AUTH PLAIN")
 
         server.verifyConnectionClosed()
         server.verifyInteractionCompleted()
@@ -165,8 +165,8 @@ class SmtpTransportTest {
 
         assertFailure {
             transport.open()
-        }.isInstanceOf<MessagingException>()
-            .hasMessage("Authentication method CRAM-MD5 is unavailable.")
+        }.isInstanceOf<MissingCapabilityException>()
+            .prop(MissingCapabilityException::capabilityName).isEqualTo("AUTH CRAM-MD5")
 
         server.verifyConnectionClosed()
         server.verifyInteractionCompleted()
@@ -405,7 +405,7 @@ class SmtpTransportTest {
     }
 
     @Test
-    fun `open() without XOAUTH2 extension should throw`() {
+    fun `open() without OAUTHBEARER extension should throw`() {
         val server = MockSmtpServer().apply {
             output("220 localhost Simple Mail Transfer Service Ready")
             expect("EHLO [127.0.0.1]")
@@ -418,8 +418,8 @@ class SmtpTransportTest {
 
         assertFailure {
             transport.open()
-        }.isInstanceOf<MessagingException>()
-            .hasMessage("Server doesn't support SASL OAUTHBEARER or XOAUTH2.")
+        }.isInstanceOf<MissingCapabilityException>()
+            .prop(MissingCapabilityException::capabilityName).isEqualTo("AUTH OAUTHBEARER")
 
         server.verifyConnectionClosed()
         server.verifyInteractionCompleted()
@@ -457,9 +457,8 @@ class SmtpTransportTest {
 
         assertFailure {
             transport.open()
-        }.isInstanceOf<CertificateValidationException>()
-            .prop(CertificateValidationException::getReason)
-            .isEqualTo(CertificateValidationException.Reason.MissingCapability)
+        }.isInstanceOf<MissingCapabilityException>()
+            .prop(MissingCapabilityException::capabilityName).isEqualTo("AUTH EXTERNAL")
 
         server.verifyConnectionClosed()
         server.verifyInteractionCompleted()
@@ -613,6 +612,31 @@ class SmtpTransportTest {
         transport.open()
 
         server.verifyConnectionStillOpen()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `open() with STARTTLS but without STARTTLS capability should throw`() {
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello 127.0.0.1")
+            output("250 HELP")
+            expect("QUIT")
+            closeConnection()
+        }
+        val transport = startServerAndCreateSmtpTransport(
+            server,
+            authenticationType = AuthType.PLAIN,
+            connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED,
+        )
+
+        assertFailure {
+            transport.open()
+        }.isInstanceOf<MissingCapabilityException>()
+            .prop(MissingCapabilityException::capabilityName).isEqualTo("STARTTLS")
+
+        server.verifyConnectionClosed()
         server.verifyInteractionCompleted()
     }
 

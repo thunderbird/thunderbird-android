@@ -11,6 +11,7 @@ import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Message.RecipientType
 import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.mail.MissingCapabilityException
 import com.fsck.k9.mail.NetworkTimeouts.SOCKET_CONNECT_TIMEOUT
 import com.fsck.k9.mail.NetworkTimeouts.SOCKET_READ_TIMEOUT
 import com.fsck.k9.mail.ServerSettings
@@ -125,10 +126,7 @@ class SmtpTransport(
                     extensions = sendHello(helloName)
                     secureConnection = true
                 } else {
-                    // This exception triggers a "Certificate error" notification that takes the user to the incoming
-                    // server settings for review. This might be needed if the account was configured with an obsolete
-                    // "STARTTLS (if available)" setting.
-                    throw CertificateValidationException("STARTTLS connection security not available")
+                    throw MissingCapabilityException("STARTTLS")
                 }
             }
 
@@ -161,14 +159,14 @@ class SmtpTransport(
                         } else if (authLoginSupported) {
                             saslAuthLogin()
                         } else {
-                            throw MessagingException("Authentication methods SASL PLAIN and LOGIN are unavailable.")
+                            throw MissingCapabilityException("AUTH PLAIN")
                         }
                     }
                     AuthType.CRAM_MD5 -> {
                         if (authCramMD5Supported) {
                             saslAuthCramMD5()
                         } else {
-                            throw MessagingException("Authentication method CRAM-MD5 is unavailable.")
+                            throw MissingCapabilityException("AUTH CRAM-MD5")
                         }
                     }
                     AuthType.XOAUTH2 -> {
@@ -179,20 +177,14 @@ class SmtpTransport(
                         } else if (authXoauth2Supported) {
                             saslOAuth(OAuthMethod.XOAUTH2)
                         } else {
-                            throw MessagingException("Server doesn't support SASL OAUTHBEARER or XOAUTH2.")
+                            throw MissingCapabilityException("AUTH OAUTHBEARER")
                         }
                     }
                     AuthType.EXTERNAL -> {
                         if (authExternalSupported) {
                             saslAuthExternal()
                         } else {
-                            // Some SMTP servers are known to provide no error indication when a client certificate
-                            // fails to validate, other than to not offer the AUTH EXTERNAL capability.
-                            // So, we treat it is an error to not offer AUTH EXTERNAL when using client certificates.
-                            // That way, the user can be notified of a problem during account setup.
-                            throw CertificateValidationException(
-                                CertificateValidationException.Reason.MissingCapability,
-                            )
+                            throw MissingCapabilityException("AUTH EXTERNAL")
                         }
                     }
                     AuthType.AUTOMATIC -> {
@@ -205,7 +197,7 @@ class SmtpTransport(
                             } else if (authCramMD5Supported) {
                                 saslAuthCramMD5()
                             } else {
-                                throw MessagingException("No supported authentication methods available.")
+                                throw MissingCapabilityException("AUTH PLAIN")
                             }
                         } else {
                             if (authCramMD5Supported) {
