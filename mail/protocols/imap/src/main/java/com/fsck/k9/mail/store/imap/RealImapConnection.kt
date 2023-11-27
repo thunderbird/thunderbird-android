@@ -521,14 +521,7 @@ internal class RealImapConnection(
             val command = Commands.AUTHENTICATE_EXTERNAL + " " + Base64.encode(settings.username)
             executeSimpleCommand(command, false)
         } catch (e: NegativeImapResponseException) {
-            /*
-             * Provide notification to the user of a problem authenticating
-             * using client certificates. We don't use an
-             * AuthenticationFailedException because that would trigger a
-             * "Username or password incorrect" notification in
-             * AccountSetupCheckSettings.
-             */
-            throw CertificateValidationException(e.message)
+            throw handleAuthenticationFailure(e)
         }
     }
 

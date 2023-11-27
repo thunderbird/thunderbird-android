@@ -1,7 +1,6 @@
 package com.fsck.k9.mail.store.pop3
 
 import assertk.assertFailure
-import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
@@ -319,8 +318,7 @@ class Pop3ConnectionTest {
 
         assertFailure {
             createAndOpenPop3Connection(settings)
-        }.isInstanceOf<CertificateValidationException>()
-            .hasMessage("POP3 client certificate authentication failed: -ERR Invalid certificate")
+        }.isInstanceOf<AuthenticationFailedException>()
 
         server.verifyInteractionCompleted()
     }

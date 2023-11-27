@@ -520,11 +520,11 @@ class RealImapConnectionTest {
         }
         val imapConnection = startServerAndCreateImapConnection(server, authType = AuthType.EXTERNAL)
 
-        // FIXME: improve exception message
         assertFailure {
             imapConnection.open()
-        }.isInstanceOf<CertificateValidationException>()
-            .message().isNotNull().contains("Bad certificate")
+        }.isInstanceOf<AuthenticationFailedException>()
+            .prop(AuthenticationFailedException::messageFromServer)
+            .isEqualTo("Bad certificate")
 
         server.verifyConnectionClosed()
         server.verifyInteractionCompleted()
