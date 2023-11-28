@@ -312,15 +312,7 @@ class Pop3Connection {
                     String.format("AUTH EXTERNAL %s",
                             Base64.encode(settings.getUsername())), false);
         } catch (Pop3ErrorResponse e) {
-            /*
-             * Provide notification to the user of a problem authenticating
-             * using client certificates. We don't use an
-             * AuthenticationFailedException because that would trigger a
-             * "Username or password incorrect" notification in
-             * AccountSetupCheckSettings.
-             */
-            throw new CertificateValidationException(
-                    "POP3 client certificate authentication failed: " + e.getMessage(), e);
+            throw new AuthenticationFailedException("AUTH EXTERNAL failed", e, e.getResponseText());
         }
     }
 
