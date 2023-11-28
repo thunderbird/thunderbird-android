@@ -994,9 +994,6 @@
     <string name="ac_transfer_error_send">هنگام ارسال پیام خطایی رخ داد. لطفاً اتصال شبکه‌تان و پیکربندی کارساز خروجی را بررسی کنید.</string>
     <string name="switch_on">روشن</string>
     <string name="switch_off">خاموش</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">اجازهٔ دسترسی به مخاطبان را بدهید</string>
-    <string name="permission_contacts_rationale_message">برای پیشنهاد مخاطب و نمایش نام و عکس مخاطب، برنامه نیاز دارد به مخاطبان شما دسترسی داشته باشد.</string>
     <string name="generic_loading_error">هنگام بارکردن داده، خطایی رخ داد</string>
     <string name="push_notification_state_initializing">مقداردهی اولیه…</string>
     <string name="push_notification_state_listening">در انتظار رایانامه‌های جدید</string>

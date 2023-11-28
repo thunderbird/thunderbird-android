@@ -975,9 +975,6 @@
     <string name="ac_transfer_error_send">حدث خطأ أثناء إرسال الرسالة. يرجى التحقق من اتصال الشبكة وتكوين خادم البريد الصادر. </string>
     <string name="switch_on">مُفعّل</string>
     <string name="switch_off">مُوقّف</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">السماح بالوصول إلى جهات الاتصال </string>
-    <string name="permission_contacts_rationale_message">لتتمكن من تقديم اقتراحات جهات الاتصال وعرض أسماء جهات الاتصال والصور ، يحتاج التطبيق إلى الوصول إلى جهات الاتصال الخاصة بك. </string>
     <string name="generic_loading_error">حدث خطأ أثناء تحميل البيانات </string>
     <string name="push_notification_state_initializing">جار تهيئة… </string>
     <string name="push_notification_state_listening">في انتظار رسائل البريد الإلكتروني الجديدة </string>

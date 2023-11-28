@@ -25,11 +25,16 @@
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Je fais confiance à cette configuration</string>
     <string name="account_setup_options_display_name_error_required">Le nom d\'affichage est requis.</string>
     <string name="account_setup_error_network">Réseau</string>
-    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">L\'adresse courriel est invalide.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Cette adresse courriel n’est pas reconnue comme valide.</string>
     <string name="account_setup_options_email_check_frequency_never">Jamais</string>
     <string name="account_setup_auto_discovery_loading_message">Recherche des détails du compte de courriel</string>
     <string name="account_setup_options_section_sync_options_">Options de synchronisation</string>
     <string name="account_setup_options_show_notifications_label">Afficher les notifications</string>
     <string name="account_setup_options_section_display_options">Options d\'affichages</string>
     <string name="account_setup_title">Courriel K-9 Mail</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Cette adresse courriel n’est pas permise.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Cette adresse courriel n’est pas prise en charge.</string>
+    <string name="account_setup_create_account_created">Le compte a été créé</string>
+    <string name="account_setup_create_account_creating">Création du compte…</string>
+    <string name="account_setup_create_account_error">Une erreur est survenue lors de la création du compte</string>
 </resources>

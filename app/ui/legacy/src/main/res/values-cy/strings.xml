@@ -992,9 +992,6 @@ Mae\'n bosib i ti gadw\'r neges hon a\'i ddefnyddio wrth gefn fel dy allwedd gyf
     <string name="ac_transfer_error_send">Bu gwall wrth anfon y neges. Gwiria gysylltiad dy rwydwaith a ffurfweddiad y gweinydd anfon.</string>
     <string name="switch_on">Ymlaen</string>
     <string name="switch_off">I ffwrdd</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Caniatáu mynediad at gysylltiadau</string>
-    <string name="permission_contacts_rationale_message">Er mwyn medru awgrymu cysylltiadau a dangos lluniau ac enwau cysylltiadau, mae ar yr ap angen mynediad at dy gysylltiadau.</string>
     <string name="generic_loading_error">Bu gwall wrth lwytho\'r data</string>
     <string name="push_notification_state_initializing">Yn ymgychwyn…</string>
     <string name="push_notification_state_listening">Yn aros am negeseuon e-bost newydd</string>

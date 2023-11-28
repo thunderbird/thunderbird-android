@@ -1004,9 +1004,6 @@
     <string name="ac_transfer_error_send">Si è verificato un errore durante l\'invio del messaggio. Controlla la tua connessione di rete e la configurazione del server di uscita.</string>
     <string name="switch_on">On</string>
     <string name="switch_off">Off</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Consenti l\'accesso ai contatti</string>
-    <string name="permission_contacts_rationale_message">Per poter fornire suggerimenti sui contatti e per visualizzare i nomi e le foto dei contatti, l\'applicazione ha bisogno di accedere ai tuoi contatti</string>
     <string name="generic_loading_error">Si è verificato un errore durante il caricamento dei dati</string>
     <string name="push_notification_state_initializing">Inizializzazione…</string>
     <string name="push_notification_state_listening">In attesa di nuove email</string>
@@ -1085,4 +1082,7 @@
     <string name="general_settings_post_remove_action_show_next_message">Vai al messaggio successivo</string>
     <string name="general_settings_post_remove_action_title">Dopo aver eliminato o spostato un messaggio</string>
     <string name="account_setup_check_settings_title">" "</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">Resta nel messaggio</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Dopo aver segnato un messaggio come non letto</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">Ritorna alla lista messaggi</string>
 </resources>

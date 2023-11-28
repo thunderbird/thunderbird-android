@@ -26,7 +26,7 @@
     <string name="account_server_settings_validation_error_port_invalid">El número de puerto no parece correcto (van de 1 a 65535).</string>
     <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
     <string name="account_server_settings_client_certificate_label">Certificado de usuario</string>
-    <string name="account_server_settings_validation_error_imap_prefix_blank">El prefijo IMAP no puede quedar en blanco.</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">El prefijo IMAP no puede estar en blanco.</string>
     <string name="account_server_settings_client_certificate_none_selected">Ninguna</string>
     <string name="account_server_settings_password_authentication_screen_lock_required">Para poder ver tu contraseña primero tienes que activar el bloqueo de pantalla en tu dispositivo.</string>
     <string name="account_server_settings_server_label">Servidor</string>

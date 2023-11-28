@@ -989,9 +989,6 @@
     <string name="ac_transfer_error_send">Er is een fout opgetreden tijdens het verzenden van het bericht. Controleer de netwerkverbinding en uitgaande serverconfiguratie.</string>
     <string name="switch_on">Op</string>
     <string name="switch_off">Uit</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Toegang tot contacten toestaan</string>
-    <string name="permission_contacts_rationale_message">Om contactsuggesties te kunnen bieden en om namen en/of foto’s van contacten weer te geven, heeft de app toegang nodig tot de contactenlijst.</string>
     <string name="generic_loading_error">Er is een fout opgetreden bij het laden van de gegevens</string>
     <string name="push_notification_state_initializing">Initialiseren…</string>
     <string name="push_notification_state_listening">In afwachting van nieuwe e-mailberichten</string>

@@ -994,9 +994,6 @@ Til að setja Autocrypt upp á nýju tæki, farðu þá eftir leiðbeiningunum s
     <string name="ac_transfer_error_send">Villa kom upp við að senda skilaboðin. Athugaðu internettenginguna þína og uppsetningu þjóns fyrir útsendan póst.</string>
     <string name="switch_on">Kveikt</string>
     <string name="switch_off">Slökkt</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Leyfa aðgang að tengiliðum</string>
-    <string name="permission_contacts_rationale_message">Til að geta komið með uppástungur um tengiliði og til að birta nöfn tengiliða og myndir, þá þarf forritið aðganga að tengiliðunum þínum.</string>
     <string name="generic_loading_error">Villa kom upp við að hlaða inn gögnunum</string>
     <string name="push_notification_state_initializing">Frumstilli…</string>
     <string name="push_notification_state_listening">Bíð eftir nýjum tölvupóstum</string>
@@ -1075,4 +1072,7 @@ Til að setja Autocrypt upp á nýju tæki, farðu þá eftir leiðbeiningunum s
     <string name="account_setup_check_settings_title">"   "</string>
     <string name="general_settings_post_remove_action_show_next_message">Birta næstu skilaboð</string>
     <string name="general_settings_post_remove_action_title">Eftir að skilaboðum hefur verið eytt eða þau færð</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">Vera áfram á skilaboðunum</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Eftir að skilaboð eru merkt sem ólesin</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">Snúa til baka í skilaboðalista</string>
 </resources>

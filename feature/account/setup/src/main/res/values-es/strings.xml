@@ -25,11 +25,16 @@
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Me fío de los ajustes</string>
     <string name="account_setup_options_display_name_error_required">Es necesario poner un nombre a mostrar.</string>
     <string name="account_setup_error_network">Red</string>
-    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">La dirección de correo no parece ser correcta.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">No se reconoce como una dirección de correo electrónico válida.</string>
     <string name="account_setup_options_email_check_frequency_never">Nunca</string>
     <string name="account_setup_auto_discovery_loading_message">Buscando los ajustes oficiales del servicio de forma automática</string>
     <string name="account_setup_options_section_sync_options_">Ajustes de sincronización</string>
     <string name="account_setup_options_show_notifications_label">Mostrar notificaciones</string>
     <string name="account_setup_options_section_display_options">Ajustes de pantalla</string>
     <string name="account_setup_title">K-9 Mail</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Esta dirección de correo electrónico no está permitida.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Esta dirección de correo electrónico no es compatible.</string>
+    <string name="account_setup_create_account_created">Cuenta creada correctamente</string>
+    <string name="account_setup_create_account_creating">Creando la cuenta…</string>
+    <string name="account_setup_create_account_error">Se ha producido un error al intentar crear la cuenta</string>
 </resources>

@@ -164,7 +164,7 @@
     <string name="debug_enable_debug_logging_title">Povolit ladící záznam</string>
     <string name="debug_enable_debug_logging_summary">Zaznamenávat rozšířené diagnostické informace</string>
     <string name="debug_enable_sensitive_logging_title">Záznamenávat citlivé informace</string>
-    <string name="debug_enable_sensitive_logging_summary">V záznamech mohou být zobrazena hesla</string>
+    <string name="debug_enable_sensitive_logging_summary">V záznamech mohou být zobrazena hesla.</string>
     <string name="debug_export_logs_title">Exportovat záznamy událostí</string>
     <string name="debug_export_logs_success">Export úspěšný. Záznamy událostí mohou obsahovat citlivé informace. Buďte opatrní s tím, komu je pošlete.</string>
     <string name="debug_export_logs_failure">Export se nezdařil.</string>
@@ -377,7 +377,8 @@
     <string name="account_setup_failed_dlg_title">Konfiguraci nastavení nelze dokončit</string>
     <string name="account_setup_failed_dlg_auth_message_fmt">Uživatelské jméno nebo heslo není správné.\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_certificate_message_fmt">Server nabízí neplatný SSL certifikát. Někdy může jít o chybu nastavení serveru, někdy o pokus útoku na vás nebo e-mailový server. Pokud nevíte o co jde, ťukněte na odmítnout a obraťte se na správce dotyčného e-mailového serveru.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_server_message_fmt">Nedaří se připojit k serveru. (<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_server_message_fmt">Nedaří se připojit k serveru.
+\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_oauth_flow_canceled">Pověření zrušeno</string>
     <string name="account_setup_failed_dlg_oauth_flow_failed">Pověření se nezdařilo s následující chybou: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 není v současnosti tímto poskytovatelem podporováno.</string>
@@ -826,9 +827,8 @@
         <item quantity="other">Načítání %d výsledků</item>
     </plurals>
     <plurals name="remote_search_downloading_limited">
-        <item quantity="one">Stahování %1$d z %2$d výsledků</item>
-        <item quantity="few">Stahování %1$d z %2$d výsledků</item>
-        <item quantity="many">Stahování %1$d z %2$d výsledků</item>
+        <item quantity="one">Stahování %1$d z %2$d výsledku</item>
+        <item quantity="few">Stahování %1$d ze %2$d výsledků</item>
         <item quantity="other">Stahování %1$d z %2$d výsledků</item>
     </plurals>
     <string name="remote_search_error">Vzdálené vyhledávání se nezdařilo</string>
@@ -836,7 +836,7 @@
     <string name="action_remote_search">Hledat zprávy na serveru</string>
     <string name="remote_search_unavailable_no_network">Vzdálené vyhledávání není k dispozici bez připojení k síti.</string>
     <string name="global_settings_background_as_unread_indicator_label">Ztmavit zprávy po přečtení</string>
-    <string name="global_settings_background_as_unread_indicator_summary">Prečtená zpráva bude mít jiné pozadí.</string>
+    <string name="global_settings_background_as_unread_indicator_summary">Jiné pozadí indikuje přečtení zprávy</string>
     <string name="global_settings_threaded_view_label">Zobrazit vlákna</string>
     <string name="global_settings_threaded_view_summary">Sjednotit zprávy patřící ke stejnému vláknu</string>
     <string name="upgrade_databases_title">Aktualizace databází</string>
@@ -881,7 +881,7 @@
     <string name="compose_error_no_draft_folder">Tento účet nemá nastavenou žádnou složku pro koncepty!</string>
     <string name="compose_error_no_key_configured">Pro tento účet není nastaven žádný klíč! Zkontrolujte nastavení.</string>
     <string name="error_crypto_provider_incompatible">Poskytovatel šifrování používá neslučitelnou verzi. Zkontrolujte svá nastavení!</string>
-    <string name="error_crypto_provider_connect">Nelze se spojit se službou šifrování, zkontrolujte své nastavení nebo ťukněte na ikonu šifrování pro nový pokus.</string>
+    <string name="error_crypto_provider_connect">Nelze se spojit se službou šifrování, zkontrolujte své nastavení nebo ťukněte na ikonu šifrování pro nový pokus!</string>
     <string name="error_crypto_provider_ui_required">Nepodařilo se inicializovat šifrování mezi odesílatelem a příjemcem – zkontrolujte svá nastavení</string>
     <string name="error_crypto_inline_attach">PGP/INLINE mód nepodporuje přílohy!</string>
     <string name="enable_inline_pgp">Povolit PGP/INLINE</string>
@@ -982,7 +982,7 @@
     <string name="general_settings_title">Hlavní nastavení</string>
     <string name="dialog_openkeychain_info_title">Není nainstalovaná žádná OpenPGP aplikace</string>
     <string name="dialog_openkeychain_info_install">Nainstalovat</string>
-    <string name="dialog_openkeychain_info_text">K-9 Mail pro šifrování mezi odesilatelem a příjemcem vyžaduje OpenKeychain</string>
+    <string name="dialog_openkeychain_info_text">Pro šifrování mezi odesilatelem a příjemcem K-9 Mail vyžaduje OpenKeychain.</string>
     <string name="encrypted_subject">Zašifrovaná zpráva</string>
     <string name="account_settings_crypto_encrypt_subject">Šifrovat předměty e-mailů</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Nemusí být podporováno některými příjemci</string>
@@ -1007,9 +1007,6 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <string name="ac_transfer_error_send">Při odesílání zprávy došlo k chybě. Zkontrolujte své připojení k síti a nastavení odchozího serveru.</string>
     <string name="switch_on">Zapnuto</string>
     <string name="switch_off">Vypnuto</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Umožnit přístup ke kontaktům</string>
-    <string name="permission_contacts_rationale_message">Aby bylo možné poskytovat automatické dopisování kontaktů a zobrazovat jména a fotky kontaktů, aplikace potřebuje přístup k vašim kontaktům.</string>
     <string name="generic_loading_error">Nastala chyba při nahrávání dat</string>
     <string name="push_notification_state_initializing">Inicializace…</string>
     <string name="push_notification_state_listening">Čeká se na nové e-maily</string>
@@ -1087,4 +1084,8 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <string name="general_settings_post_remove_action_show_next_message">Zobrazit následující zprávu</string>
     <string name="general_settings_post_remove_action_title">Po smazání nebo přesunu zprávy</string>
     <string name="background_work_notification_remove_account">Odstraňování účtu…</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">Zůstat na současné zprávě</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Po označení zprávy jako nepřečtené</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">Vrátit se na seznam pošty</string>
+    <string name="account_setup_check_settings_title">" "</string>
 </resources>

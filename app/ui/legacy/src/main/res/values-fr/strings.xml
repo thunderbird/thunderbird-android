@@ -712,9 +712,9 @@
     <string name="dialog_confirm_delete_title">Confirmer la suppression</string>
     <string name="dialog_confirm_delete_message">Voulez-vous supprimer ce courriel ?</string>
     <plurals name="dialog_confirm_delete_messages">
-        <item quantity="one">Voulez-vous vraiment supprimer ce courriel \?</item>
-        <item quantity="many">Voulez-vous vraiment supprimer les <xliff:g id="message_count">%1$d</xliff:g> de courriels \?</item>
-        <item quantity="other">Voulez-vous vraiment supprimer les <xliff:g id="message_count">%1$d</xliff:g> courriels \?</item>
+        <item quantity="one">Voulez-vous vraiment supprimer ce courriel ?</item>
+        <item quantity="many">Voulez-vous vraiment supprimer les <xliff:g id="message_count">%1$d</xliff:g> de courriels ?</item>
+        <item quantity="other">Voulez-vous vraiment supprimer les <xliff:g id="message_count">%1$d</xliff:g> courriels ?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Oui</string>
     <string name="dialog_confirm_delete_cancel_button">Non</string>
@@ -726,9 +726,9 @@
     <string name="dialog_confirm_mark_all_as_read_cancel_button">Non</string>
     <string name="dialog_confirm_spam_title">Confirmer le déplacement vers le dossier des pourriels</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">Voulez-vous déplacer ce courriel vers le dossiers des pourriels \?</item>
-        <item quantity="many">Voulez-vous déplacer les <xliff:g id="message_count">%1$d</xliff:g> de courriels vers le dossiers des pourriels \?</item>
-        <item quantity="other">Voulez-vous déplacer les <xliff:g id="message_count">%1$d</xliff:g> courriels vers le dossiers des pourriels \?</item>
+        <item quantity="one">Voulez-vous déplacer ce courriel vers le dossiers des pourriels ?</item>
+        <item quantity="many">Voulez-vous déplacer les <xliff:g id="message_count">%1$d</xliff:g> de courriels vers le dossiers des pourriels ?</item>
+        <item quantity="other">Voulez-vous déplacer les <xliff:g id="message_count">%1$d</xliff:g> courriels vers le dossiers des pourriels ?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Oui</string>
     <string name="dialog_confirm_spam_cancel_button">Non</string>
@@ -856,7 +856,7 @@
     <string name="client_certificate_spinner_empty">Aucun certificat client</string>
     <string name="client_certificate_spinner_delete">Supprimer le choix de certificat client</string>
     <string name="client_certificate_retrieval_failure">Échec de récupération du certificat client pour l’alias \« <xliff:g id="alias">%s</xliff:g>\ »</string>
-    <string name="client_certificate_expired">Le certificat client \« <xliff:g id="certificate_alias">%1$s</xliff:g>\ » est expiré ou n’est pas encore valide (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+    <string name="client_certificate_expired">Le certificat client  <xliff:g id="certificate_alias">%1$s</xliff:g>» est expiré ou n’est pas encore valide (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Chiffré*</string>
     <string name="add_from_contacts">Ajouter à partir des contacts</string>
@@ -996,9 +996,6 @@
     <string name="ac_transfer_error_send">Une erreur est survenue lors de l’envoi du courriel. Veuillez vérifier votre connexion connectivité réseau et la configuration du serveur sortant.</string>
     <string name="switch_on">Activer</string>
     <string name="switch_off">Désactiver</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Autoriser l’accès au contact</string>
-    <string name="permission_contacts_rationale_message">Afin de fournir des suggestions de contact et d’afficher les noms et les photos des contacts, l’appli a besoin d’accéder à vos contacts.</string>
     <string name="generic_loading_error">Une erreur est survenue lors du chargement des données</string>
     <string name="push_notification_state_initializing">Initialisation…</string>
     <string name="push_notification_state_listening">En attente de nouveaux courriels</string>
@@ -1072,8 +1069,11 @@
     <string name="background_work_notification_remove_account">Suppression du compte…</string>
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="message_list_content_description_unread_prefix">non lus, %s</string>
-    <string name="general_settings_post_remove_action_return_to_list">Retourner à la liste des messages</string>
-    <string name="general_settings_post_remove_action_show_previous_message">Afficher le message précédent</string>
-    <string name="general_settings_post_remove_action_show_next_message">Afficher le message suivant</string>
-    <string name="general_settings_post_remove_action_title">Après avoir supprimé ou déplacé un message</string>
+    <string name="general_settings_post_remove_action_return_to_list">Retourner à la liste des courriels</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Afficher le courriel précédent</string>
+    <string name="general_settings_post_remove_action_show_next_message">Afficher le courriel suivant</string>
+    <string name="general_settings_post_remove_action_title">Après avoir supprimé ou déplacé un courriel</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">Rester sur le courriel affiché</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Après avoir marqué un courriel comme indésirable</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">Retourner sur la liste des courriels</string>
 </resources>

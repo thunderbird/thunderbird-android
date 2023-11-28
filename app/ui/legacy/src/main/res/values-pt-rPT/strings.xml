@@ -1001,9 +1001,6 @@ Pode manter esta mensagem e usá-la como uma cópia de segurança para a sua cha
     <string name="ac_transfer_error_send">Ocorreu um erro durante o envio da mensagem. Verifique a conectividade da sua rede e as configurações do servidor de saída.</string>
     <string name="switch_on">Ativado</string>
     <string name="switch_off">Desativado</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Permitir acesso aos contactos</string>
-    <string name="permission_contacts_rationale_message">Por forma a fornecer sugestões de contactos e para mostrar nomes de contactos e fotografias, a aplicação necessita do acesso aos seus contactos.</string>
     <string name="generic_loading_error">Occoreu um erro ao carregar os dados</string>
     <string name="push_notification_state_initializing">Inicializando…</string>
     <string name="push_notification_state_listening">À espera de novos e-mails</string>

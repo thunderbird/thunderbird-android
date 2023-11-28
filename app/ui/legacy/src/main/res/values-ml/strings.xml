@@ -940,9 +940,6 @@
     <string name="ac_transfer_error_send">സന്ദേശം അയയ്ക്കുമ്പോൾ ഒരു പിശക് സംഭവിച്ചു. നിങ്ങളുടെ നെറ്റ്‌വർക്ക് കണക്റ്റിവിറ്റിയും ഔട്ട്‌ഗോയിംഗ് സെർവർ സജ്ജീകരണങ്ങളും പരിശോധിക്കുക.</string>
     <string name="switch_on">ഓൺ</string>
     <string name="switch_off">ഓഫ്</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">കോൺ‌ടാക്റ്റുകളിലേക്ക് പ്രവേശനം അനുവദിക്കുക</string>
-    <string name="permission_contacts_rationale_message">കോൺ‌ടാക്റ്റ് നിർദ്ദേശങ്ങൾ‌ നൽ‌കുന്നതിനും കോൺ‌ടാക്റ്റ് നാമങ്ങളും ഫോട്ടോകളും പ്രദർശിപ്പിക്കുന്നതിനും, അപ്ലിക്കേഷന് നിങ്ങളുടെ കോൺ‌ടാക്റ്റുകളിലേക്ക് പ്രവേശനം ആവശ്യമാണ്.</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
     <string name="swipe_action_select">തിരഞ്ഞെടുക്കുക</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->

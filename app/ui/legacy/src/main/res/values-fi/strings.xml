@@ -993,9 +993,6 @@ Voit säilyttää tämän viestin ja käyttää sitä varmuuskopioina salausavai
     <string name="ac_transfer_error_send">Viestiä lähettäessä tapahtui virhe. Tarkista verkkoyhteyden tila ja lähtevän postin palvelimen asetukset.</string>
     <string name="switch_on">Päällä</string>
     <string name="switch_off">Pois</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Salli pääsy yhteystietoihin</string>
-    <string name="permission_contacts_rationale_message">Tämä sovellus vaatii käyttöoikeuden yhteystietoihisi, jotta sovellus voi tehdä ehdotuksia yhteystietoihin liittyen ja näyttää yhteystietojen nimiä sekä kuvia.</string>
     <string name="generic_loading_error">Tietoja ladatessa tapahtui virhe</string>
     <string name="push_notification_state_initializing">Alustetaan…</string>
     <string name="push_notification_state_listening">Odotetaan uusia viestejä</string>

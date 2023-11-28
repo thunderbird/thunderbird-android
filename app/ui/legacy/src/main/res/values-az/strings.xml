@@ -5,26 +5,26 @@
     <!--Used in AndroidManifest.xml-->
     <string name="app_name">K-9 Mail</string>
     <string name="shortcuts_title">K-9 Hesablar</string>
-    <string name="unread_widget_label">K-9 Oxunmamış</string>
+    <string name="unread_widget_label">K-9 Oxunmayan</string>
     <!--Used in the about dialog-->
-    <string name="app_authors">The K-9 Dog Walkers</string>
+    <string name="app_authors">K-9 İt Gəzdirənlər</string>
     <string name="source_code">Mənbə kodu</string>
     <string name="app_license">Apache Lisenziyası, Versiya 2.0</string>
     <string name="about_project_title">Açıq Mənbə Layihəsi</string>
     <string name="about_website_title">Veb sayt</string>
-    <string name="user_manual_title">İstifadəçi dərsliyi</string>
+    <string name="user_manual_title">İstifadəçi məlumat kitabçası</string>
     <string name="get_help_title">Kömək al</string>
     <string name="user_forum_title">İstifadəçi forumu</string>
     <string name="about_fediverse_title">Fediverse</string>
     <string name="about_libraries">Kitabxanalar</string>
     <string name="license">Lisenziya</string>
     <string name="changelog_title">Dəyişiklik jurnalı</string>
-    <string name="changelog_loading_error">Dəyişiklik jurnalını yükləmək alınmadı</string>
+    <string name="changelog_loading_error">Dəyişiklik jurnalın yükləmək alınmadı.</string>
     <string name="changelog_version_title">Versiya %s</string>
-    <string name="changelog_recent_changes_title">Yenilik nədir?</string>
+    <string name="changelog_recent_changes_title">Nə yenidir</string>
     <string name="changelog_show_recent_changes">Tətbiq yeniləndisə son dəyişiklikləri göstər</string>
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
-    <string name="changelog_snackbar_text">Bu buraxılışda yeniliyin nə olduğunu tapın</string>
+    <string name="changelog_snackbar_text">Bu buraxılışda nə yenidir oxu</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
     <!--General strings that include the app name-->
@@ -34,31 +34,31 @@
     <string name="accounts_title">Hesablar</string>
     <string name="advanced">Qabaqcıl</string>
     <string name="compose_title_compose">Tərtib et</string>
-    <string name="compose_title_reply">Cavab</string>
-    <string name="compose_title_reply_all">Bütün cavablar</string>
-    <string name="compose_title_forward">İrəli</string>
-    <string name="compose_title_forward_as_attachment">Qoşma kimi irəli</string>
+    <string name="compose_title_reply">Cavab ver</string>
+    <string name="compose_title_reply_all">Hamısın cavabla</string>
+    <string name="compose_title_forward">Göndər</string>
+    <string name="compose_title_forward_as_attachment">Birləşmə kimi göndər</string>
     <string name="choose_account_title">Hesab seç</string>
     <string name="choose_folder_title">Qovluq seç</string>
-    <string name="choose_folder_move_title">Keçirt</string>
-    <string name="choose_folder_copy_title">Bura kopyala…</string>
-    <string name="actionbar_selected">%d Seçildi</string>
+    <string name="choose_folder_move_title">Bura Köçür…</string>
+    <string name="choose_folder_copy_title">Bura Yapışdır…</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seçildi</string>
     <string name="next_action">Növbəti</string>
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">Oldu</string>
-    <string name="cancel_action">İmtina</string>
+    <string name="cancel_action">Ləğv et</string>
     <string name="send_action">Göndər</string>
-    <string name="empty_subject">Mövzu boşdur, təkrar göndərmək üçün yenidən kliklə</string>
-    <string name="reply_action">Cavab</string>
-    <string name="reply_all_action">Bütün cavablar</string>
+    <string name="empty_subject">Mövzu boşdur, necəsə göndərmək üçün təkrar kliklə</string>
+    <string name="reply_action">Cavab ver</string>
+    <string name="reply_all_action">Hamısına cavab ver</string>
     <string name="delete_action">Sil</string>
     <string name="archive_action">Arxiv</string>
     <string name="spam_action">Spam</string>
-    <string name="forward_action">İrəli</string>
-    <string name="forward_as_attachment_action">Qoşma kimi irəli</string>
+    <string name="forward_action">Göndər</string>
+    <string name="forward_as_attachment_action">Qoşma fayl kimi göndər</string>
     <string name="compose_action">Tərtib et</string>
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
-    <string name="notification_action_reply">Cavab</string>
+    <string name="notification_action_reply">Cavab ver</string>
     <string name="notification_action_delete">Sil</string>
     <string name="notification_action_archive">Arxiv</string>
     <string name="notification_action_spam">Spam</string>
@@ -134,4 +134,11 @@
     <!--A user visible label for the name and email address copied to the clipboard-->
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+    <string name="message_view_theme_action_light">İşıqlı fona keçin</string>
+    <string name="default_signature">--
+\nK-9 Mail ilə Android cihazımdan göndərilib. Qısa qeydə görə üzrlü sayın.</string>
+    <string name="changelog_snackbar_button_text">Baxın</string>
+    <string name="prefs_title">Tənzimləmələr</string>
+    <string name="message_view_theme_action_dark">Qaranlıq fona keç</string>
+    <string name="about_action">Haqqında</string>
 </resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_permissions_contacts_description">Zezwól na dostęp, aby móc sugerować kontakty oraz wyświetlać nazwy i zdjęcia kontaktów.</string>
+    <string name="onboarding_permissions_notifications_description">Włącz powiadomienia, aby nie przegapić żadnych e-maili.</string>
+    <string name="onboarding_permissions_notifications_title">Powiadomienia</string>
+    <string name="onboarding_permissions_screen_title">Popraw doświadczenie</string>
+    <string name="onboarding_permissions_contacts_title">Kontakty</string>
+    <string name="onboarding_permissions_allow_button">Zezwól</string>
+    <string name="onboarding_permissions_skip_button">Pomiń</string>
+</resources>

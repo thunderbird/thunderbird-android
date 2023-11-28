@@ -591,8 +591,6 @@
     <string name="ac_transfer_error_send">მესიჯის გაგზავნისას მოხდა შეცდომა. გთხოვთ, შეამოწმეთ ქსელთან კავშირი და გამავალი სერვერის კონფიგურაცია.</string>
     <string name="switch_on">ჩართვა</string>
     <string name="switch_off">გამორთვა</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">კონტაქტებთან წვდომის დაშვება</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
     <string name="swipe_action_select">არჩევა</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->

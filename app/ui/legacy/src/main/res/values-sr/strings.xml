@@ -921,9 +921,6 @@
     <string name="ac_transfer_error_send">Дошло је до грешке при слању поруке. Проверите повезаност на мрежу и поставке одлазног сервера.</string>
     <string name="switch_on">Укљ</string>
     <string name="switch_off">Иск</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Дозволи приступ контактима</string>
-    <string name="permission_contacts_rationale_message">Да би давала предлоге, приказивала имена и слике контаката, апликацији је потребна дозвола за приступ контактима.</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
     <string name="swipe_action_select">Изабери</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->

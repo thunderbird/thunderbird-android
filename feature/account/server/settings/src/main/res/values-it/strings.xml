@@ -24,7 +24,7 @@
     <string name="account_server_settings_validation_error_port_invalid">Porta non valida (compresa tra 1–65535)</string>
     <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
     <string name="account_server_settings_client_certificate_label">Certificato del client</string>
-    <string name="account_server_settings_validation_error_imap_prefix_blank">Prefisso IMAP non può essere vuoto</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">Il prefisso IMAP non può essere vuoto</string>
     <string name="account_server_settings_client_certificate_none_selected">Nessuno</string>
     <string name="account_server_settings_server_label">Server</string>
     <string name="account_server_settings_security_label">Sicurezza</string>

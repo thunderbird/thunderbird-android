@@ -992,9 +992,6 @@ Mezu hau gorde dezakezu eta zure gako sekretuaren babes-kopia gisa erabili. Hau 
     <string name="ac_transfer_error_send">Errore bat gertatu da mezua bidaltzean. Egiaztatu zure sare konexioa eta mezuak bidaltzeko zerbitzariaren konfigurazioa.</string>
     <string name="switch_on">Bai</string>
     <string name="switch_off">Itzali</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Baimendu kontaktuak atzitzea</string>
-    <string name="permission_contacts_rationale_message">Kontaktuak proposatu ahal izateko eta kontaktuen izenak eta argazkiak bistaratzeko, aplikazioak zure kontaktuak atzitzeko baimena behar du.</string>
     <string name="generic_loading_error">Akats bat gertatu da datuak kargatzean</string>
     <string name="push_notification_state_initializing">Hasieratzen…</string>
     <string name="push_notification_state_listening">e-posta berrien zain</string>

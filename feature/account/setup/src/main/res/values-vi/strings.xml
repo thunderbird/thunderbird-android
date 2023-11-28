@@ -1,2 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_options_account_name_error_blank">Tên tài khoản không được để trống.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Địa chỉ e-mail này không được phép.</string>
+    <string name="account_setup_options_account_check_frequency_label">Tần suất kiểm tra</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Cấu hình tự động</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Cấu hình này không đáng tin cậy</string>
+    <string name="account_setup_button_finish">Hoàn thành</string>
+    <string name="account_setup_options_email_signature_label">Chữ ký email</string>
+    <string name="account_setup_options_email_display_count_label">Số lượng tin nhắn hiển thị</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Định cấu hình thủ công</string>
+    <string name="account_setup_options_email_signature_error_blank">Tên chữ ký email không được để trống.</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Cần phải phê duyệt cấu hình.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Chúng tôi đã nhận được cấu hình cho máy chủ email của bạn qua kết nối không an toàn như chúng tôi mong muốn. Điều này có nghĩa là có rất ít khả năng ai đó có thể đã thay đổi nó. Bạn có thể vui lòng kiểm tra kỹ cấu hình được cung cấp để đảm bảo nó như mong muốn không?</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Chỉnh sửa cấu hình</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Địa chỉ e-mail này không được hỗ trợ.</string>
+    <string name="account_setup_error_unknown">Lỗi không rõ</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Không tìm thấy cấu hình</string>
+    <string name="account_setup_options_top_bar_title">Tùy chọn tài khoản</string>
+    <string name="account_setup_options_account_name_label">Tên tài khoản</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Đã tìm thấy cấu hình</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">Địa chỉ e-mail là bắt buộc.</string>
+    <string name="account_setup_options_display_name_label">Tên hiển thị</string>
+    <string name="account_setup_auto_discovery_loading_error">Không tải được cấu hình email</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Tôi tin tưởng cấu hình này</string>
+    <string name="account_setup_options_display_name_error_required">Tên hiển thị là bắt buộc.</string>
+    <string name="account_setup_error_network">Mạng</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Đây không được công nhận là địa chỉ email hợp lệ.</string>
+    <string name="account_setup_options_email_check_frequency_never">Không bao giờ</string>
+    <string name="account_setup_auto_discovery_loading_message">Tìm chi tiết e-mail</string>
+    <string name="account_setup_options_section_sync_options_">Tùy chọn đồng bộ hóa</string>
+    <string name="account_setup_options_show_notifications_label">Hiển thị thông báo</string>
+    <string name="account_setup_options_section_display_options">Tùy chọn hiển thị</string>
+    <string name="account_setup_title">Thư K-9</string>
+</resources>

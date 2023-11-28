@@ -997,9 +997,6 @@
     <string name="ac_transfer_error_send">Hi ha hagut un error mentre s\'enviava el missatge. Si us plau, comproveu la connexió de xarxa i la configuració del servidor de sortida.</string>
     <string name="switch_on">Actiu</string>
     <string name="switch_off">Inactiu</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Permet l\'accés als contactes</string>
-    <string name="permission_contacts_rationale_message">Per poder proporcionar suggeriments de contactes i mostrar-ne els noms i fotografies, l\'aplicació necessita accés als vostres contactes.</string>
     <string name="generic_loading_error">S\'ha produït un error mentre es carregaven les dades</string>
     <string name="push_notification_state_initializing">S\'està iniciant…</string>
     <string name="push_notification_state_listening">S\'està esperant nous correus electrònics</string>
@@ -1078,4 +1075,7 @@
     <string name="account_setup_check_settings_title"> </string>
     <string name="general_settings_post_remove_action_show_next_message">Mostra el missatge següent</string>
     <string name="general_settings_post_remove_action_title">Després de suprimir o moure un missatge</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">Mantingues el missatge actual</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Després de marcar un missatge com a no llegit</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">Torna a la llista de missatges</string>
 </resources>

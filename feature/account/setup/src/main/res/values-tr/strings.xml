@@ -23,7 +23,7 @@
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Bu yapılandırmaya güveniyorum</string>
     <string name="account_setup_options_display_name_error_required">Görünen ad zorunludur.</string>
     <string name="account_setup_error_network">Ağ</string>
-    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">E-posta adresi geçersiz.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Bu geçerli bir e-posta adresi olarak tanınmıyor.</string>
     <string name="account_setup_auto_discovery_loading_message">E-posta bilgileri bulunuyor</string>
     <string name="account_setup_options_section_sync_options_">Eşzamanlama seçenekleri</string>
     <string name="account_setup_options_section_display_options">Görüntüleme seçenekleri</string>
@@ -32,4 +32,9 @@
     <string name="account_setup_options_email_display_count_label">Görüntülenecek ileti sayısı</string>
     <string name="account_setup_options_email_check_frequency_never">Hiçbir zaman</string>
     <string name="account_setup_options_show_notifications_label">Bildirimleri göster</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Bu e-posta adresine izin verilmiyor.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Bu e-posta adresi desteklenmiyor.</string>
+    <string name="account_setup_create_account_created">Hesap başarıyla oluşturuldu</string>
+    <string name="account_setup_create_account_creating">Hesap oluşturuluyor…</string>
+    <string name="account_setup_create_account_error">Hesap oluşturmaya çalışırken bir hata oluştu</string>
 </resources>

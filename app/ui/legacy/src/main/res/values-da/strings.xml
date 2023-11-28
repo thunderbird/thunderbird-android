@@ -983,9 +983,6 @@ Beskeden kan beholdes og bruges som sikkerhedskopi til den hemmelige nøgle. Hvi
     <string name="ac_transfer_error_send">Fejl opstod under sending af besked. Kontrollere netværk forbindelse og udgående server indstilling.</string>
     <string name="switch_on">Til</string>
     <string name="switch_off">Fra</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Tillade adgang til kontakter</string>
-    <string name="permission_contacts_rationale_message">For at kunne levere kontaktforslag og vise kontaktnavne og fotos, skal programmet have adgang til kontakter.</string>
     <string name="generic_loading_error">En fejl opstod under indlæsning af data</string>
     <string name="push_notification_state_initializing">Initialiserer…</string>
     <string name="push_notification_state_listening">Venter på nye emails</string>

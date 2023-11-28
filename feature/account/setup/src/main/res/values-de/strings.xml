@@ -25,11 +25,16 @@
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Ich vertraue dieser Konfiguration</string>
     <string name="account_setup_options_display_name_error_required">Anzeigename ist erforderlich.</string>
     <string name="account_setup_error_network">Netzwerk</string>
-    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">E-Mail-Adresse ist ungültig.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Diese Adresse wird nicht als gültige E-Mail-Adresse erkannt.</string>
     <string name="account_setup_options_email_check_frequency_never">Niemals</string>
     <string name="account_setup_auto_discovery_loading_message">E-Mail-Details finden</string>
     <string name="account_setup_options_section_sync_options_">Synchronisierungsoptionen</string>
     <string name="account_setup_options_show_notifications_label">Benachrichtigungen anzeigen</string>
     <string name="account_setup_options_section_display_options">Anzeigeoptionen</string>
     <string name="account_setup_title">K-9 Mail</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Diese E-Mail Adresse ist nicht erlaubt.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Diese E-Mail Adresse wird nicht unterstützt.</string>
+    <string name="account_setup_create_account_created">Konto erfolgreich erstellt</string>
+    <string name="account_setup_create_account_creating">Konto wird erstellt…</string>
+    <string name="account_setup_create_account_error">Beim Versuch, das Konto zu erstellen, ist ein Fehler aufgetreten</string>
 </resources>

@@ -1002,9 +1002,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
     <string name="ac_transfer_error_send">Kļūdas dēl neizdevās nosūtīt ziņu. Lūdzu, pārbaudiet tīkla savienojumu un izejošā servera iestatījumus!</string>
     <string name="switch_on">Ieslēgt</string>
     <string name="switch_off">Izslēgt</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Dot piekļuvi kontaktiem</string>
-    <string name="permission_contacts_rationale_message">Lai saņemtu kontaktu ieteikumus un parādītu to vārdus un attēlus, lietotnei nepieciešama atļauja piekļūt Jūsu kontaktiem.</string>
     <string name="generic_loading_error">Lejupielādējot datus, gadījās kļūda</string>
     <string name="push_notification_state_initializing">Inicializē…</string>
     <string name="push_notification_state_listening">Tiek gaidītas jaunas ziņas</string>

@@ -15,7 +15,7 @@
     <string name="account_setup_auto_discovery_loading_error">E-posti konto seadistuste tuvastamine ei õnnestunud</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Ma usaldan neid seadistusi</string>
     <string name="account_setup_error_network">Võrk</string>
-    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">E-posti aadress on vigane.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">See e-posti aadress ei tundu olema korrektne.</string>
     <string name="account_setup_auto_discovery_loading_message">Tuvastame e-posti konto andmeid</string>
     <string name="account_setup_title">K-9 Mail</string>
     <string name="account_setup_options_account_name_error_blank">Kasutajakonto nimi ei saa olla tühi.</string>
@@ -32,4 +32,9 @@
     <string name="account_setup_options_section_sync_options_">Sünkroniseerimisvalikud</string>
     <string name="account_setup_options_show_notifications_label">Näita teavitusi</string>
     <string name="account_setup_options_section_display_options">Kuvatavad valikud</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Sellise e-posti aadressi kasutamine pole lubatud.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Sellise e-posti aadressi kasutamine pole toetatud.</string>
+    <string name="account_setup_create_account_created">Kasutajakonto loomine õnnestus</string>
+    <string name="account_setup_create_account_creating">Kasutajakonto on loomisel…</string>
+    <string name="account_setup_create_account_error">Kasutajakonto loomisel tekkis viga</string>
 </resources>

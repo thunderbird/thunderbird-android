@@ -968,9 +968,6 @@
     <string name="ac_transfer_error_send">İleti gönderilirken bir hata oluştu. Lütfen ağ bağlantınızı ve giden sunucu yapılandırmanızı gözden geçirin.</string>
     <string name="switch_on">Açık</string>
     <string name="switch_off">Kapalı</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Kişilere erişime izin ver</string>
-    <string name="permission_contacts_rationale_message">Kişilerle ilgili öneriler sunabilmek, kişi adlarını ve fotoğraflarını görüntüleyebilmek için uygulamanın kişilerinize erişmesi gerekir.</string>
     <string name="generic_loading_error">Veriler yüklenirken bir hata oluştu </string>
     <string name="push_notification_state_initializing">Başlatılıyor…</string>
     <string name="push_notification_state_listening">Yeni e-postalar bekleniyor</string>
@@ -1072,4 +1069,7 @@
     <string name="push_info_disable_push_text">Yeni iletiler hakkında anlık bildirimlere ihtiyacınız yoksa, ittirmeyi devre dışı bırakmalı ve bilgi çekmeyi kullanmalısınız. Bilgi çekme, düzenli aralıklarla yeni e-posta olup olmadığını denetler ve bildirime ihtiyaç duymaz.</string>
     <string name="message_view_show_remote_images_action">Uzak resimleri göster</string>
     <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 şu anda bu sağlayıcı ile desteklenmiyor.</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">Geçerli iletide kal</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Bir iletiyi okunmadı olarak işaretledikten sonra</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">İleti listesine dön</string>
 </resources>

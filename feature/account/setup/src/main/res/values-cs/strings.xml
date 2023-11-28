@@ -25,11 +25,16 @@
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Důvěřuji této konfiguraci</string>
     <string name="account_setup_options_display_name_error_required">Zobrazené jméno je vyžadováno.</string>
     <string name="account_setup_error_network">Síť</string>
-    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">E-mailová adresa je neplatná.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Toto není rozeznáno jako platná e-mailová adresa.</string>
     <string name="account_setup_options_email_check_frequency_never">Nikdy</string>
     <string name="account_setup_auto_discovery_loading_message">Zjišťování podrobností o e-mailu</string>
     <string name="account_setup_options_section_sync_options_">Možnosti synchronizace</string>
     <string name="account_setup_options_show_notifications_label">Zobrazovat upozornění</string>
     <string name="account_setup_options_section_display_options">Možnosti zobrazení</string>
     <string name="account_setup_title">K-9 Mail</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Tato e-mailová adresa není dovolená.</string>
+    <string name="account_setup_create_account_created">Účet úspěšně vytvořen</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Tato e-mailová adresa není podporována.</string>
+    <string name="account_setup_create_account_creating">Vytváření účtu…</string>
+    <string name="account_setup_create_account_error">Při vytváření účtu nastala chyba</string>
 </resources>

@@ -25,11 +25,16 @@
     <string name="account_setup_auto_discovery_loading_error">Mistókst að hlaða inn tölvupóststillingum</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Ég treysti þessari uppsetningu</string>
     <string name="account_setup_options_display_name_error_required">Birtingarnafn er nauðsynlegt.</string>
-    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Tölvupóstfangið er ógilt.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Þetta telst ekki vera gilt tölvupóstfang.</string>
     <string name="account_setup_options_email_check_frequency_never">Aldrei</string>
     <string name="account_setup_auto_discovery_loading_message">Finna nánar um tölvupóst</string>
     <string name="account_setup_options_section_sync_options_">Valkostir samstillinga</string>
     <string name="account_setup_options_show_notifications_label">Birta tilkynningar</string>
     <string name="account_setup_options_section_display_options">Valkostir birtingar</string>
     <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Við höfum tekið við uppsetningunni fyrir póstþjóninn um tengingu sem ekki er eins örugg og við myndum vilja. Þetta þýðir að það eru einhverjar líkur á að einhver hafi komist í upplýsingarnar og breytt þeim. Geturðu yfirfarið þessar upplýsingar og gengið úr skugga um að allt sé eins og það á að vera\?</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Þetta tölvupóstfang er ekki leyfilegt.</string>
+    <string name="account_setup_create_account_created">Tókst að útbúa aðganginn</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Þetta tölvupóstfang er ekki stutt.</string>
+    <string name="account_setup_create_account_creating">Útbý aðgang…</string>
+    <string name="account_setup_create_account_error">Villa kom upp við að útbúa aðganginn</string>
 </resources>

@@ -986,9 +986,6 @@
     <string name="ac_transfer_error_send">寄送訊息時出現錯誤。請檢查您的網路連線與外寄伺服器設定。</string>
     <string name="switch_on">開</string>
     <string name="switch_off">關</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">允許存取聯絡人</string>
-    <string name="permission_contacts_rationale_message">為了能夠提供聯絡人建議，並顯示聯絡人姓名和照片，應用程式需要存取你的聯絡人。</string>
     <string name="generic_loading_error">載入資料時發生錯誤</string>
     <string name="push_notification_state_initializing">初始化…</string>
     <string name="push_notification_state_listening">正在等待新郵件</string>

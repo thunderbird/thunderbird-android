@@ -993,9 +993,6 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <string name="ac_transfer_error_send">Hiba történt az üzenet elküldése során. Ellenőrizze a hálózati kapcsolatot és a kimenő kiszolgáló beállítását.</string>
     <string name="switch_on">Be</string>
     <string name="switch_off">Ki</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Hozzáférés engedélyezése a partnerekhez</string>
-    <string name="permission_contacts_rationale_message">Ahhoz, hogy partnerjavaslatokat tudjon tenni és meg tudja jeleníteni a partner nevét és fényképeit, az alkalmazásnak hozzáférésre van szüksége a partnereihez.</string>
     <string name="generic_loading_error">Hiba történt az adatok betöltése során</string>
     <string name="push_notification_state_initializing">Előkészítés…</string>
     <string name="push_notification_state_listening">Várakozás az új e-mailekre</string>

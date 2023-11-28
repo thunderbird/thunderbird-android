@@ -1000,9 +1000,6 @@ Puedes guardar este mensaje y usarlo como copia de seguridad de tu clave secreta
     <string name="ac_transfer_error_send">Ha ocurrido un error al enviar el mensaje, por favor verifique su conexión a internet y la configuración del servidor de salida.</string>
     <string name="switch_on">Sí</string>
     <string name="switch_off">No</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Permitir acceso a contactos</string>
-    <string name="permission_contacts_rationale_message">Para poder proveer sugerencias de contactos y mostrar sus nombres la aplicación necesita acceso a los contactos locales del dispositivo.</string>
     <string name="generic_loading_error">Se produjo un error al cargar los datos</string>
     <string name="push_notification_state_initializing">Iniciando…</string>
     <string name="push_notification_state_listening">Esperando correos electrónicos nuevos</string>
@@ -1081,4 +1078,7 @@ Puedes guardar este mensaje y usarlo como copia de seguridad de tu clave secreta
     <string name="general_settings_post_remove_action_show_next_message">Ver siguiente correo</string>
     <string name="general_settings_post_remove_action_title">Tras borrar o mover un correo</string>
     <string name="account_setup_check_settings_title"> </string>
+    <string name="general_settings_post_mark_as_unread_action_stay">Mantener el mensaje actual</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Después de marcar un mensaje como no leído</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">Volver a la lista de mensajes</string>
 </resources>

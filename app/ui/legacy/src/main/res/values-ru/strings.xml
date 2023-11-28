@@ -1007,9 +1007,6 @@
     <string name="ac_transfer_error_send">Сбой при отправке сообщения. Проверьте соединение с сетью и настройки сервера исходящей почты.</string>
     <string name="switch_on">Вкл</string>
     <string name="switch_off">Выкл</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Разрешить доступ к контактам</string>
-    <string name="permission_contacts_rationale_message">Чтобы подсказывать имена и показывать фото, приложению нужен доступ к контактам</string>
     <string name="generic_loading_error">При загрузке данных возникла ошибка</string>
     <string name="push_notification_state_initializing">Инициализация…</string>
     <string name="push_notification_state_listening">Ожидание новых писем</string>

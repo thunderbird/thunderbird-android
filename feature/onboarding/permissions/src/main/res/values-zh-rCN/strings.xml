@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_permissions_contacts_description">允许权限以便应用提供联系人建议并展示联系人名字和照片。</string>
+    <string name="onboarding_permissions_notifications_description">打开通知以免错失任何邮件。</string>
+    <string name="onboarding_permissions_notifications_title">通知</string>
+    <string name="onboarding_permissions_screen_title">改进体验</string>
+    <string name="onboarding_permissions_contacts_title">联系人</string>
+    <string name="onboarding_permissions_allow_button">允许</string>
+    <string name="onboarding_permissions_skip_button">跳过</string>
+</resources>
