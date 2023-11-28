@@ -5,11 +5,11 @@
     <string name="account_server_validation_error_certificate">Tanúsítvány hiba</string>
     <string name="account_server_validation_outgoing_loading_message">A kimenő kiszolgáló beállítások ellenőrzése…</string>
     <string name="account_server_validation_error_network">Hálózati hiba</string>
-    <string name="account_server_validation_outgoing_success">A kijövő kiszolgáló beállítások érvényesek!</string>
+    <string name="account_server_validation_outgoing_success">A kijövő kiszolgáló beállítások érvényesek</string>
     <string name="account_server_validation_error_unknown">Ismeretlen hiba</string>
     <string name="account_server_validation_sign_in">Bejelentkezés</string>
-    <string name="account_server_validation_outgoing_loading_error">A kimenő kiszolgáló beállítások ellenőrzése sikertelen volt!</string>
-    <string name="account_server_validation_incoming_success">A bejövő kiszolgáló beállítások érvényesek!</string>
-    <string name="account_server_validation_incoming_loading_error">A bejövő kiszolgáló beállítások ellenőrzése sikertelen volt!</string>
+    <string name="account_server_validation_outgoing_loading_error">A kimenő kiszolgáló beállítások ellenőrzése sikertelen volt</string>
+    <string name="account_server_validation_incoming_success">A bejövő kiszolgáló beállítások érvényesek</string>
+    <string name="account_server_validation_incoming_loading_error">A bejövő kiszolgáló beállítások ellenőrzése sikertelen volt</string>
     <string name="account_server_validation_error_server">Kiszolgáló hiba</string>
 </resources>

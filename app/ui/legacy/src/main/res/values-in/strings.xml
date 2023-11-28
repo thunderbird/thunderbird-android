@@ -910,9 +910,6 @@ Anda dapat menyimpan pesan ini dan menggunakannya sebagai cadangan untuk kunci r
     <string name="ac_transfer_error_send">Terjadi kesalahan saat mengirim pesan. Silakan periksa konektivitas jaringan Anda dan konfigurasi server keluar.</string>
     <string name="switch_on">On</string>
     <string name="switch_off">Off</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Izinkan akses ke kontak</string>
-    <string name="permission_contacts_rationale_message">Untuk dapat memberikan saran kontak dan untuk menampilkan nama kontak dan foto, aplikasi perlu akses ke kontak Anda.</string>
     <string name="generic_loading_error">Terjadi kesalahan saat memuat data</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
     <string name="swipe_action_select">Pilih</string>

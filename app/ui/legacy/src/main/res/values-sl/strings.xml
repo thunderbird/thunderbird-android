@@ -1005,9 +1005,6 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
     <string name="ac_transfer_error_send">Prišlo je do napake med pošiljanjem sporočila. Preverite omrežne nastavitve in nastavitve odhodnega strežnika.</string>
     <string name="switch_on">Vključi</string>
     <string name="switch_off">Izključi</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Dovoli dostop do stikov</string>
-    <string name="permission_contacts_rationale_message">Če hočete dobiti predloge za stike in prikazati imena in fotografije stikov, aplikacija potrebuje dostop do vaših stikov.</string>
     <string name="generic_loading_error">Med nalaganjem podatkov je prišlo do napake</string>
     <string name="push_notification_state_initializing">Začenjanje …</string>
     <string name="push_notification_state_listening">Čakam na nova e-poštna sporočila</string>

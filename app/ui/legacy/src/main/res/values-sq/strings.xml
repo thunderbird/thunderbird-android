@@ -993,9 +993,6 @@ Mund ta mbani këtë mesazh dhe ta përdorni si një kopjeruatje të kyçit tuaj
     <string name="ac_transfer_error_send">Ndodhi një gabim teksa dërgohej mesazhi. Ju lutemi, kontrolloni lidhjen tuaj në rrjet dhe formësimin e shërbyesit të dërgimeve.</string>
     <string name="switch_on">On</string>
     <string name="switch_off">Off</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Lejo hyrje te kontaktet</string>
-    <string name="permission_contacts_rationale_message">Për të qenë në gjendje të jepen sugjerime kontaktesh dhe të shfaqen emra dhe telefona kontaktesh, aplikacioni ka nevojë të hyjë te kontaktet tuaja.</string>
     <string name="generic_loading_error">Ndodhi një gabim teksa ngarkoheshin të dhënat</string>
     <string name="push_notification_state_initializing">Po fillohet…</string>
     <string name="push_notification_state_listening">Po pritet për email-e të rinj</string>

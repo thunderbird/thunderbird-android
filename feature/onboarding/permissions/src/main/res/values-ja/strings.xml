@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_permissions_contacts_description">アクセスを許可すると、連絡先の候補を表示したり、連絡先の名前や写真を表示できます。</string>
+    <string name="onboarding_permissions_notifications_description">通知をオンにすれば、メールを見逃しません。</string>
+    <string name="onboarding_permissions_notifications_title">通知</string>
+    <string name="onboarding_permissions_screen_title">アプリを使いやすくしましょう</string>
+    <string name="onboarding_permissions_contacts_title">連絡先</string>
+    <string name="onboarding_permissions_allow_button">許可</string>
+    <string name="onboarding_permissions_skip_button">スキップ</string>
+</resources>

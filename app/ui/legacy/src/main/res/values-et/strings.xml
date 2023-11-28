@@ -996,9 +996,6 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="ac_transfer_error_send">Kirja saatmisel tekkis viga. Palun kontrolli võrguühenduse olemasolu ning väljuva e-postiserveri seadistusi.</string>
     <string name="switch_on">Sisse</string>
     <string name="switch_off">Välja</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Luba juurdepääs kontaktidele</string>
-    <string name="permission_contacts_rationale_message">Selleks, et kirja koostamisel pakkuda saajate aadresse ning kuvada nimesid ning fotosid vajab K-9 Mail õigusi lugeda nutiseadme kontaktide andmebaasi.</string>
     <string name="generic_loading_error">Andmete laadimisel tekkis viga</string>
     <string name="push_notification_state_initializing">Käivitamine…</string>
     <string name="push_notification_state_listening">Ootan uusi e-kirju</string>
@@ -1076,4 +1073,7 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="general_settings_post_remove_action_show_previous_message">näita eelmist kirja</string>
     <string name="general_settings_post_remove_action_show_next_message">näita järgmist kirja</string>
     <string name="general_settings_post_remove_action_title">Kirja kustutamisel või uued kohta tõstmisel</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">jää sama sõnumi vaatesse</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Peale sõnumi märkimist loetuks</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">mine tagasi sõnumite loendivaatesse</string>
 </resources>

@@ -935,9 +935,6 @@ Vi povas konservi tiun ĉi mesaĝon kaj uzi ĝin kiel sekurkopion de via privata
     <string name="ac_transfer_error_send">Eraro okazis dum sendado de mesaĝo. Bonvolu kontroli vian retkonekton kaj agordojn de eliga servilo.</string>
     <string name="switch_on">Ek</string>
     <string name="switch_off">For</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Permesu aliron al kontaktoj</string>
-    <string name="permission_contacts_rationale_message">Por ebligi al K-9 sugesti kontaktojn kaj vidigi iliajn nomojn kaj fotojn, la aplikaĵo postulas aliron al viaj kontaktoj.</string>
     <string name="generic_loading_error">Eraro okazis dum enlegi datumojn</string>
     <string name="push_notification_state_initializing">Komencante…</string>
     <string name="push_notification_state_listening">Atendante novajn retleterojn</string>

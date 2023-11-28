@@ -869,9 +869,6 @@ Gallout a rit mirout ar gemennadenn-mañ hag implij anezhi evel un enrolladenn e
     <string name="ac_transfer_error_send">Degouezhet ez eus bet ur fazi en ur gas ar gemennadenn. Gwiriekait ho kennask d\'ar rouedad hag ho kefluniadur evit an dafariad ec\'hankat.</string>
     <string name="switch_on">Gwereddekaat</string>
     <string name="switch_off">Diweredekaat</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Aotren da haeziñ an darempredoù</string>
-    <string name="permission_contacts_rationale_message">Evit bezañ gouest da ginnig darempredoù hag evit skrammañ anvioù ha skeudennoù an darempredoù en deus ezhomm an arload da haeziñ ho tarempredoù.</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
     <string name="swipe_action_select">Diuzañ</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->

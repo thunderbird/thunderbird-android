@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_permissions_contacts_description">Tillåt åtkomst för att kunna ge kontaktförslag och visa kontaktnamn och foton.</string>
+    <string name="onboarding_permissions_notifications_description">Slå på aviseringar så att du inte missar några e-postmeddelanden.</string>
+    <string name="onboarding_permissions_notifications_title">Aviseringar</string>
+    <string name="onboarding_permissions_screen_title">Förbättra upplevelsen</string>
+    <string name="onboarding_permissions_contacts_title">Kontakter</string>
+    <string name="onboarding_permissions_allow_button">Tillåt</string>
+    <string name="onboarding_permissions_skip_button">Hoppa över</string>
+</resources>

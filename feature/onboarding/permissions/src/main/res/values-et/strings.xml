@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_permissions_contacts_description">Luba ligipääs nutiseadme kontaktidele ja kasuta seal leiduvaid kirjeid soovitustena koos nimede ja fotodega.</string>
+    <string name="onboarding_permissions_notifications_description">Lülita sisse teavitused ning ainsamgi kiri ei jää sul märkamata.</string>
+    <string name="onboarding_permissions_notifications_title">Teavitused</string>
+    <string name="onboarding_permissions_screen_title">Kasuta rakendust tõhusamalt</string>
+    <string name="onboarding_permissions_contacts_title">Kontaktid</string>
+    <string name="onboarding_permissions_allow_button">Luba</string>
+    <string name="onboarding_permissions_skip_button">Jäta vahele</string>
+</resources>

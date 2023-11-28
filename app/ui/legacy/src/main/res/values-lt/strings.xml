@@ -997,9 +997,6 @@ Norėdami nustatyti automatinį šifravimą naujajame prietaise, vadovaukitės i
     <string name="ac_transfer_error_send">Siunčiant laišką įvyko klaida. Patikrinkite tinklo ryšį ir siunčiamo serverio konfigūraciją.</string>
     <string name="switch_on">Įj.</string>
     <string name="switch_off">Išj.</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Leisti prieigą prie kontaktų</string>
-    <string name="permission_contacts_rationale_message">Kad galėtų teikti kontaktų pasiūlymus ir rodyti kontaktų vardus bei nuotraukas, programėlei reikia prieigos prie jūsų kontaktų.</string>
     <string name="generic_loading_error">Įkeliant duomenis įvyko klaida</string>
     <string name="push_notification_state_initializing">Inicializuojama…</string>
     <string name="push_notification_state_listening">Laukiama naujų laiškų</string>

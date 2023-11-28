@@ -1,2 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_incoming_loading_message">Đang kiểm tra thiết đặt máy chủ thư đến…</string>
+    <string name="account_server_validation_error_authentication">Lỗi xác thực</string>
+    <string name="account_server_validation_error_certificate">Lỗi chứng chỉ</string>
+    <string name="account_server_validation_outgoing_loading_message">Đang kiểm tra thiết đặt máy chủ thư đi…</string>
+    <string name="account_server_validation_error_network">Lỗi mạng</string>
+    <string name="account_server_validation_outgoing_success">Thiết đặt máy chủ thư đi hợp lệ</string>
+    <string name="account_server_validation_error_unknown">Lỗi không rõ</string>
+    <string name="account_server_validation_sign_in">Xin hãy đăng nhập</string>
+    <string name="account_server_validation_outgoing_loading_error">Kiểm tra thiết đặt máy chủ thư đi không thành công</string>
+    <string name="account_server_validation_incoming_success">Thiết đặt máy chủ thư đến hợp lệ</string>
+    <string name="account_server_validation_incoming_loading_error">Kiểm tra thiết đặt máy chủ thư đến không thành công</string>
+    <string name="account_server_validation_error_server">Lỗi máy chủ</string>
+</resources>

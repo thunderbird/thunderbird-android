@@ -993,9 +993,6 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="ac_transfer_error_send">Beim Senden der Nachricht trat ein Fehler auf. Bitte überprüfe deine Netzwerkverbindung und die Konfiguration deines Postausgangsservers.</string>
     <string name="switch_on">An</string>
     <string name="switch_off">Aus</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Zugriff auf Kontakte erlauben</string>
-    <string name="permission_contacts_rationale_message">Damit die App Kontaktvorschläge machen und Namen und Fotos von Kontakten anzeigen kann, benötigt sie Zugriff auf deine Kontakte.</string>
     <string name="generic_loading_error">Beim Laden der Daten ist ein Fehler aufgetreten</string>
     <string name="push_notification_state_initializing">Initialisieren…</string>
     <string name="push_notification_state_listening">Warte auf neue E-Mails</string>
@@ -1073,4 +1070,7 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="general_settings_post_remove_action_show_previous_message">Vorherige Nachricht anzeigen</string>
     <string name="general_settings_post_remove_action_show_next_message">Nächste Nachricht anzeigen</string>
     <string name="general_settings_post_remove_action_title">Nach dem Löschen oder Verschieben einer Nachricht</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">Bei der aktuellen Nachricht bleiben</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Nachdem eine Nachricht als ungelesen markiert wurde</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">Zurück zur Nachrichtenliste</string>
 </resources>

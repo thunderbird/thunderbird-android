@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_oauth_sign_in_with_google_button">Đăng nhập bằng Google</string>
+    <string name="account_oauth_loading_error">Đăng nhập OAuth không thành công</string>
+    <string name="account_oauth_error_failed">Việc ủy quyền không thành công với lỗi sau: <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_error_browser_not_available">Ứng dụng không thể tìm thấy trình duyệt dùng để cấp quyền truy cập vào tài khoản của bạn.</string>
+    <string name="account_oauth_error_not_supported">OAuth 2.0 hiện không được nhà cung cấp này hỗ trợ.</string>
+    <string name="account_oauth_error_canceled">Đã hủy ủy quyền</string>
+    <string name="account_oauth_loading_message">Đăng nhập bằng OAuth</string>
+    <string name="account_oauth_sign_in_description">Chúng tôi sẽ chuyển hướng bạn đến nhà cung cấp email của bạn để đăng nhập. Bạn cần cấp cho ứng dụng quyền truy cập vào tài khoản email của mình.</string>
+    <string name="account_oauth_sign_in_button">Đăng nhập</string>
+</resources>

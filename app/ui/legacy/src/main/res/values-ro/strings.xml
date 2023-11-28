@@ -1003,9 +1003,6 @@ Poți păstra acest mesaj și să îl folosești drept copie de siguranță a ch
     <string name="ac_transfer_error_send">A apărut o eroare la trimiterea mesajului. Te rog verifică conexiunea la rețea și setările serverului de trimitere.</string>
     <string name="switch_on">Pornit</string>
     <string name="switch_off">Oprit</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Permite accesul contactelor</string>
-    <string name="permission_contacts_rationale_message">Pentru a putea oferi sugestii de contacte și a afișa numele și pozele contactelor, aplicația are nevoie de acces la contactele tale.</string>
     <string name="generic_loading_error">A apărut o eroare la încărcarea datelor</string>
     <string name="push_notification_state_initializing">Inițializare…</string>
     <string name="push_notification_state_listening">Așteptând noi e-mailuri</string>

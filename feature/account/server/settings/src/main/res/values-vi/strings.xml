@@ -1,2 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_settings_validation_error_server_required">Tên máy chủ là bắt buộc.</string>
+    <string name="account_server_settings_validation_error_username_required">Tên người dùng là bắt buộc.</string>
+    <string name="account_server_settings_outgoing_top_bar_title">Thiết đặt máy chủ thư đi</string>
+    <string name="account_server_settings_validation_error_password_required">Mật khẩu là bắt buộc.</string>
+    <string name="account_server_settings_incoming_imap_send_client_id_label">Gửi ID máy khách</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
+    <string name="account_server_settings_authentication_none">Không</string>
+    <string name="account_server_settings_authentication_password_encrypted">Mật khẩu được mã hóa</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">Tự động phát hiện không gian tên IMAP</string>
+    <string name="account_server_settings_incoming_top_bar_title">Thiết đặt máy chủ thư đến</string>
+    <string name="account_server_settings_authentication_password_cleartext">Mật khẩu thông thường</string>
+    <string name="account_server_settings_password_authentication_title">Xác minh danh tính của bạn</string>
+    <string name="account_server_settings_authentication_label">Xác thực</string>
+    <string name="account_server_settings_connection_security_none">Không</string>
+    <string name="account_server_settings_port_label">Cổng</string>
+    <string name="account_server_settings_incoming_imap_compression_label">Sử dụng tính năng nén</string>
+    <string name="account_server_settings_validation_error_port_required">Cổng là bắt buộc.</string>
+    <string name="account_server_settings_authentication_client_certificate">Chứng chỉ máy khách</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">Tiền tố đường dẫn IMAP</string>
+    <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
+    <string name="account_server_settings_protocol_type_label">Giao thức</string>
+    <string name="account_server_settings_password_authentication_subtitle">Mở khóa để xem mật khẩu của bạn</string>
+    <string name="account_server_settings_username_label">Tên tài khoản</string>
+    <string name="account_server_settings_validation_error_port_invalid">Cổng không hợp lệ (phải là 1–65535).</string>
+    <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
+    <string name="account_server_settings_client_certificate_label">Chứng chỉ máy khách</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">Tiền tố IMAP không được để trống.</string>
+    <string name="account_server_settings_client_certificate_none_selected">Không</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">Để xem mật khẩu của bạn tại đây, hãy bật khóa màn hình trên thiết bị này.</string>
+    <string name="account_server_settings_server_label">Máy chủ</string>
+    <string name="account_server_settings_security_label">Bảo vệ</string>
+</resources>

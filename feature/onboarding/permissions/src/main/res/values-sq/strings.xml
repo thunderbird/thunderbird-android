@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_permissions_contacts_description">Lejoni hyrje, për të qenë në gjendje të jepen sugjerime kontaktesh dhe për të shfaqur emra dhe foto kontaktesh.</string>
+    <string name="onboarding_permissions_notifications_description">Aktivizoni njoftimet, që të mos humbni email-e.</string>
+    <string name="onboarding_permissions_notifications_title">Njoftime</string>
+    <string name="onboarding_permissions_screen_title">Përmirësoni përdorimin</string>
+    <string name="onboarding_permissions_contacts_title">Kontakte</string>
+    <string name="onboarding_permissions_allow_button">Lejoji</string>
+    <string name="onboarding_permissions_skip_button">Anashkaloje</string>
+</resources>

@@ -880,8 +880,6 @@
     <string name="ac_transfer_error_send">Došlo je do greške prilikom slanja poruke. Molimo provjerite da li ste povezani na mrežu i postavke izlaznog servera.</string>
     <string name="switch_on">Uključeno</string>
     <string name="switch_off">Isključeno</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Dopusti pristup kontaktima</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
     <string name="swipe_action_select">Označi</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->

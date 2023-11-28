@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_permissions_contacts_description">Cho phép truy cập để có thể cung cấp đề xuất liên hệ và hiển thị tên và ảnh liên hệ.</string>
+    <string name="onboarding_permissions_notifications_description">Bật thông báo để không bỏ lỡ bất kỳ email nào.</string>
+    <string name="onboarding_permissions_notifications_title">Thông báo</string>
+    <string name="onboarding_permissions_screen_title">Cải thiện trải nghiệm</string>
+    <string name="onboarding_permissions_contacts_title">Danh bạ</string>
+    <string name="onboarding_permissions_allow_button">Cho phép</string>
+    <string name="onboarding_permissions_skip_button">Bỏ qua</string>
+</resources>

@@ -994,9 +994,6 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="ac_transfer_error_send">Ett fel uppstod under tiden meddelandet skickades. Kontrollera din nätverksanslutning och utgående serverkonfiguration.</string>
     <string name="switch_on">På</string>
     <string name="switch_off">Av</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Tillåt åtkomst till kontakter</string>
-    <string name="permission_contacts_rationale_message">För att kunna ge kontaktförslag och visa kontaktnamn och foton behöver appen tillgång till dina kontakter.</string>
     <string name="generic_loading_error">Ett fel uppstod när data lästes in</string>
     <string name="push_notification_state_initializing">Initierar…</string>
     <string name="push_notification_state_listening">Väntar på nya e-postmeddelanden</string>
@@ -1074,4 +1071,8 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="general_settings_post_remove_action_show_previous_message">Visa förra meddelandet</string>
     <string name="general_settings_post_remove_action_show_next_message">Visa nästa meddelande</string>
     <string name="general_settings_post_remove_action_title">Efter radering eller flytt av ett meddelande</string>
+    <string name="account_setup_check_settings_title">" "</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">Stanna på nuvarande meddelande</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Efter att ha markerat ett meddelande som oläst</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">Återgå till meddelandelistan</string>
 </resources>

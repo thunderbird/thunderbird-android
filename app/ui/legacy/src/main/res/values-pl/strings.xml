@@ -1008,9 +1008,6 @@ Tą wiadomość można zachować i użyć w formie kopii zapasowej twojego klucz
     <string name="ac_transfer_error_send">Podczas wysyłania wiadomości wystąpił błąd. Sprawdź połączenie sieciowe oraz adres i konfigurację serwera poczty wychodzącej.</string>
     <string name="switch_on">Włącz</string>
     <string name="switch_off">Wyłącz</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Pozwól na dostęp do kontaktów</string>
-    <string name="permission_contacts_rationale_message">Aby włączyć sugestie kontaktów i wyświetlać nazwy oraz zdjęcia, aplikacja wymaga dostępu do kontaktów.</string>
     <string name="generic_loading_error">Podczas ładowania danych wystąpił błąd</string>
     <string name="push_notification_state_initializing">Inicjowanie…</string>
     <string name="push_notification_state_listening">Oczekiwanie na nowe e-maile</string>
@@ -1089,4 +1086,7 @@ Tą wiadomość można zachować i użyć w formie kopii zapasowej twojego klucz
     <string name="general_settings_post_remove_action_show_next_message">Pokaż następną wiadomość</string>
     <string name="general_settings_post_remove_action_title">Po usunięciu lub przeniesieniu wiadomości</string>
     <string name="account_setup_check_settings_title">" "</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">Pozostań przy bieżącej wiadomości</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Po oznaczeniu wiadomości jako nieprzeczytanej</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">Wróć do listy wiadomości</string>
 </resources>

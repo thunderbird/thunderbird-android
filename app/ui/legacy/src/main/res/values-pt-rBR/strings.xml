@@ -159,7 +159,7 @@
     <string name="special_mailbox_name_drafts">Rascunhos</string>
     <string name="special_mailbox_name_trash">Lixeira</string>
     <string name="special_mailbox_name_sent">Enviadas</string>
-    <string name="send_failure_subject">Algumas mensagens não foram enviadas</string>
+    <string name="send_failure_subject">Não foi possível enviar algumas mensagens</string>
     <string name="version">Versão</string>
     <string name="debug_enable_debug_logging_title">Habilitar relatório de depuração</string>
     <string name="debug_enable_debug_logging_summary">Relatar informações de diagnósticos adicionais</string>
@@ -183,9 +183,9 @@
     <string name="message_compose_reply_header_fmt_with_date">Em <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> escreveu:</string>
     <string name="message_compose_error_no_recipients">Você deve incluir ao menos um destinatário.</string>
     <string name="compose_error_incomplete_recipient">O campo destinatário está incompleto!</string>
-    <string name="error_contact_address_not_found">Não foi possível encontrar um endereço de e-mail para este contato.</string>
+    <string name="error_contact_address_not_found">Não foi possível encontrar nenhum endereço de e-mail para este contato.</string>
     <string name="message_compose_attachments_skipped_toast">Alguns anexos não podem ser encaminhados porque não foram baixados.</string>
-    <string name="message_compose_attachments_forward_toast">Esta mensagem não pode ser encaminhada porque alguns anexos não foram baixados. </string>
+    <string name="message_compose_attachments_forward_toast">Esta mensagem não pode ser encaminhada porque alguns anexos não foram baixados.</string>
     <string name="message_compose_show_quoted_text_action">Incluir mensagem citada</string>
     <string name="message_compose_description_delete_quoted_text">Remover o texto citado</string>
     <string name="message_compose_description_edit_quoted_text">Editar o texto citado</string>
@@ -1003,9 +1003,6 @@ Você pode guardar esta mensagem e usá-la como um backup da sua chave secreta. 
     <string name="ac_transfer_error_send">Ocorreu um erro durante o envio da mensagem. Por favor, verifique a conectividade da sua rede e as configurações de seu servidor de envio.</string>
     <string name="switch_on">On</string>
     <string name="switch_off">Desativado</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Permitir acesso aos contatos</string>
-    <string name="permission_contacts_rationale_message">Para fornecer sugestões e exibir nomes e fotos de contatos, o app precisa de ter acesso aos seus contatos.</string>
     <string name="generic_loading_error">Ocorreu um erro durante o carregamento dos dados</string>
     <string name="push_notification_state_initializing">Iniciando…</string>
     <string name="push_notification_state_listening">Aguardando novas mensagens</string>

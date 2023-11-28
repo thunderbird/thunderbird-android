@@ -939,9 +939,6 @@ Podes conservar esta mensaxe e usala como copia de seguridade da túa chave secr
     <string name="ac_transfer_error_send">Produciuse un erro ao enviar a mensaxe. Comprobe a conectividade da súa rede e a configuración do servidor de saída.</string>
     <string name="switch_on">Acender</string>
     <string name="switch_off">Apagar</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Permitir acceso aos contactos</string>
-    <string name="permission_contacts_rationale_message">Para poder proporcionar suxestións de contactos e amosar os nomes e as fotos dos contactos, o aplicativo precisa acceder aos teus contactos.</string>
     <string name="generic_loading_error">Ocorreu un erro mentres se estaban cargando os datos</string>
     <string name="push_notification_state_initializing">Iniciando…</string>
     <string name="push_notification_state_listening">Agardando por novos correos</string>

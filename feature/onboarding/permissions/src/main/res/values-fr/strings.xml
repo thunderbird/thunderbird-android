@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_permissions_contacts_description">Autoriser l’accès afin de donner des suggestions de contact et d’afficher le nom et la photo des contacts.</string>
+    <string name="onboarding_permissions_notifications_description">Activation des notifications afin que vous ne ratiez aucun courriel.</string>
+    <string name="onboarding_permissions_notifications_title">Notifications</string>
+    <string name="onboarding_permissions_screen_title">Amélioration de l’expérience</string>
+    <string name="onboarding_permissions_contacts_title">Contacts</string>
+    <string name="onboarding_permissions_allow_button">Autoriser</string>
+    <string name="onboarding_permissions_skip_button">Ignorer</string>
+</resources>

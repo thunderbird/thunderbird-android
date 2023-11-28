@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_permissions_screen_title">Migliora l\'esperienza</string>
+    <string name="onboarding_permissions_contacts_title">Contatti</string>
+    <string name="onboarding_permissions_contacts_description">Consenti l\'accesso ai contatti per ricevere suggerimenti e visualizzare nomi e foto profilo</string>
+    <string name="onboarding_permissions_notifications_description">Attiva le notifiche per non perdere nessuna email</string>
+    <string name="onboarding_permissions_notifications_title">Notifiche</string>
+    <string name="onboarding_permissions_allow_button">Consenti</string>
+    <string name="onboarding_permissions_skip_button">Salta</string>
+</resources>

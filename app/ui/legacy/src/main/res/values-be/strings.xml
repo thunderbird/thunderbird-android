@@ -1009,9 +1009,6 @@
     <string name="ac_transfer_error_send">Падчас адпраўлення ліста адбылася памылка. Калі ласка, праверце злучэнне і канфігурацыю сервера выходнай пошты.</string>
     <string name="switch_on">Укл</string>
     <string name="switch_off">Выкл</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Дазволіць доступ да кантактаў</string>
-    <string name="permission_contacts_rationale_message">Для вываду прапаноў імёнаў і фота праграме неабходна мець доступ да кантактаў.</string>
     <string name="generic_loading_error">Падчас загрузкі даных адбылася памылка</string>
     <string name="push_notification_state_initializing">Ініцыялізацыя…</string>
     <string name="push_notification_state_listening">Чаканне новых лістоў</string>

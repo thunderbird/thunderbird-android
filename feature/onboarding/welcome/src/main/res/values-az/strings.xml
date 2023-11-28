@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="onboarding_welcome_start_button">Начало</string>
-    <string name="onboarding_welcome_title">К-9 Поща</string>
-    <string name="onboarding_welcome_message">Добре дошли в К-9 Mail, имейл клиентът за Андроид, създаден с цел повишена сигурност, лесна настройка и безпроблемно управление на всички ваши имейл акаунти.</string>
-    <string name="onboarding_welcome_import_button">Прехвърляне на настройки</string>
+    <string name="onboarding_welcome_start_button">Başlat</string>
+    <string name="onboarding_welcome_title">K-9 Mail</string>
+    <string name="onboarding_welcome_message">K-9 Mail-ə Xoş Gəlmisiniz!
+\nTəkmil təhlükəsizlik, rahat fərdiləşdirmə və bütün e-poçt hesablarınızın qüsursuz idarə edilməsi üçün tərtib edilən Android e-poçt müştərisidir.</string>
+    <string name="onboarding_welcome_import_button">Tənzimləmələri idxal et</string>
 </resources>

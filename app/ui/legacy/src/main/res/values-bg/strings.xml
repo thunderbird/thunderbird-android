@@ -915,9 +915,6 @@
     <string name="ac_transfer_error_send">Възникна грешка при изпращане на съобщението. Моля, проверете връзката си с интернет или настройките на изходящия сървър.</string>
     <string name="switch_on">Включерно</string>
     <string name="switch_off">Изключено</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Позволи достъп до контакти</string>
-    <string name="permission_contacts_rationale_message">За да може да предоставя предложения за контакти и да показва имена на контакти и снимки, приложението се нуждае от достъп до вашите контакти.</string>
     <string name="generic_loading_error">Възникна грешка при зареждането на данните</string>
     <string name="push_notification_state_initializing">Инициализира…</string>
     <string name="push_notification_state_listening">Изчаква за нови съобщения</string>

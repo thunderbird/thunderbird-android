@@ -558,7 +558,7 @@
     <string name="account_settings_notification_light_cyan">シアン</string>
     <string name="account_settings_notification_light_magenta">マゼンタ</string>
     <string name="account_settings_composition_title">メッセージ作成オプション</string>
-    <string name="account_settings_composition_label">作成時のデフォルト</string>
+    <string name="account_settings_composition_label">作成時の既定</string>
     <string name="account_settings_composition_summary">既定の差出人、Bcc、署名を設定します</string>
     <string name="account_settings_identities_label">名義を管理</string>
     <string name="account_settings_identities_summary">別の差出人アドレスと署名をセットアップします</string>
@@ -962,7 +962,7 @@
     <string name="account_settings_crypto_prefer_encrypt">Autocrypt Mutual (相互) モード</string>
     <string name="dialog_autocrypt_mutual_title">Autocrypt Mutual (相互) モード</string>
     <string name="dialog_autocrypt_mutual_description_1">通常、メッセージは選択したときや、暗号化されたメッセージに返信するときに暗号化されます。</string>
-    <string name="dialog_autocrypt_mutual_description_2">送信者と受信者の両方が Mutual (相互) モードを有効にすると、デフォルトで暗号化が有効になります。</string>
+    <string name="dialog_autocrypt_mutual_description_2">送信者と受信者の両方が Mutual (相互) モードを有効にすると、既定で暗号化が有効になります。</string>
     <string name="dialog_autocrypt_mutual_learn_more">詳細は <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">ここをクリック</a> してください。</string>
     <string name="general_settings_title">一般設定</string>
     <string name="dialog_openkeychain_info_title">OpenPGP アプリがインストールされていません</string>
@@ -988,9 +988,6 @@
     <string name="ac_transfer_error_send">メッセージの送信中にエラーが発生しました。ネットワーク接続と送信サーバーの設定を確認してください。</string>
     <string name="switch_on">オン</string>
     <string name="switch_off">オフ</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">連絡先へのアクセスを許可</string>
-    <string name="permission_contacts_rationale_message">連絡先をサジェストできるようにし、連絡先の名前と画像を表示するにはアプリが連絡先にアクセスする必要があります。</string>
     <string name="generic_loading_error">データの読み込み中にエラーが発生しました</string>
     <string name="push_notification_state_initializing">初期化中…</string>
     <string name="push_notification_state_listening">新着メッセージ待機中</string>
@@ -1070,4 +1067,7 @@
     <string name="general_settings_post_remove_action_show_next_message">次のメッセージを表示</string>
     <string name="general_settings_post_remove_action_title">メッセージの移動や削除の後</string>
     <string name="account_setup_check_settings_title">" "</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">現在のメッセージに留まる</string>
+    <string name="general_settings_post_mark_as_unread_action_title">メッセージを既読にした後</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">メッセージ一覧に戻る</string>
 </resources>

@@ -994,9 +994,6 @@
     <string name="ac_transfer_error_send">Προέκυψε ένα σφάλμα κατά την αποστολή του μηνύματος. Παρακαλώ ελέγξτε τη συνδεσιμότητα του δικτύου σας και τη διαμόρφωση του εξερχόμενου εξυπηρετητή.</string>
     <string name="switch_on">Ενεργό</string>
     <string name="switch_off">Ανενεργό</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Να επιτρέπεται η πρόσβαση στις επαφές</string>
-    <string name="permission_contacts_rationale_message">Για να είναι δυνατή η παροχή προτάσεων επαφών και η εμφάνιση των ονομάτων και φωτογραφιών των επαφών, η εφαρμογή χρειάζεται πρόσβαση στις επαφές σας.</string>
     <string name="generic_loading_error">Προέκυψε σφάλμα κατά τη φόρτωση των δεδομένων</string>
     <string name="push_notification_state_initializing">Αρχικοποίηση…</string>
     <string name="push_notification_state_listening">Αναμονή για νέα μηνύματα</string>

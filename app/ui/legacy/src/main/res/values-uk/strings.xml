@@ -46,7 +46,7 @@
     <string name="choose_folder_move_title">Посунути до…</string>
     <string name="choose_folder_copy_title">Копіювати до…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> вибрано</string>
-    <string name="next_action">Наступний</string>
+    <string name="next_action">Далі</string>
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">Гаразд</string>
     <string name="cancel_action">Скасувати</string>
@@ -257,7 +257,7 @@
     <!--Title of the setting to specify the density of the message list-->
     <string name="general_settings_message_list_density_title">Щільність</string>
     <string name="general_settings_ui_density_compact">Компактна</string>
-    <string name="general_settings_ui_density_default">Типовий</string>
+    <string name="general_settings_ui_density_default">Типова</string>
     <string name="general_settings_ui_density_relaxed">Розслаблена</string>
     <string name="global_settings_privacy_hide_useragent">Приховати поштовий клієнт</string>
     <string name="global_settings_privacy_hide_useragent_detail">Прибрати K-9 User-Agent з поштових заголовків</string>
@@ -1008,9 +1008,6 @@
     <string name="ac_transfer_error_send">При надсиланні повідомлення сталася помилка. Перевірте підключення до мережі та налаштування вихідного сервера.</string>
     <string name="switch_on">Увімкнено</string>
     <string name="switch_off">Вимкнено</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Дозволити доступ до контактів</string>
-    <string name="permission_contacts_rationale_message">Цей додаток потребує доступу до ваших контактів, щоб мати можливість відображати імена і фотографії контактів та відображати пропозиції під час їх введення.</string>
     <string name="generic_loading_error">Сталася помилка при завантаженні даних</string>
     <string name="push_notification_state_initializing">Ініціалізація…</string>
     <string name="push_notification_state_listening">Очікування нових листів</string>
@@ -1084,4 +1081,11 @@
     <string name="background_work_notification_remove_account">Видалення облікового запису…</string>
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="message_list_content_description_unread_prefix">Непрочитані, %s</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">Залишатися на поточному повідомленні</string>
+    <string name="general_settings_post_remove_action_return_to_list">Повернутися в список повідомлень</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Після позначання повідомлення як непрочитане</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">Повернутися в список повідомлень</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Показувати попереднє повідомлення</string>
+    <string name="general_settings_post_remove_action_show_next_message">Показувати наступне повідомлення</string>
+    <string name="general_settings_post_remove_action_title">Після видалення або переміщення повідомлення</string>
 </resources>

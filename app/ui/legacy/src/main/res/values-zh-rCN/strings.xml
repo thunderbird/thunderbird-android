@@ -983,9 +983,6 @@
     <string name="ac_transfer_error_send">发送邮件时出现错误。请检查您的网络连接与发件服务器设置。</string>
     <string name="switch_on">开</string>
     <string name="switch_off">关</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">允许访问联系人</string>
-    <string name="permission_contacts_rationale_message">为了能够提供联系人建议，并显示联系人姓名和照片，应用程序需要访问你的联系人。</string>
     <string name="generic_loading_error">加载数据期间发生了一个错误</string>
     <string name="push_notification_state_initializing">初始化·…</string>
     <string name="push_notification_state_listening">正在等待新邮件</string>
@@ -1064,4 +1061,7 @@
     <string name="general_settings_post_remove_action_show_next_message">显示下一封邮件</string>
     <string name="general_settings_post_remove_action_title">删除或移动邮件之后</string>
     <string name="account_setup_check_settings_title">"      "</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">停留在当前邮件</string>
+    <string name="general_settings_post_mark_as_unread_action_title">标记邮件为未读后</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">回到邮件列表</string>
 </resources>

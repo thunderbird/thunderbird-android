@@ -31,5 +31,10 @@
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">E-postadress krävs.</string>
-    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">E-post adressen är ogiltig.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Detta känns inte igen som en giltig e-postadress.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Denna e-postadress är inte tillåten.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Den här e-postadressen stöds inte.</string>
+    <string name="account_setup_create_account_created">Kontot har skapats framgångsrikt</string>
+    <string name="account_setup_create_account_creating">Skapar konto…</string>
+    <string name="account_setup_create_account_error">Ett fel uppstod när kontot skulle skapas</string>
 </resources>

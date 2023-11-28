@@ -993,9 +993,6 @@ Jo kinne dit berjocht bewarje as reservekopy foar jo geheime kaai. As jo dit dwa
     <string name="ac_transfer_error_send">Der is in flater bard wylst it ferstjoeren fan it berjocht. Kontrolearje de netwurkferbining en útgeande-serverkonfiguraasje.</string>
     <string name="switch_on">Op</string>
     <string name="switch_off">Ut</string>
-    <!--permissions-->
-    <string name="permission_contacts_rationale_title">Tagong ta kontakten tastean</string>
-    <string name="permission_contacts_rationale_message">Om kontaktsuggestjes biede te kinnen en om nammen en/of foto\'s fan kontakten wer te jaan, hat de app tagong nedich ta jo kontaktelist.</string>
     <string name="generic_loading_error">Der is in flater bard by it laden fan de gegevens</string>
     <string name="push_notification_state_initializing">Oan it inisjalisearjen…</string>
     <string name="push_notification_state_listening">Yn ôfwachting fan nije e-mailberjochten</string>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_permissions_contacts_description">Permet l\'accés per poder proporcionar suggeriments dels contactes i mostrar-ne els noms i les fotografies.</string>
+    <string name="onboarding_permissions_notifications_description">Activi les notificacions per no perdre\'s cap correu electrònic.</string>
+    <string name="onboarding_permissions_notifications_title">Notificacions</string>
+    <string name="onboarding_permissions_screen_title">Millora l\'experiència</string>
+    <string name="onboarding_permissions_contacts_title">Contactes</string>
+    <string name="onboarding_permissions_allow_button">Permetre</string>
+    <string name="onboarding_permissions_skip_button">Ometre</string>
+</resources>

@@ -9,7 +9,7 @@
     <string name="account_server_validation_error_unknown">Error desconocido</string>
     <string name="account_server_validation_sign_in">Seguir con el inicio de sesión</string>
     <string name="account_server_validation_outgoing_loading_error">No se han podido comprobar los ajustes del servidor saliente</string>
-    <string name="account_server_validation_incoming_success">Los ajustes del servidor entrante parecen válidos</string>
-    <string name="account_server_validation_incoming_loading_error">Error al comprobar la configuración del servidor entrante</string>
+    <string name="account_server_validation_incoming_success">Los ajustes del servidor entrante parecen ser correctos</string>
+    <string name="account_server_validation_incoming_loading_error">No se han podido comprobar los ajustes del servidor entrante</string>
     <string name="account_server_validation_error_server">Error del servidor</string>
 </resources>
