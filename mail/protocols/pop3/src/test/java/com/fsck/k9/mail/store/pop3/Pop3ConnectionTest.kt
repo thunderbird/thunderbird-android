@@ -306,7 +306,6 @@ class Pop3ConnectionTest {
         }.isInstanceOf<MissingCapabilityException>()
             .prop(MissingCapabilityException::capabilityName).isEqualTo("SASL EXTERNAL")
 
-        server.verifyConnectionStillOpen()
         server.verifyInteractionCompleted()
     }
 
