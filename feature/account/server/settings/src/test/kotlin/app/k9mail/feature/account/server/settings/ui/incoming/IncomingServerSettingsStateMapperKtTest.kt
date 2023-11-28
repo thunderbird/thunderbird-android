@@ -26,7 +26,12 @@ class IncomingServerSettingsStateMapperKtTest {
 
         val result = accountState.toIncomingServerSettingsState()
 
-        assertThat(result).isEqualTo(State(username = StringInputField(value = "test@example.com")))
+        assertThat(result).isEqualTo(
+            State(
+                username = StringInputField(value = "test@example.com"),
+                isLoading = false,
+            ),
+        )
     }
 
     @Test

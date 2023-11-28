@@ -24,7 +24,12 @@ class OutgoingServerSettingsStateMapperKtTest {
 
         val result = accountState.toOutgoingServerSettingsState()
 
-        assertThat(result).isEqualTo(State(username = StringInputField(value = "test@example.com")))
+        assertThat(result).isEqualTo(
+            State(
+                username = StringInputField(value = "test@example.com"),
+                isLoading = false,
+            ),
+        )
     }
 
     @Test
@@ -41,6 +46,7 @@ class OutgoingServerSettingsStateMapperKtTest {
             State(
                 username = StringInputField(value = "test@domain.example"),
                 password = StringInputField(value = INCOMING_SERVER_PASSWORD),
+                isLoading = false,
             ),
         )
     }

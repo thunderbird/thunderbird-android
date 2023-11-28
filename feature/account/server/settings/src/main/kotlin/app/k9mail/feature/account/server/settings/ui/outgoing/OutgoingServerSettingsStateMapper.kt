@@ -17,6 +17,8 @@ fun AccountState.toOutgoingServerSettingsState(): State {
         ?: State(
             username = StringInputField(value = emailAddress ?: ""),
             password = StringInputField(value = password),
+
+            isLoading = false,
         )
 }
 
