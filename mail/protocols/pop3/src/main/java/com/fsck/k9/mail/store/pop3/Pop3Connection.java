@@ -26,16 +26,26 @@ import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.MissingCapabilityException;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import javax.net.ssl.SSLException;
 
-import static com.fsck.k9.mail.CertificateValidationException.Reason.MissingCapability;
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_POP3;
 import static com.fsck.k9.mail.NetworkTimeouts.SOCKET_CONNECT_TIMEOUT;
 import static com.fsck.k9.mail.NetworkTimeouts.SOCKET_READ_TIMEOUT;
-import static com.fsck.k9.mail.store.pop3.Pop3Commands.*;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.AUTH_CRAM_MD5_CAPABILITY;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.AUTH_EXTERNAL_CAPABILITY;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.AUTH_PLAIN_CAPABILITY;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.CAPA_COMMAND;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.PASS_COMMAND;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.SASL_CAPABILITY;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.STLS_CAPABILITY;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.STLS_COMMAND;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.TOP_CAPABILITY;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.UIDL_CAPABILITY;
+import static com.fsck.k9.mail.store.pop3.Pop3Commands.USER_COMMAND;
 
 
 class Pop3Connection {
@@ -159,8 +169,7 @@ class Pop3Connection {
             }
             capabilities = getCapabilities();
         } else {
-            throw new CertificateValidationException(
-                    "STARTTLS connection security not available");
+            throw new MissingCapabilityException(STLS_CAPABILITY);
         }
 
     }
@@ -188,8 +197,7 @@ class Pop3Connection {
                 if (capabilities.external) {
                     authExternal();
                 } else {
-                    // Provide notification to user of a problem authenticating using client certificates
-                    throw new CertificateValidationException(MissingCapability);
+                    throw new MissingCapabilityException(SASL_CAPABILITY + " " + AUTH_EXTERNAL_CAPABILITY);
                 }
                 break;
 
