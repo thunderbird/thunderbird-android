@@ -17,7 +17,7 @@ enum class EmailDisplayCount(
 
     companion object {
         val DEFAULT = MESSAGES_25
-        fun all() = values().toList().toImmutableList()
+        fun all() = entries.toImmutableList()
 
         fun fromCount(count: Int): EmailDisplayCount {
             return all().find { it.count == count } ?: DEFAULT

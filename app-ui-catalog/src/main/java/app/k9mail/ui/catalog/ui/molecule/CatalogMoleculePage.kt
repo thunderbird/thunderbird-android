@@ -14,6 +14,6 @@ enum class CatalogMoleculePage(
     }
 
     companion object {
-        fun all() = values().toList().toImmutableList()
+        fun all() = entries.toImmutableList()
     }
 }

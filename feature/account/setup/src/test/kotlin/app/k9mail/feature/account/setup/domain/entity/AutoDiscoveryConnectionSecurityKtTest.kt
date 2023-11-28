@@ -9,7 +9,7 @@ class AutoDiscoveryConnectionSecurityKtTest {
 
     @Test
     fun `should map all AutoDiscoveryConnectionSecurities`() {
-        val securities = AutoDiscoveryConnectionSecurity.values()
+        val securities = AutoDiscoveryConnectionSecurity.entries
 
         for (security in securities) {
             val connectionSecurity = security.toConnectionSecurity()

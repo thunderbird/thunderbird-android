@@ -19,7 +19,7 @@ enum class EmailCheckFrequency(
 
     companion object {
         val DEFAULT = EVERY_HOUR
-        fun all() = values().toList().toImmutableList()
+        fun all() = entries.toImmutableList()
 
         fun fromMinutes(minutes: Int): EmailCheckFrequency {
             return all().find { it.minutes == minutes } ?: DEFAULT

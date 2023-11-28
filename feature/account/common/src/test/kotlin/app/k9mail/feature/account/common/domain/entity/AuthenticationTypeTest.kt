@@ -9,7 +9,7 @@ class AuthenticationTypeTest {
 
     @Test
     fun `should map all AuthenticationType to AuthTypes`() {
-        val types = AuthenticationType.values()
+        val types = AuthenticationType.entries
 
         for (type in types) {
             val authType = type.toAuthType()
@@ -28,7 +28,7 @@ class AuthenticationTypeTest {
 
     @Test
     fun `should map all AuthTypes to AuthenticationTypes`() {
-        val types = AuthType.values()
+        val types = AuthType.entries
 
         for (type in types) {
             val authenticationType = type.toAuthenticationType()

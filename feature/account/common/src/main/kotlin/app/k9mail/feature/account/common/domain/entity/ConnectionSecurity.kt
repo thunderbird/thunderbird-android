@@ -13,7 +13,7 @@ enum class ConnectionSecurity {
 
     companion object {
         val DEFAULT = TLS
-        fun all() = values().toList().toImmutableList()
+        fun all() = entries.toImmutableList()
     }
 }
 
