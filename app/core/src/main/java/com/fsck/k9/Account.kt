@@ -670,7 +670,7 @@ class Account(override val uuid: String) : BaseAccount {
 
         companion object {
             fun fromInt(initialSetting: Int): DeletePolicy {
-                return values().find { it.setting == initialSetting } ?: error("DeletePolicy $initialSetting unknown")
+                return entries.find { it.setting == initialSetting } ?: error("DeletePolicy $initialSetting unknown")
             }
         }
     }

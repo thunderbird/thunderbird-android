@@ -12,7 +12,7 @@ class IncomingProtocolTypeTest {
         val protocolTypes = IncomingProtocolType.all()
 
         assertThat(protocolTypes).isEqualTo(
-            IncomingProtocolType.values().toList(),
+            IncomingProtocolType.entries,
         )
     }
 

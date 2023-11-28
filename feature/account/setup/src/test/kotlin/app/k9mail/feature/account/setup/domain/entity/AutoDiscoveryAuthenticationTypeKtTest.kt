@@ -9,7 +9,7 @@ class AutoDiscoveryAuthenticationTypeKtTest {
 
     @Test
     fun `should map all AutoDiscoveryAuthenticationTypes`() {
-        val types = AutoDiscoveryAuthenticationType.values()
+        val types = AutoDiscoveryAuthenticationType.entries
 
         for (type in types) {
             val authenticationType = type.toAuthenticationType()

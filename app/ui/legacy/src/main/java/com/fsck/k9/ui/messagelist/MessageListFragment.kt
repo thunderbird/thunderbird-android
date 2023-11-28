@@ -679,7 +679,7 @@ class MessageListFragment :
     }
 
     fun onCycleSort() {
-        val sortTypes = SortType.values()
+        val sortTypes = SortType.entries
         val currentIndex = sortTypes.indexOf(sortType)
         val newIndex = if (currentIndex == sortTypes.lastIndex) 0 else currentIndex + 1
         val nextSortType = sortTypes[newIndex]
@@ -763,6 +763,7 @@ class MessageListFragment :
                 val cancelText = getString(R.string.dialog_confirm_spam_cancel_button)
                 ConfirmationDialogFragment.newInstance(dialogId, title, message, confirmText, cancelText)
             }
+
             R.id.dialog_confirm_delete -> {
                 val title = getString(R.string.dialog_confirm_delete_title)
                 val selectionSize = activeMessages!!.size
@@ -775,6 +776,7 @@ class MessageListFragment :
                 val cancelText = getString(R.string.dialog_confirm_delete_cancel_button)
                 ConfirmationDialogFragment.newInstance(dialogId, title, message, confirmText, cancelText)
             }
+
             R.id.dialog_confirm_mark_all_as_read -> {
                 val title = getString(R.string.dialog_confirm_mark_all_as_read_title)
                 val message = getString(R.string.dialog_confirm_mark_all_as_read_message)
@@ -782,6 +784,7 @@ class MessageListFragment :
                 val cancelText = getString(R.string.dialog_confirm_mark_all_as_read_cancel_button)
                 ConfirmationDialogFragment.newInstance(dialogId, title, message, confirmText, cancelText)
             }
+
             R.id.dialog_confirm_empty_trash -> {
                 val title = getString(R.string.dialog_confirm_empty_trash_title)
                 val message = getString(R.string.dialog_confirm_empty_trash_message)
@@ -789,6 +792,7 @@ class MessageListFragment :
                 val cancelText = getString(R.string.dialog_confirm_delete_cancel_button)
                 ConfirmationDialogFragment.newInstance(dialogId, title, message, confirmText, cancelText)
             }
+
             else -> {
                 throw RuntimeException("Called showDialog(int) with unknown dialog id.")
             }
@@ -1210,14 +1214,17 @@ class MessageListFragment :
                 onSpamConfirmed(activeMessages!!)
                 activeMessages = null
             }
+
             R.id.dialog_confirm_delete -> {
                 onDeleteConfirmed(activeMessages!!)
                 activeMessage = null
                 adapter.activeMessage = null
             }
+
             R.id.dialog_confirm_mark_all_as_read -> {
                 markAllAsRead()
             }
+
             R.id.dialog_confirm_empty_trash -> {
                 messagingController.emptyTrash(account, null)
             }
@@ -1628,21 +1635,27 @@ class MessageListFragment :
                 SwipeAction.ToggleSelection -> {
                     toggleMessageSelect(item)
                 }
+
                 SwipeAction.ToggleRead -> {
                     setFlag(item, Flag.SEEN, !item.isRead)
                 }
+
                 SwipeAction.ToggleStar -> {
                     setFlag(item, Flag.FLAGGED, !item.isStarred)
                 }
+
                 SwipeAction.Archive -> {
                     onArchive(item.messageReference)
                 }
+
                 SwipeAction.Delete -> {
                     onDelete(listOf(item.messageReference))
                 }
+
                 SwipeAction.Spam -> {
                     onSpam(listOf(item.messageReference))
                 }
+
                 SwipeAction.Move -> {
                     val messageReference = item.messageReference
                     resetSwipedView(messageReference)
@@ -1672,6 +1685,7 @@ class MessageListFragment :
             SwipeAction.Archive -> {
                 !isOutbox && item.account.hasArchiveFolder() && item.folderId != item.account.archiveFolderId
             }
+
             SwipeAction.Delete -> true
             SwipeAction.Move -> !isOutbox && messagingController.isMoveCapable(item.account)
             SwipeAction.Spam -> !isOutbox && item.account.hasSpamFolder() && item.folderId != item.account.spamFolderId
@@ -1967,48 +1981,59 @@ class MessageListFragment :
                     onDelete(selectedMessages)
                     true
                 }
+
                 R.id.mark_as_read -> {
                     setFlagForSelected(Flag.SEEN, true)
                     false
                 }
+
                 R.id.mark_as_unread -> {
                     setFlagForSelected(Flag.SEEN, false)
                     false
                 }
+
                 R.id.flag -> {
                     setFlagForSelected(Flag.FLAGGED, true)
                     false
                 }
+
                 R.id.unflag -> {
                     setFlagForSelected(Flag.FLAGGED, false)
                     false
                 }
+
                 R.id.select_all -> {
                     selectAll()
                     false
                 }
+
                 R.id.archive -> {
                     onArchive(selectedMessages)
                     // TODO: Only finish action mode if all messages have been moved.
                     true
                 }
+
                 R.id.spam -> {
                     onSpam(selectedMessages)
                     // TODO: Only finish action mode if all messages have been moved.
                     true
                 }
+
                 R.id.move -> {
                     onMove(selectedMessages)
                     true
                 }
+
                 R.id.move_to_drafts -> {
                     onMoveToDraftsFolder(selectedMessages)
                     true
                 }
+
                 R.id.copy -> {
                     onCopy(selectedMessages)
                     true
                 }
+
                 else -> return false
             }
 

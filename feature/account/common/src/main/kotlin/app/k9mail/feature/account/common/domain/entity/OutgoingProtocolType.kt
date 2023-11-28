@@ -12,7 +12,7 @@ enum class OutgoingProtocolType(
     companion object {
         val DEFAULT = SMTP
 
-        fun all() = values().toList().toImmutableList()
+        fun all() = entries.toImmutableList()
     }
 }
 

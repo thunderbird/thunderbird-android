@@ -59,7 +59,7 @@ class ConnectionSecurityTest {
 
     @Test
     fun `should map all MailConnectionSecurities to ConnectionSecurities`() {
-        val securities = MailConnectionSecurity.values()
+        val securities = MailConnectionSecurity.entries
 
         for (security in securities) {
             val connectionSecurity = security.toConnectionSecurity()
@@ -76,7 +76,7 @@ class ConnectionSecurityTest {
 
     @Test
     fun `should map to all ConnectionSecurities to MailConnectionSecurities`() {
-        val connectionSecurities = ConnectionSecurity.values()
+        val connectionSecurities = ConnectionSecurity.entries
 
         for (security in connectionSecurities) {
             val mailConnectionSecurity = security.toMailConnectionSecurity()

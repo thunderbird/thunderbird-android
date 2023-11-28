@@ -31,7 +31,7 @@ enum class AuthenticationType(
 
     companion object {
         val DEFAULT = PasswordCleartext
-        fun all() = values().toList().toImmutableList()
+        fun all() = entries.toImmutableList()
 
         fun outgoing() = all()
     }

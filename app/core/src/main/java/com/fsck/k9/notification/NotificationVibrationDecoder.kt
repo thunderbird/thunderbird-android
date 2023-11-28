@@ -14,7 +14,7 @@ class NotificationVibrationDecoder {
 
         val systemPatternArray = systemPattern.toLongArray()
         val repeatCount = systemPattern.size / 2
-        val pattern = VibratePattern.values()
+        val pattern = VibratePattern.entries
             .firstOrNull { vibratePattern ->
                 val testPattern = NotificationVibration.getSystemPattern(vibratePattern, repeatCount)
 
