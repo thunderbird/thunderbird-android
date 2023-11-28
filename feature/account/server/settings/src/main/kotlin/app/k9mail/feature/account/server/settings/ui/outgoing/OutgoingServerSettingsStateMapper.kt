@@ -10,17 +10,28 @@ import app.k9mail.feature.account.common.domain.input.StringInputField
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.State
 import com.fsck.k9.mail.ServerSettings
 
-fun AccountState.toOutgoingServerSettingsState() = outgoingServerSettings?.toOutgoingServerSettingsState()
-    ?: State(username = StringInputField(value = emailAddress ?: ""))
+fun AccountState.toOutgoingServerSettingsState(): State {
+    val password = getOutgoingServerPassword()
 
-private fun ServerSettings.toOutgoingServerSettingsState(): State {
+    return outgoingServerSettings?.toOutgoingServerSettingsState(password)
+        ?: State(
+            username = StringInputField(value = emailAddress ?: ""),
+            password = StringInputField(value = password),
+        )
+}
+
+private fun AccountState.getOutgoingServerPassword(): String {
+    return outgoingServerSettings?.password ?: incomingServerSettings?.password ?: ""
+}
+
+private fun ServerSettings.toOutgoingServerSettingsState(password: String): State {
     return State(
         server = StringInputField(value = host ?: ""),
         security = connectionSecurity.toConnectionSecurity(),
         port = NumberInputField(value = port.toLong()),
         authenticationType = authenticationType.toAuthenticationType(),
         username = StringInputField(value = username),
-        password = StringInputField(value = password ?: ""),
+        password = StringInputField(value = password),
     )
 }
 
