@@ -7,7 +7,7 @@ import app.k9mail.core.featureflag.FeatureFlagKey
 class InMemoryFeatureFlagFactory : FeatureFlagFactory {
     override fun createFeatureCatalog(): List<FeatureFlag> {
         return listOf(
-            FeatureFlag(FeatureFlagKey("new_account_edit"), false),
+            FeatureFlag(FeatureFlagKey("new_account_edit"), true),
         )
     }
 }

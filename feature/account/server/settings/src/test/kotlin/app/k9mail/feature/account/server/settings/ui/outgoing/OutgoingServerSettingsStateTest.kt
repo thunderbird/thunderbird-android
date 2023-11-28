@@ -25,6 +25,9 @@ class OutgoingServerSettingsStateTest {
                 username = StringInputField(),
                 password = StringInputField(),
                 clientCertificateAlias = null,
+
+                isLoading = true,
+                error = null,
             ),
         )
     }

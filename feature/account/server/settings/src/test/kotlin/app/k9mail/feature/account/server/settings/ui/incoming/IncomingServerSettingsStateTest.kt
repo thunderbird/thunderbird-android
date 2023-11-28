@@ -30,6 +30,9 @@ class IncomingServerSettingsStateTest {
                 imapAutodetectNamespaceEnabled = true,
                 imapUseCompression = true,
                 imapSendClientId = true,
+
+                isLoading = true,
+                error = null,
             ),
         )
     }

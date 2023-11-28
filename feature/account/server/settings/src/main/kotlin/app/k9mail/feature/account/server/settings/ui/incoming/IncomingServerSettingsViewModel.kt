@@ -14,10 +14,10 @@ import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSett
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.ViewModel
 
 open class IncomingServerSettingsViewModel(
+    initialState: State = State(),
     override val mode: InteractionMode,
     private val validator: Validator,
     private val accountStateRepository: AccountDomainContract.AccountStateRepository,
-    initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(initialState = initialState), ViewModel {
 
     @Suppress("CyclomaticComplexMethod")

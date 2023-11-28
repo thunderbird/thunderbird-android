@@ -13,10 +13,10 @@ import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSett
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.ViewModel
 
 open class OutgoingServerSettingsViewModel(
+    initialState: State = State(),
     override val mode: InteractionMode,
     private val validator: Validator,
     private val accountStateRepository: AccountDomainContract.AccountStateRepository,
-    initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(initialState = initialState), ViewModel {
 
     override fun event(event: Event) {

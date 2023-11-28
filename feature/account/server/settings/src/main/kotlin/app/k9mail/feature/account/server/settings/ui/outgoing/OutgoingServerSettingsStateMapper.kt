@@ -17,6 +17,8 @@ fun AccountState.toOutgoingServerSettingsState(): State {
         ?: State(
             username = StringInputField(value = emailAddress ?: ""),
             password = StringInputField(value = password),
+
+            isLoading = false,
         )
 }
 
@@ -32,6 +34,9 @@ private fun ServerSettings.toOutgoingServerSettingsState(password: String): Stat
         authenticationType = authenticationType.toAuthenticationType(),
         username = StringInputField(value = username),
         password = StringInputField(value = password),
+
+        isLoading = false,
+        error = null,
     )
 }
 

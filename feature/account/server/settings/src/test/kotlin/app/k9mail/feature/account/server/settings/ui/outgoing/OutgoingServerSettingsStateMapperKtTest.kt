@@ -24,7 +24,12 @@ class OutgoingServerSettingsStateMapperKtTest {
 
         val result = accountState.toOutgoingServerSettingsState()
 
-        assertThat(result).isEqualTo(State(username = StringInputField(value = "test@example.com")))
+        assertThat(result).isEqualTo(
+            State(
+                username = StringInputField(value = "test@example.com"),
+                isLoading = false,
+            ),
+        )
     }
 
     @Test
@@ -41,6 +46,7 @@ class OutgoingServerSettingsStateMapperKtTest {
             State(
                 username = StringInputField(value = "test@domain.example"),
                 password = StringInputField(value = INCOMING_SERVER_PASSWORD),
+                isLoading = false,
             ),
         )
     }
@@ -53,7 +59,7 @@ class OutgoingServerSettingsStateMapperKtTest {
 
         val result = accountState.toOutgoingServerSettingsState()
 
-        assertThat(result).isEqualTo(OUTGOING_STATE)
+        assertThat(result).isEqualTo(OUTGOING_STATE.copy(isLoading = false))
     }
 
     @Test
@@ -68,6 +74,7 @@ class OutgoingServerSettingsStateMapperKtTest {
         assertThat(result).isEqualTo(
             OUTGOING_STATE.copy(
                 password = StringInputField(value = INCOMING_SERVER_PASSWORD),
+                isLoading = false,
             ),
         )
     }
@@ -83,6 +90,7 @@ class OutgoingServerSettingsStateMapperKtTest {
         assertThat(result).isEqualTo(
             OUTGOING_STATE.copy(
                 password = StringInputField(value = ""),
+                isLoading = false,
             ),
         )
     }

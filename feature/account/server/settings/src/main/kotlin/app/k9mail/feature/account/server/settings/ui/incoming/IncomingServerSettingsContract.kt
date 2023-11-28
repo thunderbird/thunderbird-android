@@ -9,6 +9,7 @@ import app.k9mail.feature.account.common.domain.entity.toDefaultPort
 import app.k9mail.feature.account.common.domain.input.NumberInputField
 import app.k9mail.feature.account.common.domain.input.StringInputField
 import app.k9mail.feature.account.common.ui.WithInteractionMode
+import app.k9mail.feature.account.common.ui.loadingerror.LoadingErrorState
 
 interface IncomingServerSettingsContract {
 
@@ -29,7 +30,10 @@ interface IncomingServerSettingsContract {
         val imapPrefix: StringInputField = StringInputField(),
         val imapUseCompression: Boolean = true,
         val imapSendClientId: Boolean = true,
-    )
+
+        override val isLoading: Boolean = true,
+        override val error: Error? = null,
+    ) : LoadingErrorState<Error>
 
     sealed interface Event {
         data class ProtocolTypeChanged(val protocolType: IncomingProtocolType) : Event
@@ -45,15 +49,15 @@ interface IncomingServerSettingsContract {
         data class ImapUseCompressionChanged(val useCompression: Boolean) : Event
         data class ImapSendClientIdChanged(val sendClientId: Boolean) : Event
 
-        object LoadAccountState : Event
+        data object LoadAccountState : Event
 
-        object OnNextClicked : Event
-        object OnBackClicked : Event
+        data object OnNextClicked : Event
+        data object OnBackClicked : Event
     }
 
     sealed interface Effect {
-        object NavigateNext : Effect
-        object NavigateBack : Effect
+        data object NavigateNext : Effect
+        data object NavigateBack : Effect
     }
 
     interface Validator {

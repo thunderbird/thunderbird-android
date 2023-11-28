@@ -8,6 +8,7 @@ import app.k9mail.feature.account.common.domain.entity.toSmtpDefaultPort
 import app.k9mail.feature.account.common.domain.input.NumberInputField
 import app.k9mail.feature.account.common.domain.input.StringInputField
 import app.k9mail.feature.account.common.ui.WithInteractionMode
+import app.k9mail.feature.account.common.ui.loadingerror.LoadingErrorState
 
 interface OutgoingServerSettingsContract {
 
@@ -21,7 +22,10 @@ interface OutgoingServerSettingsContract {
         val username: StringInputField = StringInputField(),
         val password: StringInputField = StringInputField(),
         val clientCertificateAlias: String? = null,
-    )
+
+        override val isLoading: Boolean = true,
+        override val error: Error? = null,
+    ) : LoadingErrorState<Error>
 
     sealed interface Event {
         data class ServerChanged(val server: String) : Event
@@ -32,15 +36,15 @@ interface OutgoingServerSettingsContract {
         data class PasswordChanged(val password: String) : Event
         data class ClientCertificateChanged(val clientCertificateAlias: String?) : Event
 
-        object LoadAccountState : Event
+        data object LoadAccountState : Event
 
-        object OnNextClicked : Event
-        object OnBackClicked : Event
+        data object OnNextClicked : Event
+        data object OnBackClicked : Event
     }
 
     sealed interface Effect {
-        object NavigateNext : Effect
-        object NavigateBack : Effect
+        data object NavigateNext : Effect
+        data object NavigateBack : Effect
     }
 
     interface Validator {
