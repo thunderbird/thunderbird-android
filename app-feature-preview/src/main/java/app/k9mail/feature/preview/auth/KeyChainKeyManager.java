@@ -15,15 +15,13 @@ import android.content.Context;
 import android.security.KeyChain;
 import android.security.KeyChainException;
 
-import com.fsck.k9.mail.CertificateValidationException;
+import com.fsck.k9.mail.ClientCertificateError;
+import com.fsck.k9.mail.ClientCertificateException;
 import com.fsck.k9.mail.MessagingException;
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.X509ExtendedKeyManager;
 import javax.security.auth.x500.X500Principal;
 import timber.log.Timber;
-
-import static com.fsck.k9.mail.CertificateValidationException.Reason;
-import static com.fsck.k9.mail.CertificateValidationException.Reason.RetrievalFailure;
 
 
 /**
@@ -48,11 +46,8 @@ class KeyChainKeyManager extends X509ExtendedKeyManager {
         try {
             mChain = fetchCertificateChain(context, alias);
             mPrivateKey = fetchPrivateKey(context, alias);
-        } catch (KeyChainException e) {
-            // The certificate was possibly deleted.  Notify user of error.
-            throw new CertificateValidationException(e.getMessage(), RetrievalFailure, alias);
-        } catch (InterruptedException e) {
-            throw new CertificateValidationException(e.getMessage(), RetrievalFailure, alias);
+        } catch (KeyChainException | InterruptedException e) {
+            throw new ClientCertificateException(ClientCertificateError.RetrievalFailure, e);
         }
     }
 
@@ -68,7 +63,7 @@ class KeyChainKeyManager extends X509ExtendedKeyManager {
                 certificate.checkValidity();
             }
         } catch (CertificateException e) {
-            throw new CertificateValidationException(e.getMessage(), Reason.Expired, alias);
+            throw new ClientCertificateException(ClientCertificateError.CertificateExpired, e);
         }
 
         return chain;
