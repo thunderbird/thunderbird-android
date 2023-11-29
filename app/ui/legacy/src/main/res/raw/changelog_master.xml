@@ -5,6 +5,21 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.712" versioncode="37012" date="2023-11-30">
+        <change>New server settings screens are now also used when editing an existing account</change>
+        <change>Made it harder to accidentally trigger swipe actions in the message list screen</change>
+        <change>Added option to return to the message list after marking a message as unread in the message view</change>
+        <change>Combined settings "Return to list after delete" and "Show next message after delete" into "After deleting or moving a message"</change>
+        <change>Added screen to ask for Android permissions in the onboarding flow</change>
+        <change>Added support for the IMAP MOVE extension</change>
+        <change>Tweaked setup theme to more closely match the rest of the app</change>
+        <change>Fixed notification sounds on WearOS devices</change>
+        <change>Fixed crash when entering an unsupported email address during account setup</change>
+        <change>Fixed crash when MX lookup during account setup returns an invalid host name</change>
+        <change>Respect app theme and language settings in new account setup</change>
+        <change>Set hints for software keyboards not to use auto-correct in server settings text fields</change>
+        <change>Updated translations</change>
+    </release>
     <release version="6.711" versioncode="37011" date="2023-10-04">
         <change>Simplified the app icon so it can be a vector drawable</change>
         <change>Improved screen reader experience in various places</change>
