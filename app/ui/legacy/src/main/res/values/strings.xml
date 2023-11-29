@@ -357,16 +357,6 @@
 
     <string name="account_setup_check_settings_fetch">Fetching account settings\u2026</string>
 
-    <string name="account_setup_auth_type_normal_password">Normal password</string>
-    <string name="account_setup_auth_type_insecure_password">Password, transmitted insecurely</string>
-    <string name="account_setup_auth_type_encrypted_password">Encrypted password</string>
-    <string name="account_setup_auth_type_tls_client_certificate">Client certificate</string>
-    <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
-
-    <string name="account_setup_incoming_security_none_label">None</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
-
     <string name="account_setup_incoming_delete_policy_label">When I delete a message</string>
     <string name="account_setup_incoming_delete_policy_never_label">Do not delete on server</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Delete from server</string>
