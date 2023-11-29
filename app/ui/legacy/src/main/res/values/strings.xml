@@ -370,35 +370,22 @@
     <string name="account_setup_auth_type_tls_client_certificate">Client certificate</string>
     <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
 
-    <string name="account_setup_incoming_title">Incoming server settings</string>
-    <string name="account_setup_incoming_username_label">Username</string>
-    <string name="account_setup_incoming_password_label">Password</string>
     <string name="account_setup_incoming_client_certificate_label">Client certificate</string>
-    <string name="account_setup_incoming_pop_server_label">POP3 server</string>
-    <string name="account_setup_incoming_imap_server_label">IMAP server</string>
-    <string name="account_setup_incoming_port_label">Port</string>
     <string name="account_setup_incoming_security_label">Security</string>
     <string name="account_setup_incoming_auth_type_label">Authentication</string>
     <string name="account_setup_incoming_security_none_label">None</string>
     <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
     <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
-    <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" is not valid with \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
 
     <string name="account_setup_incoming_delete_policy_label">When I delete a message</string>
     <string name="account_setup_incoming_delete_policy_never_label">Do not delete on server</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Delete from server</string>
     <string name="account_setup_incoming_delete_policy_markread_label">Mark as read on server</string>
 
-    <string name="account_setup_incoming_use_compression">Use compression</string>
-    <string name="account_setup_incoming_send_client_id">Send client ID</string>
-
     <string name="account_setup_expunge_policy_label">Erase deleted messages on server</string>
     <string name="account_setup_expunge_policy_immediately">Immediately</string>
     <string name="account_setup_expunge_policy_on_poll">When polling</string>
     <string name="account_setup_expunge_policy_manual">Manually</string>
-
-    <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP namespace</string>
-    <string name="account_setup_incoming_imap_path_prefix_label">IMAP path prefix</string>
 
     <string name="drafts_folder_label">Drafts folder</string>
     <string name="sent_folder_label">Sent folder</string>

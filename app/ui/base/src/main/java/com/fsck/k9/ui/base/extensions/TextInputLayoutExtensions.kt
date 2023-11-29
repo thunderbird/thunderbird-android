@@ -28,6 +28,9 @@ import com.google.android.material.textfield.TextInputLayout
  * after the initial state has been set will be detected as replacing the whole text. In that case showing the password
  * will be allowed without authentication.
  */
+@Deprecated(
+    message = "Remove once all usages have been removed for the new account edit feature",
+)
 fun TextInputLayout.configureAuthenticatedPasswordToggle(
     activity: FragmentActivity,
     title: String,

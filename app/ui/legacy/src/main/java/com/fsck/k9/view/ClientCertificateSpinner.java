@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+@Deprecated
 public class ClientCertificateSpinner extends LinearLayout {
     Activity mActivity;
     OnClientCertificateChangedListener mListener;

@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.mail.ConnectionSecurity;
 
+@Deprecated
 class ConnectionSecurityHolder {
     final ConnectionSecurity connectionSecurity;
     private final Resources resources;

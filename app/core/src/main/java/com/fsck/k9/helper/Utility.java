@@ -86,11 +86,13 @@ public class Utility {
         return TextUtils.join(String.valueOf(separator), parts);
     }
 
+    @Deprecated
     public static boolean requiredFieldValid(TextView view) {
         return view.getText() != null && view.getText().length() > 0;
     }
 
 
+    @Deprecated
     public static boolean domainFieldValid(EditText view) {
         if (view.getText() != null) {
             String s = view.getText().toString();
@@ -109,6 +111,7 @@ public class Utility {
      * TODO disabled this method globally. It is used in all the settings screens but I just
      * noticed that an unrelated icon was dimmed. Android must share drawables internally.
      */
+    @Deprecated
     public static void setCompoundDrawablesAlpha(TextView view, int alpha) {
 //        Drawable[] drawables = view.getCompoundDrawables();
 //        for (Drawable drawable : drawables) {

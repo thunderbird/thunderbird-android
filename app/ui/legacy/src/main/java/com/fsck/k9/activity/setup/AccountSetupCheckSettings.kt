@@ -43,6 +43,7 @@ import timber.log.Timber
  * XXX NOTE: The manifest for this app has it ignore config changes, because it doesn't correctly deal with restarting
  * while its thread is running.
  */
+@Deprecated("Remove once all usages have been removed for the new account edit feature")
 class AccountSetupCheckSettings : K9Activity(), ConfirmationDialogFragmentListener {
     private val authViewModel: AuthViewModel by viewModel()
 
