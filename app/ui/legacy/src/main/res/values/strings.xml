@@ -984,10 +984,6 @@
     <string name="fetching_attachment_dialog_title_save">Saving draft</string>
     <string name="fetching_attachment_dialog_message">Fetching attachment…</string>
 
-    <!-- === Client certificates specific ================================================================== -->
-    <string name="client_certificate_spinner_empty">No client certificate</string>
-    <string name="client_certificate_spinner_delete">Remove client certificate selection</string>
-
     <!-- Note: This references message_view_download_remainder -->
     <string name="preview_encrypted">*Encrypted*</string>
     <string name="add_from_contacts">Add from Contacts</string>
