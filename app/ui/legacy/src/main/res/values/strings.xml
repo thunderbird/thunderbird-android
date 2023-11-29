@@ -356,13 +356,7 @@
     <string name="account_setup_basics_show_password_biometrics_title">Verify your identity</string>
     <string name="account_setup_basics_show_password_biometrics_subtitle">Unlock to view your password</string>
 
-    <string name="account_setup_check_settings_title" />
-    <string name="account_setup_check_settings_retr_info_msg">Retrieving account information\u2026</string>
-    <string name="account_setup_check_settings_check_incoming_msg">Checking incoming server settings\u2026</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">Checking outgoing server settings\u2026</string>
-    <string name="account_setup_check_settings_authenticate">Authenticating\u2026</string>
     <string name="account_setup_check_settings_fetch">Fetching account settings\u2026</string>
-    <string name="account_setup_check_settings_canceling_msg">Canceling\u2026</string>
 
     <string name="account_setup_auth_type_normal_password">Normal password</string>
     <string name="account_setup_auth_type_insecure_password">Password, transmitted insecurely</string>
@@ -430,16 +424,10 @@
 
     <string name="move_copy_cannot_copy_unsynced_message">Cannot copy or move a message that is not synchronized with the server</string>
 
-    <string name="account_setup_failed_dlg_title">Setup could not finish</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Username or password incorrect.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_certificate_message_fmt">The server presented an invalid SSL certificate. Sometimes, this is because of a server misconfiguration. Sometimes it is because someone is trying to attack you or your mail server. If you\'re not sure what\'s up, click Reject and contact the folks who manage your mail server.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_server_message_fmt">Cannot connect to server.\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_oauth_flow_canceled">Authorization canceled</string>
     <string name="account_setup_failed_dlg_oauth_flow_failed">Authorization failed with the following error: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 is currently not supported with this provider.</string>
     <string name="account_setup_failed_dlg_browser_not_found">The app couldn\'t find a browser to use for granting access to your account.</string>
-    <string name="account_setup_failed_dlg_edit_details_action">Edit details</string>
-    <string name="account_setup_failed_dlg_continue_action">Continue</string>
 
     <string name="account_settings_push_advanced_title">Advanced</string>
     <string name="account_settings_title_fmt">Account settings</string>
@@ -715,10 +703,6 @@
     <string name="sort_by_attach">Attachments</string>
 
     <string name="account_delete_dlg_title">Remove Account</string>
-
-    <string name="account_setup_failed_dlg_invalid_certificate_title">Unrecognized Certificate</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_accept">Accept Key</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_reject">Reject Key</string>
 
     <string name="folder_list_filter_hint">Folder name contains</string>
 
@@ -1011,13 +995,9 @@
     <string name="fetching_attachment_dialog_title_save">Saving draft</string>
     <string name="fetching_attachment_dialog_message">Fetching attachment…</string>
 
-    <string name="auth_external_error">Unable to authenticate.  The server does not advertise the SASL EXTERNAL capability.  This could be due to a problem with the client certificate (expired, unknown certificate authority) or some other configuration problem.</string>
-
     <!-- === Client certificates specific ================================================================== -->
     <string name="client_certificate_spinner_empty">No client certificate</string>
     <string name="client_certificate_spinner_delete">Remove client certificate selection</string>
-    <string name="client_certificate_retrieval_failure">"Failed to retrieve client certificate for alias \"<xliff:g id="alias">%s</xliff:g>\""</string>
-    <string name="client_certificate_expired">"Client certificate \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" has expired or is not yet valid (<xliff:g id="exception_message">%2$s</xliff:g>)"</string>
 
     <!-- Note: This references message_view_download_remainder -->
     <string name="preview_encrypted">*Encrypted*</string>

@@ -106,13 +106,6 @@
             android:taskAffinity=""
             android:theme="@style/Theme.K9.Dialog.Translucent.DayNight"/>
 
-        <!-- XXX Note: this activity is hacked to ignore config changes,
-             since it doesn't currently handle them correctly in code. -->
-        <activity
-            android:name=".activity.setup.AccountSetupCheckSettings"
-            android:configChanges="keyboardHidden|orientation|locale"
-            android:label="@string/account_setup_check_settings_title"/>
-
         <activity
             android:name=".ui.endtoend.AutocryptKeyTransferActivity"
             android:configChanges="locale"
