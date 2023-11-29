@@ -14,6 +14,7 @@ import com.fsck.k9.ui.observe
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+@Deprecated("Remove once import used the new oauth flow")
 class OAuthFlowActivity : K9Activity() {
     private val authViewModel: AuthViewModel by viewModel()
     private val accountManager: AccountManager by inject()
@@ -59,19 +60,24 @@ class OAuthFlowActivity : K9Activity() {
             AuthFlowState.Idle -> {
                 return
             }
+
             AuthFlowState.Success -> {
                 setResult(RESULT_OK)
                 finish()
             }
+
             AuthFlowState.Canceled -> {
                 displayErrorText(R.string.account_setup_failed_dlg_oauth_flow_canceled)
             }
+
             is AuthFlowState.Failed -> {
                 displayErrorText(R.string.account_setup_failed_dlg_oauth_flow_failed, state)
             }
+
             AuthFlowState.NotSupported -> {
                 displayErrorText(R.string.account_setup_failed_dlg_oauth_not_supported)
             }
+
             AuthFlowState.BrowserNotFound -> {
                 displayErrorText(R.string.account_setup_failed_dlg_browser_not_found)
             }
