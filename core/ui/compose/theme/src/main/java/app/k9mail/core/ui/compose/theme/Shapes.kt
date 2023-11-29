@@ -9,7 +9,7 @@ import androidx.compose.material.Shapes as MaterialShapes
 
 @Immutable
 data class Shapes(
-    val small: CornerBasedShape = RoundedCornerShape(8.dp),
+    val small: CornerBasedShape = RoundedCornerShape(4.dp),
     val medium: CornerBasedShape = RoundedCornerShape(4.dp),
     val large: CornerBasedShape = RoundedCornerShape(0.dp),
 )
