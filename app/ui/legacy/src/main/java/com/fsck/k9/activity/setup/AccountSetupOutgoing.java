@@ -73,20 +73,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     private Button mNextButton;
     private Account mAccount;
 
-    public static Intent intentActionEditOutgoingSettings(Context context, Account account) {
-        Intent i = new Intent(context, AccountSetupOutgoing.class);
-        i.setAction(Intent.ACTION_EDIT);
-        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        return i;
-    }
-
-    public static void actionEditOutgoingSettings(Context context, String accountUuid) {
-        Intent intent = new Intent(context, AccountSetupOutgoing.class);
-        intent.setAction(Intent.ACTION_EDIT);
-        intent.putExtra(EXTRA_ACCOUNT, accountUuid);
-        context.startActivity(intent);
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

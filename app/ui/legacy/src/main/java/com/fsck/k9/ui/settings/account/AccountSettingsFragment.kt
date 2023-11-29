@@ -13,15 +13,11 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.SwitchPreference
-import app.k9mail.core.featureflag.FeatureFlagProvider
-import app.k9mail.core.featureflag.toFeatureFlagKey
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import com.fsck.k9.Account
 import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.activity.ManageIdentities
 import com.fsck.k9.activity.setup.AccountSetupComposition
-import com.fsck.k9.activity.setup.AccountSetupIncoming
-import com.fsck.k9.activity.setup.AccountSetupOutgoing
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.crypto.OpenPgpApiHelper
 import com.fsck.k9.fragment.ConfirmationDialogFragment
@@ -55,7 +51,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     private val notificationChannelManager: NotificationChannelManager by inject()
     private val notificationSettingsUpdater: NotificationSettingsUpdater by inject()
     private val vibrator: Vibrator by inject()
-    private val featureFlagProvider: FeatureFlagProvider by inject()
 
     private lateinit var dataStore: AccountSettingsDataStore
 
@@ -134,9 +129,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
     private fun initializeIncomingServer() {
         findPreference<Preference>(PREFERENCE_INCOMING_SERVER)?.onClick {
-            featureFlagProvider.provide("new_account_edit".toFeatureFlagKey())
-                .onEnabled { FeatureLauncherActivity.launchEditIncomingSettings(requireActivity(), accountUuid) }
-                .onDisabled { AccountSetupIncoming.actionEditIncomingSettings(requireActivity(), accountUuid) }
+            FeatureLauncherActivity.launchEditIncomingSettings(requireActivity(), accountUuid)
         }
     }
 
@@ -162,9 +155,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
     private fun initializeOutgoingServer() {
         findPreference<Preference>(PREFERENCE_OUTGOING_SERVER)?.onClick {
-            featureFlagProvider.provide("new_account_edit".toFeatureFlagKey())
-                .onEnabled { FeatureLauncherActivity.launchEditOutgoingSettings(requireActivity(), accountUuid) }
-                .onDisabled { AccountSetupOutgoing.actionEditOutgoingSettings(requireActivity(), accountUuid) }
+            FeatureLauncherActivity.launchEditOutgoingSettings(requireActivity(), accountUuid)
         }
     }
 
