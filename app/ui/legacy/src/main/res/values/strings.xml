@@ -350,8 +350,6 @@
     <!-- Displayed below the 'account_setup_oauth_description' text -->
     <string name="account_setup_oauth_sign_in_with_google">Sign in with Google</string>
 
-    <string name="account_setup_check_settings_fetch">Fetching account settings\u2026</string>
-
     <string name="account_setup_incoming_delete_policy_label">When I delete a message</string>
     <string name="account_setup_incoming_delete_policy_never_label">Do not delete on server</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Delete from server</string>
