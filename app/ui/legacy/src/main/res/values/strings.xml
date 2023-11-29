@@ -62,7 +62,6 @@
     <string name="choose_folder_copy_title">Copy to…</string>
 
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>
-    <string name="next_action">Next</string>
     <!-- Used to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="okay_action">OK</string>
     <string name="cancel_action">Cancel</string>
