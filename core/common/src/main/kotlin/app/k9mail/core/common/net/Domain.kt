@@ -8,3 +8,12 @@ value class Domain(val value: String) {
 }
 
 fun String.toDomain() = Domain(this)
+
+@Suppress("SwallowedException")
+fun String.toDomainOrNull(): Domain? {
+    return try {
+        toDomain()
+    } catch (e: IllegalArgumentException) {
+        null
+    }
+}
