@@ -6,7 +6,6 @@
 
     <dimen name="input_label_vertical_spacing">8dp</dimen>
     <dimen name="input_label_horizontal_spacing">4dp</dimen>
-    <dimen name="account_setup_margin_between_items_incoming_and_outgoing">12dp</dimen>
 
     <dimen name="message_view_pager_page_margin">16dp</dimen>
     <dimen name="messageListSwipeThreshold">72dp</dimen>

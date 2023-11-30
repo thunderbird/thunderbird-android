@@ -6,12 +6,11 @@ import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import app.k9mail.feature.launcher.FeatureLauncherActivity
 import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.activity.compose.MessageActions
-import com.fsck.k9.activity.setup.AccountSetupIncoming
-import com.fsck.k9.activity.setup.AccountSetupOutgoing
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.helper.PendingIntentCompat.FLAG_IMMUTABLE
 import com.fsck.k9.mailstore.MessageStoreManager
@@ -112,12 +111,12 @@ internal class K9NotificationActionCreator(
     }
 
     override fun getEditIncomingServerSettingsIntent(account: Account): PendingIntent {
-        val intent = AccountSetupIncoming.intentActionEditIncomingSettings(context, account)
+        val intent = FeatureLauncherActivity.getEditIncomingSettingsIntent(context, account.uuid)
         return PendingIntent.getActivity(context, account.accountNumber, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
     }
 
     override fun getEditOutgoingServerSettingsIntent(account: Account): PendingIntent {
-        val intent = AccountSetupOutgoing.intentActionEditOutgoingSettings(context, account)
+        val intent = FeatureLauncherActivity.getEditOutgoingSettingsIntent(context, account.uuid)
         return PendingIntent.getActivity(context, account.accountNumber, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
     }
 

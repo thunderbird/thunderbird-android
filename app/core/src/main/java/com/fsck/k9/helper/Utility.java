@@ -13,8 +13,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import timber.log.Timber;
 
@@ -84,38 +82,6 @@ public class Utility {
             return null;
         }
         return TextUtils.join(String.valueOf(separator), parts);
-    }
-
-    public static boolean requiredFieldValid(TextView view) {
-        return view.getText() != null && view.getText().length() > 0;
-    }
-
-
-    public static boolean domainFieldValid(EditText view) {
-        if (view.getText() != null) {
-            String s = view.getText().toString();
-            if (s.matches("^([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)*[a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?$") &&
-                s.length() <= 253) {
-                return true;
-            }
-            if (s.matches("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$")) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /*
-     * TODO disabled this method globally. It is used in all the settings screens but I just
-     * noticed that an unrelated icon was dimmed. Android must share drawables internally.
-     */
-    public static void setCompoundDrawablesAlpha(TextView view, int alpha) {
-//        Drawable[] drawables = view.getCompoundDrawables();
-//        for (Drawable drawable : drawables) {
-//            if (drawable != null) {
-//                drawable.setAlpha(alpha);
-//            }
-//        }
     }
 
     /**

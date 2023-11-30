@@ -364,6 +364,7 @@ public class MessagingController {
         put("refreshFolderList", null, () -> refreshFolderListSynchronous(account));
     }
 
+    @Deprecated
     public void refreshFolderListSynchronous(Account account) {
         try {
             if (isAuthenticationProblem(account, true)) {
@@ -1671,10 +1672,12 @@ public class MessagingController {
         return getBackend(account).getSupportsFolderSubscriptions();
     }
 
+    @Deprecated
     public void checkIncomingServerSettings(Account account) throws MessagingException {
         getBackend(account).checkIncomingServerSettings();
     }
 
+    @Deprecated
     public void checkOutgoingServerSettings(Account account) throws MessagingException {
         getBackend(account).checkOutgoingServerSettings();
     }
@@ -2440,6 +2443,7 @@ public class MessagingController {
         notificationController.removeNewMailNotification(account, messageReference);
     }
 
+    @Deprecated
     public void clearCertificateErrorNotifications(Account account, boolean incoming) {
         notificationController.clearCertificateErrorNotifications(account, incoming);
     }

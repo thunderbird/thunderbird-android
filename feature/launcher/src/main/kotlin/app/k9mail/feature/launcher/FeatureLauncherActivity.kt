@@ -45,20 +45,32 @@ class FeatureLauncherActivity : K9Activity() {
         }
 
         @JvmStatic
-        fun launchEditIncomingSettings(context: Context, accountUuid: String) {
+        fun getEditIncomingSettingsIntent(context: Context, accountUuid: String): Intent {
             val intent = Intent(context, FeatureLauncherActivity::class.java).apply {
                 data = NAVIGATION_ROUTE_ACCOUNT_EDIT_SERVER_SETTINGS_INCOMING
                     .withAccountUuid(accountUuid).toDeepLinkUri()
             }
+            return intent
+        }
+
+        @JvmStatic
+        fun launchEditIncomingSettings(context: Context, accountUuid: String) {
+            val intent = getEditIncomingSettingsIntent(context, accountUuid)
             context.startActivity(intent)
         }
 
         @JvmStatic
-        fun launchEditOutgoingSettings(context: Context, accountUuid: String) {
+        fun getEditOutgoingSettingsIntent(context: Context, accountUuid: String): Intent {
             val intent = Intent(context, FeatureLauncherActivity::class.java).apply {
                 data = NAVIGATION_ROUTE_ACCOUNT_EDIT_SERVER_SETTINGS_OUTGOING
                     .withAccountUuid(accountUuid).toDeepLinkUri()
             }
+            return intent
+        }
+
+        @JvmStatic
+        fun launchEditOutgoingSettings(context: Context, accountUuid: String) {
+            val intent = getEditOutgoingSettingsIntent(context, accountUuid)
             context.startActivity(intent)
         }
     }

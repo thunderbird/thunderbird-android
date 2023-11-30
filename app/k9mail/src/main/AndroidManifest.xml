@@ -68,19 +68,9 @@
             />
 
         <activity
-            android:name=".activity.setup.AccountSetupIncoming"
-            android:configChanges="locale"
-            android:label="@string/account_setup_incoming_title"/>
-
-        <activity
             android:name=".activity.setup.AccountSetupComposition"
             android:configChanges="locale"
             android:label="@string/account_settings_composition_title"/>
-
-        <activity
-            android:name=".activity.setup.AccountSetupOutgoing"
-            android:configChanges="locale"
-            android:label="@string/account_setup_outgoing_title"/>
 
         <activity
             android:name=".activity.ChooseAccount"
@@ -115,13 +105,6 @@
             android:launchMode="singleTop"
             android:taskAffinity=""
             android:theme="@style/Theme.K9.Dialog.Translucent.DayNight"/>
-
-        <!-- XXX Note: this activity is hacked to ignore config changes,
-             since it doesn't currently handle them correctly in code. -->
-        <activity
-            android:name=".activity.setup.AccountSetupCheckSettings"
-            android:configChanges="keyboardHidden|orientation|locale"
-            android:label="@string/account_setup_check_settings_title"/>
 
         <activity
             android:name=".ui.endtoend.AutocryptKeyTransferActivity"
