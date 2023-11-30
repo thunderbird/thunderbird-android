@@ -6,7 +6,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.fsck.k9.Account
 
-@Deprecated("Remove once all usages have been removed for the new account edit feature")
 internal open class CertificateErrorNotificationController(
     private val notificationHelper: NotificationHelper,
     private val actionCreator: NotificationActionCreator,
