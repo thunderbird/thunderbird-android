@@ -1,54 +1,55 @@
-package com.fsck.k9.account;
+import app.k9mail.core.common.mail.Protocols
+import assertk.assertFailure
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
+import com.fsck.k9.Account.DeletePolicy
+import com.fsck.k9.account.AccountCreatorHelper
+import com.fsck.k9.mail.ConnectionSecurity
+import org.junit.Test
 
-
-import app.k9mail.core.common.mail.Protocols;
-import com.fsck.k9.Account.DeletePolicy;
-import com.fsck.k9.mail.ConnectionSecurity;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-
-
-public class AccountCreatorHelperTest {
-    private final AccountCreatorHelper accountCreatorHelper = new AccountCreatorHelper();
+class AccountCreatorHelperTest {
+    private val accountCreatorHelper = AccountCreatorHelper()
 
     @Test
-    public void getDefaultDeletePolicy_withImap_shouldReturn_ON_DELETE() {
-        DeletePolicy result = accountCreatorHelper.getDefaultDeletePolicy(Protocols.IMAP);
+    fun `getDefaultDeletePolicy with IMAP should return ON_DELETE`() {
+        val result = accountCreatorHelper.getDefaultDeletePolicy(Protocols.IMAP)
 
-        assertEquals(DeletePolicy.ON_DELETE, result);
+        assertThat(result).isEqualTo(DeletePolicy.ON_DELETE)
     }
 
     @Test
-    public void getDefaultDeletePolicy_withPop3_shouldReturn_NEVER() {
-        DeletePolicy result = accountCreatorHelper.getDefaultDeletePolicy(Protocols.POP3);
+    fun `getDefaultDeletePolicy with POP3 should return NEVER`() {
+        val result = accountCreatorHelper.getDefaultDeletePolicy(Protocols.POP3)
 
-        assertEquals(DeletePolicy.NEVER, result);
-    }
-
-    @Test(expected = AssertionError.class)
-    public void getDefaultDeletePolicy_withSmtp_shouldFail() {
-        accountCreatorHelper.getDefaultDeletePolicy(Protocols.SMTP);
+        assertThat(result).isEqualTo(DeletePolicy.NEVER)
     }
 
     @Test
-    public void getDefaultPort_withNoConnectionSecurityAndImap_shouldReturnDefaultPort() {
-        int result = accountCreatorHelper.getDefaultPort(ConnectionSecurity.NONE, Protocols.IMAP);
-
-        assertEquals(143, result);
+    fun `getDefaultDeletePolicy with SMTP should fail`() {
+        assertFailure {
+            accountCreatorHelper.getDefaultDeletePolicy(Protocols.SMTP)
+        }.isInstanceOf<AssertionError>()
     }
 
     @Test
-    public void getDefaultPort_withStartTlsAndImap_shouldReturnDefaultPort() {
-        int result = accountCreatorHelper.getDefaultPort(ConnectionSecurity.STARTTLS_REQUIRED, Protocols.IMAP);
+    fun `getDefaultPort with NoConnectionSecurity and IMAP should return default port`() {
+        val result = accountCreatorHelper.getDefaultPort(ConnectionSecurity.NONE, Protocols.IMAP)
 
-        assertEquals(143, result);
+        assertThat(result).isEqualTo(143)
     }
 
     @Test
-    public void getDefaultPort_withTlsAndImap_shouldReturnDefaultTlsPort() {
-        int result = accountCreatorHelper.getDefaultPort(ConnectionSecurity.SSL_TLS_REQUIRED, Protocols.IMAP);
+    fun `getDefaultPort with StartTls and IMAP should return default port`() {
+        val result = accountCreatorHelper.getDefaultPort(ConnectionSecurity.STARTTLS_REQUIRED, Protocols.IMAP)
 
-        assertEquals(993, result);
+        assertThat(result).isEqualTo(143)
+    }
+
+    @Test
+    fun `getDefaultPort with Tls and IMAP should return default Tls port`() {
+        val result = accountCreatorHelper.getDefaultPort(ConnectionSecurity.SSL_TLS_REQUIRED, Protocols.IMAP)
+
+        assertThat(result).isEqualTo(993)
     }
 }
