@@ -98,19 +98,18 @@ class Preferences internal constructor(
         }
     }
 
-    val accounts: List<Account>
-        get() {
-            synchronized(accountLock) {
-                if (accountsMap == null) {
-                    loadAccounts()
-                }
-
-                return accountsInOrder.toList()
+    override fun getAccounts(): List<Account> {
+        synchronized(accountLock) {
+            if (accountsMap == null) {
+                loadAccounts()
             }
+
+            return accountsInOrder.toList()
         }
+    }
 
     private val completeAccounts: List<Account>
-        get() = accounts.filter { it.isFinishedSetup }
+        get() = getAccounts().filter { it.isFinishedSetup }
 
     override fun getAccount(accountUuid: String): Account? {
         synchronized(accountLock) {
@@ -203,7 +202,7 @@ class Preferences internal constructor(
     }
 
     val defaultAccount: Account?
-        get() = accounts.firstOrNull()
+        get() = getAccounts().firstOrNull()
 
     override fun saveAccount(account: Account) {
         ensureAssignedAccountNumber(account)
@@ -236,7 +235,7 @@ class Preferences internal constructor(
     }
 
     fun generateAccountNumber(): Int {
-        val accountNumbers = accounts.map { it.accountNumber }
+        val accountNumbers = getAccounts().map { it.accountNumber }
         return findNewAccountNumber(accountNumbers)
     }
 

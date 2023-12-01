@@ -30,7 +30,7 @@ internal class NotificationOperations(
     }
 
     private fun clearUnifiedInboxNotifications() {
-        for (account in preferences.accounts) {
+        for (account in preferences.getAccounts()) {
             val messageStore = messageStoreManager.getMessageStore(account)
 
             val folderIds = messageStore.getFolders(excludeLocalOnly = true) { folderDetails ->
@@ -46,7 +46,7 @@ internal class NotificationOperations(
     }
 
     private fun clearAllNotifications() {
-        for (account in preferences.accounts) {
+        for (account in preferences.getAccounts()) {
             notificationController.clearNewMailNotifications(account, clearNewMessageState = false)
         }
     }

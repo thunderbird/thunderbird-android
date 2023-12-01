@@ -9,7 +9,7 @@ class AccountColorPicker(
     private val resources: Resources,
 ) {
     fun pickColor(): Int {
-        val accounts = preferences.accounts
+        val accounts = preferences.getAccounts()
         val usedAccountColors = accounts.map { it.chipColor }.toSet()
         val accountColors = resources.getIntArray(R.array.account_colors).toList()
 

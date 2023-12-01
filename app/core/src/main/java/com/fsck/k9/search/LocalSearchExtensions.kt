@@ -19,7 +19,7 @@ val LocalSearch.isSingleFolder: Boolean
 
 @JvmName("getAccountsFromLocalSearch")
 fun LocalSearch.getAccounts(preferences: Preferences): List<Account> {
-    val accounts = preferences.accounts
+    val accounts = preferences.getAccounts()
     return if (searchAllAccounts()) {
         accounts
     } else {

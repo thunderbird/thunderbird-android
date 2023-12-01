@@ -460,7 +460,7 @@ class MessageListFragment :
         }
 
         val subtitle = account.let { account ->
-            if (account == null || isUnifiedInbox || preferences.accounts.size == 1) {
+            if (account == null || isUnifiedInbox || preferences.getAccounts().size == 1) {
                 null
             } else {
                 account.displayName

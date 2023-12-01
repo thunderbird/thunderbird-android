@@ -74,7 +74,7 @@ class PushController internal constructor(
         Timber.v("PushController.disablePush()")
 
         coroutineScope.launch(coroutineDispatcher) {
-            for (account in preferences.accounts) {
+            for (account in preferences.getAccounts()) {
                 account.folderPushMode = FolderMode.NONE
                 preferences.saveAccount(account)
             }
@@ -191,18 +191,22 @@ class PushController internal constructor(
             realPushAccounts.isEmpty() -> {
                 stopServices()
             }
+
             backgroundSyncDisabledViaSystem -> {
                 setPushNotificationState(WAIT_BACKGROUND_SYNC)
                 startServices()
             }
+
             networkNotAvailable -> {
                 setPushNotificationState(WAIT_NETWORK)
                 startServices()
             }
+
             arePushersActive -> {
                 setPushNotificationState(LISTENING)
                 startServices()
             }
+
             else -> {
                 stopServices()
             }
@@ -210,7 +214,7 @@ class PushController internal constructor(
     }
 
     private fun getPushAccounts(): List<Account> {
-        return preferences.accounts.filter { account ->
+        return preferences.getAccounts().filter { account ->
             account.folderPushMode != FolderMode.NONE && backendManager.getBackend(account).isPushCapable
         }
     }

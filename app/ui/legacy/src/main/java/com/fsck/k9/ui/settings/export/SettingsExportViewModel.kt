@@ -58,7 +58,7 @@ class SettingsExportViewModel(
             uiModelLiveData.value = uiModel
 
             viewModelScope.launch {
-                val accounts = withContext(Dispatchers.IO) { preferences.accounts }
+                val accounts = withContext(Dispatchers.IO) { preferences.getAccounts() }
 
                 accountsMap = accounts.map { it.accountNumber to it.uuid }.toMap()
 

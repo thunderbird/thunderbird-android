@@ -41,7 +41,7 @@ class NotificationChannelManager(
         backgroundExecutor.execute {
             addGeneralChannels()
 
-            val accounts = preferences.accounts
+            val accounts = preferences.getAccounts()
 
             removeChannelsForNonExistingOrChangedAccounts(notificationManager, accounts)
             addChannelsForAccounts(notificationManager, accounts)

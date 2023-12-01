@@ -138,7 +138,7 @@ open class MessageList :
             return
         }
 
-        val accounts = preferences.accounts
+        val accounts = preferences.getAccounts()
         deleteIncompleteAccounts(accounts)
         val hasAccountSetup = accounts.any { it.isFinishedSetup }
         if (!hasAccountSetup) {
@@ -332,9 +332,11 @@ open class MessageList :
             DisplayMode.MESSAGE_LIST -> {
                 showMessageList()
             }
+
             DisplayMode.MESSAGE_VIEW -> {
                 showMessageView()
             }
+
             DisplayMode.SPLIT_VIEW -> {
                 val messageListFragment = checkNotNull(this.messageListFragment)
 
@@ -712,6 +714,7 @@ open class MessageList :
                     return true
                 }
             }
+
             KeyEvent.KEYCODE_VOLUME_DOWN -> {
                 if (messageViewContainerFragment != null && displayMode != DisplayMode.MESSAGE_LIST &&
                     K9.isUseVolumeKeysForNavigation
@@ -720,10 +723,12 @@ open class MessageList :
                     return true
                 }
             }
+
             KeyEvent.KEYCODE_DEL -> {
                 onDeleteHotKey()
                 return true
             }
+
             KeyEvent.KEYCODE_DPAD_LEFT -> {
                 return if (messageViewContainerFragment != null && displayMode == DisplayMode.MESSAGE_VIEW) {
                     showPreviousMessage()
@@ -731,6 +736,7 @@ open class MessageList :
                     false
                 }
             }
+
             KeyEvent.KEYCODE_DPAD_RIGHT -> {
                 return if (messageViewContainerFragment != null && displayMode == DisplayMode.MESSAGE_VIEW) {
                     showNextMessage()
@@ -745,22 +751,27 @@ open class MessageList :
                 messageListFragment!!.onCompose()
                 return true
             }
+
             'o' -> {
                 messageListFragment!!.onCycleSort()
                 return true
             }
+
             'i' -> {
                 messageListFragment!!.onReverseSort()
                 return true
             }
+
             'd' -> {
                 onDeleteHotKey()
                 return true
             }
+
             's' -> {
                 messageListFragment!!.toggleMessageSelect()
                 return true
             }
+
             'g' -> {
                 if (displayMode == DisplayMode.MESSAGE_LIST) {
                     messageListFragment!!.onToggleFlagged()
@@ -769,6 +780,7 @@ open class MessageList :
                 }
                 return true
             }
+
             'm' -> {
                 if (displayMode == DisplayMode.MESSAGE_LIST) {
                     messageListFragment!!.onMove()
@@ -777,6 +789,7 @@ open class MessageList :
                 }
                 return true
             }
+
             'v' -> {
                 if (displayMode == DisplayMode.MESSAGE_LIST) {
                     messageListFragment!!.onArchive()
@@ -785,6 +798,7 @@ open class MessageList :
                 }
                 return true
             }
+
             'y' -> {
                 if (displayMode == DisplayMode.MESSAGE_LIST) {
                     messageListFragment!!.onCopy()
@@ -793,6 +807,7 @@ open class MessageList :
                 }
                 return true
             }
+
             'z' -> {
                 if (displayMode == DisplayMode.MESSAGE_LIST) {
                     messageListFragment!!.onToggleRead()
@@ -801,30 +816,35 @@ open class MessageList :
                 }
                 return true
             }
+
             'f' -> {
                 if (messageViewContainerFragment != null) {
                     messageViewContainerFragment!!.onForward()
                 }
                 return true
             }
+
             'a' -> {
                 if (messageViewContainerFragment != null) {
                     messageViewContainerFragment!!.onReplyAll()
                 }
                 return true
             }
+
             'r' -> {
                 if (messageViewContainerFragment != null) {
                     messageViewContainerFragment!!.onReply()
                 }
                 return true
             }
+
             'j', 'p' -> {
                 if (messageViewContainerFragment != null) {
                     showPreviousMessage()
                 }
                 return true
             }
+
             'n', 'k' -> {
                 if (messageViewContainerFragment != null) {
                     showNextMessage()

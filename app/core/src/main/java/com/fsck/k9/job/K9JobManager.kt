@@ -23,7 +23,7 @@ class K9JobManager(
     private fun scheduleMailSync() {
         cancelAllMailSyncJobs()
 
-        preferences.accounts.forEach { account ->
+        preferences.getAccounts().forEach { account ->
             mailSyncWorkerManager.scheduleMailSync(account)
         }
     }
