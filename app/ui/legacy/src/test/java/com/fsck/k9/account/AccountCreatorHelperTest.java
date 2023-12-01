@@ -9,7 +9,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 
-public class AccountCreatorTest {
+public class AccountCreatorHelperTest {
     private final AccountCreatorHelper accountCreatorHelper = new AccountCreatorHelper();
 
     @Test
