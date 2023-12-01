@@ -46,8 +46,13 @@ class IncomingServerSettingsStateMapperKtTest {
     }
 
     @Test
-    fun `should map from state to IMAP server settings`() {
-        val incomingState = INCOMING_IMAP_STATE
+    fun `should map from state to IMAP server settings and trim`() {
+        val incomingState = INCOMING_IMAP_STATE.copy(
+            server = StringInputField(value = " imap.example.org "),
+            username = StringInputField(value = " user "),
+            password = StringInputField(value = " password "),
+            imapPrefix = StringInputField(value = " prefix "),
+        )
 
         val result = incomingState.toServerSettings()
 
@@ -55,8 +60,23 @@ class IncomingServerSettingsStateMapperKtTest {
     }
 
     @Test
-    fun `should map from state to POP3 server settings`() {
-        val incomingState = INCOMING_POP3_STATE
+    fun `should map from POP3 server settings to state`() {
+        val serverSettings = AccountState(
+            incomingServerSettings = POP3_SERVER_SETTINGS,
+        )
+
+        val result = serverSettings.toIncomingServerSettingsState()
+
+        assertThat(result).isEqualTo(INCOMING_POP3_STATE.copy(isLoading = false))
+    }
+
+    @Test
+    fun `should map from state to POP3 server settings and trim`() {
+        val incomingState = INCOMING_POP3_STATE.copy(
+            server = StringInputField(value = " pop3.example.org "),
+            username = StringInputField(value = " user "),
+            password = StringInputField(value = " password "),
+        )
 
         val result = incomingState.toServerSettings()
 

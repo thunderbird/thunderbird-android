@@ -45,12 +45,12 @@ private fun ServerSettings.toIncomingServerSettingsState(): State {
 internal fun State.toServerSettings(): ServerSettings {
     return ServerSettings(
         type = protocolType.defaultName,
-        host = server.value,
+        host = server.value.trim(),
         port = port.value!!.toInt(),
         connectionSecurity = security.toMailConnectionSecurity(),
         authenticationType = authenticationType.toAuthType(),
-        username = username.value,
-        password = if (authenticationType.isPasswordRequired) password.value else null,
+        username = username.value.trim(),
+        password = if (authenticationType.isPasswordRequired) password.value.trim() else null,
         clientCertificateAlias = clientCertificateAlias,
         extra = createExtras(),
     )
@@ -60,7 +60,7 @@ private fun State.createExtras(): Map<String, String?> {
     return if (protocolType == IncomingProtocolType.IMAP) {
         ImapStoreSettings.createExtra(
             autoDetectNamespace = imapAutodetectNamespaceEnabled,
-            pathPrefix = if (imapAutodetectNamespaceEnabled) null else imapPrefix.value,
+            pathPrefix = if (imapAutodetectNamespaceEnabled) null else imapPrefix.value.trim(),
             useCompression = imapUseCompression,
             sendClientId = imapSendClientId,
         )
