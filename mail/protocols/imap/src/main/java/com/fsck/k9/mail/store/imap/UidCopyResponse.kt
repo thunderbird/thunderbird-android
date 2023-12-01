@@ -3,7 +3,6 @@ package com.fsck.k9.mail.store.imap
 internal class UidCopyResponse private constructor(val uidMapping: Map<String, String>) {
 
     companion object {
-        @JvmStatic
         fun parse(imapResponses: List<ImapResponse>): UidCopyResponse? {
             val uidMapping = mutableMapOf<String, String>()
             for (imapResponse in imapResponses) {

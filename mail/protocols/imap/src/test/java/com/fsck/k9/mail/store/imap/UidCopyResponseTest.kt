@@ -1,139 +1,125 @@
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.mail.store.imap
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
+import com.fsck.k9.mail.store.imap.ImapResponseHelper.createImapResponseList
+import kotlin.test.Test
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Test;
-
-import static com.fsck.k9.mail.store.imap.ImapResponseHelper.createImapResponseList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
-
-public class UidCopyResponseTest {
+class UidCopyResponseTest {
     @Test
-    public void parse_withCopyUidResponse_shouldCreateUidMapping() throws Exception {
-        List<ImapResponse> imapResponses = createImapResponseList("x OK [COPYUID 1 1,3:5 7:10] Success");
+    fun `parse() with COPYUID response should return UID mapping`() {
+        val imapResponses = createImapResponseList("x OK [COPYUID 1 1,3:5 7:10] Success")
 
-        UidCopyResponse result = UidCopyResponse.parse(imapResponses);
+        val result = UidCopyResponse.parse(imapResponses)
 
-        assertNotNull(result);
-        assertEquals(createUidMapping("1=7", "3=8", "4=9", "5=10"), result.getUidMapping());
+        assertThat(result).isNotNull()
+            .transform { it.uidMapping }
+            .isEqualTo(
+                mapOf(
+                    "1" to "7",
+                    "3" to "8",
+                    "4" to "9",
+                    "5" to "10",
+                ),
+            )
     }
 
     @Test
-    public void parse_withUntaggedResponse_shouldReturnNull() throws Exception {
-        List<ImapResponse> imapResponse = createImapResponseList("* OK [COPYUID 1 1,3:5 7:10] Success");
+    fun `parse() with untagged response should return null`() {
+        val imapResponses = createImapResponseList("* OK [COPYUID 1 1,3:5 7:10] Success")
 
-        UidCopyResponse result = UidCopyResponse.parse(imapResponse);
+        val result = UidCopyResponse.parse(imapResponses)
 
-        assertNull(result);
+        assertThat(result).isNull()
     }
 
     @Test
-    public void parse_withTooShortResponse_shouldReturnNull() throws Exception {
-        List<ImapResponse> imapResponses = createImapResponseList("x OK");
+    fun `parse() with response containing too few items should return null`() {
+        val imapResponses = createImapResponseList("x OK")
 
-        UidCopyResponse result = UidCopyResponse.parse(imapResponses);
+        val result = UidCopyResponse.parse(imapResponses)
 
-        assertNull(result);
+        assertThat(result).isNull()
     }
 
     @Test
-    public void parse_withoutOkResponse_shouldReturnNull() throws Exception {
-        List<ImapResponse> imapResponses = createImapResponseList("x BYE Logout");
+    fun `parse() without OK response should return null`() {
+        val imapResponses = createImapResponseList("x BYE Logout")
 
-        UidCopyResponse result = UidCopyResponse.parse(imapResponses);
+        val result = UidCopyResponse.parse(imapResponses)
 
-        assertNull(result);
+        assertThat(result).isNull()
     }
 
     @Test
-    public void parse_withoutResponseTextList_shouldReturnNull() throws Exception {
-        List<ImapResponse> imapResponses = createImapResponseList("x OK Success");
+    fun `parse() without response text list should return null`() {
+        val imapResponses = createImapResponseList("x OK Success")
 
-        UidCopyResponse result = UidCopyResponse.parse(imapResponses);
+        val result = UidCopyResponse.parse(imapResponses)
 
-        assertNull(result);
+        assertThat(result).isNull()
     }
 
     @Test
-    public void parse_withResponseTextListTooShort_shouldReturnNull() throws Exception {
-        List<ImapResponse> imapResponses = createImapResponseList("x OK [A B C] Success");
-
-        UidCopyResponse result = UidCopyResponse.parse(imapResponses);
-
-        assertNull(result);
+    fun `parse() with response text list containing too few items should return null`() {
+        val imapResponses = createImapResponseList("x OK [A B C] Success")
+        val result = UidCopyResponse.parse(imapResponses)
+        assertThat(result).isNull()
     }
 
     @Test
-    public void parse_withoutCopyUidResponse_shouldReturnNull() throws Exception {
-        List<ImapResponse> imapResponses = createImapResponseList("x OK [A B C D] Success");
+    fun `parse() without COPYUID response should return null`() {
+        val imapResponses = createImapResponseList("x OK [A B C D] Success")
 
-        UidCopyResponse result = UidCopyResponse.parse(imapResponses);
+        val result = UidCopyResponse.parse(imapResponses)
 
-        assertNull(result);
+        assertThat(result).isNull()
     }
 
     @Test
-    public void parse_withNonStringCopyUidArgumentOne_shouldReturnNull() throws Exception {
-        List<ImapResponse> imapResponses = createImapResponseList("x OK [COPYUID () C D] Success");
+    fun `parse() with first COPYUID argument not being a string should return null`() {
+        val imapResponses = createImapResponseList("x OK [COPYUID () C D] Success")
 
-        UidCopyResponse result = UidCopyResponse.parse(imapResponses);
+        val result = UidCopyResponse.parse(imapResponses)
 
-        assertNull(result);
+        assertThat(result).isNull()
     }
 
     @Test
-    public void parse_withNonStringCopyUidArgumentTwo_shouldReturnNull() throws Exception {
-        List<ImapResponse> imapResponses = createImapResponseList("x OK [COPYUID B () D] Success");
+    fun `parse() with second COPYUID argument not being a string should return null`() {
+        val imapResponses = createImapResponseList("x OK [COPYUID B () D] Success")
 
-        UidCopyResponse result = UidCopyResponse.parse(imapResponses);
+        val result = UidCopyResponse.parse(imapResponses)
 
-        assertNull(result);
+        assertThat(result).isNull()
     }
 
     @Test
-    public void parse_withNonStringCopyUidArgumentThree_shouldReturnNull() throws Exception {
-        List<ImapResponse> imapResponses = createImapResponseList("x OK [COPYUID B C ()] Success");
+    fun `parse() with third COPYUID argument not being a string should return null`() {
+        val imapResponses = createImapResponseList("x OK [COPYUID B C ()] Success")
 
-        UidCopyResponse result = UidCopyResponse.parse(imapResponses);
+        val result = UidCopyResponse.parse(imapResponses)
 
-        assertNull(result);
+        assertThat(result).isNull()
     }
 
     @Test
-    public void parse_withNonNumberCopyUidArguments_shouldReturnNull() throws Exception {
-        List<ImapResponse> imapResponses = createImapResponseList("x OK [COPYUID B C D] Success");
+    fun `parse() with non-number COPYUID arguments should return null`() {
+        val imapResponses = createImapResponseList("x OK [COPYUID B C D] Success")
 
-        UidCopyResponse result = UidCopyResponse.parse(imapResponses);
+        val result = UidCopyResponse.parse(imapResponses)
 
-        assertNull(result);
+        assertThat(result).isNull()
     }
 
     @Test
-    public void parse_withUnbalancedCopyUidArguments_shouldReturnNull() throws Exception {
-        List<ImapResponse> imapResponses = createImapResponseList("x OK [COPYUID B 1 1,2] Success");
+    fun `parse() with unbalanced COPYUID arguments should return null`() {
+        val imapResponses = createImapResponseList("x OK [COPYUID B 1 1,2] Success")
 
-        UidCopyResponse result = UidCopyResponse.parse(imapResponses);
+        val result = UidCopyResponse.parse(imapResponses)
 
-        assertNull(result);
-    }
-
-
-    private Map<String, String> createUidMapping(String... values) {
-        Map<String, String> mapping = new HashMap<>(values.length);
-
-        for (String value : values) {
-            String[] parts = value.split("=");
-            String oldUid = parts[0];
-            String newUid = parts[1];
-            mapping.put(oldUid, newUid);
-        }
-
-        return mapping;
+        assertThat(result).isNull()
     }
 }
