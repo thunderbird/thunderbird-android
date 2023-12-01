@@ -1,30 +1,16 @@
 package com.fsck.k9.account;
 
 
-import android.content.res.Resources;
-
-import com.fsck.k9.Account.DeletePolicy;
-import com.fsck.k9.Preferences;
-import com.fsck.k9.RobolectricTest;
-import com.fsck.k9.mail.ConnectionSecurity;
 import app.k9mail.core.common.mail.Protocols;
-
-import org.junit.Before;
+import com.fsck.k9.Account.DeletePolicy;
+import com.fsck.k9.mail.ConnectionSecurity;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 
 
-public class AccountCreatorTest extends RobolectricTest {
-    private AccountCreatorHelper accountCreatorHelper;
-
-    @Before
-    public void setUp() {
-        Preferences preferences = mock(Preferences.class);
-        Resources resources = mock(Resources.class);
-        accountCreatorHelper = new AccountCreatorHelper(preferences, resources);
-    }
+public class AccountCreatorTest {
+    private final AccountCreatorHelper accountCreatorHelper = new AccountCreatorHelper();
 
     @Test
     public void getDefaultDeletePolicy_withImap_shouldReturn_ON_DELETE() {
