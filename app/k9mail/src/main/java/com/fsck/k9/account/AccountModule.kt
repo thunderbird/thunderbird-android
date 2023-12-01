@@ -15,7 +15,7 @@ val newAccountModule = module {
 
     factory {
         AccountColorPicker(
-            preferences = get(),
+            accountManager = get(),
             resources = get(),
         )
     }

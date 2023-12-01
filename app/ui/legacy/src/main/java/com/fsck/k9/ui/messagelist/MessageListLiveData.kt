@@ -1,9 +1,9 @@
 package com.fsck.k9.ui.messagelist
 
 import androidx.lifecycle.LiveData
-import com.fsck.k9.Preferences
 import com.fsck.k9.mailstore.MessageListChangedListener
 import com.fsck.k9.mailstore.MessageListRepository
+import com.fsck.k9.preferences.AccountManager
 import com.fsck.k9.search.getAccountUuids
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -12,7 +12,7 @@ import kotlinx.coroutines.withContext
 
 class MessageListLiveData(
     private val messageListLoader: MessageListLoader,
-    private val preferences: Preferences,
+    private val accountManager: AccountManager,
     private val messageListRepository: MessageListRepository,
     private val coroutineScope: CoroutineScope,
     val config: MessageListConfig,
@@ -45,7 +45,7 @@ class MessageListLiveData(
 
     private fun registerMessageListChangedListenerAsync() {
         coroutineScope.launch(Dispatchers.IO) {
-            val accountUuids = config.search.getAccountUuids(preferences)
+            val accountUuids = config.search.getAccountUuids(accountManager)
 
             for (accountUuid in accountUuids) {
                 messageListRepository.addListener(accountUuid, messageListChangedListener)

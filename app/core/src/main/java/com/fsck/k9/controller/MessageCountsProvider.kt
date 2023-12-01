@@ -1,8 +1,8 @@
 package com.fsck.k9.controller
 
 import com.fsck.k9.Account
-import com.fsck.k9.Preferences
 import com.fsck.k9.mailstore.MessageStoreManager
+import com.fsck.k9.preferences.AccountManager
 import com.fsck.k9.search.ConditionsTreeNode
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
@@ -20,7 +20,7 @@ interface MessageCountsProvider {
 data class MessageCounts(val unread: Int, val starred: Int)
 
 internal class DefaultMessageCountsProvider(
-    private val preferences: Preferences,
+    private val accountManager: AccountManager,
     private val messageStoreManager: MessageStoreManager,
 ) : MessageCountsProvider {
     override fun getMessageCounts(account: Account): MessageCounts {
@@ -34,7 +34,7 @@ internal class DefaultMessageCountsProvider(
 
     override fun getMessageCounts(searchAccount: SearchAccount): MessageCounts {
         val search = searchAccount.relatedSearch
-        val accounts = search.getAccounts(preferences)
+        val accounts = search.getAccounts(accountManager)
 
         var unreadCount = 0
         var starredCount = 0

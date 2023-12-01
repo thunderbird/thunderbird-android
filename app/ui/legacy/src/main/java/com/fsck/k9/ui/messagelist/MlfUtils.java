@@ -7,13 +7,13 @@ import android.text.TextUtils;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
-import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
+import com.fsck.k9.preferences.AccountManager;
 
 
 public class MlfUtils {
@@ -25,9 +25,9 @@ public class MlfUtils {
         return localFolder;
     }
 
-    static void setLastSelectedFolder(Preferences preferences, List<MessageReference> messages, long folderId) {
+    static void setLastSelectedFolder(AccountManager accountManager, List<MessageReference> messages, long folderId) {
         MessageReference firstMsg = messages.get(0);
-        Account account = preferences.getAccount(firstMsg.getAccountUuid());
+        Account account = accountManager.getAccount(firstMsg.getAccountUuid());
         account.setLastSelectedFolderId(folderId);
     }
 

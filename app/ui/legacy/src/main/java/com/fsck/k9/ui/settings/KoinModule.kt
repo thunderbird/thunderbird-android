@@ -37,7 +37,13 @@ val settingsUiModule = module {
     }
     factory { getSystemVibrator(context = get()) }
 
-    viewModel { SettingsExportViewModel(context = get(), preferences = get(), settingsExporter = get()) }
+    viewModel {
+        SettingsExportViewModel(
+            context = get(),
+            accountManager = get(),
+            settingsExporter = get(),
+        )
+    }
     viewModel { SettingsImportViewModel(get(), get()) }
     viewModel { SettingsImportResultViewModel() }
 

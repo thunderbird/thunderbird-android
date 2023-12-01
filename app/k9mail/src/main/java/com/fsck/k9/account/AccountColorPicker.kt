@@ -1,15 +1,15 @@
 package com.fsck.k9.account
 
 import android.content.res.Resources
-import com.fsck.k9.Preferences
 import com.fsck.k9.core.R
+import com.fsck.k9.preferences.AccountManager
 
 class AccountColorPicker(
-    private val preferences: Preferences,
+    private val accountManager: AccountManager,
     private val resources: Resources,
 ) {
     fun pickColor(): Int {
-        val accounts = preferences.getAccounts()
+        val accounts = accountManager.getAccounts()
         val usedAccountColors = accounts.map { it.chipColor }.toSet()
         val accountColors = resources.getIntArray(R.array.account_colors).toList()
 

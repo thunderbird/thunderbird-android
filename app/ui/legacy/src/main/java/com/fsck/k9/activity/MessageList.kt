@@ -41,6 +41,7 @@ import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.helper.ParcelableUtil
 import com.fsck.k9.mailstore.SearchStatusManager
+import com.fsck.k9.preferences.AccountManager
 import com.fsck.k9.preferences.GeneralSettingsManager
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
@@ -83,6 +84,7 @@ open class MessageList :
 
     protected val searchStatusManager: SearchStatusManager by inject()
     private val preferences: Preferences by inject()
+    private val accountManager: AccountManager by inject()
     private val defaultFolderProvider: DefaultFolderProvider by inject()
     private val accountRemover: BackgroundAccountRemover by inject()
     private val generalSettingsManager: GeneralSettingsManager by inject()
@@ -138,7 +140,7 @@ open class MessageList :
             return
         }
 
-        val accounts = preferences.getAccounts()
+        val accounts = accountManager.getAccounts()
         deleteIncompleteAccounts(accounts)
         val hasAccountSetup = accounts.any { it.isFinishedSetup }
         if (!hasAccountSetup) {
@@ -400,7 +402,7 @@ open class MessageList :
 
             val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT)
             if (accountUuid != null) {
-                val account = preferences.getAccount(accountUuid)
+                val account = accountManager.getAccount(accountUuid)
                 if (account == null) {
                     Timber.d("Account %s not found.", accountUuid)
                     return LaunchData(createDefaultLocalSearch())
@@ -469,7 +471,7 @@ open class MessageList :
             val search = ParcelableUtil.unmarshall(intent.getByteArrayExtra(EXTRA_SEARCH), LocalSearch.CREATOR)
             val noThreading = intent.getBooleanExtra(EXTRA_NO_THREADING, false)
             val account = intent.getStringExtra(EXTRA_ACCOUNT)?.let { accountUuid ->
-                preferences.getAccount(accountUuid)
+                accountManager.getAccount(accountUuid)
             }
 
             return LaunchData(search = search, account = account, noThreading = noThreading)
@@ -968,7 +970,7 @@ open class MessageList :
     }
 
     override fun openMessage(messageReference: MessageReference) {
-        val account = preferences.getAccount(messageReference.accountUuid) ?: error("Account not found")
+        val account = accountManager.getAccount(messageReference.accountUuid) ?: error("Account not found")
         val folderId = messageReference.folderId
 
         val draftsFolderId = account.draftsFolderId
@@ -1325,7 +1327,7 @@ open class MessageList :
         if (!search!!.searchAllAccounts()) {
             val accountUuids = search.accountUuids
             if (accountUuids.size == 1) {
-                account = preferences.getAccount(accountUuids[0])
+                account = accountManager.getAccount(accountUuids[0])
                 val folderIds = search.folderIds
                 singleFolderMode = folderIds.size == 1
             } else {
@@ -1341,7 +1343,7 @@ open class MessageList :
             preferences.defaultAccount
         } else {
             val accountUuid = accountUuids.first()
-            preferences.getAccount(accountUuid)
+            accountManager.getAccount(accountUuid)
         }
     }
 
