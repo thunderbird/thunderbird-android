@@ -3,10 +3,10 @@ package com.fsck.k9.mail.store.imap
 internal class UidCopyResponse private constructor(val uidMapping: Map<String, String>) {
 
     companion object {
-        fun parse(imapResponses: List<ImapResponse>): UidCopyResponse? {
+        fun parse(imapResponses: List<ImapResponse>, allowUntaggedResponse: Boolean = false): UidCopyResponse? {
             val uidMapping = mutableMapOf<String, String>()
             for (imapResponse in imapResponses) {
-                parseUidCopyResponse(imapResponse, uidMapping)
+                parseUidCopyResponse(imapResponse, allowUntaggedResponse, uidMapping)
             }
 
             return if (uidMapping.isNotEmpty()) {
@@ -17,8 +17,12 @@ internal class UidCopyResponse private constructor(val uidMapping: Map<String, S
         }
 
         @Suppress("ReturnCount", "ComplexCondition", "MagicNumber")
-        private fun parseUidCopyResponse(response: ImapResponse, uidMappingOutput: MutableMap<String, String>) {
-            if (!response.isTagged || response.size < 2 ||
+        private fun parseUidCopyResponse(
+            response: ImapResponse,
+            allowUntaggedResponse: Boolean,
+            uidMappingOutput: MutableMap<String, String>,
+        ) {
+            if (!(allowUntaggedResponse || response.isTagged) || response.size < 2 ||
                 !ImapResponseParser.equalsIgnoreCase(response[0], Responses.OK) || !response.isList(1)
             ) {
                 return

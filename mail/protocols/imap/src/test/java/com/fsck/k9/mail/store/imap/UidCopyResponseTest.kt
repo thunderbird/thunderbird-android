@@ -27,7 +27,28 @@ class UidCopyResponseTest {
     }
 
     @Test
-    fun `parse() with untagged response should return null`() {
+    fun `parse() with allowed untagged COPYUID response should return UID mapping`() {
+        val imapResponses = createImapResponseList(
+            "* OK [COPYUID 1 1,3 10:11]",
+            "* 1 EXPUNGE",
+            "* 1 EXPUNGE",
+            "x OK MOVE completed",
+        )
+
+        val result = UidCopyResponse.parse(imapResponses, allowUntaggedResponse = true)
+
+        assertThat(result).isNotNull()
+            .transform { it.uidMapping }
+            .isEqualTo(
+                mapOf(
+                    "1" to "10",
+                    "3" to "11",
+                ),
+            )
+    }
+
+    @Test
+    fun `parse() with untagged response when not allowed should return null`() {
         val imapResponses = createImapResponseList("* OK [COPYUID 1 1,3:5 7:10] Success")
 
         val result = UidCopyResponse.parse(imapResponses)
