@@ -10,6 +10,7 @@ class FeatureApplication : Application() {
         super.onCreate()
 
         startKoin {
+            allowOverride(false)
             androidContext(this@FeatureApplication)
             modules(featureModule)
         }

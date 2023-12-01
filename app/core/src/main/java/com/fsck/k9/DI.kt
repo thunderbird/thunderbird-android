@@ -15,8 +15,10 @@ object DI {
     private const val DEBUG = false
 
     @JvmStatic
-    fun start(application: Application, modules: List<Module>) {
+    fun start(application: Application, modules: List<Module>, allowOverride: Boolean = false) {
         startKoin {
+            allowOverride(allowOverride)
+
             if (BuildConfig.DEBUG && DEBUG) {
                 androidLogger()
             }
