@@ -14,6 +14,6 @@ internal class ValidateAccountName : DomainContract.UseCase.ValidateAccountName 
     }
 
     sealed interface ValidateAccountNameError : ValidationError {
-        object BlankAccountName : ValidateAccountNameError
+        data object BlankAccountName : ValidateAccountNameError
     }
 }

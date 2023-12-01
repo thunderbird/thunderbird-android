@@ -65,9 +65,9 @@ class ValidateEmailAddress : UseCase.ValidateEmailAddress {
     }
 
     sealed interface ValidateEmailAddressError : ValidationError {
-        object EmptyEmailAddress : ValidateEmailAddressError
-        object NotAllowed : ValidateEmailAddressError
-        object InvalidOrNotSupported : ValidateEmailAddressError
-        object InvalidEmailAddress : ValidateEmailAddressError
+        data object EmptyEmailAddress : ValidateEmailAddressError
+        data object NotAllowed : ValidateEmailAddressError
+        data object InvalidOrNotSupported : ValidateEmailAddressError
+        data object InvalidEmailAddress : ValidateEmailAddressError
     }
 }

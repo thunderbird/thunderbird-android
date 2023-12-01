@@ -14,6 +14,6 @@ internal class ValidateDisplayName : DomainContract.UseCase.ValidateDisplayName 
     }
 
     sealed interface ValidateDisplayNameError : ValidationError {
-        object EmptyDisplayName : ValidateDisplayNameError
+        data object EmptyDisplayName : ValidateDisplayNameError
     }
 }

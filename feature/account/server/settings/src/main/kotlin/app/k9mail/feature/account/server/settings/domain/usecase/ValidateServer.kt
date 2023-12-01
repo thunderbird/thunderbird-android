@@ -15,6 +15,6 @@ internal class ValidateServer : UseCase.ValidateServer {
     }
 
     sealed interface ValidateServerError : ValidationError {
-        object EmptyServer : ValidateServerError
+        data object EmptyServer : ValidateServerError
     }
 }

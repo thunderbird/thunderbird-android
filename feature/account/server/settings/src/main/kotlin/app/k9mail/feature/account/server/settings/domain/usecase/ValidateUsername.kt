@@ -15,6 +15,6 @@ internal class ValidateUsername : UseCase.ValidateUsername {
     }
 
     sealed interface ValidateUsernameError : ValidationError {
-        object EmptyUsername : ValidateUsernameError
+        data object EmptyUsername : ValidateUsernameError
     }
 }

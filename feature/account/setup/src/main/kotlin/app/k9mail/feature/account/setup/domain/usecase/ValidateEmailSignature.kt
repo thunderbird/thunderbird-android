@@ -17,6 +17,6 @@ internal class ValidateEmailSignature : DomainContract.UseCase.ValidateEmailSign
     }
 
     sealed interface ValidateEmailSignatureError : ValidationError {
-        object BlankEmailSignature : ValidateEmailSignatureError
+        data object BlankEmailSignature : ValidateEmailSignatureError
     }
 }

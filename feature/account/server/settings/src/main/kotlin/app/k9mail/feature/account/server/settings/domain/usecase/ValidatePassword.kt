@@ -16,6 +16,6 @@ class ValidatePassword : UseCase.ValidatePassword {
     }
 
     sealed interface ValidatePasswordError : ValidationError {
-        object EmptyPassword : ValidatePasswordError
+        data object EmptyPassword : ValidatePasswordError
     }
 }

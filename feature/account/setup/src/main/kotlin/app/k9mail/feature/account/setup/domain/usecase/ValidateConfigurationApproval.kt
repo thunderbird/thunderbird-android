@@ -18,6 +18,6 @@ class ValidateConfigurationApproval : UseCase.ValidateConfigurationApproval {
     }
 
     sealed interface ValidateConfigurationApprovalError : ValidationError {
-        object ApprovalRequired : ValidateConfigurationApprovalError
+        data object ApprovalRequired : ValidateConfigurationApprovalError
     }
 }

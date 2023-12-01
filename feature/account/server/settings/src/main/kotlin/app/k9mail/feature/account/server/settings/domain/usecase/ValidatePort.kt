@@ -15,8 +15,8 @@ internal class ValidatePort : UseCase.ValidatePort {
     }
 
     sealed interface ValidatePortError : ValidationError {
-        object EmptyPort : ValidatePortError
-        object InvalidPort : ValidatePortError
+        data object EmptyPort : ValidatePortError
+        data object InvalidPort : ValidatePortError
     }
 
     companion object {
