@@ -22,8 +22,12 @@ fun ValidationError.toResourceString(resources: Resources): String {
 
 private fun ValidateServerError.toServerErrorString(resources: Resources): String {
     return when (this) {
-        is ValidateServerError.EmptyServer -> resources.getString(
+        ValidateServerError.EmptyServer -> resources.getString(
             R.string.account_server_settings_validation_error_server_required,
+        )
+
+        ValidateServerError.InvalidHostnameOrIpAddress -> resources.getString(
+            R.string.account_server_settings_validation_error_server_invalid_ip_or_hostname,
         )
     }
 }

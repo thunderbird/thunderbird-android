@@ -30,6 +30,7 @@
     <string name="account_server_settings_outgoing_top_bar_title">Outgoing server settings</string>
 
     <string name="account_server_settings_validation_error_server_required">Server name is required.</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Invalid IP or hostname</string>
     <string name="account_server_settings_validation_error_port_required">Port is required.</string>
     <string name="account_server_settings_validation_error_port_invalid">Port is invalid (must be 1–65535).</string>
     <string name="account_server_settings_validation_error_username_required">Username is required.</string>
