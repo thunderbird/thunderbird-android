@@ -11,12 +11,12 @@ import androidx.core.net.toUri
 import com.fsck.k9.Account
 import com.fsck.k9.NotificationLight
 import com.fsck.k9.NotificationSettings
-import com.fsck.k9.Preferences
+import com.fsck.k9.preferences.AccountManager
 import java.util.concurrent.Executor
 import timber.log.Timber
 
 class NotificationChannelManager(
-    private val preferences: Preferences,
+    private val accountManager: AccountManager,
     private val backgroundExecutor: Executor,
     private val notificationManager: NotificationManager,
     private val resourceProvider: NotificationResourceProvider,
@@ -30,7 +30,7 @@ class NotificationChannelManager(
     }
 
     init {
-        preferences.addOnAccountsChangeListener(this::updateChannels)
+        accountManager.addOnAccountsChangeListener(this::updateChannels)
     }
 
     fun updateChannels() {
@@ -41,7 +41,7 @@ class NotificationChannelManager(
         backgroundExecutor.execute {
             addGeneralChannels()
 
-            val accounts = preferences.accounts
+            val accounts = accountManager.getAccounts()
 
             removeChannelsForNonExistingOrChangedAccounts(notificationManager, accounts)
             addChannelsForAccounts(notificationManager, accounts)

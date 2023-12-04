@@ -1,9 +1,9 @@
 package com.fsck.k9.controller
 
 import com.fsck.k9.Account
-import com.fsck.k9.Preferences
 import com.fsck.k9.mailstore.MessageStoreManager
 import com.fsck.k9.notification.NotificationController
+import com.fsck.k9.preferences.AccountManager
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.isNewMessages
 import com.fsck.k9.search.isSingleFolder
@@ -11,7 +11,7 @@ import com.fsck.k9.search.isUnifiedInbox
 
 internal class NotificationOperations(
     private val notificationController: NotificationController,
-    private val preferences: Preferences,
+    private val accountManager: AccountManager,
     private val messageStoreManager: MessageStoreManager,
 ) {
     fun clearNotifications(search: LocalSearch) {
@@ -30,7 +30,7 @@ internal class NotificationOperations(
     }
 
     private fun clearUnifiedInboxNotifications() {
-        for (account in preferences.accounts) {
+        for (account in accountManager.getAccounts()) {
             val messageStore = messageStoreManager.getMessageStore(account)
 
             val folderIds = messageStore.getFolders(excludeLocalOnly = true) { folderDetails ->
@@ -46,7 +46,7 @@ internal class NotificationOperations(
     }
 
     private fun clearAllNotifications() {
-        for (account in preferences.accounts) {
+        for (account in accountManager.getAccounts()) {
             notificationController.clearNewMailNotifications(account, clearNewMessageState = false)
         }
     }
@@ -58,6 +58,6 @@ internal class NotificationOperations(
     }
 
     private fun LocalSearch.firstAccount(): Account? {
-        return preferences.getAccount(accountUuids.first())
+        return accountManager.getAccount(accountUuids.first())
     }
 }

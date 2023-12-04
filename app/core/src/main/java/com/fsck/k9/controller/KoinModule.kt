@@ -29,7 +29,7 @@ val controllerModule = module {
     }
     single<MessageCountsProvider> {
         DefaultMessageCountsProvider(
-            preferences = get(),
+            accountManager = get(),
             messageStoreManager = get(),
         )
     }

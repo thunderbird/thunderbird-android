@@ -16,7 +16,7 @@ internal val controllerPushModule = module {
     }
     single {
         PushController(
-            preferences = get(),
+            accountManager = get(),
             generalSettingsManager = get(),
             backendManager = get(),
             pushServiceManager = get(),

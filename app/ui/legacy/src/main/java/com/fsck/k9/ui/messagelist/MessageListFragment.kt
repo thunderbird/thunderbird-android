@@ -29,7 +29,6 @@ import com.fsck.k9.Account
 import com.fsck.k9.Account.Expunge
 import com.fsck.k9.Account.SortType
 import com.fsck.k9.K9
-import com.fsck.k9.Preferences
 import com.fsck.k9.SwipeAction
 import com.fsck.k9.activity.FolderInfoHolder
 import com.fsck.k9.activity.Search
@@ -43,6 +42,7 @@ import com.fsck.k9.helper.Utility
 import com.fsck.k9.helper.mapToSet
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.preferences.AccountManager
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.search.getAccounts
@@ -79,7 +79,7 @@ class MessageListFragment :
     private val sortTypeToastProvider: SortTypeToastProvider by inject()
     private val folderNameFormatter: FolderNameFormatter by inject { parametersOf(requireContext()) }
     private val messagingController: MessagingController by inject()
-    private val preferences: Preferences by inject()
+    private val accountManager: AccountManager by inject()
     private val clock: Clock by inject()
 
     private val handler = MessageListHandler(this)
@@ -210,7 +210,7 @@ class MessageListFragment :
         localSearch = arguments.getParcelable(ARG_SEARCH)!!
 
         allAccounts = localSearch.searchAllAccounts()
-        val searchAccounts = localSearch.getAccounts(preferences)
+        val searchAccounts = localSearch.getAccounts(accountManager)
         if (searchAccounts.size == 1) {
             isSingleAccountMode = true
             val singleAccount = searchAccounts[0]
@@ -460,7 +460,7 @@ class MessageListFragment :
         }
 
         val subtitle = account.let { account ->
-            if (account == null || isUnifiedInbox || preferences.accounts.size == 1) {
+            if (account == null || isUnifiedInbox || accountManager.getAccounts().size == 1) {
                 null
             } else {
                 account.displayName
@@ -655,7 +655,7 @@ class MessageListFragment :
             account.setSortAscending(this.sortType, this.sortAscending)
             sortDateAscending = account.isSortAscending(SortType.SORT_DATE)
 
-            preferences.saveAccount(account)
+            accountManager.saveAccount(account)
         } else {
             K9.sortType = this.sortType
             if (sortAscending == null) {
@@ -719,7 +719,7 @@ class MessageListFragment :
                     activeMessages = null
 
                     if (messages.isNotEmpty()) {
-                        MlfUtils.setLastSelectedFolder(preferences, messages, destinationFolderId)
+                        MlfUtils.setLastSelectedFolder(accountManager, messages, destinationFolderId)
                     }
 
                     when (requestCode) {
@@ -1121,7 +1121,7 @@ class MessageListFragment :
     }
 
     private fun groupMessagesByAccount(messages: List<MessageReference>): Map<Account, List<MessageReference>> {
-        return messages.groupBy { preferences.getAccount(it.accountUuid)!! }
+        return messages.groupBy { accountManager.getAccount(it.accountUuid)!! }
     }
 
     private fun onSpam(messages: List<MessageReference>) {
@@ -1145,7 +1145,7 @@ class MessageListFragment :
     private fun checkCopyOrMovePossible(messages: List<MessageReference>, operation: FolderOperation): Boolean {
         if (messages.isEmpty()) return false
 
-        val account = preferences.getAccount(messages.first().accountUuid)
+        val account = accountManager.getAccount(messages.first().accountUuid)
         if (operation == FolderOperation.MOVE && !messagingController.isMoveCapable(account) ||
             operation == FolderOperation.COPY && !messagingController.isCopyCapable(account)
         ) {
@@ -1185,7 +1185,7 @@ class MessageListFragment :
             .groupBy { it.folderId }
 
         for ((folderId, messagesInFolder) in folderMap) {
-            val account = preferences.getAccount(messagesInFolder.first().accountUuid)
+            val account = accountManager.getAccount(messagesInFolder.first().accountUuid)
 
             if (operation == FolderOperation.MOVE) {
                 if (showingThreadedList) {
@@ -1268,7 +1268,7 @@ class MessageListFragment :
             messagingController.checkMail(null, true, true, false, activityListener)
         } else {
             for (accountUuid in accountUuids) {
-                val account = preferences.getAccount(accountUuid)
+                val account = accountManager.getAccount(accountUuid)
                 messagingController.checkMail(account, true, true, false, activityListener)
             }
         }
@@ -1865,7 +1865,7 @@ class MessageListFragment :
             // we don't support cross account actions atm
             if (!isSingleAccountMode) {
                 val accounts = accountUuidsForSelected.mapNotNull { accountUuid ->
-                    preferences.getAccount(accountUuid)
+                    accountManager.getAccount(accountUuid)
                 }
 
                 menu.findItem(R.id.move).isVisible = true

@@ -7,10 +7,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fsck.k9.Preferences
 import com.fsck.k9.helper.SingleLiveEvent
 import com.fsck.k9.helper.measureRealtimeMillis
 import com.fsck.k9.logging.Timber
+import com.fsck.k9.preferences.AccountManager
 import com.fsck.k9.preferences.SettingsExporter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -22,7 +22,7 @@ private typealias AccountNumber = Int
 
 class SettingsExportViewModel(
     val context: Context,
-    val preferences: Preferences,
+    val accountManager: AccountManager,
     val settingsExporter: SettingsExporter,
 ) : ViewModel() {
     private val uiModelLiveData = MutableLiveData<SettingsExportUiModel>()
@@ -58,7 +58,7 @@ class SettingsExportViewModel(
             uiModelLiveData.value = uiModel
 
             viewModelScope.launch {
-                val accounts = withContext(Dispatchers.IO) { preferences.accounts }
+                val accounts = withContext(Dispatchers.IO) { accountManager.getAccounts() }
 
                 accountsMap = accounts.map { it.accountNumber to it.uuid }.toMap()
 

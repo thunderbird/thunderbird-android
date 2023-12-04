@@ -45,7 +45,7 @@ object Core : EarlyInit {
     @JvmStatic
     fun setServicesEnabled(context: Context) {
         val appContext = context.applicationContext
-        val acctLength = Preferences.getPreferences().accounts.size
+        val acctLength = Preferences.getPreferences().getAccounts().size
         val enable = acctLength > 0
 
         setServicesEnabled(appContext, enable)
@@ -82,7 +82,7 @@ object Core : EarlyInit {
 
     private fun restoreNotifications() {
         appCoroutineScope.launch(Dispatchers.IO) {
-            val accounts = preferences.accounts
+            val accounts = preferences.getAccounts()
             notificationController.restoreNewMailNotifications(accounts)
         }
     }

@@ -2,7 +2,6 @@ package com.fsck.k9.controller.push
 
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
-import com.fsck.k9.Preferences
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.network.ConnectivityChangeListener
 import com.fsck.k9.network.ConnectivityManager
@@ -11,6 +10,7 @@ import com.fsck.k9.notification.PushNotificationState
 import com.fsck.k9.notification.PushNotificationState.LISTENING
 import com.fsck.k9.notification.PushNotificationState.WAIT_BACKGROUND_SYNC
 import com.fsck.k9.notification.PushNotificationState.WAIT_NETWORK
+import com.fsck.k9.preferences.AccountManager
 import com.fsck.k9.preferences.BackgroundSync
 import com.fsck.k9.preferences.GeneralSettingsManager
 import java.util.concurrent.Executors
@@ -29,7 +29,7 @@ import timber.log.Timber
  * Starts and stops [AccountPushController]s as necessary. Manages the Push foreground service.
  */
 class PushController internal constructor(
-    private val preferences: Preferences,
+    private val accountManager: AccountManager,
     private val generalSettingsManager: GeneralSettingsManager,
     private val backendManager: BackendManager,
     private val pushServiceManager: PushServiceManager,
@@ -74,9 +74,9 @@ class PushController internal constructor(
         Timber.v("PushController.disablePush()")
 
         coroutineScope.launch(coroutineDispatcher) {
-            for (account in preferences.accounts) {
+            for (account in accountManager.getAccounts()) {
                 account.folderPushMode = FolderMode.NONE
-                preferences.saveAccount(account)
+                accountManager.saveAccount(account)
             }
         }
     }
@@ -84,7 +84,7 @@ class PushController internal constructor(
     private fun initInBackground() {
         Timber.v("PushController.initInBackground()")
 
-        preferences.addOnAccountsChangeListener(::onAccountsChanged)
+        accountManager.addOnAccountsChangeListener(::onAccountsChanged)
         listenForBackgroundSyncChanges()
         backendManager.addListener(::onBackendChanged)
 
@@ -175,7 +175,7 @@ class PushController internal constructor(
             if (startPushAccountUuids.isNotEmpty()) {
                 Timber.v("..Starting PushController for accounts: %s", startPushAccountUuids)
                 for (accountUuid in startPushAccountUuids) {
-                    val account = preferences.getAccount(accountUuid) ?: error("Account not found: $accountUuid")
+                    val account = accountManager.getAccount(accountUuid) ?: error("Account not found: $accountUuid")
                     pushers[accountUuid] = accountPushControllerFactory.create(account).also { accountPushController ->
                         accountPushController.start()
                     }
@@ -191,18 +191,22 @@ class PushController internal constructor(
             realPushAccounts.isEmpty() -> {
                 stopServices()
             }
+
             backgroundSyncDisabledViaSystem -> {
                 setPushNotificationState(WAIT_BACKGROUND_SYNC)
                 startServices()
             }
+
             networkNotAvailable -> {
                 setPushNotificationState(WAIT_NETWORK)
                 startServices()
             }
+
             arePushersActive -> {
                 setPushNotificationState(LISTENING)
                 startServices()
             }
+
             else -> {
                 stopServices()
             }
@@ -210,7 +214,7 @@ class PushController internal constructor(
     }
 
     private fun getPushAccounts(): List<Account> {
-        return preferences.accounts.filter { account ->
+        return accountManager.getAccounts().filter { account ->
             account.folderPushMode != FolderMode.NONE && backendManager.getBackend(account).isPushCapable
         }
     }

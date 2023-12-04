@@ -2,12 +2,12 @@ package com.fsck.k9.job
 
 import androidx.work.WorkManager
 import com.fsck.k9.Account
-import com.fsck.k9.Preferences
+import com.fsck.k9.preferences.AccountManager
 import timber.log.Timber
 
 class K9JobManager(
     private val workManager: WorkManager,
-    private val preferences: Preferences,
+    private val accountManager: AccountManager,
     private val mailSyncWorkerManager: MailSyncWorkerManager,
 ) {
     fun scheduleAllMailJobs() {
@@ -23,7 +23,7 @@ class K9JobManager(
     private fun scheduleMailSync() {
         cancelAllMailSyncJobs()
 
-        preferences.accounts.forEach { account ->
+        accountManager.getAccounts().forEach { account ->
             mailSyncWorkerManager.scheduleMailSync(account)
         }
     }

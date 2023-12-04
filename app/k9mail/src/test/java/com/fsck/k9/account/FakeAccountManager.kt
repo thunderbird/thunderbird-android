@@ -11,6 +11,8 @@ class FakeAccountManager(
     private val isFailureOnSave: Boolean = false,
 ) : AccountManager {
 
+    override fun getAccounts(): List<Account> = accounts.values.toList()
+
     override fun getAccountsFlow(): Flow<List<Account>> {
         TODO("Not yet implemented")
     }

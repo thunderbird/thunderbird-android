@@ -10,7 +10,13 @@ val jobModule = module {
     single { WorkManagerConfigurationProvider(workerFactory = get()) }
     single<WorkerFactory> { K9WorkerFactory() }
     single { WorkManager.getInstance(get<Context>()) }
-    single { K9JobManager(workManager = get(), preferences = get(), mailSyncWorkerManager = get()) }
+    single {
+        K9JobManager(
+            workManager = get(),
+            accountManager = get(),
+            mailSyncWorkerManager = get(),
+        )
+    }
     factory { MailSyncWorkerManager(workManager = get(), clock = get()) }
     factory { (parameters: WorkerParameters) ->
         MailSyncWorker(messagingController = get(), preferences = get(), context = get(), parameters)

@@ -13,9 +13,17 @@ val newAccountModule = module {
         )
     }
 
+    factory {
+        AccountColorPicker(
+            accountManager = get(),
+            resources = get(),
+        )
+    }
+
     factory<AccountSetupExternalContract.AccountCreator> {
         AccountCreator(
             accountCreatorHelper = get(),
+            accountColorPicker = get(),
             localFoldersCreator = get(),
             preferences = get(),
             context = androidApplication(),

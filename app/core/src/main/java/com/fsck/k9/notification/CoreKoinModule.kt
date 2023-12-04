@@ -28,7 +28,7 @@ val coreNotificationModule = module {
     }
     single {
         NotificationChannelManager(
-            preferences = get(),
+            accountManager = get(),
             backgroundExecutor = Executors.newSingleThreadExecutor(),
             notificationManager = get<Context>().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager,
             resourceProvider = get(),

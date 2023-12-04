@@ -9,6 +9,7 @@ import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.Core
 import com.fsck.k9.Preferences
 import com.fsck.k9.logging.Timber
+import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.autoDetectNamespace
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.createExtra
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.isSendClientId
@@ -18,10 +19,12 @@ import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import com.fsck.k9.Account as K9Account
 
 // TODO Move to feature/account/setup
 class AccountCreator(
     private val accountCreatorHelper: AccountCreatorHelper,
+    private val accountColorPicker: AccountColorPicker,
     private val localFoldersCreator: SpecialLocalFoldersCreator,
     private val preferences: Preferences,
     private val context: Context,
@@ -44,20 +47,7 @@ class AccountCreator(
 
         newAccount.email = account.emailAddress
 
-        val incomingServerSettings = account.incomingServerSettings
-        if (incomingServerSettings.type == Protocols.IMAP) {
-            newAccount.useCompression = incomingServerSettings.isUseCompression
-            newAccount.isSendClientIdEnabled = incomingServerSettings.isSendClientId
-            newAccount.incomingServerSettings = incomingServerSettings.copy(
-                extra = createExtra(
-                    autoDetectNamespace = incomingServerSettings.autoDetectNamespace,
-                    pathPrefix = incomingServerSettings.pathPrefix,
-                ),
-            )
-        } else {
-            newAccount.incomingServerSettings = incomingServerSettings
-        }
-
+        newAccount.setIncomingServerSettings(account.incomingServerSettings)
         newAccount.outgoingServerSettings = account.outgoingServerSettings
 
         newAccount.oAuthState = account.authorizationState
@@ -73,8 +63,8 @@ class AccountCreator(
         newAccount.displayCount = account.options.messageDisplayCount
 
         newAccount.folderPushMode = FolderMode.NONE
-        newAccount.deletePolicy = accountCreatorHelper.getDefaultDeletePolicy(incomingServerSettings.type)
-        newAccount.chipColor = accountCreatorHelper.pickColor()
+        newAccount.deletePolicy = accountCreatorHelper.getDefaultDeletePolicy(newAccount.incomingServerSettings.type)
+        newAccount.chipColor = accountColorPicker.pickColor()
 
         localFoldersCreator.createSpecialLocalFolders(newAccount)
 
@@ -85,5 +75,20 @@ class AccountCreator(
         Core.setServicesEnabled(context)
 
         return newAccount.uuid
+    }
+}
+
+private fun K9Account.setIncomingServerSettings(serverSettings: ServerSettings) {
+    if (serverSettings.type == Protocols.IMAP) {
+        useCompression = serverSettings.isUseCompression
+        isSendClientIdEnabled = serverSettings.isSendClientId
+        incomingServerSettings = serverSettings.copy(
+            extra = createExtra(
+                autoDetectNamespace = serverSettings.autoDetectNamespace,
+                pathPrefix = serverSettings.pathPrefix,
+            ),
+        )
+    } else {
+        incomingServerSettings = serverSettings
     }
 }

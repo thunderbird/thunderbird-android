@@ -6,6 +6,7 @@ import com.fsck.k9.AccountsChangeListener
 import kotlinx.coroutines.flow.Flow
 
 interface AccountManager {
+    fun getAccounts(): List<Account>
     fun getAccountsFlow(): Flow<List<Account>>
     fun getAccount(accountUuid: String): Account?
     fun getAccountFlow(accountUuid: String): Flow<Account>

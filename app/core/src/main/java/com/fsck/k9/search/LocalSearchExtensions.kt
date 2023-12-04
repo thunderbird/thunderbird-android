@@ -3,7 +3,7 @@
 package com.fsck.k9.search
 
 import com.fsck.k9.Account
-import com.fsck.k9.Preferences
+import com.fsck.k9.preferences.AccountManager
 
 val LocalSearch.isUnifiedInbox: Boolean
     get() = id == SearchAccount.UNIFIED_INBOX
@@ -18,8 +18,8 @@ val LocalSearch.isSingleFolder: Boolean
     get() = isSingleAccount && folderIds.size == 1
 
 @JvmName("getAccountsFromLocalSearch")
-fun LocalSearch.getAccounts(preferences: Preferences): List<Account> {
-    val accounts = preferences.accounts
+fun LocalSearch.getAccounts(accountManager: AccountManager): List<Account> {
+    val accounts = accountManager.getAccounts()
     return if (searchAllAccounts()) {
         accounts
     } else {
@@ -28,6 +28,6 @@ fun LocalSearch.getAccounts(preferences: Preferences): List<Account> {
     }
 }
 
-fun LocalSearch.getAccountUuids(preferences: Preferences): List<String> {
-    return getAccounts(preferences).map { it.uuid }
+fun LocalSearch.getAccountUuids(accountManager: AccountManager): List<String> {
+    return getAccounts(accountManager).map { it.uuid }
 }
