@@ -343,7 +343,7 @@ internal class RealImapFolder(
                 uids,
             )
 
-            UidCopyResponse.parse(imapResponses)?.uidMapping
+            UidCopyResponse.parse(imapResponses, allowUntaggedResponse = true)?.uidMapping
         } catch (ioe: IOException) {
             throw ioExceptionHandler(connection, ioe)
         }

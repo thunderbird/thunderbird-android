@@ -25,6 +25,7 @@ import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.internet.BinaryTempFileBody
 import com.fsck.k9.mail.internet.MimeHeader
 import com.fsck.k9.mail.store.imap.ImapResponseHelper.createImapResponse
+import com.fsck.k9.mail.store.imap.ImapResponseHelper.createImapResponseList
 import java.io.File
 import java.io.IOException
 import java.nio.file.Files
@@ -300,7 +301,7 @@ class RealImapFolderTest {
     }
 
     @Test
-    fun `moveMessages() with MOVE extension`() {
+    fun `moveMessages() with MOVE extension and tagged COPYUID response`() {
         val sourceFolder = createFolder("Folder")
         prepareImapFolderForOpen(OpenMode.READ_WRITE)
         imapConnection.stub {
@@ -308,7 +309,29 @@ class RealImapFolderTest {
         }
         val destinationFolder = createFolder("Destination")
         val messages = listOf(createImapMessage("1"))
-        setupMoveResponse("x OK [COPYUID 23 1 101] Success")
+        setupMoveResponses("x OK [COPYUID 23 1 101] Success")
+        sourceFolder.open(OpenMode.READ_WRITE)
+
+        val uidMapping = sourceFolder.moveMessages(messages, destinationFolder)
+
+        assertCommandWithIdsIssued("UID MOVE 1 \"Destination\"")
+        assertThat(uidMapping).isNotNull().containsOnly("1" to "101")
+    }
+
+    @Test
+    fun `moveMessages() with MOVE extension and untagged COPYUID response`() {
+        val sourceFolder = createFolder("Folder")
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
+        imapConnection.stub {
+            on { hasCapability(Capabilities.MOVE) } doReturn true
+        }
+        val destinationFolder = createFolder("Destination")
+        val messages = listOf(createImapMessage("1"))
+        setupMoveResponses(
+            "* OK [COPYUID 23 1 101]",
+            "* 1 EXPUNGE",
+            "x OK MOVE completed",
+        )
         sourceFolder.open(OpenMode.READ_WRITE)
 
         val uidMapping = sourceFolder.moveMessages(messages, destinationFolder)
@@ -1223,8 +1246,8 @@ class RealImapFolderTest {
     }
 
     @Suppress("SameParameterValue")
-    private fun setupMoveResponse(response: String) {
-        val imapResponses = listOf(createImapResponse(response))
+    private fun setupMoveResponses(vararg responses: String) {
+        val imapResponses = createImapResponseList(*responses)
         whenever(imapConnection.executeCommandWithIdSet(eq(Commands.UID_MOVE), anyString(), anySet()))
             .thenReturn(imapResponses)
     }
