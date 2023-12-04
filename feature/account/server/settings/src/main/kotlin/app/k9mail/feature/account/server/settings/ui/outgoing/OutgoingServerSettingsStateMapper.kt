@@ -43,12 +43,12 @@ private fun ServerSettings.toOutgoingServerSettingsState(password: String): Stat
 internal fun State.toServerSettings(): ServerSettings {
     return ServerSettings(
         type = "smtp",
-        host = server.value,
+        host = server.value.trim(),
         port = port.value!!.toInt(),
         connectionSecurity = security.toMailConnectionSecurity(),
         authenticationType = authenticationType.toAuthType(),
-        username = if (authenticationType.isUsernameRequired) username.value else "",
-        password = if (authenticationType.isPasswordRequired) password.value else null,
+        username = if (authenticationType.isUsernameRequired) username.value.trim() else "",
+        password = if (authenticationType.isPasswordRequired) password.value.trim() else null,
         clientCertificateAlias = clientCertificateAlias,
     )
 }

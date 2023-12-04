@@ -96,8 +96,12 @@ class OutgoingServerSettingsStateMapperKtTest {
     }
 
     @Test
-    fun `should map state to server settings`() {
-        val outgoingState = OUTGOING_STATE
+    fun `should map state to server settings and trim input`() {
+        val outgoingState = OUTGOING_STATE.copy(
+            server = StringInputField(value = " smtp.example.org "),
+            username = StringInputField(value = " user "),
+            password = StringInputField(value = " password "),
+        )
 
         val result = outgoingState.toServerSettings()
 
