@@ -19,6 +19,10 @@ class BackendIdleRefreshManager(private val alarmManager: SystemAlarmManager) : 
     private var minTimeout = Long.MAX_VALUE
     private var minTimeoutTimestamp = 0L
 
+    override fun canScheduleTimers(): Boolean {
+        return alarmManager.canScheduleExactAlarms()
+    }
+
     @Synchronized
     override fun startTimer(timeout: Long, callback: Callback): IdleRefreshTimer {
         require(timeout > MIN_TIMER_DELTA) { "Timeout needs to be greater than $MIN_TIMER_DELTA ms" }
