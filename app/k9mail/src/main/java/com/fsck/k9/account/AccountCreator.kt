@@ -23,7 +23,6 @@ import com.fsck.k9.Account as K9Account
 
 // TODO Move to feature/account/setup
 class AccountCreator(
-    private val accountCreatorHelper: AccountCreatorHelper,
     private val accountColorPicker: AccountColorPicker,
     private val localFoldersCreator: SpecialLocalFoldersCreator,
     private val preferences: Preferences,
@@ -63,7 +62,7 @@ class AccountCreator(
         newAccount.displayCount = account.options.messageDisplayCount
 
         newAccount.folderPushMode = FolderMode.NONE
-        newAccount.deletePolicy = accountCreatorHelper.getDefaultDeletePolicy(newAccount.incomingServerSettings.type)
+        newAccount.deletePolicy = DeletePolicyHelper.getDefaultDeletePolicy(newAccount.incomingServerSettings.type)
         newAccount.chipColor = accountColorPicker.pickColor()
 
         localFoldersCreator.createSpecialLocalFolders(newAccount)
