@@ -46,7 +46,6 @@
     <string name="choose_folder_move_title">Verschieben nach…</string>
     <string name="choose_folder_copy_title">Kopieren nach…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> ausgewählt</string>
-    <string name="next_action">Weiter</string>
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">OK</string>
     <string name="cancel_action">Abbrechen</string>
@@ -280,46 +279,14 @@
     <string name="account_setup_oauth_sign_in">Anmelden</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in_with_google">Mit Google anmelden</string>
-    <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-    <string name="account_setup_basics_show_password_need_lock">Um dein Passwort hier anzuzeigen, aktiviere die Bildschirmsperre auf diesem Gerät.</string>
-    <string name="account_setup_basics_show_password_biometrics_title">Deine Identität bestätigen</string>
-    <string name="account_setup_basics_show_password_biometrics_subtitle">Entsperren, um dein Passwort anzuzeigen</string>
-    <string name="account_setup_check_settings_retr_info_msg">Kontoinformationen werden abgerufen\u2026</string>
-    <string name="account_setup_check_settings_check_incoming_msg">Einstellungen des Eingangsservers werden überprüft\u2026</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">Einstellungen des Ausgangsservers werden überprüft\u2026</string>
-    <string name="account_setup_check_settings_authenticate">Authentifizierung\u2026</string>
-    <string name="account_setup_check_settings_fetch">Kontoeinstellungen werden geladen\u2026</string>
-    <string name="account_setup_check_settings_canceling_msg">Aktion wird abgebrochen\u2026</string>
-    <string name="account_setup_auth_type_normal_password">Normales Passwort</string>
-    <string name="account_setup_auth_type_insecure_password">Passwort, unsicher übermittelt</string>
-    <string name="account_setup_auth_type_encrypted_password">Verschlüsseltes Passwort</string>
-    <string name="account_setup_auth_type_tls_client_certificate">Client-Zertifikat</string>
-    <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
-    <string name="account_setup_incoming_title">Einstellungen für Posteingangsserver</string>
-    <string name="account_setup_incoming_username_label">Benutzername</string>
-    <string name="account_setup_incoming_password_label">Passwort</string>
-    <string name="account_setup_incoming_client_certificate_label">Client-Zertifikat</string>
-    <string name="account_setup_incoming_pop_server_label">POP3-Server</string>
-    <string name="account_setup_incoming_imap_server_label">IMAP-Server</string>
-    <string name="account_setup_incoming_port_label">Port</string>
-    <string name="account_setup_incoming_security_label">Sicherheitstyp</string>
-    <string name="account_setup_incoming_auth_type_label">Authentifizierungstyp</string>
-    <string name="account_setup_incoming_security_none_label">Keine Verschlüsselung</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
-    <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" ist nicht gültig mit \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
     <string name="account_setup_incoming_delete_policy_label">Beim Löschen von Nachrichten</string>
     <string name="account_setup_incoming_delete_policy_never_label">Nie auf Server löschen</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Auch auf Server löschen</string>
     <string name="account_setup_incoming_delete_policy_markread_label">Auf Server als gelesen markieren</string>
-    <string name="account_setup_incoming_use_compression">Komprimierung durchführen</string>
-    <string name="account_setup_incoming_send_client_id">Client-ID senden</string>
     <string name="account_setup_expunge_policy_label">Gelöschte Nachrichten auf dem Server löschen</string>
     <string name="account_setup_expunge_policy_immediately">Sofort nach Verschieben oder Kopieren</string>
     <string name="account_setup_expunge_policy_on_poll">Bei jedem Abrufen</string>
     <string name="account_setup_expunge_policy_manual">Nur manuell</string>
-    <string name="account_setup_incoming_autodetect_namespace_label">IMAP-Namensraum automatisch ermitteln</string>
-    <string name="account_setup_incoming_imap_path_prefix_label">IMAP-Verzeichnispräfix</string>
     <string name="drafts_folder_label">Ordner für Entwürfe</string>
     <string name="sent_folder_label">Ordner für gesendete Nachrichten</string>
     <string name="trash_folder_label">Ordner für gelöschte Nachrichten</string>
@@ -327,16 +294,6 @@
     <string name="spam_folder_label">Ordner für Spam</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Nur ausgewählte Ordner anzeigen</string>
     <string name="account_setup_auto_expand_folder">Startordner</string>
-    <string name="account_setup_outgoing_title">Einstellungen für Postausgangsserver</string>
-    <string name="account_setup_outgoing_smtp_server_label">SMTP-Server</string>
-    <string name="account_setup_outgoing_port_label">Port</string>
-    <string name="account_setup_outgoing_security_label">Sicherheitstyp</string>
-    <string name="account_setup_outgoing_require_login_label">Anmeldung erforderlich.</string>
-    <string name="account_setup_outgoing_username_label">Benutzername</string>
-    <string name="account_setup_outgoing_password_label">Passwort</string>
-    <string name="account_setup_outgoing_authentication_label">Authentifizierungsmethode</string>
-    <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" ist nicht gültig mit \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
-    <string name="account_setup_bad_uri">Ungültige Einstellung: <xliff:g id="err_mess">%s</xliff:g></string>
     <string name="account_setup_options_mail_check_frequency_label">E-Mail-Abfrage</string>
     <string name="account_setup_options_mail_check_frequency_never">Nie (nur manuell)</string>
     <string name="account_setup_options_mail_check_frequency_15min">Alle 15 Minuten</string>
@@ -369,16 +326,10 @@
     <string name="account_setup_options_mail_display_count_10000">10000 Nachrichten</string>
     <string name="account_setup_options_mail_display_count_all">Alle Nachrichten</string>
     <string name="move_copy_cannot_copy_unsynced_message">Nachrichten, die nicht mit dem Server synchronisiert wurden, können nicht kopiert oder verschoben werden</string>
-    <string name="account_setup_failed_dlg_title">Einrichtung konnte nicht abgeschlossen werden</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Benutzername oder Passwort ist falsch.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_certificate_message_fmt">Der Server verwendet ein ungültiges SSL-Zertifikat. Dies könnte daran liegen, dass der Server falsch konfiguriert ist. Allerdings könnte es auch daran liegen, dass jemand versucht dich oder deinen E-Mail-Server anzugreifen. Falls du dir nicht sicher bist, was der Grund ist, klicke auf Abbrechen und kontaktiere die Administratoren deines E-Mail-Servers.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_server_message_fmt">Verbindung zum Server nicht möglich.\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_oauth_flow_canceled">Berechtigung aufgehoben</string>
     <string name="account_setup_failed_dlg_oauth_flow_failed">Die Autorisierung ist aufgrund des folgenden Fehlers fehlgeschlagen: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 wird von diesem Anbieter derzeit nicht unterstützt.</string>
     <string name="account_setup_failed_dlg_browser_not_found">Die App konnte keinen Browser finden, der für den Zugriff auf dein Konto verwendet werden kann.</string>
-    <string name="account_setup_failed_dlg_edit_details_action">Details bearbeiten</string>
-    <string name="account_setup_failed_dlg_continue_action">Weiter</string>
     <string name="account_settings_push_advanced_title">Erweitert</string>
     <string name="account_settings_title_fmt">Kontoeinstellungen</string>
     <string name="account_settings_notify_label">Bei neuen Nachrichten</string>
@@ -608,9 +559,6 @@
     <string name="sort_by_unread">Gelesen/Ungelesen</string>
     <string name="sort_by_attach">Anhang</string>
     <string name="account_delete_dlg_title">Konto entfernen</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_title">Ungültiges Zertifikat</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_accept">Zertifikat akzeptieren</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_reject">Zertifikat ablehnen</string>
     <string name="folder_list_filter_hint">Ordnername enthält</string>
     <string name="folder_list_display_mode_label">Ordner anzeigen…</string>
     <string name="folder_list_display_mode_all">Alle Ordner anzeigen</string>
@@ -843,12 +791,6 @@
     <string name="fetching_attachment_dialog_title_send">Nachricht senden</string>
     <string name="fetching_attachment_dialog_title_save">Entwurf speichern</string>
     <string name="fetching_attachment_dialog_message">Anhang wird heruntergeladen…</string>
-    <string name="auth_external_error">Authentifizierung fehlgeschlagen. Der Server bietet nicht Simple Authentication and Security Layer, kurz SASL, an. Dies könnte durch ein Problem des Client-Zertifikats (Zertifikat abgelaufen, unbekannte Zertifizierungsstelle) oder ein Konfigurationsproblem ausgelöst werden.</string>
-    <!--=== Client certificates specific ==================================================================-->
-    <string name="client_certificate_spinner_empty">Kein Client-Zertifikat</string>
-    <string name="client_certificate_spinner_delete">Client-Zertifikatsauswahl entfernen</string>
-    <string name="client_certificate_retrieval_failure">Das Abrufen des Client-Zertifikats für den Pfad \"<xliff:g id="alias">%s</xliff:g>\" ist fehlgeschlagen</string>
-    <string name="client_certificate_expired">Client-Zertifikat \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" ist abgelaufen oder noch nicht gültig (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Verschlüsselt*</string>
     <string name="add_from_contacts">Vom Adressbuch hinzufügen</string>

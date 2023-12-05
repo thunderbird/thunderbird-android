@@ -1,2 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_settings_authentication_none">Καμία</string>
+    <string name="account_server_settings_authentication_password_encrypted">Κρυπτογραφημένος κωδικός</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">Αυτόματος εντοπισμός χώρου ονομάτων IMAP</string>
+    <string name="account_server_settings_authentication_password_cleartext">Μη ασφαλής κωδικός</string>
+    <string name="account_server_settings_authentication_label">Επαλήθευση</string>
+    <string name="account_server_settings_connection_security_none">Καμία</string>
+    <string name="account_server_settings_port_label">Πόρτα</string>
+    <string name="account_server_settings_authentication_client_certificate">Πιστοποητικό πελάτη</string>
+    <string name="account_server_settings_protocol_type_label">Πρωτόκολλο</string>
+    <string name="account_server_settings_username_label">Όνομα χρήστη</string>
+    <string name="account_server_settings_client_certificate_label">Πιστοποιητικό πελάτη</string>
+    <string name="account_server_settings_client_certificate_none_selected">Κανένα</string>
+    <string name="account_server_settings_server_label">Σέρβερ</string>
+    <string name="account_server_settings_security_label">Ασφάλεια</string>
+</resources>

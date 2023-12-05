@@ -1,2 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_options_account_name_error_blank">Account name can\'t be blank.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">This email address is not allowed.</string>
+    <string name="account_setup_options_account_check_frequency_label">Check frequency</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Configure automatically</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">This configuration is not trusted</string>
+    <string name="account_setup_create_account_created">Account successfully created</string>
+    <string name="account_setup_button_finish">Finish</string>
+    <string name="account_setup_options_email_signature_label">Email signature</string>
+    <string name="account_setup_options_email_display_count_label">Number of messages to display</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Configure manually</string>
+    <string name="account_setup_options_email_signature_error_blank">Email signature name can\'t be blank.</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">It is required to approve the configuration.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">We received the configuration for your email server over a connection that isn\'t as secure as we\'d like. This means that there is a tiny chance that someone could have altered it. Could you please double-check the provided configuration to make sure it\'s as it should be?</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Edit configuration</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">This email address is not supported.</string>
+    <string name="account_setup_error_unknown">Unknown error</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Configuration not found</string>
+    <string name="account_setup_create_account_creating">Creating account…</string>
+    <string name="account_setup_options_top_bar_title">Account options</string>
+    <string name="account_setup_options_account_name_label">Account name</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Configuration found</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">Email address is required.</string>
+    <string name="account_setup_options_display_name_label">Display name</string>
+    <string name="account_setup_auto_discovery_loading_error">Failed to load email configuration</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">I trust this configuration</string>
+    <string name="account_setup_options_display_name_error_required">Display name is required.</string>
+    <string name="account_setup_create_account_error">An error occurred while trying to create the account</string>
+    <string name="account_setup_error_network">Network</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">This is not recognised as a valid email address.</string>
+    <string name="account_setup_options_email_check_frequency_never">Never</string>
+    <string name="account_setup_auto_discovery_loading_message">Finding email details</string>
+    <string name="account_setup_options_section_sync_options_">Sync options</string>
+    <string name="account_setup_options_show_notifications_label">Show notifications</string>
+    <string name="account_setup_options_section_display_options">Display options</string>
+    <string name="account_setup_title">K-9 Mail</string>
+</resources>

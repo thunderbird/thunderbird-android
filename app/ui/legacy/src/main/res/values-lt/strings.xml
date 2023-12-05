@@ -45,7 +45,6 @@
     <string name="choose_folder_move_title">Perkelti į…</string>
     <string name="choose_folder_copy_title">Kopijuoti į…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> pasirinkta</string>
-    <string name="next_action">Kitas</string>
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">Gerai</string>
     <string name="cancel_action">Atsisakyti</string>
@@ -276,45 +275,14 @@
     <string name="account_setup_oauth_sign_in">Prisijungti</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in_with_google">Prisijungti su Google</string>
-    <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-    <string name="account_setup_basics_show_password_need_lock">Norėdami čia peržiūrėti slaptažodį, įjunkite ekrano užraktą šiame prietaise.</string>
-    <string name="account_setup_basics_show_password_biometrics_title">Patvirtinkite savo tapatybę</string>
-    <string name="account_setup_basics_show_password_biometrics_subtitle">Atrakinkite norint peržiūrėti savo slaptažodį</string>
-    <string name="account_setup_check_settings_retr_info_msg">Gaunama paskyros informacija\u2026</string>
-    <string name="account_setup_check_settings_check_incoming_msg">Tikrinami gaunamųjų serverio nustatymai\u2026</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">Tikrinami siunčiamųjų serverio nustatymai\u2026</string>
-    <string name="account_setup_check_settings_authenticate">Patvirtinama tapatybė\u2026</string>
-    <string name="account_setup_check_settings_fetch">Gaunami paskyros nustatymai\u2026</string>
-    <string name="account_setup_check_settings_canceling_msg">Atšaukiama\u2026</string>
-    <string name="account_setup_auth_type_normal_password">Paprastas slaptažodis</string>
-    <string name="account_setup_auth_type_insecure_password">Nesaugiai perduotas slaptažodis</string>
-    <string name="account_setup_auth_type_encrypted_password">Šifruotas slaptažodis</string>
-    <string name="account_setup_auth_type_tls_client_certificate">Kliento sertifikatas</string>
-    <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
-    <string name="account_setup_incoming_title">Gaunamųjų laiškų serveris</string>
-    <string name="account_setup_incoming_username_label">Naudotojo vardas</string>
-    <string name="account_setup_incoming_password_label">Slaptažodis</string>
-    <string name="account_setup_incoming_client_certificate_label">Kliento sertifikatas</string>
-    <string name="account_setup_incoming_pop_server_label">POP3 serveris</string>
-    <string name="account_setup_incoming_imap_server_label">IMAP serveris</string>
-    <string name="account_setup_incoming_port_label">Prievadas</string>
-    <string name="account_setup_incoming_security_label">Saugumas</string>
-    <string name="account_setup_incoming_auth_type_label">Tapatumo nustatymas</string>
-    <string name="account_setup_incoming_security_none_label">Joks</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
-    <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" netinka su \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
     <string name="account_setup_incoming_delete_policy_label">Kai pašalinu laišką</string>
     <string name="account_setup_incoming_delete_policy_never_label">Nešalinti serveryje</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Pašalinti iš serverio</string>
     <string name="account_setup_incoming_delete_policy_markread_label">Pažymėti kaip skaitytą serveryje</string>
-    <string name="account_setup_incoming_use_compression">Naudoti suspaudimą</string>
     <string name="account_setup_expunge_policy_label">Pašalinti ištrintus laiškus serveryje</string>
     <string name="account_setup_expunge_policy_immediately">Tuojau pat</string>
     <string name="account_setup_expunge_policy_on_poll">Kai užklausiama</string>
     <string name="account_setup_expunge_policy_manual">Rankiniu būdu</string>
-    <string name="account_setup_incoming_autodetect_namespace_label">Automatiškai aptikti IMAP vietovardį</string>
-    <string name="account_setup_incoming_imap_path_prefix_label">IMAP kelio priedėlis</string>
     <string name="drafts_folder_label">Juodraščių aplankas</string>
     <string name="sent_folder_label">Išsiųstųjų aplankas</string>
     <string name="trash_folder_label">Šiukšlinė</string>
@@ -322,16 +290,6 @@
     <string name="spam_folder_label">Brukalo aplankas</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Rodyti tik prenumeruotus aplankus</string>
     <string name="account_setup_auto_expand_folder">Automatiškai išskleisti aplanką</string>
-    <string name="account_setup_outgoing_title">Siunčiamųjų laiškų serveris</string>
-    <string name="account_setup_outgoing_smtp_server_label">SMTP serveris</string>
-    <string name="account_setup_outgoing_port_label">Prievadas</string>
-    <string name="account_setup_outgoing_security_label">Saugumas</string>
-    <string name="account_setup_outgoing_require_login_label">Reikalauti prisijungti.</string>
-    <string name="account_setup_outgoing_username_label">Naudotojo vardas</string>
-    <string name="account_setup_outgoing_password_label">Slaptažodis</string>
-    <string name="account_setup_outgoing_authentication_label">Tapatumo nustatymas</string>
-    <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" netinka su \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
-    <string name="account_setup_bad_uri">Netinkamai nustatyta: <xliff:g id="err_mess">%s</xliff:g></string>
     <string name="account_setup_options_mail_check_frequency_label">Aplanko tikrinimo dažnis</string>
     <string name="account_setup_options_mail_check_frequency_never">Niekada</string>
     <string name="account_setup_options_mail_check_frequency_15min">Kas 15 minučių</string>
@@ -364,16 +322,10 @@
     <string name="account_setup_options_mail_display_count_10000">10000 laiškų</string>
     <string name="account_setup_options_mail_display_count_all">visi laiškai</string>
     <string name="move_copy_cannot_copy_unsynced_message">Neįmanoma kopijuoti ar perkelti laiškų kurie nesinchronizuoti su serveriu</string>
-    <string name="account_setup_failed_dlg_title">Nepavyko baigti nustatymo</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Naudotojo vardas arba slaptažodis neteisingi.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_certificate_message_fmt">Serveris pateikė negaliojantį SSL sertifikatą. Kartais taip nutinka dėl netinkamos serverio konfigūracijos. Kartais dėl to, kad kas nors bando atakuoti jus arba jūsų pašto serverį. Jei nesate tikri, kas nutiko, spustelėkite Atmesti ir susisiekite su žmonėmis, kurie valdo jūsų pašto serverį.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_server_message_fmt">Nepavyko prisijungti prie serverio.\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_oauth_flow_canceled">Leidimas atšauktas</string>
     <string name="account_setup_failed_dlg_oauth_flow_failed">Autorizavimas nepavyko su šia klaida: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_setup_failed_dlg_oauth_not_supported">Šiuo metu šis teikėjas nepalaiko OAuth 2.0.</string>
     <string name="account_setup_failed_dlg_browser_not_found">Programai nepavyko rasti naršyklės, kurią naudoti suteikiant prieigą prie paskyros.</string>
-    <string name="account_setup_failed_dlg_edit_details_action">Keisti detales</string>
-    <string name="account_setup_failed_dlg_continue_action">Tęsti</string>
     <string name="account_settings_push_advanced_title">Išplėstinis</string>
     <string name="account_settings_title_fmt">Aplanko nustatymai</string>
     <string name="account_settings_notify_label">Pranešimai apie naujus laiškus</string>
@@ -603,9 +555,6 @@
     <string name="sort_by_unread">Skaityta/Neskaityta</string>
     <string name="sort_by_attach">Priedai</string>
     <string name="account_delete_dlg_title">Pašalinti paskyrą</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_title">Neatpažintas sertifikatas</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_accept">Priimti raktą</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_reject">Atmesti raktą</string>
     <string name="folder_list_filter_hint">Aplanko pavadinime yra</string>
     <string name="folder_list_display_mode_label">Rodyti aplankus…</string>
     <string name="folder_list_display_mode_all">Visus aplankus</string>
@@ -847,12 +796,6 @@
     <string name="fetching_attachment_dialog_title_send">Siunčiamas laiškas</string>
     <string name="fetching_attachment_dialog_title_save">Išsaugomas juodraštis</string>
     <string name="fetching_attachment_dialog_message">Gaunamas priedas…</string>
-    <string name="auth_external_error">Nepavyksta patvirtinti autentiškumo. Serveris nereklamuoja SASL EXTERNAL galimybės. Taip gali būti dėl kliento sertifikato problemos (pasibaigęs sertifikato galiojimo laikas, nežinoma sertifikato institucija) arba kitos konfigūracijos problemos.</string>
-    <!--=== Client certificates specific ==================================================================-->
-    <string name="client_certificate_spinner_empty">Nėra kliento sertifikato</string>
-    <string name="client_certificate_spinner_delete">Pašalinti kliento sertifikato pasirinkimą</string>
-    <string name="client_certificate_retrieval_failure">Nepavyko gauti kliento sertifikato slapyvardžiui \"<xliff:g id="alias">%s</xliff:g>\"</string>
-    <string name="client_certificate_expired">Kliento sertifikato \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" galiojimo laikas baigėsi arba jis dar negalioja (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Užšifruotas*</string>
     <string name="add_from_contacts">Pridėti iš kontaktų</string>

@@ -46,7 +46,6 @@
     <string name="choose_folder_move_title">Flyt til…</string>
     <string name="choose_folder_copy_title">Kopier til…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valgt</string>
-    <string name="next_action">Næste</string>
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">O.k.</string>
     <string name="cancel_action">Annullér</string>
@@ -278,45 +277,14 @@
     <string name="account_setup_oauth_sign_in">Log ind</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in_with_google">Log ind med Google</string>
-    <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-    <string name="account_setup_basics_show_password_biometrics_title">Verificer din identitet</string>
-    <string name="account_setup_basics_show_password_biometrics_subtitle">Lås op for at vise din adgangskode</string>
-    <string name="account_setup_check_settings_retr_info_msg">Henter konto-information\u2026</string>
-    <string name="account_setup_check_settings_check_incoming_msg">Kontrollerer indstillinger for indgående server\u2026</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">Kontrollerer indstillinger for udgående server\u2026</string>
-    <string name="account_setup_check_settings_authenticate">Autentiserer\u2026</string>
-    <string name="account_setup_check_settings_fetch">Henter kontoindstillinger\u2026</string>
-    <string name="account_setup_check_settings_canceling_msg">Afbryder\u2026</string>
-    <string name="account_setup_auth_type_normal_password">Normal kodeord</string>
-    <string name="account_setup_auth_type_insecure_password">Kodeord; sendt usikret</string>
-    <string name="account_setup_auth_type_encrypted_password">Krypteret kodeord</string>
-    <string name="account_setup_auth_type_tls_client_certificate">Klient certifikat</string>
-    <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
-    <string name="account_setup_incoming_title">Indgående serverindstillinger</string>
-    <string name="account_setup_incoming_username_label">Brugernavn</string>
-    <string name="account_setup_incoming_password_label">Password</string>
-    <string name="account_setup_incoming_client_certificate_label">Klient certifikat</string>
-    <string name="account_setup_incoming_pop_server_label">POP3 server</string>
-    <string name="account_setup_incoming_imap_server_label">IMAP server</string>
-    <string name="account_setup_incoming_port_label">Port</string>
-    <string name="account_setup_incoming_security_label">Sikkerhed</string>
-    <string name="account_setup_incoming_auth_type_label">Autentifikations type</string>
-    <string name="account_setup_incoming_security_none_label">Ingen</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
-    <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" er ikke gyldig med \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
     <string name="account_setup_incoming_delete_policy_label">Når jeg sletter en mail</string>
     <string name="account_setup_incoming_delete_policy_never_label">Undlad at slette på server</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Slet på server</string>
     <string name="account_setup_incoming_delete_policy_markread_label">Markér som læst på server</string>
-    <string name="account_setup_incoming_use_compression">Brug komprimering</string>
-    <string name="account_setup_incoming_send_client_id">Send klient ID</string>
     <string name="account_setup_expunge_policy_label">Ryd slettede mails</string>
     <string name="account_setup_expunge_policy_immediately">Umiddelbart efter sletning</string>
     <string name="account_setup_expunge_policy_on_poll">I forbindelse med hentning af mails</string>
     <string name="account_setup_expunge_policy_manual">Kun manuelt</string>
-    <string name="account_setup_incoming_autodetect_namespace_label">Auto detekter IMAP namespace</string>
-    <string name="account_setup_incoming_imap_path_prefix_label">IMAP søge prefix</string>
     <string name="drafts_folder_label">Kladde mappe</string>
     <string name="sent_folder_label">Sendt mappe</string>
     <string name="trash_folder_label">Papirkurv mappe</string>
@@ -324,16 +292,6 @@
     <string name="spam_folder_label">Spam mappe</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Vis kun mapper du abonerer på</string>
     <string name="account_setup_auto_expand_folder">Udvid mapper automatisk</string>
-    <string name="account_setup_outgoing_title">Udgående serverindstillinger</string>
-    <string name="account_setup_outgoing_smtp_server_label">SMTP server</string>
-    <string name="account_setup_outgoing_port_label">Port</string>
-    <string name="account_setup_outgoing_security_label">Sikkerhedstype</string>
-    <string name="account_setup_outgoing_require_login_label">Kræv login.</string>
-    <string name="account_setup_outgoing_username_label">Brugernavn</string>
-    <string name="account_setup_outgoing_password_label">Password</string>
-    <string name="account_setup_outgoing_authentication_label">Autentifikationstype</string>
-    <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" er ikke gyldig med \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
-    <string name="account_setup_bad_uri">Ugyldig opsætning: <xliff:g id="err_mess">%s</xliff:g></string>
     <string name="account_setup_options_mail_check_frequency_label">Frekvens for hentning af mail</string>
     <string name="account_setup_options_mail_check_frequency_never">Aldrig</string>
     <string name="account_setup_options_mail_check_frequency_15min">Hver 15 minut</string>
@@ -366,12 +324,6 @@
     <string name="account_setup_options_mail_display_count_10000">10000 mails</string>
     <string name="account_setup_options_mail_display_count_all">alle mails</string>
     <string name="move_copy_cannot_copy_unsynced_message">Kan ikke kopiere eller flytte mail som ikke er synkroniseret med server</string>
-    <string name="account_setup_failed_dlg_title">Kunne ikke fuldføre opsætning</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Brugernavn / kodeord er ugyldig.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_certificate_message_fmt">Serveren præsenterede et ugyldigt SSL-certifikat. Nogle gange, er det på grund af en server fejlkonfiguration. Andre gange er det fordi nogen forsøger at angribe dig, eller din mailserver. Hvis du ikke er sikker på hvad der sker, skal du klikke på Afvis og kontakte de folk, der administrerer din mailserver.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_server_message_fmt">Kan ikke forbinde til server.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_edit_details_action">Rediger detaljer</string>
-    <string name="account_setup_failed_dlg_continue_action">Fortsæt</string>
     <string name="account_settings_push_advanced_title">Avanceret</string>
     <string name="account_settings_title_fmt">Konto opsætning</string>
     <string name="account_settings_notify_label">Vis besked når ny mail er modtaget</string>
@@ -599,9 +551,6 @@
     <string name="sort_by_unread">Læst/ulæst</string>
     <string name="sort_by_attach">Vedhæftning</string>
     <string name="account_delete_dlg_title">Fjern konto</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_title">Ukendt certificat</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_accept">Acceptér nøgle</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_reject">Afvis nøgle</string>
     <string name="folder_list_filter_hint">Mappenavn indeholder</string>
     <string name="folder_list_display_mode_label">Mapper</string>
     <string name="folder_list_display_mode_all">Vis alle mapper</string>
@@ -833,12 +782,6 @@
     <string name="fetching_attachment_dialog_title_send">Sender meddelelse</string>
     <string name="fetching_attachment_dialog_title_save">Gemmer kladde</string>
     <string name="fetching_attachment_dialog_message">Henter vedhæftning…</string>
-    <string name="auth_external_error">Ikke i stand til at autentificere. Serveren annoncerer ikke at den er i stand til at udføre SASL EXTERNAL. Dette kan være et problem med klientcertifikatet (udløbet, ukendt certifikatudsteder) eller et andet konfigurationsproblem.</string>
-    <!--=== Client certificates specific ==================================================================-->
-    <string name="client_certificate_spinner_empty">Intet klientcertifikat</string>
-    <string name="client_certificate_spinner_delete">Fjern valget af klientcertifikat</string>
-    <string name="client_certificate_retrieval_failure">Kunne ikke indlæse klientcertifikat for alias \"<xliff:g id="alias">%s</xliff:g>\"</string>
-    <string name="client_certificate_expired">Klientcertifikat \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" er udløbet eller endnu ikke gyldigt (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Krypteret*</string>
     <string name="add_from_contacts">Tilføj fra Kontakter</string>

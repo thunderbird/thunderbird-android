@@ -46,7 +46,6 @@
     <string name="choose_folder_move_title">Shpjereni te…</string>
     <string name="choose_folder_copy_title">Kopjojeni te…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> të përzgjedhur</string>
-    <string name="next_action">Pasuesi</string>
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">OK</string>
     <string name="cancel_action">Anuloje</string>
@@ -280,46 +279,14 @@
     <string name="account_setup_oauth_sign_in">Hyni</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in_with_google">Hyni me Google</string>
-    <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-    <string name="account_setup_basics_show_password_need_lock">Që të shihni fjalëkalimin tuaj këtu, aktivizoni kyçje ekrani në këtë pajisje.</string>
-    <string name="account_setup_basics_show_password_biometrics_title">Verifikoni identitetin tuaj</string>
-    <string name="account_setup_basics_show_password_biometrics_subtitle">Që të shihni fjalëkalimin tuaj, shkyçeni</string>
-    <string name="account_setup_check_settings_retr_info_msg">Po merren të dhëna llogarie\u2026</string>
-    <string name="account_setup_check_settings_check_incoming_msg">Po kontrollohen rregullime shërbyesi marrjesh\u2026</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">Po kontrollohen rregullime shërbyesi dërgimesh\u2026</string>
-    <string name="account_setup_check_settings_authenticate">Po kryhet mirëfilltësimi\u2026</string>
-    <string name="account_setup_check_settings_fetch">Po sillen rregullime llogarie\u2026</string>
-    <string name="account_setup_check_settings_canceling_msg">Po anulohet\u2026</string>
-    <string name="account_setup_auth_type_normal_password">Fjalëkalim normal</string>
-    <string name="account_setup_auth_type_insecure_password">Fjalëkalim, i transmetuar në mënyrë të pasigurt</string>
-    <string name="account_setup_auth_type_encrypted_password">Fjalëkalim i fshehtëzuar</string>
-    <string name="account_setup_auth_type_tls_client_certificate">Dëshmi klienti</string>
-    <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
-    <string name="account_setup_incoming_title">Rregullime shërbyesi për marrje</string>
-    <string name="account_setup_incoming_username_label">Emër përdoruesi</string>
-    <string name="account_setup_incoming_password_label">Fjalëkalim</string>
-    <string name="account_setup_incoming_client_certificate_label">Dëshmi klienti</string>
-    <string name="account_setup_incoming_pop_server_label">Shërbyes POP3</string>
-    <string name="account_setup_incoming_imap_server_label">Shërbyes IMAP</string>
-    <string name="account_setup_incoming_port_label">Portë</string>
-    <string name="account_setup_incoming_security_label">Siguri</string>
-    <string name="account_setup_incoming_auth_type_label">Mirëfilltësim</string>
-    <string name="account_setup_incoming_security_none_label">Asnjë</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
-    <string name="account_setup_incoming_invalid_setting_combo_notice">\“<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\” s\’është i vlefshëm me \“<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\”</string>
     <string name="account_setup_incoming_delete_policy_label">Kur fshij një mesazh</string>
     <string name="account_setup_incoming_delete_policy_never_label">Mos e fshi te shërbyesi</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Fshije te shërbyesi</string>
     <string name="account_setup_incoming_delete_policy_markread_label">Vëri shenjë si të lexuar te shërbyesi</string>
-    <string name="account_setup_incoming_use_compression">Përdor ngjeshje</string>
-    <string name="account_setup_incoming_send_client_id">Dërgo ID klienti</string>
     <string name="account_setup_expunge_policy_label">Hiqi dhe në shërbyes mesazhet e fshira</string>
     <string name="account_setup_expunge_policy_immediately">Menjëherë</string>
     <string name="account_setup_expunge_policy_on_poll">Kur vilet</string>
     <string name="account_setup_expunge_policy_manual">Dorazi</string>
-    <string name="account_setup_incoming_autodetect_namespace_label">Vetëzbulo emërhapësirë IMAP</string>
-    <string name="account_setup_incoming_imap_path_prefix_label">Parashtesë shtegu IMAP</string>
     <string name="drafts_folder_label">Dosje skicash</string>
     <string name="sent_folder_label">Dosje të dërguarish</string>
     <string name="trash_folder_label">Dosje hedhurinash</string>
@@ -327,16 +294,6 @@
     <string name="spam_folder_label">Dosje të padëshiruarish</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Shfaq vetëm dosje me pajtim</string>
     <string name="account_setup_auto_expand_folder">Dosje për vetë-zgjerim</string>
-    <string name="account_setup_outgoing_title">Rregullime shërbyesi për dërgim</string>
-    <string name="account_setup_outgoing_smtp_server_label">Shërbyes SMTP</string>
-    <string name="account_setup_outgoing_port_label">Portë</string>
-    <string name="account_setup_outgoing_security_label">Siguri</string>
-    <string name="account_setup_outgoing_require_login_label">Kërko hyrje.</string>
-    <string name="account_setup_outgoing_username_label">Emër përdoruesi</string>
-    <string name="account_setup_outgoing_password_label">Fjalëkalim</string>
-    <string name="account_setup_outgoing_authentication_label">Mirëfilltësim</string>
-    <string name="account_setup_outgoing_invalid_setting_combo_notice">\“<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\” s\’është i vlefshëm me \“<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\”</string>
-    <string name="account_setup_bad_uri">Rregullim i pavefshëm: <xliff:g id="err_mess">%s</xliff:g></string>
     <string name="account_setup_options_mail_check_frequency_label">Shpeshti vjeljeje dosjeje</string>
     <string name="account_setup_options_mail_check_frequency_never">Kurrë</string>
     <string name="account_setup_options_mail_check_frequency_15min">Çdo 15 minuta</string>
@@ -369,16 +326,10 @@
     <string name="account_setup_options_mail_display_count_10000">10000 mesazhe</string>
     <string name="account_setup_options_mail_display_count_all">krejt mesazhet</string>
     <string name="move_copy_cannot_copy_unsynced_message">S\’mund të kopjohet ose lëvizet një mesazh që s\’është njëkohësuar me shërbyesin</string>
-    <string name="account_setup_failed_dlg_title">Rregullimi s\’përfundoi dot</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Emër përdoruesi ose fjalëkalim i pasaktë.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_certificate_message_fmt">Shërbyesi paraqiti një dëshmi SSL të pavlefshme. Ndonjëherë kjo ndodh për shkak të ndonjë keqformësimi të shërbyesit. Ndonjëherë vjen ngaqë dikush po rreket të sulmojë shërbyesin tuaj të postës. Nëse s\’jeni i sigurt se ç\’po ndodh, klikoni mbi Hidhe Tej dhe lidhuni me personat që administrojnë shërbyesin tuaj të postës.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_server_message_fmt">S\’lidhet dot te shërbyesi.\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_oauth_flow_canceled">Autorizimi u anulua</string>
     <string name="account_setup_failed_dlg_oauth_flow_failed">Autorizimi dështoi me gabimin vijues: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 aktualisht nuk mbulohet me këtë furnizues shërbimi.</string>
     <string name="account_setup_failed_dlg_browser_not_found">Aplikacioni s\’gjeti dot një shfletues për ta përdorur për t\’i akorduar hyrje te llogaria juaj.</string>
-    <string name="account_setup_failed_dlg_edit_details_action">Përpunoni hollësitë</string>
-    <string name="account_setup_failed_dlg_continue_action">Vazhdo</string>
     <string name="account_settings_push_advanced_title">Të mëtejshme</string>
     <string name="account_settings_title_fmt">Rregullime llogarie</string>
     <string name="account_settings_notify_label">Njoftime email-i të ri</string>
@@ -608,9 +559,6 @@
     <string name="sort_by_unread">Të lexuar/të palexuar</string>
     <string name="sort_by_attach">Bashkëngjitje</string>
     <string name="account_delete_dlg_title">Hiqe Llogarinë</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_title">Dëshmi Jo e Njohur</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_accept">Pranoje Kyçin</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_reject">Hidhe tej Kyçin</string>
     <string name="folder_list_filter_hint">Emri i dosjes përmban</string>
     <string name="folder_list_display_mode_label">Shfaq dosje…</string>
     <string name="folder_list_display_mode_all">Krejt dosjet</string>
@@ -843,12 +791,6 @@
     <string name="fetching_attachment_dialog_title_send">Po dërgohet mesazhi</string>
     <string name="fetching_attachment_dialog_title_save">Po ruhet skica</string>
     <string name="fetching_attachment_dialog_message">Po sillet bashkëngjitja…</string>
-    <string name="auth_external_error">S\’arrihet të kryhet mirëfilltësimi.  Shërbyesi nuk shfaq aftësi SASL EXTERNAL.  Kjo mund të vijë nga një problem me dëshminë e klientit (e skaduar, autoritet i panjohur dëshmish) ose ndonjë tjetër problem formësimi.</string>
-    <!--=== Client certificates specific ==================================================================-->
-    <string name="client_certificate_spinner_empty">S\’ka dëshmi klienti</string>
-    <string name="client_certificate_spinner_delete">Hiqe përzgjedhjen për dëshmi klienti</string>
-    <string name="client_certificate_retrieval_failure">Dështoi të merrej dëshmi klienti për aliasin \“<xliff:g id="alias">%s</xliff:g>\”</string>
-    <string name="client_certificate_expired">Dëshmia e klientit \“<xliff:g id="certificate_alias">%1$s</xliff:g>\” ka skaduar ose s\’është ende e vlefshme (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*I fshehtëzuar*</string>
     <string name="add_from_contacts">Shtoni prej Kontakteve</string>

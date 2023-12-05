@@ -37,7 +37,6 @@
     <string name="choose_folder_move_title">העבר אל…</string>
     <string name="choose_folder_copy_title">העתק אל…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> נבחרו</string>
-    <string name="next_action">הבא</string>
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">אישור</string>
     <string name="cancel_action">ביטול</string>
@@ -233,27 +232,6 @@
     <string name="quiet_time_starts">התחלת שעות שקט</string>
     <string name="quiet_time_ends">סוף זמן שקט</string>
     <string name="account_setup_basics_title">הגדר חשבון חדש</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-    <string name="account_setup_basics_show_password_biometrics_title">אמת את זהותך</string>
-    <string name="account_setup_check_settings_retr_info_msg">מאחזר מידע חשבון …</string>
-    <string name="account_setup_check_settings_check_incoming_msg">בדיקת הגדרות שרת הדואר הנכנס …</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">בדיקת הגדרות שרת הדואר היוצא …</string>
-    <string name="account_setup_check_settings_authenticate">מאמת …</string>
-    <string name="account_setup_check_settings_fetch">מייבא הגדרות החשבון …</string>
-    <string name="account_setup_check_settings_canceling_msg">מבטל…</string>
-    <string name="account_setup_auth_type_tls_client_certificate">תעודת לקוח</string>
-    <string name="account_setup_incoming_title">הגדרות שרת דואר נכנס</string>
-    <string name="account_setup_incoming_username_label">שם משתמש</string>
-    <string name="account_setup_incoming_password_label">סיסמא</string>
-    <string name="account_setup_incoming_client_certificate_label">תעודת לקוח</string>
-    <string name="account_setup_incoming_pop_server_label">שרת POP3</string>
-    <string name="account_setup_incoming_imap_server_label">שרת IMAP</string>
-    <string name="account_setup_incoming_port_label">Port</string>
-    <string name="account_setup_incoming_security_label">סוג אבטחה</string>
-    <string name="account_setup_incoming_auth_type_label">הזדהות</string>
-    <string name="account_setup_incoming_security_none_label">כלום</string>
     <string name="account_setup_incoming_delete_policy_label">כאשר אני מוחק הודעה</string>
     <string name="account_setup_incoming_delete_policy_never_label">אל תמחוק בשרת</string>
     <string name="account_setup_incoming_delete_policy_delete_label">מחק מהשרת</string>
@@ -269,15 +247,6 @@
     <string name="spam_folder_label">תיקיית דואר זבל</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">הצג רק תיקיות רשומות</string>
     <string name="account_setup_auto_expand_folder">הרחב את התיקייה אוטומטית</string>
-    <string name="account_setup_outgoing_title">הגדרות שרת דואר יוצא</string>
-    <string name="account_setup_outgoing_smtp_server_label">שרת SMTP</string>
-    <string name="account_setup_outgoing_port_label">Port</string>
-    <string name="account_setup_outgoing_security_label">סוג אבטחה</string>
-    <string name="account_setup_outgoing_require_login_label">דרוש הרשמה.</string>
-    <string name="account_setup_outgoing_username_label">שם משתמש</string>
-    <string name="account_setup_outgoing_password_label">סיסמא</string>
-    <string name="account_setup_outgoing_authentication_label">סו אימות</string>
-    <string name="account_setup_bad_uri">הגדרה לא חוקית: <xliff:g id="err_mess">%s</xliff:g></string>
     <string name="account_setup_options_mail_check_frequency_never">אפ פעם</string>
     <string name="account_setup_options_mail_check_frequency_15min">כל רבע שעה</string>
     <string name="account_setup_options_mail_check_frequency_30min">כל 30 דקות</string>
@@ -309,9 +278,6 @@
     <string name="account_setup_options_mail_display_count_10000">10000 הודעות</string>
     <string name="account_setup_options_mail_display_count_all">כל ההודעות</string>
     <string name="move_copy_cannot_copy_unsynced_message">לא ניתן להעתיק או להעביר הודעה שלא מסונכרנת עם השרת</string>
-    <string name="account_setup_failed_dlg_title">ההגדרה לא הסתיימה</string>
-    <string name="account_setup_failed_dlg_edit_details_action">ערוך פרטים</string>
-    <string name="account_setup_failed_dlg_continue_action">המשך</string>
     <string name="account_settings_push_advanced_title">מתקדם</string>
     <string name="account_settings_title_fmt">הגדרות חשבון</string>
     <string name="account_settings_notify_label">התראות על הודעה חדשה</string>
@@ -456,9 +422,6 @@
     <string name="sort_by_unread">נקרא/לא נקרא</string>
     <string name="sort_by_attach">קבצים מצורפים</string>
     <string name="account_delete_dlg_title">מחק חשבון</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_title">תעודה לא מזוהה</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_accept">קבל מפתח</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_reject">דחה מפתח</string>
     <string name="folder_list_display_mode_label">תיקיות</string>
     <string name="folder_list_display_mode_all">הצג את כל התיקיות</string>
     <string name="account_settings_signature__location_label">מיקום חתימה</string>

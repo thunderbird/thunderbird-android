@@ -21,7 +21,6 @@
     <string name="compose_title_forward">பிறர்க்கு</string>
     <string name="choose_folder_title">கோப்புறை தேர்ந்தெடு</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> தேர்வாகியுள்ளது</string>
-    <string name="next_action">அடுத்து</string>
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">சரி</string>
     <string name="cancel_action">வேண்டாம்</string>
@@ -149,7 +148,6 @@
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
     <string name="account_setup_options_mail_check_frequency_never">ஒருபொழுதும்</string>
-    <string name="account_setup_failed_dlg_continue_action">தெடர்</string>
     <string name="account_settings_push_advanced_title">மேம்பட்ட</string>
     <string name="account_settings_title_fmt">கணக்கு அமைப்புகள்</string>
     <string name="account_settings_folder_notify_new_mail_mode_all">அனைத்தும்</string>

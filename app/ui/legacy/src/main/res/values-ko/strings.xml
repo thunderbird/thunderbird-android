@@ -44,7 +44,6 @@
     <string name="choose_folder_move_title">다음으로 이동</string>
     <string name="choose_folder_copy_title">다음으로 복사</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 선택</string>
-    <string name="next_action">다음</string>
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">확인</string>
     <string name="cancel_action">취소</string>
@@ -248,31 +247,6 @@
     <string name="quiet_time_starts">무음 시작 시간</string>
     <string name="quiet_time_ends">무음 끝나는 시간</string>
     <string name="account_setup_basics_title">계정 추가</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-    <string name="account_setup_check_settings_retr_info_msg">계정 정보 복구\u2026</string>
-    <string name="account_setup_check_settings_check_incoming_msg">수신 서버 설정 확인 중\u2026</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">발신 서버 설정 확인 중\u2026</string>
-    <string name="account_setup_check_settings_authenticate">인증 중\u2026</string>
-    <string name="account_setup_check_settings_fetch">계정 설정 가져 오기\u2026</string>
-    <string name="account_setup_check_settings_canceling_msg">취소 중\u2026</string>
-    <string name="account_setup_auth_type_normal_password">일반 암호</string>
-    <string name="account_setup_auth_type_insecure_password">암호가 안전하지 않은 방법으로 전송됨</string>
-    <string name="account_setup_auth_type_encrypted_password">암호화된 암호</string>
-    <string name="account_setup_auth_type_tls_client_certificate">클라이언트 인증서</string>
-    <string name="account_setup_incoming_title">받기 서버 설정</string>
-    <string name="account_setup_incoming_username_label">아이디</string>
-    <string name="account_setup_incoming_password_label">비밀번호</string>
-    <string name="account_setup_incoming_client_certificate_label">클라이언트 인증서</string>
-    <string name="account_setup_incoming_pop_server_label">POP3 서버</string>
-    <string name="account_setup_incoming_imap_server_label">IMAP 서버</string>
-    <string name="account_setup_incoming_port_label">포트 번호</string>
-    <string name="account_setup_incoming_security_label">보안 연결</string>
-    <string name="account_setup_incoming_auth_type_label">인증 방식</string>
-    <string name="account_setup_incoming_security_none_label">없음</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
     <string name="account_setup_incoming_delete_policy_label">메시지 삭제 시</string>
     <string name="account_setup_incoming_delete_policy_never_label">서버에는 메일을 삭제하지 않음</string>
     <string name="account_setup_incoming_delete_policy_delete_label">서버에도 메일 삭제</string>
@@ -281,8 +255,6 @@
     <string name="account_setup_expunge_policy_immediately">즉시</string>
     <string name="account_setup_expunge_policy_on_poll">수신 시</string>
     <string name="account_setup_expunge_policy_manual">항상 수동으로</string>
-    <string name="account_setup_incoming_autodetect_namespace_label">Auto-detect IMAP 이름공간 자동 탐지</string>
-    <string name="account_setup_incoming_imap_path_prefix_label">IMAP 경로 접두어</string>
     <string name="drafts_folder_label">임시 보관함 폴더</string>
     <string name="sent_folder_label">보낸 편지함 폴더</string>
     <string name="trash_folder_label">휴지통 폴더</string>
@@ -290,15 +262,6 @@
     <string name="spam_folder_label">스팸 폴더</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">설정한 폴더만 보기</string>
     <string name="account_setup_auto_expand_folder">폴더 자동 펼치기</string>
-    <string name="account_setup_outgoing_title">보내기 서버 설정</string>
-    <string name="account_setup_outgoing_smtp_server_label">SMTP 서버</string>
-    <string name="account_setup_outgoing_port_label">포트번호</string>
-    <string name="account_setup_outgoing_security_label">보안 유형</string>
-    <string name="account_setup_outgoing_require_login_label">로그인 필요.</string>
-    <string name="account_setup_outgoing_username_label">이름</string>
-    <string name="account_setup_outgoing_password_label">비밀번호</string>
-    <string name="account_setup_outgoing_authentication_label">인증 유형</string>
-    <string name="account_setup_bad_uri">잘못된 설정: <xliff:g id="err_mess">%s</xliff:g></string>
     <string name="account_setup_options_mail_check_frequency_label">폴더 수신 빈도</string>
     <string name="account_setup_options_mail_check_frequency_never">하지 않음</string>
     <string name="account_setup_options_mail_check_frequency_15min">15분마다</string>
@@ -331,12 +294,6 @@
     <string name="account_setup_options_mail_display_count_10000">10000개의 메세지</string>
     <string name="account_setup_options_mail_display_count_all">모든 메시지</string>
     <string name="move_copy_cannot_copy_unsynced_message">서버와 동기화되지 않은 메시지를 복사하거나 이동할 수 없습니다.</string>
-    <string name="account_setup_failed_dlg_title">설정이 완료되지 않았습니다</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">사용자 이름 또는 비밀번호가 올바르지 않습니다.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_certificate_message_fmt">서버가 올바르지 않은 SSL 인증서를 제출했습니다. 이것은 가끔 서버 설정이 잘못된 경우에 발생합니다. 하지만 누군가가 당신 혹은 당신의 메일 서버를 공격하려 할 때 발생하기도 합니다. 자세한 상황을 잘 모르신다면 일단 \'거부\'를 선택하신 다음, 당신의 메일 서버 관리자에게 연락하세요.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_server_message_fmt">서버에 접속할 수 없습니다.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_edit_details_action">내용 수정</string>
-    <string name="account_setup_failed_dlg_continue_action">계속</string>
     <string name="account_settings_push_advanced_title">고급</string>
     <string name="account_settings_title_fmt">계정 설정</string>
     <string name="account_settings_notify_label">새 메일 알림</string>
@@ -512,9 +469,6 @@
     <string name="sort_by_unread">읽음/읽지 않음</string>
     <string name="sort_by_attach">첨부</string>
     <string name="account_delete_dlg_title">계정 삭제</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_title">잘못된 인증 정보</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_accept">키 허용</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_reject">키 거부</string>
     <string name="folder_list_display_mode_label">폴더</string>
     <string name="folder_list_display_mode_all">모든 폴더 표시</string>
     <string name="folder_list_display_mode_first_class">제 1종 폴더만 표시</string>
@@ -693,11 +647,6 @@
     <string name="fetching_attachment_dialog_title_send">메시지 전송</string>
     <string name="fetching_attachment_dialog_title_save">임시 저장</string>
     <string name="fetching_attachment_dialog_message">첨부 파일 부치는 중…</string>
-    <string name="auth_external_error">인증할 수 없습니다. 서버가 SASL EXTERNAL을 사용할 수 있는지를 공지하지 않았습니다. 이것은 클라이언트 인증서 문제(알 수 없는 기관이거나 인증서가 만료됨) 또는 다른 설정 문제로 인해 발생했을 가능성이 있습니다.</string>
-    <!--=== Client certificates specific ==================================================================-->
-    <string name="client_certificate_spinner_empty">클라이언트 인증서 없음</string>
-    <string name="client_certificate_spinner_delete">클라이언트 인증서 선택 제거</string>
-    <string name="client_certificate_expired">클라이언트 인증서 \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" 이(가) 만료되었거나 올바르지 않습니다 (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">\"암호화됨\"</string>
     <string name="add_from_contacts">연락처 목록에서 추가하기</string>

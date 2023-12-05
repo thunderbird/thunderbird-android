@@ -46,7 +46,6 @@
     <string name="choose_folder_move_title">Siirrä…</string>
     <string name="choose_folder_copy_title">Kopioi…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valittu</string>
-    <string name="next_action">Seuraava</string>
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">OK</string>
     <string name="cancel_action">Peruuta</string>
@@ -280,46 +279,14 @@
     <string name="account_setup_oauth_sign_in">Kirjaudu sisään</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in_with_google">Kirjaudu sisään Googlella</string>
-    <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-    <string name="account_setup_basics_show_password_need_lock">Jotta näet salasanasi tässä, ota käyttöön laitteen näytön lukitus.</string>
-    <string name="account_setup_basics_show_password_biometrics_title">Vahvista henkilöllisyytesi</string>
-    <string name="account_setup_basics_show_password_biometrics_subtitle">Avaa lukitus nähdäksesi salasanasi</string>
-    <string name="account_setup_check_settings_retr_info_msg">Haetaan tilin tietoja\u2026</string>
-    <string name="account_setup_check_settings_check_incoming_msg">Tarkistetaan saapuvan postin palvelimen asetuksia\u2026</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">Tarkistetaan lähtevän postin palvelimen asetuksia\u2026</string>
-    <string name="account_setup_check_settings_authenticate">Varmistetaan\u2026</string>
-    <string name="account_setup_check_settings_fetch">Haetaan tilin asetuksia\u2026</string>
-    <string name="account_setup_check_settings_canceling_msg">Peruutetaan\u2026</string>
-    <string name="account_setup_auth_type_normal_password">Tavallinen salasana</string>
-    <string name="account_setup_auth_type_insecure_password">Salasana, välitetään turvattomasti</string>
-    <string name="account_setup_auth_type_encrypted_password">Salattu salasana</string>
-    <string name="account_setup_auth_type_tls_client_certificate">Asiakasvarmenne</string>
-    <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
-    <string name="account_setup_incoming_title">Saapuvan postin palvelimen asetukset</string>
-    <string name="account_setup_incoming_username_label">Käyttäjätunnus</string>
-    <string name="account_setup_incoming_password_label">Salasana</string>
-    <string name="account_setup_incoming_client_certificate_label">Asiakasvarmenne</string>
-    <string name="account_setup_incoming_pop_server_label">POP3-palvelin</string>
-    <string name="account_setup_incoming_imap_server_label">IMAP-palvelin</string>
-    <string name="account_setup_incoming_port_label">Portti</string>
-    <string name="account_setup_incoming_security_label">Suojauksen tyyppi</string>
-    <string name="account_setup_incoming_auth_type_label">Todennuksen tyyppi</string>
-    <string name="account_setup_incoming_security_none_label">Ei mitään</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
-    <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" ei ole kelvollinen asetuksen \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\" kanssa</string>
     <string name="account_setup_incoming_delete_policy_label">Kun viesti poistetaan</string>
     <string name="account_setup_incoming_delete_policy_never_label">Älä poista palvelimelta</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Poista palvelimelta</string>
     <string name="account_setup_incoming_delete_policy_markread_label">Merkitse luetuksi palvelimella</string>
-    <string name="account_setup_incoming_use_compression">Käytä pakkausta</string>
-    <string name="account_setup_incoming_send_client_id">Lähetä asiakasohjelmiston ID-tunniste</string>
     <string name="account_setup_expunge_policy_label">Poista viestit</string>
     <string name="account_setup_expunge_policy_immediately">Heti</string>
     <string name="account_setup_expunge_policy_on_poll">Tarkistettaessa</string>
     <string name="account_setup_expunge_policy_manual">Vain manuaalisesti</string>
-    <string name="account_setup_incoming_autodetect_namespace_label">Tunnista IMAP-nimiavaruus automaattisesti</string>
-    <string name="account_setup_incoming_imap_path_prefix_label">IMAP-polun etuliite</string>
     <string name="drafts_folder_label">Luonnokset-kansio</string>
     <string name="sent_folder_label">Lähetetyt-kansio</string>
     <string name="trash_folder_label">Roskakori-kansio</string>
@@ -327,16 +294,6 @@
     <string name="spam_folder_label">Roskapostikansio</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Näytä vain tilatut kansiot</string>
     <string name="account_setup_auto_expand_folder">Avaa kansio automaattisesti</string>
-    <string name="account_setup_outgoing_title">Lähtevän postin palvelimen asetukset</string>
-    <string name="account_setup_outgoing_smtp_server_label">SMTP-palvelin</string>
-    <string name="account_setup_outgoing_port_label">Portti</string>
-    <string name="account_setup_outgoing_security_label">Suojaus</string>
-    <string name="account_setup_outgoing_require_login_label">Edellytä kirjautumista.</string>
-    <string name="account_setup_outgoing_username_label">Käyttäjätunnus</string>
-    <string name="account_setup_outgoing_password_label">Salasana</string>
-    <string name="account_setup_outgoing_authentication_label">Todennustapa</string>
-    <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" ei ole kelvollinen asetuksen \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\" kanssa</string>
-    <string name="account_setup_bad_uri">Virheellinen asetus: <xliff:g id="err_mess">%s</xliff:g></string>
     <string name="account_setup_options_mail_check_frequency_label">Viestien tarkistus</string>
     <string name="account_setup_options_mail_check_frequency_never">Ei koskaan</string>
     <string name="account_setup_options_mail_check_frequency_15min">Joka 15 minuutti</string>
@@ -369,16 +326,10 @@
     <string name="account_setup_options_mail_display_count_10000">10000 viestiä</string>
     <string name="account_setup_options_mail_display_count_all">Kaikki viestit</string>
     <string name="move_copy_cannot_copy_unsynced_message">Viestiä ei voi kopioida tai siirtää, koska sitä ei ole synkronoitu palvelimelle</string>
-    <string name="account_setup_failed_dlg_title">Asennus ei onnistunut</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Käyttäjätunnus tai salasana väärin.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_certificate_message_fmt">Palvelin esitti virheellisen SSL-varmenteen. Joskus tämä johtuu palvelimen vääristä asetuksista. Toisinaan syynä on se, että joku koettaa hyökätä sinua tai sähköpostipalvelinta vastaan. Jos et ole varma mistä on kyse, napsauta Hylkää ja ole yhteydessä sähköpostipalvelinta hallinoivaan tahoon.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_server_message_fmt">Yhteys palvelimeen ei onnistu.\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_oauth_flow_canceled">Valtuutus peruttu</string>
     <string name="account_setup_failed_dlg_oauth_flow_failed">Valtuutus epäonnistui, virhe: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 ei ole tällä hetkellä tuettu tämän palvelutarjoajan kohdalla.</string>
     <string name="account_setup_failed_dlg_browser_not_found">Sovellus ei löytänyt selainta käytettäväksi pääsyn antamiseksi tälle tilille.</string>
-    <string name="account_setup_failed_dlg_edit_details_action">Muokkaa tietoja</string>
-    <string name="account_setup_failed_dlg_continue_action">Jatka</string>
     <string name="account_settings_push_advanced_title">Lisäasetukset</string>
     <string name="account_settings_title_fmt">Yleiset</string>
     <string name="account_settings_notify_label">Saapuneiden viestien ilmoitukset</string>
@@ -608,9 +559,6 @@
     <string name="sort_by_unread">Luettujen/lukemattomien mukaan</string>
     <string name="sort_by_attach">Liitteiden mukaan</string>
     <string name="account_delete_dlg_title">Poista tili</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_title">Tunnistamaton varmenne</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_accept">Hyväksy-avain</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_reject">Hylkää-avain</string>
     <string name="folder_list_filter_hint">Kansion nimi sisältää</string>
     <string name="folder_list_display_mode_label">Kansiot</string>
     <string name="folder_list_display_mode_all">Näytä kaikki</string>
@@ -843,12 +791,6 @@
     <string name="fetching_attachment_dialog_title_send">Lähetetään viestiä</string>
     <string name="fetching_attachment_dialog_title_save">Tallennetaan luonnosta</string>
     <string name="fetching_attachment_dialog_message">Noudetaan liitettä…</string>
-    <string name="auth_external_error">Autentikointi ei onnistu.  Palvelin ei ilmoita SASL EXTERNAL -kelpoisuudesta.  Tämä saattaa johtua vanhentuneesta asiakasvarmenteesta, tuntemattomasta varmentajasta tai jostakin muusta asetusongelmasta.</string>
-    <!--=== Client certificates specific ==================================================================-->
-    <string name="client_certificate_spinner_empty">Ei asiakasvarmennetta</string>
-    <string name="client_certificate_spinner_delete">Poista asiakasvarmenteen valinta</string>
-    <string name="client_certificate_retrieval_failure">Asiakasvarmenteen noutaminen epäonnistui aliakselle \"<xliff:g id="alias">%s</xliff:g>\"</string>
-    <string name="client_certificate_expired">Asiakasvarmenne \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" on vanhentunut tai ei ole vielä voimassa (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Salattu*</string>
     <string name="add_from_contacts">Lisää yhteystiedoista</string>

@@ -38,7 +38,6 @@
     <string name="choose_account_title">Избор налога</string>
     <string name="choose_folder_title">Избор фасцикле</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> изабрано</string>
-    <string name="next_action">Следеће</string>
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">У реду</string>
     <string name="cancel_action">Одустани</string>
@@ -243,32 +242,6 @@
     <string name="quiet_time_starts">Тихи сати почињу</string>
     <string name="quiet_time_ends">Тихи сати завршавају</string>
     <string name="account_setup_basics_title">Постави нови налог</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-    <string name="account_setup_check_settings_retr_info_msg">Добављам податке о налогу\u2026</string>
-    <string name="account_setup_check_settings_check_incoming_msg">Проверавам поставке долазног сервера\u2026</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">Проверавам поставке одлазног сервера\u2026</string>
-    <string name="account_setup_check_settings_authenticate">Аутентификујем\u2026</string>
-    <string name="account_setup_check_settings_fetch">Добављам поставке налога\u2026</string>
-    <string name="account_setup_check_settings_canceling_msg">Одустајем\u2026</string>
-    <string name="account_setup_auth_type_normal_password">Нормална лозинка</string>
-    <string name="account_setup_auth_type_insecure_password">Лозинка, небезбедно слање</string>
-    <string name="account_setup_auth_type_encrypted_password">Шифрована лозинка</string>
-    <string name="account_setup_auth_type_tls_client_certificate">Сертификат клијента</string>
-    <string name="account_setup_incoming_title">Поставке за долазни сервер</string>
-    <string name="account_setup_incoming_username_label">Корисничко име</string>
-    <string name="account_setup_incoming_password_label">Лозинка</string>
-    <string name="account_setup_incoming_client_certificate_label">Сертификат клијента</string>
-    <string name="account_setup_incoming_pop_server_label">ПОП3 сервер</string>
-    <string name="account_setup_incoming_imap_server_label">ИМАП сервер</string>
-    <string name="account_setup_incoming_port_label">Порт</string>
-    <string name="account_setup_incoming_security_label">Безбедност</string>
-    <string name="account_setup_incoming_auth_type_label">Аутентификација</string>
-    <string name="account_setup_incoming_security_none_label">Ништа</string>
-    <string name="account_setup_incoming_security_ssl_label">ССЛ/ТЛС</string>
-    <string name="account_setup_incoming_security_tls_label">СТАРТТЛС</string>
-    <string name="account_setup_incoming_invalid_setting_combo_notice">„<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>“ није исправно са „<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>“</string>
     <string name="account_setup_incoming_delete_policy_label">Када обришем поруку</string>
     <string name="account_setup_incoming_delete_policy_never_label">не бриши са сервера</string>
     <string name="account_setup_incoming_delete_policy_delete_label">обриши са сервера</string>
@@ -277,8 +250,6 @@
     <string name="account_setup_expunge_policy_immediately">одмах</string>
     <string name="account_setup_expunge_policy_on_poll">приликом провере</string>
     <string name="account_setup_expunge_policy_manual">ручно</string>
-    <string name="account_setup_incoming_autodetect_namespace_label">Аутоматски откриј ИМАП именски простор</string>
-    <string name="account_setup_incoming_imap_path_prefix_label">Префикс ИМАП путање</string>
     <string name="drafts_folder_label">Фасцикла нацрта</string>
     <string name="sent_folder_label">Фасцикла послатих</string>
     <string name="trash_folder_label">Фасцикла смећа</string>
@@ -286,16 +257,6 @@
     <string name="spam_folder_label">Фасцикла нежељених</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Прикажи само претплаћене фасцикле</string>
     <string name="account_setup_auto_expand_folder">Аутоматски рашири фасциклу</string>
-    <string name="account_setup_outgoing_title">Поставке за одлазни сервер</string>
-    <string name="account_setup_outgoing_smtp_server_label">СМТП сервер</string>
-    <string name="account_setup_outgoing_port_label">Порт</string>
-    <string name="account_setup_outgoing_security_label">Безбедност</string>
-    <string name="account_setup_outgoing_require_login_label">Захтевај пријаву.</string>
-    <string name="account_setup_outgoing_username_label">Корисничко име</string>
-    <string name="account_setup_outgoing_password_label">Лозинка</string>
-    <string name="account_setup_outgoing_authentication_label">Аутентификација</string>
-    <string name="account_setup_outgoing_invalid_setting_combo_notice">„<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>“ није исправно са „<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>“</string>
-    <string name="account_setup_bad_uri">Неисправна постава: <xliff:g id="err_mess">%s</xliff:g></string>
     <string name="account_setup_options_mail_check_frequency_label">Проверавање фасцикли</string>
     <string name="account_setup_options_mail_check_frequency_never">никад</string>
     <string name="account_setup_options_mail_check_frequency_15min">на 15 минута</string>
@@ -328,12 +289,6 @@
     <string name="account_setup_options_mail_display_count_10000">10000 порука</string>
     <string name="account_setup_options_mail_display_count_all">све поруке</string>
     <string name="move_copy_cannot_copy_unsynced_message">Не могу да копирам или преместим поруку која није синхронизована са сервером</string>
-    <string name="account_setup_failed_dlg_title">Постава није довршена</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Неисправно корисничко име или лозинка.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_certificate_message_fmt">Сервер је представио неисправан ССЛ сертификат. Понекад се ово дешава због лоше поставе. Понекад зато што неко покушава да нападне вас или ваш сервер поште. Ако нисте сигурни шта се дешава, кликните на Одбиј и контактирајте људе који управљају вашим сервером поште.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_server_message_fmt">Не могу да се повежем са сервером.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_edit_details_action">Уреди детаље</string>
-    <string name="account_setup_failed_dlg_continue_action">Настави</string>
     <string name="account_settings_push_advanced_title">Напредно</string>
     <string name="account_settings_title_fmt">Поставке налога</string>
     <string name="account_settings_notify_label">Обавештења о новој пошти</string>
@@ -539,9 +494,6 @@
     <string name="sort_by_unread">прочитаности</string>
     <string name="sort_by_attach">прилозима</string>
     <string name="account_delete_dlg_title">Уклони налог</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_title">Непознат сертификат</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_accept">Прихвати кључ</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_reject">Одбиј кључ</string>
     <string name="folder_list_filter_hint">Назив фасцикле садржи</string>
     <string name="folder_list_display_mode_label">Прикажи фасцикле…</string>
     <string name="folder_list_display_mode_all">све фасцикле</string>
@@ -772,12 +724,6 @@
     <string name="fetching_attachment_dialog_title_send">Шаљем поруку</string>
     <string name="fetching_attachment_dialog_title_save">Уписујем нацрт</string>
     <string name="fetching_attachment_dialog_message">Добављам прилог…</string>
-    <string name="auth_external_error">Не могу да се аутентификујем. Сервер не оглашава „SASL EXTERNAL“ могућност.  Узрок може да буде проблем са сертификатом клијента (истекао, непознат издавач сертификата) или неки други проблем у подешавању.</string>
-    <!--=== Client certificates specific ==================================================================-->
-    <string name="client_certificate_spinner_empty">Нема сертификата клијента</string>
-    <string name="client_certificate_spinner_delete">Уклони изабране сертификате</string>
-    <string name="client_certificate_retrieval_failure">Не могу да добавим сертификат клијента за алијас „<xliff:g id="alias">%s</xliff:g>“</string>
-    <string name="client_certificate_expired">Сертификат клијента „<xliff:g id="certificate_alias">%1$s</xliff:g>“ је истекао или још није важећи (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Шифровано*</string>
     <string name="add_from_contacts">Додај из контаката</string>

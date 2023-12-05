@@ -26,7 +26,7 @@
     <string name="account_server_settings_validation_error_port_invalid">通訊埠無效（必須為 1–65535 之間的正整數）。</string>
     <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
     <string name="account_server_settings_client_certificate_label">用戶端憑證</string>
-    <string name="account_server_settings_validation_error_imap_prefix_blank">Imap 前綴不能為空白。</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">IMAP 前綴不能為空白。</string>
     <string name="account_server_settings_client_certificate_none_selected">無</string>
     <string name="account_server_settings_password_authentication_screen_lock_required">如要在此檢視您的密碼，請先啟用此裝置的螢幕鎖定。</string>
     <string name="account_server_settings_server_label">伺服器</string>

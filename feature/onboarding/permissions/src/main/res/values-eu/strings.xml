@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="onboarding_permissions_contacts_description">Onartu baimena kontaktuen iradokizunak emateko eta kontaktuen izenak eta argazkiak bistaratzeko.</string>
+    <string name="onboarding_permissions_notifications_description">Gaitu jakinarazpenak mezurik ez galtzeko.</string>
+    <string name="onboarding_permissions_notifications_title">Jakinarazpenak</string>
+    <string name="onboarding_permissions_screen_title">Hobetu esperientzia</string>
+    <string name="onboarding_permissions_contacts_title">Kontaktuak</string>
+    <string name="onboarding_permissions_allow_button">Onartu</string>
+    <string name="onboarding_permissions_skip_button">Saltatu</string>
+</resources>

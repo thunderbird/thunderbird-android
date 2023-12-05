@@ -38,7 +38,6 @@
     <string name="choose_account_title">Tagh cunntas</string>
     <string name="choose_folder_title">Tagh pasgan</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> air a thaghadh</string>
-    <string name="next_action">Air adhart</string>
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">Ceart ma-thà</string>
     <string name="cancel_action">Sguir dheth</string>
@@ -244,33 +243,6 @@
     <string name="quiet_time_starts">Tòisichidh an t-àm sàmhach</string>
     <string name="quiet_time_ends">Thig an t-àm sàmhach gu crìoch</string>
     <string name="account_setup_basics_title">Suidhich cunntas ùr</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-    <string name="account_setup_basics_show_password_biometrics_title">Dearbh cò thusa</string>
-    <string name="account_setup_check_settings_retr_info_msg">A’ faighinn fiosrachadh a’ chunntais…</string>
-    <string name="account_setup_check_settings_check_incoming_msg">A’ sgrùdadh roghainnean an fhrithealaiche a-steach…</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">A’ sgrùdadh roghainnean an fhrithealaiche a-mach…</string>
-    <string name="account_setup_check_settings_authenticate">’Ga dhearbhadh…</string>
-    <string name="account_setup_check_settings_fetch">A’ faighinn roghainnean a’ chunntais…</string>
-    <string name="account_setup_check_settings_canceling_msg">A’ sgur dheth…</string>
-    <string name="account_setup_auth_type_normal_password">Facal-faire àbhaisteach</string>
-    <string name="account_setup_auth_type_insecure_password">Facal-faire, ’ga chur gun tèarainteachd</string>
-    <string name="account_setup_auth_type_encrypted_password">Facal-faire crioptaichte</string>
-    <string name="account_setup_auth_type_tls_client_certificate">Teisteanas a’ chliant</string>
-    <string name="account_setup_incoming_title">Roghainnean an fhrithealaiche a-steach</string>
-    <string name="account_setup_incoming_username_label">Ainm-cleachdaiche</string>
-    <string name="account_setup_incoming_password_label">Facal-faire</string>
-    <string name="account_setup_incoming_client_certificate_label">Teisteanas a’ chliant</string>
-    <string name="account_setup_incoming_pop_server_label">Frithealaiche POP3</string>
-    <string name="account_setup_incoming_imap_server_label">Frithealaiche IMAP</string>
-    <string name="account_setup_incoming_port_label">Port</string>
-    <string name="account_setup_incoming_security_label">Tèarainteachd</string>
-    <string name="account_setup_incoming_auth_type_label">Dearbhadh</string>
-    <string name="account_setup_incoming_security_none_label">Chan eil gin</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
-    <string name="account_setup_incoming_invalid_setting_combo_notice">Chan eil “<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>” dligheach mu choinneamh “<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>”</string>
     <string name="account_setup_incoming_delete_policy_label">Nuair a sguabas mi teachdaireachd às</string>
     <string name="account_setup_incoming_delete_policy_never_label">Na sguab às an fhrithealaiche e</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Sguab às an fhrithealaiche e</string>
@@ -279,8 +251,6 @@
     <string name="account_setup_expunge_policy_immediately">Sa bhad</string>
     <string name="account_setup_expunge_policy_on_poll">Aig an ath-cheasnachadh</string>
     <string name="account_setup_expunge_policy_manual">A làimh</string>
-    <string name="account_setup_incoming_autodetect_namespace_label">Mothaich dha ainm-spàs IMAP gu fèin-obrachail</string>
-    <string name="account_setup_incoming_imap_path_prefix_label">Ro-leasachan slighe IMAP</string>
     <string name="drafts_folder_label">Pasgan nan dreachdan</string>
     <string name="sent_folder_label">Pasgan a’ phuist chuirte</string>
     <string name="trash_folder_label">Pasgan an sgudail</string>
@@ -288,16 +258,6 @@
     <string name="spam_folder_label">Pasgan an spama</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Na seall ach pasganan le fo-sgrìobhadh</string>
     <string name="account_setup_auto_expand_folder">Leudaich am pasgan gu fèin-obrachail</string>
-    <string name="account_setup_outgoing_title">Roghainnean an fhrithealaiche a-mach</string>
-    <string name="account_setup_outgoing_smtp_server_label">Frithealaiche SMTP</string>
-    <string name="account_setup_outgoing_port_label">Port</string>
-    <string name="account_setup_outgoing_security_label">Tèarainteachd</string>
-    <string name="account_setup_outgoing_require_login_label">Iarr clàradh a-steach.</string>
-    <string name="account_setup_outgoing_username_label">Ainm-cleachdaiche</string>
-    <string name="account_setup_outgoing_password_label">Facal-faire</string>
-    <string name="account_setup_outgoing_authentication_label">Dearbhadh</string>
-    <string name="account_setup_outgoing_invalid_setting_combo_notice">Chan eil “<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>” dligheach mu choinneamh “<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>”</string>
-    <string name="account_setup_bad_uri">Suidheachadh mì-dhligheach: <xliff:g id="err_mess">%s</xliff:g></string>
     <string name="account_setup_options_mail_check_frequency_label">Dè cho tric ’s a dh’iarras sinn am post\?</string>
     <string name="account_setup_options_mail_check_frequency_never">Chan ann idir</string>
     <string name="account_setup_options_mail_check_frequency_15min">Gach cairteal na h-uarach</string>
@@ -330,16 +290,6 @@
     <string name="account_setup_options_mail_display_count_10000">10,000 teachdaireachd</string>
     <string name="account_setup_options_mail_display_count_all">na h-uile teachdaireachd</string>
     <string name="move_copy_cannot_copy_unsynced_message">Chan urrainn dhut lethbhreac a dhèanamh de theachdaireachd, no a ghluasad, mur eil e sioncronaichte leis an fhrithealaiche</string>
-    <string name="account_setup_failed_dlg_title">Cha b’ urrainn dhuinn an suidheachadh a choileanadh</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Tha an t-ainm-cleachdaiche no facal-faire ceàrr.
-\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_certificate_message_fmt">Nochd am frithealaiche teisteanas SSL nach eil dligheach. Tachraidh seo uaireannan ma chaidh am frithealaiche a dhroch-rèiteachadh. Air neo dh’fhaoidte gu bheil cuideigin airson briseadh a-steach ort no air frithealaiche a’ phuist agad. Mur eil thu cinnteach dè tha a’ tachairt, thoir gnogag air “Diùlt” is cuir fios gu na daoine a stiùireas frithealaiche a’ phuist agad.
-\n
-\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_server_message_fmt">Chan urrainn dhuinn ceangal ris an fhrithealaiche.
-\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_edit_details_action">Deasaich am fiosrachadh</string>
-    <string name="account_setup_failed_dlg_continue_action">Lean air adhart</string>
     <string name="account_settings_push_advanced_title">Adhartach</string>
     <string name="account_settings_title_fmt">Roghainnean a’ chunntais</string>
     <string name="account_settings_notify_label">Brathan mu phost ùr</string>
@@ -534,9 +484,6 @@
     <string name="sort_by_unread">Air a leughadh/gun leughadh</string>
     <string name="sort_by_attach">Ceanglachain</string>
     <string name="account_delete_dlg_title">Thoir an cunntas air falbh</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_title">Teisteanas nach aithne dhuinn</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_accept">Gabh ris an iuchair</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_reject">Diùlt an iuchair</string>
     <string name="folder_list_filter_hint">Ainm a’ phasgain anns a bheil</string>
     <string name="folder_list_display_mode_label">Seall pasganan…</string>
     <string name="folder_list_display_mode_all">Na h-uile pasgan</string>
@@ -740,12 +687,6 @@
     <string name="fetching_attachment_dialog_title_send">A’ cur na teachdaireachd</string>
     <string name="fetching_attachment_dialog_title_save">A’ sàbhaladh an dreachd</string>
     <string name="fetching_attachment_dialog_message">A’ faighinn a’ cheanglachain…</string>
-    <string name="auth_external_error">Cha b’ urrainn dhuinn dearbhadh a dhèanamh. Chan eil am frithealaiche a’ leigeil ris a bheil e comasach air SASL EXTERNAL. Dh’fhaoidte gu bheil duilgheadas le teisteanas a’ chliant (ro aosta, ùghdarras neo-aithnichte) no duilgheadas eile leis an rèiteachadh.</string>
-    <!--=== Client certificates specific ==================================================================-->
-    <string name="client_certificate_spinner_empty">Chan eil teisteanas aig a’ chliant</string>
-    <string name="client_certificate_spinner_delete">Thoir air falbh taghadh teisteanas a’ chliant</string>
-    <string name="client_certificate_retrieval_failure">Cha b’ urrainn dhuinn teisteanas a’ chliant fhaighinn dhan alias “<xliff:g id="alias">%s</xliff:g>”</string>
-    <string name="client_certificate_expired">Dh’fhalbh an ùine air teisteanas a’ chliant “<xliff:g id="certificate_alias">%1$s</xliff:g>” no chan eil e dligheachd fhathast (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Crioptaichte*</string>
     <string name="add_from_contacts">Cuir ris on luchd-aithne</string>

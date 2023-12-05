@@ -25,11 +25,16 @@
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Konfigurazio honetan konfiantza dut</string>
     <string name="account_setup_options_display_name_error_required">Bistaratzeko izena beharrezkoa da.</string>
     <string name="account_setup_error_network">Sarea</string>
-    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">E-mail helbidea ez da zuzena.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Helbide hau ez da helbide elektroniko zuzentzat jotzen.</string>
     <string name="account_setup_options_email_check_frequency_never">Inoiz ere ez</string>
     <string name="account_setup_auto_discovery_loading_message">E-mail xehetasunak bilatzen</string>
     <string name="account_setup_options_section_sync_options_">Sinkronizazio ezarpenak</string>
     <string name="account_setup_options_show_notifications_label">Erakutsi jakinarazpenak</string>
     <string name="account_setup_options_section_display_options">Pantaila ezarpenak</string>
     <string name="account_setup_title">K-9 Mail</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Helbide elektroniko hau ez dago onartuta.</string>
+    <string name="account_setup_create_account_created">Kontua sortu da</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Helbide elektroniko hau ez da bateragarria.</string>
+    <string name="account_setup_create_account_creating">Kontua sortzen…</string>
+    <string name="account_setup_create_account_error">Errore bat gertatu da kontua sortzerakoan</string>
 </resources>

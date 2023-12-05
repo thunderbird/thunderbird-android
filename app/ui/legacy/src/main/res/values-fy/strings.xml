@@ -46,7 +46,6 @@
     <string name="choose_folder_move_title">Ferpleatse nei…</string>
     <string name="choose_folder_copy_title">Kopiearje nei…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selektearre</string>
-    <string name="next_action">Folgjende</string>
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">OK</string>
     <string name="cancel_action">Annulearje</string>
@@ -280,46 +279,14 @@
     <string name="account_setup_oauth_sign_in">Oanmelde</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in_with_google">Oanmelde mei Google</string>
-    <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-    <string name="account_setup_basics_show_password_need_lock">Skeakelje op dit apparaat in skermbeskoatteling yn om hjir jo wachtwurd sjen te kinnen.</string>
-    <string name="account_setup_basics_show_password_biometrics_title">Jo identiteit ferifiearje</string>
-    <string name="account_setup_basics_show_password_biometrics_subtitle">Untskoattelje om jo wachtwurd te sjen</string>
-    <string name="account_setup_check_settings_retr_info_msg">Accountynformaasje ophelje\u2026</string>
-    <string name="account_setup_check_settings_check_incoming_msg">Kontrôle fan ynstellingen ynkommende server\u2026</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">Kontrôle fan ynstellingen útgeande server\u2026</string>
-    <string name="account_setup_check_settings_authenticate">Autentikaasje\u2026</string>
-    <string name="account_setup_check_settings_fetch">Accountynstellingen ophelje\u2026</string>
-    <string name="account_setup_check_settings_canceling_msg">Annulearje\u2026</string>
-    <string name="account_setup_auth_type_normal_password">Normaal wachtwurd</string>
-    <string name="account_setup_auth_type_insecure_password">Wachtwurd, net feilich ferstjoerd</string>
-    <string name="account_setup_auth_type_encrypted_password">Fersifere wachtwurd</string>
-    <string name="account_setup_auth_type_tls_client_certificate">Clientsertifikaat</string>
-    <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
-    <string name="account_setup_incoming_title">Ynkommende-serverynstellingen</string>
-    <string name="account_setup_incoming_username_label">Brûkersnamme</string>
-    <string name="account_setup_incoming_password_label">Wachtwurd</string>
-    <string name="account_setup_incoming_client_certificate_label">Clientsertifikaat</string>
-    <string name="account_setup_incoming_pop_server_label">POP3-server</string>
-    <string name="account_setup_incoming_imap_server_label">IMAP-server</string>
-    <string name="account_setup_incoming_port_label">Poarte</string>
-    <string name="account_setup_incoming_security_label">Befeiligingstype</string>
-    <string name="account_setup_incoming_auth_type_label">Autentikaasjetype</string>
-    <string name="account_setup_incoming_security_none_label">Gjin</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
-    <string name="account_setup_incoming_invalid_setting_combo_notice">‘<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>’ is net jildich mei ‘<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>’</string>
     <string name="account_setup_incoming_delete_policy_label">Wannear ik in berjocht fuortsmyt</string>
     <string name="account_setup_incoming_delete_policy_never_label">Net fan server fuortsmite</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Fan server fuortsmite</string>
     <string name="account_setup_incoming_delete_policy_markread_label">Op server as lêzen markearje </string>
-    <string name="account_setup_incoming_use_compression">Kompresje brûke</string>
-    <string name="account_setup_incoming_send_client_id">Client-ID ferstjoere</string>
     <string name="account_setup_expunge_policy_label">Op server fuortsmiten berjochten wiskje </string>
     <string name="account_setup_expunge_policy_immediately">Daliks nei it fuortsmiten of ferpleatsen</string>
     <string name="account_setup_expunge_policy_on_poll">By elke berjochtkontrôle</string>
     <string name="account_setup_expunge_policy_manual">Hânmjittich</string>
-    <string name="account_setup_incoming_autodetect_namespace_label">IMAP-namespace automatysk detektearje</string>
-    <string name="account_setup_incoming_imap_path_prefix_label">IMAP-paadfoarfoegsel</string>
     <string name="drafts_folder_label">Konseptemap</string>
     <string name="sent_folder_label">Ferstjoerdmap</string>
     <string name="trash_folder_label">Jiskefetmap</string>
@@ -327,16 +294,6 @@
     <string name="spam_folder_label">Net-winskemap</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Allinnich abonnearre mappen toane</string>
     <string name="account_setup_auto_expand_folder">Map automatysk útklappe</string>
-    <string name="account_setup_outgoing_title">Utgeande-serverynstellingen</string>
-    <string name="account_setup_outgoing_smtp_server_label">SMTP-server</string>
-    <string name="account_setup_outgoing_port_label">Poarte</string>
-    <string name="account_setup_outgoing_security_label">Befeiligingstype</string>
-    <string name="account_setup_outgoing_require_login_label">Oanmelden fereaske.</string>
-    <string name="account_setup_outgoing_username_label">Brûkersnamme</string>
-    <string name="account_setup_outgoing_password_label">Wachtwurd</string>
-    <string name="account_setup_outgoing_authentication_label">Autentikaasjetype</string>
-    <string name="account_setup_outgoing_invalid_setting_combo_notice">‘<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>’ is net jildich mei ‘<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>’</string>
-    <string name="account_setup_bad_uri">Unjildige ynstellingen: <xliff:g id="err_mess">%s</xliff:g></string>
     <string name="account_setup_options_mail_check_frequency_label">Frekwinsje mapkontrôle</string>
     <string name="account_setup_options_mail_check_frequency_never">Nea</string>
     <string name="account_setup_options_mail_check_frequency_15min">Elke 15 minuten</string>
@@ -369,16 +326,10 @@
     <string name="account_setup_options_mail_display_count_10000">10000 berjochten</string>
     <string name="account_setup_options_mail_display_count_all">alle berjochten</string>
     <string name="move_copy_cannot_copy_unsynced_message">Kin berjocht net kopiearje of ferpleatse, omdat dizze net syngronisearre is mei de server</string>
-    <string name="account_setup_failed_dlg_title">Ynstellen koe net foltôgje</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Brûkersnamme of wachtwurd ûnjildich.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_certificate_message_fmt">De server presintearre in ûnjildich SSL-sertifikaat. Dit kin barre troch in ferkeard konfigurearre server. Dit kin ek barre trochdat ien jo e-mailserver probearret oan te fallen. As jo net wis binne wat der oan de hân is, klik dan op Reject en nim kontakt op mei de behearder fan de e-mailserver.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_server_message_fmt">Kin gjin ferbining mei server meitsje.\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_oauth_flow_canceled">Autorisaasje is annulearre</string>
     <string name="account_setup_failed_dlg_oauth_flow_failed">Autorisaasje is mislearre mei de folgjende flater: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 wurdt op dit stuit net stipe troch dizze tsjinstferliener.</string>
     <string name="account_setup_failed_dlg_browser_not_found">Dizze app kin gjin browser fine. In browser is nedich om tagong te jaan ta jo account.</string>
-    <string name="account_setup_failed_dlg_edit_details_action">Details oanpasse</string>
-    <string name="account_setup_failed_dlg_continue_action">Trochgean</string>
     <string name="account_settings_push_advanced_title">Avansearre</string>
     <string name="account_settings_title_fmt">Accountynstellingen</string>
     <string name="account_settings_notify_label">Nije-e-mailmelding</string>
@@ -608,9 +559,6 @@
     <string name="sort_by_unread">Lêzen/net-lêzen</string>
     <string name="sort_by_attach">Bylagen</string>
     <string name="account_delete_dlg_title">Account fuortsmite</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_title">Unbekend sertifikaat</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_accept">Kaai akseptearje</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_reject">Kaai wegerje</string>
     <string name="folder_list_filter_hint">Mapnamme befettet</string>
     <string name="folder_list_display_mode_label">Mappen toane…</string>
     <string name="folder_list_display_mode_all">Alle mappen</string>
@@ -843,12 +791,6 @@
     <string name="fetching_attachment_dialog_title_send">Berjocht wurdt ferstjoerd</string>
     <string name="fetching_attachment_dialog_title_save">Konsept wurdt bewarre</string>
     <string name="fetching_attachment_dialog_message">Bylage oan it opheljen…</string>
-    <string name="auth_external_error">Kin net autentisearje. De server stipet gjin SASL EXTERNAL. Dit kin komme troch in probleem mei it clientsertifikaat (ferrûn of ûnbekende CA) of in oar konfiguraasjeprobleem.</string>
-    <!--=== Client certificates specific ==================================================================-->
-    <string name="client_certificate_spinner_empty">Gjin clientsertifikaat</string>
-    <string name="client_certificate_spinner_delete">Clientsertifikaatseleksje fuortsmite</string>
-    <string name="client_certificate_retrieval_failure">Clientsertifikaat net ûntfongen foar alias \‘<xliff:g id="alias">%s</xliff:g>\’</string>
-    <string name="client_certificate_expired">Clientsertifikaat \‘<xliff:g id="certificate_alias">%1$s</xliff:g>\’ is ferrûn of net jildich (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Fersifere*</string>
     <string name="add_from_contacts">Fan kontakten út tafoegje</string>

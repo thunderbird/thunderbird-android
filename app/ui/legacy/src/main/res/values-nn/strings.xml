@@ -25,7 +25,6 @@
     <string name="choose_account_title">Vel konto</string>
     <string name="choose_folder_title">Vel mappe</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> vald(e)</string>
-    <string name="next_action">Neste</string>
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">Greitt</string>
     <string name="cancel_action">Avbryt</string>
@@ -162,28 +161,6 @@
     <string name="global_settings_lock_screen_notification_visibility_nothing">Ingen låseskjermvarsel</string>
     <string name="global_settings_lock_screen_notification_visibility_app_name">Applikasjonsnamn</string>
     <string name="account_setup_basics_title">Legg til ein ny konto</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-    <string name="account_setup_check_settings_retr_info_msg">Hentar kontoinformasjon\u2026</string>
-    <string name="account_setup_check_settings_check_incoming_msg">Sjekkar innkomande tenarinnstillingar\u2026</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">Sjekkar utgåande tenarinnstillingar\u2026</string>
-    <string name="account_setup_check_settings_authenticate">Autentiserer\u2026</string>
-    <string name="account_setup_check_settings_fetch">Hentar kontoinnstillingar\u2026</string>
-    <string name="account_setup_check_settings_canceling_msg">Avbryt\u2026</string>
-    <string name="account_setup_auth_type_normal_password">Normalt passord</string>
-    <string name="account_setup_auth_type_encrypted_password">Kryptert passord</string>
-    <string name="account_setup_incoming_title">Innkomande tenarinnstillingar</string>
-    <string name="account_setup_incoming_username_label">Brukarnamn</string>
-    <string name="account_setup_incoming_password_label">Passord</string>
-    <string name="account_setup_incoming_pop_server_label">POP3-tenar</string>
-    <string name="account_setup_incoming_imap_server_label">IMAP-tenar</string>
-    <string name="account_setup_incoming_port_label">Port</string>
-    <string name="account_setup_incoming_security_label">Tryggleik</string>
-    <string name="account_setup_incoming_auth_type_label">Autentisering</string>
-    <string name="account_setup_incoming_security_none_label">Ingen</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
     <string name="account_setup_incoming_delete_policy_label">Når eg slettar ei melding</string>
     <string name="account_setup_incoming_delete_policy_never_label">Ikkje slett på tenaren</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Slett på tenaren</string>
@@ -194,15 +171,6 @@
     <string name="sent_folder_label">Sendt-mappa</string>
     <string name="trash_folder_label">Boskorga</string>
     <string name="archive_folder_label">Arkivmappa</string>
-    <string name="account_setup_outgoing_title">Utgåande tenarinnstillingar</string>
-    <string name="account_setup_outgoing_smtp_server_label">SMTP-tenar</string>
-    <string name="account_setup_outgoing_port_label">Port</string>
-    <string name="account_setup_outgoing_security_label">Tryggleik</string>
-    <string name="account_setup_outgoing_require_login_label">Krev innlogging.</string>
-    <string name="account_setup_outgoing_username_label">Brukarnamn</string>
-    <string name="account_setup_outgoing_password_label">Passord</string>
-    <string name="account_setup_outgoing_authentication_label">Autentisering</string>
-    <string name="account_setup_bad_uri">Ugyldig oppsett: <xliff:g id="err_mess">%s</xliff:g> </string>
     <string name="account_setup_options_mail_check_frequency_never">Aldri</string>
     <string name="account_setup_options_mail_check_frequency_15min">Kvart 15. minutt</string>
     <string name="account_setup_options_mail_check_frequency_30min">Kvart 30. minutt</string>
@@ -232,11 +200,6 @@
     <string name="account_setup_options_mail_display_count_5000">5000 meldingar</string>
     <string name="account_setup_options_mail_display_count_10000">dritmange meldingar</string>
     <string name="account_setup_options_mail_display_count_all">alle meldingar</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Brukarnamn eller passord er feil.\n(<xliff:g id="error">%s</xliff:g>) </string>
-    <string name="account_setup_failed_dlg_certificate_message_fmt">Tenaren gav eit ugyldig SSL-sertifikast. Stundom skjer dette fordi tenaren er feil innstilt. Stundom er det fordi nokon freistar gå til åtak på deg eller e-posttenaren din. Er du usikker på kva som skjer, trykk «Avvis» og ta kontakt med folka som administrerer e-posttenaren din.\n\n(<xliff:g id="error">%s</xliff:g>) </string>
-    <string name="account_setup_failed_dlg_server_message_fmt">Kan ikkje kopla til tenaren.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_edit_details_action">Endra detaljar</string>
-    <string name="account_setup_failed_dlg_continue_action">Hald fram</string>
     <string name="account_settings_push_advanced_title">Innfløkt</string>
     <string name="account_settings_title_fmt">Kontoinnstillingar</string>
     <string name="account_settings_notify_label">Nye e-postvarsel</string>
@@ -335,8 +298,6 @@
     <string name="sort_by_unread">Lesen/ulesen</string>
     <string name="sort_by_attach">Vedlegg</string>
     <string name="account_delete_dlg_title">Fjern konto</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_accept">Godta nykel</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_reject">Avvis nykel</string>
     <string name="folder_list_display_mode_label">Syn mapper …</string>
     <string name="folder_list_display_mode_all">Alle mappene</string>
     <string name="account_settings_signature__location_label">Signaturplassering</string>
@@ -475,11 +436,6 @@
     <string name="fetching_attachment_dialog_title_send">Sender melding</string>
     <string name="fetching_attachment_dialog_title_save">Lagrar kladd</string>
     <string name="fetching_attachment_dialog_message">Hentar vedlegg …</string>
-    <!--=== Client certificates specific ==================================================================-->
-    <string name="client_certificate_spinner_empty">Inkje klientsertifikat</string>
-    <string name="client_certificate_spinner_delete">Fjern utvalet av klientsertifikat</string>
-    <string name="client_certificate_retrieval_failure">Fekk ikkje til å henta klientsertifikat for aliaset \"<xliff:g id="alias">%s</xliff:g>\" </string>
-    <string name="client_certificate_expired">Klientsertifikatet \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" har gått ut på dato eller er ikkje gyldig enno (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Kryptert*</string>
     <string name="add_from_contacts">Legg til frå kontaktane</string>

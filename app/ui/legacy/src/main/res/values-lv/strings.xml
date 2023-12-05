@@ -47,7 +47,6 @@
     <string name="choose_folder_move_title">Pārvietot uz…</string>
     <string name="choose_folder_copy_title">Kopēt uz…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> atzīmēts</string>
-    <string name="next_action">Nākošais</string>
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">Piekrist</string>
     <string name="cancel_action">Atcelt</string>
@@ -286,46 +285,14 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
     <string name="account_setup_oauth_sign_in">Ierakstīties</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in_with_google">Ierakstīties ar Google</string>
-    <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-    <string name="account_setup_basics_show_password_need_lock">Lai redzētu savu paroli, iestatiet ekrāna bloķēšanu savā ierīcē.</string>
-    <string name="account_setup_basics_show_password_biometrics_title">Apstiprināt savu identitāti</string>
-    <string name="account_setup_basics_show_password_biometrics_subtitle">Lai apskatu savu paroli, atbloķējiet</string>
-    <string name="account_setup_check_settings_retr_info_msg">Iegūst konta informāciju…</string>
-    <string name="account_setup_check_settings_check_incoming_msg">Pārbauda ienākošā servera iestatījumus\u2026</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">Pārbauda izejošā servera iestatījumus\u2026</string>
-    <string name="account_setup_check_settings_authenticate">Autentificē…</string>
-    <string name="account_setup_check_settings_fetch">Iegūst konta iestatījumus…</string>
-    <string name="account_setup_check_settings_canceling_msg">Atceļ\u2026</string>
-    <string name="account_setup_auth_type_normal_password">Parasta parole</string>
-    <string name="account_setup_auth_type_insecure_password">Parole, kura nedroši pārraidīta</string>
-    <string name="account_setup_auth_type_encrypted_password">Šifrēta parole</string>
-    <string name="account_setup_auth_type_tls_client_certificate">Klienta sertifikāts</string>
-    <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
-    <string name="account_setup_incoming_title">Ienākošā servera iestatījumi</string>
-    <string name="account_setup_incoming_username_label">Lietotāja vārds</string>
-    <string name="account_setup_incoming_password_label">Parole</string>
-    <string name="account_setup_incoming_client_certificate_label">Klienta sertifikāts</string>
-    <string name="account_setup_incoming_pop_server_label">POP3 serveris</string>
-    <string name="account_setup_incoming_imap_server_label">IMAP serveris</string>
-    <string name="account_setup_incoming_port_label">Ports</string>
-    <string name="account_setup_incoming_security_label">Drošība</string>
-    <string name="account_setup_incoming_auth_type_label">Autentifikācija</string>
-    <string name="account_setup_incoming_security_none_label">Nav</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
-    <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" nav derīgs ar \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
     <string name="account_setup_incoming_delete_policy_label">Kad es izdzēšu ziņu</string>
     <string name="account_setup_incoming_delete_policy_never_label">to no servera nedzēst</string>
     <string name="account_setup_incoming_delete_policy_delete_label">to no servera dzēst</string>
     <string name="account_setup_incoming_delete_policy_markread_label">uz servera apzīmēt kā lasītu</string>
-    <string name="account_setup_incoming_use_compression">Izmantot kompresiju</string>
-    <string name="account_setup_incoming_send_client_id">Sūtīt klienta ID</string>
     <string name="account_setup_expunge_policy_label">Izdzēst ziņas arī no servera</string>
     <string name="account_setup_expunge_policy_immediately">Uzreiz</string>
     <string name="account_setup_expunge_policy_on_poll">Sazināšanās ar serveri laikā</string>
     <string name="account_setup_expunge_policy_manual">Pašrocīgi</string>
-    <string name="account_setup_incoming_autodetect_namespace_label">Automātiski noteikt IMAP namespace</string>
-    <string name="account_setup_incoming_imap_path_prefix_label">IMAP ceļa prefikss</string>
     <string name="drafts_folder_label">Melnrakstu mape</string>
     <string name="sent_folder_label">Nosūtnes mape</string>
     <string name="trash_folder_label">Papīrkurvja mape</string>
@@ -333,16 +300,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
     <string name="spam_folder_label">Mēstuļu mape</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Rādīt tikai izvēlētās mapes</string>
     <string name="account_setup_auto_expand_folder">Automātiski izvērst mapi</string>
-    <string name="account_setup_outgoing_title">Izejošā servera iestatījumi</string>
-    <string name="account_setup_outgoing_smtp_server_label">SMTP serveris</string>
-    <string name="account_setup_outgoing_port_label">Ports</string>
-    <string name="account_setup_outgoing_security_label">Drošība</string>
-    <string name="account_setup_outgoing_require_login_label">Obligāti jāierakstās</string>
-    <string name="account_setup_outgoing_username_label">Lietotāja vārds</string>
-    <string name="account_setup_outgoing_password_label">Parole</string>
-    <string name="account_setup_outgoing_authentication_label">Autentifikācija</string>
-    <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" nav derīgs ar \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
-    <string name="account_setup_bad_uri">Nederīgi iestatījumi: <xliff:g id="err_mess">%s</xliff:g></string>
     <string name="account_setup_options_mail_check_frequency_label">Mapes pārbaudes biežums</string>
     <string name="account_setup_options_mail_check_frequency_never">Nekad</string>
     <string name="account_setup_options_mail_check_frequency_15min">Ik 15 minūtes</string>
@@ -375,18 +332,10 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
     <string name="account_setup_options_mail_display_count_10000">10000 ziņas</string>
     <string name="account_setup_options_mail_display_count_all">visas ziņas</string>
     <string name="move_copy_cannot_copy_unsynced_message">Nevar kopēt vai pārvietot ziņu, kura nav sinhronizēta ar serveri</string>
-    <string name="account_setup_failed_dlg_title">Iestatīšanu nevarēja pabeigt</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Nepareizs lietotāja vārds vai parole.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_certificate_message_fmt">Serveris piedāvāja nederīgu SSL sertifikātu. Dažreiz tā gadās servera nepareizas konfigurācijas dēļ. Reizēm to izraisa uzbrukuma mēģinājums Jūsu e-pasta serverim. Ja nav pārliecības, kas par vainu, nospiediet Noraidīt un sazinieties ar sava e-pasta servera pārvaldniekiem.
-\n
-\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_server_message_fmt">Nevar savienoties ar serveri.\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_oauth_flow_canceled">Autorizācija atcelta</string>
     <string name="account_setup_failed_dlg_oauth_flow_failed">Autorizācija atcelta šādas kļūdas dēļ: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_setup_failed_dlg_oauth_not_supported">Šis epasta pakalpojumu sniedzējs OAuth 2.0 nenodrošina.</string>
     <string name="account_setup_failed_dlg_browser_not_found">Lietotnei neizdevās atrast pārlūku, lai ar tā starpniecību iegūtu piekļuvi Jūsu kontam.</string>
-    <string name="account_setup_failed_dlg_edit_details_action">Rediģēt datus</string>
-    <string name="account_setup_failed_dlg_continue_action">Turpināt</string>
     <string name="account_settings_push_advanced_title">Papildus</string>
     <string name="account_settings_title_fmt">Konta iestatījumi</string>
     <string name="account_settings_notify_label">Jauna pasta paziņojumi</string>
@@ -616,9 +565,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
     <string name="sort_by_unread">Lasīta/nelasīta</string>
     <string name="sort_by_attach">Pielikumiem</string>
     <string name="account_delete_dlg_title">Dzēst kontu</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_title">Neatpazīts sertifikāts</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_accept">Pieņemt pieejas atslēgu</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_reject">Noraidīt pieejas atslēgu</string>
     <string name="folder_list_filter_hint">Mapes nosaukums ietver</string>
     <string name="folder_list_display_mode_label">Rādīt mapes…</string>
     <string name="folder_list_display_mode_all">Visas mapes</string>
@@ -856,12 +802,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
     <string name="fetching_attachment_dialog_title_send">Ziņas nosūtīšana</string>
     <string name="fetching_attachment_dialog_title_save">Melnraksta saglabāšana</string>
     <string name="fetching_attachment_dialog_message">Pielikuma saņemšana…</string>
-    <string name="auth_external_error">Nevar veikt autentifikāciju. Serveris nepiedāvā SASL EXTERNAL iespējas. To varētu izraisīt problēmas ar klienta sertifikātu (beidzies derīguma termiņš, nezināms sertifikāta izdevējs) vai arī kādas citas ķibeles konfigurācijā.</string>
-    <!--=== Client certificates specific ==================================================================-->
-    <string name="client_certificate_spinner_empty">Nav klienta sertifikāta</string>
-    <string name="client_certificate_spinner_delete">Noņemt atzīmi klienta sertifikātam</string>
-    <string name="client_certificate_retrieval_failure">Neizdevās saņemt klienta sertifikātu aliasei \"<xliff:g id="alias">%s</xliff:g>\"</string>
-    <string name="client_certificate_expired">Klienta sertifikātam \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" beidzies derīguma termiņš vai arī tas vēl nav derīgs (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Šifrēts*</string>
     <string name="add_from_contacts">Pievienot no kontaktiem</string>

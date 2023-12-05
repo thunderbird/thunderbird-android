@@ -46,7 +46,6 @@
     <string name="choose_folder_move_title">انتقال به…</string>
     <string name="choose_folder_copy_title">کپی به…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> انتخاب</string>
-    <string name="next_action">بعدی</string>
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">خب</string>
     <string name="cancel_action">لغو</string>
@@ -281,46 +280,14 @@
     <string name="account_setup_oauth_sign_in">ورود</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in_with_google">ورود با حساب گوگل</string>
-    <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-    <string name="account_setup_basics_show_password_need_lock">برای دیدن گذرواژه‌تان در این قسمت، قفل صفحه در این دستگاه را فعال کنید.</string>
-    <string name="account_setup_basics_show_password_biometrics_title">هویت‌تان را تایید کنید</string>
-    <string name="account_setup_basics_show_password_biometrics_subtitle">برای دیدن گذرواژه، قفل را باز کنید</string>
-    <string name="account_setup_check_settings_retr_info_msg">بازیابی اطلاعات حساب کاربری\u2026</string>
-    <string name="account_setup_check_settings_check_incoming_msg">بررسی تنظیمات کارساز ورودی\u2026</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">بررسی تنظیمات کارساز خروجی\u2026</string>
-    <string name="account_setup_check_settings_authenticate">احراز هویت\u2026</string>
-    <string name="account_setup_check_settings_fetch">واکشی تنظیمات حساب کاربری\u2026</string>
-    <string name="account_setup_check_settings_canceling_msg">لغوکردن\u2026</string>
-    <string name="account_setup_auth_type_normal_password">گذرواژهٔ عادی</string>
-    <string name="account_setup_auth_type_insecure_password">گذرواژه، به‌شکل ناامن ارسال شد</string>
-    <string name="account_setup_auth_type_encrypted_password">گذرواژهٔ رمزنگاری‌شده</string>
-    <string name="account_setup_auth_type_tls_client_certificate">گواهی کارخواه</string>
-    <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
-    <string name="account_setup_incoming_title">تنظیمات کارساز ورودی</string>
-    <string name="account_setup_incoming_username_label">نام کاربری</string>
-    <string name="account_setup_incoming_password_label">گذرواژه</string>
-    <string name="account_setup_incoming_client_certificate_label">گواهی کارخواه</string>
-    <string name="account_setup_incoming_pop_server_label">کارساز POP3</string>
-    <string name="account_setup_incoming_imap_server_label">کارساز IMAP</string>
-    <string name="account_setup_incoming_port_label">درگاه</string>
-    <string name="account_setup_incoming_security_label">امنیت</string>
-    <string name="account_setup_incoming_auth_type_label">احراز هویت</string>
-    <string name="account_setup_incoming_security_none_label">هیچ‌کدام</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
-    <string name="account_setup_incoming_invalid_setting_combo_notice">«<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>» با «<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>» معتبر نیست</string>
     <string name="account_setup_incoming_delete_policy_label">زمانی که پیامی را پاک می‌کنم</string>
     <string name="account_setup_incoming_delete_policy_never_label">در کارساز پاک نشود</string>
     <string name="account_setup_incoming_delete_policy_delete_label">در کارساز نیز پاک شود</string>
     <string name="account_setup_incoming_delete_policy_markread_label">در کارساز نشان بزن که خواندم</string>
-    <string name="account_setup_incoming_use_compression">استفاده از فشرده سازی</string>
-    <string name="account_setup_incoming_send_client_id">ارسال Client ID</string>
     <string name="account_setup_expunge_policy_label">پیام‌های حذف‌شده را در کارساز پاک کن</string>
     <string name="account_setup_expunge_policy_immediately">فوراً</string>
     <string name="account_setup_expunge_policy_on_poll">در زمان سرکشی</string>
     <string name="account_setup_expunge_policy_manual">به‌طور دستی</string>
-    <string name="account_setup_incoming_autodetect_namespace_label">فضای نام IMAP را به‌طور خودکار پیدا کن</string>
-    <string name="account_setup_incoming_imap_path_prefix_label">پیشوند مسیر IMAP</string>
     <string name="drafts_folder_label">پوشهٔ پیش‌نویس‌‌ها</string>
     <string name="sent_folder_label">پوشهٔ ارسالی</string>
     <string name="trash_folder_label">پوشهٔ زباله‌دان</string>
@@ -328,16 +295,6 @@
     <string name="spam_folder_label">پوشهٔ هرزنامه</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">فقط پوشه‌هایی که مشترک آن‌ها هستم را نمایش بده</string>
     <string name="account_setup_auto_expand_folder">پوشهٔ آغازین</string>
-    <string name="account_setup_outgoing_title">تنظیمات کارساز خروجی </string>
-    <string name="account_setup_outgoing_smtp_server_label">کارساز SMTP</string>
-    <string name="account_setup_outgoing_port_label">درگاه</string>
-    <string name="account_setup_outgoing_security_label">امنیت</string>
-    <string name="account_setup_outgoing_require_login_label">واردشدن ضروری است.</string>
-    <string name="account_setup_outgoing_username_label">نام کاربری</string>
-    <string name="account_setup_outgoing_password_label">گذرواژه</string>
-    <string name="account_setup_outgoing_authentication_label">احراز هویت</string>
-    <string name="account_setup_outgoing_invalid_setting_combo_notice">«<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>» با «<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>» معتبر نیست</string>
-    <string name="account_setup_bad_uri">پیکربندی نادرست: <xliff:g id="err_mess">%s</xliff:g></string>
     <string name="account_setup_options_mail_check_frequency_label">تکرار سرکشی به پوشه</string>
     <string name="account_setup_options_mail_check_frequency_never">هرگز</string>
     <string name="account_setup_options_mail_check_frequency_15min">هر ۱۵ دقیقه</string>
@@ -370,16 +327,10 @@
     <string name="account_setup_options_mail_display_count_10000">۱۰۰۰۰ پیام</string>
     <string name="account_setup_options_mail_display_count_all">همهٔ پیام‌ها</string>
     <string name="move_copy_cannot_copy_unsynced_message">پیامی که با کارساز همگام نشده را نمی‌توانید کپی یا حذف کنید</string>
-    <string name="account_setup_failed_dlg_title">راه‌اندازی ناتمام ماند</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">نام کاربری یا گذرواژه اشتباه است.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_certificate_message_fmt">کارساز یک گواهی SSL نامعتبر ارائه داده است. گاهی این مسئله به‌سبب پیکربندی نادرست کارساز است. گاهی اوقات علت آن است که فردی تلاش می‌کند به شما یا کارساز رایانامه حمله کند. اگر اطلاعات کافی ندارید، ردکردن را انتخاب کنید و با پشتیبانی رایانامهٔ خود تماس بگیرید.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_server_message_fmt">اتصال به کارساز ناموفق بود.\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_oauth_flow_canceled">مجوزدهی لغو شد</string>
     <string name="account_setup_failed_dlg_oauth_flow_failed">مجوزدهی به علت این خطا ناتمام ماند: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 فعلا توسط این ارائه دهنده پشتیبانی نمی شود</string>
     <string name="account_setup_failed_dlg_browser_not_found">برنامه نمی تواند مرورگری را پیدا کند تا دسترسی به حسابتان را بگیرد</string>
-    <string name="account_setup_failed_dlg_edit_details_action">ویرایش جزئیات</string>
-    <string name="account_setup_failed_dlg_continue_action">ادامه</string>
     <string name="account_settings_push_advanced_title">پیشرفته</string>
     <string name="account_settings_title_fmt">تنظیمات حساب</string>
     <string name="account_settings_notify_label">اعلان‌های رایانامهٔ جدید</string>
@@ -609,9 +560,6 @@
     <string name="sort_by_unread">خوانده/نخوانده</string>
     <string name="sort_by_attach">پیوست‌ها</string>
     <string name="account_delete_dlg_title">حذف حساب</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_title">گواهی ناشناس</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_accept">پذیرش کلید</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_reject">ردکردن کلید</string>
     <string name="folder_list_filter_hint">بخشی از نام پوشه</string>
     <string name="folder_list_display_mode_label">نمایش کدام پوشه‌ها…</string>
     <string name="folder_list_display_mode_all">همهٔ پوشه‌ها</string>
@@ -844,12 +792,6 @@
     <string name="fetching_attachment_dialog_title_send">ارسال پیام</string>
     <string name="fetching_attachment_dialog_title_save">ذخیرهٔ پیش‌نویس</string>
     <string name="fetching_attachment_dialog_message">واکشی پیوست…</string>
-    <string name="auth_external_error">احراز هویت ناموفق بود. کارساز توانایی SASL EXTERNAL را از خود نشان نمی‌دهد. می‌تواند به‌سبب مشکلی با گواهی کارخواه (منقضی‌شده، گواهی ناشناخته) یا مشکلات دیگری در پیکربندی آن باشد.</string>
-    <!--=== Client certificates specific ==================================================================-->
-    <string name="client_certificate_spinner_empty">گواهی کارخواه وجود ندارد</string>
-    <string name="client_certificate_spinner_delete">انتخاب گواهی کارخواه را حذف کن</string>
-    <string name="client_certificate_retrieval_failure">بازیابی گواهی کارخواه برای نام مستعار «<xliff:g id="alias">%s</xliff:g>» ناموفق بود</string>
-    <string name="client_certificate_expired">گواهی کارخواه «<xliff:g id="certificate_alias">%1$s</xliff:g>» منقضی شده یا فعلاً معتبر نیست (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*رمزنگاری‌شده*</string>
     <string name="add_from_contacts">افزودن از مخاطبان</string>

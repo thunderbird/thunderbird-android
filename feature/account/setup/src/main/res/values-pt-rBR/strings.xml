@@ -25,11 +25,16 @@
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Eu confio nessa configuração</string>
     <string name="account_setup_options_display_name_error_required">Nome de exibição é obrigatório.</string>
     <string name="account_setup_error_network">Rede</string>
-    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Endereço de email é inválido.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Este endereço eletrônico é inválido.</string>
     <string name="account_setup_options_email_check_frequency_never">Nunca</string>
     <string name="account_setup_auto_discovery_loading_message">Encontrando configuração do email</string>
     <string name="account_setup_options_section_sync_options_">Opções de sincronização</string>
     <string name="account_setup_options_show_notifications_label">Mostrar notificações</string>
     <string name="account_setup_options_section_display_options">Opções de visualização</string>
     <string name="account_setup_title">K-9 Mail</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Este endereço eletrônico não é permitido.</string>
+    <string name="account_setup_create_account_created">Conta criada com sucesso</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Este endereço eletrônico não é suportado.</string>
+    <string name="account_setup_create_account_creating">Criando a conta…</string>
+    <string name="account_setup_create_account_error">Um erro ocorreu ao tentar criar a conta</string>
 </resources>

@@ -1,2 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_oauth_sign_in_description">Za vpis vas bomo preusmerili k vašemu ponudniku e-pošte. Aplikaciji morate odobriti dostop do svojega e-poštnega računa.</string>
+</resources>

@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="onboarding_permissions_contacts_description">संपर्क सुझाव प्रदान करने और संपर्क नामों और तस्वीरों को प्रदर्शित करने में सक्षम होने की अनुमति दें।</string>
+    <string name="onboarding_permissions_notifications_title">सूचनाएँ</string>
+    <string name="onboarding_permissions_screen_title">अनुभव में सुधार</string>
+    <string name="onboarding_permissions_contacts_title">संपर्क</string>
+</resources>
