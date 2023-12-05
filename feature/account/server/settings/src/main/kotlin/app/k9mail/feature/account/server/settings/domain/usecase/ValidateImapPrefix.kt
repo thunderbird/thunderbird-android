@@ -16,6 +16,6 @@ internal class ValidateImapPrefix : UseCase.ValidateImapPrefix {
     }
 
     sealed interface ValidateImapPrefixError : ValidationError {
-        object BlankImapPrefix : ValidateImapPrefixError
+        data object BlankImapPrefix : ValidateImapPrefixError
     }
 }
