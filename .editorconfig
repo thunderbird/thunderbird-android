@@ -15,7 +15,6 @@ max_line_length = 120
 ij_kotlin_imports_layout = *,^
 ij_kotlin_allow_trailing_comma = true
 ij_kotlin_allow_trailing_comma_on_call_site = true
-ktlint_ignore_back_ticked_identifier = true
 
 [*.{yml,yaml,json,toml,md}]
 indent_size = 2

@@ -986,7 +986,8 @@ class MessageViewFragment :
     }
 
     private enum class FolderOperation {
-        COPY, MOVE
+        COPY,
+        MOVE,
     }
 
     companion object {

@@ -46,9 +46,7 @@ internal fun CommonExtension<*, *, *, *, *>.configureSharedConfig() {
     }
 }
 
-internal fun CommonExtension<*, *, *, *, *>.configureSharedComposeConfig(
-    libs: LibrariesForLibs,
-) {
+internal fun CommonExtension<*, *, *, *, *>.configureSharedComposeConfig(libs: LibrariesForLibs) {
     buildFeatures {
         compose = true
     }
@@ -63,9 +61,7 @@ internal fun CommonExtension<*, *, *, *, *>.configureSharedComposeConfig(
     }
 }
 
-internal fun DependencyHandler.configureSharedComposeDependencies(
-    libs: LibrariesForLibs,
-) {
+internal fun DependencyHandler.configureSharedComposeDependencies(libs: LibrariesForLibs) {
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
     androidTestImplementation(composeBom)

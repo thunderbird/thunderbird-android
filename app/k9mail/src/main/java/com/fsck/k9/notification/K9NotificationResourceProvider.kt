@@ -48,12 +48,13 @@ class K9NotificationResourceProvider(private val context: Context) : Notificatio
 
     override fun certificateErrorBody(): String = context.getString(R.string.notification_certificate_error_text)
 
-    override fun newMessagesTitle(newMessagesCount: Int): String =
-        context.resources.getQuantityString(
+    override fun newMessagesTitle(newMessagesCount: Int): String {
+        return context.resources.getQuantityString(
             R.plurals.notification_new_messages_title,
             newMessagesCount,
             newMessagesCount,
         )
+    }
 
     override fun additionalMessages(overflowMessagesCount: Int, accountName: String): String =
         context.getString(R.string.notification_additional_messages, overflowMessagesCount, accountName)
@@ -77,11 +78,9 @@ class K9NotificationResourceProvider(private val context: Context) : Notificatio
     override fun checkingMailTicker(accountName: String, folderName: String): String =
         context.getString(R.string.notification_bg_sync_ticker, accountName, folderName)
 
-    override fun checkingMailTitle(): String =
-        context.getString(R.string.notification_bg_sync_title)
+    override fun checkingMailTitle(): String = context.getString(R.string.notification_bg_sync_title)
 
-    override fun checkingMailSeparator(): String =
-        context.getString(R.string.notification_bg_title_separator)
+    override fun checkingMailSeparator(): String = context.getString(R.string.notification_bg_title_separator)
 
     override fun actionMarkAsRead(): String = context.getString(R.string.notification_action_mark_as_read)
 

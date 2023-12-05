@@ -26,7 +26,8 @@ class NotificationChannelManager(
     val miscellaneousChannelId = "misc"
 
     enum class ChannelType {
-        MESSAGES, MISCELLANEOUS
+        MESSAGES,
+        MISCELLANEOUS,
     }
 
     init {

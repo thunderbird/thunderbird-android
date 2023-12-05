@@ -762,6 +762,9 @@ class RecipientPresenter(
     }
 
     enum class CryptoMode {
-        SIGN_ONLY, NO_CHOICE, CHOICE_DISABLED, CHOICE_ENABLED
+        SIGN_ONLY,
+        NO_CHOICE,
+        CHOICE_DISABLED,
+        CHOICE_ENABLED,
     }
 }

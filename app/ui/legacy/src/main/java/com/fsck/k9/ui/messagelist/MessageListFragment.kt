@@ -2046,7 +2046,8 @@ class MessageListFragment :
     }
 
     private enum class FolderOperation {
-        COPY, MOVE
+        COPY,
+        MOVE,
     }
 
     private enum class Error(@StringRes val errorText: Int) {

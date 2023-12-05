@@ -4,7 +4,7 @@
 [versions]
 gradle = "8.5"
 androidGradlePlugin = "8.1.4"
-ktlint = "0.50.0"
+ktlint = "1.0.1"
 
 kotlin = "1.9.20"
 kotlinxCoroutines = "1.7.3"
@@ -48,7 +48,7 @@ ksp = "com.google.devtools.ksp:1.9.20-1.0.14"
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-spotless = "com.diffplug.spotless:6.22.0"
+spotless = "com.diffplug.spotless:6.23.3"
 detekt = "io.gitlab.arturbosch.detekt:1.23.4"
 dependency-check = "com.github.ben-manes.versions:0.50.0"
 
