@@ -10,8 +10,9 @@ import android.transition.TransitionManager
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.core.view.isVisible
-import com.fsck.k9.finishWithErrorToast
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
 import com.fsck.k9.view.StatusIndicator
@@ -150,6 +151,12 @@ class AutocryptKeyTransferActivity : K9Activity() {
 
     fun finishWithProviderConnectError(providerName: String) {
         finishWithErrorToast(R.string.toast_openpgp_provider_error, providerName)
+    }
+
+    private fun finishWithErrorToast(@StringRes errorRes: Int, vararg formatArgs: String) {
+        val text = getString(errorRes, *formatArgs)
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show()
+        finish()
     }
 
     fun launchUserInteractionPendingIntent(pendingIntent: PendingIntent) {
