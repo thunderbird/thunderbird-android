@@ -22,7 +22,6 @@ val newAccountModule = module {
 
     factory<AccountSetupExternalContract.AccountCreator> {
         AccountCreator(
-            accountCreatorHelper = get(),
             accountColorPicker = get(),
             localFoldersCreator = get(),
             preferences = get(),
