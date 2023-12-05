@@ -39,7 +39,7 @@ class ImapServerSettingsValidator(
         } catch (e: AuthenticationFailedException) {
             ServerSettingsValidationResult.AuthenticationError(e.messageFromServer)
         } catch (e: CertificateValidationException) {
-            ServerSettingsValidationResult.CertificateError(e.certChain.toList())
+            ServerSettingsValidationResult.CertificateError(e.certificateChain)
         } catch (e: NegativeImapResponseException) {
             ServerSettingsValidationResult.ServerError(e.responseText)
         } catch (e: MessagingException) {

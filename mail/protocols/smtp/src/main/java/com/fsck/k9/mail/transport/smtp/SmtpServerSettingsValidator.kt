@@ -32,7 +32,7 @@ class SmtpServerSettingsValidator(
         } catch (e: AuthenticationFailedException) {
             ServerSettingsValidationResult.AuthenticationError(e.messageFromServer)
         } catch (e: CertificateValidationException) {
-            ServerSettingsValidationResult.CertificateError(e.certChain.toList())
+            ServerSettingsValidationResult.CertificateError(e.certificateChain)
         } catch (e: NegativeSmtpReplyException) {
             ServerSettingsValidationResult.ServerError(e.replyText)
         } catch (e: MessagingException) {

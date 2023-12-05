@@ -2449,16 +2449,9 @@ public class MessagingController {
     }
 
     public void notifyUserIfCertificateProblem(Account account, Exception exception, boolean incoming) {
-        if (!(exception instanceof CertificateValidationException)) {
-            return;
+        if (exception instanceof CertificateValidationException) {
+            notificationController.showCertificateErrorNotification(account, incoming);
         }
-
-        CertificateValidationException cve = (CertificateValidationException) exception;
-        if (!cve.needsUserAttention()) {
-            return;
-        }
-
-        notificationController.showCertificateErrorNotification(account, incoming);
     }
 
     private boolean isAuthenticationProblem(Account account, boolean incoming) {

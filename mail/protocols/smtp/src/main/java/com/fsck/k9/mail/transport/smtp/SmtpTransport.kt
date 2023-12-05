@@ -22,6 +22,7 @@ import com.fsck.k9.mail.filter.PeekableInputStream
 import com.fsck.k9.mail.filter.SmtpDataStuffing
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.oauth.XOAuth2ChallengeParser
+import com.fsck.k9.mail.ssl.CertificateChainExtractor
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import com.fsck.k9.mail.transport.smtp.SmtpHelloResponse.Hello
 import com.fsck.k9.sasl.buildOAuthBearerInitialClientResponse
@@ -35,7 +36,6 @@ import java.net.InetSocketAddress
 import java.net.Socket
 import java.net.UnknownHostException
 import java.security.GeneralSecurityException
-import java.security.cert.CertificateException
 import java.util.Locale
 import javax.net.ssl.SSLException
 import org.apache.commons.io.IOUtils
@@ -223,8 +223,9 @@ class SmtpTransport(
             throw e
         } catch (e: SSLException) {
             close()
-            if (e.cause is CertificateException) {
-                throw CertificateValidationException(e.message, e)
+            val certificateChain = CertificateChainExtractor.extract(e)
+            if (certificateChain != null) {
+                throw CertificateValidationException(certificateChain, e)
             } else {
                 throw e
             }

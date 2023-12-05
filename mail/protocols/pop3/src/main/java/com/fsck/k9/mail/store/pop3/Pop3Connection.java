@@ -14,6 +14,7 @@ import java.security.KeyManagementException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -29,6 +30,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.MissingCapabilityException;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.Hex;
+import com.fsck.k9.mail.ssl.CertificateChainExtractor;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import javax.net.ssl.SSLException;
 
@@ -92,8 +94,9 @@ class Pop3Connection {
 
             performAuthentication(settings.getAuthType(), serverGreeting);
         } catch (SSLException e) {
-            if (e.getCause() instanceof CertificateException) {
-                throw new CertificateValidationException(e.getMessage(), e);
+            List<X509Certificate> certificateChain = CertificateChainExtractor.extract(e);
+            if (certificateChain != null) {
+                throw new CertificateValidationException(certificateChain, e);
             } else {
                 throw new MessagingException("Unable to connect", e);
             }
