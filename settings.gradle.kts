@@ -46,6 +46,7 @@ include(
     ":feature:onboarding:main",
     ":feature:onboarding:welcome",
     ":feature:onboarding:permissions",
+    ":feature:onboarding:success",
 )
 
 include(

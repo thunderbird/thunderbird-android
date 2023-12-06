@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_success_title">Set up successful</string>
+    <string name="onboarding_success_message">Thank you for using K-9</string>
+    <string name="onboarding_success_go_to_inbox_button">Go to inbox</string>
+</resources>
