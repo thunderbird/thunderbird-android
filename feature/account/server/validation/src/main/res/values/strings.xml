@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_server_validation_error_authentication">Authentication error</string>
-    <string name="account_server_validation_error_certificate">Certificate error</string>
     <string name="account_server_validation_error_network">Network error</string>
     <string name="account_server_validation_error_server">Server error</string>
     <string name="account_server_validation_error_unknown">Unknown error</string>

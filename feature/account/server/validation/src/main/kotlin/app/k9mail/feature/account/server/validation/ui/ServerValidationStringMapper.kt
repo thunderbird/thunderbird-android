@@ -7,6 +7,8 @@ import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.
 
 internal fun Error.toResourceString(resources: Resources): String {
     return when (this) {
+        is Error.CertificateError -> error("Handle CertificateError using ServerCertificateErrorScreen")
+
         is Error.AuthenticationError -> {
             resources.buildErrorString(
                 titleResId = R.string.account_server_validation_error_authentication,
@@ -14,10 +16,6 @@ internal fun Error.toResourceString(resources: Resources): String {
                 detailsMessage = serverMessage,
             )
         }
-
-        is Error.CertificateError -> resources.getString(
-            R.string.account_server_validation_error_certificate,
-        )
 
         is Error.NetworkError -> {
             resources.buildErrorString(
