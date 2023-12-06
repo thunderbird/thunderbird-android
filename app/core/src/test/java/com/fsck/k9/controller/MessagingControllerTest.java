@@ -16,6 +16,7 @@ import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.backend.api.Backend;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.AuthenticationFailedException;
+import com.fsck.k9.mail.CertificateChainException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Flag;
@@ -355,7 +356,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
     @Test
     public void sendPendingMessagesSynchronous_withCertificateFailure_shouldNotify() throws MessagingException {
         setupAccountWithMessageToSend();
-        doThrow(new CertificateValidationException("Test")).when(backend).sendMessage(localMessageToSend1);
+        doThrow(new CertificateValidationException("Test", new CertificateChainException("", null, null)))
+            .when(backend).sendMessage(localMessageToSend1);
 
         controller.sendPendingMessagesSynchronous(account);
 

@@ -1,4 +1,3 @@
-
 package com.fsck.k9.mail;
 
 import java.security.cert.CertPathValidatorException;
@@ -8,47 +7,12 @@ import java.security.cert.X509Certificate;
 import javax.net.ssl.SSLHandshakeException;
 
 public class CertificateValidationException extends MessagingException {
-    public static final long serialVersionUID = -1;
-    private final Reason mReason;
     private X509Certificate[] mCertChain;
     private boolean mNeedsUserAttention = false;
-    private String mAlias;
 
-    public enum Reason {
-        Unknown, UseMessage, Expired, MissingCapability, RetrievalFailure
-    }
-
-    public CertificateValidationException(String message) {
-        this(message, Reason.UseMessage, null);
-    }
-
-    public CertificateValidationException(Reason reason) {
-        this(null, reason, null);
-    }
-
-    public CertificateValidationException(String message, Reason reason, String alias) {
-        super(message);
-        /*
-         * Instances created without a Throwable parameter as a cause are
-         * presumed to need user attention.
-         */
-        mNeedsUserAttention = true;
-        mReason = reason;
-        mAlias = alias;
-    }
-
-    public CertificateValidationException(final String message, Throwable throwable) {
-        super(message, throwable);
-        mReason = Reason.Unknown;
+    public CertificateValidationException(final String message, Throwable cause) {
+        super(message, cause);
         scanForCause();
-    }
-
-    public String getAlias() {
-        return mAlias;
-    }
-
-    public Reason getReason() {
-        return mReason;
     }
 
     private void scanForCause() {
@@ -117,7 +81,7 @@ public class CertificateValidationException extends MessagingException {
      * If the cause of this {@link CertificateValidationException} was a
      * {@link CertificateChainException}, then the offending chain is available
      * for return.
-     * 
+     *
      * @return An {@link X509Certificate X509Certificate[]} containing the Cert.
      *         chain, or else null.
      */
