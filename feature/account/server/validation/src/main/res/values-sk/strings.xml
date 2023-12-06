@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_error_certificate">Chyba certifikátu</string>
+    <string name="account_server_validation_error_network">Chyba siete</string>
+    <string name="account_server_validation_outgoing_loading_message">Kontrolujú sa nastavenia servera odchádzajúcej pošty…</string>
+    <string name="account_server_validation_outgoing_success">Nastavenia servera odchádzajúcej pošty sú platné</string>
+    <string name="account_server_validation_outgoing_loading_error">Kontrola nastavení servera odchádzajúcej pošty zlyhala</string>
+    <string name="account_server_validation_incoming_success">Nastavenia servera prichádzajúcej pošty sú platné</string>
+</resources>

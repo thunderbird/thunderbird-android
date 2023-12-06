@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="onboarding_permissions_contacts_description">Povolte přístup pro poskytování návrhů kontaktů a zobrazení jmen a fotografií kontaktů.</string>
-    <string name="onboarding_permissions_notifications_description">Povolte oznámení, abyste nezmeškali žádné e-maily.</string>
+    <string name="onboarding_permissions_notifications_description">Povolte oznámení, ať nezmeškáte žádné e-maily.</string>
     <string name="onboarding_permissions_notifications_title">Oznámení</string>
     <string name="onboarding_permissions_screen_title">Vylepšete používání aplikace</string>
     <string name="onboarding_permissions_contacts_title">Kontakty</string>

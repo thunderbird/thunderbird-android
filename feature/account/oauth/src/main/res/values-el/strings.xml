@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_oauth_sign_in_with_google_button">Είσοδος με Google</string>
+    <string name="account_oauth_loading_error">Η είσοδος με OAuth απέτυχε</string>
+    <string name="account_oauth_error_failed">Η εξουσιοδότηση ακυρώθηκε με το ακόλουθο σφάλμα: <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_error_browser_not_available">Η εφαρμογή δεν μπόρεσε να εντοπίσει κάποιο πρόγραμμα περιήγησης για παραχώρηση πρόσβασης στον λογαριασμό σας.</string>
+    <string name="account_oauth_error_not_supported">Το OAuth 2.o δεν υποστηρίζεται προς το παρόν από αυτόν τον πάροχο.</string>
+    <string name="account_oauth_error_canceled">Η εξουσιοδότηση ακυρώθηκε</string>
+    <string name="account_oauth_loading_message">Είσοδος χρησιμοποιώντας OAuth</string>
+    <string name="account_oauth_sign_in_description">Θα σας ανακατευθύνουμε στον πάροχο email σας για να συνδεθείτε. Θα πρέπει να παραχωρήσετε στην εφαρμογή πρόσβαση στον λογαριασμό email σας.</string>
+    <string name="account_oauth_sign_in_button">Είσοδος</string>
+</resources>

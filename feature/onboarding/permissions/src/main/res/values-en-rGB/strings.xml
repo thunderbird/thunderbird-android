@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="onboarding_permissions_contacts_description">Allow access to be able to provide contact suggestions and to display contact names and photos.</string>
+    <string name="onboarding_permissions_notifications_description">Turn on notifications so you don\'t miss any emails.</string>
+    <string name="onboarding_permissions_notifications_title">Notifications</string>
+    <string name="onboarding_permissions_screen_title">Improve the experience</string>
+    <string name="onboarding_permissions_contacts_title">Contacts</string>
+    <string name="onboarding_permissions_allow_button">Allow</string>
+    <string name="onboarding_permissions_skip_button">Skip</string>
+</resources>

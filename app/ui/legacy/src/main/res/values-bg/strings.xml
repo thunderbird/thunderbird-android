@@ -42,7 +42,6 @@
     <string name="choose_folder_move_title">Премести в…</string>
     <string name="choose_folder_copy_title">Копирай в…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> избрани</string>
-    <string name="next_action">Следващ</string>
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">ОК</string>
     <string name="cancel_action">Откажи</string>
@@ -250,32 +249,6 @@
     <string name="quiet_time_starts">Тих режим започва</string>
     <string name="quiet_time_ends">Тих режим свършва</string>
     <string name="account_setup_basics_title">Настрой нов профил</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-    <string name="account_setup_check_settings_retr_info_msg">Получаване на информация за профила\u2026</string>
-    <string name="account_setup_check_settings_check_incoming_msg">Проверява настройките на сървър за входяща поща\u2026</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">Проверява настройките на сървър за изходяща поща\u2026</string>
-    <string name="account_setup_check_settings_authenticate">Идентифициране\u2026</string>
-    <string name="account_setup_check_settings_fetch">Получава настройките на профила\u2026</string>
-    <string name="account_setup_check_settings_canceling_msg">Отказва\u2026</string>
-    <string name="account_setup_auth_type_normal_password">Нормална парола</string>
-    <string name="account_setup_auth_type_insecure_password">Парола, предавана несигурно</string>
-    <string name="account_setup_auth_type_encrypted_password">Криптирана парола</string>
-    <string name="account_setup_auth_type_tls_client_certificate">Клиентски сертификат</string>
-    <string name="account_setup_incoming_title">Настройки за входяща поща</string>
-    <string name="account_setup_incoming_username_label">Потребителско име</string>
-    <string name="account_setup_incoming_password_label">Парола</string>
-    <string name="account_setup_incoming_client_certificate_label">Клиентски сертификат</string>
-    <string name="account_setup_incoming_pop_server_label">POP3 сървър</string>
-    <string name="account_setup_incoming_imap_server_label">IMAP сървър</string>
-    <string name="account_setup_incoming_port_label">Порт</string>
-    <string name="account_setup_incoming_security_label">Сигурност</string>
-    <string name="account_setup_incoming_auth_type_label">Идентифициране</string>
-    <string name="account_setup_incoming_security_none_label">Никаква</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
-    <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" не е валидно с \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
     <string name="account_setup_incoming_delete_policy_label">Когато изтрия съобщение</string>
     <string name="account_setup_incoming_delete_policy_never_label">Не изтривай от сървъра</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Изтривай от сървъра</string>
@@ -284,8 +257,6 @@
     <string name="account_setup_expunge_policy_immediately">Веднага</string>
     <string name="account_setup_expunge_policy_on_poll">При проверка</string>
     <string name="account_setup_expunge_policy_manual">Ръчно</string>
-    <string name="account_setup_incoming_autodetect_namespace_label">Автоматично разпознаване на IMAP namespace-а</string>
-    <string name="account_setup_incoming_imap_path_prefix_label">IMAP path prefix</string>
     <string name="drafts_folder_label">Папка Чернови</string>
     <string name="sent_folder_label">Папка Изпратени</string>
     <string name="trash_folder_label">Папка Кошче</string>
@@ -293,16 +264,6 @@
     <string name="spam_folder_label">Папка Спам</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Показвай само абонираните папките</string>
     <string name="account_setup_auto_expand_folder">Автоматично разгъване на папка</string>
-    <string name="account_setup_outgoing_title">Настройки за изходяща поща</string>
-    <string name="account_setup_outgoing_smtp_server_label">SMTP сървър</string>
-    <string name="account_setup_outgoing_port_label">Порт</string>
-    <string name="account_setup_outgoing_security_label">Сигурност</string>
-    <string name="account_setup_outgoing_require_login_label">Изисква вписване.</string>
-    <string name="account_setup_outgoing_username_label">Потребителско име</string>
-    <string name="account_setup_outgoing_password_label">Парола</string>
-    <string name="account_setup_outgoing_authentication_label">Идентификация</string>
-    <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" не е валидно с \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
-    <string name="account_setup_bad_uri">Невалидни настройки: <xliff:g id="err_mess">%s</xliff:g></string>
     <string name="account_setup_options_mail_check_frequency_label">Честота на проверка на папката</string>
     <string name="account_setup_options_mail_check_frequency_never">Никога</string>
     <string name="account_setup_options_mail_check_frequency_15min">На всеки 15 минути</string>
@@ -335,12 +296,6 @@
     <string name="account_setup_options_mail_display_count_10000">10000 съобщения</string>
     <string name="account_setup_options_mail_display_count_all">всички съобщения</string>
     <string name="move_copy_cannot_copy_unsynced_message">Не може да копира или да премести съобщение, което не е синхронизирано със сървара</string>
-    <string name="account_setup_failed_dlg_title">Настройката завърши нуеспешно</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Потребителското име или паролата са неправилни.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_certificate_message_fmt">Сървърът представи невалиден SSL сертификат. Понякога това се случва при неправилна конфигурация на сървъра. Понякога това се случва защото някой се опитва да атакува вас или вашият сървър. Ако не сте сигурни какво се случва натиснете Отхвърли и се свържете с хората коитообслужват пощенският сървър.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_server_message_fmt">Не може да се свърже със сървъра.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_edit_details_action">Редактиране на детайлите</string>
-    <string name="account_setup_failed_dlg_continue_action">Продължи</string>
     <string name="account_settings_push_advanced_title">Разширени</string>
     <string name="account_settings_title_fmt">Настройки на профила</string>
     <string name="account_settings_notify_label">Ново известие за поща</string>
@@ -537,9 +492,6 @@
     <string name="sort_by_unread">Прочетено/непрочетено</string>
     <string name="sort_by_attach">Файлове</string>
     <string name="account_delete_dlg_title">Премахни профила</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_title">Неразпознат сертификат</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_accept">Приеми ключа</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_reject">Отхвърли ключа</string>
     <string name="folder_list_filter_hint">Името на папката съдържа</string>
     <string name="folder_list_display_mode_label">Покажи папките…</string>
     <string name="folder_list_display_mode_all">Всички папки</string>
@@ -766,12 +718,6 @@
     <string name="fetching_attachment_dialog_title_send">Изпращане на съобщение</string>
     <string name="fetching_attachment_dialog_title_save">Запазване в чернови</string>
     <string name="fetching_attachment_dialog_message">Изтегляне на прикачен файл…</string>
-    <string name="auth_external_error">Неуспешна идентификация. Сървърът не предлага SASL EXTERNAL. Това може да е поради проблем с сертификатът на клиента (изтекъл,  непознат издател на сертификат) или някакъв друг конфигурационен проблем.</string>
-    <!--=== Client certificates specific ==================================================================-->
-    <string name="client_certificate_spinner_empty">Няма сертификат на клиента</string>
-    <string name="client_certificate_spinner_delete">Премахни избора на сертификат на клиента</string>
-    <string name="client_certificate_retrieval_failure">Неуспешно изтегляне на сертификат на клиента за \"<xliff:g id="alias">%s</xliff:g>\"</string>
-    <string name="client_certificate_expired">Сертификат на клиента \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" е изтекъл или още не станал валиден (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Крипитиран*</string>
     <string name="add_from_contacts">Добавяне в контакти</string>
@@ -972,4 +918,101 @@
     <!--A user visible label for the name and email address copied to the clipboard-->
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+    <string name="user_manual_title">Ръководство</string>
+    <string name="notification_notify_error_title">Грешка при известие</string>
+    <string name="unsubscribe_action">Отписване</string>
+    <string name="about_fediverse_title">Федивселена</string>
+    <string name="changelog_snackbar_button_text">Покажи</string>
+    <string name="get_help_title">Помощ</string>
+    <string name="account_setup_failed_dlg_browser_not_found">Приложението не успя да открие браузър, който да използва за разрешаване на достъп до акаунта Ви.</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">Остани на сегашното съобщение</string>
+    <string name="settings_import_status_log_in_required">Необходимо е вписване</string>
+    <string name="general_settings_swipe_action_toggle_read">Отбележи като прочетено/непрочетено</string>
+    <string name="action_copy_email_address">Копирай имейл адрес</string>
+    <string name="account_settings_autodownload_message_size_10240">10 МБ</string>
+    <string name="message_view_me_text">мен</string>
+    <string name="account_settings_notification_channels_label">Категории известия</string>
+    <string name="action_compose_message_to">Напиши съобщение</string>
+    <string name="account_settings_autodownload_message_size_512">512 КБ</string>
+    <string name="account_settings_autodownload_message_size_1024">1 МБ</string>
+    <string name="account_settings_notification_light_white">Бял</string>
+    <string name="account_settings_vibrate_pattern_label">Ритъм на вибрацията</string>
+    <string name="message_list_content_description_unread_prefix">непрочетени, %s</string>
+    <string name="account_settings_notification_light_disabled">Изключено</string>
+    <string name="general_settings_post_remove_action_return_to_list">Върни се към списъка със съобщения</string>
+    <string name="account_setup_oauth_sign_in_with_google">Вписване чрез Google</string>
+    <string name="message_details_missing_date">Липсва поле \"Дата\"</string>
+    <string name="general_settings_post_mark_as_unread_action_title">След отбелязване на съобщение като прочетено</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">Върни се към списъка със съобщения</string>
+    <string name="account_settings_vibration">Вибрация</string>
+    <string name="general_settings_message_list_density_title">Плътност на списъка със съобщения</string>
+    <string name="font_size_message_view_recipients">Получатели</string>
+    <string name="account_settings_vibrate_pattern_5">Шаблон 5</string>
+    <string name="message_details_toolbar_title">Подробности</string>
+    <string name="general_settings_swipe_action_toggle_star">Отбележи като важно</string>
+    <string name="general_settings_right_swipe_title">Жест надясно</string>
+    <string name="clipboard_label_name_and_email_address">Име и имейл адрес</string>
+    <string name="account_settings_notification_light_label">Светлина при известие</string>
+    <string name="account_setup_oauth_sign_in">Вписване</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Покажи предишното съобщение</string>
+    <string name="account_settings_notification_light_default_color">Цвят по подразбиране</string>
+    <string name="swipe_action_move">Премести…</string>
+    <string name="show_starred_count_title">Брой важни съобщения</string>
+    <string name="account_settings_vibrate_pattern_4">Шаблон 4</string>
+    <string name="debug_export_logs_success">Експортиране успешно. Докладите може да съдържат лична информация. Внимавайте кому ги пращате.</string>
+    <string name="notification_notify_error_text">Възникна грешка при създаването на известие за ново съобщение. Причината най-вероятно е липсващ звук за известия.
+\n
+\nДокоснете тук, за да отворите настройките на известията.</string>
+    <string name="debug_export_logs_title">Експортирай докладите</string>
+    <string name="general_settings_show_compose_button_title">Показване на плаващ бутон за създаване на съобщение</string>
+    <string name="general_settings_contact_name_color_label">Цвят на контакта</string>
+    <string name="account_settings_notification_light_red">Червен</string>
+    <string name="action_copy_name_and_email_address">Копирай име и имейл адрес</string>
+    <string name="message_view_recipients_format">до <xliff:g id="recipients">%s</xliff:g></string>
+    <string name="account_settings_open_notification_settings_messages_summary">Настрой известията за нови съобщения</string>
+    <string name="account_settings_notification_light_green">Зелен</string>
+    <string name="general_settings_ui_density_relaxed">Разхлабен</string>
+    <string name="account_setup_failed_dlg_oauth_flow_failed">Разрешаването се провали и даде следната грешка: <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_settings_vibrate_pattern_2">Шаблон 2</string>
+    <string name="account_settings_vibrate_pattern_1">Шаблон 1</string>
+    <string name="account_settings_ignore_chat_messages_summary">Не известявай за съобщения от имейл чат</string>
+    <string name="message_details_loading_error">Възникна грешка при зареждането на подробностите.</string>
+    <string name="settings_import_authorization_and_password_required">Моля, впишете се и въведете паролите си</string>
+    <string name="general_settings_swipe_action_toggle_selection">Избери съобщение</string>
+    <string name="account_setup_oauth_description">За да използвате този имейл с K-9 Поща, трябва да се впишете и да разрешите на приложението достъп до имейлите си.</string>
+    <string name="account_settings_autodownload_message_size_2048">2 МБ</string>
+    <string name="message_details_replyto_section_title">Отговори</string>
+    <string name="account_settings_notification_light_magenta">Пурпурен</string>
+    <string name="global_settings_lock_screen_notification_visibility_message_count">Брой нови съобщения</string>
+    <string name="swipe_action_mark_as_read">Отбележи като прочетено</string>
+    <string name="action_add_to_contacts">Добави към контакти</string>
+    <string name="settings_import_authorization_required">Моля, впишете се</string>
+    <string name="general_settings_left_swipe_title">Жест наляво</string>
+    <string name="general_settings_ui_density_compact">Компактен</string>
+    <string name="message_list_error_title">Грешка</string>
+    <string name="general_settings_swipe_actions_title">Жестово управление</string>
+    <string name="folder_settings_folder_push_mode_inherited">Същия като класа на проверяваните папки</string>
+    <string name="account_settings_autodownload_message_size_128">128 КБ</string>
+    <string name="account_settings_notification_light_cyan">Светлосин</string>
+    <string name="account_settings_ignore_chat_messages_label">Игнорирай чатсъобщения</string>
+    <string name="account_setup_failed_dlg_oauth_flow_canceled">Разрешение отменено</string>
+    <string name="reply_to_label">Отговори</string>
+    <string name="account_settings_autodownload_message_size_32">32 КБ</string>
+    <string name="message_view_additional_recipient_prefix">+</string>
+    <string name="account_settings_notification_light_blue">Син</string>
+    <string name="account_settings_autodownload_message_size_5120">5 МБ</string>
+    <string name="general_settings_post_remove_action_show_next_message">Покажи следващото съобщение</string>
+    <string name="general_settings_post_remove_action_title">След изтриване или преместване на съобщение</string>
+    <string name="account_settings_notification_light_yellow">Жълт</string>
+    <string name="account_settings_open_notification_settings_miscellaneous_summary">Настрой известия за грешки и промени в статуса</string>
+    <string name="account_settings_autodownload_message_size_64">64 КБ</string>
+    <string name="account_settings_vibrate_summary_disabled">Изключено</string>
+    <string name="message_list_error_folder_not_found">Папката не е намерена</string>
+    <string name="account_settings_vibrate_pattern_3">Шаблон 3</string>
+    <string name="background_work_notification_remove_account">Акаунтът се трие…</string>
+    <string name="volume_navigation_title">Преход между съобщения чрез бутони за звук</string>
+    <string name="debug_export_logs_failure">Експортирането беше неуспешно.</string>
+    <string name="message_view_show_remote_images_action">Зареди изображения</string>
+    <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 с този доставчик не се поддържа в момента.</string>
+    <string name="account_settings_autodownload_message_size_256">256 КБ</string>
 </resources>

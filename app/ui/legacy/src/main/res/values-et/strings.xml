@@ -46,7 +46,6 @@
     <string name="choose_folder_move_title">Teisalda…</string>
     <string name="choose_folder_copy_title">Kopeeri…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valitud</string>
-    <string name="next_action">Järgmine</string>
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">Ok</string>
     <string name="cancel_action">Tühista</string>
@@ -281,46 +280,14 @@
     <string name="account_setup_oauth_sign_in">Logi sisse</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in_with_google">Logi sisse kasutades Google\'i teenuseid</string>
-    <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-    <string name="account_setup_basics_show_password_need_lock">Kui soovid siin näha salasõna, siis lülita sisse lukustuskuva kasutamine.</string>
-    <string name="account_setup_basics_show_password_biometrics_title">Tuvasta oma isik</string>
-    <string name="account_setup_basics_show_password_biometrics_subtitle">Oma salasõna vaatamiseks eemalda lukustus</string>
-    <string name="account_setup_check_settings_retr_info_msg">Konto info hankimine\u2026</string>
-    <string name="account_setup_check_settings_check_incoming_msg">Kontrollib sissetuleva meiliserveri sätteid\u2026</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">Kontrollib väljamineva meiliserveri sätteid\u2026</string>
-    <string name="account_setup_check_settings_authenticate">Autentimine\u2026</string>
-    <string name="account_setup_check_settings_fetch">Toob konto sätteid\u2026</string>
-    <string name="account_setup_check_settings_canceling_msg">Tühistamine\u2026</string>
-    <string name="account_setup_auth_type_normal_password">Tavaline salasõna</string>
-    <string name="account_setup_auth_type_insecure_password">Salasõna, ebaturvaliselt edastatud</string>
-    <string name="account_setup_auth_type_encrypted_password">Krüpteeritud salasõna</string>
-    <string name="account_setup_auth_type_tls_client_certificate">Kliendi sertifikaat</string>
-    <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
-    <string name="account_setup_incoming_title">Sissetuleva meiliserveri sätted</string>
-    <string name="account_setup_incoming_username_label">Kasutajanimi</string>
-    <string name="account_setup_incoming_password_label">Salasõna</string>
-    <string name="account_setup_incoming_client_certificate_label">Kliendi sertifikaat</string>
-    <string name="account_setup_incoming_pop_server_label">POP3 server</string>
-    <string name="account_setup_incoming_imap_server_label">IMAP server</string>
-    <string name="account_setup_incoming_port_label">Port</string>
-    <string name="account_setup_incoming_security_label">Turvalisus</string>
-    <string name="account_setup_incoming_auth_type_label">Autentimine</string>
-    <string name="account_setup_incoming_security_none_label">Puudub</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
-    <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" ei valideeru seadega \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
     <string name="account_setup_incoming_delete_policy_label">Kui ma kustutan kirja</string>
     <string name="account_setup_incoming_delete_policy_never_label">Ära kustuta seda serveris</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Kustuta serveris</string>
     <string name="account_setup_incoming_delete_policy_markread_label">Märgi serveris loetuks</string>
-    <string name="account_setup_incoming_use_compression">Kasuta pakkimist</string>
-    <string name="account_setup_incoming_send_client_id">Saada kliendi tunnus</string>
     <string name="account_setup_expunge_policy_label">Eemalda kustutatud kirjad serverist</string>
     <string name="account_setup_expunge_policy_immediately">Koheselt</string>
     <string name="account_setup_expunge_policy_on_poll">Andmete kontrollimisel</string>
     <string name="account_setup_expunge_policy_manual">Käsitsi</string>
-    <string name="account_setup_incoming_autodetect_namespace_label">Tuvasta IMAP nimeruum automaatselt</string>
-    <string name="account_setup_incoming_imap_path_prefix_label">IMAP tee eesliide</string>
     <string name="drafts_folder_label">Mustandite kaust</string>
     <string name="sent_folder_label">Saadetute kaust</string>
     <string name="trash_folder_label">Prügikasti kaust</string>
@@ -328,16 +295,6 @@
     <string name="spam_folder_label">Rämpsposti kaust</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Näita üksnes tellitud kaustu</string>
     <string name="account_setup_auto_expand_folder">Kaustade automaatne laiendamine</string>
-    <string name="account_setup_outgoing_title">Väljuva meiliserveri sätted</string>
-    <string name="account_setup_outgoing_smtp_server_label">SMTP server</string>
-    <string name="account_setup_outgoing_port_label">Port</string>
-    <string name="account_setup_outgoing_security_label">Turvalisus</string>
-    <string name="account_setup_outgoing_require_login_label">Sisselogimine on nõutav.</string>
-    <string name="account_setup_outgoing_username_label">Kasutajanimi</string>
-    <string name="account_setup_outgoing_password_label">Salasõna</string>
-    <string name="account_setup_outgoing_authentication_label">Autentimine</string>
-    <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" ei valideeru seadega \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
-    <string name="account_setup_bad_uri">Vigased sätted: <xliff:g id="err_mess">%s</xliff:g></string>
     <string name="account_setup_options_mail_check_frequency_label">Kausta pollimise sagedus</string>
     <string name="account_setup_options_mail_check_frequency_never">Mitte kunagi</string>
     <string name="account_setup_options_mail_check_frequency_15min">Iga 15 minuti tagant</string>
@@ -370,18 +327,10 @@
     <string name="account_setup_options_mail_display_count_10000">10000 kirja</string>
     <string name="account_setup_options_mail_display_count_all">kõik kirjad</string>
     <string name="move_copy_cannot_copy_unsynced_message">Serveriga sünkroniseerimata kirja pole võimalik kopeerida ega teisaldada</string>
-    <string name="account_setup_failed_dlg_title">Seadistamist polnud võimalik lõpetada</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Vale kasutajanimi või salasõna.\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_certificate_message_fmt">Server esitles vigast SSL sertifikaati. Mõnikord juhtub see serveri vale konfiguratsiooni tõttu. Mõnikord seetõttu, et keegi proovib rünnata Sind või Sinu meiliserverit. Kui Sa ei ole kindel mis toimub, klõpsa Tühista ja võta ühendust tegelastega, kes haldavad su meiliserverit.
-\n
-\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_server_message_fmt">Ei saa serveriga ühendust.\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_oauth_flow_canceled">Autentimine on katkenud</string>
     <string name="account_setup_failed_dlg_oauth_flow_failed">Autentimine ei õnnestunud ja tekkis järgnev viga: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_setup_failed_dlg_oauth_not_supported">See teenusepakkuja ei võimalda OAuth 2.0 kasutamist.</string>
     <string name="account_setup_failed_dlg_browser_not_found">Rakendus ei suutnud tuvastada veebibrauserit, mida saaks sinu kontole ligipääsu lubamiseks kasutada.</string>
-    <string name="account_setup_failed_dlg_edit_details_action">Muuda detaile</string>
-    <string name="account_setup_failed_dlg_continue_action">Jätka</string>
     <string name="account_settings_push_advanced_title">Täpsemalt</string>
     <string name="account_settings_title_fmt">Konto sätted</string>
     <string name="account_settings_notify_label">Uue sõnumi teated</string>
@@ -611,9 +560,6 @@
     <string name="sort_by_unread">Loetud/lugemata</string>
     <string name="sort_by_attach">Manused</string>
     <string name="account_delete_dlg_title">Eemalda konto</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_title">Tunnustamata sertifikaat</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_accept">Aktsepteeri võti</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_reject">Keeldu võtmest</string>
     <string name="folder_list_filter_hint">Kausta nimi sisaldab</string>
     <string name="folder_list_display_mode_label">Näita kaustu…</string>
     <string name="folder_list_display_mode_all">Kõik kaustad</string>
@@ -846,12 +792,6 @@
     <string name="fetching_attachment_dialog_title_send">Saadab kirja</string>
     <string name="fetching_attachment_dialog_title_save">Salvestab mustandit</string>
     <string name="fetching_attachment_dialog_message">Toob manust…</string>
-    <string name="auth_external_error">Ei suuda autentida. Server ei kuuluta SASL EXTERNAL võimekust. See võib olla kliendi sertifikaadi (aegunud, võõras sertifitseerimisasutus) või mõne muu konfiguratsiooni probleemi tõttu.</string>
-    <!--=== Client certificates specific ==================================================================-->
-    <string name="client_certificate_spinner_empty">Kliendi sertifikaati ei ole</string>
-    <string name="client_certificate_spinner_delete">Eemalda kliendi sertifikaadi valik</string>
-    <string name="client_certificate_retrieval_failure">Sertifikaadi ei õnnestunud saada aliasele \"<xliff:g id="alias">%s</xliff:g>\"</string>
-    <string name="client_certificate_expired">Kliendi sertifikaat \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" ei ole veel kehtiv või on aegunud (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Krüpeeritud*</string>
     <string name="add_from_contacts">Lisa kontaktide hulgast</string>

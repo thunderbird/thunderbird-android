@@ -26,7 +26,7 @@
     <string name="account_server_settings_validation_error_port_invalid">Porta é inválida (deve estar entre 1–65535).</string>
     <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
     <string name="account_server_settings_client_certificate_label">Certificado de usuário</string>
-    <string name="account_server_settings_validation_error_imap_prefix_blank">Prefixo IMAP não pode estar em branco.</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">O prefixo IMAP não pode estar vazio.</string>
     <string name="account_server_settings_client_certificate_none_selected">Nenhum</string>
     <string name="account_server_settings_password_authentication_screen_lock_required">Para visualizar sua senha, habilite o bloqueio de tela neste aparelho.</string>
     <string name="account_server_settings_server_label">Servidor</string>

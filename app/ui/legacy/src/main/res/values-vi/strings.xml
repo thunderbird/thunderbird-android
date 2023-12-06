@@ -47,7 +47,6 @@
     <string name="choose_folder_move_title">Chuyển đến</string>
     <string name="choose_folder_copy_title">Sao chép đến</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> đã được chọn</string>
-    <string name="next_action">Tiếp</string>
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">OK</string>
     <string name="cancel_action">Hủy bỏ</string>
@@ -279,45 +278,11 @@
     <string name="account_setup_oauth_sign_in">Đăng nhập</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in_with_google">Đăng nhập với Google</string>
-    <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-    <string name="account_setup_basics_show_password_need_lock">Để xem mật khẩu ở đây, bật tính năng khóa màn hình trên thiết bị.</string>
-    <string name="account_setup_basics_show_password_biometrics_title">Xác định danh tính của bạn</string>
-    <string name="account_setup_basics_show_password_biometrics_subtitle">Mở khóa để xem mật khẩu của bạn</string>
-    <string name="account_setup_check_settings_retr_info_msg">Lấy thông tin tài khoản\u2026</string>
-    <string name="account_setup_check_settings_check_incoming_msg">Đang kiểm tra thiết đặt incoming server…</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">Đang kiểm tra thiết đặt outgoing server…</string>
-    <string name="account_setup_check_settings_authenticate">Đang xác thực\u2026</string>
-    <string name="account_setup_check_settings_fetch">Đang lấy thiết đặt tài khoản…</string>
-    <string name="account_setup_check_settings_canceling_msg">Đang hủy\u2026</string>
-    <string name="account_setup_auth_type_normal_password">Mật khẩu bình thường</string>
-    <string name="account_setup_auth_type_insecure_password">Mật khẩu, truyền đi không bảo mật</string>
-    <string name="account_setup_auth_type_encrypted_password">Mật khẩu được mã hóa</string>
-    <string name="account_setup_auth_type_tls_client_certificate">Chứng chỉ máy khách</string>
-    <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
-    <string name="account_setup_incoming_title">Thiết đặt máy chủ tới</string>
-    <string name="account_setup_incoming_username_label">Tên người dùng</string>
-    <string name="account_setup_incoming_password_label">Mật khẩu</string>
-    <string name="account_setup_incoming_client_certificate_label">Chứng chỉ máy khách</string>
-    <string name="account_setup_incoming_pop_server_label">Máy chủ POP3</string>
-    <string name="account_setup_incoming_imap_server_label">Máy chủ IMAP</string>
-    <string name="account_setup_incoming_port_label">Cổng mạng</string>
-    <string name="account_setup_incoming_security_label">Bảo mật</string>
-    <string name="account_setup_incoming_auth_type_label">Xác thực</string>
-    <string name="account_setup_incoming_security_none_label">Không thiết đặt</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL?TSL</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
     <string name="account_setup_incoming_delete_policy_label">Khi tôi xóa một tin nhắn</string>
     <string name="account_setup_incoming_delete_policy_never_label">Không xóa trên máy chủ</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Xóa khỏi máy chủ</string>
     <string name="account_setup_incoming_delete_policy_markread_label">Đánh dấu là đã đọc trên máy chủ</string>
-    <string name="account_setup_incoming_use_compression">Sử dụng nén</string>
-    <string name="account_setup_incoming_send_client_id">Gửi ID khách hàng</string>
     <string name="account_setup_expunge_policy_label">Xóa tin nhắn đã xóa trên máy chủ</string>
-    <string name="account_setup_outgoing_port_label">Cổng mạng</string>
-    <string name="account_setup_outgoing_security_label">Bảo mật</string>
-    <string name="account_setup_outgoing_username_label">Tên người dùng</string>
-    <string name="account_setup_outgoing_password_label">Mật khẩu</string>
-    <string name="account_setup_outgoing_authentication_label">Xác thực</string>
     <string name="account_setup_options_mail_check_frequency_never">Không bao giờ</string>
     <string name="account_settings_push_advanced_title">Nâng cao</string>
     <string name="account_settings_title_fmt">Thiết lập tài khoản thư</string>
@@ -407,19 +372,13 @@
     <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
     <!--A user visible label for the email address copied to the clipboard-->
     <string name="clipboard_label_email_address">Địa chỉ email</string>
-    <!--A user visible label for the name and email address copied to the clipboard-->
-    <!--Might be displayed in a notification when deleting an account (in the background)-->
-    <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
-    <string name="account_setup_outgoing_require_login_label">Yêu cầu đăng nhập.</string>
     <string name="account_setup_options_mail_check_frequency_30min">Mỗi 30 phút</string>
-    <string name="account_setup_outgoing_title">Thiết đặt máy chủ thư đi</string>
     <string name="mail_list_widget_text">Danh sách tin nhắn K-9</string>
     <string name="account_setup_options_mail_check_frequency_1hour">Mỗi giờ</string>
     <string name="message_list_content_description_unread_prefix">chưa đọc, %s</string>
     <string name="account_setup_options_mail_check_frequency_12hour">Mỗi 12 giờ</string>
     <string name="general_settings_post_remove_action_return_to_list">Quay lại danh sách tin nhắn</string>
     <string name="account_setup_expunge_policy_manual">Thủ công</string>
-    <string name="account_setup_outgoing_smtp_server_label">Máy chủ SMTP</string>
     <string name="account_setup_expunge_policy_immediately">Ngay lập tức</string>
     <string name="general_settings_post_remove_action_show_previous_message">Hiển thị tin nhắn trước đó</string>
     <string name="dialog_openkeychain_info_text">Thư K-9 yêu cầu OpenKeychain để mã hóa đầu cuối.</string>
@@ -430,7 +389,6 @@
     <string name="idle_refresh_period_label">Làm mới kết nối IDLE</string>
     <string name="account_setup_options_mail_check_frequency_24hour">Mỗi 24 giờ</string>
     <string name="account_setup_options_mail_check_frequency_2hour">Mỗi 2 giờ</string>
-    <string name="account_setup_incoming_autodetect_namespace_label">Tự động phát hiện không gian tên IMAP</string>
     <string name="drafts_folder_label">Thư mục bản nháp</string>
     <string name="account_setup_auto_expand_folder">Tự động mở rộng thư mục</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Chỉ hiển thị các thư mục đã đăng ký</string>
@@ -440,7 +398,6 @@
     <string name="trash_folder_label">Thư mục thùng rác</string>
     <string name="general_settings_post_remove_action_show_next_message">Hiển thị tin nhắn tiếp theo</string>
     <string name="general_settings_post_remove_action_title">Sau khi xóa hoặc di chuyển tin nhắn</string>
-    <string name="account_setup_incoming_imap_path_prefix_label">Tiền tố đường dẫn IMAP</string>
     <string name="push_info_notification_explanation_text">Khi sử dụng Đẩy, Thư K-9 duy trì kết nối với máy chủ thư. Android yêu cầu hiển thị thông báo liên tục trong khi ứng dụng đang hoạt động ở chế độ nền. %s</string>
     <string name="account_setup_options_mail_check_frequency_3hour">Mỗi 3 giờ</string>
     <string name="action_copy_email_address">Sao chép địa chỉ email</string>
@@ -471,24 +428,19 @@
     <string name="background_work_notification_remove_account">Đang loại bỏ tài khoản…</string>
     <string name="account_notify_contacts_mail_only_summary">Chỉ hiển thị thông báo cho tin nhắn từ các liên hệ đã biết</string>
     <string name="account_setup_failed_dlg_browser_not_found">Ứng dụng không thể tìm thấy trình duyệt dùng để cấp quyền truy cập vào tài khoản của bạn.</string>
-    <string name="account_setup_bad_uri">Thiết lập không hợp lệ: <xliff:g id="err_mess">%s</xliff:g></string>
     <string name="account_settings_notification_channels_label">Danh mục thông báo</string>
     <string name="account_settings_default_quoted_text_shown_summary">Bao gồm tin nhắn gốc trong thư trả lời của bạn.</string>
     <string name="account_settings_notify_sync_summary">Thông báo trên thanh trạng thái khi thư được kiểm tra</string>
     <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Tất cả ngoại trừ thư mục hạng 2</string>
-    <string name="account_setup_failed_dlg_edit_details_action">Chỉnh sửa chi tiết</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Đánh dấu thư là đã đọc khi nó bị xóa</string>
     <string name="account_settings_notify_label">Thông báo thư mới</string>
     <string name="account_settings_email_label">Địa chỉ email của bạn</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Đánh dấu tin nhắn là đã đọc khi nó được mở để xem</string>
     <string name="account_settings_folder_notify_new_mail_mode_label">Thư mục thông báo</string>
     <string name="account_settings_show_pictures_only_from_contacts">Từ danh bạ</string>
-    <string name="account_setup_failed_dlg_continue_action">Tiếp tục</string>
     <string name="account_settings_folder_notify_new_mail_mode_first_class">Chỉ các thư mục hạng 1</string>
     <string name="account_settings_show_pictures_always">Từ bất cứ ai</string>
     <string name="account_settings_default_quoted_text_shown_label">Trích dẫn tin nhắn khi trả lời</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Tên hoặc mật khẩu không đúng.
-\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="message_view_recipients_format">đến <xliff:g id="recipients">%s</xliff:g></string>
     <string name="account_settings_open_notification_settings_messages_summary">Định cấu hình thông báo cho tin nhắn mới</string>
     <string name="account_setup_failed_dlg_oauth_flow_failed">Ủy quyền không thành công với lỗi sau: <xliff:g id="error">%s</xliff:g></string>
@@ -500,22 +452,14 @@
     <string name="account_settings_folder_notify_new_mail_mode_all">Tất cả</string>
     <string name="account_settings_notify_summary">Thông báo trên thanh trạng thái khi có thư đến</string>
     <string name="account_settings_show_pictures_never">Không</string>
-    <string name="account_setup_failed_dlg_certificate_message_fmt">Máy chủ xuất trình chứng chỉ SSL không hợp lệ. Đôi khi, điều này là do cấu hình sai máy chủ. Đôi khi đó là do ai đó đang cố tấn công bạn hoặc máy chủ thư của bạn. Nếu bạn không chắc chắn chuyện gì đang xảy ra, hãy nhấp vào Từ chối và liên hệ với những người quản lý máy chủ thư của bạn.
-\n
-\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_settings_show_pictures_label">Luôn hiển thị hình ảnh</string>
-    <string name="account_setup_failed_dlg_server_message_fmt">Không thể kết nối tới máy chủ.
-\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_expunge_policy_on_poll">Khi đang thăm dò</string>
-    <string name="account_setup_failed_dlg_title">Quá trình thiết lập không thể hoàn tất</string>
     <string name="account_settings_ignore_chat_messages_label">Bỏ qua tin nhắn trò chuyện</string>
     <string name="account_setup_failed_dlg_oauth_flow_canceled">Đã hủy ủy quyền</string>
     <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Thư mục hạng 1 và hạng 2</string>
-    <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" không hợp lệ với \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
     <string name="account_settings_notify_sync_label">Đồng bộ hóa thông báo</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Định cấu hình thông báo lỗi và trạng thái</string>
     <string name="account_notify_contacts_mail_only_label">Chỉ các liên hệ</string>
-    <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" không hợp lệ với \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
     <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 hiện không được nhà cung cấp này hỗ trợ.</string>
     <string name="account_settings_folder_push_mode_first_class">Chỉ các thư mục Hạng 1</string>
     <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
@@ -644,7 +588,6 @@
     <string name="sort_by_attach">Tệp đính kèm</string>
     <string name="dialog_confirm_mark_all_as_read_cancel_button">Không</string>
     <string name="dialog_confirm_mark_all_as_read_message">Bạn có muốn đánh dấu tất cả thư là đã đọc không?</string>
-    <string name="client_certificate_spinner_delete">Loại bỏ lựa chọn chứng chỉ ứng dụng khách</string>
     <string name="openpgp_dialog_sign_only_minus_attach">Chữ ký có thể được hiển thị dưới dạng tệp đính kèm \'signature.asc\' trong một số ứng dụng khách.</string>
     <string name="mark_all_as_read">Đánh dấu tất cả là đã đọc</string>
     <string name="unknown_sender">&lt;Người gửi không xác định&gt;</string>
@@ -663,4 +606,35 @@
     <string name="sort_flagged_last">Tin nhắn đã bỏ gắn sao trước</string>
     <string name="loading_attachment">Đang tải tệp đính kèm…</string>
     <string name="sort_sender_re_alpha">Người gửi đảo ngược bảng chữ cái</string>
+    <string name="account_settings_incoming_label">Máy chủ đến</string>
+    <string name="notifications_title">Thông báo</string>
+    <string name="new_identity_action">Đánh tính mới</string>
+    <string name="account_settings_ringtone">Nhạc chuông thư mới</string>
+    <string name="account_settings_notification_light_account_color">Màu tài khoản</string>
+    <string name="account_settings_notification_light_white">Trắng</string>
+    <string name="account_settings_vibrate_pattern_label">Kiểu rung</string>
+    <string name="account_settings_notification_light_disabled">Đã tắt</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Sau khi đánh dấu tin nhắn là chưa đọc</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">Quay lại danh sách tin nhắn</string>
+    <string name="account_settings_vibration">Rung</string>
+    <string name="account_settings_description_label">Tên tài khoản</string>
+    <string name="account_settings_notification_light_label">Đèn thông báo</string>
+    <string name="account_settings_vibrate_enable">Rung</string>
+    <string name="account_settings_notification_light_default_color">Màu mặc định của hệ thống</string>
+    <string name="account_settings_identities_label">Quản lý danh tính</string>
+    <string name="account_settings_incoming_summary">Cấu hình máy chủ thư đến</string>
+    <string name="manage_identities_context_menu_title">Quản lý danh tính</string>
+    <string name="account_settings_notification_light_red">Đỏ</string>
+    <string name="account_settings_notification_light_green">Lục</string>
+    <string name="account_settings_outgoing_summary">Định cấu hình máy chủ thư đi (SMTP)</string>
+    <string name="account_settings_composition_title">Tùy chọn soạn tin nhắn</string>
+    <string name="account_settings_notification_light_magenta">Đỏ tươi</string>
+    <string name="account_settings_identities_summary">Thiết lập địa chỉ và chữ ký \'Từ\' thay thế</string>
+    <string name="account_settings_name_label">Tên của bạn</string>
+    <string name="account_settings_notification_light_cyan">Lục lam</string>
+    <string name="account_settings_notification_light_blue">Lam</string>
+    <string name="edit_identity_title">Chỉnh sửa danh tính</string>
+    <string name="account_settings_notification_light_yellow">Vàng</string>
+    <string name="account_settings_vibrate_summary_disabled">Đã tắt</string>
+    <string name="manage_identities_title">Quản lý danh tính</string>
 </resources>

@@ -6,7 +6,7 @@
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Ръчно настройване</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">Нужно е да одобрите настройките.</string>
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
-    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Получихме настройките за вашият имейл чрез интернет връзка, която не е достатъчно защитена. Това означава, че има малка вероятност някой да ги е променил. Може ли да проверите отново заредените настройки, за да се уверите че са правилни\?</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Получихме настройките за Вашия имейл чрез интернет връзка, която не е достатъчно защитена. Това означава, че има малка вероятност някой да ги е променил. Може ли да проверите отново заредените настройки, за да се уверите че са правилни?</string>
     <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Промяна на настройки</string>
     <string name="account_setup_error_unknown">Непозната грешка</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
@@ -17,7 +17,24 @@
     <string name="account_setup_auto_discovery_loading_error">Неуспешно зареждане на имейл настройки</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Одобрявам тези настройки</string>
     <string name="account_setup_error_network">Мрежа</string>
-    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Имейл адресът е невалиден.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Имейл адресът не беше разпознат като валиден.</string>
     <string name="account_setup_auto_discovery_loading_message">Намиране на данни за имейла</string>
     <string name="account_setup_title">K-9 Поща</string>
+    <string name="account_setup_options_account_name_error_blank">Името на акаунта не може да бъде празно.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Този имейл адрес не е разрешен.</string>
+    <string name="account_setup_options_account_check_frequency_label">Интервал на проверка</string>
+    <string name="account_setup_create_account_created">Акаунтът беше създаден успешно</string>
+    <string name="account_setup_options_email_signature_label">Подпис</string>
+    <string name="account_setup_options_email_display_count_label">Брой съобщения, които да бъдат показани</string>
+    <string name="account_setup_options_email_signature_error_blank">Името на подписа не може да бъде празно.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Този имейл адрес не се поддържа.</string>
+    <string name="account_setup_create_account_creating">Създаване на акаунт…</string>
+    <string name="account_setup_options_account_name_label">Име на акаунта</string>
+    <string name="account_setup_options_display_name_label">Име, което да се показва</string>
+    <string name="account_setup_options_display_name_error_required">Името за визуализация е задължително.</string>
+    <string name="account_setup_create_account_error">Възникна грешка при създаването на акаунта</string>
+    <string name="account_setup_options_email_check_frequency_never">Никога</string>
+    <string name="account_setup_options_section_sync_options_">Настройки за синхронизация</string>
+    <string name="account_setup_options_show_notifications_label">Показване на известия</string>
+    <string name="account_setup_options_section_display_options">Настройки за визуализация</string>
 </resources>

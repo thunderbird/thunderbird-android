@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_oauth_sign_in_with_google_button">Prihlásiť sa cez Google</string>
+    <string name="account_oauth_sign_in_description">Na prihlásenie vás presmerujeme na stránku vášho e-mailu. Budete musieť aplikácii povoliť prístup k vášmu e-mailu.</string>
+    <string name="account_oauth_sign_in_button">Prihlásiť sa</string>
+    <string name="account_oauth_error_browser_not_available">Aplikácia nenašla prehliadač použiteľný na udelenie prístupu k vášmu účtu.</string>
+    <string name="account_oauth_error_not_supported">OAuth 2.0 nie je zatiaľ týmto poskytovateľom podporované.</string>
+</resources>

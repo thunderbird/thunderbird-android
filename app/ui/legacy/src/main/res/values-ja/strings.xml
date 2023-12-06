@@ -47,7 +47,6 @@
     <string name="choose_folder_move_title">…へ移動</string>
     <string name="choose_folder_copy_title">…へコピー</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 通を選択中</string>
-    <string name="next_action">次へ</string>
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">OK</string>
     <string name="cancel_action">キャンセル</string>
@@ -280,46 +279,14 @@
     <string name="account_setup_oauth_sign_in">サインイン</string>
     <!--Displayed below the 'account_setup_oauth_description' text-->
     <string name="account_setup_oauth_sign_in_with_google">Google でログイン</string>
-    <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
-    <string name="account_setup_basics_show_password_need_lock">ここでパスワードを表示するには、端末に画面ロックを設定してください。</string>
-    <string name="account_setup_basics_show_password_biometrics_title">本人確認</string>
-    <string name="account_setup_basics_show_password_biometrics_subtitle">ロック解除してパスワードを表示</string>
-    <string name="account_setup_check_settings_retr_info_msg">アカウント情報を取得中\u2026</string>
-    <string name="account_setup_check_settings_check_incoming_msg">受信メールサーバーを確認中…</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">送信メールサーバーを確認中…</string>
-    <string name="account_setup_check_settings_authenticate">認証中\u2026</string>
-    <string name="account_setup_check_settings_fetch">アカウント設定を取得中\u2026</string>
-    <string name="account_setup_check_settings_canceling_msg">中断中…</string>
-    <string name="account_setup_auth_type_normal_password">通常のパスワード認証</string>
-    <string name="account_setup_auth_type_insecure_password">パスワード (危険な方法で送信される)</string>
-    <string name="account_setup_auth_type_encrypted_password">暗号化されたパスワード認証</string>
-    <string name="account_setup_auth_type_tls_client_certificate">クライアント証明書認証</string>
-    <string name="account_setup_auth_type_oauth2">OAuth 2.0</string>
-    <string name="account_setup_incoming_title">受信メールサーバー設定</string>
-    <string name="account_setup_incoming_username_label">ユーザー名</string>
-    <string name="account_setup_incoming_password_label">パスワード</string>
-    <string name="account_setup_incoming_client_certificate_label">クライアント証明書</string>
-    <string name="account_setup_incoming_pop_server_label">POP3 サーバー</string>
-    <string name="account_setup_incoming_imap_server_label">IMAP サーバー</string>
-    <string name="account_setup_incoming_port_label">ポート番号</string>
-    <string name="account_setup_incoming_security_label">セキュリティ</string>
-    <string name="account_setup_incoming_auth_type_label">認証方式</string>
-    <string name="account_setup_incoming_security_none_label">なし</string>
-    <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
-    <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
-    <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" は \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\" で無効です</string>
     <string name="account_setup_incoming_delete_policy_label">メッセージを削除したときの動作</string>
     <string name="account_setup_incoming_delete_policy_never_label">サーバーでは削除しない</string>
     <string name="account_setup_incoming_delete_policy_delete_label">サーバーでも削除する</string>
     <string name="account_setup_incoming_delete_policy_markread_label">サーバーでは既読にする</string>
-    <string name="account_setup_incoming_use_compression">圧縮を使用する</string>
-    <string name="account_setup_incoming_send_client_id">クライアント ID を送信する</string>
     <string name="account_setup_expunge_policy_label">削除したメッセージをサーバーから消去するタイミング</string>
     <string name="account_setup_expunge_policy_immediately">すぐに</string>
     <string name="account_setup_expunge_policy_on_poll">同期時</string>
     <string name="account_setup_expunge_policy_manual">手動</string>
-    <string name="account_setup_incoming_autodetect_namespace_label">IMAP 名前空間を自動検出する</string>
-    <string name="account_setup_incoming_imap_path_prefix_label">IMAP ルートフォルダーパス</string>
     <string name="drafts_folder_label">下書きフォルダー</string>
     <string name="sent_folder_label">送信済みトレイ</string>
     <string name="trash_folder_label">ごみ箱フォルダー</string>
@@ -327,16 +294,6 @@
     <string name="spam_folder_label">迷惑メールフォルダー</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">購読したフォルダーのみ表示する</string>
     <string name="account_setup_auto_expand_folder">自動展開するフォルダー</string>
-    <string name="account_setup_outgoing_title">送信メールサーバー設定</string>
-    <string name="account_setup_outgoing_smtp_server_label">SMTP サーバー</string>
-    <string name="account_setup_outgoing_port_label">ポート番号</string>
-    <string name="account_setup_outgoing_security_label">セキュリティ</string>
-    <string name="account_setup_outgoing_require_login_label">認証が必要なサーバーです。</string>
-    <string name="account_setup_outgoing_username_label">アカウント名</string>
-    <string name="account_setup_outgoing_password_label">パスワード</string>
-    <string name="account_setup_outgoing_authentication_label">セキュリティ設定</string>
-    <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" は \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\" で無効です</string>
-    <string name="account_setup_bad_uri">無効なセットアップ: <xliff:g id="err_mess">%s</xliff:g></string>
     <string name="account_setup_options_mail_check_frequency_label">フォルダーの同期間隔</string>
     <string name="account_setup_options_mail_check_frequency_never">同期しない</string>
     <string name="account_setup_options_mail_check_frequency_15min">15 分ごと</string>
@@ -369,19 +326,10 @@
     <string name="account_setup_options_mail_display_count_10000">10000 通</string>
     <string name="account_setup_options_mail_display_count_all">すべて</string>
     <string name="move_copy_cannot_copy_unsynced_message">サーバーと同期されていないメッセージをコピーまたは移動できません</string>
-    <string name="account_setup_failed_dlg_title">セットアップを完了できませんでした</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">サーバー名またはパスワードが不正です\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_certificate_message_fmt">サーバーが無効な SSL 証明書を提示しました。サーバーの設定ミスが原因で発生することがあります。また、誰かがあなたやメールサーバに攻撃を試みていることもあります。何が起こっているのかがよくわからなければ、「拒否」をクリックし、メールサーバーを管理している人たちに連絡をとってください。
-\n
-\n(<xliff:g id="error">%s</xliff:g>)</string>
-    <string name="account_setup_failed_dlg_server_message_fmt">サーバーに接続できません。
-\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_oauth_flow_canceled">認証がキャンセルされました</string>
     <string name="account_setup_failed_dlg_oauth_flow_failed">以下のエラーにより認証に失敗しました: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_setup_failed_dlg_oauth_not_supported">現在、このプロバイダーは OAuth 2.0 に対応していません。</string>
     <string name="account_setup_failed_dlg_browser_not_found">アカウントへのアクセス権付与に必要なブラウザーアプリが見つかりませんでした。</string>
-    <string name="account_setup_failed_dlg_edit_details_action">詳細を編集</string>
-    <string name="account_setup_failed_dlg_continue_action">続行</string>
     <string name="account_settings_push_advanced_title">プッシュ接続の拡張設定</string>
     <string name="account_settings_title_fmt">アカウント設定</string>
     <string name="account_settings_notify_label">新着メール通知</string>
@@ -423,13 +371,13 @@
     <string name="account_settings_message_format_text">プレーンテキスト (画像や書式を取り除く)</string>
     <string name="account_settings_message_format_html">HTML (画像や書式を保持)</string>
     <string name="account_settings_message_format_auto">自動</string>
-    <string name="account_settings_always_show_cc_bcc_label">Cc/Bcc を常に表示</string>
+    <string name="account_settings_always_show_cc_bcc_label">Cc/Bcc を常に表示する</string>
     <string name="account_settings_message_read_receipt_label">開封確認</string>
     <string name="account_settings_message_read_receipt_summary">常に開封確認を要求します</string>
     <string name="account_settings_quote_style_label">返信の引用スタイル</string>
     <string name="account_settings_quote_style_prefix">引用記号 (Gmail 形式)</string>
     <string name="account_settings_quote_style_header">ヘッダー (Outlook 形式)</string>
-    <string name="account_settings_upload_sent_messages_label">送信済みメッセージをアップロード</string>
+    <string name="account_settings_upload_sent_messages_label">送信済みメッセージをアップロードする</string>
     <string name="account_settings_upload_sent_messages_summary">送信後にメッセージを送信済みトレイにアップロードします</string>
     <string name="account_settings_general_title">一般設定</string>
     <string name="account_settings_reading_mail">メール閲覧</string>
@@ -611,9 +559,6 @@
     <string name="sort_by_unread">既読/未読</string>
     <string name="sort_by_attach">添付ファイル</string>
     <string name="account_delete_dlg_title">アカウント削除</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_title">証明書が無効です</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_accept">許可</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_reject">拒否</string>
     <string name="folder_list_filter_hint">フォルダー名が含む</string>
     <string name="folder_list_display_mode_label">フォルダーを表示…</string>
     <string name="folder_list_display_mode_all">すべてのフォルダー</string>
@@ -641,7 +586,7 @@
     <string name="settings_compose_theme_label">メッセージ作成画面のテーマ</string>
     <string name="settings_language_label">言語</string>
     <string name="preference_search_no_results">設定が見つかりません</string>
-    <string name="settings_message_theme_selection_label">メッセージ画面のテーマを変更</string>
+    <string name="settings_message_theme_selection_label">メッセージのテーマを固定する</string>
     <string name="settings_message_theme_selection_summary_off">メッセージ表示中のテーマを選択します</string>
     <string name="settings_message_theme_selection_summary_on">メッセージ表示画面のテーマを変更します</string>
     <string name="setting_language_system">システム標準</string>
@@ -841,12 +786,6 @@
     <string name="fetching_attachment_dialog_title_send">メッセージを送信中</string>
     <string name="fetching_attachment_dialog_title_save">下書きを保存中</string>
     <string name="fetching_attachment_dialog_message">添付ファイルを取得中…</string>
-    <string name="auth_external_error">認証できません。サーバーは SASL EXTERNAL が使用できることを示していません。これはクライアント証明書の問題 (期限切れ､未知の認証局) または何らかの設定の影響で発生している場合があります。</string>
-    <!--=== Client certificates specific ==================================================================-->
-    <string name="client_certificate_spinner_empty">クライアント証明書なし</string>
-    <string name="client_certificate_spinner_delete">クライアント証明書の選択を解除します</string>
-    <string name="client_certificate_retrieval_failure">エイリアス \"<xliff:g id="alias">%s</xliff:g>\" のクライアント証明書の取得に失敗しました</string>
-    <string name="client_certificate_expired">クライアント証明書 \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" が、期限切れまたは無効です (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*暗号化*</string>
     <string name="add_from_contacts">連絡先から追加</string>
@@ -1066,7 +1005,6 @@
     <string name="message_view_recipients_format">宛先 <xliff:g id="recipients">%s</xliff:g></string>
     <string name="general_settings_post_remove_action_show_next_message">次のメッセージを表示</string>
     <string name="general_settings_post_remove_action_title">メッセージの移動や削除の後</string>
-    <string name="account_setup_check_settings_title">" "</string>
     <string name="general_settings_post_mark_as_unread_action_stay">現在のメッセージに留まる</string>
     <string name="general_settings_post_mark_as_unread_action_title">メッセージを既読にした後</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">メッセージ一覧に戻る</string>
