@@ -508,7 +508,9 @@ object K9 : EarlyInit {
 
     @Suppress("ktlint:standard:class-naming")
     enum class BACKGROUND_OPS {
-        ALWAYS, NEVER, WHEN_CHECKED_AUTO_SYNC
+        ALWAYS,
+        NEVER,
+        WHEN_CHECKED_AUTO_SYNC,
     }
 
     /**

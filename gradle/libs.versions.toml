@@ -2,15 +2,15 @@
 # Please don't open pull requests upgrading dependencies if you're a new contributor.
 
 [versions]
-gradle = "8.4"
-androidGradlePlugin = "8.1.2"
-ktlint = "0.50.0"
+gradle = "8.5"
+androidGradlePlugin = "8.1.4"
+ktlint = "1.0.1"
 
-kotlin = "1.9.10"
+kotlin = "1.9.20"
 kotlinxCoroutines = "1.7.3"
 jetbrainsAnnotations = "24.0.1"
 androidxAppCompat = "1.6.1"
-androidxActivity = "1.8.0"
+androidxActivity = "1.8.1"
 androidxRecyclerView = "1.3.2"
 androidxLifecycle = "2.6.2"
 androidxNavigation = "2.7.5"
@@ -21,7 +21,7 @@ androidxCoreSplashscreen = "1.0.1"
 androidxPreference = "1.2.1"
 androidxDrawerLayout = "1.1.1"
 androidxTransition = "1.4.1"
-androidxComposeCompiler = "1.5.3"
+androidxComposeCompiler = "1.5.5"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
 androidxComposeBom = "2023.10.01"
 androidxComposeMaterial = "1.5.4"
@@ -38,29 +38,29 @@ mime4j = "0.8.9"
 okhttp = "4.12.0"
 glide = "4.16.0"
 moshi = "1.15.0"
-mockito = "5.6.0"
+mockito = "5.8.0"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 android-lint = { id = "com.android.lint", version.ref = "androidGradlePlugin" }
-ksp = "com.google.devtools.ksp:1.9.10-1.0.13"
+ksp = "com.google.devtools.ksp:1.9.20-1.0.14"
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-spotless = "com.diffplug.spotless:6.22.0"
-detekt = "io.gitlab.arturbosch.detekt:1.23.2"
-dependency-check = "com.github.ben-manes.versions:0.48.0"
+spotless = "com.diffplug.spotless:6.23.3"
+detekt = "io.gitlab.arturbosch.detekt:1.23.4"
+dependency-check = "com.github.ben-manes.versions:0.50.0"
 
 [libraries]
-desugar = "com.android.tools:desugar_jdk_libs:2.0.3"
+desugar = "com.android.tools:desugar_jdk_libs:2.0.4"
 
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.4.1"
+kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.5.0"
 kotlinx-collections-immutable = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.6"
 jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrainsAnnotations" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidxAppCompat" }
@@ -147,7 +147,7 @@ kxml2 = "com.github.cketti:kxml2-extracted-from-android:1.0"
 junit = "junit:junit:4.13.2"
 robolectric = "org.robolectric:robolectric:4.11.1"
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
-mockito-kotlin = "org.mockito.kotlin:mockito-kotlin:5.1.0"
+mockito-kotlin = "org.mockito.kotlin:mockito-kotlin:5.2.1"
 turbine = "app.cash.turbine:turbine:0.13.0"
 jdom2 = "org.jdom:jdom2:2.0.6.1"
 icu4j-charset = "com.ibm.icu:icu4j-charset:72.1"
@@ -155,7 +155,7 @@ assertk = "com.willowtreeapps.assertk:assertk-jvm:0.27.0"
 
 leakcanary-android = "com.squareup.leakcanary:leakcanary-android:2.9.1"
 
-detekt-plugin-compose = "io.nlopez.compose.rules:detekt:0.3.2"
+detekt-plugin-compose = "io.nlopez.compose.rules:detekt:0.3.5"
 
 [bundles]
 shared-jvm-main = [
