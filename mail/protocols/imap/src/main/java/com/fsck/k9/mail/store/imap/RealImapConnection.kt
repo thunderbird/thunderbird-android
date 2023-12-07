@@ -15,6 +15,7 @@ import com.fsck.k9.mail.filter.Base64
 import com.fsck.k9.mail.filter.PeekableInputStream
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.oauth.XOAuth2ChallengeParser
+import com.fsck.k9.mail.ssl.CertificateChainExtractor
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import com.fsck.k9.sasl.buildOAuthBearerInitialClientResponse
 import com.jcraft.jzlib.JZlib
@@ -31,7 +32,6 @@ import java.net.SocketAddress
 import java.net.UnknownHostException
 import java.security.GeneralSecurityException
 import java.security.Security
-import java.security.cert.CertificateException
 import java.util.regex.Pattern
 import java.util.zip.Inflater
 import java.util.zip.InflaterInputStream
@@ -114,8 +114,9 @@ internal class RealImapConnection(
     }
 
     private fun handleSslException(e: SSLException) {
-        if (e.cause is CertificateException) {
-            throw CertificateValidationException(e.message, e)
+        val certificateChain = CertificateChainExtractor.extract(e)
+        if (certificateChain != null) {
+            throw CertificateValidationException(certificateChain, e)
         } else {
             throw e
         }

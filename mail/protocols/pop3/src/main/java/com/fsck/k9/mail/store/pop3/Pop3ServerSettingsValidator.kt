@@ -28,7 +28,7 @@ class Pop3ServerSettingsValidator(
         } catch (e: AuthenticationFailedException) {
             ServerSettingsValidationResult.AuthenticationError(e.messageFromServer)
         } catch (e: CertificateValidationException) {
-            ServerSettingsValidationResult.CertificateError(e.certChain.toList())
+            ServerSettingsValidationResult.CertificateError(e.certificateChain)
         } catch (e: Pop3ErrorResponse) {
             ServerSettingsValidationResult.ServerError(e.responseText)
         } catch (e: MessagingException) {
