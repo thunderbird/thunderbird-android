@@ -12,12 +12,14 @@ import androidx.navigation.compose.rememberNavController
 import app.k9mail.feature.account.setup.navigation.AccountSetupNavHost
 import app.k9mail.feature.onboarding.permissions.domain.PermissionsDomainContract.UseCase.HasRuntimePermissions
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsScreen
+import app.k9mail.feature.onboarding.success.ui.SuccessScreen
 import app.k9mail.feature.onboarding.welcome.ui.WelcomeScreen
 import org.koin.compose.koinInject
 
 private const val NESTED_NAVIGATION_ROUTE_WELCOME = "welcome"
 private const val NESTED_NAVIGATION_ROUTE_ACCOUNT_SETUP = "account_setup"
 private const val NESTED_NAVIGATION_ROUTE_PERMISSIONS = "permissions"
+private const val NESTED_NAVIGATION_ROUTE_SUCCESS = "success"
 
 private fun NavController.navigateToAccountSetup() {
     navigate(NESTED_NAVIGATION_ROUTE_ACCOUNT_SETUP)
@@ -25,6 +27,10 @@ private fun NavController.navigateToAccountSetup() {
 
 private fun NavController.navigateToPermissions() {
     navigate(NESTED_NAVIGATION_ROUTE_PERMISSIONS)
+}
+
+private fun NavController.navigateToSuccess() {
+    navigate(NESTED_NAVIGATION_ROUTE_SUCCESS)
 }
 
 @Composable
@@ -63,7 +69,13 @@ fun OnboardingNavHost(
 
         composable(route = NESTED_NAVIGATION_ROUTE_PERMISSIONS) {
             PermissionsScreen(
-                onNext = { onFinish(requireNotNull(accountUuid)) },
+                onNext = { navController.navigateToSuccess() },
+            )
+        }
+
+        composable(route = NESTED_NAVIGATION_ROUTE_SUCCESS) {
+            SuccessScreen(
+                onGoToInboxClick = { onFinish(requireNotNull(accountUuid)) },
             )
         }
     }

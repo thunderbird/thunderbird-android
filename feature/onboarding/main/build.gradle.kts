@@ -21,4 +21,5 @@ dependencies {
     implementation(projects.feature.onboarding.welcome)
     implementation(projects.feature.account.setup)
     implementation(projects.feature.onboarding.permissions)
+    implementation(projects.feature.onboarding.success)
 }
