@@ -24,6 +24,21 @@ sealed interface ServerSettingsValidationResult {
     data class CertificateError(val certificateChain: List<X509Certificate>) : ServerSettingsValidationResult
 
     /**
+     * There's a problem with the client certificate.
+     */
+    sealed interface ClientCertificateError : ServerSettingsValidationResult {
+        /**
+         * The client certificate couldn't be retrieved.
+         */
+        data object ClientCertificateRetrievalFailure : ClientCertificateError
+
+        /**
+         * The client certificate (or another one in the chain) has expired.
+         */
+        data object ClientCertificateExpired : ClientCertificateError
+    }
+
+    /**
      * Authentication failed while checking the server settings.
      */
     data class AuthenticationError(val serverMessage: String?) : ServerSettingsValidationResult
@@ -32,6 +47,11 @@ sealed interface ServerSettingsValidationResult {
      * The server returned an error while checking the server settings.
      */
     data class ServerError(val serverMessage: String?) : ServerSettingsValidationResult
+
+    /**
+     * The server is missing a capability that is required by the current server settings.
+     */
+    data class MissingServerCapabilityError(val capabilityName: String) : ServerSettingsValidationResult
 
     /**
      * An unknown error occurred while checking the server settings.

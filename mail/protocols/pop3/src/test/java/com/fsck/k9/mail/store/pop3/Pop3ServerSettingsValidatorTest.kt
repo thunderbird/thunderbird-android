@@ -7,6 +7,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
 import com.fsck.k9.mail.AuthType
+import com.fsck.k9.mail.ClientCertificateError
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.helpers.FakeTrustManager
@@ -121,6 +122,99 @@ class Pop3ServerSettingsValidatorTest {
         assertThat(result).isInstanceOf<ServerSettingsValidationResult.ServerError>()
             .prop(ServerSettingsValidationResult.ServerError::serverMessage)
             .isEqualTo("-ERR Service currently not available")
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `missing capability should return MissingServerCapabilityError`() {
+        val server = startServer {
+            output("+OK POP3 server greeting")
+            expect("CAPA")
+            output("+OK Listing of supported mechanisms follows")
+            output(".")
+            expect("QUIT")
+            closeConnection()
+        }
+        val serverSettings = ServerSettings(
+            type = "pop3",
+            host = server.host,
+            port = server.port,
+            connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED,
+            authenticationType = AuthType.PLAIN,
+            username = USERNAME,
+            password = PASSWORD,
+            clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
+        )
+
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
+
+        assertThat(result).isInstanceOf<ServerSettingsValidationResult.MissingServerCapabilityError>()
+            .prop(ServerSettingsValidationResult.MissingServerCapabilityError::capabilityName).isEqualTo("STLS")
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `client certificate retrieval failure should return ClientCertificateRetrievalFailure`() {
+        trustedSocketFactory.injectClientCertificateError(ClientCertificateError.RetrievalFailure)
+        val server = startServer {
+            output("+OK POP3 server greeting")
+            expect("CAPA")
+            output("+OK Listing of supported mechanisms follows")
+            output("STLS")
+            output(".")
+            expect("STLS")
+            output("+OK Begin TLS negotiation")
+            startTls()
+        }
+        val serverSettings = ServerSettings(
+            type = "pop3",
+            host = server.host,
+            port = server.port,
+            connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED,
+            authenticationType = AuthType.PLAIN,
+            username = USERNAME,
+            password = PASSWORD,
+            clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
+        )
+
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
+
+        assertThat(result)
+            .isInstanceOf<ServerSettingsValidationResult.ClientCertificateError.ClientCertificateRetrievalFailure>()
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `client certificate expired error should return ClientCertificateExpired`() {
+        trustedSocketFactory.injectClientCertificateError(ClientCertificateError.CertificateExpired)
+        val server = startServer {
+            output("+OK POP3 server greeting")
+            expect("CAPA")
+            output("+OK Listing of supported mechanisms follows")
+            output("STLS")
+            output(".")
+            expect("STLS")
+            output("+OK Begin TLS negotiation")
+            startTls()
+        }
+        val serverSettings = ServerSettings(
+            type = "pop3",
+            host = server.host,
+            port = server.port,
+            connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED,
+            authenticationType = AuthType.PLAIN,
+            username = USERNAME,
+            password = PASSWORD,
+            clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
+        )
+
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
+
+        assertThat(result)
+            .isInstanceOf<ServerSettingsValidationResult.ClientCertificateError.ClientCertificateExpired>()
         server.verifyConnectionClosed()
         server.verifyInteractionCompleted()
     }

@@ -7,6 +7,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
 import com.fsck.k9.mail.AuthType
+import com.fsck.k9.mail.ClientCertificateError
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.helpers.FakeTrustManager
@@ -161,6 +162,102 @@ class SmtpServerSettingsValidatorTest {
         val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
 
         assertThat(result).isInstanceOf<ServerSettingsValidationResult.ServerError>()
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `missing capability should return MissingServerCapabilityError`() {
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello 127.0.0.1")
+            output("250 HELP")
+            expect("QUIT")
+            closeConnection()
+        }
+        server.start()
+        val serverSettings = ServerSettings(
+            type = "smtp",
+            host = server.host,
+            port = server.port,
+            connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED,
+            authenticationType = AuthType.PLAIN,
+            username = USERNAME,
+            password = PASSWORD,
+            clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
+        )
+
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
+
+        assertThat(result).isInstanceOf<ServerSettingsValidationResult.MissingServerCapabilityError>()
+            .prop(ServerSettingsValidationResult.MissingServerCapabilityError::capabilityName).isEqualTo("STARTTLS")
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `client certificate retrieval failure should return ClientCertificateRetrievalFailure`() {
+        trustedSocketFactory.injectClientCertificateError(ClientCertificateError.RetrievalFailure)
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello 127.0.0.1")
+            output("250-STARTTLS")
+            output("250 HELP")
+            expect("STARTTLS")
+            output("220 Ready to start TLS")
+            startTls()
+        }
+        server.start()
+        val serverSettings = ServerSettings(
+            type = "smtp",
+            host = server.host,
+            port = server.port,
+            connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED,
+            authenticationType = AuthType.PLAIN,
+            username = USERNAME,
+            password = PASSWORD,
+            clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
+        )
+
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
+
+        assertThat(result)
+            .isInstanceOf<ServerSettingsValidationResult.ClientCertificateError.ClientCertificateRetrievalFailure>()
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `client certificate expired error should return ClientCertificateExpired`() {
+        trustedSocketFactory.injectClientCertificateError(ClientCertificateError.CertificateExpired)
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello 127.0.0.1")
+            output("250-STARTTLS")
+            output("250 HELP")
+            expect("STARTTLS")
+            output("220 Ready to start TLS")
+            startTls()
+        }
+        server.start()
+        val serverSettings = ServerSettings(
+            type = "smtp",
+            host = server.host,
+            port = server.port,
+            connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED,
+            authenticationType = AuthType.PLAIN,
+            username = USERNAME,
+            password = PASSWORD,
+            clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
+        )
+
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
+
+        assertThat(result)
+            .isInstanceOf<ServerSettingsValidationResult.ClientCertificateError.ClientCertificateExpired>()
         server.verifyConnectionClosed()
         server.verifyInteractionCompleted()
     }

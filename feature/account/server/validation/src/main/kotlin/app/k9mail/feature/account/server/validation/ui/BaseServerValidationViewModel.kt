@@ -136,12 +136,24 @@ abstract class BaseServerValidationViewModel(
                     Error.CertificateError(result.certificateChain),
                 )
 
+                ServerSettingsValidationResult.ClientCertificateError.ClientCertificateExpired -> updateError(
+                    Error.ClientCertificateExpired,
+                )
+
+                ServerSettingsValidationResult.ClientCertificateError.ClientCertificateRetrievalFailure -> updateError(
+                    Error.ClientCertificateRetrievalFailure,
+                )
+
                 is ServerSettingsValidationResult.NetworkError -> updateError(
                     Error.NetworkError(result.exception),
                 )
 
                 is ServerSettingsValidationResult.ServerError -> updateError(
                     Error.ServerError(result.serverMessage),
+                )
+
+                is ServerSettingsValidationResult.MissingServerCapabilityError -> updateError(
+                    Error.MissingServerCapabilityError(result.capabilityName),
                 )
 
                 is ServerSettingsValidationResult.UnknownError -> updateError(

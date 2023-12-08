@@ -7,6 +7,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
 import com.fsck.k9.mail.AuthType
+import com.fsck.k9.mail.ClientCertificateError
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.helpers.FakeTrustManager
@@ -211,6 +212,96 @@ class ImapServerSettingsValidatorTest {
 
         assertThat(result).isInstanceOf<ServerSettingsValidationResult.CertificateError>()
             .prop(ServerSettingsValidationResult.CertificateError::certificateChain).hasSize(1)
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `missing capability should return MissingServerCapabilityError`() {
+        trustedSocketFactory.injectClientCertificateError(ClientCertificateError.RetrievalFailure)
+        val server = startServer {
+            output("* OK IMAP4rev1 server ready")
+            expect("1 CAPABILITY")
+            output("* CAPABILITY IMAP4rev1")
+            output("1 OK CAPABILITY Completed")
+        }
+        val serverSettings = ServerSettings(
+            type = "imap",
+            host = server.host,
+            port = server.port,
+            connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED,
+            authenticationType = AuthType.PLAIN,
+            username = USERNAME,
+            password = PASSWORD,
+            clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
+        )
+
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
+
+        assertThat(result).isInstanceOf<ServerSettingsValidationResult.MissingServerCapabilityError>()
+            .prop(ServerSettingsValidationResult.MissingServerCapabilityError::capabilityName).isEqualTo("STARTTLS")
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `client certificate retrieval failure connect should return ClientCertificateRetrievalFailure`() {
+        trustedSocketFactory.injectClientCertificateError(ClientCertificateError.RetrievalFailure)
+        val server = startServer {
+            output("* OK IMAP4rev1 server ready")
+            expect("1 CAPABILITY")
+            output("* CAPABILITY IMAP4rev1 AUTH=PLAIN STARTTLS")
+            output("1 OK CAPABILITY Completed")
+            expect("2 STARTTLS")
+            output("2 OK Begin TLS negotiation now")
+            startTls()
+        }
+        val serverSettings = ServerSettings(
+            type = "imap",
+            host = server.host,
+            port = server.port,
+            connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED,
+            authenticationType = AuthType.PLAIN,
+            username = USERNAME,
+            password = PASSWORD,
+            clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
+        )
+
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
+
+        assertThat(result)
+            .isInstanceOf<ServerSettingsValidationResult.ClientCertificateError.ClientCertificateRetrievalFailure>()
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `client certificate expired should return ClientCertificateExpired`() {
+        trustedSocketFactory.injectClientCertificateError(ClientCertificateError.CertificateExpired)
+        val server = startServer {
+            output("* OK IMAP4rev1 server ready")
+            expect("1 CAPABILITY")
+            output("* CAPABILITY IMAP4rev1 AUTH=PLAIN STARTTLS")
+            output("1 OK CAPABILITY Completed")
+            expect("2 STARTTLS")
+            output("2 OK Begin TLS negotiation now")
+            startTls()
+        }
+        val serverSettings = ServerSettings(
+            type = "imap",
+            host = server.host,
+            port = server.port,
+            connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED,
+            authenticationType = AuthType.PLAIN,
+            username = USERNAME,
+            password = PASSWORD,
+            clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
+        )
+
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage = null)
+
+        assertThat(result)
+            .isInstanceOf<ServerSettingsValidationResult.ClientCertificateError.ClientCertificateExpired>()
         server.verifyConnectionClosed()
         server.verifyInteractionCompleted()
     }
