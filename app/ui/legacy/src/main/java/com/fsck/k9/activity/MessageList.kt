@@ -1,14 +1,19 @@
 package com.fsck.k9.activity
 
+import android.app.AlertDialog
 import android.app.SearchManager
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentSender
 import android.content.res.Configuration
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
+import android.os.PowerManager
+import android.provider.Settings
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
@@ -203,6 +208,7 @@ open class MessageList :
         initializeLayout()
         initializeFragments()
         displayViews()
+        checkBatteryOptimizationSetting()
     }
 
     public override fun onNewIntent(intent: Intent) {
@@ -263,6 +269,32 @@ open class MessageList :
             initializeFromLocalSearch(messageListFragment.localSearch)
         }
     }
+
+    private fun checkBatteryOptimizationSetting() {
+        if (Build.VERSION.SDK_INT >= 32) {
+            val powerManager: PowerManager = getSystemService(POWER_SERVICE) as PowerManager
+            if (!powerManager.isIgnoringBatteryOptimizations(packageName)) {
+
+                val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+                builder
+                    .setMessage(getString(R.string.battery_optimization_android_12_disclaimer))
+                    .setTitle(getString(R.string.information))
+                    .setPositiveButton("Accept") { dialog, which ->
+                        val intent = Intent()
+                        intent.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+                        intent.data = Uri.parse("package:$packageName")
+                        startActivity(intent)
+                    }
+                    .setNegativeButton("Decline") { dialog, which ->
+                        dialog.dismiss()
+                    }
+
+                val dialog: AlertDialog = builder.create()
+                dialog.show()
+            }
+        }
+    }
+
 
     private fun initializeFragments() {
         val fragmentManager = supportFragmentManager
@@ -1090,7 +1122,7 @@ open class MessageList :
         showMessageViewPlaceHolder()
 
         val tmpSearch = LocalSearch().apply {
-            setId(search?.id)
+            id = search?.id
             addAccountUuid(account.uuid)
             and(SearchField.THREAD_ID, threadRootId.toString(), SearchSpecification.Attribute.EQUALS)
         }

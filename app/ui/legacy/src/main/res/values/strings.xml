@@ -1226,4 +1226,6 @@ You can keep this message and use it as a backup for your secret key. If you wan
 
     <!-- For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers. -->
     <string name="message_list_content_description_unread_prefix">unread, %s</string>
+    <string name="battery_optimization_android_12_disclaimer">Please disable battery optimization to keep your data in sync with the application.</string>
+    <string name="information">Information</string>
 </resources>
