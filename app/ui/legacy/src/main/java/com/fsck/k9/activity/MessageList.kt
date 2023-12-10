@@ -3,7 +3,6 @@ package com.fsck.k9.activity
 import android.app.AlertDialog
 import android.app.SearchManager
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentSender
 import android.content.res.Configuration
@@ -274,7 +273,6 @@ open class MessageList :
         if (Build.VERSION.SDK_INT >= 32) {
             val powerManager: PowerManager = getSystemService(POWER_SERVICE) as PowerManager
             if (!powerManager.isIgnoringBatteryOptimizations(packageName)) {
-
                 val builder: AlertDialog.Builder = AlertDialog.Builder(this)
                 builder
                     .setMessage(getString(R.string.battery_optimization_android_12_disclaimer))
@@ -294,7 +292,6 @@ open class MessageList :
             }
         }
     }
-
 
     private fun initializeFragments() {
         val fragmentManager = supportFragmentManager
