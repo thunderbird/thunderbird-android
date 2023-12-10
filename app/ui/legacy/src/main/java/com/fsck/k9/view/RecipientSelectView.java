@@ -36,6 +36,7 @@ import android.widget.TextView;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.ui.R;
+import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.activity.AlternateRecipientAdapter;
 import com.fsck.k9.activity.AlternateRecipientAdapter.AlternateRecipientListener;
 import com.fsck.k9.activity.compose.RecipientAdapter;
@@ -484,6 +485,14 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
         invalidate();
         invalidateCursorPositionHack();
+    }
+
+    @Override
+    public void onRecipientAddressCopy(Recipient currentRecipient) {
+        ClipboardManager clipboardManager = DI.get(ClipboardManager.class);
+        String label = getContext().getResources().getString(R.string.clipboard_label_name_and_email_address);
+        String nameAndEmailAddress = currentRecipient.address.toString();
+        clipboardManager.setText(label, nameAndEmailAddress);
     }
 
     /**

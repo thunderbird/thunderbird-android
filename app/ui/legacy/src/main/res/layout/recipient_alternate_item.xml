@@ -143,6 +143,15 @@
             tools:visibility="visible"
             />
 
+        <ImageView
+            android:id="@+id/button_copy_email_address"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="center"
+            android:background="?attr/controlBackground"
+            android:contentDescription="@string/copy_action"
+            app:srcCompat="@drawable/ic_content_copy" />
+
     </LinearLayout>
 
 </LinearLayout>
