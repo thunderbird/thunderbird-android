@@ -19,6 +19,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.TooltipCompat;
 import com.fsck.k9.activity.compose.RecipientAdapter;
 import com.fsck.k9.ui.ContactBadge;
 import com.fsck.k9.ui.R;
@@ -164,6 +165,8 @@ public class AlternateRecipientAdapter extends BaseAdapter {
             }
         });
 
+        holder.copyEmailAddress.setOnClickListener(v -> listener.onRecipientAddressCopy(currentRecipient));
+
         configureCryptoStatusView(holder, recipient);
     }
 
@@ -237,6 +240,7 @@ public class AlternateRecipientAdapter extends BaseAdapter {
         public final TextView headerAddressLabel;
         public final ContactBadge headerPhoto;
         public final View headerRemove;
+        public final View copyEmailAddress;
         public final TextView itemAddress;
         public final TextView itemAddressLabel;
         public final View itemCryptoStatus;
@@ -253,6 +257,8 @@ public class AlternateRecipientAdapter extends BaseAdapter {
             headerPhoto = view.findViewById(R.id.alternate_contact_photo);
             headerRemove = view.findViewById(R.id.alternate_remove);
 
+            copyEmailAddress = view.findViewById(R.id.button_copy_email_address);
+            TooltipCompat.setTooltipText(copyEmailAddress, copyEmailAddress.getContext().getString(R.string.copy_action));
             itemAddress = view.findViewById(R.id.alternate_address);
             itemAddressLabel = view.findViewById(R.id.alternate_address_label);
             itemCryptoStatus = view.findViewById(R.id.alternate_crypto_status);
@@ -270,5 +276,6 @@ public class AlternateRecipientAdapter extends BaseAdapter {
     public interface AlternateRecipientListener {
         void onRecipientRemove(Recipient currentRecipient);
         void onRecipientChange(Recipient currentRecipient, Recipient alternateRecipient);
+        void onRecipientAddressCopy(Recipient currentRecipient);
     }
 }
