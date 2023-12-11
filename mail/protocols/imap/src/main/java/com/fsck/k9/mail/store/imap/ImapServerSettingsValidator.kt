@@ -2,12 +2,17 @@ package com.fsck.k9.mail.store.imap
 
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.CertificateValidationException
+import com.fsck.k9.mail.ClientCertificateError.CertificateExpired
+import com.fsck.k9.mail.ClientCertificateError.RetrievalFailure
+import com.fsck.k9.mail.ClientCertificateException
 import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.mail.MissingCapabilityException
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.oauth.AuthStateStorage
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.oauth.OAuth2TokenProviderFactory
 import com.fsck.k9.mail.server.ServerSettingsValidationResult
+import com.fsck.k9.mail.server.ServerSettingsValidationResult.ClientCertificateError
 import com.fsck.k9.mail.server.ServerSettingsValidator
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import java.io.IOException
@@ -42,6 +47,13 @@ class ImapServerSettingsValidator(
             ServerSettingsValidationResult.CertificateError(e.certificateChain)
         } catch (e: NegativeImapResponseException) {
             ServerSettingsValidationResult.ServerError(e.responseText)
+        } catch (e: MissingCapabilityException) {
+            ServerSettingsValidationResult.MissingServerCapabilityError(e.capabilityName)
+        } catch (e: ClientCertificateException) {
+            when (e.error) {
+                RetrievalFailure -> ClientCertificateError.ClientCertificateRetrievalFailure
+                CertificateExpired -> ClientCertificateError.ClientCertificateExpired
+            }
         } catch (e: MessagingException) {
             val cause = e.cause
             if (cause is IOException) {

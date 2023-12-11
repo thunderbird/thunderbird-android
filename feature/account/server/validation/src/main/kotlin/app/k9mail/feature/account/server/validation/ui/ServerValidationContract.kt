@@ -46,8 +46,11 @@ interface ServerValidationContract {
     sealed interface Error {
         data class NetworkError(val exception: IOException) : Error
         data class CertificateError(val certificateChain: List<X509Certificate>) : Error
+        data object ClientCertificateRetrievalFailure : Error
+        data object ClientCertificateExpired : Error
         data class AuthenticationError(val serverMessage: String?) : Error
         data class ServerError(val serverMessage: String?) : Error
+        data class MissingServerCapabilityError(val capabilityName: String) : Error
         data class UnknownError(val message: String) : Error
     }
 }

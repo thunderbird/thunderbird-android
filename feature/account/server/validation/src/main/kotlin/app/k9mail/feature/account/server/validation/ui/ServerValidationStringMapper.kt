@@ -40,6 +40,22 @@ internal fun Error.toResourceString(resources: Resources): String {
                 detailsMessage = message,
             )
         }
+
+        Error.ClientCertificateExpired -> {
+            resources.getString(R.string.account_server_validation_error_client_certificate_expired)
+        }
+
+        Error.ClientCertificateRetrievalFailure -> {
+            resources.getString(R.string.account_server_validation_error_client_certificate_retrieval_failure)
+        }
+
+        is Error.MissingServerCapabilityError -> {
+            resources.buildErrorString(
+                titleResId = R.string.account_server_validation_error_missing_server_capability,
+                detailsResId = R.string.account_server_validation_error_missing_server_capability_details,
+                detailsMessage = capabilityName,
+            )
+        }
     }
 }
 
