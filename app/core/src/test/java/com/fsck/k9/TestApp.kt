@@ -36,7 +36,7 @@ val testModule = module {
     single { mock<CoreResourceProvider>() }
     single { mock<EncryptionExtractor>() }
     single<StoragePersister> { InMemoryStoragePersister() }
-    single { mock<BackendManager>() }
+    single<BackendManager> { mock<BackendManager>() }
     single { mock<NotificationResourceProvider>() }
     single { mock<NotificationActionCreator>() }
     single { mock<NotificationStrategy>() }

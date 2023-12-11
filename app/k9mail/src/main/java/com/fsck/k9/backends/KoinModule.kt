@@ -4,6 +4,7 @@ import app.k9mail.dev.developmentBackends
 import app.k9mail.dev.developmentModuleAdditions
 import com.fsck.k9.BuildConfig
 import com.fsck.k9.backend.BackendManager
+import com.fsck.k9.backend.ConcreteBackendManager
 import com.fsck.k9.backend.imap.BackendIdleRefreshManager
 import com.fsck.k9.backend.imap.SystemAlarmManager
 import com.fsck.k9.mail.oauth.OAuth2TokenProviderFactory
@@ -12,8 +13,8 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val backendsModule = module {
-    single {
-        BackendManager(
+    single<BackendManager> {
+        ConcreteBackendManager(
             mapOf(
                 "imap" to get<ImapBackendFactory>(),
                 "pop3" to get<Pop3BackendFactory>(),
