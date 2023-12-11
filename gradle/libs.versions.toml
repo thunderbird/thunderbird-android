@@ -130,7 +130,7 @@ glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
 jsoup = "org.jsoup:jsoup:1.15.4"
 apache-httpclient5 = "org.apache.httpcomponents.client5:httpclient5:5.2.1"
-clikt = "com.github.ajalt.clikt:clikt:3.5.2"
+clikt = "com.github.ajalt.clikt:clikt:4.2.1"
 jzlib = "com.jcraft:jzlib:1.0.7"
 jutf7 = "com.beetstra.jutf7:jutf7:1.0.0"
 jcip-annotations = "net.jcip:jcip-annotations:1.0"
