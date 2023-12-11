@@ -49,6 +49,8 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingReplace;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
 import com.fsck.k9.controller.ProgressBodyFactory.ProgressListener;
+import com.fsck.k9.controller.command.AccountCommandFactory;
+import com.fsck.k9.controller.command.ConcreteAccountCommandFactory;
 import com.fsck.k9.core.BuildConfig;
 import com.fsck.k9.helper.MutableBoolean;
 import com.fsck.k9.mail.AuthType;
@@ -81,6 +83,7 @@ import com.fsck.k9.mailstore.SpecialLocalFoldersCreator;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.notification.NotificationStrategy;
 import com.fsck.k9.search.LocalSearch;
+import kotlinx.datetime.Clock;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import timber.log.Timber;
@@ -127,6 +130,8 @@ public class MessagingController {
     private final DraftOperations draftOperations;
     private final NotificationOperations notificationOperations;
 
+    private final AccountCommandFactory accountCommandFactory;
+
 
     private volatile boolean stopped = false;
 
@@ -137,10 +142,11 @@ public class MessagingController {
 
 
     MessagingController(Context context, NotificationController notificationController,
-            NotificationStrategy notificationStrategy, LocalStoreProvider localStoreProvider,
-            BackendManager backendManager, Preferences preferences, MessageStoreManager messageStoreManager,
-            SaveMessageDataCreator saveMessageDataCreator, SpecialLocalFoldersCreator specialLocalFoldersCreator,
-            List<ControllerExtension> controllerExtensions) {
+        NotificationStrategy notificationStrategy, LocalStoreProvider localStoreProvider,
+        BackendManager backendManager, Preferences preferences, MessageStoreManager messageStoreManager,
+        SaveMessageDataCreator saveMessageDataCreator, SpecialLocalFoldersCreator specialLocalFoldersCreator,
+        List<ControllerExtension> controllerExtensions, Clock clock
+    ) {
         this.context = context;
         this.notificationController = notificationController;
         this.notificationStrategy = notificationStrategy;
@@ -165,6 +171,7 @@ public class MessagingController {
 
         draftOperations = new DraftOperations(this, messageStoreManager, saveMessageDataCreator);
         notificationOperations = new NotificationOperations(notificationController, preferences, messageStoreManager);
+        accountCommandFactory = new ConcreteAccountCommandFactory(preferences, backendManager, clock);
     }
 
     private void initializeControllerExtensions(List<ControllerExtension> controllerExtensions) {
@@ -373,14 +380,7 @@ public class MessagingController {
                 return;
             }
 
-            Backend backend = getBackend(account);
-            backend.refreshFolderList();
-
-            long now = System.currentTimeMillis();
-            Timber.d("Folder list successfully refreshed @ %tc", now);
-
-            account.setLastFolderListRefreshTime(now);
-            preferences.saveAccount(account);
+            accountCommandFactory.createUpdateFolderListCommand(account.getUuid()).invoke();
         } catch (Exception e) {
             Timber.e(e);
             handleException(account, e);

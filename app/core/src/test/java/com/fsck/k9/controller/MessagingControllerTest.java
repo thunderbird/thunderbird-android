@@ -8,6 +8,8 @@ import java.util.Set;
 
 import android.content.Context;
 
+import app.k9mail.core.common.mail.Protocols;
+import app.k9mail.core.testing.TestClock;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9RobolectricTest;
@@ -34,7 +36,6 @@ import com.fsck.k9.mailstore.SendState;
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.notification.NotificationStrategy;
-import app.k9mail.core.common.mail.Protocols;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,8 +50,8 @@ import org.robolectric.shadows.ShadowLog;
 
 import static java.util.Collections.emptyList;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.inOrder;
@@ -111,6 +112,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private Preferences preferences;
     private String accountUuid;
 
+    private TestClock testClock = new TestClock();
+
 
     @Before
     public void setUp() throws MessagingException {
@@ -121,8 +124,9 @@ public class MessagingControllerTest extends K9RobolectricTest {
         preferences = Preferences.getPreferences();
 
         controller = new MessagingController(appContext, notificationController, notificationStrategy,
-                localStoreProvider, backendManager, preferences, messageStoreManager,
-                saveMessageDataCreator, specialLocalFoldersCreator, Collections.<ControllerExtension>emptyList());
+            localStoreProvider, backendManager, preferences, messageStoreManager,
+            saveMessageDataCreator, specialLocalFoldersCreator, Collections.<ControllerExtension>emptyList(),
+            testClock);
 
         configureAccount();
         configureBackendManager();

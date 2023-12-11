@@ -8,6 +8,7 @@ import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCrea
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.Core
 import com.fsck.k9.Preferences
+import com.fsck.k9.controller.command.AccountCommandFactory
 import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.autoDetectNamespace
@@ -25,6 +26,7 @@ import com.fsck.k9.Account as K9Account
 class AccountCreator(
     private val accountColorPicker: AccountColorPicker,
     private val localFoldersCreator: SpecialLocalFoldersCreator,
+    private val accountCommandFactory: AccountCommandFactory,
     private val preferences: Preferences,
     private val context: Context,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
@@ -70,6 +72,8 @@ class AccountCreator(
         newAccount.markSetupFinished()
 
         preferences.saveAccount(newAccount)
+
+        accountCommandFactory.createUpdateFolderListCommand(newAccount.uuid).invoke()
 
         Core.setServicesEnabled(context)
 

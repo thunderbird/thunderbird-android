@@ -25,6 +25,7 @@ val controllerModule = module {
             get<SaveMessageDataCreator>(),
             get<SpecialLocalFoldersCreator>(),
             get(named("controllerExtensions")),
+            get(),
         )
     }
     single<MessageCountsProvider> {

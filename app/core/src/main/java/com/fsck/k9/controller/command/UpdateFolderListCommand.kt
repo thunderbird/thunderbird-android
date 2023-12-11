@@ -45,7 +45,7 @@ class UpdateFolderListCommand(
         backend.refreshFolderList()
 
         val now = clock.now()
-        Timber.d("Folder list successfully updated @ %tc", now)
+        Timber.d("Folder list successfully updated @ %s", now)
 
         account.lastFolderListRefreshTime = now.toEpochMilliseconds()
 
