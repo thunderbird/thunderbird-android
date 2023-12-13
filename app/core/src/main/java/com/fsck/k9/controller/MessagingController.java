@@ -364,8 +364,24 @@ public class MessagingController {
         put("refreshFolderList", null, () -> refreshFolderListSynchronous(account));
     }
 
-    @Deprecated
-    public void refreshFolderListSynchronous(Account account) {
+    public void refreshFolderListBlocking(Account account) {
+        final CountDownLatch latch = new CountDownLatch(1);
+        putBackground("refreshFolderListBlocking", null, () -> {
+            try {
+                refreshFolderListSynchronous(account);
+            } finally {
+                latch.countDown();
+            }
+        });
+
+        try {
+            latch.await();
+        } catch (Exception e) {
+            Timber.e(e, "Interrupted while awaiting latch release");
+        }
+    }
+
+    void refreshFolderListSynchronous(Account account) {
         try {
             if (isAuthenticationProblem(account, true)) {
                 Timber.d("Authentication will fail. Skip refreshing the folder list.");

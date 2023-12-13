@@ -26,6 +26,7 @@ val newAccountModule = module {
             localFoldersCreator = get(),
             preferences = get(),
             context = androidApplication(),
+            messagingController = get(),
         )
     }
 
