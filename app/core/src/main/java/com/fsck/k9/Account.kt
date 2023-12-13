@@ -151,23 +151,18 @@ class Account(override val uuid: String) : BaseAccount {
 
     @get:Synchronized
     var draftsFolderSelection = SpecialFolderSelection.AUTOMATIC
-        private set
 
     @get:Synchronized
     var sentFolderSelection = SpecialFolderSelection.AUTOMATIC
-        private set
 
     @get:Synchronized
     var trashFolderSelection = SpecialFolderSelection.AUTOMATIC
-        private set
 
     @get:Synchronized
     var archiveFolderSelection = SpecialFolderSelection.AUTOMATIC
-        private set
 
     @get:Synchronized
     var spamFolderSelection = SpecialFolderSelection.AUTOMATIC
-        private set
 
     @get:Synchronized
     @set:Synchronized
