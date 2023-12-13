@@ -1,26 +1,24 @@
-package com.fsck.k9.mail.store.pop3;
+package com.fsck.k9.mail.store.pop3
 
+internal object Pop3Commands {
+    const val STLS_COMMAND = "STLS"
+    const val USER_COMMAND = "USER"
+    const val PASS_COMMAND = "PASS"
+    const val CAPA_COMMAND = "CAPA"
+    const val AUTH_COMMAND = "AUTH"
+    const val STAT_COMMAND = "STAT"
+    const val LIST_COMMAND = "LIST"
+    const val UIDL_COMMAND = "UIDL"
+    const val TOP_COMMAND = "TOP"
+    const val RETR_COMMAND = "RETR"
+    const val DELE_COMMAND = "DELE"
+    const val QUIT_COMMAND = "QUIT"
 
-class Pop3Commands {
-
-    static final String STLS_COMMAND = "STLS";
-    static final String USER_COMMAND = "USER";
-    static final String PASS_COMMAND = "PASS";
-    static final String CAPA_COMMAND = "CAPA";
-    static final String AUTH_COMMAND = "AUTH";
-    static final String STAT_COMMAND = "STAT";
-    static final String LIST_COMMAND = "LIST";
-    static final String UIDL_COMMAND = "UIDL";
-    static final String TOP_COMMAND = "TOP";
-    static final String RETR_COMMAND = "RETR";
-    static final String DELE_COMMAND = "DELE";
-    static final String QUIT_COMMAND = "QUIT";
-
-    static final String STLS_CAPABILITY = "STLS";
-    static final String UIDL_CAPABILITY = "UIDL";
-    static final String TOP_CAPABILITY = "TOP";
-    static final String SASL_CAPABILITY = "SASL";
-    static final String AUTH_PLAIN_CAPABILITY = "PLAIN";
-    static final String AUTH_CRAM_MD5_CAPABILITY = "CRAM-MD5";
-    static final String AUTH_EXTERNAL_CAPABILITY = "EXTERNAL";
+    const val STLS_CAPABILITY = "STLS"
+    const val UIDL_CAPABILITY = "UIDL"
+    const val TOP_CAPABILITY = "TOP"
+    const val SASL_CAPABILITY = "SASL"
+    const val AUTH_PLAIN_CAPABILITY = "PLAIN"
+    const val AUTH_CRAM_MD5_CAPABILITY = "CRAM-MD5"
+    const val AUTH_EXTERNAL_CAPABILITY = "EXTERNAL"
 }
