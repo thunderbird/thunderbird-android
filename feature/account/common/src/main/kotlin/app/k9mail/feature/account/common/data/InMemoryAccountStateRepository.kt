@@ -4,9 +4,11 @@ import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.common.domain.entity.AccountOptions
 import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
+import app.k9mail.feature.account.common.domain.entity.SpecialFolderSettings
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.oauth.AuthStateStorage
 
+@Suppress("TooManyFunctions")
 class InMemoryAccountStateRepository(
     private var state: AccountState = AccountState(),
 ) : AccountDomainContract.AccountStateRepository, AuthStateStorage {
@@ -33,6 +35,10 @@ class InMemoryAccountStateRepository(
 
     override fun setAuthorizationState(authorizationState: AuthorizationState) {
         state = state.copy(authorizationState = authorizationState)
+    }
+
+    override fun setSpecialFolderSettings(specialFolderSettings: SpecialFolderSettings) {
+        state = state.copy(specialFolderSettings = specialFolderSettings)
     }
 
     override fun setOptions(options: AccountOptions) {

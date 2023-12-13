@@ -4,6 +4,7 @@ import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
+import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.common.domain.input.BooleanInputField
 import app.k9mail.feature.account.common.domain.input.StringInputField
 import app.k9mail.feature.account.common.ui.loadingerror.LoadingErrorState
@@ -53,7 +54,9 @@ interface AccountAutoDiscoveryContract {
     }
 
     sealed class Effect {
-        data class NavigateNext(val isAutomaticConfig: Boolean) : Effect()
+        data class NavigateNext(
+            val result: AutoDiscoveryUiResult,
+        ) : Effect()
 
         data object NavigateBack : Effect()
     }
@@ -68,4 +71,9 @@ interface AccountAutoDiscoveryContract {
         data object NetworkError : Error
         data object UnknownError : Error
     }
+
+    data class AutoDiscoveryUiResult(
+        val isAutomaticConfig: Boolean,
+        val incomingProtocolType: IncomingProtocolType?,
+    )
 }

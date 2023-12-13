@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsScreen
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsViewModel
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsScreen
@@ -21,6 +22,8 @@ import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountScreen
 import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountViewModel
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsScreen
 import app.k9mail.feature.account.setup.ui.options.AccountOptionsViewModel
+import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersScreen
+import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersViewModel
 import org.koin.androidx.compose.koinViewModel
 
 private const val NESTED_NAVIGATION_AUTO_CONFIG = "autoconfig"
@@ -28,6 +31,7 @@ private const val NESTED_NAVIGATION_INCOMING_SERVER_CONFIG = "incoming-server/co
 private const val NESTED_NAVIGATION_INCOMING_SERVER_VALIDATION = "incoming-server/validation"
 private const val NESTED_NAVIGATION_OUTGOING_SERVER_CONFIG = "outgoing-server/config"
 private const val NESTED_NAVIGATION_OUTGOING_SERVER_VALIDATION = "outgoing-server/validation"
+private const val NESTED_NAVIGATION_SPECIAL_FOLDERS = "special-folders"
 private const val NESTED_NAVIGATION_ACCOUNT_OPTIONS = "account-options"
 private const val NESTED_NAVIGATION_CREATE_ACCOUNT = "create-account"
 
@@ -39,6 +43,7 @@ fun AccountSetupNavHost(
 ) {
     val navController = rememberNavController()
     var isAutomaticConfig by rememberSaveable { mutableStateOf(false) }
+    var hasSpecialFolders by rememberSaveable { mutableStateOf(false) }
 
     NavHost(
         navController = navController,
@@ -46,9 +51,10 @@ fun AccountSetupNavHost(
     ) {
         composable(route = NESTED_NAVIGATION_AUTO_CONFIG) {
             AccountAutoDiscoveryScreen(
-                onNext = { automaticConfig ->
-                    isAutomaticConfig = automaticConfig
+                onNext = { result ->
+                    isAutomaticConfig = result.isAutomaticConfig
                     if (isAutomaticConfig) {
+                        hasSpecialFolders = checkSpecialFoldersSupport(result.incomingProtocolType)
                         navController.navigate(NESTED_NAVIGATION_INCOMING_SERVER_VALIDATION)
                     } else {
                         navController.navigate(NESTED_NAVIGATION_INCOMING_SERVER_CONFIG)
@@ -61,7 +67,10 @@ fun AccountSetupNavHost(
 
         composable(route = NESTED_NAVIGATION_INCOMING_SERVER_CONFIG) {
             IncomingServerSettingsScreen(
-                onNext = { navController.navigate(NESTED_NAVIGATION_INCOMING_SERVER_VALIDATION) },
+                onNext = { state ->
+                    hasSpecialFolders = checkSpecialFoldersSupport(state.protocolType)
+                    navController.navigate(NESTED_NAVIGATION_INCOMING_SERVER_VALIDATION)
+                },
                 onBack = { navController.popBackStack() },
                 viewModel = koinViewModel<IncomingServerSettingsViewModel>(),
             )
@@ -96,7 +105,13 @@ fun AccountSetupNavHost(
         composable(route = NESTED_NAVIGATION_OUTGOING_SERVER_VALIDATION) {
             ServerValidationScreen(
                 onNext = {
-                    navController.navigate(NESTED_NAVIGATION_ACCOUNT_OPTIONS) {
+                    navController.navigate(
+                        if (hasSpecialFolders) {
+                            NESTED_NAVIGATION_SPECIAL_FOLDERS
+                        } else {
+                            NESTED_NAVIGATION_ACCOUNT_OPTIONS
+                        },
+                    ) {
                         if (isAutomaticConfig) {
                             popUpTo(NESTED_NAVIGATION_AUTO_CONFIG)
                         } else {
@@ -106,6 +121,16 @@ fun AccountSetupNavHost(
                 },
                 onBack = { navController.popBackStack() },
                 viewModel = koinViewModel<OutgoingServerValidationViewModel>(),
+            )
+        }
+
+        composable(route = NESTED_NAVIGATION_SPECIAL_FOLDERS) {
+            SpecialFoldersScreen(
+                onNext = {
+                    navController.navigate(NESTED_NAVIGATION_ACCOUNT_OPTIONS)
+                },
+                onBack = { navController.popBackStack() },
+                viewModel = koinViewModel<SpecialFoldersViewModel>(),
             )
         }
 
@@ -125,4 +150,8 @@ fun AccountSetupNavHost(
             )
         }
     }
+}
+
+internal fun checkSpecialFoldersSupport(protocolType: IncomingProtocolType?): Boolean {
+    return protocolType == IncomingProtocolType.IMAP
 }

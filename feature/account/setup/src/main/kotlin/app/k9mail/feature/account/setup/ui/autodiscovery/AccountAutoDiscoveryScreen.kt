@@ -16,13 +16,14 @@ import app.k9mail.feature.account.common.ui.WizardNavigationBarState
 import app.k9mail.feature.account.common.ui.preview.PreviewAccountStateRepository
 import app.k9mail.feature.account.oauth.ui.preview.PreviewAccountOAuthViewModel
 import app.k9mail.feature.account.setup.R
+import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.AutoDiscoveryUiResult
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Effect
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Event
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.ViewModel
 
 @Composable
 internal fun AccountAutoDiscoveryScreen(
-    onNext: (isAutomaticConfig: Boolean) -> Unit,
+    onNext: (AutoDiscoveryUiResult) -> Unit,
     onBack: () -> Unit,
     viewModel: ViewModel,
     modifier: Modifier = Modifier,
@@ -30,7 +31,7 @@ internal fun AccountAutoDiscoveryScreen(
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
             Effect.NavigateBack -> onBack()
-            is Effect.NavigateNext -> onNext(effect.isAutomaticConfig)
+            is Effect.NavigateNext -> onNext(effect.result)
         }
     }
 

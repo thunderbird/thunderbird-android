@@ -34,4 +34,7 @@ dependencies {
     api(projects.feature.account.server.validation)
 
     testImplementation(projects.core.ui.compose.testing)
+
+    testImplementation(platform(libs.forkhandles.bom))
+    testImplementation(libs.forkhandles.fabrikate4k)
 }

@@ -2,6 +2,7 @@ package app.k9mail.feature.account.setup.domain.usecase
 
 import app.k9mail.feature.account.common.domain.entity.Account
 import app.k9mail.feature.account.common.domain.entity.AccountOptions
+import app.k9mail.feature.account.common.domain.entity.SpecialFolderSettings
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
@@ -17,6 +18,7 @@ class CreateAccount(
         incomingServerSettings: ServerSettings,
         outgoingServerSettings: ServerSettings,
         authorizationState: String?,
+        specialFolderSettings: SpecialFolderSettings?,
         options: AccountOptions,
     ): AccountCreatorResult {
         val account = Account(
@@ -25,6 +27,7 @@ class CreateAccount(
             incomingServerSettings = incomingServerSettings,
             outgoingServerSettings = outgoingServerSettings,
             authorizationState = authorizationState,
+            specialFolderSettings = specialFolderSettings,
             options = options,
         )
 

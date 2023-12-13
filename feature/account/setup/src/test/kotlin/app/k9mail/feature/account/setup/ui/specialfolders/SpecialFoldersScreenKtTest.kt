@@ -1,28 +1,28 @@
-package app.k9mail.feature.account.setup.ui.autodiscovery
+package app.k9mail.feature.account.setup.ui.specialfolders
 
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContent
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
-import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
-import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Effect
-import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.State
+import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.Effect
+import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.State
+import app.k9mail.feature.account.setup.ui.specialfolders.fake.FakeSpecialFoldersViewModel
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
-class AccountAutoDiscoveryScreenKtTest : ComposeTest() {
+class SpecialFoldersScreenKtTest : ComposeTest() {
 
     @Test
     fun `should delegate navigation effects`() = runTest {
         val initialState = State()
-        val viewModel = FakeAccountAutoDiscoveryViewModel(initialState)
+        val viewModel = FakeSpecialFoldersViewModel(initialState)
         var onNextCounter = 0
         var onBackCounter = 0
 
         setContent {
             ThunderbirdTheme {
-                AccountAutoDiscoveryScreen(
+                SpecialFoldersScreen(
                     onNext = { onNextCounter++ },
                     onBack = { onBackCounter++ },
                     viewModel = viewModel,
@@ -33,14 +33,7 @@ class AccountAutoDiscoveryScreenKtTest : ComposeTest() {
         assertThat(onNextCounter).isEqualTo(0)
         assertThat(onBackCounter).isEqualTo(0)
 
-        viewModel.effect(
-            Effect.NavigateNext(
-                result = AccountAutoDiscoveryContract.AutoDiscoveryUiResult(
-                    isAutomaticConfig = false,
-                    incomingProtocolType = IncomingProtocolType.IMAP,
-                ),
-            ),
-        )
+        viewModel.effect(Effect.NavigateNext)
 
         assertThat(onNextCounter).isEqualTo(1)
         assertThat(onBackCounter).isEqualTo(0)

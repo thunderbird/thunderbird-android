@@ -38,6 +38,7 @@ class CreateAccountViewModel(
                 incomingServerSettings = accountState.incomingServerSettings!!,
                 outgoingServerSettings = accountState.outgoingServerSettings!!,
                 authorizationState = accountState.authorizationState?.state,
+                specialFolderSettings = accountState.specialFolderSettings,
                 options = accountState.options!!,
             )
 
