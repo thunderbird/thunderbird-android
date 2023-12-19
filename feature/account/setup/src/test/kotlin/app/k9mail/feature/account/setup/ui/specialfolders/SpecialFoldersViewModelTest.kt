@@ -249,8 +249,39 @@ class SpecialFoldersViewModelTest {
 
         testSubject.event(Event.OnRetryClicked)
 
-        turbines.assertThatAndStateTurbineConsumed {
-            isEqualTo(initialState.copy(error = null))
+        assertThat(turbines.awaitStateItem()).isEqualTo(
+            initialState.copy(
+                isLoading = true,
+                error = null,
+            ),
+        )
+
+        // Turbine misses the intermediate state because we're using UnconfinedTestDispatcher and StateFlow.
+        // Here we need to make sure the coroutine used to load the special folder options has completed.
+        mainDispatcherRule.testDispatcher.scheduler.advanceUntilIdle()
+
+        assertThat(turbines.awaitStateItem()).isEqualTo(
+            State(
+                isLoading = false,
+                isSuccess = true,
+                formState = FormState(
+                    archiveSpecialFolderOptions = SPECIAL_FOLDER_OPTIONS.archiveSpecialFolderOptions,
+                    draftsSpecialFolderOptions = SPECIAL_FOLDER_OPTIONS.draftsSpecialFolderOptions,
+                    sentSpecialFolderOptions = SPECIAL_FOLDER_OPTIONS.sentSpecialFolderOptions,
+                    spamSpecialFolderOptions = SPECIAL_FOLDER_OPTIONS.spamSpecialFolderOptions,
+                    trashSpecialFolderOptions = SPECIAL_FOLDER_OPTIONS.trashSpecialFolderOptions,
+
+                    selectedArchiveSpecialFolderOption = SPECIAL_FOLDER_ARCHIVE.copy(isAutomatic = true),
+                    selectedDraftsSpecialFolderOption = SPECIAL_FOLDER_DRAFTS.copy(isAutomatic = true),
+                    selectedSentSpecialFolderOption = SPECIAL_FOLDER_SENT.copy(isAutomatic = true),
+                    selectedSpamSpecialFolderOption = SPECIAL_FOLDER_SPAM.copy(isAutomatic = true),
+                    selectedTrashSpecialFolderOption = SPECIAL_FOLDER_TRASH.copy(isAutomatic = true),
+                ),
+            ),
+        )
+
+        turbines.assertThatAndEffectTurbineConsumed {
+            isEqualTo(Effect.NavigateNext)
         }
     }
 

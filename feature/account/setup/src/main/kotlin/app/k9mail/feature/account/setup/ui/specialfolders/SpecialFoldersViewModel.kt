@@ -150,8 +150,10 @@ class SpecialFoldersViewModel(
         viewModelScope.coroutineContext.cancelChildren()
         updateState {
             it.copy(
+                isLoading = true,
                 error = null,
             )
         }
+        onLoadSpecialFolderOptions()
     }
 }
