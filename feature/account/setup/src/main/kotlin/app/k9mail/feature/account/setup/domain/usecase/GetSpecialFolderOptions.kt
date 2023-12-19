@@ -24,6 +24,10 @@ class GetSpecialFolderOptions(
                 ?: error("No incoming server settings available")
 
             val remoteFolders = folderFetcher.getFolders(serverSettings, authStateStorage)
+                .sortedWith(
+                    compareByDescending<RemoteFolder> { it.type == FolderType.INBOX }
+                        .thenBy(String.CASE_INSENSITIVE_ORDER) { it.displayName },
+                )
 
             SpecialFolderOptions(
                 archiveSpecialFolderOptions = mapByFolderType(FolderType.ARCHIVE, remoteFolders),
