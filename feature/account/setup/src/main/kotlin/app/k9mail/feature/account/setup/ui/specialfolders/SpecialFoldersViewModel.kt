@@ -77,7 +77,11 @@ class SpecialFoldersViewModel(
                             isSuccess = true,
                         )
                     }
+
                     saveSpecialFolderSettings()
+
+                    delay(CONTINUE_NEXT_DELAY)
+                    navigateNext()
                 }
             }
         }
@@ -99,7 +103,7 @@ class SpecialFoldersViewModel(
         }
     }
 
-    private suspend fun saveSpecialFolderSettings() {
+    private fun saveSpecialFolderSettings() {
         val formState = state.value.formState
 
         accountStateRepository.setSpecialFolderSettings(
@@ -116,15 +120,11 @@ class SpecialFoldersViewModel(
                 isLoading = false,
             )
         }
-
-        delay(CONTINUE_NEXT_DELAY)
-        navigateNext()
     }
 
     private fun onNextClicked() {
-        viewModelScope.launch {
-            saveSpecialFolderSettings()
-        }
+        saveSpecialFolderSettings()
+        navigateNext()
     }
 
     private fun navigateNext() {

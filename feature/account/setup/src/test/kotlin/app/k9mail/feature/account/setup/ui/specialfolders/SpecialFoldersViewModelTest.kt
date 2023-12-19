@@ -197,9 +197,7 @@ class SpecialFoldersViewModelTest {
 
         testSubject.event(Event.OnNextClicked)
 
-        turbines.assertThatAndStateTurbineConsumed {
-            isEqualTo(initialState.copy(isLoading = false))
-        }
+        assertThat(turbines.awaitStateItem()).isEqualTo(initialState.copy(isLoading = false))
 
         turbines.assertThatAndEffectTurbineConsumed {
             isEqualTo(Effect.NavigateNext)
