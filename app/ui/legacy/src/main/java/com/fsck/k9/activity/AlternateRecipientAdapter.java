@@ -167,6 +167,11 @@ public class AlternateRecipientAdapter extends BaseAdapter {
 
         holder.copyEmailAddress.setOnClickListener(v -> listener.onRecipientAddressCopy(currentRecipient));
 
+        holder.cutEmailAddress.setOnClickListener(v -> {
+            listener.onRecipientAddressCopy(currentRecipient);
+            listener.onRecipientRemove(currentRecipient);
+        });
+
         configureCryptoStatusView(holder, recipient);
     }
 
@@ -241,6 +246,7 @@ public class AlternateRecipientAdapter extends BaseAdapter {
         public final ContactBadge headerPhoto;
         public final View headerRemove;
         public final View copyEmailAddress;
+        public final View cutEmailAddress;
         public final TextView itemAddress;
         public final TextView itemAddressLabel;
         public final View itemCryptoStatus;
@@ -258,6 +264,7 @@ public class AlternateRecipientAdapter extends BaseAdapter {
             headerRemove = view.findViewById(R.id.alternate_remove);
 
             copyEmailAddress = view.findViewById(R.id.button_copy_email_address);
+            cutEmailAddress = view.findViewById(R.id.button_cut_email_address);
             TooltipCompat.setTooltipText(copyEmailAddress, copyEmailAddress.getContext().getString(R.string.copy_action));
             itemAddress = view.findViewById(R.id.alternate_address);
             itemAddressLabel = view.findViewById(R.id.alternate_address_label);

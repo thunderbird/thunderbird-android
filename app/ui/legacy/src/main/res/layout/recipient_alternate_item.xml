@@ -144,13 +144,23 @@
             />
 
         <ImageView
+            android:id="@+id/button_cut_email_address"
+            android:layout_width="40dp"
+            android:layout_height="48dp"
+            android:scaleType="center"
+            android:background="?attr/controlBackground"
+            android:contentDescription="@string/cut_action"
+            app:srcCompat="@drawable/ic_cut" />
+
+        <ImageView
             android:id="@+id/button_copy_email_address"
-            android:layout_width="48dp"
+            android:layout_width="40dp"
             android:layout_height="48dp"
             android:scaleType="center"
             android:background="?attr/controlBackground"
             android:contentDescription="@string/copy_action"
-            app:srcCompat="@drawable/ic_content_copy" />
+            app:srcCompat="@drawable/ic_content_copy"
+            android:layout_marginEnd="8dp"/>
 
     </LinearLayout>
 

@@ -103,6 +103,7 @@
     <string name="flag_action">Add star</string>
     <string name="unflag_action">Remove star</string>
     <string name="copy_action">Copy</string>
+    <string name="cut_action">Cut</string>
     <string name="unsubscribe_action">Unsubscribe</string>
     <string name="show_headers_action">Show headers</string>
     <plurals name="copy_address_to_clipboard">
