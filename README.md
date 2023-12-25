@@ -58,6 +58,7 @@ have shaped this project so far. Feel free to propose new ADRs or suggest modifi
 
 Aside from discussing changes in [pull requests](https://github.com/thunderbird/thunderbird-android/pulls) and
 [issues](https://github.com/thunderbird/thunderbird-android/issues) we use the following communication services:
+[Droid_Spin_Square_515px_17_08_23.webm](https://github.com/thunderbird/thunderbird-android/assets/73773769/de95a626-3a02-4bae-b0a6-927261ed9aff)
 
 - Matrix: [#k9mail:matrix.org](https://matrix.to/#/#tb-android:mozilla.org)
 - IRC: [#k9mail on Libera Chat](https://web.libera.chat/#k9mail)
