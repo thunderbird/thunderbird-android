@@ -9,6 +9,7 @@ import app.k9mail.autodiscovery.api.ConnectionSecurity.StartTLS
 import app.k9mail.autodiscovery.api.ConnectionSecurity.TLS
 import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.IncomingServerSettings
+import app.k9mail.autodiscovery.api.OAuthSettings
 import app.k9mail.autodiscovery.api.OutgoingServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
 import app.k9mail.core.common.mail.EmailAddress
@@ -20,6 +21,7 @@ import app.k9mail.core.common.net.toPort
 import com.fsck.k9.logging.Timber
 import java.io.InputStream
 import java.io.InputStreamReader
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
@@ -99,6 +101,7 @@ private class ClientConfigParser(
         var domainFound = false
         var incomingServerSettings: IncomingServerSettings? = null
         var outgoingServerSettings: OutgoingServerSettings? = null
+        var oAuthSettings: OAuthSettings? = null
 
         // The 'id' attribute is required (but not really used) by Thunderbird desktop.
         val emailProviderId = pullParser.getAttributeValue(null, "id")
@@ -129,6 +132,12 @@ private class ClientConfigParser(
                             outgoingServerSettings = serverSettings
                         }
                     }
+                    "oAuth2" -> {
+                        val serverSettings = parseOAuth()
+                        if (oAuthSettings == null) {
+                            oAuthSettings = serverSettings
+                        }
+                    }
                     else -> {
                         skipElement()
                     }
@@ -144,6 +153,7 @@ private class ClientConfigParser(
         return AutoconfigParserResult.Settings(
             incomingServerSettings = incomingServerSettings ?: parserError("Missing 'incomingServer' element"),
             outgoingServerSettings = outgoingServerSettings ?: parserError("Missing 'outgoingServer' element"),
+            oAuthSettings = oAuthSettings,
         )
     }
 
@@ -195,6 +205,32 @@ private class ClientConfigParser(
         )
     }
 
+    private fun parseOAuth(): OAuthSettings {
+        val scopes = mutableListOf<String>()
+        var authorizationEndpoint: String? = null
+        var tokenEndpoint: String? = null
+
+        readElement { eventType ->
+            if (eventType == XmlPullParser.START_TAG) {
+                when (pullParser.name) {
+                    "scope" -> readScope(scopes)
+                    "authURL" -> authorizationEndpoint = readUrl()
+                    "tokenURL" -> tokenEndpoint = readUrl()
+                }
+            }
+        }
+
+        val finalScopes = scopes.toList()
+        val finalAuthorizationEndpoint = authorizationEndpoint ?: parserError("Missing 'authURL' element")
+        val finalTokenEndpoint = tokenEndpoint ?: parserError("Missing 'tokenURL' element")
+
+        return OAuthSettings(
+            finalScopes,
+            finalAuthorizationEndpoint,
+            finalTokenEndpoint,
+        )
+    }
+
     private fun readHostname(): String {
         val hostNameText = readText()
         val hostName = hostNameText.replaceVariables()
@@ -216,6 +252,17 @@ private class ClientConfigParser(
     }
 
     private fun readSocketType() = readText().toConnectionSecurity()
+
+    private fun readScope(scopes: MutableList<String>) {
+        val scope = readText()
+        scopes.add(scope)
+    }
+
+    private fun readUrl(): String {
+        val url = readText()
+        return url.takeIf { it.isValidURL() }
+            ?: parserError("Invalid URL: '$url'")
+    }
 
     private fun String.toAuthenticationType(): AuthenticationType? {
         return when (this) {
@@ -289,6 +336,11 @@ private class ClientConfigParser(
 
     @Suppress("MagicNumber")
     private fun Int.isValidPort() = this in 0..65535
+
+    private fun String.isValidURL(): Boolean {
+        val url = this.toHttpUrlOrNull()
+        return url != null
+    }
 
     private fun String.replaceVariables(): String {
         return replace("%EMAILDOMAIN%", domain)

@@ -15,6 +15,7 @@ import app.k9mail.autodiscovery.api.AuthenticationType
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.autodiscovery.api.ConnectionSecurity
 import app.k9mail.autodiscovery.api.ImapServerSettings
+import app.k9mail.autodiscovery.api.OAuthSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
 import app.k9mail.core.common.net.toHostname
 import app.k9mail.core.common.net.toPort
@@ -124,6 +125,11 @@ internal fun AutoDiscoveryResultBodyViewPreview() {
                     connectionSecurity = ConnectionSecurity.TLS,
                     authenticationTypes = listOf(AuthenticationType.PasswordEncrypted),
                     username = "",
+                ),
+                oAuthSettings = OAuthSettings(
+                    scopes = listOf("openid", "profile", "email", "groups"),
+                    authorizationEndpoint = "https://auth.example.com/api/oidc/authorization",
+                    tokenEndpoint = "https://auth.example.com/api/oidc/token",
                 ),
                 isTrusted = true,
                 source = "preview",

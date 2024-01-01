@@ -1,6 +1,7 @@
 package app.k9mail.autodiscovery.autoconfig
 
 import app.k9mail.autodiscovery.api.IncomingServerSettings
+import app.k9mail.autodiscovery.api.OAuthSettings
 import app.k9mail.autodiscovery.api.OutgoingServerSettings
 
 /**
@@ -13,6 +14,7 @@ internal sealed interface AutoconfigParserResult {
     data class Settings(
         val incomingServerSettings: IncomingServerSettings,
         val outgoingServerSettings: OutgoingServerSettings,
+        val oAuthSettings: OAuthSettings? = null,
     ) : AutoconfigParserResult
 
     /**

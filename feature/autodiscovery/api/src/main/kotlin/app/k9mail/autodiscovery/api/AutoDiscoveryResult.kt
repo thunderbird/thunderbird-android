@@ -12,6 +12,7 @@ sealed interface AutoDiscoveryResult {
     data class Settings(
         val incomingServerSettings: IncomingServerSettings,
         val outgoingServerSettings: OutgoingServerSettings,
+        var oAuthSettings: OAuthSettings?,
 
         /**
          * Indicates whether the mail server settings lookup was using only trusted channels.

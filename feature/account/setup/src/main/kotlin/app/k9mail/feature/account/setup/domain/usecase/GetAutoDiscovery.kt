@@ -32,14 +32,19 @@ internal class GetAutoDiscovery(
 
         val incomingServerSettings = settings.incomingServerSettings as ImapServerSettings
         val outgoingServerSettings = settings.outgoingServerSettings as SmtpServerSettings
+        val oAuthSettings = settings.oAuthSettings
+
+        val oAuthSettingsInAutoDiscoveryResult = oAuthSettings != null
 
         val incomingAuthenticationTypes = cleanAuthenticationTypes(
             authenticationTypes = incomingServerSettings.authenticationTypes,
             hostname = incomingServerSettings.hostname.value,
+            oAuthSettingsInAutoDiscoveryResult,
         )
         val outgoingAuthenticationTypes = cleanAuthenticationTypes(
             authenticationTypes = outgoingServerSettings.authenticationTypes,
             hostname = outgoingServerSettings.hostname.value,
+            oAuthSettingsInAutoDiscoveryResult,
         )
 
         return if (incomingAuthenticationTypes.isNotEmpty() && outgoingAuthenticationTypes.isNotEmpty()) {
@@ -59,8 +64,10 @@ internal class GetAutoDiscovery(
     private fun cleanAuthenticationTypes(
         authenticationTypes: List<AuthenticationType>,
         hostname: String,
+        oAuthSettingsInAutoDiscoveryResult: Boolean,
     ): List<AuthenticationType> {
-        return if (AuthenticationType.OAuth2 in authenticationTypes && !isOAuthSupportedFor(hostname)) {
+        return if (AuthenticationType.OAuth2 in authenticationTypes && !isOAuthSupportedFor(hostname)
+            && !oAuthSettingsInAutoDiscoveryResult) {
             // OAuth2 is not supported for this hostname; remove it from the list of supported authentication types
             authenticationTypes.filter { it != AuthenticationType.OAuth2 }
         } else {
