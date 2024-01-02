@@ -208,17 +208,14 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             findPreference<NotificationSoundPreference>(PREFERENCE_NOTIFICATION_SOUND)?.let { preference ->
                 notificationSoundPreference = preference
-                preference.isEnabled = false
             }
 
             findPreference<ListPreference>(PREFERENCE_NOTIFICATION_LIGHT)?.let { preference ->
                 notificationLightPreference = preference
-                preference.isEnabled = false
             }
 
             findPreference<VibrationPreference>(PREFERENCE_NOTIFICATION_VIBRATION)?.let { preference ->
                 notificationVibrationPreference = preference
-                preference.isEnabled = false
             }
 
             findPreference<NotificationsPreference>(PREFERENCE_NOTIFICATION_SETTINGS_MESSAGES)?.let {
@@ -232,6 +229,8 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
                     notificationChannelManager.getChannelIdFor(account, ChannelType.MISCELLANEOUS)
                 }
             }
+
+            updateNotificationPreferences(account)
         } else {
             findPreference<PreferenceCategory>(PREFERENCE_NOTIFICATION_CHANNELS).remove()
         }
@@ -251,15 +250,9 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         notificationSettingsUpdater.updateNotificationSettings(account)
         val notificationSettings = account.notificationSettings
 
-        notificationSoundPreference?.let { preference ->
-            preference.setNotificationSound(notificationSettings.ringtone?.toUri())
-            preference.isEnabled = true
-        }
+        notificationSoundPreference?.setNotificationSound(notificationSettings.ringtone?.toUri())
 
-        notificationLightPreference?.let { preference ->
-            preference.value = notificationSettings.light.name
-            preference.isEnabled = true
-        }
+        notificationLightPreference?.value = notificationSettings.light.name
 
         notificationVibrationPreference?.let { preference ->
             val notificationVibration = notificationSettings.vibration
@@ -268,7 +261,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
                 vibratePattern = notificationVibration.pattern,
                 vibrationTimes = notificationVibration.repeatCount,
             )
-            preference.isEnabled = true
         }
     }
 
