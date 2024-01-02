@@ -197,9 +197,7 @@ class SpecialFoldersViewModelTest {
 
         testSubject.event(Event.OnNextClicked)
 
-        turbines.assertThatAndStateTurbineConsumed {
-            isEqualTo(initialState.copy(isLoading = false))
-        }
+        assertThat(turbines.awaitStateItem()).isEqualTo(initialState.copy(isLoading = false))
 
         turbines.assertThatAndEffectTurbineConsumed {
             isEqualTo(Effect.NavigateNext)
@@ -245,7 +243,7 @@ class SpecialFoldersViewModelTest {
 
     @Test
     fun `should show form when OnRetryClicked event received`() = runTest {
-        val initialState = State(error = SpecialFoldersContract.Failure.SaveFailed("error"))
+        val initialState = State(error = SpecialFoldersContract.Failure.LoadFoldersFailed("irrelevant"))
         val testSubject = createTestSubject(initialState = initialState)
         val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
 

@@ -9,7 +9,6 @@ import app.k9mail.feature.account.common.domain.entity.SpecialFolderSettings
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.Effect
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.Event
-import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.Failure.SaveFailed
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.FormEvent
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.State
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.ViewModel
@@ -78,7 +77,11 @@ class SpecialFoldersViewModel(
                             isSuccess = true,
                         )
                     }
+
                     saveSpecialFolderSettings()
+
+                    delay(CONTINUE_NEXT_DELAY)
+                    navigateNext()
                 }
             }
         }
@@ -100,44 +103,28 @@ class SpecialFoldersViewModel(
         }
     }
 
-    @Suppress("TooGenericExceptionCaught")
-    private suspend fun saveSpecialFolderSettings() {
+    private fun saveSpecialFolderSettings() {
         val formState = state.value.formState
 
-        try {
-            accountStateRepository.setSpecialFolderSettings(
-                SpecialFolderSettings(
-                    archiveSpecialFolderOption = formState.selectedArchiveSpecialFolderOption,
-                    draftsSpecialFolderOption = formState.selectedDraftsSpecialFolderOption,
-                    sentSpecialFolderOption = formState.selectedSentSpecialFolderOption,
-                    spamSpecialFolderOption = formState.selectedSpamSpecialFolderOption,
-                    trashSpecialFolderOption = formState.selectedTrashSpecialFolderOption,
-                ),
+        accountStateRepository.setSpecialFolderSettings(
+            SpecialFolderSettings(
+                archiveSpecialFolderOption = formState.selectedArchiveSpecialFolderOption,
+                draftsSpecialFolderOption = formState.selectedDraftsSpecialFolderOption,
+                sentSpecialFolderOption = formState.selectedSentSpecialFolderOption,
+                spamSpecialFolderOption = formState.selectedSpamSpecialFolderOption,
+                trashSpecialFolderOption = formState.selectedTrashSpecialFolderOption,
+            ),
+        )
+        updateState { state ->
+            state.copy(
+                isLoading = false,
             )
-            updateState { state ->
-                state.copy(
-                    isLoading = false,
-                )
-            }
-        } catch (exception: Exception) {
-            Timber.e(exception, "Error while saving special folders")
-            updateState { state ->
-                state.copy(
-                    isLoading = false,
-                    error = SaveFailed(exception.message ?: "unknown error"),
-                )
-            }
-            return
         }
-
-        delay(CONTINUE_NEXT_DELAY)
-        navigateNext()
     }
 
     private fun onNextClicked() {
-        viewModelScope.launch {
-            saveSpecialFolderSettings()
-        }
+        saveSpecialFolderSettings()
+        navigateNext()
     }
 
     private fun navigateNext() {
