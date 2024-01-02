@@ -6,7 +6,7 @@ gradle = "8.5"
 androidGradlePlugin = "8.2.0"
 ktlint = "1.0.1"
 
-kotlin = "1.9.20"
+kotlin = "1.9.21"
 kotlinxCoroutines = "1.7.3"
 jetbrainsAnnotations = "24.0.1"
 androidxAppCompat = "1.6.1"
@@ -21,7 +21,7 @@ androidxCoreSplashscreen = "1.0.1"
 androidxPreference = "1.2.1"
 androidxDrawerLayout = "1.1.1"
 androidxTransition = "1.4.1"
-androidxComposeCompiler = "1.5.5"
+androidxComposeCompiler = "1.5.7"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
 androidxComposeBom = "2023.10.01"
 androidxComposeMaterial = "1.5.4"
@@ -45,7 +45,7 @@ forkhandlesBom = "2.10.2.0"
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 android-lint = { id = "com.android.lint", version.ref = "androidGradlePlugin" }
-ksp = "com.google.devtools.ksp:1.9.20-1.0.14"
+ksp = "com.google.devtools.ksp:1.9.21-1.0.16"
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
@@ -62,7 +62,7 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.5.0"
-kotlinx-collections-immutable = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.6"
+kotlinx-collections-immutable = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.7"
 jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrainsAnnotations" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidxAppCompat" }
 androidx-activity = { module = "androidx.activity:activity", version.ref = "androidxActivity" }
@@ -112,7 +112,7 @@ materialdrawer = "com.mikepenz:materialdrawer:8.4.5"
 preferencex = { module = "com.takisoft.preferencex:preferencex", version.ref = "preferencesFix" }
 preferencex-datetimepicker = { module = "com.takisoft.preferencex:preferencex-datetimepicker", version.ref = "preferencesFix" }
 preferencex-colorpicker = { module = "com.takisoft.preferencex:preferencex-colorpicker", version.ref = "preferencesFix" }
-okio = "com.squareup.okio:okio:3.6.0"
+okio = "com.squareup.okio:okio:3.7.0"
 moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
 moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
 timber = "com.jakewharton.timber:timber:5.0.1"
