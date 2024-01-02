@@ -94,7 +94,7 @@ class AuthViewModel(
 
     private suspend fun startLogin(account: Account) {
         val authRequestIntentResult = withContext(Dispatchers.IO) {
-            getOAuthRequestIntent.execute(account.incomingServerSettings.host!!, account.email)
+            getOAuthRequestIntent.execute(account.incomingServerSettings.host!!, account.email, null)
         }
 
         when (authRequestIntentResult) {

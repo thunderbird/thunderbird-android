@@ -1,6 +1,7 @@
 package app.k9mail.feature.account.oauth.domain
 
 import android.content.Intent
+import app.k9mail.autodiscovery.api.OAuthSettings
 import app.k9mail.core.common.oauth.OAuthConfiguration
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationIntentResult
@@ -12,7 +13,11 @@ interface AccountOAuthDomainContract {
 
     interface UseCase {
         fun interface GetOAuthRequestIntent {
-            fun execute(hostname: String, emailAddress: String): AuthorizationIntentResult
+            fun execute(
+                hostname: String,
+                emailAddress: String,
+                oAuthSettings: OAuthSettings?,
+            ): AuthorizationIntentResult
         }
 
         fun interface FinishOAuthSignIn {

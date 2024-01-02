@@ -1,6 +1,7 @@
 package app.k9mail.feature.account.oauth.ui
 
 import android.content.Intent
+import app.k9mail.autodiscovery.api.OAuthSettings
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import app.k9mail.feature.account.common.ui.WizardNavigationBarState
@@ -14,6 +15,7 @@ interface AccountOAuthContract {
     data class State(
         val hostname: String = "",
         val emailAddress: String = "",
+        val oAuthSettings: OAuthSettings? = null,
         val wizardNavigationBarState: WizardNavigationBarState = WizardNavigationBarState(
             isNextEnabled = false,
         ),

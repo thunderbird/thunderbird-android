@@ -14,6 +14,8 @@ dependencies {
     // TODO: Remove AccountOauth dependency
     implementation(projects.feature.account.oauth)
 
+    implementation(projects.feature.autodiscovery.api)
+
     compileOnly(projects.mail.protocols.imap)
 
     implementation(projects.plugins.openpgpApiLib.openpgpApi)

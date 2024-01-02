@@ -29,5 +29,7 @@ dependencies {
     implementation(projects.feature.account.oauth)
     implementation(projects.feature.account.server.certificate)
 
+    implementation(projects.feature.autodiscovery.api)
+
     testImplementation(projects.core.ui.compose.testing)
 }

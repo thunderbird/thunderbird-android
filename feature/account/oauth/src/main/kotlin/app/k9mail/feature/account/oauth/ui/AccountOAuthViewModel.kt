@@ -48,6 +48,7 @@ class AccountOAuthViewModel(
         val result = getOAuthRequestIntent.execute(
             hostname = state.value.hostname,
             emailAddress = state.value.emailAddress,
+            oAuthSettings = state.value.oAuthSettings,
         )
 
         when (result) {

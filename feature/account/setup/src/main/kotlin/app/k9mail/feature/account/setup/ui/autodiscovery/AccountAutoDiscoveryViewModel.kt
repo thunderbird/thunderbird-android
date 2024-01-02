@@ -154,12 +154,14 @@ internal class AccountAutoDiscoveryViewModel(
     private fun updateAutoDiscoverySettings(settings: AutoDiscoveryResult.Settings) {
         val imapServerSettings = settings.incomingServerSettings as ImapServerSettings
         val isOAuth = imapServerSettings.authenticationTypes.first() == AutoDiscoveryAuthenticationType.OAuth2
+        val oAuthSettings = settings.oAuthSettings
 
         if (isOAuth) {
             oAuthViewModel.initState(
                 AccountOAuthContract.State(
                     hostname = imapServerSettings.hostname.value,
                     emailAddress = state.value.emailAddress.value,
+                    oAuthSettings = oAuthSettings,
                 ),
             )
         }

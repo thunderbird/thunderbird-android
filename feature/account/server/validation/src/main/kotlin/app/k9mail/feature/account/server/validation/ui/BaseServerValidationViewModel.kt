@@ -95,6 +95,7 @@ abstract class BaseServerValidationViewModel(
                 AccountOAuthContract.State(
                     hostname = hostname,
                     emailAddress = emailAddress,
+                    oAuthSettings = null,
                 ),
             )
         }

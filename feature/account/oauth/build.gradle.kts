@@ -24,6 +24,8 @@ dependencies {
 
     implementation(projects.feature.account.common)
 
+    implementation(projects.feature.autodiscovery.api)
+
     implementation(libs.appauth)
     implementation(libs.androidx.compose.material)
     implementation(libs.timber)
