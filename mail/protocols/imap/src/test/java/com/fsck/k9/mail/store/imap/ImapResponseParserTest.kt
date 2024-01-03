@@ -12,7 +12,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import assertk.assertions.isTrue
 import assertk.assertions.prop
 import com.fsck.k9.mail.filter.FixedLengthInputStream
@@ -370,7 +370,7 @@ class ImapResponseParserTest {
 
         assertFailure {
             parser.readResponse(callback)
-        }.isSameAs(exception)
+        }.isSameInstanceAs(exception)
     }
 
     @Test

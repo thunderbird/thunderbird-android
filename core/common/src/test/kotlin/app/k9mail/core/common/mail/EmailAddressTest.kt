@@ -5,7 +5,7 @@ import assertk.assertThat
 import assertk.assertions.containsExactlyInAnyOrder
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import kotlin.test.Test
 
 class EmailAddressTest {
@@ -16,7 +16,7 @@ class EmailAddressTest {
 
         assertThat(emailAddress.localPart).isEqualTo("user")
         assertThat(emailAddress.encodedLocalPart).isEqualTo("user")
-        assertThat(emailAddress.domain).isSameAs(domain)
+        assertThat(emailAddress.domain).isSameInstanceAs(domain)
         assertThat(emailAddress.address).isEqualTo("user@DOMAIN.example")
         assertThat(emailAddress.normalizedAddress).isEqualTo("user@domain.example")
         assertThat(emailAddress.toString()).isEqualTo("user@DOMAIN.example")

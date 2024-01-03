@@ -3,9 +3,9 @@ package com.fsck.k9.mailstore
 import assertk.assertThat
 import assertk.assertions.isFalse
 import assertk.assertions.isNotNull
-import assertk.assertions.isNotSameAs
+import assertk.assertions.isNotSameInstanceAs
 import assertk.assertions.isNull
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import assertk.assertions.isTrue
 import com.fsck.k9.mail.Flag
 import java.util.UUID
@@ -55,7 +55,7 @@ class MessageListCacheTest {
 
         val cache2 = MessageListCache.getCache("u002")
 
-        assertThat(cache2).isNotSameAs(cache)
+        assertThat(cache2).isNotSameInstanceAs(cache)
     }
 
     @Test
@@ -64,7 +64,7 @@ class MessageListCacheTest {
 
         val cache2 = MessageListCache.getCache("u001")
 
-        assertThat(cache2).isSameAs(cache)
+        assertThat(cache2).isSameInstanceAs(cache)
     }
 
     @Test

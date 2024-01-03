@@ -4,7 +4,7 @@ import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.Body
 import com.fsck.k9.mail.FetchProfile
@@ -188,7 +188,7 @@ class Pop3FolderTest {
 
         val message = folder.getMessage(MESSAGE_SERVER_ID)
 
-        assertThat(message).isSameAs(messageList.first())
+        assertThat(message).isSameInstanceAs(messageList.first())
     }
 
     @Test
@@ -225,7 +225,7 @@ class Pop3FolderTest {
             MIME-Version: 1.0
             Content-type: text/plain
             Content-Transfer-Encoding: 7bit
-            
+
             this is some test text.
             """.trimIndent().crlf().byteInputStream()
         folder.open()
@@ -233,7 +233,7 @@ class Pop3FolderTest {
         val fetchProfile = FetchProfile()
         fetchProfile.add(FetchProfile.Item.BODY)
         stubbing(connection) {
-            on { readLine() } doReturn("1 100") doReturn(".")
+            on { readLine() } doReturn "1 100" doReturn "."
             on { inputStream } doReturn messageInputStream
         }
 

@@ -2,7 +2,7 @@ package com.fsck.k9.backend.imap
 
 import app.k9mail.backend.testing.InMemoryBackendStorage
 import assertk.assertThat
-import assertk.assertions.containsAll
+import assertk.assertions.containsAtLeast
 import assertk.assertions.containsExactlyInAnyOrder
 import assertk.assertions.isEmpty
 import assertk.assertions.isFalse
@@ -193,7 +193,7 @@ class ImapSyncTest {
 
         imapSync.sync(FOLDER_SERVER_ID, defaultSyncConfig, syncListener)
 
-        assertThat(backendFolder.getMessageFlags(messageServerId = "2")).containsAll(Flag.SEEN, Flag.ANSWERED)
+        assertThat(backendFolder.getMessageFlags(messageServerId = "2")).containsAtLeast(Flag.SEEN, Flag.ANSWERED)
     }
 
     @Test

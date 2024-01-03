@@ -4,7 +4,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.fsck.k9.Account
 import com.fsck.k9.Identity
 import com.fsck.k9.K9
@@ -25,7 +25,7 @@ class BaseNotificationDataCreatorTest {
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
-        assertThat(result.account).isSameAs(account)
+        assertThat(result.account).isSameInstanceAs(account)
     }
 
     @Test

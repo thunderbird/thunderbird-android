@@ -10,7 +10,7 @@ import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import assertk.assertions.isTrue
 import com.fsck.k9.Account
 import com.fsck.k9.controller.MessageReference
@@ -189,12 +189,12 @@ class NotificationDataStoreTest : RobolectricTest() {
         assertNotNull(resultOne)
         assertNotNull(resultTwo)
         assertThat(resultTwo.notificationData.activeNotifications).hasSize(1)
-        assertThat(resultTwo.notificationData.activeNotifications.first().content).isSameAs(content2)
+        assertThat(resultTwo.notificationData.activeNotifications.first().content).isSameInstanceAs(content2)
         assertThat(resultTwo.notificationStoreOperations).isEmpty()
         with(resultTwo.notificationHolder) {
             assertThat(notificationId).isEqualTo(resultOne.notificationHolder.notificationId)
             assertThat(timestamp).isEqualTo(resultOne.notificationHolder.timestamp)
-            assertThat(content).isSameAs(content2)
+            assertThat(content).isSameInstanceAs(content2)
         }
         assertThat(resultTwo.shouldCancelNotification).isFalse()
     }
@@ -226,7 +226,7 @@ class NotificationDataStoreTest : RobolectricTest() {
         val notificationHolder = resultTwo.notificationData.activeNotifications.first { notificationHolder ->
             notificationHolder.content.messageReference == content.messageReference
         }
-        assertThat(notificationHolder.content).isSameAs(content)
+        assertThat(notificationHolder.content).isSameInstanceAs(content)
     }
 
     private fun createAccount(): Account {

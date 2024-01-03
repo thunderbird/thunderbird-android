@@ -8,7 +8,7 @@ import assertk.assertions.containsExactly
 import assertk.assertions.hasMessage
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.FolderType
@@ -264,7 +264,7 @@ class RealImapStoreTest {
 
         val result = imapStore.getConnection()
 
-        assertThat(result).isSameAs(imapConnection)
+        assertThat(result).isSameInstanceAs(imapConnection)
     }
 
     @Test
@@ -277,8 +277,8 @@ class RealImapStoreTest {
         val resultOne = imapStore.getConnection()
         val resultTwo = imapStore.getConnection()
 
-        assertThat(resultOne).isSameAs(imapConnectionOne)
-        assertThat(resultTwo).isSameAs(imapConnectionTwo)
+        assertThat(resultOne).isSameInstanceAs(imapConnectionOne)
+        assertThat(resultTwo).isSameInstanceAs(imapConnectionTwo)
     }
 
     @Test
@@ -293,7 +293,7 @@ class RealImapStoreTest {
 
         val result = imapStore.getConnection()
 
-        assertThat(result).isSameAs(imapConnection)
+        assertThat(result).isSameInstanceAs(imapConnection)
     }
 
     @Test
@@ -311,7 +311,7 @@ class RealImapStoreTest {
 
         val result = imapStore.getConnection()
 
-        assertThat(result).isSameAs(imapConnectionTwo)
+        assertThat(result).isSameInstanceAs(imapConnectionTwo)
     }
 
     @Test
@@ -330,7 +330,7 @@ class RealImapStoreTest {
 
         val result = imapStore.getConnection()
 
-        assertThat(result).isSameAs(imapConnectionTwo)
+        assertThat(result).isSameInstanceAs(imapConnectionTwo)
     }
 
     @Test
@@ -349,7 +349,7 @@ class RealImapStoreTest {
 
         val result = imapStore.getConnection()
 
-        assertThat(result).isSameAs(imapConnectionTwo)
+        assertThat(result).isSameInstanceAs(imapConnectionTwo)
     }
 
     @Test
@@ -368,7 +368,7 @@ class RealImapStoreTest {
 
         val result = imapStore.getConnection()
 
-        assertThat(result).isSameAs(imapConnectionTwo)
+        assertThat(result).isSameInstanceAs(imapConnectionTwo)
     }
 
     private fun createMockConnection(connectionGeneration: Int = 1): ImapConnection {
