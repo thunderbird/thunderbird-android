@@ -3,11 +3,15 @@ package com.fsck.k9.account
 import android.content.Context
 import app.k9mail.core.common.mail.Protocols
 import app.k9mail.feature.account.common.domain.entity.Account
+import app.k9mail.feature.account.common.domain.entity.SpecialFolderOption
+import app.k9mail.feature.account.common.domain.entity.SpecialFolderSettings
 import app.k9mail.feature.account.setup.AccountSetupExternalContract
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
 import com.fsck.k9.Account.FolderMode
+import com.fsck.k9.Account.SpecialFolderSelection
 import com.fsck.k9.Core
 import com.fsck.k9.Preferences
+import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.autoDetectNamespace
@@ -15,6 +19,7 @@ import com.fsck.k9.mail.store.imap.ImapStoreSettings.createExtra
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.isSendClientId
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.isUseCompression
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
+import com.fsck.k9.mailstore.SpecialFolderUpdater
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -27,6 +32,7 @@ class AccountCreator(
     private val localFoldersCreator: SpecialLocalFoldersCreator,
     private val preferences: Preferences,
     private val context: Context,
+    private val messagingController: MessagingController,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : AccountSetupExternalContract.AccountCreator {
 
@@ -67,13 +73,64 @@ class AccountCreator(
 
         localFoldersCreator.createSpecialLocalFolders(newAccount)
 
+        account.specialFolderSettings?.let { specialFolderSettings ->
+            newAccount.setSpecialFolders(specialFolderSettings)
+        }
+
         newAccount.markSetupFinished()
 
         preferences.saveAccount(newAccount)
 
         Core.setServicesEnabled(context)
 
+        messagingController.refreshFolderListBlocking(newAccount)
+
         return newAccount.uuid
+    }
+
+    /**
+     * Set special folders by name.
+     *
+     * Since the folder list hasn't been synced yet, we don't have database IDs for the folders. So we use the same
+     * mechanism that is used when importing settings. See [SpecialFolderUpdater] for details.
+     */
+    private fun K9Account.setSpecialFolders(specialFolders: SpecialFolderSettings) {
+        importedArchiveFolder = specialFolders.archiveSpecialFolderOption.toFolderServerId()
+        archiveFolderSelection = specialFolders.archiveSpecialFolderOption.toFolderSelection()
+
+        importedDraftsFolder = specialFolders.draftsSpecialFolderOption.toFolderServerId()
+        draftsFolderSelection = specialFolders.draftsSpecialFolderOption.toFolderSelection()
+
+        importedSentFolder = specialFolders.sentSpecialFolderOption.toFolderServerId()
+        sentFolderSelection = specialFolders.sentSpecialFolderOption.toFolderSelection()
+
+        importedSpamFolder = specialFolders.spamSpecialFolderOption.toFolderServerId()
+        spamFolderSelection = specialFolders.spamSpecialFolderOption.toFolderSelection()
+
+        importedTrashFolder = specialFolders.trashSpecialFolderOption.toFolderServerId()
+        trashFolderSelection = specialFolders.trashSpecialFolderOption.toFolderSelection()
+    }
+
+    private fun SpecialFolderOption.toFolderServerId(): String? {
+        return when (this) {
+            is SpecialFolderOption.None -> null
+            is SpecialFolderOption.Regular -> remoteFolder.serverId.serverId
+            is SpecialFolderOption.Special -> remoteFolder.serverId.serverId
+        }
+    }
+
+    private fun SpecialFolderOption.toFolderSelection(): SpecialFolderSelection {
+        return when (this) {
+            is SpecialFolderOption.None -> {
+                if (isAutomatic) SpecialFolderSelection.AUTOMATIC else SpecialFolderSelection.MANUAL
+            }
+            is SpecialFolderOption.Regular -> {
+                SpecialFolderSelection.MANUAL
+            }
+            is SpecialFolderOption.Special -> {
+                if (isAutomatic) SpecialFolderSelection.AUTOMATIC else SpecialFolderSelection.MANUAL
+            }
+        }
     }
 }
 
