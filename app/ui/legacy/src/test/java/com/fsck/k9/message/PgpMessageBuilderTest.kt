@@ -14,7 +14,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.fsck.k9.Account.QuoteStyle
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.Identity
@@ -272,7 +272,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         verifyNoMoreInteractions(mockCallback)
 
         val pendingIntent = captor.value
-        assertThat(pendingIntent).isSameAs(mockPendingIntent)
+        assertThat(pendingIntent).isSameInstanceAs(mockPendingIntent)
     }
 
     @Test

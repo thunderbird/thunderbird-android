@@ -4,7 +4,7 @@ import android.os.Bundle
 import app.k9mail.core.android.testing.RobolectricTest
 import assertk.assertThat
 import assertk.assertions.isFalse
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import assertk.assertions.isTrue
 import com.fsck.k9.Identity
 import com.fsck.k9.mail.Address
@@ -45,7 +45,7 @@ class ReplyToPresenterTest : RobolectricTest() {
 
         val result = replyToPresenter.getAddresses()
 
-        assertThat(result).isSameAs(addresses)
+        assertThat(result).isSameInstanceAs(addresses)
     }
 
     @Test

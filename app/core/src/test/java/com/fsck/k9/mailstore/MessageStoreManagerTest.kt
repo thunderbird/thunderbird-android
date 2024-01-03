@@ -1,7 +1,7 @@
 package com.fsck.k9.mailstore
 
 import assertk.assertThat
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.fsck.k9.Account
 import com.fsck.k9.AccountRemovedListener
 import com.fsck.k9.preferences.AccountManager
@@ -26,8 +26,8 @@ class MessageStoreManagerTest {
         val accountManager = mock<AccountManager>()
         val messageStoreManager = MessageStoreManager(accountManager, messageStoreFactory)
 
-        assertThat(messageStoreManager.getMessageStore(account)).isSameAs(messageStore1)
-        assertThat(messageStoreManager.getMessageStore(account)).isSameAs(messageStore1)
+        assertThat(messageStoreManager.getMessageStore(account)).isSameInstanceAs(messageStore1)
+        assertThat(messageStoreManager.getMessageStore(account)).isSameInstanceAs(messageStore1)
     }
 
     @Test
@@ -38,11 +38,11 @@ class MessageStoreManagerTest {
         }
         val messageStoreManager = MessageStoreManager(accountManager, messageStoreFactory)
 
-        assertThat(messageStoreManager.getMessageStore(account)).isSameAs(messageStore1)
+        assertThat(messageStoreManager.getMessageStore(account)).isSameInstanceAs(messageStore1)
 
         listenerCaptor.firstValue.onAccountRemoved(account)
 
-        assertThat(messageStoreManager.getMessageStore(account)).isSameAs(messageStore2)
+        assertThat(messageStoreManager.getMessageStore(account)).isSameInstanceAs(messageStore2)
     }
 
     private fun <T : Any> KStubbing<T>.doNothingOn(block: T.() -> Any) {

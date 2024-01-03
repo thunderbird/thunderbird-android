@@ -6,7 +6,7 @@ import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.containsOnly
 import assertk.assertions.isEmpty
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import assertk.assertions.isTrue
 import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperationCallback
 import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperations
@@ -65,7 +65,7 @@ class StoragePersisterTest : K9RobolectricTest() {
 
         assertFailure {
             storagePersister.doInTransaction(operationCallback)
-        }.isSameAs(exception)
+        }.isSameInstanceAs(exception)
 
         val values = storagePersister.loadValues()
 
