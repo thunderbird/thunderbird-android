@@ -124,31 +124,31 @@ class GetSpecialFolderOptionsTest {
 
         assertThat(folders.archiveSpecialFolderOptions[0]).isEqualTo(
             SpecialFolderOption.Special(
-                remoteFolder = ARCHIVE_FOLDER_2,
+                remoteFolder = ARCHIVE_FOLDER_1,
                 isAutomatic = true,
             ),
         )
         assertThat(folders.draftsSpecialFolderOptions[0]).isEqualTo(
             SpecialFolderOption.Special(
-                remoteFolder = DRAFTS_FOLDER_2,
+                remoteFolder = DRAFTS_FOLDER_1,
                 isAutomatic = true,
             ),
         )
         assertThat(folders.sentSpecialFolderOptions[0]).isEqualTo(
             SpecialFolderOption.Special(
-                remoteFolder = SENT_FOLDER_2,
+                remoteFolder = SENT_FOLDER_1,
                 isAutomatic = true,
             ),
         )
         assertThat(folders.spamSpecialFolderOptions[0]).isEqualTo(
             SpecialFolderOption.Special(
-                remoteFolder = SPAM_FOLDER_2,
+                remoteFolder = SPAM_FOLDER_1,
                 isAutomatic = true,
             ),
         )
         assertThat(folders.trashSpecialFolderOptions[0]).isEqualTo(
             SpecialFolderOption.Special(
-                remoteFolder = TRASH_FOLDER_2,
+                remoteFolder = TRASH_FOLDER_1,
                 isAutomatic = true,
             ),
         )
@@ -299,6 +299,8 @@ class GetSpecialFolderOptionsTest {
                 SpecialFolderOption.Special(
                     remoteFolder = DRAFTS_FOLDER_1,
                 ),
+                SpecialFolderOption.Regular(REGULAR_FOLDER_1),
+                SpecialFolderOption.Regular(REGULAR_FOLDER_2),
                 SpecialFolderOption.Special(
                     remoteFolder = SENT_FOLDER_1,
                 ),
@@ -308,8 +310,6 @@ class GetSpecialFolderOptionsTest {
                 SpecialFolderOption.Special(
                     remoteFolder = TRASH_FOLDER_1,
                 ),
-                SpecialFolderOption.Regular(REGULAR_FOLDER_1),
-                SpecialFolderOption.Regular(REGULAR_FOLDER_2),
             ).toTypedArray()
         }
 
