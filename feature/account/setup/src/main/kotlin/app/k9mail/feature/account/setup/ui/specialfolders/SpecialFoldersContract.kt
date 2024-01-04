@@ -56,8 +56,6 @@ interface SpecialFoldersContract {
     }
 
     sealed interface Failure {
-        val message: String
-
-        data class LoadFoldersFailed(override val message: String) : Failure
+        data class LoadFoldersFailed(val messageFromServer: String?) : Failure
     }
 }
