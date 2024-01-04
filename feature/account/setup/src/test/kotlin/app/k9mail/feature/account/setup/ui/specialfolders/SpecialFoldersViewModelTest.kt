@@ -142,7 +142,7 @@ class SpecialFoldersViewModelTest {
         val testSubject = createTestSubject(
             formUiModel = FakeSpecialFoldersFormUiModel(),
             getSpecialFolderOptions = {
-                throw FolderFetcherException(IllegalStateException("Failed to load folders"))
+                throw FolderFetcherException(IllegalStateException(), messageFromServer = "Failed to load folders")
             },
             initialState = initialState,
         )

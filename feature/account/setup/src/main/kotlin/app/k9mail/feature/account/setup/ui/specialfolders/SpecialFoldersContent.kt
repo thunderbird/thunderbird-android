@@ -29,6 +29,7 @@ import app.k9mail.feature.account.common.ui.loadingerror.rememberContentLoadingE
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.Event
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.State
+import app.k9mail.feature.account.common.R as CommonR
 
 @Composable
 fun SpecialFoldersContent(
@@ -52,9 +53,8 @@ fun SpecialFoldersContent(
                 )
             },
             error = {
-                ErrorView(
-                    title = stringResource(id = R.string.account_setup_special_folders_error_message),
-                    message = state.error?.message,
+                SpecialFoldersErrorView(
+                    failure = state.error!!,
                     onRetry = { onEvent(Event.OnRetryClicked) },
                 )
             },
@@ -112,6 +112,26 @@ fun SuccessView(
             )
         }
     }
+}
+
+@Composable
+private fun SpecialFoldersErrorView(
+    failure: SpecialFoldersContract.Failure,
+    onRetry: () -> Unit,
+) {
+    val message = when (failure) {
+        is SpecialFoldersContract.Failure.LoadFoldersFailed -> {
+            failure.messageFromServer?.let { messageFromServer ->
+                stringResource(id = CommonR.string.account_common_error_server_message, messageFromServer)
+            }
+        }
+    }
+
+    ErrorView(
+        title = stringResource(id = R.string.account_setup_special_folders_error_message),
+        message = message,
+        onRetry = onRetry,
+    )
 }
 
 @Preview(showBackground = true)
