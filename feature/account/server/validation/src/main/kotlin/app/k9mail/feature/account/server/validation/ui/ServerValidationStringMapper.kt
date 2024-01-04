@@ -4,6 +4,7 @@ import android.content.res.Resources
 import androidx.annotation.StringRes
 import app.k9mail.feature.account.server.validation.R
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Error
+import app.k9mail.feature.account.common.R as CommonR
 
 internal fun Error.toResourceString(resources: Resources): String {
     return when (this) {
@@ -12,7 +13,7 @@ internal fun Error.toResourceString(resources: Resources): String {
         is Error.AuthenticationError -> {
             resources.buildErrorString(
                 titleResId = R.string.account_server_validation_error_authentication,
-                detailsResId = R.string.account_server_validation_error_server_message,
+                detailsResId = CommonR.string.account_common_error_server_message,
                 detailsMessage = serverMessage,
             )
         }
@@ -28,7 +29,7 @@ internal fun Error.toResourceString(resources: Resources): String {
         is Error.ServerError -> {
             resources.buildErrorString(
                 titleResId = R.string.account_server_validation_error_server,
-                detailsResId = R.string.account_server_validation_error_server_message,
+                detailsResId = CommonR.string.account_common_error_server_message,
                 detailsMessage = serverMessage,
             )
         }
