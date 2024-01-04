@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.atom.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
@@ -64,7 +65,6 @@ fun SpecialFoldersContent(
                 SuccessView(
                     message = stringResource(id = R.string.account_setup_special_folders_success_message),
                     onEditClick = { onEvent(Event.OnEditClicked) },
-                    modifier = Modifier.fillMaxWidth(),
                 )
             } else {
                 SpecialFoldersFormContent(
@@ -86,12 +86,15 @@ fun SuccessView(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(MainTheme.spacings.default)
+            .padding(MainTheme.spacings.double)
             .then(modifier),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
     ) {
-        TextSubtitle1(text = message)
+        TextSubtitle1(
+            text = message,
+            textAlign = TextAlign.Center,
+        )
 
         Row(
             modifier = Modifier.height(MainTheme.sizes.larger),
@@ -131,17 +134,63 @@ private fun SpecialFoldersErrorView(
         title = stringResource(id = R.string.account_setup_special_folders_error_message),
         message = message,
         onRetry = onRetry,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(MainTheme.spacings.double),
     )
 }
 
 @Preview(showBackground = true)
 @Composable
-internal fun SpecialFoldersContentPreview() {
+internal fun SpecialFoldersContentLoadingPreview() {
+    PreviewWithThemes {
+        SpecialFoldersContent(
+            state = State(
+                isLoading = true,
+            ),
+            onEvent = {},
+            contentPadding = PaddingValues(),
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+internal fun SpecialFoldersContentFormPreview() {
     PreviewWithThemes {
         SpecialFoldersContent(
             state = State(
                 isLoading = false,
-                error = null,
+            ),
+            onEvent = {},
+            contentPadding = PaddingValues(),
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+internal fun SpecialFoldersContentSuccessPreview() {
+    PreviewWithThemes {
+        SpecialFoldersContent(
+            state = State(
+                isLoading = false,
+                isSuccess = true,
+            ),
+            onEvent = {},
+            contentPadding = PaddingValues(),
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+internal fun SpecialFoldersContentErrorPreview() {
+    PreviewWithThemes {
+        SpecialFoldersContent(
+            state = State(
+                isLoading = false,
+                error = SpecialFoldersContract.Failure.LoadFoldersFailed("Error"),
             ),
             onEvent = {},
             contentPadding = PaddingValues(),
