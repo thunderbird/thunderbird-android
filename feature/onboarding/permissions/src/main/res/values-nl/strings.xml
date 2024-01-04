@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="onboarding_permissions_contacts_description">Geef toegang om suggesties voor contacten te kunnen geven en namen en foto’s van contacten te kunnen tonen.</string>
+    <string name="onboarding_permissions_notifications_description">Schakel meldingen in, zodat u geen e-mailberichten mist.</string>
+    <string name="onboarding_permissions_notifications_title">Meldingen</string>
+    <string name="onboarding_permissions_screen_title">Verbeter de ervaring</string>
+    <string name="onboarding_permissions_contacts_title">Contacten</string>
+    <string name="onboarding_permissions_allow_button">Toestaan</string>
+    <string name="onboarding_permissions_skip_button">Overslaan</string>
+</resources>

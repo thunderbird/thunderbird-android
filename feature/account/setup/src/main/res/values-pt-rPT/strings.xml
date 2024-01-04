@@ -1,2 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_options_account_name_error_blank">Nome da conta não pode estar em branco.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Este endereço de e-mail não é permitido.</string>
+    <string name="account_setup_options_account_check_frequency_label">Frequência de verificação</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Configurar automaticamente</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Esta configuração não é confiável</string>
+    <string name="account_setup_create_account_created">Conta criada com sucesso</string>
+    <string name="account_setup_button_finish">Finalizar</string>
+    <string name="account_setup_options_email_signature_label">Assinatura de e-mail</string>
+    <string name="account_setup_options_email_display_count_label">Número de mensagens a mostrar</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Configurar manualmente</string>
+    <string name="account_setup_options_email_signature_error_blank">Assinatura de e-mail não pode ser vazia.</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">É mandatório para aprovar a configuração.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Recebemos a configuração do seu servidor de correio eletrónico através de uma ligação que não é tão segura como gostaríamos. Isto significa que existe uma pequena hipótese de alguém a poder ter alterado. Pode verificar novamente a configuração fornecida para se certificar de que está como deve estar?</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Editar configuração</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Este endereço de e-mail não é suportado.</string>
+    <string name="account_setup_error_unknown">Erro desconhecido</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Configuração não encontrada</string>
+    <string name="account_setup_create_account_creating">A criar conta…</string>
+    <string name="account_setup_options_top_bar_title">Opções da conta</string>
+    <string name="account_setup_options_account_name_label">Nome da conta</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Configuração encontrada</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">Endereço de email necessário.</string>
+    <string name="account_setup_options_display_name_label">Nome da visualização</string>
+    <string name="account_setup_auto_discovery_loading_error">Falha ao carregar configurações de email</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Eu confio nesta configuração</string>
+    <string name="account_setup_options_display_name_error_required">Nome da visualização é mandatória.</string>
+    <string name="account_setup_create_account_error">Ocorreu um erro ao tentar criar a conta</string>
+    <string name="account_setup_error_network">Rede</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Não reconhecido como um endereço de email válido.</string>
+    <string name="account_setup_options_email_check_frequency_never">Nunca</string>
+    <string name="account_setup_auto_discovery_loading_message">A procurar detalhes do email</string>
+    <string name="account_setup_options_section_sync_options_">Opções de sincronização</string>
+    <string name="account_setup_options_show_notifications_label">Mostrar notificações</string>
+    <string name="account_setup_options_section_display_options">Opções de visualização</string>
+    <string name="account_setup_title">K-9 Mail</string>
+</resources>

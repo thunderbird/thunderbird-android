@@ -31,4 +31,5 @@
     <string name="account_server_settings_password_authentication_title">Deine Identität bestätigen</string>
     <string name="account_server_settings_password_authentication_subtitle">Entsperren, um dein Passwort anzuzeigen</string>
     <string name="account_server_settings_password_authentication_screen_lock_required">Um dein Passwort hier anzuzeigen, aktiviere die Displaysperre auf diesem Gerät.</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Ungültige IP oder ungültiger Hostname</string>
 </resources>

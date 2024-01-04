@@ -37,4 +37,18 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Questo indirizzo email non è supportato</string>
     <string name="account_setup_create_account_creating">Creazione account…</string>
     <string name="account_setup_create_account_error">Errore nel tentativo di creazione account</string>
+    <string name="account_setup_special_folders_success_message">Tutte le cartelle speciali sono state configurate automaticamente dal server</string>
+    <string name="account_setup_special_folders_folder_automatic">Automatico (%s)</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Cartella bozze</string>
+    <string name="account_setup_special_folders_error_message">Impossibile recuperare la lista delle cartelle dal server</string>
+    <string name="account_setup_special_folders_loading_message">Recupero lista cartelle…</string>
+    <string name="account_setup_special_folders_form_description">Imposta le cartelle speciali per il tuo account</string>
+    <string name="account_setup_special_folders_sent_folder_label">Cartella inviati</string>
+    <string name="account_setup_special_folders_folder_none">Nessuno</string>
+    <string name="account_setup_special_folders_top_bar_title">Cartelle speciali</string>
+    <string name="account_setup_special_folders_trash_folder_label">Cartella cestino</string>
+    <string name="account_setup_special_folders_archive_folder_label">Cartella archivio</string>
+    <string name="account_setup_special_folders_edit_folders_button_label">Modifica cartelle speciali</string>
+    <string name="account_setup_special_folders_spam_folder_label">Cartella spam</string>
+    <string name="account_setup_special_folders_form_description_automatic">L\'opzione \"Automatico\" seguirà le modifiche apportate dal server. Il valore corrente del server viene visualizzato tra parentesi.</string>
 </resources>

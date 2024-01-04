@@ -37,4 +37,18 @@
     <string name="account_setup_create_account_created">成功创建了账户</string>
     <string name="account_setup_create_account_creating">创建账户中…</string>
     <string name="account_setup_create_account_error">尝试创建账户时出错</string>
+    <string name="account_setup_special_folders_success_message">服务器已自动配置所有特殊文件夹。</string>
+    <string name="account_setup_special_folders_folder_automatic">自动（%s）</string>
+    <string name="account_setup_special_folders_drafts_folder_label">草稿文件夹</string>
+    <string name="account_setup_special_folders_error_message">未能从服务器获取文件夹列表</string>
+    <string name="account_setup_special_folders_loading_message">获取文件夹列表中…</string>
+    <string name="account_setup_special_folders_form_description">请指定账户的特殊文件夹。</string>
+    <string name="account_setup_special_folders_sent_folder_label">已发送文件夹</string>
+    <string name="account_setup_special_folders_folder_none">无</string>
+    <string name="account_setup_special_folders_top_bar_title">特殊文件夹</string>
+    <string name="account_setup_special_folders_trash_folder_label">回收站文件夹</string>
+    <string name="account_setup_special_folders_archive_folder_label">存档文件夹</string>
+    <string name="account_setup_special_folders_edit_folders_button_label">编辑特殊文件夹</string>
+    <string name="account_setup_special_folders_spam_folder_label">垃圾邮件文件夹</string>
+    <string name="account_setup_special_folders_form_description_automatic">“自动”条目会自动遵照服务器所做的更改。当前的服务器值显示在圆括号中。</string>
 </resources>

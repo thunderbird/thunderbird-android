@@ -2,7 +2,6 @@
 <resources>
     <string name="account_server_validation_incoming_loading_message">Проверява настройките на сървър за входяща поща…</string>
     <string name="account_server_validation_error_authentication">Грешка при автентикация</string>
-    <string name="account_server_validation_error_certificate">Грешка в сертификата</string>
     <string name="account_server_validation_outgoing_loading_message">Проверява настройките на сървър за изходяща поща…</string>
     <string name="account_server_validation_error_network">Мрежова грешка</string>
     <string name="account_server_validation_outgoing_success">Настройките на сървър за изходяща поща са валидни</string>

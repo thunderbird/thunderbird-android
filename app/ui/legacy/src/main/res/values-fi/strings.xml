@@ -1012,4 +1012,7 @@ Voit säilyttää tämän viestin ja käyttää sitä varmuuskopioina salausavai
     <string name="general_settings_post_remove_action_show_previous_message">Näytä edellinen viesti</string>
     <string name="general_settings_post_remove_action_show_next_message">Näytä seuraava viesti</string>
     <string name="general_settings_post_remove_action_title">Viestin poistamisen tai siirtämisen jälkeen</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">Pysy nykyisessä viestissä</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Kun viesti on merkitty lukemattomaksi</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">Palaa viestiluetteloon</string>
 </resources>

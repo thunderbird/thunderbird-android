@@ -34,4 +34,21 @@
     <string name="account_setup_options_section_display_options">Mundësi shfaqjeje</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Kjo adresë email nuk lejohet.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Kjo adresë email nuk mbulohet.</string>
+    <string name="account_setup_special_folders_success_message">Krejt dosjet speciale janë formësuar automatikisht nga shërbyesi.</string>
+    <string name="account_setup_special_folders_folder_automatic">Automatike (%s)</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Dosje skicash</string>
+    <string name="account_setup_create_account_created">Llogaria u krijua me sukses</string>
+    <string name="account_setup_special_folders_error_message">S’u arrit të sillej listë dosjesh nga shërbyesi</string>
+    <string name="account_setup_special_folders_loading_message">Po sillet listë dosjesh…</string>
+    <string name="account_setup_special_folders_form_description">Ju lutemi, përcaktoni dosjet speciale për llogarinë tuaj.</string>
+    <string name="account_setup_special_folders_sent_folder_label">Dosje të dërguarish</string>
+    <string name="account_setup_special_folders_folder_none">Asnjë</string>
+    <string name="account_setup_special_folders_top_bar_title">Dosje speciale</string>
+    <string name="account_setup_special_folders_trash_folder_label">Dosje hedhurinash</string>
+    <string name="account_setup_create_account_creating">Po krijohet llogari…</string>
+    <string name="account_setup_special_folders_archive_folder_label">Dosje arkiv</string>
+    <string name="account_setup_special_folders_edit_folders_button_label">Përpunoni dosje speciale</string>
+    <string name="account_setup_create_account_error">Ndodhi një gabim teksa provohej të krijohej llogaria</string>
+    <string name="account_setup_special_folders_spam_folder_label">Dosje të padëshiruarish</string>
+    <string name="account_setup_special_folders_form_description_automatic">Zëri “Automatik” do të pasojë ndryshime të bëra nga shërbyesi automatikisht. Vlera aktuale e shërbyesit shfaqet në kllapa.</string>
 </resources>

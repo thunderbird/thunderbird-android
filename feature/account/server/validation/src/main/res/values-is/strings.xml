@@ -2,7 +2,6 @@
 <resources>
     <string name="account_server_validation_incoming_loading_message">Athuga stillingar inn-póstþjónsins…</string>
     <string name="account_server_validation_error_authentication">Auðkenningarvilla</string>
-    <string name="account_server_validation_error_certificate">Villa í skilríki</string>
     <string name="account_server_validation_outgoing_loading_message">Athuga stillingar sendinga-póstþjónsins…</string>
     <string name="account_server_validation_error_network">Villa í netkerfi</string>
     <string name="account_server_validation_outgoing_success">Stillingar sendinga-póstþjóns eru gildar</string>
@@ -12,4 +11,11 @@
     <string name="account_server_validation_incoming_success">Stillingar inn-póstþjóns eru gildar</string>
     <string name="account_server_validation_incoming_loading_error">Athugun á stillingum inn-póstþjónsins mistókst</string>
     <string name="account_server_validation_error_server">Villa á þjóni</string>
+    <string name="account_server_validation_error_missing_server_capability">Vantar upplýsingar um getu póstþjóns</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">Skilríki biðlara var ekki aðgengilegt</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Póstþjóninn vantar þennan eiginleika:
+\n%s</string>
+    <string name="account_server_validation_error_client_certificate_expired">Skilríki biðlara er ekki lengur gilt</string>
+    <string name="account_server_validation_error_details">Nánar:
+\n%s</string>
 </resources>

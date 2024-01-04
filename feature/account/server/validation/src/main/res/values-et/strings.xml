@@ -2,7 +2,6 @@
 <resources>
     <string name="account_server_validation_incoming_loading_message">Kontrollime saabuva e-posti serveriseadistusi…</string>
     <string name="account_server_validation_error_authentication">Viga autentimisel</string>
-    <string name="account_server_validation_error_certificate">Vigane sertifikaat</string>
     <string name="account_server_validation_outgoing_loading_message">Kontrollime väljuva e-posti serveriseadistusi…</string>
     <string name="account_server_validation_error_network">Võrguühenduse viga</string>
     <string name="account_server_validation_outgoing_success">Väljuva e-posti serveriseadistused on korrektsed</string>
@@ -12,4 +11,11 @@
     <string name="account_server_validation_incoming_success">Saabuva e-posti serveriseadistused on korrektsed</string>
     <string name="account_server_validation_incoming_loading_error">Saabuva e-posti serveriseadistuste kontrollimine ei õnnestunud</string>
     <string name="account_server_validation_error_server">Serveri viga</string>
+    <string name="account_server_validation_error_missing_server_capability">Serveril puudub vajalik võimekus</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">Kliendisertifikaati ei õnnestunud laadida</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Serveril puudub vajalik võimekus:
+\n%s</string>
+    <string name="account_server_validation_error_client_certificate_expired">Kliendisertifikaadi kehtivus on lõppenud</string>
+    <string name="account_server_validation_error_details">Üksikasjalik teave:
+\n%s</string>
 </resources>

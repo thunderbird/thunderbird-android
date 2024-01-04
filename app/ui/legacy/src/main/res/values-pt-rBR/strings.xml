@@ -208,19 +208,19 @@
     <string name="message_discarded_toast">Mensagem descartada</string>
     <string name="message_saved_toast">Mensagem salva como rascunho</string>
     <string name="global_settings_flag_label">Exibir estrelas</string>
-    <string name="global_settings_flag_summary">Estrelas indicam mensagens sinalizadas</string>
+    <string name="global_settings_flag_summary">As estrelas indicam mensagens sinalizadas</string>
     <string name="global_settings_preview_lines_label">Linhas de visualização</string>
     <string name="global_settings_show_correspondent_names_label">Exibir nomes correspondentes</string>
     <string name="global_settings_show_correspondent_names_summary">Exibe os nomes correspondentes ao invés de seus endereços de e-mail</string>
-    <string name="global_settings_sender_above_subject_label">Correspondente acima do assunto</string>
+    <string name="global_settings_sender_above_subject_label">Remetente acima do assunto</string>
     <string name="global_settings_sender_above_subject_summary">Exibe os nomes correspondentes acima da linha de assunto ao invés de abaixo dela</string>
     <string name="global_settings_show_contact_name_label">Exibir nomes dos contatos</string>
-    <string name="global_settings_show_contact_name_summary">Nomeia os destinatários a partir dos Contatos, quando disponíveis</string>
+    <string name="global_settings_show_contact_name_summary">Nomear os destinatários a partir dos Contatos, quando disponíveis</string>
     <string name="global_settings_registered_name_color_label">Colorir contatos</string>
     <string name="global_settings_registered_name_color_changed">Colorir nomes em sua lista de contatos</string>
     <string name="general_settings_contact_name_color_label">Cor do nome do contato</string>
-    <string name="global_settings_messageview_fixedwidth_label">Fontes monoespaçadas</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Usa uma fonte monoespaçada ao exibir mensagens que contenham somente texto</string>
+    <string name="global_settings_messageview_fixedwidth_label">Fontes de largura fixa</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Usa uma fonte de largura fixa ao exibir mensagens que contenham somente texto</string>
     <string name="global_settings_messageview_autofit_width_label">Ajustar mensagens automaticamente</string>
     <string name="global_settings_messageview_autofit_width_summary">Ajusta as mensagens para que caibam na tela</string>
     <string name="global_settings_confirm_actions_title">Confirmar ações</string>
@@ -228,7 +228,7 @@
     <string name="global_settings_confirm_action_delete">Excluir</string>
     <string name="global_settings_confirm_action_delete_starred">Excluir sinalizadas (na visualização de mensagem)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
-    <string name="global_settings_confirm_menu_discard">Descartar mensagem</string>
+    <string name="global_settings_confirm_menu_discard">Descartar a mensagem</string>
     <string name="global_settings_confirm_menu_mark_all_read">Marcar todas as mensagens como lidas</string>
     <string name="global_settings_confirm_action_delete_notif">Excluir (na notificação)</string>
     <!--Title of the screen to configure swipe actions-->
@@ -1022,7 +1022,7 @@ Você pode guardar esta mensagem e usá-la como um backup da sua chave secreta. 
     <string name="general_settings_post_remove_action_show_previous_message">Exibir a mensagem anterior</string>
     <string name="general_settings_post_remove_action_show_next_message">Exibir a próxima mensagem</string>
     <string name="general_settings_post_remove_action_title">Após excluir ou mover uma mensagem</string>
-    <string name="general_settings_post_mark_as_unread_action_stay">Fique na mensagem atual</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">Permaneça na mensagem atual</string>
     <string name="general_settings_post_mark_as_unread_action_title">Depois de marcar uma mensagem como não lida</string>
-    <string name="general_settings_post_mark_as_unread_action_return_to_list">Voltar à lista de mensagens</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">Volte à lista de mensagens</string>
 </resources>

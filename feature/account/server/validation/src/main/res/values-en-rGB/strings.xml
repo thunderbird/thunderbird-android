@@ -2,7 +2,6 @@
 <resources>
     <string name="account_server_validation_incoming_loading_message">Checking incoming server settings…</string>
     <string name="account_server_validation_error_authentication">Authentication error</string>
-    <string name="account_server_validation_error_certificate">Certificate error</string>
     <string name="account_server_validation_outgoing_loading_message">Checking outgoing server settings…</string>
     <string name="account_server_validation_error_network">Network error</string>
     <string name="account_server_validation_outgoing_success">Outgoing server settings are valid</string>

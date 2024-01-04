@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="account_oauth_sign_in_description">Za vpis vas bomo preusmerili k vašemu ponudniku e-pošte. Aplikaciji morate odobriti dostop do svojega e-poštnega računa.</string>
+    <string name="account_oauth_sign_in_description">Za vpis je zahtevana preusmeritev k ponudniku elektronske pošte. Programu je treba odobriti dostop do računa.</string>
+    <string name="account_oauth_sign_in_with_google_button">Prijava z računom Google</string>
+    <string name="account_oauth_loading_error">Vpis z OAuth je spodletel</string>
+    <string name="account_oauth_error_canceled">Overitev je preklicana</string>
+    <string name="account_oauth_loading_message">Prijava z uporabo OAuth</string>
+    <string name="account_oauth_sign_in_button">Prijava</string>
 </resources>

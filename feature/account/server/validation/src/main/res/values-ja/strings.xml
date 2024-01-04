@@ -2,7 +2,6 @@
 <resources>
     <string name="account_server_validation_incoming_loading_message">受信サーバーの設定を確認中…</string>
     <string name="account_server_validation_error_authentication">認証エラー</string>
-    <string name="account_server_validation_error_certificate">証明書エラー</string>
     <string name="account_server_validation_outgoing_loading_message">送信サーバーの設定を確認中…</string>
     <string name="account_server_validation_error_network">ネットワークエラー</string>
     <string name="account_server_validation_outgoing_success">送信サーバーの設定が確認できました</string>
@@ -12,4 +11,11 @@
     <string name="account_server_validation_incoming_success">受信サーバーの設定が確認できました</string>
     <string name="account_server_validation_incoming_loading_error">受信サーバーの設定の確認に失敗しました</string>
     <string name="account_server_validation_error_server">サーバーエラー</string>
+    <string name="account_server_validation_error_missing_server_capability">サーバーの機能が不足しています</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">クライアント証明書にアクセスできませんでした</string>
+    <string name="account_server_validation_error_missing_server_capability_details">この機能がサーバーにありません:
+\n%s</string>
+    <string name="account_server_validation_error_client_certificate_expired">このクライアント証明書の有効期限は満了しました</string>
+    <string name="account_server_validation_error_details">詳細:
+\n%s</string>
 </resources>

@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="onboarding_permissions_contacts_description">Jou tagong om suggestjes foar kontakten jaan te kinnen en nammen en foto’s fan kontakten toane te kinnen.</string>
+    <string name="onboarding_permissions_notifications_description">Skeakelje meldingen yn, sadat jo gjin e-mailberjochten misse.</string>
+    <string name="onboarding_permissions_notifications_title">Meldingen</string>
+    <string name="onboarding_permissions_screen_title">Ferbetterje de ûnderfining</string>
+    <string name="onboarding_permissions_contacts_title">Kontakten</string>
+    <string name="onboarding_permissions_allow_button">Tastean</string>
+    <string name="onboarding_permissions_skip_button">Oerslaan</string>
+</resources>

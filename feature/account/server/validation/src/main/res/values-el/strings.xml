@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_server_validation_error_authentication">Σφάλμα ελέγχου ταυτότητας</string>
-    <string name="account_server_validation_error_certificate">Σφάλμα πιστοποιητικού</string>
     <string name="account_server_validation_error_network">Σφάλμα δικτύου</string>
     <string name="account_server_validation_error_unknown">Άγνωστο σφάλμα</string>
     <string name="account_server_validation_error_server">Σφάλμα διακομιστή</string>

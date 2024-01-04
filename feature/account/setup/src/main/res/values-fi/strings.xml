@@ -24,11 +24,16 @@
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Luotan tähän määritykseen</string>
     <string name="account_setup_options_display_name_error_required">Näyttönimi vaaditaan.</string>
     <string name="account_setup_error_network">Verkko</string>
-    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Sähköpostiosoite on virheellinen.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Tätä ei tunnistettu kelvolliseksi sähköpostiosoitteeksi.</string>
     <string name="account_setup_options_email_check_frequency_never">Ei koskaan</string>
     <string name="account_setup_auto_discovery_loading_message">Etsitään sähköpostin tietoja</string>
     <string name="account_setup_options_section_sync_options_">Synkronointiasetukset</string>
     <string name="account_setup_options_show_notifications_label">Näytä ilmoitukset</string>
     <string name="account_setup_options_section_display_options">Näkymäasetukset</string>
     <string name="account_setup_title">K-9 Mail</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Tämä sähköpostiosoite ei ole sallittu.</string>
+    <string name="account_setup_create_account_created">Tili luotu onnistuneesti</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Tämä sähköpostiosoite ei ole tuettu.</string>
+    <string name="account_setup_create_account_creating">Luodaan tiliä…</string>
+    <string name="account_setup_create_account_error">Tiliä luotaessa tapahtui virhe</string>
 </resources>

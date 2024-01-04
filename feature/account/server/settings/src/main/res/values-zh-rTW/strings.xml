@@ -31,4 +31,5 @@
     <string name="account_server_settings_password_authentication_screen_lock_required">如要在此檢視您的密碼，請先啟用此裝置的螢幕鎖定。</string>
     <string name="account_server_settings_server_label">伺服器</string>
     <string name="account_server_settings_security_label">安全性</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">IP或主機名無效</string>
 </resources>

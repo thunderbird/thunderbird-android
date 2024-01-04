@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="account_server_validation_incoming_loading_message">Controle inkomende serverinstellingen…</string>
+    <string name="account_server_validation_incoming_loading_message">Instellingen voor inkomende server controleren…</string>
     <string name="account_server_validation_error_authentication">Authenticatiefout</string>
-    <string name="account_server_validation_error_certificate">Certificaatfout</string>
-    <string name="account_server_validation_outgoing_loading_message">Controle uitgaande serverinstellingen…</string>
+    <string name="account_server_validation_outgoing_loading_message">Instellingen voor uitgaande server controleren…</string>
     <string name="account_server_validation_error_network">Netwerkfout</string>
-    <string name="account_server_validation_outgoing_success">Controle uitgaande serverinstellingen zijn geldig!</string>
+    <string name="account_server_validation_outgoing_success">Instellingen voor uitgaande server zijn geldig</string>
     <string name="account_server_validation_error_unknown">Onbekende fout</string>
     <string name="account_server_validation_sign_in">Meld u aan</string>
-    <string name="account_server_validation_outgoing_loading_error">Controle uitgaande serverinstellingen mislukt!</string>
-    <string name="account_server_validation_incoming_success">Inkomende serverinstellingen zijn valide!</string>
-    <string name="account_server_validation_incoming_loading_error">Controle inkomende serverinstellingen mislukt!</string>
+    <string name="account_server_validation_outgoing_loading_error">Instellingen voor uitgaande server controleren mislukt</string>
+    <string name="account_server_validation_incoming_success">Instellingen voor inkomende server zijn valide</string>
+    <string name="account_server_validation_incoming_loading_error">Instellingen voor inkomende server controleren mislukt</string>
     <string name="account_server_validation_error_server">Serverfout</string>
+    <string name="account_server_validation_error_missing_server_capability">Ontbrekende serverfunctionaliteit</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">Het clientcertificaat kon niet worden geraadpleegd</string>
+    <string name="account_server_validation_error_missing_server_capability_details">De server mist deze functionaliteit:
+\n%s</string>
+    <string name="account_server_validation_error_client_certificate_expired">Het clientcertificaat is niet langer geldig</string>
+    <string name="account_server_validation_error_details">Details:
+\n%s</string>
 </resources>

@@ -2,7 +2,6 @@
 <resources>
     <string name="account_server_validation_incoming_loading_message">Kontrola nastavení serveru příchozí pošty…</string>
     <string name="account_server_validation_error_authentication">Chyba autentizace</string>
-    <string name="account_server_validation_error_certificate">Chyba certifikátu</string>
     <string name="account_server_validation_outgoing_loading_message">Kontrola nastavení serveru odchozí pošty…</string>
     <string name="account_server_validation_error_network">Chyba sítě</string>
     <string name="account_server_validation_outgoing_success">Nastavení serveru odchozí pošty je platné</string>

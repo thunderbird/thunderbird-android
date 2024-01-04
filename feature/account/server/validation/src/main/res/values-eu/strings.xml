@@ -2,7 +2,6 @@
 <resources>
     <string name="account_server_validation_incoming_loading_message">Sarrerako zerbitzariaren ezarpenak egiaztatzen…</string>
     <string name="account_server_validation_error_authentication">Autentifikazio errorea</string>
-    <string name="account_server_validation_error_certificate">Ziurtagiri errorea</string>
     <string name="account_server_validation_outgoing_loading_message">Irteerako zerbitzariaren ezarpenak egiaztatzen…</string>
     <string name="account_server_validation_error_network">Sarearen errorea</string>
     <string name="account_server_validation_outgoing_success">Irteerako zerbitzariaren ezarpenak zuzenak dira</string>

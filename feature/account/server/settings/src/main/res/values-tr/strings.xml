@@ -31,4 +31,5 @@
     <string name="account_server_settings_password_authentication_title">Kimliğinizi doğrulayın</string>
     <string name="account_server_settings_password_authentication_subtitle">Parolanızı görmek için kilidi açın</string>
     <string name="account_server_settings_password_authentication_screen_lock_required">Parolanızı burada görmek için ekran kilidini etkinleştirin.</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Geçersiz IP veya sunucu adı</string>
 </resources>

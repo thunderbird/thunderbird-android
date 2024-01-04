@@ -2,7 +2,6 @@
 <resources>
     <string name="account_server_validation_incoming_loading_message">Controllo impostazioni server posta in arrivo…</string>
     <string name="account_server_validation_error_authentication">Errore di autenticazione</string>
-    <string name="account_server_validation_error_certificate">Errore del certificato</string>
     <string name="account_server_validation_outgoing_loading_message">Controllo impostazioni server in uscita…</string>
     <string name="account_server_validation_error_network">Errore di rete</string>
     <string name="account_server_validation_outgoing_success">impostazioni server in uscita valide</string>
@@ -12,4 +11,11 @@
     <string name="account_server_validation_incoming_success">Impostazioni server in arrivo valide</string>
     <string name="account_server_validation_incoming_loading_error">Controllo impostazioni server in arrivo non riuscito</string>
     <string name="account_server_validation_error_server">Errore del server</string>
+    <string name="account_server_validation_error_missing_server_capability">Funzionalità del server mancante</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">Impossibile accedere al certificato client</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Al server manca questa funzionalità:
+\n%s</string>
+    <string name="account_server_validation_error_client_certificate_expired">Il certificato client non è più valido</string>
+    <string name="account_server_validation_error_details">Dettagli:
+\n%s</string>
 </resources>

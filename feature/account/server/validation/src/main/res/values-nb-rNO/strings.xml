@@ -2,7 +2,6 @@
 <resources>
     <string name="account_server_validation_incoming_loading_message">Sjekker innstillinger for innkommende tjener …</string>
     <string name="account_server_validation_error_authentication">Identitetbekreftelsesfeil</string>
-    <string name="account_server_validation_error_certificate">Sertifikatsfeil</string>
     <string name="account_server_validation_outgoing_loading_message">Sjekker innstillinger for utgående tjener …</string>
     <string name="account_server_validation_error_network">Nettverksfeil</string>
     <string name="account_server_validation_outgoing_success">Ugyldige innstillinger for utgående tjener.</string>

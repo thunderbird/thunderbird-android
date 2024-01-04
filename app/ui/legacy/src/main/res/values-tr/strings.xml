@@ -277,10 +277,10 @@
     <string name="account_setup_expunge_policy_on_poll">Bilgi çekme zamanı</string>
     <string name="account_setup_expunge_policy_manual">Elle</string>
     <string name="drafts_folder_label">Taslaklar klasörü</string>
-    <string name="sent_folder_label">Giden Klasörü</string>
-    <string name="trash_folder_label">Çöp Klasörü</string>
-    <string name="archive_folder_label">Arşiv Klasörü</string>
-    <string name="spam_folder_label">Gereksiz posta Klasörü</string>
+    <string name="sent_folder_label">Giden klasörü</string>
+    <string name="trash_folder_label">Çöp klasörü</string>
+    <string name="archive_folder_label">Arşiv klasörü</string>
+    <string name="spam_folder_label">Gereksiz posta klasörü</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Yalnızca abone olunan klasörleri göster</string>
     <string name="account_setup_auto_expand_folder">Otomatik genişleyen klasör</string>
     <string name="account_setup_options_mail_check_frequency_label">Klasör bilgi çekme sıklığı</string>
