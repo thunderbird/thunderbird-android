@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="onboarding_permissions_notifications_description">Ota ilmoitukset käyttöön, niin saapuvat viestit eivät jää huomiotta.</string>
+    <string name="onboarding_permissions_notifications_title">Ilmoitukset</string>
+    <string name="onboarding_permissions_screen_title">Paranna kokemusta</string>
+    <string name="onboarding_permissions_contacts_title">Yhteystiedot</string>
+    <string name="onboarding_permissions_allow_button">Salli</string>
+    <string name="onboarding_permissions_skip_button">Ohita</string>
+</resources>

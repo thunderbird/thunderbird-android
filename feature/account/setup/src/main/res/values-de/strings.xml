@@ -37,4 +37,10 @@
     <string name="account_setup_create_account_created">Konto erfolgreich erstellt</string>
     <string name="account_setup_create_account_creating">Konto wird erstellt…</string>
     <string name="account_setup_create_account_error">Beim Versuch, das Konto zu erstellen, ist ein Fehler aufgetreten</string>
+    <string name="account_setup_special_folders_success_message">Alle besonderen Ordner wurden von dem Server automatisch konfiguriert.</string>
+    <string name="account_setup_special_folders_folder_automatic">Automatisch (%s)</string>
+    <string name="account_setup_special_folders_form_description">Bitte wähle die besonderen Ordner für dein Konto aus.</string>
+    <string name="account_setup_special_folders_top_bar_title">Besondere Ordner</string>
+    <string name="account_setup_special_folders_archive_folder_label">Archivordner</string>
+    <string name="account_setup_special_folders_edit_folders_button_label">Besondere Ordner bearbeiten</string>
 </resources>

@@ -1,2 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_incoming_loading_message">بررسی تنظیمات سرور ورودی …</string>
+    <string name="account_server_validation_error_missing_server_capability">قابلیت‌های سرور پیدا نشد</string>
+    <string name="account_server_validation_error_authentication">خطای احراز هویت</string>
+    <string name="account_server_validation_outgoing_loading_message">بررسی تنظیمات سرور خروجی …</string>
+    <string name="account_server_validation_error_network">خطای شبکه</string>
+    <string name="account_server_validation_outgoing_success">تنظیمات سرور خروجی معتبر است</string>
+    <string name="account_server_validation_error_unknown">خطای ناشناخته</string>
+    <string name="account_server_validation_sign_in">لطفا وارد شوید</string>
+    <string name="account_server_validation_outgoing_loading_error">بررسی تنظیمات سرور خروجی با خطا مواجه شد</string>
+    <string name="account_server_validation_incoming_success">تنظیمات سرور ورودی معتبر است</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">گواهینامه کلاینت در دسترس نیست</string>
+    <string name="account_server_validation_error_missing_server_capability_details">سرور این قابلیت را ندارد:
+\n%s</string>
+    <string name="account_server_validation_incoming_loading_error">بررسی تنظیمات سرور ورودی با خطا مواجه شد</string>
+    <string name="account_server_validation_error_server">خطای سرور</string>
+    <string name="account_server_validation_error_client_certificate_expired">گواهینامه کلاینت معتبر نیست</string>
+    <string name="account_server_validation_error_details">جزییات:
+\n%s</string>
+</resources>

@@ -3,11 +3,11 @@
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
-    <string name="app_name">K-9 Mail</string>
+    <string name="app_name">کلاینت رایانامه K9</string>
     <string name="shortcuts_title">حساب‌های K-9</string>
     <string name="unread_widget_label">نخوانده‌های K-9</string>
     <!--Used in the about dialog-->
-    <string name="app_authors">The K-9 Dog Walkers</string>
+    <string name="app_authors">K-9 Dog Walkers</string>
     <string name="source_code">کد منبع</string>
     <string name="app_license">مجوز آپاچی، نسخهٔ 2.0</string>
     <string name="about_project_title">پروژهٔ متن‌باز</string>
@@ -88,8 +88,8 @@
     <string name="unsubscribe_action">لغو اشتراک</string>
     <string name="show_headers_action">نمایش سرایندها</string>
     <plurals name="copy_address_to_clipboard">
-        <item quantity="one">نشانی‌ها در بریده‌دان کپی شد</item>
-        <item quantity="other">نشانی‌ها در بریده‌دان کپی شد</item>
+        <item quantity="one">نشانی در بریده‌دان کپی شد</item>
+        <item quantity="other">نشانی‌ها در بریده‌دان کپی شدند</item>
     </plurals>
     <string name="copy_subject_to_clipboard">نوشتهٔ موضوع به بریده‌دان کپی شد</string>
     <string name="message_view_theme_action_dark">تغییر به پوستهٔ تیره</string>
@@ -110,8 +110,7 @@
     <string name="status_network_error">خطای اتصال</string>
     <string name="status_invalid_id_error">پیام یافت نشد</string>
     <string name="status_loading_error">خطای بارگیری پیام</string>
-    <string name="load_more_messages_fmt">    تا <xliff:g id="messages_to_load">%d</xliff:g> پیام دیگر
-بارگیری کن</string>
+    <string name="load_more_messages_fmt">تا <xliff:g id="messages_to_load">%d</xliff:g> پیام دیگر بارگیری کن</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
@@ -148,7 +147,7 @@
     <string name="notification_channel_messages_title">پیام‌ها</string>
     <string name="notification_channel_messages_description">اعلان‌های مربوط به پیام‌ها</string>
     <string name="notification_channel_miscellaneous_title">متفرقه</string>
-    <string name="notification_channel_miscellaneous_description">سایر اعلان‌ها مانند خطاها و…</string>
+    <string name="notification_channel_miscellaneous_description">سایر اعلان‌ها مانند خطاها و ...</string>
     <string name="special_mailbox_name_inbox">صندوق ورودی</string>
     <string name="special_mailbox_name_outbox">صندوق خروجی</string>
     <string name="special_mailbox_name_drafts">پیش‌نویس‌ها</string>
@@ -329,8 +328,8 @@
     <string name="move_copy_cannot_copy_unsynced_message">پیامی که با کارساز همگام نشده را نمی‌توانید کپی یا حذف کنید</string>
     <string name="account_setup_failed_dlg_oauth_flow_canceled">مجوزدهی لغو شد</string>
     <string name="account_setup_failed_dlg_oauth_flow_failed">مجوزدهی به علت این خطا ناتمام ماند: <xliff:g id="error">%s</xliff:g></string>
-    <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 فعلا توسط این ارائه دهنده پشتیبانی نمی شود</string>
-    <string name="account_setup_failed_dlg_browser_not_found">برنامه نمی تواند مرورگری را پیدا کند تا دسترسی به حسابتان را بگیرد</string>
+    <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 فعلا توسط این ارائه دهنده پشتیبانی نمی‌شود.</string>
+    <string name="account_setup_failed_dlg_browser_not_found">برنامه نمی تواند مرورگری را پیدا کند تا دسترسی به حسابتان را بگیرد.</string>
     <string name="account_settings_push_advanced_title">پیشرفته</string>
     <string name="account_settings_title_fmt">تنظیمات حساب</string>
     <string name="account_settings_notify_label">اعلان‌های رایانامهٔ جدید</string>
@@ -379,7 +378,7 @@
     <string name="account_settings_quote_style_prefix">پیشوند (مثل جیمیل)</string>
     <string name="account_settings_quote_style_header">سرایند (مثل اوت‌لوک)</string>
     <string name="account_settings_upload_sent_messages_label">بارگذاری پیام‌های ارسالی</string>
-    <string name="account_settings_upload_sent_messages_summary">پیام‌ها پس از ارسال در پوشهٔ ارسالی (Sent) بارگذاری شوند.</string>
+    <string name="account_settings_upload_sent_messages_summary">پیام‌ها پس از ارسال در پوشه ارسال (Sent) بارگذاری شوند</string>
     <string name="account_settings_general_title">تنظیمات کلی</string>
     <string name="account_settings_reading_mail">خواندن رایانامه</string>
     <string name="account_settings_sync">واکشی رایانامه</string>
@@ -516,7 +515,7 @@
     <string name="edit_identity_title">ویرایش هویت</string>
     <string name="edit_identity_save">ذخیره</string>
     <string name="new_identity_action">هویت جدید</string>
-    <string name="account_settings_always_bcc_label">همهٔ پیام‌ها «مخفیانه به» کجا ارسال شوند؟</string>
+    <string name="account_settings_always_bcc_label">ارسال مخفیانه همه‌ پیام‌ها به</string>
     <string name="manage_identities_edit_action">ویرایش</string>
     <string name="manage_identities_move_up_action">برو بالا</string>
     <string name="manage_identities_move_down_action">برو پایین</string>
@@ -658,8 +657,8 @@
     <string name="dialog_confirm_delete_title">تأیید حذف</string>
     <string name="dialog_confirm_delete_message">آیا این پیام حذف شود؟</string>
     <plurals name="dialog_confirm_delete_messages">
-        <item quantity="one">آیا واقعاً این <xliff:g id="message_count">%1$d</xliff:g> پیام را حذف می‌کنید؟</item>
-        <item quantity="other">آیا واقعاً این <xliff:g id="message_count">%1$d</xliff:g> پیام را حذف می‌کنید؟</item>
+        <item quantity="one">آیا واقعا می‌خواهید این پیام را حذف کنید؟</item>
+        <item quantity="other">آیا واقعا می‌خواهید پیام <xliff:g id="message_count">%1$d</xliff:g> را حذف کنید؟</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">بله</string>
     <string name="dialog_confirm_delete_cancel_button">خیر</string>
@@ -671,8 +670,8 @@
     <string name="dialog_confirm_mark_all_as_read_cancel_button">خیر</string>
     <string name="dialog_confirm_spam_title">تأیید انتقال به پوشهٔ هرزنامه</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">آیا واقعاً این <xliff:g id="message_count">%1$d</xliff:g> پیام را به پوشهٔ هرزنامه می‌فرستید؟</item>
-        <item quantity="other">آیا واقعاً این <xliff:g id="message_count">%1$d</xliff:g> پیام را به پوشهٔ هرزنامه می‌فرستید؟</item>
+        <item quantity="one">آیا واقعا می‌خواهید این پیام را به پوشه هرزنامه منتقل کنید؟</item>
+        <item quantity="other">آیا واقعا می‌خواهید پیام <xliff:g id="message_count">%1$d</xliff:g> را به پوشه هرزنامه منتقل کنید؟</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">بله</string>
     <string name="dialog_confirm_spam_cancel_button">خیر</string>
@@ -968,7 +967,7 @@
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
     <string name="swipe_action_spam">هرزنامه</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">انتقال</string>
+    <string name="swipe_action_move">انتقال…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">نمایش دکمه نوشتن شناور</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -1009,4 +1008,11 @@
     <string name="background_work_notification_remove_account">در حال حذف حساب…</string>
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="message_list_content_description_unread_prefix">خوانده نشده، %s</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">ماندن در پیام فعلی</string>
+    <string name="general_settings_post_remove_action_return_to_list">بازگشت به لیست پیام</string>
+    <string name="general_settings_post_mark_as_unread_action_title">پس از علامت گذاری یک پیام به عنوان خوانده نشده</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">بازگشت به لیست پیام</string>
+    <string name="general_settings_post_remove_action_show_previous_message">نمایش پیام قبلی</string>
+    <string name="general_settings_post_remove_action_show_next_message">نمایش پیام بعدی</string>
+    <string name="general_settings_post_remove_action_title">پس از حذف یا جابجایی یک پیام</string>
 </resources>

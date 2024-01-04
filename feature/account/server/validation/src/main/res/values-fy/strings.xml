@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="account_server_validation_incoming_loading_message">Kontrôle ynkommende serverynstellingen…</string>
+    <string name="account_server_validation_incoming_loading_message">Ynstellingen foar ynkommende server kontrolearje…</string>
     <string name="account_server_validation_error_authentication">Autentikaasjeflater</string>
-    <string name="account_server_validation_error_certificate">Sertifikaatflater</string>
-    <string name="account_server_validation_outgoing_loading_message">Kontrôle útgeande serverynstellingen…</string>
+    <string name="account_server_validation_outgoing_loading_message">Ynstellingen foar útgeande server kontrolearje…</string>
     <string name="account_server_validation_error_network">Netwurkflater</string>
-    <string name="account_server_validation_outgoing_success">Kontrôle útgeande serverynstellingen binne falide!</string>
+    <string name="account_server_validation_outgoing_success">Ynstellingen foar útgeande server binne falide</string>
     <string name="account_server_validation_error_unknown">Unbekende flater</string>
     <string name="account_server_validation_sign_in">Meld jo oan</string>
-    <string name="account_server_validation_outgoing_loading_error">Kontrôle útgeande serverynstellingen mislearre!</string>
-    <string name="account_server_validation_incoming_success">Ynkommende serverynstellingen binne falide!</string>
-    <string name="account_server_validation_incoming_loading_error">Kontrôle ynkommende serverynstellingen mislearre!</string>
+    <string name="account_server_validation_outgoing_loading_error">Ynstellingen foar útgeande server kontrolearje mislearre</string>
+    <string name="account_server_validation_incoming_success">Ynstellingen foar ynkommende server binne falide</string>
+    <string name="account_server_validation_incoming_loading_error">Ynstellingen foar ynkommende server kontrolearje mislearre</string>
     <string name="account_server_validation_error_server">Serverflater</string>
+    <string name="account_server_validation_error_missing_server_capability">Untbrekkende serverfunksjonaliteit</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">It clientsertifikaat koe net rieplachte wurde</string>
+    <string name="account_server_validation_error_missing_server_capability_details">De server mist dizze funksjonaliteit:
+\n%s</string>
+    <string name="account_server_validation_error_client_certificate_expired">It clientsertifikaat is net langer jildich</string>
+    <string name="account_server_validation_error_details">Details:
+\n%s</string>
 </resources>

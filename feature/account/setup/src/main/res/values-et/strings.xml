@@ -37,4 +37,18 @@
     <string name="account_setup_create_account_created">Kasutajakonto loomine õnnestus</string>
     <string name="account_setup_create_account_creating">Kasutajakonto on loomisel…</string>
     <string name="account_setup_create_account_error">Kasutajakonto loomisel tekkis viga</string>
+    <string name="account_setup_special_folders_success_message">Kõik määratud kaustad on nimetatud serveri poolt.</string>
+    <string name="account_setup_special_folders_folder_automatic">Määratud automaatselt (%s)</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Mustandite kaust</string>
+    <string name="account_setup_special_folders_error_message">Kaustade loendi laadimine ei õnnestunud</string>
+    <string name="account_setup_special_folders_loading_message">Laadime kaustade loendit…</string>
+    <string name="account_setup_special_folders_form_description">Palun seadista oma kasutajakonto jaoks määratud kaustad.</string>
+    <string name="account_setup_special_folders_sent_folder_label">Saadetud kirjade kaust</string>
+    <string name="account_setup_special_folders_folder_none">Määratlemata</string>
+    <string name="account_setup_special_folders_top_bar_title">Määratud kaustad</string>
+    <string name="account_setup_special_folders_trash_folder_label">Prügikasti kaust</string>
+    <string name="account_setup_special_folders_archive_folder_label">Arhiivi kaust</string>
+    <string name="account_setup_special_folders_edit_folders_button_label">Muuda määratud kaustu</string>
+    <string name="account_setup_special_folders_spam_folder_label">Spämmi kaust</string>
+    <string name="account_setup_special_folders_form_description_automatic">Märge „Automaatne“ näitab serveri poolt tehtud muudatusi. Hetkel serveri poolt määratud väärtus on kuvatud sulgudes.</string>
 </resources>

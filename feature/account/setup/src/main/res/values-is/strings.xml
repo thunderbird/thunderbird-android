@@ -37,4 +37,16 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Þetta tölvupóstfang er ekki stutt.</string>
     <string name="account_setup_create_account_creating">Útbý aðgang…</string>
     <string name="account_setup_create_account_error">Villa kom upp við að útbúa aðganginn</string>
+    <string name="account_setup_special_folders_folder_automatic">Sjálfvirkt (%s)</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Drög-mappa</string>
+    <string name="account_setup_special_folders_error_message">Mistókst að sækja lista yfir möppur af póstþjóninum</string>
+    <string name="account_setup_special_folders_loading_message">Sæki lista yfir möppur…</string>
+    <string name="account_setup_special_folders_form_description">Skilgreindu sérmöppurnar fyrir aðganginn þinn.</string>
+    <string name="account_setup_special_folders_sent_folder_label">Sent-mappa</string>
+    <string name="account_setup_special_folders_folder_none">Ekkert</string>
+    <string name="account_setup_special_folders_top_bar_title">Sérmöppur</string>
+    <string name="account_setup_special_folders_trash_folder_label">Rusl-mappa</string>
+    <string name="account_setup_special_folders_archive_folder_label">Safnmappa</string>
+    <string name="account_setup_special_folders_edit_folders_button_label">Breyta sérmöppum</string>
+    <string name="account_setup_special_folders_spam_folder_label">Ruslpóstmappa</string>
 </resources>

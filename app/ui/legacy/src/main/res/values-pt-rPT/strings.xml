@@ -9,7 +9,7 @@
     <!--Used in the about dialog-->
     <string name="app_authors">The K-9 Dog Walkers</string>
     <string name="source_code">Código-fonte</string>
-    <string name="app_license">Licença Apache, versão 2.0.</string>
+    <string name="app_license">Licença Apache, versão 2.0</string>
     <string name="about_project_title">Projeto de Código Aberto</string>
     <string name="about_website_title">Website</string>
     <string name="user_manual_title">Manual de utilizador</string>
@@ -21,7 +21,7 @@
     <string name="changelog_title">Registo de alterações</string>
     <string name="changelog_loading_error">Não foi possível carregar o registo de alterações.</string>
     <string name="changelog_version_title">Versão %s</string>
-    <string name="changelog_recent_changes_title">O que há de novo?</string>
+    <string name="changelog_recent_changes_title">O que há de novo</string>
     <string name="changelog_show_recent_changes">Mostrar alterações recentes quando a aplicação for atualizada</string>
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
     <string name="changelog_snackbar_text">Descubra o que há de novo nesta versão</string>
@@ -190,7 +190,7 @@
     <string name="message_to_label">Para:</string>
     <string name="message_view_cc_label">Cc:</string>
     <string name="message_view_bcc_label">Bcc:</string>
-    <string name="message_view_status_attachment_not_saved">Não foi possível guardar o anexo</string>
+    <string name="message_view_status_attachment_not_saved">Não foi possível guardar o anexo.</string>
     <!--Used to display the recipient list in the message view screen.-->
     <string name="message_view_recipients_format">para <xliff:g id="recipients">%s</xliff:g></string>
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
@@ -711,8 +711,8 @@
     <string name="settings_import_later_button">Posteriormente</string>
     <string name="settings_importing">A importar configurações…</string>
     <plurals name="settings_import_password_prompt">
-        <item quantity="one">Para poder utilizar a conta \"<xliff:g id="account">%s</xliff:g>\" tem de fornecer as senhas do servidor.</item>
-        <item quantity="many">Para poder utilizar a conta \"<xliff:g id="account">%s</xliff:g>\" tem de fornecer as senhas do servidor.</item>
+        <item quantity="one">Para poder utilizar a conta \"<xliff:g id="account">%s</xliff:g>\" tem de fornecer a palavra-chave do servidor.</item>
+        <item quantity="many">Para poder utilizar a conta \"<xliff:g id="account">%s</xliff:g>\" tem de fornecer as palavras-chave dos servidors.</item>
         <item quantity="other">Para poder utilizar a conta \"<xliff:g id="account">%s</xliff:g>\" tem de fornecer as senhas do servidor.</item>
     </plurals>
     <string name="settings_import_incoming_server_password_hint">Palavra-passe do servidor de entrada</string>
@@ -946,15 +946,15 @@ Pode manter esta mensagem e usá-la como uma cópia de segurança para a sua cha
     <string name="generic_loading_error">Occoreu um erro ao carregar os dados</string>
     <string name="push_notification_state_initializing">Inicializando…</string>
     <string name="push_notification_state_listening">À espera de novos e-mails</string>
-    <string name="push_notification_state_wait_background_sync">Suspenso até que a sincronização em segundo plano seja permitida.</string>
+    <string name="push_notification_state_wait_background_sync">Suspenso até que a sincronização em segundo plano seja permitida</string>
     <string name="push_notification_state_wait_network">Suspenso até que a rede esteja disponível</string>
-    <string name="push_notification_info">Toque para saber mais</string>
+    <string name="push_notification_info">Toque para saber mais.</string>
     <string name="push_info_title">Informação sobre o Push</string>
     <string name="push_info_notification_explanation_text">Ao usar o Push, o K-9 Mail mantêm uma conneção com o servidor de mail. O Android requer que seja mostrada uma notificação constante enquanto a aplicação está ativa em segundo plano. %s</string>
     <string name="push_info_configure_notification_text">Ainda assim, o Android também permite esconder a notificação.</string>
     <string name="push_info_learn_more_text">Saber mais</string>
     <string name="push_info_configure_notification_action">Configurar a notificação</string>
-    <string name="push_info_disable_push_text">Se não necessita de notificações instantáneas, deve desligar o Push e utilizar o Polling. O Polling procura novos e-mails num intervalo regular e não requer a notificação</string>
+    <string name="push_info_disable_push_text">Se não necessita de notificações instantâneas, deve desligar o Push e utilizar o Polling. O Polling procura novos e-mails num intervalo regular e não requer a notificação.</string>
     <string name="push_info_disable_push_action">Desativar o Push</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
     <string name="swipe_action_select">Selecionar</string>
@@ -1014,4 +1014,13 @@ Pode manter esta mensagem e usá-la como uma cópia de segurança para a sua cha
     <string name="clipboard_label_name_and_email_address">Nome e endereço de email</string>
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+    <string name="general_settings_post_mark_as_unread_action_stay">Ficar na mensagem atual</string>
+    <string name="message_list_content_description_unread_prefix">não lidas,%s</string>
+    <string name="general_settings_post_remove_action_return_to_list">Voltar à lista de mensagens</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Depois de marcar uma mensagem como não lida</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">Voltar à lista de mensagens</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Mostrar mensagem anterior</string>
+    <string name="general_settings_post_remove_action_show_next_message">Mostra próxima mensagem</string>
+    <string name="general_settings_post_remove_action_title">Depois de apagar ou mover mensagem</string>
+    <string name="background_work_notification_remove_account">A remover conta…</string>
 </resources>

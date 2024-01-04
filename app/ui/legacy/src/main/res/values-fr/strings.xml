@@ -384,7 +384,7 @@
     <string name="account_settings_upload_sent_messages_summary">Téléverser les courriels vers le dossier Envoyés après l’envoi</string>
     <string name="account_settings_general_title">Paramètres généraux</string>
     <string name="account_settings_reading_mail">Lecture des courriels</string>
-    <string name="account_settings_sync">Récupération des courriels</string>
+    <string name="account_settings_sync">Ramassage des courriels</string>
     <string name="account_settings_folders">Dossiers</string>
     <string name="account_settings_quote_prefix_label">Préfixe de citation</string>
     <string name="account_settings_crypto">Chiffrement de bout en bout</string>
@@ -694,7 +694,7 @@
     <string name="settings_import_button">Importation</string>
     <string name="settings_import_success_generic">Les paramètres ont été importés avec succès</string>
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required">Veuillez saisir vos mots de passe</string>
+    <string name="settings_import_password_required">Saisissez vos mots de passe</string>
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
     <string name="settings_import_authorization_required">Veuillez vous connecter</string>
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
@@ -763,14 +763,14 @@
     <string name="account_settings_remote_search_num_label">Limite de recherche du serveur</string>
     <string name="remote_search_sending_query">Envoi de la requête au serveur</string>
     <plurals name="remote_search_downloading">
-        <item quantity="one">Récupération d’%d résultat</item>
-        <item quantity="many">Récupération de %d résultats</item>
-        <item quantity="other">Récupération de %d résultats</item>
+        <item quantity="one">Extraction d’%d résultat</item>
+        <item quantity="many">Extraction de %d de résultats</item>
+        <item quantity="other">Extraction de %d résultats</item>
     </plurals>
     <plurals name="remote_search_downloading_limited">
-        <item quantity="one">Récupération d’%1$d résultat de %2$d</item>
-        <item quantity="many">Récupération de %1$d résultats de %2$d</item>
-        <item quantity="other">Récupération de %1$d résultats de %2$d</item>
+        <item quantity="one">Extraction d’%1$d résultat de %2$d</item>
+        <item quantity="many">Extraction de %1$d de résultats de %2$d</item>
+        <item quantity="other">Extraction de %1$d résultats de %2$d</item>
     </plurals>
     <string name="remote_search_error">Échec de recherche distante</string>
     <string name="account_settings_search">Rechercher</string>
@@ -798,7 +798,7 @@
     <string name="loading_attachment">Chargement du fichier joint…</string>
     <string name="fetching_attachment_dialog_title_send">Envoi du courriel</string>
     <string name="fetching_attachment_dialog_title_save">Enregistrement du brouillon</string>
-    <string name="fetching_attachment_dialog_message">Récupération du fichier joint…</string>
+    <string name="fetching_attachment_dialog_message">Obtention du fichier joint…</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Chiffré*</string>
     <string name="add_from_contacts">Ajouter à partir des contacts</string>

@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_common_button_next">بعدی</string>
+    <string name="account_common_button_back">بازگشت</string>
+    <string name="account_common_title">کلاینت رایانامه K9</string>
+</resources>

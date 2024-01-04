@@ -2,7 +2,6 @@
 <resources>
     <string name="account_server_validation_incoming_loading_message">Comprobando los ajustes del servidor entrante…</string>
     <string name="account_server_validation_error_authentication">Error de autenticación</string>
-    <string name="account_server_validation_error_certificate">Error de certificado</string>
     <string name="account_server_validation_outgoing_loading_message">Comprobando los ajustes del servidor saliente…</string>
     <string name="account_server_validation_error_network">Error de red</string>
     <string name="account_server_validation_outgoing_success">Los ajustes del servidor saliente parecen ser correctos</string>
@@ -12,4 +11,11 @@
     <string name="account_server_validation_incoming_success">Los ajustes del servidor entrante parecen ser correctos</string>
     <string name="account_server_validation_incoming_loading_error">No se han podido comprobar los ajustes del servidor entrante</string>
     <string name="account_server_validation_error_server">Error del servidor</string>
+    <string name="account_server_validation_error_missing_server_capability">Falta capacidad en el servidor</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">No se ha podido acceder al certificado del cliente</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Al servidor le falta esta capacidad:
+\n%s</string>
+    <string name="account_server_validation_error_client_certificate_expired">El certificado del cliente ya no es válido</string>
+    <string name="account_server_validation_error_details">Detalles:
+\n%s</string>
 </resources>

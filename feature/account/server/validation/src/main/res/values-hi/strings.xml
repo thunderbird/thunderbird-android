@@ -2,7 +2,6 @@
 <resources>
     <string name="account_server_validation_incoming_loading_message">इनकमिंग सर्वर सेटिंग चेक कर रहे…</string>
     <string name="account_server_validation_error_authentication">ऑथेंटिकेशन गड़बड़</string>
-    <string name="account_server_validation_error_certificate">सर्टिफिकेट गड़बड़</string>
     <string name="account_server_validation_outgoing_loading_message">आउटगोइंग सर्वर सेटिंग चेक कर रहे…</string>
     <string name="account_server_validation_error_network">नेटवर्क गड़बड़</string>
     <string name="account_server_validation_outgoing_success">आउटगोइंग सर्वर सेटिंग सही है!</string>

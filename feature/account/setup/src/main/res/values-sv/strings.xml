@@ -37,4 +37,18 @@
     <string name="account_setup_create_account_created">Kontot har skapats framgångsrikt</string>
     <string name="account_setup_create_account_creating">Skapar konto…</string>
     <string name="account_setup_create_account_error">Ett fel uppstod när kontot skulle skapas</string>
+    <string name="account_setup_special_folders_success_message">Alla speciella mappar har konfigurerats automatiskt av servern.</string>
+    <string name="account_setup_special_folders_folder_automatic">Automatisk (%s)</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Utkast mapp</string>
+    <string name="account_setup_special_folders_error_message">Misslyckades att hämta lista av mappar från servern</string>
+    <string name="account_setup_special_folders_loading_message">Hämtar lista av mappar…</string>
+    <string name="account_setup_special_folders_form_description">Vänligen specificera dom speciella mapparna för ditt konto.</string>
+    <string name="account_setup_special_folders_sent_folder_label">Skickat mapp</string>
+    <string name="account_setup_special_folders_folder_none">Ingen</string>
+    <string name="account_setup_special_folders_top_bar_title">Speciella mappar</string>
+    <string name="account_setup_special_folders_trash_folder_label">Papperskorgen mapp</string>
+    <string name="account_setup_special_folders_archive_folder_label">Arkiv mapp</string>
+    <string name="account_setup_special_folders_edit_folders_button_label">Redigera speciella mappar</string>
+    <string name="account_setup_special_folders_spam_folder_label">Spam mapp</string>
+    <string name="account_setup_special_folders_form_description_automatic">Den \"Automatiska\" Inmatningen följer automatiskt ändringar som görs av servern. Det aktuella servervärdet visas inom parentes.</string>
 </resources>

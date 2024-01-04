@@ -2,7 +2,6 @@
 <resources>
     <string name="account_server_validation_incoming_loading_message">A bejövő kiszolgáló beállítások ellenőrzése…</string>
     <string name="account_server_validation_error_authentication">Hitelesítési hiba</string>
-    <string name="account_server_validation_error_certificate">Tanúsítvány hiba</string>
     <string name="account_server_validation_outgoing_loading_message">A kimenő kiszolgáló beállítások ellenőrzése…</string>
     <string name="account_server_validation_error_network">Hálózati hiba</string>
     <string name="account_server_validation_outgoing_success">A kijövő kiszolgáló beállítások érvényesek</string>

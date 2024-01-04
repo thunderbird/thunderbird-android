@@ -17,7 +17,7 @@
     <string name="account_server_settings_port_label">Poarte</string>
     <string name="account_server_settings_incoming_imap_compression_label">Kompresje brûke</string>
     <string name="account_server_settings_validation_error_port_required">Poarte is fereaske.</string>
-    <string name="account_server_settings_authentication_client_certificate">Kliïntsertifikaat</string>
+    <string name="account_server_settings_authentication_client_certificate">Clientsertifikaat</string>
     <string name="account_server_settings_incoming_imap_prefix_label">Prefix IMAP-paad</string>
     <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
     <string name="account_server_settings_protocol_type_label">Protokol</string>
@@ -25,10 +25,11 @@
     <string name="account_server_settings_username_label">Brûkersnamme</string>
     <string name="account_server_settings_validation_error_port_invalid">Poarte is net jildich (moat lizze tusken 1–65535).</string>
     <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
-    <string name="account_server_settings_client_certificate_label">Kliïntsertifikaat</string>
-    <string name="account_server_settings_validation_error_imap_prefix_blank">Imap-prefix mei net leech wêze.</string>
+    <string name="account_server_settings_client_certificate_label">Clientsertifikaat</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">IMAP-prefix mei net leech wêze.</string>
     <string name="account_server_settings_client_certificate_none_selected">Gjin</string>
     <string name="account_server_settings_password_authentication_screen_lock_required">Skeakelje skermbeskoatteling op dit apparaat yn, om jo wachtwurd hjir te sjen.</string>
     <string name="account_server_settings_server_label">Server</string>
     <string name="account_server_settings_security_label">Befeiliging</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Ferkeard IP-adres of hostnamme</string>
 </resources>

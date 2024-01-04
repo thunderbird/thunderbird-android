@@ -37,4 +37,18 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Aquesta direcció de correu electrònic no és compatible.</string>
     <string name="account_setup_create_account_creating">S\'està creant el compte…</string>
     <string name="account_setup_create_account_error">S\'ha produït un error en intentar crear el compte</string>
+    <string name="account_setup_special_folders_success_message">Totes les carpetes especials han estat configurades automàticament pel servidor.</string>
+    <string name="account_setup_special_folders_folder_automatic">Automàtic (%s)</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Carpeta d\'esborranys</string>
+    <string name="account_setup_special_folders_error_message">No s\'ha pogut obtenir la llista de carpetes del servidor</string>
+    <string name="account_setup_special_folders_loading_message">S\'està obtenint la llista de carpetes…</string>
+    <string name="account_setup_special_folders_form_description">Especifiqueu les carpetes especials per al vostre compte.</string>
+    <string name="account_setup_special_folders_sent_folder_label">Carpeta d\'enviats</string>
+    <string name="account_setup_special_folders_folder_none">Cap</string>
+    <string name="account_setup_special_folders_top_bar_title">Carpetes especials</string>
+    <string name="account_setup_special_folders_trash_folder_label">Carpeta paperera</string>
+    <string name="account_setup_special_folders_archive_folder_label">Carpeta d\'arxiu</string>
+    <string name="account_setup_special_folders_edit_folders_button_label">Editeu carpetes especials</string>
+    <string name="account_setup_special_folders_spam_folder_label">Carpeta brossa</string>
+    <string name="account_setup_special_folders_form_description_automatic">L\'entrada \"Automàtica\" seguirà els canvis fets pel servidor automàticament. El valor actual del servidor es mostra entre parèntesis.</string>
 </resources>

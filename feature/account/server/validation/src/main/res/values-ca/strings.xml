@@ -2,7 +2,6 @@
 <resources>
     <string name="account_server_validation_incoming_loading_message">S\'està comprovant la configuració del servidor d\'entrada…</string>
     <string name="account_server_validation_error_authentication">Error d\'autenticació</string>
-    <string name="account_server_validation_error_certificate">Error de certificat</string>
     <string name="account_server_validation_outgoing_loading_message">S\'està comprovant la configuració del servidor de sortida…</string>
     <string name="account_server_validation_error_network">Error de la xarxa</string>
     <string name="account_server_validation_outgoing_success">La configuració del servidor de sortida és vàlida</string>
@@ -12,4 +11,11 @@
     <string name="account_server_validation_incoming_success">La configuració del servidor d\'entrada és vàlida</string>
     <string name="account_server_validation_incoming_loading_error">Ha fallat la comprovació de la configuració del servidor d\'entrada</string>
     <string name="account_server_validation_error_server">Error del servidor</string>
+    <string name="account_server_validation_error_missing_server_capability">Falta capacitat al servidor</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">No s\'ha pogut accedir al certificat de client</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Al servidor li falta aquesta capacitat:
+\n%s</string>
+    <string name="account_server_validation_error_client_certificate_expired">El certificat de client ja no és vàlid</string>
+    <string name="account_server_validation_error_details">Detalls:
+\n%s</string>
 </resources>

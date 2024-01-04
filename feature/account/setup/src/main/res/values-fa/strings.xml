@@ -1,2 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_options_account_name_error_blank">نام حساب نمی تواند خالی باشد.</string>
+    <string name="account_setup_special_folders_success_message">تمام پوشه‌های ویژه به طور خودکار توسط سرور پیکربندی شده‌اند.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">این نشانی رایانامه قابل قبول نیست.</string>
+    <string name="account_setup_options_account_check_frequency_label">بررسی میزان تکرار</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">پیکربندی خودکار</string>
+    <string name="account_setup_special_folders_folder_automatic">خودکار (%s)</string>
+    <string name="account_setup_special_folders_drafts_folder_label">پوشه پیش‌نویس‌‌ها</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">این پیکربندی قابل اعتماد نیست</string>
+    <string name="account_setup_create_account_created">حساب کاربری با موفقیت ایجاد شد</string>
+    <string name="account_setup_special_folders_error_message">واکشی لیست پوشه‌ها از سرور با خطا مواجه شد</string>
+    <string name="account_setup_button_finish">پایان</string>
+    <string name="account_setup_options_email_signature_label">امضای رایانامه</string>
+    <string name="account_setup_options_email_display_count_label">تعداد پیام‌ها برای نمایش</string>
+    <string name="account_setup_special_folders_loading_message">واکشی لیست پوشه‌ها …</string>
+    <string name="account_setup_special_folders_form_description">لطفا پوشه‌های خاص را برای حساب خود مشخص کنید.</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">پیکربندی دستی</string>
+    <string name="account_setup_options_email_signature_error_blank">نام امضای رایانامه نمی‌تواند خالی باشد.</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">لازم است که پیکربندی را تایید کنید.</string>
+    <string name="account_setup_special_folders_sent_folder_label">پوشه ارسالی</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">پیکربندی سرور رایانامه شما روی ارتباطی که به اندازه کافی امن نیست دریافت شد، لطفا یکبار دیگر تنظیمات را با دقت بررسی کرده و از صحت آن اطمینان حاصل نمایید؟</string>
+    <string name="account_setup_special_folders_folder_none">هیچ‌کدام</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">ویرایش پیکربندی</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">این نشانی رایانامه پشتیبانی نمی‌شود.</string>
+    <string name="account_setup_special_folders_top_bar_title">پوشه‌های خاص</string>
+    <string name="account_setup_special_folders_trash_folder_label">پوشه زباله‌دان</string>
+    <string name="account_setup_error_unknown">خطای ناشناخته</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">پیکربندی پیدا نشد</string>
+    <string name="account_setup_create_account_creating">ایجاد حساب …</string>
+    <string name="account_setup_options_top_bar_title">گزینه‌های حساب کاربری</string>
+    <string name="account_setup_options_account_name_label">نام حساب</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">پیکربندی پیدا شد</string>
+    <string name="account_setup_special_folders_archive_folder_label">پوشه بایگانی</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">نشانی رایانامه اجباری است.</string>
+    <string name="account_setup_options_display_name_label">نام نمایشی</string>
+    <string name="account_setup_special_folders_edit_folders_button_label">ویرایش پوشه‌های ویژه</string>
+    <string name="account_setup_auto_discovery_loading_error">خطا در بارگیری پیکربندی ایمیل</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">من به این پیکربندی اعتماد دارم</string>
+    <string name="account_setup_options_display_name_error_required">نام نمایشی اجباری است.</string>
+    <string name="account_setup_create_account_error">در هنگام تلاش برای ایجاد حساب خطا رخ داده است</string>
+    <string name="account_setup_error_network">شبکه</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">این یک آدرس ایمیل معتبر نیست.</string>
+    <string name="account_setup_special_folders_spam_folder_label">پوشه هرزنامه</string>
+    <string name="account_setup_options_email_check_frequency_never">هرگز</string>
+    <string name="account_setup_auto_discovery_loading_message">پیدا کردن جزییات رایانامه</string>
+    <string name="account_setup_options_section_sync_options_">گزینه‌های همگام‌سازی</string>
+    <string name="account_setup_options_show_notifications_label">نمایش اعلان‌ها</string>
+    <string name="account_setup_options_section_display_options">گزینه‌های نمایش</string>
+    <string name="account_setup_special_folders_form_description_automatic">تنظیم \"خودکار\" تغییراتی که توسط سرور به طور خودکار انجام می شود را اعمال می‌کند. مقدار فعلی در داخل پرانتز نمایش داده می‌شود.</string>
+    <string name="account_setup_title">کلاینت رایانامه K9</string>
+</resources>

@@ -957,8 +957,8 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <string name="push_notification_state_wait_network">Uspáno do doby, než bude k dispozici síť</string>
     <string name="push_notification_info">Klepněte, pokud se chcete dozvědět víc.</string>
     <string name="push_info_title">Push informace</string>
-    <string name="push_info_notification_explanation_text">Při používání Push, K-9 Mail udržuje spojení s e-mailový serverem. Systém Android vyžaduje, je-li aplikace aktivní na pozadí, zobrazení průběžného oznámení. %s</string>
-    <string name="push_info_configure_notification_text">Nicméně, Android vám ale dovolí toto oznámení skrýt.</string>
+    <string name="push_info_notification_explanation_text">Při používání Push udržuje K-9 Mail spojení s e-mailovým serverem. Je-li aplikace aktivní na pozadí, Systém Android vyžaduje zobrazení průběžného oznámení. %s</string>
+    <string name="push_info_configure_notification_text">Nicméně Android vám také umožní toto oznámení skrýt.</string>
     <string name="push_info_learn_more_text">Zjistit více</string>
     <string name="push_info_configure_notification_action">Nastavit oznámení</string>
     <string name="push_info_disable_push_text">Pokud nepotřebujete okamžitá oznámení na nové zprávy, měli byste Push vypnout a použít pravidelné dotazování. To kontroluje nové e-maily v pravidelném intervalu a nepotřebuje oznámení.</string>

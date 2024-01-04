@@ -2,7 +2,6 @@
 <resources>
     <string name="account_server_validation_incoming_loading_message">Gelen sunucu ayarları denetleniyor…</string>
     <string name="account_server_validation_error_authentication">Kimlik doğrulama hatası</string>
-    <string name="account_server_validation_error_certificate">Sertifika hatası</string>
     <string name="account_server_validation_outgoing_loading_message">Giden sunucu ayarları denetleniyor…</string>
     <string name="account_server_validation_error_network">Ağ hatası</string>
     <string name="account_server_validation_outgoing_success">Giden sunucu ayarları geçerli</string>
@@ -12,4 +11,11 @@
     <string name="account_server_validation_incoming_success">Gelen sunucu ayarları geçerli</string>
     <string name="account_server_validation_incoming_loading_error">Gelen sunucu ayarlarının denetlenmesi başarısız oldu</string>
     <string name="account_server_validation_error_server">Sunucu hatası</string>
+    <string name="account_server_validation_error_missing_server_capability">Eksik sunucu özelliği</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">İstemci sertifikasına erişilemedi</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Sunucuda aşağıdaki özellik eksik:
+\n%s</string>
+    <string name="account_server_validation_error_client_certificate_expired">İstemci sertifikası artık geçerli değil</string>
+    <string name="account_server_validation_error_details">Ayrıntılar:
+\n%s</string>
 </resources>

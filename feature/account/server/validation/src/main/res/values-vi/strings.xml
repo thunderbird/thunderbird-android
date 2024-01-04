@@ -2,7 +2,6 @@
 <resources>
     <string name="account_server_validation_incoming_loading_message">Đang kiểm tra thiết đặt máy chủ thư đến…</string>
     <string name="account_server_validation_error_authentication">Lỗi xác thực</string>
-    <string name="account_server_validation_error_certificate">Lỗi chứng chỉ</string>
     <string name="account_server_validation_outgoing_loading_message">Đang kiểm tra thiết đặt máy chủ thư đi…</string>
     <string name="account_server_validation_error_network">Lỗi mạng</string>
     <string name="account_server_validation_outgoing_success">Thiết đặt máy chủ thư đi hợp lệ</string>

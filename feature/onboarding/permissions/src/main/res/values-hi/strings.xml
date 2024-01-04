@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="onboarding_permissions_contacts_description">संपर्क सुझाव प्रदान करने और संपर्क नामों और तस्वीरों को प्रदर्शित करने में सक्षम होने की अनुमति दें।</string>
-    <string name="onboarding_permissions_notifications_title">सूचनाएँ</string>
-    <string name="onboarding_permissions_screen_title">अनुभव में सुधार</string>
-    <string name="onboarding_permissions_contacts_title">संपर्क</string>
+    <string name="onboarding_permissions_contacts_description">कॉन्टैक्ट जोड़ने की सलाह और कॉन्टैक्ट का नाम और फोटो देख पाने के लिए एक्सेस दें।</string>
+    <string name="onboarding_permissions_notifications_title">नोटिफिकेशन</string>
+    <string name="onboarding_permissions_screen_title">ऐप बेहतर करें</string>
+    <string name="onboarding_permissions_contacts_title">कॉन्टैक्ट</string>
+    <string name="onboarding_permissions_notifications_description">नोटिफिकेशन ऑन करें ताकि आपसे कोई भी ईमेल छूट ना जाएं।</string>
+    <string name="onboarding_permissions_allow_button">दें</string>
+    <string name="onboarding_permissions_skip_button">छोड़ें</string>
 </resources>

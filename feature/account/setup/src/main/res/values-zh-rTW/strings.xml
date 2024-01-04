@@ -37,4 +37,18 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">不支援此電子郵件地址。</string>
     <string name="account_setup_create_account_creating">建立帳戶中…</string>
     <string name="account_setup_create_account_error">嘗試建立帳戶時發生錯誤</string>
+    <string name="account_setup_special_folders_success_message">所有特殊資料夾都已由伺服器自動配置。</string>
+    <string name="account_setup_special_folders_folder_automatic">自動（ %s）</string>
+    <string name="account_setup_special_folders_drafts_folder_label">草稿資料夾</string>
+    <string name="account_setup_special_folders_error_message">從伺服器獲取資料夾列表失敗</string>
+    <string name="account_setup_special_folders_loading_message">獲取資料夾列表⋯⋯</string>
+    <string name="account_setup_special_folders_form_description">請為您的帳戶指定特殊資料夾。</string>
+    <string name="account_setup_special_folders_sent_folder_label">已傳送資料夾</string>
+    <string name="account_setup_special_folders_folder_none">無</string>
+    <string name="account_setup_special_folders_top_bar_title">特殊資料夾</string>
+    <string name="account_setup_special_folders_trash_folder_label">垃圾資料夾</string>
+    <string name="account_setup_special_folders_archive_folder_label">存檔資料夾</string>
+    <string name="account_setup_special_folders_edit_folders_button_label">編輯特殊資料夾</string>
+    <string name="account_setup_special_folders_spam_folder_label">垃圾郵件資料夾</string>
+    <string name="account_setup_special_folders_form_description_automatic">“自動”條目將自動遵循伺服器所做的更改。 當前伺服器值顯示在括號中。</string>
 </resources>

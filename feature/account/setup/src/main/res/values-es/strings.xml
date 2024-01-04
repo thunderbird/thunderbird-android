@@ -11,7 +11,7 @@
     <string name="account_setup_options_email_signature_error_blank">La firma del correo no puede quedar en blanco.</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">Es necesario que primero apruebes los ajustes recibidos.</string>
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
-    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Se han recibido unos ajustes para tu servidor de correo a través de una conexión no del todo segura. Lo que significa que hay una pequeña posibilidad de que alguien la haya podido alterar durante el trayecto. Lo ideal sería que la revisaras para asegurarte de que no haya nada raro.</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Hemos recibido la configuración de tu servidor de correo electrónico a través de una conexión que no es tan segura como nos gustaría. Esto significa que existe una pequeña posibilidad de que alguien la haya alterado. Por favor, ¿podrías volver a comprobar la configuración proporcionada para asegurarte de que es como debería ser?</string>
     <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Editar los ajustes</string>
     <string name="account_setup_error_unknown">Error desconocido</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
@@ -37,4 +37,18 @@
     <string name="account_setup_create_account_created">Cuenta creada correctamente</string>
     <string name="account_setup_create_account_creating">Creando la cuenta…</string>
     <string name="account_setup_create_account_error">Se ha producido un error al intentar crear la cuenta</string>
+    <string name="account_setup_special_folders_success_message">Todas las carpetas especiales han sido configuradas automáticamente por el servidor.</string>
+    <string name="account_setup_special_folders_folder_automatic">Automático (%s)</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Carpeta de borradores</string>
+    <string name="account_setup_special_folders_error_message">Error al recuperar la lista de carpetas del servidor</string>
+    <string name="account_setup_special_folders_loading_message">Obtención de la lista de carpetas…</string>
+    <string name="account_setup_special_folders_form_description">Por favor, especifique las carpetas especiales de su cuenta.</string>
+    <string name="account_setup_special_folders_sent_folder_label">Carpeta enviada</string>
+    <string name="account_setup_special_folders_folder_none">Ninguno</string>
+    <string name="account_setup_special_folders_top_bar_title">Carpetas especiales</string>
+    <string name="account_setup_special_folders_trash_folder_label">Papelera</string>
+    <string name="account_setup_special_folders_archive_folder_label">Carpeta de archivo</string>
+    <string name="account_setup_special_folders_edit_folders_button_label">Editar las carpetas especiales</string>
+    <string name="account_setup_special_folders_spam_folder_label">Carpeta de spam</string>
+    <string name="account_setup_special_folders_form_description_automatic">La entrada \"Automática\" seguirá automáticamente los cambios realizados por el servidor. El valor actual del servidor se muestra entre paréntesis.</string>
 </resources>

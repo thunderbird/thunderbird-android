@@ -2,7 +2,6 @@
 <resources>
     <string name="account_server_validation_incoming_loading_message">Tarkistetaan saapuvan postin palvelimen asetuksia…</string>
     <string name="account_server_validation_error_authentication">Todennusvirhe</string>
-    <string name="account_server_validation_error_certificate">Varmennevirhe</string>
     <string name="account_server_validation_outgoing_loading_message">Tarkistetaan lähtevän postin palvelimen asetuksia…</string>
     <string name="account_server_validation_error_network">Verkkovirhe</string>
     <string name="account_server_validation_outgoing_success">Lähtevän postin palvelimen asetukset ovat kelvolliset</string>
