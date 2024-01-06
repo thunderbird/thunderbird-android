@@ -14,6 +14,7 @@ import android.net.SSLCertificateSocketFactory;
 import android.os.Build;
 import android.text.TextUtils;
 
+import app.k9mail.core.common.net.HostNameUtils;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ssl.TrustManagerFactory;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
@@ -129,7 +130,10 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
 
         hardenSocket(sslSocket);
 
-        setSniHost(socketFactory, sslSocket, host);
+        // RFC 6066 does not permit the use of literal IPv4 or IPv6 addresses as SNI hostnames.
+        if (HostNameUtils.INSTANCE.isLegalIPAddress(host) == null) {
+            setSniHost(socketFactory, sslSocket, host);
+        }
 
         return trustedSocket;
     }
