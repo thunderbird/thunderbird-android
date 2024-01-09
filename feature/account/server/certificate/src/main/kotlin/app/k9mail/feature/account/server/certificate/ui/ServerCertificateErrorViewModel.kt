@@ -22,8 +22,7 @@ class ServerCertificateErrorViewModel(
         serverCertificateError?.let { serverCertificateError ->
             updateState {
                 it.copy(
-                    hostname = serverCertificateError.hostname,
-                    errorText = buildErrorMessage(serverCertificateError),
+                    certificateError = formatServerCertificateError(serverCertificateError),
                 )
             }
         }
@@ -64,32 +63,5 @@ class ServerCertificateErrorViewModel(
 
     private fun navigateCertificateAccepted() {
         emitEffect(Effect.NavigateCertificateAccepted)
-    }
-
-    private fun buildErrorMessage(serverCertificateError: ServerCertificateError): String {
-        val formattedError = formatServerCertificateError(serverCertificateError)
-        val certificate = formattedError.serverCertificateProperties
-
-        return buildString {
-            if (certificate.subjectAlternativeNames.isNotEmpty()) {
-                append("Subject alternative names:\n")
-                for (subjectAlternativeName in certificate.subjectAlternativeNames) {
-                    append("- ").append(subjectAlternativeName).append("\n")
-                }
-                append("\n")
-            }
-
-            append("Not valid before: ").append(certificate.notValidBefore).append("\n")
-            append("Not valid after: ").append(certificate.notValidAfter).append("\n")
-            append("\n")
-
-            append("Subject: ").append(certificate.subject).append("\n")
-            append("Issuer: ").append(certificate.issuer).append("\n")
-            append("\n")
-
-            append("Fingerprint (SHA-1): \n").append(certificate.fingerprintSha1).append("\n")
-            append("Fingerprint (SHA-256): \n").append(certificate.fingerprintSha256).append("\n")
-            append("Fingerprint (SHA-512): \n").append(certificate.fingerprintSha512).append("\n")
-        }
     }
 }

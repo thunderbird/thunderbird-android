@@ -1,15 +1,15 @@
 package app.k9mail.feature.account.server.certificate.ui
 
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
+import app.k9mail.feature.account.server.certificate.domain.entity.FormattedServerCertificateError
 
 interface ServerCertificateErrorContract {
 
     interface ViewModel : UnidirectionalViewModel<State, Event, Effect>
 
     data class State(
-        val hostname: String = "",
         val isShowServerCertificate: Boolean = false,
-        val errorText: String = "",
+        val certificateError: FormattedServerCertificateError? = null,
     )
 
     sealed interface Event {

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- Title of the server certificate error screen -->
+    <string name="account_server_certificate_warning_title">Warning</string>
+
+    <!-- Subtitle of the server certificate error screen when we're not sure what the exact error is -->
+    <string name="account_server_certificate_unknown_error_subtitle">Certificate error</string>
+
+    <!-- Description text in the server certificate error screen when we're not sure what the exact error is -->
+    <string name="account_server_certificate_unknown_error_description_format">The app detected a potential security threat and did not continue to connect to <xliff:g id="serverName">%s</xliff:g>.\nIf you continue, attackers could try to steal information like your password or emails.</string>
+
+    <!-- Text of the back button in the server certificate error screen. Going back and not accepting the invalid certificate is the recommended action. -->
+    <string name="account_server_certificate_button_back">Go back (recommended)</string>
+
+    <!-- Text of the "more" button in the server certificate error screen. Pressing it will display details about the server certificate and only then allow the user to accept the certificate. -->
+    <string name="account_server_certificate_button_advanced">Advanced</string>
+
+    <!-- Text of the continue button in the server certificate error screen. Pressing it will accept the invalid certificate and continue to connect to the server. -->
+    <string name="account_server_certificate_button_continue">Accept risk and continue</string>
+
+    <!-- Title of the section displaying details of the server certificate -->
+    <string name="account_server_certificate_section_title">Server certificate</string>
+
+    <!-- Heading for the list of subject alternative names (SAN) from the server certificate. This is a technical term. If in doubt, do not translate. See https://en.wikipedia.org/wiki/Subject_Alternative_Name -->
+    <string name="account_server_certificate_subject_alternative_names">Subject alternative names</string>
+
+    <!-- Heading for the date/time when the certificate starts being valid -->
+    <string name="account_server_certificate_not_valid_before">Not valid before</string>
+
+    <!-- Heading for the date/time when the certificate stops being valid -->
+    <string name="account_server_certificate_not_valid_after">Not valid after</string>
+
+    <!-- Heading for the "subject" information from the server certificate. This is a technical term. If in doubt, do not translate. See https://en.wikipedia.org/wiki/Public_key_certificate -->
+    <string name="account_server_certificate_subject">Subject</string>
+
+    <!-- Heading for the "issuer" information from the server certificate. This is a technical term. If in doubt, do not translate. See https://en.wikipedia.org/wiki/Public_key_certificate -->
+    <string name="account_server_certificate_issuer">Issuer</string>
+
+    <!-- Heading for the "fingerprints" of the server certificate. This is a technical term. If in doubt, do not translate. See https://en.wikipedia.org/wiki/Fingerprint_(computing) -->
+    <string name="account_server_certificate_fingerprints_section">Fingerprints</string>
+</resources>
