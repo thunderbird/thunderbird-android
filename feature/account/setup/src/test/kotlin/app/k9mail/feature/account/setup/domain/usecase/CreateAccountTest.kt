@@ -1,6 +1,7 @@
 package app.k9mail.feature.account.setup.domain.usecase
 
 import app.k9mail.feature.account.common.domain.entity.Account
+import app.k9mail.feature.account.common.domain.entity.AccountDisplayOptions
 import app.k9mail.feature.account.common.domain.entity.AccountOptions
 import app.k9mail.feature.account.common.domain.entity.MailConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderOption
@@ -30,12 +31,13 @@ class CreateAccountTest {
         )
 
         val result = createAccount.execute(
-            EMAIL_ADDRESS,
-            INCOMING_SETTINGS,
-            OUTGOING_SETTINGS,
-            AUTHORIZATION_STATE,
-            SPECIAL_FOLDER_SETTINGS,
-            OPTIONS,
+            emailAddress = EMAIL_ADDRESS,
+            incomingServerSettings = INCOMING_SETTINGS,
+            outgoingServerSettings = OUTGOING_SETTINGS,
+            authorizationState = AUTHORIZATION_STATE,
+            specialFolderSettings = SPECIAL_FOLDER_SETTINGS,
+            options = OPTIONS,
+            displayOptions = DISPLAY_OPTIONS,
         )
 
         assertThat(result).isEqualTo(AccountCreatorResult.Success("uuid"))
@@ -104,6 +106,12 @@ class CreateAccountTest {
             checkFrequencyInMinutes = 15,
             messageDisplayCount = 25,
             showNotification = true,
+        )
+
+        val DISPLAY_OPTIONS = AccountDisplayOptions(
+            accountName = "accountName",
+            displayName = "displayName",
+            emailSignature = null,
         )
     }
 }

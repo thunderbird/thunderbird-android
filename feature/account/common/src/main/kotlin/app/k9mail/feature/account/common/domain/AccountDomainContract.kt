@@ -1,5 +1,6 @@
 package app.k9mail.feature.account.common.domain
 
+import app.k9mail.feature.account.common.domain.entity.AccountDisplayOptions
 import app.k9mail.feature.account.common.domain.entity.AccountOptions
 import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
@@ -24,6 +25,8 @@ interface AccountDomainContract {
         fun setSpecialFolderSettings(specialFolderSettings: SpecialFolderSettings)
 
         fun setOptions(options: AccountOptions)
+
+        fun setDisplayOptions(displayOptions: AccountDisplayOptions)
 
         fun clear()
     }

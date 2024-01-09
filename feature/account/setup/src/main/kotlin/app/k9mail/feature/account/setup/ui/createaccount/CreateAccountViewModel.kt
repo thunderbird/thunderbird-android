@@ -40,6 +40,7 @@ class CreateAccountViewModel(
                 authorizationState = accountState.authorizationState?.state,
                 specialFolderSettings = accountState.specialFolderSettings,
                 options = accountState.options!!,
+                displayOptions = accountState.displayOptions!!,
             )
 
             when (result) {

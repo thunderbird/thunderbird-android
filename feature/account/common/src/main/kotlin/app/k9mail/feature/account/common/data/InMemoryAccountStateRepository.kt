@@ -1,6 +1,7 @@
 package app.k9mail.feature.account.common.data
 
 import app.k9mail.feature.account.common.domain.AccountDomainContract
+import app.k9mail.feature.account.common.domain.entity.AccountDisplayOptions
 import app.k9mail.feature.account.common.domain.entity.AccountOptions
 import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
@@ -43,6 +44,10 @@ class InMemoryAccountStateRepository(
 
     override fun setOptions(options: AccountOptions) {
         state = state.copy(options = options)
+    }
+
+    override fun setDisplayOptions(displayOptions: AccountDisplayOptions) {
+        state = state.copy(displayOptions = displayOptions)
     }
 
     override fun clear() {

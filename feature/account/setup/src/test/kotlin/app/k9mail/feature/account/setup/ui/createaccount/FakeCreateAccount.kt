@@ -1,5 +1,6 @@
 package app.k9mail.feature.account.setup.ui.createaccount
 
+import app.k9mail.feature.account.common.domain.entity.AccountDisplayOptions
 import app.k9mail.feature.account.common.domain.entity.AccountOptions
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderSettings
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
@@ -18,6 +19,7 @@ class FakeCreateAccount : CreateAccount {
         authorizationState: String?,
         specialFolderSettings: SpecialFolderSettings?,
         options: AccountOptions,
+        displayOptions: AccountDisplayOptions,
     ): AccountCreatorResult {
         recordedInvocations.add(
             CreateAccountArguments(
@@ -27,6 +29,7 @@ class FakeCreateAccount : CreateAccount {
                 authorizationState,
                 specialFolderSettings,
                 options,
+                displayOptions,
             ),
         )
 
@@ -41,4 +44,5 @@ data class CreateAccountArguments(
     val authorizationState: String?,
     val specialFolderSettings: SpecialFolderSettings?,
     val options: AccountOptions,
+    val displayOptions: AccountDisplayOptions,
 )

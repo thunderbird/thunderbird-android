@@ -3,6 +3,7 @@ package app.k9mail.feature.account.setup.domain
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.core.common.domain.usecase.validation.ValidationError
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
+import app.k9mail.feature.account.common.domain.entity.AccountDisplayOptions
 import app.k9mail.feature.account.common.domain.entity.AccountOptions
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderOptions
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderSettings
@@ -24,6 +25,7 @@ interface DomainContract {
                 authorizationState: String?,
                 specialFolderSettings: SpecialFolderSettings?,
                 options: AccountOptions,
+                displayOptions: AccountDisplayOptions,
             ): AccountCreatorResult
         }
 

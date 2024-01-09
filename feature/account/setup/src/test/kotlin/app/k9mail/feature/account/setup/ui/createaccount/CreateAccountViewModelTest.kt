@@ -4,6 +4,7 @@ import app.cash.turbine.testIn
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
 import app.k9mail.feature.account.common.data.InMemoryAccountStateRepository
+import app.k9mail.feature.account.common.domain.entity.AccountDisplayOptions
 import app.k9mail.feature.account.common.domain.entity.AccountOptions
 import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
@@ -67,6 +68,7 @@ class CreateAccountViewModelTest {
                 authorizationState = AUTHORIZATION_STATE.state,
                 specialFolderSettings = SPECIAL_FOLDER_SETTINGS,
                 options = ACCOUNT_OPTIONS,
+                displayOptions = ACCOUNT_DISPLAY_OPTIONS,
             ),
         )
 
@@ -191,6 +193,12 @@ class CreateAccountViewModelTest {
             checkFrequencyInMinutes = 0,
             messageDisplayCount = 50,
             showNotification = false,
+        )
+
+        val ACCOUNT_DISPLAY_OPTIONS = AccountDisplayOptions(
+            accountName = "account name",
+            displayName = "display name",
+            emailSignature = null,
         )
 
         val ACCOUNT_STATE = AccountState(

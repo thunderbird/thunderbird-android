@@ -1,6 +1,7 @@
 package app.k9mail.feature.account.common.ui.preview
 
 import app.k9mail.feature.account.common.domain.AccountDomainContract
+import app.k9mail.feature.account.common.domain.entity.AccountDisplayOptions
 import app.k9mail.feature.account.common.domain.entity.AccountOptions
 import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
@@ -48,6 +49,8 @@ class PreviewAccountStateRepository : AccountDomainContract.AccountStateReposito
     override fun setSpecialFolderSettings(specialFolderSettings: SpecialFolderSettings) = Unit
 
     override fun setOptions(options: AccountOptions) = Unit
+
+    override fun setDisplayOptions(displayOptions: AccountDisplayOptions) = Unit
 
     override fun clear() = Unit
 }

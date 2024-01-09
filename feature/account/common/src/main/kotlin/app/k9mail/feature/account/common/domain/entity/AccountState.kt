@@ -10,4 +10,5 @@ data class AccountState(
     val authorizationState: AuthorizationState? = null,
     val specialFolderSettings: SpecialFolderSettings? = null,
     val options: AccountOptions? = null,
+    val displayOptions: AccountDisplayOptions? = null,
 )
