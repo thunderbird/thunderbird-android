@@ -23,13 +23,27 @@ class ServerCertificateErrorViewModel(
     private val serverCertificateError: ServerCertificateError? = certificateErrorRepository.getCertificateError()
 
     init {
-        setErrorMessage(buildErrorMessage(serverCertificateError))
+        serverCertificateError?.let { serverCertificateError ->
+            updateState {
+                it.copy(
+                    hostname = serverCertificateError.hostname,
+                    errorText = buildErrorMessage(serverCertificateError),
+                )
+            }
+        }
     }
 
     override fun event(event: Event) {
         when (event) {
+            Event.OnShowAdvancedClicked -> showAdvanced()
             Event.OnCertificateAcceptedClicked -> acceptCertificate()
             Event.OnBackClicked -> navigateBack()
+        }
+    }
+
+    private fun showAdvanced() {
+        updateState {
+            it.copy(isShowServerCertificate = true)
         }
     }
 
@@ -94,12 +108,6 @@ class ServerCertificateErrorViewModel(
                     }
                 }
             }
-        }
-    }
-
-    private fun setErrorMessage(errorText: String) {
-        updateState {
-            it.copy(errorText = errorText)
         }
     }
 }

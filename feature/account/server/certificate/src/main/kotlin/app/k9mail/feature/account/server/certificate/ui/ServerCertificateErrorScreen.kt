@@ -69,11 +69,19 @@ fun ServerCertificateErrorScreen(
                         modifier = Modifier
                             .fillMaxWidth(),
                     )
-                    ButtonOutlined(
-                        text = "Accept consequences and continue",
-                        onClick = { dispatch(Event.OnCertificateAcceptedClicked) },
-                        modifier = Modifier.fillMaxWidth(),
-                    )
+                    if (state.value.isShowServerCertificate) {
+                        ButtonOutlined(
+                            text = "Accept consequences and continue",
+                            onClick = { dispatch(Event.OnCertificateAcceptedClicked) },
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                    } else {
+                        ButtonOutlined(
+                            text = "Advanced",
+                            onClick = { dispatch(Event.OnShowAdvancedClicked) },
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                    }
                 }
             }
         },
@@ -110,17 +118,18 @@ fun ServerCertificateErrorScreen(
 
                 Spacer(modifier = Modifier.height(MainTheme.spacings.quadruple))
 
+                val hostname = state.value.hostname
                 TextBody1(
-                    text = "The server presented an invalid TLS certificate. " +
-                        "Sometimes, this is because of a server misconfiguration. " +
-                        "Sometimes it is because someone is trying to attack you or your mail server. " +
-                        "If you're not sure what's up, click \"Go back\" and contact the folks who manage your " +
-                        "mail server.",
+                    text = "The app detected a potential security threat and did not continue to connect to " +
+                        "$hostname. If you continue, attackers could try to steal information like your password or " +
+                        "emails.",
                 )
 
                 Spacer(modifier = Modifier.height(MainTheme.spacings.quadruple))
 
-                TextBody1(state.value.errorText)
+                if (state.value.isShowServerCertificate) {
+                    TextBody1(state.value.errorText)
+                }
             }
         }
     }

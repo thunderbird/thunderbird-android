@@ -7,16 +7,19 @@ interface ServerCertificateErrorContract {
     interface ViewModel : UnidirectionalViewModel<State, Event, Effect>
 
     data class State(
+        val hostname: String = "",
+        val isShowServerCertificate: Boolean = false,
         val errorText: String = "",
     )
 
     sealed interface Event {
-        object OnCertificateAcceptedClicked : Event
-        object OnBackClicked : Event
+        data object OnShowAdvancedClicked : Event
+        data object OnCertificateAcceptedClicked : Event
+        data object OnBackClicked : Event
     }
 
     sealed interface Effect {
-        object NavigateCertificateAccepted : Effect
-        object NavigateBack : Effect
+        data object NavigateCertificateAccepted : Effect
+        data object NavigateBack : Effect
     }
 }
