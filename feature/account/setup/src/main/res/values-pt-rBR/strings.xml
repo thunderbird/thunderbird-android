@@ -28,7 +28,7 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Este endereço eletrônico é inválido.</string>
     <string name="account_setup_options_email_check_frequency_never">Nunca</string>
     <string name="account_setup_auto_discovery_loading_message">Encontrando configuração do email</string>
-    <string name="account_setup_options_section_sync_options_">Opções de sincronização</string>
+    <string name="account_setup_options_section_sync_options">Opções de sincronização</string>
     <string name="account_setup_options_show_notifications_label">Mostrar notificações</string>
     <string name="account_setup_options_section_display_options">Opções de visualização</string>
     <string name="account_setup_title">K-9 Mail</string>

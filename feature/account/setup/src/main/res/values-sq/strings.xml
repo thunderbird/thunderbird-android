@@ -29,7 +29,7 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Kjo nuk njihet si adresë email e vlefshme.</string>
     <string name="account_setup_options_email_check_frequency_never">Kurrë</string>
     <string name="account_setup_auto_discovery_loading_message">Po gjenden hollësi email-i</string>
-    <string name="account_setup_options_section_sync_options_">Mundësi njëkohësimi</string>
+    <string name="account_setup_options_section_sync_options">Mundësi njëkohësimi</string>
     <string name="account_setup_options_show_notifications_label">Shfaq njoftime</string>
     <string name="account_setup_options_section_display_options">Mundësi shfaqjeje</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Kjo adresë email nuk lejohet.</string>

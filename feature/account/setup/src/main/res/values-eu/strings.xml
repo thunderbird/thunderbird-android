@@ -28,7 +28,7 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Helbide hau ez da helbide elektroniko zuzentzat jotzen.</string>
     <string name="account_setup_options_email_check_frequency_never">Inoiz ere ez</string>
     <string name="account_setup_auto_discovery_loading_message">E-mail xehetasunak bilatzen</string>
-    <string name="account_setup_options_section_sync_options_">Sinkronizazio ezarpenak</string>
+    <string name="account_setup_options_section_sync_options">Sinkronizazio ezarpenak</string>
     <string name="account_setup_options_show_notifications_label">Erakutsi jakinarazpenak</string>
     <string name="account_setup_options_section_display_options">Pantaila ezarpenak</string>
     <string name="account_setup_title">K-9 Mail</string>

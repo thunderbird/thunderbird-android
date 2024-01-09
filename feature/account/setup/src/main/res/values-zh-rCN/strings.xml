@@ -28,7 +28,7 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">输入值未被识别为有效的邮箱地址。</string>
     <string name="account_setup_options_email_check_frequency_never">从不</string>
     <string name="account_setup_auto_discovery_loading_message">寻找电子邮件详情中</string>
-    <string name="account_setup_options_section_sync_options_">同步选项</string>
+    <string name="account_setup_options_section_sync_options">同步选项</string>
     <string name="account_setup_options_show_notifications_label">显示通知</string>
     <string name="account_setup_options_section_display_options">显示选项</string>
     <string name="account_setup_title">K-9 Mail</string>

@@ -32,7 +32,7 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Η διεύθυνση email δεν αναγνωρίζεται ως έγκυρη.</string>
     <string name="account_setup_options_email_check_frequency_never">Ποτέ</string>
     <string name="account_setup_auto_discovery_loading_message">Εύερεση λεπτομεριών email</string>
-    <string name="account_setup_options_section_sync_options_">Επιλογές συγχρονισμού</string>
+    <string name="account_setup_options_section_sync_options">Επιλογές συγχρονισμού</string>
     <string name="account_setup_options_show_notifications_label">Εμφάνιση ειδοποιήσεων</string>
     <string name="account_setup_options_section_display_options">Επιλογές εμφάνισης</string>
     <string name="account_setup_title">K-9 Mail</string>

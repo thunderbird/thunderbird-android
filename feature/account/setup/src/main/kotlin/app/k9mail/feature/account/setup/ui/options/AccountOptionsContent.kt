@@ -102,7 +102,7 @@ internal fun AccountOptionsContent(
 
             item {
                 TextOverline(
-                    text = stringResource(id = R.string.account_setup_options_section_sync_options_),
+                    text = stringResource(id = R.string.account_setup_options_section_sync_options),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(defaultHeadlineItemPadding()),

@@ -28,7 +28,7 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Az email cím nem tekinthető érvényes email címnek.</string>
     <string name="account_setup_options_email_check_frequency_never">Soha</string>
     <string name="account_setup_auto_discovery_loading_message">E-mail adatok keresése</string>
-    <string name="account_setup_options_section_sync_options_">Szinkronizálási opciók</string>
+    <string name="account_setup_options_section_sync_options">Szinkronizálási opciók</string>
     <string name="account_setup_options_show_notifications_label">Értesítések megjelenítése</string>
     <string name="account_setup_options_section_display_options">Megjelenítési opciók</string>
     <string name="account_setup_title">K-9 Mail</string>

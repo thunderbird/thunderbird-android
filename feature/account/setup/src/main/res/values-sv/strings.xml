@@ -25,7 +25,7 @@
     <string name="account_setup_error_network">Nätverk</string>
     <string name="account_setup_options_email_check_frequency_never">Aldrig</string>
     <string name="account_setup_auto_discovery_loading_message">Hitta e-postdetaljer</string>
-    <string name="account_setup_options_section_sync_options_">Synkroniseringsinställningar</string>
+    <string name="account_setup_options_section_sync_options">Synkroniseringsinställningar</string>
     <string name="account_setup_options_show_notifications_label">Visa notiser</string>
     <string name="account_setup_options_section_display_options">Visningsinställningar</string>
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>

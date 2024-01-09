@@ -28,7 +28,7 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Cette adresse courriel n’est pas reconnue comme valide.</string>
     <string name="account_setup_options_email_check_frequency_never">Jamais</string>
     <string name="account_setup_auto_discovery_loading_message">Recherche des détails du compte de courriel</string>
-    <string name="account_setup_options_section_sync_options_">Options de synchronisation</string>
+    <string name="account_setup_options_section_sync_options">Options de synchronisation</string>
     <string name="account_setup_options_show_notifications_label">Afficher les notifications</string>
     <string name="account_setup_options_section_display_options">Options d’affichage</string>
     <string name="account_setup_title">Courriel K-9 Mail</string>

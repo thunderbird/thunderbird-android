@@ -30,7 +30,7 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Đây không được công nhận là địa chỉ email hợp lệ.</string>
     <string name="account_setup_options_email_check_frequency_never">Không bao giờ</string>
     <string name="account_setup_auto_discovery_loading_message">Tìm chi tiết e-mail</string>
-    <string name="account_setup_options_section_sync_options_">Tùy chọn đồng bộ hóa</string>
+    <string name="account_setup_options_section_sync_options">Tùy chọn đồng bộ hóa</string>
     <string name="account_setup_options_show_notifications_label">Hiển thị thông báo</string>
     <string name="account_setup_options_section_display_options">Tùy chọn hiển thị</string>
     <string name="account_setup_title">Thư K-9</string>

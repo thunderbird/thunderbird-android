@@ -18,7 +18,7 @@
     <string name="account_setup_error_network">Netværk</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Email adresse er ugyldig.</string>
     <string name="account_setup_options_email_check_frequency_never">Aldrig</string>
-    <string name="account_setup_options_section_sync_options_">Synkroniserings indstillinger</string>
+    <string name="account_setup_options_section_sync_options">Synkroniserings indstillinger</string>
     <string name="account_setup_options_show_notifications_label">Vis notifikationer</string>
     <string name="account_setup_options_section_display_options">Visningsindstillinger</string>
     <string name="account_setup_title">K-9 Mail</string>

@@ -28,7 +28,7 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">ईमेल पता गलत है।</string>
     <string name="account_setup_options_email_check_frequency_never">कभी नहीं</string>
     <string name="account_setup_auto_discovery_loading_message">ईमेल की जानकारी खोज रहे</string>
-    <string name="account_setup_options_section_sync_options_">सिंक ऑप्शन</string>
+    <string name="account_setup_options_section_sync_options">सिंक ऑप्शन</string>
     <string name="account_setup_options_show_notifications_label">नोटिफिकेशन दिखाएं</string>
     <string name="account_setup_options_section_display_options">डिस्प्ले ऑप्शन</string>
     <string name="account_setup_title">K-9 मेल</string>
