@@ -9,7 +9,7 @@ if (testCoverageEnabled) {
 }
 
 dependencies {
-    implementation(projects.app.k9mail)
+    implementation(projects.app.common)
 
     implementation(projects.app.core)
     implementation(projects.app.ui.legacy)

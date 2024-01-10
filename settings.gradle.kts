@@ -27,7 +27,7 @@ include(
 )
 
 include(
-    ":app:k9mail",
+    ":app:common",
     ":app:ui:base",
     ":app:ui:legacy",
     ":app:ui:message-list-widget",
