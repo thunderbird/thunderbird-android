@@ -20,10 +20,10 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryScr
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryViewModel
 import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountScreen
 import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountViewModel
-import app.k9mail.feature.account.setup.ui.options.AccountOptionsScreen
-import app.k9mail.feature.account.setup.ui.options.AccountOptionsViewModel
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsScreen
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsViewModel
+import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsScreen
+import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsViewModel
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersScreen
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -146,10 +146,10 @@ fun AccountSetupNavHost(
         }
 
         composable(route = NESTED_NAVIGATION_SYNC_OPTIONS) {
-            AccountOptionsScreen(
+            SyncOptionsScreen(
                 onNext = { navController.navigate(NESTED_NAVIGATION_CREATE_ACCOUNT) },
                 onBack = { navController.popBackStack() },
-                viewModel = koinViewModel<AccountOptionsViewModel>(),
+                viewModel = koinViewModel<SyncOptionsViewModel>(),
             )
         }
 

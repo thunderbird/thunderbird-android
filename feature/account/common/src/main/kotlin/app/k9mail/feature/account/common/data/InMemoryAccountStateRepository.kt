@@ -4,6 +4,7 @@ import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.common.domain.entity.AccountDisplayOptions
 import app.k9mail.feature.account.common.domain.entity.AccountOptions
 import app.k9mail.feature.account.common.domain.entity.AccountState
+import app.k9mail.feature.account.common.domain.entity.AccountSyncOptions
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderSettings
 import com.fsck.k9.mail.ServerSettings
@@ -48,6 +49,10 @@ class InMemoryAccountStateRepository(
 
     override fun setDisplayOptions(displayOptions: AccountDisplayOptions) {
         state = state.copy(displayOptions = displayOptions)
+    }
+
+    override fun setSyncOptions(syncOptions: AccountSyncOptions) {
+        state = state.copy(syncOptions = syncOptions)
     }
 
     override fun clear() {
