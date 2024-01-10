@@ -39,12 +39,12 @@ class InMemoryAccountStore(
             accountMap[account.uuid] = if (isIncoming) {
                 account.copy(
                     incomingServerSettings = serverSettings,
-                    authorizationState = authorizationState?.state,
+                    authorizationState = authorizationState?.value,
                 )
             } else {
                 account.copy(
                     outgoingServerSettings = serverSettings,
-                    authorizationState = authorizationState?.state,
+                    authorizationState = authorizationState?.value,
                 )
             }
 

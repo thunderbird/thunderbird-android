@@ -60,7 +60,7 @@ class InMemoryAccountStateRepository(
     }
 
     override fun getAuthorizationState(): String? {
-        return state.authorizationState?.state
+        return state.authorizationState?.value
     }
 
     override fun updateAuthorizationState(authorizationState: String?) {

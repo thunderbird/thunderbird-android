@@ -10,6 +10,6 @@ class AuthorizationStateTest {
     fun `should default to null state`() {
         val authorizationState = AuthorizationState()
 
-        assertThat(authorizationState.state).isNull()
+        assertThat(authorizationState.value).isNull()
     }
 }

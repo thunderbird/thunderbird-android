@@ -1,5 +1,5 @@
 package app.k9mail.feature.account.common.domain.entity
 
 data class AuthorizationState(
-    val state: String? = null,
+    val value: String? = null,
 )

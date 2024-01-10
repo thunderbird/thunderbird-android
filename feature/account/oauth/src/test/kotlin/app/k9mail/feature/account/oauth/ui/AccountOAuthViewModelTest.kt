@@ -169,7 +169,7 @@ class AccountOAuthViewModelTest {
     @Test
     fun `should finish OAuth sign in when onOAuthResult received with success`() = runTest {
         val initialState = defaultState
-        val authorizationState = AuthorizationState(state = "state")
+        val authorizationState = AuthorizationState(value = "state")
         val testSubject = createTestSubject(
             authorizationResult = AuthorizationResult.Success(authorizationState),
             initialState = initialState,

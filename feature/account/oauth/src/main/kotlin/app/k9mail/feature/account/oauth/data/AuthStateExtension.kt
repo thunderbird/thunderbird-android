@@ -7,7 +7,7 @@ import timber.log.Timber
 
 fun AuthState.toAuthorizationState(): AuthorizationState {
     return try {
-        AuthorizationState(state = jsonSerializeString())
+        AuthorizationState(value = jsonSerializeString())
     } catch (e: JSONException) {
         Timber.e(e, "Error serializing AuthorizationState")
         AuthorizationState()
@@ -16,7 +16,7 @@ fun AuthState.toAuthorizationState(): AuthorizationState {
 
 fun AuthorizationState.toAuthState(): AuthState {
     return try {
-        state?.let { AuthState.jsonDeserialize(it) } ?: AuthState()
+        value?.let { AuthState.jsonDeserialize(it) } ?: AuthState()
     } catch (e: JSONException) {
         Timber.e(e, "Error deserializing AuthorizationState")
         AuthState()

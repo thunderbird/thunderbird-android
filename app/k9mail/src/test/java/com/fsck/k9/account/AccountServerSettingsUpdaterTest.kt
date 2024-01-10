@@ -53,7 +53,7 @@ class AccountServerSettingsUpdaterTest {
         assertThat(k9Account).isNotNull().all {
             prop(K9Account::incomingServerSettings).isEqualTo(updatedIncomingServerSettings)
             prop(K9Account::outgoingServerSettings).isEqualTo(OUTGOING_SERVER_SETTINGS)
-            prop(K9Account::oAuthState).isEqualTo(updatedAuthorizationState.state)
+            prop(K9Account::oAuthState).isEqualTo(updatedAuthorizationState.value)
         }
     }
 
@@ -77,7 +77,7 @@ class AccountServerSettingsUpdaterTest {
         assertThat(k9Account).isNotNull().all {
             prop(K9Account::incomingServerSettings).isEqualTo(INCOMING_SERVER_SETTINGS)
             prop(K9Account::outgoingServerSettings).isEqualTo(updatedOutgoingServerSettings)
-            prop(K9Account::oAuthState).isEqualTo(updatedAuthorizationState.state)
+            prop(K9Account::oAuthState).isEqualTo(updatedAuthorizationState.value)
         }
     }
 
@@ -136,7 +136,7 @@ class AccountServerSettingsUpdaterTest {
             ).apply {
                 incomingServerSettings = INCOMING_SERVER_SETTINGS
                 outgoingServerSettings = OUTGOING_SERVER_SETTINGS
-                oAuthState = AUTHORIZATION_STATE.state
+                oAuthState = AUTHORIZATION_STATE.value
             }
         }
     }
