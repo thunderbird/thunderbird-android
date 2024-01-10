@@ -32,7 +32,8 @@ class AccountAutoDiscoveryStateMapperKtTest {
                 incomingServerSettings = null,
                 outgoingServerSettings = null,
                 authorizationState = null,
-                options = null,
+                displayOptions = null,
+                syncOptions = null,
             ),
         )
     }

@@ -5,8 +5,8 @@ import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.common.domain.input.StringInputField
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.State
 
-internal fun AccountState.toAccountOptionsState(): State {
-    val options = options
+internal fun AccountState.toDisplayOptionsState(): State {
+    val options = displayOptions
     return if (options == null) {
         State(
             accountName = StringInputField(emailAddress ?: ""),

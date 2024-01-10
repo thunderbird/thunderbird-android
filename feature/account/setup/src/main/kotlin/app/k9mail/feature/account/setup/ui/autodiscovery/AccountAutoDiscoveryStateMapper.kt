@@ -19,7 +19,8 @@ internal fun AccountAutoDiscoveryContract.State.toAccountState(): AccountState {
         incomingServerSettings = autoDiscoverySettings?.incomingServerSettings?.toServerSettings(password.value),
         outgoingServerSettings = autoDiscoverySettings?.outgoingServerSettings?.toServerSettings(password.value),
         authorizationState = authorizationState,
-        options = null,
+        displayOptions = null,
+        syncOptions = null,
     )
 }
 

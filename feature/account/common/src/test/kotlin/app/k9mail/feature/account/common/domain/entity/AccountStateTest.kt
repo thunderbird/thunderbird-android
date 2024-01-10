@@ -17,7 +17,9 @@ class AccountStateTest {
             prop(AccountState::incomingServerSettings).isNull()
             prop(AccountState::outgoingServerSettings).isNull()
             prop(AccountState::authorizationState).isNull()
-            prop(AccountState::options).isNull()
+            prop(AccountState::specialFolderSettings).isNull()
+            prop(AccountState::displayOptions).isNull()
+            prop(AccountState::syncOptions).isNull()
         }
     }
 }

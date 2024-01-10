@@ -3,6 +3,9 @@ package app.k9mail.feature.account.setup.domain.usecase
 import app.k9mail.feature.account.common.domain.entity.Account
 import app.k9mail.feature.account.common.domain.entity.AccountDisplayOptions
 import app.k9mail.feature.account.common.domain.entity.AccountOptions
+import app.k9mail.feature.account.common.domain.entity.AccountState
+import app.k9mail.feature.account.common.domain.entity.AccountSyncOptions
+import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import app.k9mail.feature.account.common.domain.entity.MailConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderOption
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderSettings
@@ -31,13 +34,15 @@ class CreateAccountTest {
         )
 
         val result = createAccount.execute(
-            emailAddress = EMAIL_ADDRESS,
-            incomingServerSettings = INCOMING_SETTINGS,
-            outgoingServerSettings = OUTGOING_SETTINGS,
-            authorizationState = AUTHORIZATION_STATE,
-            specialFolderSettings = SPECIAL_FOLDER_SETTINGS,
-            options = OPTIONS,
-            displayOptions = DISPLAY_OPTIONS,
+            AccountState(
+                emailAddress = EMAIL_ADDRESS,
+                incomingServerSettings = INCOMING_SETTINGS,
+                outgoingServerSettings = OUTGOING_SETTINGS,
+                authorizationState = AUTHORIZATION_STATE,
+                specialFolderSettings = SPECIAL_FOLDER_SETTINGS,
+                displayOptions = DISPLAY_OPTIONS,
+                syncOptions = SYNC_OPTIONS,
+            ),
         )
 
         assertThat(result).isEqualTo(AccountCreatorResult.Success("uuid"))
@@ -47,7 +52,7 @@ class CreateAccountTest {
                 emailAddress = EMAIL_ADDRESS,
                 incomingServerSettings = INCOMING_SETTINGS,
                 outgoingServerSettings = OUTGOING_SETTINGS,
-                authorizationState = AUTHORIZATION_STATE,
+                authorizationState = AUTHORIZATION_STATE.value,
                 specialFolderSettings = SPECIAL_FOLDER_SETTINGS,
                 options = OPTIONS,
             ),
@@ -79,7 +84,7 @@ class CreateAccountTest {
             clientCertificateAlias = null,
         )
 
-        const val AUTHORIZATION_STATE = "authorization state"
+        val AUTHORIZATION_STATE = AuthorizationState("authorization state")
 
         val SPECIAL_FOLDER_SETTINGS = SpecialFolderSettings(
             archiveSpecialFolderOption = SpecialFolderOption.Special(
@@ -112,6 +117,12 @@ class CreateAccountTest {
             accountName = "accountName",
             displayName = "displayName",
             emailSignature = null,
+        )
+
+        val SYNC_OPTIONS = AccountSyncOptions(
+            checkFrequencyInMinutes = 15,
+            messageDisplayCount = 25,
+            showNotification = true,
         )
     }
 }

@@ -2,7 +2,10 @@ package app.k9mail.feature.preview.account
 
 import app.k9mail.feature.account.common.AccountCommonExternalContract.AccountStateLoader
 import app.k9mail.feature.account.common.domain.entity.Account
+import app.k9mail.feature.account.common.domain.entity.AccountDisplayOptions
+import app.k9mail.feature.account.common.domain.entity.AccountOptions
 import app.k9mail.feature.account.common.domain.entity.AccountState
+import app.k9mail.feature.account.common.domain.entity.AccountSyncOptions
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import app.k9mail.feature.account.edit.AccountEditExternalContract.AccountServerSettingsUpdater
 import app.k9mail.feature.account.edit.AccountEditExternalContract.AccountUpdaterFailure
@@ -59,7 +62,24 @@ class InMemoryAccountStore(
             incomingServerSettings = account.incomingServerSettings,
             outgoingServerSettings = account.outgoingServerSettings,
             authorizationState = account.authorizationState?.let { AuthorizationState(it) },
-            options = account.options,
+            displayOptions = mapToDisplayOptions(account.options),
+            syncOptions = mapToSyncOptions(account.options),
+        )
+    }
+
+    private fun mapToDisplayOptions(options: AccountOptions): AccountDisplayOptions {
+        return AccountDisplayOptions(
+            accountName = options.accountName,
+            displayName = options.displayName,
+            emailSignature = options.emailSignature,
+        )
+    }
+
+    private fun mapToSyncOptions(options: AccountOptions): AccountSyncOptions {
+        return AccountSyncOptions(
+            checkFrequencyInMinutes = options.checkFrequencyInMinutes,
+            messageDisplayCount = options.messageDisplayCount,
+            showNotification = options.showNotification,
         )
     }
 }

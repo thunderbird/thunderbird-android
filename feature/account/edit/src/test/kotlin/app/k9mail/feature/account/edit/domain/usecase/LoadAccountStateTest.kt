@@ -1,8 +1,9 @@
 package app.k9mail.feature.account.edit.domain.usecase
 
 import app.k9mail.feature.account.common.data.InMemoryAccountStateRepository
-import app.k9mail.feature.account.common.domain.entity.AccountOptions
+import app.k9mail.feature.account.common.domain.entity.AccountDisplayOptions
 import app.k9mail.feature.account.common.domain.entity.AccountState
+import app.k9mail.feature.account.common.domain.entity.AccountSyncOptions
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import app.k9mail.feature.account.common.domain.entity.MailConnectionSecurity
 import assertk.assertFailure
@@ -72,10 +73,13 @@ class LoadAccountStateTest {
 
         val AUTHORIZATION_STATE = AuthorizationState("authorization state")
 
-        val OPTIONS = AccountOptions(
+        val DISPLAY_OPTIONS = AccountDisplayOptions(
             accountName = "accountName",
             displayName = "displayName",
             emailSignature = null,
+        )
+
+        val SYNC_OPTIONS = AccountSyncOptions(
             checkFrequencyInMinutes = 15,
             messageDisplayCount = 25,
             showNotification = true,
@@ -87,7 +91,8 @@ class LoadAccountStateTest {
             incomingServerSettings = INCOMING_SERVER_SETTINGS,
             outgoingServerSettings = OUTGOING_SERVER_SETTINGS,
             authorizationState = AUTHORIZATION_STATE,
-            options = OPTIONS,
+            displayOptions = DISPLAY_OPTIONS,
+            syncOptions = SYNC_OPTIONS,
         )
     }
 }

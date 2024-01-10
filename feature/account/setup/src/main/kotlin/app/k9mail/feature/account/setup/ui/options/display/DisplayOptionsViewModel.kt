@@ -14,7 +14,7 @@ internal class DisplayOptionsViewModel(
     private val accountStateRepository: AccountDomainContract.AccountStateRepository,
     initialState: State? = null,
 ) : BaseViewModel<State, Event, Effect>(
-    initialState = initialState ?: accountStateRepository.getState().toAccountOptionsState(),
+    initialState = initialState ?: accountStateRepository.getState().toDisplayOptionsState(),
 ),
     ViewModel {
 
@@ -47,7 +47,7 @@ internal class DisplayOptionsViewModel(
 
     private fun loadAccountState() {
         updateState {
-            accountStateRepository.getState().toAccountOptionsState()
+            accountStateRepository.getState().toDisplayOptionsState()
         }
     }
 

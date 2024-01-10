@@ -11,7 +11,7 @@ internal class SyncOptionsViewModel(
     private val accountStateRepository: AccountDomainContract.AccountStateRepository,
     initialState: State? = null,
 ) : BaseViewModel<State, Event, Effect>(
-    initialState = initialState ?: accountStateRepository.getState().toAccountOptionsState(),
+    initialState = initialState ?: accountStateRepository.getState().toSyncOptionsState(),
 ),
     ViewModel {
 
@@ -44,7 +44,7 @@ internal class SyncOptionsViewModel(
 
     private fun loadAccountState() {
         updateState {
-            accountStateRepository.getState().toAccountOptionsState()
+            accountStateRepository.getState().toSyncOptionsState()
         }
     }
 

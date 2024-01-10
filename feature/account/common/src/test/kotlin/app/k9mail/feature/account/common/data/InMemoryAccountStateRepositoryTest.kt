@@ -1,7 +1,8 @@
 package app.k9mail.feature.account.common.data
 
-import app.k9mail.feature.account.common.domain.entity.AccountOptions
+import app.k9mail.feature.account.common.domain.entity.AccountDisplayOptions
 import app.k9mail.feature.account.common.domain.entity.AccountState
+import app.k9mail.feature.account.common.domain.entity.AccountSyncOptions
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -25,7 +26,8 @@ class InMemoryAccountStateRepositoryTest {
                 incomingServerSettings = null,
                 outgoingServerSettings = null,
                 authorizationState = null,
-                options = null,
+                displayOptions = null,
+                syncOptions = null,
             ),
         )
     }
@@ -39,7 +41,8 @@ class InMemoryAccountStateRepositoryTest {
                 incomingServerSettings = INCOMING_SERVER_SETTINGS,
                 outgoingServerSettings = OUTGOING_SERVER_SETTINGS,
                 authorizationState = AuthorizationState("authorizationState"),
-                options = OPTIONS,
+                displayOptions = DISPLAY_OPTIONS,
+                syncOptions = SYNC_OPTIONS,
             ),
         )
         val newState = AccountState(
@@ -48,10 +51,12 @@ class InMemoryAccountStateRepositoryTest {
             incomingServerSettings = INCOMING_SERVER_SETTINGS.copy(host = "imap2.example.org"),
             outgoingServerSettings = OUTGOING_SERVER_SETTINGS.copy(host = "smtp2.example.org"),
             authorizationState = AuthorizationState("authorizationState2"),
-            options = OPTIONS.copy(
+            displayOptions = DISPLAY_OPTIONS.copy(
                 accountName = "accountName2",
                 displayName = "displayName2",
                 emailSignature = "emailSignature2",
+            ),
+            syncOptions = SYNC_OPTIONS.copy(
                 checkFrequencyInMinutes = 50,
                 messageDisplayCount = 60,
                 showNotification = false,
@@ -104,13 +109,21 @@ class InMemoryAccountStateRepositoryTest {
     }
 
     @Test
-    fun `should set options`() {
+    fun `should set display options`() {
         val testSubject = InMemoryAccountStateRepository()
 
-        testSubject.setOptions(OPTIONS)
+        testSubject.setDisplayOptions(DISPLAY_OPTIONS)
 
-        assertThat(testSubject.getState().options)
-            .isEqualTo(OPTIONS)
+        assertThat(testSubject.getState().displayOptions).isEqualTo(DISPLAY_OPTIONS)
+    }
+
+    @Test
+    fun `should set sync options`() {
+        val testSubject = InMemoryAccountStateRepository()
+
+        testSubject.setSyncOptions(SYNC_OPTIONS)
+
+        assertThat(testSubject.getState().syncOptions).isEqualTo(SYNC_OPTIONS)
     }
 
     @Test
@@ -122,7 +135,8 @@ class InMemoryAccountStateRepositoryTest {
                 incomingServerSettings = INCOMING_SERVER_SETTINGS,
                 outgoingServerSettings = OUTGOING_SERVER_SETTINGS,
                 authorizationState = AuthorizationState("authorizationState"),
-                options = OPTIONS,
+                displayOptions = DISPLAY_OPTIONS,
+                syncOptions = SYNC_OPTIONS,
             ),
         )
 
@@ -135,7 +149,8 @@ class InMemoryAccountStateRepositoryTest {
                 incomingServerSettings = null,
                 outgoingServerSettings = null,
                 authorizationState = null,
-                options = null,
+                displayOptions = null,
+                syncOptions = null,
             ),
         )
     }
@@ -163,10 +178,13 @@ class InMemoryAccountStateRepositoryTest {
             null,
         )
 
-        val OPTIONS = AccountOptions(
+        val DISPLAY_OPTIONS = AccountDisplayOptions(
             accountName = "accountName",
             displayName = "displayName",
             emailSignature = "emailSignature",
+        )
+
+        val SYNC_OPTIONS = AccountSyncOptions(
             checkFrequencyInMinutes = 10,
             messageDisplayCount = 20,
             showNotification = true,

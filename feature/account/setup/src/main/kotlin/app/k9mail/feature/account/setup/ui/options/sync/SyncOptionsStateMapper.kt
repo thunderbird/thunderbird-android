@@ -6,8 +6,8 @@ import app.k9mail.feature.account.setup.domain.entity.EmailCheckFrequency
 import app.k9mail.feature.account.setup.domain.entity.EmailDisplayCount
 import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsContract.State
 
-internal fun AccountState.toAccountOptionsState(): State {
-    val options = options
+internal fun AccountState.toSyncOptionsState(): State {
+    val options = syncOptions
     return if (options == null) {
         State()
     } else {
