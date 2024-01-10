@@ -59,7 +59,6 @@ include(
 
 include(
     ":feature:autodiscovery:api",
-    ":feature:autodiscovery:srvrecords",
     ":feature:autodiscovery:autoconfig",
     ":feature:autodiscovery:service",
 )
