@@ -1483,10 +1483,10 @@ open class MessageList :
         }
 
         @JvmStatic
-        fun shortcutIntentForAccount(context: Context?, account: Account): Intent {
+        fun shortcutIntentForAccount(context: Context, accountUuid: String): Intent {
             return Intent(context, MessageList::class.java).apply {
                 action = ACTION_SHORTCUT
-                putExtra(EXTRA_ACCOUNT, account.uuid)
+                putExtra(EXTRA_ACCOUNT, accountUuid)
 
                 addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -1551,6 +1551,14 @@ open class MessageList :
             }
 
             actionDisplaySearch(context, search, noThreading = false, newTask = false)
+        }
+
+        /**
+         * Display the default folder of a given account.
+         */
+        fun launch(context: Context, accountUuid: String) {
+            val intent = shortcutIntentForAccount(context, accountUuid)
+            context.startActivity(intent)
         }
     }
 }
