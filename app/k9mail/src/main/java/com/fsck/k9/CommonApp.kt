@@ -4,16 +4,12 @@ import android.app.Application
 import android.content.res.Configuration
 import android.content.res.Resources
 import app.k9mail.ui.widget.list.MessageListWidgetManager
-import com.fsck.k9.activity.LauncherShortcuts
-import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.job.WorkManagerConfigurationProvider
 import com.fsck.k9.notification.NotificationChannelManager
-import com.fsck.k9.provider.UnreadWidgetProvider
 import com.fsck.k9.ui.base.AppLanguageManager
 import com.fsck.k9.ui.base.ThemeManager
 import com.fsck.k9.ui.base.extensions.currentLocale
-import com.fsck.k9.widget.list.MessageListWidgetProvider
 import java.util.Locale
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,10 +20,11 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.plus
 import org.koin.android.ext.android.inject
+import org.koin.core.module.Module
 import timber.log.Timber
 import androidx.work.Configuration as WorkManagerConfiguration
 
-class App : Application(), WorkManagerConfiguration.Provider {
+abstract class CommonApp : Application(), WorkManagerConfiguration.Provider {
     private val messagingController: MessagingController by inject()
     private val messagingListenerProvider: MessagingListenerProvider by inject()
     private val themeManager: ThemeManager by inject()
@@ -44,7 +41,7 @@ class App : Application(), WorkManagerConfiguration.Provider {
 
         super.onCreate()
 
-        DI.start(this, coreModules + uiModules + appModules)
+        DI.start(this, listOf(provideAppModule()) + coreModules + uiModules + commonAppModules)
 
         K9.init(this)
         Core.init(this)
@@ -57,6 +54,8 @@ class App : Application(), WorkManagerConfiguration.Provider {
             messagingController.addListener(listener)
         }
     }
+
+    abstract fun provideAppModule(): Module
 
     private fun initializeAppLanguage() {
         appLanguageManager.init()
@@ -130,15 +129,4 @@ class App : Application(), WorkManagerConfiguration.Provider {
 
     override val workManagerConfiguration: WorkManagerConfiguration
         get() = workManagerConfigurationProvider.getConfiguration()
-
-    companion object {
-        val appConfig = AppConfig(
-            componentsToDisable = listOf(
-                MessageCompose::class.java,
-                LauncherShortcuts::class.java,
-                UnreadWidgetProvider::class.java,
-                MessageListWidgetProvider::class.java,
-            ),
-        )
-    }
 }

@@ -2,10 +2,10 @@ package app.k9mail.dev
 
 import com.fsck.k9.backend.BackendFactory
 import org.koin.core.module.Module
-import org.koin.core.scope.Scope
-
-fun Scope.developmentBackends() = emptyMap<String, BackendFactory>()
+import org.koin.core.qualifier.named
 
 fun Module.developmentModuleAdditions() {
-    // No-op
+    single<Map<String, BackendFactory>>(named("developmentBackends")) {
+        emptyMap()
+    }
 }

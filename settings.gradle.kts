@@ -21,6 +21,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 rootProject.name = "k-9"
 
 include(
+    ":app-k9mail",
     ":app-feature-preview",
     ":app-ui-catalog",
 )

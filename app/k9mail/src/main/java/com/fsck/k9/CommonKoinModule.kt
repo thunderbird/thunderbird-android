@@ -1,12 +1,10 @@
 package com.fsck.k9
 
-import app.k9mail.core.common.oauth.OAuthConfigurationFactory
 import app.k9mail.core.featureflag.FeatureFlagFactory
 import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.core.featureflag.InMemoryFeatureFlagProvider
 import app.k9mail.ui.widget.list.messageListWidgetModule
 import com.fsck.k9.account.newAccountModule
-import com.fsck.k9.auth.AppOAuthConfigurationFactory
 import com.fsck.k9.backends.backendsModule
 import com.fsck.k9.controller.ControllerExtension
 import com.fsck.k9.crypto.EncryptionExtractor
@@ -24,8 +22,7 @@ import com.fsck.k9.widget.unread.unreadWidgetModule
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-private val mainAppModule = module {
-    single { App.appConfig }
+val commonAppModule = module {
     single {
         MessagingListenerProvider(
             listOf(
@@ -36,7 +33,6 @@ private val mainAppModule = module {
     single(named("controllerExtensions")) { emptyList<ControllerExtension>() }
     single<EncryptionExtractor> { OpenPgpEncryptionExtractor.newInstance() }
     single<StoragePersister> { K9StoragePersister(get()) }
-    single<OAuthConfigurationFactory> { AppOAuthConfigurationFactory() }
     single<FeatureFlagFactory> { InMemoryFeatureFlagFactory() }
     single<FeatureFlagProvider> {
         InMemoryFeatureFlagProvider(
@@ -45,8 +41,8 @@ private val mainAppModule = module {
     }
 }
 
-val appModules = listOf(
-    mainAppModule,
+val commonAppModules = listOf(
+    commonAppModule,
     messageListWidgetConfigModule,
     messageListWidgetModule,
     unreadWidgetModule,

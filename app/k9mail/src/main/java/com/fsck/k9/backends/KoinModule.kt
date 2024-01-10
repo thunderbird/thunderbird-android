@@ -1,8 +1,6 @@
 package com.fsck.k9.backends
 
-import app.k9mail.dev.developmentBackends
-import app.k9mail.dev.developmentModuleAdditions
-import com.fsck.k9.BuildConfig
+import com.fsck.k9.backend.BackendFactory
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.backend.imap.BackendIdleRefreshManager
 import com.fsck.k9.backend.imap.SystemAlarmManager
@@ -13,11 +11,12 @@ import org.koin.dsl.module
 
 val backendsModule = module {
     single {
+        val developmentBackends = get<Map<String, BackendFactory>>(named("developmentBackends"))
         BackendManager(
             mapOf(
                 "imap" to get<ImapBackendFactory>(),
                 "pop3" to get<Pop3BackendFactory>(),
-            ) + developmentBackends(),
+            ) + developmentBackends,
         )
     }
     single {
@@ -35,9 +34,5 @@ val backendsModule = module {
     single<SystemAlarmManager> { AndroidAlarmManager(context = get(), alarmManager = get()) }
     single<IdleRefreshManager> { BackendIdleRefreshManager(alarmManager = get()) }
     single { Pop3BackendFactory(get(), get()) }
-    single(named("ClientIdAppName")) { BuildConfig.CLIENT_ID_APP_NAME }
-    single(named("ClientIdAppVersion")) { BuildConfig.VERSION_NAME }
     single<OAuth2TokenProviderFactory> { RealOAuth2TokenProviderFactory(context = get()) }
-
-    developmentModuleAdditions()
 }

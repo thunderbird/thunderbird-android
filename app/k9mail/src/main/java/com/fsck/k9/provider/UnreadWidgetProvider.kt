@@ -9,7 +9,7 @@ import android.content.Intent
 import android.view.View
 import android.widget.RemoteViews
 import com.fsck.k9.EarlyInit
-import com.fsck.k9.R
+import com.fsck.k9.common.R
 import com.fsck.k9.helper.PendingIntentCompat.FLAG_MUTABLE
 import com.fsck.k9.inject
 import com.fsck.k9.widget.unread.UnreadWidgetConfigurationActivity

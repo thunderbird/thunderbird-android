@@ -32,7 +32,7 @@ import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-@Config(application = App::class)
+@Config(application = TestApp::class)
 class DependencyInjectionTest : AutoCloseKoinTest() {
     private val lifecycleOwner = mock<LifecycleOwner> {
         on { lifecycle } doReturn mock()

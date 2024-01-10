@@ -5,8 +5,8 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
 import com.fsck.k9.Account
-import com.fsck.k9.AppRobolectricTest
 import com.fsck.k9.Preferences
+import com.fsck.k9.TestApp
 import com.fsck.k9.controller.MessageCounts
 import com.fsck.k9.controller.MessageCountsProvider
 import com.fsck.k9.mailstore.Folder
@@ -16,11 +16,17 @@ import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.koin.test.AutoCloseKoinTest
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
+import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
+import org.robolectric.annotation.Config
 
-class UnreadWidgetDataProviderTest : AppRobolectricTest() {
+@RunWith(RobolectricTestRunner::class)
+@Config(application = TestApp::class)
+class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
     private val context: Context = RuntimeEnvironment.getApplication()
     private val account = createAccount()
     private val preferences = createPreferences()

@@ -12,8 +12,8 @@ import androidx.core.os.bundleOf
 import androidx.preference.CheckBoxPreference
 import androidx.preference.Preference
 import com.fsck.k9.Preferences
-import com.fsck.k9.R
 import com.fsck.k9.activity.ChooseAccount
+import com.fsck.k9.common.R
 import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.takisoft.preferencex.PreferenceFragmentCompat
@@ -98,6 +98,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
                     val accountUuid = data.getStringExtra(ChooseAccount.EXTRA_ACCOUNT_UUID)!!
                     handleChooseAccount(accountUuid)
                 }
+
                 REQUEST_CHOOSE_FOLDER -> {
                     val folderId = data.getLongExtra(ChooseFolderActivity.RESULT_SELECTED_FOLDER_ID, -1L)
                     val folderDisplayName = data.getStringExtra(ChooseFolderActivity.RESULT_FOLDER_DISPLAY_NAME)!!
@@ -163,6 +164,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
                 }
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
