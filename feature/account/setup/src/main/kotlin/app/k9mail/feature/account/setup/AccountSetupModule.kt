@@ -15,9 +15,10 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryCon
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryValidator
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryViewModel
 import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountViewModel
-import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
-import app.k9mail.feature.account.setup.ui.options.AccountOptionsValidator
-import app.k9mail.feature.account.setup.ui.options.AccountOptionsViewModel
+import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract
+import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsValidator
+import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsViewModel
+import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsViewModel
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersFormUiModel
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersViewModel
@@ -61,7 +62,7 @@ val featureAccountSetupModule: Module = module {
     }
 
     factory<AccountAutoDiscoveryContract.Validator> { AccountAutoDiscoveryValidator() }
-    factory<AccountOptionsContract.Validator> { AccountOptionsValidator() }
+    factory<DisplayOptionsContract.Validator> { DisplayOptionsValidator() }
 
     viewModel {
         AccountAutoDiscoveryViewModel(
@@ -107,8 +108,14 @@ val featureAccountSetupModule: Module = module {
     }
 
     viewModel {
-        AccountOptionsViewModel(
+        DisplayOptionsViewModel(
             validator = get(),
+            accountStateRepository = get(),
+        )
+    }
+
+    viewModel {
+        SyncOptionsViewModel(
             accountStateRepository = get(),
         )
     }

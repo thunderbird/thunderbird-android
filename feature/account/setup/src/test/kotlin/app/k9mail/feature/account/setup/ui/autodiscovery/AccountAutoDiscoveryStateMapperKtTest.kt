@@ -15,7 +15,7 @@ import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSett
 import app.k9mail.feature.account.setup.domain.entity.AutoDiscoveryAuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.AutoDiscoveryConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.toConnectionSecurity
-import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
+import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import org.junit.Test
@@ -146,7 +146,7 @@ class AccountAutoDiscoveryStateMapperKtTest {
     fun `should map to OptionsState when empty`() {
         val optionsState = EMPTY_STATE.toOptionsState()
 
-        assertThat(optionsState).isEqualTo(AccountOptionsContract.State())
+        assertThat(optionsState).isEqualTo(DisplayOptionsContract.State())
     }
 
     @Test
@@ -154,7 +154,7 @@ class AccountAutoDiscoveryStateMapperKtTest {
         val optionsState = EMAIL_PASSWORD_STATE.toOptionsState()
 
         assertThat(optionsState).isEqualTo(
-            AccountOptionsContract.State(
+            DisplayOptionsContract.State(
                 accountName = StringInputField(value = EMAIL_ADDRESS),
             ),
         )
