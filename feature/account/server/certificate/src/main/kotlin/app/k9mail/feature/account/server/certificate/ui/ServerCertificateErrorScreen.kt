@@ -1,43 +1,40 @@
 package app.k9mail.feature.account.server.certificate.ui
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.common.PreviewDevices
-import app.k9mail.core.ui.compose.common.baseline.withBaseline
 import app.k9mail.core.ui.compose.common.mvi.observe
-import app.k9mail.core.ui.compose.designsystem.atom.Icon
+import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.button.Button
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonOutlined
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody1
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline4
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle1
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
-import app.k9mail.core.ui.compose.theme.IconsWithBaseline
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
+import app.k9mail.feature.account.server.certificate.R
 import app.k9mail.feature.account.server.certificate.data.InMemoryServerCertificateErrorRepository
 import app.k9mail.feature.account.server.certificate.domain.entity.ServerCertificateError
+import app.k9mail.feature.account.server.certificate.domain.usecase.FormatServerCertificateError
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.Effect
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.Event
+import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.State
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.ViewModel
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import org.koin.androidx.compose.koinViewModel
 
-// Note: This is a placeholder with mostly hardcoded text.
-// TODO: Replace with final design.
-@Suppress("LongMethod")
 @Composable
 fun ServerCertificateErrorScreen(
     onCertificateAccepted: () -> Unit,
@@ -45,6 +42,8 @@ fun ServerCertificateErrorScreen(
     modifier: Modifier = Modifier,
     viewModel: ViewModel = koinViewModel<ServerCertificateErrorViewModel>(),
 ) {
+    val scrollState = rememberScrollState()
+
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
             is Effect.NavigateCertificateAccepted -> onCertificateAccepted()
@@ -58,69 +57,68 @@ fun ServerCertificateErrorScreen(
 
     Scaffold(
         bottomBar = {
-            ResponsiveWidthContainer(
-                modifier = Modifier
-                    .padding(start = MainTheme.spacings.double, end = MainTheme.spacings.double),
-            ) {
-                Column {
-                    Button(
-                        text = "Go back (recommended)",
-                        onClick = { dispatch(Event.OnBackClicked) },
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                    )
-                    ButtonOutlined(
-                        text = "Accept consequences and continue",
-                        onClick = { dispatch(Event.OnCertificateAcceptedClicked) },
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                }
-            }
+            ButtonBar(
+                state = state.value,
+                dispatch = dispatch,
+                scrollState = scrollState,
+            )
         },
         modifier = modifier,
     ) { innerPadding ->
-        ResponsiveWidthContainer(modifier = Modifier.padding(innerPadding)) {
-            Column(
-                modifier = Modifier
-                    .verticalScroll(rememberScrollState())
-                    .padding(all = MainTheme.spacings.double),
-            ) {
-                Row {
-                    val warningIcon = IconsWithBaseline.Filled.warning
-                    val iconSize = MainTheme.sizes.medium
-                    val iconScalingFactor = iconSize / warningIcon.image.defaultHeight
-                    val iconBaseline = warningIcon.baseline * iconScalingFactor
+        ServerCertificateErrorContent(
+            innerPadding = innerPadding,
+            state = state.value,
+            scrollState = scrollState,
+        )
+    }
+}
 
-                    Icon(
-                        imageVector = warningIcon.image,
-                        tint = MainTheme.colors.warning,
-                        modifier = Modifier
-                            .padding(end = MainTheme.spacings.default)
-                            .requiredSize(iconSize)
-                            .withBaseline(iconBaseline)
-                            .alignByBaseline(),
-                    )
-                    TextHeadline4(
-                        text = "Warning",
-                        modifier = Modifier.alignByBaseline(),
-                    )
-                }
+@Composable
+private fun ButtonBar(
+    state: State,
+    dispatch: (Event) -> Unit,
+    scrollState: ScrollState,
+) {
+    val elevation by animateDpAsState(
+        targetValue = if (scrollState.canScrollForward) 8.dp else 0.dp,
+        label = "BottomBarElevation",
+    )
 
-                TextSubtitle1("Invalid certificate")
-
-                Spacer(modifier = Modifier.height(MainTheme.spacings.quadruple))
-
-                TextBody1(
-                    text = "The server presented an invalid TLS certificate. " +
-                        "Sometimes, this is because of a server misconfiguration. " +
-                        "Sometimes it is because someone is trying to attack you or your mail server. " +
-                        "If you're not sure what's up, click \"Go back\" and contact the folks who manage your " +
-                        "mail server.",
+    Surface(elevation = elevation) {
+        ResponsiveWidthContainer(
+            modifier = Modifier
+                .padding(
+                    start = MainTheme.spacings.double,
+                    end = MainTheme.spacings.double,
+                    top = MainTheme.spacings.half,
+                    bottom = MainTheme.spacings.half,
+                ),
+        ) {
+            Column(modifier = Modifier.animateContentSize()) {
+                Button(
+                    text = stringResource(R.string.account_server_certificate_button_back),
+                    onClick = { dispatch(Event.OnBackClicked) },
+                    modifier = Modifier.fillMaxWidth(),
                 )
 
-                Spacer(modifier = Modifier.height(MainTheme.spacings.quadruple))
-
-                TextBody1(state.value.errorText)
+                Crossfade(
+                    targetState = state.isShowServerCertificate,
+                    label = "ContinueButton",
+                ) { isShowServerCertificate ->
+                    if (isShowServerCertificate) {
+                        ButtonOutlined(
+                            text = stringResource(R.string.account_server_certificate_button_continue),
+                            onClick = { dispatch(Event.OnCertificateAcceptedClicked) },
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                    } else {
+                        ButtonOutlined(
+                            text = stringResource(R.string.account_server_certificate_button_advanced),
+                            onClick = { dispatch(Event.OnShowAdvancedClicked) },
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                    }
+                }
             }
         }
     }
@@ -177,6 +175,8 @@ internal fun ServerCertificateErrorScreenK9Preview() {
             viewModel = ServerCertificateErrorViewModel(
                 addServerCertificateException = { _, _, _ -> },
                 certificateErrorRepository = InMemoryServerCertificateErrorRepository(serverCertificateError),
+                formatServerCertificateError = FormatServerCertificateError(),
+                initialState = State(isShowServerCertificate = false),
             ),
         )
     }
