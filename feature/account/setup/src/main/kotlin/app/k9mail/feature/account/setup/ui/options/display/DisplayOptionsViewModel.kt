@@ -1,20 +1,20 @@
-package app.k9mail.feature.account.setup.ui.options
+package app.k9mail.feature.account.setup.ui.options.display
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.domain.AccountDomainContract
-import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Effect
-import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Event
-import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.State
-import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Validator
-import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.ViewModel
+import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Effect
+import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Event
+import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.State
+import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Validator
+import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.ViewModel
 
-internal class AccountOptionsViewModel(
+internal class DisplayOptionsViewModel(
     private val validator: Validator,
     private val accountStateRepository: AccountDomainContract.AccountStateRepository,
     initialState: State? = null,
 ) : BaseViewModel<State, Event, Effect>(
-    initialState = initialState ?: accountStateRepository.getState().toAccountOptionsState(),
+    initialState = initialState ?: accountStateRepository.getState().toDisplayOptionsState(),
 ),
     ViewModel {
 
@@ -40,24 +40,6 @@ internal class AccountOptionsViewModel(
                 )
             }
 
-            is Event.OnCheckFrequencyChanged -> updateState {
-                it.copy(
-                    checkFrequency = event.checkFrequency,
-                )
-            }
-
-            is Event.OnMessageDisplayCountChanged -> updateState { state ->
-                state.copy(
-                    messageDisplayCount = event.messageDisplayCount,
-                )
-            }
-
-            is Event.OnShowNotificationChanged -> updateState { state ->
-                state.copy(
-                    showNotification = event.showNotification,
-                )
-            }
-
             Event.OnNextClicked -> submit()
             Event.OnBackClicked -> navigateBack()
         }
@@ -65,7 +47,7 @@ internal class AccountOptionsViewModel(
 
     private fun loadAccountState() {
         updateState {
-            accountStateRepository.getState().toAccountOptionsState()
+            accountStateRepository.getState().toDisplayOptionsState()
         }
     }
 
@@ -89,7 +71,7 @@ internal class AccountOptionsViewModel(
         }
 
         if (!hasError) {
-            accountStateRepository.setOptions(state.value.toAccountOptions())
+            accountStateRepository.setDisplayOptions(state.value.toAccountDisplayOptions())
             navigateNext()
         }
     }

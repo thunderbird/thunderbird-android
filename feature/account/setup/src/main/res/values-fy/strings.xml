@@ -28,7 +28,7 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Dit is net as in jildich e-mailadres werkend.</string>
     <string name="account_setup_options_email_check_frequency_never">Nea</string>
     <string name="account_setup_auto_discovery_loading_message">E-maildetails sykje</string>
-    <string name="account_setup_options_section_sync_options_">Syngronisaasjeopsjes</string>
+    <string name="account_setup_options_section_sync_options">Syngronisaasjeopsjes</string>
     <string name="account_setup_options_show_notifications_label">Meldingen toane</string>
     <string name="account_setup_options_section_display_options">Werjefteopsjes</string>
     <string name="account_setup_title">K-9 Mail</string>

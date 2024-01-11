@@ -67,7 +67,7 @@ class AccountServerSettingsUpdater(
             account.outgoingServerSettings = serverSettings
         }
 
-        account.oAuthState = authorizationState?.state
+        account.oAuthState = authorizationState?.value
 
         accountManager.saveAccount(account)
 

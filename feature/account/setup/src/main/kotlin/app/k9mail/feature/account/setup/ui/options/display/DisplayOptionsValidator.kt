@@ -1,12 +1,12 @@
-package app.k9mail.feature.account.setup.ui.options
+package app.k9mail.feature.account.setup.ui.options.display
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.feature.account.setup.domain.usecase.ValidateAccountName
 import app.k9mail.feature.account.setup.domain.usecase.ValidateDisplayName
 import app.k9mail.feature.account.setup.domain.usecase.ValidateEmailSignature
-import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Validator
+import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Validator
 
-internal class AccountOptionsValidator(
+internal class DisplayOptionsValidator(
     private val accountNameValidator: ValidateAccountName = ValidateAccountName(),
     private val displayNameValidator: ValidateDisplayName = ValidateDisplayName(),
     private val emailSignatureValidator: ValidateEmailSignature = ValidateEmailSignature(),

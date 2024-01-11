@@ -1,9 +1,9 @@
-package app.k9mail.feature.account.setup.ui.options
+package app.k9mail.feature.account.setup.ui.options.display
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
-import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Validator
+import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Validator
 
-internal class FakeAccountOptionsValidator(
+internal class FakeDisplayOptionsValidator(
     private val accountNameAnswer: ValidationResult = ValidationResult.Success,
     private val displayNameAnswer: ValidationResult = ValidationResult.Success,
     private val emailSignatureAnswer: ValidationResult = ValidationResult.Success,

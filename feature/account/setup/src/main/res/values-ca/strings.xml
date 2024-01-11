@@ -29,7 +29,7 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">L\'adreça de correu electrònic no es reconeix com a vàlida.</string>
     <string name="account_setup_options_email_check_frequency_never">Mai</string>
     <string name="account_setup_auto_discovery_loading_message">Cercant els detalls del correu electrònic</string>
-    <string name="account_setup_options_section_sync_options_">Opcions de sincronització</string>
+    <string name="account_setup_options_section_sync_options">Opcions de sincronització</string>
     <string name="account_setup_options_show_notifications_label">Mostra les notificacions</string>
     <string name="account_setup_options_section_display_options">Opcions de visualització</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Aquesta direcció de correu electrònic no està permesa.</string>

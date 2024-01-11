@@ -28,7 +28,7 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Non è riconosciuto come indirizzo email valido</string>
     <string name="account_setup_options_email_check_frequency_never">Mai</string>
     <string name="account_setup_auto_discovery_loading_message">Ricerca configurazione email</string>
-    <string name="account_setup_options_section_sync_options_">Opzioni di sincronizzazione</string>
+    <string name="account_setup_options_section_sync_options">Opzioni di sincronizzazione</string>
     <string name="account_setup_options_show_notifications_label">Mostra notifiche</string>
     <string name="account_setup_options_section_display_options">Opzioni di visualizzazione</string>
     <string name="account_setup_title">K-9 Mail</string>

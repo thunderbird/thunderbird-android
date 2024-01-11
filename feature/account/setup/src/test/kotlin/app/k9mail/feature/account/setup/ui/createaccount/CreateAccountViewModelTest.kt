@@ -4,8 +4,9 @@ import app.cash.turbine.testIn
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
 import app.k9mail.feature.account.common.data.InMemoryAccountStateRepository
-import app.k9mail.feature.account.common.domain.entity.AccountOptions
+import app.k9mail.feature.account.common.domain.entity.AccountDisplayOptions
 import app.k9mail.feature.account.common.domain.entity.AccountState
+import app.k9mail.feature.account.common.domain.entity.AccountSyncOptions
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderOption
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderSettings
@@ -60,13 +61,14 @@ class CreateAccountViewModelTest {
         )
 
         assertThat(fakeCreateAccount.recordedInvocations).containsExactly(
-            CreateAccountArguments(
+            AccountState(
                 emailAddress = EMAIL_ADDRESS,
                 incomingServerSettings = INCOMING_SERVER_SETTINGS,
                 outgoingServerSettings = OUTGOING_SERVER_SETTINGS,
-                authorizationState = AUTHORIZATION_STATE.state,
+                authorizationState = AUTHORIZATION_STATE,
                 specialFolderSettings = SPECIAL_FOLDER_SETTINGS,
-                options = ACCOUNT_OPTIONS,
+                displayOptions = ACCOUNT_DISPLAY_OPTIONS,
+                syncOptions = ACCOUNT_SYNC_OPTIONS,
             ),
         )
 
@@ -184,10 +186,13 @@ class CreateAccountViewModelTest {
             ),
         )
 
-        val ACCOUNT_OPTIONS = AccountOptions(
+        val ACCOUNT_DISPLAY_OPTIONS = AccountDisplayOptions(
             accountName = "account name",
             displayName = "display name",
             emailSignature = null,
+        )
+
+        val ACCOUNT_SYNC_OPTIONS = AccountSyncOptions(
             checkFrequencyInMinutes = 0,
             messageDisplayCount = 50,
             showNotification = false,
@@ -199,7 +204,8 @@ class CreateAccountViewModelTest {
             outgoingServerSettings = OUTGOING_SERVER_SETTINGS,
             authorizationState = AUTHORIZATION_STATE,
             specialFolderSettings = SPECIAL_FOLDER_SETTINGS,
-            options = ACCOUNT_OPTIONS,
+            displayOptions = ACCOUNT_DISPLAY_OPTIONS,
+            syncOptions = ACCOUNT_SYNC_OPTIONS,
         )
     }
 }

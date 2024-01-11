@@ -33,16 +33,7 @@ class CreateAccountViewModel(
         val accountState = accountStateRepository.getState()
 
         viewModelScope.launch {
-            val result = createAccount.execute(
-                emailAddress = accountState.emailAddress ?: "",
-                incomingServerSettings = accountState.incomingServerSettings!!,
-                outgoingServerSettings = accountState.outgoingServerSettings!!,
-                authorizationState = accountState.authorizationState?.state,
-                specialFolderSettings = accountState.specialFolderSettings,
-                options = accountState.options!!,
-            )
-
-            when (result) {
+            when (val result = createAccount.execute(accountState)) {
                 is AccountCreatorResult.Success -> showSuccess(AccountUuid(result.accountUuid))
                 is AccountCreatorResult.Error -> showError(result)
             }

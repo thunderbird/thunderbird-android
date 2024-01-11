@@ -1,11 +1,11 @@
-package app.k9mail.feature.account.setup.ui.options
+package app.k9mail.feature.account.setup.ui.options.display
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.common.PreviewDevices
+import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.theme.K9Theme
@@ -14,12 +14,12 @@ import app.k9mail.feature.account.common.ui.AccountTopAppBar
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.common.ui.preview.PreviewAccountStateRepository
 import app.k9mail.feature.account.setup.R.string
-import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Effect
-import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Event
-import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.ViewModel
+import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Effect
+import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Event
+import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.ViewModel
 
 @Composable
-internal fun AccountOptionsScreen(
+internal fun DisplayOptionsScreen(
     onNext: () -> Unit,
     onBack: () -> Unit,
     viewModel: ViewModel,
@@ -43,7 +43,7 @@ internal fun AccountOptionsScreen(
     Scaffold(
         topBar = {
             AccountTopAppBar(
-                title = stringResource(id = string.account_setup_options_top_bar_title),
+                title = stringResource(id = string.account_setup_options_section_display_options),
             )
         },
         bottomBar = {
@@ -54,7 +54,7 @@ internal fun AccountOptionsScreen(
         },
         modifier = modifier,
     ) { innerPadding ->
-        AccountOptionsContent(
+        DisplayOptionsContent(
             state = state.value,
             onEvent = { dispatch(it) },
             contentPadding = innerPadding,
@@ -63,14 +63,14 @@ internal fun AccountOptionsScreen(
 }
 
 @Composable
-@PreviewDevices
-internal fun AccountOptionsScreenK9Preview() {
+@Preview(showBackground = true)
+internal fun DisplayOptionsScreenK9Preview() {
     K9Theme {
-        AccountOptionsScreen(
+        DisplayOptionsScreen(
             onNext = {},
             onBack = {},
-            viewModel = AccountOptionsViewModel(
-                validator = AccountOptionsValidator(),
+            viewModel = DisplayOptionsViewModel(
+                validator = DisplayOptionsValidator(),
                 accountStateRepository = PreviewAccountStateRepository(),
             ),
         )
@@ -78,14 +78,14 @@ internal fun AccountOptionsScreenK9Preview() {
 }
 
 @Composable
-@PreviewDevices
-internal fun AccountOptionsScreenThunderbirdPreview() {
+@Preview(showBackground = true)
+internal fun DisplayOptionsScreenThunderbirdPreview() {
     ThunderbirdTheme {
-        AccountOptionsScreen(
+        DisplayOptionsScreen(
             onNext = {},
             onBack = {},
-            viewModel = AccountOptionsViewModel(
-                validator = AccountOptionsValidator(),
+            viewModel = DisplayOptionsViewModel(
+                validator = DisplayOptionsValidator(),
                 accountStateRepository = PreviewAccountStateRepository(),
             ),
         )

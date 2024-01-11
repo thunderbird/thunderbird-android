@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.setup.ui.options
+package app.k9mail.feature.account.setup.ui.options.display
 
 import app.cash.turbine.testIn
 import app.k9mail.core.common.domain.usecase.validation.ValidationError
@@ -7,11 +7,9 @@ import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
 import app.k9mail.feature.account.common.data.InMemoryAccountStateRepository
 import app.k9mail.feature.account.common.domain.input.StringInputField
-import app.k9mail.feature.account.setup.domain.entity.EmailCheckFrequency
-import app.k9mail.feature.account.setup.domain.entity.EmailDisplayCount
-import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Effect
-import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.Event
-import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract.State
+import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Effect
+import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Event
+import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.State
 import assertk.assertThat
 import assertk.assertions.assertThatAndTurbinesConsumed
 import assertk.assertions.isEqualTo
@@ -19,13 +17,13 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
-class AccountOptionsViewModelTest {
+class DisplayOptionsViewModelTest {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val testSubject = AccountOptionsViewModel(
-        validator = FakeAccountOptionsValidator(),
+    private val testSubject = DisplayOptionsViewModel(
+        validator = FakeDisplayOptionsValidator(),
         accountStateRepository = InMemoryAccountStateRepository(),
     )
 
@@ -58,39 +56,6 @@ class AccountOptionsViewModelTest {
             initialState = State(),
             event = Event.OnEmailSignatureChanged("emailSignature"),
             expectedState = State(emailSignature = StringInputField(value = "emailSignature")),
-            coroutineScope = backgroundScope,
-        )
-    }
-
-    @Test
-    fun `should change state when OnCheckFrequencyChanged event is received`() = runTest {
-        eventStateTest(
-            viewModel = testSubject,
-            initialState = State(),
-            event = Event.OnCheckFrequencyChanged(EmailCheckFrequency.EVERY_12_HOURS),
-            expectedState = State(checkFrequency = EmailCheckFrequency.EVERY_12_HOURS),
-            coroutineScope = backgroundScope,
-        )
-    }
-
-    @Test
-    fun `should change state when OnMessageDisplayCountChanged event is received`() = runTest {
-        eventStateTest(
-            viewModel = testSubject,
-            initialState = State(),
-            event = Event.OnMessageDisplayCountChanged(EmailDisplayCount.MESSAGES_1000),
-            expectedState = State(messageDisplayCount = EmailDisplayCount.MESSAGES_1000),
-            coroutineScope = backgroundScope,
-        )
-    }
-
-    @Test
-    fun `should change state when OnShowNotificationChanged event is received`() = runTest {
-        eventStateTest(
-            viewModel = testSubject,
-            initialState = State(),
-            event = Event.OnShowNotificationChanged(true),
-            expectedState = State(showNotification = true),
             coroutineScope = backgroundScope,
         )
     }
@@ -131,8 +96,8 @@ class AccountOptionsViewModelTest {
     @Test
     fun `should change state and not emit effect when OnNextClicked event received and input invalid`() =
         runTest {
-            val viewModel = AccountOptionsViewModel(
-                validator = FakeAccountOptionsValidator(
+            val viewModel = DisplayOptionsViewModel(
+                validator = FakeDisplayOptionsValidator(
                     accountNameAnswer = ValidationResult.Failure(TestError),
                 ),
                 accountStateRepository = InMemoryAccountStateRepository(),

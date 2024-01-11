@@ -1,14 +1,16 @@
 package app.k9mail.feature.account.common.ui.preview
 
 import app.k9mail.feature.account.common.domain.AccountDomainContract
-import app.k9mail.feature.account.common.domain.entity.AccountOptions
+import app.k9mail.feature.account.common.domain.entity.AccountDisplayOptions
 import app.k9mail.feature.account.common.domain.entity.AccountState
+import app.k9mail.feature.account.common.domain.entity.AccountSyncOptions
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import app.k9mail.feature.account.common.domain.entity.MailConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderSettings
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ServerSettings
 
+@Suppress("TooManyFunctions")
 class PreviewAccountStateRepository : AccountDomainContract.AccountStateRepository {
 
     override fun getState(): AccountState = AccountState(
@@ -47,7 +49,9 @@ class PreviewAccountStateRepository : AccountDomainContract.AccountStateReposito
 
     override fun setSpecialFolderSettings(specialFolderSettings: SpecialFolderSettings) = Unit
 
-    override fun setOptions(options: AccountOptions) = Unit
+    override fun setDisplayOptions(displayOptions: AccountDisplayOptions) = Unit
+
+    override fun setSyncOptions(syncOptions: AccountSyncOptions) = Unit
 
     override fun clear() = Unit
 }

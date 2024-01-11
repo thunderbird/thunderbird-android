@@ -28,7 +28,7 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Toto není rozeznáno jako platná e-mailová adresa.</string>
     <string name="account_setup_options_email_check_frequency_never">Nikdy</string>
     <string name="account_setup_auto_discovery_loading_message">Zjišťování podrobností o e-mailu</string>
-    <string name="account_setup_options_section_sync_options_">Nastavení synchronizace</string>
+    <string name="account_setup_options_section_sync_options">Nastavení synchronizace</string>
     <string name="account_setup_options_show_notifications_label">Zobrazovat oznámení</string>
     <string name="account_setup_options_section_display_options">Nastavení zobrazení</string>
     <string name="account_setup_title">K-9 Mail</string>

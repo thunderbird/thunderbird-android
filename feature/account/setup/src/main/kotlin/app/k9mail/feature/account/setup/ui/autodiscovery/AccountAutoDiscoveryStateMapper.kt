@@ -11,7 +11,7 @@ import app.k9mail.feature.account.setup.domain.entity.toAuthenticationType
 import app.k9mail.feature.account.setup.domain.entity.toConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.toIncomingProtocolType
 import app.k9mail.feature.account.setup.domain.toServerSettings
-import app.k9mail.feature.account.setup.ui.options.AccountOptionsContract
+import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract
 
 internal fun AccountAutoDiscoveryContract.State.toAccountState(): AccountState {
     return AccountState(
@@ -19,7 +19,8 @@ internal fun AccountAutoDiscoveryContract.State.toAccountState(): AccountState {
         incomingServerSettings = autoDiscoverySettings?.incomingServerSettings?.toServerSettings(password.value),
         outgoingServerSettings = autoDiscoverySettings?.outgoingServerSettings?.toServerSettings(password.value),
         authorizationState = authorizationState,
-        options = null,
+        displayOptions = null,
+        syncOptions = null,
     )
 }
 
@@ -66,8 +67,8 @@ internal fun AccountAutoDiscoveryContract.State.toOutgoingConfigState(): Outgoin
     }
 }
 
-internal fun AccountAutoDiscoveryContract.State.toOptionsState(): AccountOptionsContract.State {
-    return AccountOptionsContract.State(
+internal fun AccountAutoDiscoveryContract.State.toOptionsState(): DisplayOptionsContract.State {
+    return DisplayOptionsContract.State(
         accountName = StringInputField(value = emailAddress.value),
     )
 }

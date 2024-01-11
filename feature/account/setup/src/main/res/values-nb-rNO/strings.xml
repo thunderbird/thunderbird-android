@@ -28,7 +28,7 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">E-postadressen er ugyldig.</string>
     <string name="account_setup_options_email_check_frequency_never">Aldri</string>
     <string name="account_setup_auto_discovery_loading_message">Finner e-postdetaljer …</string>
-    <string name="account_setup_options_section_sync_options_">Synkroniseringsalternativer</string>
+    <string name="account_setup_options_section_sync_options">Synkroniseringsalternativer</string>
     <string name="account_setup_options_show_notifications_label">Vis merknader</string>
     <string name="account_setup_options_section_display_options">Visningsalternativer</string>
     <string name="account_setup_title">K-9 Mail</string>

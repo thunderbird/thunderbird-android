@@ -20,8 +20,10 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryScr
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryViewModel
 import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountScreen
 import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountViewModel
-import app.k9mail.feature.account.setup.ui.options.AccountOptionsScreen
-import app.k9mail.feature.account.setup.ui.options.AccountOptionsViewModel
+import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsScreen
+import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsViewModel
+import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsScreen
+import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsViewModel
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersScreen
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -32,7 +34,8 @@ private const val NESTED_NAVIGATION_INCOMING_SERVER_VALIDATION = "incoming-serve
 private const val NESTED_NAVIGATION_OUTGOING_SERVER_CONFIG = "outgoing-server/config"
 private const val NESTED_NAVIGATION_OUTGOING_SERVER_VALIDATION = "outgoing-server/validation"
 private const val NESTED_NAVIGATION_SPECIAL_FOLDERS = "special-folders"
-private const val NESTED_NAVIGATION_ACCOUNT_OPTIONS = "account-options"
+private const val NESTED_NAVIGATION_DISPLAY_OPTIONS = "display-options"
+private const val NESTED_NAVIGATION_SYNC_OPTIONS = "sync-options"
 private const val NESTED_NAVIGATION_CREATE_ACCOUNT = "create-account"
 
 @Suppress("LongMethod")
@@ -109,7 +112,7 @@ fun AccountSetupNavHost(
                         if (hasSpecialFolders) {
                             NESTED_NAVIGATION_SPECIAL_FOLDERS
                         } else {
-                            NESTED_NAVIGATION_ACCOUNT_OPTIONS
+                            NESTED_NAVIGATION_DISPLAY_OPTIONS
                         },
                     ) {
                         if (isAutomaticConfig) {
@@ -127,18 +130,26 @@ fun AccountSetupNavHost(
         composable(route = NESTED_NAVIGATION_SPECIAL_FOLDERS) {
             SpecialFoldersScreen(
                 onNext = {
-                    navController.navigate(NESTED_NAVIGATION_ACCOUNT_OPTIONS)
+                    navController.navigate(NESTED_NAVIGATION_DISPLAY_OPTIONS)
                 },
                 onBack = { navController.popBackStack() },
                 viewModel = koinViewModel<SpecialFoldersViewModel>(),
             )
         }
 
-        composable(route = NESTED_NAVIGATION_ACCOUNT_OPTIONS) {
-            AccountOptionsScreen(
+        composable(route = NESTED_NAVIGATION_DISPLAY_OPTIONS) {
+            DisplayOptionsScreen(
+                onNext = { navController.navigate(NESTED_NAVIGATION_SYNC_OPTIONS) },
+                onBack = { navController.popBackStack() },
+                viewModel = koinViewModel<DisplayOptionsViewModel>(),
+            )
+        }
+
+        composable(route = NESTED_NAVIGATION_SYNC_OPTIONS) {
+            SyncOptionsScreen(
                 onNext = { navController.navigate(NESTED_NAVIGATION_CREATE_ACCOUNT) },
                 onBack = { navController.popBackStack() },
-                viewModel = koinViewModel<AccountOptionsViewModel>(),
+                viewModel = koinViewModel<SyncOptionsViewModel>(),
             )
         }
 

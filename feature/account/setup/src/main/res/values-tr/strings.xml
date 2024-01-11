@@ -25,7 +25,7 @@
     <string name="account_setup_error_network">Ağ</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Bu geçerli bir e-posta adresi olarak tanınmıyor.</string>
     <string name="account_setup_auto_discovery_loading_message">E-posta bilgileri bulunuyor</string>
-    <string name="account_setup_options_section_sync_options_">Eşzamanlama seçenekleri</string>
+    <string name="account_setup_options_section_sync_options">Eşzamanlama seçenekleri</string>
     <string name="account_setup_options_section_display_options">Görüntüleme seçenekleri</string>
     <string name="account_setup_title">K-9 Posta</string>
     <string name="account_setup_options_account_check_frequency_label">Denetleme sıklığı</string>
