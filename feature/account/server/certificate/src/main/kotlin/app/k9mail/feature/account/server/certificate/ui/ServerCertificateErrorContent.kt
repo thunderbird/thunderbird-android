@@ -17,6 +17,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.common.baseline.withBaseline
+import app.k9mail.core.ui.compose.common.resources.annotatedStringResource
+import app.k9mail.core.ui.compose.common.text.bold
 import app.k9mail.core.ui.compose.designsystem.atom.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody1
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline4
@@ -105,9 +107,9 @@ private fun CertificateErrorDescription(
     serverNameFormatter: ServerNameFormatter,
 ) {
     TextBody1(
-        text = stringResource(
+        text = annotatedStringResource(
             id = R.string.account_server_certificate_unknown_error_description_format,
-            serverNameFormatter.format(certificateError.hostname),
+            serverNameFormatter.format(certificateError.hostname).bold(),
         ),
     )
 }
