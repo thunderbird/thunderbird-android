@@ -132,7 +132,7 @@ public class GeneralSettingsDescriptions {
                 new V(1, new LanguageSetting())
         ));
         s.put("messageListPreviewLines", Settings.versions(
-                new V(1, new IntegerRangeSetting(1, 100, 2))
+                new V(1, new IntegerRangeSetting(0, 6, 2))
         ));
         s.put("messageListStars", Settings.versions(
                 new V(1, new BooleanSetting(true))
