@@ -12,7 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import app.k9mail.feature.account.setup.navigation.AccountSetupNavHost
 import app.k9mail.feature.onboarding.permissions.domain.PermissionsDomainContract.UseCase.HasRuntimePermissions
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsScreen
-import app.k9mail.feature.onboarding.welcome.ui.OnboardingScreen
+import app.k9mail.feature.onboarding.welcome.ui.WelcomeScreen
 import org.koin.compose.koinInject
 
 private const val NESTED_NAVIGATION_ROUTE_WELCOME = "welcome"
@@ -41,7 +41,7 @@ fun OnboardingNavHost(
         startDestination = NESTED_NAVIGATION_ROUTE_WELCOME,
     ) {
         composable(route = NESTED_NAVIGATION_ROUTE_WELCOME) {
-            OnboardingScreen(
+            WelcomeScreen(
                 onStartClick = { navController.navigateToAccountSetup() },
                 onImportClick = onImport,
             )
