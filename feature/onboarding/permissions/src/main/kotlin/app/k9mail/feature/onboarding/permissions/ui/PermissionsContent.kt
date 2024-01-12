@@ -19,7 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.common.PreviewDevices
+import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.common.visibility.hide
 import app.k9mail.core.ui.compose.designsystem.atom.DelayedCircularProgressIndicator
 import app.k9mail.core.ui.compose.designsystem.atom.Surface

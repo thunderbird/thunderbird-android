@@ -8,7 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts.RequestPermissi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import app.k9mail.core.android.permissions.PermissionState
-import app.k9mail.core.ui.compose.common.PreviewDevices
+import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsContract.Effect

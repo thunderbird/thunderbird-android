@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.common.PreviewDevices
+import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.common.window.WindowSizeClass
 import app.k9mail.core.ui.compose.common.window.getWindowSizeInfo
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
@@ -93,6 +93,7 @@ private fun ExpandedContent(
                 }
             }
         }
+
         WindowSizeClass.Expanded -> {
             Box(
                 modifier = Modifier
