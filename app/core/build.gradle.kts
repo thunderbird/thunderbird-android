@@ -18,7 +18,7 @@ dependencies {
     implementation(libs.okio)
     implementation(libs.commons.io)
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.work.ktx)
+    implementation(libs.androidx.work.runtime)
     implementation(libs.androidx.fragment)
     implementation(libs.androidx.localbroadcastmanager)
     implementation(libs.jsoup)

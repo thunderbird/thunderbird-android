@@ -41,7 +41,7 @@ dependencies {
     implementation(libs.fastadapter.extensions.drag)
     implementation(libs.fastadapter.extensions.utils)
     implementation(libs.circleimageview)
-    implementation(libs.androidx.work.ktx)
+    implementation(libs.androidx.work.runtime)
     api(libs.appauth)
 
     implementation(libs.commons.io)
