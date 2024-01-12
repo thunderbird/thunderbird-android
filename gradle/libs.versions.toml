@@ -41,6 +41,7 @@ glide = "4.16.0"
 moshi = "1.15.0"
 mockito = "5.8.0"
 forkhandlesBom = "2.12.2.0"
+pluginDependencyGuard = "0.4.3"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -53,6 +54,7 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 spotless = "com.diffplug.spotless:6.23.3"
 detekt = "io.gitlab.arturbosch.detekt:1.23.4"
 dependency-check = "com.github.ben-manes.versions:0.50.0"
+dependency-guard = { id = "com.dropbox.dependency-guard", version.ref = "pluginDependencyGuard" }
 
 [libraries]
 desugar = "com.android.tools:desugar_jdk_libs:2.0.4"

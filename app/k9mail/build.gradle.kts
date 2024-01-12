@@ -1,5 +1,6 @@
 plugins {
     id(ThunderbirdPlugins.App.android)
+    alias(libs.plugins.dependency.guard)
 }
 
 val testCoverageEnabled: Boolean by extra
@@ -163,4 +164,8 @@ android {
             )
         }
     }
+}
+
+dependencyGuard {
+    configuration("releaseRuntimeClasspath")
 }
