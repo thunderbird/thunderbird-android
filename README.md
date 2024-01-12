@@ -59,7 +59,7 @@ have shaped this project so far. Feel free to propose new ADRs or suggest modifi
 Aside from discussing changes in [pull requests](https://github.com/thunderbird/thunderbird-android/pulls) and
 [issues](https://github.com/thunderbird/thunderbird-android/issues) we use the following communication services:
 
-- Matrix: [#k9mail:matrix.org](https://matrix.to/#/#tb-android:mozilla.org)
+- Matrix: [#tb-android:mozilla.org](https://matrix.to/#/#tb-android:mozilla.org)
 - [Developer mailing list](https://groups.google.com/forum/#!forum/k-9-dev)
 
 ## License
