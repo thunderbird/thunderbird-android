@@ -60,7 +60,6 @@ Aside from discussing changes in [pull requests](https://github.com/thunderbird/
 [issues](https://github.com/thunderbird/thunderbird-android/issues) we use the following communication services:
 
 - Matrix: [#tb-android:mozilla.org](https://matrix.to/#/#tb-android:mozilla.org)
-- [Developer mailing list](https://groups.google.com/forum/#!forum/k-9-dev)
 
 ## License
 
