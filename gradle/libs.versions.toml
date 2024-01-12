@@ -19,6 +19,7 @@ androidxFragment = "1.6.2"
 androidxCore = "1.12.0"
 androidxCoreSplashscreen = "1.0.1"
 androidxPreference = "1.2.1"
+androidxWork = "2.9.0"
 androidxDrawerLayout = "1.1.1"
 androidxTransition = "1.4.1"
 androidxComposeCompiler = "1.5.7"
@@ -78,7 +79,8 @@ androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragme
 androidx-navigation-ui = { module = "androidx.navigation:navigation-ui", version.ref = "androidxNavigation" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidxConstraintLayout" }
 androidx-coordinatorlayout = "androidx.coordinatorlayout:coordinatorlayout:1.2.0"
-androidx-work-ktx = "androidx.work:work-runtime-ktx:2.8.1"
+androidx-work-runtime = { module = "androidx.work:work-runtime", version.ref = "androidxWork" }
+androidx-work-testing = { module = "androidx.work:work-testing", version.ref = "androidxWork" }
 androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "androidxFragment" }
 androidx-localbroadcastmanager = "androidx.localbroadcastmanager:localbroadcastmanager:1.1.0"
 androidx-core = { module = "androidx.core:core", version.ref = "androidxCore" }

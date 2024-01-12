@@ -128,9 +128,8 @@ class App : Application(), WorkManagerConfiguration.Provider {
             .launchIn(appCoroutineScope)
     }
 
-    override fun getWorkManagerConfiguration(): WorkManagerConfiguration {
-        return workManagerConfigurationProvider.getConfiguration()
-    }
+    override val workManagerConfiguration: WorkManagerConfiguration
+        get() = workManagerConfigurationProvider.getConfiguration()
 
     companion object {
         val appConfig = AppConfig(
