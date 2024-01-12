@@ -26,7 +26,7 @@ import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.onboarding.welcome.R
 
 @Composable
-internal fun OnboardingContent(
+internal fun WelcomeContent(
     onStartClick: () -> Unit,
     onImportClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -144,9 +144,9 @@ private fun Modifier.defaultItemModifier() = composed {
 
 @Composable
 @PreviewDevices
-internal fun OnboardingContentK9Preview() {
+internal fun WelcomeContentK9Preview() {
     K9Theme {
-        OnboardingContent(
+        WelcomeContent(
             onStartClick = {},
             onImportClick = {},
         )
@@ -155,9 +155,9 @@ internal fun OnboardingContentK9Preview() {
 
 @Composable
 @PreviewDevices
-internal fun OnboardingContentThunderbirdPreview() {
+internal fun WelcomeContentThunderbirdPreview() {
     ThunderbirdTheme {
-        OnboardingContent(
+        WelcomeContent(
             onStartClick = {},
             onImportClick = {},
         )
