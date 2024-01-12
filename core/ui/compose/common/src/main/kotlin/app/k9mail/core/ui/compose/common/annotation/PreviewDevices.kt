@@ -1,4 +1,4 @@
-package app.k9mail.core.ui.compose.common
+package app.k9mail.core.ui.compose.common.annotation
 
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
