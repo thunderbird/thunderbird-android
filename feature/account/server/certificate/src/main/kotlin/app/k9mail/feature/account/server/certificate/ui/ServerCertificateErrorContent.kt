@@ -17,6 +17,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.common.baseline.withBaseline
+import app.k9mail.core.ui.compose.common.resources.annotatedStringResource
+import app.k9mail.core.ui.compose.common.text.bold
 import app.k9mail.core.ui.compose.designsystem.atom.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody1
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline4
@@ -29,18 +31,20 @@ import app.k9mail.feature.account.server.certificate.R
 import app.k9mail.feature.account.server.certificate.domain.entity.FormattedServerCertificateError
 import app.k9mail.feature.account.server.certificate.domain.entity.ServerCertificateProperties
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.State
+import org.koin.compose.koinInject
 
 @Composable
 internal fun ServerCertificateErrorContent(
     innerPadding: PaddingValues,
     state: State,
     scrollState: ScrollState,
+    serverNameFormatter: ServerNameFormatter = koinInject(),
 ) {
     ResponsiveWidthContainer(modifier = Modifier.padding(innerPadding)) {
         Column(
             modifier = Modifier.verticalScroll(scrollState),
         ) {
-            CertificateErrorOverview(state)
+            CertificateErrorOverview(state, serverNameFormatter)
 
             AnimatedContent(
                 targetState = state.isShowServerCertificate,
@@ -49,6 +53,7 @@ internal fun ServerCertificateErrorContent(
                 if (isShowServerCertificate) {
                     ServerCertificateView(
                         serverCertificateProperties = state.certificateError!!.serverCertificateProperties,
+                        serverNameFormatter = serverNameFormatter,
                     )
                 }
             }
@@ -57,7 +62,7 @@ internal fun ServerCertificateErrorContent(
 }
 
 @Composable
-private fun CertificateErrorOverview(state: State) {
+private fun CertificateErrorOverview(state: State, serverNameFormatter: ServerNameFormatter) {
     Column(
         modifier = Modifier.padding(all = MainTheme.spacings.double),
     ) {
@@ -67,7 +72,7 @@ private fun CertificateErrorOverview(state: State) {
         Spacer(modifier = Modifier.height(MainTheme.spacings.quadruple))
 
         state.certificateError?.let { certificateError ->
-            CertificateErrorDescription(certificateError)
+            CertificateErrorDescription(certificateError, serverNameFormatter)
         }
     }
 }
@@ -97,11 +102,14 @@ private fun WarningTitle() {
 }
 
 @Composable
-private fun CertificateErrorDescription(certificateError: FormattedServerCertificateError) {
+private fun CertificateErrorDescription(
+    certificateError: FormattedServerCertificateError,
+    serverNameFormatter: ServerNameFormatter,
+) {
     TextBody1(
-        text = stringResource(
+        text = annotatedStringResource(
             id = R.string.account_server_certificate_unknown_error_description_format,
-            certificateError.hostname,
+            serverNameFormatter.format(certificateError.hostname).bold(),
         ),
     )
 }
@@ -132,6 +140,7 @@ internal fun ServerCertificateErrorContentPreview() {
             innerPadding = PaddingValues(all = 0.dp),
             state = state,
             scrollState = rememberScrollState(),
+            serverNameFormatter = DefaultServerNameFormatter(),
         )
     }
 }
