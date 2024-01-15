@@ -61,6 +61,13 @@ Aside from discussing changes in [pull requests](https://github.com/thunderbird/
 
 - Matrix: [#tb-android:mozilla.org](https://matrix.to/#/#tb-android:mozilla.org)
 
+## Security
+
+The code in this repository was undergoing an extensive security audit in collaboration with the Open Source Technology
+Improvement Fund ([OSTIF](https://ostif.org/)) and [7ASecurity](https://7asecurity.com/) in the first half of 2023. For
+more details, see
+our [blog post](https://blog.thunderbird.net/2023/07/k-9-mail-collaborates-with-ostif-and-7asecurity-security-audit/).
+
 ## License
 
     Licensed under the Apache License, Version 2.0 (the "License");
