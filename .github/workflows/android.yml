@@ -42,6 +42,9 @@ jobs:
       - name: Quality - Detekt
         run: ./gradlew detekt
 
+      - name: Quality - Dependency Guard
+        run: ./gradlew dependencyGuard
+
       - name: Build
         run: ./gradlew assembleDebug
 
