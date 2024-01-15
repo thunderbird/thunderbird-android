@@ -39,12 +39,14 @@ internal fun ServerCertificateView(
         TextHeadline6(stringResource(R.string.account_server_certificate_section_title))
         Spacer(modifier = Modifier.height(MainTheme.spacings.double))
 
-        TextSubtitle2(stringResource(R.string.account_server_certificate_subject_alternative_names))
-        for (subjectAlternativeName in serverCertificateProperties.subjectAlternativeNames) {
-            BulletedListItem(serverNameFormatter.format(subjectAlternativeName))
-        }
+        if (serverCertificateProperties.subjectAlternativeNames.isNotEmpty()) {
+            TextSubtitle2(stringResource(R.string.account_server_certificate_subject_alternative_names))
+            for (subjectAlternativeName in serverCertificateProperties.subjectAlternativeNames) {
+                BulletedListItem(serverNameFormatter.format(subjectAlternativeName))
+            }
 
-        Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+            Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+        }
 
         TextSubtitle2(stringResource(R.string.account_server_certificate_not_valid_before))
         TextBody1(text = serverCertificateProperties.notValidBefore)

@@ -23,7 +23,7 @@ class FormatServerCertificateError(
         val notValidBeforeInstant = Instant.fromEpochMilliseconds(certificate.notBefore.time)
         val notValidAfterInstant = Instant.fromEpochMilliseconds(certificate.notAfter.time)
 
-        val subjectAlternativeNames = certificate.subjectAlternativeNames.map { it[1].toString() }
+        val subjectAlternativeNames = certificate.subjectAlternativeNames.orEmpty().map { it[1].toString() }
 
         val notValidBefore = dateFormat.format(Date(notValidBeforeInstant.toEpochMilliseconds()))
         val notValidAfter = dateFormat.format(Date(notValidAfterInstant.toEpochMilliseconds()))

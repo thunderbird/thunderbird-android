@@ -3,6 +3,7 @@ package app.k9mail.feature.account.server.certificate.domain.usecase
 import app.k9mail.feature.account.server.certificate.domain.entity.ServerCertificateError
 import app.k9mail.feature.account.server.certificate.domain.entity.ServerCertificateProperties
 import assertk.assertThat
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
@@ -51,6 +52,22 @@ class FormatServerCertificateErrorTest {
         )
     }
 
+    @Test
+    fun `format certificate without subject alternative names`() {
+        val formatCertificateError = FormatServerCertificateError(
+            dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT, Locale.ROOT),
+        )
+        val serverCertificateError = ServerCertificateError(
+            hostname = "10.0.0.1",
+            port = 993,
+            certificateChain = listOf(readCertificate(CERTIFICATE_WITHOUT_SAN)),
+        )
+
+        val result = formatCertificateError(serverCertificateError)
+
+        assertThat(result.serverCertificateProperties.subjectAlternativeNames).isEmpty()
+    }
+
     private fun readCertificate(asciiArmoredCertificate: String): X509Certificate {
         val inputStream = asciiArmoredCertificate.byteInputStream()
 
@@ -90,6 +107,30 @@ class FormatServerCertificateErrorTest {
             ET7BSp68ZVVtxqPv1dSWzfGuJ/ekVxQ8lEEFeouhN0fX9X3c+s5vMaKwjOrMEpsi
             8TRwz311SotoKQwe6Zaoz7ASH1wq7mcvf71z81oBIgxw+s1F73hczg36TuHvzmWf
             RwxPuzZEaFZcVlmtqoq8
+            -----END CERTIFICATE-----
+        """.trimIndent()
+
+        val CERTIFICATE_WITHOUT_SAN = """
+            -----BEGIN CERTIFICATE-----
+            MIIDfDCCAmSgAwIBAgIJAJB2iRjpM5OgMA0GCSqGSIb3DQEBCwUAME4xMTAvBgNV
+            BAsMKE5vIFNOSSBwcm92aWRlZDsgcGxlYXNlIGZpeCB5b3VyIGNsaWVudC4xGTAX
+            BgNVBAMTEGludmFsaWQyLmludmFsaWQwHhcNMTUwMTAxMDAwMDAwWhcNMzAwMTAx
+            MDAwMDAwWjBOMTEwLwYDVQQLDChObyBTTkkgcHJvdmlkZWQ7IHBsZWFzZSBmaXgg
+            eW91ciBjbGllbnQuMRkwFwYDVQQDExBpbnZhbGlkMi5pbnZhbGlkMIIBIjANBgkq
+            hkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzWJP5cMThJgMBeTvRKKl7N6ZcZAbKDVA
+            tNBNnRhIgSitXxCzKtt9rp2RHkLn76oZjdNO25EPp+QgMiWU/rkkB00Y18Oahw5f
+            i8s+K9dRv6i+gSOiv2jlIeW/S0hOswUUDH0JXFkEPKILzpl5ML7wdp5kt93vHxa7
+            HswOtAxEz2WtxMdezm/3CgO3sls20wl3W03iI+kCt7HyvhGy2aRPLhJfeABpQr0U
+            ku3q6mtomy2cgFawekN/X/aH8KknX799MPcuWutM2q88mtUEBsuZmy2nsjK9J7/y
+            hhCRDzOV/yY8c5+l/u/rWuwwkZ2lgzGp4xBBfhXdr6+m9kmwWCUm9QIDAQABo10w
+            WzAOBgNVHQ8BAf8EBAMCAqQwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMC
+            MA8GA1UdEwEB/wQFMAMBAf8wGQYDVR0OBBIEELsPOJZvPr5PK0bQQWrUrLUwDQYJ
+            KoZIhvcNAQELBQADggEBALnZ4lRc9WHtafO4Y+0DWp4qgSdaGygzS/wtcRP+S2V+
+            HFOCeYDmeZ9qs0WpNlrtyeBKzBH8hOt9y8aUbZBw2M1F2Mi23Q+dhAEUfQCOKbIT
+            tunBuVfDTTbAHUuNl/eyr78v8Egi133z7zVgydVG1KA0AOSCB+B65glbpx+xMCpg
+            ZLux9THydwg3tPo/LfYbRCof+Mb8I3ZCY9O6FfZGjuxJn+0ux3SDora3NX/FmJ+i
+            kTCTsMtIFWhH3hoyYAamOOuITpPZHD7yP0lfbuncGDEqAQu2YWbYxRixfq2VSxgv
+            gWbFcmkgBLYpE8iDWT3Kdluo1+6PHaDaLg2SacOY6Go=
             -----END CERTIFICATE-----
         """.trimIndent()
     }
