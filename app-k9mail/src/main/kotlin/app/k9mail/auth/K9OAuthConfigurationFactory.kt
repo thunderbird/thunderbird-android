@@ -1,10 +1,10 @@
-package com.fsck.k9.auth
+package app.k9mail.auth
 
 import app.k9mail.core.common.oauth.OAuthConfiguration
 import app.k9mail.core.common.oauth.OAuthConfigurationFactory
 import com.fsck.k9.BuildConfig
 
-class AppOAuthConfigurationFactory : OAuthConfigurationFactory {
+class K9OAuthConfigurationFactory : OAuthConfigurationFactory {
     override fun createConfigurations(): Map<List<String>, OAuthConfiguration> {
         return mapOf(
             createAolConfiguration(),
