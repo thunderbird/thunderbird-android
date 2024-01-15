@@ -27,6 +27,7 @@ configure<SpotlessExtension> {
     format("misc") {
         target("**/*.gradle", "**/.gitignore")
         trimTrailingWhitespace()
+        targetExclude("app-k9mail/dependencies/**")
     }
 }
 
