@@ -3,6 +3,7 @@ package app.k9mail.core.ui.compose.common.resources
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
@@ -17,6 +18,12 @@ private const val PLACE_HOLDER = "{placeHolder}"
 fun annotatedStringResource(@StringRes id: Int, argument: AnnotatedString): AnnotatedString {
     val stringWithPlaceHolder = stringResource(id, PLACE_HOLDER)
     return buildAnnotatedString {
+        // In Android Studio previews loading string resources with formatting is not working
+        if (LocalInspectionMode.current) {
+            append(stringWithPlaceHolder)
+            return@buildAnnotatedString
+        }
+
         val placeHolderStartIndex = stringWithPlaceHolder.indexOf(PLACE_HOLDER)
         require(placeHolderStartIndex != -1)
 
