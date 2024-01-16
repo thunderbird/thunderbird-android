@@ -1,7 +1,7 @@
-import assertk.assertThat
-import assertk.assertions.isEqualTo
 import com.android.SdkConstants
 import com.android.build.api.artifact.SingleArtifact
+import com.github.difflib.text.DiffRow
+import com.github.difflib.text.DiffRowGenerator
 import org.gradle.configurationcache.extensions.capitalized
 
 /**
@@ -119,10 +119,11 @@ abstract class CheckBadgingTask : DefaultTask() {
     @TaskAction
     fun taskAction() {
         if (goldenBadging.isPresent.not()) {
-            logger.error(
-                "Golden badging file does not exist! " +
-                    "If this is the first time running this task, " +
-                    "run ./gradlew ${updateBadgingTaskName.get()}",
+            printlnColor(
+                ANSI_YELLOW,
+                "Golden badging file does not exist!" +
+                    " If this is the first time running this task," +
+                    " run ./gradlew ${updateBadgingTaskName.get()}",
             )
             return
         }
@@ -130,12 +131,85 @@ abstract class CheckBadgingTask : DefaultTask() {
         val goldenBadgingContent = goldenBadging.get().asFile.readText()
         val generatedBadgingContent = generatedBadging.get().asFile.readText()
         if (goldenBadgingContent == generatedBadgingContent) {
-            logger.info("Generated badging is the same as golden badging!")
+            printlnColor(ANSI_YELLOW, "Generated badging is the same as golden badging!")
             return
         }
 
-        assertThat(generatedBadgingContent).isEqualTo(goldenBadgingContent)
+        val diff = performDiff(goldenBadgingContent, generatedBadgingContent)
+        printDiff(diff)
+
+        throw GradleException(
+            """
+            Generated badging is different from golden badging!
+
+            If this change is intended, run ./gradlew ${updateBadgingTaskName.get()}
+            """.trimIndent(),
+        )
+    }
+
+    private fun performDiff(goldenBadgingContent: String, generatedBadgingContent: String): String {
+        val generator: DiffRowGenerator = DiffRowGenerator.create()
+            .showInlineDiffs(true)
+            .mergeOriginalRevised(true)
+            .inlineDiffByWord(true)
+            .oldTag { _ -> "" }
+            .newTag { _ -> "" }
+            .build()
+
+        return generator.generateDiffRows(
+            goldenBadgingContent.lines(),
+            generatedBadgingContent.lines(),
+        ).filter { row -> row.tag != DiffRow.Tag.EQUAL }
+            .joinToString("\n") { row ->
+                when (row.tag) {
+                    DiffRow.Tag.INSERT -> {
+                        "+ ${row.newLine}"
+                    }
+
+                    DiffRow.Tag.DELETE -> {
+                        "- ${row.oldLine}"
+                    }
+
+                    DiffRow.Tag.CHANGE -> {
+                        "+ ${row.newLine}"
+                        "- ${row.oldLine}"
+                    }
+
+                    DiffRow.Tag.EQUAL -> ""
+                }
+            }
+    }
+
+    private fun printDiff(diff: String) {
+        printlnColor("", null)
+        printlnColor(ANSI_YELLOW, "Badging diff:")
+
+        diff.lines().forEach { line ->
+            val ansiColor = if (line.startsWith("+")) {
+                ANSI_GREEN
+            } else if (line.startsWith("-")) {
+                ANSI_RED
+            } else {
+                null
+            }
+            printlnColor(line, ansiColor)
+        }
+    }
+
+    private fun printlnColor(text: String, ansiColor: String?) {
+        println(
+            if (ansiColor != null) {
+                ansiColor + text + ANSI_RESET
+            } else {
+                text
+            },
+        )
+    }
+
+    private companion object {
+        const val ANSI_RESET = "\u001B[0m"
+        const val ANSI_RED = "\u001B[31m"
+        const val ANSI_GREEN = "\u001B[32m"
+        const val ANSI_YELLOW = "\u001B[33m"
     }
 }
-
-
