@@ -22,7 +22,10 @@ configure<SpotlessExtension> {
     format("markdown") {
         prettier()
         target("**/*.md")
-        targetExclude("plugins/openpgp-api-lib/")
+        targetExclude(
+            "plugins/openpgp-api-lib/",
+            "**/fastlane/README.md",
+        )
     }
     format("misc") {
         target("**/*.gradle", "**/.gitignore")
