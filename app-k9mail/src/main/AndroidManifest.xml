@@ -3,7 +3,7 @@
     android:installLocation="auto">
 
     <application
-        android:name="com.fsck.k9.K9App"
+        android:name="app.k9mail.K9App"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" />
 </manifest>
