@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import app.k9mail.core.ui.compose.common.koin.koinPreview
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody1
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline6
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextOverline
@@ -17,12 +18,13 @@ import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.feature.account.server.certificate.R
 import app.k9mail.feature.account.server.certificate.domain.entity.ServerCertificateProperties
+import org.koin.compose.koinInject
 
 @Composable
 internal fun ServerCertificateView(
     serverCertificateProperties: ServerCertificateProperties,
-    serverNameFormatter: ServerNameFormatter,
     modifier: Modifier = Modifier,
+    serverNameFormatter: ServerNameFormatter = koinInject(),
 ) {
     Column(
         modifier = modifier.padding(
@@ -108,10 +110,13 @@ internal fun ServerCertificateViewPreview() {
             "ea6e2b8db2b9da9197d5112fb369fd006da545de",
     )
 
-    K9Theme {
-        ServerCertificateView(
-            serverCertificateProperties = serverCertificateProperties,
-            serverNameFormatter = DefaultServerNameFormatter(),
-        )
+    koinPreview {
+        factory<ServerNameFormatter> { DefaultServerNameFormatter() }
+    } WithContent {
+        K9Theme {
+            ServerCertificateView(
+                serverCertificateProperties = serverCertificateProperties,
+            )
+        }
     }
 }

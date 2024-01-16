@@ -11,4 +11,5 @@ dependencies {
     implementation(libs.androidx.compose.activity)
 
     testImplementation(projects.core.ui.compose.testing)
+    testImplementation(projects.core.ui.compose.designsystem)
 }

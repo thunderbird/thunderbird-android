@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
+import app.k9mail.core.ui.compose.common.koin.koinPreview
 import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.button.Button
@@ -168,16 +169,20 @@ internal fun ServerCertificateErrorScreenK9Preview() {
         certificateChain = listOf(certificate),
     )
 
-    K9Theme {
-        ServerCertificateErrorScreen(
-            onCertificateAccepted = {},
-            onBack = {},
-            viewModel = ServerCertificateErrorViewModel(
-                addServerCertificateException = { _, _, _ -> },
-                certificateErrorRepository = InMemoryServerCertificateErrorRepository(serverCertificateError),
-                formatServerCertificateError = FormatServerCertificateError(),
-                initialState = State(isShowServerCertificate = false),
-            ),
-        )
+    koinPreview {
+        factory<ServerNameFormatter> { DefaultServerNameFormatter() }
+    } WithContent {
+        K9Theme {
+            ServerCertificateErrorScreen(
+                onCertificateAccepted = {},
+                onBack = {},
+                viewModel = ServerCertificateErrorViewModel(
+                    addServerCertificateException = { _, _, _ -> },
+                    certificateErrorRepository = InMemoryServerCertificateErrorRepository(serverCertificateError),
+                    formatServerCertificateError = FormatServerCertificateError(),
+                    initialState = State(isShowServerCertificate = false),
+                ),
+            )
+        }
     }
 }
