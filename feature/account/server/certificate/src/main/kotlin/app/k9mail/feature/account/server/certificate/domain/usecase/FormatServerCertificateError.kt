@@ -4,15 +4,14 @@ import app.k9mail.feature.account.server.certificate.domain.ServerCertificateDom
 import app.k9mail.feature.account.server.certificate.domain.entity.FormattedServerCertificateError
 import app.k9mail.feature.account.server.certificate.domain.entity.ServerCertificateError
 import app.k9mail.feature.account.server.certificate.domain.entity.ServerCertificateProperties
-import com.fsck.k9.logging.Timber
-import com.fsck.k9.mail.filter.Hex
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
-import java.security.cert.CertificateEncodingException
 import java.security.cert.X509Certificate
 import java.text.DateFormat
 import java.util.Date
 import kotlinx.datetime.Instant
+import okio.ByteString
+import okio.HashingSink
+import okio.blackholeSink
+import okio.buffer
 
 class FormatServerCertificateError(
     private val dateFormat: DateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT),
@@ -33,9 +32,9 @@ class FormatServerCertificateError(
         val subject = certificate.subjectX500Principal.toString()
         val issuer = certificate.issuerX500Principal.toString()
 
-        val fingerprintSha1 = getFingerprint(certificate, algorithm = "SHA-1")
-        val fingerprintSha256 = getFingerprint(certificate, algorithm = "SHA-256")
-        val fingerprintSha512 = getFingerprint(certificate, algorithm = "SHA-512")
+        val fingerprintSha1 = computeFingerprint(certificate, HashAlgorithm.SHA_1)
+        val fingerprintSha256 = computeFingerprint(certificate, HashAlgorithm.SHA_256)
+        val fingerprintSha512 = computeFingerprint(certificate, HashAlgorithm.SHA_512)
 
         return FormattedServerCertificateError(
             hostname = serverCertificateError.hostname,
@@ -52,28 +51,23 @@ class FormatServerCertificateError(
         )
     }
 
-    private fun getFingerprint(certificate: X509Certificate, algorithm: String): String {
-        val fingerprint = computeFingerprint(certificate, algorithm)
-        return formatFingerprint(fingerprint)
-    }
-
-    private fun computeFingerprint(certificate: X509Certificate, algorithm: String): ByteArray {
-        val digest = try {
-            MessageDigest.getInstance(algorithm)
-        } catch (e: NoSuchAlgorithmException) {
-            Timber.e(e, "Error while initializing MessageDigest (%s)", algorithm)
-            return "??".toByteArray()
+    private fun computeFingerprint(certificate: X509Certificate, algorithm: HashAlgorithm): ByteString {
+        val sink = when (algorithm) {
+            HashAlgorithm.SHA_1 -> HashingSink.sha1(blackholeSink())
+            HashAlgorithm.SHA_256 -> HashingSink.sha256(blackholeSink())
+            HashAlgorithm.SHA_512 -> HashingSink.sha512(blackholeSink())
         }
 
-        return try {
-            digest.digest(certificate.encoded)
-        } catch (e: CertificateEncodingException) {
-            Timber.e(e, "Error while encoding certificate")
-            "??".toByteArray()
-        }
-    }
+        sink.buffer()
+            .write(certificate.encoded)
+            .flush()
 
-    private fun formatFingerprint(fingerprint: ByteArray): String {
-        return Hex.encodeHex(fingerprint)
+        return sink.hash
     }
+}
+
+private enum class HashAlgorithm {
+    SHA_1,
+    SHA_256,
+    SHA_512,
 }

@@ -171,6 +171,7 @@ internal fun ServerCertificateErrorScreenK9Preview() {
 
     koinPreview {
         factory<ServerNameFormatter> { DefaultServerNameFormatter() }
+        factory<FingerprintFormatter> { DefaultFingerprintFormatter() }
     } WithContent {
         K9Theme {
             ServerCertificateErrorScreen(

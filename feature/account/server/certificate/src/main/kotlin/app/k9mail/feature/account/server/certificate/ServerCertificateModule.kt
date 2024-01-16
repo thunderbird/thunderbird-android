@@ -4,7 +4,9 @@ import app.k9mail.feature.account.server.certificate.data.InMemoryServerCertific
 import app.k9mail.feature.account.server.certificate.domain.ServerCertificateDomainContract
 import app.k9mail.feature.account.server.certificate.domain.usecase.AddServerCertificateException
 import app.k9mail.feature.account.server.certificate.domain.usecase.FormatServerCertificateError
+import app.k9mail.feature.account.server.certificate.ui.DefaultFingerprintFormatter
 import app.k9mail.feature.account.server.certificate.ui.DefaultServerNameFormatter
+import app.k9mail.feature.account.server.certificate.ui.FingerprintFormatter
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorViewModel
 import app.k9mail.feature.account.server.certificate.ui.ServerNameFormatter
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -28,6 +30,8 @@ val featureAccountServerCertificateModule: Module = module {
     }
 
     factory<ServerNameFormatter> { DefaultServerNameFormatter() }
+
+    factory<FingerprintFormatter> { DefaultFingerprintFormatter() }
 
     viewModel {
         ServerCertificateErrorViewModel(
