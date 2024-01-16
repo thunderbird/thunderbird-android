@@ -2,6 +2,7 @@ package app.k9mail.feature.onboarding.permissions.ui
 
 import android.Manifest
 import android.os.Build
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
@@ -35,6 +36,10 @@ fun PermissionsScreen(
             Effect.RequestNotificationsPermission -> notificationsPermissionLauncher.requestNotificationsPermission()
             Effect.NavigateNext -> onNext()
         }
+    }
+
+    BackHandler {
+        // no back navigation
     }
 
     LaunchedEffect(key1 = Unit) {

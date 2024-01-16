@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavController
+import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -23,8 +24,8 @@ private fun NavController.navigateToAccountSetup() {
     navigate(NESTED_NAVIGATION_ROUTE_ACCOUNT_SETUP)
 }
 
-private fun NavController.navigateToPermissions() {
-    navigate(NESTED_NAVIGATION_ROUTE_PERMISSIONS)
+private fun NavController.navigateToPermissions(builder: NavOptionsBuilder.() -> Unit) {
+    navigate(NESTED_NAVIGATION_ROUTE_PERMISSIONS, builder)
 }
 
 @Composable
@@ -53,7 +54,11 @@ fun OnboardingNavHost(
                 onFinish = { createdAccountUuid: String ->
                     accountUuid = createdAccountUuid
                     if (hasRuntimePermissions()) {
-                        navController.navigateToPermissions()
+                        navController.navigateToPermissions {
+                            popUpTo(NESTED_NAVIGATION_ROUTE_WELCOME) {
+                                inclusive = true
+                            }
+                        }
                     } else {
                         onFinish(createdAccountUuid)
                     }
