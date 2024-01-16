@@ -49,8 +49,8 @@ If you need to access dependencies that are not yet defined in `build-plugin/bui
 
 1. Add the dependency to the version catalog `gradle/libs.versions.toml`
 2. Then add it to `build-plugin/build.gradle.kts`.
-  1. In case of a plugin dependency use `implementation(plugin(libs.plugins.YOUR_PLUGIN_DEPENDENCY))`.
-  2. Otherwise `implementation(libs.YOUR_DEPENDENCY))`.
+   1. In case of a plugin dependency use `implementation(plugin(libs.plugins.YOUR_PLUGIN_DEPENDENCY))`.
+   2. Otherwise `implementation(libs.YOUR_DEPENDENCY))`.
 
 When done, add the plugin to `build-plugin/src/main/kotlin/ThunderbirdPlugins.kt`
 
