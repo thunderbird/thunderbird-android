@@ -13,6 +13,7 @@ dependencies {
     implementation(projects.feature.account.common)
 
     implementation(projects.mail.common)
+    implementation(libs.okio)
 
     testImplementation(projects.core.ui.compose.testing)
 }

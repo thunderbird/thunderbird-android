@@ -18,6 +18,8 @@ import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.feature.account.server.certificate.R
 import app.k9mail.feature.account.server.certificate.domain.entity.ServerCertificateProperties
+import okio.ByteString
+import okio.ByteString.Companion.decodeHex
 import org.koin.compose.koinInject
 
 @Composable
@@ -25,6 +27,7 @@ internal fun ServerCertificateView(
     serverCertificateProperties: ServerCertificateProperties,
     modifier: Modifier = Modifier,
     serverNameFormatter: ServerNameFormatter = koinInject(),
+    fingerprintFormatter: FingerprintFormatter = koinInject(),
 ) {
     Column(
         modifier = modifier.padding(
@@ -66,16 +69,26 @@ internal fun ServerCertificateView(
         TextOverline(text = stringResource(R.string.account_server_certificate_fingerprints_section))
         Spacer(modifier = Modifier.height(MainTheme.spacings.default))
 
-        TextSubtitle2(text = "SHA-1")
-        TextBody1(text = serverCertificateProperties.fingerprintSha1)
-        Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+        Fingerprint("SHA-1", serverCertificateProperties.fingerprintSha1, fingerprintFormatter)
+        Fingerprint("SHA-256", serverCertificateProperties.fingerprintSha256, fingerprintFormatter)
+        Fingerprint("SHA-512", serverCertificateProperties.fingerprintSha512, fingerprintFormatter)
+    }
+}
 
-        TextSubtitle2(text = "SHA-256")
-        TextBody1(text = serverCertificateProperties.fingerprintSha256)
-        Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+@Composable
+private fun Fingerprint(
+    title: String,
+    fingerprint: ByteString,
+    fingerprintFormatter: FingerprintFormatter,
+) {
+    val formattedFingerprint = fingerprintFormatter.format(
+        fingerprint,
+        separatorColor = MainTheme.colors.onBackgroundSecondary,
+    )
 
-        TextSubtitle2(text = "SHA-512")
-        TextBody1(text = serverCertificateProperties.fingerprintSha512)
+    Column {
+        TextSubtitle2(text = title)
+        TextBody1(text = formattedFingerprint)
         Spacer(modifier = Modifier.height(MainTheme.spacings.double))
     }
 }
@@ -104,14 +117,17 @@ internal fun ServerCertificateViewPreview() {
         notValidAfter = "December 31, 2023, 11:59 PM",
         subject = "CN=*.domain.example",
         issuer = "CN=test, O=MZLA",
-        fingerprintSha1 = "33ab5639bfd8e7b95eb1d8d0b87781d4ffea4d5d",
-        fingerprintSha256 = "1894a19c85ba153acbf743ac4e43fc004c891604b26f8c69e1e83ea2afc7c48f",
-        fingerprintSha512 = "81381f1dacd4824a6c503fd07057763099c12b8309d0abcec4000c9060cbbfa67988b2ada669ab4837fcd3d4" +
-            "ea6e2b8db2b9da9197d5112fb369fd006da545de",
+        fingerprintSha1 = "33ab5639bfd8e7b95eb1d8d0b87781d4ffea4d5d".decodeHex(),
+        fingerprintSha256 = "1894a19c85ba153acbf743ac4e43fc004c891604b26f8c69e1e83ea2afc7c48f".decodeHex(),
+        fingerprintSha512 = (
+            "81381f1dacd4824a6c503fd07057763099c12b8309d0abcec4000c9060cbbfa6" +
+                "7988b2ada669ab4837fcd3d4ea6e2b8db2b9da9197d5112fb369fd006da545de"
+            ).decodeHex(),
     )
 
     koinPreview {
         factory<ServerNameFormatter> { DefaultServerNameFormatter() }
+        factory<FingerprintFormatter> { DefaultFingerprintFormatter() }
     } WithContent {
         K9Theme {
             ServerCertificateView(

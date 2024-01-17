@@ -32,6 +32,7 @@ import app.k9mail.feature.account.server.certificate.R
 import app.k9mail.feature.account.server.certificate.domain.entity.FormattedServerCertificateError
 import app.k9mail.feature.account.server.certificate.domain.entity.ServerCertificateProperties
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.State
+import okio.ByteString.Companion.decodeHex
 import org.koin.compose.koinInject
 
 @Composable
@@ -126,16 +127,19 @@ internal fun ServerCertificateErrorContentPreview() {
                 notValidAfter = "December 31, 2023, 11:59 PM",
                 subject = "CN=*.domain.example",
                 issuer = "CN=test, O=MZLA",
-                fingerprintSha1 = "33ab5639bfd8e7b95eb1d8d0b87781d4ffea4d5d",
-                fingerprintSha256 = "1894a19c85ba153acbf743ac4e43fc004c891604b26f8c69e1e83ea2afc7c48f",
-                fingerprintSha512 = "81381f1dacd4824a6c503fd07057763099c12b8309d0abcec4000c9060cbbfa67988b2ada669ab" +
-                    "4837fcd3d4ea6e2b8db2b9da9197d5112fb369fd006da545de",
+                fingerprintSha1 = "33ab5639bfd8e7b95eb1d8d0b87781d4ffea4d5d".decodeHex(),
+                fingerprintSha256 = "1894a19c85ba153acbf743ac4e43fc004c891604b26f8c69e1e83ea2afc7c48f".decodeHex(),
+                fingerprintSha512 = (
+                    "81381f1dacd4824a6c503fd07057763099c12b8309d0abcec4000c9060cbbfa6" +
+                        "7988b2ada669ab4837fcd3d4ea6e2b8db2b9da9197d5112fb369fd006da545de"
+                    ).decodeHex(),
             ),
         ),
     )
 
     koinPreview {
         factory<ServerNameFormatter> { DefaultServerNameFormatter() }
+        factory<FingerprintFormatter> { DefaultFingerprintFormatter() }
     } WithContent {
         K9Theme {
             ServerCertificateErrorContent(
