@@ -15,6 +15,9 @@ dependencies {
     implementation(plugin(libs.plugins.spotless))
     implementation(plugin(libs.plugins.detekt))
     implementation(plugin(libs.plugins.dependency.check))
+
+    implementation(libs.diff.utils)
+    compileOnly(libs.android.tools.common)
 }
 
 fun plugin(provider: Provider<PluginDependency>) = with(provider.get()) {

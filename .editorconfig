@@ -16,7 +16,7 @@ ij_kotlin_imports_layout = *,^
 ij_kotlin_allow_trailing_comma = true
 ij_kotlin_allow_trailing_comma_on_call_site = true
 
-[*.{yml,yaml,json,toml,md}]
+[*.{yml,yaml,json,toml}]
 indent_size = 2
 tab_width = 2
 ij_continuation_indent_size = 2

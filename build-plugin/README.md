@@ -13,7 +13,8 @@ Gradle Plugins.
 The `build-plugin` is used as included build in the root `settings.gradle.kts` and provides all
 included `xyz.gradle.kts` as plugins under their `xyz` name to the whole project.
 
-The plugins should try to accomplish single responsibility and leave one-off configuration to the module's `build.gradle.kts`.
+The plugins should try to accomplish single responsibility and leave one-off configuration to the
+module's `build.gradle.kts`.
 
 ## Convention plugins
 
@@ -35,6 +36,10 @@ The plugins should try to accomplish single responsibility and leave one-off con
 - `thunderbird.quality.spotless` - [Spotless - Code formatter](https://github.com/diffplug/spotless)
   with [Ktlint - Kotlin linter and formatter](https://pinterest.github.io/ktlint/)
   - Use `./gradlew spotlessCheck` to check for any issue and `./gradlew spotlessApply` to format your code
+- `thunderbird.quality.badging` - [Android Badging Check Plugin](https://github.com/android/nowinandroid/blob/main/build-logic/convention/src/main/kotlin/com/google/samples/apps/nowinandroid/Badging.kt)
+  - Use `./gradlew generate{VariantName}Badging` to generate badging file
+  - Use `./gradlew check{VariantName}Badging` to validate allowed badging
+  - Use `./gradlew update{VariantName}Badging` to update allowed badging
 
 ## Add new build plugin
 
@@ -45,7 +50,7 @@ If you need to access dependencies that are not yet defined in `build-plugin/bui
 1. Add the dependency to the version catalog `gradle/libs.versions.toml`
 2. Then add it to `build-plugin/build.gradle.kts`.
    1. In case of a plugin dependency use `implementation(plugin(libs.plugins.YOUR_PLUGIN_DEPENDENCY))`.
-   1. Otherwise `implementation(libs.YOUR_DEPENDENCY))`.
+   2. Otherwise `implementation(libs.YOUR_DEPENDENCY))`.
 
 When done, add the plugin to `build-plugin/src/main/kotlin/ThunderbirdPlugins.kt`
 

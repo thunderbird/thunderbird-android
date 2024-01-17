@@ -1,6 +1,7 @@
 plugins {
     id(ThunderbirdPlugins.App.android)
     alias(libs.plugins.dependency.guard)
+    id("thunderbird.quality.badging")
 }
 
 val testCoverageEnabled: Boolean by extra

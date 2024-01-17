@@ -3,7 +3,9 @@
 
 [versions]
 gradle = "8.5"
+# AGP and tools should be updated together
 androidGradlePlugin = "8.2.1"
+androidTools = "31.2.1"
 ktlint = "1.0.1"
 
 kotlin = "1.9.22"
@@ -58,6 +60,8 @@ dependency-guard = { id = "com.dropbox.dependency-guard", version.ref = "pluginD
 
 [libraries]
 desugar = "com.android.tools:desugar_jdk_libs:2.0.4"
+android-tools-common = { group = "com.android.tools", name = "common", version.ref = "androidTools" }
+diff-utils = "io.github.java-diff-utils:java-diff-utils:4.12"
 
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
