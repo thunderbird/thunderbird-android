@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_warning_title">Hoiatus</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Sertifikaadiviga</string>
+    <string name="account_server_certificate_subject">Sisu</string>
+    <string name="account_server_certificate_unknown_error_description_format">Rakendus tuvastas võimaliku turvariski ning loobus ühendusest serveriga <xliff:g id="serverName">%s</xliff:g>.
+\nKui sa jätkad, siis võimalikud ründajad võivad varastada sinu andmeid, sh. kasutajanime ja salasõna.</string>
+    <string name="account_server_certificate_button_back">Mine tagasi (soovitatav)</string>
+    <string name="account_server_certificate_button_advanced">Lisateave</string>
+    <string name="account_server_certificate_button_continue">Nõustu riskiga ja jätka</string>
+    <string name="account_server_certificate_section_title">Serveri sertifikaat</string>
+    <string name="account_server_certificate_subject_alternative_names">Serveri SANs nimed</string>
+    <string name="account_server_certificate_not_valid_before">Pole kehtiv varem kui</string>
+    <string name="account_server_certificate_not_valid_after">Pole kehtiv hiljem kui</string>
+    <string name="account_server_certificate_issuer">Väljaandja</string>
+    <string name="account_server_certificate_fingerprints_section">Sõrmejäljed</string>
+</resources>

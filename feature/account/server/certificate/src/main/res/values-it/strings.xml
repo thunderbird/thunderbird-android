@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_button_continue">Accetta il rischio e continua</string>
+    <string name="account_server_certificate_section_title">Certificato del server</string>
+    <string name="account_server_certificate_warning_title">Avviso</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Errore di certificato</string>
+    <string name="account_server_certificate_unknown_error_description_format">L\'applicazione ha rilevato una potenziale minaccia alla sicurezza e non ha continuato a connettersi a <xliff:g id="Nome del server">%s</xliff:g>.
+\nSe continui, gli aggressori potrebbero tentare di rubare informazioni come la tua password o i tuoi indirizzi email.</string>
+    <string name="account_server_certificate_button_back">Torna indietro (raccomandato)</string>
+    <string name="account_server_certificate_button_advanced">Avanzato</string>
+    <string name="account_server_certificate_subject">Soggetto</string>
+</resources>

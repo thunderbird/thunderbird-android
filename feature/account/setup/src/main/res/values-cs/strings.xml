@@ -20,10 +20,10 @@
     <string name="account_setup_options_account_name_label">Název účtu</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Nastavení nalezeno</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">E-mailová adresa je vyžadována.</string>
-    <string name="account_setup_options_display_name_label">Zobrazované jméno</string>
+    <string name="account_setup_options_display_name_label">Vaše jméno</string>
     <string name="account_setup_auto_discovery_loading_error">Nastavení e-mailu se nepodařilo nahrát</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Tomuto nastavení důvěřuji</string>
-    <string name="account_setup_options_display_name_error_required">Zobrazované jméno je vyžadováno.</string>
+    <string name="account_setup_options_display_name_error_required">Vaše jméno je vyžadováno.</string>
     <string name="account_setup_error_network">Síť</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Toto není rozeznáno jako platná e-mailová adresa.</string>
     <string name="account_setup_options_email_check_frequency_never">Nikdy</string>
@@ -37,4 +37,18 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Tato e-mailová adresa není podporována.</string>
     <string name="account_setup_create_account_creating">Vytváření účtu…</string>
     <string name="account_setup_create_account_error">Při vytváření účtu nastala chyba</string>
+    <string name="account_setup_special_folders_top_bar_title">Speciální složky</string>
+    <string name="account_setup_special_folders_form_description">Zvolte prosím speciální složky pro svůj účet.</string>
+    <string name="account_setup_special_folders_form_description_automatic">Volba \"Automaticky\" sleduje změny provedené na serveru. Aktuální hodnota je zobrazena v závorkách.</string>
+    <string name="account_setup_special_folders_loading_message">Získávání seznamu složek…</string>
+    <string name="account_setup_special_folders_error_message">Nepodařilo se získat seznam složek ze serveru</string>
+    <string name="account_setup_special_folders_success_message">Všechny speciální složky byly nastaveny automaticky na serveru.</string>
+    <string name="account_setup_special_folders_archive_folder_label">Archiv</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Koncepty</string>
+    <string name="account_setup_special_folders_sent_folder_label">Odeslané</string>
+    <string name="account_setup_special_folders_spam_folder_label">Spam</string>
+    <string name="account_setup_special_folders_trash_folder_label">Koš</string>
+    <string name="account_setup_special_folders_folder_none">Žádný</string>
+    <string name="account_setup_special_folders_folder_automatic">Automaticky (%s)</string>
+    <string name="account_setup_special_folders_edit_folders_button_label">Upravit speciální složky</string>
 </resources>

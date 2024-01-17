@@ -36,4 +36,18 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Tämä sähköpostiosoite ei ole tuettu.</string>
     <string name="account_setup_create_account_creating">Luodaan tiliä…</string>
     <string name="account_setup_create_account_error">Tiliä luotaessa tapahtui virhe</string>
+    <string name="account_setup_special_folders_success_message">Palvelin määritti kaikki erityiset kansiot automaattisesti.</string>
+    <string name="account_setup_special_folders_folder_automatic">Automaattinen(%s)</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Luonnoskansio</string>
+    <string name="account_setup_special_folders_error_message">Listan kansoista hakeminen palvelimelta epäonnistui</string>
+    <string name="account_setup_special_folders_loading_message">Haetaan listaa kansioista…</string>
+    <string name="account_setup_special_folders_form_description">Määrittele tilisi erityiset kansiot</string>
+    <string name="account_setup_special_folders_sent_folder_label">Lähetetyt-kansio</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Vastaanotimme sähköpostipalvelimesi asetukset yhteydellä, joka ei ollut aivan niin turvallinen kuin haluaisimme. Tämä tarkoittaa, että on pieni mahdollisuus, että joku on muuttanut niitä. Voisitko vielä tarkistaa ne, jotta ne ovat varmasti oikein?</string>
+    <string name="account_setup_special_folders_folder_none">Ei mitään</string>
+    <string name="account_setup_special_folders_top_bar_title">Erityiset kansiot</string>
+    <string name="account_setup_special_folders_trash_folder_label">Roskakorikansio</string>
+    <string name="account_setup_special_folders_archive_folder_label">Arkistokansio</string>
+    <string name="account_setup_special_folders_edit_folders_button_label">Muokkaa erityisiä kansioita</string>
+    <string name="account_setup_special_folders_spam_folder_label">Roskapostikansio</string>
 </resources>

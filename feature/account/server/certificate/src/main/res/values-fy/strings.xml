@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_warning_title">Warskôging</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Sertifikaatflater</string>
+    <string name="account_server_certificate_unknown_error_description_format">De app hat in potinsjeel befeiligingsrisiko detektearre en is net troch gien mei ferbinen nei <xliff:g id="serverName">%s</xliff:g>.
+\nAs jo trochgean kinne oanfallers probearje ynformaasje lykas jo wachtwurd of e-mailberjochten te stellen.</string>
+    <string name="account_server_certificate_button_back">Tebek (oanrekommandearre)</string>
+    <string name="account_server_certificate_button_advanced">Avansearre</string>
+    <string name="account_server_certificate_button_continue">Risiko akseptearje en trochgean</string>
+    <string name="account_server_certificate_section_title">Serversertifikaat</string>
+    <string name="account_server_certificate_subject_alternative_names">Multi-domeinsertifikaten</string>
+    <string name="account_server_certificate_not_valid_before">Pas jildich mei yngong fan</string>
+    <string name="account_server_certificate_not_valid_after">Unjildich nei</string>
+    <string name="account_server_certificate_subject">Eigener</string>
+    <string name="account_server_certificate_issuer">Utjouwer</string>
+    <string name="account_server_certificate_fingerprints_section">Fingerôfdrukken</string>
+</resources>

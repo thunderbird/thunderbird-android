@@ -11,4 +11,11 @@
     <string name="account_server_validation_incoming_success">Nastavení serveru příchozí pošty je platné</string>
     <string name="account_server_validation_incoming_loading_error">Kontrola nastavení serveru příchozí pošty se nezdařila</string>
     <string name="account_server_validation_error_server">Chyba serveru</string>
+    <string name="account_server_validation_error_client_certificate_expired">Klientský certifikát je již neplatný</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">Klientský certifikát není přístupný</string>
+    <string name="account_server_validation_error_missing_server_capability">Chybějící funkcionalita</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Serveru chybí tato funkcionalita:
+\n%s</string>
+    <string name="account_server_validation_error_details">Detaily:
+\n%s</string>
 </resources>

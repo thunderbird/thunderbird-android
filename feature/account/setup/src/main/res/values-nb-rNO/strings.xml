@@ -20,7 +20,7 @@
     <string name="account_setup_options_account_name_label">Kontonavn</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Fant et oppsett</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">E-postadresse kreves</string>
-    <string name="account_setup_options_display_name_label">Visningsnavn</string>
+    <string name="account_setup_options_display_name_label">Ditt navn</string>
     <string name="account_setup_auto_discovery_loading_error">Klarte ikke å laste inn e-postoppsett</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Jeg stoler på dette oppsettet</string>
     <string name="account_setup_options_display_name_error_required">Visningsnavn kreves.</string>
@@ -34,4 +34,21 @@
     <string name="account_setup_title">K-9 Mail</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Denne e-postadressen tillates ikke.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Denne e-postadressen støttes ikke.</string>
+    <string name="account_setup_special_folders_top_bar_title">Spesialmapper</string>
+    <string name="account_setup_special_folders_form_description">Angi spesialmapper for din konto.</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Kladdmappe</string>
+    <string name="account_setup_special_folders_loading_message">Henter mappeliste …</string>
+    <string name="account_setup_special_folders_error_message">Klarte ikke å hente mappeliste fra tjeneren</string>
+    <string name="account_setup_special_folders_success_message">Alle spesialmapper har blitt satt opp automatisk av tjeneren.</string>
+    <string name="account_setup_special_folders_trash_folder_label">Papirkurvsmappe</string>
+    <string name="account_setup_special_folders_folder_none">Ingen</string>
+    <string name="account_setup_special_folders_edit_folders_button_label">Rediger spesialmapper</string>
+    <string name="account_setup_create_account_error">En feil oppstod under opprettelse av kontoen</string>
+    <string name="account_setup_create_account_created">Konto opprettet</string>
+    <string name="account_setup_create_account_creating">Oppretter konto …</string>
+    <string name="account_setup_special_folders_sent_folder_label">«Sendt»-mappe</string>
+    <string name="account_setup_special_folders_spam_folder_label">Søppelpostmappe</string>
+    <string name="account_setup_special_folders_folder_automatic">Automatisk (%s)</string>
+    <string name="account_setup_special_folders_archive_folder_label">Arkivmappe</string>
+    <string name="account_setup_special_folders_form_description_automatic">«Automatisk»-oppføringen følger endringer gjort av tjeneren automatisk. Nåværende tjenerverdi vises i parenteser.</string>
 </resources>

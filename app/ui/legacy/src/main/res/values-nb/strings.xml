@@ -1009,4 +1009,7 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <string name="debug_export_logs_failure">Eksport mislyktes.</string>
     <string name="message_view_show_remote_images_action">Vis bilder fra annensteds hen</string>
     <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 støttes ikke med denne tilbyderen.</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">Forbli på nåværende melding</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">Gå tilbake til meldingslisten</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Etter markering av melding som ulest</string>
 </resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_button_continue">Godta risiko og fortsett</string>
+    <string name="account_server_certificate_section_title">Tjenersertifikat</string>
+    <string name="account_server_certificate_not_valid_before">Ikke gyldig før</string>
+    <string name="account_server_certificate_not_valid_after">Ikke gyldig etter</string>
+    <string name="account_server_certificate_fingerprints_section">Fingeravtrykk</string>
+    <string name="account_server_certificate_button_back">Gå tilbake (anbefalt)</string>
+    <string name="account_server_certificate_subject_alternative_names">Alternative emnenavn</string>
+    <string name="account_server_certificate_warning_title">Advarsel</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Sertifikatsfeil</string>
+    <string name="account_server_certificate_button_advanced">Avansert</string>
+    <string name="account_server_certificate_subject">Emne</string>
+    <string name="account_server_certificate_issuer">Utsteder</string>
+    <string name="account_server_certificate_unknown_error_description_format">En oppdaget potensiell sikkerhetsrisiko forhindret tilkobling til <xliff:g id="serverName">%s</xliff:g>.
+\nHvis du fortsetter kan angripere prøve å stjele info som f.eks. passord eller e-poster.</string>
+</resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_unknown_error_subtitle">Error en el certificado</string>
+    <string name="account_server_certificate_button_back">Retroceder (recomendado)</string>
+    <string name="account_server_certificate_not_valid_before">No válido antes de</string>
+    <string name="account_server_certificate_not_valid_after">No es válido después de</string>
+    <string name="account_server_certificate_subject">Asunto</string>
+    <string name="account_server_certificate_issuer">Emisor</string>
+    <string name="account_server_certificate_fingerprints_section">Huella digital</string>
+    <string name="account_server_certificate_warning_title">Advertencia</string>
+    <string name="account_server_certificate_unknown_error_description_format">La aplicación ha detectado un posible problema de seguridad y ha cortado la conexión con <xliff:g id="serverName">%s</xliff:g>.
+\nSi ignoras este aviso y sigues adelante los atacantes podrían conseguir robar información privada como tu contraseña o tus correos electrónicos.</string>
+    <string name="account_server_certificate_button_advanced">Avanzado</string>
+    <string name="account_server_certificate_button_continue">Aceptar el riesgo y continuar</string>
+    <string name="account_server_certificate_section_title">Certificado del servidor</string>
+    <string name="account_server_certificate_subject_alternative_names">Nombres alternativos del sujeto</string>
+</resources>

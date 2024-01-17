@@ -3,4 +3,6 @@
     <string name="account_common_button_next">Siguiente</string>
     <string name="account_common_button_back">Atrás</string>
     <string name="account_common_title">K-9 Mail</string>
+    <string name="account_common_error_server_message">El servidor devolvió el siguiente mensaje:
+\n%s</string>
 </resources>

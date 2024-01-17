@@ -6,4 +6,5 @@
     <string name="onboarding_permissions_contacts_title">Yhteystiedot</string>
     <string name="onboarding_permissions_allow_button">Salli</string>
     <string name="onboarding_permissions_skip_button">Ohita</string>
+    <string name="onboarding_permissions_contacts_description">Salli pääsy, jotta voimme näyttää yhteystietoehdotuksia ja yhteystietojen nimet ja kuvat.</string>
 </resources>
