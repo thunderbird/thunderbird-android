@@ -7,6 +7,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.util.AttributeSet
 import android.view.ContextMenu
 import android.view.ContextMenu.ContextMenuInfo
@@ -99,8 +101,11 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
             HitTestResult.SRC_ANCHOR_TYPE -> {
                 createLinkMenu(menu, webView, linkUrl = hitTestResult.extra)
             }
-            HitTestResult.IMAGE_TYPE, HitTestResult.SRC_IMAGE_ANCHOR_TYPE -> {
+            HitTestResult.IMAGE_TYPE -> {
                 createImageMenu(menu, imageUrl = hitTestResult.extra)
+            }
+            HitTestResult.SRC_IMAGE_ANCHOR_TYPE -> {
+                createImageLinkMenu(menu, webView, imageUrl = hitTestResult.extra)
             }
             HitTestResult.PHONE_TYPE -> {
                 createPhoneNumberMenu(menu, phoneNumber = hitTestResult.extra)
@@ -115,6 +120,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
         menu: ContextMenu,
         webView: WebView,
         linkUrl: String?,
+        showCopyLinkTextItem: Boolean = true,
     ) {
         if (linkUrl == null) return
 
@@ -148,7 +154,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
             menu.add(
                 Menu.NONE,
                 MENU_ITEM_LINK_VIEW,
-                0,
+                MENU_ITEM_LINK_VIEW,
                 context.getString(R.string.webview_contextmenu_link_view_action),
             ).setOnMenuItemClickListener(listener)
         }
@@ -156,23 +162,25 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
         menu.add(
             Menu.NONE,
             MENU_ITEM_LINK_SHARE,
-            1,
+            MENU_ITEM_LINK_SHARE,
             context.getString(R.string.webview_contextmenu_link_share_action),
         ).setOnMenuItemClickListener(listener)
 
         menu.add(
             Menu.NONE,
             MENU_ITEM_LINK_COPY,
-            2,
+            MENU_ITEM_LINK_COPY,
             context.getString(R.string.webview_contextmenu_link_copy_action),
         ).setOnMenuItemClickListener(listener)
 
-        menu.add(
-            Menu.NONE,
-            MENU_ITEM_LINK_TEXT_COPY,
-            3,
-            context.getString(R.string.webview_contextmenu_link_text_copy_action),
-        ).setOnMenuItemClickListener(listener)
+        if (showCopyLinkTextItem) {
+            menu.add(
+                Menu.NONE,
+                MENU_ITEM_LINK_TEXT_COPY,
+                MENU_ITEM_LINK_TEXT_COPY,
+                context.getString(R.string.webview_contextmenu_link_text_copy_action),
+            ).setOnMenuItemClickListener(listener)
+        }
     }
 
     private fun createImageMenu(menu: ContextMenu, imageUrl: String?) {
@@ -218,7 +226,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
         menu.add(
             Menu.NONE,
             MENU_ITEM_IMAGE_VIEW,
-            0,
+            MENU_ITEM_IMAGE_VIEW,
             context.getString(R.string.webview_contextmenu_image_view_action),
         ).setOnMenuItemClickListener(listener)
 
@@ -226,7 +234,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
             menu.add(
                 Menu.NONE,
                 MENU_ITEM_IMAGE_SAVE,
-                1,
+                MENU_ITEM_IMAGE_SAVE,
                 if (inlineImage) {
                     context.getString(R.string.webview_contextmenu_image_save_action)
                 } else {
@@ -239,10 +247,17 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
             menu.add(
                 Menu.NONE,
                 MENU_ITEM_IMAGE_COPY,
-                2,
+                MENU_ITEM_IMAGE_COPY,
                 context.getString(R.string.webview_contextmenu_image_copy_action),
             ).setOnMenuItemClickListener(listener)
         }
+    }
+
+    private fun createImageLinkMenu(menu: ContextMenu, webView: WebView, imageUrl: String?) {
+        val linkUrl = webView.getLinkUrl()
+
+        createImageMenu(menu, imageUrl)
+        createLinkMenu(menu, webView, linkUrl, showCopyLinkTextItem = false)
     }
 
     private fun createPhoneNumberMenu(menu: ContextMenu, phoneNumber: String?) {
@@ -518,6 +533,15 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
         return attachmentViewMap[attachment]
     }
 
+    private fun WebView.getLinkUrl(): String? {
+        val looper = requireNotNull(Looper.myLooper())
+        val handler = Handler(looper)
+        val message = handler.obtainMessage()
+        requestFocusNodeHref(message)
+
+        return message.data.getString("url")
+    }
+
     interface OnRenderingFinishedListener {
         fun onLoadFinished()
     }
@@ -527,9 +551,9 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
         private const val MENU_ITEM_LINK_SHARE = Menu.FIRST + 1
         private const val MENU_ITEM_LINK_COPY = Menu.FIRST + 2
         private const val MENU_ITEM_LINK_TEXT_COPY = Menu.FIRST + 3
-        private const val MENU_ITEM_IMAGE_VIEW = Menu.FIRST
-        private const val MENU_ITEM_IMAGE_SAVE = Menu.FIRST + 1
-        private const val MENU_ITEM_IMAGE_COPY = Menu.FIRST + 2
+        private const val MENU_ITEM_IMAGE_VIEW = Menu.FIRST + 4
+        private const val MENU_ITEM_IMAGE_SAVE = Menu.FIRST + 5
+        private const val MENU_ITEM_IMAGE_COPY = Menu.FIRST + 6
         private const val MENU_ITEM_PHONE_CALL = Menu.FIRST
         private const val MENU_ITEM_PHONE_SAVE = Menu.FIRST + 1
         private const val MENU_ITEM_PHONE_COPY = Menu.FIRST + 2
