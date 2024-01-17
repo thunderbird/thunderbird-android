@@ -24,7 +24,7 @@ configure<SpotlessExtension> {
         target("**/*.md")
         targetExclude(
             "plugins/openpgp-api-lib/",
-            "**/fastlane/README.md",
+            "app-k9mail/fastlane/README.md",
         )
     }
     format("misc") {
