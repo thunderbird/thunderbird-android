@@ -111,6 +111,7 @@ val featureAccountSetupModule: Module = module {
         DisplayOptionsViewModel(
             validator = get(),
             accountStateRepository = get(),
+            accountOwnerNameProvider = get(),
         )
     }
 

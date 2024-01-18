@@ -72,6 +72,7 @@ internal fun DisplayOptionsScreenK9Preview() {
             viewModel = DisplayOptionsViewModel(
                 validator = DisplayOptionsValidator(),
                 accountStateRepository = PreviewAccountStateRepository(),
+                accountOwnerNameProvider = { null },
             ),
         )
     }
@@ -87,6 +88,7 @@ internal fun DisplayOptionsScreenThunderbirdPreview() {
             viewModel = DisplayOptionsViewModel(
                 validator = DisplayOptionsValidator(),
                 accountStateRepository = PreviewAccountStateRepository(),
+                accountOwnerNameProvider = { null },
             ),
         )
     }

@@ -60,6 +60,7 @@ class AccountSetupModuleKtTest : KoinTest {
         }
         single<LocalKeyStore> { mock() }
         single<AccountCommonExternalContract.AccountStateLoader> { mock() }
+        factory<AccountSetupExternalContract.AccountOwnerNameProvider> { mock() }
     }
 
     @Test
@@ -83,6 +84,7 @@ class AccountSetupModuleKtTest : KoinTest {
                 InteractionMode::class,
                 SpecialFoldersContract.State::class,
                 CreateAccountContract.State::class,
+                AccountSetupExternalContract.AccountOwnerNameProvider::class,
             ),
         )
 
