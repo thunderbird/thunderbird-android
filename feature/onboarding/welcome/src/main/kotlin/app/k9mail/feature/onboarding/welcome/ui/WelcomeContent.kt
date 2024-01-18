@@ -1,17 +1,24 @@
 package app.k9mail.feature.onboarding.welcome.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.designsystem.atom.Background
 import app.k9mail.core.ui.compose.designsystem.atom.button.Button
@@ -24,6 +31,10 @@ import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.onboarding.welcome.R
+
+private const val CIRCLE_COLOR = 0xFFEEEEEE
+private const val CIRCLE_SIZE_DP = 300
+private const val LOGO_SIZE_DP = 200
 
 @Composable
 internal fun WelcomeContent(
@@ -75,13 +86,23 @@ private fun WelcomeLogo(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = Modifier.then(modifier),
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.onboarding_welcome_logo),
-            contentDescription = null,
-        )
+        Box(
+            modifier = Modifier
+                .clip(CircleShape)
+                .background(Color(CIRCLE_COLOR))
+                .size(CIRCLE_SIZE_DP.dp),
+        ) {
+            Image(
+                painter = painterResource(id = MainTheme.images.logo),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(LOGO_SIZE_DP.dp)
+                    .align(Alignment.Center),
+            )
+        }
     }
 }
 
