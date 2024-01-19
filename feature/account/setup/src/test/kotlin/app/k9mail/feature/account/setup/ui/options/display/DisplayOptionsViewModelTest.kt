@@ -22,9 +22,11 @@ class DisplayOptionsViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
+    private val accountOwnerNameProvider = FakeAccountOwnerNameProvider()
     private val testSubject = DisplayOptionsViewModel(
         validator = FakeDisplayOptionsValidator(),
         accountStateRepository = InMemoryAccountStateRepository(),
+        accountOwnerNameProvider = accountOwnerNameProvider,
     )
 
     @Test
@@ -101,6 +103,7 @@ class DisplayOptionsViewModelTest {
                     accountNameAnswer = ValidationResult.Failure(TestError),
                 ),
                 accountStateRepository = InMemoryAccountStateRepository(),
+                accountOwnerNameProvider = accountOwnerNameProvider,
             )
             val stateTurbine = viewModel.state.testIn(backgroundScope)
             val effectTurbine = viewModel.effect.testIn(backgroundScope)
@@ -150,6 +153,31 @@ class DisplayOptionsViewModelTest {
             turbines = turbines,
         ) {
             isEqualTo(Effect.NavigateBack)
+        }
+    }
+
+    @Test
+    fun `should set owner name when LoadAccountState event received`() = runTest {
+        accountOwnerNameProvider.ownerName = "Alice Example"
+        val viewModel = testSubject
+        val stateTurbine = viewModel.state.testIn(backgroundScope)
+        val effectTurbine = viewModel.effect.testIn(backgroundScope)
+        val turbines = listOf(stateTurbine, effectTurbine)
+
+        assertThatAndTurbinesConsumed(
+            actual = stateTurbine.awaitItem(),
+            turbines = turbines,
+        ) {
+            isEqualTo(State())
+        }
+
+        viewModel.event(Event.LoadAccountState)
+
+        assertThatAndTurbinesConsumed(
+            actual = stateTurbine.awaitItem(),
+            turbines = turbines,
+        ) {
+            isEqualTo(State(displayName = StringInputField("Alice Example")))
         }
     }
 

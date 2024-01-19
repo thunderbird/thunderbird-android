@@ -1,17 +1,22 @@
 package app.k9mail.feature.account.setup.ui.options.display
 
+import androidx.lifecycle.viewModelScope
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.domain.AccountDomainContract
+import app.k9mail.feature.account.common.domain.input.StringInputField
+import app.k9mail.feature.account.setup.AccountSetupExternalContract
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Effect
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Event
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.State
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Validator
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.ViewModel
+import kotlinx.coroutines.launch
 
 internal class DisplayOptionsViewModel(
     private val validator: Validator,
     private val accountStateRepository: AccountDomainContract.AccountStateRepository,
+    private val accountOwnerNameProvider: AccountSetupExternalContract.AccountOwnerNameProvider,
     initialState: State? = null,
 ) : BaseViewModel<State, Event, Effect>(
     initialState = initialState ?: accountStateRepository.getState().toDisplayOptionsState(),
@@ -46,8 +51,19 @@ internal class DisplayOptionsViewModel(
     }
 
     private fun loadAccountState() {
-        updateState {
-            accountStateRepository.getState().toDisplayOptionsState()
+        viewModelScope.launch {
+            val ownerName = accountOwnerNameProvider.getOwnerName().orEmpty()
+
+            updateState {
+                val displayOptionsState = accountStateRepository.getState().toDisplayOptionsState()
+                if (displayOptionsState.displayName.value.isEmpty()) {
+                    displayOptionsState.copy(
+                        displayName = StringInputField(value = ownerName),
+                    )
+                } else {
+                    displayOptionsState
+                }
+            }
         }
     }
 
