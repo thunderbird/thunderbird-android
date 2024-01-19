@@ -20,10 +20,10 @@
     <string name="account_setup_options_account_name_label">アカウント名</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">設定が見つかりました</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">メールアドレスは必須です。</string>
-    <string name="account_setup_options_display_name_label">表示名</string>
+    <string name="account_setup_options_display_name_label">あなたのお名前</string>
     <string name="account_setup_auto_discovery_loading_error">メールの設定が見つかりませんでした</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">この設定を信頼します</string>
-    <string name="account_setup_options_display_name_error_required">表示名は必須です。</string>
+    <string name="account_setup_options_display_name_error_required">あなたのお名前は必須です。</string>
     <string name="account_setup_error_network">ネットワーク</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">有効なメールアドレスとして認識されませんでした。</string>
     <string name="account_setup_options_email_check_frequency_never">確認しない</string>
@@ -37,4 +37,18 @@
     <string name="account_setup_create_account_created">アカウントは正常に作成されました</string>
     <string name="account_setup_create_account_creating">アカウントを作成中…</string>
     <string name="account_setup_create_account_error">アカウントの作成中にエラーが発生しました</string>
+    <string name="account_setup_special_folders_success_message">すべての特別なフォルダーが、サーバーにより自動的に設定されました。</string>
+    <string name="account_setup_special_folders_folder_automatic">自動 (%s)</string>
+    <string name="account_setup_special_folders_drafts_folder_label">下書きフォルダー</string>
+    <string name="account_setup_special_folders_error_message">サーバーからフォルダー一覧を取得できませんでした</string>
+    <string name="account_setup_special_folders_loading_message">フォルダー一覧を取得中…</string>
+    <string name="account_setup_special_folders_form_description">アカウントの特別なフォルダーを指定してください。</string>
+    <string name="account_setup_special_folders_sent_folder_label">送信済みトレイフォルダー</string>
+    <string name="account_setup_special_folders_folder_none">なし</string>
+    <string name="account_setup_special_folders_top_bar_title">特別なフォルダー</string>
+    <string name="account_setup_special_folders_trash_folder_label">ごみ箱フォルダー</string>
+    <string name="account_setup_special_folders_archive_folder_label">アーカイブフォルダー</string>
+    <string name="account_setup_special_folders_edit_folders_button_label">特別なフォルダーを編集</string>
+    <string name="account_setup_special_folders_spam_folder_label">迷惑メールフォルダー</string>
+    <string name="account_setup_special_folders_form_description_automatic">「自動」を設定すると、サーバーで設定が変更されても自動的に追従します。現在、サーバーに設定された値が括弧内に表示されています。</string>
 </resources>

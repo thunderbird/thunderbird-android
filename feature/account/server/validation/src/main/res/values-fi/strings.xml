@@ -11,4 +11,6 @@
     <string name="account_server_validation_incoming_success">Saapuvan postin palvelimen asetukset ovat kelvolliset</string>
     <string name="account_server_validation_incoming_loading_error">Saapuvan postin palvelimen asetusten tarkistaminen epäonnistui</string>
     <string name="account_server_validation_error_server">Palvelinvirhe</string>
+    <string name="account_server_validation_error_details">Lisätiedot:
+\n%s</string>
 </resources>

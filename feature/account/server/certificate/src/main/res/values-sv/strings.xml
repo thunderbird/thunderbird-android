@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_warning_title">Varning</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Certifikatfel</string>
+    <string name="account_server_certificate_button_back">Gå tillbaka (rekommenderas)</string>
+    <string name="account_server_certificate_button_advanced">Avancerat</string>
+    <string name="account_server_certificate_button_continue">Acceptera risken och fortsätt</string>
+    <string name="account_server_certificate_section_title">Servercertifikat</string>
+    <string name="account_server_certificate_subject_alternative_names">Ämnesalternativa namn</string>
+    <string name="account_server_certificate_not_valid_before">Inte giltigt före</string>
+    <string name="account_server_certificate_not_valid_after">Inte giltigt efter</string>
+    <string name="account_server_certificate_subject">Ämne</string>
+    <string name="account_server_certificate_unknown_error_description_format">Appen upptäckte ett potentiellt säkerhetshot och fortsatte inte att ansluta till <xliff:g id="serverName">%s</xliff:g>.
+\nOm du fortsätter kan angripare försöka stjäla information som ditt lösenord eller e-postmeddelanden.</string>
+    <string name="account_server_certificate_issuer">Utfärdare</string>
+    <string name="account_server_certificate_fingerprints_section">Fingeravtryck</string>
+</resources>

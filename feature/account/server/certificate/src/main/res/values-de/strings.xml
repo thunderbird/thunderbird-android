@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_warning_title">Warnung</string>
+    <string name="account_server_certificate_button_back">Zurück (empfohlen)</string>
+    <string name="account_server_certificate_button_continue">Risiko akzeptieren und fortfahren</string>
+    <string name="account_server_certificate_section_title">Serverzertifikat</string>
+    <string name="account_server_certificate_subject_alternative_names">Alternative Namen</string>
+    <string name="account_server_certificate_not_valid_before">Gültig ab</string>
+    <string name="account_server_certificate_not_valid_after">Gültig bis</string>
+    <string name="account_server_certificate_subject">Gegenstand</string>
+    <string name="account_server_certificate_issuer">Aussteller</string>
+    <string name="account_server_certificate_fingerprints_section">Fingerabdrücke</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Zertifikatsfehler</string>
+    <string name="account_server_certificate_unknown_error_description_format">Die App hat eine potenzielle Sicherheitsbedrohung erkannt und hat daher keine Verbindung zu <xliff:g id="serverName">%s</xliff:g> hergestellt.
+\nWenn du fortfahren möchtest, könnten Angreifer versuchen, Informationen wie dein Passwort oder E-Mails zu stehlen.</string>
+    <string name="account_server_certificate_button_advanced">Erweitert</string>
+</resources>

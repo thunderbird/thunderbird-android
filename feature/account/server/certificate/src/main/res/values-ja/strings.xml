@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_subject_alternative_names">サブジェクトの代替名</string>
+    <string name="account_server_certificate_warning_title">警告</string>
+    <string name="account_server_certificate_unknown_error_subtitle">証明書エラー</string>
+    <string name="account_server_certificate_unknown_error_description_format">潜在的なセキュリティ上の脅威がアプリによって検出されたため、<xliff:g id="serverName">%s</xliff:g> への接続しませんでした。
+\n続行すると、パスワードやメールなどを攻撃者が奪取できるようになります。</string>
+    <string name="account_server_certificate_button_back">戻る (推奨)</string>
+    <string name="account_server_certificate_button_advanced">詳細</string>
+    <string name="account_server_certificate_button_continue">リスクを承知した上で続行</string>
+    <string name="account_server_certificate_section_title">サーバー証明書</string>
+    <string name="account_server_certificate_not_valid_before">効力の開始</string>
+    <string name="account_server_certificate_not_valid_after">有効期限</string>
+    <string name="account_server_certificate_subject">サブジェクト</string>
+    <string name="account_server_certificate_issuer">発行元</string>
+    <string name="account_server_certificate_fingerprints_section">フィンガープリント</string>
+</resources>

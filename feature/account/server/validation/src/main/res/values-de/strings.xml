@@ -7,11 +7,11 @@
     <string name="account_server_validation_outgoing_success">Einstellungen des Postausgangsservers sind gültig</string>
     <string name="account_server_validation_error_unknown">Unbekannter Fehler</string>
     <string name="account_server_validation_sign_in">Bitte anmelden</string>
-    <string name="account_server_validation_outgoing_loading_error">Prüfung der Einstellungen des Postausgangsservers fehlgeschlagen!</string>
+    <string name="account_server_validation_outgoing_loading_error">Prüfung der Einstellungen des Postausgangsservers fehlgeschlagen</string>
     <string name="account_server_validation_incoming_success">Einstellungen des Posteingangsservers sind gültig</string>
-    <string name="account_server_validation_incoming_loading_error">Prüfung der Einstellungen des Posteingangservers fehlgeschlagen!</string>
+    <string name="account_server_validation_incoming_loading_error">Prüfung der Einstellungen des Posteingangservers fehlgeschlagen</string>
     <string name="account_server_validation_error_server">Serverfehler</string>
-    <string name="account_server_validation_error_missing_server_capability">Nicht vom Server unterstützt</string>
+    <string name="account_server_validation_error_missing_server_capability">Fehlende Serverfähigkeit</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">Auf das Client-Zertifikat konnte nicht zugegriffen werden</string>
     <string name="account_server_validation_error_missing_server_capability_details">Der Server unterstützt diese Fähigkeit nicht:
 \n%s</string>

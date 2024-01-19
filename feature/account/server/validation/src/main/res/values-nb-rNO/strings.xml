@@ -7,8 +7,15 @@
     <string name="account_server_validation_outgoing_success">Ugyldige innstillinger for utgående tjener.</string>
     <string name="account_server_validation_error_unknown">Ukjent feil</string>
     <string name="account_server_validation_sign_in">Logg inn</string>
-    <string name="account_server_validation_outgoing_loading_error">Kunne ikke sjekke innstillinger for utgående tjener.</string>
+    <string name="account_server_validation_outgoing_loading_error">Kunne ikke sjekke innstillinger for utgående tjener</string>
     <string name="account_server_validation_incoming_success">Innstillinger for innkommende tjener stemmer.</string>
     <string name="account_server_validation_incoming_loading_error">Kunne ikke sjekke innstillinger for innkommende tjener.</string>
     <string name="account_server_validation_error_server">Tjenerfeil</string>
+    <string name="account_server_validation_error_missing_server_capability">Manglende tjeneregenskap</string>
+    <string name="account_server_validation_error_client_certificate_expired">Klientsertifikatet er ikke lenger gyldig</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">Fikk ikke tak i klientsertifikatet</string>
+    <string name="account_server_validation_error_details">Detaljer:
+\n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Tjeneren mangler denne egenskapen:
+\n%s</string>
 </resources>
