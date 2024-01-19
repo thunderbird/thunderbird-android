@@ -20,5 +20,5 @@ android {
 dependencies {
     configureSharedComposeDependencies(libs)
 
-    implementation(libs.androidx.compose.activity)
+    implementation(libs.androidx.activity.compose)
 }

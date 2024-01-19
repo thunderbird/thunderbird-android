@@ -35,7 +35,7 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring(libs.desugar)
+    coreLibraryDesugaring(libs.android.desugar)
 
     implementation(libs.bundles.shared.jvm.android.app)
 
