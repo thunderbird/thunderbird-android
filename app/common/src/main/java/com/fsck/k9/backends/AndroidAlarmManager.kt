@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.SystemClock
+import androidx.core.content.ContextCompat
 import com.fsck.k9.backend.imap.SystemAlarmManager
 import com.fsck.k9.helper.AlarmManagerCompat
 import com.fsck.k9.helper.PendingIntentCompat.FLAG_IMMUTABLE
@@ -40,7 +41,8 @@ class AndroidAlarmManager(
 
     init {
         val intentFilter = IntentFilter(ALARM_ACTION)
-        context.registerReceiver(
+        ContextCompat.registerReceiver(
+            context,
             object : BroadcastReceiver() {
                 override fun onReceive(context: Context?, intent: Intent?) {
                     val callback = callback.getAndSet(null)
@@ -54,6 +56,7 @@ class AndroidAlarmManager(
                 }
             },
             intentFilter,
+            ContextCompat.RECEIVER_NOT_EXPORTED,
         )
     }
 

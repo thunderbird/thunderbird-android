@@ -19,6 +19,12 @@ dependencies {
     debugImplementation(projects.backend.demo)
 
     implementation(libs.androidx.work.runtime)
+
+    testImplementation(libs.robolectric)
+
+    // Required for DependencyInjectionTest to be able to resolve OpenPgpApiManager
+    testImplementation(projects.plugins.openpgpApiLib.openpgpApi)
+    testImplementation(projects.feature.account.setup)
 }
 
 android {
