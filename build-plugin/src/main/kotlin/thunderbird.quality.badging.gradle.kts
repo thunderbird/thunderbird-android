@@ -161,6 +161,7 @@ abstract class CheckBadgingTask : DefaultTask() {
             generatedBadgingContent.lines(),
         ).filter { row -> row.tag != DiffRow.Tag.EQUAL }
             .joinToString("\n") { row ->
+                @Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
                 when (row.tag) {
                     DiffRow.Tag.INSERT -> {
                         "+ ${row.newLine}"
