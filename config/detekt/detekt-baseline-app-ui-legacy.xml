@@ -2,7 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>CastToNullableType:AccountSetupCheckSettings.kt$AccountSetupCheckSettings$as</ID>
     <ID>CastToNullableType:MessageList.kt$MessageList$as</ID>
     <ID>CastToNullableType:MessageViewFragment.kt$MessageViewFragment$as</ID>
     <ID>CastToNullableType:VibrationPreference.kt$VibrationPreference$as</ID>
@@ -10,7 +9,6 @@
     <ID>CyclomaticComplexMethod:AccountSettingsDataStore.kt$AccountSettingsDataStore$override fun getString(key: String, defValue: String?): String?</ID>
     <ID>CyclomaticComplexMethod:AccountSettingsDataStore.kt$AccountSettingsDataStore$override fun putBoolean(key: String, value: Boolean)</ID>
     <ID>CyclomaticComplexMethod:AccountSettingsDataStore.kt$AccountSettingsDataStore$override fun putString(key: String, value: String?)</ID>
-    <ID>CyclomaticComplexMethod:AccountSetupCheckSettings.kt$AccountSetupCheckSettings$private fun acceptKeyDialog(msgResId: Int, exception: CertificateValidationException)</ID>
     <ID>CyclomaticComplexMethod:GeneralSettingsDataStore.kt$GeneralSettingsDataStore$override fun getBoolean(key: String, defValue: Boolean): Boolean</ID>
     <ID>CyclomaticComplexMethod:GeneralSettingsDataStore.kt$GeneralSettingsDataStore$override fun getString(key: String, defValue: String?): String?</ID>
     <ID>CyclomaticComplexMethod:GeneralSettingsDataStore.kt$GeneralSettingsDataStore$override fun getStringSet(key: String, defValues: Set&lt;String&gt;?): Set&lt;String&gt;?</ID>
@@ -21,16 +19,13 @@
     <ID>CyclomaticComplexMethod:MessageListAdapter.kt$MessageListAdapter$private fun bindMessageViewHolder(holder: MessageViewHolder, messageListItem: MessageListItem)</ID>
     <ID>CyclomaticComplexMethod:MessageListFragment.kt$MessageListFragment$override fun onOptionsItemSelected(item: MenuItem): Boolean</ID>
     <ID>CyclomaticComplexMethod:MessageViewFragment.kt$MessageViewFragment$override fun onOptionsItemSelected(item: MenuItem): Boolean</ID>
-    <ID>CyclomaticComplexMethod:SettingsImportFragment.kt$SettingsImportFragment$private fun ViewHolder.updateUi(model: SettingsImportUiModel)</ID>
     <ID>CyclomaticComplexMethod:SortTypeToastProvider.kt$SortTypeToastProvider$fun getToast(sortType: SortType, ascending: Boolean): Int</ID>
     <ID>CyclomaticComplexMethod:TouchInterceptView.kt$TouchInterceptView$private fun handleOnInterceptTouchEvent(event: MotionEvent)</ID>
-    <ID>ForbiddenComment:AccountSetupCheckSettings.kt$AccountSetupCheckSettings.CheckAccountTask$* FIXME: Don't use an AsyncTask to perform network operations. * See also discussion in https://github.com/thunderbird/thunderbird-android/pull/560</ID>
     <ID>ForbiddenComment:MessageDetailsFragment.kt$MessageDetailsFragment$// FIXME: Replace this with a mechanism that survives process death</ID>
     <ID>ForbiddenComment:MessageListFragment.kt$MessageListFragment$// FIXME: Don't save the changes in the UI thread</ID>
     <ID>ImplicitDefaultLocale:MessageListAdapter.kt$MessageListAdapter$String.format("%d", threadCount)</ID>
     <ID>LargeClass:MessageList.kt$MessageList : K9ActivityMessageListFragmentListenerMessageViewFragmentListenerMessageViewContainerListenerOnBackStackChangedListenerOnSwitchCompleteListener</ID>
     <ID>LargeClass:MessageListFragment.kt$MessageListFragment : FragmentConfirmationDialogFragmentListenerMessageListItemActionListener</ID>
-    <ID>LongMethod:AccountSetupCheckSettings.kt$AccountSetupCheckSettings$private fun acceptKeyDialog(msgResId: Int, exception: CertificateValidationException)</ID>
     <ID>LongMethod:MessageContainerView.kt$MessageContainerView$private fun createImageMenu(menu: ContextMenu, imageUrl: String?)</ID>
     <ID>LongMethod:MessageList.kt$MessageList$private fun decodeExtrasToLaunchData(intent: Intent): LaunchData</ID>
     <ID>LongMethod:MessageList.kt$MessageList$private fun onCustomKeyDown(event: KeyEvent): Boolean</ID>
@@ -39,22 +34,8 @@
     <ID>LongMethod:MessageViewFragment.kt$MessageViewFragment$override fun onPrepareOptionsMenu(menu: Menu)</ID>
     <ID>LongMethod:RecipientNamesView.kt$RecipientNamesView$override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int)</ID>
     <ID>LongParameterList:MessageDetailsViewModel.kt$MessageDetailsViewModel$( private val resources: Resources, private val messageRepository: MessageRepository, private val folderRepository: FolderRepository, private val contactSettingsProvider: ContactSettingsProvider, private val contactRepository: ContactRepository, private val contactPermissionResolver: ContactPermissionResolver, private val clipboardManager: ClipboardManager, private val accountManager: AccountManager, private val participantFormatter: MessageDetailsParticipantFormatter, private val folderNameFormatter: FolderNameFormatter, )</ID>
-    <ID>LongParameterList:PasswordPromptDialogFragment.kt$PasswordPromptDialogFragment.Companion$( accountUuid: String, accountName: String, inputIncomingServerPassword: Boolean, incomingServerName: String?, inputOutgoingServerPassword: Boolean, outgoingServerName: String?, targetFragment: Fragment, requestCode: Int, )</ID>
     <ID>LongParameterList:RecipientPresenter.kt$RecipientPresenter$( private val context: Context, loaderManager: LoaderManager, private val openPgpApiManager: OpenPgpApiManager, private val recipientMvpView: RecipientMvpView, account: Account, private val composePgpInlineDecider: ComposePgpInlineDecider, private val composePgpEnableByDefaultDecider: ComposePgpEnableByDefaultDecider, private val autocryptStatusInteractor: AutocryptStatusInteractor, private val replyToParser: ReplyToParser, private val draftStateHeaderParser: AutocryptDraftStateHeaderParser, )</ID>
-    <ID>LongParameterList:SettingsImportViewModel.kt$SavedAccountState$( val accountIndex: Int, val displayName: String, val accountUuid: String, val selected: Boolean, val importStatus: ImportStatus, val incomingServerName: String?, val outgoingServerName: String?, val incomingServerPasswordNeeded: Boolean, val outgoingServerPasswordNeeded: Boolean, )</ID>
-    <ID>LoopWithTooManyJumpStatements:AccountSetupCheckSettings.kt$AccountSetupCheckSettings$for</ID>
-    <ID>MagicNumber:AccountCreatorHelper.kt$AccountCreatorHelper$110</ID>
-    <ID>MagicNumber:AccountCreatorHelper.kt$AccountCreatorHelper$143</ID>
-    <ID>MagicNumber:AccountCreatorHelper.kt$AccountCreatorHelper$465</ID>
-    <ID>MagicNumber:AccountCreatorHelper.kt$AccountCreatorHelper$587</ID>
-    <ID>MagicNumber:AccountCreatorHelper.kt$AccountCreatorHelper$993</ID>
-    <ID>MagicNumber:AccountCreatorHelper.kt$AccountCreatorHelper$995</ID>
     <ID>MagicNumber:AccountItem.kt$AccountItem$200L</ID>
-    <ID>MagicNumber:AccountSetupCheckSettings.kt$AccountSetupCheckSettings$3</ID>
-    <ID>MagicNumber:AccountSetupCheckSettings.kt$AccountSetupCheckSettings$4</ID>
-    <ID>MagicNumber:AccountSetupCheckSettings.kt$AccountSetupCheckSettings$5</ID>
-    <ID>MagicNumber:AccountSetupCheckSettings.kt$AccountSetupCheckSettings$6</ID>
-    <ID>MagicNumber:AccountSetupCheckSettings.kt$AccountSetupCheckSettings$7</ID>
     <ID>MagicNumber:AutocryptSetupTransferLiveEvent.kt$AutocryptSetupTransferLiveEvent$2000</ID>
     <ID>MagicNumber:ContactLetterBitmapCreator.kt$ContactLetterBitmapCreator$0.65f</ID>
     <ID>MagicNumber:ContactLetterBitmapCreator.kt$ContactLetterBitmapCreator$255</ID>
@@ -62,7 +43,6 @@
     <ID>MagicNumber:K9Drawer.kt$K9Drawer$0x22000000</ID>
     <ID>MagicNumber:K9Drawer.kt$K9Drawer$0xffffff</ID>
     <ID>MagicNumber:MessageContainerView.kt$MessageContainerView$29</ID>
-    <ID>MagicNumber:MessageContainerView.kt$MessageContainerView$3</ID>
     <ID>MagicNumber:MessageListItemAnimator.kt$MessageListItemAnimator$120</ID>
     <ID>MagicNumber:MessageListItemMapper.kt$MessageListItemMapper$52</ID>
     <ID>MagicNumber:RecipientLayoutCreator.kt$RecipientLayoutCreator$10</ID>
@@ -70,8 +50,6 @@
     <ID>MagicNumber:RecipientMvpView.kt$RecipientMvpView$15</ID>
     <ID>MagicNumber:RecipientNamesView.kt$RecipientNamesView$8</ID>
     <ID>MagicNumber:ReplyToView.kt$ReplyToView$15</ID>
-    <ID>MagicNumber:SettingsImportListItems.kt$ImportListItem$3</ID>
-    <ID>MagicNumber:SettingsImportListItems.kt$ImportListItem$4</ID>
     <ID>MagicNumber:SettingsViewModel.kt$SettingsViewModel$500</ID>
     <ID>MagicNumber:SimpleHighlightView.kt$SimpleHighlightView$0xFFFFFF</ID>
     <ID>MagicNumber:SimpleHighlightView.kt$SimpleHighlightView$100</ID>
@@ -86,7 +64,6 @@
     <ID>NestedBlockDepth:MessageList.kt$MessageList$override fun onBackPressed()</ID>
     <ID>NestedBlockDepth:MessageList.kt$MessageList$override fun onOptionsItemSelected(item: MenuItem): Boolean</ID>
     <ID>NestedBlockDepth:MessageList.kt$MessageList$private fun decodeExtrasToLaunchData(intent: Intent): LaunchData</ID>
-    <ID>ReturnCount:AccountSetupCheckSettings.kt$AccountSetupCheckSettings.CheckAccountTask$private fun isCanceled(): Boolean</ID>
     <ID>ReturnCount:ChooseFolderActivity.kt$ChooseFolderActivity$private fun decodeArguments(savedInstanceState: Bundle?): Boolean</ID>
     <ID>ReturnCount:EditIdentity.kt$EditIdentity$override fun onOptionsItemSelected(item: MenuItem): Boolean</ID>
     <ID>ReturnCount:MessageList.kt$MessageList$private fun decodeExtrasToLaunchData(intent: Intent): LaunchData</ID>
@@ -127,7 +104,6 @@
     <ID>SpreadOperator:RecipientPresenter.kt$RecipientPresenter.&lt;no name provided&gt;$(recipientType, *recipientArray)</ID>
     <ID>SpreadOperator:ReplyToView.kt$ReplyToView$(*recipients)</ID>
     <ID>SwallowedException:AboutFragment.kt$e: ActivityNotFoundException</ID>
-    <ID>SwallowedException:AuthViewModel.kt$AuthViewModel$e: ActivityNotFoundException</ID>
     <ID>SwallowedException:ContactPictureLoader.kt$ContactPictureLoader$e: Exception</ID>
     <ID>SwallowedException:MessageContainerView.kt$MessageContainerView$e: ActivityNotFoundException</ID>
     <ID>SwallowedException:MessageDetailsViewModel.kt$MessageDetailsViewModel$e: Exception</ID>
@@ -139,9 +115,6 @@
     <ID>SwallowedException:PushInfoFragment.kt$PushInfoFragment$e: ActivityNotFoundException</ID>
     <ID>SwallowedException:SettingsListFragment.kt$SettingsListFragment$e: ActivityNotFoundException</ID>
     <ID>TooGenericExceptionCaught:AccountRemover.kt$AccountRemover$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:AccountSetupCheckSettings.kt$AccountSetupCheckSettings$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:AccountSetupCheckSettings.kt$AccountSetupCheckSettings.CheckAccountTask$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:AuthViewModel.kt$AuthViewModel$e: Exception</ID>
     <ID>TooGenericExceptionCaught:AutocryptSetupTransferLiveEvent.kt$AutocryptSetupTransferLiveEvent$e: Exception</ID>
     <ID>TooGenericExceptionCaught:ContactPhotoLoader.kt$ContactPhotoLoader$e: Exception</ID>
     <ID>TooGenericExceptionCaught:ContactPictureLoader.kt$ContactPictureLoader$e: Exception</ID>
@@ -150,16 +123,12 @@
     <ID>TooGenericExceptionCaught:MessageListFragment.kt$MessageListFragment$e: Exception</ID>
     <ID>TooGenericExceptionCaught:MessageListLoader.kt$MessageListLoader$e: Exception</ID>
     <ID>TooGenericExceptionCaught:SettingsExportViewModel.kt$SettingsExportViewModel$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:SettingsImportViewModel.kt$SettingsImportViewModel$e: Exception</ID>
     <ID>TooGenericExceptionThrown:AccountSettingsActivity.kt$AccountSettingsActivity$throw RuntimeException("getSupportActionBar() == null")</ID>
-    <ID>TooGenericExceptionThrown:AccountSetupCheckSettings.kt$AccountSetupCheckSettings$throw RuntimeException("Called showDialog(int) with unknown dialog id.")</ID>
     <ID>TooGenericExceptionThrown:GeneralSettingsActivity.kt$GeneralSettingsActivity$throw RuntimeException("getSupportActionBar() == null")</ID>
     <ID>TooGenericExceptionThrown:MessageListFragment.kt$MessageListFragment$throw RuntimeException("Called showDialog(int) with unknown dialog id.")</ID>
     <ID>TooGenericExceptionThrown:MessageViewFragment.kt$MessageViewFragment$throw RuntimeException("Called showDialog(int) with unknown dialog id.")</ID>
     <ID>TooManyFunctions:AccountSettingsDataStore.kt$AccountSettingsDataStore : PreferenceDataStore</ID>
     <ID>TooManyFunctions:AccountSettingsFragment.kt$AccountSettingsFragment : PreferenceFragmentCompatConfirmationDialogFragmentListener</ID>
-    <ID>TooManyFunctions:AccountSetupCheckSettings.kt$AccountSetupCheckSettings : K9ActivityConfirmationDialogFragmentListener</ID>
-    <ID>TooManyFunctions:AuthViewModel.kt$AuthViewModel : AndroidViewModel</ID>
     <ID>TooManyFunctions:AutocryptKeyTransferActivity.kt$AutocryptKeyTransferActivity : K9Activity</ID>
     <ID>TooManyFunctions:ChooseFolderActivity.kt$ChooseFolderActivity : K9Activity</ID>
     <ID>TooManyFunctions:FolderSettingsFragment.kt$FolderSettingsFragment : PreferenceFragmentCompatConfirmationDialogFragmentListener</ID>
@@ -182,9 +151,6 @@
     <ID>TooManyFunctions:RecipientPresenter.kt$RecipientPresenter</ID>
     <ID>TooManyFunctions:ReplyToView.kt$ReplyToView</ID>
     <ID>TooManyFunctions:SettingsExportViewModel.kt$SettingsExportViewModel : ViewModel</ID>
-    <ID>TooManyFunctions:SettingsImportFragment.kt$SettingsImportFragment : Fragment</ID>
-    <ID>TooManyFunctions:SettingsImportUiModel.kt$SettingsImportUiModel</ID>
-    <ID>TooManyFunctions:SettingsImportViewModel.kt$SettingsImportViewModel : ViewModel</ID>
     <ID>TooManyFunctions:SettingsListFragment.kt$SettingsListFragment : FragmentItemTouchCallback</ID>
     <ID>TooManyFunctions:SimpleHighlightView.kt$SimpleHighlightView : FrameLayout</ID>
     <ID>TooManyFunctions:VibrationDialogFragment.kt$VibrationDialogFragment$VibrationPatternAdapter : BaseAdapter</ID>

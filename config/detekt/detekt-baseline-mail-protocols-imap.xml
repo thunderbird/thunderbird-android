@@ -8,8 +8,6 @@
     <ID>CyclomaticComplexMethod:RealImapFolder.kt$RealImapFolder$@Throws(MessagingException::class) private fun handleFetchResponse(message: ImapMessage, fetchList: ImapList): Any?</ID>
     <ID>CyclomaticComplexMethod:RealImapFolder.kt$RealImapFolder$@Throws(MessagingException::class) private fun parseBodyStructure(bs: ImapList, part: Part, id: String)</ID>
     <ID>CyclomaticComplexMethod:RealImapStore.kt$RealImapStore$@Throws(IOException::class, MessagingException::class) private fun listFolders(connection: ImapConnection, subscribedOnly: Boolean): List&lt;FolderListItem&gt;</ID>
-    <ID>ForbiddenComment:RealImapConnectionTest.kt$RealImapConnectionTest$// FIXME: CertificateValidationException seems wrong</ID>
-    <ID>ForbiddenComment:RealImapConnectionTest.kt$RealImapConnectionTest$// FIXME: improve exception message</ID>
     <ID>ImplicitDefaultLocale:RealImapFolder.kt$RealImapFolder$String.format( "%s 1:* %sFLAGS.SILENT (%s)", Commands.UID_STORE, if (value) "+" else "-", combinedFlags, )</ID>
     <ID>ImplicitDefaultLocale:RealImapFolder.kt$RealImapFolder$String.format("%s %s", openCommand, escapedFolderName)</ID>
     <ID>ImplicitDefaultLocale:RealImapFolder.kt$RealImapFolder$String.format("%sFLAGS.SILENT (%s)", if (value) "+" else "-", combinedFlags)</ID>
@@ -49,7 +47,6 @@
     <ID>ReturnCount:RealImapFolderIdler.kt$RealImapFolderIdler$private fun ImapFolder.idle(): IdleResult</ID>
     <ID>ReturnCount:RealImapStore.kt$RealImapStore$private fun removePrefixFromFolderName(folderName: String): String?</ID>
     <ID>ReturnCount:UidValidityResponse.kt$UidValidityResponse.Companion$@JvmStatic fun parse(response: ImapResponse): UidValidityResponse?</ID>
-    <ID>SwallowedException:RealImapConnection.kt$RealImapConnection$e: NegativeImapResponseException</ID>
     <ID>SwallowedException:RealImapFolder.kt$RealImapFolder$e: NegativeImapResponseException</ID>
     <ID>SwallowedException:RealImapStore.kt$RealImapStore$e: CharacterCodingException</ID>
     <ID>SwallowedException:RealImapStore.kt$RealImapStore$ioe: IOException</ID>
