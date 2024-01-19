@@ -1,197 +1,109 @@
-package com.fsck.k9;
+package com.fsck.k9
 
-import android.util.TypedValue;
-import android.widget.TextView;
-
-import com.fsck.k9.preferences.Storage;
-import com.fsck.k9.preferences.StorageEditor;
-
+import android.util.TypedValue
+import android.widget.TextView
+import com.fsck.k9.preferences.Storage
+import com.fsck.k9.preferences.StorageEditor
 
 /**
  * Manage font size of the information displayed in the message list and in the message view.
  */
-public class FontSizes {
-    private static final String MESSAGE_LIST_SUBJECT = "fontSizeMessageListSubject";
-    private static final String MESSAGE_LIST_SENDER = "fontSizeMessageListSender";
-    private static final String MESSAGE_LIST_DATE = "fontSizeMessageListDate";
-    private static final String MESSAGE_LIST_PREVIEW = "fontSizeMessageListPreview";
-    private static final String MESSAGE_VIEW_ACCOUNT_NAME = "fontSizeMessageViewAccountName";
-    private static final String MESSAGE_VIEW_SENDER = "fontSizeMessageViewSender";
-    private static final String MESSAGE_VIEW_RECIPIENTS = "fontSizeMessageViewTo";
-    private static final String MESSAGE_VIEW_SUBJECT = "fontSizeMessageViewSubject";
-    private static final String MESSAGE_VIEW_DATE = "fontSizeMessageViewDate";
-    private static final String MESSAGE_VIEW_CONTENT_PERCENT = "fontSizeMessageViewContentPercent";
-    private static final String MESSAGE_COMPOSE_INPUT = "fontSizeMessageComposeInput";
+class FontSizes {
+    var messageListSubject: Int
+    var messageListSender: Int
+    var messageListDate: Int
+    var messageListPreview: Int
+    var messageViewAccountName: Int
+    var messageViewSender: Int
+    var messageViewRecipients: Int
+    var messageViewSubject: Int
+    var messageViewDate: Int
+    var messageViewContentAsPercent: Int
+    var messageComposeInput: Int
 
-    public static final int FONT_DEFAULT = -1;   // Don't force-reset the size of this setting
-    public static final int FONT_10SP = 10;
-    public static final int FONT_12SP = 12;
-    public static final int SMALL = 14;         // ?android:attr/textAppearanceSmall
-    public static final int FONT_16SP = 16;
-    public static final int MEDIUM = 18;        // ?android:attr/textAppearanceMedium
-    public static final int FONT_20SP = 20;
-    public static final int LARGE = 22;         // ?android:attr/textAppearanceLarge
-
-
-    private int messageListSubject;
-    private int messageListSender;
-    private int messageListDate;
-    private int messageListPreview;
-    private int messageViewAccountName;
-    private int messageViewSender;
-    private int messageViewRecipients;
-    private int messageViewSubject;
-    private int messageViewDate;
-    private int messageViewContentPercent;
-    private int messageComposeInput;
-
-
-    public FontSizes() {
-        messageListSubject = FONT_DEFAULT;
-        messageListSender = FONT_DEFAULT;
-        messageListDate = FONT_DEFAULT;
-        messageListPreview = FONT_DEFAULT;
-
-        messageViewAccountName = FONT_DEFAULT;
-        messageViewSender = FONT_DEFAULT;
-        messageViewRecipients = FONT_DEFAULT;
-        messageViewSubject = FONT_DEFAULT;
-        messageViewDate = FONT_DEFAULT;
-        messageViewContentPercent = 100;
-
-        messageComposeInput = MEDIUM;
+    init {
+        messageListSubject = FONT_DEFAULT
+        messageListSender = FONT_DEFAULT
+        messageListDate = FONT_DEFAULT
+        messageListPreview = FONT_DEFAULT
+        messageViewAccountName = FONT_DEFAULT
+        messageViewSender = FONT_DEFAULT
+        messageViewRecipients = FONT_DEFAULT
+        messageViewSubject = FONT_DEFAULT
+        messageViewDate = FONT_DEFAULT
+        messageComposeInput = MEDIUM
+        messageViewContentAsPercent = DEFAULT_CONTENT_SIZE_IN_PERCENT
     }
 
-    public void save(StorageEditor editor) {
-        editor.putInt(MESSAGE_LIST_SUBJECT, messageListSubject);
-        editor.putInt(MESSAGE_LIST_SENDER, messageListSender);
-        editor.putInt(MESSAGE_LIST_DATE, messageListDate);
-        editor.putInt(MESSAGE_LIST_PREVIEW, messageListPreview);
+    fun save(editor: StorageEditor) {
+        with(editor) {
+            putInt(MESSAGE_LIST_SUBJECT, messageListSubject)
+            putInt(MESSAGE_LIST_SENDER, messageListSender)
+            putInt(MESSAGE_LIST_DATE, messageListDate)
+            putInt(MESSAGE_LIST_PREVIEW, messageListPreview)
 
-        editor.putInt(MESSAGE_VIEW_ACCOUNT_NAME, messageViewAccountName);
-        editor.putInt(MESSAGE_VIEW_SENDER, messageViewSender);
-        editor.putInt(MESSAGE_VIEW_RECIPIENTS, messageViewRecipients);
-        editor.putInt(MESSAGE_VIEW_SUBJECT, messageViewSubject);
-        editor.putInt(MESSAGE_VIEW_DATE, messageViewDate);
-        editor.putInt(MESSAGE_VIEW_CONTENT_PERCENT, getMessageViewContentAsPercent());
+            putInt(MESSAGE_VIEW_ACCOUNT_NAME, messageViewAccountName)
+            putInt(MESSAGE_VIEW_SENDER, messageViewSender)
+            putInt(MESSAGE_VIEW_RECIPIENTS, messageViewRecipients)
+            putInt(MESSAGE_VIEW_SUBJECT, messageViewSubject)
+            putInt(MESSAGE_VIEW_DATE, messageViewDate)
+            putInt(MESSAGE_VIEW_CONTENT_PERCENT, messageViewContentAsPercent)
 
-        editor.putInt(MESSAGE_COMPOSE_INPUT, messageComposeInput);
+            putInt(MESSAGE_COMPOSE_INPUT, messageComposeInput)
+        }
     }
 
-    public void load(Storage storage) {
-        messageListSubject = storage.getInt(MESSAGE_LIST_SUBJECT, messageListSubject);
-        messageListSender = storage.getInt(MESSAGE_LIST_SENDER, messageListSender);
-        messageListDate = storage.getInt(MESSAGE_LIST_DATE, messageListDate);
-        messageListPreview = storage.getInt(MESSAGE_LIST_PREVIEW, messageListPreview);
+    fun load(storage: Storage) {
+        messageListSubject = storage.getInt(MESSAGE_LIST_SUBJECT, messageListSubject)
+        messageListSender = storage.getInt(MESSAGE_LIST_SENDER, messageListSender)
+        messageListDate = storage.getInt(MESSAGE_LIST_DATE, messageListDate)
+        messageListPreview = storage.getInt(MESSAGE_LIST_PREVIEW, messageListPreview)
 
-        messageViewAccountName = storage.getInt(MESSAGE_VIEW_ACCOUNT_NAME, messageViewAccountName);
-        messageViewSender = storage.getInt(MESSAGE_VIEW_SENDER, messageViewSender);
-        messageViewRecipients = storage.getInt(MESSAGE_VIEW_RECIPIENTS, messageViewRecipients);
-        messageViewSubject = storage.getInt(MESSAGE_VIEW_SUBJECT, messageViewSubject);
-        messageViewDate = storage.getInt(MESSAGE_VIEW_DATE, messageViewDate);
+        messageViewAccountName = storage.getInt(MESSAGE_VIEW_ACCOUNT_NAME, messageViewAccountName)
+        messageViewSender = storage.getInt(MESSAGE_VIEW_SENDER, messageViewSender)
+        messageViewRecipients = storage.getInt(MESSAGE_VIEW_RECIPIENTS, messageViewRecipients)
+        messageViewSubject = storage.getInt(MESSAGE_VIEW_SUBJECT, messageViewSubject)
+        messageViewDate = storage.getInt(MESSAGE_VIEW_DATE, messageViewDate)
 
-        loadMessageViewContentPercent(storage);
+        loadMessageViewContentPercent(storage)
 
-        messageComposeInput = storage.getInt(MESSAGE_COMPOSE_INPUT, messageComposeInput);
+        messageComposeInput = storage.getInt(MESSAGE_COMPOSE_INPUT, messageComposeInput)
     }
 
-    private void loadMessageViewContentPercent(Storage storage) {
-        setMessageViewContentAsPercent(storage.getInt(MESSAGE_VIEW_CONTENT_PERCENT, 100));
-    }
-
-    public int getMessageListSubject() {
-        return messageListSubject;
-    }
-
-    public void setMessageListSubject(int messageListSubject) {
-        this.messageListSubject = messageListSubject;
-    }
-
-    public int getMessageListSender() {
-        return messageListSender;
-    }
-
-    public void setMessageListSender(int messageListSender) {
-        this.messageListSender = messageListSender;
-    }
-
-    public int getMessageListDate() {
-        return messageListDate;
-    }
-
-    public void setMessageListDate(int messageListDate) {
-        this.messageListDate = messageListDate;
-    }
-
-    public int getMessageListPreview() {
-        return messageListPreview;
-    }
-
-    public void setMessageListPreview(int messageListPreview) {
-        this.messageListPreview = messageListPreview;
-    }
-
-    public int getMessageViewAccountName() {
-        return messageViewAccountName;
-    }
-
-    public void setMessageViewAccountName(int messageViewAccountName) {
-        this.messageViewAccountName = messageViewAccountName;
-    }
-
-    public int getMessageViewSender() {
-        return messageViewSender;
-    }
-
-    public void setMessageViewSender(int messageViewSender) {
-        this.messageViewSender = messageViewSender;
-    }
-
-    public int getMessageViewRecipients() {
-        return messageViewRecipients;
-    }
-
-    public void setMessageViewRecipients(int messageViewRecipients) {
-        this.messageViewRecipients = messageViewRecipients;
-    }
-
-    public int getMessageViewSubject() {
-        return messageViewSubject;
-    }
-
-    public void setMessageViewSubject(int messageViewSubject) {
-        this.messageViewSubject = messageViewSubject;
-    }
-
-    public int getMessageViewDate() {
-        return messageViewDate;
-    }
-
-    public void setMessageViewDate(int messageViewDate) {
-        this.messageViewDate = messageViewDate;
-    }
-
-    public int getMessageViewContentAsPercent() {
-        return messageViewContentPercent;
-    }
-
-    public void setMessageViewContentAsPercent(int size) {
-        messageViewContentPercent = size;
-    }
-
-    public int getMessageComposeInput() {
-        return messageComposeInput;
-    }
-
-    public void setMessageComposeInput(int messageComposeInput) {
-        this.messageComposeInput = messageComposeInput;
+    private fun loadMessageViewContentPercent(storage: Storage) {
+        messageViewContentAsPercent = storage.getInt(MESSAGE_VIEW_CONTENT_PERCENT, DEFAULT_CONTENT_SIZE_IN_PERCENT)
     }
 
     // This, arguably, should live somewhere in a view class, but since we call it from activities, fragments
     // and views, where isn't exactly clear.
-    public void setViewTextSize(TextView v, int fontSize) {
+    fun setViewTextSize(view: TextView, fontSize: Int) {
         if (fontSize != FONT_DEFAULT) {
-            v.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+            view.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize.toFloat())
         }
+    }
+
+    companion object {
+        private const val MESSAGE_LIST_SUBJECT = "fontSizeMessageListSubject"
+        private const val MESSAGE_LIST_SENDER = "fontSizeMessageListSender"
+        private const val MESSAGE_LIST_DATE = "fontSizeMessageListDate"
+        private const val MESSAGE_LIST_PREVIEW = "fontSizeMessageListPreview"
+        private const val MESSAGE_VIEW_ACCOUNT_NAME = "fontSizeMessageViewAccountName"
+        private const val MESSAGE_VIEW_SENDER = "fontSizeMessageViewSender"
+        private const val MESSAGE_VIEW_RECIPIENTS = "fontSizeMessageViewTo"
+        private const val MESSAGE_VIEW_SUBJECT = "fontSizeMessageViewSubject"
+        private const val MESSAGE_VIEW_DATE = "fontSizeMessageViewDate"
+        private const val MESSAGE_VIEW_CONTENT_PERCENT = "fontSizeMessageViewContentPercent"
+        private const val MESSAGE_COMPOSE_INPUT = "fontSizeMessageComposeInput"
+
+        private const val DEFAULT_CONTENT_SIZE_IN_PERCENT = 100
+
+        const val FONT_DEFAULT = -1 // Don't force-reset the size of this setting
+        const val FONT_10SP = 10
+        const val FONT_12SP = 12
+        const val SMALL = 14 // ?android:attr/textAppearanceSmall
+        const val FONT_16SP = 16
+        const val MEDIUM = 18 // ?android:attr/textAppearanceMedium
+        const val FONT_20SP = 20
+        const val LARGE = 22 // ?android:attr/textAppearanceLarge
     }
 }
