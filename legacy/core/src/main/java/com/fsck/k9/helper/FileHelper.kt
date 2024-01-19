@@ -1,147 +1,144 @@
-package com.fsck.k9.helper;
+package com.fsck.k9.helper
 
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.IOException
+import org.apache.commons.io.IOUtils
+import timber.log.Timber
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import timber.log.Timber;
-
-import org.apache.commons.io.IOUtils;
-
-
-public class FileHelper {
-    public static void touchFile(final File parentDir, final String name) {
-        final File file = new File(parentDir, name);
+object FileHelper {
+    @JvmStatic
+    fun touchFile(parentDir: File?, name: String?) {
+        val file = File(parentDir, name)
         try {
             if (!file.exists()) {
                 if (!file.createNewFile()) {
-                    Timber.d("Unable to create file: %s", file.getAbsolutePath());
+                    Timber.d("Unable to create file: %s", file.absolutePath)
                 }
             } else {
                 if (!file.setLastModified(System.currentTimeMillis())) {
-                    Timber.d("Unable to change last modification date: %s", file.getAbsolutePath());
+                    Timber.d("Unable to change last modification date: %s", file.absolutePath)
                 }
             }
-        } catch (Exception e) {
-            Timber.d(e, "Unable to touch file: %s", file.getAbsolutePath());
+        } catch (e: Exception) {
+            Timber.d(e, "Unable to touch file: %s", file.absolutePath)
         }
     }
 
-    private static void copyFile(File from, File to) throws IOException {
-        FileInputStream in = new FileInputStream(from);
-        FileOutputStream out = new FileOutputStream(to);
+    @Throws(IOException::class)
+    private fun copyFile(from: File, to: File) {
+        val `in` = FileInputStream(from)
+        val out = FileOutputStream(to)
         try {
-            byte[] buffer = new byte[1024];
-            int count;
-            while ((count = in.read(buffer)) > 0) {
-                out.write(buffer, 0, count);
+            val buffer = ByteArray(1024)
+            var count: Int
+            while (`in`.read(buffer).also { count = it } > 0) {
+                out.write(buffer, 0, count)
             }
-            out.close();
+            out.close()
         } finally {
-            IOUtils.closeQuietly(in);
-            IOUtils.closeQuietly(out);
+            IOUtils.closeQuietly(`in`)
+            IOUtils.closeQuietly(out)
         }
     }
 
-    public static void renameOrMoveByCopying(File from, File to) throws IOException {
-        deleteFileIfExists(to);
-
-        boolean renameFailed = !from.renameTo(to);
+    @JvmStatic
+    @Throws(IOException::class)
+    fun renameOrMoveByCopying(from: File, to: File) {
+        deleteFileIfExists(to)
+        val renameFailed = !from.renameTo(to)
         if (renameFailed) {
-            copyFile(from, to);
-
-            boolean deleteFromFailed = !from.delete();
+            copyFile(from, to)
+            val deleteFromFailed = !from.delete()
             if (deleteFromFailed) {
-                Timber.e("Unable to delete source file after copying to destination!");
+                Timber.e("Unable to delete source file after copying to destination!")
             }
         }
     }
 
-    private static void deleteFileIfExists(File to) throws IOException {
-        boolean fileDoesNotExist = !to.exists();
+    @Throws(IOException::class)
+    private fun deleteFileIfExists(to: File) {
+        val fileDoesNotExist = !to.exists()
         if (fileDoesNotExist) {
-            return;
+            return
         }
-
-        boolean deleteOk = to.delete();
+        val deleteOk = to.delete()
         if (deleteOk) {
-            return;
+            return
         }
-
-        throw new IOException("Unable to delete file: " + to.getAbsolutePath());
+        throw IOException("Unable to delete file: " + to.absolutePath)
     }
 
-    public static boolean move(final File from, final File to) {
+    fun move(from: File, to: File): Boolean {
         if (to.exists()) {
             if (!to.delete()) {
-                Timber.d("Unable to delete file: %s", to.getAbsolutePath());
+                Timber.d("Unable to delete file: %s", to.absolutePath)
             }
         }
-
         if (!to.getParentFile().mkdirs()) {
-            Timber.d("Unable to make directories: %s", to.getParentFile().getAbsolutePath());
+            Timber.d("Unable to make directories: %s", to.getParentFile().absolutePath)
         }
-
-        try {
-            copyFile(from, to);
-
-            boolean deleteFromFailed = !from.delete();
+        return try {
+            copyFile(from, to)
+            val deleteFromFailed = !from.delete()
             if (deleteFromFailed) {
-                Timber.e("Unable to delete source file after copying to destination!");
+                Timber.e("Unable to delete source file after copying to destination!")
             }
-            return true;
-        } catch (Exception e) {
-            Timber.w(e, "cannot move %s to %s", from.getAbsolutePath(), to.getAbsolutePath());
-            return false;
+            true
+        } catch (e: Exception) {
+            Timber.w(e, "cannot move %s to %s", from.absolutePath, to.absolutePath)
+            false
         }
     }
 
-    public static void moveRecursive(final File fromDir, final File toDir) {
+    @JvmStatic
+    fun moveRecursive(fromDir: File, toDir: File) {
         if (!fromDir.exists()) {
-            return;
+            return
         }
         if (!fromDir.isDirectory()) {
             if (toDir.exists()) {
                 if (!toDir.delete()) {
-                    Timber.w("cannot delete already existing file/directory %s", toDir.getAbsolutePath());
+                    Timber.w("cannot delete already existing file/directory %s", toDir.absolutePath)
                 }
             }
             if (!fromDir.renameTo(toDir)) {
-                Timber.w("cannot rename %s to %s - moving instead", fromDir.getAbsolutePath(), toDir.getAbsolutePath());
-                move(fromDir, toDir);
+                Timber.w("cannot rename %s to %s - moving instead", fromDir.absolutePath, toDir.absolutePath)
+                move(fromDir, toDir)
             }
-            return;
+            return
         }
         if (!toDir.exists() || !toDir.isDirectory()) {
             if (toDir.exists()) {
                 if (!toDir.delete()) {
-                    Timber.d("Unable to delete file: %s", toDir.getAbsolutePath());
+                    Timber.d("Unable to delete file: %s", toDir.absolutePath)
                 }
             }
             if (!toDir.mkdirs()) {
-                Timber.w("cannot create directory %s", toDir.getAbsolutePath());
+                Timber.w("cannot create directory %s", toDir.absolutePath)
             }
         }
-        File[] files = fromDir.listFiles();
-        for (File file : files) {
+        val files = fromDir.listFiles()
+        for (file in files) {
             if (file.isDirectory()) {
-                moveRecursive(file, new File(toDir, file.getName()));
+                moveRecursive(file, File(toDir, file.getName()))
                 if (!file.delete()) {
-                    Timber.d("Unable to delete file: %s", toDir.getAbsolutePath());
+                    Timber.d("Unable to delete file: %s", toDir.absolutePath)
                 }
             } else {
-                File target = new File(toDir, file.getName());
+                val target = File(toDir, file.getName())
                 if (!file.renameTo(target)) {
-                    Timber.w("cannot rename %s to %s - moving instead",
-                            file.getAbsolutePath(), target.getAbsolutePath());
-                    move(file, target);
+                    Timber.w(
+                        "cannot rename %s to %s - moving instead",
+                        file.absolutePath, target.absolutePath,
+                    )
+                    move(file, target)
                 }
             }
         }
         if (!fromDir.delete()) {
-            Timber.w("cannot delete %s", fromDir.getAbsolutePath());
+            Timber.w("cannot delete %s", fromDir.absolutePath)
         }
     }
 }
