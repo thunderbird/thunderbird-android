@@ -38,9 +38,6 @@
     <string name="choose_account_title">Tagh cunntas</string>
     <string name="choose_folder_title">Tagh pasgan</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> air a thaghadh</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">Ceart ma-thà</string>
-    <string name="cancel_action">Sguir dheth</string>
     <string name="send_action">Cuir</string>
     <string name="empty_subject">Tha an cuspair falamh, thoir gnogag a-rithist airson a chur co-dhiù</string>
     <string name="reply_action">Freagair</string>

@@ -46,9 +46,6 @@
     <string name="choose_folder_move_title">نقل إلي</string>
     <string name="choose_folder_copy_title">نسخ إلي</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> محدد</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">حسنًا</string>
-    <string name="cancel_action">إلغ</string>
     <string name="send_action">أرسل</string>
     <string name="empty_subject">موضوع الرسالة فارغ، أنقر مرة أخرى لمواصلة الإرسال</string>
     <string name="reply_action">رُد</string>

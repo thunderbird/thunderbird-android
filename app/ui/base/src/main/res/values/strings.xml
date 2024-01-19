@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Used to confirm acceptance of dialog boxes, warnings, errors, etc. -->
+    <string name="okay_action">OK</string>
+    <!-- Text of the cancel button in dialogs -->
+    <string name="cancel_action">Cancel</string>
+</resources>

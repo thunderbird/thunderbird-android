@@ -43,9 +43,6 @@
     <string name="choose_folder_move_title">Movi al…</string>
     <string name="choose_folder_copy_title">Kopii al…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> elektitaj</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">Bone</string>
-    <string name="cancel_action">Nuligi</string>
     <string name="send_action">Sendi</string>
     <string name="empty_subject">Temo estas malplena, frapetu denove por sendi malgraŭ tio</string>
     <string name="reply_action">Respondi</string>

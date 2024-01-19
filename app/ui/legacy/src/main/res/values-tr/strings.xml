@@ -45,9 +45,6 @@
     <string name="choose_folder_move_title">Şuraya taşı…</string>
     <string name="choose_folder_copy_title">Şuraya kopyala…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seçildi</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">Tamam</string>
-    <string name="cancel_action">İptal</string>
     <string name="send_action">Gönder</string>
     <string name="empty_subject">Konu yok, bu şekilde göndermek için tıklayın</string>
     <string name="reply_action">Yanıtla</string>

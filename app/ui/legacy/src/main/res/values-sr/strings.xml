@@ -38,9 +38,6 @@
     <string name="choose_account_title">Избор налога</string>
     <string name="choose_folder_title">Избор фасцикле</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> изабрано</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">У реду</string>
-    <string name="cancel_action">Одустани</string>
     <string name="send_action">Пошаљи</string>
     <string name="empty_subject">Тема је празна. Тапните да ипак пошаљете</string>
     <string name="reply_action">Одговори</string>

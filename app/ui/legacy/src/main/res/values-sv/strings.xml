@@ -46,9 +46,6 @@
     <string name="choose_folder_move_title">Flytta till…</string>
     <string name="choose_folder_copy_title">Kopiera till…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valda</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">OK</string>
-    <string name="cancel_action">Avbryt</string>
     <string name="send_action">Skicka</string>
     <string name="empty_subject">Ämnet är tomt, klicka igen för att skicka ändå</string>
     <string name="reply_action">Svara</string>

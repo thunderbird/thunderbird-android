@@ -46,9 +46,6 @@
     <string name="choose_folder_move_title">Посунути до…</string>
     <string name="choose_folder_copy_title">Копіювати до…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> вибрано</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">Гаразд</string>
-    <string name="cancel_action">Скасувати</string>
     <string name="send_action">Надіслати</string>
     <string name="empty_subject">Не зазначено тему; натисніть знову, щоб відправити лист без теми</string>
     <string name="reply_action">Відповісти</string>

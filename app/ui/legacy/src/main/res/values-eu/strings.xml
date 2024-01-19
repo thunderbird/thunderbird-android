@@ -46,9 +46,6 @@
     <string name="choose_folder_move_title">Mugitu hona…</string>
     <string name="choose_folder_copy_title">Kopiatu hona…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> hautatuta</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">Ados</string>
-    <string name="cancel_action">Utzi</string>
     <string name="send_action">Bidali</string>
     <string name="empty_subject">Gaia hutsik dago, hala ere bidaltzeko klikatu berriro</string>
     <string name="reply_action">Erantzun</string>

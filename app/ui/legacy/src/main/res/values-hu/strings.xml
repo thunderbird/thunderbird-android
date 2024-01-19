@@ -46,9 +46,6 @@
     <string name="choose_folder_move_title">Áthelyezés…</string>
     <string name="choose_folder_copy_title">Másolás…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> kiválasztva</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">OK</string>
-    <string name="cancel_action">Mégse</string>
     <string name="send_action">Küldés</string>
     <string name="empty_subject">A tárgy üres, kattintson újra, ha mindenképp elküldi</string>
     <string name="reply_action">Válasz</string>

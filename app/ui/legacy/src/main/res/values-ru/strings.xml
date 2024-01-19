@@ -46,9 +46,6 @@
     <string name="choose_folder_move_title">Переместить в…</string>
     <string name="choose_folder_copy_title">Копировать в…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> выбрано</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">ОК</string>
-    <string name="cancel_action">Отмена</string>
     <string name="send_action">Отправить</string>
     <string name="empty_subject">Тема не заполнена, нажмите ещё раз для отправки без темы</string>
     <string name="reply_action">Ответить</string>

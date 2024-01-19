@@ -46,9 +46,6 @@
     <string name="choose_folder_move_title">انتقال به…</string>
     <string name="choose_folder_copy_title">کپی به…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> انتخاب</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">خب</string>
-    <string name="cancel_action">لغو</string>
     <string name="send_action">ارسال</string>
     <string name="empty_subject">موضوع خالی است، دوباره بزنید می‌رود</string>
     <string name="reply_action">پاسخ</string>

@@ -45,9 +45,6 @@
     <string name="choose_folder_move_title">Symud i…</string>
     <string name="choose_folder_copy_title">Copïo i…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> wedi\'i dewis</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">Iawn</string>
-    <string name="cancel_action">Diddymu</string>
     <string name="send_action">Anfon</string>
     <string name="empty_subject">Does dim Pwnc. Clicia eto i\'w anfon beth bynnag.</string>
     <string name="reply_action">Ateb</string>

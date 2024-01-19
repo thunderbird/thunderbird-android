@@ -119,7 +119,6 @@
     <string name="folders_action">Manage folders</string>
     <string name="mark_as_unread_action">Mark unread</string>
     <string name="choose_folder_title">Choose Folder</string>
-    <string name="cancel_action">Cancel</string>
     <string name="compose_action">Compose</string>
     <string name="unflag_action">Remove star</string>
     <string name="refile_action">Refile…</string>
@@ -134,7 +133,6 @@
     <string name="compose_title_forward">Forward</string>
     <string name="font_size_settings_title">Font size</string>
     <string name="discard_action">Discard</string>
-    <string name="okay_action">OK</string>
     <string name="unsubscribe_action">Unsubscribe</string>
     <string name="changelog_show_recent_changes">Show recent changes when app was updated</string>
     <string name="about_fediverse_title">Fediverse</string>

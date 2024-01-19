@@ -25,9 +25,6 @@
     <string name="choose_account_title">Vel konto</string>
     <string name="choose_folder_title">Vel mappe</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> vald(e)</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">Greitt</string>
-    <string name="cancel_action">Avbryt</string>
     <string name="send_action">Send</string>
     <string name="empty_subject">Emnet er tomt, trykk ein gong til for å senda likevel</string>
     <string name="reply_action">Svar</string>

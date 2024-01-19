@@ -46,9 +46,6 @@
     <string name="choose_folder_move_title">Μετακίνηση σε…</string>
     <string name="choose_folder_copy_title">Αντιγραφή σε…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> επιλέχθηκαν</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">OK</string>
-    <string name="cancel_action">Ακύρωση</string>
     <string name="send_action">Αποστολή</string>
     <string name="empty_subject">Το θέμα είναι κενό, πατήστε επανάληψη για αποστολή</string>
     <string name="reply_action">Απάντηση</string>

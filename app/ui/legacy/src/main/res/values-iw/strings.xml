@@ -37,9 +37,6 @@
     <string name="choose_folder_move_title">העבר אל…</string>
     <string name="choose_folder_copy_title">העתק אל…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> נבחרו</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">אישור</string>
-    <string name="cancel_action">ביטול</string>
     <string name="send_action">שלח</string>
     <string name="empty_subject">הנושא ריק, הקש שוב כדי לשלוח בכל זאת.</string>
     <string name="reply_action">השב</string>

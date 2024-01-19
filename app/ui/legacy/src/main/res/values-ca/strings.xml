@@ -47,9 +47,6 @@
     <string name="choose_folder_move_title">Mou a…</string>
     <string name="choose_folder_copy_title">Copia a…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seleccionats</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">D\'acord</string>
-    <string name="cancel_action">Cancel·la</string>
     <string name="send_action">Envia</string>
     <string name="empty_subject">L\'assumpte és buit, feu clic un altre cop per enviar-lo així</string>
     <string name="reply_action">Respon</string>

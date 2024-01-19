@@ -46,9 +46,6 @@
     <string name="choose_folder_move_title">Flyt til…</string>
     <string name="choose_folder_copy_title">Kopier til…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valgt</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">O.k.</string>
-    <string name="cancel_action">Annullér</string>
     <string name="send_action">Send</string>
     <string name="empty_subject">Emnefeltet er tomt; klik igen for at sende alligevel</string>
     <string name="reply_action">Svar</string>

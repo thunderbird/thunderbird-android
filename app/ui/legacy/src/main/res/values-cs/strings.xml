@@ -46,9 +46,6 @@
     <string name="choose_folder_move_title">Přesunout do…</string>
     <string name="choose_folder_copy_title">Zkopírovat do…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> vybraných</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">OK</string>
-    <string name="cancel_action">Zrušit</string>
     <string name="send_action">Odeslat</string>
     <string name="empty_subject">Předmět není vyplněn, pro odeslání klepněte znovu</string>
     <string name="reply_action">Odpovědět</string>

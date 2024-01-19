@@ -21,6 +21,7 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.fsck.k9.ui.base.R as BaseR
 
 class SettingsImportFragment : Fragment() {
     private val viewModel: SettingsImportViewModel by viewModel()
@@ -83,7 +84,7 @@ class SettingsImportFragment : Fragment() {
 
         closeButton.isGone = model.closeButton == ButtonState.GONE
         when (model.closeButtonLabel) {
-            CloseButtonLabel.OK -> closeButton.setText(R.string.okay_action)
+            CloseButtonLabel.OK -> closeButton.setText(BaseR.string.okay_action)
             CloseButtonLabel.LATER -> closeButton.setText(R.string.settings_import_later_button)
         }
 

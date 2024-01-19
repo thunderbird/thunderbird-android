@@ -46,9 +46,6 @@
     <string name="choose_folder_move_title">Перамясціць у…</string>
     <string name="choose_folder_copy_title">Скапіяваць у…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> абрана</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">Добра</string>
-    <string name="cancel_action">Скасаваць</string>
     <string name="send_action">Адправіць</string>
     <string name="empty_subject">Тэма пустая. Пстрыкніце яшчэ раз, каб адправіць без яе</string>
     <string name="reply_action">Адказаць</string>

@@ -46,9 +46,6 @@
     <string name="choose_folder_move_title">Shpjereni te…</string>
     <string name="choose_folder_copy_title">Kopjojeni te…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> të përzgjedhur</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">OK</string>
-    <string name="cancel_action">Anuloje</string>
     <string name="send_action">Dërgoje</string>
     <string name="empty_subject">Subjekti është i zbrazët, riklikojeni që të dërgohet sido qoftë</string>
     <string name="reply_action">Përgjigjuni</string>

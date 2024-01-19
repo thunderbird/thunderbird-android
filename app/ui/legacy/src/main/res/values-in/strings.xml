@@ -41,9 +41,6 @@
     <string name="choose_account_title">Pilih akun</string>
     <string name="choose_folder_title">Pilih Folder</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> dipilih</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">OK</string>
-    <string name="cancel_action">Batal</string>
     <string name="send_action">Kirim</string>
     <string name="empty_subject">Subjek kosong, klik lagi untuk dikirim</string>
     <string name="reply_action">Balas</string>

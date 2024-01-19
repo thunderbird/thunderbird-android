@@ -43,9 +43,6 @@
     <string name="choose_folder_move_title">Bura Köçür…</string>
     <string name="choose_folder_copy_title">Bura Yapışdır…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seçildi</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">Oldu</string>
-    <string name="cancel_action">Ləğv et</string>
     <string name="send_action">Göndər</string>
     <string name="empty_subject">Mövzu boşdur, necəsə göndərmək üçün təkrar kliklə</string>
     <string name="reply_action">Cavab ver</string>

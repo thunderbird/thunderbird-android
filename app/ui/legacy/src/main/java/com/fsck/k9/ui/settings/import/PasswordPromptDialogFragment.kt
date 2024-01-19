@@ -15,6 +15,7 @@ import androidx.core.view.isGone
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.base.R as BaseR
 
 class PasswordPromptDialogFragment : DialogFragment() {
     private lateinit var accountUuid: String
@@ -47,8 +48,8 @@ class PasswordPromptDialogFragment : DialogFragment() {
 
         return AlertDialog.Builder(requireContext())
             .setView(dialogView)
-            .setPositiveButton(R.string.okay_action) { _, _ -> deliverPasswordPromptResult() }
-            .setNegativeButton(R.string.cancel_action, null)
+            .setPositiveButton(BaseR.string.okay_action) { _, _ -> deliverPasswordPromptResult() }
+            .setNegativeButton(BaseR.string.cancel_action, null)
             .create()
     }
 

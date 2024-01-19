@@ -43,9 +43,6 @@
     <string name="choose_folder_move_title">ഇതിലേക്ക് നീക്കുക…</string>
     <string name="choose_folder_copy_title">ഇതിലേക്ക് പകർത്തുക…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> തിരഞ്ഞെടുത്തു</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">ശരി</string>
-    <string name="cancel_action">റദ്ദാക്കുക</string>
     <string name="send_action">അയയ്ക്കുക</string>
     <string name="empty_subject">വിഷയം ശൂന്യമാണ്, ഏതുവിധേനയും അയയ്‌ക്കാൻ വീണ്ടും ക്ലിക്കുചെയ്യുക</string>
     <string name="reply_action">മറുപടി പറയുക</string>

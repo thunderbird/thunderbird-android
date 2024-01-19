@@ -30,9 +30,6 @@
     <string name="choose_account_title">Odaberite račun</string>
     <string name="choose_folder_title">Odaberite Mapu</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> odabrano</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">U REDU</string>
-    <string name="cancel_action">Otkaži</string>
     <string name="send_action">Pošalji</string>
     <string name="empty_subject">Subjekt je prazan, kliknite ponovno da svejedno pošaljete</string>
     <string name="reply_action">Odgovori</string>

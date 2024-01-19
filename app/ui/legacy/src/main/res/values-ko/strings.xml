@@ -44,9 +44,6 @@
     <string name="choose_folder_move_title">다음으로 이동</string>
     <string name="choose_folder_copy_title">다음으로 복사</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 선택</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">확인</string>
-    <string name="cancel_action">취소</string>
     <string name="send_action">전송</string>
     <string name="empty_subject">제목이 비어있지만, 재클릭시 전송</string>
     <string name="reply_action">회신</string>

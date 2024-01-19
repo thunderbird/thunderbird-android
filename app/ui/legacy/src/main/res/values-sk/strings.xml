@@ -38,9 +38,6 @@
     <string name="choose_account_title">Vyberte účet</string>
     <string name="choose_folder_title">Vyberte priečinok</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> vybraných</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">OK</string>
-    <string name="cancel_action">Zrušiť</string>
     <string name="send_action">Odoslať</string>
     <string name="empty_subject">Predmet správy je prázdny, kliknite ešte raz pre odoslanie s prázdnym predmetom.</string>
     <string name="reply_action">Odpovedať</string>

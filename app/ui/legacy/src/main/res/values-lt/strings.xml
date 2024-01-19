@@ -45,9 +45,6 @@
     <string name="choose_folder_move_title">Perkelti į…</string>
     <string name="choose_folder_copy_title">Kopijuoti į…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> pasirinkta</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">Gerai</string>
-    <string name="cancel_action">Atsisakyti</string>
     <string name="send_action">Siųsti</string>
     <string name="empty_subject">Tema yra tuščia, spustelėkite dar kartą, kad vis tiek išsiųstumėte</string>
     <string name="reply_action">Atsakyti</string>

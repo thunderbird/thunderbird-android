@@ -40,7 +40,6 @@
     <string name="mark_as_unread_action">नहीं पढ़ा मार्क करें</string>
     <string name="add_attachment_action">अटैचमेंट लगाएं</string>
     <string name="choose_folder_title">फोल्डर चुनें</string>
-    <string name="cancel_action">कैंसिल करें</string>
     <string name="compose_action">बनाएं</string>
     <string name="unflag_action">तारा हटाएं</string>
     <string name="refile_action">रिकॉर्ड करें…</string>
@@ -54,7 +53,6 @@
     <string name="status_invalid_id_error">मैसेज नहीं मिला</string>
     <string name="discard_action">फेंके</string>
     <string name="empty_trash_action">कचरा खाली करें</string>
-    <string name="okay_action">ठीक है</string>
     <string name="unsubscribe_action">अनसब्सक्राइब करें</string>
     <string name="changelog_show_recent_changes">ऐप अपडेट होने पे हाल के बदलाव दिखाएं</string>
     <string name="about_fediverse_title">फैडिवर्स</string>

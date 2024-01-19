@@ -46,9 +46,6 @@
     <string name="choose_folder_move_title">Verschieben nach…</string>
     <string name="choose_folder_copy_title">Kopieren nach…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> ausgewählt</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">OK</string>
-    <string name="cancel_action">Abbrechen</string>
     <string name="send_action">Senden</string>
     <string name="empty_subject">Betreff ist leer, bitte erneut drücken, um trotzdem zu senden</string>
     <string name="reply_action">Antworten</string>

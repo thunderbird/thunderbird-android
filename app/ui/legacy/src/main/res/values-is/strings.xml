@@ -46,9 +46,6 @@
     <string name="choose_folder_move_title">Færa í…</string>
     <string name="choose_folder_copy_title">Afrita í…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valið</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">Í lagi</string>
-    <string name="cancel_action">Hætta við</string>
     <string name="send_action">Senda</string>
     <string name="empty_subject">Viðfangsefni er autt, smelltu aftur til að senda samt</string>
     <string name="reply_action">Svara</string>

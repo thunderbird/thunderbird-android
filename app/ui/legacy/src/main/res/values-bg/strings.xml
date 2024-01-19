@@ -42,9 +42,6 @@
     <string name="choose_folder_move_title">Премести в…</string>
     <string name="choose_folder_copy_title">Копирай в…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> избрани</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">ОК</string>
-    <string name="cancel_action">Откажи</string>
     <string name="send_action">Изпрати</string>
     <string name="empty_subject">Полето Тема е празно, натиснете повторно ако искате да изпратите въпреки това</string>
     <string name="reply_action">Отговори</string>

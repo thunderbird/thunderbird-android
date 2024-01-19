@@ -237,7 +237,7 @@ public class OpenPgpAppSelectDialog extends K9Activity {
             builder.setView(LayoutInflater.from(getActivity()).inflate(
                     R.layout.dialog_openkeychain_info, null, false));
 
-            builder.setNegativeButton(R.string.cancel_action, new OnClickListener() {
+            builder.setNegativeButton(com.fsck.k9.ui.base.R.string.cancel_action, new OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     dismiss();

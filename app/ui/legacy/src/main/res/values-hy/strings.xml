@@ -24,9 +24,6 @@
     <string name="choose_account_title">Ընտրեք հաշիվ</string>
     <string name="choose_folder_title">Ընտրել պանակ</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> ընտրուած է</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">Լաւ</string>
-    <string name="cancel_action">Չեղարկել</string>
     <string name="send_action">Ուղարկել</string>
     <string name="empty_subject">Վերնագիրը նշուած չէ․ սեղմէք եւս մի անգամ ուղարկելու համար</string>
     <string name="reply_action">Պատասխանել</string>

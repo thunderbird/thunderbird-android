@@ -47,9 +47,6 @@
     <string name="choose_folder_move_title">…へ移動</string>
     <string name="choose_folder_copy_title">…へコピー</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 通を選択中</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">OK</string>
-    <string name="cancel_action">キャンセル</string>
     <string name="send_action">送信</string>
     <string name="empty_subject">件名が空です。もう一度クリックすると、そのまま送信します</string>
     <string name="reply_action">返信</string>

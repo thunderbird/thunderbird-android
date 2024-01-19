@@ -1155,7 +1155,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 return new AlertDialog.Builder(this)
                         .setTitle(R.string.confirm_discard_draft_message_title)
                         .setMessage(R.string.confirm_discard_draft_message)
-                        .setPositiveButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
+                        .setPositiveButton(com.fsck.k9.ui.base.R.string.cancel_action, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 dismissDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
