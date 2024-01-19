@@ -12,8 +12,8 @@ import com.fsck.k9.helper.SingleLiveEvent
 import com.fsck.k9.helper.measureRealtimeMillisWithResult
 import com.fsck.k9.preferences.SettingsImporter
 import com.fsck.k9.preferences.SettingsImporter.ImportResults
-import com.fsck.k9.ui.getEnum
-import com.fsck.k9.ui.putEnum
+import com.fsck.k9.ui.base.bundle.getEnum
+import com.fsck.k9.ui.base.bundle.putEnum
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay

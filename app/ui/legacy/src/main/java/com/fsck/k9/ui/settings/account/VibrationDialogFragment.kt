@@ -16,8 +16,8 @@ import androidx.preference.PreferenceDialogFragmentCompat
 import com.fsck.k9.NotificationVibration
 import com.fsck.k9.VibratePattern
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.getEnum
-import com.fsck.k9.ui.putEnum
+import com.fsck.k9.ui.base.bundle.getEnum
+import com.fsck.k9.ui.base.bundle.putEnum
 import org.koin.android.ext.android.inject
 
 class VibrationDialogFragment : PreferenceDialogFragmentCompat() {
