@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.RecyclerView
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import com.fsck.k9.Account
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.base.livedata.observeNotNull
 import com.fsck.k9.ui.helper.RecyclerViewBackgroundDrawable
-import com.fsck.k9.ui.observeNotNull
 import com.fsck.k9.ui.resolveColorAttribute
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity
 import com.fsck.k9.view.DraggableFrameLayout

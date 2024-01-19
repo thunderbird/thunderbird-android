@@ -1,4 +1,4 @@
-package com.fsck.k9.ui
+package com.fsck.k9.ui.base.livedata
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
