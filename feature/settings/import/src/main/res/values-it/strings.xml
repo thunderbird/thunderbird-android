@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_title">Importa impostazioni</string>
+    <string name="settings_import_pick_document_button">Seleziona file</string>
+    <string name="settings_import_button">Importa</string>
+    <string name="settings_import_success_generic">Impostazioni importate correttamente</string>
+    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+    <string name="settings_import_password_required">Inserisci le password</string>
+    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_required">Accedi</string>
+    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_and_password_required">Accedi e inserisci le password</string>
+    <string name="settings_import_failure">Importazione impostazioni non riuscita</string>
+    <string name="settings_import_read_failure">Lettura file impostazioni non riuscita</string>
+    <string name="settings_import_partial_failure">Importazione di alcune impostazioni non riuscita</string>
+    <string name="settings_import_status_success">Importazione completata correttamente</string>
+    <string name="settings_import_status_password_required">Password richiesta</string>
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="settings_import_status_log_in_required">Accesso richiesto</string>
+    <string name="settings_import_status_not_imported">Non importate</string>
+    <string name="settings_import_status_error">Importazione non riuscita</string>
+    <string name="settings_import_later_button">Più tardi</string>
+    <string name="settings_importing">Importazione impostazioni…</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">Per poter utilizzare l\'account \"<xliff:g id="account">%s</xliff:g>\" devi fornire la password del server</item>
+        <item quantity="many">Per poter utilizzare l\'account \"<xliff:g id="account">%s</xliff:g>\" devi fornire le password del server</item>
+        <item quantity="other">Per poter utilizzare l\'account \"<xliff:g id="account">%s</xliff:g>\" devi fornire le password del server</item>
+    </plurals>
+    <string name="settings_import_incoming_server_password_hint">Password server in arrivo</string>
+    <string name="settings_import_outgoing_server_password_hint">Password server in uscita</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Usa stessa password per server in uscita</string>
+    <string name="settings_import_server_name_format">Nome server: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_oauth_description">Per poter usare questo account email con K-9 Mail, devi accedere e autorizzare l\'accesso dell\'applicazione alla tua posta.</string>
+    <string name="settings_import_oauth_sign_in">Accedi</string>
+    <string name="settings_import_oauth_sign_in_with_google">Accedi con Google</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">Autorizzazione annullata</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Autorizzazione non riuscita con il seguente errore: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 non supportato da questo provider di posta</string>
+    <string name="settings_import_oauth_error_browser_not_found">L\' applicazione non trova un browser per richiedere l\'accesso al tuo account</string>
+    <string name="settings_import_general_settings_item">Impostazioni generali</string>
+</resources>

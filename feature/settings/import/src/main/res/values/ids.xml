@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="settings_import_list_general_item" type="id" />
+    <item name="settings_import_list_account_item" type="id" />
+</resources>

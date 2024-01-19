@@ -16,6 +16,7 @@ dependencies {
 
     implementation(projects.feature.account.setup)
     implementation(projects.feature.account.edit)
+    implementation(projects.feature.settings.import)
 
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)

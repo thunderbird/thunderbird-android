@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_title">ക്രമീകരണങ്ങൾ ഇംപോർട്ട് ചെയ്യുക</string>
+    <string name="settings_import_pick_document_button">ഫയൽ തിരഞ്ഞെടുക്കുക</string>
+    <string name="settings_import_button">ഇംപോർട്ട്</string>
+    <string name="settings_import_success_generic">ക്രമീകരണങ്ങൾ വിജയകരമായി ഇംപോർട്ട് ചെയ്തു</string>
+    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+    <string name="settings_import_password_required">ദയവായി രഹസ്യവാക്കുകൾ നൽകുക</string>
+    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+    <string name="settings_import_failure">ക്രമീകരണങ്ങൾ ഇംപോർട്ടുചെയ്യുന്നതിൽ പരാജയപ്പെട്ടു</string>
+    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+    <string name="settings_import_read_failure">ക്രമീകരണ ഫയൽ വായിക്കുന്നതിൽ പരാജയപ്പെട്ടു</string>
+    <string name="settings_import_partial_failure">ചില ക്രമീകരണങ്ങൾ ഇംപോർട്ട് ചെയ്യുന്നതിൽ പരാജയപ്പെട്ടു</string>
+    <string name="settings_import_status_success">വിജയകരമായി ഇംപോർട്ട് ചെയ്തു</string>
+    <string name="settings_import_status_password_required">രഹസ്യവാചകം ആവശ്യമാണ്</string>
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="settings_import_status_not_imported">ഇംപോർട്ട് ചെയ്തിട്ടില്ല</string>
+    <string name="settings_import_status_error">ഇംപോർട്ട് തകരാർ</string>
+    <string name="settings_import_later_button">പിന്നീട്</string>
+    <string name="settings_importing">ക്രമീകരണങ്ങൾ ഇംപോർട്ട് ചെയ്യുന്നു…</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">\"<xliff:g id="account">%s</xliff:g>\" അക്കൗണ്ട് ഉപയോഗിക്കാൻ നിങ്ങൾ സെർവർ രഹസ്യവാചകം നൽകേണ്ടതുണ്ട്.</item>
+        <item quantity="other">\"<xliff:g id="account">%s</xliff:g>\" അക്കൗണ്ട് ഉപയോഗിക്കാൻ നിങ്ങൾ സെർവർ രഹസ്യവാചകങ്ങൾ നൽകേണ്ടതുണ്ട്.</item>
+    </plurals>
+    <string name="settings_import_incoming_server_password_hint">ഇൻകമിംഗ് സെർവർ രഹസ്യവാചകം</string>
+    <string name="settings_import_outgoing_server_password_hint">ഔട്ട്‌ഗോയിംഗ് സെർവർ രഹസ്യവാചകം</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">ഔട്ട്‌ഗോയിംഗ് സെർവറിനായി സമാന രഹസ്യവാചകം ഉപയോഗിക്കുക</string>
+    <string name="settings_import_server_name_format">സെർവർ നാമം: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_general_settings_item">പൊതുവായ ക്രമീകരണങ്ങൾ</string>
+</resources>

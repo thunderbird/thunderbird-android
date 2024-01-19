@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_title">Inportatu ezarpenak</string>
+    <string name="settings_import_pick_document_button">Hautatu fitxategia</string>
+    <string name="settings_import_button">Inportatu</string>
+    <string name="settings_import_success_generic">Ezarpenak ongi inportatu dira</string>
+    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+    <string name="settings_import_password_required">Sartu pasahitzak</string>
+    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_required">Mesedez saioa hasi</string>
+    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_and_password_required">Mesedez saioa hasi eta sartu pasahitza</string>
+    <string name="settings_import_failure">Ezin izan dira ezarpenak inportatu</string>
+    <string name="settings_import_read_failure">Ezin izan da ezarpenen fitxategia irakurri</string>
+    <string name="settings_import_partial_failure">Ezin izan dira ezarpen batzuk inportatu</string>
+    <string name="settings_import_status_success">Ongi inportatuta</string>
+    <string name="settings_import_status_password_required">Pasahitza derrigorrezkoa</string>
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="settings_import_status_log_in_required">Saio-haztea beharrezkoa</string>
+    <string name="settings_import_status_not_imported">Inportatu gabe</string>
+    <string name="settings_import_status_error">Inportazio hutsegitea</string>
+    <string name="settings_import_later_button">Geroago</string>
+    <string name="settings_importing">Ezarpenak inportatzen…</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">\"<xliff:g id="account">%s</xliff:g>\" kontua erabili ahal izateko zerbitzari-pasahitza eman behar duzu.</item>
+        <item quantity="other">\"<xliff:g id="account">%s</xliff:g>\" kontua erabili ahal izateko zerbitzari-pasahitzak eman behar dituzu.</item>
+    </plurals>
+    <string name="settings_import_incoming_server_password_hint">Sarrerako zerbitzariaren pasahitza</string>
+    <string name="settings_import_outgoing_server_password_hint">Irteerako zerbitzariaren pasahitza</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Erabili pasahitz bera irteera zerbitzariarentzat</string>
+    <string name="settings_import_server_name_format">Zerbitzari-izena: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_oauth_description">Posta elektronikoko kontu hau K-9 Mail-ekin erabiltzeko, saioa hasi eta aplikazioari zure mezu elektronikoetarako sarbidea eman behar diozu.</string>
+    <string name="settings_import_oauth_sign_in">Saioa hasi</string>
+    <string name="settings_import_oauth_sign_in_with_google">Saioa hasi Googlerekin</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">baimena bertan behera utzi da</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Baimenak huts egin du errore honekin: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 une honetan ez dago hornitzaile honekin onartuta.</string>
+    <string name="settings_import_oauth_error_browser_not_found">Aplikazioak ezin izan du zure konturako sarbidea erabiltzeko arakatzailerik aurkitu.</string>
+    <string name="settings_import_general_settings_item">Ezarpen orokorrak</string>
+</resources>

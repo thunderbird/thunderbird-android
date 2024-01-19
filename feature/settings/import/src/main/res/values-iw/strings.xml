@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_title">יבא הגדרות</string>
+    <string name="settings_import_pick_document_button">בחר קובץ</string>
+    <string name="settings_import_button">יבא</string>
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="settings_import_later_button">מאוחר יותר</string>
+    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+    <string name="settings_importing">מייבא הגדרות…</string>
+    <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+    <string name="settings_import_general_settings_item">הגדרות כלליות</string>
+</resources>

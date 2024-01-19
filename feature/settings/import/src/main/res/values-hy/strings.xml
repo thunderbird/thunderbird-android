@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+    <string name="settings_import_general_settings_item">Ընդհանուր կարգաւորումներ</string>
+</resources>

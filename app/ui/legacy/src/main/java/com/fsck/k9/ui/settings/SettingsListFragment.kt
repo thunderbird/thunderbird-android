@@ -30,6 +30,7 @@ import com.mikepenz.fastadapter.drag.ItemTouchCallback
 import com.mikepenz.fastadapter.drag.SimpleDragCallback
 import com.mikepenz.fastadapter.utils.DragDropUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import app.k9mail.feature.settings.importing.R as SettingsImportR
 
 class SettingsListFragment : Fragment(), ItemTouchCallback {
     private val viewModel: SettingsViewModel by viewModel()
@@ -115,7 +116,7 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
                 )
 
                 addAction(
-                    text = getString(R.string.settings_import_title),
+                    text = getString(SettingsImportR.string.settings_import_title),
                     navigationAction = R.id.action_settingsListScreen_to_settingsImportScreen,
                     icon = R.attr.iconSettingsImport,
                 )

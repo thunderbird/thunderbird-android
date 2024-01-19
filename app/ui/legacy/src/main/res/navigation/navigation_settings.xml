@@ -62,7 +62,7 @@
 
     <fragment
         android:id="@+id/settingsImportScreen"
-        android:name="com.fsck.k9.ui.settings.import.SettingsImportFragment"
+        android:name="app.k9mail.feature.settings.import.ui.SettingsImportFragment"
         android:label="@string/settings_import_title"
         tools:layout="@layout/fragment_settings_import"/>
 

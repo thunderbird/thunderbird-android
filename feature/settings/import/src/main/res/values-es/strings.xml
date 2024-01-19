@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_title">Importar ajustes</string>
+    <string name="settings_import_pick_document_button">Seleccionar archivo</string>
+    <string name="settings_import_button">Importar</string>
+    <string name="settings_import_success_generic">Los ajustes se han importado correctamente</string>
+    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+    <string name="settings_import_password_required">Introduce tus contraseñas</string>
+    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_required">Iniciar sesión</string>
+    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_and_password_required">Inicia sesión escribiendo tu contraseña</string>
+    <string name="settings_import_failure">La importación de ajustes ha fallado</string>
+    <string name="settings_import_read_failure">Fallo al leer el archivo de ajustes</string>
+    <string name="settings_import_partial_failure">La importación de algunos ajustes ha fallado</string>
+    <string name="settings_import_status_success">Importado correctamente</string>
+    <string name="settings_import_status_password_required">Se necesita una contraseña</string>
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="settings_import_status_log_in_required">Es necesario iniciar sesión</string>
+    <string name="settings_import_status_not_imported">No importado</string>
+    <string name="settings_import_status_error">La importación ha fallado</string>
+    <string name="settings_import_later_button">Más tarde</string>
+    <string name="settings_importing">Importando ajustes…</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">Para poder usar la cuenta \"<xliff:g id="account">%s</xliff:g>\" es necesario proporcionar la contraseña del servidor.</item>
+        <item quantity="many">Para poder usar la cuenta \"<xliff:g id="account">%s</xliff:g>\" es necesario proporcionar las contraseñas del servidor.</item>
+        <item quantity="other">Para poder usar la cuenta \"<xliff:g id="account">%s</xliff:g>\" es necesario proporcionar las contraseñas del servidor.</item>
+    </plurals>
+    <string name="settings_import_incoming_server_password_hint">Contraseña del servidor de correo entrante</string>
+    <string name="settings_import_outgoing_server_password_hint">Contraseña del servidor de correo saliente</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Usar la misma contraseña para el servidor de correo saliente</string>
+    <string name="settings_import_server_name_format">Nombre del servidor: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_oauth_description">Para poder utilizar esta cuenta de correo con K-9 Mail es necesario que inicies sesión y propones los permisos necesarios de acceso.</string>
+    <string name="settings_import_oauth_sign_in">Iniciar sesión</string>
+    <string name="settings_import_oauth_sign_in_with_google">Iniciar sesión con Google</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">See ha cancelado la autorización</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">La autorización ha fallado con el error: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_not_supported">El servidor no parece que sea compatible con OAuth 2.0.</string>
+    <string name="settings_import_oauth_error_browser_not_found">La aplicación no ha encontrado ningún navegador que se pueda utilizar para iniciar sesión en tu cuenta.</string>
+    <string name="settings_import_general_settings_item">Ajustes generales</string>
+</resources>

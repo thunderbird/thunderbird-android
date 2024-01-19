@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_title">Увези поставке</string>
+    <string name="settings_import_pick_document_button">Изаберите фајл</string>
+    <string name="settings_import_button">Увоз</string>
+    <string name="settings_import_success_generic">Поставке успешно увезене</string>
+    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+    <string name="settings_import_password_required">Унесите лозинке</string>
+    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+    <string name="settings_import_failure">Не могу да увезем поставке</string>
+    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+    <string name="settings_import_read_failure">Не могу да читам фајл поставки</string>
+    <string name="settings_import_partial_failure">Не могу да увезем неке поставке</string>
+    <string name="settings_import_status_success">Успешно увезено</string>
+    <string name="settings_import_status_password_required">Неопходна је лозинка</string>
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="settings_import_status_not_imported">Није увезено </string>
+    <string name="settings_import_status_error">Увоз неуспешан</string>
+    <string name="settings_import_later_button">Касније</string>
+    <string name="settings_importing">Увозим поставке…</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">Да би користили налог „<xliff:g id="account">%s</xliff:g>“, морате унети лозинку.</item>
+        <item quantity="few">Да би користили налог „<xliff:g id="account">%s</xliff:g>“, морате унети лозинке.</item>
+        <item quantity="other">Да би користили налог „<xliff:g id="account">%s</xliff:g>“, морате унети лозинке.</item>
+    </plurals>
+    <string name="settings_import_incoming_server_password_hint">Лозинка долазног сервера</string>
+    <string name="settings_import_outgoing_server_password_hint">Лозинка одлазног сервера</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Користи исту лозинку за одлазни сервер </string>
+    <string name="settings_import_server_name_format">Назив сервера: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_general_settings_item">Опште поставке</string>
+</resources>

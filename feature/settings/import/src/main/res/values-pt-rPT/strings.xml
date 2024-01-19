@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_title">Importar configurações</string>
+    <string name="settings_import_pick_document_button">Selecionar ficheiro</string>
+    <string name="settings_import_button">Importar</string>
+    <string name="settings_import_success_generic">Configurações importadas com sucesso</string>
+    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+    <string name="settings_import_password_required">Por favor inserir palavras-passe</string>
+    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_required">Por favor, inicie sessão</string>
+    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_and_password_required">Por favor, inicie sessão e insira palavras-passe</string>
+    <string name="settings_import_failure">Falha na importação de configurações</string>
+    <string name="settings_import_read_failure">Falha na leitura do ficheiro de configurações</string>
+    <string name="settings_import_partial_failure">Falha na importação de algumas configurações</string>
+    <string name="settings_import_status_success">A importação foi bem sucedida</string>
+    <string name="settings_import_status_password_required">Necessária palavra-passe</string>
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="settings_import_status_log_in_required">Sessão iniciada necessária</string>
+    <string name="settings_import_status_not_imported">Não importado</string>
+    <string name="settings_import_status_error">Falha na importação</string>
+    <string name="settings_import_later_button">Posteriormente</string>
+    <string name="settings_importing">A importar configurações…</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">Para poder utilizar a conta \"<xliff:g id="account">%s</xliff:g>\" tem de fornecer a palavra-chave do servidor.</item>
+        <item quantity="many">Para poder utilizar a conta \"<xliff:g id="account">%s</xliff:g>\" tem de fornecer as palavras-chave dos servidors.</item>
+        <item quantity="other">Para poder utilizar a conta \"<xliff:g id="account">%s</xliff:g>\" tem de fornecer as senhas do servidor.</item>
+    </plurals>
+    <string name="settings_import_incoming_server_password_hint">Palavra-passe do servidor de entrada</string>
+    <string name="settings_import_outgoing_server_password_hint">Palavra-passe do servidor de saída</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Utilizar a mesma palavra-passe para o servidor de saída</string>
+    <string name="settings_import_server_name_format">Nome do servidor <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_oauth_description">Para usar esta conta com o K-9 Mail, é necessário iniciar sessão e conceder permissão para aceder o seus emails.</string>
+    <string name="settings_import_oauth_sign_in">Iniciar sessão</string>
+    <string name="settings_import_oauth_sign_in_with_google">Iniciar sessão com o Google</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">Autorização cancelada</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">A autorização falhou com o seguinte erro: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 não é, de momento, suportado com este provedor.</string>
+    <string name="settings_import_oauth_error_browser_not_found">A aplicação não conseguiu encontrar um navegador para usar na concessão do acesso à sua conta.</string>
+    <string name="settings_import_general_settings_item">Configurações gerais</string>
+</resources>

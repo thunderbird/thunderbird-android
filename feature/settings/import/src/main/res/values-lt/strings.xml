@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_title">Importuoti nustatymus</string>
+    <string name="settings_import_pick_document_button">Pasirinkti failą</string>
+    <string name="settings_import_button">Importuoti</string>
+    <string name="settings_import_success_generic">Nustatymai sėkmingai importuoti</string>
+    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+    <string name="settings_import_password_required">Prašome įvesti slaptažodžius</string>
+    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_required">Prašome prisijungti</string>
+    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_and_password_required">Prašome priisjungti ir įvesti slaptažodžius</string>
+    <string name="settings_import_failure">Nepavyko importuoti nustatymų</string>
+    <string name="settings_import_read_failure">Nepavyko nuskaityti nustatymų failo</string>
+    <string name="settings_import_partial_failure">Nepavyko importuoti kai kurių nustatymų</string>
+    <string name="settings_import_status_success">Sėkmingai importuota</string>
+    <string name="settings_import_status_password_required">Būtinas slaptažodis</string>
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="settings_import_status_log_in_required">Reikalingas prisijungimas</string>
+    <string name="settings_import_status_not_imported">Neimportuota</string>
+    <string name="settings_import_status_error">Importo sutrikimas</string>
+    <string name="settings_import_later_button">Vėliau</string>
+    <string name="settings_importing">Importuojami nustatymai…</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">Kad galėtumėte naudotis paskyra \"<xliff:g id="account">%s</xliff:g>\", turite nurodyti serverio slaptažodį.</item>
+        <item quantity="few">Kad galėtumėte naudotis paskyra \"<xliff:g id="account">%s</xliff:g>\", turite nurodyti serverio slaptažodžius.</item>
+        <item quantity="many">Kad galėtumėte naudotis paskyra \"<xliff:g id="account">%s</xliff:g>\", turite nurodyti serverio slaptažodžius.</item>
+        <item quantity="other">Kad galėtumėte naudotis paskyra \"<xliff:g id="account">%s</xliff:g>\", turite nurodyti serverio slaptažodžius.</item>
+    </plurals>
+    <string name="settings_import_incoming_server_password_hint">Gaunamo serverio slaptažodis</string>
+    <string name="settings_import_outgoing_server_password_hint">Siunčiamo serverio slaptažodis</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Naudoti tą patį slaptažodį siunčiamajame serveryje</string>
+    <string name="settings_import_server_name_format">Serverio pavadinimas: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_oauth_description">Norėdami naudoti šią el. pašto paskyrą su K-9 Mail, turite prisijungti ir suteikti programėlei prieigą prie savo el. laiškų.</string>
+    <string name="settings_import_oauth_sign_in">Prisijungti</string>
+    <string name="settings_import_oauth_sign_in_with_google">Prisijungti su Google</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">Leidimas atšauktas</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Autorizavimas nepavyko su šia klaida: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_not_supported">Šiuo metu šis teikėjas nepalaiko OAuth 2.0.</string>
+    <string name="settings_import_oauth_error_browser_not_found">Programai nepavyko rasti naršyklės, kurią naudoti suteikiant prieigą prie paskyros.</string>
+    <string name="settings_import_general_settings_item">Bendri nustatymai</string>
+</resources>

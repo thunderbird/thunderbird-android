@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_title">Importér opsætning</string>
+    <string name="settings_import_pick_document_button">Vælg fil</string>
+    <string name="settings_import_button">Importer</string>
+    <string name="settings_import_success_generic">Importerede indstillinger</string>
+    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+    <string name="settings_import_password_required">Indtast venligst kodeord</string>
+    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_required">Log venligst ind</string>
+    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_and_password_required">Log ind og indtast adgangskoder</string>
+    <string name="settings_import_failure">Importen af indstillinger fejlede</string>
+    <string name="settings_import_read_failure">Indlæsning af fil med indstillinger mislykkedes</string>
+    <string name="settings_import_partial_failure">Import af nogle indstillinger fejlede</string>
+    <string name="settings_import_status_success">Importeret korrrekt</string>
+    <string name="settings_import_status_password_required">Kodeord påkrævet</string>
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="settings_import_status_log_in_required">Log-ind er påkrævet</string>
+    <string name="settings_import_status_not_imported">Ikke importeret</string>
+    <string name="settings_import_status_error">Import fejlede</string>
+    <string name="settings_import_later_button">Senere</string>
+    <string name="settings_importing">Importerer opsætning…</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">For at bruge kontoen \"<xliff:g id="account">%s</xliff:g>\" er du nødt til at angive adgangskoden for serveren.</item>
+        <item quantity="other">For at bruge kontoen \"<xliff:g id="account">%s</xliff:g>\" er du nødt til at angive adgangskoderne for serveren.</item>
+    </plurals>
+    <string name="settings_import_incoming_server_password_hint">Indgående server adgangskode</string>
+    <string name="settings_import_outgoing_server_password_hint">Udgående server adgangskode</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Brug samme adgangskode for udgående server</string>
+    <string name="settings_import_server_name_format">Server navn: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_oauth_sign_in">Log ind</string>
+    <string name="settings_import_oauth_sign_in_with_google">Log ind med Google</string>
+    <string name="settings_import_general_settings_item">Generelt</string>
+</resources>

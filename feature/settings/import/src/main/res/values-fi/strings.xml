@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_title">Tuo asetukset</string>
+    <string name="settings_import_pick_document_button">Valitse tiedosto</string>
+    <string name="settings_import_button">Tuo</string>
+    <string name="settings_import_success_generic">Asetusten tuonti onnistui</string>
+    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+    <string name="settings_import_password_required">Anna salasanat</string>
+    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_required">Kirjaudu sisään</string>
+    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_and_password_required">Kirjaudu sisään ja anna salasanat</string>
+    <string name="settings_import_failure">Asetusten tuonti epäonnistui</string>
+    <string name="settings_import_read_failure">Asetustiedoston lukeminen epäonnistui</string>
+    <string name="settings_import_partial_failure">Joidenkin asetusten tuonti epäonnistui</string>
+    <string name="settings_import_status_success">Tuonti onnistui</string>
+    <string name="settings_import_status_password_required">Salasana vaaditaan</string>
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="settings_import_status_log_in_required">Sisäänkirjautuminen vaaditaan</string>
+    <string name="settings_import_status_not_imported">Ei tuotu</string>
+    <string name="settings_import_status_error">Tuontivirhe</string>
+    <string name="settings_import_later_button">Myöhemmin</string>
+    <string name="settings_importing">Tuodaan asetuksia…</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">Jotta voit käyttää tiliä \"<xliff:g id="account">%s</xliff:g>\", sinun on annettava palvelimen salasana.</item>
+        <item quantity="other">Jotta voit käyttää tiliä \"<xliff:g id="account">%s</xliff:g>\", sinun on annettava palvelimien salasanat.</item>
+    </plurals>
+    <string name="settings_import_incoming_server_password_hint">Saapuvan postin palvelimen salasana</string>
+    <string name="settings_import_outgoing_server_password_hint">Lähtevän postin palvelimen salasana</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Käytä samaa salasanaa lähtevälle palvelimelle</string>
+    <string name="settings_import_server_name_format">Palvelimen nimi: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_oauth_description">Jotta voit käyttää tätä tiliä K-9 Mailin kanssa, sinun tulee kirjautua sisään ja antaa sovellukselle oikeus päästä sähköposteihisi.</string>
+    <string name="settings_import_oauth_sign_in">Kirjaudu sisään</string>
+    <string name="settings_import_oauth_sign_in_with_google">Kirjaudu sisään Googlella</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">Valtuutus peruttu</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Valtuutus epäonnistui, virhe: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 ei ole tällä hetkellä tuettu tämän palvelutarjoajan kohdalla.</string>
+    <string name="settings_import_oauth_error_browser_not_found">Sovellus ei löytänyt selainta käytettäväksi pääsyn antamiseksi tälle tilille.</string>
+    <string name="settings_import_general_settings_item">Yleiset asetukset</string>
+</resources>

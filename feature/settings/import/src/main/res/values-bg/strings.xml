@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_title">Внасяне настройки</string>
+    <string name="settings_import_pick_document_button">Избери файл</string>
+    <string name="settings_import_button">Внасяне</string>
+    <string name="settings_import_success_generic">Успешно импортирани настройки</string>
+    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+    <string name="settings_import_password_required">Моля, въведете пароли</string>
+    <string name="settings_import_authorization_required">Моля, впишете се</string>
+    <string name="settings_import_authorization_and_password_required">Моля, впишете се и въведете паролите си</string>
+    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+    <string name="settings_import_failure">Импортирането на настройките не бе успешно</string>
+    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+    <string name="settings_import_read_failure">Файлът за настройки не бе прочетен</string>
+    <string name="settings_import_partial_failure">Импортирането на някои настройки не бе успешно</string>
+    <string name="settings_import_status_success">Успешно импортиране</string>
+    <string name="settings_import_status_password_required">Изисква се парола</string>
+    <string name="settings_import_status_log_in_required">Необходимо е вписване</string>
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="settings_import_status_not_imported">Не се импортира</string>
+    <string name="settings_import_status_error">Неуспешно импортиране</string>
+    <string name="settings_import_later_button">По късно</string>
+    <string name="settings_importing">Настройки на внасянето…</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">За да можете да използвате профила \"<xliff:g id="account">%s</xliff:g>\" трябва да предоставите паролите на сървъра.</item>
+        <item quantity="other">За да можете да използвате профила \"<xliff:g id="account">%s</xliff:g>\" трябва да предоставите паролите на сървъра.</item>
+    </plurals>
+    <string name="settings_import_incoming_server_password_hint">Парола за входящ сървър</string>
+    <string name="settings_import_outgoing_server_password_hint">Парола за изходящ сървър</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Използвай същата парола  като на изходящия сървър</string>
+    <string name="settings_import_server_name_format">Име на сървър: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_oauth_description">За да използвате този имейл с K-9 Поща, трябва да се впишете и да разрешите на приложението достъп до имейлите си.</string>
+    <string name="settings_import_oauth_sign_in">Вписване</string>
+    <string name="settings_import_oauth_sign_in_with_google">Вписване чрез Google</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">Разрешение отменено</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Разрешаването се провали и даде следната грешка: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 с този доставчик не се поддържа в момента.</string>
+    <string name="settings_import_oauth_error_browser_not_found">Приложението не успя да открие браузър, който да използва за разрешаване на достъп до акаунта Ви.</string>
+    <string name="settings_import_general_settings_item">Общи настройки</string>
+</resources>

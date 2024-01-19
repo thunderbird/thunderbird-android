@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_title">Імпартаваць налады</string>
+    <string name="settings_import_pick_document_button">Абраць файл</string>
+    <string name="settings_import_button">Імпарт</string>
+    <string name="settings_import_success_generic">Налады паспяхова імпартаваныя</string>
+    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+    <string name="settings_import_password_required">Калі ласка, увядзіце пароль</string>
+    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_required">Увайдзіце</string>
+    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_and_password_required">Увайдзіце і ўвядзіце пароль</string>
+    <string name="settings_import_failure">Не ўдалося імпартаваць налады</string>
+    <string name="settings_import_read_failure">Не ўдалося прачытаць файл налад</string>
+    <string name="settings_import_partial_failure">Не ўдалося імпартаваць некаторыя налады</string>
+    <string name="settings_import_status_success">Паспяхова імпартавана</string>
+    <string name="settings_import_status_password_required">Патрабуецца пароль</string>
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="settings_import_status_log_in_required">Неабходна ўвайсці</string>
+    <string name="settings_import_status_not_imported">Не імпартавана</string>
+    <string name="settings_import_status_error">Не ўдалося імпартаваць</string>
+    <string name="settings_import_later_button">Пазней</string>
+    <string name="settings_importing">Імпарт налад…</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">Каб мець магчымасць выкарыстоўваць акаўнт \"<xliff:g id="account">%s</xliff:g>\", вам неабходна ўвесці пароль для сервера.</item>
+        <item quantity="few">Каб мець магчымасць выкарыстоўваць акаўнт \"<xliff:g id="account">%s</xliff:g>\", вам неабходна ўвесці паролі для сервера.</item>
+        <item quantity="many">Каб мець магчымасць выкарыстоўваць акаўнт \"<xliff:g id="account">%s</xliff:g>\", вам неабходна ўвесці паролі для сервера.</item>
+        <item quantity="other">Каб мець магчымасць выкарыстоўваць акаўнт \"<xliff:g id="account">%s</xliff:g>\", вам неабходна ўвесці паролі для сервера.</item>
+    </plurals>
+    <string name="settings_import_incoming_server_password_hint">Пароль для сервера ўваходнай пошты</string>
+    <string name="settings_import_outgoing_server_password_hint">Пароль для сервера выходнай пошты</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Выкарыстоўваць той жа пароль для сервера выходнай пошты</string>
+    <string name="settings_import_server_name_format">Назва сервера: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_oauth_description">Каб выкарыстоўваць гэты акаўнт электроннай пошты ў K-9 Mail, вам трэба ўвайсці і даць праграме доступ да вашай электроннай пошты.</string>
+    <string name="settings_import_oauth_sign_in">Увайсці</string>
+    <string name="settings_import_oauth_sign_in_with_google">Увайсці з дапамогай Google</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">Аўтарызацыя скасаваная</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Не ўдалося выканаць аўтарызацыю праз наступную памылку: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_not_supported">На дадзены момант OAuth 2.0 не падтрымліваецца гэтай службай.</string>
+    <string name="settings_import_oauth_error_browser_not_found">Праграме не ўдалося знайсці браўзер, каб даць доступ да вашага акаўнта.</string>
+    <string name="settings_import_general_settings_item">Асноўныя налады</string>
+</resources>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_title">Importēt K-9 iestatījumus</string>
+    <string name="settings_import_pick_document_button">Izvēlēties failu</string>
+    <string name="settings_import_button">Importēt</string>
+    <string name="settings_import_success_generic">Iestatījumi veiksmīgi importēti</string>
+    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+    <string name="settings_import_password_required">Lūdzu ievadiet paroles</string>
+    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_required">Lūdzu, ierakstieties!</string>
+    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_and_password_required">Lūdzu, ierakstieties un ievadiet paroles!</string>
+    <string name="settings_import_failure">Neizdevās importēt iestatījumus</string>
+    <string name="settings_import_read_failure">Neizdevās nolasīt iestatījumu failu</string>
+    <string name="settings_import_partial_failure">Neizdevās importēt dažus iestatījumus</string>
+    <string name="settings_import_status_success">Imports veiksmīgs</string>
+    <string name="settings_import_status_password_required">Nepieciešama parole</string>
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="settings_import_status_log_in_required">Nepieciešams ierakstīties</string>
+    <string name="settings_import_status_not_imported">Nav importēts</string>
+    <string name="settings_import_status_error">Imports neizdevās</string>
+    <string name="settings_import_later_button">Vēlāk</string>
+    <string name="settings_importing">Importē iestatījumus…</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="zero">Lai lietotu kontu \"<xliff:g id="account">%s</xliff:g>\", jāievada servera parole.</item>
+        <item quantity="one">Lai lietotu kontu \"<xliff:g id="account">%s</xliff:g>\", jāievada servera parole.</item>
+        <item quantity="other">Lai lietotu kontu \"<xliff:g id="account">%s</xliff:g>\", jāievada servera paroles.</item>
+    </plurals>
+    <string name="settings_import_incoming_server_password_hint">Ienākošā servera parole</string>
+    <string name="settings_import_outgoing_server_password_hint">Izejošā servera parole</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Izmantot to pašu paroli izejošajam serverim</string>
+    <string name="settings_import_server_name_format">Servera nosaukums: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_oauth_description">Lai K-9 programmā lietotu šo e-pasta kontu, Jums jāierakstās un jādod atļauja K-9 piekļūt e-pastiem.</string>
+    <string name="settings_import_oauth_sign_in">Ierakstīties</string>
+    <string name="settings_import_oauth_sign_in_with_google">Ierakstīties ar Google</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">Autorizācija atcelta</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Autorizācija atcelta šādas kļūdas dēļ: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_not_supported">Šis epasta pakalpojumu sniedzējs OAuth 2.0 nenodrošina.</string>
+    <string name="settings_import_oauth_error_browser_not_found">Lietotnei neizdevās atrast pārlūku, lai ar tā starpniecību iegūtu piekļuvi Jūsu kontam.</string>
+    <string name="settings_import_general_settings_item">Vispārējie iestatījumi</string>
+</resources>
