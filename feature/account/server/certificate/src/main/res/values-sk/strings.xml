@@ -1,2 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_warning_title">Varovanie</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Chyba certifikátu</string>
+    <string name="account_server_certificate_unknown_error_description_format">Aplikácia zistila potenciálnu bezpečnostnú hrozbu a prerušila pripojovanie k <xliff:g id="serverName">%s</xliff:g>.
+\nAk budete pokračovať, útočníci by sa mohli pokúsiť získať informácie ako heslá alebo emaily.</string>
+    <string name="account_server_certificate_not_valid_after">Platné do</string>
+    <string name="account_server_certificate_issuer">Vydavateľ</string>
+    <string name="account_server_certificate_button_back">Vrátiť sa späť (odporúčané)</string>
+    <string name="account_server_certificate_button_advanced">Pokročilé</string>
+    <string name="account_server_certificate_button_continue">Prijať riziko a pokračovať</string>
+    <string name="account_server_certificate_section_title">Certifikát servera</string>
+    <string name="account_server_certificate_subject_alternative_names">Alternatívne názvy</string>
+    <string name="account_server_certificate_not_valid_before">Platné od</string>
+    <string name="account_server_certificate_subject">Predmet</string>
+    <string name="account_server_certificate_fingerprints_section">Otlačky certifikátu</string>
+</resources>

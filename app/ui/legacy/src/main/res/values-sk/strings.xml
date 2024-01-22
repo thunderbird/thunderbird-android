@@ -820,4 +820,18 @@
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="user_manual_title">Užívateľská príručka</string>
     <string name="get_help_title">Získať pomoc</string>
+    <string name="changelog_recent_changes_title">Čo je nové</string>
+    <string name="changelog_show_recent_changes">Po aktualizácii aplikácie zobrazovať najnovšie zmeny</string>
+    <string name="search_everywhere_action">Hľadať všade</string>
+    <string name="new_messages_title">Nové správy</string>
+    <string name="notification_certificate_error_public">Chyba certifikátu</string>
+    <string name="notification_notify_error_title">Chyba oznámení</string>
+    <string name="changelog_snackbar_text">Zistite, čo je nové v tomto vydaní</string>
+    <string name="changelog_snackbar_button_text">Zobraziť</string>
+    <string name="choose_folder_move_title">Presunúť do…</string>
+    <string name="choose_folder_copy_title">Skopírovať do…</string>
+    <string name="unsubscribe_action">Odhlásiť odber</string>
+    <string name="copy_subject_to_clipboard">Text predmetu skopírovaný do schránky</string>
+    <string name="notification_channel_push_title">Synchronizovať (Push)</string>
+    <string name="notification_channel_push_description">Zobrazené po dobu čakania na nové správy</string>
 </resources>
