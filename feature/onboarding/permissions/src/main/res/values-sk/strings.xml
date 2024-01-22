@@ -3,4 +3,8 @@
     <string name="onboarding_permissions_screen_title">Pomôžte nám zlepšiť aplikáciu</string>
     <string name="onboarding_permissions_contacts_title">Kontakty</string>
     <string name="onboarding_permissions_skip_button">Preskočiť</string>
+    <string name="onboarding_permissions_notifications_description">Povoľte oznámenia, aby ste nezmeškali žiadne emaily.</string>
+    <string name="onboarding_permissions_allow_button">Povoliť</string>
+    <string name="onboarding_permissions_contacts_description">Povoľte prístup na poskytovanie návrhov kontaktov a zobrazenie mien a fotografií kontakov.</string>
+    <string name="onboarding_permissions_notifications_title">Oznámenia</string>
 </resources>
