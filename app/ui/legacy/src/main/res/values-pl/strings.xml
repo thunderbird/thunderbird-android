@@ -47,9 +47,6 @@
     <string name="choose_folder_move_title">Przenieś do…</string>
     <string name="choose_folder_copy_title">Skopiuj do…</string>
     <string name="actionbar_selected">Wybrano <xliff:g id="selection_count">%d</xliff:g></string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">OK</string>
-    <string name="cancel_action">Anuluj</string>
     <string name="send_action">Wyślij</string>
     <string name="empty_subject">Temat jest pusty, kliknij ponownie, aby wysłać</string>
     <string name="reply_action">Odpowiedz</string>
@@ -279,11 +276,6 @@
     <string name="quiet_time_starts">Początek okresu ciszy</string>
     <string name="quiet_time_ends">Koniec okresu ciszy</string>
     <string name="account_setup_basics_title">Dodaj konto</string>
-    <string name="account_setup_oauth_description">Aby używać tego konta e-mail z K-9 Mail, musisz się zalogować i przyznać aplikacji dostęp do swoich e-maili.</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in">Zaloguj się</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in_with_google">Zaloguj się przez Google</string>
     <string name="account_setup_incoming_delete_policy_label">Gdy skasuję wiadomość</string>
     <string name="account_setup_incoming_delete_policy_never_label">Nie usuwaj z serwera</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Usuń ją z serwera</string>
@@ -331,10 +323,6 @@
     <string name="account_setup_options_mail_display_count_10000">10000 wiadomości</string>
     <string name="account_setup_options_mail_display_count_all">Wszystkie wiadomości</string>
     <string name="move_copy_cannot_copy_unsynced_message">Nie można skopiować ani przenieść wiadomości, która nie jest zsynchronizowana z serwerem</string>
-    <string name="account_setup_failed_dlg_oauth_flow_canceled">Autoryzacja anulowana</string>
-    <string name="account_setup_failed_dlg_oauth_flow_failed">Autoryzacja nie powiodła się z następującym błędem: <xliff:g id="error">%s</xliff:g></string>
-    <string name="account_setup_failed_dlg_oauth_not_supported">Ten dostawca nie obsługuje obecnie protokołu OAuth 2.0.</string>
-    <string name="account_setup_failed_dlg_browser_not_found">Aplikacja nie mogła znaleźć przeglądarki, za pomocą której można uzyskać dostęp do Twojego konta.</string>
     <string name="account_settings_push_advanced_title">Zaawansowane</string>
     <string name="account_settings_title_fmt">Ustawienia ogólne</string>
     <string name="account_settings_notify_label">Nowe wiadomości</string>
@@ -693,37 +681,6 @@
     <string name="settings_export_progress_text">Eksportowanie ustawień…</string>
     <string name="settings_export_success_generic">Eksport ustawień zakończony sukcesem</string>
     <string name="settings_export_failure">Błąd eksportu</string>
-    <string name="settings_import_title">Importuj ustawienia</string>
-    <string name="settings_import_pick_document_button">Wybierz plik</string>
-    <string name="settings_import_button">Importuj</string>
-    <string name="settings_import_success_generic">Ustawienia zostały zaimportowane</string>
-    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required">Proszę podać hasła</string>
-    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_required">Zaloguj się</string>
-    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_and_password_required">Zaloguj się i podaj hasła</string>
-    <string name="settings_import_failure">Import ustawień się nie powiódł</string>
-    <string name="settings_import_read_failure">Odczyt pliku ustawień się nie powiódł</string>
-    <string name="settings_import_partial_failure">Import niektórych ustawień się nie powiódł</string>
-    <string name="settings_import_status_success">Zaimportowano z powodzeniem</string>
-    <string name="settings_import_status_password_required">Hasło wymagane</string>
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import_status_log_in_required">Wymagane jest zalogowanie się</string>
-    <string name="settings_import_status_not_imported">Niezaimportowane</string>
-    <string name="settings_import_status_error">Import zakończony niepowodzeniem</string>
-    <string name="settings_import_later_button">Później</string>
-    <string name="settings_importing">Importowanie ustawień…</string>
-    <plurals name="settings_import_password_prompt">
-        <item quantity="one">Aby móc skorzystać z konta \"<xliff:g id="account">%s</xliff:g>\", trzeba podać hasło.</item>
-        <item quantity="few">Aby móc skorzystać z konta \"<xliff:g id="account">%s</xliff:g>\", trzeba podać hasła.</item>
-        <item quantity="many">Aby móc skorzystać z konta \"<xliff:g id="account">%s</xliff:g>\", trzeba podać hasła.</item>
-        <item quantity="other">Aby móc skorzystać z konta \"<xliff:g id="account">%s</xliff:g>\", trzeba podać hasła.</item>
-    </plurals>
-    <string name="settings_import_incoming_server_password_hint">Hasło serwera poczty przychodzącej</string>
-    <string name="settings_import_outgoing_server_password_hint">Hasło serwera poczty wychodzącej</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Użyj tego samego hasła dla serwera poczty wychodzącej</string>
-    <string name="server_name_format">Nazwa serwera: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="unread_widget_select_account">Pokaż licznik nieprzeczytanych dla…</string>
     <string name="unread_widget_account_title">Konto</string>
     <string name="unread_widget_account_summary">Konto, dla którego liczba nieprzeczytanych wiadomości powinna być wyświetlana</string>

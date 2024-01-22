@@ -46,9 +46,6 @@
     <string name="choose_folder_move_title">Færa í…</string>
     <string name="choose_folder_copy_title">Afrita í…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valið</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">Í lagi</string>
-    <string name="cancel_action">Hætta við</string>
     <string name="send_action">Senda</string>
     <string name="empty_subject">Viðfangsefni er autt, smelltu aftur til að senda samt</string>
     <string name="reply_action">Svara</string>
@@ -275,11 +272,6 @@
     <string name="quiet_time_starts">Kyrrðarstund hefst</string>
     <string name="quiet_time_ends">Kyrrðarstund endar</string>
     <string name="account_setup_basics_title">Setja upp nýjan aðgang</string>
-    <string name="account_setup_oauth_description">Til að nota þennan tölvupóstaðgang með K-9 póstinum, þarftu að skrá þig inn og veita forritinu heimild inn á tölvupóstinn þinn.</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in">Skrá inn</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in_with_google">Skrá inn með Google</string>
     <string name="account_setup_incoming_delete_policy_label">Þegar ég eyði skilaboðum</string>
     <string name="account_setup_incoming_delete_policy_never_label">Ekki eyða af póstþjóni</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Eyða af póstþjóni</string>
@@ -327,10 +319,6 @@
     <string name="account_setup_options_mail_display_count_10000">10000 skilaboð</string>
     <string name="account_setup_options_mail_display_count_all">öll skilaboð</string>
     <string name="move_copy_cannot_copy_unsynced_message">Get ekki afritað eða fært skilaboð sem ekki er samstillt við póstþjóninn</string>
-    <string name="account_setup_failed_dlg_oauth_flow_canceled">Hætt við auðkenningu</string>
-    <string name="account_setup_failed_dlg_oauth_flow_failed">Auðkenning mistókst með eftirfarandi villuboðum: <xliff:g id="error">%s</xliff:g></string>
-    <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 er ekki stutt í augnablikinu hjá þessari þjónustuveitu.</string>
-    <string name="account_setup_failed_dlg_browser_not_found">Forritið fann engan vafra til að nota til að fá aðgang að notandaaðgangnum þinum.</string>
     <string name="account_settings_push_advanced_title">Ítarlegt</string>
     <string name="account_settings_title_fmt">Aðgangsstillingar</string>
     <string name="account_settings_notify_label">Tilkynningar um nýjan póst</string>
@@ -685,35 +673,6 @@
     <string name="settings_export_progress_text">Flytja út stillingar…</string>
     <string name="settings_export_success_generic">Tókst að flytja út stillingar</string>
     <string name="settings_export_failure">Mistókst að flytja út stillingar</string>
-    <string name="settings_import_title">Flytja inn stillingar</string>
-    <string name="settings_import_pick_document_button">Velja skrá</string>
-    <string name="settings_import_button">Flytja inn</string>
-    <string name="settings_import_success_generic">Tókst að flytja inn stillingar</string>
-    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required"> Settu inn lykilorðin</string>
-    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_required">Skráðu þig inn</string>
-    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_and_password_required"> Skráðu þig inn og settu inn lykilorð</string>
-    <string name="settings_import_failure">Mistókst að flytja inn stillingar</string>
-    <string name="settings_import_read_failure">Mistókst að lesa stillingaskrá</string>
-    <string name="settings_import_partial_failure">Mistókst að flytja inn sumar stillingar</string>
-    <string name="settings_import_status_success">Innflutningur tókst</string>
-    <string name="settings_import_status_password_required">Lykilorðs er krafist</string>
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import_status_log_in_required">Innskráningar krafist</string>
-    <string name="settings_import_status_not_imported">Ekki flutt inn</string>
-    <string name="settings_import_status_error">Innflutningur mistókst</string>
-    <string name="settings_import_later_button">Síðar</string>
-    <string name="settings_importing">Flytja inn stillingar…</string>
-    <plurals name="settings_import_password_prompt">
-        <item quantity="one">Til að geta notað aðganginn \"<xliff:g id="account">%s</xliff:g>\" verður þú að gefa upp lykilorðið á þjóninum.</item>
-        <item quantity="other">Til að geta notað aðganginn \"<xliff:g id="account">%s</xliff:g>\" verður þú að gefa upp lykilorðin á þjóninum.</item>
-    </plurals>
-    <string name="settings_import_incoming_server_password_hint">Lykilorð móttöku-póstþjóns</string>
-    <string name="settings_import_outgoing_server_password_hint">Lykilorð sendinga-póstþjóns</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Nota sama lykilorð fyrir sendinga-póstþjóninn</string>
-    <string name="server_name_format">Heiti póstþjóns: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="unread_widget_select_account">Sýna fjölda ólesins fyrir…</string>
     <string name="unread_widget_account_title">Aðgangur</string>
     <string name="unread_widget_account_summary">Aðgangurinn sem birting fjöldi ólesinna skilaboða tilheyrir</string>

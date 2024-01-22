@@ -46,9 +46,6 @@
     <string name="choose_folder_move_title">Переместить в…</string>
     <string name="choose_folder_copy_title">Копировать в…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> выбрано</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">ОК</string>
-    <string name="cancel_action">Отмена</string>
     <string name="send_action">Отправить</string>
     <string name="empty_subject">Тема не заполнена, нажмите ещё раз для отправки без темы</string>
     <string name="reply_action">Ответить</string>
@@ -278,11 +275,6 @@
     <string name="quiet_time_starts">Начало</string>
     <string name="quiet_time_ends">Конец</string>
     <string name="account_setup_basics_title">Создание учётной записи</string>
-    <string name="account_setup_oauth_description">Чтобы использовать эту учётную запись электронной почты с K-9 Mail, вам необходимо войти в систему и предоставить приложению доступ к вашим электронным письмам.</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in">Войти</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in_with_google">Войдите в систему с помощью Google</string>
     <string name="account_setup_incoming_delete_policy_label">Удалённое, на сервере</string>
     <string name="account_setup_incoming_delete_policy_never_label">Оставить</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Удалить</string>
@@ -330,10 +322,6 @@
     <string name="account_setup_options_mail_display_count_10000">10000 сообщений</string>
     <string name="account_setup_options_mail_display_count_all">Все сообщения</string>
     <string name="move_copy_cannot_copy_unsynced_message">Нельзя скопировать или переместить сообщение, не синхронизированное с сервером</string>
-    <string name="account_setup_failed_dlg_oauth_flow_canceled">Авторизация отменена</string>
-    <string name="account_setup_failed_dlg_oauth_flow_failed">Авторизация завершилась ошибкой со следующей ошибкой: <xliff:g id="error">%s</xliff:g></string>
-    <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 в настоящее время не поддерживается этим поставщиком.</string>
-    <string name="account_setup_failed_dlg_browser_not_found">Приложению не удалось найти браузер, чтобы дать доступ к вашей учётной записи.</string>
     <string name="account_settings_push_advanced_title">Дополнительно</string>
     <string name="account_settings_title_fmt">Настройки учётной записи</string>
     <string name="account_settings_notify_label">Уведомить о почте</string>
@@ -692,37 +680,6 @@
     <string name="settings_export_progress_text">Экспорт настроек…</string>
     <string name="settings_export_success_generic">Настройки успешно экспортированы</string>
     <string name="settings_export_failure">Сбой экспорта настроек</string>
-    <string name="settings_import_title">Импорт настроек</string>
-    <string name="settings_import_pick_document_button">Выбрать файл</string>
-    <string name="settings_import_button">Импорт</string>
-    <string name="settings_import_success_generic">Настройки успешно импортированы</string>
-    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required">Пожалуйста, введите пароли</string>
-    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_required">Пожалуйста, войдите в систему</string>
-    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_and_password_required">Пожалуйста, войдите в систему и введите пароль</string>
-    <string name="settings_import_failure">Не удалось импортировать настройки</string>
-    <string name="settings_import_read_failure">Не удалось прочесть файл настроек</string>
-    <string name="settings_import_partial_failure">Не удалось импортировать некоторые настройки</string>
-    <string name="settings_import_status_success">Успешный импорт</string>
-    <string name="settings_import_status_password_required">Требуется пароль</string>
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import_status_log_in_required">Требуется вход в систему</string>
-    <string name="settings_import_status_not_imported">Не импортировано</string>
-    <string name="settings_import_status_error">Импорт не удался</string>
-    <string name="settings_import_later_button">Позже</string>
-    <string name="settings_importing">Импорт настроек…</string>
-    <plurals name="settings_import_password_prompt">
-        <item quantity="one">Чтобы использовать ящик «<xliff:g id="account">%s</xliff:g>» необходимо ввести пароль.</item>
-        <item quantity="few">Чтобы использовать ящик «<xliff:g id="account">%s</xliff:g>» необходимо ввести пароли.</item>
-        <item quantity="many">Чтобы использовать ящик «<xliff:g id="account">%s</xliff:g>» необходимо ввести пароли.</item>
-        <item quantity="other">Чтобы использовать учётную запись «<xliff:g id="account">%s</xliff:g>» необходимо ввести пароли.</item>
-    </plurals>
-    <string name="settings_import_incoming_server_password_hint">Входящий пароль сервера</string>
-    <string name="settings_import_outgoing_server_password_hint">Исходящий пароль сервера</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Использовать тот же пароль для исходящего сервера</string>
-    <string name="server_name_format">Названия серверов: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="unread_widget_select_account">Счётчик непрочитанных</string>
     <string name="unread_widget_account_title">Учётная запись</string>
     <string name="unread_widget_account_summary">Учётная запись для отображения счётчика непрочитанных</string>

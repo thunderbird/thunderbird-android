@@ -12,7 +12,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.observeNotNull
+import com.fsck.k9.ui.base.livedata.observeNotNull
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel

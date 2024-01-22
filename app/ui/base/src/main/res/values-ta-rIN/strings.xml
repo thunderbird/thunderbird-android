@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
+    <string name="okay_action">சரி</string>
+    <string name="cancel_action">வேண்டாம்</string>
+</resources>

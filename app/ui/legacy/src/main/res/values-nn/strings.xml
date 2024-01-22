@@ -25,9 +25,6 @@
     <string name="choose_account_title">Vel konto</string>
     <string name="choose_folder_title">Vel mappe</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> vald(e)</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">Greitt</string>
-    <string name="cancel_action">Avbryt</string>
     <string name="send_action">Send</string>
     <string name="empty_subject">Emnet er tomt, trykk ein gong til for å senda likevel</string>
     <string name="reply_action">Svar</string>
@@ -376,13 +373,9 @@
     <string name="settings_export_share_button">Del</string>
     <string name="settings_export_progress_text">Eksporterer innstillingar …</string>
     <string name="settings_export_failure">Eksportering av innstillingane vart mislukka</string>
-    <string name="settings_import_title">Importer innstillingar</string>
-    <string name="settings_import_button">Importer</string>
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_importing">Importerer innstillingar …</string>
     <string name="unread_widget_select_account">Syn talet på ulesne for …</string>
     <string name="webview_empty_message">Ingen tekst</string>
     <string name="webview_contextmenu_link_view_action">Opna lenkje</string>

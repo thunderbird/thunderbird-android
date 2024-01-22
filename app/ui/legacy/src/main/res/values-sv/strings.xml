@@ -46,9 +46,6 @@
     <string name="choose_folder_move_title">Flytta till…</string>
     <string name="choose_folder_copy_title">Kopiera till…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valda</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">OK</string>
-    <string name="cancel_action">Avbryt</string>
     <string name="send_action">Skicka</string>
     <string name="empty_subject">Ämnet är tomt, klicka igen för att skicka ändå</string>
     <string name="reply_action">Svara</string>
@@ -275,11 +272,6 @@
     <string name="quiet_time_starts">Tyst tid börjar</string>
     <string name="quiet_time_ends">Tyst tid slutar</string>
     <string name="account_setup_basics_title">Konfigurera ett nytt konto</string>
-    <string name="account_setup_oauth_description">För att använda detta e-postkonto med K-9 Mail måste du logga in och ge appen åtkomst till dina e-postmeddelanden.</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in">Logga in</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in_with_google">Logga in med Google</string>
     <string name="account_setup_incoming_delete_policy_label">När jag tar bort ett meddelande</string>
     <string name="account_setup_incoming_delete_policy_never_label">Ta inte bort från servern</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Ta bort från servern</string>
@@ -327,10 +319,6 @@
     <string name="account_setup_options_mail_display_count_10000">10000 meddelanden</string>
     <string name="account_setup_options_mail_display_count_all">alla meddelanden</string>
     <string name="move_copy_cannot_copy_unsynced_message">Kan inte kopiera eller flytta ett meddelande som inte är synkroniserat med servern</string>
-    <string name="account_setup_failed_dlg_oauth_flow_canceled">Auktoriseringen avbröts</string>
-    <string name="account_setup_failed_dlg_oauth_flow_failed">Auktoriseringen misslyckades med följande fel: <xliff:g id="error">%s</xliff:g></string>
-    <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 stöds för närvarande inte av denna leverantör.</string>
-    <string name="account_setup_failed_dlg_browser_not_found">Appen kunde inte hitta en webbläsare att använda för att ge åtkomst till ditt konto.</string>
     <string name="account_settings_push_advanced_title">Avancerat</string>
     <string name="account_settings_title_fmt">Kontoinställningar</string>
     <string name="account_settings_notify_label">Aviseringar vid ny e-post</string>
@@ -685,35 +673,6 @@
     <string name="settings_export_progress_text">Exporterar inställningar…</string>
     <string name="settings_export_success_generic">Inställningar exporterades</string>
     <string name="settings_export_failure">Export av inställningar misslyckades</string>
-    <string name="settings_import_title">Importera inställningar</string>
-    <string name="settings_import_pick_document_button">Välj fil</string>
-    <string name="settings_import_button">Importera</string>
-    <string name="settings_import_success_generic">Inställningarna importerade</string>
-    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required">Ange lösenord</string>
-    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_required">Logga in</string>
-    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_and_password_required">Logga in och ange lösenord</string>
-    <string name="settings_import_failure">Det gick inte att importera inställningar</string>
-    <string name="settings_import_read_failure">Det gick inte att läsa inställningsfilen</string>
-    <string name="settings_import_partial_failure">Det gick inte att importera vissa inställningar</string>
-    <string name="settings_import_status_success">Importerades</string>
-    <string name="settings_import_status_password_required">Lösenord krävs</string>
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import_status_log_in_required">Inloggning krävs</string>
-    <string name="settings_import_status_not_imported">Inte importerad</string>
-    <string name="settings_import_status_error">Importfel</string>
-    <string name="settings_import_later_button">Senare</string>
-    <string name="settings_importing">Importerar inställningar…</string>
-    <plurals name="settings_import_password_prompt">
-        <item quantity="one">För att kunna använda kontot \"<xliff:g id="account">%s</xliff:g>\" måste du ange serverlösenordet.</item>
-        <item quantity="other">För att kunna använda kontot \"<xliff:g id="account">%s</xliff:g>\" måste du ange serverlösenorden.</item>
-    </plurals>
-    <string name="settings_import_incoming_server_password_hint">Inkommande serverlösenord</string>
-    <string name="settings_import_outgoing_server_password_hint">Utgående serverlösenord</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Använd samma lösenord för utgående server</string>
-    <string name="server_name_format">Servernamn: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="unread_widget_select_account">Visa antalet olästa för…</string>
     <string name="unread_widget_account_title">Konto</string>
     <string name="unread_widget_account_summary">Kontot för vilken olästa räkningen ska visas</string>

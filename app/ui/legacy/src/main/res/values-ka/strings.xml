@@ -30,9 +30,6 @@
     <string name="choose_account_title">აირჩიეთ ანგარიში</string>
     <string name="choose_folder_title">აირჩიეთ საქაღალდე</string>
     <string name="actionbar_selected">არჩეულია <xliff:g id="selection_count">%d</xliff:g></string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">ᲝᲙ</string>
-    <string name="cancel_action">გაუქმება</string>
     <string name="send_action">გაგზავნა</string>
     <string name="empty_subject">საგნის ველი ცარიელია. მაინც გასაგზავნად, დააჭირეთ ხელახლა</string>
     <string name="reply_action">პასუხი</string>
@@ -421,21 +418,6 @@
     <string name="settings_list_backup_category">სათადარიგო ასლი</string>
     <string name="settings_export_button">ექსპორტი</string>
     <string name="settings_export_share_button">გაზიარება</string>
-    <string name="settings_import_title">პარამეტრების იმპორტირება</string>
-    <string name="settings_import_button">იმპორტი</string>
-    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_importing">პარამეტრების იმპორტირება...</string>
-    <plurals name="settings_import_password_prompt">
-        <item quantity="one">ანგარიშის „<xliff:g id="account">%s</xliff:g>“ გამოსაყენებლად, საჭიროა სერვერის პაროლის მითითება.</item>
-        <item quantity="other">ანგარიშის „<xliff:g id="account">%s</xliff:g>“ გამოსაყენებლად, საჭიროა სერვერის პაროლის მითითება.</item>
-    </plurals>
-    <string name="settings_import_incoming_server_password_hint">შემავალი სერვერის პაროლი</string>
-    <string name="settings_import_outgoing_server_password_hint">გამავალი სერვერის პაროლი</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">იმავე პაროლის გამოყენება გამავალი სერვერისთვის</string>
-    <string name="server_name_format">სერვერის სახელი: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="unread_widget_account_title">ანგარიში</string>
     <string name="unread_widget_unified_inbox_account_summary">გაერთიანებული შემავალი</string>
     <string name="unread_widget_folder_enabled_title">საკეცების რაოდენობა</string>

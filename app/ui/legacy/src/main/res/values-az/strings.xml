@@ -43,9 +43,6 @@
     <string name="choose_folder_move_title">Bura Köçür…</string>
     <string name="choose_folder_copy_title">Bura Yapışdır…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seçildi</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">Oldu</string>
-    <string name="cancel_action">Ləğv et</string>
     <string name="send_action">Göndər</string>
     <string name="empty_subject">Mövzu boşdur, necəsə göndərmək üçün təkrar kliklə</string>
     <string name="reply_action">Cavab ver</string>
@@ -85,8 +82,6 @@
     <string name="general_settings_swipe_action_spam">Spam</string>
     <!--Name of the swipe action to move a message to another folder-->
     <!--Title of the setting to specify the density of the message list-->
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <!--Displayed below the 'account_setup_oauth_description' text-->
     <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
     <string name="account_settings_push_advanced_title">Qabaqcıl</string>
     <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->

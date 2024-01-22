@@ -46,9 +46,6 @@
     <string name="choose_folder_move_title">Посунути до…</string>
     <string name="choose_folder_copy_title">Копіювати до…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> вибрано</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">Гаразд</string>
-    <string name="cancel_action">Скасувати</string>
     <string name="send_action">Надіслати</string>
     <string name="empty_subject">Не зазначено тему; натисніть знову, щоб відправити лист без теми</string>
     <string name="reply_action">Відповісти</string>
@@ -279,11 +276,6 @@
     <string name="quiet_time_starts">Початок Тихої Години</string>
     <string name="quiet_time_ends">Кінець Тихої Години</string>
     <string name="account_setup_basics_title">Налаштувати новий обліковий запис</string>
-    <string name="account_setup_oauth_description">Для використання цього поштового облікового запису у K-9 Mail Вам потрібно увійти в обліковий запис та надати доступ до ел.листів.</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in">Увійти</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in_with_google">Увійти з Google</string>
     <string name="account_setup_incoming_delete_policy_label">Коли я видаляю повідомлення</string>
     <string name="account_setup_incoming_delete_policy_never_label">Не видаляти на сервері</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Видаляти на сервері</string>
@@ -331,10 +323,6 @@
     <string name="account_setup_options_mail_display_count_10000">10000 повідомлень</string>
     <string name="account_setup_options_mail_display_count_all">усі повідомлення</string>
     <string name="move_copy_cannot_copy_unsynced_message">Не можна копіювати чи переміщувати повідомлення, не синхронізоване з сервером</string>
-    <string name="account_setup_failed_dlg_oauth_flow_canceled"> Авторизація скасована</string>
-    <string name="account_setup_failed_dlg_oauth_flow_failed">Авторизація на вдалася з таких причин: <xliff:g id="error">%s</xliff:g></string>
-    <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 наразі цим провайдером не підтримується.</string>
-    <string name="account_setup_failed_dlg_browser_not_found">Програма не може знайти браузер для надання доступу до Вашого облікового запису.</string>
     <string name="account_settings_push_advanced_title">Додатково</string>
     <string name="account_settings_title_fmt">Параметри облікового запису</string>
     <string name="account_settings_notify_label">Сповіщення про нову пошту</string>
@@ -693,37 +681,6 @@
     <string name="settings_export_progress_text">Експортуються налаштування…</string>
     <string name="settings_export_success_generic">Налаштування успішно експортовані</string>
     <string name="settings_export_failure">Не вдалося експортувати налаштування</string>
-    <string name="settings_import_title">Імпортувати налаштування</string>
-    <string name="settings_import_pick_document_button">Вибрати файл</string>
-    <string name="settings_import_button">Імпорт</string>
-    <string name="settings_import_success_generic">Налаштування успішно імпортовано</string>
-    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required">Введіть паролі</string>
-    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_required">Увійдіть, будь ласка</string>
-    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_and_password_required">Будь ласка, увійдіть та наберіть паролі</string>
-    <string name="settings_import_failure">Не вдалося імпортувати налаштування</string>
-    <string name="settings_import_read_failure">Не вдалося прочитати файл з налаштуваннями</string>
-    <string name="settings_import_partial_failure">Не вдалося імпортувати деякі налаштування</string>
-    <string name="settings_import_status_success">Успішно імпортовано</string>
-    <string name="settings_import_status_password_required">Потрібен пароль</string>
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import_status_log_in_required">Потрібно увійти</string>
-    <string name="settings_import_status_not_imported">Не імпортовано</string>
-    <string name="settings_import_status_error">Збій імпортування</string>
-    <string name="settings_import_later_button">Пізніше</string>
-    <string name="settings_importing">Імпортуються налаштування…</string>
-    <plurals name="settings_import_password_prompt">
-        <item quantity="one">Щоб користуватися обліковим записом <xliff:g id="account">%s</xliff:g>, потрібно надати пароль сервера.</item>
-        <item quantity="few">Щоб користуватися обліковим записом <xliff:g id="account">%s</xliff:g>, потрібно надати паролі сервера.</item>
-        <item quantity="many">Щоб користуватися обліковим записом <xliff:g id="account">%s</xliff:g>, потрібно надати паролі сервера.</item>
-        <item quantity="other">Щоб користуватися обліковим записом <xliff:g id="account">%s</xliff:g>, потрібно надати паролі сервера.</item>
-    </plurals>
-    <string name="settings_import_incoming_server_password_hint">Пароль сервера вхідної пошти</string>
-    <string name="settings_import_outgoing_server_password_hint">Пароль сервера вихідної пошти</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Використовувати той же пароль для сервера вихідної пошти</string>
-    <string name="server_name_format">Ім\'я сервера: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="unread_widget_select_account">Показати кількість непрочитаних для…</string>
     <string name="unread_widget_account_title">Обліковий запис</string>
     <string name="unread_widget_account_summary">Обліковий запис, для якого має відображатися кількість непрочитаних листів</string>

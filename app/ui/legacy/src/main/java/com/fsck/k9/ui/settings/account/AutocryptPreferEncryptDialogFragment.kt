@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceDialogFragmentCompat
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.base.R as BaseR
 
 class AutocryptPreferEncryptDialogFragment : PreferenceDialogFragmentCompat() {
     private val preferEncryptPreference: AutocryptPreferEncryptPreference
@@ -31,8 +32,8 @@ class AutocryptPreferEncryptDialogFragment : PreferenceDialogFragmentCompat() {
 
         return AlertDialog.Builder(requireContext())
             .setView(view)
-            .setPositiveButton(R.string.okay_action, ::onClick)
-            .setNegativeButton(R.string.cancel_action, ::onClick)
+            .setPositiveButton(BaseR.string.okay_action, ::onClick)
+            .setNegativeButton(BaseR.string.cancel_action, ::onClick)
             .create()
     }
 

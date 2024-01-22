@@ -47,9 +47,6 @@
     <string name="choose_folder_move_title">Verplaatsen naar…</string>
     <string name="choose_folder_copy_title">Kopiëren naar…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> geselecteerd</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">OK</string>
-    <string name="cancel_action">Annuleren</string>
     <string name="send_action">Verzenden</string>
     <string name="empty_subject">Er is geen onderwerp ingevuld. Tik nogmaals om toch te versturen</string>
     <string name="reply_action">Beantwoorden</string>
@@ -277,11 +274,6 @@
     <string name="quiet_time_starts">Stilteperiode start</string>
     <string name="quiet_time_ends">Stilteperiode eindigt</string>
     <string name="account_setup_basics_title">Een nieuwe account instellen</string>
-    <string name="account_setup_oauth_description">Om met K-9 Mail deze e-mailaccount te gebruiken moet u aanmelden om de app toegang te geven tot uw e-mailberichten.</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in">Aanmelden</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in_with_google">Aanmelden met Google</string>
     <string name="account_setup_incoming_delete_policy_label">Wanneer ik een bericht verwijder</string>
     <string name="account_setup_incoming_delete_policy_never_label">Niet van server verwijderen</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Van server verwijderen</string>
@@ -329,10 +321,6 @@
     <string name="account_setup_options_mail_display_count_10000">10000 berichten</string>
     <string name="account_setup_options_mail_display_count_all">alle berichten</string>
     <string name="move_copy_cannot_copy_unsynced_message">Kan bericht niet kopiëren of verplaatsen, omdat deze niet is gesynchroniseerd met de server</string>
-    <string name="account_setup_failed_dlg_oauth_flow_canceled">Autorisatie geannuleerd</string>
-    <string name="account_setup_failed_dlg_oauth_flow_failed">Autorisatie is mislukt met de volgende foutmelding: <xliff:g id="error">%s</xliff:g></string>
-    <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 wordt momenteel niet ondersteund door deze provider.</string>
-    <string name="account_setup_failed_dlg_browser_not_found">Deze app kan geen browser vinden. Een browser is nodig om toegang te krijgen tot uw account.</string>
     <string name="account_settings_push_advanced_title">Geavanceerd</string>
     <string name="account_settings_title_fmt">Accountinstellingen</string>
     <string name="account_settings_notify_label">Nieuwe e-mailmelding</string>
@@ -687,35 +675,6 @@
     <string name="settings_export_progress_text">Instellingen exporteren…</string>
     <string name="settings_export_success_generic">Instellingen met succes geëxporteerd</string>
     <string name="settings_export_failure">Instellingen exporteren mislukt</string>
-    <string name="settings_import_title">Instellingen importeren</string>
-    <string name="settings_import_pick_document_button">Bestand selecteren</string>
-    <string name="settings_import_button">Importeren</string>
-    <string name="settings_import_success_generic">Instellingen met succes geïmporteerd</string>
-    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required">Voer de wachtwoorden in</string>
-    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_required">Aanmelden</string>
-    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_and_password_required">Meld u aan en voer de wachtwoorden in</string>
-    <string name="settings_import_failure">Instellingen importeren mislukt</string>
-    <string name="settings_import_read_failure">Lezen van instellingenbestand mislukt</string>
-    <string name="settings_import_partial_failure">Importeren van sommige instellingen mislukt</string>
-    <string name="settings_import_status_success">Met succes geïmporteerd</string>
-    <string name="settings_import_status_password_required">Wachtwoord vereist</string>
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import_status_log_in_required">Aanmelden vereist</string>
-    <string name="settings_import_status_not_imported">Niet geïmporteerd</string>
-    <string name="settings_import_status_error">Importeren mislukt</string>
-    <string name="settings_import_later_button">Later</string>
-    <string name="settings_importing">Instellingen importeren…</string>
-    <plurals name="settings_import_password_prompt">
-        <item quantity="one">Om de account ‘<xliff:g id="account">%s</xliff:g>’ te gebruiken moet u het wachtwoord van de server opgeven.</item>
-        <item quantity="other">Om de account ‘<xliff:g id="account">%s</xliff:g>’ te gebruiken moet u de wachtwoorden van de server opgeven.</item>
-    </plurals>
-    <string name="settings_import_incoming_server_password_hint">Wachtwoord inkomende server</string>
-    <string name="settings_import_outgoing_server_password_hint">Wachtwoord uitgaande server</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Gebruik hetzelfde wachtwoord voor de uitgaande server</string>
-    <string name="server_name_format">Servernaam: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="unread_widget_select_account">Aantal ongelezen tonen voor…</string>
     <string name="unread_widget_account_title">Account</string>
     <string name="unread_widget_account_summary">De account waarvan het aantal ongelezen berichten wordt getoond</string>

@@ -37,9 +37,6 @@
     <string name="choose_folder_move_title">העבר אל…</string>
     <string name="choose_folder_copy_title">העתק אל…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> נבחרו</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">אישור</string>
-    <string name="cancel_action">ביטול</string>
     <string name="send_action">שלח</string>
     <string name="empty_subject">הנושא ריק, הקש שוב כדי לשלוח בכל זאת.</string>
     <string name="reply_action">השב</string>
@@ -512,15 +509,8 @@
     <string name="settings_export_share_button">שתף</string>
     <string name="settings_export_progress_text">מייצא הגדרות…</string>
     <string name="settings_export_failure">נכשל בייצוא הגדרות</string>
-    <string name="settings_import_title">יבא הגדרות</string>
-    <string name="settings_import_pick_document_button">בחר קובץ</string>
-    <string name="settings_import_button">יבא</string>
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import_later_button">מאוחר יותר</string>
-    <string name="settings_importing">מייבא הגדרות…</string>
     <string name="unread_widget_account_title">חשבון</string>
     <string name="unread_widget_folder_title">תיקייה</string>
     <string name="webview_contextmenu_link_view_action">פתח קישור</string>

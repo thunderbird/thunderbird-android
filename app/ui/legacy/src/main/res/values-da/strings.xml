@@ -46,9 +46,6 @@
     <string name="choose_folder_move_title">Flyt til…</string>
     <string name="choose_folder_copy_title">Kopier til…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valgt</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">O.k.</string>
-    <string name="cancel_action">Annullér</string>
     <string name="send_action">Send</string>
     <string name="empty_subject">Emnefeltet er tomt; klik igen for at sende alligevel</string>
     <string name="reply_action">Svar</string>
@@ -273,10 +270,6 @@
     <string name="quiet_time_starts">Start tid</string>
     <string name="quiet_time_ends">Slut tid</string>
     <string name="account_setup_basics_title">Opsætning af ny konto</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in">Log ind</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in_with_google">Log ind med Google</string>
     <string name="account_setup_incoming_delete_policy_label">Når jeg sletter en mail</string>
     <string name="account_setup_incoming_delete_policy_never_label">Undlad at slette på server</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Slet på server</string>
@@ -675,35 +668,6 @@
     <string name="settings_export_progress_text">Eksporterer opsætning…</string>
     <string name="settings_export_success_generic">Indstillinger succesfuldt eksporteret</string>
     <string name="settings_export_failure">Eksport af indstillinger fejlede</string>
-    <string name="settings_import_title">Importér opsætning</string>
-    <string name="settings_import_pick_document_button">Vælg fil</string>
-    <string name="settings_import_button">Importer</string>
-    <string name="settings_import_success_generic">Importerede indstillinger</string>
-    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required">Indtast venligst kodeord</string>
-    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_required">Log venligst ind</string>
-    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_and_password_required">Log ind og indtast adgangskoder</string>
-    <string name="settings_import_failure">Importen af indstillinger fejlede</string>
-    <string name="settings_import_read_failure">Indlæsning af fil med indstillinger mislykkedes</string>
-    <string name="settings_import_partial_failure">Import af nogle indstillinger fejlede</string>
-    <string name="settings_import_status_success">Importeret korrrekt</string>
-    <string name="settings_import_status_password_required">Kodeord påkrævet</string>
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import_status_log_in_required">Log-ind er påkrævet</string>
-    <string name="settings_import_status_not_imported">Ikke importeret</string>
-    <string name="settings_import_status_error">Import fejlede</string>
-    <string name="settings_import_later_button">Senere</string>
-    <string name="settings_importing">Importerer opsætning…</string>
-    <plurals name="settings_import_password_prompt">
-        <item quantity="one">For at bruge kontoen \"<xliff:g id="account">%s</xliff:g>\" er du nødt til at angive adgangskoden for serveren.</item>
-        <item quantity="other">For at bruge kontoen \"<xliff:g id="account">%s</xliff:g>\" er du nødt til at angive adgangskoderne for serveren.</item>
-    </plurals>
-    <string name="settings_import_incoming_server_password_hint">Indgående server adgangskode</string>
-    <string name="settings_import_outgoing_server_password_hint">Udgående server adgangskode</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Brug samme adgangskode for udgående server</string>
-    <string name="server_name_format">Server navn: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="unread_widget_select_account">Vis antal ulæste for…</string>
     <string name="unread_widget_account_title">Konto</string>
     <string name="unread_widget_account_summary">Kontoen for hvilken tælleren for ulæste mails skal vises</string>

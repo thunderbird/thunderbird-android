@@ -38,9 +38,6 @@
     <string name="choose_account_title">Избор налога</string>
     <string name="choose_folder_title">Избор фасцикле</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> изабрано</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">У реду</string>
-    <string name="cancel_action">Одустани</string>
     <string name="send_action">Пошаљи</string>
     <string name="empty_subject">Тема је празна. Тапните да ипак пошаљете</string>
     <string name="reply_action">Одговори</string>
@@ -617,33 +614,6 @@
     <string name="settings_export_progress_text">Извозим поставке…</string>
     <string name="settings_export_success_generic">Поставке успешно извезене</string>
     <string name="settings_export_failure">Неуспех извоза поставки</string>
-    <string name="settings_import_title">Увези поставке</string>
-    <string name="settings_import_pick_document_button">Изаберите фајл</string>
-    <string name="settings_import_button">Увоз</string>
-    <string name="settings_import_success_generic">Поставке успешно увезене</string>
-    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required">Унесите лозинке</string>
-    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_failure">Не могу да увезем поставке</string>
-    <string name="settings_import_read_failure">Не могу да читам фајл поставки</string>
-    <string name="settings_import_partial_failure">Не могу да увезем неке поставке</string>
-    <string name="settings_import_status_success">Успешно увезено</string>
-    <string name="settings_import_status_password_required">Неопходна је лозинка</string>
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import_status_not_imported">Није увезено </string>
-    <string name="settings_import_status_error">Увоз неуспешан</string>
-    <string name="settings_import_later_button">Касније</string>
-    <string name="settings_importing">Увозим поставке…</string>
-    <plurals name="settings_import_password_prompt">
-        <item quantity="one">Да би користили налог „<xliff:g id="account">%s</xliff:g>“, морате унети лозинку.</item>
-        <item quantity="few">Да би користили налог „<xliff:g id="account">%s</xliff:g>“, морате унети лозинке.</item>
-        <item quantity="other">Да би користили налог „<xliff:g id="account">%s</xliff:g>“, морате унети лозинке.</item>
-    </plurals>
-    <string name="settings_import_incoming_server_password_hint">Лозинка долазног сервера</string>
-    <string name="settings_import_outgoing_server_password_hint">Лозинка одлазног сервера</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Користи исту лозинку за одлазни сервер </string>
-    <string name="server_name_format">Назив сервера: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="unread_widget_select_account">Прикажи број непрочитаних за…</string>
     <string name="unread_widget_account_title">Налог</string>
     <string name="unread_widget_account_summary">Налог за који ће бројач непрочитаних порука бити приказан</string>

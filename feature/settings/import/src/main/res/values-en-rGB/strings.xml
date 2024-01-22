@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_title">Import settings</string>
+    <string name="settings_import_pick_document_button">Select file</string>
+    <string name="settings_import_button">Import</string>
+    <string name="settings_import_success_generic">Settings successfully imported</string>
+    <string name="settings_import_password_required">Please enter passwords</string>
+    <string name="settings_import_authorization_required">Please sign in</string>
+    <string name="settings_import_authorization_and_password_required">Please sign in and enter passwords</string>
+    <string name="settings_import_failure">Failed to import settings</string>
+    <string name="settings_import_read_failure">Failed to read settings file</string>
+    <string name="settings_import_partial_failure">Failed to import some settings</string>
+    <string name="settings_import_status_success">Imported successfully</string>
+    <string name="settings_import_status_password_required">Password required</string>
+    <string name="settings_import_status_log_in_required">Sign-in required</string>
+    <string name="settings_import_status_not_imported">Not imported</string>
+    <string name="settings_import_status_error">Import failure</string>
+    <string name="settings_import_later_button">Later</string>
+    <string name="settings_importing">Importing settings…</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">To be able to use the account \"<xliff:g id="account">%s</xliff:g>\" you need to provide the server password.</item>
+        <item quantity="other">To be able to use the account \"<xliff:g id="account">%s</xliff:g>\" you need to provide the server passwords.</item>
+    </plurals>
+    <string name="settings_import_incoming_server_password_hint">Incoming server password</string>
+    <string name="settings_import_outgoing_server_password_hint">Outgoing server password</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Use same password for outgoing server</string>
+    <string name="settings_import_server_name_format">Server name: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_oauth_description">To use this email account with K-9 Mail, you need to sign in and grant the app access to your emails.</string>
+    <string name="settings_import_oauth_sign_in">Sign in</string>
+    <string name="settings_import_oauth_sign_in_with_google">Sign in with Google</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">Authorisation cancelled</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Authorisation failed with the following error: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 is currently not supported with this provider.</string>
+    <string name="settings_import_oauth_error_browser_not_found">The app couldn\'t find a browser to use for granting access to your account.</string>
+    <string name="settings_import_general_settings_item">General settings</string>
+</resources>

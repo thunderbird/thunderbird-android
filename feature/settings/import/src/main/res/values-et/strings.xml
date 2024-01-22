@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_title">Impordi sätted</string>
+    <string name="settings_import_pick_document_button">Vali fail</string>
+    <string name="settings_import_button">Impordi</string>
+    <string name="settings_import_success_generic">Sätted edukalt imporditud</string>
+    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+    <string name="settings_import_password_required">Palun sisesta salasõnad</string>
+    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_required">Palun logi sisse</string>
+    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_and_password_required">Palun logi sisse ja sisesta salasõnad</string>
+    <string name="settings_import_failure">Sätete importimine ebaõnnestus</string>
+    <string name="settings_import_read_failure">Sätete faili lugemine ebaõnnestus</string>
+    <string name="settings_import_partial_failure">Mõnede sätete importimine ebaõnnestus</string>
+    <string name="settings_import_status_success">Importimine õnnestus</string>
+    <string name="settings_import_status_password_required">Salasõna on vajalik</string>
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="settings_import_status_log_in_required">Sisselogimine on nõutav</string>
+    <string name="settings_import_status_not_imported">Ei imporditud</string>
+    <string name="settings_import_status_error">Importimise viga</string>
+    <string name="settings_import_later_button">Hiljem</string>
+    <string name="settings_importing">Sätete importimine…</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">„<xliff:g id="account">%s</xliff:g>“ konto kasutamiseks palun sisesta serveri salasõna.</item>
+        <item quantity="other">„<xliff:g id="account">%s</xliff:g>“ konto kasutamiseks palun sisesta serveri salasõnad.</item>
+    </plurals>
+    <string name="settings_import_incoming_server_password_hint">Saabuvaid kirju teenindava serveri salasõna</string>
+    <string name="settings_import_outgoing_server_password_hint">Väljuvaid kirju teenindava serveri salasõna</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Kasuta sama salasõna ka väljuvate kirjade serveri tarbeks</string>
+    <string name="settings_import_server_name_format">Serveri nimi: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_oauth_description">Kui soovid seda e-posti teenust kasutada K-9 e-postikliendiga, siis logi teenusesse ja anna rakendusele õigus e-kirju ligeda.</string>
+    <string name="settings_import_oauth_sign_in">Logi sisse</string>
+    <string name="settings_import_oauth_sign_in_with_google">Logi sisse kasutades Google\'i teenuseid</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">Autentimine on katkenud</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Autentimine ei õnnestunud ja tekkis järgnev viga: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_not_supported">See teenusepakkuja ei võimalda OAuth 2.0 kasutamist.</string>
+    <string name="settings_import_oauth_error_browser_not_found">Rakendus ei suutnud tuvastada veebibrauserit, mida saaks sinu kontole ligipääsu lubamiseks kasutada.</string>
+    <string name="settings_import_general_settings_item">Üldised sätted</string>
+</resources>

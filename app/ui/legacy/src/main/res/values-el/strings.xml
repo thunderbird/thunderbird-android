@@ -46,9 +46,6 @@
     <string name="choose_folder_move_title">Μετακίνηση σε…</string>
     <string name="choose_folder_copy_title">Αντιγραφή σε…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> επιλέχθηκαν</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">OK</string>
-    <string name="cancel_action">Ακύρωση</string>
     <string name="send_action">Αποστολή</string>
     <string name="empty_subject">Το θέμα είναι κενό, πατήστε επανάληψη για αποστολή</string>
     <string name="reply_action">Απάντηση</string>
@@ -275,11 +272,6 @@
     <string name="quiet_time_starts">Έναρξη Ωρών Ησυχίας</string>
     <string name="quiet_time_ends">Λήξη Ωρών Ησυχίας</string>
     <string name="account_setup_basics_title">Ρύθμιση νέου λογαριασμού</string>
-    <string name="account_setup_oauth_description">Αν θέλετε να χρησιμοποιήσετε αυτόν τον λογαριασμό ηλεκτρονικού ταχυδρομείου με το K-9 Mail πρέπει να συνδεθείτε και να παραχωρήσετε στην εφαρμογή πρόσβαση στα ηλεκτρονικά μηνύματά σας.</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in">Σύνδεση</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in_with_google">Σύνδεση μέσω Google</string>
     <string name="account_setup_incoming_delete_policy_label">Κατά τη διαγραφή μηνύματος</string>
     <string name="account_setup_incoming_delete_policy_never_label">Να μη διαγράφεται στον εξυπηρετητή</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Να διαγράφεται άμεσα από τον εξυπηρετητή</string>
@@ -327,10 +319,6 @@
     <string name="account_setup_options_mail_display_count_10000">10000 μηνύματα</string>
     <string name="account_setup_options_mail_display_count_all">Όλα τα μηνύματα</string>
     <string name="move_copy_cannot_copy_unsynced_message">Αδύνατη η αντιγραφή ή η μετακίνηση μηνύματος που δεν έχει συγχρονιστεί με τον εξυπηρετητή</string>
-    <string name="account_setup_failed_dlg_oauth_flow_canceled">Η εξακρίβωση ακυρώθηκε</string>
-    <string name="account_setup_failed_dlg_oauth_flow_failed">Η εξακρίβωση απέτυχε με το εξής σφάλμα: <xliff:g id="error">%s</xliff:g></string>
-    <string name="account_setup_failed_dlg_oauth_not_supported">Το πρωτόκολο OAuth 2.0 αυτή τη στιγμή δεν υποστηρίζεται από τον συγκεκριμένο πάροχο.</string>
-    <string name="account_setup_failed_dlg_browser_not_found">Η εφαρμογή δεν βρήκε περιηγητή ιστού για να παράσχει πρόσβαση στον λογαριασμό σας.</string>
     <string name="account_settings_push_advanced_title">Προχωρημένα</string>
     <string name="account_settings_title_fmt">Ρυθμίσεις λογαριασμού</string>
     <string name="account_settings_notify_label">Ειδοποιήσεις νέων μηνυμάτων</string>
@@ -685,35 +673,6 @@
     <string name="settings_export_progress_text">Εξαγωγή ρυθμίσεων σε εξέλιξη…</string>
     <string name="settings_export_success_generic">Οι ρυθμίσεις έχουν εξαχθεί με επιτυχία</string>
     <string name="settings_export_failure">Αποτυχία εξαγωγής ρυθμίσεων</string>
-    <string name="settings_import_title">Εισαγωγή ρυθμίσεων</string>
-    <string name="settings_import_pick_document_button">Επιλογή αρχείου</string>
-    <string name="settings_import_button">Εισαγωγή</string>
-    <string name="settings_import_success_generic">Οι ρυθμίσεις έχουν εισαχθεί με επιτυχία</string>
-    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required">Παρακαλώ εισάγετε συνθηματικά</string>
-    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_required">Παρακαλώ συνδεθείτε</string>
-    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_and_password_required">Παρακαλώ συνδεθείτε και εισάγετε κωδικό</string>
-    <string name="settings_import_failure">Αποτυχία εισαγωγής ρυθμίσεων</string>
-    <string name="settings_import_read_failure">Αποτυχία ανάγνωσης αρχείου ρυθμίσεων</string>
-    <string name="settings_import_partial_failure">Αποτυχία εισαγωγής ορισμένων ρυθμίσεων</string>
-    <string name="settings_import_status_success">Η εισαγωγή ολοκληρώθηκε με επιτυχία</string>
-    <string name="settings_import_status_password_required">Απαιτείται κωδικός πρόσβασης</string>
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import_status_log_in_required">Απαιτείται σύνδεση</string>
-    <string name="settings_import_status_not_imported">Δεν έχει εισαχθεί</string>
-    <string name="settings_import_status_error">Αποτυχία εισαγωγής</string>
-    <string name="settings_import_later_button">Αργότερα</string>
-    <string name="settings_importing">Εισαγωγή ρυθμίσεων σε εξέλιξη…</string>
-    <plurals name="settings_import_password_prompt">
-        <item quantity="one">Για να χρησιμοποιήσετε το λογαριασμό «<xliff:g id="account">%s</xliff:g>» πρέπει να εισάγετε τον κωδικό πρόσβασης του διακομιστή.</item>
-        <item quantity="other">Για να χρησιμοποιήσετε τον λογαριασμό «<xliff:g id="account">%s</xliff:g>» πρέπει να εισάγετε τους κωδικούς πρόσβασης του εξυπηρετητή.</item>
-    </plurals>
-    <string name="settings_import_incoming_server_password_hint">Κωδικός πρόσβασης εξυπηρετητή εισερχομένων</string>
-    <string name="settings_import_outgoing_server_password_hint">Κωδικός πρόσβασης εξυπηρετητή εξερχομένων</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Χρήση του ίδιου κωδικού πρόσβασης και για τον εξυπηρετητή εξερχομένων</string>
-    <string name="server_name_format">Όνομα εξυπηρετητή: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="unread_widget_select_account">Προβολή πλήθους μη αναγνωσμένων για…</string>
     <string name="unread_widget_account_title">Λογαριασμός</string>
     <string name="unread_widget_account_summary">Ο λογαριασμός για τον οποίο θα πρέπει να εμφανίζεται ο αριθμός μη αναγνωσμένων</string>
@@ -929,7 +888,7 @@
     <string name="ac_transfer_msg_subject">Μήνυμα Ρύθμισης Autocrypt</string>
     <string name="ac_transfer_msg_body">Αυτό το μήνυμα περιέχει όσες πληροφορίες χρειάζεστε για την ασφαλή μεταφορά των ρυθμίσεων Autocrypt μαζί με το μυστικό σας κλειδί από την αρχική συσκευή.
 
-Για να ρυθμίσετε τη νέα σας συσκευή για Autocrypt, παρακαλώ ακολουθήστε τις οδηγίες που θα πρέπει να παρουσιάζονται από τη νέα σας συσκευή. 
+Για να ρυθμίσετε τη νέα σας συσκευή για Autocrypt, παρακαλώ ακολουθήστε τις οδηγίες που θα πρέπει να παρουσιάζονται από τη νέα σας συσκευή.
 
 Μπορείτε να κρατήσετε αυτό το μήνυμα και να το χρησιμοποιήσετε ως εφεδρικό για το μυστικό σας κλειδί. Εάν αυτό επιθυμείτε, θα πρέπει να σημειώσετε τον κωδικό και να τον αποθηκεύσετε σε ασφαλές σημείο.
 </string>

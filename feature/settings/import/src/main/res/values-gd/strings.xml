@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_title">Ion-phortaich na roghainnean</string>
+    <string name="settings_import_button">Ion-phortaich</string>
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="settings_importing">Ag ion-phortadh nan roghainnean…</string>
+    <string name="settings_import_general_settings_item">Roghainnean coitcheann</string>
+</resources>

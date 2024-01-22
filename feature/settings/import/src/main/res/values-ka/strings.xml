@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_title">პარამეტრების იმპორტირება</string>
+    <string name="settings_import_button">იმპორტი</string>
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="settings_importing">პარამეტრების იმპორტირება...</string>
+    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">ანგარიშის „<xliff:g id="account">%s</xliff:g>“ გამოსაყენებლად, საჭიროა სერვერის პაროლის მითითება.</item>
+        <item quantity="other">ანგარიშის „<xliff:g id="account">%s</xliff:g>“ გამოსაყენებლად, საჭიროა სერვერის პაროლის მითითება.</item>
+    </plurals>
+    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+    <string name="settings_import_incoming_server_password_hint">შემავალი სერვერის პაროლი</string>
+    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+    <string name="settings_import_outgoing_server_password_hint">გამავალი სერვერის პაროლი</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">იმავე პაროლის გამოყენება გამავალი სერვერისთვის</string>
+    <string name="settings_import_server_name_format">სერვერის სახელი: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_general_settings_item">ზოგადი პარამეტრები</string>
+</resources>

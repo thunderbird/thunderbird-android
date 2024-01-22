@@ -46,9 +46,6 @@
     <string name="choose_folder_move_title">انتقال به…</string>
     <string name="choose_folder_copy_title">کپی به…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> انتخاب</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">خب</string>
-    <string name="cancel_action">لغو</string>
     <string name="send_action">ارسال</string>
     <string name="empty_subject">موضوع خالی است، دوباره بزنید می‌رود</string>
     <string name="reply_action">پاسخ</string>
@@ -274,11 +271,6 @@
     <string name="quiet_time_starts">آغاز زمان خاموشی</string>
     <string name="quiet_time_ends">پایان زمان خاموشی</string>
     <string name="account_setup_basics_title">راه‌اندازی حساب کاربری جدید</string>
-    <string name="account_setup_oauth_description">جهت استفاده‌ این حساب کاربری از K-9 Mail، نیاز است که وارد حساب کاربری خود شوید و اجازه دسترسی اپلیکیشن به ایمیل‌ها را صادر کنید.</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in">ورود</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in_with_google">ورود با حساب گوگل</string>
     <string name="account_setup_incoming_delete_policy_label">زمانی که پیامی را پاک می‌کنم</string>
     <string name="account_setup_incoming_delete_policy_never_label">در کارساز پاک نشود</string>
     <string name="account_setup_incoming_delete_policy_delete_label">در کارساز نیز پاک شود</string>
@@ -326,10 +318,6 @@
     <string name="account_setup_options_mail_display_count_10000">۱۰۰۰۰ پیام</string>
     <string name="account_setup_options_mail_display_count_all">همهٔ پیام‌ها</string>
     <string name="move_copy_cannot_copy_unsynced_message">پیامی که با کارساز همگام نشده را نمی‌توانید کپی یا حذف کنید</string>
-    <string name="account_setup_failed_dlg_oauth_flow_canceled">مجوزدهی لغو شد</string>
-    <string name="account_setup_failed_dlg_oauth_flow_failed">مجوزدهی به علت این خطا ناتمام ماند: <xliff:g id="error">%s</xliff:g></string>
-    <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 فعلا توسط این ارائه دهنده پشتیبانی نمی‌شود.</string>
-    <string name="account_setup_failed_dlg_browser_not_found">برنامه نمی تواند مرورگری را پیدا کند تا دسترسی به حسابتان را بگیرد.</string>
     <string name="account_settings_push_advanced_title">پیشرفته</string>
     <string name="account_settings_title_fmt">تنظیمات حساب</string>
     <string name="account_settings_notify_label">اعلان‌های رایانامهٔ جدید</string>
@@ -684,35 +672,6 @@
     <string name="settings_export_progress_text">در حال برون‌برد تنظیمات…</string>
     <string name="settings_export_success_generic">برون‌برد تنظیمات موفقیت‌آمیز بود</string>
     <string name="settings_export_failure">برون‌برد تنظیمات ناموفق بود</string>
-    <string name="settings_import_title">درون‌برد تنظیمات</string>
-    <string name="settings_import_pick_document_button">انتخاب پرونده</string>
-    <string name="settings_import_button">درون‌برد</string>
-    <string name="settings_import_success_generic">درون‌برد تنظیمات موفقیت‌آمیز بود</string>
-    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required">لطفاً گذرواژه‌ها را وارد کنید</string>
-    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_required">لطفا وارد شوید</string>
-    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_and_password_required">لطفا وارد شوید و رمز را وارد کنید</string>
-    <string name="settings_import_failure">درون‌برد تنظیمات ناموفق بود</string>
-    <string name="settings_import_read_failure">خواندن پروندهٔ تنظیمات ناموفق بود</string>
-    <string name="settings_import_partial_failure">درون‌برد برخی تنظیمات ناموفق بود</string>
-    <string name="settings_import_status_success">درون‌برد موفقیت‌آمیز بود</string>
-    <string name="settings_import_status_password_required">گذرواژه لازم است</string>
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import_status_log_in_required">ورود نیاز است</string>
-    <string name="settings_import_status_not_imported">درون‌برد نشده</string>
-    <string name="settings_import_status_error">شکست درون‌برد</string>
-    <string name="settings_import_later_button">بعداً</string>
-    <string name="settings_importing">در حال درون‌برد تنظیمات…</string>
-    <plurals name="settings_import_password_prompt">
-        <item quantity="one">برای اینکه بتوانید از حساب «<xliff:g id="account">%s</xliff:g>» استفاده کنید، باید گذرواژهٔ میزبان را ارائه نمایید.</item>
-        <item quantity="other">برای اینکه بتوانید از حساب «<xliff:g id="account">%s</xliff:g>» استفاده کنید، باید گذرواژه‌های کارساز را ارائه نمایید.</item>
-    </plurals>
-    <string name="settings_import_incoming_server_password_hint">گذرواژهٔ کارساز ورودی</string>
-    <string name="settings_import_outgoing_server_password_hint">گذرواژهٔ کارساز خروجی</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">برای کارساز خروجی از همان گذرواژه استفاده کن</string>
-    <string name="server_name_format">نام کارساز:<xliff:g id="hostname">%s</xliff:g></string>
     <string name="unread_widget_select_account">نمایش تعداد نخوانده‌ها برای…</string>
     <string name="unread_widget_account_title">حساب</string>
     <string name="unread_widget_account_summary">حسابی که تعداد نخوانده‌های آن باید نشان داده شود</string>

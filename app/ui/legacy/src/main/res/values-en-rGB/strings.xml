@@ -34,8 +34,6 @@
     <!--Name of the swipe action to move a message to the spam folder-->
     <!--Name of the swipe action to move a message to another folder-->
     <!--Title of the setting to specify the density of the message list-->
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <!--Displayed below the 'account_setup_oauth_description' text-->
     <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
     <string name="move_copy_cannot_copy_unsynced_message">Cannot copy or move a message that is not synchronised with the server</string>
     <string name="account_settings_color_label">Account colour</string>
@@ -119,7 +117,6 @@
     <string name="folders_action">Manage folders</string>
     <string name="mark_as_unread_action">Mark unread</string>
     <string name="choose_folder_title">Choose Folder</string>
-    <string name="cancel_action">Cancel</string>
     <string name="compose_action">Compose</string>
     <string name="unflag_action">Remove star</string>
     <string name="refile_action">Refile…</string>
@@ -134,7 +131,6 @@
     <string name="compose_title_forward">Forward</string>
     <string name="font_size_settings_title">Font size</string>
     <string name="discard_action">Discard</string>
-    <string name="okay_action">OK</string>
     <string name="unsubscribe_action">Unsubscribe</string>
     <string name="changelog_show_recent_changes">Show recent changes when app was updated</string>
     <string name="about_fediverse_title">Fediverse</string>
@@ -180,24 +176,19 @@
     <string name="account_settings_folder_push_mode_first_class">Only 1st Class folders</string>
     <string name="message_compose_error_no_recipients">You must add at least one recipient.</string>
     <string name="notification_channel_messages_title">Messages</string>
-    <string name="settings_import_outgoing_server_password_hint">Outgoing server password</string>
-    <string name="account_setup_failed_dlg_browser_not_found">The app couldn\'t find a browser to use for granting access to your account.</string>
     <string name="quiet_time_description">Disable ringing, buzzing and flashing at night</string>
-    <string name="settings_import_read_failure">Failed to read settings file</string>
     <string name="global_settings_confirm_action_delete">Delete</string>
     <string name="general_settings_post_mark_as_unread_action_stay">Stay on current message</string>
     <string name="account_settings_composition_summary">Set your default From, Bcc and signature</string>
     <string name="manage_identities_move_down_action">Move down</string>
     <string name="folder_settings_folder_push_mode_normal">No Class</string>
     <string name="message_to_fmt">To:<xliff:g id="counterParty">%s</xliff:g></string>
-    <string name="settings_import_status_log_in_required">Sign-in required</string>
     <string name="from_same_sender">More from this sender</string>
     <string name="notification_channel_miscellaneous_title">Miscellaneous</string>
     <string name="general_settings_swipe_action_toggle_read">Mark as read/unread</string>
     <string name="notification_bg_sync_ticker">Checking mail: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="global_settings_lock_screen_notification_visibility_app_name">Application name</string>
     <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
-    <string name="settings_import_partial_failure">Failed to import some settings</string>
     <string name="font_size_tiniest">Tiniest</string>
     <string name="idle_refresh_period_12min">Every 12 minutes</string>
     <string name="general_no_sender">No sender</string>
@@ -221,14 +212,9 @@
     <string name="account_settings_default_quoted_text_shown_summary">Include the original message in your reply.</string>
     <string name="font_size_larger">Larger</string>
     <string name="account_settings_autodownload_message_size_1024">1 MiB</string>
-    <string name="settings_importing">Importing settings…</string>
     <string name="background_ops_always">Always</string>
     <string name="settings_export_button">Export</string>
     <string name="account_setup_push_limit_5">5 folders</string>
-    <plurals name="settings_import_password_prompt">
-        <item quantity="one">To be able to use the account \"<xliff:g id="account">%s</xliff:g>\" you need to provide the server password.</item>
-        <item quantity="other">To be able to use the account \"<xliff:g id="account">%s</xliff:g>\" you need to provide the server passwords.</item>
-    </plurals>
     <string name="account_settings_notification_light_white">White</string>
     <string name="message_discarded_toast">Message discarded</string>
     <string name="edit_identity_description_label">Identity description</string>
@@ -242,10 +228,8 @@
     <string name="account_settings_reply_after_quote_summary">The original message will appear above your reply.</string>
     <string name="account_settings_notification_light_disabled">Disabled</string>
     <string name="account_setup_options_mail_check_frequency_12hour">Every 12 hours</string>
-    <string name="settings_import_failure">Failed to import settings</string>
     <string name="general_settings_post_remove_action_return_to_list">Return to message list</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Delete from server</string>
-    <string name="account_setup_oauth_sign_in_with_google">Sign in with Google</string>
     <string name="quiet_time_notification_description">Completely disable notifications during Quiet Time</string>
     <string name="notification_action_archive_all">Archive All</string>
     <string name="notification_channel_push_description">Displayed while waiting for new messages</string>
@@ -331,7 +315,6 @@
     <string name="account_settings_signature_label">Signature</string>
     <string name="settings_language_label">Language</string>
     <string name="account_settings_email_label">Your email address</string>
-    <string name="account_setup_oauth_sign_in">Sign in</string>
     <string name="global_settings_messageview_autofit_width_summary">Shrink messages to fit the screen</string>
     <string name="dialog_confirm_mark_all_as_read_title">Confirm mark all as read</string>
     <string name="setting_theme_global">Use app theme</string>
@@ -396,10 +379,8 @@
     <string name="quiet_time_notification">Disable notifications</string>
     <string name="message_compose_content_hint">Message text</string>
     <string name="account_settings_folder_notify_new_mail_mode_none">None</string>
-    <string name="settings_import_status_error">Import failure</string>
     <string name="message_compose_quote_header_separator">-------- Original Message --------</string>
     <string name="edit_identity_signature_hint">(Optional)</string>
-    <string name="settings_import_later_button">Later</string>
     <string name="notification_bg_send_ticker">Sending mail: <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Check your server settings</string>
     <string name="account_settings_folder_push_mode_none">None</string>
@@ -412,7 +393,6 @@
     <string name="debug_enable_debug_logging_summary">Log extra diagnostic information</string>
     <string name="message_compose_subject_hint">Subject</string>
     <string name="manage_identities_context_menu_title">Manage identity</string>
-    <string name="settings_import_incoming_server_password_hint">Incoming server password</string>
     <string name="settings_export_progress_text">Exporting settings…</string>
     <string name="setting_theme_dark">Dark</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">All drafts will be stored encrypted</string>
@@ -462,7 +442,6 @@
     <string name="general_settings_ui_density_relaxed">Relaxed</string>
     <string name="account_setup_options_mail_check_frequency_never">Never</string>
     <string name="global_settings_sender_above_subject_summary">Show correspondent names above the subject line, rather than below it</string>
-    <string name="account_setup_failed_dlg_oauth_flow_failed">Authorisation failed with the following error: <xliff:g id="error">%s</xliff:g></string>
     <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>
     <string name="folder_settings_folder_sync_mode_second_class">2nd Class</string>
     <string name="font_size_medium">Medium</string>
@@ -512,7 +491,6 @@
     <string name="global_settings_notification_quick_delete_always">Always</string>
     <string name="notification_authentication_error_title">Authentication failed</string>
     <string name="notification_channel_messages_description">Notifications related to messages</string>
-    <string name="settings_import_authorization_and_password_required">Please sign in and enter passwords</string>
     <string name="account_settings_composition">Sending mail</string>
     <string name="account_settings_folder_sync_mode_first_class">Only 1st Class folders</string>
     <string name="account_settings_searchable_none">None</string>
@@ -533,7 +511,6 @@
     <string name="debug_enable_sensitive_logging_summary">May show passwords in logs.</string>
     <string name="account_settings_folder_target_mode_all">All</string>
     <string name="account_setup_options_mail_display_count_500">500 messages</string>
-    <string name="account_setup_oauth_description">To use this email account with K-9 Mail, you need to sign in and grant the app access to your emails.</string>
     <string name="account_setup_push_limit_50">50 folders</string>
     <string name="account_settings_autodownload_message_size_16">16 KiB</string>
     <string name="global_settings_lock_screen_notification_visibility_everything">Same as when screen unlocked</string>
@@ -579,14 +556,12 @@
     <string name="folder_list_display_mode_first_and_second_class">1st &amp; 2nd Class folders</string>
     <string name="animations_title">Animation</string>
     <string name="account_settings_message_age_7">the last week</string>
-    <string name="settings_import_status_not_imported">Not imported</string>
     <string name="account_settings_folder_sync_mode_not_second_class">All except 2nd Class folders</string>
     <string name="account_settings_show_pictures_label">Always show images</string>
     <string name="account_settings_identities_summary">Set up alternate \'From\' addresses and signatures</string>
     <string name="debug_enable_debug_logging_title">Enable debug logging</string>
     <string name="font_size_message_compose_input">Text input fields</string>
     <string name="dialog_confirm_clear_local_folder_title">Clear local messages?</string>
-    <string name="settings_import_authorization_required">Please sign in</string>
     <string name="folder_settings_folder_notify_mode_first_class">1st Class</string>
     <string name="global_settings_preview_lines_label">Preview lines</string>
     <string name="confirm_discard_draft_message">Are you sure you want to discard this message?</string>
@@ -604,7 +579,6 @@
     <string name="send_failed_reason">Send failed: %s</string>
     <string name="folder_settings_folder_display_mode_first_class">1st Class</string>
     <string name="general_settings_ui_density_compact">Compact</string>
-    <string name="settings_import_title">Import settings</string>
     <string name="message_compose_description_delete_quoted_text">Remove quoted text</string>
     <string name="account_settings_folders">Folders</string>
     <string name="message_saved_toast">Message saved as draft</string>
@@ -640,7 +614,6 @@
     <string name="folder_settings_folder_display_mode_label">Folder display class</string>
     <string name="account_settings_strip_signature_label">Strip signatures on reply</string>
     <string name="message_to_label">To:</string>
-    <string name="account_setup_failed_dlg_oauth_flow_canceled">Authorisation cancelled</string>
     <string name="interaction_preferences">Interaction</string>
     <string name="archive_folder_label">Archive folder</string>
     <string name="account_settings_message_age_21">the last 3 weeks</string>
@@ -658,10 +631,8 @@
     <string name="account_settings_folder_display_mode_all">All</string>
     <string name="global_settings_show_contact_name_summary">Use recipient names from Contacts when available</string>
     <string name="debug_enable_sensitive_logging_title">Log sensitive information</string>
-    <string name="settings_import_pick_document_button">Select file</string>
     <string name="preference_search_no_results">No settings found</string>
     <string name="sort_by_date">Date</string>
-    <string name="settings_import_status_password_required">Password required</string>
     <string name="account_settings_automatic_special_folder">Automatic (%s)</string>
     <string name="message_view_additional_recipient_prefix">+</string>
     <string name="background_ops_label">Background sync</string>
@@ -684,7 +655,6 @@
     <string name="account_settings_message_age_1_month">the last month</string>
     <string name="global_settings_privacy_hide_useragent">Hide mail client</string>
     <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
-    <string name="settings_import_password_required">Please enter passwords</string>
     <string name="font_size_message_list">Message lists</string>
     <string name="folder_settings_folder_push_mode_first_class">1st Class</string>
     <string name="general_settings_post_remove_action_show_next_message">Show next message</string>
@@ -694,11 +664,9 @@
     <string name="account_settings_crypto_app">Enable OpenPGP support</string>
     <string name="special_mailbox_name_drafts">Drafts</string>
     <string name="folder_settings_folder_notify_mode_inherited">Same as push class</string>
-    <string name="settings_import_status_success">Imported successfully</string>
     <string name="sort_unread_last">Read messages first</string>
     <string name="global_settings_privacy_hide_useragent_detail">Remove K-9 User-Agent from mail headers</string>
     <string name="edit_identity_title">Edit identity</string>
-    <string name="settings_import_button">Import</string>
     <string name="message_compose_show_quoted_text_action">Include quoted message</string>
     <string name="sort_sender_alpha">Sender alphabetical</string>
     <string name="account_settings_reading_mail">Reading mail</string>
@@ -724,7 +692,6 @@
     <string name="sort_flagged_last">Unstarred messages first</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Save or Discard this message?</string>
     <string name="account_settings_strip_signature_summary">Signatures will be removed from quoted messages</string>
-    <string name="settings_import_success_generic">Settings successfully imported</string>
     <string name="account_settings_autodownload_message_size_64">64 KiB</string>
     <string name="account_settings_folder_push_mode_label">Push folders</string>
     <string name="account_settings_push_advanced_title">Advanced</string>
@@ -744,7 +711,6 @@
     <string name="notification_action_delete_all">Delete All</string>
     <string name="account_settings_searchable_displayable">Displayable</string>
     <string name="message_view_show_remote_images_action">Show remote images</string>
-    <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 is currently not supported with this provider.</string>
     <string name="privacy_preferences">Privacy</string>
     <string name="account_settings_autodownload_message_size_256">256 KiB</string>
     <string name="folder_settings_folder_notify_mode_second_class">2nd Class</string>
@@ -871,7 +837,6 @@
     <string name="enable_encryption">Enable Encryption</string>
     <string name="crypto_msg_unencrypted_sign_unknown">from unknown end-to-end key</string>
     <string name="crypto_msg_unencrypted_sign_insecure">but end-to-end key is not considered secure</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Use same password for outgoing server</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">May not be supported by some recipients</string>
     <string name="ac_transfer_will_be_sent">The message will be sent to your address:</string>
     <string name="action_copy_name_and_email_address">Copy name and email address</string>
@@ -1005,7 +970,6 @@
     <string name="openpgp_enabled_error_msg">Some of the selected recipients don\'t support this feature!</string>
     <string name="message_list_error_folder_not_found">Folder not found</string>
     <string name="background_work_notification_remove_account">Removing account…</string>
-    <string name="server_name_format">Server name: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="push_info_configure_notification_action">Configure notification</string>
     <string name="push_info_disable_push_text">If you don\'t need instant notifications about new messages, you should disable Push and use Polling. Polling checks for new mail at regular intervals and does not need the notification.</string>
     <string name="loading_attachment">Loading attachment…</string>

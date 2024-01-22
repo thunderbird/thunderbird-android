@@ -47,9 +47,6 @@
     <string name="choose_folder_move_title">Chuyển đến</string>
     <string name="choose_folder_copy_title">Sao chép đến</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> đã được chọn</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">OK</string>
-    <string name="cancel_action">Hủy bỏ</string>
     <string name="send_action">Gửi</string>
     <string name="empty_subject">Chủ đề trống, bấm lại để gửi bất chấp</string>
     <string name="reply_action">Trả lời</string>
@@ -273,11 +270,6 @@
     <string name="quiet_time_starts">Bắt đầu Không làm phiền</string>
     <string name="quiet_time_ends">Kết thúc Không làm phiền</string>
     <string name="account_setup_basics_title">Tạo tài khoản mới</string>
-    <string name="account_setup_oauth_description">Để sử dụng tài khoản email này với Thư K-9, bạn cần đăng nhập và cấp cho ứng dụng quyền truy cập vào email của mình.</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in">Đăng nhập</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in_with_google">Đăng nhập với Google</string>
     <string name="account_setup_incoming_delete_policy_label">Khi tôi xóa một tin nhắn</string>
     <string name="account_setup_incoming_delete_policy_never_label">Không xóa trên máy chủ</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Xóa khỏi máy chủ</string>
@@ -427,7 +419,6 @@
     <string name="idle_refresh_period_6min">Mỗi 6 phút</string>
     <string name="background_work_notification_remove_account">Đang loại bỏ tài khoản…</string>
     <string name="account_notify_contacts_mail_only_summary">Chỉ hiển thị thông báo cho tin nhắn từ các liên hệ đã biết</string>
-    <string name="account_setup_failed_dlg_browser_not_found">Ứng dụng không thể tìm thấy trình duyệt dùng để cấp quyền truy cập vào tài khoản của bạn.</string>
     <string name="account_settings_notification_channels_label">Danh mục thông báo</string>
     <string name="account_settings_default_quoted_text_shown_summary">Bao gồm tin nhắn gốc trong thư trả lời của bạn.</string>
     <string name="account_settings_notify_sync_summary">Thông báo trên thanh trạng thái khi thư được kiểm tra</string>
@@ -443,7 +434,6 @@
     <string name="account_settings_default_quoted_text_shown_label">Trích dẫn tin nhắn khi trả lời</string>
     <string name="message_view_recipients_format">đến <xliff:g id="recipients">%s</xliff:g></string>
     <string name="account_settings_open_notification_settings_messages_summary">Định cấu hình thông báo cho tin nhắn mới</string>
-    <string name="account_setup_failed_dlg_oauth_flow_failed">Ủy quyền không thành công với lỗi sau: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_settings_notify_self_summary">Hiển thị thông báo cho tin nhắn tôi đã gửi</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Đánh dấu là đã đọc khi mở</string>
     <string name="account_settings_ignore_chat_messages_summary">Không hiển thị thông báo cho các tin nhắn thuộc cuộc trò chuyện qua email</string>
@@ -455,12 +445,10 @@
     <string name="account_settings_show_pictures_label">Luôn hiển thị hình ảnh</string>
     <string name="account_setup_expunge_policy_on_poll">Khi đang thăm dò</string>
     <string name="account_settings_ignore_chat_messages_label">Bỏ qua tin nhắn trò chuyện</string>
-    <string name="account_setup_failed_dlg_oauth_flow_canceled">Đã hủy ủy quyền</string>
     <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Thư mục hạng 1 và hạng 2</string>
     <string name="account_settings_notify_sync_label">Đồng bộ hóa thông báo</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Định cấu hình thông báo lỗi và trạng thái</string>
     <string name="account_notify_contacts_mail_only_label">Chỉ các liên hệ</string>
-    <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 hiện không được nhà cung cấp này hỗ trợ.</string>
     <string name="account_settings_folder_push_mode_first_class">Chỉ các thư mục Hạng 1</string>
     <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
     <string name="action_compose_message_to">Soạn tin nhắn tới</string>

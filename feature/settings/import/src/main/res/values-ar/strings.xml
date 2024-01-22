@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_title">استيراد الإعدادات</string>
+    <string name="settings_import_pick_document_button">اختيار ملف</string>
+    <string name="settings_import_button">استيراد</string>
+    <string name="settings_import_success_generic">تم استيراد الإعدادات بنجاح </string>
+    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+    <string name="settings_import_password_required">الرجاء إدخال كلمات المرور </string>
+    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_required">الرجاء تسجيل الدخول </string>
+    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_and_password_required">الرجاء تسجيل الدخول وإدخال كلمات المرور </string>
+    <string name="settings_import_failure">فشل استيراد الإعدادات </string>
+    <string name="settings_import_read_failure">فشلت قراءة ملف الإعدادات </string>
+    <string name="settings_import_partial_failure">فشل استيراد بعض الإعدادات </string>
+    <string name="settings_import_status_success">تم الاستيراد بنجاح </string>
+    <string name="settings_import_status_password_required">كلمة المرور مطلوبة </string>
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="settings_import_status_log_in_required">تسجيل الدخول مطلوب </string>
+    <string name="settings_import_status_not_imported">غير مستورد </string>
+    <string name="settings_import_status_error">فشل الاستيراد </string>
+    <string name="settings_import_later_button">لاحقًا</string>
+    <string name="settings_importing">استيراد الإعدادات…</string>
+    <string name="settings_import_incoming_server_password_hint">كلمة مرور الخادم الواردة </string>
+    <string name="settings_import_outgoing_server_password_hint">كلمة مرور خادم البريد الصادر </string>
+    <string name="settings_import_use_same_password_for_outgoing_server">استخدم نفس كلمة المرور لخادم البريد الصادر </string>
+    <string name="settings_import_server_name_format">اسم الخادم: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_oauth_description">لاستخدام حساب البريد الإلكتروني هذا مع K-9 Mail ، تحتاج إلى تسجيل الدخول ومنح التطبيق حق الوصول إلى رسائل البريد الإلكتروني الخاصة بك. </string>
+    <string name="settings_import_oauth_sign_in">تسجيل الدخول</string>
+    <string name="settings_import_oauth_sign_in_with_google">تسجيل الدخول بأستخدام جوجل</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">تم إلغاء التفويض </string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">فشل التفويض مع الخطأ التالي: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 غير مدعوم حاليًا مع هذا الموفر. </string>
+    <string name="settings_import_oauth_error_browser_not_found">تعذر على التطبيق العثور على متصفح لاستخدامه لمنح حق الوصول إلى حسابك </string>
+    <string name="settings_import_general_settings_item">الإعدادات العامة</string>
+</resources>

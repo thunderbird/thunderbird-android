@@ -249,10 +249,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="com.fsck.k9.activity.setup.OAuthFlowActivity"
-            android:label="@string/account_setup_basics_title" />
-
         <!-- This component is disabled by default (if possible). It will be enabled programmatically if necessary. -->
         <receiver
             android:name="com.fsck.k9.provider.UnreadWidgetProvider"

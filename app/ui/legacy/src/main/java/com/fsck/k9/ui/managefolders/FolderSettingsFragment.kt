@@ -10,11 +10,12 @@ import androidx.preference.Preference
 import com.fsck.k9.fragment.ConfirmationDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.base.livedata.observeNotNull
 import com.fsck.k9.ui.folders.FolderNameFormatter
-import com.fsck.k9.ui.observeNotNull
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.fsck.k9.ui.base.R as BaseR
 
 class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFragmentListener {
     private val viewModel: FolderSettingsViewModel by viewModel()
@@ -100,7 +101,7 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
             getString(R.string.dialog_confirm_clear_local_folder_title),
             getString(R.string.dialog_confirm_clear_local_folder_message),
             getString(R.string.dialog_confirm_clear_local_folder_action),
-            getString(R.string.cancel_action),
+            getString(BaseR.string.cancel_action),
         )
         dialogFragment.setTargetFragment(this, REQUEST_CLEAR_FOLDER)
         dialogFragment.show(requireFragmentManager(), TAG_CLEAR_FOLDER_CONFIRMATION)

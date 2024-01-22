@@ -42,9 +42,6 @@
     <string name="choose_folder_move_title">Премести в…</string>
     <string name="choose_folder_copy_title">Копирай в…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> избрани</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">ОК</string>
-    <string name="cancel_action">Откажи</string>
     <string name="send_action">Изпрати</string>
     <string name="empty_subject">Полето Тема е празно, натиснете повторно ако искате да изпратите въпреки това</string>
     <string name="reply_action">Отговори</string>
@@ -614,32 +611,6 @@
     <string name="settings_export_progress_text">Настройки на изнсянето…</string>
     <string name="settings_export_success_generic">Настройките са успешно изнесени</string>
     <string name="settings_export_failure">Неуспешно изнасяне на настройки</string>
-    <string name="settings_import_title">Внасяне настройки</string>
-    <string name="settings_import_pick_document_button">Избери файл</string>
-    <string name="settings_import_button">Внасяне</string>
-    <string name="settings_import_success_generic">Успешно импортирани настройки</string>
-    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required">Моля, въведете пароли</string>
-    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_failure">Импортирането на настройките не бе успешно</string>
-    <string name="settings_import_read_failure">Файлът за настройки не бе прочетен</string>
-    <string name="settings_import_partial_failure">Импортирането на някои настройки не бе успешно</string>
-    <string name="settings_import_status_success">Успешно импортиране</string>
-    <string name="settings_import_status_password_required">Изисква се парола</string>
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import_status_not_imported">Не се импортира</string>
-    <string name="settings_import_status_error">Неуспешно импортиране</string>
-    <string name="settings_import_later_button">По късно</string>
-    <string name="settings_importing">Настройки на внасянето…</string>
-    <plurals name="settings_import_password_prompt">
-        <item quantity="one">За да можете да използвате профила \"<xliff:g id="account">%s</xliff:g>\" трябва да предоставите паролите на сървъра.</item>
-        <item quantity="other">За да можете да използвате профила \"<xliff:g id="account">%s</xliff:g>\" трябва да предоставите паролите на сървъра.</item>
-    </plurals>
-    <string name="settings_import_incoming_server_password_hint">Парола за входящ сървър</string>
-    <string name="settings_import_outgoing_server_password_hint">Парола за изходящ сървър</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Използвай същата парола  като на изходящия сървър</string>
-    <string name="server_name_format">Име на сървър: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="unread_widget_select_account">Показване на непрочетената бройка за…</string>
     <string name="unread_widget_account_title">Профил</string>
     <string name="unread_widget_account_summary">Профилът, за който да се показва броят непрочетени съобщения</string>
@@ -924,9 +895,7 @@
     <string name="about_fediverse_title">Федивселена</string>
     <string name="changelog_snackbar_button_text">Покажи</string>
     <string name="get_help_title">Помощ</string>
-    <string name="account_setup_failed_dlg_browser_not_found">Приложението не успя да открие браузър, който да използва за разрешаване на достъп до акаунта Ви.</string>
     <string name="general_settings_post_mark_as_unread_action_stay">Остани на сегашното съобщение</string>
-    <string name="settings_import_status_log_in_required">Необходимо е вписване</string>
     <string name="general_settings_swipe_action_toggle_read">Отбележи като прочетено/непрочетено</string>
     <string name="action_copy_email_address">Копирай имейл адрес</string>
     <string name="account_settings_autodownload_message_size_10240">10 МБ</string>
@@ -940,7 +909,6 @@
     <string name="message_list_content_description_unread_prefix">непрочетени, %s</string>
     <string name="account_settings_notification_light_disabled">Изключено</string>
     <string name="general_settings_post_remove_action_return_to_list">Върни се към списъка със съобщения</string>
-    <string name="account_setup_oauth_sign_in_with_google">Вписване чрез Google</string>
     <string name="message_details_missing_date">Липсва поле \"Дата\"</string>
     <string name="general_settings_post_mark_as_unread_action_title">След отбелязване на съобщение като прочетено</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Върни се към списъка със съобщения</string>
@@ -953,7 +921,6 @@
     <string name="general_settings_right_swipe_title">Жест надясно</string>
     <string name="clipboard_label_name_and_email_address">Име и имейл адрес</string>
     <string name="account_settings_notification_light_label">Светлина при известие</string>
-    <string name="account_setup_oauth_sign_in">Вписване</string>
     <string name="general_settings_post_remove_action_show_previous_message">Покажи предишното съобщение</string>
     <string name="account_settings_notification_light_default_color">Цвят по подразбиране</string>
     <string name="swipe_action_move">Премести…</string>
@@ -972,21 +939,17 @@
     <string name="account_settings_open_notification_settings_messages_summary">Настрой известията за нови съобщения</string>
     <string name="account_settings_notification_light_green">Зелен</string>
     <string name="general_settings_ui_density_relaxed">Разхлабен</string>
-    <string name="account_setup_failed_dlg_oauth_flow_failed">Разрешаването се провали и даде следната грешка: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_settings_vibrate_pattern_2">Шаблон 2</string>
     <string name="account_settings_vibrate_pattern_1">Шаблон 1</string>
     <string name="account_settings_ignore_chat_messages_summary">Не известявай за съобщения от имейл чат</string>
     <string name="message_details_loading_error">Възникна грешка при зареждането на подробностите.</string>
-    <string name="settings_import_authorization_and_password_required">Моля, впишете се и въведете паролите си</string>
     <string name="general_settings_swipe_action_toggle_selection">Избери съобщение</string>
-    <string name="account_setup_oauth_description">За да използвате този имейл с K-9 Поща, трябва да се впишете и да разрешите на приложението достъп до имейлите си.</string>
     <string name="account_settings_autodownload_message_size_2048">2 МБ</string>
     <string name="message_details_replyto_section_title">Отговори</string>
     <string name="account_settings_notification_light_magenta">Пурпурен</string>
     <string name="global_settings_lock_screen_notification_visibility_message_count">Брой нови съобщения</string>
     <string name="swipe_action_mark_as_read">Отбележи като прочетено</string>
     <string name="action_add_to_contacts">Добави към контакти</string>
-    <string name="settings_import_authorization_required">Моля, впишете се</string>
     <string name="general_settings_left_swipe_title">Жест наляво</string>
     <string name="general_settings_ui_density_compact">Компактен</string>
     <string name="message_list_error_title">Грешка</string>
@@ -995,7 +958,6 @@
     <string name="account_settings_autodownload_message_size_128">128 КБ</string>
     <string name="account_settings_notification_light_cyan">Светлосин</string>
     <string name="account_settings_ignore_chat_messages_label">Игнорирай чатсъобщения</string>
-    <string name="account_setup_failed_dlg_oauth_flow_canceled">Разрешение отменено</string>
     <string name="reply_to_label">Отговори</string>
     <string name="account_settings_autodownload_message_size_32">32 КБ</string>
     <string name="message_view_additional_recipient_prefix">+</string>
@@ -1013,6 +975,5 @@
     <string name="volume_navigation_title">Преход между съобщения чрез бутони за звук</string>
     <string name="debug_export_logs_failure">Експортирането беше неуспешно.</string>
     <string name="message_view_show_remote_images_action">Зареди изображения</string>
-    <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 с този доставчик не се поддържа в момента.</string>
     <string name="account_settings_autodownload_message_size_256">256 КБ</string>
 </resources>

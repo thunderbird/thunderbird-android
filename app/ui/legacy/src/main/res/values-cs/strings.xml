@@ -46,9 +46,6 @@
     <string name="choose_folder_move_title">Přesunout do…</string>
     <string name="choose_folder_copy_title">Zkopírovat do…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> vybraných</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">OK</string>
-    <string name="cancel_action">Zrušit</string>
     <string name="send_action">Odeslat</string>
     <string name="empty_subject">Předmět není vyplněn, pro odeslání klepněte znovu</string>
     <string name="reply_action">Odpovědět</string>
@@ -279,11 +276,6 @@
     <string name="quiet_time_starts">Doba klidu začíná</string>
     <string name="quiet_time_ends">Doba klidu končí</string>
     <string name="account_setup_basics_title">Založit nový účet</string>
-    <string name="account_setup_oauth_description">Pokud chcete tento e-mailový účet používat v K-9 mail, je třeba se přihlásit a udělit přístup k e-mailům.</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in">Přihlásit se</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in_with_google">Přihlásit se prostřednictvím Google</string>
     <string name="account_setup_incoming_delete_policy_label">Když smažu zprávu</string>
     <string name="account_setup_incoming_delete_policy_never_label">Nemazat ji na serveru</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Smazat na serveru</string>
@@ -331,10 +323,6 @@
     <string name="account_setup_options_mail_display_count_10000">10000 zpráv</string>
     <string name="account_setup_options_mail_display_count_all">všechny zprávy</string>
     <string name="move_copy_cannot_copy_unsynced_message">Nelze kopírovat nebo přesunovat zprávu, která není synchronizována se serverem</string>
-    <string name="account_setup_failed_dlg_oauth_flow_canceled">Ověření zrušeno</string>
-    <string name="account_setup_failed_dlg_oauth_flow_failed">Ověření se nezdařilo s následující chybou: <xliff:g id="error">%s</xliff:g></string>
-    <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 není v současnosti tímto poskytovatelem podporováno.</string>
-    <string name="account_setup_failed_dlg_browser_not_found">Aplikaci se nepodařilo najít webový prohlížeč, který použít pro udělení přístupu k vašemu účtu.</string>
     <string name="account_settings_push_advanced_title">Rozšířené</string>
     <string name="account_settings_title_fmt">Nastavení účtu</string>
     <string name="account_settings_notify_label">Oznamování nové pošty</string>
@@ -693,37 +681,6 @@
     <string name="settings_export_progress_text">Exportování nastavení…</string>
     <string name="settings_export_success_generic">Nastavení úspěšně exportována</string>
     <string name="settings_export_failure">Export nastavení se nezdařil</string>
-    <string name="settings_import_title">Importovat nastavení</string>
-    <string name="settings_import_pick_document_button">Vybrat soubor</string>
-    <string name="settings_import_button">Import</string>
-    <string name="settings_import_success_generic">Nastavení úspěšně importována</string>
-    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required">Zadejte hesla</string>
-    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_required">Přihlaste se</string>
-    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_and_password_required">Přihlaste se a zadejte hesla</string>
-    <string name="settings_import_failure">Nepodařilo se importovat nastavení</string>
-    <string name="settings_import_read_failure">Nepodařilo se číst soubor s nastaveními</string>
-    <string name="settings_import_partial_failure">Nepodařilo se naimportovat některá nastavení</string>
-    <string name="settings_import_status_success">Úspěšně naimportováno</string>
-    <string name="settings_import_status_password_required">Vyžadováno hesl</string>
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import_status_log_in_required">Je vyžadováno přihlášení se</string>
-    <string name="settings_import_status_not_imported">Nenaimportováno</string>
-    <string name="settings_import_status_error">Nezdar při importu</string>
-    <string name="settings_import_later_button">Později</string>
-    <string name="settings_importing">Importování nastavení…</string>
-    <plurals name="settings_import_password_prompt">
-        <item quantity="one">Abyste mohli používat účet „<xliff:g id="account">%s</xliff:g>“, je třeba zadat heslo k serveru.</item>
-        <item quantity="few">Abyste mohli používat účty „<xliff:g id="account">%s</xliff:g>“, je třeba zadat heslo k serveru.</item>
-        <item quantity="many">Abyste mohli používat účty „<xliff:g id="account">%s</xliff:g>“, je třeba zadat heslo k serveru.</item>
-        <item quantity="other">Abyste mohli používat účty „<xliff:g id="account">%s</xliff:g>“, je třeba zadat heslo k serveru.</item>
-    </plurals>
-    <string name="settings_import_incoming_server_password_hint">Heslo pro server pro příchozí</string>
-    <string name="settings_import_outgoing_server_password_hint">Heslo pro server pro odchozí</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Použít stejné heslo jako pro server pro odchozí</string>
-    <string name="server_name_format">Název serveru: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="unread_widget_select_account">Zobrazit počet nepřečtených pro…</string>
     <string name="unread_widget_account_title">Účet</string>
     <string name="unread_widget_account_summary">Účet pro který má  být zobrazen počet nepřečtených</string>

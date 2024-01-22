@@ -30,9 +30,6 @@
     <string name="choose_account_title">Dibab ar gont</string>
     <string name="choose_folder_title">Dibab an teuliad</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> diuzet</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">OK</string>
-    <string name="cancel_action">Nullañ</string>
     <string name="send_action">Kas</string>
     <string name="empty_subject">Goullo eo an danvez, klikit en-dro evit kas memestra</string>
     <string name="reply_action">Respont</string>
@@ -586,13 +583,9 @@
     <string name="settings_export_progress_text">Oc’h ezporzhiañ an arventennoù…</string>
     <string name="settings_export_success_generic">Arventennoù ezporzhiet gant berzh</string>
     <string name="settings_export_failure">C’hwitadenn war ezporzhiañ an arventennoù</string>
-    <string name="settings_import_title">Enporzhiañ an arventennoù</string>
-    <string name="settings_import_button">Enporzhiañ</string>
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_importing">Oc’h enporzhiañ an arventennoù…</string>
     <string name="unread_widget_select_account">Diskouez an niver a bosteloù anlennet evit…</string>
     <string name="unread_widget_account_title">Kont</string>
     <string name="unread_widget_account_summary">Ar gont implijet evit diskouez an niver a gemennadennoù anlennet</string>

@@ -46,9 +46,6 @@
     <string name="choose_folder_move_title">Siirrä…</string>
     <string name="choose_folder_copy_title">Kopioi…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valittu</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">OK</string>
-    <string name="cancel_action">Peruuta</string>
     <string name="send_action">Lähetä</string>
     <string name="empty_subject">Aihe on tyhjä, napsauta uudelleen lähettääksesi silti</string>
     <string name="reply_action">Vastaa</string>
@@ -274,11 +271,6 @@
     <string name="quiet_time_starts">Hiljainen aika alkaa</string>
     <string name="quiet_time_ends">Hiljainen aika päättyy</string>
     <string name="account_setup_basics_title">Lisää uusi tili</string>
-    <string name="account_setup_oauth_description">Jotta voit käyttää tätä tiliä K-9 Mailin kanssa, sinun tulee kirjautua sisään ja antaa sovellukselle oikeus päästä sähköposteihisi.</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in">Kirjaudu sisään</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in_with_google">Kirjaudu sisään Googlella</string>
     <string name="account_setup_incoming_delete_policy_label">Kun viesti poistetaan</string>
     <string name="account_setup_incoming_delete_policy_never_label">Älä poista palvelimelta</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Poista palvelimelta</string>
@@ -326,10 +318,6 @@
     <string name="account_setup_options_mail_display_count_10000">10000 viestiä</string>
     <string name="account_setup_options_mail_display_count_all">Kaikki viestit</string>
     <string name="move_copy_cannot_copy_unsynced_message">Viestiä ei voi kopioida tai siirtää, koska sitä ei ole synkronoitu palvelimelle</string>
-    <string name="account_setup_failed_dlg_oauth_flow_canceled">Valtuutus peruttu</string>
-    <string name="account_setup_failed_dlg_oauth_flow_failed">Valtuutus epäonnistui, virhe: <xliff:g id="error">%s</xliff:g></string>
-    <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 ei ole tällä hetkellä tuettu tämän palvelutarjoajan kohdalla.</string>
-    <string name="account_setup_failed_dlg_browser_not_found">Sovellus ei löytänyt selainta käytettäväksi pääsyn antamiseksi tälle tilille.</string>
     <string name="account_settings_push_advanced_title">Lisäasetukset</string>
     <string name="account_settings_title_fmt">Yleiset</string>
     <string name="account_settings_notify_label">Saapuneiden viestien ilmoitukset</string>
@@ -684,35 +672,6 @@
     <string name="settings_export_progress_text">Viedään asetuksia…</string>
     <string name="settings_export_success_generic">Asetukset vietiin onnistuneesti</string>
     <string name="settings_export_failure">Asetusten vienti epäonnistui</string>
-    <string name="settings_import_title">Tuo asetukset</string>
-    <string name="settings_import_pick_document_button">Valitse tiedosto</string>
-    <string name="settings_import_button">Tuo</string>
-    <string name="settings_import_success_generic">Asetusten tuonti onnistui</string>
-    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required">Anna salasanat</string>
-    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_required">Kirjaudu sisään</string>
-    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_and_password_required">Kirjaudu sisään ja anna salasanat</string>
-    <string name="settings_import_failure">Asetusten tuonti epäonnistui</string>
-    <string name="settings_import_read_failure">Asetustiedoston lukeminen epäonnistui</string>
-    <string name="settings_import_partial_failure">Joidenkin asetusten tuonti epäonnistui</string>
-    <string name="settings_import_status_success">Tuonti onnistui</string>
-    <string name="settings_import_status_password_required">Salasana vaaditaan</string>
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import_status_log_in_required">Sisäänkirjautuminen vaaditaan</string>
-    <string name="settings_import_status_not_imported">Ei tuotu</string>
-    <string name="settings_import_status_error">Tuontivirhe</string>
-    <string name="settings_import_later_button">Myöhemmin</string>
-    <string name="settings_importing">Tuodaan asetuksia…</string>
-    <plurals name="settings_import_password_prompt">
-        <item quantity="one">Jotta voit käyttää tiliä \"<xliff:g id="account">%s</xliff:g>\", sinun on annettava palvelimen salasana.</item>
-        <item quantity="other">Jotta voit käyttää tiliä \"<xliff:g id="account">%s</xliff:g>\", sinun on annettava palvelimien salasanat.</item>
-    </plurals>
-    <string name="settings_import_incoming_server_password_hint">Saapuvan postin palvelimen salasana</string>
-    <string name="settings_import_outgoing_server_password_hint">Lähtevän postin palvelimen salasana</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Käytä samaa salasanaa lähtevälle palvelimelle</string>
-    <string name="server_name_format">Palvelimen nimi: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="unread_widget_select_account">Näytä tilin lukemattomien viestien määrä…</string>
     <string name="unread_widget_account_title">Tili</string>
     <string name="unread_widget_account_summary">Tili, jonka osalta näytetään lukemattomien viestien määrä</string>

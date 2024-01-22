@@ -48,6 +48,10 @@ include(
 )
 
 include(
+    ":feature:settings:import",
+)
+
+include(
     ":feature:account:common",
     ":feature:account:edit",
     ":feature:account:oauth",

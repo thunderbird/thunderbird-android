@@ -46,9 +46,6 @@
     <string name="choose_folder_move_title">Verschieben nach…</string>
     <string name="choose_folder_copy_title">Kopieren nach…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> ausgewählt</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">OK</string>
-    <string name="cancel_action">Abbrechen</string>
     <string name="send_action">Senden</string>
     <string name="empty_subject">Betreff ist leer, bitte erneut drücken, um trotzdem zu senden</string>
     <string name="reply_action">Antworten</string>
@@ -274,11 +271,6 @@
     <string name="quiet_time_starts">Ruhezeit startet</string>
     <string name="quiet_time_ends">Ruhezeit endet</string>
     <string name="account_setup_basics_title">E-Mail-Konto einrichten</string>
-    <string name="account_setup_oauth_description">Um dieses E-Mail-Konto mit K-9 Mail zu verwenden, musst du dich anmelden und der App Zugriff auf deine E-Mails gewähren.</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in">Anmelden</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in_with_google">Mit Google anmelden</string>
     <string name="account_setup_incoming_delete_policy_label">Beim Löschen von Nachrichten</string>
     <string name="account_setup_incoming_delete_policy_never_label">Nie auf Server löschen</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Auch auf Server löschen</string>
@@ -326,10 +318,6 @@
     <string name="account_setup_options_mail_display_count_10000">10000 Nachrichten</string>
     <string name="account_setup_options_mail_display_count_all">Alle Nachrichten</string>
     <string name="move_copy_cannot_copy_unsynced_message">Nachrichten, die nicht mit dem Server synchronisiert wurden, können nicht kopiert oder verschoben werden</string>
-    <string name="account_setup_failed_dlg_oauth_flow_canceled">Berechtigung aufgehoben</string>
-    <string name="account_setup_failed_dlg_oauth_flow_failed">Die Autorisierung ist aufgrund des folgenden Fehlers fehlgeschlagen: <xliff:g id="error">%s</xliff:g></string>
-    <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 wird von diesem Anbieter derzeit nicht unterstützt.</string>
-    <string name="account_setup_failed_dlg_browser_not_found">Die App konnte keinen Browser finden, der für den Zugriff auf dein Konto verwendet werden kann.</string>
     <string name="account_settings_push_advanced_title">Erweitert</string>
     <string name="account_settings_title_fmt">Kontoeinstellungen</string>
     <string name="account_settings_notify_label">Bei neuen Nachrichten</string>
@@ -684,35 +672,6 @@
     <string name="settings_export_progress_text">Einstellungen werden exportiert…</string>
     <string name="settings_export_success_generic">Einstellungen erfolgreich exportiert</string>
     <string name="settings_export_failure">Einstellungen konnten nicht exportiert werden</string>
-    <string name="settings_import_title">Einstellungen importieren</string>
-    <string name="settings_import_pick_document_button">Datei auswählen</string>
-    <string name="settings_import_button">Importieren</string>
-    <string name="settings_import_success_generic">Einstellungen erfolgreich importiert</string>
-    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required">Bitte gib die Passwörter ein</string>
-    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_required">Bitte melde dich an</string>
-    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_and_password_required">Bitte melde dich an und gib deine Passwörter ein</string>
-    <string name="settings_import_failure">Einstellungen konnten nicht importiert werden</string>
-    <string name="settings_import_read_failure">Einstellungsdatei konnte nicht gelesen werden</string>
-    <string name="settings_import_partial_failure">Einige Einstellungen konnten nicht importiert werden</string>
-    <string name="settings_import_status_success">Erfolgreich importiert</string>
-    <string name="settings_import_status_password_required">Passwort erforderlich</string>
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import_status_log_in_required">Anmeldung erforderlich</string>
-    <string name="settings_import_status_not_imported">Nicht importiert</string>
-    <string name="settings_import_status_error">Importfehler</string>
-    <string name="settings_import_later_button">Später</string>
-    <string name="settings_importing">Einstellungen werden importiert…</string>
-    <plurals name="settings_import_password_prompt">
-        <item quantity="one">Um das Konto \"<xliff:g id="account">%s</xliff:g>\" nutzen zu können, musst du das Serverpasswort eingeben.</item>
-        <item quantity="other">Um das Konto \"<xliff:g id="account">%s</xliff:g>\" nutzen zu können, musst du die Serverpasswörter eingeben.</item>
-    </plurals>
-    <string name="settings_import_incoming_server_password_hint">Passwort des Posteingangsservers</string>
-    <string name="settings_import_outgoing_server_password_hint">Passwort des Postausgangsservers</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Gleiches Passwort für den Postausgangsserver verwenden</string>
-    <string name="server_name_format">Servername: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="unread_widget_select_account">Anzahl ungelesener Nachrichten anzeigen für…</string>
     <string name="unread_widget_account_title">Konto</string>
     <string name="unread_widget_account_summary">Das Konto, für das der Zähler für ungelesene Nachrichten angezeigt werden soll</string>

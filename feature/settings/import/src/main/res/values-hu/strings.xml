@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_title">Beállítások importálása</string>
+    <string name="settings_import_pick_document_button">Fájl kiválasztása</string>
+    <string name="settings_import_button">Importálás</string>
+    <string name="settings_import_success_generic">A beállítások sikeresen importálva</string>
+    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+    <string name="settings_import_password_required">Adja meg a jelszavakat</string>
+    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_required">Jelentkezzen be</string>
+    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+    <string name="settings_import_authorization_and_password_required">Jelentkezzen be, és adja meg a jelszavakat</string>
+    <string name="settings_import_failure">Nem sikerült importálni a beállításokat</string>
+    <string name="settings_import_read_failure">Nem sikerült beolvasni a beállítások fájlt</string>
+    <string name="settings_import_partial_failure">Nem sikerült importálni néhány beállítást</string>
+    <string name="settings_import_status_success">Sikeresen importálva</string>
+    <string name="settings_import_status_password_required">Jelszó szükséges</string>
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="settings_import_status_log_in_required">Bejelentkezés szükséges</string>
+    <string name="settings_import_status_not_imported">Nincs importálva</string>
+    <string name="settings_import_status_error">Importálási hiba</string>
+    <string name="settings_import_later_button">Később</string>
+    <string name="settings_importing">Beállítások importálása…</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">Ahhoz, hogy képes legyen használni a(z) „<xliff:g id="account">%s</xliff:g>” fiókot, meg kell adnia a kiszolgáló jelszavát.</item>
+        <item quantity="other">Ahhoz, hogy képes legyen használni a(z) „<xliff:g id="account">%s</xliff:g>” fiókot, meg kell adnia a kiszolgáló jelszavait.</item>
+    </plurals>
+    <string name="settings_import_incoming_server_password_hint">Bejövő kiszolgáló jelszava</string>
+    <string name="settings_import_outgoing_server_password_hint">Kimenő kiszolgáló jelszava</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Ugyanazon jelszó használata a kimenő kiszolgálónál</string>
+    <string name="settings_import_server_name_format">Kiszolgáló neve: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_oauth_description">Ezen e-mail-fiók K-9 Maillel történő használatához be kell jelentkeznie, és hozzáférést kell adnia az alkalmazásnak az e-mailjeihez.</string>
+    <string name="settings_import_oauth_sign_in">Bejelentkezés</string>
+    <string name="settings_import_oauth_sign_in_with_google">Bejelentkezés Google használatával</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">A felhatalmazás megszakítva</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">A felhatalmazás meghiúsult a következő hibával: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_not_supported">Az OAuth 2.0 jelenleg nem támogatott ezzel a szolgáltatóval.</string>
+    <string name="settings_import_oauth_error_browser_not_found">Az alkalmazás nem talált böngészőt a fiókhoz történő hozzáférés megadásához való használathoz.</string>
+    <string name="settings_import_general_settings_item">Általános beállítások</string>
+</resources>

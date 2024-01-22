@@ -36,9 +36,6 @@
     <string name="choose_account_title">Velg konto</string>
     <string name="choose_folder_title">Velg mappe</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valgt</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">OK</string>
-    <string name="cancel_action">Avbryt</string>
     <string name="send_action">Send</string>
     <string name="empty_subject">Emnefeltet er tomt, klikk igjen for å sende likevel</string>
     <string name="reply_action">Svar</string>
@@ -609,22 +606,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <string name="settings_export_progress_text">Eksporterer innstillnger …</string>
     <string name="settings_export_success_generic">Innstillinger eksportert med hell</string>
     <string name="settings_export_failure">Eksportering av innstillinger mislyktes</string>
-    <string name="settings_import_title">Importer innstillinger</string>
-    <string name="settings_import_pick_document_button">Velg fil</string>
-    <string name="settings_import_button">Importer</string>
-    <string name="settings_import_success_generic">Innstillinger importert med hell</string>
-    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required">Vennligst skriv inn passord</string>
-    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_failure">Import av innstillinger mislyktes</string>
-    <string name="settings_import_read_failure">Klarte ikke avlese innstillingsfil</string>
-    <string name="settings_import_partial_failure">Klarte ikke importere noen innstillinger</string>
-    <string name="settings_import_status_success">Importert med hell</string>
-    <string name="settings_import_status_password_required">Passord er påkrevd</string>
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_importing">Importerer innstillinger …</string>
-    <string name="server_name_format">Tjenernavn: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="unread_widget_select_account">Vis antall uleste for …</string>
     <string name="unread_widget_account_title">Konto</string>
     <string name="unread_widget_account_summary">Kontoen antall uleste meldinger skal vises for</string>
@@ -875,9 +856,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="notification_certificate_error_public">Sertifikatsfeil</string>
-    <string name="settings_import_outgoing_server_password_hint">Passord for utgående tjener</string>
-    <string name="account_setup_failed_dlg_browser_not_found">Fant ikke noen nettleser å bruke for å innvilge tilgang til kontoen din.</string>
-    <string name="settings_import_status_log_in_required">Innlogging kreves</string>
     <string name="general_settings_swipe_action_toggle_read">Marker som lest/ulest</string>
     <string name="action_copy_email_address">Kopier e-postadresse</string>
     <string name="message_view_me_text">meg</string>
@@ -886,10 +864,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <string name="copy_subject_to_clipboard">Emnetekst kopiert til utklippstavlen</string>
     <string name="choose_folder_move_title">Flytt til …</string>
     <string name="push_notification_state_initializing">Igangsetter …</string>
-    <plurals name="settings_import_password_prompt">
-        <item quantity="one">For å bruke <xliff:g id="account">%s</xliff:g>-kontoen må du angi tjenerpassordet.</item>
-        <item quantity="other">For å bruke <xliff:g id="account">%s</xliff:g>-kontoen må du angi tjenerpassordene.</item>
-    </plurals>
     <string name="account_settings_notification_light_white">Hvit</string>
     <string name="account_settings_vibrate_pattern_label">Vibrasjonsmønster</string>
     <string name="message_list_content_description_unread_prefix">ulest, %s</string>
@@ -897,7 +871,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <string name="account_settings_notification_light_disabled">Avskrudd</string>
     <string name="general_settings_post_remove_action_return_to_list">Tilbake til meldingsliste</string>
     <string name="webview_contextmenu_link_text_clipboard_label">Lenketekst</string>
-    <string name="account_setup_oauth_sign_in_with_google">Logg inn med Google</string>
     <string name="notification_channel_push_description">Vist i påvente av nye meldinger</string>
     <string name="message_details_missing_date">Manglende «Date»(Dato)-hode</string>
     <string name="ac_transfer_show_code">Vis oppsettskode</string>
@@ -914,7 +887,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <string name="clipboard_label_name_and_email_address">Navn og e-postadresse</string>
     <string name="account_settings_notification_light_label">Merknadslys</string>
     <string name="push_info_configure_notification_text">Dog gir Android deg også mulighet til å skjule merknaden.</string>
-    <string name="account_setup_oauth_sign_in">Logg inn</string>
     <string name="general_settings_post_remove_action_show_previous_message">Vis forrige melding</string>
     <string name="account_settings_notification_light_default_color">Forvalgt systemfarge</string>
     <string name="user_manual_title">Brukermanual</string>
@@ -931,13 +903,9 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <string name="account_settings_crypto_summary_config">Setter opp …</string>
     <string name="debug_export_logs_title">Eksporter logger</string>
     <string name="unknown_recipient">&lt;Ukjent mottager&gt;</string>
-    <string name="settings_import_status_error">Importfeil</string>
-    <string name="settings_import_later_button">Senere</string>
     <string name="general_settings_show_compose_button_title">Vis flytende «Skriv»-knapp</string>
     <string name="changelog_snackbar_text">Finn ut hva som er nytt i denne utgaven</string>
-    <string name="settings_import_incoming_server_password_hint">Passord for innkommende tjener</string>
     <string name="general_settings_contact_name_color_label">Kontaktnavnsfarge</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Bruk samme passord for utgående tjener</string>
     <string name="account_settings_notification_light_red">Rød</string>
     <string name="ac_transfer_will_be_sent">Meldingen vil bli sendt til din adresse:</string>
     <string name="action_copy_name_and_email_address">Kopier navn og e-postadresse</string>
@@ -949,7 +917,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <string name="show_unified_inbox_title">Vis enhetlig innboks</string>
     <string name="general_settings_ui_density_relaxed">Avslappet</string>
     <string name="unsubscribe_action">Opphev abonnement</string>
-    <string name="account_setup_failed_dlg_oauth_flow_failed">Identitetsbekreftelse mislyktes med følgende feil: <xliff:g id="error">%s</xliff:g></string>
     <string name="changelog_show_recent_changes">Vis nylige endringer ved første oppstart av ny versjon</string>
     <string name="about_fediverse_title">Fediverset</string>
     <string name="changelog_snackbar_button_text">Vis</string>
@@ -958,10 +925,8 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <string name="push_notification_state_wait_network">I dvale til nettverk er tilgjengelig</string>
     <string name="account_settings_ignore_chat_messages_summary">Ikke vis merknader for meldinger som tilhører e-postsludringer</string>
     <string name="message_details_loading_error">Kunne ikke laste inn meldingsdetaljene.</string>
-    <string name="settings_import_authorization_and_password_required">Logg inn og skriv inn passord</string>
     <string name="general_settings_swipe_action_toggle_selection">Veksle markering</string>
     <string name="ac_transfer_finish">Fullfør ved å åpne meldingen på din andre enhet og deretter skrive inn oppsettskoden.</string>
-    <string name="account_setup_oauth_description">Logg inn og innvilg programmet tilgang til e-postene dine for å bruke denne e-postkontoen med K-9 Mail.</string>
     <string name="notification_channel_push_title">Synkroniser (dytting)</string>
     <string name="message_details_replyto_section_title">Besvar</string>
     <string name="push_info_learn_more_text">Lær mer</string>
@@ -969,10 +934,8 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <string name="global_settings_lock_screen_notification_visibility_message_count">Antall nye meldinger</string>
     <string name="swipe_action_mark_as_read">Marker som lest</string>
     <string name="push_notification_state_wait_background_sync">I dvale til bakgrunnssynkronisering er tillatt</string>
-    <string name="settings_import_status_not_imported">Ikke importert</string>
     <string name="action_add_to_contacts">Legg til i kontakter</string>
     <string name="choose_folder_copy_title">Kopier til …</string>
-    <string name="settings_import_authorization_required">Logg inn</string>
     <string name="general_settings_left_swipe_title">Venstredragning</string>
     <string name="ac_transfer_error_send">Kunne ikke sende meldingen. Sjekk nettverkstilkoblingen din og oppsett for utgående tjener.</string>
     <string name="general_settings_ui_density_compact">Kompakt</string>
@@ -982,7 +945,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <string name="folder_settings_folder_push_mode_inherited">Samme som spørringsklasse</string>
     <string name="account_settings_notification_light_cyan">Cyanblå</string>
     <string name="account_settings_ignore_chat_messages_label">Ignorer sludringsmeldinger</string>
-    <string name="account_setup_failed_dlg_oauth_flow_canceled">Identitetsbekreftelse avbrutt</string>
     <string name="get_help_title">Støtte</string>
     <string name="reply_to_label">Besvar</string>
     <string name="save_or_discard_draft_message_changes">Lagre eller forkast endringer\?</string>
@@ -1008,7 +970,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <string name="push_info_disable_push_text">Skru av dytting og bruk spørring hvis du ikke trenger merknader om nye meldinger. Spørring sjekker ny e-post ved regelmessige intervalles og trenger ikke merknaden.</string>
     <string name="debug_export_logs_failure">Eksport mislyktes.</string>
     <string name="message_view_show_remote_images_action">Vis bilder fra annensteds hen</string>
-    <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 støttes ikke med denne tilbyderen.</string>
     <string name="general_settings_post_mark_as_unread_action_stay">Forbli på nåværende melding</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Gå tilbake til meldingslisten</string>
     <string name="general_settings_post_mark_as_unread_action_title">Etter markering av melding som ulest</string>

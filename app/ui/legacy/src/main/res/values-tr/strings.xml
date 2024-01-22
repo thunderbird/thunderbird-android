@@ -45,9 +45,6 @@
     <string name="choose_folder_move_title">Şuraya taşı…</string>
     <string name="choose_folder_copy_title">Şuraya kopyala…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seçildi</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">Tamam</string>
-    <string name="cancel_action">İptal</string>
     <string name="send_action">Gönder</string>
     <string name="empty_subject">Konu yok, bu şekilde göndermek için tıklayın</string>
     <string name="reply_action">Yanıtla</string>
@@ -264,10 +261,6 @@
     <string name="quiet_time_starts">Sessiz Zaman başlangıcı</string>
     <string name="quiet_time_ends">Sessiz Zaman bitişi</string>
     <string name="account_setup_basics_title">Bir yeni hesap kurun</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in">Giriş yap</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in_with_google">Google ile giriş yap</string>
     <string name="account_setup_incoming_delete_policy_label">Bir iletiyi sildiğim zaman</string>
     <string name="account_setup_incoming_delete_policy_never_label">Sunucudan silme</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Sunucudan sil</string>
@@ -315,7 +308,6 @@
     <string name="account_setup_options_mail_display_count_10000">10000 ileti</string>
     <string name="account_setup_options_mail_display_count_all">Bütün iletiler</string>
     <string name="move_copy_cannot_copy_unsynced_message">Sunucu ile eşzamanlanmayan bir ileti kopyalanamaz veya taşınamaz</string>
-    <string name="account_setup_failed_dlg_oauth_flow_canceled">Yetkilendirme iptal edildi</string>
     <string name="account_settings_push_advanced_title">Gelişmiş</string>
     <string name="account_settings_title_fmt">Hesap ayarları</string>
     <string name="account_settings_notify_label">Yeni posta bildirimleri</string>
@@ -665,34 +657,6 @@
     <string name="settings_export_progress_text">Dışa aktarma ayarları…</string>
     <string name="settings_export_success_generic">Ayarlar başarıyla dışa aktarıldı</string>
     <string name="settings_export_failure">Hesaplar çıkarılırken hata oluştu</string>
-    <string name="settings_import_title">İçe aktarım ayarları</string>
-    <string name="settings_import_pick_document_button">Dosya seç</string>
-    <string name="settings_import_button">İçe Aktar</string>
-    <string name="settings_import_success_generic">Ayarlar başarıyla içe aktarıldı</string>
-    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required">Lütfen parolaları girin</string>
-    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_required">Lütfen giriş yapın</string>
-    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_and_password_required">Lütfen giriş yapın ve parolaları girin</string>
-    <string name="settings_import_failure">Ayarlar içe aktarılamadı</string>
-    <string name="settings_import_read_failure">Ayarlar dosyası okunamadı</string>
-    <string name="settings_import_partial_failure">Bazı ayarlar içe aktarılamadı</string>
-    <string name="settings_import_status_success">Başarıyla içe aktarıldı</string>
-    <string name="settings_import_status_password_required">Parola gerekli</string>
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import_status_not_imported">İçe aktarılmadı</string>
-    <string name="settings_import_status_error">İçe aktarma hatası</string>
-    <string name="settings_import_later_button">Daha sonra</string>
-    <string name="settings_importing">İçe aktarma ayarları…</string>
-    <plurals name="settings_import_password_prompt">
-        <item quantity="one">\"<xliff:g id="account">%s</xliff:g>\" hesabını kullanabilmek için sunucu parolasını sağlamanız gerekir.</item>
-        <item quantity="other">\"<xliff:g id="account">%s</xliff:g>\" hesaplarını kullanabilmek için sunucu parolalarını sağlamanız gerekir.</item>
-    </plurals>
-    <string name="settings_import_incoming_server_password_hint">Gelen sunucusu parolası</string>
-    <string name="settings_import_outgoing_server_password_hint">Giden sunucusu parolası</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Giden sunucusu için de aynı parolayı kullan</string>
-    <string name="server_name_format">Sunucu adı: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="unread_widget_select_account">Şunun için okunmadı sayısını göster…</string>
     <string name="unread_widget_account_title">Hesap</string>
     <string name="unread_widget_account_summary">Okunmamış ileti sayısının görüntüleneceği hesap</string>
@@ -969,9 +933,6 @@
     <string name="clipboard_label_email_address">E-posta adresi</string>
     <!--A user visible label for the name and email address copied to the clipboard-->
     <!--Might be displayed in a notification when deleting an account (in the background)-->
-    <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
-    <string name="account_setup_failed_dlg_browser_not_found">Uygulama, hesabınıza erişim izni vermek için kullanılacak bir tarayıcı bulamadı.</string>
-    <string name="settings_import_status_log_in_required">Oturum açma gerekli</string>
     <string name="action_copy_email_address">E-posta adresini kopyala</string>
     <string name="message_view_me_text">bana</string>
     <string name="action_compose_message_to">Şunun için ileti oluştur</string>
@@ -994,11 +955,9 @@
     <string name="message_view_recipients_format"><xliff:g id="recipients">%s</xliff:g> kişisine</string>
     <string name="push_info_title">İttirme Bilgileri</string>
     <string name="general_settings_ui_density_relaxed">Rahat</string>
-    <string name="account_setup_failed_dlg_oauth_flow_failed">Yetkilendirme şu hatayla başarısız oldu: <xliff:g id="error">%s</xliff:g></string>
     <string name="changelog_snackbar_button_text">Görüntüle</string>
     <string name="account_settings_ignore_chat_messages_summary">Bir e-posta sohbetine ait iletiler için bildirim gösterme</string>
     <string name="message_details_loading_error">İleti ayrıntıları yüklenirken bir hata oluştu.</string>
-    <string name="account_setup_oauth_description">Bu e-posta hesabını K-9 Posta ile kullanmak için oturum açmanız ve uygulamaya e-postalarınıza erişim izni vermeniz gerekir.</string>
     <string name="action_add_to_contacts">Kişilere ekle</string>
     <string name="general_settings_ui_density_compact">Sıkı</string>
     <string name="message_view_additional_recipient_prefix">+</string>
@@ -1010,7 +969,6 @@
     <string name="volume_navigation_title">İleti görünümünde ses tuşu ile gezinti</string>
     <string name="push_info_disable_push_text">Yeni iletiler hakkında anlık bildirimlere ihtiyacınız yoksa, ittirmeyi devre dışı bırakmalı ve bilgi çekmeyi kullanmalısınız. Bilgi çekme, düzenli aralıklarla yeni e-posta olup olmadığını denetler ve bildirime ihtiyaç duymaz.</string>
     <string name="message_view_show_remote_images_action">Uzak resimleri göster</string>
-    <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 şu anda bu sağlayıcı ile desteklenmiyor.</string>
     <string name="general_settings_post_mark_as_unread_action_stay">Geçerli iletide kal</string>
     <string name="general_settings_post_mark_as_unread_action_title">Bir iletiyi okunmadı olarak işaretledikten sonra</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">İleti listesine dön</string>

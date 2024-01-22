@@ -47,9 +47,6 @@
     <string name="choose_folder_move_title">Pārvietot uz…</string>
     <string name="choose_folder_copy_title">Kopēt uz…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> atzīmēts</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">Piekrist</string>
-    <string name="cancel_action">Atcelt</string>
     <string name="send_action">Sūtīt</string>
     <string name="empty_subject">Nav sūtījuma temata. Noklikšķiniet vēlreiz, lai tik un tā nosūtītu</string>
     <string name="reply_action">Atbildēt</string>
@@ -280,11 +277,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
     <string name="quiet_time_starts">Netraucēšanas laika sākums</string>
     <string name="quiet_time_ends">Netraucēšanas laika beigas</string>
     <string name="account_setup_basics_title">Iestatīt jaunu kontu</string>
-    <string name="account_setup_oauth_description">Lai K-9 programmā lietotu šo e-pasta kontu, Jums jāierakstās un jādod atļauja K-9 piekļūt e-pastiem.</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in">Ierakstīties</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in_with_google">Ierakstīties ar Google</string>
     <string name="account_setup_incoming_delete_policy_label">Kad es izdzēšu ziņu</string>
     <string name="account_setup_incoming_delete_policy_never_label">to no servera nedzēst</string>
     <string name="account_setup_incoming_delete_policy_delete_label">to no servera dzēst</string>
@@ -332,10 +324,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
     <string name="account_setup_options_mail_display_count_10000">10000 ziņas</string>
     <string name="account_setup_options_mail_display_count_all">visas ziņas</string>
     <string name="move_copy_cannot_copy_unsynced_message">Nevar kopēt vai pārvietot ziņu, kura nav sinhronizēta ar serveri</string>
-    <string name="account_setup_failed_dlg_oauth_flow_canceled">Autorizācija atcelta</string>
-    <string name="account_setup_failed_dlg_oauth_flow_failed">Autorizācija atcelta šādas kļūdas dēļ: <xliff:g id="error">%s</xliff:g></string>
-    <string name="account_setup_failed_dlg_oauth_not_supported">Šis epasta pakalpojumu sniedzējs OAuth 2.0 nenodrošina.</string>
-    <string name="account_setup_failed_dlg_browser_not_found">Lietotnei neizdevās atrast pārlūku, lai ar tā starpniecību iegūtu piekļuvi Jūsu kontam.</string>
     <string name="account_settings_push_advanced_title">Papildus</string>
     <string name="account_settings_title_fmt">Konta iestatījumi</string>
     <string name="account_settings_notify_label">Jauna pasta paziņojumi</string>
@@ -692,36 +680,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
     <string name="settings_export_progress_text">Eksportē iestatījumus…</string>
     <string name="settings_export_success_generic">Iestatījumi veiksmīgi eksportēti</string>
     <string name="settings_export_failure">Iestatījumu eksports neizdevās</string>
-    <string name="settings_import_title">Importēt K-9 iestatījumus</string>
-    <string name="settings_import_pick_document_button">Izvēlēties failu</string>
-    <string name="settings_import_button">Importēt</string>
-    <string name="settings_import_success_generic">Iestatījumi veiksmīgi importēti</string>
-    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required">Lūdzu ievadiet paroles</string>
-    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_required">Lūdzu, ierakstieties!</string>
-    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_and_password_required">Lūdzu, ierakstieties un ievadiet paroles!</string>
-    <string name="settings_import_failure">Neizdevās importēt iestatījumus</string>
-    <string name="settings_import_read_failure">Neizdevās nolasīt iestatījumu failu</string>
-    <string name="settings_import_partial_failure">Neizdevās importēt dažus iestatījumus</string>
-    <string name="settings_import_status_success">Imports veiksmīgs</string>
-    <string name="settings_import_status_password_required">Nepieciešama parole</string>
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import_status_log_in_required">Nepieciešams ierakstīties</string>
-    <string name="settings_import_status_not_imported">Nav importēts</string>
-    <string name="settings_import_status_error">Imports neizdevās</string>
-    <string name="settings_import_later_button">Vēlāk</string>
-    <string name="settings_importing">Importē iestatījumus…</string>
-    <plurals name="settings_import_password_prompt">
-        <item quantity="zero">Lai lietotu kontu \"<xliff:g id="account">%s</xliff:g>\", jāievada servera parole.</item>
-        <item quantity="one">Lai lietotu kontu \"<xliff:g id="account">%s</xliff:g>\", jāievada servera parole.</item>
-        <item quantity="other">Lai lietotu kontu \"<xliff:g id="account">%s</xliff:g>\", jāievada servera paroles.</item>
-    </plurals>
-    <string name="settings_import_incoming_server_password_hint">Ienākošā servera parole</string>
-    <string name="settings_import_outgoing_server_password_hint">Izejošā servera parole</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Izmantot to pašu paroli izejošajam serverim</string>
-    <string name="server_name_format">Servera nosaukums: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="unread_widget_select_account">Parādīt nelasīto ziņu skaitu…</string>
     <string name="unread_widget_account_title">Konts</string>
     <string name="unread_widget_account_summary">Konts, kuram jāparāda nelasīto skaits</string>

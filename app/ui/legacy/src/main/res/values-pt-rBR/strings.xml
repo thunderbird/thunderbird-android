@@ -47,9 +47,6 @@
     <string name="choose_folder_move_title">Mover para…</string>
     <string name="choose_folder_copy_title">Copiar para…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selecionadas</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">OK</string>
-    <string name="cancel_action">Cancelar</string>
     <string name="send_action">Enviar</string>
     <string name="empty_subject">O assunto está em branco, clique novamente para enviar mesmo assim</string>
     <string name="reply_action">Responder</string>
@@ -279,11 +276,6 @@
     <string name="quiet_time_starts">Início do período de silêncio</string>
     <string name="quiet_time_ends">Término do período de silêncio</string>
     <string name="account_setup_basics_title">Configurar uma nova conta</string>
-    <string name="account_setup_oauth_description">Para usar essa conta de e-mail com o K-9 Mail, você precisa autenticar-se e fornecer acesso do app aos seus e-mails.</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in">Autenticar-se</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in_with_google">Autenticar-se com o Google</string>
     <string name="account_setup_incoming_delete_policy_label">Quando eu excluir uma mensagem</string>
     <string name="account_setup_incoming_delete_policy_never_label">Não excluí-la do servidor</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Excluí-la do servidor</string>
@@ -331,10 +323,6 @@
     <string name="account_setup_options_mail_display_count_10000">10000 mensagens</string>
     <string name="account_setup_options_mail_display_count_all">todas as mensagens</string>
     <string name="move_copy_cannot_copy_unsynced_message">Não é possível copiar ou mover uma mensagem que não foi sincronizada com o servidor</string>
-    <string name="account_setup_failed_dlg_oauth_flow_canceled">Autorização cancelada</string>
-    <string name="account_setup_failed_dlg_oauth_flow_failed">Ocorreu o seguinte erro com a autorização: <xliff:g id="error">%s</xliff:g></string>
-    <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 não é suportado atualmente neste provedor.</string>
-    <string name="account_setup_failed_dlg_browser_not_found">O aplicativo não conseguiu encontrar um navegador para usar para conceder acesso à sua conta.</string>
     <string name="account_settings_push_advanced_title">Avançado</string>
     <string name="account_settings_title_fmt">Configurações da conta</string>
     <string name="account_settings_notify_label">Novas notificações de e-mail</string>
@@ -691,36 +679,6 @@
     <string name="settings_export_progress_text">Exportando configurações…</string>
     <string name="settings_export_success_generic">As configurações foram exportadas com sucesso</string>
     <string name="settings_export_failure">Não foi possível exportar as configurações</string>
-    <string name="settings_import_title">Importar configurações</string>
-    <string name="settings_import_pick_document_button">Selecionar arquivo</string>
-    <string name="settings_import_button">Importar</string>
-    <string name="settings_import_success_generic">As configurações foram importadas com sucesso</string>
-    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required">Por favor, digite as senhas</string>
-    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_required">Por favor, faça sua autenticação</string>
-    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_and_password_required">Por favor, faça sua autenticação e digite as senha</string>
-    <string name="settings_import_failure">Não foi possível importar as configurações</string>
-    <string name="settings_import_read_failure">Não foi possível ler o arquivo de configurações</string>
-    <string name="settings_import_partial_failure">Não foi possível importar algumas configurações</string>
-    <string name="settings_import_status_success">Importado com sucesso</string>
-    <string name="settings_import_status_password_required">É necessária a senha</string>
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import_status_log_in_required">É necessário fazer a sua autenticação</string>
-    <string name="settings_import_status_not_imported">Não importado</string>
-    <string name="settings_import_status_error">Falha na importação</string>
-    <string name="settings_import_later_button">Mais tarde</string>
-    <string name="settings_importing">Importando configurações…</string>
-    <plurals name="settings_import_password_prompt">
-        <item quantity="one">Para usar a conta \"<xliff:g id="account">%s</xliff:g>\", você precisa fornecer a senha do servidor.</item>
-        <item quantity="many">Para usar a conta \"<xliff:g id="account">%s</xliff:g>\", você precisa fornecer as senhas do servidor.</item>
-        <item quantity="other">Para usar a conta \"<xliff:g id="account">%s</xliff:g>\", você precisa fornecer as senhas do servidor.</item>
-    </plurals>
-    <string name="settings_import_incoming_server_password_hint">Senha do servidor de recebimento</string>
-    <string name="settings_import_outgoing_server_password_hint">Senha do servidor de envio</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Usar a mesma senha para o servidor de envio</string>
-    <string name="server_name_format">Nome do servidor: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="unread_widget_select_account">Exibir contagem de não lidas para…</string>
     <string name="unread_widget_account_title">Conta</string>
     <string name="unread_widget_account_summary">A conta cujo número de mensagens não lidas deve ser exibido</string>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_title">Enporti agordojn</string>
+    <string name="settings_import_pick_document_button">Elekti dosieron</string>
+    <string name="settings_import_button">Enporti</string>
+    <string name="settings_import_success_generic">Sukcese enportis agordojn</string>
+    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+    <string name="settings_import_password_required">Bonvolu entajpi pasvortojn</string>
+    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+    <string name="settings_import_failure">Fiaskis enporti agordojn</string>
+    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+    <string name="settings_import_read_failure">Fiaskis legi dosieron kun agordoj</string>
+    <string name="settings_import_partial_failure">Fiaskis enporti iujn agordojn</string>
+    <string name="settings_import_status_success">Sukcesis enporti</string>
+    <string name="settings_import_status_password_required">Postulas pasvorton</string>
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="settings_import_status_not_imported">Ne enportita</string>
+    <string name="settings_import_status_error">Fiaskis enporti</string>
+    <string name="settings_import_later_button">Poste</string>
+    <string name="settings_importing">Enportado de agordoj…</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">Por uzi la konton “<xliff:g id="account">%s</xliff:g>” vi devas enigi pasvorton.</item>
+        <item quantity="other">Por uzi la konton “<xliff:g id="account">%s</xliff:g>” vi devas enigi pasvortojn.</item>
+    </plurals>
+    <string name="settings_import_incoming_server_password_hint">Pasvorto de enira servo</string>
+    <string name="settings_import_outgoing_server_password_hint">Pasvorto de elira servo</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Uzi la saman pasvorton por elira servilo</string>
+    <string name="settings_import_server_name_format">Nomo de servilo: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_general_settings_item">Ĝeneralaj agordoj</string>
+</resources>

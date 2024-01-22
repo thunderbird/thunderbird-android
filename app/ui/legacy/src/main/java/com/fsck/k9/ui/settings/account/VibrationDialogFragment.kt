@@ -16,9 +16,10 @@ import androidx.preference.PreferenceDialogFragmentCompat
 import com.fsck.k9.NotificationVibration
 import com.fsck.k9.VibratePattern
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.getEnum
-import com.fsck.k9.ui.putEnum
+import com.fsck.k9.ui.base.bundle.getEnum
+import com.fsck.k9.ui.base.bundle.putEnum
 import org.koin.android.ext.android.inject
+import com.fsck.k9.ui.base.R as BaseR
 
 class VibrationDialogFragment : PreferenceDialogFragmentCompat() {
     private val vibrator: Vibrator by inject()
@@ -54,8 +55,8 @@ class VibrationDialogFragment : PreferenceDialogFragmentCompat() {
 
         return AlertDialog.Builder(context)
             .setAdapter(adapter, null)
-            .setPositiveButton(R.string.okay_action, ::onClick)
-            .setNegativeButton(R.string.cancel_action, ::onClick)
+            .setPositiveButton(BaseR.string.okay_action, ::onClick)
+            .setNegativeButton(BaseR.string.cancel_action, ::onClick)
             .create()
     }
 

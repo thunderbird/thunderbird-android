@@ -47,9 +47,6 @@
     <string name="choose_folder_move_title">Sposta in…</string>
     <string name="choose_folder_copy_title">Copia in…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selezionati</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">OK</string>
-    <string name="cancel_action">Annulla</string>
     <string name="send_action">Invia</string>
     <string name="empty_subject">Oggetto vuoto, clicca di nuovo per inviare comunque</string>
     <string name="reply_action">Rispondi</string>
@@ -279,11 +276,6 @@
     <string name="quiet_time_starts">Attiva tempo di riposo alle</string>
     <string name="quiet_time_ends">Disattiva tempo di riposo alle</string>
     <string name="account_setup_basics_title">Configura nuovo account</string>
-    <string name="account_setup_oauth_description">Per poter usare questo account email con K-9 Mail, devi accedere e autorizzare l\'accesso dell\'applicazione alla tua posta.</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in">Accedi</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in_with_google">Accedi con Google</string>
     <string name="account_setup_incoming_delete_policy_label">Quando elimino un messaggio</string>
     <string name="account_setup_incoming_delete_policy_never_label">Non eliminare dal server</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Rimuovi dal server</string>
@@ -331,10 +323,6 @@
     <string name="account_setup_options_mail_display_count_10000">10000 messaggi</string>
     <string name="account_setup_options_mail_display_count_all">tutti i messaggi</string>
     <string name="move_copy_cannot_copy_unsynced_message">Impossibile copiare o spostare un messaggio non sincronizzato con il server</string>
-    <string name="account_setup_failed_dlg_oauth_flow_canceled">Autorizzazione annullata</string>
-    <string name="account_setup_failed_dlg_oauth_flow_failed">Autorizzazione non riuscita con il seguente errore: <xliff:g id="error">%s</xliff:g></string>
-    <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 non supportato da questo provider di posta</string>
-    <string name="account_setup_failed_dlg_browser_not_found">L\' applicazione non trova un browser per richiedere l\'accesso al tuo account</string>
     <string name="account_settings_push_advanced_title">Avanzate</string>
     <string name="account_settings_title_fmt">Impostazioni account</string>
     <string name="account_settings_notify_label">Notifiche nuovi messaggi</string>
@@ -691,36 +679,6 @@
     <string name="settings_export_progress_text">Esportazione impostazioni…</string>
     <string name="settings_export_success_generic">Impostazioni esportate correttamente</string>
     <string name="settings_export_failure">Esportazione impostazioni non riuscita</string>
-    <string name="settings_import_title">Importa impostazioni</string>
-    <string name="settings_import_pick_document_button">Seleziona file</string>
-    <string name="settings_import_button">Importa</string>
-    <string name="settings_import_success_generic">Impostazioni importate correttamente</string>
-    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required">Inserisci le password</string>
-    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_required">Accedi</string>
-    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_and_password_required">Accedi e inserisci le password</string>
-    <string name="settings_import_failure">Importazione impostazioni non riuscita</string>
-    <string name="settings_import_read_failure">Lettura file impostazioni non riuscita</string>
-    <string name="settings_import_partial_failure">Importazione di alcune impostazioni non riuscita</string>
-    <string name="settings_import_status_success">Importazione completata correttamente</string>
-    <string name="settings_import_status_password_required">Password richiesta</string>
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import_status_log_in_required">Accesso richiesto</string>
-    <string name="settings_import_status_not_imported">Non importate</string>
-    <string name="settings_import_status_error">Importazione non riuscita</string>
-    <string name="settings_import_later_button">Più tardi</string>
-    <string name="settings_importing">Importazione impostazioni…</string>
-    <plurals name="settings_import_password_prompt">
-        <item quantity="one">Per poter utilizzare l\'account \"<xliff:g id="account">%s</xliff:g>\" devi fornire la password del server</item>
-        <item quantity="many">Per poter utilizzare l\'account \"<xliff:g id="account">%s</xliff:g>\" devi fornire le password del server</item>
-        <item quantity="other">Per poter utilizzare l\'account \"<xliff:g id="account">%s</xliff:g>\" devi fornire le password del server</item>
-    </plurals>
-    <string name="settings_import_incoming_server_password_hint">Password server in arrivo</string>
-    <string name="settings_import_outgoing_server_password_hint">Password server in uscita</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Usa stessa password per server in uscita</string>
-    <string name="server_name_format">Nome server: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="unread_widget_select_account">Mostra conteggio messaggi non letti per…</string>
     <string name="unread_widget_account_title">Account</string>
     <string name="unread_widget_account_summary">Account per i quali visualizzare il contatore non letti</string>

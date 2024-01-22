@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_title">Importovať nastavenia</string>
+    <string name="settings_import_pick_document_button">Vybrať súbor</string>
+    <string name="settings_import_button">Importovať</string>
+    <string name="settings_import_success_generic">Nastavenia úspešne importované</string>
+    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+    <string name="settings_import_password_required">Zadajte heslá</string>
+    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+    <string name="settings_import_failure">Import nastavení zlyhal</string>
+    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+    <string name="settings_import_read_failure">Nepodarilo sa prečítať súbor s nastaveniami</string>
+    <string name="settings_import_partial_failure">Import časti nastavení zlyhal</string>
+    <string name="settings_import_status_success">Import prebehol úspešne</string>
+    <string name="settings_import_status_password_required">Vyžadované heslo</string>
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="settings_import_status_not_imported">Nenaimportované</string>
+    <string name="settings_import_status_error">Zlyhanie pri importe</string>
+    <string name="settings_import_later_button">Neskôr</string>
+    <string name="settings_importing">Importovanie nastavení…</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">Pred používaním účtu \"<xliff:g id="account">%s</xliff:g>\"  je potrebné zadať heslo na server.</item>
+        <item quantity="few">Pred používaním účtu \"<xliff:g id="account">%s</xliff:g>\" je potrebné zadať heslo na server.</item>
+        <item quantity="many">Pred používaním účtov \"<xliff:g id="account">%s</xliff:g>\" je potrebné zadať heslo na server.</item>
+        <item quantity="other">Pred používaním účtov „<xliff:g id="account">%s</xliff:g>“ je potrebné zadať heslo na server.</item>
+    </plurals>
+    <string name="settings_import_incoming_server_password_hint">Heslo na server na príjem</string>
+    <string name="settings_import_outgoing_server_password_hint">Heslo na server na odosielanie</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Použiť rovnaké heslo ako na server na odosielanie </string>
+    <string name="settings_import_server_name_format">Názov serveru: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_general_settings_item">Všeobecné nastavenia</string>
+</resources>

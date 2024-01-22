@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_title">Uvoz postavki</string>
+    <string name="settings_import_pick_document_button">Odaberi datoteku</string>
+    <string name="settings_import_button">Uvoz</string>
+    <string name="settings_import_success_generic">Postavke su uspješno uvezene</string>
+    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
+    <string name="settings_import_password_required">Molimo unesite lozinke</string>
+    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
+    <string name="settings_import_failure">Uvoz postavki nije uspio</string>
+    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
+    <string name="settings_import_read_failure">Čitanje datoteke postavki nije uspjelo</string>
+    <string name="settings_import_partial_failure">Uvoz nekih postavki nije uspio</string>
+    <string name="settings_import_status_success">Uspješno uvezeno</string>
+    <string name="settings_import_status_password_required">Lozinka obavezna</string>
+    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
+    <string name="settings_import_status_not_imported">Nije uvezeno</string>
+    <string name="settings_import_status_error">Uvoz nije uspio</string>
+    <string name="settings_import_later_button">Kasnije</string>
+    <string name="settings_importing">Uvozim postavke…</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">Da bi bili u mogućnosti da koristite račun \"<xliff:g id="account">%s</xliff:g>\" potrebno je da unesete lozinku za server.</item>
+        <item quantity="few">Da bi bili u mogućnosti da koristite račun \"<xliff:g id="account">%s</xliff:g>\" potrebno je da unesete lozinke za server.</item>
+        <item quantity="other">Da bi bili u mogućnosti da koristite račun \"<xliff:g id="account">%s</xliff:g>\" potrebno je da unesete lozinke za server.</item>
+    </plurals>
+    <string name="settings_import_incoming_server_password_hint">Lozinka dolaznog poslužitelja</string>
+    <string name="settings_import_outgoing_server_password_hint">Lozinka odlaznog poslužitelja</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Koristi istu loziku za odlazni poslužitelj</string>
+    <string name="settings_import_server_name_format">Naziv servera: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_general_settings_item">Opća podešavanja</string>
+</resources>

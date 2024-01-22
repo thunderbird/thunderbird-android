@@ -46,9 +46,6 @@
     <string name="choose_folder_move_title">Shpjereni te…</string>
     <string name="choose_folder_copy_title">Kopjojeni te…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> të përzgjedhur</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">OK</string>
-    <string name="cancel_action">Anuloje</string>
     <string name="send_action">Dërgoje</string>
     <string name="empty_subject">Subjekti është i zbrazët, riklikojeni që të dërgohet sido qoftë</string>
     <string name="reply_action">Përgjigjuni</string>
@@ -274,11 +271,6 @@
     <string name="quiet_time_starts">Qetësia fillon më</string>
     <string name="quiet_time_ends">Qetësia mbaron më</string>
     <string name="account_setup_basics_title">Ujdisni një llogari të re</string>
-    <string name="account_setup_oauth_description">Që të përdorni këtë llogari email me K-9 Mail, lypset të bëni hyrjen dhe t\’i akordoni aplikacionit hyrje te email-et tuaj.</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in">Hyni</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in_with_google">Hyni me Google</string>
     <string name="account_setup_incoming_delete_policy_label">Kur fshij një mesazh</string>
     <string name="account_setup_incoming_delete_policy_never_label">Mos e fshi te shërbyesi</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Fshije te shërbyesi</string>
@@ -326,10 +318,6 @@
     <string name="account_setup_options_mail_display_count_10000">10000 mesazhe</string>
     <string name="account_setup_options_mail_display_count_all">krejt mesazhet</string>
     <string name="move_copy_cannot_copy_unsynced_message">S\’mund të kopjohet ose lëvizet një mesazh që s\’është njëkohësuar me shërbyesin</string>
-    <string name="account_setup_failed_dlg_oauth_flow_canceled">Autorizimi u anulua</string>
-    <string name="account_setup_failed_dlg_oauth_flow_failed">Autorizimi dështoi me gabimin vijues: <xliff:g id="error">%s</xliff:g></string>
-    <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 aktualisht nuk mbulohet me këtë furnizues shërbimi.</string>
-    <string name="account_setup_failed_dlg_browser_not_found">Aplikacioni s\’gjeti dot një shfletues për ta përdorur për t\’i akorduar hyrje te llogaria juaj.</string>
     <string name="account_settings_push_advanced_title">Të mëtejshme</string>
     <string name="account_settings_title_fmt">Rregullime llogarie</string>
     <string name="account_settings_notify_label">Njoftime email-i të ri</string>
@@ -684,35 +672,6 @@
     <string name="settings_export_progress_text">Po eksportohen rregullimet…</string>
     <string name="settings_export_success_generic">Rregullimet u eksportuan me sukses</string>
     <string name="settings_export_failure">S\’u arrit të eksportohen rregullimet</string>
-    <string name="settings_import_title">Importo rregullime</string>
-    <string name="settings_import_pick_document_button">Përzgjidhni kartelë</string>
-    <string name="settings_import_button">Importoje</string>
-    <string name="settings_import_success_generic">Rregullimet u importuan me sukses</string>
-    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required">Ju lutemi, jepni fjalëkalime</string>
-    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_required">Ju lutemi, bëni hyrjen</string>
-    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_and_password_required">Ju lutemi, bëni hyrjen dhe jepni fjalëkalime</string>
-    <string name="settings_import_failure">S\’u arrit të importohen rregullime</string>
-    <string name="settings_import_read_failure">S\’u arrit të lexohet kartelë rregullimesh</string>
-    <string name="settings_import_partial_failure">S\’u arrit të importohen disa rregullime</string>
-    <string name="settings_import_status_success">U importuan me sukses</string>
-    <string name="settings_import_status_password_required">Lypset fjalëkalim</string>
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import_status_log_in_required">Hyrje e domosdoshme</string>
-    <string name="settings_import_status_not_imported">I paimportuar</string>
-    <string name="settings_import_status_error">Dështim importimi</string>
-    <string name="settings_import_later_button">Më vonë</string>
-    <string name="settings_importing">Po importohen rregullime…</string>
-    <plurals name="settings_import_password_prompt">
-        <item quantity="one">Që të mund të përdorni llogarinë \“<xliff:g id="account">%s</xliff:g>\” duhet të jepni fjalëkalimin e shërbyesit.</item>
-        <item quantity="other">Që të mund të përdorni llogarinë \“<xliff:g id="account">%s</xliff:g>\” duhet të jepni fjalëkalimet e shërbyesit.</item>
-    </plurals>
-    <string name="settings_import_incoming_server_password_hint">Fjalëkalim shërbyesi marrjesh</string>
-    <string name="settings_import_outgoing_server_password_hint">Fjalëkalim shërbyesi dërgimesh</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Përdor po atë fjalëkalim për shërbyes dërgimesh</string>
-    <string name="server_name_format">Emër shërbyesi: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="unread_widget_select_account">Shfaq numër të palexuarish për…</string>
     <string name="unread_widget_account_title">Llogari</string>
     <string name="unread_widget_account_summary">Llogaria për të cilën duhet shfaqur numri i të palexuarve</string>

@@ -5,7 +5,6 @@
         <attr name="toolbarColor" format="reference|color" />
         <attr name="messageHeaderBackground" format="reference|color" />
         <attr name="extraMessageHeaderBackground" format="reference|color" />
-        <attr name="bottomBarBackground" format="reference|color" />
         <attr name="floatingActionButtonBackgroundColor" format="reference|color" />
         <attr name="floatingActionButtonForegroundColor" format="reference|color" />
         <attr name="iconUnifiedInbox" format="reference" />
@@ -64,7 +63,6 @@
         <attr name="iconSettingsAccountAdd" format="reference" />
         <attr name="iconSettingsExport" format="reference" />
         <attr name="iconSettingsImport" format="reference" />
-        <attr name="iconSettingsImportStatus" format="reference" />
         <attr name="textColorPrimaryRecipientDropdown" format="reference" />
         <attr name="textColorSecondaryRecipientDropdown" format="reference" />
         <attr name="backgroundColorChooseAccountHeader" format="color" />

@@ -46,9 +46,6 @@
     <string name="choose_folder_move_title">移动至…</string>
     <string name="choose_folder_copy_title">复制到…</string>
     <string name="actionbar_selected">已选择 <xliff:g id="selection_count">%d</xliff:g> 个</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">确定</string>
-    <string name="cancel_action">取消</string>
     <string name="send_action">发送</string>
     <string name="empty_subject">主题为空，确认发送请再次单击</string>
     <string name="reply_action">回复</string>
@@ -274,11 +271,6 @@
     <string name="quiet_time_starts">免打扰时间开始</string>
     <string name="quiet_time_ends">免打扰时间结束</string>
     <string name="account_setup_basics_title">设置新账户</string>
-    <string name="account_setup_oauth_description">要通过 K-9 Mail 使用这个电子邮件账户，你需要登录并授予应用访问你电子邮件的权限。</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in">登录</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in_with_google">Google 登录</string>
     <string name="account_setup_incoming_delete_policy_label">当我删除邮件时</string>
     <string name="account_setup_incoming_delete_policy_never_label">不要从服务器上删除</string>
     <string name="account_setup_incoming_delete_policy_delete_label">立刻从服务器上删除</string>
@@ -326,10 +318,6 @@
     <string name="account_setup_options_mail_display_count_10000">10000 封</string>
     <string name="account_setup_options_mail_display_count_all">所有邮件</string>
     <string name="move_copy_cannot_copy_unsynced_message">没有与服务器同步的邮件无法进行拷贝或移动</string>
-    <string name="account_setup_failed_dlg_oauth_flow_canceled">授权被取消</string>
-    <string name="account_setup_failed_dlg_oauth_flow_failed">授权失败，错误信息如下：<xliff:g id="error">%s</xliff:g></string>
-    <string name="account_setup_failed_dlg_oauth_not_supported">此提供商目前不支持 OAuth 2.0.</string>
-    <string name="account_setup_failed_dlg_browser_not_found">应用找不到一个浏览器来授予访问你账户的权限。</string>
     <string name="account_settings_push_advanced_title">高级</string>
     <string name="account_settings_title_fmt">通用设置</string>
     <string name="account_settings_notify_label">新邮件通知</string>
@@ -682,34 +670,6 @@
     <string name="settings_export_progress_text">正在导出设置…</string>
     <string name="settings_export_success_generic">设置已成功导出</string>
     <string name="settings_export_failure">导出设置失败</string>
-    <string name="settings_import_title">导入设置</string>
-    <string name="settings_import_pick_document_button">选择文件</string>
-    <string name="settings_import_button">导入</string>
-    <string name="settings_import_success_generic">配置导入成功</string>
-    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required">请输入密码</string>
-    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_required">请登录</string>
-    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_and_password_required">请登录并输入密码</string>
-    <string name="settings_import_failure">配置导入失败</string>
-    <string name="settings_import_read_failure">读取配置文件失败</string>
-    <string name="settings_import_partial_failure">导入部分配置失败</string>
-    <string name="settings_import_status_success">导入成功</string>
-    <string name="settings_import_status_password_required">需要输入密码</string>
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import_status_log_in_required">需要登录</string>
-    <string name="settings_import_status_not_imported">没有导入</string>
-    <string name="settings_import_status_error">导入失败</string>
-    <string name="settings_import_later_button">之后</string>
-    <string name="settings_importing">正在导入设置……</string>
-    <plurals name="settings_import_password_prompt">
-        <item quantity="other">您需要提供服务器密码才能够使用账户 \"<xliff:g id="account">%s</xliff:g>\"。</item>
-    </plurals>
-    <string name="settings_import_incoming_server_password_hint">收件服务器密码</string>
-    <string name="settings_import_outgoing_server_password_hint">发件服务器密码</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">发件服务器使用相同的密码</string>
-    <string name="server_name_format">服务器名：<xliff:g id="hostname">%s</xliff:g></string>
     <string name="unread_widget_select_account">显示未读数…</string>
     <string name="unread_widget_account_title">账户</string>
     <string name="unread_widget_account_summary">要显示未读邮件数的账户</string>

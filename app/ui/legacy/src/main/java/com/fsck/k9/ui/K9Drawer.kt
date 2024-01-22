@@ -24,6 +24,7 @@ import com.fsck.k9.ui.account.AccountsViewModel
 import com.fsck.k9.ui.account.DisplayAccount
 import com.fsck.k9.ui.base.Theme
 import com.fsck.k9.ui.base.ThemeManager
+import com.fsck.k9.ui.base.livedata.observeNotNull
 import com.fsck.k9.ui.folders.DisplayUnifiedInbox
 import com.fsck.k9.ui.folders.FolderIconProvider
 import com.fsck.k9.ui.folders.FolderList

@@ -47,9 +47,6 @@
     <string name="choose_folder_move_title">Ferpleatse nei…</string>
     <string name="choose_folder_copy_title">Kopiearje nei…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selektearre</string>
-    <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-    <string name="okay_action">OK</string>
-    <string name="cancel_action">Annulearje</string>
     <string name="send_action">Ferstjoere</string>
     <string name="empty_subject">Der is gjin ûnderwerp ynfierd. Tik nochris om dochs te ferstjoeren</string>
     <string name="reply_action">Beäntwurdzje</string>
@@ -277,11 +274,6 @@
     <string name="quiet_time_starts">Stilteperioade start</string>
     <string name="quiet_time_ends">Stilteperioade einiget</string>
     <string name="account_setup_basics_title">In nije account ynstelle</string>
-    <string name="account_setup_oauth_description">Om mei K-9 Mail dizze e-mailaccount te brûken moatte jo jo oanmelde om de app tagong te jaan ta jo e-mailberjochten.</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in">Oanmelde</string>
-    <!--Displayed below the 'account_setup_oauth_description' text-->
-    <string name="account_setup_oauth_sign_in_with_google">Oanmelde mei Google</string>
     <string name="account_setup_incoming_delete_policy_label">Wannear’t ik in berjocht fuortsmyt</string>
     <string name="account_setup_incoming_delete_policy_never_label">Net fan server fuortsmite</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Fan server fuortsmite</string>
@@ -329,10 +321,6 @@
     <string name="account_setup_options_mail_display_count_10000">10000 berjochten</string>
     <string name="account_setup_options_mail_display_count_all">alle berjochten</string>
     <string name="move_copy_cannot_copy_unsynced_message">Kin berjocht net kopiearje of ferpleatse, omdat dizze net syngronisearre is mei de server</string>
-    <string name="account_setup_failed_dlg_oauth_flow_canceled">Autorisaasje annulearre</string>
-    <string name="account_setup_failed_dlg_oauth_flow_failed">Autorisaasje is mislearre mei de folgjende flater: <xliff:g id="error">%s</xliff:g></string>
-    <string name="account_setup_failed_dlg_oauth_not_supported">OAuth 2.0 wurdt op dit stuit net stipe troch dizze provider.</string>
-    <string name="account_setup_failed_dlg_browser_not_found">Dizze app kin gjin browser fine. In browser is nedich om tagong te jaan ta jo account.</string>
     <string name="account_settings_push_advanced_title">Avansearre</string>
     <string name="account_settings_title_fmt">Accountynstellingen</string>
     <string name="account_settings_notify_label">Nije e-mailmelding</string>
@@ -687,35 +675,6 @@
     <string name="settings_export_progress_text">Eksportynstellingen…</string>
     <string name="settings_export_success_generic">Ynstellingen mei sukses eksportearre</string>
     <string name="settings_export_failure">Ynstellingen eksportearjen mislearre</string>
-    <string name="settings_import_title">Ynstellingen ymportearje</string>
-    <string name="settings_import_pick_document_button">Bestân selektearje</string>
-    <string name="settings_import_button">Ymportearje</string>
-    <string name="settings_import_success_generic">Ynstellingen mei sukses ymportearre</string>
-    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required">Fier de wachtwurden yn</string>
-    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_required">Oanmelde</string>
-    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_and_password_required">Meld jo oan en fier it wachtwurd yn</string>
-    <string name="settings_import_failure">Ynstellingen ymportearjen mislearre</string>
-    <string name="settings_import_read_failure">Lêzen fan ynstellingenbestân mislearre</string>
-    <string name="settings_import_partial_failure">Ymportearjen fan guon ynstellingen mislearre</string>
-    <string name="settings_import_status_success">Mei sukses ymportearre</string>
-    <string name="settings_import_status_password_required">Wachtwurd fereaske</string>
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import_status_log_in_required">Oanmelden fereaske</string>
-    <string name="settings_import_status_not_imported">Net ymportearre</string>
-    <string name="settings_import_status_error">Ymportearjen mislearre</string>
-    <string name="settings_import_later_button">Letter</string>
-    <string name="settings_importing">Ynstellingen ymportearje…</string>
-    <plurals name="settings_import_password_prompt">
-        <item quantity="one">Om de account ‘<xliff:g id="account">%s</xliff:g>’ te brûken moatte jo it wachtwurd fan de server opjaan.</item>
-        <item quantity="other">Om de account ‘<xliff:g id="account">%s</xliff:g>’ te brûken moatte jo de wachtwurden fan de server opjaan.</item>
-    </plurals>
-    <string name="settings_import_incoming_server_password_hint">Wachtwurd ynkommende server</string>
-    <string name="settings_import_outgoing_server_password_hint">Wachtwurd útgeande server</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Brûk itselde wachtwurd foar de útgeande server</string>
-    <string name="server_name_format">Servernamme: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="unread_widget_select_account">Tal net-lêzen werjaan foar…</string>
     <string name="unread_widget_account_title">Account</string>
     <string name="unread_widget_account_summary">De account wêrfan it tal net-lêzen berjochten toand wurdt</string>

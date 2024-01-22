@@ -41,6 +41,7 @@ import org.koin.core.parameter.parametersOf
 import org.openintents.openpgp.OpenPgpApiManager
 import org.openintents.openpgp.util.OpenPgpKeyPreference
 import org.openintents.openpgp.util.OpenPgpProviderUtil
+import com.fsck.k9.ui.base.R as BaseR
 
 class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFragmentListener {
     private val viewModel: AccountSettingsViewModel by activityViewModel()
@@ -399,8 +400,8 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
             DIALOG_DELETE_ACCOUNT,
             getString(R.string.account_delete_dlg_title),
             getString(R.string.account_delete_dlg_instructions_fmt, getAccount().displayName),
-            getString(R.string.okay_action),
-            getString(R.string.cancel_action),
+            getString(BaseR.string.okay_action),
+            getString(BaseR.string.cancel_action),
         )
         dialogFragment.setTargetFragment(this, REQUEST_DELETE_ACCOUNT)
         dialogFragment.show(requireFragmentManager(), TAG_DELETE_ACCOUNT_CONFIRMATION)
