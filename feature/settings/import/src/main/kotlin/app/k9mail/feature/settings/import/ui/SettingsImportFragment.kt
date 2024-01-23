@@ -8,23 +8,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import app.k9mail.feature.settings.importing.R
 import com.fsck.k9.ui.base.livedata.observeNotNull
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
-import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.fsck.k9.ui.base.R as BaseR
 
 class SettingsImportFragment : Fragment() {
     private val viewModel: SettingsImportViewModel by viewModel()
-    private val resultViewModel: SettingsImportResultViewModel by activityViewModel()
 
     private lateinit var settingsImportAdapter: FastAdapter<ImportListItem<*>>
     private lateinit var itemAdapter: ItemAdapter<ImportListItem<*>>
@@ -155,9 +155,8 @@ class SettingsImportFragment : Fragment() {
 
     @Suppress("SwallowedException")
     private fun closeImportScreen(action: Action.Close) {
-        if (action.importSuccess) {
-            resultViewModel.setSettingsImportResult()
-        }
+        setFragmentResult(action.importSuccess)
+
         try {
             findNavController().popBackStack()
         } catch (e: IllegalStateException) {
@@ -232,10 +231,22 @@ class SettingsImportFragment : Fragment() {
         }
     }
 
+    private fun setFragmentResult(accountImported: Boolean) {
+        setFragmentResult(
+            requestKey = FRAGMENT_RESULT_KEY,
+            result = bundleOf(
+                FRAGMENT_RESULT_ACCOUNT_IMPORTED to accountImported,
+            ),
+        )
+    }
+
     companion object {
         private const val REQUEST_PICK_DOCUMENT = Activity.RESULT_FIRST_USER
         private const val REQUEST_PASSWORD_PROMPT = Activity.RESULT_FIRST_USER + 1
         private const val REQUEST_AUTHORIZATION = Activity.RESULT_FIRST_USER + 2
+
+        const val FRAGMENT_RESULT_KEY = "settings_import"
+        const val FRAGMENT_RESULT_ACCOUNT_IMPORTED = "accountImported"
     }
 }
 

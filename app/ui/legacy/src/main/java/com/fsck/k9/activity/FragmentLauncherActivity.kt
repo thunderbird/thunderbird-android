@@ -3,17 +3,11 @@ package com.fsck.k9.activity
 import android.content.Intent
 import android.os.Bundle
 import app.k9mail.feature.settings.import.ui.SettingsImportFragment
-import app.k9mail.feature.settings.import.ui.SettingsImportResultViewModel
-import app.k9mail.feature.settings.import.ui.SettingsImportSuccess
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import app.k9mail.feature.settings.importing.R as SettingsImportR
 
 class FragmentLauncherActivity : K9Activity() {
-
-    private val settingsImportResultViewModel: SettingsImportResultViewModel by viewModel()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -31,11 +25,14 @@ class FragmentLauncherActivity : K9Activity() {
             .replace(R.id.fragment_launcher_container, SettingsImportFragment())
             .commit()
 
-        settingsImportResultViewModel.settingsImportResult.observe(this) {
-            if (it == SettingsImportSuccess) {
+        supportFragmentManager.setFragmentResultListener(
+            SettingsImportFragment.FRAGMENT_RESULT_KEY,
+            this,
+        ) { _, result: Bundle ->
+            if (result.getBoolean(SettingsImportFragment.FRAGMENT_RESULT_ACCOUNT_IMPORTED, false)) {
                 launchMessageList()
-                finish()
             }
+            finish()
         }
     }
 
