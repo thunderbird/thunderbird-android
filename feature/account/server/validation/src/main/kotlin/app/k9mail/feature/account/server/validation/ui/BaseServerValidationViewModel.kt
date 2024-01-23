@@ -19,7 +19,7 @@ import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-private const val CONTINUE_NEXT_DELAY = 2000L
+private const val CONTINUE_NEXT_DELAY = 200L
 
 @Suppress("TooManyFunctions")
 abstract class BaseServerValidationViewModel(
