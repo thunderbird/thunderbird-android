@@ -26,6 +26,7 @@ import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme.Icons
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
+import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.account.common.ui.loadingerror.rememberContentLoadingErrorViewState
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.Event
@@ -45,33 +46,37 @@ fun SpecialFoldersContent(
             .padding(contentPadding)
             .then(modifier),
     ) {
-        ContentLoadingErrorView(
-            state = rememberContentLoadingErrorViewState(state = state),
-            loading = {
-                LoadingView(
-                    message = stringResource(id = R.string.account_setup_special_folders_loading_message),
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            },
-            error = {
-                SpecialFoldersErrorView(
-                    failure = state.error!!,
-                    onRetry = { onEvent(Event.OnRetryClicked) },
-                )
-            },
-            modifier = Modifier.fillMaxSize(),
-        ) {
-            if (state.isSuccess) {
-                SuccessView(
-                    message = stringResource(id = R.string.account_setup_special_folders_success_message),
-                    onEditClick = { onEvent(Event.OnEditClicked) },
-                )
-            } else {
-                SpecialFoldersFormContent(
-                    state = state.formState,
-                    onEvent = onEvent,
-                    modifier = Modifier.fillMaxSize(),
-                )
+        Column {
+            AppTitleTopHeader()
+
+            ContentLoadingErrorView(
+                state = rememberContentLoadingErrorViewState(state = state),
+                loading = {
+                    LoadingView(
+                        message = stringResource(id = R.string.account_setup_special_folders_loading_message),
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                },
+                error = {
+                    SpecialFoldersErrorView(
+                        failure = state.error!!,
+                        onRetry = { onEvent(Event.OnRetryClicked) },
+                    )
+                },
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                if (state.isSuccess) {
+                    SuccessView(
+                        message = stringResource(id = R.string.account_setup_special_folders_success_message),
+                        onEditClick = { onEvent(Event.OnEditClicked) },
+                    )
+                } else {
+                    SpecialFoldersFormContent(
+                        state = state.formState,
+                        onEvent = onEvent,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
             }
         }
     }
