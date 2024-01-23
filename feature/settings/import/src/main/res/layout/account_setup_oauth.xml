@@ -42,7 +42,7 @@
                 android:id="@+id/google_sign_in_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_google_signin_dark"
+                android:background="@drawable/settings_import_button_google_signin_dark"
                 android:text="@string/settings_import_oauth_sign_in_with_google"
                 android:textAllCaps="false"
                 android:textColor="#ffffff"
