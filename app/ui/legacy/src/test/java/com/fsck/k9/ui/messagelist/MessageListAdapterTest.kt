@@ -20,8 +20,8 @@ import assertk.assertions.isNull
 import assertk.assertions.support.expected
 import com.fsck.k9.Account
 import com.fsck.k9.FontSizes
-import com.fsck.k9.FontSizes.FONT_DEFAULT
-import com.fsck.k9.FontSizes.LARGE
+import com.fsck.k9.FontSizes.Companion.FONT_DEFAULT
+import com.fsck.k9.FontSizes.Companion.LARGE
 import com.fsck.k9.UiDensity
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.mail.Address
