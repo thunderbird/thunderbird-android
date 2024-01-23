@@ -29,10 +29,10 @@ internal fun ServerValidationMainScreen(
         },
         bottomBar = {
             WizardNavigationBar(
-                onNextClick = {},
+                onNextClick = { dispatch(Event.OnNextClicked) },
                 onBackClick = { dispatch(Event.OnBackClicked) },
                 state = WizardNavigationBarState(
-                    showNext = false,
+                    showNext = state.value.isSuccess,
                 ),
             )
         },
