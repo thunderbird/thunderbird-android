@@ -7,7 +7,11 @@ import com.fsck.k9.activity.MessageList
 class AccountSetupFinishedLauncher(
     private val context: Context,
 ) : FeatureLauncherExternalContract.AccountSetupFinishedLauncher {
-    override fun launch(accountUuid: String) {
-        MessageList.launch(context, accountUuid)
+    override fun launch(accountUuid: String?) {
+        if (accountUuid != null) {
+            MessageList.launch(context, accountUuid)
+        } else {
+            MessageList.launch(context)
+        }
     }
 }

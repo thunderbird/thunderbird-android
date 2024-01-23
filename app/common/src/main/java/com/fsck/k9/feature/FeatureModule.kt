@@ -10,10 +10,4 @@ val featureModule = module {
             context = androidContext(),
         )
     }
-
-    factory<FeatureLauncherExternalContract.ImportSettingsLauncher> {
-        ImportSettingsLauncher(
-            context = androidContext(),
-        )
-    }
 }
