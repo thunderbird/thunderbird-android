@@ -22,6 +22,7 @@ rootProject.name = "k-9"
 
 include(
     ":app-k9mail",
+    ":app-thunderbird",
     ":app-ui-catalog",
 )
 
