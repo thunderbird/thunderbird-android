@@ -150,13 +150,7 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
         when (item) {
             is AccountItem -> launchAccountSettings(item.account)
             is UrlActionItem -> openUrl(item.url)
-            is SettingsActionItem -> {
-                if (item.navigationAction == R.id.action_settingsListScreen_to_addAccountScreen) {
-                    FeatureLauncherActivity.launchSetupAccount(requireActivity())
-                } else {
-                    findNavController().navigate(item.navigationAction)
-                }
-            }
+            is SettingsActionItem -> findNavController().navigate(item.navigationAction)
         }
     }
 
