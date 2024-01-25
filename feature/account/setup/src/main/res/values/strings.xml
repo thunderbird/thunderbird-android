@@ -13,7 +13,7 @@
 
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
-    <string name="account_setup_auto_discovery_loading_message">Finding email details</string>
+    <string name="account_setup_auto_discovery_loading_message">Looking up configuration…</string>
     <string name="account_setup_auto_discovery_loading_error">Failed to load email configuration</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Configuration found</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Configuration not found</string>
