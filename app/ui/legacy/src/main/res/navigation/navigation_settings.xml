@@ -51,7 +51,7 @@
     <activity
         android:id="@+id/addAccountScreen"
         android:name="app.k9mail.feature.launcher.FeatureLauncherActivity"
-        android:data="app://account/setup"
+        app:data="app://account/setup"
         android:label="@string/account_setup_basics_title" />
 
     <fragment
