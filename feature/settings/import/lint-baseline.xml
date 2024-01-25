@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.2.1" type="baseline" client="gradle" dependencies="false" name="AGP (8.2.1)" variant="all" version="8.2.1">
+
+    <issue
+        id="UseGetLayoutInflater"
+        message="Use of LayoutInflater.from(Context) detected. Consider using layoutInflater instead"
+        errorLine1="        val layoutInflater = LayoutInflater.from(requireContext())"
+        errorLine2="                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/app/k9mail/feature/settings/import/ui/PasswordPromptDialogFragment.kt"
+            line="64"
+            column="30"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;cy&quot; (Welsh) the following quantities should also be defined: `few` (e.g. &quot;3 chi, 3 cath&quot;), `zero` (e.g. &quot;0 cŵn, 0 cathod&quot;)"
+        errorLine1="    &lt;plurals name=&quot;settings_import_password_prompt&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-cy/strings.xml"
+            line="24"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;es&quot; (Spanish) the following quantities are not relevant: `many`"
+        errorLine1="    &lt;plurals name=&quot;settings_import_password_prompt&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-es/strings.xml"
+            line="24"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;fr&quot; (French) the following quantities are not relevant: `many`"
+        errorLine1="    &lt;plurals name=&quot;settings_import_password_prompt&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-fr/strings.xml"
+            line="24"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;it&quot; (Italian) the following quantities are not relevant: `many`"
+        errorLine1="    &lt;plurals name=&quot;settings_import_password_prompt&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-it/strings.xml"
+            line="24"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;pt&quot; (Portuguese) the following quantities are not relevant: `many`"
+        errorLine1="    &lt;plurals name=&quot;settings_import_password_prompt&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-pt-rBR/strings.xml"
+            line="24"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;pt&quot; (Portuguese) the following quantities are not relevant: `many`"
+        errorLine1="    &lt;plurals name=&quot;settings_import_password_prompt&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-pt-rPT/strings.xml"
+            line="24"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="StaticFieldLeak"
+        message="This field leaks a context object"
+        errorLine1="    private val context: Context,"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/app/k9mail/feature/settings/import/ui/SettingsImportViewModel.kt"
+            line="30"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="TypographyEllipsis"
+        message="Replace &quot;...&quot; with ellipsis character (…, &amp;#8230;) ?"
+        errorLine1="    &lt;string name=&quot;settings_importing&quot;>პარამეტრების იმპორტირება...&lt;/string>"
+        errorLine2="                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-ka/strings.xml"
+            line="6"
+            column="39"/>
+    </issue>
+
+</issues>

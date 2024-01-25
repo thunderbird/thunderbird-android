@@ -16,6 +16,10 @@ android {
             manifestPlaceholders["appAuthRedirectScheme"] = "FIXME: override this in your app project"
         }
     }
+
+    lint {
+        baseline = file("lint-baseline.xml")
+    }
 }
 
 dependencies {
