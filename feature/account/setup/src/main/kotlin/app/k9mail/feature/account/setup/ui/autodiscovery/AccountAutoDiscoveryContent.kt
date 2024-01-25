@@ -15,8 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
-import app.k9mail.core.ui.compose.designsystem.atom.Background
+import app.k9mail.core.ui.compose.common.annotation.PreviewDevicesWithBackground
 import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
@@ -46,42 +45,40 @@ internal fun AccountAutoDiscoveryContent(
     oAuthViewModel: AccountOAuthContract.ViewModel,
     modifier: Modifier = Modifier,
 ) {
-    Background(
+    val scrollState = rememberScrollState()
+
+    ResponsiveWidthContainer(
         modifier = Modifier
             .fillMaxSize()
             .testTag("AccountAutoDiscoveryContent")
             .then(modifier),
     ) {
-        val scrollState = rememberScrollState()
-
-        ResponsiveWidthContainer {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+        ) {
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .weight(1f)
+                    .verticalScroll(scrollState)
+                    .imePadding(),
             ) {
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .verticalScroll(scrollState)
-                        .imePadding(),
-                ) {
-                    AppTitleTopHeader(
-                        title = stringResource(id = R.string.account_setup_title),
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    AutoDiscoveryContent(
-                        state = state,
-                        onEvent = onEvent,
-                        oAuthViewModel = oAuthViewModel,
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                }
-
-                WizardNavigationBar(
-                    onNextClick = { onEvent(Event.OnNextClicked) },
-                    onBackClick = { onEvent(Event.OnBackClicked) },
-                    state = WizardNavigationBarState(showNext = state.isNextButtonVisible),
+                AppTitleTopHeader(
+                    title = stringResource(id = R.string.account_setup_title),
                 )
+                Spacer(modifier = Modifier.weight(1f))
+                AutoDiscoveryContent(
+                    state = state,
+                    onEvent = onEvent,
+                    oAuthViewModel = oAuthViewModel,
+                )
+                Spacer(modifier = Modifier.weight(1f))
             }
+
+            WizardNavigationBar(
+                onNextClick = { onEvent(Event.OnNextClicked) },
+                onBackClick = { onEvent(Event.OnBackClicked) },
+                state = WizardNavigationBarState(showNext = state.isNextButtonVisible),
+            )
         }
     }
 }
@@ -182,7 +179,7 @@ internal fun ContentView(
 }
 
 @Composable
-@PreviewDevices
+@PreviewDevicesWithBackground
 internal fun AccountAutoDiscoveryContentK9Preview() {
     K9Theme {
         AccountAutoDiscoveryContent(
@@ -194,7 +191,7 @@ internal fun AccountAutoDiscoveryContentK9Preview() {
 }
 
 @Composable
-@PreviewDevices
+@PreviewDevicesWithBackground
 internal fun AccountAutoDiscoveryContentThunderbirdPreview() {
     ThunderbirdTheme {
         AccountAutoDiscoveryContent(

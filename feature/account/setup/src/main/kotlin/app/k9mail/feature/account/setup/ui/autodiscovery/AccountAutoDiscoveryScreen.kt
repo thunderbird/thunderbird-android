@@ -4,7 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
-import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
+import app.k9mail.core.ui.compose.common.annotation.PreviewDevicesWithBackground
 import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
@@ -42,7 +42,7 @@ internal fun AccountAutoDiscoveryScreen(
 }
 
 @Composable
-@PreviewDevices
+@PreviewDevicesWithBackground
 internal fun AccountAutoDiscoveryScreenK9Preview() {
     K9Theme {
         AccountAutoDiscoveryScreen(
@@ -59,7 +59,7 @@ internal fun AccountAutoDiscoveryScreenK9Preview() {
 }
 
 @Composable
-@PreviewDevices
+@PreviewDevicesWithBackground
 internal fun AccountAutoDiscoveryScreenThunderbirdPreview() {
     ThunderbirdTheme {
         AccountAutoDiscoveryScreen(
