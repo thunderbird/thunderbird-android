@@ -106,7 +106,7 @@ internal fun AutoDiscoveryContent(
         error = {
             ErrorView(
                 title = stringResource(id = R.string.account_setup_auto_discovery_loading_error),
-                message = state.error?.toResourceString(resources),
+                message = state.error?.toAutoDiscoveryErrorString(resources),
                 onRetry = { onEvent(Event.OnRetryClicked) },
                 modifier = Modifier.fillMaxSize(),
             )
@@ -155,7 +155,7 @@ internal fun ContentView(
 
         EmailAddressInput(
             emailAddress = state.emailAddress.value,
-            errorMessage = state.emailAddress.error?.toResourceString(resources),
+            errorMessage = state.emailAddress.error?.toAutoDiscoveryValidationErrorString(resources),
             onEmailAddressChange = { onEvent(Event.EmailAddressChanged(it)) },
             contentPadding = PaddingValues(),
         )
@@ -164,7 +164,7 @@ internal fun ContentView(
             Spacer(modifier = Modifier.height(MainTheme.spacings.double))
             PasswordInput(
                 password = state.password.value,
-                errorMessage = state.password.error?.toResourceString(resources),
+                errorMessage = state.password.error?.toAutoDiscoveryValidationErrorString(resources),
                 onPasswordChange = { onEvent(Event.PasswordChanged(it)) },
                 contentPadding = PaddingValues(),
             )

@@ -13,7 +13,7 @@ import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 import app.k9mail.feature.account.common.domain.input.BooleanInputField
 import app.k9mail.feature.account.setup.R
-import app.k9mail.feature.account.setup.ui.autodiscovery.toResourceString
+import app.k9mail.feature.account.setup.ui.autodiscovery.toAutoDiscoveryValidationErrorString
 
 @Composable
 internal fun AutoDiscoveryResultApprovalView(
@@ -30,7 +30,7 @@ internal fun AutoDiscoveryResultApprovalView(
         ),
         checked = approvalState.value ?: false,
         onCheckedChange = onApprovalChange,
-        errorMessage = approvalState.error?.toResourceString(resources),
+        errorMessage = approvalState.error?.toAutoDiscoveryValidationErrorString(resources),
         contentPadding = PaddingValues(),
     )
 }

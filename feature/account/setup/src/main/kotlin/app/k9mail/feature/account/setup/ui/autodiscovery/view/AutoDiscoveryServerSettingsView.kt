@@ -26,7 +26,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody2
 import app.k9mail.core.ui.compose.theme.Icons
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
-import app.k9mail.feature.account.setup.ui.autodiscovery.toResourceString
+import app.k9mail.feature.account.setup.ui.autodiscovery.toAutoDiscoveryConnectionSecurityString
 
 @Composable
 internal fun AutoDiscoveryServerSettingsView(
@@ -76,7 +76,7 @@ internal fun AutoDiscoveryServerSettingsView(
             icon = Icons.Filled.security,
             text = buildAnnotatedString {
                 append("Security: ")
-                append(connectionSecurity.toResourceString(resources))
+                append(connectionSecurity.toAutoDiscoveryConnectionSecurityString(resources))
             },
         )
 
