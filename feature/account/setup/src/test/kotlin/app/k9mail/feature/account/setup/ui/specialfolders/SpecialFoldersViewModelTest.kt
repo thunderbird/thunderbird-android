@@ -229,19 +229,6 @@ class SpecialFoldersViewModelTest {
     }
 
     @Test
-    fun `should show form when OnEditClicked event received`() = runTest {
-        val initialState = State(isSuccess = true)
-        val testSubject = createTestSubject(initialState = initialState)
-        val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
-
-        testSubject.event(Event.OnEditClicked)
-
-        turbines.assertThatAndStateTurbineConsumed {
-            isEqualTo(initialState.copy(isSuccess = false))
-        }
-    }
-
-    @Test
     fun `should show form when OnRetryClicked event received`() = runTest {
         val initialState = State(error = SpecialFoldersContract.Failure.LoadFoldersFailed("irrelevant"))
         val testSubject = createTestSubject(initialState = initialState)
