@@ -27,7 +27,7 @@
     <string name="account_setup_error_network">网络</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">输入值未被识别为有效的邮箱地址。</string>
     <string name="account_setup_options_email_check_frequency_never">从不</string>
-    <string name="account_setup_auto_discovery_loading_message">寻找电子邮件详情中</string>
+    <string name="account_setup_auto_discovery_loading_message">正在查询配置…</string>
     <string name="account_setup_options_section_sync_options">同步选项</string>
     <string name="account_setup_options_show_notifications_label">显示通知</string>
     <string name="account_setup_options_section_display_options">显示选项</string>
@@ -48,7 +48,6 @@
     <string name="account_setup_special_folders_top_bar_title">特殊文件夹</string>
     <string name="account_setup_special_folders_trash_folder_label">回收站文件夹</string>
     <string name="account_setup_special_folders_archive_folder_label">存档文件夹</string>
-    <string name="account_setup_special_folders_edit_folders_button_label">编辑特殊文件夹</string>
     <string name="account_setup_special_folders_spam_folder_label">垃圾邮件文件夹</string>
     <string name="account_setup_special_folders_form_description_automatic">“自动”条目会自动遵照服务器所做的更改。当前的服务器值显示在圆括号中。</string>
 </resources>

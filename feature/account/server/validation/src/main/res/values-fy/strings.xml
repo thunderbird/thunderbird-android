@@ -4,11 +4,11 @@
     <string name="account_server_validation_error_authentication">Autentikaasjeflater</string>
     <string name="account_server_validation_outgoing_loading_message">Ynstellingen foar útgeande server kontrolearje…</string>
     <string name="account_server_validation_error_network">Netwurkflater</string>
-    <string name="account_server_validation_outgoing_success">Ynstellingen foar útgeande server binne falide</string>
+    <string name="account_server_validation_outgoing_success">Ynstellingen foar útgeande server ferifiearre</string>
     <string name="account_server_validation_error_unknown">Unbekende flater</string>
     <string name="account_server_validation_sign_in">Meld jo oan</string>
     <string name="account_server_validation_outgoing_loading_error">Ynstellingen foar útgeande server kontrolearje mislearre</string>
-    <string name="account_server_validation_incoming_success">Ynstellingen foar ynkommende server binne falide</string>
+    <string name="account_server_validation_incoming_success">Ynstellingen foar ynkommende server ferifiearre</string>
     <string name="account_server_validation_incoming_loading_error">Ynstellingen foar ynkommende server kontrolearje mislearre</string>
     <string name="account_server_validation_error_server">Serverflater</string>
     <string name="account_server_validation_error_missing_server_capability">Untbrekkende serverfunksjonaliteit</string>

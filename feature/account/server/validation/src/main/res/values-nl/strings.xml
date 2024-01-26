@@ -4,11 +4,11 @@
     <string name="account_server_validation_error_authentication">Authenticatiefout</string>
     <string name="account_server_validation_outgoing_loading_message">Instellingen voor uitgaande server controleren…</string>
     <string name="account_server_validation_error_network">Netwerkfout</string>
-    <string name="account_server_validation_outgoing_success">Instellingen voor uitgaande server zijn geldig</string>
+    <string name="account_server_validation_outgoing_success">Instellingen voor uitgaande server geverifieerd</string>
     <string name="account_server_validation_error_unknown">Onbekende fout</string>
     <string name="account_server_validation_sign_in">Meld u aan</string>
     <string name="account_server_validation_outgoing_loading_error">Instellingen voor uitgaande server controleren mislukt</string>
-    <string name="account_server_validation_incoming_success">Instellingen voor inkomende server zijn valide</string>
+    <string name="account_server_validation_incoming_success">Instellingen voor inkomende server geverifieerd</string>
     <string name="account_server_validation_incoming_loading_error">Instellingen voor inkomende server controleren mislukt</string>
     <string name="account_server_validation_error_server">Serverfout</string>
     <string name="account_server_validation_error_missing_server_capability">Ontbrekende serverfunctionaliteit</string>

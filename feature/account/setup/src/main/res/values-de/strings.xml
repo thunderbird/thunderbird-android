@@ -42,7 +42,6 @@
     <string name="account_setup_special_folders_form_description">Bitte wähle die besonderen Ordner für dein Konto aus.</string>
     <string name="account_setup_special_folders_top_bar_title">Besondere Ordner</string>
     <string name="account_setup_special_folders_archive_folder_label">Archiv</string>
-    <string name="account_setup_special_folders_edit_folders_button_label">Besondere Ordner bearbeiten</string>
     <string name="account_setup_special_folders_form_description_automatic">Der Eintrag \"Automatisch\" übernimmt die vom Server vorgenommenen Änderungen. Der aktuelle Serverwert wird in Klammern angezeigt.</string>
     <string name="account_setup_special_folders_loading_message">Liste der Ordner wird abgerufen…</string>
     <string name="account_setup_special_folders_error_message">Liste der Ordner konnte nicht vom Server abgerufen werden</string>

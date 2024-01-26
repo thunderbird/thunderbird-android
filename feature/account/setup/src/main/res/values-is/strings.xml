@@ -21,10 +21,10 @@
     <string name="account_setup_options_account_name_label">Heiti notandaaðgangs</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Uppsetning fannst</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Tölvupóstfang er nauðsynlegt.</string>
-    <string name="account_setup_options_display_name_label">Birtingarnafn</string>
+    <string name="account_setup_options_display_name_label">Nafnið þitt</string>
     <string name="account_setup_auto_discovery_loading_error">Mistókst að hlaða inn tölvupóststillingum</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Ég treysti þessari uppsetningu</string>
-    <string name="account_setup_options_display_name_error_required">Birtingarnafn er nauðsynlegt.</string>
+    <string name="account_setup_options_display_name_error_required">Nafnið þitt er nauðsynlegt.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Þetta telst ekki vera gilt tölvupóstfang.</string>
     <string name="account_setup_options_email_check_frequency_never">Aldrei</string>
     <string name="account_setup_auto_discovery_loading_message">Finna nánar um tölvupóst</string>
@@ -47,6 +47,5 @@
     <string name="account_setup_special_folders_top_bar_title">Sérmöppur</string>
     <string name="account_setup_special_folders_trash_folder_label">Rusl-mappa</string>
     <string name="account_setup_special_folders_archive_folder_label">Safnmappa</string>
-    <string name="account_setup_special_folders_edit_folders_button_label">Breyta sérmöppum</string>
     <string name="account_setup_special_folders_spam_folder_label">Ruslpóstmappa</string>
 </resources>

@@ -24,7 +24,7 @@
     <string name="account_setup_options_display_name_error_required">Adınız zorunludur.</string>
     <string name="account_setup_error_network">Ağ</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Bu geçerli bir e-posta adresi olarak tanınmıyor.</string>
-    <string name="account_setup_auto_discovery_loading_message">E-posta bilgileri bulunuyor</string>
+    <string name="account_setup_auto_discovery_loading_message">Yapılandırma aranıyor…</string>
     <string name="account_setup_options_section_sync_options">Eşzamanlama seçenekleri</string>
     <string name="account_setup_options_section_display_options">Görüntüleme seçenekleri</string>
     <string name="account_setup_title">K-9 Posta</string>
@@ -48,7 +48,7 @@
     <string name="account_setup_special_folders_top_bar_title">Özel klasörler</string>
     <string name="account_setup_special_folders_trash_folder_label">Çöp klasörü</string>
     <string name="account_setup_special_folders_archive_folder_label">Arşiv klasörü</string>
-    <string name="account_setup_special_folders_edit_folders_button_label">Özel klasörleri düzenle</string>
     <string name="account_setup_special_folders_spam_folder_label">Gereksiz posta klasörü</string>
     <string name="account_setup_special_folders_form_description_automatic">\"Otomatik\" seçeneği sunucu tarafından yapılan değişiklikleri otomatik olarak takip edecektir. Geçerli sunucu değeri parantez içinde gösterilir.</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Parola zorunludur.</string>
 </resources>

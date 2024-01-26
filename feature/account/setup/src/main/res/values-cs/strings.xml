@@ -50,5 +50,4 @@
     <string name="account_setup_special_folders_trash_folder_label">Koš</string>
     <string name="account_setup_special_folders_folder_none">Žádný</string>
     <string name="account_setup_special_folders_folder_automatic">Automaticky (%s)</string>
-    <string name="account_setup_special_folders_edit_folders_button_label">Upravit speciální složky</string>
 </resources>

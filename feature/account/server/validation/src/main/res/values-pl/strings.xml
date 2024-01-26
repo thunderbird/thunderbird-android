@@ -4,11 +4,11 @@
     <string name="account_server_validation_error_authentication">Błąd autoryzacji</string>
     <string name="account_server_validation_outgoing_loading_message">Sprawdzanie ustawień serwera poczty wychodzącej…</string>
     <string name="account_server_validation_error_network">Błąd sieci</string>
-    <string name="account_server_validation_outgoing_success">Ustawienia serwera poczty wychodzącej są prawidłowe</string>
+    <string name="account_server_validation_outgoing_success">Zweryfikowano ustawienia serwera poczty wychodzącej</string>
     <string name="account_server_validation_error_unknown">Nieznany błąd</string>
     <string name="account_server_validation_sign_in">Zaloguj się</string>
     <string name="account_server_validation_outgoing_loading_error">Sprawdzanie ustawień serwera poczty wychodzącej nie powiodło się</string>
-    <string name="account_server_validation_incoming_success">Ustawienia serwera poczty przychodzącej są prawidłowe</string>
+    <string name="account_server_validation_incoming_success">Zweryfikowano ustawienia serwera poczty przychodzącej</string>
     <string name="account_server_validation_incoming_loading_error">Sprawdzanie ustawień serwera poczty przychodzącej nie powiodło się</string>
     <string name="account_server_validation_error_server">Błąd serwera</string>
     <string name="account_server_validation_error_missing_server_capability">Brak możliwości serwera</string>
