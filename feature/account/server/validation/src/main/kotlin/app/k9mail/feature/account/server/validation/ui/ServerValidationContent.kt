@@ -23,7 +23,6 @@ import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 import app.k9mail.feature.account.common.ui.item.ErrorItem
 import app.k9mail.feature.account.common.ui.item.ListItem
 import app.k9mail.feature.account.common.ui.item.LoadingItem
-import app.k9mail.feature.account.common.ui.item.SuccessItem
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
 import app.k9mail.feature.account.oauth.ui.AccountOAuthView
 import app.k9mail.feature.account.oauth.ui.preview.PreviewAccountOAuthViewModel
@@ -74,7 +73,7 @@ internal fun ServerValidationContent(
                 }
             } else if (state.isSuccess) {
                 item(key = "success") {
-                    SuccessItem(
+                    LoadingItem(
                         message = stringResource(
                             id = if (isIncomingValidation) {
                                 R.string.account_server_validation_incoming_success
