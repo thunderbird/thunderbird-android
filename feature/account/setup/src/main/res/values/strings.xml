@@ -51,6 +51,18 @@
     <string name="account_setup_options_section_sync_options">Sync options</string>
     <string name="account_setup_options_account_check_frequency_label">Check frequency</string>
     <string name="account_setup_options_email_check_frequency_never">Never</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Every minute</item>
+        <item quantity="other">Every %d minutes</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Every hour</item>
+        <item quantity="other">Every %d hours</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">1 message</item>
+        <item quantity="other">%d messages</item>
+    </plurals>
     <string name="account_setup_options_email_display_count_label">Number of messages to display</string>
     <string name="account_setup_options_show_notifications_label">Show notifications</string>
 
