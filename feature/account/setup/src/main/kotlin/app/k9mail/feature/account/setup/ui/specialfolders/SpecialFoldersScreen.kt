@@ -43,7 +43,7 @@ fun SpecialFoldersScreen(
                 onNextClick = { dispatch(Event.OnNextClicked) },
                 onBackClick = { dispatch(Event.OnBackClicked) },
                 state = WizardNavigationBarState(
-                    isNextEnabled = state.value.isLoading.not(),
+                    showNext = state.value.isManualSetup && state.value.isLoading.not(),
                 ),
             )
         },
