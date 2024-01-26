@@ -10,7 +10,7 @@
     <string name="settings_import_authorization_required">Oanmelde</string>
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
     <string name="settings_import_authorization_and_password_required">Meld jo oan en fier it wachtwurd yn</string>
-    <string name="settings_import_failure">Ynstellingen ymportearjen mislearre</string>
+    <string name="settings_import_failure">Ynstellingen ymportearje mislearre</string>
     <string name="settings_import_read_failure">Lêzen fan ynstellingenbestân mislearre</string>
     <string name="settings_import_partial_failure">Ymportearjen fan guon ynstellingen mislearre</string>
     <string name="settings_import_status_success">Mei sukses ymportearre</string>

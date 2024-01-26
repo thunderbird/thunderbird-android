@@ -27,7 +27,7 @@
     <string name="account_setup_error_network">Netwerk</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Dit is niet als een geldig e-mailadres herkend.</string>
     <string name="account_setup_options_email_check_frequency_never">Nooit</string>
-    <string name="account_setup_auto_discovery_loading_message">E-maildetails zoeken</string>
+    <string name="account_setup_auto_discovery_loading_message">Configuratie zoeken…</string>
     <string name="account_setup_options_section_sync_options">Synchronisatieopties</string>
     <string name="account_setup_options_show_notifications_label">Meldingen tonen</string>
     <string name="account_setup_options_section_display_options">Weergaveopties</string>
@@ -48,7 +48,6 @@
     <string name="account_setup_special_folders_top_bar_title">Speciale mappen</string>
     <string name="account_setup_special_folders_trash_folder_label">Prullenbak</string>
     <string name="account_setup_special_folders_archive_folder_label">Archief</string>
-    <string name="account_setup_special_folders_edit_folders_button_label">Speciale mappen bewerken</string>
     <string name="account_setup_special_folders_spam_folder_label">Spam</string>
     <string name="account_setup_special_folders_form_description_automatic">De invoer ‘Automatisch’ zal de wijzigingen gemaakt door de server automatisch volgen. De actuele serverwaarde wordt tussen haakjes getoond.</string>
 </resources>

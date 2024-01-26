@@ -27,7 +27,7 @@
     <string name="account_setup_error_network">Red</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">No se reconoce como una dirección de correo electrónico válida.</string>
     <string name="account_setup_options_email_check_frequency_never">Nunca</string>
-    <string name="account_setup_auto_discovery_loading_message">Buscando los ajustes oficiales del servicio de forma automática</string>
+    <string name="account_setup_auto_discovery_loading_message">Buscando la configuración…</string>
     <string name="account_setup_options_section_sync_options">Ajustes de sincronización</string>
     <string name="account_setup_options_show_notifications_label">Mostrar notificaciones</string>
     <string name="account_setup_options_section_display_options">Ajustes de pantalla</string>
@@ -48,7 +48,7 @@
     <string name="account_setup_special_folders_top_bar_title">Carpetas especiales</string>
     <string name="account_setup_special_folders_trash_folder_label">Papelera</string>
     <string name="account_setup_special_folders_archive_folder_label">Carpeta de archivo</string>
-    <string name="account_setup_special_folders_edit_folders_button_label">Editar las carpetas especiales</string>
     <string name="account_setup_special_folders_spam_folder_label">Carpeta de spam</string>
     <string name="account_setup_special_folders_form_description_automatic">La entrada \"Automática\" seguirá automáticamente los cambios realizados por el servidor. El valor actual del servidor se muestra entre paréntesis.</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">La contraseña es obligatoria.</string>
 </resources>

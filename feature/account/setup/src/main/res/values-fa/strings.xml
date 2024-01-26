@@ -36,7 +36,6 @@
     <string name="account_setup_special_folders_archive_folder_label">پوشه بایگانی</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">نشانی رایانامه اجباری است.</string>
     <string name="account_setup_options_display_name_label">نام نمایشی</string>
-    <string name="account_setup_special_folders_edit_folders_button_label">ویرایش پوشه‌های ویژه</string>
     <string name="account_setup_auto_discovery_loading_error">خطا در بارگیری پیکربندی ایمیل</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">من به این پیکربندی اعتماد دارم</string>
     <string name="account_setup_options_display_name_error_required">نام نمایشی اجباری است.</string>

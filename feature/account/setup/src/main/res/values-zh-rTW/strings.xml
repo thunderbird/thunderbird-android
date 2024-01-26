@@ -48,7 +48,6 @@
     <string name="account_setup_special_folders_top_bar_title">特殊資料夾</string>
     <string name="account_setup_special_folders_trash_folder_label">垃圾資料夾</string>
     <string name="account_setup_special_folders_archive_folder_label">存檔資料夾</string>
-    <string name="account_setup_special_folders_edit_folders_button_label">編輯特殊資料夾</string>
     <string name="account_setup_special_folders_spam_folder_label">垃圾郵件資料夾</string>
     <string name="account_setup_special_folders_form_description_automatic">“自動”條目將自動遵循伺服器所做的更改。 當前伺服器值顯示在括號中。</string>
 </resources>

@@ -4,11 +4,11 @@
     <string name="account_server_validation_error_authentication">Viga autentimisel</string>
     <string name="account_server_validation_outgoing_loading_message">Kontrollime väljuva e-posti serveriseadistusi…</string>
     <string name="account_server_validation_error_network">Võrguühenduse viga</string>
-    <string name="account_server_validation_outgoing_success">Väljuva e-posti serveriseadistused on korrektsed</string>
+    <string name="account_server_validation_outgoing_success">Väljuva e-posti serveriseadistused on üle kontrollitud</string>
     <string name="account_server_validation_error_unknown">Teadmata viga</string>
     <string name="account_server_validation_sign_in">Palun logi sisse</string>
     <string name="account_server_validation_outgoing_loading_error">Väljuva e-posti serveriseadistuste kontrollimine ei õnnestunud</string>
-    <string name="account_server_validation_incoming_success">Saabuva e-posti serveriseadistused on korrektsed</string>
+    <string name="account_server_validation_incoming_success">Saabuva e-posti serveriseadistused on üle kontrollitud</string>
     <string name="account_server_validation_incoming_loading_error">Saabuva e-posti serveriseadistuste kontrollimine ei õnnestunud</string>
     <string name="account_server_validation_error_server">Serveri viga</string>
     <string name="account_server_validation_error_missing_server_capability">Serveril puudub vajalik võimekus</string>

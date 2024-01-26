@@ -47,7 +47,6 @@
     <string name="account_setup_special_folders_trash_folder_label">Dosje hedhurinash</string>
     <string name="account_setup_create_account_creating">Po krijohet llogari…</string>
     <string name="account_setup_special_folders_archive_folder_label">Dosje arkiv</string>
-    <string name="account_setup_special_folders_edit_folders_button_label">Përpunoni dosje speciale</string>
     <string name="account_setup_create_account_error">Ndodhi një gabim teksa provohej të krijohej llogaria</string>
     <string name="account_setup_special_folders_spam_folder_label">Dosje të padëshiruarish</string>
     <string name="account_setup_special_folders_form_description_automatic">Zëri “Automatik” do të pasojë ndryshime të bëra nga shërbyesi automatikisht. Vlera aktuale e shërbyesit shfaqet në kllapa.</string>

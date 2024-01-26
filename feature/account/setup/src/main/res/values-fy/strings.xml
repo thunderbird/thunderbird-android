@@ -27,7 +27,7 @@
     <string name="account_setup_error_network">Netwurk</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Dit is net as in jildich e-mailadres werkend.</string>
     <string name="account_setup_options_email_check_frequency_never">Nea</string>
-    <string name="account_setup_auto_discovery_loading_message">E-maildetails sykje</string>
+    <string name="account_setup_auto_discovery_loading_message">Konfiguraasje sykje…</string>
     <string name="account_setup_options_section_sync_options">Syngronisaasjeopsjes</string>
     <string name="account_setup_options_show_notifications_label">Meldingen toane</string>
     <string name="account_setup_options_section_display_options">Werjefteopsjes</string>
@@ -48,7 +48,6 @@
     <string name="account_setup_special_folders_top_bar_title">Spesjale mappen</string>
     <string name="account_setup_special_folders_trash_folder_label">Jiskefet</string>
     <string name="account_setup_special_folders_archive_folder_label">Argyf</string>
-    <string name="account_setup_special_folders_edit_folders_button_label">Spesjale mappen bewurkje</string>
     <string name="account_setup_special_folders_spam_folder_label">Net-winske</string>
     <string name="account_setup_special_folders_form_description_automatic">De ynfier ‘Automatysk’ sil de wizigingen makke troch de server automatysk folgje. De aktuele serverwearde wurdt tusken heakjes toand.</string>
 </resources>

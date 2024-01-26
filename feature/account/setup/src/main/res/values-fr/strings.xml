@@ -48,7 +48,6 @@
     <string name="account_setup_special_folders_folder_none">Aucun</string>
     <string name="account_setup_special_folders_trash_folder_label">Dossier de la corbeille</string>
     <string name="account_setup_special_folders_archive_folder_label">Dossier des archives</string>
-    <string name="account_setup_special_folders_edit_folders_button_label">Modifier les dossiers spéciaux</string>
     <string name="account_setup_special_folders_spam_folder_label">Dossier du pourriel (indésirables)</string>
     <string name="account_setup_special_folders_form_description_automatic">L’option « Automatique » suivra automatiquement les changements effectués par le serveur. La valeur actuelle du serveur est affichée entre parenthèses.</string>
 </resources>

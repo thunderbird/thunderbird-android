@@ -48,6 +48,5 @@
     <string name="account_setup_special_folders_top_bar_title">Erityiset kansiot</string>
     <string name="account_setup_special_folders_trash_folder_label">Roskakorikansio</string>
     <string name="account_setup_special_folders_archive_folder_label">Arkistokansio</string>
-    <string name="account_setup_special_folders_edit_folders_button_label">Muokkaa erityisiä kansioita</string>
     <string name="account_setup_special_folders_spam_folder_label">Roskapostikansio</string>
 </resources>

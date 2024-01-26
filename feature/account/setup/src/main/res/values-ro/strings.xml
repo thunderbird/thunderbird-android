@@ -48,7 +48,6 @@
     <string name="account_setup_special_folders_top_bar_title">Dosare speciale</string>
     <string name="account_setup_special_folders_trash_folder_label">Dosarul gunoi</string>
     <string name="account_setup_special_folders_archive_folder_label">Dosarul de arhivare</string>
-    <string name="account_setup_special_folders_edit_folders_button_label">Editează dosarele speciale</string>
     <string name="account_setup_special_folders_spam_folder_label">Dosarul spam</string>
     <string name="account_setup_special_folders_form_description_automatic">Intrarea „Automat” va urma automat modificările făcute de server. Valoarea curentă a serverului este afișată în paranteze.</string>
 </resources>

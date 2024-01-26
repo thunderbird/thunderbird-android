@@ -32,8 +32,8 @@
     <string name="settings_import_oauth_description">Um dieses E-Mail-Konto mit K-9 Mail zu verwenden, musst du dich anmelden und der App Zugriff auf deine E-Mails gewähren.</string>
     <string name="settings_import_oauth_sign_in">Anmelden</string>
     <string name="settings_import_oauth_sign_in_with_google">Mit Google anmelden</string>
-    <string name="settings_import_oauth_error_oauth_flow_canceled">Berechtigung aufgehoben</string>
-    <string name="settings_import_oauth_error_oauth_flow_failed">Die Autorisierung ist aufgrund des folgenden Fehlers fehlgeschlagen: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">Autorisierung aufgehoben</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Autorisierung ist aufgrund des folgenden Fehlers fehlgeschlagen: <xliff:g id="error">%s</xliff:g></string>
     <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 wird von diesem Anbieter derzeit nicht unterstützt.</string>
     <string name="settings_import_oauth_error_browser_not_found">Die App konnte keinen Browser finden, der für den Zugriff auf dein Konto verwendet werden kann.</string>
     <string name="settings_import_general_settings_item">Allgemeine Einstellungen</string>
