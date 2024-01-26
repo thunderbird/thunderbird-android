@@ -16,6 +16,7 @@ class SpecialFoldersStateTest {
         assertThat(state).isEqualTo(
             State(
                 formState = FormState(),
+                isManualSetup = false,
                 isSuccess = false,
                 error = null,
                 isLoading = true,

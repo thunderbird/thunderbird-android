@@ -75,7 +75,7 @@ class SpecialFoldersViewModelTest {
             }
 
             turbines.assertThatAndEffectTurbineConsumed {
-                isEqualTo(Effect.NavigateNext)
+                isEqualTo(Effect.NavigateNext(false))
             }
 
             assertThat(accountStateRepository.getState()).isEqualTo(
@@ -108,6 +108,7 @@ class SpecialFoldersViewModelTest {
         testSubject.event(Event.LoadSpecialFolderOptions)
 
         val unvalidatedState = initialState.copy(
+            isManualSetup = true,
             isLoading = false,
             isSuccess = false,
             formState = FormState(
@@ -187,7 +188,7 @@ class SpecialFoldersViewModelTest {
 
     @Test
     fun `should save form data and emit NavigateNext effect when OnNextClicked event received`() = runTest {
-        val initialState = State(isSuccess = true)
+        val initialState = State(isManualSetup = true)
         val accountStateRepository = InMemoryAccountStateRepository()
         val testSubject = createTestSubject(
             initialState = initialState,
@@ -200,7 +201,7 @@ class SpecialFoldersViewModelTest {
         assertThat(turbines.awaitStateItem()).isEqualTo(initialState.copy(isLoading = false))
 
         turbines.assertThatAndEffectTurbineConsumed {
-            isEqualTo(Effect.NavigateNext)
+            isEqualTo(Effect.NavigateNext(true))
         }
 
         assertThat(accountStateRepository.getState()).isEqualTo(
@@ -268,7 +269,7 @@ class SpecialFoldersViewModelTest {
         )
 
         turbines.assertThatAndEffectTurbineConsumed {
-            isEqualTo(Effect.NavigateNext)
+            isEqualTo(Effect.NavigateNext(false))
         }
     }
 

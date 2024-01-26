@@ -64,6 +64,7 @@ class SpecialFoldersViewModel(
                 is ValidationResult.Failure -> {
                     updateState {
                         it.copy(
+                            isManualSetup = true,
                             isSuccess = false,
                             isLoading = false,
                         )
@@ -128,7 +129,7 @@ class SpecialFoldersViewModel(
 
     private fun navigateNext() {
         viewModelScope.coroutineContext.cancelChildren()
-        emitEffect(Effect.NavigateNext)
+        emitEffect(Effect.NavigateNext(isManualSetup = state.value.isManualSetup))
     }
 
     private fun onBackClicked() {

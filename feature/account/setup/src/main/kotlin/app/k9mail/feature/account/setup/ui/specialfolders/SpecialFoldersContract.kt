@@ -15,6 +15,7 @@ interface SpecialFoldersContract {
     data class State(
         val formState: FormState = FormState(),
 
+        val isManualSetup: Boolean = false,
         val isSuccess: Boolean = false,
         override val error: Failure? = null,
         override val isLoading: Boolean = true,
@@ -50,7 +51,10 @@ interface SpecialFoldersContract {
     }
 
     sealed interface Effect {
-        data object NavigateNext : Effect
+        data class NavigateNext(
+            val isManualSetup: Boolean,
+        ) : Effect
+
         data object NavigateBack : Effect
     }
 

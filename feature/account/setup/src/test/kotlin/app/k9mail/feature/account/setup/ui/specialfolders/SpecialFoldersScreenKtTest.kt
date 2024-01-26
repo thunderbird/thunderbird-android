@@ -33,7 +33,7 @@ class SpecialFoldersScreenKtTest : ComposeTest() {
         assertThat(onNextCounter).isEqualTo(0)
         assertThat(onBackCounter).isEqualTo(0)
 
-        viewModel.effect(Effect.NavigateNext)
+        viewModel.effect(Effect.NavigateNext(true))
 
         assertThat(onNextCounter).isEqualTo(1)
         assertThat(onBackCounter).isEqualTo(0)

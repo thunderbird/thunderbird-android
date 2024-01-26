@@ -17,14 +17,14 @@ import app.k9mail.feature.account.setup.ui.specialfolders.fake.FakeSpecialFolder
 
 @Composable
 fun SpecialFoldersScreen(
-    onNext: () -> Unit,
+    onNext: (isManualSetup: Boolean) -> Unit,
     onBack: () -> Unit,
     viewModel: ViewModel,
     modifier: Modifier = Modifier,
 ) {
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
-            Effect.NavigateNext -> onNext()
+            is Effect.NavigateNext -> onNext(effect.isManualSetup)
             Effect.NavigateBack -> onBack()
         }
     }
