@@ -151,10 +151,10 @@ private fun BottomBar(
             Row(
                 modifier = Modifier
                     .padding(
-                        start = MainTheme.spacings.double,
-                        end = MainTheme.spacings.double,
-                        top = MainTheme.spacings.half,
-                        bottom = MainTheme.spacings.half,
+                        start = MainTheme.spacings.quadruple,
+                        end = MainTheme.spacings.quadruple,
+                        top = MainTheme.spacings.default,
+                        bottom = MainTheme.spacings.double,
                     )
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.End,
