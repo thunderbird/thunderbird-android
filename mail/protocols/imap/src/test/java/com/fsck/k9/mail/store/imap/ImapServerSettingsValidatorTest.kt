@@ -254,7 +254,6 @@ class ImapServerSettingsValidatorTest {
             output("1 OK CAPABILITY Completed")
             expect("2 STARTTLS")
             output("2 OK Begin TLS negotiation now")
-            startTls()
         }
         val serverSettings = ServerSettings(
             type = "imap",
