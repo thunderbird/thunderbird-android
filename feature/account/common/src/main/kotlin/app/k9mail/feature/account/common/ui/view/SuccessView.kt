@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.atom.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle1
@@ -28,7 +29,10 @@ fun SuccessView(
             .then(modifier),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        TextSubtitle1(text = message)
+        TextSubtitle1(
+            text = message,
+            textAlign = TextAlign.Center,
+        )
         Row(
             modifier = Modifier.height(MainTheme.sizes.larger),
             verticalAlignment = Alignment.CenterVertically,
@@ -47,7 +51,7 @@ fun SuccessView(
 internal fun SuccessViewPreview() {
     PreviewWithThemes {
         SuccessView(
-            message = "Success",
+            message = "The app tried really hard and managed to successfully complete the operation.",
         )
     }
 }

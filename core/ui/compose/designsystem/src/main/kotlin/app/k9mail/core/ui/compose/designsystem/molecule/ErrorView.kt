@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.R
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
@@ -54,6 +55,7 @@ fun ErrorView(
                 )
                 TextSubtitle1(
                     text = title,
+                    textAlign = TextAlign.Center,
                 )
             }
 
