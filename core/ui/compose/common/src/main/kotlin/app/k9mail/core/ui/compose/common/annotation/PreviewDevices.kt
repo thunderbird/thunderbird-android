@@ -8,6 +8,7 @@ import androidx.compose.ui.tooling.preview.Preview
  *
  * It's used to provide previews for a set of different devices and form factors.
  */
+@Preview(name = "Small phone", device = "spec:shape=Normal,width=360,height=640,unit=dp,dpi=160")
 @Preview(name = "Phone", device = Devices.PHONE)
 @Preview(name = "Phone landscape", device = "spec:shape=Normal,width=891,height=411,unit=dp,dpi=420")
 @Preview(name = "Foldable", device = Devices.FOLDABLE)

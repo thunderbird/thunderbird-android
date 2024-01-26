@@ -2,12 +2,13 @@ package app.k9mail.feature.account.setup.ui.autodiscovery
 
 import android.content.res.Resources
 import app.k9mail.core.common.domain.usecase.validation.ValidationError
+import app.k9mail.feature.account.server.settings.domain.usecase.ValidatePassword
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.domain.entity.AutoDiscoveryConnectionSecurity
 import app.k9mail.feature.account.setup.domain.usecase.ValidateConfigurationApproval
 import app.k9mail.feature.account.setup.domain.usecase.ValidateEmailAddress
 
-internal fun AutoDiscoveryConnectionSecurity.toResourceString(resources: Resources): String {
+internal fun AutoDiscoveryConnectionSecurity.toAutoDiscoveryConnectionSecurityString(resources: Resources): String {
     return when (this) {
         AutoDiscoveryConnectionSecurity.StartTLS -> resources.getString(
             R.string.account_setup_auto_discovery_connection_security_start_tls,
@@ -19,16 +20,18 @@ internal fun AutoDiscoveryConnectionSecurity.toResourceString(resources: Resourc
     }
 }
 
-internal fun AccountAutoDiscoveryContract.Error.toResourceString(resources: Resources): String {
+internal fun AccountAutoDiscoveryContract.Error.toAutoDiscoveryErrorString(resources: Resources): String {
     return when (this) {
         AccountAutoDiscoveryContract.Error.NetworkError -> resources.getString(R.string.account_setup_error_network)
         AccountAutoDiscoveryContract.Error.UnknownError -> resources.getString(R.string.account_setup_error_unknown)
     }
 }
 
-internal fun ValidationError.toResourceString(resources: Resources): String {
+internal fun ValidationError.toAutoDiscoveryValidationErrorString(resources: Resources): String {
     return when (this) {
         is ValidateEmailAddress.ValidateEmailAddressError -> toEmailAddressErrorString(resources)
+        is ValidatePassword.ValidatePasswordError -> toPasswordErrorString(resources)
+
         is ValidateConfigurationApproval.ValidateConfigurationApprovalError -> toConfigurationApprovalErrorString(
             resources,
         )
@@ -54,6 +57,14 @@ private fun ValidateEmailAddress.ValidateEmailAddressError.toEmailAddressErrorSt
         ValidateEmailAddress.ValidateEmailAddressError.InvalidEmailAddress -> {
             resources.getString(R.string.account_setup_auto_discovery_validation_error_email_address_invalid)
         }
+    }
+}
+
+private fun ValidatePassword.ValidatePasswordError.toPasswordErrorString(resources: Resources): String {
+    return when (this) {
+        ValidatePassword.ValidatePasswordError.EmptyPassword -> resources.getString(
+            R.string.account_setup_auto_discovery_validation_error_password_required,
+        )
     }
 }
 
