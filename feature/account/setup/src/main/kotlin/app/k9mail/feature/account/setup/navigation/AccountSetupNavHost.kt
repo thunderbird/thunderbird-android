@@ -129,8 +129,18 @@ fun AccountSetupNavHost(
 
         composable(route = NESTED_NAVIGATION_SPECIAL_FOLDERS) {
             SpecialFoldersScreen(
-                onNext = {
-                    navController.navigate(NESTED_NAVIGATION_DISPLAY_OPTIONS)
+                onNext = { isManualSetup ->
+                    navController.navigate(NESTED_NAVIGATION_DISPLAY_OPTIONS) {
+                        if (isManualSetup) {
+                            popUpTo(NESTED_NAVIGATION_SPECIAL_FOLDERS)
+                        } else {
+                            if (isAutomaticConfig) {
+                                popUpTo(NESTED_NAVIGATION_AUTO_CONFIG)
+                            } else {
+                                popUpTo(NESTED_NAVIGATION_OUTGOING_SERVER_CONFIG)
+                            }
+                        }
+                    }
                 },
                 onBack = { navController.popBackStack() },
                 viewModel = koinViewModel<SpecialFoldersViewModel>(),
