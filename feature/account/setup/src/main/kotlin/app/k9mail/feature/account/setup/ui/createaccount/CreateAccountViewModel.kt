@@ -3,6 +3,7 @@ package app.k9mail.feature.account.setup.ui.createaccount
 import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.domain.AccountDomainContract.AccountStateRepository
+import app.k9mail.feature.account.common.ui.WizardConstants
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase.CreateAccount
 import app.k9mail.feature.account.setup.domain.entity.AccountUuid
@@ -12,8 +13,6 @@ import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountContract.S
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
-private const val CONTINUE_NEXT_DELAY = 2000L
 
 class CreateAccountViewModel(
     private val createAccount: CreateAccount,
@@ -49,7 +48,7 @@ class CreateAccountViewModel(
         }
 
         viewModelScope.launch {
-            delay(CONTINUE_NEXT_DELAY)
+            delay(WizardConstants.CONTINUE_NEXT_DELAY)
             navigateNext(accountUuid)
         }
     }

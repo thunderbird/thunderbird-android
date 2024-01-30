@@ -2,6 +2,7 @@ package app.k9mail.feature.account.edit.ui.server.settings.save
 
 import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
+import app.k9mail.feature.account.common.ui.WizardConstants
 import app.k9mail.feature.account.edit.domain.AccountEditDomainContract
 import app.k9mail.feature.account.edit.ui.server.settings.save.SaveServerSettingsContract.Effect
 import app.k9mail.feature.account.edit.ui.server.settings.save.SaveServerSettingsContract.Event
@@ -11,8 +12,6 @@ import app.k9mail.feature.account.edit.ui.server.settings.save.SaveServerSetting
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
-private const val CONTINUE_NEXT_DELAY = 1500L
 
 abstract class BaseSaveServerSettingsViewModel(
     val accountUuid: String,
@@ -50,7 +49,7 @@ abstract class BaseSaveServerSettingsViewModel(
         }
 
         viewModelScope.launch {
-            delay(CONTINUE_NEXT_DELAY)
+            delay(WizardConstants.CONTINUE_NEXT_DELAY)
             navigateNext()
         }
     }
