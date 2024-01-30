@@ -1,6 +1,7 @@
 package app.k9mail.feature.account.edit.ui.server.settings
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -8,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import app.k9mail.feature.account.edit.ui.server.settings.modify.ModifyOutgoingServerSettingsViewModel
 import app.k9mail.feature.account.edit.ui.server.settings.save.SaveOutgoingServerSettingsViewModel
 import app.k9mail.feature.account.edit.ui.server.settings.save.SaveServerSettingsScreen
+import app.k9mail.feature.account.server.settings.R
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsScreen
 import app.k9mail.feature.account.server.validation.ui.OutgoingServerValidationViewModel
 import app.k9mail.feature.account.server.validation.ui.ServerValidationScreen
@@ -49,6 +51,7 @@ fun EditOutgoingServerSettingsNavHost(
         }
         composable(route = NESTED_NAVIGATION_ROUTE_VALIDATE) {
             ServerValidationScreen(
+                title = stringResource(id = R.string.account_server_settings_outgoing_top_bar_title),
                 onBack = { navController.popBackStack() },
                 onNext = { navController.navigateToSave() },
                 viewModel = koinViewModel<OutgoingServerValidationViewModel> {

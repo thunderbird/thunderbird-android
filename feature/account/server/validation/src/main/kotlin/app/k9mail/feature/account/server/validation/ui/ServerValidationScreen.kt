@@ -17,6 +17,7 @@ fun ServerValidationScreen(
     onBack: () -> Unit,
     viewModel: ViewModel,
     modifier: Modifier = Modifier,
+    title: String? = null,
 ) {
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
@@ -40,9 +41,17 @@ fun ServerValidationScreen(
             modifier = modifier,
         )
     } else {
-        ServerValidationMainScreen(
-            viewModel = viewModel,
-            modifier = modifier,
-        )
+        if (title != null) {
+            ServerValidationToolbarScreen(
+                title = title,
+                viewModel = viewModel,
+                modifier = modifier,
+            )
+        } else {
+            ServerValidationMainScreen(
+                viewModel = viewModel,
+                modifier = modifier,
+            )
+        }
     }
 }
