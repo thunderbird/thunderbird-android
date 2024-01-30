@@ -14,7 +14,6 @@ import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 import app.k9mail.feature.account.common.ui.loadingerror.rememberContentLoadingErrorViewState
-import app.k9mail.feature.account.common.ui.view.SuccessView
 import app.k9mail.feature.account.edit.R
 
 @Composable
@@ -42,7 +41,7 @@ fun SaveServerSettingsContent(
                 )
             },
             content = {
-                SuccessView(
+                LoadingView(
                     message = stringResource(id = R.string.account_edit_save_server_settings_success_message),
                 )
             },
