@@ -6,6 +6,7 @@ import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderOptions
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderSettings
+import app.k9mail.feature.account.common.ui.WizardConstants
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.Effect
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.Event
@@ -17,8 +18,6 @@ import com.fsck.k9.mail.folders.FolderFetcherException
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
-private const val CONTINUE_NEXT_DELAY = 1500L
 
 class SpecialFoldersViewModel(
     private val formUiModel: SpecialFoldersContract.FormUiModel,
@@ -80,7 +79,7 @@ class SpecialFoldersViewModel(
 
                     saveSpecialFolderSettings()
 
-                    delay(CONTINUE_NEXT_DELAY)
+                    delay(WizardConstants.CONTINUE_NEXT_DELAY)
                     navigateNext()
                 }
             }

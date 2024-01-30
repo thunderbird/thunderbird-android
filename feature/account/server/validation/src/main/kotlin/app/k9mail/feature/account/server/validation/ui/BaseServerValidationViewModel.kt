@@ -3,6 +3,7 @@ package app.k9mail.feature.account.server.validation.ui
 import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.domain.AccountDomainContract
+import app.k9mail.feature.account.common.ui.WizardConstants
 import app.k9mail.feature.account.oauth.domain.AccountOAuthDomainContract
 import app.k9mail.feature.account.oauth.domain.entity.OAuthResult
 import app.k9mail.feature.account.oauth.domain.entity.isOAuth
@@ -18,8 +19,6 @@ import com.fsck.k9.mail.server.ServerSettingsValidationResult
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
-private const val CONTINUE_NEXT_DELAY = 200L
 
 @Suppress("TooManyFunctions")
 abstract class BaseServerValidationViewModel(
@@ -172,7 +171,7 @@ abstract class BaseServerValidationViewModel(
         }
 
         viewModelScope.launch {
-            delay(CONTINUE_NEXT_DELAY)
+            delay(WizardConstants.CONTINUE_NEXT_DELAY)
             navigateNext()
         }
     }
