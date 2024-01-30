@@ -20,7 +20,8 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - uses: gradle/gradle-build-action@v2
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
 
       - name: Quality - Spotless Markdown Check
         run: ./gradlew spotlessMarkdownCheck
