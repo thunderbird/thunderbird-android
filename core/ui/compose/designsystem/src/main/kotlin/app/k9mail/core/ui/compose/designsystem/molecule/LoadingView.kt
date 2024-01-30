@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.atom.CircularProgressIndicator
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle1
@@ -36,7 +37,10 @@ fun LoadingView(
             verticalArrangement = Arrangement.Center,
         ) {
             if (message != null) {
-                TextSubtitle1(text = message)
+                TextSubtitle1(
+                    text = message,
+                    textAlign = TextAlign.Center,
+                )
             }
             Row(
                 modifier = Modifier.height(MainTheme.sizes.larger),
