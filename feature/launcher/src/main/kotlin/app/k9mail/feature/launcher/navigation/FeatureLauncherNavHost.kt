@@ -27,7 +27,10 @@ fun FeatureLauncherNavHost(
         modifier = modifier,
     ) {
         onboardingRoute(
-            onFinish = { accountUuid -> accountSetupFinishedLauncher.launch(accountUuid) },
+            onFinish = { accountUuid ->
+                accountSetupFinishedLauncher.launch(accountUuid)
+                activity.finish()
+            },
         )
         accountSetupRoute(
             onBack = onBack,
