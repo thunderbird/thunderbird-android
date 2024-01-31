@@ -15,17 +15,15 @@ accompanist = "0.32.0"
 androidDesugar = "2.0.4"
 androidMaterial = "1.9.0"
 # AGP and tools should be updated together
-androidGradlePlugin = "8.2.1"
-androidTools = "31.2.1"
+androidGradlePlugin = "8.2.2"
+androidTools = "31.2.2"
 androidxActivity = "1.8.2"
 androidxAnnotation = "1.7.1"
 androidxAppCompat = "1.6.1"
 androidxBiometric = "1.1.0"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
-androidxComposeBom = "2023.10.01"
+androidxComposeBom = "2024.01.00"
 androidxComposeCompiler = "1.5.8"
-androidxComposeMaterial = "1.5.4"
-androidxComposeMaterial3 = "1.1.2"
 androidxConstraintLayout = "2.1.4"
 androidxCoordinatorLayout = "1.2.0"
 androidxCore = "1.12.0"
@@ -75,18 +73,18 @@ koinAndroid = "3.5.3"
 koinAndroidCompose = "3.5.3"
 koinTest = "3.5.3"
 kotlin = "1.9.22"
-kotlinKsp = "1.9.22-1.0.16"
+kotlinKsp = "1.9.22-1.0.17"
 kotlinxCoroutines = "1.7.3"
 kotlinxDateTime = "0.5.0"
 ktlint = "1.0.1"
 kxml2 = "1.0"
-leakcanary = "2.9.1"
+leakcanary = "2.13"
 materialDrawer = "8.4.5"
 mime4j = "0.8.9"
 minidns = "1.0.4"
 mockito = "5.8.0"
 mockitoKotlin = "5.2.1"
-moshi = "1.15.0"
+moshi = "1.15.1"
 okhttp = "4.12.0"
 okio = "3.7.0"
 preferencesFix = "1.1.0"
@@ -125,10 +123,10 @@ androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "a
 androidx-biometric = { module = "androidx.biometric:biometric", version.ref = "androidxBiometric" }
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidxComposeBom" }
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation" }
-androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "androidxComposeMaterial" }
-androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "androidxComposeMaterial" }
-androidx-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "androidxComposeMaterial3" }
-androidx-compose-material3-windowSizeClass = { module = "androidx.compose.material3:material3-window-size-class", version.ref = "androidxComposeMaterial3" }
+androidx-compose-material = { module = "androidx.compose.material:material" }
+androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
+androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
+androidx-compose-material3-windowSizeClass = { module = "androidx.compose.material3:material3-window-size-class" }
 androidx-compose-runtime = { module = "androidx.compose.runtime:runtime" }
 androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
