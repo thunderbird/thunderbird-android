@@ -61,6 +61,7 @@ fun EditIncomingServerSettingsNavHost(
         }
         composable(route = NESTED_NAVIGATION_ROUTE_SAVE) {
             SaveServerSettingsScreen(
+                title = stringResource(id = R.string.account_server_settings_incoming_top_bar_title),
                 onNext = onFinish,
                 onBack = { navController.popBackStack(route = NESTED_NAVIGATION_ROUTE_MODIFY, inclusive = false) },
                 viewModel = koinViewModel<SaveIncomingServerSettingsViewModel> {

@@ -19,6 +19,7 @@ import app.k9mail.feature.account.edit.ui.server.settings.save.fake.FakeSaveServ
 
 @Composable
 fun SaveServerSettingsScreen(
+    title: String,
     onNext: () -> Unit,
     onBack: () -> Unit,
     viewModel: ViewModel,
@@ -42,7 +43,7 @@ fun SaveServerSettingsScreen(
     Scaffold(
         topBar = {
             AccountTopAppBarWithBackButton(
-                title = "Edit Server Settings",
+                title = title,
                 onBackClicked = {
                     dispatch(Event.OnBackClicked)
                 },
@@ -76,6 +77,7 @@ fun SaveServerSettingsScreen(
 internal fun SaveServerSettingsScreenK9Preview() {
     K9Theme {
         SaveServerSettingsScreen(
+            title = "Incoming server settings",
             onNext = {},
             onBack = {},
             viewModel = FakeSaveServerSettingsViewModel(
@@ -90,6 +92,7 @@ internal fun SaveServerSettingsScreenK9Preview() {
 internal fun SaveServerSettingsScreenThunderbirdPreview() {
     ThunderbirdTheme {
         SaveServerSettingsScreen(
+            title = "Incoming server settings",
             onNext = {},
             onBack = {},
             viewModel = FakeSaveServerSettingsViewModel(
