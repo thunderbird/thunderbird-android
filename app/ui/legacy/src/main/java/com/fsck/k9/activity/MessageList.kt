@@ -940,6 +940,10 @@ open class MessageList :
         }
     }
 
+    private fun expandSearchView() {
+        searchView?.isIconified = false
+    }
+
     fun setActionBarTitle(title: String, subtitle: String? = null) {
         actionBar.title = title
         actionBar.subtitle = subtitle
@@ -1047,6 +1051,15 @@ open class MessageList :
         if (isDrawerEnabled) {
             lockDrawer()
         }
+    }
+
+    override fun onSearchRequested(): Boolean {
+        if (displayMode == DisplayMode.MESSAGE_VIEW || searchView == null) {
+            return false
+        }
+
+        expandSearchView()
+        return true
     }
 
     override fun startSearch(query: String, account: Account?, folderId: Long?): Boolean {
