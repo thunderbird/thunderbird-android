@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<changelog>
+<changelog
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource"
+    >
     <release version="4.904" versioncode="21007" >
         <change>OpenPGP API v3サポートを追加しました</change>
         <change>IMAPログインの問題を修正しました</change>
