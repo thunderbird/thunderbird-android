@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
-    <issue id="MissingTranslation" severity="ignore" />
+    <issue id="MissingTranslation" severity="informational" />
     <issue id="ExtraTranslation" severity="warning" />
-    <issue id="OldTargetApi" severity="ignore" />
-    <issue id="GoogleAppIndexingWarning" severity="ignore" />
+    <issue id="ImpliedQuantity" severity="warning" />
 </lint>
