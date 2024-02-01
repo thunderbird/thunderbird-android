@@ -18,19 +18,20 @@
     <string name="about_fediverse_title">Fediverse</string>
     <string name="about_libraries">库</string>
     <string name="license">许可</string>
-    <string name="changelog_title">修改记录</string>
+    <string name="changelog_title">更新日志</string>
     <string name="changelog_loading_error">无法加载更新日志。</string>
     <string name="changelog_version_title">版本 %s</string>
-    <string name="changelog_recent_changes_title">最新邮件</string>
-    <string name="changelog_show_recent_changes">显示应用更新后的最新更改</string>
+    <string name="changelog_recent_changes_title">新增功能</string>
+    <string name="changelog_show_recent_changes">在应用更新后显示更新日志</string>
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
     <string name="changelog_snackbar_text">了解此版本的新增功能</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">查看</string>
     <!--Default signature-->
-    <string name="default_signature">-- \n使用 K-9 Mail 发送自我的Android设备。</string>
+    <string name="default_signature">--
+\n此邮件通过 K-9 Mail 在我的 Android 设备中编辑和发送。如果邮件有格式方面的不足，还请见谅。</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">即将从 K-9 Mail 中移除账户“<xliff:g id="account">%s</xliff:g>”。</string>
+    <string name="account_delete_dlg_instructions_fmt">将从 K-9 Mail 中移除账户 <xliff:g id="account">%s</xliff:g> 。</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">作者</string>
     <string name="about_title">关于 K-9 Mail</string>
@@ -38,27 +39,27 @@
     <string name="advanced">高级</string>
     <string name="compose_title_compose">撰写邮件</string>
     <string name="compose_title_reply">回复</string>
-    <string name="compose_title_reply_all">全部回复</string>
+    <string name="compose_title_reply_all">回复全部</string>
     <string name="compose_title_forward">转发</string>
     <string name="compose_title_forward_as_attachment">作为附件转发</string>
     <string name="choose_account_title">切换账户</string>
     <string name="choose_folder_title">选择文件夹</string>
-    <string name="choose_folder_move_title">移动至…</string>
+    <string name="choose_folder_move_title">移动到…</string>
     <string name="choose_folder_copy_title">复制到…</string>
     <string name="actionbar_selected">已选择 <xliff:g id="selection_count">%d</xliff:g> 个</string>
     <string name="send_action">发送</string>
-    <string name="empty_subject">主题为空，确认发送请再次单击</string>
+    <string name="empty_subject">主题为空，再次点击以确认发送</string>
     <string name="reply_action">回复</string>
     <string name="reply_all_action">回复全部</string>
     <string name="delete_action">删除</string>
     <string name="archive_action">归档</string>
     <string name="spam_action">标记为垃圾邮件</string>
     <string name="forward_action">转发</string>
-    <string name="forward_as_attachment_action">转发为附件</string>
+    <string name="forward_as_attachment_action">作为附件转发</string>
     <string name="edit_as_new_message_action">作为新邮件编辑</string>
     <string name="move_action">移动</string>
     <string name="move_to_drafts_action">移动到草稿</string>
-    <string name="refile_action">重新归档…</string>
+    <string name="refile_action">移动或复制…</string>
     <string name="done_action">完成</string>
     <string name="discard_action">丢弃</string>
     <string name="save_draft_action">保存为草稿</string>
@@ -69,11 +70,11 @@
     <string name="add_account_action">添加账户</string>
     <string name="compose_action">新邮件</string>
     <string name="search_action">搜索</string>
-    <string name="search_everywhere_action">在每个地方搜索</string>
+    <string name="search_everywhere_action">全局搜索</string>
     <string name="search_results">搜索结果</string>
     <string name="new_messages_title">新邮件</string>
     <string name="preferences_action">设置</string>
-    <string name="folders_action">管理文件夹</string>
+    <string name="folders_action">文件夹管理</string>
     <string name="account_settings_action">账户设置</string>
     <string name="remove_account_action">移除账户</string>
     <string name="mark_as_read_action">标记为已读</string>
@@ -87,7 +88,7 @@
     <plurals name="copy_address_to_clipboard">
         <item quantity="other">地址已复制到剪贴板</item>
     </plurals>
-    <string name="copy_subject_to_clipboard">主题文本已复制到剪贴板</string>
+    <string name="copy_subject_to_clipboard">主题内容已复制到剪贴板</string>
     <string name="message_view_theme_action_dark">切换到深色主题</string>
     <string name="message_view_theme_action_light">切换到明亮主题</string>
     <string name="mark_as_unread_action">标记为未读</string>

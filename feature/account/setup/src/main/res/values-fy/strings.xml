@@ -50,4 +50,17 @@
     <string name="account_setup_special_folders_archive_folder_label">Argyf</string>
     <string name="account_setup_special_folders_spam_folder_label">Net-winske</string>
     <string name="account_setup_special_folders_form_description_automatic">De ynfier ‘Automatysk’ sil de wizigingen makke troch de server automatysk folgje. De aktuele serverwearde wurdt tusken heakjes toand.</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Wachtwurd is fereaske.</string>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Elke oere</item>
+        <item quantity="other">Elke %d oeren</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">1 berjocht</item>
+        <item quantity="other">%d berjochten</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Elke minút</item>
+        <item quantity="other">Elke %d minuten</item>
+    </plurals>
 </resources>

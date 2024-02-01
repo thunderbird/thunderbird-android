@@ -51,4 +51,16 @@
     <string name="account_setup_special_folders_spam_folder_label">Gereksiz posta klasörü</string>
     <string name="account_setup_special_folders_form_description_automatic">\"Otomatik\" seçeneği sunucu tarafından yapılan değişiklikleri otomatik olarak takip edecektir. Geçerli sunucu değeri parantez içinde gösterilir.</string>
     <string name="account_setup_auto_discovery_validation_error_password_required">Parola zorunludur.</string>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Saatte bir</item>
+        <item quantity="other">Her %d saatte bir</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">1 ileti</item>
+        <item quantity="other">%d ileti</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Dakikada bir</item>
+        <item quantity="other">Her %d dakikada bir</item>
+    </plurals>
 </resources>

@@ -5,11 +5,11 @@
     <string name="account_server_validation_error_authentication">Erro de autenticação</string>
     <string name="account_server_validation_outgoing_loading_message">A verificar as configurações do servidor de saída…</string>
     <string name="account_server_validation_error_network">Erro de rede</string>
-    <string name="account_server_validation_outgoing_success">As configurações do servidor de saída são válidas</string>
+    <string name="account_server_validation_outgoing_success">As configurações do servidor de saída verificadas</string>
     <string name="account_server_validation_error_unknown">Erro desconhecido</string>
     <string name="account_server_validation_sign_in">Por favor efectue log in</string>
     <string name="account_server_validation_outgoing_loading_error">Falhou a verificação das configurações do servidor de saída</string>
-    <string name="account_server_validation_incoming_success">Configurações do servidor de entrada são válidas</string>
+    <string name="account_server_validation_incoming_success">Configurações do servidor de entrada verificadas</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">O certificado do cliente não pode ser acedido</string>
     <string name="account_server_validation_error_missing_server_capability_details">O servidor não tem esta funcionalidade:
 \n%s</string>

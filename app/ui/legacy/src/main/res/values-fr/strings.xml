@@ -517,7 +517,7 @@
     <string name="edit_identity_name_label">Votre nom</string>
     <string name="edit_identity_name_hint">(Facultatif)</string>
     <string name="edit_identity_email_label">Adresse courriel</string>
-    <string name="edit_identity_email_hint">(Exigée)</string>
+    <string name="edit_identity_email_hint">(Requis)</string>
     <string name="edit_identity_reply_to_label">Adresse de réponse</string>
     <string name="edit_identity_reply_to_hint">(Facultative)</string>
     <string name="edit_identity_signature_label">Signature</string>

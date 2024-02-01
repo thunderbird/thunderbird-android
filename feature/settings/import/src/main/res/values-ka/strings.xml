@@ -3,7 +3,7 @@
     <string name="settings_import_title">პარამეტრების იმპორტირება</string>
     <string name="settings_import_button">იმპორტი</string>
     <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_importing">პარამეტრების იმპორტირება...</string>
+    <string name="settings_importing">პარამეტრების იმპორტირება…</string>
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
     <plurals name="settings_import_password_prompt">
         <item quantity="one">ანგარიშის „<xliff:g id="account">%s</xliff:g>“ გამოსაყენებლად, საჭიროა სერვერის პაროლის მითითება.</item>
