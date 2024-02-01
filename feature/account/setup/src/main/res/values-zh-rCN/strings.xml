@@ -50,4 +50,14 @@
     <string name="account_setup_special_folders_archive_folder_label">存档文件夹</string>
     <string name="account_setup_special_folders_spam_folder_label">垃圾邮件文件夹</string>
     <string name="account_setup_special_folders_form_description_automatic">“自动”条目会自动遵照服务器所做的更改。当前的服务器值显示在圆括号中。</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">密码是必需的。</string>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="other">每 %d 个小时</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="other">每 %d 分钟</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="other">%d 封邮件</item>
+    </plurals>
 </resources>

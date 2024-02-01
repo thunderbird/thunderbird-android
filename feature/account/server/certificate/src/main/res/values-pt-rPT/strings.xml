@@ -1,2 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_warning_title">Aviso</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Erro no certificado</string>
+    <string name="account_server_certificate_button_back">Regressar (recomendado)</string>
+    <string name="account_server_certificate_button_advanced">Avançado</string>
+    <string name="account_server_certificate_button_continue">Aceitar risco e continuar</string>
+    <string name="account_server_certificate_section_title">Certificado do servidor</string>
+    <string name="account_server_certificate_subject_alternative_names">Nomes alternativos</string>
+    <string name="account_server_certificate_not_valid_before">Não válido antes de</string>
+    <string name="account_server_certificate_not_valid_after">Não válido depois de</string>
+    <string name="account_server_certificate_issuer">Emissor</string>
+    <string name="account_server_certificate_subject">Sujeito</string>
+    <string name="account_server_certificate_fingerprints_section">Impressão digital</string>
+    <string name="account_server_certificate_unknown_error_description_format">A aplicação detetou um potencial risco de segurança e não continuou a ligar-se a <xliff:g id="serverName">%s</xliff:g>.
+\nSe continuar, os atacantes podem tentar roubar informações como a sua palavra-passe ou e-mails.</string>
+</resources>

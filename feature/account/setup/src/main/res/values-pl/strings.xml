@@ -51,4 +51,22 @@
     <string name="account_setup_special_folders_spam_folder_label">Folder spamu</string>
     <string name="account_setup_special_folders_form_description_automatic">Pozycja „Automatyczny” będzie podążać automatycznie za zmianami wprowadzonymi przez serwer. Bieżąca wartość serwera jest wyświetlana w nawiasach.</string>
     <string name="account_setup_auto_discovery_validation_error_password_required">Hasło jest wymagane.</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Co minutę</item>
+        <item quantity="few">Co %d minuty</item>
+        <item quantity="many">Co %d minut</item>
+        <item quantity="other">Co %d minut</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Co godzinę</item>
+        <item quantity="few">Co %d godziny</item>
+        <item quantity="many">Co %d godzin</item>
+        <item quantity="other">Co %d godzin</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">1 wiadomość</item>
+        <item quantity="few">%d wiadomości</item>
+        <item quantity="many">%d wiadomości</item>
+        <item quantity="other">%d wiadomości</item>
+    </plurals>
 </resources>

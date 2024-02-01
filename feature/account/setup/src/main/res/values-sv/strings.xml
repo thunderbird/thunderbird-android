@@ -24,7 +24,7 @@
     <string name="account_setup_options_display_name_error_required">Ditt namn krävs.</string>
     <string name="account_setup_error_network">Nätverk</string>
     <string name="account_setup_options_email_check_frequency_never">Aldrig</string>
-    <string name="account_setup_auto_discovery_loading_message">Hitta e-postdetaljer</string>
+    <string name="account_setup_auto_discovery_loading_message">Söker upp konfiguration…</string>
     <string name="account_setup_options_section_sync_options">Synkroniseringsinställningar</string>
     <string name="account_setup_options_show_notifications_label">Visa notiser</string>
     <string name="account_setup_options_section_display_options">Visningsinställningar</string>
@@ -50,4 +50,5 @@
     <string name="account_setup_special_folders_archive_folder_label">Arkiv mapp</string>
     <string name="account_setup_special_folders_spam_folder_label">Spam mapp</string>
     <string name="account_setup_special_folders_form_description_automatic">Den \"Automatiska\" Inmatningen följer automatiskt ändringar som görs av servern. Det aktuella servervärdet visas inom parentes.</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Lösenord krävs.</string>
 </resources>

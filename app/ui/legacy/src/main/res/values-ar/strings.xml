@@ -142,7 +142,8 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">إشعار خطأ</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">حدث خطأ أثناء محاولة إنشاء إشعار نظام برسالة جديدة. السبب على الأرجح هو فقدان صوت الإشعار. \ n \ n انقر لفتح إعدادات الإشعارات.</string>
+    <string name="notification_notify_error_text">حدث خطأ أثناء محاولة إنشاء إشعار نظام برسالة جديدة. السبب على الأرجح هو فقدان صوت الإشعار.
+\nانقر لفتح إعدادات الإشعارات.</string>
     <string name="notification_bg_sync_ticker">تفقد البريد: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">التحقق من البريد</string>
     <string name="notification_bg_send_ticker">إرسال البريد: <xliff:g id="account">%s</xliff:g></string>

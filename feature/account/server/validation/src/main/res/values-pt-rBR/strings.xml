@@ -11,4 +11,8 @@
     <string name="account_server_validation_incoming_success">Configurações do servidor de entrada são válidas</string>
     <string name="account_server_validation_incoming_loading_error">Erro ao checar configurações do servidor de entrada</string>
     <string name="account_server_validation_error_server">Erro do servidor</string>
+    <string name="account_server_validation_error_client_certificate_expired">O certificado do cliente não está mais válido</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">O certificado do cliente não pode ser acessado</string>
+    <string name="account_server_validation_error_missing_server_capability">Falta de capacidade no servidor</string>
+    <string name="account_server_validation_error_details">Detalhes</string>
 </resources>
