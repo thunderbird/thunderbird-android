@@ -40,7 +40,6 @@ import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.helper.ParcelableUtil
-import com.fsck.k9.mailstore.SearchStatusManager
 import com.fsck.k9.preferences.AccountManager
 import com.fsck.k9.preferences.GeneralSettingsManager
 import com.fsck.k9.search.LocalSearch
@@ -82,7 +81,6 @@ open class MessageList :
     FragmentManager.OnBackStackChangedListener,
     OnSwitchCompleteListener {
 
-    protected val searchStatusManager: SearchStatusManager by inject()
     private val preferences: Preferences by inject()
     private val accountManager: AccountManager by inject()
     private val defaultFolderProvider: DefaultFolderProvider by inject()
@@ -506,12 +504,6 @@ open class MessageList :
 
         if (displayMode != DisplayMode.MESSAGE_VIEW) {
             onMessageListDisplayed()
-        }
-
-        if (this !is Search) {
-            // necessary b/c no guarantee Search.onStop will be called before MessageList.onResume
-            // when returning from search results
-            searchStatusManager.isActive = false
         }
     }
 
