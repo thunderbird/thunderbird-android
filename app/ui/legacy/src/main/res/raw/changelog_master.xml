@@ -5,6 +5,18 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.715" versioncode="37015" date="2024-02-01">
+        <change>Added image handling within the context menu for hyperlinks</change>
+        <change>Added ability to forward opened attachments to new emails</change>
+        <change>Improved certificate error screen during account setup</change>
+        <change>Improved settings import during account setup</change>
+        <change>Improved account setup UI/UX</change>
+        <change>Improved account setup rendering on small screens</change>
+        <change>Improved edit account server settings UI/UX</change>
+        <change>Fixed AlarmManager crash on Android 14</change>
+        <change>Internal changes</change>
+        <change>Updated translations</change>
+    </release>
     <release version="6.714" versioncode="37014" date="2024-01-04">
         <change>Added screen to configure special folders during account setup</change>
         <change>Added copy action to recipient dropdown in compose screen</change>
