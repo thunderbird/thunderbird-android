@@ -109,12 +109,13 @@ class AboutFragment : Fragment() {
                 "https://kotlinlang.org/api/latest/jvm/stdlib/",
                 "Apache License, Version 2.0",
             ),
-            Library("KotlinX Immutable Collections",
+            Library(
+                "KotlinX Immutable Collections",
                 "https://github.com/Kotlin/kotlinx.collections.immutable",
-                "Apache License, Version 2.0"
+                "Apache License, Version 2.0",
             ),
-            Library("KotlinX DateTime","https://github.com/Kotlin/kotlinx-datetime","Apache License, Version 2.0"),
-            Library("Kotlin Android Extensions Runtime","https://kotlinlang.org/","Apache License, Version 2.0"),
+            Library("KotlinX DateTime", "https://github.com/Kotlin/kotlinx-datetime", "Apache License, Version 2.0"),
+            Library("Kotlin Android Extensions Runtime", "https://kotlinlang.org/", "Apache License, Version 2.0"),
             Library("AppAuth for Android", "https://github.com/openid/AppAuth-Android", "Apache License, Version 2.0"),
             Library("CircleImageView", "https://github.com/hdodenhof/CircleImageView", "Apache License, Version 2.0"),
             Library("ckChangeLog", "https://github.com/cketti/ckChangeLog", "Apache License, Version 2.0"),
@@ -148,24 +149,26 @@ class AboutFragment : Fragment() {
                 "https://github.com/splitwise/TokenAutoComplete/",
                 "Apache License, Version 2.0",
             ),
-            Library("accompanist","https://github.com/google/accompanist","Apache License, Version 2.0"),
-            Library("FlexboxLayout","https://github.com/google/flexbox-layout","Apache License, Version 2.0"),
-            Library("Error Prone","https://github.com/google/error-prone","Apache License, Version 2.0"),
-            Library("ListenableFuture",
+            Library("accompanist", "https://github.com/google/accompanist", "Apache License, Version 2.0"),
+            Library("FlexboxLayout", "https://github.com/google/flexbox-layout", "Apache License, Version 2.0"),
+            Library("Error Prone", "https://github.com/google/error-prone", "Apache License, Version 2.0"),
+            Library(
+                "ListenableFuture",
                 "https://mvnrepository.com/artifact/com.google.guava/listenablefuture/1.0",
-                "Apache License, Version 2.0"
+                "Apache License, Version 2.0",
             ),
-            Library("ColorPicker","https://github.com/gregkorossy/ColorPicker","Apache License, Version 2.0"),
-            Library("DateTimePicker","https://github.com/gregkorossy/DateTimePicker","Apache License, Version 2.0"),
-            Library("jcip-annotations","https://jcip.net/","Public License"),
-            Library("Http Components","https://hc.apache.org/","Apache License, Version 2.0"),
-            Library("Compose Runtime",
+            Library("ColorPicker", "https://github.com/gregkorossy/ColorPicker", "Apache License, Version 2.0"),
+            Library("DateTimePicker", "https://github.com/gregkorossy/DateTimePicker", "Apache License, Version 2.0"),
+            Library("jcip-annotations", "https://jcip.net/", "Public License"),
+            Library("Http Components", "https://hc.apache.org/", "Apache License, Version 2.0"),
+            Library(
+                "Compose Runtime",
                 "https://mvnrepository.com/artifact/org.jetbrains.compose.runtime/runtime",
-                "Apache License, Version 2.0"
+                "Apache License, Version 2.0",
             ),
-            Library("SLF4J","https://www.slf4j.org/","MIT License"),
-            Library("java-annotations","https://github.com/JetBrains/java-annotations","Apache License, Version 2.0"),
-            Library("Parcelize Runtime","https://kotlinlang.org/","Apache License, Version 2.0")
+            Library("SLF4J", "https://www.slf4j.org/", "MIT License"),
+            Library("java-annotations", "https://github.com/JetBrains/java-annotations", "Apache License, Version 2.0"),
+            Library("Parcelize Runtime", "https://kotlinlang.org/", "Apache License, Version 2.0"),
         )
     }
 }
