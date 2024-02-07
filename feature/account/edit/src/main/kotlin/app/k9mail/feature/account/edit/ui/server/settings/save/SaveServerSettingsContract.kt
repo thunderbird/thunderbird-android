@@ -16,7 +16,6 @@ interface SaveServerSettingsContract {
 
     sealed interface Event {
         data object SaveServerSettings : Event
-        data object OnNextClicked : Event
         data object OnBackClicked : Event
     }
 

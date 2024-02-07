@@ -51,14 +51,12 @@ fun SaveServerSettingsScreen(
         },
         bottomBar = {
             WizardNavigationBar(
-                onNextClick = {
-                    dispatch(Event.OnNextClicked)
-                },
+                onNextClick = {},
                 onBackClick = {
                     dispatch(Event.OnBackClicked)
                 },
                 state = WizardNavigationBarState(
-                    isNextEnabled = state.value.error == null && !state.value.isLoading,
+                    showNext = false,
                     isBackEnabled = state.value.error != null,
                 ),
             )

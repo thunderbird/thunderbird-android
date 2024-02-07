@@ -24,7 +24,6 @@ abstract class BaseSaveServerSettingsViewModel(
     override fun event(event: Event) {
         when (event) {
             Event.SaveServerSettings -> handleOneTimeEvent(event, ::onSaveServerSettings)
-            Event.OnNextClicked -> navigateNext()
             Event.OnBackClicked -> navigateBack()
         }
     }
@@ -64,8 +63,6 @@ abstract class BaseSaveServerSettingsViewModel(
     }
 
     private fun navigateNext() {
-        if (state.value.isLoading || state.value.error != null) return
-
         viewModelScope.coroutineContext.cancelChildren()
         emitEffect(Effect.NavigateNext)
     }
