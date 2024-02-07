@@ -40,7 +40,6 @@ import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.helper.ParcelableUtil
-import com.fsck.k9.mailstore.SearchStatusManager
 import com.fsck.k9.preferences.AccountManager
 import com.fsck.k9.preferences.GeneralSettingsManager
 import com.fsck.k9.search.LocalSearch
@@ -82,7 +81,6 @@ open class MessageList :
     FragmentManager.OnBackStackChangedListener,
     OnSwitchCompleteListener {
 
-    protected val searchStatusManager: SearchStatusManager by inject()
     private val preferences: Preferences by inject()
     private val accountManager: AccountManager by inject()
     private val defaultFolderProvider: DefaultFolderProvider by inject()
@@ -507,12 +505,6 @@ open class MessageList :
         if (displayMode != DisplayMode.MESSAGE_VIEW) {
             onMessageListDisplayed()
         }
-
-        if (this !is Search) {
-            // necessary b/c no guarantee Search.onStop will be called before MessageList.onResume
-            // when returning from search results
-            searchStatusManager.isActive = false
-        }
     }
 
     override fun onStart() {
@@ -919,8 +911,6 @@ open class MessageList :
         val searchView = searchItem.actionView as SearchView
         searchView.maxWidth = Int.MAX_VALUE
         searchView.queryHint = resources.getString(R.string.search_action)
-        val searchManager = getSystemService(SEARCH_SERVICE) as SearchManager
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
         searchView.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
@@ -948,6 +938,10 @@ open class MessageList :
             searchView.setQuery(null, false)
             searchView.isIconified = true
         }
+    }
+
+    private fun expandSearchView() {
+        searchView?.isIconified = false
     }
 
     fun setActionBarTitle(title: String, subtitle: String? = null) {
@@ -1057,6 +1051,15 @@ open class MessageList :
         if (isDrawerEnabled) {
             lockDrawer()
         }
+    }
+
+    override fun onSearchRequested(): Boolean {
+        if (displayMode == DisplayMode.MESSAGE_VIEW || searchView == null) {
+            return false
+        }
+
+        expandSearchView()
+        return true
     }
 
     override fun startSearch(query: String, account: Account?, folderId: Long?): Boolean {

@@ -39,10 +39,6 @@
         tools:replace="android:theme"
         tools:ignore="UnusedAttribute">
 
-        <meta-data
-            android:name="android.app.default_searchable"
-            android:value="com.fsck.k9.activity.Search" />
-
         <!-- TODO: Remove once minSdkVersion has been changed to 24+ -->
         <meta-data
             android:name="com.lge.support.SPLIT_WINDOW"
@@ -170,21 +166,10 @@
             </intent-filter>
         </activity>
 
-        <!-- Search Activity - searchable -->
         <activity
             android:name="com.fsck.k9.activity.Search"
-            android:configChanges="locale"
             android:label="@string/search_action"
-            android:uiOptions="splitActionBarWhenNarrow"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
-        </activity>
+            android:exported="false" />
 
         <!--
         This component is disabled by default. It will be enabled programmatically after an account has been set up.
