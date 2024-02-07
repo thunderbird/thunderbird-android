@@ -27,6 +27,7 @@ class SaveServerSettingsScreenKtTest : ComposeTest() {
 
         setContent {
             SaveServerSettingsScreen(
+                title = "irrelevant",
                 onNext = { onNextCounter++ },
                 onBack = { onBackCounter++ },
                 viewModel = viewModel,
