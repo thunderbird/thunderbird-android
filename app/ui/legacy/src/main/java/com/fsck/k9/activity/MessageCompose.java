@@ -45,6 +45,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
+import androidx.core.content.IntentCompat;
+import androidx.core.os.BundleCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.fsck.k9.Account;
@@ -428,7 +430,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 if (action == Action.FORWARD_AS_ATTACHMENT) {
                     messageLoaderHelper.asyncStartOrResumeLoadingMessageMetadata(relatedMessageReference);
                 } else {
-                    Parcelable cachedDecryptionResult = intent.getParcelableExtra(EXTRA_MESSAGE_DECRYPTION_RESULT);
+                    Parcelable cachedDecryptionResult = IntentCompat.getParcelableExtra(
+                        intent,
+                        EXTRA_MESSAGE_DECRYPTION_RESULT,
+                        Parcelable.class
+                    );
                     messageLoaderHelper.asyncStartOrResumeLoadingMessage(
                             relatedMessageReference, cachedDecryptionResult);
                 }
@@ -536,12 +542,16 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
             String type = intent.getType();
             if (Intent.ACTION_SEND.equals(action)) {
-                Uri stream = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+                Uri stream = IntentCompat.getParcelableExtra(intent,Intent.EXTRA_STREAM, Uri.class);
                 if (stream != null) {
                     attachmentPresenter.addExternalAttachment(stream, type);
                 }
             } else {
-                List<Parcelable> list = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
+                List<Parcelable> list = IntentCompat.getParcelableArrayListExtra(
+                    intent,
+                    Intent.EXTRA_STREAM,
+                    Parcelable.class
+                );
                 if (list != null) {
                     for (Parcelable parcelable : list) {
                         Uri stream = (Uri) parcelable;
@@ -650,7 +660,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         } else {
             draftMessageId = null;
         }
-        identity = savedInstanceState.getParcelable(STATE_IDENTITY);
+        identity = BundleCompat.getParcelable(savedInstanceState, STATE_IDENTITY, Identity.class);
         identityChanged = savedInstanceState.getBoolean(STATE_IDENTITY_CHANGED);
         repliedToMessageId = savedInstanceState.getString(STATE_IN_REPLY_TO);
         referencedMessageIds = savedInstanceState.getString(STATE_REFERENCES);

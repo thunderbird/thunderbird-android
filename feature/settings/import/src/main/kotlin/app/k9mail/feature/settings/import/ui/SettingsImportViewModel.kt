@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
+import androidx.core.os.BundleCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -70,7 +71,7 @@ internal class SettingsImportViewModel(
     }
 
     fun initializeFromSavedState(savedInstanceState: Bundle) {
-        contentUri = savedInstanceState.getParcelable(STATE_CONTENT_URI)
+        contentUri = BundleCompat.getParcelable(savedInstanceState, STATE_CONTENT_URI, Uri::class.java)
         currentlyAuthorizingAccountUuid = savedInstanceState.getString(STATE_CURRENTLY_AUTHORIZING_ACCOUNT_UUID)
 
         updateUiModel {
@@ -204,12 +205,15 @@ internal class SettingsImportViewModel(
             ImportStatus.NOT_AVAILABLE -> updateUiModel {
                 toggleSettingsListItemSelection(position)
             }
+
             ImportStatus.IMPORT_SUCCESS_AUTHORIZATION_REQUIRED -> {
                 startAuthorization(settingsListItem as SettingsListItem.Account)
             }
+
             ImportStatus.IMPORT_SUCCESS_PASSWORD_REQUIRED -> {
                 showPasswordPromptDialog(settingsListItem as SettingsListItem.Account)
             }
+
             else -> Unit
         }
     }

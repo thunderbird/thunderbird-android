@@ -2,6 +2,7 @@ package com.fsck.k9.ui.endtoend
 
 import android.app.PendingIntent
 import android.content.Intent
+import androidx.core.content.IntentCompat
 import com.fsck.k9.Account
 import com.fsck.k9.autocrypt.AutocryptTransferMessageCreator
 import com.fsck.k9.helper.SingleLiveEvent
@@ -36,7 +37,11 @@ class AutocryptSetupMessageLiveEvent(
         val result = openPgpApi.executeApi(intent, null as InputStream?, baos)
 
         val keyData = baos.toByteArray()
-        val pi: PendingIntent = result.getParcelableExtra(OpenPgpApi.RESULT_INTENT) ?: error("Missing result intent")
+        val pi: PendingIntent = IntentCompat.getParcelableExtra(
+            result,
+            OpenPgpApi.RESULT_INTENT,
+            PendingIntent::class.java,
+        ) ?: error("Missing result intent")
 
         val setupMessage = messageCreator.createAutocryptTransferMessage(keyData, address)
 

@@ -3,6 +3,7 @@ package com.fsck.k9.ui.settings.export
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import androidx.core.os.BundleCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -101,7 +102,7 @@ class SettingsExportViewModel(
             statusText = StatusText.valueOf(savedInstanceState.getString(STATE_STATUS_TEXT, StatusText.HIDDEN.name))
         }
 
-        contentUri = savedInstanceState.getParcelable(STATE_CONTENT_URI)
+        contentUri = BundleCompat.getParcelable(savedInstanceState, STATE_CONTENT_URI, Uri::class.java)
     }
 
     fun onExportButtonClicked() {

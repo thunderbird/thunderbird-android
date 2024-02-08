@@ -13,9 +13,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.core.os.BundleCompat;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
-
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState;
 import com.fsck.k9.activity.loader.AttachmentContentLoader;
 import com.fsck.k9.activity.loader.AttachmentInfoLoader;
@@ -286,7 +287,7 @@ public class AttachmentPresenter {
             new LoaderManager.LoaderCallbacks<Attachment>() {
                 @Override
                 public Loader<Attachment> onCreateLoader(int id, Bundle args) {
-                    Uri uri = args.getParcelable(LOADER_ARG_ATTACHMENT);
+                    Uri uri = BundleCompat.getParcelable(args, LOADER_ARG_ATTACHMENT, Uri.class);
                     return new AttachmentInfoLoader(context, attachments.get(uri));
                 }
 
@@ -319,7 +320,7 @@ public class AttachmentPresenter {
             new LoaderManager.LoaderCallbacks<Attachment>() {
                 @Override
                 public Loader<Attachment> onCreateLoader(int id, Bundle args) {
-                    Uri uri = args.getParcelable(LOADER_ARG_ATTACHMENT);
+                    Uri uri = BundleCompat.getParcelable(args, LOADER_ARG_ATTACHMENT, Uri.class);
                     return new AttachmentContentLoader(context, attachments.get(uri));
                 }
 
@@ -353,7 +354,7 @@ public class AttachmentPresenter {
             new LoaderManager.LoaderCallbacks<Attachment>() {
                 @Override
                 public Loader<Attachment> onCreateLoader(int id, Bundle args) {
-                    Uri uri = args.getParcelable(LOADER_ARG_ATTACHMENT);
+                    Uri uri = BundleCompat.getParcelable(args, LOADER_ARG_ATTACHMENT, Uri.class);
                     return new AttachmentContentLoader(context, inlineAttachments.get(uri).getAttachment());
                 }
 

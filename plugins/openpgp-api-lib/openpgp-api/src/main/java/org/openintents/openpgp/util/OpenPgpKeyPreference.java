@@ -24,11 +24,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.res.TypedArray;
-import androidx.fragment.app.Fragment;
-import androidx.preference.Preference;
 import android.text.format.DateUtils;
 import android.util.AttributeSet;
 
+import androidx.core.content.IntentCompat;
+import androidx.fragment.app.Fragment;
+import androidx.preference.Preference;
 import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback;
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderError;
@@ -146,7 +147,11 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
             switch (resultCode) {
                 case OpenPgpApi.RESULT_CODE_SUCCESS:
                 case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED: {
-                    PendingIntent pendingIntentSelectKey = result.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
+                    PendingIntent pendingIntentSelectKey = IntentCompat.getParcelableExtra(
+                        result,
+                        OpenPgpApi.RESULT_INTENT,
+                        PendingIntent.class
+                    );
 
                     if (result.hasExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID)) {
                         long keyId = result.getLongExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, NO_KEY);
@@ -161,7 +166,11 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
                     break;
                 }
                 case OpenPgpApi.RESULT_CODE_ERROR: {
-                    OpenPgpError error = result.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
+                    OpenPgpError error = IntentCompat.getParcelableExtra(
+                        result,
+                        OpenPgpApi.RESULT_ERROR,
+                        OpenPgpError.class
+                    );
                     Timber.e("RESULT_CODE_ERROR: %s", error.getMessage());
 
                     break;
