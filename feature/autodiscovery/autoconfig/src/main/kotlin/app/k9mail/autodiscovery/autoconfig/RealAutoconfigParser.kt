@@ -97,8 +97,8 @@ private class ClientConfigParser(
 
     private fun parseEmailProvider(): AutoconfigParserResult {
         var domainFound = false
-        var incomingServerSettings: IncomingServerSettings? = null
-        var outgoingServerSettings: OutgoingServerSettings? = null
+        val incomingServerSettings = mutableListOf<IncomingServerSettings>()
+        val outgoingServerSettings = mutableListOf<OutgoingServerSettings>()
 
         // The 'id' attribute is required (but not really used) by Thunderbird desktop.
         val emailProviderId = pullParser.getAttributeValue(null, "id")
@@ -118,15 +118,13 @@ private class ClientConfigParser(
                         }
                     }
                     "incomingServer" -> {
-                        val serverSettings = parseServer("imap", ::createImapServerSettings)
-                        if (incomingServerSettings == null) {
-                            incomingServerSettings = serverSettings
+                        parseServer("imap", ::createImapServerSettings)?.let { serverSettings ->
+                            incomingServerSettings.add(serverSettings)
                         }
                     }
                     "outgoingServer" -> {
-                        val serverSettings = parseServer("smtp", ::createSmtpServerSettings)
-                        if (outgoingServerSettings == null) {
-                            outgoingServerSettings = serverSettings
+                        parseServer("smtp", ::createSmtpServerSettings)?.let { serverSettings ->
+                            outgoingServerSettings.add(serverSettings)
                         }
                     }
                     else -> {
@@ -141,9 +139,17 @@ private class ClientConfigParser(
             parserError("Valid 'domain' element required")
         }
 
+        if (incomingServerSettings.isEmpty()) {
+            parserError("No supported 'incomingServer' element found")
+        }
+
+        if (outgoingServerSettings.isEmpty()) {
+            parserError("No supported 'outgoingServer' element found")
+        }
+
         return AutoconfigParserResult.Settings(
-            incomingServerSettings = incomingServerSettings ?: parserError("Missing 'incomingServer' element"),
-            outgoingServerSettings = outgoingServerSettings ?: parserError("Missing 'outgoingServer' element"),
+            incomingServerSettings = incomingServerSettings,
+            outgoingServerSettings = outgoingServerSettings,
         )
     }
 
