@@ -93,4 +93,27 @@
 
 ### Create release on Google Play
 
-TODO
+1. Go to the [Google Play Console](https://play.google.com/console/)
+2. Select the _K-9 Mail_ app
+3. Click on _Open testing_ in the left sidebar
+4. Click on _Create new release_
+5. Upload the APK to _App bundles_
+6. Fill out Release name (e.g. "$versionCode ($versionName)")
+7. Fill out Release notes (copy from `app-k9mail/fastlane/metadata/android/en-US/changelogs/${versionCode}.txt`)
+8. Click _Next_
+9. Review the release
+10. Start with a staged rollout (usually 20%) for production and full rollout for beta versions
+11. On the Publishing overview page, click _Send change for review_
+12. Wait for the review to complete
+13. In case of a rejection, fix the issues and repeat the process
+14. Once the review is complete, monitor the staged rollout for issues and increase the rollout percentage as necessary
+
+### Troubleshooting
+
+### F-Droid
+
+If the app doesn't show up in the F-Droid client:
+
+- Check the build cycle, maybe you just missed it and it will be available in the next cycle. (The cycle is usually every 5 days.)
+- Check [F-Droid Status](https://fdroidstatus.org/status/fdroid) for any issues.
+- Check [F-Droid Monitor](https://monitor.f-droid.org/builds) for any errors mentioning `com.fsck.k9`.
