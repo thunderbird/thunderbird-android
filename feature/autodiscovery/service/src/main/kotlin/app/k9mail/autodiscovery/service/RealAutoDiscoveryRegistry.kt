@@ -15,16 +15,16 @@ class RealAutoDiscoveryRegistry(
     override fun getAutoDiscoveries(): List<AutoDiscovery> = autoDiscoveries
 
     companion object {
-        val defaultAutoconfigUrlConfig = AutoconfigUrlConfig(
+        private val defaultAutoconfigUrlConfig = AutoconfigUrlConfig(
             httpsOnly = false,
             includeEmailAddress = false,
         )
 
-        fun createDefault(
+        fun createDefaultAutoDiscoveries(
             okHttpClient: OkHttpClient,
             autoconfigUrlConfig: AutoconfigUrlConfig = defaultAutoconfigUrlConfig,
-        ): RealAutoDiscoveryRegistry = RealAutoDiscoveryRegistry(
-            autoDiscoveries = listOf(
+        ): List<AutoDiscovery> {
+            return listOf(
                 createProviderAutoconfigDiscovery(
                     okHttpClient = okHttpClient,
                     config = autoconfigUrlConfig,
@@ -35,7 +35,7 @@ class RealAutoDiscoveryRegistry(
                 createMxLookupAutoconfigDiscovery(
                     okHttpClient = okHttpClient,
                 ),
-            ),
-        )
+            )
+        }
     }
 }

@@ -100,11 +100,36 @@ class ValidateServerSettingsTest {
         assertThat(result).isEqualTo(failure)
     }
 
+    @Test
+    fun `should validate successfully for demo settings`() = runTest {
+        val testSubject = ValidateServerSettings(
+            authStateStorage = authStateStorage,
+            imapValidator = { _, _ -> ServerSettingsValidationResult.NetworkError(IOException("Failed IMAP")) },
+            pop3Validator = { _, _ -> ServerSettingsValidationResult.NetworkError(IOException("Failed POP3")) },
+            smtpValidator = { _, _ -> ServerSettingsValidationResult.NetworkError(IOException("Failed SMTP")) },
+        )
+
+        val result = testSubject.execute(
+            ServerSettings(
+                type = "demo",
+                host = "demo.example.com",
+                port = 993,
+                connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
+                authenticationType = AuthType.PLAIN,
+                username = "user",
+                password = "password",
+                clientCertificateAlias = null,
+            ),
+        )
+
+        assertThat(result).isEqualTo(ServerSettingsValidationResult.Success)
+    }
+
     private companion object {
 
         val IMAP_SERVER_SETTINGS = ServerSettings(
             type = "imap",
-            host = "imap.example.org",
+            host = "imap.example.com",
             port = 993,
             connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
             authenticationType = AuthType.PLAIN,
@@ -115,7 +140,7 @@ class ValidateServerSettingsTest {
 
         val POP3_SERVER_SETTINGS = ServerSettings(
             type = "pop3",
-            host = "pop3.example.org",
+            host = "pop3.example.com",
             port = 993,
             connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
             authenticationType = AuthType.PLAIN,
@@ -126,7 +151,7 @@ class ValidateServerSettingsTest {
 
         val SMTP_SERVER_SETTINGS = ServerSettings(
             type = "smtp",
-            host = "smtp.example.org",
+            host = "smtp.example.com",
             port = 993,
             connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
             authenticationType = AuthType.PLAIN,

@@ -1,6 +1,7 @@
 package app.k9mail.feature.account.setup
 
 import android.content.Context
+import app.k9mail.autodiscovery.api.AutoDiscovery
 import app.k9mail.core.common.oauth.OAuthConfigurationFactory
 import app.k9mail.feature.account.common.AccountCommonExternalContract
 import app.k9mail.feature.account.common.domain.entity.AccountState
@@ -28,6 +29,7 @@ import org.junit.runner.RunWith
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.module.Module
+import org.koin.core.qualifier.named
 import org.koin.dsl.koinApplication
 import org.koin.dsl.module
 import org.koin.test.KoinTest
@@ -61,6 +63,7 @@ class AccountSetupModuleKtTest : KoinTest {
         single<LocalKeyStore> { mock() }
         single<AccountCommonExternalContract.AccountStateLoader> { mock() }
         factory<AccountSetupExternalContract.AccountOwnerNameProvider> { mock() }
+        single<List<AutoDiscovery>>(named("extraAutoDiscoveries")) { emptyList() }
     }
 
     @Test

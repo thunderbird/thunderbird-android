@@ -22,6 +22,7 @@ class ValidateServerSettings(
                 "imap" -> imapValidator.checkServerSettings(settings, authStateStorage)
                 "pop3" -> pop3Validator.checkServerSettings(settings, authStateStorage)
                 "smtp" -> smtpValidator.checkServerSettings(settings, authStateStorage)
+                "demo" -> ServerSettingsValidationResult.Success
                 else -> {
                     throw IllegalArgumentException("Unsupported server type: ${settings.type}")
                 }
