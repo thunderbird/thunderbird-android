@@ -6,6 +6,7 @@ import app.k9mail.autodiscovery.api.AutoDiscoveryService
 import app.k9mail.autodiscovery.api.ConnectionSecurity
 import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.IncomingServerSettings
+import app.k9mail.autodiscovery.api.OutgoingServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
 import app.k9mail.core.common.mail.EmailAddress
 import app.k9mail.core.common.net.toHostname
@@ -48,9 +49,22 @@ class GetAutoDiscoveryTest {
     }
 
     @Test
-    fun `should return NoUsableSettingsFound result when server settings not supported`() = runTest {
+    fun `should return NoUsableSettingsFound result when incoming server settings not supported`() = runTest {
         val useCase = GetAutoDiscovery(
-            service = FakeAutoDiscoveryService(SETTINGS_WITH_UNSUPPORTED_SERVER),
+            service = FakeAutoDiscoveryService(SETTINGS_WITH_UNSUPPORTED_INCOMING_SERVER),
+            oauthProvider = FakeOAuthConfigurationProvider(),
+        )
+
+        val result = useCase.execute("user@example.com")
+
+        assertThat(result)
+            .isInstanceOf<AutoDiscoveryResult.NoUsableSettingsFound>()
+    }
+
+    @Test
+    fun `should return NoUsableSettingsFound result when server outgoing settings not supported`() = runTest {
+        val useCase = GetAutoDiscovery(
+            service = FakeAutoDiscoveryService(SETTINGS_WITH_UNSUPPORTED_OUTGOING_SERVER),
             oauthProvider = FakeOAuthConfigurationProvider(),
         )
 
@@ -124,7 +138,8 @@ class GetAutoDiscoveryTest {
         override fun getConfiguration(hostname: String): OAuthConfiguration? = answer
     }
 
-    private class UnsupportedServerSettings : IncomingServerSettings
+    private class UnsupportedIncomingServerSettings : IncomingServerSettings
+    private class UnsupportedOutgoingServerSettings : OutgoingServerSettings
 
     private companion object {
         private val SETTINGS_WITH_OAUTH = AutoDiscoveryResult.Settings(
@@ -146,8 +161,8 @@ class GetAutoDiscoveryTest {
             source = "source",
         )
 
-        private val SETTINGS_WITH_UNSUPPORTED_SERVER = AutoDiscoveryResult.Settings(
-            incomingServerSettings = UnsupportedServerSettings(),
+        private val SETTINGS_WITH_UNSUPPORTED_INCOMING_SERVER = AutoDiscoveryResult.Settings(
+            incomingServerSettings = UnsupportedIncomingServerSettings(),
             outgoingServerSettings = SmtpServerSettings(
                 hostname = "smtp.example.com".toHostname(),
                 port = 465.toPort(),
@@ -155,6 +170,19 @@ class GetAutoDiscoveryTest {
                 authenticationTypes = listOf(AuthenticationType.OAuth2),
                 username = "user",
             ),
+            isTrusted = true,
+            source = "source",
+        )
+
+        private val SETTINGS_WITH_UNSUPPORTED_OUTGOING_SERVER = AutoDiscoveryResult.Settings(
+            incomingServerSettings = ImapServerSettings(
+                hostname = "imap.example.com".toHostname(),
+                port = 993.toPort(),
+                connectionSecurity = ConnectionSecurity.TLS,
+                authenticationTypes = listOf(AuthenticationType.OAuth2, AuthenticationType.PasswordCleartext),
+                username = "user",
+            ),
+            outgoingServerSettings = UnsupportedOutgoingServerSettings(),
             isTrusted = true,
             source = "source",
         )

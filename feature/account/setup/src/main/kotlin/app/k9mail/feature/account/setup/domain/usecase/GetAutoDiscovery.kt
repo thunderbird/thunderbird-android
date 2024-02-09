@@ -26,7 +26,9 @@ internal class GetAutoDiscovery(
     }
 
     private fun validateOAuthSupport(settings: AutoDiscoveryResult.Settings): AutoDiscoveryResult {
-        if (settings.incomingServerSettings !is ImapServerSettings) {
+        if (settings.incomingServerSettings !is ImapServerSettings ||
+            settings.outgoingServerSettings !is SmtpServerSettings
+        ) {
             return AutoDiscoveryResult.NoUsableSettingsFound
         }
 
