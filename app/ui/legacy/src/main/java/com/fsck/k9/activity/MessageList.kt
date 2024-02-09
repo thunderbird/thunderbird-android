@@ -26,6 +26,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 import androidx.fragment.app.commitNow
+import app.k9mail.core.android.common.compat.BundleCompat
 import app.k9mail.core.android.common.contact.CachingRepository
 import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.feature.launcher.FeatureLauncherActivity
@@ -168,6 +169,7 @@ open class MessageList :
         window.statusBarColor = Color.TRANSPARENT
 
         val rootLayout = findViewById<View>(R.id.drawerLayout)
+
         rootLayout.systemUiVisibility = rootLayout.systemUiVisibility or View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
             View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 
@@ -301,8 +303,13 @@ open class MessageList :
         }
 
         if (savedInstanceState != null) {
-            val savedDisplayMode = savedInstanceState.getSerializable(STATE_DISPLAY_MODE) as DisplayMode
-            if (savedDisplayMode != DisplayMode.SPLIT_VIEW) {
+            val savedDisplayMode = BundleCompat.getSerializable(
+                savedInstanceState,
+                STATE_DISPLAY_MODE,
+                DisplayMode::class.java,
+            )
+
+            if (savedDisplayMode != null && savedDisplayMode != DisplayMode.SPLIT_VIEW) {
                 displayMode = savedDisplayMode
                 return
             }
