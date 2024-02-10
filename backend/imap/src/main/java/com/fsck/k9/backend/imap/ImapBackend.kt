@@ -145,16 +145,8 @@ class ImapBackend(
         return commandUploadMessage.uploadMessage(folderServerId, message)
     }
 
-    override fun checkIncomingServerSettings() {
-        imapStore.checkSettings()
-    }
-
     override fun sendMessage(message: Message) {
         smtpTransport.sendMessage(message)
-    }
-
-    override fun checkOutgoingServerSettings() {
-        smtpTransport.checkSettings()
     }
 
     override fun createPusher(callback: BackendPusherCallback): BackendPusher {

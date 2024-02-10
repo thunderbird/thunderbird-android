@@ -90,13 +90,7 @@ interface Backend {
     fun uploadMessage(folderServerId: String, message: Message): String?
 
     @Throws(MessagingException::class)
-    fun checkIncomingServerSettings()
-
-    @Throws(MessagingException::class)
     fun sendMessage(message: Message)
-
-    @Throws(MessagingException::class)
-    fun checkOutgoingServerSettings()
 
     fun createPusher(callback: BackendPusherCallback): BackendPusher
 }

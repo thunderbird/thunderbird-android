@@ -1688,16 +1688,6 @@ public class MessagingController {
         return getBackend(account).getSupportsFolderSubscriptions();
     }
 
-    @Deprecated
-    public void checkIncomingServerSettings(Account account) throws MessagingException {
-        getBackend(account).checkIncomingServerSettings();
-    }
-
-    @Deprecated
-    public void checkOutgoingServerSettings(Account account) throws MessagingException {
-        getBackend(account).checkOutgoingServerSettings();
-    }
-
     public void moveMessages(Account srcAccount, long srcFolderId,
             List<MessageReference> messageReferences, long destFolderId) {
         actOnMessageGroup(srcAccount, srcFolderId, messageReferences, (account, messageFolder, messages) -> {

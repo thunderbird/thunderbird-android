@@ -15,7 +15,6 @@ import okhttp3.OkHttpClient
 import rs.ltt.jmap.client.JmapClient
 import rs.ltt.jmap.client.http.BasicAuthHttpAuthentication
 import rs.ltt.jmap.client.http.HttpAuthentication
-import rs.ltt.jmap.common.method.call.core.EchoMethodCall
 
 class JmapBackend(
     backendStorage: BackendStorage,
@@ -134,16 +133,8 @@ class JmapBackend(
         return commandUpload.uploadMessage(folderServerId, message)
     }
 
-    override fun checkIncomingServerSettings() {
-        jmapClient.call(EchoMethodCall()).get()
-    }
-
     override fun sendMessage(message: Message) {
         throw UnsupportedOperationException("not implemented")
-    }
-
-    override fun checkOutgoingServerSettings() {
-        checkIncomingServerSettings()
     }
 
     override fun createPusher(callback: BackendPusherCallback): BackendPusher {

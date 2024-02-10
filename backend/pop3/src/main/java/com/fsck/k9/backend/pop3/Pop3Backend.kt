@@ -124,16 +124,8 @@ class Pop3Backend(
         throw UnsupportedOperationException("not supported")
     }
 
-    override fun checkIncomingServerSettings() {
-        pop3Store.checkSettings()
-    }
-
     override fun sendMessage(message: Message) {
         smtpTransport.sendMessage(message)
-    }
-
-    override fun checkOutgoingServerSettings() {
-        smtpTransport.checkSettings()
     }
 
     override fun createPusher(callback: BackendPusherCallback): BackendPusher {
