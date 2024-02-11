@@ -51,4 +51,16 @@
     <string name="account_setup_special_folders_spam_folder_label">Spam mapp</string>
     <string name="account_setup_special_folders_form_description_automatic">Den \"Automatiska\" Inmatningen följer automatiskt ändringar som görs av servern. Det aktuella servervärdet visas inom parentes.</string>
     <string name="account_setup_auto_discovery_validation_error_password_required">Lösenord krävs.</string>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">1 meddelande</item>
+        <item quantity="other">%d meddelanden</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Varje minut</item>
+        <item quantity="other">Var %d minuter</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Varje timme</item>
+        <item quantity="other">Var %d timmar</item>
+    </plurals>
 </resources>

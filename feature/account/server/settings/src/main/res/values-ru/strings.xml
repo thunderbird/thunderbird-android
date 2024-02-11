@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_settings_incoming_imap_namespace_label">Автоматическое определение пространства имен IMAP</string>
+    <string name="account_server_settings_outgoing_top_bar_title">Настройки исходящего сервера</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Недопустимый IP-адрес или имя хоста</string>
+    <string name="account_server_settings_validation_error_port_invalid">Порт неверный (должен быть 1-65535).</string>
+    <string name="account_server_settings_validation_error_password_required">Требуется пароль.</string>
+    <string name="account_server_settings_password_authentication_title">Подтвердите вашу личность</string>
+    <string name="account_server_settings_password_authentication_subtitle">Разблокируйте чтобы увидеть ваш пароль</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">Префикс IMAP не может быть пустым.</string>
+    <string name="account_server_settings_server_label">Сервер</string>
+    <string name="account_server_settings_protocol_type_label">Протокол</string>
+    <string name="account_server_settings_security_label">Безопасность</string>
+    <string name="account_server_settings_port_label">Порт</string>
+    <string name="account_server_settings_authentication_label">Аутентификация</string>
+    <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
+    <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
+    <string name="account_server_settings_authentication_none">Ничего</string>
+    <string name="account_server_settings_authentication_password_cleartext">Обычный пароль</string>
+    <string name="account_server_settings_authentication_password_encrypted">Зашифрованный пароль</string>
+    <string name="account_server_settings_authentication_client_certificate">Сертификат клиента</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
+    <string name="account_server_settings_client_certificate_none_selected">Ничего</string>
+    <string name="account_server_settings_client_certificate_label">Сертификат клиента</string>
+    <string name="account_server_settings_incoming_top_bar_title">Настройки входящего сервера</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">Префикс пути IMAP</string>
+    <string name="account_server_settings_incoming_imap_compression_label">Использовать сжатие</string>
+    <string name="account_server_settings_incoming_imap_send_client_id_label">Отправить идентификатор клиента</string>
+    <string name="account_server_settings_connection_security_none">Ничего</string>
+    <string name="account_server_settings_username_label">Имя пользователя</string>
+    <string name="account_server_settings_validation_error_port_required">Требуется порт.</string>
+    <string name="account_server_settings_validation_error_username_required">Требуется имя пользователя.</string>
+    <string name="account_server_settings_validation_error_server_required">Необходимо указать имя сервера.</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">Чтобы увидеть ваш пароль, включите блокировку экрана на этом устройстве.</string>
+</resources>

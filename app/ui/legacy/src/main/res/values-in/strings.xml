@@ -878,4 +878,7 @@ Anda dapat menyimpan pesan ini dan menggunakannya sebagai cadangan untuk kunci r
     <string name="changelog_snackbar_button_text">Lihat</string>
     <string name="choose_folder_move_title">Pindahkan ke…</string>
     <string name="choose_folder_copy_title">Salin ke…</string>
+    <string name="new_messages_title">Pesan baru</string>
+    <string name="notification_channel_push_title">Sinkronisasi (Push)</string>
+    <string name="debug_export_logs_failure">Ekspor gagal.</string>
 </resources>

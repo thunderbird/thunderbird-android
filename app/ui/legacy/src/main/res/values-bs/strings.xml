@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="shortcuts_title">K-9 Računi</string>
+    <string name="unread_widget_label">K-9 Nepročitano</string>
+    <string name="source_code">Izvorni kod</string>
+    <string name="app_license">Apache Licenca, Verzija 2.0</string>
+    <string name="about_website_title">Veb-sajt</string>
+    <string name="user_manual_title">Uputstvo za korisnika</string>
+    <string name="about_fediverse_title">Fedivers</string>
+    <string name="about_libraries">Biblioteke</string>
+    <string name="license">Licenca</string>
+    <string name="changelog_title">Dnevnik izmjena</string>
+    <string name="changelog_version_title">Verzija %s</string>
+    <string name="changelog_recent_changes_title">Šta je novo</string>
+    <string name="changelog_show_recent_changes">Prikaži skorije izmjene kad se aplikacija ažurira</string>
+    <string name="changelog_snackbar_button_text">Pogledaj</string>
+    <string name="account_delete_dlg_instructions_fmt">Račun \"<xliff:g id="account">%s</xliff:g>\" će biti uklonjen iz K-9 Mail-a.</string>
+    <string name="compose_title_reply">Odgovori</string>
+    <string name="choose_folder_move_title">Premjesti u…</string>
+    <string name="choose_folder_copy_title">Kopiraj u…</string>
+    <string name="empty_subject">Tema je prazna, kliknite ponovno da svejedno pošaljete</string>
+    <string name="reply_action">Odgovori</string>
+    <string name="archive_action">Arhiviraj</string>
+    <string name="move_action">Premjesti</string>
+    <string name="refile_action">Ponovo zavedi…</string>
+    <string name="done_action">Gotovo</string>
+    <string name="discard_action">Odbaci</string>
+    <string name="check_mail_action">Provjeri e-poštu</string>
+    <string name="refresh_folders_action">Osvježi spisak direktorijuma</string>
+    <string name="filter_folders_action">Pronađi direktorijum</string>
+    <string name="search_action">Pretraži</string>
+    <string name="search_everywhere_action">Pretraži svugdje</string>
+    <string name="search_results">Rezultati pretraživanja</string>
+    <string name="new_messages_title">Nove poruke</string>
+    <string name="folders_action">Upravljajte direktorijumima</string>
+    <string name="send_alternate_action">Podijeli</string>
+    <string name="size_format_megabytes">%.1f MB</string>
+    <string name="notification_bg_send_ticker">Slanje pošte: <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_bg_send_title">Slanje pošte</string>
+    <string name="notification_bg_title_separator">:</string>
+    <string name="notification_channel_push_description">Prikazano dok se čeka na nove poruke</string>
+    <string name="notification_channel_messages_description">Obavještenja vezana za poruke</string>
+    <string name="notification_channel_miscellaneous_title">Razno</string>
+    <string name="special_mailbox_name_inbox">Dolazna pošta</string>
+    <string name="version">Verzija</string>
+    <string name="debug_enable_debug_logging_title">Omogući dnevnik grešaka</string>
+    <string name="debug_enable_debug_logging_summary">Zapisuj posebne dijagnostičke informacije</string>
+    <string name="debug_enable_sensitive_logging_title">Zabilježi osjetljive informacije</string>
+    <string name="debug_enable_sensitive_logging_summary">Prikazati lozinke u zapisnicima.</string>
+    <string name="debug_export_logs_title">Izvezi dnevnike grešaka</string>
+    <string name="debug_export_logs_success">Izvoz uspješan. Dnevnici grešaka mogu sadržati osjetljive podatke. Pazite sa kime ih dijelite.</string>
+    <string name="debug_export_logs_failure">Izvoz neuspješan.</string>
+    <string name="message_list_load_more_messages_action">Učitaj više poruka</string>
+    <string name="message_to_fmt">Za:<xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_compose_subject_hint">Tema</string>
+    <string name="message_compose_content_hint">Tekst poruke</string>
+    <string name="message_compose_signature_hint">Potpis</string>
+    <string name="message_compose_quote_header_subject">Tema:</string>
+    <string name="message_compose_quote_header_cc">Cc:</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> je napisao:</string>
+    <string name="message_compose_reply_header_fmt_with_date">Dana <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> je napisao:</string>
+    <string name="message_compose_error_no_recipients">Morate dodati barem jednog primatelja</string>
+    <string name="compose_error_incomplete_recipient">Polje primatelja sadrži nepotpun unos!</string>
+    <string name="error_contact_address_not_found">Nije poronađena mejl-adresa za ovaj kontakt.</string>
+    <string name="message_compose_attachments_skipped_toast">Neki prilozi ne mogu biti proslijeđeni zato što nisu preuzeti.</string>
+    <string name="message_compose_attachments_forward_toast">Ova poruka ne može biti proslijeđena zato što neki prilozi nisu preuzeti.</string>
+    <string name="message_compose_show_quoted_text_action">Uključi citirane poruke</string>
+    <string name="message_compose_description_delete_quoted_text">Ukloni citirani tekst</string>
+    <string name="message_compose_description_edit_quoted_text">Uredi citirani tekst</string>
+    <string name="remove_attachment_action">Ukloni prilog</string>
+    <string name="message_view_bcc_label">Bcc:</string>
+    <string name="message_view_status_attachment_not_saved">Nije moguće spremiti prilog.</string>
+    <string name="message_view_recipients_format">za <xliff:g id="recipients">%s</xliff:g></string>
+    <string name="message_view_additional_recipient_prefix">+</string>
+    <string name="message_view_no_viewer">Ne mogu pronaći program za prikaz <xliff:g id="mimetype">%s</xliff:g>.</string>
+    <string name="message_view_sender_label">putem %1$s</string>
+    <string name="from_same_sender">Više od ovog pošiljatelja</string>
+    <string name="message_discarded_toast">Poruka odbačena</string>
+    <string name="message_saved_toast">Poruka spremljena kao skica</string>
+    <string name="global_settings_flag_label">Prikaži zvjezdice</string>
+    <string name="global_settings_flag_summary">Zvjezdice ukazuju na označene poruke</string>
+    <string name="global_settings_preview_lines_label">Prikaži linije pregleda</string>
+    <string name="global_settings_show_correspondent_names_label">Prikaži imena dopisnika</string>
+    <string name="global_settings_show_correspondent_names_summary">Prikaži imena korespodenata umjesto njihove mejl-adrese</string>
+    <string name="about_action">O nama</string>
+    <string name="prefs_title">Postavke</string>
+    <string name="app_name">K-9 Mail</string>
+    <string name="app_authors">K-9 razvojni tim</string>
+    <string name="get_help_title">Zatražite pomoć</string>
+    <string name="about_project_title">Projekat otvorenog koda</string>
+    <string name="user_forum_title">Korisnički forum</string>
+    <string name="changelog_loading_error">Nije moguće učitati dnevnik izmjena.</string>
+    <string name="changelog_snackbar_text">Vidite šta je novo u ovom izdanju</string>
+    <string name="default_signature">--
+\nPoslano sa mog Android uređaja preko K-9 Mail-a. Molim vas oprostite na mojoj sažetosti.</string>
+    <string name="authors">Autori</string>
+    <string name="about_title">O K-9 Mail-u</string>
+    <string name="advanced">Napredno</string>
+    <string name="compose_title_compose">Sastavi</string>
+    <string name="accounts_title">Računi</string>
+    <string name="compose_title_forward">Proslijedi</string>
+    <string name="compose_title_forward_as_attachment">Proslijedi kao prilog</string>
+    <string name="choose_account_title">Odaberite račun</string>
+    <string name="compose_title_reply_all">Odgovori svima</string>
+    <string name="choose_folder_title">Odaberite direktorijum</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> odabrano</string>
+    <string name="send_action">Pošalji</string>
+    <string name="spam_action">Neželjena pošta</string>
+    <string name="reply_all_action">Odgovori svima</string>
+    <string name="delete_action">Obriši</string>
+    <string name="forward_action">Proslijedi</string>
+    <string name="forward_as_attachment_action">Proslijedi kao prilog</string>
+    <string name="edit_as_new_message_action">Uređuj kao novu poruku</string>
+    <string name="save_draft_action">Spremi kao skicu</string>
+    <string name="send_messages_action">Pošalji poruke</string>
+    <string name="preferences_action">Postavke</string>
+    <string name="add_account_action">Dodaj račun</string>
+    <string name="compose_action">Sastavi</string>
+    <string name="account_settings_action">Postavke računa</string>
+    <string name="remove_account_action">Obriši račun</string>
+    <string name="mark_as_read_action">Označi pročitanim</string>
+    <string name="send_alternate_chooser_title">Odaberi pošiljatelja</string>
+    <string name="flag_action">Dodaj zvjezdicu</string>
+    <string name="unflag_action">Ukloni zvjezdicu</string>
+    <string name="copy_action">Kopiraj</string>
+    <string name="unsubscribe_action">Odjavi se</string>
+    <string name="show_headers_action">Prikaži zaglavlje</string>
+    <plurals name="copy_address_to_clipboard">
+        <item quantity="one">Adresa kopirana u međuspremnik</item>
+        <item quantity="few">Adrese kopirane u međuspremnik</item>
+        <item quantity="other">Adresa kopirano u međuspremnik</item>
+    </plurals>
+    <string name="copy_subject_to_clipboard">Tekst teme kopiran u međuspremnik</string>
+    <string name="mark_as_unread_action">Označi nepročitanim</string>
+    <string name="message_view_theme_action_dark">Prebaci na tamnu temu</string>
+    <string name="message_view_theme_action_light">Prebaci na svijetlu temu</string>
+    <string name="general_no_subject">(Nema teme)</string>
+    <string name="read_receipt">Potvrda čitanja</string>
+    <string name="empty_trash_action">Isprazni smeće</string>
+    <string name="read_receipt_enabled">Zahtjevaj potvrdu čitanja</string>
+    <string name="read_receipt_disabled">Ne zahtjevaj potvrdu čitanja</string>
+    <string name="add_attachment_action">Dodaj prilog</string>
+    <string name="expunge_action">Izbrisati</string>
+    <string name="status_invalid_id_error">Poruka nije pronađena</string>
+    <string name="status_loading_error">Greška pri učitavanju poruke</string>
+    <string name="load_more_messages_fmt">Učitati \u0020do <xliff:g id="messages_to_load">%d</xliff:g> više</string>
+    <string name="size_format_gigabytes">%.1f GB</string>
+    <string name="size_format_kilobytes">%.1f kB</string>
+    <string name="size_format_bytes">%d B</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nova poruka</item>
+        <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> novih poruka</item>
+        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> novih poruka</item>
+    </plurals>
+    <string name="notification_action_mark_as_read">Označi pročitanim</string>
+    <string name="notification_action_mark_all_as_read">Označi sve kao pročitane</string>
+    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> više na <xliff:g id="account">%2$s</xliff:g></string>
+    <string name="notification_action_reply">Odgovori</string>
+    <string name="general_no_sender">Nema pošaljitelja</string>
+    <string name="status_loading_more">Učitavanje poruka…</string>
+    <string name="status_network_error">Greška internet veze</string>
+    <string name="notification_certificate_error_title">Greška sertifikata za <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_action_delete">Obriši</string>
+    <string name="notification_action_delete_all">Obriši sve</string>
+    <string name="notification_action_archive">Arhiviraj</string>
+    <string name="notification_action_archive_all">Arhiviraj sve</string>
+    <string name="notification_action_spam">Neželjena pošta</string>
+    <string name="notification_certificate_error_public">Greška sertifikata</string>
+    <string name="notification_certificate_error_text">Provjerite postavke vašeg servera</string>
+    <string name="notification_authentication_error_text">Autentifikacija nije uspjela za <xliff:g id="account">%s</xliff:g>. Ažurirajte postavke vašeg servera.</string>
+    <string name="notification_authentication_error_title">Autentifikacija nije uspjela</string>
+    <string name="notification_notify_error_title">Greška pri kreiranju obavještenja</string>
+    <string name="notification_notify_error_text">Dogodila se greška tokom kreiranja sistemskog obavještenja za novu poruku. Razlog je vjerovatno nemanje zvuka obavještenja.
+\n
+\nDodirnite da otvorite podešavanja obavještenja.</string>
+    <string name="notification_bg_sync_title">Provjeravanje pošte</string>
+    <string name="notification_bg_sync_ticker">Provjeravanje pošte: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
+    <string name="notification_channel_push_title">Sinhronizacija (Push)</string>
+    <string name="notification_channel_messages_title">Poruke</string>
+    <string name="notification_channel_miscellaneous_description">Raznovrsne obavijesti kao greške itd.</string>
+    <string name="special_mailbox_name_trash">Smeće</string>
+    <string name="special_mailbox_name_outbox">Odlazna pošta</string>
+    <string name="special_mailbox_name_drafts">Skice</string>
+    <string name="special_mailbox_name_sent">Poslano</string>
+    <string name="send_failure_subject">Slanje nekih poruka nije uspjelo</string>
+    <string name="message_compose_quote_header_separator">-------- Originalna Poruka --------</string>
+    <string name="message_compose_quote_header_send_date">Poslano:</string>
+    <string name="message_compose_quote_header_to">Za:</string>
+    <string name="message_view_me_text">mene</string>
+    <string name="message_compose_quote_header_from">Od:</string>
+    <string name="message_to_label">Za:</string>
+    <string name="message_view_cc_label">Cc:</string>
+    <string name="message_view_show_remote_images_action">Prikaži udaljene slikovne datoteke</string>
+    <string name="message_view_download_remainder">Preuzmi cijelu poruku</string>
+    <string name="move_to_drafts_action">Pređite na nacrte</string>
+    <string name="global_settings_sender_above_subject_label">Dopisnik iznad teme</string>
+    <string name="global_settings_sender_above_subject_summary">Prikažite imena dopisnika iznad teme, a ne ispod nje</string>
+    <string name="global_settings_show_contact_name_label">Prikaži imena kontakata</string>
+    <string name="global_settings_show_contact_name_summary">Koristi imena iz kontakata ako je moguće</string>
+    <string name="global_settings_registered_name_color_label">Oboji kontakte</string>
+    <string name="global_settings_registered_name_color_changed">Oboji imena u vašoj listi kontakata</string>
+    <string name="general_settings_contact_name_color_label">Boja imena kontakta</string>
+    <string name="global_settings_messageview_fixedwidth_label">Fontovi fiksne veličine</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Koristite font fiksne širine kada prikazujete obične poruke</string>
+    <string name="global_settings_messageview_autofit_width_label">Automatsko uklapanje poruka</string>
+    <string name="global_settings_messageview_autofit_width_summary">Smanji poruke kako bi se uklopile u ekran</string>
+    <string name="general_settings_post_remove_action_title">Nakon brisanja ili premještanja poruke</string>
+    <string name="general_settings_post_remove_action_return_to_list">Povratak na listu poruka</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Prikaži prethodnu poruku</string>
+    <string name="general_settings_post_remove_action_show_next_message">Prikaži sljedeću poruku</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Nakon označavanja poruke kao nepročitane</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">Ostanite na trenutnoj poruci</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">Povratak na listu poruka</string>
+    <string name="global_settings_confirm_actions_title">Potvrdi radnje</string>
+    <string name="global_settings_confirm_actions_summary">Prikazuj dijalog prilikom izvođenja odabranih radnji</string>
+    <string name="global_settings_confirm_action_delete">Obriši</string>
+    <string name="global_settings_confirm_action_delete_starred">Obriši označeno zvjezdicom (u pregledu poruke)</string>
+    <string name="global_settings_confirm_action_spam">Neželjena pošta</string>
+    <string name="global_settings_confirm_menu_discard">Odbaci poruku</string>
+    <string name="global_settings_confirm_menu_mark_all_read">Označi sve poruke kao pročitane</string>
+    <string name="global_settings_confirm_action_delete_notif">Obriši (iz obavijesti)</string>
+    <string name="general_settings_swipe_actions_title">Radnje prevlačenja</string>
+    <string name="general_settings_right_swipe_title">Prevucite udesno</string>
+    <string name="general_settings_left_swipe_title">Prevlačenje ulijevo</string>
+    <string name="general_settings_swipe_action_none">Nema</string>
+    <string name="general_settings_swipe_action_toggle_selection">Odaberi ili poništi odabir</string>
+    <string name="general_settings_swipe_action_toggle_read">Označi kao pročitano ili nepročitano</string>
+    <string name="general_settings_swipe_action_toggle_star">Dodajte ili uklonite zvjezdicu</string>
+    <string name="general_settings_swipe_action_archive">Arhivaj</string>
+    <string name="general_settings_swipe_action_delete">Obriši</string>
+    <string name="general_settings_swipe_action_spam">Neželjena pošta</string>
+    <string name="general_settings_swipe_action_move">Premjesti</string>
+    <string name="general_settings_message_list_density_title">Gustina teksta</string>
+    <string name="general_settings_ui_density_compact">Kompaktan</string>
+    <string name="general_settings_ui_density_relaxed">Opušten</string>
+    <string name="general_settings_ui_density_default">Uobičajen</string>
+    <string name="global_settings_privacy_hide_useragent">Sakrij klijent e-pošte</string>
+</resources>
