@@ -448,7 +448,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             messageContentView.requestFocus();
         } else if (startedByExternalIntent) {
             // If started by external intent, focus "Subject" or content field (Issue #7618)
-            if(subjectView.getText().length() == 0) {
+            if (subjectView.getText().length() == 0) {
                 subjectView.requestFocus();
             } else {
                 messageContentView.requestFocus();
