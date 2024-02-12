@@ -233,7 +233,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             if (cursor == null) {
                 return;
             }
-        } catch (SecurityException e) {
+        } catch (Exception e) {
             Timber.e(e, "Couldn't obtain recipients from crypto provider!");
             return;
         }
