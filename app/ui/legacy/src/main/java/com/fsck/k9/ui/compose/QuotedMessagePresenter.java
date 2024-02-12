@@ -5,6 +5,7 @@ import java.util.Map;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import app.k9mail.core.android.common.compat.BundleCompat;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.MessageFormat;
@@ -153,7 +154,7 @@ public class QuotedMessagePresenter {
         outState.putBoolean(STATE_KEY_FORCE_PLAIN_TEXT, forcePlainText);
     }
 
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
+    public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         quotedHtmlContent = BundleCompat.INSTANCE.getSerializable(
             savedInstanceState,
             STATE_KEY_HTML_QUOTE,
