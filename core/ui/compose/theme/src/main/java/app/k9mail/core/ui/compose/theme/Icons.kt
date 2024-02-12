@@ -1,17 +1,15 @@
 package app.k9mail.core.ui.compose.theme
 
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Cancel
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.MoveToInbox
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Outbox
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.icons.outlined.ArrowDropUp
 import androidx.compose.material.icons.outlined.Celebration
@@ -33,9 +31,6 @@ object Icons {
 
         val inbox: ImageVector
             get() = MaterialIcons.Filled.MoveToInbox
-
-        val notification: ImageVector
-            get() = MaterialIcons.Filled.Notifications
 
         val outbox: ImageVector
             get() = MaterialIcons.Filled.Outbox
@@ -61,7 +56,7 @@ object Icons {
 
     object Outlined {
         val arrowBack: ImageVector
-            get() = MaterialIcons.Outlined.ArrowBack
+            get() = MaterialIcons.AutoMirrored.Outlined.ArrowBack
 
         val arrowDropDown: ImageVector
             get() = MaterialIcons.Outlined.ArrowDropDown

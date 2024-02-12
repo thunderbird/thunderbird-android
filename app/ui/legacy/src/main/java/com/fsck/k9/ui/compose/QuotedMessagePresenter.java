@@ -5,19 +5,14 @@ import java.util.Map;
 
 import android.os.Bundle;
 
-import com.fsck.k9.DI;
-import timber.log.Timber;
-
+import androidx.annotation.NonNull;
+import app.k9mail.core.android.common.compat.BundleCompat;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.Account.QuoteStyle;
+import com.fsck.k9.DI;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageCompose.Action;
-import com.fsck.k9.message.extractors.BodyTextExtractor;
-import com.fsck.k9.message.html.HtmlConverter;
-import com.fsck.k9.message.quote.HtmlQuoteCreator;
-import com.fsck.k9.message.quote.TextQuoteCreator;
-import com.fsck.k9.message.signature.HtmlSignatureRemover;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
@@ -25,11 +20,17 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.AttachmentResolver;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.message.IdentityField;
-import com.fsck.k9.message.quote.InsertableHtmlContent;
 import com.fsck.k9.message.MessageBuilder;
 import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageFormat;
+import com.fsck.k9.message.extractors.BodyTextExtractor;
+import com.fsck.k9.message.html.HtmlConverter;
+import com.fsck.k9.message.quote.HtmlQuoteCreator;
+import com.fsck.k9.message.quote.InsertableHtmlContent;
+import com.fsck.k9.message.quote.TextQuoteCreator;
+import com.fsck.k9.message.signature.HtmlSignatureRemover;
 import com.fsck.k9.message.signature.TextSignatureRemover;
+import timber.log.Timber;
 
 
 public class QuotedMessagePresenter {
@@ -153,18 +154,32 @@ public class QuotedMessagePresenter {
         outState.putBoolean(STATE_KEY_FORCE_PLAIN_TEXT, forcePlainText);
     }
 
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        quotedHtmlContent = (InsertableHtmlContent) savedInstanceState.getSerializable(STATE_KEY_HTML_QUOTE);
+    public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        quotedHtmlContent = BundleCompat.INSTANCE.getSerializable(
+            savedInstanceState,
+            STATE_KEY_HTML_QUOTE,
+            InsertableHtmlContent.class
+        );
+        quotedTextFormat = BundleCompat.getSerializable(
+            savedInstanceState,
+            STATE_KEY_QUOTED_TEXT_FORMAT,
+            SimpleMessageFormat.class
+        );
+
+        forcePlainText = savedInstanceState.getBoolean(STATE_KEY_FORCE_PLAIN_TEXT);
+
+        showOrHideQuotedText(
+            BundleCompat.getSerializable(
+                savedInstanceState,
+                STATE_KEY_QUOTED_TEXT_MODE,
+                QuotedTextMode.class
+            )
+        );
+
         if (quotedHtmlContent != null && quotedHtmlContent.getQuotedContent() != null) {
             // we don't have the part here, but inline-displayed images are cached by the webview
             view.setQuotedHtml(quotedHtmlContent.getQuotedContent(), null);
         }
-        quotedTextFormat = (SimpleMessageFormat) savedInstanceState.getSerializable(
-                STATE_KEY_QUOTED_TEXT_FORMAT);
-        forcePlainText = savedInstanceState.getBoolean(STATE_KEY_FORCE_PLAIN_TEXT);
-
-        showOrHideQuotedText(
-                (QuotedTextMode) savedInstanceState.getSerializable(STATE_KEY_QUOTED_TEXT_MODE));
     }
 
     public void processMessageToForward(MessageViewInfo messageViewInfo) throws MessagingException {

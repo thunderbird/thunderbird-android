@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import app.k9mail.core.android.common.compat.BundleCompat
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.loader.observeLoading
 import de.cketti.changelog.ReleaseItem
@@ -20,7 +21,9 @@ import org.koin.core.parameter.parametersOf
  */
 class ChangelogFragment : Fragment() {
     private val viewModel: ChangelogViewModel by viewModel {
-        val mode = arguments?.getSerializable(ARG_MODE) as? ChangeLogMode ?: error("Missing argument '$ARG_MODE'")
+        val mode = arguments?.let {
+            BundleCompat.getSerializable(it, ARG_MODE, ChangeLogMode::class.java)
+        } ?: error("Missing argument '$ARG_MODE'")
         parametersOf(mode)
     }
 
@@ -85,6 +88,7 @@ class ChangelogAdapter(releaseItems: List<ReleaseItem>) : RecyclerView.Adapter<V
                 viewHolder.versionName.text = context.getString(R.string.changelog_version_title, item.versionName)
                 viewHolder.versionDate.text = item.date
             }
+
             is String -> {
                 val viewHolder = holder as ChangeItemViewHolder
                 viewHolder.changeText.text = item

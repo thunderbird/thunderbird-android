@@ -9,10 +9,11 @@ import java.util.Arrays;
 
 import android.app.PendingIntent;
 import android.content.Intent;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-
+import androidx.core.content.IntentCompat;
 import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
@@ -27,7 +28,6 @@ import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
-import com.fsck.k9.mail.internet.Headers;
 import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
@@ -310,14 +310,22 @@ public class PgpMessageBuilder extends MessageBuilder {
                 return null;
 
             case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
-                PendingIntent returnedPendingIntent = result.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
+                PendingIntent returnedPendingIntent = IntentCompat.getParcelableExtra(
+                    result,
+                    OpenPgpApi.RESULT_INTENT,
+                    PendingIntent.class
+                );
                 if (returnedPendingIntent == null) {
                     throw new MessagingException("openpgp api needs user interaction, but returned no pendingintent!");
                 }
                 return returnedPendingIntent;
 
             case OpenPgpApi.RESULT_CODE_ERROR:
-                OpenPgpError error = result.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
+                OpenPgpError error = IntentCompat.getParcelableExtra(
+                    result,
+                    OpenPgpApi.RESULT_ERROR,
+                    OpenPgpError.class
+                );
                 if (error == null) {
                     throw new MessagingException("internal openpgp api error");
                 }

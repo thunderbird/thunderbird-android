@@ -46,8 +46,8 @@ class CommonTextFieldTest(
     fun `should be enabled by default`() = runComposeTest {
         setContent {
             testSubject(
-                modifier = Modifier.testTag(testSubjectName),
-                textFieldConfig = TextFieldConfig(
+                Modifier.testTag(testSubjectName),
+                TextFieldConfig(
                     label = null,
                     isEnabled = null,
                     isReadOnly = false,
@@ -63,8 +63,8 @@ class CommonTextFieldTest(
     fun `should be disabled when enabled is false`() = runComposeTest {
         setContent {
             testSubject(
-                modifier = Modifier.testTag(testSubjectName),
-                textFieldConfig = TextFieldConfig(
+                Modifier.testTag(testSubjectName),
+                TextFieldConfig(
                     label = null,
                     isEnabled = false,
                     isReadOnly = false,
@@ -80,8 +80,8 @@ class CommonTextFieldTest(
     fun `should show label when label is not null`() = runComposeTest {
         setContent {
             testSubject(
-                modifier = Modifier.testTag(testSubjectName),
-                textFieldConfig = TextFieldConfig(
+                Modifier.testTag(testSubjectName),
+                TextFieldConfig(
                     label = LABEL,
                     isEnabled = null,
                     isReadOnly = false,
@@ -97,8 +97,8 @@ class CommonTextFieldTest(
     fun `should show asterisk when isRequired is true`() = runComposeTest {
         setContent {
             testSubject(
-                modifier = Modifier.testTag(testSubjectName),
-                textFieldConfig = TextFieldConfig(
+                Modifier.testTag(testSubjectName),
+                TextFieldConfig(
                     label = LABEL,
                     isEnabled = null,
                     isReadOnly = false,
@@ -114,8 +114,8 @@ class CommonTextFieldTest(
     fun `should not show asterisk when isRequired is false`() = runComposeTest {
         setContent {
             testSubject(
-                modifier = Modifier.testTag(testSubjectName),
-                textFieldConfig = TextFieldConfig(
+                Modifier.testTag(testSubjectName),
+                TextFieldConfig(
                     label = LABEL,
                     isEnabled = null,
                     isReadOnly = false,
@@ -131,8 +131,8 @@ class CommonTextFieldTest(
     fun `should not allow editing when isReadOnly is true`() = runComposeTest {
         setContent {
             testSubject(
-                modifier = Modifier.testTag(testSubjectName),
-                textFieldConfig = TextFieldConfig(
+                Modifier.testTag(testSubjectName),
+                TextFieldConfig(
                     label = LABEL,
                     isEnabled = null,
                     isReadOnly = true,

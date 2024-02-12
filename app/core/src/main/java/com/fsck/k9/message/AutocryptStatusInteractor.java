@@ -5,11 +5,11 @@ import java.io.InputStream;
 
 import android.app.PendingIntent;
 import android.content.Intent;
+
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.annotation.WorkerThread;
-
+import androidx.core.content.IntentCompat;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.util.OpenPgpApi;
 import timber.log.Timber;
@@ -34,11 +34,19 @@ public class AutocryptStatusInteractor {
         switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR)) {
             case OpenPgpApi.RESULT_CODE_SUCCESS:
                 RecipientAutocryptStatusType type = getRecipientAutocryptStatusFromIntent(result);
-                PendingIntent pendingIntent = result.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
+                PendingIntent pendingIntent = IntentCompat.getParcelableExtra(
+                    result,
+                    OpenPgpApi.RESULT_INTENT,
+                    PendingIntent.class
+                );
                 return new RecipientAutocryptStatus(type, pendingIntent);
 
             case OpenPgpApi.RESULT_CODE_ERROR:
-                OpenPgpError error = result.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
+                OpenPgpError error = IntentCompat.getParcelableExtra(
+                    result,
+                    OpenPgpApi.RESULT_ERROR,
+                    OpenPgpError.class
+                );
                 if (error != null) {
                     Timber.w("OpenPGP API Error #%s: %s", error.getErrorId(), error.getMessage());
                 } else {

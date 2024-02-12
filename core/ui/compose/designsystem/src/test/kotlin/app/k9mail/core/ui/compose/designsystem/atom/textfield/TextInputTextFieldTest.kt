@@ -37,9 +37,9 @@ class TextInputTextFieldTest(
         var value = testInput
         setContent {
             testSubject(
-                value = value,
-                onValueChange = { value = it },
-                modifier = Modifier.testTag(testSubjectName),
+                value,
+                { value = it },
+                Modifier.testTag(testSubjectName),
             )
         }
 

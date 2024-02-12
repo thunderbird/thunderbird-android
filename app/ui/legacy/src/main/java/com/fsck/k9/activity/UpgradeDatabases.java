@@ -8,16 +8,17 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.widget.TextView;
 
+import androidx.core.content.IntentCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.ui.R;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.service.DatabaseUpgradeService;
+import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.base.K9Activity;
 
 
@@ -137,7 +138,7 @@ public class UpgradeDatabases extends K9Activity {
      */
     private void decodeExtras() {
         Intent intent = getIntent();
-        mStartIntent = intent.getParcelableExtra(EXTRA_START_INTENT);
+        mStartIntent = IntentCompat.getParcelableExtra(intent, EXTRA_START_INTENT, Intent.class);
     }
 
     /**

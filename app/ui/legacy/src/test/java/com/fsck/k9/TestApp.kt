@@ -3,7 +3,6 @@ package com.fsck.k9
 import android.app.Application
 import com.fsck.k9.preferences.InMemoryStoragePersister
 import com.fsck.k9.preferences.StoragePersister
-import com.fsck.k9.storage.storageModule
 import org.koin.dsl.module
 
 class TestApp : Application() {
@@ -13,7 +12,7 @@ class TestApp : Application() {
         super.onCreate()
         DI.start(
             application = this,
-            modules = coreModules + storageModule + testModule,
+            modules = coreModules + commonAppModules + uiModules + testModule,
             allowOverride = true,
         )
 

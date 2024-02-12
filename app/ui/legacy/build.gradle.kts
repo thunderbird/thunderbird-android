@@ -56,6 +56,8 @@ dependencies {
     implementation(libs.glide)
     annotationProcessor(libs.glide.compiler)
 
+    // This is necessary as RecipientPresenterTest fails to inject
+    testImplementation(projects.app.common)
     testImplementation(projects.core.testing)
     testImplementation(projects.mail.testing)
     testImplementation(projects.app.storage)

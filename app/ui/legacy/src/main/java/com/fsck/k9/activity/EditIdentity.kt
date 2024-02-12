@@ -6,6 +6,8 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.core.content.IntentCompat
+import androidx.core.os.BundleCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import com.fsck.k9.Account
@@ -44,8 +46,16 @@ class EditIdentity : K9Activity() {
         account = Preferences.getPreferences().getAccount(accountUuid) ?: error("Couldn't find account")
 
         identity = when {
-            savedInstanceState != null -> savedInstanceState.getParcelable(EXTRA_IDENTITY) ?: error("Missing state")
-            identityIndex != -1 -> intent.getParcelableExtra(EXTRA_IDENTITY) ?: error("Missing argument")
+            savedInstanceState != null -> {
+                BundleCompat.getParcelable(savedInstanceState, EXTRA_IDENTITY, Identity::class.java)
+                    ?: error("Missing state")
+            }
+
+            identityIndex != -1 -> {
+                IntentCompat.getParcelableExtra(intent, EXTRA_IDENTITY, Identity::class.java)
+                    ?: error("Missing argument")
+            }
+
             else -> Identity()
         }
 

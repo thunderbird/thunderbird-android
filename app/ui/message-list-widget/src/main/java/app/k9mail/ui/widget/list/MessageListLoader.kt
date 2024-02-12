@@ -44,15 +44,15 @@ internal class MessageListLoader(
         val mapper = MessageListItemMapper(messageHelper, account)
 
         return if (config.showingThreadedList) {
-            val (selection, selectionArgs) = buildSelection(account, config)
+            val (selection, selectionArgs) = buildSelection(config)
             messageListRepository.getThreadedMessages(accountUuid, selection, selectionArgs, sortOrder, mapper)
         } else {
-            val (selection, selectionArgs) = buildSelection(account, config)
+            val (selection, selectionArgs) = buildSelection(config)
             messageListRepository.getMessages(accountUuid, selection, selectionArgs, sortOrder, mapper)
         }
     }
 
-    private fun buildSelection(account: Account, config: MessageListConfig): Pair<String, Array<String>> {
+    private fun buildSelection(config: MessageListConfig): Pair<String, Array<String>> {
         val query = StringBuilder()
         val queryArgs = mutableListOf<String>()
 
@@ -95,25 +95,31 @@ internal class MessageListLoader(
             SortType.SORT_DATE -> {
                 compareBy(config.sortAscending) { it.sortMessageDate }
             }
+
             SortType.SORT_ARRIVAL -> {
                 compareBy(config.sortAscending) { it.sortInternalDate }
             }
+
             SortType.SORT_SUBJECT -> {
                 compareStringBy<MessageListItem>(config.sortAscending) { it.sortSubject.orEmpty() }
                     .thenByDate(config)
             }
+
             SortType.SORT_SENDER -> {
                 compareStringBy<MessageListItem>(config.sortAscending) { it.displayName }
                     .thenByDate(config)
             }
+
             SortType.SORT_UNREAD -> {
                 compareBy<MessageListItem>(config.sortAscending) { it.isRead }
                     .thenByDate(config)
             }
+
             SortType.SORT_FLAGGED -> {
                 compareBy<MessageListItem>(!config.sortAscending) { it.sortIsStarred }
                     .thenByDate(config)
             }
+
             SortType.SORT_ATTACHMENT -> {
                 compareBy<MessageListItem>(!config.sortAscending) { it.hasAttachments }
                     .thenByDate(config)

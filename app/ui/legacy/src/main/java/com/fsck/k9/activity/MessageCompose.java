@@ -25,9 +25,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.ActionBar;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.ContextThemeWrapper;
@@ -45,6 +42,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.ActionBar;
+import androidx.core.content.IntentCompat;
+import androidx.core.os.BundleCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.fsck.k9.Account;
@@ -108,12 +111,11 @@ import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.ui.base.ThemeManager;
-import com.fsck.k9.ui.compose.WrapUriTextWatcher;
 import com.fsck.k9.ui.compose.QuotedMessageMvpView;
 import com.fsck.k9.ui.compose.QuotedMessagePresenter;
+import com.fsck.k9.ui.compose.WrapUriTextWatcher;
 import com.fsck.k9.ui.helper.SizeFormatter;
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider;
-
 import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.util.OpenPgpApi;
 import timber.log.Timber;
@@ -429,7 +431,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 if (action == Action.FORWARD_AS_ATTACHMENT) {
                     messageLoaderHelper.asyncStartOrResumeLoadingMessageMetadata(relatedMessageReference);
                 } else {
-                    Parcelable cachedDecryptionResult = intent.getParcelableExtra(EXTRA_MESSAGE_DECRYPTION_RESULT);
+                    Parcelable cachedDecryptionResult = IntentCompat.getParcelableExtra(
+                        intent,
+                        EXTRA_MESSAGE_DECRYPTION_RESULT,
+                        Parcelable.class
+                    );
                     messageLoaderHelper.asyncStartOrResumeLoadingMessage(
                             relatedMessageReference, cachedDecryptionResult);
                 }
@@ -537,12 +543,16 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
             String type = intent.getType();
             if (Intent.ACTION_SEND.equals(action)) {
-                Uri stream = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+                Uri stream = IntentCompat.getParcelableExtra(intent,Intent.EXTRA_STREAM, Uri.class);
                 if (stream != null) {
                     attachmentPresenter.addExternalAttachment(stream, type);
                 }
             } else {
-                List<Parcelable> list = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
+                List<Parcelable> list = IntentCompat.getParcelableArrayListExtra(
+                    intent,
+                    Intent.EXTRA_STREAM,
+                    Parcelable.class
+                );
                 if (list != null) {
                     for (Parcelable parcelable : list) {
                         Uri stream = (Uri) parcelable;
@@ -634,7 +644,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
         attachmentsView.removeAllViews();
@@ -651,7 +661,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         } else {
             draftMessageId = null;
         }
-        identity = savedInstanceState.getParcelable(STATE_IDENTITY);
+        identity = BundleCompat.getParcelable(savedInstanceState, STATE_IDENTITY, Identity.class);
         identityChanged = savedInstanceState.getBoolean(STATE_IDENTITY_CHANGED);
         repliedToMessageId = savedInstanceState.getString(STATE_IN_REPLY_TO);
         referencedMessageIds = savedInstanceState.getString(STATE_REFERENCES);
@@ -1055,6 +1065,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         return true;
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
         prepareToFinish(false);
