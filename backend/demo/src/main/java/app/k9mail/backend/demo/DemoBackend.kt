@@ -161,10 +161,6 @@ class DemoBackend(private val backendStorage: BackendStorage) : Backend {
         return createNewServerId()
     }
 
-    override fun checkIncomingServerSettings() = Unit
-
-    override fun checkOutgoingServerSettings() = Unit
-
     override fun sendMessage(message: Message) {
         val inboxServerId = messageStoreInfo.filterValues { it.type == FolderType.INBOX }.keys.first()
         val backendFolder = backendStorage.getFolder(inboxServerId)
