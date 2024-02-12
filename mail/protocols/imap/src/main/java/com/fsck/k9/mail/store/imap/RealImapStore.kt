@@ -212,15 +212,17 @@ internal open class RealImapStore(
         return folderName.substring(prefixLength)
     }
 
-    @Throws(MessagingException::class)
+    @Suppress("TooGenericExceptionCaught")
+    @Throws(MessagingException::class, IOException::class)
     override fun checkSettings() {
         try {
             val connection = createImapConnection()
 
             connection.open()
             connection.close()
-        } catch (e: IOException) {
-            throw MessagingException("Unable to connect", e)
+        } catch (e: Exception) {
+            Timber.e(e, "Error while checking server settings")
+            throw e
         }
     }
 
