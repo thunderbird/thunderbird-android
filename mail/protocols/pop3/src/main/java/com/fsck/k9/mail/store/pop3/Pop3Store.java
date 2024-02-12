@@ -4,6 +4,7 @@ package com.fsck.k9.mail.store.pop3;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fsck.k9.logging.Timber;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.MessagingException;
@@ -54,8 +55,10 @@ public class Pop3Store {
         try {
             folder.open();
             folder.requestUidl();
-        }
-        finally {
+        } catch (Exception e) {
+            Timber.e(e, "Error while checking server settings");
+            throw e;
+        } finally {
             folder.close();
         }
     }
