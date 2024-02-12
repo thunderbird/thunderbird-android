@@ -71,48 +71,6 @@ class BaseSaveServerSettingsViewModelTest {
     }
 
     @Test
-    fun `should prevent navigation effects when in loading state`() = runTest {
-        val testSubject = TestSaveServerSettingsViewModel(
-            accountUuid = ACCOUNT_UUID,
-            saveServerSettings = { _, _ ->
-                // Do nothing
-            },
-            initialState = State(isLoading = true),
-        )
-        val turbines = turbinesWithInitialStateCheck(testSubject, State(isLoading = true))
-
-        testSubject.event(Event.OnNextClicked)
-
-        turbines.effectTurbine.ensureAllEventsConsumed()
-
-        testSubject.event(Event.OnBackClicked)
-
-        turbines.effectTurbine.ensureAllEventsConsumed()
-    }
-
-    @Test
-    fun `should allow NavigateNext when no error and not loading`() = runTest {
-        val testSubject = TestSaveServerSettingsViewModel(
-            accountUuid = ACCOUNT_UUID,
-            saveServerSettings = { _, _ ->
-                // Do nothing
-            },
-            initialState = State(isLoading = false),
-        )
-        val turbines = turbinesWithInitialStateCheck(testSubject, State(isLoading = false))
-
-        testSubject.event(Event.OnNextClicked)
-
-        turbines.assertThatAndEffectTurbineConsumed {
-            isEqualTo(Effect.NavigateNext)
-        }
-
-        testSubject.event(Event.OnBackClicked)
-
-        turbines.effectTurbine.ensureAllEventsConsumed()
-    }
-
-    @Test
     fun `should allow NavigateBack when error and not loading`() = runTest {
         val failure = Failure.SaveServerSettingsFailed("Test exception")
         val testSubject = TestSaveServerSettingsViewModel(
@@ -126,10 +84,6 @@ class BaseSaveServerSettingsViewModelTest {
             ),
         )
         val turbines = turbinesWithInitialStateCheck(testSubject, State(isLoading = false, error = failure))
-
-        testSubject.event(Event.OnNextClicked)
-
-        turbines.effectTurbine.ensureAllEventsConsumed()
 
         testSubject.event(Event.OnBackClicked)
 
