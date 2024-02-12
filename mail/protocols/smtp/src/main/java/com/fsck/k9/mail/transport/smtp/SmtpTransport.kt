@@ -665,12 +665,16 @@ class SmtpTransport(
         }
     }
 
+    @Suppress("TooGenericExceptionCaught")
     @Throws(MessagingException::class)
     fun checkSettings() {
         ensureClosed()
 
         try {
             open()
+        } catch (e: Exception) {
+            Timber.e(e, "Error while checking server settings")
+            throw e
         } finally {
             close()
         }
