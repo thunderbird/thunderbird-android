@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="Theme.K9.Startup" parent="Theme.K9.Dark">
         <item name="android:windowBackground">@android:color/black</item>
     </style>
 
     <!-- Empty base themes that can be easily replaced by RRO (Runtime Resource Overlay) themes -->
-    <style name="Theme.K9.Light.Base" parent="Theme.MaterialComponents.Light.NoActionBar" />
-    <style name="Theme.K9.Dark.Base" parent="Theme.MaterialComponents.NoActionBar" />
+    <style name="Theme.K9.Light.Base" parent="Theme.Material3.Light.NoActionBar" />
+    <style name="Theme.K9.Dark.Base" parent="Theme.Material3.Dark.NoActionBar" />
 
     <style name="Theme.K9.Light.Common" parent="Theme.K9.Light.Base">
         <item name="windowActionModeOverlay">true</item>
@@ -340,7 +340,7 @@
         <item name="backgroundColorChooseAccountHeader">#404040</item>
     </style>
 
-    <style name="Theme.K9.Dialog.Translucent.Dark" parent="Theme.MaterialComponents.Dialog.Bridge">
+    <style name="Theme.K9.Dialog.Translucent.Dark" parent="Theme.Material3.Dark.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
@@ -354,7 +354,7 @@
         <item name="tintColorBulletPointNeutral">#bbb</item>
     </style>
 
-    <style name="Theme.K9.Dialog.Translucent.Light" parent="Theme.MaterialComponents.Light.Dialog.Bridge">
+    <style name="Theme.K9.Dialog.Translucent.Light" parent="Theme.Material3.Light.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>

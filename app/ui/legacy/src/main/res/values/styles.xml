@@ -83,7 +83,7 @@
         <item name="android:layout_width">match_parent</item>
     </style>
 
-    <style name="Widget.K9.Toolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
+    <style name="Widget.K9.Toolbar" parent="Widget.Material3.Toolbar">
         <item name="android:background">?attr/toolbarColor</item>
         <item name="titleTextColor">?android:attr/textColorPrimary</item>
         <item name="subtitleTextColor">?android:attr/textColorSecondary</item>
@@ -95,7 +95,7 @@
         <item name="actionMenuTextColor">?android:attr/textColorSecondary</item>
     </style>
 
-    <style name="Widget.K9.Button.Snackbar" parent="Widget.MaterialComponents.Button.TextButton.Snackbar">
+    <style name="Widget.K9.Button.Snackbar" parent="Widget.Material3.Button.TextButton.Snackbar">
         <item name="android:textColor">?attr/colorSecondary</item>
     </style>
 
