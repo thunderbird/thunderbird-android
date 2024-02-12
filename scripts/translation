@@ -1,0 +1,3 @@
+#!/bin/sh
+
+./gradlew --quiet ":cli:translation-cli:installDist" < /dev/null && ./cli/translation-cli/build/install/translation-cli/bin/translation-cli "$@"
