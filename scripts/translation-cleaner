@@ -1,0 +1,105 @@
+#!/bin/bash
+
+if ! command -v jq $> /dev/null
+then
+    echo "jq could not be found, please install jq - commandline JSON processor"
+    exit 1
+fi
+
+if [ $# -lt 1 ]
+  then
+    echo "No arguments supplied"
+    echo "Usage: translation-cleaner <weblate-token> [threshold]"
+    exit 1
+fi
+
+# Load languages from weblate
+# $1 - weblate token
+# $2 - weblate project
+load_languages () {
+    local token=$1
+    local project=$2
+
+    curl -s \
+        -H "Authorization: Token $token" \
+        -H "Accept: application/json" \
+        -X GET https://hosted.weblate.org/api/projects/$project/languages/
+}
+
+# Filter not translated languages by threshold
+# $1 - input json
+# $2 - threshold
+filter_not_translated_languages () {
+    local input=$1
+    local threshold=$2
+
+    jq -r '.[] | select(.translated_percent < '"$threshold"').code' "$input"
+}
+
+search_translation_folders () {
+    local languages=$1
+
+    for lang in $languages
+    do
+        find . -type d \
+            -path "*/res/values-$lang" \
+            ! -path "*/build/*" ! -path "*/.git/*" ! -path "*/.idea/*" ! -path "*/.gradle/*"
+    done
+}
+
+# Delete translation folders
+# $1 - folders to delete
+delete_translation_folders () {
+    local folders=$1
+
+    for folder in $folders
+    do
+        echo "Deleting $folder"
+        rm -rf "$folder"
+    done
+}
+
+# Confirm deletion of translation folders
+# $1 - changes to apply
+confirm_delete () {
+    local changes=$1
+
+    if [ -z "$changes" ]; then
+        echo
+        echo "No changes to apply."
+        exit 0
+    fi
+
+    echo
+    echo "The following folders will be deleted:"
+    echo
+    echo "$changes"
+    echo
+    echo "Type in 'YES' to apply changes, otherwise skip."
+    read -r user_input
+    if [ "$user_input" = "YES" ]; then
+        echo
+        echo "Applying changes..."
+        echo
+        delete_translation_folders "$changes"
+    else
+        echo
+        echo "Skipping changes."
+        echo
+    fi
+}
+
+TOKEN=$1
+THRESHOLD=${2:-70}
+
+filtered_languages=$(load_languages "$TOKEN" tb-android | filter_not_translated_languages - "$THRESHOLD")
+echo
+echo "Languages that are below the translation threshold of ($THRESHOLD%):"
+echo
+echo "$filtered_languages"
+echo
+
+echo "Searching for translation folders..."
+searched_language_folders=$(search_translation_folders "$filtered_languages")
+
+confirm_delete "$searched_language_folders"
