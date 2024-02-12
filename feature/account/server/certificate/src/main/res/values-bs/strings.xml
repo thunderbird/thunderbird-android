@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_warning_title">Upozorenje</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Greška sertifikata</string>
+    <string name="account_server_certificate_button_back">Idite nazad (preporučeno)</string>
+    <string name="account_server_certificate_button_advanced">Napredna podešavanja</string>
+    <string name="account_server_certificate_button_continue">Prihvatite rizik i nastavite</string>
+    <string name="account_server_certificate_section_title">Sertifikat servera</string>
+    <string name="account_server_certificate_subject_alternative_names">Alternativna imena subjekta (SAN - Subject alternative names)</string>
+    <string name="account_server_certificate_not_valid_after">Nevažeći poslije</string>
+    <string name="account_server_certificate_subject">Subjekat iz sertifikata servera</string>
+    <string name="account_server_certificate_issuer">Sertifikaciono tijelo</string>
+    <string name="account_server_certificate_fingerprints_section">Fingerprint-i</string>
+    <string name="account_server_certificate_unknown_error_description_format">Aplikacija je detektovala potencijalnu sigurnosnu prijetnju i neće se povezati sa <xliff:g id="serverName">%s</xliff:g>.
+\nAko nastavite, hakeri bi mogli ukrasti vaše informacije kao što su lozinka ili mejlovi.</string>
+    <string name="account_server_certificate_not_valid_before">Nevažeći prije</string>
+</resources>

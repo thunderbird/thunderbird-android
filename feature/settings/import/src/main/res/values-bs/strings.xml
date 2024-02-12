@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_pick_document_button">Odaberi datoteku</string>
+    <string name="settings_import_password_required">Molimo unesite lozinke</string>
+    <string name="settings_import_authorization_required">Molimo prijavite se</string>
+    <string name="settings_import_authorization_and_password_required">Molimo prijavite se i unesite lozinke</string>
+    <string name="settings_import_failure">Uvoz postavki nije uspio</string>
+    <string name="settings_import_read_failure">Čitanje datoteke postavki nije uspjelo</string>
+    <string name="settings_import_status_success">Uspješno uvezeno</string>
+    <string name="settings_import_status_password_required">Lozinka neophodna</string>
+    <string name="settings_import_status_not_imported">Nije uvezeno</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">Da bi bili u mogućnosti da koristite račun \"<xliff:g id="account">%s</xliff:g>\" potrebno je da unesete lozinku.</item>
+        <item quantity="few">Da bi bili u mogućnosti da koristite račun \"<xliff:g id="account">%s</xliff:g>\" potrebno je da unesete lozinke.</item>
+        <item quantity="other">Da bi bili u mogućnosti da koristite račun \"<xliff:g id="account">%s</xliff:g>\" potrebno je da unesete lozinke.</item>
+    </plurals>
+    <string name="settings_import_incoming_server_password_hint">Lozinka dolaznog servera</string>
+    <string name="settings_import_outgoing_server_password_hint">Lozinka odlaznog servera</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Koristi istu loziku za odlazni server</string>
+    <string name="settings_import_server_name_format">Naziv servera: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_oauth_description">Kako bi koristili ovaj mejl račun kroz K-9 Mail, morate se prijaviti i dodijeliti dozvolu aplikaciji da pristupi vašim mejlovima.</string>
+    <string name="settings_import_oauth_sign_in">Prijavite se</string>
+    <string name="settings_import_oauth_sign_in_with_google">Prijavite se pomoću Google-a</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">Autorizacija otkazana</string>
+    <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 trenutno nije podržan od strane ovog provajdera.</string>
+    <string name="settings_import_oauth_error_browser_not_found">Aplikacija nije pronašla pretraživač pomoću kojeg bi dali pristup vašem računu.</string>
+    <string name="settings_import_title">Uvoz postavki</string>
+    <string name="settings_import_button">Uvoz</string>
+    <string name="settings_import_success_generic">Postavke su uspješno uvezene</string>
+    <string name="settings_import_partial_failure">Uvoz nekih postavki nije uspio</string>
+    <string name="settings_import_status_log_in_required">Prijavljivanje neophodno</string>
+    <string name="settings_import_later_button">Kasnije</string>
+    <string name="settings_import_status_error">Uvoz nije uspio</string>
+    <string name="settings_importing">Uvozim postavke…</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Autorizacija neuspješna iz sljedećeg razloga: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_general_settings_item">Opšta podešavanja</string>
+</resources>

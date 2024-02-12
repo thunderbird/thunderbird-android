@@ -4,11 +4,11 @@
     <string name="account_server_validation_error_authentication">Errore di autenticazione</string>
     <string name="account_server_validation_outgoing_loading_message">Controllo impostazioni server in uscita…</string>
     <string name="account_server_validation_error_network">Errore di rete</string>
-    <string name="account_server_validation_outgoing_success">impostazioni server in uscita valide</string>
+    <string name="account_server_validation_outgoing_success">Impostazioni server in uscita verificate</string>
     <string name="account_server_validation_error_unknown">Errore sconosciuto</string>
     <string name="account_server_validation_sign_in">Accedi</string>
     <string name="account_server_validation_outgoing_loading_error">Controllo impostazioni server in uscita non riuscito</string>
-    <string name="account_server_validation_incoming_success">Impostazioni server in arrivo valide</string>
+    <string name="account_server_validation_incoming_success">Impostazioni server in arrivo verificate</string>
     <string name="account_server_validation_incoming_loading_error">Controllo impostazioni server in arrivo non riuscito</string>
     <string name="account_server_validation_error_server">Errore del server</string>
     <string name="account_server_validation_error_missing_server_capability">Funzionalità del server mancante</string>

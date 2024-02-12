@@ -51,4 +51,19 @@
     <string name="account_setup_special_folders_spam_folder_label">Carpeta de spam</string>
     <string name="account_setup_special_folders_form_description_automatic">La entrada \"Automática\" seguirá automáticamente los cambios realizados por el servidor. El valor actual del servidor se muestra entre paréntesis.</string>
     <string name="account_setup_auto_discovery_validation_error_password_required">La contraseña es obligatoria.</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Cada minuto</item>
+        <item quantity="many">Cada %d minutos</item>
+        <item quantity="other">Cada %d minutos</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Cada hora</item>
+        <item quantity="many">Cada %d horas</item>
+        <item quantity="other">Cada %d horas</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">1 mensaje</item>
+        <item quantity="many">%d mensajes</item>
+        <item quantity="other">%d mensajes</item>
+    </plurals>
 </resources>

@@ -10,4 +10,6 @@
     <string name="account_server_certificate_button_advanced">Avanzato</string>
     <string name="account_server_certificate_subject">Soggetto</string>
     <string name="account_server_certificate_subject_alternative_names">Suggerisci nomi alternativi</string>
+    <string name="account_server_certificate_not_valid_before">Non valido prima</string>
+    <string name="account_server_certificate_not_valid_after">Non valido dopo</string>
 </resources>

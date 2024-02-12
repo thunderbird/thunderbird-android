@@ -27,7 +27,7 @@
     <string name="account_setup_error_network">ネットワーク</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">有効なメールアドレスとして認識されませんでした。</string>
     <string name="account_setup_options_email_check_frequency_never">確認しない</string>
-    <string name="account_setup_auto_discovery_loading_message">メールの詳細を確認中</string>
+    <string name="account_setup_auto_discovery_loading_message">メールの設定を確認中…</string>
     <string name="account_setup_options_section_sync_options">同期設定</string>
     <string name="account_setup_options_show_notifications_label">通知を表示する</string>
     <string name="account_setup_options_section_display_options">表示設定</string>
@@ -50,4 +50,14 @@
     <string name="account_setup_special_folders_archive_folder_label">アーカイブフォルダー</string>
     <string name="account_setup_special_folders_spam_folder_label">迷惑メールフォルダー</string>
     <string name="account_setup_special_folders_form_description_automatic">「自動」を設定すると、サーバーで設定が変更されても自動的に追従します。現在、サーバーに設定された値が括弧内に表示されています。</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="other">%d 分ごと</item>
+    </plurals>
+    <string name="account_setup_auto_discovery_validation_error_password_required">パスワードが必要です。</string>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="other">%d 時間ごと</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="other">メッセージ %d 通</item>
+    </plurals>
 </resources>

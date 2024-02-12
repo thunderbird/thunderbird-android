@@ -1,2 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">Адрес электронной почты обязателен.</string>
+    <string name="account_setup_special_folders_form_description_automatic">Запись \"Автоматически\" будет автоматически следовать за изменениями, вносимыми сервером. Текущее значение сервера отображается в круглых скобках.</string>
+    <string name="account_setup_special_folders_top_bar_title">Специальные папки</string>
+    <string name="account_setup_special_folders_form_description">Укажите специальные папки для вашей учетной записи.</string>
+    <string name="account_setup_special_folders_archive_folder_label">Папка архивные</string>
+    <string name="account_setup_options_top_bar_title">Параметры учетной записи</string>
+    <string name="account_setup_options_display_name_label">Отображённое имя</string>
+    <string name="account_setup_options_email_signature_label">Подпись электронной почты</string>
+    <string name="account_setup_options_email_signature_error_blank">Имя подписи электронной почты не может быть пустым.</string>
+    <string name="account_setup_options_show_notifications_label">Показывать уведомления</string>
+    <string name="account_setup_create_account_error">При попытке создать учетную запись произошла ошибка</string>
+    <string name="account_setup_options_account_check_frequency_label">Частота проверки</string>
+    <string name="account_setup_options_email_check_frequency_never">Никогда</string>
+    <string name="account_setup_options_email_display_count_label">Число отображенных сообщений</string>
+    <string name="account_setup_create_account_creating">Создание учетной записи…</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Требуется пароль.</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Настроить вручную</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Изменить настройки</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Я доверяю этим настройкам</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Необходимо подтвердить настройки.</string>
+    <string name="account_setup_special_folders_loading_message">Получение списка папок…</string>
+    <string name="account_setup_special_folders_error_message">Не удалось получить список папок с сервера</string>
+    <string name="account_setup_special_folders_success_message">Все специальные папки были настроены сервером автоматически.</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Папка черновики</string>
+    <string name="account_setup_options_account_name_label">Название учетной записи</string>
+    <string name="account_setup_special_folders_sent_folder_label">Папка отправленные</string>
+    <string name="account_setup_special_folders_spam_folder_label">Папка спам</string>
+    <string name="account_setup_special_folders_trash_folder_label">Папка корзина</string>
+    <string name="account_setup_special_folders_folder_none">Ничего</string>
+    <string name="account_setup_special_folders_folder_automatic">Автоматически (%s)</string>
+    <string name="account_setup_options_section_display_options">Отобразить параметры</string>
+    <string name="account_setup_options_section_sync_options">Параметры синхронизации</string>
+    <string name="account_setup_options_account_name_error_blank">Имя учетной записи не может быть пустым.</string>
+    <string name="account_setup_create_account_created">Учетная запись успешно создана</string>
+    <string name="account_setup_options_display_name_error_required">Необходимо указать ваше имя.</string>
+    <string name="account_setup_title">K-9 Mail</string>
+    <string name="account_setup_button_finish">Завершить</string>
+    <string name="account_setup_error_network">Сеть</string>
+    <string name="account_setup_error_unknown">Неизвестная ошибка</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_loading_error">Не удалось загрузить настройки электронной почты</string>
+    <string name="account_setup_auto_discovery_loading_message">Поиск настроек…</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Настройки найдены</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Не удалось найти настройки</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Эти настройки не являются доверенными</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Этот адрес электронной почты недопустим.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Этот адрес электронной почты не поддерживается.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Этот адрес электронной почты не распознан как действительный.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Настроить автоматически</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Каждую %d минуту</item>
+        <item quantity="few">Каждые %d минуты</item>
+        <item quantity="many">Каждые %d минут</item>
+        <item quantity="other">Каждые %d минут</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Каждый %d час</item>
+        <item quantity="few">Каждые %d часа</item>
+        <item quantity="many">Каждые %d часов</item>
+        <item quantity="other">Каждые %d часов</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">%d сообщение</item>
+        <item quantity="few">%d сообщения</item>
+        <item quantity="many">%d сообщений</item>
+        <item quantity="other">%d сообщений</item>
+    </plurals>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Полученные настройки для вашего сервера электронной почты через соединение оказалось ненадежным. Это означает, что есть риск того, что кто-то мог изменить настройки. Пожалуйста, убедитесь что предоставленные настройки правильные, и повторите попытку.</string>
+</resources>
