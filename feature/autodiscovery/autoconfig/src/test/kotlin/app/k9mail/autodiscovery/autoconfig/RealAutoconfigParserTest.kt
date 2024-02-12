@@ -12,6 +12,7 @@ import app.k9mail.core.common.mail.toUserEmailAddress
 import app.k9mail.core.common.net.toHostname
 import app.k9mail.core.common.net.toPort
 import assertk.assertThat
+import assertk.assertions.containsExactly
 import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
@@ -55,6 +56,30 @@ class RealAutoconfigParserTest {
         </clientConfig>
         """.trimIndent()
 
+    @Language("XML")
+    private val additionalIncomingServer =
+        """
+        <incomingServer type="imap">
+          <hostname>imap.domain.example</hostname>
+          <port>143</port>
+          <socketType>STARTTLS</socketType>
+          <authentication>password-cleartext</authentication>
+          <username>%EMAILADDRESS%</username>
+        </incomingServer>
+        """.trimIndent()
+
+    @Language("XML")
+    private val additionalOutgoingServer =
+        """
+        <outgoingServer type="smtp">
+          <hostname>smtp.domain.example</hostname>
+          <port>465</port>
+          <socketType>SSL</socketType>
+          <authentication>password-cleartext</authentication>
+          <username>%EMAILADDRESS%</username>
+        </outgoingServer>
+        """.trimIndent()
+
     private val irrelevantEmailAddress = "irrelevant@domain.example".toUserEmailAddress()
 
     @Test
@@ -65,19 +90,23 @@ class RealAutoconfigParserTest {
 
         assertThat(result).isNotNull().isEqualTo(
             Settings(
-                ImapServerSettings(
-                    hostname = "imap.domain.example".toHostname(),
-                    port = 993.toPort(),
-                    connectionSecurity = TLS,
-                    authenticationTypes = listOf(PasswordCleartext),
-                    username = "user@domain.example",
+                incomingServerSettings = listOf(
+                    ImapServerSettings(
+                        hostname = "imap.domain.example".toHostname(),
+                        port = 993.toPort(),
+                        connectionSecurity = TLS,
+                        authenticationTypes = listOf(PasswordCleartext),
+                        username = "user@domain.example",
+                    ),
                 ),
-                SmtpServerSettings(
-                    hostname = "smtp.domain.example".toHostname(),
-                    port = 587.toPort(),
-                    connectionSecurity = StartTLS,
-                    authenticationTypes = listOf(PasswordCleartext),
-                    username = "user@domain.example",
+                outgoingServerSettings = listOf(
+                    SmtpServerSettings(
+                        hostname = "smtp.domain.example".toHostname(),
+                        port = 587.toPort(),
+                        connectionSecurity = StartTLS,
+                        authenticationTypes = listOf(PasswordCleartext),
+                        username = "user@domain.example",
+                    ),
                 ),
             ),
         )
@@ -91,19 +120,70 @@ class RealAutoconfigParserTest {
 
         assertThat(result).isNotNull().isEqualTo(
             Settings(
-                ImapServerSettings(
-                    hostname = "imap.gmail.com".toHostname(),
-                    port = 993.toPort(),
-                    connectionSecurity = TLS,
-                    authenticationTypes = listOf(OAuth2, PasswordCleartext),
-                    username = "test@gmail.com",
+                incomingServerSettings = listOf(
+                    ImapServerSettings(
+                        hostname = "imap.gmail.com".toHostname(),
+                        port = 993.toPort(),
+                        connectionSecurity = TLS,
+                        authenticationTypes = listOf(OAuth2, PasswordCleartext),
+                        username = "test@gmail.com",
+                    ),
                 ),
-                SmtpServerSettings(
-                    hostname = "smtp.gmail.com".toHostname(),
-                    port = 465.toPort(),
-                    connectionSecurity = TLS,
-                    authenticationTypes = listOf(OAuth2, PasswordCleartext),
-                    username = "test@gmail.com",
+                outgoingServerSettings = listOf(
+                    SmtpServerSettings(
+                        hostname = "smtp.gmail.com".toHostname(),
+                        port = 465.toPort(),
+                        connectionSecurity = TLS,
+                        authenticationTypes = listOf(OAuth2, PasswordCleartext),
+                        username = "test@gmail.com",
+                    ),
+                ),
+            ),
+        )
+    }
+
+    @Test
+    fun `multiple incomingServer and outgoingServer elements`() {
+        val inputStream = minimalConfig.withModifications {
+            element("incomingServer").insertBefore(additionalIncomingServer)
+            element("outgoingServer").insertBefore(additionalOutgoingServer)
+        }
+
+        val result = parser.parseSettings(inputStream, email = "user@domain.example".toUserEmailAddress())
+
+        assertThat(result).isNotNull().isEqualTo(
+            Settings(
+                incomingServerSettings = listOf(
+                    ImapServerSettings(
+                        hostname = "imap.domain.example".toHostname(),
+                        port = 143.toPort(),
+                        connectionSecurity = StartTLS,
+                        authenticationTypes = listOf(PasswordCleartext),
+                        username = "user@domain.example",
+                    ),
+                    ImapServerSettings(
+                        hostname = "imap.domain.example".toHostname(),
+                        port = 993.toPort(),
+                        connectionSecurity = TLS,
+                        authenticationTypes = listOf(PasswordCleartext),
+                        username = "user@domain.example",
+                    ),
+                ),
+                outgoingServerSettings = listOf(
+                    SmtpServerSettings(
+                        hostname = "smtp.domain.example".toHostname(),
+                        port = 465.toPort(),
+                        connectionSecurity = TLS,
+                        authenticationTypes = listOf(PasswordCleartext),
+                        username = "user@domain.example",
+                    ),
+                    SmtpServerSettings(
+                        hostname = "smtp.domain.example".toHostname(),
+                        port = 587.toPort(),
+                        connectionSecurity = StartTLS,
+                        authenticationTypes = listOf(PasswordCleartext),
+                        username = "user@domain.example",
+                    ),
                 ),
             ),
         )
@@ -122,19 +202,23 @@ class RealAutoconfigParserTest {
 
         assertThat(result).isNotNull().isEqualTo(
             Settings(
-                ImapServerSettings(
-                    hostname = "user.domain.example".toHostname(),
-                    port = 993.toPort(),
-                    connectionSecurity = TLS,
-                    authenticationTypes = listOf(PasswordCleartext),
-                    username = "user@domain.example",
+                incomingServerSettings = listOf(
+                    ImapServerSettings(
+                        hostname = "user.domain.example".toHostname(),
+                        port = 993.toPort(),
+                        connectionSecurity = TLS,
+                        authenticationTypes = listOf(PasswordCleartext),
+                        username = "user@domain.example",
+                    ),
                 ),
-                SmtpServerSettings(
-                    hostname = "user.outgoing.domain.example".toHostname(),
-                    port = 587.toPort(),
-                    connectionSecurity = StartTLS,
-                    authenticationTypes = listOf(PasswordCleartext),
-                    username = "domain.example",
+                outgoingServerSettings = listOf(
+                    SmtpServerSettings(
+                        hostname = "user.outgoing.domain.example".toHostname(),
+                        port = 587.toPort(),
+                        connectionSecurity = StartTLS,
+                        authenticationTypes = listOf(PasswordCleartext),
+                        username = "domain.example",
+                    ),
                 ),
             ),
         )
@@ -153,7 +237,7 @@ class RealAutoconfigParserTest {
         val result = parser.parseSettings(inputStream, email = "user@domain.example".toUserEmailAddress())
 
         assertThat(result).isInstanceOf<Settings>()
-            .prop(Settings::incomingServerSettings).isEqualTo(
+            .prop(Settings::incomingServerSettings).containsExactly(
                 ImapServerSettings(
                     hostname = "imap.domain.example".toHostname(),
                     port = 993.toPort(),
@@ -173,7 +257,7 @@ class RealAutoconfigParserTest {
         val result = parser.parseSettings(inputStream, email = "user@domain.example".toUserEmailAddress())
 
         assertThat(result).isInstanceOf<Settings>()
-            .prop(Settings::incomingServerSettings).isEqualTo(
+            .prop(Settings::incomingServerSettings).containsExactly(
                 ImapServerSettings(
                     hostname = "imap.domain.example".toHostname(),
                     port = 993.toPort(),
@@ -193,7 +277,7 @@ class RealAutoconfigParserTest {
         val result = parser.parseSettings(inputStream, email = "user@domain.example".toUserEmailAddress())
 
         assertThat(result).isInstanceOf<Settings>()
-            .prop(Settings::outgoingServerSettings).isEqualTo(
+            .prop(Settings::outgoingServerSettings).containsExactly(
                 SmtpServerSettings(
                     hostname = "smtp.domain.example".toHostname(),
                     port = 587.toPort(),
@@ -213,7 +297,7 @@ class RealAutoconfigParserTest {
         val result = parser.parseSettings(inputStream, email = "user@domain.example".toUserEmailAddress())
 
         assertThat(result).isInstanceOf<Settings>()
-            .prop(Settings::incomingServerSettings).isEqualTo(
+            .prop(Settings::incomingServerSettings).containsExactly(
                 ImapServerSettings(
                     hostname = "imap.domain.example".toHostname(),
                     port = 993.toPort(),
@@ -281,7 +365,7 @@ class RealAutoconfigParserTest {
         val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
 
         assertThat(result).isInstanceOf<ParserError>()
-            .prop(ParserError::error).hasMessage("Missing 'incomingServer' element")
+            .prop(ParserError::error).hasMessage("No supported 'incomingServer' element found")
     }
 
     @Test
@@ -293,7 +377,7 @@ class RealAutoconfigParserTest {
         val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
 
         assertThat(result).isInstanceOf<ParserError>()
-            .prop(ParserError::error).hasMessage("Missing 'outgoingServer' element")
+            .prop(ParserError::error).hasMessage("No supported 'outgoingServer' element found")
     }
 
     @Test
@@ -440,7 +524,7 @@ class RealAutoconfigParserTest {
         val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
 
         assertThat(result).isInstanceOf<ParserError>()
-            .prop(ParserError::error).hasMessage("Missing 'incomingServer' element")
+            .prop(ParserError::error).hasMessage("No supported 'incomingServer' element found")
     }
 
     @Test
@@ -455,7 +539,7 @@ class RealAutoconfigParserTest {
         val result = parser.parseSettings(inputStream, irrelevantEmailAddress)
 
         assertThat(result).isInstanceOf<ParserError>()
-            .prop(ParserError::error).hasMessage("Missing 'outgoingServer' element")
+            .prop(ParserError::error).hasMessage("No supported 'outgoingServer' element found")
     }
 
     @Test

@@ -11,9 +11,14 @@ internal sealed interface AutoconfigParserResult {
      * Server settings extracted from the Autoconfig XML.
      */
     data class Settings(
-        val incomingServerSettings: IncomingServerSettings,
-        val outgoingServerSettings: OutgoingServerSettings,
-    ) : AutoconfigParserResult
+        val incomingServerSettings: List<IncomingServerSettings>,
+        val outgoingServerSettings: List<OutgoingServerSettings>,
+    ) : AutoconfigParserResult {
+        init {
+            require(incomingServerSettings.isNotEmpty())
+            require(outgoingServerSettings.isNotEmpty())
+        }
+    }
 
     /**
      * Server settings couldn't be extracted.

@@ -38,8 +38,8 @@ internal class RealAutoconfigFetcher(
                 return when (val parserResult = parser.parseSettings(inputStream, email)) {
                     is Settings -> {
                         AutoDiscoveryResult.Settings(
-                            incomingServerSettings = parserResult.incomingServerSettings,
-                            outgoingServerSettings = parserResult.outgoingServerSettings,
+                            incomingServerSettings = parserResult.incomingServerSettings.first(),
+                            outgoingServerSettings = parserResult.outgoingServerSettings.first(),
                             isTrusted = fetchResult.isTrusted,
                             source = autoconfigUrl.toString(),
                         )
