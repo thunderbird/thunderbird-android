@@ -61,15 +61,12 @@
         // Legacy styles
         <item name="windowActionModeOverlay">true</item>
 
-        <item name="toolbarColor">@color/material_gray_100</item>
-
         <item name="messageHeaderBackground">@color/material_gray_200</item>
         <item name="extraMessageHeaderBackground">@color/material_gray_100</item>
         <item name="bottomBarBackground">@color/material_gray_50</item>
         <item name="floatingActionButtonBackgroundColor">?attr/colorPrimary</item>
         <item name="floatingActionButtonForegroundColor">?attr/colorOnPrimary</item>
 
-        <item name="toolbarStyle">@style/Widget.K9.Toolbar</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="textInputStyle">?attr/textInputOutlinedStyle</item>
 
@@ -270,8 +267,6 @@
 
         // Legacy styles
         <item name="windowActionModeOverlay">true</item>
-        <item name="android:navigationBarColor">#000000</item>
-        <item name="toolbarColor">@color/material_gray_900</item>
 
         <item name="messageHeaderBackground">@color/material_gray_900</item>
         <item name="extraMessageHeaderBackground">@color/material_gray_900</item>
@@ -279,7 +274,6 @@
         <item name="floatingActionButtonBackgroundColor">?attr/colorPrimary</item>
         <item name="floatingActionButtonForegroundColor">?attr/colorOnPrimary</item>
 
-        <item name="toolbarStyle">@style/Widget.K9.Toolbar</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="textInputStyle">?attr/textInputOutlinedStyle</item>
 

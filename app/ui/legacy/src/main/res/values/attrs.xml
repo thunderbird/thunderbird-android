@@ -2,7 +2,6 @@
 <resources>
 
     <declare-styleable name="K9Styles">
-        <attr name="toolbarColor" format="reference|color" />
         <attr name="messageHeaderBackground" format="reference|color" />
         <attr name="extraMessageHeaderBackground" format="reference|color" />
         <attr name="floatingActionButtonBackgroundColor" format="reference|color" />
