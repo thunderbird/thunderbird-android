@@ -1,6 +1,8 @@
 package app.k9mail.feature.account.setup
 
+import app.k9mail.autodiscovery.api.AutoDiscoveryRegistry
 import app.k9mail.autodiscovery.api.AutoDiscoveryService
+import app.k9mail.autodiscovery.service.RealAutoDiscoveryRegistry
 import app.k9mail.autodiscovery.service.RealAutoDiscoveryService
 import app.k9mail.feature.account.common.featureAccountCommonModule
 import app.k9mail.feature.account.oauth.featureAccountOAuthModule
@@ -42,9 +44,15 @@ val featureAccountSetupModule: Module = module {
         OkHttpClient()
     }
 
+    single<AutoDiscoveryRegistry> {
+        RealAutoDiscoveryRegistry.createDefault(
+            okHttpClient = get(),
+        )
+    }
+
     single<AutoDiscoveryService> {
         RealAutoDiscoveryService(
-            okHttpClient = get(),
+            autoDiscoveryRegistry = get(),
         )
     }
 
