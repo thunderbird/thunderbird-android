@@ -64,8 +64,6 @@
         <item name="messageHeaderBackground">@color/material_gray_200</item>
         <item name="extraMessageHeaderBackground">@color/material_gray_100</item>
         <item name="bottomBarBackground">@color/material_gray_50</item>
-        <item name="floatingActionButtonBackgroundColor">?attr/colorPrimary</item>
-        <item name="floatingActionButtonForegroundColor">?attr/colorOnPrimary</item>
 
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="textInputStyle">?attr/textInputOutlinedStyle</item>
@@ -271,8 +269,6 @@
         <item name="messageHeaderBackground">@color/material_gray_900</item>
         <item name="extraMessageHeaderBackground">@color/material_gray_900</item>
         <item name="bottomBarBackground">@color/material_gray_900</item>
-        <item name="floatingActionButtonBackgroundColor">?attr/colorPrimary</item>
-        <item name="floatingActionButtonForegroundColor">?attr/colorOnPrimary</item>
 
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="textInputStyle">?attr/textInputOutlinedStyle</item>
