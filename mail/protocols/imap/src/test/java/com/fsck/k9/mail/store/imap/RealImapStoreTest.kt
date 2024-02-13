@@ -1,11 +1,8 @@
 package com.fsck.k9.mail.store.imap
 
-import assertk.all
 import assertk.assertFailure
 import assertk.assertThat
-import assertk.assertions.cause
 import assertk.assertions.containsExactly
-import assertk.assertions.hasMessage
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.isSameInstanceAs
@@ -44,18 +41,16 @@ class RealImapStoreTest {
     }
 
     @Test
-    fun `checkSettings() with open throwing should throw MessagingException`() {
+    fun `checkSettings() with open throwing an IOException should pass it through`() {
+        val ioException = IOException()
         val imapConnection = createMockConnection().stub {
-            on { open() } doThrow IOException::class
+            on { open() } doThrow ioException
         }
         imapStore.enqueueImapConnection(imapConnection)
 
         assertFailure {
             imapStore.checkSettings()
-        }.isInstanceOf<MessagingException>().all {
-            hasMessage("Unable to connect")
-            cause().isNotNull().isInstanceOf<IOException>()
-        }
+        }.isSameInstanceAs(ioException)
     }
 
     @Test
