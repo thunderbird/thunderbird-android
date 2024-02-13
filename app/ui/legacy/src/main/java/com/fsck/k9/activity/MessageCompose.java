@@ -372,8 +372,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             relatedMessageProcessed = savedInstanceState.getBoolean(STATE_KEY_SOURCE_MESSAGE_PROCED, false);
         }
 
-
-        if (initFromIntent(intent)) {
+        boolean startedByExternalIntent = initFromIntent(intent);
+        if (startedByExternalIntent) {
             action = Action.COMPOSE;
             changesMadeSinceLastSave = true;
         } else {
@@ -452,6 +452,13 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 action == Action.EDIT_DRAFT) {
             //change focus to message body.
             messageContentView.requestFocus();
+        } else if (startedByExternalIntent) {
+            // If started by external intent, focus "Subject" or content field (Issue #7618)
+            if (subjectView.getText().length() == 0) {
+                subjectView.requestFocus();
+            } else {
+                messageContentView.requestFocus();
+            }
         } else {
             // Explicitly set focus to "To:" input field (see issue 2998)
             recipientMvpView.requestFocusOnToField();
