@@ -1,0 +1,5 @@
+- Small bug fixes and UI/UX polish in account setup
+- Fixed a crash caused by an interaction with OpenKeychain 6.0.0
+- Focus on subject or body input fields when opening the compose screen via a mailto: URI
+- Removed Hebrew and Korean translations because less than 70% of strings were translated. Volunteers to update the translations are always welcome!
+- Updated remaining translations
