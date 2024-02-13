@@ -42,7 +42,7 @@ android {
             listOf(
                 "in", "br", "ca", "cs", "cy", "da", "de", "et", "en", "en_GB", "es", "eo", "eu", "fr", "gd", "gl",
                 "hr", "is", "it", "lv", "lt", "hu", "nl", "nb", "pl", "pt_PT", "pt_BR", "ru", "ro", "sq", "sk", "sl",
-                "fi", "sv", "tr", "el", "be", "bg", "sr", "uk", "iw", "ar", "fa", "ml", "ko", "zh_CN", "zh_TW", "ja",
+                "fi", "sv", "tr", "el", "be", "bg", "sr", "uk", "ar", "fa", "ml", "zh_CN", "zh_TW", "ja",
                 "fy",
             ),
         )
