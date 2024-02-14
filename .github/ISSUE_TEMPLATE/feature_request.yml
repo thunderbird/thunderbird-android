@@ -1,6 +1,6 @@
 name: Feature request
 description: Suggest an idea for K-9 Mail
-labels: [ "enhancement", "unconfirmed" ]
+labels: [ "type: enhancement", "unconfirmed" ]
 body:
   - type: checkboxes
     id: checklist
