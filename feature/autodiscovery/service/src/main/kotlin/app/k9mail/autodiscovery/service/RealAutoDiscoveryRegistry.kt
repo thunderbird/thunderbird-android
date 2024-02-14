@@ -29,10 +29,10 @@ class RealAutoDiscoveryRegistry(
                     okHttpClient = okHttpClient,
                     config = autoconfigUrlConfig,
                 ),
-                createMxLookupAutoconfigDiscovery(
+                createIspDbAutoconfigDiscovery(
                     okHttpClient = okHttpClient,
                 ),
-                createIspDbAutoconfigDiscovery(
+                createMxLookupAutoconfigDiscovery(
                     okHttpClient = okHttpClient,
                 ),
             ),
