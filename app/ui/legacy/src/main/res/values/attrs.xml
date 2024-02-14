@@ -131,8 +131,6 @@
         <attr name="openpgp_blue" format="reference|color" />
         <attr name="openpgp_grey" format="reference|color" />
         <attr name="openpgp_dark_grey" format="reference|color" />
-
-        <attr name="behindRecyclerView" format="reference|color" />
     </declare-styleable>
 
     <declare-styleable name="FoldableLinearLayout">

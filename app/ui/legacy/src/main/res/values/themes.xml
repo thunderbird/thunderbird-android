@@ -198,7 +198,6 @@
 
         <item name="materialDrawerStyle">@style/Widget.MaterialDrawerStyle.K9.Light</item>
         <item name="materialDrawerHeaderStyle">@style/Widget.MaterialDrawerHeaderStyle.K9.Light</item>
-        <item name="behindRecyclerView">#F0F0F0</item>
 
         <item name="snackbarButtonStyle">@style/Widget.K9.Button.Snackbar</item>
     </style>
@@ -402,8 +401,6 @@
 
         <item name="materialDrawerStyle">@style/Widget.MaterialDrawerStyle.K9.Dark</item>
         <item name="materialDrawerHeaderStyle">@style/Widget.MaterialDrawerHeaderStyle.K9.Dark</item>
-
-        <item name="behindRecyclerView">#202020</item>
 
         <item name="snackbarButtonStyle">@style/Widget.K9.Button.Snackbar</item>
     </style>
