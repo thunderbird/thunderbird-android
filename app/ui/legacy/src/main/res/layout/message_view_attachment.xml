@@ -17,7 +17,6 @@
         android:orientation="vertical"
         android:focusable="true"
         android:clickable="true"
-        app:cardBackgroundColor="?attr/attachmentCardBackground"
         app:cardElevation="1dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout

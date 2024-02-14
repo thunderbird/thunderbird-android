@@ -58,7 +58,8 @@
         <item name="colorErrorContainer">@color/k9_error_090</item>
         <item name="colorOnErrorContainer">@color/k9_error_010</item>
 
-        // Legacy styles
+        <!-- Legacy styles -->
+
         <item name="windowActionModeOverlay">true</item>
 
         <item name="messageHeaderBackground">@color/material_gray_200</item>
@@ -123,8 +124,10 @@
         <item name="iconSettingsExport">@drawable/ic_export</item>
         <item name="iconSettingsImport">@drawable/ic_import</item>
         <item name="iconSettingsImportStatus">@drawable/ic_import_status</item>
+
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_light</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_light</item>
+
         <item name="messageListSelectedCheckMarkColor">?attr/colorSecondary</item>
         <item name="messageListSelectedBackgroundColor">?attr/colorSecondaryVariant</item>
         <item name="messageListSelectedBackgroundAlphaFraction">33%</item>
@@ -168,7 +171,6 @@
         <item name="messageStarColor">#fbbc04</item>
         <item name="messageDetailsAddContactIcon">@drawable/ic_person_add</item>
         <item name="messageDetailsDividerColor">#ffcccccc</item>
-        <item name="attachmentCardBackground">#e8e8e8</item>
         <item name="contactPictureFallbackDefaultBackgroundColor">#ffababab</item>
         <item name="contactPictureFallbackBackgroundColors">@array/contact_picture_fallback_background_colors_light</item>
         <item name="contactTokenBackgroundColor">#ccc</item>
@@ -259,8 +261,8 @@
         <item name="colorErrorContainer">@color/k9_error_030</item>
         <item name="colorOnErrorContainer">@color/k9_error_090</item>
 
+        <!-- Legacy styles -->
 
-        // Legacy styles
         <item name="windowActionModeOverlay">true</item>
 
         <item name="messageHeaderBackground">@color/material_gray_900</item>
@@ -326,6 +328,7 @@
         <item name="iconSettingsExport">@drawable/ic_export</item>
         <item name="iconSettingsImport">@drawable/ic_import</item>
         <item name="iconSettingsImportStatus">@drawable/ic_import_status</item>
+
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_dark</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_dark</item>
         <item name="messageListSelectedCheckMarkColor">?attr/colorSecondary</item>
@@ -371,7 +374,6 @@
         <item name="messageStarColor">#fdd663</item>
         <item name="messageDetailsAddContactIcon">@drawable/ic_person_add</item>
         <item name="messageDetailsDividerColor">#ff555555</item>
-        <item name="attachmentCardBackground">#313131</item>
         <item name="contactTokenBackgroundColor">#313131</item>
         <item name="contactPictureFallbackDefaultBackgroundColor">#ff606060</item>
         <item name="contactPictureFallbackBackgroundColors">@array/contact_picture_fallback_background_colors_dark</item>
