@@ -11,7 +11,7 @@ interface SyncOptionsContract {
     data class State(
         val checkFrequency: EmailCheckFrequency = EmailCheckFrequency.DEFAULT,
         val messageDisplayCount: EmailDisplayCount = EmailDisplayCount.DEFAULT,
-        val showNotification: Boolean = false,
+        val showNotification: Boolean = true,
     )
 
     sealed interface Event {
