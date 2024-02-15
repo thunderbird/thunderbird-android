@@ -24,7 +24,7 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
     private var currentUiState: GeneralSettingsUiState? = null
     private var snackbar: Snackbar? = null
 
-    private val exportLogsResultContract = registerForActivityResult(CreateDocument()) { contentUri ->
+    private val exportLogsResultContract = registerForActivityResult(CreateDocument("text/plain")) { contentUri ->
         if (contentUri != null) {
             viewModel.exportLogs(contentUri)
         }
