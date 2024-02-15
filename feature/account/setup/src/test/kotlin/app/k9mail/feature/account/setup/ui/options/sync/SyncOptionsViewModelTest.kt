@@ -56,8 +56,8 @@ class SyncOptionsViewModelTest {
         eventStateTest(
             viewModel = testSubject,
             initialState = State(),
-            event = Event.OnShowNotificationChanged(true),
-            expectedState = State(showNotification = true),
+            event = Event.OnShowNotificationChanged(false),
+            expectedState = State(showNotification = false),
             coroutineScope = backgroundScope,
         )
     }

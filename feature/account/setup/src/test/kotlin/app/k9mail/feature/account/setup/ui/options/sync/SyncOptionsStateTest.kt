@@ -17,7 +17,7 @@ class SyncOptionsStateTest {
             State(
                 checkFrequency = EmailCheckFrequency.DEFAULT,
                 messageDisplayCount = EmailDisplayCount.DEFAULT,
-                showNotification = false,
+                showNotification = true,
             ),
         )
     }
