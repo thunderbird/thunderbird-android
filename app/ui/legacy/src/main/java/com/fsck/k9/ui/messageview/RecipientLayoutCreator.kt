@@ -1,5 +1,8 @@
 package com.fsck.k9.ui.messageview
 
+import android.text.SpannableStringBuilder
+import androidx.core.text.toSpanned
+
 private const val LIST_SEPARATOR = ", "
 
 /**
@@ -11,16 +14,25 @@ private const val LIST_SEPARATOR = ", "
  *   to me, Alice, Bob, Charly, Dora +11
  *
  * If there's not enough room to display the first recipient name, we return it anyway and expect the component that is
- * actually rendering the text to ellipsize [RecipientLayoutData.recipientNames], but not
+ * actually rendering the text to ellipsize [RecipientLayoutData.recipientList], but not
  * [RecipientLayoutData.additionalRecipients].
  */
 internal class RecipientLayoutCreator(
     private val textMeasure: TextMeasure,
     private val maxNumberOfRecipientNames: Int,
-    private val recipientsFormat: String,
+    recipientsFormat: String,
     private val additionalRecipientSpacing: Int,
     private val additionalRecipientsPrefix: String,
 ) {
+    private val recipientsPrefix: String
+    private val recipientsSuffix: String
+
+    init {
+        require(recipientsFormat.contains("%s")) { "recipientFormat must contain '%s'" }
+        recipientsPrefix = recipientsFormat.substringBefore("%s")
+        recipientsSuffix = recipientsFormat.substringAfter("%s")
+    }
+
     fun createRecipientLayout(
         recipientNames: List<CharSequence>,
         totalNumberOfRecipients: Int,
@@ -30,7 +42,7 @@ internal class RecipientLayoutCreator(
 
         if (recipientNames.size == 1) {
             return RecipientLayoutData(
-                recipientNames = recipientsFormat.format(recipientNames.first()),
+                recipientList = createRecipientList(recipientNames),
                 additionalRecipients = null,
             )
         }
@@ -39,11 +51,7 @@ internal class RecipientLayoutCreator(
 
         val maxRecipientNames = recipientNames.size.coerceAtMost(maxNumberOfRecipientNames)
         for (numberOfDisplayRecipients in maxRecipientNames downTo 2) {
-            val recipientNamesString = recipientNames.asSequence()
-                .take(numberOfDisplayRecipients)
-                .joinToString(separator = LIST_SEPARATOR)
-
-            val displayRecipients = recipientsFormat.format(recipientNamesString)
+            val recipientList = createRecipientList(recipientNames.take(numberOfDisplayRecipients))
 
             additionalRecipientsBuilder.setLength(0)
             val numberOfAdditionalRecipients = totalNumberOfRecipients - numberOfDisplayRecipients
@@ -52,36 +60,47 @@ internal class RecipientLayoutCreator(
                 additionalRecipientsBuilder.append(numberOfAdditionalRecipients)
             }
 
-            if (doesTextFitAvailableWidth(displayRecipients, additionalRecipientsBuilder, availableWidth)) {
+            if (doesTextFitAvailableWidth(recipientList, additionalRecipientsBuilder, availableWidth)) {
                 return RecipientLayoutData(
-                    recipientNames = displayRecipients,
+                    recipientList = recipientList,
                     additionalRecipients = additionalRecipientsBuilder.toStringOrNull(),
                 )
             }
         }
 
         return RecipientLayoutData(
-            recipientNames = recipientsFormat.format(recipientNames.first()),
+            recipientList = createRecipientList(recipientNames.take(1)),
             additionalRecipients = "$additionalRecipientsPrefix${totalNumberOfRecipients - 1}",
         )
     }
 
     private fun doesTextFitAvailableWidth(
-        displayRecipients: CharSequence,
+        recipientList: CharSequence,
         additionalRecipients: CharSequence,
         availableWidth: Int,
     ): Boolean {
-        val recipientNamesWidth = textMeasure.measureRecipientNames(displayRecipients)
-        if (recipientNamesWidth > availableWidth) {
+        val recipientListWidth = textMeasure.measureRecipientNames(recipientList)
+        if (recipientListWidth > availableWidth) {
             return false
-        } else if (additionalRecipients.isEmpty()) {
-            return true
         }
 
-        val totalWidth = recipientNamesWidth + additionalRecipientSpacing +
-            textMeasure.measureRecipientCount(additionalRecipients)
+        return if (additionalRecipients.isEmpty()) {
+            true
+        } else {
+            val totalWidth = recipientListWidth + additionalRecipientSpacing +
+                textMeasure.measureRecipientCount(additionalRecipients)
 
-        return totalWidth <= availableWidth
+            totalWidth <= availableWidth
+        }
+    }
+
+    private fun createRecipientList(recipientNames: List<CharSequence>): CharSequence {
+        return recipientNames.joinTo(
+            buffer = SpannableStringBuilder(),
+            separator = LIST_SEPARATOR,
+            prefix = recipientsPrefix,
+            postfix = recipientsSuffix,
+        ).toSpanned()
     }
 }
 
@@ -90,7 +109,7 @@ private fun StringBuilder.toStringOrNull(): String? {
 }
 
 internal data class RecipientLayoutData(
-    val recipientNames: CharSequence,
+    val recipientList: CharSequence,
     val additionalRecipients: String?,
 )
 

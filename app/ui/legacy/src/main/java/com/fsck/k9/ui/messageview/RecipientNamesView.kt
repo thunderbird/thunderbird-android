@@ -125,7 +125,7 @@ class RecipientNamesView(context: Context, attrs: AttributeSet?) : ViewGroup(con
             availableWidth,
         )
 
-        recipientNameTextView.text = recipientLayoutData.recipientNames
+        recipientNameTextView.text = recipientLayoutData.recipientList
         val additionalRecipientsVisible = recipientLayoutData.additionalRecipients != null
         val remainingWidth: Int
         if (additionalRecipientsVisible) {
