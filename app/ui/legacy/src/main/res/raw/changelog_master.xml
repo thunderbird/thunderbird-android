@@ -5,6 +5,13 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.717" versioncode="37017" date="2024-02-16">
+        <change>Fixed order of autoconfig discovery steps</change>
+        <change>Changed default display count to 100</change>
+        <change>Enabled notifications for new accounts by default</change>
+        <change>Reverted the change to handling mailto: URIs introduced in K-9 Mail 6.716 because of unintended side effects</change>
+        <change>Fixed bug to make "colorize contacts" work again in message view</change>
+    </release>
     <release version="6.716" versioncode="37016" date="2024-02-13">
         <change>Small bug fixes and UI/UX polish in account setup</change>
         <change>Fixed a crash caused by an interaction with OpenKeychain 6.0.0</change>
