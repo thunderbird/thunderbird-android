@@ -4,6 +4,7 @@ import app.k9mail.autodiscovery.api.AutoDiscoveryRegistry
 import app.k9mail.autodiscovery.api.AutoDiscoveryService
 import app.k9mail.autodiscovery.service.RealAutoDiscoveryRegistry
 import app.k9mail.autodiscovery.service.RealAutoDiscoveryService
+import app.k9mail.core.common.net.ssl.installTrustedCertificates
 import app.k9mail.feature.account.common.featureAccountCommonModule
 import app.k9mail.feature.account.oauth.featureAccountOAuthModule
 import app.k9mail.feature.account.server.settings.featureAccountServerSettingsModule
@@ -41,7 +42,9 @@ val featureAccountSetupModule: Module = module {
     )
 
     single<OkHttpClient> {
-        OkHttpClient()
+        OkHttpClient.Builder()
+            .installTrustedCertificates(trustedCertificateProvider = get())
+            .build()
     }
 
     single<AutoDiscoveryRegistry> {
