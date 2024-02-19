@@ -4,5 +4,7 @@ plugins {
 }
 
 dependencies {
+    implementation(libs.okio)
+
     testImplementation(projects.core.testing)
 }

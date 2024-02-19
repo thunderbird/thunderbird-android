@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import app.k9mail.core.common.net.ssl.decodeCertificatePem
 import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.common.koin.koinPreview
 import app.k9mail.core.ui.compose.common.mvi.observe
@@ -32,8 +33,6 @@ import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorCo
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.Event
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.State
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.ViewModel
-import java.security.cert.CertificateFactory
-import java.security.cert.X509Certificate
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -128,7 +127,7 @@ private fun ButtonBar(
 @Composable
 @PreviewDevices
 internal fun ServerCertificateErrorScreenK9Preview() {
-    val inputStream = """
+    val certificate = """
         -----BEGIN CERTIFICATE-----
         MIIE8jCCA9qgAwIBAgISA3bsPKY1eoe/RiBO2t8fUvh1MA0GCSqGSIb3DQEBCwUA
         MDIxCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1MZXQncyBFbmNyeXB0MQswCQYDVQQD
@@ -158,10 +157,7 @@ internal fun ServerCertificateErrorScreenK9Preview() {
         o7IlPgdD9rzZCsbYe+VNBQWY3358u7ifOJG8r2jXzyHKgUC+OBXgz3kjrClzJfl1
         pjcJhNU1UQtIVERwmxI9F5oQqUyxvA==
         -----END CERTIFICATE-----
-    """.trimIndent().byteInputStream()
-
-    val certificateFactory = CertificateFactory.getInstance("X.509")
-    val certificate = certificateFactory.generateCertificate(inputStream) as X509Certificate
+    """.trimIndent().decodeCertificatePem()
 
     val serverCertificateError = ServerCertificateError(
         hostname = "mail.domain.example",
