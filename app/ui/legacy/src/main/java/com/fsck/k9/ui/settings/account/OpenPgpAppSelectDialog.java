@@ -4,7 +4,6 @@ package com.fsck.k9.ui.settings.account;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -30,6 +29,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.ui.base.ThemeType;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpProviderUtil;
 import timber.log.Timber;
@@ -163,7 +163,7 @@ public class OpenPgpAppSelectDialog extends K9Activity {
         @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
 
             builder.setTitle(R.string.account_settings_crypto_app_select_title);
 
@@ -231,7 +231,7 @@ public class OpenPgpAppSelectDialog extends K9Activity {
         @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireActivity());
 
             builder.setTitle(R.string.dialog_openkeychain_info_title);
             builder.setView(LayoutInflater.from(getActivity()).inflate(
