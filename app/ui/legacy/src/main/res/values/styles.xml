@@ -82,9 +82,5 @@
         <item name="android:layout_width">match_parent</item>
     </style>
 
-    <style name="Widget.K9.Button.Snackbar" parent="Widget.Material3.Button.TextButton.Snackbar">
-        <item name="android:textColor">?attr/colorSecondary</item>
-    </style>
-
 </resources>
 
