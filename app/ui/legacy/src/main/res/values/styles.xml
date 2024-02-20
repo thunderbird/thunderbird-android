@@ -48,17 +48,16 @@
         <item name="materialDrawerPrimaryIcon">?android:textColorSecondary</item>
         <item name="materialDrawerSecondaryText">?android:textColorSecondary</item>
         <item name="materialDrawerSecondaryIcon">?android:textColorSecondary</item>
-        <item name="materialDrawerSelectedBackgroundColor">?colorAccent</item>
+        <item name="materialDrawerSelectedBackgroundColor">?android:textColorTertiary</item>
+        <item name="materialDrawerDividerColor">?attr/colorOnSurfaceVariant</item>
     </style>
 
     <style name="Widget.MaterialDrawerStyle.K9.Light" parent="Widget.MaterialDrawerStyle.K9">
         <item name="materialDrawerInsetForeground">@android:color/transparent</item>
-        <item name="materialDrawerDividerColor">#eee</item>
     </style>
 
     <style name="Widget.MaterialDrawerStyle.K9.Dark" parent="Widget.MaterialDrawerStyle.K9">
         <item name="materialDrawerInsetForeground">@android:color/transparent</item>
-        <item name="materialDrawerDividerColor">#444</item>
     </style>
 
     <style name="Widget.MaterialDrawerHeaderStyle.K9">
