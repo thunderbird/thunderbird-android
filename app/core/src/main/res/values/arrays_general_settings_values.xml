@@ -3,53 +3,53 @@
 
     <string-array name="supported_languages" translatable="false">
         <item />
-        <item>in</item>
+        <item>ar</item>
+        <item>be</item>
+        <item>bg</item>
         <item>br</item>
         <item>ca</item>
         <item>cs</item>
         <item>cy</item>
         <item>da</item>
         <item>de</item>
-        <item>et</item>
+        <item>el</item>
         <item>en</item>
         <item>en_GB</item>
-        <item>es</item>
         <item>eo</item>
+        <item>es</item>
+        <item>et</item>
         <item>eu</item>
+        <item>fa</item>
+        <item>fi</item>
         <item>fr</item>
         <item>fy</item>
         <item>gd</item>
         <item>gl</item>
         <item>hr</item>
+        <item>hu</item>
+        <item>in</item>
         <item>is</item>
         <item>it</item>
-        <item>lv</item>
+        <item>ja</item>
         <item>lt</item>
-        <item>hu</item>
-        <item>nl</item>
+        <item>lv</item>
+        <item>ml</item>
         <item>nb</item>
+        <item>nl</item>
         <item>pl</item>
-        <item>pt_PT</item>
         <item>pt_BR</item>
-        <item>ru</item>
+        <item>pt_PT</item>
         <item>ro</item>
-        <item>sq</item>
+        <item>ru</item>
         <item>sk</item>
         <item>sl</item>
-        <item>fi</item>
+        <item>sq</item>
+        <item>sr</item>
         <item>sv</item>
         <item>tr</item>
-        <item>el</item>
-        <item>be</item>
-        <item>bg</item>
-        <item>sr</item>
         <item>uk</item>
-        <item>ar</item>
-        <item>fa</item>
-        <item>ml</item>
         <item>zh_CN</item>
         <item>zh_TW</item>
-        <item>ja</item>
     </string-array>
 
     <string-array name="language_values" translatable="false">

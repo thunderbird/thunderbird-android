@@ -58,6 +58,7 @@ fastAdapter = "5.7.0"
 forkhandlesBom = "2.12.2.0"
 glide = "4.16.0"
 gradle = "8.5"
+http4kBom = "5.13.7.0"
 icu4j = "72.1"
 javaDiffUtils = "4.12"
 jcipAnnotations = "1.0"
@@ -177,6 +178,10 @@ forkhandles-bom = { module = "dev.forkhandles:forkhandles-bom", version.ref = "f
 forkhandles-fabrikate4k = { module = "dev.forkhandles:fabrikate4k" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
+http4k-bom = { module = "org.http4k:http4k-bom", version.ref = "http4kBom" }
+http4k-core = { module = "org.http4k:http4k-core" }
+http4k-client-okhttp = { module = "org.http4k:http4k-client-okhttp" }
+http4k-format-moshi = { module = "org.http4k:http4k-format-moshi" }
 icu4j-charset = { module = "com.ibm.icu:icu4j-charset", version.ref = "icu4j" }
 jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrainsAnnotations" }
 jcip-annotations = { module = "net.jcip:jcip-annotations", version.ref = "jcipAnnotations" }
