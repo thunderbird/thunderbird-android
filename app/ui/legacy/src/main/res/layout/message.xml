@@ -33,7 +33,6 @@ the 'message view theme' setting).
                 android:id="@+id/extra_header_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/extraMessageHeaderBackground"
                 android:paddingVertical="4dp"
                 android:visibility="gone"
                 tools:visibility="visible">
