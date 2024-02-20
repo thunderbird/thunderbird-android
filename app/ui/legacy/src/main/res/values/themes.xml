@@ -62,7 +62,6 @@
 
         <item name="windowActionModeOverlay">true</item>
 
-        <item name="messageHeaderBackground">@color/material_gray_200</item>
         <item name="extraMessageHeaderBackground">@color/material_gray_100</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="textInputStyle">?attr/textInputOutlinedStyle</item>
@@ -265,7 +264,6 @@
 
         <item name="windowActionModeOverlay">true</item>
 
-        <item name="messageHeaderBackground">@color/material_gray_900</item>
         <item name="extraMessageHeaderBackground">@color/material_gray_900</item>
 
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
