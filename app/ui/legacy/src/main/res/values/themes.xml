@@ -63,7 +63,6 @@
         <item name="windowActionModeOverlay">true</item>
 
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
-        <item name="textInputStyle">?attr/textInputOutlinedStyle</item>
 
         <item name="iconUnifiedInbox">@drawable/ic_inbox_multiple</item>
         <item name="iconFolder">@drawable/ic_folder</item>
@@ -264,7 +263,6 @@
         <item name="windowActionModeOverlay">true</item>
 
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
-        <item name="textInputStyle">?attr/textInputOutlinedStyle</item>
 
         <item name="iconUnifiedInbox">@drawable/ic_inbox_multiple</item>
         <item name="iconFolder">@drawable/ic_folder</item>
