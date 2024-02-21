@@ -11,7 +11,6 @@
 # 4. Run the app and check for any issues.
 
 [versions]
-accompanist = "0.32.0"
 androidDesugar = "2.0.4"
 androidMaterial = "1.9.0"
 # AGP and tools should be updated together
@@ -113,7 +112,6 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "kotlinKsp" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotlessPlugin" }
 
 [libraries]
-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 android-desugar = { module = "com.android.tools:desugar_jdk_libs", version.ref = "androidDesugar" }
 android-material = { module = "com.google.android.material:material", version.ref = "androidMaterial" }
 android-tools-common = { module = "com.android.tools:common", version.ref = "androidTools" }
