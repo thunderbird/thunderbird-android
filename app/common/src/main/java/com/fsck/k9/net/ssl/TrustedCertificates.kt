@@ -1,16 +1,15 @@
 package com.fsck.k9.net.ssl
 
 /**
- * The PEM-encoded certificates for trusted Certificate Authorities (CAs).
+ * List of PEM-encoded certificates for trusted Certificate Authorities (CAs).
  *
- * These certificates are used to establish a list of trusted certificates for the TLS (Transport Layer Security)
- * implementation and to supplement the list of certificates that are not included in the system's trust store.
- * This is essential to maintain the ability to establish TLS connections on older versions of Android.
+ * These aim to fill the gap of missing certificates in earlier versions of Android.
  */
 object TrustedCertificates {
 
     // Let's Encrypt Certificates - https://letsencrypt.org/certificates/
     // ISRG Root X1 self-signed: https://letsencrypt.org/certs/isrgrootx1.pem
+    // Not present in Android 7 and earlier
     internal val certificateIsrgRootX1 = """
         -----BEGIN CERTIFICATE-----
         MIIFazCCA1OgAwIBAgIRAIIQz7DSQONZRGPgu2OCiwAwDQYJKoZIhvcNAQELBQAw
@@ -47,6 +46,7 @@ object TrustedCertificates {
 
     // Let's Encrypt Certificates - https://letsencrypt.org/certificates/
     // ISRG Root X2 self-signed: https://letsencrypt.org/certs/isrg-root-x2.pem
+    // Not present in Android 13 and earlier
     internal val certificateIsrgRootX2 = """
         -----BEGIN CERTIFICATE-----
         MIICGzCCAaGgAwIBAgIQQdKd0XLq7qeAwSxs6S+HUjAKBggqhkjOPQQDAzBPMQsw
