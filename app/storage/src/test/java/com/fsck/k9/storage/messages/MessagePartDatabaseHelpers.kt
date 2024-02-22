@@ -114,14 +114,18 @@ data class MessagePartEntry(
         if (header != null) {
             if (other.header == null) return false
             if (!header.contentEquals(other.header)) return false
-        } else if (other.header != null) return false
+        } else if (other.header != null) {
+            return false
+        }
         if (encoding != other.encoding) return false
         if (charset != other.charset) return false
         if (dataLocation != other.dataLocation) return false
         if (data != null) {
             if (other.data == null) return false
             if (!data.contentEquals(other.data)) return false
-        } else if (other.data != null) return false
+        } else if (other.data != null) {
+            return false
+        }
         if (preamble != other.preamble) return false
         if (epilogue != other.epilogue) return false
         if (boundary != other.boundary) return false
