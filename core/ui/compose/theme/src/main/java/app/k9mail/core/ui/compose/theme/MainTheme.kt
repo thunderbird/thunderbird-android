@@ -31,7 +31,10 @@ fun MainTheme(
         lightImages
     }
 
-    SetSystemBarsColor(color = colors.toolbar)
+    SetSystemBarsColor(
+        darkTheme = darkTheme,
+        color = colors.toolbar,
+    )
 
     val shapes = MainTheme.shapes
 

@@ -3,7 +3,7 @@ package app.k9mail.feature.launcher
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.view.WindowCompat
+import androidx.activity.enableEdgeToEdge
 import app.k9mail.core.ui.compose.common.activity.setActivityContent
 import app.k9mail.core.ui.compose.common.navigation.toDeepLinkUri
 import app.k9mail.feature.account.edit.navigation.NAVIGATION_ROUTE_ACCOUNT_EDIT_SERVER_SETTINGS_INCOMING
@@ -19,7 +19,7 @@ class FeatureLauncherActivity : K9Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+        enableEdgeToEdge()
 
         setActivityContent {
             FeatureLauncherApp()
