@@ -167,6 +167,7 @@ org.apache.james:apache-mime4j-core:0.8.9
 org.apache.james:apache-mime4j-dom:0.8.9
 org.jetbrains.compose.runtime:runtime:1.5.11
 org.jetbrains.kotlin:kotlin-android-extensions-runtime:1.9.22
+org.jetbrains.kotlin:kotlin-bom:1.9.22
 org.jetbrains.kotlin:kotlin-parcelize-runtime:1.9.22
 org.jetbrains.kotlin:kotlin-stdlib-common:1.9.22
 org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.22

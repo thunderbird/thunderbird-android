@@ -12,6 +12,8 @@ java {
 configureKotlinJavaCompatibility()
 
 dependencies {
+    implementation(platform(libs.kotlin.bom))
+
     implementation(libs.bundles.shared.jvm.main)
     testImplementation(libs.bundles.shared.jvm.test)
 }
