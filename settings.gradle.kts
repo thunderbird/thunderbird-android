@@ -34,7 +34,6 @@ include(
     ":app:storage",
     ":app:crypto-openpgp",
     ":app:testing",
-    ":app:html-cleaner",
 )
 
 include(
@@ -109,4 +108,8 @@ include(
     ":cli:autodiscovery-cli",
     ":cli:html-cleaner-cli",
     ":cli:translation-cli",
+)
+
+include(
+    ":library:html-cleaner",
 )
