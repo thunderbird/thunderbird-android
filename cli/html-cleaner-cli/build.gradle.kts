@@ -9,7 +9,7 @@ application {
 }
 
 dependencies {
-    implementation(projects.app.htmlCleaner)
+    implementation(projects.library.htmlCleaner)
 
     implementation(libs.clikt)
     implementation(libs.okio)
