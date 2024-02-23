@@ -100,7 +100,6 @@ class AboutFragment : Fragment() {
                 "Apache License, Version 2.0",
             ),
             Library("AppAuth for Android", "https://github.com/openid/AppAuth-Android", "Apache License, Version 2.0"),
-            Library("Accompanist", "https://github.com/google/accompanist", "Apache License, Version 2.0"),
             Library("Apache HttpComponents", "https://hc.apache.org/", "Apache License, Version 2.0"),
             Library("CircleImageView", "https://github.com/hdodenhof/CircleImageView", "Apache License, Version 2.0"),
             Library("ckChangeLog", "https://github.com/cketti/ckChangeLog", "Apache License, Version 2.0"),
