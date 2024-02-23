@@ -12,7 +12,7 @@
 
 [versions]
 androidDesugar = "2.0.4"
-androidMaterial = "1.9.0"
+androidMaterial = "1.11.0"
 # AGP and tools should be updated together
 androidGradlePlugin = "8.2.2"
 androidTools = "31.2.2"

@@ -125,7 +125,7 @@ com.github.bumptech.glide:disklrucache:4.16.0
 com.github.bumptech.glide:gifdecoder:4.16.0
 com.github.bumptech.glide:glide:4.16.0
 com.google.android.flexbox:flexbox:3.0.0
-com.google.android.material:material:1.9.0
+com.google.android.material:material:1.11.0
 com.google.errorprone:error_prone_annotations:2.15.0
 com.google.guava:listenablefuture:1.0
 com.jakewharton.timber:timber:5.0.1
