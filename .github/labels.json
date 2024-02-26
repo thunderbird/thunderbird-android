@@ -1,0 +1,212 @@
+[
+  {
+    "name": "backlog",
+    "color": "c2c2c2",
+    "aliases": [],
+    "description": "Tasks and features handled by project maintainers",
+    "delete": false
+  },
+  {
+    "name": "good first issue",
+    "color": "7070ff",
+    "aliases": [],
+    "description": "Ideal for newcomers to start contributing",
+    "delete": false
+  },
+  {
+    "name": "priority: critical",
+    "color": "b60205",
+    "aliases": [],
+    "description": "Critical issues that require immediate attention",
+    "delete": false
+  },
+  {
+    "name": "priority: high",
+    "color": "d93f0b",
+    "aliases": [],
+    "description": "High priority issues that need to be addressed soon",
+    "delete": false
+  },
+  {
+    "name": "priority: medium",
+    "color": "fbca04",
+    "aliases": [],
+    "description": "Medium priority issues that can wait, but should be addressed",
+    "delete": false
+  },
+  {
+    "name": "priority: low",
+    "color": "0e8a16",
+    "aliases": [],
+    "description": "Low priority issues that can be addressed later",
+    "delete": false
+  },
+  {
+    "name": "status: can't reproduce",
+    "color": "bfdadc",
+    "aliases": [],
+    "description": "Issues that cannot be replicated with the provided details",
+    "delete": false
+  },
+  {
+    "name": "status: duplicate",
+    "color": "eeeeee",
+    "aliases": [],
+    "description": "Issues already reported or addressed",
+    "delete": false
+  },
+  {
+    "name": "status: help wanted",
+    "color": "bfe5bf",
+    "aliases": [],
+    "description": "Issues seeking help from the community",
+    "delete": false
+  },
+  {
+    "name": "status: needs design",
+    "color": "ffe4e1",
+    "aliases": [],
+    "description": "Issues requiring design decisions or inputs",
+    "delete": false
+  },
+  {
+    "name": "status: needs information",
+    "color": "fef2c0",
+    "aliases": [],
+    "description": "Needs more information to proceed",
+    "delete": false
+  },
+  {
+    "name": "status: needs specification",
+    "color": "d5eef9",
+    "aliases": [],
+    "description": "Issues requiring further specification or clarification",
+    "delete": false
+  },
+  {
+    "name": "status: needs work",
+    "color": "e99695",
+    "aliases": [],
+    "description": "Issues that are pending further action or development",
+    "delete": false
+  },
+  {
+    "name": "status: wontfix",
+    "color": "ffffff",
+    "aliases": [],
+    "description": "Issues that are not going to be addressed",
+    "delete": false
+  },
+  {
+    "name": "type: accessibility",
+    "color": "60bf0d",
+    "aliases": [],
+    "description": "Issues related to improving accessibility for all users",
+    "delete": false
+  },
+  {
+    "name": "type: architecture",
+    "color": "64b6e9",
+    "aliases": [],
+    "description": "Architecture of the project and high level design",
+    "delete": false
+  },
+  {
+    "name": "type: bug",
+    "color": "e74c3c",
+    "aliases": [],
+    "description": "Something is causing incorrect behavior or errors",
+    "delete": false
+  },
+  {
+    "name": "type: dependency",
+    "color": "c6e4f0",
+    "aliases": [],
+    "description": "Project dependencies",
+    "delete": false
+  },
+  {
+    "name": "type: discussion",
+    "color": "f2df5b",
+    "aliases": [],
+    "description": "Community discussion and ideas",
+    "delete": false
+  },
+  {
+    "name": "type: documentation",
+    "color": "b6c94a",
+    "aliases": [],
+    "description": "Improvements or additions to documentation",
+    "delete": false
+  },
+  {
+    "name": "type: enhancement",
+    "color": "a2eeef",
+    "aliases": [],
+    "description": "New features or improvements to existing features.",
+    "delete": false
+  },
+  {
+    "name": "type: epic",
+    "color": "f180c5",
+    "aliases": [],
+    "description": "A major feature or initiative",
+    "delete": false
+  },
+  {
+    "name": "type: feature request",
+    "color": "2ecc71",
+    "aliases": [],
+    "description": "New feature or capability",
+    "delete": false
+  },
+  {
+    "name": "type: performance",
+    "color": "e5adae",
+    "aliases": [],
+    "description": "Speed, memory usage or efficiency issues",
+    "delete": false
+  },
+  {
+    "name": "type: security",
+    "color": "ffdfba",
+    "aliases": [],
+    "description": "Issues related to security vulnerabilities",
+    "delete": false
+  },
+  {
+    "name": "type: task",
+    "color": "bcbe7c",
+    "aliases": [],
+    "description": "General tasks or to-dos",
+    "delete": false
+  },
+  {
+    "name": "type: third-party integration",
+    "color": "d8eae1",
+    "aliases": [],
+    "description": "Integration with external services or platforms.",
+    "delete": false
+  },
+  {
+    "name": "type: translation",
+    "color": "2eccaa",
+    "aliases": [],
+    "description": "Translation related issues",
+    "delete": false
+  },
+  {
+    "name": "type: UI/UX",
+    "color": "d4c5f9",
+    "aliases": [],
+    "description": "Visual or UX design issues",
+    "delete": false
+  },
+  {
+    "name": "unconfirmed",
+    "color": "504754",
+    "aliases": [],
+    "description": "Newly reported issues awaiting triage or confirmation",
+    "delete": false
+  }
+]
