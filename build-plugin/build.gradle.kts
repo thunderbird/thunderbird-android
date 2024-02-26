@@ -18,6 +18,10 @@ dependencies {
 
     implementation(libs.diff.utils)
     compileOnly(libs.android.tools.common)
+
+    // This defines the used Kotlin version for all Plugin dependencies
+    // and ensures that transitive dependencies are aligned on one version.
+    implementation(platform(libs.kotlin.gradle.bom))
 }
 
 fun plugin(provider: Provider<PluginDependency>) = with(provider.get()) {

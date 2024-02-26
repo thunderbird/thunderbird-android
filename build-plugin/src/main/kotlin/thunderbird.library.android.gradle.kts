@@ -27,6 +27,8 @@ android {
 }
 
 dependencies {
+    implementation(platform(libs.kotlin.bom))
+
     implementation(libs.bundles.shared.jvm.main)
     implementation(libs.bundles.shared.jvm.android)
 

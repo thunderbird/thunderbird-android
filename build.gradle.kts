@@ -45,12 +45,6 @@ allprojects {
                 .using(module("androidx.transition:transition:${libs.versions.androidxTransition.get()}"))
             substitute(module("org.jetbrains:annotations"))
                 .using(module("org.jetbrains:annotations:${libs.versions.jetbrainsAnnotations.get()}"))
-            substitute(module("org.jetbrains.kotlin:kotlin-stdlib"))
-                .using(module("org.jetbrains.kotlin:kotlin-stdlib:${libs.versions.kotlin.get()}"))
-            substitute(module("org.jetbrains.kotlin:kotlin-stdlib-jdk7"))
-                .using(module("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${libs.versions.kotlin.get()}"))
-            substitute(module("org.jetbrains.kotlin:kotlin-stdlib-jdk8"))
-                .using(module("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${libs.versions.kotlin.get()}"))
             substitute(module("org.jetbrains.kotlinx:kotlinx-coroutines-android"))
                 .using(
                     module(
