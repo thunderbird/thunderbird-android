@@ -5,6 +5,15 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.800" versioncode="38000" date="2024-02-29">
+        <change>New and improved account setup</change>
+        <change>Added option to return to the message list after marking a message as unread in the message view</change>
+        <change>Made it harder to accidentally trigger swipe actions in the message list screen</change>
+        <change>Improved screen reader experience in various places</change>
+        <change>IMAP: Added support for sending the ID command (that is required by some email providers)</change>
+        <change>Various other bug fixes and improvements; see changes for versions 6.7xx</change>
+        <change>Removed Hebrew and Korean translations because of how incomplete they were; volunteer translators welcome!</change>
+    </release>
     <release version="6.717" versioncode="37017" date="2024-02-16">
         <change>Fixed order of autoconfig discovery steps</change>
         <change>Changed default display count to 100</change>
