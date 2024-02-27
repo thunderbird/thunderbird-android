@@ -6,11 +6,10 @@ import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
+import androidx.core.app.PendingIntentCompat
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.activity.MessageList.Companion.intentDisplaySearch
-import com.fsck.k9.helper.PendingIntentCompat.FLAG_IMMUTABLE
-import com.fsck.k9.helper.PendingIntentCompat.FLAG_MUTABLE
 import com.fsck.k9.search.SearchAccount.Companion.createUnifiedInboxAccount
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -59,8 +58,7 @@ open class MessageListWidgetProvider : AppWidgetProvider(), KoinComponent {
             openInUnifiedInbox = true,
             messageViewOnly = true,
         )
-
-        return PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT or FLAG_MUTABLE)
+        return PendingIntentCompat.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT, true)!!
     }
 
     private fun viewUnifiedInboxPendingIntent(context: Context): PendingIntent {
@@ -72,14 +70,13 @@ open class MessageListWidgetProvider : AppWidgetProvider(), KoinComponent {
             newTask = true,
             clearTop = true,
         )
-
-        return PendingIntent.getActivity(context, -1, intent, PendingIntent.FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
+        return PendingIntentCompat.getActivity(context, -1, intent, PendingIntent.FLAG_UPDATE_CURRENT, false)!!
     }
 
     private fun composeActionPendingIntent(context: Context): PendingIntent {
         val intent = Intent(context, MessageCompose::class.java).apply {
             action = MessageCompose.ACTION_COMPOSE
         }
-        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE)
+        return PendingIntentCompat.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT, false)!!
     }
 }

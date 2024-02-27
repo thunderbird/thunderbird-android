@@ -6,10 +6,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.SystemClock
+import androidx.core.app.PendingIntentCompat
 import androidx.core.content.ContextCompat
 import com.fsck.k9.backend.imap.SystemAlarmManager
 import com.fsck.k9.helper.AlarmManagerCompat
-import com.fsck.k9.helper.PendingIntentCompat.FLAG_IMMUTABLE
 import java.util.concurrent.atomic.AtomicReference
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -34,7 +34,7 @@ class AndroidAlarmManager(
             setPackage(context.packageName)
         }
 
-        PendingIntent.getBroadcast(context, REQUEST_CODE, intent, FLAG_IMMUTABLE)
+        PendingIntentCompat.getBroadcast(context, REQUEST_CODE, intent, 0, false)!!
     }
 
     private val callback = AtomicReference<Callback?>(null)
