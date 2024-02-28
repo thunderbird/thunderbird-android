@@ -1,7 +1,6 @@
 package com.fsck.k9.notification
 
 import android.app.Notification
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -9,9 +8,9 @@ import android.os.Build
 import android.provider.Settings
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.app.PendingIntentCompat
 import com.fsck.k9.Account
 import com.fsck.k9.K9
-import com.fsck.k9.helper.PendingIntentCompat
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
 import timber.log.Timber
 
@@ -65,7 +64,7 @@ class NotificationHelper(
         }
 
         val notificationSettingsPendingIntent =
-            PendingIntent.getActivity(context, account.accountNumber, intent, PendingIntentCompat.FLAG_IMMUTABLE)
+            PendingIntentCompat.getActivity(context, account.accountNumber, intent, 0, false)
 
         val notification = createNotificationBuilder(account, ChannelType.MISCELLANEOUS)
             .setSmallIcon(resourceProvider.iconWarning)
