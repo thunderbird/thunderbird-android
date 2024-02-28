@@ -10,7 +10,11 @@ configure<SpotlessExtension> {
             .setEditorConfigPath("$projectDir/.editorconfig")
             .editorConfigOverride(editorConfigOverride)
         target("**/*.kt")
-        targetExclude("**/build/", "**/resources/", "plugins/openpgp-api-lib/")
+        targetExclude(
+            "**/build/",
+            "**/resources/",
+            "plugins/openpgp-api-lib/",
+        )
     }
     kotlinGradle {
         ktlint(libs.versions.ktlint.get())
@@ -25,6 +29,7 @@ configure<SpotlessExtension> {
         targetExclude(
             "plugins/openpgp-api-lib/",
             "app-k9mail/fastlane/README.md",
+            "**/build/",
         )
     }
     format("misc") {
