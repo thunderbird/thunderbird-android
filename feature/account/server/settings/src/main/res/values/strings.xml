@@ -35,6 +35,7 @@
     <string name="account_server_settings_validation_error_port_invalid">Port is invalid (must be 1–65535).</string>
     <string name="account_server_settings_validation_error_username_required">Username is required.</string>
     <string name="account_server_settings_validation_error_password_required">Password is required.</string>
+    <string name="account_server_settings_validation_error_password_contains_linebreak">The password should not contain a linebreak.</string>
     <string name="account_server_settings_validation_error_imap_prefix_blank">IMAP prefix can\'t be blank.</string>
 
     <string name="account_server_settings_password_authentication_title">Verify your identity</string>

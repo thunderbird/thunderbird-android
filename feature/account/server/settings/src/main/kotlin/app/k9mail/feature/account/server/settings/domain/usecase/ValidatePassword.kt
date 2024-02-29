@@ -10,12 +10,17 @@ class ValidatePassword : UseCase.ValidatePassword {
     override fun execute(password: String): ValidationResult {
         return when {
             password.isBlank() -> ValidationResult.Failure(ValidatePasswordError.EmptyPassword)
-
+            password.contains(LINE_BREAK) -> ValidationResult.Failure(ValidatePasswordError.LinebreakInPassword)
             else -> ValidationResult.Success
         }
     }
 
     sealed interface ValidatePasswordError : ValidationError {
         data object EmptyPassword : ValidatePasswordError
+        data object LinebreakInPassword : ValidatePasswordError
+    }
+
+    private companion object {
+        const val LINE_BREAK = "\n"
     }
 }

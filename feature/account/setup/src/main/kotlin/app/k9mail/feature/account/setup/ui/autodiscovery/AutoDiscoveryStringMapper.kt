@@ -65,6 +65,10 @@ private fun ValidatePassword.ValidatePasswordError.toPasswordErrorString(resourc
         ValidatePassword.ValidatePasswordError.EmptyPassword -> resources.getString(
             R.string.account_setup_auto_discovery_validation_error_password_required,
         )
+
+        ValidatePassword.ValidatePasswordError.LinebreakInPassword -> resources.getString(
+            R.string.account_setup_auto_discovery_validation_error_password_contains_linebreak,
+        )
     }
 }
 

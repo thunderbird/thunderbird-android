@@ -18,20 +18,33 @@ class ValidatePasswordTest {
     }
 
     @Test
-    fun `should fail when password is empty`() {
-        val result = testSubject.execute("")
+    fun `should fail when password is blank`() {
+        val testCases = listOf(
+            "",
+            "\n",
+            " ",
+        )
 
-        assertThat(result).isInstanceOf<ValidationResult.Failure>()
-            .prop(ValidationResult.Failure::error)
-            .isInstanceOf<ValidatePassword.ValidatePasswordError.EmptyPassword>()
+        testCases.forEach { testCase ->
+            assertThat(testSubject.execute(testCase))
+                .isInstanceOf<ValidationResult.Failure>()
+                .prop(ValidationResult.Failure::error)
+                .isInstanceOf<ValidatePassword.ValidatePasswordError.EmptyPassword>()
+        }
     }
 
     @Test
-    fun `should fail when password is blank`() {
-        val result = testSubject.execute(" ")
+    fun `should fail when password contains linebreak`() {
+        val testCases = listOf(
+            "password\n",
+            "\npassword",
+        )
 
-        assertThat(result).isInstanceOf<ValidationResult.Failure>()
-            .prop(ValidationResult.Failure::error)
-            .isInstanceOf<ValidatePassword.ValidatePasswordError.EmptyPassword>()
+        testCases.forEach { testCase ->
+            assertThat(testSubject.execute(testCase))
+                .isInstanceOf<ValidationResult.Failure>()
+                .prop(ValidationResult.Failure::error)
+                .isInstanceOf<ValidatePassword.ValidatePasswordError.LinebreakInPassword>()
+        }
     }
 }
