@@ -30,5 +30,6 @@ internal object StorageMigrations {
         if (oldVersion < 21) StorageMigrationTo21(db, migrationsHelper).createPostRemoveNavigationSetting()
         if (oldVersion < 22) StorageMigrationTo22(db, migrationsHelper).fixServerSettings()
         if (oldVersion < 23) StorageMigrationTo23(db, migrationsHelper).renameSendClientId()
+        if (oldVersion < 24) StorageMigrationTo24(db, migrationsHelper).removeLegacyAuthenticationModes()
     }
 }
