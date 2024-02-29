@@ -1,0 +1,1387 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
+<!--
+     The master change log is kept in res/raw/changelog_master.xml.
+     Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
+-->
+<changelog>
+    <release version="6.800" versioncode="38000" date="2024-02-29">
+        <change>New and improved account setup</change>
+        <change>Added option to return to the message list after marking a message as unread in the message view</change>
+        <change>Made it harder to accidentally trigger swipe actions in the message list screen</change>
+        <change>Improved screen reader experience in various places</change>
+        <change>IMAP: Added support for sending the ID command (that is required by some email providers)</change>
+        <change>Various other bug fixes and improvements; see changes for versions 6.7xx</change>
+        <change>Removed Hebrew and Korean translations because of how incomplete they were; volunteer translators welcome!</change>
+    </release>
+    <release version="6.717" versioncode="37017" date="2024-02-16">
+        <change>Fixed order of autoconfig discovery steps</change>
+        <change>Changed default display count to 100</change>
+        <change>Enabled notifications for new accounts by default</change>
+        <change>Reverted the change to handling mailto: URIs introduced in K-9 Mail 6.716 because of unintended side effects</change>
+        <change>Fixed bug to make "colorize contacts" work again in message view</change>
+    </release>
+    <release version="6.716" versioncode="37016" date="2024-02-13">
+        <change>Small bug fixes and UI/UX polish in account setup</change>
+        <change>Fixed a crash caused by an interaction with OpenKeychain 6.0.0</change>
+        <change>Focus on subject or body input fields when opening the compose screen via a mailto: URI</change>
+        <change>Removed Hebrew and Korean translations because less than 70% of strings were translated. Volunteers to update the translations are always welcome!</change>
+        <change>Updated remaining translations</change>
+    </release>
+    <release version="6.715" versioncode="37015" date="2024-02-01">
+        <change>Added image handling within the context menu for hyperlinks</change>
+        <change>Added ability to forward opened attachments to new emails</change>
+        <change>Improved certificate error screen during account setup</change>
+        <change>Improved settings import during account setup</change>
+        <change>Improved account setup UI/UX</change>
+        <change>Improved account setup rendering on small screens</change>
+        <change>Improved edit account server settings UI/UX</change>
+        <change>Fixed AlarmManager crash on Android 14</change>
+        <change>Internal changes</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.714" versioncode="37014" date="2024-01-04">
+        <change>Added screen to configure special folders during account setup</change>
+        <change>Added copy action to recipient dropdown in compose screen</change>
+        <change>Improved error messages during account setup</change>
+        <change>Internal changes</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.713" versioncode="37013" date="2023-12-04">
+        <change>Note: For now please manually allow "alarms &amp; reminders" in Android's app settings when using Push on Android 14</change>
+        <change>Fixed crash when Push was enabled on Android 14</change>
+        <change>IMAP: Improved handling of the response to the MOVE command</change>
+    </release>
+    <release version="6.712" versioncode="37012" date="2023-11-30">
+        <change>New server settings screens are now also used when editing an existing account</change>
+        <change>Made it harder to accidentally trigger swipe actions in the message list screen</change>
+        <change>Added option to return to the message list after marking a message as unread in the message view</change>
+        <change>Combined settings "Return to list after delete" and "Show next message after delete" into "After deleting or moving a message"</change>
+        <change>Added screen to ask for Android permissions in the onboarding flow</change>
+        <change>Added support for the IMAP MOVE extension</change>
+        <change>Tweaked setup theme to more closely match the rest of the app</change>
+        <change>Fixed notification sounds on WearOS devices</change>
+        <change>Fixed crash when entering an unsupported email address during account setup</change>
+        <change>Fixed crash when MX lookup during account setup returns an invalid host name</change>
+        <change>Respect app theme and language settings in new account setup</change>
+        <change>Set hints for software keyboards not to use auto-correct in server settings text fields</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.711" versioncode="37011" date="2023-10-04">
+        <change>Simplified the app icon so it can be a vector drawable</change>
+        <change>Improved screen reader experience in various places</change>
+        <change>Improved logging on failing settings import</change>
+        <change>Improved display of some HTML messages</change>
+        <change>Changed background color in message view and compose screens when using dark theme</change>
+        <change>Fixed OAuth 2.0 with Yahoo and AOL</change>
+        <change>Fixed display issues when rendering a message/rfc822 inline part</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.710" versioncode="37010" date="2023-08-18">
+        <change>Fixed bug where accounts using OAuth weren't set up properly in K-9 Mail 6.709</change>
+        <change>Moved "Show only subscribed folders" setting to "Folders" section</change>
+    </release>
+    <release version="6.709" versioncode="37009" date="2023-08-14">
+        <change>Enabled the new and improved account setup flow</change>
+    </release>
+    <release version="6.708" versioncode="37008" date="2023-08-08">
+        <change>Changed compose icon in the message list widget to match the icon inside the app</change>
+        <change>Added information about the read state of a message to the data read by screen readers</change>
+        <change>A URI pasted when composing a message will now be surrounded by angle brackets</change>
+        <change>Improved error handling in many situations</change>
+        <change>Fixed bug where account name wasn't displayed in the message view when it should</change>
+        <change>Fixed inconsistent behavior when replying to messages</change>
+        <change>Fixed bug when saving a draft message using an identity without a display name</change>
+        <change>Fixed display issue when removing an account</change>
+        <change>Quite a few internal changes</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.707" versioncode="37007" date="2023-06-19">
+        <change>Fixed bug where navigating to a different screen after using the system back button/gesture could crash the app</change>
+    </release>
+    <release version="6.706" versioncode="37006" date="2023-06-16">
+        <change>Fixed a bug that lead to folders appearing to be empty</change>
+        <change>Don't use nickname as display name when auto-completing recipient using the nickname</change>
+    </release>
+    <release version="6.705" versioncode="37005" date="2023-06-12">
+        <change>Adding to contacts should now allow you again to add the email address to an existing contact</change>
+        <change>Fixed display issue with recipients in message view screen</change>
+        <change>Fixed appearance of "Sign in with Google" button</change>
+        <change>Fixed bugs with importing and exporting identities</change>
+        <change>Manually entering names containing non-latin characters is now possible when composing messages</change>
+        <change>The app will no longer ask to save a draft when no changes have been made to an existing draft message</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.704" versioncode="37004" date="2023-05-23">
+        <change>Changed primary action in message view header from "reply all" to "reply"</change>
+        <change>Fixed the app so it runs on devices that don't support home screen widgets</change>
+        <change>Fixed bug where "Cannot connect to crypto provider" was displayed when the problem wasn't the crypto provider</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.703" versioncode="37003" date="2023-05-08">
+        <change>Internal changes</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.702" versioncode="37002" date="2023-05-02">
+        <change>Fixed crash when the compose screen goes to the background, e.g. when adding an attachment</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.701" versioncode="37001" date="2023-04-28">
+        <change>IMAP: Added support for sending the ID command (that is required by some email providers)</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.700" versioncode="37000" date="2023-04-24">
+        <change>Don't attempt to open file: URIs in an email; tapping such a link will now copy the URL to the clipboard instead</change>
+        <change>Fixed a crash when trying to export accounts containing an identity without a sender name</change>
+        <change>Improved logging when exporting settings to a file fails</change>
+        <change>Fixed various crashes</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.603" versioncode="36003" date="2023-10-12">
+        <change>Fixed settings import/export of identities without a name or description</change>
+    </release>
+    <release version="6.602" versioncode="36002" date="2023-05-11">
+        <change>Change primary action in message view header from "reply all" to "reply"</change>
+    </release>
+    <release version="6.601" versioncode="36001" date="2023-04-18">
+        <change>Reverted changes to home screen widgets because apparently not every device vendor has incorporated the relevant fixes in Android 12+</change>
+    </release>
+    <release version="6.600" versioncode="36000" date="2023-04-11">
+        <change>Redesigned the message view screen; tap the message header containing sender/recipient names to see more details</change>
+        <change>Added a setting for three different message list densities: compact, default, relaxed</change>
+        <change>Added better support for right-to-left languages when composing messages</change>
+        <change>Search now also considers recipient addresses</change>
+        <change>Fixed a bug where notifications would sometimes reappear shortly after having been dismissed</change>
+        <change>IMAP: Fixed a bug where sometimes authentication errors were silently ignored</change>
+        <change>Various other small bug fixes and improvements; see changes for versions 6.5xx</change>
+    </release>
+    <release version="6.511" versioncode="35011" date="2023-03-31">
+        <change>Swiping between messages should now work more reliably</change>
+        <change>Fixed message details layout when contact pictures are disabled</change>
+        <change>Fixed disappearing toolbar buttons in the message view screen</change>
+        <change>Fixed a couple of rare crashes</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.510" versioncode="35010" date="2023-03-17">
+        <change>Made small changes to the appearance of the message list</change>
+        <change>Added a font size setting for the account name when viewing a message</change>
+        <change>Use colored navigation bar on Android 8.1 and above</change>
+        <change>Fixed status bar color on Android 5</change>
+        <change>IMAP: Fixed a bug where sometimes an authentication error was silently ignored</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.509" versioncode="35009" date="2023-02-28">
+        <change>Cleaned up the message list design</change>
+        <change>Added setting for three different message list densities: compact, default, relaxed</change>
+        <change>Made small changes to the appearance of participant entries in the message details screen</change>
+        <change>Added validation for email address fields in "Edit identity" screen</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.508" versioncode="35008" date="2023-02-15">
+        <change>Removed "Send…" submenu from the message view toolbar</change>
+        <change>Limit summary notification actions to messages for which individual notifications are currently being displayed</change>
+        <change>Fixed crash when trying to download an embedded image not using an http(s) URI</change>
+        <change>Internal changes</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.507" versioncode="35007" date="2023-02-10">
+        <change>Respect "show contact names" setting in message details screen</change>
+        <change>Display folder name in message details screen</change>
+        <change>Small adjustment to the appearance of the "Download complete message" button</change>
+        <change>Internal changes</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.506" versioncode="35006" date="2023-02-03">
+        <change>Fixed a crash when displaying a message without any recipients</change>
+        <change>Fetch BCC header when partially downloading a message</change>
+    </release>
+    <release version="6.505" versioncode="35005" date="2023-02-01">
+        <change>Redesign of the message view screen</change>
+        <change>Internal changes</change>
+    </release>
+    <release version="6.504" versioncode="35004" date="2023-01-27">
+        <change>POP3: Fixed bug that lead to messages not being deleted from the server</change>
+        <change>Fixed a crash when a message is deleted (remotely) while it is being dragged in the message list</change>
+        <change>Avoid crash when opening drafts from the message list widget</change>
+    </release>
+    <release version="6.503" versioncode="35003" date="2023-01-19">
+        <change>Tweaked theme colors</change>
+        <change>Added support for HTML messages using the &lt;base> tag and relative links</change>
+        <change>Fixed the logic to skip the trash folder when deleting messages, e.g. when deleting spam</change>
+        <change>Fixed bug that could lead to messages not being marked as read on the server when they should have been</change>
+        <change>Internal changes</change>
+    </release>
+    <release version="6.502" versioncode="35002" date="2023-01-16">
+        <change>Fixed crash at app startup</change>
+    </release>
+    <release version="6.501" versioncode="35001" date="2023-01-09">
+        <change>Delete spam messages immediately without moving them to the trash folder</change>
+        <change>Changed the way home screen widgets are disabled when there is no account set up to work around a bug in Android versions prior to 12</change>
+        <change>Mark recent changes as read when the snackbar is dismissed via swipe</change>
+    </release>
+    <release version="6.500" versioncode="35000" date="2023-01-06">
+        <change>The light and dark themes are now based on Material Design 2. This is still work in progress.</change>
+        <change>Added a floating compose button to the message list screen</change>
+        <change>Search now also considers recipient addresses</change>
+        <change>Always move to previous/next message when swiping left/right outside of the message body</change>
+        <change>Lists of folders are now sorted alphabetically in account settings</change>
+        <change>Added better support for right-to-left languages when composing messages</change>
+        <change>When sending a message, the associated draft message will be deleted immediately, bypassing the Trash folder</change>
+        <change>mailto:, matrix:, and xmpp: URIs in plain text messages are now turned into links</change>
+        <change>Fixed a bug where notifications would sometimes reappear shortly after having been dismissed</change>
+        <change>Various other bug fixes</change>
+    </release>
+    <release version="6.400" versioncode="34000" date="2022-11-28">
+        <change>Added swipe actions to the message list screen</change>
+        <change>Added support for swiping between messages</change>
+        <change>Added a monochromatic app icon for Android 13</change>
+        <change>Fixed "K-9 Accounts" shortcuts (please remove existing shortcuts and add them again)</change>
+        <change>Fixed error reporting for (old) send failures</change>
+        <change>A lot of other bug fixes; see changes for versions 6.3xx</change>
+        <change>Added Western Frisian translation and updated others</change>
+    </release>
+    <release version="6.312" versioncode="33012" date="2022-11-15">
+        <change>Tweaked swipe actions in the message list screen</change>
+        <change>Fixed a bug where canceling account setup was showing a new account in the side drawer</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.311" versioncode="33011" date="2022-11-01">
+        <change>Don't unexpectedly show and focus the "reply to" field when composing a message</change>
+        <change>Fixed a bug where sometimes toolbar buttons in the message view would affect another message than the one currently being displayed</change>
+        <change>Changed the way the app switches to the next/previous message to avoid a bug that could lead to the toolbar disappearing</change>
+        <change>Fall back to using IPv4 if connecting to a POP3 server using IPv6 fails</change>
+        <change>SMTP: Stop treating all TLS errors as certificate error</change>
+        <change>Added more (local) logging when creating and removing notifications</change>
+        <change>Fixed a couple of rare crashes</change>
+    </release>
+    <release version="6.310" versioncode="33010" date="2022-10-24">
+        <change>Fixed "K-9 Accounts" shortcuts (you probably have to remove existing shortcuts and add them again)</change>
+        <change>Fixed a couple of bugs and display issues in the message list widget</change>
+        <change>Fixed bug that could lead to a crypto provider popup showing before swiping to the next/previous message was completed</change>
+        <change>Some other minor bug fixes</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.309" versioncode="33009" date="2022-10-12">
+        <change>Automatically scroll to the top after using pull to refresh, so new messages are visible</change>
+        <change>Fixed a bug that prevented the app from establishing a connection to the outgoing server under certain circumstances</change>
+        <change>Fixed a bug that could lead to messages being sent twice when the send button was double clicked</change>
+        <change>Changed the structure of HTML signatures in outgoing messages to increase compatibility</change>
+        <change>More bug fixes and internal changes</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.308" versioncode="33008" date="2022-10-06">
+        <change>Added swipe actions to the message list screen</change>
+        <change>Changed the minimum size of the message list widget to 2x2 cells</change>
+        <change>Fixed a bug where the app would start using the light theme before switching to the dark theme resulting in a brief flash of white</change>
+        <change>More minor bug fixes and improvements</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.307" versioncode="33007" date="2022-09-26">
+        <change>Fixed the message list background color in the dark theme</change>
+        <change>Fixed a small display issue where "Load up to X more" could have been displayed when it shouldn't have been</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.306" versioncode="33006" date="2022-09-23">
+        <change>Added a monochromatic app icon for Android 13</change>
+        <change>Changed the UI component used for the message list; now changes to the list will be animated</change>
+        <change>Removed the volume key navigation for list views because it doesn't play nice with the above change</change>
+        <change>Fixed a bug that lead to the search input field being focused on app start on some devices</change>
+        <change>Restored the previous behavior of "show next message after delete"</change>
+        <change>A lot of internal changes and some minor performance improvements</change>
+    </release>
+    <release version="6.305" versioncode="33005" date="2022-09-17">
+        <change>Fixed a bug that could lead to a crash when opening the message list</change>
+    </release>
+    <release version="6.304" versioncode="33004" date="2022-09-16">
+        <change>Allow unmasking the password field without authentication as soon as the original password in incoming/outgoing server settings has been overwritten completely</change>
+        <change>Don't crash when IMAP servers send attachment names that contain non-ASCII characters</change>
+        <change>Fixed a bug where the search input field would collapse back into its toolbar icon while it was being used</change>
+        <change>Removed support for Direct Share because the app can no longer use the number of times a person has been contacted to make useful suggestions</change>
+        <change>More internal changes</change>
+    </release>
+    <release version="6.303" versioncode="33003" date="2022-09-08">
+        <change>Fixed a bug that lead to search being broken</change>
+        <change>Fixed error reporting for (old) send failures</change>
+        <change>Fixed "strip signatures on reply"</change>
+        <change>Fixed a crash when tapping a toolbar action in message view before loading the message has finished</change>
+    </release>
+    <release version="6.302" versioncode="33002" date="2022-09-05">
+        <change>Fixed moving to next/previous message when sorting the message list by read/unread or starred/unstarred</change>
+        <change>Fixed a crash when a third-party app shared a file to K-9 Mail without granting access to it</change>
+        <change>Keep some more attributes when sanitizing HTML</change>
+        <change>A lot of internal changes and improvements</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.301" versioncode="33001" date="2022-08-09">
+        <change>Fixed crash when viewing a message and OpenKeychain needed to display its user interface, e.g. to ask for a password</change>
+        <change>When composing a message containing consecutive spaces convert them to non-breaking spaces in the generated HTML part of the message</change>
+        <change>Fixed bug where moving a message to another folder wouldn't update the apps search index</change>
+        <change>Fixed small bug where not all cached values were removed when using "clear local messages"</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.300" versioncode="33000" date="2022-08-04">
+        <change>Added support for swiping between messages</change>
+        <change>Fixed multiple bugs when there are notifications for more than 8 messages</change>
+        <change>Fixed bug that could lead to broken attachment names when large messages were only partially downloaded (IMAP)</change>
+        <change>Added Western Frisian translation</change>
+    </release>
+    <release version="6.202" versioncode="32002" date="2022-07-26">
+        <change>Increased timeout when sending messages because some users have reported problems with sending large attachments</change>
+        <change>Allow all URI schemes in HTML links</change>
+        <change>Fixed display bug with search in general settings</change>
+        <change>When composing messages don't hide Cc and Bcc fields if they contain incomplete email addresses</change>
+    </release>
+    <release version="6.201" versioncode="32001" date="2022-07-15">
+        <change>Added support for using OAuth 2.0 with Office365 accounts</change>
+        <change>Fixed a bug that could lead to two message lists being displayed on top of each other</change>
+        <change>Avoid a crash when trying to create new message notifications but the notification sound couldn't be accessed</change>
+        <change>Fixed a bug where multi-select mode was exited early in some cases</change>
+        <change>Don't require re-authorization when getting an OAuth token fails due to a temporary error</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.200" versioncode="32000" date="2022-07-08">
+        <change>Added support for using OAuth 2.0 with Google, Yahoo, AOL, and personal Microsoft accounts (Office365 accounts are not supported yet)</change>
+        <change>Added "Unsubscribe" action that is displayed in the menu when viewing a message that contains an Unsubscribe header</change>
+        <change>Various bug fixes and improvements</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.101" versioncode="31001" date="2022-07-06">
+        <change>Added support for using OAuth 2.0 with personal Microsoft accounts (Office365 accounts don't work yet)</change>
+        <change>Made the transition of existing Gmail accounts to OAuth 2.0 a bit easier</change>
+        <change>Fixed various small UI bugs</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.100" versioncode="31000" date="2022-06-15">
+        <change>Added support for using OAuth 2.0 with Google accounts</change>
+        <change>Added support for using OAuth 2.0 with Yahoo and AOL accounts</change>
+        <change>Added "Unsubscribe" action that is displayed in the menu when viewing a message that contains an Unsubscribe header</change>
+        <change>Fixed a bug where unrelated notifications where cleared after synchronizing a folder containing no unread messages</change>
+        <change>Fixed rare problem with decoding format=flowed messages</change>
+        <change>Various other small bug fixes and improvements</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.000" versioncode="30000" date="2022-04-18">
+        <change>Added support for setting the notification vibration pattern on Android 8+</change>
+        <change>Added support for setting a custom notification light color on Android 8+</change>
+        <change>Added a setting to configure the notification sound on Android 8+ (because some vendor-specific Android versions removed this feature from their user interface)</change>
+        <change>Restore 'new mail' notifications when the app is restarted</change>
+        <change>Open message from notification in Unified Inbox if possible</change>
+        <change>Hide sensitive information when sync and error notifications are displayed on the lock screen</change>
+        <change>Added a setting to suppress notifications for chat messages</change>
+        <change>Don't create notifications when manually refreshing the message list</change>
+        <change>Don't show notifications for new messages when syncing a folder for the first time</change>
+        <change>Removed the "hide subject in notifications" setting; use the "lock screen notifications" setting instead</change>
+        <change>Fixed back button behavior when opening a single message from a notification</change>
+        <change>A lot of other fixes related to notifications</change>
+        <change>Added support for entering Reply-To addresses when composing a message</change>
+        <change>Optionally show starred message count in side drawer</change>
+        <change>Require the user to authenticate before unmasking server passwords</change>
+        <change>Added a menu option to export the debug log under Settings → General settings → Debugging</change>
+        <change>IMAP: Removed setting to enable remote search (it's now enabled by default; still requires an additional button press)</change>
+        <change>Numerous other bug fixes and improvements (see change log entries for 5.9xx)</change>
+    </release>
+    <release version="5.916" versioncode="29016" date="2022-04-12">
+        <change>Fixed bug that crashed the app when setting a notification sound on certain devices</change>
+        <change>Fixed crash when rotating the device while a delete confirmation dialog was showing</change>
+    </release>
+    <release version="5.915" versioncode="29015" date="2022-04-06">
+        <change>Fixed settings import</change>
+        <change>Fixed bug where the configuration of a notification category wasn't properly synced with in-app notification settings</change>
+        <change>Fixed display issues when switching the language inside the app</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.914" versioncode="29014" date="2022-03-24">
+        <change>The name and description of notification categories are now updated when the app language is changed</change>
+        <change>Fixed bug where notification settings might not have been properly restored on settings import</change>
+        <change>Fixed a crash when tapping the unread widget tries to open a folder that no longer exists</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.913" versioncode="29013" date="2022-03-11">
+        <change>Don't create notifications when manually refreshing the message list</change>
+        <change>Fixed import and export of notification settings</change>
+        <change>Fixed bug that could lead to multiple notifications being created for the same message</change>
+        <change>Fixed bug that sometimes crashed the app after changing the notification sound</change>
+        <change>Added support for messages that specified the character set in multiple ways</change>
+        <change>A lot of internal improvements</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.912" versioncode="29012" date="2022-02-22">
+        <change>Fixed bugs where notifications weren't removed when they should have been</change>
+        <change>Added a setting to configure the notification sound on Android 8+ (because some vendor-specific Android versions removed this feature from their user interface)</change>
+        <change>Automatically recover in situations where messages can't be sent because the Outbox folder is missing</change>
+        <change>Added more logging around 'new message' notifications</change>
+        <change>Always prompt which app to use when sharing links</change>
+        <change>Removed the the button bar in the drawer and switched back to the sticky footer</change>
+        <change>Don't expose MessageProvider to third-party apps</change>
+        <change>Updated the app to target the Android 12 API</change>
+    </release>
+    <release version="5.911" versioncode="29011" date="2022-02-12">
+        <change>Reworked the user interface for the vibration pattern setting</change>
+        <change>Reworked the notification light color setting</change>
+        <change>Improved display of accounts without a name</change>
+        <change>Tapping a "send failure" notification will now open the Outbox folder</change>
+        <change>Fixed bug that led to some messages not being displayed properly</change>
+        <change>Fixed various smaller bugs related to notifications</change>
+        <change>Changed the way settings are stored; this might fix the bug where all accounts are lost</change>
+    </release>
+    <release version="5.910" versioncode="29010" date="2022-01-25">
+        <change>POP3: Changed the way the list of supported authentication methods is retrieved from the server</change>
+        <change>IMAP: Removed setting to enable remote search (it's now enabled by default; still requires an additional button press)</change>
+        <change>Changed the default color for registered contacts to provide good contrast with both light and dark themes</change>
+        <change>Fixed search by sender name</change>
+        <change>Ignore spaces at the end of the username inserted by some software keyboards when using auto-completion</change>
+    </release>
+    <release version="5.909" versioncode="29009" date="2022-01-12">
+        <change>Only remove notifications for messages currently being displayed</change>
+        <change>Open message from notification in Unified Inbox if possible</change>
+        <change>Fixed stale message count for the Outbox folder</change>
+        <change>Fixed search field not working properly when using a hardware keyboard</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.908" versioncode="29008" date="2022-01-06">
+        <change>Fixed a bug where sometimes the app created notifications when downloading old messages</change>
+        <change>Fixed settings import so the imported theme is applied right away</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.907" versioncode="29007" date="2021-12-27">
+        <change>Added support for setting the notification vibration pattern on Android 8+</change>
+        <change>Added support for setting a custom notification light color on Android 8+</change>
+        <change>Fixed back button behavior when opening a single message from a notification</change>
+        <change>Improved behavior when clicking grouped notifications for new messages of an account</change>
+        <change>Hide sensitive information when sync and error notifications are displayed on the lock screen</change>
+        <change>The account color is now used for sync and error notifications</change>
+        <change>Hide notification vibration settings when there's no vibrator hardware</change>
+        <change>Fixed hotkey handling when using non-QWERTY keyboard layouts</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.906" versioncode="29006" date="2021-12-07">
+        <change>Set the auto-expand folder to 'Inbox' by default</change>
+        <change>Restore 'new mail' notifications when the app is restarted</change>
+        <change>Switched ringtone picker so custom notification sounds can be supported (Android 7 and older)</change>
+        <change>Fixed bug where vibration for notifications couldn't be disabled (Android 7 and older)</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.905" versioncode="29005" date="2021-11-24">
+        <change>Set subject when forwarding a message as attachment</change>
+        <change>Added a menu option to export the debug log under Settings → General settings → Debugging</change>
+        <change>Don't display "unread count" in notifications; only number of new messages</change>
+        <change>Properly decode multiple encoded words using the ISO-2022-JP charset (e.g. in subjects)</change>
+        <change>Fixed a crash when users left the message view screen before the download of an image attachment was complete</change>
+        <change>Don't crash when loading images without internet permission (could only happen with custom ROMs)</change>
+        <change>Fixed a rare crash when auto-completing email addresses in the compose screen</change>
+        <change>A lot of internal changes and cleanup</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.904" versioncode="29004" date="2021-10-05">
+        <change>Tweaked toolbar in move/copy screens</change>
+        <change>Fixed a bug where line breaks were added when editing a draft</change>
+        <change>Fixed animation when switching accounts</change>
+        <change>Fixed crash that could occur when deleting an account</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.903" versioncode="29003" date="2021-09-28">
+        <change>Removed the "default account" setting; the first account in the list is now automatically the default account</change>
+        <change>Removed the "hide subject in notifications" setting; use the "lock screen notifications" setting instead</change>
+        <change>Fixed bug where the list of displayed folders wasn't updated when a folder was added or removed from the server</change>
+        <change>Fixed lock screen notification when there's only one new message</change>
+        <change>Fixed bug that lead to newly created accounts not having an account color</change>
+    </release>
+    <release version="5.902" versioncode="29002" date="2021-09-21">
+        <change>Fixed missing notification sound</change>
+    </release>
+    <release version="5.901" versioncode="29001" date="2021-09-17">
+        <change>Added support for entering Reply-To addresses when composing a message</change>
+        <change>Display the unread message count for the Unified Inbox in the drawer</change>
+        <change>Fixed crash when using the split-screen view</change>
+        <change>Hide notification category settings on Android versions that don't support them</change>
+        <change>Update the sync notification for an account instead of adding and removing it for each folder</change>
+        <change>A lot of internal changes to the notification code - please report any bugs or odd behavior you encounter</change>
+    </release>
+    <release version="5.900" versioncode="29000" date="2021-09-09">
+        <change>Experimental: Added a toolbar with a "check mail" button to the navigation drawer</change>
+        <change>Experimental: Tweaked the mark as unread toolbar icon</change>
+        <change>Don't show notifications for new messages when syncing a folder for the first time</change>
+        <change>Optionally show starred message count in navigation drawer</change>
+        <change>Require the user to authenticate before unmasking server passwords</change>
+        <change>Properly decode format=flowed body before including the text in a reply</change>
+        <change>Added a setting to suppress notifications for chat messages</change>
+        <change>Small change to the user interface for searching messages</change>
+        <change>Make sure attachment box isn't cut off on small screens</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.806" versioncode="28006" date="2021-08-30">
+        <change>Fixed the check for missing outgoing server credentials, again… hopefully 🤞</change>
+    </release>
+    <release version="5.805" versioncode="28005" date="2021-08-21">
+        <change>Fixed the check for missing incoming/outgoing server credentials (introduced in K-9 Mail 5.804)</change>
+        <change>Changed the 'save attachment' icon (apparently floppy disks are no longer a thing)</change>
+    </release>
+    <release version="5.804" versioncode="28004" date="2021-08-18">
+        <change>Fixed a bug where Push didn't work with some servers</change>
+        <change>Don't connect to the incoming or outgoing server when passwords haven't been provided after import</change>
+        <change>Added missing scrollbars in screens showing the folder list</change>
+        <change>Tapping the app icon should now always bring the app to the foreground instead of adding another message list screen</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.803" versioncode="28003" date="2021-08-12">
+        <change>Don't show the icon for the ongoing Push notification in the status bar (on versions older than Android 8.0)</change>
+        <change>Directly open system settings for notification categories (Android 8.0 and newer)</change>
+        <change>Fixed a bug where a notification wasn't removed when the associated message was deleted</change>
+        <change>Ignore unnecessary spaces when filtering the list of folders</change>
+        <change>Fixed crypto status icons not being clickable</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.802" versioncode="28002" date="2021-08-04">
+        <change>Fixed a bug that was triggered when Push was enabled, but the server didn't support Push. If you've noticed high battery drain, this was probably it</change>
+        <change>Added support for archive and spam actions in the Unified Inbox</change>
+        <change>Fixed notification sounds/vibration. Sometimes notifications were audible when they shouldn't have been, sometimes the other way around</change>
+        <change>Display the star of starred messages in yellow</change>
+        <change>Don't show archive/spam action when no such folder is configured</change>
+        <change>Fixed a crash when saving a draft message with modified signature text</change>
+        <change>Fixed a crash when refreshing attachment previews</change>
+    </release>
+    <release version="5.801" versioncode="28001" date="2021-07-30">
+        <change>Tweaked the default font sizes</change>
+        <change>The name of the currently selected account is displayed in the top bar below the folder name (when using multiple accounts)</change>
+        <change>When selecting an account in the drawer the auto-expand folder is now displayed right away</change>
+        <change>Added support for user-installed CAs</change>
+        <change>Error notifications now contain the full error text</change>
+        <change>Fixed some crashes</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.800" versioncode="28000" date="2021-07-24">
+        <change>Major redesign of the user interface</change>
+        <change>Changed periodic background sync and push implementations to work much more reliably</change>
+        <change>Deprecated support for the WebDAV protocol; new accounts can no longer be added</change>
+        <change>K-9 Mail now requires Android 5.0 and newer</change>
+        <change>Added support for Autocrypt setup message</change>
+        <change>Added support for encrypted subjects</change>
+        <change>Don't use default signature when setting up a new account</change>
+        <change>Allow installation on external media (Android 6+ with adopted storage)</change>
+        <change>Removed keyboard shortcuts for menu items; on some devices they conflicted with system shortcuts</change>
+        <change>Removed the broken option to store the message database on external storage</change>
+        <change>Removed the 'remote control' interface third-party apps could use to change some settings in K-9 Mail</change>
+        <change>A lot of other bug fixes, internal changes, and improvements</change>
+        <change>Check out the changelog entries for 5.7xx versions for a lot more details</change>
+    </release>
+    <release version="5.741" versioncode="27041" date="2021-07-22">
+        <change>Updated translations</change>
+    </release>
+    <release version="5.740" versioncode="27040" date="2021-07-16">
+        <change>Added an info screen when tapping the Push notification</change>
+        <change>Fixed a couple of crashes related to Push</change>
+        <change>Various small user interface fixes</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.739" versioncode="27039" date="2021-07-10">
+        <change>Fixed bug that could prevent the device from going to sleep when Push was active</change>
+        <change>Fixed bug that lead to Push not being restarted when network connectivity returned</change>
+        <change>Fixed some issues with displaying the "What's new" notice</change>
+    </release>
+    <release version="5.738" versioncode="27038" date="2021-07-08">
+        <change>Inline attachments are now included in forwarded messages</change>
+        <change>Quick access to the "What's new" screen when the app was updated</change>
+        <change>Close and reopen Push connections when the active network has changed</change>
+        <change>Fixed a bug that lead to Push not working properly</change>
+        <change>Fixed some minor bugs</change>
+    </release>
+    <release version="5.737" versioncode="27037" date="2021-06-26">
+        <change>Fixed a bug in the network connectivity detection code for Push</change>
+    </release>
+    <release version="5.736" versioncode="27036" date="2021-06-24">
+        <change>Fixed Push-related crash with non-IMAP accounts</change>
+        <change>Don't show Push-related settings for non-IMAP accounts</change>
+    </release>
+    <release version="5.735" versioncode="27035" date="2021-06-24">
+        <change>Added back support for IMAP IDLE (Push)</change>
+        <change>Show unread count on account list in drawer</change>
+        <change>Added 'search everywhere' to menu when displaying results of a search in a single folder</change>
+        <change>Long-pressing the subject when viewing a message now copies the text to the clipboard</change>
+        <change>Removed "Notification opens unread messages" setting</change>
+        <change>Honor expunge policy when deleting messages without Trash folder (IMAP)</change>
+        <change>Fixed multiple bugs related to remote search (IMAP)</change>
+        <change>Fixed instances where the system language instead of the app language was used for some texts</change>
+        <change>Fixed bug that prevented forwarding encrypted attachments</change>
+        <change>Fixed various crashes</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.734" versioncode="27034" date="2021-05-01">
+        <change>Added support for reordering accounts (in the settings screen)</change>
+        <change>Added the ability to discard changes and keep the original draft</change>
+        <change>Preserve whitespace when converting the message signature to HTML</change>
+        <change>Ignore invalid email addresses in the system contacts database</change>
+        <change>Clear message view when changing folders in split-screen mode</change>
+        <change>Small optimizations to improve the app startup time</change>
+        <change>Fixed crash when trying to compose a message from the message list widget</change>
+        <change>Lots of internal changes – please report any bugs or odd behavior you encounter</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.733" versioncode="27033" date="2021-03-23">
+        <change>Added support for In-Reply-To parameter in mailto: URIs</change>
+        <change>Fixed various display bugs related to the drawer</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.732" versioncode="27032" date="2021-03-04">
+        <change>Fixed a crash when checking all accounts from the drawer</change>
+        <change>Fixed a crash when configuring the outgoing server to not require sign-in</change>
+        <change>Fixed a bug that prevented importing a settings file not containing general settings</change>
+        <change>Fixed many issues related to the drawer</change>
+        <change>Fixed a UI glitch when deleting an account</change>
+        <change>Fixed a UI glitch when dismissing the delete confirmation dialog from a notification</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.731" versioncode="27031" date="2021-02-23">
+        <change>Fixed display bug when opening Unified Inbox from a launcher shortcut</change>
+        <change>Fixed functionality to download and save linked images on Android 10+</change>
+        <change>Moved 'show headers' functionality to a separate screen</change>
+        <change>Added save button to 'edit identity' screen</change>
+        <change>Added translation: Malayalam</change>
+    </release>
+    <release version="5.730" versioncode="27030" date="2021-02-16">
+        <change>Fixed bug where account wouldn't refresh automatically</change>
+        <change>Fixed crash when trying to compose a message</change>
+        <change>Fixed bug that could have lead to an empty email being sent</change>
+        <change>Fixed bug where refresh indicator in drawer disappeared too early</change>
+        <change>Back button now opens Unified Inbox before exiting the app</change>
+        <change>Added translations: Belarusian, British English</change>
+    </release>
+    <release version="5.729" versioncode="27029" date="2021-02-12">
+        <change>Fixed a bug that could crash the app at startup</change>
+    </release>
+    <release version="5.728" versioncode="27028" date="2021-02-10">
+        <change>Added support for using a client certificate and a password at the same time</change>
+        <change>Unified Inbox is now displayed on top of the folder list in the drawer</change>
+        <change>Improved the sort order of email addresses in the auto-complete popup</change>
+        <change>Fixed a bug when parsing recipient email addresses in the "compose" screen</change>
+        <change>Fixed bug where the folder list wasn't fetched from the server</change>
+        <change>Fixed a bug in the "import settings" screen</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.727" versioncode="27027" date="2021-01-25">
+        <change>Updated "About" screen</change>
+        <change>Changed appearance of "Changelog" screen</change>
+        <change>Added "User forum" link to the "Settings" screen</change>
+        <change>Cleaned up some of the icons used in the app</change>
+        <change>Fixed bug when going back to previous steps when setting up an account</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.726" versioncode="27026" date="2021-01-06">
+        <change>Updated password input fields to be able to reveal passwords</change>
+        <change>Added support for going back to previous steps when setting up an account</change>
+        <change>Fixed a couple of crashes</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.725" versioncode="27025" date="2020-11-18">
+        <change>Prefer email addresses marked as default in email auto-completion popup</change>
+        <change>Internal changes</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.724" versioncode="27024" date="2020-11-01">
+        <change>Fixed crash when trying to forward or reply to a message</change>
+        <change>Fixed crash when trying to compose a message from a search view</change>
+        <change>Fixed crash when message list couldn't be loaded</change>
+        <change>Fixed crash when setting up an account didn't work right away, e.g. wrong password was entered</change>
+    </release>
+    <release version="5.723" versioncode="27023" date="2020-10-31">
+        <change>Fixed bug that prevented some messages from being moved</change>
+        <change>Fixed message list display bug when multiple roles were assigned to the same folder</change>
+        <change>Number of messages in Outbox folder are now displayed in the side drawer</change>
+        <change>Tweaked message list appearance of Outbox</change>
+        <change>Message list footer is now hidden while list is loading</change>
+    </release>
+    <release version="5.722" versioncode="27022" date="2020-10-20">
+        <change>Fixed bug where updating drafts wouldn't upload the change to the server</change>
+        <change>Fixed bug where URLs were duplicated when saving drafts</change>
+        <change>Improved HTTP URL detection when URL is wrapped in parentheses</change>
+        <change>Don't show archive or spam action when displaying the corresponding folder</change>
+        <change>Show recipient name for all messages in Sent, Drafts, and Outbox folders</change>
+        <change>Use automatic identity selection when forwarding emails</change>
+        <change>Display message headers in original order</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.721" versioncode="27021" date="2020-10-07">
+        <change>Fixed bug that lead to the message body not being displayed when it contained a signature ending with a URL</change>
+        <change>Added 'copy link text to clipboard' option when long-pressing links</change>
+        <change>Treat all whitespace as separator when detecting URLs</change>
+    </release>
+    <release version="5.720" versioncode="27020" date="2020-10-06">
+        <change>Fixed bug in preview text extraction that could stop synchronization</change>
+        <change>When displaying text/plain parts the signature is de-emphasized</change>
+        <change>Sharing a message now includes subject, date, sender, and recipients</change>
+        <change>No longer use ISO-8859-1 encoding for headers</change>
+    </release>
+    <release version="5.719" versioncode="27019" date="2020-10-04">
+        <change>Show image previews for attachments with application/octet-stream MIME type</change>
+        <change>Improved display of certain HTML messages</change>
+        <change>When auto-completing email addresses show starred contacts first</change>
+        <change>Improved preview text extraction</change>
+        <change>Improved support for encrypted subjects</change>
+        <change>Extended certificate dialog to show SHA-256 and SHA-512 fingerprints</change>
+        <change>Use correct OpenPGP key when sending signed-only email after switching identities</change>
+        <change>Fixed bug where using certain search text would crash the app</change>
+        <change>Fixed bug where state was lost on screen rotation in unread widget configuration</change>
+        <change>Many internal changes</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.718" versioncode="27018" date="2020-08-18">
+        <change>Hide empty footer view in message list</change>
+        <change>Don't show standard message actions for messages in the Outbox</change>
+        <change>Tweaked UX of recipient chips</change>
+        <change>Refresh the list of folders when refreshing a folder</change>
+        <change>Apply global display settings to the message list when returning from settings screen</change>
+        <change>Many internal changes</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.717" versioncode="27017" date="2020-06-19">
+        <change>Fixed display of text/plain parts containing text in a right-to-left language</change>
+        <change>Don't retry remote commands that failed with an error</change>
+        <change>Don't use default signature when setting up a new account</change>
+        <change>Fixed a bug that caused new message notifications to be skipped</change>
+        <change>Fixed a bug when uploading messages via IMAP failed</change>
+        <change>Fixed various bugs with POP3 accounts</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.716" versioncode="27016" date="2020-06-04">
+        <change>Fixed bug that hid folders in the drawer behind the sticky footer</change>
+        <change>Fixed crash when server contains a folder named 'Outbox'</change>
+        <change>Avoid crash when adding an attachment fails</change>
+        <change>Removed support for using Shift JIS charsets when sending a message</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.715" versioncode="27015" date="2020-05-27">
+        <change>Added swipe to refresh to side drawer</change>
+        <change>Display day of the week in the message list for messages younger than 7 days</change>
+        <change>Fixed bug that could lead to duplicated folders</change>
+        <change>Fixed bug that didn't allow to turn off encryption when replying to an encrypted email</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.714" versioncode="27014" date="2020-05-13">
+        <change>IMAP: Fixed refreshing the folder list</change>
+        <change>Keep drawer open after selecting an account</change>
+        <change>Increased the size of the progress bar shown when refreshing a folder</change>
+        <change>Some smaller bug fixes</change>
+    </release>
+    <release version="5.713" versioncode="27013" date="2020-05-08">
+        <change>Fixed bug where reply/reply all/forward would open an empty new message screen</change>
+    </release>
+    <release version="5.712" versioncode="27012" date="2020-05-08">
+        <change>Fixed crash on startup with Android 7 and older</change>
+    </release>
+    <release version="5.711" versioncode="27011" date="2020-05-08">
+        <change>Fixed some bugs with periodic mail sync (mail was usually checked too often)</change>
+        <change>Fixed a couple of bugs where unnecessary data was kept in the local database</change>
+        <change>Fixed bug where a special folder wasn't removed locally when removed from the server</change>
+        <change>Fixed bug when creating signed-only messages with 'encrypt message subjects' enabled</change>
+        <change>Lots of internal changes</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.710" versioncode="27010" date="2020-04-24">
+        <change>Fixed duplicate message bug after moving a message</change>
+        <change>Removed keyboard shortcuts for menu items; on some devices they conflicted with system shortcuts</change>
+        <change>Don't show fullscreen keyboard in landscape mode</change>
+        <change>Fixed bug where line breaks were ignored when loading draft messages</change>
+        <change>POP3: Fixed moving deleted messages to the Trash folder</change>
+    </release>
+    <release version="5.709" versioncode="27009" date="2020-04-18">
+        <change>Display larger preview for image attachments</change>
+        <change>Fixed import and export of folder settings</change>
+        <change>IMAP: Properly handle UIDVALIDITY changes</change>
+        <change>Various smaller bug fixes</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.708" versioncode="27008" date="2020-03-19">
+        <change>Long-press on message in message list now selects the message</change>
+        <change>Click on contact picture in message list now selects the message</change>
+        <change>Fixed bug that disabled auto-completion when composing messages</change>
+        <change>Fixed dark/light theme issues</change>
+        <change>Removed 'Gestures' setting</change>
+        <change>Renamed "send again" to "edit as new message"</change>
+    </release>
+    <release version="5.707" versioncode="27007" date="2020-03-06">
+        <change>Fixed a bug in the new 'back button opens default folder' code</change>
+        <change>Fixed a crash on Android 5.x devices with old WebView versions</change>
+        <change>Fixed theme issues in some settings screens</change>
+    </release>
+    <release version="5.706" versioncode="27006" date="2020-03-03">
+        <change>Unified Inbox is now opened by default (if enabled)</change>
+        <change>Back button now opens default folder before exiting the app</change>
+        <change>Fixed bug where the input area for the message body wasn't growing properly</change>
+        <change>Keep read position when switching apps</change>
+        <change>Don't open external links inside the app on old Android/WebView versions</change>
+        <change>Update "auto BCC" recipients when switching accounts in message compose window</change>
+        <change>Fixed UI bug where BCC recipient and the date overlapped when viewing messages</change>
+        <change>Fixed bug that lead to display of inaccurate attachment sizes</change>
+        <change>Opt out of anonymous WebView metrics collection</change>
+        <change>Removed automatic display of "What's New" dialog because of display issues</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.705" versioncode="27005" date="2020-02-06">
+        <change>Fixed bug that prevented contact pictures from being displayed</change>
+        <change>Display progress bar when syncing a folder</change>
+        <change>Fixed deleting messages when there's no Trash folder (IMAP)</change>
+        <change>Fixed a crash when encountering messages without a subject</change>
+        <change>Fixed bug that could lead to two message lists being displayed on top of each other</change>
+        <change>Stop trying to open external links inside the app when there's no app installed to handle the content</change>
+        <change>Updated translations</change>
+        <change>A lot of internal changes and improvements</change>
+    </release>
+    <release version="5.704" versioncode="27004" date="2020-01-09">
+        <change>Changed background color of the app icon</change>
+        <change>Added setting to mark a message as read when it is deleted (enabled by default)</change>
+        <change>Fixed crash when trying to reply to encrypted messages</change>
+        <change>Fixed configuration of special folders that lead to Inbox not being checked for new messages automatically</change>
+    </release>
+    <release version="5.703" versioncode="27003" date="2019-12-22">
+        <change>Fixed issue where going back to the app would open the default folder</change>
+        <change>Fixed crash when trying to create a new identity</change>
+        <change>Various smaller bug fixes</change>
+        <change>'Choose folder' now displays folders in the same order as the side drawer</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.702" versioncode="27002" date="2019-12-13">
+        <change>The back button now closes the side drawer instead of exiting the app immediately</change>
+        <change>Fixed "Download complete message" for POP3 accounts</change>
+        <change>Fixed bug that could lead to some messages not being synchronized with an IMAP server</change>
+        <change>Fixed bug where sometimes subjects weren't encoded properly</change>
+        <change>Fixed crash when changing theme</change>
+        <change>'Manage folders' now displays folders in the same order as the side drawer</change>
+    </release>
+    <release version="5.701" versioncode="27001" date="2019-12-02">
+        <change>Use account color as accent color in drawer</change>
+        <change>Removed setting 'Start in Unified Inbox'</change>
+        <change>Fixed bug that displayed folders when the Unified Inbox was selected</change>
+        <change>Fixed bug where work was accidentally done in the main thread</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.700" versioncode="27000" date="2019-11-24">
+        <change>Major redesign of the user interface</change>
+        <change>Temporarily disabled Push (IMAP IDLE) until we can make it work reliable; your accounts will be polled every 15 minutes instead</change>
+        <change>Deprecated support for the WebDAV protocol; new accounts can no longer be added</change>
+        <change>K-9 Mail now requires Android 5.0 and newer</change>
+        <change>Added support for Autocrypt setup message</change>
+        <change>Added support for encrypted subjects</change>
+        <change>Allow installation on external media (Android 6+ with adopted storage)</change>
+        <change>Removed the broken option to store the message database on external storage</change>
+        <change>Removed the 'remote control' interface third-party apps could use to change some settings in K-9 Mail</change>
+        <change>Fixed a lot of bugs and probably introduced some new ones. Please report bugs.</change>
+    </release>
+    <release version="5.600" versioncode="26000" date="2018-09-02">
+        <change>Allow some outdated HTML attributes so emails from popular internet services are displayed as intended</change>
+        <change>Fixed bug when moving or copying message (IMAP)</change>
+    </release>
+    <release version="5.503" versioncode="25030" date="2018-04-02">
+        <change>Fixed bug with some soft keyboards when auto-completing recipients</change>
+        <change>Fixed crash when decrypting messages</change>
+    </release>
+    <release version="5.502" versioncode="25020" date="2018-03-11">
+        <change>Updated translations</change>
+    </release>
+    <release version="5.501" versioncode="25010" date="2018-02-25">
+        <change>Fixed bug that lead to important files being stripped from the APK</change>
+    </release>
+    <release version="5.500" versioncode="25000" date="2018-02-24">
+        <change>Further improvements to encryption user experience</change>
+        <change>Added ability to forward a message as attachment</change>
+        <change>Improved the way we display text/plain messages</change>
+        <change>Improved rendering of RTL text</change>
+        <change>Import/Export maintain account ordering</change>
+        <change>Altered identity prioritization</change>
+        <change>Added option for limiting push connections to 5</change>
+        <change>Added SMTP hostname privacy option</change>
+        <change>Fixed bug that caused draft messages to be lost</change>
+        <change>Fixed bug relating to encrypted attached emails</change>
+        <change>Updated translations</change>
+        <change>More bug fixes</change>
+    </release>
+    <release version="5.403" versioncode="23630" date="2018-01-06">
+        <change>Fixed bug that caused 'Quiet Time' to behave erratically</change>
+    </release>
+    <release version="5.402" versioncode="23620" date="2018-01-04">
+        <change>Fixed display issues with certain messages</change>
+    </release>
+    <release version="5.401" versioncode="23610" date="2018-01-03">
+        <change>Fixed bug that lead to some messages showing as empty</change>
+    </release>
+    <release version="5.400" versioncode="23600" date="2017-12-27">
+        <change>Avoid crash on Android 8.1</change>
+        <change>Updated translations</change>
+        <change>Added Albanian translation</change>
+    </release>
+    <release version="5.304" versioncode="23540" date="2017-11-10">
+        <change>Fixed bug that could cause OpenPGP signature verification to fail when it shouldn't</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.303" versioncode="23530" date="2017-11-03">
+        <change>Fixed bug that could lead to attachments not being displayed</change>
+        <change>Fixed bug where HTML messages weren't displayed correctly</change>
+        <change>Fixed crash when encountering invalid email addresses</change>
+    </release>
+    <release version="5.302" versioncode="23520" date="2017-10-28">
+        <change>Fixed display errors of plain text messages</change>
+        <change>Added translations: Indonesian, Breton</change>
+    </release>
+    <release version="5.301" versioncode="23510" date="2017-10-14">
+        <change>Improved OpenPGP support</change>
+        <change>Various bug fixes</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.300" versioncode="23500" date="2017-09-10">
+        <change>New app icon</change>
+        <change>New widget: Message List</change>
+        <change>New OpenPGP flow, adhering to Autocrypt specification</change>
+        <change>Settings export uses Storage Access Framework</change>
+        <change>Better support for multi-window</change>
+        <change>Recipient search now includes nicknames</change>
+        <change>Many bugfixes and optimizations</change>
+        <change>Added translations: Esperanto, Gaelic (Scottish), Icelandic, Welsh</change>
+    </release>
+    <release version="5.208" versioncode="23271" date="2017-08-28">
+        <change>Fixed bug where automatic synchronization wouldn't restart after the device exited doze mode</change>
+    </release>
+    <release version="5.207" versioncode="23270" date="2017-04-13">
+        <change>Improved speed of local message search</change>
+    </release>
+    <release version="5.206" versioncode="23260" date="2017-03-15">
+        <change>Fixed crash when starting the app from the unread widget</change>
+    </release>
+    <release version="5.205" versioncode="23250" date="2017-02-24">
+        <change>Fixed bug where the message body wasn't displayed when no crypto provider was configured</change>
+    </release>
+    <release version="5.204" versioncode="23240" date="2017-02-24">
+        <change>Fixed bug where not all data was removed for deleted messages</change>
+        <change>Improved support for messages that didn't display correctly</change>
+        <change>Fixed bug with notification actions sometimes not working</change>
+        <change>Use "encrypted.asc" as filename for PGP/MIME emails</change>
+        <change>Updated translations</change>
+        <change>Many more bug fixes</change>
+    </release>
+    <release version="5.203" versioncode="23230" date="2017-01-17">
+        <change>Fixed bug with pinch to zoom gesture</change>
+        <change>Added setting for disabling 'mark all as read' confirmation dialog</change>
+        <change>Update full text search index when removing messages</change>
+        <change>Fixed display bug when replying to messages using dark theme</change>
+        <change>Don't hide Cc and Bcc if 'Always show Cc/Bcc' is enabled</change>
+        <change>Allow sending signed-only PGP/INLINE messages</change>
+        <change>Don't save drafts when message could be sent encrypted</change>
+        <change>More bug fixes</change>
+    </release>
+    <release version="5.202" versioncode="23220" date="2017-01-05">
+        <change>Fixed bug where BCC header line was accidentally included in sent messages</change>
+        <change>Fixed problem with getting the list of IMAP folders</change>
+        <change>Always show subject in message header when split mode is active</change>
+        <change>Hide crypto status indicator in contact dropdown when no crypto provider is configured</change>
+        <change>Fixed button to expand CC/BCC recipients in dark theme</change>
+        <change>Fixed various crashes</change>
+    </release>
+    <release version="5.201" versioncode="23210" date="2016-12-31">
+        <change>Fixed crash during database upgrade</change>
+        <change>Fixed various minor bugs</change>
+    </release>
+    <release version="5.200" versioncode="23200" date="2016-12-26">
+        <change>Fixed bug with status display of signed messages</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.200-RC2" versioncode="23191" date="2016-12-11">
+        <change>Fixed crash when opening attached messages</change>
+        <change>Don't crash when message list contains messages for which we couldn't extract a preview</change>
+    </release>
+    <release version="5.200-RC1" versioncode="23190" date="2016-12-09">
+        <change>Added support for PGP/MIME</change>
+        <change>Added support for bundled notifications on Android 7+ and Android Wear</change>
+        <change>New option: only notify for messages from contacts</change>
+        <change>Ask for confirmation on "mark all as read"</change>
+        <change>Added support for sub-folders (WebDAV)</change>
+        <change>Added support for List-Post header</change>
+        <change>Added support for Server Name Indication</change>
+        <change>Disabled support for SSLv3 protocol/ciphers and all RC4 ciphers</change>
+        <change>Removed support for APG (use OpenKeychain instead)</change>
+        <change>Added server settings for more providers</change>
+        <change>Added translations: Bulgarian, Persian (Farsi), Croatian, Portuguese, Romanian, Slovenian, Serbian</change>
+        <change>Lots of smaller bug fixes and features</change>
+    </release>
+    <release version="5.115" versioncode="23114" date="2016-11-18">
+        <change>More user interface tweaks for encryption-related functionality</change>
+        <change>Message signing without encryption is now an expert feature that is disabled by default</change>
+        <change>Added support for directional pad to move to next/previous message</change>
+        <change>Worked around a bug when viewing attachments</change>
+        <change>Fixed notification grouping on Android Wear and Android 7.0</change>
+        <change>Fixed notification actions on Android 7.0</change>
+    </release>
+    <release version="5.114" versioncode="23113" date="2016-10-13">
+        <change>User interface tweaks for encryption-related functionality</change>
+        <change>Fixed crash caused by new message notifications</change>
+        <change>Fixed bug with downloading attachments</change>
+        <change>Fixed structure of emails created with K-9 Mail</change>
+        <change>Fixed bug where message list was displayed twice</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.113" versioncode="23112" date="2016-10-06">
+        <change>Fixed dark theme</change>
+    </release>
+    <release version="5.112" versioncode="23111" date="2016-10-05">
+        <change>Fixed crash when selecting folder to move message</change>
+        <change>Fixed bug where wrong message format was used when replying</change>
+        <change>Fixed position of context menus on Android 7.0</change>
+        <change>Fixed icon for encryption status of a message</change>
+        <change>Hide crypto status when no crypto provider is configured</change>
+        <change>Hide invalid email addresses of a system contact</change>
+        <change>Added support for linkifying URLs with new TLDs</change>
+        <change>Added server settings for more providers</change>
+    </release>
+    <release version="5.111" versioncode="23110" date="2016-08-27">
+        <change>Fixed replying to and forwarding of encrypted messages</change>
+        <change>Ask for confirmation on "mark all as read"</change>
+        <change>Suggest server name based on server type</change>
+        <change>Added support for esPass MIME type (application/vnd.espass-espass+zip)</change>
+        <change>Removed attachment indicator for encrypted messages</change>
+        <change>Don't add additional line break to the end of a message when sending</change>
+        <change>Removed broken support for sending messages as 8-bit via SMTP</change>
+        <change>Lots of internal changes and minor bug fixes</change>
+    </release>
+    <release version="5.110" versioncode="23100" date="2016-07-06">
+        <change>New option: only notify for messages from contacts</change>
+        <change>Added auto-configuration support for more providers</change>
+        <change>Improved PGP/MIME experience</change>
+        <change>Lots of internal improvements</change>
+    </release>
+    <release version="5.109" versioncode="23090" date="2016-05-21">
+        <change>Added support for List-Post header</change>
+        <change>Added support for sub-folders (WebDAV)</change>
+        <change>Display notification on authentication failures</change>
+        <change>Protect against the Surreptitious Sharing vulnerability</change>
+        <change>Re-enabled search in message bodies</change>
+        <change>Fixed support for PGP/INLINE</change>
+        <change>Fixed bug where some threads had multiple entries in the message list</change>
+        <change>Fixed 'reply to all'</change>
+        <change>More bug fixes</change>
+    </release>
+    <release version="5.108" versioncode="23080" date="2016-03-22">
+        <change>Added rudimentary support for reading and composing PGP/MIME messages</change>
+        <change>Added support for stacked single message notifications on Android Wear</change>
+        <change>Added setting to disable notifications during quiet time</change>
+        <change>Added setting to show confirmation dialog when discarding message</change>
+        <change>Added option to copy sender/recipient addresses to clipboard</change>
+        <change>Show warning when user tries to send an email without a subject</change>
+        <change>New database structure; temporarily disables fulltext search</change>
+        <change>Allow importing of settings created with newer versions of K-9 Mail</change>
+        <change>Added support for Server Name Indication</change>
+        <change>Disabled support for SSLv3 protocol/ciphers and all RC4 ciphers</change>
+        <change>Fixed bug where third-party apps couldn't delete messages from certain folders</change>
+        <change>Fixed bug in settings export with certain folder names</change>
+        <change>IMAP: Fall back to LOGIN command when AUTHENTICATE PLAIN fails</change>
+        <change>Added auto-configuration support for more providers</change>
+        <change>Added translations for Persian (Farsi) and Slovenian</change>
+        <change>Updated translations</change>
+        <change>More bug fixes</change>
+    </release>
+    <release version="5.107" versioncode="23070" date="2015-06-09">
+        <change>Fixed an issue caused by the latest Android System WebView update</change>
+    </release>
+    <release version="5.106" versioncode="23060" date="2015-05-02">
+        <change>Fixed a bug where messages where not always displayed on Android 5.x</change>
+    </release>
+    <release version="5.105" versioncode="23050" date="2015-03-14">
+        <change>Reverted all changes introduced with v5.104 except for the bugfixes related to Android 5.1</change>
+    </release>
+    <release version="5.104" versioncode="23040" date="2015-03-13">
+        <change>Fixed crash when selecting multiple messages on Android 5.1</change>
+        <change>Fixed settings export</change>
+        <change>Fixed some layout bugs</change>
+        <change>Added Serbian translation</change>
+        <change>Updated several translations</change>
+    </release>
+    <release version="5.103" versioncode="23030" date="2014-12-06">
+        <change>Added ability to customize lock screen notifications (Android 5.0+ only)</change>
+        <change>Fixed a bug where a certificate error was wrongly reported</change>
+        <change>Updated translation</change>
+    </release>
+    <release version="5.102" versioncode="23020" date="2014-11-28">
+        <change>Improved 'open' functionality for attachments</change>
+        <change>Removed APG legacy interface</change>
+        <change>Fixed bug in Russian translation</change>
+    </release>
+    <release version="5.101" versioncode="23010" date="2014-10-10">
+        <change>Fixed build problems that caused v5.100 to request the permissions READ_CALL_LOG and WRITE_CALL_LOG</change>
+    </release>
+    <release version="5.100" versioncode="23000" date="2014-10-08">
+        <change>Removed SSL/TLS session caching because it was causing problems</change>
+    </release>
+    <release version="4.905" versioncode="21008" date="2014-09-10">
+        <change>Dropped support for Android versions older than 4.0.3</change>
+        <change>Added ability to use client certificates for authentication</change>
+        <change>Enabled support for TLSv1.1 and TLSv1.2</change>
+        <change>Added SSL/TLS session caching</change>
+        <change>Finer grained control for notifications</change>
+        <change>Added support for delete confirmations in the message list</change>
+        <change>Added the option to show the password when setting up new accounts</change>
+        <change>Added privacy setting to omit the User-Agent header</change>
+        <change>Added privacy setting to use UTC as timezone in mail headers</change>
+        <change>Added auto configuration settings for various providers</change>
+        <change>Fixed HELO/EHLO with IPv6 address literals</change>
+        <change>Various bug fixes</change>
+        <change>Added translations: Latvian, Estonian, Norwegian Bokmål, Galician (Spain)</change>
+    </release>
+    <release version="4.904" versioncode="21007" date="2014-04-18">
+        <change>Added support for OpenPGP API v3</change>
+        <change>Fixed problems with IMAP login</change>
+        <change>Updated translations</change>
+        <change>Fixed multiple bugs</change>
+    </release>
+    <release version="4.903" versioncode="21006" date="2014-03-06">
+        <change>Offer encrypted connection by default when manually setting up an account</change>
+        <change>Simplified options for authentication and security</change>
+        <change>Removed auto-configuration settings for all providers that didn't support encrypted connections</change>
+        <change>Improved compatibility with IMAP (proxy) servers</change>
+        <change>More small fixes and improvements</change>
+    </release>
+    <release version="4.902" versioncode="21005" date="2014-02-23">
+        <change>Avoid adding the same recipient twice when using "reply to all"</change>
+        <change>Fixed a bug with bitcoin URIs</change>
+        <change>Added mailbox.org to the list of providers</change>
+    </release>
+    <release version="4.901" versioncode="21004" date="2014-02-14">
+        <change>Added a slider to allow picking a font size for the message body (40% to 250%) in settings</change>
+        <change>Added support for KitKat's Storage Access Framework that allows you to attach multiple files at once</change>
+        <change>Added support for apps that don't know how to properly use Android's 'share' functionality</change>
+        <change>Fixed a bug with IMAP Push that could cause excessive battery drain</change>
+        <change>Another attempt at working around the display bug on Asus Transformer devices</change>
+        <change>Don't lose formatting of the quoted message when changing orientation while replying</change>
+        <change>Disabled pull-to-refresh in search views where remote search isn't allowed</change>
+        <change>More bug fixes</change>
+        <change>Updated Japanese translation</change>
+    </release>
+    <release version="4.900" versioncode="21003" date="2014-01-22">
+        <change>Fix issue 6064: Inline images don't display on KitKat</change>
+        <change>Update list of German Internet providers</change>
+        <change>Add provider Outlook.sk and Azet.sk to provider list</change>
+        <change>Update Brazilian Portuguese, Czech, Danish, Dutch, French, Greek, Hungarian, Polish, Russian, Slovak, Spanish, and Ukrainian translations</change>
+        <change>Fix POP3 STLS command</change>
+        <change>Use a locale-specific date in the header of a quoted message</change>
+        <change>Account preferences clean-up</change>
+        <change>Make IMAP autoconfig recognize "Draft" as drafts folder</change>
+        <change>Add posteo.de to providers.xml</change>
+        <change>Return proper error message when certificate couldn't be verified against global key store</change>
+        <change>Add support for bitcoin URIs</change>
+        <change>Change the way we harden SSL/TLS sockets. Disallow a couple of weak ciphers, bring known ones in a defined order and sort unknown ciphers at the end. Also re-enable SSLv3 because it's still used a lot.</change>
+        <change>Implement pruning of old certificates from LocalKeyStore. Certificates are deleted whenever server settings are changed or an account is deleted.</change>
+        <change>Fix inadequate certificate validation. Proper host name validation was not being performed for certificates kept in the local keystore.  If an attacker could convince a user to accept and store an attacker's certificate, then that certificate could be used for MITM attacks, giving the attacker access to all connections to all servers in all accounts in K-9.</change>
+        <change>Users can now use different certificates for different servers on the same host (listening to different ports).</change>
+        <change>The above changes mean that users might have to re-accept certificates that they had previously accepted and are still using (but only if the certificate's Subject doesn't match the host that they are connecting to).</change>
+        <change>Make sure to return different colors for senders with different name, but the same mail address (e.g. mails sent by certain issue tracking systems).</change>
+        <change>With the new webview scrollview combo we've got loadinoverviewmode seems to behave better.</change>
+        <change>Fix file selection for import Using FLAG_ACTIVITY_NO_HISTORY will cause the file selection to fail when KitKat's "Open from" activity opens a third-party activity.</change>
+    </release>
+    <release version="4.701" versioncode="19002" date="2013-11-06">
+        <change>Overhauled how we do message view scrolling to fix a KitKat issue. Thanks to Joe Steele!</change>
+        <change>Hardened TLS cipher suites and versions</change>
+        <change>K-9 no longer adds blank lines to composed messages if there is no quoted text</change>
+        <change>Fixed serveral issues related to message drafts</change>
+        <change>Better cleanup of old data when deleting an account</change>
+        <change>Worked around a bug in KitKat that stopped settings import from working</change>
+        <change>Updated German, Greek, Japanese, Korean, Lithuanian, Portugese, Russian and Slovak translations</change>
+    </release>
+    <release version="4.700" versioncode="19001" date="2013-10-11">
+        <change>Code cleanups</change>
+        <change>Fixed a bug that could have caused message drafts to be sent before they were ready</change>
+        <change>Updates to German, Japanese, Russian, Slovak translations</change>
+        <change>Fix some small bugs in contact picture generation</change>
+        <change>Fetch attachments while MessageCompose activity is running</change>
+    </release>
+    <release version="4.512" versioncode="18012" date="2013-09-16">
+        <change>Updated auto-configuration settings to use IMAP for outlook.com</change>
+        <change>Updated auto-configuration settings for gmx.de</change>
+        <change>Notifications no longer show "null" when sending mail</change>
+        <change>Increased compatibility with custom ROMs and newer Samsung firmwares</change>
+        <change>Improved message generation</change>
+        <change>Dramatically improved SMTP 8BITMIME compliance</change>
+        <change>Updated Czech, French, German, Russian and Slovak translation</change>
+    </release>
+    <release version="4.511" versioncode="18011" date="2013-08-31">
+        <change>Remove remote/local store references when deleting accounts</change>
+        <change>Add visual indicator that a menu item opens a submenu</change>
+        <change>Make actions shown in message view menu configurable</change>
+        <change>Remove icons from the "Refile" submenu, as we don't show icons in any other submenu.</change>
+        <change>Add icon for the copy action</change>
+    </release>
+    <release version="4.510" versioncode="18010" date="2013-08-27">
+        <change>Fix erroneous SSL certificate warnings when connecting to a server that speaks STARTTLS</change>
+        <change>Updates to Russian and Slovakian translations</change>
+        <change>Major performance updates when opening folder lists</change>
+        <change>Fix a crashing bug related to random number generation on some 3rd party roms</change>
+        <change>Fixed a bug that prevented starring messages in the message list</change>
+    </release>
+    <release version="4.509" versioncode="18009" date="2013-08-23">
+        <change>Updates to Catalan, Czech, Dutch, Finnish, French, German, Korean, Spanish and Swedish translations</change>
+        <change>Several performance improvements and crash fixes</change>
+        <change>tweak message list item "read item" background color so you can see the item divider a bit better</change>
+        <change>Add back select/deselect action to the message list context menu</change>
+        <change>Default message list checkboxes to off again</change>
+        <change>move message list thread count up to the subject line</change>
+        <change>add back stars to the message list UI</change>
+        <change>Return to old style color chips for accounts, folders and messages.</change>
+        <change>Skip incorrectly formatted/parsed LSUB/LIST replies from IMAP servers</change>
+        <change>Autoconfigure SSL for provider gmx.de</change>
+        <change>Autoconfiguration for a comprehensive list of .ru mail providers.</change>
+        <change>Use Google's fix for the PRNG mess Source: http://android-developers.blogspot.de/2013/08/some-securerandom-thoughts.html</change>
+        <change>Add an actionbar item for "add account" to the account list (if there's room)</change>
+        <change>GMail-app-style generated colorful one-letter contact pictures for pictureless contacts</change>
+        <change>Tighten up the account list display for narrow-screened devices like the HTC One</change>
+        <change>Updated invalid certificate message to be a bit more user-friendly.</change>
+        <change>Restore super-dense message list layout when the user has selected 0 lines of message preview and no contact pictures</change>
+        <change>Rename "SSL" to "SSL/TLS" and "TLS" to "STARTTLS" to better explain what's really going on</change>
+    </release>
+    <release version="4.508" versioncode="18008" date="2013-07-18">
+        <change>Move 'share' menu item back, at least for the moment</change>
+    </release>
+    <release version="4.507" versioncode="18007" date="2013-07-18">
+        <change>Add some Russian ISPs for autoconfiguration</change>
+        <change>Polish and Slovak translation updates</change>
+        <change>Performance improvements</change>
+        <change>Build system improvements</change>
+        <change>Move 'share' menu item up a level in the menu to ease discoverability</change>
+    </release>
+    <release version="4.506" versioncode="18006" date="2013-07-11">
+        <change>Performance improvements</change>
+        <change>Added autoconfiguration for Fastmail.FM</change>
+        <change>New Slovak translation</change>
+        <change>Updated Italian and Russian translations</change>
+        <change>Don't save signature to identity header if identity doesn't use a signature</change>
+    </release>
+    <release version="4.505" versioncode="18005" date="2013-07-08">
+        <change>Major performance improvements in folder lists</change>
+        <change>Catalan, Chinese and Russian translation updates</change>
+        <change>Several bugfixes</change>
+    </release>
+    <release version="4.503" versioncode="18003" date="2013-07-05">
+        <change>Added additional shortcuts to the Folder list</change>
+        <change>Tweaks to checkboxes and color chip display</change>
+        <change>Added an "empty trash" option to the Account context menu</change>
+        <change>Never use extended notifications when privacy mode is enabled</change>
+        <change>Removed submenu from the account context menu to work a bug in some Galaxy devices</change>
+        <change>Only enable debug logging on debugging builds</change>
+        <change>Bumped the minSdkVersion to 8 since we use features from SDK 8</change>
+        <change>Updated Russian, French, Greek, and Brazilian Portuguese translation</change>
+        <change>More bug fixes</change>
+    </release>
+    <release version="4.502" versioncode="18002" date="2013-05-23">
+        <change>Fixed bug that prevented moving to previous and next message in some situations</change>
+        <change>Updated Japanese, Czech, and Brazilian Portuguese translation</change>
+        <change>Fixed a couple of bugs</change>
+    </release>
+    <release version="4.501" versioncode="18001" date="2013-05-10">
+        <change>Added setting to automatically shrink messages to fit the screen width</change>
+        <change>Updated Greek translation</change>
+    </release>
+    <release version="4.331" versioncode="17032" date="2013-05-07">
+        <change>Checking mail from the Unified Inbox is now supported</change>
+        <change>Added "mark all as read" to the menu of the message list</change>
+        <change>Added sort by sender</change>
+        <change>Simplified status icons in the message list</change>
+        <change>Fixed inability to zoom out</change>
+        <change>Composing messages in right to left languages should now work better</change>
+        <change>Exclude folders Trash, Spam, and Outbox from "All messages"</change>
+        <change>Fixed white "flicker" when using the dark theme</change>
+        <change>Updated German translation</change>
+        <change>Many bug fixes</change>
+    </release>
+    <release version="4.330" versioncode="17031" date="2013-03-19">
+        <change>Changed appearance of the unread widget</change>
+        <change>Fixed crash when opening the app from notifications</change>
+        <change>Updated Finnish, Catalan translations</change>
+        <change>Multiple bug fixes</change>
+    </release>
+    <release version="4.329" versioncode="17030" date="2013-03-14">
+        <change>Changed the notification icon (Android 2.3+ only)</change>
+        <change>Restored showing the unread count on top of notification icons (Android 2.x only)</change>
+        <change>Show preview text of the latest message in a thread</change>
+        <change>Fixed 'empty trash' functionality for POP3 accounts</change>
+        <change>Added work-around for the auto-scroll issue of the message view on Jelly Bean</change>
+        <change>Changed navigation when coming from a notification</change>
+        <change>Don't return to home screen after forwarding/replying to a message</change>
+        <change>Changed button bar style in account setup screens (Android 3+)</change>
+        <change>Highlight selected message in the message list</change>
+        <change>Added a series of predefined account colors that will be used before resorting to random colors</change>
+        <change>Hide delete policy option not applicable to POP3 accounts</change>
+        <change>Fall back to character set ISO-2022-JP when ISO-2022-JP-2 is not available</change>
+        <change>Updated Korean, Danish, Finnish translations</change>
+        <change>More bug fixes</change>
+    </release>
+    <release version="4.328" versioncode="17029" date="2013-02-20">
+        <change>Fixed the changelog :)</change>
+    </release>
+    <release version="4.327" versioncode="17028" date="2013-02-20">
+        <change>Fix dialog message when deleting multiple messages from a notification</change>
+        <change>Message view / list: fix NPE when list is empty</change>
+        <change>If there is no message when resuming, K-9 should return to a MessageList.</change>
+        <change>Add a caching layer to EmailProvider.  Database updates can be surprisingly slow. This lead to slow updates of the user interface which in turn made working with K-9 Mail not as fun as it should be. This commit hopefully changes that.</change>
+        <change>Updated Japanese translation</change>
+        <change>Updated French translation</change>
+        <change>Updated Czech localization</change>
+    </release>
+    <release version="4.326" versioncode="17027" date="2013-02-16">
+        <change>Korean translation update</change>
+        <change>Message header area overhauled</change>
+        <change>Holo theme improvements</change>
+        <change>Fix several NPEes</change>
+        <change>Finnish translation update</change>
+        <change>Improve last folder update time formatting.</change>
+        <change>Experimental change to move most of our refile buttons into a refile submenu. Specifically to elicit feedback. I don't expect this change to stick around in its current form. But I do want to get a sense of whether it's something that makes people happy or angry</change>
+        <change>Clean up date handling</change>
+        <change>Update German translation</change>
+        <change>Add animated notification icon for "check mail"</change>
+        <change>There's no good reason to exclude the Subject from the "full headers" view, especicially since we now play games with it sometimes showing up in the header and sometimes in the titlebar</change>
+        <change>Switch our font sizes to have a "default", which is the size described in the XML.</change>
+        <change>Add optional contact pictures to message list</change>
+        <change>Remove text selection menu item for JB and higher.  Those versions have text selection support built-in (via long pressing the WebView).</change>
+        <change>Move message view theme setting from message view menu to global prefs by default.</change>
+        <change>Move "show all headers" into the menu (and out of the UI)</change>
+    </release>
+    <release version="4.325" versioncode="17026" date="2013-02-07">
+        <change>Bug fixes (threading, checkboxes)</change>
+        <change>German translation update</change>
+    </release>
+    <release version="4.324" versioncode="17025" date="2013-02-06">
+        <change>Bug fixes</change>
+        <change>Improved animations when showing the message list</change>
+    </release>
+    <release version="4.323" versioncode="17024" date="2013-02-05">
+        <change>Bug fixes</change>
+        <change>Updates to Finnish and French translations</change>
+        <change>Put back prev/next buttons in non-split message views</change>
+    </release>
+    <release version="4.322" versioncode="17023" date="2013-02-04">
+        <change>Added a setting to enable split-screen mode (display message list next to message content)</change>
+        <change>Show a thread as unread/starred if at least one message is unread/starred</change>
+        <change>Modified the preview lines setting to allow disabling message preview in message list</change>
+        <change>Remember the scroll position of the message list</change>
+        <change>Changed the color picker</change>
+        <change>Improved certificate failure notifications</change>
+        <change>Fixed a bug that prevented third-party apps from reading the number of unread messages</change>
+        <change>Fixed a bug that caused the app to load too many messages when you clicked "Load more messages"</change>
+        <change>Updated Finnish, French, German, Dutch translations</change>
+    </release>
+    <release version="4.321" versioncode="17022" date="2013-01-16">
+        <change>Fixed some bugs related to message threading</change>
+        <change>Improved search for folders in the folder list</change>
+        <change>Added support for wrapping long folder names in the folder list</change>
+        <change>Added a progress indicator for remote searches</change>
+        <change>Reworked messagelist progress indicators</change>
+        <change>Improved notifications on SSL certificate validation failures</change>
+        <change>Updated Finnish, French, Spanish translations</change>
+        <change>Fixes to the new notificiations</change>
+        <change>Improvements to database upgrade infrastructure</change>
+        <change>Added the ability to search all local messages from the folder list</change>
+        <change>Added button to show this about screen</change>
+        <change>Close thread view when last message has been moved/deleted</change>
+        <change>Performance improvements</change>
+    </release>
+    <release version="4.320" versioncode="17021" date="2013-01-11">
+        <change>Added 'Account settings' back to the account context menu</change>
+        <change>Added 'Refresh' and 'Settings' back to the folder context menu</change>
+        <change>Minor bug fixes</change>
+    </release>
+    <release version="4.319" versioncode="17020" date="2013-01-08">
+        <change>Added Jelly Bean-style notifications</change>
+    </release>
+
+</changelog>
