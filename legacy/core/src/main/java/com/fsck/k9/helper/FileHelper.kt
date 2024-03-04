@@ -1,15 +1,14 @@
 package com.fsck.k9.helper
 
 import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
 import java.io.IOException
-import org.apache.commons.io.IOUtils
 import timber.log.Timber
 
 object FileHelper {
+
     @JvmStatic
-    fun touchFile(parentDir: File?, name: String?) {
+    @Suppress("TooGenericExceptionCaught")
+    fun touchFile(parentDir: File, name: String) {
         val file = File(parentDir, name)
         try {
             if (!file.exists()) {
@@ -26,30 +25,13 @@ object FileHelper {
         }
     }
 
-    @Throws(IOException::class)
-    private fun copyFile(from: File, to: File) {
-        val `in` = FileInputStream(from)
-        val out = FileOutputStream(to)
-        try {
-            val buffer = ByteArray(1024)
-            var count: Int
-            while (`in`.read(buffer).also { count = it } > 0) {
-                out.write(buffer, 0, count)
-            }
-            out.close()
-        } finally {
-            IOUtils.closeQuietly(`in`)
-            IOUtils.closeQuietly(out)
-        }
-    }
-
     @JvmStatic
     @Throws(IOException::class)
     fun renameOrMoveByCopying(from: File, to: File) {
         deleteFileIfExists(to)
         val renameFailed = !from.renameTo(to)
         if (renameFailed) {
-            copyFile(from, to)
+            from.copyTo(target = to, overwrite = true)
             val deleteFromFailed = !from.delete()
             if (deleteFromFailed) {
                 Timber.e("Unable to delete source file after copying to destination!")
@@ -58,29 +40,26 @@ object FileHelper {
     }
 
     @Throws(IOException::class)
-    private fun deleteFileIfExists(to: File) {
-        val fileDoesNotExist = !to.exists()
-        if (fileDoesNotExist) {
-            return
+    private fun deleteFileIfExists(file: File) {
+        if (file.exists() && !file.delete()) {
+            throw IOException("Unable to delete file: ${file.absolutePath}")
         }
-        val deleteOk = to.delete()
-        if (deleteOk) {
-            return
-        }
-        throw IOException("Unable to delete file: " + to.absolutePath)
     }
 
+    @Suppress("TooGenericExceptionCaught")
     fun move(from: File, to: File): Boolean {
         if (to.exists()) {
             if (!to.delete()) {
                 Timber.d("Unable to delete file: %s", to.absolutePath)
             }
         }
-        if (!to.getParentFile().mkdirs()) {
-            Timber.d("Unable to make directories: %s", to.getParentFile().absolutePath)
+
+        val parent = to.parentFile
+        if (parent != null && !parent.mkdirs()) {
+            Timber.d("Unable to make directories: %s", parent.absolutePath)
         }
         return try {
-            copyFile(from, to)
+            from.copyTo(target = to, overwrite = true)
             val deleteFromFailed = !from.delete()
             if (deleteFromFailed) {
                 Timber.e("Unable to delete source file after copying to destination!")
@@ -119,7 +98,7 @@ object FileHelper {
                 Timber.w("cannot create directory %s", toDir.absolutePath)
             }
         }
-        val files = fromDir.listFiles()
+        val files = fromDir.listFiles().orEmpty()
         for (file in files) {
             if (file.isDirectory()) {
                 moveRecursive(file, File(toDir, file.getName()))
