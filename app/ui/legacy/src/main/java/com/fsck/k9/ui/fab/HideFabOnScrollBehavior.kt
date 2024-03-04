@@ -9,8 +9,17 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.marginBottom
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.SnackbarLayout
 
+/**
+ * Hides the floating action button when the `CoordinatorLayout` is scrolled.
+ *
+ * The behavior to hide the FAB when the [CoordinatorLayout] is scrolled is provided by the super class
+ * [HideBottomViewOnScrollBehavior]. The code in this class adjusts the vertical position of the FAB when a [Snackbar]
+ * is visible. This is necessary because we (like many others) deliberately ignore the
+ * [guideline](https://m3.material.io/components/snackbar/guidelines) to display a `Snackbar` above the FAB.
+ */
 class HideFabOnScrollBehavior(context: Context, attributes: AttributeSet) :
     HideBottomViewOnScrollBehavior<FloatingActionButton>(context, attributes) {
 
@@ -23,20 +32,16 @@ class HideFabOnScrollBehavior(context: Context, attributes: AttributeSet) :
         super.onAttachedToLayoutParams(lp)
     }
 
-    // FIXME restricted API
-    @SuppressLint("RestrictedApi")
     override fun layoutDependsOn(parent: CoordinatorLayout, child: FloatingActionButton, dependency: View): Boolean {
-        return dependency is SnackbarLayout || super.layoutDependsOn(parent, child, dependency)
+        return dependency.isSnackbarLayout() || super.layoutDependsOn(parent, child, dependency)
     }
 
-    // FIXME restricted API
-    @SuppressLint("RestrictedApi")
     override fun onDependentViewChanged(
         parent: CoordinatorLayout,
         child: FloatingActionButton,
         dependency: View,
     ): Boolean {
-        if (dependency is SnackbarLayout) {
+        if (dependency.isSnackbarLayout()) {
             val additionalHiddenOffsetY = dependency.height + dependency.marginBottom
             setAdditionalHiddenOffsetY(child, additionalHiddenOffsetY)
         }
@@ -44,13 +49,18 @@ class HideFabOnScrollBehavior(context: Context, attributes: AttributeSet) :
         return false
     }
 
-    // FIXME restricted API
-    @SuppressLint("RestrictedApi")
     override fun onDependentViewRemoved(parent: CoordinatorLayout, child: FloatingActionButton, dependency: View) {
         super.onDependentViewRemoved(parent, child, dependency)
 
-        if (dependency is SnackbarLayout) {
+        if (dependency.isSnackbarLayout()) {
             setAdditionalHiddenOffsetY(child, 0)
         }
+    }
+
+    // SnackbarLayout is a restricted type that shouldn't be accessed from outside of its library. However, there
+    // doesn't seem to be a public API we could use to implement the desired behavior.
+    @SuppressLint("RestrictedApi")
+    private fun View.isSnackbarLayout(): Boolean {
+        return this is SnackbarLayout
     }
 }
