@@ -1,5 +1,6 @@
 package com.fsck.k9.ui.fab
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity
@@ -22,10 +23,14 @@ class HideFabOnScrollBehavior(context: Context, attributes: AttributeSet) :
         super.onAttachedToLayoutParams(lp)
     }
 
+    // FIXME restricted API
+    @SuppressLint("RestrictedApi")
     override fun layoutDependsOn(parent: CoordinatorLayout, child: FloatingActionButton, dependency: View): Boolean {
         return dependency is SnackbarLayout || super.layoutDependsOn(parent, child, dependency)
     }
 
+    // FIXME restricted API
+    @SuppressLint("RestrictedApi")
     override fun onDependentViewChanged(
         parent: CoordinatorLayout,
         child: FloatingActionButton,
@@ -39,6 +44,8 @@ class HideFabOnScrollBehavior(context: Context, attributes: AttributeSet) :
         return false
     }
 
+    // FIXME restricted API
+    @SuppressLint("RestrictedApi")
     override fun onDependentViewRemoved(parent: CoordinatorLayout, child: FloatingActionButton, dependency: View) {
         super.onDependentViewRemoved(parent, child, dependency)
 
