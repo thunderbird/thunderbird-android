@@ -18,7 +18,6 @@ public class AttachmentDownloadDialogFragment extends DialogFragment {
     private static final String ARG_MESSAGE = "message";
 
 
-    private ProgressDialog dialog;
     private MessagingListener messagingListener;
     private MessagingController messagingController;
 
@@ -42,6 +41,14 @@ public class AttachmentDownloadDialogFragment extends DialogFragment {
 
         final SizeUnit sizeUnit = SizeUnit.getAppropriateFor(size);
 
+        ProgressDialog dialog = new ProgressDialog(getActivity());
+        dialog.setMessage(message);
+        dialog.setMax(sizeUnit.valueInSizeUnit(size));
+        dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        dialog.setProgress(0);
+        dialog.setProgressNumberFormat("%1d/%2d " + sizeUnit.shortName);
+        dialog.show();
+
         messagingListener = new SimpleMessagingListener() {
             @Override
             public void updateProgress(int progress) {
@@ -51,14 +58,6 @@ public class AttachmentDownloadDialogFragment extends DialogFragment {
 
         messagingController = MessagingController.getInstance(getActivity());
         messagingController.addListener(messagingListener);
-
-        dialog = new ProgressDialog(getActivity());
-        dialog.setMessage(message);
-        dialog.setMax(sizeUnit.valueInSizeUnit(size));
-        dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        dialog.setProgress(0);
-        dialog.setProgressNumberFormat("%1d/%2d " + sizeUnit.shortName);
-        dialog.show();
 
         return dialog;
     }
