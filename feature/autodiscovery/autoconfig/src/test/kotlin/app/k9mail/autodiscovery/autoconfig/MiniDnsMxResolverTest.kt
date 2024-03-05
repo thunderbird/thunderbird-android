@@ -9,6 +9,7 @@ import assertk.assertions.index
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
+import assertk.assertions.isTrue
 import kotlin.test.Ignore
 import kotlin.test.Test
 
@@ -32,6 +33,16 @@ class MiniDnsMxResolverTest {
                 "alt3.aspmx.l.google.com",
             )
         }
+    }
+
+    @Test
+    @Ignore("Requires internet")
+    fun `MX lookup for known domain using DNSSEC`() {
+        val domain = "posteo.de".toDomain()
+
+        val result = resolver.lookup(domain)
+
+        assertThat(result.isTrusted).isTrue()
     }
 
     @Test
