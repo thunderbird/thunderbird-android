@@ -135,7 +135,7 @@ com.mikepenz:fastadapter-extensions-expandable:5.7.0
 com.mikepenz:fastadapter-extensions-swipe:5.7.0
 com.mikepenz:fastadapter-extensions-utils:5.7.0
 com.mikepenz:fastadapter:5.7.0
-com.mikepenz:materialdrawer:8.4.5
+com.mikepenz:materialdrawer:9.0.2
 com.splitwise:tokenautocomplete:4.0.0-beta01
 com.squareup.moshi:moshi:1.15.1
 com.squareup.okhttp3:okhttp:4.12.0

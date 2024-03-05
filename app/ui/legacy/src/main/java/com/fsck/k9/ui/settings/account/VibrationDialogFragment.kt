@@ -10,7 +10,6 @@ import android.widget.CheckedTextView
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SwitchCompat
 import androidx.preference.PreferenceDialogFragmentCompat
 import com.fsck.k9.NotificationVibration
@@ -18,6 +17,7 @@ import com.fsck.k9.VibratePattern
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.bundle.getEnum
 import com.fsck.k9.ui.base.bundle.putEnum
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.android.ext.android.inject
 import com.fsck.k9.ui.base.R as BaseR
 
@@ -53,7 +53,7 @@ class VibrationDialogFragment : PreferenceDialogFragmentCompat() {
             vibrationTimes,
         )
 
-        return AlertDialog.Builder(context)
+        return MaterialAlertDialogBuilder(context)
             .setAdapter(adapter, null)
             .setPositiveButton(BaseR.string.okay_action, ::onClick)
             .setNegativeButton(BaseR.string.cancel_action, ::onClick)

@@ -32,9 +32,8 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/floatingActionButtonMargin"
         android:contentDescription="@string/compose_action"
-        app:backgroundTint="?attr/floatingActionButtonBackgroundColor"
         app:layout_behavior="com.fsck.k9.ui.fab.HideFabOnScrollBehavior"
         app:srcCompat="?attr/iconActionCompose"
-        app:tint="?attr/floatingActionButtonForegroundColor" />
+        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

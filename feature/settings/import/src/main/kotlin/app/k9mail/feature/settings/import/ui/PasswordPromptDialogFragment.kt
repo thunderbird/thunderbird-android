@@ -8,13 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.CheckBox
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.Group
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import app.k9mail.feature.settings.importing.R
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.fsck.k9.ui.base.R as BaseR
 
 class PasswordPromptDialogFragment : DialogFragment() {
@@ -46,7 +46,7 @@ class PasswordPromptDialogFragment : DialogFragment() {
             outgoingServerName,
         )
 
-        return AlertDialog.Builder(requireContext())
+        return MaterialAlertDialogBuilder(requireContext())
             .setView(dialogView)
             .setPositiveButton(BaseR.string.okay_action) { _, _ -> deliverPasswordPromptResult() }
             .setNegativeButton(BaseR.string.cancel_action, null)

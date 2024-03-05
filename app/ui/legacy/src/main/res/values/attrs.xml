@@ -2,11 +2,6 @@
 <resources>
 
     <declare-styleable name="K9Styles">
-        <attr name="toolbarColor" format="reference|color" />
-        <attr name="messageHeaderBackground" format="reference|color" />
-        <attr name="extraMessageHeaderBackground" format="reference|color" />
-        <attr name="floatingActionButtonBackgroundColor" format="reference|color" />
-        <attr name="floatingActionButtonForegroundColor" format="reference|color" />
         <attr name="iconUnifiedInbox" format="reference" />
         <attr name="iconFolder" format="reference" />
         <attr name="iconFolderInbox" format="reference" />
@@ -107,7 +102,6 @@
         <attr name="messageStarColor" format="color"/>
         <attr name="messageDetailsAddContactIcon" format="reference"/>
         <attr name="messageDetailsDividerColor" format="reference|color"/>
-        <attr name="attachmentCardBackground" format="reference|color"/>
         <attr name="composerBackgroundColor" format="color"/>
         <attr name="contactPictureFallbackDefaultBackgroundColor" format="reference|color"/>
         <attr name="contactPictureFallbackBackgroundColors" format="reference"/>
@@ -134,8 +128,6 @@
         <attr name="openpgp_blue" format="reference|color" />
         <attr name="openpgp_grey" format="reference|color" />
         <attr name="openpgp_dark_grey" format="reference|color" />
-
-        <attr name="behindRecyclerView" format="reference|color" />
     </declare-styleable>
 
     <declare-styleable name="FoldableLinearLayout">

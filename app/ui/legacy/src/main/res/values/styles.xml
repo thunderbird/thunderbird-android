@@ -48,17 +48,16 @@
         <item name="materialDrawerPrimaryIcon">?android:textColorSecondary</item>
         <item name="materialDrawerSecondaryText">?android:textColorSecondary</item>
         <item name="materialDrawerSecondaryIcon">?android:textColorSecondary</item>
-        <item name="materialDrawerSelectedBackgroundColor">?colorAccent</item>
+        <item name="materialDrawerSelectedBackgroundColor">?android:textColorTertiary</item>
+        <item name="materialDrawerDividerColor">?attr/colorOnSurfaceVariant</item>
     </style>
 
     <style name="Widget.MaterialDrawerStyle.K9.Light" parent="Widget.MaterialDrawerStyle.K9">
         <item name="materialDrawerInsetForeground">@android:color/transparent</item>
-        <item name="materialDrawerDividerColor">#eee</item>
     </style>
 
     <style name="Widget.MaterialDrawerStyle.K9.Dark" parent="Widget.MaterialDrawerStyle.K9">
         <item name="materialDrawerInsetForeground">@android:color/transparent</item>
-        <item name="materialDrawerDividerColor">#444</item>
     </style>
 
     <style name="Widget.MaterialDrawerHeaderStyle.K9">
@@ -81,22 +80,6 @@
 
     <style name="AttachmentCard" parent="">
         <item name="android:layout_width">match_parent</item>
-    </style>
-
-    <style name="Widget.K9.Toolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
-        <item name="android:background">?attr/toolbarColor</item>
-        <item name="titleTextColor">?android:attr/textColorPrimary</item>
-        <item name="subtitleTextColor">?android:attr/textColorSecondary</item>
-        <item name="android:theme">@style/ThemeOverlay.K9.Toolbar</item>
-    </style>
-
-    <style name="ThemeOverlay.K9.Toolbar" parent="">
-        <item name="colorControlNormal">?android:attr/textColorSecondary</item>
-        <item name="actionMenuTextColor">?android:attr/textColorSecondary</item>
-    </style>
-
-    <style name="Widget.K9.Button.Snackbar" parent="Widget.MaterialComponents.Button.TextButton.Snackbar">
-        <item name="android:textColor">?attr/colorSecondary</item>
     </style>
 
 </resources>

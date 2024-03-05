@@ -1,33 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="Theme.K9.Startup" parent="Theme.K9.Dark">
         <item name="android:windowBackground">@android:color/black</item>
     </style>
 
     <!-- Empty base themes that can be easily replaced by RRO (Runtime Resource Overlay) themes -->
-    <style name="Theme.K9.Light.Base" parent="Theme.MaterialComponents.Light.NoActionBar" />
-    <style name="Theme.K9.Dark.Base" parent="Theme.MaterialComponents.NoActionBar" />
+    <style name="Theme.K9.Light.Base" parent="Theme.Material3.Light.NoActionBar" />
+    <style name="Theme.K9.Dark.Base" parent="Theme.Material3.Dark.NoActionBar" />
 
     <style name="Theme.K9.Light.Common" parent="Theme.K9.Light.Base">
+        <!-- Colors -->
+        <item name="colorPrimary">@color/k9_primary_040</item>
+        <item name="colorOnPrimary">@color/k9_primary_100</item>
+        <item name="colorPrimaryInverse">@color/k9_primary_080</item>
+        <item name="colorPrimaryContainer">@color/k9_primary_090</item>
+        <item name="colorOnPrimaryContainer">@color/k9_primary_010</item>
+        <item name="colorPrimaryFixed">@color/k9_primary_090</item>
+        <item name="colorPrimaryFixedDim">@color/k9_primary_080</item>
+        <item name="colorOnPrimaryFixed">@color/k9_primary_010</item>
+        <item name="colorOnPrimaryFixedVariant">@color/k9_primary_030</item>
+        <item name="colorSecondary">@color/k9_secondary_040</item>
+        <item name="colorOnSecondary">@color/k9_secondary_100</item>
+        <item name="colorSecondaryContainer">@color/k9_secondary_090</item>
+        <item name="colorOnSecondaryContainer">@color/k9_secondary_010</item>
+        <item name="colorSecondaryFixed">@color/k9_secondary_090</item>
+        <item name="colorSecondaryFixedDim">@color/k9_secondary_080</item>
+        <item name="colorOnSecondaryFixed">@color/k9_secondary_010</item>
+        <item name="colorOnSecondaryFixedVariant">@color/k9_secondary_030</item>
+        <item name="colorTertiary">@color/k9_tertiary_040</item>
+        <item name="colorOnTertiary">@color/k9_tertiary_100</item>
+        <item name="colorTertiaryContainer">@color/k9_tertiary_090</item>
+        <item name="colorOnTertiaryContainer">@color/k9_tertiary_010</item>
+        <item name="colorTertiaryFixed">@color/k9_tertiary_090</item>
+        <item name="colorTertiaryFixedDim">@color/k9_tertiary_080</item>
+        <item name="colorOnTertiaryFixed">@color/k9_tertiary_010</item>
+        <item name="colorOnTertiaryFixedVariant">@color/k9_tertiary_030</item>
+        <item name="android:colorBackground">@color/k9_neutral_099</item>
+        <item name="colorOnBackground">@color/k9_neutral_010</item>
+        <item name="colorSurface">@color/k9_neutral_098</item>
+        <item name="colorOnSurface">@color/k9_neutral_010</item>
+        <item name="colorSurfaceVariant">@color/k9_neutral_variant_090</item>
+        <item name="colorOnSurfaceVariant">@color/k9_neutral_variant_030</item>
+        <item name="colorSurfaceInverse">@color/k9_neutral_020</item>
+        <item name="colorOnSurfaceInverse">@color/k9_neutral_095</item>
+        <item name="colorSurfaceBright">@color/k9_neutral_098</item>
+        <item name="colorSurfaceDim">@color/k9_neutral_087</item>
+        <item name="colorSurfaceContainer">@color/k9_neutral_094</item>
+        <item name="colorSurfaceContainerLow">@color/k9_neutral_096</item>
+        <item name="colorSurfaceContainerHigh">@color/k9_neutral_092</item>
+        <item name="colorSurfaceContainerLowest">@color/k9_neutral_100</item>
+        <item name="colorSurfaceContainerHighest">@color/k9_neutral_090</item>
+        <item name="colorOutline">@color/k9_neutral_variant_050</item>
+        <item name="colorOutlineVariant">@color/k9_neutral_variant_080</item>
+        <item name="colorError">@color/k9_error_040</item>
+        <item name="colorOnError">@color/k9_error_100</item>
+        <item name="colorErrorContainer">@color/k9_error_090</item>
+        <item name="colorOnErrorContainer">@color/k9_error_010</item>
+
+        <!-- Legacy styles -->
+
         <item name="windowActionModeOverlay">true</item>
 
-        <item name="toolbarColor">@color/material_gray_100</item>
-
-        <item name="colorPrimary">@color/material_gray_800</item>
-        <item name="colorPrimaryVariant">@color/material_gray_700</item>
-        <item name="colorSecondary">@color/material_pink_500</item>
-        <item name="colorSecondaryVariant">@color/material_pink_300</item>
-        <item name="colorOnSecondary">#ffffff</item>
-        <item name="messageHeaderBackground">@color/material_gray_200</item>
-        <item name="extraMessageHeaderBackground">@color/material_gray_100</item>
-        <item name="bottomBarBackground">@color/material_gray_50</item>
-        <item name="floatingActionButtonBackgroundColor">?attr/colorPrimary</item>
-        <item name="floatingActionButtonForegroundColor">?attr/colorOnPrimary</item>
-
-        <item name="toolbarStyle">@style/Widget.K9.Toolbar</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
-        <item name="textInputStyle">?attr/textInputOutlinedStyle</item>
 
         <item name="iconUnifiedInbox">@drawable/ic_inbox_multiple</item>
         <item name="iconFolder">@drawable/ic_folder</item>
@@ -86,8 +121,10 @@
         <item name="iconSettingsExport">@drawable/ic_export</item>
         <item name="iconSettingsImport">@drawable/ic_import</item>
         <item name="iconSettingsImportStatus">@drawable/ic_import_status</item>
+
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_light</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_light</item>
+
         <item name="messageListSelectedCheckMarkColor">?attr/colorSecondary</item>
         <item name="messageListSelectedBackgroundColor">?attr/colorSecondaryVariant</item>
         <item name="messageListSelectedBackgroundAlphaFraction">33%</item>
@@ -131,7 +168,6 @@
         <item name="messageStarColor">#fbbc04</item>
         <item name="messageDetailsAddContactIcon">@drawable/ic_person_add</item>
         <item name="messageDetailsDividerColor">#ffcccccc</item>
-        <item name="attachmentCardBackground">#e8e8e8</item>
         <item name="contactPictureFallbackDefaultBackgroundColor">#ffababab</item>
         <item name="contactPictureFallbackBackgroundColors">@array/contact_picture_fallback_background_colors_light</item>
         <item name="contactTokenBackgroundColor">#ccc</item>
@@ -161,38 +197,72 @@
 
         <item name="materialDrawerStyle">@style/Widget.MaterialDrawerStyle.K9.Light</item>
         <item name="materialDrawerHeaderStyle">@style/Widget.MaterialDrawerHeaderStyle.K9.Light</item>
-        <item name="behindRecyclerView">#F0F0F0</item>
-
-        <item name="snackbarButtonStyle">@style/Widget.K9.Button.Snackbar</item>
     </style>
 
     <style name="Theme.K9.Light" parent="Theme.K9.Light.Common">
-        <item name="android:statusBarColor">#000000</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
     <style name="Theme.K9.Dark" parent="Theme.K9.Dark.Common">
-        <item name="android:statusBarColor">#000000</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
     <style name="Theme.K9.Dark.Common" parent="Theme.K9.Dark.Base">
-        <item name="android:navigationBarColor">#000000</item>
+        <!-- Colors -->
+        <item name="colorPrimary">@color/k9_primary_080</item>
+        <item name="colorOnPrimary">@color/k9_primary_020</item>
+        <item name="colorPrimaryInverse">@color/k9_primary_040</item>
+        <item name="colorPrimaryContainer">@color/k9_primary_030</item>
+        <item name="colorOnPrimaryContainer">@color/k9_primary_090</item>
+        <item name="colorPrimaryFixed">@color/k9_primary_090</item>
+        <item name="colorPrimaryFixedDim">@color/k9_primary_080</item>
+        <item name="colorOnPrimaryFixed">@color/k9_primary_010</item>
+        <item name="colorOnPrimaryFixedVariant">@color/k9_primary_030</item>
+        <item name="colorSecondary">@color/k9_secondary_080</item>
+        <item name="colorOnSecondary">@color/k9_secondary_020</item>
+        <item name="colorSecondaryContainer">@color/k9_secondary_030</item>
+        <item name="colorOnSecondaryContainer">@color/k9_secondary_090</item>
+        <item name="colorSecondaryFixed">@color/k9_secondary_090</item>
+        <item name="colorSecondaryFixedDim">@color/k9_secondary_080</item>
+        <item name="colorOnSecondaryFixed">@color/k9_secondary_010</item>
+        <item name="colorOnSecondaryFixedVariant">@color/k9_secondary_030</item>
+        <item name="colorTertiary">@color/k9_tertiary_080</item>
+        <item name="colorOnTertiary">@color/k9_tertiary_020</item>
+        <item name="colorTertiaryContainer">@color/k9_tertiary_030</item>
+        <item name="colorOnTertiaryContainer">@color/k9_tertiary_090</item>
+        <item name="colorTertiaryFixed">@color/k9_tertiary_090</item>
+        <item name="colorTertiaryFixedDim">@color/k9_tertiary_080</item>
+        <item name="colorOnTertiaryFixed">@color/k9_tertiary_010</item>
+        <item name="colorOnTertiaryFixedVariant">@color/k9_tertiary_030</item>
+        <item name="android:colorBackground">@color/k9_neutral_010</item>
+        <item name="colorOnBackground">@color/k9_neutral_090</item>
+        <item name="colorSurface">@color/k9_neutral_006</item>
+        <item name="colorOnSurface">@color/k9_neutral_090</item>
+        <item name="colorSurfaceVariant">@color/k9_neutral_variant_030</item>
+        <item name="colorOnSurfaceVariant">@color/k9_neutral_variant_080</item>
+        <item name="colorSurfaceInverse">@color/k9_neutral_090</item>
+        <item name="colorOnSurfaceInverse">@color/k9_neutral_020</item>
+        <item name="colorSurfaceBright">@color/k9_neutral_024</item>
+        <item name="colorSurfaceDim">@color/k9_neutral_006</item>
+        <item name="colorSurfaceContainer">@color/k9_neutral_012</item>
+        <item name="colorSurfaceContainerLow">@color/k9_neutral_010</item>
+        <item name="colorSurfaceContainerHigh">@color/k9_neutral_017</item>
+        <item name="colorSurfaceContainerLowest">@color/k9_neutral_004</item>
+        <item name="colorSurfaceContainerHighest">@color/k9_neutral_022</item>
+        <item name="colorOutline">@color/k9_neutral_variant_060</item>
+        <item name="colorOutlineVariant">@color/k9_neutral_variant_030</item>
+        <item name="colorError">@color/k9_error_080</item>
+        <item name="colorOnError">@color/k9_error_020</item>
+        <item name="colorErrorContainer">@color/k9_error_030</item>
+        <item name="colorOnErrorContainer">@color/k9_error_090</item>
+
+        <!-- Legacy styles -->
+
         <item name="windowActionModeOverlay">true</item>
 
-        <item name="toolbarColor">@color/material_gray_900</item>
-
-        <item name="colorPrimary">@color/material_gray_100</item>
-        <item name="colorPrimaryVariant">@color/material_gray_50</item>
-        <item name="colorSecondary">@color/material_pink_300</item>
-        <item name="colorSecondaryVariant">@color/material_pink_500</item>
-        <item name="messageHeaderBackground">@color/material_gray_900</item>
-        <item name="extraMessageHeaderBackground">@color/material_gray_900</item>
-        <item name="bottomBarBackground">@color/material_gray_900</item>
-        <item name="floatingActionButtonBackgroundColor">?attr/colorPrimary</item>
-        <item name="floatingActionButtonForegroundColor">?attr/colorOnPrimary</item>
-
-        <item name="toolbarStyle">@style/Widget.K9.Toolbar</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
-        <item name="textInputStyle">?attr/textInputOutlinedStyle</item>
 
         <item name="iconUnifiedInbox">@drawable/ic_inbox_multiple</item>
         <item name="iconFolder">@drawable/ic_folder</item>
@@ -251,6 +321,7 @@
         <item name="iconSettingsExport">@drawable/ic_export</item>
         <item name="iconSettingsImport">@drawable/ic_import</item>
         <item name="iconSettingsImportStatus">@drawable/ic_import_status</item>
+
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_dark</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_dark</item>
         <item name="messageListSelectedCheckMarkColor">?attr/colorSecondary</item>
@@ -296,7 +367,6 @@
         <item name="messageStarColor">#fdd663</item>
         <item name="messageDetailsAddContactIcon">@drawable/ic_person_add</item>
         <item name="messageDetailsDividerColor">#ff555555</item>
-        <item name="attachmentCardBackground">#313131</item>
         <item name="contactTokenBackgroundColor">#313131</item>
         <item name="contactPictureFallbackDefaultBackgroundColor">#ff606060</item>
         <item name="contactPictureFallbackBackgroundColors">@array/contact_picture_fallback_background_colors_dark</item>
@@ -326,10 +396,6 @@
 
         <item name="materialDrawerStyle">@style/Widget.MaterialDrawerStyle.K9.Dark</item>
         <item name="materialDrawerHeaderStyle">@style/Widget.MaterialDrawerHeaderStyle.K9.Dark</item>
-
-        <item name="behindRecyclerView">#202020</item>
-
-        <item name="snackbarButtonStyle">@style/Widget.K9.Button.Snackbar</item>
     </style>
 
     <style name="Theme.K9.Dialog.Light" parent="Theme.K9.Light">
@@ -340,7 +406,7 @@
         <item name="backgroundColorChooseAccountHeader">#404040</item>
     </style>
 
-    <style name="Theme.K9.Dialog.Translucent.Dark" parent="Theme.MaterialComponents.Dialog.Bridge">
+    <style name="Theme.K9.Dialog.Translucent.Dark" parent="Theme.Material3.Dark.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
@@ -354,7 +420,7 @@
         <item name="tintColorBulletPointNeutral">#bbb</item>
     </style>
 
-    <style name="Theme.K9.Dialog.Translucent.Light" parent="Theme.MaterialComponents.Light.Dialog.Bridge">
+    <style name="Theme.K9.Dialog.Translucent.Light" parent="Theme.Material3.Light.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>

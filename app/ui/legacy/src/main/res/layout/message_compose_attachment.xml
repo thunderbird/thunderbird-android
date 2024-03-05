@@ -8,7 +8,6 @@
     android:layout_marginEnd="12dp"
     android:layout_marginBottom="12dp"
     android:orientation="vertical"
-    app:cardBackgroundColor="?attr/attachmentCardBackground"
     app:cardElevation="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
