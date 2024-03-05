@@ -29,6 +29,7 @@ fun TextFieldOutlinedEmailAddress(
         readOnly = isReadOnly,
         isError = hasError,
         keyboardOptions = KeyboardOptions(
+            autoCorrect = false,
             keyboardType = KeyboardType.Email,
         ),
         singleLine = true,
