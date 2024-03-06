@@ -22,7 +22,7 @@ fun TextFieldOutlinedEmailAddress(
 ) {
     MaterialOutlinedTextField(
         value = value,
-        onValueChange = onValueChange,
+        onValueChange = stripLineBreaks(onValueChange),
         modifier = modifier,
         enabled = isEnabled,
         label = selectLabel(label, isRequired),
