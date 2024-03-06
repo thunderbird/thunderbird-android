@@ -9,6 +9,9 @@ interface CatalogContract {
     ) {
         K9("K-9"),
         THUNDERBIRD("Thunderbird"),
+
+        // Theme 2
+        THEME_2_K9("K-9 (Material3)"),
     }
 
     enum class ThemeVariant(
@@ -26,8 +29,8 @@ interface CatalogContract {
     )
 
     sealed interface Event {
-        object OnThemeChanged : Event
+        data object OnThemeChanged : Event
 
-        object OnThemeVariantChanged : Event
+        data object OnThemeVariantChanged : Event
     }
 }

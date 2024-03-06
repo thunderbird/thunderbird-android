@@ -1,7 +1,7 @@
 package app.k9mail.ui.catalog
 
 import android.app.Application
-import app.k9mail.ui.catalog.ui.catalogUiModule
+import app.k9mail.ui.catalog.di.catalogUiModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
