@@ -120,7 +120,6 @@
         <item name="iconSettingsAccountAdd">@drawable/ic_account_plus</item>
         <item name="iconSettingsExport">@drawable/ic_export</item>
         <item name="iconSettingsImport">@drawable/ic_import</item>
-        <item name="iconSettingsImportStatus">@drawable/ic_import_status</item>
 
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_light</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_light</item>
@@ -320,7 +319,6 @@
         <item name="iconSettingsAccountAdd">@drawable/ic_account_plus</item>
         <item name="iconSettingsExport">@drawable/ic_export</item>
         <item name="iconSettingsImport">@drawable/ic_import</item>
-        <item name="iconSettingsImportStatus">@drawable/ic_import_status</item>
 
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_dark</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_dark</item>
