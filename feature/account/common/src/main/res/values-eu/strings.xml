@@ -3,4 +3,6 @@
     <string name="account_common_button_next">Hurrengoa</string>
     <string name="account_common_button_back">Aurrekoa</string>
     <string name="account_common_title">K-9 Mail</string>
+    <string name="account_common_error_server_message">Zerbitzariak mezu hau itzuli du:
+\n%s</string>
 </resources>

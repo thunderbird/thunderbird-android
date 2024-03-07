@@ -1,2 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_button_back">بازگشت (توصیه می‌شود)</string>
+    <string name="account_server_certificate_button_advanced">پیشرفته</string>
+    <string name="account_server_certificate_button_continue">پذیرفتن ریسک و ادامه دادن</string>
+    <string name="account_server_certificate_not_valid_before">معتبر نیست تا قبل از</string>
+    <string name="account_server_certificate_not_valid_after">معتبر نیست تا بعد از</string>
+    <string name="account_server_certificate_subject">موضوع</string>
+    <string name="account_server_certificate_issuer">ایجاد کننده</string>
+    <string name="account_server_certificate_fingerprints_section">اثرانگشت‌ها</string>
+    <string name="account_server_certificate_warning_title">اخطار</string>
+    <string name="account_server_certificate_unknown_error_subtitle">خطای گواهی</string>
+    <string name="account_server_certificate_unknown_error_description_format">یک مسئله امنیتی شناسایی شد و به <xliff:g id="serverName">%s</xliff:g> متصل نشد.
+\nدر صورت تمایل به ادامه، ریسک سرقت اطلاعات شما مانند رمز عبور و ایمیل‌ها وجود دارد.</string>
+    <string name="account_server_certificate_section_title">گواهی کارساز</string>
+    <string name="account_server_certificate_subject_alternative_names">نام‌های حایگزین موضوع</string>
+</resources>

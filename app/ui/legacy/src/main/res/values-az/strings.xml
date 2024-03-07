@@ -130,9 +130,10 @@
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="message_view_theme_action_light">İşıqlı fona keçin</string>
     <string name="default_signature">--
-\nK-9 Mail ilə Android cihazımdan göndərilib. Qısa qeydə görə üzrlü sayın.</string>
+\nK-9 Mail ilə Android cihazımdan göndərilib. Yığcamlığa görə üzrlü sayın.</string>
     <string name="changelog_snackbar_button_text">Baxın</string>
     <string name="prefs_title">Tənzimləmələr</string>
     <string name="message_view_theme_action_dark">Qaranlıq fona keç</string>
     <string name="about_action">Haqqında</string>
+    <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account"> %s</xliff:g> \" hesabı K-9 Mail-dən silinəcək.</string>
 </resources>

@@ -349,7 +349,7 @@
     <string name="account_settings_notification_channels_label">Kategorie powiadomień</string>
     <string name="account_settings_open_notification_settings_messages_summary">Konfiguruj powiadomienia dla nowych wiadomości</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Konfiguruj powiadomienia o błędach i stanie</string>
-    <string name="account_settings_show_pictures_label">Zawsze pokazuj obrazki</string>
+    <string name="account_settings_show_pictures_label">Zawsze pokazuj obrazy</string>
     <string name="account_settings_show_pictures_never">Nie</string>
     <string name="account_settings_show_pictures_only_from_contacts">Od kontaktów</string>
     <string name="account_settings_show_pictures_always">Od każdego</string>
@@ -361,8 +361,8 @@
     <string name="account_settings_strip_signature_label">Wycinaj podpis z tekstu</string>
     <string name="account_settings_strip_signature_summary">Gdy odpowiadasz na wiadomość, cytowany tekst nie bedzie zawierał podpisu</string>
     <string name="account_settings_message_format_label">Format wiadomości</string>
-    <string name="account_settings_message_format_text">Zwykły tekst (bez obrazków i formatowania)</string>
-    <string name="account_settings_message_format_html">HTML (z obrazkami i formatowaniem)</string>
+    <string name="account_settings_message_format_text">Zwykły tekst (bez obrazów i formatowania)</string>
+    <string name="account_settings_message_format_html">HTML (z obrazami i formatowaniem)</string>
     <string name="account_settings_message_format_auto">Automatycznie</string>
     <string name="account_settings_always_show_cc_bcc_label">Zawsze wyświetlaj DW/UDW</string>
     <string name="account_settings_message_read_receipt_label">Potwierdzenie przeczytania</string>

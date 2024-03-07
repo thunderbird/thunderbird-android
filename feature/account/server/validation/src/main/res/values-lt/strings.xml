@@ -1,2 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_error_client_certificate_expired">Kliento liudijimas nebegalioja</string>
+    <string name="account_server_validation_error_missing_server_capability">Serveryje trūksta galimybės</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">Kliento liudijimo nepavykto pasiekti</string>
+    <string name="account_server_validation_error_details">Išsamiau:
+\n%s</string>
+    <string name="account_server_validation_incoming_loading_message">Tikrinami gaunamų laiškų serverio parametrai…</string>
+    <string name="account_server_validation_sign_in">Prisijunkite</string>
+    <string name="account_server_validation_outgoing_success">Siunčiamų laiškų serverio parametrai patvirtinti</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Serveryje trūksta šios galimybės:
+\n%s</string>
+    <string name="account_server_validation_incoming_loading_error">Nepavyko patikrinti gaunamų laiškų serverio parametrų</string>
+    <string name="account_server_validation_incoming_success">Gaunamų laiškų serverio parametrai patvirtinti</string>
+    <string name="account_server_validation_outgoing_loading_message">Tikrinami siunčiamų laiškų serverio parametrai…</string>
+    <string name="account_server_validation_outgoing_loading_error">Nepavyko patikrinti siunčiamų laiškų serverio parametrų</string>
+    <string name="account_server_validation_error_authentication">Klaida nustatant tapatybę</string>
+    <string name="account_server_validation_error_network">Tinklo klaida</string>
+    <string name="account_server_validation_error_server">Serverio klaida</string>
+    <string name="account_server_validation_error_unknown">Nežinoma klaida</string>
+</resources>

@@ -33,7 +33,7 @@
     <!--General strings that include the app name-->
     <string name="account_delete_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" は K-9 Mail から削除されます。</string>
     <!--=== General strings ==================================================================-->
-    <string name="authors">作者</string>
+    <string name="authors">開発者</string>
     <string name="about_title">K-9 Mail について</string>
     <string name="accounts_title">アカウント</string>
     <string name="advanced">拡張</string>

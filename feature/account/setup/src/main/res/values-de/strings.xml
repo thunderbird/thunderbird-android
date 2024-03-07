@@ -21,13 +21,13 @@
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Konfiguration gefunden</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">E-Mail-Adresse ist erforderlich.</string>
     <string name="account_setup_options_display_name_label">Dein Name</string>
-    <string name="account_setup_auto_discovery_loading_error">Die E-Mail-Konfiguration konnte nicht geladen werden</string>
+    <string name="account_setup_auto_discovery_loading_error">E-Mail-Konfiguration konnte nicht geladen werden</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Ich vertraue dieser Konfiguration</string>
     <string name="account_setup_options_display_name_error_required">Dein Name ist erforderlich.</string>
     <string name="account_setup_error_network">Netzwerk</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Diese Adresse wird nicht als gültige E-Mail-Adresse erkannt.</string>
     <string name="account_setup_options_email_check_frequency_never">Niemals</string>
-    <string name="account_setup_auto_discovery_loading_message">E-Mail-Details finden</string>
+    <string name="account_setup_auto_discovery_loading_message">E-Mail-Konfiguration suchen…</string>
     <string name="account_setup_options_section_sync_options">Synchronisierungsoptionen</string>
     <string name="account_setup_options_show_notifications_label">Benachrichtigungen anzeigen</string>
     <string name="account_setup_options_section_display_options">Anzeigeoptionen</string>
@@ -50,4 +50,17 @@
     <string name="account_setup_special_folders_trash_folder_label">Papierkorb</string>
     <string name="account_setup_special_folders_folder_none">Keine</string>
     <string name="account_setup_special_folders_spam_folder_label">Spam</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Passwort ist erforderlich.</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Jede Minute</item>
+        <item quantity="other">Alle %d Minuten</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Jede Stunde</item>
+        <item quantity="other">Alle %d Stunden</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">1 Nachricht</item>
+        <item quantity="other">%d Nachrichten</item>
+    </plurals>
 </resources>

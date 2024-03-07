@@ -27,7 +27,7 @@
     <string name="account_setup_error_network">Rețea</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Aceasta nu este recunoscută ca o adresă de e-mail validă.</string>
     <string name="account_setup_options_email_check_frequency_never">Niciodată</string>
-    <string name="account_setup_auto_discovery_loading_message">Găsirea detaliilor de e-mail</string>
+    <string name="account_setup_auto_discovery_loading_message">Se caută configurația…</string>
     <string name="account_setup_options_section_sync_options">Opțiuni de sincronizare</string>
     <string name="account_setup_options_show_notifications_label">Afișare notificări</string>
     <string name="account_setup_options_section_display_options">Opțiuni de afișare</string>
@@ -50,4 +50,20 @@
     <string name="account_setup_special_folders_archive_folder_label">Dosarul de arhivare</string>
     <string name="account_setup_special_folders_spam_folder_label">Dosarul spam</string>
     <string name="account_setup_special_folders_form_description_automatic">Intrarea „Automat” va urma automat modificările făcute de server. Valoarea curentă a serverului este afișată în paranteze.</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Parola este necesară.</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Fiecare %d minut</item>
+        <item quantity="few">Fiecare %d minute</item>
+        <item quantity="other">Fiecare %d minute</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Fiecare %d oră</item>
+        <item quantity="few">Fiecare %d ore</item>
+        <item quantity="other">Fiecare %d ore</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">%d mesaj</item>
+        <item quantity="few">%d mesaje</item>
+        <item quantity="other">%d mesaje</item>
+    </plurals>
 </resources>

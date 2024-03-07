@@ -27,7 +27,7 @@
     <string name="account_setup_error_network">Rete</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Non è riconosciuto come indirizzo email valido</string>
     <string name="account_setup_options_email_check_frequency_never">Mai</string>
-    <string name="account_setup_auto_discovery_loading_message">Ricerca configurazione email</string>
+    <string name="account_setup_auto_discovery_loading_message">Ricerca della configurazione…</string>
     <string name="account_setup_options_section_sync_options">Opzioni di sincronizzazione</string>
     <string name="account_setup_options_show_notifications_label">Mostra notifiche</string>
     <string name="account_setup_options_section_display_options">Opzioni di visualizzazione</string>
@@ -53,17 +53,17 @@
     <plurals name="account_setup_options_email_display_count_messages">
         <item quantity="one">1 messaggio</item>
         <item quantity="many">%d messaggi</item>
-        <item quantity="other"></item>
+        <item quantity="other">%d messaggi</item>
     </plurals>
     <plurals name="account_setup_options_email_check_frequency_hours">
         <item quantity="one">Ogni ora</item>
         <item quantity="many">Ogni %d ore</item>
-        <item quantity="other"></item>
+        <item quantity="other">Ogni %d ore</item>
     </plurals>
     <string name="account_setup_auto_discovery_validation_error_password_required">La password è richiesta.</string>
     <plurals name="account_setup_options_email_check_frequency_minutes">
         <item quantity="one">Ogni minuto</item>
         <item quantity="many">Ogni %d minuti</item>
-        <item quantity="other"></item>
+        <item quantity="other">Ogni %d minuti</item>
     </plurals>
 </resources>

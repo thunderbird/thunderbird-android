@@ -1,2 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_warning_title">Abisua</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Ziurtagiriaren errorea</string>
+    <string name="account_server_certificate_unknown_error_description_format">Aplikazioak balizko segurtasun-mehatxu bat detektatu du eta ez du <xliff:g id="serverName">%s</xliff:g>-ra konektatzen jarraitu.
+\nJarraitzen baduzu, erasotzaileak zure pasahitza edo mezu elektronikoak bezalako informazioa lapurtzen saia litezke.</string>
+    <string name="account_server_certificate_button_back">Atzera itzuli (gomendatua)</string>
+    <string name="account_server_certificate_button_advanced">Aurreratua</string>
+    <string name="account_server_certificate_button_continue">Arriskua onartu eta jarraitu</string>
+    <string name="account_server_certificate_section_title">Zerbitzariaren ziurtagiria</string>
+    <string name="account_server_certificate_subject_alternative_names">Subjektuaren ordezko izenak</string>
+    <string name="account_server_certificate_not_valid_before">Data hau baino lehen ez du balio</string>
+    <string name="account_server_certificate_not_valid_after">Data honen ondoren ez du balio</string>
+    <string name="account_server_certificate_subject">Subjektua</string>
+    <string name="account_server_certificate_issuer">Jaulkitzailea</string>
+    <string name="account_server_certificate_fingerprints_section">Hatz-markak</string>
+</resources>

@@ -22,9 +22,9 @@
     <string name="settings_import_later_button">Più tardi</string>
     <string name="settings_importing">Importazione impostazioni…</string>
     <plurals name="settings_import_password_prompt">
-        <item quantity="one">Per poter utilizzare l\'account \"<xliff:g id="account">%s</xliff:g>\" devi fornire la password del server</item>
-        <item quantity="many">Per poter utilizzare l\'account \"<xliff:g id="account">%s</xliff:g>\" devi fornire le password del server</item>
-        <item quantity="other">Per poter utilizzare l\'account \"<xliff:g id="account">%s</xliff:g>\" devi fornire le password del server</item>
+        <item quantity="one">Per poter utilizzare l\'account \"<xliff:g id="account">%s</xliff:g>\" devi fornire la password del server.</item>
+        <item quantity="many">Per poter utilizzare l\'account \"<xliff:g id="account">%s</xliff:g>\" devi fornire le password del server.</item>
+        <item quantity="other">Per poter utilizzare l\'account \"<xliff:g id="account">%s</xliff:g>\" devi fornire le password del server.</item>
     </plurals>
     <string name="settings_import_incoming_server_password_hint">Password server in arrivo</string>
     <string name="settings_import_outgoing_server_password_hint">Password server in uscita</string>
@@ -35,7 +35,7 @@
     <string name="settings_import_oauth_sign_in_with_google">Accedi con Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Autorizzazione annullata</string>
     <string name="settings_import_oauth_error_oauth_flow_failed">Autorizzazione non riuscita con il seguente errore: <xliff:g id="error">%s</xliff:g></string>
-    <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 non supportato da questo provider di posta</string>
-    <string name="settings_import_oauth_error_browser_not_found">L\' applicazione non trova un browser per richiedere l\'accesso al tuo account</string>
+    <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 non è supportato da questo provider di posta.</string>
+    <string name="settings_import_oauth_error_browser_not_found">L\' applicazione non trova un browser per richiedere l\'accesso al tuo account.</string>
     <string name="settings_import_general_settings_item">Impostazioni generali</string>
 </resources>

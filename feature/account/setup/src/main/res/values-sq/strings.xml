@@ -21,14 +21,14 @@
     <string name="account_setup_options_account_name_label">Emër llogarie</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">U Gjet formësim</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Lypset adresa email.</string>
-    <string name="account_setup_options_display_name_label">Emër në ekran</string>
+    <string name="account_setup_options_display_name_label">Emri juaj</string>
     <string name="account_setup_auto_discovery_loading_error">S’u arrit të ngarkohej formësimi i email-it</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">E besoj këtë formësim</string>
-    <string name="account_setup_options_display_name_error_required">Emri në ekran është i domosdoshëm.</string>
+    <string name="account_setup_options_display_name_error_required">Emri juaj është i domosdoshëm.</string>
     <string name="account_setup_error_network">Rrjeti</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Kjo nuk njihet si adresë email e vlefshme.</string>
     <string name="account_setup_options_email_check_frequency_never">Kurrë</string>
-    <string name="account_setup_auto_discovery_loading_message">Po gjenden hollësi email-i</string>
+    <string name="account_setup_auto_discovery_loading_message">Po shihet për formësim…</string>
     <string name="account_setup_options_section_sync_options">Mundësi njëkohësimi</string>
     <string name="account_setup_options_show_notifications_label">Shfaq njoftime</string>
     <string name="account_setup_options_section_display_options">Mundësi shfaqjeje</string>
@@ -50,4 +50,17 @@
     <string name="account_setup_create_account_error">Ndodhi një gabim teksa provohej të krijohej llogaria</string>
     <string name="account_setup_special_folders_spam_folder_label">Dosje të padëshiruarish</string>
     <string name="account_setup_special_folders_form_description_automatic">Zëri “Automatik” do të pasojë ndryshime të bëra nga shërbyesi automatikisht. Vlera aktuale e shërbyesit shfaqet në kllapa.</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Fjalëkalimi është i domosdoshëm.</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Çdo minutë</item>
+        <item quantity="other">Çdo %d minuta</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Çdo orë</item>
+        <item quantity="other">Çdo %d orë</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">1 mesazh</item>
+        <item quantity="other">%d mesazhe</item>
+    </plurals>
 </resources>
