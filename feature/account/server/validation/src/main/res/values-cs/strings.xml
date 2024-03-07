@@ -4,11 +4,11 @@
     <string name="account_server_validation_error_authentication">Chyba autentizace</string>
     <string name="account_server_validation_outgoing_loading_message">Kontrola nastavení serveru odchozí pošty…</string>
     <string name="account_server_validation_error_network">Chyba sítě</string>
-    <string name="account_server_validation_outgoing_success">Nastavení serveru odchozí pošty je platné</string>
+    <string name="account_server_validation_outgoing_success">Nastavení serveru odchozí pošty je ověřené</string>
     <string name="account_server_validation_error_unknown">Neznámá chyba</string>
     <string name="account_server_validation_sign_in">Přihlaste se</string>
     <string name="account_server_validation_outgoing_loading_error">Kontrola nastavení serveru odchozí pošty se nezdařila</string>
-    <string name="account_server_validation_incoming_success">Nastavení serveru příchozí pošty je platné</string>
+    <string name="account_server_validation_incoming_success">Nastavení serveru příchozí pošty je ověřené</string>
     <string name="account_server_validation_incoming_loading_error">Kontrola nastavení serveru příchozí pošty se nezdařila</string>
     <string name="account_server_validation_error_server">Chyba serveru</string>
     <string name="account_server_validation_error_client_certificate_expired">Klientský certifikát je již neplatný</string>

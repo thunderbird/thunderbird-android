@@ -27,7 +27,7 @@
     <string name="account_setup_options_display_name_error_required">Nafnið þitt er nauðsynlegt.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Þetta telst ekki vera gilt tölvupóstfang.</string>
     <string name="account_setup_options_email_check_frequency_never">Aldrei</string>
-    <string name="account_setup_auto_discovery_loading_message">Finna nánar um tölvupóst</string>
+    <string name="account_setup_auto_discovery_loading_message">Skoða grunnstillingar…</string>
     <string name="account_setup_options_section_sync_options">Valkostir samstillinga</string>
     <string name="account_setup_options_show_notifications_label">Birta tilkynningar</string>
     <string name="account_setup_options_section_display_options">Valkostir birtingar</string>
@@ -48,4 +48,19 @@
     <string name="account_setup_special_folders_trash_folder_label">Rusl-mappa</string>
     <string name="account_setup_special_folders_archive_folder_label">Safnmappa</string>
     <string name="account_setup_special_folders_spam_folder_label">Ruslpóstmappa</string>
+    <string name="account_setup_special_folders_form_description_automatic">\"Sjálfvirkt\" færslan mun fylgja sjálfkrafa þeim breytingum sem póstþjónninn gerir. Fyrirliggjandi gildi þjónsins eru birt innan sviga.</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Lykilorð er nauðsynlegt.</string>
+    <string name="account_setup_special_folders_success_message">Allar sérmöppur hafa verið stilltar sjálfkrafa af póstþjóninum.</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Á mínútu fresti</item>
+        <item quantity="other">Á %d mínútna fresti</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Á klukkustundar fresti</item>
+        <item quantity="other">Á %d klukkustunda fresti</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">1 skilaboð</item>
+        <item quantity="other">%d skilaboð</item>
+    </plurals>
 </resources>

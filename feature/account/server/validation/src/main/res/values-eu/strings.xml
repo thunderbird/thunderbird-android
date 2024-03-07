@@ -11,4 +11,11 @@
     <string name="account_server_validation_incoming_success">Sarrerako zerbitzariaren ezarpenak zuzenak dira</string>
     <string name="account_server_validation_incoming_loading_error">Akatsa sarrerako zerbitzariaren ezarpenak egiaztatzean</string>
     <string name="account_server_validation_error_server">Zerbitzariaren errorea</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Zerbitzariari gaitasun hau falta zaio:
+\n%s</string>
+    <string name="account_server_validation_error_client_certificate_expired">Bezeroaren ziurtagiriak dagoeneko ez du balio</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">Ezin izan da bezeroaren ziurtagiria atzitu</string>
+    <string name="account_server_validation_error_missing_server_capability">Zerbitzariaren gaitasuna falta da</string>
+    <string name="account_server_validation_error_details">Xehetasunak:
+\n%s</string>
 </resources>

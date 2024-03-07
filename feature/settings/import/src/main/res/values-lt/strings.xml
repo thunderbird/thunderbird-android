@@ -9,7 +9,7 @@
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
     <string name="settings_import_authorization_required">Prašome prisijungti</string>
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_and_password_required">Prašome priisjungti ir įvesti slaptažodžius</string>
+    <string name="settings_import_authorization_and_password_required">Prašome prisijungti ir įvesti slaptažodžius</string>
     <string name="settings_import_failure">Nepavyko importuoti nustatymų</string>
     <string name="settings_import_read_failure">Nepavyko nuskaityti nustatymų failo</string>
     <string name="settings_import_partial_failure">Nepavyko importuoti kai kurių nustatymų</string>

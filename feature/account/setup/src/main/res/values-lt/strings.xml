@@ -1,2 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_special_folders_top_bar_title">Specialieji aplankai</string>
+    <string name="account_setup_special_folders_loading_message">Gaunamas aplankų sąrašas…</string>
+    <string name="account_setup_special_folders_error_message">Nepavyko gauti aplankų sąrašo iš serverio</string>
+    <string name="account_setup_special_folders_success_message">Visi specialieji aplankai automatiškai sukonfigūruoti remiantis serverio parametrais.</string>
+    <string name="account_setup_special_folders_archive_folder_label">Archyvo aplankas</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Juodraščių aplankas</string>
+    <string name="account_setup_special_folders_spam_folder_label">Brukalo aplankas</string>
+    <string name="account_setup_special_folders_trash_folder_label">Šiukšlinės aplankas</string>
+    <string name="account_setup_special_folders_folder_none">Jokio</string>
+    <string name="account_setup_special_folders_folder_automatic">Automatinis (%s)</string>
+    <string name="account_setup_options_top_bar_title">Paskyros nustatymai</string>
+    <string name="account_setup_options_account_name_error_blank">Paskyros pavadinimas negali būti tuščias.</string>
+    <string name="account_setup_options_display_name_label">Jūsų vardas</string>
+    <string name="account_setup_options_display_name_error_required">Jūsų vardas būtinas.</string>
+    <string name="account_setup_options_email_signature_error_blank">Laiškų parašo pavadinimas negali būti tuščias.</string>
+    <string name="account_setup_options_email_signature_label">Laiškų parašas</string>
+    <string name="account_setup_options_account_check_frequency_label">Tikrinimo dažnis</string>
+    <string name="account_setup_options_email_check_frequency_never">Niekada</string>
+    <string name="account_setup_options_email_display_count_label">Rodomų laiškų kiekis</string>
+    <string name="account_setup_special_folders_sent_folder_label">Išsiųstųjų aplankas</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Kas %d minutę</item>
+        <item quantity="few">Kas %d minutes</item>
+        <item quantity="other">Kas %d minučių</item>
+    </plurals>
+    <string name="account_setup_options_show_notifications_label">Rodyti pranešimus</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Jūsų el. pašto serverių konfigūraciją gavome ne tokiu saugiu ryšiu, kokiu norėtume. Tai reiškia, jog yra nedidelė galimybė, kad ji buvo pakeista. Prašom patikrinti, jog žemiau nurodyta konfigūracija yra teisinga.</string>
+    <string name="account_setup_special_folders_form_description">Prašom nurodyti šios paskyros specialiuosius aplankus.</string>
+    <string name="account_setup_special_folders_form_description_automatic">Pasirinkus „Automatinis“, bus automatiškai sekami serveryje atlikti pakeitimai. Esamoji reikšmė nurodyta skliaustuose.</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Slaptažodį įvesti privaloma.</string>
+    <string name="account_setup_auto_discovery_loading_message">Ieškoma konfigūracijos…</string>
+    <string name="account_setup_auto_discovery_loading_error">Nepavyko įkelti el. pašto konfigūracijos</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Konfigūracija aptikta</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Konfigūracija neaptikta</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Konfigūruoti automatiškai</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Šia konfigūracija nepasitikima</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Konfigūruoti rankiniu būdu</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Taisyti konfigūraciją</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Pasitikiu šia konfigūracija</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Tai būtina konfigūracijai patvirtinti.</string>
+    <string name="account_setup_options_section_sync_options">Sinchronizavimo nustatymai</string>
+    <string name="account_setup_create_account_creating">Kuriama paskyra…</string>
+    <string name="account_setup_create_account_created">Paskyra sėkmingai sukurta</string>
+    <string name="account_setup_title">K-9 paštas</string>
+    <string name="account_setup_button_finish">Užbaigti</string>
+    <string name="account_setup_error_network">Tinklas</string>
+    <string name="account_setup_error_unknown">Nenumatyta klaida</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">El. pašto adresą įvesti būtina.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Šis el. pašto adresas neleidžiamas.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Šis el. pašto adresas nepalaikomas.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Įvestas tekstas nepanašus į el. pašto adresą.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_options_section_display_options">Rodymo nustatymai</string>
+    <string name="account_setup_options_account_name_label">Paskyros pavadinimas</string>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Kas %d valandą</item>
+        <item quantity="few">Kas %d valandas</item>
+        <item quantity="other">Kas %d valandų</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">%d laiškas</item>
+        <item quantity="few">%d laiškai</item>
+        <item quantity="other">%d laiškų</item>
+    </plurals>
+    <string name="account_setup_create_account_error">Kuriant paskyrą, įvyko klaida</string>
+</resources>

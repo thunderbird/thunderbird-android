@@ -1,2 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_unknown_error_description_format">Programa aptiko galima saugos grėsmę, todėl nutraukė bandymą jungtis prie <xliff:g id="serverName">%s</xliff:g>.
+\nJei tęsite, piktavaliai gali kėsintis pavogti jūsų duomenis, pavyzdžiui slaptažodį ar el. laiškus.</string>
+    <string name="account_server_certificate_warning_title">Įspėjimas</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Liudijimo klaida</string>
+    <string name="account_server_certificate_button_advanced">Išsamiau</string>
+    <string name="account_server_certificate_button_back">Grįžti (rekomenduotina)</string>
+    <string name="account_server_certificate_button_continue">Priimti riziką ir tęsti</string>
+    <string name="account_server_certificate_section_title">Serverio liudijimas</string>
+    <string name="account_server_certificate_subject_alternative_names">Subjekto alternatyvieji vardai</string>
+    <string name="account_server_certificate_not_valid_before">Negalioja iki</string>
+    <string name="account_server_certificate_not_valid_after">Negalioja po</string>
+    <string name="account_server_certificate_subject">Subjektas</string>
+    <string name="account_server_certificate_issuer">Išdavėjas</string>
+    <string name="account_server_certificate_fingerprints_section">Kontroliniai kodai</string>
+</resources>
