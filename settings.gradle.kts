@@ -80,6 +80,7 @@ include(
     ":core:ui:compose:theme2:k9mail",
     ":core:ui:compose:theme2:thunderbird",
     ":core:ui:compose:testing",
+    ":core:ui:legacy:designsystem",
 )
 
 include(
