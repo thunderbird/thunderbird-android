@@ -26,7 +26,7 @@ fun TextFieldOutlined(
 ) {
     MaterialOutlinedTextField(
         value = value,
-        onValueChange = onValueChange,
+        onValueChange = if (isSingleLine) stripLineBreaks(onValueChange) else onValueChange,
         modifier = modifier,
         enabled = isEnabled,
         label = selectLabel(label, isRequired),

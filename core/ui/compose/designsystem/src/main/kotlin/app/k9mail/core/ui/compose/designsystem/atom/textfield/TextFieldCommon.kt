@@ -5,6 +5,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 
+private val LINE_BREAK = "[\\r\\n]".toRegex()
+
+internal fun stripLineBreaks(onValueChange: (String) -> Unit): (String) -> Unit = { value ->
+    onValueChange(value.replace(LINE_BREAK, replacement = ""))
+}
+
 internal fun selectLabel(
     label: String?,
     isRequired: Boolean,
