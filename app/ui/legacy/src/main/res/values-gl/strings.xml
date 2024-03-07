@@ -617,8 +617,8 @@
     <string name="dialog_confirm_mark_all_as_read_cancel_button">Non</string>
     <string name="dialog_confirm_spam_title">Confirmar antes de mover á carpeta spam</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">Queres mover esta mensaxe á carpeta spam?</item>
-        <item quantity="other">Queres mover esta mensaxe á carpeta spam?</item>
+        <item quantity="one">Realmente queres mover esta mensaxe ao cartafol de spam?</item>
+        <item quantity="other">Realmente queres mover as mensaxes <xliff:g id="message_count">%1$d</xliff:g> ao cartafol de spam?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Si</string>
     <string name="dialog_confirm_spam_cancel_button">Non</string>
@@ -911,4 +911,69 @@ Podes conservar esta mensaxe e usala como copia de seguridade da túa chave secr
     <!--A user visible label for the name and email address copied to the clipboard-->
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+<string name="new_messages_title">Novas mensaxes</string>
+    <string name="unsubscribe_action">Cancelar a subscrición</string>
+    <string name="message_view_me_text">eu</string>
+    <string name="message_view_show_remote_images_action">Mostra imaxes remotas</string>
+    <string name="general_settings_contact_name_color_label">Cor do nome do contacto</string>
+    <string name="general_settings_post_remove_action_title">Despois de eliminar ou mover unha mensaxe</string>
+    <string name="general_settings_post_remove_action_return_to_list">Volver á lista de mensaxes</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Mostrar a mensaxe anterior</string>
+    <string name="general_settings_post_remove_action_show_next_message">Mostra a seguinte mensaxe</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">Manterse na mensaxe actual</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">Volver á lista de mensaxes</string>
+    <string name="general_settings_swipe_actions_title">Accións de pasar o dedo</string>
+    <string name="general_settings_right_swipe_title">Pase o dedo cara á dereita</string>
+    <string name="general_settings_left_swipe_title">Pase o dedo cara á esquerda</string>
+    <string name="general_settings_swipe_action_toggle_star">Engadir/eliminar estrela</string>
+    <string name="general_settings_message_list_density_title">densidade</string>
+    <string name="general_settings_ui_density_compact">Compacto</string>
+    <string name="account_settings_vibrate_pattern_5">Patrón 5</string>
+    <string name="account_settings_notification_light_disabled">Desactivado</string>
+    <string name="account_settings_notification_light_default_color">Cor predeterminada do sistema</string>
+    <string name="account_settings_notification_light_white">Branco</string>
+    <string name="account_settings_notification_light_blue">Azul</string>
+    <string name="account_settings_notification_light_yellow">Amarelo</string>
+    <string name="message_list_error_folder_not_found">Non se atopou o cartafol</string>
+    <string name="message_details_toolbar_title">Detalles da mensaxe</string>
+    <string name="message_details_loading_error">Produciuse un erro ao cargar os detalles da mensaxe.</string>
+    <string name="action_add_to_contacts">Engadir aos contactos</string>
+    <string name="action_compose_message_to">Redactar un correo dirixido a</string>
+    <string name="action_copy_email_address">Copiar enderezo de correo electrónico</string>
+    <string name="volume_navigation_title">Navegación coa tecla de volume na vista de mensaxes</string>
+    <string name="general_settings_show_compose_button_title">Mostrar o botón flotante de redacción</string>
+    <string name="message_list_error_title">Erro</string>
+    <string name="account_settings_vibrate_pattern_2">Patrón 2</string>
+    <string name="account_settings_notification_light_label">Luz de notificación</string>
+    <string name="account_settings_vibrate_summary_disabled">Desactivado</string>
+    <string name="account_settings_notification_light_cyan">Cian</string>
+    <string name="account_settings_notification_light_magenta">Magenta</string>
+    <string name="account_settings_vibrate_pattern_label">Patrón de vibración</string>
+    <string name="account_settings_vibrate_pattern_1">Patrón 1</string>
+    <string name="account_settings_vibrate_pattern_3">Patrón 3</string>
+    <string name="account_settings_vibrate_pattern_4">Patrón 4</string>
+    <string name="action_copy_name_and_email_address">Copia o nome e o enderezo de correo electrónico</string>
+    <string name="background_work_notification_remove_account">Eliminando conta…</string>
+    <string name="notification_notify_error_title">Erro de notificación</string>
+    <string name="get_help_title">Obter axuda</string>
+    <string name="changelog_snackbar_button_text">Vista</string>
+    <string name="message_view_recipients_format">aos <xliff:g id="destinatarios">%s</xliff:g></string>
+    <string name="message_view_additional_recipient_prefix">+</string>
+    <string name="general_settings_swipe_action_toggle_read">Marcar como lido/non lido</string>
+    <string name="account_settings_notification_light_red">Vermello</string>
+    <string name="account_settings_notification_light_green">Verde</string>
+    <string name="general_settings_swipe_action_toggle_selection">Alternar selección</string>
+    <string name="general_settings_ui_density_relaxed">Relaxado</string>
+    <string name="account_settings_vibration">Vibración</string>
+    <string name="font_size_message_view_recipients">Destinatarios</string>
+    <string name="swipe_action_mark_as_read">Marcar como leído</string>
+    <string name="clipboard_label_name_and_email_address">Nome e enderezo de correo electrónico</string>
+    <string name="user_manual_title">Manual de usuario</string>
+    <string name="notification_notify_error_text">Produciuse un erro ao tentar crear unha notificación do sistema para unha mensaxe nova. O motivo é probablemente un son de notificación que falta.
+\n
+\nToca para abrir a configuración de notificacións.</string>
+    <string name="message_details_missing_date">Falta a cabeceira \"Data\".</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Despois de marcar unha mensaxe como non lida</string>
+    <string name="swipe_action_move">Mover…</string>
+    <string name="message_list_content_description_unread_prefix">sen ler, %s</string>
 </resources>

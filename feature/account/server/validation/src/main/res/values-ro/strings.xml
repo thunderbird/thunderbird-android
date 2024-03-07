@@ -4,11 +4,11 @@
     <string name="account_server_validation_error_authentication">Eroare de autentificare</string>
     <string name="account_server_validation_outgoing_loading_message">Verificarea setărilor serverului de expediere…</string>
     <string name="account_server_validation_error_network">Eroare de rețea</string>
-    <string name="account_server_validation_outgoing_success">Setările serverului de ieșire sunt valide</string>
+    <string name="account_server_validation_outgoing_success">Setările serverului de ieșire sunt verificate</string>
     <string name="account_server_validation_error_unknown">Eroare necunoscută</string>
     <string name="account_server_validation_sign_in">Conectează-te</string>
     <string name="account_server_validation_outgoing_loading_error">Verificarea setărilor serverului de ieșire a eșuat</string>
-    <string name="account_server_validation_incoming_success">Setările serverului de intrare sunt valide</string>
+    <string name="account_server_validation_incoming_success">Setările serverului de intrare sunt verificate</string>
     <string name="account_server_validation_incoming_loading_error">Verificarea setărilor serverului de intrare a eșuat</string>
     <string name="account_server_validation_error_server">Eroare de server</string>
     <string name="account_server_validation_error_missing_server_capability">Lipsește capacitatea serverului</string>

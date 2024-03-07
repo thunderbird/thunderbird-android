@@ -1,2 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_unknown_error_description_format">Aplikacioni pikasi një kërcënim potencial sigurie dhe s’vazhdoi të lidhet me <xliff:g id="serverName">%s</xliff:g>.
+\nNëse vazhdoni, agresorë mund të përpiqen të vjedhin informacione, bie fjala, fjalëkalim, ose email-e.</string>
+    <string name="account_server_certificate_issuer">Lëshues</string>
+    <string name="account_server_certificate_fingerprints_section">Shenja gishtash</string>
+    <string name="account_server_certificate_warning_title">Kujdes</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Gabim dëshmie</string>
+    <string name="account_server_certificate_button_back">Shkon mbrapsht (e rekomanduar)</string>
+    <string name="account_server_certificate_button_advanced">Të mëtejshme</string>
+    <string name="account_server_certificate_button_continue">Pranojeni rrezikun dhe vazhdoni</string>
+    <string name="account_server_certificate_section_title">Dëshmi shërbyesi</string>
+    <string name="account_server_certificate_subject_alternative_names">Emra alternativë të subjektit</string>
+    <string name="account_server_certificate_not_valid_before">Jo e vlefshme para</string>
+    <string name="account_server_certificate_not_valid_after">Jo e vlefshme pas</string>
+    <string name="account_server_certificate_subject">Subjekt</string>
+</resources>

@@ -4,11 +4,11 @@
     <string name="account_server_validation_error_authentication">Gabim mirëfilltësimi</string>
     <string name="account_server_validation_outgoing_loading_message">Po kontrollohen rregullime shërbyesi dërgimi mesazhesh…</string>
     <string name="account_server_validation_error_network">Gabim rrjeti</string>
-    <string name="account_server_validation_outgoing_success">Rregullimet për shërbyes dërgimi mesazhesh janë të vlefshme</string>
+    <string name="account_server_validation_outgoing_success">Rregullimet për shërbyes dërgimi mesazhesh janë verifikuar</string>
     <string name="account_server_validation_error_unknown">Gabim i panjohur</string>
     <string name="account_server_validation_sign_in">Ju lutemi, bëni hyrjen</string>
     <string name="account_server_validation_outgoing_loading_error">Kontrolli i rregullimeve të shërbyesit të dërgimit të mesazheve dështoi</string>
-    <string name="account_server_validation_incoming_success">Rregullimet për shërbyes marrjeje mesazhesh janë të vlefshme</string>
+    <string name="account_server_validation_incoming_success">Rregullimet për shërbyes marrjeje mesazhesh janë verifikuar</string>
     <string name="account_server_validation_incoming_loading_error">Kontrolli i rregullimeve të shërbyesit të marrjes së mesazheve dështoi</string>
     <string name="account_server_validation_error_server">Gabim shërbyesi</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">S’u përdor dot dëshmia e klientit</string>

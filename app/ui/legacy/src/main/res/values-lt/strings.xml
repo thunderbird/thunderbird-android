@@ -10,7 +10,7 @@
     <string name="app_authors">K-9 šunų vedžiotojai</string>
     <string name="source_code">Šaltinio kodas</string>
     <string name="app_license">Apache licencija, versija 2.0</string>
-    <string name="about_project_title">Atviro kodo projektas</string>
+    <string name="about_project_title">Atvirojo kodo projektas</string>
     <string name="about_website_title">Svetainė</string>
     <string name="user_manual_title">Naudotojo vadovas</string>
     <string name="get_help_title">Gauti pagalbos</string>
@@ -964,4 +964,30 @@ Norėdami nustatyti automatinį šifravimą naujajame prietaise, vadovaukitės i
     <string name="clipboard_label_name_and_email_address">Vardas ir el. pašto adresas</string>
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+<string name="message_details_loading_error">Bandant įkelti laiško savybes, įvyko klaida.</string>
+    <string name="general_settings_post_remove_action_return_to_list">Grįžti į laiškų sąrašą</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Rodyti ankstesnį laišką</string>
+    <string name="general_settings_ui_density_relaxed">Mažesnis</string>
+    <string name="general_settings_show_compose_button_title">Rodyti slankų rašymo mygtuką</string>
+    <string name="notification_notify_error_text">Bandant sukurti sistemos pranešimą apie naują laišką, įvyko klaida. Tikėtina priežastis – trūkstamas pranešimo garsas.
+\n
+\nBakstelėkite pranešimų nustatymams atverti.</string>
+    <string name="general_settings_post_remove_action_show_next_message">Rodyti kitą laišką</string>
+    <string name="general_settings_post_remove_action_title">Pašalinus ar perkėlus laišką</string>
+    <string name="general_settings_right_swipe_title">Braukimas dešinėn</string>
+    <string name="general_settings_left_swipe_title">Braukimas kairėn</string>
+    <string name="general_settings_swipe_actions_title">Braukimo veiksmai</string>
+    <string name="general_settings_ui_density_compact">Didesnis</string>
+    <string name="general_settings_message_list_density_title">Tankis</string>
+    <string name="message_details_missing_date">Trūksta „Date“ antraštės</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Pažymėjus laišką kaip neskaitytą</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">Likti šiame laiške</string>
+    <string name="general_settings_swipe_action_toggle_selection">Pasirinkti / panaikinti pasirinkimą</string>
+    <string name="general_settings_swipe_action_toggle_read">Pažymėti kaip skaitytą / neskaitytą</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">Grįžti į laiškų sąrašą</string>
+    <string name="volume_navigation_title">Judėjimas laiškų sąrašu garso mygtukais</string>
+    <string name="action_compose_message_to">Rašyti laišką</string>
+    <string name="background_work_notification_remove_account">Šalinama paskyra…</string>
+    <string name="message_list_content_description_unread_prefix">neskaityti, %s</string>
+    <string name="changelog_snackbar_button_text">Rodyti</string>
 </resources>

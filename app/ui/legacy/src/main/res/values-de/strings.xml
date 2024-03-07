@@ -348,7 +348,7 @@
     <string name="account_settings_show_pictures_never">Niemals</string>
     <string name="account_settings_show_pictures_only_from_contacts">Nur von Kontakten</string>
     <string name="account_settings_show_pictures_always">Von jedem</string>
-    <string name="account_settings_composition">E-Mail-Versand</string>
+    <string name="account_settings_composition">E-Mails versenden</string>
     <string name="account_settings_default_quoted_text_shown_label">Nachricht beim Antworten zitieren</string>
     <string name="account_settings_default_quoted_text_shown_summary">Ursprüngliche Nachricht als Zitat in die Antwort einfügen.</string>
     <string name="account_settings_reply_after_quote_label">Antwort nach Zitat</string>

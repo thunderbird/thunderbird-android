@@ -27,7 +27,7 @@
     <string name="account_setup_error_network">Síť</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Toto není rozeznáno jako platná e-mailová adresa.</string>
     <string name="account_setup_options_email_check_frequency_never">Nikdy</string>
-    <string name="account_setup_auto_discovery_loading_message">Zjišťování podrobností o e-mailu</string>
+    <string name="account_setup_auto_discovery_loading_message">Zjišťování konfigurace…</string>
     <string name="account_setup_options_section_sync_options">Nastavení synchronizace</string>
     <string name="account_setup_options_show_notifications_label">Zobrazovat oznámení</string>
     <string name="account_setup_options_section_display_options">Nastavení zobrazení</string>
@@ -50,4 +50,20 @@
     <string name="account_setup_special_folders_trash_folder_label">Koš</string>
     <string name="account_setup_special_folders_folder_none">Žádný</string>
     <string name="account_setup_special_folders_folder_automatic">Automaticky (%s)</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Heslo je vyžadováno.</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Každou minutu</item>
+        <item quantity="few">Každé %d minuty</item>
+        <item quantity="other">Každých %d minut</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Každou hodinu</item>
+        <item quantity="few">Každé %d hodiny</item>
+        <item quantity="other">Každých %d hodin</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">1 zpráva</item>
+        <item quantity="few">%d zprávy</item>
+        <item quantity="other">%d zpráv</item>
+    </plurals>
 </resources>

@@ -5,11 +5,11 @@
     <string name="account_server_validation_error_authentication">خطای احراز هویت</string>
     <string name="account_server_validation_outgoing_loading_message">بررسی تنظیمات سرور خروجی …</string>
     <string name="account_server_validation_error_network">خطای شبکه</string>
-    <string name="account_server_validation_outgoing_success">تنظیمات سرور خروجی معتبر است</string>
+    <string name="account_server_validation_outgoing_success">تنظیمات سرور خروجی اعتبارسنجی شد</string>
     <string name="account_server_validation_error_unknown">خطای ناشناخته</string>
     <string name="account_server_validation_sign_in">لطفا وارد شوید</string>
     <string name="account_server_validation_outgoing_loading_error">بررسی تنظیمات سرور خروجی با خطا مواجه شد</string>
-    <string name="account_server_validation_incoming_success">تنظیمات سرور ورودی معتبر است</string>
+    <string name="account_server_validation_incoming_success">تنظیمات سرور ورودی اعتبارسنجی شد</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">گواهینامه کلاینت در دسترس نیست</string>
     <string name="account_server_validation_error_missing_server_capability_details">سرور این قابلیت را ندارد:
 \n%s</string>

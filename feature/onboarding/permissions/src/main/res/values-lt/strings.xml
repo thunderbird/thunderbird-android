@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="onboarding_permissions_screen_title">Pagerinkite patirtį</string>
+    <string name="onboarding_permissions_contacts_title">Kontaktai</string>
+    <string name="onboarding_permissions_contacts_description">Leiskite prieigą, kad programa galėtų siūlyti laiškų adresatus, rodyti jų vardus ir nuotraukas.</string>
+    <string name="onboarding_permissions_notifications_title">Pranešimai</string>
+    <string name="onboarding_permissions_notifications_description">Įjunkite pranešimus, kad gaunami laiškai neliktų nepastebėti.</string>
+    <string name="onboarding_permissions_allow_button">Leisti</string>
+    <string name="onboarding_permissions_skip_button">Praleisti</string>
+</resources>

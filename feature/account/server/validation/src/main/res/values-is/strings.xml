@@ -4,11 +4,11 @@
     <string name="account_server_validation_error_authentication">Auðkenningarvilla</string>
     <string name="account_server_validation_outgoing_loading_message">Athuga stillingar sendinga-póstþjónsins…</string>
     <string name="account_server_validation_error_network">Villa í netkerfi</string>
-    <string name="account_server_validation_outgoing_success">Stillingar sendinga-póstþjóns eru gildar</string>
+    <string name="account_server_validation_outgoing_success">Stillingar sendinga-póstþjóns sannreyndar</string>
     <string name="account_server_validation_error_unknown">Óþekkt villa</string>
     <string name="account_server_validation_sign_in">Skráðu þig inn</string>
     <string name="account_server_validation_outgoing_loading_error">Athugun á stillingum sendinga-póstþjónsins mistókst</string>
-    <string name="account_server_validation_incoming_success">Stillingar inn-póstþjóns eru gildar</string>
+    <string name="account_server_validation_incoming_success">Stillingar inn-póstþjóns sannreyndar</string>
     <string name="account_server_validation_incoming_loading_error">Athugun á stillingum inn-póstþjónsins mistókst</string>
     <string name="account_server_validation_error_server">Villa á þjóni</string>
     <string name="account_server_validation_error_missing_server_capability">Vantar upplýsingar um getu póstþjóns</string>

@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_settings_validation_error_password_required">Slaptažodį nurodyti būtina.</string>
+    <string name="account_server_settings_password_authentication_subtitle">Atrakinkite slaptažodžiui pamatyti</string>
+    <string name="account_server_settings_protocol_type_label">Protokolas</string>
+    <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
+    <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">IMAP kelio prefiksas</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Neleistinas IP adresas ar serverio vardas</string>
+    <string name="account_server_settings_validation_error_port_invalid">Prievadas neleistinas (leistinos reikšmės – 1–65535).</string>
+    <string name="account_server_settings_validation_error_username_required">Naudotojo vardą nurodyti būtina.</string>
+    <string name="account_server_settings_password_authentication_title">Patvirtinkite savo tapatybę</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">Kad čia matytumėte slaptažodį, šiame įrenginyje įgalinkite ekrano užraktą.</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">IMAP prefiksas negali būti tuščias.</string>
+    <string name="account_server_settings_server_label">Serveris</string>
+    <string name="account_server_settings_security_label">Šifravimas</string>
+    <string name="account_server_settings_port_label">Prievadas</string>
+    <string name="account_server_settings_authentication_label">Tapatumo nustatymas</string>
+    <string name="account_server_settings_username_label">Naudotojo vardas</string>
+    <string name="account_server_settings_connection_security_none">Jokio</string>
+    <string name="account_server_settings_authentication_none">Jokio</string>
+    <string name="account_server_settings_authentication_password_cleartext">Paprastas slaptažodis</string>
+    <string name="account_server_settings_authentication_password_encrypted">Šifruotas slaptažodis</string>
+    <string name="account_server_settings_authentication_client_certificate">Kliento liudijimas</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
+    <string name="account_server_settings_client_certificate_none_selected">Jokio</string>
+    <string name="account_server_settings_client_certificate_label">Kliento liudijimas</string>
+    <string name="account_server_settings_incoming_top_bar_title">Gaunamų laiškų serverio parametrai</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">Automatiškai aptikti IMAP vardų erdvę</string>
+    <string name="account_server_settings_incoming_imap_compression_label">Naudoti glaudinimą</string>
+    <string name="account_server_settings_incoming_imap_send_client_id_label">Siųsti kliento ID</string>
+    <string name="account_server_settings_outgoing_top_bar_title">Siunčiamų laiškų serverio parametrai</string>
+    <string name="account_server_settings_validation_error_server_required">Serverio vardą nurodyti būtina.</string>
+    <string name="account_server_settings_validation_error_port_required">Prievadą nurodyti būtina.</string>
+</resources>

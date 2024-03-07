@@ -37,4 +37,30 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Helbide elektroniko hau ez da bateragarria.</string>
     <string name="account_setup_create_account_creating">Kontua sortzen…</string>
     <string name="account_setup_create_account_error">Errore bat gertatu da kontua sortzerakoan</string>
+    <string name="account_setup_special_folders_top_bar_title">Karpeta bereziak</string>
+    <string name="account_setup_special_folders_form_description">Zehaztu zure kontuko karpeta bereziak.</string>
+    <string name="account_setup_special_folders_loading_message">Karpeten zerrenda lortzen…</string>
+    <string name="account_setup_special_folders_error_message">Ezin izan da zerbitzaritik karpeten zerrenda eskuratu</string>
+    <string name="account_setup_special_folders_form_description_automatic">\"Automatiko\" sarrerak zerbitzariak egindako aldaketei jarraituko die automatikoki. Uneko zerbitzariaren balioa parentesi artean bistaratzen da.</string>
+    <string name="account_setup_special_folders_success_message">Zerbitzariak karpeta berezi guztiak automatikoki konfiguratu ditu.</string>
+    <string name="account_setup_special_folders_archive_folder_label">Artxiboen karpeta</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Zirriborroen karpeta</string>
+    <string name="account_setup_special_folders_sent_folder_label">Bidalitakoen karpeta</string>
+    <string name="account_setup_special_folders_spam_folder_label">Spam karpeta</string>
+    <string name="account_setup_special_folders_trash_folder_label">Zaborrontziaren karpeta</string>
+    <string name="account_setup_special_folders_folder_none">Bat ere ez</string>
+    <string name="account_setup_special_folders_folder_automatic">Automatikoa (%s)</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Pasahitza beharrezkoa da.</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Minuturo</item>
+        <item quantity="other">%d minuturo</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Orduro</item>
+        <item quantity="other">%d orduro</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">Mezu bat</item>
+        <item quantity="other">%d mezu</item>
+    </plurals>
 </resources>
