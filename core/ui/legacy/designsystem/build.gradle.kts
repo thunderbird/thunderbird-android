@@ -7,6 +7,5 @@ android {
 }
 
 dependencies {
-    // TODO Remove this dependency once the legacy theme is available
-    api(libs.android.material)
+    api(projects.core.ui.legacy.theme2.common)
 }

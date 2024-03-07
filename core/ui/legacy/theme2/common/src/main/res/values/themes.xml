@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Empty base themes that can be easily replaced by RRO (Runtime Resource Overlay) themes -->
+    <style name="Theme2.Main.Light.Base" parent="Theme.Material3.Light.NoActionBar" />
+    <style name="Theme2.Main.Dark.Base" parent="Theme.Material3.Dark.NoActionBar" />
+    <style name="Theme2.Main.DayNight.Base" parent="Theme.Material3.DayNight.NoActionBar" />
+
+    <!-- Common main themes -->
+    <style name="Theme2.Main.Light.Common" parent="Theme2.Main.Light.Base">
+        <!-- Draw action mode above content -->
+        <item name="windowActionModeOverlay">true</item>
+    </style>
+
+    <style name="Theme2.Main.Dark.Common" parent="Theme2.Main.Dark.Base">
+        <!-- Draw action mode above content -->
+        <item name="windowActionModeOverlay">true</item>
+    </style>
+
+    <style name="Theme2.Main.DayNight.Common" parent="Theme2.Main.Light.Base" />
+
+    <!-- Main themes -->
+    <style name="Theme2.Main.Light" parent="Theme2.Main.Light.Common">
+        <item name="android:statusBarColor">?attr/colorSurfaceInverse</item>
+        <item name="android:navigationBarColor">?attr/colorSurfaceInverse</item>
+    </style>
+
+    <style name="Theme2.Main.Dark" parent="Theme2.Main.Dark.Common">
+        <item name="android:statusBarColor">?attr/colorSurfaceContainer</item>
+        <item name="android:navigationBarColor">?attr/colorSurfaceContainer</item>
+    </style>
+
+    <style name="Theme2.Main.DayNight" parent="Theme2.Main.Light" />
+
+    <style name="Theme2.Main.Startup" parent="Theme2.Main.Dark">
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+
+</resources>
