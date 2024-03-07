@@ -28,6 +28,9 @@ dependencies {
     implementation(projects.core.ui.compose.designsystem)
 
     implementation(projects.feature.account.oauth)
+
+    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.android.material)
     implementation(libs.appauth)
 
     implementation(libs.androidx.constraintlayout)
