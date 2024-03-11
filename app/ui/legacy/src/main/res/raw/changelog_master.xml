@@ -5,6 +5,15 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.801" versioncode="38001" date="2024-03-11">
+        <change>Added DNSSEC support when looking for server settings during setup</change>
+        <change>Made a change to prevent some software keyboards from capitalizing/auto-correcting email addresses in account setup</change>
+        <change>Fixed a crash when a very long subject was used</change>
+        <change>Fixed displaying OAuth 2.0 error messages</change>
+        <change>Fixed rare crash when downloading an attachment</change>
+        <change>Added code to disallow line breaks in single line text inputs</change>
+        <change>Updated translations</change>
+    </release>
     <release version="6.800" versioncode="38000" date="2024-02-29">
         <change>New and improved account setup</change>
         <change>Added option to return to the message list after marking a message as unread in the message view</change>
