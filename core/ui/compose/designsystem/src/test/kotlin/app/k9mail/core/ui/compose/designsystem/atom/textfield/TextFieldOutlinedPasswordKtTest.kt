@@ -1,18 +1,24 @@
 package app.k9mail.core.ui.compose.designsystem.atom.textfield
 
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextInput
 import app.k9mail.core.ui.compose.designsystem.R
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import assertk.assertThat
+import assertk.assertions.isEqualTo
 import assertk.assertions.isTrue
 import org.junit.Test
 
 private const val PASSWORD = "Password input"
+private const val TEST_TAG = "TextFieldOutlinedPassword"
 
 class TextFieldOutlinedPasswordKtTest : ComposeTest() {
 
@@ -129,6 +135,78 @@ class TextFieldOutlinedPasswordKtTest : ComposeTest() {
         }
 
         onNodeWithText(PASSWORD).assertDoesNotExist()
+    }
+
+    @Test
+    fun `variant 1 should call onValueChange when value changes`() = runComposeTest {
+        var value = "initial"
+        setContent {
+            TextFieldOutlinedPassword(
+                value = value,
+                onValueChange = { value = it },
+                modifier = Modifier.testTag(TEST_TAG),
+            )
+        }
+
+        onNodeWithTag(TEST_TAG).performClick()
+        onNodeWithTag(TEST_TAG).performTextInput(" + added text")
+
+        assertThat(value).isEqualTo("initial + added text")
+    }
+
+    @Test
+    fun `variant 2 should call onValueChange when value changes`() = runComposeTest {
+        var value = "initial"
+        setContent {
+            TextFieldOutlinedPassword(
+                value = value,
+                onValueChange = { value = it },
+                isPasswordVisible = false,
+                onPasswordVisibilityToggleClicked = {},
+                modifier = Modifier.testTag(TEST_TAG),
+            )
+        }
+
+        onNodeWithTag(TEST_TAG).performClick()
+        onNodeWithTag(TEST_TAG).performTextInput(" + added text")
+
+        assertThat(value).isEqualTo("initial + added text")
+    }
+
+    @Test
+    fun `variant 1 should strip line breaks before onValueChange is called`() = runComposeTest {
+        var value = ""
+        setContent {
+            TextFieldOutlinedPassword(
+                value = value,
+                onValueChange = { value = it },
+                modifier = Modifier.testTag(TEST_TAG),
+            )
+        }
+
+        onNodeWithTag(TEST_TAG).performClick()
+        onNodeWithTag(TEST_TAG).performTextInput("one\n two")
+
+        assertThat(value).isEqualTo("one two")
+    }
+
+    @Test
+    fun `variant 2 should strip line breaks before onValueChange is called`() = runComposeTest {
+        var value = ""
+        setContent {
+            TextFieldOutlinedPassword(
+                value = value,
+                onValueChange = { value = it },
+                isPasswordVisible = false,
+                onPasswordVisibilityToggleClicked = {},
+                modifier = Modifier.testTag(TEST_TAG),
+            )
+        }
+
+        onNodeWithTag(TEST_TAG).performClick()
+        onNodeWithTag(TEST_TAG).performTextInput("one\n two")
+
+        assertThat(value).isEqualTo("one two")
     }
 
     private fun SemanticsNodeInteractionsProvider.onShowPasswordNode(): SemanticsNodeInteraction {

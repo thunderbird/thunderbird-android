@@ -39,6 +39,8 @@
     public <init>(android.content.Context);
 }
 
+-keep class com.fsck.k9.mail.oauth.XOAuth2Response { *; }
+
 # okhttp rules
 # see: https://github.com/square/okhttp/blob/master/okhttp/src/main/resources/META-INF/proguard/okhttp3.pro
 
