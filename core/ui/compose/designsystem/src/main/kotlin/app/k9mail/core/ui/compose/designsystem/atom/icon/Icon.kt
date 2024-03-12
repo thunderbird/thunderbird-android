@@ -1,4 +1,4 @@
-package app.k9mail.core.ui.compose.designsystem.atom
+package app.k9mail.core.ui.compose.designsystem.atom.icon
 
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.LocalContentColor
@@ -7,7 +7,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import app.k9mail.core.ui.compose.theme.Icons
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 import androidx.compose.material.Icon as MaterialIcon
 

@@ -1,4 +1,4 @@
-package app.k9mail.core.ui.compose.theme
+package app.k9mail.core.ui.compose.designsystem.atom.icon
 
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.ui.unit.dp

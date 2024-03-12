@@ -10,7 +10,6 @@ android {
 dependencies {
     api(projects.core.ui.compose.common)
     implementation(libs.androidx.compose.material)
-    implementation(libs.androidx.compose.material.icons.extended)
 
     implementation(libs.androidx.activity)
 }
