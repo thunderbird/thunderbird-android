@@ -36,7 +36,7 @@
         <item name="colorTertiaryFixedDim">@color/k9_tertiary_080</item>
         <item name="colorOnTertiaryFixed">@color/k9_tertiary_010</item>
         <item name="colorOnTertiaryFixedVariant">@color/k9_tertiary_030</item>
-        <item name="android:colorBackground">@color/k9_neutral_099</item>
+        <item name="android:colorBackground">@color/k9_neutral_098</item>
         <item name="colorOnBackground">@color/k9_neutral_010</item>
         <item name="colorSurface">@color/k9_neutral_098</item>
         <item name="colorOnSurface">@color/k9_neutral_010</item>
