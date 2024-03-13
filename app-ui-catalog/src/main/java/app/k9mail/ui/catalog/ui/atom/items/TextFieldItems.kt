@@ -12,7 +12,8 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.designsystem.atom.Icon
+import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
+import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle1
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlined
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedEmailAddress
@@ -20,7 +21,6 @@ import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedN
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedPassword
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedSelect
 import app.k9mail.core.ui.compose.designsystem.molecule.input.CheckboxInput
-import app.k9mail.core.ui.compose.theme.Icons
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.ui.catalog.ui.common.helper.WithRememberedState
 import app.k9mail.ui.catalog.ui.common.list.itemDefaultPadding

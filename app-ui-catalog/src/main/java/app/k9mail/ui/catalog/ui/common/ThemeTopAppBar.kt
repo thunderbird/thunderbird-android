@@ -6,8 +6,8 @@ import androidx.compose.material.icons.filled.ShuffleOn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
+import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.organism.TopAppBar
-import app.k9mail.core.ui.compose.theme.Icons
 import app.k9mail.ui.catalog.ui.CatalogContract.Theme
 import app.k9mail.ui.catalog.ui.CatalogContract.ThemeVariant
 import androidx.compose.material.icons.Icons as MaterialIcons

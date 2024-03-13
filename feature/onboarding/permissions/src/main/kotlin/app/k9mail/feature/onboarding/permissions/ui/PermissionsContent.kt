@@ -25,10 +25,10 @@ import app.k9mail.core.ui.compose.designsystem.atom.DelayedCircularProgressIndic
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.button.Button
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
+import app.k9mail.core.ui.compose.designsystem.atom.icon.IconsWithBottomRightOverlay
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline5
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
-import app.k9mail.core.ui.compose.theme.IconsWithBottomRightOverlay
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader

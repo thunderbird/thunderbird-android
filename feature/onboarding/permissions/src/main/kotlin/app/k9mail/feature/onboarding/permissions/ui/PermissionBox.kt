@@ -20,12 +20,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.common.image.ImageWithOverlayCoordinate
-import app.k9mail.core.ui.compose.designsystem.atom.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.button.Button
+import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
+import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
+import app.k9mail.core.ui.compose.designsystem.atom.icon.IconsWithBottomRightOverlay
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody2
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline6
-import app.k9mail.core.ui.compose.theme.Icons
-import app.k9mail.core.ui.compose.theme.IconsWithBottomRightOverlay
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.feature.onboarding.permissions.R

@@ -2,7 +2,7 @@ package app.k9mail.feature.account.setup.ui.autodiscovery.view
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector
-import app.k9mail.core.ui.compose.theme.Icons
+import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.feature.account.setup.R
 
 enum class AutoDiscoveryResultHeaderState(

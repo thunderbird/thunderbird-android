@@ -20,10 +20,10 @@ import app.k9mail.autodiscovery.api.ConnectionSecurity
 import app.k9mail.core.common.net.Hostname
 import app.k9mail.core.common.net.isIpAddress
 import app.k9mail.core.common.net.toHostname
-import app.k9mail.core.ui.compose.designsystem.atom.Icon
+import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
+import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody1
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody2
-import app.k9mail.core.ui.compose.theme.Icons
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 import app.k9mail.feature.account.setup.ui.autodiscovery.toAutoDiscoveryConnectionSecurityString
