@@ -79,10 +79,29 @@
 
 1. Fetch the latest changes from the _fdroiddata_ repository.
 2. Switch to a new branch in your copy of the _fdroiddata_ repository.
-3. Edit `app-metadata/com.fsck.k9.yml` to create a new entry for the version you want to release. Usually it's copy & paste
+3. Edit `metadata/com.fsck.k9.yml` to create a new entry for the version you want to release. Usually it's copy & paste
    of the previous entry and adjusting `versionName`, `versionCode`, and `commit` (use the tag name).
    Leave `CurrentVersion` and `CurrentVersionCode` unchanged. Those specify which version is the stable/recommended
    build.
+
+   Example:
+
+   ```yaml
+   - versionName: "${versionName}"
+     versionCode: ${versionCode}
+     commit: "${tagName}"
+     subdir: app-k9mail
+     prebuild: ( cd .. && ln -s app-metadata/com.fsck.k9 metadata )
+     sudo:
+       - apt-get update
+       - apt-get install -y openjdk-17-jdk-headless
+       - update-alternatives --auto java
+     gradle:
+       - yes
+     scandelete:
+       - build-plugin/build
+   ```
+
 4. Commit the changes. Message: "Update K-9 Mail to $newVersionName"
 5. Run `fdroid build --latest com.fsck.k9` to build the project using F-Droid's toolchain.
 6. Push the changes to your fork of the _fdroiddata_ repository.
