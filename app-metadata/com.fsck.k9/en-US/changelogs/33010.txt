@@ -1,5 +1,0 @@
-- Fixed "K-9 Accounts" shortcuts (you probably have to remove existing shortcuts and add them again)
-- Fixed a couple of bugs and display issues in the message list widget
-- Fixed bug that could lead to a crypto provider popup showing before swiping to the next/previous message was completed
-- Some other minor bug fixes
-- Updated translations

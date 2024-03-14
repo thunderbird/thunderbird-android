@@ -1,2 +1,0 @@
-- Fixed bug that crashed the app when setting a notification sound on certain devices
-- Fixed crash when rotating the device while a delete confirmation dialog was showing

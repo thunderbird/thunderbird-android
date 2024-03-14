@@ -1,5 +1,0 @@
-- Respect "show contact names" setting in message details screen
-- Display folder name in message details screen
-- Small adjustment to the appearance of the "Download complete message" button
-- Internal changes
-- Updated translations

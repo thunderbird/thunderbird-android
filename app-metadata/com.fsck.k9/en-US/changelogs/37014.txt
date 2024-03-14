@@ -1,5 +1,0 @@
-- Added screen to configure special folders during account setup
-- Added copy action to recipient dropdown in compose screen
-- Improved error messages during account setup
-- Internal changes
-- Updated translations

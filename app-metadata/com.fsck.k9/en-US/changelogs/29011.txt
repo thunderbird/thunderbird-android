@@ -1,7 +1,0 @@
-- Reworked the user interface for the vibration pattern setting
-- Reworked the notification light color setting
-- Improved display of accounts without a name
-- Tapping a "send failure" notification will now open the Outbox folder
-- Fixed bug that led to some messages not being displayed properly
-- Fixed various smaller bugs related to notifications
-- Changed the way settings are stored; this might fix the bug where all accounts are lost

@@ -1,5 +1,0 @@
-- Tweaked theme colors
-- Added support for HTML messages using the <base> tag and relative links
-- Fixed the logic to skip the trash folder when deleting messages, e.g. when deleting spam
-- Fixed bug that could lead to messages not being marked as read on the server when they should have been
-- Internal changes

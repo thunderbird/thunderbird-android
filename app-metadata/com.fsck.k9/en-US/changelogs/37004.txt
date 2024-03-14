@@ -1,4 +1,0 @@
-- Changed primary action in message view header from "reply all" to "reply"
-- Fixed the app so it runs on devices that don't support home screen widgets
-- Fixed bug where "Cannot connect to crypto provider" was displayed when the problem wasn't the crypto provider
-- Updated translations

@@ -1,4 +1,0 @@
-- Increased timeout when sending messages because some users have reported problems with sending large attachments
-- Allow all URI schemes in HTML links
-- Fixed display bug with search in general settings
-- When composing messages don't hide Cc and Bcc fields if they contain incomplete email addresses

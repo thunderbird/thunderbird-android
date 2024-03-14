@@ -1,5 +1,0 @@
-- Fixed order of autoconfig discovery steps
-- Changed default display count to 100
-- Enabled notifications for new accounts by default
-- Reverted the change to handling mailto: URIs introduced in K-9 Mail 6.716 because of unintended side effects
-- Fixed bug to make "colorize contacts" work again in message view
