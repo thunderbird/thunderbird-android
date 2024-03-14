@@ -43,7 +43,7 @@
 1. Update versionCode and versionName in `app-k9mail/build.gradle.kts`
 2. Create change log entries in
    - `app/ui/legacy/src/main/res/raw/changelog_master.xml`
-   - `app-k9mail/fastlane/metadata/android/en-US/changelogs/${versionCode}.txt`
+   - `app-metadata/com.fsck.k9/en-US/changelogs/${versionCode}.txt`
      Use past tense. Try to keep them high level. Focus on the user (experience).
 3. Commit the changes. Message: "Version $versionName"
 4. Run `./gradlew clean :app-k9mail:assembleRelease --no-build-cache --no-configuration-cache`
@@ -79,7 +79,7 @@
 
 1. Fetch the latest changes from the _fdroiddata_ repository.
 2. Switch to a new branch in your copy of the _fdroiddata_ repository.
-3. Edit `metadata/com.fsck.k9.yml` to create a new entry for the version you want to release. Usually it's copy & paste
+3. Edit `app-metadata/com.fsck.k9.yml` to create a new entry for the version you want to release. Usually it's copy & paste
    of the previous entry and adjusting `versionName`, `versionCode`, and `commit` (use the tag name).
    Leave `CurrentVersion` and `CurrentVersionCode` unchanged. Those specify which version is the stable/recommended
    build.
@@ -99,7 +99,7 @@
 4. Click on _Create new release_
 5. Upload the APK to _App bundles_
 6. Fill out Release name (e.g. "$versionCode ($versionName)")
-7. Fill out Release notes (copy from `app-k9mail/fastlane/metadata/android/en-US/changelogs/${versionCode}.txt`)
+7. Fill out Release notes (copy from `app-metadata/com.fsck.k9/en-US/changelogs/${versionCode}.txt`)
 8. Click _Next_
 9. Review the release
 10. Start with a staged rollout (usually 20%) for production and full rollout for beta versions
