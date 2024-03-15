@@ -76,6 +76,8 @@ include(
     ":core:ui:compose:common",
     ":core:ui:compose:designsystem",
     ":core:ui:compose:theme",
+    ":core:ui:compose:theme2:common",
+    ":core:ui:compose:theme2:k9mail",
     ":core:ui:compose:testing",
 )
 

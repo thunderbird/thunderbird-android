@@ -5,10 +5,8 @@ import app.k9mail.ui.catalog.ui.CatalogContract.Event
 import app.k9mail.ui.catalog.ui.CatalogContract.Event.OnThemeChanged
 import app.k9mail.ui.catalog.ui.CatalogContract.Event.OnThemeVariantChanged
 import app.k9mail.ui.catalog.ui.CatalogContract.State
-import app.k9mail.ui.catalog.ui.CatalogContract.Theme.K9
-import app.k9mail.ui.catalog.ui.CatalogContract.Theme.THUNDERBIRD
-import app.k9mail.ui.catalog.ui.CatalogContract.ThemeVariant.DARK
-import app.k9mail.ui.catalog.ui.CatalogContract.ThemeVariant.LIGHT
+import app.k9mail.ui.catalog.ui.CatalogContract.Theme
+import app.k9mail.ui.catalog.ui.CatalogContract.ThemeVariant
 import app.k9mail.ui.catalog.ui.CatalogContract.ViewModel
 
 class CatalogViewModel(
@@ -17,18 +15,22 @@ class CatalogViewModel(
     override fun event(event: Event) {
         when (event) {
             is OnThemeChanged -> {
-                when (state.value.theme) {
-                    K9 -> updateState { it.copy(theme = THUNDERBIRD) }
-                    THUNDERBIRD -> updateState { it.copy(theme = K9) }
-                }
+                updateState { it.copy(theme = selectNextTheme(it.theme)) }
             }
 
             is OnThemeVariantChanged -> {
                 when (state.value.themeVariant) {
-                    LIGHT -> updateState { it.copy(themeVariant = DARK) }
-                    DARK -> updateState { it.copy(themeVariant = LIGHT) }
+                    ThemeVariant.LIGHT -> updateState { it.copy(themeVariant = ThemeVariant.DARK) }
+                    ThemeVariant.DARK -> updateState { it.copy(themeVariant = ThemeVariant.LIGHT) }
                 }
             }
         }
+    }
+
+    private fun selectNextTheme(currentTheme: Theme): Theme {
+        val themes = Theme.entries
+        val currentThemeIndex = themes.indexOf(currentTheme)
+        val nextThemeIndex = (currentThemeIndex + 1) % themes.size
+        return themes[nextThemeIndex]
     }
 }
