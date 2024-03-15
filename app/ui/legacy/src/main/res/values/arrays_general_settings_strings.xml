@@ -142,6 +142,7 @@
 
     <string-array name="confirm_action_entries">
         <item>@string/global_settings_confirm_action_delete</item>
+        <item>@string/global_settings_confirm_action_delete_from_trash</item>
         <item>@string/global_settings_confirm_action_delete_starred</item>
         <item>@string/global_settings_confirm_action_delete_notif</item>
         <item>@string/global_settings_confirm_action_spam</item>

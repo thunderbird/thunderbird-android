@@ -40,6 +40,7 @@ import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo58;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo69;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo79;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo89;
+import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo91;
 
 import static com.fsck.k9.K9.LockScreenNotificationVisibility;
 
@@ -68,6 +69,9 @@ public class GeneralSettingsDescriptions {
         ));
         s.put("confirmDelete", Settings.versions(
                 new V(1, new BooleanSetting(false))
+        ));
+        s.put("confirmDeleteTrash", Settings.versions(
+            new V(91, new BooleanSetting(false))
         ));
         s.put("confirmDeleteStarred", Settings.versions(
                 new V(2, new BooleanSetting(false))

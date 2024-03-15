@@ -688,7 +688,8 @@ class MessageListFragment :
     }
 
     private fun onDelete(messages: List<MessageReference>) {
-        if (K9.isConfirmDelete) {
+        if (K9.isConfirmDelete && !isShowingTrashFolder
+            || K9.isConfirmDeleteFromTrash && isShowingTrashFolder) {
             // remember the message selection for #onCreateDialog(int)
             activeMessages = messages
             showDialog(R.id.dialog_confirm_delete)

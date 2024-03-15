@@ -276,6 +276,7 @@
     <string name="global_settings_confirm_actions_title">Confirm actions</string>
     <string name="global_settings_confirm_actions_summary">Show a dialog whenever you perform selected actions</string>
     <string name="global_settings_confirm_action_delete">Delete</string>
+    <string name="global_settings_confirm_action_delete_from_trash">Delete (from trash)</string>
     <string name="global_settings_confirm_action_delete_starred">Delete Starred (in message view)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
     <string name="global_settings_confirm_menu_discard">Discard message</string>
