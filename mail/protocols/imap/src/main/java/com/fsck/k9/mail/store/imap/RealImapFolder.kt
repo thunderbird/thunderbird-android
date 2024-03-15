@@ -354,7 +354,7 @@ internal class RealImapFolder(
 
         val uidMapping = copyMessages(messages, folder)
         setFlags(messages, setOf(Flag.DELETED), true)
-        expungeUidsOnly(uids)
+        expungeUidsAfterDelete(uids)
 
         return uidMapping
     }
@@ -1117,8 +1117,8 @@ internal class RealImapFolder(
         expungeUids(uids, fullExpungeFallback = true)
     }
 
-    private fun expungeUidsOnly(uids: List<String>) {
-        expungeUids(uids, fullExpungeFallback = false)
+    private fun expungeUidsAfterDelete(uids: List<String>) {
+        expungeUids(uids, fullExpungeFallback = internalImapStore.config.isExpungeImmediately())
     }
 
     private fun expungeUids(uids: List<String>, fullExpungeFallback: Boolean) {
