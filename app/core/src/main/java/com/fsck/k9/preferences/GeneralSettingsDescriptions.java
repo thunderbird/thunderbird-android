@@ -40,7 +40,6 @@ import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo58;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo69;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo79;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo89;
-import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo91;
 
 import static com.fsck.k9.K9.LockScreenNotificationVisibility;
 
