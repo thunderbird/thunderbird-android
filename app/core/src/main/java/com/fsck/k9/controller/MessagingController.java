@@ -117,6 +117,7 @@ public class MessagingController {
     private final MessageStoreManager messageStoreManager;
     private final SaveMessageDataCreator saveMessageDataCreator;
     private final SpecialLocalFoldersCreator specialLocalFoldersCreator;
+    private final LocalDeleteOperationDecider localDeleteOperationDecider;
 
     private final Thread controllerThread;
 
@@ -140,7 +141,7 @@ public class MessagingController {
             NotificationStrategy notificationStrategy, LocalStoreProvider localStoreProvider,
             BackendManager backendManager, Preferences preferences, MessageStoreManager messageStoreManager,
             SaveMessageDataCreator saveMessageDataCreator, SpecialLocalFoldersCreator specialLocalFoldersCreator,
-            List<ControllerExtension> controllerExtensions) {
+            LocalDeleteOperationDecider localDeleteOperationDecider, List<ControllerExtension> controllerExtensions) {
         this.context = context;
         this.notificationController = notificationController;
         this.notificationStrategy = notificationStrategy;
@@ -150,6 +151,7 @@ public class MessagingController {
         this.messageStoreManager = messageStoreManager;
         this.saveMessageDataCreator = saveMessageDataCreator;
         this.specialLocalFoldersCreator = specialLocalFoldersCreator;
+        this.localDeleteOperationDecider = localDeleteOperationDecider;
 
         controllerThread = new Thread(new Runnable() {
             @Override
@@ -1978,10 +1980,8 @@ public class MessagingController {
 
             Map<String, String> uidMap = null;
             Long trashFolderId = account.getTrashFolderId();
-            boolean isSpamFolder = account.hasSpamFolder() && account.getSpamFolderId() == folderId;
             boolean doNotMoveToTrashFolder = skipTrashFolder ||
-                !account.hasTrashFolder() || folderId == trashFolderId ||
-                isSpamFolder;
+                localDeleteOperationDecider.isDeleteImmediately(account, folderId);
 
             LocalFolder localTrashFolder = null;
             if (doNotMoveToTrashFolder) {

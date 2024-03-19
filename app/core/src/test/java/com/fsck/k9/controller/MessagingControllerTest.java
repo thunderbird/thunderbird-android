@@ -122,7 +122,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         controller = new MessagingController(appContext, notificationController, notificationStrategy,
                 localStoreProvider, backendManager, preferences, messageStoreManager,
-                saveMessageDataCreator, specialLocalFoldersCreator, Collections.<ControllerExtension>emptyList());
+                saveMessageDataCreator, specialLocalFoldersCreator, new LocalDeleteOperationDecider(),
+                Collections.<ControllerExtension>emptyList());
 
         configureAccount();
         configureBackendManager();
