@@ -12,6 +12,7 @@ import assertk.assertions.prop
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
+import com.fsck.k9.preferences.FakeAccountManager
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import com.fsck.k9.Account as K9Account

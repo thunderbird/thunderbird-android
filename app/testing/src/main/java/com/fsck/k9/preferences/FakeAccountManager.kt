@@ -1,9 +1,8 @@
-package com.fsck.k9.account
+package com.fsck.k9.preferences
 
 import com.fsck.k9.Account
 import com.fsck.k9.AccountRemovedListener
 import com.fsck.k9.AccountsChangeListener
-import com.fsck.k9.preferences.AccountManager
 import kotlinx.coroutines.flow.Flow
 
 class FakeAccountManager(
