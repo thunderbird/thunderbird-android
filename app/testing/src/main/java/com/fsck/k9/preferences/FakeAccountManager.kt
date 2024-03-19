@@ -6,9 +6,10 @@ import com.fsck.k9.AccountsChangeListener
 import kotlinx.coroutines.flow.Flow
 
 class FakeAccountManager(
-    private val accounts: MutableMap<String, Account> = mutableMapOf(),
+    accounts: List<Account> = listOf(),
     private val isFailureOnSave: Boolean = false,
 ) : AccountManager {
+    private val accounts = accounts.associateBy { it.uuid }.toMutableMap()
 
     override fun getAccounts(): List<Account> = accounts.values.toList()
 

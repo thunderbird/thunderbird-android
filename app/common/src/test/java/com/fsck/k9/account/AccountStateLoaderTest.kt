@@ -28,8 +28,8 @@ class AccountStateLoaderTest {
 
     @Test
     fun `loadAccountState() SHOULD return account when present in accountManager`() = runTest {
-        val accounts = mutableMapOf(
-            "accountUuid" to Account(uuid = "accountUuid").apply {
+        val accounts = listOf(
+            Account(uuid = "accountUuid").apply {
                 identities = mutableListOf(Identity())
                 email = "emailAddress"
                 incomingServerSettings = INCOMING_SERVER_SETTINGS
