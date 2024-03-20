@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
-import app.k9mail.core.ui.compose.designsystem.atom.button.Button
+import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextCaption
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.feature.account.oauth.R
@@ -36,7 +36,7 @@ internal fun SignInView(
                 enabled = isEnabled,
             )
         } else {
-            Button(
+            ButtonFilled(
                 text = stringResource(id = R.string.account_oauth_sign_in_button),
                 onClick = onSignInClick,
                 enabled = isEnabled,

@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.common.image.ImageWithOverlayCoordinate
-import app.k9mail.core.ui.compose.designsystem.atom.button.Button
+import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.atom.icon.IconsWithBottomRightOverlay
@@ -73,7 +73,7 @@ internal fun PermissionBox(
         ) {
             Spacer(modifier = Modifier.height(MainTheme.spacings.default))
 
-            Button(
+            ButtonFilled(
                 text = stringResource(R.string.onboarding_permissions_allow_button),
                 onClick = onAllowClick,
                 modifier = Modifier.alpha(buttonAlpha),

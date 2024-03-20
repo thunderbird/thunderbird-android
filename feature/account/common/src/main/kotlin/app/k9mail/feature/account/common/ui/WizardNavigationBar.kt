@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
-import app.k9mail.core.ui.compose.designsystem.atom.button.Button
+import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonOutlined
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme.K9Theme
@@ -49,7 +49,7 @@ fun WizardNavigationBar(
                 )
             }
             if (state.showNext) {
-                Button(
+                ButtonFilled(
                     text = nextButtonText,
                     onClick = onNextClick,
                     enabled = state.isNextEnabled,

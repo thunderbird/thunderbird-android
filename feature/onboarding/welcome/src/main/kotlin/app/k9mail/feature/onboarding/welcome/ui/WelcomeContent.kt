@@ -21,7 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.designsystem.atom.Background
-import app.k9mail.core.ui.compose.designsystem.atom.button.Button
+import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody1
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline2
@@ -147,7 +147,7 @@ private fun WelcomeFooter(
         verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.quarter),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Button(
+        ButtonFilled(
             text = stringResource(id = R.string.onboarding_welcome_start_button),
             onClick = onStartClick,
         )
