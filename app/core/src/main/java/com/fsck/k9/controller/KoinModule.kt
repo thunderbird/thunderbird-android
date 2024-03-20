@@ -37,4 +37,14 @@ val controllerModule = module {
     }
 
     single { DeleteOperationDecider() }
+
+    single<LocalFolderChecker> { DefaultLocalFolderChecker(folderRepository = get()) }
+
+    single {
+        PermanentDeleteChecker(
+            accountManager = get(),
+            localFolderChecker = get(),
+            deleteOperationDecider = get(),
+        )
+    }
 }
