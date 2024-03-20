@@ -4,6 +4,9 @@ import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import android.provider.Settings
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.fsck.k9.CoreResourceProvider
@@ -49,25 +52,46 @@ internal class PushNotificationManager(
     }
 
     private fun createNotification(): Notification {
-        val intent = Intent(PUSH_INFO_ACTION).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            setPackage(context.packageName)
-        }
-        val contentIntent = PendingIntent.getActivity(context, 1, intent, FLAG_IMMUTABLE)
-
         return NotificationCompat.Builder(context, notificationChannelManager.pushChannelId)
             .setSmallIcon(resourceProvider.iconPushNotification)
             .setContentTitle(resourceProvider.pushNotificationText(notificationState))
-            .setContentText(resourceProvider.pushNotificationInfoText())
-            .setContentIntent(contentIntent)
+            .setContentText(getContentText())
+            .setContentIntent(getContentIntent())
             .setOngoing(true)
-            .setNotificationSilent()
+            .setSilent(true)
             .setPriority(NotificationCompat.PRIORITY_MIN)
             .setBadgeIconType(NotificationCompat.BADGE_ICON_NONE)
             .setLocalOnly(true)
             .setShowWhen(false)
             .build()
+    }
+
+    private fun getContentIntent(): PendingIntent {
+        val intent = if (notificationState == PushNotificationState.ALARM_PERMISSION_MISSING) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+                error("ACTION_REQUEST_SCHEDULE_EXACT_ALARM is only available on API 31+")
+            }
+
+            Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM).apply {
+                data = Uri.parse("package:${context.packageName}")
+            }
+        } else {
+            Intent(PUSH_INFO_ACTION).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                setPackage(context.packageName)
+            }
+        }
+
+        return PendingIntent.getActivity(context, 1, intent, FLAG_IMMUTABLE)
+    }
+
+    private fun getContentText(): String {
+        return if (notificationState == PushNotificationState.ALARM_PERMISSION_MISSING) {
+            resourceProvider.pushNotificationGrantAlarmPermissionText()
+        } else {
+            resourceProvider.pushNotificationInfoText()
+        }
     }
 }
 
@@ -76,4 +100,5 @@ enum class PushNotificationState {
     LISTENING,
     WAIT_BACKGROUND_SYNC,
     WAIT_NETWORK,
+    ALARM_PERMISSION_MISSING,
 }

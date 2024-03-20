@@ -1,0 +1,59 @@
+package com.fsck.k9.controller.push
+
+import android.app.AlarmManager
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
+import com.fsck.k9.helper.AlarmManagerCompat
+import timber.log.Timber
+
+/**
+ * Starting with Android 12 we have to check whether the app can schedule exact alarms.
+ */
+@RequiresApi(Build.VERSION_CODES.S)
+internal class AlarmPermissionManagerApi31(
+    private val context: Context,
+    private val alarmManagerCompat: AlarmManagerCompat,
+) : AlarmPermissionManager {
+    private var isRegistered = false
+    private var listener: AlarmPermissionListener? = null
+
+    private val intentFilter = IntentFilter().apply {
+        addAction(AlarmManager.ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED)
+    }
+
+    private val receiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent?) {
+            val listener = synchronized(this@AlarmPermissionManagerApi31) { listener }
+            listener?.onAlarmPermissionGranted()
+        }
+    }
+
+    override fun canScheduleExactAlarms(): Boolean {
+        return alarmManagerCompat.canScheduleExactAlarms()
+    }
+
+    @Synchronized
+    override fun registerListener(listener: AlarmPermissionListener) {
+        if (!isRegistered) {
+            Timber.v("Registering alarm permission listener")
+            isRegistered = true
+            this.listener = listener
+            ContextCompat.registerReceiver(context, receiver, intentFilter, ContextCompat.RECEIVER_NOT_EXPORTED)
+        }
+    }
+
+    @Synchronized
+    override fun unregisterListener() {
+        if (isRegistered) {
+            Timber.v("Unregistering alarm permission listener")
+            isRegistered = false
+            listener = null
+            context.unregisterReceiver(receiver)
+        }
+    }
+}
