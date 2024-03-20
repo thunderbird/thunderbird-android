@@ -11,6 +11,8 @@ dependencies {
     api(projects.core.ui.compose.theme)
     api(projects.core.ui.compose.theme2.common)
 
+    debugApi(projects.core.ui.compose.theme2.k9mail)
+
     implementation(libs.androidx.compose.material)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material.icons.extended)
