@@ -1,13 +1,7 @@
 package com.fsck.k9.mail.store.imap
 
-class TestIdleRefreshManager(
-    private val areTimersSupported: Boolean = true,
-) : IdleRefreshManager {
+class TestIdleRefreshManager : IdleRefreshManager {
     private val timers = mutableListOf<TestIdleRefreshTimer>()
-
-    override fun canScheduleTimers(): Boolean {
-        return areTimersSupported
-    }
 
     @Synchronized
     override fun startTimer(timeout: Long, callback: () -> Unit): TestIdleRefreshTimer {
