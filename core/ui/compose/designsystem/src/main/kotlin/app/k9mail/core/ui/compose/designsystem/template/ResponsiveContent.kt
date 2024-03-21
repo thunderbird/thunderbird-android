@@ -87,7 +87,7 @@ private fun ExpandedContent(
             ) {
                 Surface(
                     modifier = Modifier.requiredWidth(WindowSizeClass.MEDIUM_MAX_WIDTH.dp),
-                    elevation = MainTheme.elevations.raised,
+                    tonalElevation = MainTheme.elevations.raised,
                 ) {
                     content()
                 }
@@ -105,7 +105,7 @@ private fun ExpandedContent(
                     modifier = Modifier
                         .requiredWidth(WindowSizeClass.MEDIUM_MAX_WIDTH.dp)
                         .requiredHeight(WindowSizeClass.MEDIUM_MAX_HEIGHT.dp),
-                    elevation = MainTheme.elevations.raised,
+                    tonalElevation = MainTheme.elevations.raised,
                 ) {
                     content()
                 }

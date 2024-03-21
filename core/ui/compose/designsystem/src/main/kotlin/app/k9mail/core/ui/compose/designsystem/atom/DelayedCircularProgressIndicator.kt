@@ -1,5 +1,6 @@
 package app.k9mail.core.ui.compose.designsystem.atom
 
+import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -9,7 +10,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import app.k9mail.core.ui.compose.common.visibility.hide
-import app.k9mail.core.ui.compose.theme.MainTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -23,7 +23,7 @@ private const val LOADING_INDICATOR_DELAY = 500L
 @Composable
 fun DelayedCircularProgressIndicator(
     modifier: Modifier = Modifier,
-    color: Color = MainTheme.colors.secondary,
+    color: Color = ProgressIndicatorDefaults.circularColor,
 ) {
     var progressIndicatorVisible by remember { mutableStateOf(false) }
 

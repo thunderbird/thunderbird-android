@@ -85,7 +85,9 @@ private fun ButtonBar(
         label = "BottomBarElevation",
     )
 
-    Surface(elevation = elevation) {
+    Surface(
+        tonalElevation = elevation,
+    ) {
         ResponsiveWidthContainer(
             modifier = Modifier
                 .padding(

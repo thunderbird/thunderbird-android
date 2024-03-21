@@ -144,7 +144,9 @@ private fun BottomBar(
         label = "BottomBarElevation",
     )
 
-    Surface(elevation = elevation) {
+    Surface(
+        tonalElevation = elevation,
+    ) {
         ResponsiveWidthContainer(
             modifier = Modifier.fillMaxWidth(),
         ) {
