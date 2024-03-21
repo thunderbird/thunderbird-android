@@ -4,9 +4,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
-import app.k9mail.core.ui.compose.theme.PreviewWithThemes
-import androidx.compose.material.OutlinedTextField as MaterialOutlinedTextField
+import androidx.compose.material3.OutlinedTextField as Material3OutlinedTextField
 
 @Suppress("LongParameterList")
 @Composable
@@ -20,7 +18,7 @@ fun TextFieldOutlinedNumber(
     isRequired: Boolean = false,
     hasError: Boolean = false,
 ) {
-    MaterialOutlinedTextField(
+    Material3OutlinedTextField(
         value = value?.toString() ?: "",
         onValueChange = {
             onValueChange(
@@ -37,51 +35,4 @@ fun TextFieldOutlinedNumber(
         ),
         singleLine = true,
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun TextFieldOutlinedNumberPreview() {
-    PreviewWithThemes {
-        TextFieldOutlinedNumber(
-            value = 123L,
-            onValueChange = {},
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun TextFieldOutlinedNumberWithLabelPreview() {
-    PreviewWithThemes {
-        TextFieldOutlinedNumber(
-            value = 123L,
-            label = "Label",
-            onValueChange = {},
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun TextFieldOutlinedNumberDisabledPreview() {
-    PreviewWithThemes {
-        TextFieldOutlinedNumber(
-            value = 123L,
-            onValueChange = {},
-            isEnabled = false,
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun TextFieldOutlinedNumberErrorPreview() {
-    PreviewWithThemes {
-        TextFieldOutlinedNumber(
-            value = 123L,
-            onValueChange = {},
-            hasError = true,
-        )
-    }
 }
