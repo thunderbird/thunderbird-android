@@ -18,7 +18,7 @@ import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.common.koin.koinPreview
 import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import app.k9mail.core.ui.compose.designsystem.atom.button.Button
+import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonOutlined
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
@@ -85,7 +85,9 @@ private fun ButtonBar(
         label = "BottomBarElevation",
     )
 
-    Surface(elevation = elevation) {
+    Surface(
+        tonalElevation = elevation,
+    ) {
         ResponsiveWidthContainer(
             modifier = Modifier
                 .padding(
@@ -96,7 +98,7 @@ private fun ButtonBar(
                 ),
         ) {
             Column(modifier = Modifier.animateContentSize()) {
-                Button(
+                ButtonFilled(
                     text = stringResource(R.string.account_server_certificate_button_back),
                     onClick = { dispatch(Event.OnBackClicked) },
                     modifier = Modifier.fillMaxWidth(),

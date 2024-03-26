@@ -1,5 +1,5 @@
 plugins {
-    id(ThunderbirdPlugins.App.android)
+    id(ThunderbirdPlugins.App.androidCompose)
     alias(libs.plugins.dependency.guard)
     id("thunderbird.quality.badging")
 }
@@ -11,6 +11,8 @@ if (testCoverageEnabled) {
 
 dependencies {
     implementation(projects.app.common)
+    implementation(projects.core.ui.compose.theme2.k9mail)
+    implementation(projects.feature.launcher)
 
     implementation(projects.app.core)
     implementation(projects.app.ui.legacy)

@@ -23,7 +23,7 @@ import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.common.visibility.hide
 import app.k9mail.core.ui.compose.designsystem.atom.DelayedCircularProgressIndicator
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import app.k9mail.core.ui.compose.designsystem.atom.button.Button
+import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.atom.icon.IconsWithBottomRightOverlay
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline5
@@ -144,7 +144,9 @@ private fun BottomBar(
         label = "BottomBarElevation",
     )
 
-    Surface(elevation = elevation) {
+    Surface(
+        tonalElevation = elevation,
+    ) {
         ResponsiveWidthContainer(
             modifier = Modifier.fillMaxWidth(),
         ) {
@@ -163,7 +165,7 @@ private fun BottomBar(
                     targetState = state.isNextButtonVisible,
                     label = "NextButton",
                 ) { isNextButtonVisible ->
-                    Button(
+                    ButtonFilled(
                         text = stringResource(CommonR.string.account_common_button_next),
                         onClick = { onEvent(Event.NextClicked) },
                         modifier = Modifier.hide(!isNextButtonVisible),

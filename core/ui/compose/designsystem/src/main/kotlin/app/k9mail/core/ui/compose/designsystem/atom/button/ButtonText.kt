@@ -1,15 +1,13 @@
 package app.k9mail.core.ui.compose.designsystem.atom.button
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.material.ButtonDefaults
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextButton
-import app.k9mail.core.ui.compose.theme.MainTheme
-import app.k9mail.core.ui.compose.theme.PreviewWithThemes
-import androidx.compose.material.TextButton as MaterialTextButton
+import app.k9mail.core.ui.compose.theme2.MainTheme
+import androidx.compose.material3.Text as Material3Text
+import androidx.compose.material3.TextButton as Material3TextButton
 
 @Composable
 fun ButtonText(
@@ -20,7 +18,7 @@ fun ButtonText(
     color: Color? = null,
     contentPadding: PaddingValues = buttonContentPadding(),
 ) {
-    MaterialTextButton(
+    Material3TextButton(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
@@ -29,41 +27,6 @@ fun ButtonText(
         ),
         contentPadding = contentPadding,
     ) {
-        TextButton(text = text)
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun ButtonTextPreview() {
-    PreviewWithThemes {
-        ButtonText(
-            text = "ButtonText",
-            onClick = {},
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun ButtonTextColoredPreview() {
-    PreviewWithThemes {
-        ButtonText(
-            text = "ButtonTextColored",
-            onClick = {},
-            color = Color.Magenta,
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun ButtonTextDisabledPreview() {
-    PreviewWithThemes {
-        ButtonText(
-            text = "ButtonTextDisabled",
-            onClick = {},
-            enabled = false,
-        )
+        Material3Text(text = text)
     }
 }

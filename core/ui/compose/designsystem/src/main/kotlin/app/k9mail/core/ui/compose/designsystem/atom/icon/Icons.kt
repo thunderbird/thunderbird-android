@@ -11,7 +11,6 @@ import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.ArrowDropDown
-import androidx.compose.material.icons.outlined.ArrowDropUp
 import androidx.compose.material.icons.outlined.Celebration
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.ErrorOutline
@@ -60,9 +59,6 @@ object Icons {
 
         val arrowDropDown: ImageVector
             get() = MaterialIcons.Outlined.ArrowDropDown
-
-        val arrowDropUp: ImageVector
-            get() = MaterialIcons.Outlined.ArrowDropUp
 
         val celebration: ImageVector
             get() = MaterialIcons.Outlined.Celebration

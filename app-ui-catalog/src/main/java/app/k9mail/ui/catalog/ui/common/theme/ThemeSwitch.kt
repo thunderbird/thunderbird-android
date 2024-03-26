@@ -39,13 +39,21 @@ private fun K9ThemeSwitch(
     when (themeVariant) {
         ThemeVariant.LIGHT -> K9Theme(
             darkTheme = false,
-            content = content,
-        )
+        ) {
+            K9MailTheme2(
+                darkTheme = false,
+                content = content,
+            )
+        }
 
         ThemeVariant.DARK -> K9Theme(
             darkTheme = true,
-            content = content,
-        )
+        ) {
+            K9MailTheme2(
+                darkTheme = true,
+                content = content,
+            )
+        }
     }
 }
 
@@ -57,13 +65,21 @@ private fun ThunderbirdThemeSwitch(
     when (themeVariant) {
         ThemeVariant.LIGHT -> ThunderbirdTheme(
             darkTheme = false,
-            content = content,
-        )
+        ) {
+            K9MailTheme2(
+                darkTheme = true,
+                content = content,
+            )
+        }
 
         ThemeVariant.DARK -> ThunderbirdTheme(
             darkTheme = true,
-            content = content,
-        )
+        ) {
+            K9MailTheme2(
+                darkTheme = true,
+                content = content,
+            )
+        }
     }
 }
 
@@ -75,12 +91,20 @@ private fun K9Theme2Switch(
     when (themeVariant) {
         ThemeVariant.LIGHT -> K9MailTheme2(
             darkTheme = false,
-            content = content,
-        )
+        ) {
+            K9Theme(
+                darkTheme = false,
+                content = content,
+            )
+        }
 
         ThemeVariant.DARK -> K9MailTheme2(
             darkTheme = true,
-            content = content,
-        )
+        ) {
+            K9Theme(
+                darkTheme = false,
+                content = content,
+            )
+        }
     }
 }

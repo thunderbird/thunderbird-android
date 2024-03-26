@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.atom.Divider
+import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline6
 import app.k9mail.core.ui.compose.theme.MainTheme
 
@@ -26,7 +26,7 @@ fun LazyGridScope.sectionHeaderItem(
             TextHeadline6(
                 text = text,
             )
-            Divider()
+            DividerHorizontal()
         }
     }
 }

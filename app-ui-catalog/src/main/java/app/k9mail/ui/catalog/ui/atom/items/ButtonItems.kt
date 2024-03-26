@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import app.k9mail.core.ui.compose.designsystem.atom.button.Button
+import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonOutlined
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.theme.MainTheme
@@ -21,9 +21,8 @@ fun LazyGridScope.buttonItems() {
             horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
             modifier = Modifier.itemDefaultPadding(),
         ) {
-            Button(text = "Enabled", onClick = { })
-            Button(text = "Colored", onClick = { }, color = Color.Magenta)
-            Button(text = "Disabled", onClick = { }, enabled = false)
+            ButtonFilled(text = "Enabled", onClick = { })
+            ButtonFilled(text = "Disabled", onClick = { }, enabled = false)
         }
     }
     sectionHeaderItem(text = "Buttons - Outlined")
@@ -33,7 +32,6 @@ fun LazyGridScope.buttonItems() {
             modifier = Modifier.itemDefaultPadding(),
         ) {
             ButtonOutlined(text = "Enabled", onClick = { })
-            ButtonOutlined(text = "Colored", onClick = { }, color = Color.Magenta)
             ButtonOutlined(text = "Disabled", onClick = { }, enabled = false)
         }
     }
