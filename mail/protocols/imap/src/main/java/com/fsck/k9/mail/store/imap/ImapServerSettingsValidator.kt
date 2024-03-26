@@ -32,6 +32,7 @@ class ImapServerSettingsValidator(
         val config = object : ImapStoreConfig {
             override val logLabel = "check"
             override fun isSubscribedFoldersOnly() = false
+            override fun isExpungeImmediately() = false
             override fun clientId() = ImapClientId(appName = clientIdAppName, appVersion = clientIdAppVersion)
         }
         val oAuth2TokenProvider = createOAuth2TokenProviderOrNull(authStateStorage)

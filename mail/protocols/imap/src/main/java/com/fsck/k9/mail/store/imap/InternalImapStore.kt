@@ -4,6 +4,7 @@ import com.fsck.k9.mail.Flag
 
 internal interface InternalImapStore {
     val logLabel: String
+    val config: ImapStoreConfig
 
     fun getCombinedPrefix(): String
 
