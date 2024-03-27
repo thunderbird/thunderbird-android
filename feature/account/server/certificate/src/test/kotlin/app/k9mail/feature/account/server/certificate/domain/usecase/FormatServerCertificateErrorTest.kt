@@ -1,12 +1,11 @@
 package app.k9mail.feature.account.server.certificate.domain.usecase
 
+import app.k9mail.core.common.net.ssl.decodeCertificatePem
 import app.k9mail.feature.account.server.certificate.domain.entity.ServerCertificateError
 import app.k9mail.feature.account.server.certificate.domain.entity.ServerCertificateProperties
 import assertk.assertThat
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
-import java.security.cert.CertificateFactory
-import java.security.cert.X509Certificate
 import java.text.DateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -28,7 +27,7 @@ class FormatServerCertificateErrorTest {
         val serverCertificateError = ServerCertificateError(
             hostname = "expired.badssl.com",
             port = 443,
-            certificateChain = listOf(readCertificate(EXPIRED_CERTIFICATE)),
+            certificateChain = listOf(EXPIRED_CERTIFICATE),
         )
 
         val result = formatCertificateError(serverCertificateError)
@@ -60,19 +59,12 @@ class FormatServerCertificateErrorTest {
         val serverCertificateError = ServerCertificateError(
             hostname = "10.0.0.1",
             port = 993,
-            certificateChain = listOf(readCertificate(CERTIFICATE_WITHOUT_SAN)),
+            certificateChain = listOf(CERTIFICATE_WITHOUT_SAN),
         )
 
         val result = formatCertificateError(serverCertificateError)
 
         assertThat(result.serverCertificateProperties.subjectAlternativeNames).isEmpty()
-    }
-
-    private fun readCertificate(asciiArmoredCertificate: String): X509Certificate {
-        val inputStream = asciiArmoredCertificate.byteInputStream()
-
-        val certificateFactory = CertificateFactory.getInstance("X.509")
-        return certificateFactory.generateCertificate(inputStream) as X509Certificate
     }
 
     companion object {
@@ -108,7 +100,7 @@ class FormatServerCertificateErrorTest {
             8TRwz311SotoKQwe6Zaoz7ASH1wq7mcvf71z81oBIgxw+s1F73hczg36TuHvzmWf
             RwxPuzZEaFZcVlmtqoq8
             -----END CERTIFICATE-----
-        """.trimIndent()
+        """.trimIndent().decodeCertificatePem()
 
         val CERTIFICATE_WITHOUT_SAN = """
             -----BEGIN CERTIFICATE-----
@@ -132,6 +124,6 @@ class FormatServerCertificateErrorTest {
             kTCTsMtIFWhH3hoyYAamOOuITpPZHD7yP0lfbuncGDEqAQu2YWbYxRixfq2VSxgv
             gWbFcmkgBLYpE8iDWT3Kdluo1+6PHaDaLg2SacOY6Go=
             -----END CERTIFICATE-----
-        """.trimIndent()
+        """.trimIndent().decodeCertificatePem()
     }
 }
