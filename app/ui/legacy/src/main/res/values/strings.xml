@@ -1098,7 +1098,9 @@ You can keep this message and use it as a backup for your secret key. If you wan
     <string name="push_notification_state_listening">Waiting for new emails</string>
     <string name="push_notification_state_wait_background_sync">Sleeping until background sync is allowed</string>
     <string name="push_notification_state_wait_network">Sleeping until network is available</string>
+    <string name="push_notification_state_alarm_permission_missing">Missing permission to schedule alarms</string>
     <string name="push_notification_info">Tap to learn more.</string>
+    <string name="push_notification_grant_alarm_permission">Tap to grant permission.</string>
 
     <string name="push_info_title">Push Info</string>
     <string name="push_info_notification_explanation_text">When using Push, K-9 Mail maintains a connection to the mail server. Android requires displaying an ongoing notification while the app is active in the background. %s</string>

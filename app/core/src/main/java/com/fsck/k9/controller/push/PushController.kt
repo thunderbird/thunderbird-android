@@ -7,6 +7,7 @@ import com.fsck.k9.network.ConnectivityChangeListener
 import com.fsck.k9.network.ConnectivityManager
 import com.fsck.k9.notification.PushNotificationManager
 import com.fsck.k9.notification.PushNotificationState
+import com.fsck.k9.notification.PushNotificationState.ALARM_PERMISSION_MISSING
 import com.fsck.k9.notification.PushNotificationState.LISTENING
 import com.fsck.k9.notification.PushNotificationState.WAIT_BACKGROUND_SYNC
 import com.fsck.k9.notification.PushNotificationState.WAIT_NETWORK
@@ -28,6 +29,7 @@ import timber.log.Timber
 /**
  * Starts and stops [AccountPushController]s as necessary. Manages the Push foreground service.
  */
+@Suppress("LongParameterList")
 class PushController internal constructor(
     private val accountManager: AccountManager,
     private val generalSettingsManager: GeneralSettingsManager,
@@ -35,6 +37,7 @@ class PushController internal constructor(
     private val pushServiceManager: PushServiceManager,
     private val bootCompleteManager: BootCompleteManager,
     private val autoSyncManager: AutoSyncManager,
+    private val alarmPermissionManager: AlarmPermissionManager,
     private val pushNotificationManager: PushNotificationManager,
     private val connectivityManager: ConnectivityManager,
     private val accountPushControllerFactory: AccountPushControllerFactory,
@@ -50,6 +53,7 @@ class PushController internal constructor(
         override fun onConnectivityChanged() = this@PushController.onConnectivityChanged()
         override fun onConnectivityLost() = this@PushController.onConnectivityLost()
     }
+    private val alarmPermissionListener = AlarmPermissionListener(::onAlarmPermissionGranted)
 
     /**
      * Initialize [PushController].
@@ -109,6 +113,10 @@ class PushController internal constructor(
         launchUpdatePushers()
     }
 
+    private fun onAlarmPermissionGranted() {
+        launchUpdatePushers()
+    }
+
     private fun onConnectivityChanged() {
         coroutineScope.launch(coroutineDispatcher) {
             synchronized(lock) {
@@ -142,17 +150,24 @@ class PushController internal constructor(
         }
     }
 
+    @Suppress("LongMethod", "CyclomaticComplexMethod")
     private fun updatePushers() {
         Timber.v("PushController.updatePushers()")
 
         val generalSettings = generalSettingsManager.getSettings()
 
+        val alarmPermissionMissing = !alarmPermissionManager.canScheduleExactAlarms()
         val backgroundSyncDisabledViaSystem = autoSyncManager.isAutoSyncDisabled
         val backgroundSyncDisabledInApp = generalSettings.backgroundSync == BackgroundSync.NEVER
         val networkNotAvailable = !connectivityManager.isNetworkAvailable()
         val realPushAccounts = getPushAccounts()
 
-        val pushAccounts = if (backgroundSyncDisabledViaSystem || backgroundSyncDisabledInApp || networkNotAvailable) {
+        val shouldDisablePushAccounts = backgroundSyncDisabledViaSystem ||
+            backgroundSyncDisabledInApp ||
+            networkNotAvailable ||
+            alarmPermissionMissing
+
+        val pushAccounts = if (shouldDisablePushAccounts) {
             emptyList()
         } else {
             realPushAccounts
@@ -202,6 +217,11 @@ class PushController internal constructor(
                 startServices()
             }
 
+            alarmPermissionMissing -> {
+                setPushNotificationState(ALARM_PERMISSION_MISSING)
+                startServices()
+            }
+
             arePushersActive -> {
                 setPushNotificationState(LISTENING)
                 startServices()
@@ -228,6 +248,7 @@ class PushController internal constructor(
         bootCompleteManager.enableReceiver()
         registerAutoSyncListener()
         registerConnectivityChangeListener()
+        registerAlarmPermissionListener()
         connectivityManager.start()
     }
 
@@ -236,6 +257,7 @@ class PushController internal constructor(
         bootCompleteManager.disableReceiver()
         autoSyncManager.unregisterListener()
         unregisterConnectivityChangeListener()
+        alarmPermissionManager.unregisterListener()
         connectivityManager.stop()
     }
 
@@ -253,5 +275,11 @@ class PushController internal constructor(
 
     private fun unregisterConnectivityChangeListener() {
         connectivityManager.removeListener(connectivityChangeListener)
+    }
+
+    private fun registerAlarmPermissionListener() {
+        if (!alarmPermissionManager.canScheduleExactAlarms()) {
+            alarmPermissionManager.registerListener(alarmPermissionListener)
+        }
     }
 }

@@ -22,9 +22,12 @@ internal val controllerPushModule = module {
             pushServiceManager = get(),
             bootCompleteManager = get(),
             autoSyncManager = get(),
+            alarmPermissionManager = get(),
             pushNotificationManager = get(),
             connectivityManager = get(),
             accountPushControllerFactory = get(),
         )
     }
+
+    single<AlarmPermissionManager> { AlarmPermissionManager(context = get(), alarmManagerCompat = get()) }
 }

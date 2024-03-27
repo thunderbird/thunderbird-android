@@ -44,9 +44,13 @@ class K9CoreResourceProvider(private val context: Context) : CoreResourceProvide
             PushNotificationState.LISTENING -> R.string.push_notification_state_listening
             PushNotificationState.WAIT_BACKGROUND_SYNC -> R.string.push_notification_state_wait_background_sync
             PushNotificationState.WAIT_NETWORK -> R.string.push_notification_state_wait_network
+            PushNotificationState.ALARM_PERMISSION_MISSING -> R.string.push_notification_state_alarm_permission_missing
         }
         return context.getString(resId)
     }
 
     override fun pushNotificationInfoText(): String = context.getString(R.string.push_notification_info)
+
+    override fun pushNotificationGrantAlarmPermissionText(): String =
+        context.getString(R.string.push_notification_grant_alarm_permission)
 }
