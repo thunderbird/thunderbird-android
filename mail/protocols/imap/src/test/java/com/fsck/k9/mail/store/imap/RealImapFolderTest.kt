@@ -54,8 +54,10 @@ import org.mockito.kotlin.stub
 import org.mockito.kotlin.whenever
 
 class RealImapFolderTest {
+    private val imapStoreConfig = FakeImapStoreConfig()
     private val internalImapStore = object : InternalImapStore {
         override val logLabel = "Account"
+        override val config = imapStoreConfig
         override fun getCombinedPrefix() = ""
         override fun getPermanentFlagsIndex() = mutableSetOf<Flag>()
     }
@@ -355,7 +357,26 @@ class RealImapFolderTest {
     }
 
     @Test
-    fun `moveMessages() should delete messages from source folder but not issue EXPUNGE command`() {
+    fun `moveMessages() with expungeImmediately = true should delete and expunge`() {
+        imapStoreConfig.expungeImmediately = true
+        val sourceFolder = createFolder("Folder")
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
+        imapConnection.stub {
+            on { isUidPlusCapable } doReturn false
+        }
+        val destinationFolder = createFolder("Destination")
+        val messages = listOf(createImapMessage("1"))
+        sourceFolder.open(OpenMode.READ_WRITE)
+
+        sourceFolder.moveMessages(messages, destinationFolder)
+
+        assertCommandWithIdsIssued("UID STORE 1 +FLAGS.SILENT (\\Deleted)")
+        assertCommandIssued("EXPUNGE")
+    }
+
+    @Test
+    fun `moveMessages() with expungeImmediately = false should delete but not expunge`() {
+        imapStoreConfig.expungeImmediately = false
         val sourceFolder = createFolder("Folder")
         prepareImapFolderForOpen(OpenMode.READ_WRITE)
         imapConnection.stub {

@@ -50,11 +50,6 @@ internal class ImapBackendPusher(
     private var currentIdleRefreshMs = 15 * 60 * 1000L
 
     override fun start() {
-        if (!idleRefreshManager.canScheduleTimers()) {
-            Timber.v("Not starting ImapBackendPusher for %s because the app can't schedule timers", accountName)
-            return
-        }
-
         coroutineScope.launch {
             pushConfigProvider.maxPushFoldersFlow.collect { maxPushFolders ->
                 currentMaxPushFolders = maxPushFolders

@@ -32,4 +32,5 @@ interface CoreResourceProvider {
     val iconPushNotification: Int
     fun pushNotificationText(notificationState: PushNotificationState): String
     fun pushNotificationInfoText(): String
+    fun pushNotificationGrantAlarmPermissionText(): String
 }

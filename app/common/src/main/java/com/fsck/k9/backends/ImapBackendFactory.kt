@@ -2,6 +2,7 @@ package com.fsck.k9.backends
 
 import android.content.Context
 import com.fsck.k9.Account
+import com.fsck.k9.Account.Expunge
 import com.fsck.k9.backend.BackendFactory
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.backend.imap.ImapBackend
@@ -73,6 +74,8 @@ class ImapBackendFactory(
                 get() = account.uuid
 
             override fun isSubscribedFoldersOnly() = account.isSubscribedFoldersOnly
+
+            override fun isExpungeImmediately() = account.expungePolicy == Expunge.EXPUNGE_IMMEDIATELY
 
             override fun clientId() = ImapClientId(appName = clientIdAppName, appVersion = clientIdAppVersion)
         }

@@ -60,10 +60,6 @@ class AndroidAlarmManager(
         )
     }
 
-    override fun canScheduleExactAlarms(): Boolean {
-        return alarmManager.canScheduleExactAlarms()
-    }
-
     override fun setAlarm(triggerTime: Long, callback: Callback) {
         this.callback.set(callback)
         alarmManager.scheduleAlarm(triggerTime, pendingIntent)

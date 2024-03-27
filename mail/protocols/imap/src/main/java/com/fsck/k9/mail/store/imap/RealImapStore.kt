@@ -20,7 +20,7 @@ import java.util.LinkedList
 
 internal open class RealImapStore(
     private val serverSettings: ServerSettings,
-    private val config: ImapStoreConfig,
+    override val config: ImapStoreConfig,
     private val trustedSocketFactory: TrustedSocketFactory,
     private val oauthTokenProvider: OAuth2TokenProvider?,
 ) : ImapStore, ImapConnectionManager, InternalImapStore {

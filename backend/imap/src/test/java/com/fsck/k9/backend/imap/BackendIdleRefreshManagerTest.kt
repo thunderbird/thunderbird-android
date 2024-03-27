@@ -156,10 +156,6 @@ class MockSystemAlarmManager(startTime: Long) : SystemAlarmManager {
     var callback: Callback? = null
     val alarmTimes = mutableListOf<Long>()
 
-    override fun canScheduleExactAlarms(): Boolean {
-        throw UnsupportedOperationException("not implemented")
-    }
-
     override fun setAlarm(triggerTime: Long, callback: () -> Unit) {
         this.triggerTime = triggerTime
         this.callback = callback
