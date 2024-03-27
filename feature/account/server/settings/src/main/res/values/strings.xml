@@ -25,7 +25,7 @@
     <string name="account_server_settings_incoming_imap_namespace_label">Auto-detect IMAP namespace</string>
     <string name="account_server_settings_incoming_imap_prefix_label">IMAP path prefix</string>
     <string name="account_server_settings_incoming_imap_compression_label">Use compression</string>
-    <string name="account_server_settings_incoming_imap_send_client_id_label">Send client ID</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">Send client information</string>
 
     <string name="account_server_settings_outgoing_top_bar_title">Outgoing server settings</string>
 
