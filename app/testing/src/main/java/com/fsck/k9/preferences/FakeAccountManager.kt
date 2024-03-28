@@ -1,15 +1,15 @@
-package com.fsck.k9.account
+package com.fsck.k9.preferences
 
 import com.fsck.k9.Account
 import com.fsck.k9.AccountRemovedListener
 import com.fsck.k9.AccountsChangeListener
-import com.fsck.k9.preferences.AccountManager
 import kotlinx.coroutines.flow.Flow
 
 class FakeAccountManager(
-    private val accounts: MutableMap<String, Account> = mutableMapOf(),
+    accounts: List<Account> = listOf(),
     private val isFailureOnSave: Boolean = false,
 ) : AccountManager {
+    private val accounts = accounts.associateBy { it.uuid }.toMutableMap()
 
     override fun getAccounts(): List<Account> = accounts.values.toList()
 

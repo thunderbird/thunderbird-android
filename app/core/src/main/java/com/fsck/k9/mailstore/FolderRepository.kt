@@ -223,6 +223,11 @@ class FolderRepository(
         return messageStore.getFolder(folderId) { true } ?: false
     }
 
+    fun isLocalFolder(account: Account, folderId: Long): Boolean {
+        val messageStore = messageStoreManager.getMessageStore(account)
+        return messageStore.getFolder(folderId) { it.isLocalOnly } ?: false
+    }
+
     fun updateFolderDetails(account: Account, folderDetails: FolderDetails) {
         val messageStore = messageStoreManager.getMessageStore(account)
         messageStore.updateFolderSettings(folderDetails)

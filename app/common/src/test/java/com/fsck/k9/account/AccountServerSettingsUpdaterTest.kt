@@ -12,6 +12,7 @@ import assertk.assertions.prop
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
+import com.fsck.k9.preferences.FakeAccountManager
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import com.fsck.k9.Account as K9Account
@@ -20,7 +21,7 @@ class AccountServerSettingsUpdaterTest {
 
     @Test
     fun `updateServerSettings() SHOULD return account not found exception WHEN none present with uuid`() = runTest {
-        val accountManager = FakeAccountManager(accounts = mutableMapOf())
+        val accountManager = FakeAccountManager()
         val testSubject = AccountServerSettingsUpdater(accountManager)
 
         val result = testSubject.updateServerSettings(
@@ -35,7 +36,7 @@ class AccountServerSettingsUpdaterTest {
 
     @Test
     fun `updateServerSettings() SHOULD return success with updated incoming settings WHEN is incoming`() = runTest {
-        val accountManager = FakeAccountManager(accounts = mutableMapOf(ACCOUNT_UUID to createAccount(ACCOUNT_UUID)))
+        val accountManager = FakeAccountManager(accounts = listOf(createAccount(ACCOUNT_UUID)))
         val updatedIncomingServerSettings = INCOMING_SERVER_SETTINGS.copy(port = 123)
         val updatedAuthorizationState = AuthorizationState("new")
         val testSubject = AccountServerSettingsUpdater(accountManager)
@@ -59,7 +60,7 @@ class AccountServerSettingsUpdaterTest {
 
     @Test
     fun `updateServerSettings() SHOULD return success with updated outgoing settings WHEN is not incoming`() = runTest {
-        val accountManager = FakeAccountManager(accounts = mutableMapOf(ACCOUNT_UUID to createAccount(ACCOUNT_UUID)))
+        val accountManager = FakeAccountManager(accounts = listOf(createAccount(ACCOUNT_UUID)))
         val updatedOutgoingServerSettings = OUTGOING_SERVER_SETTINGS.copy(port = 123)
         val updatedAuthorizationState = AuthorizationState("new")
         val testSubject = AccountServerSettingsUpdater(accountManager)
@@ -84,7 +85,7 @@ class AccountServerSettingsUpdaterTest {
     @Test
     fun `updateServerSettings() SHOULD return unknown error when exception thrown`() = runTest {
         val accountManager = FakeAccountManager(
-            accounts = mutableMapOf(ACCOUNT_UUID to createAccount(ACCOUNT_UUID)),
+            accounts = listOf(createAccount(ACCOUNT_UUID)),
             isFailureOnSave = true,
         )
         val testSubject = AccountServerSettingsUpdater(accountManager)

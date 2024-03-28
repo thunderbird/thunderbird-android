@@ -24,13 +24,27 @@ val controllerModule = module {
             get<MessageStoreManager>(),
             get<SaveMessageDataCreator>(),
             get<SpecialLocalFoldersCreator>(),
+            get<DeleteOperationDecider>(),
             get(named("controllerExtensions")),
         )
     }
+
     single<MessageCountsProvider> {
         DefaultMessageCountsProvider(
             accountManager = get(),
             messageStoreManager = get(),
+        )
+    }
+
+    single { DeleteOperationDecider() }
+
+    single<LocalFolderChecker> { DefaultLocalFolderChecker(folderRepository = get()) }
+
+    single {
+        PermanentDeleteChecker(
+            accountManager = get(),
+            localFolderChecker = get(),
+            deleteOperationDecider = get(),
         )
     }
 }

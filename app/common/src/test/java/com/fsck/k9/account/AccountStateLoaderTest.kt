@@ -10,6 +10,7 @@ import com.fsck.k9.Identity
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
+import com.fsck.k9.preferences.FakeAccountManager
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
@@ -27,8 +28,8 @@ class AccountStateLoaderTest {
 
     @Test
     fun `loadAccountState() SHOULD return account when present in accountManager`() = runTest {
-        val accounts = mutableMapOf(
-            "accountUuid" to Account(uuid = "accountUuid").apply {
+        val accounts = listOf(
+            Account(uuid = "accountUuid").apply {
                 identities = mutableListOf(Identity())
                 email = "emailAddress"
                 incomingServerSettings = INCOMING_SERVER_SETTINGS
