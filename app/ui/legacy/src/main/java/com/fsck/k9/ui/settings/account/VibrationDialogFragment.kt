@@ -12,11 +12,11 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.preference.PreferenceDialogFragmentCompat
+import app.k9mail.core.android.common.bundle.getEnum
+import app.k9mail.core.android.common.bundle.putEnum
 import com.fsck.k9.NotificationVibration
 import com.fsck.k9.VibratePattern
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.base.bundle.getEnum
-import com.fsck.k9.ui.base.bundle.putEnum
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.android.ext.android.inject
 import com.fsck.k9.ui.base.R as BaseR

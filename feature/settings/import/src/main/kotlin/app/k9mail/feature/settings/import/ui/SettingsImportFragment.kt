@@ -21,7 +21,6 @@ import com.fsck.k9.ui.base.livedata.observeNotNull
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import com.fsck.k9.ui.base.R as BaseR
 
 class SettingsImportFragment : Fragment() {
     private val viewModel: SettingsImportViewModel by viewModel()
@@ -73,17 +72,19 @@ class SettingsImportFragment : Fragment() {
                 importButton.isVisible = true
                 importButton.isEnabled = false
             }
+
             ButtonState.ENABLED -> {
                 importButton.isVisible = true
                 importButton.isEnabled = true
             }
+
             ButtonState.INVISIBLE -> importButton.isInvisible = true
             ButtonState.GONE -> importButton.isGone = true
         }
 
         closeButton.isGone = model.closeButton == ButtonState.GONE
         when (model.closeButtonLabel) {
-            CloseButtonLabel.OK -> closeButton.setText(BaseR.string.okay_action)
+            CloseButtonLabel.OK -> closeButton.setText(R.string.settings_import_action_okay)
             CloseButtonLabel.LATER -> closeButton.setText(R.string.settings_import_later_button)
         }
 
@@ -98,27 +99,35 @@ class SettingsImportFragment : Fragment() {
             StatusText.IMPORTING_PROGRESS -> {
                 statusText.text = getString(R.string.settings_importing)
             }
+
             StatusText.IMPORT_SUCCESS -> {
                 statusText.text = getString(R.string.settings_import_success_generic)
             }
+
             StatusText.IMPORT_SUCCESS_PASSWORD_REQUIRED -> {
                 statusText.text = getString(R.string.settings_import_password_required)
             }
+
             StatusText.IMPORT_SUCCESS_AUTHORIZATION_REQUIRED -> {
                 statusText.text = getString(R.string.settings_import_authorization_required)
             }
+
             StatusText.IMPORT_SUCCESS_PASSWORD_AND_AUTHORIZATION_REQUIRED -> {
                 statusText.text = getString(R.string.settings_import_authorization_and_password_required)
             }
+
             StatusText.IMPORT_READ_FAILURE -> {
                 statusText.text = getString(R.string.settings_import_read_failure)
             }
+
             StatusText.IMPORT_PARTIAL_FAILURE -> {
                 statusText.text = getString(R.string.settings_import_partial_failure)
             }
+
             StatusText.IMPORT_FAILURE -> {
                 statusText.text = getString(R.string.settings_import_failure)
             }
+
             StatusText.HIDDEN -> statusText.text = null
         }
 

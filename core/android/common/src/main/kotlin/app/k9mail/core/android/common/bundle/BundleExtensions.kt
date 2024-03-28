@@ -1,4 +1,4 @@
-package com.fsck.k9.ui.base.bundle
+package app.k9mail.core.android.common.bundle
 
 import android.os.Bundle
 

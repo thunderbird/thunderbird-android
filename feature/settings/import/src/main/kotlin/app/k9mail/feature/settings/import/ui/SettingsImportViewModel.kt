@@ -9,13 +9,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.k9mail.core.android.common.bundle.getEnum
+import app.k9mail.core.android.common.bundle.putEnum
 import app.k9mail.feature.settings.import.SettingsImportExternalContract.AccountActivator
 import com.fsck.k9.helper.SingleLiveEvent
 import com.fsck.k9.helper.measureRealtimeMillisWithResult
 import com.fsck.k9.preferences.SettingsImporter
 import com.fsck.k9.preferences.SettingsImporter.ImportResults
-import com.fsck.k9.ui.base.bundle.getEnum
-import com.fsck.k9.ui.base.bundle.putEnum
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
