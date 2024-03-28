@@ -69,6 +69,9 @@ public class GeneralSettingsDescriptions {
         s.put("confirmDelete", Settings.versions(
                 new V(1, new BooleanSetting(false))
         ));
+        s.put("confirmDeleteTrash", Settings.versions(
+            new V(91, new BooleanSetting(false))
+        ));
         s.put("confirmDeleteStarred", Settings.versions(
                 new V(2, new BooleanSetting(false))
         ));

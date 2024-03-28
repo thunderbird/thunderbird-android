@@ -177,6 +177,7 @@ class GeneralSettingsDataStore(
             "confirm_actions" -> {
                 mutableSetOf<String>().apply {
                     if (K9.isConfirmDelete) add("delete")
+                    if (K9.isConfirmDeleteFromTrash) add("delete_trash")
                     if (K9.isConfirmDeleteStarred) add("delete_starred")
                     if (K9.isConfirmDeleteFromNotification) add("delete_notif")
                     if (K9.isConfirmSpam) add("spam")
@@ -202,6 +203,7 @@ class GeneralSettingsDataStore(
         when (key) {
             "confirm_actions" -> {
                 K9.isConfirmDelete = "delete" in checkedValues
+                K9.isConfirmDeleteFromTrash = "delete_trash" in checkedValues
                 K9.isConfirmDeleteStarred = "delete_starred" in checkedValues
                 K9.isConfirmDeleteFromNotification = "delete_notif" in checkedValues
                 K9.isConfirmSpam = "spam" in checkedValues

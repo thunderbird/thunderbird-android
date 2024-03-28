@@ -193,6 +193,7 @@
 
     <string-array name="confirm_action_values" translatable="false">
         <item>delete</item>
+        <item>delete_trash</item>
         <item>delete_starred</item>
         <item>delete_notif</item>
         <item>spam</item>

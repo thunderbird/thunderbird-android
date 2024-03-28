@@ -133,6 +133,9 @@ object K9 : EarlyInit {
     var isConfirmDelete = false
 
     @JvmStatic
+    var isConfirmDeleteFromTrash = false
+
+    @JvmStatic
     var isConfirmDiscardMessage = true
 
     @JvmStatic
@@ -338,6 +341,7 @@ object K9 : EarlyInit {
         isHideTimeZone = storage.getBoolean("hideTimeZone", false)
 
         isConfirmDelete = storage.getBoolean("confirmDelete", false)
+        isConfirmDeleteFromTrash = storage.getBoolean("confirmDeleteTrash", false)
         isConfirmDiscardMessage = storage.getBoolean("confirmDiscardMessage", true)
         isConfirmDeleteStarred = storage.getBoolean("confirmDeleteStarred", false)
         isConfirmSpam = storage.getBoolean("confirmSpam", false)
@@ -414,6 +418,7 @@ object K9 : EarlyInit {
         editor.putString("language", k9Language)
 
         editor.putBoolean("confirmDelete", isConfirmDelete)
+        editor.putBoolean("confirmDeleteTrash", isConfirmDeleteFromTrash)
         editor.putBoolean("confirmDiscardMessage", isConfirmDiscardMessage)
         editor.putBoolean("confirmDeleteStarred", isConfirmDeleteStarred)
         editor.putBoolean("confirmSpam", isConfirmSpam)
