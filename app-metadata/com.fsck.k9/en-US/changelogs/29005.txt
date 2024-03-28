@@ -1,9 +1,0 @@
-- Set subject when forwarding a message as attachment
-- Added a menu option to export the debug log under Settings → General settings → Debugging
-- Don't display "unread count" in notifications; only number of new messages
-- Properly decode multiple encoded words using the ISO-2022-JP charset (e.g. in subjects)
-- Fixed a crash when users left the message view screen before the download of an image attachment was complete
-- Don't crash when loading images without internet permission (could only happen with custom ROMs)
-- Fixed a rare crash when auto-completing email addresses in the compose screen
-- A lot of internal changes and cleanup
-- Updated translations

@@ -91,6 +91,7 @@
      versionCode: ${versionCode}
      commit: "${tagName}"
      subdir: app-k9mail
+     submodules: true
      prebuild: ( cd .. && ln -s app-metadata/com.fsck.k9 metadata )
      sudo:
        - apt-get update

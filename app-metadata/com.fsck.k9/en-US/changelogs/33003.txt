@@ -1,4 +1,0 @@
-- Fixed a bug that lead to search being broken
-- Fixed error reporting for (old) send failures
-- Fixed "strip signatures on reply"
-- Fixed a crash when tapping a toolbar action in message view before loading the message has finished

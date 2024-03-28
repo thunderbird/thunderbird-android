@@ -1,5 +1,0 @@
-- Set the auto-expand folder to 'Inbox' by default
-- Restore 'new mail' notifications when the app is restarted
-- Switched ringtone picker so custom notification sounds can be supported (Android 7 and older)
-- Fixed bug where vibration for notifications couldn't be disabled (Android 7 and older)
-- Updated translations

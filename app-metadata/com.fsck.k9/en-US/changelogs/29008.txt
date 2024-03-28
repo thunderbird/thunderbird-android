@@ -1,3 +1,0 @@
-- Fixed a bug where sometimes the app created notifications when downloading old messages
-- Fixed settings import so the imported theme value is applied right away
-- Updated translations

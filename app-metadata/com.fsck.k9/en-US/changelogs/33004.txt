@@ -1,5 +1,0 @@
-- Allow unmasking the password field without authentication as soon as the original password in incoming/outgoing server settings has been overwritten completely
-- Don't crash when IMAP servers send attachment names that contain non-ASCII characters
-- Fixed a bug where the search input field would collapse back into its toolbar icon while it was being used
-- Removed support for Direct Share because the app can no longer use the number of times a person has been contacted to make useful suggestions
-- More internal changes

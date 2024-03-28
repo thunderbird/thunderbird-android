@@ -1,7 +1,0 @@
-- Don't create notifications when manually refreshing the message list
-- Fixed import and export of notification settings
-- Fixed bug that could lead to multiple notifications being created for the same message
-- Fixed bug that sometimes crashed the app after changing the notification sound
-- Added support for messages that specified the character set in multiple ways
-- A lot of internal improvements
-- Updated translations

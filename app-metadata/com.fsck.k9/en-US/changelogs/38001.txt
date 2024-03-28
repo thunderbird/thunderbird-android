@@ -1,7 +1,0 @@
-- Added DNSSEC support when looking for server settings during setup
-- Made a change to prevent some software keyboards from capitalizing/auto-correcting email addresses in account setup
-- Fixed a crash when a very long subject was used
-- Fixed displaying OAuth 2.0 error messages
-- Fixed rare crash when downloading an attachment
-- Added code to disallow line breaks in single line text inputs
-- Updated translations

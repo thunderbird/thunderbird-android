@@ -1,5 +1,0 @@
-- Fixed moving to next/previous message when sorting the message list by read/unread or starred/unstarred
-- Fixed a crash when a third-party app shared a file to K-9 Mail without granting access to it
-- Keep some more attributes when sanitizing HTML
-- A lot of internal changes and improvements
-- Updated translations

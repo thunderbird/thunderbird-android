@@ -1,5 +1,0 @@
-- Added swipe actions to the message list screen
-- Changed the minimum size of the message list widget to 2x2 cells
-- Fixed a bug where the app would start using the light theme before switching to the dark theme resulting in a brief flash of white
-- More minor bug fixes and improvements
-- Updated translations

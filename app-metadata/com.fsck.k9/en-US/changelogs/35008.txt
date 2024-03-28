@@ -1,5 +1,0 @@
-- Removed "Send…" submenu from the message view toolbar
-- Limit summary notification actions to messages for which individual notifications are currently being displayed
-- Fixed crash when trying to download an embedded image not using an http(s) URI
-- Internal changes
-- Updated translations

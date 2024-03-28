@@ -1,6 +1,0 @@
-- Made small changes to the appearance of the message list
-- Added a font size setting for the account name when viewing a message
-- Use colored navigation bar on Android 8.1 and above
-- Fixed status bar color on Android 5
-- IMAP: Fixed a bug where sometimes an authentication error was silently ignored
-- Updated translations

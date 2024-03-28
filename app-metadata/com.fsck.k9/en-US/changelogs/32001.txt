@@ -1,6 +1,0 @@
-- Added support for using OAuth 2.0 with Office365 accounts
-- Fixed a bug that could lead to two message lists being displayed on top of each other
-- Avoid a crash when trying to create new message notifications but the notification sound couldn't be accessed
-- Fixed a bug where multi-select mode was exited early in some cases
-- Don't require re-authorization when getting an OAuth token fails due to a temporary error
-- Updated translations

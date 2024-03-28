@@ -40,6 +40,18 @@ Thank you for contributing! If you're unfamiliar with the code, start by reading
 
 Please fork this repository and contribute back using [pull requests](https://github.com/thunderbird/thunderbird-android/pulls).
 
+We use git submodules for some dependencies. To clone the repository, use the following command:
+
+```bash
+git clone --recurse-submodules git@github.com:thunderbird/thunderbird-android.git
+```
+
+If you already cloned the repository without the `--recurse-submodules` flag, you can initialize the submodules with the following command:
+
+```bash
+git submodule update --init --recursive
+```
+
 Any contributions, large or small, major features, bug fixes, unit/integration tests are welcomed and appreciated
 but will be thoroughly reviewed and discussed.
 Please make sure you read the [Code Style Guidelines](https://github.com/thunderbird/thunderbird-android/wiki/CodeStyle).

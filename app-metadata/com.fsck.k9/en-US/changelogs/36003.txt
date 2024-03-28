@@ -1,1 +1,0 @@
-- Fixed settings import/export of identities without a name or description

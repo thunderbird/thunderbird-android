@@ -1,2 +1,0 @@
-- Fixed a crash when displaying a message without any recipients
-- Fetch BCC header when partially downloading a message

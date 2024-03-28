@@ -1,6 +1,0 @@
-- Added a monochromatic app icon for Android 13
-- Changed the UI component used for the message list; now changes to the list will be animated
-- Removed the volume key navigation for list views because it doesn't play nice with the above change
-- Fixed a bug that lead to the search input field being focused on app start on some devices
-- Restored the previous behavior of "show next message after delete"
-- A lot of internal changes and some minor performance improvements

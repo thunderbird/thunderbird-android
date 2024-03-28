@@ -1,1 +1,0 @@
-- Reverted changes to home screen widgets because apparently not every device vendor has incorporated the relevant fixes in Android 12+

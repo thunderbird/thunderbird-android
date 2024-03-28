@@ -1,7 +1,0 @@
-- New and improved account setup
-- Added option to return to the message list after marking a message as unread in the message view
-- Made it harder to accidentally trigger swipe actions in the message list screen
-- Improved screen reader experience in various places
-- IMAP: Added support for sending the ID command (that is required by some email providers)
-- Various other bug fixes and improvements; see changes for versions 6.7xx
-- Removed Hebrew and Korean translations because of how incomplete they were; volunteer translators welcome!

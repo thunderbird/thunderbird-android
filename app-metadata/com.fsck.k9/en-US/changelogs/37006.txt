@@ -1,2 +1,0 @@
-- Fixed a bug that lead to folders appearing to be empty
-- Don't use nickname as display name when auto-completing recipient using the nickname

@@ -1,4 +1,0 @@
-- Fixed settings import
-- Fixed bug where the configuration of a notification category wasn't properly synced with in-app notification settings
-- Fixed display issues when switching the language inside the app
-- Updated translations

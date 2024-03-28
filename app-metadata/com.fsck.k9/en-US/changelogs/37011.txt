@@ -1,8 +1,0 @@
-- Simplified the app icon so it can be a vector drawable
-- Improved screen reader experience in various places
-- Improved logging on failing settings import
-- Improved display of some HTML messages
-- Changed background color in message view and compose screens when using dark theme
-- Fixed OAuth 2.0 with Yahoo and AOL
-- Fixed display issues when rendering a message/rfc822 inline part
-- Updated translations

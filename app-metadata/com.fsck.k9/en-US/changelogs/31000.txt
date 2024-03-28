@@ -1,7 +1,0 @@
-- Added support for using OAuth 2.0 with Google accounts
-- Added support for using OAuth 2.0 with Yahoo and AOL accounts
-- Added "Unsubscribe" action that is displayed in the menu when viewing a message that contains an Unsubscribe header
-- Fixed a bug where unrelated notifications where cleared after synchronizing a folder containing no unread messages
-- Fixed rare problem with decoding format=flowed messages
-- Various other small bug fixes and improvements
-- Updated translations

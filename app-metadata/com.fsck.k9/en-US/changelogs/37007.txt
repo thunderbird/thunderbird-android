@@ -1,1 +1,0 @@
-- Fixed bug where navigating to a different screen after using the system back button/gesture could crash the app

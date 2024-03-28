@@ -1,8 +1,0 @@
-- Fixed bugs where notifications weren't removed when they should have been
-- Added a setting to configure the notification sound on Android 8+ (because some vendor-specific Android versions removed this feature from their user interface)
-- Automatically recover in situations where messages can't be sent because the Outbox folder is missing
-- Added more logging around 'new message' notifications
-- Always prompt which app to use when sharing links
-- Removed the the button bar in the drawer and switched back to the sticky footer
-- Don't expose MessageProvider to third-party apps
-- Updated the app to target the Android 12 API

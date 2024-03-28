@@ -1,6 +1,0 @@
-- Automatically scroll to the top after using pull to refresh, so new messages are visible
-- Fixed a bug that prevented the app from establishing a connection to the outgoing server under certain circumstances
-- Fixed a bug that could lead to messages being sent twice when the send button was double clicked
-- Changed the structure of HTML signatures in outgoing messages to increase compatibility
-- More bug fixes and internal changes
-- Updated translations

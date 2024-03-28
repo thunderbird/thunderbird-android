@@ -1,5 +1,0 @@
-- Cleaned up the message list design
-- Added setting for three different message list densities: compact, default, relaxed
-- Made small changes to the appearance of participant entries in the message details screen
-- Added validation for email address fields in "Edit identity" screen
-- Updated translations

@@ -1,4 +1,0 @@
-- Added support for using OAuth 2.0 with Google, Yahoo, AOL, and personal Microsoft accounts (Office365 accounts are not supported yet)
-- Added "Unsubscribe" action that is displayed in the menu when viewing a message that contains an Unsubscribe header
-- Various bug fixes and improvements
-- Updated translations

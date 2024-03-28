@@ -1,7 +1,0 @@
-- Added swipe actions to the message list screen
-- Added support for swiping between messages
-- Added a monochromatic app icon for Android 13
-- Fixed "K-9 Accounts" shortcuts (please remove existing shortcuts and add them again)
-- Fixed error reporting for (old) send failures
-- A lot of other bug fixes; see changes for versions 6.3xx
-- Added Western Frisian translation and updated others

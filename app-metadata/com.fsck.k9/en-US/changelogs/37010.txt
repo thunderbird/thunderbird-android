@@ -1,2 +1,0 @@
-- Fixed bug where accounts using OAuth weren't set up properly in K-9 Mail 6.709
-- Moved "Show only subscribed folders" setting to "Folders" section

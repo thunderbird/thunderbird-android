@@ -1,0 +1,3 @@
+[submodule "metadata"]
+	path = app-metadata
+	url = git@github.com:thunderbird/thunderbird-android-metadata.git

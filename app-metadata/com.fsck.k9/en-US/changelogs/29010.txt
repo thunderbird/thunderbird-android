@@ -1,5 +1,0 @@
-- POP3: Changed the way the list of supported authentication methods is retrieved from the server
-- IMAP: Removed setting to enable remote search (it's now enabled by default; still requires an additional button press)
-- Changed the default color for registered contacts to provide good contrast with both light and dark themes
-- Fixed search by sender name
-- Ignore spaces at the end of the username inserted by some software keyboards when using auto-completion

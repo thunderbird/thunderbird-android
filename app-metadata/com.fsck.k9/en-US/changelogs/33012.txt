@@ -1,3 +1,0 @@
-- Tweaked swipe actions in the message list screen
-- Fixed a bug where canceling account setup was showing a new account in the side drawer
-- Updated translations

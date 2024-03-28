@@ -1,5 +1,0 @@
-- Don't attempt to open file: URIs in an email; tapping such a link will now copy the URL to the clipboard instead
-- Fixed a crash when trying to export accounts containing an identity without a sender name
-- Improved logging when exporting settings to a file fails
-- Fixed various crashes
-- Updated translations

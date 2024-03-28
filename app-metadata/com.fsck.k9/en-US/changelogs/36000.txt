@@ -1,7 +1,0 @@
-- Redesigned the message view screen; tap the message header containing sender/recipient names to see more details
-- Added a setting for three different message list densities: compact, default, relaxed
-- Added better support for right-to-left languages when composing messages
-- Search now also considers recipient addresses
-- Fixed a bug where notifications would sometimes reappear shortly after having been dismissed
-- IMAP: Fixed a bug where sometimes authentication errors were silently ignored
-- Various other small bug fixes and improvements; see changes for versions 6.5xx
