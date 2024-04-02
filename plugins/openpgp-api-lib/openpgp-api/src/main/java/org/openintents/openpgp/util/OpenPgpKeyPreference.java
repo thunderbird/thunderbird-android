@@ -196,9 +196,8 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
         }
 
         try {
-            intentSenderFragment
-                    .startIntentSenderForResult(pendingIntentSelectKey.getIntentSender(), REQUEST_CODE_KEY_PREFERENCE,
-                    null, 0, 0, 0, null);
+            OpenPgpIntentStarter.startIntentSenderForResult(intentSenderFragment,
+                pendingIntentSelectKey.getIntentSender(), REQUEST_CODE_KEY_PREFERENCE);
         } catch (IntentSender.SendIntentException e) {
             Timber.e(e,"Error launching pending intent");
         } finally {
