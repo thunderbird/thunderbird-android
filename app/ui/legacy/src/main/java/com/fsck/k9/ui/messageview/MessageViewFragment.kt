@@ -54,6 +54,7 @@ import com.fsck.k9.ui.share.ShareIntentBuilder
 import com.fsck.k9.ui.withArguments
 import java.util.Locale
 import org.koin.android.ext.android.inject
+import org.openintents.openpgp.util.OpenPgpIntentStarter
 import timber.log.Timber
 
 class MessageViewFragment :
@@ -828,24 +829,9 @@ class MessageViewFragment :
         }
 
         @Throws(SendIntentException::class)
-        override fun startPendingIntentForCryptoPresenter(
-            intentSender: IntentSender,
-            requestCode: Int,
-            fillIntent: Intent?,
-            flagsMask: Int,
-            flagValues: Int,
-            extraFlags: Int,
-        ) {
+        override fun startPendingIntentForCryptoPresenter(intentSender: IntentSender, requestCode: Int) {
             val maskedRequestCode = requestCode or REQUEST_MASK_CRYPTO_PRESENTER
-            startIntentSenderForResult(
-                intentSender,
-                maskedRequestCode,
-                fillIntent,
-                flagsMask,
-                flagValues,
-                extraFlags,
-                null,
-            )
+            OpenPgpIntentStarter.startIntentSenderForResult(this@MessageViewFragment, intentSender, maskedRequestCode)
         }
 
         override fun restartMessageCryptoProcessing() {
@@ -921,27 +907,16 @@ class MessageViewFragment :
             Toast.makeText(requireContext(), R.string.status_network_error, Toast.LENGTH_LONG).show()
         }
 
-        override fun startIntentSenderForMessageLoaderHelper(
-            intentSender: IntentSender,
-            requestCode: Int,
-            fillIntent: Intent?,
-            flagsMask: Int,
-            flagValues: Int,
-            extraFlags: Int,
-        ): Boolean {
+        override fun startIntentSenderForMessageLoaderHelper(intentSender: IntentSender, requestCode: Int): Boolean {
             if (!isActive) return false
 
             showProgressThreshold = null
             try {
                 val maskedRequestCode = requestCode or REQUEST_MASK_LOADER_HELPER
-                startIntentSenderForResult(
+                OpenPgpIntentStarter.startIntentSenderForResult(
+                    this@MessageViewFragment,
                     intentSender,
                     maskedRequestCode,
-                    fillIntent,
-                    flagsMask,
-                    flagValues,
-                    extraFlags,
-                    null,
                 )
             } catch (e: SendIntentException) {
                 Timber.e(e, "Irrecoverable error calling PendingIntent!")

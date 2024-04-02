@@ -120,7 +120,7 @@ public class MessageCryptoPresenter {
             PendingIntent pendingIntent = cryptoResultAnnotation.getOpenPgpSigningKeyIntentIfAny();
             if (pendingIntent != null) {
                 messageCryptoMvpView.startPendingIntentForCryptoPresenter(
-                        pendingIntent.getIntentSender(), REQUEST_CODE_UNKNOWN_KEY, null, 0, 0, 0);
+                    pendingIntent.getIntentSender(), REQUEST_CODE_UNKNOWN_KEY);
             }
         } catch (IntentSender.SendIntentException e) {
             Timber.e(e, "SendIntentException");
@@ -136,7 +136,7 @@ public class MessageCryptoPresenter {
             PendingIntent pendingIntent = cryptoResultAnnotation.getOpenPgpInsecureWarningPendingIntent();
             if (pendingIntent != null) {
                 messageCryptoMvpView.startPendingIntentForCryptoPresenter(
-                        pendingIntent.getIntentSender(), REQUEST_CODE_SECURITY_WARNING, null, 0, 0, 0);
+                        pendingIntent.getIntentSender(), REQUEST_CODE_SECURITY_WARNING);
             }
         } catch (IntentSender.SendIntentException e) {
             Timber.e(e, "SendIntentException");
@@ -171,8 +171,8 @@ public class MessageCryptoPresenter {
         void redisplayMessage();
         void restartMessageCryptoProcessing();
 
-        void startPendingIntentForCryptoPresenter(IntentSender si, Integer requestCode, Intent fillIntent,
-                int flagsMask, int flagValues, int extraFlags) throws IntentSender.SendIntentException;
+        void startPendingIntentForCryptoPresenter(IntentSender intentSender, Integer requestCode)
+            throws IntentSender.SendIntentException;
 
         void showCryptoConfigDialog();
     }

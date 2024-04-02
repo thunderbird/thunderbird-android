@@ -19,6 +19,7 @@ import com.fsck.k9.view.StatusIndicator
 import kotlinx.coroutines.delay
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
+import org.openintents.openpgp.util.OpenPgpIntentStarter
 import timber.log.Timber
 
 class AutocryptKeyTransferActivity : K9Activity() {
@@ -161,9 +162,9 @@ class AutocryptKeyTransferActivity : K9Activity() {
 
     fun launchUserInteractionPendingIntent(pendingIntent: PendingIntent) {
         try {
-            startIntentSender(pendingIntent.intentSender, null, 0, 0, 0)
+            OpenPgpIntentStarter.startIntentSender(this, pendingIntent.intentSender)
         } catch (e: SendIntentException) {
-            Timber.e(e)
+            Timber.e(e, "Error starting PendingIntent")
         }
     }
 
