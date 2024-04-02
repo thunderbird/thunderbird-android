@@ -830,17 +830,12 @@ class MessageViewFragment :
         @Throws(SendIntentException::class)
         override fun startPendingIntentForCryptoPresenter(
             intentSender: IntentSender,
-            requestCode: Int?,
+            requestCode: Int,
             fillIntent: Intent?,
             flagsMask: Int,
             flagValues: Int,
             extraFlags: Int,
         ) {
-            if (requestCode == null) {
-                requireActivity().startIntentSender(intentSender, fillIntent, flagsMask, flagValues, extraFlags)
-                return
-            }
-
             val maskedRequestCode = requestCode or REQUEST_MASK_CRYPTO_PRESENTER
             startIntentSenderForResult(
                 intentSender,
