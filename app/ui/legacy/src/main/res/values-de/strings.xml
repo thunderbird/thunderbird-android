@@ -936,7 +936,7 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
     <string name="message_details_toolbar_title">Nachrichtendetails</string>
     <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
-    <string name="message_details_missing_date">\'Datum\' fehlt in der Kopfzeile</string>
+    <string name="message_details_missing_date">Kopfzeile enthält keinen \'Date\'-Eintrag</string>
     <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
     <string name="message_details_from_section_title">Von</string>
     <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
@@ -974,4 +974,6 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="general_settings_post_mark_as_unread_action_stay">Bei der aktuellen Nachricht bleiben</string>
     <string name="general_settings_post_mark_as_unread_action_title">Nachdem eine Nachricht als ungelesen markiert wurde</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Zurück zur Nachrichtenliste</string>
+    <string name="push_notification_state_alarm_permission_missing">Fehlende Berechtigung zur Zeitplanung von Alarmen</string>
+    <string name="push_notification_grant_alarm_permission">Antippen, um die Berechtigung zu erteilen.</string>
 </resources>

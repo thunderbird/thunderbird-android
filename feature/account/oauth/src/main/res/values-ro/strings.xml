@@ -3,7 +3,7 @@
     <string name="account_oauth_sign_in_with_google_button">Conectează-te cu Google</string>
     <string name="account_oauth_loading_error">Conectarea OAuth a eșuat</string>
     <string name="account_oauth_error_failed">Autorizarea a eșuat cu următoarea eroare: <xliff:g id="error">%s</xliff:g></string>
-    <string name="account_oauth_error_browser_not_available">Aplicația nu a putut găsi un browser pe care să îl folosească pentru a vă acorda acces la cont.</string>
+    <string name="account_oauth_error_browser_not_available">Aplicația nu a putut găsi un browser pe care să îl folosească pentru a acorda acces la cont.</string>
     <string name="account_oauth_error_not_supported">OAuth 2.0 nu este acceptat în prezent cu acest furnizor.</string>
     <string name="account_oauth_error_canceled">Autorizație anulată</string>
     <string name="account_oauth_loading_message">Conectare folosind OAuth</string>

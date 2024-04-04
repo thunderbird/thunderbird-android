@@ -78,7 +78,7 @@
     <string name="remove_account_action">Șterge contul</string>
     <string name="mark_as_read_action">Marchează ca citit</string>
     <string name="send_alternate_action">Distribuie</string>
-    <string name="send_alternate_chooser_title">Alege expeditor</string>
+    <string name="send_alternate_chooser_title">Alege expeditorul</string>
     <string name="flag_action">Adaugă steluță</string>
     <string name="unflag_action">Șterge steluța</string>
     <string name="copy_action">Copiază</string>
@@ -90,15 +90,15 @@
         <item quantity="other">Adresele au fost copiate în clipboard</item>
     </plurals>
     <string name="copy_subject_to_clipboard">Textul subiectului copiat în clipboard</string>
-    <string name="message_view_theme_action_dark">Comută la tema închisă</string>
-    <string name="message_view_theme_action_light">Comută la tema deschisă</string>
+    <string name="message_view_theme_action_dark">Comută la tema întunecată</string>
+    <string name="message_view_theme_action_light">Comută la tema luminoasă</string>
     <string name="mark_as_unread_action">Marchează ca necitit</string>
     <string name="read_receipt">Raport de citire</string>
     <string name="read_receipt_enabled">Se va cere un raport de citire</string>
     <string name="read_receipt_disabled">Nu se va cere un raport de citire</string>
     <string name="add_attachment_action">Adaugă atașament</string>
     <string name="empty_trash_action">Golește coșul de gunoi</string>
-    <string name="expunge_action">Şterge</string>
+    <string name="expunge_action">Elimină</string>
     <string name="about_action">Despre</string>
     <string name="prefs_title">Setări</string>
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
@@ -981,4 +981,6 @@ Poți păstra acest mesaj și să îl folosești drept copie de siguranță a ch
     <string name="general_settings_post_mark_as_unread_action_stay">Rămâneți la mesajul curent</string>
     <string name="general_settings_post_mark_as_unread_action_title">După marcarea unui mesaj ca necitit</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Revenire la lista de mesaje</string>
+    <string name="push_notification_state_alarm_permission_missing">Lipsește permisiunea de a programa alarme</string>
+    <string name="push_notification_grant_alarm_permission">Atinge pentru a acorda permisiunea.</string>
 </resources>

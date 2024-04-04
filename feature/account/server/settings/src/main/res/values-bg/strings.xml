@@ -4,7 +4,6 @@
     <string name="account_server_settings_validation_error_username_required">Потребителското име е задължително.</string>
     <string name="account_server_settings_outgoing_top_bar_title">Настройки на изходящ сървър</string>
     <string name="account_server_settings_validation_error_password_required">Паролата е задължителна.</string>
-    <string name="account_server_settings_incoming_imap_send_client_id_label">Изпращай клиентски идентификатор</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_authentication_none">Никаква</string>
     <string name="account_server_settings_authentication_password_encrypted">Криптирана парола</string>

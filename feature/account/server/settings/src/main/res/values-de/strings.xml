@@ -4,7 +4,6 @@
     <string name="account_server_settings_validation_error_username_required">Benutzername ist erforderlich.</string>
     <string name="account_server_settings_outgoing_top_bar_title">Einstellungen des Postausgangsservers</string>
     <string name="account_server_settings_validation_error_password_required">Passwort ist erforderlich.</string>
-    <string name="account_server_settings_incoming_imap_send_client_id_label">Client-ID senden</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_authentication_none">Keine</string>
     <string name="account_server_settings_authentication_password_encrypted">Verschlüsseltes Passwort</string>
@@ -32,4 +31,5 @@
     <string name="account_server_settings_password_authentication_subtitle">Entsperren, um dein Passwort anzuzeigen</string>
     <string name="account_server_settings_password_authentication_screen_lock_required">Um dein Passwort hier anzuzeigen, aktiviere die Displaysperre auf diesem Gerät.</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Ungültige IP oder ungültiger Hostname</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">Client-Informationen senden</string>
 </resources>

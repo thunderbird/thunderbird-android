@@ -28,7 +28,6 @@
     <string name="account_server_settings_incoming_top_bar_title">Gaunamų laiškų serverio parametrai</string>
     <string name="account_server_settings_incoming_imap_namespace_label">Automatiškai aptikti IMAP vardų erdvę</string>
     <string name="account_server_settings_incoming_imap_compression_label">Naudoti glaudinimą</string>
-    <string name="account_server_settings_incoming_imap_send_client_id_label">Siųsti kliento ID</string>
     <string name="account_server_settings_outgoing_top_bar_title">Siunčiamų laiškų serverio parametrai</string>
     <string name="account_server_settings_validation_error_server_required">Serverio vardą nurodyti būtina.</string>
     <string name="account_server_settings_validation_error_port_required">Prievadą nurodyti būtina.</string>

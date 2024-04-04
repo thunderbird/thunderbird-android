@@ -966,4 +966,6 @@
     <string name="general_settings_post_mark_as_unread_action_stay">停留在当前邮件</string>
     <string name="general_settings_post_mark_as_unread_action_title">标记邮件为未读后</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">回到邮件列表</string>
+    <string name="push_notification_state_alarm_permission_missing">缺少安排闹铃的权限</string>
+    <string name="push_notification_grant_alarm_permission">轻按授予权限。</string>
 </resources>

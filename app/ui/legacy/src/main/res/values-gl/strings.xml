@@ -25,7 +25,8 @@
     <string name="changelog_snackbar_text">Mira as novidades deste lanzamento</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">-- \nEnviado dende o meu teléfono Android con K-9 Mail. Desculpa a miña brevedade</string>
+    <string name="default_signature">--
+\nEnviado dende o meu teléfono Android con K-9 Mail. Desculpa a miña brevedade.</string>
     <!--General strings that include the app name-->
     <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\" será eliminada de K-9 Mail.</string>
     <!--=== General strings ==================================================================-->
@@ -148,7 +149,7 @@
     <string name="debug_enable_debug_logging_title">Activar acceso a debug</string>
     <string name="debug_enable_debug_logging_summary">Diagnóstico con información adicional</string>
     <string name="debug_enable_sensitive_logging_title">Información sensible</string>
-    <string name="debug_enable_sensitive_logging_summary">Deben amosarse chaves no log</string>
+    <string name="debug_enable_sensitive_logging_summary">Deben amosarse chaves no log.</string>
     <string name="debug_export_logs_title">Exportar rexistros</string>
     <string name="debug_export_logs_success">Exportación correcta. Os rexistros poden conter información confidencial. Teña coidado a quen os envías.</string>
     <string name="debug_export_logs_failure">Houbo un erro ao exportar.</string>
@@ -165,7 +166,7 @@
     <string name="message_compose_quote_header_cc">CC:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> escribiu:</string>
     <string name="message_compose_reply_header_fmt_with_date">No <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> escribeu:</string>
-    <string name="message_compose_error_no_recipients">Debes engadir un destinatario</string>
+    <string name="message_compose_error_no_recipients">Debes engadir un destinatario.</string>
     <string name="compose_error_incomplete_recipient">O campo de destino contén datos incompletos!</string>
     <string name="error_contact_address_not_found">Non atopo enderezo electrónico.</string>
     <string name="message_compose_attachments_skipped_toast">Algúns adxuntos non poden reenviarse porque non foron descargados.</string>
@@ -331,7 +332,7 @@
     <string name="account_settings_default_quoted_text_shown_label">Citar mensaxe na resposta</string>
     <string name="account_settings_default_quoted_text_shown_summary">Incluír a mensaxe orixinal na súa resposta.</string>
     <string name="account_settings_reply_after_quote_label">Resposta tras cita</string>
-    <string name="account_settings_reply_after_quote_summary">Cando se responda a un correo, o texto orixinal estará por riba da sua resposta</string>
+    <string name="account_settings_reply_after_quote_summary">Cando se responda a un correo, o texto orixinal estará por riba da sua resposta.</string>
     <string name="account_settings_strip_signature_label">Quitar as firmas na resposta</string>
     <string name="account_settings_strip_signature_summary">Quitaranse as firmas nas mensaxes citadas</string>
     <string name="account_settings_message_format_label">Formato da mensaxe</string>
@@ -470,7 +471,7 @@
     <string name="manage_identities_move_down_action">Baixar</string>
     <string name="manage_identities_move_top_action">Ao principio / facer principal</string>
     <string name="manage_identities_remove_action">Eliminar</string>
-    <string name="edit_identity_description_label">Descripción identidade:</string>
+    <string name="edit_identity_description_label">Descripción identidade</string>
     <string name="edit_identity_description_hint">(Opcional)</string>
     <string name="edit_identity_name_label">O teu nome</string>
     <string name="edit_identity_name_hint">(Opcional)</string>
@@ -509,7 +510,7 @@
     <string name="sort_by_attach">Adxuntos</string>
     <string name="account_delete_dlg_title">Eliminar conta</string>
     <string name="folder_list_filter_hint">Nome do cartafol contén</string>
-    <string name="folder_list_display_mode_label">Carpetas</string>
+    <string name="folder_list_display_mode_label">Carpetas…</string>
     <string name="folder_list_display_mode_all">Ver todas as carpetas</string>
     <string name="folder_list_display_mode_first_class">Ver só carpetas de 1a Clase</string>
     <string name="folder_list_display_mode_first_and_second_class">Ver carpetas de 1a e 2a Clase</string>
@@ -591,7 +592,7 @@
     <string name="font_size_medium">Mediana</string>
     <string name="font_size_large">Grande</string>
     <string name="font_size_larger">Moi Grande</string>
-    <string name="error_activity_not_found">Non existe aplicación para executar esta acción</string>
+    <string name="error_activity_not_found">Non existe aplicación para executar esta acción.</string>
     <string name="send_failed_reason">Fallou o envío: %s</string>
     <string name="save_or_discard_draft_message_dlg_title">¿Guardar coma borrador?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">¿Gardar ou descartar esta mensaxe?</string>
@@ -687,7 +688,7 @@
     <string name="action_remote_search">Buscar mensaxes no servidor</string>
     <string name="remote_search_unavailable_no_network">Precísase conexión a rede para buscar no servidor.</string>
     <string name="global_settings_background_as_unread_indicator_label">Cambiar a cor cando lido</string>
-    <string name="global_settings_background_as_unread_indicator_summary">O fondo diferente mostrará que a mensaxe foi lida.</string>
+    <string name="global_settings_background_as_unread_indicator_summary">O fondo diferente mostrará que a mensaxe foi lida</string>
     <string name="global_settings_threaded_view_label">Vista en conversa</string>
     <string name="global_settings_threaded_view_summary">Agrupar mensaxes por conversa</string>
     <string name="upgrade_databases_title">Actualizando bases de datos</string>
@@ -789,7 +790,7 @@
     <string name="locked_attach_unencrypted">Esta parte non foi cifrada, e podería ser non segura.</string>
     <string name="locked_attach_title">Anexo non protexido</string>
     <string name="message_progress_text">A cargar…</string>
-    <string name="messageview_decrypt_cancelled">O descifrado foi cancelado</string>
+    <string name="messageview_decrypt_cancelled">O descifrado foi cancelado.</string>
     <string name="messageview_decrypt_retry">Intentar de novo</string>
     <string name="messageview_decrypt_incomplete">Debe descargar a mensaxe cifrada para descifrala.</string>
     <string name="messageview_crypto_error_title">Fallo ao descifrar o correo</string>
@@ -801,7 +802,8 @@
     <string name="error_sign_only_no_encryption">Cifrado non dispoñible no modo só-firma!</string>
     <string name="unsigned_text_divider_label">Texto non firmado</string>
     <string name="crypto_no_provider_title">Este correo está cifrado</string>
-    <string name="crypto_no_provider_message">Este correo foi cifrado con OpenPGP.\nPara lelo, precisa instalar e configurar un app compatible con OpenPGP</string>
+    <string name="crypto_no_provider_message">Este correo foi cifrado con OpenPGP.
+\nPara lelo, precisa instalar e configurar un app compatible con OpenPGP.</string>
     <string name="crypto_no_provider_button">Ir a Configuración</string>
     <string name="mail_list_widget_text">Lista de mensaxes K-9</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
@@ -972,8 +974,10 @@ Podes conservar esta mensaxe e usala como copia de seguridade da túa chave secr
     <string name="notification_notify_error_text">Produciuse un erro ao tentar crear unha notificación do sistema para unha mensaxe nova. O motivo é probablemente un son de notificación que falta.
 \n
 \nToca para abrir a configuración de notificacións.</string>
-    <string name="message_details_missing_date">Falta a cabeceira \"Data\".</string>
+    <string name="message_details_missing_date">Falta a cabeceira \"Data\"</string>
     <string name="general_settings_post_mark_as_unread_action_title">Despois de marcar unha mensaxe como non lida</string>
     <string name="swipe_action_move">Mover…</string>
     <string name="message_list_content_description_unread_prefix">sen ler, %s</string>
+    <string name="push_notification_grant_alarm_permission">Toque para garantir o permiso.</string>
+    <string name="push_notification_state_alarm_permission_missing">Faltan permisos para programar alarmas</string>
 </resources>

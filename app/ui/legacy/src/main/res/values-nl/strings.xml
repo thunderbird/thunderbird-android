@@ -974,4 +974,6 @@
     <string name="general_settings_post_mark_as_unread_action_stay">Bij huidige bericht blijven</string>
     <string name="general_settings_post_mark_as_unread_action_title">Na het als gelezen markeren van een bericht</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Terug naar berichtenlijst</string>
+    <string name="push_notification_state_alarm_permission_missing">Toestemming om alarmen te plannen ontbreekt</string>
+    <string name="push_notification_grant_alarm_permission">Tik om toestemming te geven.</string>
 </resources>

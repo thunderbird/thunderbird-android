@@ -1,2 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_special_folders_archive_folder_label">תיקיית ארכיון</string>
+    <string name="account_setup_special_folders_sent_folder_label">תיקיית פריטים שנשלחו</string>
+    <string name="account_setup_special_folders_spam_folder_label">תיקיית דואר זבל</string>
+    <string name="account_setup_special_folders_trash_folder_label">תיקיית פריטים שנמחקו</string>
+    <string name="account_setup_special_folders_folder_automatic">אוטומטי (%s)</string>
+    <string name="account_setup_special_folders_folder_none">כלום</string>
+    <string name="account_setup_options_account_name_label">שם חשבון</string>
+    <string name="account_setup_options_account_name_error_blank">שם חשבון אינו יכול להיות ריק.</string>
+    <string name="account_setup_options_display_name_label">שם תצוגה</string>
+    <string name="account_setup_options_display_name_error_required">דרוש שם תצוגה.</string>
+    <string name="account_setup_options_email_signature_error_blank">שם חתימת דוא\"ל לא יכול להיות ריק.</string>
+    <string name="account_setup_options_email_signature_label">חתימת דוא\"ל</string>
+    <string name="account_setup_options_account_check_frequency_label">תדירות בדיקה</string>
+    <string name="account_setup_options_email_check_frequency_never">אף פעם</string>
+    <string name="account_setup_create_account_creating">יוצר חשבון…</string>
+    <string name="account_setup_create_account_error">אירעה שגיאה בעת ניסיון יצירת החשבון</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">דרושה סיסמה.</string>
+    <string name="account_setup_special_folders_drafts_folder_label">תיקיית טיוטות</string>
+    <string name="account_setup_options_top_bar_title">אפשרויות חשבון</string>
+    <string name="account_setup_options_section_display_options">הצג אפשרויות</string>
+    <string name="account_setup_options_section_sync_options">אפשרויות סנכרון</string>
+    <string name="account_setup_options_email_display_count_label">כמות הודעות להצגה</string>
+    <string name="account_setup_title">דוא\"ל K-9</string>
+    <string name="account_setup_button_finish">סיום</string>
+    <string name="account_setup_error_network">רשת</string>
+    <string name="account_setup_error_unknown">שגיאה לא ידועה</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">דרושה כתובת דוא\"ל.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">כתובת דוא\"ל זו לא מוכרת ככתובת דוא\"ל חוקית.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">כתובת הדוא\"ל הזאת לא מותרת.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">כתובת הדוא\"ל הזאת לא נתמכת.</string>
+    <string name="account_setup_auto_discovery_loading_error">טעינת תצורת דוא\"ל נכשלה</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_loading_message">מחפש תצורה…</string>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">כל שעה</item>
+        <item quantity="two">כל שעתיים</item>
+        <item quantity="other">כל %d שעות</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">כל דקה</item>
+        <item quantity="two">כל 2 דקות</item>
+        <item quantity="other">כל %d דקות</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">הודעה אחת</item>
+        <item quantity="two">2 הודעות</item>
+        <item quantity="other">%d הודעות</item>
+    </plurals>
+    <string name="account_setup_options_show_notifications_label">הצג התראות</string>
+    <string name="account_setup_create_account_created">החשבון נוצר בהצלחה</string>
+    <string name="account_setup_special_folders_top_bar_title">תיקיות מיוחדות</string>
+    <string name="account_setup_special_folders_success_message">תצורת כל התיקיות המיוחדות נעשתה אוטומטית ע\"י השרת.</string>
+    <string name="account_setup_special_folders_loading_message">מביא רשימת תיקיות…</string>
+    <string name="account_setup_special_folders_error_message">הבאת רשימת התיקיות מהשרת נכשלה</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">תצורה נמצאה</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">לא נמצאה תצורה</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">תצורה אוטומטית</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">תצורה זו אינה מהימנה</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">תצורה ידנית</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">ערוך תצורה</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">אני סומך על תצורה זו</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">נדרש לאשר את התצורה.</string>
+    <string name="account_setup_special_folders_form_description">אנא ציין את התיקיות המיוחדות עבור החשבון שלך.</string>
+    <string name="account_setup_special_folders_form_description_automatic">הערך \"אוטומטי\" יעקוב אחר שינויים שנעשים ע\"י השרת באופן אוטומטי. ערך השרת הנוכחי מופיע בסוגריים.</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">קיבלנו את התצורה עבור שרת הדוא\"ל שלך דרך חיבור שאינו מאובטח כפי שהיינו רוצים. משמעות הדבר היא שיש סיכוי זעיר שמישהו יכול היה לשנות אותה. האם תוכל בבקשה לבדוק שוב את התצורה שסופקה כדי לוודא שהיא כפי שהיא צריכה להיות?</string>
+</resources>

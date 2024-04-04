@@ -650,9 +650,9 @@
     <string name="dialog_confirm_delete_title">Conferma eliminazione</string>
     <string name="dialog_confirm_delete_message">Vuoi eliminare questo messaggio\?</string>
     <plurals name="dialog_confirm_delete_messages">
-        <item quantity="one">Vuoi davvero eliminare questo messaggio\?</item>
-        <item quantity="many">Vuoi davvero eliminare i <xliff:g id="message_count">%1$d</xliff:g> messaggi selezionati\?</item>
-        <item quantity="other">Vuoi davvero eliminare i <xliff:g id="message_count">%1$d</xliff:g> messaggi selezionati\?</item>
+        <item quantity="one">Vuoi davvero eliminare questo messaggio?</item>
+        <item quantity="many">Vuoi davvero eliminare i <xliff:g id="message_count">%1$d</xliff:g> messaggi selezionati?</item>
+        <item quantity="other">Vuoi davvero eliminare i <xliff:g id="message_count">%1$d</xliff:g> messaggi selezionati?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Sì</string>
     <string name="dialog_confirm_delete_cancel_button">No</string>
@@ -664,9 +664,9 @@
     <string name="dialog_confirm_mark_all_as_read_cancel_button">No</string>
     <string name="dialog_confirm_spam_title">Conferma spostamento nella cartella spam</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">Vuoi davvero spostare il messaggio nella cartella spam\?</item>
-        <item quantity="many">Vuoi davvero spostare i <xliff:g id="message_count">%1$d</xliff:g> messaggi selezionati nella cartella spam\?</item>
-        <item quantity="other">Vuoi davvero spostare i <xliff:g id="message_count">%1$d</xliff:g> messaggi selezionati nella cartella spam\?</item>
+        <item quantity="one">Vuoi davvero spostare il messaggio nella cartella spam?</item>
+        <item quantity="many">Vuoi davvero spostare i <xliff:g id="message_count">%1$d</xliff:g> messaggi selezionati nella cartella spam?</item>
+        <item quantity="other">Vuoi davvero spostare i <xliff:g id="message_count">%1$d</xliff:g> messaggi selezionati nella cartella spam?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Sì</string>
     <string name="dialog_confirm_spam_cancel_button">No</string>
@@ -980,4 +980,6 @@
     <string name="general_settings_post_mark_as_unread_action_stay">Resta nel messaggio</string>
     <string name="general_settings_post_mark_as_unread_action_title">Dopo aver segnato un messaggio come non letto</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Ritorna alla lista messaggi</string>
+    <string name="push_notification_state_alarm_permission_missing">Autorizzazione mancante per pianificare gli allarmi</string>
+    <string name="push_notification_grant_alarm_permission">Tocca per concedere l\'autorizzazione.</string>
 </resources>

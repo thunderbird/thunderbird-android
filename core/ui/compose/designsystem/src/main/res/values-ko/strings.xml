@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="designsystem_atom_password_textfield_hide_password">비밀번호 숨기기</string>
+    <string name="designsystem_atom_password_textfield_show_password">비밀번호 표시</string>
+    <string name="designsystem_molecule_email_address_input_label">이메일 주소</string>
+    <string name="designsystem_molecule_password_input_label">비밀번호</string>
+    <string name="designsystem_molecule_error_view_button_retry">재시도</string>
+</resources>

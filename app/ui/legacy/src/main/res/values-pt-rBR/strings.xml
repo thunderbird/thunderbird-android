@@ -46,7 +46,7 @@
     <string name="choose_folder_title">Selecionar pasta</string>
     <string name="choose_folder_move_title">Mover para…</string>
     <string name="choose_folder_copy_title">Copiar para…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selecionadas</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selecionada(s)</string>
     <string name="send_action">Enviar</string>
     <string name="empty_subject">O assunto está em branco, clique novamente para enviar mesmo assim</string>
     <string name="reply_action">Responder</string>
@@ -132,7 +132,7 @@
     <string name="notification_certificate_error_title">Erro no certificado de <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Verifique suas configurações de servidor</string>
     <string name="notification_authentication_error_title">Falha na autenticação</string>
-    <string name="notification_authentication_error_text">Falha na autenticação de <xliff:g id="account">%s</xliff:g>. Atualize suas configurações de servidor.</string>
+    <string name="notification_authentication_error_text">Falha na autenticação em <xliff:g id="account">%s</xliff:g>. Atualize suas configurações de servidor.</string>
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Notificação de erro</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
@@ -165,7 +165,7 @@
     <string name="debug_export_logs_success">Exportado com sucesso. Os relatórios podem conter informação sensível. Tome cuidado ao enviá-los para alguém.</string>
     <string name="debug_export_logs_failure">Não foi possível exportar.</string>
     <string name="message_list_load_more_messages_action">Carregar mais mensagens</string>
-    <string name="message_to_fmt">Para:<xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_to_fmt">Para: <xliff:g id="counterParty">%s</xliff:g></string>
     <string name="message_compose_subject_hint">Assunto</string>
     <string name="message_compose_content_hint">Texto da mensagem</string>
     <string name="message_compose_signature_hint">Assinatura</string>
@@ -270,17 +270,17 @@
     <string name="global_settings_lock_screen_notification_visibility_senders">Número de mensagens e remetentes</string>
     <string name="global_settings_lock_screen_notification_visibility_everything">O mesmo de quando a tela está desbloqueada</string>
     <string name="quiet_time">Período de silêncio</string>
-    <string name="quiet_time_description">Desabilita som, vibração e luz indicadora à noite</string>
+    <string name="quiet_time_description">Desabilita som, vibração e luz de notificação à noite</string>
     <string name="quiet_time_notification">Desativar notificações</string>
     <string name="quiet_time_notification_description">Desabilita completamente as notificações durante o período de silêncio</string>
     <string name="quiet_time_starts">Início do período de silêncio</string>
     <string name="quiet_time_ends">Término do período de silêncio</string>
     <string name="account_setup_basics_title">Configurar uma nova conta</string>
     <string name="account_setup_incoming_delete_policy_label">Quando eu excluir uma mensagem</string>
-    <string name="account_setup_incoming_delete_policy_never_label">Não excluí-la do servidor</string>
-    <string name="account_setup_incoming_delete_policy_delete_label">Excluí-la do servidor</string>
+    <string name="account_setup_incoming_delete_policy_never_label">Não excluí-la no servidor</string>
+    <string name="account_setup_incoming_delete_policy_delete_label">Excluí-la no servidor</string>
     <string name="account_setup_incoming_delete_policy_markread_label">Marcá-la como lida no servidor</string>
-    <string name="account_setup_expunge_policy_label">Apagar no servidor as mensagens excluídas localmente</string>
+    <string name="account_setup_expunge_policy_label">Apagar, no servidor, as mensagens excluídas localmente</string>
     <string name="account_setup_expunge_policy_immediately">Imediatamente</string>
     <string name="account_setup_expunge_policy_on_poll">Durante a verificação</string>
     <string name="account_setup_expunge_policy_manual">Manualmente</string>

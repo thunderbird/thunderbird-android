@@ -4,11 +4,11 @@
     <string name="account_server_validation_error_authentication">Error d\'autenticació</string>
     <string name="account_server_validation_outgoing_loading_message">S\'està comprovant la configuració del servidor de sortida…</string>
     <string name="account_server_validation_error_network">Error de la xarxa</string>
-    <string name="account_server_validation_outgoing_success">La configuració del servidor de sortida és vàlida</string>
+    <string name="account_server_validation_outgoing_success">La configuració del servidor de sortida s\'ha verificat</string>
     <string name="account_server_validation_error_unknown">Error desconegut</string>
     <string name="account_server_validation_sign_in">Si us plau, inicieu la sessió</string>
     <string name="account_server_validation_outgoing_loading_error">Ha fallat la comprovació de la configuració del servidor de sortida</string>
-    <string name="account_server_validation_incoming_success">La configuració del servidor d\'entrada és vàlida</string>
+    <string name="account_server_validation_incoming_success">La configuració del servidor d\'entrada s\'ha verificat</string>
     <string name="account_server_validation_incoming_loading_error">Ha fallat la comprovació de la configuració del servidor d\'entrada</string>
     <string name="account_server_validation_error_server">Error del servidor</string>
     <string name="account_server_validation_error_missing_server_capability">Falta capacitat al servidor</string>

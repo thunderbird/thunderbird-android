@@ -974,4 +974,6 @@
     <string name="general_settings_post_mark_as_unread_action_stay">By aktuele berjocht bliuwe</string>
     <string name="general_settings_post_mark_as_unread_action_title">Nei it as lêzen markearjen fan in berjocht</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Werom nei berjochtelist</string>
+    <string name="push_notification_state_alarm_permission_missing">Tastimming om alarms te plannen ûntbrekt</string>
+    <string name="push_notification_grant_alarm_permission">Tik om tastimming te jaan.</string>
 </resources>

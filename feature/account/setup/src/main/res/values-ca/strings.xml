@@ -21,14 +21,14 @@
     <string name="account_setup_options_account_name_label">Nom del compte</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">S\'ha trobat una configuració</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Cal l\'adreça de correu electrònic.</string>
-    <string name="account_setup_options_display_name_label">Nom a mostrar</string>
+    <string name="account_setup_options_display_name_label">El teu nom</string>
     <string name="account_setup_auto_discovery_loading_error">Ha fallat la càrrega de la configuració de correu electrònic</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Confio en aquesta configuració</string>
-    <string name="account_setup_options_display_name_error_required">Cal el nom a mostrar.</string>
+    <string name="account_setup_options_display_name_error_required">Es requereix el teu nom.</string>
     <string name="account_setup_error_network">Xarxa</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">L\'adreça de correu electrònic no es reconeix com a vàlida.</string>
     <string name="account_setup_options_email_check_frequency_never">Mai</string>
-    <string name="account_setup_auto_discovery_loading_message">Cercant els detalls del correu electrònic</string>
+    <string name="account_setup_auto_discovery_loading_message">Cercant configuració…</string>
     <string name="account_setup_options_section_sync_options">Opcions de sincronització</string>
     <string name="account_setup_options_show_notifications_label">Mostra les notificacions</string>
     <string name="account_setup_options_section_display_options">Opcions de visualització</string>
@@ -50,4 +50,20 @@
     <string name="account_setup_special_folders_archive_folder_label">Carpeta d\'arxiu</string>
     <string name="account_setup_special_folders_spam_folder_label">Carpeta brossa</string>
     <string name="account_setup_special_folders_form_description_automatic">L\'entrada \"Automàtica\" seguirà els canvis fets pel servidor automàticament. El valor actual del servidor es mostra entre parèntesis.</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Cada minut</item>
+        <item quantity="many">Cada %d minuts</item>
+        <item quantity="other">Cada %d minuts</item>
+    </plurals>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Es requereix contrasenya.</string>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Cada hora</item>
+        <item quantity="many">Cada %d hores</item>
+        <item quantity="other">Cada %d hores</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">1 missatge</item>
+        <item quantity="many">%d missatges</item>
+        <item quantity="other">%d missatges</item>
+    </plurals>
 </resources>

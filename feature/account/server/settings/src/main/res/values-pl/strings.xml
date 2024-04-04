@@ -4,7 +4,6 @@
     <string name="account_server_settings_validation_error_username_required">Nazwa użytkownika jest wymagana.</string>
     <string name="account_server_settings_outgoing_top_bar_title">Ustawienia serwera poczty wychodzącej</string>
     <string name="account_server_settings_validation_error_password_required">Hasło jest wymagane.</string>
-    <string name="account_server_settings_incoming_imap_send_client_id_label">Wyślij identyfikator klienta</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_authentication_none">Brak</string>
     <string name="account_server_settings_authentication_password_encrypted">Zaszyfrowane hasło</string>
@@ -32,4 +31,5 @@
     <string name="account_server_settings_password_authentication_subtitle">Odblokuj, aby zobaczyć swoje hasło</string>
     <string name="account_server_settings_password_authentication_screen_lock_required">Aby zobaczyć tutaj swoje hasło, ustaw blokadę ekranu na tym urządzeniu.</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Nieprawidłowy adres IP lub nazwa hosta</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">Wyślij informacje o kliencie</string>
 </resources>

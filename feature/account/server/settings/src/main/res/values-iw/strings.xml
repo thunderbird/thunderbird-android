@@ -1,2 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_settings_password_authentication_title">אמת את זהותך</string>
+    <string name="account_server_settings_password_authentication_subtitle">בטל את הנעילה כדי לראות את הסיסמה שלך</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">כדי להציג את הסיסמה שלך כאן, הפעל נעילת מסך במכשיר זה.</string>
+    <string name="account_server_settings_protocol_type_label">פרוטוקול</string>
+    <string name="account_server_settings_server_label">שרת</string>
+    <string name="account_server_settings_security_label">אבטחה</string>
+    <string name="account_server_settings_port_label">פורט</string>
+    <string name="account_server_settings_authentication_label">אימות</string>
+    <string name="account_server_settings_username_label">שם משתמש</string>
+    <string name="account_server_settings_connection_security_none">כלום</string>
+    <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
+    <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
+    <string name="account_server_settings_authentication_none">כלום</string>
+    <string name="account_server_settings_authentication_password_cleartext">סיסמה רגילה</string>
+    <string name="account_server_settings_authentication_password_encrypted">סיסמה מוצפנת</string>
+    <string name="account_server_settings_authentication_client_certificate">תעודת לקוח</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">קידומת IMAP לא יכולה להיות ריקה.</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">IP או שם מארח לא חוקיים</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
+    <string name="account_server_settings_client_certificate_none_selected">כלום</string>
+    <string name="account_server_settings_client_certificate_label">תעודת לקוח</string>
+    <string name="account_server_settings_incoming_top_bar_title">הגדרות שרת דואר נכנס</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">זהה אוטומטית מרחב שמות של IMAP</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">קידומת נתיב IMAP</string>
+    <string name="account_server_settings_incoming_imap_compression_label">השתמש בדחיסה</string>
+    <string name="account_server_settings_validation_error_port_invalid">הפורט לא חוקי (חייב להיות בין 1–65535).</string>
+    <string name="account_server_settings_validation_error_username_required">נדרש שם משתמש.</string>
+    <string name="account_server_settings_outgoing_top_bar_title">הגדרות שרת דואר יוצא</string>
+    <string name="account_server_settings_validation_error_server_required">נדרש שם שרת.</string>
+    <string name="account_server_settings_validation_error_port_required">נדרש פורט.</string>
+    <string name="account_server_settings_validation_error_password_required">דרושה סיסמה.</string>
+</resources>

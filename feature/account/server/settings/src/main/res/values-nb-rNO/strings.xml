@@ -4,7 +4,6 @@
     <string name="account_server_settings_validation_error_username_required">Brukernavn kreves.</string>
     <string name="account_server_settings_outgoing_top_bar_title">Innstillinger for utgående tjener</string>
     <string name="account_server_settings_validation_error_password_required">Passord kreves.</string>
-    <string name="account_server_settings_incoming_imap_send_client_id_label">Send klient-ID</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_authentication_none">Ingen</string>
     <string name="account_server_settings_authentication_password_encrypted">Kryptert passord</string>

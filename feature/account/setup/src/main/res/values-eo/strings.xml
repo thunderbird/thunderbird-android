@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Pasvorto necesas.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">Retpoŝta adreso necesas.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_error_network">Reto</string>
+    <string name="account_setup_error_unknown">Nekonata eraro</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+</resources>

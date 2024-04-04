@@ -2,9 +2,9 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_server_certificate_unknown_error_subtitle">Eroare de certificare</string>
     <string name="account_server_certificate_warning_title">Avertisment</string>
-    <string name="account_server_certificate_button_back">Întoarceți-vă (recomandat)</string>
+    <string name="account_server_certificate_button_back">Întoarcere (recomandat)</string>
     <string name="account_server_certificate_button_advanced">Avansat</string>
-    <string name="account_server_certificate_button_continue">Acceptați riscurile și continuați</string>
+    <string name="account_server_certificate_button_continue">Acceptă riscurile și continuă</string>
     <string name="account_server_certificate_section_title">Certificatul serverului</string>
     <string name="account_server_certificate_subject_alternative_names">Nume alternative ale subiectului</string>
     <string name="account_server_certificate_not_valid_before">Nu este valabil înainte de</string>
@@ -13,5 +13,5 @@
     <string name="account_server_certificate_issuer">Emitent</string>
     <string name="account_server_certificate_fingerprints_section">Amprente digitale</string>
     <string name="account_server_certificate_unknown_error_description_format">Aplicația a detectat o potențială amenințare la adresa securității și nu a continuat să se conecteze la <xliff:g id="serverName">%s</xliff:g>.
-\nDacă continuați, atacatorii ar putea încerca să vă fure informații precum parola sau corespondența electronică.</string>
+\nDacă continui, atacatorii ar putea încerca să fure informații precum parola sau corespondența electronică.</string>
 </resources>

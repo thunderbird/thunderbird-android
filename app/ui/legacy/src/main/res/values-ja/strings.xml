@@ -968,4 +968,6 @@
     <string name="general_settings_post_mark_as_unread_action_stay">現在のメッセージに留まる</string>
     <string name="general_settings_post_mark_as_unread_action_title">メッセージを既読にした後</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">メッセージ一覧に戻る</string>
+    <string name="push_notification_grant_alarm_permission">タップして権限を付与してください。</string>
+    <string name="push_notification_state_alarm_permission_missing">アラームを設定する権限がありません</string>
 </resources>

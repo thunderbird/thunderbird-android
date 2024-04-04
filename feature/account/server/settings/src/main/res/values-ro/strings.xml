@@ -4,7 +4,6 @@
     <string name="account_server_settings_validation_error_username_required">Numele de utilizator este necesar.</string>
     <string name="account_server_settings_outgoing_top_bar_title">Setări server de expediere</string>
     <string name="account_server_settings_validation_error_password_required">Parola este necesară.</string>
-    <string name="account_server_settings_incoming_imap_send_client_id_label">Trimite ID-ul clientului</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_authentication_none">Nimic</string>
     <string name="account_server_settings_authentication_password_encrypted">Parolă criptată</string>
@@ -29,7 +28,8 @@
     <string name="account_server_settings_server_label">Server</string>
     <string name="account_server_settings_security_label">Securitate</string>
     <string name="account_server_settings_password_authentication_title">Verifică identitatea ta</string>
-    <string name="account_server_settings_password_authentication_subtitle">Deblochează ca sa vezi parola ta</string>
+    <string name="account_server_settings_password_authentication_subtitle">Deblochează ca sa vezi parola</string>
     <string name="account_server_settings_password_authentication_screen_lock_required">Pentru a-ți vedea parola aici, activează ecranul de blocare pe acest dispozitiv.</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">IP sau hostname invalid</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">Trimite informații despre client</string>
 </resources>
