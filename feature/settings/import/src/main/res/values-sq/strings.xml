@@ -10,9 +10,9 @@
     <string name="settings_import_authorization_required">Ju lutemi, bëni hyrjen</string>
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
     <string name="settings_import_authorization_and_password_required">Ju lutemi, bëni hyrjen dhe jepni fjalëkalime</string>
-    <string name="settings_import_failure">S\’u arrit të importohen rregullime</string>
-    <string name="settings_import_read_failure">S\’u arrit të lexohet kartelë rregullimesh</string>
-    <string name="settings_import_partial_failure">S\’u arrit të importohen disa rregullime</string>
+    <string name="settings_import_failure">Su arrit të importohen rregullime</string>
+    <string name="settings_import_read_failure">Su arrit të lexohet kartelë rregullimesh</string>
+    <string name="settings_import_partial_failure">Su arrit të importohen disa rregullime</string>
     <string name="settings_import_status_success">U importuan me sukses</string>
     <string name="settings_import_status_password_required">Lypset fjalëkalim</string>
     <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
@@ -22,19 +22,19 @@
     <string name="settings_import_later_button">Më vonë</string>
     <string name="settings_importing">Po importohen rregullime…</string>
     <plurals name="settings_import_password_prompt">
-        <item quantity="one">Që të mund të përdorni llogarinë \“<xliff:g id="account">%s</xliff:g>\” duhet të jepni fjalëkalimin e shërbyesit.</item>
-        <item quantity="other">Që të mund të përdorni llogarinë \“<xliff:g id="account">%s</xliff:g>\” duhet të jepni fjalëkalimet e shërbyesit.</item>
+        <item quantity="one">Që të mund të përdorni llogarinë <xliff:g id="account">%s</xliff:g> duhet të jepni fjalëkalimin e shërbyesit.</item>
+        <item quantity="other">Që të mund të përdorni llogarinë <xliff:g id="account">%s</xliff:g> duhet të jepni fjalëkalimet e shërbyesit.</item>
     </plurals>
     <string name="settings_import_incoming_server_password_hint">Fjalëkalim shërbyesi marrjesh</string>
     <string name="settings_import_outgoing_server_password_hint">Fjalëkalim shërbyesi dërgimesh</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Përdor po atë fjalëkalim për shërbyes dërgimesh</string>
     <string name="settings_import_server_name_format">Emër shërbyesi: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Që të përdorni këtë llogari email me K-9 Mail, lypset të bëni hyrjen dhe t\’i akordoni aplikacionit hyrje te email-et tuaj.</string>
+    <string name="settings_import_oauth_description">Që të përdorni këtë llogari email me K-9 Mail, lypset të bëni hyrjen dhe ti akordoni aplikacionit hyrje te email-et tuaj.</string>
     <string name="settings_import_oauth_sign_in">Hyni</string>
     <string name="settings_import_oauth_sign_in_with_google">Hyni me Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Autorizimi u anulua</string>
     <string name="settings_import_oauth_error_oauth_flow_failed">Autorizimi dështoi me gabimin vijues: <xliff:g id="error">%s</xliff:g></string>
     <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 aktualisht nuk mbulohet me këtë furnizues shërbimi.</string>
-    <string name="settings_import_oauth_error_browser_not_found">Aplikacioni s\’gjeti dot një shfletues për ta përdorur për t\’i akorduar hyrje te llogaria juaj.</string>
+    <string name="settings_import_oauth_error_browser_not_found">Aplikacioni sgjeti dot një shfletues për ta përdorur për ti akorduar hyrje te llogaria juaj.</string>
     <string name="settings_import_general_settings_item">Rregullime të përgjithshme</string>
 </resources>

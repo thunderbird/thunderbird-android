@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_oauth_sign_in_button">Saluti</string>
+    <string name="account_oauth_sign_in_with_google_button">Saluti per Google</string>
+    <string name="account_oauth_loading_message">Saluti per OAuth</string>
+    <string name="account_oauth_loading_error">Malsukcesis saluti per OAuth</string>
+</resources>

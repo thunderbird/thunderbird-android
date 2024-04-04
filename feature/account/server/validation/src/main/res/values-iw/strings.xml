@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="account_server_validation_error_client_certificate_expired">תעודת הלקוח אינה בתוקף עוד</string>
+    <string name="account_server_validation_error_client_certificate_expired">תעודת הלקוח כבר לא בתוקף</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">לא ניתן לגשת לתעודת הלקוח</string>
     <string name="account_server_validation_error_missing_server_capability">יכולת שרת חסרה</string>
     <string name="account_server_validation_error_details">פרטים:
 \n%s</string>
-    <string name="account_server_validation_incoming_success">הגדרות שרת נכנסות אומתו</string>
-    <string name="account_server_validation_outgoing_loading_error">בדיקת הגדרות שרת יוצאות נכשלה</string>
-    <string name="account_server_validation_incoming_loading_error">בדיקת הגדרות שרת נכנסות נכשלה</string>
-    <string name="account_server_validation_outgoing_loading_message">הגדרות שרת יוצאות בבדיקה…</string>
-    <string name="account_server_validation_incoming_loading_message">הגדרות שרת נכנסות בבדיקה…</string>
-    <string name="account_server_validation_outgoing_success">הגדרות שרת יוצאות אומתו</string>
+    <string name="account_server_validation_incoming_success">הגדרות שרת דואר נכנס אומתו</string>
+    <string name="account_server_validation_outgoing_loading_error">בדיקת הגדרות שרת דואר יוצא נכשלה</string>
+    <string name="account_server_validation_incoming_loading_error">בדיקת הגדרות שרת דואר נכנס נכשלה</string>
+    <string name="account_server_validation_outgoing_loading_message">הגדרות שרת דואר יוצא בבדיקה…</string>
+    <string name="account_server_validation_incoming_loading_message">הגדרות שרת דואר נכנס בבדיקה…</string>
+    <string name="account_server_validation_outgoing_success">הגדרות שרת דואר יוצא אומתו</string>
     <string name="account_server_validation_sign_in">אנא התחבר</string>
     <string name="account_server_validation_error_authentication">שגיאת אימות</string>
     <string name="account_server_validation_error_network">שגיאת רשת</string>
     <string name="account_server_validation_error_server">שגיאת שרת</string>
     <string name="account_server_validation_error_unknown">שגיאה לא ידועה</string>
-    <string name="account_server_validation_error_missing_server_capability_details">היכולת הבא חסרה לשרת:
+    <string name="account_server_validation_error_missing_server_capability_details">היכולת הבאה חסרה לשרת:
 \n%s</string>
 </resources>

@@ -4,7 +4,6 @@
     <string name="account_server_settings_validation_error_username_required">ユーザー名は必須です。</string>
     <string name="account_server_settings_outgoing_top_bar_title">送信サーバー設定</string>
     <string name="account_server_settings_validation_error_password_required">パスワードは必須です。</string>
-    <string name="account_server_settings_incoming_imap_send_client_id_label">クライアント ID を送信する</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_authentication_none">なし</string>
     <string name="account_server_settings_authentication_password_encrypted">暗号化されたパスワード認証</string>
@@ -32,4 +31,5 @@
     <string name="account_server_settings_password_authentication_subtitle">ロック解除してパスワードを表示</string>
     <string name="account_server_settings_password_authentication_screen_lock_required">ここでパスワードを表示するには、端末に画面ロックを設定してください。</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">IP またはホスト名が無効です</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">クライアントの情報を送信する</string>
 </resources>

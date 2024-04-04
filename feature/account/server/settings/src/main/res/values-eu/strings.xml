@@ -4,7 +4,6 @@
     <string name="account_server_settings_validation_error_username_required">Erabiltzaile izena beharrezkoa da.</string>
     <string name="account_server_settings_outgoing_top_bar_title">Irteera zerbitzariaren ezarpenak</string>
     <string name="account_server_settings_validation_error_password_required">Pasahitza beharrezkoa da.</string>
-    <string name="account_server_settings_incoming_imap_send_client_id_label">Bidali bezero IDa</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_authentication_none">Bat ere ez</string>
     <string name="account_server_settings_authentication_password_encrypted">Pasahitz zifratua</string>

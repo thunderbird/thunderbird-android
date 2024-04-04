@@ -4,7 +4,6 @@
     <string name="account_server_settings_validation_error_username_required">Nome de usuário é obrigatório.</string>
     <string name="account_server_settings_outgoing_top_bar_title">Configuração do servidor de saída</string>
     <string name="account_server_settings_validation_error_password_required">Senha é obrigatória.</string>
-    <string name="account_server_settings_incoming_imap_send_client_id_label">Enviar identidade de cliente</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_authentication_none">Nenhum</string>
     <string name="account_server_settings_authentication_password_encrypted">Senha criptografada</string>

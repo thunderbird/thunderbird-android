@@ -87,8 +87,8 @@
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">Адрес скопирован в буфер</item>
         <item quantity="few">Адреса скопированы в буфер</item>
-        <item quantity="many">Адреса скопированы в буфер</item>
-        <item quantity="other">Адреса скопированы в буфер</item>
+        <item quantity="many"></item>
+        <item quantity="other"></item>
     </plurals>
     <string name="copy_subject_to_clipboard">Текст темы скопирован в буфер обмена</string>
     <string name="message_view_theme_action_dark">Тёмная тема</string>
@@ -116,9 +116,9 @@
     <string name="size_format_bytes">%d Б</string>
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> новое сообщение</item>
-        <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> новых сообщения</item>
-        <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> новых сообщений</item>
-        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> новых сообщений</item>
+        <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> новых сообщений</item>
+        <item quantity="many"></item>
+        <item quantity="other"></item>
     </plurals>
     <string name="notification_additional_messages">+ ещё <xliff:g id="additional_messages">%1$d</xliff:g> в <xliff:g id="account">%2$s</xliff:g></string>
     <string name="notification_action_reply">Ответить</string>
@@ -133,11 +133,13 @@
     <string name="notification_certificate_error_title">Сбой сертификата <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Проверьте настройки сервера</string>
     <string name="notification_authentication_error_title">Сбой аутентификации</string>
-    <string name="notification_authentication_error_text">Сбой аутентификации для <xliff:g id="account">%s</xliff:g>. Измените настройки сервера</string>
+    <string name="notification_authentication_error_text">Сбой аутентификации для <xliff:g id="account">%s</xliff:g>. Обновите настройки сервера.</string>
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Ошибка уведомления</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">При попытке создать системное уведомление для нового сообщения произошла ошибка. Причина, скорее всего, заключается в отсутствующем звука уведомления.\n\nНажмите , чтобы открыть настройки уведомлений.</string>
+    <string name="notification_notify_error_text">При попытке создать системное уведомление для нового сообщения произошла ошибка. Причина, скорее всего, заключается в отсутствующем звуке уведомления.
+\n
+\nНажмите, чтобы открыть настройки уведомлений.</string>
     <string name="notification_bg_sync_ticker">Проверка <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Проверка почты</string>
     <string name="notification_bg_send_ticker">Отправка <xliff:g id="account">%s</xliff:g></string>
@@ -148,7 +150,7 @@
     <string name="notification_channel_messages_title">Сообщение</string>
     <string name="notification_channel_messages_description">Уведомления о сообщениях</string>
     <string name="notification_channel_miscellaneous_title">Разное</string>
-    <string name="notification_channel_miscellaneous_description">Прочие уведомления</string>
+    <string name="notification_channel_miscellaneous_description">Различные уведомления, например, об ошибках и т.д.</string>
     <string name="special_mailbox_name_inbox">Входящие</string>
     <string name="special_mailbox_name_outbox">Исходящие</string>
     <string name="special_mailbox_name_drafts">Черновики</string>
@@ -159,7 +161,7 @@
     <string name="debug_enable_debug_logging_title">Журнал отладки</string>
     <string name="debug_enable_debug_logging_summary">Запись диагностических сообщений</string>
     <string name="debug_enable_sensitive_logging_title">Личные данные</string>
-    <string name="debug_enable_sensitive_logging_summary">Разрешить запись паролей в журнал</string>
+    <string name="debug_enable_sensitive_logging_summary">Позволить отображение паролей в журнале.</string>
     <string name="debug_export_logs_title">Экспорт журнала</string>
     <string name="debug_export_logs_success">Экспорт выполнен. Журнал может содержать личные данные. Будьте осторожнее с тем, кому вы их посылаете.</string>
     <string name="debug_export_logs_failure">Сбой экспорта.</string>
@@ -177,7 +179,7 @@
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> пишет:</string>
     <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> пишет:</string>
     <string name="message_compose_error_no_recipients">Вы должны добавить хотя бы одного адресата.</string>
-    <string name="compose_error_incomplete_recipient">Поле адресата заполнено неполностью!</string>
+    <string name="compose_error_incomplete_recipient">Поле адресата заполнено не полностью!</string>
     <string name="error_contact_address_not_found">Контакт не содержит сведений об эл. почте.</string>
     <string name="message_compose_attachments_skipped_toast">Некоторые вложения не были загружены и не могут быть отправлены.</string>
     <string name="message_compose_attachments_forward_toast">Сообщение не может быть переслано, так как не загружены вложения.</string>
@@ -354,9 +356,9 @@
     <string name="account_settings_show_pictures_always">Всегда</string>
     <string name="account_settings_composition">Отправка</string>
     <string name="account_settings_default_quoted_text_shown_label">Цитировать при ответе</string>
-    <string name="account_settings_default_quoted_text_shown_summary">Включать исходное сообщение в ответ</string>
+    <string name="account_settings_default_quoted_text_shown_summary">Включать исходное сообщение в свой ответ.</string>
     <string name="account_settings_reply_after_quote_label">Цитата над ответом</string>
-    <string name="account_settings_reply_after_quote_summary">Разместить исходное сообщение над текстом ответа</string>
+    <string name="account_settings_reply_after_quote_summary">Разместить исходное сообщение над текстом ответа.</string>
     <string name="account_settings_strip_signature_label">Без подписей в цитате</string>
     <string name="account_settings_strip_signature_summary">Удалять подписи из цитируемого текста</string>
     <string name="account_settings_message_format_label">Формат сообщений</string>
@@ -476,7 +478,7 @@
     <string name="notifications_title">Уведомления</string>
     <string name="account_settings_vibration">Вибрация</string>
     <string name="account_settings_vibrate_enable">Вибрация</string>
-    <string name="account_settings_vibrate_pattern_label">Cхема вибрации</string>
+    <string name="account_settings_vibrate_pattern_label">Схема вибрации</string>
     <string name="account_settings_vibrate_pattern_default">По умолчанию</string>
     <string name="account_settings_vibrate_pattern_1">Шаблон 1</string>
     <string name="account_settings_vibrate_pattern_2">Шаблон 2</string>
@@ -514,7 +516,7 @@
     <string name="manage_identities_move_top_action">Вверх</string>
     <string name="manage_identities_remove_action">Удалить</string>
     <string name="edit_identity_description_label">Название роли</string>
-    <string name="edit_identity_description_hint">опция</string>
+    <string name="edit_identity_description_hint">(Необязательно)</string>
     <string name="edit_identity_name_label">Ваше имя</string>
     <string name="edit_identity_name_hint">(Необязательно)</string>
     <string name="edit_identity_email_label">Адрес электронной почты</string>
@@ -542,7 +544,7 @@
     <string name="sort_unread_last">Прочитано – не прочитано</string>
     <string name="sort_attach_first">С вложениями – без вложений</string>
     <string name="sort_unattached_first">Без вложений – с вложениями</string>
-    <string name="sort_by">Упорядочивание</string>
+    <string name="sort_by">Сортировать по…</string>
     <string name="sort_by_date">Дата</string>
     <string name="sort_by_arrival">Получено</string>
     <string name="sort_by_subject">Тема</string>
@@ -563,11 +565,11 @@
     <string name="setting_theme_global">Как в приложении</string>
     <string name="setting_theme_dark">Тёмная</string>
     <string name="setting_theme_light">Светлая</string>
-    <string name="setting_theme_follow_system">Использовать умолчания системы</string>
+    <string name="setting_theme_follow_system">Как в системе</string>
     <string name="display_preferences">Вид</string>
     <string name="global_preferences">Общие</string>
     <string name="debug_preferences">Отладка</string>
-    <string name="privacy_preferences">Личное</string>
+    <string name="privacy_preferences">Конфиденциальность</string>
     <string name="network_preferences">Сеть</string>
     <string name="interaction_preferences">Интерфейс</string>
     <string name="accountlist_preferences">Список учётных записей</string>
@@ -580,12 +582,12 @@
     <string name="preference_search_no_results">Настройки не найдены</string>
     <string name="settings_message_theme_selection_label">Тема для писем</string>
     <string name="settings_message_theme_selection_summary_off">Разрешено выбрать тему сообщения не зависимо от темы приложения.</string>
-    <string name="settings_message_theme_selection_summary_on">Фиксированная тема для писем, зависит от выбранной темы приложения</string>
+    <string name="settings_message_theme_selection_summary_on">Фиксированная тема для писем, зависит от выбранной темы приложения.</string>
     <string name="setting_language_system">По умолчанию</string>
     <string name="background_ops_label">Фоновая синхронизация</string>
     <string name="background_ops_never">Никогда</string>
     <string name="background_ops_always">Всегда</string>
-    <string name="background_ops_auto_sync_only">Если вкл. Автосинхронизация</string>
+    <string name="background_ops_auto_sync_only">Для автосинхронизации</string>
     <string name="batch_select_all">Выбрать все</string>
     <string name="account_setup_push_limit_label">Лимит push-проверки</string>
     <string name="account_setup_push_limit_5">5 папок</string>
@@ -600,7 +602,7 @@
     <string name="animations_summary">Анимация интерфейса</string>
     <string name="volume_navigation_title">Управление клавишами громкости для перехода между письмами</string>
     <string name="show_unified_inbox_title">Показывать общий ящик для входящих</string>
-    <string name="show_starred_count_title">Cчётчик важных</string>
+    <string name="show_starred_count_title">Счётчик важных</string>
     <string name="integrated_inbox_title">Входящие</string>
     <string name="integrated_inbox_detail">из всех ящиков</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Общие «Входящие»</string>
@@ -652,7 +654,7 @@
         <item quantity="one">Удалить сообщение?</item>
         <item quantity="few">Удалить <xliff:g id="message_count">%1$d</xliff:g> сообщения?</item>
         <item quantity="many">Удалить <xliff:g id="message_count">%1$d</xliff:g> сообщений?</item>
-        <item quantity="other">Вы действительно хотите удалить <xliff:g id="message_count">%1$d</xliff:g> сообщений?</item>
+        <item quantity="other">Удалить <xliff:g id="message_count">%1$d</xliff:g> сообщений?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Да</string>
     <string name="dialog_confirm_delete_cancel_button">Нет</string>
@@ -664,10 +666,10 @@
     <string name="dialog_confirm_mark_all_as_read_cancel_button">Нет</string>
     <string name="dialog_confirm_spam_title">Переместить в спам</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">Переместить сообщение в Спам?</item>
-        <item quantity="few">Переместить <xliff:g id="message_count">%1$d</xliff:g> сообщения в Спам?</item>
-        <item quantity="many">Переместить <xliff:g id="message_count">%1$d</xliff:g> сообщений в Спам?</item>
-        <item quantity="other">Переместить <xliff:g id="message_count">%1$d</xliff:g> сообщений в Спам?</item>
+        <item quantity="one">Переместить сообщение в cпам?</item>
+        <item quantity="few">Переместить <xliff:g id="message_count">%1$d</xliff:g> сообщения в cпам?</item>
+        <item quantity="many">Переместить <xliff:g id="message_count">%1$d</xliff:g> сообщений в cпам?</item>
+        <item quantity="other">Переместить <xliff:g id="message_count">%1$d</xliff:g> сообщений в cпам?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Да</string>
     <string name="dialog_confirm_spam_cancel_button">Нет</string>
@@ -724,7 +726,7 @@
     <string name="account_settings_remote_search_num_label">Ограничение поиска на сервере</string>
     <string name="remote_search_sending_query">Отправка запроса на сервер</string>
     <plurals name="remote_search_downloading">
-        <item quantity="one">Получение %d результата </item>
+        <item quantity="one">Получение %d результата</item>
         <item quantity="few">Получение %d результатов</item>
         <item quantity="many">Получение %d результатов</item>
         <item quantity="other">Получение %d результатов</item>
@@ -777,7 +779,7 @@
     <string name="address_type_other">Прочее</string>
     <string name="address_type_mobile">Мобильный</string>
     <string name="compose_error_no_draft_folder">Для данной учётной записи не настроена папка Черновики!</string>
-    <string name="compose_error_no_key_configured">Для данной учётной записи не настроены ключи! Проверьте настройки</string>
+    <string name="compose_error_no_key_configured">Для данной учётной записи не настроены ключи! Проверьте настройки.</string>
     <string name="error_crypto_provider_incompatible">Криптопровайдер использует несовместимую версию. Проверьте настройки!</string>
     <string name="error_crypto_provider_connect">Нет доступа к криптопровайдеру. Проверьте настройки или нажмите значок шифрования для повтора!</string>
     <string name="error_crypto_provider_ui_required">Ошибка инициализации сквозного шифрования. Проверьте настройки</string>
@@ -913,12 +915,12 @@
     <string name="push_notification_state_wait_network">Спящий режим до появления сети</string>
     <string name="push_notification_info">Нажмите, чтобы узнать больше.</string>
     <string name="push_info_title">Всплывающая информация</string>
-    <string name="push_info_notification_explanation_text">При использовании Push K-9 Mail поддерживает соединение с почтовым сервером. Android требует отображения постоянного уведомления, пока приложение активно в фоновом режиме. %s</string>
+    <string name="push_info_notification_explanation_text">При использовании push K-9 Mail поддерживает соединение с почтовым сервером. Android требует отображения постоянного уведомления, пока приложение активно в фоновом режиме. %s</string>
     <string name="push_info_configure_notification_text">Однако Android также позволяет скрыть уведомление.</string>
     <string name="push_info_learn_more_text">Узнать больше</string>
     <string name="push_info_configure_notification_action">Настроить уведомление</string>
-    <string name="push_info_disable_push_text">Если вам не нужны мгновенные уведомления о новых сообщениях, вам следует отключить Push и использовать Опрос. Опрос проверяет наличие новой почты через регулярные промежутки времени и не нуждается в уведомлениях.</string>
-    <string name="push_info_disable_push_action">Отключить Push</string>
+    <string name="push_info_disable_push_text">Если вам не нужны мгновенные уведомления о новых сообщениях, вам следует отключить «Push» и использовать «Опрос». Опрос проверяет наличие новой почты через регулярные промежутки времени и не нуждается в уведомлениях.</string>
+    <string name="push_info_disable_push_action">Отключить push</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
     <string name="swipe_action_select">Выбрать</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
@@ -948,7 +950,7 @@
     <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
     <string name="message_details_toolbar_title">Подробности сообщения</string>
     <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
-    <string name="message_details_missing_date">Отсутствует заголовок \'Дата\'</string>
+    <string name="message_details_missing_date">Отсутствует заголовок «Дата»</string>
     <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
     <string name="message_details_from_section_title">От</string>
     <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
@@ -977,4 +979,15 @@
     <string name="clipboard_label_name_and_email_address">Имя и адрес эл. почты</string>
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+<string name="general_settings_post_mark_as_unread_action_title">После пометки сообщения как непрочитанного</string>
+    <string name="background_work_notification_remove_account">Удаление учётной записи…</string>
+    <string name="message_list_content_description_unread_prefix">не прочитано, %s</string>
+    <string name="general_settings_post_remove_action_title">После удаления или перемещения сообщения</string>
+    <string name="general_settings_post_remove_action_return_to_list">Возврат к списку сообщений</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Показать предыдущее сообщение</string>
+    <string name="general_settings_post_remove_action_show_next_message">Показать следующее сообщение</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">Оставаться на текущем сообщении</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">Возврат к списку сообщений</string>
+    <string name="push_notification_grant_alarm_permission">Нажмите, чтобы дать разрешение.</string>
+    <string name="push_notification_state_alarm_permission_missing">Отсутствует разрешение на установку будильников</string>
 </resources>

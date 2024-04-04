@@ -972,4 +972,6 @@
     <string name="general_settings_post_mark_as_unread_action_stay">Geçerli iletide kal</string>
     <string name="general_settings_post_mark_as_unread_action_title">Bir iletiyi okunmadı olarak işaretledikten sonra</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">İleti listesine dön</string>
+    <string name="push_notification_state_alarm_permission_missing">Alarmları zamanlamak için izin eksik</string>
+    <string name="push_notification_grant_alarm_permission">İzin vermek için dokunun.</string>
 </resources>

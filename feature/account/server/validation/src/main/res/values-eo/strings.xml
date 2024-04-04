@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_error_details">Detaloj:
+\n%s</string>
+    <string name="account_server_validation_sign_in">Bonvolu saluti</string>
+    <string name="account_server_validation_error_server">Servila eraro</string>
+    <string name="account_server_validation_error_network">Reta eraro</string>
+    <string name="account_server_validation_error_unknown">Nekonata eraro</string>
+</resources>

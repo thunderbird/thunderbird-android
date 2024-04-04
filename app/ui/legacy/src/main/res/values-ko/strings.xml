@@ -768,4 +768,12 @@
     <!--A user visible label for the name and email address copied to the clipboard-->
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+<string name="size_format_bytes">%d B</string>
+    <string name="notification_channel_push_description">새 메시지 받는 중</string>
+    <string name="notification_certificate_error_public">인증 요류</string>
+    <string name="size_format_gigabytes">%.1f GB</string>
+    <string name="size_format_megabytes">%.1f MB</string>
+    <string name="size_format_kilobytes">%.1f kB</string>
+    <string name="notification_channel_miscellaneous_description">오류 같은 기타 알림.</string>
+    <string name="version">버전</string>
 </resources>

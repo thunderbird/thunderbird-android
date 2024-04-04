@@ -4,7 +4,6 @@
     <string name="account_server_settings_validation_error_username_required">Käyttäjätunnus vaaditaan.</string>
     <string name="account_server_settings_outgoing_top_bar_title">Lähtevän postin palvelimen asetukset</string>
     <string name="account_server_settings_validation_error_password_required">Salasana vaaditaan.</string>
-    <string name="account_server_settings_incoming_imap_send_client_id_label">Lähetä asiakastunniste</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_authentication_none">Ei mitään</string>
     <string name="account_server_settings_authentication_password_encrypted">Salattu salasana</string>
@@ -31,5 +30,5 @@
     <string name="account_server_settings_password_authentication_screen_lock_required">Nähdäksesi salasanasi tässä, ota näytön lukitus käyttöön tällä laitteella.</string>
     <string name="account_server_settings_server_label">Palvelin</string>
     <string name="account_server_settings_security_label">Suojaus</string>
-    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Kelvoton IP- tai verkko-osoite</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Virheellinen IP-osoite tai konenimi</string>
 </resources>

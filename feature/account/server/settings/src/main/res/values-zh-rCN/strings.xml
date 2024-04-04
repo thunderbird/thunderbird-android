@@ -4,7 +4,6 @@
     <string name="account_server_settings_validation_error_username_required">用户名是必需的。</string>
     <string name="account_server_settings_outgoing_top_bar_title">发件服务器设置</string>
     <string name="account_server_settings_validation_error_password_required">密码是必需的。</string>
-    <string name="account_server_settings_incoming_imap_send_client_id_label">发送客户端 ID</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_authentication_none">无</string>
     <string name="account_server_settings_authentication_password_encrypted">加密的密码</string>
@@ -32,4 +31,5 @@
     <string name="account_server_settings_password_authentication_subtitle">解锁以查看你的密码</string>
     <string name="account_server_settings_password_authentication_screen_lock_required">要在此查看你的密码，请启用此设备的屏幕锁。</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">无效 IP 或主机名</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">发送客户端信息</string>
 </resources>

@@ -23,6 +23,7 @@
     <string name="settings_importing">S\'està important la configuració…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">Per poder fer servir el compte <xliff:g id="account">%s</xliff:g> heu de proporcionar la contrasenya del servidor.</item>
+        <item quantity="many">Per poder fer servir el compte <xliff:g id="account">%s</xliff:g> heu de proporcionar les contrasenyes del servidor.</item>
         <item quantity="other">Per poder fer servir el compte <xliff:g id="account">%s</xliff:g> heu de proporcionar les contrasenyes del servidor.</item>
     </plurals>
     <string name="settings_import_incoming_server_password_hint">Contrasenya del servidor d\'entrada</string>

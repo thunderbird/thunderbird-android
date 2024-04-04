@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_certificate_warning_title">Averto</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Atestila eraro</string>
+    <string name="account_server_certificate_fingerprints_section">Fingrospuroj</string>
+    <string name="account_server_certificate_subject">Temo</string>
+    <string name="account_server_certificate_section_title">Servila atestilo</string>
+    <string name="account_server_certificate_button_back">Reen (rekomendate)</string>
+</resources>

@@ -4,7 +4,6 @@
     <string name="account_server_settings_validation_error_username_required">A felhasználónév megadása szükséges.</string>
     <string name="account_server_settings_outgoing_top_bar_title">Kimenő kiszolgáló beállítások</string>
     <string name="account_server_settings_validation_error_password_required">A jelszó megadása szükséges.</string>
-    <string name="account_server_settings_incoming_imap_send_client_id_label">Ügyfél azonosító küldése</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_authentication_none">Nincs</string>
     <string name="account_server_settings_authentication_password_encrypted">Titkosított jelszó</string>

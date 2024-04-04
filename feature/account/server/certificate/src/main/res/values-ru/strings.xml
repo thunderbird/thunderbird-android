@@ -13,4 +13,5 @@
     <string name="account_server_certificate_issuer">Эмитент</string>
     <string name="account_server_certificate_unknown_error_description_format">Приложением было обнаружена потенциальная угроза безопасности и не позволило продолжить подключение к <xliff:g id="serverName">%s</xliff:g>.
 \nЕсли вы продолжите подключение, злоумышленники могут попытаться украсть информацию, например ваш пароль или электронную почту.</string>
+    <string name="account_server_certificate_fingerprints_section">Цифровой отпечаток устройства</string>
 </resources>

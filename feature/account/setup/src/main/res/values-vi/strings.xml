@@ -37,4 +37,8 @@
     <string name="account_setup_create_account_created">Tạo tài khoản thành công</string>
     <string name="account_setup_create_account_creating">Đang tạo tài khoản…</string>
     <string name="account_setup_create_account_error">Đã xảy ra lỗi khi cố gắng tạo tài khoản</string>
+    <string name="account_setup_special_folders_top_bar_title">Thư mục đặc biệt</string>
+    <string name="account_setup_special_folders_loading_message">Đang lấy danh sách thư mục…</string>
+    <string name="account_setup_special_folders_error_message">Không thể lấy danh sách thư mục từ máy chủ</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Mật khẩu là bắt buộc.</string>
 </resources>

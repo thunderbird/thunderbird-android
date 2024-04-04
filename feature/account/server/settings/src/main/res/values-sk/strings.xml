@@ -24,7 +24,6 @@
     <string name="account_server_settings_incoming_imap_namespace_label">Automaticky zistiť menný priestor IMAPu</string>
     <string name="account_server_settings_incoming_imap_prefix_label">Predpona cesty IMAP</string>
     <string name="account_server_settings_incoming_imap_compression_label">Komprimovať</string>
-    <string name="account_server_settings_incoming_imap_send_client_id_label">Odoslať ID klienta</string>
     <string name="account_server_settings_validation_error_port_invalid">Port je neplatný (musí byť 1-65535).</string>
     <string name="account_server_settings_validation_error_username_required">Užívateľské meno je vyžadované.</string>
     <string name="account_server_settings_validation_error_imap_prefix_blank">Predpona IMAP nemôže byť prázdna.</string>

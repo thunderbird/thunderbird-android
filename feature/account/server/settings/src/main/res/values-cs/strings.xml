@@ -4,7 +4,6 @@
     <string name="account_server_settings_validation_error_username_required">Uživatelské jméno je vyžadováno.</string>
     <string name="account_server_settings_outgoing_top_bar_title">Nastavení serveru odchozí pošty</string>
     <string name="account_server_settings_validation_error_password_required">Heslo je vyžadováno.</string>
-    <string name="account_server_settings_incoming_imap_send_client_id_label">Odeslat ID klienta</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_authentication_none">Žádné</string>
     <string name="account_server_settings_authentication_password_encrypted">Šifrované heslo</string>

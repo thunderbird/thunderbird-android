@@ -4,7 +4,6 @@
     <string name="account_server_settings_validation_error_username_required">Es necesario poner el nombre de usuario.</string>
     <string name="account_server_settings_outgoing_top_bar_title">Ajustes del servidor saliente</string>
     <string name="account_server_settings_validation_error_password_required">Es necesario poner una contraseña.</string>
-    <string name="account_server_settings_incoming_imap_send_client_id_label">Enviar ident. de cliente</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_authentication_none">Ninguna</string>
     <string name="account_server_settings_authentication_password_encrypted">Contraseña cifrada</string>
@@ -32,4 +31,5 @@
     <string name="account_server_settings_server_label">Servidor</string>
     <string name="account_server_settings_security_label">Seguridad</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">IP o nombre de host no válidos</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">Enviar información del cliente</string>
 </resources>

@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
+    <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
+    <string name="account_server_settings_authentication_none">Nenio</string>
+    <string name="account_server_settings_authentication_password_cleartext">Ordinara pasvorto</string>
+    <string name="account_server_settings_authentication_password_encrypted">Ĉifrita pasvorto</string>
+</resources>

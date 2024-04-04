@@ -4,7 +4,6 @@
     <string name="account_server_settings_validation_error_username_required">Tên người dùng là bắt buộc.</string>
     <string name="account_server_settings_outgoing_top_bar_title">Thiết đặt máy chủ thư đi</string>
     <string name="account_server_settings_validation_error_password_required">Mật khẩu là bắt buộc.</string>
-    <string name="account_server_settings_incoming_imap_send_client_id_label">Gửi ID máy khách</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_authentication_none">Không</string>
     <string name="account_server_settings_authentication_password_encrypted">Mật khẩu được mã hóa</string>

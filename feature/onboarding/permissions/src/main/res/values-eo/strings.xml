@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="onboarding_permissions_allow_button">Permesi</string>
+    <string name="onboarding_permissions_skip_button">Preterpasi</string>
+    <string name="onboarding_permissions_notifications_title">Sciigoj</string>
+    <string name="onboarding_permissions_contacts_title">Kontaktoj</string>
+</resources>

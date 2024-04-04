@@ -4,7 +4,6 @@
     <string name="account_server_settings_validation_error_username_required">यूज़रनेम ज़रूरी है।</string>
     <string name="account_server_settings_outgoing_top_bar_title">आउटगोइंग सर्वर सेटिंग</string>
     <string name="account_server_settings_validation_error_password_required">पासवर्ड ज़रूरी है।</string>
-    <string name="account_server_settings_incoming_imap_send_client_id_label">क्लाइंट आईडी भेजें</string>
     <string name="account_server_settings_authentication_client_oauth">ओऑथ 2.0</string>
     <string name="account_server_settings_authentication_none">कुछ नहीं</string>
     <string name="account_server_settings_authentication_password_encrypted">एंक्रिप्टेड पासवर्ड</string>

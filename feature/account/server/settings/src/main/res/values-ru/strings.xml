@@ -25,11 +25,11 @@
     <string name="account_server_settings_incoming_top_bar_title">Настройки входящего сервера</string>
     <string name="account_server_settings_incoming_imap_prefix_label">Префикс пути IMAP</string>
     <string name="account_server_settings_incoming_imap_compression_label">Использовать сжатие</string>
-    <string name="account_server_settings_incoming_imap_send_client_id_label">Отправить идентификатор клиента</string>
     <string name="account_server_settings_connection_security_none">Ничего</string>
     <string name="account_server_settings_username_label">Имя пользователя</string>
     <string name="account_server_settings_validation_error_port_required">Требуется порт.</string>
     <string name="account_server_settings_validation_error_username_required">Требуется имя пользователя.</string>
     <string name="account_server_settings_validation_error_server_required">Необходимо указать имя сервера.</string>
     <string name="account_server_settings_password_authentication_screen_lock_required">Чтобы увидеть ваш пароль, включите блокировку экрана на этом устройстве.</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">Отправлять информацию о клиенте</string>
 </resources>
