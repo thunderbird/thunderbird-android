@@ -1,0 +1,5 @@
+- Push: Notify user if permission to schedule exact alarms is missing
+- Renamed "Send client ID" setting to "Send client information"
+- IMAP: Added support for the \NonExistent LIST response attribute
+- IMAP: Issue EXPUNGE command after moving without MOVE extension
+- Updated translations; added Hebrew translation

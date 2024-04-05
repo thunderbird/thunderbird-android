@@ -143,8 +143,13 @@ internal open class RealImapStore(
             }
 
             if (RealImapFolder.INBOX.equals(serverId, ignoreCase = true)) {
+                // We always add our own inbox entry to the returned list.
                 continue
             } else if (listResponse.hasAttribute("\\NoSelect")) {
+                // RFC 3501, section 7.2.2: It is not possible to use this name as a selectable mailbox.
+                continue
+            } else if (listResponse.hasAttribute("\\NonExistent")) {
+                // RFC 5258, section 3: The "\NonExistent" attribute implies "\NoSelect".
                 continue
             }
 
