@@ -5,6 +5,13 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.802" versioncode="38002" date="2024-04-05">
+        <change>Push: Notify user if permission to schedule exact alarms is missing</change>
+        <change>Renamed "Send client ID" setting to "Send client information"</change>
+        <change>IMAP: Added support for the \NonExistent LIST response attribute</change>
+        <change>IMAP: Issue EXPUNGE command after moving without MOVE extension</change>
+        <change>Updated translations; added Hebrew translation</change>
+    </release>
     <release version="6.801" versioncode="38001" date="2024-03-11">
         <change>Added DNSSEC support when looking for server settings during setup</change>
         <change>Made a change to prevent some software keyboards from capitalizing/auto-correcting email addresses in account setup</change>
