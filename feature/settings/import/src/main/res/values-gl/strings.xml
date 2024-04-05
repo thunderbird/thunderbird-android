@@ -7,10 +7,10 @@
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
     <string name="settings_import_password_required">Insira os contrasinais</string>
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_failure">Houbo un erro ao importar a configuración</string>
+    <string name="settings_import_failure">Ocorreu un erro ao importar a configuración</string>
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_read_failure">Houbo un erro ao ler o ficheiro de configuracións</string>
-    <string name="settings_import_partial_failure">Houbo un erro ao importar algúns axustes</string>
+    <string name="settings_import_read_failure">Ocorreu un erro ao ler o ficheiro de configuracións</string>
+    <string name="settings_import_partial_failure">Ocorreu un erro ao importar algúns axustes</string>
     <string name="settings_import_status_success">Importado con éxito</string>
     <string name="settings_import_status_password_required">Requírese contrasinal</string>
     <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
@@ -27,4 +27,14 @@
     <string name="settings_import_use_same_password_for_outgoing_server">Use o mesmo contrasinal para o servidor de saída</string>
     <string name="settings_import_server_name_format">Nome do servidor: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="settings_import_general_settings_item">Configuración Xeral</string>
+    <string name="settings_import_authorization_required">Inicie sesión</string>
+    <string name="settings_import_authorization_and_password_required">Inicie sesión e insira contrasinal</string>
+    <string name="settings_import_oauth_sign_in_with_google">Iniciar sesión con Google</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">Autorización cancelada</string>
+    <string name="settings_import_status_log_in_required">Requírese inicio de sesión</string>
+    <string name="settings_import_oauth_description">Para usar esta conta de correo con K-9 Mail, é preciso iniciar sesión e permitirlle á app acceso aos correos.</string>
+    <string name="settings_import_oauth_sign_in">Iniciar sesión</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">A autorización fallou co seguinte erro: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 non é soportado actualmente con este provedor.</string>
+    <string name="settings_import_oauth_error_browser_not_found">A aplicación non puido atopar un navegador web para iniciar sesión na túa conta.</string>
 </resources>

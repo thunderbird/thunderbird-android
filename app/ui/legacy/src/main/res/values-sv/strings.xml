@@ -975,4 +975,6 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="general_settings_post_mark_as_unread_action_stay">Stanna på nuvarande meddelande</string>
     <string name="general_settings_post_mark_as_unread_action_title">Efter att ha markerat ett meddelande som oläst</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Återgå till meddelandelistan</string>
+    <string name="push_notification_state_alarm_permission_missing">Saknar behörigheter för att schemalägga larm</string>
+    <string name="push_notification_grant_alarm_permission">Tryck för att ge behörigheter.</string>
 </resources>

@@ -4,13 +4,15 @@
     <string name="account_server_validation_error_authentication">Todennusvirhe</string>
     <string name="account_server_validation_outgoing_loading_message">Tarkistetaan lähtevän postin palvelimen asetuksia…</string>
     <string name="account_server_validation_error_network">Verkkovirhe</string>
-    <string name="account_server_validation_outgoing_success">Lähtevän postin palvelimen asetukset ovat kelvolliset</string>
+    <string name="account_server_validation_outgoing_success">Lähtevän postin palvelimen asetukset on vahvistettu</string>
     <string name="account_server_validation_error_unknown">Tuntematon virhe</string>
     <string name="account_server_validation_sign_in">Kirjaudu sisään</string>
     <string name="account_server_validation_outgoing_loading_error">Lähtevän postin palvelimen asetusten tarkistaminen epäonnistui</string>
-    <string name="account_server_validation_incoming_success">Saapuvan postin palvelimen asetukset ovat kelvolliset</string>
+    <string name="account_server_validation_incoming_success">Saapuvan postin palvelimen asetukset on vahvistettu</string>
     <string name="account_server_validation_incoming_loading_error">Saapuvan postin palvelimen asetusten tarkistaminen epäonnistui</string>
     <string name="account_server_validation_error_server">Palvelinvirhe</string>
     <string name="account_server_validation_error_details">Lisätiedot:
 \n%s</string>
+    <string name="account_server_validation_error_client_certificate_expired">Asiakkaan varmenne ei ole enää kelvollinen</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">Ei pääsyä asiakkaan varmenteeseen</string>
 </resources>

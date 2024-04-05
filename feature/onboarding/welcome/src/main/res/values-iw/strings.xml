@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="onboarding_welcome_title">דוא\"ל K-9</string>
-    <string name="onboarding_welcome_message">ברוכים הבאים ל- K-9 דוא\"ל, לקוח הדואר האלקטרוני של אנדרואיד שתוכנן עבור אבטחה משופרת, התאמה אישית קלה וניהול חלק של כל חשבונות הדואר האלקטרוני שלכם.</string>
-    <string name="onboarding_welcome_start_button">התחלה</string>
+    <string name="onboarding_welcome_message">ברוכים הבאים לדוא\"ל K-9, לקוח הדואר האלקטרוני של אנדרואיד שתוכנן עבור אבטחה משופרת, התאמה אישית קלה וניהול חלק של כל חשבונות הדואר האלקטרוני שלכם.</string>
+    <string name="onboarding_welcome_start_button">התחל</string>
     <string name="onboarding_welcome_import_button">ייבוא הגדרות</string>
 </resources>

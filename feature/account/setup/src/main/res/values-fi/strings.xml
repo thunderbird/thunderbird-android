@@ -19,14 +19,14 @@
     <string name="account_setup_options_account_name_label">Tilin nimi</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Määritys löytyi</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Sähköpostiosoite vaaditaan.</string>
-    <string name="account_setup_options_display_name_label">Näyttönimi</string>
+    <string name="account_setup_options_display_name_label">Nimi</string>
     <string name="account_setup_auto_discovery_loading_error">Sähköpostin määrityksen lataaminen epäonnistui</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Luotan tähän määritykseen</string>
-    <string name="account_setup_options_display_name_error_required">Näyttönimi vaaditaan.</string>
+    <string name="account_setup_options_display_name_error_required">Nimi vaaditaan.</string>
     <string name="account_setup_error_network">Verkko</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Tätä ei tunnistettu kelvolliseksi sähköpostiosoitteeksi.</string>
     <string name="account_setup_options_email_check_frequency_never">Ei koskaan</string>
-    <string name="account_setup_auto_discovery_loading_message">Etsitään sähköpostin tietoja</string>
+    <string name="account_setup_auto_discovery_loading_message">Etsitään määritystä…</string>
     <string name="account_setup_options_section_sync_options">Synkronointiasetukset</string>
     <string name="account_setup_options_show_notifications_label">Näytä ilmoitukset</string>
     <string name="account_setup_options_section_display_options">Näkymäasetukset</string>
@@ -49,4 +49,17 @@
     <string name="account_setup_special_folders_trash_folder_label">Roskakorikansio</string>
     <string name="account_setup_special_folders_archive_folder_label">Arkistokansio</string>
     <string name="account_setup_special_folders_spam_folder_label">Roskapostikansio</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Salasana on pakollinen.</string>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">1 message</item>
+        <item quantity="other">%d messages</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Minuutin välein</item>
+        <item quantity="other">%d minuutin välein</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Tunnin välein</item>
+        <item quantity="other">%d tunnin välein</item>
+    </plurals>
 </resources>

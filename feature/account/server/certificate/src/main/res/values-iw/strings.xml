@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_unknown_error_subtitle">שגיאת תעודה</string>
+    <string name="account_server_certificate_button_back">לחזור אחורה (מומלץ)</string>
+    <string name="account_server_certificate_button_advanced">מתקדם</string>
+    <string name="account_server_certificate_button_continue">לקבל את הסיכון ולהמשיך</string>
+    <string name="account_server_certificate_section_title">תעודת שרת</string>
+    <string name="account_server_certificate_subject_alternative_names">Subject alternative names</string>
+    <string name="account_server_certificate_not_valid_before">לא תקף לפני</string>
+    <string name="account_server_certificate_not_valid_after">לא תקף אחרי</string>
+    <string name="account_server_certificate_subject">Subject</string>
+    <string name="account_server_certificate_issuer">מנפיק</string>
+    <string name="account_server_certificate_warning_title">אזהרה</string>
+    <string name="account_server_certificate_unknown_error_description_format">היישומון הבחין באיום אבטחה אפשרי ולא המשיך להתחבר אל <xliff:g id="serverName">%s</xliff:g>.
+\nאם תמשיך, תוקפים יוכלו לנסות לגנוב מידע כגון הסיסמה שלך או הודעות דוא\"ל.</string>
+</resources>

@@ -1,2 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_subject">Subjecte</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Error de certificat</string>
+    <string name="account_server_certificate_unknown_error_description_format">L\'aplicació ha detectat una possible amenaça de seguretat i no ha continuat amb la connexió a <xliff:g id="serverName">%s</xliff:g>.
+\nSi continues, els atacants podrien intentar robar-te informació com ara la contrasenya o els teus correus.</string>
+    <string name="account_server_certificate_section_title">Certificat del servidor</string>
+    <string name="account_server_certificate_warning_title">Avís</string>
+    <string name="account_server_certificate_not_valid_after">No vàlid després</string>
+    <string name="account_server_certificate_issuer">Emissor</string>
+    <string name="account_server_certificate_fingerprints_section">Empremtes</string>
+    <string name="account_server_certificate_button_back">Torna enrere (recomanat)</string>
+    <string name="account_server_certificate_button_advanced">Avançat</string>
+    <string name="account_server_certificate_button_continue">Accepta el risc i continua</string>
+    <string name="account_server_certificate_subject_alternative_names">Noms alternatius del subjecte</string>
+    <string name="account_server_certificate_not_valid_before">Abans no era vàlid</string>
+</resources>

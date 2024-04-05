@@ -12,7 +12,7 @@
     <string name="account_setup_options_email_signature_error_blank">Emri i nënshkrimit të email-it s’mund të jetë i zbrazët.</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">Lypset të miratohet formësimi.</string>
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
-    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">E morëm formësimin për shërbyesin tuaj email përmes një lidhjeje që s’është aq e siguruar sa do të donim. Kjo do të thotë se ka një mundësi të vockël që dikur të mund ta ketë ndryshuar. A mund ta rikontrolloni formësimin e dhënë, për t’u siguruar se është siç duhet të jetë\?</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">E morëm formësimin për shërbyesin tuaj email përmes një lidhjeje që s’është aq e siguruar sa do të donim. Kjo do të thotë se ka një mundësi të vockël që dikur të mund ta ketë ndryshuar. A mund ta rikontrolloni formësimin e dhënë, për t’u siguruar se është siç duhet të jetë?</string>
     <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Përpunoni formësimin</string>
     <string name="account_setup_error_unknown">Gabim i panjohur</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>

@@ -18,7 +18,6 @@
     <string name="account_server_settings_incoming_imap_namespace_label">Automatsko otkrivanje IMAP imenskog prostora</string>
     <string name="account_server_settings_incoming_imap_prefix_label">Prefiks IMAP putanje</string>
     <string name="account_server_settings_incoming_imap_compression_label">Koristi kompresiju podataka</string>
-    <string name="account_server_settings_incoming_imap_send_client_id_label">Pošalji ID klijenta</string>
     <string name="account_server_settings_outgoing_top_bar_title">Postavke odlazećeg servera</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Nevažeća IP adresa ili ime hosta</string>
     <string name="account_server_settings_validation_error_port_required">Port je neophodan.</string>

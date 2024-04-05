@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_error_client_certificate_expired">만료된 클라이언트 인증서</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">클라이언트 인증서에 접근할 수 없습니다</string>
+    <string name="account_server_validation_error_missing_server_capability">서버 용량 부족</string>
+    <string name="account_server_validation_error_details">자세히:
+\n%s</string>
+    <string name="account_server_validation_error_server">서버 오류</string>
+    <string name="account_server_validation_error_unknown">알수 없는 오류</string>
+    <string name="account_server_validation_error_authentication">인증 오류</string>
+    <string name="account_server_validation_error_network">네트워크 오류</string>
+</resources>

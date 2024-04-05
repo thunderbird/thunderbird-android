@@ -980,4 +980,6 @@ Puedes guardar este mensaje y usarlo como copia de seguridad de tu clave secreta
     <string name="general_settings_post_mark_as_unread_action_stay">Seguir en el correo actual</string>
     <string name="general_settings_post_mark_as_unread_action_title">Tras marcar un correo como no leído</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Volver al listado de correos</string>
+    <string name="push_notification_state_alarm_permission_missing">Falta permiso para programar alarmas</string>
+    <string name="push_notification_grant_alarm_permission">Pulse para conceder el permiso.</string>
 </resources>

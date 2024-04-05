@@ -4,5 +4,5 @@
 \n%s</string>
     <string name="account_common_title">דוא\"ל K-9</string>
     <string name="account_common_button_next">הבא</string>
-    <string name="account_common_button_back">אחורה</string>
+    <string name="account_common_button_back">הקודם</string>
 </resources>

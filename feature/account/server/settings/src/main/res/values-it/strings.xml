@@ -4,7 +4,6 @@
     <string name="account_server_settings_validation_error_username_required">Nome utente obbligatorio</string>
     <string name="account_server_settings_outgoing_top_bar_title">Impostazioni server in uscita</string>
     <string name="account_server_settings_validation_error_password_required">Password obbligatoria</string>
-    <string name="account_server_settings_incoming_imap_send_client_id_label">Invia ID cliente</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_authentication_none">Nessuno</string>
     <string name="account_server_settings_authentication_password_encrypted">Password criptata</string>
@@ -32,4 +31,5 @@
     <string name="account_server_settings_password_authentication_subtitle">Sblocca per visualizzare la password</string>
     <string name="account_server_settings_password_authentication_screen_lock_required">Per visualizzare la password qui, attiva il blocco schermo su questo dispositivo</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">IP o hostname invalido</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">Invia informazioni sul client</string>
 </resources>

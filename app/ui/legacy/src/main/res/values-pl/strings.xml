@@ -987,4 +987,6 @@ Tą wiadomość można zachować i użyć w formie kopii zapasowej twojego klucz
     <string name="general_settings_post_mark_as_unread_action_stay">Pozostań przy bieżącej wiadomości</string>
     <string name="general_settings_post_mark_as_unread_action_title">Po oznaczeniu wiadomości jako nieprzeczytanej</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Wróć do listy wiadomości</string>
+    <string name="push_notification_state_alarm_permission_missing">Brak uprawnień do planowania alarmów</string>
+    <string name="push_notification_grant_alarm_permission">Stuknij, aby udzielić uprawnienia.</string>
 </resources>

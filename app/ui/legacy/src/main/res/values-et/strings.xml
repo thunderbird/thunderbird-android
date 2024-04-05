@@ -975,4 +975,6 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="general_settings_post_mark_as_unread_action_stay">jää sama sõnumi vaatesse</string>
     <string name="general_settings_post_mark_as_unread_action_title">Peale sõnumi märkimist loetuks</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">mine tagasi sõnumite loendivaatesse</string>
+    <string name="push_notification_state_alarm_permission_missing">Puuduvad õigused alarmide seadistamiseks</string>
+    <string name="push_notification_grant_alarm_permission">Õiguste jagamiseks klõpsi.</string>
 </resources>

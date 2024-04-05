@@ -4,7 +4,6 @@
     <string name="account_server_settings_validation_error_username_required">Cal el nom d\'usuari.</string>
     <string name="account_server_settings_outgoing_top_bar_title">Configuració del servidor de sortida</string>
     <string name="account_server_settings_validation_error_password_required">Cal la contrasenya.</string>
-    <string name="account_server_settings_incoming_imap_send_client_id_label">Envia l\'ID de client</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_authentication_none">Cap</string>
     <string name="account_server_settings_authentication_password_encrypted">Contrasenya encriptada</string>
@@ -32,4 +31,5 @@
     <string name="account_server_settings_password_authentication_subtitle">Desbloqueu-ho per veure la contrasenya</string>
     <string name="account_server_settings_password_authentication_screen_lock_required">Per veure la contrasenya aquí, activeu el bloqueig de pantalla en aquest dispositiu.</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">IP o nom d\'amfitrió no vàlids</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">Envia informació del client</string>
 </resources>

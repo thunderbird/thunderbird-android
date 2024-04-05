@@ -1,2 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_certificate_button_advanced">Lisäasetukset</string>
+    <string name="account_server_certificate_warning_title">Varoitus</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Varmennevirhe</string>
+    <string name="account_server_certificate_button_back">Palaa takaisin (suositeltu)</string>
+    <string name="account_server_certificate_button_continue">Hyväksy riski ja jatka</string>
+    <string name="account_server_certificate_section_title">Palvelimen varmenne</string>
+    <string name="account_server_certificate_subject_alternative_names">Vaihtoehtoiset nimet</string>
+    <string name="account_server_certificate_not_valid_before">Ei kelvollinen ennen</string>
+    <string name="account_server_certificate_not_valid_after">Ei kelvollinen jälkeen</string>
+    <string name="account_server_certificate_issuer">Myöntäjä</string>
+    <string name="account_server_certificate_fingerprints_section">Sormenjäljet</string>
+</resources>

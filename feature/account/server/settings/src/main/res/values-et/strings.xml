@@ -4,7 +4,6 @@
     <string name="account_server_settings_validation_error_username_required">Kasutajanimi on vajalik.</string>
     <string name="account_server_settings_outgoing_top_bar_title">Väljuva e-posti serveriseadistused</string>
     <string name="account_server_settings_validation_error_password_required">Salasõna on vajalik.</string>
-    <string name="account_server_settings_incoming_imap_send_client_id_label">Saada kliendi tunnus</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_authentication_none">Puudub</string>
     <string name="account_server_settings_authentication_password_encrypted">Krüptitud salasõna</string>
@@ -32,4 +31,5 @@
     <string name="account_server_settings_server_label">Server</string>
     <string name="account_server_settings_security_label">Turvalisus</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Vigane ip-aadress või serveri nimi</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">Saada kliendi teave</string>
 </resources>

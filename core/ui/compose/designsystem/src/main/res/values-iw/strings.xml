@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="designsystem_atom_password_textfield_show_password">הצג סיסמה</string>
+    <string name="designsystem_molecule_email_address_input_label">כתובת דוא\"ל</string>
+    <string name="designsystem_molecule_password_input_label">סיסמה</string>
+    <string name="designsystem_atom_password_textfield_hide_password">הסתר סיסמה</string>
+    <string name="designsystem_molecule_error_view_button_retry">נסה שוב</string>
+</resources>

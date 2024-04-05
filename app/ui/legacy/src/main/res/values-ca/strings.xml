@@ -974,4 +974,6 @@
     <string name="general_settings_post_mark_as_unread_action_stay">Mantingues el missatge actual</string>
     <string name="general_settings_post_mark_as_unread_action_title">Després de marcar un missatge com a no llegit</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Torna a la llista de missatges</string>
+    <string name="push_notification_state_alarm_permission_missing">Falta permís per a programar alarmes</string>
+    <string name="push_notification_grant_alarm_permission">Toca per a concedir permís.</string>
 </resources>

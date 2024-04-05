@@ -19,18 +19,19 @@
     <string name="about_libraries">Librari</string>
     <string name="license">Licencë</string>
     <string name="changelog_title">Regjistër ndryshimesh</string>
-    <string name="changelog_loading_error">S\’u ngarkua dot regjistri i ndryshimeve.</string>
+    <string name="changelog_loading_error">Su ngarkua dot regjistri i ndryshimeve.</string>
     <string name="changelog_version_title">Version %s</string>
-    <string name="changelog_recent_changes_title">Ç\’ka të re</string>
+    <string name="changelog_recent_changes_title">Çka të re</string>
     <string name="changelog_show_recent_changes">Shfaq ndryshime së fundi, kur përditësohet aplikacioni</string>
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
-    <string name="changelog_snackbar_text">Mësoni ç\’ka të re në këtë hedhje në qarkullim</string>
+    <string name="changelog_snackbar_text">Mësoni çka të re në këtë hedhje në qarkullim</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Shiheni</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nDërguar nga pajisja ime Android, me K-9 Mail. Ju lutem, më ndjeni për shkurtësinë.</string>
+    <string name="default_signature">--
+\nDërguar nga pajisja ime Android, me K-9 Mail. Ju lutem, më ndjeni për shkurtësinë.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Llogaria \“<xliff:g id="account">%s</xliff:g>\” do të hiqet që nga K-9 Mail.</string>
+    <string name="account_delete_dlg_instructions_fmt">Llogaria “<xliff:g id="account">%s</xliff:g>” do të hiqet që nga K-9 Mail.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Autorë</string>
     <string name="about_title">Mbi K-9 Mail</string>
@@ -94,7 +95,7 @@
     <string name="mark_as_unread_action">Shënoje si të palexuar</string>
     <string name="read_receipt">Dëftesë leximi</string>
     <string name="read_receipt_enabled">Do të kërkojë dëftesë leximi</string>
-    <string name="read_receipt_disabled">S\’do të kërkojë dëftesë leximi</string>
+    <string name="read_receipt_disabled">Sdo të kërkojë dëftesë leximi</string>
     <string name="add_attachment_action">Shtoni bashkëngjitje</string>
     <string name="empty_trash_action">Zbraz Hedhurinat</string>
     <string name="expunge_action">Pastroji</string>
@@ -103,12 +104,11 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Pa subjekt)</string>
     <string name="general_no_sender">Pa dërgues</string>
-    <string name="status_loading_more">Po ngarkohen mesazhe\u2026</string>
+    <string name="status_loading_more">Po ngarkohen mesazhe…</string>
     <string name="status_network_error">Gabim lidhjeje</string>
-    <string name="status_invalid_id_error">S\’u gjet mesazh</string>
+    <string name="status_invalid_id_error">Su gjet mesazh</string>
     <string name="status_loading_error">Gabim ngarkimi mesazhi</string>
-    <string name="load_more_messages_fmt">Ngarko deri
-    në <xliff:g id="messages_to_load">%d</xliff:g> më tepër</string>
+    <string name="load_more_messages_fmt">Ngarko deri \u0020 \u0020në <xliff:g id="messages_to_load">%d</xliff:g> më tepër</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
@@ -134,7 +134,9 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Gabim njoftimi</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">Ndodhi një gabim teksa provohej të krijohej një njoftim sistemi për një mesazh të ri. Arsyeja ka shumë gjasa të jetë mungesa e një tingulli njoftimesh.\n\nPrekeni që të hapen rregullimet për njoftimet.</string>
+    <string name="notification_notify_error_text">Ndodhi një gabim teksa provohej të krijohej një njoftim sistemi për një mesazh të ri. Arsyeja ka shumë gjasa të jetë mungesa e një tingulli njoftimesh.
+\n
+\nPrekeni që të hapen rregullimet për njoftimet.</string>
     <string name="notification_bg_sync_ticker">Po merret postë: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Marrje poste</string>
     <string name="notification_bg_send_ticker">Po dërgohet postë: <xliff:g id="account">%s</xliff:g></string>
@@ -175,9 +177,9 @@
     <string name="message_compose_reply_header_fmt_with_date">Më <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> shkroi:</string>
     <string name="message_compose_error_no_recipients">Duhet të shtoni të paktën një marrës.</string>
     <string name="compose_error_incomplete_recipient">Fusha e marrësit përmban gjëra të paplota!</string>
-    <string name="error_contact_address_not_found">S\’u gjet adresë email për këtë kontakt.</string>
-    <string name="message_compose_attachments_skipped_toast">Disa bashkëngjitje s\’përcillen dot, ngaqë s\’janë shkarkuar.</string>
-    <string name="message_compose_attachments_forward_toast">Mesazhi s\’mund të përcillet, ngaqë nuk janë shkarkuar disa bashkëngjitje.</string>
+    <string name="error_contact_address_not_found">Su gjet adresë email për këtë kontakt.</string>
+    <string name="message_compose_attachments_skipped_toast">Disa bashkëngjitje spërcillen dot, ngaqë sjanë shkarkuar.</string>
+    <string name="message_compose_attachments_forward_toast">Mesazhi smund të përcillet, ngaqë nuk janë shkarkuar disa bashkëngjitje.</string>
     <string name="message_compose_show_quoted_text_action">Përfshije mesazhin e cituar</string>
     <string name="message_compose_description_delete_quoted_text">Hiqe tekstin e cituar</string>
     <string name="message_compose_description_edit_quoted_text">Përpunoni tekstin e cituar</string>
@@ -194,7 +196,7 @@
     <string name="message_view_me_text">mua</string>
     <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
     <string name="message_view_show_remote_images_action">Shfaq figura të largëta</string>
-    <string name="message_view_no_viewer">S\’arrihet të gjendet parës për <xliff:g id="mimetype">%s</xliff:g>.</string>
+    <string name="message_view_no_viewer">S’arrihet të gjendet parës për <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Shkarko mesazhin e plotë</string>
     <string name="message_view_sender_label">përmes %1$s</string>
     <string name="from_same_sender">Më tepër nga ky dërgues</string>
@@ -215,7 +217,7 @@
     <string name="global_settings_messageview_fixedwidth_label">Shkronja me gjerësi të fiksuar</string>
     <string name="global_settings_messageview_fixedwidth_summary">Kur shfaqen mesazhe tekst i thjeshtë, përdor shkronja me gjerësi të fiksuar</string>
     <string name="global_settings_messageview_autofit_width_label">Rregulloje vetvetiu nxënien e mesazhit</string>
-    <string name="global_settings_messageview_autofit_width_summary">Tkurri mesazhet t\’i nxërë ekrani</string>
+    <string name="global_settings_messageview_autofit_width_summary">Tkurri mesazhet ti nxërë ekrani</string>
     <string name="global_settings_confirm_actions_title">Ripohoni veprimet</string>
     <string name="global_settings_confirm_actions_summary">Shfaq një dialog kurdo që kryeni veprime që keni përzgjedhur</string>
     <string name="global_settings_confirm_action_delete">Fshije</string>
@@ -317,7 +319,7 @@
     <string name="account_setup_options_mail_display_count_5000">5000 mesazhe</string>
     <string name="account_setup_options_mail_display_count_10000">10000 mesazhe</string>
     <string name="account_setup_options_mail_display_count_all">krejt mesazhet</string>
-    <string name="move_copy_cannot_copy_unsynced_message">S\’mund të kopjohet ose lëvizet një mesazh që s\’është njëkohësuar me shërbyesin</string>
+    <string name="move_copy_cannot_copy_unsynced_message">Smund të kopjohet ose lëvizet një mesazh që sështë njëkohësuar me shërbyesin</string>
     <string name="account_settings_push_advanced_title">Të mëtejshme</string>
     <string name="account_settings_title_fmt">Rregullime llogarie</string>
     <string name="account_settings_notify_label">Njoftime email-i të ri</string>
@@ -376,7 +378,7 @@
     <string name="account_settings_crypto_app">Aktivizo mbulim OpenPGP</string>
     <string name="account_settings_crypto_app_select_title">Përzgjidhni aplikacion OpenPGP</string>
     <string name="account_settings_crypto_key">Formësoni kyç skaj-më-skaj</string>
-    <string name="account_settings_crypto_summary_off">S\’ka aplikacion OpenPGP të formësuar</string>
+    <string name="account_settings_crypto_summary_off">Ska aplikacion OpenPGP të formësuar</string>
     <string name="account_settings_crypto_summary_on">I lidhur me %s</string>
     <string name="account_settings_crypto_summary_config">Po formësohet…</string>
     <string name="account_settings_crypto_encrypt_all_drafts">Depozitoji të fshehtëzuara krejt skicat</string>
@@ -415,7 +417,7 @@
     <string name="account_settings_message_age_3_months">3 muajt e shkuar</string>
     <string name="account_settings_message_age_6_months">6 muajt e shkuar</string>
     <string name="account_settings_message_age_1_year">vitin e shkuar</string>
-    <string name="account_settings_folder_display_mode_label">Dosje për t\’u shfaqur</string>
+    <string name="account_settings_folder_display_mode_label">Dosje për tu shfaqur</string>
     <string name="account_settings_folder_display_mode_all">Krejt</string>
     <string name="account_settings_folder_display_mode_first_class">Vetëm dosje të Klasës I</string>
     <string name="account_settings_folder_display_mode_first_and_second_class">Dosje të Klasës I dhe II</string>
@@ -524,8 +526,8 @@
     <string name="default_identity_description">Identiteti fillestar</string>
     <string name="choose_identity_title">Zgjidhni identitet</string>
     <string name="send_as">Dërgoje si</string>
-    <string name="no_removable_identity">S\’mund të hiqni identitetin tuaj të vetëm</string>
-    <string name="identity_has_no_email">S\’mund të përdorni një identitet pa adresë email</string>
+    <string name="no_removable_identity">Smund të hiqni identitetin tuaj të vetëm</string>
+    <string name="identity_has_no_email">Smund të përdorni një identitet pa adresë email</string>
     <string name="sort_earliest_first">Mesazhet më të hershëm së pari</string>
     <string name="sort_latest_first">Mesazhet më të rinj së pari</string>
     <string name="sort_subject_alpha">Subjektet sipas abc-së</string>
@@ -632,7 +634,7 @@
     <string name="font_size_medium">Të mesme</string>
     <string name="font_size_large">Të mëdha</string>
     <string name="font_size_larger">Më të mëdha</string>
-    <string name="error_activity_not_found">S\’u gjet aplikacion i përshtatshëm për këtë veprim.</string>
+    <string name="error_activity_not_found">Su gjet aplikacion i përshtatshëm për këtë veprim.</string>
     <string name="send_failed_reason">Dërgimi dështoi: %s</string>
     <string name="save_or_discard_draft_message_dlg_title">Të ruhet skica e mesazhit?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Të ruhet apo të hidhet tej ky mesazh?</string>
@@ -640,7 +642,7 @@
     <string name="confirm_discard_draft_message_title">Të hidhet tej mesazhi?</string>
     <string name="confirm_discard_draft_message">Jeni i sigurt se doni të hidhet tej ky mesazh?</string>
     <string name="dialog_confirm_clear_local_folder_title">Të spastrohen mesazhe vendore?</string>
-    <string name="dialog_confirm_clear_local_folder_message">Kjo do të heqë nga dosja krejt mesazhet vendore. Prej shërbyesit s\’do të fshihet ndonjë mesazh.</string>
+    <string name="dialog_confirm_clear_local_folder_message">Kjo do të heqë nga dosja krejt mesazhet vendore. Prej shërbyesit sdo të fshihet ndonjë mesazh.</string>
     <string name="dialog_confirm_clear_local_folder_action">Spastroji mesazhet</string>
     <string name="dialog_confirm_delete_title">Ripohoni fshirjen</string>
     <string name="dialog_confirm_delete_message">Doni të fshihet ky mesazh?</string>
@@ -651,7 +653,7 @@
     <string name="dialog_confirm_delete_confirm_button">Po</string>
     <string name="dialog_confirm_delete_cancel_button">Jo</string>
     <string name="dialog_confirm_mark_all_as_read_title">Ripohoni vënien shenjë krejt mesazheve si të lexuar</string>
-    <string name="dialog_confirm_mark_all_as_read_message">Doni t\’u vihet shenjë krejt mesazheve si të lexuar?</string>
+    <string name="dialog_confirm_mark_all_as_read_message">Doni tu vihet shenjë krejt mesazheve si të lexuar?</string>
     <string name="dialog_confirm_empty_trash_title">Ripohoni zbrazje hedhurinash</string>
     <string name="dialog_confirm_empty_trash_message">Doni të zbrazet dosja e hedhurinave?</string>
     <string name="dialog_confirm_mark_all_as_read_confirm_button">Po</string>
@@ -671,7 +673,7 @@
     <string name="settings_export_share_button">Ndajeni me të tjerë</string>
     <string name="settings_export_progress_text">Po eksportohen rregullimet…</string>
     <string name="settings_export_success_generic">Rregullimet u eksportuan me sukses</string>
-    <string name="settings_export_failure">S\’u arrit të eksportohen rregullimet</string>
+    <string name="settings_export_failure">Su arrit të eksportohen rregullimet</string>
     <string name="unread_widget_select_account">Shfaq numër të palexuarish për…</string>
     <string name="unread_widget_account_title">Llogari</string>
     <string name="unread_widget_account_summary">Llogaria për të cilën duhet shfaqur numri i të palexuarve</string>
@@ -682,9 +684,9 @@
     <string name="unread_widget_folder_summary">Dosja për të cilën duhet shfaqur numri i të palexuarve</string>
     <string name="unread_widget_action_done">U bë</string>
     <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
-    <string name="unread_widget_account_not_selected">S\’u përzgjodh llogari</string>
-    <string name="unread_widget_folder_not_selected">S\’u përzgjodh ndonjë dosje</string>
-    <string name="webview_empty_message">S\’ka tekst</string>
+    <string name="unread_widget_account_not_selected">Su përzgjodh llogari</string>
+    <string name="unread_widget_folder_not_selected">Su përzgjodh ndonjë dosje</string>
+    <string name="webview_empty_message">Ska tekst</string>
     <string name="webview_contextmenu_link_view_action">Hape lidhjen</string>
     <string name="webview_contextmenu_link_share_action">Lidhje ndarjesh me të tjerë</string>
     <string name="webview_contextmenu_link_copy_action">Kopjoja lidhjen në të papastër</string>
@@ -733,7 +735,7 @@
     <string name="global_settings_threaded_view_summary">Grupoji mesazhet sipas bisedash</string>
     <string name="upgrade_databases_title">Përditësim bazash të dhënash</string>
     <string name="upgrade_databases_unspecified">Po përditësohen baza të dhënash…</string>
-    <string name="upgrade_database_format">Po përditësohet baza e të dhënave për \“<xliff:g id="account">%s</xliff:g>\”</string>
+    <string name="upgrade_database_format">Po përditësohet baza e të dhënave për <xliff:g id="account">%s</xliff:g></string>
     <string name="global_settings_splitview_mode_label">Shfaqe me ekranin të ndarë</string>
     <string name="global_settings_splitview_always">Përherë</string>
     <string name="global_settings_splitview_never">Kurrë</string>
@@ -764,18 +766,19 @@
     <string name="address_type_work">Pune</string>
     <string name="address_type_other">Tjetër</string>
     <string name="address_type_mobile">Celular</string>
-    <string name="compose_error_no_draft_folder">S\’ka dosje Skica të formësuar për këtë llogari!</string>
-    <string name="compose_error_no_key_configured">Për këtë llogari s\’ka kyç të formësuar! Kontrolloni rregullimet tuaja.</string>
+    <string name="compose_error_no_draft_folder">Ska dosje Skica të formësuar për këtë llogari!</string>
+    <string name="compose_error_no_key_configured">Për këtë llogari ska kyç të formësuar! Kontrolloni rregullimet tuaja.</string>
     <string name="error_crypto_provider_incompatible">Furnizuesi i modulit kriptografik përdor version të papërputhshëm. Ju lutemi, kontrolloni rregullimet tuaja!</string>
-    <string name="error_crypto_provider_connect">S\’lidhet dot te furnizuesi i modulit kriptografik, kontrolloni rregullimet tuaja ose klikoni ikonën e kriptografisë që të riprovohet!</string>
-    <string name="error_crypto_provider_ui_required">S\’u arrit të gatitej fshehtëzim skaj-më-skaj, ju lutemi, kontrolloni rregullimet tuaja</string>
+    <string name="error_crypto_provider_connect">Slidhet dot te furnizuesi i modulit kriptografik, kontrolloni rregullimet tuaja ose klikoni ikonën e kriptografisë që të riprovohet!</string>
+    <string name="error_crypto_provider_ui_required">Su arrit të gatitej fshehtëzim skaj-më-skaj, ju lutemi, kontrolloni rregullimet tuaja</string>
     <string name="error_crypto_inline_attach">Mënyra PGP/INLINE nuk i mbulon bashkëngjitjet!</string>
     <string name="enable_inline_pgp">Aktivizo PGP/BRENDAZI</string>
     <string name="disable_inline_pgp">Çaktivizo PGP/BRENDAZI</string>
     <string name="enable_sign_only">Aktivizo PGP Vetëm-Nënshkrim</string>
     <string name="disable_sign_only">Çaktivizo PGP Vetëm-Nënshkrim</string>
     <string name="openpgp_inline_title">Mënyra PGP/Brendazi</string>
-    <string name="openpgp_inline_text">Email-i po dërgohet nën formatin PGP/INLINE.\nKjo duhet të përdoret vetëm për arsye përputhshmërie:</string>
+    <string name="openpgp_inline_text">Email-i po dërgohet nën formatin PGP/INLINE.
+\nKjo duhet të përdoret vetëm për arsye përputhshmërie:</string>
     <string name="openpgp_inline_plus_compat">Disa klientë mbulojnë vetëm këtë format</string>
     <string name="openpgp_inline_minus_transit">Nënshkrimet mund të cenohen gjatë shpërnguljes</string>
     <string name="openpgp_inline_minus_attach">Nuk mbulohen bashkëngjitjet</string>
@@ -808,7 +811,7 @@
     <string name="crypto_msg_title_encrypted_unknown">I fshehtëzuar</string>
     <string name="crypto_msg_encrypted_error">por pati një gabim shfshehtëzimi</string>
     <string name="crypto_msg_encrypted_incomplete">për shfshehtëzim, mesazhi duhet shkarkuar plotësisht</string>
-    <string name="crypto_msg_encrypted_no_provider">por s\’ka të formësuar aplikacion kriptografie</string>
+    <string name="crypto_msg_encrypted_no_provider">por ska të formësuar aplikacion kriptografie</string>
     <string name="crypto_msg_title_encrypted_unsigned">I fshehtëzuar</string>
     <string name="crypto_msg_encrypted_unsigned">por jo skaj-më-skaj</string>
     <string name="crypto_msg_title_encrypted_signed_e2e">I fshehtëzuar Skaj-më-Skaj</string>
@@ -827,7 +830,7 @@
     <string name="crypto_info_view_sender">Shihni Dërguesin</string>
     <string name="crypto_info_view_security_warning">Hollësi</string>
     <string name="locked_attach_unlock">Shkyçe</string>
-    <string name="locked_attach_unencrypted">Kjo pjesë s\’qe fshehtëzuar, dhe mund të jetë e pasigurt.</string>
+    <string name="locked_attach_unencrypted">Kjo pjesë sqe fshehtëzuar, dhe mund të jetë e pasigurt.</string>
     <string name="locked_attach_title">Bashkëngjitje e Pambrojtur</string>
     <string name="message_progress_text">Po ngarkohet…</string>
     <string name="messageview_decrypt_cancelled">Shfshehtëzimi u anulua.</string>
@@ -839,10 +842,11 @@
     <string name="account_settings_crypto_hide_sign_only">Fshihi nënshkrimet e pafshehtëzuara</string>
     <string name="account_settings_crypto_hide_sign_only_on">Do të shfaqen vetëm nënshkrimet e fshehtëzuara</string>
     <string name="account_settings_crypto_hide_sign_only_off">Do të shfaqen krejt nënshkrimet</string>
-    <string name="error_sign_only_no_encryption">S\’mund të kihet fshehtëzim nën mënyrën vetëm-nënshkrim!</string>
+    <string name="error_sign_only_no_encryption">Smund të kihet fshehtëzim nën mënyrën vetëm-nënshkrim!</string>
     <string name="unsigned_text_divider_label">Tekst i Panënshkruar</string>
     <string name="crypto_no_provider_title">Ky email është i fshehtëzuar</string>
-    <string name="crypto_no_provider_message">Ky email është fshehtëzuar me OpenPGP.\nQë ta lexoni, lypset të instaloni dhe formësoni një aplikacion të përputhshëm me OpenPGP-në.</string>
+    <string name="crypto_no_provider_message">Ky email është fshehtëzuar me OpenPGP.
+\nQë ta lexoni, lypset të instaloni dhe formësoni një aplikacion të përputhshëm me OpenPGP-në.</string>
     <string name="crypto_no_provider_button">Kaloni te Rregullimet</string>
     <string name="mail_list_widget_text">Listë K-9 Mesazhesh</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
@@ -854,7 +858,7 @@
     <string name="enable_encryption">Aktivizo Fshehtëzimin</string>
     <string name="disable_encryption">Çaktivizo Fshehtëzimin</string>
     <string name="openpgp_description_text1">Fshehtëzimi i mesazheve bën të mundur që ata të mund të lexohen vetëm nga marrësi, dhe askush tjetër.</string>
-    <string name="openpgp_description_text3">Fshehtëzimi do të shfaqet vetëm nëse mbulohet nga krejt marrësit, dhe duhet t\’ju kenë dërguar një email më parë.</string>
+    <string name="openpgp_description_text3">Fshehtëzimi do të shfaqet vetëm nëse mbulohet nga krejt marrësit, dhe duhet tju kenë dërguar një email më parë.</string>
     <string name="openpgp_description_text2">Aktivizoni/çaktivizoni fshehtëzimin duke klikuar mbi këtë ikonë.</string>
     <string name="openpgp_enabled_error_gotit">E mora vesh</string>
     <string name="openpgp_enabled_error_back">Mbrapsht</string>
@@ -862,11 +866,11 @@
     <string name="openpgp_encryption">Fshehtëzim OpenPGP</string>
     <string name="account_settings_crypto_prefer_encrypt">Mënyra Autocrypt e përbashkët</string>
     <string name="dialog_autocrypt_mutual_title">Mënyra Autocrypt e përbashkët</string>
-    <string name="dialog_autocrypt_mutual_description_1">Mesazhet normalisht do të fshehtëzohen sipas zgjedhjes tuaj,  ose kur i përgjigjeni një mesazhi të fshehtëzuar.</string>
+    <string name="dialog_autocrypt_mutual_description_1">Mesazhet normalisht do të fshehtëzohen sipas zgjedhjes tuaj, ose kur i përgjigjeni një mesazhi të fshehtëzuar.</string>
     <string name="dialog_autocrypt_mutual_description_2">Nëse si dërguesi, ashtu edhe marrësit aktivizojnë mënyrën e përbashkët, fshehtëzimi do të aktivizohet si parazgjedhje.</string>
     <string name="dialog_autocrypt_mutual_learn_more">Mund <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">të klikoni këtu</a> që të mësoni më tepër.</string>
     <string name="general_settings_title">Rregullime të përgjithshme</string>
-    <string name="dialog_openkeychain_info_title">S\’ka aplikacion OpenPGP të instaluar</string>
+    <string name="dialog_openkeychain_info_title">Ska aplikacion OpenPGP të instaluar</string>
     <string name="dialog_openkeychain_info_install">Instaloje</string>
     <string name="dialog_openkeychain_info_text">K-9 Mail lyp OpenKeychain për fshehtëzime skaj-më-skaj.</string>
     <string name="encrypted_subject">Mesazh i Fshehtëzuar</string>
@@ -885,12 +889,7 @@
     <string name="ac_transfer_finish">Për të përfunduar, hapeni mesazhin te pajisja juaj tjetër dhe jepni kodin e rregullimit.</string>
     <string name="ac_transfer_show_code">Shfaq Kod Rregullimi</string>
     <string name="ac_transfer_msg_subject">Mesazh Rregullimi Autocrypt-i</string>
-    <string name="ac_transfer_msg_body">Ky mesazh përmban krejt të dhënat për shpërnguljen e rregullimeve tuaja për Autocrypt-in, tok me kyçin tuaj të fshehtë, në mënyrë të siguruar, nga pajisja juaj fillestare.
-
-Që të rregulloni Autocrypt-in për pajisjen tuaj të re, ju lutemi, ndiqni udhëzimet që duhet t\’ju shfaqen në të.
-
-Mund ta mbani këtë mesazh dhe ta përdorni si një kopjeruatje të kyçit tuaj të fshehtë. Nëse doni ta bëni këtë, fjalëkalimin duhet ta shkruani diku dhe ta depozitoni në mënyrë të sigurt.
-</string>
+    <string name="ac_transfer_msg_body">Ky mesazh përmban krejt të dhënat për shpërnguljen e rregullimeve tuaja për Autocrypt-in, tok me kyçin tuaj të fshehtë, në mënyrë të siguruar, nga pajisja juaj fillestare. Që të rregulloni Autocrypt-in për pajisjen tuaj të re, ju lutemi, ndiqni udhëzimet që duhet tju shfaqen në të. Mund ta mbani këtë mesazh dhe ta përdorni si një kopjeruatje të kyçit tuaj të fshehtë. Nëse doni ta bëni këtë, fjalëkalimin duhet ta shkruani diku dhe ta depozitoni në mënyrë të sigurt.</string>
     <string name="ac_transfer_error_send">Ndodhi një gabim teksa dërgohej mesazhi. Ju lutemi, kontrolloni lidhjen tuaj në rrjet dhe formësimin e shërbyesit të dërgimeve.</string>
     <string name="switch_on">On</string>
     <string name="switch_off">Off</string>
@@ -932,7 +931,7 @@ Mund ta mbani këtë mesazh dhe ta përdorni si një kopjeruatje të kyçit tuaj
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
     <string name="message_list_error_title">Gabim</string>
     <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
-    <string name="message_list_error_folder_not_found">S\’u gjet dosja</string>
+    <string name="message_list_error_folder_not_found">Su gjet dosja</string>
     <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
     <string name="message_details_toolbar_title">Hollësi mesazhi</string>
     <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
@@ -942,7 +941,7 @@ Mund ta mbani këtë mesazh dhe ta përdorni si një kopjeruatje të kyçit tuaj
     <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
     <string name="message_details_sender_section_title">Dërgues</string>
     <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
-    <string name="message_details_replyto_section_title">Përgjigjuni</string>
+    <string name="message_details_replyto_section_title">Përgjigjuni për</string>
     <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
     <string name="message_details_to_section_title">Për</string>
     <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
@@ -975,4 +974,6 @@ Mund ta mbani këtë mesazh dhe ta përdorni si një kopjeruatje të kyçit tuaj
     <string name="general_settings_post_mark_as_unread_action_stay">Qëndro në mesazhin aktual</string>
     <string name="general_settings_post_mark_as_unread_action_title">Pas vënies shenjë një mesazhi si i palexuar</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Kthehu te lista e mesazheve</string>
+    <string name="push_notification_grant_alarm_permission">Për të akorduar leje, prekeni.</string>
+    <string name="push_notification_state_alarm_permission_missing">Mungojnë leje për të planifikuar alarme</string>
 </resources>

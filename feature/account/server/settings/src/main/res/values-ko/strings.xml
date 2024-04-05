@@ -13,4 +13,14 @@
     <string name="account_server_settings_client_certificate_label">클라이언트 인증서</string>
     <string name="account_server_settings_server_label">서버</string>
     <string name="account_server_settings_security_label">보안</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">IMAP 접두사는 비워 둘 수 없습니다.</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">잘못된 IP 또는 호스트 이름</string>
+    <string name="account_server_settings_password_authentication_subtitle">비밀번호를 보기 위해 잠금 해제</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">여기서 비밀번호를 보기 위해, 기기에 잠금 화면을 설정하세요.</string>
+    <string name="account_server_settings_validation_error_password_required">비밀번호가 필요합니다.</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">IMAP 경로 접두사</string>
+    <string name="account_server_settings_incoming_imap_compression_label">압축 사용</string>
+    <string name="account_server_settings_outgoing_top_bar_title">발신 서버 설정</string>
+    <string name="account_server_settings_client_certificate_none_selected">없음</string>
+    <string name="account_server_settings_validation_error_port_required">포트가 요구됩니다.</string>
 </resources>
