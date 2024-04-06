@@ -12,19 +12,13 @@ import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotNull
 import assertk.assertions.isTrue
 import assertk.assertions.key
 import assertk.assertions.prop
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.Preferences
 import com.fsck.k9.mail.AuthType
-import com.fsck.k9.preferences.SettingsImporter.AccountDescription
-import com.fsck.k9.preferences.SettingsImporter.AccountDescriptionPair
-import com.fsck.k9.preferences.SettingsImporter.ImportContents
-import com.fsck.k9.preferences.SettingsImporter.ImportResults
-import com.fsck.k9.preferences.SettingsImporter.ImportedAccount
-import com.fsck.k9.preferences.SettingsImporter.ImportedIdentity
-import com.fsck.k9.preferences.SettingsImporter.ImportedServer
 import java.util.UUID
 import org.junit.Before
 import org.junit.Test
@@ -130,7 +124,7 @@ class SettingsImporterTest : K9RobolectricTest() {
 
         val results = SettingsImporter.parseSettings(inputStream, true, accountUuids, true)
 
-        assertThat(results.accounts).all {
+        assertThat(results.accounts).isNotNull().all {
             hasSize(1)
             key(accountUuid).all {
                 prop(ImportedAccount::uuid).isEqualTo(accountUuid)
@@ -161,11 +155,12 @@ class SettingsImporterTest : K9RobolectricTest() {
 
         val results = SettingsImporter.parseSettings(inputStream, true, accountUuids, true)
 
-        assertThat(results.accounts).all {
+        assertThat(results.accounts).isNotNull().all {
             hasSize(1)
             key(accountUuid).all {
                 prop(ImportedAccount::uuid).isEqualTo(accountUuid)
-                prop(ImportedAccount::identities).extracting(ImportedIdentity::email).containsExactly("user@gmail.com")
+                prop(ImportedAccount::identities).isNotNull()
+                    .extracting(ImportedIdentity::email).containsExactly("user@gmail.com")
             }
         }
     }
@@ -191,8 +186,10 @@ class SettingsImporterTest : K9RobolectricTest() {
         val results = SettingsImporter.parseSettings(inputStream, true, accountUuids, false)
 
         assertThat(results.accounts)
+            .isNotNull()
             .key(accountUuid)
             .prop(ImportedAccount::incoming)
+            .isNotNull()
             .prop(ImportedServer::authenticationType)
             .isEqualTo(AuthType.CRAM_MD5)
     }

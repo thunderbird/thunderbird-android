@@ -12,8 +12,9 @@ import androidx.lifecycle.viewModelScope
 import app.k9mail.feature.settings.import.SettingsImportExternalContract.AccountActivator
 import com.fsck.k9.helper.SingleLiveEvent
 import com.fsck.k9.helper.measureRealtimeMillisWithResult
+import com.fsck.k9.preferences.ImportContents
+import com.fsck.k9.preferences.ImportResults
 import com.fsck.k9.preferences.SettingsImporter
-import com.fsck.k9.preferences.SettingsImporter.ImportResults
 import com.fsck.k9.ui.base.bundle.getEnum
 import com.fsck.k9.ui.base.bundle.putEnum
 import kotlinx.coroutines.Dispatchers
@@ -380,7 +381,7 @@ internal class SettingsImportViewModel(
         }
     }
 
-    private fun readSettings(contentUri: Uri): SettingsImporter.ImportContents {
+    private fun readSettings(contentUri: Uri): ImportContents {
         return context.contentResolver.openInputStream(contentUri).use { inputStream ->
             SettingsImporter.getImportStreamContents(inputStream)
         }
