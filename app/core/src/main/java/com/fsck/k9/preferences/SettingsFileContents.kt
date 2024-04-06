@@ -2,66 +2,46 @@ package com.fsck.k9.preferences
 
 import com.fsck.k9.mail.AuthType
 
-internal class Imported {
-    @JvmField var contentVersion: Int = 0
+internal data class Imported(
+    @JvmField val contentVersion: Int,
+    @JvmField val globalSettings: ImportedSettings?,
+    @JvmField val accounts: Map<String, ImportedAccount>?,
+)
 
-    @JvmField var globalSettings: ImportedSettings? = null
+internal data class ImportedSettings(
+    @JvmField val settings: Map<String, String> = emptyMap(),
+)
 
-    @JvmField var accounts: Map<String, ImportedAccount>? = null
-}
+internal data class ImportedAccount(
+    @JvmField val uuid: String,
+    @JvmField val name: String?,
+    @JvmField val incoming: ImportedServer?,
+    @JvmField val outgoing: ImportedServer?,
+    @JvmField val settings: ImportedSettings?,
+    @JvmField val identities: List<ImportedIdentity>?,
+    @JvmField val folders: List<ImportedFolder>?,
+)
 
-internal class ImportedSettings {
-    @JvmField var settings = mutableMapOf<String, String>()
-}
+internal data class ImportedServer(
+    @JvmField val type: String?,
+    @JvmField val host: String?,
+    @JvmField val port: String?,
+    @JvmField val connectionSecurity: String?,
+    @JvmField val authenticationType: AuthType?,
+    @JvmField val username: String?,
+    @JvmField val password: String?,
+    @JvmField val clientCertificateAlias: String?,
+    @JvmField val extras: ImportedSettings?,
+)
 
-internal class ImportedAccount {
-    @JvmField var uuid: String? = null
+internal data class ImportedIdentity(
+    @JvmField val name: String?,
+    @JvmField val email: String?,
+    @JvmField val description: String?,
+    @JvmField val settings: ImportedSettings?,
+)
 
-    @JvmField var name: String? = null
-
-    @JvmField var incoming: ImportedServer? = null
-
-    @JvmField var outgoing: ImportedServer? = null
-
-    @JvmField var settings: ImportedSettings? = null
-
-    @JvmField var identities: List<ImportedIdentity>? = null
-
-    @JvmField var folders: List<ImportedFolder>? = null
-}
-
-internal class ImportedServer {
-    @JvmField var type: String? = null
-
-    @JvmField var host: String? = null
-
-    @JvmField var port: String? = null
-
-    @JvmField var connectionSecurity: String? = null
-
-    @JvmField var authenticationType: AuthType? = null
-
-    @JvmField var username: String? = null
-
-    @JvmField var password: String? = null
-
-    @JvmField var clientCertificateAlias: String? = null
-
-    @JvmField var extras: ImportedSettings? = null
-}
-
-internal class ImportedIdentity {
-    @JvmField var name: String? = null
-
-    @JvmField var email: String? = null
-
-    @JvmField var description: String? = null
-
-    @JvmField var settings: ImportedSettings? = null
-}
-
-internal class ImportedFolder {
-    @JvmField var name: String? = null
-
-    @JvmField var settings: ImportedSettings? = null
-}
+internal data class ImportedFolder(
+    @JvmField val name: String?,
+    @JvmField val settings: ImportedSettings?,
+)

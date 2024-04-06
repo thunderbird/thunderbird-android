@@ -1,7 +1,6 @@
 package com.fsck.k9.preferences
 
 import com.fsck.k9.mail.AuthType
-import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.util.UUID
@@ -10,410 +9,433 @@ import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
 import timber.log.Timber
 
+/**
+ * Parser for K-9 Mail's settings file format.
+ */
 internal class SettingsFileParser {
     @Throws(SettingsImportExportException::class)
     fun parseSettings(
-        inputStream: InputStream?,
+        inputStream: InputStream,
         globalSettings: Boolean,
         accountUuids: List<String>?,
         overview: Boolean,
     ): Imported {
-        require(!(!overview && accountUuids == null)) { "Argument 'accountUuids' must not be null." }
-
         try {
-            val factory = XmlPullParserFactory.newInstance()
-            val xpp = factory.newPullParser()
+            val settings = XmlSettingsParser(inputStream).parse()
 
-            val reader = InputStreamReader(inputStream)
-            xpp.setInput(reader)
-
-            var imported: Imported? = null
-            var eventType = xpp.eventType
-            while (eventType != XmlPullParser.END_DOCUMENT) {
-                if (eventType == XmlPullParser.START_TAG) {
-                    if (SettingsExporter.ROOT_ELEMENT == xpp.name) {
-                        imported = parseRoot(xpp, globalSettings, accountUuids, overview)
-                    } else {
-                        Timber.w("Unexpected start tag: %s", xpp.name)
-                    }
-                }
-                eventType = xpp.next()
+            // TODO: Move this filtering code out of SettingsFileParser
+            val filteredGlobalSettings = if (overview) {
+                settings.globalSettings?.let { ImportedSettings() }
+            } else if (globalSettings) {
+                settings.globalSettings
+            } else {
+                null
             }
 
-            if (imported == null || (overview && imported.globalSettings == null && imported.accounts == null)) {
-                throw SettingsImportExportException("Invalid import data")
+            val filteredAccounts = if (overview || accountUuids == null) {
+                settings.accounts
+            } else {
+                settings.accounts?.filterKeys { it in accountUuids }
             }
 
-            return imported
-        } catch (e: Exception) {
-            throw SettingsImportExportException(e)
+            return settings.copy(
+                globalSettings = filteredGlobalSettings,
+                accounts = filteredAccounts,
+            )
+        } catch (e: XmlPullParserException) {
+            throw SettingsImportExportException("Error parsing settings XML", e)
+        } catch (e: SettingsParserException) {
+            throw SettingsImportExportException("Error parsing settings XML", e)
         }
     }
+}
 
-    @Throws(XmlPullParserException::class, IOException::class, SettingsImportExportException::class)
-    private fun parseRoot(
-        xpp: XmlPullParser,
-        globalSettings: Boolean,
-        accountUuids: List<String>?,
-        overview: Boolean,
-    ): Imported {
-        val result = Imported()
+@Suppress("TooManyFunctions")
+private class XmlSettingsParser(
+    private val inputStream: InputStream,
+) {
+    private val pullParser: XmlPullParser = XmlPullParserFactory.newInstance().newPullParser().apply {
+        setInput(InputStreamReader(inputStream))
+    }
 
-        val fileFormatVersionString = xpp.getAttributeValue(null, SettingsExporter.FILE_FORMAT_ATTRIBUTE)
-        validateFileFormatVersion(fileFormatVersionString)
+    fun parse(): Imported {
+        var imported: Imported? = null
+        do {
+            val eventType = pullParser.next()
 
-        val contentVersionString = xpp.getAttributeValue(null, SettingsExporter.VERSION_ATTRIBUTE)
-        result.contentVersion = validateContentVersion(contentVersionString)
-
-        var eventType = xpp.next()
-        while (!(eventType == XmlPullParser.END_TAG && SettingsExporter.ROOT_ELEMENT == xpp.name)) {
             if (eventType == XmlPullParser.START_TAG) {
-                val element = xpp.name
-                if (SettingsExporter.GLOBAL_ELEMENT == element) {
-                    if (overview || globalSettings) {
-                        if (result.globalSettings == null) {
-                            if (overview) {
-                                result.globalSettings = ImportedSettings()
-                                skipToEndTag(xpp, SettingsExporter.GLOBAL_ELEMENT)
-                            } else {
-                                result.globalSettings = parseSettings(xpp, SettingsExporter.GLOBAL_ELEMENT)
-                            }
+                when (pullParser.name) {
+                    SettingsExporter.ROOT_ELEMENT -> {
+                        imported = readRoot()
+                    }
+                    else -> {
+                        skipElement()
+                    }
+                }
+            }
+        } while (eventType != XmlPullParser.END_DOCUMENT)
+
+        if (imported == null) {
+            parserError("Missing '${SettingsExporter.ROOT_ELEMENT}' element")
+        }
+
+        return imported
+    }
+
+    private fun readRoot(): Imported {
+        var generalSettings: ImportedSettings? = null
+        var accounts: Map<String, ImportedAccount>? = null
+
+        val fileFormatVersion = readFileFormatVersion()
+        if (fileFormatVersion != SettingsExporter.FILE_FORMAT_VERSION) {
+            parserError("Unsupported file format version: $fileFormatVersion")
+        }
+
+        val contentVersion = readContentVersion()
+
+        readElement { eventType ->
+            if (eventType == XmlPullParser.START_TAG) {
+                when (pullParser.name) {
+                    SettingsExporter.GLOBAL_ELEMENT -> {
+                        if (generalSettings == null) {
+                            generalSettings = readGlobalSettings()
                         } else {
-                            skipToEndTag(xpp, SettingsExporter.GLOBAL_ELEMENT)
-                            Timber.w("More than one global settings element. Only using the first one!")
+                            Timber.w("More than one '${SettingsExporter.GLOBAL_ELEMENT}' element!")
+                            skipElement()
                         }
-                    } else {
-                        skipToEndTag(xpp, SettingsExporter.GLOBAL_ELEMENT)
-                        Timber.i("Skipping global settings")
                     }
-                } else if (SettingsExporter.ACCOUNTS_ELEMENT == element) {
-                    if (result.accounts == null) {
-                        result.accounts = parseAccounts(xpp, accountUuids, overview)
-                    } else {
-                        Timber.w("More than one accounts element. Only using the first one!")
+                    SettingsExporter.ACCOUNTS_ELEMENT -> {
+                        if (accounts == null) {
+                            accounts = readAccounts()
+                        } else {
+                            Timber.w("More than one '${SettingsExporter.ACCOUNTS_ELEMENT}' element!")
+                            skipElement()
+                        }
                     }
-                } else {
-                    Timber.w("Unexpected start tag: %s", xpp.name)
+                    else -> {
+                        skipElement()
+                    }
                 }
             }
-            eventType = xpp.next()
         }
 
-        return result
+        return Imported(contentVersion, generalSettings, accounts)
     }
 
-    @Throws(SettingsImportExportException::class)
-    private fun validateFileFormatVersion(versionString: String?): Int {
-        if (versionString == null) {
-            throw SettingsImportExportException("Missing file format version")
-        }
-
-        val version: Int
-        try {
-            version = versionString.toInt()
-        } catch (e: NumberFormatException) {
-            throw SettingsImportExportException("Invalid file format version: $versionString")
-        }
-
-        if (version != SettingsExporter.FILE_FORMAT_VERSION) {
-            throw SettingsImportExportException("Unsupported file format version: $versionString")
-        }
-
-        return version
+    private fun readFileFormatVersion(): Int {
+        val versionString = readAttribute(SettingsExporter.FILE_FORMAT_ATTRIBUTE)
+        return versionString.toIntOrNull()
+            ?: parserError("Invalid file format version: $versionString")
     }
 
-    @Throws(SettingsImportExportException::class)
-    private fun validateContentVersion(versionString: String?): Int {
-        if (versionString == null) {
-            throw SettingsImportExportException("Missing content version")
-        }
-
-        val version: Int
-        try {
-            version = versionString.toInt()
-        } catch (e: NumberFormatException) {
-            throw SettingsImportExportException("Invalid content version: $versionString")
-        }
-
-        if (version < 1) {
-            throw SettingsImportExportException("Unsupported content version: $versionString")
-        }
-
-        return version
+    private fun readContentVersion(): Int {
+        val versionString = readAttribute(SettingsExporter.VERSION_ATTRIBUTE)
+        return versionString.toIntOrNull()?.takeIf { it > 0 }
+            ?: parserError("Invalid content version: $versionString")
     }
 
-    @Throws(XmlPullParserException::class, IOException::class)
-    private fun parseSettings(xpp: XmlPullParser, endTag: String): ImportedSettings? {
-        var result: ImportedSettings? = null
+    private fun readGlobalSettings(): ImportedSettings? {
+        return readSettingsContainer()
+    }
 
-        var eventType = xpp.next()
-        while (!(eventType == XmlPullParser.END_TAG && endTag == xpp.name)) {
+    private fun readSettingsContainer(): ImportedSettings? {
+        val settings = mutableMapOf<String, String>()
+
+        readElement { eventType ->
             if (eventType == XmlPullParser.START_TAG) {
-                val element = xpp.name
-                if (SettingsExporter.VALUE_ELEMENT == element) {
-                    val key = xpp.getAttributeValue(null, SettingsExporter.KEY_ATTRIBUTE)
-                    val value = getText(xpp)
+                when (pullParser.name) {
+                    SettingsExporter.VALUE_ELEMENT -> {
+                        val key = readAttribute(SettingsExporter.KEY_ATTRIBUTE)
+                        val value = readText()
 
-                    if (result == null) {
-                        result = ImportedSettings()
+                        if (settings.containsKey(key)) {
+                            Timber.w("Already read key \"%s\". Ignoring value \"%s\"", key, value)
+                        } else {
+                            settings[key] = value
+                        }
                     }
-
-                    if (result.settings.containsKey(key)) {
-                        Timber.w("Already read key \"%s\". Ignoring value \"%s\"", key, value)
-                    } else {
-                        result.settings[key] = value
+                    else -> {
+                        skipElement()
                     }
-                } else {
-                    Timber.w("Unexpected start tag: %s", xpp.name)
                 }
             }
-            eventType = xpp.next()
         }
 
-        return result
+        return if (settings.isNotEmpty()) {
+            ImportedSettings(settings)
+        } else {
+            null
+        }
     }
 
-    @Throws(XmlPullParserException::class, IOException::class)
-    private fun parseAccounts(
-        xpp: XmlPullParser,
-        accountUuids: List<String>?,
-        overview: Boolean,
-    ): Map<String, ImportedAccount>? {
-        var accounts: MutableMap<String, ImportedAccount>? = null
+    private fun readAccounts(): Map<String, ImportedAccount>? {
+        val accounts = mutableMapOf<String, ImportedAccount>()
 
-        var eventType = xpp.next()
-        while (!(eventType == XmlPullParser.END_TAG && SettingsExporter.ACCOUNTS_ELEMENT == xpp.name)) {
+        readElement { eventType ->
             if (eventType == XmlPullParser.START_TAG) {
-                val element = xpp.name
-                if (SettingsExporter.ACCOUNT_ELEMENT == element) {
-                    if (accounts == null) {
-                        accounts = LinkedHashMap()
-                    }
+                when (pullParser.name) {
+                    SettingsExporter.ACCOUNT_ELEMENT -> {
+                        val account = readAccount()
 
-                    val account = parseAccount(xpp, accountUuids, overview)
-
-                    if (account == null) {
-                        // Do nothing - parseAccount() already logged a message
-                    } else if (!accounts.containsKey(account.uuid)) {
-                        accounts[account.uuid!!] = account
-                    } else {
-                        Timber.w("Duplicate account entries with UUID %s. Ignoring!", account.uuid)
+                        if (account == null) {
+                            // Do nothing - readAccount() already logged a message
+                        } else if (!accounts.containsKey(account.uuid)) {
+                            accounts[account.uuid] = account
+                        } else {
+                            Timber.w("Duplicate account entries with UUID %s. Ignoring!", account.uuid)
+                        }
                     }
-                } else {
-                    Timber.w("Unexpected start tag: %s", xpp.name)
+                    else -> {
+                        skipElement()
+                    }
                 }
             }
-            eventType = xpp.next()
         }
 
-        return accounts
+        return accounts.takeIf { it.isNotEmpty() }
     }
 
-    @Throws(XmlPullParserException::class, IOException::class)
-    private fun parseAccount(xpp: XmlPullParser, accountUuids: List<String>?, overview: Boolean): ImportedAccount? {
-        val uuid = xpp.getAttributeValue(null, SettingsExporter.UUID_ATTRIBUTE)
-
-        try {
-            UUID.fromString(uuid)
-        } catch (e: Exception) {
-            skipToEndTag(xpp, SettingsExporter.ACCOUNT_ELEMENT)
-            Timber.w("Skipping account with invalid UUID %s", uuid)
+    private fun readAccount(): ImportedAccount? {
+        val uuid = readUuid()
+        if (uuid == null) {
+            skipElement()
             return null
         }
 
-        val account = ImportedAccount()
-        account.uuid = uuid
+        var name: String? = null
+        var incoming: ImportedServer? = null
+        var outgoing: ImportedServer? = null
+        var settings: ImportedSettings? = null
+        var identities: List<ImportedIdentity>? = null
+        var folders: List<ImportedFolder>? = null
 
-        if (overview || accountUuids!!.contains(uuid)) {
-            var eventType = xpp.next()
-            while (!(eventType == XmlPullParser.END_TAG && SettingsExporter.ACCOUNT_ELEMENT == xpp.name)) {
-                if (eventType == XmlPullParser.START_TAG) {
-                    val element = xpp.name
-                    if (SettingsExporter.NAME_ELEMENT == element) {
-                        account.name = getText(xpp)
-                    } else if (SettingsExporter.INCOMING_SERVER_ELEMENT == element) {
-                        if (overview) {
-                            skipToEndTag(xpp, SettingsExporter.INCOMING_SERVER_ELEMENT)
-                        } else {
-                            account.incoming = parseServerSettings(xpp, SettingsExporter.INCOMING_SERVER_ELEMENT)
-                        }
-                    } else if (SettingsExporter.OUTGOING_SERVER_ELEMENT == element) {
-                        if (overview) {
-                            skipToEndTag(xpp, SettingsExporter.OUTGOING_SERVER_ELEMENT)
-                        } else {
-                            account.outgoing = parseServerSettings(xpp, SettingsExporter.OUTGOING_SERVER_ELEMENT)
-                        }
-                    } else if (SettingsExporter.SETTINGS_ELEMENT == element) {
-                        if (overview) {
-                            skipToEndTag(xpp, SettingsExporter.SETTINGS_ELEMENT)
-                        } else {
-                            account.settings = parseSettings(xpp, SettingsExporter.SETTINGS_ELEMENT)
-                        }
-                    } else if (SettingsExporter.IDENTITIES_ELEMENT == element) {
-                        account.identities = parseIdentities(xpp)
-                    } else if (SettingsExporter.FOLDERS_ELEMENT == element) {
-                        if (overview) {
-                            skipToEndTag(xpp, SettingsExporter.FOLDERS_ELEMENT)
-                        } else {
-                            account.folders = parseFolders(xpp)
-                        }
-                    } else {
-                        Timber.w("Unexpected start tag: %s", xpp.name)
+        readElement { eventType ->
+            if (eventType == XmlPullParser.START_TAG) {
+                when (pullParser.name) {
+                    SettingsExporter.NAME_ELEMENT -> {
+                        name = readText()
+                    }
+                    SettingsExporter.INCOMING_SERVER_ELEMENT -> {
+                        incoming = readServerSettings()
+                    }
+                    SettingsExporter.OUTGOING_SERVER_ELEMENT -> {
+                        outgoing = readServerSettings()
+                    }
+                    SettingsExporter.SETTINGS_ELEMENT -> {
+                        settings = readSettingsContainer()
+                    }
+                    SettingsExporter.IDENTITIES_ELEMENT -> {
+                        identities = readIdentities()
+                    }
+                    SettingsExporter.FOLDERS_ELEMENT -> {
+                        folders = readFolders()
+                    }
+                    else -> {
+                        skipElement()
                     }
                 }
-                eventType = xpp.next()
             }
-        } else {
-            skipToEndTag(xpp, SettingsExporter.ACCOUNT_ELEMENT)
-            Timber.i("Skipping account with UUID %s", uuid)
         }
 
         // If we couldn't find an account name use the UUID
-        if (account.name == null) {
-            account.name = uuid
+        if (name == null) {
+            name = uuid
         }
 
-        return account
+        return ImportedAccount(uuid, name, incoming, outgoing, settings, identities, folders)
     }
 
-    @Throws(XmlPullParserException::class, IOException::class)
-    private fun parseServerSettings(xpp: XmlPullParser, endTag: String): ImportedServer {
-        val server = ImportedServer()
+    private fun readUuid(): String? {
+        val uuid = pullParser.getAttributeValue(null, SettingsExporter.UUID_ATTRIBUTE)
 
-        server.type = xpp.getAttributeValue(null, SettingsExporter.TYPE_ATTRIBUTE)
-
-        var eventType = xpp.next()
-        while (!(eventType == XmlPullParser.END_TAG && endTag == xpp.name)) {
-            if (eventType == XmlPullParser.START_TAG) {
-                val element = xpp.name
-                if (SettingsExporter.HOST_ELEMENT == element) {
-                    server.host = getText(xpp)
-                } else if (SettingsExporter.PORT_ELEMENT == element) {
-                    server.port = getText(xpp)
-                } else if (SettingsExporter.CONNECTION_SECURITY_ELEMENT == element) {
-                    server.connectionSecurity = getText(xpp)
-                } else if (SettingsExporter.AUTHENTICATION_TYPE_ELEMENT == element) {
-                    val text = getText(xpp)
-                    server.authenticationType = AuthType.valueOf(text)
-                } else if (SettingsExporter.USERNAME_ELEMENT == element) {
-                    server.username = getText(xpp)
-                } else if (SettingsExporter.CLIENT_CERTIFICATE_ALIAS_ELEMENT == element) {
-                    server.clientCertificateAlias = getText(xpp)
-                } else if (SettingsExporter.PASSWORD_ELEMENT == element) {
-                    server.password = getText(xpp)
-                } else if (SettingsExporter.EXTRA_ELEMENT == element) {
-                    server.extras = parseSettings(xpp, SettingsExporter.EXTRA_ELEMENT)
-                } else {
-                    Timber.w("Unexpected start tag: %s", xpp.name)
-                }
-            }
-            eventType = xpp.next()
+        try {
+            UUID.fromString(uuid)
+        } catch (e: IllegalArgumentException) {
+            Timber.w(e, "Invalid account UUID: %s", uuid)
+            return null
         }
 
-        return server
+        return uuid
     }
 
-    @Throws(XmlPullParserException::class, IOException::class)
-    private fun parseIdentities(xpp: XmlPullParser): List<ImportedIdentity>? {
-        var identities: MutableList<ImportedIdentity>? = null
+    private fun readServerSettings(): ImportedServer {
+        var host: String? = null
+        var port: String? = null
+        var connectionSecurity: String? = null
+        var authenticationType: AuthType? = null
+        var username: String? = null
+        var password: String? = null
+        var clientCertificateAlias: String? = null
+        var extras: ImportedSettings? = null
 
-        var eventType = xpp.next()
-        while (!(eventType == XmlPullParser.END_TAG && SettingsExporter.IDENTITIES_ELEMENT == xpp.name)) {
+        val type = pullParser.getAttributeValue(null, SettingsExporter.TYPE_ATTRIBUTE)
+
+        readElement { eventType ->
             if (eventType == XmlPullParser.START_TAG) {
-                val element = xpp.name
-                if (SettingsExporter.IDENTITY_ELEMENT == element) {
-                    if (identities == null) {
-                        identities = ArrayList()
+                when (pullParser.name) {
+                    SettingsExporter.HOST_ELEMENT -> {
+                        host = readText()
                     }
-
-                    val identity = parseIdentity(xpp)
-                    identities.add(identity)
-                } else {
-                    Timber.w("Unexpected start tag: %s", xpp.name)
+                    SettingsExporter.PORT_ELEMENT -> {
+                        port = readText()
+                    }
+                    SettingsExporter.CONNECTION_SECURITY_ELEMENT -> {
+                        connectionSecurity = readText()
+                    }
+                    SettingsExporter.AUTHENTICATION_TYPE_ELEMENT -> {
+                        val text = readText()
+                        authenticationType = AuthType.valueOf(text)
+                    }
+                    SettingsExporter.USERNAME_ELEMENT -> {
+                        username = readText()
+                    }
+                    SettingsExporter.CLIENT_CERTIFICATE_ALIAS_ELEMENT -> {
+                        clientCertificateAlias = readText()
+                    }
+                    SettingsExporter.PASSWORD_ELEMENT -> {
+                        password = readText()
+                    }
+                    SettingsExporter.EXTRA_ELEMENT -> {
+                        extras = readSettingsContainer()
+                    }
+                    else -> {
+                        skipElement()
+                    }
                 }
             }
-            eventType = xpp.next()
+        }
+
+        return ImportedServer(
+            type,
+            host,
+            port,
+            connectionSecurity,
+            authenticationType,
+            username,
+            password,
+            clientCertificateAlias,
+            extras,
+        )
+    }
+
+    private fun readIdentities(): List<ImportedIdentity> {
+        val identities = mutableListOf<ImportedIdentity>()
+
+        readElement { eventType ->
+            if (eventType == XmlPullParser.START_TAG) {
+                when (pullParser.name) {
+                    SettingsExporter.IDENTITY_ELEMENT -> {
+                        val identity = readIdentity()
+                        identities.add(identity)
+                    }
+                    else -> {
+                        skipElement()
+                    }
+                }
+            }
         }
 
         return identities
     }
 
-    @Throws(XmlPullParserException::class, IOException::class)
-    private fun parseIdentity(xpp: XmlPullParser): ImportedIdentity {
-        val identity = ImportedIdentity()
+    private fun readIdentity(): ImportedIdentity {
+        var name: String? = null
+        var email: String? = null
+        var description: String? = null
+        var settings: ImportedSettings? = null
 
-        var eventType = xpp.next()
-        while (!(eventType == XmlPullParser.END_TAG && SettingsExporter.IDENTITY_ELEMENT == xpp.name)) {
+        readElement { eventType ->
             if (eventType == XmlPullParser.START_TAG) {
-                val element = xpp.name
-                if (SettingsExporter.NAME_ELEMENT == element) {
-                    identity.name = getText(xpp)
-                } else if (SettingsExporter.EMAIL_ELEMENT == element) {
-                    identity.email = getText(xpp)
-                } else if (SettingsExporter.DESCRIPTION_ELEMENT == element) {
-                    identity.description = getText(xpp)
-                } else if (SettingsExporter.SETTINGS_ELEMENT == element) {
-                    identity.settings = parseSettings(xpp, SettingsExporter.SETTINGS_ELEMENT)
-                } else {
-                    Timber.w("Unexpected start tag: %s", xpp.name)
+                when (pullParser.name) {
+                    SettingsExporter.NAME_ELEMENT -> {
+                        name = readText()
+                    }
+                    SettingsExporter.EMAIL_ELEMENT -> {
+                        email = readText()
+                    }
+                    SettingsExporter.DESCRIPTION_ELEMENT -> {
+                        description = readText()
+                    }
+                    SettingsExporter.SETTINGS_ELEMENT -> {
+                        settings = readSettingsContainer()
+                    }
+                    else -> {
+                        skipElement()
+                    }
                 }
             }
-            eventType = xpp.next()
         }
 
-        return identity
+        return ImportedIdentity(name, email, description, settings)
     }
 
-    @Throws(XmlPullParserException::class, IOException::class)
-    private fun parseFolders(xpp: XmlPullParser): List<ImportedFolder>? {
-        var folders: MutableList<ImportedFolder>? = null
+    private fun readFolders(): List<ImportedFolder> {
+        val folders = mutableListOf<ImportedFolder>()
 
-        var eventType = xpp.next()
-        while (!(eventType == XmlPullParser.END_TAG && SettingsExporter.FOLDERS_ELEMENT == xpp.name)) {
+        readElement { eventType ->
             if (eventType == XmlPullParser.START_TAG) {
-                val element = xpp.name
-                if (SettingsExporter.FOLDER_ELEMENT == element) {
-                    if (folders == null) {
-                        folders = ArrayList()
+                when (pullParser.name) {
+                    SettingsExporter.FOLDER_ELEMENT -> {
+                        val folder = readFolder()
+                        if (folder != null) {
+                            folders.add(folder)
+                        }
                     }
-
-                    val folder = parseFolder(xpp)
-                    folders.add(folder)
-                } else {
-                    Timber.w("Unexpected start tag: %s", xpp.name)
+                    else -> {
+                        skipElement()
+                    }
                 }
             }
-            eventType = xpp.next()
         }
 
         return folders
     }
 
-    @Throws(XmlPullParserException::class, IOException::class)
-    private fun parseFolder(xpp: XmlPullParser): ImportedFolder {
-        val folder = ImportedFolder()
+    private fun readFolder(): ImportedFolder? {
+        val name = pullParser.getAttributeValue(null, SettingsExporter.NAME_ATTRIBUTE) ?: return null
+        val settings = readSettingsContainer()
 
-        folder.name = xpp.getAttributeValue(null, SettingsExporter.NAME_ATTRIBUTE)
-
-        folder.settings = parseSettings(xpp, SettingsExporter.FOLDER_ELEMENT)
-
-        return folder
+        return ImportedFolder(name, settings)
     }
 
-    @Throws(XmlPullParserException::class, IOException::class)
-    private fun getText(xpp: XmlPullParser): String {
-        val eventType = xpp.next()
-        if (eventType != XmlPullParser.TEXT) {
-            return ""
+    private fun readText(): String {
+        return if (pullParser.next() == XmlPullParser.TEXT) {
+            pullParser.text
+        } else {
+            ""
         }
-        return xpp.text
     }
 
-    @Throws(XmlPullParserException::class, IOException::class)
-    private fun skipToEndTag(xpp: XmlPullParser, endTag: String) {
-        var eventType = xpp.next()
-        while (!(eventType == XmlPullParser.END_TAG && endTag == xpp.name)) {
-            eventType = xpp.next()
+    private fun readAttribute(name: String): String {
+        return pullParser.getAttributeValue(null, name) ?: parserError("Missing '$name' attribute")
+    }
+
+    private fun readElement(block: (Int) -> Unit) {
+        require(pullParser.eventType == XmlPullParser.START_TAG)
+
+        val tagName = pullParser.name
+        val depth = pullParser.depth
+        while (true) {
+            when (val eventType = pullParser.next()) {
+                XmlPullParser.END_DOCUMENT -> {
+                    parserError("End of document reached while reading element '$tagName'")
+                }
+                XmlPullParser.END_TAG -> {
+                    if (pullParser.name == tagName && pullParser.depth == depth) return
+                }
+                else -> {
+                    block(eventType)
+                }
+            }
         }
+    }
+
+    private fun skipElement() {
+        Timber.d("Skipping element '%s'", pullParser.name)
+        readElement { /* Do nothing */ }
+    }
+
+    private fun parserError(message: String): Nothing {
+        throw SettingsParserException(message)
     }
 }
