@@ -92,10 +92,6 @@
      commit: "${tagName}"
      subdir: app-k9mail
      prebuild: ( cd .. && ln -s app-metadata/com.fsck.k9 metadata )
-     sudo:
-       - apt-get update
-       - apt-get install -y openjdk-17-jdk-headless
-       - update-alternatives --auto java
      gradle:
        - yes
      scandelete:
@@ -180,10 +176,6 @@
      commit: "${tagName}"
      subdir: app-k9mail
      prebuild: ( cd .. && ln -s app-metadata/com.fsck.k9 metadata )
-     sudo:
-       - apt-get update
-       - apt-get install -y openjdk-17-jdk-headless
-       - update-alternatives --auto java
      gradle:
        - yes
      scandelete:
