@@ -1,5 +1,0 @@
-- Only remove notifications for messages currently being displayed
-- Open message from notification in Unified Inbox if possible
-- Fixed stale message count for the Outbox folder
-- Fixed search field not working properly when using a hardware keyboard
-- Updated translations

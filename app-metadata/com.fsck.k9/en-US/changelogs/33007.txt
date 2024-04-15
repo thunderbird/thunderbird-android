@@ -1,3 +1,0 @@
-- Fixed the message list background color in the dark theme
-- Fixed a small display issue where "Load up to X more" could have been displayed when it shouldn't have been
-- Updated translations

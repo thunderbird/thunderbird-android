@@ -1,2 +1,0 @@
-- IMAP: Added support for sending the ID command (that is required by some email providers)
-- Updated translations

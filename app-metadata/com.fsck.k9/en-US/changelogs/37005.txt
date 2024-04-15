@@ -1,7 +1,0 @@
-- Adding to contacts should now allow you again to add the email address to an existing contact
-- Fixed display issue with recipients in message view screen
-- Fixed appearance of "Sign in with Google" button
-- Fixed bugs with importing and exporting identities
-- Manually entering names containing non-latin characters is now possible when composing messages
-- The app will no longer ask to save a draft when no changes have been made to an existing draft message
-- Updated translations

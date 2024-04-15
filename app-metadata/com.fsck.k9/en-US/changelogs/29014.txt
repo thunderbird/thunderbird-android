@@ -1,4 +1,0 @@
-- The name and description of notification categories are now updated when the app language is changed
-- Fixed bug where notification settings might not have been properly restored on settings import
-- Fixed a crash when tapping the unread widget tries to open a folder that no longer exists
-- Updated translations

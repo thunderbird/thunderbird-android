@@ -1,4 +1,0 @@
-- Added support for swiping between messages
-- Fixed multiple bugs when there are notifications for more than 8 messages
-- Fixed bug that could lead to broken attachment names when large messages were only partially downloaded (IMAP)
-- Added Western Frisian translation

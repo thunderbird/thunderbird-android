@@ -1,9 +1,0 @@
-- Added support for setting the notification vibration pattern on Android 8+
-- Added support for setting a custom notification light color on Android 8+
-- Fixed back button behavior when opening a single message from a notification
-- Improved behavior when clicking grouped notifications for new messages of an account
-- Hide sensitive information when sync and error notifications are displayed on the lock screen
-- The account color is now used for sync and error notifications
-- Hide notification vibration settings when there's no vibrator hardware
-- Fixed hotkey handling when using non-QWERTY keyboard layouts
-- Updated translations
