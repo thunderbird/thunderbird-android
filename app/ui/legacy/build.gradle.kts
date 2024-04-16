@@ -45,7 +45,6 @@ dependencies {
     implementation(libs.fastadapter.extensions.utils)
     implementation(libs.circleImageView)
     implementation(libs.androidx.work.runtime)
-    api(libs.appauth)
 
     implementation(libs.commons.io)
     implementation(libs.androidx.core.ktx)
@@ -76,14 +75,5 @@ android {
 
     buildFeatures {
         buildConfig = true
-    }
-
-    buildTypes {
-        debug {
-            manifestPlaceholders["appAuthRedirectScheme"] = "FIXME: override this in your app project"
-        }
-        release {
-            manifestPlaceholders["appAuthRedirectScheme"] = "FIXME: override this in your app project"
-        }
     }
 }
