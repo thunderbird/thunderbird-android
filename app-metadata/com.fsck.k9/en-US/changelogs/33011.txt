@@ -1,7 +1,0 @@
-- Don't unexpectedly show and focus the "reply to" field when composing a message
-- Fixed a bug where sometimes toolbar buttons in the message view would affect another message than the one currently being displayed
-- Changed the way the app switches to the next/previous message to avoid a bug that could lead to the toolbar disappearing
-- Fall back to using IPv4 if connecting to a POP3 server using IPv6 fails
-- SMTP: Stop treating all TLS errors as certificate error
-- Added more (local) logging when creating and removing notifications
-- Fixed a couple of rare crashes

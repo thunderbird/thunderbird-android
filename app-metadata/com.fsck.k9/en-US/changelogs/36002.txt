@@ -1,1 +1,0 @@
-- Change primary action in message view header from "reply all" to "reply"

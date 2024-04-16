@@ -1,5 +1,0 @@
-- Fixed crash when viewing a message and OpenKeychain needed to display its user interface, e.g. to ask for a password
-- When composing a message containing consecutive spaces convert them to non-breaking spaces in the generated HTML part of the message
-- Fixed bug where moving a message to another folder wouldn't update the apps search index
-- Fixed small bug where not all cached values were removed when using "clear local messages"
-- Updated translations

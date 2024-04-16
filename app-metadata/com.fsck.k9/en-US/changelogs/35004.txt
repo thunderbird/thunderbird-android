@@ -1,3 +1,0 @@
-- POP3: Fixed bug that lead to messages not being deleted from the server
-- Fixed a crash when a message is deleted (remotely) while it is being dragged in the message list
-- Avoid crash when opening drafts from the message list widget

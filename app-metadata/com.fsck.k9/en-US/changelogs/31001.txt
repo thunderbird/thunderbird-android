@@ -1,4 +1,0 @@
-- Added support for using OAuth 2.0 with personal Microsoft accounts (Office365 accounts don't work yet)
-- Made the transition of existing Gmail accounts to OAuth 2.0 a bit easier
-- Fixed various small UI bugs
-- Updated translations

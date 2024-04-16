@@ -1,2 +1,0 @@
-- Fixed crash when the compose screen goes to the background, e.g. when adding an attachment
-- Updated translations

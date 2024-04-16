@@ -1,5 +1,0 @@
-- Swiping between messages should now work more reliably
-- Fixed message details layout when contact pictures are disabled
-- Fixed disappearing toolbar buttons in the message view screen
-- Fixed a couple of rare crashes
-- Updated translations

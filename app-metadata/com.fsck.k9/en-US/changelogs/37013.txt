@@ -1,3 +1,0 @@
-- Note: For now please manually allow "alarms & reminders" in Android's app settings when using Push on Android 14
-- Fixed crash when Push was enabled on Android 14
-- IMAP: Improved handling of the response to the MOVE command
