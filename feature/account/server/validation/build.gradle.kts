@@ -5,15 +5,6 @@ plugins {
 android {
     namespace = "app.k9mail.feature.account.server.validation"
     resourcePrefix = "account_server_validation_"
-
-    buildTypes {
-        debug {
-            manifestPlaceholders["appAuthRedirectScheme"] = "FIXME: override this in your app project"
-        }
-        release {
-            manifestPlaceholders["appAuthRedirectScheme"] = "FIXME: override this in your app project"
-        }
-    }
 }
 
 dependencies {

@@ -115,28 +115,24 @@ android {
         debug {
             applicationIdSuffix = ".debug"
             isMinifyEnabled = false
-            manifestPlaceholders["appAuthRedirectScheme"] = "net.thunderbird.placeholder.debug"
         }
 
         release {
             signingConfig = signingConfigs.findByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
-            manifestPlaceholders["appAuthRedirectScheme"] = "net.thunderbird.placeholder"
         }
 
         create("daily") {
             initWith(getByName("release"))
             applicationIdSuffix = ".daily"
             matchingFallbacks += listOf("release")
-            manifestPlaceholders["appAuthRedirectScheme"] = "net.thunderbird.placeholder.daily"
         }
 
         create("beta") {
             initWith(getByName("release"))
             applicationIdSuffix = ".beta"
             matchingFallbacks += listOf("release")
-            manifestPlaceholders["appAuthRedirectScheme"] = "net.thunderbird.placeholder.beta"
         }
     }
 
