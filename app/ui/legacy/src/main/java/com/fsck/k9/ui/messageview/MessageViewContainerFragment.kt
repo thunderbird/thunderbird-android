@@ -1,7 +1,6 @@
 package com.fsck.k9.ui.messageview
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -218,10 +217,6 @@ class MessageViewContainerFragment : Fragment() {
 
     fun onDelete() {
         messageViewFragment.onDelete()
-    }
-
-    fun onPendingIntentResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        findMessageViewFragment().onPendingIntentResult(requestCode, resultCode, data)
     }
 
     private class MessageViewContainerAdapter(

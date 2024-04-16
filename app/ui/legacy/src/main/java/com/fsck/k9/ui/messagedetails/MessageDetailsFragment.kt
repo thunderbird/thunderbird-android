@@ -2,6 +2,7 @@ package com.fsck.k9.ui.messagedetails
 
 import android.app.PendingIntent
 import android.content.Intent
+import android.content.IntentSender.SendIntentException
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -36,6 +37,8 @@ import com.mikepenz.fastadapter.listeners.ClickEventHook
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import org.openintents.openpgp.util.OpenPgpIntentStarter
+import timber.log.Timber
 
 class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
     private val viewModel: MessageDetailsViewModel by viewModel()
@@ -333,7 +336,11 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
     }
 
     private fun showCryptoKeys(pendingIntent: PendingIntent) {
-        requireActivity().startIntentSender(pendingIntent.intentSender, null, 0, 0, 0)
+        try {
+            OpenPgpIntentStarter.startIntentSender(requireActivity(), pendingIntent.intentSender)
+        } catch (e: SendIntentException) {
+            Timber.e(e, "Error starting PendingIntent")
+        }
     }
 
     private fun searchCryptoKeys() {

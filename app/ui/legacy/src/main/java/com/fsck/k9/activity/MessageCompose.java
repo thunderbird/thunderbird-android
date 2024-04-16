@@ -117,6 +117,7 @@ import com.fsck.k9.ui.messagelist.DefaultFolderProvider;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.util.OpenPgpApi;
+import org.openintents.openpgp.util.OpenPgpIntentStarter;
 import timber.log.Timber;
 
 
@@ -1621,7 +1622,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     public void onMessageBuildReturnPendingIntent(PendingIntent pendingIntent, int requestCode) {
         requestCode |= REQUEST_MASK_MESSAGE_BUILDER;
         try {
-            startIntentSenderForResult(pendingIntent.getIntentSender(), requestCode, null, 0, 0, 0);
+            OpenPgpIntentStarter.startIntentSenderForResult(this, pendingIntent.getIntentSender(), requestCode);
         } catch (SendIntentException e) {
             Timber.e(e, "Error starting pending intent from builder!");
         }
@@ -1630,9 +1631,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     public void launchUserInteractionPendingIntent(PendingIntent pendingIntent, int requestCode) {
         requestCode |= REQUEST_MASK_RECIPIENT_PRESENTER;
         try {
-            startIntentSenderForResult(pendingIntent.getIntentSender(), requestCode, null, 0, 0, 0);
+            OpenPgpIntentStarter.startIntentSenderForResult(this, pendingIntent.getIntentSender(), requestCode);
         } catch (SendIntentException e) {
-            e.printStackTrace();
+            Timber.e(e, "Error starting pending intent from builder!");
         }
     }
 
@@ -1688,11 +1689,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         @Override
-        public boolean startIntentSenderForMessageLoaderHelper(IntentSender si, int requestCode, Intent fillIntent,
-                int flagsMask, int flagValues, int extraFlags) {
+        public boolean startIntentSenderForMessageLoaderHelper(IntentSender intentSender, int requestCode) {
             try {
                 requestCode |= REQUEST_MASK_LOADER_HELPER;
-                startIntentSenderForResult(si, requestCode, fillIntent, flagsMask, flagValues, extraFlags);
+                OpenPgpIntentStarter.startIntentSenderForResult(MessageCompose.this, intentSender, requestCode);
             } catch (SendIntentException e) {
                 Timber.e(e, "Irrecoverable error calling PendingIntent!");
             }

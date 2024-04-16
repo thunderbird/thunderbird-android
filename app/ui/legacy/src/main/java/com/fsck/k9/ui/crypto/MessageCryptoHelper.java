@@ -795,7 +795,7 @@ public class MessageCryptoHelper {
             callback.onCryptoOperationsFinished(queuedResult);
         } else if (queuedPendingIntent != null) {
             boolean pendingIntentHandled = callback.startPendingIntentForCryptoHelper(
-                    queuedPendingIntent.getIntentSender(), REQUEST_CODE_USER_INTERACTION, null, 0, 0, 0);
+                    queuedPendingIntent.getIntentSender(), REQUEST_CODE_USER_INTERACTION);
             if (pendingIntentHandled) {
                 queuedPendingIntent = null;
             }

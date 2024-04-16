@@ -54,6 +54,7 @@ import com.fsck.k9.ui.share.ShareIntentBuilder
 import com.fsck.k9.ui.withArguments
 import java.util.Locale
 import org.koin.android.ext.android.inject
+import org.openintents.openpgp.util.OpenPgpIntentStarter
 import timber.log.Timber
 
 class MessageViewFragment :
@@ -563,7 +564,8 @@ class MessageViewFragment :
         startActivityForResult(intent, requestCode)
     }
 
-    fun onPendingIntentResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    @Deprecated("Switch to Activity Result API")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode and REQUEST_MASK_LOADER_HELPER == REQUEST_MASK_LOADER_HELPER) {
             val maskedRequestCode = requestCode xor REQUEST_MASK_LOADER_HELPER
             messageLoaderHelper.onActivityResult(maskedRequestCode, resultCode, data)
@@ -571,9 +573,7 @@ class MessageViewFragment :
             val maskedRequestCode = requestCode xor REQUEST_MASK_CRYPTO_PRESENTER
             messageCryptoPresenter.onActivityResult(maskedRequestCode, resultCode, data)
         }
-    }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode != Activity.RESULT_OK) return
 
         when (requestCode) {
@@ -829,28 +829,9 @@ class MessageViewFragment :
         }
 
         @Throws(SendIntentException::class)
-        override fun startPendingIntentForCryptoPresenter(
-            intentSender: IntentSender,
-            requestCode: Int?,
-            fillIntent: Intent?,
-            flagsMask: Int,
-            flagValues: Int,
-            extraFlags: Int,
-        ) {
-            if (requestCode == null) {
-                requireActivity().startIntentSender(intentSender, fillIntent, flagsMask, flagValues, extraFlags)
-                return
-            }
-
+        override fun startPendingIntentForCryptoPresenter(intentSender: IntentSender, requestCode: Int) {
             val maskedRequestCode = requestCode or REQUEST_MASK_CRYPTO_PRESENTER
-            requireActivity().startIntentSenderForResult(
-                intentSender,
-                maskedRequestCode,
-                fillIntent,
-                flagsMask,
-                flagValues,
-                extraFlags,
-            )
+            OpenPgpIntentStarter.startIntentSenderForResult(this@MessageViewFragment, intentSender, maskedRequestCode)
         }
 
         override fun restartMessageCryptoProcessing() {
@@ -926,26 +907,16 @@ class MessageViewFragment :
             Toast.makeText(requireContext(), R.string.status_network_error, Toast.LENGTH_LONG).show()
         }
 
-        override fun startIntentSenderForMessageLoaderHelper(
-            intentSender: IntentSender,
-            requestCode: Int,
-            fillIntent: Intent?,
-            flagsMask: Int,
-            flagValues: Int,
-            extraFlags: Int,
-        ): Boolean {
+        override fun startIntentSenderForMessageLoaderHelper(intentSender: IntentSender, requestCode: Int): Boolean {
             if (!isActive) return false
 
             showProgressThreshold = null
             try {
                 val maskedRequestCode = requestCode or REQUEST_MASK_LOADER_HELPER
-                requireActivity().startIntentSenderForResult(
+                OpenPgpIntentStarter.startIntentSenderForResult(
+                    this@MessageViewFragment,
                     intentSender,
                     maskedRequestCode,
-                    fillIntent,
-                    flagsMask,
-                    flagValues,
-                    extraFlags,
                 )
             } catch (e: SendIntentException) {
                 Timber.e(e, "Irrecoverable error calling PendingIntent!")

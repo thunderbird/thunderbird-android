@@ -3,7 +3,6 @@ package com.fsck.k9.activity
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
-import android.content.IntentSender
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
@@ -1285,38 +1284,6 @@ open class MessageList :
         messagingController.clearNotifications(search)
     }
 
-    override fun startIntentSenderForResult(
-        intent: IntentSender,
-        requestCode: Int,
-        fillInIntent: Intent?,
-        flagsMask: Int,
-        flagsValues: Int,
-        extraFlags: Int,
-    ) {
-        // If any of the high 16 bits are set it is not one of our request codes
-        if (requestCode and REQUEST_CODE_MASK != 0) {
-            super.startIntentSenderForResult(intent, requestCode, fillInIntent, flagsMask, flagsValues, extraFlags)
-            return
-        }
-
-        val modifiedRequestCode = requestCode or REQUEST_FLAG_PENDING_INTENT
-        super.startIntentSenderForResult(intent, modifiedRequestCode, fillInIntent, flagsMask, flagsValues, extraFlags)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        // If any of the high 16 bits are set it is not one of our request codes
-        if (requestCode and REQUEST_CODE_MASK != 0) return
-
-        if (requestCode and REQUEST_FLAG_PENDING_INTENT != 0) {
-            val originalRequestCode = requestCode xor REQUEST_FLAG_PENDING_INTENT
-            if (messageViewContainerFragment != null) {
-                messageViewContainerFragment!!.onPendingIntentResult(originalRequestCode, resultCode, data)
-            }
-        }
-    }
-
     private val isAdditionalMessageListDisplayed: Boolean
         get() = supportFragmentManager.backStackEntryCount > 0
 
@@ -1419,9 +1386,6 @@ open class MessageList :
         private const val FIRST_FRAGMENT_TRANSACTION = "first"
         private const val FRAGMENT_TAG_MESSAGE_VIEW_CONTAINER = "MessageViewContainerFragment"
         private const val FRAGMENT_TAG_PLACEHOLDER = "MessageViewPlaceholder"
-
-        private const val REQUEST_CODE_MASK = 0xFFFF0000.toInt()
-        private const val REQUEST_FLAG_PENDING_INTENT = 1 shl 15
 
         private val defaultFolderProvider: DefaultFolderProvider by inject()
 

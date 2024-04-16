@@ -357,14 +357,12 @@ public class MessageLoaderHelper {
         }
 
         @Override
-        public boolean startPendingIntentForCryptoHelper(IntentSender si, int requestCode, Intent fillIntent,
-                int flagsMask, int flagValues, int extraFlags) {
+        public boolean startPendingIntentForCryptoHelper(IntentSender intentSender, int requestCode) {
             if (callback == null) {
                 throw new IllegalStateException("unexpected call when callback is already detached");
             }
 
-            return callback.startIntentSenderForMessageLoaderHelper(si, requestCode, fillIntent,
-                    flagsMask, flagValues, extraFlags);
+            return callback.startIntentSenderForMessageLoaderHelper(intentSender, requestCode);
         }
     };
 
@@ -524,8 +522,7 @@ public class MessageLoaderHelper {
 
         void setLoadingProgress(int current, int max);
 
-        boolean startIntentSenderForMessageLoaderHelper(IntentSender si, int requestCode, Intent fillIntent,
-                int flagsMask, int flagValues, int extraFlags);
+        boolean startIntentSenderForMessageLoaderHelper(IntentSender intentSender, int requestCode);
 
         void onDownloadErrorMessageNotFound();
         void onDownloadErrorNetworkError();
