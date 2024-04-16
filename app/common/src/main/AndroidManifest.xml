@@ -336,15 +336,25 @@
 
         <activity
             android:name="net.openid.appauth.RedirectUriReceiverActivity"
-            android:exported="true"
-            tools:node="merge">
+            android:exported="true" >
+
+            <!-- The library's default intent filter with `appAuthRedirectScheme` replaced by `applicationId` -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <!-- Microsoft uses a special redirect URI format for Android apps -->
+                <data android:scheme="${applicationId}" />
+            </intent-filter>
+
+            <!-- Microsoft uses a special redirect URI format for Android apps -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:scheme="msauth"
                     android:host="${applicationId}" />
