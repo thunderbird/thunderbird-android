@@ -43,6 +43,21 @@ internal val darkThemeColorScheme = ThemeColorScheme(
     surfaceDim = TonalColorPalette.neutral006,
 
     scrim = TonalColorPalette.neutral000,
+
+    info = TonalColorPalette.info080,
+    onInfo = TonalColorPalette.info020,
+    infoContainer = TonalColorPalette.info030,
+    onInfoContainer = TonalColorPalette.info090,
+
+    success = TonalColorPalette.success080,
+    onSuccess = TonalColorPalette.success020,
+    successContainer = TonalColorPalette.success030,
+    onSuccessContainer = TonalColorPalette.success090,
+
+    warning = TonalColorPalette.warning080,
+    onWarning = TonalColorPalette.warning020,
+    warningContainer = TonalColorPalette.warning030,
+    onWarningContainer = TonalColorPalette.warning090,
 )
 
 internal val lightThemeColorScheme = ThemeColorScheme(
@@ -86,4 +101,19 @@ internal val lightThemeColorScheme = ThemeColorScheme(
     surfaceDim = TonalColorPalette.neutral087,
 
     scrim = TonalColorPalette.neutral000,
+
+    info = TonalColorPalette.info040,
+    onInfo = TonalColorPalette.info100,
+    infoContainer = TonalColorPalette.info090,
+    onInfoContainer = TonalColorPalette.info010,
+
+    success = TonalColorPalette.success040,
+    onSuccess = TonalColorPalette.success100,
+    successContainer = TonalColorPalette.success090,
+    onSuccessContainer = TonalColorPalette.success010,
+
+    warning = TonalColorPalette.warning040,
+    onWarning = TonalColorPalette.warning100,
+    warningContainer = TonalColorPalette.warning090,
+    onWarningContainer = TonalColorPalette.warning010,
 )

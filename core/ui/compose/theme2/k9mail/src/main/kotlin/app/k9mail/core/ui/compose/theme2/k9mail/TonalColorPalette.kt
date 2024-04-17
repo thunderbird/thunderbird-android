@@ -97,4 +97,28 @@ internal object TonalColorPalette {
     val neutralVariant095 = Color(color = 0xFFFFECEF)
     val neutralVariant099 = Color(color = 0xFFFFFBFF)
     val neutralVariant100 = Color(color = 0xFFFFFFFF)
+
+    val info010 = Color(color = 0xFF221B00)
+    val info020 = Color(color = 0xFF3A3000)
+    val info030 = Color(color = 0xFF544600)
+    val info040 = Color(color = 0xFF705D00)
+    val info080 = Color(color = 0xFFE8C41D)
+    val info090 = Color(color = 0xFFFFE16E)
+    val info100 = Color(color = 0xFFFFFFFF)
+
+    val success010 = Color(color = 0xFF002204)
+    val success020 = Color(color = 0xFF00390A)
+    val success030 = Color(color = 0xFF005313)
+    val success040 = Color(color = 0xFF006E1C)
+    val success080 = Color(color = 0xFF7DDC7A)
+    val success090 = Color(color = 0xFF98F994)
+    val success100 = Color(color = 0xFFFFFFFF)
+
+    val warning010 = Color(color = 0xFF2E1500)
+    val warning020 = Color(color = 0xFF4C2700)
+    val warning030 = Color(color = 0xFF6D3A00)
+    val warning040 = Color(color = 0xFF8F4E00)
+    val warning080 = Color(color = 0xFFFFB77B)
+    val warning090 = Color(color = 0xFFFFDCC2)
+    val warning100 = Color(color = 0xFFFFFFFF)
 }
