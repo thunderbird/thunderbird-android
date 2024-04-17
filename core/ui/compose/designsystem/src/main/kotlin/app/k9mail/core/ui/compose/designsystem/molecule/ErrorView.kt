@@ -17,7 +17,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.R
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
-import app.k9mail.core.ui.compose.designsystem.atom.button.buttonContentPadding
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody2
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle1
@@ -75,10 +74,6 @@ fun ErrorView(
                     ButtonText(
                         text = stringResource(id = R.string.designsystem_molecule_error_view_button_retry),
                         onClick = onRetry,
-                        contentPadding = buttonContentPadding(
-                            start = MainTheme.spacings.double,
-                            end = MainTheme.spacings.double,
-                        ),
                     )
                 }
             }
