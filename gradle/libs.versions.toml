@@ -68,10 +68,7 @@ jsoup = "1.17.2"
 junit = "4.13.2"
 jutf7 = "1.0.0"
 jzlib = "1.0.7"
-koinCore = "3.5.3"
-koinAndroid = "3.5.3"
-koinAndroidCompose = "3.5.3"
-koinTest = "3.5.3"
+koinBom = "3.5.6"
 kotlinBom = "1.9.23"
 # Needs to match the version used by Gradle, just check with `./gradlew --version`
 kotlinGradleBom = "1.9.22"
@@ -191,11 +188,12 @@ jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 junit = { module = "junit:junit", version.ref = "junit" }
 jutf7 = { module = "com.beetstra.jutf7:jutf7", version.ref = "jutf7" }
 jzlib = { module = "com.jcraft:jzlib", version.ref = "jzlib" }
-koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinCore" }
-koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
-koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinAndroidCompose" }
-koin-test = { module = "io.insert-koin:koin-test", version.ref = "koinTest" }
-koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4", version.ref = "koinTest" }
+koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koinBom" }
+koin-core = { module = "io.insert-koin:koin-core" }
+koin-android = { module = "io.insert-koin:koin-android" }
+koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose" }
+koin-test = { module = "io.insert-koin:koin-test" }
+koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4" }
 kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlinBom" }
 kotlin-gradle-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlinGradleBom" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
