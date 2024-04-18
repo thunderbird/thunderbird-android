@@ -5,10 +5,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.R
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedPassword
-import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 
 @Composable
 fun PasswordInput(
@@ -31,27 +29,6 @@ fun PasswordInput(
             isRequired = isRequired,
             hasError = errorMessage != null,
             modifier = Modifier.fillMaxWidth(),
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun PasswordInputPreview() {
-    PreviewWithThemes {
-        PasswordInput(
-            onPasswordChange = {},
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun PasswordInputWithErrorPreview() {
-    PreviewWithThemes {
-        PasswordInput(
-            onPasswordChange = {},
-            errorMessage = "Password error",
         )
     }
 }

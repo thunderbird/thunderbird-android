@@ -11,11 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.atom.CircularProgressIndicator
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle1
-import app.k9mail.core.ui.compose.theme.MainTheme
-import app.k9mail.core.ui.compose.theme.PreviewWithThemes
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
+import app.k9mail.core.ui.compose.theme2.MainTheme
 
 @Composable
 fun LoadingView(
@@ -32,12 +30,12 @@ fun LoadingView(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(MainTheme.spacings.double),
+                .padding(MainTheme.spacings.triple),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
             if (message != null) {
-                TextSubtitle1(
+                TextTitleMedium(
                     text = message,
                     textAlign = TextAlign.Center,
                 )
@@ -49,23 +47,5 @@ fun LoadingView(
                 CircularProgressIndicator()
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun LoadingViewPreview() {
-    PreviewWithThemes {
-        LoadingView()
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun LoadingViewWithMessagePreview() {
-    PreviewWithThemes {
-        LoadingView(
-            message = "Loading ...",
-        )
     }
 }

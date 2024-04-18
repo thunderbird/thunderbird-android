@@ -6,11 +6,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedSelect
-import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun <T> SelectInput(
@@ -35,18 +32,6 @@ fun <T> SelectInput(
             modifier = Modifier.fillMaxWidth(),
             optionToStringTransformation = optionToStringTransformation,
             label = label,
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun SelectInputPreview() {
-    PreviewWithThemes {
-        SelectInput(
-            options = persistentListOf("Option 1", "Option 2", "Option 3"),
-            selectedOption = "Option 1",
-            onOptionChange = {},
         )
     }
 }
