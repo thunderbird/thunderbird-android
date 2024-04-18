@@ -13,6 +13,8 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
+import app.k9mail.core.ui.compose.theme.K9Theme
+import app.k9mail.core.ui.compose.theme2.k9mail.K9MailTheme2
 import org.junit.Rule
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -31,7 +33,21 @@ open class ComposeTest {
     }
 }
 
+/**
+ * Set the content of the test
+ */
 fun ComposeTest.setContent(content: @Composable () -> Unit) = composeTestRule.setContent(content)
+
+/**
+ * Set the content of the test and wrap it in the default theme.
+ */
+fun ComposeTest.setContentWithTheme(content: @Composable () -> Unit) = composeTestRule.setContent {
+    K9MailTheme2 {
+        K9Theme {
+            content()
+        }
+    }
+}
 
 fun ComposeTest.onNodeWithTag(
     tag: String,
