@@ -19,7 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContentWithBackground
+import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContentWithSurface
 import app.k9mail.core.ui.compose.theme.MainTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
@@ -58,7 +58,7 @@ fun <T> PagedContent(
                 )
             }
         }
-        ResponsiveContentWithBackground {
+        ResponsiveContentWithSurface {
             HorizontalPager(
                 state = pagerState,
                 modifier = Modifier

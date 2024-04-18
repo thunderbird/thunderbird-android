@@ -8,12 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.common.window.WindowSizeClass
 import app.k9mail.core.ui.compose.common.window.getWindowSizeInfo
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import app.k9mail.core.ui.compose.theme.K9Theme
-import app.k9mail.core.ui.compose.theme.MainTheme
+import app.k9mail.core.ui.compose.theme2.MainTheme
 
 /**
  * The [ResponsiveContent] composable automatically adapts its child content to different screen sizes and resolutions,
@@ -87,7 +85,7 @@ private fun ExpandedContent(
             ) {
                 Surface(
                     modifier = Modifier.requiredWidth(WindowSizeClass.MEDIUM_MAX_WIDTH.dp),
-                    tonalElevation = MainTheme.elevations.raised,
+                    tonalElevation = MainTheme.elevations.level1,
                 ) {
                     content()
                 }
@@ -105,25 +103,10 @@ private fun ExpandedContent(
                     modifier = Modifier
                         .requiredWidth(WindowSizeClass.MEDIUM_MAX_WIDTH.dp)
                         .requiredHeight(WindowSizeClass.MEDIUM_MAX_HEIGHT.dp),
-                    tonalElevation = MainTheme.elevations.raised,
+                    tonalElevation = MainTheme.elevations.level1,
                 ) {
                     content()
                 }
-            }
-        }
-    }
-}
-
-@Composable
-@PreviewDevices
-internal fun ResponsiveContentPreview() {
-    K9Theme {
-        Surface {
-            ResponsiveContent {
-                Surface(
-                    color = MainTheme.colors.info,
-                    modifier = Modifier.fillMaxSize(),
-                ) {}
             }
         }
     }
