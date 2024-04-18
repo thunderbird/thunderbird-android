@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_push_title">Push folders</string>
+    <string name="settings_push_option_all">All</string>
+    <string name="settings_push_option_first_class">Only 1st Class folders</string>
+    <string name="settings_push_option_first_and_second_class">1st and 2nd Class folders</string>
+    <string name="settings_push_option_all_except_second_class">All except 2nd Class folders</string>
+    <string name="settings_push_option_none">None</string>
+    <string name="settings_push_alarm_permission_required">Permission required (<xliff:g id="currentValue" example="None">%s</xliff:g>)</string>
+    <string name="settings_push_permission_info_text">K-9 Mail needs to regularly wake up to keep Push connections alive. In order for this to work you need to grant the permission to schedule alarms.</string>
+    <string name="settings_push_grant_permission_button">Grant permission</string>
+</resources>

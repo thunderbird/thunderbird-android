@@ -8,7 +8,7 @@ import com.fsck.k9.helper.AlarmManagerCompat
 /**
  * Checks whether the app can schedule exact alarms.
  */
-internal interface AlarmPermissionManager {
+interface AlarmPermissionManager {
     /**
      * Checks whether the app can schedule exact alarms.
      *
@@ -45,6 +45,6 @@ internal fun AlarmPermissionManager(context: Context, alarmManagerCompat: AlarmM
  * Note: Currently Android stops (and potentially restarts) the app when the permission is revoked. So there's no
  * callback mechanism for the permission revocation case.
  */
-internal fun interface AlarmPermissionListener {
+fun interface AlarmPermissionListener {
     fun onAlarmPermissionGranted()
 }

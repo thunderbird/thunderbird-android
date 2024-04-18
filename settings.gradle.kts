@@ -49,6 +49,7 @@ include(
 
 include(
     ":feature:settings:import",
+    ":feature:settings:push",
 )
 
 include(
