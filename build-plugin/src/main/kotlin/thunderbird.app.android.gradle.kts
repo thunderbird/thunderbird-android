@@ -38,6 +38,7 @@ dependencies {
     coreLibraryDesugaring(libs.android.desugar)
 
     implementation(platform(libs.kotlin.bom))
+    implementation(platform(libs.koin.bom))
 
     implementation(libs.bundles.shared.jvm.android.app)
 

@@ -21,8 +21,8 @@ androidxAnnotation = "1.7.1"
 androidxAppCompat = "1.6.1"
 androidxBiometric = "1.1.0"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
-androidxComposeBom = "2024.02.01"
-androidxComposeCompiler = "1.5.10"
+androidxComposeBom = "2024.04.00"
+androidxComposeCompiler = "1.5.11"
 androidxConstraintLayout = "2.1.4"
 androidxCoordinatorLayout = "1.2.0"
 androidxCore = "1.12.0"
@@ -47,17 +47,17 @@ appAuth = "0.11.1"
 assertk = "0.28.0"
 circleImageView = "3.1.0"
 ckchangelog = "2.0.0-beta02"
-clikt = "4.2.2"
-commonsIo = "2.15.1"
+clikt = "4.3.0"
+commonsIo = "2.16.1"
 dependencyCheckPlugin = "0.51.0"
 dependencyGuardPlugin = "0.5.0"
 detektPlugin = "1.23.5"
-detektPluginCompose = "0.3.11"
+detektPluginCompose = "0.3.15"
 fastAdapter = "5.7.0"
-forkhandlesBom = "2.13.1.0"
+forkhandlesBom = "2.15.1.0"
 glide = "4.16.0"
-gradle = "8.6"
-http4kBom = "5.13.7.0"
+gradle = "8.7"
+http4kBom = "5.16.0.0"
 icu4j = "72.1"
 javaDiffUtils = "4.12"
 jcipAnnotations = "1.0"
@@ -68,14 +68,11 @@ jsoup = "1.17.2"
 junit = "4.13.2"
 jutf7 = "1.0.0"
 jzlib = "1.0.7"
-koinCore = "3.5.3"
-koinAndroid = "3.5.3"
-koinAndroidCompose = "3.5.3"
-koinTest = "3.5.3"
-kotlinBom = "1.9.22"
+koinBom = "3.5.6"
+kotlinBom = "1.9.23"
 # Needs to match the version used by Gradle, just check with `./gradlew --version`
-kotlinGradleBom = "1.9.20"
-kotlinKsp = "1.9.22-1.0.17"
+kotlinGradleBom = "1.9.22"
+kotlinKsp = "1.9.23-1.0.20"
 kotlinxCoroutines = "1.8.0"
 kotlinxDateTime = "0.5.0"
 ktlint = "1.1.1"
@@ -84,13 +81,13 @@ leakcanary = "2.13"
 materialDrawer = "9.0.2"
 mime4j = "0.8.9"
 minidns = "1.0.5"
-mockito = "5.8.0"
-mockitoKotlin = "5.2.1"
+mockito = "5.11.0"
+mockitoKotlin = "5.3.1"
 moshi = "1.15.1"
 okhttp = "4.12.0"
-okio = "3.8.0"
+okio = "3.9.0"
 preferencesFix = "1.1.0"
-robolectric = "4.11.1"
+robolectric = "4.12.1"
 safeContentResolver = "1.0.0"
 searchPreference = "v2.3.0"
 spotlessPlugin = "6.25.0"
@@ -191,11 +188,12 @@ jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 junit = { module = "junit:junit", version.ref = "junit" }
 jutf7 = { module = "com.beetstra.jutf7:jutf7", version.ref = "jutf7" }
 jzlib = { module = "com.jcraft:jzlib", version.ref = "jzlib" }
-koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinCore" }
-koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
-koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinAndroidCompose" }
-koin-test = { module = "io.insert-koin:koin-test", version.ref = "koinTest" }
-koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4", version.ref = "koinTest" }
+koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koinBom" }
+koin-core = { module = "io.insert-koin:koin-core" }
+koin-android = { module = "io.insert-koin:koin-android" }
+koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose" }
+koin-test = { module = "io.insert-koin:koin-test" }
+koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4" }
 kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlinBom" }
 kotlin-gradle-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlinGradleBom" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
