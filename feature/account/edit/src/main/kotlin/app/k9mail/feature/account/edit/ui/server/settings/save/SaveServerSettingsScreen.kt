@@ -6,10 +6,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.common.mvi.observe
+import app.k9mail.core.ui.compose.designsystem.organism.TopAppBarWithBackButton
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
-import app.k9mail.feature.account.common.ui.AccountTopAppBarWithBackButton
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.common.ui.WizardNavigationBarState
 import app.k9mail.feature.account.edit.ui.server.settings.save.SaveServerSettingsContract.Effect
@@ -42,9 +42,9 @@ fun SaveServerSettingsScreen(
 
     Scaffold(
         topBar = {
-            AccountTopAppBarWithBackButton(
+            TopAppBarWithBackButton(
                 title = title,
-                onBackClicked = {
+                onBackClick = {
                     dispatch(Event.OnBackClicked)
                 },
             )
