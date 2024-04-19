@@ -395,7 +395,7 @@ internal class SettingsImportViewModel(
             ?: error("Failed to open settings file for reading: $contentUri")
 
         return inputStream.use {
-            SettingsImporter.importSettings(context, inputStream, generalSettings, accounts, false)
+            SettingsImporter.importSettings(context, inputStream, generalSettings, accounts)
         }
     }
 

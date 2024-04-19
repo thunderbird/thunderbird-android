@@ -9,7 +9,6 @@ data class ImportResults(
 data class AccountDescriptionPair(
     val original: AccountDescription,
     val imported: AccountDescription,
-    val overwritten: Boolean,
     val authorizationNeeded: Boolean,
     val incomingPasswordNeeded: Boolean,
     val outgoingPasswordNeeded: Boolean,

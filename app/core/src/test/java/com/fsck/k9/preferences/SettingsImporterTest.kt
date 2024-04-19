@@ -38,7 +38,7 @@ class SettingsImporterTest : K9RobolectricTest() {
         val accountUuids = emptyList<String>()
 
         assertFailure {
-            SettingsImporter.importSettings(context, inputStream, true, accountUuids, true)
+            SettingsImporter.importSettings(context, inputStream, true, accountUuids)
         }.isInstanceOf<SettingsImportExportException>()
     }
 
@@ -48,7 +48,7 @@ class SettingsImporterTest : K9RobolectricTest() {
         val accountUuids = emptyList<String>()
 
         assertFailure {
-            SettingsImporter.importSettings(context, inputStream, true, accountUuids, true)
+            SettingsImporter.importSettings(context, inputStream, true, accountUuids)
         }.isInstanceOf<SettingsImportExportException>()
     }
 
@@ -58,7 +58,7 @@ class SettingsImporterTest : K9RobolectricTest() {
         val accountUuids = emptyList<String>()
 
         assertFailure {
-            SettingsImporter.importSettings(context, inputStream, true, accountUuids, true)
+            SettingsImporter.importSettings(context, inputStream, true, accountUuids)
         }.isInstanceOf<SettingsImportExportException>()
     }
 
@@ -68,7 +68,7 @@ class SettingsImporterTest : K9RobolectricTest() {
         val accountUuids = emptyList<String>()
 
         assertFailure {
-            SettingsImporter.importSettings(context, inputStream, true, accountUuids, true)
+            SettingsImporter.importSettings(context, inputStream, true, accountUuids)
         }.isInstanceOf<SettingsImportExportException>()
     }
 
@@ -78,7 +78,7 @@ class SettingsImporterTest : K9RobolectricTest() {
         val accountUuids = emptyList<String>()
 
         assertFailure {
-            SettingsImporter.importSettings(context, inputStream, true, accountUuids, true)
+            SettingsImporter.importSettings(context, inputStream, true, accountUuids)
         }.isInstanceOf<SettingsImportExportException>()
     }
 
@@ -88,7 +88,7 @@ class SettingsImporterTest : K9RobolectricTest() {
         val accountUuids = emptyList<String>()
 
         assertFailure {
-            SettingsImporter.importSettings(context, inputStream, true, accountUuids, true)
+            SettingsImporter.importSettings(context, inputStream, true, accountUuids)
         }.isInstanceOf<SettingsImportExportException>()
     }
 
@@ -98,7 +98,7 @@ class SettingsImporterTest : K9RobolectricTest() {
         val accountUuids = emptyList<String>()
 
         assertFailure {
-            SettingsImporter.importSettings(context, inputStream, true, accountUuids, true)
+            SettingsImporter.importSettings(context, inputStream, true, accountUuids)
         }.isInstanceOf<SettingsImportExportException>()
     }
 
@@ -137,7 +137,7 @@ class SettingsImporterTest : K9RobolectricTest() {
             """.trimIndent().byteInputStream()
         val accountUuids = listOf(accountUuid)
 
-        val results = SettingsImporter.importSettings(context, inputStream, true, accountUuids, false)
+        val results = SettingsImporter.importSettings(context, inputStream, true, accountUuids)
 
         assertThat(results).all {
             prop(ImportResults::erroneousAccounts).isEmpty()
