@@ -13,7 +13,7 @@ import androidx.compose.material3.Surface as Material3Surface
 fun Surface(
     modifier: Modifier = Modifier,
     shape: Shape = RectangleShape,
-    color: Color = Color.Unspecified,
+    color: Color = MainTheme.colors.surface,
     tonalElevation: Dp = MainTheme.elevations.level0,
     content: @Composable () -> Unit,
 ) {

@@ -13,9 +13,7 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
 @PreviewDevices
 internal fun ResponsiveWidthContainerPreview() {
     PreviewWithTheme {
-        Surface(
-            color = MainTheme.colors.surfaceContainer,
-        ) {
+        Surface {
             ResponsiveWidthContainer {
                 Surface(
                     color = MainTheme.colors.error,
