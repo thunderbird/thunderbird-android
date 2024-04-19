@@ -1,7 +1,6 @@
 package com.fsck.k9.preferences
 
 import android.content.Context
-import android.text.TextUtils
 import com.fsck.k9.Account
 import com.fsck.k9.AccountPreferenceSerializer
 import com.fsck.k9.Core
@@ -17,7 +16,6 @@ import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import com.fsck.k9.preferences.ServerTypeConverter.toServerSettingsType
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException
 import java.io.InputStream
-import java.util.Collections
 import java.util.UUID
 import kotlinx.datetime.Clock
 import timber.log.Timber
@@ -34,22 +32,25 @@ object SettingsImporter {
      * @throws SettingsImportExportException In case of an error.
      */
     @Throws(SettingsImportExportException::class)
-    fun getImportStreamContents(inputStream: InputStream?): ImportContents {
+    fun getImportStreamContents(inputStream: InputStream): ImportContents {
         try {
             // Parse the import stream but don't save individual settings (overview=true)
             val settingsFileParser = SettingsFileParser()
-            val imported = settingsFileParser.parseSettings(inputStream!!, false, null, true)
+            val imported = settingsFileParser.parseSettings(
+                inputStream = inputStream,
+                globalSettings = false,
+                accountUuids = null,
+                overview = true,
+            )
 
             // If the stream contains global settings the "globalSettings" member will not be null
             val globalSettings = (imported.globalSettings != null)
 
-            val accounts: MutableList<AccountDescription> = ArrayList()
-            // If the stream contains at least one account configuration the "accounts" member will not be null.
-            if (imported.accounts != null) {
-                for (account in imported.accounts.values) {
-                    val accountName = getAccountDisplayName(account)
-                    accounts.add(AccountDescription(accountName!!, account.uuid))
-                }
+            val accounts = imported.accounts?.values.orEmpty().map { importedAccount ->
+                AccountDescription(
+                    name = getAccountDisplayName(importedAccount),
+                    uuid = importedAccount.uuid,
+                )
             }
 
             // TODO: throw exception if neither global settings nor account settings could be found
@@ -82,18 +83,23 @@ object SettingsImporter {
     @Throws(SettingsImportExportException::class)
     fun importSettings(
         context: Context,
-        inputStream: InputStream?,
+        inputStream: InputStream,
         globalSettings: Boolean,
         accountUuids: List<String>?,
         overwrite: Boolean,
     ): ImportResults {
         try {
             var globalSettingsImported = false
-            val importedAccounts: MutableList<AccountDescriptionPair> = ArrayList()
-            val erroneousAccounts: MutableList<AccountDescription> = ArrayList()
+            val importedAccounts = mutableListOf<AccountDescriptionPair>()
+            val erroneousAccounts = mutableListOf<AccountDescription>()
 
             val settingsFileParser = SettingsFileParser()
-            val imported = settingsFileParser.parseSettings(inputStream!!, globalSettings, accountUuids, false)
+            val imported = settingsFileParser.parseSettings(
+                inputStream = inputStream,
+                globalSettings = globalSettings,
+                accountUuids = accountUuids,
+                overview = false,
+            )
 
             val preferences = Preferences.getPreferences()
             val storage = preferences.storage
@@ -106,6 +112,7 @@ object SettingsImporter {
                     } else {
                         Timber.w("Was asked to import global settings but none found.")
                     }
+
                     if (editor.commit()) {
                         Timber.v("Committed global settings to the preference storage.")
                         globalSettingsImported = true
@@ -117,11 +124,11 @@ object SettingsImporter {
                 }
             }
 
-            if (accountUuids != null && accountUuids.size > 0) {
+            if (!accountUuids.isNullOrEmpty()) {
                 if (imported.accounts != null) {
                     for (accountUuid in accountUuids) {
-                        if (imported.accounts.containsKey(accountUuid)) {
-                            val account = imported.accounts[accountUuid]
+                        val account = imported.accounts[accountUuid]
+                        if (account != null) {
                             try {
                                 var editor = preferences.createStorageEditor()
 
@@ -139,8 +146,11 @@ object SettingsImporter {
 
                                         val newUuid = importResult.imported.uuid
                                         val oldAccountUuids = preferences.storage.getString("accountUuids", "")
-                                        val newAccountUuids =
-                                            if ((oldAccountUuids.length > 0)) "$oldAccountUuids,$newUuid" else newUuid
+                                        val newAccountUuids = if (oldAccountUuids.isNotEmpty()) {
+                                            "$oldAccountUuids,$newUuid"
+                                        } else {
+                                            newUuid
+                                        }
 
                                         putString(editor, "accountUuids", newAccountUuids)
 
@@ -162,22 +172,11 @@ object SettingsImporter {
                                     erroneousAccounts.add(importResult.original)
                                 }
                             } catch (e: InvalidSettingValueException) {
-                                var reason = e.message
-
-                                if (TextUtils.isEmpty(reason)) {
-                                    reason = "Unknown"
-                                }
-
-                                Timber.e(
-                                    e,
-                                    "Encountered invalid setting while importing account \"%s\", reason: \"%s\"",
-                                    account!!.name,
-                                    reason,
-                                )
+                                Timber.e(e, "Encountered invalid setting while importing account \"%s\"", account.name)
 
                                 erroneousAccounts.add(AccountDescription(account.name!!, account.uuid))
                             } catch (e: Exception) {
-                                Timber.e(e, "Exception while importing account \"%s\"", account!!.name)
+                                Timber.e(e, "Exception while importing account \"%s\"", account.name)
 
                                 erroneousAccounts.add(AccountDescription(account.name!!, account.uuid))
                             }
@@ -204,11 +203,11 @@ object SettingsImporter {
             val localFoldersCreator = DI.get(SpecialLocalFoldersCreator::class.java)
 
             // Create special local folders
-            for ((_, imported1) in importedAccounts) {
-                val accountUuid = imported1.uuid
-                val account = preferences.getAccount(accountUuid)
+            for (importedAccount in importedAccounts) {
+                val accountUuid = importedAccount.imported.uuid
+                val account = preferences.getAccount(accountUuid) ?: error("Failed to load account: $accountUuid")
 
-                localFoldersCreator.createSpecialLocalFolders(account!!)
+                localFoldersCreator.createSpecialLocalFolders(account)
             }
 
             DI.get(RealGeneralSettingsManager::class.java).loadSettings()
@@ -226,10 +225,10 @@ object SettingsImporter {
         storage: Storage,
         editor: StorageEditor,
         contentVersion: Int,
-        settings: ImportedSettings?,
+        settings: ImportedSettings,
     ) {
         // Validate global settings
-        val validatedSettings = GeneralSettingsDescriptions.validate(contentVersion, settings!!.settings)
+        val validatedSettings = GeneralSettingsDescriptions.validate(contentVersion, settings.settings)
 
         // Upgrade global settings to current content version
         if (contentVersion != Settings.VERSION) {
@@ -240,7 +239,7 @@ object SettingsImporter {
         val stringSettings = GeneralSettingsDescriptions.convert(validatedSettings)
 
         // Use current global settings as base and overwrite with validated settings read from the import file.
-        val mergedSettings: MutableMap<String, String> = HashMap(GeneralSettingsDescriptions.getGlobalSettings(storage))
+        val mergedSettings = GeneralSettingsDescriptions.getGlobalSettings(storage).toMutableMap()
         mergedSettings.putAll(stringSettings)
 
         for ((key, value) in mergedSettings) {
@@ -252,10 +251,10 @@ object SettingsImporter {
     private fun importAccount(
         editor: StorageEditor,
         contentVersion: Int,
-        account: ImportedAccount?,
+        account: ImportedAccount,
         overwrite: Boolean,
     ): AccountDescriptionPair {
-        val original = AccountDescription(account!!.name!!, account.uuid)
+        val original = AccountDescription(account.name!!, account.uuid)
 
         val prefs = Preferences.getPreferences()
         val accounts = prefs.getAccounts()
@@ -299,8 +298,8 @@ object SettingsImporter {
 
         val incomingServerName = incoming.host
         val incomingPasswordNeeded =
-            AuthType.EXTERNAL != incoming.authenticationType && AuthType.XOAUTH2 != incoming.authenticationType &&
-                (incoming.password == null || incoming.password!!.isEmpty())
+            incoming.authenticationType != AuthType.EXTERNAL && incoming.authenticationType != AuthType.XOAUTH2 &&
+                incoming.password.isNullOrEmpty()
 
         var authorizationNeeded = incoming.authenticationType == AuthType.XOAUTH2
 
@@ -308,8 +307,6 @@ object SettingsImporter {
             throw InvalidSettingValueException("Missing outgoing server settings")
         }
 
-        var outgoingServerName: String? = null
-        var outgoingPasswordNeeded = false
         // Write outgoing server settings
         val outgoing = createServerSettings(account.outgoing)
         val outgoingServer = serverSettingsSerializer.serialize(outgoing)
@@ -319,16 +316,13 @@ object SettingsImporter {
          * Mark account as disabled if the settings file contained a username but no password, except when the
          * AuthType is EXTERNAL.
          */
-        outgoingPasswordNeeded =
-            (
-                AuthType.EXTERNAL != outgoing.authenticationType && AuthType.XOAUTH2 != outgoing.authenticationType &&
-                    outgoing.username != null && !outgoing.username.isEmpty()
-                ) &&
-            (outgoing.password == null || outgoing.password!!.isEmpty())
+        val outgoingPasswordNeeded =
+            outgoing.authenticationType != AuthType.EXTERNAL && outgoing.authenticationType != AuthType.XOAUTH2 &&
+                outgoing.username.isNotEmpty() && outgoing.password.isNullOrEmpty()
 
-        authorizationNeeded = authorizationNeeded or (outgoing.authenticationType == AuthType.XOAUTH2)
+        authorizationNeeded = authorizationNeeded || outgoing.authenticationType == AuthType.XOAUTH2
 
-        outgoingServerName = outgoing.host
+        val outgoingServerName = outgoing.host
 
         val createAccountDisabled = incomingPasswordNeeded || outgoingPasswordNeeded || authorizationNeeded
         if (createAccountDisabled) {
@@ -350,15 +344,15 @@ object SettingsImporter {
         // Merge account settings if necessary
         val writeSettings: MutableMap<String, String>
         if (mergeImportedAccount) {
-            writeSettings = HashMap(AccountSettingsDescriptions.getAccountSettings(prefs.storage, uuid))
+            writeSettings = AccountSettingsDescriptions.getAccountSettings(prefs.storage, uuid).toMutableMap()
             writeSettings.putAll(stringSettings)
         } else {
             writeSettings = stringSettings
         }
 
         // Write account settings
-        for ((key1, value) in writeSettings) {
-            val key = accountKeyPrefix + key1
+        for ((accountKey, value) in writeSettings) {
+            val key = accountKeyPrefix + accountKey
             putString(editor, key, value)
         }
 
@@ -412,7 +406,6 @@ object SettingsImporter {
         prefs: Preferences,
     ) {
         // Validate folder settings
-
         val validatedSettings =
             FolderSettingsDescriptions.validate(contentVersion, folder.settings!!.settings, !overwrite)
 
@@ -428,6 +421,7 @@ object SettingsImporter {
         val writeSettings: MutableMap<String, String>
         if (overwrite) {
             writeSettings = FolderSettingsDescriptions.getFolderSettings(prefs.storage, uuid, folder.name)
+                .toMutableMap()
             writeSettings.putAll(stringSettings)
         } else {
             writeSettings = stringSettings
@@ -435,8 +429,8 @@ object SettingsImporter {
 
         // Write folder settings
         val prefix = uuid + "." + folder.name + "."
-        for ((key1, value) in writeSettings) {
-            val key = prefix + key1
+        for ((folderKey, value) in writeSettings) {
+            val key = prefix + folderKey
             putString(editor, key, value)
         }
     }
@@ -446,7 +440,7 @@ object SettingsImporter {
         editor: StorageEditor,
         contentVersion: Int,
         uuid: String,
-        account: ImportedAccount?,
+        account: ImportedAccount,
         overwrite: Boolean,
         existingAccount: Account?,
         prefs: Preferences,
@@ -464,10 +458,10 @@ object SettingsImporter {
         }
 
         // Write identities
-        for (identity in account!!.identities!!) {
+        for (identity in account.identities!!) {
             var writeIdentityIndex = nextIdentityIndex
             var mergeSettings = false
-            if (overwrite && existingIdentities.size > 0) {
+            if (overwrite && existingIdentities.isNotEmpty()) {
                 val identityIndex = findIdentity(identity, existingIdentities)
                 if (identityIndex != -1) {
                     writeIdentityIndex = identityIndex
@@ -481,7 +475,7 @@ object SettingsImporter {
             val identitySuffix = ".$writeIdentityIndex"
 
             // Write name used in identity
-            val identityName = if ((identity.name == null)) "" else identity.name
+            val identityName = identity.name.orEmpty()
             putString(
                 editor,
                 accountKeyPrefix + AccountPreferenceSerializer.IDENTITY_NAME_KEY + identitySuffix,
@@ -528,21 +522,19 @@ object SettingsImporter {
                 // Merge identity settings if necessary
                 var writeSettings: MutableMap<String, String?>
                 if (mergeSettings) {
-                    writeSettings = HashMap(
-                        IdentitySettingsDescriptions.getIdentitySettings(
-                            prefs.storage,
-                            uuid,
-                            writeIdentityIndex,
-                        ),
-                    )
+                    writeSettings = IdentitySettingsDescriptions.getIdentitySettings(
+                        prefs.storage,
+                        uuid,
+                        writeIdentityIndex,
+                    ).toMutableMap()
                     writeSettings.putAll(stringSettings)
                 } else {
                     writeSettings = stringSettings
                 }
 
                 // Write identity settings
-                for ((key1, value) in writeSettings) {
-                    val key = accountKeyPrefix + key1 + identitySuffix
+                for ((identityKey, value) in writeSettings) {
+                    val key = accountKeyPrefix + identityKey + identitySuffix
                     putString(editor, key, value)
                 }
             }
@@ -550,16 +542,7 @@ object SettingsImporter {
     }
 
     private fun isAccountNameUsed(name: String?, accounts: List<Account>): Boolean {
-        for (account in accounts) {
-            if (account == null) {
-                continue
-            }
-
-            if (account.displayName == name) {
-                return true
-            }
-        }
-        return false
+        return accounts.any { it.displayName == name }
     }
 
     private fun findIdentity(identity: ImportedIdentity, identities: List<Identity>): Int {
@@ -597,25 +580,18 @@ object SettingsImporter {
         editor.putString(key, value)
     }
 
-    private fun getAccountDisplayName(account: ImportedAccount): String? {
-        var name = account.name
-        if (TextUtils.isEmpty(name) && account.identities != null && account.identities.size > 0) {
-            name = account.identities[0].email
-        }
-
-        return name
+    private fun getAccountDisplayName(account: ImportedAccount): String {
+        return account.name?.takeIf { it.isNotEmpty() }
+            ?: account.identities?.firstOrNull()?.email
+            ?: error("Account name missing")
     }
 
-    private fun createServerSettings(importedServer: ImportedServer?): ServerSettings {
-        val type = toServerSettingsType(importedServer!!.type!!)
+    private fun createServerSettings(importedServer: ImportedServer): ServerSettings {
+        val type = toServerSettingsType(importedServer.type!!)
         val port = convertPort(importedServer.port)
         val connectionSecurity = convertConnectionSecurity(importedServer.connectionSecurity)
         val password = if (importedServer.authenticationType == AuthType.XOAUTH2) "" else importedServer.password
-        val extra = if (importedServer.extras != null) {
-            Collections.unmodifiableMap(importedServer.extras.settings)
-        } else {
-            emptyMap()
-        }
+        val extra = importedServer.extras?.settings.orEmpty()
 
         return ServerSettings(
             type,
