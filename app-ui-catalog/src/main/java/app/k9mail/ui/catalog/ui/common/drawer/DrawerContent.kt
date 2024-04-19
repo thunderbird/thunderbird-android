@@ -1,21 +1,23 @@
 package app.k9mail.ui.catalog.ui.common.drawer
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.theme.MainTheme
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
+import app.k9mail.core.ui.compose.designsystem.organism.drawer.ModalDrawerSheet
+import app.k9mail.core.ui.compose.designsystem.organism.drawer.NavigationDrawerDivider
+import app.k9mail.core.ui.compose.designsystem.organism.drawer.NavigationDrawerHeadline
+import app.k9mail.core.ui.compose.designsystem.organism.drawer.NavigationDrawerItem
 import app.k9mail.ui.catalog.ui.CatalogContract.Theme
 import app.k9mail.ui.catalog.ui.CatalogContract.ThemeVariant
-import app.k9mail.ui.catalog.ui.common.theme.ThemeSelector
-import app.k9mail.ui.catalog.ui.common.theme.ThemeVariantSelector
+import app.k9mail.ui.catalog.ui.next
 
 @Suppress("LongParameterList", "LongMethod")
 @Composable
 fun DrawerContent(
-    toggleDrawer: () -> Unit,
+    closeDrawer: () -> Unit,
     theme: Theme,
     themeVariant: ThemeVariant,
     onThemeChanged: () -> Unit,
@@ -25,65 +27,71 @@ fun DrawerContent(
     onNavigateToOrganisms: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn(
+    ModalDrawerSheet(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
     ) {
-        item {
-            DrawerHeaderItem(
-                text = "Design system",
-            )
-        }
-        item {
-            DrawerCategoryItem(
-                text = "Atoms",
-                onItemClick = {
-                    toggleDrawer()
-                    onNavigateToAtoms()
-                },
-            )
-        }
-        item {
-            DrawerCategoryItem(
-                text = "Molecules",
-                onItemClick = {
-                    toggleDrawer()
-                    onNavigateToMolecules()
-                },
-            )
-        }
-        item {
-            DrawerCategoryItem(
-                text = "Organisms",
-                onItemClick = {
-                    toggleDrawer()
-                    onNavigateToOrganisms()
-                },
-            )
-        }
+        NavigationDrawerHeadline(
+            title = "Design system",
+        )
+        NavigationDrawerItem(
+            label = "Atoms",
+            selected = false,
+            onClick = {
+                closeDrawer()
+                onNavigateToAtoms()
+            },
+        )
+        NavigationDrawerItem(
+            label = "Molecules",
+            selected = false,
+            onClick = {
+                closeDrawer()
+                onNavigateToMolecules()
+            },
+        )
+        NavigationDrawerItem(
+            label = "Organisms",
+            selected = false,
+            onClick = {
+                closeDrawer()
+                onNavigateToOrganisms()
+            },
+        )
 
-        item {
-            DrawerHeaderItem(
-                text = "Theme selection",
-            )
-        }
-        item {
-            ThemeSelector(
-                theme = theme,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = MainTheme.spacings.double),
-                onThemeChangeClick = onThemeChanged,
-            )
-        }
-        item {
-            ThemeVariantSelector(
-                themeVariant = themeVariant,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = MainTheme.spacings.double),
-                onThemeVariantChange = onThemeVariantChanged,
-            )
-        }
+        NavigationDrawerDivider()
+
+        NavigationDrawerHeadline(
+            title = "Theme",
+        )
+
+        NavigationDrawerItem(
+            label = buildAnnotatedString {
+                append("Change to ")
+                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                    append(theme.next().displayName)
+                }
+                append(" theme")
+            },
+            selected = false,
+            onClick = {
+                closeDrawer()
+                onThemeChanged()
+            },
+        )
+
+        NavigationDrawerItem(
+            label = buildAnnotatedString {
+                append("Change to ")
+                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                    append(themeVariant.next().displayName)
+                }
+                append(" theme variant")
+            },
+            selected = false,
+            onClick = {
+                closeDrawer()
+                onThemeVariantChanged()
+            },
+        )
     }
 }
