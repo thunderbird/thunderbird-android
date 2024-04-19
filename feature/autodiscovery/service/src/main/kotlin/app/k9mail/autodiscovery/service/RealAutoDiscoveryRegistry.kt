@@ -17,7 +17,7 @@ class RealAutoDiscoveryRegistry(
     companion object {
         val defaultAutoconfigUrlConfig = AutoconfigUrlConfig(
             httpsOnly = false,
-            includeEmailAddress = false,
+            includeEmailAddress = true,
         )
 
         fun createDefault(
