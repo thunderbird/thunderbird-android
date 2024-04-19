@@ -18,6 +18,17 @@ import java.util.UUID
 import kotlinx.datetime.Clock
 import timber.log.Timber
 
+// TODO: Further refactor this class to be able to get rid of these detekt issues.
+@Suppress(
+    "LongMethod",
+    "CyclomaticComplexMethod",
+    "NestedBlockDepth",
+    "TooManyFunctions",
+    "TooGenericExceptionCaught",
+    "SwallowedException",
+    "ReturnCount",
+    "ThrowsCount",
+)
 class SettingsImporter internal constructor(
     private val settingsFileParser: SettingsFileParser,
     private val preferences: Preferences,
