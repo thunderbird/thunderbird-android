@@ -4,7 +4,6 @@ import android.content.Context
 import com.fsck.k9.Account
 import com.fsck.k9.AccountPreferenceSerializer
 import com.fsck.k9.Core
-import com.fsck.k9.DI
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.ServerSettingsSerializer
@@ -19,7 +18,15 @@ import java.util.UUID
 import kotlinx.datetime.Clock
 import timber.log.Timber
 
-object SettingsImporter {
+class SettingsImporter internal constructor(
+    private val settingsFileParser: SettingsFileParser,
+    private val preferences: Preferences,
+    private val generalSettingsManager: RealGeneralSettingsManager,
+    private val localFoldersCreator: SpecialLocalFoldersCreator,
+    private val serverSettingsSerializer: ServerSettingsSerializer,
+    private val clock: Clock,
+    private val context: Context,
+) {
     /**
      * Parses an import [InputStream] and returns information on whether it contains global settings and/or account
      * settings. For all account configurations found, the name of the account along with the account UUID is returned.
@@ -34,7 +41,6 @@ object SettingsImporter {
     fun getImportStreamContents(inputStream: InputStream): ImportContents {
         try {
             // Parse the import stream but don't save individual settings (overview=true)
-            val settingsFileParser = SettingsFileParser()
             val imported = settingsFileParser.parseSettings(
                 inputStream = inputStream,
                 globalSettings = false,
@@ -65,7 +71,6 @@ object SettingsImporter {
      * Reads an import [InputStream] and imports the global settings and/or account configurations specified by the
      * arguments.
      *
-     * @param context A [Context] instance.
      * @param inputStream The `InputStream` to read the settings from.
      * @param globalSettings `true` if global settings should be imported from the file.
      * @param accountUuids A list of UUIDs of the accounts that should be imported.
@@ -76,7 +81,6 @@ object SettingsImporter {
      */
     @Throws(SettingsImportExportException::class)
     fun importSettings(
-        context: Context,
         inputStream: InputStream,
         globalSettings: Boolean,
         accountUuids: List<String>?,
@@ -86,7 +90,6 @@ object SettingsImporter {
             val importedAccounts = mutableListOf<AccountDescriptionPair>()
             val erroneousAccounts = mutableListOf<AccountDescription>()
 
-            val settingsFileParser = SettingsFileParser()
             val imported = settingsFileParser.parseSettings(
                 inputStream = inputStream,
                 globalSettings = globalSettings,
@@ -94,7 +97,6 @@ object SettingsImporter {
                 overview = false,
             )
 
-            val preferences = Preferences.getPreferences()
             val storage = preferences.storage
 
             if (globalSettings) {
@@ -191,8 +193,6 @@ object SettingsImporter {
 
             preferences.loadAccounts()
 
-            val localFoldersCreator = DI.get(SpecialLocalFoldersCreator::class.java)
-
             // Create special local folders
             for (importedAccount in importedAccounts) {
                 val accountUuid = importedAccount.imported.uuid
@@ -201,7 +201,7 @@ object SettingsImporter {
                 localFoldersCreator.createSpecialLocalFolders(account)
             }
 
-            DI.get(RealGeneralSettingsManager::class.java).loadSettings()
+            generalSettingsManager.loadSettings()
             Core.setServicesEnabled(context)
 
             return ImportResults(globalSettingsImported, importedAccounts, erroneousAccounts)
@@ -281,7 +281,6 @@ object SettingsImporter {
 
         // Write incoming server settings
         val incoming = createServerSettings(account.incoming)
-        val serverSettingsSerializer = DI.get(ServerSettingsSerializer::class.java)
         val incomingServer = serverSettingsSerializer.serialize(incoming)
         putString(editor, accountKeyPrefix + AccountPreferenceSerializer.INCOMING_SERVER_SETTINGS_KEY, incomingServer)
 
@@ -358,7 +357,6 @@ object SettingsImporter {
         // When deleting an account and then restoring it using settings import, the same account UUID will be used.
         // To avoid reusing a previously existing notification channel ID, we need to make sure to use a unique value
         // for `messagesNotificationChannelVersion`.
-        val clock = DI.get(Clock::class.java)
         val messageNotificationChannelVersion = clock.now().epochSeconds.toString()
         putString(editor, accountKeyPrefix + "messagesNotificationChannelVersion", messageNotificationChannelVersion)
 
