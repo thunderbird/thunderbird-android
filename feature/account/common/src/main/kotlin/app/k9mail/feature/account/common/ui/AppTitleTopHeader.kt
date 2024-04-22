@@ -13,7 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline2
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextDisplayMedium
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
@@ -55,7 +55,7 @@ fun AppTitleTopHeader(
                 contentDescription = null,
             )
 
-            TextHeadline2(text = title)
+            TextDisplayMedium(text = title)
         }
     }
 }

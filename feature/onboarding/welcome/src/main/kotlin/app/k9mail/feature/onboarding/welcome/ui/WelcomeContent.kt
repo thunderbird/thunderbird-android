@@ -24,7 +24,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline2
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextDisplayMedium
 import app.k9mail.core.ui.compose.designsystem.template.LazyColumnWithHeaderFooter
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContent
 import app.k9mail.core.ui.compose.theme.K9Theme
@@ -114,7 +114,7 @@ private fun WelcomeTitle(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        TextHeadline2(
+        TextDisplayMedium(
             text = stringResource(id = R.string.onboarding_welcome_title),
         )
     }
