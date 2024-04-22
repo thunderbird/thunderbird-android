@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle1
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
@@ -49,13 +49,13 @@ internal fun ContentListViewPreview() {
     PreviewWithThemes {
         ContentListView {
             item {
-                TextSubtitle1("Item 1")
+                TextTitleMedium("Item 1")
             }
             item {
-                TextSubtitle1("Item 2")
+                TextTitleMedium("Item 2")
             }
             item {
-                TextSubtitle1("Item 3")
+                TextTitleMedium("Item 3")
             }
         }
     }

@@ -24,7 +24,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.IconsWithBaseline
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadlineMedium
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle1
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
@@ -67,7 +67,7 @@ private fun CertificateErrorOverview(state: State) {
         modifier = Modifier.padding(all = MainTheme.spacings.double),
     ) {
         WarningTitle()
-        TextSubtitle1(stringResource(R.string.account_server_certificate_unknown_error_subtitle))
+        TextTitleMedium(stringResource(R.string.account_server_certificate_unknown_error_subtitle))
 
         Spacer(modifier = Modifier.height(MainTheme.spacings.quadruple))
 
