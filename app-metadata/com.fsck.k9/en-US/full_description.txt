@@ -1,24 +1,22 @@
-K-9 Mail is an open source email client that works with basically every email provider.
+Open source e-mail client that works with basically every e-mail provider.
 
 <b>Features</b>
 
-* supports multiple accounts
+* Multiple accounts
 * Unified Inbox
-* privacy-friendly (no tracking whatsoever, only connects to your email provider)
-* automatic background synchronization or push notifications
-* local and server-side search
-* OpenPGP email encryption (PGP/MIME)
+* Privacy-friendly (no tracking whatsoever, only connects to your e-mail provider)
+* Automatic background synchronization or push notifications
+* Local and server-side search
+* OpenPGP e-mail encryption (PGP/MIME)
 
-Install the app <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain: Easy PGP</a> to encrypt/decrypt your emails using OpenPGP.
-
+Install the app <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain: Easy PGP</a> to encrypt/decrypt your e-mails using OpenPGP.
 
 <b>Support</b>
 
-If you're having trouble with K-9 Mail, ask for help in our <a href="https://forum.k9mail.app">support forum</a>.
-
+Ask for help with K-9 Mail in the <a href="https://forum.k9mail.app">support forum</a>.
 
 <b>Want to help?</b>
 
-K-9 Mail is a community developed project. If you're interested in helping to improve the app, please join us!
-You can find our bug tracker, source code, and wiki at <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
-We're always happy to welcome new developers, designers, documenters, translators, bug triagers and friends.
+K-9 Mail is a community developed project. Help improve the app. Join us!
+The bug tracker, source code, and wiki is at <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
+New developers, designers, documenters, translators, bug triagers and friends are always welcome.
