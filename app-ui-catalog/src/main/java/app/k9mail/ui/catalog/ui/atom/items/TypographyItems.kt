@@ -10,7 +10,6 @@ import androidx.compose.ui.text.withStyle
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextButton
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline1
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline3
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline4
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline5
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline6
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextOverline
@@ -45,14 +44,6 @@ private fun LazyGridScope.textItems(
     item {
         TextHeadline3(
             text = annotatedString("Headline3", isAnnotated),
-            modifier = Modifier.itemDefaultPadding(),
-            color = color,
-
-        )
-    }
-    item {
-        TextHeadline4(
-            text = annotatedString("Headline4", isAnnotated),
             modifier = Modifier.itemDefaultPadding(),
             color = color,
         )
