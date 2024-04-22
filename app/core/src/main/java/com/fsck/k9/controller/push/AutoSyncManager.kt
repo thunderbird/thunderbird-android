@@ -5,6 +5,7 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import androidx.core.content.ContextCompat
 import com.fsck.k9.K9
 import timber.log.Timber
 
@@ -38,7 +39,7 @@ internal class AutoSyncManager(private val context: Context) {
             Timber.v("Registering auto sync listener")
             isRegistered = true
             this.listener = listener
-            context.registerReceiver(receiver, intentFilter)
+            ContextCompat.registerReceiver(context, receiver, intentFilter, ContextCompat.RECEIVER_NOT_EXPORTED)
         }
     }
 
