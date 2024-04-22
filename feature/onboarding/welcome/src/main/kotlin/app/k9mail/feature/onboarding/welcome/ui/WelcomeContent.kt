@@ -23,7 +23,7 @@ import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody1
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline2
 import app.k9mail.core.ui.compose.designsystem.template.LazyColumnWithHeaderFooter
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContent
@@ -130,7 +130,7 @@ private fun WelcomeMessage(
             .then(modifier),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        TextBody1(
+        TextBodyLarge(
             text = stringResource(id = R.string.onboarding_welcome_message),
         )
     }

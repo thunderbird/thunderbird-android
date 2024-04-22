@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.common.koin.koinPreview
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody1
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline6
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextOverline
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle2
@@ -49,22 +49,22 @@ internal fun ServerCertificateView(
         }
 
         TextSubtitle2(stringResource(R.string.account_server_certificate_not_valid_before))
-        TextBody1(text = serverCertificateProperties.notValidBefore)
+        TextBodyLarge(text = serverCertificateProperties.notValidBefore)
 
         Spacer(modifier = Modifier.height(MainTheme.spacings.default))
 
         TextSubtitle2(stringResource(R.string.account_server_certificate_not_valid_after))
-        TextBody1(text = serverCertificateProperties.notValidAfter)
+        TextBodyLarge(text = serverCertificateProperties.notValidAfter)
 
         Spacer(modifier = Modifier.height(MainTheme.spacings.double))
 
         TextSubtitle2(stringResource(R.string.account_server_certificate_subject))
-        TextBody1(text = serverCertificateProperties.subject)
+        TextBodyLarge(text = serverCertificateProperties.subject)
 
         Spacer(modifier = Modifier.height(MainTheme.spacings.double))
 
         TextSubtitle2(stringResource(R.string.account_server_certificate_issuer))
-        TextBody1(text = serverCertificateProperties.issuer)
+        TextBodyLarge(text = serverCertificateProperties.issuer)
 
         Spacer(modifier = Modifier.height(MainTheme.spacings.double))
 
@@ -90,7 +90,7 @@ private fun Fingerprint(
 
     Column {
         TextSubtitle2(text = title)
-        TextBody1(text = formattedFingerprint)
+        TextBodyLarge(text = formattedFingerprint)
         Spacer(modifier = Modifier.height(MainTheme.spacings.double))
     }
 }
@@ -98,11 +98,11 @@ private fun Fingerprint(
 @Composable
 private fun BulletedListItem(text: String) {
     Row {
-        TextBody1(
+        TextBodyLarge(
             text = "\u2022",
             modifier = Modifier.padding(horizontal = MainTheme.spacings.half),
         )
-        TextBody1(text = text)
+        TextBodyLarge(text = text)
     }
 }
 

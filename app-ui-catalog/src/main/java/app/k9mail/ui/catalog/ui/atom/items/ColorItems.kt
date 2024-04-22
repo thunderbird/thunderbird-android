@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody1
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.ui.catalog.ui.common.list.itemDefaultPadding
 import app.k9mail.ui.catalog.ui.common.list.sectionHeaderItem
@@ -96,7 +96,7 @@ private fun ColorContent(
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier.padding(MainTheme.spacings.double),
         ) {
-            TextBody1(text = name)
+            TextBodyLarge(text = name)
         }
     }
 }
