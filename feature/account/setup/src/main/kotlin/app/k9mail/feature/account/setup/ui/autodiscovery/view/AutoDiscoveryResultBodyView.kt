@@ -19,7 +19,7 @@ import app.k9mail.autodiscovery.api.SmtpServerSettings
 import app.k9mail.core.common.net.toHostname
 import app.k9mail.core.common.net.toPort
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody2
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 import app.k9mail.feature.account.setup.R
@@ -39,7 +39,7 @@ internal fun AutoDiscoveryResultBodyView(
     ) {
         if (settings.isTrusted.not()) {
             Spacer(modifier = Modifier.height(MainTheme.sizes.smaller))
-            TextBody2(
+            TextBodyMedium(
                 text = stringResource(
                     id = R.string.account_setup_auto_discovery_result_disclaimer_untrusted_configuration,
                 ),

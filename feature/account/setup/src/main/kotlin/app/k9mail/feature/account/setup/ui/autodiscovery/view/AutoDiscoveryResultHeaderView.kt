@@ -13,7 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody2
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline6
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
@@ -50,7 +50,7 @@ internal fun AutoDiscoveryResultHeaderView(
             TextHeadline6(
                 text = stringResource(state.titleResourceId),
             )
-            TextBody2(
+            TextBodyMedium(
                 text = stringResource(state.subtitleResourceId),
                 color = selectColor(state),
             )
