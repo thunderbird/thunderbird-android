@@ -11,7 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.common.koin.koinPreview
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextOverline
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle2
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
 import app.k9mail.core.ui.compose.theme.K9Theme
@@ -68,7 +68,7 @@ internal fun ServerCertificateView(
 
         Spacer(modifier = Modifier.height(MainTheme.spacings.double))
 
-        TextOverline(text = stringResource(R.string.account_server_certificate_fingerprints_section))
+        TextLabelSmall(text = stringResource(R.string.account_server_certificate_fingerprints_section))
         Spacer(modifier = Modifier.height(MainTheme.spacings.default))
 
         Fingerprint("SHA-1", serverCertificateProperties.fingerprintSha1, fingerprintFormatter)

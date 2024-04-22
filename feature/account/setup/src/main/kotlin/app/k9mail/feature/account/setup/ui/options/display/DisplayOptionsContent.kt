@@ -18,7 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextOverline
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
 import app.k9mail.core.ui.compose.designsystem.molecule.input.TextInput
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme.K9Theme
@@ -61,7 +61,7 @@ internal fun DisplayOptionsContent(
             }
 
             item {
-                TextOverline(
+                TextLabelSmall(
                     text = stringResource(id = R.string.account_setup_options_section_display_options),
                     modifier = Modifier
                         .fillMaxWidth()
