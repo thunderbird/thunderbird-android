@@ -4,7 +4,6 @@ import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContentWithTheme
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.Effect
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.State
-import app.k9mail.feature.account.server.settings.ui.incoming.fake.FakeIncomingServerSettingsViewModel
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest

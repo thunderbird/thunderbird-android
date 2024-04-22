@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.server.settings.ui.incoming.fake
+package app.k9mail.feature.account.server.settings.ui.incoming
 
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.domain.entity.InteractionMode

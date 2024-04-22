@@ -1,7 +1,6 @@
-package app.k9mail.feature.account.server.settings.ui.outgoing.fake
+package app.k9mail.feature.account.server.settings.ui.outgoing
 
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
-import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract
 
 class FakeOutgoingServerSettingsValidator(
     private val serverAnswer: ValidationResult = ValidationResult.Success,
