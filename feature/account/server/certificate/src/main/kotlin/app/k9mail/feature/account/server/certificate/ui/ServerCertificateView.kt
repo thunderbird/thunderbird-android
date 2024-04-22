@@ -11,9 +11,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.common.koin.koinPreview
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline6
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextOverline
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle2
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.feature.account.server.certificate.R
@@ -36,7 +36,7 @@ internal fun ServerCertificateView(
             top = MainTheme.spacings.double,
         ),
     ) {
-        TextHeadline6(stringResource(R.string.account_server_certificate_section_title))
+        TextTitleLarge(stringResource(R.string.account_server_certificate_section_title))
         Spacer(modifier = Modifier.height(MainTheme.spacings.double))
 
         if (serverCertificateProperties.subjectAlternativeNames.isNotEmpty()) {
