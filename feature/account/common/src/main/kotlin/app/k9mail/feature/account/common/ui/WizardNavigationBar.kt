@@ -7,13 +7,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonOutlined
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
-import app.k9mail.core.ui.compose.theme.K9Theme
-import app.k9mail.core.ui.compose.theme.MainTheme
-import app.k9mail.core.ui.compose.theme.PreviewWithThemes
+import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.common.R
 
 @Composable
@@ -66,70 +63,5 @@ private fun getHorizontalArrangement(state: WizardNavigationBarState): Arrangeme
         Arrangement.End
     } else {
         Arrangement.Start
-    }
-}
-
-@PreviewDevices
-@Composable
-internal fun WizardNavigationBarK9Preview() {
-    K9Theme {
-        WizardNavigationBar(
-            onNextClick = {},
-            onBackClick = {},
-        )
-    }
-}
-
-@PreviewDevices
-@Composable
-internal fun WizardNavigationBarPreview() {
-    PreviewWithThemes {
-        WizardNavigationBar(
-            onNextClick = {},
-            onBackClick = {},
-        )
-    }
-}
-
-@PreviewDevices
-@Composable
-internal fun WizardNavigationBarDisabledPreview() {
-    PreviewWithThemes {
-        WizardNavigationBar(
-            onNextClick = {},
-            onBackClick = {},
-            state = WizardNavigationBarState(
-                isNextEnabled = false,
-                isBackEnabled = false,
-            ),
-        )
-    }
-}
-
-@PreviewDevices
-@Composable
-internal fun WizardNavigationBarHideNextPreview() {
-    PreviewWithThemes {
-        WizardNavigationBar(
-            onNextClick = {},
-            onBackClick = {},
-            state = WizardNavigationBarState(
-                showNext = false,
-            ),
-        )
-    }
-}
-
-@PreviewDevices
-@Composable
-internal fun WizardNavigationBarHideBackPreview() {
-    PreviewWithThemes {
-        WizardNavigationBar(
-            onNextClick = {},
-            onBackClick = {},
-            state = WizardNavigationBarState(
-                showBack = false,
-            ),
-        )
     }
 }

@@ -2,7 +2,7 @@ package app.k9mail.feature.account.common.ui.item
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
-import app.k9mail.core.ui.compose.theme.MainTheme
+import app.k9mail.core.ui.compose.theme2.MainTheme
 
 @Composable
 fun defaultHeadlineItemPadding() = PaddingValues(

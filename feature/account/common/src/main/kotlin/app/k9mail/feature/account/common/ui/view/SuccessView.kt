@@ -10,12 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
-import app.k9mail.core.ui.compose.theme.MainTheme
-import app.k9mail.core.ui.compose.theme.PreviewWithThemes
+import app.k9mail.core.ui.compose.theme2.MainTheme
 
 @Composable
 fun SuccessView(
@@ -43,15 +41,5 @@ fun SuccessView(
                 modifier = Modifier.requiredSize(MainTheme.sizes.large),
             )
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun SuccessViewPreview() {
-    PreviewWithThemes {
-        SuccessView(
-            message = "The app tried really hard and managed to successfully complete the operation.",
-        )
     }
 }
