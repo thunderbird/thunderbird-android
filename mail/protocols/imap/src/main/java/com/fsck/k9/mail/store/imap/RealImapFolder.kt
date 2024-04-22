@@ -185,22 +185,6 @@ internal class RealImapFolder(
     }
 
     @Throws(MessagingException::class)
-    private fun exists(escapedFolderName: String): Boolean {
-        return try {
-            // Since we don't care about RECENT, we'll use that for the check, because we're checking
-            // a folder other than ourself, and don't want any untagged responses to cause a change
-            // in our own fields
-            connection!!.executeSimpleCommand(String.format("STATUS %s (RECENT)", escapedFolderName))
-
-            true
-        } catch (ioe: IOException) {
-            throw ioExceptionHandler(connection, ioe)
-        } catch (e: NegativeImapResponseException) {
-            false
-        }
-    }
-
-    @Throws(MessagingException::class)
     override fun exists(): Boolean {
         if (exists) {
             return true
@@ -287,19 +271,6 @@ internal class RealImapFolder(
         val uids = messages.map { it.uid.toLong() }.toSet()
         val encodedDestinationFolderName = folderNameCodec.encode(folder.prefixedName)
         val escapedDestinationFolderName = ImapUtility.encodeString(encodedDestinationFolderName)
-
-        // TODO: Just perform the operation and only check for existence of the folder if the operation fails.
-        if (!exists(escapedDestinationFolderName)) {
-            if (K9MailLib.isDebug()) {
-                Timber.i(
-                    "ImapFolder.copyMessages: couldn't find remote folder '%s' for %s",
-                    escapedDestinationFolderName,
-                    logId,
-                )
-            }
-
-            throw FolderNotFoundException(folder.serverId)
-        }
 
         return try {
             val imapResponses = connection!!.executeCommandWithIdSet(

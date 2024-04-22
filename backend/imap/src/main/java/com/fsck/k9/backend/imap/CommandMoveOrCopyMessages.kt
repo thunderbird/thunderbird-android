@@ -41,10 +41,6 @@ internal class CommandMoveOrCopyMessages(private val imapStore: ImapStore) {
                 return null
             }
 
-            if (!remoteSrcFolder.exists()) {
-                throw MessagingException("moveOrCopyMessages: remoteFolder $srcFolder does not exist", true)
-            }
-
             remoteSrcFolder.open(OpenMode.READ_WRITE)
             if (remoteSrcFolder.mode != OpenMode.READ_WRITE) {
                 throw MessagingException(
