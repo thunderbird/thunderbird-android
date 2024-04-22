@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
@@ -27,9 +26,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextDisplayMedium
 import app.k9mail.core.ui.compose.designsystem.template.LazyColumnWithHeaderFooter
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContent
-import app.k9mail.core.ui.compose.theme.K9Theme
-import app.k9mail.core.ui.compose.theme.MainTheme
-import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.onboarding.welcome.R
 
 private const val CIRCLE_COLOR = 0xFFEEEEEE
@@ -161,26 +158,4 @@ private fun WelcomeFooter(
 private fun Modifier.defaultItemModifier() = composed {
     fillMaxWidth()
         .padding(MainTheme.spacings.default)
-}
-
-@Composable
-@PreviewDevices
-internal fun WelcomeContentK9Preview() {
-    K9Theme {
-        WelcomeContent(
-            onStartClick = {},
-            onImportClick = {},
-        )
-    }
-}
-
-@Composable
-@PreviewDevices
-internal fun WelcomeContentThunderbirdPreview() {
-    ThunderbirdTheme {
-        WelcomeContent(
-            onStartClick = {},
-            onImportClick = {},
-        )
-    }
 }
