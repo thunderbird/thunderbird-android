@@ -8,7 +8,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextButton
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextCaption
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline1
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline2
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline3
@@ -98,13 +97,6 @@ private fun LazyGridScope.textItems(
     item {
         TextButton(
             text = annotatedString("Button", isAnnotated),
-            modifier = Modifier.itemDefaultPadding(),
-            color = color,
-        )
-    }
-    item {
-        TextCaption(
-            text = annotatedString("Caption", isAnnotated),
             modifier = Modifier.itemDefaultPadding(),
             color = color,
         )

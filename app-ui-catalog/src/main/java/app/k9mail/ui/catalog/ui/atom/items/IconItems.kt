@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextCaption
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.ui.catalog.ui.common.list.itemDefaultPadding
 import app.k9mail.ui.catalog.ui.common.list.sectionHeaderItem
@@ -64,6 +64,6 @@ private fun IconItem(
                 tint = Color.Magenta,
             )
         }
-        TextCaption(text = name)
+        TextBodySmall(text = name)
     }
 }

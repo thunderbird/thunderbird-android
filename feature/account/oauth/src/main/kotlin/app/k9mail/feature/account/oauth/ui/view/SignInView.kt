@@ -9,7 +9,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextCaption
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.feature.account.oauth.R
 
@@ -25,7 +25,7 @@ internal fun SignInView(
         verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
         modifier = modifier,
     ) {
-        TextCaption(
+        TextBodySmall(
             text = stringResource(id = R.string.account_oauth_sign_in_description),
             textAlign = TextAlign.Center,
         )
