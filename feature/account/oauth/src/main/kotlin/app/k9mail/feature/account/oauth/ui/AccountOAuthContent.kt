@@ -8,12 +8,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
-import app.k9mail.core.ui.compose.theme.K9Theme
-import app.k9mail.core.ui.compose.theme.MainTheme
-import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.oauth.R
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.Event
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.State
@@ -51,27 +48,5 @@ internal fun AccountOAuthContent(
                 isEnabled = isEnabled,
             )
         }
-    }
-}
-
-@Composable
-@PreviewDevices
-internal fun AccountOAuthContentK9Preview() {
-    K9Theme {
-        AccountOAuthContent(
-            state = State(),
-            onEvent = {},
-        )
-    }
-}
-
-@Composable
-@PreviewDevices
-internal fun AccountOAuthContentThunderbirdPreview() {
-    ThunderbirdTheme {
-        AccountOAuthContent(
-            state = State(),
-            onEvent = {},
-        )
     }
 }
