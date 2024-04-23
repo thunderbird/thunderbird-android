@@ -6,7 +6,13 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val featureSettingsImportModule = module {
-    viewModel { SettingsImportViewModel(context = get(), accountActivator = get()) }
+    viewModel {
+        SettingsImportViewModel(
+            context = get(),
+            settingsImporter = get(),
+            accountActivator = get(),
+        )
+    }
 
     viewModel {
         AuthViewModel(

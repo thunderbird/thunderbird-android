@@ -30,6 +30,7 @@ private typealias AccountNumber = Int
 
 internal class SettingsImportViewModel(
     private val context: Context,
+    private val settingsImporter: SettingsImporter,
     private val accountActivator: AccountActivator,
 ) : ViewModel() {
     private val uiModelLiveData = MutableLiveData<SettingsImportUiModel>()
@@ -382,14 +383,20 @@ internal class SettingsImportViewModel(
     }
 
     private fun readSettings(contentUri: Uri): ImportContents {
-        return context.contentResolver.openInputStream(contentUri).use { inputStream ->
-            SettingsImporter.getImportStreamContents(inputStream)
+        val inputStream = context.contentResolver.openInputStream(contentUri)
+            ?: error("Failed to open settings file for reading: $contentUri")
+
+        return inputStream.use {
+            settingsImporter.getImportStreamContents(inputStream)
         }
     }
 
     private fun importSettings(contentUri: Uri, generalSettings: Boolean, accounts: List<AccountUuid>): ImportResults {
-        return context.contentResolver.openInputStream(contentUri).use { inputStream ->
-            SettingsImporter.importSettings(context, inputStream, generalSettings, accounts, false)
+        val inputStream = context.contentResolver.openInputStream(contentUri)
+            ?: error("Failed to open settings file for reading: $contentUri")
+
+        return inputStream.use {
+            settingsImporter.importSettings(inputStream, generalSettings, accounts)
         }
     }
 
