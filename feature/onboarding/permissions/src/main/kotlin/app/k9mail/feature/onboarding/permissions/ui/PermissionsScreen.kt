@@ -8,13 +8,9 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import app.k9mail.core.android.permissions.PermissionState
-import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.common.mvi.observe
-import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsContract.Effect
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsContract.Event
-import kotlinx.coroutines.Dispatchers
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -59,19 +55,5 @@ private fun ManagedActivityResultLauncher<String, Boolean>.requestContactsPermis
 private fun ManagedActivityResultLauncher<String, Boolean>.requestNotificationsPermission() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         launch(Manifest.permission.POST_NOTIFICATIONS)
-    }
-}
-
-@PreviewDevices
-@Composable
-internal fun PermissionScreenPreview() {
-    K9Theme {
-        PermissionsScreen(
-            viewModel = PermissionsViewModel(
-                checkPermission = { PermissionState.Denied },
-                backgroundDispatcher = Dispatchers.Main.immediate,
-            ),
-            onNext = {},
-        )
     }
 }

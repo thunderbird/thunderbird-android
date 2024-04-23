@@ -7,10 +7,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
-import app.k9mail.core.ui.compose.theme.MainTheme
+import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.oauth.R
 
 @Composable
@@ -43,22 +42,4 @@ internal fun SignInView(
             )
         }
     }
-}
-
-@PreviewDevices
-@Composable
-internal fun SignInViewPreview() {
-    SignInView(
-        onSignInClick = {},
-        isGoogleSignIn = false,
-    )
-}
-
-@PreviewDevices
-@Composable
-internal fun SignInViewWithGooglePreview() {
-    SignInView(
-        onSignInClick = {},
-        isGoogleSignIn = true,
-    )
 }
