@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle1
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlined
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedEmailAddress
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedNumber
@@ -85,7 +85,7 @@ fun <T> TextFieldDemo(
                             start = MainTheme.spacings.default,
                         ),
                 ) {
-                    TextSubtitle1(text = "Configuration:")
+                    TextTitleMedium(text = "Configuration:")
                 }
 
                 CheckboxInput(

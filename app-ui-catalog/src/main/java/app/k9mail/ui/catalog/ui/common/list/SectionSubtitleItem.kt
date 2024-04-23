@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle1
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.theme.MainTheme
 
 fun LazyGridScope.sectionSubtitleItem(
@@ -23,7 +23,7 @@ fun LazyGridScope.sectionSubtitleItem(
                     end = MainTheme.spacings.double,
                 ),
         ) {
-            TextSubtitle1(
+            TextTitleMedium(
                 text = text,
             )
             DividerHorizontal()

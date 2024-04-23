@@ -22,9 +22,9 @@ import app.k9mail.core.ui.compose.common.resources.annotatedStringResource
 import app.k9mail.core.ui.compose.common.text.bold
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.IconsWithBaseline
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody1
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline4
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle1
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadlineMedium
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
@@ -67,7 +67,7 @@ private fun CertificateErrorOverview(state: State) {
         modifier = Modifier.padding(all = MainTheme.spacings.double),
     ) {
         WarningTitle()
-        TextSubtitle1(stringResource(R.string.account_server_certificate_unknown_error_subtitle))
+        TextTitleMedium(stringResource(R.string.account_server_certificate_unknown_error_subtitle))
 
         Spacer(modifier = Modifier.height(MainTheme.spacings.quadruple))
 
@@ -94,7 +94,7 @@ private fun WarningTitle() {
                 .withBaseline(iconBaseline)
                 .alignByBaseline(),
         )
-        TextHeadline4(
+        TextHeadlineMedium(
             text = stringResource(R.string.account_server_certificate_warning_title),
             modifier = Modifier.alignByBaseline(),
         )
@@ -106,7 +106,7 @@ private fun CertificateErrorDescription(
     certificateError: FormattedServerCertificateError,
     serverNameFormatter: ServerNameFormatter = koinInject(),
 ) {
-    TextBody1(
+    TextBodyLarge(
         text = annotatedStringResource(
             id = R.string.account_server_certificate_unknown_error_description_format,
             serverNameFormatter.format(certificateError.hostname).bold(),

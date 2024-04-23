@@ -14,7 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.image.FixedScaleImage
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextCaption
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.ui.catalog.ui.common.list.itemDefaultPadding
 import app.k9mail.ui.catalog.ui.common.list.sectionHeaderItem
@@ -140,6 +140,6 @@ private fun FixedScaleImageView(
                 allowOverflow = allowOverflow,
             )
         }
-        TextCaption(text = description)
+        TextBodySmall(text = description)
     }
 }

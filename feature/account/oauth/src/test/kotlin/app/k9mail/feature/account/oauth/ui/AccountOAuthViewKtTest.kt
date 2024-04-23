@@ -1,8 +1,7 @@
 package app.k9mail.feature.account.oauth.ui
 
 import app.k9mail.core.ui.compose.testing.ComposeTest
-import app.k9mail.core.ui.compose.testing.setContent
-import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.core.ui.compose.testing.setContentWithTheme
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import app.k9mail.feature.account.oauth.domain.entity.OAuthResult
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.Effect
@@ -22,13 +21,11 @@ class AccountOAuthViewKtTest : ComposeTest() {
         var oAuthResult: OAuthResult? = null
         val authorizationState = AuthorizationState()
 
-        setContent {
-            ThunderbirdTheme {
-                AccountOAuthView(
-                    onOAuthResult = { oAuthResult = it },
-                    viewModel = viewModel,
-                )
-            }
+        setContentWithTheme {
+            AccountOAuthView(
+                onOAuthResult = { oAuthResult = it },
+                viewModel = viewModel,
+            )
         }
 
         assertThat(oAuthResult).isNull()

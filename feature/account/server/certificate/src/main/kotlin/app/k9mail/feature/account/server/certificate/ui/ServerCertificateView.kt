@@ -10,10 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.common.koin.koinPreview
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody1
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline6
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextOverline
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle2
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.feature.account.server.certificate.R
@@ -36,11 +36,11 @@ internal fun ServerCertificateView(
             top = MainTheme.spacings.double,
         ),
     ) {
-        TextHeadline6(stringResource(R.string.account_server_certificate_section_title))
+        TextTitleLarge(stringResource(R.string.account_server_certificate_section_title))
         Spacer(modifier = Modifier.height(MainTheme.spacings.double))
 
         if (serverCertificateProperties.subjectAlternativeNames.isNotEmpty()) {
-            TextSubtitle2(stringResource(R.string.account_server_certificate_subject_alternative_names))
+            TextTitleSmall(stringResource(R.string.account_server_certificate_subject_alternative_names))
             for (subjectAlternativeName in serverCertificateProperties.subjectAlternativeNames) {
                 BulletedListItem(serverNameFormatter.format(subjectAlternativeName))
             }
@@ -48,27 +48,27 @@ internal fun ServerCertificateView(
             Spacer(modifier = Modifier.height(MainTheme.spacings.double))
         }
 
-        TextSubtitle2(stringResource(R.string.account_server_certificate_not_valid_before))
-        TextBody1(text = serverCertificateProperties.notValidBefore)
+        TextTitleSmall(stringResource(R.string.account_server_certificate_not_valid_before))
+        TextBodyLarge(text = serverCertificateProperties.notValidBefore)
 
         Spacer(modifier = Modifier.height(MainTheme.spacings.default))
 
-        TextSubtitle2(stringResource(R.string.account_server_certificate_not_valid_after))
-        TextBody1(text = serverCertificateProperties.notValidAfter)
+        TextTitleSmall(stringResource(R.string.account_server_certificate_not_valid_after))
+        TextBodyLarge(text = serverCertificateProperties.notValidAfter)
 
         Spacer(modifier = Modifier.height(MainTheme.spacings.double))
 
-        TextSubtitle2(stringResource(R.string.account_server_certificate_subject))
-        TextBody1(text = serverCertificateProperties.subject)
+        TextTitleSmall(stringResource(R.string.account_server_certificate_subject))
+        TextBodyLarge(text = serverCertificateProperties.subject)
 
         Spacer(modifier = Modifier.height(MainTheme.spacings.double))
 
-        TextSubtitle2(stringResource(R.string.account_server_certificate_issuer))
-        TextBody1(text = serverCertificateProperties.issuer)
+        TextTitleSmall(stringResource(R.string.account_server_certificate_issuer))
+        TextBodyLarge(text = serverCertificateProperties.issuer)
 
         Spacer(modifier = Modifier.height(MainTheme.spacings.double))
 
-        TextOverline(text = stringResource(R.string.account_server_certificate_fingerprints_section))
+        TextLabelSmall(text = stringResource(R.string.account_server_certificate_fingerprints_section))
         Spacer(modifier = Modifier.height(MainTheme.spacings.default))
 
         Fingerprint("SHA-1", serverCertificateProperties.fingerprintSha1, fingerprintFormatter)
@@ -89,8 +89,8 @@ private fun Fingerprint(
     )
 
     Column {
-        TextSubtitle2(text = title)
-        TextBody1(text = formattedFingerprint)
+        TextTitleSmall(text = title)
+        TextBodyLarge(text = formattedFingerprint)
         Spacer(modifier = Modifier.height(MainTheme.spacings.double))
     }
 }
@@ -98,11 +98,11 @@ private fun Fingerprint(
 @Composable
 private fun BulletedListItem(text: String) {
     Row {
-        TextBody1(
+        TextBodyLarge(
             text = "\u2022",
             modifier = Modifier.padding(horizontal = MainTheme.spacings.half),
         )
-        TextBody1(text = text)
+        TextBodyLarge(text = text)
     }
 }
 

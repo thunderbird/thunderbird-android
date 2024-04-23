@@ -26,7 +26,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.atom.icon.IconsWithBottomRightOverlay
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline5
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadlineSmall
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.theme.K9Theme
@@ -81,7 +81,7 @@ private fun HeaderArea() {
     ) {
         AppTitleTopHeader()
 
-        TextHeadline5(
+        TextHeadlineSmall(
             text = stringResource(R.string.onboarding_permissions_screen_title),
             modifier = Modifier.padding(horizontal = MainTheme.spacings.double),
         )

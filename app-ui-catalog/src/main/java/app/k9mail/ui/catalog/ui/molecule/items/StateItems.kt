@@ -10,7 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextSubtitle1
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorState
 import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
@@ -109,13 +109,13 @@ private fun StatefulContentLoadingErrorState() {
             .height(200.dp)
             .fillMaxSize(),
         error = {
-            TextSubtitle1(text = "Error")
+            TextTitleMedium(text = "Error")
         },
         loading = {
-            TextSubtitle1(text = "Loading...")
+            TextTitleMedium(text = "Loading...")
         },
         content = {
-            TextSubtitle1(text = "Content")
+            TextTitleMedium(text = "Content")
         },
     )
 }

@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody1
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextCaption
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.designsystem.molecule.input.SelectInput
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
@@ -44,7 +44,7 @@ fun SpecialFoldersFormContent(
         }
 
         item {
-            TextBody1(
+            TextBodyLarge(
                 text = stringResource(id = R.string.account_setup_special_folders_form_description),
                 modifier = Modifier.padding(defaultItemPadding()),
             )
@@ -106,7 +106,7 @@ fun SpecialFoldersFormContent(
         }
 
         item {
-            TextCaption(
+            TextBodySmall(
                 text = stringResource(id = R.string.account_setup_special_folders_form_description_automatic),
                 modifier = Modifier.padding(defaultItemPadding()),
             )

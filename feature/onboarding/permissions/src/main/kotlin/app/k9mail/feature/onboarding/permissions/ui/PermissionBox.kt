@@ -24,8 +24,8 @@ import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.atom.icon.IconsWithBottomRightOverlay
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody2
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadline6
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.feature.onboarding.permissions.R
@@ -57,8 +57,8 @@ internal fun PermissionBox(
                 IconWithPermissionStateOverlay(icon, permissionState)
             }
             Column {
-                TextHeadline6(text = title)
-                TextBody2(text = description)
+                TextTitleLarge(text = title)
+                TextBodyMedium(text = description)
             }
         }
 

@@ -1,9 +1,10 @@
 package app.k9mail.core.ui.compose.common.koin
 
 import androidx.compose.runtime.Composable
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody1
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.onNodeWithText
+import app.k9mail.core.ui.compose.testing.setContentWithTheme
 import kotlin.test.Test
 import org.koin.compose.koinInject
 
@@ -12,7 +13,7 @@ class KoinPreviewTest : ComposeTest() {
     fun `koinPreview should make dependencies available in WithContent block`() = runComposeTest {
         val injectString = "Test"
 
-        setContent {
+        setContentWithTheme {
             koinPreview {
                 factory { injectString }
             } WithContent {
@@ -28,5 +29,5 @@ class KoinPreviewTest : ComposeTest() {
 private fun TestComposable(
     injected: String = koinInject(),
 ) {
-    TextBody1(text = injected)
+    TextBodyLarge(text = injected)
 }
