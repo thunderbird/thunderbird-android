@@ -1,8 +1,7 @@
 package app.k9mail.feature.account.setup.ui.specialfolders
 
 import app.k9mail.core.ui.compose.testing.ComposeTest
-import app.k9mail.core.ui.compose.testing.setContent
-import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.core.ui.compose.testing.setContentWithTheme
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.Effect
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.State
 import app.k9mail.feature.account.setup.ui.specialfolders.fake.FakeSpecialFoldersViewModel
@@ -20,14 +19,12 @@ class SpecialFoldersScreenKtTest : ComposeTest() {
         var onNextCounter = 0
         var onBackCounter = 0
 
-        setContent {
-            ThunderbirdTheme {
-                SpecialFoldersScreen(
-                    onNext = { onNextCounter++ },
-                    onBack = { onBackCounter++ },
-                    viewModel = viewModel,
-                )
-            }
+        setContentWithTheme {
+            SpecialFoldersScreen(
+                onNext = { onNextCounter++ },
+                onBack = { onBackCounter++ },
+                viewModel = viewModel,
+            )
         }
 
         assertThat(onNextCounter).isEqualTo(0)

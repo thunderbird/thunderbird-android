@@ -1,6 +1,5 @@
 package app.k9mail.core.ui.compose.designsystem.atom.button
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -16,7 +15,6 @@ fun ButtonText(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     color: Color? = null,
-    contentPadding: PaddingValues = buttonContentPadding(),
 ) {
     Material3TextButton(
         onClick = onClick,
@@ -25,7 +23,6 @@ fun ButtonText(
         colors = ButtonDefaults.textButtonColors(
             contentColor = color ?: MainTheme.colors.primary,
         ),
-        contentPadding = contentPadding,
     ) {
         Material3Text(text = text)
     }

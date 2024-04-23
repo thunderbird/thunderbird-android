@@ -12,6 +12,7 @@ dependencies {
     api(libs.assertk)
 
     implementation(projects.core.ui.compose.theme)
+    implementation(projects.core.ui.compose.theme2.k9mail)
     implementation(libs.androidx.compose.material)
 
     implementation(libs.bundles.shared.jvm.test.compose)

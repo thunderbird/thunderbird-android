@@ -8,11 +8,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.atom.Checkbox
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody1
-import app.k9mail.core.ui.compose.theme.MainTheme
-import app.k9mail.core.ui.compose.theme.PreviewWithThemes
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
+import app.k9mail.core.ui.compose.theme2.MainTheme
 
 @Composable
 fun CheckboxInput(
@@ -39,44 +37,7 @@ fun CheckboxInput(
                 checked = checked,
                 onCheckedChange = onCheckedChange,
             )
-            TextBody1(text = text)
+            TextBodyLarge(text = text)
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun CheckboxInputPreview() {
-    PreviewWithThemes {
-        CheckboxInput(
-            text = "CheckboxInput",
-            checked = false,
-            onCheckedChange = {},
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun CheckboxInputWithErrorPreview() {
-    PreviewWithThemes {
-        CheckboxInput(
-            text = "CheckboxInput",
-            checked = false,
-            onCheckedChange = {},
-            errorMessage = "Error message",
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun CheckboxInputCheckedPreview() {
-    PreviewWithThemes {
-        CheckboxInput(
-            text = "CheckboxInput",
-            checked = true,
-            onCheckedChange = {},
-        )
     }
 }

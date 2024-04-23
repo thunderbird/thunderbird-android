@@ -34,3 +34,17 @@ interface CatalogContract {
         data object OnThemeVariantChanged : Event
     }
 }
+
+fun CatalogContract.Theme.next(): CatalogContract.Theme {
+    val themes = CatalogContract.Theme.entries
+    val currentThemeIndex = themes.indexOf(this)
+    val nextThemeIndex = (currentThemeIndex + 1) % themes.size
+    return themes[nextThemeIndex]
+}
+
+fun CatalogContract.ThemeVariant.next(): CatalogContract.ThemeVariant {
+    val variants = CatalogContract.ThemeVariant.entries
+    val currentVariantIndex = variants.indexOf(this)
+    val nextVariantIndex = (currentVariantIndex + 1) % variants.size
+    return variants[nextVariantIndex]
+}

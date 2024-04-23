@@ -4,9 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedNumber
-import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 
 @Suppress("LongParameterList")
 @Composable
@@ -31,39 +29,6 @@ fun NumberInput(
             isRequired = isRequired,
             hasError = errorMessage != null,
             modifier = Modifier.fillMaxWidth(),
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun IntegerInputPreview() {
-    PreviewWithThemes {
-        NumberInput(
-            onValueChange = {},
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun IntegerInputIsRequiredPreview() {
-    PreviewWithThemes {
-        NumberInput(
-            onValueChange = {},
-            label = "Text input is required",
-            isRequired = true,
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun IntegerInputWithErrorPreview() {
-    PreviewWithThemes {
-        NumberInput(
-            onValueChange = {},
-            errorMessage = "Text input error",
         )
     }
 }

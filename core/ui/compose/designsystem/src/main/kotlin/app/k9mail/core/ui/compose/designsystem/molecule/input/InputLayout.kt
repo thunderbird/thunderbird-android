@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextCaption
-import app.k9mail.core.ui.compose.theme.MainTheme
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
+import app.k9mail.core.ui.compose.theme2.MainTheme
 
 @Composable
 fun InputLayout(
@@ -27,7 +27,7 @@ fun InputLayout(
         content()
 
         AnimatedVisibility(visible = errorMessage != null) {
-            TextCaption(
+            TextBodySmall(
                 text = errorMessage ?: "",
                 modifier = Modifier.padding(start = MainTheme.spacings.double, top = MainTheme.spacings.half),
                 color = MainTheme.colors.error,
@@ -35,7 +35,7 @@ fun InputLayout(
         }
 
         AnimatedVisibility(visible = warningMessage != null) {
-            TextCaption(
+            TextBodySmall(
                 text = warningMessage ?: "",
                 modifier = Modifier.padding(start = MainTheme.spacings.double, top = MainTheme.spacings.half),
                 color = MainTheme.colors.warning,

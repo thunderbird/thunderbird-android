@@ -1,46 +1,22 @@
 package app.k9mail.core.ui.compose.designsystem.atom.icon
 
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.tooling.preview.Preview
-import app.k9mail.core.ui.compose.theme.PreviewWithThemes
-import androidx.compose.material.Icon as MaterialIcon
+import androidx.compose.material3.Icon as Material3Icon
+import androidx.compose.material3.LocalContentColor as Material3LocalContentColor
 
 @Composable
 fun Icon(
     imageVector: ImageVector,
     modifier: Modifier = Modifier,
-    tint: Color = LocalContentColor.current.copy(alpha = LocalContentAlpha.current),
+    tint: Color? = null,
 ) {
-    MaterialIcon(
+    Material3Icon(
         imageVector = imageVector,
         contentDescription = null,
         modifier = modifier,
-        tint = tint,
+        tint = tint ?: Material3LocalContentColor.current,
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun IconPreview() {
-    PreviewWithThemes {
-        Icon(
-            imageVector = Icons.Filled.error,
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun IconTintedPreview() {
-    PreviewWithThemes {
-        Icon(
-            imageVector = Icons.Filled.error,
-            tint = Color.Magenta,
-        )
-    }
 }

@@ -1,8 +1,7 @@
 package app.k9mail.feature.account.server.validation.ui
 
 import app.k9mail.core.ui.compose.testing.ComposeTest
-import app.k9mail.core.ui.compose.testing.setContent
-import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.core.ui.compose.testing.setContentWithTheme
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Effect
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.State
 import app.k9mail.feature.account.server.validation.ui.fake.FakeServerValidationViewModel
@@ -20,14 +19,12 @@ class ServerValidationScreenKtTest : ComposeTest() {
         var onNextCounter = 0
         var onBackCounter = 0
 
-        setContent {
-            ThunderbirdTheme {
-                ServerValidationScreen(
-                    onNext = { onNextCounter++ },
-                    onBack = { onBackCounter++ },
-                    viewModel = viewModel,
-                )
-            }
+        setContentWithTheme {
+            ServerValidationScreen(
+                onNext = { onNextCounter++ },
+                onBack = { onBackCounter++ },
+                viewModel = viewModel,
+            )
         }
 
         assertThat(onNextCounter).isEqualTo(0)

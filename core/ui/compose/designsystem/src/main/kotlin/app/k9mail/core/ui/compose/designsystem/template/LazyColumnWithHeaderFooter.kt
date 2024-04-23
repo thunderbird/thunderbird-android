@@ -1,19 +1,13 @@
 package app.k9mail.core.ui.compose.designsystem.template
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
-import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import app.k9mail.core.ui.compose.theme.K9Theme
-import app.k9mail.core.ui.compose.theme.MainTheme
 
 /**
  * The [LazyColumnWithHeaderFooter] composable creates a [LazyColumn] with header and footer items.
@@ -70,25 +64,6 @@ private fun verticalArrangementWithHeaderFooter(verticalArrangement: Arrangement
             innerOutPositions.forEachIndexed { index, position -> outPositions[index + 1] = position + headerSize }
             outPositions[0] = 0
             outPositions[outPositions.lastIndex] = totalSize - footerSize
-        }
-    }
-}
-
-@Composable
-@Preview
-internal fun LazyColumnWithHeaderFooterPreview() {
-    K9Theme {
-        Surface {
-            LazyColumnWithHeaderFooter(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double, Alignment.CenterVertically),
-                header = { Text(text = "Header") },
-                footer = { Text(text = "Footer") },
-            ) {
-                items(10) {
-                    Text(text = "Item $it")
-                }
-            }
         }
     }
 }

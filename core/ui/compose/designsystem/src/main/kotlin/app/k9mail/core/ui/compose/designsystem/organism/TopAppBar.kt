@@ -1,92 +1,66 @@
 package app.k9mail.core.ui.compose.designsystem.organism
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody2
-import app.k9mail.core.ui.compose.theme.MainTheme
-import app.k9mail.core.ui.compose.theme.PreviewWithThemes
-import androidx.compose.material.TopAppBar as MaterialTopAppBar
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
+import androidx.compose.material3.TopAppBar as Material3TopAppBar
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAppBar(
     title: String,
     modifier: Modifier = Modifier,
-    subtitle: String? = null,
-    navigationIcon: @Composable (() -> Unit)? = null,
+    navigationIcon: @Composable (() -> Unit) = {},
     actions: @Composable RowScope.() -> Unit = {},
-    titleContentPadding: PaddingValues? = null,
 ) {
-    MaterialTopAppBar(
-        title = { TopAppBarTitle(title, subtitle, titleContentPadding) },
+    Material3TopAppBar(
+        title = { TextTitleLarge(text = title) },
         modifier = modifier,
         navigationIcon = navigationIcon,
         actions = actions,
-        backgroundColor = MainTheme.colors.toolbar,
     )
 }
 
 @Composable
-private fun TopAppBarTitle(
+fun TopAppBarWithMenuButton(
     title: String,
-    subtitle: String?,
-    titleContentPadding: PaddingValues?,
+    onMenuClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    actions: @Composable RowScope.() -> Unit = {},
 ) {
-    Column(
-        if (titleContentPadding != null) {
-            Modifier.padding(titleContentPadding)
-        } else {
-            Modifier
+    TopAppBar(
+        title = title,
+        modifier = modifier,
+        navigationIcon = {
+            ButtonIcon(
+                onClick = onMenuClick,
+                imageVector = Icons.Outlined.menu,
+            )
         },
-    ) {
-        Text(text = title)
-        if (subtitle != null) {
-            TextBody2(text = subtitle)
-        }
-    }
+        actions = actions,
+    )
 }
 
-@Preview
 @Composable
-internal fun TopAppBarPreview() {
-    PreviewWithThemes {
-        TopAppBar(
-            title = "Title",
-            navigationIcon = {
-                IconButton(onClick = {}) {
-                    Icon(
-                        imageVector = Icons.Outlined.menu,
-                        contentDescription = null,
-                    )
-                }
-            },
-            actions = {
-                IconButton(onClick = {}) {
-                    Icon(
-                        imageVector = Icons.Outlined.menu,
-                        contentDescription = null,
-                    )
-                }
-            },
-        )
-    }
-}
-
-@Preview
-@Composable
-internal fun TopAppBarWithSubtitlePreview() {
-    PreviewWithThemes {
-        TopAppBar(
-            title = "Title",
-            subtitle = "Subtitle",
-        )
-    }
+fun TopAppBarWithBackButton(
+    title: String,
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    actions: @Composable RowScope.() -> Unit = {},
+) {
+    TopAppBar(
+        title = title,
+        modifier = modifier,
+        navigationIcon = {
+            ButtonIcon(
+                onClick = onBackClick,
+                imageVector = Icons.Outlined.arrowBack,
+            )
+        },
+        actions = actions,
+    )
 }

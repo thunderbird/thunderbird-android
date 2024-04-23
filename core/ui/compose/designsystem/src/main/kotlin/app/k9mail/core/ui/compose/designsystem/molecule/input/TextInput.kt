@@ -5,9 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlined
-import app.k9mail.core.ui.compose.theme.PreviewWithThemes
 
 @Suppress("LongParameterList")
 @Composable
@@ -38,39 +36,6 @@ fun TextInput(
             isSingleLine = isSingleLine,
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = keyboardOptions,
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun TextInputPreview() {
-    PreviewWithThemes {
-        TextInput(
-            onTextChange = {},
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun TextInputIsRequiredPreview() {
-    PreviewWithThemes {
-        TextInput(
-            onTextChange = {},
-            label = "Text input is required",
-            isRequired = true,
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun TextInputWithErrorPreview() {
-    PreviewWithThemes {
-        TextInput(
-            onTextChange = {},
-            errorMessage = "Text input error",
         )
     }
 }

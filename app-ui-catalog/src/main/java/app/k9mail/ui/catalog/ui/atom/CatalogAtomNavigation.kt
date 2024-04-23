@@ -1,5 +1,8 @@
 package app.k9mail.ui.catalog.ui.atom
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -16,8 +19,8 @@ fun NavController.navigateToCatalogAtom() {
     )
 }
 
-fun NavGraphBuilder.catalogAtomRoute() {
+fun NavGraphBuilder.catalogAtomRoute(paddingValues: PaddingValues) {
     composable(route = NAVIGATION_ROUTE_CATALOG_ATOM) {
-        CatalogAtomScreen()
+        CatalogAtomScreen(Modifier.padding(paddingValues))
     }
 }

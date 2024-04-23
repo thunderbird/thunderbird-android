@@ -6,29 +6,23 @@ import androidx.compose.material.icons.filled.ShuffleOn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
-import app.k9mail.core.ui.compose.designsystem.organism.TopAppBar
+import app.k9mail.core.ui.compose.designsystem.organism.TopAppBarWithMenuButton
 import app.k9mail.ui.catalog.ui.CatalogContract.Theme
 import app.k9mail.ui.catalog.ui.CatalogContract.ThemeVariant
 import androidx.compose.material.icons.Icons as MaterialIcons
 
 @Composable
 fun ThemeTopAppBar(
-    onNavigationClick: () -> Unit,
+    onMenuClick: () -> Unit,
     theme: Theme,
     themeVariant: ThemeVariant,
     onThemeClick: () -> Unit,
     onThemeVariantClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    TopAppBar(
+    TopAppBarWithMenuButton(
         title = "${theme.displayName} Catalog",
-        navigationIcon = {
-            ButtonIcon(
-                onClick = onNavigationClick,
-                imageVector = Icons.Outlined.menu,
-            )
-        },
+        onMenuClick = onMenuClick,
         actions = {
             ButtonIcon(
                 onClick = onThemeClick,

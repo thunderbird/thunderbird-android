@@ -19,7 +19,6 @@ import app.k9mail.autodiscovery.api.SmtpServerSettings
 import app.k9mail.core.common.net.toHostname
 import app.k9mail.core.common.net.toPort
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
-import app.k9mail.core.ui.compose.designsystem.atom.button.buttonContentPadding
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody2
 import app.k9mail.core.ui.compose.theme.MainTheme
 import app.k9mail.core.ui.compose.theme.PreviewWithThemes
@@ -97,10 +96,6 @@ internal fun EditConfigurationButton(
             text = stringResource(id = R.string.account_setup_auto_discovery_result_edit_configuration_button_label),
             onClick = onEditConfigurationClick,
             color = MainTheme.colors.warning,
-            contentPadding = buttonContentPadding(
-                start = MainTheme.spacings.double,
-                end = MainTheme.spacings.double,
-            ),
         )
     }
 }

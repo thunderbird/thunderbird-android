@@ -1,120 +1,45 @@
 package app.k9mail.core.ui.compose.designsystem.template
 
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.DrawerState
-import androidx.compose.material.Scaffold
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
-import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import app.k9mail.core.ui.compose.theme.K9Theme
-import app.k9mail.core.ui.compose.theme.MainTheme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import androidx.compose.material.FabPosition as MaterialFabPosition
-import androidx.compose.material.Scaffold as MaterialScaffold
+import androidx.compose.material3.FabPosition as Material3FabPosition
+import androidx.compose.material3.Scaffold as Material3Scaffold
 
 @Suppress("LongParameterList")
 @Composable
 fun Scaffold(
     modifier: Modifier = Modifier,
-    topBar: @Composable (toggleDrawer: () -> Unit) -> Unit = {},
+    topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
+    snackbarHost: @Composable () -> Unit = {},
     floatingActionButton: @Composable () -> Unit = {},
     floatingActionButtonPosition: ScaffoldFabPosition = ScaffoldFabPosition.End,
-    drawerContent: @Composable (ColumnScope.(toggleDrawer: () -> Unit) -> Unit)? = null,
     content: @Composable (PaddingValues) -> Unit,
 ) {
-    val scaffoldState = rememberScaffoldState()
-    val coroutineScope = rememberCoroutineScope()
-
-    MaterialScaffold(
+    Material3Scaffold(
         modifier = modifier,
-        scaffoldState = scaffoldState,
-        topBar = {
-            topBar { toggleDrawer(scaffoldState.drawerState, coroutineScope) }
-        },
+        topBar = topBar,
         bottomBar = bottomBar,
+        snackbarHost = snackbarHost,
         floatingActionButton = floatingActionButton,
         floatingActionButtonPosition = floatingActionButtonPosition.toMaterialFabPosition(),
-        drawerContent = drawerContent?.let { providedDrawerContent ->
-            {
-                providedDrawerContent { toggleDrawer(scaffoldState.drawerState, coroutineScope) }
-            }
-        },
-        drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
         content = content,
     )
 }
 
-private fun toggleDrawer(
-    drawerState: DrawerState,
-    coroutineScope: CoroutineScope,
-) {
-    coroutineScope.launch {
-        delay(timeMillis = DRAWER_TOGGLE_DELAY)
-        if (drawerState.isClosed) {
-            drawerState.open()
-        } else {
-            drawerState.close()
-        }
-    }
-}
-
 enum class ScaffoldFabPosition {
-    End,
+    Start,
     Center,
+    End,
+    EndOverlay,
 }
 
-private fun ScaffoldFabPosition.toMaterialFabPosition(): MaterialFabPosition {
+private fun ScaffoldFabPosition.toMaterialFabPosition(): Material3FabPosition {
     return when (this) {
-        ScaffoldFabPosition.End -> MaterialFabPosition.End
-        ScaffoldFabPosition.Center -> MaterialFabPosition.Center
-    }
-}
-
-/**
- * Delay before opening/closing the drawer to avoid the drawer being opened/closed
- * immediately and give time for the ripple effect to finish.
- */
-private const val DRAWER_TOGGLE_DELAY = 250L
-
-@Composable
-@PreviewDevices
-internal fun ScaffoldPreview() {
-    K9Theme {
-        Scaffold(
-            topBar = {
-                Surface(
-                    color = MainTheme.colors.error,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(MainTheme.sizes.topBarHeight),
-                ) {}
-            },
-            bottomBar = {
-                Surface(
-                    color = MainTheme.colors.error,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(MainTheme.sizes.bottomBarHeight),
-                ) {}
-            },
-        ) { contentPadding ->
-            Surface(
-                color = MainTheme.colors.info,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(contentPadding),
-            ) {}
-        }
+        ScaffoldFabPosition.Start -> Material3FabPosition.Start
+        ScaffoldFabPosition.Center -> Material3FabPosition.Center
+        ScaffoldFabPosition.End -> Material3FabPosition.End
+        ScaffoldFabPosition.EndOverlay -> Material3FabPosition.EndOverlay
     }
 }

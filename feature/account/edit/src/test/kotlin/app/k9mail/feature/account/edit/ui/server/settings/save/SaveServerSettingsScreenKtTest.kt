@@ -1,7 +1,7 @@
 package app.k9mail.feature.account.edit.ui.server.settings.save
 
 import app.k9mail.core.ui.compose.testing.ComposeTest
-import app.k9mail.core.ui.compose.testing.setContent
+import app.k9mail.core.ui.compose.testing.setContentWithTheme
 import app.k9mail.feature.account.edit.ui.server.settings.save.SaveServerSettingsContract.Effect
 import app.k9mail.feature.account.edit.ui.server.settings.save.SaveServerSettingsContract.State
 import app.k9mail.feature.account.edit.ui.server.settings.save.fake.FakeSaveServerSettingsViewModel
@@ -25,7 +25,7 @@ class SaveServerSettingsScreenKtTest : ComposeTest() {
         var onNextCounter = 0
         var onBackCounter = 0
 
-        setContent {
+        setContentWithTheme {
             SaveServerSettingsScreen(
                 title = "irrelevant",
                 onNext = { onNextCounter++ },

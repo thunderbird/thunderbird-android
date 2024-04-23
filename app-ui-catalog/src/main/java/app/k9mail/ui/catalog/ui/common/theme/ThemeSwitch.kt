@@ -37,6 +37,58 @@ private fun K9ThemeSwitch(
     content: @Composable () -> Unit,
 ) {
     when (themeVariant) {
+        ThemeVariant.LIGHT -> K9MailTheme2(
+            darkTheme = false,
+        ) {
+            K9Theme(
+                darkTheme = false,
+                content = content,
+            )
+        }
+
+        ThemeVariant.DARK -> K9MailTheme2(
+            darkTheme = true,
+        ) {
+            K9Theme(
+                darkTheme = true,
+                content = content,
+            )
+        }
+    }
+}
+
+@Composable
+private fun ThunderbirdThemeSwitch(
+    themeVariant: ThemeVariant,
+    content: @Composable () -> Unit,
+) {
+    when (themeVariant) {
+        ThemeVariant.LIGHT -> K9MailTheme2(
+            darkTheme = false,
+        ) {
+            ThunderbirdTheme(
+                darkTheme = false,
+                content = content,
+            )
+        }
+
+        ThemeVariant.DARK -> K9MailTheme2(
+            darkTheme = true,
+        ) {
+            ThunderbirdTheme(
+                darkTheme = true,
+                content = content,
+            )
+        }
+    }
+}
+
+@Composable
+private fun K9Theme2Switch(
+    themeVariant: ThemeVariant,
+    content: @Composable () -> Unit,
+) {
+    when (themeVariant) {
         ThemeVariant.LIGHT -> K9Theme(
             darkTheme = false,
         ) {
@@ -51,58 +103,6 @@ private fun K9ThemeSwitch(
         ) {
             K9MailTheme2(
                 darkTheme = true,
-                content = content,
-            )
-        }
-    }
-}
-
-@Composable
-private fun ThunderbirdThemeSwitch(
-    themeVariant: ThemeVariant,
-    content: @Composable () -> Unit,
-) {
-    when (themeVariant) {
-        ThemeVariant.LIGHT -> ThunderbirdTheme(
-            darkTheme = false,
-        ) {
-            K9MailTheme2(
-                darkTheme = true,
-                content = content,
-            )
-        }
-
-        ThemeVariant.DARK -> ThunderbirdTheme(
-            darkTheme = true,
-        ) {
-            K9MailTheme2(
-                darkTheme = true,
-                content = content,
-            )
-        }
-    }
-}
-
-@Composable
-private fun K9Theme2Switch(
-    themeVariant: ThemeVariant,
-    content: @Composable () -> Unit,
-) {
-    when (themeVariant) {
-        ThemeVariant.LIGHT -> K9MailTheme2(
-            darkTheme = false,
-        ) {
-            K9Theme(
-                darkTheme = false,
-                content = content,
-            )
-        }
-
-        ThemeVariant.DARK -> K9MailTheme2(
-            darkTheme = true,
-        ) {
-            K9Theme(
-                darkTheme = false,
                 content = content,
             )
         }

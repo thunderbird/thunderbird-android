@@ -8,11 +8,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.atom.Switch
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody1
-import app.k9mail.core.ui.compose.theme.MainTheme
-import app.k9mail.core.ui.compose.theme.PreviewWithThemes
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
+import app.k9mail.core.ui.compose.theme2.MainTheme
 
 @Composable
 fun SwitchInput(
@@ -33,50 +31,13 @@ fun SwitchInput(
                 .fillMaxWidth()
                 .clickable { onCheckedChange(!checked) },
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
+            horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
         ) {
             Switch(
                 checked = checked,
                 onCheckedChange = onCheckedChange,
             )
-            TextBody1(text = text)
+            TextBodyLarge(text = text)
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun SwitchInputPreview() {
-    PreviewWithThemes {
-        SwitchInput(
-            text = "SwitchInput",
-            checked = false,
-            onCheckedChange = {},
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun SwitchInputWithErrorPreview() {
-    PreviewWithThemes {
-        SwitchInput(
-            text = "SwitchInput",
-            checked = false,
-            onCheckedChange = {},
-            errorMessage = "Error message",
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun SwitchInputCheckedPreview() {
-    PreviewWithThemes {
-        SwitchInput(
-            text = "SwitchInput",
-            checked = true,
-            onCheckedChange = {},
-        )
     }
 }

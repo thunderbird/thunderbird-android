@@ -7,12 +7,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.common.mvi.observe
+import app.k9mail.core.ui.compose.designsystem.organism.TopAppBarWithBackButton
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.feature.account.common.domain.entity.InteractionMode
 import app.k9mail.feature.account.common.ui.AccountTopAppBar
-import app.k9mail.feature.account.common.ui.AccountTopAppBarWithBackButton
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.common.ui.preview.PreviewAccountStateRepository
 import app.k9mail.feature.account.server.settings.R
@@ -45,9 +45,9 @@ fun IncomingServerSettingsScreen(
     Scaffold(
         topBar = {
             if (viewModel.mode == InteractionMode.Edit) {
-                AccountTopAppBarWithBackButton(
+                TopAppBarWithBackButton(
                     title = stringResource(id = R.string.account_server_settings_incoming_top_bar_title),
-                    onBackClicked = { dispatch(Event.OnBackClicked) },
+                    onBackClick = { dispatch(Event.OnBackClicked) },
                 )
             } else {
                 AccountTopAppBar(

@@ -1,5 +1,6 @@
 package app.k9mail.ui.catalog.ui.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -13,6 +14,7 @@ import app.k9mail.ui.catalog.ui.organism.catalogOrganismRoute
 fun CatalogNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
+    paddingValues: PaddingValues = PaddingValues(),
     startDestination: String = NAVIGATION_ROUTE_CATALOG_ATOM,
 ) {
     NavHost(
@@ -20,8 +22,8 @@ fun CatalogNavHost(
         startDestination = startDestination,
         modifier = modifier,
     ) {
-        catalogAtomRoute()
-        catalogMoleculeRoute()
-        catalogOrganismRoute()
+        catalogAtomRoute(paddingValues)
+        catalogMoleculeRoute(paddingValues)
+        catalogOrganismRoute(paddingValues)
     }
 }

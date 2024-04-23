@@ -3,6 +3,7 @@ package app.k9mail.ui.catalog.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
+import app.k9mail.core.ui.compose.designsystem.organism.drawer.ModalNavigationDrawer
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.ui.catalog.ui.CatalogContract.State
 import app.k9mail.ui.catalog.ui.atom.navigateToCatalogAtom
@@ -21,20 +22,10 @@ fun CatalogContent(
 ) {
     val navController = rememberNavController()
 
-    Scaffold(
-        modifier = modifier,
-        topBar = { toggleDrawer ->
-            ThemeTopAppBar(
-                onNavigationClick = toggleDrawer,
-                theme = state.theme,
-                themeVariant = state.themeVariant,
-                onThemeClick = onThemeChanged,
-                onThemeVariantClick = onThemeVariantChanged,
-            )
-        },
-        drawerContent = { toogleDrawer ->
+    ModalNavigationDrawer(
+        drawerContent = { closeDrawer ->
             DrawerContent(
-                toggleDrawer = toogleDrawer,
+                closeDrawer = closeDrawer,
                 theme = state.theme,
                 themeVariant = state.themeVariant,
                 onThemeChanged = onThemeChanged,
@@ -50,9 +41,23 @@ fun CatalogContent(
                 },
             )
         },
-    ) {
-        CatalogNavHost(
-            navController = navController,
-        )
+    ) { openDrawer ->
+        Scaffold(
+            modifier = modifier,
+            topBar = {
+                ThemeTopAppBar(
+                    onMenuClick = openDrawer,
+                    theme = state.theme,
+                    themeVariant = state.themeVariant,
+                    onThemeClick = onThemeChanged,
+                    onThemeVariantClick = onThemeVariantChanged,
+                )
+            },
+        ) { paddingValues ->
+            CatalogNavHost(
+                navController = navController,
+                paddingValues = paddingValues,
+            )
+        }
     }
 }

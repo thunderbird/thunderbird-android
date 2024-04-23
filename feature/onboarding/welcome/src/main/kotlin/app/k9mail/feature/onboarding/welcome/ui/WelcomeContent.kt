@@ -20,7 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
-import app.k9mail.core.ui.compose.designsystem.atom.Background
+import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBody1
@@ -42,7 +42,7 @@ internal fun WelcomeContent(
     onImportClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Background(
+    Surface(
         modifier = modifier,
     ) {
         ResponsiveContent {

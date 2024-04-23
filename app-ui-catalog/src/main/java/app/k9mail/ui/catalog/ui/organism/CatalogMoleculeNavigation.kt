@@ -1,5 +1,8 @@
 package app.k9mail.ui.catalog.ui.organism
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -16,8 +19,8 @@ fun NavController.navigateToCatalogOrganism() {
     )
 }
 
-fun NavGraphBuilder.catalogOrganismRoute() {
+fun NavGraphBuilder.catalogOrganismRoute(paddingValues: PaddingValues) {
     composable(route = NAVIGATION_ROUTE_CATALOG_ORGANISM) {
-        CatalogOrganismScreen()
+        CatalogOrganismScreen(Modifier.padding(paddingValues))
     }
 }
