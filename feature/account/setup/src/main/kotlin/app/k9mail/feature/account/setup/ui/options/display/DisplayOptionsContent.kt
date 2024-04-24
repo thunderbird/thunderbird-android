@@ -1,7 +1,6 @@
 package app.k9mail.feature.account.setup.ui.options.display
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -17,13 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
 import app.k9mail.core.ui.compose.designsystem.molecule.input.TextInput
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
-import app.k9mail.core.ui.compose.theme.K9Theme
-import app.k9mail.core.ui.compose.theme.MainTheme
-import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.account.common.ui.item.defaultHeadlineItemPadding
 import app.k9mail.feature.account.common.ui.item.defaultItemPadding
@@ -31,7 +27,6 @@ import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Event
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.State
 
-@OptIn(ExperimentalLayoutApi::class)
 @Suppress("LongMethod")
 @Composable
 internal fun DisplayOptionsContent(
@@ -105,29 +100,5 @@ internal fun DisplayOptionsContent(
                 Spacer(modifier = Modifier.requiredHeight(MainTheme.sizes.smaller))
             }
         }
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-internal fun DisplayOptionsContentK9Preview() {
-    K9Theme {
-        DisplayOptionsContent(
-            state = State(),
-            onEvent = {},
-            contentPadding = PaddingValues(),
-        )
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-internal fun DisplayOptionsContentThunderbirdPreview() {
-    ThunderbirdTheme {
-        DisplayOptionsContent(
-            state = State(),
-            onEvent = {},
-            contentPadding = PaddingValues(),
-        )
     }
 }
