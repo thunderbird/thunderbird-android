@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
-import app.k9mail.core.ui.compose.theme.MainTheme
+import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.ui.catalog.ui.common.list.itemDefaultPadding
 import app.k9mail.ui.catalog.ui.common.list.sectionHeaderItem
 
@@ -25,26 +25,8 @@ fun LazyGridScope.colorItems() {
     }
     item {
         ColorContent(
-            name = "Primary Variant",
-            color = MainTheme.colors.primaryVariant,
-        )
-    }
-    item {
-        ColorContent(
             name = "Secondary",
             color = MainTheme.colors.secondary,
-        )
-    }
-    item {
-        ColorContent(
-            name = "Secondary Variant",
-            color = MainTheme.colors.secondaryVariant,
-        )
-    }
-    item {
-        ColorContent(
-            name = "Background",
-            color = MainTheme.colors.background,
         )
     }
     item {
