@@ -19,7 +19,6 @@ import app.k9mail.feature.account.common.domain.input.StringInputField
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.Effect
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.Event
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.State
-import app.k9mail.feature.account.server.settings.ui.outgoing.fake.FakeOutgoingServerSettingsValidator
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.AuthType
