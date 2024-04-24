@@ -15,23 +15,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.common.annotation.PreviewDevicesWithBackground
 import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
 import app.k9mail.core.ui.compose.designsystem.molecule.input.EmailAddressInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.PasswordInput
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
-import app.k9mail.core.ui.compose.theme.K9Theme
-import app.k9mail.core.ui.compose.theme.MainTheme
-import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
+import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.common.ui.WizardNavigationBarState
 import app.k9mail.feature.account.common.ui.loadingerror.rememberContentLoadingErrorViewState
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
 import app.k9mail.feature.account.oauth.ui.AccountOAuthView
-import app.k9mail.feature.account.oauth.ui.preview.PreviewAccountOAuthViewModel
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Event
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.State
@@ -175,29 +171,5 @@ internal fun ContentView(
                 isEnabled = isAutoDiscoverySettingsTrusted || isConfigurationApproved,
             )
         }
-    }
-}
-
-@Composable
-@PreviewDevicesWithBackground
-internal fun AccountAutoDiscoveryContentK9Preview() {
-    K9Theme {
-        AccountAutoDiscoveryContent(
-            state = State(),
-            onEvent = {},
-            oAuthViewModel = PreviewAccountOAuthViewModel(),
-        )
-    }
-}
-
-@Composable
-@PreviewDevicesWithBackground
-internal fun AccountAutoDiscoveryContentThunderbirdPreview() {
-    ThunderbirdTheme {
-        AccountAutoDiscoveryContent(
-            state = State(),
-            onEvent = {},
-            oAuthViewModel = PreviewAccountOAuthViewModel(),
-        )
     }
 }

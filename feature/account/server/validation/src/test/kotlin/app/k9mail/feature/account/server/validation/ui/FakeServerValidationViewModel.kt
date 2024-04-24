@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.server.validation.ui.fake
+package app.k9mail.feature.account.server.validation.ui
 
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
