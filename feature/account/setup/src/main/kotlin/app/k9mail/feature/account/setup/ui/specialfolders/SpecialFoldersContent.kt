@@ -9,13 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
-import app.k9mail.core.ui.compose.theme.MainTheme
-import app.k9mail.core.ui.compose.theme.PreviewWithThemes
+import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.account.common.ui.loadingerror.rememberContentLoadingErrorViewState
 import app.k9mail.feature.account.setup.R
@@ -93,62 +91,4 @@ private fun SpecialFoldersErrorView(
             .fillMaxWidth()
             .padding(MainTheme.spacings.double),
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun SpecialFoldersContentLoadingPreview() {
-    PreviewWithThemes {
-        SpecialFoldersContent(
-            state = State(
-                isLoading = true,
-            ),
-            onEvent = {},
-            contentPadding = PaddingValues(),
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun SpecialFoldersContentFormPreview() {
-    PreviewWithThemes {
-        SpecialFoldersContent(
-            state = State(
-                isLoading = false,
-            ),
-            onEvent = {},
-            contentPadding = PaddingValues(),
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun SpecialFoldersContentSuccessPreview() {
-    PreviewWithThemes {
-        SpecialFoldersContent(
-            state = State(
-                isLoading = false,
-                isSuccess = true,
-            ),
-            onEvent = {},
-            contentPadding = PaddingValues(),
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun SpecialFoldersContentErrorPreview() {
-    PreviewWithThemes {
-        SpecialFoldersContent(
-            state = State(
-                isLoading = false,
-                error = SpecialFoldersContract.Failure.LoadFoldersFailed("Error"),
-            ),
-            onEvent = {},
-            contentPadding = PaddingValues(),
-        )
-    }
 }

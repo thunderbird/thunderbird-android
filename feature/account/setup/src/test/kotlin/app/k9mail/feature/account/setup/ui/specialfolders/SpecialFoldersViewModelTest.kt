@@ -17,7 +17,6 @@ import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.FormEvent
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.FormState
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.State
-import app.k9mail.feature.account.setup.ui.specialfolders.fake.FakeSpecialFoldersFormUiModel
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
