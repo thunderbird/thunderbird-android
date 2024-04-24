@@ -63,6 +63,7 @@ internal class PushNotificationManager(
             .setBadgeIconType(NotificationCompat.BADGE_ICON_NONE)
             .setLocalOnly(true)
             .setShowWhen(false)
+            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
             .build()
     }
 
