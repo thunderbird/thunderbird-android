@@ -7,10 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.molecule.input.CheckboxInput
-import app.k9mail.core.ui.compose.theme.MainTheme
-import app.k9mail.core.ui.compose.theme.PreviewWithThemes
+import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.common.domain.input.BooleanInputField
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.ui.autodiscovery.toAutoDiscoveryValidationErrorString
@@ -33,18 +31,4 @@ internal fun AutoDiscoveryResultApprovalView(
         errorMessage = approvalState.error?.toAutoDiscoveryValidationErrorString(resources),
         contentPadding = PaddingValues(),
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun AutoDiscoveryResultApprovalViewPreview() {
-    PreviewWithThemes {
-        AutoDiscoveryResultApprovalView(
-            approvalState = BooleanInputField(
-                value = true,
-                isValid = true,
-            ),
-            onApprovalChange = {},
-        )
-    }
 }

@@ -10,18 +10,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import app.k9mail.autodiscovery.api.AuthenticationType
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
-import app.k9mail.autodiscovery.api.ConnectionSecurity
 import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
-import app.k9mail.core.common.net.toHostname
-import app.k9mail.core.common.net.toPort
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
-import app.k9mail.core.ui.compose.theme.MainTheme
-import app.k9mail.core.ui.compose.theme.PreviewWithThemes
+import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.setup.R
 
 @Composable
@@ -96,34 +90,6 @@ internal fun EditConfigurationButton(
             text = stringResource(id = R.string.account_setup_auto_discovery_result_edit_configuration_button_label),
             onClick = onEditConfigurationClick,
             color = MainTheme.colors.warning,
-        )
-    }
-}
-
-@Preview
-@Composable
-internal fun AutoDiscoveryResultBodyViewPreview() {
-    PreviewWithThemes {
-        AutoDiscoveryResultBodyView(
-            settings = AutoDiscoveryResult.Settings(
-                incomingServerSettings = ImapServerSettings(
-                    hostname = "imap.example.com".toHostname(),
-                    port = 993.toPort(),
-                    connectionSecurity = ConnectionSecurity.TLS,
-                    authenticationTypes = listOf(AuthenticationType.PasswordEncrypted),
-                    username = "",
-                ),
-                outgoingServerSettings = SmtpServerSettings(
-                    hostname = "smtp.example.com".toHostname(),
-                    port = 465.toPort(),
-                    connectionSecurity = ConnectionSecurity.TLS,
-                    authenticationTypes = listOf(AuthenticationType.PasswordEncrypted),
-                    username = "",
-                ),
-                isTrusted = true,
-                source = "preview",
-            ),
-            onEditConfigurationClick = {},
         )
     }
 }

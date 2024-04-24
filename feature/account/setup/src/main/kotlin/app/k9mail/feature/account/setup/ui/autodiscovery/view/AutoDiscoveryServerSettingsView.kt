@@ -15,17 +15,14 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.autodiscovery.api.ConnectionSecurity
 import app.k9mail.core.common.net.Hostname
 import app.k9mail.core.common.net.isIpAddress
-import app.k9mail.core.common.net.toHostname
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
-import app.k9mail.core.ui.compose.theme.MainTheme
-import app.k9mail.core.ui.compose.theme.PreviewWithThemes
+import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.setup.ui.autodiscovery.toAutoDiscoveryConnectionSecurityString
 
 @Composable
@@ -113,61 +110,6 @@ private fun ServerSettingRow(
         }
         TextBodyMedium(
             text = text,
-        )
-    }
-}
-
-@Preview
-@Composable
-internal fun AutoDiscoveryServerSettingsViewPreview() {
-    PreviewWithThemes {
-        AutoDiscoveryServerSettingsView(
-            protocolName = "IMAP",
-            serverHostname = "imap.example.com".toHostname(),
-            serverPort = 993,
-            connectionSecurity = ConnectionSecurity.TLS,
-        )
-    }
-}
-
-@Preview
-@Composable
-internal fun AutoDiscoveryServerSettingsViewOutgoingPreview() {
-    PreviewWithThemes {
-        AutoDiscoveryServerSettingsView(
-            protocolName = "IMAP",
-            serverHostname = "imap.example.com".toHostname(),
-            serverPort = 993,
-            connectionSecurity = ConnectionSecurity.TLS,
-            isIncoming = false,
-        )
-    }
-}
-
-@Preview
-@Composable
-internal fun AutoDiscoveryServerSettingsViewWithUserPreview() {
-    PreviewWithThemes {
-        AutoDiscoveryServerSettingsView(
-            protocolName = "IMAP",
-            serverHostname = "imap.example.com".toHostname(),
-            serverPort = 993,
-            connectionSecurity = ConnectionSecurity.TLS,
-            username = "username",
-        )
-    }
-}
-
-@Preview
-@Composable
-internal fun AutoDiscoveryServerSettingsViewWithIpAddressPreview() {
-    PreviewWithThemes {
-        AutoDiscoveryServerSettingsView(
-            protocolName = "IMAP",
-            serverHostname = "127.0.0.1".toHostname(),
-            serverPort = 993,
-            connectionSecurity = ConnectionSecurity.TLS,
-            username = "username",
         )
     }
 }
