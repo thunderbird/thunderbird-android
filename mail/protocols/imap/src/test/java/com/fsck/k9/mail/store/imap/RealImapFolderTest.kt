@@ -1136,11 +1136,11 @@ class RealImapFolderTest {
     }
 
     @Test
-    fun setFlags_shouldIssueUidStoreCommand() {
+    fun setFlagsForAllMessages_shouldIssueUidStoreCommand() {
         val folder = createFolder("Folder")
         prepareImapFolderForOpen(OpenMode.READ_WRITE)
 
-        folder.setFlags(setOf(Flag.SEEN), true)
+        folder.setFlagsForAllMessages(setOf(Flag.SEEN), true)
 
         assertCommandIssued("UID STORE 1:* +FLAGS.SILENT (\\Seen)")
     }

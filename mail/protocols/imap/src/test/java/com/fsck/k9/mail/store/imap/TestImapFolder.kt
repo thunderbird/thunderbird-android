@@ -96,7 +96,7 @@ internal open class TestImapFolder(
         throw UnsupportedOperationException("not implemented")
     }
 
-    override fun setFlags(flags: Set<Flag>, value: Boolean) {
+    override fun setFlagsForAllMessages(flags: Set<Flag>, value: Boolean) {
         throw UnsupportedOperationException("not implemented")
     }
 

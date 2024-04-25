@@ -70,7 +70,7 @@ interface ImapFolder {
     fun appendMessages(messages: List<Message>): Map<String, String>?
 
     @Throws(MessagingException::class)
-    fun setFlags(flags: Set<Flag>, value: Boolean)
+    fun setFlagsForAllMessages(flags: Set<Flag>, value: Boolean)
 
     @Throws(MessagingException::class)
     fun setFlags(messages: List<ImapMessage>, flags: Set<Flag>, value: Boolean)
