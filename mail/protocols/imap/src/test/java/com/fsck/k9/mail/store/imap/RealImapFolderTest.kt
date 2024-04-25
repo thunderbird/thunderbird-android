@@ -1184,9 +1184,22 @@ class RealImapFolderTest {
     }
 
     @Test
+    fun `search() on closed folder should throw`() {
+        val folder = createFolder("Folder")
+
+        assertFailure {
+            folder.search("query", setOf(Flag.SEEN), emptySet(), true)
+        }.isInstanceOf<MessagingException>()
+            .hasMessage("Folder Folder is not open.")
+
+        verifyNoMoreInteractions(imapConnection)
+    }
+
+    @Test
     fun search_withFullTextSearchEnabled_shouldIssueRespectiveCommand() {
         val folder = createFolder("Folder")
         prepareImapFolderForOpen(OpenMode.READ_ONLY)
+        folder.open(OpenMode.READ_ONLY)
         setupUidSearchResponses("1 OK SEARCH completed")
 
         folder.search("query", setOf(Flag.SEEN), emptySet(), true)
@@ -1198,6 +1211,7 @@ class RealImapFolderTest {
     fun search_withFullTextSearchDisabled_shouldIssueRespectiveCommand() {
         val folder = createFolder("Folder")
         prepareImapFolderForOpen(OpenMode.READ_ONLY)
+        folder.open(OpenMode.READ_ONLY)
         setupUidSearchResponses("1 OK SEARCH completed")
 
         folder.search("query", emptySet(), emptySet(), false)

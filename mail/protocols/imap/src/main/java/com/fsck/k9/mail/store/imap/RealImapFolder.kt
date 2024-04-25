@@ -1191,7 +1191,6 @@ internal class RealImapFolder(
         performFullTextSearch: Boolean,
     ): List<ImapMessage> {
         try {
-            open(OpenMode.READ_ONLY)
             checkOpen()
 
             inSearch = true
