@@ -1,10 +1,11 @@
-package app.k9mail.unread
+package com.fsck.k9.widget.unread
 
 import android.content.Context
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
 import com.fsck.k9.Account
+import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessageCounts
 import com.fsck.k9.controller.MessageCountsProvider
@@ -14,10 +15,11 @@ import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
-import com.fsck.k9.widget.unread.UnreadWidgetConfiguration
-import com.fsck.k9.widget.unread.UnreadWidgetDataProvider
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.core.context.startKoin
+import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
@@ -41,6 +43,17 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
         folderRepository,
         folderNameFormatter,
     )
+
+    @Before
+    fun setUp() {
+        startKoin {
+            modules(
+                module {
+                    factory<CoreResourceProvider> { FakeCoreResourceProvider() }
+                },
+            )
+        }
+    }
 
     @Test
     fun unifiedInbox() {
