@@ -1,5 +1,6 @@
 package com.fsck.k9.controller.push
 
+import android.app.ForegroundServiceStartNotAllowedException
 import android.app.Service
 import android.content.Intent
 import android.content.pm.ServiceInfo
@@ -26,10 +27,15 @@ class PushService : Service() {
         Timber.v("PushService.onStartCommand(%s)", intent)
         super.onStartCommand(intent, flags, startId)
 
-        startForeground()
-        notifyServiceStarted()
+        val isAutomaticRestart = intent == null
+        if (isAutomaticRestart) {
+            maybeStartForeground()
+            initializePushController()
+        } else {
+            startForeground()
+        }
 
-        initializePushController()
+        notifyServiceStarted()
 
         return START_STICKY
     }
@@ -39,6 +45,32 @@ class PushService : Service() {
         pushNotificationManager.setForegroundServiceStopped()
         notifyServiceStopped()
         super.onDestroy()
+    }
+
+    private fun maybeStartForeground() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            startForeground()
+        } else {
+            try {
+                startForeground()
+            } catch (e: ForegroundServiceStartNotAllowedException) {
+                Timber.e(e, "Ignoring ForegroundServiceStartNotAllowedException during automatic restart.")
+
+                // There are quite a few crash reports where calling startForeground() throws
+                // ForegroundServiceStartNotAllowedException when the system is restarting the service. This shouldn't
+                // happen since the app was allowed to start a foreground service when it was originally started.
+                // We haven't been able to reliably reproduce this behavior. So it's not clear if and how we can work
+                // around this.
+                //
+                // Possible workarounds:
+                // - [X] Catch and ignore ForegroundServiceStartNotAllowedException.
+                // - [ ] Skip call to startForeground() when onStartCommand() is called with intent == null.
+                // - [ ] Catch ForegroundServiceStartNotAllowedException and stop the service. Create a notification
+                //       asking the user to tap it to restart the push service.
+                //
+                // See https://github.com/thunderbird/thunderbird-android/issues/7416
+            }
+        }
     }
 
     private fun startForeground() {
