@@ -4,16 +4,16 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.k9mail.feature.account.oauth.R
-import androidx.compose.material.Button as MaterialButton
+import androidx.compose.material3.Button as Material3Button
 
 /**
  * A sign in with Google button, following the Google Branding Guidelines.
@@ -38,18 +38,18 @@ fun SignInWithGoogleButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    isLight: Boolean = MaterialTheme.colors.isLight,
+    isDark: Boolean = isSystemInDarkTheme(),
 ) {
-    MaterialButton(
+    Material3Button(
         onClick = onClick,
         modifier = modifier,
         colors = ButtonDefaults.buttonColors(
-            contentColor = getTextColor(isLight),
-            backgroundColor = getSurfaceColor(isLight),
+            contentColor = getTextColor(isDark),
+            containerColor = getSurfaceColor(isDark),
         ),
         border = BorderStroke(
             width = 1.dp,
-            color = getBorderColor(isLight),
+            color = getBorderColor(isDark),
         ),
         contentPadding = PaddingValues(all = 0.dp),
         enabled = enabled,
@@ -96,28 +96,28 @@ fun SignInWithGoogleButton(
 }
 
 @Suppress("MagicNumber")
-private fun getBorderColor(isLight: Boolean): Color {
-    return if (isLight) {
-        Color(0x87000000)
-    } else {
+private fun getBorderColor(isDark: Boolean): Color {
+    return if (isDark) {
         Color(0xFF4285F4)
+    } else {
+        Color(0x87000000)
     }
 }
 
 @Suppress("MagicNumber")
-private fun getSurfaceColor(isLight: Boolean): Color {
-    return if (isLight) {
-        Color(0xFFFFFFFF)
-    } else {
+private fun getSurfaceColor(isDark: Boolean): Color {
+    return if (isDark) {
         Color(0xFF4285F4)
+    } else {
+        Color(0xFFFFFFFF)
     }
 }
 
 @Suppress("MagicNumber")
-private fun getTextColor(isLight: Boolean): Color {
-    return if (isLight) {
-        Color(0x87000000)
-    } else {
+private fun getTextColor(isDark: Boolean): Color {
+    return if (isDark) {
         Color(0xFFFFFFFF)
+    } else {
+        Color(0x87000000)
     }
 }
