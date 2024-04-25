@@ -995,6 +995,19 @@ class RealImapFolderTest {
     }
 
     @Test
+    fun `appendMessages() on closed folder should throw`() {
+        val folder = createFolder("Folder")
+        val messages = listOf(createImapMessage("1"))
+
+        assertFailure {
+            folder.appendMessages(messages)
+        }.isInstanceOf<MessagingException>()
+            .hasMessage("Folder Folder is not open.")
+
+        verifyNoMoreInteractions(imapConnection)
+    }
+
+    @Test
     fun appendMessages_shouldIssueRespectiveCommand() {
         val folder = createFolder("Folder")
         prepareImapFolderForOpen(OpenMode.READ_WRITE)

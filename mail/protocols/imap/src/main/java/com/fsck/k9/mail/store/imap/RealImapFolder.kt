@@ -964,7 +964,6 @@ internal class RealImapFolder(
      */
     @Throws(MessagingException::class)
     override fun appendMessages(messages: List<Message>): Map<String, String>? {
-        open(OpenMode.READ_WRITE)
         checkOpen()
 
         return try {
