@@ -12,6 +12,7 @@ interface CatalogContract {
 
         // Theme 2
         THEME_2_K9("K-9 (Material3)"),
+        THEME_2_THUNDERBIRD("Thunderbird (Material3)"),
     }
 
     enum class ThemeVariant(

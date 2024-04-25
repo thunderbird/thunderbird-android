@@ -1,6 +1,6 @@
 # K-9 Mail
 
-This is the official source code repository for the K-9 Mail project.
+This is the source code repository for the K-9 Mail project.
 
 ## Maintenance
 
