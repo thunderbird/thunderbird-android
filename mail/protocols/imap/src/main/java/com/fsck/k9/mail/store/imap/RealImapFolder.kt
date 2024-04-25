@@ -1110,7 +1110,6 @@ internal class RealImapFolder(
 
     @Throws(MessagingException::class)
     override fun setFlagsForAllMessages(flags: Set<Flag>, value: Boolean) {
-        open(OpenMode.READ_WRITE)
         checkOpen()
 
         val canCreateForwardedFlag = canCreateKeywords ||
