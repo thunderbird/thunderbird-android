@@ -1132,7 +1132,6 @@ internal class RealImapFolder(
 
     @Throws(MessagingException::class)
     override fun setFlags(messages: List<ImapMessage>, flags: Set<Flag>, value: Boolean) {
-        open(OpenMode.READ_WRITE)
         checkOpen()
 
         val uids = messages.map { it.uid.toLong() }.toSet()

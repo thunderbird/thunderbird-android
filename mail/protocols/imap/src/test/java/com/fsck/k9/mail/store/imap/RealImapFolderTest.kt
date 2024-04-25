@@ -1159,6 +1159,31 @@ class RealImapFolderTest {
     }
 
     @Test
+    fun `setFlags() on closed folder should throw`() {
+        val folder = createFolder("Folder")
+        val messages = listOf(createImapMessage("1"))
+
+        assertFailure {
+            folder.setFlags(messages, setOf(Flag.SEEN), true)
+        }.isInstanceOf<MessagingException>()
+            .hasMessage("Folder Folder is not open.")
+
+        verifyNoMoreInteractions(imapConnection)
+    }
+
+    @Test
+    fun `setFlags() should issue UID STORE command`() {
+        val folder = createFolder("Folder")
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
+        folder.open(OpenMode.READ_WRITE)
+        val messages = listOf(createImapMessage("1"))
+
+        folder.setFlags(messages, setOf(Flag.SEEN), true)
+
+        assertCommandWithIdsIssued("UID STORE 1 +FLAGS.SILENT (\\Seen)")
+    }
+
+    @Test
     fun search_withFullTextSearchEnabled_shouldIssueRespectiveCommand() {
         val folder = createFolder("Folder")
         prepareImapFolderForOpen(OpenMode.READ_ONLY)
