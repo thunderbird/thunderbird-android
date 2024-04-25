@@ -1,11 +1,10 @@
 package app.k9mail.ui.catalog.ui.organism.items
 
 import androidx.compose.foundation.lazy.grid.LazyGridScope
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.organism.TopAppBar
 import app.k9mail.core.ui.compose.designsystem.organism.TopAppBarWithBackButton
@@ -21,7 +20,7 @@ fun LazyGridScope.appBarItems() {
         ItemOutlined {
             TopAppBarItem(
                 title = "Title",
-                actionIcon = Icons.Filled.user,
+                actionIcon = Icons.Outlined.celebration,
             )
         }
     }
@@ -56,21 +55,17 @@ fun TopAppBarItem(
         title = title,
         navigationIcon = {
             navIcon?.let {
-                IconButton(onClick = {}) {
-                    Icon(
-                        imageVector = navIcon,
-                        contentDescription = null,
-                    )
-                }
+                ButtonIcon(
+                    onClick = {},
+                    imageVector = Icons.Outlined.menu,
+                )
             }
         },
         actions = {
-            IconButton(onClick = {}) {
-                Icon(
-                    imageVector = actionIcon,
-                    contentDescription = null,
-                )
-            }
+            ButtonIcon(
+                onClick = {},
+                imageVector = actionIcon,
+            )
         },
         modifier = modifier,
     )
