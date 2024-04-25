@@ -75,6 +75,9 @@ internal class ImapSync(
 
             if (syncConfig.expungePolicy === ExpungePolicy.ON_POLL) {
                 Timber.d("SYNC: Expunging folder %s:%s", accountName, folder)
+                if (!remoteFolder.isOpen || remoteFolder.mode != OpenMode.READ_WRITE) {
+                    remoteFolder.open(OpenMode.READ_WRITE)
+                }
                 remoteFolder.expunge()
             }
 

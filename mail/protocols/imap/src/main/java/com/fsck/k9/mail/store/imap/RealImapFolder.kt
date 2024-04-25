@@ -46,7 +46,7 @@ internal class RealImapFolder(
     override var mode: OpenMode? = null
         private set
 
-    val isOpen: Boolean
+    override val isOpen: Boolean
         get() = connection != null
 
     override fun getUidValidity(): Long? {
@@ -1073,7 +1073,6 @@ internal class RealImapFolder(
 
     @Throws(MessagingException::class)
     override fun expunge() {
-        open(OpenMode.READ_WRITE)
         checkOpen()
 
         try {

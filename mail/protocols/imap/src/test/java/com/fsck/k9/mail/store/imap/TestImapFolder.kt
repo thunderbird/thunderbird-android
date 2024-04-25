@@ -18,7 +18,7 @@ internal open class TestImapFolder(
     override var messageCount: Int = 0
         protected set
 
-    var isOpen: Boolean = false
+    override var isOpen: Boolean = false
         protected set
 
     private var openAction: () -> Unit = {}

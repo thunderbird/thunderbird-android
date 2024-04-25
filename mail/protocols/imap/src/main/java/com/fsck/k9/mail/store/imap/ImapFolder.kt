@@ -14,6 +14,7 @@ interface ImapFolder {
     val serverId: String
     val mode: OpenMode?
     val messageCount: Int
+    val isOpen: Boolean
 
     @Throws(MessagingException::class)
     fun exists(): Boolean

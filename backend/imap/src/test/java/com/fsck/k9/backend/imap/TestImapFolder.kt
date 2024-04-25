@@ -17,6 +17,9 @@ open class TestImapFolder(override val serverId: String) : ImapFolder {
     override var mode: OpenMode? = null
         protected set
 
+    override val isOpen: Boolean
+        get() = mode != null
+
     override var messageCount: Int = 0
 
     var wasExpunged: Boolean = false
