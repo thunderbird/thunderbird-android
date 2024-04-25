@@ -21,7 +21,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedN
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedPassword
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedSelect
 import app.k9mail.core.ui.compose.designsystem.molecule.input.CheckboxInput
-import app.k9mail.core.ui.compose.theme.MainTheme
+import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.ui.catalog.ui.common.helper.WithRememberedState
 import app.k9mail.ui.catalog.ui.common.list.itemDefaultPadding
 import app.k9mail.ui.catalog.ui.common.list.sectionHeaderItem

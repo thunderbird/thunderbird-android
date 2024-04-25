@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.theme.MainTheme
+import app.k9mail.core.ui.compose.theme2.MainTheme
 
 @Composable
 fun ItemOutlined(

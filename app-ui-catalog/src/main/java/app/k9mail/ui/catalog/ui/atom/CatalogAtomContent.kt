@@ -2,9 +2,6 @@ package app.k9mail.ui.catalog.ui.atom
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
-import app.k9mail.core.ui.compose.theme.K9Theme
-import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.ui.catalog.ui.atom.CatalogAtomPage.BUTTON
 import app.k9mail.ui.catalog.ui.atom.CatalogAtomPage.COLOR
 import app.k9mail.ui.catalog.ui.atom.CatalogAtomPage.ICON
@@ -21,10 +18,9 @@ import app.k9mail.ui.catalog.ui.atom.items.textFieldItems
 import app.k9mail.ui.catalog.ui.atom.items.typographyItems
 import app.k9mail.ui.catalog.ui.common.PagedContent
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-fun CatalogContent(
+fun CatalogAtomContent(
     pages: ImmutableList<CatalogAtomPage>,
     initialPage: CatalogAtomPage,
     modifier: Modifier = Modifier,
@@ -43,27 +39,5 @@ fun CatalogContent(
             ICON -> iconItems()
             IMAGE -> imageItems()
         }
-    }
-}
-
-@PreviewDevices
-@Composable
-internal fun CatalogContentK9ThemePreview() {
-    K9Theme {
-        CatalogContent(
-            pages = persistentListOf(TYPOGRAPHY, COLOR),
-            initialPage = TYPOGRAPHY,
-        )
-    }
-}
-
-@PreviewDevices
-@Composable
-internal fun CatalogContentThunderbirdThemePreview() {
-    ThunderbirdTheme {
-        CatalogContent(
-            pages = persistentListOf(TYPOGRAPHY, COLOR),
-            initialPage = TYPOGRAPHY,
-        )
     }
 }

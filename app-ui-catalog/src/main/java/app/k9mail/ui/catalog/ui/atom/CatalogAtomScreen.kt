@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 fun CatalogAtomScreen(
     modifier: Modifier = Modifier,
 ) {
-    CatalogContent(
+    CatalogAtomContent(
         pages = CatalogAtomPage.all(),
         initialPage = CatalogAtomPage.TYPOGRAPHY,
         modifier = modifier,

@@ -18,7 +18,7 @@ dependencies {
     implementation(projects.core.ui.compose.theme2.thunderbird)
     implementation(projects.core.ui.compose.theme2.k9mail)
 
-    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material.icons.extended)
 
     implementation(libs.kotlinx.datetime)
