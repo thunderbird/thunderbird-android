@@ -1100,9 +1100,22 @@ class RealImapFolderTest {
     }
 
     @Test
+    fun `expungeUids() on closed folder should throw`() {
+        val folder = createFolder("Folder")
+
+        assertFailure {
+            folder.expungeUids(listOf("1"))
+        }.isInstanceOf<MessagingException>()
+            .hasMessage("Folder Folder is not open.")
+
+        verifyNoMoreInteractions(imapConnection)
+    }
+
+    @Test
     fun expungeUids_withUidPlus_shouldIssueUidExpungeCommand() {
         val folder = createFolder("Folder")
         prepareImapFolderForOpen(OpenMode.READ_WRITE)
+        folder.open(OpenMode.READ_WRITE)
         whenever(imapConnection.isUidPlusCapable).thenReturn(true)
 
         folder.expungeUids(listOf("1"))
@@ -1114,6 +1127,7 @@ class RealImapFolderTest {
     fun expungeUids_withoutUidPlus_shouldIssueExpungeCommand() {
         val folder = createFolder("Folder")
         prepareImapFolderForOpen(OpenMode.READ_WRITE)
+        folder.open(OpenMode.READ_WRITE)
         whenever(imapConnection.isUidPlusCapable).thenReturn(false)
 
         folder.expungeUids(listOf("1"))

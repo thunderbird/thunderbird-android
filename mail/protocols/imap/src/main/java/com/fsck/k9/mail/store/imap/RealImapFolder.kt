@@ -1083,6 +1083,7 @@ internal class RealImapFolder(
     }
 
     override fun expungeUids(uids: List<String>) {
+        checkOpen()
         expungeUids(uids, fullExpungeFallback = true)
     }
 
@@ -1092,9 +1093,6 @@ internal class RealImapFolder(
 
     private fun expungeUids(uids: List<String>, fullExpungeFallback: Boolean) {
         require(uids.isNotEmpty()) { "expungeUids() must be called with a non-empty set of UIDs" }
-
-        open(OpenMode.READ_WRITE)
-        checkOpen()
 
         try {
             if (connection!!.isUidPlusCapable) {
