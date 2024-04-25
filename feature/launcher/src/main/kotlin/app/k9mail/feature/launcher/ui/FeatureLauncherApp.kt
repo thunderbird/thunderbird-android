@@ -7,7 +7,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import app.k9mail.core.ui.compose.common.activity.LocalActivity
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import app.k9mail.core.ui.compose.theme.K9Theme
 import app.k9mail.feature.launcher.FeatureLauncherExternalContract.FeatureThemeProvider
 import app.k9mail.feature.launcher.navigation.FeatureLauncherNavHost
 import org.koin.compose.koinInject
@@ -19,21 +18,19 @@ fun FeatureLauncherApp(
 ) {
     val navController = rememberNavController()
 
-    K9Theme {
-        themeProvider.WithTheme {
-            Surface(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .safeDrawingPadding()
-                    .then(modifier),
-            ) {
-                val activity = LocalActivity.current
+    themeProvider.WithTheme {
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .safeDrawingPadding()
+                .then(modifier),
+        ) {
+            val activity = LocalActivity.current
 
-                FeatureLauncherNavHost(
-                    navController = navController,
-                    onBack = { activity.finish() },
-                )
-            }
+            FeatureLauncherNavHost(
+                navController = navController,
+                onBack = { activity.finish() },
+            )
         }
     }
 }

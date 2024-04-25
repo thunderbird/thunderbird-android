@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.setup.ui.specialfolders.fake
+package app.k9mail.feature.account.setup.ui.specialfolders
 
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.FormEvent
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.FormState

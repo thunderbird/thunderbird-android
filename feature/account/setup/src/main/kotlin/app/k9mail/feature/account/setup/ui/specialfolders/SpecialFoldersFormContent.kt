@@ -11,12 +11,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.designsystem.molecule.input.SelectInput
-import app.k9mail.core.ui.compose.theme.MainTheme
-import app.k9mail.core.ui.compose.theme.PreviewWithThemes
+import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.common.ui.item.defaultItemPadding
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.FormEvent
@@ -111,16 +109,5 @@ fun SpecialFoldersFormContent(
                 modifier = Modifier.padding(defaultItemPadding()),
             )
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun SpecialFoldersFormContentPreview() {
-    PreviewWithThemes {
-        SpecialFoldersFormContent(
-            state = FormState(),
-            onEvent = {},
-        )
     }
 }
