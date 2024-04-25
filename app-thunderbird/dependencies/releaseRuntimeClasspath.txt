@@ -25,14 +25,12 @@ androidx.compose.foundation:foundation-layout:1.6.5
 androidx.compose.foundation:foundation:1.6.5
 androidx.compose.material3:material3-android:1.2.1
 androidx.compose.material3:material3:1.2.1
-androidx.compose.material:material-android:1.6.5
 androidx.compose.material:material-icons-core-android:1.6.5
 androidx.compose.material:material-icons-core:1.6.5
 androidx.compose.material:material-icons-extended-android:1.6.5
 androidx.compose.material:material-icons-extended:1.6.5
 androidx.compose.material:material-ripple-android:1.6.5
 androidx.compose.material:material-ripple:1.6.5
-androidx.compose.material:material:1.6.5
 androidx.compose.runtime:runtime-android:1.6.5
 androidx.compose.runtime:runtime-saveable-android:1.6.5
 androidx.compose.runtime:runtime-saveable:1.6.5

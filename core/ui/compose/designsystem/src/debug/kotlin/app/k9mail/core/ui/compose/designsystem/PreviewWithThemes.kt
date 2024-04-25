@@ -7,10 +7,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
-import app.k9mail.core.ui.compose.theme.K9Theme
-import app.k9mail.core.ui.compose.theme.ThunderbirdTheme
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.core.ui.compose.theme2.k9mail.K9MailTheme2
+import app.k9mail.core.ui.compose.theme2.thunderbird.ThunderbirdTheme2
 
 @Composable
 fun PreviewWithThemes(
@@ -21,24 +20,34 @@ fun PreviewWithThemes(
         modifier = modifier,
     ) {
         K9MailTheme2 {
-            // TODO remove once design system is migrated to theme2
-            K9Theme {
-                PreviewSurface {
-                    Column {
-                        PreviewHeader(themeName = "K9Theme Light")
-                        content()
-                    }
+            PreviewSurface {
+                Column {
+                    PreviewHeader(themeName = "K9Theme Light")
+                    content()
                 }
             }
         }
         K9MailTheme2(darkTheme = true) {
-            // TODO remove once design system is migrated to theme2
-            K9Theme {
-                PreviewSurface {
-                    Column {
-                        PreviewHeader(themeName = "K9Theme Dark")
-                        content()
-                    }
+            PreviewSurface {
+                Column {
+                    PreviewHeader(themeName = "K9Theme Dark")
+                    content()
+                }
+            }
+        }
+        ThunderbirdTheme2 {
+            PreviewSurface {
+                Column {
+                    PreviewHeader(themeName = "ThunderbirdTheme Light")
+                    content()
+                }
+            }
+        }
+        ThunderbirdTheme2(darkTheme = true) {
+            PreviewSurface {
+                Column {
+                    PreviewHeader(themeName = "ThunderbirdTheme Dark")
+                    content()
                 }
             }
         }
@@ -60,6 +69,7 @@ fun PreviewWithTheme(
         PreviewThemeType.K9MAIL -> {
             PreviewWithK9MailTheme(isDarkTheme, content)
         }
+
         PreviewThemeType.THUNDERBIRD -> {
             PreviewWithThunderbirdTheme(isDarkTheme, content)
         }
@@ -71,12 +81,10 @@ private fun PreviewWithK9MailTheme(
     isDarkTheme: Boolean,
     content: @Composable () -> Unit,
 ) {
-    K9MailTheme2(darkTheme = isDarkTheme) {
-        // TODO remove once design system is migrated to theme2
-        K9Theme(darkTheme = isDarkTheme) {
-            content()
-        }
-    }
+    K9MailTheme2(
+        darkTheme = isDarkTheme,
+        content = content,
+    )
 }
 
 @Composable
@@ -84,13 +92,10 @@ private fun PreviewWithThunderbirdTheme(
     isDarkTheme: Boolean,
     content: @Composable () -> Unit,
 ) {
-    // TODO replace with Thunderbird theme2 once available
-    K9MailTheme2(darkTheme = isDarkTheme) {
-        // TODO remove once design system is migrated to theme2
-        ThunderbirdTheme(darkTheme = isDarkTheme) {
-            content()
-        }
-    }
+    ThunderbirdTheme2(
+        darkTheme = isDarkTheme,
+        content = content,
+    )
 }
 
 @Composable
