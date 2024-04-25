@@ -1,3 +1,3 @@
 # Thunderbird for Android
 
-This is the official source code of the Thunderbird Android app.
+This is the source code of the Thunderbird Android app.
