@@ -13,6 +13,7 @@ import timber.log.Timber
  * Foreground service that is used to keep the app alive while listening for new emails (Push).
  */
 class PushService : Service() {
+    private val pushServiceManager: PushServiceManager by inject()
     private val pushNotificationManager: PushNotificationManager by inject()
     private val pushController: PushController by inject()
 
@@ -22,10 +23,12 @@ class PushService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Timber.v("PushService.onStartCommand()")
+        Timber.v("PushService.onStartCommand(%s)", intent)
         super.onStartCommand(intent, flags, startId)
 
         startForeground()
+        notifyServiceStarted()
+
         initializePushController()
 
         return START_STICKY
@@ -34,6 +37,7 @@ class PushService : Service() {
     override fun onDestroy() {
         Timber.v("PushService.onDestroy()")
         pushNotificationManager.setForegroundServiceStopped()
+        notifyServiceStopped()
         super.onDestroy()
     }
 
@@ -46,6 +50,18 @@ class PushService : Service() {
         } else {
             startForeground(notificationId, notification)
         }
+    }
+
+    private fun notifyServiceStarted() {
+        // If our process was low-memory killed and now this service is being restarted by the system,
+        // PushServiceManager doesn't necessarily know about this service's state. So we're updating it now.
+        pushServiceManager.setServiceStarted()
+    }
+
+    private fun notifyServiceStopped() {
+        // Usually this service is only stopped via PushServiceManager. But we still notify PushServiceManager here in
+        // case the system decided to stop the service (without killing the process).
+        pushServiceManager.setServiceStopped()
     }
 
     private fun initializePushController() {

@@ -30,6 +30,16 @@ internal class PushServiceManager(private val context: Context) {
         }
     }
 
+    fun setServiceStarted() {
+        Timber.v("PushServiceManager.setServiceStarted()")
+        isServiceStarted.set(true)
+    }
+
+    fun setServiceStopped() {
+        Timber.v("PushServiceManager.setServiceStopped()")
+        isServiceStarted.set(false)
+    }
+
     private fun startService() {
         try {
             val intent = Intent(context, PushService::class.java)
