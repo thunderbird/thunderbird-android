@@ -3,12 +3,12 @@
 
     <style name="ComposeTextLabel" parent="@android:style/TextAppearance.Medium">
         <item name="android:textSize">15sp</item>
-        <item name="android:textColor">#aaa</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
     </style>
 
     <style name="ComposeEditText" parent="@android:style/TextAppearance.Medium">
         <item name="android:textSize">16sp</item>
-        <item name="android:textColorHint">#aaa</item>
+        <item name="android:textColorHint">?attr/colorOnSurfaceVariant</item>
     </style>
 
     <style name="RecipientEditText" parent="ComposeEditText">
@@ -16,7 +16,7 @@
     </style>
 
     <style name="ComposeEditTextLarge" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColorHint">#aaa</item>
+        <item name="android:textColorHint">?attr/colorOnSurfaceVariant</item>
     </style>
 
     <style name="MessageComposeHighlight">
