@@ -4,21 +4,17 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import android.widget.ProgressBar
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
-import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.fragment.app.FragmentManager
@@ -163,23 +159,6 @@ open class MessageList :
                 secondOutAnimation = AnimationUtils.loadAnimation(this@MessageList, R.anim.slide_out_left)
                 setOnSwitchCompleteListener(this@MessageList)
             }
-        }
-
-        window.statusBarColor = Color.TRANSPARENT
-
-        val rootLayout = findViewById<View>(R.id.drawerLayout)
-
-        rootLayout.systemUiVisibility = rootLayout.systemUiVisibility or View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        }
-
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        toolbar.setOnApplyWindowInsetsListener { view, insets ->
-            view.setPadding(view.paddingLeft, insets.systemWindowInsetTop, view.paddingRight, view.paddingBottom)
-            insets
         }
 
         val swipeRefreshLayout = findViewById<View>(R.id.material_drawer_swipe_refresh)
