@@ -58,6 +58,8 @@
         <item name="colorErrorContainer">@color/k9_error_090</item>
         <item name="colorOnErrorContainer">@color/k9_error_010</item>
 
+        <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
+
         <!-- Legacy styles -->
 
         <item name="windowActionModeOverlay">true</item>
@@ -257,6 +259,8 @@
         <item name="colorOnError">@color/k9_error_020</item>
         <item name="colorErrorContainer">@color/k9_error_030</item>
         <item name="colorOnErrorContainer">@color/k9_error_090</item>
+
+        <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
 
         <!-- Legacy styles -->
 

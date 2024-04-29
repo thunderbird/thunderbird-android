@@ -2,11 +2,13 @@ package app.k9mail.core.ui.compose.designsystem.organism
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
+import app.k9mail.core.ui.compose.theme2.MainTheme
 import androidx.compose.material3.TopAppBar as Material3TopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -22,6 +24,9 @@ fun TopAppBar(
         modifier = modifier,
         navigationIcon = navigationIcon,
         actions = actions,
+        colors = topAppBarColors(
+            containerColor = MainTheme.colors.surfaceContainer,
+        ),
     )
 }
 
