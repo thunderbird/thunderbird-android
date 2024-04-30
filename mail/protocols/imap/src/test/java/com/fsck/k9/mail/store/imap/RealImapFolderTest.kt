@@ -284,8 +284,8 @@ class RealImapFolderTest {
 
         assertFailure {
             sourceFolder.copyMessages(messages, destinationFolder)
-        }.isInstanceOf<MessagingException>()
-            .hasMessage("Folder Source is not open.")
+        }.isInstanceOf<IllegalStateException>()
+            .hasMessage("Folder 'Source' is not open.")
     }
 
     @Test
@@ -300,6 +300,20 @@ class RealImapFolderTest {
         val uidMapping = sourceFolder.copyMessages(messages, destinationFolder)
 
         assertThat(uidMapping).isNotNull().containsOnly("1" to "101")
+    }
+
+    @Test
+    fun `moveMessages() on closed folder should throw`() {
+        val sourceFolder = createFolder("Source")
+        val destinationFolder = createFolder("Destination")
+        val messages = listOf(createImapMessage("1"))
+
+        assertFailure {
+            sourceFolder.moveMessages(messages, destinationFolder)
+        }.isInstanceOf<IllegalStateException>()
+            .hasMessage("Folder 'Source' is not open.")
+
+        verifyNoMoreInteractions(imapConnection)
     }
 
     @Test
@@ -426,8 +440,8 @@ class RealImapFolderTest {
 
         assertFailure {
             folder.unreadMessageCount
-        }.isInstanceOf<MessagingException>()
-            .hasMessage("Folder FolderName is not open.")
+        }.isInstanceOf<IllegalStateException>()
+            .hasMessage("Folder 'FolderName' is not open.")
     }
 
     @Test
@@ -462,8 +476,8 @@ class RealImapFolderTest {
 
         assertFailure {
             folder.flaggedMessageCount
-        }.isInstanceOf<MessagingException>()
-            .hasMessage("Folder FolderName is not open.")
+        }.isInstanceOf<IllegalStateException>()
+            .hasMessage("Folder 'FolderName' is not open.")
     }
 
     @Test
@@ -596,8 +610,8 @@ class RealImapFolderTest {
 
         assertFailure {
             folder.getMessages(1, 5, null, null)
-        }.isInstanceOf<MessagingException>()
-            .hasMessage("Folder FolderName is not open.")
+        }.isInstanceOf<IllegalStateException>()
+            .hasMessage("Folder 'FolderName' is not open.")
     }
 
     @Test
@@ -606,8 +620,8 @@ class RealImapFolderTest {
 
         assertFailure {
             folder.getMessages(setOf(1L, 2L, 5L), false, null)
-        }.isInstanceOf<MessagingException>()
-            .hasMessage("Folder FolderName is not open.")
+        }.isInstanceOf<IllegalStateException>()
+            .hasMessage("Folder 'FolderName' is not open.")
     }
 
     @Test
@@ -643,8 +657,8 @@ class RealImapFolderTest {
 
         assertFailure {
             folder.getMessagesFromUids(listOf("11", "22", "25"))
-        }.isInstanceOf<MessagingException>()
-            .hasMessage("Folder FolderName is not open.")
+        }.isInstanceOf<IllegalStateException>()
+            .hasMessage("Folder 'FolderName' is not open.")
     }
 
     @Test
@@ -666,8 +680,8 @@ class RealImapFolderTest {
 
         assertFailure {
             folder.areMoreMessagesAvailable(10, Date())
-        }.isInstanceOf<MessagingException>()
-            .hasMessage("Folder FolderName is not open.")
+        }.isInstanceOf<IllegalStateException>()
+            .hasMessage("Folder 'FolderName' is not open.")
     }
 
     @Test
@@ -728,6 +742,25 @@ class RealImapFolderTest {
         folder.fetch(emptyList(), fetchProfile, null, MAX_DOWNLOAD_SIZE)
 
         assertThat(testConnectionManager.numberOfGetConnectionCalls).isEqualTo(0)
+    }
+
+    @Test
+    fun `fetch() on closed folder should throw`() {
+        val folder = createFolder("Folder")
+        val messages = createImapMessages("1")
+        val fetchProfile = createFetchProfile()
+
+        assertFailure {
+            folder.fetch(
+                messages = messages,
+                fetchProfile = fetchProfile,
+                listener = null,
+                maxDownloadSize = MAX_DOWNLOAD_SIZE,
+            )
+        }.isInstanceOf<IllegalStateException>()
+            .hasMessage("Folder 'Folder' is not open.")
+
+        verifyNoMoreInteractions(imapConnection)
     }
 
     @Test
@@ -948,6 +981,20 @@ class RealImapFolderTest {
     }
 
     @Test
+    fun `fetchPart() on closed folder should throw`() {
+        val folder = createFolder("Folder")
+        val message = createImapMessage("1")
+        val part = createPart("TEXT")
+
+        assertFailure {
+            folder.fetchPart(message = message, part = part, bodyFactory = mock(), maxDownloadSize = 4096)
+        }.isInstanceOf<IllegalStateException>()
+            .hasMessage("Folder 'Folder' is not open.")
+
+        verifyNoMoreInteractions(imapConnection)
+    }
+
+    @Test
     fun fetchPart_withTextSection_shouldIssueRespectiveCommand() {
         val folder = createFolder("Folder")
         prepareImapFolderForOpen(OpenMode.READ_ONLY)
@@ -1001,8 +1048,8 @@ class RealImapFolderTest {
 
         assertFailure {
             folder.appendMessages(messages)
-        }.isInstanceOf<MessagingException>()
-            .hasMessage("Folder Folder is not open.")
+        }.isInstanceOf<IllegalStateException>()
+            .hasMessage("Folder 'Folder' is not open.")
 
         verifyNoMoreInteractions(imapConnection)
     }
@@ -1082,8 +1129,8 @@ class RealImapFolderTest {
 
         assertFailure {
             folder.expunge()
-        }.isInstanceOf<MessagingException>()
-            .hasMessage("Folder Folder is not open.")
+        }.isInstanceOf<IllegalStateException>()
+            .hasMessage("Folder 'Folder' is not open.")
 
         verifyNoMoreInteractions(imapConnection)
     }
@@ -1105,8 +1152,8 @@ class RealImapFolderTest {
 
         assertFailure {
             folder.expungeUids(listOf("1"))
-        }.isInstanceOf<MessagingException>()
-            .hasMessage("Folder Folder is not open.")
+        }.isInstanceOf<IllegalStateException>()
+            .hasMessage("Folder 'Folder' is not open.")
 
         verifyNoMoreInteractions(imapConnection)
     }
@@ -1141,8 +1188,8 @@ class RealImapFolderTest {
 
         assertFailure {
             folder.setFlagsForAllMessages(setOf(Flag.SEEN), true)
-        }.isInstanceOf<MessagingException>()
-            .hasMessage("Folder Folder is not open.")
+        }.isInstanceOf<IllegalStateException>()
+            .hasMessage("Folder 'Folder' is not open.")
 
         verifyNoMoreInteractions(imapConnection)
     }
@@ -1165,8 +1212,8 @@ class RealImapFolderTest {
 
         assertFailure {
             folder.setFlags(messages, setOf(Flag.SEEN), true)
-        }.isInstanceOf<MessagingException>()
-            .hasMessage("Folder Folder is not open.")
+        }.isInstanceOf<IllegalStateException>()
+            .hasMessage("Folder 'Folder' is not open.")
 
         verifyNoMoreInteractions(imapConnection)
     }
@@ -1189,8 +1236,8 @@ class RealImapFolderTest {
 
         assertFailure {
             folder.search("query", setOf(Flag.SEEN), emptySet(), true)
-        }.isInstanceOf<MessagingException>()
-            .hasMessage("Folder Folder is not open.")
+        }.isInstanceOf<IllegalStateException>()
+            .hasMessage("Folder 'Folder' is not open.")
 
         verifyNoMoreInteractions(imapConnection)
     }

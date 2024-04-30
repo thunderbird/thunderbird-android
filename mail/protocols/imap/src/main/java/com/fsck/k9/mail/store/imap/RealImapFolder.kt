@@ -1162,11 +1162,8 @@ internal class RealImapFolder(
         }
     }
 
-    @Throws(MessagingException::class)
     private fun checkOpen() {
-        if (!isOpen) {
-            throw MessagingException("Folder $serverId is not open.")
-        }
+        check(isOpen) { "Folder '$serverId' is not open." }
     }
 
     private fun ioExceptionHandler(connection: ImapConnection?, ioe: IOException): MessagingException {
