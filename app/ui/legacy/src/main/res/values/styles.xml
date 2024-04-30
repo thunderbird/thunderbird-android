@@ -3,17 +3,20 @@
 
     <style name="ComposeTextLabel" parent="@android:style/TextAppearance.Medium">
         <item name="android:textSize">15sp</item>
-        <item name="android:textColor">#aaa</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
     </style>
+
     <style name="ComposeEditText" parent="@android:style/TextAppearance.Medium">
         <item name="android:textSize">16sp</item>
-        <item name="android:textColorHint">#aaa</item>
+        <item name="android:textColorHint">?attr/colorOnSurfaceVariant</item>
     </style>
+
     <style name="RecipientEditText" parent="ComposeEditText">
         <item name="android:lineSpacingExtra">4dp</item>
     </style>
+
     <style name="ComposeEditTextLarge" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColorHint">#aaa</item>
+        <item name="android:textColorHint">?attr/colorOnSurfaceVariant</item>
     </style>
 
     <style name="MessageComposeHighlight">
@@ -40,6 +43,10 @@
         <item name="android:paddingLeft">@dimen/input_label_horizontal_spacing</item>
         <item name="android:paddingRight">@dimen/input_label_horizontal_spacing</item>
         <item name="android:textColor">?android:attr/textColorHint</item>
+    </style>
+
+    <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">?attr/colorSurfaceContainer</item>
     </style>
 
     <style name="Widget.MaterialDrawerStyle.K9" parent="Widget.MaterialDrawerStyle">

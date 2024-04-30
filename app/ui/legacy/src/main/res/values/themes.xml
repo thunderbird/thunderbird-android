@@ -58,6 +58,8 @@
         <item name="colorErrorContainer">@color/k9_error_090</item>
         <item name="colorOnErrorContainer">@color/k9_error_010</item>
 
+        <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
+
         <!-- Legacy styles -->
 
         <item name="windowActionModeOverlay">true</item>
@@ -200,13 +202,13 @@
     </style>
 
     <style name="Theme.K9.Light" parent="Theme.K9.Light.Common">
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">?attr/colorSurfaceInverse</item>
+        <item name="android:navigationBarColor">?attr/colorSurfaceInverse</item>
     </style>
 
     <style name="Theme.K9.Dark" parent="Theme.K9.Dark.Common">
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">?attr/colorSurfaceContainer</item>
+        <item name="android:navigationBarColor">?attr/colorSurfaceContainer</item>
     </style>
 
     <style name="Theme.K9.Dark.Common" parent="Theme.K9.Dark.Base">
@@ -257,6 +259,8 @@
         <item name="colorOnError">@color/k9_error_020</item>
         <item name="colorErrorContainer">@color/k9_error_030</item>
         <item name="colorOnErrorContainer">@color/k9_error_090</item>
+
+        <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
 
         <!-- Legacy styles -->
 

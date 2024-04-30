@@ -22,10 +22,9 @@ the 'composer theme' setting).
         <LinearLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_marginLeft="12dip"
-            android:layout_marginRight="12dip"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:background="?attr/colorSurfaceContainerLow"
             android:minHeight="50dp">
 
             <EditText
@@ -36,6 +35,8 @@ the 'composer theme' setting).
                 android:inputType="textEmailSubject|textAutoCorrect|textCapSentences"
                 android:imeOptions="actionNext|flagNoExtractUi"
                 android:singleLine="true"
+                android:layout_marginLeft="12dip"
+                android:layout_marginRight="12dip"
                 android:background="@android:color/transparent"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
