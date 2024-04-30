@@ -66,7 +66,6 @@
 
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
 
-        <item name="iconUnifiedInbox">@drawable/ic_inbox_multiple</item>
         <item name="iconFolder">@drawable/ic_folder</item>
         <item name="iconFolderInbox">@drawable/ic_inbox</item>
         <item name="iconFolderOutbox">@drawable/ic_outbox</item>
@@ -268,7 +267,6 @@
 
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
 
-        <item name="iconUnifiedInbox">@drawable/ic_inbox_multiple</item>
         <item name="iconFolder">@drawable/ic_folder</item>
         <item name="iconFolderInbox">@drawable/ic_inbox</item>
         <item name="iconFolderOutbox">@drawable/ic_outbox</item>
