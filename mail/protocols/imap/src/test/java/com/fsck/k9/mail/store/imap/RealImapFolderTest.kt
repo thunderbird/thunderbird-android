@@ -317,6 +317,20 @@ class RealImapFolderTest {
     }
 
     @Test
+    fun `moveMessages() on folder opened as read-only should throw`() {
+        val sourceFolder = createFolder("Folder")
+        prepareImapFolderForOpen(OpenMode.READ_ONLY)
+        sourceFolder.open(OpenMode.READ_ONLY)
+        val destinationFolder = createFolder("Destination")
+        val messages = listOf(createImapMessage("1"))
+
+        assertFailure {
+            sourceFolder.moveMessages(messages, destinationFolder)
+        }.isInstanceOf<IllegalStateException>()
+            .hasMessage("Folder 'Folder' needs to be opened for read-write access.")
+    }
+
+    @Test
     fun `moveMessages() with MOVE extension and tagged COPYUID response`() {
         val sourceFolder = createFolder("Folder")
         prepareImapFolderForOpen(OpenMode.READ_WRITE)
@@ -1055,6 +1069,19 @@ class RealImapFolderTest {
     }
 
     @Test
+    fun `appendMessages() on folder opened as read-only should throw`() {
+        val folder = createFolder("Folder")
+        prepareImapFolderForOpen(OpenMode.READ_ONLY)
+        folder.open(OpenMode.READ_ONLY)
+        val messages = listOf(createImapMessage("1"))
+
+        assertFailure {
+            folder.appendMessages(messages)
+        }.isInstanceOf<IllegalStateException>()
+            .hasMessage("Folder 'Folder' needs to be opened for read-write access.")
+    }
+
+    @Test
     fun appendMessages_shouldIssueRespectiveCommand() {
         val folder = createFolder("Folder")
         prepareImapFolderForOpen(OpenMode.READ_WRITE)
@@ -1136,6 +1163,18 @@ class RealImapFolderTest {
     }
 
     @Test
+    fun `expunge() on folder opened as read-only should throw`() {
+        val folder = createFolder("Folder")
+        prepareImapFolderForOpen(OpenMode.READ_ONLY)
+        folder.open(OpenMode.READ_ONLY)
+
+        assertFailure {
+            folder.expunge()
+        }.isInstanceOf<IllegalStateException>()
+            .hasMessage("Folder 'Folder' needs to be opened for read-write access.")
+    }
+
+    @Test
     fun expunge_shouldIssueExpungeCommand() {
         val folder = createFolder("Folder")
         prepareImapFolderForOpen(OpenMode.READ_WRITE)
@@ -1156,6 +1195,18 @@ class RealImapFolderTest {
             .hasMessage("Folder 'Folder' is not open.")
 
         verifyNoMoreInteractions(imapConnection)
+    }
+
+    @Test
+    fun `expungeUids() on folder opened as read-only should throw`() {
+        val folder = createFolder("Folder")
+        prepareImapFolderForOpen(OpenMode.READ_ONLY)
+        folder.open(OpenMode.READ_ONLY)
+
+        assertFailure {
+            folder.expungeUids(listOf("1"))
+        }.isInstanceOf<IllegalStateException>()
+            .hasMessage("Folder 'Folder' needs to be opened for read-write access.")
     }
 
     @Test
@@ -1195,6 +1246,18 @@ class RealImapFolderTest {
     }
 
     @Test
+    fun `setFlagsForAllMessages() on folder opened as read-only should throw`() {
+        val folder = createFolder("Folder")
+        prepareImapFolderForOpen(OpenMode.READ_ONLY)
+        folder.open(OpenMode.READ_ONLY)
+
+        assertFailure {
+            folder.setFlagsForAllMessages(setOf(Flag.SEEN), true)
+        }.isInstanceOf<IllegalStateException>()
+            .hasMessage("Folder 'Folder' needs to be opened for read-write access.")
+    }
+
+    @Test
     fun setFlagsForAllMessages_shouldIssueUidStoreCommand() {
         val folder = createFolder("Folder")
         prepareImapFolderForOpen(OpenMode.READ_WRITE)
@@ -1216,6 +1279,19 @@ class RealImapFolderTest {
             .hasMessage("Folder 'Folder' is not open.")
 
         verifyNoMoreInteractions(imapConnection)
+    }
+
+    @Test
+    fun `setFlags() on folder opened as read-only should throw`() {
+        val folder = createFolder("Folder")
+        prepareImapFolderForOpen(OpenMode.READ_ONLY)
+        folder.open(OpenMode.READ_ONLY)
+        val messages = listOf(createImapMessage("1"))
+
+        assertFailure {
+            folder.setFlags(messages, setOf(Flag.SEEN), true)
+        }.isInstanceOf<IllegalStateException>()
+            .hasMessage("Folder 'Folder' needs to be opened for read-write access.")
     }
 
     @Test

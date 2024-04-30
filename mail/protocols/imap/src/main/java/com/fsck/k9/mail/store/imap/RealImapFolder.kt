@@ -307,7 +307,7 @@ internal class RealImapFolder(
             return null
         }
 
-        checkOpen()
+        checkOpenWithWriteAccess()
 
         return if (connection.hasCapability(Capabilities.MOVE)) {
             moveMessagesUsingMoveExtension(messages, folder)
@@ -980,7 +980,7 @@ internal class RealImapFolder(
      */
     @Throws(MessagingException::class)
     override fun appendMessages(messages: List<Message>): Map<String, String>? {
-        checkOpen()
+        checkOpenWithWriteAccess()
 
         return try {
             val uidMap: MutableMap<String, String> = HashMap()
@@ -1089,7 +1089,7 @@ internal class RealImapFolder(
 
     @Throws(MessagingException::class)
     override fun expunge() {
-        checkOpen()
+        checkOpenWithWriteAccess()
 
         try {
             executeSimpleCommand("EXPUNGE")
@@ -1099,7 +1099,7 @@ internal class RealImapFolder(
     }
 
     override fun expungeUids(uids: List<String>) {
-        checkOpen()
+        checkOpenWithWriteAccess()
         expungeUids(uids, fullExpungeFallback = true)
     }
 
@@ -1126,7 +1126,7 @@ internal class RealImapFolder(
 
     @Throws(MessagingException::class)
     override fun setFlagsForAllMessages(flags: Set<Flag>, value: Boolean) {
-        checkOpen()
+        checkOpenWithWriteAccess()
 
         val canCreateForwardedFlag = canCreateKeywords ||
             internalImapStore.getPermanentFlagsIndex().contains(Flag.FORWARDED)
@@ -1148,7 +1148,7 @@ internal class RealImapFolder(
 
     @Throws(MessagingException::class)
     override fun setFlags(messages: List<ImapMessage>, flags: Set<Flag>, value: Boolean) {
-        checkOpen()
+        checkOpenWithWriteAccess()
 
         val uids = messages.map { it.uid.toLong() }.toSet()
         val canCreateForwardedFlag = canCreateKeywords ||
@@ -1164,6 +1164,11 @@ internal class RealImapFolder(
 
     private fun checkOpen() {
         check(isOpen) { "Folder '$serverId' is not open." }
+    }
+
+    private fun checkOpenWithWriteAccess() {
+        checkOpen()
+        check(mode == OpenMode.READ_WRITE) { "Folder '$serverId' needs to be opened for read-write access." }
     }
 
     private fun ioExceptionHandler(connection: ImapConnection?, ioe: IOException): MessagingException {
