@@ -19,7 +19,7 @@ fun ResponsiveContentWithSurface(
     ResponsiveContent {
         Surface(
             modifier = modifier,
-            color = MainTheme.colors.surfaceContainer,
+            color = MainTheme.colors.surface,
         ) {
             content()
         }
