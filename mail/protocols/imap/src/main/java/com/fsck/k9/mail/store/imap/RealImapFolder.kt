@@ -46,7 +46,7 @@ internal class RealImapFolder(
     override var mode: OpenMode? = null
         private set
 
-    val isOpen: Boolean
+    override val isOpen: Boolean
         get() = connection != null
 
     override fun getUidValidity(): Long? {
@@ -964,7 +964,6 @@ internal class RealImapFolder(
      */
     @Throws(MessagingException::class)
     override fun appendMessages(messages: List<Message>): Map<String, String>? {
-        open(OpenMode.READ_WRITE)
         checkOpen()
 
         return try {
@@ -1074,7 +1073,6 @@ internal class RealImapFolder(
 
     @Throws(MessagingException::class)
     override fun expunge() {
-        open(OpenMode.READ_WRITE)
         checkOpen()
 
         try {
@@ -1085,6 +1083,7 @@ internal class RealImapFolder(
     }
 
     override fun expungeUids(uids: List<String>) {
+        checkOpen()
         expungeUids(uids, fullExpungeFallback = true)
     }
 
@@ -1094,9 +1093,6 @@ internal class RealImapFolder(
 
     private fun expungeUids(uids: List<String>, fullExpungeFallback: Boolean) {
         require(uids.isNotEmpty()) { "expungeUids() must be called with a non-empty set of UIDs" }
-
-        open(OpenMode.READ_WRITE)
-        checkOpen()
 
         try {
             if (connection!!.isUidPlusCapable) {
@@ -1113,8 +1109,7 @@ internal class RealImapFolder(
     }
 
     @Throws(MessagingException::class)
-    override fun setFlags(flags: Set<Flag>, value: Boolean) {
-        open(OpenMode.READ_WRITE)
+    override fun setFlagsForAllMessages(flags: Set<Flag>, value: Boolean) {
         checkOpen()
 
         val canCreateForwardedFlag = canCreateKeywords ||
@@ -1137,7 +1132,6 @@ internal class RealImapFolder(
 
     @Throws(MessagingException::class)
     override fun setFlags(messages: List<ImapMessage>, flags: Set<Flag>, value: Boolean) {
-        open(OpenMode.READ_WRITE)
         checkOpen()
 
         val uids = messages.map { it.uid.toLong() }.toSet()
@@ -1155,7 +1149,7 @@ internal class RealImapFolder(
     @Throws(MessagingException::class)
     private fun checkOpen() {
         if (!isOpen) {
-            throw MessagingException("Folder $prefixedName is not open.")
+            throw MessagingException("Folder $serverId is not open.")
         }
     }
 
@@ -1197,7 +1191,6 @@ internal class RealImapFolder(
         performFullTextSearch: Boolean,
     ): List<ImapMessage> {
         try {
-            open(OpenMode.READ_ONLY)
             checkOpen()
 
             inSearch = true

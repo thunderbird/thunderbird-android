@@ -13,7 +13,7 @@ internal class CommandDeleteAll(private val imapStore: ImapStore) {
         try {
             remoteFolder.open(OpenMode.READ_WRITE)
 
-            remoteFolder.setFlags(setOf(Flag.DELETED), true)
+            remoteFolder.setFlagsForAllMessages(setOf(Flag.DELETED), true)
         } finally {
             remoteFolder.close()
         }

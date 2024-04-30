@@ -18,7 +18,7 @@ internal open class TestImapFolder(
     override var messageCount: Int = 0
         protected set
 
-    var isOpen: Boolean = false
+    override var isOpen: Boolean = false
         protected set
 
     private var openAction: () -> Unit = {}
@@ -96,7 +96,7 @@ internal open class TestImapFolder(
         throw UnsupportedOperationException("not implemented")
     }
 
-    override fun setFlags(flags: Set<Flag>, value: Boolean) {
+    override fun setFlagsForAllMessages(flags: Set<Flag>, value: Boolean) {
         throw UnsupportedOperationException("not implemented")
     }
 

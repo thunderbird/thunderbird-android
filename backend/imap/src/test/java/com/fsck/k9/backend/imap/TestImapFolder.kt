@@ -17,6 +17,9 @@ open class TestImapFolder(override val serverId: String) : ImapFolder {
     override var mode: OpenMode? = null
         protected set
 
+    override val isOpen: Boolean
+        get() = mode != null
+
     override var messageCount: Int = 0
 
     var wasExpunged: Boolean = false
@@ -136,7 +139,7 @@ open class TestImapFolder(override val serverId: String) : ImapFolder {
         throw UnsupportedOperationException("not implemented")
     }
 
-    override fun setFlags(flags: Set<Flag>, value: Boolean) {
+    override fun setFlagsForAllMessages(flags: Set<Flag>, value: Boolean) {
         if (value) {
             for (messageFlagSet in messageFlags.values) {
                 messageFlagSet.addAll(flags)
