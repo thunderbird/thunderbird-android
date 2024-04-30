@@ -1,7 +1,6 @@
 package com.fsck.k9.backend.imap
 
 import com.fsck.k9.logging.Timber
-import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.store.imap.ImapFolder
 import com.fsck.k9.mail.store.imap.ImapStore
 import com.fsck.k9.mail.store.imap.OpenMode
@@ -42,12 +41,6 @@ internal class CommandMoveOrCopyMessages(private val imapStore: ImapStore) {
             }
 
             remoteSrcFolder.open(OpenMode.READ_WRITE)
-            if (remoteSrcFolder.mode != OpenMode.READ_WRITE) {
-                throw MessagingException(
-                    "moveOrCopyMessages: could not open remoteSrcFolder $srcFolder read/write",
-                    true,
-                )
-            }
 
             val messages = uids.map { uid -> remoteSrcFolder.getMessage(uid) }
 

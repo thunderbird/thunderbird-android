@@ -40,9 +40,23 @@ internal class RealImapFolder(
     private var canCreateKeywords = false
     private var uidValidity: Long? = null
 
+    /**
+     * Specifies whether the folder was opened in read-only or read-write mode based on the the tagged OK response to
+     * the SELECT or EXAMINE command (READ-ONLY or READ-WRITE).
+     *
+     * Most of the time this will match the [mode] value. But it's possible for the SELECT command to open a folder in
+     * read-only mode. See RFC 3501, section 6.3.1.
+     *
+     * Note: Currently unused.
+     */
+    private var serverOpenMode: OpenMode? = null
+
     override var messageCount = -1
         private set
 
+    /**
+     * The [OpenMode] value that was passed when this folder was [opened][open].
+     */
     override var mode: OpenMode? = null
         private set
 
@@ -84,6 +98,12 @@ internal class RealImapFolder(
         return handleUntaggedResponses(connection!!.executeSimpleCommand(command))
     }
 
+    /**
+     * Opens the folder in either read-only or read-write mode.
+     *
+     * When [OpenMode.READ_ONLY] is passed the EXAMINE command is used to open the folder.
+     * When [OpenMode.READ_WRITE] is passed the SELECT command is used to open the folder.
+     */
     @Throws(MessagingException::class)
     override fun open(mode: OpenMode) {
         internalOpen(mode)
@@ -118,10 +138,6 @@ internal class RealImapFolder(
             val command = String.format("%s %s", openCommand, escapedFolderName)
             val responses = executeSimpleCommand(command)
 
-            /*
-             * If the command succeeds we expect the folder has been opened read-write unless we
-             * are notified otherwise in the responses.
-             */
             this.mode = mode
 
             for (response in responses) {
@@ -160,7 +176,7 @@ internal class RealImapFolder(
     private fun handleSelectOrExamineOkResponse(response: ImapResponse) {
         val selectOrExamineResponse = SelectOrExamineResponse.parse(response) ?: return // This shouldn't happen
         if (selectOrExamineResponse.hasOpenMode()) {
-            mode = selectOrExamineResponse.openMode
+            serverOpenMode = selectOrExamineResponse.openMode
         }
     }
 
