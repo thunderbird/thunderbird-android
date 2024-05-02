@@ -1,4 +1,4 @@
-# 0002 - UI - Wrap Material Components in Atomic Design System
+# UI - Wrap Material Components in Atomic Design System
 
 ## Status
 

@@ -1,4 +1,4 @@
-# [NNNN] - [Descriptive Title in Title Case]
+# [Descriptive Title in Title Case]
 
 ## Status
 

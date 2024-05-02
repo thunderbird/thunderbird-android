@@ -1,4 +1,4 @@
-# 0001 - Switch from Java to Kotlin
+# Switch from Java to Kotlin
 
 ## Status
 
