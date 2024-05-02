@@ -1,5 +1,7 @@
 # Naming Conventions for Interfaces and Their Implementations
 
+- Pull Request: [#7794](https://github.com/thunderbird/thunderbird-android/pull/7794)
+
 ## Status
 
 - **Accepted**

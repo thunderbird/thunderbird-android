@@ -17,6 +17,9 @@ We adhere to Michael Nygard's [ADR format proposal](https://cognitect.com/blog/2
 where each ADR document should contain:
 
 1. **Title**: A short descriptive name for the decision.
+   1. **Link to Issue**: A link to the issue that prompted the decision.
+   2. **Link to Pull Request**: A link to the pull request that implements the ADR.
+   3. **Link to Tracking Issue**: A link to the tracking issue, if applicable.
 2. **Status**: The current status of the decision (proposed, accepted, rejected, deprecated, superseded)
 3. **Context**: The context that motivates this decision.
 4. **Decision**: The change that we're proposing and/or doing.
