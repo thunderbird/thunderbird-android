@@ -1,0 +1,18 @@
+[book]
+title = "Thunderbird for Android - Developer Documentation"
+authors = ["Thunderbird Mobile Team"]
+description = "Developer Documentation for the Thunderbird for Android project."
+language = "en"
+multilingual = false
+src = "."
+
+[rust]
+edition = "2018"
+
+[build]
+build-dir = "book"
+create-missing = false
+
+[output.html]
+git-repository-url = "https://github.com/thunderbird/thunderbird-android"
+git-branch = "main"
