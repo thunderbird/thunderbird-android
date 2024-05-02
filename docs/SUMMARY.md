@@ -1,5 +1,6 @@
 # Summary
 
+- [Contributing](CONTRIBUTING.md)
 - [Design](DESIGN.md)
 - [Releasing](RELEASING.md)
 - [Translations](translations.md)
