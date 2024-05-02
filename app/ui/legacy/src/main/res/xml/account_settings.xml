@@ -89,12 +89,8 @@
             app:useSimpleSummaryProvider="true"
             android:title="@string/account_settings_folder_sync_mode_label" />
 
-        <ListPreference
-            android:dialogTitle="@string/account_settings_folder_push_mode_label"
-            android:entries="@array/folder_push_mode_entries"
-            android:entryValues="@array/folder_push_mode_values"
+        <app.k9mail.feature.settings.push.ui.PushFoldersPreference
             android:key="folder_push_mode"
-            app:useSimpleSummaryProvider="true"
             android:title="@string/account_settings_folder_push_mode_label" />
 
         <CheckBoxPreference

@@ -14,6 +14,8 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.SwitchPreference
 import app.k9mail.feature.launcher.FeatureLauncherActivity
+import app.k9mail.feature.settings.push.ui.PushFoldersActivity
+import app.k9mail.feature.settings.push.ui.PushFoldersPreference
 import com.fsck.k9.Account
 import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.activity.ManageIdentities
@@ -58,6 +60,11 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     private var notificationSoundPreference: NotificationSoundPreference? = null
     private var notificationLightPreference: ListPreference? = null
     private var notificationVibrationPreference: VibrationPreference? = null
+
+    private var pushFoldersPreference: PushFoldersPreference? = null
+    private val pushFoldersScreenLauncher = registerForActivityResult(PushFoldersActivity.ResultContract()) { result ->
+        pushFoldersPreference?.onValueSelected(result)
+    }
 
     private val accountUuid: String by lazy {
         checkNotNull(arguments?.getString(ARG_ACCOUNT_UUID)) { "$ARG_ACCOUNT_UUID == null" }
@@ -198,6 +205,13 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         if (!messagingController.isPushCapable(account)) {
             findPreference<Preference>(PREFERENCE_PUSH_MODE)?.remove()
             findPreference<Preference>(PREFERENCE_ADVANCED_PUSH_SETTINGS)?.remove()
+        } else {
+            pushFoldersPreference = findPreference<PushFoldersPreference>(PREFERENCE_PUSH_MODE)?.apply {
+                setOnPreferenceClickListener {
+                    pushFoldersScreenLauncher.launch(accountUuid)
+                    true
+                }
+            }
         }
     }
 
