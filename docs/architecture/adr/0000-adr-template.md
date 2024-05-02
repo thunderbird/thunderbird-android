@@ -1,4 +1,11 @@
-# [NNNN] - [Descriptive Title in Title Case]
+# [Descriptive Title in Title Case]
+
+- Issue: [#NNNN](https://github.com/thunderbird/thunderbird-android/issues/NNNN)
+- Pull Request: [#NNNN](https://github.com/thunderbird/thunderbird-android/pull/NNNN)
+
+<!-- optional in case there are follow-up issues
+- Tracking Issue: [#NNNN](https://github.com/thunderbird/thunderbird-android/issues/NNNN)
+-->
 
 ## Status
 

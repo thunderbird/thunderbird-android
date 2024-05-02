@@ -1,4 +1,6 @@
-# 0001 - Switch from Java to Kotlin
+# Switch from Java to Kotlin
+
+- Pull Request: [#7221](https://github.com/thunderbird/thunderbird-android/pull/7221)
 
 ## Status
 
