@@ -19,6 +19,7 @@ import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
+import android.nfc.NfcAdapter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -503,9 +504,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         boolean startedByExternalIntent = false;
         final String action = intent.getAction();
 
-        if (Intent.ACTION_VIEW.equals(action) || Intent.ACTION_SENDTO.equals(action)) {
+        if (Intent.ACTION_VIEW.equals(action) || Intent.ACTION_SENDTO.equals(action) || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
             /*
-             * Someone has clicked a mailto: link. The address is in the URI.
+             * Someone has clicked a mailto: link, or scanned an NFC tag. The address is in the URI.
              */
             if (intent.getData() != null) {
                 Uri uri = intent.getData();
