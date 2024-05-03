@@ -233,10 +233,10 @@ class SettingsImporter internal constructor(
         storage: Storage,
         editor: StorageEditor,
         contentVersion: Int,
-        settings: ImportedSettings,
+        settings: SettingsMap,
     ) {
         // Validate global settings
-        val validatedSettings = GeneralSettingsDescriptions.validate(contentVersion, settings.settings)
+        val validatedSettings = GeneralSettingsDescriptions.validate(contentVersion, settings)
 
         // Upgrade global settings to current content version
         if (contentVersion != Settings.VERSION) {
@@ -259,7 +259,7 @@ class SettingsImporter internal constructor(
     private fun importAccount(
         editor: StorageEditor,
         contentVersion: Int,
-        account: ImportedAccount,
+        account: SettingsFile.Account,
     ): AccountDescriptionPair {
         val original = AccountDescription(account.name!!, account.uuid)
 
@@ -336,7 +336,7 @@ class SettingsImporter internal constructor(
 
         // Validate account settings
         val validatedSettings =
-            AccountSettingsDescriptions.validate(contentVersion, account.settings!!.settings, true)
+            AccountSettingsDescriptions.validate(contentVersion, account.settings!!, true)
 
         // Upgrade account settings to current content version
         if (contentVersion != Settings.VERSION) {
@@ -393,11 +393,11 @@ class SettingsImporter internal constructor(
         editor: StorageEditor,
         contentVersion: Int,
         uuid: String,
-        folder: ImportedFolder,
+        folder: SettingsFile.Folder,
     ) {
         // Validate folder settings
         val validatedSettings =
-            FolderSettingsDescriptions.validate(contentVersion, folder.settings!!.settings, true)
+            FolderSettingsDescriptions.validate(contentVersion, folder.settings!!, true)
 
         // Upgrade folder settings to current content version
         if (contentVersion != Settings.VERSION) {
@@ -420,7 +420,7 @@ class SettingsImporter internal constructor(
         editor: StorageEditor,
         contentVersion: Int,
         uuid: String,
-        account: ImportedAccount,
+        account: SettingsFile.Account,
     ) {
         val accountKeyPrefix = "$uuid."
 
@@ -463,7 +463,7 @@ class SettingsImporter internal constructor(
                 // Validate identity settings
                 val validatedSettings = IdentitySettingsDescriptions.validate(
                     contentVersion,
-                    identity.settings.settings,
+                    identity.settings,
                     true,
                 )
 
@@ -513,18 +513,18 @@ class SettingsImporter internal constructor(
         editor.putString(key, value)
     }
 
-    private fun getAccountDisplayName(account: ImportedAccount): String {
+    private fun getAccountDisplayName(account: SettingsFile.Account): String {
         return account.name?.takeIf { it.isNotEmpty() }
             ?: account.identities?.firstOrNull()?.email
             ?: error("Account name missing")
     }
 
-    private fun createServerSettings(importedServer: ImportedServer): ServerSettings {
+    private fun createServerSettings(importedServer: SettingsFile.Server): ServerSettings {
         val type = toServerSettingsType(importedServer.type!!)
         val port = convertPort(importedServer.port)
         val connectionSecurity = convertConnectionSecurity(importedServer.connectionSecurity)
         val password = if (importedServer.authenticationType == AuthType.XOAUTH2) "" else importedServer.password
-        val extra = importedServer.extras?.settings.orEmpty()
+        val extra = importedServer.extras.orEmpty()
 
         return ServerSettings(
             type,
