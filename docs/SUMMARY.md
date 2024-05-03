@@ -10,4 +10,5 @@
   - [0004 - Naming Conventions for Interfaces and Their Implementations](architecture/adr/0004-naming-conventions-for-interfaces-and-their-implementations.md)
   - [0005 - Central Project Configuration](architecture/adr/0005-central-project-configuration.md)
   - [0006 - White Label Architecture](architecture/adr/0006-white-label-architecture.md)
+  - [0007 - Project Structure](architecture/adr/0007-project-structure.md)
 - [Add Documentation](add-documentation.md)
