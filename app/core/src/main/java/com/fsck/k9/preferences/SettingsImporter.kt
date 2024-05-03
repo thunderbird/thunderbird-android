@@ -51,13 +51,7 @@ class SettingsImporter internal constructor(
     @Throws(SettingsImportExportException::class)
     fun getImportStreamContents(inputStream: InputStream): ImportContents {
         try {
-            // Parse the import stream but don't save individual settings (overview=true)
-            val imported = settingsFileParser.parseSettings(
-                inputStream = inputStream,
-                globalSettings = false,
-                accountUuids = null,
-                overview = true,
-            )
+            val imported = settingsFileParser.parseSettings(inputStream)
 
             // If the stream contains global settings the "globalSettings" member will not be null
             val globalSettings = (imported.globalSettings != null)
@@ -101,11 +95,23 @@ class SettingsImporter internal constructor(
             val importedAccounts = mutableListOf<AccountDescriptionPair>()
             val erroneousAccounts = mutableListOf<AccountDescription>()
 
-            val imported = settingsFileParser.parseSettings(
-                inputStream = inputStream,
-                globalSettings = globalSettings,
-                accountUuids = accountUuids,
-                overview = false,
+            val settings = settingsFileParser.parseSettings(inputStream)
+
+            val filteredGlobalSettings = if (globalSettings) {
+                settings.globalSettings
+            } else {
+                null
+            }
+
+            val filteredAccounts = if (accountUuids == null) {
+                settings.accounts
+            } else {
+                settings.accounts?.filterKeys { it in accountUuids }
+            }
+
+            val imported = settings.copy(
+                globalSettings = filteredGlobalSettings,
+                accounts = filteredAccounts,
             )
 
             val storage = preferences.storage

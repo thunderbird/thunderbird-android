@@ -30,9 +30,8 @@ class SettingsFileParserTest : RobolectricTest() {
               </accounts>
             </k9settings>
             """.trimIndent().byteInputStream()
-        val accountUuids = listOf("1")
 
-        val results = parser.parseSettings(inputStream, true, accountUuids, true)
+        val results = parser.parseSettings(inputStream)
 
         assertThat(results.accounts).isNotNull().all {
             hasSize(1)
@@ -61,9 +60,8 @@ class SettingsFileParserTest : RobolectricTest() {
               </accounts>
             </k9settings>
             """.trimIndent().byteInputStream()
-        val accountUuids = listOf("1")
 
-        val results = parser.parseSettings(inputStream, true, accountUuids, true)
+        val results = parser.parseSettings(inputStream)
 
         assertThat(results.accounts).isNotNull().all {
             hasSize(1)
@@ -91,9 +89,8 @@ class SettingsFileParserTest : RobolectricTest() {
               </accounts>
             </k9settings>
             """.trimIndent().byteInputStream()
-        val accountUuids = listOf(accountUuid)
 
-        val results = parser.parseSettings(inputStream, true, accountUuids, false)
+        val results = parser.parseSettings(inputStream)
 
         assertThat(results.accounts)
             .isNotNull()

@@ -14,34 +14,9 @@ import timber.log.Timber
  */
 internal class SettingsFileParser {
     @Throws(SettingsImportExportException::class)
-    fun parseSettings(
-        inputStream: InputStream,
-        globalSettings: Boolean,
-        accountUuids: List<String>?,
-        overview: Boolean,
-    ): Imported {
+    fun parseSettings(inputStream: InputStream): Imported {
         try {
-            val settings = XmlSettingsParser(inputStream).parse()
-
-            // TODO: Move this filtering code out of SettingsFileParser
-            val filteredGlobalSettings = if (overview) {
-                settings.globalSettings?.let { ImportedSettings() }
-            } else if (globalSettings) {
-                settings.globalSettings
-            } else {
-                null
-            }
-
-            val filteredAccounts = if (overview || accountUuids == null) {
-                settings.accounts
-            } else {
-                settings.accounts?.filterKeys { it in accountUuids }
-            }
-
-            return settings.copy(
-                globalSettings = filteredGlobalSettings,
-                accounts = filteredAccounts,
-            )
+            return XmlSettingsParser(inputStream).parse()
         } catch (e: XmlPullParserException) {
             throw SettingsImportExportException("Error parsing settings XML", e)
         } catch (e: SettingsParserException) {
