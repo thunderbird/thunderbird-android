@@ -29,7 +29,7 @@
     <string name="settings_import_outgoing_server_password_hint">گذرواژهٔ کارساز خروجی</string>
     <string name="settings_import_use_same_password_for_outgoing_server">برای کارساز خروجی از همان گذرواژه استفاده کن</string>
     <string name="settings_import_server_name_format">نام کارساز:<xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">جهت استفاده‌ این حساب کاربری از K-9 Mail، نیاز است که وارد حساب کاربری خود شوید و اجازه دسترسی اپلیکیشن به ایمیل‌ها را صادر کنید.</string>
+    <string name="settings_import_oauth_description">برای استفاده‌ از این حساب با نامهٔ کی۹ باید وارد شده و اجازهٔ دسترسی به رایانامه‌هایتان را به کاره بدهید.</string>
     <string name="settings_import_oauth_sign_in">ورود</string>
     <string name="settings_import_oauth_sign_in_with_google">ورود با حساب گوگل</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">مجوزدهی لغو شد</string>

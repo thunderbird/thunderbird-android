@@ -1,0 +1,7 @@
+- DNSSEC-Unterstützung bei der Suche nach Servereinstellungen während der Einrichtung hinzugefügt
+- Es wurde eine Änderung vorgenommen, die verhindert, dass einige Software-Tastaturen E-Mail-Adressen bei der Kontoeinrichtung großschreiben/automatisch korrigieren
+- Behebung eines Absturzes bei Verwendung eines sehr langen Betreffs
+- Anzeige von OAuth 2.0-Fehlermeldungen behoben
+- Seltener Absturz beim Herunterladen eines Anhangs behoben
+- Code hinzugefügt, um Zeilenumbrüche in einzeiligen Texteingaben zu unterbinden
+- Aktualisierte Übersetzungen

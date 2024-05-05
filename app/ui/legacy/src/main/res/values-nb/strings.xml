@@ -22,7 +22,7 @@
     <!--Default signature-->
     <string name="default_signature">-- \nSendt fra min Android-enhet med K-9 e-post. Unnskyld min kortfattethet.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Kontoen \"<xliff:g id="account">%s</xliff:g>\" vil bli fjernet fra K-9 e-post</string>
+    <string name="account_delete_dlg_instructions_fmt">Kontoen \"<xliff:g id="account">%s</xliff:g>\" vil bli fjernet fra K-9 e-post.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Utviklere</string>
     <string name="about_title">Om K-9 Mail</string>
@@ -867,7 +867,7 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <string name="account_settings_notification_light_white">Hvit</string>
     <string name="account_settings_vibrate_pattern_label">Vibrasjonsmønster</string>
     <string name="message_list_content_description_unread_prefix">ulest, %s</string>
-    <string name="generic_loading_error">Kunne ikke laste inn dataen</string>
+    <string name="generic_loading_error">Klarte ikke å laste inn dataene</string>
     <string name="account_settings_notification_light_disabled">Avskrudd</string>
     <string name="general_settings_post_remove_action_return_to_list">Tilbake til meldingsliste</string>
     <string name="webview_contextmenu_link_text_clipboard_label">Lenketekst</string>
@@ -878,12 +878,12 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <string name="general_settings_message_list_density_title">Tetthet</string>
     <string name="ac_transfer_intro">Autocrypt-oppsettsmelding deler ditt ende-til-ende-oppsett med andre enheter på en sikker måte.</string>
     <string name="font_size_message_view_recipients">Mottagere</string>
-    <string name="ac_transfer_msg_body">Meldingen inneholder all info for å overføre dine Autocrypt-innstillinger sammen med din hemmelige nøkkel sikkert fra din opprinnelige enhet. For å bruke din enhet for Autocrypt kan du følge instruksen presentert på din nye enhet. Du kan beholde denne meldingen og bruke den som en sikkerhetskopi for din hemmelige nøkkel. Hvis du ønsker å gjøre dette, bør du skrive ned passordet og lagre det sikkert.</string>
+    <string name="ac_transfer_msg_body">Meldingen inneholder all info for å overføre dine Autocrypt-innstillinger sammen med din hemmelige nøkkel sikkert fra din opprinnelige enhet. For å bruke din nye enhet for Autocrypt kan du følge instruksene som skal være presentert på din nye enhet. Du kan beholde denne meldingen og bruke den som en sikkerhetskopi for din hemmelige nøkkel. Hvis du ønsker å gjøre dette, bør du skrive ned passordet og lagre den sikkert.</string>
     <string name="account_settings_vibrate_pattern_5">Mønster 5</string>
     <string name="message_details_toolbar_title">Meldingsdetaljer</string>
     <string name="webview_contextmenu_link_text_copy_action">Kopier lenketekst til utklippstavlen</string>
     <string name="general_settings_swipe_action_toggle_star">Legg til/fjern stjerne</string>
-    <string name="general_settings_right_swipe_title">Høyredragning</string>
+    <string name="general_settings_right_swipe_title">Høyresveip</string>
     <string name="clipboard_label_name_and_email_address">Navn og e-postadresse</string>
     <string name="account_settings_notification_light_label">Merknadslys</string>
     <string name="push_info_configure_notification_text">Dog gir Android deg også mulighet til å skjule merknaden.</string>
@@ -896,7 +896,7 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <string name="show_starred_count_title">Vis antall stjernemerkede</string>
     <string name="ac_transfer_generating">Genererer oppsettsmelding …</string>
     <string name="account_settings_vibrate_pattern_4">Mønster 4</string>
-    <string name="debug_export_logs_success">Eksportert. Logger kan inneholde sensitiv info. Vær forsiktig med hvem du sender dem til.</string>
+    <string name="debug_export_logs_success">Eksporteringen lyktes. Logger kan inneholde sensitiv info. Vær forsiktig med hvem du sender dem til.</string>
     <string name="notification_notify_error_text">Kunne ikke opprette systemmerknad for ny melding. Dette skyldes antagelig merknadslyden.
 \n
 \nTrykk for å åpne merknadsinnstillinger.</string>
@@ -910,21 +910,21 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <string name="ac_transfer_will_be_sent">Meldingen vil bli sendt til din adresse:</string>
     <string name="action_copy_name_and_email_address">Kopier navn og e-postadresse</string>
     <string name="message_view_recipients_format">til <xliff:g id="recipients">%s</xliff:g></string>
-    <string name="push_notification_state_listening">Venter på nye e-poster …</string>
+    <string name="push_notification_state_listening">Venter på nye e-poster</string>
     <string name="push_info_title">Dyttingsinfo</string>
     <string name="account_settings_open_notification_settings_messages_summary">Sett opp merknader for nye meldinger</string>
     <string name="account_settings_notification_light_green">Grønn</string>
-    <string name="show_unified_inbox_title">Vis enhetlig innboks</string>
+    <string name="show_unified_inbox_title">Vis sammenslått innboks</string>
     <string name="general_settings_ui_density_relaxed">Avslappet</string>
     <string name="unsubscribe_action">Opphev abonnement</string>
-    <string name="changelog_show_recent_changes">Vis nylige endringer ved første oppstart av ny versjon</string>
+    <string name="changelog_show_recent_changes">Vis nylige endringer etter at appen har blitt oppdatert</string>
     <string name="about_fediverse_title">Fediverset</string>
     <string name="changelog_snackbar_button_text">Vis</string>
     <string name="account_settings_vibrate_pattern_2">Mønster 2</string>
     <string name="account_settings_vibrate_pattern_1">Mønster 1</string>
     <string name="push_notification_state_wait_network">I dvale til nettverk er tilgjengelig</string>
     <string name="account_settings_ignore_chat_messages_summary">Ikke vis merknader for meldinger som tilhører e-postsludringer</string>
-    <string name="message_details_loading_error">Kunne ikke laste inn meldingsdetaljene.</string>
+    <string name="message_details_loading_error">Klarte ikke å laste inn meldingsdetaljene.</string>
     <string name="general_settings_swipe_action_toggle_selection">Veksle markering</string>
     <string name="ac_transfer_finish">Fullfør ved å åpne meldingen på din andre enhet og deretter skrive inn oppsettskoden.</string>
     <string name="notification_channel_push_title">Synkroniser (dytting)</string>
@@ -937,7 +937,7 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <string name="action_add_to_contacts">Legg til i kontakter</string>
     <string name="choose_folder_copy_title">Kopier til …</string>
     <string name="general_settings_left_swipe_title">Venstredragning</string>
-    <string name="ac_transfer_error_send">Kunne ikke sende meldingen. Sjekk nettverkstilkoblingen din og oppsett for utgående tjener.</string>
+    <string name="ac_transfer_error_send">En feil oppstod under sending av meldingen. Sjekk nettverkstilkoblingen din og oppsett for utgående tjener.</string>
     <string name="general_settings_ui_density_compact">Kompakt</string>
     <string name="unknown_sender">&lt;Ukjent avsender&gt;</string>
     <string name="message_list_error_title">Feil</string>
@@ -947,8 +947,8 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <string name="account_settings_ignore_chat_messages_label">Ignorer sludringsmeldinger</string>
     <string name="get_help_title">Støtte</string>
     <string name="reply_to_label">Besvar</string>
-    <string name="save_or_discard_draft_message_changes">Lagre eller forkast endringer\?</string>
-    <string name="changelog_loading_error">Kunne ikke lese endringsloggen.</string>
+    <string name="save_or_discard_draft_message_changes">Vil du lagre eller forkaste endringene?</string>
+    <string name="changelog_loading_error">Klarte ikke å laste inn endringsloggen.</string>
     <string name="message_view_additional_recipient_prefix">+</string>
     <string name="push_notification_info">Trykk for å lære mer.</string>
     <string name="account_settings_notification_light_blue">Blå</string>
@@ -965,7 +965,7 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <string name="message_list_error_folder_not_found">Fant ikke mappen</string>
     <string name="account_settings_vibrate_pattern_3">Mønster 3</string>
     <string name="background_work_notification_remove_account">Fjerner konto …</string>
-    <string name="volume_navigation_title">Navigasjon med lydstyrkeknapper i meldingsvisning</string>
+    <string name="volume_navigation_title">Navigasjon med lydknapper i meldingsvisning</string>
     <string name="push_info_configure_notification_action">Sett opp merknad</string>
     <string name="push_info_disable_push_text">Skru av dytting og bruk spørring hvis du ikke trenger merknader om nye meldinger. Spørring sjekker ny e-post ved regelmessige intervalles og trenger ikke merknaden.</string>
     <string name="debug_export_logs_failure">Eksport mislyktes.</string>
@@ -973,4 +973,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <string name="general_settings_post_mark_as_unread_action_stay">Forbli på nåværende melding</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Gå tilbake til meldingslisten</string>
     <string name="general_settings_post_mark_as_unread_action_title">Etter markering av melding som ulest</string>
+    <string name="push_notification_state_alarm_permission_missing">Mangler tillatelse til å planlegge alarmer</string>
+    <string name="push_notification_grant_alarm_permission">Trykk for å gi tillatelse.</string>
 </resources>

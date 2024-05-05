@@ -1,0 +1,7 @@
+– Prise en charge de DNSSEC pour la découverte des paramètres des serveurs lors de la configuration
+– Modification visant à empêcher, lors de la configuration du compte, la correction automatique et la mise en majuscule des adresses courriel par certains claviers logiciels.
+– Correction d’un plantage causé par la présence d’un objet très long.
+– Correction de l’affichage des messages d’erreur OAuth 2.0.
+– Correction d’un plantage rare lors du téléchargement d’un fichier joint.
+– Interdiction des sauts de ligne pour les entrées de texte d’une ligne.
+– Mise à jour des traductions.

@@ -1,2 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_error_authentication">Kesalahan autentikasi</string>
+    <string name="account_server_validation_error_network">Kesalahan jaringan</string>
+    <string name="account_server_validation_outgoing_loading_message">Memeriksa pengaturan server keluar…</string>
+    <string name="account_server_validation_error_client_certificate_expired">Sertifikat klien sudah tidak valid</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">Sertifikat klien ini tidak dapat diakses</string>
+    <string name="account_server_validation_incoming_loading_error">Gagal memeriksa pengaturan server masuk</string>
+    <string name="account_server_validation_incoming_success">Pengaturan server masuk diverifikasi</string>
+    <string name="account_server_validation_error_missing_server_capability">Kehilangan kemampuan server</string>
+    <string name="account_server_validation_error_details">Rincian:
+\n%s</string>
+    <string name="account_server_validation_incoming_loading_message">Memeriksa pengaturan server masuk…</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Server kehilangan kemampuan berikut ini:
+\n%s</string>
+    <string name="account_server_validation_outgoing_success">Pengaturan server keluar diverifikasi</string>
+    <string name="account_server_validation_sign_in">Silakan masuk</string>
+    <string name="account_server_validation_outgoing_loading_error">Gagal memeriksa pengaturan server keluar</string>
+    <string name="account_server_validation_error_server">Kesalahan server</string>
+    <string name="account_server_validation_error_unknown">Kesalahan tidak diketahui</string>
+</resources>

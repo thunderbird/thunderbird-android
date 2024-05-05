@@ -1,0 +1,5 @@
+- Opravy drobných chyb a vylepšení UI/UX v nastavení účtu
+- Opraven pád způsobený interakcí s OpenKeychain 6.0.0.
+- Zaměření na vstupní pole předmětu nebo těla při otevření obrazovky pro sestavení zprávy prostřednictvím mailto: URI
+- Odstraněny překlady hebrejštiny a korejštiny, protože bylo přeloženo méně než 70% řetězců. Dobrovolníci na aktualizaci překladů jsou vždy vítáni!
+- Aktualizovány zbývající překlady

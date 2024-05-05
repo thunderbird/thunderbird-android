@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="onboarding_permissions_contacts_description">允许权限以便应用提供联系人建议并展示联系人名字和照片。</string>
-    <string name="onboarding_permissions_notifications_description">打开通知以免错失任何邮件。</string>
+    <string name="onboarding_permissions_contacts_description">允许访问以便提供联系人建议并显示联系人名称和照片。</string>
+    <string name="onboarding_permissions_notifications_description">打开通知，以免错过任何电子邮件。</string>
     <string name="onboarding_permissions_notifications_title">通知</string>
     <string name="onboarding_permissions_screen_title">改进体验</string>
     <string name="onboarding_permissions_contacts_title">联系人</string>

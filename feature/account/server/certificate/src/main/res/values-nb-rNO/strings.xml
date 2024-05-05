@@ -12,6 +12,6 @@
     <string name="account_server_certificate_button_advanced">Avansert</string>
     <string name="account_server_certificate_subject">Emne</string>
     <string name="account_server_certificate_issuer">Utsteder</string>
-    <string name="account_server_certificate_unknown_error_description_format">En oppdaget potensiell sikkerhetsrisiko forhindret tilkobling til <xliff:g id="serverName">%s</xliff:g>.
+    <string name="account_server_certificate_unknown_error_description_format">Appen oppdaget en potensiell sikkerhetsrisiko og gikk ikke viderer til å koble til <xliff:g id="serverName">%s</xliff:g>.
 \nHvis du fortsetter kan angripere prøve å stjele info som f.eks. passord eller e-poster.</string>
 </resources>

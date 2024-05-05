@@ -1,0 +1,10 @@
+- Beeldverwerking toegevoegd in het contextmenu voor hyperlinks
+- Extra mogelijkheid om geopende bijlagen door te sturen naar nieuwe e-mailberichten
+- Verbeterd certificaatfoutscherm bij het instellen van een account
+- Verbeterde import van instellingen bij het instellen van een account
+- Verbeterde UI/UX bij het instellen van accounts
+- Verbeterde weergave van accountinstellingen op kleine schermen
+- Verbeterde bewerking accountserverinstellingen UI/UX
+- AlarmManager-crash opgelost op Android 14
+- Interne wijzigingen
+- Bijgewerkte vertalingen

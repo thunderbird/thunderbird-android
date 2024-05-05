@@ -975,4 +975,6 @@ Til að setja Autocrypt upp á nýju tæki, farðu þá eftir leiðbeiningunum s
     <string name="general_settings_post_mark_as_unread_action_stay">Vera áfram á skilaboðunum</string>
     <string name="general_settings_post_mark_as_unread_action_title">Eftir að skilaboð eru merkt sem ólesin</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Snúa til baka í skilaboðalista</string>
+    <string name="push_notification_state_alarm_permission_missing">Vantar heimild til að setja áminningar á áætlun</string>
+    <string name="push_notification_grant_alarm_permission">Ýttu til að veita heimild.</string>
 </resources>

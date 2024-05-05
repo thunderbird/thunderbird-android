@@ -7,6 +7,6 @@
     <string name="account_oauth_error_not_supported">OAuth 2.0 توسط این ارایه دهنده پشتیبانی نمی‌شود.</string>
     <string name="account_oauth_error_canceled">مجوزدهی لغو شد</string>
     <string name="account_oauth_loading_message">ورود با استفاده از OAuth</string>
-    <string name="account_oauth_sign_in_description">ما شما را به ارائه دهنده ایمیل خود هدایت می کنیم تا وارد شوید. شما باید دسترسی برنامه به حساب ایمیل خود را اعطا کنید.</string>
+    <string name="account_oauth_sign_in_description">برای ورود به‌فراهم‌کنندهٔ رایانامه‌تان هدایتتان می‌کنیم. باید دسترسی حساب رایانامه‌تان را به کاره بدهید.</string>
     <string name="account_oauth_sign_in_button">ثبت نام</string>
 </resources>

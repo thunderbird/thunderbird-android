@@ -1,0 +1,10 @@
+– Gestion des images dans le menu contextuel pour les hyperliens.
+– Possibilité de transférer des fichiers joints ouverts vers de nouveaux courriels.
+– Amélioration de l’écran d’erreur de certificat lors de la configuration du compte.
+– Amélioration de l’importation des paramètres lors de la configuration du compte.
+– Amélioration de l’interface et l’expérience utilisateur de configuration des comptes
+– Amélioration du rendu de la configuration du compte sur les petits écrans
+– Amélioration de l’interface et l’expérience utilisateur de modification des paramètres du serveur.
+– Correction du plantage du gestionnaire d’alarme d’Android 14.
+– Changements internes.
+– Mise à jour des traductions.

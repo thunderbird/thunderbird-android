@@ -1,0 +1,5 @@
+- Kleine Fehlerkorrekturen und UI/UX-Optimierung bei der Kontoeinrichtung
+- Behebung eines Absturzes, der durch eine Interaktion mit OpenKeychain 6.0.0 verursacht wurde
+- Fokus auf Betreff- oder Textfelder beim Öffnen des Erstellungsbildschirms über eine mailto: URI
+- Hebräische und koreanische Übersetzungen wurden entfernt, da weniger als 70% der Zeichenketten übersetzt wurden. Freiwillige, die die Übersetzungen aktualisieren möchten, sind jederzeit willkommen!
+- Aktualisierte Übersetzungen

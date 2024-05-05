@@ -30,4 +30,6 @@
     <string name="account_server_settings_password_authentication_screen_lock_required">Để xem mật khẩu của bạn tại đây, hãy bật khóa màn hình trên thiết bị này.</string>
     <string name="account_server_settings_server_label">Máy chủ</string>
     <string name="account_server_settings_security_label">Bảo vệ</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">Gửi thông tin máy khách</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">IP hoặc tên máy chủ không hợp lệ</string>
 </resources>

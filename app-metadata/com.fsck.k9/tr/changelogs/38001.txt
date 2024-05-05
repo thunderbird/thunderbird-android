@@ -1,0 +1,7 @@
+- Kurulum sırasında sunucu ayarları aranırken DNSSEC desteği eklendi
+- Bazı yazılım klavyelerinin hesap kurulumunda e-posta adreslerini büyük harfle yazmasını/otomatik olarak düzeltmesini önlemek için bir değişiklik yapıldı
+- Çok uzun bir konu kullanıldığında oluşan çökme düzeltildi
+- OAuth 2.0 hata iletilerinin görüntülenmesi düzeltildi
+- Bir eki indirirken oluşan nadir çökme düzeltildi
+- Tek satırlı metin girdilerinde satır sonlarına izin vermemek için kod eklendi
+- Çeviriler güncellendi

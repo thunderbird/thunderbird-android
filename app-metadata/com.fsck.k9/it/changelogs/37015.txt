@@ -1,0 +1,10 @@
+- Aggiunta la gestione delle immagini nel menu contestuale per i collegamenti ipertestuali
+- Aggiunta la possibilità di inoltrare gli allegati aperti a nuove email
+- Schermata di errore del certificato migliorata durante la configurazione dell'account
+- Importazione delle impostazioni migliorata durante la configurazione dell'account
+- UI/UX di configurazione dell'account migliorata
+- Miglioramento del rendering della configurazione dell'account su schermi piccoli
+- Migliorata l'interfaccia utente/UX delle impostazioni del server dell'account di modifica
+- Risolto il problema del crash di AlarmManager su Android 14
+- Cambiamenti interni
+- Traduzioni aggiornate

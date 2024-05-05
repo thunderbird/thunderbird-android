@@ -1,0 +1,5 @@
+- Correction de l’ordre des étapes de découverte de la configuration automatique.
+- Modification du nombre d’affichage par défaut à 100.
+- Activation par défaut des notifications pour les nouveaux comptes.
+- Annulation de la modification de gestion des URI mailto: de Courriel K-9 Mail 6.716 qui provoquait des effets indésirables.
+- Correction d’un bogue afin que l’option « colorer les contacts » fonctionne à nouveau dans la vue des courriels.

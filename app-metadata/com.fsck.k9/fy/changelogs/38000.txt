@@ -1,0 +1,7 @@
+- Nije en ferbettere accountkonfiguraase
+- Opsje tafoege om werom te kearen nei de berjochtelist nei it markearjen fan in berjocht as net-lêzen yn de berjochtwerjefte
+- It is swierder wurden om mei fersin feiaksjes te aktivearjen yn it skerm mei de berjochtelist
+- Ferbettere skermlêzerûnderfining op ferskate plakken
+- IMAP: stipe tafoege foar it ferstjoeren fan de ID-opdracht (dy’t fereaske is troch guon e-mailproviders)
+- Ferskate oare bugfixes en ferbetteringen; Sjoch wizigingen foar ferzjes 6.7xx
+- Hebriuwske en Koreaanske oersettingen fuortsmiten fanwegen de net folsleine oersettingen; Frijwillige oersetters wolkom!

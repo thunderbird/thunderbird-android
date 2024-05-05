@@ -1,0 +1,5 @@
+- Push: Gebruiker op de hoogte stellen als toestemming ontbreekt om exacte alarmen in te plannen
+- De instelling ‘Client-ID verzenden’ is hernoemd naar ‘Klantinformatie verzenden’
+- IMAP: Ondersteuning toegevoegd voor het NonExistent LIST-antwoordattribuut
+- IMAP: Geef het EXPUNGE-commando na het verplaatsen zonder MOVE-extensie
+- Bijgewerkte vertalingen; Hebreeuwse vertaling toegevoegd

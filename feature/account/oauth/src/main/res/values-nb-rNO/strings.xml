@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_oauth_sign_in_with_google_button">Logg inn med Google</string>
-    <string name="account_oauth_loading_error">Kunne ikke logge inn med OAuth …</string>
+    <string name="account_oauth_loading_error">Innlogging med OAuth mislyktes</string>
     <string name="account_oauth_error_failed">Identitetsbekreftelse mislyktes med følgende feil: <xliff:g id="error">%s</xliff:g></string>
-    <string name="account_oauth_error_browser_not_available">Fant ikke noen nettleser å bruke for å innvilge tilgang til kontoen din.</string>
+    <string name="account_oauth_error_browser_not_available">Appen klarte ikke å finne noen nettleser å bruke for å innvilge tilgang til kontoen din.</string>
     <string name="account_oauth_error_not_supported">OAuth 2.0 støttes ikke med denne tilbyderen.</string>
     <string name="account_oauth_error_canceled">Identitetsbekreftelse avbrutt</string>
-    <string name="account_oauth_loading_message">Logger inn med OAuth …</string>
+    <string name="account_oauth_loading_message">Logger inn med OAuth</string>
     <string name="account_oauth_sign_in_description">Du vil bli sendt til din e-posttilbyder for innlogging. Du må innvilge programmet tilgang til e-postkontoen din.</string>
     <string name="account_oauth_sign_in_button">Logg inn</string>
 </resources>

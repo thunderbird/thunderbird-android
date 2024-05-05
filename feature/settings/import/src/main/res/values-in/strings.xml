@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="settings_import_title">Impor pengaturan</string>
-    <string name="settings_import_pick_document_button">Pilih file</string>
+    <string name="settings_import_pick_document_button">Pilih berkas</string>
     <string name="settings_import_button">Impor</string>
     <string name="settings_import_success_generic">Pengaturan berhasil diimpor</string>
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required">Silahkan masukkan kata sandi</string>
+    <string name="settings_import_password_required">Silakan masukkan kata sandi</string>
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
     <string name="settings_import_failure">Gagal mengimpor pengaturan</string>
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_read_failure">Gagal membaca file pengaturan</string>
+    <string name="settings_import_read_failure">Gagal membaca berkas pengaturan</string>
     <string name="settings_import_partial_failure">Gagal mengimpor beberapa pengaturan</string>
     <string name="settings_import_status_success">Berhasil diimpor</string>
-    <string name="settings_import_status_password_required">Diperlukan kata sandi</string>
+    <string name="settings_import_status_password_required">Kata sandi diperlukan</string>
     <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
     <string name="settings_import_status_not_imported">Tidak diimpor</string>
-    <string name="settings_import_status_error">Kegagalan impor</string>
+    <string name="settings_import_status_error">Impor gagal</string>
     <string name="settings_import_later_button">Nanti</string>
     <string name="settings_importing">Mengimpor pengaturan…</string>
     <plurals name="settings_import_password_prompt">
@@ -25,5 +25,15 @@
     <string name="settings_import_outgoing_server_password_hint">Kata sandi server keluar</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Gunakan kata sandi yang sama untuk server keluar</string>
     <string name="settings_import_server_name_format">Nama server: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_general_settings_item">Pengaturan Umum</string>
+    <string name="settings_import_general_settings_item">Pengaturan umum</string>
+    <string name="settings_import_authorization_required">Silakan masuk</string>
+    <string name="settings_import_authorization_and_password_required">Silakan masuk dan masukkan kata sandi</string>
+    <string name="settings_import_status_log_in_required">Diperlukan proses masuk</string>
+    <string name="settings_import_oauth_description">Untuk menggunakan akun surel ini dengan K-9 Mail, Anda perlu masuk dan memberikan akses aplikasi ke surel Anda.</string>
+    <string name="settings_import_oauth_sign_in">Masuk</string>
+    <string name="settings_import_oauth_sign_in_with_google">Masuk dengan Google</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">Otorisasi dibatalkan</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Otorisasi gagal dengan pesan berikut: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 saat ini tidak didukung oleh penyedia ini.</string>
+    <string name="settings_import_oauth_error_browser_not_found">Aplikasi ini tidak bisa menemukan peramban yang bisa digunakan untuk memberikan akses ke akun Anda.</string>
 </resources>

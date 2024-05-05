@@ -1,0 +1,5 @@
+- Pequeñas correcciones de errores y mejora de la interfaz de usuario y la interfaz de usuario en la configuración de cuentas.
+- Corrección de un fallo causado por OpenKeychain 6.0.0
+- Enfoque en los campos de asunto o cuerpo al abrir la pantalla de redacción a través de un mailto: URI.
+- Se han eliminado las traducciones al hebreo y al coreano porque se han traducido menos del 70%. Los voluntarios para actualizar las traducciones son siempre bienvenidos.
+- Actualizadas las traducciones
