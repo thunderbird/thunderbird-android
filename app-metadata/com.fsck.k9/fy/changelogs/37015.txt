@@ -1,0 +1,10 @@
+- Byldferwurking tafoege yn it kontekstmenu foar hyperlinks
+- Ekstra mooglikheid om iepene bylagen troch te stjoeren nei nije e-mailberjochten
+- Ferbettere sertifikaatflaterskerm by it ynstellen fan in account
+- Ferbettere ymport fan ynstellingen by it ynstellen fan in account
+- Ferbettere UI/UX by it ynstellen fan accounts
+- Ferbettere werjefte fan accountynstellingen op lytse skermen
+- Ferbettere bewurking accountserverynstellingen UI/UX
+- AlarmManager-crash oplost op Android 14
+- Ynterne wizigingen
+- Bywurke oersettingen

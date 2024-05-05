@@ -1,1 +1,1 @@
-Client de messagerie complet
+Client de courriel complet

@@ -1,0 +1,10 @@
+- Menambahkan penanganan gambar dalam menu konteks untuk pranala
+- Menambahkan kemampuan untuk meneruskan lampiran terbuka ke surel baru
+- Memperbaiki layar kesalahan sertifikat yang terjadi saat pengaturan akun
+- Meningkatkan pengaturan impor selama pengaturan akun
+- Meningkatkan pengaturan akun UI/UX
+- Meningkatkan pengaturan akun pada layar kecil
+- Meningkatkan pengaturan server akun edit UI/UX
+- Memperbaiki kesalahan AlarmManager pada Android 14
+- Perubahan internal
+- Memperbarui terjemahan

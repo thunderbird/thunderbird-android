@@ -1,0 +1,24 @@
+K-9 Posta, her e-posta sağlayıcısı ile çalışan açık kaynaklı bir e-posta istemcisidir.
+
+<b>Özellikler</b>
+
+* Çoklu hesap desteği
+* Birleşik gelen kutusu
+* Gizlilik dostu (hiçbir şekilde izleme yok, yalnızca e-posta sağlayıcınıza bağlanır)
+* Otomatik arka planda eşzamanlama veya anlık bildirimler
+* Yerel ve sunucu tarafında arama
+* OpenPGP e-posta şifrelemesi (PGP/MIME)
+
+E-postalarınızı OpenPGP kullanarak şifrelemek/şifresini çözmek için <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain: Kolay PGP</a> uygulamasını kurun.
+
+
+<b>Destek</b>
+
+K-9 Mail ile ilgili sorun yaşıyorsanız, <a href="https://forum.k9mail.app">destek forumumuzda</a> yardım isteyin.
+
+
+<b>Yardım etmek ister misiniz?</b>
+
+K-9 Posta topluluk tarafından geliştirilen bir projedir. Uygulamayı geliştirmeye yardım etmekle ilgileniyorsanız, lütfen bize katılın!
+Hata izleyicimizi, kaynak kodumuzu ve wiki sayfamızı <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a> adresinde bulabilirsiniz.
+Yeni geliştiricileri, tasarımcıları, belgeleyicileri, çevirmenleri, hata takipçilerini ve arkadaşlarımızı ağırlamaktan her zaman mutluluk duyarız.

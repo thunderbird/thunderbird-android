@@ -1,0 +1,24 @@
+K-9 Mail は、標準的なメールプロバイダーと組み合わせて使用するオープンソースのメールクライアントです。
+
+<b>機能</b>
+
+* 複数アカウントに対応
+* 統合受信トレイ
+* プライバシーフレンドリー (トラッキングは一切なし、メールプロバイダーへの接続のみ)
+* 自動バックグラウンド同期またはプッシュ通知
+* 端末とサーバーを検索
+* OpenPGP メール暗号化 (PGP/MIME)
+
+OpenPGP を使用したメールの暗号化/復号には <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain: Easy PGP</a> をインストールしてください。
+
+
+<b>サポート</b>
+
+K-9 Mail を使用していて問題に遭遇した場合、<a href="https://forum.k9mail.app">サポートフォーラム (英語)</a> で質問してください。
+
+
+<b>Want to help?</b>
+
+K-9 Mail はコミュニティが開発するプロジェクトです。このアプリの改善に関わってみたい方は、ぜひご参加ください！
+バグトラッカー、ソースコード、Wiki は <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a> です。
+開発者、デザイナー、ドキュメントライター、翻訳者、バグハンターと新しい友達はいつでも大歓迎です。

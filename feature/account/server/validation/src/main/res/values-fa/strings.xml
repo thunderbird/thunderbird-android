@@ -10,12 +10,12 @@
     <string name="account_server_validation_sign_in">لطفا وارد شوید</string>
     <string name="account_server_validation_outgoing_loading_error">بررسی تنظیمات سرور خروجی با خطا مواجه شد</string>
     <string name="account_server_validation_incoming_success">تنظیمات سرور ورودی اعتبارسنجی شد</string>
-    <string name="account_server_validation_error_client_certificate_retrieval_failure">گواهینامه کلاینت در دسترس نیست</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">گواهینامهٔ کارخواه در دسترس نیست</string>
     <string name="account_server_validation_error_missing_server_capability_details">سرور این قابلیت را ندارد:
 \n%s</string>
     <string name="account_server_validation_incoming_loading_error">بررسی تنظیمات سرور ورودی با خطا مواجه شد</string>
     <string name="account_server_validation_error_server">خطای سرور</string>
-    <string name="account_server_validation_error_client_certificate_expired">گواهینامه کلاینت معتبر نیست</string>
+    <string name="account_server_validation_error_client_certificate_expired">گواهینامهٔ کارخواه دیگر معتبر نیست</string>
     <string name="account_server_validation_error_details">جزییات:
 \n%s</string>
 </resources>

@@ -2,11 +2,11 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_oauth_sign_in_with_google_button">使用 Google 登录</string>
     <string name="account_oauth_loading_error">OAuth 登录失败</string>
-    <string name="account_oauth_error_failed">授权失败，出现下列错误：<xliff:g id="error">%s</xliff:g></string>
-    <string name="account_oauth_error_browser_not_available">本应用找不到用来授予账户访问权限的浏览器。</string>
-    <string name="account_oauth_error_not_supported">此提供商当前不支持 OAuth 2.0。</string>
-    <string name="account_oauth_error_canceled">授权被取消</string>
+    <string name="account_oauth_error_failed">授权失败，错误如下：<xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_error_browser_not_available">此应用找不到用于授权访问您账号的浏览器。</string>
+    <string name="account_oauth_error_not_supported">此提供者目前不支持 OAuth 2.0。</string>
+    <string name="account_oauth_error_canceled">授权已取消</string>
     <string name="account_oauth_loading_message">使用 OAuth 登录</string>
-    <string name="account_oauth_sign_in_description">我们会将你重定向到你的电子邮箱提供商页面进行登录。你需要允许本应用访问你的电子邮箱账户。</string>
+    <string name="account_oauth_sign_in_description">我们会将您重定向到您的邮件服务提供者网站进行登录。您需要授权此应用访问您的电子邮件账号。</string>
     <string name="account_oauth_sign_in_button">登录</string>
 </resources>

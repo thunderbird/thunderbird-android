@@ -1,0 +1,5 @@
+- Dorong: Memberi tahu pengguna jika izin untuk menjadwalkan alarm yang tepat tidak ada
+- Mengganti nama pengaturan "Kirim ID klien" menjadi "Kirim informasi klien"
+- IMAP: Menambahkan dukungan untuk atribut respons \NonExistent LIST
+- IMAP: Mengeluarkan perintah EXPUNGE setelah pindah tanpa ekstensi MOVE
+- Terjemahan yang diperbarui; menambahkan terjemahan bahasa Ibrani

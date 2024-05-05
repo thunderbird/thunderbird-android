@@ -1,0 +1,5 @@
+- Push: Notificar al usuario si falta el permiso para programar alarmas exactas
+- Cambio de nombre de "Enviar ID de cliente" a "Enviar información de cliente".
+- IMAP: Añadida compatibilidad con el atributo de respuesta \NNNonExistent LIST
+- IMAP: Emisión del comando EXPUNGE después de mover sin extensión MOVE
+- Traducciones actualizadas; se ha añadido la traducción al hebreo

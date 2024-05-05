@@ -22,14 +22,14 @@
     <string name="account_setup_options_account_name_label">Tên tài khoản</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Đã tìm thấy cấu hình</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Địa chỉ e-mail là bắt buộc.</string>
-    <string name="account_setup_options_display_name_label">Tên hiển thị</string>
+    <string name="account_setup_options_display_name_label">Tên của bạn</string>
     <string name="account_setup_auto_discovery_loading_error">Không tải được cấu hình email</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Tôi tin tưởng cấu hình này</string>
-    <string name="account_setup_options_display_name_error_required">Tên hiển thị là bắt buộc.</string>
+    <string name="account_setup_options_display_name_error_required">Tên của bạn là bắt buộc.</string>
     <string name="account_setup_error_network">Mạng</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Đây không được công nhận là địa chỉ email hợp lệ.</string>
     <string name="account_setup_options_email_check_frequency_never">Không bao giờ</string>
-    <string name="account_setup_auto_discovery_loading_message">Tìm chi tiết e-mail</string>
+    <string name="account_setup_auto_discovery_loading_message">Đang tìm cấu hình…</string>
     <string name="account_setup_options_section_sync_options">Tùy chọn đồng bộ hóa</string>
     <string name="account_setup_options_show_notifications_label">Hiển thị thông báo</string>
     <string name="account_setup_options_section_display_options">Tùy chọn hiển thị</string>
@@ -41,4 +41,23 @@
     <string name="account_setup_special_folders_loading_message">Đang lấy danh sách thư mục…</string>
     <string name="account_setup_special_folders_error_message">Không thể lấy danh sách thư mục từ máy chủ</string>
     <string name="account_setup_auto_discovery_validation_error_password_required">Mật khẩu là bắt buộc.</string>
+    <string name="account_setup_special_folders_form_description">Hãy chỉ cụ thể thư mục đặc biệt cho tài khoản của bạn.</string>
+    <string name="account_setup_special_folders_success_message">Tất cả thư mục đặc biệt đã được cấu hình tự động bởi máy chủ.</string>
+    <string name="account_setup_special_folders_archive_folder_label">Thư mục lưu trữ</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Thư mục nháp</string>
+    <string name="account_setup_special_folders_sent_folder_label">Thư mục đã gửi</string>
+    <string name="account_setup_special_folders_spam_folder_label">Thư mục spam</string>
+    <string name="account_setup_special_folders_trash_folder_label">Thư mục rác</string>
+    <string name="account_setup_special_folders_folder_none">Không thiết đặt</string>
+    <string name="account_setup_special_folders_folder_automatic">Tự động (%s)</string>
+    <string name="account_setup_special_folders_form_description_automatic">Mục \"Tự động\" sẽ tuân theo thay đổi của máy chủ. Giá trị hiện tại của máy chủ đang hiển thị trong ngoặc kép.</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="other">Mỗi %d phút</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="other">Mỗi %d giờ</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="other">%d tin nhắn</item>
+    </plurals>
 </resources>

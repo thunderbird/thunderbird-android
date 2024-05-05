@@ -1,0 +1,5 @@
+- Piccole correzioni di bug e perfezionamento della UI/UX nella configurazione dell'account
+- Risolto un crash causato da un'interazione con OpenKeychain 6.0.0
+- Focus sui campi di input dell'oggetto o del corpo quando si apre la schermata di composizione tramite un mailto: URI
+- Rimosse le traduzioni in ebraico e coreano perché è stato tradotto meno del 70% delle stringhe. I volontari per aggiornare le traduzioni sono sempre i benvenuti!
+- Aggiornate le restanti traduzioni

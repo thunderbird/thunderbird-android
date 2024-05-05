@@ -17,7 +17,7 @@
     <string name="account_server_settings_port_label">پورت</string>
     <string name="account_server_settings_incoming_imap_compression_label">استفاده از فشرده‌سازی</string>
     <string name="account_server_settings_validation_error_port_required">وارد کردن پورت الزامی است.</string>
-    <string name="account_server_settings_authentication_client_certificate">گواهینامه کلاینت</string>
+    <string name="account_server_settings_authentication_client_certificate">گواهینامهٔ کارخواه</string>
     <string name="account_server_settings_incoming_imap_prefix_label">پیشوند مسیر IMAP</string>
     <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
     <string name="account_server_settings_protocol_type_label">پروتکل</string>
@@ -25,7 +25,7 @@
     <string name="account_server_settings_username_label">نام کاربری</string>
     <string name="account_server_settings_validation_error_port_invalid">پورت معتبر نیست (باید بین 1 تا 6535 باشد).</string>
     <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
-    <string name="account_server_settings_client_certificate_label">گواهینامه کلاینت</string>
+    <string name="account_server_settings_client_certificate_label">گواهینامهٔ کارخواه</string>
     <string name="account_server_settings_validation_error_imap_prefix_blank">پیشوند IMAP نمی تواند خالی باشد.</string>
     <string name="account_server_settings_client_certificate_none_selected">هیچ‌کدام</string>
     <string name="account_server_settings_password_authentication_screen_lock_required">برای دیدن رمز عبور در این قسمت، قفل صفحه در این دستگاه را فعال کنید.</string>

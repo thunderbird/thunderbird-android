@@ -1,0 +1,5 @@
+- Drobne poprawki błędów i dopracowanie interfejsu użytkownika/UX w konfiguracji konta
+- Naprawiono awarię spowodowaną interakcją z OpenKeychain 6.0.0
+- Fokus na polach wprowadzania tematu lub treści podczas otwierania ekranu tworzenia wiadomości za pośrednictwem mailto: URI
+- Usunięto tłumaczenia na język hebrajski i koreański, ponieważ przetłumaczono mniej niż 70% ciągów znaków. Chętni do aktualizacji tłumaczeń są zawsze mile widziani!
+- Zaktualizowano pozostałe tłumaczenia

@@ -1,0 +1,10 @@
+- Thêm xử lý ảnh trong menu
+- Thêm chuyển tiếp tệp tin đính kèm đã được mở đến email mới
+- Cải thiện lỗi chứng chỉ trong quá trình thiết lập tài khoản
+- Cải thiện nhập cài đặt trong quá trình thiết lập tài khoản
+- Cải thiện trải nghiệm lúc lập tài khoản
+- Cải thiện quá trình lập tài khoản cho thiết bị màn hình nhỏ
+- Cải thiện trải nghiệm lúc chỉnh sửa tài khoản máy chủ
+- Sửa lỗi sập AlarmManager trên Android 14
+- Thay đổi nội bộ
+- Cải thiện biên dịch

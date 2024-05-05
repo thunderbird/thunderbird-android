@@ -1,0 +1,7 @@
+- Nowa i ulepszona konfiguracja konta
+- Dodano opcję powrotu do listy wiadomości po oznaczeniu wiadomości jako nieprzeczytanej w widoku wiadomości
+- Utrudniono przypadkowe uruchomienie akcji przesuwania na ekranie listy wiadomości
+- Poprawiono działanie czytnika ekranu w różnych miejscach
+- IMAP: dodano obsługę wysyłania polecenia ID (wymagane przez niektórych dostawców poczty e-mail)
+- Różne inne poprawki i ulepszenia błędów; zobacz zmiany dla wersji 6.7xx
+- Usunięto tłumaczenia na język hebrajski i koreański ze względu na ich niekompletność; mile widziani tłumacze-wolontariusze!

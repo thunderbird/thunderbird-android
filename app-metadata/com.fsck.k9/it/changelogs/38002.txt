@@ -1,0 +1,5 @@
+- Push: avvisa l'utente se manca l'autorizzazione per programmare gli allarmi esatti
+- Impostazione "Invia ID cliente" rinominata in "Invia informazioni cliente"
+- IMAP: aggiunto il supporto per l'attributo di risposta \NonExistent LIST
+- IMAP: emetti il comando EXPUNGE dopo lo spostamento senza estensione MOVE
+- Traduzioni aggiornate; aggiunta la traduzione ebraica

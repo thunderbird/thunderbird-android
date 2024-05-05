@@ -1,0 +1,7 @@
+- Nové a vylepšené nastavení účtu
+- Přidána možnost návratu do seznamu zpráv po označení zprávy jako nepřečtené v zobrazení zpráv
+- Ztíženo náhodné spuštění akce přejetí prstem na obrazovce seznamu zpráv
+- Zlepšeno prostředí pro čtečky obrazovky na různých místech
+- IMAP: Přidána podpora pro odesílání příkazu ID (který vyžadují někteří poskytovatelé e-mailových služeb)
+- Různé další opravy chyb a vylepšení; viz změny pro verze 6.7xx
+- Odstraněny překlady hebrejštiny a korejštiny, protože byly nekompletní; dobrovolníci na překlady jsou vždy vítáni!

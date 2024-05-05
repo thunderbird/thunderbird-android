@@ -4,12 +4,12 @@
     <string name="account_server_validation_error_authentication">Identitetbekreftelsesfeil</string>
     <string name="account_server_validation_outgoing_loading_message">Sjekker innstillinger for utgående tjener …</string>
     <string name="account_server_validation_error_network">Nettverksfeil</string>
-    <string name="account_server_validation_outgoing_success">Ugyldige innstillinger for utgående tjener.</string>
+    <string name="account_server_validation_outgoing_success">Innstillinger for utgående tjener er verifisert</string>
     <string name="account_server_validation_error_unknown">Ukjent feil</string>
     <string name="account_server_validation_sign_in">Logg inn</string>
     <string name="account_server_validation_outgoing_loading_error">Kunne ikke sjekke innstillinger for utgående tjener</string>
-    <string name="account_server_validation_incoming_success">Innstillinger for innkommende tjener stemmer.</string>
-    <string name="account_server_validation_incoming_loading_error">Kunne ikke sjekke innstillinger for innkommende tjener.</string>
+    <string name="account_server_validation_incoming_success">Innstillinger for innkommende tjener er verifisert</string>
+    <string name="account_server_validation_incoming_loading_error">Kunne ikke sjekke innstillinger for innkommende tjener</string>
     <string name="account_server_validation_error_server">Tjenerfeil</string>
     <string name="account_server_validation_error_missing_server_capability">Manglende tjeneregenskap</string>
     <string name="account_server_validation_error_client_certificate_expired">Klientsertifikatet er ikke lenger gyldig</string>

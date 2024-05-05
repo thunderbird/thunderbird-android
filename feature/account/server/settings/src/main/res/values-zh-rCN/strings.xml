@@ -6,10 +6,10 @@
     <string name="account_server_settings_validation_error_password_required">密码是必需的。</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_authentication_none">无</string>
-    <string name="account_server_settings_authentication_password_encrypted">加密的密码</string>
-    <string name="account_server_settings_incoming_imap_namespace_label">自动检测 IMAP 名称空间</string>
+    <string name="account_server_settings_authentication_password_encrypted">加密密码</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">自动检测 IMAP 命名空间</string>
     <string name="account_server_settings_incoming_top_bar_title">收件服务器设置</string>
-    <string name="account_server_settings_authentication_password_cleartext">常规密码</string>
+    <string name="account_server_settings_authentication_password_cleartext">普通密码</string>
     <string name="account_server_settings_authentication_label">身份验证</string>
     <string name="account_server_settings_connection_security_none">无</string>
     <string name="account_server_settings_port_label">端口</string>
@@ -20,16 +20,16 @@
     <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
     <string name="account_server_settings_protocol_type_label">协议</string>
     <string name="account_server_settings_username_label">用户名</string>
-    <string name="account_server_settings_validation_error_port_invalid">端口无效（必须是 1–65535 之间的正整数）。</string>
+    <string name="account_server_settings_validation_error_port_invalid">端口无效（必须是 1–65535 之间的整数）。</string>
     <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
     <string name="account_server_settings_client_certificate_label">客户端证书</string>
     <string name="account_server_settings_validation_error_imap_prefix_blank">IMAP 前缀不能为空。</string>
     <string name="account_server_settings_client_certificate_none_selected">无</string>
     <string name="account_server_settings_server_label">服务器</string>
     <string name="account_server_settings_security_label">安全性</string>
-    <string name="account_server_settings_password_authentication_title">验证你的身份</string>
-    <string name="account_server_settings_password_authentication_subtitle">解锁以查看你的密码</string>
-    <string name="account_server_settings_password_authentication_screen_lock_required">要在此查看你的密码，请启用此设备的屏幕锁。</string>
+    <string name="account_server_settings_password_authentication_title">验证您的身份</string>
+    <string name="account_server_settings_password_authentication_subtitle">解锁以查看您的密码</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">要在此查看您的密码，请启用此设备的屏幕锁。</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">无效 IP 或主机名</string>
     <string name="account_server_settings_incoming_imap_send_client_info_label">发送客户端信息</string>
 </resources>

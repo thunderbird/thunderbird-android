@@ -1,0 +1,7 @@
+- Penyiapan akun yang baru & lebih baik
+- Menambah opsi untuk kembali ke daftar pesan setelah menandai pesan sebagai belum dibaca
+- Membuat lebih sulit untuk secara tidak sengaja mengusap di layar daftar pesan
+- Peningkatan pengalaman pembaca layar di berbagai tempat
+- IMAP: Menambah dukungan untuk mengirim perintah ID (diperlukan oleh beberapa penyedia surel)
+- Berbagai perbaikan lainnya; lihat log untuk versi 6.7xx
+- Menghapus bahasa Ibrani dan Korea karena tidak lengkap; relawan dipersilakan!

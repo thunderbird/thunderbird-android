@@ -326,9 +326,9 @@
     <string name="account_settings_notify_label">Notifications de nouveaux courriels</string>
     <string name="account_settings_folder_notify_new_mail_mode_label">Dossiers des notifications</string>
     <string name="account_settings_folder_notify_new_mail_mode_all">Tous</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Seulement les dossiers de 1re classe</string>
+    <string name="account_settings_folder_notify_new_mail_mode_first_class">Seulement les dossiers de 1re classe</string>
     <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Dossiers de 1re et 2e classes</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Tous sauf les dossiers de 2e classe</string>
+    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Tous sauf les dossiers de 2e classe</string>
     <string name="account_settings_folder_notify_new_mail_mode_none">Aucun</string>
     <string name="account_settings_notify_sync_label">Notifications de synchronisation</string>
     <string name="account_settings_email_label">Votre adresse courriel</string>
@@ -976,4 +976,6 @@
     <string name="general_settings_post_mark_as_unread_action_stay">Rester sur le courriel affiché</string>
     <string name="general_settings_post_mark_as_unread_action_title">Après avoir marqué un courriel comme indésirable</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Retourner sur la liste des courriels</string>
+    <string name="push_notification_state_alarm_permission_missing">Il manque une autorisation pour programmer des alarmes</string>
+    <string name="push_notification_grant_alarm_permission">Touchez pour accorder l’autorisation.</string>
 </resources>

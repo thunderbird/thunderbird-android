@@ -31,4 +31,5 @@
     <string name="account_server_settings_validation_error_server_required">נדרש שם שרת.</string>
     <string name="account_server_settings_validation_error_port_required">נדרש פורט.</string>
     <string name="account_server_settings_validation_error_password_required">דרושה סיסמה.</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">שלח מידע לקוח</string>
 </resources>

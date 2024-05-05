@@ -4,16 +4,16 @@
     <string name="account_server_validation_error_authentication">身份验证错误</string>
     <string name="account_server_validation_outgoing_loading_message">正在检查发件服务器设置…</string>
     <string name="account_server_validation_error_network">网络错误</string>
-    <string name="account_server_validation_outgoing_success">已验证发件服务器设置</string>
+    <string name="account_server_validation_outgoing_success">发件服务器设置已验证</string>
     <string name="account_server_validation_error_unknown">未知错误</string>
     <string name="account_server_validation_sign_in">请登录</string>
     <string name="account_server_validation_outgoing_loading_error">检查发件服务器设置失败</string>
-    <string name="account_server_validation_incoming_success">已验证收件服务器设置</string>
+    <string name="account_server_validation_incoming_success">收件服务器设置已验证</string>
     <string name="account_server_validation_incoming_loading_error">检查收件服务器设置失败</string>
     <string name="account_server_validation_error_server">服务器错误</string>
-    <string name="account_server_validation_error_missing_server_capability">缺少的服务器能力</string>
+    <string name="account_server_validation_error_missing_server_capability">缺少服务器功能</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">无法访问客户端证书</string>
-    <string name="account_server_validation_error_missing_server_capability_details">服务器缺少此能力
+    <string name="account_server_validation_error_missing_server_capability_details">服务器缺少此功能：
 \n%s</string>
     <string name="account_server_validation_error_client_certificate_expired">客户端证书不再有效</string>
     <string name="account_server_validation_error_details">详情：

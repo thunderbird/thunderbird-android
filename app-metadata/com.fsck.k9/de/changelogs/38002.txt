@@ -1,0 +1,5 @@
+- Push: Benutzer benachrichtigen, wenn die Erlaubnis zur genauen Planung von Alarmen fehlt
+- Umbenennung der Einstellung "Client-ID senden" in "Client-Informationen senden"
+- IMAP: Unterstützung für das Antwortattribut \NonExistent LIST hinzugefügt
+- IMAP: Ausgabe des Befehls EXPUNGE nach dem Verschieben ohne MOVE-Erweiterung
+- Aktualisierte Übersetzungen; hebräische Übersetzung hinzugefügt

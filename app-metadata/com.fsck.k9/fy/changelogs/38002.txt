@@ -1,0 +1,5 @@
+- Push: brûker op de hichte stelle as tastimming ûntbrekt om eksakte alarms yn te plannen
+- De ynstelling ‘Client-ID ferstjoere’ is omneamd nei ‘Klantynformaasje ferstjoere’
+- IMAP: stipe tafoege foar it NonExistent LIST-antwurdattribút
+- IMAP: jou it EXPUNGE-kommando nei it ferpleatsen sûnder MOVE-útwreiding
+- Bywurke oersettingen; Hebriuwske oersetting tafoege

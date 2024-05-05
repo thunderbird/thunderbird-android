@@ -1,0 +1,5 @@
+- Đẩy: Thông báo người dùng nếu không có quyền đặt báo thức
+- Sửa "Gửi ID thiết bị" thành "Gửi thông tin thiết bị"
+- IMAP: Hỗ trợ \NonExistent LIST trong thuộc tính trả lời
+- IMAP: Ra lệnh EXPUNGE sau khi di chuyển không có tiện ích MOVE
+- Cập nhật biên dịch; thêm tiếng Do Thái

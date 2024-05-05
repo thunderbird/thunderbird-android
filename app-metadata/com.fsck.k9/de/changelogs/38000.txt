@@ -1,0 +1,7 @@
+- Neue und verbesserte Kontoeinrichtung
+- Option hinzugefügt, um zur Nachrichtenliste zurückzukehren, nachdem eine Nachricht in der Nachrichtenansicht als ungelesen markiert wurde
+- Es ist nun schwieriger, versehentlich Wischaktionen in der Nachrichtenliste auszulösen
+- Verbessertes Screenreader-Erlebnis an verschiedenen Stellen
+- IMAP: Unterstützung für das Senden des ID-Befehls (der von einigen E-Mail-Anbietern benötigt wird) hinzugefügt
+- Verschiedene andere Fehlerkorrekturen und Verbesserungen; siehe Änderungen für die Versionen 6.7xx
+- Hebräische und koreanische Übersetzungen wurden entfernt, da sie unvollständig waren; freiwillige Übersetzer sind willkommen!
