@@ -1,0 +1,5 @@
+– Correction de petits bogues et amélioration de l’interface et l’interface utilisateur de configuration des comptes.
+– Correction d’un plantage causé par une interaction avec OpenKeychain 6.0.0.
+– Après ouverture de l’écran de rédaction par une URI mailto:, choix des champs de saisie de l’objet ou du corps du courriel.
+– Suppression des traductions en hébreu et en coréen, à 70 %. Les bénévoles sont toujours les bienvenus pour mettre à jour les traductions.
+– Mise à jour des traductions restantes.

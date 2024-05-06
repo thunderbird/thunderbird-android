@@ -1,0 +1,5 @@
+- Reihenfolge der Autokonfigurations-Ermittlungsschritte korrigiert
+- Standardmäßige Anzahl der Anzeigen wurde auf 100 geändert
+- Benachrichtigungen für neue Konten standardmäßig aktiviert
+- Die in K-9 Mail 6.716 eingeführte Änderung zur Behandlung von mailto: URIs wurde wegen unbeabsichtigter Nebeneffekte rückgängig gemacht
+- Fehler behoben, damit „Kontakte einfärben“ in der Nachrichtenansicht wieder funktioniert

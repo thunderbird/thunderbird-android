@@ -983,4 +983,6 @@ Você pode guardar esta mensagem e usá-la como um backup da sua chave secreta. 
     <string name="general_settings_post_mark_as_unread_action_stay">Permaneça na mensagem atual</string>
     <string name="general_settings_post_mark_as_unread_action_title">Depois de marcar uma mensagem como não lida</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Volte à lista de mensagens</string>
+    <string name="push_notification_state_alarm_permission_missing">Falta permissão para agendar alarmes</string>
+    <string name="push_notification_grant_alarm_permission">Toque para conceder a permissão.</string>
 </resources>

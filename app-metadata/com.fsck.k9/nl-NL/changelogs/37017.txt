@@ -1,0 +1,5 @@
+- Vaste volgorde van de stappen voor het detecteren van autoconfig
+- Het standaard aantal weergaven is gewijzigd in 100
+- Standaard ingeschakelde meldingen voor nieuwe accounts
+- De wijziging in het afhandelen van mailto: URI’s geïntroduceerd in K-9 Mail 6.716 is teruggedraaid vanwege onbedoelde bijwerkingen
+- Bug opgelost om ‘Contacten inkleuren’ weer te laten werken in de berichtweergave

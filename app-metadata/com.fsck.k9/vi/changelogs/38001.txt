@@ -1,0 +1,7 @@
+- Thêm hỗ trợ DNSSEC lúc thiết lập tài khoản
+- Tránh việc một số bàn phìm tự động viết hoa khi nhập email lúc thiết lập tài khoản
+- Sửa lỗi sập khi tiêu đề dài
+- Sửa lỗi hiển thị OAuth 2.0
+- Sửa lỗi hiếm gặp khi tải tệp tin đính kèm
+- Thêm đoạn mã để không xuống dòng khi nhập văn bản một dòng
+- Cập nhật biên dịch

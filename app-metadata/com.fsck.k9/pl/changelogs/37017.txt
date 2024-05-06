@@ -1,0 +1,5 @@
+- Naprawiono kolejność kroków automatycznego wykrywania konfiguracji
+- Zmieniono domyślną iczbę wyświetleń na 100
+- Domyślnie włączono powiadomienia dla nowych kont
+- Cofnięto zmianę dotyczącą obsługi mailto: URI wprowadzoną w K-9 Mail 6.716 z powodu niezamierzonych skutków ubocznych
+- Naprawiono błąd powodujący ponowne działanie „kolorowania kontaktów” w widoku wiadomości

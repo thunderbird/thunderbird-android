@@ -4,11 +4,18 @@
     <string name="account_server_validation_error_authentication">Lỗi xác thực</string>
     <string name="account_server_validation_outgoing_loading_message">Đang kiểm tra thiết đặt máy chủ thư đi…</string>
     <string name="account_server_validation_error_network">Lỗi mạng</string>
-    <string name="account_server_validation_outgoing_success">Thiết đặt máy chủ thư đi hợp lệ</string>
+    <string name="account_server_validation_outgoing_success">Thiết đặt máy chủ gửi đi đã được xác thực</string>
     <string name="account_server_validation_error_unknown">Lỗi không rõ</string>
     <string name="account_server_validation_sign_in">Xin hãy đăng nhập</string>
     <string name="account_server_validation_outgoing_loading_error">Kiểm tra thiết đặt máy chủ thư đi không thành công</string>
-    <string name="account_server_validation_incoming_success">Thiết đặt máy chủ thư đến hợp lệ</string>
+    <string name="account_server_validation_incoming_success">Thiết đặt máy chủ gửi đến đã được xác thực</string>
     <string name="account_server_validation_incoming_loading_error">Kiểm tra thiết đặt máy chủ thư đến không thành công</string>
     <string name="account_server_validation_error_server">Lỗi máy chủ</string>
+    <string name="account_server_validation_error_client_certificate_expired">Chứng chỉ máy khánh không còn hợp lệ</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">Chứng chỉ máy khách không thể truy cập được</string>
+    <string name="account_server_validation_error_details">Chi tiết:
+\n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Máy chủ không có khả năng này:
+\n%s</string>
+    <string name="account_server_validation_error_missing_server_capability">Máy chủ không có khả năng</string>
 </resources>

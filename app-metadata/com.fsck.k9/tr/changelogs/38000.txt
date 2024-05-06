@@ -1,0 +1,7 @@
+- Yeni ve iyileştirilmiş hesap kurulumu
+- İleti görünümünde bir iletiyi okunmadı olarak işaretledikten sonra ileti listesine dönme seçeneği eklendi
+- İleti listesi ekranında kaydırma eylemlerini yanlışlıkla tetiklemek zorlaştırıldı
+- Çeşitli yerlerde ekran okuyucu deneyimi iyileştirildi
+- IMAP: ID komutunu göndermek için destek eklendi (bazı e-posta sağlayıcıları tarafından gereklidir)
+- Diğer çeşitli hata düzeltmeleri ve iyileştirmeler; 6.7xx sürümleri için değişikliklere bakın
+- İbranice ve Korece çeviriler eksik olduğu için kaldırıldı; gönüllü çevirmenleri bekliyoruz!

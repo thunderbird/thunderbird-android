@@ -1,0 +1,7 @@
+- Trải nghiệm mới khi thiết lập tài khoản
+- Thêm lựa chọn quay lại danh sách tin nhắn sau khi đánh dấu email là chưa đọc
+- Tránh vô tình kích hoạt lựa chọn lướt ở danh sách tin nhắn
+- Cải thiện trải nghiệm đọc ở một số chỗ
+- IMAP: hỗ trợ gửi lệnh ID (yêu cầu bởi một số dịch vụ email)
+- Sửa một số lỗi và cải thiện; xem danh sách ở phiên bản 6.7xx
+- Bỏ tiếng Do Thái và tiếng Hàn vì ít tiến triển; tình nguyện viên luôn được chào đón!

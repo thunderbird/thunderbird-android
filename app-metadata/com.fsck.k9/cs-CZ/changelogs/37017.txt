@@ -1,0 +1,5 @@
+- Opraveno pořadí kroků automatického zjišťování konfigurace
+- Změna výchozího počtu zobrazení na 100
+- Ve výchozím nastavení povolena oznámení pro nové účty
+- Vrácena změna zpracování mailto: URI zavedená v K-9 Mail 6.716 kvůli nechtěným vedlejším účinkům
+- Opravena chyba, aby v zobrazení zpráv opět fungovala funkce "vybarvit kontakty"

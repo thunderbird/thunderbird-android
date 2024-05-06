@@ -1,0 +1,10 @@
+- Dodano obsługę obrazów w menu kontekstowym dla hiperłączy
+- Dodano możliwość przekazywania otwartych załączników do nowych wiadomości e-mail
+- Poprawiono ekran błędu certyfikatu podczas konfiguracji konta
+- Poprawione importowanie ustawień podczas konfiguracji konta
+- Ulepszony interfejs użytkownika/UX konfiguracji konta
+- Poprawiono renderowanie konfiguracji konta na małych ekranach
+- Poprawiono ustawienia serwera edycji konta UI/UX
+- Naprawiono awarię AlarmManagera na Androidzie 14
+- Zmiany wewnętrzne
+- Zaktualizowano tłumaczenia

@@ -1,0 +1,7 @@
+- Menambahkan dukungan DNSSEC saat mencari pengaturan server selama penyiapan
+- Membuat perubahan untuk mencegah beberapa keyboard perangkat lunak menggunakan huruf besar/mengoreksi alamat surel secara otomatis saat penyiapan akun
+- Memperbaiki kerusakan saat subjek yang sangat panjang digunakan
+- Memperbaiki tampilan pesan kesalahan OAuth 2.0
+- Memperbaiki kerusakan saat mengunduh lampiran
+- Menambah kode untuk melarang jeda baris dalam input teks 1 baris
+- Memperbarui terjemahan

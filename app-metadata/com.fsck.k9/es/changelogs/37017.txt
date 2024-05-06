@@ -1,0 +1,5 @@
+- Corregido el orden de los pasos de la autoconfiguración
+- Cambiado el recuento de visualizaciones por defecto a 100
+- Habilitadas por defecto las notificaciones para nuevas cuentas
+- Revertido el cambio en el manejo de mailto: URIs introducido en K-9 Mail 6.716 debido a efectos secundarios no deseados
+- Corregido error para que "colorear contactos" vuelva a funcionar en la vista de mensajes

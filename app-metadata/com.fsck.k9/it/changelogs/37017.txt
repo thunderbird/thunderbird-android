@@ -1,0 +1,5 @@
+- Risolto l'ordine dei passaggi di rilevamento della configurazione automatica
+- Modificato il conteggio di visualizzazione predefinito a 100
+- Abilitate le notifiche per i nuovi account per impostazione predefinita
+- Ripristinata la modifica alla gestione di mailto: URI introdotti in K-9 Mail 6.716 a causa di effetti collaterali indesiderati
+- Risolto il bug per far funzionare nuovamente "colora contatti" nella visualizzazione dei messaggi

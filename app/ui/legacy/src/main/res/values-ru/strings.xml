@@ -87,8 +87,8 @@
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">Адрес скопирован в буфер</item>
         <item quantity="few">Адреса скопированы в буфер</item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="many">Адреса скопированы в буфер</item>
+        <item quantity="other">Адреса скопированы в буфер</item>
     </plurals>
     <string name="copy_subject_to_clipboard">Текст темы скопирован в буфер обмена</string>
     <string name="message_view_theme_action_dark">Тёмная тема</string>
@@ -116,9 +116,9 @@
     <string name="size_format_bytes">%d Б</string>
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> новое сообщение</item>
-        <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> новых сообщений</item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> новых сообщения</item>
+        <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> новых сообщений</item>
+        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> новых сообщений</item>
     </plurals>
     <string name="notification_additional_messages">+ ещё <xliff:g id="additional_messages">%1$d</xliff:g> в <xliff:g id="account">%2$s</xliff:g></string>
     <string name="notification_action_reply">Ответить</string>

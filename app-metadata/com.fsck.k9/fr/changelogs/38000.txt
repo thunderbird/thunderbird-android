@@ -1,0 +1,7 @@
+– Nouvelle configuration améliorée des comptes.
+– Option permettant de revenir à la liste des courriels après avoir marqué un courriel comme non lu dans la vue des courriels.
+– Il est plus difficile de déclencher accidentellement des actions de balayage dans l’écran de la liste des courriels.
+– Amélioration de l’expérience des lecteurs d’écran à divers endroits.
+– IMAP : ajout de la prise en charge de l’envoi de la commande ID (nécessaire pour certains services de courriel).
+– Diverses autres corrections de bogues et améliorations ; voir les changements pour les versions 6.7xx
+– Suppression des traductions en hébreu et en coréen, incomplètes ; les traducteurs volontaires sont les bienvenus.

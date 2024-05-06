@@ -1,0 +1,7 @@
+- Configurazione dell'account nuova e migliorata
+- Aggiunta l'opzione per tornare all'elenco dei messaggi dopo aver contrassegnato un messaggio come non letto nella visualizzazione dei messaggi
+- È stato reso più difficile l'attivazione accidentale di azioni di scorrimento nella schermata dell'elenco dei messaggi
+- Esperienza di lettura dello schermo migliorata in vari luoghi
+- IMAP: aggiunto supporto per l'invio del comando ID (richiesto da alcuni provider di posta elettronica)
+- Varie altre correzioni di bug e miglioramenti; vedere le modifiche per le versioni 6.7xx
+- Rimosse le traduzioni ebraica e coreana perché incomplete; traduttori volontari benvenuti!

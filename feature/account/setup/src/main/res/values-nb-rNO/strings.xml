@@ -23,11 +23,11 @@
     <string name="account_setup_options_display_name_label">Ditt navn</string>
     <string name="account_setup_auto_discovery_loading_error">Klarte ikke å laste inn e-postoppsett</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Jeg stoler på dette oppsettet</string>
-    <string name="account_setup_options_display_name_error_required">Visningsnavn kreves.</string>
+    <string name="account_setup_options_display_name_error_required">Navnet ditt kreves.</string>
     <string name="account_setup_error_network">Nettverk</string>
-    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">E-postadressen er ugyldig.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Dette er ikke gjenkjent som en gyldig e-postadresse.</string>
     <string name="account_setup_options_email_check_frequency_never">Aldri</string>
-    <string name="account_setup_auto_discovery_loading_message">Finner e-postdetaljer …</string>
+    <string name="account_setup_auto_discovery_loading_message">Finner oppsett …</string>
     <string name="account_setup_options_section_sync_options">Synkroniseringsalternativer</string>
     <string name="account_setup_options_show_notifications_label">Vis merknader</string>
     <string name="account_setup_options_section_display_options">Visningsalternativer</string>
@@ -43,11 +43,24 @@
     <string name="account_setup_special_folders_trash_folder_label">Papirkurvsmappe</string>
     <string name="account_setup_special_folders_folder_none">Ingen</string>
     <string name="account_setup_create_account_error">En feil oppstod under opprettelse av kontoen</string>
-    <string name="account_setup_create_account_created">Konto opprettet</string>
+    <string name="account_setup_create_account_created">Kontoen ble vellykket opprettet</string>
     <string name="account_setup_create_account_creating">Oppretter konto …</string>
     <string name="account_setup_special_folders_sent_folder_label">«Sendt»-mappe</string>
     <string name="account_setup_special_folders_spam_folder_label">Søppelpostmappe</string>
     <string name="account_setup_special_folders_folder_automatic">Automatisk (%s)</string>
     <string name="account_setup_special_folders_archive_folder_label">Arkivmappe</string>
     <string name="account_setup_special_folders_form_description_automatic">«Automatisk»-oppføringen følger endringer gjort av tjeneren automatisk. Nåværende tjenerverdi vises i parenteser.</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Hvert minutt</item>
+        <item quantity="other">Hvert %d. minutt</item>
+    </plurals>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Passord kreves.</string>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Hver time</item>
+        <item quantity="other">Hver %d. time</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">1 melding</item>
+        <item quantity="other">%d meldinger</item>
+    </plurals>
 </resources>

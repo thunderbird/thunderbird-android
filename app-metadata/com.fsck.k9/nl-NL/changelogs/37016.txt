@@ -1,0 +1,5 @@
+- Kleine bugfixes en UI/UX oppoetsen bij het instellen van een account
+- Een crash verholpen die werd veroorzaakt door een interactie met OpenKeychain 6.0.0
+- Focus op onderwerp- of lichaamsinvoervelden bij het openen van het opstelscherm via een mailto: URI
+- Hebreeuwse en Koreaanse vertalingen verwijderd, omdat minder dan 70% van de strings was vertaald. Vrijwilligers om de vertalingen bij te werken zijn altijd welkom!
+- Resterende vertalingen bijgewerkt

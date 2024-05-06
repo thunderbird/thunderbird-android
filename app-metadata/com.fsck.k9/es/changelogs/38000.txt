@@ -1,0 +1,7 @@
+- Nueva y mejorada configuración de la cuenta
+- Se ha añadido la opción de volver a la lista de mensajes después de marcar un mensaje como no leído en la vista de mensajes.
+- Se ha dificultado la activación accidental de acciones de deslizamiento en la pantalla de la lista de mensajes.
+- Mejora del lector de pantalla en varios lugares.
+- IMAP: Se ha añadido compatibilidad con el envío del comando ID (requerido por algunos proveedores de correo electrónico).
+- Otras mejoras y correcciones de errores; véanse los cambios de las versiones 6.7xx.
+- Eliminadas las traducciones al hebreo y al coreano debido a lo incompletas que estaban; ¡se aceptan traductores voluntarios!

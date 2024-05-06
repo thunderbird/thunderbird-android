@@ -1,0 +1,5 @@
+- Push: Upozornit uživatele, pokud chybí oprávnění plánovat přesné alarmy
+- Přejmenováno nastavení "Odeslat ID klienta" na "Odeslat informace o klientovi"
+- IMAP: Přidána podpora pro atribut odpovědi \NonExistent LIST
+- IMAP: Vydání příkazu EXPUNGE po přesunu bez rozšíření MOVE
+- Aktualizovány překlady; přidán překlad do hebrejštiny

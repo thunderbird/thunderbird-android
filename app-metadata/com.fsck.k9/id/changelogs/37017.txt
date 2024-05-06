@@ -1,0 +1,5 @@
+- Memperbaiki urutan langkah penemuan konfigurasi otomatis
+- Mengubah jumlah tampilan bawaan menjadi 100
+- Mengaktifkan notifikasi untuk akun baru secara bawaan
+- Mengembalikan perubahan untuk menangani mailto: URI yang diperkenalkan di K-9 Mail 6.716 karena efek samping yang tidak diinginkan
+- Memperbaiki kesalahan agar fitur "warnai kontak" berfungsi kembali di tampilan pesan

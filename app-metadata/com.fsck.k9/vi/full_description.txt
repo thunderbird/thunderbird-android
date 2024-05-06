@@ -1,0 +1,23 @@
+K-9 Mail là phần mềm mã nguồn mở tương thích với mọi dịch vụ email.
+
+<b>Tính năng</b>
+
+* Hỗ trợ nhiều tài khoản
+* Đồng bộ nhiều hộp thư
+* Tôn trọng quyền riêng tư (không theo dõi, chỉ kết nối bạn với nhà cung cấp email)
+* Tự động đồng bộ hoặc thông báo thời gian thực
+* Tìm kiếm thư trên thiết bị và trên máy chủ
+* Mã hóa thư bằng OpenPGP (PGP/MIME)
+
+Cài đặt ứng dụng <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain: Easy PGP</a> để mã hóa/giải mã thư bằng OpenPGP.
+
+
+<b>Hỗ trợ</b>
+
+Nếu bạn gặp vấn đề với K-9 Mail, hãy liên lạc ở <a href="https://forum.k9mail.app">diễn đàn hỗ trợ</a> của chúng tôi.
+
+<b>Muốn tham gia?</b>
+
+K-9 Mail là dự án phát triển bởi cộng đồng. Nếu bạn quan tâm đến việc cải thiện ứng dụng, hãy tham gia chúng tôi!
+Bạn có thể tìm dach sách lỗi, mã nguồn, và tài liệu ở <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
+Chúng tôi luôn chào đón vị trí phát triển, thiết kế, viết tài liệu, phiên dịch, tìm lỗi và bạn bè nói chung.

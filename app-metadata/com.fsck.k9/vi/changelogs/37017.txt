@@ -1,0 +1,5 @@
+- Sửa thứ tự liên quan đến autoconfig
+- Đặt 100 làm số hiển thị mặc định
+- Tài khoản mới có thông báo đẩy bật mặc định
+- Hoàn nguyên tính năng mailto: URI ở phiên bản K-9 Mail 6.716 vì lỗi
+- Sửa lỗi "thêm màu vào người liên lạc" trong danh sách tin nhắn

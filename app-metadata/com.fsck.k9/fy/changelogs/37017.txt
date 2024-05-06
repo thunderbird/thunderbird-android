@@ -1,0 +1,5 @@
+- Fêste folchoarder fan de stappen foar it detektearjen fan autoconfig
+- It standert oantal werjeften is wizige nei 100
+- Standert ynskeakele meldingen foar nije accounts
+- De wiziging yn it ôfhanneljen fan mailto: URI’s yntrodusearre yn K-9 Mail 6.716 is weromdraaid fanwegen net bedoelde bywurkingen
+- Bug oplost om ‘Kontakten ynkleurje’ wer wurkje te litten yn de berjochtwerjefte

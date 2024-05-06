@@ -1,0 +1,5 @@
+- Push: powiadom użytkownika, jeśli brakuje uprawnień do planowania dokładnych alarmów
+- Zmieniono nazwę ustawienia „Wyślij identyfikator klienta” na „Wyślij informacje o kliencie”
+- IMAP: dodano obsługę atrybutu odpowiedzi \NonExistent LIST
+- IMAP: wydawanie polecenia EXPUNGE po przeniesieniu bez rozszerzenia MOVE
+- Zaktualizowano tłumaczenia; dodano tłumaczenie hebrajskie

@@ -13,4 +13,5 @@
     <string name="account_server_certificate_warning_title">אזהרה</string>
     <string name="account_server_certificate_unknown_error_description_format">היישומון הבחין באיום אבטחה אפשרי ולא המשיך להתחבר אל <xliff:g id="serverName">%s</xliff:g>.
 \nאם תמשיך, תוקפים יוכלו לנסות לגנוב מידע כגון הסיסמה שלך או הודעות דוא\"ל.</string>
+    <string name="account_server_certificate_fingerprints_section">טביעות אצבע</string>
 </resources>
