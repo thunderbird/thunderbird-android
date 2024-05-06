@@ -1151,6 +1151,67 @@ class RealImapFolderTest {
     }
 
     @Test
+    fun `deleteMessages() on closed folder should throw`() {
+        val folder = createFolder("Folder")
+        val messages = listOf(createImapMessage("1"))
+
+        assertFailure {
+            folder.deleteMessages(messages)
+        }.isInstanceOf<IllegalStateException>()
+            .hasMessage("Folder 'Folder' is not open.")
+
+        verifyNoMoreInteractions(imapConnection)
+    }
+
+    @Test
+    fun `deleteMessages() on folder opened as read-only should throw`() {
+        val folder = createFolder("Folder")
+        prepareImapFolderForOpen(OpenMode.READ_ONLY)
+        folder.open(OpenMode.READ_ONLY)
+        val messages = listOf(createImapMessage("1"))
+
+        assertFailure {
+            folder.deleteMessages(messages)
+        }.isInstanceOf<IllegalStateException>()
+            .hasMessage("Folder 'Folder' needs to be opened for read-write access.")
+    }
+
+    @Test
+    fun `deleteMessages() with expungeImmediately = true should set deleted flag and expunge message`() {
+        imapStoreConfig.expungeImmediately = true
+        val folder = createFolder("Folder")
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
+        imapConnection.stub {
+            on { isUidPlusCapable } doReturn true
+        }
+        folder.open(OpenMode.READ_WRITE)
+        val messages = listOf(createImapMessage("1"))
+
+        folder.deleteMessages(messages)
+
+        assertCommandWithIdsIssued("UID STORE 1 +FLAGS.SILENT (\\Deleted)")
+        assertCommandWithIdsIssued("UID EXPUNGE 1")
+    }
+
+    @Test
+    fun `deleteMessages() with expungeImmediately = false should set deleted flag but not expunge message`() {
+        imapStoreConfig.expungeImmediately = false
+        val folder = createFolder("Folder")
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
+        imapConnection.stub {
+            on { isUidPlusCapable } doReturn true
+        }
+        folder.open(OpenMode.READ_WRITE)
+        val messages = listOf(createImapMessage("1"))
+
+        folder.deleteMessages(messages)
+
+        assertCommandWithIdsIssued("UID STORE 1 +FLAGS.SILENT (\\Deleted)")
+        verify(imapConnection, never()).executeCommandWithIdSet("UID EXPUNGE", "", setOf(1L))
+        verify(imapConnection, never()).executeSimpleCommand("EXPUNGE")
+    }
+
+    @Test
     fun `deleteAllMessages() on closed folder should throw`() {
         val folder = createFolder("Folder")
 
