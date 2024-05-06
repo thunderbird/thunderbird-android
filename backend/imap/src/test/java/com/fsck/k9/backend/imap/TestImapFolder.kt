@@ -171,6 +171,10 @@ open class TestImapFolder(override val serverId: String) : ImapFolder {
         throw UnsupportedOperationException("not implemented")
     }
 
+    override fun deleteMessages(messages: List<ImapMessage>) {
+        setFlags(messages, setOf(Flag.DELETED), true)
+    }
+
     override fun deleteAllMessages() {
         setFlagsForAllMessages(setOf(Flag.DELETED), true)
     }

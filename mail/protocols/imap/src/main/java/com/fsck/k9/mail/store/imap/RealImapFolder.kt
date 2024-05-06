@@ -1088,6 +1088,11 @@ internal class RealImapFolder(
     }
 
     @Throws(MessagingException::class)
+    override fun deleteMessages(messages: List<ImapMessage>) {
+        setFlags(messages, setOf(Flag.DELETED), true)
+    }
+
+    @Throws(MessagingException::class)
     override fun deleteAllMessages() {
         checkOpenWithWriteAccess()
 
