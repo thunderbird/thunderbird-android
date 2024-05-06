@@ -80,10 +80,6 @@ class ImapBackend(
         commandExpunge.expunge(folderServerId)
     }
 
-    override fun expungeMessages(folderServerId: String, messageServerIds: List<String>) {
-        commandExpunge.expungeMessages(folderServerId, messageServerIds)
-    }
-
     override fun deleteMessages(folderServerId: String, messageServerIds: List<String>) {
         commandDelete.deleteMessages(folderServerId, messageServerIds)
     }
