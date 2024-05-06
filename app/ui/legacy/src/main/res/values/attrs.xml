@@ -129,11 +129,6 @@
         <attr name="openpgp_dark_grey" format="reference|color" />
     </declare-styleable>
 
-    <declare-styleable name="FoldableLinearLayout">
-        <attr name="foldedLabel" format="string" />
-        <attr name="unFoldedLabel" format="string" />
-    </declare-styleable>
-
     <declare-styleable name="LinearViewAnimator">
         <attr name="downInAnimation" format="reference" />
         <attr name="downOutAnimation" format="reference" />
