@@ -112,6 +112,10 @@ internal open class TestImapFolder(
         throw UnsupportedOperationException("not implemented")
     }
 
+    override fun deleteAllMessages() {
+        throw UnsupportedOperationException("not implemented")
+    }
+
     override fun expunge() {
         throw UnsupportedOperationException("not implemented")
     }

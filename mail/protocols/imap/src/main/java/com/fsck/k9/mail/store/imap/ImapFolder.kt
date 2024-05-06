@@ -82,6 +82,9 @@ interface ImapFolder {
     fun moveMessages(messages: List<ImapMessage>, folder: ImapFolder): Map<String, String>?
 
     @Throws(MessagingException::class)
+    fun deleteAllMessages()
+
+    @Throws(MessagingException::class)
     fun expunge()
 
     @Throws(MessagingException::class)
