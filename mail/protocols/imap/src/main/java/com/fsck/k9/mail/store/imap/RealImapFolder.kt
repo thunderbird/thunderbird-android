@@ -1089,7 +1089,13 @@ internal class RealImapFolder(
 
     @Throws(MessagingException::class)
     override fun deleteAllMessages() {
+        checkOpenWithWriteAccess()
+
         setFlagsForAllMessages(setOf(Flag.DELETED), true)
+
+        if (internalImapStore.config.isExpungeImmediately()) {
+            expunge()
+        }
     }
 
     @Throws(MessagingException::class)

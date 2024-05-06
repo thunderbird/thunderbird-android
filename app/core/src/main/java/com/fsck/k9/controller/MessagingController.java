@@ -2094,10 +2094,6 @@ public class MessagingController {
         Backend backend = getBackend(account);
         backend.deleteAllMessages(trashFolderServerId);
 
-        if (account.getExpungePolicy() == Expunge.EXPUNGE_IMMEDIATELY && backend.getSupportsExpunge()) {
-            backend.expunge(trashFolderServerId);
-        }
-
         // Remove all messages marked as deleted
         folder.destroyDeletedMessages();
 
