@@ -2,12 +2,6 @@
 <resources>
 
     <declare-styleable name="K9Styles">
-        <attr name="iconSettingsAbout" format="reference" />
-        <attr name="iconSettingsGeneral" format="reference" />
-        <attr name="iconSettingsAccount" format="reference" />
-        <attr name="iconSettingsAccountAdd" format="reference" />
-        <attr name="iconSettingsExport" format="reference" />
-        <attr name="iconSettingsImport" format="reference" />
         <attr name="textColorPrimaryRecipientDropdown" format="reference" />
         <attr name="textColorSecondaryRecipientDropdown" format="reference" />
         <attr name="backgroundColorChooseAccountHeader" format="color" />
@@ -67,8 +61,6 @@
         <attr name="iconAboutWebsite" format="reference"/>
         <attr name="iconAboutFediverse" format="reference"/>
         <attr name="iconUserForum" format="reference"/>
-        <attr name="iconUserManual" format="reference"/>
-        <attr name="iconHelp" format="reference"/>
 
         <attr name="unencryptedAttachmentUnlock" format="reference|color" />
         <attr name="openpgp_black" format="reference|color" />

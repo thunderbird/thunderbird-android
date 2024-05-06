@@ -66,12 +66,7 @@
 
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
 
-        <item name="iconSettingsAbout">@drawable/ic_info</item>
-        <item name="iconSettingsGeneral">@drawable/ic_cog</item>
-        <item name="iconSettingsAccount">@drawable/ic_account</item>
-        <item name="iconSettingsAccountAdd">@drawable/ic_account_plus</item>
-        <item name="iconSettingsExport">@drawable/ic_export</item>
-        <item name="iconSettingsImport">@drawable/ic_import</item>
+        // TODO: Remove iconSettingsImportStatus as soon icons are migrated to icon module
         <item name="iconSettingsImportStatus">@drawable/ic_import_status</item>
 
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_light</item>
@@ -134,8 +129,6 @@
         <item name="iconAboutLicense">@drawable/ic_description</item>
         <item name="iconAboutWebsite">@drawable/ic_link</item>
         <item name="iconUserForum">@drawable/ic_forum</item>
-        <item name="iconUserManual">@drawable/ic_open_book</item>
-        <item name="iconHelp">@drawable/ic_help</item>
         <item name="iconAboutFediverse">@drawable/ic_mastodon</item>
 
         <item name="unencryptedAttachmentUnlock">@drawable/ic_visibility</item>
@@ -218,12 +211,7 @@
 
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
 
-        <item name="iconSettingsAbout">@drawable/ic_info</item>
-        <item name="iconSettingsGeneral">@drawable/ic_cog</item>
-        <item name="iconSettingsAccount">@drawable/ic_account</item>
-        <item name="iconSettingsAccountAdd">@drawable/ic_account_plus</item>
-        <item name="iconSettingsExport">@drawable/ic_export</item>
-        <item name="iconSettingsImport">@drawable/ic_import</item>
+        // TODO: Remove iconSettingsImportStatus as soon icons are migrated to icon module
         <item name="iconSettingsImportStatus">@drawable/ic_import_status</item>
 
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_dark</item>
@@ -285,8 +273,6 @@
         <item name="iconAboutLicense">@drawable/ic_description</item>
         <item name="iconAboutWebsite">@drawable/ic_link</item>
         <item name="iconUserForum">@drawable/ic_forum</item>
-        <item name="iconUserManual">@drawable/ic_open_book</item>
-        <item name="iconHelp">@drawable/ic_help</item>
         <item name="iconAboutFediverse">@drawable/ic_mastodon</item>
 
         <item name="unencryptedAttachmentUnlock">@drawable/ic_visibility</item>

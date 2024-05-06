@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.annotation.AttrRes
+import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -87,7 +87,7 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
             addAction(
                 text = getString(R.string.general_settings_title),
                 navigationAction = R.id.action_settingsListScreen_to_generalSettingsScreen,
-                icon = R.attr.iconSettingsGeneral,
+                icon = R.drawable.ic_cog,
             )
 
             addSection(title = getString(R.string.accounts_title)) {
@@ -99,7 +99,7 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
                 addAction(
                     text = getString(R.string.add_account_action),
                     navigationAction = R.id.action_settingsListScreen_to_addAccountScreen,
-                    icon = R.attr.iconSettingsAccountAdd,
+                    icon = R.drawable.ic_account_plus,
                 )
             }
 
@@ -107,13 +107,13 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
                 addAction(
                     text = getString(R.string.settings_export_title),
                     navigationAction = R.id.action_settingsListScreen_to_settingsExportScreen,
-                    icon = R.attr.iconSettingsExport,
+                    icon = R.drawable.ic_export,
                 )
 
                 addAction(
                     text = getString(SettingsImportR.string.settings_import_title),
                     navigationAction = R.id.action_settingsListScreen_to_settingsImportScreen,
-                    icon = R.attr.iconSettingsImport,
+                    icon = R.drawable.ic_import,
                 )
             }
 
@@ -121,19 +121,19 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
                 addAction(
                     text = getString(R.string.about_action),
                     navigationAction = R.id.action_settingsListScreen_to_aboutScreen,
-                    icon = R.attr.iconSettingsAbout,
+                    icon = R.drawable.ic_info,
                 )
 
                 addUrlAction(
                     text = getString(R.string.user_manual_title),
                     url = getString(R.string.user_manual_url),
-                    icon = R.attr.iconUserManual,
+                    icon = R.drawable.ic_open_book,
                 )
 
                 addUrlAction(
                     text = getString(R.string.get_help_title),
                     url = getString(R.string.user_forum_url),
-                    icon = R.attr.iconHelp,
+                    icon = R.drawable.ic_help,
                 )
             }
         }
@@ -176,12 +176,12 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
         private val settingsList = mutableListOf<GenericItem>()
         private var itemId = 0L
 
-        fun addAction(text: String, @IdRes navigationAction: Int, @AttrRes icon: Int) {
+        fun addAction(text: String, @IdRes navigationAction: Int, @DrawableRes icon: Int) {
             itemId++
             settingsList.add(SettingsActionItem(itemId, text, navigationAction, icon))
         }
 
-        fun addUrlAction(text: String, url: String, @AttrRes icon: Int) {
+        fun addUrlAction(text: String, url: String, @DrawableRes icon: Int) {
             itemId++
             settingsList.add(UrlActionItem(itemId, text, url, icon))
         }
