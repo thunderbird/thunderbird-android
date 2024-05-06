@@ -5,6 +5,6 @@
         android:id="@+id/done"
         android:title="@string/unread_widget_action_done"
         app:showAsAction="always"
-        android:icon="?attr/iconActionSave"
+        android:icon="@drawable/ic_floppy"
         />
 </menu>

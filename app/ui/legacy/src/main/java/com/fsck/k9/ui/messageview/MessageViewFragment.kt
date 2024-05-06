@@ -18,7 +18,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import androidx.core.content.withStyledAttributes
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -240,16 +240,14 @@ class MessageViewFragment :
                 menu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_read_action)
             }
 
-            val drawableAttr = if (isMessageRead) {
-                intArrayOf(R.attr.iconActionMarkAsUnread)
+            val drawableId = if (isMessageRead) {
+                R.drawable.ic_mark_new
             } else {
-                intArrayOf(R.attr.iconActionMarkAsRead)
+                R.drawable.ic_opened_envelope
             }
 
-            val toolbarContext = requireActivity().findViewById<View>(R.id.toolbar).context
-            toolbarContext.withStyledAttributes(attrs = drawableAttr) {
-                menu.findItem(R.id.toggle_unread).icon = getDrawable(0)
-            }
+            val drawable = ContextCompat.getDrawable(requireContext(), drawableId)
+            menu.findItem(R.id.toggle_unread).icon = drawable
         }
 
         if (isMoveCapable) {
@@ -588,9 +586,11 @@ class MessageViewFragment :
             MessageDetailsFragment.ACTION_SEARCH_KEYS -> {
                 messageCryptoPresenter.onClickSearchKey()
             }
+
             MessageDetailsFragment.ACTION_SHOW_WARNING -> {
                 messageCryptoPresenter.onClickShowCryptoWarningDetails()
             }
+
             else -> {
                 error("Unsupported action: $action")
             }
@@ -691,6 +691,7 @@ class MessageViewFragment :
                     cancelText,
                 )
             }
+
             R.id.dialog_confirm_spam -> {
                 val title = getString(R.string.dialog_confirm_spam_title)
                 val message = resources.getQuantityString(R.plurals.dialog_confirm_spam_message, 1)
@@ -704,6 +705,7 @@ class MessageViewFragment :
                     cancelText,
                 )
             }
+
             R.id.dialog_attachment_progress -> {
                 val currentAttachmentViewInfo = checkNotNull(this.currentAttachmentViewInfo)
 
@@ -711,6 +713,7 @@ class MessageViewFragment :
                 val size = currentAttachmentViewInfo.size
                 AttachmentDownloadDialogFragment.newInstance(size, message)
             }
+
             else -> {
                 throw RuntimeException("Called showDialog(int) with unknown dialog id.")
             }
@@ -787,9 +790,11 @@ class MessageViewFragment :
                     putExtra(MessageCompose.EXTRA_ACCOUNT, messageReference.accountUuid)
                 }
             }
+
             is HttpsUnsubscribeUri -> {
                 Intent(Intent.ACTION_VIEW, unsubscribeUri.uri)
             }
+
             else -> error("Unknown UnsubscribeUri - $unsubscribeUri")
         }
 

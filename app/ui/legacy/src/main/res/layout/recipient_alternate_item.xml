@@ -65,7 +65,7 @@
             android:padding="8dp"
             android:id="@+id/alternate_remove"
             android:background="?android:selectableItemBackground"
-            app:srcCompat="?attr/iconActionCancel"
+            app:srcCompat="@drawable/ic_clear"
             />
 
     </LinearLayout>

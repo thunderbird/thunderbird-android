@@ -181,7 +181,7 @@
                 android:layout_height="match_parent"
                 android:padding="6dp"
                 android:scaleType="centerCrop"
-                app:srcCompat="?attr/iconActionExpand" />
+                app:srcCompat="@drawable/ic_chevron_down" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -299,7 +299,7 @@
                 android:layout_height="match_parent"
                 android:padding="6dp"
                 android:scaleType="centerCrop"
-                app:srcCompat="?attr/iconActionExpand"
+                app:srcCompat="@drawable/ic_chevron_down"
                 android:id="@+id/recipient_expander"
                 />
 
