@@ -88,7 +88,7 @@ class SettingsImporter internal constructor(
     fun importSettings(
         inputStream: InputStream,
         globalSettings: Boolean,
-        accountUuids: List<String>?,
+        accountUuids: List<String>,
     ): ImportResults {
         try {
             var globalSettingsImported = false
@@ -103,11 +103,7 @@ class SettingsImporter internal constructor(
                 null
             }
 
-            val filteredAccounts = if (accountUuids == null) {
-                settings.accounts
-            } else {
-                settings.accounts?.filterKeys { it in accountUuids }
-            }
+            val filteredAccounts = settings.accounts?.filterKeys { it in accountUuids }
 
             val imported = settings.copy(
                 globalSettings = filteredGlobalSettings,
@@ -136,7 +132,7 @@ class SettingsImporter internal constructor(
                 }
             }
 
-            if (!accountUuids.isNullOrEmpty()) {
+            if (accountUuids.isNotEmpty()) {
                 if (imported.accounts != null) {
                     for (accountUuid in accountUuids) {
                         val account = imported.accounts[accountUuid]
