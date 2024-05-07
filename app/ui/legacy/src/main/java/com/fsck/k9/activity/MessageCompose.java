@@ -47,6 +47,7 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.core.content.IntentCompat;
 import androidx.core.os.BundleCompat;
+import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.fsck.k9.Account;
@@ -1845,7 +1846,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             if (isLoadingComplete) {
                 if (attachment.isSupportedImage()) {
                     ImageView attachmentTypeView = view.findViewById(R.id.attachment_type);
-                    attachmentTypeView.setImageResource(R.drawable.ic_attachment_image);
+                    attachmentTypeView.setImageResource(Icons.Filled.AttachmentImage);
 
                     ImageView preview = view.findViewById(R.id.attachment_preview);
                     preview.setVisibility(View.VISIBLE);

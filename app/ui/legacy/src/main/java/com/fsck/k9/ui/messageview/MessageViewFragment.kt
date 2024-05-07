@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageCompose
@@ -241,9 +242,9 @@ class MessageViewFragment :
             }
 
             val drawableId = if (isMessageRead) {
-                R.drawable.ic_mark_new
+                Icons.Filled.MarkNew
             } else {
-                R.drawable.ic_opened_envelope
+                Icons.Filled.OpenedEnvelope
             }
 
             val drawable = ContextCompat.getDrawable(requireContext(), drawableId)

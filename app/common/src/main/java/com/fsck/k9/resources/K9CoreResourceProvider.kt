@@ -1,6 +1,7 @@
 package com.fsck.k9.resources
 
 import android.content.Context
+import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.notification.PushNotificationState
 import com.fsck.k9.ui.R
@@ -36,7 +37,7 @@ class K9CoreResourceProvider(private val context: Context) : CoreResourceProvide
 
     override fun outboxFolderName(): String = context.getString(R.string.special_mailbox_name_outbox)
 
-    override val iconPushNotification: Int = R.drawable.ic_push_notification
+    override val iconPushNotification: Int = Icons.Outlined.PushNotification
 
     override fun pushNotificationText(notificationState: PushNotificationState): String {
         val resId = when (notificationState) {

@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import com.fsck.k9.Account
 import com.fsck.k9.ui.R
@@ -87,7 +88,7 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
             addAction(
                 text = getString(R.string.general_settings_title),
                 navigationAction = R.id.action_settingsListScreen_to_generalSettingsScreen,
-                icon = R.drawable.ic_cog,
+                icon = Icons.Filled.Cog,
             )
 
             addSection(title = getString(R.string.accounts_title)) {
@@ -99,7 +100,7 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
                 addAction(
                     text = getString(R.string.add_account_action),
                     navigationAction = R.id.action_settingsListScreen_to_addAccountScreen,
-                    icon = R.drawable.ic_account_plus,
+                    icon = Icons.Outlined.AccountPlus,
                 )
             }
 
@@ -107,13 +108,13 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
                 addAction(
                     text = getString(R.string.settings_export_title),
                     navigationAction = R.id.action_settingsListScreen_to_settingsExportScreen,
-                    icon = R.drawable.ic_export,
+                    icon = Icons.Outlined.Export,
                 )
 
                 addAction(
                     text = getString(SettingsImportR.string.settings_import_title),
                     navigationAction = R.id.action_settingsListScreen_to_settingsImportScreen,
-                    icon = R.drawable.ic_import,
+                    icon = Icons.Outlined.Import,
                 )
             }
 
@@ -121,19 +122,19 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
                 addAction(
                     text = getString(R.string.about_action),
                     navigationAction = R.id.action_settingsListScreen_to_aboutScreen,
-                    icon = R.drawable.ic_info,
+                    icon = Icons.Outlined.Info,
                 )
 
                 addUrlAction(
                     text = getString(R.string.user_manual_title),
                     url = getString(R.string.user_manual_url),
-                    icon = R.drawable.ic_open_book,
+                    icon = Icons.Filled.OpenBook,
                 )
 
                 addUrlAction(
                     text = getString(R.string.get_help_title),
                     url = getString(R.string.user_forum_url),
-                    icon = R.drawable.ic_help,
+                    icon = Icons.Outlined.Help,
                 )
             }
         }

@@ -25,6 +25,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
+import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import com.fsck.k9.FontSizes
 import com.fsck.k9.UiDensity
 import com.fsck.k9.contacts.ContactPictureLoader
@@ -484,7 +485,7 @@ class MessageListAdapter internal constructor(
         if (displayAddress != null) {
             contactsPictureLoader.setContactPicture(contactPictureView, displayAddress)
         } else {
-            contactPictureView.setImageResource(R.drawable.ic_contact_picture)
+            contactPictureView.setImageResource(Icons.Filled.ContactPicture)
         }
     }
 

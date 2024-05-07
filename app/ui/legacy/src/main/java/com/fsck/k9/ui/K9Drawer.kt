@@ -11,6 +11,7 @@ import android.widget.ImageView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageList
@@ -287,7 +288,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         sliderView.addStickyFooterItem(
             PrimaryDrawerItem().apply {
                 nameRes = R.string.preferences_action
-                iconRes = R.drawable.ic_cog
+                iconRes = Icons.Filled.Cog
                 identifier = DRAWER_ID_PREFERENCES
                 isSelectable = false
             },
@@ -360,7 +361,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
         folderList.unifiedInbox?.let { unifiedInbox ->
             val unifiedInboxItem = PrimaryDrawerItem().apply {
-                iconRes = R.drawable.ic_inbox_multiple
+                iconRes = Icons.Filled.InboxMultiple
                 identifier = DRAWER_ID_UNIFIED_INBOX
                 nameRes = R.string.integrated_inbox_title
                 selectedColorInt = selectedBackgroundColor

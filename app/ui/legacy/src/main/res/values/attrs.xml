@@ -5,7 +5,6 @@
         <attr name="textColorPrimaryRecipientDropdown" format="reference" />
         <attr name="textColorSecondaryRecipientDropdown" format="reference" />
         <attr name="backgroundColorChooseAccountHeader" format="color" />
-        <attr name="messageListSelectedCheckMarkColor" format="reference|color"/>
         <attr name="messageListSelectedBackgroundColor" format="reference|color"/>
         <attr name="messageListSelectedBackgroundAlphaFraction" format="fraction"/>
         <attr name="messageListSelectedBackgroundAlphaBackground" format="reference|color"/>

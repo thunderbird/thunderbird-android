@@ -19,6 +19,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.ui.utils.bottomsheet.ToolbarBottomSheetDialog
 import app.k9mail.ui.utils.bottomsheet.ToolbarBottomSheetDialogFragment
 import com.fsck.k9.activity.MessageCompose
@@ -81,7 +82,7 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
         val toolbar = checkNotNull(toolbar)
         toolbar.apply {
             title = getString(R.string.message_details_toolbar_title)
-            navigationIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_close)
+            navigationIcon = ContextCompat.getDrawable(requireContext(), Icons.Outlined.Close)
 
             setNavigationOnClickListener {
                 dismissAllowingStateLoss()
@@ -109,11 +110,13 @@ class MessageDetailsFragment : ToolbarBottomSheetDialogFragment() {
                     errorView.isVisible = false
                     recyclerView.isVisible = false
                 }
+
                 MessageDetailsState.Error -> {
                     progressBar.isVisible = false
                     errorView.isVisible = true
                     recyclerView.isVisible = false
                 }
+
                 is MessageDetailsState.DataLoaded -> {
                     progressBar.isVisible = false
                     errorView.isVisible = false

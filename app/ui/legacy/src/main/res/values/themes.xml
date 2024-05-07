@@ -74,7 +74,6 @@
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_light</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_light</item>
 
-        <item name="messageListSelectedCheckMarkColor">?attr/colorSecondary</item>
         <item name="messageListSelectedBackgroundColor">?attr/colorSecondaryVariant</item>
         <item name="messageListSelectedBackgroundAlphaFraction">33%</item>
         <item name="messageListSelectedBackgroundAlphaBackground">?attr/colorSurface</item>
@@ -196,7 +195,6 @@
 
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_dark</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_dark</item>
-        <item name="messageListSelectedCheckMarkColor">?attr/colorSecondary</item>
         <item name="messageListSelectedBackgroundColor">?attr/colorSecondaryVariant</item>
         <item name="messageListSelectedBackgroundAlphaFraction">25%</item>
         <item name="messageListSelectedBackgroundAlphaBackground">?attr/colorSurface</item>

@@ -4,6 +4,7 @@ import android.content.res.Resources.Theme
 import android.graphics.drawable.Drawable
 import androidx.annotation.DrawableRes
 import androidx.core.content.res.ResourcesCompat
+import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import com.fsck.k9.SwipeAction
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.resolveColorAttribute
@@ -11,15 +12,15 @@ import com.fsck.k9.ui.resolveColorAttribute
 class SwipeResourceProvider(val theme: Theme) {
     val iconTint = theme.resolveColorAttribute(R.attr.messageListSwipeIconTint)
 
-    private val selectIcon = theme.loadDrawable(R.drawable.ic_check_circle)
-    private val markAsReadIcon = theme.loadDrawable(R.drawable.ic_opened_envelope)
-    private val markAsUnreadIcon = theme.loadDrawable(R.drawable.ic_mark_new)
-    private val addStarIcon = theme.loadDrawable(R.drawable.ic_star)
-    private val removeStarIcon = theme.loadDrawable(R.drawable.ic_star_outline)
-    private val archiveIcon = theme.loadDrawable(R.drawable.ic_archive)
-    private val deleteIcon = theme.loadDrawable(R.drawable.ic_trash_can)
-    private val spamIcon = theme.loadDrawable(R.drawable.ic_alert_octagon)
-    private val moveIcon = theme.loadDrawable(R.drawable.ic_move_to_folder)
+    private val selectIcon = theme.loadDrawable(Icons.Filled.CheckCircle)
+    private val markAsReadIcon = theme.loadDrawable(Icons.Filled.OpenedEnvelope)
+    private val markAsUnreadIcon = theme.loadDrawable(Icons.Filled.MarkNew)
+    private val addStarIcon = theme.loadDrawable(Icons.Filled.Star)
+    private val removeStarIcon = theme.loadDrawable(Icons.Outlined.Star)
+    private val archiveIcon = theme.loadDrawable(Icons.Filled.Archive)
+    private val deleteIcon = theme.loadDrawable(Icons.Filled.Trash)
+    private val spamIcon = theme.loadDrawable(Icons.Filled.Spam)
+    private val moveIcon = theme.loadDrawable(Icons.Filled.Move)
 
     private val noActionColor = theme.resolveColorAttribute(R.attr.messageListSwipeDisabledBackgroundColor)
     private val selectColor = theme.resolveColorAttribute(R.attr.messageListSwipeSelectBackgroundColor)
