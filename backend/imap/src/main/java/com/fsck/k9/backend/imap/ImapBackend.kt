@@ -30,6 +30,7 @@ class ImapBackend(
     private val commandMarkAllAsRead = CommandMarkAllAsRead(imapStore)
     private val commandExpunge = CommandExpunge(imapStore)
     private val commandMoveOrCopyMessages = CommandMoveOrCopyMessages(imapStore)
+    private val commandDelete = CommandDelete(imapStore)
     private val commandDeleteAll = CommandDeleteAll(imapStore)
     private val commandSearch = CommandSearch(imapStore)
     private val commandDownloadMessage = CommandDownloadMessage(backendStorage, imapStore)
@@ -79,12 +80,8 @@ class ImapBackend(
         commandExpunge.expunge(folderServerId)
     }
 
-    override fun expungeMessages(folderServerId: String, messageServerIds: List<String>) {
-        commandExpunge.expungeMessages(folderServerId, messageServerIds)
-    }
-
     override fun deleteMessages(folderServerId: String, messageServerIds: List<String>) {
-        commandSetFlag.setFlag(folderServerId, messageServerIds, Flag.DELETED, true)
+        commandDelete.deleteMessages(folderServerId, messageServerIds)
     }
 
     override fun deleteAllMessages(folderServerId: String) {

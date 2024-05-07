@@ -4,15 +4,17 @@ import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.store.imap.ImapStore
 import com.fsck.k9.mail.store.imap.OpenMode
 
-internal class CommandDeleteAll(private val imapStore: ImapStore) {
+internal class CommandDelete(private val imapStore: ImapStore) {
 
     @Throws(MessagingException::class)
-    fun deleteAll(folderServerId: String) {
+    fun deleteMessages(folderServerId: String, messageServerIds: List<String>) {
         val remoteFolder = imapStore.getFolder(folderServerId)
         try {
             remoteFolder.open(OpenMode.READ_WRITE)
 
-            remoteFolder.deleteAllMessages()
+            val messages = messageServerIds.map { uid -> remoteFolder.getMessage(uid) }
+
+            remoteFolder.deleteMessages(messages)
         } finally {
             remoteFolder.close()
         }

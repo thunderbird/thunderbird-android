@@ -1,7 +1,6 @@
 package com.fsck.k9.controller
 
 import com.fsck.k9.Account
-import com.fsck.k9.Account.Expunge
 import com.fsck.k9.K9
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.controller.MessagingControllerCommands.PendingAppend
@@ -115,7 +114,7 @@ internal class DraftOperations(
             uploadMessage(backend, account, localFolder, localMessage)
         }
 
-        deleteMessage(backend, account, localFolder, command.deleteMessageId)
+        deleteMessage(backend, localFolder, command.deleteMessageId)
     }
 
     private fun uploadMessage(
@@ -152,7 +151,7 @@ internal class DraftOperations(
         }
     }
 
-    private fun deleteMessage(backend: Backend, account: Account, localFolder: LocalFolder, messageId: Long) {
+    private fun deleteMessage(backend: Backend, localFolder: LocalFolder, messageId: Long) {
         val messageServerId = localFolder.getMessageUidById(messageId) ?: run {
             Timber.i("Couldn't find local copy of message [ID: %d] to be deleted. Skipping delete.", messageId)
             return
@@ -161,10 +160,6 @@ internal class DraftOperations(
         val messageServerIds = listOf(messageServerId)
         val folderServerId = localFolder.serverId
         backend.deleteMessages(folderServerId, messageServerIds)
-
-        if (backend.supportsExpunge && account.expungePolicy == Expunge.EXPUNGE_IMMEDIATELY) {
-            backend.expungeMessages(folderServerId, messageServerIds)
-        }
 
         messagingController.destroyPlaceholderMessages(localFolder, messageServerIds)
     }

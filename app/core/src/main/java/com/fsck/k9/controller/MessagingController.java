@@ -29,7 +29,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.DeletePolicy;
-import com.fsck.k9.Account.Expunge;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -991,10 +990,6 @@ public class MessagingController {
         Backend backend = getBackend(account);
         String folderServerId = getFolderServerId(account, folderId);
         backend.deleteMessages(folderServerId, uids);
-
-        if (backend.getSupportsExpunge() && account.getExpungePolicy() == Expunge.EXPUNGE_IMMEDIATELY) {
-            backend.expungeMessages(folderServerId, uids);
-        }
 
         LocalStore localStore = localStoreProvider.getInstance(account);
         LocalFolder localFolder = localStore.getFolder(folderId);
@@ -2093,10 +2088,6 @@ public class MessagingController {
 
         Backend backend = getBackend(account);
         backend.deleteAllMessages(trashFolderServerId);
-
-        if (account.getExpungePolicy() == Expunge.EXPUNGE_IMMEDIATELY && backend.getSupportsExpunge()) {
-            backend.expunge(trashFolderServerId);
-        }
 
         // Remove all messages marked as deleted
         folder.destroyDeletedMessages();

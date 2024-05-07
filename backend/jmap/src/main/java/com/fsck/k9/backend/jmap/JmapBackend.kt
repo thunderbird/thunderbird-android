@@ -72,10 +72,6 @@ class JmapBackend(
         throw UnsupportedOperationException("not implemented")
     }
 
-    override fun expungeMessages(folderServerId: String, messageServerIds: List<String>) {
-        throw UnsupportedOperationException("not implemented")
-    }
-
     override fun deleteMessages(folderServerId: String, messageServerIds: List<String>) {
         commandDelete.deleteMessages(messageServerIds)
     }

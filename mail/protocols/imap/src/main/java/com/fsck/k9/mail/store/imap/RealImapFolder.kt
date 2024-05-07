@@ -1088,6 +1088,29 @@ internal class RealImapFolder(
     }
 
     @Throws(MessagingException::class)
+    override fun deleteMessages(messages: List<ImapMessage>) {
+        checkOpenWithWriteAccess()
+
+        setFlags(messages, setOf(Flag.DELETED), true)
+
+        if (internalImapStore.config.isExpungeImmediately()) {
+            val uids = messages.map { it.uid }
+            expungeUids(uids)
+        }
+    }
+
+    @Throws(MessagingException::class)
+    override fun deleteAllMessages() {
+        checkOpenWithWriteAccess()
+
+        setFlagsForAllMessages(setOf(Flag.DELETED), true)
+
+        if (internalImapStore.config.isExpungeImmediately()) {
+            expunge()
+        }
+    }
+
+    @Throws(MessagingException::class)
     override fun expunge() {
         checkOpenWithWriteAccess()
 
