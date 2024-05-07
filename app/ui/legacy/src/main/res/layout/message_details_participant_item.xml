@@ -63,7 +63,7 @@
         android:paddingHorizontal="12dp"
         app:layout_constraintEnd_toStartOf="@id/menu_overflow"
         app:layout_constraintTop_toTopOf="@+id/menu_overflow"
-        app:srcCompat="?attr/messageDetailsAddContactIcon" />
+        app:srcCompat="@drawable/ic_person_add" />
 
     <ImageView
         android:id="@+id/menu_overflow"

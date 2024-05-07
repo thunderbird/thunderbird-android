@@ -2,62 +2,6 @@
 <resources>
 
     <declare-styleable name="K9Styles">
-        <attr name="iconUnifiedInbox" format="reference" />
-        <attr name="iconFolder" format="reference" />
-        <attr name="iconFolderInbox" format="reference" />
-        <attr name="iconFolderOutbox" format="reference" />
-        <attr name="iconFolderArchive" format="reference" />
-        <attr name="iconFolderDrafts" format="reference" />
-        <attr name="iconFolderSent" format="reference" />
-        <attr name="iconFolderSpam" format="reference" />
-        <attr name="iconFolderTrash" format="reference" />
-        <attr name="iconActionAddAttachment" format="reference" />
-        <attr name="iconActionArchive" format="reference" />
-        <attr name="iconActionCompose" format="reference" />
-        <attr name="iconActionDelete" format="reference" />
-        <attr name="iconActionMove" format="reference" />
-        <attr name="iconActionCopy" format="reference" />
-        <attr name="iconActionNextStatus" format="reference" />
-        <attr name="iconActionRefresh" format="reference" />
-        <attr name="iconActionSearch" format="reference" />
-        <attr name="iconActionSearchFolder" format="reference" />
-        <attr name="iconActionSend" format="reference" />
-        <attr name="iconActionSettings" format="reference" />
-        <attr name="iconActionSort" format="reference" />
-        <attr name="iconActionSpam" format="reference" />
-        <attr name="iconActionFlag" format="reference" />
-        <attr name="iconActionUnflag" format="reference" />
-        <attr name="iconActionMarkAsRead" format="reference" />
-        <attr name="iconActionMarkAsUnread" format="reference" />
-        <attr name="iconActionRemoteSearch" format="reference" />
-        <attr name="iconActionAdd" format="reference" />
-        <attr name="iconActionImportExport" format="reference" />
-        <attr name="iconActionUpload" format="reference" />
-        <attr name="iconActionSelectAll" format="reference" />
-        <attr name="iconActionSave" format="reference" />
-        <attr name="iconActionSaveAttachment" format="reference" />
-        <attr name="iconActionCancel" format="reference" />
-        <attr name="iconActionRequestReadReceipt" format="reference" />
-        <attr name="iconActionExpand" format="reference" />
-        <attr name="iconActionCollapse" format="reference" />
-        <attr name="iconPreferencesDisplay" format="reference" />
-        <attr name="iconPreferencesInteraction" format="reference" />
-        <attr name="iconPreferencesNotifications" format="reference" />
-        <attr name="iconPreferencesNetwork" format="reference" />
-        <attr name="iconPreferencesPrivacy" format="reference" />
-        <attr name="iconPreferencesDebug" format="reference" />
-        <attr name="iconPreferencesFolders" format="reference" />
-        <attr name="iconPreferencesCrypto" format="reference" />
-        <attr name="iconPreferencesFetchMail" format="reference" />
-        <attr name="iconPreferencesSearch" format="reference" />
-        <attr name="iconPreferencesReadMail" format="reference" />
-        <attr name="iconPreferencesCompose" format="reference" />
-        <attr name="iconSettingsAbout" format="reference" />
-        <attr name="iconSettingsGeneral" format="reference" />
-        <attr name="iconSettingsAccount" format="reference" />
-        <attr name="iconSettingsAccountAdd" format="reference" />
-        <attr name="iconSettingsExport" format="reference" />
-        <attr name="iconSettingsImport" format="reference" />
         <attr name="textColorPrimaryRecipientDropdown" format="reference" />
         <attr name="textColorSecondaryRecipientDropdown" format="reference" />
         <attr name="backgroundColorChooseAccountHeader" format="color" />
@@ -77,30 +21,16 @@
         <attr name="messageListPreviewTextColor" format="reference|color"/>
         <attr name="messageListDividerColor" format="reference|color"/>
         <attr name="messageListStateIconTint" format="reference|color"/>
-        <attr name="messageListAttachment" format="reference"/>
-        <attr name="messageListAnswered" format="reference"/>
-        <attr name="messageListForwarded" format="reference"/>
-        <attr name="messageListAnsweredForwarded" format="reference"/>
         <attr name="messageListSwipeIconTint" format="reference|color"/>
         <attr name="messageListSwipeDisabledBackgroundColor" format="reference|color"/>
-        <attr name="messageListSwipeSelectIcon" format="reference"/>
         <attr name="messageListSwipeSelectBackgroundColor" format="reference|color"/>
-        <attr name="messageListSwipeMarkAsReadIcon" format="reference"/>
-        <attr name="messageListSwipeMarkAsUnreadIcon" format="reference"/>
         <attr name="messageListSwipeToggleReadBackgroundColor" format="reference|color"/>
-        <attr name="messageListSwipeAddStarIcon" format="reference"/>
-        <attr name="messageListSwipeRemoveStarIcon" format="reference"/>
         <attr name="messageListSwipeToggleStarBackgroundColor" format="reference|color"/>
-        <attr name="messageListSwipeArchiveIcon" format="reference"/>
         <attr name="messageListSwipeArchiveBackgroundColor" format="reference|color"/>
-        <attr name="messageListSwipeDeleteIcon" format="reference"/>
         <attr name="messageListSwipeDeleteBackgroundColor" format="reference|color"/>
-        <attr name="messageListSwipeSpamIcon" format="reference"/>
         <attr name="messageListSwipeSpamBackgroundColor" format="reference|color"/>
-        <attr name="messageListSwipeMoveIcon" format="reference"/>
         <attr name="messageListSwipeMoveBackgroundColor" format="reference|color"/>
         <attr name="messageStarColor" format="color"/>
-        <attr name="messageDetailsAddContactIcon" format="reference"/>
         <attr name="messageDetailsDividerColor" format="reference|color"/>
         <attr name="composerBackgroundColor" format="color"/>
         <attr name="contactPictureFallbackDefaultBackgroundColor" format="reference|color"/>
@@ -110,17 +40,6 @@
         <attr name="tintColorBulletPointNeutral" format="reference|color"/>
         <attr name="tintColorBulletPointNegative" format="reference|color"/>
 
-        <attr name="iconAboutVersion" format="reference"/>
-        <attr name="iconAboutAuthors" format="reference"/>
-        <attr name="iconAboutSourceCode" format="reference"/>
-        <attr name="iconAboutLicense" format="reference"/>
-        <attr name="iconAboutWebsite" format="reference"/>
-        <attr name="iconAboutFediverse" format="reference"/>
-        <attr name="iconUserForum" format="reference"/>
-        <attr name="iconUserManual" format="reference"/>
-        <attr name="iconHelp" format="reference"/>
-
-        <attr name="unencryptedAttachmentUnlock" format="reference|color" />
         <attr name="openpgp_black" format="reference|color" />
         <attr name="openpgp_orange" format="reference|color" />
         <attr name="openpgp_red" format="reference|color" />
@@ -128,11 +47,6 @@
         <attr name="openpgp_blue" format="reference|color" />
         <attr name="openpgp_grey" format="reference|color" />
         <attr name="openpgp_dark_grey" format="reference|color" />
-    </declare-styleable>
-
-    <declare-styleable name="FoldableLinearLayout">
-        <attr name="foldedLabel" format="string" />
-        <attr name="unFoldedLabel" format="string" />
     </declare-styleable>
 
     <declare-styleable name="LinearViewAnimator">

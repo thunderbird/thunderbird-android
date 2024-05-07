@@ -1,9 +1,9 @@
 package com.fsck.k9.ui.settings
 
-import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.DrawableRes
 import com.fsck.k9.ui.R
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
@@ -12,7 +12,7 @@ internal class UrlActionItem(
     override var identifier: Long,
     val text: String,
     val url: String,
-    val icon: Int,
+    @DrawableRes val icon: Int,
 ) : AbstractItem<UrlActionItem.ViewHolder>() {
     override val type = R.id.settings_list_url_item
 
@@ -26,10 +26,7 @@ internal class UrlActionItem(
 
         override fun bindView(item: UrlActionItem, payloads: List<Any>) {
             text.text = item.text
-
-            val outValue = TypedValue()
-            icon.context.theme.resolveAttribute(item.icon, outValue, true)
-            icon.setImageResource(outValue.resourceId)
+            icon.setImageResource(item.icon)
         }
 
         override fun unbindView(item: UrlActionItem) {

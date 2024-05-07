@@ -74,7 +74,7 @@
                 android:layout_marginBottom="8dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/locked_attach_unlock"
-                app:srcCompat="?attr/unencryptedAttachmentUnlock"
+                app:srcCompat="@drawable/ic_visibility"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/locked_name"

@@ -7,7 +7,6 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.TypedValue
 import android.widget.ImageView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -71,6 +70,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private val resources: Resources by inject()
     private val messagingController: MessagingController by inject()
     private val accountImageLoader: AccountImageLoader by inject()
+    private val folderIconProvider: FolderIconProvider by inject()
 
     private val drawer: DrawerLayout = parent.findViewById(R.id.drawerLayout)
     private val sliderView: MaterialDrawerSliderView = parent.findViewById(R.id.material_drawer_slider)
@@ -79,7 +79,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         dividerBelowHeader = false
         displayBadgesOnCurrentProfileImage = false
     }
-    private val folderIconProvider: FolderIconProvider = FolderIconProvider(parent.theme)
     private val swipeRefreshLayout: SwipeRefreshLayout
 
     private val userFolderDrawerIds = ArrayList<Long>()
@@ -288,20 +287,11 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         sliderView.addStickyFooterItem(
             PrimaryDrawerItem().apply {
                 nameRes = R.string.preferences_action
-                iconRes = getResId(R.attr.iconActionSettings)
+                iconRes = R.drawable.ic_cog
                 identifier = DRAWER_ID_PREFERENCES
                 isSelectable = false
             },
         )
-    }
-
-    private fun getResId(resAttribute: Int): Int {
-        val typedValue = TypedValue()
-        val found = parent.theme.resolveAttribute(resAttribute, typedValue, true)
-        if (!found) {
-            throw AssertionError("Couldn't find resource with attribute $resAttribute")
-        }
-        return typedValue.resourceId
     }
 
     private fun getFolderDisplayName(folder: Folder): String {

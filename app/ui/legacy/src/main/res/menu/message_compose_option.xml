@@ -4,13 +4,13 @@
     <item
         android:id="@+id/add_attachment"
         android:title="@string/add_attachment_action"
-        android:icon="?attr/iconActionAddAttachment"
+        android:icon="@drawable/ic_attachment"
         app:showAsAction="always"
     />
     <item
         android:id="@+id/send"
         android:title="@string/send_action"
-        android:icon="?attr/iconActionSend"
+        android:icon="@drawable/ic_send"
         app:showAsAction="always"
     />
     <item
@@ -20,17 +20,17 @@
     <item
         android:id="@+id/save"
         android:title="@string/save_draft_action"
-        android:icon="?attr/iconActionSave"
+        android:icon="@drawable/ic_floppy"
         />
     <item
         android:id="@+id/discard"
         android:title="@string/discard_action"
-        android:icon="?attr/iconActionCancel"
+        android:icon="@drawable/ic_clear"
     />
     <item
         android:id="@+id/read_receipt"
         android:title="@string/read_receipt"
-        android:icon="?attr/iconActionRequestReadReceipt"
+        android:icon="@drawable/ic_action_request_read_receipt_light"
     />
     <item
         android:id="@+id/openpgp_encrypt_enable"

@@ -3,6 +3,6 @@
     <item
         android:id="@+id/new_identity"
         android:title="@string/new_identity_action"
-        android:icon="?attr/iconActionAdd"
+        android:icon="@drawable/ic_plus"
     />
 </menu>

@@ -2,24 +2,24 @@ package com.fsck.k9.ui.messagelist
 
 import android.content.res.Resources.Theme
 import android.graphics.drawable.Drawable
-import androidx.annotation.AttrRes
+import androidx.annotation.DrawableRes
+import androidx.core.content.res.ResourcesCompat
 import com.fsck.k9.SwipeAction
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.resolveColorAttribute
-import com.fsck.k9.ui.resolveDrawableAttribute
 
 class SwipeResourceProvider(val theme: Theme) {
     val iconTint = theme.resolveColorAttribute(R.attr.messageListSwipeIconTint)
 
-    private val selectIcon = theme.loadDrawable(R.attr.messageListSwipeSelectIcon)
-    private val markAsReadIcon = theme.loadDrawable(R.attr.messageListSwipeMarkAsReadIcon)
-    private val markAsUnreadIcon = theme.loadDrawable(R.attr.messageListSwipeMarkAsUnreadIcon)
-    private val addStarIcon = theme.loadDrawable(R.attr.messageListSwipeAddStarIcon)
-    private val removeStarIcon = theme.loadDrawable(R.attr.messageListSwipeRemoveStarIcon)
-    private val archiveIcon = theme.loadDrawable(R.attr.messageListSwipeArchiveIcon)
-    private val deleteIcon = theme.loadDrawable(R.attr.messageListSwipeDeleteIcon)
-    private val spamIcon = theme.loadDrawable(R.attr.messageListSwipeSpamIcon)
-    private val moveIcon = theme.loadDrawable(R.attr.messageListSwipeMoveIcon)
+    private val selectIcon = theme.loadDrawable(R.drawable.ic_check_circle)
+    private val markAsReadIcon = theme.loadDrawable(R.drawable.ic_opened_envelope)
+    private val markAsUnreadIcon = theme.loadDrawable(R.drawable.ic_mark_new)
+    private val addStarIcon = theme.loadDrawable(R.drawable.ic_star)
+    private val removeStarIcon = theme.loadDrawable(R.drawable.ic_star_outline)
+    private val archiveIcon = theme.loadDrawable(R.drawable.ic_archive)
+    private val deleteIcon = theme.loadDrawable(R.drawable.ic_trash_can)
+    private val spamIcon = theme.loadDrawable(R.drawable.ic_alert_octagon)
+    private val moveIcon = theme.loadDrawable(R.drawable.ic_move_to_folder)
 
     private val noActionColor = theme.resolveColorAttribute(R.attr.messageListSwipeDisabledBackgroundColor)
     private val selectColor = theme.resolveColorAttribute(R.attr.messageListSwipeSelectBackgroundColor)
@@ -81,6 +81,6 @@ class SwipeResourceProvider(val theme: Theme) {
     }
 }
 
-private fun Theme.loadDrawable(@AttrRes attributeId: Int): Drawable {
-    return resolveDrawableAttribute(attributeId).mutate()
+private fun Theme.loadDrawable(@DrawableRes drawableResId: Int): Drawable {
+    return ResourcesCompat.getDrawable(resources, drawableResId, this)!!
 }

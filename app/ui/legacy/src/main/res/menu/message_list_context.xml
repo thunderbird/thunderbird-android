@@ -5,31 +5,31 @@
         android:id="@+id/delete"
         android:title="@string/delete_action"
         app:showAsAction="always"
-        android:icon="?attr/iconActionDelete"
+        android:icon="@drawable/ic_trash_can"
     />
     <item
         android:id="@+id/mark_as_read"
         android:title="@string/mark_as_read_action"
         app:showAsAction="always"
-        android:icon="?attr/iconActionMarkAsRead"
+        android:icon="@drawable/ic_opened_envelope"
     />
     <item
         android:id="@+id/mark_as_unread"
         android:title="@string/mark_as_unread_action"
         app:showAsAction="always"
-        android:icon="?attr/iconActionMarkAsUnread"
+        android:icon="@drawable/ic_mark_new"
     />
     <item
         android:id="@+id/archive"
         android:title="@string/archive_action"
         app:showAsAction="always"
-        android:icon="?attr/iconActionArchive"
+        android:icon="@drawable/ic_archive"
     />
     <item
         android:id="@+id/move"
         android:title="@string/move_action"
         app:showAsAction="ifRoom"
-        android:icon="?attr/iconActionMove"
+        android:icon="@drawable/ic_move_to_folder"
     />
     <item
         android:id="@+id/move_to_drafts"
@@ -40,29 +40,29 @@
     <item
         android:id="@+id/copy"
         android:title="@string/copy_action"
-        android:icon="?attr/iconActionCopy"
+        android:icon="@drawable/ic_content_copy"
     />
     <item
         android:id="@+id/flag"
         android:title="@string/flag_action"
         app:showAsAction="ifRoom"
-        android:icon="?attr/iconActionFlag"
+        android:icon="@drawable/ic_star"
     />
     <item
         android:id="@+id/unflag"
         android:title="@string/unflag_action"
         app:showAsAction="ifRoom"
-        android:icon="?attr/iconActionUnflag"
+        android:icon="@drawable/ic_star_outline"
     />
     <item
         android:id="@+id/spam"
         android:title="@string/spam_action"
         app:showAsAction="ifRoom"
-        android:icon="?attr/iconActionSpam"
+        android:icon="@drawable/ic_alert_octagon"
     />
     <item
         android:id="@+id/select_all"
-        android:icon="?attr/iconActionSelectAll"
+        android:icon="@drawable/ic_select_all"
         app:showAsAction="never"
         android:title="@string/batch_select_all"
     />

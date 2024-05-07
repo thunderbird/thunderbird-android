@@ -11,7 +11,7 @@
     <!-- MessageList -->
     <item
         android:id="@+id/search"
-        android:icon="?attr/iconActionSearch"
+        android:icon="@drawable/ic_magnify"
         android:title="@string/search_action"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="always" />
@@ -19,7 +19,7 @@
     <!-- MessageList -->
     <item
         android:id="@+id/search_remote"
-        android:icon="?attr/iconActionRemoteSearch"
+        android:icon="@drawable/ic_magnify_cloud"
         android:title="@string/action_remote_search"
         android:visible="false"
         app:showAsAction="always" />
@@ -27,7 +27,7 @@
     <!-- MessageView -->
     <item
         android:id="@+id/archive"
-        android:icon="?attr/iconActionArchive"
+        android:icon="@drawable/ic_archive"
         android:title="@string/archive_action"
         android:visible="false"
         app:showAsAction="always" />
@@ -35,7 +35,7 @@
     <!-- MessageView -->
     <item
         android:id="@+id/delete"
-        android:icon="?attr/iconActionDelete"
+        android:icon="@drawable/ic_trash_can"
         android:title="@string/delete_action"
         android:visible="false"
         app:showAsAction="always" />
@@ -43,7 +43,7 @@
     <!-- MessageView -->
     <item
         android:id="@+id/toggle_unread"
-        android:icon="?attr/iconActionMarkAsUnread"
+        android:icon="@drawable/ic_mark_new"
         android:title="@string/mark_as_unread_action"
         android:visible="false"
         app:showAsAction="always" />
@@ -51,7 +51,7 @@
     <!-- MessageView -->
     <item
         android:id="@+id/spam"
-        android:icon="?attr/iconActionSpam"
+        android:icon="@drawable/ic_alert_octagon"
         android:title="@string/spam_action"
         android:visible="false"
         app:showAsAction="ifRoom" />
@@ -59,7 +59,7 @@
     <!-- MessageView -->
     <item
         android:id="@+id/move"
-        android:icon="?attr/iconActionMove"
+        android:icon="@drawable/ic_move_to_folder"
         android:title="@string/move_action"
         android:visible="false"
         app:showAsAction="ifRoom" />
@@ -67,7 +67,7 @@
     <!-- MessageView -->
     <item
         android:id="@+id/copy"
-        android:icon="?attr/iconActionCopy"
+        android:icon="@drawable/ic_content_copy"
         android:title="@string/copy_action"
         android:visible="false"
         app:showAsAction="ifRoom" />
@@ -121,14 +121,14 @@
     <!-- always -->
     <item
         android:id="@+id/compose"
-        android:icon="?attr/iconActionCompose"
+        android:icon="@drawable/ic_pencil"
         android:title="@string/compose_action"
         app:showAsAction="ifRoom" />
 
     <!-- MessageList -->
     <item
         android:id="@+id/set_sort"
-        android:icon="?attr/iconActionSort"
+        android:icon="@drawable/ic_sort"
         android:title="@string/sort_by"
         app:showAsAction="ifRoom">
         <menu>
@@ -159,7 +159,7 @@
     <!-- MessageList -->
     <item
         android:id="@+id/select_all"
-        android:icon="?attr/iconActionSelectAll"
+        android:icon="@drawable/ic_select_all"
         android:title="@string/batch_select_all"
         app:showAsAction="never" />
 
@@ -172,7 +172,7 @@
     <!-- MessageList -->
     <item
         android:id="@+id/send_messages"
-        android:icon="?attr/iconActionUpload"
+        android:icon="@drawable/ic_file_upload"
         android:title="@string/send_messages_action"
         app:showAsAction="never" />
 

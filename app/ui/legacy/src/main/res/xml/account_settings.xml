@@ -7,7 +7,7 @@
     android:title="@string/account_settings_title_fmt">
 
     <PreferenceScreen
-        android:icon="?attr/iconSettingsGeneral"
+        android:icon="@drawable/ic_cog"
         android:key="account_settings"
         android:title="@string/account_settings_general_title">
 
@@ -25,7 +25,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:icon="?attr/iconPreferencesReadMail"
+        android:icon="@drawable/ic_opened_envelope"
         android:key="reading_mail"
         android:title="@string/account_settings_reading_mail">
 
@@ -45,7 +45,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:icon="?attr/iconPreferencesFetchMail"
+        android:icon="@drawable/ic_preferences_check_mail"
         android:key="incoming_prefs"
         android:title="@string/account_settings_sync">
 
@@ -152,7 +152,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:icon="?attr/iconPreferencesCompose"
+        android:icon="@drawable/ic_pencil"
         android:key="composing"
         android:title="@string/account_settings_composition">
 
@@ -228,7 +228,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:icon="?attr/iconPreferencesFolders"
+        android:icon="@drawable/ic_folder"
         android:key="folders"
         android:title="@string/account_settings_folders">
 
@@ -293,7 +293,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:icon="?attr/iconPreferencesNotifications"
+        android:icon="@drawable/ic_notifications"
         android:key="notifications"
         android:title="@string/notifications_title">
 
@@ -378,7 +378,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:icon="?attr/iconPreferencesSearch"
+        android:icon="@drawable/ic_magnify"
         android:key="search"
         android:title="@string/account_settings_search">
 
@@ -393,7 +393,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:icon="?attr/iconPreferencesCrypto"
+        android:icon="@drawable/ic_preferences_crypto"
         android:key="openpgp"
         android:title="@string/account_settings_crypto">
 
