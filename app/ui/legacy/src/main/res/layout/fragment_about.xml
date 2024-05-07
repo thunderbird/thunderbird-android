@@ -47,7 +47,7 @@
                 android:layout_height="24dp"
                 android:layout_gravity="center"
                 android:contentDescription="@null"
-                app:srcCompat="?attr/iconAboutVersion" />
+                app:srcCompat="@drawable/ic_info" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -88,7 +88,7 @@
                 android:layout_height="24dp"
                 android:layout_gravity="center"
                 android:contentDescription="@null"
-                app:srcCompat="?attr/iconAboutAuthors" />
+                app:srcCompat="@drawable/ic_people" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -128,7 +128,7 @@
                 android:layout_height="24dp"
                 android:layout_gravity="center"
                 android:contentDescription="@null"
-                app:srcCompat="?attr/iconAboutSourceCode" />
+                app:srcCompat="@drawable/ic_code" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -168,7 +168,7 @@
                 android:layout_height="24dp"
                 android:layout_gravity="center"
                 android:contentDescription="@null"
-                app:srcCompat="?attr/iconAboutLicense" />
+                app:srcCompat="@drawable/ic_description" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -218,7 +218,7 @@
                 android:layout_height="24dp"
                 android:layout_gravity="center"
                 android:contentDescription="@null"
-                app:srcCompat="?attr/iconAboutWebsite" />
+                app:srcCompat="@drawable/ic_link" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -258,7 +258,7 @@
                 android:layout_height="24dp"
                 android:layout_gravity="center"
                 android:contentDescription="@null"
-                app:srcCompat="?attr/iconUserForum" />
+                app:srcCompat="@drawable/ic_forum" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -298,7 +298,7 @@
                 android:layout_height="24dp"
                 android:layout_gravity="center"
                 android:contentDescription="@null"
-                app:srcCompat="?attr/iconAboutFediverse" />
+                app:srcCompat="@drawable/ic_mastodon" />
 
             <LinearLayout
                 android:layout_width="match_parent"

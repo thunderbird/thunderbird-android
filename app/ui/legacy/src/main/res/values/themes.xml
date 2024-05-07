@@ -123,14 +123,6 @@
         <item name="tintColorBulletPointNegative">#dd2222</item>
         <item name="tintColorBulletPointNeutral">#888</item>
 
-        <item name="iconAboutVersion">@drawable/ic_info</item>
-        <item name="iconAboutAuthors">@drawable/ic_people</item>
-        <item name="iconAboutSourceCode">@drawable/ic_code</item>
-        <item name="iconAboutLicense">@drawable/ic_description</item>
-        <item name="iconAboutWebsite">@drawable/ic_link</item>
-        <item name="iconUserForum">@drawable/ic_forum</item>
-        <item name="iconAboutFediverse">@drawable/ic_mastodon</item>
-
         <item name="unencryptedAttachmentUnlock">@drawable/ic_visibility</item>
         <item name="openpgp_black">#000</item>
         <item name="openpgp_orange">#FF8800</item>
@@ -266,14 +258,6 @@
         <item name="tintColorBulletPointPositive">#77aa22</item>
         <item name="tintColorBulletPointNegative">#dd2222</item>
         <item name="tintColorBulletPointNeutral">#bbb</item>
-
-        <item name="iconAboutVersion">@drawable/ic_info</item>
-        <item name="iconAboutAuthors">@drawable/ic_people</item>
-        <item name="iconAboutSourceCode">@drawable/ic_code</item>
-        <item name="iconAboutLicense">@drawable/ic_description</item>
-        <item name="iconAboutWebsite">@drawable/ic_link</item>
-        <item name="iconUserForum">@drawable/ic_forum</item>
-        <item name="iconAboutFediverse">@drawable/ic_mastodon</item>
 
         <item name="unencryptedAttachmentUnlock">@drawable/ic_visibility</item>
         <item name="openpgp_black">#fff</item>

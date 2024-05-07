@@ -54,14 +54,6 @@
         <attr name="tintColorBulletPointNeutral" format="reference|color"/>
         <attr name="tintColorBulletPointNegative" format="reference|color"/>
 
-        <attr name="iconAboutVersion" format="reference"/>
-        <attr name="iconAboutAuthors" format="reference"/>
-        <attr name="iconAboutSourceCode" format="reference"/>
-        <attr name="iconAboutLicense" format="reference"/>
-        <attr name="iconAboutWebsite" format="reference"/>
-        <attr name="iconAboutFediverse" format="reference"/>
-        <attr name="iconUserForum" format="reference"/>
-
         <attr name="unencryptedAttachmentUnlock" format="reference|color" />
         <attr name="openpgp_black" format="reference|color" />
         <attr name="openpgp_orange" format="reference|color" />
