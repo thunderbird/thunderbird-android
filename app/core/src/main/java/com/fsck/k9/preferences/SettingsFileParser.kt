@@ -64,7 +64,7 @@ private class XmlSettingsParser(
 
     private fun readRoot(): Contents {
         var generalSettings: SettingsMap? = null
-        var accounts: Map<String, Account>? = null
+        var accounts: List<Account>? = null
 
         val fileFormatVersion = readFileFormatVersion()
         if (fileFormatVersion != SettingsExporter.FILE_FORMAT_VERSION) {
@@ -144,8 +144,8 @@ private class XmlSettingsParser(
         return settings.takeIf { it.isNotEmpty() }
     }
 
-    private fun readAccounts(): Map<String, Account> {
-        val accounts = mutableMapOf<String, Account>()
+    private fun readAccounts(): List<Account> {
+        val accounts = mutableListOf<Account>()
 
         readElement { eventType ->
             if (eventType == XmlPullParser.START_TAG) {
@@ -155,10 +155,10 @@ private class XmlSettingsParser(
 
                         if (account == null) {
                             // Do nothing - readAccount() already logged a message
-                        } else if (!accounts.containsKey(account.uuid)) {
-                            accounts[account.uuid] = account
-                        } else {
+                        } else if (accounts.any { it.uuid == account.uuid }) {
                             Timber.w("Duplicate account entries with UUID %s. Ignoring!", account.uuid)
+                        } else {
+                            accounts.add(account)
                         }
                     }
                     else -> {

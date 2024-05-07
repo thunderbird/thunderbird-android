@@ -6,9 +6,9 @@ import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.extracting
 import assertk.assertions.hasSize
+import assertk.assertions.index
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
-import assertk.assertions.key
 import assertk.assertions.prop
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.preferences.SettingsFile.Account
@@ -38,7 +38,7 @@ class SettingsFileParserTest : RobolectricTest() {
 
         assertThat(results.accounts).isNotNull().all {
             hasSize(1)
-            key(accountUuid).all {
+            index(0).all {
                 prop(Account::uuid).isEqualTo(accountUuid)
                 prop(Account::name).isEqualTo("Account")
             }
@@ -68,7 +68,7 @@ class SettingsFileParserTest : RobolectricTest() {
 
         assertThat(results.accounts).isNotNull().all {
             hasSize(1)
-            key(accountUuid).all {
+            index(0).all {
                 prop(Account::uuid).isEqualTo(accountUuid)
                 prop(Account::identities).isNotNull()
                     .extracting(Identity::email).containsExactly("user@gmail.com")
@@ -97,7 +97,7 @@ class SettingsFileParserTest : RobolectricTest() {
 
         assertThat(results.accounts)
             .isNotNull()
-            .key(accountUuid)
+            .index(0)
             .prop(Account::incoming)
             .isNotNull()
             .prop(Server::authenticationType)

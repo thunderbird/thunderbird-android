@@ -56,7 +56,7 @@ class SettingsImporter internal constructor(
             // If the stream contains global settings the "globalSettings" member will not be null
             val globalSettings = (imported.globalSettings != null)
 
-            val accounts = imported.accounts?.values.orEmpty().map { importedAccount ->
+            val accounts = imported.accounts.map { importedAccount ->
                 AccountDescription(
                     name = getAccountDisplayName(importedAccount),
                     uuid = importedAccount.uuid,
@@ -103,7 +103,7 @@ class SettingsImporter internal constructor(
                 null
             }
 
-            val filteredAccounts = settings.accounts.filterKeys { it in accountUuids }
+            val filteredAccounts = settings.accounts.filter { it.uuid in accountUuids }
 
             val imported = settings.copy(
                 globalSettings = filteredGlobalSettings,
@@ -133,7 +133,7 @@ class SettingsImporter internal constructor(
             }
 
             if (accountUuids.isNotEmpty()) {
-                val foundAccountUuids = imported.accounts.map { it.value.uuid }.toSet()
+                val foundAccountUuids = imported.accounts.map { it.uuid }.toSet()
                 val missingAccountUuids = accountUuids.toSet() - foundAccountUuids
                 if (missingAccountUuids.isNotEmpty()) {
                     for (accountUuid in missingAccountUuids) {
@@ -141,7 +141,7 @@ class SettingsImporter internal constructor(
                     }
                 }
 
-                for (account in imported.accounts.values) {
+                for (account in imported.accounts) {
                     try {
                         var editor = preferences.createStorageEditor()
 

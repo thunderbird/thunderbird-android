@@ -8,7 +8,7 @@ internal interface SettingsFile {
     data class Contents(
         val contentVersion: Int,
         val globalSettings: SettingsMap?,
-        val accounts: Map<String, Account>,
+        val accounts: List<Account>,
     )
 
     data class Account(
