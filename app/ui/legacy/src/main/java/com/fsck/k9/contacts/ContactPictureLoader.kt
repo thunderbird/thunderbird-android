@@ -5,11 +5,11 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.widget.ImageView
 import androidx.annotation.WorkerThread
+import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.FutureTarget
 import com.fsck.k9.mail.Address
-import com.fsck.k9.ui.R
 import com.fsck.k9.view.RecipientSelectView.Recipient
 
 class ContactPictureLoader(
@@ -41,8 +41,8 @@ class ContactPictureLoader(
     private fun setContactPicture(imageView: ImageView, contactPictureUri: Uri) {
         Glide.with(imageView.context)
             .load(contactPictureUri)
-            .placeholder(R.drawable.ic_contact_picture)
-            .error(R.drawable.ic_contact_picture)
+            .placeholder(Icons.Filled.ContactPicture)
+            .error(Icons.Filled.ContactPicture)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .dontAnimate()
             .into(imageView)
@@ -72,7 +72,7 @@ class ContactPictureLoader(
         return Glide.with(context)
             .asBitmap()
             .load(contactPictureUri)
-            .error(R.drawable.ic_contact_picture)
+            .error(Icons.Filled.ContactPicture)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .dontAnimate()
             .submit(pictureSizeInPx, pictureSizeInPx)

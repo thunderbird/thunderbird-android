@@ -26,6 +26,7 @@ dependencies {
     implementation(projects.app.core)
     implementation(projects.app.ui.base)
     implementation(projects.core.ui.compose.designsystem)
+    implementation(projects.core.ui.legacy.designsystem)
 
     implementation(projects.feature.account.oauth)
     implementation(libs.appauth)

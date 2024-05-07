@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.RecyclerView
+import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.Preferences
@@ -96,7 +97,7 @@ class ChooseFolderActivity : K9Activity() {
     private fun initializeActionBar() {
         val actionBar = supportActionBar ?: error("Action bar missing")
         actionBar.setDisplayHomeAsUpEnabled(true)
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_close)
+        actionBar.setHomeAsUpIndicator(Icons.Outlined.Close)
     }
 
     private fun initializeFolderList() {
@@ -161,17 +162,19 @@ class ChooseFolderActivity : K9Activity() {
         val folderMenuItem = menu.findItem(R.id.filter_folders)
         val folderSearchView = folderMenuItem.actionView as SearchView
         folderSearchView.queryHint = getString(R.string.folder_list_filter_hint)
-        folderSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                itemAdapter.filter(query)
-                return true
-            }
+        folderSearchView.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    itemAdapter.filter(query)
+                    return true
+                }
 
-            override fun onQueryTextChange(newText: String): Boolean {
-                itemAdapter.filter(newText)
-                return true
-            }
-        })
+                override fun onQueryTextChange(newText: String): Boolean {
+                    itemAdapter.filter(newText)
+                    return true
+                }
+            },
+        )
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

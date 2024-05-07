@@ -18,6 +18,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.TooltipCompat;
+import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons;
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.FontSizes;
@@ -26,7 +27,6 @@ import com.fsck.k9.activity.misc.ContactPicture;
 import com.fsck.k9.contacts.ContactPictureLoader;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.MessageHelper;
-import com.fsck.k9.ui.messageview.MessageViewRecipientFormatter;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
@@ -38,6 +38,7 @@ import com.fsck.k9.ui.helper.RelativeDateTimeFormatter;
 import com.fsck.k9.ui.messageview.DisplayRecipients;
 import com.fsck.k9.ui.messageview.DisplayRecipientsExtractor;
 import com.fsck.k9.ui.messageview.MessageHeaderClickListener;
+import com.fsck.k9.ui.messageview.MessageViewRecipientFormatter;
 import com.fsck.k9.ui.messageview.RecipientNamesView;
 import com.google.android.material.chip.Chip;
 
@@ -213,7 +214,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
                 ContactPictureLoader contactsPictureLoader = ContactPicture.getContactPictureLoader();
                 contactsPictureLoader.setContactPicture(contactPictureView, fromAddress);
             } else {
-                contactPictureView.setImageResource(R.drawable.ic_contact_picture);
+                contactPictureView.setImageResource(Icons.Filled.ContactPicture);
             }
         } else {
             contactPictureView.setVisibility(View.GONE);
@@ -277,10 +278,10 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private int getReplyImageResource(@NonNull ReplyAction replyAction) {
         switch (replyAction) {
             case REPLY: {
-                return R.drawable.ic_reply;
+                return Icons.Filled.Reply;
             }
             case REPLY_ALL: {
-                return R.drawable.ic_reply_all;
+                return Icons.Filled.ReplyAll;
             }
             default: {
                 throw new IllegalStateException("Unknown reply action: " + replyAction);

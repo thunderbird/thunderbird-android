@@ -10,13 +10,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.fsck.k9.K9;
+import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.helper.ContextHelper;
 import com.fsck.k9.ui.helper.SizeFormatter;
-import com.fsck.k9.mailstore.AttachmentViewInfo;
 
 
 public class AttachmentView extends FrameLayout implements OnClickListener {
@@ -83,7 +84,7 @@ public class AttachmentView extends FrameLayout implements OnClickListener {
         setAttachmentSize(attachment.size);
 
         if (attachment.isSupportedImage()) {
-            attachmentType.setImageResource(R.drawable.ic_attachment_image);
+            attachmentType.setImageResource(Icons.Filled.AttachmentImage);
             if (attachment.isContentAvailable()) {
                 refreshThumbnail();
             }

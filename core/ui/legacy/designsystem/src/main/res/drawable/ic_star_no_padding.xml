@@ -1,7 +1,7 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="20dp"
     android:height="19dp"
-    android:tint="?attr/messageStarColor"
+    android:tint="?attr/iconStarColor"
     android:viewportWidth="20"
     android:viewportHeight="19">
     <path

@@ -66,13 +66,11 @@
 
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
 
-        // TODO: Remove iconSettingsImportStatus as soon icons are migrated to icon module
-        <item name="iconSettingsImportStatus">@drawable/ic_import_status</item>
+        <item name="iconStarColor">#fbbc04</item>
 
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_light</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_light</item>
 
-        <item name="messageListSelectedCheckMarkColor">?attr/colorSecondary</item>
         <item name="messageListSelectedBackgroundColor">?attr/colorSecondaryVariant</item>
         <item name="messageListSelectedBackgroundAlphaFraction">33%</item>
         <item name="messageListSelectedBackgroundAlphaBackground">?attr/colorSurface</item>
@@ -99,7 +97,6 @@
         <item name="messageListSwipeSpamBackgroundColor">@color/material_red_700</item>
         <item name="messageListSwipeMoveBackgroundColor">@color/material_purple_500</item>
 
-        <item name="messageStarColor">#fbbc04</item>
         <item name="messageDetailsDividerColor">#ffcccccc</item>
         <item name="contactPictureFallbackDefaultBackgroundColor">#ffababab</item>
         <item name="contactPictureFallbackBackgroundColors">@array/contact_picture_fallback_background_colors_light</item>
@@ -188,12 +185,10 @@
 
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
 
-        // TODO: Remove iconSettingsImportStatus as soon icons are migrated to icon module
-        <item name="iconSettingsImportStatus">@drawable/ic_import_status</item>
+        <item name="iconStarColor">#fdd663</item>
 
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_dark</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_dark</item>
-        <item name="messageListSelectedCheckMarkColor">?attr/colorSecondary</item>
         <item name="messageListSelectedBackgroundColor">?attr/colorSecondaryVariant</item>
         <item name="messageListSelectedBackgroundAlphaFraction">25%</item>
         <item name="messageListSelectedBackgroundAlphaBackground">?attr/colorSurface</item>
@@ -220,7 +215,6 @@
         <item name="messageListSwipeSpamBackgroundColor">@color/material_red_800</item>
         <item name="messageListSwipeMoveBackgroundColor">@color/material_purple_600</item>
 
-        <item name="messageStarColor">#fdd663</item>
         <item name="messageDetailsDividerColor">#ff555555</item>
         <item name="contactTokenBackgroundColor">#313131</item>
         <item name="contactPictureFallbackDefaultBackgroundColor">#ff606060</item>

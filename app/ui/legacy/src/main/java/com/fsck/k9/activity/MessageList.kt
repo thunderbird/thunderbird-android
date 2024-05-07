@@ -24,6 +24,7 @@ import androidx.fragment.app.commitNow
 import app.k9mail.core.android.common.compat.BundleCompat
 import app.k9mail.core.android.common.contact.CachingRepository
 import app.k9mail.core.android.common.contact.ContactRepository
+import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import com.fsck.k9.Account
 import com.fsck.k9.K9
@@ -1268,12 +1269,12 @@ open class MessageList :
 
     private fun lockDrawer() {
         drawer!!.lock()
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
+        actionBar.setHomeAsUpIndicator(Icons.Outlined.ArrowBack)
     }
 
     private fun unlockDrawer() {
         drawer!!.unlock()
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu)
+        actionBar.setHomeAsUpIndicator(Icons.Outlined.Menu)
     }
 
     private fun initializeFromLocalSearch(search: LocalSearch?) {
