@@ -55,7 +55,7 @@ internal fun AutoDiscoveryResultHeaderView(
         }
         if (state.isExpandable) {
             Icon(
-                imageVector = if (isExpanded) Icons.Outlined.expandLess else Icons.Outlined.expandMore,
+                imageVector = if (isExpanded) Icons.Outlined.ExpandLess else Icons.Outlined.ExpandMore,
                 modifier = Modifier.padding(MainTheme.spacings.default),
             )
         }

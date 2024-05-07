@@ -43,7 +43,7 @@ fun TopAppBarWithMenuButton(
         navigationIcon = {
             ButtonIcon(
                 onClick = onMenuClick,
-                imageVector = Icons.Outlined.menu,
+                imageVector = Icons.Outlined.Menu,
             )
         },
         actions = actions,
@@ -63,7 +63,7 @@ fun TopAppBarWithBackButton(
         navigationIcon = {
             ButtonIcon(
                 onClick = onBackClick,
-                imageVector = Icons.Outlined.arrowBack,
+                imageVector = Icons.Outlined.ArrowBack,
             )
         },
         actions = actions,

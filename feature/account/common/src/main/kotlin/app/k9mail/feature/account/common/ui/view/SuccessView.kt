@@ -36,7 +36,7 @@ fun SuccessView(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
-                imageVector = Icons.Outlined.celebration,
+                imageVector = Icons.Outlined.Celebration,
                 tint = MainTheme.colors.secondary,
                 modifier = Modifier.requiredSize(MainTheme.sizes.large),
             )

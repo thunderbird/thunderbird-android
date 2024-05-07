@@ -20,7 +20,7 @@ fun LazyGridScope.appBarItems() {
         ItemOutlined {
             TopAppBarItem(
                 title = "Title",
-                actionIcon = Icons.Outlined.celebration,
+                actionIcon = Icons.Outlined.Celebration,
             )
         }
     }
@@ -57,7 +57,7 @@ fun TopAppBarItem(
             navIcon?.let {
                 ButtonIcon(
                     onClick = {},
-                    imageVector = Icons.Outlined.menu,
+                    imageVector = Icons.Outlined.Menu,
                 )
             }
         },

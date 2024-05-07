@@ -27,7 +27,7 @@ fun TextFieldOutlinedFakeSelect(
             .then(modifier),
         readOnly = true,
         label = optionalLabel(label),
-        trailingIcon = { Icon(Icons.Outlined.arrowDropDown) },
+        trailingIcon = { Icon(Icons.Outlined.ArrowDropDown) },
         singleLine = true,
         interactionSource = remember { MutableInteractionSource() }
             .also { interactionSource ->

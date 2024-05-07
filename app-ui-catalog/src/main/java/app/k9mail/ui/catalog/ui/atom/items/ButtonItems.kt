@@ -77,8 +77,8 @@ fun LazyGridScope.buttonItems() {
             horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
             modifier = Modifier.itemDefaultPadding(),
         ) {
-            ButtonIcon(onClick = { }, imageVector = Icons.Outlined.celebration)
-            ButtonIcon(onClick = { }, imageVector = Icons.Outlined.celebration, enabled = false)
+            ButtonIcon(onClick = { }, imageVector = Icons.Outlined.Celebration)
+            ButtonIcon(onClick = { }, imageVector = Icons.Outlined.Celebration, enabled = false)
         }
     }
 }

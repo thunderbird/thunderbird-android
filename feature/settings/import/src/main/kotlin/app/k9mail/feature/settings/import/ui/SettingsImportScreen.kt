@@ -30,7 +30,7 @@ fun SettingsImportScreen(
                 navigationIcon = {
                     ButtonIcon(
                         onClick = onBack,
-                        imageVector = Icons.Outlined.arrowBack,
+                        imageVector = Icons.Outlined.ArrowBack,
                     )
                 },
             )

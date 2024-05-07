@@ -101,7 +101,7 @@ private fun IconWithPermissionStateOverlay(
             UiPermissionState.Unknown -> Unit
             UiPermissionState.Granted -> {
                 Icon(
-                    imageVector = Icons.Filled.check,
+                    imageVector = Icons.Filled.Check,
                     tint = MainTheme.colors.success,
                     modifier = Modifier
                         .size(overlayIconSize)
@@ -114,7 +114,7 @@ private fun IconWithPermissionStateOverlay(
 
             UiPermissionState.Denied -> {
                 Icon(
-                    imageVector = Icons.Filled.cancel,
+                    imageVector = Icons.Filled.Cancel,
                     tint = MainTheme.colors.warning,
                     modifier = Modifier
                         .size(overlayIconSize)

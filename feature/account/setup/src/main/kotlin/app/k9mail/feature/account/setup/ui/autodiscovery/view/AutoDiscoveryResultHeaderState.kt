@@ -12,21 +12,21 @@ enum class AutoDiscoveryResultHeaderState(
     val isExpandable: Boolean,
 ) {
     NoSettings(
-        icon = Icons.Outlined.info,
+        icon = Icons.Outlined.Info,
         titleResourceId = R.string.account_setup_auto_discovery_result_header_title_configuration_not_found,
         subtitleResourceId = R.string.account_setup_auto_discovery_result_header_subtitle_configuration_not_found,
         isExpandable = false,
     ),
 
     Trusted(
-        icon = Icons.Outlined.check,
+        icon = Icons.Outlined.Check,
         titleResourceId = R.string.account_setup_auto_discovery_status_header_title_configuration_found,
         subtitleResourceId = R.string.account_setup_auto_discovery_result_header_subtitle_configuration_trusted,
         isExpandable = true,
     ),
 
     Untrusted(
-        icon = Icons.Outlined.info,
+        icon = Icons.Outlined.Info,
         titleResourceId = R.string.account_setup_auto_discovery_status_header_title_configuration_found,
         subtitleResourceId = R.string.account_setup_auto_discovery_result_header_subtitle_configuration_untrusted,
         isExpandable = true,
