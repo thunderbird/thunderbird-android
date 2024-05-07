@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@+id/account_color_chip"
         app:layout_constraintTop_toTopOf="@+id/top_guideline"
-        app:srcCompat="?attr/messageListAnswered" />
+        app:srcCompat="@drawable/ic_messagelist_answered" />
 
     <TextView
         android:id="@+id/subject"
@@ -119,7 +119,7 @@
         android:layout_marginEnd="4dp"
         app:layout_constraintEnd_toStartOf="@+id/date"
         app:layout_constraintTop_toTopOf="@+id/top_guideline"
-        app:srcCompat="?attr/messageListAttachment" />
+        app:srcCompat="@drawable/ic_messagelist_attachment" />
 
     <TextView
         android:id="@+id/date"

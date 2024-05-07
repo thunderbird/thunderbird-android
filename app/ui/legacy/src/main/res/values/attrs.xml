@@ -21,30 +21,16 @@
         <attr name="messageListPreviewTextColor" format="reference|color"/>
         <attr name="messageListDividerColor" format="reference|color"/>
         <attr name="messageListStateIconTint" format="reference|color"/>
-        <attr name="messageListAttachment" format="reference"/>
-        <attr name="messageListAnswered" format="reference"/>
-        <attr name="messageListForwarded" format="reference"/>
-        <attr name="messageListAnsweredForwarded" format="reference"/>
         <attr name="messageListSwipeIconTint" format="reference|color"/>
         <attr name="messageListSwipeDisabledBackgroundColor" format="reference|color"/>
-        <attr name="messageListSwipeSelectIcon" format="reference"/>
         <attr name="messageListSwipeSelectBackgroundColor" format="reference|color"/>
-        <attr name="messageListSwipeMarkAsReadIcon" format="reference"/>
-        <attr name="messageListSwipeMarkAsUnreadIcon" format="reference"/>
         <attr name="messageListSwipeToggleReadBackgroundColor" format="reference|color"/>
-        <attr name="messageListSwipeAddStarIcon" format="reference"/>
-        <attr name="messageListSwipeRemoveStarIcon" format="reference"/>
         <attr name="messageListSwipeToggleStarBackgroundColor" format="reference|color"/>
-        <attr name="messageListSwipeArchiveIcon" format="reference"/>
         <attr name="messageListSwipeArchiveBackgroundColor" format="reference|color"/>
-        <attr name="messageListSwipeDeleteIcon" format="reference"/>
         <attr name="messageListSwipeDeleteBackgroundColor" format="reference|color"/>
-        <attr name="messageListSwipeSpamIcon" format="reference"/>
         <attr name="messageListSwipeSpamBackgroundColor" format="reference|color"/>
-        <attr name="messageListSwipeMoveIcon" format="reference"/>
         <attr name="messageListSwipeMoveBackgroundColor" format="reference|color"/>
         <attr name="messageStarColor" format="color"/>
-        <attr name="messageDetailsAddContactIcon" format="reference"/>
         <attr name="messageDetailsDividerColor" format="reference|color"/>
         <attr name="composerBackgroundColor" format="color"/>
         <attr name="contactPictureFallbackDefaultBackgroundColor" format="reference|color"/>
@@ -54,7 +40,6 @@
         <attr name="tintColorBulletPointNeutral" format="reference|color"/>
         <attr name="tintColorBulletPointNegative" format="reference|color"/>
 
-        <attr name="unencryptedAttachmentUnlock" format="reference|color" />
         <attr name="openpgp_black" format="reference|color" />
         <attr name="openpgp_orange" format="reference|color" />
         <attr name="openpgp_red" format="reference|color" />

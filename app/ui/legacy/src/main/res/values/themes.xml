@@ -88,32 +88,18 @@
         <item name="messageListPreviewTextColor">#ff444444</item>
         <item name="messageListDividerColor">#ffcccccc</item>
         <item name="messageListStateIconTint">#bbbbbb</item>
-        <item name="messageListAttachment">@drawable/ic_messagelist_attachment</item>
-        <item name="messageListAnswered">@drawable/ic_messagelist_answered</item>
-        <item name="messageListForwarded">@drawable/ic_messagelist_forwarded</item>
-        <item name="messageListAnsweredForwarded">@drawable/ic_messagelist_answered_forwarded</item>
 
         <item name="messageListSwipeIconTint">#ffffff</item>
         <item name="messageListSwipeDisabledBackgroundColor">@color/material_gray_200</item>
-        <item name="messageListSwipeSelectIcon">@drawable/ic_check_circle</item>
         <item name="messageListSwipeSelectBackgroundColor">@color/material_blue_600</item>
-        <item name="messageListSwipeMarkAsReadIcon">@drawable/ic_opened_envelope</item>
-        <item name="messageListSwipeMarkAsUnreadIcon">@drawable/ic_mark_new</item>
         <item name="messageListSwipeToggleReadBackgroundColor">@color/material_blue_600</item>
-        <item name="messageListSwipeAddStarIcon">@drawable/ic_star</item>
-        <item name="messageListSwipeRemoveStarIcon">@drawable/ic_star_outline</item>
         <item name="messageListSwipeToggleStarBackgroundColor">@color/material_orange_600</item>
-        <item name="messageListSwipeArchiveIcon">@drawable/ic_archive</item>
         <item name="messageListSwipeArchiveBackgroundColor">@color/material_green_600</item>
-        <item name="messageListSwipeDeleteIcon">@drawable/ic_trash_can</item>
         <item name="messageListSwipeDeleteBackgroundColor">@color/material_red_600</item>
-        <item name="messageListSwipeSpamIcon">@drawable/ic_alert_octagon</item>
         <item name="messageListSwipeSpamBackgroundColor">@color/material_red_700</item>
-        <item name="messageListSwipeMoveIcon">@drawable/ic_move_to_folder</item>
         <item name="messageListSwipeMoveBackgroundColor">@color/material_purple_500</item>
 
         <item name="messageStarColor">#fbbc04</item>
-        <item name="messageDetailsAddContactIcon">@drawable/ic_person_add</item>
         <item name="messageDetailsDividerColor">#ffcccccc</item>
         <item name="contactPictureFallbackDefaultBackgroundColor">#ffababab</item>
         <item name="contactPictureFallbackBackgroundColors">@array/contact_picture_fallback_background_colors_light</item>
@@ -123,7 +109,6 @@
         <item name="tintColorBulletPointNegative">#dd2222</item>
         <item name="tintColorBulletPointNeutral">#888</item>
 
-        <item name="unencryptedAttachmentUnlock">@drawable/ic_visibility</item>
         <item name="openpgp_black">#000</item>
         <item name="openpgp_orange">#FF8800</item>
         <item name="openpgp_red">#CC0000</item>
@@ -224,32 +209,18 @@
         <item name="messageListPreviewTextColor">#ffaaaaaa</item>
         <item name="messageListDividerColor">#ff333333</item>
         <item name="messageListStateIconTint">#777777</item>
-        <item name="messageListAttachment">@drawable/ic_messagelist_attachment</item>
-        <item name="messageListAnswered">@drawable/ic_messagelist_answered</item>
-        <item name="messageListForwarded">@drawable/ic_messagelist_forwarded</item>
-        <item name="messageListAnsweredForwarded">@drawable/ic_messagelist_answered_forwarded</item>
 
         <item name="messageListSwipeIconTint">#ffffff</item>
         <item name="messageListSwipeDisabledBackgroundColor">@color/material_gray_900</item>
-        <item name="messageListSwipeSelectIcon">@drawable/ic_check_circle</item>
         <item name="messageListSwipeSelectBackgroundColor">@color/material_blue_700</item>
-        <item name="messageListSwipeMarkAsReadIcon">@drawable/ic_opened_envelope</item>
-        <item name="messageListSwipeMarkAsUnreadIcon">@drawable/ic_mark_new</item>
         <item name="messageListSwipeToggleReadBackgroundColor">@color/material_blue_700</item>
-        <item name="messageListSwipeAddStarIcon">@drawable/ic_star</item>
-        <item name="messageListSwipeRemoveStarIcon">@drawable/ic_star_outline</item>
         <item name="messageListSwipeToggleStarBackgroundColor">@color/material_orange_700</item>
-        <item name="messageListSwipeArchiveIcon">@drawable/ic_archive</item>
         <item name="messageListSwipeArchiveBackgroundColor">@color/material_green_700</item>
-        <item name="messageListSwipeDeleteIcon">@drawable/ic_trash_can</item>
         <item name="messageListSwipeDeleteBackgroundColor">@color/material_red_700</item>
-        <item name="messageListSwipeSpamIcon">@drawable/ic_alert_octagon</item>
         <item name="messageListSwipeSpamBackgroundColor">@color/material_red_800</item>
-        <item name="messageListSwipeMoveIcon">@drawable/ic_move_to_folder</item>
         <item name="messageListSwipeMoveBackgroundColor">@color/material_purple_600</item>
 
         <item name="messageStarColor">#fdd663</item>
-        <item name="messageDetailsAddContactIcon">@drawable/ic_person_add</item>
         <item name="messageDetailsDividerColor">#ff555555</item>
         <item name="contactTokenBackgroundColor">#313131</item>
         <item name="contactPictureFallbackDefaultBackgroundColor">#ff606060</item>
@@ -259,7 +230,6 @@
         <item name="tintColorBulletPointNegative">#dd2222</item>
         <item name="tintColorBulletPointNeutral">#bbb</item>
 
-        <item name="unencryptedAttachmentUnlock">@drawable/ic_visibility</item>
         <item name="openpgp_black">#fff</item>
         <item name="openpgp_orange">#ee7700</item>
         <item name="openpgp_red">#CC0000</item>

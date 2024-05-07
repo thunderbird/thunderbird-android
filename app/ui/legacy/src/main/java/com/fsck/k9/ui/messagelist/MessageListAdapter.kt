@@ -33,7 +33,6 @@ import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.resolveColorAttribute
-import com.fsck.k9.ui.resolveDrawableAttribute
 import kotlin.math.max
 
 private const val FOOTER_ID = 1L
@@ -51,9 +50,10 @@ class MessageListAdapter internal constructor(
     private val relativeDateTimeFormatter: RelativeDateTimeFormatter,
 ) : RecyclerView.Adapter<MessageListViewHolder>() {
 
-    private val forwardedIcon: Drawable = theme.resolveDrawableAttribute(R.attr.messageListForwarded)
-    private val answeredIcon: Drawable = theme.resolveDrawableAttribute(R.attr.messageListAnswered)
-    private val forwardedAnsweredIcon: Drawable = theme.resolveDrawableAttribute(R.attr.messageListAnsweredForwarded)
+    private val forwardedIcon: Drawable = ResourcesCompat.getDrawable(res, R.drawable.ic_messagelist_forwarded, theme)!!
+    private val answeredIcon: Drawable = ResourcesCompat.getDrawable(res, R.drawable.ic_messagelist_answered, theme)!!
+    private val forwardedAnsweredIcon: Drawable = ResourcesCompat
+        .getDrawable(res, R.drawable.ic_messagelist_answered_forwarded, theme)!!
     private val unreadTextColor: Int = theme.resolveColorAttribute(R.attr.messageListUnreadTextColor)
     private val readTextColor: Int = theme.resolveColorAttribute(R.attr.messageListReadTextColor)
     private val previewTextColor: Int = theme.resolveColorAttribute(R.attr.messageListPreviewTextColor)
@@ -317,11 +317,13 @@ class MessageListAdapter internal constructor(
                 textViewMarginTop = compactTextViewMarginTop
                 lineSpacingMultiplier = compactLineSpacingMultiplier
             }
+
             UiDensity.Default -> {
                 verticalPadding = defaultVerticalPadding
                 textViewMarginTop = defaultTextViewMarginTop
                 lineSpacingMultiplier = defaultLineSpacingMultiplier
             }
+
             UiDensity.Relaxed -> {
                 verticalPadding = relaxedVerticalPadding
                 textViewMarginTop = relaxedTextViewMarginTop
@@ -349,9 +351,11 @@ class MessageListAdapter internal constructor(
                 val messageListItem = getItem(position)
                 bindMessageViewHolder(holder as MessageViewHolder, messageListItem)
             }
+
             TYPE_FOOTER -> {
                 bindFooterViewHolder(holder as FooterViewHolder)
             }
+
             else -> {
                 error("Unsupported type: $viewType")
             }
