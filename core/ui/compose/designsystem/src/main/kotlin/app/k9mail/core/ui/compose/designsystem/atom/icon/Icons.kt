@@ -18,7 +18,6 @@ import androidx.compose.material.icons.outlined.ExpandLess
 import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Menu
-import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material.icons.Icons as MaterialIcons
 
@@ -71,9 +70,6 @@ object Icons {
 
         val info: ImageVector
             get() = MaterialIcons.Outlined.Info
-
-        val warning: ImageVector
-            get() = MaterialIcons.Outlined.WarningAmber
 
         val error: ImageVector
             get() = MaterialIcons.Outlined.ErrorOutline
