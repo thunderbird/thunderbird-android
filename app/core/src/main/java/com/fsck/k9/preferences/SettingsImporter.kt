@@ -103,7 +103,7 @@ class SettingsImporter internal constructor(
                 null
             }
 
-            val filteredAccounts = settings.accounts?.filterKeys { it in accountUuids }
+            val filteredAccounts = settings.accounts.filterKeys { it in accountUuids }
 
             val imported = settings.copy(
                 globalSettings = filteredGlobalSettings,
@@ -133,74 +133,70 @@ class SettingsImporter internal constructor(
             }
 
             if (accountUuids.isNotEmpty()) {
-                if (imported.accounts != null) {
-                    for (accountUuid in accountUuids) {
-                        val account = imported.accounts[accountUuid]
-                        if (account != null) {
-                            try {
-                                var editor = preferences.createStorageEditor()
+                for (accountUuid in accountUuids) {
+                    val account = imported.accounts[accountUuid]
+                    if (account != null) {
+                        try {
+                            var editor = preferences.createStorageEditor()
 
-                                val importResult = importAccount(editor, imported.contentVersion, account)
+                            val importResult = importAccount(editor, imported.contentVersion, account)
 
-                                if (editor.commit()) {
-                                    Timber.v(
-                                        "Committed settings for account \"%s\" to the settings database.",
-                                        importResult.imported.name,
-                                    )
+                            if (editor.commit()) {
+                                Timber.v(
+                                    "Committed settings for account \"%s\" to the settings database.",
+                                    importResult.imported.name,
+                                )
 
-                                    // Add UUID of the account we just imported to the list of account UUIDs
-                                    editor = preferences.createStorageEditor()
+                                // Add UUID of the account we just imported to the list of account UUIDs
+                                editor = preferences.createStorageEditor()
 
-                                    val newUuid = importResult.imported.uuid
-                                    val oldAccountUuids = preferences.storage.getString("accountUuids", "")
-                                    val newAccountUuids = if (oldAccountUuids.isNotEmpty()) {
-                                        "$oldAccountUuids,$newUuid"
-                                    } else {
-                                        newUuid
-                                    }
-
-                                    putString(editor, "accountUuids", newAccountUuids)
-
-                                    if (!editor.commit()) {
-                                        throw SettingsImportExportException("Failed to set account UUID list")
-                                    }
-
-                                    // Reload accounts
-                                    preferences.loadAccounts()
-
-                                    importedAccounts.add(importResult)
+                                val newUuid = importResult.imported.uuid
+                                val oldAccountUuids = preferences.storage.getString("accountUuids", "")
+                                val newAccountUuids = if (oldAccountUuids.isNotEmpty()) {
+                                    "$oldAccountUuids,$newUuid"
                                 } else {
-                                    Timber.w(
-                                        "Error while committing settings for account \"%s\" to the settings database.",
-                                        importResult.original.name,
-                                    )
-
-                                    erroneousAccounts.add(importResult.original)
+                                    newUuid
                                 }
-                            } catch (e: InvalidSettingValueException) {
-                                Timber.e(e, "Encountered invalid setting while importing account \"%s\"", account.name)
 
-                                erroneousAccounts.add(AccountDescription(account.name!!, account.uuid))
-                            } catch (e: Exception) {
-                                Timber.e(e, "Exception while importing account \"%s\"", account.name)
+                                putString(editor, "accountUuids", newAccountUuids)
 
-                                erroneousAccounts.add(AccountDescription(account.name!!, account.uuid))
+                                if (!editor.commit()) {
+                                    throw SettingsImportExportException("Failed to set account UUID list")
+                                }
+
+                                // Reload accounts
+                                preferences.loadAccounts()
+
+                                importedAccounts.add(importResult)
+                            } else {
+                                Timber.w(
+                                    "Error while committing settings for account \"%s\" to the settings database.",
+                                    importResult.original.name,
+                                )
+
+                                erroneousAccounts.add(importResult.original)
                             }
-                        } else {
-                            Timber.w(
-                                "Was asked to import account with UUID %s. But this account wasn't found.",
-                                accountUuid,
-                            )
+                        } catch (e: InvalidSettingValueException) {
+                            Timber.e(e, "Encountered invalid setting while importing account \"%s\"", account.name)
+
+                            erroneousAccounts.add(AccountDescription(account.name!!, account.uuid))
+                        } catch (e: Exception) {
+                            Timber.e(e, "Exception while importing account \"%s\"", account.name)
+
+                            erroneousAccounts.add(AccountDescription(account.name!!, account.uuid))
                         }
+                    } else {
+                        Timber.w(
+                            "Was asked to import account with UUID %s. But this account wasn't found.",
+                            accountUuid,
+                        )
                     }
+                }
 
-                    val editor = preferences.createStorageEditor()
+                val editor = preferences.createStorageEditor()
 
-                    if (!editor.commit()) {
-                        throw SettingsImportExportException("Failed to set default account")
-                    }
-                } else {
-                    Timber.w("Was asked to import at least one account but none found.")
+                if (!editor.commit()) {
+                    throw SettingsImportExportException("Failed to set default account")
                 }
             }
 

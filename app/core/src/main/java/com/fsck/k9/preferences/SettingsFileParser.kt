@@ -99,7 +99,7 @@ private class XmlSettingsParser(
             }
         }
 
-        return Contents(contentVersion, generalSettings, accounts)
+        return Contents(contentVersion, generalSettings, accounts.orEmpty())
     }
 
     private fun readFileFormatVersion(): Int {
@@ -144,7 +144,7 @@ private class XmlSettingsParser(
         return settings.takeIf { it.isNotEmpty() }
     }
 
-    private fun readAccounts(): Map<String, Account>? {
+    private fun readAccounts(): Map<String, Account> {
         val accounts = mutableMapOf<String, Account>()
 
         readElement { eventType ->
@@ -168,7 +168,7 @@ private class XmlSettingsParser(
             }
         }
 
-        return accounts.takeIf { it.isNotEmpty() }
+        return accounts
     }
 
     private fun readAccount(): Account? {
