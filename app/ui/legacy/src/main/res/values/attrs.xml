@@ -30,7 +30,6 @@
         <attr name="messageListSwipeDeleteBackgroundColor" format="reference|color"/>
         <attr name="messageListSwipeSpamBackgroundColor" format="reference|color"/>
         <attr name="messageListSwipeMoveBackgroundColor" format="reference|color"/>
-        <attr name="messageStarColor" format="color"/>
         <attr name="messageDetailsDividerColor" format="reference|color"/>
         <attr name="composerBackgroundColor" format="color"/>
         <attr name="contactPictureFallbackDefaultBackgroundColor" format="reference|color"/>
