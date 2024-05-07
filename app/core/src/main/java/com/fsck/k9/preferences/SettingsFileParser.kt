@@ -1,6 +1,11 @@
 package com.fsck.k9.preferences
 
 import com.fsck.k9.mail.AuthType
+import com.fsck.k9.preferences.SettingsFile.Account
+import com.fsck.k9.preferences.SettingsFile.Contents
+import com.fsck.k9.preferences.SettingsFile.Folder
+import com.fsck.k9.preferences.SettingsFile.Identity
+import com.fsck.k9.preferences.SettingsFile.Server
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.util.UUID
@@ -14,34 +19,9 @@ import timber.log.Timber
  */
 internal class SettingsFileParser {
     @Throws(SettingsImportExportException::class)
-    fun parseSettings(
-        inputStream: InputStream,
-        globalSettings: Boolean,
-        accountUuids: List<String>?,
-        overview: Boolean,
-    ): Imported {
+    fun parseSettings(inputStream: InputStream): Contents {
         try {
-            val settings = XmlSettingsParser(inputStream).parse()
-
-            // TODO: Move this filtering code out of SettingsFileParser
-            val filteredGlobalSettings = if (overview) {
-                settings.globalSettings?.let { ImportedSettings() }
-            } else if (globalSettings) {
-                settings.globalSettings
-            } else {
-                null
-            }
-
-            val filteredAccounts = if (overview || accountUuids == null) {
-                settings.accounts
-            } else {
-                settings.accounts?.filterKeys { it in accountUuids }
-            }
-
-            return settings.copy(
-                globalSettings = filteredGlobalSettings,
-                accounts = filteredAccounts,
-            )
+            return XmlSettingsParser(inputStream).parse()
         } catch (e: XmlPullParserException) {
             throw SettingsImportExportException("Error parsing settings XML", e)
         } catch (e: SettingsParserException) {
@@ -58,15 +38,15 @@ private class XmlSettingsParser(
         setInput(InputStreamReader(inputStream))
     }
 
-    fun parse(): Imported {
-        var imported: Imported? = null
+    fun parse(): Contents {
+        var contents: Contents? = null
         do {
             val eventType = pullParser.next()
 
             if (eventType == XmlPullParser.START_TAG) {
                 when (pullParser.name) {
                     SettingsExporter.ROOT_ELEMENT -> {
-                        imported = readRoot()
+                        contents = readRoot()
                     }
                     else -> {
                         skipElement()
@@ -75,16 +55,16 @@ private class XmlSettingsParser(
             }
         } while (eventType != XmlPullParser.END_DOCUMENT)
 
-        if (imported == null) {
+        if (contents == null) {
             parserError("Missing '${SettingsExporter.ROOT_ELEMENT}' element")
         }
 
-        return imported
+        return contents
     }
 
-    private fun readRoot(): Imported {
-        var generalSettings: ImportedSettings? = null
-        var accounts: Map<String, ImportedAccount>? = null
+    private fun readRoot(): Contents {
+        var generalSettings: SettingsMap? = null
+        var accounts: Map<String, Account>? = null
 
         val fileFormatVersion = readFileFormatVersion()
         if (fileFormatVersion != SettingsExporter.FILE_FORMAT_VERSION) {
@@ -119,7 +99,7 @@ private class XmlSettingsParser(
             }
         }
 
-        return Imported(contentVersion, generalSettings, accounts)
+        return Contents(contentVersion, generalSettings, accounts)
     }
 
     private fun readFileFormatVersion(): Int {
@@ -134,11 +114,11 @@ private class XmlSettingsParser(
             ?: parserError("Invalid content version: $versionString")
     }
 
-    private fun readGlobalSettings(): ImportedSettings? {
+    private fun readGlobalSettings(): SettingsMap? {
         return readSettingsContainer()
     }
 
-    private fun readSettingsContainer(): ImportedSettings? {
+    private fun readSettingsContainer(): SettingsMap? {
         val settings = mutableMapOf<String, String>()
 
         readElement { eventType ->
@@ -161,15 +141,11 @@ private class XmlSettingsParser(
             }
         }
 
-        return if (settings.isNotEmpty()) {
-            ImportedSettings(settings)
-        } else {
-            null
-        }
+        return settings.takeIf { it.isNotEmpty() }
     }
 
-    private fun readAccounts(): Map<String, ImportedAccount>? {
-        val accounts = mutableMapOf<String, ImportedAccount>()
+    private fun readAccounts(): Map<String, Account>? {
+        val accounts = mutableMapOf<String, Account>()
 
         readElement { eventType ->
             if (eventType == XmlPullParser.START_TAG) {
@@ -195,7 +171,7 @@ private class XmlSettingsParser(
         return accounts.takeIf { it.isNotEmpty() }
     }
 
-    private fun readAccount(): ImportedAccount? {
+    private fun readAccount(): Account? {
         val uuid = readUuid()
         if (uuid == null) {
             skipElement()
@@ -203,11 +179,11 @@ private class XmlSettingsParser(
         }
 
         var name: String? = null
-        var incoming: ImportedServer? = null
-        var outgoing: ImportedServer? = null
-        var settings: ImportedSettings? = null
-        var identities: List<ImportedIdentity>? = null
-        var folders: List<ImportedFolder>? = null
+        var incoming: Server? = null
+        var outgoing: Server? = null
+        var settings: SettingsMap? = null
+        var identities: List<Identity>? = null
+        var folders: List<Folder>? = null
 
         readElement { eventType ->
             if (eventType == XmlPullParser.START_TAG) {
@@ -242,7 +218,7 @@ private class XmlSettingsParser(
             name = uuid
         }
 
-        return ImportedAccount(uuid, name, incoming, outgoing, settings, identities, folders)
+        return Account(uuid, name, incoming, outgoing, settings, identities, folders)
     }
 
     private fun readUuid(): String? {
@@ -258,7 +234,7 @@ private class XmlSettingsParser(
         return uuid
     }
 
-    private fun readServerSettings(): ImportedServer {
+    private fun readServerSettings(): Server {
         var host: String? = null
         var port: String? = null
         var connectionSecurity: String? = null
@@ -266,7 +242,7 @@ private class XmlSettingsParser(
         var username: String? = null
         var password: String? = null
         var clientCertificateAlias: String? = null
-        var extras: ImportedSettings? = null
+        var extras: SettingsMap? = null
 
         val type = pullParser.getAttributeValue(null, SettingsExporter.TYPE_ATTRIBUTE)
 
@@ -305,7 +281,7 @@ private class XmlSettingsParser(
             }
         }
 
-        return ImportedServer(
+        return Server(
             type,
             host,
             port,
@@ -318,8 +294,8 @@ private class XmlSettingsParser(
         )
     }
 
-    private fun readIdentities(): List<ImportedIdentity> {
-        val identities = mutableListOf<ImportedIdentity>()
+    private fun readIdentities(): List<Identity> {
+        val identities = mutableListOf<Identity>()
 
         readElement { eventType ->
             if (eventType == XmlPullParser.START_TAG) {
@@ -338,11 +314,11 @@ private class XmlSettingsParser(
         return identities
     }
 
-    private fun readIdentity(): ImportedIdentity {
+    private fun readIdentity(): Identity {
         var name: String? = null
         var email: String? = null
         var description: String? = null
-        var settings: ImportedSettings? = null
+        var settings: SettingsMap? = null
 
         readElement { eventType ->
             if (eventType == XmlPullParser.START_TAG) {
@@ -366,11 +342,11 @@ private class XmlSettingsParser(
             }
         }
 
-        return ImportedIdentity(name, email, description, settings)
+        return Identity(name, email, description, settings)
     }
 
-    private fun readFolders(): List<ImportedFolder> {
-        val folders = mutableListOf<ImportedFolder>()
+    private fun readFolders(): List<Folder> {
+        val folders = mutableListOf<Folder>()
 
         readElement { eventType ->
             if (eventType == XmlPullParser.START_TAG) {
@@ -391,11 +367,11 @@ private class XmlSettingsParser(
         return folders
     }
 
-    private fun readFolder(): ImportedFolder? {
+    private fun readFolder(): Folder? {
         val name = pullParser.getAttributeValue(null, SettingsExporter.NAME_ATTRIBUTE) ?: return null
         val settings = readSettingsContainer()
 
-        return ImportedFolder(name, settings)
+        return Folder(name, settings)
     }
 
     private fun readText(): String {

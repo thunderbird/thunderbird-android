@@ -11,6 +11,9 @@ import assertk.assertions.isNotNull
 import assertk.assertions.key
 import assertk.assertions.prop
 import com.fsck.k9.mail.AuthType
+import com.fsck.k9.preferences.SettingsFile.Account
+import com.fsck.k9.preferences.SettingsFile.Identity
+import com.fsck.k9.preferences.SettingsFile.Server
 import java.util.UUID
 import org.junit.Test
 
@@ -30,15 +33,14 @@ class SettingsFileParserTest : RobolectricTest() {
               </accounts>
             </k9settings>
             """.trimIndent().byteInputStream()
-        val accountUuids = listOf("1")
 
-        val results = parser.parseSettings(inputStream, true, accountUuids, true)
+        val results = parser.parseSettings(inputStream)
 
         assertThat(results.accounts).isNotNull().all {
             hasSize(1)
             key(accountUuid).all {
-                prop(ImportedAccount::uuid).isEqualTo(accountUuid)
-                prop(ImportedAccount::name).isEqualTo("Account")
+                prop(Account::uuid).isEqualTo(accountUuid)
+                prop(Account::name).isEqualTo("Account")
             }
         }
     }
@@ -61,16 +63,15 @@ class SettingsFileParserTest : RobolectricTest() {
               </accounts>
             </k9settings>
             """.trimIndent().byteInputStream()
-        val accountUuids = listOf("1")
 
-        val results = parser.parseSettings(inputStream, true, accountUuids, true)
+        val results = parser.parseSettings(inputStream)
 
         assertThat(results.accounts).isNotNull().all {
             hasSize(1)
             key(accountUuid).all {
-                prop(ImportedAccount::uuid).isEqualTo(accountUuid)
-                prop(ImportedAccount::identities).isNotNull()
-                    .extracting(ImportedIdentity::email).containsExactly("user@gmail.com")
+                prop(Account::uuid).isEqualTo(accountUuid)
+                prop(Account::identities).isNotNull()
+                    .extracting(Identity::email).containsExactly("user@gmail.com")
             }
         }
     }
@@ -91,16 +92,15 @@ class SettingsFileParserTest : RobolectricTest() {
               </accounts>
             </k9settings>
             """.trimIndent().byteInputStream()
-        val accountUuids = listOf(accountUuid)
 
-        val results = parser.parseSettings(inputStream, true, accountUuids, false)
+        val results = parser.parseSettings(inputStream)
 
         assertThat(results.accounts)
             .isNotNull()
             .key(accountUuid)
-            .prop(ImportedAccount::incoming)
+            .prop(Account::incoming)
             .isNotNull()
-            .prop(ImportedServer::authenticationType)
+            .prop(Server::authenticationType)
             .isEqualTo(AuthType.CRAM_MD5)
     }
 }
