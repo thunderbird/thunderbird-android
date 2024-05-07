@@ -68,9 +68,6 @@
 
         <item name="iconStarColor">#fbbc04</item>
 
-        // TODO: Remove iconSettingsImportStatus as soon icons are migrated to icon module
-        <item name="iconSettingsImportStatus">@drawable/ic_import_status</item>
-
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_light</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_light</item>
 
@@ -189,9 +186,6 @@
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
 
         <item name="iconStarColor">#fdd663</item>
-
-        // TODO: Remove iconSettingsImportStatus as soon icons are migrated to icon module
-        <item name="iconSettingsImportStatus">@drawable/ic_import_status</item>
 
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_dark</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_dark</item>
