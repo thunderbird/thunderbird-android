@@ -53,7 +53,7 @@ internal fun AutoDiscoveryServerSettingsView(
         )
 
         ServerSettingRow(
-            icon = if (isIncoming) Icons.Filled.Inbox else Icons.Filled.Outbox,
+            icon = if (isIncoming) Icons.Outlined.Inbox else Icons.Outlined.Outbox,
             text = buildAnnotatedString {
                 append("Server")
                 append(": ")
@@ -70,7 +70,7 @@ internal fun AutoDiscoveryServerSettingsView(
         )
 
         ServerSettingRow(
-            icon = Icons.Filled.Security,
+            icon = Icons.Outlined.Security,
             text = buildAnnotatedString {
                 append("Security: ")
                 append(connectionSecurity.toAutoDiscoveryConnectionSecurityString(resources))
@@ -79,7 +79,7 @@ internal fun AutoDiscoveryServerSettingsView(
 
         if (username.isNotEmpty()) {
             ServerSettingRow(
-                icon = Icons.Filled.User,
+                icon = Icons.Outlined.AccountCircle,
                 text = buildAnnotatedString {
                     append("Username: ")
                     append(username)

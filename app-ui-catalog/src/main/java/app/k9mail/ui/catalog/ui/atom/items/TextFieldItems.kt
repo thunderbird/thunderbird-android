@@ -160,7 +160,7 @@ private fun LazyGridScope.textFieldOutlinedItems() {
                 onValueChange = { state.value = state.value.copy(input = it) },
                 trailingIcon = {
                     if (state.value.showTrailingIcon) {
-                        Icon(imageVector = Icons.Filled.User)
+                        Icon(imageVector = Icons.Outlined.AccountCircle)
                     }
                 },
                 isEnabled = !state.value.isDisabled,

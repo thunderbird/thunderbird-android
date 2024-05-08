@@ -10,7 +10,7 @@ import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
 internal fun IconPreview() {
     PreviewWithThemes {
         Icon(
-            imageVector = Icons.Filled.Error,
+            imageVector = Icons.Outlined.Celebration,
         )
     }
 }
@@ -20,7 +20,7 @@ internal fun IconPreview() {
 internal fun IconTintedPreview() {
     PreviewWithThemes {
         Icon(
-            imageVector = Icons.Filled.Error,
+            imageVector = Icons.Outlined.Celebration,
             tint = Color.Magenta,
         )
     }
