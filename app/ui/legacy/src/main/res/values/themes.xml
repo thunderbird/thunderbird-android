@@ -148,7 +148,6 @@
         <item name="iconUserForum">@drawable/ic_forum</item>
         <item name="iconUserManual">@drawable/ic_open_book</item>
         <item name="iconHelp">@drawable/ic_help</item>
-        <item name="iconAboutFediverse">@drawable/ic_mastodon</item>
 
         <item name="unencryptedAttachmentUnlock">@drawable/ic_visibility</item>
         <item name="openpgp_black">#000</item>
@@ -313,7 +312,6 @@
         <item name="iconUserForum">@drawable/ic_forum</item>
         <item name="iconUserManual">@drawable/ic_open_book</item>
         <item name="iconHelp">@drawable/ic_help</item>
-        <item name="iconAboutFediverse">@drawable/ic_mastodon</item>
 
         <item name="unencryptedAttachmentUnlock">@drawable/ic_visibility</item>
         <item name="openpgp_black">#fff</item>
