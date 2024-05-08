@@ -51,10 +51,10 @@ class MessageListAdapter internal constructor(
     private val relativeDateTimeFormatter: RelativeDateTimeFormatter,
 ) : RecyclerView.Adapter<MessageListViewHolder>() {
 
-    private val forwardedIcon: Drawable = ResourcesCompat.getDrawable(res, R.drawable.ic_messagelist_forwarded, theme)!!
-    private val answeredIcon: Drawable = ResourcesCompat.getDrawable(res, R.drawable.ic_messagelist_answered, theme)!!
-    private val forwardedAnsweredIcon: Drawable = ResourcesCompat
-        .getDrawable(res, R.drawable.ic_messagelist_answered_forwarded, theme)!!
+    private val forwardedIcon: Drawable = ResourcesCompat.getDrawable(res, Icons.Outlined.Forward, theme)!!
+    private val answeredIcon: Drawable = ResourcesCompat.getDrawable(res, Icons.Outlined.Reply, theme)!!
+    private val forwardedAnsweredIcon: Drawable =
+        ResourcesCompat.getDrawable(res, Icons.Outlined.CompareArrows, theme)!!
     private val unreadTextColor: Int = theme.resolveColorAttribute(R.attr.messageListUnreadTextColor)
     private val readTextColor: Int = theme.resolveColorAttribute(R.attr.messageListReadTextColor)
     private val previewTextColor: Int = theme.resolveColorAttribute(R.attr.messageListPreviewTextColor)

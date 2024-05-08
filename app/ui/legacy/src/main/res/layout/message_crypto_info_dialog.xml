@@ -14,7 +14,7 @@
         android:layout_gravity="center_vertical"
         android:id="@+id/crypto_info_top_icon_1"
         android:layout_marginEnd="12dp"
-        tools:src="@drawable/status_signature"
+        tools:src="@drawable/ic_check_circle"
         tools:tint="?attr/openpgp_blue"
         />
 

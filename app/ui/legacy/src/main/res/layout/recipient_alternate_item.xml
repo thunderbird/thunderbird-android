@@ -137,7 +137,7 @@
             android:layout_gravity="center_vertical"
             android:layout_margin="13dp"
             android:id="@+id/alternate_crypto_status_simple"
-            app:srcCompat="@drawable/status_lock"
+            app:srcCompat="@drawable/ic_lock"
             app:tint="?attr/openpgp_black"
             android:visibility="gone"
             tools:visibility="visible"

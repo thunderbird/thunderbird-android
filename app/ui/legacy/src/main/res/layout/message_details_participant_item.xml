@@ -80,7 +80,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/dots_vertical" />
+        app:srcCompat="@drawable/ic_more_vert" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/top_guideline"

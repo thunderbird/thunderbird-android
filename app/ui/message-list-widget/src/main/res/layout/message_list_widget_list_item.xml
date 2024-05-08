@@ -35,7 +35,7 @@
             android:layout_centerInParent="true"
             android:layout_marginStart="4dp"
             android:layout_toStartOf="@+id/mail_date"
-            android:src="@drawable/ic_messagelist_attachment_light"
+            android:src="@drawable/ic_attachment"
             android:visibility="gone"
             tools:visibility="visible" />
 
