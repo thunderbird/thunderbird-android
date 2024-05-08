@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+This is a copy of MaterialDrawer's @layout/material_drawer_item_primary with the most notable change being that the
+@id/material_drawer_name TextView is changed to ellipsize in the middle. When updating MaterialDrawer check if changes
+to @layout/material_drawer_item_primary need to be applied here as well.
+-->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -13,7 +18,7 @@
         android:id="@+id/material_drawer_icon"
         android:layout_width="@dimen/material_drawer_item_primary_icon"
         android:layout_height="@dimen/material_drawer_item_primary"
-        android:paddingStart="0dp"
+        android:paddingStart="@dimen/material_drawer_item_primary_icon_padding_left"
         android:paddingTop="@dimen/material_drawer_item_primary_icon_padding"
         android:paddingEnd="@dimen/material_drawer_item_primary_icon_padding_right"
         android:paddingBottom="@dimen/material_drawer_item_primary_icon_padding"
@@ -68,7 +73,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/material_drawer_padding"
-        android:layout_marginEnd="0dp"
+        android:layout_marginLeft="@dimen/material_drawer_padding"
+        android:layout_marginEnd="@dimen/material_drawer_padding"
+        android:layout_marginRight="@dimen/material_drawer_padding"
         android:fontFamily="sans-serif"
         android:gravity="center"
         android:lines="1"
