@@ -6,7 +6,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srcCompat="@drawable/ic_chevron_right_black_24dp"
+        app:srcCompat="@drawable/ic_chevron_right"
         app:tint="@color/status_todo_chevron" />
 
     <ProgressBar
@@ -18,13 +18,13 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srcCompat="@drawable/ic_check_black_24dp"
+        app:srcCompat="@drawable/ic_check"
         app:tint="@color/status_ok_checkmark" />
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srcCompat="@drawable/ic_close_black_24dp"
+        app:srcCompat="@drawable/ic_close"
         app:tint="@color/status_error_cross" />
 
 </merge>

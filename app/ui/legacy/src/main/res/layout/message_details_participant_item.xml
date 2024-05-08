@@ -9,12 +9,13 @@
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
+<!--    TODO replace with ImageView-->
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/contact_picture"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
-        android:src="@drawable/ic_contact_picture"
+        android:src="@drawable/ic_account_circle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/top_guideline" />
 

@@ -13,7 +13,7 @@
         android:maxLevel="2"
         android:minLevel="2" />
     <item
-        android:drawable="@drawable/ic_not_imported"
+        android:drawable="@drawable/ic_block"
         android:maxLevel="3"
         android:minLevel="3" />
     <item

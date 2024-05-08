@@ -25,7 +25,7 @@
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@android:id/text1"
-        tools:src="@drawable/ic_contact_picture" />
+        tools:src="@drawable/ic_account_circle" />
 
     <View
         android:id="@+id/background_position_helper"

@@ -84,7 +84,7 @@ public class AttachmentView extends FrameLayout implements OnClickListener {
         setAttachmentSize(attachment.size);
 
         if (attachment.isSupportedImage()) {
-            attachmentType.setImageResource(Icons.Filled.AttachmentImage);
+            attachmentType.setImageResource(Icons.Outlined.Image);
             if (attachment.isContentAvailable()) {
                 refreshThumbnail();
             }

@@ -5,51 +5,84 @@ import app.k9mail.core.ui.legacy.designsystem.R
 /**
  * Icons used in the legacy design system.
  *
- * The icons are organized in two types: `Filled` and `Outlined`. Each object contains the icons as drawableRes.
+ * For Material 3 we use mainly Outlined icons. Filled icons are used for special cases.
+ *
+ * Each object contains the icons as drawableRes.
  */
 object Icons {
     object Filled {
+        val Star = R.drawable.ic_star_filled
+    }
+
+    object Outlined {
+        @JvmField
+        val AccountCircle = R.drawable.ic_account_circle
+        val Add = R.drawable.ic_add
+        val AllInbox = R.drawable.ic_all_inbox
         val Archive = R.drawable.ic_archive
-
-        @JvmField
-        val AttachmentImage = R.drawable.ic_attachment_image
+        val ArrowBack = R.drawable.ic_arrow_back
+        val Attachment = R.drawable.ic_attachment
+        val Block = R.drawable.ic_block
+        val BugReport = R.drawable.ic_bug_report
+        val Check = R.drawable.ic_check
         val CheckCircle = R.drawable.ic_check_circle
+        val ChevronRight = R.drawable.ic_chevron_right
+        val Close = R.drawable.ic_close
+        val Code = R.drawable.ic_code
+        val ContentCopy = R.drawable.ic_content_copy
+        val Delete = R.drawable.ic_delete
+        val Description = R.drawable.ic_description
+        val Download = R.drawable.ic_download
+        val Draft = R.drawable.ic_draft
+        val DragHandle = R.drawable.ic_drag_handle
+        val DriveFileMove = R.drawable.ic_drive_file_move
+        val Edit = R.drawable.ic_edit
+        val Error = R.drawable.ic_error
+        val ExpandLess = R.drawable.ic_expand_less
+        val ExpandMore = R.drawable.ic_expand_more
+        val FilterList = R.drawable.ic_filter_list
+        val Folder = R.drawable.ic_folder
+        val Forum = R.drawable.ic_forum
+        val Group = R.drawable.ic_group
+        val Help = R.drawable.ic_help
 
         @JvmField
-        val ContactPicture = R.drawable.ic_contact_picture
-        val Cog = R.drawable.ic_cog
-        val Drafts = R.drawable.ic_drafts_folder
-        val Folder = R.drawable.ic_folder
-        val InboxMultiple = R.drawable.ic_inbox_multiple
-        val MarkNew = R.drawable.ic_mark_new
-        val Move = R.drawable.ic_move_to_folder
-        val OpenedEnvelope = R.drawable.ic_opened_envelope
-        val OpenBook = R.drawable.ic_open_book
+        val Image = R.drawable.ic_image
+        val Inbox = R.drawable.ic_inbox
+        val Info = R.drawable.ic_info
+        val Key = R.drawable.ic_key
+        val Link = R.drawable.ic_link
+        val Lock = R.drawable.ic_lock
+        val Login = R.drawable.ic_login
+        val Mail = R.drawable.ic_mail
+        val MarkEmailRead = R.drawable.ic_mark_email_read
+        val MarkEmailUnread = R.drawable.ic_mark_email_unread
+        val Menu = R.drawable.ic_menu
+        val MenuBook = R.drawable.ic_menu_book
+        val Monitor = R.drawable.ic_monitor
+        val Notifications = R.drawable.ic_notifications
+        val Outbox = R.drawable.ic_outbox
+        val PersonAdd = R.drawable.ic_person_add
+        val Refresh = R.drawable.ic_refresh
 
         @JvmField
         val Reply = R.drawable.ic_reply
 
         @JvmField
         val ReplyAll = R.drawable.ic_reply_all
-
+        val Report = R.drawable.ic_report
+        val Save = R.drawable.ic_save
+        val Search = R.drawable.ic_search
+        val Security = R.drawable.ic_security
+        val SelectAll = R.drawable.ic_select_all
         val Send = R.drawable.ic_send
+        val Settings = R.drawable.ic_settings
+        val Sort = R.drawable.ic_sort
         val Star = R.drawable.ic_star
-        val Spam = R.drawable.ic_alert_octagon
-        val Trash = R.drawable.ic_trash_can
-    }
-
-    object Outlined {
-        val AccountPlus = R.drawable.ic_account_plus
-        val ArrowBack = R.drawable.ic_arrow_back
-        val Close = R.drawable.ic_close
-        val Export = R.drawable.ic_export
-        val Help = R.drawable.ic_help
-        val Import = R.drawable.ic_import
-        val Info = R.drawable.ic_info
-        val Inbox = R.drawable.ic_inbox
-        val Menu = R.drawable.ic_menu
-        val Outbox = R.drawable.ic_outbox
-        val PushNotification = R.drawable.ic_push_notification
-        val Star = R.drawable.ic_star_outline
+        val SwapVert = R.drawable.ic_swap_vert
+        val Sync = R.drawable.ic_sync
+        val TouchApp = R.drawable.ic_touch_app
+        val Upload = R.drawable.ic_upload
+        val Visibility = R.drawable.ic_visibility
     }
 }

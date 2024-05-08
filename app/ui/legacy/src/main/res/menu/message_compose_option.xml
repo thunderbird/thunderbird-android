@@ -20,12 +20,12 @@
     <item
         android:id="@+id/save"
         android:title="@string/save_draft_action"
-        android:icon="@drawable/ic_floppy"
+        android:icon="@drawable/ic_save"
         />
     <item
         android:id="@+id/discard"
         android:title="@string/discard_action"
-        android:icon="@drawable/ic_clear"
+        android:icon="@drawable/ic_close"
     />
     <item
         android:id="@+id/read_receipt"

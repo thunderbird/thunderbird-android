@@ -88,7 +88,7 @@
                 android:layout_height="24dp"
                 android:layout_gravity="center"
                 android:contentDescription="@null"
-                app:srcCompat="@drawable/ic_people" />
+                app:srcCompat="@drawable/ic_group" />
 
             <LinearLayout
                 android:layout_width="match_parent"

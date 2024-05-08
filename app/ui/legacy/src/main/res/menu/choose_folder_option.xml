@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/filter_folders"
-        android:icon="@drawable/ic_folder_magnify"
+        android:icon="@drawable/ic_filter_list"
         android:title="@string/filter_folders_action"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="collapseActionView|ifRoom" />

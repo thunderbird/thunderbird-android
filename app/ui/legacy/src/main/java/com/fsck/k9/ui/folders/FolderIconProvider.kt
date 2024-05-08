@@ -6,12 +6,12 @@ import com.fsck.k9.mailstore.FolderType
 class FolderIconProvider {
     private val iconFolderInboxResId: Int = Icons.Outlined.Inbox
     private val iconFolderOutboxResId: Int = Icons.Outlined.Outbox
-    private val iconFolderSentResId: Int = Icons.Filled.Send
-    private val iconFolderTrashResId: Int = Icons.Filled.Trash
-    private val iconFolderDraftsResId: Int = Icons.Filled.Drafts
-    private val iconFolderArchiveResId: Int = Icons.Filled.Archive
-    private val iconFolderSpamResId: Int = Icons.Filled.Spam
-    var iconFolderResId: Int = Icons.Filled.Folder
+    private val iconFolderSentResId: Int = Icons.Outlined.Send
+    private val iconFolderTrashResId: Int = Icons.Outlined.Delete
+    private val iconFolderDraftsResId: Int = Icons.Outlined.Draft
+    private val iconFolderArchiveResId: Int = Icons.Outlined.Archive
+    private val iconFolderSpamResId: Int = Icons.Outlined.Report
+    var iconFolderResId: Int = Icons.Outlined.Folder
 
     fun getFolderIcon(type: FolderType): Int = when (type) {
         FolderType.INBOX -> iconFolderInboxResId
