@@ -121,7 +121,6 @@
         <attr name="iconAboutSourceCode" format="reference"/>
         <attr name="iconAboutLicense" format="reference"/>
         <attr name="iconAboutWebsite" format="reference"/>
-        <attr name="iconAboutFediverse" format="reference"/>
         <attr name="iconUserForum" format="reference"/>
         <attr name="iconUserManual" format="reference"/>
         <attr name="iconHelp" format="reference"/>
