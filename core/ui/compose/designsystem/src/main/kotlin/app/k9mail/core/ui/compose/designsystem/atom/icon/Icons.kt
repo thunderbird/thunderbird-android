@@ -6,7 +6,6 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Outbox
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.AccountCircle
-import androidx.compose.material.icons.outlined.Celebration
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.ExpandLess
@@ -38,9 +37,6 @@ object Icons {
 
         val Check: ImageVector
             get() = MaterialIcons.Outlined.Check
-
-        val Celebration: ImageVector
-            get() = MaterialIcons.Outlined.Celebration
 
         val ErrorOutline: ImageVector
             get() = MaterialIcons.Outlined.ErrorOutline

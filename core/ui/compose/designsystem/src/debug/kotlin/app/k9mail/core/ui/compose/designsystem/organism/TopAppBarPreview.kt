@@ -33,7 +33,7 @@ internal fun TopAppBarWithActionsPreview() {
                 )
                 ButtonIcon(
                     onClick = {},
-                    imageVector = Icons.Outlined.Celebration,
+                    imageVector = Icons.Outlined.Visibility,
                 )
             },
         )

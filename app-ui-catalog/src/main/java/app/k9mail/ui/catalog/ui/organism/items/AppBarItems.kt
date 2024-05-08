@@ -20,7 +20,7 @@ fun LazyGridScope.appBarItems() {
         ItemOutlined {
             TopAppBarItem(
                 title = "Title",
-                actionIcon = Icons.Outlined.Celebration,
+                actionIcon = Icons.Outlined.Info,
             )
         }
     }
