@@ -1,0 +1,5 @@
+- Perbaikan bug kecil dan memoles UI/UX dalam pengaturan akun
+- Memperbaiki kesalahan yang disebabkan oleh interaksi dengan OpenKeychain 6.0.0
+- Fokus pada bidang input subjek atau inti saat membuka layar menyusun melalui mailto: URI
+- Menghapus bahasa Ibrani dan Korea karena terjemahan kurang dari 70%. Kami selalu menerima jika ada relawan yang ingin memperbaruinya!
+- Memperbarui terjemahan yang tersisa

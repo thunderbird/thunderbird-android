@@ -1,2 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_unknown_error_description_format">Aplikasi ini mendeteksi adanya potensi ancaman keamanan dan tidak melanjutkan koneksi ke <xliff:g id="serverName">%s</xliff:g>.
+\nJika Anda melanjutkannya, penyerang dapat mencuri informasi seperti kata sandi atau surel Anda.</string>
+    <string name="account_server_certificate_subject">Subjek</string>
+    <string name="account_server_certificate_issuer">Penerbit</string>
+    <string name="account_server_certificate_warning_title">Peringatan</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Kesalahan sertifikat</string>
+    <string name="account_server_certificate_button_back">Kembali (disarankan)</string>
+    <string name="account_server_certificate_button_advanced">Lanjutan</string>
+    <string name="account_server_certificate_button_continue">Terima risikonya dan lanjutkan</string>
+    <string name="account_server_certificate_section_title">Sertifikat server</string>
+    <string name="account_server_certificate_subject_alternative_names">Nama alternatif subjek</string>
+    <string name="account_server_certificate_not_valid_before">Tidak valid sebelum</string>
+    <string name="account_server_certificate_not_valid_after">Tidak valid sesudah</string>
+    <string name="account_server_certificate_fingerprints_section">Sidik jari</string>
+</resources>

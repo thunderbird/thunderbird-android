@@ -1,0 +1,10 @@
+- Añadido el manejo de imágenes dentro del menú contextual para hipervínculos.
+- Se ha añadido la posibilidad de reenviar los archivos adjuntos abiertos a nuevos mensajes de correo electrónico.
+- Mejora de la pantalla de error de certificado durante la configuración de la cuenta
+- Mejora de la importación de ajustes durante la configuración de la cuenta
+- Mejora de la interfaz de usuario y la interfaz de usuario de la configuración de cuentas
+- Mejora de la representación de la configuración de la cuenta en pantallas pequeñas
+- Mejoras en la interfaz de usuario y la interfaz de usuario para editar la configuración del servidor de cuentas.
+- Corrección del fallo de AlarmManager en Android 14
+- Cambios internos
+- Traducciones actualizadas

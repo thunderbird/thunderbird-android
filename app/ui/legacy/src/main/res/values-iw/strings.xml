@@ -989,4 +989,6 @@
     <string name="push_info_disable_push_text">אם אין לך צורך בהתראות מיידיות על הודעות חדשות, כדאי לך לכבות את מצב הדחיפה (Push) ולהשתמש במצב הזמנה לשידור (Polling). מצב זה בודק אם יש הודעות חדשות במרווחי זמן קבועים ולא דורש את ההתראה הקבועה.</string>
     <string name="action_copy_name_and_email_address">העתק שם וכתובת דוא\"ל</string>
     <string name="clipboard_label_name_and_email_address">שם וכתובת דוא\"ל</string>
+    <string name="push_notification_state_alarm_permission_missing">חסרות הרשאות לתזמון התרעות</string>
+    <string name="push_notification_grant_alarm_permission">לחצו למתן הרשאות.</string>
 </resources>

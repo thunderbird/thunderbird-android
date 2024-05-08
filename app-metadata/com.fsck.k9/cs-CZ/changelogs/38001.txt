@@ -1,0 +1,7 @@
+- Přidána podpora DNSSEC při hledání nastavení serveru během nastavení
+- Provedena změna, která zabrání některým softwarovým klávesnicím v psaní velkých písmen/automatické opravě e-mailových adres při nastavování účtu
+- Opraven pád při použití velmi dlouhého předmětu
+- Opraveno zobrazování chybových zpráv OAuth 2.0
+- Opraven vzácný pád při stahování přílohy
+- Přidán kód pro zakázání zlomů řádků v jednořádkových textových vstupech
+- Aktualizovány překlady

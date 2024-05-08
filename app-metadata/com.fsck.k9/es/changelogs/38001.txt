@@ -1,0 +1,7 @@
+- Añadido compatibilidad con DNSSEC al buscar la configuración del servidor.
+- Se ha realizado un cambio para evitar que algunos teclados de software pongan en mayúsculas o corrijan automáticamente las direcciones de correo electrónico.
+- Corregido un fallo cuando se usa un asunto muy largo.
+- Corregido la visualización de errores OAuth 2.0.
+- Corrección de un fallo poco frecuente al descargar un adjunto
+- Se ha añadido código para no permitir saltos de línea en texto de una sola línea.
+- Traducciones actualizadas

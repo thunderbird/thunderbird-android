@@ -1,2 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_unknown_error_description_format">Ứng dụng phát hiện một lỗ hổng bảo mật tiềm năng và không kết nối đến <xliff:g id="serverName">%s</xliff:g>.
+\nNếu bạn tiếp tục, kẻ xấu có thể lấy được thông tin cá nhân như mật khẩu và emails.</string>
+    <string name="account_server_certificate_warning_title">Cảnh báo</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Lỗi chứng chỉ</string>
+    <string name="account_server_certificate_button_back">Quay lại (khuyến nghị)</string>
+    <string name="account_server_certificate_button_advanced">Nâng cao</string>
+    <string name="account_server_certificate_button_continue">Chấp nhận rủi ro và tiếp tục</string>
+    <string name="account_server_certificate_section_title">Chứng chỉ máy chủ</string>
+    <string name="account_server_certificate_subject_alternative_names">Tên miền phụ</string>
+    <string name="account_server_certificate_not_valid_before">Không hợp lệ trước</string>
+    <string name="account_server_certificate_not_valid_after">Không hợp lệ sau</string>
+    <string name="account_server_certificate_subject">Chủ đề</string>
+    <string name="account_server_certificate_issuer">Bên cấp</string>
+    <string name="account_server_certificate_fingerprints_section">Dấu vân tay</string>
+</resources>

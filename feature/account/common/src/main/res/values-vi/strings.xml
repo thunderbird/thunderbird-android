@@ -3,4 +3,6 @@
     <string name="account_common_button_next">Kế tiếp</string>
     <string name="account_common_button_back">Quay lại</string>
     <string name="account_common_title">Thư K-9</string>
+    <string name="account_common_error_server_message">Máy chủ trả lại tin nhắn sau:
+\n%s</string>
 </resources>

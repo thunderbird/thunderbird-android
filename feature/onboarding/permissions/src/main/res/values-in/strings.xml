@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="onboarding_permissions_screen_title">Meningkatkan pengalaman</string>
+    <string name="onboarding_permissions_contacts_title">Kontak</string>
+    <string name="onboarding_permissions_contacts_description">Memungkinkan akses untuk dapat memberikan saran kontak dan menampilkan nama kontak dan foto.</string>
+    <string name="onboarding_permissions_notifications_title">Notifikasi</string>
+    <string name="onboarding_permissions_notifications_description">Menyalakan notifikasi sehingga Anda tidak melewatkan surel apa pun.</string>
+    <string name="onboarding_permissions_allow_button">Mengizinkan</string>
+    <string name="onboarding_permissions_skip_button">Lewati</string>
+</resources>

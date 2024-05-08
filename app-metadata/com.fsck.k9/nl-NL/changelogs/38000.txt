@@ -1,0 +1,7 @@
+- Nieuwe en verbeterde accountconfiguratie
+- Optie toegevoegd om terug te keren naar de berichtenlijst na het markeren van een bericht als ongelezen in de berichtweergave
+- Het is moeilijker geworden om per ongeluk veegacties te activeren in het scherm met de berichtenlijst
+- Verbeterde schermlezerervaring op verschillende plaatsen
+- IMAP: Ondersteuning toegevoegd voor het verzenden van de ID-opdracht (die vereist is door sommige e-mailproviders)
+- Diverse andere bugfixes en verbeteringen; Zie wijzigingen voor versies 6.7xx
+- Hebreeuwse en Koreaanse vertalingen verwijderd vanwege de onvolledige vertalingen; Vrijwillige vertalers welkom!

@@ -1,0 +1,7 @@
+- Aggiunto supporto DNSSEC durante la ricerca delle impostazioni del server durante la configurazione
+- Apportata una modifica per impedire ad alcune tastiere software di scrivere in maiuscolo/correggere automaticamente gli indirizzi e-mail nella configurazione dell'account
+- Risolto un crash quando veniva utilizzato un soggetto molto lungo
+- Risolto il problema relativo alla visualizzazione dei messaggi di errore OAuth 2.0
+- Risolto il raro crash durante il download di un allegato
+- Aggiunto codice per non consentire interruzioni di riga negli input di testo a riga singola
+- Traduzioni aggiornate

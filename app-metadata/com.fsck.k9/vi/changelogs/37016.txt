@@ -1,0 +1,5 @@
+- Sửa lỗi và trải nghiệm lúc lập tài khoản
+- Sửa lỗi sập do OpenKeychain 6.0.0
+- Đi đến phần tiêu đề hoặc nội dung khi mở đường dẫn mailto: URI
+- Bỏ tiếng Do Thái và tiếng Hàn vì ít hơn 70% chữ được dịch. Tình nguyện viên luôn được chào đón!
+- Cập nhật biên dịch

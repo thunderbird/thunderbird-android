@@ -1,0 +1,10 @@
+- Bildbearbeitung für Hyperlinks im Kontextmenü hinzugefügt
+- Geöffnete Anhänge können nun an neue E-Mails weitergeleitet werden
+- Verbesserte Anzeige von Zertifikatsfehlern bei der Kontoeinrichtung
+- Verbesserter Import von Einstellungen während der Kontoeinrichtung
+- Verbesserte Kontoeinrichtung UI/UX
+- Verbessertes Rendering der Kontoeinrichtung auf kleinen Bildschirmen
+- Verbesserte UI/UX für die Bearbeitung von Kontoservereinstellungen
+- Absturz des AlarmManagers unter Android 14 behoben
+- Interne Änderungen
+- Aktualisierte Übersetzungen

@@ -1,0 +1,5 @@
+- İttir: Tam alarmları zamanlama izni eksikse kullanıcıyı bilgilendir
+- "İstemci kimliğini gönder" ayarı "İstemci bilgilerini gönder" olarak yeniden adlandırıldı
+- IMAP: \NonExistent LIST yanıt özniteliği için destek eklendi
+- IMAP: MOVE uzantısı olmadan taşıdıktan sonra EXPUNGE komutunu ilet
+- Çeviriler güncellendi; İbranice çeviri eklendi

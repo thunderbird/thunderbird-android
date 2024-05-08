@@ -1,0 +1,7 @@
+- Dodano obsługę DNSSEC podczas wyszukiwania ustawień serwera podczas konfiguracji
+- Wprowadzono zmianę, aby uniemożliwić niektórym klawiaturom programowym pisanie wielkimi literami/automatyczne poprawianie adresów e-mail podczas konfiguracji konta
+- Naprawiono awarię, gdy używany był bardzo długi temat
+- Naprawiono wyświetlanie komunikatów o błędach OAuth 2.0
+- Naprawiono rzadką awarię podczas pobierania załącznika
+- Dodano kod uniemożliwiający łamanie wierszy w jednowierszowym wprowadzaniu tekstu
+- Zaktualizowano tłumaczenia

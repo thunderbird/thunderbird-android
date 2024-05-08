@@ -3,16 +3,16 @@
     <string name="settings_import_title">导入设置</string>
     <string name="settings_import_pick_document_button">选择文件</string>
     <string name="settings_import_button">导入</string>
-    <string name="settings_import_success_generic">配置导入成功</string>
+    <string name="settings_import_success_generic">设置已成功导入</string>
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
     <string name="settings_import_password_required">请输入密码</string>
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
     <string name="settings_import_authorization_required">请登录</string>
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
     <string name="settings_import_authorization_and_password_required">请登录并输入密码</string>
-    <string name="settings_import_failure">配置导入失败</string>
-    <string name="settings_import_read_failure">读取配置文件失败</string>
-    <string name="settings_import_partial_failure">导入部分配置失败</string>
+    <string name="settings_import_failure">导入设置失败</string>
+    <string name="settings_import_read_failure">读取设置文件失败</string>
+    <string name="settings_import_partial_failure">无法导入某些设置</string>
     <string name="settings_import_status_success">导入成功</string>
     <string name="settings_import_status_password_required">需要输入密码</string>
     <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
@@ -20,20 +20,20 @@
     <string name="settings_import_status_not_imported">没有导入</string>
     <string name="settings_import_status_error">导入失败</string>
     <string name="settings_import_later_button">之后</string>
-    <string name="settings_importing">正在导入设置……</string>
+    <string name="settings_importing">正在导入设置…</string>
     <plurals name="settings_import_password_prompt">
-        <item quantity="other">您需要提供服务器密码才能够使用账户 \"<xliff:g id="account">%s</xliff:g>\"。</item>
+        <item quantity="other">您需要提供服务器密码才能使用此账号 \"<xliff:g id="account">%s</xliff:g>\"。</item>
     </plurals>
     <string name="settings_import_incoming_server_password_hint">收件服务器密码</string>
     <string name="settings_import_outgoing_server_password_hint">发件服务器密码</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">发件服务器使用相同的密码</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">对发件服务器使用相同密码</string>
     <string name="settings_import_server_name_format">服务器名：<xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">要通过 K-9 Mail 使用这个电子邮件账户，你需要登录并授予应用访问你电子邮件的权限。</string>
+    <string name="settings_import_oauth_description">要在 K-9 Mail 中使用此电子邮件账号，您需要登录并授权应用访问您的电子邮件。</string>
     <string name="settings_import_oauth_sign_in">登录</string>
-    <string name="settings_import_oauth_sign_in_with_google">Google 登录</string>
-    <string name="settings_import_oauth_error_oauth_flow_canceled">授权被取消</string>
-    <string name="settings_import_oauth_error_oauth_flow_failed">授权失败，错误信息如下：<xliff:g id="error">%s</xliff:g></string>
-    <string name="settings_import_oauth_error_oauth_not_supported">此提供商目前不支持 OAuth 2.0.</string>
-    <string name="settings_import_oauth_error_browser_not_found">应用找不到一个浏览器来授予访问你账户的权限。</string>
+    <string name="settings_import_oauth_sign_in_with_google">用 Google 登录</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">授权已取消</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">授权失败，错误如下：<xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_not_supported">此提供者目前不支持 OAuth 2.0。</string>
+    <string name="settings_import_oauth_error_browser_not_found">此应用找不到用于授权访问您账号的浏览器。</string>
     <string name="settings_import_general_settings_item">常规设置</string>
 </resources>

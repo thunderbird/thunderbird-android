@@ -21,7 +21,7 @@
     <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
     <string name="account_server_settings_protocol_type_label">Protocole</string>
     <string name="account_server_settings_password_authentication_subtitle">Déverrouillez pour afficher votre mot de passe</string>
-    <string name="account_server_settings_username_label">Non d\'utilisateur</string>
+    <string name="account_server_settings_username_label">Nom d’utilisateur</string>
     <string name="account_server_settings_validation_error_port_invalid">Le port est invalide (entre 1 et 65535).</string>
     <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
     <string name="account_server_settings_client_certificate_label">Certificat client</string>
@@ -31,4 +31,5 @@
     <string name="account_server_settings_server_label">Serveur</string>
     <string name="account_server_settings_security_label">Sécurité</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Adresse IP ou nom d’hôte invalide</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">Envoyer les renseignements du client</string>
 </resources>

@@ -2,16 +2,16 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_server_certificate_warning_title">警告</string>
     <string name="account_server_certificate_unknown_error_subtitle">证书错误</string>
-    <string name="account_server_certificate_unknown_error_description_format">K-9 Mail在连接到<xliff:g id="serverName">%s</xliff:g>时检测到潜在的安全威胁。
-\n如果你继续，攻击者可能窃取你的信息，如密码和电子邮箱地址。</string>
+    <string name="account_server_certificate_unknown_error_description_format">此应用检测到潜在的安全威胁，没有继续连接到 <xliff:g id="serverName">%s</xliff:g>。
+\n如果您继续，攻击者可能会试图窃取您的密码或电子邮件等信息。</string>
     <string name="account_server_certificate_button_continue">接受风险并继续</string>
     <string name="account_server_certificate_button_back">返回（推荐）</string>
-    <string name="account_server_certificate_button_advanced">高级设置</string>
+    <string name="account_server_certificate_button_advanced">高级</string>
     <string name="account_server_certificate_section_title">服务器证书</string>
-    <string name="account_server_certificate_subject_alternative_names">证书持有者身份</string>
-    <string name="account_server_certificate_not_valid_before">在此之前无效</string>
-    <string name="account_server_certificate_not_valid_after">在此之后无效</string>
-    <string name="account_server_certificate_subject">主体</string>
+    <string name="account_server_certificate_subject_alternative_names">主题备用名称</string>
+    <string name="account_server_certificate_not_valid_before">此前无效</string>
+    <string name="account_server_certificate_not_valid_after">此后无效</string>
+    <string name="account_server_certificate_subject">主题</string>
     <string name="account_server_certificate_issuer">颁发者</string>
     <string name="account_server_certificate_fingerprints_section">指纹</string>
 </resources>
