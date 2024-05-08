@@ -73,7 +73,7 @@ internal fun TextFieldOutlinedWithTrailingIconPreview() {
         TextFieldOutlined(
             value = "",
             onValueChange = {},
-            trailingIcon = { Icon(imageVector = Icons.Filled.User) },
+            trailingIcon = { Icon(imageVector = Icons.Outlined.AccountCircle) },
             isRequired = true,
         )
     }
