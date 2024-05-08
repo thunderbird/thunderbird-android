@@ -57,11 +57,6 @@ class AboutFragment : Fragment() {
             openUrl(getString(R.string.user_forum_url))
         }
 
-        val fediverseLayout = view.findViewById<View>(R.id.fediverseLayout)
-        fediverseLayout.setOnClickListener {
-            openUrl(getString(R.string.fediverse_url))
-        }
-
         val manager = LinearLayoutManager(view.context)
         val librariesRecyclerView = view.findViewById<RecyclerView>(R.id.libraries)
         librariesRecyclerView.apply {
