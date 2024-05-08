@@ -25,9 +25,7 @@ class RecipientMvpView(private val activity: MessageCompose) : View.OnFocusChang
     private val ccView: RecipientSelectView = activity.findViewById(R.id.cc)
     private val bccView: RecipientSelectView = activity.findViewById(R.id.bcc)
     private val ccWrapper: View = activity.findViewById(R.id.cc_wrapper)
-    private val ccDivider: View = activity.findViewById(R.id.cc_divider)
     private val bccWrapper: View = activity.findViewById(R.id.bcc_wrapper)
-    private val bccDivider: View = activity.findViewById(R.id.bcc_divider)
     private val recipientExpanderContainer: ViewAnimator = activity.findViewById(R.id.recipient_expander_container)
     private val cryptoStatusView: ToolableViewAnimator = activity.findViewById(R.id.crypto_status)
     private val cryptoSpecialModeIndicator: ToolableViewAnimator = activity.findViewById(R.id.crypto_special_mode)
@@ -241,12 +239,10 @@ class RecipientMvpView(private val activity: MessageCompose) : View.OnFocusChang
 
     fun setCcVisibility(visible: Boolean) {
         ccWrapper.isVisible = visible
-        ccDivider.isVisible = visible
     }
 
     fun setBccVisibility(visible: Boolean) {
         bccWrapper.isVisible = visible
-        bccDivider.isVisible = visible
     }
 
     fun setRecipientExpanderVisibility(visible: Boolean) {

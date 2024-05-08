@@ -17,7 +17,6 @@ private const val VIEW_INDEX_REPLY_TO_EXPANDER_HIDDEN = 1
 class ReplyToView(activity: MessageCompose) {
     private val replyToView: RecipientSelectView = activity.findViewById(R.id.reply_to)
     private val replyToWrapper: View = activity.findViewById(R.id.reply_to_wrapper)
-    private val replyToDivider: View = activity.findViewById(R.id.reply_to_divider)
     private val replyToExpanderContainer: ViewAnimator = activity.findViewById(R.id.reply_to_expander_container)
     private val replyToExpander: View = activity.findViewById(R.id.reply_to_expander)
 
@@ -37,7 +36,6 @@ class ReplyToView(activity: MessageCompose) {
     var isVisible: Boolean
         get() = replyToWrapper.isVisible
         set(visible) {
-            replyToDivider.isVisible = visible
             replyToView.isVisible = visible
             replyToWrapper.isVisible = visible
 

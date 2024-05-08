@@ -192,13 +192,6 @@
 
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:visibility="gone"
-        android:id="@+id/reply_to_divider"
-        android:background="?android:attr/listDivider" />
-
     <LinearLayout
         android:id="@+id/reply_to_wrapper"
         android:visibility="gone"
@@ -238,11 +231,6 @@
             />
 
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider" />
 
     <RelativeLayout
         android:id="@+id/to_wrapper"
@@ -311,11 +299,6 @@
 
     </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider" />
-
     <LinearLayout
         android:id="@+id/cc_wrapper"
         android:visibility="gone"
@@ -356,13 +339,6 @@
 
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:visibility="gone"
-        android:id="@+id/cc_divider"
-        android:background="?android:attr/listDivider" />
-
     <LinearLayout
         android:id="@+id/bcc_wrapper"
         android:visibility="gone"
@@ -402,12 +378,5 @@
             />
 
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:visibility="gone"
-        android:id="@+id/bcc_divider"
-        android:background="?android:attr/listDivider" />
 
 </LinearLayout>
