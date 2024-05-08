@@ -7,7 +7,7 @@
     android:title="@string/account_settings_title_fmt">
 
     <PreferenceScreen
-        android:icon="@drawable/ic_cog"
+        android:icon="@drawable/ic_settings"
         android:key="account_settings"
         android:title="@string/account_settings_general_title">
 
@@ -25,7 +25,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:icon="@drawable/ic_opened_envelope"
+        android:icon="@drawable/ic_mark_email_read"
         android:key="reading_mail"
         android:title="@string/account_settings_reading_mail">
 
@@ -45,7 +45,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:icon="@drawable/ic_preferences_check_mail"
+        android:icon="@drawable/ic_sync"
         android:key="incoming_prefs"
         android:title="@string/account_settings_sync">
 
@@ -152,7 +152,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:icon="@drawable/ic_pencil"
+        android:icon="@drawable/ic_edit"
         android:key="composing"
         android:title="@string/account_settings_composition">
 
@@ -378,7 +378,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:icon="@drawable/ic_magnify"
+        android:icon="@drawable/ic_search"
         android:key="search"
         android:title="@string/account_settings_search">
 
@@ -393,7 +393,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:icon="@drawable/ic_preferences_crypto"
+        android:icon="@drawable/ic_lock"
         android:key="openpgp"
         android:title="@string/account_settings_crypto">
 

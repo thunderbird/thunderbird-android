@@ -32,7 +32,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/compose_action"
             android:scaleType="center"
-            android:src="@drawable/ic_pencil" />
+            android:src="@drawable/ic_edit" />
 
     </LinearLayout>
 

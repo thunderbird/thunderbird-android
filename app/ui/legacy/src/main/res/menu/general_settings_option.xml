@@ -5,7 +5,7 @@
     <item
         android:id="@+id/search"
         android:title="@string/search_action"
-        android:icon="@drawable/ic_magnify"
+        android:icon="@drawable/ic_search"
         app:showAsAction="collapseActionView|ifRoom"
         app:actionViewClass="com.bytehamster.lib.preferencesearch.SearchPreferenceActionView" />
 

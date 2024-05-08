@@ -24,7 +24,7 @@
             android:layout_height="40dp"
             android:contentDescription="@string/account_settings_action"
             android:padding="8dp"
-            app:srcCompat="@drawable/ic_cog" />
+            app:srcCompat="@drawable/ic_settings" />
 
         <TextView
             android:id="@+id/text"

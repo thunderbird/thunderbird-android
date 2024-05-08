@@ -37,7 +37,7 @@ class K9CoreResourceProvider(private val context: Context) : CoreResourceProvide
 
     override fun outboxFolderName(): String = context.getString(R.string.special_mailbox_name_outbox)
 
-    override val iconPushNotification: Int = Icons.Outlined.PushNotification
+    override val iconPushNotification: Int = Icons.Outlined.Notifications
 
     override fun pushNotificationText(notificationState: PushNotificationState): String {
         val resId = when (notificationState) {

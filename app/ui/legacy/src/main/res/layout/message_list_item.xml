@@ -24,7 +24,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/top_guideline"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/ic_check_circle_large" />
+        app:srcCompat="@drawable/ic_check_circle" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/contact_picture"
@@ -37,7 +37,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/top_guideline"
         app:layout_constraintVertical_bias="0.0"
-        tools:src="@drawable/ic_contact_picture" />
+        tools:src="@drawable/ic_account_circle" />
 
     <TextView
         android:id="@+id/preview"

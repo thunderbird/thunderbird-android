@@ -25,7 +25,7 @@
         android:layout_marginStart="16dp"
         android:contentDescription="@null"
         android:focusable="false"
-        app:srcCompat="@drawable/ic_import_status"
+        app:srcCompat="@drawable/settings_import_import_status"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

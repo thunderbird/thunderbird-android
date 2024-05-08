@@ -33,7 +33,7 @@
         android:layout_margin="@dimen/floatingActionButtonMargin"
         android:contentDescription="@string/compose_action"
         app:layout_behavior="com.fsck.k9.ui.fab.HideFabOnScrollBehavior"
-        app:srcCompat="@drawable/ic_pencil"
+        app:srcCompat="@drawable/ic_edit"
         />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

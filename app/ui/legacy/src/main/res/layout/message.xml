@@ -44,7 +44,7 @@ the 'message view theme' setting).
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:text="@string/message_view_show_remote_images_action"
-                    app:icon="@drawable/ic_attachment_image" />
+                    app:icon="@drawable/ic_image" />
 
             </FrameLayout>
 

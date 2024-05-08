@@ -214,7 +214,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
                 ContactPictureLoader contactsPictureLoader = ContactPicture.getContactPictureLoader();
                 contactsPictureLoader.setContactPicture(contactPictureView, fromAddress);
             } else {
-                contactPictureView.setImageResource(Icons.Filled.ContactPicture);
+                contactPictureView.setImageResource(Icons.Outlined.AccountCircle);
             }
         } else {
             contactPictureView.setVisibility(View.GONE);
@@ -278,10 +278,10 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private int getReplyImageResource(@NonNull ReplyAction replyAction) {
         switch (replyAction) {
             case REPLY: {
-                return Icons.Filled.Reply;
+                return Icons.Outlined.Reply;
             }
             case REPLY_ALL: {
-                return Icons.Filled.ReplyAll;
+                return Icons.Outlined.ReplyAll;
             }
             default: {
                 throw new IllegalStateException("Unknown reply action: " + replyAction);

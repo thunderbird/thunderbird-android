@@ -13,7 +13,7 @@
         android:layout_height="36dp"
         android:layout_marginStart="12dp"
         android:id="@+id/contact_photo"
-        tools:src="@drawable/ic_contact_picture"
+        tools:src="@drawable/ic_account_circle"
         />
 
     <LinearLayout

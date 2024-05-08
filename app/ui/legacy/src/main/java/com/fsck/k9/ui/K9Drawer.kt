@@ -288,7 +288,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         sliderView.addStickyFooterItem(
             PrimaryDrawerItem().apply {
                 nameRes = R.string.preferences_action
-                iconRes = Icons.Filled.Cog
+                iconRes = Icons.Outlined.Settings
                 identifier = DRAWER_ID_PREFERENCES
                 isSelectable = false
             },
@@ -361,7 +361,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
         folderList.unifiedInbox?.let { unifiedInbox ->
             val unifiedInboxItem = PrimaryDrawerItem().apply {
-                iconRes = Icons.Filled.InboxMultiple
+                iconRes = Icons.Outlined.AllInbox
                 identifier = DRAWER_ID_UNIFIED_INBOX
                 nameRes = R.string.integrated_inbox_title
                 selectedColorInt = selectedBackgroundColor

@@ -242,9 +242,9 @@ class MessageViewFragment :
             }
 
             val drawableId = if (isMessageRead) {
-                Icons.Filled.MarkNew
+                Icons.Outlined.MarkEmailUnread
             } else {
-                Icons.Filled.OpenedEnvelope
+                Icons.Outlined.MarkEmailRead
             }
 
             val drawable = ContextCompat.getDrawable(requireContext(), drawableId)

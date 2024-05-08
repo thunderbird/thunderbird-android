@@ -8,7 +8,7 @@
     search:ignore="true">
 
     <PreferenceScreen
-        android:icon="@drawable/ic_tv"
+        android:icon="@drawable/ic_monitor"
         android:key="display_preferences"
         android:title="@string/display_preferences"
         search:ignore="true">
@@ -305,7 +305,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:icon="@drawable/ic_touch"
+        android:icon="@drawable/ic_touch_app"
         android:key="interaction_preferences"
         android:title="@string/interaction_preferences"
         search:ignore="true">
@@ -415,7 +415,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:icon="@drawable/ic_arrow_up_down"
+        android:icon="@drawable/ic_swap_vert"
         android:key="network_preferences"
         android:title="@string/network_preferences"
         search:ignore="true">
@@ -431,7 +431,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:icon="@drawable/ic_shield"
+        android:icon="@drawable/ic_security"
         android:key="privacy_preferences"
         android:title="@string/privacy_preferences"
         search:ignore="true">
@@ -449,7 +449,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:icon="@drawable/ic_bug"
+        android:icon="@drawable/ic_bug_report"
         android:key="debug_preferences"
         android:title="@string/debug_preferences"
         search:ignore="true">

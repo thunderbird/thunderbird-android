@@ -88,7 +88,7 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
             addAction(
                 text = getString(R.string.general_settings_title),
                 navigationAction = R.id.action_settingsListScreen_to_generalSettingsScreen,
-                icon = Icons.Filled.Cog,
+                icon = Icons.Outlined.Settings,
             )
 
             addSection(title = getString(R.string.accounts_title)) {
@@ -100,7 +100,7 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
                 addAction(
                     text = getString(R.string.add_account_action),
                     navigationAction = R.id.action_settingsListScreen_to_addAccountScreen,
-                    icon = Icons.Outlined.AccountPlus,
+                    icon = Icons.Outlined.Add,
                 )
             }
 
@@ -108,13 +108,13 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
                 addAction(
                     text = getString(R.string.settings_export_title),
                     navigationAction = R.id.action_settingsListScreen_to_settingsExportScreen,
-                    icon = Icons.Outlined.Export,
+                    icon = Icons.Outlined.Upload,
                 )
 
                 addAction(
                     text = getString(SettingsImportR.string.settings_import_title),
                     navigationAction = R.id.action_settingsListScreen_to_settingsImportScreen,
-                    icon = Icons.Outlined.Import,
+                    icon = Icons.Outlined.Download,
                 )
             }
 
@@ -128,7 +128,7 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
                 addUrlAction(
                     text = getString(R.string.user_manual_title),
                     url = getString(R.string.user_manual_url),
-                    icon = Icons.Filled.OpenBook,
+                    icon = Icons.Outlined.MenuBook,
                 )
 
                 addUrlAction(

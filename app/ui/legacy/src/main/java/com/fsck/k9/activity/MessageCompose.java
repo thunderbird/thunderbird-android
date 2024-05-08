@@ -1846,7 +1846,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             if (isLoadingComplete) {
                 if (attachment.isSupportedImage()) {
                     ImageView attachmentTypeView = view.findViewById(R.id.attachment_type);
-                    attachmentTypeView.setImageResource(Icons.Filled.AttachmentImage);
+                    attachmentTypeView.setImageResource(Icons.Outlined.Image);
 
                     ImageView preview = view.findViewById(R.id.attachment_preview);
                     preview.setVisibility(View.VISIBLE);

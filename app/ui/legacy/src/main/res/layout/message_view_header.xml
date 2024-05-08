@@ -84,7 +84,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_contact_picture" />
+            tools:src="@drawable/ic_account_circle" />
 
         <TextView
             android:id="@+id/from"
