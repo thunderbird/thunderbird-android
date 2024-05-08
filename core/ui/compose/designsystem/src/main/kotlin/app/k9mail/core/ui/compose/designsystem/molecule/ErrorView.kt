@@ -45,7 +45,7 @@ fun ErrorView(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Icon(
-                    imageVector = Icons.Filled.error,
+                    imageVector = Icons.Filled.Error,
                     tint = MainTheme.colors.error,
                 )
                 Spacer(modifier = Modifier.height(MainTheme.spacings.double))

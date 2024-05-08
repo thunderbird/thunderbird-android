@@ -11,7 +11,7 @@ internal fun ButtonIconPreview() {
     PreviewWithThemes {
         ButtonIcon(
             onClick = { },
-            imageVector = Icons.Outlined.info,
+            imageVector = Icons.Outlined.Info,
         )
     }
 }
@@ -22,7 +22,7 @@ internal fun ButtonIconFilledPreview() {
     PreviewWithThemes {
         ButtonIcon(
             onClick = { },
-            imageVector = Icons.Filled.cancel,
+            imageVector = Icons.Filled.Cancel,
         )
     }
 }

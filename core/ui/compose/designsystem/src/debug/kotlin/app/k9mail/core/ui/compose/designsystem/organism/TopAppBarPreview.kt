@@ -25,15 +25,15 @@ internal fun TopAppBarWithActionsPreview() {
             actions = {
                 ButtonIcon(
                     onClick = {},
-                    imageVector = Icons.Outlined.info,
+                    imageVector = Icons.Outlined.Info,
                 )
                 ButtonIcon(
                     onClick = {},
-                    imageVector = Icons.Outlined.check,
+                    imageVector = Icons.Outlined.Check,
                 )
                 ButtonIcon(
                     onClick = {},
-                    imageVector = Icons.Outlined.celebration,
+                    imageVector = Icons.Outlined.Celebration,
                 )
             },
         )

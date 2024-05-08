@@ -18,70 +18,66 @@ import androidx.compose.material.icons.outlined.ExpandLess
 import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Menu
-import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material.icons.Icons as MaterialIcons
 
 // We're using getters so not all icons are loaded into memory as soon as one of the nested objects is accessed.
 object Icons {
     object Filled {
-        val error: ImageVector
+        val Error: ImageVector
             get() = MaterialIcons.Filled.Error
 
-        val inbox: ImageVector
+        val Inbox: ImageVector
             get() = MaterialIcons.Filled.MoveToInbox
 
-        val outbox: ImageVector
+        val Outbox: ImageVector
             get() = MaterialIcons.Filled.Outbox
 
-        val security: ImageVector
+        val Security: ImageVector
             get() = MaterialIcons.Filled.Security
 
-        val passwordVisibility: ImageVector
+        val PasswordVisibility: ImageVector
             get() = MaterialIcons.Filled.Visibility
 
-        val passwordVisibilityOff: ImageVector
+        val PasswordVisibilityOff: ImageVector
             get() = MaterialIcons.Filled.VisibilityOff
 
-        val user: ImageVector
+        val User: ImageVector
             get() = MaterialIcons.Filled.AccountCircle
 
-        val check: ImageVector
+        val Check: ImageVector
             get() = MaterialIcons.Filled.CheckCircle
 
-        val cancel: ImageVector
+        val Cancel: ImageVector
             get() = MaterialIcons.Filled.Cancel
     }
 
     object Outlined {
-        val arrowBack: ImageVector
+        val ArrowBack: ImageVector
             get() = MaterialIcons.AutoMirrored.Outlined.ArrowBack
 
-        val arrowDropDown: ImageVector
+        val ArrowDropDown: ImageVector
             get() = MaterialIcons.Outlined.ArrowDropDown
 
-        val celebration: ImageVector
+        val Celebration: ImageVector
             get() = MaterialIcons.Outlined.Celebration
 
-        val menu: ImageVector
+        val Menu: ImageVector
             get() = MaterialIcons.Outlined.Menu
 
-        val check: ImageVector
+        val Check: ImageVector
             get() = MaterialIcons.Outlined.Check
 
-        val info: ImageVector
+        val Info: ImageVector
             get() = MaterialIcons.Outlined.Info
 
-        val warning: ImageVector
-            get() = MaterialIcons.Outlined.WarningAmber
-
-        val error: ImageVector
+        val Error: ImageVector
             get() = MaterialIcons.Outlined.ErrorOutline
 
-        val expandMore: ImageVector
+        val ExpandMore: ImageVector
             get() = MaterialIcons.Outlined.ExpandMore
 
-        val expandLess: ImageVector
+        val ExpandLess: ImageVector
             get() = MaterialIcons.Outlined.ExpandLess
     }
 }

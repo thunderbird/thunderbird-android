@@ -70,7 +70,7 @@ internal fun ScaffoldWitFabPreview() {
             floatingActionButton = {
                 ButtonIcon(
                     onClick = { },
-                    imageVector = Icons.Outlined.check,
+                    imageVector = Icons.Outlined.Check,
                 )
             },
         ) { contentPadding ->
