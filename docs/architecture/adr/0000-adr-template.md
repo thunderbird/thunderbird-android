@@ -1,4 +1,4 @@
-# [Descriptive Title in Title Case]
+# Descriptive Title in Title Case
 
 - Issue: [#NNNN](https://github.com/thunderbird/thunderbird-android/issues/NNNN)
 - Pull Request: [#NNNN](https://github.com/thunderbird/thunderbird-android/pull/NNNN)
