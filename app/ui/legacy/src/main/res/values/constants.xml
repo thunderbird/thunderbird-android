@@ -7,6 +7,4 @@
     <string name="app_authors_url" translatable="false">https://github.com/thunderbird/thunderbird-android/graphs/contributors</string>
     <string name="app_source_url" translatable="false">https://github.com/thunderbird/thunderbird-android</string>
     <string name="app_license_url" translatable="false">https://www.apache.org/licenses/LICENSE-2.0</string>
-    <string name="fediverse_handle" translatable="false">\@k9mail@fosstodon.org</string>
-    <string name="fediverse_url" translatable="false">https://fosstodon.org/@k9mail</string>
 </resources>
