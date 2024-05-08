@@ -24,7 +24,8 @@ the 'composer theme' setting).
             android:layout_width="match_parent"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:background="?attr/colorSurfaceContainerLow"
+            android:background="@drawable/message_compose_header_row_background"
+            android:addStatesFromChildren="true"
             android:minHeight="50dp">
 
             <EditText

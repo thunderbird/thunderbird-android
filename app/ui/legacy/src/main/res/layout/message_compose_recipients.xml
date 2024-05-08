@@ -5,14 +5,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/colorSurfaceContainerLow"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginStart="12dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="0dp"
+        android:background="@drawable/message_compose_header_row_background"
+        android:addStatesFromChildren="true"
         android:minHeight="50dp"
         android:animateLayoutChanges="true">
 
@@ -197,8 +199,10 @@
         android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_marginLeft="12dip"
-        android:layout_marginRight="12dip"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:background="@drawable/message_compose_header_row_background"
+        android:addStatesFromChildren="true"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:minHeight="50dp">
@@ -236,8 +240,10 @@
         android:id="@+id/to_wrapper"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:background="@drawable/message_compose_header_row_background"
+        android:addStatesFromChildren="true"
         android:minHeight="50dp">
 
         <TextView
@@ -304,8 +310,10 @@
         android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_marginLeft="12dip"
-        android:layout_marginRight="12dip"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:background="@drawable/message_compose_header_row_background"
+        android:addStatesFromChildren="true"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:minHeight="50dp">
@@ -344,8 +352,10 @@
         android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_marginLeft="12dip"
-        android:layout_marginRight="12dip"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:background="@drawable/message_compose_header_row_background"
+        android:addStatesFromChildren="true"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:minHeight="50dp">
