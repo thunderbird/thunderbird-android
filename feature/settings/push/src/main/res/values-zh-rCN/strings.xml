@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_push_title">推送文件夹</string>
+    <string name="settings_push_option_all">全部</string>
+    <string name="settings_push_option_first_class">仅 1 级文件夹</string>
+    <string name="settings_push_option_first_and_second_class">1 级和 2 级文件夹</string>
+    <string name="settings_push_option_all_except_second_class">除 2 级文件夹外的所有文件夹</string>
+    <string name="settings_push_option_none">无</string>
+    <string name="settings_push_grant_permission_button">授予权限</string>
+    <string name="settings_push_alarm_permission_required">需要权限 (<xliff:g id="currentValue" example="None">%s</xliff:g>)</string>
+    <string name="settings_push_permission_info_text">K-9 Mail 需要定期唤醒以保持推送连接继续存在。要使其正常工作，您需要授予设置闹钟的权限。</string>
+</resources>

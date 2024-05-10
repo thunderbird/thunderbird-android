@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_push_option_first_class">Tylko foldery klasy 1</string>
+    <string name="settings_push_option_first_and_second_class">Foldery klasy 1 oraz 2</string>
+    <string name="settings_push_option_none">Żadne</string>
+    <string name="settings_push_grant_permission_button">Przyznaj uprawnienia</string>
+    <string name="settings_push_title">Sprawdzaj przez push</string>
+    <string name="settings_push_option_all">Wszystkie</string>
+    <string name="settings_push_option_all_except_second_class">Wszystkie poza klasą 2</string>
+    <string name="settings_push_alarm_permission_required">Wymagane uprawnienia (<xliff:g id="currentValue" example="Żadne">%s</xliff:g>)</string>
+    <string name="settings_push_permission_info_text">K-9 Mail musi regularnie się budzić, aby utrzymać połączenia push przy życiu. Aby to zadziałało, musisz przyznać uprawnienia do planowania alarmów.</string>
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_push_option_first_class">Seulement les dossiers de 1re classe</string>
+    <string name="settings_push_option_none">Aucun</string>
+    <string name="settings_push_alarm_permission_required">Autorisation nécessaire (<xliff:g id="currentValue" example="Aucun">%s</xliff:g>)</string>
+    <string name="settings_push_grant_permission_button">Autoriser</string>
+    <string name="settings_push_permission_info_text">Courriel K-9 Mail doit se réveiller régulièrement pour maintenir les connexions Pousser actives. Pour que cela fonctionne, vous devez l’autoriser à programmer des alarmes.</string>
+    <string name="settings_push_title">Dossiers à pousser</string>
+    <string name="settings_push_option_all">Tous</string>
+    <string name="settings_push_option_first_and_second_class">Dossiers de 1re et 2e classes</string>
+    <string name="settings_push_option_all_except_second_class">Tous sauf les dossiers de 2e classe</string>
+</resources>

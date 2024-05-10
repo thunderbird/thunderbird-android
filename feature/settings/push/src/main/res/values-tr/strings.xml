@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_push_title">Gönderme klasörleri</string>
+    <string name="settings_push_option_first_class">Yalnızca 1. Sınıf klasörler</string>
+    <string name="settings_push_option_first_and_second_class">1. ve 2. Sınıf klasörler</string>
+    <string name="settings_push_option_all_except_second_class">2. Sınıf klasörler dışında tümü</string>
+    <string name="settings_push_permission_info_text">K-9 Posta\'nın gönderme bağlantılarını canlı tutmak için düzenli olarak uyanması gerekir. Bunun çalışması için alarmları zamanlama izni vermeniz gerekir.</string>
+    <string name="settings_push_option_all">Tümü</string>
+    <string name="settings_push_option_none">Hiçbiri</string>
+    <string name="settings_push_alarm_permission_required">İzin gerekli (<xliff:g id="currentValue" example="None">%s</xliff:g>)</string>
+    <string name="settings_push_grant_permission_button">İzin ver</string>
+</resources>
