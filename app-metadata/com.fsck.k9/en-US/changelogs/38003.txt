@@ -1,0 +1,2 @@
+- Ask for permission to schedule alarms before allowing to enable Push on Android 12+
+- Updated translations

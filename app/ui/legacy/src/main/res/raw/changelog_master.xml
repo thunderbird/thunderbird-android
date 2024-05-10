@@ -5,6 +5,10 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.803" versioncode="38003" date="2024-05-10">
+        <change>Ask for permission to schedule alarms before allowing to enable Push on Android 12+</change>
+        <change>Updated translations</change>
+    </release>
     <release version="6.802" versioncode="38002" date="2024-04-05">
         <change>Push: Notify user if permission to schedule exact alarms is missing</change>
         <change>Renamed "Send client ID" setting to "Send client information"</change>
