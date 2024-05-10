@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_push_option_first_and_second_class">پوشه‌های کلاس نخست و دوم</string>
+    <string name="settings_push_option_all_except_second_class">همه جز پوشه‌های کلاس دوم</string>
+    <string name="settings_push_option_none">هیچ کدام</string>
+    <string name="settings_push_option_all">همه</string>
+    <string name="settings_push_option_first_class">فقط پوشه‌های کلاس نخست</string>
+    <string name="settings_push_grant_permission_button">اعطای اجازه</string>
+    <string name="settings_push_title">پوشه‌های ارسالی</string>
+    <string name="settings_push_alarm_permission_required">نیازمند اجازه (<xliff:g id="currentValue" example="None">%s</xliff:g>)</string>
+    <string name="settings_push_permission_info_text">کی۹ باید برای زنده نگه داشتن اتّصال‌های ارسالی مرتّباً بیدار شود. برای این کار باید اجازهٔ زمان‌بندی هشدارها را بدهید.</string>
+</resources>

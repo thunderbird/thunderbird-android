@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_push_option_all">Tutte</string>
+    <string name="settings_push_option_first_class">Solo le cartelle di 1a classe</string>
+    <string name="settings_push_option_first_and_second_class">Cartelle di 1a e 2a classe</string>
+    <string name="settings_push_option_all_except_second_class">Tutte eccetto le cartelle di 2a classe</string>
+    <string name="settings_push_option_none">Nessuna</string>
+    <string name="settings_push_grant_permission_button">Concedi l\'autorizzazione</string>
+    <string name="settings_push_title">Cartelle push</string>
+</resources>

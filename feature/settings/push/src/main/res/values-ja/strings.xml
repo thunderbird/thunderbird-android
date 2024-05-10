@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_push_option_first_and_second_class">1st および 2nd クラスフォルダー</string>
+    <string name="settings_push_option_all_except_second_class">2nd クラスフォルダーを除くすべて</string>
+    <string name="settings_push_option_none">なし</string>
+    <string name="settings_push_title">プッシュフォルダー</string>
+    <string name="settings_push_option_all">すべて</string>
+    <string name="settings_push_option_first_class">1st クラスフォルダーのみ</string>
+    <string name="settings_push_grant_permission_button">権限を付与</string>
+</resources>

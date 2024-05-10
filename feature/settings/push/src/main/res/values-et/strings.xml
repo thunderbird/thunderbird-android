@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_push_title">Tõuketeenuse kaustad</string>
+    <string name="settings_push_option_all">Kõik</string>
+    <string name="settings_push_option_first_class">Vaid esimese järgu kaustad</string>
+    <string name="settings_push_option_first_and_second_class">Esimese ja teise järgu kaustad</string>
+    <string name="settings_push_option_all_except_second_class">Kõik peale teise järgu kaustade</string>
+    <string name="settings_push_option_none">Määramata</string>
+    <string name="settings_push_alarm_permission_required">Õigused on vajalikud (<xliff:g id="currentValue" example="None">%s</xliff:g>)</string>
+    <string name="settings_push_grant_permission_button">Anna õigused</string>
+    <string name="settings_push_permission_info_text">Selleks, et hoida tõuketeenuste jaoks vajalik võrguühendus toimivana peab K-9 Mail aeg-ajalt ennast tööle panema. Et selline lahendus toimiks palun anna talle õigus hallata äratusi.</string>
+</resources>
