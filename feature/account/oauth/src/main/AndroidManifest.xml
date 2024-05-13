@@ -4,10 +4,6 @@
 
     <application>
 
-        <activity
-            android:name="app.k9mail.feature.settings.import.ui.OAuthFlowActivity"
-            android:label="@string/settings_import_oauth_sign_in" />
-
         <!-- We remove this activity entry to avoid all modules depending on this one having to define an override for
              the manifest placeholder 'appAuthRedirectScheme'. The entry is added back in :app:common -->
         <activity

@@ -8,15 +8,6 @@ android {
     namespace = "app.k9mail.feature.settings.importing"
     resourcePrefix = "settings_import_"
 
-    buildTypes {
-        debug {
-            manifestPlaceholders["appAuthRedirectScheme"] = "FIXME: override this in your app project"
-        }
-        release {
-            manifestPlaceholders["appAuthRedirectScheme"] = "FIXME: override this in your app project"
-        }
-    }
-
     lint {
         baseline = file("lint-baseline.xml")
     }

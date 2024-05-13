@@ -24,6 +24,7 @@ dependencies {
     implementation(libs.preferencex)
     implementation(libs.timber)
     implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.appauth)
 
     implementation(libs.glide)
     annotationProcessor(libs.glide.compiler)
@@ -40,13 +41,4 @@ dependencies {
 
 android {
     namespace = "com.fsck.k9.common"
-
-    buildTypes {
-        debug {
-            manifestPlaceholders["appAuthRedirectScheme"] = "FIXME: override this in your app project"
-        }
-        release {
-            manifestPlaceholders["appAuthRedirectScheme"] = "FIXME: override this in your app project"
-        }
-    }
 }

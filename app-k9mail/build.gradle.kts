@@ -142,8 +142,6 @@ android {
                 "OAUTH_MICROSOFT_REDIRECT_URI",
                 "\"msauth://com.fsck.k9/Dx8yUsuhyU3dYYba1aA16Wxu5eM%3D\"",
             )
-
-            manifestPlaceholders["appAuthRedirectScheme"] = "com.fsck.k9"
         }
 
         debug {
@@ -174,8 +172,6 @@ android {
                 "OAUTH_MICROSOFT_REDIRECT_URI",
                 "\"msauth://com.fsck.k9.debug/VZF2DYuLYAu4TurFd6usQB2JPts%3D\"",
             )
-
-            manifestPlaceholders["appAuthRedirectScheme"] = "com.fsck.k9.debug"
         }
     }
 
