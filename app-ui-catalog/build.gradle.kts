@@ -14,6 +14,7 @@ android {
 
 dependencies {
     implementation(projects.core.ui.compose.designsystem)
+    implementation(projects.core.ui.legacy.designsystem)
 
     implementation(projects.core.ui.compose.theme2.thunderbird)
     implementation(projects.core.ui.compose.theme2.k9mail)
