@@ -9,7 +9,7 @@ import app.k9mail.core.ui.compose.designsystem.molecule.input.SelectInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.SwitchInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.TextInput
 import app.k9mail.ui.catalog.ui.common.helper.WithRememberedState
-import app.k9mail.ui.catalog.ui.common.list.ItemOutlined
+import app.k9mail.ui.catalog.ui.common.list.ItemOutlinedView
 import app.k9mail.ui.catalog.ui.common.list.fullSpanItem
 import app.k9mail.ui.catalog.ui.common.list.sectionHeaderItem
 import app.k9mail.ui.catalog.ui.common.list.sectionSubtitleItem
@@ -20,7 +20,7 @@ fun LazyGridScope.inputItems() {
     sectionHeaderItem(text = "TextInput")
     sectionSubtitleItem(text = "Default")
     fullSpanItem {
-        ItemOutlined {
+        ItemOutlinedView {
             WithRememberedState(input = "") { state ->
                 TextInput(
                     text = state.value,
@@ -31,7 +31,7 @@ fun LazyGridScope.inputItems() {
     }
     sectionSubtitleItem(text = "With error")
     fullSpanItem {
-        ItemOutlined {
+        ItemOutlinedView {
             WithRememberedState(input = "") { state ->
                 TextInput(
                     text = state.value,
@@ -45,7 +45,7 @@ fun LazyGridScope.inputItems() {
     sectionHeaderItem(text = "EmailAddressInput")
     sectionSubtitleItem(text = "Default")
     fullSpanItem {
-        ItemOutlined {
+        ItemOutlinedView {
             WithRememberedState(input = "") { state ->
                 EmailAddressInput(
                     emailAddress = state.value,
@@ -56,7 +56,7 @@ fun LazyGridScope.inputItems() {
     }
     sectionSubtitleItem(text = "With error")
     fullSpanItem {
-        ItemOutlined {
+        ItemOutlinedView {
             WithRememberedState(input = "wrong email address") { state ->
                 EmailAddressInput(
                     emailAddress = state.value,
@@ -70,7 +70,7 @@ fun LazyGridScope.inputItems() {
     sectionHeaderItem(text = "NumberInput")
     sectionSubtitleItem(text = "Default")
     fullSpanItem {
-        ItemOutlined {
+        ItemOutlinedView {
             WithRememberedState<Long?>(input = null) { state ->
                 NumberInput(
                     value = state.value,
@@ -81,7 +81,7 @@ fun LazyGridScope.inputItems() {
     }
     sectionSubtitleItem(text = "With error")
     fullSpanItem {
-        ItemOutlined {
+        ItemOutlinedView {
             WithRememberedState<Long?>(input = 123L) { state ->
                 NumberInput(
                     value = state.value,
@@ -95,7 +95,7 @@ fun LazyGridScope.inputItems() {
     sectionHeaderItem(text = "PasswordInput")
     sectionSubtitleItem(text = "Default")
     fullSpanItem {
-        ItemOutlined {
+        ItemOutlinedView {
             WithRememberedState(input = "") { state ->
                 PasswordInput(
                     password = state.value,
@@ -106,7 +106,7 @@ fun LazyGridScope.inputItems() {
     }
     sectionSubtitleItem(text = "With error")
     fullSpanItem {
-        ItemOutlined {
+        ItemOutlinedView {
             WithRememberedState(input = "wrong password") { state ->
                 PasswordInput(
                     password = state.value,
@@ -120,7 +120,7 @@ fun LazyGridScope.inputItems() {
     sectionHeaderItem(text = "SelectInput")
     fullSpanItem {
         val options = persistentListOf("Option 1", "Option 2", "Option 3")
-        ItemOutlined {
+        ItemOutlinedView {
             WithRememberedState(input = options.first()) { state ->
                 SelectInput(
                     options = options,
@@ -134,7 +134,7 @@ fun LazyGridScope.inputItems() {
     sectionHeaderItem(text = "CheckboxInput")
     sectionSubtitleItem(text = "Default")
     fullSpanItem {
-        ItemOutlined {
+        ItemOutlinedView {
             WithRememberedState(input = false) { state ->
                 CheckboxInput(
                     text = "Check the box",
@@ -146,7 +146,7 @@ fun LazyGridScope.inputItems() {
     }
     sectionSubtitleItem(text = "With error")
     fullSpanItem {
-        ItemOutlined {
+        ItemOutlinedView {
             WithRememberedState(input = false) { state ->
                 CheckboxInput(
                     text = "Check the box",
@@ -161,7 +161,7 @@ fun LazyGridScope.inputItems() {
     sectionHeaderItem(text = "SwitchInput")
     sectionSubtitleItem(text = "Default")
     fullSpanItem {
-        ItemOutlined {
+        ItemOutlinedView {
             WithRememberedState(input = false) { state ->
                 SwitchInput(
                     text = "Switch the toggle",
@@ -173,7 +173,7 @@ fun LazyGridScope.inputItems() {
     }
     sectionSubtitleItem(text = "With error")
     fullSpanItem {
-        ItemOutlined {
+        ItemOutlinedView {
             WithRememberedState(input = false) { state ->
                 SwitchInput(
                     text = "Switch the toggle",

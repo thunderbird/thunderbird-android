@@ -15,7 +15,7 @@ import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorState
 import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
-import app.k9mail.ui.catalog.ui.common.list.ItemOutlined
+import app.k9mail.ui.catalog.ui.common.list.ItemOutlinedView
 import app.k9mail.ui.catalog.ui.common.list.fullSpanItem
 import app.k9mail.ui.catalog.ui.common.list.sectionHeaderItem
 import app.k9mail.ui.catalog.ui.common.list.sectionInfoItem
@@ -24,14 +24,14 @@ import app.k9mail.ui.catalog.ui.common.list.sectionSubtitleItem
 fun LazyGridScope.stateItems() {
     sectionHeaderItem(text = "ErrorView")
     fullSpanItem {
-        ItemOutlined {
+        ItemOutlinedView {
             ErrorView(
                 title = "Error",
             )
         }
     }
     fullSpanItem {
-        ItemOutlined {
+        ItemOutlinedView {
             ErrorView(
                 title = "Error with message",
                 message = "Something went wrong",
@@ -39,7 +39,7 @@ fun LazyGridScope.stateItems() {
         }
     }
     fullSpanItem {
-        ItemOutlined {
+        ItemOutlinedView {
             ErrorView(
                 title = "Error with retry",
                 onRetry = {},
@@ -47,7 +47,7 @@ fun LazyGridScope.stateItems() {
         }
     }
     fullSpanItem {
-        ItemOutlined {
+        ItemOutlinedView {
             ErrorView(
                 title = "Error with retry and message",
                 message = "Something went wrong",
@@ -59,13 +59,13 @@ fun LazyGridScope.stateItems() {
     sectionHeaderItem(text = "LoadingView")
     sectionSubtitleItem(text = "Default")
     fullSpanItem {
-        ItemOutlined {
+        ItemOutlinedView {
             LoadingView()
         }
     }
     sectionSubtitleItem(text = "With message")
     fullSpanItem {
-        ItemOutlined {
+        ItemOutlinedView {
             LoadingView(
                 message = "Loading...",
             )
@@ -76,7 +76,7 @@ fun LazyGridScope.stateItems() {
     sectionInfoItem(text = "Click below to change state")
     fullSpanItem {
         Column {
-            ItemOutlined {
+            ItemOutlinedView {
                 StatefulContentLoadingErrorState()
             }
         }

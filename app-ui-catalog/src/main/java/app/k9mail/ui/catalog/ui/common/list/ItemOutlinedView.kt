@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.theme2.MainTheme
 
 @Composable
-fun ItemOutlined(
+fun ItemOutlinedView(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
