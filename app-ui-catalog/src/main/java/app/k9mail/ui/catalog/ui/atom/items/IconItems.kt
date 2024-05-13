@@ -14,6 +14,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.theme2.MainTheme
+import app.k9mail.ui.catalog.ui.common.list.defaultItem
 import app.k9mail.ui.catalog.ui.common.list.defaultItemPadding
 import app.k9mail.ui.catalog.ui.common.list.sectionHeaderItem
 
@@ -29,7 +30,7 @@ private inline fun <reified T> LazyGridScope.getIconsFor(icons: T) {
         if (exclusions.contains(method.name)) {
             continue
         } else if (method.name.startsWith("get")) {
-            item {
+            defaultItem {
                 method.isAccessible = true
                 val imageVector = method.invoke(icons) as ImageVector
                 IconItem(

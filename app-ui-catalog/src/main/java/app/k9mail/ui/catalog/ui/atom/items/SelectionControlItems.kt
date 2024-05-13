@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.atom.Checkbox
 import app.k9mail.core.ui.compose.designsystem.atom.Switch
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
+import app.k9mail.ui.catalog.ui.common.list.defaultItem
 import app.k9mail.ui.catalog.ui.common.list.defaultItemPadding
 import app.k9mail.ui.catalog.ui.common.list.sectionHeaderItem
 
@@ -45,7 +46,7 @@ private fun LazyGridScope.captionItem(
     caption: String,
     content: @Composable () -> Unit,
 ) {
-    item {
+    defaultItem {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(defaultItemPadding()),
