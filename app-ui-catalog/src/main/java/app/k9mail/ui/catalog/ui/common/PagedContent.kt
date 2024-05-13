@@ -18,7 +18,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContentWithSurface
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.ui.catalog.ui.common.list.fullSpanItem
@@ -66,7 +65,7 @@ fun <T> PagedContent(
                     .fillMaxSize(),
             ) { page ->
                 LazyVerticalGrid(
-                    columns = GridCells.Adaptive(300.dp),
+                    columns = GridCells.Adaptive(MainTheme.sizes.larger),
                     modifier = Modifier
                         .fillMaxSize()
                         .imePadding(),
