@@ -23,8 +23,8 @@ import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedS
 import app.k9mail.core.ui.compose.designsystem.molecule.input.CheckboxInput
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.ui.catalog.ui.common.helper.WithRememberedState
+import app.k9mail.ui.catalog.ui.common.list.defaultItemPadding
 import app.k9mail.ui.catalog.ui.common.list.fullSpanItem
-import app.k9mail.ui.catalog.ui.common.list.itemDefaultPadding
 import app.k9mail.ui.catalog.ui.common.list.sectionHeaderItem
 import app.k9mail.ui.catalog.ui.common.list.sectionSubtitleItem
 import kotlinx.collections.immutable.ImmutableList
@@ -70,7 +70,7 @@ fun <T> TextFieldDemo(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .itemDefaultPadding()
+                .padding(defaultItemPadding())
                 .then(modifier),
         ) {
             key(state.value.showLabel, state.value.isRequired) {

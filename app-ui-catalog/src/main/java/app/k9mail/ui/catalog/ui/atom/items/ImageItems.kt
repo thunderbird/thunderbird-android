@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.runtime.Composable
@@ -16,8 +17,8 @@ import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.image.FixedScaleImage
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.theme2.MainTheme
+import app.k9mail.ui.catalog.ui.common.list.defaultItemPadding
 import app.k9mail.ui.catalog.ui.common.list.fullSpanItem
-import app.k9mail.ui.catalog.ui.common.list.itemDefaultPadding
 import app.k9mail.ui.catalog.ui.common.list.sectionHeaderItem
 import app.k9mail.ui.catalog.ui.common.list.sectionSubtitleItem
 
@@ -27,7 +28,7 @@ fun LazyGridScope.imageItems() {
         Image(
             painter = painterResource(id = MainTheme.images.logo),
             contentDescription = "logo",
-            modifier = Modifier.itemDefaultPadding(),
+            modifier = Modifier.padding(defaultItemPadding()),
         )
     }
 
@@ -126,7 +127,7 @@ private fun FixedScaleImageView(
     allowOverflow: Boolean = false,
 ) {
     Column(
-        modifier = Modifier.itemDefaultPadding(),
+        modifier = Modifier.padding(defaultItemPadding()),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(

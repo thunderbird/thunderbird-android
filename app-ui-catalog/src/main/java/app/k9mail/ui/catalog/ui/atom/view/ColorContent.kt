@@ -13,7 +13,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.theme2.MainTheme
-import app.k9mail.ui.catalog.ui.common.list.itemDefaultPadding
+import app.k9mail.ui.catalog.ui.common.list.defaultItemPadding
 
 @Composable
 internal fun ColorContent(
@@ -25,7 +25,7 @@ internal fun ColorContent(
     Surface(
         color = color,
         modifier = Modifier
-            .itemDefaultPadding()
+            .padding(defaultItemPadding())
             .then(modifier),
     ) {
         Row(
