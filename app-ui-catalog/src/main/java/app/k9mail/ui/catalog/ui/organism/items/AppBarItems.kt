@@ -10,13 +10,14 @@ import app.k9mail.core.ui.compose.designsystem.organism.TopAppBar
 import app.k9mail.core.ui.compose.designsystem.organism.TopAppBarWithBackButton
 import app.k9mail.core.ui.compose.designsystem.organism.TopAppBarWithMenuButton
 import app.k9mail.ui.catalog.ui.common.list.ItemOutlined
+import app.k9mail.ui.catalog.ui.common.list.fullSpanItem
 import app.k9mail.ui.catalog.ui.common.list.sectionHeaderItem
 import app.k9mail.ui.catalog.ui.common.list.sectionSubtitleItem
 
 fun LazyGridScope.appBarItems() {
     sectionHeaderItem(text = "TopAppBar")
     sectionSubtitleItem(text = "With menu icon")
-    item {
+    fullSpanItem {
         ItemOutlined {
             TopAppBarItem(
                 title = "Title",
@@ -25,7 +26,7 @@ fun LazyGridScope.appBarItems() {
         }
     }
     sectionSubtitleItem(text = "With back menu icon")
-    item {
+    fullSpanItem {
         ItemOutlined {
             TopAppBarWithMenuButton(
                 title = "Title",
@@ -34,7 +35,7 @@ fun LazyGridScope.appBarItems() {
         }
     }
     sectionSubtitleItem(text = "With back icon")
-    item {
+    fullSpanItem {
         ItemOutlined {
             TopAppBarWithBackButton(
                 title = "Title",

@@ -10,6 +10,7 @@ import app.k9mail.core.ui.compose.designsystem.molecule.input.SwitchInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.TextInput
 import app.k9mail.ui.catalog.ui.common.helper.WithRememberedState
 import app.k9mail.ui.catalog.ui.common.list.ItemOutlined
+import app.k9mail.ui.catalog.ui.common.list.fullSpanItem
 import app.k9mail.ui.catalog.ui.common.list.sectionHeaderItem
 import app.k9mail.ui.catalog.ui.common.list.sectionSubtitleItem
 import kotlinx.collections.immutable.persistentListOf
@@ -18,7 +19,7 @@ import kotlinx.collections.immutable.persistentListOf
 fun LazyGridScope.inputItems() {
     sectionHeaderItem(text = "TextInput")
     sectionSubtitleItem(text = "Default")
-    item {
+    fullSpanItem {
         ItemOutlined {
             WithRememberedState(input = "") { state ->
                 TextInput(
@@ -29,7 +30,7 @@ fun LazyGridScope.inputItems() {
         }
     }
     sectionSubtitleItem(text = "With error")
-    item {
+    fullSpanItem {
         ItemOutlined {
             WithRememberedState(input = "") { state ->
                 TextInput(
@@ -43,7 +44,7 @@ fun LazyGridScope.inputItems() {
 
     sectionHeaderItem(text = "EmailAddressInput")
     sectionSubtitleItem(text = "Default")
-    item {
+    fullSpanItem {
         ItemOutlined {
             WithRememberedState(input = "") { state ->
                 EmailAddressInput(
@@ -54,7 +55,7 @@ fun LazyGridScope.inputItems() {
         }
     }
     sectionSubtitleItem(text = "With error")
-    item {
+    fullSpanItem {
         ItemOutlined {
             WithRememberedState(input = "wrong email address") { state ->
                 EmailAddressInput(
@@ -68,7 +69,7 @@ fun LazyGridScope.inputItems() {
 
     sectionHeaderItem(text = "NumberInput")
     sectionSubtitleItem(text = "Default")
-    item {
+    fullSpanItem {
         ItemOutlined {
             WithRememberedState<Long?>(input = null) { state ->
                 NumberInput(
@@ -79,7 +80,7 @@ fun LazyGridScope.inputItems() {
         }
     }
     sectionSubtitleItem(text = "With error")
-    item {
+    fullSpanItem {
         ItemOutlined {
             WithRememberedState<Long?>(input = 123L) { state ->
                 NumberInput(
@@ -93,7 +94,7 @@ fun LazyGridScope.inputItems() {
 
     sectionHeaderItem(text = "PasswordInput")
     sectionSubtitleItem(text = "Default")
-    item {
+    fullSpanItem {
         ItemOutlined {
             WithRememberedState(input = "") { state ->
                 PasswordInput(
@@ -104,7 +105,7 @@ fun LazyGridScope.inputItems() {
         }
     }
     sectionSubtitleItem(text = "With error")
-    item {
+    fullSpanItem {
         ItemOutlined {
             WithRememberedState(input = "wrong password") { state ->
                 PasswordInput(
@@ -117,7 +118,7 @@ fun LazyGridScope.inputItems() {
     }
 
     sectionHeaderItem(text = "SelectInput")
-    item {
+    fullSpanItem {
         val options = persistentListOf("Option 1", "Option 2", "Option 3")
         ItemOutlined {
             WithRememberedState(input = options.first()) { state ->
@@ -132,7 +133,7 @@ fun LazyGridScope.inputItems() {
 
     sectionHeaderItem(text = "CheckboxInput")
     sectionSubtitleItem(text = "Default")
-    item {
+    fullSpanItem {
         ItemOutlined {
             WithRememberedState(input = false) { state ->
                 CheckboxInput(
@@ -144,7 +145,7 @@ fun LazyGridScope.inputItems() {
         }
     }
     sectionSubtitleItem(text = "With error")
-    item {
+    fullSpanItem {
         ItemOutlined {
             WithRememberedState(input = false) { state ->
                 CheckboxInput(
@@ -159,7 +160,7 @@ fun LazyGridScope.inputItems() {
 
     sectionHeaderItem(text = "SwitchInput")
     sectionSubtitleItem(text = "Default")
-    item {
+    fullSpanItem {
         ItemOutlined {
             WithRememberedState(input = false) { state ->
                 SwitchInput(
@@ -171,7 +172,7 @@ fun LazyGridScope.inputItems() {
         }
     }
     sectionSubtitleItem(text = "With error")
-    item {
+    fullSpanItem {
         ItemOutlined {
             WithRememberedState(input = false) { state ->
                 SwitchInput(

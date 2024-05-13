@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContentWithSurface
 import app.k9mail.core.ui.compose.theme2.MainTheme
+import app.k9mail.ui.catalog.ui.common.list.fullSpanItem
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
@@ -73,7 +74,7 @@ fun <T> PagedContent(
                     verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
                 ) {
                     onRenderPage(pages[page])
-                    item { Spacer(modifier = Modifier.height(MainTheme.sizes.smaller)) }
+                    fullSpanItem { Spacer(modifier = Modifier.height(MainTheme.sizes.smaller)) }
                 }
             }
         }

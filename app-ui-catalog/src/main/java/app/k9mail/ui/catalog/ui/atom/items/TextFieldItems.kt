@@ -23,6 +23,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedS
 import app.k9mail.core.ui.compose.designsystem.molecule.input.CheckboxInput
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.ui.catalog.ui.common.helper.WithRememberedState
+import app.k9mail.ui.catalog.ui.common.list.fullSpanItem
 import app.k9mail.ui.catalog.ui.common.list.itemDefaultPadding
 import app.k9mail.ui.catalog.ui.common.list.sectionHeaderItem
 import app.k9mail.ui.catalog.ui.common.list.sectionSubtitleItem
@@ -148,7 +149,7 @@ fun <T> TextFieldDemo(
 private val defaultPadding = PaddingValues(0.dp)
 
 private fun LazyGridScope.textFieldOutlinedItems() {
-    item {
+    fullSpanItem {
         TextFieldDemo(
             hasTrailingIcon = true,
             hasSingleLine = true,
@@ -175,7 +176,7 @@ private fun LazyGridScope.textFieldOutlinedItems() {
 }
 
 private fun LazyGridScope.passwordTextFieldOutlinedItems() {
-    item {
+    fullSpanItem {
         TextFieldDemo(
             initialState = TextFieldState(
                 input = "",
@@ -197,7 +198,7 @@ private fun LazyGridScope.passwordTextFieldOutlinedItems() {
 }
 
 private fun LazyGridScope.emailTextFieldOutlinedItems() {
-    item {
+    fullSpanItem {
         TextFieldDemo(
             initialState = TextFieldState(
                 input = "",
@@ -219,7 +220,7 @@ private fun LazyGridScope.emailTextFieldOutlinedItems() {
 }
 
 private fun LazyGridScope.numberTextFieldOutlinedItems() {
-    item {
+    fullSpanItem {
         TextFieldDemo(
             initialState = TextFieldState<Long?>(
                 input = 123L,
@@ -246,7 +247,7 @@ private data class TextFieldSelectState(
 )
 
 private fun LazyGridScope.selectionTextFieldOutlinedItems() {
-    item {
+    fullSpanItem {
         TextFieldDemo(
             initialState = TextFieldState(
                 input = TextFieldSelectState(),

@@ -16,20 +16,21 @@ import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
 import app.k9mail.ui.catalog.ui.common.list.ItemOutlined
+import app.k9mail.ui.catalog.ui.common.list.fullSpanItem
 import app.k9mail.ui.catalog.ui.common.list.sectionHeaderItem
 import app.k9mail.ui.catalog.ui.common.list.sectionInfoItem
 import app.k9mail.ui.catalog.ui.common.list.sectionSubtitleItem
 
 fun LazyGridScope.stateItems() {
     sectionHeaderItem(text = "ErrorView")
-    item {
+    fullSpanItem {
         ItemOutlined {
             ErrorView(
                 title = "Error",
             )
         }
     }
-    item {
+    fullSpanItem {
         ItemOutlined {
             ErrorView(
                 title = "Error with message",
@@ -37,7 +38,7 @@ fun LazyGridScope.stateItems() {
             )
         }
     }
-    item {
+    fullSpanItem {
         ItemOutlined {
             ErrorView(
                 title = "Error with retry",
@@ -45,7 +46,7 @@ fun LazyGridScope.stateItems() {
             )
         }
     }
-    item {
+    fullSpanItem {
         ItemOutlined {
             ErrorView(
                 title = "Error with retry and message",
@@ -57,13 +58,13 @@ fun LazyGridScope.stateItems() {
 
     sectionHeaderItem(text = "LoadingView")
     sectionSubtitleItem(text = "Default")
-    item {
+    fullSpanItem {
         ItemOutlined {
             LoadingView()
         }
     }
     sectionSubtitleItem(text = "With message")
-    item {
+    fullSpanItem {
         ItemOutlined {
             LoadingView(
                 message = "Loading...",
@@ -73,7 +74,7 @@ fun LazyGridScope.stateItems() {
 
     sectionHeaderItem(text = "ContentLoadingErrorView")
     sectionInfoItem(text = "Click below to change state")
-    item {
+    fullSpanItem {
         Column {
             ItemOutlined {
                 StatefulContentLoadingErrorState()
