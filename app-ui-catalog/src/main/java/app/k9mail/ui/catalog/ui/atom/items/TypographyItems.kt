@@ -1,5 +1,6 @@
 package app.k9mail.ui.catalog.ui.atom.items
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,7 +23,8 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
-import app.k9mail.ui.catalog.ui.common.list.itemDefaultPadding
+import app.k9mail.ui.catalog.ui.common.list.defaultItemPadding
+import app.k9mail.ui.catalog.ui.common.list.fullSpanItem
 import app.k9mail.ui.catalog.ui.common.list.sectionHeaderItem
 
 fun LazyGridScope.typographyItems() {
@@ -41,112 +43,112 @@ private fun LazyGridScope.textItems(
     isAnnotated: Boolean = false,
     color: Color = Color.Unspecified,
 ) {
-    item {
+    fullSpanItem {
         TextDisplayLarge(
             text = annotatedString("DisplayLarge", isAnnotated),
-            modifier = Modifier.itemDefaultPadding(),
+            modifier = Modifier.padding(defaultItemPadding()),
             color = color,
         )
     }
-    item {
+    fullSpanItem {
         TextDisplayMedium(
             text = annotatedString("DisplayMedium", isAnnotated),
-            modifier = Modifier.itemDefaultPadding(),
+            modifier = Modifier.padding(defaultItemPadding()),
             color = color,
         )
     }
-    item {
+    fullSpanItem {
         TextDisplaySmall(
             text = annotatedString("DisplaySmall", isAnnotated),
-            modifier = Modifier.itemDefaultPadding(),
+            modifier = Modifier.padding(defaultItemPadding()),
             color = color,
         )
     }
 
-    item {
+    fullSpanItem {
         TextHeadlineLarge(
             text = annotatedString("HeadlineLarge", isAnnotated),
-            modifier = Modifier.itemDefaultPadding(),
+            modifier = Modifier.padding(defaultItemPadding()),
             color = color,
         )
     }
-    item {
+    fullSpanItem {
         TextHeadlineMedium(
             text = annotatedString("HeadlineMedium", isAnnotated),
-            modifier = Modifier.itemDefaultPadding(),
+            modifier = Modifier.padding(defaultItemPadding()),
             color = color,
         )
     }
-    item {
+    fullSpanItem {
         TextHeadlineSmall(
             text = annotatedString("HeadlineSmall", isAnnotated),
-            modifier = Modifier.itemDefaultPadding(),
+            modifier = Modifier.padding(defaultItemPadding()),
             color = color,
         )
     }
 
-    item {
+    fullSpanItem {
         TextTitleLarge(
             text = annotatedString("TitleLarge", isAnnotated),
-            modifier = Modifier.itemDefaultPadding(),
+            modifier = Modifier.padding(defaultItemPadding()),
             color = color,
         )
     }
-    item {
+    fullSpanItem {
         TextTitleMedium(
             text = annotatedString("TitleMedium", isAnnotated),
-            modifier = Modifier.itemDefaultPadding(),
+            modifier = Modifier.padding(defaultItemPadding()),
             color = color,
         )
     }
-    item {
+    fullSpanItem {
         TextTitleSmall(
             text = annotatedString("TitleSmall", isAnnotated),
-            modifier = Modifier.itemDefaultPadding(),
+            modifier = Modifier.padding(defaultItemPadding()),
             color = color,
         )
     }
 
-    item {
+    fullSpanItem {
         TextBodyLarge(
             text = annotatedString("BodyLarge", isAnnotated),
-            modifier = Modifier.itemDefaultPadding(),
+            modifier = Modifier.padding(defaultItemPadding()),
             color = color,
         )
     }
-    item {
+    fullSpanItem {
         TextBodyMedium(
             text = annotatedString("BodyMedium", isAnnotated),
-            modifier = Modifier.itemDefaultPadding(),
+            modifier = Modifier.padding(defaultItemPadding()),
             color = color,
         )
     }
-    item {
+    fullSpanItem {
         TextBodySmall(
             text = annotatedString("BodySmall", isAnnotated),
-            modifier = Modifier.itemDefaultPadding(),
+            modifier = Modifier.padding(defaultItemPadding()),
             color = color,
         )
     }
 
-    item {
+    fullSpanItem {
         TextLabelLarge(
             text = annotatedString("LabelLarge", isAnnotated),
-            modifier = Modifier.itemDefaultPadding(),
+            modifier = Modifier.padding(defaultItemPadding()),
             color = color,
         )
     }
-    item {
+    fullSpanItem {
         TextLabelMedium(
             text = annotatedString("LabelMedium", isAnnotated),
-            modifier = Modifier.itemDefaultPadding(),
+            modifier = Modifier.padding(defaultItemPadding()),
             color = color,
         )
     }
-    item {
+    fullSpanItem {
         TextLabelSmall(
             text = annotatedString("LabelSmall", isAnnotated),
-            modifier = Modifier.itemDefaultPadding(),
+            modifier = Modifier.padding(defaultItemPadding()),
             color = color,
         )
     }
