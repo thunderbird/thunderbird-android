@@ -10,6 +10,18 @@ android {
         versionCode = 1
         versionName = "1.0"
     }
+
+    buildTypes {
+        // Preview build type to render compose without debug features.
+        // This gives a better idea of the real world drawing performance.
+        create("preview") {
+            initWith(getByName("debug"))
+            applicationIdSuffix = ".preview"
+            isDebuggable = false
+            matchingFallbacks += listOf("release")
+            isDefault = true
+        }
+    }
 }
 
 dependencies {
