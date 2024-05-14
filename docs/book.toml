@@ -16,3 +16,9 @@ create-missing = false
 [output.html]
 git-repository-url = "https://github.com/thunderbird/thunderbird-android"
 git-branch = "main"
+additional-js = ["assets/mermaid.min.js", "assets/mermaid-init.js"]
+
+[preprocessor]
+
+[preprocessor.mermaid]
+command = "mdbook-mermaid"

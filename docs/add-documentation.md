@@ -10,6 +10,18 @@ To add or modify the documentation, you need to edit the markdown files in the `
 
 The documentation is written using standard Markdown syntax, including GitHub flavored Markdown. You can use headers, lists, links, code blocks, and other Markdown features to structure your content.
 
+For creating diagrams, we use the [mermaid](https://mermaid-js.github.io/mermaid/#/) syntax. You can include mermaid diagrams in your markdown files by using the following syntax:
+
+````
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
+````
+
 ### Adding a New Page
 
 To add a new page to the documentation, you need to create a new markdown file in the `docs/` directory. You can add a new page to the table of contents by adding an entry to the `SUMMARY.md` file.
@@ -41,7 +53,13 @@ To build the documentation, you need to have `mdbook` and its dependencies insta
 cargo install mdbook
 ```
 
-Once you have `mdbook` installed, you can build the documentation by running the following command:
+We also use mermaid for generating diagrams in the documentation. You need to install [mdbook-mermaid](https://github.com/badboy/mdbook-mermaid) additionally:
+
+```bash
+cargo install mdbook-mermaid
+```
+
+Once you have `mdbook` and `mdbook-mermaid` installed, you can build the documentation by running the following command in the `docs/` directory:
 
 ```bash
 mdbook build
