@@ -61,7 +61,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="8dp"
                 android:id="@+id/crypto_special_inline"
-                app:srcCompat="@drawable/compatibility"
+                app:srcCompat="@drawable/ic_healing"
                 app:tint="@color/light_black" />
 
             <ImageView
@@ -70,7 +70,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="8dp"
                 android:id="@+id/crypto_special_sign_only"
-                app:srcCompat="@drawable/status_signature"
+                app:srcCompat="@drawable/ic_check_circle"
                 app:tint="?attr/openpgp_blue" />
 
             <FrameLayout
@@ -84,14 +84,14 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="8dp"
-                    app:srcCompat="@drawable/status_signature"
+                    app:srcCompat="@drawable/ic_check_circle"
                     app:tint="?attr/openpgp_blue" />
 
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:layout_gravity="end|bottom"
-                    app:srcCompat="@drawable/compatibility"
+                    app:srcCompat="@drawable/ic_healing"
                     app:tint="@color/light_black" />
             </FrameLayout>
 
@@ -121,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:id="@+id/crypto_status_disabled"
-                    app:srcCompat="@drawable/status_lock_disabled"
+                    app:srcCompat="@drawable/ic_no_encryption"
                     app:tint="?attr/openpgp_dark_grey" />
 
                 <ImageView
@@ -129,7 +129,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:id="@+id/crypto_status_enabled"
-                    app:srcCompat="@drawable/status_lock"
+                    app:srcCompat="@drawable/ic_lock"
                     app:tint="?attr/openpgp_green" />
 
                 <FrameLayout

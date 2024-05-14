@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_gravity="center_vertical"
-            app:srcCompat="@drawable/compatibility"
+            app:srcCompat="@drawable/ic_healing"
             android:scaleType="fitCenter"
             app:tint="@color/light_black"
             />

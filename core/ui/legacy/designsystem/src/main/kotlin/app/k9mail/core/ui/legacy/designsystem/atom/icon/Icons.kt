@@ -18,6 +18,8 @@ object Icons {
         @JvmField
         val AccountCircle = R.drawable.ic_account_circle
         val Add = R.drawable.ic_add
+        val AddCircle = R.drawable.ic_add_circle
+        val Adjust = R.drawable.ic_adjust
         val AllInbox = R.drawable.ic_all_inbox
         val Archive = R.drawable.ic_archive
         val ArrowBack = R.drawable.ic_arrow_back
@@ -29,9 +31,11 @@ object Icons {
         val ChevronRight = R.drawable.ic_chevron_right
         val Close = R.drawable.ic_close
         val Code = R.drawable.ic_code
+        val CompareArrows = R.drawable.ic_compare_arrows
         val ContentCopy = R.drawable.ic_content_copy
         val Delete = R.drawable.ic_delete
         val Description = R.drawable.ic_description
+        val DoNotDisturbOn = R.drawable.ic_do_not_disturb_on
         val Download = R.drawable.ic_download
         val Draft = R.drawable.ic_draft
         val DragHandle = R.drawable.ic_drag_handle
@@ -43,7 +47,9 @@ object Icons {
         val FilterList = R.drawable.ic_filter_list
         val Folder = R.drawable.ic_folder
         val Forum = R.drawable.ic_forum
+        val Forward = R.drawable.ic_forward
         val Group = R.drawable.ic_group
+        val Healing = R.drawable.ic_healing
         val Help = R.drawable.ic_help
 
         @JvmField
@@ -60,8 +66,11 @@ object Icons {
         val Menu = R.drawable.ic_menu
         val MenuBook = R.drawable.ic_menu_book
         val Monitor = R.drawable.ic_monitor
+        val MoreVert = R.drawable.ic_more_vert
+        val NoEncryption = R.drawable.ic_no_encryption
         val Notifications = R.drawable.ic_notifications
         val Outbox = R.drawable.ic_outbox
+        val Person = R.drawable.ic_person
         val PersonAdd = R.drawable.ic_person_add
         val Refresh = R.drawable.ic_refresh
 
@@ -84,5 +93,6 @@ object Icons {
         val TouchApp = R.drawable.ic_touch_app
         val Upload = R.drawable.ic_upload
         val Visibility = R.drawable.ic_visibility
+        val Warning = R.drawable.ic_warning
     }
 }

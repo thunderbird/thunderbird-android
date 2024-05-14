@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_gravity="center_vertical"
-            app:srcCompat="@drawable/status_signature"
+            app:srcCompat="@drawable/ic_check_circle"
             android:scaleType="fitCenter"
             app:tint="@color/light_black"
             />
@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="6dp"
-            app:srcCompat="@drawable/status_lock_disabled"
+            app:srcCompat="@drawable/ic_no_encryption"
             app:tint="?attr/openpgp_dark_grey"
             />
 
@@ -72,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="6dp"
-            app:srcCompat="@drawable/status_lock"
+            app:srcCompat="@drawable/ic_lock"
             app:tint="?attr/openpgp_green"
             />
 

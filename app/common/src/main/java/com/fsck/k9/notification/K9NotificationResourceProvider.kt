@@ -1,22 +1,23 @@
 package com.fsck.k9.notification
 
 import android.content.Context
+import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import com.fsck.k9.ui.R
 
 class K9NotificationResourceProvider(private val context: Context) : NotificationResourceProvider {
-    override val iconWarning: Int = R.drawable.notification_icon_warning
-    override val iconMarkAsRead: Int = R.drawable.notification_action_mark_as_read
-    override val iconDelete: Int = R.drawable.notification_action_delete
-    override val iconReply: Int = R.drawable.notification_action_reply
-    override val iconNewMail: Int = R.drawable.notification_icon_new_mail
+    override val iconWarning: Int = Icons.Outlined.Warning
+    override val iconMarkAsRead: Int = Icons.Outlined.MarkEmailRead
+    override val iconDelete: Int = Icons.Outlined.Delete
+    override val iconReply: Int = Icons.Outlined.Reply
+    override val iconNewMail: Int = Icons.Outlined.MarkEmailUnread
     override val iconSendingMail: Int = R.drawable.notification_icon_check_mail
     override val iconCheckingMail: Int = R.drawable.notification_icon_check_mail
     override val iconBackgroundWorkNotification: Int = R.drawable.notification_icon_background_work
-    override val wearIconMarkAsRead: Int = R.drawable.notification_action_mark_as_read
-    override val wearIconDelete: Int = R.drawable.notification_action_delete
-    override val wearIconArchive: Int = R.drawable.notification_action_archive
-    override val wearIconReplyAll: Int = R.drawable.notification_action_reply
-    override val wearIconMarkAsSpam: Int = R.drawable.notification_action_mark_as_spam
+    override val wearIconMarkAsRead: Int = Icons.Outlined.MarkEmailRead
+    override val wearIconDelete: Int = Icons.Outlined.Delete
+    override val wearIconArchive: Int = Icons.Outlined.Archive
+    override val wearIconReplyAll: Int = Icons.Outlined.Reply
+    override val wearIconMarkAsSpam: Int = Icons.Outlined.Report
 
     override val pushChannelName: String
         get() = context.getString(R.string.notification_channel_push_title)

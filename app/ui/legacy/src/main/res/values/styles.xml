@@ -24,17 +24,17 @@
     </style>
 
     <style name="PositiveBulletPoint">
-        <item name="srcCompat">@drawable/bullet_point_positive</item>
+        <item name="srcCompat">@drawable/ic_add_circle</item>
         <item name="android:tint">?attr/tintColorBulletPointPositive</item>
     </style>
 
     <style name="NeutralBulletPoint">
-        <item name="srcCompat">@drawable/bullet_point_neutral</item>
+        <item name="srcCompat">@drawable/ic_adjust</item>
         <item name="android:tint">?attr/tintColorBulletPointNeutral</item>
     </style>
 
     <style name="NegativeBulletPoint">
-        <item name="srcCompat">@drawable/bullet_point_negative</item>
+        <item name="srcCompat">@drawable/ic_do_not_disturb_on</item>
         <item name="android:tint">?attr/tintColorBulletPointNegative</item>
     </style>
 
