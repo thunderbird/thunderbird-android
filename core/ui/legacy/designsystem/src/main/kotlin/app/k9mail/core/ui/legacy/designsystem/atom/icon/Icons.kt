@@ -25,6 +25,7 @@ object Icons {
         val ArrowBack = R.drawable.ic_arrow_back
         val Attachment = R.drawable.ic_attachment
         val Block = R.drawable.ic_block
+        val Bolt = R.drawable.ic_bolt
         val BugReport = R.drawable.ic_bug_report
         val Check = R.drawable.ic_check
         val CheckCircle = R.drawable.ic_check_circle
