@@ -12,12 +12,12 @@
 
 [versions]
 androidDesugar = "2.0.4"
-androidMaterial = "1.11.0"
+androidMaterial = "1.12.0"
 # AGP and tools should be updated together
 androidGradlePlugin = "8.2.2"
 androidTools = "31.2.2"
 androidxActivity = "1.8.2"
-androidxAnnotation = "1.7.1"
+androidxAnnotation = "1.8.0"
 androidxAppCompat = "1.6.1"
 androidxBiometric = "1.1.0"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
@@ -28,7 +28,7 @@ androidxCoordinatorLayout = "1.2.0"
 androidxCore = "1.13.1"
 androidxCoreSplashscreen = "1.0.1"
 androidxDrawerLayout = "1.1.1"
-androidxFragment = "1.6.2"
+androidxFragment = "1.7.1"
 androidxLifecycle = "2.7.0"
 androidxLocalBroadcastManager = "1.1.0"
 androidxNavigation = "2.7.7"
