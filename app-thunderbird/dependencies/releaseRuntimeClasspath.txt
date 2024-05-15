@@ -110,7 +110,7 @@ androidx.sqlite:sqlite:2.3.0
 androidx.startup:startup-runtime:1.1.1
 androidx.swiperefreshlayout:swiperefreshlayout:1.1.0
 androidx.tracing:tracing:1.0.0
-androidx.transition:transition:1.4.1
+androidx.transition:transition:1.5.0
 androidx.vectordrawable:vectordrawable-animated:1.1.0
 androidx.vectordrawable:vectordrawable:1.1.0
 androidx.versionedparcelable:versionedparcelable:1.1.1
