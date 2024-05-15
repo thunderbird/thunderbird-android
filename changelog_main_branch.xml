@@ -5,6 +5,39 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.900" versioncode="39000" date="2024-05-15">
+        <change>Started converting the user interface to Material 3</change>
+        <change>Added support for mailto: URI on NFC tag</change>
+        <change>Added experimental workaround for the app crashing in the background</change>
+        <change>Optimized some of the IMAP protocol interactions</change>
+        <change>Don't delay showing the notification when Push is active</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.802" versioncode="38002" date="2024-04-05">
+        <change>Push: Notify user if permission to schedule exact alarms is missing</change>
+        <change>Renamed "Send client ID" setting to "Send client information"</change>
+        <change>IMAP: Added support for the \NonExistent LIST response attribute</change>
+        <change>IMAP: Issue EXPUNGE command after moving without MOVE extension</change>
+        <change>Updated translations; added Hebrew translation</change>
+    </release>
+    <release version="6.801" versioncode="38001" date="2024-03-11">
+        <change>Added DNSSEC support when looking for server settings during setup</change>
+        <change>Made a change to prevent some software keyboards from capitalizing/auto-correcting email addresses in account setup</change>
+        <change>Fixed a crash when a very long subject was used</change>
+        <change>Fixed displaying OAuth 2.0 error messages</change>
+        <change>Fixed rare crash when downloading an attachment</change>
+        <change>Added code to disallow line breaks in single line text inputs</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="6.800" versioncode="38000" date="2024-02-29">
+        <change>New and improved account setup</change>
+        <change>Added option to return to the message list after marking a message as unread in the message view</change>
+        <change>Made it harder to accidentally trigger swipe actions in the message list screen</change>
+        <change>Improved screen reader experience in various places</change>
+        <change>IMAP: Added support for sending the ID command (that is required by some email providers)</change>
+        <change>Various other bug fixes and improvements; see changes for versions 6.7xx</change>
+        <change>Removed Hebrew and Korean translations because of how incomplete they were; volunteer translators welcome!</change>
+    </release>
     <release version="6.717" versioncode="37017" date="2024-02-16">
         <change>Fixed order of autoconfig discovery steps</change>
         <change>Changed default display count to 100</change>
