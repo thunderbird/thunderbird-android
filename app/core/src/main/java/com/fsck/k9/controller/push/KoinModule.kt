@@ -29,5 +29,5 @@ internal val controllerPushModule = module {
         )
     }
 
-    single<AlarmPermissionManager> { AlarmPermissionManager(context = get(), alarmManagerCompat = get()) }
+    single<AlarmPermissionManager> { AlarmPermissionManager(context = get(), alarmManager = get()) }
 }

@@ -1,15 +1,16 @@
 package com.fsck.k9.backends
 
+import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.SystemClock
+import androidx.core.app.AlarmManagerCompat
 import androidx.core.app.PendingIntentCompat
 import androidx.core.content.ContextCompat
 import com.fsck.k9.backend.imap.SystemAlarmManager
-import com.fsck.k9.helper.AlarmManagerCompat
 import java.util.concurrent.atomic.AtomicReference
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -24,7 +25,7 @@ private typealias Callback = () -> Unit
 
 class AndroidAlarmManager(
     private val context: Context,
-    private val alarmManager: AlarmManagerCompat,
+    private val alarmManager: AlarmManager,
     backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : SystemAlarmManager {
     private val coroutineScope = CoroutineScope(backgroundDispatcher)
@@ -62,12 +63,18 @@ class AndroidAlarmManager(
 
     override fun setAlarm(triggerTime: Long, callback: Callback) {
         this.callback.set(callback)
-        alarmManager.scheduleAlarm(triggerTime, pendingIntent)
+
+        AlarmManagerCompat.setExactAndAllowWhileIdle(
+            alarmManager,
+            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            triggerTime,
+            pendingIntent,
+        )
     }
 
     override fun cancelAlarm() {
         callback.set(null)
-        alarmManager.cancelAlarm(pendingIntent)
+        alarmManager.cancel(pendingIntent)
     }
 
     override fun now(): Long = SystemClock.elapsedRealtime()
