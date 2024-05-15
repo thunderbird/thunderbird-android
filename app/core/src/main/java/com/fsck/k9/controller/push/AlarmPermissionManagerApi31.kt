@@ -7,8 +7,8 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.core.app.AlarmManagerCompat
 import androidx.core.content.ContextCompat
-import com.fsck.k9.helper.AlarmManagerCompat
 import timber.log.Timber
 
 /**
@@ -17,7 +17,7 @@ import timber.log.Timber
 @RequiresApi(Build.VERSION_CODES.S)
 internal class AlarmPermissionManagerApi31(
     private val context: Context,
-    private val alarmManagerCompat: AlarmManagerCompat,
+    private val alarmManager: AlarmManager,
 ) : AlarmPermissionManager {
     private var isRegistered = false
     private var listener: AlarmPermissionListener? = null
@@ -34,7 +34,7 @@ internal class AlarmPermissionManagerApi31(
     }
 
     override fun canScheduleExactAlarms(): Boolean {
-        return alarmManagerCompat.canScheduleExactAlarms()
+        return AlarmManagerCompat.canScheduleExactAlarms(alarmManager)
     }
 
     @Synchronized
