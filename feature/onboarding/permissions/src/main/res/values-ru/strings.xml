@@ -2,9 +2,9 @@
 <resources>
     <string name="onboarding_permissions_notifications_title">Уведомления</string>
     <string name="onboarding_permissions_skip_button">Пропустить</string>
-    <string name="onboarding_permissions_screen_title">Улучшить опыт</string>
+    <string name="onboarding_permissions_screen_title">Повысить удобство</string>
     <string name="onboarding_permissions_contacts_title">Контакты</string>
-    <string name="onboarding_permissions_notifications_description">Включает уведомления, чтобы не пропустить ни одного письма.</string>
+    <string name="onboarding_permissions_notifications_description">Включите уведомления, чтобы не пропустить ни одного письма.</string>
     <string name="onboarding_permissions_allow_button">Разрешить</string>
-    <string name="onboarding_permissions_contacts_description">Предоставьте доступ, чтобы иметь возможность предоставлять предложения о контактах и отображать их имена и фотографии.</string>
+    <string name="onboarding_permissions_contacts_description">Предоставьте доступ, чтобы иметь возможность предлагать контакты и отображать их имена и фотографии.</string>
 </resources>

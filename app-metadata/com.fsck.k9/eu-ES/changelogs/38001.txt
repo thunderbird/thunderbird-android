@@ -1,0 +1,7 @@
+- DNSSEC laguntza gehitu da konfigurazio garaian zerbitzariaren ezarpenak bilatzeko
+- Aldaketa bat egin da software-teklatu batzuek kontuaren konfigurazioan helbide elektronikoak maiuskulaz edo automatikoki zuzentzea saihesteko
+- Gai oso luzea erabiltzen deneko hutsegitea konpondu da
+- OAuth 2.0 errore-mezuak bistaratzea konpondu da
+- Eranskin bat deskargatzean hutsegite arraro bat konpondu da
+- Kodea gehitu da lerro bakarreko testu-sarreran lerro-jauziak ez onartzeko
+- Itzulpen eguneratuak

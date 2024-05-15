@@ -15,7 +15,6 @@
     <string name="user_manual_title">Руководство пользователя</string>
     <string name="get_help_title">Получить помощь</string>
     <string name="user_forum_title">Форум пользователей</string>
-    <string name="about_fediverse_title">Федеративная сеть</string>
     <string name="about_libraries">Библиотеки</string>
     <string name="license">Лицензия</string>
     <string name="changelog_title">Список изменений</string>
@@ -28,12 +27,13 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Показать</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nПростите за краткость, создано в K-9 Mail.</string>
+    <string name="default_signature">--
+\nПростите за краткость, создано в Почте K-9.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Учётная запись «<xliff:g id="account">%s</xliff:g>» будет удалена из приложения K-9 Mail.</string>
+    <string name="account_delete_dlg_instructions_fmt">Учётная запись \"<xliff:g id="account">%s</xliff:g>\" будет удалена из приложения Почта K-9.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Авторы</string>
-    <string name="about_title">О приложении K-9 Mail</string>
+    <string name="about_title">О приложении Почта K-9</string>
     <string name="accounts_title">Учётные записи</string>
     <string name="advanced">Дополнительно</string>
     <string name="compose_title_compose">Новое</string>
@@ -218,7 +218,7 @@
     <string name="global_settings_registered_name_color_changed">Выделять цветом имена из контактов</string>
     <string name="general_settings_contact_name_color_label">Цвет контакта</string>
     <string name="global_settings_messageview_fixedwidth_label">Моноширинный шрифт</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Показать сообщения в формате «Только текст» моноширинным шрифтом</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Показать сообщения в формате \"Только текст\" моноширинным шрифтом</string>
     <string name="global_settings_messageview_autofit_width_label">Вписать по ширине</string>
     <string name="global_settings_messageview_autofit_width_summary">Подогнать текст сообщения по ширине экрана</string>
     <string name="global_settings_confirm_actions_title">Подтверждать действия</string>
@@ -257,10 +257,10 @@
     <string name="general_settings_ui_density_default">По умолчанию</string>
     <string name="general_settings_ui_density_relaxed">Ослабленная</string>
     <string name="global_settings_privacy_hide_useragent">Скрыть почтовик</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Убрать «K-9 User-Agent» из заголовков сообщений</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Убрать \"K-9 User-Agent\" из заголовков сообщений</string>
     <string name="global_settings_privacy_hide_timezone">Скрыть временную зону</string>
     <string name="global_settings_privacy_hide_timezone_detail">Использовать UTC вместо местного времени в заголовках сообщений</string>
-    <string name="global_settings_notification_quick_delete_title">Кнопка «Удалить»</string>
+    <string name="global_settings_notification_quick_delete_title">Кнопка \"Удалить\"</string>
     <string name="global_settings_notification_quick_delete_never">Никогда</string>
     <string name="global_settings_notification_quick_delete_when_single_msg">Для одиночного</string>
     <string name="global_settings_notification_quick_delete_always">Всегда</string>
@@ -372,7 +372,7 @@
     <string name="account_settings_quote_style_prefix">Префикс (Gmail)</string>
     <string name="account_settings_quote_style_header">Заголовок (Outlook)</string>
     <string name="account_settings_upload_sent_messages_label">Выгрузить отправленные</string>
-    <string name="account_settings_upload_sent_messages_summary">Помещать сообщения в папку «Отправленные» после отправки</string>
+    <string name="account_settings_upload_sent_messages_summary">Помещать сообщения в папку \"Отправленные\" после отправки</string>
     <string name="account_settings_general_title">Основные</string>
     <string name="account_settings_reading_mail">Чтение</string>
     <string name="account_settings_sync">Получение</string>
@@ -605,8 +605,8 @@
     <string name="show_starred_count_title">Счётчик важных</string>
     <string name="integrated_inbox_title">Входящие</string>
     <string name="integrated_inbox_detail">из всех ящиков</string>
-    <string name="folder_settings_include_in_integrated_inbox_label">Общие «Входящие»</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Показать почту в общих «Входящих»</string>
+    <string name="folder_settings_include_in_integrated_inbox_label">Общие \"Входящие\"</string>
+    <string name="folder_settings_include_in_integrated_inbox_summary">Показать почту в общих \"Входящих\"</string>
     <string name="account_settings_searchable_label">Папки для поиска</string>
     <string name="account_settings_searchable_all">Все</string>
     <string name="account_settings_searchable_displayable">Видимые</string>
@@ -666,10 +666,10 @@
     <string name="dialog_confirm_mark_all_as_read_cancel_button">Нет</string>
     <string name="dialog_confirm_spam_title">Переместить в спам</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">Переместить сообщение в cпам?</item>
-        <item quantity="few">Переместить <xliff:g id="message_count">%1$d</xliff:g> сообщения в cпам?</item>
-        <item quantity="many">Переместить <xliff:g id="message_count">%1$d</xliff:g> сообщений в cпам?</item>
-        <item quantity="other">Переместить <xliff:g id="message_count">%1$d</xliff:g> сообщений в cпам?</item>
+        <item quantity="one">Переместить сообщение в спам?</item>
+        <item quantity="few">Переместить <xliff:g id="message_count">%1$d</xliff:g> сообщения в спам?</item>
+        <item quantity="many">Переместить <xliff:g id="message_count">%1$d</xliff:g> сообщений в спам?</item>
+        <item quantity="other">Переместить <xliff:g id="message_count">%1$d</xliff:g> сообщений в спам?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Да</string>
     <string name="dialog_confirm_spam_cancel_button">Нет</string>
@@ -685,7 +685,7 @@
     <string name="unread_widget_select_account">Счётчик непрочитанных</string>
     <string name="unread_widget_account_title">Учётная запись</string>
     <string name="unread_widget_account_summary">Учётная запись для отображения счётчика непрочитанных</string>
-    <string name="unread_widget_unified_inbox_account_summary">Общие «Входящие»</string>
+    <string name="unread_widget_unified_inbox_account_summary">Общие \"Входящие\"</string>
     <string name="unread_widget_folder_enabled_title">Счётчик папок</string>
     <string name="unread_widget_folder_enabled_summary">Показывать счётчик непрочитанных только для одной папки</string>
     <string name="unread_widget_folder_title">Папка</string>
@@ -747,7 +747,7 @@
     <string name="global_settings_threaded_view_summary">Объединить сообщения, показав счётчик</string>
     <string name="upgrade_databases_title">Обновление данных</string>
     <string name="upgrade_databases_unspecified">Обновление данных…</string>
-    <string name="upgrade_database_format">Обновление учётной записи «<xliff:g id="account">%s</xliff:g>»</string>
+    <string name="upgrade_database_format">Обновление учётной записи \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="global_settings_splitview_mode_label">Разделить экран</string>
     <string name="global_settings_splitview_always">Всегда</string>
     <string name="global_settings_splitview_never">Никогда</string>
@@ -786,8 +786,8 @@
     <string name="error_crypto_inline_attach">Режим PGP/INLINE не поддерживает вложения!</string>
     <string name="enable_inline_pgp">Включить PGP/INLINE</string>
     <string name="disable_inline_pgp">Отключить PGP/INLINE</string>
-    <string name="enable_sign_only">Включить PGP «Только подпись»</string>
-    <string name="disable_sign_only">Отключить PGP «Только подпись»</string>
+    <string name="enable_sign_only">Включить PGP \"Только подпись\"</string>
+    <string name="disable_sign_only">Отключить PGP \"Только подпись\"</string>
     <string name="openpgp_inline_title">Режим PGP/INLINE</string>
     <string name="openpgp_inline_text">Сообщение отправлено в формате PGP/INLINE.\nИспользуйте только для совместимости</string>
     <string name="openpgp_inline_plus_compat">Некоторые клиенты поддерживают только этот формат</string>
@@ -799,11 +799,11 @@
     <string name="openpgp_sign_only_ok">Понятно!</string>
     <string name="openpgp_sign_only_disable">Отключить</string>
     <string name="openpgp_sign_only_keep_enabled">Не отключать</string>
-    <string name="openpgp_dialog_sign_only_title">Режим PGP «Только подпись»</string>
+    <string name="openpgp_dialog_sign_only_title">Режим PGP \"Только подпись\"</string>
     <string name="openpgp_dialog_sign_only_text">В этом режиме, ключ PGP будет использоваться для создания криптографической подписи к незашифрованному сообщению</string>
     <string name="openpgp_dialog_sign_only_plus_verified">Адресат сможет убедиться, что сообщение подлинное и подписано Вашим ключом</string>
     <string name="openpgp_dialog_sign_only_minus_break">Подписи могут повредиться при отправке нескольким адресатам</string>
-    <string name="openpgp_dialog_sign_only_minus_attach">Подписи могут отображаться как вложенные файлы «signature.asc»</string>
+    <string name="openpgp_dialog_sign_only_minus_attach">Подписи могут отображаться как вложенные файлы \"signature.asc\"</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">Всегда добавлять подпись к шифрованным сообщениям</string>
     <string name="crypto_msg_title_plaintext">Текст</string>
     <string name="crypto_msg_unencrypted_sign_error">неверная подпись сквозного шифрования</string>
@@ -853,7 +853,7 @@
     <string name="account_settings_crypto_hide_sign_only">Скрыть подписи без шифрования</string>
     <string name="account_settings_crypto_hide_sign_only_on">Отображаются зашифрованные подписи</string>
     <string name="account_settings_crypto_hide_sign_only_off">Отображаются все подписи</string>
-    <string name="error_sign_only_no_encryption">Шифрование недоступно в режиме «Только подпись»</string>
+    <string name="error_sign_only_no_encryption">Шифрование недоступно в режиме \"Только подпись\"</string>
     <string name="unsigned_text_divider_label">Неподписанный текст</string>
     <string name="crypto_no_provider_title">Сообщение зашифровано</string>
     <string name="crypto_no_provider_message">Сообщение зашифровано OpenPGP.\nЧтобы прочесть его, необходимо установить и настроить подходящее OpenPGP-приложение.</string>
@@ -915,11 +915,11 @@
     <string name="push_notification_state_wait_network">Спящий режим до появления сети</string>
     <string name="push_notification_info">Нажмите, чтобы узнать больше.</string>
     <string name="push_info_title">Всплывающая информация</string>
-    <string name="push_info_notification_explanation_text">При использовании push K-9 Mail поддерживает соединение с почтовым сервером. Android требует отображения постоянного уведомления, пока приложение активно в фоновом режиме. %s</string>
+    <string name="push_info_notification_explanation_text">При использовании push Почта K-9 поддерживает соединение с почтовым сервером. Android требует отображения постоянного уведомления, пока приложение активно в фоновом режиме. %s</string>
     <string name="push_info_configure_notification_text">Однако Android также позволяет скрыть уведомление.</string>
     <string name="push_info_learn_more_text">Узнать больше</string>
     <string name="push_info_configure_notification_action">Настроить уведомление</string>
-    <string name="push_info_disable_push_text">Если вам не нужны мгновенные уведомления о новых сообщениях, вам следует отключить «Push» и использовать «Опрос». Опрос проверяет наличие новой почты через регулярные промежутки времени и не нуждается в уведомлениях.</string>
+    <string name="push_info_disable_push_text">Если вам не нужны мгновенные уведомления о новых сообщениях, вам следует отключить \"Push\" и использовать \"Опрос\". Опрос проверяет наличие новой почты через регулярные промежутки времени и не нуждается в уведомлениях.</string>
     <string name="push_info_disable_push_action">Отключить push</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
     <string name="swipe_action_select">Выбрать</string>
@@ -950,7 +950,7 @@
     <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
     <string name="message_details_toolbar_title">Подробности сообщения</string>
     <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
-    <string name="message_details_missing_date">Отсутствует заголовок «Дата»</string>
+    <string name="message_details_missing_date">Отсутствует заголовок \"Дата\"</string>
     <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
     <string name="message_details_from_section_title">От</string>
     <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->

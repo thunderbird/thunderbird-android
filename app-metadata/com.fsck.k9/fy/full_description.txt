@@ -19,6 +19,6 @@ As jo problemen hawwe mei K-9 Mail, freegje dan om help yn ús <a href="https://
 
 <b>Wolle jo helpe?</b>
 
-K-9 Mail is in troch de mienskip ûntwikkele projekt. As jo ynteressearre binne om te helpen de app te ferbetterjen, doch dan mee!
+K-9 Mail is in troch de mienskip ûntwikkele projekt. As jo ynteressearre binne om te helpen de app te ferbetterjen, doch dan mei!
 Jo kinne ús bugtracker, boarnekoade en wiki fine op <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
 It docht ús altyd goed om nije ûntwikkelers, ûntwerpers, dokumentalisten, oersetters, flateranalisten en freonen wolkom te hjitten.

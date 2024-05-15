@@ -1,0 +1,5 @@
+- Push: jakinarazi erabiltzaileari alarma zehatzak antolatzeko baimena falta bada
+- "Bidali bezeroaren IDa" ezarpenari "Bidali bezeroaren informazioa" izena jarri zaio
+- IMAP: \NonExistent LIST erantzunaren atributuaren euskarria gehitu da
+- IMAP: Eman EXPUNGE komandoa MOVE luzapenik gabe mugitu ondoren
+- Itzulpen eguneratuak; gehitutako hebreerazko itzulpena

@@ -585,7 +585,6 @@
     <string name="user_manual_title">מדריך משתמש</string>
     <string name="get_help_title">קבל עזרה</string>
     <string name="user_forum_title">פורום משתמשים</string>
-    <string name="about_fediverse_title">Fediverse</string>
     <string name="edit_as_new_message_action">לערוך כהודעה חדשה</string>
     <string name="unsubscribe_action">ביטול הרשמה</string>
     <string name="status_loading_error">שגיאה בטעינת הודעה</string>

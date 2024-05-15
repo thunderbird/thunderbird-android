@@ -1,0 +1,5 @@
+- Errore txikien konponketa eta kontuaren konfigurazioan UI/UX-etako hobekuntzak.
+- OpenKeychain 6.0.0-rekin elkarrekintza batek eragindako hutsegite bat konpondu da
+- Gaia edo gorputza idazteko eremuetan zentratu posta elektroniko bidez idazteko pantaila irekitzean: URI
+- Hebreera eta koreerazko itzulpenak kendu ziren, kateen % 70 baino gutxiago itzuli zirelako. Itzulpenak eguneratzeko boluntarioak ongi etorriak dira beti!
+- Gainerako itzulpenak eguneratu dira

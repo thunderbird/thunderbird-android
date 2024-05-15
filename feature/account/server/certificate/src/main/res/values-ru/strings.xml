@@ -3,15 +3,15 @@
     <string name="account_server_certificate_warning_title">Внимание</string>
     <string name="account_server_certificate_unknown_error_subtitle">Ошибка сертификата</string>
     <string name="account_server_certificate_button_back">Вернуться (рекомендуется)</string>
-    <string name="account_server_certificate_button_advanced">Расширенный</string>
+    <string name="account_server_certificate_button_advanced">Дополнительно</string>
     <string name="account_server_certificate_button_continue">Принять риск и продолжить</string>
     <string name="account_server_certificate_section_title">Сертификат сервера</string>
     <string name="account_server_certificate_subject_alternative_names">Альтернативные названия субъектов</string>
-    <string name="account_server_certificate_not_valid_before">Недействителен до</string>
-    <string name="account_server_certificate_not_valid_after">Не действует после</string>
-    <string name="account_server_certificate_subject">Тема</string>
+    <string name="account_server_certificate_not_valid_before">Не действителен до</string>
+    <string name="account_server_certificate_not_valid_after">Не действителен после</string>
+    <string name="account_server_certificate_subject">Субъект</string>
     <string name="account_server_certificate_issuer">Эмитент</string>
-    <string name="account_server_certificate_unknown_error_description_format">Приложением было обнаружена потенциальная угроза безопасности и не позволило продолжить подключение к <xliff:g id="serverName">%s</xliff:g>.
+    <string name="account_server_certificate_unknown_error_description_format">Приложение обнаружило потенциальную угрозу безопасности и прекратило подключение к <xliff:g id="serverName">%s</xliff:g>.
 \nЕсли вы продолжите подключение, злоумышленники могут попытаться украсть информацию, например ваш пароль или электронную почту.</string>
-    <string name="account_server_certificate_fingerprints_section">Цифровой отпечаток устройства</string>
+    <string name="account_server_certificate_fingerprints_section">Цифровой отпечаток</string>
 </resources>
