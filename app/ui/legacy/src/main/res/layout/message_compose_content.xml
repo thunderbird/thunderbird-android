@@ -3,8 +3,8 @@
 We explicitly set the background color in case this layout is inflated using a theme different from the app theme (via
 the 'composer theme' setting).
 -->
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -114,20 +114,22 @@ the 'composer theme' setting).
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true">
 
-                <ImageButton
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.Material3.Button.IconButton.Filled"
                     android:id="@+id/quoted_text_edit"
                     android:contentDescription="@string/message_compose_description_edit_quoted_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:background="@drawable/btn_edit" />
+                    app:icon="@drawable/ic_edit" />
 
-                <ImageButton
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.Material3.Button.IconButton.Filled"
                     android:id="@+id/quoted_text_delete"
                     android:contentDescription="@string/message_compose_description_delete_quoted_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/btn_dialog" />
+                    app:icon="@drawable/ic_close" />
 
             </LinearLayout>
 
