@@ -5,7 +5,7 @@
     <string name="account_server_validation_error_missing_server_capability">Отсутствующие возможности сервера</string>
     <string name="account_server_validation_outgoing_loading_message">Проверка настроек исходящего сервера…</string>
     <string name="account_server_validation_sign_in">Пожалуйста, войдите</string>
-    <string name="account_server_validation_error_missing_server_capability_details">На сервере отсутствует эта возможность::
+    <string name="account_server_validation_error_missing_server_capability_details">На сервере отсутствует эта возможность:
 \n%s</string>
     <string name="account_server_validation_incoming_success">Настройки сервера входящих сообщений проверены</string>
     <string name="account_server_validation_incoming_loading_error">Проверка параметров входящего сервера не удалась</string>

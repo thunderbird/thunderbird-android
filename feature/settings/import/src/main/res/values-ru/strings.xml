@@ -22,18 +22,18 @@
     <string name="settings_import_later_button">Позже</string>
     <string name="settings_importing">Импорт настроек…</string>
     <plurals name="settings_import_password_prompt">
-        <item quantity="one">Чтобы использовать ящик «<xliff:g id="account">%s</xliff:g>» необходимо ввести пароль.</item>
-        <item quantity="few">Чтобы использовать ящик «<xliff:g id="account">%s</xliff:g>» необходимо ввести пароли.</item>
-        <item quantity="many">Чтобы использовать ящик «<xliff:g id="account">%s</xliff:g>» необходимо ввести пароли.</item>
-        <item quantity="other">Чтобы использовать учётную запись «<xliff:g id="account">%s</xliff:g>» необходимо ввести пароли.</item>
+        <item quantity="one">Чтобы использовать ящик \"<xliff:g id="account">%s</xliff:g>\", необходимо ввести пароль.</item>
+        <item quantity="few">Чтобы использовать ящик \"<xliff:g id="account">%s</xliff:g>\", необходимо ввести пароли.</item>
+        <item quantity="many">Чтобы использовать ящик \"<xliff:g id="account">%s</xliff:g>\", необходимо ввести пароли.</item>
+        <item quantity="other">Чтобы использовать ящик \"<xliff:g id="account">%s</xliff:g>\", необходимо ввести пароли.</item>
     </plurals>
-    <string name="settings_import_incoming_server_password_hint">Входящий пароль сервера</string>
-    <string name="settings_import_outgoing_server_password_hint">Исходящий пароль сервера</string>
+    <string name="settings_import_incoming_server_password_hint">Пароль входящего сервера</string>
+    <string name="settings_import_outgoing_server_password_hint">Пароль исходящего сервера</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Использовать тот же пароль для исходящего сервера</string>
     <string name="settings_import_server_name_format">Названия серверов: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Чтобы использовать эту учётную запись электронной почты с K-9 Mail, вам необходимо войти в систему и предоставить приложению доступ к вашим электронным письмам.</string>
+    <string name="settings_import_oauth_description">Чтобы использовать эту учётную запись электронной почты с Почтой K-9, вам необходимо войти в систему и предоставить приложению доступ к вашим электронным письмам.</string>
     <string name="settings_import_oauth_sign_in">Войти</string>
-    <string name="settings_import_oauth_sign_in_with_google">Войдите в систему с помощью Google</string>
+    <string name="settings_import_oauth_sign_in_with_google">Войти с помощью Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Авторизация отменена</string>
     <string name="settings_import_oauth_error_oauth_flow_failed">Авторизация завершилась ошибкой со следующей ошибкой: <xliff:g id="error">%s</xliff:g></string>
     <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 в настоящее время не поддерживается этим поставщиком.</string>

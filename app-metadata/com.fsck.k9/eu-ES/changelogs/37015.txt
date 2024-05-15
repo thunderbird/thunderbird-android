@@ -1,0 +1,10 @@
+- Hiperesteken laster-menuan irudien kudeaketa gehitu da
+- Irekitako eranskinak mezu elektroniko berrietara birbidaltzeko gaitasuna gehitu da
+- Ziurtagiriaren errore-pantaila hobetu da kontua konfiguratzean
+- Ezarpenen inportazioa hobetu da kontua konfiguratzean
+- Kontuaren konfigurazio UI/UX hobetua
+- Pantaila txikietan kontuaren konfigurazioa hobetu da
+- Editatu kontuaren zerbitzariaren ezarpenak UI/UX hobetu dira
+- AlarmManager arazoa konpondu da Android 14-n
+- Barne-aldaketak
+- Itzulpen eguneratuak

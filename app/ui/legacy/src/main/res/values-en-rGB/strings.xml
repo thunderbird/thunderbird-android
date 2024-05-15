@@ -133,7 +133,6 @@
     <string name="discard_action">Discard</string>
     <string name="unsubscribe_action">Unsubscribe</string>
     <string name="changelog_show_recent_changes">Show recent changes when app was updated</string>
-    <string name="about_fediverse_title">Fediverse</string>
     <string name="changelog_snackbar_button_text">View</string>
     <string name="about_project_title">Open Source Project</string>
     <string name="compose_title_reply">Reply</string>

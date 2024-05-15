@@ -15,7 +15,6 @@
     <string name="user_manual_title">راهنمای کاربر</string>
     <string name="get_help_title">کمک گرفتن</string>
     <string name="user_forum_title">انجمن کاربری</string>
-    <string name="about_fediverse_title">فِدیوِرس</string>
     <string name="about_libraries">کتابخانه‌ها</string>
     <string name="license">مجوز</string>
     <string name="changelog_title">گزارش تغییرات</string>
@@ -144,7 +143,7 @@
     <string name="notification_channel_messages_title">پیام‌ها</string>
     <string name="notification_channel_messages_description">اعلان‌های مربوط به پیام‌ها</string>
     <string name="notification_channel_miscellaneous_title">متفرقه</string>
-    <string name="notification_channel_miscellaneous_description">سایر اعلان‌ها مانند خطاها و ...</string>
+    <string name="notification_channel_miscellaneous_description">سایر اعلان‌ها مانند خطاها و …</string>
     <string name="special_mailbox_name_inbox">صندوق ورودی</string>
     <string name="special_mailbox_name_outbox">صندوق خروجی</string>
     <string name="special_mailbox_name_drafts">پیش‌نویس‌ها</string>

@@ -1,0 +1,7 @@
+- Kontuaren konfigurazio berria eta hobetua
+- Mezuen zerrendara itzultzeko aukera gehitu da mezu bat mezuen ikuspegian irakurri gabeko gisa markatu ondoren
+- Zaildu egin da mezuen zerrendako pantailan nahi gabe irristatze-ekintzak abiaraztea
+- Pantaila irakurgailuaren esperientzia hobetua hainbat lekutan
+- IMAP: ID komandoa bidaltzeko laguntza gehitu da (posta elektronikoko hornitzaile batzuek eskatzen dutena)
+- Beste hainbat akats konponketa eta hobekuntza; ikusi 6.7xx bertsioetarako aldaketak
+- Hebreera eta koreerazko itzulpenak ezabatu egin ziren, osatugabeak zirelako; Itzultzaile boluntarioak ongi etorriak!

@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="designsystem_atom_password_textfield_hide_password">Skrij geslo</string>
+    <string name="designsystem_atom_password_textfield_show_password">Pokaži geslo</string>
+    <string name="designsystem_molecule_email_address_input_label">Elektronski naslov</string>
+    <string name="designsystem_molecule_password_input_label">Geslo</string>
+    <string name="designsystem_molecule_error_view_button_retry">Poskusi znova</string>
 </resources>

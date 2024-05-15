@@ -918,7 +918,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <string name="general_settings_ui_density_relaxed">Avslappet</string>
     <string name="unsubscribe_action">Opphev abonnement</string>
     <string name="changelog_show_recent_changes">Vis nylige endringer etter at appen har blitt oppdatert</string>
-    <string name="about_fediverse_title">Fediverset</string>
     <string name="changelog_snackbar_button_text">Vis</string>
     <string name="account_settings_vibrate_pattern_2">Mønster 2</string>
     <string name="account_settings_vibrate_pattern_1">Mønster 1</string>

@@ -55,7 +55,6 @@
     <string name="empty_trash_action">कचरा खाली करें</string>
     <string name="unsubscribe_action">अनसब्सक्राइब करें</string>
     <string name="changelog_show_recent_changes">ऐप अपडेट होने पे हाल के बदलाव दिखाएं</string>
-    <string name="about_fediverse_title">फैडिवर्स</string>
     <string name="changelog_snackbar_button_text">देखें</string>
     <string name="about_project_title">ओपन सोर्स प्रोजेक्ट</string>
     <string name="compose_title_reply">जवाब दें</string>

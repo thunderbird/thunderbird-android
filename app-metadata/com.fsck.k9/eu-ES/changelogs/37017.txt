@@ -1,0 +1,5 @@
+- Autokonfigurazioaren urratsen ordena zuzendu da
+- Lehenetsitako bistaratze-kopurua 100era aldatu da
+- Lehenespenez, kontu berrietarako jakinarazpenak gaituta
+- Mailto-ren kudeaketa leheneratu du: K-9 Mail 6.716-n sartutako URIak nahi gabeko albo-ondorioengatik
+- Akatsa konpondu da "kolorizatutako kontaktuak" mezuen ikuspegian berriro funtzionatzeko

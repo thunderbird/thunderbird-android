@@ -1,0 +1,24 @@
+K-9 Mail kode irekiko posta-bezero bat da, funtsean posta-hornitzaile guztiekin lan egiten duena.
+
+<b>Ezaugarriak</b>
+
+* Hainbat kontu onartzen ditu
+* Sarrera-ontzi bateratua
+* Pribatutasuna errespetatzen duena (inolako jarraipenik gabe, zure posta-hornitzailearekin soilik konektatzen da)
+* Atzeko planoko sinkronizazio automatikoa edo push jakinarazpenak
+* Tokiko eta zerbitzariaren aldeko bilaketa
+* OpenPGP posta elektronikoaren enkriptatzea (PGP/MIME)
+
+Instalatu <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain: Easy PGP</a> aplikazioa zure mezu elektronikoak OpenPGP erabiliz zifratzeko/deszifratzeko.
+
+
+<b>Laguntza</b>
+
+K-9 Mail-ekin arazoak badituzu, eskatu laguntza gure <a href="https://forum.k9mail.app">laguntza-foroan</a>.
+
+
+<b>Lagundu nahi?</b>
+
+K-9 Mail komunitatean garatutako proiektu bat da. Aplikazioa hobetzen laguntzea interesatzen bazaizu, bat egin gurekin!
+Gure akatsen jarraipena, iturburu-kodea eta wikia aurki ditzakezu <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a> helbidean .
+Beti pozik gaude garatzaile, diseinatzaile, dokumentatzaile, itzultzaile, akatsen probatzaile eta lagun berriei ongi etorria ematen.

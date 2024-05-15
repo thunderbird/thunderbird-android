@@ -15,7 +15,6 @@
     <string name="user_manual_title">Дапаможнік карыстальніка</string>
     <string name="get_help_title">Атрымаць дапамогу</string>
     <string name="user_forum_title">Форум</string>
-    <string name="about_fediverse_title">Fediverse</string>
     <string name="about_libraries">Бібліятэкі</string>
     <string name="license">Ліцэнзія</string>
     <string name="changelog_title">Спіс зменаў</string>
@@ -139,7 +138,7 @@
     <string name="notification_notify_error_title">Памылка апавяшчэння</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_text">Падчас стварэння сістэмнага апавяшчэння пра новы ліст адбылася памылка. Хутчэй за ўсё, прычына ў адсутнасці гуку апавяшчэння.\n\nНацісніце, каб адкрыць налады апавяшчэнняў.</string>
-    <string name="notification_bg_sync_ticker">Правяранне пошты: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+    <string name="notification_bg_sync_ticker">Правяранне пошты: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Правяранне пошты</string>
     <string name="notification_bg_send_ticker">Адпраўленне пошты: <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">Адпраўленне пошты</string>
