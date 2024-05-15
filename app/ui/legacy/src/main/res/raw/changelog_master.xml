@@ -5,6 +5,14 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.900" versioncode="39000" date="2024-05-15">
+        <change>Started converting the user interface to Material 3</change>
+        <change>Added support for mailto: URI on NFC tag</change>
+        <change>Added experimental workaround for the app crashing in the background</change>
+        <change>Optimized some of the IMAP protocol interactions</change>
+        <change>Don't delay showing the notification when Push is active</change>
+        <change>Updated translations</change>
+    </release>
     <release version="6.802" versioncode="38002" date="2024-04-05">
         <change>Push: Notify user if permission to schedule exact alarms is missing</change>
         <change>Renamed "Send client ID" setting to "Send client information"</change>
