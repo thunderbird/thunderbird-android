@@ -1,0 +1,1 @@
+- Fixed a crash when opening the screen to compose a message

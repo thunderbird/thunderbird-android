@@ -5,6 +5,9 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.901" versioncode="39001" date="2024-05-15">
+        <change>Fixed a crash when opening the screen to compose a message</change>
+    </release>
     <release version="6.900" versioncode="39000" date="2024-05-15">
         <change>Started converting the user interface to Material 3</change>
         <change>Added support for mailto: URI on NFC tag</change>
