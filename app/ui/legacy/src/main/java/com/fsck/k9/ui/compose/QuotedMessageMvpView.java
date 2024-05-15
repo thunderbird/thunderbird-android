@@ -30,11 +30,11 @@ public class QuotedMessageMvpView {
 
     private final Button mQuotedTextShow;
     private final View mQuotedTextBar;
-    private final ImageButton mQuotedTextEdit;
+    private final View mQuotedTextEdit;
     private final EditText mQuotedText;
     private final MessageWebView mQuotedHTML;
     private final EditText mMessageContentView;
-    private final ImageButton mQuotedTextDelete;
+    private final View mQuotedTextDelete;
 
 
     public QuotedMessageMvpView(MessageCompose messageCompose) {
