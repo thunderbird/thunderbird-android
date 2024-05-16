@@ -12,23 +12,23 @@
 
 [versions]
 androidDesugar = "2.0.4"
-androidMaterial = "1.11.0"
+androidMaterial = "1.12.0"
 # AGP and tools should be updated together
 androidGradlePlugin = "8.2.2"
 androidTools = "31.2.2"
 androidxActivity = "1.8.2"
-androidxAnnotation = "1.7.1"
+androidxAnnotation = "1.8.0"
 androidxAppCompat = "1.6.1"
 androidxBiometric = "1.1.0"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
-androidxComposeBom = "2024.04.00"
-androidxComposeCompiler = "1.5.11"
+androidxComposeBom = "2024.05.00"
+androidxComposeCompiler = "1.5.14"
 androidxConstraintLayout = "2.1.4"
 androidxCoordinatorLayout = "1.2.0"
 androidxCore = "1.13.1"
 androidxCoreSplashscreen = "1.0.1"
 androidxDrawerLayout = "1.1.1"
-androidxFragment = "1.6.2"
+androidxFragment = "1.7.1"
 androidxLifecycle = "2.7.0"
 androidxLocalBroadcastManager = "1.1.0"
 androidxNavigation = "2.7.7"
@@ -40,24 +40,23 @@ androidxTestEspresso = "3.5.1"
 androidxTestExt = "1.1.5"
 androidxTestRules = "1.5.0"
 androidxTestRunner = "1.5.2"
-androidxTransition = "1.4.1"
 androidxWork = "2.9.0"
 apacheHttpclient5 = "5.3.1"
 appAuth = "0.11.1"
-assertk = "0.28.0"
+assertk = "0.28.1"
 circleImageView = "3.1.0"
 ckchangelog = "2.0.0-beta02"
-clikt = "4.3.0"
+clikt = "4.4.0"
 commonsIo = "2.16.1"
 dependencyCheckPlugin = "0.51.0"
 dependencyGuardPlugin = "0.5.0"
 detektPlugin = "1.23.5"
-detektPluginCompose = "0.3.15"
+detektPluginCompose = "0.3.21"
 fastAdapter = "5.7.0"
-forkhandlesBom = "2.15.1.0"
+forkhandlesBom = "2.18.0.1"
 glide = "4.16.0"
 gradle = "8.7"
-http4kBom = "5.16.0.0"
+http4kBom = "5.20.0.0"
 icu4j = "72.1"
 javaDiffUtils = "4.12"
 jcipAnnotations = "1.0"
@@ -69,19 +68,19 @@ junit = "4.13.2"
 jutf7 = "1.0.0"
 jzlib = "1.0.7"
 koinBom = "3.5.6"
-kotlinBom = "1.9.23"
+kotlinBom = "1.9.24"
 # Needs to match the version used by Gradle, just check with `./gradlew --version`
 kotlinGradleBom = "1.9.22"
-kotlinKsp = "1.9.23-1.0.20"
-kotlinxCoroutines = "1.8.0"
-kotlinxDateTime = "0.5.0"
+kotlinxCoroutines = "1.8.1"
+kotlinKsp = "1.9.24-1.0.20"
+kotlinxDateTime = "0.6.0"
 ktlint = "1.1.1"
 kxml2 = "1.0"
 leakcanary = "2.13"
 materialDrawer = "9.0.2"
 mime4j = "0.8.9"
 minidns = "1.0.5"
-mockito = "5.11.0"
+mockito = "5.12.0"
 mockitoKotlin = "5.3.1"
 moshi = "1.15.1"
 okhttp = "4.12.0"
@@ -138,6 +137,7 @@ androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", versi
 androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "androidxFragment" }
 androidx-lifecycle-common = { module = "androidx.lifecycle:lifecycle-common", version.ref = "androidxLifecycle" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
+androidx-lifecycle-runtime-testing = { module = "androidx.lifecycle:lifecycle-runtime-testing", version.ref = "androidxLifecycle" }
 androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
 androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidxLifecycle" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
@@ -258,6 +258,7 @@ shared-jvm-android-compose-debug = [
 ]
 shared-jvm-androidtest-compose = [
   "androidx-compose-ui-test-junit4",
+  "androidx-lifecycle-runtime-testing",
 ]
 shared-jvm-test = [
   "assertk",

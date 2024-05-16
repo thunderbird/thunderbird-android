@@ -41,8 +41,6 @@ allprojects {
                 .using(module("androidx.drawerlayout:drawerlayout:${libs.versions.androidxDrawerLayout.get()}"))
             substitute(module("androidx.lifecycle:lifecycle-livedata"))
                 .using(module("androidx.lifecycle:lifecycle-livedata:${libs.versions.androidxLifecycle.get()}"))
-            substitute(module("androidx.transition:transition"))
-                .using(module("androidx.transition:transition:${libs.versions.androidxTransition.get()}"))
             substitute(module("org.jetbrains:annotations"))
                 .using(module("org.jetbrains:annotations:${libs.versions.jetbrainsAnnotations.get()}"))
             substitute(module("org.jetbrains.kotlinx:kotlinx-coroutines-android"))
