@@ -32,6 +32,7 @@
         <item>it</item>
         <item>iw</item>
         <item>ja</item>
+        <item>ko</item>
         <item>lt</item>
         <item>lv</item>
         <item>ml</item>
@@ -49,6 +50,7 @@
         <item>sv</item>
         <item>tr</item>
         <item>uk</item>
+        <item>vi</item>
         <item>zh_CN</item>
         <item>zh_TW</item>
     </string-array>
