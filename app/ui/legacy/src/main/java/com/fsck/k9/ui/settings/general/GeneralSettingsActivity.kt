@@ -118,12 +118,6 @@ class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, S
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onBackPressed() {
-        if (!searchPreferenceActionView.cancelSearch()) {
-            super.onBackPressed()
-        }
-    }
-
     override fun onPreferenceStartScreen(
         caller: PreferenceFragmentCompat,
         preferenceScreen: PreferenceScreen,
