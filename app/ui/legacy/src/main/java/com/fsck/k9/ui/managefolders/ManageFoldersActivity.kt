@@ -38,11 +38,11 @@ class ManageFoldersActivity : K9Activity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp() || navigateUpBySimulatedBackButtonPress()
+        return navController.navigateUp() || super.onSupportNavigateUp() || finishActivity()
     }
 
-    private fun navigateUpBySimulatedBackButtonPress(): Boolean {
-        onBackPressed()
+    private fun finishActivity(): Boolean {
+        finish()
         return true
     }
 
