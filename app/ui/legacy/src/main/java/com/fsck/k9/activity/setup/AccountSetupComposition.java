@@ -111,7 +111,7 @@ public class AccountSetupComposition extends K9Activity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+            finish();
             return true;
         }
 
@@ -133,9 +133,11 @@ public class AccountSetupComposition extends K9Activity {
     }
 
     @Override
-    public void onBackPressed() {
+    public void onStop() {
+        // TODO: Instead of saving the changes when the activity is stopped, add buttons to explicitly save or discard
+        //  changes.
         saveSettings();
-        super.onBackPressed();
+        super.onStop();
     }
 
     @Override
