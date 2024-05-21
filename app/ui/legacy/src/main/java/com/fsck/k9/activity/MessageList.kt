@@ -12,9 +12,11 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isGone
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.fragment.app.FragmentManager
@@ -525,6 +527,7 @@ open class MessageList :
     private fun initializeActionBar() {
         actionBar = supportActionBar!!
         actionBar.setDisplayHomeAsUpEnabled(true)
+        actionBar.setDisplayShowTitleEnabled(false)
     }
 
     private fun initializeDrawer(savedInstanceState: Bundle?) {
@@ -930,9 +933,17 @@ open class MessageList :
         searchView?.isIconified = false
     }
 
-    fun setActionBarTitle(title: String, subtitle: String? = null) {
-        actionBar.title = title
-        actionBar.subtitle = subtitle
+    private fun setActionBarTitle(title: String, subtitle: String? = null) {
+        findViewById<TextView>(R.id.toolbarTitle).text = title
+        findViewById<TextView>(R.id.toolbarSubtitle).apply {
+            if (subtitle != null) {
+                text = subtitle
+                isGone = false
+            } else {
+                text = null
+                isGone = true
+            }
+        }
     }
 
     override fun setMessageListTitle(title: String, subtitle: String?) {
