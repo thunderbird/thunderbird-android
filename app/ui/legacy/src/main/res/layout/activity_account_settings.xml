@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:context=".settings.account.AccountSettingsActivity">
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         style="?attr/toolbarStyle"
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
             android:layout_marginVertical="@dimen/toolbarTitleMarginVertical"
             tools:listitem="@layout/account_spinner_item"/>
 
-    </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/accountSettingsContainer"
