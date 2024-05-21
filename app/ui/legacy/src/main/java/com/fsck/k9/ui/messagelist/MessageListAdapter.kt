@@ -485,7 +485,7 @@ class MessageListAdapter internal constructor(
         if (displayAddress != null) {
             contactsPictureLoader.setContactPicture(contactPictureView, displayAddress)
         } else {
-            contactPictureView.setImageResource(Icons.Outlined.AccountCircle)
+            contactPictureView.setImageResource(Icons.Outlined.Check)
         }
     }
 

@@ -19,12 +19,15 @@
         android:layout_marginStart="@dimen/messageListHorizontalPadding"
         android:layout_marginTop="@dimen/fakeAlignImageTopToTextTopPadding"
         android:contentDescription="@null"
+        android:background="@drawable/message_list_item_selection_background"
+        android:padding="4dp"
         android:visibility="gone"
+        app:tint="?attr/colorOnPrimary"
         app:layout_constraintBottom_toTopOf="@+id/bottom_guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/top_guideline"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/ic_check_circle" />
+        app:srcCompat="@drawable/ic_check" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/contact_picture"
@@ -37,7 +40,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/top_guideline"
         app:layout_constraintVertical_bias="0.0"
-        tools:src="@drawable/ic_account_circle" />
+        tools:src="@drawable/ic_person" />
 
     <TextView
         android:id="@+id/preview"
