@@ -10,13 +10,15 @@
         android:id="@+id/toolbar"
         style="?attr/toolbarStyle"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
         tools:navigationIcon="@drawable/ic_arrow_back">
 
         <com.fsck.k9.ui.settings.account.AccountSelectionSpinner
             android:id="@+id/accountSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/toolbarTitleMarginVertical"
             tools:listitem="@layout/account_spinner_item"/>
 
     </androidx.appcompat.widget.Toolbar>
