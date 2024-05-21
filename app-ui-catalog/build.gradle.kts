@@ -19,7 +19,6 @@ android {
             applicationIdSuffix = ".preview"
             isDebuggable = false
             matchingFallbacks += listOf("release")
-            isDefault = true
         }
     }
 }
