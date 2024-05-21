@@ -19,7 +19,6 @@
         <attr name="messageListReadTextColor" format="reference|color"/>
         <attr name="messageListPreviewTextColor" format="reference|color"/>
         <attr name="messageListDividerColor" format="reference|color"/>
-        <attr name="messageListStateIconTint" format="reference|color"/>
         <attr name="messageListSwipeIconTint" format="reference|color"/>
         <attr name="messageListSwipeDisabledBackgroundColor" format="reference|color"/>
         <attr name="messageListSwipeSelectBackgroundColor" format="reference|color"/>
