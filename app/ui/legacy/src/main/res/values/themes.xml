@@ -85,7 +85,6 @@
         <item name="messageListReadTextColor">#ff444444</item>
         <item name="messageListPreviewTextColor">#ff444444</item>
         <item name="messageListDividerColor">#ffcccccc</item>
-        <item name="messageListStateIconTint">#bbbbbb</item>
 
         <item name="messageListSwipeIconTint">#ffffff</item>
         <item name="messageListSwipeDisabledBackgroundColor">@color/material_gray_200</item>
@@ -203,7 +202,6 @@
         <item name="messageListReadTextColor">#ffaaaaaa</item>
         <item name="messageListPreviewTextColor">#ffaaaaaa</item>
         <item name="messageListDividerColor">#ff333333</item>
-        <item name="messageListStateIconTint">#777777</item>
 
         <item name="messageListSwipeIconTint">#ffffff</item>
         <item name="messageListSwipeDisabledBackgroundColor">@color/material_gray_900</item>
