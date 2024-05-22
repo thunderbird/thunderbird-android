@@ -71,9 +71,6 @@
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_light</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_light</item>
 
-        <item name="messageListSelectedBackgroundColor">?attr/colorSecondaryVariant</item>
-        <item name="messageListSelectedBackgroundAlphaFraction">33%</item>
-        <item name="messageListSelectedBackgroundAlphaBackground">?attr/colorSurface</item>
         <item name="messageListRegularItemBackgroundColor">?android:attr/windowBackground</item>
         <item name="messageListReadItemBackgroundColor">#ffd8d8d8</item>
         <item name="messageListUnreadItemBackgroundColor">?attr/messageListRegularItemBackgroundColor</item>
@@ -188,9 +185,6 @@
 
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_dark</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_dark</item>
-        <item name="messageListSelectedBackgroundColor">?attr/colorSecondaryVariant</item>
-        <item name="messageListSelectedBackgroundAlphaFraction">25%</item>
-        <item name="messageListSelectedBackgroundAlphaBackground">?attr/colorSurface</item>
         <item name="messageListRegularItemBackgroundColor">?android:attr/windowBackground</item>
         <item name="messageListReadItemBackgroundColor">?attr/messageListRegularItemBackgroundColor</item>
         <item name="messageListUnreadItemBackgroundColor">#ff505050</item>

@@ -63,11 +63,8 @@ class MessageListAdapter internal constructor(
         alphaFractionAttrId = R.attr.messageListActiveItemBackgroundAlphaFraction,
         backgroundColorAttrId = R.attr.messageListActiveItemBackgroundAlphaBackground,
     )
-    private val selectedItemBackgroundColor: Int = theme.resolveColorAttribute(
-        colorAttrId = R.attr.messageListSelectedBackgroundColor,
-        alphaFractionAttrId = R.attr.messageListSelectedBackgroundAlphaFraction,
-        backgroundColorAttrId = R.attr.messageListSelectedBackgroundAlphaBackground,
-    )
+    private val selectedItemBackgroundColor: Int =
+        theme.resolveColorAttribute(com.google.android.material.R.attr.colorSurfaceContainerHigh)
     private val regularItemBackgroundColor: Int =
         theme.resolveColorAttribute(R.attr.messageListRegularItemBackgroundColor)
     private val readItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListReadItemBackgroundColor)
@@ -485,7 +482,7 @@ class MessageListAdapter internal constructor(
         if (displayAddress != null) {
             contactsPictureLoader.setContactPicture(contactPictureView, displayAddress)
         } else {
-            contactPictureView.setImageResource(Icons.Outlined.AccountCircle)
+            contactPictureView.setImageResource(Icons.Outlined.Check)
         }
     }
 
