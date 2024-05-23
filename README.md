@@ -81,3 +81,6 @@ our [blog post](https://blog.thunderbird.net/2023/07/k-9-mail-collaborates-with-
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
+
+
+[阅读中文](zh-README.md)
