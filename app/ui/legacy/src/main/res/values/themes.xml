@@ -80,7 +80,6 @@
         <item name="messageListActiveItemBackgroundAlphaBackground">?attr/colorSurface</item>
         <item name="messageListUnreadTextColor">#dd000000</item>
         <item name="messageListReadTextColor">#ff444444</item>
-        <item name="messageListDividerColor">#ffcccccc</item>
 
         <item name="messageListSwipeSelectColor">@color/material_blue_600</item>
         <item name="messageListSwipeToggleReadColor">@color/material_blue_600</item>
@@ -90,7 +89,6 @@
         <item name="messageListSwipeSpamColor">@color/material_red_700</item>
         <item name="messageListSwipeMoveColor">@color/material_purple_500</item>
 
-        <item name="messageDetailsDividerColor">#ffcccccc</item>
         <item name="contactPictureFallbackDefaultBackgroundColor">#ffababab</item>
         <item name="contactPictureFallbackBackgroundColors">@array/contact_picture_fallback_background_colors_light</item>
         <item name="contactTokenBackgroundColor">#ccc</item>
@@ -190,7 +188,6 @@
         <item name="messageListActiveItemBackgroundAlphaBackground">?attr/colorSurface</item>
         <item name="messageListUnreadTextColor">#ffffffff</item>
         <item name="messageListReadTextColor">#ffaaaaaa</item>
-        <item name="messageListDividerColor">#ff333333</item>
 
         <item name="messageListSwipeSelectColor">@color/material_blue_700</item>
         <item name="messageListSwipeToggleReadColor">@color/material_blue_700</item>
@@ -200,7 +197,6 @@
         <item name="messageListSwipeSpamColor">@color/material_red_800</item>
         <item name="messageListSwipeMoveColor">@color/material_purple_600</item>
 
-        <item name="messageDetailsDividerColor">#ff555555</item>
         <item name="contactTokenBackgroundColor">#313131</item>
         <item name="contactPictureFallbackDefaultBackgroundColor">#ff606060</item>
         <item name="contactPictureFallbackBackgroundColors">@array/contact_picture_fallback_background_colors_dark</item>
