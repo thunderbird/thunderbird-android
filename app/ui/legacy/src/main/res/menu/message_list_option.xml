@@ -26,14 +26,6 @@
 
     <!-- MessageView -->
     <item
-        android:id="@+id/archive"
-        android:icon="@drawable/ic_archive"
-        android:title="@string/archive_action"
-        android:visible="false"
-        app:showAsAction="always" />
-
-    <!-- MessageView -->
-    <item
         android:id="@+id/delete"
         android:icon="@drawable/ic_delete"
         android:title="@string/delete_action"
@@ -45,6 +37,14 @@
         android:id="@+id/toggle_unread"
         android:icon="@drawable/ic_mark_email_unread"
         android:title="@string/mark_as_unread_action"
+        android:visible="false"
+        app:showAsAction="always" />
+
+    <!-- MessageView -->
+    <item
+        android:id="@+id/archive"
+        android:icon="@drawable/ic_archive"
+        android:title="@string/archive_action"
         android:visible="false"
         app:showAsAction="always" />
 
