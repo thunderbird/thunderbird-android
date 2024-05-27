@@ -882,7 +882,7 @@ open class MessageList :
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.message_list_option, menu)
+        menuInflater.inflate(R.menu.message_list_option_menu, menu)
 
         val searchItem = menu.findItem(R.id.search)
         initializeSearchMenuItem(searchItem)
