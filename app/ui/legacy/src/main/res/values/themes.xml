@@ -97,7 +97,6 @@
         <item name="contactPictureFallbackDefaultBackgroundColor">#ffababab</item>
         <item name="contactPictureFallbackBackgroundColors">@array/contact_picture_fallback_background_colors_light</item>
         <item name="contactTokenBackgroundColor">#ccc</item>
-        <item name="composerBackgroundColor">@android:color/background_light</item>
         <item name="tintColorBulletPointPositive">#77aa22</item>
         <item name="tintColorBulletPointNegative">#dd2222</item>
         <item name="tintColorBulletPointNeutral">#888</item>
@@ -211,7 +210,6 @@
         <item name="contactTokenBackgroundColor">#313131</item>
         <item name="contactPictureFallbackDefaultBackgroundColor">#ff606060</item>
         <item name="contactPictureFallbackBackgroundColors">@array/contact_picture_fallback_background_colors_dark</item>
-        <item name="composerBackgroundColor">@android:color/background_dark</item>
         <item name="tintColorBulletPointPositive">#77aa22</item>
         <item name="tintColorBulletPointNegative">#dd2222</item>
         <item name="tintColorBulletPointNeutral">#bbb</item>
