@@ -1899,7 +1899,7 @@ class MessageListFragment :
         }
 
         override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
-            mode.menuInflater.inflate(R.menu.message_list_context, menu)
+            mode.menuInflater.inflate(R.menu.message_list_context_menu, menu)
 
             setContextCapabilities(account, menu)
             return true
