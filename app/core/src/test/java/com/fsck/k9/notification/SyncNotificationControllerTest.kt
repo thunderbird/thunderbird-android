@@ -31,10 +31,15 @@ class SyncNotificationControllerTest : RobolectricTest() {
     private val notificationManager = mock<NotificationManagerCompat>()
     private val builder = createFakeNotificationBuilder(notification)
     private val lockScreenNotificationBuilder = createFakeNotificationBuilder(lockScreenNotification)
+    private val notificationHelper = createFakeNotificationHelper(
+        notificationManager,
+        builder,
+        lockScreenNotificationBuilder,
+    )
     private val account = createFakeAccount()
     private val contentIntent = mock<PendingIntent>()
     private val controller = SyncNotificationController(
-        notificationHelper = createFakeNotificationHelper(notificationManager, builder, lockScreenNotificationBuilder),
+        notificationHelper = notificationHelper,
         actionBuilder = createActionBuilder(contentIntent),
         resourceProvider = resourceProvider,
     )
@@ -45,7 +50,7 @@ class SyncNotificationControllerTest : RobolectricTest() {
 
         controller.showSendingNotification(account)
 
-        verify(notificationManager).notify(notificationId, notification)
+        verify(notificationHelper).notify(notificationId, notification)
         verify(builder).setSmallIcon(resourceProvider.iconSendingMail)
         verify(builder).setTicker("Sending mail: $ACCOUNT_NAME")
         verify(builder).setContentTitle("Sending mail")
@@ -73,7 +78,7 @@ class SyncNotificationControllerTest : RobolectricTest() {
 
         controller.showFetchingMailNotification(account, localFolder)
 
-        verify(notificationManager).notify(notificationId, notification)
+        verify(notificationHelper).notify(notificationId, notification)
         verify(builder).setSmallIcon(resourceProvider.iconCheckingMail)
         verify(builder).setTicker("Checking mail: $ACCOUNT_NAME:$FOLDER_NAME")
         verify(builder).setContentTitle("Checking mail")
@@ -91,7 +96,7 @@ class SyncNotificationControllerTest : RobolectricTest() {
 
         controller.showEmptyFetchingMailNotification(account)
 
-        verify(notificationManager).notify(notificationId, notification)
+        verify(notificationHelper).notify(notificationId, notification)
         verify(builder).setSmallIcon(resourceProvider.iconCheckingMail)
         verify(builder).setContentTitle("Checking mail")
         verify(builder).setContentText(ACCOUNT_NAME)

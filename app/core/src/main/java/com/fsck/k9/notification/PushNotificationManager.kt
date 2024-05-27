@@ -11,6 +11,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.PendingIntentCompat
 import com.fsck.k9.CoreResourceProvider
+import timber.log.Timber
 
 private const val PUSH_INFO_ACTION = "app.k9mail.action.PUSH_INFO"
 
@@ -48,7 +49,11 @@ internal class PushNotificationManager(
 
     private fun updateNotification() {
         val notification = createNotification()
-        notificationManager.notify(notificationId, notification)
+        try {
+            notificationManager.notify(notificationId, notification)
+        } catch (e: SecurityException) {
+            Timber.e(e, "Failed to post updated notification")
+        }
     }
 
     private fun createNotification(): Notification {

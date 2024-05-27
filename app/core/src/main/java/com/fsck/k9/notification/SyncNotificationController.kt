@@ -32,7 +32,7 @@ internal class SyncNotificationController(
             .setContentIntent(showMessageListPendingIntent)
             .setPublicVersion(createSendingLockScreenNotification(account))
 
-        notificationManager.notify(notificationId, notificationBuilder.build())
+        notificationHelper.notify(notificationId, notificationBuilder.build())
     }
 
     fun clearSendingNotification(account: Account) {
@@ -66,7 +66,7 @@ internal class SyncNotificationController(
             .setPublicVersion(createFetchingMailLockScreenNotification(account))
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
 
-        notificationManager.notify(notificationId, notificationBuilder.build())
+        notificationHelper.notify(notificationId, notificationBuilder.build())
     }
 
     fun showEmptyFetchingMailNotification(account: Account) {
@@ -85,7 +85,7 @@ internal class SyncNotificationController(
             .setPublicVersion(createFetchingMailLockScreenNotification(account))
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
 
-        notificationManager.notify(notificationId, notificationBuilder.build())
+        notificationHelper.notify(notificationId, notificationBuilder.build())
     }
 
     fun clearFetchingMailNotification(account: Account) {

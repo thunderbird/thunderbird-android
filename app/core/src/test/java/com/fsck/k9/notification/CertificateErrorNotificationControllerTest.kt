@@ -42,7 +42,7 @@ class CertificateErrorNotificationControllerTest : RobolectricTest() {
 
         controller.showCertificateErrorNotification(account, INCOMING)
 
-        verify(notificationManager).notify(notificationId, notification)
+        verify(notificationHelper).notify(notificationId, notification)
         assertCertificateErrorNotificationContents()
     }
 
@@ -61,7 +61,7 @@ class CertificateErrorNotificationControllerTest : RobolectricTest() {
 
         controller.showCertificateErrorNotification(account, OUTGOING)
 
-        verify(notificationManager).notify(notificationId, notification)
+        verify(notificationHelper).notify(notificationId, notification)
         assertCertificateErrorNotificationContents()
     }
 

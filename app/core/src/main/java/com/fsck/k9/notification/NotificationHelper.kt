@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.PendingIntentCompat
@@ -48,11 +49,20 @@ class NotificationHelper(
                 Timber.e(e, "Failed to create a notification for a new message")
                 showNotifyErrorNotification(account)
             } else {
-                throw e
+                Timber.e(e, "Failed to post notification")
             }
         }
     }
 
+    fun notify(notificationId: Int, notification: Notification) {
+        try {
+            notificationManager.notify(notificationId, notification)
+        } catch (e: SecurityException) {
+            Timber.e(e, "Failed to post notification")
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun showNotifyErrorNotification(account: Account) {
         val title = resourceProvider.notifyErrorTitle()
         val text = resourceProvider.notifyErrorText()
@@ -81,7 +91,7 @@ class NotificationHelper(
             .build()
 
         val notificationId = NotificationIds.getNewMailSummaryNotificationId(account)
-        notificationManager.notify(notificationId, notification)
+        notify(notificationId, notification)
     }
 
     companion object {

@@ -40,7 +40,7 @@ internal class SendFailedNotificationController(
             .setCategory(NotificationCompat.CATEGORY_ERROR)
             .setErrorAppearance()
 
-        notificationManager.notify(notificationId, notificationBuilder.build())
+        notificationHelper.notify(notificationId, notificationBuilder.build())
     }
 
     fun clearSendFailedNotification(account: Account) {
