@@ -83,5 +83,6 @@ class SwipeResourceProvider(val theme: Theme) {
 }
 
 private fun Theme.loadDrawable(@DrawableRes drawableResId: Int): Drawable {
-    return ResourcesCompat.getDrawable(resources, drawableResId, this)!!
+    // mutate() is called to ensure that the drawable can be modified and doesn't affect other drawables
+    return ResourcesCompat.getDrawable(resources, drawableResId, this)!!.mutate()
 }
