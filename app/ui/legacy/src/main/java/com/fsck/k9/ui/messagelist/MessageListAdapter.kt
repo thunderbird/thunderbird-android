@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.AbsoluteSizeSpan
-import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
@@ -57,7 +56,6 @@ class MessageListAdapter internal constructor(
         ResourcesCompat.getDrawable(res, Icons.Outlined.CompareArrows, theme)!!
     private val unreadTextColor: Int = theme.resolveColorAttribute(R.attr.messageListUnreadTextColor)
     private val readTextColor: Int = theme.resolveColorAttribute(R.attr.messageListReadTextColor)
-    private val previewTextColor: Int = theme.resolveColorAttribute(R.attr.messageListPreviewTextColor)
     private val activeItemBackgroundColor: Int = theme.resolveColorAttribute(
         colorAttrId = R.attr.messageListActiveItemBackgroundColor,
         alphaFractionAttrId = R.attr.messageListActiveItemBackgroundAlphaFraction,
@@ -450,14 +448,6 @@ class MessageListAdapter internal constructor(
 
         val beforePreviewLength = beforePreviewText.length
         addBeforePreviewSpan(previewText, beforePreviewLength, messageRead)
-
-        // Set span (color) for preview message
-        previewText.setSpan(
-            ForegroundColorSpan(previewTextColor),
-            beforePreviewLength,
-            previewText.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
-        )
     }
 
     private fun addBeforePreviewSpan(text: Spannable, length: Int, messageRead: Boolean) {
