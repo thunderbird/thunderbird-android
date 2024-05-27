@@ -131,9 +131,11 @@ public class ManageIdentities extends ChooseIdentity {
 
 
     @Override
-    public void onBackPressed() {
+    public void onStop() {
+        // TODO: Instead of saving the changes when the activity is stopped, save the changes (in a background thread)
+        //  immediately after modifying the list of identities.
         saveIdentities();
-        super.onBackPressed();
+        super.onStop();
     }
 
     private void saveIdentities() {
@@ -141,6 +143,5 @@ public class ManageIdentities extends ChooseIdentity {
             mAccount.setIdentities(identities);
             Preferences.getPreferences().saveAccount(mAccount);
         }
-        finish();
     }
 }
