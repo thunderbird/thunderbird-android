@@ -36,11 +36,9 @@ the 'composer theme' setting).
                 android:inputType="textEmailSubject|textAutoCorrect|textCapSentences"
                 android:imeOptions="actionNext|flagNoExtractUi"
                 android:singleLine="true"
-                android:layout_marginLeft="12dip"
-                android:layout_marginRight="12dip"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
                 android:background="@android:color/transparent"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
                 style="@style/ComposeEditTextLarge"
                 />
         </LinearLayout>
@@ -76,9 +74,9 @@ the 'composer theme' setting).
         <Button
             android:id="@+id/quoted_text_show"
             android:text="@string/message_compose_show_quoted_text_action"
-            android:textSize="16sp"
-            android:padding="0dip"
             android:layout_gravity="end"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="8dp"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"/>
 
@@ -108,6 +106,8 @@ the 'composer theme' setting).
                 android:id="@+id/quoted_text_buttons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingStart="0dp"
+                android:paddingEnd="12dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true">
 
@@ -117,7 +117,6 @@ the 'composer theme' setting).
                     android:contentDescription="@string/message_compose_description_edit_quoted_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
                     app:icon="@drawable/ic_edit" />
 
                 <com.google.android.material.button.MaterialButton
