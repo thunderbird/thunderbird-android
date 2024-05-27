@@ -100,8 +100,7 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toEndOf="@+id/status"
         app:layout_constraintTop_toTopOf="@+id/top_guideline"
-        tools:text="Subject"
-        tools:textColor="?attr/messageListReadTextColor" />
+        tools:text="Subject" />
 
     <TextView
         android:id="@+id/thread_count"
