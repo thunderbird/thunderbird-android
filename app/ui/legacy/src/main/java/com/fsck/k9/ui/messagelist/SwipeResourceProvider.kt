@@ -12,15 +12,24 @@ import com.fsck.k9.ui.resolveColorAttribute
 class SwipeResourceProvider(val theme: Theme) {
     val iconTint = theme.resolveColorAttribute(R.attr.messageListSwipeIconTint)
 
-    private val selectIcon = theme.loadDrawable(Icons.Outlined.CheckCircle)
-    private val markAsReadIcon = theme.loadDrawable(Icons.Outlined.MarkEmailRead)
-    private val markAsUnreadIcon = theme.loadDrawable(Icons.Outlined.MarkEmailUnread)
-    private val addStarIcon = theme.loadDrawable(Icons.Filled.Star)
-    private val removeStarIcon = theme.loadDrawable(Icons.Outlined.Star)
-    private val archiveIcon = theme.loadDrawable(Icons.Outlined.Archive)
-    private val deleteIcon = theme.loadDrawable(Icons.Outlined.Delete)
-    private val spamIcon = theme.loadDrawable(Icons.Outlined.Report)
-    private val moveIcon = theme.loadDrawable(Icons.Outlined.DriveFileMove)
+    private val selectIcon: Drawable
+        get() = theme.loadDrawable(Icons.Outlined.CheckCircle)
+    private val markAsReadIcon: Drawable
+        get() = theme.loadDrawable(Icons.Outlined.MarkEmailRead)
+    private val markAsUnreadIcon: Drawable
+        get() = theme.loadDrawable(Icons.Outlined.MarkEmailUnread)
+    private val addStarIcon: Drawable
+        get() = theme.loadDrawable(Icons.Filled.Star)
+    private val removeStarIcon: Drawable
+        get() = theme.loadDrawable(Icons.Outlined.Star)
+    private val archiveIcon: Drawable
+        get() = theme.loadDrawable(Icons.Outlined.Archive)
+    private val deleteIcon: Drawable
+        get() = theme.loadDrawable(Icons.Outlined.Delete)
+    private val spamIcon: Drawable
+        get() = theme.loadDrawable(Icons.Outlined.Report)
+    private val moveIcon: Drawable
+        get() = theme.loadDrawable(Icons.Outlined.DriveFileMove)
 
     private val noActionColor = theme.resolveColorAttribute(R.attr.messageListSwipeDisabledBackgroundColor)
     private val selectColor = theme.resolveColorAttribute(R.attr.messageListSwipeSelectBackgroundColor)
