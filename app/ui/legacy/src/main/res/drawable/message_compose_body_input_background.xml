@@ -1,0 +1,46 @@
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:insetLeft="16dp"
+    android:insetTop="8dp"
+    android:insetRight="16dp"
+    android:insetBottom="8dp">
+
+    <selector>
+
+        <item android:state_focused="true">
+            <layer-list>
+                <!-- Bottom line; shifted to revert inset -->
+                <item
+                    android:gravity="bottom"
+                    android:bottom="-8dp"
+                    android:left="-16dp"
+                    android:right="-16dp">
+
+                    <shape android:shape="rectangle">
+                        <size android:height="1dp" />
+                        <solid android:color="?attr/colorPrimary" />
+                    </shape>
+
+                </item>
+            </layer-list>
+        </item>
+
+        <item>
+            <layer-list>
+                <!-- Bottom line; shifted to revert inset -->
+                <item
+                    android:gravity="bottom"
+                    android:bottom="-8dp"
+                    android:left="-16dp"
+                    android:right="-16dp">
+
+                    <shape android:shape="rectangle">
+                        <size android:height="1dp" />
+                        <solid android:color="?attr/colorSurfaceContainerHighest" />
+                    </shape>
+
+                </item>
+            </layer-list>
+        </item>
+
+    </selector>
+</inset>
