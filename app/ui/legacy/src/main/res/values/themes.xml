@@ -58,12 +58,12 @@
         <item name="colorErrorContainer">@color/k9_error_090</item>
         <item name="colorOnErrorContainer">@color/k9_error_010</item>
 
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeCloseDrawable">@drawable/ic_close</item>
+        <item name="actionBarPopupTheme">@style/Widget.App.ActionMode.PopupMenu</item>
         <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
 
         <!-- Legacy styles -->
-
-        <item name="windowActionModeOverlay">true</item>
-
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
 
         <item name="iconStarColor">#fbbc04</item>
@@ -173,12 +173,12 @@
         <item name="colorErrorContainer">@color/k9_error_030</item>
         <item name="colorOnErrorContainer">@color/k9_error_090</item>
 
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeCloseDrawable">@drawable/ic_close</item>
+        <item name="actionBarPopupTheme">@style/Widget.App.ActionMode.PopupMenu</item>
         <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
 
         <!-- Legacy styles -->
-
-        <item name="windowActionModeOverlay">true</item>
-
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
 
         <item name="iconStarColor">#fdd663</item>

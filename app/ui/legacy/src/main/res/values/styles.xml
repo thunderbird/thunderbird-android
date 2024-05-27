@@ -49,6 +49,11 @@
         <item name="android:background">?attr/colorSurfaceContainer</item>
     </style>
 
+    <style name="Widget.App.ActionMode.PopupMenu" parent="Widget.Material3.PopupMenu">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:background">?attr/colorSurfaceContainer</item>
+    </style>
+
     <style name="Widget.MaterialDrawerStyle.K9" parent="Widget.MaterialDrawerStyle">
         <item name="materialDrawerBackground">?android:colorBackground</item>
         <item name="materialDrawerPrimaryText">?android:textColorPrimary</item>
