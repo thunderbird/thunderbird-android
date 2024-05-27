@@ -20,8 +20,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.Build.VERSION
-import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
@@ -98,13 +96,6 @@ class ToolbarBottomSheetDialog internal constructor(context: Context, @StyleRes 
             // The status bar should always be transparent because of the window animation.
             window.statusBarColor = Color.TRANSPARENT
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-
-            if (VERSION.SDK_INT < VERSION_CODES.M) {
-                // It can be transparent for API 23 and above because we will handle switching the status
-                // bar icons to light or dark as appropriate. For API 21 and API 22 we just set the
-                // translucent status bar.
-                window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            }
 
             window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         }

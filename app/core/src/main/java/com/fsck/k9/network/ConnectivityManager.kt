@@ -19,7 +19,6 @@ interface ConnectivityChangeListener {
 internal fun ConnectivityManager(systemConnectivityManager: SystemConnectivityManager): ConnectivityManager {
     return when {
         Build.VERSION.SDK_INT >= 24 -> ConnectivityManagerApi24(systemConnectivityManager)
-        Build.VERSION.SDK_INT >= 23 -> ConnectivityManagerApi23(systemConnectivityManager)
-        else -> ConnectivityManagerApi21(systemConnectivityManager)
+        else -> ConnectivityManagerApi23(systemConnectivityManager)
     }
 }
