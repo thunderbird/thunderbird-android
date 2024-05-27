@@ -21,7 +21,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="?attr/messageListSwipeSelectIcon"
+        tools:src="@drawable/ic_check"
         tools:tint="?attr/messageListSwipeIconTint" />
 
     <TextView

@@ -21,7 +21,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="?attr/messageListSwipeMarkAsReadIcon"
+        tools:src="@drawable/ic_mark_email_unread"
         tools:tint="?attr/messageListSwipeIconTint" />
 
     <TextView
