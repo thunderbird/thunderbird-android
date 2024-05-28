@@ -32,7 +32,11 @@ class MessageListSwipeCallback(
     private val backgroundColorPaint = Paint()
 
     private val swipeRightLayout: View
+    private val swipeRightIcon: ImageView
+    private val swipeRightText: TextView
     private val swipeLeftLayout: View
+    private val swipeLeftIcon: ImageView
+    private val swipeLeftText: TextView
 
     private var maxSwipeRightDistance: Int = -1
     private var maxSwipeLeftDistance: Int = -1
@@ -42,6 +46,12 @@ class MessageListSwipeCallback(
 
         swipeRightLayout = layoutInflater.inflate(R.layout.swipe_right_action, null, false)
         swipeLeftLayout = layoutInflater.inflate(R.layout.swipe_left_action, null, false)
+
+        swipeRightIcon = swipeRightLayout.findViewById(R.id.swipe_action_icon)
+        swipeRightText = swipeRightLayout.findViewById(R.id.swipe_action_text)
+
+        swipeLeftIcon = swipeLeftLayout.findViewById(R.id.swipe_action_icon)
+        swipeLeftText = swipeLeftLayout.findViewById(R.id.swipe_action_text)
     }
 
     override fun isFlingEnabled(): Boolean {
@@ -175,6 +185,8 @@ class MessageListSwipeCallback(
 
         val swipeLayout = if (swipeRight) swipeRightLayout else swipeLeftLayout
         val swipeAction = if (swipeRight) swipeRightAction else swipeLeftAction
+        val swipeIcon = if (swipeRight) swipeRightIcon else swipeLeftIcon
+        val swipeText = if (swipeRight) swipeRightText else swipeLeftText
 
         val foregroundColor: Int
         val backgroundColor: Int
@@ -191,12 +203,10 @@ class MessageListSwipeCallback(
         val icon = resourceProvider.getIcon(item, swipeAction)
         icon.setTint(foregroundColor)
 
-        val iconView = swipeLayout.findViewById<ImageView>(R.id.swipe_action_icon)
-        iconView.setImageDrawable(icon)
+        swipeIcon.setImageDrawable(icon)
 
-        val textView = swipeLayout.findViewById<TextView>(R.id.swipe_action_text)
-        textView.setTextColor(foregroundColor)
-        textView.text = resourceProvider.getActionName(item, swipeAction, isSelected)
+        swipeText.text = resourceProvider.getActionName(item, swipeAction, isSelected)
+        swipeText.setTextColor(foregroundColor)
 
         if (swipeLayout.isDirty) {
             val widthMeasureSpec = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY)
@@ -205,9 +215,9 @@ class MessageListSwipeCallback(
             swipeLayout.layout(0, 0, width, height)
 
             if (swipeRight) {
-                maxSwipeRightDistance = textView.right + swipePadding
+                maxSwipeRightDistance = swipeText.right + swipePadding
             } else {
-                maxSwipeLeftDistance = swipeLayout.width - textView.left + swipePadding
+                maxSwipeLeftDistance = swipeLayout.width - swipeText.left + swipePadding
             }
         }
 
