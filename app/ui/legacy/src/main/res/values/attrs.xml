@@ -16,13 +16,13 @@
         <attr name="messageListReadTextColor" format="reference|color"/>
         <attr name="messageListPreviewTextColor" format="reference|color"/>
         <attr name="messageListDividerColor" format="reference|color"/>
-        <attr name="messageListSwipeSelectBackgroundColor" format="reference|color"/>
-        <attr name="messageListSwipeToggleReadBackgroundColor" format="reference|color"/>
-        <attr name="messageListSwipeToggleStarBackgroundColor" format="reference|color"/>
-        <attr name="messageListSwipeArchiveBackgroundColor" format="reference|color"/>
-        <attr name="messageListSwipeDeleteBackgroundColor" format="reference|color"/>
-        <attr name="messageListSwipeSpamBackgroundColor" format="reference|color"/>
-        <attr name="messageListSwipeMoveBackgroundColor" format="reference|color"/>
+        <attr name="messageListSwipeSelectColor" format="reference|color"/>
+        <attr name="messageListSwipeToggleReadColor" format="reference|color"/>
+        <attr name="messageListSwipeToggleStarColor" format="reference|color"/>
+        <attr name="messageListSwipeArchiveColor" format="reference|color"/>
+        <attr name="messageListSwipeDeleteColor" format="reference|color"/>
+        <attr name="messageListSwipeSpamColor" format="reference|color"/>
+        <attr name="messageListSwipeMoveColor" format="reference|color"/>
         <attr name="messageDetailsDividerColor" format="reference|color"/>
         <attr name="composerBackgroundColor" format="color"/>
         <attr name="contactPictureFallbackDefaultBackgroundColor" format="reference|color"/>

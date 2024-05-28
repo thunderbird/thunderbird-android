@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    tools:background="?attr/messageListSwipeSelectBackgroundColor"
+    tools:background="?attr/messageListSwipeSelectColor"
     tools:ignore="RtlHardcoded"
     tools:layout_height="?android:listPreferredItemHeight">
 

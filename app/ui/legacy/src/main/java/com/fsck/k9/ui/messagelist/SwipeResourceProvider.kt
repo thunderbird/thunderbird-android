@@ -50,13 +50,13 @@ class SwipeResourceProvider(private val context: Context) {
         return context.resolveColorAttribute(
             when (action) {
                 SwipeAction.None -> error("action == SwipeAction.None")
-                SwipeAction.ToggleSelection -> R.attr.messageListSwipeSelectBackgroundColor
-                SwipeAction.ToggleRead -> R.attr.messageListSwipeToggleReadBackgroundColor
-                SwipeAction.ToggleStar -> R.attr.messageListSwipeToggleStarBackgroundColor
-                SwipeAction.Archive -> R.attr.messageListSwipeArchiveBackgroundColor
-                SwipeAction.Delete -> R.attr.messageListSwipeDeleteBackgroundColor
-                SwipeAction.Spam -> R.attr.messageListSwipeSpamBackgroundColor
-                SwipeAction.Move -> R.attr.messageListSwipeMoveBackgroundColor
+                SwipeAction.ToggleSelection -> R.attr.messageListSwipeSelectColor
+                SwipeAction.ToggleRead -> R.attr.messageListSwipeToggleReadColor
+                SwipeAction.ToggleStar -> R.attr.messageListSwipeToggleStarColor
+                SwipeAction.Archive -> R.attr.messageListSwipeArchiveColor
+                SwipeAction.Delete -> R.attr.messageListSwipeDeleteColor
+                SwipeAction.Spam -> R.attr.messageListSwipeSpamColor
+                SwipeAction.Move -> R.attr.messageListSwipeMoveColor
             },
         )
     }
