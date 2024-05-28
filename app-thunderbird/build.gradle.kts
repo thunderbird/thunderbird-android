@@ -18,9 +18,11 @@ dependencies {
     implementation(projects.app.ui.legacy)
     implementation(projects.app.ui.messageListWidget)
 
-    debugImplementation(projects.backend.demo)
-
     implementation(libs.androidx.work.runtime)
+
+    implementation(projects.feature.autodiscovery.api)
+    debugImplementation(projects.backend.demo)
+    debugImplementation(projects.feature.autodiscovery.demo)
 
     testImplementation(libs.robolectric)
 
