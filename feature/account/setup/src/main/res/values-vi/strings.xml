@@ -26,7 +26,7 @@
     <string name="account_setup_auto_discovery_loading_error">Không tải được cấu hình email</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Tôi tin tưởng cấu hình này</string>
     <string name="account_setup_options_display_name_error_required">Tên của bạn là bắt buộc.</string>
-    <string name="account_setup_error_network">Mạng</string>
+    <string name="account_setup_error_network">Vui lòng kiểm tra trạng thái kết nối của bạn và thử lại.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Đây không được công nhận là địa chỉ email hợp lệ.</string>
     <string name="account_setup_options_email_check_frequency_never">Không bao giờ</string>
     <string name="account_setup_auto_discovery_loading_message">Đang tìm cấu hình…</string>

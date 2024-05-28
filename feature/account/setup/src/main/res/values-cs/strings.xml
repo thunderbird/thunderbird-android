@@ -24,7 +24,7 @@
     <string name="account_setup_auto_discovery_loading_error">Nastavení e-mailu se nepodařilo nahrát</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Tomuto nastavení důvěřuji</string>
     <string name="account_setup_options_display_name_error_required">Vaše jméno je vyžadováno.</string>
-    <string name="account_setup_error_network">Síť</string>
+    <string name="account_setup_error_network">Zkontrolujte prosím stav připojení a zkuste to znovu.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Toto není rozeznáno jako platná e-mailová adresa.</string>
     <string name="account_setup_options_email_check_frequency_never">Nikdy</string>
     <string name="account_setup_auto_discovery_loading_message">Zjišťování konfigurace…</string>

@@ -16,7 +16,7 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Имейл адресът е задължителен.</string>
     <string name="account_setup_auto_discovery_loading_error">Неуспешно зареждане на имейл настройки</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Одобрявам тези настройки</string>
-    <string name="account_setup_error_network">Мрежа</string>
+    <string name="account_setup_error_network">Моля, проверете състоянието на връзката си и опитайте отново.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Имейл адресът не беше разпознат като валиден.</string>
     <string name="account_setup_auto_discovery_loading_message">Намиране на данни за имейла</string>
     <string name="account_setup_title">K-9 Поща</string>

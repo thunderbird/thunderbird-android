@@ -3,7 +3,7 @@
     <string name="account_setup_title">K-9 Mail</string>
     <string name="account_setup_button_finish">Finish</string>
 
-    <string name="account_setup_error_network">Network </string>
+    <string name="account_setup_error_network">Please check your connection status and try again.</string>
     <string name="account_setup_error_unknown">Unknown error</string>
 
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Email address is required.</string>

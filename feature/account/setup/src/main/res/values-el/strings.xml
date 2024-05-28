@@ -28,7 +28,7 @@
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Εμπιστεύομαι αυτή τη διαμόρφωση</string>
     <string name="account_setup_options_display_name_error_required">Απαιτείται ένα εμφανιζόμενο όνομα.</string>
     <string name="account_setup_create_account_error">Παρουσιάστηκε σφάλμα κατά την προσπάθεια δημιουργίας του λογαριασμού</string>
-    <string name="account_setup_error_network">Δίκτυο</string>
+    <string name="account_setup_error_network">Ελέγξτε την κατάσταση της σύνδεσής σας και δοκιμάστε ξανά.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Η διεύθυνση email δεν αναγνωρίζεται ως έγκυρη.</string>
     <string name="account_setup_options_email_check_frequency_never">Ποτέ</string>
     <string name="account_setup_auto_discovery_loading_message">Εύερεση λεπτομεριών email</string>

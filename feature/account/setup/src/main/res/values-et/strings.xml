@@ -14,7 +14,7 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_required">E-posti aadressi sisestamine on kohustuslik.</string>
     <string name="account_setup_auto_discovery_loading_error">E-posti konto seadistuste tuvastamine ei õnnestunud</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Ma usaldan neid seadistusi</string>
-    <string name="account_setup_error_network">Võrk</string>
+    <string name="account_setup_error_network">Kontrollige oma ühenduse olekut ja proovige uuesti.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">See e-posti aadress ei tundu olema korrektne.</string>
     <string name="account_setup_auto_discovery_loading_message">Tuvastame e-posti konto seadistusi…</string>
     <string name="account_setup_title">K-9 Mail</string>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_setup_button_finish">Ljúka</string>
-    <string name="account_setup_error_network">Netkerfi</string>
+    <string name="account_setup_error_network">Athugaðu stöðu tengingarinnar og reyndu aftur.</string>
     <string name="account_setup_title">K-9 - Póstur</string>
     <string name="account_setup_options_account_name_error_blank">Heiti notandaaðgangs má ekki vera tómt.</string>
     <string name="account_setup_options_account_check_frequency_label">Tíðni athugana</string>

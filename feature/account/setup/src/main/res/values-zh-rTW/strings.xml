@@ -24,7 +24,7 @@
     <string name="account_setup_auto_discovery_loading_error">載入電子郵件配置失敗</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">我信任此配置</string>
     <string name="account_setup_options_display_name_error_required">需要輸入帳號名稱。</string>
-    <string name="account_setup_error_network">網路</string>
+    <string name="account_setup_error_network">請檢查您的連線狀態並重試。</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">輸入值未被識別為有效的電子郵件地址。</string>
     <string name="account_setup_options_email_check_frequency_never">從不</string>
     <string name="account_setup_auto_discovery_loading_message">正在尋找電子郵件詳細資料</string>

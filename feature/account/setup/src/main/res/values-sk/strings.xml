@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_setup_button_finish">Dokončiť</string>
-    <string name="account_setup_error_network">Sieť</string>
+    <string name="account_setup_error_network">Skontrolujte stav pripojenia a skúste to znova.</string>
     <string name="account_setup_title">K-9 Mail</string>
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Táto e-mailová adresa nie je podporovaná.</string>

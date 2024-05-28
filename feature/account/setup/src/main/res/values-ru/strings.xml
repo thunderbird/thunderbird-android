@@ -37,7 +37,7 @@
     <string name="account_setup_options_display_name_error_required">Необходимо указать ваше имя.</string>
     <string name="account_setup_title">Почта K-9</string>
     <string name="account_setup_button_finish">Завершить</string>
-    <string name="account_setup_error_network">Сеть</string>
+    <string name="account_setup_error_network">Пожалуйста, проверьте статус вашего соединения и повторите попытку.</string>
     <string name="account_setup_error_unknown">Неизвестная ошибка</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_loading_error">Не удалось загрузить настройки электронной почты</string>

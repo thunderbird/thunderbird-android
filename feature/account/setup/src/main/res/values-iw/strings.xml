@@ -24,7 +24,7 @@
     <string name="account_setup_options_email_display_count_label">כמות הודעות להצגה</string>
     <string name="account_setup_title">דוא\"ל K-9</string>
     <string name="account_setup_button_finish">סיום</string>
-    <string name="account_setup_error_network">רשת</string>
+    <string name="account_setup_error_network">אנא בדוק את מצב החיבור שלך ונסה שוב.</string>
     <string name="account_setup_error_unknown">שגיאה לא ידועה</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">דרושה כתובת דוא\"ל.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">כתובת דוא\"ל זו לא מוכרת ככתובת דוא\"ל חוקית.</string>

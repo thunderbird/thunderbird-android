@@ -24,7 +24,7 @@
     <string name="account_setup_auto_discovery_loading_error">ईमेल की सेटिंग लोड नहीं कर सके</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">हम इस सेटिंग पे भरोसा करते है</string>
     <string name="account_setup_options_display_name_error_required">डिस्प्ले नाम ज़रूरी है।</string>
-    <string name="account_setup_error_network">नेटवर्क</string>
+    <string name="account_setup_error_network">कृपया अपनी कनेक्शन स्थिति जांचें और पुनः प्रयास करें।</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">ईमेल पता गलत है।</string>
     <string name="account_setup_options_email_check_frequency_never">कभी नहीं</string>
     <string name="account_setup_auto_discovery_loading_message">ईमेल की जानकारी खोज रहे</string>

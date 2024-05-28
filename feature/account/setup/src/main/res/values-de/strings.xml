@@ -24,7 +24,7 @@
     <string name="account_setup_auto_discovery_loading_error">E-Mail-Konfiguration konnte nicht geladen werden</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Ich vertraue dieser Konfiguration</string>
     <string name="account_setup_options_display_name_error_required">Dein Name ist erforderlich.</string>
-    <string name="account_setup_error_network">Netzwerk</string>
+    <string name="account_setup_error_network">Bitte überprüfen Sie Ihren Verbindungsstatus und versuchen Sie es erneut.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Diese Adresse wird nicht als gültige E-Mail-Adresse erkannt.</string>
     <string name="account_setup_options_email_check_frequency_never">Niemals</string>
     <string name="account_setup_auto_discovery_loading_message">E-Mail-Konfiguration suchen…</string>

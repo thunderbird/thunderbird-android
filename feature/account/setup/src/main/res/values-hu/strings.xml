@@ -24,7 +24,7 @@
     <string name="account_setup_auto_discovery_loading_error">Nem sikerült betölteni az e-mail konfigurációt.</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Megbízom a konfigurációban</string>
     <string name="account_setup_options_display_name_error_required">A megjelenített név kötelező.</string>
-    <string name="account_setup_error_network">Hálózat</string>
+    <string name="account_setup_error_network">Kérjük, ellenőrizze a kapcsolat állapotát, és próbálja újra.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Az email cím nem tekinthető érvényes email címnek.</string>
     <string name="account_setup_options_email_check_frequency_never">Soha</string>
     <string name="account_setup_auto_discovery_loading_message">E-mail adatok keresése</string>

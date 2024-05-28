@@ -24,7 +24,7 @@
     <string name="account_setup_auto_discovery_loading_error">Klarte ikke å laste inn e-postoppsett</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Jeg stoler på dette oppsettet</string>
     <string name="account_setup_options_display_name_error_required">Navnet ditt kreves.</string>
-    <string name="account_setup_error_network">Nettverk</string>
+    <string name="account_setup_error_network">Sjekk tilkoblingsstatusen og prøv igjen.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Dette er ikke gjenkjent som en gyldig e-postadresse.</string>
     <string name="account_setup_options_email_check_frequency_never">Aldri</string>
     <string name="account_setup_auto_discovery_loading_message">Finner oppsett …</string>

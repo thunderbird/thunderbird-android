@@ -45,7 +45,7 @@
     <string name="account_setup_create_account_created">Paskyra sėkmingai sukurta</string>
     <string name="account_setup_title">K-9 paštas</string>
     <string name="account_setup_button_finish">Užbaigti</string>
-    <string name="account_setup_error_network">Tinklas</string>
+    <string name="account_setup_error_network">Patikrinkite ryšio būseną ir bandykite dar kartą.</string>
     <string name="account_setup_error_unknown">Nenumatyta klaida</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">El. pašto adresą įvesti būtina.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Šis el. pašto adresas neleidžiamas.</string>

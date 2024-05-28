@@ -24,7 +24,7 @@
     <string name="account_setup_auto_discovery_loading_error">Échec de chargement de la configuration du compte de courriel</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Je fais confiance à cette configuration</string>
     <string name="account_setup_options_display_name_error_required">Votre nom est requis.</string>
-    <string name="account_setup_error_network">Réseau</string>
+    <string name="account_setup_error_network">Veuillez vérifier l'état de votre connexion et réessayer.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Cette adresse courriel n’est pas reconnue comme valide.</string>
     <string name="account_setup_options_email_check_frequency_never">Jamais</string>
     <string name="account_setup_auto_discovery_loading_message">Découverte de la configuration…</string>
