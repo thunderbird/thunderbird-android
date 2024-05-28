@@ -44,4 +44,6 @@ val defaultExcludes = listOf(
     "**/build/**",
     ".github/**",
     "gradle/**",
+    "**/app/k9mail/ui/utils/itemtouchhelper/**",
+    "**/app/k9mail/ui/utils/linearlayoutmanager/**",
 )
