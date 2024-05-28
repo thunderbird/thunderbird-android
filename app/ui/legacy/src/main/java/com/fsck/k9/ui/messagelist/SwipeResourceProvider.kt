@@ -10,28 +10,18 @@ import androidx.core.content.res.ResourcesCompat
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import com.fsck.k9.SwipeAction
 import com.fsck.k9.ui.R
+import com.google.android.material.color.ColorRoles
+import com.google.android.material.color.MaterialColors
 
 class SwipeResourceProvider(private val context: Context) {
 
-    val iconTint = context.resolveColorAttribute(R.attr.messageListSwipeIconTint)
-
-    fun getIcon(item: MessageListItem, action: SwipeAction): Drawable {
+    fun getActionIcon(action: SwipeAction): Drawable {
         return context.loadDrawable(
             when (action) {
                 SwipeAction.None -> error("action == SwipeAction.None")
                 SwipeAction.ToggleSelection -> Icons.Outlined.CheckCircle
-                SwipeAction.ToggleRead -> if (item.isRead) {
-                    Icons.Outlined.MarkEmailUnread
-                } else {
-                    Icons.Outlined.MarkEmailRead
-                }
-
-                SwipeAction.ToggleStar -> if (item.isStarred) {
-                    Icons.Outlined.Star
-                } else {
-                    Icons.Filled.Star
-                }
-
+                SwipeAction.ToggleRead -> Icons.Outlined.MarkEmailRead
+                SwipeAction.ToggleStar -> Icons.Filled.Star
                 SwipeAction.Archive -> Icons.Outlined.Archive
                 SwipeAction.Delete -> Icons.Outlined.Delete
                 SwipeAction.Spam -> Icons.Outlined.Report
@@ -40,11 +30,26 @@ class SwipeResourceProvider(private val context: Context) {
         )
     }
 
+    fun getActionIconToggled(action: SwipeAction): Drawable? {
+        return when (action) {
+            SwipeAction.None -> error("action == SwipeAction.None")
+            SwipeAction.ToggleRead -> context.loadDrawable(Icons.Outlined.MarkEmailUnread)
+            SwipeAction.ToggleStar -> context.loadDrawable(Icons.Outlined.Star)
+
+            else -> null
+        }
+    }
+
+    fun getActionColorRoles(action: SwipeAction): ColorRoles {
+        val harmonizedColor = MaterialColors.harmonizeWithPrimary(context, getActionColor(action))
+        return MaterialColors.getColorRoles(context, harmonizedColor)
+    }
+
     @ColorInt
-    fun getBackgroundColor(action: SwipeAction): Int {
+    private fun getActionColor(action: SwipeAction): Int {
         return context.resolveColorAttribute(
             when (action) {
-                SwipeAction.None -> R.attr.messageListSwipeDisabledBackgroundColor
+                SwipeAction.None -> error("action == SwipeAction.None")
                 SwipeAction.ToggleSelection -> R.attr.messageListSwipeSelectBackgroundColor
                 SwipeAction.ToggleRead -> R.attr.messageListSwipeToggleReadBackgroundColor
                 SwipeAction.ToggleStar -> R.attr.messageListSwipeToggleStarBackgroundColor
@@ -56,34 +61,30 @@ class SwipeResourceProvider(private val context: Context) {
         )
     }
 
-    fun getActionName(item: MessageListItem, action: SwipeAction, isSelected: Boolean): String {
+    fun getActionName(action: SwipeAction): String {
         return context.loadString(
             when (action) {
                 SwipeAction.None -> error("action == SwipeAction.None")
-                SwipeAction.ToggleSelection -> if (isSelected) {
-                    R.string.swipe_action_deselect
-                } else {
-                    R.string.swipe_action_select
-                }
-
-                SwipeAction.ToggleRead -> if (item.isRead) {
-                    R.string.swipe_action_mark_as_unread
-                } else {
-                    R.string.swipe_action_mark_as_read
-                }
-
-                SwipeAction.ToggleStar -> if (item.isStarred) {
-                    R.string.swipe_action_remove_star
-                } else {
-                    R.string.swipe_action_add_star
-                }
-
+                SwipeAction.ToggleSelection -> R.string.swipe_action_select
+                SwipeAction.ToggleRead -> R.string.swipe_action_mark_as_read
+                SwipeAction.ToggleStar -> R.string.swipe_action_add_star
                 SwipeAction.Archive -> R.string.swipe_action_archive
                 SwipeAction.Delete -> R.string.swipe_action_delete
                 SwipeAction.Spam -> R.string.swipe_action_spam
                 SwipeAction.Move -> R.string.swipe_action_move
             },
         )
+    }
+
+    fun getActionNameToggled(action: SwipeAction): String? {
+        return when (action) {
+            SwipeAction.None -> error("action == SwipeAction.None")
+            SwipeAction.ToggleSelection -> context.loadString(R.string.swipe_action_deselect)
+            SwipeAction.ToggleRead -> context.loadString(R.string.swipe_action_mark_as_unread)
+            SwipeAction.ToggleStar -> context.loadString(R.string.swipe_action_remove_star)
+
+            else -> null
+        }
     }
 }
 

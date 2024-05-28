@@ -83,8 +83,6 @@
         <item name="messageListPreviewTextColor">#ff444444</item>
         <item name="messageListDividerColor">#ffcccccc</item>
 
-        <item name="messageListSwipeIconTint">#ffffff</item>
-        <item name="messageListSwipeDisabledBackgroundColor">@color/material_gray_200</item>
         <item name="messageListSwipeSelectBackgroundColor">@color/material_blue_600</item>
         <item name="messageListSwipeToggleReadBackgroundColor">@color/material_blue_600</item>
         <item name="messageListSwipeToggleStarBackgroundColor">@color/material_orange_600</item>
@@ -197,8 +195,6 @@
         <item name="messageListPreviewTextColor">#ffaaaaaa</item>
         <item name="messageListDividerColor">#ff333333</item>
 
-        <item name="messageListSwipeIconTint">#ffffff</item>
-        <item name="messageListSwipeDisabledBackgroundColor">@color/material_gray_900</item>
         <item name="messageListSwipeSelectBackgroundColor">@color/material_blue_700</item>
         <item name="messageListSwipeToggleReadBackgroundColor">@color/material_blue_700</item>
         <item name="messageListSwipeToggleStarBackgroundColor">@color/material_orange_700</item>

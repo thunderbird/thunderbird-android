@@ -21,8 +21,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_mark_email_unread"
-        tools:tint="?attr/messageListSwipeIconTint" />
+        tools:src="@drawable/ic_mark_email_unread" />
 
     <TextView
         android:id="@+id/swipe_action_text"
@@ -36,7 +35,6 @@
         android:gravity="right"
         android:maxLines="1"
         android:textAppearance="?attr/textAppearanceBody2"
-        android:textColor="?attr/messageListSwipeIconTint"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
