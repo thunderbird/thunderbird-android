@@ -19,7 +19,7 @@ import timber.log.Timber;
 
 
 public class K9StoragePersister implements StoragePersister {
-    private static final int DB_VERSION = 21;
+    private static final int DB_VERSION = 22;
     private static final String DB_NAME = "preferences_storage";
 
     private final Context context;
