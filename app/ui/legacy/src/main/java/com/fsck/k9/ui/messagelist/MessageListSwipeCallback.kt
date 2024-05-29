@@ -19,22 +19,6 @@ import com.fsck.k9.ui.R
 import com.google.android.material.color.ColorRoles
 import kotlin.math.abs
 
-private data class SwipeActionConfig(
-    private val colorRoles: ColorRoles,
-    val icon: Drawable,
-    val iconToggled: Drawable? = null,
-    val actionName: String,
-    val actionNameToggled: String? = null,
-) {
-    fun getForegroundColor(isReversed: Boolean): Int {
-        return if (isReversed) colorRoles.onAccent else colorRoles.accent
-    }
-
-    fun getBackgroundColor(isReversed: Boolean): Int {
-        return if (isReversed) colorRoles.accent else colorRoles.onAccent
-    }
-}
-
 @SuppressLint("InflateParams")
 class MessageListSwipeCallback(
     context: Context,
@@ -189,7 +173,7 @@ class MessageListSwipeCallback(
     private fun Canvas.drawBackground(dX: Float, width: Int, height: Int) {
         val swipeActionConfig = if (dX > 0) swipeRightConfig else swipeLeftConfig
 
-        backgroundColorPaint.color = swipeActionConfig.getBackgroundColor(false)
+        backgroundColorPaint.color = swipeActionConfig.backgroundColor
         drawRect(
             0F,
             0F,
@@ -209,25 +193,18 @@ class MessageListSwipeCallback(
         val swipeIcon = if (swipeRight) swipeRightIcon else swipeLeftIcon
         val swipeText = if (swipeRight) swipeRightText else swipeLeftText
 
-        val foregroundColor = swipeActionConfig.getForegroundColor(swipeThresholdReached)
+        val foregroundColor = getForegroundColor(swipeActionConfig, swipeThresholdReached)
+        val backgroundColor = getBackgroundColor(swipeActionConfig, swipeThresholdReached)
 
-        swipeLayout.setBackgroundColor(swipeActionConfig.getBackgroundColor(swipeThresholdReached))
+        swipeLayout.setBackgroundColor(backgroundColor)
 
-        val icon = if (isToggable(swipeAction, item)) {
-            swipeActionConfig.iconToggled ?: error("action has no toggled icon")
-        } else {
-            swipeActionConfig.icon
-        }
+        val icon = getIcon(swipeAction, item, swipeActionConfig)
         icon.setTint(foregroundColor)
 
         swipeIcon.setImageDrawable(icon)
 
         val isSelected = adapter.isSelected(item)
-        swipeText.text = if (isToggable(swipeAction, item) || isSelected) {
-            swipeActionConfig.actionNameToggled ?: error("action has no toggled name")
-        } else {
-            swipeActionConfig.actionName
-        }
+        swipeText.text = getActionName(swipeAction, item, isSelected, swipeActionConfig)
         swipeText.setTextColor(foregroundColor)
 
         if (swipeLayout.isDirty) {
@@ -244,6 +221,45 @@ class MessageListSwipeCallback(
         }
 
         swipeLayout.draw(this)
+    }
+
+    private fun getActionName(
+        swipeAction: SwipeAction,
+        item: MessageListItem,
+        isSelected: Boolean,
+        swipeActionConfig: SwipeActionConfig,
+    ) = if (isToggled(swipeAction, item) || isSelected) {
+        swipeActionConfig.actionNameToggled ?: error("action has no toggled name")
+    } else {
+        swipeActionConfig.actionName
+    }
+
+    private fun getIcon(
+        swipeAction: SwipeAction,
+        item: MessageListItem,
+        swipeActionConfig: SwipeActionConfig,
+    ) = if (isToggled(swipeAction, item)) {
+        swipeActionConfig.iconToggled ?: error("action has no toggled icon")
+    } else {
+        swipeActionConfig.icon
+    }
+
+    private fun getForegroundColor(
+        swipeActionConfig: SwipeActionConfig,
+        swipeThresholdReached: Boolean,
+    ) = if (swipeThresholdReached) {
+        swipeActionConfig.backgroundColor
+    } else {
+        swipeActionConfig.foregroundColor
+    }
+
+    private fun getBackgroundColor(
+        swipeActionConfig: SwipeActionConfig,
+        swipeThresholdReached: Boolean,
+    ) = if (swipeThresholdReached) {
+        swipeActionConfig.foregroundColor
+    } else {
+        swipeActionConfig.backgroundColor
     }
 
     override fun getMaxSwipeDistance(recyclerView: RecyclerView, direction: Int): Int {
@@ -280,7 +296,7 @@ class MessageListSwipeCallback(
         actionNameToggled = resourceProvider.getActionNameToggled(swipeAction),
     )
 
-    private fun isToggable(swipeAction: SwipeAction, item: MessageListItem): Boolean {
+    private fun isToggled(swipeAction: SwipeAction, item: MessageListItem): Boolean {
         return when (swipeAction) {
             SwipeAction.ToggleRead -> item.isRead
             SwipeAction.ToggleStar -> item.isStarred
@@ -301,6 +317,17 @@ interface MessageListSwipeListener {
     fun onSwipeActionChanged(item: MessageListItem, action: SwipeAction)
     fun onSwipeAction(item: MessageListItem, action: SwipeAction)
     fun onSwipeEnded(item: MessageListItem)
+}
+
+private data class SwipeActionConfig(
+    private val colorRoles: ColorRoles,
+    val icon: Drawable,
+    val iconToggled: Drawable? = null,
+    val actionName: String,
+    val actionNameToggled: String? = null,
+) {
+    val foregroundColor = colorRoles.accent
+    val backgroundColor = colorRoles.onAccent
 }
 
 private fun ViewHolder.markAsSwiped(value: Boolean) {
