@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package app.k9mail.ui.utils.itemtouchhelper; 
+package app.k9mail.ui.utils.itemtouchhelper;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -2126,7 +2126,11 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
          * @param actionState       The type of interaction on the View. Is either {@link
          *                          #ACTION_STATE_DRAG} or {@link #ACTION_STATE_SWIPE}.
          * @param isCurrentlyActive True if this view is currently being controlled by the user or
-         *                          false it is simply animating back to its original state.
+         *                          false if it is simply animating back to its original state.
+         * @param success           True if the swipe threshold was reached and the user isn't controlling the view
+         *                          anymore, i.e. the swipe action was triggered. False if the user is controlling the
+         *                          view or the view is animating back to its original state because the swipe threshold
+         *                          wasn't reached.
          * @see #onChildDrawOver(Canvas, RecyclerView, ViewHolder, float, float, int,
          * boolean)
          */
