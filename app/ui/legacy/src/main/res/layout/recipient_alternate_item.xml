@@ -32,7 +32,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/alternate_header_name"
                 android:textColor="?attr/textColorPrimaryRecipientDropdown"
                 android:textAppearance="?android:attr/textAppearanceMedium"
@@ -44,7 +44,7 @@
                 tools:text="Mr. Firstname Lastname"
                 />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/alternate_header_label"
                 android:textColor="?attr/textColorPrimaryRecipientDropdown"
                 android:textAppearance="?android:attr/textAppearanceSmall"
@@ -80,7 +80,7 @@
         android:id="@+id/alternate_container_item"
         >
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/alternate_address_label"
             android:textColor="?attr/textColorSecondaryRecipientDropdown"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -92,7 +92,7 @@
             tools:text="Home"
             />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/alternate_address"
             android:textColor="?attr/textColorSecondaryRecipientDropdown"
             android:textAppearance="?android:attr/textAppearanceSmall"

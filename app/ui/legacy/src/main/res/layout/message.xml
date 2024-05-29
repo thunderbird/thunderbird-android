@@ -82,7 +82,7 @@ the 'message view theme' setting).
                         style="@android:style/Widget.Holo.ProgressBar.Horizontal"
                         />
 
-                    <TextView
+                    <com.google.android.material.textview.MaterialTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/message_progress"

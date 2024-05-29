@@ -2,11 +2,11 @@ package com.fsck.k9.ui.messagedetails
 
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.view.isVisible
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.ui.R
+import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
@@ -26,8 +26,8 @@ internal class ParticipantItem(
         val menuOverflow: View = view.findViewById(R.id.menu_overflow)
 
         private val contactPicture: ImageView = view.findViewById(R.id.contact_picture)
-        private val name = view.findViewById<TextView>(R.id.name)
-        private val email = view.findViewById<TextView>(R.id.email)
+        private val name = view.findViewById<MaterialTextView>(R.id.name)
+        private val email = view.findViewById<MaterialTextView>(R.id.email)
         private val originalBackground = view.background
 
         init {

@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.MeasureSpec
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.graphics.withTranslation
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -17,6 +16,7 @@ import app.k9mail.ui.utils.itemtouchhelper.ItemTouchHelper
 import com.fsck.k9.SwipeAction
 import com.fsck.k9.ui.R
 import com.google.android.material.color.ColorRoles
+import com.google.android.material.textview.MaterialTextView
 import kotlin.math.abs
 
 @SuppressLint("InflateParams")
@@ -35,10 +35,10 @@ class MessageListSwipeCallback(
 
     private val swipeRightLayout: View
     private val swipeRightIcon: ImageView
-    private val swipeRightText: TextView
+    private val swipeRightText: MaterialTextView
     private val swipeLeftLayout: View
     private val swipeLeftIcon: ImageView
-    private val swipeLeftText: TextView
+    private val swipeLeftText: MaterialTextView
     private val swipeRightConfig: SwipeActionConfig
     private val swipeLeftConfig: SwipeActionConfig
 

@@ -7,11 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.TextView
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.core.view.isVisible
 import com.fsck.k9.Account
 import com.fsck.k9.ui.R
+import com.google.android.material.textview.MaterialTextView
 
 class AccountSelectionSpinner : AppCompatSpinner {
     var selection: Account
@@ -60,8 +60,8 @@ class AccountSelectionSpinner : AppCompatSpinner {
 
             val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.account_spinner_item, parent, false)
 
-            val name: TextView = view.findViewById(R.id.name)
-            val email: TextView = view.findViewById(R.id.email)
+            val name: MaterialTextView = view.findViewById(R.id.name)
+            val email: MaterialTextView = view.findViewById(R.id.email)
 
             return view.apply {
                 name.text = title
@@ -75,8 +75,8 @@ class AccountSelectionSpinner : AppCompatSpinner {
             val view = convertView
                 ?: LayoutInflater.from(context).inflate(R.layout.account_spinner_dropdown_item, parent, false)
 
-            val name: TextView = view.findViewById(R.id.name)
-            val email: TextView = view.findViewById(R.id.email)
+            val name: MaterialTextView = view.findViewById(R.id.name)
+            val email: MaterialTextView = view.findViewById(R.id.email)
 
             return view.apply {
                 val accountName = account.name

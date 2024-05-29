@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -12,6 +11,7 @@ import app.k9mail.core.android.common.compat.BundleCompat
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.loader.observeLoading
 import com.google.android.material.checkbox.MaterialCheckBox
+import com.google.android.material.textview.MaterialTextView
 import de.cketti.changelog.ReleaseItem
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -108,10 +108,10 @@ class ChangelogAdapter(releaseItems: List<ReleaseItem>) : RecyclerView.Adapter<V
 }
 
 class ReleaseItemViewHolder(view: View) : ViewHolder(view) {
-    val versionName: TextView = view.findViewById(R.id.version_name)
-    val versionDate: TextView = view.findViewById(R.id.version_date)
+    val versionName: MaterialTextView = view.findViewById(R.id.version_name)
+    val versionDate: MaterialTextView = view.findViewById(R.id.version_date)
 }
 
 class ChangeItemViewHolder(view: View) : ViewHolder(view) {
-    val changeText: TextView = view.findViewById(R.id.change_text)
+    val changeText: MaterialTextView = view.findViewById(R.id.change_text)
 }

@@ -11,7 +11,6 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.DrawableRes;
@@ -34,6 +33,7 @@ import com.fsck.k9.message.ReplyAction;
 import com.fsck.k9.message.ReplyActionStrategy;
 import com.fsck.k9.message.ReplyActions;
 import com.fsck.k9.ui.R;
+import com.fsck.k9.ui.helper.BottomBaselineTextView;
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter;
 import com.fsck.k9.ui.messageview.DisplayRecipients;
 import com.fsck.k9.ui.messageview.DisplayRecipientsExtractor;
@@ -41,6 +41,7 @@ import com.fsck.k9.ui.messageview.MessageHeaderClickListener;
 import com.fsck.k9.ui.messageview.MessageViewRecipientFormatter;
 import com.fsck.k9.ui.messageview.RecipientNamesView;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.textview.MaterialTextView;
 
 
 public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
@@ -52,13 +53,13 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private final FontSizes fontSizes = K9.getFontSizes();
 
     private Chip accountNameView;
-    private TextView subjectView;
+    private BottomBaselineTextView subjectView;
     private ImageView starView;
     private ImageView contactPictureView;
-    private TextView fromView;
+    private MaterialTextView fromView;
     private ImageView cryptoStatusIcon;
     private RecipientNamesView recipientNamesView;
-    private TextView dateView;
+    private MaterialTextView dateView;
     private ImageView menuPrimaryActionView;
 
     private RelativeDateTimeFormatter relativeDateTimeFormatter;

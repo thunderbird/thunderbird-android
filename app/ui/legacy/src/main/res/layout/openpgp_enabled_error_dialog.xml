@@ -10,7 +10,7 @@
     android:paddingBottom="24dp"
     tools:context="com.fsck.k9.activity.compose.PgpEnabledErrorDialog">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
@@ -18,7 +18,7 @@
         android:text="@string/openpgp_enabled_error_title"
         />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:textAppearanceSmall"

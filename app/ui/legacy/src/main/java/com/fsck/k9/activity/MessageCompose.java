@@ -38,7 +38,6 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -117,6 +116,7 @@ import com.fsck.k9.ui.compose.WrapUriTextWatcher;
 import com.fsck.k9.ui.helper.SizeFormatter;
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textview.MaterialTextView;
 import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpIntentStarter;
@@ -224,7 +224,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private boolean requestReadReceipt = false;
 
-    private TextView chooseIdentityButton;
+    private MaterialTextView chooseIdentityView;
     private EditText subjectView;
     private EditText signatureView;
     private EditText messageContentView;
@@ -298,8 +298,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             return;
         }
 
-        chooseIdentityButton = findViewById(R.id.identity);
-        chooseIdentityButton.setOnClickListener(this);
+        chooseIdentityView = findViewById(R.id.identity);
+        chooseIdentityView.setOnClickListener(this);
 
         ReplyToView replyToView = new ReplyToView(this);
         replyToPresenter = new ReplyToPresenter(replyToView);
@@ -937,7 +937,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void updateFrom() {
-        chooseIdentityButton.setText(identity.getEmail());
+        chooseIdentityView.setText(identity.getEmail());
     }
 
     private void updateSignature() {
@@ -1828,7 +1828,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 throw new IllegalArgumentException();
             }
 
-            TextView nameView = view.findViewById(R.id.attachment_name);
+            MaterialTextView nameView = view.findViewById(R.id.attachment_name);
             boolean hasMetadata = (attachment.state != Attachment.LoadingState.URI_ONLY);
             if (hasMetadata) {
                 nameView.setText(attachment.name);
@@ -1837,7 +1837,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
 
             if (attachment.size != null && attachment.size >= 0) {
-                TextView sizeView = view.findViewById(R.id.attachment_size);
+                MaterialTextView sizeView = view.findViewById(R.id.attachment_size);
                 sizeView.setText(sizeFormatter.formatSize(attachment.size));
             }
 

@@ -14,7 +14,7 @@
         android:layout_marginVertical="32dp"
         tools:visibility="gone" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/message_details_error"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

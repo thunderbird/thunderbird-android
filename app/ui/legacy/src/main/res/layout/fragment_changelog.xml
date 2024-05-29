@@ -33,7 +33,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="gone" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/changelog_error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

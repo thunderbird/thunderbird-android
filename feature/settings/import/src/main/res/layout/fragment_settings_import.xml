@@ -100,7 +100,7 @@
             app:layout_constraintStart_toStartOf="@+id/importButton"
             app:layout_constraintTop_toTopOf="@+id/importButton" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/statusText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

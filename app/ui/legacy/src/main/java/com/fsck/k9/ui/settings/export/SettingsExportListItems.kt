@@ -1,8 +1,8 @@
 package com.fsck.k9.ui.settings.export
 
 import android.view.View
-import android.widget.TextView
 import com.fsck.k9.ui.R
+import com.google.android.material.textview.MaterialTextView
 
 private const val GENERAL_SETTINGS_ID = 0L
 private const val ACCOUNT_ITEMS_ID_OFFSET = 1L
@@ -15,8 +15,8 @@ class GeneralSettingsItem : CheckBoxItem<CheckBoxViewHolder>(GENERAL_SETTINGS_ID
 }
 
 class AccountViewHolder(view: View) : CheckBoxViewHolder(view) {
-    val accountDisplayName: TextView = view.findViewById(R.id.accountDisplayName)
-    val accountEmail: TextView = view.findViewById(R.id.accountEmail)
+    val accountDisplayName: MaterialTextView = view.findViewById(R.id.accountDisplayName)
+    val accountEmail: MaterialTextView = view.findViewById(R.id.accountEmail)
 }
 
 class AccountItem(account: SettingsListItem.Account) :

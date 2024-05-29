@@ -29,7 +29,7 @@
                 android:orientation="vertical"
                 android:layout_marginVertical="@dimen/toolbarTitleMarginVertical">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/toolbarTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
                     android:textColor="?attr/colorOnSurface"
                     tools:text="Inbox" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/toolbarSubtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

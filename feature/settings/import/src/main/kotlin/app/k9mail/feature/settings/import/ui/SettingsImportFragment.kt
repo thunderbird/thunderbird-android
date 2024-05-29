@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
@@ -18,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import app.k9mail.feature.settings.importing.R
 import com.fsck.k9.ui.base.livedata.observeNotNull
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -266,6 +266,6 @@ private class ViewHolder(view: View) {
     val closeButton: MaterialButton = view.findViewById(R.id.closeButton)
     val loadingProgressBar: View = view.findViewById(R.id.loadingProgressBar)
     val importProgressBar: View = view.findViewById(R.id.importProgressBar)
-    val statusText: TextView = view.findViewById(R.id.statusText)
+    val statusText: MaterialTextView = view.findViewById(R.id.statusText)
     val settingsImportList: RecyclerView = view.findViewById(R.id.settingsImportList)
 }

@@ -14,7 +14,6 @@ import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -234,7 +233,7 @@ public class OpenPgpAppSelectDialog extends K9Activity {
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireActivity());
 
             builder.setTitle(R.string.dialog_openkeychain_info_title);
-            builder.setView(LayoutInflater.from(getActivity()).inflate(
+            builder.setView(getLayoutInflater().inflate(
                     R.layout.dialog_openkeychain_info, null, false));
 
             builder.setNegativeButton(com.fsck.k9.ui.base.R.string.cancel_action, new OnClickListener() {

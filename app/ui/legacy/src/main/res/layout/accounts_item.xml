@@ -28,7 +28,7 @@
             android:paddingStart="1dp"
             android:paddingEnd="0dp">
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
                 android:textSize="@dimen/appTextSizeMedium"
                 tools:text="@sample/accounts.json/data/name"/>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

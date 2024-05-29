@@ -10,7 +10,7 @@
     android:paddingStart="12dp"
     android:paddingEnd="4dp">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         tools:text="Initial identity" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/description"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

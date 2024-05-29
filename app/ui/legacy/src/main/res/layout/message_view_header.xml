@@ -86,7 +86,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/ic_account_circle" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/from"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Sender name" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

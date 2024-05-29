@@ -9,7 +9,6 @@ import android.widget.BaseAdapter
 import android.widget.CheckedTextView
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
-import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.preference.PreferenceDialogFragmentCompat
 import com.fsck.k9.NotificationVibration
@@ -18,6 +17,7 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.bundle.getEnum
 import com.fsck.k9.ui.base.bundle.putEnum
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textview.MaterialTextView
 import org.koin.android.ext.android.inject
 import com.fsck.k9.ui.base.R as BaseR
 
@@ -167,7 +167,7 @@ class VibrationDialogFragment : PreferenceDialogFragmentCompat() {
 
         private fun getVibrationTimesView(convertView: View?, parent: ViewGroup?): View {
             return convertView.orInflate<View>(R.layout.preference_vibration_times_item, parent).apply {
-                val vibrationTimesValue = findViewById<TextView>(R.id.vibrationTimesValue)
+                val vibrationTimesValue = findViewById<MaterialTextView>(R.id.vibrationTimesValue)
                 vibrationTimesValue.text = vibrationTimes.toString()
 
                 val vibrationTimesSeekBar = findViewById<SeekBar>(R.id.vibrationTimesSeekBar).apply {

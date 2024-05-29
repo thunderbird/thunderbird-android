@@ -7,7 +7,6 @@ import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -25,9 +24,9 @@ import com.fsck.k9.FontSizes.Companion.LARGE
 import com.fsck.k9.UiDensity
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.mail.Address
-import com.fsck.k9.textString
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
+import com.google.android.material.textview.MaterialTextView
 import org.junit.Test
 import org.mockito.kotlin.mock
 import org.robolectric.Robolectric
@@ -481,11 +480,11 @@ class MessageListAdapterTest : RobolectricTest() {
     val View.accountChipView: View get() = findViewById(R.id.account_color_chip)
     val View.starView: View get() = findViewById(R.id.star)
     val View.contactPictureContainerView: View get() = findViewById(R.id.contact_picture_click_area)
-    val View.threadCountView: TextView get() = findViewById(R.id.thread_count)
-    val View.firstLineView: TextView get() = findViewById(R.id.subject)
-    val View.secondLineView: TextView get() = findViewById(R.id.preview)
+    val View.threadCountView: MaterialTextView get() = findViewById(R.id.thread_count)
+    val View.firstLineView: MaterialTextView get() = findViewById(R.id.subject)
+    val View.secondLineView: MaterialTextView get() = findViewById(R.id.preview)
     val View.attachmentCountView: View get() = findViewById(R.id.attachment)
-    val View.dateView: TextView get() = findViewById(R.id.date)
+    val View.dateView: MaterialTextView get() = findViewById(R.id.date)
 
     private fun Assert<View>.isVisible() = given { actual ->
         if (!actual.isVisible) {
@@ -519,4 +518,7 @@ class MessageListAdapterTest : RobolectricTest() {
         val spans = (text as Spannable).getSpans(0, text.length, AbsoluteSizeSpan::class.java)
         spans.firstOrNull()?.size
     }
+
+    private val MaterialTextView.textString: String
+        get() = text.toString()
 }

@@ -9,7 +9,6 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
@@ -18,6 +17,7 @@ import com.fsck.k9.controller.push.PushController
 import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.ui.R
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.textview.MaterialTextView
 import org.koin.android.ext.android.inject
 
 private const val LEARN_MORE_URL = "https://k9mail.app/go/push-info"
@@ -36,7 +36,7 @@ class PushInfoFragment : Fragment() {
     }
 
     private fun initializeNotificationSection(view: View) {
-        val notificationTextView = view.findViewById<TextView>(R.id.notificationText)
+        val notificationTextView = view.findViewById<MaterialTextView>(R.id.notificationText)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val configureNotificationText = getString(R.string.push_info_configure_notification_text)
             notificationTextView.text = getString(

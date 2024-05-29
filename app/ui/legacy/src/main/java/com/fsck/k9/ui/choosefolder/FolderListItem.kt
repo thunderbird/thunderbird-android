@@ -2,9 +2,9 @@ package com.fsck.k9.ui.choosefolder
 
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.ui.R
+import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.items.AbstractItem
 
 class FolderListItem(
@@ -28,5 +28,5 @@ class FolderListItem(
 
 class FolderListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val icon: ImageView = itemView.findViewById(R.id.folder_icon)
-    val name: TextView = itemView.findViewById(R.id.folder_name)
+    val name: MaterialTextView = itemView.findViewById(R.id.folder_name)
 }

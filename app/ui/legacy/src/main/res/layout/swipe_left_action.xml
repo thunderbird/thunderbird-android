@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/ic_mark_email_unread" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/swipe_action_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

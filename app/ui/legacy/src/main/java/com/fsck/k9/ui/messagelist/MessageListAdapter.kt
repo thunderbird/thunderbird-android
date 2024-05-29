@@ -33,6 +33,7 @@ import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.resolveColorAttribute
+import com.google.android.material.textview.MaterialTextView
 import kotlin.math.max
 
 private const val FOOTER_ID = 1L
@@ -437,7 +438,7 @@ class MessageListAdapter internal constructor(
         holder.text.text = footerText
     }
 
-    private fun formatPreviewText(preview: TextView, beforePreviewText: CharSequence, messageRead: Boolean) {
+    private fun formatPreviewText(preview: MaterialTextView, beforePreviewText: CharSequence, messageRead: Boolean) {
         val previewText = preview.text as Spannable
 
         val beforePreviewLength = beforePreviewText.length

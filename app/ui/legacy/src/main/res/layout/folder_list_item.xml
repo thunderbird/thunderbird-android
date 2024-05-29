@@ -19,7 +19,7 @@
         android:layout_marginEnd="32dp"
         tools:srcCompat="@drawable/ic_inbox"/>
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/folder_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

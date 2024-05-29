@@ -36,7 +36,7 @@
                 android:background="#d55"
                 />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_marginLeft="8dp"
@@ -55,7 +55,7 @@
 
         </LinearLayout>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/message_unsigned_text"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"

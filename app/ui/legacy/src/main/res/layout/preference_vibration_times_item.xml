@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/vibrationTimesValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         android:textColor="?attr/textColorAlertDialogListItem"
         tools:text="2" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/vibrationTimesTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

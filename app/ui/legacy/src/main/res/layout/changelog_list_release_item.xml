@@ -6,7 +6,7 @@
     android:gravity="bottom"
     android:orientation="horizontal">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/version_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -18,7 +18,7 @@
         android:textAppearance="?attr/textAppearanceHeadline6"
         tools:text="Version 1.0.0" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/version_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

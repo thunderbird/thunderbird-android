@@ -8,8 +8,6 @@ import android.content.res.Resources;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.AttrRes;
-import androidx.annotation.DrawableRes;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,14 +15,16 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
+import androidx.annotation.AttrRes;
+import androidx.annotation.DrawableRes;
 import androidx.appcompat.widget.TooltipCompat;
 import com.fsck.k9.activity.compose.RecipientAdapter;
 import com.fsck.k9.ui.ContactBadge;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.ThemeUtils;
+import com.google.android.material.textview.MaterialTextView;
 
 
 public class AlternateRecipientAdapter extends BaseAdapter {
@@ -124,10 +124,10 @@ public class AlternateRecipientAdapter extends BaseAdapter {
 
         holder.headerName.setText(recipient.getNameOrUnknown(context));
         if (!TextUtils.isEmpty(recipient.addressLabel)) {
-            holder.headerAddressLabel.setText(recipient.addressLabel);
-            holder.headerAddressLabel.setVisibility(View.VISIBLE);
+            holder.headerLabel.setText(recipient.addressLabel);
+            holder.headerLabel.setVisibility(View.VISIBLE);
         } else {
-            holder.headerAddressLabel.setVisibility(View.GONE);
+            holder.headerLabel.setVisibility(View.GONE);
         }
 
         RecipientAdapter.setContactPhotoOrPlaceholder(context, holder.headerPhoto, recipient);
@@ -236,13 +236,13 @@ public class AlternateRecipientAdapter extends BaseAdapter {
 
     private static class RecipientTokenHolder {
         public final View layoutHeader, layoutItem;
-        public final TextView headerName;
-        public final TextView headerAddressLabel;
+        public final MaterialTextView headerName;
+        public final MaterialTextView headerLabel;
         public final ContactBadge headerPhoto;
         public final View headerRemove;
         public final View copyEmailAddress;
-        public final TextView itemAddress;
-        public final TextView itemAddressLabel;
+        public final MaterialTextView itemAddress;
+        public final MaterialTextView itemAddressLabel;
         public final View itemCryptoStatus;
         public final ImageView itemCryptoStatusIcon;
         public final ImageView itemCryptoStatusSimple;
@@ -253,7 +253,7 @@ public class AlternateRecipientAdapter extends BaseAdapter {
             layoutItem = view.findViewById(R.id.alternate_container_item);
 
             headerName = view.findViewById(R.id.alternate_header_name);
-            headerAddressLabel = view.findViewById(R.id.alternate_header_label);
+            headerLabel = view.findViewById(R.id.alternate_header_label);
             headerPhoto = view.findViewById(R.id.alternate_contact_photo);
             headerRemove = view.findViewById(R.id.alternate_remove);
 

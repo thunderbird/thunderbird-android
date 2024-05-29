@@ -21,7 +21,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                     android:text="@string/edit_identity_description_label"
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
@@ -36,7 +36,7 @@
                     android:hint="@string/edit_identity_description_hint"
                     />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                     android:text="@string/edit_identity_name_label"
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
@@ -51,7 +51,7 @@
                     android:hint="@string/edit_identity_name_hint"
                     />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                     android:text="@string/edit_identity_email_label"
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
@@ -67,7 +67,7 @@
                     android:hint="@string/edit_identity_email_hint"
                     android:inputType="textEmailAddress"/>
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                     android:text="@string/edit_identity_reply_to_label"
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
@@ -84,7 +84,7 @@
                     android:inputType="textEmailAddress"
                     />
             <!--
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:text="@string/edit_identity_always_bcc_label"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
@@ -108,7 +108,7 @@
                     android:layout_height="fill_parent"
                     android:orientation="vertical">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                         android:text="@string/edit_identity_signature_label"
                         android:layout_height="wrap_content"
                         android:layout_width="fill_parent"

@@ -26,7 +26,7 @@
             android:padding="8dp"
             app:srcCompat="@drawable/ic_settings" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text"
             android:layout_width="0dip"
             android:layout_height="wrap_content"

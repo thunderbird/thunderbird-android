@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="&#x200B;" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/accountDisplayName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="@sample/accounts.json/data/name" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/accountEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

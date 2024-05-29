@@ -8,7 +8,8 @@
     android:foreground="?attr/selectableItemBackground"
     android:gravity="center"
     android:orientation="horizontal">
-    <TextView
+
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/main_text"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="?android:attr/textColorPrimary"
@@ -17,4 +18,5 @@
         android:gravity="center"
         tools:text="Load up to 100 more"
         />
+
 </LinearLayout>

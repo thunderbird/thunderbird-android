@@ -27,7 +27,7 @@
         tools:srcCompat="@drawable/status_lock_dots_3"
         tools:tint="?attr/openpgp_green" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/crypto_status_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="@string/crypto_msg_title_encrypted_signed_e2e" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/crypto_status_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

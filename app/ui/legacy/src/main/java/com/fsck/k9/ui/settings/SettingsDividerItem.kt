@@ -1,8 +1,8 @@
 package com.fsck.k9.ui.settings
 
 import android.view.View
-import android.widget.TextView
 import com.fsck.k9.ui.R
+import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
@@ -17,7 +17,7 @@ internal class SettingsDividerItem(
     override fun getViewHolder(v: View) = ViewHolder(v)
 
     class ViewHolder(view: View) : FastAdapter.ViewHolder<SettingsDividerItem>(view) {
-        val text: TextView = view.findViewById(R.id.text)
+        val text: MaterialTextView = view.findViewById(R.id.text)
 
         override fun bindView(item: SettingsDividerItem, payloads: List<Any>) {
             text.text = item.text
