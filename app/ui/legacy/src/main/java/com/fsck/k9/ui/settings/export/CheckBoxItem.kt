@@ -1,9 +1,9 @@
 package com.fsck.k9.ui.settings.export
 
 import android.view.View
-import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.ui.R
+import com.google.android.material.checkbox.MaterialCheckBox
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 import com.mikepenz.fastadapter.listeners.ClickEventHook
@@ -18,7 +18,7 @@ abstract class CheckBoxItem<VH : CheckBoxViewHolder>(override var identifier: Lo
 }
 
 open class CheckBoxViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val checkBox: CheckBox = itemView.findViewById(R.id.checkBox)
+    val checkBox: MaterialCheckBox = itemView.findViewById(R.id.checkBox)
 }
 
 class CheckBoxClickEvent(val action: (position: Int, isSelected: Boolean) -> Unit) : ClickEventHook<CheckBoxItem<*>>() {

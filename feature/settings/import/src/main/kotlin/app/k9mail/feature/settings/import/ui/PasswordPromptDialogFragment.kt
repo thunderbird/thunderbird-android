@@ -6,7 +6,6 @@ import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.CheckBox
 import android.widget.TextView
 import androidx.constraintlayout.widget.Group
 import androidx.core.os.bundleOf
@@ -14,6 +13,7 @@ import androidx.core.view.isGone
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import app.k9mail.feature.settings.importing.R
+import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.fsck.k9.ui.base.R as BaseR
 
@@ -67,7 +67,7 @@ class PasswordPromptDialogFragment : DialogFragment() {
         val passwordPromptIntro: TextView = view.findViewById(R.id.passwordPromptIntro)
         val incomingServerNameView: TextView = view.findViewById(R.id.incomingServerName)
         val outgoingServerNameView: TextView = view.findViewById(R.id.outgoingServerName)
-        val useSamePasswordCheckbox: CheckBox = view.findViewById(R.id.useSamePasswordCheckbox)
+        val useSamePasswordCheckbox: MaterialCheckBox = view.findViewById(R.id.useSamePasswordCheckbox)
         val incomingServerGroup: Group = view.findViewById(R.id.incomingServerGroup)
         val outgoingServerGroup: Group = view.findViewById(R.id.outgoingServerGroup)
 
@@ -100,7 +100,7 @@ class PasswordPromptDialogFragment : DialogFragment() {
     private fun deliverPasswordPromptResult() {
         val incomingServerPasswordView: TextView = dialogView.findViewById(R.id.incomingServerPassword)
         val outgoingServerPasswordView: TextView = dialogView.findViewById(R.id.outgoingServerPassword)
-        val useSamePasswordCheckbox: CheckBox = dialogView.findViewById(R.id.useSamePasswordCheckbox)
+        val useSamePasswordCheckbox: MaterialCheckBox = dialogView.findViewById(R.id.useSamePasswordCheckbox)
 
         val incomingServerPassword = when {
             !inputIncomingServerPassword -> null

@@ -44,7 +44,7 @@
                 android:layout_weight="1"
                 android:text="@string/dialog_autocrypt_mutual_description_2" />
 
-            <CheckBox
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/prefer_encrypt_check"

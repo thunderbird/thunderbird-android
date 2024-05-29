@@ -83,7 +83,7 @@
                     android:hint="@string/edit_identity_reply_to_hint"
                     android:inputType="textEmailAddress"
                     />
-            <!-- 
+            <!--
         <TextView
             android:text="@string/edit_identity_always_bcc_label"
             android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_width="fill_parent" />
             -->
-            <CheckBox
+            <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/signature_use"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"

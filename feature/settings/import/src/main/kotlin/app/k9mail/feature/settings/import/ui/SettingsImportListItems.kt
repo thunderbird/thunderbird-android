@@ -1,12 +1,12 @@
 package app.k9mail.feature.settings.import.ui
 
 import android.view.View
-import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import app.k9mail.feature.settings.importing.R
+import com.google.android.material.checkbox.MaterialCheckBox
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 import com.mikepenz.fastadapter.listeners.ClickEventHook
@@ -54,7 +54,7 @@ internal abstract class ImportListItem<VH : ImportCheckBoxViewHolder>(
 }
 
 internal open class ImportCheckBoxViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val checkBox: CheckBox = itemView.findViewById(R.id.checkBox)
+    val checkBox: MaterialCheckBox = itemView.findViewById(R.id.checkBox)
     val statusIcon: ImageView = itemView.findViewById(R.id.statusIcon)
 }
 

@@ -69,7 +69,7 @@
                     android:layout_width="fill_parent"
                     android:contentDescription="@string/account_settings_always_bcc_label"/>
 
-            <CheckBox
+            <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/account_signature_use"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"

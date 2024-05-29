@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.CheckBox
 import android.widget.TextView
 import androidx.core.content.IntentCompat
 import androidx.core.os.BundleCompat
@@ -16,6 +15,7 @@ import com.fsck.k9.Identity
 import com.fsck.k9.Preferences
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
+import com.google.android.material.checkbox.MaterialCheckBox
 import org.koin.android.ext.android.inject
 
 class EditIdentity : K9Activity() {
@@ -28,7 +28,7 @@ class EditIdentity : K9Activity() {
     private lateinit var name: TextView
     private lateinit var email: TextView
     private lateinit var replyTo: TextView
-    private lateinit var signatureUse: CheckBox
+    private lateinit var signatureUse: MaterialCheckBox
     private lateinit var signature: TextView
     private lateinit var signatureLayout: View
 
