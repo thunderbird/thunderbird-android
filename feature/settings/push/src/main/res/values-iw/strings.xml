@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_push_option_first_class">רק תיקיות מדרגה ראשונה</string>
+    <string name="settings_push_option_all_except_second_class">הכל חוץ מתיקיות מדרגה שניה</string>
+    <string name="settings_push_option_none">אף אחת</string>
+    <string name="settings_push_grant_permission_button">אשר הרשאה</string>
+    <string name="settings_push_title">תיקיות דחיפה</string>
+    <string name="settings_push_option_all">הכל</string>
+    <string name="settings_push_option_first_and_second_class">תיקיות מדרגה ראשונה ושניה</string>
+    <string name="settings_push_alarm_permission_required">הרשאה נצטרכת (<xliff:g id="currentValue" example="None">%s</xliff:g>)</string>
+    <string name="settings_push_permission_info_text">K-9 דוא\"ל צריך להתעורר באופן קבוע על מנת לשמור על חיבורי הדחיפה בחיים. בכדי שזה יעבוד, יש לאשר את הרשאת תזמון התרעות.</string>
+</resources>

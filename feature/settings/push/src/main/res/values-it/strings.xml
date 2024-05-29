@@ -7,4 +7,5 @@
     <string name="settings_push_option_none">Nessuna</string>
     <string name="settings_push_grant_permission_button">Concedi l\'autorizzazione</string>
     <string name="settings_push_title">Cartelle push</string>
+    <string name="settings_push_permission_info_text">K-9 Mail deve attivarsi regolarmente per mantenere attive le connessioni Push. Affinché funzioni è necessario concedere l\'autorizzazione per pianificare gli allarmi.</string>
 </resources>

@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_push_title">Папки \"Push\"</string>
+    <string name="settings_push_option_all">Все</string>
+    <string name="settings_push_option_first_class">Только папки 1-го класса</string>
+    <string name="settings_push_option_first_and_second_class">Папки 1-го и 2-го класса</string>
+    <string name="settings_push_option_all_except_second_class">Все, кроме папок 2-го класса</string>
+    <string name="settings_push_option_none">Ничего</string>
+    <string name="settings_push_alarm_permission_required">Требуется разрешение (<xliff:g id="currentValue" example="Ничего">%s</xliff:g>)</string>
+    <string name="settings_push_permission_info_text">Почте K-9 необходимо регулярно просыпаться, чтобы поддерживать работоспособность push-соединений. Чтобы это работало, необходимо предоставить разрешение на установку будильников.</string>
+    <string name="settings_push_grant_permission_button">Разрешить</string>
+</resources>
