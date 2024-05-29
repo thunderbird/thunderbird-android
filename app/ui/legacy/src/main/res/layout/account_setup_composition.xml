@@ -108,14 +108,14 @@
                         android:layout_width="wrap_content"
                         android:orientation="vertical">
 
-                    <RadioButton
+                    <com.google.android.material.radiobutton.MaterialRadioButton
                             android:id="@+id/account_signature_location_before_quoted_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/account_settings_signature__location_before_quoted_text"
                             android:contentDescription="@string/account_settings_signature__location_label"/>
 
-                    <RadioButton
+                    <com.google.android.material.radiobutton.MaterialRadioButton
                             android:id="@+id/account_signature_location_after_quoted_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
