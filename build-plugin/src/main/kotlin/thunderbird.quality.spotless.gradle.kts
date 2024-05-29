@@ -14,6 +14,8 @@ configure<SpotlessExtension> {
             "**/build/",
             "**/resources/",
             "plugins/openpgp-api-lib/",
+            "ui-utils/ItemTouchHelper/",
+            "ui-utils/LinearLayoutManager/",
         )
     }
     kotlinGradle {
