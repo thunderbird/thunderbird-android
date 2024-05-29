@@ -65,6 +65,7 @@ include(
     ":feature:autodiscovery:api",
     ":feature:autodiscovery:autoconfig",
     ":feature:autodiscovery:service",
+    ":feature:autodiscovery:demo",
 )
 
 include(
