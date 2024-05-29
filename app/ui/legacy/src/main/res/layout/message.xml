@@ -37,7 +37,7 @@ the 'message view theme' setting).
                 android:visibility="gone"
                 tools:visibility="visible">
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/show_pictures"
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="wrap_content"
@@ -105,7 +105,8 @@ the 'message view theme' setting).
 
     </com.fsck.k9.view.NonLockingScrollView>
 
-    <Button android:id="@+id/download_remainder"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/download_remainder"
         style="?attr/materialButtonOutlinedStyle"
         android:layout_marginHorizontal="16dp"
         android:text="@string/message_view_download_remainder"

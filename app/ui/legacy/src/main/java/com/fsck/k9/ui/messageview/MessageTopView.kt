@@ -12,7 +12,6 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
@@ -30,6 +29,7 @@ import com.fsck.k9.ui.messageview.MessageContainerView.OnRenderingFinishedListen
 import com.fsck.k9.view.MessageHeader
 import com.fsck.k9.view.ThemeUtils
 import com.fsck.k9.view.ToolableViewAnimator
+import com.google.android.material.button.MaterialButton
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -49,10 +49,10 @@ class MessageTopView(
     lateinit var messageHeaderView: MessageHeader
 
     private lateinit var containerView: ViewGroup
-    private lateinit var downloadRemainderButton: Button
+    private lateinit var downloadRemainderButton: MaterialButton
     private lateinit var attachmentCallback: AttachmentViewCallback
     private lateinit var extraHeaderContainer: View
-    private lateinit var showPicturesButton: Button
+    private lateinit var showPicturesButton: MaterialButton
 
     private var isShowingProgress = false
     private var showPicturesButtonClicked = false

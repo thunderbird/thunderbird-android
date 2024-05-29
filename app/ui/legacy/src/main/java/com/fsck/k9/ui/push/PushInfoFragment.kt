@@ -9,7 +9,6 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -18,6 +17,7 @@ import androidx.fragment.app.Fragment
 import com.fsck.k9.controller.push.PushController
 import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.ui.R
+import com.google.android.material.button.MaterialButton
 import org.koin.android.ext.android.inject
 
 private const val LEARN_MORE_URL = "https://k9mail.app/go/push-info"
@@ -43,7 +43,7 @@ class PushInfoFragment : Fragment() {
                 R.string.push_info_notification_explanation_text,
                 configureNotificationText,
             )
-            val configureNotificationButton = view.findViewById<Button>(R.id.configureNotificationButton)
+            val configureNotificationButton = view.findViewById<MaterialButton>(R.id.configureNotificationButton)
             configureNotificationButton.isVisible = true
             configureNotificationButton.setOnClickListener {
                 launchNotificationSettings()
@@ -52,13 +52,13 @@ class PushInfoFragment : Fragment() {
             notificationTextView.text = getString(R.string.push_info_notification_explanation_text, "")
         }
 
-        view.findViewById<Button>(R.id.learnMoreButton).setOnClickListener {
+        view.findViewById<MaterialButton>(R.id.learnMoreButton).setOnClickListener {
             launchLearnMoreAction()
         }
     }
 
     private fun initializeDisablePushSection(view: View) {
-        val disablePushButton = view.findViewById<Button>(R.id.disablePushButton)
+        val disablePushButton = view.findViewById<MaterialButton>(R.id.disablePushButton)
         disablePushButton.setOnClickListener(::disablePush)
     }
 

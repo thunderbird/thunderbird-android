@@ -77,7 +77,7 @@ the 'composer theme' setting).
             android:imeOptions="flagNoExtractUi"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/quoted_text_show"
             android:text="@string/message_compose_show_quoted_text_action"
             android:textSize="16sp"
