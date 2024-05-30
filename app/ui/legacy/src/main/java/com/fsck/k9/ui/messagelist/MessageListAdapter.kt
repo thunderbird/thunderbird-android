@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.AbsoluteSizeSpan
-import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
@@ -55,9 +54,6 @@ class MessageListAdapter internal constructor(
     private val answeredIcon: Drawable = ResourcesCompat.getDrawable(res, Icons.Outlined.Reply, theme)!!
     private val forwardedAnsweredIcon: Drawable =
         ResourcesCompat.getDrawable(res, Icons.Outlined.CompareArrows, theme)!!
-    private val unreadTextColor: Int = theme.resolveColorAttribute(R.attr.messageListUnreadTextColor)
-    private val readTextColor: Int = theme.resolveColorAttribute(R.attr.messageListReadTextColor)
-    private val previewTextColor: Int = theme.resolveColorAttribute(R.attr.messageListPreviewTextColor)
     private val activeItemBackgroundColor: Int = theme.resolveColorAttribute(
         colorAttrId = R.attr.messageListActiveItemBackgroundColor,
         alphaFractionAttrId = R.attr.messageListActiveItemBackgroundAlphaFraction,
@@ -375,7 +371,6 @@ class MessageListAdapter internal constructor(
         }
 
         with(messageListItem) {
-            val textColor = if (isRead) readTextColor else unreadTextColor
             val maybeBoldTypeface = if (isRead) Typeface.NORMAL else Typeface.BOLD
             val displayDate = relativeDateTimeFormatter.formatDate(messageDate)
             val displayThreadCount = if (appearance.showingThreadedList) threadCount else 0
@@ -409,13 +404,11 @@ class MessageListAdapter internal constructor(
                     messageStringBuilder.append(" – ").append(preview)
                 }
             }
-            holder.preview.setTextColor(textColor)
             holder.preview.setText(messageStringBuilder, TextView.BufferType.SPANNABLE)
 
             formatPreviewText(holder.preview, beforePreviewText, isRead)
 
             holder.subject.typeface = Typeface.create(holder.subject.typeface, maybeBoldTypeface)
-            holder.subject.setTextColor(textColor)
 
             val firstLineText = if (appearance.senderAboveSubject) displayName else subject
             holder.subject.text = firstLineText
@@ -427,7 +420,6 @@ class MessageListAdapter internal constructor(
             }
 
             holder.date.typeface = Typeface.create(holder.date.typeface, maybeBoldTypeface)
-            holder.date.setTextColor(textColor)
             holder.date.text = displayDate
             holder.attachment.isVisible = hasAttachments
 
@@ -450,14 +442,6 @@ class MessageListAdapter internal constructor(
 
         val beforePreviewLength = beforePreviewText.length
         addBeforePreviewSpan(previewText, beforePreviewLength, messageRead)
-
-        // Set span (color) for preview message
-        previewText.setSpan(
-            ForegroundColorSpan(previewTextColor),
-            beforePreviewLength,
-            previewText.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
-        )
     }
 
     private fun addBeforePreviewSpan(text: Spannable, length: Int, messageRead: Boolean) {

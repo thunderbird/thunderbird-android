@@ -4,5 +4,5 @@
     android:layout_height="1px"
     android:layout_marginHorizontal="32dp"
     android:layout_marginVertical="8dp"
-    android:background="?attr/messageDetailsDividerColor"
+    android:background="?attr/colorOutlineVariant"
     android:focusable="false" />
