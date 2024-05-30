@@ -12,6 +12,7 @@ if (testCoverageEnabled) {
 dependencies {
     implementation(projects.app.common)
     implementation(projects.core.ui.compose.theme2.k9mail)
+    implementation(projects.core.ui.legacy.theme2.k9mail)
     implementation(projects.feature.launcher)
 
     implementation(projects.app.core)

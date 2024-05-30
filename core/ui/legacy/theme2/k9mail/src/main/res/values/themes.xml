@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="Theme2.K9.Light" parent="Theme2.Main.Light">
+        <item name="colorPrimary">@color/k9_primary_040</item>
+        <item name="colorOnPrimary">@color/k9_primary_100</item>
+        <item name="colorPrimaryInverse">@color/k9_primary_080</item>
+        <item name="colorPrimaryContainer">@color/k9_primary_090</item>
+        <item name="colorOnPrimaryContainer">@color/k9_primary_010</item>
+        <item name="colorPrimaryFixed">@color/k9_primary_090</item>
+        <item name="colorPrimaryFixedDim">@color/k9_primary_080</item>
+        <item name="colorOnPrimaryFixed">@color/k9_primary_010</item>
+        <item name="colorOnPrimaryFixedVariant">@color/k9_primary_030</item>
+        <item name="colorSecondary">@color/k9_secondary_040</item>
+        <item name="colorOnSecondary">@color/k9_secondary_100</item>
+        <item name="colorSecondaryContainer">@color/k9_secondary_090</item>
+        <item name="colorOnSecondaryContainer">@color/k9_secondary_010</item>
+        <item name="colorSecondaryFixed">@color/k9_secondary_090</item>
+        <item name="colorSecondaryFixedDim">@color/k9_secondary_080</item>
+        <item name="colorOnSecondaryFixed">@color/k9_secondary_010</item>
+        <item name="colorOnSecondaryFixedVariant">@color/k9_secondary_030</item>
+        <item name="colorTertiary">@color/k9_tertiary_040</item>
+        <item name="colorOnTertiary">@color/k9_tertiary_100</item>
+        <item name="colorTertiaryContainer">@color/k9_tertiary_090</item>
+        <item name="colorOnTertiaryContainer">@color/k9_tertiary_010</item>
+        <item name="colorTertiaryFixed">@color/k9_tertiary_090</item>
+        <item name="colorTertiaryFixedDim">@color/k9_tertiary_080</item>
+        <item name="colorOnTertiaryFixed">@color/k9_tertiary_010</item>
+        <item name="colorOnTertiaryFixedVariant">@color/k9_tertiary_030</item>
+        <item name="android:colorBackground">@color/k9_neutral_098</item>
+        <item name="colorOnBackground">@color/k9_neutral_010</item>
+        <item name="colorSurface">@color/k9_neutral_098</item>
+        <item name="colorOnSurface">@color/k9_neutral_010</item>
+        <item name="colorSurfaceVariant">@color/k9_neutral_variant_090</item>
+        <item name="colorOnSurfaceVariant">@color/k9_neutral_variant_030</item>
+        <item name="colorSurfaceInverse">@color/k9_neutral_020</item>
+        <item name="colorOnSurfaceInverse">@color/k9_neutral_095</item>
+        <item name="colorSurfaceBright">@color/k9_neutral_098</item>
+        <item name="colorSurfaceDim">@color/k9_neutral_087</item>
+        <item name="colorSurfaceContainer">@color/k9_neutral_094</item>
+        <item name="colorSurfaceContainerLow">@color/k9_neutral_096</item>
+        <item name="colorSurfaceContainerHigh">@color/k9_neutral_092</item>
+        <item name="colorSurfaceContainerLowest">@color/k9_neutral_100</item>
+        <item name="colorSurfaceContainerHighest">@color/k9_neutral_090</item>
+        <item name="colorOutline">@color/k9_neutral_variant_050</item>
+        <item name="colorOutlineVariant">@color/k9_neutral_variant_080</item>
+        <item name="colorError">@color/k9_error_040</item>
+        <item name="colorOnError">@color/k9_error_100</item>
+        <item name="colorErrorContainer">@color/k9_error_090</item>
+        <item name="colorOnErrorContainer">@color/k9_error_010</item>
+    </style>
+
+    <style name="Theme2.K9.Dark" parent="Theme2.Main.Dark">
+        <item name="colorPrimary">@color/k9_primary_080</item>
+        <item name="colorOnPrimary">@color/k9_primary_020</item>
+        <item name="colorPrimaryInverse">@color/k9_primary_040</item>
+        <item name="colorPrimaryContainer">@color/k9_primary_030</item>
+        <item name="colorOnPrimaryContainer">@color/k9_primary_090</item>
+        <item name="colorPrimaryFixed">@color/k9_primary_090</item>
+        <item name="colorPrimaryFixedDim">@color/k9_primary_080</item>
+        <item name="colorOnPrimaryFixed">@color/k9_primary_010</item>
+        <item name="colorOnPrimaryFixedVariant">@color/k9_primary_030</item>
+        <item name="colorSecondary">@color/k9_secondary_080</item>
+        <item name="colorOnSecondary">@color/k9_secondary_020</item>
+        <item name="colorSecondaryContainer">@color/k9_secondary_030</item>
+        <item name="colorOnSecondaryContainer">@color/k9_secondary_090</item>
+        <item name="colorSecondaryFixed">@color/k9_secondary_090</item>
+        <item name="colorSecondaryFixedDim">@color/k9_secondary_080</item>
+        <item name="colorOnSecondaryFixed">@color/k9_secondary_010</item>
+        <item name="colorOnSecondaryFixedVariant">@color/k9_secondary_030</item>
+        <item name="colorTertiary">@color/k9_tertiary_080</item>
+        <item name="colorOnTertiary">@color/k9_tertiary_020</item>
+        <item name="colorTertiaryContainer">@color/k9_tertiary_030</item>
+        <item name="colorOnTertiaryContainer">@color/k9_tertiary_090</item>
+        <item name="colorTertiaryFixed">@color/k9_tertiary_090</item>
+        <item name="colorTertiaryFixedDim">@color/k9_tertiary_080</item>
+        <item name="colorOnTertiaryFixed">@color/k9_tertiary_010</item>
+        <item name="colorOnTertiaryFixedVariant">@color/k9_tertiary_030</item>
+        <item name="android:colorBackground">@color/k9_neutral_010</item>
+        <item name="colorOnBackground">@color/k9_neutral_090</item>
+        <item name="colorSurface">@color/k9_neutral_006</item>
+        <item name="colorOnSurface">@color/k9_neutral_090</item>
+        <item name="colorSurfaceVariant">@color/k9_neutral_variant_030</item>
+        <item name="colorOnSurfaceVariant">@color/k9_neutral_variant_080</item>
+        <item name="colorSurfaceInverse">@color/k9_neutral_090</item>
+        <item name="colorOnSurfaceInverse">@color/k9_neutral_020</item>
+        <item name="colorSurfaceBright">@color/k9_neutral_024</item>
+        <item name="colorSurfaceDim">@color/k9_neutral_006</item>
+        <item name="colorSurfaceContainer">@color/k9_neutral_012</item>
+        <item name="colorSurfaceContainerLow">@color/k9_neutral_010</item>
+        <item name="colorSurfaceContainerHigh">@color/k9_neutral_017</item>
+        <item name="colorSurfaceContainerLowest">@color/k9_neutral_004</item>
+        <item name="colorSurfaceContainerHighest">@color/k9_neutral_022</item>
+        <item name="colorOutline">@color/k9_neutral_variant_060</item>
+        <item name="colorOutlineVariant">@color/k9_neutral_variant_030</item>
+        <item name="colorError">@color/k9_error_080</item>
+        <item name="colorOnError">@color/k9_error_020</item>
+        <item name="colorErrorContainer">@color/k9_error_030</item>
+        <item name="colorOnErrorContainer">@color/k9_error_090</item>
+    </style>
+
+</resources>
