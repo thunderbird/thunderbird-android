@@ -2,9 +2,9 @@ package com.fsck.k9.ui.settings
 
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.annotation.DrawableRes
 import com.fsck.k9.ui.R
+import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
@@ -21,7 +21,7 @@ internal class UrlActionItem(
     override fun getViewHolder(v: View) = ViewHolder(v)
 
     class ViewHolder(view: View) : FastAdapter.ViewHolder<UrlActionItem>(view) {
-        val text: TextView = view.findViewById(R.id.text)
+        val text: MaterialTextView = view.findViewById(R.id.text)
         val icon: ImageView = view.findViewById(R.id.icon)
 
         override fun bindView(item: UrlActionItem, payloads: List<Any>) {

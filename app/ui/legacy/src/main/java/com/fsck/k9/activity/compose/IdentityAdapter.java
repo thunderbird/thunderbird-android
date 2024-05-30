@@ -1,11 +1,15 @@
 package com.fsck.k9.activity.compose;
 
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
@@ -13,10 +17,7 @@ import com.fsck.k9.Identity;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.identity.IdentityFormatter;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import com.google.android.material.textview.MaterialTextView;
 
 /**
  * Adapter for the <em>Choose identity</em> list view.
@@ -140,12 +141,12 @@ public class IdentityAdapter extends BaseAdapter {
     }
 
     static class AccountHolder {
-        public TextView name;
+        public MaterialTextView name;
         public View chip;
     }
 
     static class IdentityHolder {
-        public TextView name;
-        public TextView description;
+        public MaterialTextView name;
+        public MaterialTextView description;
     }
 }

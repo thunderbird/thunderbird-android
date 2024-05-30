@@ -4,8 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.CheckBox
-import android.widget.TextView
+import android.widget.EditText
 import androidx.core.content.IntentCompat
 import androidx.core.os.BundleCompat
 import androidx.core.view.isVisible
@@ -16,6 +15,7 @@ import com.fsck.k9.Identity
 import com.fsck.k9.Preferences
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
+import com.google.android.material.checkbox.MaterialCheckBox
 import org.koin.android.ext.android.inject
 
 class EditIdentity : K9Activity() {
@@ -24,12 +24,12 @@ class EditIdentity : K9Activity() {
     private lateinit var account: Account
     private lateinit var identity: Identity
 
-    private lateinit var description: TextView
-    private lateinit var name: TextView
-    private lateinit var email: TextView
-    private lateinit var replyTo: TextView
-    private lateinit var signatureUse: CheckBox
-    private lateinit var signature: TextView
+    private lateinit var description: EditText
+    private lateinit var name: EditText
+    private lateinit var email: EditText
+    private lateinit var replyTo: EditText
+    private lateinit var signatureUse: MaterialCheckBox
+    private lateinit var signature: EditText
     private lateinit var signatureLayout: View
 
     private var identityIndex: Int = 0
@@ -67,23 +67,23 @@ class EditIdentity : K9Activity() {
         signature = findViewById(R.id.signature)
         signatureLayout = findViewById(R.id.signature_layout)
 
-        description.text = identity.description
-        name.text = identity.name
-        email.text = identity.email
-        replyTo.text = identity.replyTo
+        description.setText(identity.description)
+        name.setText(identity.name)
+        email.setText(identity.email)
+        replyTo.setText(identity.replyTo)
 
         signatureUse.isChecked = identity.signatureUse
         signatureUse.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 signatureLayout.isVisible = true
-                signature.text = identity.signature
+                signature.setText(identity.signature)
             } else {
                 signatureLayout.isVisible = false
             }
         }
 
         if (signatureUse.isChecked) {
-            signature.text = identity.signature
+            signature.setText(identity.signature)
         } else {
             signatureLayout.isVisible = false
         }
@@ -104,11 +104,11 @@ class EditIdentity : K9Activity() {
         invalidateOptionsMenu()
     }
 
-    private fun isValidEmailAddress(textView: TextView): Boolean {
+    private fun isValidEmailAddress(textView: EditText): Boolean {
         return emailAddressValidator.isValidAddressOnly(textView.text.trim())
     }
 
-    private fun isValidEmailAddressOrEmpty(textView: TextView): Boolean {
+    private fun isValidEmailAddressOrEmpty(textView: EditText): Boolean {
         return textView.text.isBlank() || isValidEmailAddress(textView)
     }
 

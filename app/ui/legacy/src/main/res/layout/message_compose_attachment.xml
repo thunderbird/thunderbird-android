@@ -40,7 +40,7 @@
             app:layout_constraintTop_toBottomOf="@+id/attachment_preview"
             app:tint="?attr/colorAccent" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/attachment_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="filename.ext" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/attachment_size"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

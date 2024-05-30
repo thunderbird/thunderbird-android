@@ -12,7 +12,7 @@
     android:paddingRight="16dp"
     android:paddingBottom="12dp">
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
             android:textColor="?android:attr/textColorPrimary"
             tools:text="Android Jetpack libraries" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/license"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -26,7 +26,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:ignore="UnusedAttribute">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/exportButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/shareButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
             app:layout_constraintStart_toStartOf="@+id/exportButton"
             app:layout_constraintTop_toTopOf="@+id/exportButton" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/statusText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

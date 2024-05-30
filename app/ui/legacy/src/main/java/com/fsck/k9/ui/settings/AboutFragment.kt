@@ -9,13 +9,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.ui.R
+import com.google.android.material.textview.MaterialTextView
 import timber.log.Timber
 
 class AboutFragment : Fragment() {
@@ -26,7 +26,7 @@ class AboutFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val versionTextView = view.findViewById<TextView>(R.id.version)
+        val versionTextView = view.findViewById<MaterialTextView>(R.id.version)
         versionTextView.text = getVersionNumber()
 
         val versionLayout = view.findViewById<View>(R.id.versionLayout)
@@ -192,8 +192,8 @@ private class LibrariesAdapter(private val dataset: Array<Library>) :
     RecyclerView.Adapter<LibrariesAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val name: TextView = view.findViewById(R.id.name)
-        val license: TextView = view.findViewById(R.id.license)
+        val name: MaterialTextView = view.findViewById(R.id.name)
+        val license: MaterialTextView = view.findViewById(R.id.license)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

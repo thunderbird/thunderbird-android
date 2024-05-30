@@ -7,7 +7,7 @@
     android:focusable="false"
     android:orientation="horizontal">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,7 +15,7 @@
         android:textAppearance="?attr/textAppearanceOverline"
         tools:text="To" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/extra"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -7,7 +7,7 @@
     android:padding="24dp"
     tools:context=".settings.account.OpenPgpAppSelectDialog$OpenKeychainInfoFragment">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/dialog_openkeychain_info_text"

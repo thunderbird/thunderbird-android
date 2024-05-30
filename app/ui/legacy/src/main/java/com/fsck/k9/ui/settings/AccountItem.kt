@@ -3,12 +3,12 @@ package com.fsck.k9.ui.settings
 import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.Account
 import com.fsck.k9.ui.R
+import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.drag.IDraggable
 import com.mikepenz.fastadapter.items.AbstractItem
@@ -27,8 +27,8 @@ internal class AccountItem(
     override fun getViewHolder(v: View) = ViewHolder(v)
 
     class ViewHolder(view: View) : FastAdapter.ViewHolder<AccountItem>(view) {
-        val name: TextView = view.findViewById(R.id.name)
-        val email: TextView = view.findViewById(R.id.email)
+        val name: MaterialTextView = view.findViewById(R.id.name)
+        val email: MaterialTextView = view.findViewById(R.id.email)
         val dragHandle: ImageView = view.findViewById(R.id.drag_handle)
 
         override fun bindView(item: AccountItem, payloads: List<Any>) {

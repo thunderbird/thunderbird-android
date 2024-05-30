@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -14,6 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import app.k9mail.feature.settings.importing.R
 import com.fsck.k9.preferences.AccountManager
 import com.fsck.k9.ui.base.K9Activity
+import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.launch
@@ -25,7 +25,7 @@ class OAuthFlowActivity : K9Activity() {
     private val authViewModel: AuthViewModel by viewModel()
     private val accountManager: AccountManager by inject()
 
-    private lateinit var errorText: TextView
+    private lateinit var errorText: MaterialTextView
     private lateinit var signInButton: Button
     private lateinit var signInProgress: ProgressBar
 

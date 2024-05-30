@@ -2,9 +2,9 @@ package com.fsck.k9.ui.messagedetails
 
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.annotation.DrawableRes
 import com.fsck.k9.ui.R
+import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
@@ -19,7 +19,7 @@ internal class FolderNameItem(
 
     class ViewHolder(view: View) : FastAdapter.ViewHolder<FolderNameItem>(view) {
         private val folderIcon: ImageView = view.findViewById(R.id.folder_icon)
-        private val folderName = view.findViewById<TextView>(R.id.folder_name)
+        private val folderName = view.findViewById<MaterialTextView>(R.id.folder_name)
 
         override fun bindView(item: FolderNameItem, payloads: List<Any>) {
             folderName.text = item.displayName

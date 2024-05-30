@@ -1,5 +1,6 @@
 package com.fsck.k9.activity;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,14 +12,14 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.BaseAccount;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.ui.R;
 import com.fsck.k9.search.SearchAccount;
+import com.fsck.k9.ui.R;
+import com.google.android.material.textview.MaterialTextView;
 
 
 /**
@@ -138,8 +139,8 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
         }
 
         class AccountViewHolder {
-            public TextView description;
-            public TextView email;
+            public MaterialTextView description;
+            public MaterialTextView email;
             public View chip;
         }
     }

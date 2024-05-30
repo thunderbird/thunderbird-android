@@ -21,7 +21,6 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebView.HitTestResult
 import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ShareCompat.IntentBuilder
 import androidx.core.view.isGone
@@ -38,6 +37,7 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.view.MessageWebView
 import com.fsck.k9.view.MessageWebView.OnPageFinishedListener
 import com.fsck.k9.view.WebViewConfigProvider
+import com.google.android.material.textview.MaterialTextView
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
@@ -58,7 +58,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
     private lateinit var attachmentsContainer: ViewGroup
     private lateinit var unsignedTextContainer: View
     private lateinit var unsignedTextDivider: View
-    private lateinit var unsignedText: TextView
+    private lateinit var unsignedText: MaterialTextView
 
     private var isShowingPictures = false
     private var currentHtmlText: String? = null
@@ -101,15 +101,19 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
             HitTestResult.SRC_ANCHOR_TYPE -> {
                 createLinkMenu(menu, webView, linkUrl = hitTestResult.extra)
             }
+
             HitTestResult.IMAGE_TYPE -> {
                 createImageMenu(menu, imageUrl = hitTestResult.extra)
             }
+
             HitTestResult.SRC_IMAGE_ANCHOR_TYPE -> {
                 createImageLinkMenu(menu, webView, imageUrl = hitTestResult.extra)
             }
+
             HitTestResult.PHONE_TYPE -> {
                 createPhoneNumberMenu(menu, phoneNumber = hitTestResult.extra)
             }
+
             HitTestResult.EMAIL_TYPE -> {
                 createEmailMenu(menu, email = hitTestResult.extra)
             }
@@ -130,16 +134,19 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(linkUrl))
                     startActivityIfAvailable(context, intent)
                 }
+
                 MENU_ITEM_LINK_SHARE -> {
                     IntentBuilder(context)
                         .setType("text/plain")
                         .setText(linkUrl)
                         .startChooser()
                 }
+
                 MENU_ITEM_LINK_COPY -> {
                     val label = context.getString(R.string.webview_contextmenu_link_clipboard_label)
                     clipboardManager.setText(label, linkUrl)
                 }
+
                 MENU_ITEM_LINK_TEXT_COPY -> {
                     val message = linkTextHandler.obtainMessage()
                     webView.requestFocusNodeHref(message)
@@ -202,6 +209,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
                         startActivityIfAvailable(context, intent)
                     }
                 }
+
                 MENU_ITEM_IMAGE_SAVE -> {
                     if (inlineImage) {
                         attachmentCallback.onSaveAttachment(attachmentViewInfo)
@@ -209,6 +217,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
                         downloadImage(imageUri)
                     }
                 }
+
                 MENU_ITEM_IMAGE_COPY -> {
                     val label = context.getString(R.string.webview_contextmenu_image_clipboard_label)
                     clipboardManager.setText(label, imageUri.toString())
@@ -270,10 +279,12 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
                     val intent = Intent(Intent.ACTION_VIEW, uri)
                     startActivityIfAvailable(context, intent)
                 }
+
                 MENU_ITEM_PHONE_SAVE -> {
                     val intent = ContactIntentHelper.getAddPhoneContactIntent(phoneNumber)
                     startActivityIfAvailable(context, intent)
                 }
+
                 MENU_ITEM_PHONE_COPY -> {
                     val label = context.getString(R.string.webview_contextmenu_phone_clipboard_label)
                     clipboardManager.setText(label, phoneNumber)
@@ -316,10 +327,12 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
                     val intent = Intent(Intent.ACTION_VIEW, uri)
                     startActivityIfAvailable(context, intent)
                 }
+
                 MENU_ITEM_EMAIL_SAVE -> {
                     val intent = ContactIntentHelper.getAddEmailContactIntent(Address(email))
                     startActivityIfAvailable(context, intent)
                 }
+
                 MENU_ITEM_EMAIL_COPY -> {
                     val label = context.getString(R.string.webview_contextmenu_email_clipboard_label)
                     clipboardManager.setText(label, email)

@@ -5,9 +5,9 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.view.isGone
 import com.fsck.k9.ui.R
+import com.google.android.material.textview.MaterialTextView
 
 private const val MAX_NUMBER_OF_RECIPIENT_NAMES = 5
 
@@ -30,8 +30,8 @@ class RecipientNamesView(context: Context, attrs: AttributeSet?) : ViewGroup(con
 
     private val recipientLayoutCreator: RecipientLayoutCreator
 
-    private val recipientNameTextView: TextView
-    private val recipientCountTextView: TextView
+    private val recipientNameTextView: MaterialTextView
+    private val recipientCountTextView: MaterialTextView
     private val additionRecipientSpacing: Int
 
     init {
@@ -53,7 +53,7 @@ class RecipientNamesView(context: Context, attrs: AttributeSet?) : ViewGroup(con
             return measureWidth(recipientCountTextView, text)
         }
 
-        private fun measureWidth(textView: TextView, text: CharSequence): Int {
+        private fun measureWidth(textView: MaterialTextView, text: CharSequence): Int {
             textView.text = text
 
             val widthMeasureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)

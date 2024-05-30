@@ -3,9 +3,9 @@ package com.fsck.k9.ui.messagedetails
 import android.content.res.ColorStateList
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.resolveColorAttribute
+import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
@@ -16,8 +16,8 @@ internal class CryptoStatusItem(val cryptoDetails: CryptoDetails) : AbstractItem
     override fun getViewHolder(v: View) = ViewHolder(v)
 
     class ViewHolder(view: View) : FastAdapter.ViewHolder<CryptoStatusItem>(view) {
-        private val titleTextView = view.findViewById<TextView>(R.id.crypto_status_title)
-        private val descriptionTextView = view.findViewById<TextView>(R.id.crypto_status_description)
+        private val titleTextView = view.findViewById<MaterialTextView>(R.id.crypto_status_title)
+        private val descriptionTextView = view.findViewById<MaterialTextView>(R.id.crypto_status_description)
         private val imageView = view.findViewById<ImageView>(R.id.crypto_status_icon)
         private val originalBackground = view.background
 

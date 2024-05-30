@@ -7,12 +7,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.livedata.observeNotNull
+import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -66,10 +66,12 @@ class SettingsExportFragment : Fragment() {
                 exportButton.isVisible = true
                 exportButton.isEnabled = false
             }
+
             ButtonState.ENABLED -> {
                 exportButton.isVisible = true
                 exportButton.isEnabled = true
             }
+
             ButtonState.INVISIBLE -> exportButton.visibility = View.INVISIBLE
             ButtonState.GONE -> exportButton.visibility = View.GONE
         }
@@ -83,10 +85,12 @@ class SettingsExportFragment : Fragment() {
                 statusText.isVisible = true
                 statusText.text = getString(R.string.settings_export_success_generic)
             }
+
             StatusText.PROGRESS -> {
                 statusText.isVisible = true
                 statusText.text = getString(R.string.settings_export_progress_text)
             }
+
             StatusText.EXPORT_FAILURE -> {
                 statusText.isVisible = true
                 statusText.text = getString(R.string.settings_export_failure)
@@ -166,6 +170,6 @@ private class ViewHolder(view: View) {
     val exportButton: View = view.findViewById(R.id.exportButton)
     val shareButton: View = view.findViewById(R.id.shareButton)
     val progressBar: View = view.findViewById(R.id.progressBar)
-    val statusText: TextView = view.findViewById(R.id.statusText)
+    val statusText: MaterialTextView = view.findViewById(R.id.statusText)
     val settingsExportList: RecyclerView = view.findViewById(R.id.settingsExportList)
 }

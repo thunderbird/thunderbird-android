@@ -12,7 +12,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
@@ -61,6 +60,7 @@ import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListene
 import com.fsck.k9.ui.messageview.PlaceholderFragment
 import com.fsck.k9.view.ViewSwitcher
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener
+import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.materialdrawer.util.getOptimalDrawerWidth
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
@@ -934,8 +934,8 @@ open class MessageList :
     }
 
     private fun setActionBarTitle(title: String, subtitle: String? = null) {
-        findViewById<TextView>(R.id.toolbarTitle).text = title
-        findViewById<TextView>(R.id.toolbarSubtitle).apply {
+        findViewById<MaterialTextView>(R.id.toolbarTitle).text = title
+        findViewById<MaterialTextView>(R.id.toolbarSubtitle).apply {
             if (subtitle != null) {
                 text = subtitle
                 isGone = false

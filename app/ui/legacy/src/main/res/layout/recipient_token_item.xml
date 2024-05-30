@@ -37,7 +37,7 @@
         app:layout_constraintStart_toStartOf="@+id/contact_photo"
         app:layout_constraintTop_toTopOf="@+id/contact_photo" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@android:id/text1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

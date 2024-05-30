@@ -9,13 +9,13 @@ import android.transition.TransitionInflater
 import android.transition.TransitionManager
 import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
 import com.fsck.k9.view.StatusIndicator
+import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.delay
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
@@ -27,8 +27,8 @@ class AutocryptKeyTransferActivity : K9Activity() {
 
     private lateinit var transferSendButton: View
     private lateinit var transferButtonShowCode: View
-    private lateinit var transferAddress1: TextView
-    private lateinit var transferAddress2: TextView
+    private lateinit var transferAddress1: MaterialTextView
+    private lateinit var transferAddress2: MaterialTextView
     private lateinit var transferMsgInfo: View
     private lateinit var transferLayoutGenerating: View
     private lateinit var transferLayoutSending: View

@@ -12,11 +12,9 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
-import android.widget.TextView
 import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.common.mail.EmailAddress
 import app.k9mail.core.common.mail.toEmailAddressOrNull
@@ -30,6 +28,8 @@ import com.fsck.k9.ui.messageview.MessageContainerView.OnRenderingFinishedListen
 import com.fsck.k9.view.MessageHeader
 import com.fsck.k9.view.ThemeUtils
 import com.fsck.k9.view.ToolableViewAnimator
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.textview.MaterialTextView
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -44,15 +44,15 @@ class MessageTopView(
 
     private lateinit var viewAnimator: ToolableViewAnimator
     private lateinit var progressBar: ProgressBar
-    private lateinit var progressText: TextView
+    private lateinit var progressText: MaterialTextView
 
     lateinit var messageHeaderView: MessageHeader
 
     private lateinit var containerView: ViewGroup
-    private lateinit var downloadRemainderButton: Button
+    private lateinit var downloadRemainderButton: MaterialButton
     private lateinit var attachmentCallback: AttachmentViewCallback
     private lateinit var extraHeaderContainer: View
-    private lateinit var showPicturesButton: Button
+    private lateinit var showPicturesButton: MaterialButton
 
     private var isShowingProgress = false
     private var showPicturesButtonClicked = false
@@ -152,7 +152,7 @@ class MessageTopView(
         resetAndPrepareMessageView(messageViewInfo)
         val view = layoutInflater.inflate(R.layout.message_content_crypto_error, containerView, false)
         setCryptoProviderIcon(providerIcon, view)
-        val cryptoErrorText = view.findViewById<TextView>(R.id.crypto_error_text)
+        val cryptoErrorText = view.findViewById<MaterialTextView>(R.id.crypto_error_text)
         val openPgpError = messageViewInfo.cryptoResultAnnotation.openPgpError
         if (openPgpError != null) {
             val errorText = openPgpError.message

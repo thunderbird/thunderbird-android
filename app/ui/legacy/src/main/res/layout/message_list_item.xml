@@ -42,7 +42,7 @@
         app:layout_constraintVertical_bias="0.0"
         tools:src="@drawable/ic_person" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/preview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
         app:srcCompat="@drawable/ic_reply"
         tools:ignore="RtlSymmetry" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/subject"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
         app:layout_constraintTop_toTopOf="@+id/top_guideline"
         tools:text="Subject" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/thread_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -126,7 +126,7 @@
         app:layout_constraintTop_toTopOf="@+id/top_guideline"
         app:srcCompat="@drawable/ic_attachment" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

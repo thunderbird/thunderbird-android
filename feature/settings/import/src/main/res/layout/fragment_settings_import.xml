@@ -19,7 +19,7 @@
         tools:listitem="@layout/settings_import_account_list_item"
         tools:itemCount="3" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/pickDocumentButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:ignore="UnusedAttribute">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/importButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/buttonBarrier" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/closeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
             app:layout_constraintStart_toStartOf="@+id/importButton"
             app:layout_constraintTop_toTopOf="@+id/importButton" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/statusText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

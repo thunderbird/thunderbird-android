@@ -24,14 +24,14 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
                 android:text="@string/settings_import_oauth_description"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/oauth_sign_in_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/error_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

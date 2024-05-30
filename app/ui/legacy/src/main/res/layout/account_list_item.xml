@@ -34,7 +34,7 @@
             android:paddingStart="24dp"
             android:paddingEnd="16dp">
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
                 android:textAppearance="?android:attr/textAppearanceListItem"
                 tools:text="Personal" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

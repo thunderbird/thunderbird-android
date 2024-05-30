@@ -13,7 +13,7 @@
         android:layout_width="6dp"
         tools:background="@sample/accounts.json/data/color"/>
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

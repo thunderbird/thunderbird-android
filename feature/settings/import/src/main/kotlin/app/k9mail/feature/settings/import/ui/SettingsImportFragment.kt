@@ -6,8 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
@@ -18,6 +16,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import app.k9mail.feature.settings.importing.R
 import com.fsck.k9.ui.base.livedata.observeNotNull
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -73,10 +73,12 @@ class SettingsImportFragment : Fragment() {
                 importButton.isVisible = true
                 importButton.isEnabled = false
             }
+
             ButtonState.ENABLED -> {
                 importButton.isVisible = true
                 importButton.isEnabled = true
             }
+
             ButtonState.INVISIBLE -> importButton.isInvisible = true
             ButtonState.GONE -> importButton.isGone = true
         }
@@ -98,27 +100,35 @@ class SettingsImportFragment : Fragment() {
             StatusText.IMPORTING_PROGRESS -> {
                 statusText.text = getString(R.string.settings_importing)
             }
+
             StatusText.IMPORT_SUCCESS -> {
                 statusText.text = getString(R.string.settings_import_success_generic)
             }
+
             StatusText.IMPORT_SUCCESS_PASSWORD_REQUIRED -> {
                 statusText.text = getString(R.string.settings_import_password_required)
             }
+
             StatusText.IMPORT_SUCCESS_AUTHORIZATION_REQUIRED -> {
                 statusText.text = getString(R.string.settings_import_authorization_required)
             }
+
             StatusText.IMPORT_SUCCESS_PASSWORD_AND_AUTHORIZATION_REQUIRED -> {
                 statusText.text = getString(R.string.settings_import_authorization_and_password_required)
             }
+
             StatusText.IMPORT_READ_FAILURE -> {
                 statusText.text = getString(R.string.settings_import_read_failure)
             }
+
             StatusText.IMPORT_PARTIAL_FAILURE -> {
                 statusText.text = getString(R.string.settings_import_partial_failure)
             }
+
             StatusText.IMPORT_FAILURE -> {
                 statusText.text = getString(R.string.settings_import_failure)
             }
+
             StatusText.HIDDEN -> statusText.text = null
         }
 
@@ -253,9 +263,9 @@ class SettingsImportFragment : Fragment() {
 private class ViewHolder(view: View) {
     val pickDocumentButton: View = view.findViewById(R.id.pickDocumentButton)
     val importButton: View = view.findViewById(R.id.importButton)
-    val closeButton: Button = view.findViewById(R.id.closeButton)
+    val closeButton: MaterialButton = view.findViewById(R.id.closeButton)
     val loadingProgressBar: View = view.findViewById(R.id.loadingProgressBar)
     val importProgressBar: View = view.findViewById(R.id.importProgressBar)
-    val statusText: TextView = view.findViewById(R.id.statusText)
+    val statusText: MaterialTextView = view.findViewById(R.id.statusText)
     val settingsImportList: RecyclerView = view.findViewById(R.id.settingsImportList)
 }

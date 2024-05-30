@@ -7,8 +7,6 @@ import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import android.text.Spannable;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
@@ -18,13 +16,15 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import com.fsck.k9.activity.misc.ContactPicture;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 import com.fsck.k9.view.ThemeUtils;
+import com.google.android.material.textview.MaterialTextView;
 
 
 public class RecipientAdapter extends BaseAdapter implements Filterable {
@@ -185,8 +185,8 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
 
 
     private static class RecipientTokenHolder {
-        public final TextView name;
-        public final TextView email;
+        public final MaterialTextView name;
+        public final MaterialTextView email;
         final ImageView photo;
         final View cryptoStatus;
         final ImageView cryptoStatusIcon;

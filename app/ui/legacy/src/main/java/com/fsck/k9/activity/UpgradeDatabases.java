@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.TextView;
 
 import androidx.core.content.IntentCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -20,6 +19,7 @@ import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.service.DatabaseUpgradeService;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.base.K9Activity;
+import com.google.android.material.textview.MaterialTextView;
 
 
 /**
@@ -96,7 +96,7 @@ public class UpgradeDatabases extends K9Activity {
 
     private Intent mStartIntent;
 
-    private TextView mUpgradeText;
+    private MaterialTextView mUpgradeText;
 
     private LocalBroadcastManager mLocalBroadcastManager;
     private UpgradeDatabaseBroadcastReceiver mBroadcastReceiver;

@@ -6,16 +6,17 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.base.K9Activity;
+import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.android.material.radiobutton.MaterialRadioButton;
+
 
 public class AccountSetupComposition extends K9Activity {
 
@@ -27,9 +28,9 @@ public class AccountSetupComposition extends K9Activity {
     private EditText mAccountEmail;
     private EditText mAccountAlwaysBcc;
     private EditText mAccountName;
-    private CheckBox mAccountSignatureUse;
-    private RadioButton mAccountSignatureBeforeLocation;
-    private RadioButton mAccountSignatureAfterLocation;
+    private MaterialCheckBox mAccountSignatureUse;
+    private MaterialRadioButton mAccountSignatureBeforeLocation;
+    private MaterialRadioButton mAccountSignatureAfterLocation;
     private LinearLayout mAccountSignatureLayout;
 
 

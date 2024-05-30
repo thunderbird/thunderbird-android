@@ -1,8 +1,8 @@
 package com.fsck.k9.ui.messagedetails
 
 import android.view.View
-import android.widget.TextView
 import com.fsck.k9.ui.R
+import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
@@ -16,8 +16,8 @@ internal class SectionHeaderItem(
     override fun getViewHolder(v: View) = ViewHolder(v)
 
     class ViewHolder(view: View) : FastAdapter.ViewHolder<SectionHeaderItem>(view) {
-        private val textView = view.findViewById<TextView>(R.id.title)
-        private val extraTextView = view.findViewById<TextView>(R.id.extra)
+        private val textView = view.findViewById<MaterialTextView>(R.id.title)
+        private val extraTextView = view.findViewById<MaterialTextView>(R.id.extra)
 
         override fun bindView(item: SectionHeaderItem, payloads: List<Any>) {
             textView.text = item.title

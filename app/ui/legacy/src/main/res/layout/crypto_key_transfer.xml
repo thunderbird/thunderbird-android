@@ -19,14 +19,14 @@
         android:paddingLeft="12dp"
         android:paddingRight="12dp">
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             style="?android:textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="@string/ac_transfer_intro" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/transferSendButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,14 +42,14 @@
             android:layout_marginTop="24dp"
             android:orientation="vertical">
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 style="?android:textAppearanceMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ac_transfer_will_be_sent"
                 />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/transferAddress1"
                 style="?android:textAppearanceMedium"
                 android:layout_width="wrap_content"
@@ -77,7 +77,7 @@
                 android:layout_margin="8dp"
                 />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 style="?android:textAppearanceMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -107,14 +107,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     style="?android:textAppearanceMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/ac_transfer_sending_to"
                     />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/transferAddress2"
                     style="?android:textAppearanceMedium"
                     android:layout_width="wrap_content"
@@ -142,7 +142,7 @@
                 android:layout_margin="8dp"
                 />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 style="?android:textAppearanceMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -152,7 +152,7 @@
 
         </LinearLayout>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/transferErrorSend"
             style="?android:textAppearanceMedium"
             android:layout_width="wrap_content"
@@ -161,7 +161,7 @@
             tools:visibility="gone"
             />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/transferButtonShowCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

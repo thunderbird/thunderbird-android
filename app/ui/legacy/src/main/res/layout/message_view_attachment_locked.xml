@@ -35,7 +35,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:tint="?attr/openpgp_red" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/locked_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="packed" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/locked_info"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
