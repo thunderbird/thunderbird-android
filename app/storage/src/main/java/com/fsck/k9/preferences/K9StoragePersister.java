@@ -4,7 +4,6 @@ package com.fsck.k9.preferences;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,10 +12,9 @@ import android.os.SystemClock;
 
 import androidx.annotation.NonNull;
 import com.fsck.k9.helper.Utility;
+import com.fsck.k9.preferences.migrations.DefaultStorageMigrationsHelper;
 import com.fsck.k9.preferences.migrations.StorageMigrations;
 import com.fsck.k9.preferences.migrations.StorageMigrationsHelper;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import timber.log.Timber;
 
 
@@ -25,6 +23,7 @@ public class K9StoragePersister implements StoragePersister {
     private static final String DB_NAME = "preferences_storage";
 
     private final Context context;
+    private final StorageMigrationsHelper migrationsHelper = new DefaultStorageMigrationsHelper();
 
     public K9StoragePersister(Context context) {
         this.context = context;
@@ -168,84 +167,4 @@ public class K9StoragePersister implements StoragePersister {
 
         return loadedValues;
     }
-
-    private String readValue(SQLiteDatabase mDb, String key) {
-        Cursor cursor = null;
-        String value = null;
-        try {
-            cursor = mDb.query(
-                    "preferences_storage",
-                    new String[] {"value"},
-                    "primkey = ?",
-                    new String[] {key},
-                    null,
-                    null,
-                    null);
-
-            if (cursor.moveToNext()) {
-                value = cursor.getString(0);
-                Timber.d("Loading key '%s', value = '%s'", key, value);
-            }
-        } finally {
-            Utility.closeQuietly(cursor);
-        }
-
-        return value;
-    }
-
-    private void writeValue(SQLiteDatabase mDb, String key, String value) {
-        if (value == null) {
-            mDb.delete("preferences_storage", "primkey = ?", new String[] { key });
-            return;
-        }
-
-        ContentValues cv = new ContentValues();
-        cv.put("primkey", key);
-        cv.put("value", value);
-
-        long result = mDb.update("preferences_storage", cv, "primkey = ?", new String[] { key });
-
-        if (result == -1) {
-            Timber.e("Error writing key '%s', value = '%s'", key, value);
-        }
-    }
-
-    private void insertValue(SQLiteDatabase mDb, String key, String value) {
-        if (value == null) {
-            return;
-        }
-
-        ContentValues cv = new ContentValues();
-        cv.put("primkey", key);
-        cv.put("value", value);
-
-        long result = mDb.insert("preferences_storage", null, cv);
-
-        if (result == -1) {
-            Timber.e("Error writing key '%s', value = '%s'", key, value);
-        }
-    }
-
-    private StorageMigrationsHelper migrationsHelper = new StorageMigrationsHelper() {
-        @Override
-        public void writeValue(@NotNull SQLiteDatabase db, @NotNull String key, String value) {
-            K9StoragePersister.this.writeValue(db, key, value);
-        }
-
-        @NotNull
-        @Override
-        public Map<String, String> readAllValues(@NotNull SQLiteDatabase db) {
-            return K9StoragePersister.this.readAllValues(db);
-        }
-
-        @Override
-        public String readValue(@NotNull SQLiteDatabase db, @NotNull String key) {
-            return K9StoragePersister.this.readValue(db, key);
-        }
-
-        @Override
-        public void insertValue(@NotNull SQLiteDatabase db, @NotNull String key, @Nullable String value) {
-            K9StoragePersister.this.insertValue(db, key, value);
-        }
-    };
 }
