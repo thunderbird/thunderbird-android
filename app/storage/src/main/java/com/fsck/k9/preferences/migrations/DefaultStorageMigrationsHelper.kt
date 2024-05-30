@@ -1,97 +1,85 @@
-package com.fsck.k9.preferences.migrations;
+package com.fsck.k9.preferences.migrations
 
+import android.content.ContentValues
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
+import com.fsck.k9.helper.Utility
+import timber.log.Timber
 
-import java.util.HashMap;
-import java.util.Map;
-
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-
-import com.fsck.k9.helper.Utility;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import timber.log.Timber;
-
-
-public class DefaultStorageMigrationsHelper implements StorageMigrationsHelper {
-    @NotNull
-    @Override
-    public Map<String, String> readAllValues(@NotNull SQLiteDatabase db) {
-        HashMap<String, String> loadedValues = new HashMap<>();
-        Cursor cursor = null;
+class DefaultStorageMigrationsHelper : StorageMigrationsHelper {
+    override fun readAllValues(db: SQLiteDatabase): Map<String, String> {
+        val loadedValues = HashMap<String, String>()
+        var cursor: Cursor? = null
         try {
-            cursor = db.rawQuery("SELECT primkey, value FROM preferences_storage", null);
+            cursor = db.rawQuery("SELECT primkey, value FROM preferences_storage", null)
             while (cursor.moveToNext()) {
-                String key = cursor.getString(0);
-                String value = cursor.getString(1);
-                Timber.d("Loading key '%s', value = '%s'", key, value);
-                loadedValues.put(key, value);
+                val key = cursor.getString(0)
+                val value = cursor.getString(1)
+                Timber.d("Loading key '%s', value = '%s'", key, value)
+                loadedValues[key] = value
             }
         } finally {
-            Utility.closeQuietly(cursor);
+            Utility.closeQuietly(cursor)
         }
 
-        return loadedValues;
+        return loadedValues
     }
 
-    @Override
-    public String readValue(@NotNull SQLiteDatabase db, @NotNull String key) {
-        Cursor cursor = null;
-        String value = null;
+    override fun readValue(db: SQLiteDatabase, key: String): String? {
+        var cursor: Cursor? = null
+        var value: String? = null
         try {
             cursor = db.query(
                 "preferences_storage",
-                new String[] {"value"},
+                arrayOf("value"),
                 "primkey = ?",
-                new String[] {key},
+                arrayOf(key),
                 null,
                 null,
-                null);
+                null
+            )
 
             if (cursor.moveToNext()) {
-                value = cursor.getString(0);
-                Timber.d("Loading key '%s', value = '%s'", key, value);
+                value = cursor.getString(0)
+                Timber.d("Loading key '%s', value = '%s'", key, value)
             }
         } finally {
-            Utility.closeQuietly(cursor);
+            Utility.closeQuietly(cursor)
         }
 
-        return value;
+        return value
     }
 
-    @Override
-    public void writeValue(@NotNull SQLiteDatabase db, @NotNull String key, String value) {
+    override fun writeValue(db: SQLiteDatabase, key: String, value: String?) {
         if (value == null) {
-            db.delete("preferences_storage", "primkey = ?", new String[] { key });
-            return;
+            db.delete("preferences_storage", "primkey = ?", arrayOf(key))
+            return
         }
 
-        ContentValues cv = new ContentValues();
-        cv.put("primkey", key);
-        cv.put("value", value);
+        val cv = ContentValues()
+        cv.put("primkey", key)
+        cv.put("value", value)
 
-        long result = db.update("preferences_storage", cv, "primkey = ?", new String[] { key });
+        val result = db.update("preferences_storage", cv, "primkey = ?", arrayOf(key)).toLong()
 
-        if (result == -1) {
-            Timber.e("Error writing key '%s', value = '%s'", key, value);
+        if (result == -1L) {
+            Timber.e("Error writing key '%s', value = '%s'", key, value)
         }
     }
 
-    @Override
-    public void insertValue(@NotNull SQLiteDatabase db, @NotNull String key, @Nullable String value) {
+    override fun insertValue(db: SQLiteDatabase, key: String, value: String?) {
         if (value == null) {
-            return;
+            return
         }
 
-        ContentValues cv = new ContentValues();
-        cv.put("primkey", key);
-        cv.put("value", value);
+        val cv = ContentValues()
+        cv.put("primkey", key)
+        cv.put("value", value)
 
-        long result = db.insert("preferences_storage", null, cv);
+        val result = db.insert("preferences_storage", null, cv)
 
-        if (result == -1) {
-            Timber.e("Error writing key '%s', value = '%s'", key, value);
+        if (result == -1L) {
+            Timber.e("Error writing key '%s', value = '%s'", key, value)
         }
     }
 }
