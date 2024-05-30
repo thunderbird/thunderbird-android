@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.MeasureSpec
@@ -15,12 +16,13 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import app.k9mail.ui.utils.itemtouchhelper.ItemTouchHelper
 import com.fsck.k9.SwipeAction
 import com.fsck.k9.ui.R
+import com.google.android.material.color.ColorRoles
 import kotlin.math.abs
 
 @SuppressLint("InflateParams")
 class MessageListSwipeCallback(
     context: Context,
-    private val resourceProvider: SwipeResourceProvider,
+    resourceProvider: SwipeResourceProvider,
     private val swipeActionSupportProvider: SwipeActionSupportProvider,
     private val swipeRightAction: SwipeAction,
     private val swipeLeftAction: SwipeAction,
@@ -32,7 +34,13 @@ class MessageListSwipeCallback(
     private val backgroundColorPaint = Paint()
 
     private val swipeRightLayout: View
+    private val swipeRightIcon: ImageView
+    private val swipeRightText: TextView
     private val swipeLeftLayout: View
+    private val swipeLeftIcon: ImageView
+    private val swipeLeftText: TextView
+    private val swipeRightConfig: SwipeActionConfig
+    private val swipeLeftConfig: SwipeActionConfig
 
     private var maxSwipeRightDistance: Int = -1
     private var maxSwipeLeftDistance: Int = -1
@@ -42,6 +50,15 @@ class MessageListSwipeCallback(
 
         swipeRightLayout = layoutInflater.inflate(R.layout.swipe_right_action, null, false)
         swipeLeftLayout = layoutInflater.inflate(R.layout.swipe_left_action, null, false)
+
+        swipeRightIcon = swipeRightLayout.findViewById(R.id.swipe_action_icon)
+        swipeRightText = swipeRightLayout.findViewById(R.id.swipe_action_text)
+
+        swipeLeftIcon = swipeLeftLayout.findViewById(R.id.swipe_action_icon)
+        swipeLeftText = swipeLeftLayout.findViewById(R.id.swipe_action_text)
+
+        swipeRightConfig = setupSwipeAction(swipeRightAction, resourceProvider)
+        swipeLeftConfig = setupSwipeAction(swipeLeftAction, resourceProvider)
     }
 
     override fun isFlingEnabled(): Boolean {
@@ -142,7 +159,8 @@ class MessageListSwipeCallback(
             canvas.withTranslation(x = view.left.toFloat(), y = view.top.toFloat()) {
                 if (isCurrentlyActive || !success) {
                     val holder = viewHolder as MessageViewHolder
-                    drawLayout(dX, viewWidth, viewHeight, holder)
+                    val item = adapter.getItemById(holder.uniqueId) ?: return@withTranslation
+                    drawLayout(dX, viewWidth, viewHeight, item)
                 } else {
                     drawBackground(dX, viewWidth, viewHeight)
                 }
@@ -153,10 +171,9 @@ class MessageListSwipeCallback(
     }
 
     private fun Canvas.drawBackground(dX: Float, width: Int, height: Int) {
-        val swipeAction = if (dX > 0) swipeRightAction else swipeLeftAction
-        val backgroundColor = resourceProvider.getBackgroundColor(swipeAction)
+        val swipeActionConfig = if (dX > 0) swipeRightConfig else swipeLeftConfig
 
-        backgroundColorPaint.color = backgroundColor
+        backgroundColorPaint.color = swipeActionConfig.backgroundColor
         drawRect(
             0F,
             0F,
@@ -166,37 +183,29 @@ class MessageListSwipeCallback(
         )
     }
 
-    private fun Canvas.drawLayout(dX: Float, width: Int, height: Int, viewHolder: MessageViewHolder) {
-        val item = adapter.getItemById(viewHolder.uniqueId) ?: return
-        val isSelected = adapter.isSelected(item)
-
+    private fun Canvas.drawLayout(dX: Float, width: Int, height: Int, item: MessageListItem) {
         val swipeRight = dX > 0
         val swipeThresholdReached = abs(dX) > swipeThreshold
 
         val swipeLayout = if (swipeRight) swipeRightLayout else swipeLeftLayout
         val swipeAction = if (swipeRight) swipeRightAction else swipeLeftAction
+        val swipeActionConfig = if (swipeRight) swipeRightConfig else swipeLeftConfig
+        val swipeIcon = if (swipeRight) swipeRightIcon else swipeLeftIcon
+        val swipeText = if (swipeRight) swipeRightText else swipeLeftText
 
-        val foregroundColor: Int
-        val backgroundColor: Int
-        if (swipeThresholdReached) {
-            foregroundColor = resourceProvider.iconTint
-            backgroundColor = resourceProvider.getBackgroundColor(swipeAction)
-        } else {
-            foregroundColor = resourceProvider.getBackgroundColor(swipeAction)
-            backgroundColor = resourceProvider.getBackgroundColor(SwipeAction.None)
-        }
+        val foregroundColor = getForegroundColor(swipeActionConfig, swipeThresholdReached)
+        val backgroundColor = getBackgroundColor(swipeActionConfig, swipeThresholdReached)
 
         swipeLayout.setBackgroundColor(backgroundColor)
 
-        val icon = resourceProvider.getIcon(item, swipeAction)
+        val icon = getIcon(swipeAction, item, swipeActionConfig)
         icon.setTint(foregroundColor)
 
-        val iconView = swipeLayout.findViewById<ImageView>(R.id.swipe_action_icon)
-        iconView.setImageDrawable(icon)
+        swipeIcon.setImageDrawable(icon)
 
-        val textView = swipeLayout.findViewById<TextView>(R.id.swipe_action_text)
-        textView.setTextColor(foregroundColor)
-        textView.text = resourceProvider.getActionName(item, swipeAction, isSelected)
+        val isSelected = adapter.isSelected(item)
+        swipeText.text = getActionName(swipeAction, item, isSelected, swipeActionConfig)
+        swipeText.setTextColor(foregroundColor)
 
         if (swipeLayout.isDirty) {
             val widthMeasureSpec = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY)
@@ -205,13 +214,52 @@ class MessageListSwipeCallback(
             swipeLayout.layout(0, 0, width, height)
 
             if (swipeRight) {
-                maxSwipeRightDistance = textView.right + swipePadding
+                maxSwipeRightDistance = swipeText.right + swipePadding
             } else {
-                maxSwipeLeftDistance = swipeLayout.width - textView.left + swipePadding
+                maxSwipeLeftDistance = swipeLayout.width - swipeText.left + swipePadding
             }
         }
 
         swipeLayout.draw(this)
+    }
+
+    private fun getActionName(
+        swipeAction: SwipeAction,
+        item: MessageListItem,
+        isSelected: Boolean,
+        swipeActionConfig: SwipeActionConfig,
+    ) = if (isToggled(swipeAction, item) || isSelected) {
+        swipeActionConfig.actionNameToggled ?: error("action has no toggled name")
+    } else {
+        swipeActionConfig.actionName
+    }
+
+    private fun getIcon(
+        swipeAction: SwipeAction,
+        item: MessageListItem,
+        swipeActionConfig: SwipeActionConfig,
+    ) = if (isToggled(swipeAction, item)) {
+        swipeActionConfig.iconToggled ?: error("action has no toggled icon")
+    } else {
+        swipeActionConfig.icon
+    }
+
+    private fun getForegroundColor(
+        swipeActionConfig: SwipeActionConfig,
+        swipeThresholdReached: Boolean,
+    ) = if (swipeThresholdReached) {
+        swipeActionConfig.backgroundColor
+    } else {
+        swipeActionConfig.foregroundColor
+    }
+
+    private fun getBackgroundColor(
+        swipeActionConfig: SwipeActionConfig,
+        swipeThresholdReached: Boolean,
+    ) = if (swipeThresholdReached) {
+        swipeActionConfig.foregroundColor
+    } else {
+        swipeActionConfig.backgroundColor
     }
 
     override fun getMaxSwipeDistance(recyclerView: RecyclerView, direction: Int): Int {
@@ -240,6 +288,22 @@ class MessageListSwipeCallback(
         return (super.getAnimationDuration(recyclerView, animationType, animateDx, animateDy) * percentage).toLong()
     }
 
+    private fun setupSwipeAction(swipeAction: SwipeAction, resourceProvider: SwipeResourceProvider) = SwipeActionConfig(
+        colorRoles = resourceProvider.getActionColorRoles(swipeAction),
+        icon = resourceProvider.getActionIcon(swipeAction),
+        iconToggled = resourceProvider.getActionIconToggled(swipeAction),
+        actionName = resourceProvider.getActionName(swipeAction),
+        actionNameToggled = resourceProvider.getActionNameToggled(swipeAction),
+    )
+
+    private fun isToggled(swipeAction: SwipeAction, item: MessageListItem): Boolean {
+        return when (swipeAction) {
+            SwipeAction.ToggleRead -> item.isRead
+            SwipeAction.ToggleStar -> item.isStarred
+            else -> false
+        }
+    }
+
     private val ViewHolder.messageListItem: MessageListItem?
         get() = (this as? MessageViewHolder)?.uniqueId?.let { adapter.getItemById(it) }
 }
@@ -253,6 +317,17 @@ interface MessageListSwipeListener {
     fun onSwipeActionChanged(item: MessageListItem, action: SwipeAction)
     fun onSwipeAction(item: MessageListItem, action: SwipeAction)
     fun onSwipeEnded(item: MessageListItem)
+}
+
+private data class SwipeActionConfig(
+    private val colorRoles: ColorRoles,
+    val icon: Drawable,
+    val iconToggled: Drawable? = null,
+    val actionName: String,
+    val actionNameToggled: String? = null,
+) {
+    val foregroundColor = colorRoles.accent
+    val backgroundColor = colorRoles.onAccent
 }
 
 private fun ViewHolder.markAsSwiped(value: Boolean) {

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    tools:background="?attr/messageListSwipeSelectBackgroundColor"
+    tools:background="?attr/messageListSwipeSelectColor"
     tools:ignore="RtlHardcoded"
     tools:layout_height="?android:listPreferredItemHeight">
 
@@ -21,8 +21,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="?attr/messageListSwipeSelectIcon"
-        tools:tint="?attr/messageListSwipeIconTint" />
+        tools:src="@drawable/ic_check" />
 
     <TextView
         android:id="@+id/swipe_action_text"
@@ -36,7 +35,6 @@
         android:gravity="left"
         android:maxLines="1"
         android:textAppearance="?attr/textAppearanceBody2"
-        android:textColor="?attr/messageListSwipeIconTint"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

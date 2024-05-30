@@ -1,87 +1,109 @@
 package com.fsck.k9.ui.messagelist
 
-import android.content.res.Resources.Theme
+import android.content.Context
 import android.graphics.drawable.Drawable
+import android.util.TypedValue
+import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.core.content.res.ResourcesCompat
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import com.fsck.k9.SwipeAction
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.resolveColorAttribute
+import com.google.android.material.color.ColorRoles
+import com.google.android.material.color.MaterialColors
 
-class SwipeResourceProvider(val theme: Theme) {
-    val iconTint = theme.resolveColorAttribute(R.attr.messageListSwipeIconTint)
+class SwipeResourceProvider(private val context: Context) {
 
-    private val selectIcon = theme.loadDrawable(Icons.Outlined.CheckCircle)
-    private val markAsReadIcon = theme.loadDrawable(Icons.Outlined.MarkEmailRead)
-    private val markAsUnreadIcon = theme.loadDrawable(Icons.Outlined.MarkEmailUnread)
-    private val addStarIcon = theme.loadDrawable(Icons.Filled.Star)
-    private val removeStarIcon = theme.loadDrawable(Icons.Outlined.Star)
-    private val archiveIcon = theme.loadDrawable(Icons.Outlined.Archive)
-    private val deleteIcon = theme.loadDrawable(Icons.Outlined.Delete)
-    private val spamIcon = theme.loadDrawable(Icons.Outlined.Report)
-    private val moveIcon = theme.loadDrawable(Icons.Outlined.DriveFileMove)
+    fun getActionIcon(action: SwipeAction): Drawable {
+        return context.loadDrawable(
+            when (action) {
+                SwipeAction.None -> error("action == SwipeAction.None")
+                SwipeAction.ToggleSelection -> Icons.Outlined.CheckCircle
+                SwipeAction.ToggleRead -> Icons.Outlined.MarkEmailRead
+                SwipeAction.ToggleStar -> Icons.Filled.Star
+                SwipeAction.Archive -> Icons.Outlined.Archive
+                SwipeAction.Delete -> Icons.Outlined.Delete
+                SwipeAction.Spam -> Icons.Outlined.Report
+                SwipeAction.Move -> Icons.Outlined.DriveFileMove
+            },
+        )
+    }
 
-    private val noActionColor = theme.resolveColorAttribute(R.attr.messageListSwipeDisabledBackgroundColor)
-    private val selectColor = theme.resolveColorAttribute(R.attr.messageListSwipeSelectBackgroundColor)
-    private val toggleReadColor = theme.resolveColorAttribute(R.attr.messageListSwipeToggleReadBackgroundColor)
-    private val toggleStarColor = theme.resolveColorAttribute(R.attr.messageListSwipeToggleStarBackgroundColor)
-    private val archiveColor = theme.resolveColorAttribute(R.attr.messageListSwipeArchiveBackgroundColor)
-    private val deleteColor = theme.resolveColorAttribute(R.attr.messageListSwipeDeleteBackgroundColor)
-    private val spamColor = theme.resolveColorAttribute(R.attr.messageListSwipeSpamBackgroundColor)
-    private val moveColor = theme.resolveColorAttribute(R.attr.messageListSwipeMoveBackgroundColor)
-
-    private val selectText = theme.resources.getString(R.string.swipe_action_select)
-    private val deselectText = theme.resources.getString(R.string.swipe_action_deselect)
-    private val markAsReadText = theme.resources.getString(R.string.swipe_action_mark_as_read)
-    private val markAsUnreadText = theme.resources.getString(R.string.swipe_action_mark_as_unread)
-    private val addStarText = theme.resources.getString(R.string.swipe_action_add_star)
-    private val removeStarText = theme.resources.getString(R.string.swipe_action_remove_star)
-    private val archiveText = theme.resources.getString(R.string.swipe_action_archive)
-    private val deleteText = theme.resources.getString(R.string.swipe_action_delete)
-    private val spamText = theme.resources.getString(R.string.swipe_action_spam)
-    private val moveText = theme.resources.getString(R.string.swipe_action_move)
-
-    fun getIcon(item: MessageListItem, action: SwipeAction): Drawable {
+    fun getActionIconToggled(action: SwipeAction): Drawable? {
         return when (action) {
             SwipeAction.None -> error("action == SwipeAction.None")
-            SwipeAction.ToggleSelection -> selectIcon
-            SwipeAction.ToggleRead -> if (item.isRead) markAsUnreadIcon else markAsReadIcon
-            SwipeAction.ToggleStar -> if (item.isStarred) removeStarIcon else addStarIcon
-            SwipeAction.Archive -> archiveIcon
-            SwipeAction.Delete -> deleteIcon
-            SwipeAction.Spam -> spamIcon
-            SwipeAction.Move -> moveIcon
+            SwipeAction.ToggleRead -> context.loadDrawable(Icons.Outlined.MarkEmailUnread)
+            SwipeAction.ToggleStar -> context.loadDrawable(Icons.Outlined.Star)
+
+            else -> null
         }
     }
 
-    fun getBackgroundColor(action: SwipeAction): Int {
-        return when (action) {
-            SwipeAction.None -> noActionColor
-            SwipeAction.ToggleSelection -> selectColor
-            SwipeAction.ToggleRead -> toggleReadColor
-            SwipeAction.ToggleStar -> toggleStarColor
-            SwipeAction.Archive -> archiveColor
-            SwipeAction.Delete -> deleteColor
-            SwipeAction.Spam -> spamColor
-            SwipeAction.Move -> moveColor
-        }
+    fun getActionColorRoles(action: SwipeAction): ColorRoles {
+        val harmonizedColor = MaterialColors.harmonizeWithPrimary(context, getActionColor(action))
+        return MaterialColors.getColorRoles(context, harmonizedColor)
     }
 
-    fun getActionName(item: MessageListItem, action: SwipeAction, isSelected: Boolean): String {
+    @ColorInt
+    private fun getActionColor(action: SwipeAction): Int {
+        return context.resolveColorAttribute(
+            when (action) {
+                SwipeAction.None -> error("action == SwipeAction.None")
+                SwipeAction.ToggleSelection -> R.attr.messageListSwipeSelectColor
+                SwipeAction.ToggleRead -> R.attr.messageListSwipeToggleReadColor
+                SwipeAction.ToggleStar -> R.attr.messageListSwipeToggleStarColor
+                SwipeAction.Archive -> R.attr.messageListSwipeArchiveColor
+                SwipeAction.Delete -> R.attr.messageListSwipeDeleteColor
+                SwipeAction.Spam -> R.attr.messageListSwipeSpamColor
+                SwipeAction.Move -> R.attr.messageListSwipeMoveColor
+            },
+        )
+    }
+
+    fun getActionName(action: SwipeAction): String {
+        return context.loadString(
+            when (action) {
+                SwipeAction.None -> error("action == SwipeAction.None")
+                SwipeAction.ToggleSelection -> R.string.swipe_action_select
+                SwipeAction.ToggleRead -> R.string.swipe_action_mark_as_read
+                SwipeAction.ToggleStar -> R.string.swipe_action_add_star
+                SwipeAction.Archive -> R.string.swipe_action_archive
+                SwipeAction.Delete -> R.string.swipe_action_delete
+                SwipeAction.Spam -> R.string.swipe_action_spam
+                SwipeAction.Move -> R.string.swipe_action_move
+            },
+        )
+    }
+
+    fun getActionNameToggled(action: SwipeAction): String? {
         return when (action) {
             SwipeAction.None -> error("action == SwipeAction.None")
-            SwipeAction.ToggleSelection -> if (isSelected) deselectText else selectText
-            SwipeAction.ToggleRead -> if (item.isRead) markAsUnreadText else markAsReadText
-            SwipeAction.ToggleStar -> if (item.isStarred) removeStarText else addStarText
-            SwipeAction.Archive -> archiveText
-            SwipeAction.Delete -> deleteText
-            SwipeAction.Spam -> spamText
-            SwipeAction.Move -> moveText
+            SwipeAction.ToggleSelection -> context.loadString(R.string.swipe_action_deselect)
+            SwipeAction.ToggleRead -> context.loadString(R.string.swipe_action_mark_as_unread)
+            SwipeAction.ToggleStar -> context.loadString(R.string.swipe_action_remove_star)
+
+            else -> null
         }
     }
 }
 
-private fun Theme.loadDrawable(@DrawableRes drawableResId: Int): Drawable {
-    return ResourcesCompat.getDrawable(resources, drawableResId, this)!!
+private fun Context.loadDrawable(@DrawableRes drawableResId: Int): Drawable {
+    // mutate() is called to ensure that the drawable can be modified and doesn't affect other drawables
+    return ResourcesCompat.getDrawable(resources, drawableResId, theme)!!.mutate()
+}
+
+fun Context.resolveColorAttribute(attrId: Int): Int {
+    val typedValue = TypedValue()
+
+    val found = theme.resolveAttribute(attrId, typedValue, true)
+    if (!found) {
+        error("Couldn't resolve attribute ($attrId)")
+    }
+
+    return typedValue.data
+}
+
+private fun Context.loadString(@StringRes stringResId: Int): String {
+    return resources.getString(stringResId)
 }

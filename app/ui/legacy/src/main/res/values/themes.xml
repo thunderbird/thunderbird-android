@@ -83,15 +83,13 @@
         <item name="messageListPreviewTextColor">#ff444444</item>
         <item name="messageListDividerColor">#ffcccccc</item>
 
-        <item name="messageListSwipeIconTint">#ffffff</item>
-        <item name="messageListSwipeDisabledBackgroundColor">@color/material_gray_200</item>
-        <item name="messageListSwipeSelectBackgroundColor">@color/material_blue_600</item>
-        <item name="messageListSwipeToggleReadBackgroundColor">@color/material_blue_600</item>
-        <item name="messageListSwipeToggleStarBackgroundColor">@color/material_orange_600</item>
-        <item name="messageListSwipeArchiveBackgroundColor">@color/material_green_600</item>
-        <item name="messageListSwipeDeleteBackgroundColor">@color/material_red_600</item>
-        <item name="messageListSwipeSpamBackgroundColor">@color/material_red_700</item>
-        <item name="messageListSwipeMoveBackgroundColor">@color/material_purple_500</item>
+        <item name="messageListSwipeSelectColor">@color/material_blue_600</item>
+        <item name="messageListSwipeToggleReadColor">@color/material_blue_600</item>
+        <item name="messageListSwipeToggleStarColor">@color/material_orange_600</item>
+        <item name="messageListSwipeArchiveColor">@color/material_green_600</item>
+        <item name="messageListSwipeDeleteColor">@color/material_red_600</item>
+        <item name="messageListSwipeSpamColor">@color/material_red_700</item>
+        <item name="messageListSwipeMoveColor">@color/material_purple_500</item>
 
         <item name="messageDetailsDividerColor">#ffcccccc</item>
         <item name="contactPictureFallbackDefaultBackgroundColor">#ffababab</item>
@@ -196,15 +194,13 @@
         <item name="messageListPreviewTextColor">#ffaaaaaa</item>
         <item name="messageListDividerColor">#ff333333</item>
 
-        <item name="messageListSwipeIconTint">#ffffff</item>
-        <item name="messageListSwipeDisabledBackgroundColor">@color/material_gray_900</item>
-        <item name="messageListSwipeSelectBackgroundColor">@color/material_blue_700</item>
-        <item name="messageListSwipeToggleReadBackgroundColor">@color/material_blue_700</item>
-        <item name="messageListSwipeToggleStarBackgroundColor">@color/material_orange_700</item>
-        <item name="messageListSwipeArchiveBackgroundColor">@color/material_green_700</item>
-        <item name="messageListSwipeDeleteBackgroundColor">@color/material_red_700</item>
-        <item name="messageListSwipeSpamBackgroundColor">@color/material_red_800</item>
-        <item name="messageListSwipeMoveBackgroundColor">@color/material_purple_600</item>
+        <item name="messageListSwipeSelectColor">@color/material_blue_700</item>
+        <item name="messageListSwipeToggleReadColor">@color/material_blue_700</item>
+        <item name="messageListSwipeToggleStarColor">@color/material_orange_700</item>
+        <item name="messageListSwipeArchiveColor">@color/material_green_700</item>
+        <item name="messageListSwipeDeleteColor">@color/material_red_700</item>
+        <item name="messageListSwipeSpamColor">@color/material_red_800</item>
+        <item name="messageListSwipeMoveColor">@color/material_purple_600</item>
 
         <item name="messageDetailsDividerColor">#ff555555</item>
         <item name="contactTokenBackgroundColor">#313131</item>
