@@ -196,13 +196,8 @@
         <item name="materialDrawerHeaderStyle">@style/Widget.MaterialDrawerHeaderStyle.K9.Dark</item>
     </style>
 
-    <style name="Theme.K9.Light.Dialog" parent="Theme.K9.Light">
-        <item name="backgroundColorChooseAccountHeader">#cccccc</item>
-    </style>
-
-    <style name="Theme.K9.Dark.Dialog" parent="Theme.K9.Dark">
-        <item name="backgroundColorChooseAccountHeader">#404040</item>
-    </style>
+    <style name="Theme.K9.Light.Dialog" parent="Theme.K9.Light" />
+    <style name="Theme.K9.Dark.Dialog" parent="Theme.K9.Dark" />
 
     <style name="Theme.K9.Dark.Dialog.Translucent" parent="Theme.Material3.Dark.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>

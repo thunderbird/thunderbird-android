@@ -5,7 +5,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="?attr/backgroundColorChooseAccountHeader"
+    android:background="?attr/colorSurfaceContainerHighest"
     android:gravity="start|center_vertical">
     <View
         android:id="@+id/chip"
