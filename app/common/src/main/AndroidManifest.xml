@@ -30,7 +30,6 @@
         android:allowTaskReparenting="false"
         android:usesCleartextTraffic="true"
         android:networkSecurityConfig="@xml/network_security_config"
-        android:icon="@drawable/ic_launcher"
         android:theme="@style/Theme.K9.Startup"
         android:resizeableActivity="true"
         android:allowBackup="false"
@@ -242,7 +241,6 @@
         <!-- This component is disabled by default (if possible). It will be enabled programmatically if necessary. -->
         <receiver
             android:name="com.fsck.k9.provider.UnreadWidgetProvider"
-            android:icon="@drawable/ic_launcher"
             android:label="@string/unread_widget_label"
             android:enabled="@bool/home_screen_widgets_enabled"
             android:exported="false">
