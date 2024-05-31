@@ -2,9 +2,7 @@
 <resources>
 
     <style name="Theme.K9.DayNight" parent="Theme.K9.Dark" />
-
-    <style name="Theme.K9.Dialog.DayNight" parent="Theme.K9.Dialog.Dark" />
-
-    <style name="Theme.K9.Dialog.Translucent.DayNight" parent="Theme.K9.Dialog.Translucent.Dark" />
+    <style name="Theme.K9.DayNight.Dialog" parent="Theme.K9.Dark.Dialog" />
+    <style name="Theme.K9.DayNight.Dialog.Translucent" parent="Theme.K9.Dark.Dialog.Translucent" />
 
 </resources>

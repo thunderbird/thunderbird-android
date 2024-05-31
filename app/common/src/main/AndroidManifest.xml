@@ -60,7 +60,7 @@
         <activity
             android:name="com.fsck.k9.ui.settings.account.OpenPgpAppSelectDialog"
             android:configChanges="locale"
-            android:theme="@style/Theme.K9.Dialog.Translucent.DayNight" />
+            android:theme="@style/Theme.K9.DayNight.Dialog.Translucent" />
 
         <activity
             android:name="com.fsck.k9.activity.setup.AccountSetupComposition"
@@ -99,7 +99,7 @@
             android:excludeFromRecents="true"
             android:launchMode="singleTop"
             android:taskAffinity=""
-            android:theme="@style/Theme.K9.Dialog.Translucent.DayNight" />
+            android:theme="@style/Theme.K9.DayNight.Dialog.Translucent" />
 
         <activity
             android:name="com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity"
