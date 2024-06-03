@@ -12,9 +12,9 @@ import android.os.SystemClock;
 
 import androidx.annotation.NonNull;
 import com.fsck.k9.helper.Utility;
-import com.fsck.k9.preferences.migrations.DefaultStorageMigrationsHelper;
-import com.fsck.k9.preferences.migrations.StorageMigrations;
-import com.fsck.k9.preferences.migrations.StorageMigrationsHelper;
+import com.fsck.k9.preferences.migration.DefaultStorageMigrationsHelper;
+import com.fsck.k9.preferences.migration.StorageMigrations;
+import com.fsck.k9.preferences.migration.StorageMigrationsHelper;
 import timber.log.Timber;
 
 
