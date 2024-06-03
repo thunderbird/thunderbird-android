@@ -28,5 +28,6 @@ internal object StorageMigrations {
         if (oldVersion < 19) StorageMigrationTo19(db, migrationsHelper).markGmailAccounts()
         if (oldVersion < 20) StorageMigrationTo20(db, migrationsHelper).fixIdentities()
         if (oldVersion < 21) StorageMigrationTo21(db, migrationsHelper).createPostRemoveNavigationSetting()
+        if (oldVersion < 22) StorageMigrationTo22(db, migrationsHelper).fixServerSettings()
     }
 }
