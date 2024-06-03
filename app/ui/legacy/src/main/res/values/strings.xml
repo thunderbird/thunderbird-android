@@ -47,7 +47,6 @@
 
     <string name="about_title">About K-9 Mail</string>
     <string name="accounts_title">Accounts</string>
-    <string name="advanced">Advanced</string>
 
     <string name="compose_title_compose">Compose</string>
     <string name="compose_title_reply">Reply</string>
@@ -359,7 +358,6 @@
     <string name="account_setup_incoming_subscribed_folders_only_label">Show only subscribed folders</string>
     <string name="account_setup_auto_expand_folder">Auto-expand folder</string>
 
-    <string name="account_setup_options_mail_check_frequency_label">Folder poll frequency</string>
     <string name="account_setup_options_mail_check_frequency_never">Never</string>
     <string name="account_setup_options_mail_check_frequency_15min">Every 15 minutes</string>
     <string name="account_setup_options_mail_check_frequency_30min">Every 30 minutes</string>
@@ -381,7 +379,6 @@
     <string name="idle_refresh_period_60min">Every 60 minutes</string>
 
 
-    <string name="account_setup_options_mail_display_count_label">Number of messages to display</string>
     <string name="account_setup_options_mail_display_count_10">10 messages</string>
     <string name="account_setup_options_mail_display_count_25">25 messages</string>
     <string name="account_setup_options_mail_display_count_50">50 messages</string>
@@ -1005,11 +1002,6 @@
     <string name="crypto_msg_encrypted_sign_error">but end-to-end data has errors</string>
     <string name="crypto_msg_encrypted_insecure">but encryption not considered secure</string>
 
-    <string name="crypto_info_ok">OK</string>
-    <string name="crypto_info_search_key">Search Key</string>
-    <string name="crypto_info_view_signer">View Signer</string>
-    <string name="crypto_info_view_sender">View Sender</string>
-    <string name="crypto_info_view_security_warning">Details</string>
     <string name="locked_attach_unlock">Unlock</string>
     <string name="locked_attach_unencrypted">This part was not encrypted, and may be insecure.</string>
     <string name="locked_attach_title">Unprotected Attachment</string>
