@@ -1,10 +1,9 @@
-package com.fsck.k9.widget.unread
+package app.k9mail.feature.widget.unread
 
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import com.fsck.k9.provider.UnreadWidgetProvider
 
 class UnreadWidgetUpdater(private val context: Context) {
     private val appWidgetManager = AppWidgetManager.getInstance(context)

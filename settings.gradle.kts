@@ -69,6 +69,10 @@ include(
 )
 
 include(
+    ":feature:widget:unread",
+)
+
+include(
     ":core:common",
     ":core:featureflags",
     ":core:testing",

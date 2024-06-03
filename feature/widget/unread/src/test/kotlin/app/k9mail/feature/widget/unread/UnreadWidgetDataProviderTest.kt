@@ -1,4 +1,4 @@
-package com.fsck.k9.widget.unread
+package app.k9mail.feature.widget.unread
 
 import android.content.Context
 import assertk.assertThat
@@ -89,7 +89,11 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
 
     @Test
     fun folder() {
-        val configuration = UnreadWidgetConfiguration(appWidgetId = 4, accountUuid = ACCOUNT_UUID, folderId = FOLDER_ID)
+        val configuration = UnreadWidgetConfiguration(
+            appWidgetId = 4,
+            accountUuid = ACCOUNT_UUID,
+            folderId = FOLDER_ID,
+        )
 
         val widgetData = provider.loadUnreadWidgetData(configuration)
 
@@ -101,7 +105,11 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
 
     @Test
     fun nonExistentAccount_shouldReturnNull() {
-        val configuration = UnreadWidgetConfiguration(appWidgetId = 3, accountUuid = "invalid", folderId = null)
+        val configuration = UnreadWidgetConfiguration(
+            appWidgetId = 3,
+            accountUuid = "invalid",
+            folderId = null,
+        )
 
         val widgetData = provider.loadUnreadWidgetData(configuration)
 

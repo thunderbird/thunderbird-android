@@ -4,6 +4,6 @@
     android:previewImage="@drawable/preview_unread_widget"
     android:minHeight="40dp"
     android:minWidth="40dp"
-    android:configure="com.fsck.k9.widget.unread.UnreadWidgetConfigurationActivity"
+    android:configure="app.k9mail.feature.widget.unread.UnreadWidgetConfigurationActivity"
     android:updatePeriodMillis="0">
 </appwidget-provider>

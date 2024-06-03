@@ -1,4 +1,4 @@
-package com.fsck.k9.widget.unread
+package app.k9mail.feature.widget.unread
 
 import android.app.Activity
 import android.appwidget.AppWidgetManager
@@ -13,13 +13,13 @@ import androidx.preference.CheckBoxPreference
 import androidx.preference.Preference
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.ChooseAccount
-import com.fsck.k9.common.R
 import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import org.koin.android.ext.android.inject
 import com.fsck.k9.ui.R as UiR
 
+@Suppress("TooManyFunctions")
 class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
     private val preferences: Preferences by inject()
     private val repository: UnreadWidgetRepository by inject()
@@ -170,14 +170,15 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
     }
 
     private fun validateWidget(): Boolean {
-        if (selectedAccountUuid == null) {
+        return if (selectedAccountUuid == null) {
             Toast.makeText(requireContext(), UiR.string.unread_widget_account_not_selected, Toast.LENGTH_LONG).show()
-            return false
+            false
         } else if (unreadFolderEnabled.isChecked && selectedFolderId == null) {
             Toast.makeText(requireContext(), UiR.string.unread_widget_folder_not_selected, Toast.LENGTH_LONG).show()
-            return false
+            false
+        } else {
+            true
         }
-        return true
     }
 
     private fun updateWidgetAndExit() {

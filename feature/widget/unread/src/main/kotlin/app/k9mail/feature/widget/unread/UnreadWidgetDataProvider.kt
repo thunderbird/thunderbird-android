@@ -1,4 +1,4 @@
-package com.fsck.k9.widget.unread
+package app.k9mail.feature.widget.unread
 
 import android.content.Context
 import android.content.Intent
@@ -60,6 +60,7 @@ class UnreadWidgetDataProvider(
         return getClickIntentForFolder(account, folderId)
     }
 
+    @Suppress("ReturnCount")
     private fun loadFolderData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? {
         val accountUuid = configuration.accountUuid
         val account = preferences.getAccount(accountUuid) ?: return null

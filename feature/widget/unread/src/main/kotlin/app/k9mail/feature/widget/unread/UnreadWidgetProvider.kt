@@ -1,4 +1,4 @@
-package com.fsck.k9.provider
+package app.k9mail.feature.widget.unread
 
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.appwidget.AppWidgetManager
@@ -9,11 +9,7 @@ import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.PendingIntentCompat
 import com.fsck.k9.EarlyInit
-import com.fsck.k9.common.R
 import com.fsck.k9.inject
-import com.fsck.k9.widget.unread.UnreadWidgetConfigurationActivity
-import com.fsck.k9.widget.unread.UnreadWidgetData
-import com.fsck.k9.widget.unread.UnreadWidgetRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -52,7 +48,12 @@ class UnreadWidgetProvider : AppWidgetProvider(), EarlyInit {
         }
     }
 
-    private fun updateWidget(context: Context, appWidgetManager: AppWidgetManager, data: UnreadWidgetData) {
+    @Suppress("TooGenericExceptionCaught")
+    private fun updateWidget(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        data: UnreadWidgetData,
+    ) {
         val remoteViews = RemoteViews(context.packageName, R.layout.unread_widget_layout)
 
         val appWidgetId = data.configuration.appWidgetId

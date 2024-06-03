@@ -1,8 +1,7 @@
-package com.fsck.k9.widget.unread
+package app.k9mail.feature.widget.unread
 
 import android.appwidget.AppWidgetManager
 import android.os.Bundle
-import com.fsck.k9.common.R
 import com.fsck.k9.ui.base.K9Activity
 import com.fsck.k9.ui.fragmentTransaction
 import timber.log.Timber

@@ -1,4 +1,4 @@
-package com.fsck.k9.widget.unread
+package app.k9mail.feature.widget.unread
 
 import com.fsck.k9.Account
 import com.fsck.k9.controller.SimpleMessagingListener
@@ -7,6 +7,7 @@ import timber.log.Timber
 
 class UnreadWidgetUpdateListener(private val unreadWidgetUpdater: UnreadWidgetUpdater) : SimpleMessagingListener() {
 
+    @Suppress("TooGenericExceptionCaught")
     private fun updateUnreadWidget() {
         try {
             unreadWidgetUpdater.updateAll()

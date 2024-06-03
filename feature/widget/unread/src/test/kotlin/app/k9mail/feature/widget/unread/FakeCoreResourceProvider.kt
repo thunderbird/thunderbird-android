@@ -1,4 +1,4 @@
-package com.fsck.k9.widget.unread
+package app.k9mail.feature.widget.unread
 
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.notification.PushNotificationState

@@ -1,9 +1,15 @@
-package com.fsck.k9.widget.unread
+package app.k9mail.feature.widget.unread
 
 import org.koin.dsl.module
 
 val unreadWidgetModule = module {
-    single { UnreadWidgetRepository(context = get(), dataRetriever = get(), migrations = get()) }
+    single {
+        UnreadWidgetRepository(
+            context = get(),
+            dataRetriever = get(),
+            migrations = get(),
+        )
+    }
     single {
         UnreadWidgetDataProvider(
             context = get(),
