@@ -2,41 +2,52 @@ package com.fsck.k9.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import com.fsck.k9.BaseAccount
-import com.fsck.k9.activity.MessageList.Companion.shortcutIntent
-import com.fsck.k9.activity.MessageList.Companion.shortcutIntentForAccount
 import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.ui.R
 
 class LauncherShortcuts : AccountList() {
-    override fun onCreate(icicle: Bundle?) {
-        super.onCreate(icicle)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setTitle(R.string.shortcuts_title)
 
         // finish() immediately if we aren't supposed to be here
-        if (Intent.ACTION_CREATE_SHORTCUT != intent.action) {
+        if (intent.action != Intent.ACTION_CREATE_SHORTCUT) {
             finish()
         }
     }
 
     override fun onAccountSelected(account: BaseAccount) {
-        val shortcutIntent: Intent
-        if (account is SearchAccount) {
-            shortcutIntent = shortcutIntent(this, account.id)
+        val shortcutIntent = if (account is SearchAccount) {
+            MessageList.shortcutIntent(this, account.id)
         } else {
-            shortcutIntent = shortcutIntentForAccount(this, account.uuid)
+            MessageList.shortcutIntentForAccount(this, account.uuid)
         }
 
-        val intent = Intent()
-        intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent)
-        val accountName = account.name
-        val displayName = accountName ?: account.email
-        intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, displayName)
-        val iconResource: Parcelable = Intent.ShortcutIconResource.fromContext(this, R.drawable.ic_launcher)
-        intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconResource)
+        val displayName = account.name ?: account.email
+        val iconResId = R.drawable.ic_launcher
+        val iconResource = Intent.ShortcutIconResource.fromContext(this, iconResId)
 
-        setResult(RESULT_OK, intent)
+        setResult(
+            RESULT_OK,
+            createResultIntent(
+                shortcutIntent,
+                displayName,
+                iconResource,
+            ),
+        )
         finish()
+    }
+
+    private fun createResultIntent(
+        shortcutIntent: Intent,
+        displayName: String,
+        iconResource: Intent.ShortcutIconResource,
+    ): Intent {
+        return Intent().apply {
+            putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent)
+            putExtra(Intent.EXTRA_SHORTCUT_NAME, displayName)
+            putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconResource)
+        }
     }
 }
