@@ -2,7 +2,6 @@ package net.thunderbird.android
 
 import app.k9mail.core.common.oauth.OAuthConfigurationFactory
 import app.k9mail.core.common.provider.AppNameProvider
-import app.k9mail.core.ui.compose.theme2.thunderbird.ThunderbirdTheme2
 import app.k9mail.feature.launcher.FeatureLauncherExternalContract.FeatureThemeProvider
 import app.k9mail.feature.widget.unread.UnreadWidgetClassProvider
 import com.fsck.k9.AppConfig
@@ -24,7 +23,7 @@ val appModule = module {
     single<AppConfig> { appConfig }
     single<OAuthConfigurationFactory> { ThunderbirdOAuthConfigurationFactory() }
     single<AppNameProvider> { TbAppNameProvider(androidContext()) }
-    single<FeatureThemeProvider> { provideFeatureThemeProvider() }
+    single<FeatureThemeProvider> { TbFeatureThemeProvider() }
     single<UnreadWidgetClassProvider> {
         UnreadWidgetClassProvider { UnreadWidgetProvider::class.java }
     }
@@ -40,9 +39,3 @@ val appConfig = AppConfig(
         MessageListWidgetProvider::class.java,
     ),
 )
-
-private fun provideFeatureThemeProvider(): FeatureThemeProvider = FeatureThemeProvider { content ->
-    ThunderbirdTheme2 {
-        content()
-    }
-}
