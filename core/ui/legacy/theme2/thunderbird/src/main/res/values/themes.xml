@@ -48,6 +48,9 @@
         <item name="colorOnError">@color/thunderbird_error_100</item>
         <item name="colorErrorContainer">@color/thunderbird_error_090</item>
         <item name="colorOnErrorContainer">@color/thunderbird_error_010</item>
+
+        <!-- Custom attributes -->
+        <item name="appLogo">@drawable/ic_app_logo</item>
     </style>
 
     <style name="Theme2.Thunderbird.Dark" parent="Theme2.Main.Dark">
@@ -97,6 +100,9 @@
         <item name="colorOnError">@color/thunderbird_error_020</item>
         <item name="colorErrorContainer">@color/thunderbird_error_030</item>
         <item name="colorOnErrorContainer">@color/thunderbird_error_090</item>
+
+        <!-- Custom attributes -->
+        <item name="appLogo">@drawable/ic_app_logo</item>
     </style>
 
 </resources>

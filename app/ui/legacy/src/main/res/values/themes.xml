@@ -53,6 +53,9 @@
         <item name="colorErrorContainer">@color/k9_error_090</item>
         <item name="colorOnErrorContainer">@color/k9_error_010</item>
 
+        <!-- Custom attributes -->
+        <item name="appLogo">@drawable/ic_app_logo</item>
+
         <item name="actionModeCloseDrawable">@drawable/ic_close</item>
         <item name="actionBarPopupTheme">@style/Widget.App.ActionMode.PopupMenu</item>
         <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
