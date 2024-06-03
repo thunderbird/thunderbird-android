@@ -2,8 +2,6 @@ package com.fsck.k9.controller.push
 
 import android.app.AlarmManager
 import android.content.Context
-import android.os.Build
-import android.provider.Settings
 
 /**
  * Checks whether the app can schedule exact alarms.
@@ -32,11 +30,7 @@ internal interface AlarmPermissionManager {
  * Factory method to create an Android API-specific instance of [AlarmPermissionManager].
  */
 internal fun AlarmPermissionManager(context: Context, alarmManager: AlarmManager): AlarmPermissionManager {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        AlarmPermissionManagerApi31(context, alarmManager)
-    } else {
-        AlarmPermissionManagerApi21()
-    }
+    return AlarmPermissionManagerImpl(context, alarmManager)
 }
 
 /**

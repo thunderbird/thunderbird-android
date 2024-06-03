@@ -5,8 +5,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.core.app.AlarmManagerCompat
 import androidx.core.content.ContextCompat
 import timber.log.Timber
@@ -14,21 +12,21 @@ import timber.log.Timber
 /**
  * Starting with Android 12 we have to check whether the app can schedule exact alarms.
  */
-@RequiresApi(Build.VERSION_CODES.S)
-internal class AlarmPermissionManagerApi31(
+internal class AlarmPermissionManagerImpl(
     private val context: Context,
     private val alarmManager: AlarmManager,
 ) : AlarmPermissionManager {
     private var isRegistered = false
     private var listener: AlarmPermissionListener? = null
 
-    private val intentFilter = IntentFilter().apply {
-        addAction(AlarmManager.ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED)
+    private val intentFilter by lazy {
+        @Suppress("InlinedApi")
+        IntentFilter(AlarmManager.ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED)
     }
 
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent?) {
-            val listener = synchronized(this@AlarmPermissionManagerApi31) { listener }
+            val listener = synchronized(this@AlarmPermissionManagerImpl) { listener }
             listener?.onAlarmPermissionGranted()
         }
     }
