@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_setup_title">K-9 Mail</string>
-    <string name="account_setup_button_finish">Finish</string>
 
     <string name="account_setup_error_network">Network </string>
     <string name="account_setup_error_unknown">Unknown error</string>
@@ -26,7 +25,6 @@
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">I trust this configuration</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">It is required to approve the configuration.</string>
 
-    <string name="account_setup_special_folders_top_bar_title">Special folders</string>
     <string name="account_setup_special_folders_form_description">Please specify the special folders for your account.</string>
     <string name="account_setup_special_folders_form_description_automatic">The \"Automatic\" entry will follow changes made by the server automatically. The current server value is displayed in parentheses.</string>
     <string name="account_setup_special_folders_loading_message">Fetching list of folders…</string>
@@ -40,7 +38,6 @@
     <string name="account_setup_special_folders_folder_none">None</string>
     <string name="account_setup_special_folders_folder_automatic">Automatic (%s)</string>
 
-    <string name="account_setup_options_top_bar_title">Account options</string>
     <string name="account_setup_options_section_display_options">Display options</string>
     <string name="account_setup_options_account_name_label">Account name</string>
     <string name="account_setup_options_account_name_error_blank">Account name can\'t be blank.</string>

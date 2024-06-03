@@ -38,13 +38,6 @@
         <item name="android:tint">?attr/tintColorBulletPointNegative</item>
     </style>
 
-    <style name="InputLabel" parent="TextAppearance.AppCompat.Caption">
-        <item name="android:paddingBottom">@dimen/input_label_vertical_spacing</item>
-        <item name="android:paddingLeft">@dimen/input_label_horizontal_spacing</item>
-        <item name="android:paddingRight">@dimen/input_label_horizontal_spacing</item>
-        <item name="android:textColor">?android:attr/textColorHint</item>
-    </style>
-
     <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar">
         <item name="android:background">?attr/colorSurfaceContainer</item>
     </style>
