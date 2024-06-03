@@ -6,7 +6,7 @@ import app.k9mail.core.android.common.database.getStringOrThrow
 import app.k9mail.core.android.common.database.map
 import timber.log.Timber
 
-class DefaultStorageMigrationsHelper : StorageMigrationsHelper {
+class DefaultStorageMigrationHelper : StorageMigrationHelper {
     override fun readAllValues(db: SQLiteDatabase): Map<String, String> {
         return db.query(TABLE_NAME, arrayOf(KEY_COLUMN, VALUE_COLUMN), null, null, null, null, null).use {
             it.map { cursor ->

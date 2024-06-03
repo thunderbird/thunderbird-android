@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase
  */
 class StorageMigrationTo6(
     private val db: SQLiteDatabase,
-    private val migrationsHelper: StorageMigrationsHelper,
+    private val migrationsHelper: StorageMigrationHelper,
 ) {
     fun performLegacyMigrations() {
         rewriteTheme()

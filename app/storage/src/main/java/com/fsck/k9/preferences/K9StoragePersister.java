@@ -12,9 +12,9 @@ import android.os.SystemClock;
 
 import androidx.annotation.NonNull;
 import com.fsck.k9.helper.Utility;
-import com.fsck.k9.preferences.migration.DefaultStorageMigrationsHelper;
+import com.fsck.k9.preferences.migration.DefaultStorageMigrationHelper;
 import com.fsck.k9.preferences.migration.StorageMigrations;
-import com.fsck.k9.preferences.migration.StorageMigrationsHelper;
+import com.fsck.k9.preferences.migration.StorageMigrationHelper;
 import timber.log.Timber;
 
 
@@ -23,7 +23,7 @@ public class K9StoragePersister implements StoragePersister {
     private static final String DB_NAME = "preferences_storage";
 
     private final Context context;
-    private final StorageMigrationsHelper migrationsHelper = new DefaultStorageMigrationsHelper();
+    private final StorageMigrationHelper migrationHelper = new DefaultStorageMigrationHelper();
 
     public K9StoragePersister(Context context) {
         this.context = context;
@@ -42,7 +42,7 @@ public class K9StoragePersister implements StoragePersister {
             if (db.getVersion() < 1) {
                 createStorageDatabase(db);
             } else {
-                StorageMigrations.upgradeDatabase(db, migrationsHelper);
+                StorageMigrations.upgradeDatabase(db, migrationHelper);
             }
 
             db.setVersion(DB_VERSION);

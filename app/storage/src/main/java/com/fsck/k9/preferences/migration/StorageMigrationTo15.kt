@@ -10,7 +10,7 @@ private const val MINIMUM_IDLE_REFRESH_MINUTES = 2
  */
 class StorageMigrationTo15(
     private val db: SQLiteDatabase,
-    private val migrationsHelper: StorageMigrationsHelper,
+    private val migrationsHelper: StorageMigrationHelper,
 ) {
     fun rewriteIdleRefreshInterval() {
         val accountUuidsListValue = migrationsHelper.readValue(db, "accountUuids")

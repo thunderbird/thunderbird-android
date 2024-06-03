@@ -9,7 +9,7 @@ import com.fsck.k9.ServerSettingsSerializer
  */
 class StorageMigrationTo14(
     private val db: SQLiteDatabase,
-    private val migrationsHelper: StorageMigrationsHelper,
+    private val migrationsHelper: StorageMigrationHelper,
 ) {
     private val serverSettingsSerializer = ServerSettingsSerializer()
 

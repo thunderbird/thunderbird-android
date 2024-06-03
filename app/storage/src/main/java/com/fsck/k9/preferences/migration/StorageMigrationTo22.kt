@@ -10,7 +10,7 @@ import com.squareup.moshi.Types
  */
 class StorageMigrationTo22(
     private val db: SQLiteDatabase,
-    private val migrationsHelper: StorageMigrationsHelper,
+    private val migrationsHelper: StorageMigrationHelper,
 ) {
     fun fixServerSettings() {
         val accountUuidsListValue = migrationsHelper.readValue(db, "accountUuids")

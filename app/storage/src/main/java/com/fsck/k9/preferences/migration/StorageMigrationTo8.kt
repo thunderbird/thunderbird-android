@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase
  */
 class StorageMigrationTo8(
     private val db: SQLiteDatabase,
-    private val migrationsHelper: StorageMigrationsHelper,
+    private val migrationsHelper: StorageMigrationHelper,
 ) {
     fun rewriteTheme() {
         val theme = migrationsHelper.readValue(db, "theme")

@@ -12,7 +12,7 @@ import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo31
  */
 class StorageMigrationTo11(
     private val db: SQLiteDatabase,
-    private val migrationsHelper: StorageMigrationsHelper,
+    private val migrationsHelper: StorageMigrationHelper,
 ) {
     fun upgradeMessageViewContentFontSize() {
         val newFontSizeValue = migrationsHelper.readValue(db, "fontSizeMessageViewContentPercent")

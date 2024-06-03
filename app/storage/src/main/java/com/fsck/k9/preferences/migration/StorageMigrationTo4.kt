@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase
  */
 class StorageMigrationTo4(
     private val db: SQLiteDatabase,
-    private val migrationsHelper: StorageMigrationsHelper,
+    private val migrationsHelper: StorageMigrationHelper,
 ) {
     fun insertSpecialFolderSelectionValues() {
         val accountUuidsListValue = migrationsHelper.readValue(db, "accountUuids")
