@@ -64,12 +64,21 @@ class AndroidAlarmManager(
     override fun setAlarm(triggerTime: Long, callback: Callback) {
         this.callback.set(callback)
 
-        AlarmManagerCompat.setExactAndAllowWhileIdle(
-            alarmManager,
-            AlarmManager.ELAPSED_REALTIME_WAKEUP,
-            triggerTime,
-            pendingIntent,
-        )
+        if (AlarmManagerCompat.canScheduleExactAlarms(alarmManager)) {
+            AlarmManagerCompat.setExactAndAllowWhileIdle(
+                alarmManager,
+                AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                triggerTime,
+                pendingIntent,
+            )
+        } else {
+            AlarmManagerCompat.setAndAllowWhileIdle(
+                alarmManager,
+                AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                triggerTime,
+                pendingIntent,
+            )
+        }
     }
 
     override fun cancelAlarm() {

@@ -164,8 +164,7 @@ class PushController internal constructor(
 
         val shouldDisablePushAccounts = backgroundSyncDisabledViaSystem ||
             backgroundSyncDisabledInApp ||
-            networkNotAvailable ||
-            alarmPermissionMissing
+            networkNotAvailable
 
         val pushAccounts = if (shouldDisablePushAccounts) {
             emptyList()
