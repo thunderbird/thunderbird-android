@@ -1,4 +1,4 @@
-package com.fsck.k9.preferences.migrations;
+package com.fsck.k9.preferences.migration;
 
 
 import java.net.URI;
@@ -11,7 +11,7 @@ import timber.log.Timber;
 
 
 public class StorageMigrationTo2 {
-    public static void urlEncodeUserNameAndPassword(SQLiteDatabase db, StorageMigrationsHelper migrationsHelper) {
+    public static void urlEncodeUserNameAndPassword(SQLiteDatabase db, StorageMigrationHelper migrationsHelper) {
         Timber.i("Updating preferences to urlencoded username/password");
 
         String accountUuids = migrationsHelper.readValue(db, "accountUuids");

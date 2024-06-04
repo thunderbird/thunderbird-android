@@ -1,4 +1,4 @@
-package com.fsck.k9.preferences.migrations
+package com.fsck.k9.preferences.migration
 
 import assertk.all
 import assertk.assertThat
@@ -16,8 +16,8 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class StorageMigrationTo22Test {
     private val database = createPreferencesDatabase()
-    private val migrationsHelper = DefaultStorageMigrationsHelper()
-    private val migration = StorageMigrationTo22(database, migrationsHelper)
+    private val migrationHelper = DefaultStorageMigrationHelper()
+    private val migration = StorageMigrationTo22(database, migrationHelper)
 
     @After
     fun tearDown() {
@@ -75,7 +75,7 @@ class StorageMigrationTo22Test {
 
         migration.fixServerSettings()
 
-        assertThat(migrationsHelper.readAllValues(database)).all {
+        assertThat(migrationHelper.readAllValues(database)).all {
             key("$accountOne.incomingServerSettings").isEqualTo(
                 """
                 {
@@ -138,14 +138,14 @@ class StorageMigrationTo22Test {
 
     private fun writeAccountUuids(vararg accounts: String) {
         val accountUuids = accounts.joinToString(separator = ",")
-        migrationsHelper.insertValue(database, "accountUuids", accountUuids)
+        migrationHelper.insertValue(database, "accountUuids", accountUuids)
     }
 
     private fun createAccount(vararg pairs: Pair<String, String>): String {
         val accountUuid = UUID.randomUUID().toString()
 
         for ((key, value) in pairs) {
-            migrationsHelper.insertValue(database, "$accountUuid.$key", value)
+            migrationHelper.insertValue(database, "$accountUuid.$key", value)
         }
 
         return accountUuid

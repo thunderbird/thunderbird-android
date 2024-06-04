@@ -1,4 +1,4 @@
-package com.fsck.k9.preferences.migrations
+package com.fsck.k9.preferences.migration
 
 import android.database.sqlite.SQLiteDatabase
 import com.fsck.k9.mail.Address
@@ -13,7 +13,7 @@ import com.fsck.k9.mail.Address
  */
 class StorageMigrationTo20(
     private val db: SQLiteDatabase,
-    private val migrationsHelper: StorageMigrationsHelper,
+    private val migrationsHelper: StorageMigrationHelper,
 ) {
     fun fixIdentities() {
         val accountUuidsListValue = migrationsHelper.readValue(db, "accountUuids")

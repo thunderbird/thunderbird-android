@@ -1,4 +1,4 @@
-package com.fsck.k9.preferences.migrations
+package com.fsck.k9.preferences.migration
 
 import android.database.sqlite.SQLiteDatabase
 import com.squareup.moshi.Moshi
@@ -16,7 +16,7 @@ import com.squareup.moshi.Types
  */
 class StorageMigrationTo19(
     private val db: SQLiteDatabase,
-    private val migrationsHelper: StorageMigrationsHelper,
+    private val migrationsHelper: StorageMigrationHelper,
 ) {
     fun markGmailAccounts() {
         val accountUuidsListValue = migrationsHelper.readValue(db, "accountUuids")

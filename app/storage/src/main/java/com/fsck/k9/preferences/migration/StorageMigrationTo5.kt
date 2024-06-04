@@ -1,4 +1,4 @@
-package com.fsck.k9.preferences.migrations
+package com.fsck.k9.preferences.migration
 
 import android.database.sqlite.SQLiteDatabase
 
@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase
  */
 class StorageMigrationTo5(
     private val db: SQLiteDatabase,
-    private val migrationsHelper: StorageMigrationsHelper,
+    private val migrationsHelper: StorageMigrationHelper,
 ) {
     fun fixMailCheckFrequencies() {
         val accountUuidsListValue = migrationsHelper.readValue(db, "accountUuids")

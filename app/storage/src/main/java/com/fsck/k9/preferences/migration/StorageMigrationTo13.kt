@@ -1,4 +1,4 @@
-package com.fsck.k9.preferences.migrations
+package com.fsck.k9.preferences.migration
 
 import android.database.sqlite.SQLiteDatabase
 
@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase
  */
 class StorageMigrationTo13(
     private val db: SQLiteDatabase,
-    private val migrationsHelper: StorageMigrationsHelper,
+    private val migrationsHelper: StorageMigrationHelper,
 ) {
     fun renameHideSpecialAccounts() {
         val hideSpecialAccounts = migrationsHelper.readValue(db, "hideSpecialAccounts")?.toBoolean() ?: false

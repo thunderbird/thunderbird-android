@@ -1,4 +1,4 @@
-package com.fsck.k9.preferences.migrations
+package com.fsck.k9.preferences.migration
 
 import android.database.sqlite.SQLiteDatabase
 import app.k9mail.core.common.mail.Protocols
@@ -9,7 +9,7 @@ import com.fsck.k9.ServerSettingsSerializer
  */
 class StorageMigrationTo14(
     private val db: SQLiteDatabase,
-    private val migrationsHelper: StorageMigrationsHelper,
+    private val migrationsHelper: StorageMigrationHelper,
 ) {
     private val serverSettingsSerializer = ServerSettingsSerializer()
 

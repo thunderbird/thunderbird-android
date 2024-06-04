@@ -1,11 +1,11 @@
-package com.fsck.k9.preferences.migrations
+package com.fsck.k9.preferences.migration
 
 import android.database.sqlite.SQLiteDatabase
 
 internal object StorageMigrations {
     @Suppress("MagicNumber", "CyclomaticComplexMethod")
     @JvmStatic
-    fun upgradeDatabase(db: SQLiteDatabase, migrationsHelper: StorageMigrationsHelper) {
+    fun upgradeDatabase(db: SQLiteDatabase, migrationsHelper: StorageMigrationHelper) {
         val oldVersion = db.version
 
         if (oldVersion < 2) StorageMigrationTo2.urlEncodeUserNameAndPassword(db, migrationsHelper)
