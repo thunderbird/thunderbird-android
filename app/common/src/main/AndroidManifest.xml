@@ -30,7 +30,6 @@
         android:allowTaskReparenting="false"
         android:usesCleartextTraffic="true"
         android:networkSecurityConfig="@xml/network_security_config"
-        android:icon="@drawable/ic_launcher"
         android:theme="@style/Theme.K9.Startup"
         android:resizeableActivity="true"
         android:allowBackup="false"
@@ -60,7 +59,7 @@
         <activity
             android:name="com.fsck.k9.ui.settings.account.OpenPgpAppSelectDialog"
             android:configChanges="locale"
-            android:theme="@style/Theme.K9.Dialog.Translucent.DayNight" />
+            android:theme="@style/Theme.K9.DayNight.Dialog.Translucent" />
 
         <activity
             android:name="com.fsck.k9.activity.setup.AccountSetupComposition"
@@ -99,7 +98,7 @@
             android:excludeFromRecents="true"
             android:launchMode="singleTop"
             android:taskAffinity=""
-            android:theme="@style/Theme.K9.Dialog.Translucent.DayNight" />
+            android:theme="@style/Theme.K9.DayNight.Dialog.Translucent" />
 
         <activity
             android:name="com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity"
@@ -242,7 +241,6 @@
         <!-- This component is disabled by default (if possible). It will be enabled programmatically if necessary. -->
         <receiver
             android:name="com.fsck.k9.provider.UnreadWidgetProvider"
-            android:icon="@drawable/ic_launcher"
             android:label="@string/unread_widget_label"
             android:enabled="@bool/home_screen_widgets_enabled"
             android:exported="false">

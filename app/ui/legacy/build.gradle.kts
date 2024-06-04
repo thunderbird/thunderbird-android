@@ -6,6 +6,8 @@ plugins {
 dependencies {
     api(projects.app.ui.base)
     api(projects.core.ui.legacy.designsystem)
+    // TODO: Remove once Theme2 is fully migrated
+    api(projects.core.ui.legacy.theme2.k9mail)
 
     implementation(projects.app.core)
     implementation(projects.mail.common)

@@ -82,6 +82,9 @@ include(
     ":core:ui:compose:theme2:thunderbird",
     ":core:ui:compose:testing",
     ":core:ui:legacy:designsystem",
+    ":core:ui:legacy:theme2:common",
+    ":core:ui:legacy:theme2:k9mail",
+    ":core:ui:legacy:theme2:thunderbird",
 )
 
 include(

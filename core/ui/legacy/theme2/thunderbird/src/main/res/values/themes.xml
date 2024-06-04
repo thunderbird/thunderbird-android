@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="Theme2.Thunderbird.Light" parent="Theme2.Main.Light">
+        <item name="colorPrimary">@color/thunderbird_primary_040</item>
+        <item name="colorOnPrimary">@color/thunderbird_primary_100</item>
+        <item name="colorPrimaryInverse">@color/thunderbird_primary_080</item>
+        <item name="colorPrimaryContainer">@color/thunderbird_primary_090</item>
+        <item name="colorOnPrimaryContainer">@color/thunderbird_primary_010</item>
+        <item name="colorPrimaryFixed">@color/thunderbird_primary_090</item>
+        <item name="colorPrimaryFixedDim">@color/thunderbird_primary_080</item>
+        <item name="colorOnPrimaryFixed">@color/thunderbird_primary_010</item>
+        <item name="colorOnPrimaryFixedVariant">@color/thunderbird_primary_030</item>
+        <item name="colorSecondary">@color/thunderbird_secondary_040</item>
+        <item name="colorOnSecondary">@color/thunderbird_secondary_100</item>
+        <item name="colorSecondaryContainer">@color/thunderbird_secondary_090</item>
+        <item name="colorOnSecondaryContainer">@color/thunderbird_secondary_010</item>
+        <item name="colorSecondaryFixed">@color/thunderbird_secondary_090</item>
+        <item name="colorSecondaryFixedDim">@color/thunderbird_secondary_080</item>
+        <item name="colorOnSecondaryFixed">@color/thunderbird_secondary_010</item>
+        <item name="colorOnSecondaryFixedVariant">@color/thunderbird_secondary_030</item>
+        <item name="colorTertiary">@color/thunderbird_tertiary_040</item>
+        <item name="colorOnTertiary">@color/thunderbird_tertiary_100</item>
+        <item name="colorTertiaryContainer">@color/thunderbird_tertiary_090</item>
+        <item name="colorOnTertiaryContainer">@color/thunderbird_tertiary_010</item>
+        <item name="colorTertiaryFixed">@color/thunderbird_tertiary_090</item>
+        <item name="colorTertiaryFixedDim">@color/thunderbird_tertiary_080</item>
+        <item name="colorOnTertiaryFixed">@color/thunderbird_tertiary_010</item>
+        <item name="colorOnTertiaryFixedVariant">@color/thunderbird_tertiary_030</item>
+        <item name="android:colorBackground">@color/thunderbird_neutral_099</item>
+        <item name="colorOnBackground">@color/thunderbird_neutral_010</item>
+        <item name="colorSurface">@color/thunderbird_neutral_098</item>
+        <item name="colorOnSurface">@color/thunderbird_neutral_010</item>
+        <item name="colorSurfaceVariant">@color/thunderbird_neutral_variant_090</item>
+        <item name="colorOnSurfaceVariant">@color/thunderbird_neutral_variant_030</item>
+        <item name="colorSurfaceInverse">@color/thunderbird_neutral_020</item>
+        <item name="colorOnSurfaceInverse">@color/thunderbird_neutral_095</item>
+        <item name="colorSurfaceBright">@color/thunderbird_neutral_098</item>
+        <item name="colorSurfaceDim">@color/thunderbird_neutral_087</item>
+        <item name="colorSurfaceContainer">@color/thunderbird_neutral_094</item>
+        <item name="colorSurfaceContainerLow">@color/thunderbird_neutral_096</item>
+        <item name="colorSurfaceContainerHigh">@color/thunderbird_neutral_092</item>
+        <item name="colorSurfaceContainerLowest">@color/thunderbird_neutral_100</item>
+        <item name="colorSurfaceContainerHighest">@color/thunderbird_neutral_090</item>
+        <item name="colorOutline">@color/thunderbird_neutral_variant_050</item>
+        <item name="colorOutlineVariant">@color/thunderbird_neutral_variant_080</item>
+        <item name="colorError">@color/thunderbird_error_040</item>
+        <item name="colorOnError">@color/thunderbird_error_100</item>
+        <item name="colorErrorContainer">@color/thunderbird_error_090</item>
+        <item name="colorOnErrorContainer">@color/thunderbird_error_010</item>
+
+        <!-- Custom attributes -->
+        <item name="appLogo">@drawable/ic_app_logo</item>
+    </style>
+
+    <style name="Theme2.Thunderbird.Dark" parent="Theme2.Main.Dark">
+        <item name="colorPrimary">@color/thunderbird_primary_080</item>
+        <item name="colorOnPrimary">@color/thunderbird_primary_020</item>
+        <item name="colorPrimaryInverse">@color/thunderbird_primary_040</item>
+        <item name="colorPrimaryContainer">@color/thunderbird_primary_030</item>
+        <item name="colorOnPrimaryContainer">@color/thunderbird_primary_090</item>
+        <item name="colorPrimaryFixed">@color/thunderbird_primary_090</item>
+        <item name="colorPrimaryFixedDim">@color/thunderbird_primary_080</item>
+        <item name="colorOnPrimaryFixed">@color/thunderbird_primary_010</item>
+        <item name="colorOnPrimaryFixedVariant">@color/thunderbird_primary_030</item>
+        <item name="colorSecondary">@color/thunderbird_secondary_080</item>
+        <item name="colorOnSecondary">@color/thunderbird_secondary_020</item>
+        <item name="colorSecondaryContainer">@color/thunderbird_secondary_030</item>
+        <item name="colorOnSecondaryContainer">@color/thunderbird_secondary_090</item>
+        <item name="colorSecondaryFixed">@color/thunderbird_secondary_090</item>
+        <item name="colorSecondaryFixedDim">@color/thunderbird_secondary_080</item>
+        <item name="colorOnSecondaryFixed">@color/thunderbird_secondary_010</item>
+        <item name="colorOnSecondaryFixedVariant">@color/thunderbird_secondary_030</item>
+        <item name="colorTertiary">@color/thunderbird_tertiary_080</item>
+        <item name="colorOnTertiary">@color/thunderbird_tertiary_020</item>
+        <item name="colorTertiaryContainer">@color/thunderbird_tertiary_030</item>
+        <item name="colorOnTertiaryContainer">@color/thunderbird_tertiary_090</item>
+        <item name="colorTertiaryFixed">@color/thunderbird_tertiary_090</item>
+        <item name="colorTertiaryFixedDim">@color/thunderbird_tertiary_080</item>
+        <item name="colorOnTertiaryFixed">@color/thunderbird_tertiary_010</item>
+        <item name="colorOnTertiaryFixedVariant">@color/thunderbird_tertiary_030</item>
+        <item name="android:colorBackground">@color/thunderbird_neutral_010</item>
+        <item name="colorOnBackground">@color/thunderbird_neutral_090</item>
+        <item name="colorSurface">@color/thunderbird_neutral_006</item>
+        <item name="colorOnSurface">@color/thunderbird_neutral_090</item>
+        <item name="colorSurfaceVariant">@color/thunderbird_neutral_variant_030</item>
+        <item name="colorOnSurfaceVariant">@color/thunderbird_neutral_variant_080</item>
+        <item name="colorSurfaceInverse">@color/thunderbird_neutral_090</item>
+        <item name="colorOnSurfaceInverse">@color/thunderbird_neutral_020</item>
+        <item name="colorSurfaceBright">@color/thunderbird_neutral_024</item>
+        <item name="colorSurfaceDim">@color/thunderbird_neutral_006</item>
+        <item name="colorSurfaceContainer">@color/thunderbird_neutral_012</item>
+        <item name="colorSurfaceContainerLow">@color/thunderbird_neutral_010</item>
+        <item name="colorSurfaceContainerHigh">@color/thunderbird_neutral_017</item>
+        <item name="colorSurfaceContainerLowest">@color/thunderbird_neutral_004</item>
+        <item name="colorSurfaceContainerHighest">@color/thunderbird_neutral_022</item>
+        <item name="colorOutline">@color/thunderbird_neutral_variant_060</item>
+        <item name="colorOutlineVariant">@color/thunderbird_neutral_variant_030</item>
+        <item name="colorError">@color/thunderbird_error_080</item>
+        <item name="colorOnError">@color/thunderbird_error_020</item>
+        <item name="colorErrorContainer">@color/thunderbird_error_030</item>
+        <item name="colorOnErrorContainer">@color/thunderbird_error_090</item>
+
+        <!-- Custom attributes -->
+        <item name="appLogo">@drawable/ic_app_logo</item>
+    </style>
+
+</resources>
