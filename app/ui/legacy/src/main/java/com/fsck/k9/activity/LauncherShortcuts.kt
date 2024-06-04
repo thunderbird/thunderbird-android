@@ -5,6 +5,9 @@ import android.content.res.Resources.Theme
 import android.os.Bundle
 import android.util.TypedValue
 import androidx.annotation.AttrRes
+import androidx.core.content.pm.ShortcutInfoCompat
+import androidx.core.content.pm.ShortcutManagerCompat
+import androidx.core.graphics.drawable.IconCompat
 import com.fsck.k9.BaseAccount
 import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.ui.R
@@ -30,29 +33,17 @@ class LauncherShortcuts : AccountList() {
 
         val displayName = account.name ?: account.email
         val iconResId = theme.resolveDrawableResourceId(CommonR.attr.appLogo)
-        val iconResource = Intent.ShortcutIconResource.fromContext(this, iconResId)
 
-        setResult(
-            RESULT_OK,
-            createResultIntent(
-                shortcutIntent,
-                displayName,
-                iconResource,
-            ),
-        )
+        val shortcut = ShortcutInfoCompat.Builder(this, account.uuid)
+            .setShortLabel(displayName)
+            .setIcon(IconCompat.createWithResource(this, iconResId))
+            .setIntent(shortcutIntent)
+            .build()
+
+        val resultIntent = ShortcutManagerCompat.createShortcutResultIntent(this, shortcut)
+
+        setResult(RESULT_OK, resultIntent)
         finish()
-    }
-
-    private fun createResultIntent(
-        shortcutIntent: Intent,
-        displayName: String,
-        iconResource: Intent.ShortcutIconResource,
-    ): Intent {
-        return Intent().apply {
-            putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent)
-            putExtra(Intent.EXTRA_SHORTCUT_NAME, displayName)
-            putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconResource)
-        }
     }
 
     private fun Theme.resolveDrawableResourceId(@AttrRes attr: Int): Int {
