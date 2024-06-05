@@ -16,6 +16,7 @@ import android.os.AsyncTask;
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.WorkerThread;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import timber.log.Timber;
 
@@ -188,7 +189,7 @@ public class AttachmentTempFileProvider extends FileProvider {
 
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
-            context.registerReceiver(cleanupReceiver, intentFilter);
+            ContextCompat.registerReceiver(context, cleanupReceiver, intentFilter, ContextCompat.RECEIVER_NOT_EXPORTED);
         }
     }
 
