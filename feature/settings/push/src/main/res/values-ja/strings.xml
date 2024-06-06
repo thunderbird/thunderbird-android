@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="settings_push_option_first_and_second_class">1st および 2nd クラスフォルダー</string>
     <string name="settings_push_option_all_except_second_class">2nd クラスフォルダーを除くすべて</string>
     <string name="settings_push_option_none">なし</string>
@@ -7,4 +7,6 @@
     <string name="settings_push_option_all">すべて</string>
     <string name="settings_push_option_first_class">1st クラスフォルダーのみ</string>
     <string name="settings_push_grant_permission_button">権限を付与</string>
+    <string name="settings_push_alarm_permission_required">権限が必要です (<xliff:g id="currentValue" example="None">%s</xliff:g>)</string>
+    <string name="settings_push_permission_info_text">プッシュ接続を有効に維持し続けるには、K-9 Mail が常時起動している必要があります。常時起動のため、アラームを設定する権限を付与してください。</string>
 </resources>

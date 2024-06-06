@@ -1,2 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="settings_push_title">Push mappar</string>
+    <string name="settings_push_option_all">Alla</string>
+    <string name="settings_push_option_first_class">Endast 1:a klass mappar</string>
+    <string name="settings_push_option_first_and_second_class">1:a och 2:a klass mappar</string>
+    <string name="settings_push_option_all_except_second_class">Alla utom 2:a klass mappar</string>
+    <string name="settings_push_option_none">Inga</string>
+    <string name="settings_push_permission_info_text">K-9 Mail måste vakna regelbundet för att hålla Push-anslutningar vid liv. För att detta ska fungera behöver du ge tillstånd att schemalägga larm.</string>
+    <string name="settings_push_grant_permission_button">Ge tillstånd</string>
+</resources>

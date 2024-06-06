@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_push_option_all">Guztiak</string>
+    <string name="settings_push_title">Push karpetak</string>
+    <string name="settings_push_option_first_class">1. mailako karpetak bakarrik</string>
+    <string name="settings_push_option_first_and_second_class">1. eta 2. mailako karpetak</string>
+    <string name="settings_push_option_all_except_second_class">Guztiak 2. mailako karpetak izan ezik</string>
+    <string name="settings_push_option_none">Bat ere ez</string>
+    <string name="settings_push_alarm_permission_required">Baimena behar da (<xliff:g id="currentValue" adibidea="Bat ere ez">%s</xliff:g>)</string>
+    <string name="settings_push_permission_info_text">K-9 Mail-ek aldizka esnatu behar du Push konexioak bizirik manten daitezen. Honek funtzionatzeko alarmak programatzeko baimena eman behar duzu.</string>
+    <string name="settings_push_grant_permission_button">Baimena eman</string>
+</resources>
