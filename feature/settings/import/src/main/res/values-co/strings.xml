@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_title">Impurtà i parametri</string>
+    <string name="settings_import_pick_document_button">Selezziunà un schedariu</string>
+    <string name="settings_import_button">Impurtà</string>
+    <string name="settings_import_success_generic">I parametri sò stati impurtati currettamente</string>
+    <string name="settings_import_authorization_required">Cunnittitevi</string>
+    <string name="settings_import_authorization_and_password_required">Cunnittitevi è stampittate e parolle d’intesa</string>
+    <string name="settings_import_failure">Fiascu per impurtà i parametri</string>
+    <string name="settings_import_read_failure">Fiascu di lettura di u schedariu di parametri</string>
+    <string name="settings_import_partial_failure">Fiascu per impurtà certi parametri</string>
+    <string name="settings_import_status_success">Impurtatu currettamente</string>
+    <string name="settings_import_status_password_required">A parolla d’intesa hè richiesta</string>
+    <string name="settings_import_status_not_imported">Micca impurtatu</string>
+    <string name="settings_import_status_error">Fiascu à l’impurtazione</string>
+    <string name="settings_import_later_button">Dopu</string>
+    <string name="settings_importing">Impurtazione di i parametri…</string>
+    <string name="settings_import_incoming_server_password_hint">Parolla d’intesa di u servitore d’entrata</string>
+    <string name="settings_import_outgoing_server_password_hint">Parolla d’intesa di u servitore d’esciuta</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Impiegà a listessa parolla d’intesa per u servitore d’esciuta</string>
+    <string name="settings_import_oauth_error_browser_not_found">L’appiecazione ùn pò micca truvà un navigatore à impiegà per cuncede l’accessu à u vostru contu.</string>
+    <string name="settings_import_general_settings_item">Parametri generali</string>
+    <string name="settings_import_password_required">Stampittate e parolle d’intesa</string>
+    <string name="settings_import_status_log_in_required">A cunnessione hè richiesta</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">Per pudè impiegà u contu \"<xliff:g id="account">%s</xliff:g>\" ci vole à pruvede a parolla d’intesa di u servitore.</item>
+        <item quantity="other">Per pudè impiegà u contu \"<xliff:g id="account">%s</xliff:g>\" ci vole à pruvede e parolle d’intesa di u servitore.</item>
+    </plurals>
+    <string name="settings_import_server_name_format">Nome di u servitore : <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_oauth_description">Per impiegà stu contu cù K-9 Mail, ci vole à cunnettesi è cuncede à l’appiecazione l’accessu à a vostra messaghjeria.</string>
+    <string name="settings_import_oauth_sign_in">Cunnettesi</string>
+    <string name="settings_import_oauth_sign_in_with_google">Cunnettesi cù Google</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">Autorizazione abbandunata</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Fiascu di l’autorizazione cù quellu sbagliu : <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_not_supported">Attualmente, OAuth 2.0 ùn hè micca accettatu cù stu furnidore.</string>
+</resources>

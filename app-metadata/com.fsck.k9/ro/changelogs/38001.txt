@@ -1,0 +1,7 @@
+- S-a adăugat suport DNSSEC la căutarea setărilor serverului în timpul configurării
+- S-a făcut o modificare pentru a împiedica unele tastaturi software să valorifice cu majuscule/să corecteze automat adresele de e-mail în configurarea contului
+- S-a remediat o blocare când a fost folosit un subiect foarte lung
+- S-a rezolvat afișarea mesajelor de eroare OAuth 2.0
+- S-a remediat un accident rar la descărcarea unui atașament
+- S-a adăugat un cod pentru a interzice întreruperile de linie în introducerea textului pe o singură linie
+- Traduceri actualizate

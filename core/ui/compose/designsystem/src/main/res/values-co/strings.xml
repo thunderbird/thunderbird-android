@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="designsystem_atom_password_textfield_hide_password">Piattà a parolla d’intesa</string>
+    <string name="designsystem_atom_password_textfield_show_password">Affissa a parolla d’intesa</string>
+    <string name="designsystem_molecule_email_address_input_label">Indirizzu elettronicu</string>
+    <string name="designsystem_molecule_password_input_label">Parolla d’intesa</string>
+    <string name="designsystem_molecule_error_view_button_retry">Pruvà torna</string>
+</resources>

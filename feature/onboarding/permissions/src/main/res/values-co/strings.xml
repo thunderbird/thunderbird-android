@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_permissions_contacts_title">Cuntatti</string>
+    <string name="onboarding_permissions_contacts_description">Permette l’accessu per prupone suggestioni di cuntattu è per affissà nomi è fotò di i cuntatti.</string>
+    <string name="onboarding_permissions_notifications_description">Attivate e nutificazioni per ùn perde alcunu messaghju.</string>
+    <string name="onboarding_permissions_skip_button">Ignurà</string>
+    <string name="onboarding_permissions_screen_title">Amendà l’esperienza</string>
+    <string name="onboarding_permissions_notifications_title">Nutificazioni</string>
+    <string name="onboarding_permissions_allow_button">Permette</string>
+</resources>

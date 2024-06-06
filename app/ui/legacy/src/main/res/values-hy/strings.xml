@@ -15,7 +15,6 @@
     <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" հաշիւն հեռացուելու է Կ֊9 Մեյլ֊ից։</string>
     <!--=== General strings ==================================================================-->
     <string name="accounts_title">Հաշիւներ</string>
-    <string name="advanced">Առաջադէմ</string>
     <string name="compose_title_compose">Գրել</string>
     <string name="compose_title_reply">Պատասխանել</string>
     <string name="compose_title_reply_all">Պատասխանել բոլորին</string>
@@ -209,7 +208,6 @@
     <string name="archive_folder_label">Արխիւի պանակ</string>
     <string name="spam_folder_label">Լցօնի պանակ</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Ցուցադրել միայն բաժանորդագրուած պանակները</string>
-    <string name="account_setup_options_mail_check_frequency_label">Պանակ թարմացնելու յաճախականութիւն</string>
     <string name="account_setup_options_mail_check_frequency_never">Երբեք</string>
     <string name="account_setup_options_mail_check_frequency_15min">15 րոպէն մէկ</string>
     <string name="account_setup_options_mail_check_frequency_30min">30 րոպէն մէկ</string>
@@ -228,7 +226,6 @@
     <string name="idle_refresh_period_36min">36 րոպէն մէկ</string>
     <string name="idle_refresh_period_48min">48 րոպէն մէկ</string>
     <string name="idle_refresh_period_60min">60 րոպէն մէկ</string>
-    <string name="account_setup_options_mail_display_count_label">Ցուցադրուող իմակների քանակը</string>
     <string name="account_setup_options_mail_display_count_10">10 իմակ</string>
     <string name="account_setup_options_mail_display_count_25">25 իմակ</string>
     <string name="account_setup_options_mail_display_count_50">50 իմակ</string>
@@ -386,7 +383,6 @@
     <!--Note: This references message_view_download_remainder-->
     <string name="address_type_other">Այլ</string>
     <string name="address_type_mobile">Դիւրակիր</string>
-    <string name="crypto_info_ok">Լաւ</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="general_settings_title">Ընդհանուր կարգաւորումներ</string>

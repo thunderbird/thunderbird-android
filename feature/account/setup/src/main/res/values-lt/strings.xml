@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="account_setup_special_folders_top_bar_title">Specialieji aplankai</string>
     <string name="account_setup_special_folders_loading_message">Gaunamas aplankų sąrašas…</string>
     <string name="account_setup_special_folders_error_message">Nepavyko gauti aplankų sąrašo iš serverio</string>
     <string name="account_setup_special_folders_success_message">Visi specialieji aplankai automatiškai sukonfigūruoti remiantis serverio parametrais.</string>
@@ -10,7 +9,6 @@
     <string name="account_setup_special_folders_trash_folder_label">Šiukšlinės aplankas</string>
     <string name="account_setup_special_folders_folder_none">Jokio</string>
     <string name="account_setup_special_folders_folder_automatic">Automatinis (%s)</string>
-    <string name="account_setup_options_top_bar_title">Paskyros nustatymai</string>
     <string name="account_setup_options_account_name_error_blank">Paskyros pavadinimas negali būti tuščias.</string>
     <string name="account_setup_options_display_name_label">Jūsų vardas</string>
     <string name="account_setup_options_display_name_error_required">Jūsų vardas būtinas.</string>
@@ -44,7 +42,6 @@
     <string name="account_setup_create_account_creating">Kuriama paskyra…</string>
     <string name="account_setup_create_account_created">Paskyra sėkmingai sukurta</string>
     <string name="account_setup_title">K-9 paštas</string>
-    <string name="account_setup_button_finish">Užbaigti</string>
     <string name="account_setup_error_network">Tinklas</string>
     <string name="account_setup_error_unknown">Nenumatyta klaida</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">El. pašto adresą įvesti būtina.</string>

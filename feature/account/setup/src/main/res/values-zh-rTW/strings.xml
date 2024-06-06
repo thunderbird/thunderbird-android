@@ -4,7 +4,6 @@
     <string name="account_setup_options_account_check_frequency_label">檢查頻率</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">自動配置</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">此配置不受信任</string>
-    <string name="account_setup_button_finish">完成</string>
     <string name="account_setup_options_email_signature_label">電子郵件簽名</string>
     <string name="account_setup_options_email_display_count_label">要顯示的郵件數</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">手動配置</string>
@@ -16,7 +15,6 @@
     <string name="account_setup_error_unknown">未知錯誤</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">未找到配置</string>
-    <string name="account_setup_options_top_bar_title">帳號選項</string>
     <string name="account_setup_options_account_name_label">帳號名稱</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">找到了配置</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">需要輸入電子郵件地址。</string>
@@ -45,7 +43,6 @@
     <string name="account_setup_special_folders_form_description">請為您的帳戶指定特殊資料夾。</string>
     <string name="account_setup_special_folders_sent_folder_label">已傳送資料夾</string>
     <string name="account_setup_special_folders_folder_none">無</string>
-    <string name="account_setup_special_folders_top_bar_title">特殊資料夾</string>
     <string name="account_setup_special_folders_trash_folder_label">垃圾資料夾</string>
     <string name="account_setup_special_folders_archive_folder_label">存檔資料夾</string>
     <string name="account_setup_special_folders_spam_folder_label">垃圾郵件資料夾</string>

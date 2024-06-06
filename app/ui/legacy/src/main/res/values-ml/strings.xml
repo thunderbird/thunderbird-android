@@ -31,7 +31,6 @@
     <string name="authors">രചയിതാക്കൾ</string>
     <string name="about_title">കെ-9 മെയിലിനെക്കുറിച്ച്</string>
     <string name="accounts_title">അക്കൗണ്ടുകൾ</string>
-    <string name="advanced">വിപുലമായത്</string>
     <string name="compose_title_compose">രചിക്കുക</string>
     <string name="compose_title_reply">മറുപടി പറയുക</string>
     <string name="compose_title_reply_all">എല്ലാത്തിനും മറുപടി പറയുക</string>
@@ -266,7 +265,6 @@
     <string name="spam_folder_label">സ്പാം ഫോൾഡർ</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">സബ്‌സ്‌ക്രൈബുചെയ്‌ത ഫോൾഡറുകൾ മാത്രം കാണിക്കുക</string>
     <string name="account_setup_auto_expand_folder">ഫോൾഡർ യാന്ത്രികമായി വികസിപ്പിക്കുക</string>
-    <string name="account_setup_options_mail_check_frequency_label">ഫോൾഡർ വോട്ടെടുപ്പ് ആവൃത്തി</string>
     <string name="account_setup_options_mail_check_frequency_never">ഒരിക്കലും</string>
     <string name="account_setup_options_mail_check_frequency_15min">ഓരോ 15 മിനിറ്റിലും</string>
     <string name="account_setup_options_mail_check_frequency_30min">ഓരോ 33 മിനിറ്റിലും</string>
@@ -285,7 +283,6 @@
     <string name="idle_refresh_period_36min">ഓരോ 36 മിനിറ്റിലും</string>
     <string name="idle_refresh_period_48min">ഓരോ 48 മിനിറ്റിലും</string>
     <string name="idle_refresh_period_60min">ഓരോ 60 മിനിറ്റിലും</string>
-    <string name="account_setup_options_mail_display_count_label">പ്രദർശിപ്പിക്കേണ്ട സന്ദേശങ്ങളുടെ എണ്ണം</string>
     <string name="account_setup_options_mail_display_count_10">10 സന്ദേശങ്ങൾ</string>
     <string name="account_setup_options_mail_display_count_25">25 സന്ദേശങ്ങൾ</string>
     <string name="account_setup_options_mail_display_count_50">50 സന്ദേശങ്ങൾ</string>
@@ -780,11 +777,6 @@
     <string name="crypto_msg_encrypted_sign_insecure">പക്ഷെ എൻഡ്-ടു-എൻഡ് കീ സുരക്ഷിതമാണെന്ന് കണക്കാക്കില്ല</string>
     <string name="crypto_msg_encrypted_sign_error">എൻഡ്-ടു-എൻഡ് ഡാറ്റയ്ക്ക് പിശകുകളുണ്ട്</string>
     <string name="crypto_msg_encrypted_insecure">എന്നാൽ എൻ‌ക്രിപ്ഷൻ സുരക്ഷിതമാണെന്ന് കണക്കാക്കില്ല</string>
-    <string name="crypto_info_ok">ശരി</string>
-    <string name="crypto_info_search_key">കീ തിരയുക</string>
-    <string name="crypto_info_view_signer">ഒപ്പുകാരനെ കാണുക</string>
-    <string name="crypto_info_view_sender">അയച്ചയാളെ കാണുക</string>
-    <string name="crypto_info_view_security_warning">വിവരങ്ങൾ</string>
     <string name="locked_attach_unlock">അൺലോക്കുചെയ്യുക</string>
     <string name="locked_attach_unencrypted">ഈ ഭാഗം എൻ‌ക്രിപ്റ്റ് ചെയ്തിട്ടില്ല, മാത്രമല്ല സുരക്ഷിതമല്ലാത്തതാകാം.</string>
     <string name="locked_attach_title">സുരക്ഷിതമല്ലാത്ത അറ്റാച്ചുമെന്റ്</string>

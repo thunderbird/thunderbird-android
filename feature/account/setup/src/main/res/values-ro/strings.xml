@@ -4,7 +4,6 @@
     <string name="account_setup_options_account_check_frequency_label">Frecvența de verificare</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Configurare automată</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Această configurație nu este de încredere</string>
-    <string name="account_setup_button_finish">Finalizare</string>
     <string name="account_setup_options_email_signature_label">Semnătură e-mail</string>
     <string name="account_setup_options_email_display_count_label">Numărul de mesaje afișate</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Configurare manuală</string>
@@ -16,7 +15,6 @@
     <string name="account_setup_error_unknown">Eroare necunoscută</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Configurația nu a fost găsită</string>
-    <string name="account_setup_options_top_bar_title">Opţiuni cont</string>
     <string name="account_setup_options_account_name_label">Nume cont</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Configurație găsită</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Este necesară adresa de e-mail.</string>
@@ -45,7 +43,6 @@
     <string name="account_setup_special_folders_form_description">Specifică dosarele speciale pentru contul tău.</string>
     <string name="account_setup_special_folders_sent_folder_label">Dosarul trimise</string>
     <string name="account_setup_special_folders_folder_none">Nimic</string>
-    <string name="account_setup_special_folders_top_bar_title">Dosare speciale</string>
     <string name="account_setup_special_folders_trash_folder_label">Dosarul gunoi</string>
     <string name="account_setup_special_folders_archive_folder_label">Dosarul de arhivare</string>
     <string name="account_setup_special_folders_spam_folder_label">Dosarul spam</string>

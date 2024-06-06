@@ -1,0 +1,7 @@
+- Cunfigurazione nova è amendata di i conti
+- Ozzione nova per rivene à a lista di i messaghji dopu avè marcatu un messaghju cum’è micca lettu nant’à a vista di i messaghji
+- Currezzione per rende più difficiule di scruchjà l’azzioni di spazzatura nant’à u screnu di a vista di i messaghji
+- Amendamentu di l’esperienza di i lettori di screnu in parechji lochi
+- IMAP : Aghjuntu di a pussibilità di mandà a cumanda ID (hè richiesta da certi furnidori di messaghjeria)
+- Varie currezzioni è amendamenti ; lighjite i cambiamenti per e versioni 6.7xx
+- Cacciatura di e traduzzioni in Ebreu è in Cureanu chì sò incumplete ; i traduttori vuluntarii sò i benvenuti !

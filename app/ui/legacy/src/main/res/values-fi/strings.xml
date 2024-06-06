@@ -34,7 +34,6 @@
     <string name="authors">Tekijät</string>
     <string name="about_title">Tietoja K-9 Mailista</string>
     <string name="accounts_title">Tilit</string>
-    <string name="advanced">Lisäasetukset</string>
     <string name="compose_title_compose">Kirjoita</string>
     <string name="compose_title_reply">Vastaa</string>
     <string name="compose_title_reply_all">Vastaa kaikille</string>
@@ -285,7 +284,6 @@
     <string name="spam_folder_label">Roskapostikansio</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Näytä vain tilatut kansiot</string>
     <string name="account_setup_auto_expand_folder">Avaa kansio automaattisesti</string>
-    <string name="account_setup_options_mail_check_frequency_label">Viestien tarkistus</string>
     <string name="account_setup_options_mail_check_frequency_never">Ei koskaan</string>
     <string name="account_setup_options_mail_check_frequency_15min">Joka 15 minuutti</string>
     <string name="account_setup_options_mail_check_frequency_30min">Joka 30 minuutti</string>
@@ -304,7 +302,6 @@
     <string name="idle_refresh_period_36min">Joka 36 minuutti</string>
     <string name="idle_refresh_period_48min">Joka 48 minuutti</string>
     <string name="idle_refresh_period_60min">Joka 60 minuutti</string>
-    <string name="account_setup_options_mail_display_count_label">Näytettävien viestien lukumäärä</string>
     <string name="account_setup_options_mail_display_count_10">10 kansiota</string>
     <string name="account_setup_options_mail_display_count_25">25 kansiota</string>
     <string name="account_setup_options_mail_display_count_50">50 kansiota</string>
@@ -820,11 +817,6 @@
     <string name="crypto_msg_encrypted_sign_insecure">mutta päästä päähän -avainta ei mielletä turvalliseksi</string>
     <string name="crypto_msg_encrypted_sign_error">mutta päästä päähän -tiedot sisältävät virheitä</string>
     <string name="crypto_msg_encrypted_insecure">mutta salausta ei mielletä turvalliseksi</string>
-    <string name="crypto_info_ok">OK</string>
-    <string name="crypto_info_search_key">Etsi avainta</string>
-    <string name="crypto_info_view_signer">Näytä allekirjoittaja</string>
-    <string name="crypto_info_view_sender">Näytä lähettäjä</string>
-    <string name="crypto_info_view_security_warning">Yksityiskohdat</string>
     <string name="locked_attach_unlock">Avaa lukitus</string>
     <string name="locked_attach_unencrypted">Tätä osaa ei salattu, joten se saattaa olla epäluotettava.</string>
     <string name="locked_attach_title">Suojaamaton liite</string>

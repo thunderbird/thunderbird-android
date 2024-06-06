@@ -3,7 +3,6 @@
     <string name="account_setup_options_account_name_error_blank">Hesap adı boş olamaz.</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Otomatik olarak yapılandır</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Bu yapılandırma güvenilir değil</string>
-    <string name="account_setup_button_finish">Bitti</string>
     <string name="account_setup_options_email_signature_label">E-posta imzası</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Elle yapılandır</string>
     <string name="account_setup_options_email_signature_error_blank">E-posta imza adı boş olamaz.</string>
@@ -14,7 +13,6 @@
     <string name="account_setup_error_unknown">Bilinmeyen hata</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Yapılandırma bulunamadı</string>
-    <string name="account_setup_options_top_bar_title">Hesap seçenekleri</string>
     <string name="account_setup_options_account_name_label">Hesap adı</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Yapılandırma bulundu</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">E-posta adresi zorunludur.</string>
@@ -45,7 +43,6 @@
     <string name="account_setup_special_folders_form_description">Lütfen hesabınız için özel klasörleri belirtin.</string>
     <string name="account_setup_special_folders_sent_folder_label">Giden klasörü</string>
     <string name="account_setup_special_folders_folder_none">Yok</string>
-    <string name="account_setup_special_folders_top_bar_title">Özel klasörler</string>
     <string name="account_setup_special_folders_trash_folder_label">Çöp klasörü</string>
     <string name="account_setup_special_folders_archive_folder_label">Arşiv klasörü</string>
     <string name="account_setup_special_folders_spam_folder_label">Gereksiz posta klasörü</string>

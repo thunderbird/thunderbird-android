@@ -35,7 +35,6 @@
     <string name="authors">Auteurs</string>
     <string name="about_title">Over K-9 Mail</string>
     <string name="accounts_title">Accounts</string>
-    <string name="advanced">Geavanceerd</string>
     <string name="compose_title_compose">Nieuw bericht</string>
     <string name="compose_title_reply">Beantwoorden</string>
     <string name="compose_title_reply_all">Allen beantwoorden</string>
@@ -288,7 +287,6 @@
     <string name="spam_folder_label">Spam</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Alleen geabonneerde mappen tonen</string>
     <string name="account_setup_auto_expand_folder">Map automatisch uitvouwen</string>
-    <string name="account_setup_options_mail_check_frequency_label">Frequentie mapcontrole</string>
     <string name="account_setup_options_mail_check_frequency_never">Nooit</string>
     <string name="account_setup_options_mail_check_frequency_15min">Elke 15 minuten</string>
     <string name="account_setup_options_mail_check_frequency_30min">Elke 30 minuten</string>
@@ -307,7 +305,6 @@
     <string name="idle_refresh_period_36min">Elke 36 minuten</string>
     <string name="idle_refresh_period_48min">Elke 48 minuten</string>
     <string name="idle_refresh_period_60min">Elke 60 minuten</string>
-    <string name="account_setup_options_mail_display_count_label">Aantal berichten om te tonen</string>
     <string name="account_setup_options_mail_display_count_10">10 berichten</string>
     <string name="account_setup_options_mail_display_count_25">25 berichten</string>
     <string name="account_setup_options_mail_display_count_50">50 berichten</string>
@@ -824,11 +821,6 @@
     <string name="crypto_msg_encrypted_sign_insecure">maar end-to-end-sleutel wordt als onveilig beschouwd</string>
     <string name="crypto_msg_encrypted_sign_error">maar end-to-end-gegevens bevatten fouten</string>
     <string name="crypto_msg_encrypted_insecure">maar versleuteling is niet veilig</string>
-    <string name="crypto_info_ok">OK</string>
-    <string name="crypto_info_search_key">Sleutel zoeken</string>
-    <string name="crypto_info_view_signer">Ondertekenaar bekijken</string>
-    <string name="crypto_info_view_sender">Afzender bekijken</string>
-    <string name="crypto_info_view_security_warning">Details</string>
     <string name="locked_attach_unlock">Deblokkeren</string>
     <string name="locked_attach_unencrypted">Dit onderdeel is niet versleuteld en is misschien onveilig.</string>
     <string name="locked_attach_title">Onbeveiligde bijlage</string>

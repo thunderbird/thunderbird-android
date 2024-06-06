@@ -4,7 +4,6 @@
     <string name="account_setup_options_account_check_frequency_label">Sjekkfrekvens</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Sett opp automatisk</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Dette oppsettet er ikke tiltrodd</string>
-    <string name="account_setup_button_finish">Fullfør</string>
     <string name="account_setup_options_email_signature_label">E-postsignatur</string>
     <string name="account_setup_options_email_display_count_label">Antall meldinger å vise</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Sett opp manuelt</string>
@@ -16,7 +15,6 @@
     <string name="account_setup_error_unknown">Ukjent feil</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Fant ikke noe oppsett</string>
-    <string name="account_setup_options_top_bar_title">Kontoalternativer</string>
     <string name="account_setup_options_account_name_label">Kontonavn</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Fant et oppsett</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">E-postadresse kreves</string>
@@ -34,7 +32,6 @@
     <string name="account_setup_title">K-9 Mail</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Denne e-postadressen tillates ikke.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Denne e-postadressen støttes ikke.</string>
-    <string name="account_setup_special_folders_top_bar_title">Spesialmapper</string>
     <string name="account_setup_special_folders_form_description">Angi spesialmapper for din konto.</string>
     <string name="account_setup_special_folders_drafts_folder_label">Kladdmappe</string>
     <string name="account_setup_special_folders_loading_message">Henter mappeliste …</string>

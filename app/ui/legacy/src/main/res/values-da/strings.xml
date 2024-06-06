@@ -34,7 +34,6 @@
     <string name="authors">Forfattere</string>
     <string name="about_title">Om K-9 Mail</string>
     <string name="accounts_title">Konti</string>
-    <string name="advanced">Avanceret</string>
     <string name="compose_title_compose">Skriv</string>
     <string name="compose_title_reply">Svar</string>
     <string name="compose_title_reply_all">Svar alle</string>
@@ -284,7 +283,6 @@
     <string name="spam_folder_label">Spam mappe</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Vis kun mapper du abonerer på</string>
     <string name="account_setup_auto_expand_folder">Udvid mapper automatisk</string>
-    <string name="account_setup_options_mail_check_frequency_label">Frekvens for hentning af mail</string>
     <string name="account_setup_options_mail_check_frequency_never">Aldrig</string>
     <string name="account_setup_options_mail_check_frequency_15min">Hver 15 minut</string>
     <string name="account_setup_options_mail_check_frequency_30min">Hver 30 minut</string>
@@ -303,7 +301,6 @@
     <string name="idle_refresh_period_36min">Hver 36 minut</string>
     <string name="idle_refresh_period_48min">Hver 48 minut</string>
     <string name="idle_refresh_period_60min">Hver 60 minut</string>
-    <string name="account_setup_options_mail_display_count_label">Antal viste mails</string>
     <string name="account_setup_options_mail_display_count_10">10 mails</string>
     <string name="account_setup_options_mail_display_count_25">25 mails</string>
     <string name="account_setup_options_mail_display_count_50">50 mails</string>
@@ -816,11 +813,6 @@
     <string name="crypto_msg_encrypted_sign_insecure">men end-to-end nøglen betragtes ikke som sikker</string>
     <string name="crypto_msg_encrypted_sign_error">men end-to-end data indeholder fejl</string>
     <string name="crypto_msg_encrypted_insecure">men krypteringen betragtes ikke som sikker</string>
-    <string name="crypto_info_ok">OK</string>
-    <string name="crypto_info_search_key">Søgenøgle</string>
-    <string name="crypto_info_view_signer">Vis underskriver</string>
-    <string name="crypto_info_view_sender">Vis afsender</string>
-    <string name="crypto_info_view_security_warning">Detaljer</string>
     <string name="locked_attach_unlock">Lås op</string>
     <string name="locked_attach_unencrypted">Denne del var ikke krypteret og kan være usikker.</string>
     <string name="locked_attach_title">Ubeskyttet vedhæftning</string>

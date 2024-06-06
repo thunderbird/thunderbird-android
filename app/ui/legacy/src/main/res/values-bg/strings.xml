@@ -31,7 +31,6 @@
     <string name="authors">Автори</string>
     <string name="about_title">Относно K-9 Mail</string>
     <string name="accounts_title">Профили</string>
-    <string name="advanced">Разширени</string>
     <string name="compose_title_compose">Създай</string>
     <string name="compose_title_reply">Отговори</string>
     <string name="compose_title_reply_all">Отговори до всички</string>
@@ -261,7 +260,6 @@
     <string name="spam_folder_label">Папка Спам</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Показвай само абонираните папките</string>
     <string name="account_setup_auto_expand_folder">Автоматично разгъване на папка</string>
-    <string name="account_setup_options_mail_check_frequency_label">Честота на проверка на папката</string>
     <string name="account_setup_options_mail_check_frequency_never">Никога</string>
     <string name="account_setup_options_mail_check_frequency_15min">На всеки 15 минути</string>
     <string name="account_setup_options_mail_check_frequency_30min">На всеки 30 минути</string>
@@ -280,7 +278,6 @@
     <string name="idle_refresh_period_36min">На всеки 36 минути</string>
     <string name="idle_refresh_period_48min">На всеки 48 минути</string>
     <string name="idle_refresh_period_60min">На всеки 60 минути</string>
-    <string name="account_setup_options_mail_display_count_label">Брой съобщения за показване</string>
     <string name="account_setup_options_mail_display_count_10">10 съобщения</string>
     <string name="account_setup_options_mail_display_count_25">25 съобщения</string>
     <string name="account_setup_options_mail_display_count_50">50 съобщения</string>
@@ -759,11 +756,6 @@
     <string name="crypto_msg_encrypted_sign_insecure">но ключът от край-до-край не се счита за сигурен</string>
     <string name="crypto_msg_encrypted_sign_error">но информацията от край-до-край има грешки</string>
     <string name="crypto_msg_encrypted_insecure">но криптирането не се счита за сигурно</string>
-    <string name="crypto_info_ok">ОК</string>
-    <string name="crypto_info_search_key">Ключ за търсене</string>
-    <string name="crypto_info_view_signer">Преглед на подписалия се</string>
-    <string name="crypto_info_view_sender">Преглед на изпращача</string>
-    <string name="crypto_info_view_security_warning">Информация</string>
     <string name="locked_attach_unlock">Отключване</string>
     <string name="locked_attach_unencrypted">Тази част не криптирана и може да е несигурна.</string>
     <string name="locked_attach_title">Незащитен прикачен файл.</string>

@@ -18,7 +18,7 @@
     <string name="about_libraries">函式庫</string>
     <string name="license">授權</string>
     <string name="changelog_title">變更記錄</string>
-    <string name="changelog_loading_error">無法載入變更記錄</string>
+    <string name="changelog_loading_error">無法載入變更記錄。</string>
     <string name="changelog_version_title">第%s版</string>
     <string name="changelog_recent_changes_title">最新消息</string>
     <string name="changelog_show_recent_changes">顯示應用程式更新後的最新變更</string>
@@ -34,7 +34,6 @@
     <string name="authors">作者</string>
     <string name="about_title">關於 K-9 Mail</string>
     <string name="accounts_title">帳號</string>
-    <string name="advanced">進階</string>
     <string name="compose_title_compose">新郵件</string>
     <string name="compose_title_reply">回覆</string>
     <string name="compose_title_reply_all">全部回覆</string>
@@ -46,7 +45,7 @@
     <string name="choose_folder_copy_title">複製至…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 已選擇</string>
     <string name="send_action">寄送</string>
-    <string name="empty_subject">主題空白，確定要寄送的話請再按一次。</string>
+    <string name="empty_subject">主題空白，再次點擊以繼續寄送</string>
     <string name="reply_action">回覆</string>
     <string name="reply_all_action">全部回覆</string>
     <string name="delete_action">刪除</string>
@@ -57,7 +56,7 @@
     <string name="edit_as_new_message_action">編輯為新訊息</string>
     <string name="move_action">移動</string>
     <string name="move_to_drafts_action">移至草稿</string>
-    <string name="refile_action">再次封存</string>
+    <string name="refile_action">再次封存…</string>
     <string name="done_action">完成</string>
     <string name="discard_action">捨棄</string>
     <string name="save_draft_action">儲存為草稿</string>
@@ -155,7 +154,7 @@
     <string name="debug_enable_sensitive_logging_summary">允許在日誌中顯示密碼。</string>
     <string name="debug_export_logs_title">匯出日誌</string>
     <string name="debug_export_logs_success">匯出成功。日誌可能包含敏感訊息。請小心選擇您要傳送的人。</string>
-    <string name="debug_export_logs_failure">匯出失敗</string>
+    <string name="debug_export_logs_failure">匯出失敗。</string>
     <string name="message_list_load_more_messages_action">載入更多郵件</string>
     <string name="message_to_fmt">收件人：<xliff:g id="counterParty">%s</xliff:g></string>
     <string name="message_compose_subject_hint">主題</string>
@@ -171,7 +170,7 @@
     <string name="message_compose_reply_header_fmt_with_date">於 <xliff:g id="sent_date">%1$s</xliff:g>，<xliff:g id="sender">%2$s</xliff:g> 寫到：</string>
     <string name="message_compose_error_no_recipients">至少必須加入一位收件人。</string>
     <string name="compose_error_incomplete_recipient">收件人欄位包含不完整的輸入！</string>
-    <string name="error_contact_address_not_found">沒有發現電子郵件地址</string>
+    <string name="error_contact_address_not_found">找不到此聯絡人的電子郵件地址。</string>
     <string name="message_compose_attachments_skipped_toast">由於一些附件還沒有被下載，因此無法轉寄這些附件。</string>
     <string name="message_compose_attachments_forward_toast">因為有些附件尚未下載，所以無法轉寄郵件。</string>
     <string name="message_compose_show_quoted_text_action">包括引用訊息</string>
@@ -283,7 +282,6 @@
     <string name="spam_folder_label">垃圾郵件匣名稱</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">只顯示訂閱的資料夾</string>
     <string name="account_setup_auto_expand_folder">自動展開資料夾</string>
-    <string name="account_setup_options_mail_check_frequency_label">信件匣檢查頻率</string>
     <string name="account_setup_options_mail_check_frequency_never">不要</string>
     <string name="account_setup_options_mail_check_frequency_15min">15 分鐘一次</string>
     <string name="account_setup_options_mail_check_frequency_30min">30 分鐘一次</string>
@@ -302,7 +300,6 @@
     <string name="idle_refresh_period_36min">36 分鐘一次</string>
     <string name="idle_refresh_period_48min">48 分鐘一次</string>
     <string name="idle_refresh_period_60min">60 分鐘一次</string>
-    <string name="account_setup_options_mail_display_count_label">郵件顯示數量</string>
     <string name="account_setup_options_mail_display_count_10">10 封</string>
     <string name="account_setup_options_mail_display_count_25">25 封</string>
     <string name="account_setup_options_mail_display_count_50">50 封</string>
@@ -347,7 +344,7 @@
     <string name="account_settings_show_pictures_always">全部郵件</string>
     <string name="account_settings_composition">寄送郵件</string>
     <string name="account_settings_default_quoted_text_shown_label">回覆時引用原文</string>
-    <string name="account_settings_default_quoted_text_shown_summary">回覆郵件時，引用原始郵件內容</string>
+    <string name="account_settings_default_quoted_text_shown_summary">在你的回覆中包含原始訊息。</string>
     <string name="account_settings_reply_after_quote_label">在引用的內容後進行回覆</string>
     <string name="account_settings_reply_after_quote_summary">回覆郵件時，原始郵件會顯示在您的郵件的上方。</string>
     <string name="account_settings_strip_signature_label">去除引用信件簽名</string>
@@ -535,7 +532,7 @@
     <string name="sort_unread_last">優先顯示已讀郵件</string>
     <string name="sort_attach_first">優先顯示帶有附件的郵件</string>
     <string name="sort_unattached_first">優先顯示沒有附件的郵件</string>
-    <string name="sort_by">排序方式</string>
+    <string name="sort_by">排序方式…</string>
     <string name="sort_by_date">日期</string>
     <string name="sort_by_arrival">收到日</string>
     <string name="sort_by_subject">主題</string>
@@ -545,7 +542,7 @@
     <string name="sort_by_attach">附件</string>
     <string name="account_delete_dlg_title">刪除帳號</string>
     <string name="folder_list_filter_hint">信件匣名稱包括</string>
-    <string name="folder_list_display_mode_label">信件匣</string>
+    <string name="folder_list_display_mode_label">顯示資料夾…</string>
     <string name="folder_list_display_mode_all">顯示全部信件匣</string>
     <string name="folder_list_display_mode_first_class">只顯示第一類信件匣</string>
     <string name="folder_list_display_mode_first_and_second_class">顯示第一類和第二類信件匣</string>
@@ -669,7 +666,7 @@
     <string name="settings_export_failure">匯出設定失敗</string>
     <string name="unread_widget_select_account">顯示未讀數量…</string>
     <string name="unread_widget_account_title">帳號</string>
-    <string name="unread_widget_account_summary">顯示該帳號的未讀數量。</string>
+    <string name="unread_widget_account_summary">顯示該帳戶的未讀數量</string>
     <string name="unread_widget_unified_inbox_account_summary">全域收件匣</string>
     <string name="unread_widget_folder_enabled_title">信件匣數</string>
     <string name="unread_widget_folder_enabled_summary">顯示單一信件匣中的未讀數量</string>
@@ -721,7 +718,7 @@
     <string name="action_remote_search">搜尋伺服器上的訊息內容</string>
     <string name="remote_search_unavailable_no_network">沒有網路連線，無法進行遠端搜尋。</string>
     <string name="global_settings_background_as_unread_indicator_label">讀取時變更顏色</string>
-    <string name="global_settings_background_as_unread_indicator_summary">訊息已被讀取後，會顯示不同的背景。</string>
+    <string name="global_settings_background_as_unread_indicator_summary">訊息已被讀取後會顯示不同的背景</string>
     <string name="global_settings_threaded_view_label">樹狀檢視</string>
     <string name="global_settings_threaded_view_summary">以訊息交談內容分群</string>
     <string name="upgrade_databases_title">更新資料庫</string>
@@ -749,7 +746,7 @@
     <string name="recipient_cc">副本</string>
     <string name="recipient_bcc">密件副本</string>
     <string name="recipient_to">收件人</string>
-    <string name="recipient_from">寄件人：</string>
+    <string name="recipient_from">寄件人</string>
     <string name="reply_to_label">回覆給</string>
     <string name="unknown_recipient">&lt;未知收件人&gt;</string>
     <string name="unknown_sender">&lt;未知寄件人&gt;</string>
@@ -772,10 +769,10 @@
     <string name="openpgp_inline_plus_compat">有些軟體只支援這種格式</string>
     <string name="openpgp_inline_minus_transit">簽名在傳輸過程中可能損壞</string>
     <string name="openpgp_inline_minus_attach">不支援附件</string>
-    <string name="openpgp_inline_ok">知道了</string>
+    <string name="openpgp_inline_ok">知道了！</string>
     <string name="openpgp_inline_disable">停用</string>
     <string name="openpgp_inline_keep_enabled">保持啟用</string>
-    <string name="openpgp_sign_only_ok">知道了</string>
+    <string name="openpgp_sign_only_ok">知道了！</string>
     <string name="openpgp_sign_only_disable">停用</string>
     <string name="openpgp_sign_only_keep_enabled">保持啟用</string>
     <string name="openpgp_dialog_sign_only_title">僅用 PGP 簽名模式</string>
@@ -800,7 +797,7 @@
     <string name="crypto_msg_unencrypted_sign_unknown">來自未知的端到端金鑰</string>
     <string name="crypto_msg_title_encrypted_unknown">已加密</string>
     <string name="crypto_msg_encrypted_error">然而出現解密錯誤</string>
-    <string name="crypto_msg_encrypted_incomplete">必須下載加密的訊息才能解密。</string>
+    <string name="crypto_msg_encrypted_incomplete">必須完全下載訊息才能解密</string>
     <string name="crypto_msg_encrypted_no_provider">但是未設定加密應用程式</string>
     <string name="crypto_msg_title_encrypted_unsigned">已加密</string>
     <string name="crypto_msg_encrypted_unsigned">但這不是端到端加密的</string>
@@ -814,11 +811,6 @@
     <string name="crypto_msg_encrypted_sign_insecure">然而端到端金鑰被認為是不安全的</string>
     <string name="crypto_msg_encrypted_sign_error">然而端到端資料存在錯誤</string>
     <string name="crypto_msg_encrypted_insecure">但加密不被視為安全</string>
-    <string name="crypto_info_ok">確定</string>
-    <string name="crypto_info_search_key">搜尋金鑰</string>
-    <string name="crypto_info_view_signer">檢視簽名者</string>
-    <string name="crypto_info_view_sender">檢視寄送者</string>
-    <string name="crypto_info_view_security_warning">詳細訊息</string>
     <string name="locked_attach_unlock">解除鎖定</string>
     <string name="locked_attach_unencrypted">這部分還未加密，可能不安全。</string>
     <string name="locked_attach_title">不受保護的連接</string>
@@ -832,7 +824,7 @@
     <string name="account_settings_crypto_hide_sign_only">隐藏未加密的簽名</string>
     <string name="account_settings_crypto_hide_sign_only_on">僅限顯示加密過的簽名</string>
     <string name="account_settings_crypto_hide_sign_only_off">顯示所有簽名</string>
-    <string name="error_sign_only_no_encryption">在簽名模式下無法使用加密</string>
+    <string name="error_sign_only_no_encryption">在僅簽名模式下無法使用加密！</string>
     <string name="unsigned_text_divider_label">未簽名文字</string>
     <string name="crypto_no_provider_title">郵件已被加密</string>
     <string name="crypto_no_provider_message">這封郵件使用 OpenPGP 進行了加密。\n請安裝並設定一個相容 OpenPGP 的應用程式來查看郵件。</string>
@@ -862,7 +854,7 @@
     <string name="dialog_openkeychain_info_title">未安裝 OpenPGP 應用程式</string>
     <string name="dialog_openkeychain_info_install">安裝</string>
     <string name="dialog_openkeychain_info_text">K-9 Mail 需要 OpenKeychain 提供端到端加密。</string>
-    <string name="encrypted_subject">已加密的訊息。</string>
+    <string name="encrypted_subject">已加密的訊息</string>
     <string name="account_settings_crypto_encrypt_subject">加密訊息主題</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">有些收件人可能不支援加密</string>
     <string name="toast_account_not_found">内部錯誤：帳號無效！</string>
@@ -892,7 +884,7 @@
     <string name="push_notification_state_listening">正在等待新郵件</string>
     <string name="push_notification_state_wait_background_sync">等待背景同步允許</string>
     <string name="push_notification_state_wait_network">等待網路可用</string>
-    <string name="push_notification_info">按一下了解更多</string>
+    <string name="push_notification_info">點擊以瞭解更多。</string>
     <string name="push_info_title">推送資訊</string>
     <string name="push_info_notification_explanation_text">使用推送時，K-9 Mail 會保持與郵件伺服器的連線。當應用程式在背景執行時，Android 需要開啟顯示持續的通知的權限。%s</string>
     <string name="push_info_configure_notification_text">不過，Android 也允許你隱藏通知。</string>
@@ -931,7 +923,7 @@
     <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
     <string name="message_details_missing_date">缺少「Date」標頭</string>
     <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
-    <string name="message_details_from_section_title">寄件人：</string>
+    <string name="message_details_from_section_title">寄件人</string>
     <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
     <string name="message_details_sender_section_title">寄件人</string>
     <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
@@ -943,7 +935,7 @@
     <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
     <string name="message_details_bcc_section_title">密件副本</string>
     <!--Displayed when loading the message details has failed-->
-    <string name="message_details_loading_error">載入郵件詳情時發生錯誤</string>
+    <string name="message_details_loading_error">載入郵件詳情時發生錯誤。</string>
     <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
     <string name="action_add_to_contacts">新增到聯絡人</string>
     <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
@@ -967,4 +959,6 @@
     <string name="general_settings_post_mark_as_unread_action_stay">停留在目前郵件</string>
     <string name="general_settings_post_mark_as_unread_action_title">標記郵件為未讀後</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">回到郵件清單</string>
+    <string name="push_notification_state_alarm_permission_missing">缺少排程鬧鐘的權限</string>
+    <string name="push_notification_grant_alarm_permission">點擊以授予權限。</string>
 </resources>

@@ -34,7 +34,6 @@
     <string name="authors">Autorid</string>
     <string name="about_title">Programmist K-9 Mail</string>
     <string name="accounts_title">Kontod</string>
-    <string name="advanced">Täpsemalt</string>
     <string name="compose_title_compose">Koosta</string>
     <string name="compose_title_reply">Vasta</string>
     <string name="compose_title_reply_all">Vasta kõigile</string>
@@ -286,7 +285,6 @@
     <string name="spam_folder_label">Rämpsposti kaust</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Näita üksnes tellitud kaustu</string>
     <string name="account_setup_auto_expand_folder">Kaustade automaatne laiendamine</string>
-    <string name="account_setup_options_mail_check_frequency_label">Kausta pollimise sagedus</string>
     <string name="account_setup_options_mail_check_frequency_never">Mitte kunagi</string>
     <string name="account_setup_options_mail_check_frequency_15min">Iga 15 minuti tagant</string>
     <string name="account_setup_options_mail_check_frequency_30min">Iga 30 minuti tagant</string>
@@ -305,7 +303,6 @@
     <string name="idle_refresh_period_36min">Iga 36 minuti tagant</string>
     <string name="idle_refresh_period_48min">Iga 48 minuti tagant</string>
     <string name="idle_refresh_period_60min">Iga 60 minuti tagant</string>
-    <string name="account_setup_options_mail_display_count_label">Kuvatavate kirjade arv</string>
     <string name="account_setup_options_mail_display_count_10">10 kirja</string>
     <string name="account_setup_options_mail_display_count_25">25 kirja</string>
     <string name="account_setup_options_mail_display_count_50">50 kirja</string>
@@ -821,11 +818,6 @@
     <string name="crypto_msg_encrypted_sign_insecure">aga läbiva krüptimise võtit ei loeta turvaliseks</string>
     <string name="crypto_msg_encrypted_sign_error">aga läbivalt krüptitud andmetes leidub vigu</string>
     <string name="crypto_msg_encrypted_insecure">aga krüptimise meetodeid ei loeta turvaliseks</string>
-    <string name="crypto_info_ok">OK</string>
-    <string name="crypto_info_search_key">Otsinguvõti</string>
-    <string name="crypto_info_view_signer">Vaata allkirjastajat</string>
-    <string name="crypto_info_view_sender">Vaata saatjat</string>
-    <string name="crypto_info_view_security_warning">Detailid</string>
     <string name="locked_attach_unlock">Ava</string>
     <string name="locked_attach_unencrypted">See osa on krüptimata ja võib olla ebaturvaline.</string>
     <string name="locked_attach_title">Krüptimata manus</string>

@@ -4,7 +4,6 @@
     <string name="account_setup_options_account_check_frequency_label">Frequência de checagem</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Configurar automaticamente</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Essa configuração não é confiável</string>
-    <string name="account_setup_button_finish">Encerrar</string>
     <string name="account_setup_options_email_signature_label">Assinatura do email</string>
     <string name="account_setup_options_email_display_count_label">Número de mensagens para mostrar</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Configurar manualmente</string>
@@ -16,7 +15,6 @@
     <string name="account_setup_error_unknown">Erro desconhecido</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Configuração não encontrada</string>
-    <string name="account_setup_options_top_bar_title">Opções da conta</string>
     <string name="account_setup_options_account_name_label">Nome da conta</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Configuração encontrada</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Endereço de email é obrigatório.</string>
@@ -45,7 +43,6 @@
     <string name="account_setup_special_folders_trash_folder_label">Pasta da lixeira</string>
     <string name="account_setup_special_folders_folder_none">Nenhum</string>
     <string name="account_setup_auto_discovery_validation_error_password_required">Senha é obrigatória.</string>
-    <string name="account_setup_special_folders_top_bar_title">Pastas especiais</string>
     <string name="account_setup_special_folders_form_description">Por favor, especifique as pastas especiais para sua conta.</string>
     <string name="account_setup_special_folders_error_message">Falha em obter lista de pastas do servidor</string>
     <string name="account_setup_special_folders_archive_folder_label">Pasta de arquivo</string>

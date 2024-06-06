@@ -34,7 +34,6 @@
     <string name="authors">Upphovsmän</string>
     <string name="about_title">Om K-9 Mail</string>
     <string name="accounts_title">Konton</string>
-    <string name="advanced">Avancerat</string>
     <string name="compose_title_compose">Skriva</string>
     <string name="compose_title_reply">Svara</string>
     <string name="compose_title_reply_all">Svara alla</string>
@@ -286,7 +285,6 @@
     <string name="spam_folder_label">Skräppostmapp</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Visa endast prenumererade mappar</string>
     <string name="account_setup_auto_expand_folder">Expandera automatiskt mapp</string>
-    <string name="account_setup_options_mail_check_frequency_label">Frekvens för mappkontroll</string>
     <string name="account_setup_options_mail_check_frequency_never">Aldrig</string>
     <string name="account_setup_options_mail_check_frequency_15min">Var 15:e minut</string>
     <string name="account_setup_options_mail_check_frequency_30min">Var 30:e minut</string>
@@ -305,7 +303,6 @@
     <string name="idle_refresh_period_36min">Var 36:e minut</string>
     <string name="idle_refresh_period_48min">Var 48:e minut</string>
     <string name="idle_refresh_period_60min">Var 60:e minut</string>
-    <string name="account_setup_options_mail_display_count_label">Antal meddelanden att visa</string>
     <string name="account_setup_options_mail_display_count_10">10 meddelanden</string>
     <string name="account_setup_options_mail_display_count_25">25 meddelanden</string>
     <string name="account_setup_options_mail_display_count_50">50 meddelanden</string>
@@ -821,11 +818,6 @@
     <string name="crypto_msg_encrypted_sign_insecure">men ände-till-ände-nyckeln anses inte säker</string>
     <string name="crypto_msg_encrypted_sign_error">men ände-till-ände-data har fel</string>
     <string name="crypto_msg_encrypted_insecure">men kryptering anses inte säker</string>
-    <string name="crypto_info_ok">OK</string>
-    <string name="crypto_info_search_key">Sök nyckel</string>
-    <string name="crypto_info_view_signer">Visa signatör</string>
-    <string name="crypto_info_view_sender">Visa avsändare</string>
-    <string name="crypto_info_view_security_warning">Detaljer</string>
     <string name="locked_attach_unlock">Lås upp</string>
     <string name="locked_attach_unencrypted">Denna del var inte krypterad och kan vara osäker.</string>
     <string name="locked_attach_title">Oskyddad bilaga</string>

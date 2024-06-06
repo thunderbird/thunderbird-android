@@ -1,0 +1,1 @@
+- Se ha corregido un bloqueo al abrir la pantalla para redactar un mensaje

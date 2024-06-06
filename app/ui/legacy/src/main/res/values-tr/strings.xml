@@ -33,7 +33,6 @@
     <string name="authors">Yapanlar</string>
     <string name="about_title">K-9 Posta Hakkında</string>
     <string name="accounts_title">Hesaplar</string>
-    <string name="advanced">Gelişmiş</string>
     <string name="compose_title_compose">Oluştur</string>
     <string name="compose_title_reply">Yanıtla</string>
     <string name="compose_title_reply_all">Tümünü Yanıtla</string>
@@ -275,7 +274,6 @@
     <string name="spam_folder_label">Gereksiz posta klasörü</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Yalnızca abone olunan klasörleri göster</string>
     <string name="account_setup_auto_expand_folder">Otomatik genişleyen klasör</string>
-    <string name="account_setup_options_mail_check_frequency_label">Klasör bilgi çekme sıklığı</string>
     <string name="account_setup_options_mail_check_frequency_never">Hiçbir zaman</string>
     <string name="account_setup_options_mail_check_frequency_15min">Her 15 dakikada bir</string>
     <string name="account_setup_options_mail_check_frequency_30min">Her 30 dakikada bir</string>
@@ -294,7 +292,6 @@
     <string name="idle_refresh_period_36min">Her 36 dakikada bir</string>
     <string name="idle_refresh_period_48min">Her 48 dakikada bir</string>
     <string name="idle_refresh_period_60min">Her 60 dakikada bir</string>
-    <string name="account_setup_options_mail_display_count_label">Görüntülenecek ileti sayısı</string>
     <string name="account_setup_options_mail_display_count_10">10 ileti</string>
     <string name="account_setup_options_mail_display_count_25">25 ileti</string>
     <string name="account_setup_options_mail_display_count_50">50 ileti</string>
@@ -806,11 +803,6 @@
     <string name="crypto_msg_encrypted_sign_insecure">uçtan uca anahtar güvenli sayılamaz </string>
     <string name="crypto_msg_encrypted_sign_error">uçtan uca veri hataları var</string>
     <string name="crypto_msg_encrypted_insecure">ancak şifreleme güvenli olarak değerlendirilmedi</string>
-    <string name="crypto_info_ok">Tamam</string>
-    <string name="crypto_info_search_key">Arama Tuşu</string>
-    <string name="crypto_info_view_signer">İmzalayanı görüntüle</string>
-    <string name="crypto_info_view_sender">Göndereni Görüntüle</string>
-    <string name="crypto_info_view_security_warning">Ayrıntılar</string>
     <string name="locked_attach_unlock">Kilidi aç</string>
     <string name="locked_attach_unencrypted">Bu bölüm şifreli değil, güvensiz olabilir.</string>
     <string name="locked_attach_title">Korunmasız Eklenti</string>

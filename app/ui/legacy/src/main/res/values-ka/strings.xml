@@ -21,7 +21,6 @@
     <string name="authors">ავტორები</string>
     <string name="about_title">K-9 Mail-ის შესახებ</string>
     <string name="accounts_title">ანგარიშები</string>
-    <string name="advanced">გაფართოებული</string>
     <string name="compose_title_compose">შექმნა</string>
     <string name="compose_title_reply">პასუხი</string>
     <string name="compose_title_reply_all">პასუხი ყველას</string>
@@ -210,7 +209,6 @@
     <string name="trash_folder_label">ნაგვის საკეცი</string>
     <string name="archive_folder_label">არქივის საკეცი</string>
     <string name="spam_folder_label">სპამის საკეცი</string>
-    <string name="account_setup_options_mail_check_frequency_label">საკეცის გამოკითხვის სიხშირე</string>
     <string name="account_setup_options_mail_check_frequency_never">არასდროს</string>
     <string name="account_setup_options_mail_check_frequency_15min">ყოველ 15 წუთში</string>
     <string name="account_setup_options_mail_check_frequency_30min">ყოველ 30 წუთში</string>
@@ -495,10 +493,6 @@
     <string name="crypto_msg_encrypted_sign_expired">თუმცა, გამჭოლი შიფრაციის გასაღების ვადა ამოწურულია</string>
     <string name="crypto_msg_encrypted_sign_revoked">თუმცა, გამჭოლი შიფრაციის გასაღები გაბათილებულია</string>
     <string name="crypto_msg_encrypted_sign_insecure">თუმცა, გამჭოლი შიფრაციის გასაღები არ მიიჩნევა უსაფრთხოდ</string>
-    <string name="crypto_info_ok">ᲝᲙ</string>
-    <string name="crypto_info_view_signer">ხელმომწერის ჩვენება</string>
-    <string name="crypto_info_view_sender">გამგზავნის ჩვენება</string>
-    <string name="crypto_info_view_security_warning">დეტალები</string>
     <string name="locked_attach_unlock">გახსნა</string>
     <string name="message_progress_text">ჩატვირთვა…</string>
     <string name="messageview_decrypt_retry">გამეორება</string>

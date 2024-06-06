@@ -1,0 +1,6 @@
+- Mulai mengonversi antarmuka pengguna ke Material 3
+- Menambahkan dukungan untuk mailto: URI pada tag NFC
+- Menambahkan penyelesaian eksperimental untuk aplikasi yang eror di latar belakang
+- Mengoptimalkan beberapa interaksi protokol IMAP
+- Tidak menunda lagi tampilan notifikasi saat Dorongan aktif
+- Memperbarui terjemahan

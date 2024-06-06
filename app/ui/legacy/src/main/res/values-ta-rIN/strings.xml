@@ -14,7 +14,6 @@
     <string name="account_delete_dlg_instructions_fmt">K-9 அஞ்சலிருந்து \"<xliff:g id="account">%s</xliff:g>\" கணக்கு அழிக்கப்படும்.</string>
     <!--=== General strings ==================================================================-->
     <string name="accounts_title">கணக்குகள்</string>
-    <string name="advanced">மேம்பட்ட</string>
     <string name="compose_title_compose">எழுது</string>
     <string name="compose_title_reply">பதில்</string>
     <string name="compose_title_reply_all">அனைவருக்கும் பதில்</string>
@@ -194,7 +193,6 @@
     <string name="recipient_cc">நகல்</string>
     <string name="recipient_bcc">மறை நகல்</string>
     <string name="recipient_to">பெறுநர்</string>
-    <string name="crypto_info_ok">சரி</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_back">பின்</string>

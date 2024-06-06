@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Konfigurér automatisk</string>
-    <string name="account_setup_button_finish">Afslut</string>
     <string name="account_setup_options_email_signature_label">Email signatur</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Konfigurér manuelt</string>
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
@@ -9,7 +8,6 @@
     <string name="account_setup_error_unknown">Ukendt fejl</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Konfiguration ikke fundet</string>
-    <string name="account_setup_options_top_bar_title">Konto indstillinger</string>
     <string name="account_setup_options_account_name_label">Konto navn</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Konfiguration fundet</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Email adresse er påkrævet.</string>

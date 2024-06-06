@@ -4,7 +4,6 @@
     <string name="account_setup_options_account_check_frequency_label">Controlefrequentie</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Automatisch configureren</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Deze configuratie is niet vertrouwd</string>
-    <string name="account_setup_button_finish">Voltooien</string>
     <string name="account_setup_options_email_signature_label">E-mailhandtekening</string>
     <string name="account_setup_options_email_display_count_label">Aantal te tonen berichten</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Handmatig configureren</string>
@@ -16,7 +15,6 @@
     <string name="account_setup_error_unknown">Onbekende fout</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Configuratie niet gevonden</string>
-    <string name="account_setup_options_top_bar_title">Accountopties</string>
     <string name="account_setup_options_account_name_label">Accountnaam</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Configuratie gevonden</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">E-mailadres is vereist.</string>
@@ -45,7 +43,6 @@
     <string name="account_setup_special_folders_form_description">Specificeer de speciale mappen voor uw account.</string>
     <string name="account_setup_special_folders_sent_folder_label">Verzonden</string>
     <string name="account_setup_special_folders_folder_none">Geen</string>
-    <string name="account_setup_special_folders_top_bar_title">Speciale mappen</string>
     <string name="account_setup_special_folders_trash_folder_label">Prullenbak</string>
     <string name="account_setup_special_folders_archive_folder_label">Archief</string>
     <string name="account_setup_special_folders_spam_folder_label">Spam</string>

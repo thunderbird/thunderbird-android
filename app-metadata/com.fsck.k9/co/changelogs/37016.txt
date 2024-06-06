@@ -1,0 +1,5 @@
+- Currezzione di prublemi chjuchi è amendamentu di l’interfaccia è di l’esperienza di l’utilizatore per a cunfigurazione di contu
+- Currezzione d’un accidente cagiunatu da un’interazzione cù OpenKeychain 6.0.0
+- Dà a primura à i campi di stampittera di u sughjettu o di u testu di messaghju à l’apertura di u screnu via un mailto: URI
+- Cacciatura di e traduzzioni in Ebreu è in Cureanu chì sò fatte à menu di 70%. I vuluntarii per traduce sò sempre i benvenuti !
+- Messa à livellu di e traduzzioni rimanente

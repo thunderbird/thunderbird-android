@@ -4,7 +4,6 @@
     <string name="account_setup_options_account_check_frequency_label">Četnost kontroly</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Nastavit automaticky</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Toto nastavení není důvěryhodné</string>
-    <string name="account_setup_button_finish">Dokončit</string>
     <string name="account_setup_options_email_signature_label">Podpis e-mailů</string>
     <string name="account_setup_options_email_display_count_label">Počet zobrazovaných zpráv</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Nastavit ručně</string>
@@ -16,7 +15,6 @@
     <string name="account_setup_error_unknown">Neznámá chyba</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Nastavení nenalezeno</string>
-    <string name="account_setup_options_top_bar_title">Nastavení účtu</string>
     <string name="account_setup_options_account_name_label">Název účtu</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Nastavení nalezeno</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">E-mailová adresa je vyžadována.</string>
@@ -37,7 +35,6 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Tato e-mailová adresa není podporována.</string>
     <string name="account_setup_create_account_creating">Vytváření účtu…</string>
     <string name="account_setup_create_account_error">Při vytváření účtu nastala chyba</string>
-    <string name="account_setup_special_folders_top_bar_title">Speciální složky</string>
     <string name="account_setup_special_folders_form_description">Zvolte prosím speciální složky pro svůj účet.</string>
     <string name="account_setup_special_folders_form_description_automatic">Volba \"Automaticky\" sleduje změny provedené na serveru. Aktuální hodnota je zobrazena v závorkách.</string>
     <string name="account_setup_special_folders_loading_message">Získávání seznamu složek…</string>

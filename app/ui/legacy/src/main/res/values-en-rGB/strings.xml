@@ -122,7 +122,6 @@
     <string name="refile_action">Refile…</string>
     <string name="source_code">Source code</string>
     <string name="changelog_snackbar_text">Find out what\'s new in this release</string>
-    <string name="advanced">Advanced</string>
     <string name="choose_account_title">Choose Account</string>
     <string name="flag_action">Add star</string>
     <string name="move_action">Move</string>
@@ -470,7 +469,6 @@
     <string name="quiet_time_starts">Quiet Time starts</string>
     <string name="account_setup_options_mail_display_count_10">10 messages</string>
     <string name="account_settings_crypto_summary_off">No OpenPGP app configured</string>
-    <string name="account_setup_options_mail_check_frequency_label">Folder poll frequency</string>
     <string name="folder_list_display_mode_first_class">1st Class folders</string>
     <string name="account_settings_message_read_receipt_label">Read receipt</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Mark as read when opened</string>
@@ -587,7 +585,6 @@
     <string name="drafts_folder_label">Drafts folder</string>
     <string name="account_settings_name_label">Your name</string>
     <string name="folder_settings_folder_push_mode_inherited">Same as poll class</string>
-    <string name="account_setup_options_mail_display_count_label">Number of messages to display</string>
     <string name="edit_identity_name_label">Your name</string>
     <string name="account_settings_autodownload_message_size_128">128 KiB</string>
     <string name="font_size_message_view_sender">Sender</string>
@@ -740,7 +737,6 @@
     <string name="crypto_msg_title_unencrypted_signed">Signed plaintext</string>
     <string name="crypto_msg_encrypted_no_provider">but no crypto app is configured</string>
     <string name="webview_contextmenu_image_save_action">Save image</string>
-    <string name="crypto_info_view_security_warning">Details</string>
     <string name="disable_encryption">Disable Encryption</string>
     <string name="global_settings_threaded_view_summary">Group messages by conversation</string>
     <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>
@@ -763,7 +759,6 @@
     <string name="crypto_no_provider_message">This email has been encrypted with OpenPGP.
 \nTo read it, you need to install and configure a compatible OpenPGP App.</string>
     <string name="fetching_attachment_dialog_title_send">Sending message</string>
-    <string name="crypto_info_search_key">Search Key</string>
     <string name="message_details_missing_date">Missing \'Date\' header</string>
     <string name="crypto_msg_encrypted_insecure">but encryption not considered secure</string>
     <string name="openpgp_inline_minus_attach">Attachments are not supported</string>
@@ -799,7 +794,6 @@
     <string name="clipboard_label_name_and_email_address">Name and email address</string>
     <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
     <string name="push_info_configure_notification_text">However, Android also allows you to hide the notification.</string>
-    <string name="crypto_info_view_sender">View Sender</string>
     <string name="crypto_msg_unencrypted_sign_error">end-to-end signature contained an error</string>
     <string name="global_settings_splitview_never">Never</string>
     <string name="swipe_action_select">Select</string>
@@ -867,7 +861,6 @@
     <string name="recipient_to">To</string>
     <string name="account_settings_crypto_prefer_encrypt">Autocrypt mutual mode</string>
     <string name="crypto_msg_encrypted_sign_insecure">but end-to-end key is not considered secure</string>
-    <string name="crypto_info_ok">OK</string>
     <string name="remote_search_unavailable_no_network">A network connection is required for server search.</string>
     <string name="account_settings_crypto_hide_sign_only_on">Only encrypted signatures will be displayed</string>
     <string name="preview_encrypted">*Encrypted*</string>
@@ -889,7 +882,6 @@
     <string name="fetching_attachment_dialog_title_save">Saving draft</string>
     <string name="crypto_msg_encrypted_sign_mismatch">but end-to-end key didn\'t match sender</string>
     <string name="ac_transfer_finish">To finish, open the message on your other device and enter the setup code.</string>
-    <string name="crypto_info_view_signer">View Signer</string>
     <string name="address_type_home">Home</string>
     <string name="crypto_msg_title_plaintext">Plaintext</string>
     <string name="message_details_replyto_section_title">Reply to</string>

@@ -4,7 +4,6 @@
     <string name="account_setup_options_account_check_frequency_label">Egiaztatze maiztasuna</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Konfiguratu automatikoki</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Konfigurazio hori ez da fidagarria</string>
-    <string name="account_setup_button_finish">Bukatu</string>
     <string name="account_setup_options_email_signature_label">E-mail sinadura</string>
     <string name="account_setup_options_email_display_count_label">Bistaratuko den mezu kopurua</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Eskuz konfiguratu</string>
@@ -16,7 +15,6 @@
     <string name="account_setup_error_unknown">Errore ezezaguna</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Ez da ezarpenik aurkitu</string>
-    <string name="account_setup_options_top_bar_title">Kontu ezarpenak</string>
     <string name="account_setup_options_account_name_label">Kontu izena</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Ezarpenak aurkitu dira</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">E-mail helbidea nahitaezkoa da.</string>
@@ -37,7 +35,6 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Helbide elektroniko hau ez da bateragarria.</string>
     <string name="account_setup_create_account_creating">Kontua sortzen…</string>
     <string name="account_setup_create_account_error">Errore bat gertatu da kontua sortzerakoan</string>
-    <string name="account_setup_special_folders_top_bar_title">Karpeta bereziak</string>
     <string name="account_setup_special_folders_form_description">Zehaztu zure kontuko karpeta bereziak.</string>
     <string name="account_setup_special_folders_loading_message">Karpeten zerrenda lortzen…</string>
     <string name="account_setup_special_folders_error_message">Ezin izan da zerbitzaritik karpeten zerrenda eskuratu</string>

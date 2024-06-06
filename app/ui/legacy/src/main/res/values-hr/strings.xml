@@ -21,7 +21,6 @@
     <string name="authors">Autori</string>
     <string name="about_title">O K-9 Mail</string>
     <string name="accounts_title">Računi</string>
-    <string name="advanced">Napredno</string>
     <string name="compose_title_compose">Sastavi</string>
     <string name="compose_title_reply">Odgovori</string>
     <string name="compose_title_reply_all">Odgovori svima</string>
@@ -245,7 +244,6 @@
     <string name="spam_folder_label">Mapa neželjene pošte</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Prikaži samo pretplaćene mape</string>
     <string name="account_setup_auto_expand_folder">Automatsko proširivanje mapa</string>
-    <string name="account_setup_options_mail_check_frequency_label">Učestalost provjera mapa</string>
     <string name="account_setup_options_mail_check_frequency_never">Nikad</string>
     <string name="account_setup_options_mail_check_frequency_15min">Svakih 15 minuta</string>
     <string name="account_setup_options_mail_check_frequency_30min">Svakih 30 minuta</string>
@@ -264,7 +262,6 @@
     <string name="idle_refresh_period_36min">Svakih 36 minuta</string>
     <string name="idle_refresh_period_48min">Svakih 48 minuta</string>
     <string name="idle_refresh_period_60min">Svakih 60 minuta</string>
-    <string name="account_setup_options_mail_display_count_label">Broj poruka za prikaz</string>
     <string name="account_setup_options_mail_display_count_10">10 poruka</string>
     <string name="account_setup_options_mail_display_count_25">25 poruka</string>
     <string name="account_setup_options_mail_display_count_50">50 poruka</string>
@@ -741,10 +738,6 @@
     <string name="crypto_msg_encrypted_sign_insecure">ali ključ s kraja na kraj se ne smatra sigurnim</string>
     <string name="crypto_msg_encrypted_sign_error">ali podatci s kraja na kraj sadrže greške</string>
     <string name="crypto_msg_encrypted_insecure">ali šifriranje se ne smatra sigurnim</string>
-    <string name="crypto_info_ok">U REDU</string>
-    <string name="crypto_info_view_signer">Pogledaj potpisnika</string>
-    <string name="crypto_info_view_sender">Pogledaj Pošiljatelja</string>
-    <string name="crypto_info_view_security_warning">Detalji</string>
     <string name="locked_attach_unlock">Otključaj</string>
     <string name="locked_attach_unencrypted">Ovaj dio nije šifrirani i može biti nesiguran.</string>
     <string name="locked_attach_title">Nezaštićeni Privitak</string>

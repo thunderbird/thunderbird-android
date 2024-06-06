@@ -4,7 +4,6 @@
     <string name="account_setup_options_account_check_frequency_label">Frecuencia de comprobación</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Configurar de forma automática</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Estos ajustes no han sido validados</string>
-    <string name="account_setup_button_finish">Terminar</string>
     <string name="account_setup_options_email_signature_label">Firma del correo</string>
     <string name="account_setup_options_email_display_count_label">Cantidad de correos a mostrar</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Configurar a mano</string>
@@ -16,7 +15,6 @@
     <string name="account_setup_error_unknown">Error desconocido</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Configuración no encontrada</string>
-    <string name="account_setup_options_top_bar_title">Ajustes de cuenta</string>
     <string name="account_setup_options_account_name_label">Nombre de cuenta</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Configuración detectada</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Es necesario proporcionar al menos una dirección de correo.</string>
@@ -45,7 +43,6 @@
     <string name="account_setup_special_folders_form_description">Por favor, especifique las carpetas especiales de su cuenta.</string>
     <string name="account_setup_special_folders_sent_folder_label">Carpeta enviada</string>
     <string name="account_setup_special_folders_folder_none">Ninguno</string>
-    <string name="account_setup_special_folders_top_bar_title">Carpetas especiales</string>
     <string name="account_setup_special_folders_trash_folder_label">Papelera</string>
     <string name="account_setup_special_folders_archive_folder_label">Carpeta de archivo</string>
     <string name="account_setup_special_folders_spam_folder_label">Carpeta de spam</string>

@@ -6,7 +6,6 @@
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Αυτόματη διαμόρφωση</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Αυτή η διαμόρφωση δεν είναι αξιόπιστη</string>
     <string name="account_setup_create_account_created">Ο λογαριασμος δημιουργηθηκε επιτυχως</string>
-    <string name="account_setup_button_finish">Ολοκλήρωση</string>
     <string name="account_setup_options_email_signature_label">Υπογραφή email</string>
     <string name="account_setup_options_email_display_count_label">Αριθμός μηνυμάτων προς εμφάνιση</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Ρυθμίστε χειροκίνητα</string>
@@ -19,7 +18,6 @@
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Η διαμόρφωση δεν βρέθηκε</string>
     <string name="account_setup_create_account_creating">Δημιουργία λογαριασμού…</string>
-    <string name="account_setup_options_top_bar_title">Επιλογές λογαριασμού</string>
     <string name="account_setup_options_account_name_label">Ονομα λογαριασμού</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Η διαμόρφωση βρέθηκε</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Απαιτείται διεύθυνση email.</string>

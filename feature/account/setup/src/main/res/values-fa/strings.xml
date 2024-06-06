@@ -10,7 +10,6 @@
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">این پیکربندی قابل اعتماد نیست</string>
     <string name="account_setup_create_account_created">حساب کاربری با موفقیت ایجاد شد</string>
     <string name="account_setup_special_folders_error_message">واکشی لیست پوشه‌ها از سرور با خطا مواجه شد</string>
-    <string name="account_setup_button_finish">پایان</string>
     <string name="account_setup_options_email_signature_label">امضای رایانامه</string>
     <string name="account_setup_options_email_display_count_label">تعداد پیام‌ها برای نمایش</string>
     <string name="account_setup_special_folders_loading_message">واکشی لیست پوشه‌ها …</string>
@@ -24,13 +23,11 @@
     <string name="account_setup_special_folders_folder_none">هیچ‌کدام</string>
     <string name="account_setup_auto_discovery_result_edit_configuration_button_label">ویرایش پیکربندی</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">این نشانی رایانامه پشتیبانی نمی‌شود.</string>
-    <string name="account_setup_special_folders_top_bar_title">پوشه‌های خاص</string>
     <string name="account_setup_special_folders_trash_folder_label">پوشه زباله‌دان</string>
     <string name="account_setup_error_unknown">خطای ناشناخته</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">پیکربندی پیدا نشد</string>
     <string name="account_setup_create_account_creating">ایجاد حساب …</string>
-    <string name="account_setup_options_top_bar_title">گزینه‌های حساب کاربری</string>
     <string name="account_setup_options_account_name_label">نام حساب</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">پیکربندی پیدا شد</string>
     <string name="account_setup_special_folders_archive_folder_label">پوشه بایگانی</string>

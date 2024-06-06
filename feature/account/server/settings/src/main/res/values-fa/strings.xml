@@ -31,4 +31,5 @@
     <string name="account_server_settings_password_authentication_screen_lock_required">برای دیدن رمز عبور در این قسمت، قفل صفحه در این دستگاه را فعال کنید.</string>
     <string name="account_server_settings_server_label">سرور</string>
     <string name="account_server_settings_security_label">امنیت</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">ارسال اطلاعات کارخواه</string>
 </resources>

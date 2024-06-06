@@ -4,7 +4,6 @@
     <string name="account_setup_options_account_check_frequency_label">Kontrôlefrekwinsje</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Automatysk konfigurearje</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Dizze konfiguraasje is net fertroud</string>
-    <string name="account_setup_button_finish">Foltôgje</string>
     <string name="account_setup_options_email_signature_label">E-mailhantekening</string>
     <string name="account_setup_options_email_display_count_label">Oantal te toanen berjochten</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Hânmjittich konfigurearje</string>
@@ -16,7 +15,6 @@
     <string name="account_setup_error_unknown">Unbekende flater</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Konfiguraasje net fûn</string>
-    <string name="account_setup_options_top_bar_title">Accountopsjes</string>
     <string name="account_setup_options_account_name_label">Accountnamme</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Konfiguraasje fûn</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">E-mailadres is fereaske.</string>
@@ -45,7 +43,6 @@
     <string name="account_setup_special_folders_form_description">Spesifisearje de spesjale mappen foar jo account.</string>
     <string name="account_setup_special_folders_sent_folder_label">Ferstjoerd</string>
     <string name="account_setup_special_folders_folder_none">Gjin</string>
-    <string name="account_setup_special_folders_top_bar_title">Spesjale mappen</string>
     <string name="account_setup_special_folders_trash_folder_label">Jiskefet</string>
     <string name="account_setup_special_folders_archive_folder_label">Argyf</string>
     <string name="account_setup_special_folders_spam_folder_label">Net-winske</string>

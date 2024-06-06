@@ -33,7 +33,6 @@
     <string name="authors">Autoriai</string>
     <string name="about_title">Apie K-9 Mail</string>
     <string name="accounts_title">Paskyros</string>
-    <string name="advanced">Išplėstinis</string>
     <string name="compose_title_compose">Sukurti</string>
     <string name="compose_title_reply">Atsakyti</string>
     <string name="compose_title_reply_all">Atsakyti visiems</string>
@@ -281,7 +280,6 @@
     <string name="spam_folder_label">Brukalo aplankas</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Rodyti tik prenumeruotus aplankus</string>
     <string name="account_setup_auto_expand_folder">Automatiškai išskleisti aplanką</string>
-    <string name="account_setup_options_mail_check_frequency_label">Aplanko tikrinimo dažnis</string>
     <string name="account_setup_options_mail_check_frequency_never">Niekada</string>
     <string name="account_setup_options_mail_check_frequency_15min">Kas 15 minučių</string>
     <string name="account_setup_options_mail_check_frequency_30min">Kas 30 minučių</string>
@@ -300,7 +298,6 @@
     <string name="idle_refresh_period_36min">Kas 36 minutes</string>
     <string name="idle_refresh_period_48min">Kas 48 minutes</string>
     <string name="idle_refresh_period_60min">Kas 60 minučių</string>
-    <string name="account_setup_options_mail_display_count_label">Rodyti laiškų</string>
     <string name="account_setup_options_mail_display_count_10">10 laiškų</string>
     <string name="account_setup_options_mail_display_count_25">25 laiškai</string>
     <string name="account_setup_options_mail_display_count_50">50 laiškų</string>
@@ -823,11 +820,6 @@
     <string name="crypto_msg_encrypted_sign_insecure">bet visapusiškas raktas nelaikomas saugiu</string>
     <string name="crypto_msg_encrypted_sign_error">bet visapusiški duomenys turi klaidų</string>
     <string name="crypto_msg_encrypted_insecure">bet šifravimas nelaikomas saugiu</string>
-    <string name="crypto_info_ok">Gerai</string>
-    <string name="crypto_info_search_key">Ieškoti rakto</string>
-    <string name="crypto_info_view_signer">Peržiūrėti pasirašytoją</string>
-    <string name="crypto_info_view_sender">Peržiūrėti siuntėją</string>
-    <string name="crypto_info_view_security_warning">Išsamiau</string>
     <string name="locked_attach_unlock">Atrakinti</string>
     <string name="locked_attach_unencrypted">Ši dalis nebuvo užšifruota ir gali būti nesaugi.</string>
     <string name="locked_attach_title">Neapsaugotas priedas</string>

@@ -1,0 +1,5 @@
+- Ordinea fixată a pașilor de descoperire a configurației automate
+- S-a schimbat numărul de afișare implicit la 100
+- Notificări activate pentru conturi noi în mod implicit
+- S-a inversat modificarea la gestionarea mailto: URI-urile introduse în K-9 Mail 6.716 din cauza efectelor secundare neintenționate
+- S-a remediat o eroare pentru ca „colorați contactele” să funcționeze din nou în vizualizarea mesajelor

@@ -1,0 +1,5 @@
+- Catapughjà : Signalà à l’utilizatore s’è un permessu hè assente durante a pianificazione d’una alarme esatta
+- L’ozzione « Mandà l’ID di u cliente » si chjama avà « Mandà l’infurmazione di u cliente »
+- IMAP : Aghjuntu di l’attributu di risposta LIST « \NonExistent »
+- IMAP : Inviu di a cumanda EXPUNGE dopu à u dispiazzamentu senza l’estensione MOVE
+- Aghjuntu di a traduzzione in Ebreu è messe à livellu d’altre traduzzioni

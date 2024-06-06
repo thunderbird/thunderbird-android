@@ -1,0 +1,1 @@
+- Risolto un crash durante l'apertura dello schermo per comporre un messaggio

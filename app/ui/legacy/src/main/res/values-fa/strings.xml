@@ -34,7 +34,6 @@
     <string name="authors">سازندگان</string>
     <string name="about_title">دربارهٔ K-9 Mail</string>
     <string name="accounts_title">حساب‌ها</string>
-    <string name="advanced">پیشرفته</string>
     <string name="compose_title_compose">نوشتن</string>
     <string name="compose_title_reply">پاسخ</string>
     <string name="compose_title_reply_all">پاسخ به همه</string>
@@ -285,7 +284,6 @@
     <string name="spam_folder_label">پوشهٔ هرزنامه</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">فقط پوشه‌هایی که مشترک آن‌ها هستم را نمایش بده</string>
     <string name="account_setup_auto_expand_folder">پوشهٔ آغازین</string>
-    <string name="account_setup_options_mail_check_frequency_label">تکرار سرکشی به پوشه</string>
     <string name="account_setup_options_mail_check_frequency_never">هرگز</string>
     <string name="account_setup_options_mail_check_frequency_15min">هر ۱۵ دقیقه</string>
     <string name="account_setup_options_mail_check_frequency_30min">هر ۳۰ دقیقه</string>
@@ -304,7 +302,6 @@
     <string name="idle_refresh_period_36min">هر ۳۶ دقیقه</string>
     <string name="idle_refresh_period_48min">هر ۴۸ دقیقه</string>
     <string name="idle_refresh_period_60min">هر ۶۰ دقیقه</string>
-    <string name="account_setup_options_mail_display_count_label">تعداد پیام‌ها برای نمایش</string>
     <string name="account_setup_options_mail_display_count_10">۱۰ پیام</string>
     <string name="account_setup_options_mail_display_count_25">۲۵ پیام</string>
     <string name="account_setup_options_mail_display_count_50">۵۰ پیام</string>
@@ -820,11 +817,6 @@
     <string name="crypto_msg_encrypted_sign_insecure">اما کلیدِ سرتاسر، امن نیست</string>
     <string name="crypto_msg_encrypted_sign_error">اما اطلاعات سرتاسر، خطاهایی دارد</string>
     <string name="crypto_msg_encrypted_insecure">اما رمزنگاری، امن نیست</string>
-    <string name="crypto_info_ok">خب</string>
-    <string name="crypto_info_search_key">کلید جستجو</string>
-    <string name="crypto_info_view_signer">دیدن امضاکننده</string>
-    <string name="crypto_info_view_sender">دیدن فرستنده</string>
-    <string name="crypto_info_view_security_warning">جزئیات</string>
     <string name="locked_attach_unlock">قفل‌گشایی</string>
     <string name="locked_attach_unencrypted">این بخش رمزنگاری نشده و شاید ناامن باشد.</string>
     <string name="locked_attach_title">پیوستِ محافظت‌نشده</string>

@@ -34,7 +34,6 @@
     <string name="authors">Autores</string>
     <string name="about_title">Acerca de K-9 Mail</string>
     <string name="accounts_title">Cuentas</string>
-    <string name="advanced">Avanzado</string>
     <string name="compose_title_compose">Redactar</string>
     <string name="compose_title_reply">Responder</string>
     <string name="compose_title_reply_all">Responder a todos</string>
@@ -287,7 +286,6 @@
     <string name="spam_folder_label">Carpeta Spam</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Ver sólo carpetas suscritas</string>
     <string name="account_setup_auto_expand_folder">Autoexpandir carpeta</string>
-    <string name="account_setup_options_mail_check_frequency_label">Frecuencia de comprobación de correo nuevo</string>
     <string name="account_setup_options_mail_check_frequency_never">Nunca</string>
     <string name="account_setup_options_mail_check_frequency_15min">Cada 15 minutos</string>
     <string name="account_setup_options_mail_check_frequency_30min">Cada 30 minutos</string>
@@ -306,7 +304,6 @@
     <string name="idle_refresh_period_36min">Cada 36 minutos</string>
     <string name="idle_refresh_period_48min">Cada 48 minutos</string>
     <string name="idle_refresh_period_60min">Cada 60 minutos</string>
-    <string name="account_setup_options_mail_display_count_label">Número de correos a mostrar</string>
     <string name="account_setup_options_mail_display_count_10">10 correos</string>
     <string name="account_setup_options_mail_display_count_25">25 correos</string>
     <string name="account_setup_options_mail_display_count_50">50 correos</string>
@@ -826,11 +823,6 @@
     <string name="crypto_msg_encrypted_sign_insecure">pero la clave de extremo a extremo es insegura</string>
     <string name="crypto_msg_encrypted_sign_error">pero los datos de extremo a extremo tienen errores</string>
     <string name="crypto_msg_encrypted_insecure">pero el cifrado es inseguro</string>
-    <string name="crypto_info_ok">Aceptar</string>
-    <string name="crypto_info_search_key">Buscar clave</string>
-    <string name="crypto_info_view_signer">Ver firmante</string>
-    <string name="crypto_info_view_sender">Ver remitente</string>
-    <string name="crypto_info_view_security_warning">Detalles</string>
     <string name="locked_attach_unlock">Desbloquear</string>
     <string name="locked_attach_unencrypted">Esta parte no está cifrada y puede ser insegura.</string>
     <string name="locked_attach_title">Adjunto desprotegido</string>

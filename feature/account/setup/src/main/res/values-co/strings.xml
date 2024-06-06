@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_setup_title">K-9 Mail</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">L’indirizzu elettronicu hè richiestu.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">St’indirizzu elettronicu ùn hè micca permessu.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">St’indirizzu elettronicu ùn hè micca ricunnisciutu cum’è accettevule.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_loading_message">Ricerca di a cunfigurazione…</string>
+    <string name="account_setup_auto_discovery_loading_error">Fiascu di u caricamentu di a cunfigurazione di u contu di messaghjeria</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">A cunfigurazione hè stata trova</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">A cunfigurazione ùn hè micca degna di cunfidenza</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Facciu cunfidenza à quella cunfigurazione</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Hè richiestu d’appruvà a cunfigurazione.</string>
+    <string name="account_setup_special_folders_loading_message">Riguarera di a lista di i cartulari…</string>
+    <string name="account_setup_special_folders_error_message">Fiascu di a riguarera di a lista di i cartulari da u servitore</string>
+    <string name="account_setup_special_folders_success_message">Tutti i cartulari speziali sò stati cunfigurati autumaticamente da u servitore.</string>
+    <string name="account_setup_special_folders_archive_folder_label">Cartulare di l’archivii</string>
+    <string name="account_setup_special_folders_sent_folder_label">Cartulare di i messaghji mandati</string>
+    <string name="account_setup_special_folders_folder_none">Nisunu</string>
+    <string name="account_setup_special_folders_folder_automatic">Autumaticu (%s)</string>
+    <string name="account_setup_options_section_display_options">Ozzioni d’affissera</string>
+    <string name="account_setup_options_account_name_error_blank">U nome di u contu ùn pò micca esse viotu.</string>
+    <string name="account_setup_options_display_name_error_required">U vostru nome hè richiestu.</string>
+    <string name="account_setup_options_email_signature_label">Segnatura di u messaghju elettronicu</string>
+    <string name="account_setup_options_account_check_frequency_label">Frequenza di cuntrollu</string>
+    <string name="account_setup_options_email_check_frequency_never">Mai</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Ogni minutu</item>
+        <item quantity="other">Tutti i %d minuti</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Ogni ora</item>
+        <item quantity="other">Tutte e %d ore</item>
+    </plurals>
+    <string name="account_setup_options_email_display_count_label">Numeru di messaghji à affissà</string>
+    <string name="account_setup_options_show_notifications_label">Affissà e nutificazioni</string>
+    <string name="account_setup_create_account_creating">Creazione di contu…</string>
+    <string name="account_setup_create_account_error">Un sbagliu hè accadutu durante a creazione di u contu</string>
+    <string name="account_setup_create_account_created">U contu hè statu creatu currettamente</string>
+    <string name="account_setup_error_network">Reta</string>
+    <string name="account_setup_error_unknown">Sbagliu scunnisciutu</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">St’indirizzu elettronicu ùn hè micca accettatu.</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">A parolla d’intesa hè richiesta.</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">A cunfigurazione ùn si trova micca</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Cunfigurà autumaticamente</string>
+    <string name="account_setup_special_folders_form_description">Selezziunate i cartulari speziali per u vostru contu.</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Avemu ricevutu a cunfigurazione per u vostru servitore di messaghjeria via una cunnessione chì ùn hè micca tantu sicura chì no a vuleriamu. Vole si dì chì ci hè una pussibilità chjuca chjuca chì qualchissia l’abbia alterata. Puderiate verificà torna a cunfigurazione pruvista per assicurassi ch’ella sia degna di cunfidenza ?</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Cunfigurà manualmente</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Mudificà a cunfigurazione</string>
+    <string name="account_setup_special_folders_form_description_automatic">L’ozzione « Autumatica » seguiterà autumaticamente i cambiamenti fatti da u servitore. U valore attuale di u servitore hè affissatu trà parentesi.</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Cartulare di e bruttacopie</string>
+    <string name="account_setup_special_folders_spam_folder_label">Cartulare di i merzaghji (dispiacevule)</string>
+    <string name="account_setup_special_folders_trash_folder_label">Cartulare di a curbella</string>
+    <string name="account_setup_options_account_name_label">Nome di u contu</string>
+    <string name="account_setup_options_display_name_label">U vostru nome</string>
+    <string name="account_setup_options_section_sync_options">Ozzioni di sincrunizazione</string>
+    <string name="account_setup_options_email_signature_error_blank">A segnatura di u messaghju elettronicu ùn pò micca esse viota.</string>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">1 messaghju</item>
+        <item quantity="other">%d messaghji</item>
+    </plurals>
+</resources>

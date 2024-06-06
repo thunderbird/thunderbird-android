@@ -1,0 +1,1 @@
+- Memperbaiki eror saat membuka layar untuk membuat pesan baru

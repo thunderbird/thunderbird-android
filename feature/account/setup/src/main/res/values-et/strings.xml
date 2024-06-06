@@ -2,7 +2,6 @@
 <resources>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Seadista automaatselt</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">See seadistus ei ole usaldusväärne</string>
-    <string name="account_setup_button_finish">Lõpeta</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Seadista käsitsi</string>
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
     <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Me laadisime sinu e-postikonto seadistused üle võrguühenduse, mis pole meie arvates piisavalt turvaline. See tähendab, et on pisikene võimalus, et väline osapool on neid muutnud. Palun topeltkontrolli, et näidatud seadistused on sellised, nagu nad peaksid olema, eksole\?</string>
@@ -24,7 +23,6 @@
     <string name="account_setup_options_email_display_count_label">Kuvatavate kirjade arv</string>
     <string name="account_setup_options_email_signature_error_blank">E-kirja allkiri ei saa olla tühi.</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">On nõutav, et saa nõustud nende seadistustega.</string>
-    <string name="account_setup_options_top_bar_title">Konto valikud</string>
     <string name="account_setup_options_account_name_label">Kasutajakonto nimi</string>
     <string name="account_setup_options_display_name_label">Sinu nimi</string>
     <string name="account_setup_options_display_name_error_required">Sinu nimi peab olema sisestatud.</string>
@@ -45,7 +43,6 @@
     <string name="account_setup_special_folders_form_description">Palun seadista oma kasutajakonto jaoks määratud kaustad.</string>
     <string name="account_setup_special_folders_sent_folder_label">Saadetud kirjade kaust</string>
     <string name="account_setup_special_folders_folder_none">Määratlemata</string>
-    <string name="account_setup_special_folders_top_bar_title">Määratud kaustad</string>
     <string name="account_setup_special_folders_trash_folder_label">Prügikasti kaust</string>
     <string name="account_setup_special_folders_archive_folder_label">Arhiivi kaust</string>
     <string name="account_setup_special_folders_spam_folder_label">Spämmi kaust</string>

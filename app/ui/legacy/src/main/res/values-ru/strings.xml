@@ -35,7 +35,6 @@
     <string name="authors">Авторы</string>
     <string name="about_title">О приложении Почта K-9</string>
     <string name="accounts_title">Учётные записи</string>
-    <string name="advanced">Дополнительно</string>
     <string name="compose_title_compose">Новое</string>
     <string name="compose_title_reply">Ответ</string>
     <string name="compose_title_reply_all">Ответить всем</string>
@@ -292,7 +291,6 @@
     <string name="spam_folder_label">Папка спам</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Только подписанные папки</string>
     <string name="account_setup_auto_expand_folder">Автопереход в папку</string>
-    <string name="account_setup_options_mail_check_frequency_label">Промежуток проверки</string>
     <string name="account_setup_options_mail_check_frequency_never">Вручную</string>
     <string name="account_setup_options_mail_check_frequency_15min">15 минут</string>
     <string name="account_setup_options_mail_check_frequency_30min">30 минут</string>
@@ -311,7 +309,6 @@
     <string name="idle_refresh_period_36min">36 минут</string>
     <string name="idle_refresh_period_48min">48 минут</string>
     <string name="idle_refresh_period_60min">1 час</string>
-    <string name="account_setup_options_mail_display_count_label">Загружать сообщений</string>
     <string name="account_setup_options_mail_display_count_10">10 сообщений</string>
     <string name="account_setup_options_mail_display_count_25">25 сообщений</string>
     <string name="account_setup_options_mail_display_count_50">50 сообщений</string>
@@ -835,11 +832,6 @@
     <string name="crypto_msg_encrypted_sign_insecure">но ключ сквозного шифрования небезопасен</string>
     <string name="crypto_msg_encrypted_sign_error">но произошёл сбой в данных сквозного шифрования</string>
     <string name="crypto_msg_encrypted_insecure">но шифрование не считается безопасным</string>
-    <string name="crypto_info_ok">OK</string>
-    <string name="crypto_info_search_key">Поиск криптоключа</string>
-    <string name="crypto_info_view_signer">Кем подписано</string>
-    <string name="crypto_info_view_sender">Кем отправлено</string>
-    <string name="crypto_info_view_security_warning">Подробности</string>
     <string name="locked_attach_unlock">Разблокировать</string>
     <string name="locked_attach_unencrypted">Эта часть не была зашифрована и небезопасна</string>
     <string name="locked_attach_title">Незащищённое вложение</string>

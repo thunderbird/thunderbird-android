@@ -32,7 +32,6 @@
     <string name="authors">Penulis</string>
     <string name="about_title">Tentang K-9 Mail</string>
     <string name="accounts_title">Akun</string>
-    <string name="advanced">Lanjutan</string>
     <string name="compose_title_compose">Menyusun</string>
     <string name="compose_title_reply">Balas</string>
     <string name="compose_title_reply_all">Balas semua</string>
@@ -253,7 +252,6 @@
     <string name="spam_folder_label">Folder spam</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Hanya tampilkan folder langganan</string>
     <string name="account_setup_auto_expand_folder">Otomatis lebarkan folder</string>
-    <string name="account_setup_options_mail_check_frequency_label">Frekuensi pengecekan folder</string>
     <string name="account_setup_options_mail_check_frequency_never">Tidak pernah</string>
     <string name="account_setup_options_mail_check_frequency_15min">Setiap 15 menit</string>
     <string name="account_setup_options_mail_check_frequency_30min">Setiap 30 menit</string>
@@ -272,7 +270,6 @@
     <string name="idle_refresh_period_36min">Setiap 36 Menit</string>
     <string name="idle_refresh_period_48min">Setiap 48 Menit</string>
     <string name="idle_refresh_period_60min">Setiap 60 Menit</string>
-    <string name="account_setup_options_mail_display_count_label">Jumlah pesan yang akan ditampilkan</string>
     <string name="account_setup_options_mail_display_count_10">10 pesan</string>
     <string name="account_setup_options_mail_display_count_25">25 pesan</string>
     <string name="account_setup_options_mail_display_count_50">50 pesan</string>
@@ -756,11 +753,6 @@
     <string name="crypto_msg_encrypted_sign_insecure">tetapi kunci end-to-end tidak dianggap aman</string>
     <string name="crypto_msg_encrypted_sign_error">tetapi data end-to-end memiliki kesalahan</string>
     <string name="crypto_msg_encrypted_insecure">namun enkripsi tidak dianggap aman</string>
-    <string name="crypto_info_ok">Oke</string>
-    <string name="crypto_info_search_key">Kunci Pencarian</string>
-    <string name="crypto_info_view_signer">Lihat Penanda</string>
-    <string name="crypto_info_view_sender">Lihat Pengirim</string>
-    <string name="crypto_info_view_security_warning">Detail</string>
     <string name="locked_attach_unlock">Buka kunci</string>
     <string name="locked_attach_unencrypted">Bagian ini tidak dienkripsi dan mungkin tidak aman.</string>
     <string name="locked_attach_title">Lampiran tidak terlindungi</string>

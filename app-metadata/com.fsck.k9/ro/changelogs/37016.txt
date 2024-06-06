@@ -1,0 +1,5 @@
+- Remedieri mici de erori și lustruire UI/UX în configurarea contului
+- S-a remediat o blocare cauzată de o interacțiunea cu OpenKeychain 6.0.0
+- Concentrați-vă pe câmpurile de introducere a subiectului sau a corpului când deschideți ecranul de scriere printr-un mailto: URI
+- S-au eliminat traducerile în ebraică și coreeană deoarece mai puțin de 70% dintre șiruri au fost traduse. Voluntarii care actualizează traducerile sunt întotdeauna bineveniți!
+- S-au actualizat traducerile rămase

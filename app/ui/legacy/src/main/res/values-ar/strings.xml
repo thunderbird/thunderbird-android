@@ -34,7 +34,6 @@
     <string name="authors">الناشرين</string>
     <string name="about_title">عن بريد K-9</string>
     <string name="accounts_title">الحسابات</string>
-    <string name="advanced">متقدمة</string>
     <string name="compose_title_compose">أنشِئ</string>
     <string name="compose_title_reply">رُد</string>
     <string name="compose_title_reply_all">رٌد على الكل</string>
@@ -295,7 +294,6 @@
     <string name="spam_folder_label">مجلد البريد المزعج</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">إظهار المجلدات المشتركة فقط </string>
     <string name="account_setup_auto_expand_folder">توسيع المجلد تلقائيا</string>
-    <string name="account_setup_options_mail_check_frequency_label">تردد استطلاع المجلد </string>
     <string name="account_setup_options_mail_check_frequency_never">أبدًا</string>
     <string name="account_setup_options_mail_check_frequency_15min">كل 15 دقيقة</string>
     <string name="account_setup_options_mail_check_frequency_30min">كل 30 دقيقة</string>
@@ -314,7 +312,6 @@
     <string name="idle_refresh_period_36min">كل 36 دقيقة</string>
     <string name="idle_refresh_period_48min">كل 48 دقيقة</string>
     <string name="idle_refresh_period_60min">كل 60 دقيقة</string>
-    <string name="account_setup_options_mail_display_count_label">عدد الرسائل التي ستظهر</string>
     <string name="account_setup_options_mail_display_count_10">10 رسائل</string>
     <string name="account_setup_options_mail_display_count_25">25 رسالة</string>
     <string name="account_setup_options_mail_display_count_50">50 رسالة</string>
@@ -814,11 +811,6 @@
     <string name="crypto_msg_encrypted_sign_insecure">لكن المفتاح من طرف إلى طرف لا يعتبر آمنًا</string>
     <string name="crypto_msg_encrypted_sign_error">لكن البيانات الشاملة بها أخطاء </string>
     <string name="crypto_msg_encrypted_insecure">لكن التشفير لا يعتبر آمنًا </string>
-    <string name="crypto_info_ok">حسنًا</string>
-    <string name="crypto_info_search_key">البحث عن مفتاح</string>
-    <string name="crypto_info_view_signer">إظهار المُوَقِّع</string>
-    <string name="crypto_info_view_sender">إظهار المُرسِل</string>
-    <string name="crypto_info_view_security_warning">التفاصيل</string>
     <string name="locked_attach_unlock">فك القفل</string>
     <string name="locked_attach_unencrypted">لم يتم تشفير هذا الجزء ، وربما يكون غير آمن. </string>
     <string name="locked_attach_title">مُرفق غير محمي</string>

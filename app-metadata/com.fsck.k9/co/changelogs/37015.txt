@@ -1,0 +1,10 @@
+- Aghjuntu di u trattamentu di e fiure in u listinu cuntestuale per l’iperliami
+- Aghjuntu di a pussibilità di trasferisce e pezze aghjunte aperte ver di messaghji novi
+- Amendamentu di u screnu di sbagliu di certificatu durante a cunfigurazione di u contu
+- Amendamentu di l’impurtazione di i parametri durante a cunfigurazione di u contu
+- Amendamentu di l’interfaccia è di l’esperienza di l’utilizatore (UI/UX) per a cunfigurazione di contu
+- Amendamentu di a restituzione di a cunfigurazione di contu nant’à i screni chjuchi
+- Amendamentu UI/UX per a mudificazione di i parametri di u servitore
+- Currezzione di l’accidente cù AlarmManager nant’à Android 14
+- Cambiamenti interni
+- Messe à livellu di e traduzzioni

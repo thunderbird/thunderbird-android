@@ -6,7 +6,6 @@
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Configure automatically</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">This configuration is not trusted</string>
     <string name="account_setup_create_account_created">Account successfully created</string>
-    <string name="account_setup_button_finish">Finish</string>
     <string name="account_setup_options_email_signature_label">Email signature</string>
     <string name="account_setup_options_email_display_count_label">Number of messages to display</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Configure manually</string>
@@ -20,7 +19,6 @@
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Configuration not found</string>
     <string name="account_setup_create_account_creating">Creating account…</string>
-    <string name="account_setup_options_top_bar_title">Account options</string>
     <string name="account_setup_options_account_name_label">Account name</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Configuration found</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Email address is required.</string>

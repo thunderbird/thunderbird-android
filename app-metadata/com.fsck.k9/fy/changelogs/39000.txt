@@ -1,0 +1,6 @@
+- Begûn mei it konvertearjen fan de brûkersinterface nei Material 3
+- Stipe tafoege foar mailto: URI op NFC-tag
+- Eksperimintele oplossing tafoege foar de app dy’t op de eftergrûn ferûngelokket
+- Inkelde fan de IMAP-protokolynteraksjes optimalisearre
+- Fertraagje de melding net wannear’t Push aktyf is
+- Bywurke oersettingen
