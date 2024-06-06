@@ -23,7 +23,6 @@
         android:layout_height="wrap_content"
         android:minHeight="?android:attr/listPreferredItemHeight"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="?android:attr/textColorAlertDialogListItem"
         android:gravity="center_vertical"
         android:checkMark="?android:attr/listChoiceIndicatorSingle"
         android:ellipsize="marquee"

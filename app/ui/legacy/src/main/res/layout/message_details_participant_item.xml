@@ -24,7 +24,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?attr/textAppearanceBodyLarge"
-        android:textColor="?android:attr/textColorPrimary"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@+id/email"
         app:layout_constraintEnd_toStartOf="@+id/menu_add_contact"

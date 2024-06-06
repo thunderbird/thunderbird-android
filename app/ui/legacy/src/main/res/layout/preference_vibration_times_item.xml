@@ -28,7 +28,7 @@
         android:layout_toStartOf="@id/vibrationTimesValue"
         android:text="@string/account_settings_vibrate_times"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="?attr/textColorAlertDialogListItem" />
+        />
 
     <SeekBar
         android:id="@+id/vibrationTimesSeekBar"

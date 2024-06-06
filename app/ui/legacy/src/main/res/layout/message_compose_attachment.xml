@@ -48,7 +48,6 @@
             android:layout_marginTop="8dp"
             android:ellipsize="start"
             android:singleLine="true"
-            android:textColor="?android:attr/textColorPrimary"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/attachment_size"
             app:layout_constraintEnd_toStartOf="@id/barrier_button"

@@ -23,7 +23,6 @@
         android:paddingStart="18dp"
         android:paddingEnd="4dp"
         android:paddingBottom="8dp"
-        android:textColor="?android:attr/textColorPrimary"
         android:textAppearance="?android:attr/textAppearanceMedium"
         tools:text="@sample/accounts.json/data/name"/>
 

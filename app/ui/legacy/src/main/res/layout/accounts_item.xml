@@ -34,7 +34,6 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:ellipsize="end"
-                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="@dimen/appTextSizeMedium"
                 tools:text="@sample/accounts.json/data/name"/>
 

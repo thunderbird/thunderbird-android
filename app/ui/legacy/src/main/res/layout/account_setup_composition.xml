@@ -26,7 +26,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="?android:attr/textColorPrimary"/>
+                    />
 
             <EditText
                     android:id="@+id/account_name"
@@ -42,7 +42,6 @@
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="?android:attr/textColorPrimary"
                     />
 
             <EditText
@@ -59,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="?android:attr/textColorPrimary"/>
+                    />
 
             <EditText
                     android:id="@+id/account_always_bcc"
@@ -86,7 +85,7 @@
                         android:layout_height="wrap_content"
                         android:layout_width="fill_parent"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="?android:attr/textColorPrimary"/>
+                        />
 
                 <EditText
                         android:id="@+id/account_signature"
@@ -100,7 +99,7 @@
                         android:layout_height="wrap_content"
                         android:layout_width="fill_parent"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="?android:attr/textColorPrimary"/>
+                        />
 
                 <RadioGroup
                         android:id="@+id/account_signature_location"
