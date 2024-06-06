@@ -21,7 +21,7 @@
         android:layout_marginStart="4dp"
         android:singleLine="true"
         android:textAppearance="?attr/textAppearanceBodyMedium"
-        android:textColor="?attr/colorAccent"
+        android:textColor="?attr/colorSecondary"
         tools:text="+2" />
 
 </merge>

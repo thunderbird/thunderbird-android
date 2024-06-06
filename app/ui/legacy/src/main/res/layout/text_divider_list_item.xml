@@ -14,5 +14,5 @@
     android:paddingTop="4dp"
     android:singleLine="true"
     android:textAppearance="?attr/textAppearanceTitleSmall"
-    android:textColor="?attr/colorAccent"
+    android:textColor="?attr/colorSecondary"
     tools:text="Divider" />

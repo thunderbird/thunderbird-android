@@ -27,7 +27,7 @@
             android:paddingBottom="8dp"
             android:text="@string/about_title"
             android:textAppearance="?attr/textAppearanceTitleSmall"
-            android:textColor="?attr/colorAccent" />
+            android:textColor="?attr/colorSecondary" />
 
         <LinearLayout
             android:id="@+id/versionLayout"
@@ -202,7 +202,7 @@
             android:paddingBottom="8dp"
             android:text="@string/about_project_title"
             android:textAppearance="?attr/textAppearanceTitleSmall"
-            android:textColor="?attr/colorAccent" />
+            android:textColor="?attr/colorSecondary" />
 
         <LinearLayout
             android:id="@+id/websiteLayout"
@@ -295,7 +295,7 @@
             android:paddingBottom="8dp"
             android:text="@string/about_libraries"
             android:textAppearance="?attr/textAppearanceTitleSmall"
-            android:textColor="?attr/colorAccent" />
+            android:textColor="?attr/colorSecondary" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/libraries"
