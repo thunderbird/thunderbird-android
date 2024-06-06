@@ -50,6 +50,7 @@ android {
                 "bg",
                 "br",
                 "ca",
+                "co",
                 "cs",
                 "cy",
                 "da",
