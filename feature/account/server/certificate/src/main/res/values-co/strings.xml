@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_warning_title">Avertimentu</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Sbagliu di certificatu</string>
+    <string name="account_server_certificate_button_back">Ritornu (ricumandatu)</string>
+    <string name="account_server_certificate_button_continue">Accettà u risicu è cuntinuà</string>
+    <string name="account_server_certificate_button_advanced">Espertu</string>
+    <string name="account_server_certificate_section_title">Certificatu di u servitore</string>
+    <string name="account_server_certificate_not_valid_before">Inaccettevule nanzu à</string>
+    <string name="account_server_certificate_not_valid_after">Inaccettevule dopu à</string>
+    <string name="account_server_certificate_subject">Sughjettu</string>
+    <string name="account_server_certificate_issuer">Emettore</string>
+    <string name="account_server_certificate_fingerprints_section">Impronte</string>
+    <string name="account_server_certificate_unknown_error_description_format">L’appiecazione hà scupertu una minaccia pussibule di sicurità è ùn hà micca cuntinuatu à cunnettesi à <xliff:g id="serverName">%s</xliff:g>.
+\nS’è vo cuntinuate, assaltadori puderianu pruvà d’arrubavvi infurmazioni cum’è parolla d’intesa o messaghji elettronichi.</string>
+    <string name="account_server_certificate_subject_alternative_names">Nomi alternativi di u sughjettu</string>
+</resources>

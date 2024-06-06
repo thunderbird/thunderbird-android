@@ -1,2 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">Надіслати інформацію про клієнта</string>
+    <string name="account_server_settings_protocol_type_label">Протокол</string>
+    <string name="account_server_settings_server_label">Сервер</string>
+    <string name="account_server_settings_security_label">Безпека</string>
+    <string name="account_server_settings_port_label">Порт</string>
+    <string name="account_server_settings_authentication_label">Аутентифікація</string>
+    <string name="account_server_settings_username_label">Ім’я користувача</string>
+    <string name="account_server_settings_connection_security_none">Жодна</string>
+    <string name="account_server_settings_authentication_none">Жодна</string>
+    <string name="account_server_settings_authentication_password_cleartext">Звичайний пароль</string>
+    <string name="account_server_settings_authentication_password_encrypted">Зашифрований пароль</string>
+    <string name="account_server_settings_authentication_client_certificate">Сертифікат клієнта</string>
+    <string name="account_server_settings_client_certificate_none_selected">Жоден</string>
+    <string name="account_server_settings_client_certificate_label">Сертифікат клієнта</string>
+    <string name="account_server_settings_incoming_top_bar_title">Налаштування вхідного сервера</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">Автовизначення області назв IMAP</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">Префікс шляху IMAP</string>
+    <string name="account_server_settings_incoming_imap_compression_label">Стиснення</string>
+    <string name="account_server_settings_outgoing_top_bar_title">Налаштування вихідного сервера</string>
+</resources>

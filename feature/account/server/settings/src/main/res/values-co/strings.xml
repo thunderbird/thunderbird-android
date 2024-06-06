@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_server_settings_security_label">Sicurità</string>
+    <string name="account_server_settings_authentication_password_encrypted">Parolle d’intesa cifrata</string>
+    <string name="account_server_settings_authentication_client_certificate">Certificatu di u cliente</string>
+    <string name="account_server_settings_client_certificate_none_selected">Nisunu</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">Scuperta autumatica di u spaziu di nome IMAP</string>
+    <string name="account_server_settings_incoming_imap_compression_label">Impiegà a cumpressione</string>
+    <string name="account_server_settings_validation_error_username_required">U nome d’utilizatore hè richiestu.</string>
+    <string name="account_server_settings_validation_error_password_required">A parolla d’intesa hè richiesta.</string>
+    <string name="account_server_settings_password_authentication_title">Verificà a vostra identità</string>
+    <string name="account_server_settings_client_certificate_label">Certificatu di u cliente</string>
+    <string name="account_server_settings_incoming_top_bar_title">Parametri di u servitore d’entrata</string>
+    <string name="account_server_settings_authentication_label">Autenticazione</string>
+    <string name="account_server_settings_username_label">Nome d’utilizatore</string>
+    <string name="account_server_settings_protocol_type_label">Protocollu</string>
+    <string name="account_server_settings_server_label">Servitore</string>
+    <string name="account_server_settings_port_label">Portu</string>
+    <string name="account_server_settings_connection_security_none">Nisuna</string>
+    <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
+    <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
+    <string name="account_server_settings_authentication_none">Nisuna</string>
+    <string name="account_server_settings_authentication_password_cleartext">Parolla d’intesa nurmale</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">Prefissu di u chjassu IMAP</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">Mandà l’infurmazione di u cliente</string>
+    <string name="account_server_settings_outgoing_top_bar_title">Parametri di u servitore d’esciuta</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Indirizzu IP o nome d’ospite inaccettevule</string>
+    <string name="account_server_settings_validation_error_port_required">U portu hè richiestu.</string>
+    <string name="account_server_settings_validation_error_server_required">U nome di u servitore hè richiestu.</string>
+    <string name="account_server_settings_validation_error_port_invalid">U portu hè inaccettevule (deve esse trà 1 è 65535).</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">U prefissu IMAP ùn pò micca esse viotu.</string>
+    <string name="account_server_settings_password_authentication_subtitle">Spalancate per affissà a vostra parolla d’intesa</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">Per affissà quì a vostra parolla d’intesa, attivate l’ammarchjunata di u screnu nant’à st’apparechju.</string>
+</resources>

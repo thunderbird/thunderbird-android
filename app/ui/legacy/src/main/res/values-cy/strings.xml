@@ -33,7 +33,6 @@
     <string name="authors">Awduron</string>
     <string name="about_title">Ynghylch K-9 Mail</string>
     <string name="accounts_title">Cyfrifon</string>
-    <string name="advanced">Uwch</string>
     <string name="compose_title_compose">Ysgrifennu</string>
     <string name="compose_title_reply">Ateb</string>
     <string name="compose_title_reply_all">Ateb i bawb</string>
@@ -276,7 +275,6 @@
     <string name="spam_folder_label">Ffolder sbam</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Dangos dim ond y ffolderi dwi\'n eu dewis</string>
     <string name="account_setup_auto_expand_folder">Awto-ehangu ffolder</string>
-    <string name="account_setup_options_mail_check_frequency_label">Pa mor aml i wirio\'r ffolder</string>
     <string name="account_setup_options_mail_check_frequency_never">Byth</string>
     <string name="account_setup_options_mail_check_frequency_15min">Pob 15 munud</string>
     <string name="account_setup_options_mail_check_frequency_30min">Pob 30 munud</string>
@@ -295,7 +293,6 @@
     <string name="idle_refresh_period_36min">Pob 36 munud</string>
     <string name="idle_refresh_period_48min">Pob 48 munud</string>
     <string name="idle_refresh_period_60min">Pob 60 munud</string>
-    <string name="account_setup_options_mail_display_count_label">Nifer o negeseuon i\'w dangos</string>
     <string name="account_setup_options_mail_display_count_10">10 neges</string>
     <string name="account_setup_options_mail_display_count_25">25 neges</string>
     <string name="account_setup_options_mail_display_count_50">50 neges</string>
@@ -818,11 +815,6 @@
     <string name="crypto_msg_encrypted_sign_insecure">ond dyw\'r allwedd diwedd-i-ddiwedd ddim yn ymddangos yn ddiogel</string>
     <string name="crypto_msg_encrypted_sign_error">ond mae gwallau yn y data diwedd-i-ddiwedd</string>
     <string name="crypto_msg_encrypted_insecure">ond dyw\'r amgryptiad ddim yn ymddangos yn ddiogel</string>
-    <string name="crypto_info_ok">Iawn</string>
-    <string name="crypto_info_search_key">Allwedd Chwilio</string>
-    <string name="crypto_info_view_signer">Gweld Llofnodydd</string>
-    <string name="crypto_info_view_sender">Gweld Anfonwr</string>
-    <string name="crypto_info_view_security_warning">Manylion</string>
     <string name="locked_attach_unlock">Datgloi</string>
     <string name="locked_attach_unencrypted">Ni chafodd y rhan hwn ei amgryptio a gall fod yn anniogel.</string>
     <string name="locked_attach_title">Atodiad heb ei ddiogelu</string>

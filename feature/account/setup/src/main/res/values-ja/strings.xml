@@ -4,7 +4,6 @@
     <string name="account_setup_options_account_check_frequency_label">確認頻度</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">自動で設定します</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">この設定は信頼されていません</string>
-    <string name="account_setup_button_finish">完了</string>
     <string name="account_setup_options_email_signature_label">メール署名</string>
     <string name="account_setup_options_email_display_count_label">表示するメッセージの数</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">手動設定</string>
@@ -16,7 +15,6 @@
     <string name="account_setup_error_unknown">不明なエラーが発生しました</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">設定が見つかりませんでした</string>
-    <string name="account_setup_options_top_bar_title">アカウント設定</string>
     <string name="account_setup_options_account_name_label">アカウント名</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">設定が見つかりました</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">メールアドレスは必須です。</string>
@@ -45,7 +43,6 @@
     <string name="account_setup_special_folders_form_description">アカウントの特別なフォルダーを指定してください。</string>
     <string name="account_setup_special_folders_sent_folder_label">送信済みトレイフォルダー</string>
     <string name="account_setup_special_folders_folder_none">なし</string>
-    <string name="account_setup_special_folders_top_bar_title">特別なフォルダー</string>
     <string name="account_setup_special_folders_trash_folder_label">ごみ箱フォルダー</string>
     <string name="account_setup_special_folders_archive_folder_label">アーカイブフォルダー</string>
     <string name="account_setup_special_folders_spam_folder_label">迷惑メールフォルダー</string>

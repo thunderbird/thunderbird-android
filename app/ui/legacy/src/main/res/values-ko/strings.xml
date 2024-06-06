@@ -33,7 +33,6 @@
     <string name="authors">제작자</string>
     <string name="about_title">K-9 메일에 대하여</string>
     <string name="accounts_title">계정</string>
-    <string name="advanced">고급</string>
     <string name="compose_title_compose">작성</string>
     <string name="compose_title_reply">답장</string>
     <string name="compose_title_reply_all">전체 답장</string>
@@ -259,7 +258,6 @@
     <string name="spam_folder_label">스팸 폴더</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">설정한 폴더만 보기</string>
     <string name="account_setup_auto_expand_folder">폴더 자동 펼치기</string>
-    <string name="account_setup_options_mail_check_frequency_label">폴더 수신 빈도</string>
     <string name="account_setup_options_mail_check_frequency_never">하지 않음</string>
     <string name="account_setup_options_mail_check_frequency_15min">15분마다</string>
     <string name="account_setup_options_mail_check_frequency_30min">30분마다</string>
@@ -278,7 +276,6 @@
     <string name="idle_refresh_period_36min">36분마다</string>
     <string name="idle_refresh_period_48min">48분마다</string>
     <string name="idle_refresh_period_60min">60분마다</string>
-    <string name="account_setup_options_mail_display_count_label">화면에 보여질 메시지 수</string>
     <string name="account_setup_options_mail_display_count_10">10 메시지</string>
     <string name="account_setup_options_mail_display_count_25">25 메시지</string>
     <string name="account_setup_options_mail_display_count_50">50 메시지</string>
@@ -683,11 +680,6 @@
     <string name="crypto_msg_encrypted_sign_unknown">미지 키</string>
     <string name="crypto_msg_encrypted_sign_mismatch">하지만 종단간의 키가 보낸 자에 맞지 않습니다</string>
     <string name="crypto_msg_encrypted_sign_expired">하지만 종단간의 키가 기한이 지났습니다.</string>
-    <string name="crypto_info_ok">확인</string>
-    <string name="crypto_info_search_key">키를 검색하기</string>
-    <string name="crypto_info_view_signer">서명인을 보기</string>
-    <string name="crypto_info_view_sender">보낸 자를 보기</string>
-    <string name="crypto_info_view_security_warning">세부 사항</string>
     <string name="locked_attach_title">보호되지 않은 부착 파일</string>
     <string name="message_progress_text">로딩 중…</string>
     <string name="messageview_decrypt_cancelled">복호화가 취소되었습니다.</string>

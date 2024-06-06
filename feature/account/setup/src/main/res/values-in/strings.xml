@@ -2,7 +2,6 @@
 <resources>
     <string name="account_setup_special_folders_form_description_automatic">Entri \"Otomatis\" akan mengikuti perubahan yang dilakukan oleh server secara otomatis. Nilai server saat ini ditampilkan dalam tanda kurung.</string>
     <string name="account_setup_special_folders_loading_message">Mengambil daftar folder…</string>
-    <string name="account_setup_special_folders_top_bar_title">Folder spesial</string>
     <string name="account_setup_special_folders_form_description">Silakan tentukan folder spesial untuk akun Anda.</string>
     <string name="account_setup_special_folders_error_message">Gagal mengambil daftar folder dari server</string>
     <string name="account_setup_special_folders_success_message">Semua folder spesial telah dikonfigurasi secara otomatis oleh server.</string>
@@ -23,7 +22,6 @@
     <string name="account_setup_special_folders_folder_none">Tidak ada</string>
     <string name="account_setup_special_folders_folder_automatic">Otomatis (%s)</string>
     <string name="account_setup_options_account_name_label">Nama akun</string>
-    <string name="account_setup_options_top_bar_title">Opsi akun</string>
     <string name="account_setup_options_section_display_options">Opsi tampilan</string>
     <string name="account_setup_options_account_name_error_blank">Nama akun tidak boleh kosong.</string>
     <string name="account_setup_options_display_name_label">Nama Anda</string>
@@ -35,7 +33,6 @@
     <string name="account_setup_create_account_error">Terjadi galat saat mencoba untuk membuat akun</string>
     <string name="account_setup_create_account_created">Akun berhasil dibuat</string>
     <string name="account_setup_title">K-9 Mail</string>
-    <string name="account_setup_button_finish">Selesai</string>
     <string name="account_setup_error_network">Jaringan</string>
     <string name="account_setup_error_unknown">Galat tak diketahui</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Alamat surel diperlukan.</string>

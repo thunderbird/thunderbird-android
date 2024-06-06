@@ -4,7 +4,6 @@
     <string name="account_setup_options_account_check_frequency_label">检查频率</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">自动配置</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">此配置不受信任</string>
-    <string name="account_setup_button_finish">完毕</string>
     <string name="account_setup_options_email_signature_label">电子邮件签名</string>
     <string name="account_setup_options_email_display_count_label">要显示的邮件数</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">手动配置</string>
@@ -16,7 +15,6 @@
     <string name="account_setup_error_unknown">未知错误</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">配置未找到</string>
-    <string name="account_setup_options_top_bar_title">账号选项</string>
     <string name="account_setup_options_account_name_label">账号名称</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">配置已找到</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">电子邮件地址是必需的。</string>
@@ -45,7 +43,6 @@
     <string name="account_setup_special_folders_form_description">请为您的账号指定特殊文件夹。</string>
     <string name="account_setup_special_folders_sent_folder_label">已发送邮件文件夹</string>
     <string name="account_setup_special_folders_folder_none">无</string>
-    <string name="account_setup_special_folders_top_bar_title">特殊文件夹</string>
     <string name="account_setup_special_folders_trash_folder_label">已删除邮件文件夹</string>
     <string name="account_setup_special_folders_archive_folder_label">存档文件夹</string>
     <string name="account_setup_special_folders_spam_folder_label">垃圾邮件文件夹</string>

@@ -35,7 +35,6 @@
     <string name="authors">Auteurs</string>
     <string name="about_title">Oer K-9 Mail</string>
     <string name="accounts_title">Accounts</string>
-    <string name="advanced">Avansearre</string>
     <string name="compose_title_compose">Nij berjocht</string>
     <string name="compose_title_reply">Beäntwurdzje</string>
     <string name="compose_title_reply_all">Allen beäntwurdzje</string>
@@ -288,7 +287,6 @@
     <string name="spam_folder_label">Net-winske</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Allinnich abonnearre mappen toane</string>
     <string name="account_setup_auto_expand_folder">Map automatysk útklappe</string>
-    <string name="account_setup_options_mail_check_frequency_label">Frekwinsje mapkontrôle</string>
     <string name="account_setup_options_mail_check_frequency_never">Nea</string>
     <string name="account_setup_options_mail_check_frequency_15min">Elke 15 minuten</string>
     <string name="account_setup_options_mail_check_frequency_30min">Elke 30 minuten</string>
@@ -307,7 +305,6 @@
     <string name="idle_refresh_period_36min">Elke 36 minuten</string>
     <string name="idle_refresh_period_48min">Elke 48 minuten</string>
     <string name="idle_refresh_period_60min">Elke 60 minuten</string>
-    <string name="account_setup_options_mail_display_count_label">Tal berjochten om te toanen</string>
     <string name="account_setup_options_mail_display_count_10">10 berjochten</string>
     <string name="account_setup_options_mail_display_count_25">25 berjochten</string>
     <string name="account_setup_options_mail_display_count_50">50 berjochten</string>
@@ -824,11 +821,6 @@
     <string name="crypto_msg_encrypted_sign_insecure">mar ein-ta-ein-kaai is ûnfeilich</string>
     <string name="crypto_msg_encrypted_sign_error">mar ein-ta-ein-gegevens befetsje flaters</string>
     <string name="crypto_msg_encrypted_insecure">mar fersifering is net feilich</string>
-    <string name="crypto_info_ok">OK</string>
-    <string name="crypto_info_search_key">Kaai sykje</string>
-    <string name="crypto_info_view_signer">Undertekener besjen</string>
-    <string name="crypto_info_view_sender">Ofstjoerder besjen</string>
-    <string name="crypto_info_view_security_warning">Details</string>
     <string name="locked_attach_unlock">Deblokkearje</string>
     <string name="locked_attach_unencrypted">Dit ûnderdiel is net fersifere en is miskien ûnfeilich.</string>
     <string name="locked_attach_title">Unbefeilige bylage</string>

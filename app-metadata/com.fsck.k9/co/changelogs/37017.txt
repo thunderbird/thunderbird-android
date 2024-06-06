@@ -1,0 +1,5 @@
+- Currezzione di l’ordine di e tappe di scuperta di a cunfigurazione autumatica
+- Mudificazione di u numeru d’affissera predefinitu à 100
+- Attivazione predefinita di e nutificazioni per i conti novi
+- Annullazione di a mudificazione di ghjestione di mailto: URI ghjunta cù K-9 Mail 6.716 per via di l’effetti laterali disprezzati
+- Currezzione d’un prublema per fà funziunà torna « Culurisce i cuntatti » in a vista di i messaghji

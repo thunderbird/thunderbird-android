@@ -1,0 +1,5 @@
+- Push: notificați utilizatorul dacă lipsește permisiunea de a programa alarme exacte
+- Setarea „Trimite ID-ul clientului” a fost redenumită în „Trimite informații despre client”
+- IMAP: S-a adăugat suport pentru atributul de răspuns \NonExitent LIST
+- IMAP: Emite comanda EXPUNGE după ce te muți fără extensia MOVE
+- Traduceri actualizate; a fost adăugată traducere ebraică

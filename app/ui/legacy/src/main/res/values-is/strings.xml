@@ -34,7 +34,6 @@
     <string name="authors">Höfundar</string>
     <string name="about_title">Um K-9 póstinn</string>
     <string name="accounts_title">Aðgangar</string>
-    <string name="advanced">Ítarlegt</string>
     <string name="compose_title_compose">Semja</string>
     <string name="compose_title_reply">Svara</string>
     <string name="compose_title_reply_all">Svara öllum</string>
@@ -286,7 +285,6 @@
     <string name="spam_folder_label">Ruslpóstmappa</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Sýna einungis möppur í áskrift</string>
     <string name="account_setup_auto_expand_folder">Fletta möppu út sjálfvirkt</string>
-    <string name="account_setup_options_mail_check_frequency_label">Tíðni athugana á möppu</string>
     <string name="account_setup_options_mail_check_frequency_never">Aldrei</string>
     <string name="account_setup_options_mail_check_frequency_15min">Á 15 mínútna fresti</string>
     <string name="account_setup_options_mail_check_frequency_30min">Á 30 mínútna fresti</string>
@@ -305,7 +303,6 @@
     <string name="idle_refresh_period_36min">Á 36 mínútna fresti</string>
     <string name="idle_refresh_period_48min">Á 48 mínútna fresti</string>
     <string name="idle_refresh_period_60min">Á 60 mínútna fresti</string>
-    <string name="account_setup_options_mail_display_count_label">Fjöldi skilaboða sem á að birta</string>
     <string name="account_setup_options_mail_display_count_10">10 skilaboð</string>
     <string name="account_setup_options_mail_display_count_25">25 skilaboð</string>
     <string name="account_setup_options_mail_display_count_50">50 skilaboð</string>
@@ -821,11 +818,6 @@
     <string name="crypto_msg_encrypted_sign_insecure">en enda-í-enda dulritunarlykillinn er ekki álitinn öruggur</string>
     <string name="crypto_msg_encrypted_sign_error">en enda-í-enda dulritunarlykillinn er með villur</string>
     <string name="crypto_msg_encrypted_insecure">en dulritunin er ekki álitin örugg</string>
-    <string name="crypto_info_ok">Í lagi</string>
-    <string name="crypto_info_search_key">Leita að lykli</string>
-    <string name="crypto_info_view_signer">Skoða undirritara</string>
-    <string name="crypto_info_view_sender">Skoða sendanda</string>
-    <string name="crypto_info_view_security_warning">Nánar</string>
     <string name="locked_attach_unlock">Aflæsa</string>
     <string name="locked_attach_unencrypted">Þessi hluti var ekki dulritaður og gæti því verið óöruggur.</string>
     <string name="locked_attach_title">Óvarið viðhengi</string>

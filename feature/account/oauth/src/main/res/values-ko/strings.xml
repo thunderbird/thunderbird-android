@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_oauth_sign_in_button">로그인</string>
+    <string name="account_oauth_sign_in_with_google_button">구글로 로그인하기</string>
+    <string name="account_oauth_loading_message">OAuth 를 사용하여 로그인</string>
+    <string name="account_oauth_loading_error">OAuth 로그인 실패</string>
+</resources>

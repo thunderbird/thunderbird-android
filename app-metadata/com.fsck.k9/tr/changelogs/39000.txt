@@ -1,0 +1,6 @@
+- Kullanıcı arayüzü Material 3'e dönüştürülmeye başlandı
+- NFC etiketinde mailto: URI desteği eklendi
+- Uygulamanın arka planda çökmesi için deneysel geçici çözüm eklendi
+- IMAP protokol etkileşimlerinin bazıları iyileştirildi
+- İtme etkin olduğunda bildirimi gösterme gecikmesin
+- Çeviriler güncellendi

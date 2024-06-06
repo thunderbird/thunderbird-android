@@ -18,12 +18,10 @@
     <string name="account_setup_create_account_error">אירעה שגיאה בעת ניסיון יצירת החשבון</string>
     <string name="account_setup_auto_discovery_validation_error_password_required">דרושה סיסמה.</string>
     <string name="account_setup_special_folders_drafts_folder_label">תיקיית טיוטות</string>
-    <string name="account_setup_options_top_bar_title">אפשרויות חשבון</string>
     <string name="account_setup_options_section_display_options">הצג אפשרויות</string>
     <string name="account_setup_options_section_sync_options">אפשרויות סנכרון</string>
     <string name="account_setup_options_email_display_count_label">כמות הודעות להצגה</string>
     <string name="account_setup_title">דוא\"ל K-9</string>
-    <string name="account_setup_button_finish">סיום</string>
     <string name="account_setup_error_network">רשת</string>
     <string name="account_setup_error_unknown">שגיאה לא ידועה</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">דרושה כתובת דוא\"ל.</string>
@@ -51,7 +49,6 @@
     </plurals>
     <string name="account_setup_options_show_notifications_label">הצג התראות</string>
     <string name="account_setup_create_account_created">החשבון נוצר בהצלחה</string>
-    <string name="account_setup_special_folders_top_bar_title">תיקיות מיוחדות</string>
     <string name="account_setup_special_folders_success_message">תצורת כל התיקיות המיוחדות נעשתה אוטומטית ע\"י השרת.</string>
     <string name="account_setup_special_folders_loading_message">מביא רשימת תיקיות…</string>
     <string name="account_setup_special_folders_error_message">הבאת רשימת התיקיות מהשרת נכשלה</string>

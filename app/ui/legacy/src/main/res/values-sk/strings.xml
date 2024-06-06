@@ -28,7 +28,6 @@
     <string name="authors">Autori</string>
     <string name="about_title">O aplikácii K-9 mail </string>
     <string name="accounts_title">Účty</string>
-    <string name="advanced">Pokročilé</string>
     <string name="compose_title_compose">Napísať</string>
     <string name="compose_title_reply">Odpovedať</string>
     <string name="compose_title_reply_all">Odpovedať všetkým</string>
@@ -254,7 +253,6 @@
     <string name="spam_folder_label">Priečinok Nevyžiadaná</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Zobraziť iba odoberané priečinky</string>
     <string name="account_setup_auto_expand_folder">Automaticky rozbaliť priečinok</string>
-    <string name="account_setup_options_mail_check_frequency_label">Frekvencia synchronizácie priečinkov</string>
     <string name="account_setup_options_mail_check_frequency_never">Nikdy</string>
     <string name="account_setup_options_mail_check_frequency_15min">Každých 15 minút</string>
     <string name="account_setup_options_mail_check_frequency_30min">Každých 30 minút</string>
@@ -273,7 +271,6 @@
     <string name="idle_refresh_period_36min">Každých 36 minút</string>
     <string name="idle_refresh_period_48min">Každých 48 minút</string>
     <string name="idle_refresh_period_60min">Každých 60 minút</string>
-    <string name="account_setup_options_mail_display_count_label">Počet správ na zobrazenie</string>
     <string name="account_setup_options_mail_display_count_10">10 správ</string>
     <string name="account_setup_options_mail_display_count_25">25 správ</string>
     <string name="account_setup_options_mail_display_count_50">50 správ</string>
@@ -718,8 +715,6 @@
     <string name="openpgp_dialog_sign_only_neutral_encsigned">Šifrované správy vždy obsahujú podpis.</string>
     <string name="crypto_msg_unsupported_encrypted">Formát šifrovanej správy nie je podporovaný.</string>
     <string name="crypto_msg_cancelled">Správa je šifrovaná, dešifrovanie bolo zrušené.</string>
-    <string name="crypto_info_ok">OK</string>
-    <string name="crypto_info_view_security_warning">Detaily</string>
     <string name="locked_attach_unlock">Odomknúť</string>
     <string name="locked_attach_unencrypted">Táto časť nebola zašifrovaná a nemusí byť bezpečná.</string>
     <string name="locked_attach_title">Nechránená príloha</string>

@@ -5,7 +5,6 @@
     <string name="account_setup_options_account_check_frequency_label">Freqüència de comprovació</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Configura automàticament</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Aquesta configuració no és fiable</string>
-    <string name="account_setup_button_finish">Finalitza</string>
     <string name="account_setup_options_email_signature_label">Signatura de correu electrònic</string>
     <string name="account_setup_options_email_display_count_label">Nombre de missatges a mostrar</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Configureu manualment</string>
@@ -17,7 +16,6 @@
     <string name="account_setup_error_unknown">Error desconegut</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">No s\'ha trobat cap configuració</string>
-    <string name="account_setup_options_top_bar_title">Opcions del compte</string>
     <string name="account_setup_options_account_name_label">Nom del compte</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">S\'ha trobat una configuració</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Cal l\'adreça de correu electrònic.</string>
@@ -45,7 +43,6 @@
     <string name="account_setup_special_folders_form_description">Especifiqueu les carpetes especials per al vostre compte.</string>
     <string name="account_setup_special_folders_sent_folder_label">Carpeta d\'enviats</string>
     <string name="account_setup_special_folders_folder_none">Cap</string>
-    <string name="account_setup_special_folders_top_bar_title">Carpetes especials</string>
     <string name="account_setup_special_folders_trash_folder_label">Carpeta paperera</string>
     <string name="account_setup_special_folders_archive_folder_label">Carpeta d\'arxiu</string>
     <string name="account_setup_special_folders_spam_folder_label">Carpeta brossa</string>

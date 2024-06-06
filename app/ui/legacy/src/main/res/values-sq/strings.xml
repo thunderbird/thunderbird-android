@@ -35,7 +35,6 @@
     <string name="authors">Autorë</string>
     <string name="about_title">Mbi K-9 Mail</string>
     <string name="accounts_title">Llogari</string>
-    <string name="advanced">Të mëtejshme</string>
     <string name="compose_title_compose">Hartoni</string>
     <string name="compose_title_reply">Përgjigjuni</string>
     <string name="compose_title_reply_all">Përgjigjuni të tërëve</string>
@@ -287,7 +286,6 @@
     <string name="spam_folder_label">Dosje të padëshiruarish</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Shfaq vetëm dosje me pajtim</string>
     <string name="account_setup_auto_expand_folder">Dosje për vetë-zgjerim</string>
-    <string name="account_setup_options_mail_check_frequency_label">Shpeshti vjeljeje dosjeje</string>
     <string name="account_setup_options_mail_check_frequency_never">Kurrë</string>
     <string name="account_setup_options_mail_check_frequency_15min">Çdo 15 minuta</string>
     <string name="account_setup_options_mail_check_frequency_30min">Çdo 30 minuta</string>
@@ -306,7 +304,6 @@
     <string name="idle_refresh_period_36min">Çdo 36 minuta</string>
     <string name="idle_refresh_period_48min">Çdo 48 minuta</string>
     <string name="idle_refresh_period_60min">Çdo 60 minuta</string>
-    <string name="account_setup_options_mail_display_count_label">Numër mesazhesh për shfaqje</string>
     <string name="account_setup_options_mail_display_count_10">10 mesazhe</string>
     <string name="account_setup_options_mail_display_count_25">25 mesazhe</string>
     <string name="account_setup_options_mail_display_count_50">50 mesazhe</string>
@@ -823,11 +820,6 @@
     <string name="crypto_msg_encrypted_sign_insecure">por kyçi për skaj-më-skaj nuk konsiderohet i sigurt</string>
     <string name="crypto_msg_encrypted_sign_error">por të dhënat skaj-më-skaj kanë gabime</string>
     <string name="crypto_msg_encrypted_insecure">por fshehtëzim i konsideruar jo i sigurt</string>
-    <string name="crypto_info_ok">OK</string>
-    <string name="crypto_info_search_key">Kërko Kyç</string>
-    <string name="crypto_info_view_signer">Shihni Nënshkruesin</string>
-    <string name="crypto_info_view_sender">Shihni Dërguesin</string>
-    <string name="crypto_info_view_security_warning">Hollësi</string>
     <string name="locked_attach_unlock">Shkyçe</string>
     <string name="locked_attach_unencrypted">Kjo pjesë sqe fshehtëzuar, dhe mund të jetë e pasigurt.</string>
     <string name="locked_attach_title">Bashkëngjitje e Pambrojtur</string>

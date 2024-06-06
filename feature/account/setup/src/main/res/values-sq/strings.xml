@@ -5,7 +5,6 @@
     <string name="account_setup_options_account_check_frequency_label">Shpeshti kontrolli</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Formësoje automatikisht</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Ky formësim s’është i besuar</string>
-    <string name="account_setup_button_finish">Përfundoje</string>
     <string name="account_setup_options_email_signature_label">Nënshkrim email-i</string>
     <string name="account_setup_options_email_display_count_label">Numër mesazhesh për shfaqje</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Formësojeni dorazi</string>
@@ -17,7 +16,6 @@
     <string name="account_setup_error_unknown">Gabim i panjohur</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">S’u gjet formësim</string>
-    <string name="account_setup_options_top_bar_title">Mundësi llogarie</string>
     <string name="account_setup_options_account_name_label">Emër llogarie</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">U Gjet formësim</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Lypset adresa email.</string>
@@ -43,7 +41,6 @@
     <string name="account_setup_special_folders_form_description">Ju lutemi, përcaktoni dosjet speciale për llogarinë tuaj.</string>
     <string name="account_setup_special_folders_sent_folder_label">Dosje të dërguarish</string>
     <string name="account_setup_special_folders_folder_none">Asnjë</string>
-    <string name="account_setup_special_folders_top_bar_title">Dosje speciale</string>
     <string name="account_setup_special_folders_trash_folder_label">Dosje hedhurinash</string>
     <string name="account_setup_create_account_creating">Po krijohet llogari…</string>
     <string name="account_setup_special_folders_archive_folder_label">Dosje arkiv</string>

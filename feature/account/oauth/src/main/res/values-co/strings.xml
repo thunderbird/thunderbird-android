@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_oauth_error_failed">Fiascu di l’autorizazione cù quellu sbagliu : <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_sign_in_description">Avemu da ridiregevi versu u vostru furnidore di messaghjeria per cunnettesi. Ci vole à cuncede à l’appiecazione l’accessu à u vostru contu di messaghjeria.</string>
+    <string name="account_oauth_sign_in_button">Cunnettesi</string>
+    <string name="account_oauth_sign_in_with_google_button">Cunnettesi cù Google</string>
+    <string name="account_oauth_loading_message">Cunnessione impieghendu OAuth</string>
+    <string name="account_oauth_loading_error">Fiascu di a cunnessione OAuth</string>
+    <string name="account_oauth_error_canceled">Autorizazione abbandunata</string>
+    <string name="account_oauth_error_not_supported">Attualmente, OAuth 2.0 ùn hè micca accettatu cù stu furnidore.</string>
+    <string name="account_oauth_error_browser_not_available">L’appiecazione ùn pò micca truvà un navigatore à impiegà per cuncede l’accessu à u vostru contu.</string>
+</resources>

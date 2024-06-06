@@ -1,0 +1,7 @@
+- Configurare nouă și îmbunătățită a contului
+- Opțiune adăugată pentru a reveni la lista de mesaje după marcarea unui mesaj ca necitit în vizualizarea mesajelor
+- Am făcut mai dificilă declanșarea accidentală a acțiunilor de glisare în ecranul cu lista de mesaje
+- Experiență îmbunătățită a citirii ecranului în diferite locuri
+- IMAP: S-a adăugat suport pentru trimiterea comenzii ID (care este cerută de unii furnizori de e-mail)
+- Diverse alte remedieri de erori și îmbunătățiri; vezi modificările pentru versiunile 6.7xx
+- S-au eliminat traducerile în ebraică și coreeană din cauza cât de incomplete erau; traducătorii voluntari sunt bineveniți!

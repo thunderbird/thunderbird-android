@@ -1,0 +1,1 @@
+- Sửa lỗi treo máy khi mở màn hình soạn tin nhắn

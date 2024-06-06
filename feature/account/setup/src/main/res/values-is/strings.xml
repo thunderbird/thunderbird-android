@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="account_setup_button_finish">Ljúka</string>
     <string name="account_setup_error_network">Netkerfi</string>
     <string name="account_setup_title">K-9 - Póstur</string>
     <string name="account_setup_options_account_name_error_blank">Heiti notandaaðgangs má ekki vera tómt.</string>
@@ -17,7 +16,6 @@
     <string name="account_setup_error_unknown">Óþekkt villa</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Uppsetning fannst ekki</string>
-    <string name="account_setup_options_top_bar_title">Valkostir aðgangs</string>
     <string name="account_setup_options_account_name_label">Heiti notandaaðgangs</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Uppsetning fannst</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Tölvupóstfang er nauðsynlegt.</string>
@@ -44,7 +42,6 @@
     <string name="account_setup_special_folders_form_description">Skilgreindu sérmöppurnar fyrir aðganginn þinn.</string>
     <string name="account_setup_special_folders_sent_folder_label">Sent-mappa</string>
     <string name="account_setup_special_folders_folder_none">Ekkert</string>
-    <string name="account_setup_special_folders_top_bar_title">Sérmöppur</string>
     <string name="account_setup_special_folders_trash_folder_label">Rusl-mappa</string>
     <string name="account_setup_special_folders_archive_folder_label">Safnmappa</string>
     <string name="account_setup_special_folders_spam_folder_label">Ruslpóstmappa</string>

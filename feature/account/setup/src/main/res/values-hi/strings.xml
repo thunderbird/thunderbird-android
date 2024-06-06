@@ -4,7 +4,6 @@
     <string name="account_setup_options_account_check_frequency_label">चेक करने की फ्रीक्वेंसी</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">अपनेआप सेट करें</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">इस सेटिंग पे भरोसा नहीं है</string>
-    <string name="account_setup_button_finish">खत्म करें</string>
     <string name="account_setup_options_email_signature_label">ईमेल दस्तखत</string>
     <string name="account_setup_options_email_display_count_label">मैसेज डिस्प्ले करें</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">खुद सेट करें</string>
@@ -16,7 +15,6 @@
     <string name="account_setup_error_unknown">अनजान गड़बड़</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">एसएसएल/टीएलएस</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">सेटिंग नहीं मिली</string>
-    <string name="account_setup_options_top_bar_title">अकाउंट ऑप्शन</string>
     <string name="account_setup_options_account_name_label">अकाउंट का नाम</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">सेटिंग मिल गई</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">ईमेल पता ज़रूरी है।</string>

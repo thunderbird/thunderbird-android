@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_server_validation_error_server">Sbagliu di u servitore</string>
+    <string name="account_server_validation_error_missing_server_capability">Funzione assente nant’à u servitore</string>
+    <string name="account_server_validation_incoming_loading_message">Cuntrollu di i parametri di u servitore d’entrata…</string>
+    <string name="account_server_validation_incoming_success">I parametri di u servitore d’entrata sò stati verificati</string>
+    <string name="account_server_validation_outgoing_loading_message">Cuntrollu di i parametri di u servitore d’esciuta…</string>
+    <string name="account_server_validation_outgoing_success">I parametri di u servitore d’esciuta sò stati verificati</string>
+    <string name="account_server_validation_sign_in">Cunnittitevi</string>
+    <string name="account_server_validation_error_authentication">Sbagliu d’autenticazione</string>
+    <string name="account_server_validation_error_network">Sbagliu di a reta</string>
+    <string name="account_server_validation_error_unknown">Sbagliu scunnisciutu</string>
+    <string name="account_server_validation_error_client_certificate_expired">U certificatu di u cliente ùn hè più accettevule</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">U certificatu di u cliente ùn pò micca esse acciditu</string>
+    <string name="account_server_validation_error_missing_server_capability_details">U servitore ùn pussede micca sta funzione :
+\n%s</string>
+    <string name="account_server_validation_error_details">Detaglii :
+\n%s</string>
+    <string name="account_server_validation_incoming_loading_error">Fiascu di u cuntrollu di i parametri di u servitore d’entrata</string>
+    <string name="account_server_validation_outgoing_loading_error">Fiascu di u cuntrollu di i parametri di u servitore d’esciuta</string>
+</resources>

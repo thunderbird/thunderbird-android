@@ -1,0 +1,6 @@
+- Start der Konvertierung der Benutzeroberfläche in Material 3
+- Unterstützung für mailto: URI auf NFC-Tag hinzugefügt
+- Experimenteller Workaround für das Abstürzen der App im Hintergrund hinzugefügt
+- Einige der IMAP-Protokoll-Interaktionen wurden optimiert
+- Anzeige der Benachrichtigung wird nicht mehr verzögert, wenn Push aktiv ist
+- Übersetzungen aktualisiert

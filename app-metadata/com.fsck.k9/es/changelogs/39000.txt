@@ -1,0 +1,6 @@
+- Comenzó la conversión de la interfaz de usuario a Material 3
+- Añadido soporte para mailto: URI en la etiqueta NFC
+- Se ha añadido solución experimental para el bloqueo de la aplicación en segundo plano
+- Optimizado algunas de las interacciones del protocolo IMAP
+- No demore la visualización de la notificación cuando Push está activo
+- Traducciones actualizadas

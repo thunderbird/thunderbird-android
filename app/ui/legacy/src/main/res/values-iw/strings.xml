@@ -27,7 +27,6 @@
     <!--=== General strings ==================================================================-->
     <string name="about_title">אודות דוא\"ל K-9</string>
     <string name="accounts_title">חשבונות</string>
-    <string name="advanced">מתקדם</string>
     <string name="compose_title_compose">חבר</string>
     <string name="compose_title_reply">השב</string>
     <string name="compose_title_reply_all">השב לכולם</string>
@@ -261,7 +260,6 @@
     <string name="idle_refresh_period_36min">כל 36 דקות</string>
     <string name="idle_refresh_period_48min">כל 48 דקות</string>
     <string name="idle_refresh_period_60min">כל 60 דקות</string>
-    <string name="account_setup_options_mail_display_count_label">מספר הודעות להצגה</string>
     <string name="account_setup_options_mail_display_count_10">10 הודעות</string>
     <string name="account_setup_options_mail_display_count_25">25 הודעות</string>
     <string name="account_setup_options_mail_display_count_50">50 הודעות</string>
@@ -532,7 +530,6 @@
     <string name="recipient_to">אל</string>
     <string name="address_type_other">אחר</string>
     <string name="address_type_mobile">סלולרי</string>
-    <string name="crypto_info_ok">אישור</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="general_settings_title">הגדרות כלליות</string>
@@ -728,7 +725,6 @@
     <string name="changelog_loading_error">לא ניתן לטעון את יומן השינויים.</string>
     <string name="authors">יוצרים</string>
     <string name="message_view_show_remote_images_action">הצגת תמונות מרוחקות</string>
-    <string name="account_setup_options_mail_check_frequency_label">תדירות בדיקת תיקייה במצב הזמנה לשידור (poll)</string>
     <string name="font_size_message_view_recipients">נמענים</string>
     <string name="disable_inline_pgp">כבה PGP/INLINE</string>
     <string name="settings_export_success_generic">הגדרות יוצאו בהצלחה</string>
@@ -818,9 +814,6 @@
     <string name="crypto_msg_encrypted_sign_revoked">אך מפתח קצה לקצה נשלל</string>
     <string name="crypto_msg_encrypted_sign_error">אך יש שגיאות בנתוני קצה לקצה</string>
     <string name="crypto_msg_encrypted_insecure">אך ההצפנה לא נחשבת מאובטחת</string>
-    <string name="crypto_info_search_key">כפתור חיפוש</string>
-    <string name="crypto_info_view_signer">הצג חותם</string>
-    <string name="crypto_info_view_sender">הצג שולח</string>
     <string name="messageview_decrypt_retry">נסה שוב</string>
     <string name="messageview_crypto_error_title">שגיאה בפענוח דוא\"ל</string>
     <string name="recipient_error_non_ascii">כרגע לא נתמכים תווים מיוחדים!</string>
@@ -905,7 +898,6 @@
     <string name="locked_attach_unlock">פתח נעילה</string>
     <string name="locked_attach_title">צרופה לא מוגנת</string>
     <string name="message_progress_text">טוען…</string>
-    <string name="crypto_info_view_security_warning">פרטים</string>
     <string name="openpgp_description_text1">הצפנת הודעות מוודאת שהן יוכלו להיקרא ע\"י הנמען, ולא ע\"י אף אחד אחר.</string>
     <string name="toast_openpgp_provider_error">שגיאה בחיבור אל %s!</string>
     <string name="encrypted_subject">הודעה מוצפנת</string>

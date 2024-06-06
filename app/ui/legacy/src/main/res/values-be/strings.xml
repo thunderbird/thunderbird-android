@@ -34,7 +34,6 @@
     <string name="authors">Аўтары</string>
     <string name="about_title">Пра K-9 Mail</string>
     <string name="accounts_title">Акаўнты</string>
-    <string name="advanced">Дадаткова</string>
     <string name="compose_title_compose">Напісаць</string>
     <string name="compose_title_reply">Адказаць</string>
     <string name="compose_title_reply_all">Адказаць усім</string>
@@ -290,7 +289,6 @@
     <string name="spam_folder_label">Каталог спаму</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Паказваць толькі падпісаныя каталогі</string>
     <string name="account_setup_auto_expand_folder">Аўтапераход у каталог</string>
-    <string name="account_setup_options_mail_check_frequency_label">Частата апытання</string>
     <string name="account_setup_options_mail_check_frequency_never">Ніколі</string>
     <string name="account_setup_options_mail_check_frequency_15min">Кожныя 15 хвілін</string>
     <string name="account_setup_options_mail_check_frequency_30min">Кожныя 30 хвілін</string>
@@ -309,7 +307,6 @@
     <string name="idle_refresh_period_36min">Кожныя 36 хвілін</string>
     <string name="idle_refresh_period_48min">Кожныя 48 хвілін</string>
     <string name="idle_refresh_period_60min">Кожныя 60 хвілін</string>
-    <string name="account_setup_options_mail_display_count_label">Колькасць лістоў для паказу</string>
     <string name="account_setup_options_mail_display_count_10">10 лістоў</string>
     <string name="account_setup_options_mail_display_count_25">25 лістоў</string>
     <string name="account_setup_options_mail_display_count_50">50 лістоў</string>
@@ -833,11 +830,6 @@
     <string name="crypto_msg_encrypted_sign_insecure">але ключ скразнога шыфравання небяспечны</string>
     <string name="crypto_msg_encrypted_sign_error">але ў даных скразнога шыфравання адбылася памылка</string>
     <string name="crypto_msg_encrypted_insecure">але шыфраванне лічыцца небяспечным</string>
-    <string name="crypto_info_ok">Добра</string>
-    <string name="crypto_info_search_key">Пошук ключа</string>
-    <string name="crypto_info_view_signer">Хто падпісаў</string>
-    <string name="crypto_info_view_sender">Хто адправіў</string>
-    <string name="crypto_info_view_security_warning">Падрабязнасці</string>
     <string name="locked_attach_unlock">Разблакаваць</string>
     <string name="locked_attach_unencrypted">Гэтая частка незашыфраваная, таму небяспечная.</string>
     <string name="locked_attach_title">Неабароненыя ўкладзеныя файлы</string>

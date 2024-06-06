@@ -34,7 +34,6 @@
     <string name="authors">Szerzők</string>
     <string name="about_title">A K-9 Mail névjegye</string>
     <string name="accounts_title">Fiókok</string>
-    <string name="advanced">Speciális</string>
     <string name="compose_title_compose">Írás</string>
     <string name="compose_title_reply">Válasz</string>
     <string name="compose_title_reply_all">Válasz mindenkinek</string>
@@ -285,7 +284,6 @@
     <string name="spam_folder_label">Levélszemét mappa</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Csak feliratkozott mappák megjelenítése</string>
     <string name="account_setup_auto_expand_folder">Mappa automatikus kinyitása</string>
-    <string name="account_setup_options_mail_check_frequency_label">Mappa lekérdezésének gyakorisága</string>
     <string name="account_setup_options_mail_check_frequency_never">Soha</string>
     <string name="account_setup_options_mail_check_frequency_15min">15 percenként</string>
     <string name="account_setup_options_mail_check_frequency_30min">30 percenként</string>
@@ -304,7 +302,6 @@
     <string name="idle_refresh_period_36min">36 percenként</string>
     <string name="idle_refresh_period_48min">48 percenként</string>
     <string name="idle_refresh_period_60min">60 percenként</string>
-    <string name="account_setup_options_mail_display_count_label">Megjelenítendő üzenetek száma</string>
     <string name="account_setup_options_mail_display_count_10">10 üzenet</string>
     <string name="account_setup_options_mail_display_count_25">25 üzenet</string>
     <string name="account_setup_options_mail_display_count_50">50 üzenet</string>
@@ -820,11 +817,6 @@
     <string name="crypto_msg_encrypted_sign_insecure">de a végpontok közötti kulcs nem tekinthető biztonságosnak</string>
     <string name="crypto_msg_encrypted_sign_error">de a végpontok közötti adatok hibákat tartalmaznak</string>
     <string name="crypto_msg_encrypted_insecure">de a titkosítás nem tekinthető biztonságosnak</string>
-    <string name="crypto_info_ok">OK</string>
-    <string name="crypto_info_search_key">Kulcs keresése</string>
-    <string name="crypto_info_view_signer">Aláíró megtekintése</string>
-    <string name="crypto_info_view_sender">Feladó megtekintése</string>
-    <string name="crypto_info_view_security_warning">Részletek</string>
     <string name="locked_attach_unlock">Feloldás</string>
     <string name="locked_attach_unencrypted">Ez a rész nem volt titkosítva, és esetleg nem biztonságos.</string>
     <string name="locked_attach_title">Nem védett melléklet</string>

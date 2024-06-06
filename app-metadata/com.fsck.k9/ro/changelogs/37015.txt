@@ -1,0 +1,10 @@
+- S-a adăugat gestionarea imaginilor în meniul contextual pentru hyperlinkuri
+- S-a adăugat capacitatea de a redirecționa atașamentele deschise către e-mailuri noi
+- Ecran de eroare de certificat îmbunătățit în timpul configurării contului
+- Importarea setărilor îmbunătățite în timpul configurării contului
+- UI/UX de configurare a contului îmbunătățită
+- Redare îmbunătățită a configurației contului pe ecrane mici
+- Editare îmbunătățită a setărilor serverului de cont UI/UX
+- S-a remediat blocarea AlarmManager pe Android 14
+- Modificări interne
+- Traduceri actualizate

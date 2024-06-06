@@ -4,7 +4,6 @@
     <string name="account_setup_options_account_check_frequency_label">Prüfintervall</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Automatisch konfigurieren</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Diese Konfiguration ist nicht vertrauenswürdig</string>
-    <string name="account_setup_button_finish">Fertigstellen</string>
     <string name="account_setup_options_email_signature_label">E-Mail-Signatur</string>
     <string name="account_setup_options_email_display_count_label">Anzahl der anzuzeigenden Nachrichten</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Manuell konfigurieren</string>
@@ -16,7 +15,6 @@
     <string name="account_setup_error_unknown">Unbekannter Fehler</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Konfiguration nicht gefunden</string>
-    <string name="account_setup_options_top_bar_title">Kontoeinstellungen</string>
     <string name="account_setup_options_account_name_label">Kontoname</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Konfiguration gefunden</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">E-Mail-Adresse ist erforderlich.</string>
@@ -40,7 +38,6 @@
     <string name="account_setup_special_folders_success_message">Alle besonderen Ordner wurden vom Server automatisch konfiguriert.</string>
     <string name="account_setup_special_folders_folder_automatic">Automatisch (%s)</string>
     <string name="account_setup_special_folders_form_description">Bitte wähle die besonderen Ordner für dein Konto aus.</string>
-    <string name="account_setup_special_folders_top_bar_title">Besondere Ordner</string>
     <string name="account_setup_special_folders_archive_folder_label">Archiv</string>
     <string name="account_setup_special_folders_form_description_automatic">Der Eintrag \"Automatisch\" übernimmt die vom Server vorgenommenen Änderungen. Der aktuelle Serverwert wird in Klammern angezeigt.</string>
     <string name="account_setup_special_folders_loading_message">Liste der Ordner wird abgerufen…</string>

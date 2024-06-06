@@ -1,0 +1,6 @@
+- Begonnen met het converteren van de gebruikersinterface naar Material 3
+- Ondersteuning toegevoegd voor mailto: URI op NFC-tag
+- Experimentele oplossing toegevoegd voor de app die op de achtergrond crasht
+- Enkele van de IMAP-protocolinteracties geoptimaliseerd
+- Vertraag de melding niet wanneer Push actief is
+- Bijgewerkte vertalingen

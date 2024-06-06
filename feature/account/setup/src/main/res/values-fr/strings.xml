@@ -4,7 +4,6 @@
     <string name="account_setup_options_account_check_frequency_label">Fréquence de relève</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Configurer automatiquement</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Cette configuration n’est pas fiable</string>
-    <string name="account_setup_button_finish">Terminer</string>
     <string name="account_setup_options_email_signature_label">Signature du courriel</string>
     <string name="account_setup_options_email_display_count_label">Nombre de messages à afficher</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Configurer manuellement</string>
@@ -16,7 +15,6 @@
     <string name="account_setup_error_unknown">Erreur inconnue</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">La configuration n’a pas été trouvée</string>
-    <string name="account_setup_options_top_bar_title">Options du compte</string>
     <string name="account_setup_options_account_name_label">Nom du compte</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">La configuration a été trouvée</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">L’adresse courriel est requise.</string>
@@ -38,7 +36,6 @@
     <string name="account_setup_create_account_creating">Création du compte…</string>
     <string name="account_setup_create_account_error">Une erreur est survenue lors de la création du compte</string>
     <string name="account_setup_special_folders_form_description">Sélectionnez les dossiers spéciaux de votre compte.</string>
-    <string name="account_setup_special_folders_top_bar_title">Dossiers spéciaux</string>
     <string name="account_setup_special_folders_success_message">Tous les dossiers spéciaux ont été configurés automatiquement par le serveur.</string>
     <string name="account_setup_special_folders_folder_automatic">Automatique (%s)</string>
     <string name="account_setup_special_folders_drafts_folder_label">Dossier des brouillons</string>

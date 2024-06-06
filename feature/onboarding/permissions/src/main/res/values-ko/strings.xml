@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="onboarding_permissions_notifications_title">알림</string>
+    <string name="onboarding_permissions_notifications_description">이메일을 놓치지 않도록 알림을 켜세요.</string>
+    <string name="onboarding_permissions_allow_button">허용</string>
+</resources>

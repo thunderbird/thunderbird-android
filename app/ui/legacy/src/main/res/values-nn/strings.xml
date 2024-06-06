@@ -16,7 +16,6 @@
     <string name="account_delete_dlg_instructions_fmt">Kontoen \"<xliff:g id="account">%s</xliff:g>\" vil verta fjerna frå K-9 Mail.</string>
     <!--=== General strings ==================================================================-->
     <string name="accounts_title">Kontoar</string>
-    <string name="advanced">Innfløkt</string>
     <string name="compose_title_compose">Skriv</string>
     <string name="compose_title_reply">Svar</string>
     <string name="compose_title_reply_all">Svar alle</string>
@@ -185,7 +184,6 @@
     <string name="idle_refresh_period_36min">Kvart 36. minutt</string>
     <string name="idle_refresh_period_48min">Kvart 48. minutt</string>
     <string name="idle_refresh_period_60min">Kvar time</string>
-    <string name="account_setup_options_mail_display_count_label">Kor mange meldingar som skal synast:</string>
     <string name="account_setup_options_mail_display_count_10">10 meldingar</string>
     <string name="account_setup_options_mail_display_count_25">25 meldingar</string>
     <string name="account_setup_options_mail_display_count_50">50 meldingar</string>
@@ -450,7 +448,6 @@
     <string name="openpgp_sign_only_keep_enabled">Hald påskrudd</string>
     <string name="crypto_msg_unsupported_encrypted">Meldinga er kryptert, men i eit ikkje-støtta format.</string>
     <string name="crypto_msg_cancelled">Meldinga er kryptert, men avkrypteringa vart avbroten.</string>
-    <string name="crypto_info_ok">Greitt</string>
     <string name="message_progress_text">Lastar …</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <string name="message_list_widget_initializing">Lastar …</string>

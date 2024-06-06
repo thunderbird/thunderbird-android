@@ -1,0 +1,1 @@
+– Correction d’un plantage lors de l’ouverture de l’écran de rédaction d’un message

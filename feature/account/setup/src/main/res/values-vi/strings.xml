@@ -5,7 +5,6 @@
     <string name="account_setup_options_account_check_frequency_label">Tần suất kiểm tra</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Cấu hình tự động</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Cấu hình này không đáng tin cậy</string>
-    <string name="account_setup_button_finish">Hoàn thành</string>
     <string name="account_setup_options_email_signature_label">Chữ ký email</string>
     <string name="account_setup_options_email_display_count_label">Số lượng tin nhắn hiển thị</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Định cấu hình thủ công</string>
@@ -18,7 +17,6 @@
     <string name="account_setup_error_unknown">Lỗi không rõ</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Không tìm thấy cấu hình</string>
-    <string name="account_setup_options_top_bar_title">Tùy chọn tài khoản</string>
     <string name="account_setup_options_account_name_label">Tên tài khoản</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Đã tìm thấy cấu hình</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Địa chỉ e-mail là bắt buộc.</string>
@@ -37,7 +35,6 @@
     <string name="account_setup_create_account_created">Tạo tài khoản thành công</string>
     <string name="account_setup_create_account_creating">Đang tạo tài khoản…</string>
     <string name="account_setup_create_account_error">Đã xảy ra lỗi khi cố gắng tạo tài khoản</string>
-    <string name="account_setup_special_folders_top_bar_title">Thư mục đặc biệt</string>
     <string name="account_setup_special_folders_loading_message">Đang lấy danh sách thư mục…</string>
     <string name="account_setup_special_folders_error_message">Không thể lấy danh sách thư mục từ máy chủ</string>
     <string name="account_setup_auto_discovery_validation_error_password_required">Mật khẩu là bắt buộc.</string>

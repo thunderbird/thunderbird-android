@@ -35,7 +35,6 @@
     <string name="authors">作者</string>
     <string name="about_title">关于 K-9 Mail</string>
     <string name="accounts_title">账号</string>
-    <string name="advanced">高级</string>
     <string name="compose_title_compose">撰写</string>
     <string name="compose_title_reply">回复</string>
     <string name="compose_title_reply_all">回复全部</string>
@@ -286,7 +285,6 @@
     <string name="spam_folder_label">垃圾邮件文件夹</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">只显示订阅的文件夹</string>
     <string name="account_setup_auto_expand_folder">自动展开文件夹</string>
-    <string name="account_setup_options_mail_check_frequency_label">文件夹轮询频率</string>
     <string name="account_setup_options_mail_check_frequency_never">从不</string>
     <string name="account_setup_options_mail_check_frequency_15min">每 15 分钟</string>
     <string name="account_setup_options_mail_check_frequency_30min">每 30 分钟</string>
@@ -305,7 +303,6 @@
     <string name="idle_refresh_period_36min">每 36 分钟</string>
     <string name="idle_refresh_period_48min">每 48 分钟</string>
     <string name="idle_refresh_period_60min">每 60 分钟</string>
-    <string name="account_setup_options_mail_display_count_label">要显示的邮件数</string>
     <string name="account_setup_options_mail_display_count_10">10 封</string>
     <string name="account_setup_options_mail_display_count_25">25 封</string>
     <string name="account_setup_options_mail_display_count_50">50 封</string>
@@ -818,11 +815,6 @@
     <string name="crypto_msg_encrypted_sign_insecure">但是端到端密钥不认为是安全的</string>
     <string name="crypto_msg_encrypted_sign_error">但是端到端数据有错误</string>
     <string name="crypto_msg_encrypted_insecure">但是加密不认为安全</string>
-    <string name="crypto_info_ok">确定</string>
-    <string name="crypto_info_search_key">搜索密钥</string>
-    <string name="crypto_info_view_signer">查看签名者</string>
-    <string name="crypto_info_view_sender">查看发件人</string>
-    <string name="crypto_info_view_security_warning">详情</string>
     <string name="locked_attach_unlock">解锁</string>
     <string name="locked_attach_unencrypted">此部分未加密，可能不安全。</string>
     <string name="locked_attach_title">无保护的附件</string>

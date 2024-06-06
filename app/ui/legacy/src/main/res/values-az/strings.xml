@@ -31,7 +31,6 @@
     <string name="authors">Müəlliflər</string>
     <string name="about_title">K-9 Mail Haqqında</string>
     <string name="accounts_title">Hesablar</string>
-    <string name="advanced">Qabaqcıl</string>
     <string name="compose_title_compose">Tərtib et</string>
     <string name="compose_title_reply">Cavab ver</string>
     <string name="compose_title_reply_all">Hamısın cavabla</string>
@@ -83,14 +82,6 @@
     <!--Title of the setting to specify the density of the message list-->
     <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
     <string name="account_settings_push_advanced_title">Qabaqcıl</string>
-    <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
-    <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <!--=== Client certificates specific ==================================================================-->
-    <!--Note: This references message_view_download_remainder-->
-    <string name="crypto_info_ok">Oldu</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <!--permissions-->

@@ -6,7 +6,6 @@
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Configurar automaticamente</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Esta configuração não é confiável</string>
     <string name="account_setup_create_account_created">Conta criada com sucesso</string>
-    <string name="account_setup_button_finish">Finalizar</string>
     <string name="account_setup_options_email_signature_label">Assinatura de e-mail</string>
     <string name="account_setup_options_email_display_count_label">Número de mensagens a mostrar</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Configurar manualmente</string>
@@ -20,7 +19,6 @@
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Configuração não encontrada</string>
     <string name="account_setup_create_account_creating">A criar conta…</string>
-    <string name="account_setup_options_top_bar_title">Opções da conta</string>
     <string name="account_setup_options_account_name_label">Nome da conta</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Configuração encontrada</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Endereço de email necessário.</string>
@@ -37,7 +35,6 @@
     <string name="account_setup_options_show_notifications_label">Mostrar notificações</string>
     <string name="account_setup_options_section_display_options">Opções de visualização</string>
     <string name="account_setup_title">K-9 Mail</string>
-    <string name="account_setup_special_folders_top_bar_title">Pastas especiais</string>
     <string name="account_setup_special_folders_form_description">Por favor indique as pastas especiais para a sua conta.</string>
     <string name="account_setup_special_folders_form_description_automatic">A entrada \"Automático\" seguirá automaticamente as alterações efetuadas pelo servidor. O valor atual do servidor é apresentado entre parênteses.</string>
     <string name="account_setup_special_folders_loading_message">A obter a lista de pastas…</string>

@@ -5,7 +5,6 @@
     <string name="account_setup_options_account_check_frequency_label">Kolla efter ny e-post frekvens</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Konfigurera automatiskt</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Denna konfiguration är inte pålitlig</string>
-    <string name="account_setup_button_finish">Slutför</string>
     <string name="account_setup_options_email_signature_label">E-post signatur</string>
     <string name="account_setup_options_email_display_count_label">Antal meddelanden att visa</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Konfigurera manuellt</string>
@@ -15,7 +14,6 @@
     <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Redigera konfiguration</string>
     <string name="account_setup_error_unknown">Okänt fel</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Konfiguration hittades inte</string>
-    <string name="account_setup_options_top_bar_title">Kontoinställningar</string>
     <string name="account_setup_options_account_name_label">Kontonamn</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Konfiguration hittades</string>
     <string name="account_setup_options_display_name_label">Ditt namn</string>
@@ -45,7 +43,6 @@
     <string name="account_setup_special_folders_form_description">Vänligen specificera dom speciella mapparna för ditt konto.</string>
     <string name="account_setup_special_folders_sent_folder_label">Skickat mapp</string>
     <string name="account_setup_special_folders_folder_none">Ingen</string>
-    <string name="account_setup_special_folders_top_bar_title">Speciella mappar</string>
     <string name="account_setup_special_folders_trash_folder_label">Papperskorgen mapp</string>
     <string name="account_setup_special_folders_archive_folder_label">Arkiv mapp</string>
     <string name="account_setup_special_folders_spam_folder_label">Spam mapp</string>

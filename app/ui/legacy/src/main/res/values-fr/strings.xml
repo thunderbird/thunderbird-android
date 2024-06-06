@@ -34,7 +34,6 @@
     <string name="authors">Auteurs</string>
     <string name="about_title">À propos de Courriel K-9 Mail</string>
     <string name="accounts_title">Comptes</string>
-    <string name="advanced">Avancé</string>
     <string name="compose_title_compose">Rédiger</string>
     <string name="compose_title_reply">Répondre</string>
     <string name="compose_title_reply_all">Répondre à tous</string>
@@ -288,7 +287,6 @@
     <string name="spam_folder_label">Dossier des pourriels</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Afficher seulement les dossiers auxquels je suis abonné</string>
     <string name="account_setup_auto_expand_folder">Ouvrir automatiquement le dossier</string>
-    <string name="account_setup_options_mail_check_frequency_label">Fréquence de scrutation des dossiers</string>
     <string name="account_setup_options_mail_check_frequency_never">Jamais</string>
     <string name="account_setup_options_mail_check_frequency_15min">Toutes les 15 minutes</string>
     <string name="account_setup_options_mail_check_frequency_30min">Toutes les 30 minutes</string>
@@ -307,7 +305,6 @@
     <string name="idle_refresh_period_36min">Toutes les 36 minutes</string>
     <string name="idle_refresh_period_48min">Toutes les 48 minutes</string>
     <string name="idle_refresh_period_60min">Toutes les 60 minutes</string>
-    <string name="account_setup_options_mail_display_count_label">Nombre de courriels à afficher</string>
     <string name="account_setup_options_mail_display_count_10">10 courriels</string>
     <string name="account_setup_options_mail_display_count_25">25 courriels</string>
     <string name="account_setup_options_mail_display_count_50">50 courriels</string>
@@ -827,11 +824,6 @@
     <string name="crypto_msg_encrypted_sign_insecure">mais la clé de bout en bout n’est pas considérée comme sûre</string>
     <string name="crypto_msg_encrypted_sign_error">mais les données de bout en bout contiennent des erreurs</string>
     <string name="crypto_msg_encrypted_insecure">mais le chiffrement n’est pas considéré comme sûr</string>
-    <string name="crypto_info_ok">Ok</string>
-    <string name="crypto_info_search_key">Touche de recherche</string>
-    <string name="crypto_info_view_signer">Visualiser le signataire</string>
-    <string name="crypto_info_view_sender">Visualiser l’expéditeur</string>
-    <string name="crypto_info_view_security_warning">Détails</string>
     <string name="locked_attach_unlock">Déverrrouiller</string>
     <string name="locked_attach_unencrypted">Cette partie n’a pas été chiffrée et pourrait ne pas être fiable.</string>
     <string name="locked_attach_title">Fichier joint non protégé</string>
