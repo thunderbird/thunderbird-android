@@ -17,7 +17,7 @@
         android:singleLine="true"
         android:ellipsize="end"
         android:textColor="?android:attr/textColorPrimary"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textAppearance="?attr/textAppearanceBodyLarge"
         tools:text="Initial identity" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -27,7 +27,7 @@
         android:singleLine="true"
         android:ellipsize="end"
         android:textColor="?android:attr/textColorSecondary"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
         tools:text="Firstname Lastname &lt;user@domain.example&gt;" />
 
 </LinearLayout>

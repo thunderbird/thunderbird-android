@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textAppearance="?attr/textAppearanceBody2"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
         android:textColor="?android:attr/textColorSecondary"
         tools:text="to me" />
 
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:singleLine="true"
-        android:textAppearance="?attr/textAppearanceBody2"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
         android:textColor="?attr/colorAccent"
         tools:text="+2" />
 

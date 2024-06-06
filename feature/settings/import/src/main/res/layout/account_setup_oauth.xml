@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
                 android:text="@string/settings_import_oauth_description"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                android:textAppearance="?attr/textAppearanceBodyLarge" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/oauth_sign_in_button"
@@ -61,7 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
                 tools:text="@string/settings_import_oauth_error_browser_not_found" />
 
         </LinearLayout>

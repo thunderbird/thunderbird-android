@@ -13,7 +13,7 @@
         android:paddingEnd="4dp"
         android:paddingBottom="4dp"
         android:text="•"
-        android:textAppearance="?attr/textAppearanceBody2"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
         tools:ignore="HardcodedText" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -25,6 +25,6 @@
         android:paddingStart="0dp"
         android:paddingEnd="16dp"
         android:paddingBottom="4dp"
-        android:textAppearance="?attr/textAppearanceBody2"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
         tools:text="Bug fixes and minor improvements" />
 </LinearLayout>

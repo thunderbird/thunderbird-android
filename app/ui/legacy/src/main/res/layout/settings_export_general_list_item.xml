@@ -28,7 +28,7 @@
         android:layout_marginTop="8dp"
         android:duplicateParentState="true"
         android:text="@string/general_settings_title"
-        android:textAppearance="?android:attr/textAppearanceListItem"
+        android:textAppearance="?attr/textAppearanceTitleMedium"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline"

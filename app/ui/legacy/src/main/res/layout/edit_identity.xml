@@ -25,7 +25,7 @@
                     android:text="@string/edit_identity_description_label"
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?android:attr/textColorPrimary"/>
 
             <EditText
@@ -40,7 +40,7 @@
                     android:text="@string/edit_identity_name_label"
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?android:attr/textColorPrimary"/>
 
             <EditText
@@ -55,7 +55,7 @@
                     android:text="@string/edit_identity_email_label"
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?android:attr/textColorPrimary"
                     />
 
@@ -71,7 +71,7 @@
                     android:text="@string/edit_identity_reply_to_label"
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?android:attr/textColorPrimary"
                     />
 
@@ -88,7 +88,7 @@
             android:text="@string/edit_identity_always_bcc_label"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textColor="?android:attr/textColorPrimary" />
         <EditText
             android:id="@+id/account_always_bcc"
@@ -112,7 +112,7 @@
                         android:text="@string/edit_identity_signature_label"
                         android:layout_height="wrap_content"
                         android:layout_width="fill_parent"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
                         android:textColor="?android:attr/textColorPrimary"/>
 
                 <EditText

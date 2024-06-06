@@ -26,7 +26,7 @@
             android:paddingTop="16dp"
             android:paddingBottom="8dp"
             android:text="@string/about_title"
-            android:textAppearance="?attr/textAppearanceSubtitle2"
+            android:textAppearance="?attr/textAppearanceTitleSmall"
             android:textColor="?attr/colorAccent" />
 
         <LinearLayout
@@ -60,12 +60,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/version"
-                    android:textColor="?android:attr/textColorPrimary" />
+                    android:textAppearance="?attr/textAppearanceTitleMedium" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/version"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
                     tools:text="1.2.3" />
             </LinearLayout>
         </LinearLayout>
@@ -101,12 +102,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/authors"
-                    android:textColor="?android:attr/textColorPrimary" />
+                    android:textAppearance="?attr/textAppearanceTitleMedium" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/app_authors" />
+                    android:text="@string/app_authors"
+                    android:textAppearance="?attr/textAppearanceBodyMedium" />
             </LinearLayout>
         </LinearLayout>
 
@@ -141,12 +143,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/source_code"
-                    android:textColor="?android:attr/textColorPrimary" />
+                    android:textAppearance="?attr/textAppearanceTitleMedium" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/app_source_url" />
+                    android:text="@string/app_source_url"
+                    android:textAppearance="?attr/textAppearanceBodyMedium" />
             </LinearLayout>
         </LinearLayout>
 
@@ -181,12 +184,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/license"
-                    android:textColor="?android:attr/textColorPrimary" />
+                    android:textAppearance="?attr/textAppearanceTitleMedium" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/app_license" />
+                    android:text="@string/app_license"
+                    android:textAppearance="?attr/textAppearanceBodyMedium" />
             </LinearLayout>
         </LinearLayout>
 
@@ -197,7 +201,7 @@
             android:paddingTop="16dp"
             android:paddingBottom="8dp"
             android:text="@string/about_project_title"
-            android:textAppearance="?attr/textAppearanceSubtitle2"
+            android:textAppearance="?attr/textAppearanceTitleSmall"
             android:textColor="?attr/colorAccent" />
 
         <LinearLayout
@@ -231,12 +235,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/about_website_title"
-                    android:textColor="?android:attr/textColorPrimary" />
+                    android:textAppearance="?attr/textAppearanceTitleMedium" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/app_webpage_url" />
+                    android:text="@string/app_webpage_url"
+                    android:textAppearance="?attr/textAppearanceBodyMedium" />
             </LinearLayout>
         </LinearLayout>
 
@@ -271,12 +276,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/user_forum_title"
-                    android:textColor="?android:attr/textColorPrimary" />
+                    android:textAppearance="?attr/textAppearanceTitleMedium" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/user_forum_url" />
+                    android:text="@string/user_forum_url"
+                    android:textAppearance="?attr/textAppearanceBodyMedium" />
             </LinearLayout>
         </LinearLayout>
 
@@ -288,7 +294,7 @@
             android:paddingTop="16dp"
             android:paddingBottom="8dp"
             android:text="@string/about_libraries"
-            android:textAppearance="?attr/textAppearanceSubtitle2"
+            android:textAppearance="?attr/textAppearanceTitleSmall"
             android:textColor="?attr/colorAccent" />
 
         <androidx.recyclerview.widget.RecyclerView
