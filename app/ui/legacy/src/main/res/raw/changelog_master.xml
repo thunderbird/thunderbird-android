@@ -5,6 +5,11 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.804" versioncode="38004" date="2024-06-07">
+        <change>Added a workaround for a crash when the system is restarting the Push foreground service</change>
+        <change>Updated the app to target the Android 14 API</change>
+        <change>Updated translations</change>
+    </release>
     <release version="6.803" versioncode="38003" date="2024-05-10">
         <change>Ask for permission to schedule alarms before allowing to enable Push on Android 12+</change>
         <change>Updated translations</change>

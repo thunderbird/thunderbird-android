@@ -1,0 +1,3 @@
+- Added a workaround for a crash when the system is restarting the Push foreground service
+- Updated the app to target the Android 14 API
+- Updated translations
