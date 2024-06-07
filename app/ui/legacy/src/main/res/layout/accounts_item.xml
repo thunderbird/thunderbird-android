@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:ellipsize="end"
-                android:textSize="@dimen/appTextSizeMedium"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
                 tools:text="@sample/accounts.json/data/name"/>
 
         <com.google.android.material.textview.MaterialTextView
@@ -44,7 +44,7 @@
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:textColor="?attr/colorSecondary"
-                android:textSize="@dimen/appTextSizeSmaller"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
                 tools:text="@sample/accounts.json/data/email"/>
 
     </LinearLayout>
