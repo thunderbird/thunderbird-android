@@ -2,7 +2,7 @@ package com.fsck.k9.ui.helper
 
 import android.content.Context
 import android.util.AttributeSet
-import androidx.appcompat.widget.AppCompatTextView
+import com.google.android.material.textview.MaterialTextView
 
 /**
  * Return the baseline of the last line of text, instead of TextView's default of the first line.
@@ -11,7 +11,7 @@ import androidx.appcompat.widget.AppCompatTextView
 class BottomBaselineTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-) : AppCompatTextView(context, attrs) {
+) : MaterialTextView(context, attrs) {
 
     override fun getBaseline(): Int {
         val layout = layout ?: return super.getBaseline()
