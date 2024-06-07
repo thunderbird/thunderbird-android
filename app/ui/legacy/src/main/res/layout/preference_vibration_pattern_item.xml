@@ -14,5 +14,4 @@
     android:paddingStart="@dimen/abc_select_dialog_padding_start_material"
     android:paddingEnd="?attr/dialogPreferredPadding"
     android:textAppearance="?attr/textAppearanceBodyMedium"
-    android:textColor="?attr/textColorAlertDialogListItem"
     tools:text="Pattern 1" />
