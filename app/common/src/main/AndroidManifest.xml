@@ -232,20 +232,6 @@
 
         <!-- This component is disabled by default (if possible). It will be enabled programmatically if necessary. -->
         <receiver
-            android:name="app.k9mail.feature.widget.unread.UnreadWidgetProvider"
-            android:label="@string/unread_widget_label"
-            android:enabled="@bool/home_screen_widgets_enabled"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/unread_widget_info" />
-        </receiver>
-
-        <!-- This component is disabled by default (if possible). It will be enabled programmatically if necessary. -->
-        <receiver
             android:name="com.fsck.k9.widget.list.MessageListWidgetProvider"
             android:icon="@drawable/message_list_widget_preview"
             android:label="@string/mail_list_widget_text"

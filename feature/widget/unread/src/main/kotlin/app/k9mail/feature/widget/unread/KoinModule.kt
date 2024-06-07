@@ -20,7 +20,12 @@ val unreadWidgetModule = module {
             folderNameFormatter = get(),
         )
     }
-    single { UnreadWidgetUpdater(context = get()) }
+    single {
+        UnreadWidgetUpdater(
+            context = get(),
+            classProvider = get(),
+        )
+    }
     single { UnreadWidgetUpdateListener(unreadWidgetUpdater = get()) }
     single { UnreadWidgetMigrations(accountRepository = get(), folderRepository = get()) }
 }

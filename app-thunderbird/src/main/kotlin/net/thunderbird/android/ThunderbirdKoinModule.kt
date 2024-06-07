@@ -3,13 +3,14 @@ package net.thunderbird.android
 import app.k9mail.core.common.oauth.OAuthConfigurationFactory
 import app.k9mail.core.ui.compose.theme2.thunderbird.ThunderbirdTheme2
 import app.k9mail.feature.launcher.FeatureLauncherExternalContract.FeatureThemeProvider
-import app.k9mail.feature.widget.unread.UnreadWidgetProvider
+import app.k9mail.feature.widget.unread.UnreadWidgetClassProvider
 import com.fsck.k9.AppConfig
 import com.fsck.k9.activity.LauncherShortcuts
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.widget.list.MessageListWidgetProvider
 import net.thunderbird.android.auth.ThunderbirdOAuthConfigurationFactory
 import net.thunderbird.android.dev.developmentModuleAdditions
+import net.thunderbird.android.widget.provider.UnreadWidgetProvider
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -19,6 +20,9 @@ val appModule = module {
     single<AppConfig> { appConfig }
     single<OAuthConfigurationFactory> { ThunderbirdOAuthConfigurationFactory() }
     single<FeatureThemeProvider> { provideFeatureThemeProvider() }
+    single<UnreadWidgetClassProvider> {
+        UnreadWidgetClassProvider { UnreadWidgetProvider::class.java }
+    }
 
     developmentModuleAdditions()
 }

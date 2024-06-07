@@ -16,14 +16,36 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
- * Unread home screen widget "provider"
+ * Unread widget provider that displays the number of unread messages on the user's home screen.
  *
- * IMPORTANT: This class must not be renamed or moved, otherwise unread widgets added to the home screen using an older
- * version of the app will stop working.
+ * The concrete implementation of this class must be added to the app's manifest.
  *
- * The rest of the unread widget specific code can be found in the package [com.fsck.k9.widget.unread].
+ * The manifest entry should look like this:
+ *
+ * ```
+ * <manifest>
+ *     <application>
+ *         <receiver
+ *             android:name="app.k9mail.feature.widget.unread.UnreadWidgetProvider"
+ *             android:label="@string/unread_widget_label"
+ *             android:enabled="@bool/home_screen_widgets_enabled"
+ *             android:exported="false">
+ *             <intent-filter>
+ *                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+ *             </intent-filter>
+ *             <meta-data
+ *                 android:name="android.appwidget.provider"
+ *                 android:resource="@xml/unread_widget_info" />
+ *         </receiver>
+ *     </application>
+ * </manifest>
+ * ```
+ *
+ * IMPORTANT: The concrete implementation of this class that is exposed via the manifest and must have a fully
+ *            qualified class name that can't ever be changed. Otherwise widgets created with older versions of the app
+ *            will stop working.
  */
-class UnreadWidgetProvider : AppWidgetProvider(), EarlyInit {
+abstract class BaseUnreadWidgetProvider : AppWidgetProvider(), EarlyInit {
     private val repository: UnreadWidgetRepository by inject()
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
