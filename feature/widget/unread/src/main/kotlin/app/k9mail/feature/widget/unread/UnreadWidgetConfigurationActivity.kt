@@ -3,7 +3,7 @@ package app.k9mail.feature.widget.unread
 import android.appwidget.AppWidgetManager
 import android.os.Bundle
 import com.fsck.k9.ui.base.K9Activity
-import com.fsck.k9.ui.fragmentTransaction
+import com.fsck.k9.ui.base.extensions.fragmentTransaction
 import timber.log.Timber
 import com.fsck.k9.ui.R as UiR
 

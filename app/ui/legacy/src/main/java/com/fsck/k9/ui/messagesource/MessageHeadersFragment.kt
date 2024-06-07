@@ -13,8 +13,8 @@ import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.mail.Header
 import com.fsck.k9.mail.internet.MimeUtility
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.base.extensions.withArguments
 import com.fsck.k9.ui.base.loader.observeLoading
-import com.fsck.k9.ui.withArguments
 import com.google.android.material.textview.MaterialTextView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

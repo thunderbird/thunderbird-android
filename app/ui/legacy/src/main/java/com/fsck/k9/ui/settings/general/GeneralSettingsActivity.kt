@@ -14,8 +14,8 @@ import com.bytehamster.lib.preferencesearch.SearchPreferenceResult
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
-import com.fsck.k9.ui.fragmentTransaction
-import com.fsck.k9.ui.fragmentTransactionWithBackStack
+import com.fsck.k9.ui.base.extensions.fragmentTransaction
+import com.fsck.k9.ui.base.extensions.fragmentTransactionWithBackStack
 
 class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, SearchPreferenceResultListener {
     private lateinit var searchPreferenceActionView: SearchPreferenceActionView

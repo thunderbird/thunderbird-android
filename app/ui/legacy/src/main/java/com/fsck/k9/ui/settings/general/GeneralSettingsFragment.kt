@@ -8,8 +8,8 @@ import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
 import androidx.preference.ListPreference
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.base.extensions.withArguments
 import com.fsck.k9.ui.observe
-import com.fsck.k9.ui.withArguments
 import com.google.android.material.snackbar.Snackbar
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import org.koin.android.ext.android.inject
