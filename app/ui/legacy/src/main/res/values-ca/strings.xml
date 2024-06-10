@@ -675,18 +675,6 @@
     <string name="settings_export_progress_text">S\'està exportant la configuració…</string>
     <string name="settings_export_success_generic">La configuració s\'ha exportat correctament</string>
     <string name="settings_export_failure">Ha fallat exportar la configuració</string>
-    <string name="unread_widget_select_account">Mostra el recompte de no llegits per a…</string>
-    <string name="unread_widget_account_title">Compte</string>
-    <string name="unread_widget_account_summary">El compte per al qual s\'ha de mostrar el nombre de missatges no llegits</string>
-    <string name="unread_widget_unified_inbox_account_summary">Bústia d\'entrada unificada</string>
-    <string name="unread_widget_folder_enabled_title">Compte de carpetes</string>
-    <string name="unread_widget_folder_enabled_summary">Mostra el nombre de missatges no llegits de només una carpeta</string>
-    <string name="unread_widget_folder_title">Carpeta</string>
-    <string name="unread_widget_folder_summary">La carpeta per a la qual s\'ha de mostrar el nombre de missatges no llegits</string>
-    <string name="unread_widget_action_done">Fet</string>
-    <string name="unread_widget_title"><xliff:g id="nom_del_compte">%1$s</xliff:g> - <xliff:g id="nom_de_la_carpeta">%2$s</xliff:g></string>
-    <string name="unread_widget_account_not_selected">No hi ha cap compte seleccionat</string>
-    <string name="unread_widget_folder_not_selected">No hi ha cap carpeta seleccionada</string>
     <string name="webview_empty_message">Sense text</string>
     <string name="webview_contextmenu_link_view_action">Obre l\'enllaç</string>
     <string name="webview_contextmenu_link_share_action">Comparteix l\'enllaç</string>

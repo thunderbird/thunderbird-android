@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="unread_widget_select_account">Zobraziť počet neprečítaných správ pre…</string>
+    <string name="unread_widget_account_title">Účet</string>
+    <string name="unread_widget_unified_inbox_account_summary">Jednotná schránka</string>
+    <string name="unread_widget_folder_enabled_title">Počet v priečinku</string>
+    <string name="unread_widget_folder_enabled_summary">Zobraziť pošet neprečítaných len pre jeden priečinok</string>
+    <string name="unread_widget_folder_title">Priečinok</string>
+    <string name="unread_widget_folder_summary">Priečinok, pre ktorý má byť zobrazený počet neprečítaných</string>
+    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+    <string name="unread_widget_folder_not_selected">Nebol vybraný žiaden priečinok</string>
+</resources>

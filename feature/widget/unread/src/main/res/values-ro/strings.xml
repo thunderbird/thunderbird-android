@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="unread_widget_select_account">Arată număr necitite pentru…</string>
+    <string name="unread_widget_account_title">Cont</string>
+    <string name="unread_widget_account_summary">Contul pentru care trebuie afișat totalul mesajelor necitite</string>
+    <string name="unread_widget_unified_inbox_account_summary">Căsuță poștală unificată</string>
+    <string name="unread_widget_folder_enabled_title">Total dosare</string>
+    <string name="unread_widget_folder_enabled_summary">Afișează total necitite pentru un singur dosar</string>
+    <string name="unread_widget_folder_title">Dosar</string>
+    <string name="unread_widget_folder_summary">Dosarul pentru care trebuie afișat total mesaje necitite</string>
+    <string name="unread_widget_action_done">Realizat</string>
+    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+    <string name="unread_widget_account_not_selected">Niciun cont selectat</string>
+    <string name="unread_widget_folder_not_selected">Niciun dosar selectat</string>
+</resources>

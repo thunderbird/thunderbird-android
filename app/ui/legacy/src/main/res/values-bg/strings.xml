@@ -608,18 +608,6 @@
     <string name="settings_export_progress_text">Настройки на изнсянето…</string>
     <string name="settings_export_success_generic">Настройките са успешно изнесени</string>
     <string name="settings_export_failure">Неуспешно изнасяне на настройки</string>
-    <string name="unread_widget_select_account">Показване на непрочетената бройка за…</string>
-    <string name="unread_widget_account_title">Профил</string>
-    <string name="unread_widget_account_summary">Профилът, за който да се показва броят непрочетени съобщения</string>
-    <string name="unread_widget_unified_inbox_account_summary">Обща входяща кутия</string>
-    <string name="unread_widget_folder_enabled_title">Брой папки</string>
-    <string name="unread_widget_folder_enabled_summary">Показване на броя непрочетени съобщения само за една папка</string>
-    <string name="unread_widget_folder_title">Папка</string>
-    <string name="unread_widget_folder_summary">Папката, за която да се показва броят непрочетени съобщения</string>
-    <string name="unread_widget_action_done">Готово</string>
-    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
-    <string name="unread_widget_account_not_selected">Няма избран профил</string>
-    <string name="unread_widget_folder_not_selected">Няма избрана папка</string>
     <string name="webview_empty_message">Няма текст</string>
     <string name="webview_contextmenu_link_view_action">Отваряне на връзка</string>
     <string name="webview_contextmenu_link_share_action">Споделяне на връзка</string>

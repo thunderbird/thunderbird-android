@@ -653,18 +653,6 @@
     <string name="settings_export_progress_text">Dışa aktarma ayarları…</string>
     <string name="settings_export_success_generic">Ayarlar başarıyla dışa aktarıldı</string>
     <string name="settings_export_failure">Hesaplar çıkarılırken hata oluştu</string>
-    <string name="unread_widget_select_account">Şunun için okunmadı sayısını göster…</string>
-    <string name="unread_widget_account_title">Hesap</string>
-    <string name="unread_widget_account_summary">Okunmamış ileti sayısının görüntüleneceği hesap</string>
-    <string name="unread_widget_unified_inbox_account_summary">Birleşik Gelen Kutusu</string>
-    <string name="unread_widget_folder_enabled_title">Klasör sayısı</string>
-    <string name="unread_widget_folder_enabled_summary">Yalnızca tek bir klasörün okunmayan sayısını görüntüle</string>
-    <string name="unread_widget_folder_title">Klasör</string>
-    <string name="unread_widget_folder_summary">Okunmamış ileti sayının görüntüleneceği klasör</string>
-    <string name="unread_widget_action_done">Tamam</string>
-    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
-    <string name="unread_widget_account_not_selected">Seçili hesap yok</string>
-    <string name="unread_widget_folder_not_selected">Seçili klasör yok</string>
     <string name="webview_empty_message">Metin yok</string>
     <string name="webview_contextmenu_link_view_action">Bağlantıyı aç</string>
     <string name="webview_contextmenu_link_share_action">Bağlantıyı paylaş</string>

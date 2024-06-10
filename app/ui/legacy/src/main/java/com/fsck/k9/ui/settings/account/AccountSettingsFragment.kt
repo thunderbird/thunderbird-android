@@ -28,12 +28,12 @@ import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
 import com.fsck.k9.notification.NotificationSettingsUpdater
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.base.extensions.withArguments
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
 import com.fsck.k9.ui.settings.onClick
 import com.fsck.k9.ui.settings.oneTimeClickListener
 import com.fsck.k9.ui.settings.remove
 import com.fsck.k9.ui.settings.removeEntry
-import com.fsck.k9.ui.withArguments
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.activityViewModel

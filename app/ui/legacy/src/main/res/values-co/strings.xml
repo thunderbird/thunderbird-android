@@ -594,8 +594,6 @@
     <string name="dialog_confirm_spam_confirm_button">Sì</string>
     <string name="settings_list_miscellaneous_category">Diversi</string>
     <string name="settings_export_title">Espurtà i parametri</string>
-    <string name="unread_widget_select_account">Affissà u numeru di à leghje per…</string>
-    <string name="unread_widget_account_title">Contu</string>
     <string name="webview_contextmenu_phone_call_action">Chjamà u numeru</string>
     <string name="account_settings_remote_search_num_results_entries_100">100</string>
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
@@ -611,7 +609,6 @@
     <string name="font_size_message_view_account">Nome di u contu</string>
     <string name="font_size_message_list_preview">Fighjulata</string>
     <string name="font_size_message_view_date">Data è ora</string>
-    <string name="unread_widget_folder_enabled_summary">Affissà u numeru di à leghje solu per un cartulare unicu</string>
     <string name="font_size_message_compose">Cumpusizione di messaghju</string>
     <string name="font_size_default">Predefinita</string>
     <string name="font_size_smaller">Più chjucu</string>
@@ -635,9 +632,7 @@
     <string name="font_size_message_list">Liste di i messaghji</string>
     <string name="font_size_message_list_subject">Sughjettu</string>
     <string name="font_size_settings_description">Cunfigurà a dimensione di e grafie</string>
-    <string name="unread_widget_account_not_selected">Alcunu contu ùn hè selezziunatu</string>
     <string name="webview_contextmenu_link_view_action">Apre u liame</string>
-    <string name="unread_widget_folder_not_selected">Alcunu cartulare ùn hè selezziunatu</string>
     <string name="webview_empty_message">Senza testu</string>
     <string name="webview_contextmenu_link_share_action">Sparte u liame</string>
     <string name="webview_contextmenu_link_text_copy_action">Cupià u testu di u liame in u preme’papei</string>
@@ -650,8 +645,6 @@
     <string name="webview_contextmenu_phone_copy_action">Cupià u numeru in u preme’papei</string>
     <string name="webview_contextmenu_email_send_action">Mandà un messaghju</string>
     <string name="webview_contextmenu_phone_clipboard_label">Numeru di telefonu</string>
-    <string name="unread_widget_unified_inbox_account_summary">Scatula di ricezzione unificata</string>
-    <string name="unread_widget_folder_enabled_title">Numeru di cartulari</string>
     <string name="remote_search_unavailable_no_network">Una cunnessione à a reta hè richiesta per una ricerca nant’à u servitore.</string>
     <string name="global_settings_background_as_unread_indicator_summary">Un sfondulu sfarente indicherà chì u messaghju hè statu lettu</string>
     <string name="upgrade_database_format">Messa à livellu di a basa di dati di u contu « <xliff:g id="account">%s</xliff:g> »</string>
@@ -688,11 +681,6 @@
     <string name="settings_export_button">Espurtà</string>
     <string name="settings_export_share_button">Sparte</string>
     <string name="settings_export_progress_text">Espurtazione di i parametri…</string>
-    <string name="unread_widget_account_summary">U contu per quellu u numeru di i messaghji à leghje deve esse affissatu</string>
-    <string name="unread_widget_folder_title">Cartulare</string>
-    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
-    <string name="unread_widget_folder_summary">U cartulare per quellu u numeru di i messaghji à leghje deve esse affissatu</string>
-    <string name="unread_widget_action_done">Fattu</string>
     <string name="webview_contextmenu_link_clipboard_label">Liame</string>
     <string name="webview_contextmenu_image_clipboard_label">Indirizzu web di a fiura</string>
     <string name="webview_contextmenu_image_download_action">Scaricà a fiura</string>

@@ -827,18 +827,6 @@
     <string name="settings_export_success_generic">Settings successfully exported</string>
     <string name="settings_export_failure">Failed to export settings</string>
 
-    <string name="unread_widget_select_account">Show unread count for…</string>
-    <string name="unread_widget_account_title">Account</string>
-    <string name="unread_widget_account_summary">The account for which the unread count should be displayed</string>
-    <string name="unread_widget_unified_inbox_account_summary">Unified Inbox</string>
-    <string name="unread_widget_folder_enabled_title">Folder count</string>
-    <string name="unread_widget_folder_enabled_summary">Display the unread count of only a single folder</string>
-    <string name="unread_widget_folder_title">Folder</string>
-    <string name="unread_widget_folder_summary">The folder for which the unread count should be displayed</string>
-    <string name="unread_widget_action_done">Done</string>
-    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
-    <string name="unread_widget_account_not_selected">No account selected</string>
-    <string name="unread_widget_folder_not_selected">No folder selected</string>
 
     <string name="webview_empty_message">No text</string>
 

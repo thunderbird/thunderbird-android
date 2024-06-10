@@ -11,9 +11,9 @@ import androidx.preference.PreferenceFragmentCompat.OnPreferenceStartScreenCallb
 import androidx.preference.PreferenceScreen
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
+import com.fsck.k9.ui.base.extensions.fragmentTransaction
+import com.fsck.k9.ui.base.extensions.fragmentTransactionWithBackStack
 import com.fsck.k9.ui.base.livedata.observeNotNull
-import com.fsck.k9.ui.fragmentTransaction
-import com.fsck.k9.ui.fragmentTransactionWithBackStack
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 

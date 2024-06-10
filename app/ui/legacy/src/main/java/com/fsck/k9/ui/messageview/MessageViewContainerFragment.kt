@@ -12,9 +12,9 @@ import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.base.extensions.withArguments
 import com.fsck.k9.ui.messagelist.MessageListItem
 import com.fsck.k9.ui.messagelist.MessageListViewModel
-import com.fsck.k9.ui.withArguments
 
 /**
  * A fragment that uses [ViewPager2] to allow the user to swipe between messages.

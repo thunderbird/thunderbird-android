@@ -664,18 +664,6 @@
     <string name="settings_export_progress_text">正在匯出設定…</string>
     <string name="settings_export_success_generic">設定已成功匯出</string>
     <string name="settings_export_failure">匯出設定失敗</string>
-    <string name="unread_widget_select_account">顯示未讀數量…</string>
-    <string name="unread_widget_account_title">帳號</string>
-    <string name="unread_widget_account_summary">顯示該帳戶的未讀數量</string>
-    <string name="unread_widget_unified_inbox_account_summary">全域收件匣</string>
-    <string name="unread_widget_folder_enabled_title">信件匣數</string>
-    <string name="unread_widget_folder_enabled_summary">顯示單一信件匣中的未讀數量</string>
-    <string name="unread_widget_folder_title">信件匣</string>
-    <string name="unread_widget_folder_summary">顯示信件匣中的未讀數量</string>
-    <string name="unread_widget_action_done">完成</string>
-    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
-    <string name="unread_widget_account_not_selected">未選擇帳號</string>
-    <string name="unread_widget_folder_not_selected">未選擇信件匣</string>
     <string name="webview_empty_message">沒有內容</string>
     <string name="webview_contextmenu_link_view_action">開啟檢視</string>
     <string name="webview_contextmenu_link_share_action">分享鏈結</string>

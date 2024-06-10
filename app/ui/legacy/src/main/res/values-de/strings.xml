@@ -668,18 +668,6 @@
     <string name="settings_export_progress_text">Einstellungen werden exportiert…</string>
     <string name="settings_export_success_generic">Einstellungen erfolgreich exportiert</string>
     <string name="settings_export_failure">Einstellungen konnten nicht exportiert werden</string>
-    <string name="unread_widget_select_account">Anzahl ungelesener Nachrichten anzeigen für…</string>
-    <string name="unread_widget_account_title">Konto</string>
-    <string name="unread_widget_account_summary">Das Konto, für das der Zähler für ungelesene Nachrichten angezeigt werden soll</string>
-    <string name="unread_widget_unified_inbox_account_summary">Gemeinsamer Posteingang</string>
-    <string name="unread_widget_folder_enabled_title">Ordneranzahl</string>
-    <string name="unread_widget_folder_enabled_summary">Den Zähler für ungelesene Nachrichten eines einzelnen Ordners zeigen</string>
-    <string name="unread_widget_folder_title">Ordner</string>
-    <string name="unread_widget_folder_summary">Die Ordnerliste, für die der Zähler für ungelesene Nachrichten angezeigt werden soll</string>
-    <string name="unread_widget_action_done">Fertig</string>
-    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
-    <string name="unread_widget_account_not_selected">Kein Konto ausgewählt</string>
-    <string name="unread_widget_folder_not_selected">Kein Ordner ausgewählt</string>
     <string name="webview_empty_message">Kein Nachrichtentext</string>
     <string name="webview_contextmenu_link_view_action">Öffnen</string>
     <string name="webview_contextmenu_link_share_action">Link teilen</string>

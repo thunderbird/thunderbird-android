@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="unread_widget_select_account">Montri nombron da nelegitaj por…</string>
+    <string name="unread_widget_account_title">Konto</string>
+    <string name="unread_widget_account_summary">La konto por kiu vidigi nombron da nelegitaj</string>
+    <string name="unread_widget_unified_inbox_account_summary">Unuigita ricevujo</string>
+    <string name="unread_widget_folder_enabled_title">Mesaĝuja nombro</string>
+    <string name="unread_widget_folder_enabled_summary">Vidigi nombron da nelegitaj nur por unu mesaĝujo</string>
+    <string name="unread_widget_folder_title">Mesaĝujo</string>
+    <string name="unread_widget_folder_summary">La mesaĝujo por kiu vidigi nombron da nelegitaj</string>
+    <string name="unread_widget_action_done">Farita</string>
+    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+    <string name="unread_widget_account_not_selected">Neniu konto elektita</string>
+    <string name="unread_widget_folder_not_selected">Neniu mesaĝujo elektita</string>
+</resources>

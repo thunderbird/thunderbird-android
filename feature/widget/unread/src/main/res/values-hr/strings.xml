@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="unread_widget_select_account">Prikaži brojač nepročitanih za…</string>
+    <string name="unread_widget_account_title">Račun</string>
+    <string name="unread_widget_account_summary">Račun za koji će broj nepročitanih biti prikazivan</string>
+    <string name="unread_widget_unified_inbox_account_summary">Objedinjena Dolazna Pošta</string>
+    <string name="unread_widget_folder_enabled_title">Broj mapa</string>
+    <string name="unread_widget_folder_title">Mapa</string>
+    <string name="unread_widget_folder_summary">Mapa za koju će broj nepročitanih biti prikazivan</string>
+    <string name="unread_widget_action_done">Gotovo</string>
+    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+    <string name="unread_widget_account_not_selected">Nijedan račun nije odabran</string>
+    <string name="unread_widget_folder_not_selected">Nijedna mapa nije odabrana</string>
+</resources>

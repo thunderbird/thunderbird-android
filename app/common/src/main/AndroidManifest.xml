@@ -191,14 +191,6 @@
         </activity>
 
         <activity
-            android:name="com.fsck.k9.widget.unread.UnreadWidgetConfigurationActivity"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
-            </intent-filter>
-        </activity>
-
-        <activity
             android:name="com.fsck.k9.activity.UpgradeDatabases"
             android:label="@string/upgrade_databases_title" />
 
@@ -237,20 +229,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-        <!-- This component is disabled by default (if possible). It will be enabled programmatically if necessary. -->
-        <receiver
-            android:name="com.fsck.k9.provider.UnreadWidgetProvider"
-            android:label="@string/unread_widget_label"
-            android:enabled="@bool/home_screen_widgets_enabled"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/unread_widget_info" />
-        </receiver>
 
         <!-- This component is disabled by default (if possible). It will be enabled programmatically if necessary. -->
         <receiver

@@ -19,6 +19,8 @@ dependencies {
     implementation(projects.app.ui.legacy)
     implementation(projects.app.ui.messageListWidget)
 
+    implementation(projects.feature.widget.unread)
+
     implementation(libs.androidx.work.runtime)
 
     implementation(projects.feature.autodiscovery.api)

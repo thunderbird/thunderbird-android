@@ -46,13 +46,13 @@ import com.fsck.k9.preferences.GeneralSettingsManager
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.Theme
 import com.fsck.k9.ui.base.ThemeManager
+import com.fsck.k9.ui.base.extensions.withArguments
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.messagedetails.MessageDetailsFragment
 import com.fsck.k9.ui.messagesource.MessageSourceActivity
 import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity
 import com.fsck.k9.ui.share.ShareIntentBuilder
-import com.fsck.k9.ui.withArguments
 import java.util.Locale
 import org.koin.android.ext.android.inject
 import org.openintents.openpgp.util.OpenPgpIntentStarter

@@ -677,18 +677,6 @@
     <string name="settings_export_progress_text">Exportování nastavení…</string>
     <string name="settings_export_success_generic">Nastavení úspěšně exportována</string>
     <string name="settings_export_failure">Export nastavení se nezdařil</string>
-    <string name="unread_widget_select_account">Zobrazit počet nepřečtených pro…</string>
-    <string name="unread_widget_account_title">Účet</string>
-    <string name="unread_widget_account_summary">Účet pro který má  být zobrazen počet nepřečtených</string>
-    <string name="unread_widget_unified_inbox_account_summary">Sjednocená doručená pošta</string>
-    <string name="unread_widget_folder_enabled_title">Počet ve složce</string>
-    <string name="unread_widget_folder_enabled_summary">Zobrazit počet nepřečtených pouze pro jedinou složku</string>
-    <string name="unread_widget_folder_title">Složka</string>
-    <string name="unread_widget_folder_summary">Složka pro kterou má  být zobrazen počet nepřečtených</string>
-    <string name="unread_widget_action_done">Hotovo</string>
-    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> – <xliff:g id="folder_name">%2$s</xliff:g></string>
-    <string name="unread_widget_account_not_selected">Nebyl vybrán žádný účet</string>
-    <string name="unread_widget_folder_not_selected">Nebyla vybrána žádná složka</string>
     <string name="webview_empty_message">Žádný text</string>
     <string name="webview_contextmenu_link_view_action">Otevřít odkaz</string>
     <string name="webview_contextmenu_link_share_action">Sdílet odkaz</string>

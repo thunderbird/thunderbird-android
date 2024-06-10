@@ -28,9 +28,9 @@ import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.CryptoResultAnnotation
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.base.extensions.withArguments
 import com.fsck.k9.ui.folders.FolderIconProvider
 import com.fsck.k9.ui.observe
-import com.fsck.k9.ui.withArguments
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.GenericItem
 import com.mikepenz.fastadapter.adapters.ItemAdapter

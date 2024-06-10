@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="unread_widget_select_account">Mostrar conta de non lidas para…</string>
+    <string name="unread_widget_account_title">Conta</string>
+    <string name="unread_widget_account_summary">A conta para a cal se mostrará o número de non lidos</string>
+    <string name="unread_widget_unified_inbox_account_summary">Caixa de entrada unificada</string>
+    <string name="unread_widget_folder_enabled_title">Conta de cartafol</string>
+    <string name="unread_widget_folder_enabled_summary">Mostar o número de non lidos para cartafol individual</string>
+    <string name="unread_widget_folder_title">Cartafol</string>
+    <string name="unread_widget_folder_summary">O cartafol para o cal se mostrará o número de mensaxes non lidas</string>
+    <string name="unread_widget_action_done">Feito</string>
+    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+    <string name="unread_widget_account_not_selected">Sen conta seleccionada</string>
+    <string name="unread_widget_folder_not_selected">Sen cartafol seleccionado</string>
+</resources>
