@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:textAppearance="?attr/textAppearanceOverline"
+        android:textAppearance="?attr/textAppearanceLabelSmall"
         tools:text="To" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -21,8 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="16dp"
-        android:textAppearance="?attr/textAppearanceOverline"
-        android:textColor="?android:attr/textColorSecondary"
+        android:textAppearance="?attr/textAppearanceLabelSmall"
+        android:textColor="?attr/colorSecondary"
         tools:text="3" />
 
 </LinearLayout>

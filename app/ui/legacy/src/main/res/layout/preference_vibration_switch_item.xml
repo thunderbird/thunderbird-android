@@ -27,7 +27,7 @@
             android:paddingEnd="?attr/dialogPreferredPadding"
             android:paddingBottom="16dp"
             android:text="@string/account_settings_vibrate_enable"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textAppearance="?attr/textAppearanceHeadlineSmall"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -49,8 +49,7 @@
         android:paddingStart="?attr/dialogPreferredPadding"
         android:paddingEnd="?attr/dialogPreferredPadding"
         android:text="@string/account_settings_vibrate_pattern_label"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="?attr/textColorAlertDialogListItem"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider" />

@@ -37,7 +37,7 @@
             android:paddingEnd="16dp"
             android:paddingBottom="8dp"
             android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceListItem"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
             tools:text="List item with simple text" />
     </LinearLayout>
 

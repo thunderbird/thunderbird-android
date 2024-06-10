@@ -16,8 +16,7 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
             tools:text="Android Jetpack libraries" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -25,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
             tools:text="Apache License, Version 2.0" />
 
 </LinearLayout>

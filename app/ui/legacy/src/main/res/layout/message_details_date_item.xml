@@ -9,5 +9,5 @@
     android:layout_marginTop="16dp"
     android:focusable="false"
     android:gravity="end"
-    android:textAppearance="?attr/textAppearanceBody2"
+    android:textAppearance="?attr/textAppearanceBodyMedium"
     tools:text="Wednesday, 11 January 2023, 10:31 pm" />

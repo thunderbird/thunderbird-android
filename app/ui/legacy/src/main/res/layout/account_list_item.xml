@@ -43,7 +43,7 @@
                 android:paddingTop="8dp"
                 android:paddingBottom="4dp"
                 android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceListItem"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
                 tools:text="Personal" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -53,7 +53,7 @@
                 android:ellipsize="end"
                 android:paddingBottom="4dp"
                 android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
                 tools:text="test@example.org" />
 
         </LinearLayout>

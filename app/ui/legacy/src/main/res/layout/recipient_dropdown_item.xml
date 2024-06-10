@@ -25,7 +25,7 @@
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text1"
             android:textColor="?attr/textColorPrimaryRecipientDropdown"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="6dp"
@@ -38,7 +38,7 @@
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text2"
             android:textColor="?attr/textColorSecondaryRecipientDropdown"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="12dp"

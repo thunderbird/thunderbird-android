@@ -15,7 +15,7 @@
         android:paddingTop="8dp"
         android:paddingEnd="8dp"
         android:paddingBottom="8dp"
-        android:textAppearance="?attr/textAppearanceHeadline6"
+        android:textAppearance="?attr/textAppearanceTitleLarge"
         tools:text="Version 1.0.0" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -26,6 +26,6 @@
         android:paddingTop="8dp"
         android:paddingEnd="16dp"
         android:paddingBottom="8dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
         tools:text="2021-01-21" />
 </LinearLayout>

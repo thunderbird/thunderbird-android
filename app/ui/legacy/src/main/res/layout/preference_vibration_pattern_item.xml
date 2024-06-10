@@ -13,6 +13,5 @@
     android:minHeight="?attr/listPreferredItemHeightSmall"
     android:paddingStart="@dimen/abc_select_dialog_padding_start_material"
     android:paddingEnd="?attr/dialogPreferredPadding"
-    android:textAppearance="?android:attr/textAppearanceMedium"
-    android:textColor="?attr/textColorAlertDialogListItem"
+    android:textAppearance="?attr/textAppearanceBodyMedium"
     tools:text="Pattern 1" />

@@ -25,8 +25,8 @@
                     android:text="@string/account_settings_name_label"
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="?android:attr/textColorPrimary"/>
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    />
 
             <EditText
                     android:id="@+id/account_name"
@@ -41,8 +41,7 @@
                     android:text="@string/account_settings_email_label"
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="?android:attr/textColorPrimary"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
                     />
 
             <EditText
@@ -58,8 +57,8 @@
                     android:text="@string/account_settings_always_bcc_label"
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="?android:attr/textColorPrimary"/>
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    />
 
             <EditText
                     android:id="@+id/account_always_bcc"
@@ -85,8 +84,8 @@
                         android:text="@string/account_settings_signature_label"
                         android:layout_height="wrap_content"
                         android:layout_width="fill_parent"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="?android:attr/textColorPrimary"/>
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        />
 
                 <EditText
                         android:id="@+id/account_signature"
@@ -99,8 +98,8 @@
                         android:text="@string/account_settings_signature__location_label"
                         android:layout_height="wrap_content"
                         android:layout_width="fill_parent"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="?android:attr/textColorPrimary"/>
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        />
 
                 <RadioGroup
                         android:id="@+id/account_signature_location"

@@ -13,6 +13,6 @@
     android:paddingRight="16dp"
     android:paddingTop="4dp"
     android:singleLine="true"
-    android:textAppearance="?attr/textAppearanceSubtitle2"
-    android:textColor="?attr/colorAccent"
+    android:textAppearance="?attr/textAppearanceTitleSmall"
+    android:textColor="?attr/colorSecondary"
     tools:text="Divider" />

@@ -47,7 +47,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/attachment_preview"
-                app:tint="?attr/colorAccent" />
+                app:tint="?attr/colorSecondary" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/attachment_name"
@@ -58,8 +58,7 @@
                 android:layout_marginEnd="8dp"
                 android:ellipsize="start"
                 android:singleLine="true"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="14sp"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
                 app:layout_constraintBottom_toTopOf="@+id/attachment_size"
                 app:layout_constraintEnd_toStartOf="@+id/save_button"
                 app:layout_constraintStart_toEndOf="@+id/attachment_type"
@@ -73,8 +72,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:singleLine="true"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textSize="12sp"
+                android:textColor="?attr/colorSecondary"
+                android:textAppearance="?attr/textAppearanceBodySmall"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/attachment_name"
                 app:layout_constraintStart_toStartOf="@+id/attachment_name"

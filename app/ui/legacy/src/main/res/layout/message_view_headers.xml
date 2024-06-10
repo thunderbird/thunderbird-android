@@ -19,8 +19,8 @@
             android:ellipsize="none"
             android:padding="16dp"
             android:singleLine="false"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="?android:attr/textColorSecondary"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?attr/colorSecondary"
             android:textIsSelectable="true"
             tools:text="From: alice@domain.example\nTo: bob@domain.example\nSubject: Hi Bob" />
 

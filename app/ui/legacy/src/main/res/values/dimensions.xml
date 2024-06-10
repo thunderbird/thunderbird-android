@@ -32,8 +32,4 @@
     <dimen name="floatingActionButtonMargin">16dp</dimen>
     <!-- Height of FloatingActionButton (56dp) plus two times floatingActionButtonMargin -->
     <dimen name="floatingActionButtonSpacing">88dp</dimen>
-
-    <dimen name="appTextSizeSmaller" format="dimension">14sp</dimen>
-    <dimen name="appTextSizeSmall" format="dimension">16sp</dimen>
-    <dimen name="appTextSizeMedium" format="dimension">18sp</dimen>
 </resources>
