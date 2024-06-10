@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_push_option_none">Engin</string>
+    <string name="settings_push_alarm_permission_required">Heimild nauðsynleg(<xliff:g id="currentValue" example="Engin">%s</xliff:g>)</string>
+    <string name="settings_push_grant_permission_button">Veita heimild</string>
+    <string name="settings_push_permission_info_text">K-9 póstforritið þarf að vakna reglulega til að halda ýti-tengingum (push connections) í gangi. Til að þetta virki þarftu að veita heimild til að áætla áminningar.</string>
+    <string name="settings_push_option_all_except_second_class">Allt nema 2. flokks möppur</string>
+    <string name="settings_push_title">Möppur til að ýta</string>
+    <string name="settings_push_option_all">Allar</string>
+    <string name="settings_push_option_first_class">Einungis 1. flokks möppur</string>
+    <string name="settings_push_option_first_and_second_class">1. og 2. flokks möppur</string>
+</resources>
