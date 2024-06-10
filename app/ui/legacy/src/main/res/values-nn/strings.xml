@@ -374,7 +374,6 @@
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="unread_widget_select_account">Syn talet på ulesne for …</string>
     <string name="webview_empty_message">Ingen tekst</string>
     <string name="webview_contextmenu_link_view_action">Opna lenkje</string>
     <string name="webview_contextmenu_link_share_action">Del lenkje</string>

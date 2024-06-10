@@ -571,12 +571,6 @@
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="unread_widget_select_account">읽지 않은 메일 수 보이기</string>
-    <string name="unread_widget_account_title">계정</string>
-    <string name="unread_widget_folder_title">폴더</string>
-    <string name="unread_widget_action_done">완료</string>
-    <string name="unread_widget_account_not_selected">계정이 선택되지 않았습니다.</string>
-    <string name="unread_widget_folder_not_selected">폴더가 선택되지 않았습니다.</string>
     <string name="webview_empty_message">내용 없음</string>
     <string name="webview_contextmenu_link_view_action">열어 보기</string>
     <string name="webview_contextmenu_link_share_action">주소 공유</string>

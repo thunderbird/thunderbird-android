@@ -661,11 +661,6 @@
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Có</string>
     <string name="settings_export_progress_text">Đang xuất cài đặt…</string>
-    <string name="unread_widget_folder_enabled_title">Số thư mục</string>
-    <string name="unread_widget_folder_enabled_summary">Hiển thị số chưa đọc của một thư mục</string>
-    <string name="unread_widget_folder_title">Thư mục</string>
-    <string name="unread_widget_account_not_selected">Không có tài khoản được chọn</string>
-    <string name="unread_widget_folder_not_selected">Không có thư mục được chọn</string>
     <string name="webview_contextmenu_link_copy_action">Sao chép đường dẫn vào bảng nhớ tạm</string>
     <string name="webview_contextmenu_link_clipboard_label">Đường dẫn</string>
     <string name="webview_contextmenu_link_text_clipboard_label">Nội dung đường dẫn</string>
@@ -785,11 +780,6 @@
     <string name="dialog_confirm_empty_trash_title">Xác nhận làm trống thùng rác</string>
     <string name="settings_export_success_generic">Xuất cài đặt thành công</string>
     <string name="settings_export_failure">Xuất cài đặt thất bại</string>
-    <string name="unread_widget_unified_inbox_account_summary">Hộp thư thống nhất</string>
-    <string name="unread_widget_select_account">Hiển thị số chưa đọc cho…</string>
-    <string name="unread_widget_account_title">Tài khoản</string>
-    <string name="unread_widget_account_summary">Tài khoản mà số chưa đọc nên hiển thị</string>
-    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
     <string name="webview_contextmenu_link_view_action">Mở đường dẫn</string>
     <string name="webview_contextmenu_link_share_action">Chia sẻ đường dẫn</string>
     <string name="webview_contextmenu_link_text_copy_action">Sao chép chữ của đường dẫn vào bảng nhớ tạm</string>
@@ -852,8 +842,6 @@
     <string name="settings_export_button">Xuất</string>
     <string name="webview_empty_message">Không có chữ</string>
     <string name="webview_contextmenu_phone_clipboard_label">Số điện thoại</string>
-    <string name="unread_widget_folder_summary">Thư mục mà số chưa đọc nên hiển thị</string>
-    <string name="unread_widget_action_done">Xong</string>
     <string name="account_settings_remote_search_num_results_entries_25">25</string>
     <string name="account_settings_remote_search_num_results_entries_50">50</string>
     <string name="global_settings_messageview_visible_refile_actions_summary">Hiển thị hành động được chọn trong menu đọc tin nhắn</string>

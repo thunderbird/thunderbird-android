@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="unread_widget_select_account">Лічыльнік непрачытаных…</string>
+    <string name="unread_widget_account_title">Акаўнт</string>
+    <string name="unread_widget_account_summary">Акаўнт для адлюстравання лічыльніка непрачытаных</string>
+    <string name="unread_widget_unified_inbox_account_summary">Усе атрыманыя</string>
+    <string name="unread_widget_folder_enabled_title">Лічыльнік каталогаў</string>
+    <string name="unread_widget_folder_enabled_summary">Паказваць лічыльнік непрачытаных лістоў толькі для асобнага каталога</string>
+    <string name="unread_widget_folder_title">Каталог</string>
+    <string name="unread_widget_folder_summary">Каталог для адлюстравання лічыльніка непрачытаных</string>
+    <string name="unread_widget_action_done">Завершана</string>
+    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+    <string name="unread_widget_account_not_selected">Акаўнт не абраны</string>
+    <string name="unread_widget_folder_not_selected">Каталог не абраны</string>
+</resources>

@@ -17,7 +17,6 @@ import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import org.koin.android.ext.android.inject
-import com.fsck.k9.ui.R as UiR
 
 @Suppress("TooManyFunctions")
 class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
@@ -49,7 +48,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
 
         unreadFolderEnabled = findPreference(PREFERENCE_UNREAD_FOLDER_ENABLED)!!
         unreadFolderEnabled.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, _ ->
-            unreadFolder.summary = getString(UiR.string.unread_widget_folder_summary)
+            unreadFolder.summary = getString(R.string.unread_widget_folder_summary)
             selectedFolderId = null
             selectedFolderDisplayName = null
             true
@@ -118,7 +117,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
         selectedAccountUuid = accountUuid
         selectedFolderId = null
         selectedFolderDisplayName = null
-        unreadFolder.summary = getString(UiR.string.unread_widget_folder_summary)
+        unreadFolder.summary = getString(R.string.unread_widget_folder_summary)
         if (SearchAccount.UNIFIED_INBOX == selectedAccountUuid) {
             handleSearchAccount()
         } else {
@@ -128,7 +127,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
 
     private fun handleSearchAccount() {
         if (SearchAccount.UNIFIED_INBOX == selectedAccountUuid) {
-            unreadAccount.setSummary(UiR.string.unread_widget_unified_inbox_account_summary)
+            unreadAccount.setSummary(R.string.unread_widget_unified_inbox_account_summary)
         }
         unreadFolderEnabled.isEnabled = false
         unreadFolderEnabled.isChecked = false
@@ -171,10 +170,10 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
 
     private fun validateWidget(): Boolean {
         return if (selectedAccountUuid == null) {
-            Toast.makeText(requireContext(), UiR.string.unread_widget_account_not_selected, Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), R.string.unread_widget_account_not_selected, Toast.LENGTH_LONG).show()
             false
         } else if (unreadFolderEnabled.isChecked && selectedFolderId == null) {
-            Toast.makeText(requireContext(), UiR.string.unread_widget_folder_not_selected, Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), R.string.unread_widget_folder_not_selected, Toast.LENGTH_LONG).show()
             false
         } else {
             true

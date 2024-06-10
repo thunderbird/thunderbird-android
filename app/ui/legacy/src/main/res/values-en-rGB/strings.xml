@@ -723,14 +723,11 @@
     <string name="webview_contextmenu_phone_save_action">Save to Contacts</string>
     <string name="account_settings_remote_search_num_label">Server search limit</string>
     <string name="account_settings_search">Search</string>
-    <string name="unread_widget_account_title">Account</string>
     <string name="dialog_autocrypt_mutual_description_2">If both sender and recipients enable mutual mode, encryption will be enabled by default.</string>
     <string name="global_settings_show_contact_picture_label">Show contact pictures</string>
     <string name="account_settings_crypto_hide_sign_only_off">All signatures will be displayed</string>
-    <string name="unread_widget_action_done">Done</string>
     <string name="action_copy_email_address">Copy email address</string>
     <string name="dialog_autocrypt_mutual_learn_more">You can <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">click here</a> to learn more.</string>
-    <string name="unread_widget_folder_not_selected">No folder selected</string>
     <string name="action_compose_message_to">Compose message to</string>
     <string name="crypto_no_provider_title">This email is encrypted</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
@@ -745,7 +742,6 @@
     <string name="global_settings_threaded_view_label">Threaded view</string>
     <string name="webview_contextmenu_email_copy_action">Copy address to clipboard</string>
     <string name="push_notification_state_initializing">Initialising…</string>
-    <string name="unread_widget_unified_inbox_account_summary">Unified Inbox</string>
     <string name="mail_list_widget_text">K-9 Message List</string>
     <string name="crypto_msg_title_encrypted_signed_e2e">End-to-End encrypted</string>
     <string name="message_list_content_description_unread_prefix">unread, %s</string>
@@ -782,7 +778,6 @@
     <string name="message_details_sender_section_title">Sender</string>
     <string name="openpgp_description_text2">Toggle encryption by clicking this icon.</string>
     <string name="toast_account_not_found">Internal error: Invalid account!</string>
-    <string name="unread_widget_select_account">Show unread count for…</string>
     <string name="message_details_toolbar_title">Message details</string>
     <string name="webview_contextmenu_link_text_copy_action">Copy link text to clipboard</string>
     <string name="unsigned_text_divider_label">Unsigned Text</string>
@@ -792,7 +787,6 @@
     <string name="recipient_error_non_ascii">Special characters are currently not supported!</string>
     <string name="message_details_cc_section_title">Cc</string>
     <string name="clipboard_label_name_and_email_address">Name and email address</string>
-    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
     <string name="push_info_configure_notification_text">However, Android also allows you to hide the notification.</string>
     <string name="crypto_msg_unencrypted_sign_error">end-to-end signature contained an error</string>
     <string name="global_settings_splitview_never">Never</string>
@@ -870,7 +864,6 @@
     <string name="push_notification_state_wait_network">Sleeping until network is available</string>
     <string name="crypto_msg_encrypted_sign_error">but end-to-end data has errors</string>
     <string name="global_settings_splitview_mode_label">Show split-screen</string>
-    <string name="unread_widget_folder_enabled_summary">Display the unread count of only a single folder</string>
     <string name="dialog_autocrypt_mutual_title">Autocrypt mutual mode</string>
     <string name="messageview_decrypt_retry">Retry</string>
     <string name="message_details_loading_error">An error occurred while loading the message details.</string>
@@ -888,7 +881,6 @@
     <string name="push_info_learn_more_text">Learn more</string>
     <string name="webview_contextmenu_link_share_action">Share link</string>
     <string name="openpgp_sign_only_ok">Got it!</string>
-    <string name="unread_widget_account_not_selected">No account selected</string>
     <string name="upgrade_databases_title">Upgrading databases</string>
     <string name="swipe_action_mark_as_read">Mark read</string>
     <string name="push_notification_state_wait_background_sync">Sleeping until background sync is allowed</string>
@@ -928,12 +920,10 @@
     <string name="openpgp_inline_keep_enabled">Keep Enabled</string>
     <string name="ac_transfer_sending_to">Sending message to:</string>
     <string name="swipe_action_remove_star">Remove star</string>
-    <string name="unread_widget_folder_enabled_title">Folder count</string>
     <string name="reply_to_label">Reply to</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
     <string name="toast_openpgp_provider_error">Error connecting to %s!</string>
     <string name="message_details_from_section_title">From</string>
-    <string name="unread_widget_account_summary">The account for which the unread count should be displayed</string>
     <string name="push_notification_info">Tap to learn more.</string>
     <string name="messageview_crypto_error_title">Error decrypting email</string>
     <plurals name="remote_search_downloading_limited">
@@ -947,7 +937,6 @@
     <string name="openpgp_enabled_error_disable">Disable Encryption</string>
     <string name="remote_search_error">Remote search failed</string>
     <string name="push_info_disable_push_action">Disable Push</string>
-    <string name="unread_widget_folder_title">Folder</string>
     <string name="push_info_notification_explanation_text">When using Push, K-9 Mail maintains a connection to the mail server. Android requires displaying an ongoing notification while the app is active in the background. %s</string>
     <string name="recipient_from">From</string>
     <string name="fetching_attachment_dialog_message">Fetching attachment…</string>
@@ -956,7 +945,6 @@
     <string name="crypto_msg_incomplete_signed">must fully download message to process signature</string>
     <string name="account_settings_crypto_encrypt_subject">Encrypt message subjects</string>
     <string name="crypto_msg_title_unencrypted_signed_e2e">End-to-End signed plaintext</string>
-    <string name="unread_widget_folder_summary">The folder for which the unread count should be displayed</string>
     <string name="webview_contextmenu_phone_call_action">Call number</string>
     <string name="openpgp_enabled_error_msg">Some of the selected recipients don\'t support this feature!</string>
     <string name="message_list_error_folder_not_found">Folder not found</string>

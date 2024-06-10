@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="unread_widget_select_account">Diskouez an niver a bosteloù anlennet evit…</string>
+    <string name="unread_widget_account_title">Kont</string>
+    <string name="unread_widget_account_summary">Ar gont implijet evit diskouez an niver a gemennadennoù anlennet</string>
+    <string name="unread_widget_unified_inbox_account_summary">Boest degemer unanet</string>
+    <string name="unread_widget_folder_enabled_title">Niver a gemennadennoù anlennet en teuliad</string>
+    <string name="unread_widget_folder_enabled_summary">Diskouez an niver a gemennadennoù anlennet en un teuliad</string>
+    <string name="unread_widget_folder_title">Teuliad</string>
+    <string name="unread_widget_folder_summary">An teuliad implijet evit diskouez an niver a gemennadennoù anlennet</string>
+    <string name="unread_widget_action_done">Graet</string>
+    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+    <string name="unread_widget_account_not_selected">Kont ebet diuzet</string>
+    <string name="unread_widget_folder_not_selected">Teuliad ebet diuzet</string>
+</resources>

@@ -668,18 +668,6 @@
     <string name="settings_export_progress_text">Beállítások exportálása…</string>
     <string name="settings_export_success_generic">A beállítások sikeresen exportálva</string>
     <string name="settings_export_failure">A beállítások exportálása sikertelen</string>
-    <string name="unread_widget_select_account">Olvasatlanok számának megjelenítése ennél…</string>
-    <string name="unread_widget_account_title">Fiók</string>
-    <string name="unread_widget_account_summary">Az a fiók, amelynél az olvasatlanok számlálóját meg kell jeleníteni</string>
-    <string name="unread_widget_unified_inbox_account_summary">Egységes beérkezett üzenetek</string>
-    <string name="unread_widget_folder_enabled_title">Mappaszámláló</string>
-    <string name="unread_widget_folder_enabled_summary">Az olvasatlan számláló megjelenítése csak egy önálló mappára</string>
-    <string name="unread_widget_folder_title">Mappa</string>
-    <string name="unread_widget_folder_summary">Az a mappa, amelynél az olvasatlanok számlálóját meg kell jeleníteni</string>
-    <string name="unread_widget_action_done">Kész</string>
-    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> – <xliff:g id="folder_name">%2$s</xliff:g></string>
-    <string name="unread_widget_account_not_selected">Nincs fiók kiválasztva</string>
-    <string name="unread_widget_folder_not_selected">Nincs mappa kiválasztva</string>
     <string name="webview_empty_message">Nincs szöveg</string>
     <string name="webview_contextmenu_link_view_action">Hivatkozás megnyitása</string>
     <string name="webview_contextmenu_link_share_action">Hivatkozás megosztása</string>

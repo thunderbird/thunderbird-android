@@ -508,8 +508,6 @@
     <string name="settings_export_failure">נכשל בייצוא הגדרות</string>
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="unread_widget_account_title">חשבון</string>
-    <string name="unread_widget_folder_title">תיקייה</string>
     <string name="webview_contextmenu_link_view_action">פתח קישור</string>
     <string name="webview_contextmenu_link_share_action">שתף קישור</string>
     <string name="webview_contextmenu_link_clipboard_label">קישור</string>
@@ -620,8 +618,6 @@
     <string name="account_settings_mark_message_as_read_on_delete_summary">סמן הודעה כנקראה כאשר היא נמחקת</string>
     <string name="account_settings_automatic_special_folder">אוטומטי (%s)</string>
     <string name="font_size_message_compose">יצירת הודעה</string>
-    <string name="unread_widget_folder_enabled_summary">הצג כמות לא נקראו של תיקייה יחידה</string>
-    <string name="unread_widget_folder_summary">התיקייה עבורה תוצג כמות ההודעות שלא נקראו</string>
     <string name="webview_contextmenu_link_text_clipboard_label">טקסט קישור</string>
     <string name="webview_contextmenu_image_clipboard_label">URL של התמונה</string>
     <string name="webview_contextmenu_email_send_action">שלח דואר</string>
@@ -671,7 +667,6 @@
     <string name="dialog_confirm_empty_trash_title">אשר ריקון פריטים שנמחקו</string>
     <string name="webview_empty_message">אין טקסט</string>
     <string name="webview_contextmenu_link_copy_action">העתק קישור ללוח</string>
-    <string name="unread_widget_folder_not_selected">לא נבחרה תיקייה</string>
     <string name="webview_contextmenu_link_text_copy_action">העתק טקסט קישור ללוח</string>
     <string name="webview_contextmenu_image_copy_action">העתק URL של התמונה ללוח</string>
     <string name="webview_contextmenu_email_save_action">שמור באנשי קשר</string>
@@ -703,9 +698,6 @@
     <string name="dialog_confirm_mark_all_as_read_message">רוצה לסמן את כל ההודעות כנקראו?</string>
     <string name="settings_list_backup_category">גיבוי</string>
     <string name="settings_export_title">יצא הגדרות</string>
-    <string name="unread_widget_select_account">הצג כמות לא נקראו עבור…</string>
-    <string name="unread_widget_account_summary">החשבון עבורו תוצג כמות ההודעות שלא נקראו</string>
-    <string name="unread_widget_unified_inbox_account_summary">דואר נכנס מאוחד (Unified Inbox)</string>
     <string name="webview_contextmenu_phone_call_action">התקשר למספר</string>
     <string name="webview_contextmenu_phone_save_action">שמור באנשי קשר</string>
     <string name="webview_contextmenu_phone_clipboard_label">מספר טלפון</string>
@@ -749,8 +741,6 @@
         <item quantity="two">בטוח שברצונך למחוק <xliff:g id="message_count">%1$d</xliff:g> הודעות?</item>
         <item quantity="other">בטוח שברצונך למחוק <xliff:g id="message_count">%1$d</xliff:g> הודעות?</item>
     </plurals>
-    <string name="unread_widget_action_done">נעשה</string>
-    <string name="unread_widget_account_not_selected">לא נבחר חשבון</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
     <string name="account_settings_remote_search_num_results_entries_25">25</string>
     <string name="action_remote_search">חפש הודעות בשרת</string>
@@ -840,7 +830,6 @@
     <string name="sort_sender_alpha">שולח ע\"פ סדר האלף-בית</string>
     <string name="sort_sender_re_alpha">שולח ע\"פ סדר אלף-בית הפוך</string>
     <string name="setting_theme_global">השתמש בתמת (theme) היישומון</string>
-    <string name="unread_widget_folder_enabled_title">כמות תיקיות</string>
     <string name="crypto_msg_cancelled">ההודעה מוצפנת, אך הפענוח בוטל.</string>
     <string name="crypto_msg_unsupported_encrypted">ההודעה מוצפנת, אך בפורמט שלא נתמך.</string>
     <string name="crypto_msg_unencrypted_sign_verified">מחותם מאומת</string>
@@ -880,7 +869,6 @@
     <string name="account_settings_vibrate_pattern_4">תבנית 4</string>
     <string name="sort_by_arrival">זמן הגעה</string>
     <string name="folder_list_display_mode_first_class">תיקיות מחלקה ראשונה</string>
-    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
     <string name="crypto_msg_encrypted_incomplete">חובה להוריד הודעה בשלמותה עבור פענוח</string>
     <string name="crypto_msg_encrypted_sign_unknown">ממפתח קצה לקצה לא מוכר</string>
     <string name="crypto_msg_encrypted_no_provider">אך לא מוגדר אף יישומון הצפנה (crypto app)</string>

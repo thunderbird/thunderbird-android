@@ -613,15 +613,6 @@
     <string name="settings_export_progress_text">Exportovanie nastavení…</string>
     <string name="settings_export_success_generic">Export nastavení prebehol úspešne</string>
     <string name="settings_export_failure">Nepodarilo sa exportovať nastavenia</string>
-    <string name="unread_widget_select_account">Zobraziť počet neprečítaných správ pre…</string>
-    <string name="unread_widget_account_title">Účet</string>
-    <string name="unread_widget_unified_inbox_account_summary">Jednotná schránka</string>
-    <string name="unread_widget_folder_enabled_title">Počet v priečinku</string>
-    <string name="unread_widget_folder_enabled_summary">Zobraziť pošet neprečítaných len pre jeden priečinok</string>
-    <string name="unread_widget_folder_title">Priečinok</string>
-    <string name="unread_widget_folder_summary">Priečinok, pre ktorý má byť zobrazený počet neprečítaných</string>
-    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
-    <string name="unread_widget_folder_not_selected">Nebol vybraný žiaden priečinok</string>
     <string name="webview_empty_message">Žiadny text</string>
     <string name="webview_contextmenu_link_view_action">Otvoriť odkaz</string>
     <string name="webview_contextmenu_link_share_action">Zdieľať odkaz</string>

@@ -667,18 +667,6 @@
     <string name="settings_export_progress_text">正在导出设置…</string>
     <string name="settings_export_success_generic">设置已成功导出</string>
     <string name="settings_export_failure">无法导出设置</string>
-    <string name="unread_widget_select_account">显示未读邮件数…</string>
-    <string name="unread_widget_account_title">账号</string>
-    <string name="unread_widget_account_summary">应显示未读邮件数的账号</string>
-    <string name="unread_widget_unified_inbox_account_summary">统一收件箱</string>
-    <string name="unread_widget_folder_enabled_title">文件夹数</string>
-    <string name="unread_widget_folder_enabled_summary">仅显示单个文件夹的未读邮件数</string>
-    <string name="unread_widget_folder_title">文件夹</string>
-    <string name="unread_widget_folder_summary">应显示未读邮件数的文件夹</string>
-    <string name="unread_widget_action_done">完毕</string>
-    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
-    <string name="unread_widget_account_not_selected">未选择账号</string>
-    <string name="unread_widget_folder_not_selected">未选择文件夹</string>
     <string name="webview_empty_message">无文本</string>
     <string name="webview_contextmenu_link_view_action">打开链接</string>
     <string name="webview_contextmenu_link_share_action">分享链接</string>

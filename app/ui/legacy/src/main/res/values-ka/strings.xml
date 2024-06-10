@@ -416,13 +416,6 @@
     <string name="settings_list_backup_category">სათადარიგო ასლი</string>
     <string name="settings_export_button">ექსპორტი</string>
     <string name="settings_export_share_button">გაზიარება</string>
-    <string name="unread_widget_account_title">ანგარიში</string>
-    <string name="unread_widget_unified_inbox_account_summary">გაერთიანებული შემავალი</string>
-    <string name="unread_widget_folder_enabled_title">საკეცების რაოდენობა</string>
-    <string name="unread_widget_folder_title">საკეცი</string>
-    <string name="unread_widget_action_done">შესრულდა</string>
-    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
-    <string name="unread_widget_account_not_selected">ანგარიში არ არის არჩეული</string>
     <string name="webview_contextmenu_link_copy_action">ბმულის კოპირება ასლთსათავსში</string>
     <string name="webview_contextmenu_link_clipboard_label">ბმული</string>
     <string name="webview_contextmenu_link_text_copy_action">ბმულის ტექსტის კოპირება ასლთსათავსში</string>

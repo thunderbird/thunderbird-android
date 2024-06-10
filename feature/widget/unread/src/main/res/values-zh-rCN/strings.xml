@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="unread_widget_select_account">显示未读邮件数…</string>
+    <string name="unread_widget_account_title">账号</string>
+    <string name="unread_widget_account_summary">应显示未读邮件数的账号</string>
+    <string name="unread_widget_unified_inbox_account_summary">统一收件箱</string>
+    <string name="unread_widget_folder_enabled_title">文件夹数</string>
+    <string name="unread_widget_folder_enabled_summary">仅显示单个文件夹的未读邮件数</string>
+    <string name="unread_widget_folder_title">文件夹</string>
+    <string name="unread_widget_folder_summary">应显示未读邮件数的文件夹</string>
+    <string name="unread_widget_action_done">完毕</string>
+    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+    <string name="unread_widget_account_not_selected">未选择账号</string>
+    <string name="unread_widget_folder_not_selected">未选择文件夹</string>
+</resources>

@@ -5,7 +5,6 @@ import android.os.Bundle
 import com.fsck.k9.ui.base.K9Activity
 import com.fsck.k9.ui.base.extensions.fragmentTransaction
 import timber.log.Timber
-import com.fsck.k9.ui.R as UiR
 
 /**
  * Activity to select an account for the unread widget.
@@ -15,7 +14,7 @@ class UnreadWidgetConfigurationActivity : K9Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setLayout(R.layout.activity_unread_widget_configuration)
-        setTitle(UiR.string.unread_widget_select_account)
+        setTitle(R.string.unread_widget_select_account)
 
         var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
         val extras = intent.extras

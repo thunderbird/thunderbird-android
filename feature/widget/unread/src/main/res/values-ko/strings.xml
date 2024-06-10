@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="unread_widget_select_account">읽지 않은 메일 수 보이기</string>
+    <string name="unread_widget_account_title">계정</string>
+    <string name="unread_widget_folder_title">폴더</string>
+    <string name="unread_widget_action_done">완료</string>
+    <string name="unread_widget_account_not_selected">계정이 선택되지 않았습니다.</string>
+    <string name="unread_widget_folder_not_selected">폴더가 선택되지 않았습니다.</string>
+</resources>

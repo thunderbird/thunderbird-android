@@ -594,18 +594,6 @@
     <string name="settings_export_failure">Cha b’ urrainn dhuinn na roghainnean às-phortadh</string>
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="unread_widget_select_account">Seall co mheud a tha gun leughadh ann an…</string>
-    <string name="unread_widget_account_title">Cunntas</string>
-    <string name="unread_widget_account_summary">An cunntas dhan dèid na teachdaireachdan gun leughadh a chunntadh</string>
-    <string name="unread_widget_unified_inbox_account_summary">An t-oll-bhogsa</string>
-    <string name="unread_widget_folder_enabled_title">Cunntas pasgain</string>
-    <string name="unread_widget_folder_enabled_summary">Seall cunntas nan teachdaireachdan gun leughadh air aon phasgan a-mhàin</string>
-    <string name="unread_widget_folder_title">Pasgan</string>
-    <string name="unread_widget_folder_summary">Am pasgan dhan dèid na teachdaireachdan gun leughadh a chunntadh</string>
-    <string name="unread_widget_action_done">Deiseil</string>
-    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> – <xliff:g id="folder_name">%2$s</xliff:g></string>
-    <string name="unread_widget_account_not_selected">Cha deach cunntas a thaghadh</string>
-    <string name="unread_widget_folder_not_selected">Cha deach pasgan a thaghadh</string>
     <string name="webview_empty_message">Gun teacsa</string>
     <string name="webview_contextmenu_link_view_action">Fosgail an ceangal</string>
     <string name="webview_contextmenu_link_share_action">Co-roinn an ceangal</string>
