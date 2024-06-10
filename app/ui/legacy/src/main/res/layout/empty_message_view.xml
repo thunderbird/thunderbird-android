@@ -10,6 +10,7 @@
         android:layout_centerVertical="true"
         android:text="@string/message_view_empty"
         android:textAppearance="?attr/textAppearanceBodyLarge"
-        android:textColor="?android:attr/textColorSecondary" />
+        android:textColor="?attr/colorSecondary"
+        />
 
 </RelativeLayout>

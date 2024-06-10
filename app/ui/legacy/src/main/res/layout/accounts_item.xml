@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:ellipsize="end"
-                android:textColor="?android:attr/textColorSecondary"
+                android:textColor="?attr/colorSecondary"
                 android:textSize="@dimen/appTextSizeSmaller"
                 tools:text="@sample/accounts.json/data/email"/>
 

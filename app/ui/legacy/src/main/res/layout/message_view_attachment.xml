@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:singleLine="true"
-                android:textColor="?android:attr/textColorSecondary"
+                android:textColor="?attr/colorSecondary"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/attachment_name"

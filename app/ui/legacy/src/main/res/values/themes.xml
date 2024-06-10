@@ -91,7 +91,7 @@
         <item name="messageListRegularItemBackgroundColor">?android:attr/windowBackground</item>
         <item name="messageListReadItemBackgroundColor">#ffd8d8d8</item>
         <item name="messageListUnreadItemBackgroundColor">?attr/messageListRegularItemBackgroundColor</item>
-        <item name="messageListThreadCountTextColor">?android:attr/textColorSecondary</item>
+        <item name="messageListThreadCountTextColor">?attr/colorSecondary</item>
         <item name="messageListActiveItemBackgroundColor">?attr/colorSecondaryVariant</item>
         <item name="messageListActiveItemBackgroundAlphaFraction">60%</item>
         <item name="messageListActiveItemBackgroundAlphaBackground">?attr/colorSurface</item>
@@ -207,7 +207,7 @@
         <item name="messageListRegularItemBackgroundColor">?android:attr/windowBackground</item>
         <item name="messageListReadItemBackgroundColor">?attr/messageListRegularItemBackgroundColor</item>
         <item name="messageListUnreadItemBackgroundColor">#ff505050</item>
-        <item name="messageListThreadCountTextColor">?android:attr/textColorSecondary</item>
+        <item name="messageListThreadCountTextColor">?attr/colorSecondary</item>
         <item name="messageListActiveItemBackgroundColor">?attr/colorSecondaryVariant</item>
         <item name="messageListActiveItemBackgroundAlphaFraction">50%</item>
         <item name="messageListActiveItemBackgroundAlphaBackground">?attr/colorSurface</item>

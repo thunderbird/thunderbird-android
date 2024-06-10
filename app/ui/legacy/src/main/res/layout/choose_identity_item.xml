@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:ellipsize="end"
-        android:textColor="?android:attr/textColorSecondary"
+        android:textColor="?attr/colorSecondary"
         android:textAppearance="?attr/textAppearanceBodyMedium"
         tools:text="Firstname Lastname &lt;user@domain.example&gt;" />
 

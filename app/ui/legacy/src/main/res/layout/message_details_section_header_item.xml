@@ -22,7 +22,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginEnd="16dp"
         android:textAppearance="?attr/textAppearanceLabelSmall"
-        android:textColor="?android:attr/textColorSecondary"
+        android:textColor="?attr/colorSecondary"
         tools:text="3" />
 
 </LinearLayout>

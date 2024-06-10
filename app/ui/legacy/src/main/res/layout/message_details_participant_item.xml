@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
         android:textAppearance="?attr/textAppearanceBodyMedium"
-        android:textColor="?android:attr/textColorSecondary"
+        android:textColor="?attr/colorSecondary"
         android:layout_marginStart="16dp"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@+id/bottom_guideline"

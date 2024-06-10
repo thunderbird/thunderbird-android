@@ -11,7 +11,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textAppearance="?attr/textAppearanceBodyMedium"
-        android:textColor="?android:attr/textColorSecondary"
+        android:textColor="?attr/colorSecondary"
         tools:text="to me" />
 
     <com.google.android.material.textview.MaterialTextView

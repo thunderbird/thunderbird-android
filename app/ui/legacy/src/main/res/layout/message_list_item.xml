@@ -132,7 +132,7 @@
         android:layout_marginEnd="@dimen/messageListHorizontalPadding"
         android:singleLine="true"
         android:textSize="@dimen/appTextSizeSmaller"
-        android:textColor="?android:attr/textColorSecondary"
+        android:textColor="?attr/colorSecondary"
         app:layout_constraintBaseline_toBaselineOf="@+id/subject"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="Oct 27" />

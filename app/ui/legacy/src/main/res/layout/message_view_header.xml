@@ -112,7 +112,7 @@
             android:ellipsize="none"
             android:singleLine="true"
             android:textAppearance="?attr/textAppearanceCaption"
-            android:textColor="?android:attr/textColorSecondary"
+            android:textColor="?attr/colorSecondary"
             app:layout_constraintBaseline_toBaselineOf="@+id/from"
             app:layout_constraintEnd_toStartOf="@+id/menu_primary_action"
             app:layout_constraintStart_toEndOf="@id/from"
