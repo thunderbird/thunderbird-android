@@ -20,4 +20,40 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">해당 이메일 주소는 유효하지 않습니다.</string>
     <string name="account_setup_options_section_display_options">화면 설정</string>
     <string name="account_setup_options_account_name_label">계정 이름</string>
+    <string name="account_setup_special_folders_folder_automatic">자동 (%s)</string>
+    <string name="account_setup_options_display_name_error_required">당신의 이름은 필수입니다.</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="other">%d 분마다</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="other">메시지 %d 개</item>
+    </plurals>
+    <string name="account_setup_create_account_created">성공적으로 계정이 생성됨</string>
+    <string name="account_setup_special_folders_loading_message">폴더 리스트를 가져오는 중…</string>
+    <string name="account_setup_special_folders_success_message">모든 특수 폴더는 서버에 의해 자동으로 구성됩니다.</string>
+    <string name="account_setup_special_folders_folder_none">없음</string>
+    <string name="account_setup_options_display_name_label">당신의 이름</string>
+    <string name="account_setup_options_email_display_count_label">표시할 메시지 수</string>
+    <string name="account_setup_options_account_check_frequency_label">확인 빈도</string>
+    <string name="account_setup_create_account_error">계정을 만들려는 동안 오류가 발생함</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">구성을 승인해야 합니다.</string>
+    <string name="account_setup_special_folders_form_description">계정의 특수 폴더를 지정해 주세요.</string>
+    <string name="account_setup_special_folders_form_description_automatic">\"자동\" 항목은 서버가 변경한 내용을 자동으로 따릅니다. 현재 서버 값은 괄호 안에 표시됩니다.</string>
+    <string name="account_setup_options_email_signature_label">이메일 서명</string>
+    <string name="account_setup_options_section_sync_options">동기화 옵션</string>
+    <string name="account_setup_options_email_signature_error_blank">이메일 서명은 비워둘 수 없습니다.</string>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="other">%d 시간마다</item>
+    </plurals>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">설정을 찾음</string>
+    <string name="account_setup_auto_discovery_loading_error">이메일 설정 로딩 실패</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">설정을 찾을 수 없음</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">자동으로 설정하기</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">이 구성을 신뢰할 수 없음</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">보안이 취약한 연결을 통해 이메일 서버 구성을 받았습니다. 즉, 누군가 설정을 변경했을 가능성이 매우 희박하다는 뜻입니다. 제공된 구성이 올바른지 다시 한 번 확인해 주시겠어요?</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">수동으로 구성하기</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">구성 수정</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">이 설정을 신뢰함</string>
+    <string name="account_setup_options_show_notifications_label">알림 보기</string>
 </resources>
