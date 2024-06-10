@@ -15,10 +15,6 @@
         <item name="android:lineSpacingExtra">4dp</item>
     </style>
 
-    <style name="ComposeEditTextLarge" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColorHint">?attr/colorOnSurfaceVariant</item>
-    </style>
-
     <style name="MessageComposeHighlight">
         <item name="highlightBackgroundColor">#99444444</item>
     </style>

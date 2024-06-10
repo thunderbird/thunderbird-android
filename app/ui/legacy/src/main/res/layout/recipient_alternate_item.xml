@@ -35,7 +35,7 @@
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/alternate_header_name"
                 android:textColor="?attr/textColorPrimaryRecipientDropdown"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
@@ -47,7 +47,7 @@
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/alternate_header_label"
                 android:textColor="?attr/textColorPrimaryRecipientDropdown"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
@@ -83,7 +83,7 @@
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/alternate_address_label"
             android:textColor="?attr/textColorSecondaryRecipientDropdown"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:singleLine="true"
@@ -95,7 +95,7 @@
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/alternate_address"
             android:textColor="?attr/textColorSecondaryRecipientDropdown"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

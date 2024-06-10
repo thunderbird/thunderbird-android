@@ -11,7 +11,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/main_text"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?attr/textAppearanceBodyLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"

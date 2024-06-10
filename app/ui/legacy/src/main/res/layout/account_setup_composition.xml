@@ -25,7 +25,7 @@
                     android:text="@string/account_settings_name_label"
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
                     />
 
             <EditText
@@ -41,7 +41,7 @@
                     android:text="@string/account_settings_email_label"
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
                     />
 
             <EditText
@@ -57,7 +57,7 @@
                     android:text="@string/account_settings_always_bcc_label"
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
                     />
 
             <EditText
@@ -84,7 +84,7 @@
                         android:text="@string/account_settings_signature_label"
                         android:layout_height="wrap_content"
                         android:layout_width="fill_parent"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
                         />
 
                 <EditText
@@ -98,7 +98,7 @@
                         android:text="@string/account_settings_signature__location_label"
                         android:layout_height="wrap_content"
                         android:layout_width="fill_parent"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
                         />
 
                 <RadioGroup

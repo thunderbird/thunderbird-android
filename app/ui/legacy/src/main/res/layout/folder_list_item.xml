@@ -27,7 +27,7 @@
         android:paddingTop="12dp"
         android:paddingEnd="16dp"
         android:paddingBottom="12dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?attr/textAppearanceTitleMedium"
         tools:text="Inbox" />
 
 </LinearLayout>

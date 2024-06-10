@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?android:attr/listPreferredItemHeight"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textAppearance="?attr/textAppearanceTitleLarge"
         android:gravity="center_vertical"
         android:checkMark="?android:attr/listChoiceIndicatorSingle"
         android:ellipsize="marquee"
