@@ -108,7 +108,7 @@
         android:layout_marginEnd="4dp"
         android:focusable="false"
         android:textAppearance="?attr/textAppearanceBodyMedium"
-        android:textColor="?attr/messageListThreadCountTextColor"
+        android:textColor="?attr/colorSecondary"
         app:layout_constraintBaseline_toBaselineOf="@+id/subject"
         app:layout_constraintEnd_toStartOf="@+id/attachment"
         app:layout_constraintHorizontal_bias="0.0"

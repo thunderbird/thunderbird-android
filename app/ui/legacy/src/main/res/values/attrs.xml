@@ -7,7 +7,6 @@
         <attr name="messageListRegularItemBackgroundColor" format="reference|color"/>
         <attr name="messageListReadItemBackgroundColor" format="reference|color"/>
         <attr name="messageListUnreadItemBackgroundColor" format="reference|color"/>
-        <attr name="messageListThreadCountTextColor" format="reference|color"/>
         <attr name="messageListActiveItemBackgroundColor" format="reference|color"/>
         <attr name="messageListActiveItemBackgroundAlphaFraction" format="fraction"/>
         <attr name="messageListActiveItemBackgroundAlphaBackground" format="reference|color"/>
