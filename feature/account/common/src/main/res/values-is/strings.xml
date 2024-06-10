@@ -2,7 +2,6 @@
 <resources>
     <string name="account_common_button_next">Næsta</string>
     <string name="account_common_button_back">Til baka</string>
-    <string name="account_common_title">K-9 - Póstur</string>
     <string name="account_common_error_server_message">Póstþjónninn svaraði með eftirfarandi skilaboðum:
 \n%s</string>
 </resources>

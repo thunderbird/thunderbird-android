@@ -2,5 +2,4 @@
 <resources>
     <string name="account_common_button_next">Напред</string>
     <string name="account_common_button_back">Назад</string>
-    <string name="account_common_title">К-9 Поща</string>
 </resources>

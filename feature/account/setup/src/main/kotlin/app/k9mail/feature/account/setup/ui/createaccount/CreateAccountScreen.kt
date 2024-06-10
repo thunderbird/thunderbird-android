@@ -4,6 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import app.k9mail.core.common.provider.AppNameProvider
 import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
@@ -19,6 +20,7 @@ internal fun CreateAccountScreen(
     onNext: (AccountUuid) -> Unit,
     onBack: () -> Unit,
     viewModel: ViewModel,
+    appNameProvider: AppNameProvider,
     modifier: Modifier = Modifier,
 ) {
     val (state, dispatch) = viewModel.observe { effect ->
@@ -38,7 +40,9 @@ internal fun CreateAccountScreen(
 
     Scaffold(
         topBar = {
-            AppTitleTopHeader()
+            AppTitleTopHeader(
+                title = appNameProvider.appName,
+            )
         },
         bottomBar = {
             WizardNavigationBar(

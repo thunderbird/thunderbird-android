@@ -2,7 +2,6 @@
 <resources>
     <string name="account_common_button_next">下一步</string>
     <string name="account_common_button_back">返回</string>
-    <string name="account_common_title">K-9 Mail</string>
     <string name="account_common_error_server_message">服务器返回了以下消息：
 \n%s</string>
 </resources>
