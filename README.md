@@ -36,13 +36,7 @@ Interested in helping to translate K-9 Mail? Contribute here:
 
 ## Contributing
 
-Thank you for contributing! If you're unfamiliar with the code, start by reading the [developer documentation](docs/DESIGN.md)
-
-Please fork this repository and contribute back using [pull requests](https://github.com/thunderbird/thunderbird-android/pulls).
-
-Any contributions, large or small, major features, bug fixes, unit/integration tests are welcomed and appreciated
-but will be thoroughly reviewed and discussed.
-Please make sure you read the [Code Style Guidelines](https://github.com/thunderbird/thunderbird-android/wiki/CodeStyle).
+We welcome contributions from everyone. Please see the [CONTRIBUTING](docs/CONTRIBUTING.md) guide for more information.
 
 ### Architecture Decision Records (ADR)
 
