@@ -1,0 +1,86 @@
+name: "NowSecure GHAS"
+
+on:
+  workflow_dispatch:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: "11"
+          distribution: "adopt"
+          cache: "gradle"
+
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Build application
+        run: ./gradlew assembleDebug --stacktrace --no-daemon
+
+      - name: Upload application
+        uses: actions/upload-artifact@v2
+        with:
+          name: app
+          path: ./app/k9mail/build/outputs/apk/debug/k9mail-debug.apk
+          retention-days: 3
+
+  scan:
+    runs-on: ubuntu-latest
+    outputs:
+      report_id: ${{ steps.upload.outputs.report_id }}
+    # The stage that builds the application.
+    needs: build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Replace with whatever pulls the application file before we upload.
+      - name: Download application
+        uses: actions/download-artifact@v2
+        with:
+          # Generated in the "build" stage.
+          name: app
+
+      - id: upload
+        name: NowSecure upload app
+        uses: nowsecure/nowsecure-action/upload-app@v3.2.0
+        with:
+          platform_token: ${{ secrets.NS_TOKEN }}
+          # TODO: Replace application path.
+          app_file:  "k9mail-debug.apk"	
+          # TODO: Replace the Group ID.
+          group_id: "602abed9-4c66-453d-8431-da0195b682de"	  
+  process:
+    if: ${{ needs.scan.outputs.report_id }}
+    runs-on: ubuntu-latest
+    environment:
+      name: nowsecure-env
+    # The above stage we introduced.
+    needs: scan
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: NowSecure download report
+        uses: nowsecure/nowsecure-action/convert-sarif@v3.2.0
+        timeout-minutes: 30
+        with:
+          report_id: ${{ needs.scan.outputs.report_id }}
+          platform_token: ${{ secrets.NS_TOKEN }}
+          # TODO: Replace the Group ID.
+          group_id: "602abed9-4c66-453d-8431-da0195b682de"
+          
+      - name: Save SARIF File
+        uses: actions/upload-artifact@v2
+        with:
+          name: NowSecure SARIF
+          path: NowSecure.sarif
+          retention-days: 14
+    
