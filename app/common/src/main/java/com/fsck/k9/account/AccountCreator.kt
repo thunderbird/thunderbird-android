@@ -16,7 +16,7 @@ import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.autoDetectNamespace
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.createExtra
-import com.fsck.k9.mail.store.imap.ImapStoreSettings.isSendClientId
+import com.fsck.k9.mail.store.imap.ImapStoreSettings.isSendClientInfo
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.isUseCompression
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
 import com.fsck.k9.mailstore.SpecialFolderUpdater
@@ -141,7 +141,7 @@ class AccountCreator(
 private fun K9Account.setIncomingServerSettings(serverSettings: ServerSettings) {
     if (serverSettings.type == Protocols.IMAP) {
         useCompression = serverSettings.isUseCompression
-        isSendClientIdEnabled = serverSettings.isSendClientId
+        isSendClientInfoEnabled = serverSettings.isSendClientInfo
         incomingServerSettings = serverSettings.copy(
             extra = createExtra(
                 autoDetectNamespace = serverSettings.autoDetectNamespace,

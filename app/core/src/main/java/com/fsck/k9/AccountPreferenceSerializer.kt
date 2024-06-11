@@ -140,7 +140,7 @@ class AccountPreferenceSerializer(
             isReplyAfterQuote = storage.getBoolean("$accountUuid.replyAfterQuote", DEFAULT_REPLY_AFTER_QUOTE)
             isStripSignature = storage.getBoolean("$accountUuid.stripSignature", DEFAULT_STRIP_SIGNATURE)
             useCompression = storage.getBoolean("$accountUuid.useCompression", true)
-            isSendClientIdEnabled = storage.getBoolean("$accountUuid.sendClientId", true)
+            isSendClientInfoEnabled = storage.getBoolean("$accountUuid.sendClientId", true)
 
             importedAutoExpandFolder = storage.getString("$accountUuid.autoExpandFolderName", null)
 
@@ -365,7 +365,7 @@ class AccountPreferenceSerializer(
             editor.putLong("$accountUuid.lastFolderListRefreshTime", lastFolderListRefreshTime)
             editor.putBoolean("$accountUuid.isFinishedSetup", isFinishedSetup)
             editor.putBoolean("$accountUuid.useCompression", useCompression)
-            editor.putBoolean("$accountUuid.sendClientId", isSendClientIdEnabled)
+            editor.putBoolean("$accountUuid.sendClientId", isSendClientInfoEnabled)
             editor.putBoolean("$accountUuid.migrateToOAuth", shouldMigrateToOAuth)
         }
 

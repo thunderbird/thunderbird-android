@@ -43,7 +43,7 @@ internal fun AccountAutoDiscoveryContract.State.toIncomingConfigState(): Incomin
             imapAutodetectNamespaceEnabled = true,
             imapPrefix = StringInputField(value = ""),
             imapUseCompression = true,
-            imapSendClientId = true,
+            imapSendClientInfo = true,
         )
     }
 }

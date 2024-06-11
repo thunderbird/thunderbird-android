@@ -16,8 +16,8 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val appModule = module {
-    single(named("ClientIdAppName")) { BuildConfig.CLIENT_ID_APP_NAME }
-    single(named("ClientIdAppVersion")) { BuildConfig.VERSION_NAME }
+    single(named("ClientInfoAppName")) { BuildConfig.CLIENT_INFO_APP_NAME }
+    single(named("ClientInfoAppVersion")) { BuildConfig.VERSION_NAME }
     single<AppConfig> { appConfig }
     single<OAuthConfigurationFactory> { K9OAuthConfigurationFactory() }
     single<FeatureThemeProvider> { provideFeatureThemeProvider() }

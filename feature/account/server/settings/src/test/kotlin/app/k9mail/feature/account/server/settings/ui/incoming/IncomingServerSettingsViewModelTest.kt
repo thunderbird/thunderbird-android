@@ -52,7 +52,7 @@ class IncomingServerSettingsViewModelTest {
                     autoDetectNamespace = true,
                     pathPrefix = null,
                     useCompression = true,
-                    sendClientId = true,
+                    sendClientInfo = true,
                 ),
             ),
         )
@@ -84,7 +84,7 @@ class IncomingServerSettingsViewModelTest {
                     imapAutodetectNamespaceEnabled = true,
                     imapPrefix = StringInputField(value = ""),
                     imapUseCompression = true,
-                    imapSendClientId = true,
+                    imapSendClientInfo = true,
 
                     isLoading = false,
                 ),
@@ -237,13 +237,13 @@ class IncomingServerSettingsViewModelTest {
     }
 
     @Test
-    fun `should change state when ImapSendClientIdChanged event is received`() = runTest {
-        val initialState = State(imapSendClientId = true)
+    fun `should change state when ImapSendClientInfoChanged event is received`() = runTest {
+        val initialState = State(imapSendClientInfo = true)
         eventStateTest(
             viewModel = createTestSubject(initialState),
             initialState = initialState,
-            event = Event.ImapSendClientIdChanged(false),
-            expectedState = State(imapSendClientId = false),
+            event = Event.ImapSendClientInfoChanged(false),
+            expectedState = State(imapSendClientInfo = false),
             coroutineScope = backgroundScope,
         )
     }
@@ -283,11 +283,11 @@ class IncomingServerSettingsViewModelTest {
                     username = "",
                     password = "",
                     clientCertificateAlias = null,
-                    extra = mapOf(
-                        "autoDetectNamespace" to "true",
-                        "pathPrefix" to null,
-                        "useCompression" to "true",
-                        "sendClientId" to "true",
+                    extra = ImapStoreSettings.createExtra(
+                        autoDetectNamespace = true,
+                        pathPrefix = null,
+                        useCompression = true,
+                        sendClientInfo = true,
                     ),
                 ),
             ),
@@ -340,11 +340,11 @@ class IncomingServerSettingsViewModelTest {
                         username = "",
                         password = null,
                         clientCertificateAlias = null,
-                        extra = mapOf(
-                            "autoDetectNamespace" to "true",
-                            "pathPrefix" to null,
-                            "useCompression" to "true",
-                            "sendClientId" to "true",
+                        extra = ImapStoreSettings.createExtra(
+                            autoDetectNamespace = true,
+                            pathPrefix = null,
+                            useCompression = true,
+                            sendClientInfo = true,
                         ),
                     ),
                 ),

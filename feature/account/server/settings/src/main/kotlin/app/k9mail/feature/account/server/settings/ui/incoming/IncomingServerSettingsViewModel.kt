@@ -45,7 +45,7 @@ open class IncomingServerSettingsViewModel(
             }
 
             is Event.ImapUseCompressionChanged -> updateState { it.copy(imapUseCompression = event.useCompression) }
-            is Event.ImapSendClientIdChanged -> updateState { it.copy(imapSendClientId = event.sendClientId) }
+            is Event.ImapSendClientInfoChanged -> updateState { it.copy(imapSendClientInfo = event.sendClientInfo) }
 
             Event.OnNextClicked -> onNext()
             Event.OnBackClicked -> onBack()

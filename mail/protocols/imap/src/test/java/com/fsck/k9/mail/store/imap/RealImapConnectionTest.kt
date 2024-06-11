@@ -857,7 +857,7 @@ class RealImapConnectionTest {
     }
 
     @Test
-    fun `open() with ID capability and clientIdAppName should send ID command`() {
+    fun `open() with ID capability and clientInfoAppName should send ID command`() {
         val server = MockImapServer().apply {
             simplePreAuthAndLoginDialog(postAuthCapabilities = "ID")
             expect("""3 ID ("name" "AppName" "version" "AppVersion")""")
@@ -867,7 +867,7 @@ class RealImapConnectionTest {
         }
         val imapConnection = startServerAndCreateImapConnection(
             server,
-            clientId = ImapClientId(appName = "AppName", appVersion = "AppVersion"),
+            clientInfo = ImapClientInfo(appName = "AppName", appVersion = "AppVersion"),
         )
 
         imapConnection.open()
@@ -877,14 +877,14 @@ class RealImapConnectionTest {
     }
 
     @Test
-    fun `open() without ID capability and clientIdAppName set should send not ID command`() {
+    fun `open() without ID capability and clientInfoAppName set should send not ID command`() {
         val server = MockImapServer().apply {
             simplePreAuthAndLoginDialog()
             simplePostAuthenticationDialog(tag = 3)
         }
         val imapConnection = startServerAndCreateImapConnection(
             server,
-            clientId = ImapClientId(appName = "AppName", appVersion = "AppVersion"),
+            clientInfo = ImapClientInfo(appName = "AppName", appVersion = "AppVersion"),
         )
 
         imapConnection.open()
@@ -894,12 +894,12 @@ class RealImapConnectionTest {
     }
 
     @Test
-    fun `open() with ID capability but empty clientIdAppName should not send ID command`() {
+    fun `open() with ID capability but empty clientInfoAppName should not send ID command`() {
         val server = MockImapServer().apply {
             simplePreAuthAndLoginDialog(postAuthCapabilities = "ID")
             simplePostAuthenticationDialog(tag = 3)
         }
-        val imapConnection = startServerAndCreateImapConnection(server, clientId = null)
+        val imapConnection = startServerAndCreateImapConnection(server, clientInfo = null)
 
         imapConnection.open()
 
@@ -918,7 +918,7 @@ class RealImapConnectionTest {
         }
         val imapConnection = startServerAndCreateImapConnection(
             server,
-            clientId = ImapClientId(appName = "AppName", appVersion = "AppVersion"),
+            clientInfo = ImapClientInfo(appName = "AppName", appVersion = "AppVersion"),
         )
 
         imapConnection.open()
@@ -937,7 +937,7 @@ class RealImapConnectionTest {
         }
         val imapConnection = startServerAndCreateImapConnection(
             server,
-            clientId = ImapClientId(appName = "AppName", appVersion = "AppVersion"),
+            clientInfo = ImapClientInfo(appName = "AppName", appVersion = "AppVersion"),
         )
 
         imapConnection.open()
@@ -956,7 +956,7 @@ class RealImapConnectionTest {
         }
         val imapConnection = startServerAndCreateImapConnection(
             server,
-            clientId = ImapClientId(appName = "AppName", appVersion = "AppVersion"),
+            clientInfo = ImapClientInfo(appName = "AppName", appVersion = "AppVersion"),
         )
 
         imapConnection.open()
@@ -1157,7 +1157,7 @@ class RealImapConnectionTest {
         connectionSecurity: ConnectionSecurity = ConnectionSecurity.NONE,
         authType: AuthType = AuthType.PLAIN,
         useCompression: Boolean = false,
-        clientId: ImapClientId? = null,
+        clientInfo: ImapClientInfo? = null,
     ): ImapConnection {
         server.start()
 
@@ -1169,7 +1169,7 @@ class RealImapConnectionTest {
             username = USERNAME,
             password = PASSWORD,
             useCompression = useCompression,
-            clientId = clientId,
+            clientInfo = clientInfo,
         )
 
         return createImapConnection(settings, socketFactory, oAuth2TokenProvider)

@@ -17,20 +17,20 @@ import com.fsck.k9.mail.ssl.TrustedSocketFactory
 class ImapFolderFetcher internal constructor(
     private val trustedSocketFactory: TrustedSocketFactory,
     private val oAuth2TokenProviderFactory: OAuth2TokenProviderFactory?,
-    private val clientIdAppName: String,
-    private val clientIdAppVersion: String,
+    private val clientInfoAppName: String,
+    private val clientInfoAppVersion: String,
     private val imapStoreFactory: ImapStoreFactory,
 ) : FolderFetcher {
     constructor(
         trustedSocketFactory: TrustedSocketFactory,
         oAuth2TokenProviderFactory: OAuth2TokenProviderFactory?,
-        clientIdAppName: String,
-        clientIdAppVersion: String,
+        clientInfoAppName: String,
+        clientInfoAppVersion: String,
     ) : this(
         trustedSocketFactory,
         oAuth2TokenProviderFactory,
-        clientIdAppName,
-        clientIdAppVersion,
+        clientInfoAppName,
+        clientInfoAppVersion,
         imapStoreFactory = ImapStore.Companion,
     )
 
@@ -42,7 +42,7 @@ class ImapFolderFetcher internal constructor(
             override val logLabel = "folder-fetcher"
             override fun isSubscribedFoldersOnly() = false
             override fun isExpungeImmediately() = false
-            override fun clientId() = ImapClientId(appName = clientIdAppName, appVersion = clientIdAppVersion)
+            override fun clientInfo() = ImapClientInfo(appName = clientInfoAppName, appVersion = clientInfoAppVersion)
         }
         val oAuth2TokenProvider = createOAuth2TokenProviderOrNull(authStateStorage)
         val store = imapStoreFactory.create(serverSettings, config, trustedSocketFactory, oAuth2TokenProvider)

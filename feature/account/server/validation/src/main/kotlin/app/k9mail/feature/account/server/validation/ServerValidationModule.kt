@@ -29,8 +29,8 @@ val featureAccountServerValidationModule = module {
             imapValidator = ImapServerSettingsValidator(
                 trustedSocketFactory = get(),
                 oAuth2TokenProviderFactory = get(),
-                clientIdAppName = get(named("ClientIdAppName")),
-                clientIdAppVersion = get(named("ClientIdAppVersion")),
+                clientInfoAppName = get(named("ClientInfoAppName")),
+                clientInfoAppVersion = get(named("ClientInfoAppVersion")),
             ),
             pop3Validator = Pop3ServerSettingsValidator(
                 trustedSocketFactory = get(),

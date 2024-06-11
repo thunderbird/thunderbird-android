@@ -13,7 +13,7 @@ fun Account.toImapServerSettings(): ServerSettings {
             autoDetectNamespace = serverSettings.autoDetectNamespace,
             pathPrefix = serverSettings.pathPrefix,
             useCompression = useCompression,
-            sendClientId = isSendClientIdEnabled,
+            sendClientInfo = isSendClientInfoEnabled,
         ),
     )
 }

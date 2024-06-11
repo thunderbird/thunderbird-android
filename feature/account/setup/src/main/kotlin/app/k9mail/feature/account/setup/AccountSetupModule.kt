@@ -89,8 +89,8 @@ val featureAccountSetupModule: Module = module {
         ImapFolderFetcher(
             trustedSocketFactory = get(),
             oAuth2TokenProviderFactory = get(),
-            clientIdAppName = get(named("ClientIdAppName")),
-            clientIdAppVersion = get(named("ClientIdAppVersion")),
+            clientInfoAppName = get(named("ClientInfoAppName")),
+            clientInfoAppVersion = get(named("ClientInfoAppVersion")),
         )
     }
 

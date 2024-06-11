@@ -45,7 +45,7 @@ class ModifyIncomingServerSettingsViewModelTest {
                     autoDetectNamespace = true,
                     pathPrefix = null,
                     useCompression = true,
-                    sendClientId = true,
+                    sendClientInfo = true,
                 ),
             ),
         )
@@ -79,7 +79,7 @@ class ModifyIncomingServerSettingsViewModelTest {
                     imapAutodetectNamespaceEnabled = true,
                     imapPrefix = StringInputField(value = ""),
                     imapUseCompression = true,
-                    imapSendClientId = true,
+                    imapSendClientInfo = true,
 
                     isLoading = false,
                 ),

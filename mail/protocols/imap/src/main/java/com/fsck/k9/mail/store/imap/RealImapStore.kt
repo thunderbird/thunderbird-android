@@ -11,7 +11,7 @@ import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.autoDetectNamespace
-import com.fsck.k9.mail.store.imap.ImapStoreSettings.isSendClientId
+import com.fsck.k9.mail.store.imap.ImapStoreSettings.isSendClientInfo
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.isUseCompression
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
 import java.io.IOException
@@ -309,7 +309,7 @@ internal open class RealImapStore(
 
         override val useCompression: Boolean = serverSettings.isUseCompression
 
-        override val clientId: ImapClientId? = config.clientId().takeIf { serverSettings.isSendClientId }
+        override val clientInfo: ImapClientInfo? = config.clientInfo().takeIf { serverSettings.isSendClientInfo }
 
         override var pathPrefix: String?
             get() = this@RealImapStore.pathPrefix

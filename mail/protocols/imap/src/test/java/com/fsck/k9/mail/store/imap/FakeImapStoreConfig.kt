@@ -11,7 +11,7 @@ class FakeImapStoreConfig : ImapStoreConfig {
 
     override fun isExpungeImmediately(): Boolean = expungeImmediately
 
-    override fun clientId(): ImapClientId {
+    override fun clientInfo(): ImapClientInfo {
         throw UnsupportedOperationException("not implemented")
     }
 }

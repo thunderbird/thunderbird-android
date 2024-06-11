@@ -97,7 +97,7 @@ internal class RealImapConnection(
             extractOrRequestCapabilities(responses)
 
             enableCompressionIfRequested()
-            sendClientIdIfSupported()
+            sendClientInfoIfSupported()
 
             retrievePathPrefixIfNecessary()
             retrievePathDelimiterIfNecessary()
@@ -547,12 +547,12 @@ internal class RealImapConnection(
         }
     }
 
-    private fun sendClientIdIfSupported() {
-        val clientId = settings.clientId
+    private fun sendClientInfoIfSupported() {
+        val clientInfo = settings.clientInfo
 
-        if (hasCapability(Capabilities.ID) && clientId != null) {
-            val encodedAppName = ImapUtility.encodeString(clientId.appName)
-            val encodedAppVersion = ImapUtility.encodeString(clientId.appVersion)
+        if (hasCapability(Capabilities.ID) && clientInfo != null) {
+            val encodedAppName = ImapUtility.encodeString(clientInfo.appName)
+            val encodedAppVersion = ImapUtility.encodeString(clientInfo.appVersion)
 
             try {
                 executeSimpleCommand("""ID ("name" $encodedAppName "version" $encodedAppVersion)""")

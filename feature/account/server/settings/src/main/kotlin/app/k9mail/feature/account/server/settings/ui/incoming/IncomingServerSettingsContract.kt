@@ -29,7 +29,7 @@ interface IncomingServerSettingsContract {
         val imapAutodetectNamespaceEnabled: Boolean = true,
         val imapPrefix: StringInputField = StringInputField(),
         val imapUseCompression: Boolean = true,
-        val imapSendClientId: Boolean = true,
+        val imapSendClientInfo: Boolean = true,
 
         override val isLoading: Boolean = true,
         override val error: Error? = null,
@@ -47,7 +47,7 @@ interface IncomingServerSettingsContract {
         data class ImapAutoDetectNamespaceChanged(val enabled: Boolean) : Event
         data class ImapPrefixChanged(val imapPrefix: String) : Event
         data class ImapUseCompressionChanged(val useCompression: Boolean) : Event
-        data class ImapSendClientIdChanged(val sendClientId: Boolean) : Event
+        data class ImapSendClientInfoChanged(val sendClientInfo: Boolean) : Event
 
         data object LoadAccountState : Event
 

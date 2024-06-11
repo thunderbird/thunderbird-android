@@ -96,7 +96,7 @@ class IncomingServerSettingsStateMapperKtTest {
             imapAutodetectNamespaceEnabled = false,
             imapPrefix = StringInputField(value = "prefix"),
             imapUseCompression = true,
-            imapSendClientId = true,
+            imapSendClientInfo = true,
         )
 
         private val IMAP_SERVER_SETTINGS = ServerSettings(
@@ -112,7 +112,7 @@ class IncomingServerSettingsStateMapperKtTest {
                 autoDetectNamespace = false,
                 pathPrefix = "prefix",
                 useCompression = true,
-                sendClientId = true,
+                sendClientInfo = true,
             ),
         )
 

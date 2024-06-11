@@ -9,7 +9,7 @@ import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.autoDetectNamespace
-import com.fsck.k9.mail.store.imap.ImapStoreSettings.isSendClientId
+import com.fsck.k9.mail.store.imap.ImapStoreSettings.isSendClientInfo
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.isUseCompression
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
 import com.fsck.k9.preferences.AccountManager
@@ -53,7 +53,7 @@ class AccountServerSettingsUpdater(
         if (isIncoming) {
             if (serverSettings.type == Protocols.IMAP) {
                 account.useCompression = serverSettings.isUseCompression
-                account.isSendClientIdEnabled = serverSettings.isSendClientId
+                account.isSendClientInfoEnabled = serverSettings.isSendClientInfo
                 account.incomingServerSettings = serverSettings.copy(
                     extra = ImapStoreSettings.createExtra(
                         autoDetectNamespace = serverSettings.autoDetectNamespace,

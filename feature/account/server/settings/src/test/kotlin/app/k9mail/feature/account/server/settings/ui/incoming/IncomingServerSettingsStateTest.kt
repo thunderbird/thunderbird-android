@@ -29,7 +29,7 @@ class IncomingServerSettingsStateTest {
                 clientCertificateAlias = null,
                 imapAutodetectNamespaceEnabled = true,
                 imapUseCompression = true,
-                imapSendClientId = true,
+                imapSendClientInfo = true,
 
                 isLoading = true,
                 error = null,

@@ -4,5 +4,5 @@ interface ImapStoreConfig {
     val logLabel: String
     fun isSubscribedFoldersOnly(): Boolean
     fun isExpungeImmediately(): Boolean
-    fun clientId(): ImapClientId
+    fun clientInfo(): ImapClientInfo
 }

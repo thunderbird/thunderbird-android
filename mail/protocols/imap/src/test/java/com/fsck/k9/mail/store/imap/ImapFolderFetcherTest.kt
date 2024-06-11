@@ -28,8 +28,8 @@ class ImapFolderFetcherTest {
     private val folderFetcher = ImapFolderFetcher(
         trustedSocketFactory = trustedSocketFactory,
         oAuth2TokenProviderFactory = null,
-        clientIdAppName = "irrelevant",
-        clientIdAppVersion = "irrelevant",
+        clientInfoAppName = "irrelevant",
+        clientInfoAppVersion = "irrelevant",
         imapStoreFactory = { _, _, _, _ ->
             fakeImapStore
         },
@@ -47,7 +47,7 @@ class ImapFolderFetcherTest {
             autoDetectNamespace = true,
             pathPrefix = null,
             useCompression = false,
-            sendClientId = false,
+            sendClientInfo = false,
         ),
     )
 

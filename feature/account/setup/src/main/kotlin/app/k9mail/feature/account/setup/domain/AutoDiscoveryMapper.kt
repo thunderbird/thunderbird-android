@@ -35,7 +35,7 @@ private fun ImapServerSettings.toImapServerSettings(password: String?): ServerSe
             autoDetectNamespace = true,
             pathPrefix = null,
             useCompression = true,
-            sendClientId = true,
+            sendClientInfo = true,
         ),
     )
 }
