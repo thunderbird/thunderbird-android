@@ -41,6 +41,7 @@ import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo54;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo74;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo80;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo81;
+import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo91;
 
 import static com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo53.FOLDER_NONE;
 
@@ -282,7 +283,11 @@ public class AccountSettingsDescriptions {
                 new V(81, new BooleanSetting(true))
         ));
         s.put("sendClientId", Settings.versions(
-                new V(88, new BooleanSetting(true))
+                new V(88, new BooleanSetting(true)),
+                new V(91, null)
+        ));
+        s.put("sendClientInfo", Settings.versions(
+                new V(91, new BooleanSetting(true))
         ));
         // note that there is no setting for openPgpProvider, because this will have to be set up together
         // with the actual provider after import anyways.
@@ -295,6 +300,7 @@ public class AccountSettingsDescriptions {
         u.put(74, new AccountSettingsUpgraderTo74());
         u.put(80, new AccountSettingsUpgraderTo80());
         u.put(81, new AccountSettingsUpgraderTo81());
+        u.put(91, new AccountSettingsUpgraderTo91());
 
         UPGRADERS = Collections.unmodifiableMap(u);
     }
