@@ -14,7 +14,6 @@
     <ID>ImplicitDefaultLocale:RealImapFolder.kt$RealImapFolder$String.format(";\r\n %s=%s", paramName, encodedValue)</ID>
     <ID>ImplicitDefaultLocale:RealImapFolder.kt$RealImapFolder$String.format("BODY.PEEK[%s]", partId)</ID>
     <ID>ImplicitDefaultLocale:RealImapFolder.kt$RealImapFolder$String.format("CREATE %s", escapedFolderName)</ID>
-    <ID>ImplicitDefaultLocale:RealImapFolder.kt$RealImapFolder$String.format("STATUS %s (RECENT)", escapedFolderName)</ID>
     <ID>ImplicitDefaultLocale:RealImapFolder.kt$RealImapFolder$String.format("STATUS %s (UIDVALIDITY)", escapedFolderName)</ID>
     <ID>ImplicitDefaultLocale:RealImapFolder.kt$RealImapFolder$String.format("UID FETCH %s (%s)", commaSeparatedUids, spaceSeparatedFetchFields)</ID>
     <ID>ImplicitDefaultLocale:RealImapFolder.kt$RealImapFolder$String.format("UID FETCH %s (UID %s)", message.uid, fetch)</ID>

@@ -29,7 +29,6 @@
     <ID>LongMethod:MessageContainerView.kt$MessageContainerView$private fun createImageMenu(menu: ContextMenu, imageUrl: String?)</ID>
     <ID>LongMethod:MessageList.kt$MessageList$private fun decodeExtrasToLaunchData(intent: Intent): LaunchData</ID>
     <ID>LongMethod:MessageList.kt$MessageList$private fun onCustomKeyDown(event: KeyEvent): Boolean</ID>
-    <ID>LongMethod:MessageList.kt$MessageList$public override fun onCreate(savedInstanceState: Bundle?)</ID>
     <ID>LongMethod:MessageListAdapter.kt$MessageListAdapter$private fun bindMessageViewHolder(holder: MessageViewHolder, messageListItem: MessageListItem)</ID>
     <ID>LongMethod:MessageViewFragment.kt$MessageViewFragment$override fun onPrepareOptionsMenu(menu: Menu)</ID>
     <ID>LongMethod:RecipientNamesView.kt$RecipientNamesView$override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int)</ID>
@@ -81,7 +80,6 @@
     <ID>ReturnCount:MessageTopView.kt$MessageTopView$private fun shouldShowPicturesFromSender(showPicturesSetting: ShowPictures, message: Message): Boolean</ID>
     <ID>ReturnCount:MessageViewFragment.kt$MessageViewFragment$override fun onOptionsItemSelected(item: MenuItem): Boolean</ID>
     <ID>ReturnCount:RecipientLayoutCreator.kt$RecipientLayoutCreator$fun createRecipientLayout( recipientNames: List&lt;CharSequence&gt;, totalNumberOfRecipients: Int, availableWidth: Int, ): RecipientLayoutData</ID>
-    <ID>ReturnCount:RecipientLayoutCreator.kt$RecipientLayoutCreator$private fun doesTextFitAvailableWidth( displayRecipients: CharSequence, additionalRecipients: CharSequence, availableWidth: Int, ): Boolean</ID>
     <ID>ReturnCount:RecipientPresenter.kt$RecipientPresenter$fun checkRecipientsOkForSending(): Boolean</ID>
     <ID>ReturnCount:RecipientPresenter.kt$RecipientPresenter$private fun toggleEncryptionState(showGotIt: Boolean)</ID>
     <ID>ReturnCount:ShareIntentBuilder.kt$ShareIntentBuilder$private fun extractBodyText(message: LocalMessage): String</ID>

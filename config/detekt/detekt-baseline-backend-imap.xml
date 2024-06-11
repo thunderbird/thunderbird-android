@@ -13,7 +13,6 @@
     <ID>MagicNumber:ImapBackendPusher.kt$ImapBackendPusher$60</ID>
     <ID>MaxLineLength:ImapSync.kt$ImapSync.&lt;no name provided&gt;$// TODO: This might be the source of poll count errors in the UI. Is todo always the same as ofTotal</ID>
     <ID>NestedBlockDepth:ImapSync.kt$ImapSync$private fun synchronizeMailboxSynchronous(folder: String, syncConfig: SyncConfig, listener: SyncListener)</ID>
-    <ID>ReturnCount:CommandSetFlag.kt$CommandSetFlag$fun setFlag(folderServerId: String, messageServerIds: List&lt;String&gt;, flag: Flag, newState: Boolean)</ID>
     <ID>ReturnCount:ImapSync.kt$ImapSync$private fun isOldMessage(messageServerId: String, highestKnownUid: Long?): Boolean</ID>
     <ID>ReturnCount:ImapSync.kt$ImapSync$private fun syncFlags(syncConfig: SyncConfig, backendFolder: BackendFolder, remoteMessage: ImapMessage): Boolean</ID>
     <ID>ReturnCount:UidReverseComparator.kt$UidReverseComparator$override fun compare(messageLeft: Message, messageRight: Message): Int</ID>

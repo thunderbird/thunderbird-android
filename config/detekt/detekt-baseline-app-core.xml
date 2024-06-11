@@ -4,7 +4,6 @@
   <CurrentIssues>
     <ID>CastToNullableType:SettingsExporter.kt$SettingsExporter$as</ID>
     <ID>CyclomaticComplexMethod:HttpUriParser.kt$HttpUriParser$private fun tryMatchIpv6Address(text: CharSequence, startPos: Int): Int</ID>
-    <ID>CyclomaticComplexMethod:PushController.kt$PushController$private fun updatePushers()</ID>
     <ID>CyclomaticComplexMethod:SettingsExporter.kt$SettingsExporter$private fun writeAccount(serializer: XmlSerializer, account: Account, prefs: Map&lt;String, Any&gt;)</ID>
     <ID>ForbiddenComment:K9BackendFolderTest.kt$K9BackendFolderTest$// FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()</ID>
     <ID>ForbiddenComment:K9BackendStorageTest.kt$K9BackendStorageTest$// FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()</ID>
@@ -19,7 +18,6 @@
     <ID>LongMethod:NotificationDataStore.kt$NotificationDataStore$@Synchronized fun removeNotifications( account: Account, selector: (List&lt;MessageReference&gt;) -&gt; List&lt;MessageReference&gt;, ): RemoveNotificationsResult?</ID>
     <ID>LongMethod:SettingsExporter.kt$SettingsExporter$private fun writeAccount(serializer: XmlSerializer, account: Account, prefs: Map&lt;String, Any&gt;)</ID>
     <ID>LongMethod:TextBodyBuilderTest.kt$TextBodyBuilderTest.Companion$@JvmStatic @Parameterized.Parameters(name = "{index}: {0}") fun data(): Collection&lt;TestData&gt;</ID>
-    <ID>LongParameterList:PushController.kt$PushController$( private val accountManager: AccountManager, private val generalSettingsManager: GeneralSettingsManager, private val backendManager: BackendManager, private val pushServiceManager: PushServiceManager, private val bootCompleteManager: BootCompleteManager, private val autoSyncManager: AutoSyncManager, private val pushNotificationManager: PushNotificationManager, private val connectivityManager: ConnectivityManager, private val accountPushControllerFactory: AccountPushControllerFactory, private val coroutineScope: CoroutineScope = GlobalScope, private val coroutineDispatcher: CoroutineDispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher(), )</ID>
     <ID>LoopWithTooManyJumpStatements:HttpUriParser.kt$HttpUriParser$while</ID>
     <ID>LoopWithTooManyJumpStatements:SettingsExporter.kt$SettingsExporter$for</ID>
     <ID>MagicNumber:Account.kt$Account$168</ID>
