@@ -1,0 +1,24 @@
+K-9 - Póstur (K-9 Mail) er tölvupóstforrit með opnum grunnkóða sem virkar með næstum því öllum póstþjónustum.
+
+<b>Eiginleikar</b>
+
+* Styður marga póstreikninga
+* Sameinað innhólf
+* Privacy-friendly (engin rakning af neinu tagi, tengist bara póstþjónum)
+* Sjálfvirk samstilling í bakgrunni eða ýti-tilkynningar
+* Leit á tölvu eða póstþjóni
+* OpenPGP-dulritun pósts (PGP/MIME)
+
+Settu upp forritið <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain: Einfalt PGP</a> til að dulrita/afkóða póstana þína með OpenPGP.
+
+
+<b>Aðstoð</b>
+
+Ef þú átt í vandræðum með K-9 póstforritið, geturðu beðið um hjálp á <a href="https://forum.k9mail.app">aðstoðarspjallinu okkar</a>.
+
+
+<b>Viltu hjálpa?</b>
+
+K-9 - Póstur er samvinnuverkefni. Ef þú hefur áhuga á að vera með í að bæta hugbúnaðińn, komdu til liðs við okkur!
+Þú finnur villuskráningar, grunnkóða og wiki-síður á <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
+Við tökum vel á móti nýjum forriturum, hönnuðum, skrifurum, þýðendum, villuflokkurum og vinum.
