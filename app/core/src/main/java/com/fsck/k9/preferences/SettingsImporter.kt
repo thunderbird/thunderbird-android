@@ -40,6 +40,7 @@ class SettingsImporter internal constructor(
 ) {
     private val generalSettingsValidator = GeneralSettingsValidator()
     private val generalSettingsUpgrader = GeneralSettingsUpgrader()
+    private val generalSettingsWriter = GeneralSettingsWriter(preferences)
 
     /**
      * Parses an import [InputStream] and returns information on whether it contains global settings and/or account
@@ -113,25 +114,11 @@ class SettingsImporter internal constructor(
                 accounts = filteredAccounts,
             )
 
-            val storage = preferences.storage
-
             if (globalSettings) {
-                try {
-                    val editor = preferences.createStorageEditor()
-                    if (imported.globalSettings != null) {
-                        importGlobalSettings(storage, editor, imported.contentVersion, imported.globalSettings)
-                    } else {
-                        Timber.w("Was asked to import global settings but none found.")
-                    }
-
-                    if (editor.commit()) {
-                        Timber.v("Committed global settings to the preference storage.")
-                        globalSettingsImported = true
-                    } else {
-                        Timber.v("Failed to commit global settings to the preference storage")
-                    }
-                } catch (e: Exception) {
-                    Timber.e(e, "Exception while importing global settings")
+                if (imported.globalSettings != null) {
+                    globalSettingsImported = importGeneralSettings(imported.contentVersion, imported.globalSettings)
+                } else {
+                    Timber.w("Was asked to import global settings but none found.")
                 }
             }
 
@@ -224,25 +211,16 @@ class SettingsImporter internal constructor(
         }
     }
 
-    private fun importGlobalSettings(
-        storage: Storage,
-        editor: StorageEditor,
-        contentVersion: Int,
-        settings: SettingsMap,
-    ) {
-        val validatedSettings = generalSettingsValidator.validate(contentVersion, settings)
+    private fun importGeneralSettings(contentVersion: Int, settings: SettingsMap): Boolean {
+        return try {
+            val validatedSettings = generalSettingsValidator.validate(contentVersion, settings)
 
-        val currentSettings = generalSettingsUpgrader.upgrade(contentVersion, validatedSettings).toMutableMap()
+            val currentSettings = generalSettingsUpgrader.upgrade(contentVersion, validatedSettings)
 
-        // Convert global settings to the string representation used in preference storage
-        val stringSettings = GeneralSettingsDescriptions.convert(currentSettings)
-
-        // Use current global settings as base and overwrite with validated settings read from the import file.
-        val mergedSettings = GeneralSettingsDescriptions.getGlobalSettings(storage).toMutableMap()
-        mergedSettings.putAll(stringSettings)
-
-        for ((key, value) in mergedSettings) {
-            putString(editor, key, value)
+            generalSettingsWriter.write(currentSettings)
+        } catch (e: Exception) {
+            Timber.e(e, "Exception while importing general settings")
+            false
         }
     }
 
