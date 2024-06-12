@@ -41,6 +41,7 @@ class SettingsImporter internal constructor(
     private val generalSettingsValidator = GeneralSettingsValidator()
     private val folderSettingsValidator = FolderSettingsValidator()
     private val identitySettingsValidator = IdentitySettingsValidator()
+    private val accountSettingsValidator = AccountSettingsValidator()
 
     private val generalSettingsUpgrader = GeneralSettingsUpgrader()
     private val folderSettingsUpgrader = FolderSettingsUpgrader()
@@ -311,9 +312,8 @@ class SettingsImporter internal constructor(
             editor.putBoolean(accountKeyPrefix + "enabled", false)
         }
 
-        // Validate account settings
-        val validatedSettings =
-            AccountSettingsDescriptions.validate(contentVersion, account.settings!!, true)
+        val validatedAccount = accountSettingsValidator.validate(contentVersion, account)
+        val validatedSettings = validatedAccount.settings.toMutableMap()
 
         // Upgrade account settings to current content version
         if (contentVersion != Settings.VERSION) {

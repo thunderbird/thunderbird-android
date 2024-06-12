@@ -6,11 +6,11 @@ interface ValidatedSettings {
     data class Account(
         val uuid: String,
         val name: String?,
-        val incoming: Server,
-        val outgoing: Server,
+//        val incoming: Server,
+//        val outgoing: Server,
         val settings: InternalSettingsMap,
-        val identities: List<Identity>,
-        val folders: List<Folder>,
+//        val identities: List<Identity>,
+//        val folders: List<Folder>,
     )
 
     data class Server(
