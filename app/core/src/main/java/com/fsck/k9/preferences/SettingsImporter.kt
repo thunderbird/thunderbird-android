@@ -46,6 +46,7 @@ class SettingsImporter internal constructor(
     private val generalSettingsUpgrader = GeneralSettingsUpgrader()
     private val folderSettingsUpgrader = FolderSettingsUpgrader()
     private val identitySettingsUpgrader = IdentitySettingsUpgrader()
+    private val accountSettingsUpgrader = AccountSettingsUpgrader()
 
     private val generalSettingsWriter = GeneralSettingsWriter(preferences)
     private val folderSettingsWriter = FolderSettingsWriter()
@@ -313,15 +314,11 @@ class SettingsImporter internal constructor(
         }
 
         val validatedAccount = accountSettingsValidator.validate(contentVersion, account)
-        val validatedSettings = validatedAccount.settings.toMutableMap()
 
-        // Upgrade account settings to current content version
-        if (contentVersion != Settings.VERSION) {
-            AccountSettingsDescriptions.upgrade(contentVersion, validatedSettings)
-        }
+        val currentAccount = accountSettingsUpgrader.upgrade(contentVersion, validatedAccount)
 
         // Convert account settings to the string representation used in preference storage
-        val stringSettings = AccountSettingsDescriptions.convert(validatedSettings)
+        val stringSettings = AccountSettingsDescriptions.convert(currentAccount.settings)
 
         // Write account settings
         for ((accountKey, value) in stringSettings) {
