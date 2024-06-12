@@ -4,6 +4,9 @@ import com.fsck.k9.preferences.ServerTypeConverter.toServerSettingsType
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException
 
 internal class AccountSettingsValidator {
+    private val identitySettingsValidator = IdentitySettingsValidator()
+    private val folderSettingsValidator = FolderSettingsValidator()
+
     fun validate(contentVersion: Int, account: SettingsFile.Account): ValidatedSettings.Account {
         val validatedSettings = AccountSettingsDescriptions.validate(contentVersion, account.settings!!, true)
 
@@ -16,7 +19,32 @@ internal class AccountSettingsValidator {
             incoming = incomingServer,
             outgoing = outgoingServer,
             settings = validatedSettings,
+            identities = validateIdentities(contentVersion, account.identities),
+            folders = validateFolders(contentVersion, account.folders),
         )
+    }
+
+    private fun validateIdentities(
+        contentVersion: Int,
+        identities: List<SettingsFile.Identity>?,
+    ): List<ValidatedSettings.Identity> {
+        if (identities.isNullOrEmpty()) {
+            throw InvalidSettingValueException("Missing identities, there should be at least one.")
+        }
+
+        return identities.map { identity ->
+            identitySettingsValidator.validate(contentVersion, identity)
+        }
+    }
+
+    private fun validateFolders(
+        contentVersion: Int,
+        folders: List<SettingsFile.Folder>?,
+    ): List<ValidatedSettings.Folder> {
+        return folders.orEmpty()
+            .map { folder ->
+                folderSettingsValidator.validate(contentVersion, folder)
+            }
     }
 
     private fun validateIncomingServer(incoming: SettingsFile.Server?): ValidatedSettings.Server {

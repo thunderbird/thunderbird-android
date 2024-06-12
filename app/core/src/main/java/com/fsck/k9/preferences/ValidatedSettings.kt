@@ -9,8 +9,8 @@ interface ValidatedSettings {
         val incoming: Server,
         val outgoing: Server,
         val settings: InternalSettingsMap,
-//        val identities: List<Identity>,
-//        val folders: List<Folder>,
+        val identities: List<Identity>,
+        val folders: List<Folder>,
     )
 
     data class Server(

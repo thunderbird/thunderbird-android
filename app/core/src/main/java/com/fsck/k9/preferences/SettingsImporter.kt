@@ -33,8 +33,6 @@ class SettingsImporter internal constructor(
     private val context: Context,
 ) {
     private val generalSettingsValidator = GeneralSettingsValidator()
-    private val folderSettingsValidator = FolderSettingsValidator()
-    private val identitySettingsValidator = IdentitySettingsValidator()
     private val accountSettingsValidator = AccountSettingsValidator()
 
     private val generalSettingsUpgrader = GeneralSettingsUpgrader()
@@ -260,18 +258,11 @@ class SettingsImporter internal constructor(
         val uuid = accountMapping.second.uuid
 
         // Write identities
-        if (account.identities != null) {
-            importIdentities(editor, contentVersion, uuid, account)
-        } else {
-            // Require accounts to at least have one identity
-            throw InvalidSettingValueException("Missing identities, there should be at least one.")
-        }
+        importIdentities(editor, contentVersion, uuid, currentAccount.identities)
 
         // Write folder settings
-        if (account.folders != null) {
-            for (folder in account.folders) {
-                importFolder(editor, contentVersion, uuid, folder)
-            }
+        for (folder in currentAccount.folders) {
+            importFolder(editor, contentVersion, uuid, folder)
         }
 
         return AccountDescriptionPair(
@@ -289,11 +280,9 @@ class SettingsImporter internal constructor(
         editor: StorageEditor,
         contentVersion: Int,
         uuid: String,
-        folder: SettingsFile.Folder,
+        folder: ValidatedSettings.Folder,
     ) {
-        val validatedFolder = folderSettingsValidator.validate(contentVersion, folder)
-
-        val currentFolder = folderSettingsUpgrader.upgrade(contentVersion, validatedFolder)
+        val currentFolder = folderSettingsUpgrader.upgrade(contentVersion, folder)
 
         folderSettingsWriter.write(editor, uuid, currentFolder)
     }
@@ -303,10 +292,10 @@ class SettingsImporter internal constructor(
         editor: StorageEditor,
         contentVersion: Int,
         uuid: String,
-        account: SettingsFile.Account,
+        identities: List<ValidatedSettings.Identity>,
     ) {
         // Write identities
-        for ((index, identity) in account.identities!!.withIndex()) {
+        for ((index, identity) in identities.withIndex()) {
             importIdentity(editor, contentVersion, uuid, index, identity)
         }
     }
@@ -316,11 +305,9 @@ class SettingsImporter internal constructor(
         contentVersion: Int,
         accountUuid: String,
         index: Int,
-        identity: SettingsFile.Identity,
+        identity: ValidatedSettings.Identity,
     ) {
-        val validatedIdentity = identitySettingsValidator.validate(contentVersion, identity)
-
-        val currentIdentity = identitySettingsUpgrader.upgrade(contentVersion, validatedIdentity)
+        val currentIdentity = identitySettingsUpgrader.upgrade(contentVersion, identity)
 
         identitySettingsWriter.write(editor, accountUuid, index, currentIdentity)
     }
