@@ -5,7 +5,7 @@ K-9 Mail to klient e-mail typu open source, który działa zasadniczo z każdym 
 * Obsługa wiely kont
 * Ujednolicona skrzynka odbiorcza
 * Poszanowanie prywatności (bez śledzenia, łączy się tylko z dostawcą e-maila)
-* Automatyczna synchronizacja tła lub powiadomienia Push
+* Automatyczna synchronizacja tła lub powiadomienia push
 * Wyszukiwanie lokalne i serwerowe
 * Szyfrowanie e -mail OpenPGP (PGP/MIME)
 
