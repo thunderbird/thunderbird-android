@@ -6,9 +6,6 @@ import com.fsck.k9.Core
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.ServerSettingsSerializer
-import com.fsck.k9.mail.AuthType
-import com.fsck.k9.mail.ConnectionSecurity
-import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException
 import java.io.InputStream
@@ -48,7 +45,7 @@ class SettingsImporter internal constructor(
     private val generalSettingsWriter = GeneralSettingsWriter(preferences)
     private val folderSettingsWriter = FolderSettingsWriter()
     private val identitySettingsWriter = IdentitySettingsWriter()
-    private val accountSettingsWriter = AccountSettingsWriter(preferences, clock)
+    private val accountSettingsWriter = AccountSettingsWriter(preferences, clock, serverSettingsSerializer)
 
     /**
      * Parses an import [InputStream] and returns information on whether it contains global settings and/or account
@@ -244,42 +241,23 @@ class SettingsImporter internal constructor(
 
         val accountMapping = accountSettingsWriter.write(editor, currentAccount)
 
-        val uuid = accountMapping.second.uuid
-        val accountKeyPrefix = "$uuid."
-
-        // Write incoming server settings
-        val incoming = createServerSettings(currentAccount.incoming)
-        val incomingServer = serverSettingsSerializer.serialize(incoming)
-        putString(editor, accountKeyPrefix + AccountPreferenceSerializer.INCOMING_SERVER_SETTINGS_KEY, incomingServer)
-
+        val incoming = currentAccount.incoming
         val incomingServerName = incoming.host
         val incomingPasswordNeeded =
-            incoming.authenticationType != AuthType.EXTERNAL && incoming.authenticationType != AuthType.XOAUTH2 &&
+            incoming.authenticationType != "EXTERNAL" && incoming.authenticationType != "XOAUTH2" &&
                 incoming.password.isNullOrEmpty()
 
-        var authorizationNeeded = incoming.authenticationType == AuthType.XOAUTH2
+        var authorizationNeeded = incoming.authenticationType == "XOAUTH2"
 
-        // Write outgoing server settings
-        val outgoing = createServerSettings(currentAccount.outgoing)
-        val outgoingServer = serverSettingsSerializer.serialize(outgoing)
-        putString(editor, accountKeyPrefix + AccountPreferenceSerializer.OUTGOING_SERVER_SETTINGS_KEY, outgoingServer)
-
-        /*
-         * Mark account as disabled if the settings file contained a username but no password, except when the
-         * AuthType is EXTERNAL.
-         */
+        val outgoing = currentAccount.outgoing
+        val outgoingServerName = outgoing.host
         val outgoingPasswordNeeded =
-            outgoing.authenticationType != AuthType.EXTERNAL && outgoing.authenticationType != AuthType.XOAUTH2 &&
+            outgoing.authenticationType != "EXTERNAL" && outgoing.authenticationType != "XOAUTH2" &&
                 outgoing.username.isNotEmpty() && outgoing.password.isNullOrEmpty()
 
-        authorizationNeeded = authorizationNeeded || outgoing.authenticationType == AuthType.XOAUTH2
+        authorizationNeeded = authorizationNeeded || outgoing.authenticationType == "XOAUTH2"
 
-        val outgoingServerName = outgoing.host
-
-        val createAccountDisabled = incomingPasswordNeeded || outgoingPasswordNeeded || authorizationNeeded
-        if (createAccountDisabled) {
-            editor.putBoolean(accountKeyPrefix + "enabled", false)
-        }
+        val uuid = accountMapping.second.uuid
 
         // Write identities
         if (account.identities != null) {
@@ -376,38 +354,5 @@ class SettingsImporter internal constructor(
         return account.name?.takeIf { it.isNotEmpty() }
             ?: account.identities?.firstOrNull()?.email
             ?: error("Account name missing")
-    }
-
-    private fun createServerSettings(server: ValidatedSettings.Server): ServerSettings {
-        val connectionSecurity = convertConnectionSecurity(server.connectionSecurity)
-        val authenticationType = AuthType.valueOf(server.authenticationType)
-        val password = if (authenticationType == AuthType.XOAUTH2) "" else server.password
-
-        return ServerSettings(
-            server.type,
-            server.host,
-            server.port,
-            connectionSecurity,
-            authenticationType,
-            server.username,
-            password,
-            server.clientCertificateAlias,
-            server.extras,
-        )
-    }
-
-    private fun convertConnectionSecurity(connectionSecurity: String): ConnectionSecurity {
-        try {
-            // TODO: Add proper settings validation and upgrade capability for server settings. Once that exists, move
-            //  this code into a SettingsUpgrader.
-            if ("SSL_TLS_OPTIONAL" == connectionSecurity) {
-                return ConnectionSecurity.SSL_TLS_REQUIRED
-            } else if ("STARTTLS_OPTIONAL" == connectionSecurity) {
-                return ConnectionSecurity.STARTTLS_REQUIRED
-            }
-            return ConnectionSecurity.valueOf(connectionSecurity)
-        } catch (e: Exception) {
-            return ConnectionSecurity.SSL_TLS_REQUIRED
-        }
     }
 }

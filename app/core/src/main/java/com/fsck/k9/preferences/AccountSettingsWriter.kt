@@ -2,13 +2,20 @@ package com.fsck.k9.preferences
 
 import com.fsck.k9.Account
 import com.fsck.k9.AccountPreferenceSerializer.Companion.ACCOUNT_DESCRIPTION_KEY
+import com.fsck.k9.AccountPreferenceSerializer.Companion.INCOMING_SERVER_SETTINGS_KEY
+import com.fsck.k9.AccountPreferenceSerializer.Companion.OUTGOING_SERVER_SETTINGS_KEY
 import com.fsck.k9.Preferences
+import com.fsck.k9.ServerSettingsSerializer
+import com.fsck.k9.mail.AuthType
+import com.fsck.k9.mail.ConnectionSecurity
+import com.fsck.k9.mail.ServerSettings
 import java.util.UUID
 import kotlinx.datetime.Clock
 
 internal class AccountSettingsWriter(
     private val preferences: Preferences,
     private val clock: Clock,
+    private val serverSettingsSerializer: ServerSettingsSerializer,
 ) {
     fun write(editor: StorageEditor, account: ValidatedSettings.Account): Pair<AccountDescription, AccountDescription> {
         val originalAccountName = account.name!!
@@ -39,6 +46,9 @@ internal class AccountSettingsWriter(
             key = "$accountUuid.messagesNotificationChannelVersion",
             value = messageNotificationChannelVersion,
         )
+
+        writeServerSettings(editor, key = "$accountUuid.$INCOMING_SERVER_SETTINGS_KEY", server = account.incoming)
+        writeServerSettings(editor, key = "$accountUuid.$OUTGOING_SERVER_SETTINGS_KEY", server = account.outgoing)
 
         return originalAccount to writtenAccount
     }
@@ -73,5 +83,48 @@ internal class AccountSettingsWriter(
 
     private fun isAccountNameUsed(name: String?, accounts: List<Account>): Boolean {
         return accounts.any { it.displayName == name }
+    }
+
+    private fun writeServerSettings(
+        editor: StorageEditor,
+        key: String,
+        server: ValidatedSettings.Server,
+    ) {
+        val serverSettings = createServerSettings(server)
+        val serverSettingsJson = serverSettingsSerializer.serialize(serverSettings)
+        editor.putStringWithLogging(key, serverSettingsJson)
+    }
+
+    private fun createServerSettings(server: ValidatedSettings.Server): ServerSettings {
+        val connectionSecurity = convertConnectionSecurity(server.connectionSecurity)
+        val authenticationType = AuthType.valueOf(server.authenticationType)
+        val password = if (authenticationType == AuthType.XOAUTH2) "" else server.password
+
+        return ServerSettings(
+            server.type,
+            server.host,
+            server.port,
+            connectionSecurity,
+            authenticationType,
+            server.username,
+            password,
+            server.clientCertificateAlias,
+            server.extras,
+        )
+    }
+
+    @Suppress("TooGenericExceptionCaught", "SwallowedException")
+    private fun convertConnectionSecurity(connectionSecurity: String): ConnectionSecurity {
+        return try {
+            // TODO: Add proper settings validation and upgrade capability for server settings. Once that exists, move
+            //  this code into a SettingsUpgrader.
+            when (connectionSecurity) {
+                "SSL_TLS_OPTIONAL" -> ConnectionSecurity.SSL_TLS_REQUIRED
+                "STARTTLS_OPTIONAL" -> ConnectionSecurity.STARTTLS_REQUIRED
+                else -> ConnectionSecurity.valueOf(connectionSecurity)
+            }
+        } catch (e: Exception) {
+            ConnectionSecurity.SSL_TLS_REQUIRED
+        }
     }
 }
