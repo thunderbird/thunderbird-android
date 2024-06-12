@@ -3,7 +3,6 @@
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
-    <string name="app_name">K-9 E-post</string>
     <string name="shortcuts_title">K-9 Kontoar</string>
     <string name="unread_widget_label">K-9 Ulesne</string>
     <!--Used in the about dialog-->
