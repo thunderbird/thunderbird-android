@@ -39,6 +39,7 @@ class SettingsImporter internal constructor(
     private val context: Context,
 ) {
     private val generalSettingsValidator = GeneralSettingsValidator()
+    private val generalSettingsUpgrader = GeneralSettingsUpgrader()
 
     /**
      * Parses an import [InputStream] and returns information on whether it contains global settings and/or account
@@ -229,15 +230,12 @@ class SettingsImporter internal constructor(
         contentVersion: Int,
         settings: SettingsMap,
     ) {
-        val validatedSettings = generalSettingsValidator.validate(contentVersion, settings).toMutableMap()
+        val validatedSettings = generalSettingsValidator.validate(contentVersion, settings)
 
-        // Upgrade global settings to current content version
-        if (contentVersion != Settings.VERSION) {
-            GeneralSettingsDescriptions.upgrade(contentVersion, validatedSettings)
-        }
+        val currentSettings = generalSettingsUpgrader.upgrade(contentVersion, validatedSettings).toMutableMap()
 
         // Convert global settings to the string representation used in preference storage
-        val stringSettings = GeneralSettingsDescriptions.convert(validatedSettings)
+        val stringSettings = GeneralSettingsDescriptions.convert(currentSettings)
 
         // Use current global settings as base and overwrite with validated settings read from the import file.
         val mergedSettings = GeneralSettingsDescriptions.getGlobalSettings(storage).toMutableMap()
