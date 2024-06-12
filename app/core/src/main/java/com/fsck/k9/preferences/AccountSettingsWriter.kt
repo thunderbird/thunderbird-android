@@ -17,6 +17,9 @@ internal class AccountSettingsWriter(
     private val clock: Clock,
     private val serverSettingsSerializer: ServerSettingsSerializer,
 ) {
+    private val identitySettingsWriter = IdentitySettingsWriter()
+    private val folderSettingsWriter = FolderSettingsWriter()
+
     fun write(editor: StorageEditor, account: ValidatedSettings.Account): Pair<AccountDescription, AccountDescription> {
         val originalAccountName = account.name!!
         val originalAccountUuid = account.uuid
@@ -50,7 +53,26 @@ internal class AccountSettingsWriter(
         writeServerSettings(editor, key = "$accountUuid.$INCOMING_SERVER_SETTINGS_KEY", server = account.incoming)
         writeServerSettings(editor, key = "$accountUuid.$OUTGOING_SERVER_SETTINGS_KEY", server = account.outgoing)
 
+        writeIdentities(editor, accountUuid, account.identities)
+        writeFolders(editor, accountUuid, account.folders)
+
         return originalAccount to writtenAccount
+    }
+
+    private fun writeIdentities(
+        editor: StorageEditor,
+        accountUuid: String,
+        identities: List<ValidatedSettings.Identity>,
+    ) {
+        for ((index, identity) in identities.withIndex()) {
+            identitySettingsWriter.write(editor, accountUuid, index, identity)
+        }
+    }
+
+    private fun writeFolders(editor: StorageEditor, accountUuid: String, folders: List<ValidatedSettings.Folder>) {
+        for (folder in folders) {
+            folderSettingsWriter.write(editor, accountUuid, folder)
+        }
     }
 
     private fun getUniqueAccountUuid(accountUuid: String): String {

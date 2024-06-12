@@ -39,8 +39,6 @@ class SettingsImporter internal constructor(
     private val accountSettingsUpgrader = AccountSettingsUpgrader()
 
     private val generalSettingsWriter = GeneralSettingsWriter(preferences)
-    private val folderSettingsWriter = FolderSettingsWriter()
-    private val identitySettingsWriter = IdentitySettingsWriter()
     private val accountSettingsWriter = AccountSettingsWriter(preferences, clock, serverSettingsSerializer)
 
     /**
@@ -253,16 +251,6 @@ class SettingsImporter internal constructor(
 
         authorizationNeeded = authorizationNeeded || outgoing.authenticationType == "XOAUTH2"
 
-        val uuid = accountMapping.second.uuid
-
-        // Write identities
-        importIdentities(editor, uuid, currentAccount.identities)
-
-        // Write folder settings
-        for (folder in currentAccount.folders) {
-            importFolder(editor, uuid, folder)
-        }
-
         return AccountDescriptionPair(
             accountMapping.first,
             accountMapping.second,
@@ -272,35 +260,6 @@ class SettingsImporter internal constructor(
             incomingServerName!!,
             outgoingServerName!!,
         )
-    }
-
-    private fun importFolder(
-        editor: StorageEditor,
-        uuid: String,
-        folder: ValidatedSettings.Folder,
-    ) {
-        folderSettingsWriter.write(editor, uuid, folder)
-    }
-
-    @Throws(InvalidSettingValueException::class)
-    private fun importIdentities(
-        editor: StorageEditor,
-        uuid: String,
-        identities: List<ValidatedSettings.Identity>,
-    ) {
-        // Write identities
-        for ((index, identity) in identities.withIndex()) {
-            importIdentity(editor, uuid, index, identity)
-        }
-    }
-
-    private fun importIdentity(
-        editor: StorageEditor,
-        accountUuid: String,
-        index: Int,
-        identity: ValidatedSettings.Identity,
-    ) {
-        identitySettingsWriter.write(editor, accountUuid, index, identity)
     }
 
     /**
