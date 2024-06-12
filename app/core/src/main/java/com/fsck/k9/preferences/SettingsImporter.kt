@@ -6,6 +6,7 @@ import com.fsck.k9.Core
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.ServerSettingsSerializer
+import com.fsck.k9.helper.mapCollectionToSet
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException
 import java.io.InputStream
@@ -98,88 +99,63 @@ class SettingsImporter internal constructor(
             val importedAccounts = mutableListOf<AccountDescriptionPair>()
             val erroneousAccounts = mutableListOf<AccountDescription>()
 
-            val settings = settingsFileParser.parseSettings(inputStream)
+            val allContents = settingsFileParser.parseSettings(inputStream)
 
-            val filteredGlobalSettings = if (globalSettings) {
-                settings.globalSettings
-            } else {
-                null
+            val contents = filterSettings(allContents, globalSettings, accountUuids)
+
+            if (contents.globalSettings != null) {
+                globalSettingsImported = importGeneralSettings(contents.contentVersion, contents.globalSettings)
             }
 
-            val filteredAccounts = settings.accounts.filter { it.uuid in accountUuids }
+            for (account in contents.accounts) {
+                try {
+                    var editor = preferences.createStorageEditor()
 
-            val imported = settings.copy(
-                globalSettings = filteredGlobalSettings,
-                accounts = filteredAccounts,
-            )
+                    val importResult = importAccount(editor, contents.contentVersion, account)
 
-            if (globalSettings) {
-                if (imported.globalSettings != null) {
-                    globalSettingsImported = importGeneralSettings(imported.contentVersion, imported.globalSettings)
-                } else {
-                    Timber.w("Was asked to import global settings but none found.")
-                }
-            }
+                    if (editor.commit()) {
+                        Timber.v(
+                            "Committed settings for account \"%s\" to the settings database.",
+                            importResult.imported.name,
+                        )
 
-            if (accountUuids.isNotEmpty()) {
-                val foundAccountUuids = imported.accounts.map { it.uuid }.toSet()
-                val missingAccountUuids = accountUuids.toSet() - foundAccountUuids
-                if (missingAccountUuids.isNotEmpty()) {
-                    for (accountUuid in missingAccountUuids) {
-                        Timber.w("Was asked to import account %s. But this account wasn't found.", accountUuid)
-                    }
-                }
+                        // Add UUID of the account we just imported to the list of account UUIDs
+                        editor = preferences.createStorageEditor()
 
-                for (account in imported.accounts) {
-                    try {
-                        var editor = preferences.createStorageEditor()
-
-                        val importResult = importAccount(editor, imported.contentVersion, account)
-
-                        if (editor.commit()) {
-                            Timber.v(
-                                "Committed settings for account \"%s\" to the settings database.",
-                                importResult.imported.name,
-                            )
-
-                            // Add UUID of the account we just imported to the list of account UUIDs
-                            editor = preferences.createStorageEditor()
-
-                            val newUuid = importResult.imported.uuid
-                            val oldAccountUuids = preferences.storage.getString("accountUuids", "")
-                            val newAccountUuids = if (oldAccountUuids.isNotEmpty()) {
-                                "$oldAccountUuids,$newUuid"
-                            } else {
-                                newUuid
-                            }
-
-                            putString(editor, "accountUuids", newAccountUuids)
-
-                            if (!editor.commit()) {
-                                throw SettingsImportExportException("Failed to set account UUID list")
-                            }
-
-                            // Reload accounts
-                            preferences.loadAccounts()
-
-                            importedAccounts.add(importResult)
+                        val newUuid = importResult.imported.uuid
+                        val oldAccountUuids = preferences.storage.getString("accountUuids", "")
+                        val newAccountUuids = if (oldAccountUuids.isNotEmpty()) {
+                            "$oldAccountUuids,$newUuid"
                         } else {
-                            Timber.w(
-                                "Error while committing settings for account \"%s\" to the settings database.",
-                                importResult.original.name,
-                            )
-
-                            erroneousAccounts.add(importResult.original)
+                            newUuid
                         }
-                    } catch (e: InvalidSettingValueException) {
-                        Timber.e(e, "Encountered invalid setting while importing account \"%s\"", account.name)
 
-                        erroneousAccounts.add(AccountDescription(account.name!!, account.uuid))
-                    } catch (e: Exception) {
-                        Timber.e(e, "Exception while importing account \"%s\"", account.name)
+                        putString(editor, "accountUuids", newAccountUuids)
 
-                        erroneousAccounts.add(AccountDescription(account.name!!, account.uuid))
+                        if (!editor.commit()) {
+                            throw SettingsImportExportException("Failed to set account UUID list")
+                        }
+
+                        // Reload accounts
+                        preferences.loadAccounts()
+
+                        importedAccounts.add(importResult)
+                    } else {
+                        Timber.w(
+                            "Error while committing settings for account \"%s\" to the settings database.",
+                            importResult.original.name,
+                        )
+
+                        erroneousAccounts.add(importResult.original)
                     }
+                } catch (e: InvalidSettingValueException) {
+                    Timber.e(e, "Encountered invalid setting while importing account \"%s\"", account.name)
+
+                    erroneousAccounts.add(AccountDescription(account.name!!, account.uuid))
+                } catch (e: Exception) {
+                    Timber.e(e, "Exception while importing account \"%s\"", account.name)
+
+                    erroneousAccounts.add(AccountDescription(account.name!!, account.uuid))
                 }
 
                 val editor = preferences.createStorageEditor()
@@ -208,6 +184,28 @@ class SettingsImporter internal constructor(
         } catch (e: Exception) {
             throw SettingsImportExportException(e)
         }
+    }
+
+    private fun filterSettings(
+        contents: SettingsFile.Contents,
+        importGeneralSettings: Boolean,
+        importAccountUuids: List<String>,
+    ): SettingsFile.Contents {
+        if (importGeneralSettings && contents.globalSettings == null) {
+            Timber.w("Was asked to import global settings but none found.")
+        }
+
+        val accountUuids = contents.accounts.mapCollectionToSet { it.uuid }
+        for (importAccountUuid in importAccountUuids) {
+            if (importAccountUuid !in accountUuids) {
+                Timber.w("Was asked to import account %s. But this account wasn't found.", importAccountUuid)
+            }
+        }
+
+        return contents.copy(
+            globalSettings = contents.globalSettings.takeIf { importGeneralSettings },
+            accounts = contents.accounts.filter { it.uuid in importAccountUuids },
+        )
     }
 
     private fun importGeneralSettings(contentVersion: Int, settings: SettingsMap): Boolean {
