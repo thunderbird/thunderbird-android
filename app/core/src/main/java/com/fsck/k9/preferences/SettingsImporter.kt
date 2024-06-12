@@ -44,6 +44,7 @@ class SettingsImporter internal constructor(
 
     private val generalSettingsUpgrader = GeneralSettingsUpgrader()
     private val folderSettingsUpgrader = FolderSettingsUpgrader()
+    private val identitySettingsUpgrader = IdentitySettingsUpgrader()
 
     private val generalSettingsWriter = GeneralSettingsWriter(preferences)
     private val folderSettingsWriter = FolderSettingsWriter()
@@ -426,15 +427,10 @@ class SettingsImporter internal constructor(
             )
         }
 
-        val validatedSettings = validatedIdentity.settings.toMutableMap()
-
-        // Upgrade identity settings to current content version
-        if (contentVersion != Settings.VERSION) {
-            IdentitySettingsDescriptions.upgrade(contentVersion, validatedSettings)
-        }
+        val currentIdentity = identitySettingsUpgrader.upgrade(contentVersion, validatedIdentity)
 
         // Convert identity settings to the representation used in preference storage
-        val stringSettings = IdentitySettingsDescriptions.convert(validatedSettings)
+        val stringSettings = IdentitySettingsDescriptions.convert(currentIdentity.settings)
 
         // Write identity settings
         for ((identityKey, value) in stringSettings) {
