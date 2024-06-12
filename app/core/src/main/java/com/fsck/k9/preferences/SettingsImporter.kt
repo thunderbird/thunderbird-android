@@ -10,7 +10,6 @@ import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
-import com.fsck.k9.preferences.ServerTypeConverter.toServerSettingsType
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException
 import java.io.InputStream
 import kotlinx.datetime.Clock
@@ -248,13 +247,8 @@ class SettingsImporter internal constructor(
         val uuid = accountMapping.second.uuid
         val accountKeyPrefix = "$uuid."
 
-        if (account.incoming == null) {
-            // We don't import accounts without incoming server settings
-            throw InvalidSettingValueException("Missing incoming server settings")
-        }
-
         // Write incoming server settings
-        val incoming = createServerSettings(account.incoming)
+        val incoming = createServerSettings(currentAccount.incoming)
         val incomingServer = serverSettingsSerializer.serialize(incoming)
         putString(editor, accountKeyPrefix + AccountPreferenceSerializer.INCOMING_SERVER_SETTINGS_KEY, incomingServer)
 
@@ -265,12 +259,8 @@ class SettingsImporter internal constructor(
 
         var authorizationNeeded = incoming.authenticationType == AuthType.XOAUTH2
 
-        if (account.outgoing == null) {
-            throw InvalidSettingValueException("Missing outgoing server settings")
-        }
-
         // Write outgoing server settings
-        val outgoing = createServerSettings(account.outgoing)
+        val outgoing = createServerSettings(currentAccount.outgoing)
         val outgoingServer = serverSettingsSerializer.serialize(outgoing)
         putString(editor, accountKeyPrefix + AccountPreferenceSerializer.OUTGOING_SERVER_SETTINGS_KEY, outgoingServer)
 
@@ -388,32 +378,25 @@ class SettingsImporter internal constructor(
             ?: error("Account name missing")
     }
 
-    private fun createServerSettings(importedServer: SettingsFile.Server): ServerSettings {
-        val type = toServerSettingsType(importedServer.type!!)
-        val port = convertPort(importedServer.port)
-        val connectionSecurity = convertConnectionSecurity(importedServer.connectionSecurity)
-        val authenticationType = convertAuthenticationType(importedServer.authenticationType)
-        val password = if (authenticationType == AuthType.XOAUTH2) "" else importedServer.password
-        val extra = importedServer.extras.orEmpty()
+    private fun createServerSettings(server: ValidatedSettings.Server): ServerSettings {
+        val connectionSecurity = convertConnectionSecurity(server.connectionSecurity)
+        val authenticationType = AuthType.valueOf(server.authenticationType)
+        val password = if (authenticationType == AuthType.XOAUTH2) "" else server.password
 
         return ServerSettings(
-            type,
-            importedServer.host,
-            port,
+            server.type,
+            server.host,
+            server.port,
             connectionSecurity,
             authenticationType,
-            importedServer.username!!,
+            server.username,
             password,
-            importedServer.clientCertificateAlias,
-            extra,
+            server.clientCertificateAlias,
+            server.extras,
         )
     }
 
-    private fun convertPort(port: String?): Int {
-        return port?.toIntOrNull() ?: -1
-    }
-
-    private fun convertConnectionSecurity(connectionSecurity: String?): ConnectionSecurity {
+    private fun convertConnectionSecurity(connectionSecurity: String): ConnectionSecurity {
         try {
             // TODO: Add proper settings validation and upgrade capability for server settings. Once that exists, move
             //  this code into a SettingsUpgrader.
@@ -422,13 +405,9 @@ class SettingsImporter internal constructor(
             } else if ("STARTTLS_OPTIONAL" == connectionSecurity) {
                 return ConnectionSecurity.STARTTLS_REQUIRED
             }
-            return ConnectionSecurity.valueOf(connectionSecurity!!)
+            return ConnectionSecurity.valueOf(connectionSecurity)
         } catch (e: Exception) {
             return ConnectionSecurity.SSL_TLS_REQUIRED
         }
-    }
-
-    private fun convertAuthenticationType(authenticationType: String?): AuthType {
-        return AuthType.valueOf(authenticationType!!)
     }
 }
