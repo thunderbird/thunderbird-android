@@ -36,8 +36,6 @@ class SettingsImporter internal constructor(
     private val accountSettingsValidator = AccountSettingsValidator()
 
     private val generalSettingsUpgrader = GeneralSettingsUpgrader()
-    private val folderSettingsUpgrader = FolderSettingsUpgrader()
-    private val identitySettingsUpgrader = IdentitySettingsUpgrader()
     private val accountSettingsUpgrader = AccountSettingsUpgrader()
 
     private val generalSettingsWriter = GeneralSettingsWriter(preferences)
@@ -258,11 +256,11 @@ class SettingsImporter internal constructor(
         val uuid = accountMapping.second.uuid
 
         // Write identities
-        importIdentities(editor, contentVersion, uuid, currentAccount.identities)
+        importIdentities(editor, uuid, currentAccount.identities)
 
         // Write folder settings
         for (folder in currentAccount.folders) {
-            importFolder(editor, contentVersion, uuid, folder)
+            importFolder(editor, uuid, folder)
         }
 
         return AccountDescriptionPair(
@@ -278,38 +276,31 @@ class SettingsImporter internal constructor(
 
     private fun importFolder(
         editor: StorageEditor,
-        contentVersion: Int,
         uuid: String,
         folder: ValidatedSettings.Folder,
     ) {
-        val currentFolder = folderSettingsUpgrader.upgrade(contentVersion, folder)
-
-        folderSettingsWriter.write(editor, uuid, currentFolder)
+        folderSettingsWriter.write(editor, uuid, folder)
     }
 
     @Throws(InvalidSettingValueException::class)
     private fun importIdentities(
         editor: StorageEditor,
-        contentVersion: Int,
         uuid: String,
         identities: List<ValidatedSettings.Identity>,
     ) {
         // Write identities
         for ((index, identity) in identities.withIndex()) {
-            importIdentity(editor, contentVersion, uuid, index, identity)
+            importIdentity(editor, uuid, index, identity)
         }
     }
 
     private fun importIdentity(
         editor: StorageEditor,
-        contentVersion: Int,
         accountUuid: String,
         index: Int,
         identity: ValidatedSettings.Identity,
     ) {
-        val currentIdentity = identitySettingsUpgrader.upgrade(contentVersion, identity)
-
-        identitySettingsWriter.write(editor, accountUuid, index, currentIdentity)
+        identitySettingsWriter.write(editor, accountUuid, index, identity)
     }
 
     /**
