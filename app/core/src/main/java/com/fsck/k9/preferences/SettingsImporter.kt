@@ -42,6 +42,8 @@ class SettingsImporter internal constructor(
     private val folderSettingsValidator = FolderSettingsValidator()
 
     private val generalSettingsUpgrader = GeneralSettingsUpgrader()
+    private val folderSettingsUpgrader = FolderSettingsUpgrader()
+
     private val generalSettingsWriter = GeneralSettingsWriter(preferences)
 
     /**
@@ -368,18 +370,13 @@ class SettingsImporter internal constructor(
     ) {
         val validatedFolder = folderSettingsValidator.validate(contentVersion, folder)
 
-        val validatedSettings = validatedFolder.settings.toMutableMap()
-
-        // Upgrade folder settings to current content version
-        if (contentVersion != Settings.VERSION) {
-            FolderSettingsDescriptions.upgrade(contentVersion, validatedSettings)
-        }
+        val currentFolder = folderSettingsUpgrader.upgrade(contentVersion, validatedFolder)
 
         // Convert folder settings to the string representation used in preference storage
-        val stringSettings = FolderSettingsDescriptions.convert(validatedSettings)
+        val stringSettings = FolderSettingsDescriptions.convert(currentFolder.settings)
 
         // Write folder settings
-        val prefix = uuid + "." + folder.name + "."
+        val prefix = uuid + "." + currentFolder.name + "."
         for ((folderKey, value) in stringSettings) {
             val key = prefix + folderKey
             putString(editor, key, value)
