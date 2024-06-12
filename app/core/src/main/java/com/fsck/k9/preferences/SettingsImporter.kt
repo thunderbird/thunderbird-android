@@ -39,6 +39,8 @@ class SettingsImporter internal constructor(
     private val context: Context,
 ) {
     private val generalSettingsValidator = GeneralSettingsValidator()
+    private val folderSettingsValidator = FolderSettingsValidator()
+
     private val generalSettingsUpgrader = GeneralSettingsUpgrader()
     private val generalSettingsWriter = GeneralSettingsWriter(preferences)
 
@@ -364,9 +366,9 @@ class SettingsImporter internal constructor(
         uuid: String,
         folder: SettingsFile.Folder,
     ) {
-        // Validate folder settings
-        val validatedSettings =
-            FolderSettingsDescriptions.validate(contentVersion, folder.settings!!, true)
+        val validatedFolder = folderSettingsValidator.validate(contentVersion, folder)
+
+        val validatedSettings = validatedFolder.settings.toMutableMap()
 
         // Upgrade folder settings to current content version
         if (contentVersion != Settings.VERSION) {
