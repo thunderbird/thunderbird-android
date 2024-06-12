@@ -10,7 +10,6 @@ import assertk.assertions.index
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.prop
-import com.fsck.k9.mail.AuthType
 import com.fsck.k9.preferences.SettingsFile.Account
 import com.fsck.k9.preferences.SettingsFile.Identity
 import com.fsck.k9.preferences.SettingsFile.Server
@@ -101,6 +100,6 @@ class SettingsFileParserTest : RobolectricTest() {
             .prop(Account::incoming)
             .isNotNull()
             .prop(Server::authenticationType)
-            .isEqualTo(AuthType.CRAM_MD5)
+            .isEqualTo("CRAM_MD5")
     }
 }

@@ -1,7 +1,5 @@
 package com.fsck.k9.preferences
 
-import com.fsck.k9.mail.AuthType
-
 internal typealias SettingsMap = Map<String, String>
 
 internal interface SettingsFile {
@@ -26,7 +24,7 @@ internal interface SettingsFile {
         val host: String?,
         val port: String?,
         val connectionSecurity: String?,
-        val authenticationType: AuthType?,
+        val authenticationType: String?,
         val username: String?,
         val password: String?,
         val clientCertificateAlias: String?,

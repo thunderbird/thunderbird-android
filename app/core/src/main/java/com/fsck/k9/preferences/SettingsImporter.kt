@@ -515,7 +515,8 @@ class SettingsImporter internal constructor(
         val type = toServerSettingsType(importedServer.type!!)
         val port = convertPort(importedServer.port)
         val connectionSecurity = convertConnectionSecurity(importedServer.connectionSecurity)
-        val password = if (importedServer.authenticationType == AuthType.XOAUTH2) "" else importedServer.password
+        val authenticationType = convertAuthenticationType(importedServer.authenticationType)
+        val password = if (authenticationType == AuthType.XOAUTH2) "" else importedServer.password
         val extra = importedServer.extras.orEmpty()
 
         return ServerSettings(
@@ -523,7 +524,7 @@ class SettingsImporter internal constructor(
             importedServer.host,
             port,
             connectionSecurity,
-            importedServer.authenticationType!!,
+            authenticationType,
             importedServer.username!!,
             password,
             importedServer.clientCertificateAlias,
@@ -548,5 +549,9 @@ class SettingsImporter internal constructor(
         } catch (e: Exception) {
             return ConnectionSecurity.SSL_TLS_REQUIRED
         }
+    }
+
+    private fun convertAuthenticationType(authenticationType: String?): AuthType {
+        return AuthType.valueOf(authenticationType!!)
     }
 }
