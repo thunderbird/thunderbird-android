@@ -45,6 +45,7 @@ class SettingsImporter internal constructor(
     private val folderSettingsUpgrader = FolderSettingsUpgrader()
 
     private val generalSettingsWriter = GeneralSettingsWriter(preferences)
+    private val folderSettingsWriter = FolderSettingsWriter()
 
     /**
      * Parses an import [InputStream] and returns information on whether it contains global settings and/or account
@@ -372,15 +373,7 @@ class SettingsImporter internal constructor(
 
         val currentFolder = folderSettingsUpgrader.upgrade(contentVersion, validatedFolder)
 
-        // Convert folder settings to the string representation used in preference storage
-        val stringSettings = FolderSettingsDescriptions.convert(currentFolder.settings)
-
-        // Write folder settings
-        val prefix = uuid + "." + currentFolder.name + "."
-        for ((folderKey, value) in stringSettings) {
-            val key = prefix + folderKey
-            putString(editor, key, value)
-        }
+        folderSettingsWriter.write(editor, uuid, currentFolder)
     }
 
     @Throws(InvalidSettingValueException::class)
