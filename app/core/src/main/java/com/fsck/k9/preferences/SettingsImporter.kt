@@ -1,7 +1,6 @@
 package com.fsck.k9.preferences
 
 import android.content.Context
-import com.fsck.k9.Account
 import com.fsck.k9.AccountPreferenceSerializer
 import com.fsck.k9.Core
 import com.fsck.k9.K9
@@ -14,7 +13,6 @@ import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import com.fsck.k9.preferences.ServerTypeConverter.toServerSettingsType
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException
 import java.io.InputStream
-import java.util.UUID
 import kotlinx.datetime.Clock
 import timber.log.Timber
 
@@ -51,6 +49,7 @@ class SettingsImporter internal constructor(
     private val generalSettingsWriter = GeneralSettingsWriter(preferences)
     private val folderSettingsWriter = FolderSettingsWriter()
     private val identitySettingsWriter = IdentitySettingsWriter()
+    private val accountSettingsWriter = AccountSettingsWriter(preferences, clock)
 
     /**
      * Parses an import [InputStream] and returns information on whether it contains global settings and/or account
@@ -240,35 +239,14 @@ class SettingsImporter internal constructor(
         contentVersion: Int,
         account: SettingsFile.Account,
     ): AccountDescriptionPair {
-        val original = AccountDescription(account.name!!, account.uuid)
+        val validatedAccount = accountSettingsValidator.validate(contentVersion, account)
 
-        val prefs = Preferences.getPreferences()
-        val accounts = prefs.getAccounts()
+        val currentAccount = accountSettingsUpgrader.upgrade(contentVersion, validatedAccount)
 
-        val existingAccount = prefs.getAccount(account.uuid)
-        val uuid = if (existingAccount != null) {
-            // An account with this UUID already exists. So generate a new UUID.
-            UUID.randomUUID().toString()
-        } else {
-            account.uuid
-        }
+        val accountMapping = accountSettingsWriter.write(editor, currentAccount)
 
-        // Make sure the account name is unique
-        var accountName = account.name
-        if (isAccountNameUsed(accountName, accounts)) {
-            // Account name is already in use. So generate a new one by appending " (x)", where x is the first
-            // number >= 1 that results in an unused account name.
-            for (i in 1..accounts.size) {
-                accountName = account.name + " (" + i + ")"
-                if (!isAccountNameUsed(accountName, accounts)) {
-                    break
-                }
-            }
-        }
-
-        // Write account name
+        val uuid = accountMapping.second.uuid
         val accountKeyPrefix = "$uuid."
-        putString(editor, accountKeyPrefix + AccountPreferenceSerializer.ACCOUNT_DESCRIPTION_KEY, accountName)
 
         if (account.incoming == null) {
             // We don't import accounts without incoming server settings
@@ -313,23 +291,6 @@ class SettingsImporter internal constructor(
             editor.putBoolean(accountKeyPrefix + "enabled", false)
         }
 
-        val validatedAccount = accountSettingsValidator.validate(contentVersion, account)
-
-        val currentAccount = accountSettingsUpgrader.upgrade(contentVersion, validatedAccount)
-
-        // Convert account settings to the string representation used in preference storage
-        val stringSettings = AccountSettingsDescriptions.convert(currentAccount.settings)
-
-        // Write account settings
-        for ((accountKey, value) in stringSettings) {
-            val key = accountKeyPrefix + accountKey
-            putString(editor, key, value)
-        }
-
-        // Generate and write a new "accountNumber"
-        val newAccountNumber = prefs.generateAccountNumber()
-        putString(editor, accountKeyPrefix + "accountNumber", newAccountNumber.toString())
-
         // Write identities
         if (account.identities != null) {
             importIdentities(editor, contentVersion, uuid, account)
@@ -345,16 +306,9 @@ class SettingsImporter internal constructor(
             }
         }
 
-        // When deleting an account and then restoring it using settings import, the same account UUID will be used.
-        // To avoid reusing a previously existing notification channel ID, we need to make sure to use a unique value
-        // for `messagesNotificationChannelVersion`.
-        val messageNotificationChannelVersion = clock.now().epochSeconds.toString()
-        putString(editor, accountKeyPrefix + "messagesNotificationChannelVersion", messageNotificationChannelVersion)
-
-        val imported = AccountDescription(accountName!!, uuid)
         return AccountDescriptionPair(
-            original,
-            imported,
+            accountMapping.first,
+            accountMapping.second,
             authorizationNeeded,
             incomingPasswordNeeded,
             outgoingPasswordNeeded,
@@ -401,10 +355,6 @@ class SettingsImporter internal constructor(
         val currentIdentity = identitySettingsUpgrader.upgrade(contentVersion, validatedIdentity)
 
         identitySettingsWriter.write(editor, accountUuid, index, currentIdentity)
-    }
-
-    private fun isAccountNameUsed(name: String?, accounts: List<Account>): Boolean {
-        return accounts.any { it.displayName == name }
     }
 
     /**
