@@ -1,9 +1,6 @@
 package com.fsck.k9.preferences
 
 import android.content.Context
-import com.fsck.k9.AccountPreferenceSerializer
-import com.fsck.k9.Core
-import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.ServerSettingsSerializer
 import com.fsck.k9.helper.mapCollectionToSet
@@ -40,7 +37,13 @@ class SettingsImporter internal constructor(
     private val accountSettingsUpgrader = AccountSettingsUpgrader()
 
     private val generalSettingsWriter = GeneralSettingsWriter(preferences)
-    private val accountSettingsWriter = AccountSettingsWriter(preferences, clock, serverSettingsSerializer)
+    private val accountSettingsWriter = AccountSettingsWriter(
+        preferences,
+        localFoldersCreator,
+        clock,
+        serverSettingsSerializer,
+        context,
+    )
 
     /**
      * Parses an import [InputStream] and returns information on whether it contains global settings and/or account
@@ -109,45 +112,8 @@ class SettingsImporter internal constructor(
 
             for (account in contents.accounts) {
                 try {
-                    var editor = preferences.createStorageEditor()
-
-                    val importResult = importAccount(editor, contents.contentVersion, account)
-
-                    if (editor.commit()) {
-                        Timber.v(
-                            "Committed settings for account \"%s\" to the settings database.",
-                            importResult.imported.name,
-                        )
-
-                        // Add UUID of the account we just imported to the list of account UUIDs
-                        editor = preferences.createStorageEditor()
-
-                        val newUuid = importResult.imported.uuid
-                        val oldAccountUuids = preferences.storage.getString("accountUuids", "")
-                        val newAccountUuids = if (oldAccountUuids.isNotEmpty()) {
-                            "$oldAccountUuids,$newUuid"
-                        } else {
-                            newUuid
-                        }
-
-                        putString(editor, "accountUuids", newAccountUuids)
-
-                        if (!editor.commit()) {
-                            throw SettingsImportExportException("Failed to set account UUID list")
-                        }
-
-                        // Reload accounts
-                        preferences.loadAccounts()
-
-                        importedAccounts.add(importResult)
-                    } else {
-                        Timber.w(
-                            "Error while committing settings for account \"%s\" to the settings database.",
-                            importResult.original.name,
-                        )
-
-                        erroneousAccounts.add(importResult.original)
-                    }
+                    val importResult = importAccount(contents.contentVersion, account)
+                    importedAccounts.add(importResult)
                 } catch (e: InvalidSettingValueException) {
                     Timber.e(e, "Encountered invalid setting while importing account \"%s\"", account.name)
 
@@ -157,26 +123,9 @@ class SettingsImporter internal constructor(
 
                     erroneousAccounts.add(AccountDescription(account.name!!, account.uuid))
                 }
-
-                val editor = preferences.createStorageEditor()
-
-                if (!editor.commit()) {
-                    throw SettingsImportExportException("Failed to set default account")
-                }
-            }
-
-            preferences.loadAccounts()
-
-            // Create special local folders
-            for (importedAccount in importedAccounts) {
-                val accountUuid = importedAccount.imported.uuid
-                val account = preferences.getAccount(accountUuid) ?: error("Failed to load account: $accountUuid")
-
-                localFoldersCreator.createSpecialLocalFolders(account)
             }
 
             generalSettingsManager.loadSettings()
-            Core.setServicesEnabled(context)
 
             return ImportResults(globalSettingsImported, importedAccounts, erroneousAccounts)
         } catch (e: SettingsImportExportException) {
@@ -221,9 +170,7 @@ class SettingsImporter internal constructor(
         }
     }
 
-    @Throws(InvalidSettingValueException::class)
     private fun importAccount(
-        editor: StorageEditor,
         contentVersion: Int,
         account: SettingsFile.Account,
     ): AccountDescriptionPair {
@@ -231,7 +178,7 @@ class SettingsImporter internal constructor(
 
         val currentAccount = accountSettingsUpgrader.upgrade(contentVersion, validatedAccount)
 
-        val accountMapping = accountSettingsWriter.write(editor, currentAccount)
+        val accountMapping = accountSettingsWriter.write(currentAccount)
 
         val incoming = currentAccount.incoming
         val incomingServerName = incoming.host
@@ -258,31 +205,6 @@ class SettingsImporter internal constructor(
             incomingServerName!!,
             outgoingServerName!!,
         )
-    }
-
-    /**
-     * Write to a [StorageEditor] while logging what is written if debug logging is enabled.
-     *
-     * @param editor The `Editor` to write to.
-     * @param key The name of the preference to modify.
-     * @param value The new value for the preference.
-     */
-    private fun putString(editor: StorageEditor, key: String, value: String?) {
-        if (K9.isDebugLoggingEnabled) {
-            var outputValue = value
-            if (!K9.isSensitiveDebugLoggingEnabled &&
-                (
-                    key.endsWith("." + AccountPreferenceSerializer.OUTGOING_SERVER_SETTINGS_KEY) ||
-                        key.endsWith("." + AccountPreferenceSerializer.INCOMING_SERVER_SETTINGS_KEY)
-                    )
-            ) {
-                outputValue = "*sensitive*"
-            }
-
-            Timber.v("Setting %s=%s", key, outputValue)
-        }
-
-        editor.putString(key, value)
     }
 
     private fun getAccountDisplayName(account: SettingsFile.Account): String {

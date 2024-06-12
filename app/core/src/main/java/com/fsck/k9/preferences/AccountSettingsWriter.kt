@@ -1,26 +1,33 @@
 package com.fsck.k9.preferences
 
+import android.content.Context
 import com.fsck.k9.Account
 import com.fsck.k9.AccountPreferenceSerializer.Companion.ACCOUNT_DESCRIPTION_KEY
 import com.fsck.k9.AccountPreferenceSerializer.Companion.INCOMING_SERVER_SETTINGS_KEY
 import com.fsck.k9.AccountPreferenceSerializer.Companion.OUTGOING_SERVER_SETTINGS_KEY
+import com.fsck.k9.Core
 import com.fsck.k9.Preferences
 import com.fsck.k9.ServerSettingsSerializer
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
+import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import java.util.UUID
 import kotlinx.datetime.Clock
 
 internal class AccountSettingsWriter(
     private val preferences: Preferences,
+    private val localFoldersCreator: SpecialLocalFoldersCreator,
     private val clock: Clock,
     private val serverSettingsSerializer: ServerSettingsSerializer,
+    private val context: Context,
 ) {
     private val identitySettingsWriter = IdentitySettingsWriter()
     private val folderSettingsWriter = FolderSettingsWriter()
 
-    fun write(editor: StorageEditor, account: ValidatedSettings.Account): Pair<AccountDescription, AccountDescription> {
+    fun write(account: ValidatedSettings.Account): Pair<AccountDescription, AccountDescription> {
+        val editor = preferences.createStorageEditor()
+
         val originalAccountName = account.name!!
         val originalAccountUuid = account.uuid
         val originalAccount = AccountDescription(originalAccountName, originalAccountUuid)
@@ -56,7 +63,31 @@ internal class AccountSettingsWriter(
         writeIdentities(editor, accountUuid, account.identities)
         writeFolders(editor, accountUuid, account.folders)
 
+        updateAccountUuids(editor, accountUuid)
+
+        if (!editor.commit()) {
+            error("Failed to commit account settings")
+        }
+
+        // Reload accounts so the new account can be picked up by Preferences.getAccount()
+        preferences.loadAccounts()
+
+        val appAccount = preferences.getAccount(accountUuid) ?: error("Failed to load account: $accountUuid")
+        localFoldersCreator.createSpecialLocalFolders(appAccount)
+
+        Core.setServicesEnabled(context)
+
         return originalAccount to writtenAccount
+    }
+
+    private fun updateAccountUuids(editor: StorageEditor, accountUuid: String) {
+        val oldAccountUuids = preferences.storage.getString("accountUuids", "")
+            .split(',')
+            .dropLastWhile { it.isEmpty() }
+        val newAccountUuids = oldAccountUuids + accountUuid
+
+        val newAccountUuidString = newAccountUuids.joinToString(separator = ",")
+        editor.putStringWithLogging("accountUuids", newAccountUuidString)
     }
 
     private fun writeIdentities(
