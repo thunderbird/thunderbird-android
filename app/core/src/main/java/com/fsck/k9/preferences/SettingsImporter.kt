@@ -38,6 +38,8 @@ class SettingsImporter internal constructor(
     private val clock: Clock,
     private val context: Context,
 ) {
+    private val generalSettingsValidator = GeneralSettingsValidator()
+
     /**
      * Parses an import [InputStream] and returns information on whether it contains global settings and/or account
      * settings. For all account configurations found, the name of the account along with the account UUID is returned.
@@ -227,8 +229,7 @@ class SettingsImporter internal constructor(
         contentVersion: Int,
         settings: SettingsMap,
     ) {
-        // Validate global settings
-        val validatedSettings = GeneralSettingsDescriptions.validate(contentVersion, settings)
+        val validatedSettings = generalSettingsValidator.validate(contentVersion, settings).toMutableMap()
 
         // Upgrade global settings to current content version
         if (contentVersion != Settings.VERSION) {
