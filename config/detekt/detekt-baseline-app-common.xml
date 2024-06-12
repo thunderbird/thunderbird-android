@@ -4,15 +4,9 @@
   <CurrentIssues>
     <ID>CyclomaticComplexMethod:K9NotificationStrategy.kt$K9NotificationStrategy$override fun shouldNotifyForMessage( account: Account, localFolder: LocalFolder, message: LocalMessage, isOldMessage: Boolean, ): Boolean</ID>
     <ID>LongMethod:K9NotificationStrategy.kt$K9NotificationStrategy$override fun shouldNotifyForMessage( account: Account, localFolder: LocalFolder, message: LocalMessage, isOldMessage: Boolean, ): Boolean</ID>
-    <ID>LoopWithTooManyJumpStatements:UnreadWidgetMigrations.kt$UnreadWidgetMigrations$for</ID>
     <ID>ReturnCount:K9NotificationStrategy.kt$K9NotificationStrategy$override fun shouldNotifyForMessage( account: Account, localFolder: LocalFolder, message: LocalMessage, isOldMessage: Boolean, ): Boolean</ID>
-    <ID>ReturnCount:UnreadWidgetConfigurationFragment.kt$UnreadWidgetConfigurationFragment$private fun validateWidget(): Boolean</ID>
-    <ID>ReturnCount:UnreadWidgetDataProvider.kt$UnreadWidgetDataProvider$private fun loadFolderData(configuration: UnreadWidgetConfiguration): UnreadWidgetData?</ID>
-    <ID>TooGenericExceptionCaught:UnreadWidgetProvider.kt$UnreadWidgetProvider$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:UnreadWidgetUpdateListener.kt$UnreadWidgetUpdateListener$e: Exception</ID>
     <ID>TooManyFunctions:K9CoreResourceProvider.kt$K9CoreResourceProvider : CoreResourceProvider</ID>
     <ID>TooManyFunctions:K9NotificationActionCreator.kt$K9NotificationActionCreator : NotificationActionCreator</ID>
     <ID>TooManyFunctions:K9NotificationResourceProvider.kt$K9NotificationResourceProvider : NotificationResourceProvider</ID>
-    <ID>TooManyFunctions:UnreadWidgetConfigurationFragment.kt$UnreadWidgetConfigurationFragment : PreferenceFragmentCompat</ID>
   </CurrentIssues>
 </SmellBaseline>

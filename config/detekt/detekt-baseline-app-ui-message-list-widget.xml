@@ -7,6 +7,5 @@
     <ID>TooGenericExceptionCaught:MessageListLoader.kt$MessageListLoader$e: Exception</ID>
     <ID>TooGenericExceptionCaught:MessageListWidgetManager.kt$MessageListWidgetManager$e: RuntimeException</ID>
     <ID>TooManyFunctions:MessageListRemoteViewFactory.kt$MessageListRemoteViewFactory : RemoteViewsFactoryKoinComponent</ID>
-    <ID>UnusedParameter:MessageListLoader.kt$MessageListLoader$account: Account</ID>
   </CurrentIssues>
 </SmellBaseline>
