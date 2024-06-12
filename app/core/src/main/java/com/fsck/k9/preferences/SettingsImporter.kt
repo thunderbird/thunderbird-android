@@ -48,6 +48,7 @@ class SettingsImporter internal constructor(
 
     private val generalSettingsWriter = GeneralSettingsWriter(preferences)
     private val folderSettingsWriter = FolderSettingsWriter()
+    private val identitySettingsWriter = IdentitySettingsWriter()
 
     /**
      * Parses an import [InputStream] and returns information on whether it contains global settings and/or account
@@ -400,43 +401,9 @@ class SettingsImporter internal constructor(
     ) {
         val validatedIdentity = identitySettingsValidator.validate(contentVersion, identity)
 
-        val accountKeyPrefix = "$accountUuid."
-        val identitySuffix = ".$index"
-
-        // Write name used in identity
-        val identityName = identity.name.orEmpty()
-        putString(
-            editor,
-            accountKeyPrefix + AccountPreferenceSerializer.IDENTITY_NAME_KEY + identitySuffix,
-            identityName,
-        )
-
-        // Write email address
-        putString(
-            editor,
-            accountKeyPrefix + AccountPreferenceSerializer.IDENTITY_EMAIL_KEY + identitySuffix,
-            identity.email,
-        )
-
-        // Write identity description
-        if (identity.description != null) {
-            putString(
-                editor,
-                accountKeyPrefix + AccountPreferenceSerializer.IDENTITY_DESCRIPTION_KEY + identitySuffix,
-                identity.description,
-            )
-        }
-
         val currentIdentity = identitySettingsUpgrader.upgrade(contentVersion, validatedIdentity)
 
-        // Convert identity settings to the representation used in preference storage
-        val stringSettings = IdentitySettingsDescriptions.convert(currentIdentity.settings)
-
-        // Write identity settings
-        for ((identityKey, value) in stringSettings) {
-            val key = accountKeyPrefix + identityKey + identitySuffix
-            putString(editor, key, value)
-        }
+        identitySettingsWriter.write(editor, accountUuid, index, currentIdentity)
     }
 
     private fun isAccountNameUsed(name: String?, accounts: List<Account>): Boolean {
