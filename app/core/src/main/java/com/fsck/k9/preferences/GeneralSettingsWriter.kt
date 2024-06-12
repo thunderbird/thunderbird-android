@@ -7,6 +7,7 @@ import timber.log.Timber
 
 internal class GeneralSettingsWriter(
     private val preferences: Preferences,
+    private val generalSettingsManager: RealGeneralSettingsManager,
 ) {
     fun write(settings: InternalSettingsMap): Boolean {
         // Convert general settings to the string representation used in preference storage
@@ -24,6 +25,9 @@ internal class GeneralSettingsWriter(
 
         return if (editor.commit()) {
             Timber.v("Committed general settings to the preference storage.")
+
+            generalSettingsManager.loadSettings()
+
             true
         } else {
             Timber.v("Failed to commit general settings to the preference storage")

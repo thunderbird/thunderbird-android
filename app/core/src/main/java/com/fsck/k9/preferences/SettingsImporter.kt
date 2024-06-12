@@ -36,7 +36,7 @@ class SettingsImporter internal constructor(
     private val generalSettingsUpgrader = GeneralSettingsUpgrader()
     private val accountSettingsUpgrader = AccountSettingsUpgrader()
 
-    private val generalSettingsWriter = GeneralSettingsWriter(preferences)
+    private val generalSettingsWriter = GeneralSettingsWriter(preferences, generalSettingsManager)
     private val accountSettingsWriter = AccountSettingsWriter(
         preferences,
         localFoldersCreator,
@@ -124,8 +124,6 @@ class SettingsImporter internal constructor(
                     erroneousAccounts.add(AccountDescription(account.name!!, account.uuid))
                 }
             }
-
-            generalSettingsManager.loadSettings()
 
             return ImportResults(globalSettingsImported, importedAccounts, erroneousAccounts)
         } catch (e: SettingsImportExportException) {
