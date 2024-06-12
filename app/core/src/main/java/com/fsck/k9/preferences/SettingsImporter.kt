@@ -40,6 +40,7 @@ class SettingsImporter internal constructor(
 ) {
     private val generalSettingsValidator = GeneralSettingsValidator()
     private val folderSettingsValidator = FolderSettingsValidator()
+    private val identitySettingsValidator = IdentitySettingsValidator()
 
     private val generalSettingsUpgrader = GeneralSettingsUpgrader()
     private val folderSettingsUpgrader = FolderSettingsUpgrader()
@@ -383,65 +384,62 @@ class SettingsImporter internal constructor(
         uuid: String,
         account: SettingsFile.Account,
     ) {
-        val accountKeyPrefix = "$uuid."
-
-        // Gather information about existing identities for this account (if any)
-
         // Write identities
         for ((index, identity) in account.identities!!.withIndex()) {
-            val identitySuffix = ".$index"
+            importIdentity(editor, contentVersion, uuid, index, identity)
+        }
+    }
 
-            // Write name used in identity
-            val identityName = identity.name.orEmpty()
+    private fun importIdentity(
+        editor: StorageEditor,
+        contentVersion: Int,
+        accountUuid: String,
+        index: Int,
+        identity: SettingsFile.Identity,
+    ) {
+        val validatedIdentity = identitySettingsValidator.validate(contentVersion, identity)
+
+        val accountKeyPrefix = "$accountUuid."
+        val identitySuffix = ".$index"
+
+        // Write name used in identity
+        val identityName = identity.name.orEmpty()
+        putString(
+            editor,
+            accountKeyPrefix + AccountPreferenceSerializer.IDENTITY_NAME_KEY + identitySuffix,
+            identityName,
+        )
+
+        // Write email address
+        putString(
+            editor,
+            accountKeyPrefix + AccountPreferenceSerializer.IDENTITY_EMAIL_KEY + identitySuffix,
+            identity.email,
+        )
+
+        // Write identity description
+        if (identity.description != null) {
             putString(
                 editor,
-                accountKeyPrefix + AccountPreferenceSerializer.IDENTITY_NAME_KEY + identitySuffix,
-                identityName,
+                accountKeyPrefix + AccountPreferenceSerializer.IDENTITY_DESCRIPTION_KEY + identitySuffix,
+                identity.description,
             )
+        }
 
-            // Validate email address
-            if (!IdentitySettingsDescriptions.isEmailAddressValid(identity.email)) {
-                throw InvalidSettingValueException("Invalid email address: " + identity.email)
-            }
+        val validatedSettings = validatedIdentity.settings.toMutableMap()
 
-            // Write email address
-            putString(
-                editor,
-                accountKeyPrefix + AccountPreferenceSerializer.IDENTITY_EMAIL_KEY + identitySuffix,
-                identity.email,
-            )
+        // Upgrade identity settings to current content version
+        if (contentVersion != Settings.VERSION) {
+            IdentitySettingsDescriptions.upgrade(contentVersion, validatedSettings)
+        }
 
-            // Write identity description
-            if (identity.description != null) {
-                putString(
-                    editor,
-                    accountKeyPrefix + AccountPreferenceSerializer.IDENTITY_DESCRIPTION_KEY + identitySuffix,
-                    identity.description,
-                )
-            }
+        // Convert identity settings to the representation used in preference storage
+        val stringSettings = IdentitySettingsDescriptions.convert(validatedSettings)
 
-            if (identity.settings != null) {
-                // Validate identity settings
-                val validatedSettings = IdentitySettingsDescriptions.validate(
-                    contentVersion,
-                    identity.settings,
-                    true,
-                )
-
-                // Upgrade identity settings to current content version
-                if (contentVersion != Settings.VERSION) {
-                    IdentitySettingsDescriptions.upgrade(contentVersion, validatedSettings)
-                }
-
-                // Convert identity settings to the representation used in preference storage
-                val stringSettings = IdentitySettingsDescriptions.convert(validatedSettings)
-
-                // Write identity settings
-                for ((identityKey, value) in stringSettings) {
-                    val key = accountKeyPrefix + identityKey + identitySuffix
-                    putString(editor, key, value)
-                }
-            }
+        // Write identity settings
+        for ((identityKey, value) in stringSettings) {
+            val key = accountKeyPrefix + identityKey + identitySuffix
+            putString(editor, key, value)
         }
     }
 

@@ -94,6 +94,11 @@ class IdentitySettingsDescriptions {
         public String fromString(String value) throws InvalidSettingValueException {
             return value;
         }
+
+        @Override
+        public String toString(String value) {
+            return value;
+        }
     }
 
     private static class OptionalEmailAddressSetting extends SettingsDescription<String> {
