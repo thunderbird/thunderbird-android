@@ -5,6 +5,7 @@
 .DS_Store
 .settings
 .classpath
+.kotlin
 bin
 captures
 coverage

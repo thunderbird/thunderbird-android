@@ -1,5 +1,6 @@
 plugins {
     id("thunderbird.library.android")
+    id("org.jetbrains.kotlin.plugin.compose")
     id("thunderbird.quality.detekt.typed")
 }
 
