@@ -30,7 +30,7 @@
 
 
     <!-- Default signature -->
-    <string name="default_signature">-- \nSent from my Android device with K-9 Mail. Please excuse my brevity.</string>
+    <string name="default_signature">-- \nSent from my Android device with <xliff:g id="app_name">%s</xliff:g>. Please excuse my brevity.</string>
 
 
     <!-- General strings that include the app name -->
