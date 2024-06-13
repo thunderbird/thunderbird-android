@@ -21,7 +21,7 @@ androidxAnnotation = "1.8.0"
 androidxAppCompat = "1.6.1"
 androidxBiometric = "1.1.0"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
-androidxComposeBom = "2024.05.00"
+androidxComposeBom = "2024.06.00"
 androidxConstraintLayout = "2.1.4"
 androidxCoordinatorLayout = "1.2.0"
 androidxCore = "1.13.1"
