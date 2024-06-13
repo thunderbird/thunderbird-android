@@ -1,50 +1,19 @@
 package com.fsck.k9.preferences
 
-import android.content.Context
-import com.fsck.k9.Preferences
-import com.fsck.k9.ServerSettingsSerializer
 import com.fsck.k9.helper.mapCollectionToSet
-import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException
 import java.io.InputStream
-import kotlinx.datetime.Clock
 import timber.log.Timber
 
-// TODO: Further refactor this class to be able to get rid of these detekt issues.
-@Suppress(
-    "LongMethod",
-    "CyclomaticComplexMethod",
-    "NestedBlockDepth",
-    "TooManyFunctions",
-    "TooGenericExceptionCaught",
-    "SwallowedException",
-    "ReturnCount",
-    "ThrowsCount",
-)
 class SettingsImporter internal constructor(
     private val settingsFileParser: SettingsFileParser,
-    private val preferences: Preferences,
-    private val generalSettingsManager: RealGeneralSettingsManager,
-    private val localFoldersCreator: SpecialLocalFoldersCreator,
-    private val serverSettingsSerializer: ServerSettingsSerializer,
-    private val clock: Clock,
-    private val context: Context,
+    private val generalSettingsValidator: GeneralSettingsValidator,
+    private val accountSettingsValidator: AccountSettingsValidator,
+    private val generalSettingsUpgrader: GeneralSettingsUpgrader,
+    private val accountSettingsUpgrader: AccountSettingsUpgrader,
+    private val generalSettingsWriter: GeneralSettingsWriter,
+    private val accountSettingsWriter: AccountSettingsWriter,
 ) {
-    private val generalSettingsValidator = GeneralSettingsValidator()
-    private val accountSettingsValidator = AccountSettingsValidator()
-
-    private val generalSettingsUpgrader = GeneralSettingsUpgrader()
-    private val accountSettingsUpgrader = AccountSettingsUpgrader()
-
-    private val generalSettingsWriter = GeneralSettingsWriter(preferences, generalSettingsManager)
-    private val accountSettingsWriter = AccountSettingsWriter(
-        preferences,
-        localFoldersCreator,
-        clock,
-        serverSettingsSerializer,
-        context,
-    )
-
     /**
      * Parses an import [InputStream] and returns information on whether it contains global settings and/or account
      * settings. For all account configurations found, the name of the account along with the account UUID is returned.
@@ -55,6 +24,7 @@ class SettingsImporter internal constructor(
      *
      * @throws SettingsImportExportException In case of an error.
      */
+    @Suppress("TooGenericExceptionCaught")
     @Throws(SettingsImportExportException::class)
     fun getImportStreamContents(inputStream: InputStream): ImportContents {
         try {
@@ -91,6 +61,7 @@ class SettingsImporter internal constructor(
      *
      * @throws SettingsImportExportException In case of an error.
      */
+    @Suppress("TooGenericExceptionCaught")
     @Throws(SettingsImportExportException::class)
     fun importSettings(
         inputStream: InputStream,
@@ -155,6 +126,7 @@ class SettingsImporter internal constructor(
         )
     }
 
+    @Suppress("TooGenericExceptionCaught")
     private fun importGeneralSettings(contentVersion: Int, settings: SettingsMap): Boolean {
         return try {
             val validatedSettings = generalSettingsValidator.validate(contentVersion, settings)
