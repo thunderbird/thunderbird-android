@@ -34,7 +34,7 @@
 
 
     <!-- General strings that include the app name -->
-    <string name="account_delete_dlg_instructions_fmt">The account \"<xliff:g id="account">%s</xliff:g>\" will be removed from K-9 Mail.</string>
+    <string name="account_delete_dlg_instructions_fmt">The account \"<xliff:g id="account">%s</xliff:g>\" will be removed from <xliff:g id="app_name">%s</xliff:g>.</string>
 
 
     <!-- === General strings ================================================================== -->
