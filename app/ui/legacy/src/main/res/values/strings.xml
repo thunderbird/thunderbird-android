@@ -41,7 +41,7 @@
 
     <string name="authors">Authors</string>
 
-    <string name="about_title">About K-9 Mail</string>
+    <string name="about_title">About <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Accounts</string>
 
     <string name="compose_title_compose">Compose</string>
