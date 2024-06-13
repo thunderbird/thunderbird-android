@@ -1078,7 +1078,7 @@ You can keep this message and use it as a backup for your secret key. If you wan
     <string name="push_notification_grant_alarm_permission">Tap to grant permission.</string>
 
     <string name="push_info_title">Push Info</string>
-    <string name="push_info_notification_explanation_text">When using Push, K-9 Mail maintains a connection to the mail server. Android requires displaying an ongoing notification while the app is active in the background. %s</string>
+    <string name="push_info_notification_explanation_text">When using Push, <xliff:g id="app_name">%1$s</xliff:g> maintains a connection to the mail server. Android requires displaying an ongoing notification while the app is active in the background. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="push_info_configure_notification_text">However, Android also allows you to hide the notification.</string>
     <string name="push_info_learn_more_text">Learn more</string>
     <string name="push_info_configure_notification_action">Configure notification</string>
