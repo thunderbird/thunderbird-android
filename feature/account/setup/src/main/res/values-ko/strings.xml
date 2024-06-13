@@ -2,7 +2,6 @@
 <resources>
     <string name="account_setup_error_unknown">알 수 없는 오류</string>
     <string name="account_setup_error_network">네트워크</string>
-    <string name="account_setup_title">K-9 메일</string>
     <string name="account_setup_special_folders_archive_folder_label">보관함</string>
     <string name="account_setup_special_folders_error_message">서버에서 폴더 목록을 가져오지 못했습니다</string>
     <string name="account_setup_special_folders_sent_folder_label">보낸편지함</string>

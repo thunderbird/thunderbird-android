@@ -29,7 +29,6 @@
     <string name="account_setup_options_section_sync_options">Synchronisierungsoptionen</string>
     <string name="account_setup_options_show_notifications_label">Benachrichtigungen anzeigen</string>
     <string name="account_setup_options_section_display_options">Anzeigeoptionen</string>
-    <string name="account_setup_title">K-9 Mail</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Diese E-Mail Adresse ist nicht erlaubt.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Diese E-Mail Adresse wird nicht unterstützt.</string>
     <string name="account_setup_create_account_created">Konto erfolgreich erstellt</string>

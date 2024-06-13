@@ -2,7 +2,6 @@
 <resources>
     <string name="account_common_button_next">İleri</string>
     <string name="account_common_button_back">Geri</string>
-    <string name="account_common_title">K-9 Posta</string>
     <string name="account_common_error_server_message">Sunucu aşağıdaki hatayı döndürdü:
 \n%s</string>
 </resources>

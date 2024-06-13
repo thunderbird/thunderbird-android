@@ -4,6 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import app.k9mail.core.common.provider.AppNameProvider
 import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
@@ -17,6 +18,7 @@ fun SpecialFoldersScreen(
     onNext: (isManualSetup: Boolean) -> Unit,
     onBack: () -> Unit,
     viewModel: ViewModel,
+    appNameProvider: AppNameProvider,
     modifier: Modifier = Modifier,
 ) {
     val (state, dispatch) = viewModel.observe { effect ->
@@ -50,6 +52,7 @@ fun SpecialFoldersScreen(
             state = state.value,
             onEvent = { dispatch(it) },
             contentPadding = innerPadding,
+            appName = appNameProvider.appName,
         )
     }
 }

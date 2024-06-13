@@ -34,7 +34,6 @@
     <string name="account_setup_options_section_sync_options">Opções de sincronização</string>
     <string name="account_setup_options_show_notifications_label">Mostrar notificações</string>
     <string name="account_setup_options_section_display_options">Opções de visualização</string>
-    <string name="account_setup_title">K-9 Mail</string>
     <string name="account_setup_special_folders_form_description">Por favor indique as pastas especiais para a sua conta.</string>
     <string name="account_setup_special_folders_form_description_automatic">A entrada \"Automático\" seguirá automaticamente as alterações efetuadas pelo servidor. O valor atual do servidor é apresentado entre parênteses.</string>
     <string name="account_setup_special_folders_loading_message">A obter a lista de pastas…</string>

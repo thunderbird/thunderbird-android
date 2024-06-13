@@ -2,7 +2,6 @@
 <resources>
     <string name="account_common_button_next">Naslednji</string>
     <string name="account_common_button_back">Prejšnji</string>
-    <string name="account_common_title">K-9 Mail</string>
     <string name="account_common_error_server_message">Strežnik je vrnil naslednje sporočilo:
 \n%s</string>
 </resources>

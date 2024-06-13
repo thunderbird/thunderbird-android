@@ -2,7 +2,6 @@
 <resources>
     <string name="account_common_button_next">Înainte</string>
     <string name="account_common_button_back">Înapoi</string>
-    <string name="account_common_title">K-9 Mail</string>
     <string name="account_common_error_server_message">Serverul a returnat următorul mesaj:
 \n%s</string>
 </resources>

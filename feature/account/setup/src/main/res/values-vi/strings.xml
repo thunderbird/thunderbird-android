@@ -31,7 +31,6 @@
     <string name="account_setup_options_section_sync_options">Tùy chọn đồng bộ hóa</string>
     <string name="account_setup_options_show_notifications_label">Hiển thị thông báo</string>
     <string name="account_setup_options_section_display_options">Tùy chọn hiển thị</string>
-    <string name="account_setup_title">Thư K-9</string>
     <string name="account_setup_create_account_created">Tạo tài khoản thành công</string>
     <string name="account_setup_create_account_creating">Đang tạo tài khoản…</string>
     <string name="account_setup_create_account_error">Đã xảy ra lỗi khi cố gắng tạo tài khoản</string>

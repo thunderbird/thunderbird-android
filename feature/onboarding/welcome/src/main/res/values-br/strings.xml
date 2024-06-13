@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="onboarding_welcome_start_button">Hasi</string>
-    <string name="onboarding_welcome_title">K-9 Mail</string>
     <string name="onboarding_welcome_import_button">Ezarpenak inportatu</string>
     <string name="onboarding_welcome_message">Ongi etorri K-9 Mail-era, segurtasun handiagoa, pertsonalizazio erraza eta posta elektronikoko kontu guztiak pitzadurarik gabe kudeatzeko diseinatutako Android-erako posta elektronikoko bezerora.</string>
 </resources>

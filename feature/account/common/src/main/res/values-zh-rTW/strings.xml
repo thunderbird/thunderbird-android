@@ -2,5 +2,4 @@
 <resources>
     <string name="account_common_button_next">下一步</string>
     <string name="account_common_button_back">返回</string>
-    <string name="account_common_title">K-9 Mail</string>
 </resources>

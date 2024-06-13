@@ -3,6 +3,7 @@ package app.k9mail.feature.account.setup
 import android.content.Context
 import app.k9mail.autodiscovery.api.AutoDiscovery
 import app.k9mail.core.common.oauth.OAuthConfigurationFactory
+import app.k9mail.core.common.provider.AppNameProvider
 import app.k9mail.feature.account.common.AccountCommonExternalContract
 import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.common.domain.entity.InteractionMode
@@ -13,6 +14,7 @@ import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSett
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
+import app.k9mail.feature.account.setup.ui.FakeAppNameProvider
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
 import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountContract
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract
@@ -64,6 +66,7 @@ class AccountSetupModuleKtTest : KoinTest {
         single<AccountCommonExternalContract.AccountStateLoader> { mock() }
         factory<AccountSetupExternalContract.AccountOwnerNameProvider> { mock() }
         single<List<AutoDiscovery>>(named("extraAutoDiscoveries")) { emptyList() }
+        single<AppNameProvider> { FakeAppNameProvider }
     }
 
     @Test

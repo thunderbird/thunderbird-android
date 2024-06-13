@@ -13,6 +13,7 @@ internal fun SyncOptionsContentPreview() {
             state = SyncOptionsContract.State(),
             onEvent = {},
             contentPadding = PaddingValues(),
+            appName = "AppName",
         )
     }
 }

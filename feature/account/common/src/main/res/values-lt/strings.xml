@@ -2,7 +2,6 @@
 <resources>
     <string name="account_common_error_server_message">Serverio grąžintas pranešimas:
 \n%s</string>
-    <string name="account_common_title">K-9 paštas</string>
     <string name="account_common_button_next">Toliau</string>
     <string name="account_common_button_back">Atgal</string>
 </resources>

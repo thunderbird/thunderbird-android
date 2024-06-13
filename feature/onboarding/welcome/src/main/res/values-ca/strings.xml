@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="onboarding_welcome_start_button">Inicia</string>
-    <string name="onboarding_welcome_title">K-9 Mail</string>
     <string name="onboarding_welcome_import_button">Importa una configuració</string>
     <string name="onboarding_welcome_message">Us donem la benvinguda al K-9 Mail, el client d\'Android de correu electrònic dissenyat per a millorar la seguretat, facilitar la personalització i gestionar sense problemes tots els vostres comptes de correu.</string>
 </resources>

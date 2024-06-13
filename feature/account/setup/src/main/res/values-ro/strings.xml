@@ -29,7 +29,6 @@
     <string name="account_setup_options_section_sync_options">Opțiuni de sincronizare</string>
     <string name="account_setup_options_show_notifications_label">Afișare notificări</string>
     <string name="account_setup_options_section_display_options">Opțiuni de afișare</string>
-    <string name="account_setup_title">K-9 Mail</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Această adresă de e-mail nu este permisă.</string>
     <string name="account_setup_create_account_created">Cont creat cu succes</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Această adresă de e-mail nu este acceptată.</string>

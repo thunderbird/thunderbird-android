@@ -53,6 +53,7 @@ fun OnboardingNavHost(
             WelcomeScreen(
                 onStartClick = { navController.navigateToAccountSetup() },
                 onImportClick = { navController.navigateToSettingsImport() },
+                appNameProvider = koinInject(),
             )
         }
 

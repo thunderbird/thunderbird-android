@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="account_setup_title">K-9 Mail</string>
 
     <string name="account_setup_error_network">Network </string>
     <string name="account_setup_error_unknown">Unknown error</string>

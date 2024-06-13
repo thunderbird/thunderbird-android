@@ -2,5 +2,4 @@
 <resources>
     <string name="account_common_button_next">Επόμενο</string>
     <string name="account_common_button_back">Πίσω</string>
-    <string name="account_common_title">K-9 Mail</string>
 </resources>

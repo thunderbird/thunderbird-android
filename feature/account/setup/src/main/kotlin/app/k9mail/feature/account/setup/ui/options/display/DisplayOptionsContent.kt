@@ -33,6 +33,7 @@ internal fun DisplayOptionsContent(
     state: State,
     onEvent: (Event) -> Unit,
     contentPadding: PaddingValues,
+    appName: String,
     modifier: Modifier = Modifier,
 ) {
     val resources = LocalContext.current.resources
@@ -52,7 +53,9 @@ internal fun DisplayOptionsContent(
             verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
         ) {
             item {
-                AppTitleTopHeader()
+                AppTitleTopHeader(
+                    title = appName,
+                )
             }
 
             item {

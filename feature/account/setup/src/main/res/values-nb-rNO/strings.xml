@@ -29,7 +29,6 @@
     <string name="account_setup_options_section_sync_options">Synkroniseringsalternativer</string>
     <string name="account_setup_options_show_notifications_label">Vis merknader</string>
     <string name="account_setup_options_section_display_options">Visningsalternativer</string>
-    <string name="account_setup_title">K-9 Mail</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Denne e-postadressen tillates ikke.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Denne e-postadressen støttes ikke.</string>
     <string name="account_setup_special_folders_form_description">Angi spesialmapper for din konto.</string>

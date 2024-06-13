@@ -29,7 +29,6 @@
     <string name="account_setup_options_section_sync_options">同步选项</string>
     <string name="account_setup_options_show_notifications_label">显示通知</string>
     <string name="account_setup_options_section_display_options">显示选项</string>
-    <string name="account_setup_title">K-9 Mail</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">不允许此电子邮件地址。</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">不支持此电子邮件地址。</string>
     <string name="account_setup_create_account_created">账号已成功创建</string>

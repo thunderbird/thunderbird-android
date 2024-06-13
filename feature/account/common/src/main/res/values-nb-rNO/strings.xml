@@ -2,7 +2,6 @@
 <resources>
     <string name="account_common_button_next">Neste</string>
     <string name="account_common_button_back">Tilbake</string>
-    <string name="account_common_title">K-9 Mail</string>
     <string name="account_common_error_server_message">Tjeneren svarte følgende:
 \n%s</string>
 </resources>

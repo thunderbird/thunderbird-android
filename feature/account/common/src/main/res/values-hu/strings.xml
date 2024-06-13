@@ -2,5 +2,4 @@
 <resources>
     <string name="account_common_button_next">Következő</string>
     <string name="account_common_button_back">Vissza</string>
-    <string name="account_common_title">K-9 Mail</string>
 </resources>

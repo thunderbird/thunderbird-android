@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="onboarding_welcome_start_button">Los</string>
-    <string name="onboarding_welcome_title">K-9 Mail</string>
     <string name="onboarding_welcome_import_button">Einstellungen importieren</string>
     <string name="onboarding_welcome_message">Willkommen bei K-9 Mail, dem Android-E-Mail-Client, der für mehr Sicherheit, einfache Anpassung und nahtlose Verwaltung aller deiner E-Mail-Konten entwickelt wurde.</string>
 </resources>
