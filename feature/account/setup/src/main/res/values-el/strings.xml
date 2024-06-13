@@ -33,5 +33,4 @@
     <string name="account_setup_options_section_sync_options">Επιλογές συγχρονισμού</string>
     <string name="account_setup_options_show_notifications_label">Εμφάνιση ειδοποιήσεων</string>
     <string name="account_setup_options_section_display_options">Επιλογές εμφάνισης</string>
-    <string name="account_setup_title">K-9 Mail</string>
 </resources>

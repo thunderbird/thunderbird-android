@@ -66,6 +66,7 @@ fun AccountSetupNavHost(
                 },
                 onBack = onBack,
                 viewModel = koinViewModel<AccountAutoDiscoveryViewModel>(),
+                appNameProvider = koinInject(),
             )
         }
 

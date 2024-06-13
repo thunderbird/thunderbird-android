@@ -29,6 +29,5 @@
     <string name="account_setup_options_section_sync_options">सिंक ऑप्शन</string>
     <string name="account_setup_options_show_notifications_label">नोटिफिकेशन दिखाएं</string>
     <string name="account_setup_options_section_display_options">डिस्प्ले ऑप्शन</string>
-    <string name="account_setup_title">K-9 मेल</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">ये ईमेल पता गलत है।</string>
 </resources>

@@ -29,7 +29,6 @@
     <string name="account_setup_options_section_sync_options">Syngronisaasjeopsjes</string>
     <string name="account_setup_options_show_notifications_label">Meldingen toane</string>
     <string name="account_setup_options_section_display_options">Werjefteopsjes</string>
-    <string name="account_setup_title">K-9 Mail</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Dit e-mailadres is net tastien.</string>
     <string name="account_setup_create_account_created">Account mei sukses oanmakke</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Dit e-mailadres wurdt net stipe.</string>

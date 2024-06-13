@@ -29,7 +29,6 @@
     <string name="account_setup_options_section_sync_options">Nastavení synchronizace</string>
     <string name="account_setup_options_show_notifications_label">Zobrazovat oznámení</string>
     <string name="account_setup_options_section_display_options">Nastavení zobrazení</string>
-    <string name="account_setup_title">K-9 Mail</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Tato e-mailová adresa není dovolena.</string>
     <string name="account_setup_create_account_created">Účet úspěšně vytvořen</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Tato e-mailová adresa není podporována.</string>

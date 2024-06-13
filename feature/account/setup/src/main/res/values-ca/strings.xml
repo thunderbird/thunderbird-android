@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="account_setup_title">K-9 Mail</string>
     <string name="account_setup_options_account_name_error_blank">El nom del compte no pot estar en blanc.</string>
     <string name="account_setup_options_account_check_frequency_label">Freqüència de comprovació</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Configura automàticament</string>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="account_setup_title">K-9 Mail</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">L’indirizzu elettronicu hè richiestu.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">St’indirizzu elettronicu ùn hè micca permessu.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">St’indirizzu elettronicu ùn hè micca ricunnisciutu cum’è accettevule.</string>

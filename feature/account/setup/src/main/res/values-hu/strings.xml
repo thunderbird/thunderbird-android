@@ -29,7 +29,6 @@
     <string name="account_setup_options_section_sync_options">Szinkronizálási opciók</string>
     <string name="account_setup_options_show_notifications_label">Értesítések megjelenítése</string>
     <string name="account_setup_options_section_display_options">Megjelenítési opciók</string>
-    <string name="account_setup_title">K-9 Mail</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Ez az email cím nem engedélyezett.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Ez az email cím nem támogatott.</string>
 </resources>

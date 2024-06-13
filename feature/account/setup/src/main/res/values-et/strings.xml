@@ -16,7 +16,6 @@
     <string name="account_setup_error_network">Võrk</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">See e-posti aadress ei tundu olema korrektne.</string>
     <string name="account_setup_auto_discovery_loading_message">Tuvastame e-posti konto seadistusi…</string>
-    <string name="account_setup_title">K-9 Mail</string>
     <string name="account_setup_options_account_name_error_blank">Kasutajakonto nimi ei saa olla tühi.</string>
     <string name="account_setup_options_account_check_frequency_label">Kirjade kontrollimise sagedus</string>
     <string name="account_setup_options_email_signature_label">E-kirja allkiri</string>

@@ -17,7 +17,6 @@
     <string name="account_setup_error_network">Мрежа</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Имейл адресът не беше разпознат като валиден.</string>
     <string name="account_setup_auto_discovery_loading_message">Намиране на данни за имейла</string>
-    <string name="account_setup_title">K-9 Поща</string>
     <string name="account_setup_options_account_name_error_blank">Името на акаунта не може да бъде празно.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Този имейл адрес не е разрешен.</string>
     <string name="account_setup_options_account_check_frequency_label">Интервал на проверка</string>

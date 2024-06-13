@@ -34,5 +34,4 @@
     <string name="account_setup_options_section_sync_options">Sync options</string>
     <string name="account_setup_options_show_notifications_label">Show notifications</string>
     <string name="account_setup_options_section_display_options">Display options</string>
-    <string name="account_setup_title">K-9 Mail</string>
 </resources>

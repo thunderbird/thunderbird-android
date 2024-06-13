@@ -28,7 +28,6 @@
     <string name="account_setup_options_section_sync_options">Synkronointiasetukset</string>
     <string name="account_setup_options_show_notifications_label">Näytä ilmoitukset</string>
     <string name="account_setup_options_section_display_options">Näkymäasetukset</string>
-    <string name="account_setup_title">K-9 Mail</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Tämä sähköpostiosoite ei ole sallittu.</string>
     <string name="account_setup_create_account_created">Tili luotu onnistuneesti</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Tämä sähköpostiosoite ei ole tuettu.</string>

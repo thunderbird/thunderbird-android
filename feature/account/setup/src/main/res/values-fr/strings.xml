@@ -29,7 +29,6 @@
     <string name="account_setup_options_section_sync_options">Options de synchronisation</string>
     <string name="account_setup_options_show_notifications_label">Afficher les notifications</string>
     <string name="account_setup_options_section_display_options">Options d’affichage</string>
-    <string name="account_setup_title">Courriel K-9 Mail</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Cette adresse courriel n’est pas permise.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Cette adresse courriel n’est pas prise en charge.</string>
     <string name="account_setup_create_account_created">Le compte a été créé</string>

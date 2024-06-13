@@ -29,7 +29,6 @@
     <string name="account_setup_options_section_sync_options">同期設定</string>
     <string name="account_setup_options_show_notifications_label">通知を表示する</string>
     <string name="account_setup_options_section_display_options">表示設定</string>
-    <string name="account_setup_title">K-9 Mail</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">このメールアドレスは許可されていません。</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">このメールアドレスには対応していません。</string>
     <string name="account_setup_create_account_created">アカウントは正常に作成されました</string>

@@ -29,7 +29,6 @@
     <string name="account_setup_options_section_sync_options">Sinkronizazio ezarpenak</string>
     <string name="account_setup_options_show_notifications_label">Erakutsi jakinarazpenak</string>
     <string name="account_setup_options_section_display_options">Pantaila ezarpenak</string>
-    <string name="account_setup_title">K-9 Mail</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Helbide elektroniko hau ez dago onartuta.</string>
     <string name="account_setup_create_account_created">Kontua sortu da</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Helbide elektroniko hau ez da bateragarria.</string>
