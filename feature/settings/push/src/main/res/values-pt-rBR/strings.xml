@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_push_title">Fazer push das pastas</string>
+    <string name="settings_push_option_all">Todas</string>
+    <string name="settings_push_option_first_class">Somente pastas de 1ª Classe</string>
+    <string name="settings_push_option_first_and_second_class">Pastas de 1ª e 2ª Classe</string>
+    <string name="settings_push_option_all_except_second_class">Todas exceto as pastas de 2ª Classe</string>
+    <string name="settings_push_option_none">Nenhuma</string>
+    <string name="settings_push_alarm_permission_required">Permissão necessária (<xliff:g id="currentValue" example="None">%s</xliff:g>)</string>
+    <string name="settings_push_permission_info_text">O K-9 Mail precisa acordar regularmente para manter as conexões Push executando. Para que isto funcione, você precisa conceder a permissão para agendar alarmes.</string>
+    <string name="settings_push_grant_permission_button">Conceder permissão</string>
+</resources>
