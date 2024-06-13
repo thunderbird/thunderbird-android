@@ -8,5 +8,6 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.common)
     implementation(projects.core.ui.compose.designsystem)
 }

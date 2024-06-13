@@ -11,6 +11,7 @@ internal fun WelcomeContentPreview() {
         WelcomeContent(
             onStartClick = {},
             onImportClick = {},
+            appName = "AppName",
         )
     }
 }

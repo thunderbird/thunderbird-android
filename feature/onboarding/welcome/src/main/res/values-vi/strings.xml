@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="onboarding_welcome_start_button">Bắt đầu</string>
-    <string name="onboarding_welcome_title">Thư K-9</string>
     <string name="onboarding_welcome_import_button">Nhập thiết đặt</string>
     <string name="onboarding_welcome_message">Chào mừng bạn đến với Thư K-9, ứng dụng email khách Android được thiết kế để tăng cường bảo mật, tùy chỉnh dễ dàng và quản lý liền mạch tất cả tài khoản email của bạn.</string>
 </resources>

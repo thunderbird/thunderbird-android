@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="onboarding_welcome_start_button">Alusta</string>
-    <string name="onboarding_welcome_title">K-9 Mail</string>
     <string name="onboarding_welcome_import_button">Impordi seadistused</string>
     <string name="onboarding_welcome_message">Tere tulemast kasutama K-9 Maili! Tegemiston Androidile mõeldud e-posti kliendiga, millel on tõhus turvalisus, mugav kohendatavus ning mugavad võimalused sinu kõikide e-postikontode haldamiseks.</string>
 </resources>

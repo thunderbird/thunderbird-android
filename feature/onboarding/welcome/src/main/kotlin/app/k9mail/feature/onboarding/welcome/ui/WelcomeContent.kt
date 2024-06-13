@@ -37,6 +37,7 @@ private const val LOGO_SIZE_DP = 200
 internal fun WelcomeContent(
     onStartClick: () -> Unit,
     onImportClick: () -> Unit,
+    appName: String,
     modifier: Modifier = Modifier,
 ) {
     Surface(
@@ -65,6 +66,7 @@ internal fun WelcomeContent(
                 }
                 item {
                     WelcomeTitle(
+                        title = appName,
                         modifier = Modifier.defaultItemModifier(),
                     )
                 }
@@ -105,6 +107,7 @@ private fun WelcomeLogo(
 
 @Composable
 private fun WelcomeTitle(
+    title: String,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -112,7 +115,7 @@ private fun WelcomeTitle(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         TextDisplayMedium(
-            text = stringResource(id = R.string.onboarding_welcome_title),
+            text = title,
         )
     }
 }

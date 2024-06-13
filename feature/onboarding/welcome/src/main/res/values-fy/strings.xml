@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="onboarding_welcome_start_button">Starte</string>
-    <string name="onboarding_welcome_title">K-9 Mail</string>
     <string name="onboarding_welcome_import_button">Ynstellingen ymportearje</string>
     <string name="onboarding_welcome_message">Wolkom by K-9 Mail, de Android e-mailclient ûntwurpen foar ferbettere befeiliging, maklike oanpassingen en noflik behear fan al jo e-mailaccounts.</string>
 </resources>

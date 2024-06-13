@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="onboarding_welcome_message">Sveiki! Tai – „K-9 paštas“, el. pašto programa „Android“ aplinkai, orientuota į didesnį saugumą, patogų tinkinimą ir paprastą el. pašto paskyrų tvarkymą.</string>
-    <string name="onboarding_welcome_title">K-9 paštas</string>
     <string name="onboarding_welcome_start_button">Pradėti</string>
     <string name="onboarding_welcome_import_button">Importuoti nustatymus</string>
 </resources>

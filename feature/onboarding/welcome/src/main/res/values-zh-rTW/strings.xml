@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="onboarding_welcome_start_button">開始</string>
-    <string name="onboarding_welcome_title">K-9 Mail</string>
     <string name="onboarding_welcome_import_button">匯入設定</string>
     <string name="onboarding_welcome_message">歡迎使用 K-9 Mail，這是一款旨在為增強安全性、輕鬆自訂以及無縫管理您所有的電子郵件帳號而設計的 Android 電子郵件用戶端。</string>
 </resources>

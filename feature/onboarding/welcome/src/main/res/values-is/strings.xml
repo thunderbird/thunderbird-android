@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="onboarding_welcome_start_button">Byrja</string>
-    <string name="onboarding_welcome_title">K-9 Póstur</string>
     <string name="onboarding_welcome_import_button">Flytja inn stillingar</string>
     <string name="onboarding_welcome_message">Velkomin í K-9 Póstinn, tölvupóstforrit fyrir Android sem er hannað til að auka öryggi, að vera auðvelt að sérsníða, og sem auðveldi umsýslu með tölvupósti og notendaðgöngum.</string>
 </resources>
