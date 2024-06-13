@@ -27,8 +27,8 @@ val backendsModule = module {
             backendStorageFactory = get(),
             trustedSocketFactory = get(),
             context = get(),
-            clientIdAppName = get(named("ClientIdAppName")),
-            clientIdAppVersion = get(named("ClientIdAppVersion")),
+            clientInfoAppName = get(named("ClientInfoAppName")),
+            clientInfoAppVersion = get(named("ClientInfoAppVersion")),
         )
     }
     single<SystemAlarmManager> { AndroidAlarmManager(context = get(), alarmManager = get()) }

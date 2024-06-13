@@ -45,8 +45,8 @@ class ServerValidationModuleKtTest : KoinTest {
         }
         single<LocalKeyStore> { mock() }
         factory<AccountCommonExternalContract.AccountStateLoader> { mock() }
-        single(named("ClientIdAppName")) { "App Name" }
-        single(named("ClientIdAppVersion")) { "App Version" }
+        single(named("ClientInfoAppName")) { "App Name" }
+        single(named("ClientInfoAppVersion")) { "App Version" }
     }
 
     @OptIn(KoinExperimentalAPI::class)

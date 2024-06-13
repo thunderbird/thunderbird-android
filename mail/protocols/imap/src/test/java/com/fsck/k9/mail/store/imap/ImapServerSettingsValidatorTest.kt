@@ -24,7 +24,7 @@ private const val PASSWORD = "password"
 private const val AUTHORIZATION_STATE = "auth state"
 private const val AUTHORIZATION_TOKEN = "auth-token"
 private val CLIENT_CERTIFICATE_ALIAS: String? = null
-private const val CLIENT_ID = "clientId"
+private const val CLIENT_NAME = "clientName"
 private const val CLIENT_VERSION = "clientVersion"
 
 class ImapServerSettingsValidatorTest {
@@ -33,8 +33,8 @@ class ImapServerSettingsValidatorTest {
     private val serverSettingsValidator = ImapServerSettingsValidator(
         trustedSocketFactory = trustedSocketFactory,
         oAuth2TokenProviderFactory = null,
-        clientIdAppName = CLIENT_ID,
-        clientIdAppVersion = CLIENT_VERSION,
+        clientInfoAppName = CLIENT_NAME,
+        clientInfoAppVersion = CLIENT_VERSION,
     )
 
     @Test
@@ -48,7 +48,7 @@ class ImapServerSettingsValidatorTest {
             output("+")
             expect("AHVzZXIAcGFzc3dvcmQ=")
             output("2 OK [CAPABILITY IMAP4rev1 AUTH=PLAIN NAMESPACE ID] LOGIN completed")
-            expect("3 ID (\"name\" \"$CLIENT_ID\" \"version\" \"$CLIENT_VERSION\")")
+            expect("3 ID (\"name\" \"$CLIENT_NAME\" \"version\" \"$CLIENT_VERSION\")")
             output("* ID NIL")
             output("3 OK ID completed")
             expect("4 NAMESPACE")
@@ -68,7 +68,7 @@ class ImapServerSettingsValidatorTest {
                 autoDetectNamespace = true,
                 pathPrefix = null,
                 useCompression = false,
-                sendClientId = true,
+                sendClientInfo = true,
             ),
         )
 
@@ -87,8 +87,8 @@ class ImapServerSettingsValidatorTest {
                 assertThat(authStateStorage.getAuthorizationState()).isEqualTo(AUTHORIZATION_STATE)
                 FakeOAuth2TokenProvider()
             },
-            clientIdAppName = CLIENT_ID,
-            clientIdAppVersion = CLIENT_VERSION,
+            clientInfoAppName = CLIENT_NAME,
+            clientInfoAppVersion = CLIENT_VERSION,
         )
         val server = startServer {
             output("* OK IMAP4rev1 server ready")
@@ -97,7 +97,7 @@ class ImapServerSettingsValidatorTest {
             output("1 OK CAPABILITY Completed")
             expect("2 AUTHENTICATE OAUTHBEARER bixhPXVzZXIsAWF1dGg9QmVhcmVyIGF1dGgtdG9rZW4BAQ==")
             output("2 OK [CAPABILITY IMAP4rev1 SASL-IR AUTH=PLAIN AUTH=OAUTHBEARER NAMESPACE ID] LOGIN completed")
-            expect("3 ID (\"name\" \"$CLIENT_ID\" \"version\" \"$CLIENT_VERSION\")")
+            expect("3 ID (\"name\" \"$CLIENT_NAME\" \"version\" \"$CLIENT_VERSION\")")
             output("* ID NIL")
             output("3 OK ID completed")
             expect("4 NAMESPACE")
@@ -117,7 +117,7 @@ class ImapServerSettingsValidatorTest {
                 autoDetectNamespace = true,
                 pathPrefix = null,
                 useCompression = false,
-                sendClientId = true,
+                sendClientInfo = true,
             ),
         )
         val authStateStorage = FakeAuthStateStorage(authorizationState = AUTHORIZATION_STATE)

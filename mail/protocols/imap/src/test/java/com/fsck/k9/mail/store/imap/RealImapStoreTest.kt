@@ -425,7 +425,7 @@ class RealImapStoreTest {
                 autoDetectNamespace = true,
                 pathPrefix = null,
                 useCompression = false,
-                sendClientId = false,
+                sendClientInfo = false,
             ),
         )
     }
@@ -448,7 +448,7 @@ class RealImapStoreTest {
             override val logLabel: String = "irrelevant"
             override fun isSubscribedFoldersOnly(): Boolean = isSubscribedFoldersOnly
             override fun isExpungeImmediately(): Boolean = true
-            override fun clientId(): ImapClientId = ImapClientId(appName = "irrelevant", appVersion = "irrelevant")
+            override fun clientInfo() = ImapClientInfo(appName = "irrelevant", appVersion = "irrelevant")
         }
     }
 

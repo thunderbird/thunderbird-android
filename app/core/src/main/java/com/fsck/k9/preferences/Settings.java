@@ -36,7 +36,7 @@ public class Settings {
      *
      * @see SettingsExporter
      */
-    public static final int VERSION = 90;
+    public static final int VERSION = 91;
 
     static Map<String, Object> validate(int version, Map<String, TreeMap<Integer, SettingsDescription>> settings,
             Map<String, String> importedSettings, boolean useDefaultValues) {
@@ -120,7 +120,10 @@ public class Settings {
         for (int toVersion = version + 1; toVersion <= VERSION; toVersion++) {
             if (customUpgraders.containsKey(toVersion)) {
                 SettingsUpgrader upgrader = customUpgraders.get(toVersion);
-                deletedSettings = upgrader.upgrade(validatedSettingsMutable);
+                Set<String> settingsToDelete = upgrader.upgrade(validatedSettingsMutable);
+                if (settingsToDelete != null) {
+                    deletedSettings = new HashSet<>(settingsToDelete);
+                }
             }
 
             deletedSettings = upgradeSettingsGeneric(settings, validatedSettingsMutable, deletedSettings, toVersion);

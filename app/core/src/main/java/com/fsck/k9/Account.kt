@@ -229,7 +229,7 @@ class Account(override val uuid: String) : BaseAccount {
 
     @get:Synchronized
     @set:Synchronized
-    var isSendClientIdEnabled = true
+    var isSendClientInfoEnabled = true
 
     @get:Synchronized
     @set:Synchronized

@@ -101,7 +101,7 @@ android {
             ),
         )
 
-        buildConfigField("String", "CLIENT_ID_APP_NAME", "\"K-9 Mail\"")
+        buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"K-9 Mail\"")
     }
 
     signingConfigs {

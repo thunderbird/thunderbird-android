@@ -8,7 +8,7 @@ import com.fsck.k9.mail.ServerSettings
 object ImapStoreSettings {
     private const val AUTODETECT_NAMESPACE_KEY = "autoDetectNamespace"
     private const val PATH_PREFIX_KEY = "pathPrefix"
-    private const val SEND_CLIENT_ID = "sendClientId"
+    private const val SEND_CLIENT_INFO = "sendClientInfo"
     private const val USE_COMPRESSION = "useCompression"
 
     @JvmStatic
@@ -24,8 +24,8 @@ object ImapStoreSettings {
         get() = extra[USE_COMPRESSION]?.toBoolean() ?: true
 
     @JvmStatic
-    val ServerSettings.isSendClientId: Boolean
-        get() = extra[SEND_CLIENT_ID]?.toBoolean() ?: true
+    val ServerSettings.isSendClientInfo: Boolean
+        get() = extra[SEND_CLIENT_INFO]?.toBoolean() ?: true
 
     // Note: These extras are currently held in the instance referenced by Account.incomingServerSettings
     @JvmStatic
@@ -41,13 +41,13 @@ object ImapStoreSettings {
         autoDetectNamespace: Boolean,
         pathPrefix: String?,
         useCompression: Boolean,
-        sendClientId: Boolean,
+        sendClientInfo: Boolean,
     ): Map<String, String?> {
         return mapOf(
             AUTODETECT_NAMESPACE_KEY to autoDetectNamespace.toString(),
             PATH_PREFIX_KEY to pathPrefix,
             USE_COMPRESSION to useCompression.toString(),
-            SEND_CLIENT_ID to sendClientId.toString(),
+            SEND_CLIENT_INFO to sendClientInfo.toString(),
         )
     }
 }

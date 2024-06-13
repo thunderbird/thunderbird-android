@@ -12,7 +12,7 @@ import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSett
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.autoDetectNamespace
-import com.fsck.k9.mail.store.imap.ImapStoreSettings.isSendClientId
+import com.fsck.k9.mail.store.imap.ImapStoreSettings.isSendClientInfo
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.isUseCompression
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
 
@@ -35,7 +35,7 @@ private fun ServerSettings.toIncomingServerSettingsState(): State {
         imapAutodetectNamespaceEnabled = autoDetectNamespace,
         imapPrefix = StringInputField(value = pathPrefix ?: ""),
         imapUseCompression = isUseCompression,
-        imapSendClientId = isSendClientId,
+        imapSendClientInfo = isSendClientInfo,
 
         isLoading = false,
         error = null,
@@ -62,7 +62,7 @@ private fun State.createExtras(): Map<String, String?> {
             autoDetectNamespace = imapAutodetectNamespaceEnabled,
             pathPrefix = if (imapAutodetectNamespaceEnabled) null else imapPrefix.value.trim(),
             useCompression = imapUseCompression,
-            sendClientId = imapSendClientId,
+            sendClientInfo = imapSendClientInfo,
         )
     } else {
         emptyMap()
