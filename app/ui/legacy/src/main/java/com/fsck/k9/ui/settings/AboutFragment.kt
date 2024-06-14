@@ -14,24 +14,17 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import app.k9mail.core.common.provider.AppNameProvider
 import com.fsck.k9.ui.R
 import com.google.android.material.textview.MaterialTextView
-import org.koin.android.ext.android.inject
 import timber.log.Timber
 
 class AboutFragment : Fragment() {
-    private val appNameProvider: AppNameProvider by inject()
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_about, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val titleTextView = view.findViewById<MaterialTextView>(R.id.about_title)
-        titleTextView.text = getString(R.string.about_title, appNameProvider.appName)
 
         val versionTextView = view.findViewById<MaterialTextView>(R.id.version)
         versionTextView.text = getVersionNumber()

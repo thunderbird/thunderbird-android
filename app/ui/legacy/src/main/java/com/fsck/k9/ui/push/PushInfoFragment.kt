@@ -13,7 +13,6 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import app.k9mail.core.common.provider.AppNameProvider
 import com.fsck.k9.controller.push.PushController
 import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.ui.R
@@ -26,7 +25,6 @@ private const val LEARN_MORE_URL = "https://k9mail.app/go/push-info"
 class PushInfoFragment : Fragment() {
     private val notificationChannelManager: NotificationChannelManager by inject()
     private val pushController: PushController by inject()
-    private val appNameProvider: AppNameProvider by inject()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_push_info, container, false)
@@ -39,26 +37,19 @@ class PushInfoFragment : Fragment() {
 
     private fun initializeNotificationSection(view: View) {
         val notificationTextView = view.findViewById<MaterialTextView>(R.id.notificationText)
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val configureNotificationText = getString(R.string.push_info_configure_notification_text)
             notificationTextView.text = getString(
                 R.string.push_info_notification_explanation_text,
-                appNameProvider.appName,
                 configureNotificationText,
             )
-
             val configureNotificationButton = view.findViewById<MaterialButton>(R.id.configureNotificationButton)
             configureNotificationButton.isVisible = true
             configureNotificationButton.setOnClickListener {
                 launchNotificationSettings()
             }
         } else {
-            notificationTextView.text = getString(
-                R.string.push_info_notification_explanation_text,
-                appNameProvider.appName,
-                "",
-            )
+            notificationTextView.text = getString(R.string.push_info_notification_explanation_text, "")
         }
 
         view.findViewById<MaterialButton>(R.id.learnMoreButton).setOnClickListener {

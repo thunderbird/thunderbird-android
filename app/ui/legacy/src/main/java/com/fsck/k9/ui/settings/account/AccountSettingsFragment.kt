@@ -13,7 +13,6 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.SwitchPreference
-import app.k9mail.core.common.provider.AppNameProvider
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import com.fsck.k9.Account
 import com.fsck.k9.account.BackgroundAccountRemover
@@ -53,7 +52,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     private val notificationChannelManager: NotificationChannelManager by inject()
     private val notificationSettingsUpdater: NotificationSettingsUpdater by inject()
     private val vibrator: Vibrator by inject()
-    private val appNameProvider: AppNameProvider by inject()
 
     private lateinit var dataStore: AccountSettingsDataStore
 
@@ -401,7 +399,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         val dialogFragment = ConfirmationDialogFragment.newInstance(
             DIALOG_DELETE_ACCOUNT,
             getString(R.string.account_delete_dlg_title),
-            getString(R.string.account_delete_dlg_instructions_fmt, getAccount().displayName, appNameProvider.appName),
+            getString(R.string.account_delete_dlg_instructions_fmt, getAccount().displayName),
             getString(BaseR.string.okay_action),
             getString(BaseR.string.cancel_action),
         )

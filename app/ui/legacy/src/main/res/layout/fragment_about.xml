@@ -20,7 +20,6 @@
             app:srcCompat="@drawable/ic_app_logo" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/about_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="16dp"
