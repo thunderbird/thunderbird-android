@@ -7,12 +7,10 @@ import com.fsck.k9.ui.base.locale.SystemLocaleChangeListener
 import com.fsck.k9.ui.base.locale.SystemLocaleManager
 import java.util.Locale
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.plus
 
 /**
  * Manages app language changes.
@@ -22,7 +20,7 @@ import kotlinx.coroutines.plus
  */
 class AppLanguageManager(
     private val systemLocaleManager: SystemLocaleManager,
-    private val coroutineScope: CoroutineScope = GlobalScope + Dispatchers.Main,
+    private val coroutineScope: CoroutineScope = MainScope(),
 ) {
     private var currentOverrideLocale: Locale? = null
     private val _overrideLocale = MutableSharedFlow<Locale?>(replay = 1)
