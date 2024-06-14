@@ -19,12 +19,9 @@
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">-- \nSendt fra min Android-enhet med K-9 e-post. Unnskyld min kortfattethet.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Kontoen \"<xliff:g id="account">%s</xliff:g>\" vil bli fjernet fra K-9 e-post.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Utviklere</string>
-    <string name="about_title">Om K-9 Mail</string>
     <string name="accounts_title">Kontoer</string>
     <string name="compose_title_compose">Skriv</string>
     <string name="compose_title_reply">Svar</string>
@@ -776,7 +773,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <string name="general_settings_title">Generelle innstillinger</string>
     <string name="dialog_openkeychain_info_title">Inget OpenPGP-program installert</string>
     <string name="dialog_openkeychain_info_install">Installer</string>
-    <string name="dialog_openkeychain_info_text">K-9 Mail krever OpenKeychain for ende-til-ende -kryptering.</string>
     <string name="encrypted_subject">Kryptert melding</string>
     <string name="account_settings_crypto_encrypt_subject">Kryptert meldingsemne.</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Er kanskje ikke støttet av noen mottakere</string>
@@ -935,7 +931,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <string name="search_everywhere_action">Søk overalt</string>
     <string name="new_messages_title">Nye meldinger</string>
     <string name="push_info_disable_push_action">Skru av dytting</string>
-    <string name="push_info_notification_explanation_text">Ved bruk av dytting vil K-9 Mail opprettholde en tilkobling til e-posttjeneren. Android krever visning av pågående merknad når programmet er aktivt i bakgrunnen. %s</string>
     <string name="changelog_version_title">Versjon %s</string>
     <string name="account_settings_notification_light_yellow">Gul</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Oppsettsfeil og statusmerknader</string>

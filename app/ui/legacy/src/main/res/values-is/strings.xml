@@ -26,12 +26,9 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Skoða</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nSent úr Android tækinu mínu með K-9 póstforritinu. Afsakaðu hvað ég stytti mál mitt mikið.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Aðgangurinn \"<xliff:g id="account">%s</xliff:g>\" verður fjarlægður úr K-9 póstinum.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Höfundar</string>
-    <string name="about_title">Um K-9 póstinn</string>
     <string name="accounts_title">Aðgangar</string>
     <string name="compose_title_compose">Semja</string>
     <string name="compose_title_reply">Svara</string>
@@ -847,7 +844,6 @@
     <string name="general_settings_title">Almennar stillingar</string>
     <string name="dialog_openkeychain_info_title">Ekkert OpenPGP-forrit er uppsett</string>
     <string name="dialog_openkeychain_info_install">Setja upp</string>
-    <string name="dialog_openkeychain_info_text">K-9 póstur krefs OpenKeychain fyrir enda-í-enda dulritun.</string>
     <string name="encrypted_subject">Dulrituð skilaboð</string>
     <string name="account_settings_crypto_encrypt_subject">Dulrita viðfangsefni skilaboða</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Er hugsanlega ekki stutt hjá sumum viðtakendum</string>
@@ -880,7 +876,6 @@ Til að setja Autocrypt upp á nýju tæki, farðu þá eftir leiðbeiningunum s
     <string name="push_notification_state_wait_network">Í dvala þar til netkerfi er til taks</string>
     <string name="push_notification_info">Ýttu til að kanna nánar.</string>
     <string name="push_info_title">Upplýsingar um ýtitilkynningar</string>
-    <string name="push_info_notification_explanation_text">Þegar ýtitilkynningar (push-notifications) eru notaðar, heldur K-9 póstforritið virkri tengingu við póstþjóninn. Android krefst þess að þá sé birt í sífellu tilkynning um þetta á meðan forritið er virkt í bakgrunni. %s</string>
     <string name="push_info_configure_notification_text">Hinsvegar leyfir Android einnig að tilkynningin sé falin.</string>
     <string name="push_info_learn_more_text">Kanna nánar</string>
     <string name="push_info_configure_notification_action">Stilla tilkynningu</string>

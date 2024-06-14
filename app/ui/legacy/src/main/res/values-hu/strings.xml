@@ -26,12 +26,9 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Megtekintés</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nAndroidos készülékről küldve K-9 Mail használatával. Elnézést a rövidségért.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">A(z) „<xliff:g id="account">%s</xliff:g>” fiók eltávolításra kerül a K-9 Mail alkalmazásból.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Szerzők</string>
-    <string name="about_title">A K-9 Mail névjegye</string>
     <string name="accounts_title">Fiókok</string>
     <string name="compose_title_compose">Írás</string>
     <string name="compose_title_reply">Válasz</string>
@@ -846,7 +843,6 @@
     <string name="general_settings_title">Általános beállítások</string>
     <string name="dialog_openkeychain_info_title">Nincs OpenPGP alkalmazás telepítve</string>
     <string name="dialog_openkeychain_info_install">Telepítés</string>
-    <string name="dialog_openkeychain_info_text">A K-9 Mail az OpenKeychain alkalmazást igényli a végpontok közötti titkosításhoz.</string>
     <string name="encrypted_subject">Titkosított üzenet</string>
     <string name="account_settings_crypto_encrypt_subject">Üzenet tárgyainak titkosítása</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Néhány címzett esetleg nem támogatja</string>
@@ -879,7 +875,6 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <string name="push_notification_state_wait_network">Alvás addig, amíg a hálózat elérhetővé nem válik</string>
     <string name="push_notification_info">Koppintson ide a további tudnivalókért.</string>
     <string name="push_info_title">Leküldési információk</string>
-    <string name="push_info_notification_explanation_text">Amikor leküldést használ, a K-9 Mail egy kapcsolatot tart fenn a levelezőkiszolgálóval. Az Android megköveteli, hogy értesítést jelenítsen meg az alkalmazás, ha aktív a háttérben. %s</string>
     <string name="push_info_configure_notification_text">Viszont az Android azt is lehetővé teszi, hogy elrejtse az értesítést.</string>
     <string name="push_info_learn_more_text">További tudnivaló</string>
     <string name="push_info_configure_notification_action">Értesítés beállítása</string>

@@ -25,12 +25,9 @@
     <string name="changelog_snackbar_text">Darganfod beth sy\'n newydd yn y diweddariad hwn</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">-- \nAnfonwyd gyda K-9 Mail ar Android\n - yr ap ebost cyntaf yn y Gymraeg.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Caiff y cyfrif \"<xliff:g id="account">%s</xliff:g>\" ei dynnu o K-9 Mail.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Awduron</string>
-    <string name="about_title">Ynghylch K-9 Mail</string>
     <string name="accounts_title">Cyfrifon</string>
     <string name="compose_title_compose">Ysgrifennu</string>
     <string name="compose_title_reply">Ateb</string>
@@ -844,7 +841,6 @@
     <string name="general_settings_title">Gosodiadau cyffredinol</string>
     <string name="dialog_openkeychain_info_title">Nid oes ap OpenPGP wedi\'i osod</string>
     <string name="dialog_openkeychain_info_install">Gosod</string>
-    <string name="dialog_openkeychain_info_text">Mae ar K-9 Mail angen OpenKeychain ar gyfer amgryptiad pen-i-ben.</string>
     <string name="encrypted_subject">Neges wedi\'i Hamgryptio</string>
     <string name="account_settings_crypto_encrypt_subject">Amgryptio pynciau negeseuon</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Mae\'n bosib na fydd rhai derbynwyr yn medru ei brosesu</string>
@@ -877,7 +873,6 @@ Mae\'n bosib i ti gadw\'r neges hon a\'i ddefnyddio wrth gefn fel dy allwedd gyf
     <string name="push_notification_state_wait_network">Yn cysgu nes bod rhwydwaith ar gael</string>
     <string name="push_notification_info">Tapiwch i ddysgu rhagor.</string>
     <string name="push_info_title">Gwybodaeth gwthio</string>
-    <string name="push_info_notification_explanation_text">Pan yn defnyddio Gwthio, mae K-9 Mail yn cadw cysylltiad â\'r gweinydd ebost. Mae ar Android angen dangos hysbysiad parhaus tra bod yr ap yn weithredol yn y cefndir. %s</string>
     <string name="push_info_configure_notification_text">Fodd bynnag, mae Android hefyd yn eich galluogi i guddio\'r hysbysiad.</string>
     <string name="push_info_learn_more_text">Dysgu rhagor</string>
     <string name="push_info_configure_notification_action">Ffurfweddu hysbysiad</string>

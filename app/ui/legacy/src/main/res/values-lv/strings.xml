@@ -26,13 +26,9 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Skatīt</string>
     <!--Default signature-->
-    <string name="default_signature">--
-\nSūtīts ar K-9 pastu no manas Android ierīces. Atvainojiet, ka mana izpausme ir tik kodolīga.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Konts \"<xliff:g id="account">%s</xliff:g>\" tiks dzēsts no K-9 pasta.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Autori</string>
-    <string name="about_title">Par K-9 pastu</string>
     <string name="accounts_title">Konti</string>
     <string name="compose_title_compose">Rakstīt ziņu</string>
     <string name="compose_title_reply">Atbildēt</string>
@@ -857,7 +853,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
     <string name="general_settings_title">Vispārējie iestatījumi</string>
     <string name="dialog_openkeychain_info_title">OpenPGP lietotne nav instalēta</string>
     <string name="dialog_openkeychain_info_install">Instalēt</string>
-    <string name="dialog_openkeychain_info_text">Lai nodrošinātu end-to-end šifrēšanu K-9 pastam nepieciešams OpenKeychain.</string>
     <string name="encrypted_subject">Šifrēta ziņa</string>
     <string name="account_settings_crypto_encrypt_subject">Šifrēt ziņu tematus</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Daži saņēmēji to, iespējams, neatbalsta</string>
@@ -885,7 +880,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
     <string name="push_notification_state_wait_network">Snaust, kamēr pieejams tīkls</string>
     <string name="push_notification_info">Pieskarieties, lai uzzinātu vairāk.</string>
     <string name="push_info_title">Grūdeņa/stūmekļa (push) informācija</string>
-    <string name="push_info_notification_explanation_text">Kad tiek izmantots grūdenis/stūmeklis (push), K-9 pasts uztur savienojumu ar e-pasta serveri. Android OS liek rādīt paziņojumu, ka lietotne fonā ir aktīva. %s</string>
     <string name="push_info_configure_notification_text">Taču Android Jums ļauj arī paslēpt paziņojumu.</string>
     <string name="push_info_learn_more_text">Uzzināt vairāk</string>
     <string name="push_info_configure_notification_action">Konfigurēt paziņojumu</string>

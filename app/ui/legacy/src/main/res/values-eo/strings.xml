@@ -23,12 +23,9 @@
     <string name="changelog_snackbar_text">Kio estas nova en tiu ĉi versio</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">-- \nSendita per K-9 Retpoŝtilo. Bonvolu pardoni min por skribi mallonge.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">La konto \"<xliff:g id="account">%s</xliff:g>\" estos forigita el K-9 Retpoŝtilo.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Aŭtoroj</string>
-    <string name="about_title">Pri K-9 Retpoŝtilo</string>
     <string name="accounts_title">Kontoj</string>
     <string name="compose_title_compose">Krei</string>
     <string name="compose_title_reply">Respondi</string>
@@ -801,7 +798,6 @@
     <string name="general_settings_title">Ĝeneralaj agordoj</string>
     <string name="dialog_openkeychain_info_title">Neniu OpenPGP-aplikaĵo instalita</string>
     <string name="dialog_openkeychain_info_install">Instali</string>
-    <string name="dialog_openkeychain_info_text">K-9 Retpoŝtilo postulas OpenKeychain por ĉifri de-fino-al-fino.</string>
     <string name="encrypted_subject">Ĉifrita mesaĝo</string>
     <string name="account_settings_crypto_encrypt_subject">Ĉifri temon de mesaĝo</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Povas esti nesubtenata de iuj ricevontoj</string>
@@ -834,7 +830,6 @@ Vi povas konservi tiun ĉi mesaĝon kaj uzi ĝin kiel sekurkopion de via privata
     <string name="push_notification_state_wait_network">Haltigita ĝis interreta konekto estos disponebla</string>
     <string name="push_notification_info">Frapetu por pli da informoj.</string>
     <string name="push_info_title">Informoj pri samtempigo</string>
-    <string name="push_info_notification_explanation_text">Dum uzi puŝ-sciigojn pri novaj retleteroj, la aplikaĵo K-9 Retpoŝtilo subtenas konekton al la retpoŝta servilo. La operaciumo Android postulas por ke la aplikaĵo montru sciigon dum labori fone. %s</string>
     <string name="push_info_configure_notification_text">Tamen Android ebligas kaŝi tiun sciigon.</string>
     <string name="push_info_learn_more_text">Pli da informoj</string>
     <string name="push_info_configure_notification_action">Agordi sciigon</string>

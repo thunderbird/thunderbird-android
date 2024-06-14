@@ -26,12 +26,9 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Προβολή</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nΣταλμένο από τη συσκευή μου Android με το K-9 Mail. Παρακαλώ συγχωρήστε την ολιγολογία μου.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Ο λογαριασμός \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφεί από το K-9 Mail.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Συντελεστές</string>
-    <string name="about_title">Σχετικά με το K-9 Mail</string>
     <string name="accounts_title">Λογαριασμοί</string>
     <string name="compose_title_compose">Σύνθεση</string>
     <string name="compose_title_reply">Απάντηση</string>
@@ -847,7 +844,6 @@
     <string name="general_settings_title">Γενικές ρυθμίσεις</string>
     <string name="dialog_openkeychain_info_title">Δεν υπάρχει εγκατεστημένη εφαρμογή OpenPGP</string>
     <string name="dialog_openkeychain_info_install">Εγκατάσταση</string>
-    <string name="dialog_openkeychain_info_text">Το K-9 Mail χρειάζεται το OpenKeychain για διατερματική κρυπτογράφηση.</string>
     <string name="encrypted_subject">Κρυπτογραφημένο μήνυμα</string>
     <string name="account_settings_crypto_encrypt_subject">Κρυπτογράφηση θεμάτων των μηνυμάτων </string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Ενδέχεται να μην υποστηρίζεται από ορισμένους παραλήπτες</string>
@@ -880,7 +876,6 @@
     <string name="push_notification_state_wait_network">Σε αδράνεια μέχρι να υπάρξει διαθέσιμο δίκτυο</string>
     <string name="push_notification_info">Πατήστε για να μάθετε περισσότερα</string>
     <string name="push_info_title">Πληροφορίες σπρωξίματος</string>
-    <string name="push_info_notification_explanation_text">Όταν χρησιμοποιείται το σπρώξιμο (Push), το K-9 Mail διατηρεί μια σύνδεση με τον εξυπηρετητή ηλεκτρονικού ταχυδρομείου (mail server). Το Android απαιτεί να προβάλλεται συνεχώς μια ειδοποίηση όσο η εφαρμογή λειτουργεί στο παρασκήνιο. %s</string>
     <string name="push_info_configure_notification_text">Παρόλα αυτά, το Android σάς επιτρέπει να κρύψετε την ειδοποίηση.</string>
     <string name="push_info_learn_more_text">Μάθετε περισσότερα</string>
     <string name="push_info_configure_notification_action">Προσαρμογή ειδοποίησης</string>

@@ -26,13 +26,9 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Vista</string>
     <!--Default signature-->
-    <string name="default_signature">--
-\nEnviat des del meu dispositiu Android amb el K-9 Mail. Disculpeu la brevetat.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">El compte \"<xliff:g id="account">%s</xliff:g>\" s\'eliminarà del K-9 Mail.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Autors</string>
-    <string name="about_title">Quant al K-9 Mail</string>
     <string name="accounts_title">Comptes</string>
     <string name="compose_title_compose">Redacta</string>
     <string name="compose_title_reply">Respon</string>
@@ -857,7 +853,6 @@
     <string name="general_settings_title">Configuració general</string>
     <string name="dialog_openkeychain_info_title">No hi ha cap aplicació OpenPGP instal·lada</string>
     <string name="dialog_openkeychain_info_install">Instal·la</string>
-    <string name="dialog_openkeychain_info_text">El K-9 Mail requereix OpenKeychain per a l\'encriptació d\'extrem a extrem.</string>
     <string name="encrypted_subject">Missatge encriptat</string>
     <string name="account_settings_crypto_encrypt_subject">Encripta l\'assumpte dels missatges</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Pot no ser admès per alguns destinataris</string>
@@ -885,7 +880,6 @@
     <string name="push_notification_state_wait_network">Inactiu fins que la xarxa estigui disponible</string>
     <string name="push_notification_info">Toca per obtenir més informació.</string>
     <string name="push_info_title">Informació de Tramesa</string>
-    <string name="push_info_notification_explanation_text">Quan es fa servir Tramesa, K-9 Mail manté una connexió amb el servidor de correu. L\'Android requereix mostrar una notificació en curs mentre l’aplicació estigui activa en segon pla. %s</string>
     <string name="push_info_configure_notification_text">Tot i això, l\'Android també us permet amagar la notificació.</string>
     <string name="push_info_learn_more_text">Apreneu-ne més</string>
     <string name="push_info_configure_notification_action">Configureu la notificació</string>

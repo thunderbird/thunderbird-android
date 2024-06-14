@@ -9,9 +9,7 @@
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">-- \nՈւղարկուած է իմ Անդրոիդ սարքից Կ֊9 Մեյլ֊ով։ Ներեցէք հակիրճ լինելու համար։</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" հաշիւն հեռացուելու է Կ֊9 Մեյլ֊ից։</string>
     <!--=== General strings ==================================================================-->
     <string name="accounts_title">Հաշիւներ</string>
     <string name="compose_title_compose">Գրել</string>

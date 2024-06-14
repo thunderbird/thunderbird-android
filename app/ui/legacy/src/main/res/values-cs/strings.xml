@@ -26,12 +26,9 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Zobrazit</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nOdesláno aplikací K-9 Mail ze systému Android. Omluvte prosím moji stručnost.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Účet \"<xliff:g id="account">%s</xliff:g>\" bude odstraněn z K-9 Mail.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Autoři</string>
-    <string name="about_title">O aplikaci K-9 mail</string>
     <string name="accounts_title">Účty</string>
     <string name="compose_title_compose">Nová</string>
     <string name="compose_title_reply">Odpovědět</string>
@@ -860,7 +857,6 @@
     <string name="general_settings_title">Hlavní nastavení</string>
     <string name="dialog_openkeychain_info_title">Není nainstalovaná žádná OpenPGP aplikace</string>
     <string name="dialog_openkeychain_info_install">Nainstalovat</string>
-    <string name="dialog_openkeychain_info_text">Pro šifrování mezi odesílatelem a příjemcem vyžaduje K-9 Mail aplikaci OpenKeychain.</string>
     <string name="encrypted_subject">Zašifrovaná zpráva</string>
     <string name="account_settings_crypto_encrypt_subject">Šifrovat předměty e-mailů</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Nemusí být podporováno některými příjemci</string>
@@ -892,7 +888,6 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <string name="push_notification_state_wait_network">Uspáno do doby, než bude k dispozici síť</string>
     <string name="push_notification_info">Klepněte, pokud se chcete dozvědět víc.</string>
     <string name="push_info_title">Push informace</string>
-    <string name="push_info_notification_explanation_text">Při používání Push udržuje K-9 Mail spojení s e-mailovým serverem. Je-li aplikace aktivní na pozadí, Systém Android vyžaduje zobrazení průběžného oznámení. %s</string>
     <string name="push_info_configure_notification_text">Nicméně Android vám také umožní toto oznámení skrýt.</string>
     <string name="push_info_learn_more_text">Zjistit více</string>
     <string name="push_info_configure_notification_action">Nastavit oznámení</string>

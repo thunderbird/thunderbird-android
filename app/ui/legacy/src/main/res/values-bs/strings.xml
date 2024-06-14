@@ -13,7 +13,6 @@
     <string name="changelog_recent_changes_title">Šta je novo</string>
     <string name="changelog_show_recent_changes">Prikaži skorije izmjene kad se aplikacija ažurira</string>
     <string name="changelog_snackbar_button_text">Pogledaj</string>
-    <string name="account_delete_dlg_instructions_fmt">Račun \"<xliff:g id="account">%s</xliff:g>\" će biti uklonjen iz K-9 Mail-a.</string>
     <string name="compose_title_reply">Odgovori</string>
     <string name="choose_folder_move_title">Premjesti u…</string>
     <string name="choose_folder_copy_title">Kopiraj u…</string>
@@ -89,10 +88,7 @@
     <string name="user_forum_title">Korisnički forum</string>
     <string name="changelog_loading_error">Nije moguće učitati dnevnik izmjena.</string>
     <string name="changelog_snackbar_text">Vidite šta je novo u ovom izdanju</string>
-    <string name="default_signature">--
-\nPoslano sa mog Android uređaja preko K-9 Mail-a. Molim vas oprostite na mojoj sažetosti.</string>
     <string name="authors">Autori</string>
-    <string name="about_title">O K-9 Mail-u</string>
     <string name="compose_title_compose">Sastavi</string>
     <string name="accounts_title">Računi</string>
     <string name="compose_title_forward">Proslijedi</string>

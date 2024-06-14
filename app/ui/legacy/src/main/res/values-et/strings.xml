@@ -26,12 +26,9 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Vaata</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nSaadetud Androidi seadmelt K-9 meiliga. Vabanda, et nii lühdalt.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Konto \"<xliff:g id="account">%s</xliff:g>\" eemaldatakse K-9 Mailist.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Autorid</string>
-    <string name="about_title">Programmist K-9 Mail</string>
     <string name="accounts_title">Kontod</string>
     <string name="compose_title_compose">Koosta</string>
     <string name="compose_title_reply">Vasta</string>
@@ -847,7 +844,6 @@
     <string name="general_settings_title">Üldised sätted</string>
     <string name="dialog_openkeychain_info_title">OpenPGP rakendus paigaldamata</string>
     <string name="dialog_openkeychain_info_install">Paigalda</string>
-    <string name="dialog_openkeychain_info_text">K-9 Mail eeldab läbiva krüptimise puhul OpenKeychain\'i kasutamist.</string>
     <string name="encrypted_subject">Krüptitud kiri</string>
     <string name="account_settings_crypto_encrypt_subject">Krüpti ka kirja pealkiri</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Selline funktsionaalsus ei pruugi kõikide kirjasaajate puhul olla toetatud</string>
@@ -880,7 +876,6 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="push_notification_state_wait_network">Ootan taustal kuni võrguühendus taastub</string>
     <string name="push_notification_info">Lisateabe saamiseks klõpsi.</string>
     <string name="push_info_title">Tõuketeenuste teave</string>
-    <string name="push_info_notification_explanation_text">Tõuketeenuste kasutamiseks vajab K-9 Mail pidevat ühendust e-posti serveriga. Selleks eeldab Android K-9 Mail\'i taustatl töötamise ajal püsiteavituse kasutamist. %s</string>
     <string name="push_info_configure_notification_text">Siiski, Androidis saad sa ka teavituse peita.</string>
     <string name="push_info_learn_more_text">Lisateave</string>
     <string name="push_info_configure_notification_action">Seadista teavitusi</string>

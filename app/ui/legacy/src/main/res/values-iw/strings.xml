@@ -19,12 +19,8 @@
     <string name="changelog_snackbar_text">גלה מה חדש בגירסה זו</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">--
-\nנשלח ממכשיר האנדרואיד שלי בעזרת אפליקציית הדוא\"ל K-9. סלח לי על הקצרנות.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">החשבון \"<xliff:g id="account">%s</xliff:g>\" יימחק מדוא\"ל K-9.</string>
     <!--=== General strings ==================================================================-->
-    <string name="about_title">אודות דוא\"ל K-9</string>
     <string name="accounts_title">חשבונות</string>
     <string name="compose_title_compose">חבר</string>
     <string name="compose_title_reply">השב</string>
@@ -874,7 +870,6 @@
     <string name="message_list_widget_list_item_loading">טוען…</string>
     <string name="openpgp_enabled_error_back">אחורה</string>
     <string name="openpgp_enabled_error_disable">בטל הצפנה</string>
-    <string name="dialog_openkeychain_info_text">דוא\"ל K-9 דורש OpenKeychain עבור הצפנה מקצה לקצה.</string>
     <string name="account_settings_upload_sent_messages_summary">לאחר השליחה העלה הודעות לתיקיית פריטים שנשלחו</string>
     <string name="account_settings_notification_light_cyan">ציאן</string>
     <string name="openpgp_description_text2">להפעיל או לכבות הצפנה בלחיצה על האיקון הזה.</string>
@@ -947,7 +942,6 @@
     <string name="push_info_configure_notification_action">הגדר תצורת התראה</string>
     <string name="push_notification_state_listening">ממתין לדוא\"ל חדש</string>
     <string name="ac_transfer_msg_body">הודעה זאת מכילה את כל המידע שדרוש כדי להעביר את הגדרות Autocrypt שלך יחד עם המפתח הסודי שלך באופן מאובטח מהמכשיר המקורי שלך. אנא עקוב אחר ההוראות שאמורות להיות מוצגות במכשיר החדש כדי להגדירו עבור Autocrypt. אתה יכול לשמור את ההודעה הזאת ולהשתמש בה כגיבוי למפתח הסודי שלך. אם תרצה לעשות זאת, כדאי לך לכתוב את הסיסמה ולאחסן אותה במקום בטוח.</string>
-    <string name="push_info_notification_explanation_text">כאשר משתמשים בדחיפה (Push), K-9 שומר על חיבור לשרת הדואר. אנדרואיד דורש להציג התראה מתמשכת בזמן שהיישומון פעיל ברקע. %s</string>
     <string name="push_info_disable_push_action">כבה דחיפה (Push)</string>
     <string name="swipe_action_mark_as_read">סמן כנקראה</string>
     <string name="swipe_action_move">העבר…</string>

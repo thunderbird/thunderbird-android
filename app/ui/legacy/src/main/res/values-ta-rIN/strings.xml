@@ -10,7 +10,6 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">K-9 அஞ்சலிருந்து \"<xliff:g id="account">%s</xliff:g>\" கணக்கு அழிக்கப்படும்.</string>
     <!--=== General strings ==================================================================-->
     <string name="accounts_title">கணக்குகள்</string>
     <string name="compose_title_compose">எழுது</string>

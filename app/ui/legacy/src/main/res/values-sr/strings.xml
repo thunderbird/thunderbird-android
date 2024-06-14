@@ -20,12 +20,9 @@
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">-- \nПослато К-9 Поштом са мог Андроид уређаја. Извините због сажетости.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Налог „<xliff:g id="account">%s</xliff:g>“ ће бити уклоњен из К-9 Поште.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Аутори</string>
-    <string name="about_title">О К-9 пошти</string>
     <string name="accounts_title">Налози</string>
     <string name="compose_title_compose">Састави</string>
     <string name="compose_title_reply">Одговори</string>
@@ -789,7 +786,6 @@
     <string name="general_settings_title">Опште поставке</string>
     <string name="dialog_openkeychain_info_title">ОпенПГП није инсталиран</string>
     <string name="dialog_openkeychain_info_install">Инсталирај</string>
-    <string name="dialog_openkeychain_info_text">К-9 Пошта захтева „OpenKeychain“ за шифровање с краја-на-крај.</string>
     <string name="encrypted_subject">Шифрована порука</string>
     <string name="account_settings_crypto_encrypt_subject">Шифруј тему поруке</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Неки примаоци можда не подржавају</string>

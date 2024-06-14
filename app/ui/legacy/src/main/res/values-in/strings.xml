@@ -23,13 +23,9 @@
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">--
-\nDikirim dari perangkat Android saya dengan K-9 Mail. Mohon maaf atas singkatnya penjelasan saya.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Akun \"<xliff:g id="account">%s</xliff:g>\" akan dihapus dari K-9 Mail.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Penulis</string>
-    <string name="about_title">Tentang K-9 Mail</string>
     <string name="accounts_title">Akun</string>
     <string name="compose_title_compose">Menyusun</string>
     <string name="compose_title_reply">Balas</string>
@@ -783,7 +779,6 @@
     <string name="general_settings_title">Pengaturan umum</string>
     <string name="dialog_openkeychain_info_title">Tidak ada aplikasi OpenPGP yang terpasang</string>
     <string name="dialog_openkeychain_info_install">Memasang</string>
-    <string name="dialog_openkeychain_info_text">K-9 Mail membutuhkan OpenKeychain untuk enkripsi menyeluruh.</string>
     <string name="encrypted_subject">Pesan terenkripsi</string>
     <string name="account_settings_crypto_encrypt_subject">Enkripsikan subjek pesan</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Mungkin tidak didukung oleh beberapa penerima</string>
@@ -928,7 +923,6 @@
     <string name="push_notification_grant_alarm_permission">Ketuk untuk memberikan izin.</string>
     <string name="push_info_title">Info Dorongan</string>
     <string name="push_info_disable_push_action">Nonaktifkan Dorongan</string>
-    <string name="push_info_notification_explanation_text">Saat menggunakan Dorongan, K-9 Mail menjaga koneksi ke server surat. Android memerlukan tampilan notifikasi yang sedang berlangsung ketika aplikasi sedang aktif di latar belakang. %s</string>
     <string name="push_info_configure_notification_text">Namun, Android juga mengizinkan Anda untuk menyembunyikan notifikasi tersebut.</string>
     <string name="push_info_learn_more_text">Pelajari lebih lanjut</string>
     <string name="swipe_action_mark_as_read">Tandai sebagai dibaca</string>

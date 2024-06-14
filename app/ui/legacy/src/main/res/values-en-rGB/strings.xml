@@ -111,8 +111,6 @@
     <string name="account_settings_notification_light_default_color">System default colour</string>
     <string name="save_draft_action">Save as draft</string>
     <string name="user_manual_title">User manual</string>
-    <string name="default_signature">--
-\nSent from my Android device with K-9 Mail. Please excuse my brevity.</string>
     <string name="folders_action">Manage folders</string>
     <string name="mark_as_unread_action">Mark unread</string>
     <string name="choose_folder_title">Choose Folder</string>
@@ -148,7 +146,6 @@
     <string name="remove_account_action">Remove account</string>
     <string name="app_authors">The K-9 Dog Walkers</string>
     <string name="reply_action">Reply</string>
-    <string name="account_delete_dlg_instructions_fmt">The account \"<xliff:g id="account">%s</xliff:g>\" will be removed from K-9 Mail.</string>
     <string name="show_headers_action">Show headers</string>
     <string name="user_forum_title">User forum</string>
     <string name="app_license">Apache License, Version 2.0</string>
@@ -164,7 +161,6 @@
     <string name="accounts_title">Accounts</string>
     <string name="new_messages_title">New messages</string>
     <string name="changelog_version_title">Version %s</string>
-    <string name="about_title">About K-9 Mail</string>
     <string name="delete_action">Delete</string>
     <string name="account_settings_mail_display_count_label">Local folder size</string>
     <string name="notification_certificate_error_public">Certificate error</string>
@@ -813,7 +809,6 @@
     <string name="address_type_other">Other</string>
     <string name="webview_contextmenu_image_title">Image</string>
     <string name="crypto_msg_encrypted_sign_revoked">but end-to-end key is revoked</string>
-    <string name="dialog_openkeychain_info_text">K-9 Mail requires OpenKeychain for end-to-end encryption.</string>
     <string name="crypto_msg_encrypted_sign_expired">but end-to-end key is expired</string>
     <string name="account_settings_crypto_hide_sign_only">Hide unencrypted signatures</string>
     <string name="webview_contextmenu_phone_copy_action">Copy number to clipboard</string>
@@ -936,7 +931,6 @@
     <string name="openpgp_enabled_error_disable">Disable Encryption</string>
     <string name="remote_search_error">Remote search failed</string>
     <string name="push_info_disable_push_action">Disable Push</string>
-    <string name="push_info_notification_explanation_text">When using Push, K-9 Mail maintains a connection to the mail server. Android requires displaying an ongoing notification while the app is active in the background. %s</string>
     <string name="recipient_from">From</string>
     <string name="fetching_attachment_dialog_message">Fetching attachment…</string>
     <string name="dialog_autocrypt_mutual_description_1">Messages will normally be encrypted by choice, or when replying to an encrypted message.</string>

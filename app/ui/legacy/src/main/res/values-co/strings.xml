@@ -11,9 +11,6 @@
     <string name="changelog_recent_changes_title">Ciò chì hè novu</string>
     <string name="changelog_show_recent_changes">Affissà i cambiamenti recente quandu l’appiecazione hè stata messa à livellu</string>
     <string name="changelog_snackbar_button_text">Affissà</string>
-    <string name="default_signature">--
-\nMandatu da u mo apparechju Android cù K-9 Mail.Scusate a mo curtezza.</string>
-    <string name="account_delete_dlg_instructions_fmt">U contu \"<xliff:g id="account">%s</xliff:g>\" serà cacciatu da K-9 Mail.</string>
     <string name="authors">Autori</string>
     <string name="compose_title_compose">Cumpone</string>
     <string name="compose_title_reply_all">Risponde à tutti</string>
@@ -54,7 +51,6 @@
     <string name="source_code">Codice di fonte</string>
     <string name="changelog_version_title">Versione %s</string>
     <string name="changelog_snackbar_text">Scuprite ciò chì hè novu in sta versione</string>
-    <string name="about_title">Apprupositu di K-9 Mail</string>
     <string name="accounts_title">Conti</string>
     <string name="compose_title_reply">Risponde</string>
     <string name="compose_title_forward_as_attachment">Trasferisce cum’è pezza aghjunta</string>
@@ -819,7 +815,6 @@
     <string name="ac_transfer_will_be_sent">U messaghju serà mandatu à u vostru indirizzu :</string>
     <string name="ac_transfer_msg_body">Stu messaghju cuntene tutte l’infurmazioni per trasferisce in modu sicuru i vostri parametri Autocrypt è a vostra chjave sicreta da u vostru apparechju d’origine. Per cunfigurà u vostru apparechju novu per Autocrypt, ci vole à seguità l’istruzzioni chì duverianu esse prisentate da u vostru apparechju novu. Pudete cunservà stu messaghju è impiegallu tale una salvaguardia di a vostra chjave sicreta. S’è vo vulete fà cusì, duveriate piglià nota di a parolla d’intesa è piazzalla in un locu sicuru.</string>
     <string name="push_info_title">Infurmazioni di a catapughjata</string>
-    <string name="push_info_notification_explanation_text">Quandu s’impiegheghja a catapughjata, K-9 Mail mantene a cunnessione à u servitore di messaghjeria. Android richiede l’affissera d’una nutificazione quandu l’appiecazione hè attiva in tacca di sfondulu. %s</string>
     <string name="push_notification_state_alarm_permission_missing">Un permessu hè assente per pianificà l’alarme</string>
     <string name="swipe_action_add_star">Aghjunghje una stella</string>
     <string name="push_info_disable_push_text">S’è vo ùn avete micca bisognu di nutificazione istantanea per i messaghji novi, duveriate disattivà a catapughjata è impiegà a sullicitazione. A sullicitazione cuntrolleghja l’arrivu di i messaghji novi à un intervallu regulare è ùn hà micca bisognu di nutificazione.</string>
@@ -858,7 +853,6 @@
     <string name="openpgp_description_text3">A cifratura ùn serà pruposta chì solu s’ella hè accettata da tutti i destinatarii, è ch’elli vi anu dighjà mandatu un messaghju prima.</string>
     <string name="openpgp_enabled_error_gotit">Aghju capitu</string>
     <string name="openpgp_enabled_error_back">Ritornu</string>
-    <string name="dialog_openkeychain_info_text">K-9 Mail richiede OpenKeychain per a cifratura da un capu à l\'altru.</string>
     <string name="encrypted_subject">Messaghju cifratu</string>
     <string name="toast_account_not_found">Sbagliu internu : u contu hè inaccettevule !</string>
     <string name="ac_transfer_setting_summary">Sparte in modu sicuru a cunfigurazione da un capu à l\'altru cù d’altri apparechji</string>

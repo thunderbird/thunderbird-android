@@ -26,12 +26,9 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Показати</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nВідправлено з мого Android-пристрою за допомогою додатка K-9 Mail. Вибачте за стислість.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Обліковий запис \"<xliff:g id="account">%s</xliff:g>\" буде вилучено з K-9 Mail.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Розробники</string>
-    <string name="about_title">Про K-9 Mail</string>
     <string name="accounts_title">Облікові записи</string>
     <string name="compose_title_compose">Написати новий лист</string>
     <string name="compose_title_reply">Відповісти</string>
@@ -859,7 +856,6 @@
     <string name="general_settings_title">Загальні налаштування</string>
     <string name="dialog_openkeychain_info_title">Не встановлено додатка OpenPGP</string>
     <string name="dialog_openkeychain_info_install">Встановити</string>
-    <string name="dialog_openkeychain_info_text">K-9 Mail потребує OpenKeychain для наскрізного шифрування.</string>
     <string name="encrypted_subject">Зашифроване повідомлення</string>
     <string name="account_settings_crypto_encrypt_subject">Шифрувати теми повідомлень</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Може не підтримуватися деякими адресатами</string>
@@ -892,7 +888,6 @@
     <string name="push_notification_state_wait_network">Очікування наявності мережі</string>
     <string name="push_notification_info">Натисніть, щоб дізнатися більше.</string>
     <string name="push_info_title">Інформація про сповіщення</string>
-    <string name="push_info_notification_explanation_text">Під час використання пуш-сповіщень, K-9 Mail використовує з\'єднання з поштовим сервером. Android\'у необхідно відображати сповіщення безперервно доки програма працює на фоні. %s</string>
     <string name="push_info_configure_notification_text">Тим не менш, Android також дозволяє приховати сповіщення.</string>
     <string name="push_info_learn_more_text">Дізнатися більше</string>
     <string name="push_info_configure_notification_action">Налаштувати сповіщення</string>

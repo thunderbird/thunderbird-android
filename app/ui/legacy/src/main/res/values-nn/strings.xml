@@ -10,9 +10,7 @@
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">-- \nSendt frå Android-dingsen min med K-9 E-post. Orsak stuttleiken.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Kontoen \"<xliff:g id="account">%s</xliff:g>\" vil verta fjerna frå K-9 Mail.</string>
     <!--=== General strings ==================================================================-->
     <string name="accounts_title">Kontoar</string>
     <string name="compose_title_compose">Skriv</string>

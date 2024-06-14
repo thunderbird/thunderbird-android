@@ -13,12 +13,9 @@
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">-- \nPoslano sa mog Android uređaja sa K-9 Mail. Molim vas oprostite na mojoj sažetosti.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Račun \"<xliff:g id="account">%s</xliff:g>\" će biti maknut iz K-9 Maila.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Autori</string>
-    <string name="about_title">O K-9 Mail</string>
     <string name="accounts_title">Računi</string>
     <string name="compose_title_compose">Sastavi</string>
     <string name="compose_title_reply">Odgovori</string>
@@ -761,7 +758,6 @@
     <string name="general_settings_title">Opća podešavanja</string>
     <string name="dialog_openkeychain_info_title">Nema intalirane OpenPGP aplikacije</string>
     <string name="dialog_openkeychain_info_install">Instaliraj</string>
-    <string name="dialog_openkeychain_info_text">K-9 Mail zahtjeva OpenKeychain za šifriranje s kraja na kraj.</string>
     <string name="encrypted_subject">Šifrirana poruka</string>
     <string name="account_settings_crypto_encrypt_subject">Šifriraj subjekte poruke</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Možda nije podržano od strane nekih primaoca</string>

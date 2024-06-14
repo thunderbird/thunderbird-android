@@ -25,12 +25,9 @@
     <string name="changelog_snackbar_text">Sužinokite, kas naujo šioje versijoje</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">- \nIšsiųsta iš mano Android įrenginio naudojant K-9 Mail. Atleiskite už trumpumą.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Paskyra \"<xliff:g id="account">%s</xliff:g>\" bus pašalinta iš „K-9 Mail“.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Autoriai</string>
-    <string name="about_title">Apie K-9 Mail</string>
     <string name="accounts_title">Paskyros</string>
     <string name="compose_title_compose">Sukurti</string>
     <string name="compose_title_reply">Atsakyti</string>
@@ -849,7 +846,6 @@
     <string name="general_settings_title">Bendri nustatymai</string>
     <string name="dialog_openkeychain_info_title">Neįdiegta OpenPGP programa</string>
     <string name="dialog_openkeychain_info_install">Įdiegti</string>
-    <string name="dialog_openkeychain_info_text">K-9 Mail reikia OpenKeychain, visapusiškam šifravimui.</string>
     <string name="encrypted_subject">Šifruotas laiškas</string>
     <string name="account_settings_crypto_encrypt_subject">Užšifruoti laiškų temas</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Gali būti nepalaikoma kai kurių gavėjų</string>
@@ -882,7 +878,6 @@ Norėdami nustatyti automatinį šifravimą naujajame prietaise, vadovaukitės i
     <string name="push_notification_state_wait_network">Miegama, kol bus prieinamas tinklas</string>
     <string name="push_notification_info">Bakstelėkite, jei norite sužinoti daugiau.</string>
     <string name="push_info_title">Push Info</string>
-    <string name="push_info_notification_explanation_text">Naudojant Push, K-9 Mail palaiko ryšį su pašto serveriu. Android reikalauja rodyti nuolatinį pranešimą, kol programa veikia fone. %s</string>
     <string name="push_info_configure_notification_text">Tačiau Android taip pat leidžia paslėpti pranešimą.</string>
     <string name="push_info_learn_more_text">Sužinoti daugiau</string>
     <string name="push_info_configure_notification_action">Konfiguruoti pranešimą</string>

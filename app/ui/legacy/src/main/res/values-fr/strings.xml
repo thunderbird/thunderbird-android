@@ -26,12 +26,9 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Afficher</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nEnvoyé de mon appareil Android avec Courriel K-9 Mail. Veuillez excuser ma brièveté.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Le compte « <xliff:g id="account">%s</xliff:g> » sera supprimé de Courriel K-9 Mail.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Auteurs</string>
-    <string name="about_title">À propos de Courriel K-9 Mail</string>
     <string name="accounts_title">Comptes</string>
     <string name="compose_title_compose">Rédiger</string>
     <string name="compose_title_reply">Répondre</string>
@@ -853,7 +850,6 @@
     <string name="general_settings_title">Paramètres généraux</string>
     <string name="dialog_openkeychain_info_title">Aucune appli OpenPGP n’est installée</string>
     <string name="dialog_openkeychain_info_install">Installer</string>
-    <string name="dialog_openkeychain_info_text">Courriel K-9 Mail a besoin d’OpenKeychain pour le chiffrement de bout en bout.</string>
     <string name="encrypted_subject">Courriel chiffré</string>
     <string name="account_settings_crypto_encrypt_subject">Chiffrer l’objet des courriels</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Pourrait ne pas être pris en charge par certains destinataires</string>
@@ -881,7 +877,6 @@
     <string name="push_notification_state_wait_network">Inactif tant que le réseau n’est pas disponible</string>
     <string name="push_notification_info">Touchez pour en apprendre davantage.</string>
     <string name="push_info_title">Renseignements du pousser</string>
-    <string name="push_info_notification_explanation_text">En utilisant le pousser, Courriel K-9 Mail maintient une connexion vers le serveur de courriel. Android exige l’affichage d’une notification continue quand l’appli est active en arrière-plan. %s</string>
     <string name="push_info_configure_notification_text">Cependant, Android vous permet aussi de cacher la notification.</string>
     <string name="push_info_learn_more_text">En apprendre davantage</string>
     <string name="push_info_configure_notification_action">Configurer la notification</string>

@@ -20,12 +20,9 @@
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">-- \nOdoslané z môjho Android zariadenia prostredníctvom K-9 Mail. Prosím, ospravedlňte moju stručnosť.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Účet \"<xliff:g id="account">%s</xliff:g>\" bude odstránený z K-9 Mail.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Autori</string>
-    <string name="about_title">O aplikácii K-9 mail </string>
     <string name="accounts_title">Účty</string>
     <string name="compose_title_compose">Napísať</string>
     <string name="compose_title_reply">Odpovedať</string>

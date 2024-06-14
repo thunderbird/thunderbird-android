@@ -23,12 +23,9 @@
     <string name="changelog_snackbar_text">ഈ റിലീസിൽ പുതിയത് എന്താണെന്ന് കണ്ടെത്തുക</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">-- \nകെ-9 മെയിൽ ഉപയോഗിച്ച് എന്റെ ആൻഡ്രോയിഡിൽ നിന്നും അയച്ചത്. ദയവായി എന്റെ പദപ്രയോഗമിതത്വം ക്ഷമിക്കുക.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">കെ-9 മെയിലിൽ നിന്ന്  \"<xliff:g id="account">%s</xliff:g>\" അക്കൗണ്ട് നീക്കംചെയ്യും. </string>
     <!--=== General strings ==================================================================-->
     <string name="authors">രചയിതാക്കൾ</string>
-    <string name="about_title">കെ-9 മെയിലിനെക്കുറിച്ച്</string>
     <string name="accounts_title">അക്കൗണ്ടുകൾ</string>
     <string name="compose_title_compose">രചിക്കുക</string>
     <string name="compose_title_reply">മറുപടി പറയുക</string>
@@ -806,7 +803,6 @@
     <string name="general_settings_title">പൊതുവായ ക്രമീകരണങ്ങൾ</string>
     <string name="dialog_openkeychain_info_title">OpenPGP അപ്ലിക്കേഷനുകളൊന്നും ഇൻസ്റ്റാളുചെയ്‌തിട്ടില്ല</string>
     <string name="dialog_openkeychain_info_install">ഇൻസ്റ്റാൾ ചെയ്യുക</string>
-    <string name="dialog_openkeychain_info_text">കെ-9 മെയിലിന് എൻഡ്-ടു-എൻഡ് എൻ‌ക്രിപ്ഷനായി ഓപ്പൺ‌കീചെയിൻ ആവശ്യമാണ്.</string>
     <string name="encrypted_subject">എൻക്രിപ്റ്റുചെയ്‌ത സന്ദേശം</string>
     <string name="account_settings_crypto_encrypt_subject">സന്ദേശ വിഷയങ്ങൾ എൻ‌ക്രിപ്റ്റ് ചെയ്യുക</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">ചില സ്വീകർത്താക്കൾ പിന്തുണച്ചേക്കില്ല</string>
