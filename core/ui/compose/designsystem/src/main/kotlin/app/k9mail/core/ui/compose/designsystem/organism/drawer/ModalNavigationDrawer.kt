@@ -19,8 +19,8 @@ fun ModalNavigationDrawer(
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
-    val openDrawer = { scope.launch { drawerState.open() } }
-    val closeDrawer = {
+    val openDrawer: () -> Unit = { scope.launch { drawerState.open() } }
+    val closeDrawer: () -> Unit = {
         scope.launch {
             delay(DRAWER_CLOSE_DELAY)
             drawerState.close()

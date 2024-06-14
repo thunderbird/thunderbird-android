@@ -21,8 +21,7 @@ androidxAnnotation = "1.8.0"
 androidxAppCompat = "1.6.1"
 androidxBiometric = "1.1.0"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
-androidxComposeBom = "2024.05.00"
-androidxComposeCompiler = "1.5.14"
+androidxComposeBom = "2024.06.00"
 androidxConstraintLayout = "2.1.4"
 androidxCoordinatorLayout = "1.2.0"
 androidxCore = "1.13.1"
@@ -55,7 +54,7 @@ detektPluginCompose = "0.3.21"
 fastAdapter = "5.7.0"
 forkhandlesBom = "2.18.0.1"
 glide = "4.16.0"
-gradle = "8.7"
+gradle = "8.8"
 http4kBom = "5.20.0.0"
 icu4j = "72.1"
 javaDiffUtils = "4.12"
@@ -68,11 +67,11 @@ junit = "4.13.2"
 jutf7 = "1.0.0"
 jzlib = "1.0.7"
 koinBom = "3.5.6"
-kotlinBom = "1.9.24"
+kotlinBom = "2.0.0"
 # Needs to match the version used by Gradle, just check with `./gradlew --version`
 kotlinGradleBom = "1.9.22"
 kotlinxCoroutines = "1.8.1"
-kotlinKsp = "1.9.24-1.0.20"
+kotlinKsp = "2.0.0-1.0.22"
 kotlinxDateTime = "0.6.0"
 ktlint = "1.1.1"
 kxml2 = "1.0"
@@ -100,6 +99,7 @@ android-application = { id = "com.android.application", version.ref = "androidGr
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 android-lint = { id = "com.android.lint", version.ref = "androidGradlePlugin" }
 android-test = { id = "com.android.test", version.ref = "androidGradlePlugin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinBom" }
 dependency-check = { id = "com.github.ben-manes.versions", version.ref = "dependencyCheckPlugin" }
 dependency-guard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuardPlugin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detektPlugin" }

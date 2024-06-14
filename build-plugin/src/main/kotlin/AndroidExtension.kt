@@ -51,10 +51,6 @@ internal fun CommonExtension<*, *, *, *, *>.configureSharedComposeConfig(libs: L
         compose = true
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
-    }
-
     lint {
         warningsAsErrors = false
         abortOnError = true
