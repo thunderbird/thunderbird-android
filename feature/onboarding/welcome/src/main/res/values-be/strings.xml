@@ -2,5 +2,4 @@
 <resources>
     <string name="onboarding_welcome_start_button">Comenzar</string>
     <string name="onboarding_welcome_import_button">Importar ajustes</string>
-    <string name="onboarding_welcome_message">Te damos la bienvenida a K-9 Mail, el cliente de correo electrónico para Android que proporciona una seguridad avanzada, una personalización accesible y el poder aglutinar todas tus cuentas en una única línea temporal.</string>
 </resources>

@@ -2,5 +2,4 @@
 <resources>
     <string name="onboarding_welcome_start_button">Indulás</string>
     <string name="onboarding_welcome_import_button">Beállítások importálása</string>
-    <string name="onboarding_welcome_message">Üdvözlet a K-9 Mail alkalmazásban, az Android e-mail klienst a megerősített biztonság, a könnyű testreszabás és az összes e-mail fiók zökkenőmentes kezelése érdekében tervezték.</string>
 </resources>

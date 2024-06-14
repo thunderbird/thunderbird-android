@@ -2,5 +2,4 @@
 <resources>
     <string name="onboarding_welcome_start_button">Start</string>
     <string name="onboarding_welcome_import_button">Instellingen importeren</string>
-    <string name="onboarding_welcome_message">Welkom bij K-9 Mail, de Android e-mailclient ontworpen voor verbeterde beveiliging, eenvoudige aanpasmogelijkheden en naadloos beheer van al uw e-mailaccounts.</string>
 </resources>

@@ -2,5 +2,4 @@
 <resources>
     <string name="onboarding_welcome_start_button">शुरू करें</string>
     <string name="onboarding_welcome_import_button">सेटिंग इंपोर्ट करें</string>
-    <string name="onboarding_welcome_message">ज़्यादा सेफ्टी, सीधे-साधे सेटिंग, और आपके सारे ईमेल अकाउंट के आसान मैनेजमेंट के लिए डिज़ाइन किया गया एक एंड्रॉइड ईमेल क्लाइंट। के-9 मेल में स्वागत है।</string>
 </resources>

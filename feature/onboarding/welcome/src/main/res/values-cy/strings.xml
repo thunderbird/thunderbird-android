@@ -2,5 +2,4 @@
 <resources>
     <string name="onboarding_welcome_start_button">Démarrer</string>
     <string name="onboarding_welcome_import_button">Importer les paramètres</string>
-    <string name="onboarding_welcome_message">Bienvenue sur Courriel K-9 Mail, le client de courriel pour Android conçu pour une sécurité accrue, une personnalisation facilitée et une gestion optimisée de tous vos comptes de courriel.</string>
 </resources>

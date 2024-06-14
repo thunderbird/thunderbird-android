@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">Starte</string>
     <string name="onboarding_welcome_import_button">Ynstellingen ymportearje</string>
-    <string name="onboarding_welcome_message">Wolkom by &lt;xliff:g id=\"app_name\"&gt;%s&lt;/xliff:g&gt;, de Android e-mailclient ûntwurpen foar ferbettere befeiliging, maklike oanpassingen en noflik behear fan al jo e-mailaccounts.</string>
+    <string name="onboarding_welcome_message">Wolkom by <xliff:g id="app_name">%s</xliff:g>, de Android e-mailclient ûntwurpen foar ferbettere befeiliging, maklike oanpassingen en noflik behear fan al jo e-mailaccounts.</string>
 </resources>

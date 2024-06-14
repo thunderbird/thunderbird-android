@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">开始</string>
     <string name="onboarding_welcome_import_button">导入设置</string>
-    <string name="onboarding_welcome_message">欢迎使用 &lt;xliff:g id=\"app_name\"&gt;%s&lt;/xliff:g&gt;，这是一款 Android 电子邮件客户端，旨在增强安全性、轻松定制和无缝管理您的所有电子邮件账号。</string>
+    <string name="onboarding_welcome_message">欢迎使用 <xliff:g id="app_name">%s</xliff:g>，这是一款 Android 电子邮件客户端，旨在增强安全性、轻松定制和无缝管理您的所有电子邮件账号。</string>
 </resources>
