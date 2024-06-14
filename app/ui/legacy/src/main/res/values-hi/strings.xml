@@ -34,8 +34,6 @@
     <string name="send_messages_action">मैसेज भेजें</string>
     <string name="save_draft_action">ड्राफ्ट के तरह सेव करें</string>
     <string name="user_manual_title">यूज़र मैनुअल</string>
-    <string name="default_signature">--
-\nअपने एंड्रॉइड डिवाइस से के-9 मेल से भेजा। मेरे छोटे शब्दों में लिखने पे ध्यान ना दें।</string>
     <string name="folders_action">फोल्डर मैनेज करें</string>
     <string name="mark_as_unread_action">नहीं पढ़ा मार्क करें</string>
     <string name="add_attachment_action">अटैचमेंट लगाएं</string>
@@ -76,7 +74,6 @@
     <string name="remove_account_action">अकाउंट हटाएं</string>
     <string name="app_authors">के-9 डॉग वॉकर</string>
     <string name="reply_action">जवाब दें</string>
-    <string name="account_delete_dlg_instructions_fmt">अकाउंट \"<xliff:g id="account">%s</xliff:g>\" के-9 मेल से हटा दिया जाएगा।</string>
     <string name="show_headers_action">हैडर दिखाएं</string>
     <string name="user_forum_title">यूज़र फॉरम</string>
     <string name="app_license">अपाचे लाइसेंस 2.0</string>
@@ -94,7 +91,6 @@
     <string name="changelog_version_title">वर्ज़न %s</string>
     <string name="status_network_error">कनेक्शन गड़बड़</string>
     <string name="about_action">बारे में</string>
-    <string name="about_title">के-9 मेल के बारे में</string>
     <string name="delete_action">हटाएं</string>
     <string name="notification_certificate_error_public">सर्टिफिकेट गड़बड़</string>
     <string name="message_compose_error_no_recipients">आपको कमसेकम एक लेनेवाला पता डालना होगा।</string>

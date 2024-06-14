@@ -26,12 +26,9 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Ikusi</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nAndroid gailutik bidalia K-9 Mail erabiliz. Barka laburtasuna.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" kontua K-9 Mail-etik kenduko da.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Egileak</string>
-    <string name="about_title">K-9 Mail-i buruz</string>
     <string name="accounts_title">Kontuak</string>
     <string name="compose_title_compose">Idatzi</string>
     <string name="compose_title_reply">Erantzun</string>
@@ -846,7 +843,6 @@
     <string name="general_settings_title">Ezarpen orokorrak</string>
     <string name="dialog_openkeychain_info_title">Ez dago OpenPGP aplikaziorik instalatuta</string>
     <string name="dialog_openkeychain_info_install">Instalatu</string>
-    <string name="dialog_openkeychain_info_text">K-9 Mail aplikazioak OpenKeychain behar du muturretik muturrerako zifratzerako.</string>
     <string name="encrypted_subject">Zifratu mezua</string>
     <string name="account_settings_crypto_encrypt_subject">Zifratu mezuen gaiak</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Hartzaile batzuk agian ez dute onartuko</string>
@@ -878,7 +874,6 @@ Mezu hau gorde dezakezu eta zure gako sekretuaren babes-kopia gisa erabili. Hau 
     <string name="push_notification_state_wait_network">Lo, sarea eskuragarri izan arte</string>
     <string name="push_notification_info">Sakatu informazio gehiago lortzeko.</string>
     <string name="push_info_title">Push Informazioa</string>
-    <string name="push_info_notification_explanation_text">Push erabiltzean, K-9 Mailek posta zerbitzariarekiko konexioa mantentzen du. Androidek jakinarazpen bat erakutsi behar du, aplikazioa atzeko planoan martxan dagoen bitartean. %s</string>
     <string name="push_info_configure_notification_text">Androidek ere jakinarazpena ezkutatzen uzten dizu.</string>
     <string name="push_info_learn_more_text">Informazio gehiago</string>
     <string name="push_info_configure_notification_action">Konfiguratu jakinarazpena</string>

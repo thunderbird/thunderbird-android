@@ -26,12 +26,9 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Vizualizare</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nTrimis de pe dispozitivul meu Android cu K-9 Mail. Rog scuzați concizia mea.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Contul \"<xliff:g id="account">%s</xliff:g>\" va fi șters din K-9 Mail.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Autori</string>
-    <string name="about_title">Despre K-9 Mail</string>
     <string name="accounts_title">Conturi</string>
     <string name="compose_title_compose">Scrie</string>
     <string name="compose_title_reply">Răspunde</string>
@@ -853,7 +850,6 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
     <string name="general_settings_title">Preferințe generale</string>
     <string name="dialog_openkeychain_info_title">Nicio aplicație OpenPGP instalată</string>
     <string name="dialog_openkeychain_info_install">Instalare</string>
-    <string name="dialog_openkeychain_info_text">K-9 Mail necesită OpenKeychain pentru criptarea punct-la-punct.</string>
     <string name="encrypted_subject">Mesaj Criptat</string>
     <string name="account_settings_crypto_encrypt_subject">Criptează subiectele mesajelor</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Posibil să nu fie suportat la anumiți destinatari</string>
@@ -886,7 +882,6 @@ Poți păstra acest mesaj și să îl folosești drept copie de siguranță a ch
     <string name="push_notification_state_wait_network">În așteptare până când rețeaua este disponibilă</string>
     <string name="push_notification_info">Apasă pentru a afla mai multe.</string>
     <string name="push_info_title">Informații despre Push </string>
-    <string name="push_info_notification_explanation_text">Atunci când se utilizează Push, K-9 Mail menține o conexiune cu serverul de e-mail. Android necesită afișarea unei notificări în curs de desfășurare în timp ce aplicația este activă în fundal. %s</string>
     <string name="push_info_configure_notification_text">Cu toate acestea, Android permite, de asemenea, ascunderea notificării.</string>
     <string name="push_info_learn_more_text">Află mai multe</string>
     <string name="push_info_configure_notification_action">Configurează notificarea</string>

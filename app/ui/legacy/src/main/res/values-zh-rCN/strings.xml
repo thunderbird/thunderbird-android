@@ -26,13 +26,9 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">查看</string>
     <!--Default signature-->
-    <string name="default_signature">--
-\n通过 K-9 Mail 从我的 Android 设备发送。请原谅我的简洁。</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">将从 K-9 Mail 中移除账号“<xliff:g id="account">%s</xliff:g>”。</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">作者</string>
-    <string name="about_title">关于 K-9 Mail</string>
     <string name="accounts_title">账号</string>
     <string name="compose_title_compose">撰写</string>
     <string name="compose_title_reply">回复</string>
@@ -845,7 +841,6 @@
     <string name="general_settings_title">常规设置</string>
     <string name="dialog_openkeychain_info_title">未安装 OpenPGP 应用</string>
     <string name="dialog_openkeychain_info_install">安装</string>
-    <string name="dialog_openkeychain_info_text">K-9 Mail 需要 OpenKeychain 进行端到端加密。</string>
     <string name="encrypted_subject">加密邮件</string>
     <string name="account_settings_crypto_encrypt_subject">加密邮件主题</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">某些收件人可能不支持</string>
@@ -873,7 +868,6 @@
     <string name="push_notification_state_wait_network">在网络可用之前一直处于睡眠状态</string>
     <string name="push_notification_info">轻击以了解更多信息。</string>
     <string name="push_info_title">推送信息</string>
-    <string name="push_info_notification_explanation_text">使用推送功能时，K-9 Mail 会保持与邮件服务器的连接。Android 要求在应用处于后台活动状态时显示持续通知。%s</string>
     <string name="push_info_configure_notification_text">然而，Android 也允许您隐藏通知。</string>
     <string name="push_info_learn_more_text">了解更多</string>
     <string name="push_info_configure_notification_action">配置通知</string>

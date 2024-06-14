@@ -26,12 +26,9 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">مشاهده</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nاز دستگاه اندرویدی‌ام و به‌وسیلهٔ K-9 Mail ارسال شد.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">حساب «<xliff:g id="account">%s</xliff:g>» از K-9 Mail حذف خواهد شد.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">سازندگان</string>
-    <string name="about_title">دربارهٔ K-9 Mail</string>
     <string name="accounts_title">حساب‌ها</string>
     <string name="compose_title_compose">نوشتن</string>
     <string name="compose_title_reply">پاسخ</string>
@@ -846,7 +843,6 @@
     <string name="general_settings_title">تنظیمات کلی</string>
     <string name="dialog_openkeychain_info_title">برنامه‌ای برای OpenPGP نصب نیست</string>
     <string name="dialog_openkeychain_info_install">نصب</string>
-    <string name="dialog_openkeychain_info_text">‏K-9 Mail برای رمزنگاری سرتاسر به OpenKeychain نیاز دارد.</string>
     <string name="encrypted_subject">پیام رمزنگاری‌شده</string>
     <string name="account_settings_crypto_encrypt_subject">موضوع پیام رمزنگاری شود</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">شاید برخی گیرندگان از آن پشتیبانی نکنند</string>
@@ -879,7 +875,6 @@
     <string name="push_notification_state_wait_network">می‌خوابد تا هنگامی که شبکه در دسترس باشد</string>
     <string name="push_notification_info">لمس کنید تا بیشتر بدانید.</string>
     <string name="push_info_title">اطلاعات پیشرانی</string>
-    <string name="push_info_notification_explanation_text">هنگام استفاده از پیشرانی، K-9 Mail اتصالی به کارساز رایانامه برقرار می‌کند. اندروید نیاز دارد هنگامی که برنامه‌ای در پس‌زمینه فعال است اعلان مداومی را نشان دهد. %s</string>
     <string name="push_info_configure_notification_text">البته اندروید این امکان را به شما می‌دهد که اعلان را پنهان کنید.</string>
     <string name="push_info_learn_more_text">بیشتر بدانید</string>
     <string name="push_info_configure_notification_action">پیکربندی اعلان</string>

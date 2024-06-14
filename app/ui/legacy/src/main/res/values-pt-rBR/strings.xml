@@ -26,13 +26,9 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Ver</string>
     <!--Default signature-->
-    <string name="default_signature">--
-\nEnviado do meu dispositivo Android com o K-9 Mail. Peço desculpa pela brevidade.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\" será removida do K-9 Mail.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Autores</string>
-    <string name="about_title">Sobre o K-9 Mail</string>
     <string name="accounts_title">Contas</string>
     <string name="compose_title_compose">Escrever</string>
     <string name="compose_title_reply">Responder</string>
@@ -855,7 +851,6 @@
     <string name="general_settings_title">Configurações gerais</string>
     <string name="dialog_openkeychain_info_title">Nenhum app OpenPGP instalado</string>
     <string name="dialog_openkeychain_info_install">Instalar</string>
-    <string name="dialog_openkeychain_info_text">O K-9 Mail precisa do OpenKeychain para criptografia de ponta a ponta.</string>
     <string name="encrypted_subject">Mensagem criptografada</string>
     <string name="account_settings_crypto_encrypt_subject">Criptografar os assuntos das mensagens</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Pode não ser suportado por alguns destinatários</string>
@@ -888,7 +883,6 @@ Você pode guardar esta mensagem e usá-la como um backup da sua chave secreta. 
     <string name="push_notification_state_wait_network">Suspenso até que a rede esteja disponível</string>
     <string name="push_notification_info">Toque para aprender mais.</string>
     <string name="push_info_title">Informações de push</string>
-    <string name="push_info_notification_explanation_text">Ao usar Push, o K-9 Mail mantém uma conexão com o servidor de e-mail. O Android demanda que seja exibida uma notificação enquanto o app estiver ativo em segundo plano. %s</string>
     <string name="push_info_configure_notification_text">Entretanto, o Android também permite que você oculte a notificação.</string>
     <string name="push_info_learn_more_text">Saiba mais</string>
     <string name="push_info_configure_notification_action">Configurar a notificação</string>

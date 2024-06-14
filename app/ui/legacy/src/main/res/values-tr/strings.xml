@@ -25,12 +25,9 @@
     <string name="changelog_snackbar_text">Bu sürümdeki yenilikleri öğrenin </string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">-- \nAndroid için K-9 Posta\'dan gönderildi. Lütfen bu kısa notumu mazur görün.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Hesap \"<xliff:g id="account">%s</xliff:g>\" K-9 Mail\'den kaldırılacak.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Yapanlar</string>
-    <string name="about_title">K-9 Posta Hakkında</string>
     <string name="accounts_title">Hesaplar</string>
     <string name="compose_title_compose">Oluştur</string>
     <string name="compose_title_reply">Yanıtla</string>
@@ -833,7 +830,6 @@
     <string name="general_settings_title">Genel Ayarlar</string>
     <string name="dialog_openkeychain_info_title">Kurulu OpenPGP uygulaması yok</string>
     <string name="dialog_openkeychain_info_install">Kur</string>
-    <string name="dialog_openkeychain_info_text">K-9 Posta, uçtan uca şifreleme için OpenKeychain gerektirir.</string>
     <string name="encrypted_subject">Şifreli İleti</string>
     <string name="account_settings_crypto_encrypt_subject">İleti konularını şifrele</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Bazı alıcılar tarafından desteklenmeyebilir</string>
@@ -942,7 +938,6 @@
     <string name="general_settings_post_remove_action_show_next_message">Sonraki iletiyi göster</string>
     <string name="general_settings_post_remove_action_title">Bir iletiyi sildikten veya taşıdıktan sonra</string>
     <string name="push_info_disable_push_action">İttirmeyi Devre Dışı Bırak</string>
-    <string name="push_info_notification_explanation_text">İttirme kullanırken, K-9 Posta e-posta sunucusuyla sürekli bir bağlantı oluşturur. Android, uygulama arka planda etkinken devam eden bir bildirim görüntülenmesini gerektirir. %s</string>
     <string name="background_work_notification_remove_account">Hesap kaldırılıyor…</string>
     <string name="volume_navigation_title">İleti görünümünde ses tuşu ile gezinti</string>
     <string name="push_info_disable_push_text">Yeni iletiler hakkında anlık bildirimlere ihtiyacınız yoksa, ittirmeyi devre dışı bırakmalı ve bilgi çekmeyi kullanmalısınız. Bilgi çekme, düzenli aralıklarla yeni e-posta olup olmadığını denetler ve bildirime ihtiyaç duymaz.</string>

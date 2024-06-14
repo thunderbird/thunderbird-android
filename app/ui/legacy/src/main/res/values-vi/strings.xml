@@ -26,13 +26,9 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Hiển thị</string>
     <!--Default signature-->
-    <string name="default_signature">--
-\nĐược gửi từ thiết bị Android của tôi bằng Thư K-9. Thứ lỗi cho sự không bền bỉ của tôi.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Tài khoản \"<xliff:g id="account">%s</xliff:g>\" sẽ bị xóa khỏi Thư K-9.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Người viết</string>
-    <string name="about_title">Giới thiệu về Thư K-9</string>
     <string name="accounts_title">Tài khoản</string>
     <string name="compose_title_compose">Soạn thư</string>
     <string name="compose_title_reply">Trả lời</string>
@@ -367,7 +363,6 @@
     <string name="account_setup_expunge_policy_manual">Thủ công</string>
     <string name="account_setup_expunge_policy_immediately">Ngay lập tức</string>
     <string name="general_settings_post_remove_action_show_previous_message">Hiển thị tin nhắn trước đó</string>
-    <string name="dialog_openkeychain_info_text">Thư K-9 yêu cầu OpenKeychain để mã hóa đầu cuối.</string>
     <string name="account_setup_options_mail_check_frequency_15min">Mỗi 15 phút</string>
     <string name="spam_folder_label">Thư mục thư rác</string>
     <string name="general_settings_ui_density_relaxed">Thư giãn</string>
@@ -383,7 +378,6 @@
     <string name="trash_folder_label">Thư mục thùng rác</string>
     <string name="general_settings_post_remove_action_show_next_message">Hiển thị tin nhắn tiếp theo</string>
     <string name="general_settings_post_remove_action_title">Sau khi xóa hoặc di chuyển tin nhắn</string>
-    <string name="push_info_notification_explanation_text">Khi sử dụng Đẩy, Thư K-9 duy trì kết nối với máy chủ thư. Android yêu cầu hiển thị thông báo liên tục trong khi ứng dụng đang hoạt động ở chế độ nền. %s</string>
     <string name="account_setup_options_mail_check_frequency_3hour">Mỗi 3 giờ</string>
     <string name="action_copy_email_address">Sao chép địa chỉ email</string>
     <string name="idle_refresh_period_12min">Mỗi 12 phút</string>

@@ -26,12 +26,9 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Leer</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nEnviado desde mi dispositivo Android con K-9 Mail. Por favor, disculpa mi brevedad.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">La cuenta \"<xliff:g id="account">%s</xliff:g>\" será eliminada de K-9 Mail.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Autores</string>
-    <string name="about_title">Acerca de K-9 Mail</string>
     <string name="accounts_title">Cuentas</string>
     <string name="compose_title_compose">Redactar</string>
     <string name="compose_title_reply">Responder</string>
@@ -852,7 +849,6 @@
     <string name="general_settings_title">Ajustes generales</string>
     <string name="dialog_openkeychain_info_title">La aplicación de OpenPGP no está instalada</string>
     <string name="dialog_openkeychain_info_install">Instalar</string>
-    <string name="dialog_openkeychain_info_text">K-9 Mail necesita OpenKeychain para el cifrado de extremo a extremo.</string>
     <string name="encrypted_subject">Mensaje cifrado</string>
     <string name="account_settings_crypto_encrypt_subject">Asunto del mensaje cifrado</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Puede que no esté disponible para algunos destinatarios</string>
@@ -885,7 +881,6 @@ Puedes guardar este mensaje y usarlo como copia de seguridad de tu clave secreta
     <string name="push_notification_state_wait_network">Esperar hasta que la red esté disponible</string>
     <string name="push_notification_info">Toca aquí para leer más sobre el tema.</string>
     <string name="push_info_title">Información sobre comprobaciones rápidas («push»)</string>
-    <string name="push_info_notification_explanation_text">Al utilizar la comprobación rápida de mensajes (conocido como «push», o IDLE) K-9 Mail mantiene una conexión permanente e ininterrumpida con el servidor de correo. Por limitaciones de Android esto requiere mostrar una notificación mientras realiza esta acción en un segundo plano. %s</string>
     <string name="push_info_configure_notification_text">Sin embargo, Android también te permite ocultar la notificación. </string>
     <string name="push_info_learn_more_text">Leer más sobre el tema</string>
     <string name="push_info_configure_notification_action">Configurar la apariencia de la notificación</string>

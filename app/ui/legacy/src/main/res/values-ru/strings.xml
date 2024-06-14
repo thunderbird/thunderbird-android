@@ -26,13 +26,9 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Показать</string>
     <!--Default signature-->
-    <string name="default_signature">--
-\nПростите за краткость, создано в Почте K-9.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Учётная запись \"<xliff:g id="account">%s</xliff:g>\" будет удалена из приложения Почта K-9.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Авторы</string>
-    <string name="about_title">О приложении Почта K-9</string>
     <string name="accounts_title">Учётные записи</string>
     <string name="compose_title_compose">Новое</string>
     <string name="compose_title_reply">Ответ</string>
@@ -861,7 +857,6 @@
     <string name="general_settings_title">Основные</string>
     <string name="dialog_openkeychain_info_title">OpenPGP не установлен</string>
     <string name="dialog_openkeychain_info_install">Установить</string>
-    <string name="dialog_openkeychain_info_text">Для сквозного шифрования в K-9 нужен OpenKeychain.</string>
     <string name="encrypted_subject">Зашифрованное сообщение</string>
     <string name="account_settings_crypto_encrypt_subject">Шифровать темы сообщений</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Может поддерживаться не всеми адресатами</string>
@@ -894,7 +889,6 @@
     <string name="push_notification_state_wait_network">Спящий режим до появления сети</string>
     <string name="push_notification_info">Нажмите, чтобы узнать больше.</string>
     <string name="push_info_title">Всплывающая информация</string>
-    <string name="push_info_notification_explanation_text">При использовании push Почта K-9 поддерживает соединение с почтовым сервером. Android требует отображения постоянного уведомления, пока приложение активно в фоновом режиме. %s</string>
     <string name="push_info_configure_notification_text">Однако Android также позволяет скрыть уведомление.</string>
     <string name="push_info_learn_more_text">Узнать больше</string>
     <string name="push_info_configure_notification_action">Настроить уведомление</string>

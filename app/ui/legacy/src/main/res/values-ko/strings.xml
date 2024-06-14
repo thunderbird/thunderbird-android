@@ -25,12 +25,9 @@
     <string name="changelog_snackbar_text">이 릴리즈의 새로운 기능 알아보기</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">-- \n안드로이드 기기에서 K-9 메일을 사용해 보낸 메일입니다.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" 계정이 K-9에서 삭제됩니다.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">제작자</string>
-    <string name="about_title">K-9 메일에 대하여</string>
     <string name="accounts_title">계정</string>
     <string name="compose_title_compose">작성</string>
     <string name="compose_title_reply">답장</string>
@@ -696,7 +693,6 @@
     <string name="general_settings_title">일반 설정</string>
     <string name="dialog_openkeychain_info_title">OpenPGP 앱이 설치되지 않음</string>
     <string name="dialog_openkeychain_info_install">설치</string>
-    <string name="dialog_openkeychain_info_text">K-9 메일의 종단간 암호화에 OpenKeychain이 필요합니다.</string>
     <string name="encrypted_subject">암호화된 메시지</string>
     <string name="account_settings_crypto_encrypt_subject">메시지 주제를 암호화시키기</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">일부 수령인의 앱이 이것을 지원하지 않을 수 있습니다</string>

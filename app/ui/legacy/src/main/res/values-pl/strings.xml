@@ -26,13 +26,9 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Wyświetl</string>
     <!--Default signature-->
-    <string name="default_signature">--
-\nWysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwięzłość.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Konto \"<xliff:g id="account">%s</xliff:g>\" zostanie usunięte z K-9 Mail.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Autorzy</string>
-    <string name="about_title">O aplikacji K-9 Mail</string>
     <string name="accounts_title">Konta</string>
     <string name="compose_title_compose">Nowa wiadomość</string>
     <string name="compose_title_reply">Odpowiedz</string>
@@ -859,7 +855,6 @@
     <string name="general_settings_title">Ustawienia ogólne</string>
     <string name="dialog_openkeychain_info_title">Brak aplikacji dla OpenPGP</string>
     <string name="dialog_openkeychain_info_install">Instaluj</string>
-    <string name="dialog_openkeychain_info_text">K-9 Mail wymaga OpenKeychain do szyfrowania typu „end-to-end”.</string>
     <string name="encrypted_subject">Zaszyfrowana wiadomość</string>
     <string name="account_settings_crypto_encrypt_subject">Zaszyfruj tematy wiadomości</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Może nie być wspierana przez niektórych odbiorców</string>
@@ -892,7 +887,6 @@ Tą wiadomość można zachować i użyć w formie kopii zapasowej twojego klucz
     <string name="push_notification_state_wait_network">Uśpione, dopóki sieć nie będzie dostępna</string>
     <string name="push_notification_info">Stuknij, aby dowiedzieć się więcej.</string>
     <string name="push_info_title">Informacje push</string>
-    <string name="push_info_notification_explanation_text">Podczas korzystania z funkcji push, K-9 Mail utrzymuje połączenie z serwerem pocztowym. Android wymaga wyświetlania ciągłego, gdy aplikacja jest aktywna w tle. %s</string>
     <string name="push_info_configure_notification_text">Jednak Android pozwala również ukryć powiadomienie.</string>
     <string name="push_info_learn_more_text">Dowiedz się więcej</string>
     <string name="push_info_configure_notification_action">Skonfiguruj powiadomienie</string>

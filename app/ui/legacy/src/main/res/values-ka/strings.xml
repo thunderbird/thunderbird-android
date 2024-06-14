@@ -13,12 +13,9 @@
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">-- \nგამოგზავნილია Android მოწყობილობიდან K-9 Mail-ის გამოყენებით. მაპატიეთ ჩემი სიტყვაძუნწობა.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">ანგარიში \"<xliff:g id="account">%s</xliff:g>\" წაიშლება K-9 Mail-დან.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">ავტორები</string>
-    <string name="about_title">K-9 Mail-ის შესახებ</string>
     <string name="accounts_title">ანგარიშები</string>
     <string name="compose_title_compose">შექმნა</string>
     <string name="compose_title_reply">პასუხი</string>
@@ -512,7 +509,6 @@
     <string name="general_settings_title">ზოგადი პარამეტრები</string>
     <string name="dialog_openkeychain_info_title">OpenPGP აპი არ არის დაყენებული</string>
     <string name="dialog_openkeychain_info_install">დაყენება</string>
-    <string name="dialog_openkeychain_info_text">K-9 Mail გამჭოლი შიფრაციისთვის საჭიროებს OpenKeychain.</string>
     <string name="encrypted_subject">დაშიფრული წერილი</string>
     <string name="account_settings_crypto_encrypt_subject">მესიჯის საგნის დაშიფვრა</string>
     <string name="toast_account_not_found">შიდა შეცდომა: არასწორი ანგარიში!</string>

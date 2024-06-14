@@ -25,12 +25,9 @@
     <string name="changelog_snackbar_text">Kaj je novega v tej izdaji</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">-- \nPoslano s programom K-9 Mail.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Račun »<xliff:g id="account">%s</xliff:g>« bo odstranjen iz programa.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Avtorji</string>
-    <string name="about_title">O programu</string>
     <string name="accounts_title">Računi</string>
     <string name="compose_title_compose">Sestavi novo</string>
     <string name="compose_title_reply">Odgovori</string>
@@ -855,7 +852,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="general_settings_title">Splošne nastavitve</string>
     <string name="dialog_openkeychain_info_title">Ni nameščenega programa OpenPGP</string>
     <string name="dialog_openkeychain_info_install">Namesti</string>
-    <string name="dialog_openkeychain_info_text">Program K-9 Mail zahteva OpenKeychain za celovito šifriranje.</string>
     <string name="encrypted_subject">Šifrirano sporočilo</string>
     <string name="account_settings_crypto_encrypt_subject">Šifriraj zadeve sporočila</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Nekateri odjemalci funkcije morda ne podpirajo</string>
@@ -888,7 +884,6 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
     <string name="push_notification_state_wait_network">Spanje, dokler ni na voljo omrežja</string>
     <string name="push_notification_info">Dotakni se, če želiš izvedeti več.</string>
     <string name="push_info_title">Podrobnosti potisnih storitev</string>
-    <string name="push_info_notification_explanation_text">Ko uporabljate potisk, K-9 Mail vzdržuje povezavo s poštnim strežnikom. Android zahteva prikaz obvestila, ko je aplikacija aktivna v ozadju. %s</string>
     <string name="push_info_configure_notification_text">Vendar pa vam Android tudi omogoča, da obvestilo skrijete.</string>
     <string name="push_info_learn_more_text">Več o tem</string>
     <string name="push_info_configure_notification_action">Nastavitev obveščanja</string>

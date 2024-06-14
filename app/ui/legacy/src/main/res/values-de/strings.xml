@@ -26,12 +26,9 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Ansehen</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nDiese Nachricht wurde von meinem Android-Gerät mit K-9 Mail gesendet.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Das Konto \"<xliff:g id="account">%s</xliff:g>\" wird aus K-9 Mail entfernt.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Autoren</string>
-    <string name="about_title">Über K-9 Mail</string>
     <string name="accounts_title">Konten</string>
     <string name="compose_title_compose">Verfassen</string>
     <string name="compose_title_reply">Antworten</string>
@@ -846,7 +843,6 @@
     <string name="general_settings_title">Allgemeine Einstellungen</string>
     <string name="dialog_openkeychain_info_title">Keine OpenPGP-App installiert</string>
     <string name="dialog_openkeychain_info_install">Installieren</string>
-    <string name="dialog_openkeychain_info_text">K-9 Mail benötigt OpenKeychain für die Ende-zu-Ende Verschlüsselung.</string>
     <string name="encrypted_subject">Verschlüsselte Nachricht</string>
     <string name="account_settings_crypto_encrypt_subject">Betreff der Nachricht verschlüsseln</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Möglicherweise nicht von allen Empfängern unterstützt</string>
@@ -879,7 +875,6 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="push_notification_state_wait_network">Wartet, bis ein Netzwerk verfügbar ist</string>
     <string name="push_notification_info">Antippen, um mehr zu erfahren.</string>
     <string name="push_info_title">Push-Information</string>
-    <string name="push_info_notification_explanation_text">Bei der Verwendung von Push hält K-9 Mail eine Verbindung zum E-Mail-Server aufrecht. Bei Android muss eine laufende Benachrichtigung angezeigt werden, während die App im Hintergrund aktiv ist. %s</string>
     <string name="push_info_configure_notification_text">Allerdings erlaubt Android auch, dass die Benachrichtigung ausgeblendet wird.</string>
     <string name="push_info_learn_more_text">Mehr erfahren</string>
     <string name="push_info_configure_notification_action">Benachrichtigung einstellen</string>

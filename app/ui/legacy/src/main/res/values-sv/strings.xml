@@ -26,12 +26,9 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Visa</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nSkickat från min Android-enhet med K-9 Mail. Ursäkta min korthet.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Kontot \"<xliff:g id="account">%s</xliff:g>\" kommer att tas bort från K-9 Mail.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Upphovsmän</string>
-    <string name="about_title">Om K-9 Mail</string>
     <string name="accounts_title">Konton</string>
     <string name="compose_title_compose">Skriva</string>
     <string name="compose_title_reply">Svara</string>
@@ -847,7 +844,6 @@
     <string name="general_settings_title">Allmänna inställningar</string>
     <string name="dialog_openkeychain_info_title">Ingen OpenPGP-app installerad</string>
     <string name="dialog_openkeychain_info_install">Installera</string>
-    <string name="dialog_openkeychain_info_text">K-9 Mail kräver OpenKeychain för ände-till-ände-kryptering.</string>
     <string name="encrypted_subject">Krypterat meddelande</string>
     <string name="account_settings_crypto_encrypt_subject">Kryptera meddelandeämnen</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Kanske inte stöds av vissa mottagare</string>
@@ -880,7 +876,6 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="push_notification_state_wait_network">Sover tills nätverket är tillgängligt</string>
     <string name="push_notification_info">Tryck för att läsa mer.</string>
     <string name="push_info_title">Push-info</string>
-    <string name="push_info_notification_explanation_text">Vid användning av Push upprätthåller K-9 Mail en anslutning till e-postservern. Android kräver att ett pågående meddelande visas medan appen är aktiv i bakgrunden. %s</string>
     <string name="push_info_configure_notification_text">Men Android låter dig också dölja aviseringen.</string>
     <string name="push_info_learn_more_text">Lär dig mer</string>
     <string name="push_info_configure_notification_action">Anpassa avisering</string>

@@ -26,12 +26,9 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Праглядзець</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nАдпраўлена з маёй прылады праз K-9 Mail. Выбачайце за сцісласць.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Акаўнт \"<xliff:g id="account">%s</xliff:g>\" будзе выдалены з K-9 Mail.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Аўтары</string>
-    <string name="about_title">Пра K-9 Mail</string>
     <string name="accounts_title">Акаўнты</string>
     <string name="compose_title_compose">Напісаць</string>
     <string name="compose_title_reply">Адказаць</string>
@@ -859,7 +856,6 @@
     <string name="general_settings_title">Асноўныя налады</string>
     <string name="dialog_openkeychain_info_title">Няма ўсталяванай праграмы OpenPGP</string>
     <string name="dialog_openkeychain_info_install">Усталяваць</string>
-    <string name="dialog_openkeychain_info_text">Для скразнога шыфравання ў K-9 Mail патрабуецца OpenKeychain.</string>
     <string name="encrypted_subject">Зашыфраваны ліст</string>
     <string name="account_settings_crypto_encrypt_subject">Шыфраваць тэмы лістоў</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Можа падтрымлівацца не ўсімі адрасатамі</string>
@@ -893,7 +889,6 @@
     <string name="push_notification_state_wait_network">Знаходзіцца ў рэжыме сну, пакуль не стане даступная сетка</string>
     <string name="push_notification_info">Націсніце, каб даведацца больш.</string>
     <string name="push_info_title">Звесткі пра прымусовае правяранне</string>
-    <string name="push_info_notification_explanation_text">Пры выкарыстанні прымусовага правярання K-9 Mail падтрымлівае злучэнне з паштовым серверам. Android патрабуе паказу бягучага апавяшчэння, пакуль праграма актыўная ў фонавым рэжыме. %s</string>
     <string name="push_info_configure_notification_text">Аднак Android таксама дазваляе схаваць апавяшчэнне.</string>
     <string name="push_info_learn_more_text">Даведацца больш</string>
     <string name="push_info_configure_notification_action">Наладжванне апавяшчэння</string>

@@ -21,9 +21,7 @@
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">-- Chaidh a chur le post /e/.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Thèid an cunntas “<xliff:g id="account">%s</xliff:g>” a thoirt air falbh on phost.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Ùghdaran</string>
     <string name="accounts_title">Cunntasan</string>

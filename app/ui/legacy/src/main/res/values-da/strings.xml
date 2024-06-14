@@ -26,12 +26,9 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Vis</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nDette er sendt fra min mobiltelefon. Undskyld at jeg fatter mig i korthed.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Kontoen  \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet fra K-9 Mail.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Forfattere</string>
-    <string name="about_title">Om K-9 Mail</string>
     <string name="accounts_title">Konti</string>
     <string name="compose_title_compose">Skriv</string>
     <string name="compose_title_reply">Svar</string>
@@ -842,7 +839,6 @@
     <string name="general_settings_title">Generelt</string>
     <string name="dialog_openkeychain_info_title">Intet OpenPGP program installeret</string>
     <string name="dialog_openkeychain_info_install">Installere</string>
-    <string name="dialog_openkeychain_info_text">K-9 Mail kræver OpenKeychain for ende-til-ende kryptering.</string>
     <string name="encrypted_subject">Krypteret besked</string>
     <string name="account_settings_crypto_encrypt_subject">Kryptér besked emner</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Understøttes ikke af alle modtagere</string>
@@ -875,7 +871,6 @@ Beskeden kan beholdes og bruges som sikkerhedskopi til den hemmelige nøgle. Hvi
     <string name="push_notification_state_wait_network">I dvale indtil netværk er tilgængelig</string>
     <string name="push_notification_info">Tryk for at lære mere.</string>
     <string name="push_info_title">Skub handling</string>
-    <string name="push_info_notification_explanation_text">Når skub handling bruges, opretholder K-9 Mail en forbindelse til post server. Android kræver, at der vises en løbende påmindelse, når app er aktiv i baggrunden. %s</string>
     <string name="push_info_configure_notification_text">Android giver dog også mulighed for at skjule påmindelsen.</string>
     <string name="push_info_learn_more_text">Lær mere</string>
     <string name="push_info_configure_notification_action">Indstille påmindelse</string>

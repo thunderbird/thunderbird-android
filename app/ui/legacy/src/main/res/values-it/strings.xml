@@ -26,13 +26,9 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Vedi</string>
     <!--Default signature-->
-    <string name="default_signature">--
-\nInviato dal mio dispositivo Android con K-9 Mail. Perdona la brevità.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">L\'account \"<xliff:g id="account">%s</xliff:g>\" sarà rimosso da K-9 Mail</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Autori</string>
-    <string name="about_title">Informazioni su K-9 Mail</string>
     <string name="accounts_title">Account</string>
     <string name="compose_title_compose">Componi</string>
     <string name="compose_title_reply">Rispondi</string>
@@ -857,7 +853,6 @@
     <string name="general_settings_title">Impostazioni generali</string>
     <string name="dialog_openkeychain_info_title">Nessuna applicazione OpenPGP installata</string>
     <string name="dialog_openkeychain_info_install">Installa</string>
-    <string name="dialog_openkeychain_info_text">K-9 Mail richiede OpenKeychain per la criptatura end-to-end</string>
     <string name="encrypted_subject">Messaggio criptato</string>
     <string name="account_settings_crypto_encrypt_subject">Cripta l\'oggetto dei messaggi</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Potrebbe non essere supportato da alcuni destinatari</string>
@@ -885,7 +880,6 @@
     <string name="push_notification_state_wait_network">Inattivo fino a quando la rete non sarà disponibile</string>
     <string name="push_notification_info">Tocca per saperne di più</string>
     <string name="push_info_title">Push Info</string>
-    <string name="push_info_notification_explanation_text">Quando si utilizza Push, K-9 Mail mantiene una connessione attiva al server di posta. Android richiede la presenza di una notifica mentre l\'app è attiva in background. %s</string>
     <string name="push_info_configure_notification_text">Tuttavia, Android ti consente anche di nascondere la notifica.</string>
     <string name="push_info_learn_more_text">Per saperne di più</string>
     <string name="push_info_configure_notification_action">Configura notifica</string>

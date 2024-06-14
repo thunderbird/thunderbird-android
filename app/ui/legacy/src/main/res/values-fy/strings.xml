@@ -26,13 +26,9 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Besjen</string>
     <!--Default signature-->
-    <string name="default_signature">--
-\nFerstjoerd fan myn Android-apparaat ôf mei K-9 Mail.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">De account ‘<xliff:g id="account">%s</xliff:g>’ wurdt út K-9 Mail fuortsmiten.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Auteurs</string>
-    <string name="about_title">Oer K-9 Mail</string>
     <string name="accounts_title">Accounts</string>
     <string name="compose_title_compose">Nij berjocht</string>
     <string name="compose_title_reply">Beäntwurdzje</string>
@@ -851,7 +847,6 @@
     <string name="general_settings_title">Algemiene ynstellingen</string>
     <string name="dialog_openkeychain_info_title">Gjin OpenPGP-app ynstallearre</string>
     <string name="dialog_openkeychain_info_install">Ynstallearje</string>
-    <string name="dialog_openkeychain_info_text">K-9 Mail fereasket OpenKeychain foar ein-ta-einfersifering.</string>
     <string name="encrypted_subject">Fersifere berjocht</string>
     <string name="account_settings_crypto_encrypt_subject">Underwerp fan berjocht fersiferje</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Mooglik net stipe troch alle ûntfangers</string>
@@ -879,7 +874,6 @@
     <string name="push_notification_state_wait_network">Docht neat oant der in netwurk beskikber is</string>
     <string name="push_notification_info">Tik hjir foar mear ynfo.</string>
     <string name="push_info_title">Push-ynformaasje</string>
-    <string name="push_info_notification_explanation_text">As jo push brûke, dan hâld K-9 Mail in ferbining iepen mei de e-mailserver. Android fereasket dat in app dy’t op de eftergrûn aktyf bliuwt in melding pleatst. %s</string>
     <string name="push_info_configure_notification_text">Android makket it echter ek mooglik om meldingen te ferstopjen.</string>
     <string name="push_info_learn_more_text">Mear ynfo</string>
     <string name="push_info_configure_notification_action">Melding ynstelle</string>
