@@ -10,8 +10,9 @@ import android.widget.RemoteViews
 import androidx.core.app.PendingIntentCompat
 import com.fsck.k9.EarlyInit
 import com.fsck.k9.inject
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -47,11 +48,12 @@ import timber.log.Timber
  */
 abstract class BaseUnreadWidgetProvider : AppWidgetProvider(), EarlyInit {
     private val repository: UnreadWidgetRepository by inject()
+    private val widgetScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         val pendingResult = goAsync()
 
-        GlobalScope.launch(Dispatchers.IO) {
+        widgetScope.launch {
             updateWidgets(context, appWidgetManager, appWidgetIds)
             pendingResult.finish()
         }
