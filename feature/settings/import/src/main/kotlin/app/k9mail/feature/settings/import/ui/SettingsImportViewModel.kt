@@ -18,7 +18,7 @@ import com.fsck.k9.preferences.SettingsImporter
 import com.fsck.k9.ui.base.bundle.getEnum
 import com.fsck.k9.ui.base.bundle.putEnum
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -228,9 +228,11 @@ internal class SettingsImportViewModel(
             updateCloseButtonAndImportStatusText()
         }
 
-        GlobalScope.launch(Dispatchers.IO) {
-            with(result) {
-                accountActivator.enableAccount(accountUuid, incomingServerPassword, outgoingServerPassword)
+        viewModelScope.launch(Dispatchers.IO) {
+            withContext(NonCancellable) {
+                with(result) {
+                    accountActivator.enableAccount(accountUuid, incomingServerPassword, outgoingServerPassword)
+                }
             }
         }
     }
@@ -244,8 +246,10 @@ internal class SettingsImportViewModel(
                 updateCloseButtonAndImportStatusText()
             }
 
-            GlobalScope.launch(Dispatchers.IO) {
-                accountActivator.enableAccount(accountUuid)
+            viewModelScope.launch(Dispatchers.IO) {
+                withContext(NonCancellable) {
+                    accountActivator.enableAccount(accountUuid)
+                }
             }
         }
     }
