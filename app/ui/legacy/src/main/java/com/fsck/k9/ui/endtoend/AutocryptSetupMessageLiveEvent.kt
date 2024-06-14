@@ -10,20 +10,25 @@ import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.openintents.openpgp.util.OpenPgpApi
 
 class AutocryptSetupMessageLiveEvent(
     val messageCreator: AutocryptTransferMessageCreator,
+    private val eventScope: CoroutineScope = MainScope(),
 ) : SingleLiveEvent<AutocryptSetupMessage>() {
+
     fun loadAutocryptSetupMessageAsync(openPgpApi: OpenPgpApi, account: Account) {
-        GlobalScope.launch(Dispatchers.Main) {
-            value = withContext(Dispatchers.IO) {
+        eventScope.launch {
+            val result = withContext(Dispatchers.IO) {
                 loadAutocryptSetupMessage(openPgpApi, account)
             }
+
+            value = result
         }
     }
 

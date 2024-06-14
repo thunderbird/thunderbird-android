@@ -4,8 +4,8 @@ import android.app.PendingIntent
 import androidx.lifecycle.LifecycleOwner
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.openintents.openpgp.OpenPgpApiManager
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback
@@ -18,6 +18,7 @@ class AutocryptKeyTransferPresenter internal constructor(
     private val preferences: Preferences,
     private val viewModel: AutocryptKeyTransferViewModel,
     private val view: AutocryptKeyTransferActivity,
+    private val presenterScope: CoroutineScope = MainScope(),
 ) {
 
     private lateinit var account: Account
@@ -67,7 +68,7 @@ class AutocryptKeyTransferPresenter internal constructor(
     fun onClickTransferSend() {
         view.sceneGeneratingAndSending()
 
-        GlobalScope.launch(Dispatchers.Main) {
+        presenterScope.launch {
             view.uxDelay()
             view.setLoadingStateGenerating()
 
@@ -97,6 +98,7 @@ class AutocryptKeyTransferPresenter internal constructor(
                 view.setLoadingStateFinished()
                 view.sceneFinished()
             }
+
             is AutocryptSetupTransferResult.Failure -> {
                 Timber.e(result.exception, "Error sending setup message")
                 view.setLoadingStateSendingFailed()
