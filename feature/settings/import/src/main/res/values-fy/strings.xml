@@ -29,7 +29,7 @@
     <string name="settings_import_outgoing_server_password_hint">Wachtwurd útgeande server</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Brûk itselde wachtwurd foar de útgeande server</string>
     <string name="settings_import_server_name_format">Servernamme: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Om mei K-9 Mail dizze e-mailaccount te brûken moatte jo jo oanmelde om de app tagong te jaan ta jo e-mailberjochten.</string>
+    <string name="settings_import_oauth_description">Om dizze e-mailaccount te brûken, moatte jo jo oanmelde om de app tagong te jaan ta jo e-mailberjochten.</string>
     <string name="settings_import_oauth_sign_in">Oanmelde</string>
     <string name="settings_import_oauth_sign_in_with_google">Oanmelde mei Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Autorisaasje annulearre</string>

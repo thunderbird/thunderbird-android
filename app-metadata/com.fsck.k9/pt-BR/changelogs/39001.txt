@@ -1,0 +1,1 @@
+- Foi corrigido um crash quando a tela de compor uma mensagem é aberta

@@ -4,7 +4,7 @@
     <string name="account_setup_options_account_check_frequency_label">Kolla efter ny e-post frekvens</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Konfigurera automatiskt</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Denna konfiguration är inte pålitlig</string>
-    <string name="account_setup_options_email_signature_label">E-post signatur</string>
+    <string name="account_setup_options_email_signature_label">E-postsignatur</string>
     <string name="account_setup_options_email_display_count_label">Antal meddelanden att visa</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Konfigurera manuellt</string>
     <string name="account_setup_options_email_signature_error_blank">E-postsignaturens namn får inte vara tomt.</string>

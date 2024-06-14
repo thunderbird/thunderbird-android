@@ -9,7 +9,7 @@ K-9 Mail — это почтовый клиент с открытым исход
 * Локальный и серверный поиск
 * Шифрование электронной почты OpenPGP (PGP/MIME)
 
-Установите приложение <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain: Простой PGP</a>,чтобы шифровать и расшифровывать вашу электронную почту с помощью OpenPGP.
+Установите приложение <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain: Простой PGP</a>, чтобы шифровать и расшифровывать вашу электронную почту с помощью OpenPGP.
 
 
 <b>Поддержка</b>

@@ -2,5 +2,5 @@
 <resources>
     <string name="onboarding_welcome_start_button">Начать</string>
     <string name="onboarding_welcome_import_button">Импорт настроек</string>
-    <string name="onboarding_welcome_message">Добро пожаловать в Почту K-9 - почтовый клиент для Android, обеспечивающий повышенную безопасность, лёгкую настройку и удобное управление всеми учётными записями электронной почты.</string>
+    <string name="onboarding_welcome_message">Добро пожаловать в &lt;xliff:g id=\"app_name\"&gt;%s&lt;/xliff:g&gt; — почтовый клиент для Android, обеспечивающий повышенную безопасность, лёгкую настройку и удобное управление всеми учётными записями электронной почты.</string>
 </resources>

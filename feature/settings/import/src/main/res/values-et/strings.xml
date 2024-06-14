@@ -29,7 +29,7 @@
     <string name="settings_import_outgoing_server_password_hint">Väljuvaid kirju teenindava serveri salasõna</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Kasuta sama salasõna ka väljuvate kirjade serveri tarbeks</string>
     <string name="settings_import_server_name_format">Serveri nimi: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Kui soovid seda e-posti teenust kasutada K-9 e-postikliendiga, siis logi teenusesse ja anna rakendusele õigus e-kirju ligeda.</string>
+    <string name="settings_import_oauth_description">Kui soovid kasutada seda e-posti teenust, siis logi teenusesse ja anna sellele rakendusele õigus lugeda e-kirju.</string>
     <string name="settings_import_oauth_sign_in">Logi sisse</string>
     <string name="settings_import_oauth_sign_in_with_google">Logi sisse kasutades Google\'i teenuseid</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Autentimine on katkenud</string>

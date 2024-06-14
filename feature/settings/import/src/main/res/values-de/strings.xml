@@ -29,7 +29,7 @@
     <string name="settings_import_outgoing_server_password_hint">Passwort des Postausgangsservers</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Gleiches Passwort für den Postausgangsserver verwenden</string>
     <string name="settings_import_server_name_format">Servername: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Um dieses E-Mail-Konto mit K-9 Mail zu verwenden, musst du dich anmelden und der App Zugriff auf deine E-Mails gewähren.</string>
+    <string name="settings_import_oauth_description">Um dieses E-Mail-Konto zu verwenden, musst du dich anmelden und der App Zugriff auf deine E-Mails gewähren.</string>
     <string name="settings_import_oauth_sign_in">Anmelden</string>
     <string name="settings_import_oauth_sign_in_with_google">Mit Google anmelden</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Autorisierung aufgehoben</string>
