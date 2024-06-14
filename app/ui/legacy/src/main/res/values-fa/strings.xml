@@ -26,7 +26,8 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">مشاهده</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nاز دستگاه اندرویدی‌ام و به‌وسیلهٔ K-9 Mail ارسال شد.</string>
+    <string name="default_signature">--
+\nاز دستگاه اندرویدی‌ام و به‌وسیلهٔ K-9 Mail ارسال شد.</string>
     <!--General strings that include the app name-->
     <string name="account_delete_dlg_instructions_fmt">حساب «<xliff:g id="account">%s</xliff:g>» از K-9 Mail حذف خواهد شد.</string>
     <!--=== General strings ==================================================================-->

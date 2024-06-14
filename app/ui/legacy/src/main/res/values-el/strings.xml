@@ -26,7 +26,8 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Προβολή</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nΣταλμένο από τη συσκευή μου Android με το K-9 Mail. Παρακαλώ συγχωρήστε την ολιγολογία μου.</string>
+    <string name="default_signature">--
+\nΣταλμένο από τη συσκευή μου Android με το K-9 Mail. Παρακαλώ συγχωρήστε την ολιγολογία μου.</string>
     <!--General strings that include the app name-->
     <string name="account_delete_dlg_instructions_fmt">Ο λογαριασμός \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφεί από το K-9 Mail.</string>
     <!--=== General strings ==================================================================-->

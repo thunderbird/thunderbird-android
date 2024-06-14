@@ -26,7 +26,8 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Vaata</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nSaadetud Androidi seadmelt K-9 meiliga. Vabanda, et nii lühdalt.</string>
+    <string name="default_signature">--
+\nSaadetud Androidi seadmelt K-9 meiliga. Vabanda, et nii lühdalt.</string>
     <!--General strings that include the app name-->
     <string name="account_delete_dlg_instructions_fmt">Konto \"<xliff:g id="account">%s</xliff:g>\" eemaldatakse K-9 Mailist.</string>
     <!--=== General strings ==================================================================-->

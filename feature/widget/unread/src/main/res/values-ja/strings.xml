@@ -1,13 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="unread_widget_select_account">…の未読数を表示</string>
+    <string name="unread_widget_select_account">…の未読件数を表示</string>
     <string name="unread_widget_account_title">アカウント</string>
-    <string name="unread_widget_account_summary">未読数を表示するアカウント</string>
+    <string name="unread_widget_account_summary">未読件数を表示するアカウント</string>
     <string name="unread_widget_unified_inbox_account_summary">統合受信トレイ</string>
-    <string name="unread_widget_folder_enabled_title">フォルダー数</string>
-    <string name="unread_widget_folder_enabled_summary">1 件のフォルダーの未読数のみ表示します</string>
+    <string name="unread_widget_folder_enabled_title">フォルダー件数</string>
+    <string name="unread_widget_folder_enabled_summary">指定したフォルダー 1 件のみの未読件数を表示します</string>
     <string name="unread_widget_folder_title">フォルダー</string>
-    <string name="unread_widget_folder_summary">未読数を表示するフォルダー</string>
+    <string name="unread_widget_folder_summary">未読件数を表示するフォルダー</string>
     <string name="unread_widget_action_done">完了</string>
     <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
     <string name="unread_widget_account_not_selected">アカウントが選択されていません</string>

@@ -25,7 +25,8 @@
     <string name="changelog_snackbar_text">Sužinokite, kas naujo šioje versijoje</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">- \nIšsiųsta iš mano Android įrenginio naudojant K-9 Mail. Atleiskite už trumpumą.</string>
+    <string name="default_signature">-
+\nIšsiųsta iš mano Android įrenginio naudojant K-9 Mail. Atleiskite už trumpumą.</string>
     <!--General strings that include the app name-->
     <string name="account_delete_dlg_instructions_fmt">Paskyra \"<xliff:g id="account">%s</xliff:g>\" bus pašalinta iš „K-9 Mail“.</string>
     <!--=== General strings ==================================================================-->

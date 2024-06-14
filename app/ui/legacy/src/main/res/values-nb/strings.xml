@@ -19,7 +19,8 @@
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">-- \nSendt fra min Android-enhet med K-9 e-post. Unnskyld min kortfattethet.</string>
+    <string name="default_signature">--
+\nSendt fra min Android-enhet med K-9 e-post. Unnskyld min kortfattethet.</string>
     <!--General strings that include the app name-->
     <string name="account_delete_dlg_instructions_fmt">Kontoen \"<xliff:g id="account">%s</xliff:g>\" vil bli fjernet fra K-9 e-post.</string>
     <!--=== General strings ==================================================================-->

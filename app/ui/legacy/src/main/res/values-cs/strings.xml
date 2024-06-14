@@ -26,7 +26,8 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Zobrazit</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nOdesláno aplikací K-9 Mail ze systému Android. Omluvte prosím moji stručnost.</string>
+    <string name="default_signature">--
+\nOdesláno aplikací K-9 Mail ze systému Android. Omluvte prosím moji stručnost.</string>
     <!--General strings that include the app name-->
     <string name="account_delete_dlg_instructions_fmt">Účet \"<xliff:g id="account">%s</xliff:g>\" bude odstraněn z K-9 Mail.</string>
     <!--=== General strings ==================================================================-->

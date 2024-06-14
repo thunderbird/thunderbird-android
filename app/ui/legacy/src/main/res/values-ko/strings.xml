@@ -25,7 +25,8 @@
     <string name="changelog_snackbar_text">이 릴리즈의 새로운 기능 알아보기</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">-- \n안드로이드 기기에서 K-9 메일을 사용해 보낸 메일입니다.</string>
+    <string name="default_signature">--
+\n안드로이드 기기에서 K-9 메일을 사용해 보낸 메일입니다.</string>
     <!--General strings that include the app name-->
     <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" 계정이 K-9에서 삭제됩니다.</string>
     <!--=== General strings ==================================================================-->

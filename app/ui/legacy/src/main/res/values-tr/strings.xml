@@ -25,7 +25,8 @@
     <string name="changelog_snackbar_text">Bu sürümdeki yenilikleri öğrenin </string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">-- \nAndroid için K-9 Posta\'dan gönderildi. Lütfen bu kısa notumu mazur görün.</string>
+    <string name="default_signature">--
+\nAndroid için K-9 Posta\'dan gönderildi. Lütfen bu kısa notumu mazur görün.</string>
     <!--General strings that include the app name-->
     <string name="account_delete_dlg_instructions_fmt">Hesap \"<xliff:g id="account">%s</xliff:g>\" K-9 Mail\'den kaldırılacak.</string>
     <!--=== General strings ==================================================================-->

@@ -26,7 +26,8 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">檢視</string>
     <!--Default signature-->
-    <string name="default_signature">-- \n使用 K-9 Mail 寄送。來自我的 Android 裝置。</string>
+    <string name="default_signature">--
+\n使用 K-9 Mail 寄送。來自我的 Android 裝置。</string>
     <!--General strings that include the app name-->
     <string name="account_delete_dlg_instructions_fmt">帳號「<xliff:g id="account">%s</xliff:g>」將從 K-9 Mail 中刪除。</string>
     <!--=== General strings ==================================================================-->

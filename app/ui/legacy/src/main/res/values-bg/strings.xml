@@ -23,7 +23,8 @@
     <string name="changelog_snackbar_text">Разбери какво ново в тази варсия</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">-- \nИзпратено от моето Андроид у-во чрез K-9 Mail. Моля да ме извините за краткия ми изказ.</string>
+    <string name="default_signature">--
+\nИзпратено от моето Андроид у-во чрез K-9 Mail. Моля да ме извините за краткия ми изказ.</string>
     <!--General strings that include the app name-->
     <string name="account_delete_dlg_instructions_fmt">Акаунтът \"<xliff:g id="account">%s</xliff:g>\" ще бъде премахнат от K-9 Mail.</string>
     <!--=== General strings ==================================================================-->

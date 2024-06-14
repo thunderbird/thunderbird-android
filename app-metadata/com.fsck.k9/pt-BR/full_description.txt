@@ -2,12 +2,12 @@ K-9 Mail é um cliente de email de código aberto que funciona com quase todos o
 
 <b>Funcionalidades</b>
 
-* funciona com várias contas
+* Suporta várias contas
 * Caixa de Entrada unificada
-* não viola sua privacidade (nenhum tipo de rastreamento, só conecta ao seu provedor de email)
-* sincronização automática no plano de fundo, e notificações push
-* pesquisa de emails localmente e no servidor
-* criptografia de email OpenPGP (PGP/MIME)
+* Não viola sua privacidade (nenhum tipo de rastreamento, só conecta ao seu provedor de email)
+* Sincronização automática no plano de fundo, e notificações push
+* Pesquisa de emails localmente e no servidor
+* Criptografia de email OpenPGP (PGP/MIME)
 
 Instale o aplicativo <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain: Easy PGP</a> para criptografar/descriptografar seus emails usando OpenPGP.
 

@@ -23,7 +23,8 @@
     <string name="changelog_snackbar_text">Kio estas nova en tiu ĉi versio</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">-- \nSendita per K-9 Retpoŝtilo. Bonvolu pardoni min por skribi mallonge.</string>
+    <string name="default_signature">--
+\nSendita per K-9 Retpoŝtilo. Bonvolu pardoni min por skribi mallonge.</string>
     <!--General strings that include the app name-->
     <string name="account_delete_dlg_instructions_fmt">La konto \"<xliff:g id="account">%s</xliff:g>\" estos forigita el K-9 Retpoŝtilo.</string>
     <!--=== General strings ==================================================================-->

@@ -26,7 +26,8 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Vizualizare</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nTrimis de pe dispozitivul meu Android cu K-9 Mail. Rog scuzați concizia mea.</string>
+    <string name="default_signature">--
+\nTrimis de pe dispozitivul meu Android cu K-9 Mail. Rog scuzați concizia mea.</string>
     <!--General strings that include the app name-->
     <string name="account_delete_dlg_instructions_fmt">Contul \"<xliff:g id="account">%s</xliff:g>\" va fi șters din K-9 Mail.</string>
     <!--=== General strings ==================================================================-->

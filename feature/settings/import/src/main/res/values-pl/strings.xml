@@ -31,7 +31,7 @@
     <string name="settings_import_outgoing_server_password_hint">Hasło serwera poczty wychodzącej</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Użyj tego samego hasła dla serwera poczty wychodzącej</string>
     <string name="settings_import_server_name_format">Nazwa serwera: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Aby używać tego konta e-mail z K-9 Mail, musisz się zalogować i przyznać aplikacji dostęp do swoich e-maili.</string>
+    <string name="settings_import_oauth_description">Aby używać tego konta e-mail, musisz się zalogować i przyznać aplikacji dostęp do swoich e-maili.</string>
     <string name="settings_import_oauth_sign_in">Zaloguj się</string>
     <string name="settings_import_oauth_sign_in_with_google">Zaloguj się przez Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Autoryzacja anulowana</string>

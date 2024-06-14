@@ -26,7 +26,8 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Afficher</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nEnvoyé de mon appareil Android avec Courriel K-9 Mail. Veuillez excuser ma brièveté.</string>
+    <string name="default_signature">--
+\nEnvoyé de mon appareil Android avec Courriel K-9 Mail. Veuillez excuser ma brièveté.</string>
     <!--General strings that include the app name-->
     <string name="account_delete_dlg_instructions_fmt">Le compte « <xliff:g id="account">%s</xliff:g> » sera supprimé de Courriel K-9 Mail.</string>
     <!--=== General strings ==================================================================-->

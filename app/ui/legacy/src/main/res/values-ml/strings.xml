@@ -23,9 +23,10 @@
     <string name="changelog_snackbar_text">ഈ റിലീസിൽ പുതിയത് എന്താണെന്ന് കണ്ടെത്തുക</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">-- \nകെ-9 മെയിൽ ഉപയോഗിച്ച് എന്റെ ആൻഡ്രോയിഡിൽ നിന്നും അയച്ചത്. ദയവായി എന്റെ പദപ്രയോഗമിതത്വം ക്ഷമിക്കുക.</string>
+    <string name="default_signature">--
+\nകെ-9 മെയിൽ ഉപയോഗിച്ച് എന്റെ ആൻഡ്രോയിഡിൽ നിന്നും അയച്ചത്. ദയവായി എന്റെ പദപ്രയോഗമിതത്വം ക്ഷമിക്കുക.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">കെ-9 മെയിലിൽ നിന്ന്  \"<xliff:g id="account">%s</xliff:g>\" അക്കൗണ്ട് നീക്കംചെയ്യും. </string>
+    <string name="account_delete_dlg_instructions_fmt">കെ-9 മെയിലിൽ നിന്ന് \"<xliff:g id="account">%s</xliff:g>\" അക്കൗണ്ട് നീക്കംചെയ്യും. </string>
     <!--=== General strings ==================================================================-->
     <string name="authors">രചയിതാക്കൾ</string>
     <string name="about_title">കെ-9 മെയിലിനെക്കുറിച്ച്</string>

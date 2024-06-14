@@ -13,7 +13,8 @@
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">-- \nKaset eus ma fellgomzer Android gant K-9 Mail.</string>
+    <string name="default_signature">--
+\nKaset eus ma fellgomzer Android gant K-9 Mail.</string>
     <!--General strings that include the app name-->
     <string name="account_delete_dlg_instructions_fmt">Dilamet e vo ar gont \"<xliff:g id="account">%s</xliff:g>\" eus K-9 Mail.</string>
     <!--=== General strings ==================================================================-->

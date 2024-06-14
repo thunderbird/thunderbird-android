@@ -26,7 +26,8 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Megtekintés</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nAndroidos készülékről küldve K-9 Mail használatával. Elnézést a rövidségért.</string>
+    <string name="default_signature">--
+\nAndroidos készülékről küldve K-9 Mail használatával. Elnézést a rövidségért.</string>
     <!--General strings that include the app name-->
     <string name="account_delete_dlg_instructions_fmt">A(z) „<xliff:g id="account">%s</xliff:g>” fiók eltávolításra kerül a K-9 Mail alkalmazásból.</string>
     <!--=== General strings ==================================================================-->

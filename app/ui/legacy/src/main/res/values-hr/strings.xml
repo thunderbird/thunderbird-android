@@ -13,7 +13,8 @@
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">-- \nPoslano sa mog Android uređaja sa K-9 Mail. Molim vas oprostite na mojoj sažetosti.</string>
+    <string name="default_signature">--
+\nPoslano sa mog Android uređaja sa K-9 Mail. Molim vas oprostite na mojoj sažetosti.</string>
     <!--General strings that include the app name-->
     <string name="account_delete_dlg_instructions_fmt">Račun \"<xliff:g id="account">%s</xliff:g>\" će biti maknut iz K-9 Maila.</string>
     <!--=== General strings ==================================================================-->

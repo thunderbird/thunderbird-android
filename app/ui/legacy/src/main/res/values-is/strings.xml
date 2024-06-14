@@ -26,7 +26,8 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Skoða</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nSent úr Android tækinu mínu með K-9 póstforritinu. Afsakaðu hvað ég stytti mál mitt mikið.</string>
+    <string name="default_signature">--
+\nSent úr Android tækinu mínu með K-9 póstforritinu. Afsakaðu hvað ég stytti mál mitt mikið.</string>
     <!--General strings that include the app name-->
     <string name="account_delete_dlg_instructions_fmt">Aðgangurinn \"<xliff:g id="account">%s</xliff:g>\" verður fjarlægður úr K-9 póstinum.</string>
     <!--=== General strings ==================================================================-->

@@ -26,7 +26,8 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Ikusi</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nAndroid gailutik bidalia K-9 Mail erabiliz. Barka laburtasuna.</string>
+    <string name="default_signature">--
+\nAndroid gailutik bidalia K-9 Mail erabiliz. Barka laburtasuna.</string>
     <!--General strings that include the app name-->
     <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" kontua K-9 Mail-etik kenduko da.</string>
     <!--=== General strings ==================================================================-->

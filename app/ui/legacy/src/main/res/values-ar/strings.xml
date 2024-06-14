@@ -26,7 +26,8 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">عرض</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nتم الإرسال من هاتفي الأندرويد بواسطة برنامج K-9. أعتذر عن الإيجاز.</string>
+    <string name="default_signature">--
+\nتم الإرسال من هاتفي الأندرويد بواسطة برنامج K-9. أعتذر عن الإيجاز.</string>
     <!--General strings that include the app name-->
     <string name="account_delete_dlg_instructions_fmt">سيُحذف الحساب \"<xliff:g id="account">%s</xliff:g>\" من الحسابات في K-9.</string>
     <!--=== General strings ==================================================================-->
@@ -840,7 +841,7 @@
     <string name="general_settings_title">الإعدادات العامة</string>
     <string name="dialog_openkeychain_info_title">ليس هناك أي تطبيق أوبن بي جي بي مُثبّت</string>
     <string name="dialog_openkeychain_info_install">تثبيت</string>
-    <string name="dialog_openkeychain_info_text">يتطلب K-9 Mail OpenKeychain للتشفير من طرف إلى طرف. </string>
+    <string name="dialog_openkeychain_info_text">يتطلب K-9 Mail OpenKeychain للتشفير من طرف إلى طرف.</string>
     <string name="encrypted_subject">رسالة مشفّرة</string>
     <string name="account_settings_crypto_encrypt_subject">تشفير مواضيع الرسالة </string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">قد لا تكون مدعومة من قبل بعض المستلمين </string>

@@ -25,7 +25,8 @@
     <string name="changelog_snackbar_text">Kaj je novega v tej izdaji</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
-    <string name="default_signature">-- \nPoslano s programom K-9 Mail.</string>
+    <string name="default_signature">--
+\nPoslano s programom K-9 Mail.</string>
     <!--General strings that include the app name-->
     <string name="account_delete_dlg_instructions_fmt">Račun »<xliff:g id="account">%s</xliff:g>« bo odstranjen iz programa.</string>
     <!--=== General strings ==================================================================-->

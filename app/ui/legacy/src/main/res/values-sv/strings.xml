@@ -26,7 +26,8 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Visa</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nSkickat från min Android-enhet med K-9 Mail. Ursäkta min korthet.</string>
+    <string name="default_signature">--
+\nSkickat från min Android-enhet med K-9 Mail. Ursäkta min korthet.</string>
     <!--General strings that include the app name-->
     <string name="account_delete_dlg_instructions_fmt">Kontot \"<xliff:g id="account">%s</xliff:g>\" kommer att tas bort från K-9 Mail.</string>
     <!--=== General strings ==================================================================-->

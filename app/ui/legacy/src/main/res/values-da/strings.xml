@@ -26,9 +26,10 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Vis</string>
     <!--Default signature-->
-    <string name="default_signature">-- \nDette er sendt fra min mobiltelefon. Undskyld at jeg fatter mig i korthed.</string>
+    <string name="default_signature">--
+\nDette er sendt fra min mobiltelefon. Undskyld at jeg fatter mig i korthed.</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Kontoen  \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet fra K-9 Mail.</string>
+    <string name="account_delete_dlg_instructions_fmt">Kontoen \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet fra K-9 Mail.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Forfattere</string>
     <string name="about_title">Om K-9 Mail</string>
