@@ -28,7 +28,7 @@
     <string name="settings_import_outgoing_server_password_hint">送信サーバーのパスワード</string>
     <string name="settings_import_use_same_password_for_outgoing_server">送信サーバーに同じパスワードを使用する</string>
     <string name="settings_import_server_name_format">サーバー名: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">このメールアカウントを K-9 Mail で使用するには、サインインしてアプリにメールへのアクセスを許可する必要があります。</string>
+    <string name="settings_import_oauth_description">このメールアカウントを使用するには、ログインしてアプリにメールへのアクセスを許可する必要があります。</string>
     <string name="settings_import_oauth_sign_in">サインイン</string>
     <string name="settings_import_oauth_sign_in_with_google">Google でログイン</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">認証がキャンセルされました</string>

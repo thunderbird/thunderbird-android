@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">Başla</string>
     <string name="onboarding_welcome_import_button">Ayarları içe aktar</string>
-    <string name="onboarding_welcome_message">Gelişmiş güvenlik, kolay özelleştirme ve tüm e-posta hesaplarınızın sorunsuz yönetimi için tasarlanan Android e-posta istemcisi K-9 Posta\'ya hoş geldiniz.</string>
+    <string name="onboarding_welcome_message">Gelişmiş güvenlik, kolay özelleştirme ve tüm e-posta hesaplarınızın sorunsuz yönetimi için tasarlanan <xliff:g id="app_name">%s</xliff:g> Android e-posta istemcisine hoş geldiniz.</string>
 </resources>

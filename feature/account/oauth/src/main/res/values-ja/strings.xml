@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_oauth_sign_in_with_google_button">Google でログイン</string>
-    <string name="account_oauth_loading_error">OAuth サインインに失敗しました</string>
+    <string name="account_oauth_loading_error">OAuth ログインに失敗しました</string>
     <string name="account_oauth_error_failed">以下のエラーにより認証に失敗しました: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_browser_not_available">アカウントへのアクセス権付与に必要なブラウザーアプリが見つかりませんでした。</string>
     <string name="account_oauth_error_not_supported">現在、このプロバイダーは OAuth 2.0 に対応していません。</string>
     <string name="account_oauth_error_canceled">認証がキャンセルされました</string>
-    <string name="account_oauth_loading_message">OAuth でサインイン中</string>
-    <string name="account_oauth_sign_in_description">サインインのため、あなたのメールプロバイダーにリダイレクトします。アプリにメールアカウントへのアクセス権を付与してください。</string>
-    <string name="account_oauth_sign_in_button">サインイン</string>
+    <string name="account_oauth_loading_message">OAuth でログイン中</string>
+    <string name="account_oauth_sign_in_description">ログインのため、あなたのメールプロバイダーにリダイレクトします。アプリにメールアカウントへのアクセス権を付与してください。</string>
+    <string name="account_oauth_sign_in_button">ログイン</string>
 </resources>

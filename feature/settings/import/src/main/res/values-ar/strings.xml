@@ -25,7 +25,7 @@
     <string name="settings_import_outgoing_server_password_hint">كلمة مرور خادم البريد الصادر </string>
     <string name="settings_import_use_same_password_for_outgoing_server">استخدم نفس كلمة المرور لخادم البريد الصادر </string>
     <string name="settings_import_server_name_format">اسم الخادم: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">لاستخدام حساب البريد الإلكتروني هذا مع K-9 Mail ، تحتاج إلى تسجيل الدخول ومنح التطبيق حق الوصول إلى رسائل البريد الإلكتروني الخاصة بك. </string>
+    <string name="settings_import_oauth_description">لاستخدام حساب البريد الإلكتروني هذا مع K-9 Mail ، تحتاج إلى تسجيل الدخول ومنح التطبيق حق الوصول إلى رسائل البريد الإلكتروني الخاصة بك.</string>
     <string name="settings_import_oauth_sign_in">تسجيل الدخول</string>
     <string name="settings_import_oauth_sign_in_with_google">تسجيل الدخول بأستخدام جوجل</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">تم إلغاء التفويض </string>

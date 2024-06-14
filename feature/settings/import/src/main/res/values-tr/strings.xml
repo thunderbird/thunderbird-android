@@ -29,7 +29,7 @@
     <string name="settings_import_outgoing_server_password_hint">Giden sunucusu parolası</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Giden sunucusu için de aynı parolayı kullan</string>
     <string name="settings_import_server_name_format">Sunucu adı: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Bu e-posta hesabını K-9 Posta ile kullanmak için oturum açmanız ve uygulamaya e-postalarınıza erişim izni vermeniz gerekir.</string>
+    <string name="settings_import_oauth_description">Bu e-posta hesabını kullanmak için oturum açmanız ve uygulamaya e-postalarınıza erişim izni vermeniz gerekir.</string>
     <string name="settings_import_oauth_sign_in">Giriş yap</string>
     <string name="settings_import_oauth_sign_in_with_google">Google ile giriş yap</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Yetkilendirme iptal edildi</string>

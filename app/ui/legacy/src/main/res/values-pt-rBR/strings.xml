@@ -422,7 +422,7 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">Pastas de 1ª e 2ª classe</string>
     <string name="account_settings_folder_sync_mode_not_second_class">Todas, exceto as pastas de 2ª classe</string>
     <string name="account_settings_folder_sync_mode_none">Nenhuma</string>
-    <string name="account_settings_folder_push_mode_label">Sincronizar pastas</string>
+    <string name="account_settings_folder_push_mode_label">Sincronizar pastas usando o Push</string>
     <string name="account_settings_folder_push_mode_all">Todas</string>
     <string name="account_settings_folder_push_mode_first_class">Apenas pastas de 1ª classe</string>
     <string name="account_settings_folder_push_mode_first_and_second_class">Pastas de 1ª e 2ª classe</string>
@@ -579,7 +579,7 @@
     <string name="background_ops_always">Sempre</string>
     <string name="background_ops_auto_sync_only">Quando a sincronização automática estiver habilitada</string>
     <string name="batch_select_all">Selecionar todas</string>
-    <string name="account_setup_push_limit_label">Máximo de pastas para verificar ao sincronizar</string>
+    <string name="account_setup_push_limit_label">Máximo de pastas para verificar ao sincronizar via push</string>
     <string name="account_setup_push_limit_5">5 pastas</string>
     <string name="account_setup_push_limit_10">10 pastas</string>
     <string name="account_setup_push_limit_25">25 pastas</string>
@@ -877,7 +877,7 @@ Você pode guardar esta mensagem e usá-la como um backup da sua chave secreta. 
     <string name="switch_on">On</string>
     <string name="switch_off">Desativado</string>
     <string name="generic_loading_error">Ocorreu um erro durante o carregamento dos dados</string>
-    <string name="push_notification_state_initializing">Iniciando…</string>
+    <string name="push_notification_state_initializing">Inicializando…</string>
     <string name="push_notification_state_listening">Aguardando novas mensagens</string>
     <string name="push_notification_state_wait_background_sync">Suspenso até que a sincronização em segundo plano seja permitida</string>
     <string name="push_notification_state_wait_network">Suspenso até que a rede esteja disponível</string>
@@ -885,8 +885,8 @@ Você pode guardar esta mensagem e usá-la como um backup da sua chave secreta. 
     <string name="push_info_title">Informações de push</string>
     <string name="push_info_configure_notification_text">Entretanto, o Android também permite que você oculte a notificação.</string>
     <string name="push_info_learn_more_text">Saiba mais</string>
-    <string name="push_info_configure_notification_action">Configurar a notificação</string>
-    <string name="push_info_disable_push_text">Caso você não precise de notificações instantâneas sobre novas mensagens, você deve desabilitar o push e usar somente a consulta (\"polling\"). A consulta procura por novas mensagens em intervalos regulares e não necessita da notificação.</string>
+    <string name="push_info_configure_notification_action">Configurar notificação</string>
+    <string name="push_info_disable_push_text">Caso você não precise de notificações instantâneas sobre novas mensagens, você deve desabilitar o push e usar somente o polling. A consulta procura por novas mensagens em intervalos regulares e não necessita da notificação.</string>
     <string name="push_info_disable_push_action">Desabilitar o Push</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
     <string name="swipe_action_select">Marcar</string>

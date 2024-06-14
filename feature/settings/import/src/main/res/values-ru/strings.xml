@@ -31,7 +31,7 @@
     <string name="settings_import_outgoing_server_password_hint">Пароль исходящего сервера</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Использовать тот же пароль для исходящего сервера</string>
     <string name="settings_import_server_name_format">Названия серверов: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Чтобы использовать эту учётную запись электронной почты с Почтой K-9, вам необходимо войти в систему и предоставить приложению доступ к вашим электронным письмам.</string>
+    <string name="settings_import_oauth_description">Чтобы использовать эту учётную запись электронной почты, вам необходимо войти в систему и предоставить приложению доступ к вашим электронным письмам.</string>
     <string name="settings_import_oauth_sign_in">Войти</string>
     <string name="settings_import_oauth_sign_in_with_google">Войти с помощью Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Авторизация отменена</string>

@@ -2,5 +2,4 @@
 <resources>
     <string name="onboarding_welcome_start_button">Aloita</string>
     <string name="onboarding_welcome_import_button">Tuo asetukset</string>
-    <string name="onboarding_welcome_message">Tervetuloa K-9 Mailiin, Android-sähköpostiohjelmaan, joka on suunniteltu parannettua turvallisuutta, helppoa mukauttamista ja saumatonta tilien hallintaa ajatellen.</string>
 </resources>
