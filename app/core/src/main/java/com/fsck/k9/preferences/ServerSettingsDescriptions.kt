@@ -4,6 +4,7 @@ import com.fsck.k9.preferences.Settings.IntegerRangeSetting
 import com.fsck.k9.preferences.Settings.SettingsDescription
 import com.fsck.k9.preferences.Settings.SettingsUpgrader
 import com.fsck.k9.preferences.Settings.StringSetting
+import com.fsck.k9.preferences.upgrader.ServerSettingsUpgraderTo92
 import java.util.TreeMap
 
 /**
@@ -28,6 +29,13 @@ internal class ServerSettingsDescriptions {
                         "STARTTLS_OPTIONAL",
                         "STARTTLS_REQUIRED",
                         "SSL_TLS_OPTIONAL",
+                        "SSL_TLS_REQUIRED",
+                    ),
+                ),
+                92 to NoDefaultStringEnumSetting(
+                    values = setOf(
+                        "NONE",
+                        "STARTTLS_REQUIRED",
                         "SSL_TLS_REQUIRED",
                     ),
                 ),
@@ -57,7 +65,9 @@ internal class ServerSettingsDescriptions {
     }
 
     val upgraders: Map<Int, SettingsUpgrader> by lazy {
-        emptyMap()
+        mapOf(
+            92 to ServerSettingsUpgraderTo92(),
+        )
     }
 
     companion object {

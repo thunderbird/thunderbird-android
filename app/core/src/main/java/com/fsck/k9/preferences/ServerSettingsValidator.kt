@@ -22,6 +22,10 @@ internal class ServerSettingsValidator(
             throw InvalidSettingValueException("Missing '$AUTHENTICATION_TYPE' value")
         }
 
+        if (validatedSettings[CONNECTION_SECURITY] !is String) {
+            throw InvalidSettingValueException("Missing '$CONNECTION_SECURITY' value")
+        }
+
         return ValidatedSettings.Server(
             type = toServerSettingsType(server.type!!),
             settings = validatedSettings,

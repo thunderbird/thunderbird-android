@@ -141,6 +141,16 @@ class ServerSettingsValidatorTest {
         )
     }
 
+    @Test
+    fun `missing connection security value in version 92`() {
+        val server = SERVER.copy(connectionSecurity = null)
+
+        assertFailure {
+            validator.validate(contentVersion = 92, server)
+        }.isInstanceOf<InvalidSettingValueException>()
+            .hasMessage("Missing 'connectionSecurity' value")
+    }
+
     companion object {
         private val SERVER = SettingsFile.Server(
             type = "IMAP",

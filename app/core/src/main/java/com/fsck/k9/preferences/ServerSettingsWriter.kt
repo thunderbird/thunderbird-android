@@ -30,7 +30,7 @@ internal class ServerSettingsWriter(
 
         val host = validatedSettings[HOST] as? String
         val port = validatedSettings[PORT] as Int
-        val connectionSecurity = convertConnectionSecurity(validatedSettings[CONNECTION_SECURITY] as String)
+        val connectionSecurity = ConnectionSecurity.valueOf(validatedSettings[CONNECTION_SECURITY] as String)
         val authenticationType = AuthType.valueOf(validatedSettings[AUTHENTICATION_TYPE] as String)
         val username = validatedSettings[USERNAME] as String
         val rawPassword = validatedSettings[PASSWORD] as? String
@@ -48,20 +48,5 @@ internal class ServerSettingsWriter(
             clientCertificateAlias,
             server.extras,
         )
-    }
-
-    @Suppress("TooGenericExceptionCaught", "SwallowedException")
-    private fun convertConnectionSecurity(connectionSecurity: String): ConnectionSecurity {
-        return try {
-            // TODO: Add proper settings validation and upgrade capability for server settings. Once that exists, move
-            //  this code into a SettingsUpgrader.
-            when (connectionSecurity) {
-                "SSL_TLS_OPTIONAL" -> ConnectionSecurity.SSL_TLS_REQUIRED
-                "STARTTLS_OPTIONAL" -> ConnectionSecurity.STARTTLS_REQUIRED
-                else -> ConnectionSecurity.valueOf(connectionSecurity)
-            }
-        } catch (e: Exception) {
-            ConnectionSecurity.SSL_TLS_REQUIRED
-        }
     }
 }
