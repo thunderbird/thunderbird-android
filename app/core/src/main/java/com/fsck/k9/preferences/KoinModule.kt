@@ -25,15 +25,32 @@ val preferencesModule = module {
     } bind GeneralSettingsManager::class
 
     factory { SettingsFileParser() }
+
+    factory { GeneralSettingsValidator() }
+    factory { GeneralSettingsUpgrader() }
+    factory { GeneralSettingsWriter(preferences = get(), generalSettingsManager = get()) }
+
+    factory { AccountSettingsValidator() }
+    factory { AccountSettingsUpgrader() }
+    factory {
+        AccountSettingsWriter(
+            preferences = get(),
+            localFoldersCreator = get(),
+            clock = get(),
+            serverSettingsSerializer = get(),
+            context = get(),
+        )
+    }
+
     factory {
         SettingsImporter(
             settingsFileParser = get(),
-            preferences = get(),
-            generalSettingsManager = get(),
-            localFoldersCreator = get(),
-            serverSettingsSerializer = get(),
-            clock = get(),
-            context = get(),
+            generalSettingsValidator = get(),
+            accountSettingsValidator = get(),
+            generalSettingsUpgrader = get(),
+            accountSettingsUpgrader = get(),
+            generalSettingsWriter = get(),
+            accountSettingsWriter = get(),
         )
     }
 }

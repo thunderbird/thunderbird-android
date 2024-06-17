@@ -1,6 +1,5 @@
 package com.fsck.k9.preferences
 
-import com.fsck.k9.mail.AuthType
 import com.fsck.k9.preferences.SettingsFile.Account
 import com.fsck.k9.preferences.SettingsFile.Contents
 import com.fsck.k9.preferences.SettingsFile.Folder
@@ -238,7 +237,7 @@ private class XmlSettingsParser(
         var host: String? = null
         var port: String? = null
         var connectionSecurity: String? = null
-        var authenticationType: AuthType? = null
+        var authenticationType: String? = null
         var username: String? = null
         var password: String? = null
         var clientCertificateAlias: String? = null
@@ -259,8 +258,7 @@ private class XmlSettingsParser(
                         connectionSecurity = readText()
                     }
                     SettingsExporter.AUTHENTICATION_TYPE_ELEMENT -> {
-                        val text = readText()
-                        authenticationType = AuthType.valueOf(text)
+                        authenticationType = readText()
                     }
                     SettingsExporter.USERNAME_ELEMENT -> {
                         username = readText()
