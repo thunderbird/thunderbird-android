@@ -24,7 +24,9 @@ class ServerSettingsValidatorTest {
 
         val result = validator.validate(contentVersion = 1, server)
 
-        assertThat(result).isEqualTo(VALIDATED_SERVER.copy(password = "password"))
+        assertThat(result).isEqualTo(
+            VALIDATED_SERVER.copy(settings = VALIDATED_SERVER.settings + ("password" to "password")),
+        )
     }
 
     @Test
@@ -33,7 +35,9 @@ class ServerSettingsValidatorTest {
 
         val result = validator.validate(contentVersion = 1, server)
 
-        assertThat(result).isEqualTo(VALIDATED_SERVER.copy(clientCertificateAlias = "alias"))
+        assertThat(result).isEqualTo(
+            VALIDATED_SERVER.copy(settings = VALIDATED_SERVER.settings + ("clientCertificateAlias" to "alias")),
+        )
     }
 
     @Test
@@ -53,7 +57,9 @@ class ServerSettingsValidatorTest {
 
         val result = validator.validate(contentVersion = 1, server)
 
-        assertThat(result).isEqualTo(VALIDATED_SERVER.copy(host = null))
+        assertThat(result).isEqualTo(
+            VALIDATED_SERVER.copy(settings = VALIDATED_SERVER.settings + ("host" to null)),
+        )
     }
 
     // TODO: We currently fall back to a default value of -1, but probably shouldn't
@@ -63,7 +69,9 @@ class ServerSettingsValidatorTest {
 
         val result = validator.validate(contentVersion = 1, server)
 
-        assertThat(result).isEqualTo(VALIDATED_SERVER.copy(port = -1))
+        assertThat(result).isEqualTo(
+            VALIDATED_SERVER.copy(settings = VALIDATED_SERVER.settings + ("port" to -1)),
+        )
     }
 
     // TODO: We currently fall back to a default value of -1, but probably shouldn't
@@ -73,7 +81,9 @@ class ServerSettingsValidatorTest {
 
         val result = validator.validate(contentVersion = 1, server)
 
-        assertThat(result).isEqualTo(VALIDATED_SERVER.copy(port = -1))
+        assertThat(result).isEqualTo(
+            VALIDATED_SERVER.copy(settings = VALIDATED_SERVER.settings + ("port" to -1)),
+        )
     }
 
     // TODO: We currently fall back to a default value of SSL_TLS_REQUIRED, but probably shouldn't
@@ -83,7 +93,9 @@ class ServerSettingsValidatorTest {
 
         val result = validator.validate(contentVersion = 1, server)
 
-        assertThat(result).isEqualTo(VALIDATED_SERVER.copy(connectionSecurity = "SSL_TLS_REQUIRED"))
+        assertThat(result).isEqualTo(
+            VALIDATED_SERVER.copy(settings = VALIDATED_SERVER.settings + ("connectionSecurity" to "SSL_TLS_REQUIRED")),
+        )
     }
 
     // TODO: We currently fall back to a default value of SSL_TLS_REQUIRED, but probably shouldn't
@@ -93,7 +105,9 @@ class ServerSettingsValidatorTest {
 
         val result = validator.validate(contentVersion = 1, server)
 
-        assertThat(result).isEqualTo(VALIDATED_SERVER.copy(connectionSecurity = "SSL_TLS_REQUIRED"))
+        assertThat(result).isEqualTo(
+            VALIDATED_SERVER.copy(settings = VALIDATED_SERVER.settings + ("connectionSecurity" to "SSL_TLS_REQUIRED")),
+        )
     }
 
     @Test
@@ -122,7 +136,9 @@ class ServerSettingsValidatorTest {
 
         val result = validator.validate(contentVersion = 1, server)
 
-        assertThat(result).isEqualTo(VALIDATED_SERVER.copy(username = ""))
+        assertThat(result).isEqualTo(
+            VALIDATED_SERVER.copy(settings = VALIDATED_SERVER.settings + ("username" to "")),
+        )
     }
 
     companion object {
@@ -143,13 +159,15 @@ class ServerSettingsValidatorTest {
 
         private val VALIDATED_SERVER = ValidatedSettings.Server(
             type = "imap",
-            host = "imap.domain.example",
-            port = 993,
-            connectionSecurity = "SSL_TLS_REQUIRED",
-            authenticationType = "PLAIN",
-            username = "user",
-            password = null,
-            clientCertificateAlias = null,
+            settings = mapOf(
+                "host" to "imap.domain.example",
+                "port" to 993,
+                "connectionSecurity" to "SSL_TLS_REQUIRED",
+                "authenticationType" to "PLAIN",
+                "username" to "user",
+                "password" to null,
+                "clientCertificateAlias" to null,
+            ),
             extras = mapOf(
                 "autoDetectNamespace" to "true",
                 "PATH_PREFIX_KEY" to "",

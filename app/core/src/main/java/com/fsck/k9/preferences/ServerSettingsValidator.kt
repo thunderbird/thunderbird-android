@@ -18,16 +18,13 @@ internal class ServerSettingsValidator(
 
         val validatedSettings = Settings.validate(contentVersion, serverSettingsDescriptions.settings, settings, true)
 
+        if (validatedSettings[AUTHENTICATION_TYPE] !is String) {
+            throw InvalidSettingValueException("Missing '$AUTHENTICATION_TYPE' value")
+        }
+
         return ValidatedSettings.Server(
             type = toServerSettingsType(server.type!!),
-            host = validatedSettings[HOST] as? String,
-            port = validatedSettings[PORT] as Int,
-            connectionSecurity = validatedSettings[CONNECTION_SECURITY] as String,
-            authenticationType = validatedSettings[AUTHENTICATION_TYPE] as? String
-                ?: throw InvalidSettingValueException("Missing '$AUTHENTICATION_TYPE' value"),
-            username = validatedSettings[USERNAME] as String,
-            password = validatedSettings[PASSWORD] as? String,
-            clientCertificateAlias = validatedSettings[CLIENT_CERTIFICATE_ALIAS] as? String,
+            settings = validatedSettings,
             extras = server.extras.orEmpty(),
         )
     }

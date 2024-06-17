@@ -4,6 +4,13 @@ import com.fsck.k9.ServerSettingsSerializer
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
+import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.AUTHENTICATION_TYPE
+import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.CLIENT_CERTIFICATE_ALIAS
+import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.CONNECTION_SECURITY
+import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.HOST
+import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.PASSWORD
+import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.PORT
+import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.USERNAME
 
 internal class ServerSettingsWriter(
     private val serverSettingsSerializer: ServerSettingsSerializer,
@@ -19,19 +26,26 @@ internal class ServerSettingsWriter(
     }
 
     private fun createServerSettings(server: ValidatedSettings.Server): ServerSettings {
-        val connectionSecurity = convertConnectionSecurity(server.connectionSecurity)
-        val authenticationType = AuthType.valueOf(server.authenticationType)
-        val password = if (authenticationType == AuthType.XOAUTH2) "" else server.password
+        val validatedSettings = server.settings
+
+        val host = validatedSettings[HOST] as? String
+        val port = validatedSettings[PORT] as Int
+        val connectionSecurity = convertConnectionSecurity(validatedSettings[CONNECTION_SECURITY] as String)
+        val authenticationType = AuthType.valueOf(validatedSettings[AUTHENTICATION_TYPE] as String)
+        val username = validatedSettings[USERNAME] as String
+        val rawPassword = validatedSettings[PASSWORD] as? String
+        val password = if (authenticationType == AuthType.XOAUTH2) "" else rawPassword
+        val clientCertificateAlias = validatedSettings[CLIENT_CERTIFICATE_ALIAS] as? String
 
         return ServerSettings(
             server.type,
-            server.host,
-            server.port,
+            host,
+            port,
             connectionSecurity,
             authenticationType,
-            server.username,
+            username,
             password,
-            server.clientCertificateAlias,
+            clientCertificateAlias,
             server.extras,
         )
     }
