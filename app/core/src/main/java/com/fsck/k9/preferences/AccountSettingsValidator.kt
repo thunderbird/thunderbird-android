@@ -1,17 +1,17 @@
 package com.fsck.k9.preferences
 
-import com.fsck.k9.preferences.ServerTypeConverter.toServerSettingsType
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException
 
 internal class AccountSettingsValidator {
     private val identitySettingsValidator = IdentitySettingsValidator()
     private val folderSettingsValidator = FolderSettingsValidator()
+    private val serverSettingsValidator = ServerSettingsValidator()
 
     fun validate(contentVersion: Int, account: SettingsFile.Account): ValidatedSettings.Account {
         val validatedSettings = AccountSettingsDescriptions.validate(contentVersion, account.settings!!, true)
 
-        val incomingServer = validateIncomingServer(account.incoming)
-        val outgoingServer = validateOutgoingServer(account.outgoing)
+        val incomingServer = validateIncomingServer(contentVersion, account.incoming)
+        val outgoingServer = validateOutgoingServer(contentVersion, account.outgoing)
 
         return ValidatedSettings.Account(
             uuid = account.uuid,
@@ -47,33 +47,19 @@ internal class AccountSettingsValidator {
             }
     }
 
-    private fun validateIncomingServer(incoming: SettingsFile.Server?): ValidatedSettings.Server {
+    private fun validateIncomingServer(contentVersion: Int, incoming: SettingsFile.Server?): ValidatedSettings.Server {
         if (incoming == null) {
             throw InvalidSettingValueException("Missing incoming server settings")
         }
 
-        return validateServerSettings(incoming)
+        return serverSettingsValidator.validate(contentVersion, incoming)
     }
 
-    private fun validateOutgoingServer(outgoing: SettingsFile.Server?): ValidatedSettings.Server {
+    private fun validateOutgoingServer(contentVersion: Int, outgoing: SettingsFile.Server?): ValidatedSettings.Server {
         if (outgoing == null) {
             throw InvalidSettingValueException("Missing outgoing server settings")
         }
 
-        return validateServerSettings(outgoing)
-    }
-
-    private fun validateServerSettings(server: SettingsFile.Server): ValidatedSettings.Server {
-        return ValidatedSettings.Server(
-            type = toServerSettingsType(server.type!!),
-            host = server.host,
-            port = server.port?.toIntOrNull() ?: -1,
-            connectionSecurity = server.connectionSecurity!!,
-            authenticationType = server.authenticationType!!,
-            username = server.username!!,
-            password = server.password,
-            clientCertificateAlias = server.clientCertificateAlias,
-            extras = server.extras.orEmpty(),
-        )
+        return serverSettingsValidator.validate(contentVersion, outgoing)
     }
 }
