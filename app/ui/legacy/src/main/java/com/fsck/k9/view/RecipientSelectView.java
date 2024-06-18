@@ -141,7 +141,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         // Since the recipient chip views are not part of the view hierarchy we need to manually invalidate this
         // RecipientSelectView whenever a contact picture was loaded in order for the image to be drawn.
         RecipientCircleImageView contactPhotoView = view.findViewById(R.id.contact_photo);
-        contactPhotoView.setOnSetImageDrawableListener(this::postInvalidate);
+        contactPhotoView.setOnSetImageDrawableListener(this::redrawTokens);
 
         return view;
     }
@@ -301,6 +301,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         }
 
         invalidate();
+        redrawTokens();
         invalidateCursorPositionHack();
     }
 
@@ -484,6 +485,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         }
 
         invalidate();
+        redrawTokens();
         invalidateCursorPositionHack();
     }
 

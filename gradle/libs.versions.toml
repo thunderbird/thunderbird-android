@@ -90,7 +90,7 @@ safeContentResolver = "1.0.0"
 searchPreference = "v2.3.0"
 spotlessPlugin = "6.25.0"
 timber = "5.0.1"
-tokenautocomplete = "4.0.0-beta01"
+tokenautocomplete = "4.0.0-beta01-k9mail02"
 turbine = "0.13.0"
 xmlpull = "1.0"
 
@@ -223,7 +223,7 @@ robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectr
 safeContentResolver = { module = "de.cketti.safecontentresolver:safe-content-resolver-v21", version.ref = "safeContentResolver" }
 searchPreference = { module = "com.github.ByteHamster:SearchPreference", version.ref = "searchPreference" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
-tokenautocomplete = { module = "com.splitwise:tokenautocomplete", version.ref = "tokenautocomplete" }
+tokenautocomplete = { module = "de.cketti.temp:tokenautocomplete", version.ref = "tokenautocomplete" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 xmlpull = { module = "com.github.cketti:xmlpull-extracted-from-android", version.ref = "xmlpull" }
 
