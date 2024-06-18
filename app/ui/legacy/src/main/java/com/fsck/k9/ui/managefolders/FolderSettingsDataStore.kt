@@ -7,15 +7,15 @@ import com.fsck.k9.mailstore.FolderDetails
 import com.fsck.k9.mailstore.FolderRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
 class FolderSettingsDataStore(
     private val folderRepository: FolderRepository,
     private val account: Account,
     private var folder: FolderDetails,
+    private val saveScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO),
 ) : PreferenceDataStore() {
-    private val saveScope = CoroutineScope(GlobalScope.coroutineContext + Dispatchers.IO)
 
     override fun getBoolean(key: String?, defValue: Boolean): Boolean {
         return when (key) {
@@ -50,15 +50,19 @@ class FolderSettingsDataStore(
             "folder_settings_folder_display_mode" -> {
                 updateFolder(folder.copy(displayClass = FolderClass.valueOf(newValue)))
             }
+
             "folder_settings_folder_sync_mode" -> {
                 updateFolder(folder.copy(syncClass = FolderClass.valueOf(newValue)))
             }
+
             "folder_settings_folder_notify_mode" -> {
                 updateFolder(folder.copy(notifyClass = FolderClass.valueOf(newValue)))
             }
+
             "folder_settings_folder_push_mode" -> {
                 updateFolder(folder.copy(pushClass = FolderClass.valueOf(newValue)))
             }
+
             else -> error("Unknown key: $key")
         }
     }
