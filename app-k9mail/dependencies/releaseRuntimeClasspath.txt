@@ -142,7 +142,6 @@ com.mikepenz:fastadapter-extensions-swipe:5.7.0
 com.mikepenz:fastadapter-extensions-utils:5.7.0
 com.mikepenz:fastadapter:5.7.0
 com.mikepenz:materialdrawer:9.0.2
-com.splitwise:tokenautocomplete:4.0.0-beta01
 com.squareup.moshi:moshi:1.15.1
 com.squareup.okhttp3:okhttp:4.12.0
 com.squareup.okio:okio-jvm:3.9.0
@@ -155,6 +154,7 @@ com.takisoft.preferencex:preferencex:1.1.0
 commons-io:commons-io:2.16.1
 de.cketti.library.changelog:ckchangelog-core:2.0.0-beta02
 de.cketti.safecontentresolver:safe-content-resolver-v21:1.0.0
+de.cketti.temp:tokenautocomplete:4.0.0-beta01-k9mail02
 de.hdodenhof:circleimageview:3.1.0
 io.insert-koin:koin-android:3.5.6
 io.insert-koin:koin-androidx-compose:3.5.6
