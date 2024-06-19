@@ -571,7 +571,6 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
     private class RecipientTokenSpan extends TokenImageSpan {
         private final View view;
-        private boolean initialLayoutPerformed = false;
 
         public RecipientTokenSpan(View view, Recipient recipient) {
             super(view, recipient);
@@ -584,47 +583,12 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         }
 
         @Override
-        public int getSize(@NonNull Paint paint, CharSequence charSequence, int start, int end,
-                @Nullable Paint.FontMetricsInt fontMetricsInt) {
-            if (initialLayoutPerformed && view.isLayoutRequested()) {
-                relayoutView();
-            }
-
-            int size = super.getSize(paint, charSequence, start, end, fontMetricsInt);
-            initialLayoutPerformed = true;
-            return size;
-        }
-
-        @Override
         public void draw(@NonNull Canvas canvas, CharSequence text, int start, int end, float x, int top, int y,
                 int bottom, @NonNull Paint paint) {
-            if (initialLayoutPerformed && view.isLayoutRequested()) {
-                relayoutView();
-            }
-
             super.draw(canvas, text, start, end, x, top, y, bottom, paint);
 
             // Dispatch onPreDraw event so image loading using Glide will work properly.
             view.findViewById(R.id.contact_photo).getViewTreeObserver().dispatchOnPreDraw();
-
-            initialLayoutPerformed = true;
-        }
-
-        // Hack to support layout changes
-        // TODO: Remove once a TokenAutoComplete release includes https://github.com/splitwise/TokenAutoComplete/pull/403
-        private void relayoutView() {
-            int maxViewSpanWidth = getMaxViewSpanWidth();
-
-            int spec = View.MeasureSpec.AT_MOST;
-            if (maxViewSpanWidth == 0) {
-                //If the width is 0, allow the view to choose it's own content size
-                spec = View.MeasureSpec.UNSPECIFIED;
-            }
-            int widthSpec = View.MeasureSpec.makeMeasureSpec(maxViewSpanWidth, spec);
-            int heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-
-            view.measure(widthSpec, heightSpec);
-            view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
         }
     }
 
