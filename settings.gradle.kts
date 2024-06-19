@@ -30,7 +30,6 @@ include(
     ":app:common",
     ":app:ui:base",
     ":app:ui:legacy",
-    ":app:ui:message-list-widget",
     ":app:core",
     ":app:storage",
     ":app:crypto-openpgp",
@@ -69,6 +68,7 @@ include(
 )
 
 include(
+    ":feature:widget:message-list",
     ":feature:widget:unread",
 )
 

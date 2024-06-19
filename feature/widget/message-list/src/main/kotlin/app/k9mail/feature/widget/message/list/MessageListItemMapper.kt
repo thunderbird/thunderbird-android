@@ -1,4 +1,4 @@
-package app.k9mail.ui.widget.list
+package app.k9mail.feature.widget.message.list
 
 import com.fsck.k9.Account
 import com.fsck.k9.controller.MessageReference
@@ -48,6 +48,7 @@ internal class MessageListItemMapper(
         )
     }
 
+    @Suppress("ImplicitDefaultLocale")
     private fun formatDate(date: Long): String {
         calendar.timeInMillis = date
         val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
@@ -56,6 +57,7 @@ internal class MessageListItemMapper(
         return String.format("%d %s", dayOfMonth, month)
     }
 
+    @Suppress("MagicNumber")
     private fun createUniqueId(account: Account, messageId: Long): Long {
         return ((account.accountNumber + 1).toLong() shl 52) + messageId
     }

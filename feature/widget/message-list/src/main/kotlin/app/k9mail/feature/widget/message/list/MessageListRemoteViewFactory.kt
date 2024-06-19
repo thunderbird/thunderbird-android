@@ -1,4 +1,4 @@
-package app.k9mail.ui.widget.list
+package app.k9mail.feature.widget.message.list
 
 import android.content.Context
 import android.graphics.Typeface
@@ -17,6 +17,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import com.fsck.k9.ui.R as UiR
 
+@Suppress("TooManyFunctions")
 internal class MessageListRemoteViewFactory(private val context: Context) : RemoteViewsFactory, KoinComponent {
     private val messageListLoader: MessageListLoader by inject()
 

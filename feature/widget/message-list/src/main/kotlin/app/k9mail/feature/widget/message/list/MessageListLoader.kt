@@ -1,4 +1,4 @@
-package app.k9mail.ui.widget.list
+package app.k9mail.feature.widget.message.list
 
 import com.fsck.k9.Account
 import com.fsck.k9.Account.SortType
@@ -16,6 +16,7 @@ internal class MessageListLoader(
     private val messageHelper: MessageHelper,
 ) {
 
+    @Suppress("TooGenericExceptionCaught")
     fun getMessageList(config: MessageListConfig): List<MessageListItem> {
         return try {
             getMessageListInfo(config)

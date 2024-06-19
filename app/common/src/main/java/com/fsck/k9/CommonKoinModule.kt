@@ -3,9 +3,9 @@ package com.fsck.k9
 import app.k9mail.core.featureflag.FeatureFlagFactory
 import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.core.featureflag.InMemoryFeatureFlagProvider
+import app.k9mail.feature.widget.message.list.messageListWidgetModule
 import app.k9mail.feature.widget.unread.UnreadWidgetUpdateListener
 import app.k9mail.feature.widget.unread.unreadWidgetModule
-import app.k9mail.ui.widget.list.messageListWidgetModule
 import com.fsck.k9.account.newAccountModule
 import com.fsck.k9.backends.backendsModule
 import com.fsck.k9.controller.ControllerExtension

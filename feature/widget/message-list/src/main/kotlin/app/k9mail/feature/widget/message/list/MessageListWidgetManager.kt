@@ -1,4 +1,4 @@
-package app.k9mail.ui.widget.list
+package app.k9mail.feature.widget.message.list
 
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
@@ -33,6 +33,7 @@ class MessageListWidgetManager(
         }
     }
 
+    @Suppress("TooGenericExceptionCaught")
     private fun onMessageListChanged() {
         try {
             triggerMessageListWidgetUpdate()

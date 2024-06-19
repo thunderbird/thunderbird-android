@@ -3,7 +3,7 @@ package com.fsck.k9
 import android.app.Application
 import android.content.res.Configuration
 import android.content.res.Resources
-import app.k9mail.ui.widget.list.MessageListWidgetManager
+import app.k9mail.feature.widget.message.list.MessageListWidgetManager
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.job.WorkManagerConfigurationProvider
 import com.fsck.k9.notification.NotificationChannelManager

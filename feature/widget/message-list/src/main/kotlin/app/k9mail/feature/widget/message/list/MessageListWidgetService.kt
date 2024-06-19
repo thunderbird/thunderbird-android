@@ -1,4 +1,4 @@
-package app.k9mail.ui.widget.list
+package app.k9mail.feature.widget.message.list
 
 import android.content.Intent
 import android.widget.RemoteViewsService
