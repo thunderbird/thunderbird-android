@@ -9,8 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.compose.AndroidFragment
 import app.k9mail.core.ui.compose.common.activity.LocalActivity
-import app.k9mail.core.ui.compose.common.fragment.FragmentView
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.organism.TopAppBar
@@ -60,8 +60,7 @@ private fun SettingsImportContent(
         }
     }
 
-    FragmentView(
-        fragmentFactory = { SettingsImportFragment() },
+    AndroidFragment<SettingsImportFragment>(
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues),
