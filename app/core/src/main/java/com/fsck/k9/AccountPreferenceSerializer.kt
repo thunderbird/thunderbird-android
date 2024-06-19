@@ -124,7 +124,10 @@ class AccountPreferenceSerializer(
             maxPushFolders = storage.getInt("$accountUuid.maxPushFolders", 10)
             isSubscribedFoldersOnly = storage.getBoolean("$accountUuid.subscribedFoldersOnly", false)
             maximumPolledMessageAge = storage.getInt("$accountUuid.maximumPolledMessageAge", -1)
-            maximumAutoDownloadMessageSize = storage.getInt("$accountUuid.maximumAutoDownloadMessageSize", 32768)
+            maximumAutoDownloadMessageSize = storage.getInt(
+                "$accountUuid.maximumAutoDownloadMessageSize",
+                DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE,
+            )
             messageFormat = getEnumStringPref(storage, "$accountUuid.messageFormat", DEFAULT_MESSAGE_FORMAT)
             val messageFormatAuto = storage.getBoolean("$accountUuid.messageFormatAuto", DEFAULT_MESSAGE_FORMAT_AUTO)
             if (messageFormatAuto && messageFormat == MessageFormat.TEXT) {
@@ -597,7 +600,7 @@ class AccountPreferenceSerializer(
             maxPushFolders = 10
             isSubscribedFoldersOnly = false
             maximumPolledMessageAge = -1
-            maximumAutoDownloadMessageSize = 32768
+            maximumAutoDownloadMessageSize = DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE
             messageFormat = DEFAULT_MESSAGE_FORMAT
             isMessageFormatAuto = DEFAULT_MESSAGE_FORMAT_AUTO
             isMessageReadReceipt = DEFAULT_MESSAGE_READ_RECEIPT
@@ -672,5 +675,6 @@ class AccountPreferenceSerializer(
         const val DEFAULT_STRIP_SIGNATURE = true
         const val DEFAULT_REMOTE_SEARCH_NUM_RESULTS = 25
         const val DEFAULT_RINGTONE_URI = "content://settings/system/notification_sound"
+        const val DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE = 131072
     }
 }
