@@ -175,21 +175,6 @@
             android:label="@string/search_action"
             android:exported="false" />
 
-        <!--
-        This component is disabled by default. It will be enabled programmatically after an account has been set up.
-        -->
-        <activity
-            android:name="com.fsck.k9.activity.LauncherShortcuts"
-            android:configChanges="locale"
-            android:label="@string/shortcuts_title"
-            android:enabled="false"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.CREATE_SHORTCUT" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
         <activity
             android:name="com.fsck.k9.activity.UpgradeDatabases"
             android:label="@string/upgrade_databases_title" />
