@@ -7,12 +7,12 @@ import android.content.Intent
 
 class UnreadWidgetUpdater(
     private val context: Context,
-    private val classProvider: UnreadWidgetClassProvider,
+    private val config: UnreadWidgetConfig,
 ) {
     private val appWidgetManager = AppWidgetManager.getInstance(context)
 
     fun updateAll() {
-        val thisWidget = ComponentName(context, classProvider.getUnreadWidgetClass())
+        val thisWidget = ComponentName(context, config.providerClass)
         val widgetIds = appWidgetManager.getAppWidgetIds(thisWidget)
 
         updateWidgets(context, widgetIds)
@@ -23,7 +23,7 @@ class UnreadWidgetUpdater(
     }
 
     private fun updateWidgets(context: Context, widgetIds: IntArray) {
-        val updateIntent = Intent(context, classProvider.getUnreadWidgetClass())
+        val updateIntent = Intent(context, config.providerClass)
         updateIntent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
         updateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, widgetIds)
 
