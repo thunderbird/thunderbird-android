@@ -573,7 +573,7 @@
     <string name="settings_language_label">Язык</string>
     <string name="preference_search_no_results">Настройки не найдены</string>
     <string name="settings_message_theme_selection_label">Тема для писем</string>
-    <string name="settings_message_theme_selection_summary_off">Разрешено выбрать тему сообщения не зависимо от темы приложения.</string>
+    <string name="settings_message_theme_selection_summary_off">Разрешено выбрать тему сообщения независимо от темы приложения.</string>
     <string name="settings_message_theme_selection_summary_on">Фиксированная тема для писем, зависит от выбранной темы приложения.</string>
     <string name="setting_language_system">По умолчанию</string>
     <string name="background_ops_label">Фоновая синхронизация</string>
@@ -643,7 +643,7 @@
     <string name="dialog_confirm_delete_title">Подтвердите удаление</string>
     <string name="dialog_confirm_delete_message">Вы хотите удалить это сообщение?</string>
     <plurals name="dialog_confirm_delete_messages">
-        <item quantity="one">Удалить сообщение?</item>
+        <item quantity="one">Удалить <xliff:g id="message_count">%1$d</xliff:g> сообщение?</item>
         <item quantity="few">Удалить <xliff:g id="message_count">%1$d</xliff:g> сообщения?</item>
         <item quantity="many">Удалить <xliff:g id="message_count">%1$d</xliff:g> сообщений?</item>
         <item quantity="other">Удалить <xliff:g id="message_count">%1$d</xliff:g> сообщений?</item>
@@ -658,7 +658,7 @@
     <string name="dialog_confirm_mark_all_as_read_cancel_button">Нет</string>
     <string name="dialog_confirm_spam_title">Переместить в спам</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">Переместить сообщение в спам?</item>
+        <item quantity="one">Переместить <xliff:g id="message_count">%1$d</xliff:g> сообщение в спам?</item>
         <item quantity="few">Переместить <xliff:g id="message_count">%1$d</xliff:g> сообщения в спам?</item>
         <item quantity="many">Переместить <xliff:g id="message_count">%1$d</xliff:g> сообщений в спам?</item>
         <item quantity="other">Переместить <xliff:g id="message_count">%1$d</xliff:g> сообщений в спам?</item>
@@ -712,7 +712,7 @@
         <item quantity="other">Получение %d результатов</item>
     </plurals>
     <plurals name="remote_search_downloading_limited">
-        <item quantity="one">Получение %1$d из %2$d результатов</item>
+        <item quantity="one">Получение %1$d из %2$d результата</item>
         <item quantity="few">Получение %1$d из %2$d результатов</item>
         <item quantity="many">Получение %1$d из %2$d результатов</item>
         <item quantity="other">Получение %1$d из %2$d результатов</item>
@@ -780,7 +780,7 @@
     <string name="openpgp_sign_only_disable">Отключить</string>
     <string name="openpgp_sign_only_keep_enabled">Не отключать</string>
     <string name="openpgp_dialog_sign_only_title">Режим PGP \"Только подпись\"</string>
-    <string name="openpgp_dialog_sign_only_text">В этом режиме, ключ PGP будет использоваться для создания криптографической подписи к незашифрованному сообщению</string>
+    <string name="openpgp_dialog_sign_only_text">В этом режиме ключ PGP будет использоваться для создания криптографической подписи к незашифрованному сообщению</string>
     <string name="openpgp_dialog_sign_only_plus_verified">Адресат сможет убедиться, что сообщение подлинное и подписано Вашим ключом</string>
     <string name="openpgp_dialog_sign_only_minus_break">Подписи могут повредиться при отправке нескольким адресатам</string>
     <string name="openpgp_dialog_sign_only_minus_attach">Подписи могут отображаться как вложенные файлы \"signature.asc\"</string>
@@ -961,4 +961,10 @@
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Возврат к списку сообщений</string>
     <string name="push_notification_grant_alarm_permission">Нажмите, чтобы дать разрешение.</string>
     <string name="push_notification_state_alarm_permission_missing">Отсутствует разрешение на установку будильников</string>
+    <string name="dialog_openkeychain_info_text">Для сквозного шифрования в требуется приложение OpenKeychain.</string>
+    <string name="default_signature">--
+\nОтправлено с моего Android из <xliff:g id="app_name">%s</xliff:g>. Простите за краткость.</string>
+    <string name="push_info_notification_explanation_text">При использовании push <xliff:g id="app_name">%1$s</xliff:g> поддерживает соединение с почтовым сервером. Android требует отображения постоянного уведомления, пока приложение активно в фоновом режиме. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="account_delete_dlg_instructions_fmt">Учётная запись \"<xliff:g id="account">%s</xliff:g>\" будет удалена из приложения <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="about_title">О приложении <xliff:g id="app_name">%s</xliff:g></string>
 </resources>

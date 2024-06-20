@@ -29,7 +29,7 @@
     <string name="settings_import_outgoing_server_password_hint">Lykilorð sendinga-póstþjóns</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Nota sama lykilorð fyrir sendinga-póstþjóninn</string>
     <string name="settings_import_server_name_format">Heiti póstþjóns: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Til að nota þennan tölvupóstaðgang með K-9 póstinum, þarftu að skrá þig inn og veita forritinu heimild inn á tölvupóstinn þinn.</string>
+    <string name="settings_import_oauth_description">Til að nota þennan tölvupóstaðgang, þarftu að skrá þig inn og veita forritinu heimild inn á tölvupóstinn þinn.</string>
     <string name="settings_import_oauth_sign_in">Skrá inn</string>
     <string name="settings_import_oauth_sign_in_with_google">Skrá inn með Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Hætt við auðkenningu</string>

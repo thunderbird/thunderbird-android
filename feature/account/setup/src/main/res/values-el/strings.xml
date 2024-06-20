@@ -29,8 +29,21 @@
     <string name="account_setup_error_network">Δίκτυο</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Η διεύθυνση email δεν αναγνωρίζεται ως έγκυρη.</string>
     <string name="account_setup_options_email_check_frequency_never">Ποτέ</string>
-    <string name="account_setup_auto_discovery_loading_message">Εύερεση λεπτομεριών email</string>
+    <string name="account_setup_auto_discovery_loading_message">Αναζήτηση ρυθμίσεων…</string>
     <string name="account_setup_options_section_sync_options">Επιλογές συγχρονισμού</string>
     <string name="account_setup_options_show_notifications_label">Εμφάνιση ειδοποιήσεων</string>
     <string name="account_setup_options_section_display_options">Επιλογές εμφάνισης</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Απαιτείται κωδικός</string>
+    <string name="account_setup_special_folders_form_description">Παρακαλώ επέλεξε τους ειδικούς φακέλους για τον λογαριασμό σας</string>
+    <string name="account_setup_special_folders_sent_folder_label">Απεσταλμένα</string>
+    <string name="account_setup_special_folders_spam_folder_label">Ανεπιθύμητα</string>
+    <string name="account_setup_special_folders_success_message">Όλοι οι ειδικοί φάκελοι έχουν ρυθμιστεί αυτόματα από τον server.</string>
+    <string name="account_setup_special_folders_folder_automatic">Αυτόματα (%s)</string>
+    <string name="account_setup_special_folders_trash_folder_label">Απορρίμματα</string>
+    <string name="account_setup_special_folders_folder_none">Κανένας</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Πρόχειρα</string>
+    <string name="account_setup_special_folders_archive_folder_label">Φάκελος αρχειοθέτησης</string>
+    <string name="account_setup_special_folders_loading_message">Φόρτωση της λίστας των φακέλων…</string>
+    <string name="account_setup_special_folders_error_message">Αποτυχία φόρτωσης της λίστας των φακέλων από τον σερβερ</string>
+    <string name="account_setup_options_email_signature_error_blank">Το εμφανιζόμενο όνομα δε μπορεί να μείνει κενό.</string>
 </resources>

@@ -29,7 +29,7 @@
     <string name="settings_import_outgoing_server_password_hint">Utgående serverlösenord</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Använd samma lösenord för utgående server</string>
     <string name="settings_import_server_name_format">Servernamn: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">För att använda detta e-postkonto med K-9 Mail måste du logga in och ge appen åtkomst till dina e-postmeddelanden.</string>
+    <string name="settings_import_oauth_description">För att använda detta e-postkonto måste du logga in och ge appen åtkomst till dina e-postmeddelanden.</string>
     <string name="settings_import_oauth_sign_in">Logga in</string>
     <string name="settings_import_oauth_sign_in_with_google">Logga in med Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Auktoriseringen avbröts</string>

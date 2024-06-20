@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">Starta</string>
     <string name="onboarding_welcome_import_button">Importera inställningar</string>
+    <string name="onboarding_welcome_message">Välkommen till <xliff:g id="app_name">%s</xliff:g>, Android-e-postklienten designad för förbättrad säkerhet, enkel anpassning och sömlös hantering av alla dina e-postkonton.</string>
 </resources>

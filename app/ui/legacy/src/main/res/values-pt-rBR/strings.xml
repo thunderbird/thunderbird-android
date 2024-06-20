@@ -344,7 +344,7 @@
     <string name="account_settings_show_pictures_never">Não</string>
     <string name="account_settings_show_pictures_only_from_contacts">Dos contatos</string>
     <string name="account_settings_show_pictures_always">De qualquer um</string>
-    <string name="account_settings_composition">Enviando e-mails</string>
+    <string name="account_settings_composition">Envio de mensagens</string>
     <string name="account_settings_default_quoted_text_shown_label">Citar a mensagem ao responder</string>
     <string name="account_settings_default_quoted_text_shown_summary">Incluir a mensagem original em sua resposta.</string>
     <string name="account_settings_reply_after_quote_label">Resposta após o texto citado</string>
@@ -955,4 +955,10 @@ Você pode guardar esta mensagem e usá-la como um backup da sua chave secreta. 
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Volte à lista de mensagens</string>
     <string name="push_notification_state_alarm_permission_missing">Falta permissão para agendar alarmes</string>
     <string name="push_notification_grant_alarm_permission">Toque para conceder a permissão.</string>
+    <string name="about_title">Sobre <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="push_info_notification_explanation_text">Ao usar o Push, <xliff:g id="app_name">%1$s</xliff:g> mantém uma conexão ao servidor de e-mail. O Android requer que uma notificação seja mostrada enquanto o app está rodando em segundo plano. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="dialog_openkeychain_info_text">O app OpenKeychain é necessário para ativar o suporte à criptografia de ponta a ponta.</string>
+    <string name="default_signature">--
+\nEnviado de meu dispositivo Android com <xliff:g id="app_name">%s</xliff:g>. Por favor, desculpe minha brevidade.</string>
+    <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\"será removida de <xliff:g id="app_name">%s</xliff:g>.</string>
 </resources>

@@ -1,2 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_certificate_warning_title">सूचना</string>
+    <string name="account_server_certificate_unknown_error_subtitle">प्रमाणपत्र की त्रुटि</string>
+</resources>

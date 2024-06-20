@@ -946,4 +946,10 @@
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Kthehu te lista e mesazheve</string>
     <string name="push_notification_grant_alarm_permission">Për të akorduar leje, prekeni.</string>
     <string name="push_notification_state_alarm_permission_missing">Mungojnë leje për të planifikuar alarme</string>
+    <string name="dialog_openkeychain_info_text">Aplikacioni OpenKeychain është i domosdoshëm për të aktivizuar mbulim fshehtëzimi skaj-më-skaj.</string>
+    <string name="default_signature">--
+\nDërguar nga pajisja ime Android, me <xliff:g id="app_name">%s</xliff:g>. Më ndjeni që i rashë shkurt.</string>
+    <string name="about_title">Mbi <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="account_delete_dlg_instructions_fmt">Llogaria \"<xliff:g id="account">%s</xliff:g>\" do të hiqet nga <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="push_info_notification_explanation_text">Kur përdoret Push, <xliff:g id="app_name">%1$s</xliff:g> mban një lidhje me shërbyesin e postës. Android-i lyp shfaqjen e vazhdueshme të një njoftimi, teksa aplikacioni është aktiv në prapaskenë. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
 </resources>

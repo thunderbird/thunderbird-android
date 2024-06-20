@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">Principià</string>
     <string name="onboarding_welcome_import_button">Impurtà i parametri</string>
+    <string name="onboarding_welcome_message">Benvenuta in <xliff:g id="app_name">%s</xliff:g>, l’appiecazione di messaghjeria per Android, cuncepita per una sicurità aumentata, una persunalizazione faciule è una ghjestione senza straziu di tutti i vostri conti di messaghjeria.</string>
 </resources>
