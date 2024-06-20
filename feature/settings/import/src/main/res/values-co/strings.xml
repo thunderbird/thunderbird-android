@@ -27,7 +27,7 @@
         <item quantity="other">Per pudè impiegà u contu \"<xliff:g id="account">%s</xliff:g>\" ci vole à pruvede e parolle d’intesa di u servitore.</item>
     </plurals>
     <string name="settings_import_server_name_format">Nome di u servitore : <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Per impiegà stu contu cù K-9 Mail, ci vole à cunnettesi è cuncede à l’appiecazione l’accessu à a vostra messaghjeria.</string>
+    <string name="settings_import_oauth_description">Per impiegà stu contu, ci vole à cunnettesi è cuncede à l’appiecazione l’accessu à a vostra messaghjeria.</string>
     <string name="settings_import_oauth_sign_in">Cunnettesi</string>
     <string name="settings_import_oauth_sign_in_with_google">Cunnettesi cù Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Autorizazione abbandunata</string>

@@ -958,4 +958,12 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <string name="general_settings_post_mark_as_unread_action_stay">Zůstat na současné zprávě</string>
     <string name="general_settings_post_mark_as_unread_action_title">Po označení zprávy jako nepřečtené</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Vrátit se na seznam zpráv</string>
+    <string name="account_delete_dlg_instructions_fmt">Účet \"<xliff:g id="account">%s</xliff:g>\" bude odstraněn z <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="push_notification_state_alarm_permission_missing">Chybí oprávnění pro nastavování alarmů</string>
+    <string name="dialog_openkeychain_info_text">Pro šifrování mezi odesílatelem a příjemcem je potřeba aplikace OpenKeychain.</string>
+    <string name="about_title">O aplikaci <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="push_info_notification_explanation_text">Při používání Push udržuje <xliff:g id="app_name">%1$s</xliff:g> spojení s e-mailovým serverem. Je-li aplikace aktivní na pozadí, Systém Android vyžaduje zobrazení průběžného oznámení. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="push_notification_grant_alarm_permission">Klepnutím udělíte oprávnění.</string>
+    <string name="default_signature">--
+\nOdesláno aplikací <xliff:g id="app_name">%s</xliff:g> ze systému Android. Omluvte prosím moji stručnost.</string>
 </resources>

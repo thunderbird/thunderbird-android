@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">Começar</string>
     <string name="onboarding_welcome_import_button">Importar configurações</string>
+    <string name="onboarding_welcome_message">Bem-vindo ao <xliff:g id="app_name">%s</xliff:g>, um cliente de e-mail para Android desenhado para melhor segurança, customização fácil, e gerenciamento intuitivo de todas as suas contas de e-mail.</string>
 </resources>

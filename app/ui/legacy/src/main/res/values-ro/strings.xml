@@ -954,4 +954,10 @@ Poți păstra acest mesaj și să îl folosești drept copie de siguranță a ch
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Revenire la lista de mesaje</string>
     <string name="push_notification_state_alarm_permission_missing">Lipsește permisiunea de a programa alarme</string>
     <string name="push_notification_grant_alarm_permission">Atinge pentru a acorda permisiunea.</string>
+    <string name="dialog_openkeychain_info_text">Aplicația OpenKeychain este necesară pentru a activa suportul pentru criptarea end-to-end.</string>
+    <string name="push_info_notification_explanation_text">Când utilizezi Push, <xliff:g id="app_name">%1$s</xliff:g> menține o conexiune la serverul de e-mail. Android necesită afișarea unei notificări în curs de desfășurare în timp ce aplicația este activă în fundal. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="default_signature">--
+\nTrimis de pe dispozitivul meu Android cu <xliff:g id="app_name">%s</xliff:g>. Vă rog să-mi scuzați concizia.</string>
+    <string name="account_delete_dlg_instructions_fmt">Contul „<xliff:g id="account">%s</xliff:g>” va fi eliminat din <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="about_title">Despre <xliff:g id="app_name">%s</xliff:g></string>
 </resources>

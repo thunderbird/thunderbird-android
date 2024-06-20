@@ -30,7 +30,7 @@
     <string name="settings_import_outgoing_server_password_hint">Parola serverului de expediere</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Folosește aceeași parolă pentru serverul de expediere</string>
     <string name="settings_import_server_name_format">Nume server: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Pentru a utiliza acest cont de e-mail cu K-9 Mail, trebuie să te conectezi și să acorzi aplicației acces la e-mailuri.</string>
+    <string name="settings_import_oauth_description">Pentru a utiliza acest cont de e-mail, trebuie să te conectezi și să acorzi aplicației acces la e-mailuri.</string>
     <string name="settings_import_oauth_sign_in">Conectează-te</string>
     <string name="settings_import_oauth_sign_in_with_google">Conectează-te cu Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Autorizație anulată</string>

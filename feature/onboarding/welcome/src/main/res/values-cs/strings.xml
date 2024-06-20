@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">Začít</string>
     <string name="onboarding_welcome_import_button">Importovat nastavení</string>
+    <string name="onboarding_welcome_message">Vítejte v <xliff:g id="app_name">%s</xliff:g>, e-mailovém klientu pro Android navrženém pro bezpečnost, snadné přizpůsobení a jednotnou správu všech vašich e-mailových účtů.</string>
 </resources>

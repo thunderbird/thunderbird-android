@@ -884,4 +884,10 @@
     <string name="clipboard_label_name_and_email_address">Nome è indirizzu elettronicu</string>
     <string name="message_list_content_description_unread_prefix">à leghje, %s</string>
     <string name="background_work_notification_remove_account">Cacciatura di u contu…</string>
+    <string name="account_delete_dlg_instructions_fmt">U contu \"<xliff:g id="account">%s</xliff:g>\" serà cacciatu da <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="push_info_notification_explanation_text">Quandu s’impiegheghja a catapughjata, <xliff:g id="app_name">%1$s</xliff:g> mantene una cunnessione à u servitore di messaghjeria. Android richiede l’affissera d’una nutificazione quandu l’appiecazione hè attiva in tacca di sfondulu. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="default_signature">--
+\nMandatu da u mo apparechju Android cù <xliff:g id="app_name">%s</xliff:g>. Scusate a mo curtezza.</string>
+    <string name="dialog_openkeychain_info_text">L’appiecazione OpenKeychain hè richiesta per permette l’adopru di a cifratura da un capu à l\'altru.</string>
+    <string name="about_title">Apprupositu di <xliff:g id="app_name">%s</xliff:g></string>
 </resources>

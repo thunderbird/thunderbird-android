@@ -949,4 +949,5 @@
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Retourner sur la liste des courriels</string>
     <string name="push_notification_state_alarm_permission_missing">Il manque une autorisation pour programmer des alarmes</string>
     <string name="push_notification_grant_alarm_permission">Touchez pour accorder l’autorisation.</string>
+    <string name="about_title">À propos de <xliff:g id="app_name">%s</xliff:g></string>
 </resources>

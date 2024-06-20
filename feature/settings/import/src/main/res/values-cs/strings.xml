@@ -31,7 +31,7 @@
     <string name="settings_import_outgoing_server_password_hint">Heslo pro server pro odchozí</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Použít stejné heslo jako pro server pro odchozí</string>
     <string name="settings_import_server_name_format">Název serveru: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Pokud chcete tento e-mailový účet používat v K-9 mail, je třeba se přihlásit a udělit přístup k e-mailům.</string>
+    <string name="settings_import_oauth_description">Pokud chcete tento e-mailový účet používat, je třeba se přihlásit a udělit přístup k e-mailům.</string>
     <string name="settings_import_oauth_sign_in">Přihlásit se</string>
     <string name="settings_import_oauth_sign_in_with_google">Přihlásit se prostřednictvím Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Ověření zrušeno</string>
