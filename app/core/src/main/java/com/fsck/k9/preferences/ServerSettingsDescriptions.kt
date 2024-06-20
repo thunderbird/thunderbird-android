@@ -5,6 +5,7 @@ import com.fsck.k9.preferences.Settings.SettingsDescription
 import com.fsck.k9.preferences.Settings.SettingsUpgrader
 import com.fsck.k9.preferences.Settings.StringSetting
 import com.fsck.k9.preferences.upgrader.ServerSettingsUpgraderTo92
+import com.fsck.k9.preferences.upgrader.ServerSettingsUpgraderTo94
 import java.util.TreeMap
 
 /**
@@ -51,6 +52,14 @@ internal class ServerSettingsDescriptions {
                         "LOGIN",
                     ),
                 ),
+                94 to NoDefaultStringEnumSetting(
+                    values = setOf(
+                        "PLAIN",
+                        "CRAM_MD5",
+                        "EXTERNAL",
+                        "XOAUTH2",
+                    ),
+                ),
             ),
             USERNAME to versions(
                 1 to StringSetting(""),
@@ -67,6 +76,7 @@ internal class ServerSettingsDescriptions {
     val upgraders: Map<Int, SettingsUpgrader> by lazy {
         mapOf(
             92 to ServerSettingsUpgraderTo92(),
+            94 to ServerSettingsUpgraderTo94(),
         )
     }
 
