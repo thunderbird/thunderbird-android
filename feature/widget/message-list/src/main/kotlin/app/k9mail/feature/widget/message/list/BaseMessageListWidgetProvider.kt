@@ -15,7 +15,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import com.fsck.k9.ui.R as UiR
 
-open class MessageListWidgetProvider : AppWidgetProvider(), KoinComponent {
+abstract class BaseMessageListWidgetProvider : AppWidgetProvider(), KoinComponent {
     private val messageListWidgetManager: MessageListWidgetManager by inject()
 
     override fun onEnabled(context: Context) {
