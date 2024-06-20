@@ -1007,10 +1007,6 @@
     <string name="crypto_no_provider_button">Go to Settings</string>
 
     <string name="mail_list_widget_text">K-9 Message List</string>
-    <!-- Displayed in the the message list widget when the app hasn't had a chance to send content to it yet -->
-    <string name="message_list_widget_initializing">Loading…</string>
-    <!-- Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough -->
-    <string name="message_list_widget_list_item_loading">Loading…</string>
 
     <string name="openpgp_enabled_error_title">Encryption not possible</string>
     <string name="openpgp_enabled_error_msg">Some of the selected recipients don\'t support this feature!</string>

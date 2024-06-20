@@ -808,9 +808,7 @@
     <string name="crypto_no_provider_button">Ayarlara Git</string>
     <string name="mail_list_widget_text">K-9 İleti Listesi</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
-    <string name="message_list_widget_initializing">Yükleniyor…</string>
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
-    <string name="message_list_widget_list_item_loading">Yükleniyor…</string>
     <string name="openpgp_enabled_error_title">Şifreleme yapılamaz</string>
     <string name="openpgp_enabled_error_msg">Seçilen bazı alıcılar bu özelliği desteklemiyor!</string>
     <string name="enable_encryption">Şifreleme etkin</string>

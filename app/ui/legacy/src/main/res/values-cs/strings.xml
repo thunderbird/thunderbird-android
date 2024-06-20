@@ -835,9 +835,7 @@
     <string name="crypto_no_provider_button">Přejít do nastavení</string>
     <string name="mail_list_widget_text">Seznam zpráv K-9</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
-    <string name="message_list_widget_initializing">Načítání…</string>
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
-    <string name="message_list_widget_list_item_loading">Načítání…</string>
     <string name="openpgp_enabled_error_title">Šifrování není možné</string>
     <string name="openpgp_enabled_error_msg">Někteří ze zvolených příjemců nepodporují tuto funkci!</string>
     <string name="enable_encryption">Zapnout šifrování</string>

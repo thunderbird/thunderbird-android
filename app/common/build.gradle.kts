@@ -4,7 +4,6 @@ plugins {
 
 dependencies {
     implementation(projects.app.ui.legacy)
-    implementation(projects.app.ui.messageListWidget)
     implementation(projects.app.core)
     implementation(projects.app.storage)
     implementation(projects.app.cryptoOpenpgp)
@@ -17,7 +16,9 @@ dependencies {
     implementation(projects.feature.account.setup)
     implementation(projects.feature.account.edit)
     implementation(projects.feature.settings.import)
+
     implementation(projects.feature.widget.unread)
+    implementation(projects.feature.widget.messageList)
 
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)

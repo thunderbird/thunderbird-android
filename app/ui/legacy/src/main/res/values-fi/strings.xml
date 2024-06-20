@@ -821,9 +821,7 @@
     <string name="crypto_no_provider_button">Siirry asetuksiin</string>
     <string name="mail_list_widget_text">K-9-viestiluettelo</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
-    <string name="message_list_widget_initializing">Ladataan…</string>
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
-    <string name="message_list_widget_list_item_loading">Ladataan…</string>
     <string name="openpgp_enabled_error_title">Salaus ei ole mahdollista</string>
     <string name="openpgp_enabled_error_msg">Jotkut valitut vastaanottajat eivät tue tätä ominaisuutta!</string>
     <string name="enable_encryption">Käytä salausta</string>

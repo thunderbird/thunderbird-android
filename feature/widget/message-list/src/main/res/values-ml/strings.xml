@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="message_list_widget_compose_action">രചിക്കുക</string>
+    <string name="message_list_widget_list_item_loading">ലോഡുചെയ്യുന്നു…</string>
+    <string name="message_list_widget_initializing">ലോഡുചെയ്യുന്നു…</string>
+    <string name="message_list_widget_inbox_title">ഏകീകൃത ഇൻ‌ബോക്സ്</string>
+</resources>

@@ -781,9 +781,7 @@
     <string name="crypto_no_provider_button">ക്രമീകരണങ്ങളിലേക്ക് പോകുക</string>
     <string name="mail_list_widget_text">കെ-9 സന്ദേശ പട്ടിക</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
-    <string name="message_list_widget_initializing">ലോഡുചെയ്യുന്നു…</string>
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
-    <string name="message_list_widget_list_item_loading">ലോഡുചെയ്യുന്നു…</string>
     <string name="openpgp_enabled_error_title">എൻക്രിപ്ഷൻ സാധ്യമല്ല</string>
     <string name="openpgp_enabled_error_msg">തിരഞ്ഞെടുത്ത ചില സ്വീകർത്താക്കൾ ഈ സവിശേഷതയെ പിന്തുണയ്ക്കുന്നില്ല!</string>
     <string name="enable_encryption">എൻക്രിപ്ഷൻ പ്രാപ്തമാക്കുക</string>

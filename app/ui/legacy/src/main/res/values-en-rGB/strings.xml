@@ -741,7 +741,6 @@
     <string name="crypto_msg_title_encrypted_signed_e2e">End-to-End encrypted</string>
     <string name="message_list_content_description_unread_prefix">unread, %s</string>
     <string name="general_settings_title">General settings</string>
-    <string name="message_list_widget_initializing">Loading…</string>
     <string name="generic_loading_error">An error occurred while loading the data</string>
     <string name="error_sign_only_no_encryption">Encryption unavailable in sign-only mode!</string>
     <string name="webview_contextmenu_link_text_clipboard_label">Link text</string>
@@ -878,7 +877,6 @@
     <string name="upgrade_databases_title">Upgrading databases</string>
     <string name="swipe_action_mark_as_read">Mark read</string>
     <string name="push_notification_state_wait_background_sync">Sleeping until background sync is allowed</string>
-    <string name="message_list_widget_list_item_loading">Loading…</string>
     <string name="openpgp_sign_only_keep_enabled">Keep Enabled</string>
     <string name="webview_contextmenu_image_view_action">View image</string>
     <string name="action_add_to_contacts">Add to contacts</string>

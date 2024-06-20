@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="message_list_widget_compose_action">Састави</string>
+    <string name="message_list_widget_list_item_loading">Учитавам…</string>
+    <string name="message_list_widget_initializing">Учитавам…</string>
+    <string name="message_list_widget_inbox_title">Обједињено сандуче</string>
+</resources>

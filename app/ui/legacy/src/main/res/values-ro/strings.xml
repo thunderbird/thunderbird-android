@@ -828,9 +828,7 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
     <string name="crypto_no_provider_button">Mergi la Setări</string>
     <string name="mail_list_widget_text">Listă mesaje K-9</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
-    <string name="message_list_widget_initializing">Se încarcă…</string>
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
-    <string name="message_list_widget_list_item_loading">Se încarcă…</string>
     <string name="openpgp_enabled_error_title">Criptarea nu este posibilă</string>
     <string name="openpgp_enabled_error_msg">Unii dintre destinatarii selectați nu suportă această facilitate!</string>
     <string name="enable_encryption">Activează criptarea</string>

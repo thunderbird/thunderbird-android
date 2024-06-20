@@ -831,9 +831,7 @@
     <string name="crypto_no_provider_button">Vai alle impostazioni</string>
     <string name="mail_list_widget_text">Lista messaggi di K-9</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
-    <string name="message_list_widget_initializing">Caricamento…</string>
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
-    <string name="message_list_widget_list_item_loading">Caricamento…</string>
     <string name="openpgp_enabled_error_title">Criptatura non possibile</string>
     <string name="openpgp_enabled_error_msg">Alcuni dei destinatari selezionati non supportano questa funzionalità!</string>
     <string name="enable_encryption">Abilita criptatura</string>

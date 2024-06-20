@@ -23,7 +23,7 @@ val unreadWidgetModule = module {
     single {
         UnreadWidgetUpdater(
             context = get(),
-            classProvider = get(),
+            config = get(),
         )
     }
     single { UnreadWidgetUpdateListener(unreadWidgetUpdater = get()) }

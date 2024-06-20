@@ -699,7 +699,6 @@
     <string name="messageview_decrypt_retry">Thử lại</string>
     <string name="messageview_decrypt_incomplete">Tin nhắn mã hóa bắt buộc tải xuống để giải mã.</string>
     <string name="recipient_error_non_ascii">Ký tự đặc biệt không được hỗ trợ!</string>
-    <string name="message_list_widget_list_item_loading">Đang tải…</string>
     <string name="openpgp_enabled_error_back">Quay lại</string>
     <string name="openpgp_enabled_error_disable">Hủy kích hoạt Mã hóa</string>
     <string name="openpgp_encryption">Mã hóa OpenPGP</string>
@@ -810,7 +809,6 @@
     <string name="message_progress_text">Đang tải…</string>
     <string name="messageview_crypto_error_title">Lỗi giải mã email</string>
     <string name="recipient_error_parse_failed">Lỗi xử lý địa chỉ!</string>
-    <string name="message_list_widget_initializing">Đang tải…</string>
     <string name="openpgp_enabled_error_title">Không thể mã hóa</string>
     <string name="openpgp_description_text1">Việc mã hóa tin nhắn đảm bảo chúng chỉ được đọc bởi đúng người nhận, và không một ai khác.</string>
     <string name="openpgp_description_text3">Việc mã hóa chỉ khả thi nếu tất cả người nhận đều hỗ trợ, và họ phải gửi bạn một email trước đó.</string>
