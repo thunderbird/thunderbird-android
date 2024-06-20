@@ -15,13 +15,7 @@ interface ValidatedSettings {
 
     data class Server(
         val type: String,
-        val host: String?,
-        val port: Int,
-        val connectionSecurity: String,
-        val authenticationType: String,
-        val username: String,
-        val password: String?,
-        val clientCertificateAlias: String?,
+        val settings: InternalSettingsMap,
         val extras: Map<String, String?>,
     )
 

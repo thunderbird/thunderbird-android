@@ -1,6 +1,10 @@
 package com.fsck.k9.preferences
 
 import com.fsck.k9.helper.mapCollectionToSet
+import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.AUTHENTICATION_TYPE
+import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.HOST
+import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.PASSWORD
+import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.USERNAME
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException
 import java.io.InputStream
 import timber.log.Timber
@@ -151,20 +155,25 @@ class SettingsImporter internal constructor(
         val accountMapping = accountSettingsWriter.write(currentAccount)
 
         val incoming = currentAccount.incoming
-        val incomingServerName = incoming.host
+        val incomingServerName = incoming.settings[HOST] as? String
+        val incomingAuthenticationType = incoming.settings[AUTHENTICATION_TYPE] as String
+        val incomingPassword = incoming.settings[PASSWORD] as? String
         val incomingPasswordNeeded =
-            incoming.authenticationType != "EXTERNAL" && incoming.authenticationType != "XOAUTH2" &&
-                incoming.password.isNullOrEmpty()
+            incomingAuthenticationType != "EXTERNAL" && incomingAuthenticationType != "XOAUTH2" &&
+                incomingPassword.isNullOrEmpty()
 
-        var authorizationNeeded = incoming.authenticationType == "XOAUTH2"
+        var authorizationNeeded = incomingAuthenticationType == "XOAUTH2"
 
         val outgoing = currentAccount.outgoing
-        val outgoingServerName = outgoing.host
+        val outgoingServerName = outgoing.settings[HOST] as? String
+        val outgoingAuthenticationType = outgoing.settings[AUTHENTICATION_TYPE] as String
+        val outgoingUsername = outgoing.settings[USERNAME] as String
+        val outgoingPassword = outgoing.settings[PASSWORD] as? String
         val outgoingPasswordNeeded =
-            outgoing.authenticationType != "EXTERNAL" && outgoing.authenticationType != "XOAUTH2" &&
-                outgoing.username.isNotEmpty() && outgoing.password.isNullOrEmpty()
+            outgoingAuthenticationType != "EXTERNAL" && outgoingAuthenticationType != "XOAUTH2" &&
+                outgoingUsername.isNotEmpty() && outgoingPassword.isNullOrEmpty()
 
-        authorizationNeeded = authorizationNeeded || outgoing.authenticationType == "XOAUTH2"
+        authorizationNeeded = authorizationNeeded || outgoingAuthenticationType == "XOAUTH2"
 
         return AccountDescriptionPair(
             accountMapping.first,
