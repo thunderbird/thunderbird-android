@@ -30,7 +30,7 @@
             android:layout_width="56dp"
             android:layout_height="match_parent"
             android:background="?android:attr/selectableItemBackground"
-            android:contentDescription="@string/compose_action"
+            android:contentDescription="@string/message_list_widget_compose_action"
             android:scaleType="center"
             android:src="@drawable/ic_edit" />
 

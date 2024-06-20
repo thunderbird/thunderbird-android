@@ -741,9 +741,7 @@
     <string name="crypto_no_provider_button">Idi u Postavke</string>
     <string name="mail_list_widget_text">K-9 Popis Poruka</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
-    <string name="message_list_widget_initializing">Učitavam…</string>
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
-    <string name="message_list_widget_list_item_loading">Učitavam…</string>
     <string name="openpgp_enabled_error_title">Šifriranje nije moguće</string>
     <string name="enable_encryption">Uključi šifriranje</string>
     <string name="disable_encryption">Onemogući šifriranje</string>

@@ -760,9 +760,7 @@
     <string name="crypto_no_provider_button">Към настройки</string>
     <string name="mail_list_widget_text">K-9 списък със собщения</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
-    <string name="message_list_widget_initializing">Зареждане…</string>
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
-    <string name="message_list_widget_list_item_loading">Зареждане…</string>
     <string name="openpgp_enabled_error_title">Криптирането е невъзможно</string>
     <string name="openpgp_enabled_error_msg">Някои от избраните получатели не поддържат тази функция!</string>
     <string name="enable_encryption">Включване на криптирането</string>

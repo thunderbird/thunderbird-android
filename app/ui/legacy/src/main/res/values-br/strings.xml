@@ -737,9 +737,7 @@
     <string name="crypto_no_provider_button">Mont d\'an arventennoù</string>
     <string name="mail_list_widget_text">Roll kemennadennoù K-9</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
-    <string name="message_list_widget_initializing">O kargañ…</string>
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
-    <string name="message_list_widget_list_item_loading">O kargañ…</string>
     <string name="openpgp_enabled_error_title">N’eo ket posupl enrinegañ</string>
     <string name="openpgp_enabled_error_msg">Ul lodenn eus an degemererien ne skoront ket ar c’heweriuster-mañ!</string>
     <string name="enable_encryption">Gweredekaat an enrinegañ</string>

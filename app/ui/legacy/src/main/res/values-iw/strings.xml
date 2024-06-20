@@ -757,7 +757,6 @@
     <string name="crypto_no_provider_message">הדוא\"ל הזה הוצפן עם OpenPGP.
 \nעל מנת לקרוא אותו, עליך להתקין ולהגדיר יישומון OpenPGP תואם.</string>
     <string name="mail_list_widget_text">רשימת הודעות K-9</string>
-    <string name="message_list_widget_initializing">טוען…</string>
     <string name="openpgp_enabled_error_title">הצפנה לא אפשרית</string>
     <string name="openpgp_description_text3">הצפנה תופיע רק אם היא נתמכת ע\"י כל הנמענים, והם שלחו לך דוא\"ל בעבר.</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">הגדרת התראות שגיאה ומצב</string>
@@ -867,7 +866,6 @@
     <string name="crypto_msg_encrypted_incomplete">חובה להוריד הודעה בשלמותה עבור פענוח</string>
     <string name="crypto_msg_encrypted_sign_unknown">ממפתח קצה לקצה לא מוכר</string>
     <string name="crypto_msg_encrypted_no_provider">אך לא מוגדר אף יישומון הצפנה (crypto app)</string>
-    <string name="message_list_widget_list_item_loading">טוען…</string>
     <string name="openpgp_enabled_error_back">אחורה</string>
     <string name="openpgp_enabled_error_disable">בטל הצפנה</string>
     <string name="account_settings_upload_sent_messages_summary">לאחר השליחה העלה הודעות לתיקיית פריטים שנשלחו</string>

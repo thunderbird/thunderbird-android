@@ -757,9 +757,7 @@
     <string name="crypto_no_provider_button">Pergi ke Pengaturan</string>
     <string name="mail_list_widget_text">Daftar pesan K-9</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
-    <string name="message_list_widget_initializing">Memuat…</string>
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
-    <string name="message_list_widget_list_item_loading">Memuat…</string>
     <string name="openpgp_enabled_error_title">Enkripsi tidak mungkin dilakukan</string>
     <string name="openpgp_enabled_error_msg">Beberapa penerima yang dipilih tidak mendukung fitur ini!</string>
     <string name="enable_encryption">Aktifkan Enkripsi</string>

@@ -718,9 +718,7 @@
     <string name="crypto_no_provider_message">Táto správa bola zašifrovaná pomocou OpenPGP\nJe potrebné nakonfigurovať kompatibilnú OpenPGP aplikáciu.</string>
     <string name="mail_list_widget_text">Zoznam správ K-9</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
-    <string name="message_list_widget_initializing">Načítavam…</string>
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
-    <string name="message_list_widget_list_item_loading">Načítavam…</string>
     <string name="openpgp_enabled_error_back">Späť</string>
     <string name="general_settings_title">Všeobecné nastavenia</string>
     <!--permissions-->

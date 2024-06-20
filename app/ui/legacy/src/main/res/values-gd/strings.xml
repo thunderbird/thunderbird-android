@@ -747,9 +747,7 @@
     <string name="crypto_no_provider_button">Tagh aplacaid OpenPGP</string>
     <string name="mail_list_widget_text">Liosta theachdaireachdan puist</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
-    <string name="message_list_widget_initializing">’Ga luchdadh…</string>
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
-    <string name="message_list_widget_list_item_loading">’Ga luchdadh…</string>
     <string name="openpgp_enabled_error_title">Cha ghabh a chrioptachadh</string>
     <string name="openpgp_enabled_error_msg">Cha chuir gach faightear a thagh thu taic ris a’ ghleus seo!</string>
     <string name="enable_encryption">Cuir crioptachadh an comas</string>

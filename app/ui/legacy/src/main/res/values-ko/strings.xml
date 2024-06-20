@@ -681,9 +681,7 @@
     <string name="unsigned_text_divider_label">서명되지 않은 글</string>
     <string name="crypto_no_provider_button">설정으로 움직이기</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
-    <string name="message_list_widget_initializing">로딩 중…</string>
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
-    <string name="message_list_widget_list_item_loading">로딩 중…</string>
     <string name="openpgp_enabled_error_title">암호화가 불가능합니다</string>
     <string name="openpgp_enabled_error_msg">선택된 몇몇 받는 사람들은 이 기능을 지원하지 않습니다!</string>
     <string name="enable_encryption">암호화 사용</string>

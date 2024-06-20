@@ -756,7 +756,6 @@
     <string name="locked_attach_unencrypted">Sta parte ùn hè stata micca cifrata è puderia ùn esse sicura.</string>
     <string name="messageview_decrypt_cancelled">A dicifratura hè stata abbandunata.</string>
     <string name="account_settings_crypto_hide_sign_only_off">Tutte e segnature seranu affissate</string>
-    <string name="message_list_widget_initializing">Caricamentu…</string>
     <string name="openpgp_description_text1">A cifratura di i messaghji assicureghja ch’elli pudenu esse letti solu da u destinatariu, è da altrunimu.</string>
     <string name="openpgp_enabled_error_disable">Disattivà a cifratura</string>
     <string name="openpgp_encryption">Cifratura OpenPGP</string>
@@ -807,7 +806,6 @@
     <string name="messageview_decrypt_retry">Pruvà torna</string>
     <string name="messageview_decrypt_incomplete">U messaghju cifratu deve esse scaricatu per pudè esse dicifratu.</string>
     <string name="error_sign_only_no_encryption">A cifratura hè indispunibule in u modu « sign-only » !</string>
-    <string name="message_list_widget_list_item_loading">Caricamentu…</string>
     <string name="account_settings_crypto_prefer_encrypt">Modu mutuale di cifratura autumatica</string>
     <string name="dialog_autocrypt_mutual_description_2">S’è u speditore è i destinatarii attivanu u modu mutuale, a cifratura serà attivata in modu predefinitu.</string>
     <string name="dialog_openkeychain_info_title">Alcuna appiecazione OpenPGP ùn hè installata</string>

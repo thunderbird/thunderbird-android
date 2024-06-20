@@ -446,9 +446,7 @@
     <string name="crypto_msg_cancelled">Meldinga er kryptert, men avkrypteringa vart avbroten.</string>
     <string name="message_progress_text">Lastar …</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
-    <string name="message_list_widget_initializing">Lastar …</string>
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
-    <string name="message_list_widget_list_item_loading">Lastar …</string>
     <string name="general_settings_title">Generelle innstilingar</string>
     <!--permissions-->
     <!--Name of the swipe action to select a message. Try to keep it short.-->

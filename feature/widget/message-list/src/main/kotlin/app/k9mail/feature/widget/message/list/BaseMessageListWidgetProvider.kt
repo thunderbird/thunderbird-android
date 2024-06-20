@@ -13,7 +13,6 @@ import com.fsck.k9.activity.MessageList.Companion.intentDisplaySearch
 import com.fsck.k9.search.SearchAccount.Companion.createUnifiedInboxAccount
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import com.fsck.k9.ui.R as UiR
 
 abstract class BaseMessageListWidgetProvider : AppWidgetProvider(), KoinComponent {
     private val messageListWidgetManager: MessageListWidgetManager by inject()
@@ -35,7 +34,7 @@ abstract class BaseMessageListWidgetProvider : AppWidgetProvider(), KoinComponen
     private fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
         val views = RemoteViews(context.packageName, R.layout.message_list_widget_layout)
 
-        views.setTextViewText(R.id.folder, context.getString(UiR.string.integrated_inbox_title))
+        views.setTextViewText(R.id.folder, context.getString(R.string.message_list_widget_inbox_title))
 
         val intent = Intent(context, MessageListWidgetService::class.java)
         views.setRemoteAdapter(R.id.listView, intent)
