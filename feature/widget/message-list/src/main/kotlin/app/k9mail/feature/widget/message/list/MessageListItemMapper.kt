@@ -57,8 +57,11 @@ internal class MessageListItemMapper(
         return String.format("%d %s", dayOfMonth, month)
     }
 
-    @Suppress("MagicNumber")
     private fun createUniqueId(account: Account, messageId: Long): Long {
-        return ((account.accountNumber + 1).toLong() shl 52) + messageId
+        return ((account.accountNumber + 1).toLong() shl ACCOUNT_NUMBER_BIT_SHIFT) + messageId
+    }
+
+    private companion object {
+        const val ACCOUNT_NUMBER_BIT_SHIFT = 52
     }
 }
