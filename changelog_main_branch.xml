@@ -5,6 +5,16 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.902" versioncode="39002" date="2024-06-21">
+        <change>Changed a lot of internals to migrate to Material 3. Please note that the Material 3 UI is still in an early state.</change>
+        <change>Changed the order of toolbar actions in the message view to match the order in multi-select mode</change>
+        <change>Changed default value for "Fetch messages up to" to 128KiB</change>
+        <change>Fixed bug where toolbar icons were displayed in the wrong color after performing a swipe action</change>
+        <change>Fixed crash when cutting email addresses from a recipient field when composing a message</change>
+        <change>Fixed toolbar size when using a non-default system font size</change>
+        <change>Added Corsican, Korean, and Vietnamese translations</change>
+        <change>Updated translations</change>
+    </release>
     <release version="6.901" versioncode="39001" date="2024-05-15">
         <change>Fixed a crash when opening the screen to compose a message</change>
     </release>
