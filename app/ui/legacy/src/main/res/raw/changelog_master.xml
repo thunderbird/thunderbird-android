@@ -5,6 +5,9 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="6.903" versioncode="39003" date="unreleased">
+        <change>Placeholder</change>
+    </release>
     <release version="6.902" versioncode="39002" date="2024-06-21">
         <change>Changed a lot of internals to migrate to Material 3. Please note that the Material 3 UI is still in an early state.</change>
         <change>Changed the order of toolbar actions in the message view to match the order in multi-select mode</change>
