@@ -9,7 +9,7 @@
         <activity
             android:name="app.k9mail.feature.widget.shortcut.LauncherShortcutActivity"
             android:configChanges="locale"
-            android:label="@string/shortcuts_title"
+            android:label="@string/shortcut_widget_title"
             android:enabled="false"
             android:exported="true">
             <intent-filter>
