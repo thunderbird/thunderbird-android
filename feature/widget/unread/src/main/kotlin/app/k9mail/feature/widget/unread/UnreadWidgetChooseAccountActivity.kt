@@ -1,11 +1,12 @@
-package com.fsck.k9.activity
+package app.k9mail.feature.widget.unread
 
 import android.content.Intent
 import android.os.Bundle
 import com.fsck.k9.BaseAccount
+import com.fsck.k9.activity.AccountList
 import com.fsck.k9.ui.R
 
-class ChooseAccount : AccountList() {
+class UnreadWidgetChooseAccountActivity : AccountList() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTitle(R.string.choose_account_title)
