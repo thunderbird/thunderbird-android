@@ -35,7 +35,6 @@
     <string name="compose_title_reply_all">Απάντηση σε όλους</string>
     <string name="compose_title_forward">Προώθηση</string>
     <string name="compose_title_forward_as_attachment">Προώθηση ως συνημμένο</string>
-    <string name="choose_account_title">Επιλογή Λογαριασμού</string>
     <string name="choose_folder_title">Επιλογή φακέλου</string>
     <string name="choose_folder_move_title">Μετακίνηση σε…</string>
     <string name="choose_folder_copy_title">Αντιγραφή σε…</string>

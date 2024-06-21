@@ -34,7 +34,6 @@
     <string name="compose_title_reply_all">Odgovori vsem</string>
     <string name="compose_title_forward">Posreduj</string>
     <string name="compose_title_forward_as_attachment">Posreduj kot prilogo</string>
-    <string name="choose_account_title">Izbor računa</string>
     <string name="choose_folder_title">Izbor mape</string>
     <string name="choose_folder_move_title">Premakni v …</string>
     <string name="choose_folder_copy_title">Kopiraj v …</string>

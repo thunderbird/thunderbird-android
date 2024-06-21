@@ -6,7 +6,7 @@
         <activity
             android:name=".UnreadWidgetChooseAccountActivity"
             android:configChanges="locale"
-            android:label="@string/choose_account_title"
+            android:label="@string/unread_widget_choose_account_title"
             android:noHistory="true" />
 
         <activity

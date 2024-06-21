@@ -35,7 +35,6 @@
     <string name="compose_title_reply_all">Відповісти всім</string>
     <string name="compose_title_forward">Переслати</string>
     <string name="compose_title_forward_as_attachment">Переслати як вкладення</string>
-    <string name="choose_account_title">Вибрати обліковий запис</string>
     <string name="choose_folder_title">Вибрати теку</string>
     <string name="choose_folder_move_title">Посунути до…</string>
     <string name="choose_folder_copy_title">Копіювати до…</string>

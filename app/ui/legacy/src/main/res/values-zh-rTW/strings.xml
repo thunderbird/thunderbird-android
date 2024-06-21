@@ -35,7 +35,6 @@
     <string name="compose_title_reply_all">全部回覆</string>
     <string name="compose_title_forward">轉寄</string>
     <string name="compose_title_forward_as_attachment">以附件形式轉寄</string>
-    <string name="choose_account_title">選取帳號</string>
     <string name="choose_folder_title">選取信件匣</string>
     <string name="choose_folder_move_title">移至…</string>
     <string name="choose_folder_copy_title">複製至…</string>

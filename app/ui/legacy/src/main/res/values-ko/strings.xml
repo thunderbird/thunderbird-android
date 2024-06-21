@@ -34,7 +34,6 @@
     <string name="compose_title_reply_all">전체 답장</string>
     <string name="compose_title_forward">전달</string>
     <string name="compose_title_forward_as_attachment">첨부 파일 형태로 전달</string>
-    <string name="choose_account_title">계정 선택</string>
     <string name="choose_folder_title">폴더 선택</string>
     <string name="choose_folder_move_title">다음으로 이동</string>
     <string name="choose_folder_copy_title">다음으로 복사</string>

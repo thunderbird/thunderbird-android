@@ -35,7 +35,6 @@
     <string name="compose_title_reply_all">Válasz mindenkinek</string>
     <string name="compose_title_forward">Továbbítás</string>
     <string name="compose_title_forward_as_attachment">Továbbítás mellékletként</string>
-    <string name="choose_account_title">Fiók választása</string>
     <string name="choose_folder_title">Mappa választása</string>
     <string name="choose_folder_move_title">Áthelyezés…</string>
     <string name="choose_folder_copy_title">Másolás…</string>

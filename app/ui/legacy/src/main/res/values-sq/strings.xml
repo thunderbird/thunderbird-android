@@ -35,7 +35,6 @@
     <string name="compose_title_reply_all">Përgjigjuni të tërëve</string>
     <string name="compose_title_forward">Përcille</string>
     <string name="compose_title_forward_as_attachment">Përcille si bashkëngjitje</string>
-    <string name="choose_account_title">Zgjidhni Llogari</string>
     <string name="choose_folder_title">Zgjidhni Dosje</string>
     <string name="choose_folder_move_title">Shpjereni te…</string>
     <string name="choose_folder_copy_title">Kopjojeni te…</string>

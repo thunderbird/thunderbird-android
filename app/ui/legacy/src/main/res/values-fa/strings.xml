@@ -35,7 +35,6 @@
     <string name="compose_title_reply_all">پاسخ به همه</string>
     <string name="compose_title_forward">هدایت</string>
     <string name="compose_title_forward_as_attachment">هدایت به‌شکل پیوست</string>
-    <string name="choose_account_title">انتخاب حساب</string>
     <string name="choose_folder_title">انتخاب پوشه</string>
     <string name="choose_folder_move_title">انتقال به…</string>
     <string name="choose_folder_copy_title">کپی به…</string>

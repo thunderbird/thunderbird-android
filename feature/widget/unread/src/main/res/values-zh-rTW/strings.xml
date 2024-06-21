@@ -12,4 +12,5 @@
     <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
     <string name="unread_widget_account_not_selected">未選擇帳號</string>
     <string name="unread_widget_folder_not_selected">未選擇信件匣</string>
+    <string name="unread_widget_choose_account_title">選取帳號</string>
 </resources>

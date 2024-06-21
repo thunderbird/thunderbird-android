@@ -35,7 +35,6 @@
     <string name="compose_title_reply_all">Odpovědět všem</string>
     <string name="compose_title_forward">Přeposlat</string>
     <string name="compose_title_forward_as_attachment">Přeposlat jako přílohu</string>
-    <string name="choose_account_title">Vyberte účet</string>
     <string name="choose_folder_title">Výběr složky</string>
     <string name="choose_folder_move_title">Přesunout do…</string>
     <string name="choose_folder_copy_title">Zkopírovat do…</string>

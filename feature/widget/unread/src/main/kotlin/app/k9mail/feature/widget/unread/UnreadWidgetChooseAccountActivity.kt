@@ -4,12 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import com.fsck.k9.BaseAccount
 import com.fsck.k9.activity.AccountList
-import com.fsck.k9.ui.R
 
 class UnreadWidgetChooseAccountActivity : AccountList() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTitle(R.string.choose_account_title)
+        setTitle(R.string.unread_widget_choose_account_title)
     }
 
     override fun onAccountSelected(account: BaseAccount) {

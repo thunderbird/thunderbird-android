@@ -35,7 +35,6 @@
     <string name="compose_title_reply_all">Răspunde tuturor</string>
     <string name="compose_title_forward">Redirecționează</string>
     <string name="compose_title_forward_as_attachment">Trimite atașat</string>
-    <string name="choose_account_title">Alege contul</string>
     <string name="choose_folder_title">Alege dosar</string>
     <string name="choose_folder_move_title">Mută la…</string>
     <string name="choose_folder_copy_title">Copiază la…</string>

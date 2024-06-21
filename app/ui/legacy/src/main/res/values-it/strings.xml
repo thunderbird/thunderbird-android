@@ -35,7 +35,6 @@
     <string name="compose_title_reply_all">Rispondi a tutti</string>
     <string name="compose_title_forward">Inoltra</string>
     <string name="compose_title_forward_as_attachment">Inoltra come allegato</string>
-    <string name="choose_account_title">Scegli account</string>
     <string name="choose_folder_title">Scegli cartella</string>
     <string name="choose_folder_move_title">Sposta in…</string>
     <string name="choose_folder_copy_title">Copia in…</string>

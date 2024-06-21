@@ -29,7 +29,6 @@
     <string name="compose_title_reply_all">Odpovedať všetkým</string>
     <string name="compose_title_forward">Preposlať</string>
     <string name="compose_title_forward_as_attachment">Preposlať ako prílohu</string>
-    <string name="choose_account_title">Vyberte účet</string>
     <string name="choose_folder_title">Vyberte priečinok</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> vybraných</string>
     <string name="send_action">Odoslať</string>

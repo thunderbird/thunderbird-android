@@ -12,4 +12,5 @@
     <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
     <string name="unread_widget_account_not_selected">അക്കൗണ്ട് ഒന്നും തിരഞ്ഞെടുത്തിട്ടില്ല</string>
     <string name="unread_widget_folder_not_selected">ഫോൾഡർ ഒന്നും തിരഞ്ഞെടുത്തിട്ടില്ല</string>
+    <string name="unread_widget_choose_account_title">അക്കൗണ്ട് തിരഞ്ഞെടുക്കുക</string>
 </resources>

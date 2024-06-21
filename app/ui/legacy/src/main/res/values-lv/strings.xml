@@ -35,7 +35,6 @@
     <string name="compose_title_reply_all">Atbildēt visiem</string>
     <string name="compose_title_forward">Pārsūtīt</string>
     <string name="compose_title_forward_as_attachment">Pārsūtīt kā pielikumu</string>
-    <string name="choose_account_title">Izvēlēties kontu</string>
     <string name="choose_folder_title">Izvēlēties mapi</string>
     <string name="choose_folder_move_title">Pārvietot uz…</string>
     <string name="choose_folder_copy_title">Kopēt uz…</string>

@@ -35,7 +35,6 @@
     <string name="compose_title_reply_all">Svar alle</string>
     <string name="compose_title_forward">Videresend</string>
     <string name="compose_title_forward_as_attachment">Videresend som vedhæftet</string>
-    <string name="choose_account_title">Vælg konto</string>
     <string name="choose_folder_title">Vælg mappe</string>
     <string name="choose_folder_move_title">Flyt til…</string>
     <string name="choose_folder_copy_title">Kopier til…</string>

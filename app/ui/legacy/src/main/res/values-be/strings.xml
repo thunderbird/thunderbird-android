@@ -35,7 +35,6 @@
     <string name="compose_title_reply_all">Адказаць усім</string>
     <string name="compose_title_forward">Пераслаць</string>
     <string name="compose_title_forward_as_attachment">Пераслаць як далучаны файл</string>
-    <string name="choose_account_title">Абраць акаўнт</string>
     <string name="choose_folder_title">Абраць каталог</string>
     <string name="choose_folder_move_title">Перамясціць у…</string>
     <string name="choose_folder_copy_title">Скапіяваць у…</string>

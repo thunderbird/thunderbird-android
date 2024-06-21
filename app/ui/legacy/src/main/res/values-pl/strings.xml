@@ -38,7 +38,6 @@
     <string name="compose_title_reply_all">Odpowiedz wszystkim</string>
     <string name="compose_title_forward">Przekaż</string>
     <string name="compose_title_forward_as_attachment">Przekaż jako załącznik</string>
-    <string name="choose_account_title">Wybierz konto</string>
     <string name="choose_folder_title">Wybierz folder</string>
     <string name="choose_folder_move_title">Przenieś do…</string>
     <string name="choose_folder_copy_title">Skopiuj do…</string>

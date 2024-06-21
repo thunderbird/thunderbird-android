@@ -35,7 +35,6 @@
     <string name="compose_title_reply_all">回复全部</string>
     <string name="compose_title_forward">转发</string>
     <string name="compose_title_forward_as_attachment">作为附件转发</string>
-    <string name="choose_account_title">选择账号</string>
     <string name="choose_folder_title">选择文件夹</string>
     <string name="choose_folder_move_title">移动到…</string>
     <string name="choose_folder_copy_title">复制到…</string>

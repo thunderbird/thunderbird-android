@@ -38,7 +38,6 @@
     <string name="compose_title_reply_all">全員に返信</string>
     <string name="compose_title_forward">転送</string>
     <string name="compose_title_forward_as_attachment">添付として転送</string>
-    <string name="choose_account_title">アカウントを選択</string>
     <string name="choose_folder_title">フォルダーを選択</string>
     <string name="choose_folder_move_title">…へ移動</string>
     <string name="choose_folder_copy_title">…へコピー</string>

@@ -50,7 +50,6 @@
     <string name="compose_title_forward">Forward</string>
     <string name="compose_title_forward_as_attachment">Forward as attachment</string>
 
-    <string name="choose_account_title">Choose Account</string>
     <string name="choose_folder_title">Choose Folder</string>
     <string name="choose_folder_move_title">Move to…</string>
     <string name="choose_folder_copy_title">Copy to…</string>

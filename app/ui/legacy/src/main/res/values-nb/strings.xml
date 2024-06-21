@@ -28,7 +28,6 @@
     <string name="compose_title_reply_all">Svar alle</string>
     <string name="compose_title_forward">Videresend</string>
     <string name="compose_title_forward_as_attachment">Videresend som vedlegg</string>
-    <string name="choose_account_title">Velg konto</string>
     <string name="choose_folder_title">Velg mappe</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valgt</string>
     <string name="send_action">Send</string>

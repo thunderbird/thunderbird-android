@@ -35,7 +35,6 @@
     <string name="compose_title_reply_all">Svara alla</string>
     <string name="compose_title_forward">Vidarebefordra</string>
     <string name="compose_title_forward_as_attachment">Vidarebefordra som bilaga</string>
-    <string name="choose_account_title">Välj konto</string>
     <string name="choose_folder_title">Välj mapp</string>
     <string name="choose_folder_move_title">Flytta till…</string>
     <string name="choose_folder_copy_title">Kopiera till…</string>

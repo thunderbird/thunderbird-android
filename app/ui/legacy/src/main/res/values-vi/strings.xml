@@ -35,7 +35,6 @@
     <string name="compose_title_reply_all">Trả lời tất cả</string>
     <string name="compose_title_forward">Chuyển tiếp</string>
     <string name="compose_title_forward_as_attachment">Chuyển tiếp ở dạng tệp đính kèm</string>
-    <string name="choose_account_title">Chọn tài khoản</string>
     <string name="choose_folder_title">Chọn thư mục</string>
     <string name="choose_folder_move_title">Chuyển đến…</string>
     <string name="choose_folder_copy_title">Sao chép đến…</string>

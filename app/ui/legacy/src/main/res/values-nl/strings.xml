@@ -35,7 +35,6 @@
     <string name="compose_title_reply_all">Allen beantwoorden</string>
     <string name="compose_title_forward">Doorsturen</string>
     <string name="compose_title_forward_as_attachment">Als bijlage doorsturen</string>
-    <string name="choose_account_title">Account kiezen</string>
     <string name="choose_folder_title">Kies een map</string>
     <string name="choose_folder_move_title">Verplaatsen naar…</string>
     <string name="choose_folder_copy_title">Kopiëren naar…</string>

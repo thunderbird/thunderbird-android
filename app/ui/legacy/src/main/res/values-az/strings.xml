@@ -34,7 +34,6 @@
     <string name="compose_title_reply_all">Hamısın cavabla</string>
     <string name="compose_title_forward">Göndər</string>
     <string name="compose_title_forward_as_attachment">Birləşmə kimi göndər</string>
-    <string name="choose_account_title">Hesab seç</string>
     <string name="choose_folder_title">Qovluq seç</string>
     <string name="choose_folder_move_title">Bura Köçür…</string>
     <string name="choose_folder_copy_title">Bura Yapışdır…</string>

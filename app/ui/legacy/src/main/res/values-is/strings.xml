@@ -35,7 +35,6 @@
     <string name="compose_title_reply_all">Svara öllum</string>
     <string name="compose_title_forward">Framsenda</string>
     <string name="compose_title_forward_as_attachment">Áframsenda sem viðhengi</string>
-    <string name="choose_account_title">Veldu aðgang</string>
     <string name="choose_folder_title">Veldu möppu</string>
     <string name="choose_folder_move_title">Færa í…</string>
     <string name="choose_folder_copy_title">Afrita í…</string>

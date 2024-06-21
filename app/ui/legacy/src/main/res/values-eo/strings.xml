@@ -32,7 +32,6 @@
     <string name="compose_title_reply_all">Respondi al ĉiuj</string>
     <string name="compose_title_forward">Plusendi</string>
     <string name="compose_title_forward_as_attachment">Plusendi kiel kunsendaĵon</string>
-    <string name="choose_account_title">Elektu konton</string>
     <string name="choose_folder_title">Elekti mesaĝujon</string>
     <string name="choose_folder_move_title">Movi al…</string>
     <string name="choose_folder_copy_title">Kopii al…</string>

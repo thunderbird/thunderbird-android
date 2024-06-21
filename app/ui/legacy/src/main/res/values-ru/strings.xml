@@ -35,7 +35,6 @@
     <string name="compose_title_reply_all">Ответить всем</string>
     <string name="compose_title_forward">Пересылка</string>
     <string name="compose_title_forward_as_attachment">Переслать вложением</string>
-    <string name="choose_account_title">Выберите учётную запись</string>
     <string name="choose_folder_title">Выбор папки</string>
     <string name="choose_folder_move_title">Переместить в…</string>
     <string name="choose_folder_copy_title">Копировать в…</string>

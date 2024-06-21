@@ -35,7 +35,6 @@
     <string name="compose_title_reply_all">Vastaa kaikille</string>
     <string name="compose_title_forward">Välitä</string>
     <string name="compose_title_forward_as_attachment">Välitä liitteenä</string>
-    <string name="choose_account_title">Valitse tili</string>
     <string name="choose_folder_title">Valitse kansio</string>
     <string name="choose_folder_move_title">Siirrä…</string>
     <string name="choose_folder_copy_title">Kopioi…</string>

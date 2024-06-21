@@ -119,7 +119,6 @@
     <string name="refile_action">Refile…</string>
     <string name="source_code">Source code</string>
     <string name="changelog_snackbar_text">Find out what\'s new in this release</string>
-    <string name="choose_account_title">Choose Account</string>
     <string name="flag_action">Add star</string>
     <string name="move_action">Move</string>
     <string name="general_settings_contact_name_color_label">Contact name colour</string>

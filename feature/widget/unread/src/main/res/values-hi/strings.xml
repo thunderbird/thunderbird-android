@@ -2,4 +2,5 @@
 <resources>
     <string name="unread_widget_select_account">इन अनपढें इ-मेइल की गिनती…</string>
     <string name="unread_widget_account_title">खाता</string>
+    <string name="unread_widget_choose_account_title">अकाउंट चुनें</string>
 </resources>
