@@ -18,23 +18,20 @@ import com.google.android.material.textview.MaterialTextView
 /**
  * Activity displaying the list of accounts.
  *
- *
- *
  * Classes extending this abstract class have to provide an [.onAccountSelected]
  * method to perform an action when an account is selected.
- *
  */
 abstract class AccountList : K9ListActivity(), OnItemClickListener {
-    public override fun onCreate(icicle: Bundle?) {
-        super.onCreate(icicle)
 
+    public override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setResult(RESULT_CANCELED)
-
         setLayout(R.layout.account_list)
 
-        val listView = listView
-        listView.onItemClickListener = this
-        listView.itemsCanFocus = false
+        listView.apply {
+            onItemClickListener = this@AccountList
+            itemsCanFocus = false
+        }
     }
 
     /**
@@ -51,12 +48,12 @@ abstract class AccountList : K9ListActivity(), OnItemClickListener {
     }
 
     /**
-     * Create a new [AccountsAdapter] instance and assign it to the [ListView].
+     * Create a new [AccountsAdapter] instance and assign it to the [android.widget.ListView].
      *
      * @param realAccounts
      * An array of accounts to display.
      */
-    fun populateListView(realAccounts: List<Account>?) {
+    fun populateListView(realAccounts: List<Account>) {
         val accounts: MutableList<BaseAccount> = ArrayList()
 
         if (isShowUnifiedInbox) {
@@ -64,11 +61,12 @@ abstract class AccountList : K9ListActivity(), OnItemClickListener {
             accounts.add(unifiedInboxAccount)
         }
 
-        accounts.addAll(realAccounts!!)
-        val adapter: AccountsAdapter = AccountsAdapter(accounts)
-        val listView = listView
-        listView.adapter = adapter
-        listView.invalidate()
+        accounts.addAll(realAccounts)
+
+        listView.apply {
+            adapter = AccountsAdapter(accounts)
+            invalidate()
+        }
     }
 
     /**
@@ -77,51 +75,46 @@ abstract class AccountList : K9ListActivity(), OnItemClickListener {
      * @param account
      * The account the user selected.
      */
-    protected abstract fun onAccountSelected(account: BaseAccount?)
+    protected abstract fun onAccountSelected(account: BaseAccount)
 
-    internal inner class AccountsAdapter(accounts: List<BaseAccount?>?) : ArrayAdapter<BaseAccount?>(
-        this@AccountList, 0, accounts!!,
+    internal inner class AccountsAdapter(accounts: List<BaseAccount?>) : ArrayAdapter<BaseAccount?>(
+        this@AccountList,
+        0,
+        accounts,
     ) {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             val account = getItem(position)
             val view = convertView ?: layoutInflater.inflate(R.layout.accounts_item, parent, false)
 
-            var holder: AccountViewHolder? = view.tag as AccountViewHolder
-            if (holder == null) {
-                holder = AccountViewHolder()
-                holder!!.description = view.findViewById<MaterialTextView>(R.id.description)
-                holder.email = view.findViewById<MaterialTextView>(R.id.email)
-                holder.chip = view.findViewById<View>(R.id.chip)
-
-                view.tag = holder
+            val holder = (view.tag as? AccountViewHolder) ?: AccountViewHolder(view).apply {
+                view.tag = this
             }
 
             val accountName = account!!.name
             if (accountName != null) {
-                holder!!.description!!.text = accountName
-                holder.email!!.text = account.email
-                holder.email!!.visibility = View.VISIBLE
+                holder.description.text = accountName
+                holder.email.text = account.email
+                holder.email.visibility = View.VISIBLE
             } else {
-                holder!!.description!!.text = account.email
-                holder.email!!.visibility = View.GONE
+                holder.description.text = account.email
+                holder.email.visibility = View.GONE
             }
 
             if (account is Account) {
-                holder.chip!!.setBackgroundColor(account.chipColor)
+                holder.chip.setBackgroundColor(account.chipColor)
             } else {
-                holder.chip!!.setBackgroundColor(0xff999999.toInt())
+                holder.chip.setBackgroundColor(0xff999999.toInt())
             }
 
-            holder.chip!!.background.alpha = 255
-
+            holder.chip.background.alpha = BACKGROUND_ALPHA
 
             return view
         }
 
-        internal inner class AccountViewHolder {
-            var description: MaterialTextView? = null
-            var email: MaterialTextView? = null
-            var chip: View? = null
+        internal inner class AccountViewHolder(view: View) {
+            var description: MaterialTextView = view.findViewById(R.id.description)
+            var email: MaterialTextView = view.findViewById(R.id.email)
+            var chip: View = view.findViewById(R.id.chip)
         }
     }
 
@@ -136,5 +129,9 @@ abstract class AccountList : K9ListActivity(), OnItemClickListener {
         override fun onPostExecute(accounts: List<Account>) {
             populateListView(accounts)
         }
+    }
+
+    private companion object {
+        const val BACKGROUND_ALPHA = 255
     }
 }
