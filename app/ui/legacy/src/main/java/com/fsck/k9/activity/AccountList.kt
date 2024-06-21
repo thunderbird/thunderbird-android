@@ -1,12 +1,14 @@
 package com.fsck.k9.activity
 
-import android.os.AsyncTask
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.fsck.k9.Account
 import com.fsck.k9.BaseAccount
 import com.fsck.k9.K9.isShowUnifiedInbox
@@ -14,6 +16,9 @@ import com.fsck.k9.Preferences.Companion.getPreferences
 import com.fsck.k9.search.SearchAccount.Companion.createUnifiedInboxAccount
 import com.fsck.k9.ui.R
 import com.google.android.material.textview.MaterialTextView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * Activity displaying the list of accounts.
@@ -32,14 +37,12 @@ abstract class AccountList : K9ListActivity(), OnItemClickListener {
             onItemClickListener = this@AccountList
             itemsCanFocus = false
         }
-    }
 
-    /**
-     * Reload list of accounts when this activity is resumed.
-     */
-    public override fun onResume() {
-        super.onResume()
-        LoadAccounts().execute()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                loadAccounts()
+            }
+        }
     }
 
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
@@ -48,12 +51,23 @@ abstract class AccountList : K9ListActivity(), OnItemClickListener {
     }
 
     /**
+     * Load accounts in a background thread and populate the list view with the results on main thread.
+     */
+    private suspend fun loadAccounts() {
+        val accounts = withContext(Dispatchers.IO) {
+            getPreferences().getAccounts()
+        }
+
+        populateListView(accounts)
+    }
+
+    /**
      * Create a new [AccountsAdapter] instance and assign it to the [android.widget.ListView].
      *
      * @param realAccounts
      * An array of accounts to display.
      */
-    fun populateListView(realAccounts: List<Account>) {
+    private fun populateListView(realAccounts: List<Account>) {
         val accounts: MutableList<BaseAccount> = ArrayList()
 
         if (isShowUnifiedInbox) {
@@ -115,19 +129,6 @@ abstract class AccountList : K9ListActivity(), OnItemClickListener {
             var description: MaterialTextView = view.findViewById(R.id.description)
             var email: MaterialTextView = view.findViewById(R.id.email)
             var chip: View = view.findViewById(R.id.chip)
-        }
-    }
-
-    /**
-     * Load accounts in a background thread
-     */
-    internal inner class LoadAccounts : AsyncTask<Void?, Void?, List<Account>>() {
-        override fun doInBackground(vararg params: Void?): List<Account> {
-            return getPreferences().getAccounts()
-        }
-
-        override fun onPostExecute(accounts: List<Account>) {
-            populateListView(accounts)
         }
     }
 
