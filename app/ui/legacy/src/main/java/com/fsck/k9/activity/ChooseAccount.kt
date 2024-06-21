@@ -6,14 +6,15 @@ import com.fsck.k9.BaseAccount
 import com.fsck.k9.ui.R
 
 class ChooseAccount : AccountList() {
-    override fun onCreate(icicle: Bundle?) {
-        super.onCreate(icicle)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setTitle(R.string.choose_account_title)
     }
 
     override fun onAccountSelected(account: BaseAccount) {
-        val intent = Intent()
-        intent.putExtra(EXTRA_ACCOUNT_UUID, account.uuid)
+        val intent = Intent().apply {
+            putExtra(EXTRA_ACCOUNT_UUID, account.uuid)
+        }
         setResult(RESULT_OK, intent)
         finish()
     }
