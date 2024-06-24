@@ -755,7 +755,6 @@
     <string name="crypto_no_provider_title">Имейлът е криптиран</string>
     <string name="crypto_no_provider_message">Този имейл е криптиран използвайки OpenPGP.\nЗа да го прочетете, трябва да инсталирате и настроите OpenPGP приложението.</string>
     <string name="crypto_no_provider_button">Към настройки</string>
-    <string name="mail_list_widget_text">K-9 списък със собщения</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Криптирането е невъзможно</string>

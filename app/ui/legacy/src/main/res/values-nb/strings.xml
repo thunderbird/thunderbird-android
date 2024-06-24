@@ -746,7 +746,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <string name="crypto_no_provider_title">Denne e-posten er kryptert</string>
     <string name="crypto_no_provider_message">Denne e-posten har blitt kryptert med OpenPGP.\nFor å lese den, må du installere og sette opp et kompatibelt OpenPGP-program.</string>
     <string name="crypto_no_provider_button">Gå til \"Innstillinger\"</string>
-    <string name="mail_list_widget_text">K-9 meldingsliste</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Kryptering er ikke mulig</string>

@@ -814,7 +814,6 @@
     <string name="crypto_no_provider_message">此电子邮件已使用 OpenPGP 加密。
 \n要阅读它，您需要安装和配置兼容的 OpenPGP 应用。</string>
     <string name="crypto_no_provider_button">转到设置</string>
-    <string name="mail_list_widget_text">K-9 邮件列表</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">无法加密</string>

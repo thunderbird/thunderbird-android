@@ -736,7 +736,6 @@
     <string name="crypto_no_provider_title">Vaš email je šifriran</string>
     <string name="crypto_no_provider_message">Ova e-poruka je šifrirana korištenjem OpenPGP.\nDa bi ste je pročitali, potrebno je da instalirate i postavite odgovarajuću OpenPGP aplikaciju.</string>
     <string name="crypto_no_provider_button">Idi u Postavke</string>
-    <string name="mail_list_widget_text">K-9 Popis Poruka</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Šifriranje nije moguće</string>

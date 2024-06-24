@@ -734,7 +734,6 @@
     <string name="global_settings_threaded_view_label">Threaded view</string>
     <string name="webview_contextmenu_email_copy_action">Copy address to clipboard</string>
     <string name="push_notification_state_initializing">Initialising…</string>
-    <string name="mail_list_widget_text">K-9 Message List</string>
     <string name="crypto_msg_title_encrypted_signed_e2e">End-to-End encrypted</string>
     <string name="message_list_content_description_unread_prefix">unread, %s</string>
     <string name="general_settings_title">General settings</string>

@@ -817,7 +817,6 @@
     <string name="crypto_no_provider_title">Diese E-Mail ist verschlüsselt</string>
     <string name="crypto_no_provider_message">Diese E-Mail ist mit OpenPGP verschlüsselt.\nUm sie zu lesen, muss eine kompatible OpenPGP-App installiert und konfiguriert werden.</string>
     <string name="crypto_no_provider_button">Zu den Einstellungen</string>
-    <string name="mail_list_widget_text">K-9 Nachrichtenliste</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Verschlüsselung nicht möglich</string>

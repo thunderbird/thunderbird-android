@@ -759,7 +759,6 @@
     <string name="crypto_no_provider_title">Ова е-порука је шифрована</string>
     <string name="crypto_no_provider_message">Ова е-порука је шифрована помоћу у ОпенПГП-а.\nДа бисте је прочитали, треба да инсталирате и подесите компатибилну ОпенПГП апликацију.</string>
     <string name="crypto_no_provider_button">Иди на Поставке</string>
-    <string name="mail_list_widget_text">К-9 списак порука</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Шифровање није могуће</string>

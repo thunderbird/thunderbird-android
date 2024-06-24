@@ -816,7 +816,6 @@
     <string name="crypto_no_provider_message">このメールは OpenPGP で暗号化されました。
 \nメールを読むためには、OpenPGP と互換性のあるアプリをインストールして設定する必要があります。</string>
     <string name="crypto_no_provider_button">設定に移動</string>
-    <string name="mail_list_widget_text">K-9 メッセージ一覧</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">暗号化できません</string>

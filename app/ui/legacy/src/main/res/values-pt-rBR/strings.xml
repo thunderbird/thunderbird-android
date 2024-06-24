@@ -824,7 +824,6 @@
     <string name="crypto_no_provider_title">Esta mensagem está criptografada</string>
     <string name="crypto_no_provider_message">Esta mensagem foi criptografada com OpenPGP.\nPara ler, precisa instalar e configurar um aplicativo OpenPGP compatível.</string>
     <string name="crypto_no_provider_button">Ir para as configurações</string>
-    <string name="mail_list_widget_text">Lista de mensagens do K-9</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Não foi possível criptografar</string>

@@ -829,7 +829,6 @@
     <string name="crypto_no_provider_title">Цей електронний лист зашифровано</string>
     <string name="crypto_no_provider_message">Цей електронний лист було зашифровано за допомогою OpenPGP.\nЩоб його прочитати, необхідно встановити та налаштувати сумісний OpenPGP-додаток.</string>
     <string name="crypto_no_provider_button">Перейти до Налаштувань</string>
-    <string name="mail_list_widget_text">K-9 Список повідомлень</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Шифрування неможливе</string>

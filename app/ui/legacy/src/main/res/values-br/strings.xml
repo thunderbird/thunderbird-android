@@ -732,7 +732,6 @@
     <string name="crypto_no_provider_title">N’eo ket enrineget ar postel-mañ</string>
     <string name="crypto_no_provider_message">Enrineget eo bet ar postel-mañ gant OpenPGP.\nEvit gallout e lenn e rankit staliañ ha kefluniañ un arload OpenPGP keverlec’h.</string>
     <string name="crypto_no_provider_button">Mont d\'an arventennoù</string>
-    <string name="mail_list_widget_text">Roll kemennadennoù K-9</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">N’eo ket posupl enrinegañ</string>

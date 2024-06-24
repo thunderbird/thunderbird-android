@@ -1000,8 +1000,6 @@
     <string name="crypto_no_provider_message">This email has been encrypted with OpenPGP.\nTo read it, you need to install and configure a compatible OpenPGP App.</string>
     <string name="crypto_no_provider_button">Go to Settings</string>
 
-    <string name="mail_list_widget_text">K-9 Message List</string>
-
     <string name="openpgp_enabled_error_title">Encryption not possible</string>
     <string name="openpgp_enabled_error_msg">Some of the selected recipients don\'t support this feature!</string>
     <string name="enable_encryption">Enable Encryption</string>

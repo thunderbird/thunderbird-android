@@ -4,4 +4,5 @@
     <string name="message_list_widget_list_item_loading">Loading…</string>
     <string name="message_list_widget_initializing">Loading…</string>
     <string name="message_list_widget_inbox_title">Unified Inbox</string>
+    <string name="message_list_widget_label">Message List</string>
 </resources>

@@ -810,7 +810,6 @@
     <string name="crypto_no_provider_title">هذه الرسالة مُعماة</string>
     <string name="crypto_no_provider_message">تم تشفير هذا البريد الإلكتروني باستخدام OpenPGP. \ n لقراءته ، تحتاج إلى تثبيت وتكوين تطبيق OpenPGP متوافق. </string>
     <string name="crypto_no_provider_button">اذهب للاعدادات </string>
-    <string name="mail_list_widget_text">قائمة رسائل K-9</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">التعمية غير ممكنة</string>

@@ -822,7 +822,6 @@
     <string name="crypto_no_provider_title">Este correo está cifrado</string>
     <string name="crypto_no_provider_message">Este correo ha sido cifrado con OpenPGP.\nPara leerlo es necesario instalar y configurar una aplicación compatible con OpenPGP.</string>
     <string name="crypto_no_provider_button">Ir a los ajustes</string>
-    <string name="mail_list_widget_text">Lista de correos de K-9</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">No es posible cifrar</string>

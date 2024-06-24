@@ -352,7 +352,6 @@
     <!--A user visible label for the email address copied to the clipboard-->
     <string name="clipboard_label_email_address">Địa chỉ email</string>
     <string name="account_setup_options_mail_check_frequency_30min">Mỗi 30 phút</string>
-    <string name="mail_list_widget_text">Danh sách tin nhắn K-9</string>
     <string name="account_setup_options_mail_check_frequency_1hour">Mỗi giờ</string>
     <string name="message_list_content_description_unread_prefix">chưa đọc, %s</string>
     <string name="account_setup_options_mail_check_frequency_12hour">Mỗi 12 giờ</string>

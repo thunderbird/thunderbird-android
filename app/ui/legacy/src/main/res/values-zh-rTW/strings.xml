@@ -810,7 +810,6 @@
     <string name="crypto_no_provider_title">郵件已被加密</string>
     <string name="crypto_no_provider_message">這封郵件使用 OpenPGP 進行了加密。\n請安裝並設定一個相容 OpenPGP 的應用程式來查看郵件。</string>
     <string name="crypto_no_provider_button">前往設定</string>
-    <string name="mail_list_widget_text">K-9 訊息列表</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">無法加密</string>

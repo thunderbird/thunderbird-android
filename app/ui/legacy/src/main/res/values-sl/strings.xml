@@ -825,7 +825,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="crypto_no_provider_title">Sporočilo je šifrirano</string>
     <string name="crypto_no_provider_message">Sporočilo je šifrirano s programom OpenPGP.\nZa ogled vsebine je treba namestiti ustrezen podprt program OpenPGP.</string>
     <string name="crypto_no_provider_button">Pojdi v Nastavitve</string>
-    <string name="mail_list_widget_text">Seznami sporočil</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Šifriranje ni mogoče</string>

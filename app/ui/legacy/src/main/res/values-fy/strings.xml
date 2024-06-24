@@ -820,7 +820,6 @@
     <string name="crypto_no_provider_message">Dit e-mailberjocht is mei OpenPGP fersifere.
 \nYnstallearje en stel in OpenPGP-app yn om it e-mailberjocht te lêzen.</string>
     <string name="crypto_no_provider_button">Gean nei Ynstellingen</string>
-    <string name="mail_list_widget_text">K-9-berjochtelist</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Fersifering net mooglik</string>

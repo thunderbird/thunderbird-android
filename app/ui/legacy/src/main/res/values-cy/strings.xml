@@ -814,7 +814,6 @@
     <string name="crypto_no_provider_title">Mae\'r neges e-bost hon wedi ei amgryptio.</string>
     <string name="crypto_no_provider_message">Mae\'r neges e-bost hon wedi ei amgryptio gydag OpenPGP.\nI\'w darllen, rhaid gosod a ffurfweddu ap OpenPGP sy\'n cydweddu.</string>
     <string name="crypto_no_provider_button">Mynd i Osodiadau</string>
-    <string name="mail_list_widget_text">Rhestr Negeseuon K-9</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Dyw amgryptiad ddim ar gael.</string>

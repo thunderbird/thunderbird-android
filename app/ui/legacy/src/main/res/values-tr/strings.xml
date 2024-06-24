@@ -803,7 +803,6 @@
     <string name="crypto_no_provider_message">Bu e-posta OpenPGP ile şifrelendi.
 \nOkumak için uyumlu bir OpenPGP uygulaması kurup yapılandırmalısınız.</string>
     <string name="crypto_no_provider_button">Ayarlara Git</string>
-    <string name="mail_list_widget_text">K-9 İleti Listesi</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Şifreleme yapılamaz</string>

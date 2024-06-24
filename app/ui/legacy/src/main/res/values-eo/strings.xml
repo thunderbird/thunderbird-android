@@ -771,7 +771,6 @@
     <string name="crypto_no_provider_title">Tiu ĉi retletero estas ĉifrita</string>
     <string name="crypto_no_provider_message">Tiu ĉi retletero estas ĉifrita per OpenPGP.\nPor legi ĝin, vi devas instali kaj agordi kongruan OpenPGP-aplikaĵon.</string>
     <string name="crypto_no_provider_button">Iri al agordoj</string>
-    <string name="mail_list_widget_text">K-9 mesaĝlisto</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Ĉifrado ne eblas</string>

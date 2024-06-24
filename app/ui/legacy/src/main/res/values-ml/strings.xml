@@ -776,7 +776,6 @@
     <string name="crypto_no_provider_title">ഈ ഇമെയിൽ എൻ‌ക്രിപ്റ്റ് ചെയ്തതാണ്</string>
     <string name="crypto_no_provider_message">ഈ ഇമെയിൽ ഓപ്പൺപിജിപി ഉപയോഗിച്ച് എൻക്രിപ്റ്റുചെയ്‌തതാണ്.\nഇത് വായിക്കാൻ, നിങ്ങൾ ഒരു അനുയോജ്യമായ ഓപ്പൺപിജിപി അപ്ലിക്കേഷൻ ഇൻസ്റ്റാളുചെയ്‌ത് ക്രമീകരിക്കേണ്ടതുണ്ട്. </string>
     <string name="crypto_no_provider_button">ക്രമീകരണങ്ങളിലേക്ക് പോകുക</string>
-    <string name="mail_list_widget_text">കെ-9 സന്ദേശ പട്ടിക</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">എൻക്രിപ്ഷൻ സാധ്യമല്ല</string>

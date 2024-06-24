@@ -831,7 +831,6 @@
     <string name="crypto_no_provider_title">Ta wiadomość e-mail jest zaszyfrowana</string>
     <string name="crypto_no_provider_message">Ta wiadomość e-mail została zaszyfrowana z użyciem OpenPGP.\n Aby ją odczytać, należy zainstalować i skonfigurować zgodną aplikację OpenPGP.</string>
     <string name="crypto_no_provider_button">Przejdź do ustawień</string>
-    <string name="mail_list_widget_text">Lista wiadomości K-9</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Szyfrowanie nie jest możliwe</string>

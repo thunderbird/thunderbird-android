@@ -819,7 +819,6 @@
     <string name="crypto_no_provider_title">Šis el. laiškas yra užšifruotas</string>
     <string name="crypto_no_provider_message">Šis el. laiškas užšifruotas naudojant OpenPGP.\nKad jį perskaitytumėte, turite įdiegti ir sukonfigūruoti suderinamą OpenPGP programėlę.</string>
     <string name="crypto_no_provider_button">Eiti į Nustatymus</string>
-    <string name="mail_list_widget_text">K-9 laiškų sąrašas</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Šifravimas neįmanomas</string>

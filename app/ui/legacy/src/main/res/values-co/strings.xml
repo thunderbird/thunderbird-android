@@ -839,7 +839,6 @@
     <string name="crypto_no_provider_title">Stu messaghju hè cifratu</string>
     <string name="crypto_no_provider_button">Andà à i parametri</string>
     <string name="unsigned_text_divider_label">Testu micca firmatu</string>
-    <string name="mail_list_widget_text">Lista di i messaghji di K-9</string>
     <string name="enable_encryption">Attivà a cifratura</string>
     <string name="disable_encryption">Disattivà a cifratura</string>
     <string name="openpgp_enabled_error_title">A cifratura hè impussibule</string>

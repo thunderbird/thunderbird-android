@@ -742,7 +742,6 @@
     <string name="crypto_no_provider_message">Chaidh am post-d seo a chrioptachadh le OpenPGP.
 \nFeumaidh tu aplacaid a tha comasach air OpenPGP a stàladh is a rèiteachadh mus urrainn dhut a leughadh.</string>
     <string name="crypto_no_provider_button">Tagh aplacaid OpenPGP</string>
-    <string name="mail_list_widget_text">Liosta theachdaireachdan puist</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Cha ghabh a chrioptachadh</string>

@@ -823,7 +823,6 @@
     <string name="crypto_no_provider_title">Le courriel est chiffré</string>
     <string name="crypto_no_provider_message">Ce courriel a été chiffré avec OpenPGP.\nPour le lire, vous devez installer et configurer une appli compatible avec OpenPGP.</string>
     <string name="crypto_no_provider_button">Aller dans Paramètres</string>
-    <string name="mail_list_widget_text">Liste des courriels de K-9</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Le chiffrement est impossible</string>

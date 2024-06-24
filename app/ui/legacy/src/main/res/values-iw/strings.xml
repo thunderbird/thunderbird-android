@@ -753,7 +753,6 @@
     <string name="account_settings_crypto_hide_sign_only_off">כל החתימות יוצגו</string>
     <string name="crypto_no_provider_message">הדוא\"ל הזה הוצפן עם OpenPGP.
 \nעל מנת לקרוא אותו, עליך להתקין ולהגדיר יישומון OpenPGP תואם.</string>
-    <string name="mail_list_widget_text">רשימת הודעות K-9</string>
     <string name="openpgp_enabled_error_title">הצפנה לא אפשרית</string>
     <string name="openpgp_description_text3">הצפנה תופיע רק אם היא נתמכת ע\"י כל הנמענים, והם שלחו לך דוא\"ל בעבר.</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">הגדרת התראות שגיאה ומצב</string>

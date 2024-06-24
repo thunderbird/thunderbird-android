@@ -27,7 +27,7 @@
         <receiver
             android:name="com.fsck.k9.widget.list.MessageListWidgetProvider"
             android:icon="@drawable/message_list_widget_preview"
-            android:label="@string/mail_list_widget_text"
+            android:label="@string/message_list_widget_label"
             android:enabled="@bool/home_screen_widgets_enabled"
             android:exported="false">
             <intent-filter>
