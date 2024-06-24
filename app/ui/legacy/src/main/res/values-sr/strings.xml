@@ -3,7 +3,6 @@
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
-    <string name="unread_widget_label">К-9 непрочитане</string>
     <!--Used in the about dialog-->
     <string name="app_authors">К-9 развојни тим</string>
     <string name="source_code">Изворни код</string>

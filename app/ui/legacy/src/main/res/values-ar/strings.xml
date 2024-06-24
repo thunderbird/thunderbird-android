@@ -3,7 +3,6 @@
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
-    <string name="unread_widget_label">رسائل K-9 غير المقروءة</string>
     <!--Used in the about dialog-->
     <string name="app_authors">فريق The K-9 Dog Walkers</string>
     <string name="source_code">الكود المصدري</string>

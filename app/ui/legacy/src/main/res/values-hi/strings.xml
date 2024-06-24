@@ -22,7 +22,6 @@
     <string name="add_account_action">अकाउंट जोड़ें</string>
     <string name="spam_action">स्पैम</string>
     <string name="read_receipt_disabled">पढ़ा रसीद नहीं मांगेंगे</string>
-    <string name="unread_widget_label">के-9 नहीं पढ़ा</string>
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">पता क्लिपबोर्ड पे कॉपी किया गया</item>
         <item quantity="other">पते क्लिपबोर्ड पे कॉपी किए गए</item>

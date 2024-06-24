@@ -3,7 +3,6 @@
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
-    <string name="unread_widget_label">K-9 Lugemata</string>
     <!--Used in the about dialog-->
     <string name="app_authors">K-9 Autorid</string>
     <string name="source_code">Lähtekood</string>

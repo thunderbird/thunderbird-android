@@ -13,4 +13,5 @@
     <string name="unread_widget_account_not_selected">No account selected</string>
     <string name="unread_widget_folder_not_selected">No folder selected</string>
     <string name="unread_widget_choose_account_title">Choose Account</string>
+    <string name="unread_widget_label">Unread count</string>
 </resources>

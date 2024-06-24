@@ -3,7 +3,6 @@
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
-    <string name="unread_widget_label">K-9 - הודעות שלא נקראו</string>
     <!--Used in the about dialog-->
     <string name="source_code">קוד מקור</string>
     <string name="app_license">רישיון Apache, גירסה 2.0</string>

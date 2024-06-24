@@ -2,10 +2,6 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
 
-    <!-- This should make it easier for forks to change the branding -->
-
-    <string name="unread_widget_label">K-9 Unread</string>
-
     <!-- Used in the about dialog -->
     <string name="app_authors">The K-9 Dog Walkers</string>
     <string name="source_code">Source code</string>
