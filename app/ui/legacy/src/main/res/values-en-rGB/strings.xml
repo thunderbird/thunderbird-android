@@ -141,7 +141,7 @@
     <string name="copy_action">Copy</string>
     <string name="choose_folder_copy_title">Copy to…</string>
     <string name="remove_account_action">Remove account</string>
-    <string name="app_authors">The K-9 Dog Walkers</string>
+    <string name="about_app_authors_k9">The K-9 Dog Walkers</string>
     <string name="reply_action">Reply</string>
     <string name="show_headers_action">Show headers</string>
     <string name="user_forum_title">User forum</string>

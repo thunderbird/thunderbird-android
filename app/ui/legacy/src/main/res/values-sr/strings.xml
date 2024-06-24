@@ -4,7 +4,7 @@
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
     <!--Used in the about dialog-->
-    <string name="app_authors">К-9 развојни тим</string>
+    <string name="about_app_authors_k9">К-9 развојни тим</string>
     <string name="source_code">Изворни код</string>
     <string name="app_license">Апач лиценца, верзије 2.0</string>
     <string name="about_project_title">Пројекат отвореног кода</string>

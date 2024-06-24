@@ -4,7 +4,7 @@
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
     <!--Used in the about dialog-->
-    <string name="app_authors">K-9 Txakur-paseatzaileak</string>
+    <string name="about_app_authors_k9">K-9 Txakur-paseatzaileak</string>
     <string name="source_code">Iturburu-kodea</string>
     <string name="app_license">Apache lizentzia, 2.0 bertsioa</string>
     <string name="about_project_title">Kode Irekiko Proiektua</string>

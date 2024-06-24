@@ -4,7 +4,7 @@
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
     <!--Used in the about dialog-->
-    <string name="app_authors">K-9 hundatemjararnir</string>
+    <string name="about_app_authors_k9">K-9 hundatemjararnir</string>
     <string name="source_code">Grunnkóði</string>
     <string name="app_license">Apache notkunarleyfi, útgáfa 2.0</string>
     <string name="about_project_title">Verkefni með opnum grunnkóða</string>

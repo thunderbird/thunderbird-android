@@ -567,7 +567,7 @@
     <!--A user visible label for the name and email address copied to the clipboard-->
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
-<string name="app_authors">מוליכי הכלבים של K-9</string>
+<string name="about_app_authors_k9">מוליכי הכלבים של K-9</string>
     <string name="about_website_title">אתר אינטרנט</string>
     <string name="user_manual_title">מדריך משתמש</string>
     <string name="get_help_title">קבל עזרה</string>

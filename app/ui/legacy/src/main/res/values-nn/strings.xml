@@ -4,7 +4,7 @@
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
     <!--Used in the about dialog-->
-    <string name="app_authors">The K-9 Dog Walkers</string>
+    <string name="about_app_authors_k9">The K-9 Dog Walkers</string>
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->

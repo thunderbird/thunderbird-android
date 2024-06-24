@@ -4,7 +4,7 @@
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
     <!--Used in the about dialog-->
-    <string name="app_authors">Les auteurs de Courriel K-9 Mail</string>
+    <string name="about_app_authors_k9">Les auteurs de Courriel K-9 Mail</string>
     <string name="source_code">Code source</string>
     <string name="app_license">Licence Apache, Version 2.0</string>
     <string name="about_project_title">Projet à code source ouvert</string>

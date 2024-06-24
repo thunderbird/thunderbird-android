@@ -4,7 +4,7 @@
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
     <!--Used in the about dialog-->
-    <string name="app_authors">Het K-9-ontwikkelteam</string>
+    <string name="about_app_authors_k9">Het K-9-ontwikkelteam</string>
     <string name="source_code">Broncode</string>
     <string name="app_license">Apache-licentie, versie 2.0</string>
     <string name="about_project_title">Openbroncodeproject</string>
