@@ -110,6 +110,12 @@
                     android:layout_height="wrap_content"
                     android:text="@string/about_app_authors_k9"
                     android:textAppearance="?attr/textAppearanceBodyMedium" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/about_app_authors_thunderbird"
+                    android:textAppearance="?attr/textAppearanceBodyMedium" />
             </LinearLayout>
         </LinearLayout>
 

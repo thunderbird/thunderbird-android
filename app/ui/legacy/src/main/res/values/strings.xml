@@ -4,6 +4,7 @@
 
     <!-- Used in the about dialog -->
     <string name="about_app_authors_k9">The K-9 Dog Walkers</string>
+    <string name="about_app_authors_thunderbird">Thunderbird Mobile Team</string>
     <string name="source_code">Source code</string>
     <string name="app_license">Apache License, Version 2.0</string>
     <string name="about_project_title">Open Source Project</string>
