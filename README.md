@@ -18,7 +18,7 @@ You might also be interested in becoming a [tester](https://forum.k9mail.app/t/h
 ## Release Notes
 
 Check out the [Release Notes](https://github.com/thunderbird/thunderbird-android/wiki/ReleaseNotes) to find out what changed
-in each version of K-9 Mail.
+in each version of K-9 Mail. For a more up to date list of changes, see the XML [Changelog](app/ui/legacy/src/main/res/raw/changelog_master.xml).
 
 ## Need Help?
 
