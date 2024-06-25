@@ -152,7 +152,7 @@ class SmtpTransport(
                 (!password.isNullOrEmpty() || AuthType.EXTERNAL == authType || AuthType.XOAUTH2 == authType)
             ) {
                 when (authType) {
-                    AuthType.LOGIN, AuthType.PLAIN -> {
+                    AuthType.PLAIN -> {
                         // try saslAuthPlain first, because it supports UTF-8 explicitly
                         if (authPlainSupported) {
                             saslAuthPlain()
@@ -185,32 +185,6 @@ class SmtpTransport(
                             saslAuthExternal()
                         } else {
                             throw MissingCapabilityException("AUTH EXTERNAL")
-                        }
-                    }
-                    AuthType.AUTOMATIC -> {
-                        if (secureConnection) {
-                            // try saslAuthPlain first, because it supports UTF-8 explicitly
-                            if (authPlainSupported) {
-                                saslAuthPlain()
-                            } else if (authLoginSupported) {
-                                saslAuthLogin()
-                            } else if (authCramMD5Supported) {
-                                saslAuthCramMD5()
-                            } else {
-                                throw MissingCapabilityException("AUTH PLAIN")
-                            }
-                        } else {
-                            if (authCramMD5Supported) {
-                                saslAuthCramMD5()
-                            } else {
-                                // We refuse to insecurely transmit the password using the obsolete AUTOMATIC setting
-                                // because of the potential for a MITM attack. Affected users must choose a different
-                                // setting.
-                                throw MessagingException(
-                                    "Update your outgoing server authentication setting. " +
-                                        "AUTOMATIC authentication is unavailable.",
-                                )
-                            }
                         }
                     }
                     else -> {

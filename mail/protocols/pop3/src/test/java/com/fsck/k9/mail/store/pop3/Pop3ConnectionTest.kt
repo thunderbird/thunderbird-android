@@ -7,7 +7,6 @@ import assertk.assertions.prop
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.AuthType.CRAM_MD5
 import com.fsck.k9.mail.AuthType.EXTERNAL
-import com.fsck.k9.mail.AuthType.LOGIN
 import com.fsck.k9.mail.AuthType.PLAIN
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.CertificateChainException
@@ -384,7 +383,7 @@ class Pop3ConnectionTest {
     }
 
     private fun MockPop3Server.createSettings(
-        authType: AuthType = LOGIN,
+        authType: AuthType = PLAIN,
         connectionSecurity: ConnectionSecurity = NONE,
     ): Pop3Settings {
         return SimplePop3Settings().apply {

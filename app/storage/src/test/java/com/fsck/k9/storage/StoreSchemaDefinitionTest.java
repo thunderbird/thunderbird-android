@@ -411,7 +411,7 @@ public class StoreSchemaDefinitionTest extends K9RobolectricTest {
         when(account.getLocalStorageProviderId()).thenReturn(StorageManager.InternalStorageProvider.ID);
 
         ServerSettings incomingServerSettings = new ServerSettings("dummy", "", -1, ConnectionSecurity.NONE,
-                AuthType.AUTOMATIC, "", "", null);
+                AuthType.PLAIN, "", "", null);
         when(account.getIncomingServerSettings()).thenReturn(incomingServerSettings);
         return account;
     }

@@ -22,13 +22,4 @@ public enum AuthType {
      * https://developers.google.com/gmail/xoauth2_protocol#the_sasl_xoauth2_mechanism
      */
     XOAUTH2,
-
-    /*
-     * The following are obsolete authentication settings that were used with
-     * SMTP. They are no longer presented to the user as options, but they may
-     * still exist in a user's settings from a previous version or may be found
-     * when importing settings.
-     */
-    AUTOMATIC,
-    LOGIN
 }
