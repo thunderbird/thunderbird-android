@@ -6,4 +6,6 @@
     <color name="status_error_cross">#f44336</color>
     <color name="status_ok_checkmark">#7bad45</color>
 
+    <color name="account_list_item_chip_background">#FF999999</color>
+
 </resources>
