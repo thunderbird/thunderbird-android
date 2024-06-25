@@ -946,6 +946,6 @@
     <string name="account_delete_dlg_instructions_fmt">De account \"<xliff:g id="account">%s</xliff:g>\" zal uit <xliff:g id="app_name">%s</xliff:g> worden verwijderd.</string>
     <string name="about_title">Over <xliff:g id="app_name">%s</xliff:g></string>
     <string name="push_info_notification_explanation_text">Bij gebruik van Push onderhoudt <xliff:g id="app_name">%1$s</xliff:g> een verbinding met de mailserver. Android vereist het doorlopend weergeven van een melding als de app actief is op de achtergrond. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
-    <string name="default_signature">--
+    <string name="default_signature">-- 
 \nVerzonden vanaf mijn Android-apparaat met <xliff:g id="app_name">%s</xliff:g>. Mijn excuses voor mijn beknoptheid.</string>
 </resources>

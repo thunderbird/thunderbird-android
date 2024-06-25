@@ -1,0 +1,24 @@
+K-9 메일은 기본적으로 모든 이메일 제공업체와 호환되는 오픈 소스 이메일 클라이언트입니다.
+
+<b>기능</b>
+
+* 다중 계정 지원
+* 통합 받은편지함
+* 개인정보 보호 친화적 (사용자를 추적하지 않으며, 오직 사용자의 이메일 제공업체에만 연결합니다)
+* 백그라운드 동기화와 푸시 알림
+* 로컬 및 서버 측 검색
+* OpenPGP 이메일 암호화 (PGP/MIME)
+
+OpenPGP를 사용하여 이메일을 암호화/복호화하려면 <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain: Easy PGP</a> 앱을 설치해야 합니다.
+
+
+<b>지원</b>
+
+K-9 메일을 사용하는데 문제가 있으시면 <a href="https://forum.k9mail.app">지원 포럼</a>에서 도움을 요청하세요.
+
+
+<b>도움을 주고 싶으신가요?</b>
+
+K-9 메일은 커뮤니티에서 개발한 프로젝트입니다. 프로젝트의 개선에 관심이 있으시다면 저희와 함께해 주세요!
+버그 트래커, 소스 코드, 위키는 <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>에서 찾으실 수 있습니다.
+새로운 개발자, 디자이너, 문서 작성가, 번역가, 버그 분류자, 그리고 친구들을 항상 환영합니다.

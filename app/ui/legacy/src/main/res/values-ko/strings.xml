@@ -5,7 +5,7 @@
     <!--Used in AndroidManifest.xml-->
     <!--Used in the about dialog-->
     <string name="about_app_authors_k9">K-9 개발자들</string>
-    <string name="source_code">소소 코드</string>
+    <string name="source_code">소스 코드</string>
     <string name="app_license">아파치 라이선스, 버전 2.0</string>
     <string name="about_project_title">오픈 소스 프로젝트</string>
     <string name="about_website_title">웹사이트</string>
@@ -35,12 +35,12 @@
     <string name="choose_folder_title">폴더 선택</string>
     <string name="choose_folder_move_title">다음으로 이동</string>
     <string name="choose_folder_copy_title">다음으로 복사</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 선택</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 선택됨</string>
     <string name="send_action">전송</string>
-    <string name="empty_subject">제목이 비어있지만, 재클릭시 전송</string>
-    <string name="reply_action">회신</string>
-    <string name="reply_all_action">전체회신</string>
-    <string name="delete_action">지우기</string>
+    <string name="empty_subject">제목이 비어 있습니다. 전송하려면 다시 클릭하세요.</string>
+    <string name="reply_action">답장</string>
+    <string name="reply_all_action">전체 답장</string>
+    <string name="delete_action">삭제</string>
     <string name="archive_action">보관</string>
     <string name="spam_action">스팸</string>
     <string name="forward_action">전달</string>
@@ -50,7 +50,7 @@
     <string name="move_to_drafts_action">초안으로 이동</string>
     <string name="refile_action">관리…</string>
     <string name="done_action">완료</string>
-    <string name="discard_action">버리기</string>
+    <string name="discard_action">취소</string>
     <string name="save_draft_action">임시 보관함에 저장</string>
     <string name="check_mail_action">새로고침</string>
     <string name="send_messages_action">메시지 보내기</string>
@@ -68,11 +68,11 @@
     <string name="remove_account_action">계정 삭제</string>
     <string name="mark_as_read_action">읽은 메일로 표시</string>
     <string name="send_alternate_action">공유</string>
-    <string name="send_alternate_chooser_title">발신자 선택</string>
-    <string name="flag_action">별표하기</string>
-    <string name="unflag_action">별표 해제하기</string>
+    <string name="send_alternate_chooser_title">보낸 사람 선택</string>
+    <string name="flag_action">별표 표시</string>
+    <string name="unflag_action">별표 삭제</string>
     <string name="copy_action">복사</string>
-    <string name="show_headers_action">헤더 보이기</string>
+    <string name="show_headers_action">헤더 보기</string>
     <plurals name="copy_address_to_clipboard">
         <item quantity="other">클립보드에 이메일 주소 복사</item>
     </plurals>
@@ -83,44 +83,44 @@
     <string name="read_receipt">읽음 확인</string>
     <string name="read_receipt_enabled">읽음 확인을 요청함</string>
     <string name="read_receipt_disabled">읽음 확인을 요청하지 않음</string>
-    <string name="add_attachment_action">첨부 추가</string>
+    <string name="add_attachment_action">첨부 파일 추가</string>
     <string name="empty_trash_action">휴지통 비우기</string>
     <string name="expunge_action">폐기</string>
     <string name="about_action">정보</string>
     <string name="prefs_title">설정</string>
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(제목 없음)</string>
-    <string name="general_no_sender">보낸이 없음</string>
+    <string name="general_no_sender">보낸 사람 없음</string>
     <string name="status_loading_more">이메일을 가져오는 중..\u2026</string>
     <string name="status_network_error">연결 오류</string>
     <string name="status_invalid_id_error">메시지를 찾을 수 없습니다</string>
-    <string name="status_loading_error">메시지 로딩 에러</string>
+    <string name="status_loading_error">메시지 로딩 오류</string>
     <string name="load_more_messages_fmt">최대 <xliff:g id="messages_to_load">%d</xliff:g>개 더 불러오기</string>
     <plurals name="notification_new_messages_title">
         <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> 새 메세지</item>
     </plurals>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> more on <xliff:g id="account">%2$s</xliff:g></string>
     <string name="notification_action_reply">답장</string>
-    <string name="notification_action_mark_as_read">읽음</string>
+    <string name="notification_action_mark_as_read">읽은 것으로 표시</string>
     <string name="notification_action_mark_all_as_read">모두 읽은 것으로 표시</string>
     <string name="notification_action_delete">삭제</string>
-    <string name="notification_action_delete_all">전부 삭제</string>
+    <string name="notification_action_delete_all">모두 삭제</string>
     <string name="notification_action_archive">보관</string>
     <string name="notification_action_archive_all">모두 보관</string>
     <string name="notification_action_spam">스팸</string>
     <string name="notification_certificate_error_title">계정 인증 오류 (<xliff:g id="account">%s</xliff:g>)</string>
-    <string name="notification_certificate_error_text">서버 설정을 점검하십시오.</string>
+    <string name="notification_certificate_error_text">서버 설정을 확인해 주세요</string>
     <string name="notification_authentication_error_title">인증 실패</string>
     <string name="notification_authentication_error_text"><xliff:g id="account">%s</xliff:g> 계정 인증 오류. 서버 설정을 업데이트하세요.</string>
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_text">새로운 메시지를 위한 시스템 알림을 만드는 중에 오류가 발생했습니다. 알림 소리가 지정되지 않아 그럴 가능성이 높습니다.\n\n여기를 눌러 알림 설정으로 이동하세요.</string>
-    <string name="notification_bg_sync_ticker">메일 체크 중: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
-    <string name="notification_bg_sync_title">메일 체크 중</string>
+    <string name="notification_bg_sync_ticker">메일 확인 중: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
+    <string name="notification_bg_sync_title">메일 확인 중</string>
     <string name="notification_bg_send_ticker">메일 전송 중: <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">메일 전송 중</string>
     <string name="notification_bg_title_separator">:</string>
-    <string name="notification_channel_push_title">동기화 하기 (누르세요)</string>
+    <string name="notification_channel_push_title">동기화하기 (푸시)</string>
     <string name="notification_channel_messages_title">메시지</string>
     <string name="notification_channel_miscellaneous_title">기타 설정</string>
     <string name="special_mailbox_name_inbox">받은 편지함</string>
@@ -129,14 +129,14 @@
     <string name="special_mailbox_name_trash">휴지통</string>
     <string name="special_mailbox_name_sent">보냄</string>
     <string name="send_failure_subject">일부 메시지를 보내는 데 실패하였습니다</string>
-    <string name="debug_enable_debug_logging_title">버그 정보 기록</string>
-    <string name="debug_enable_debug_logging_summary">부차적인 진단 정보를 기록합니다</string>
+    <string name="debug_enable_debug_logging_title">디버그 로깅 활성화</string>
+    <string name="debug_enable_debug_logging_summary">추가적인 진단 정보를 기록합니다</string>
     <string name="debug_enable_sensitive_logging_title">중요 정보 기록</string>
     <string name="debug_enable_sensitive_logging_summary">로그에 비밀번호를 남길 수도 있습니다</string>
     <string name="debug_export_logs_title">로그 내보내기</string>
-    <string name="debug_export_logs_success">내보내기에 성공했습니다. 로그는 민감한 정보를 포함하고 있을 수도 있습니다. 전송할 때 유의하세요.</string>
-    <string name="debug_export_logs_failure">내보내기 실패</string>
-    <string name="message_list_load_more_messages_action">메시지 추가 로드</string>
+    <string name="debug_export_logs_success">내보내기에 성공했습니다. 로그에 민감한 정보가 포함되어 있을 수 있습니다. 전송할 때 유의하세요.</string>
+    <string name="debug_export_logs_failure">내보내기에 실패했습니다.</string>
+    <string name="message_list_load_more_messages_action">메시지 불러오기</string>
     <string name="message_to_fmt">To:<xliff:g id="counterParty">%s</xliff:g></string>
     <string name="message_compose_subject_hint">제목</string>
     <string name="message_compose_content_hint">내용</string>
@@ -155,12 +155,12 @@
     <string name="message_compose_attachments_skipped_toast">일부 첨부 파일이 다운로드되지 않아 전달될 수 없습니다.</string>
     <string name="message_compose_attachments_forward_toast">일부 첨부 파일이 다운로드되지 않아 전달할 수 없습니다.</string>
     <string name="message_compose_show_quoted_text_action">인용 메세지 포함</string>
-    <string name="message_compose_description_delete_quoted_text">인용된 메시지 제거</string>
-    <string name="message_compose_description_edit_quoted_text">인용된 메시지 편집</string>
+    <string name="message_compose_description_delete_quoted_text">인용 메시지 제거</string>
+    <string name="message_compose_description_edit_quoted_text">인용 메시지 편집</string>
     <string name="message_to_label">수신자:</string>
     <string name="message_view_cc_label">참조:</string>
-    <string name="message_view_bcc_label">Bcc:</string>
-    <string name="message_view_status_attachment_not_saved">첨부파일을 저장할 수 없음</string>
+    <string name="message_view_bcc_label">숨은 참조:</string>
+    <string name="message_view_status_attachment_not_saved">첨부 파일을 저장할 수 없습니다.</string>
     <!--Used to display the recipient list in the message view screen.-->
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
     <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
@@ -168,7 +168,7 @@
     <string name="message_view_no_viewer"><xliff:g id="mimetype">%s</xliff:g>에 대한 뷰어를 찾을 수 없습니다.</string>
     <string name="message_view_download_remainder">메시지의 남은 부분 다운로드</string>
     <string name="message_view_sender_label">%1$s을 통하여</string>
-    <string name="from_same_sender">이 발신자에 대한 추가 작업</string>
+    <string name="from_same_sender">이 보낸 사람에 대한 추가 작업</string>
     <string name="message_discarded_toast">삭제됨</string>
     <string name="message_saved_toast">임시 보관함에 저장되었습니다</string>
     <string name="global_settings_flag_label">별표 보기</string>
@@ -193,7 +193,7 @@
     <string name="global_settings_confirm_action_delete_starred">별표된 메시지 삭제 (메시지 보기에서만)</string>
     <string name="global_settings_confirm_action_spam">스팸</string>
     <string name="global_settings_confirm_menu_discard">메시지 버림</string>
-    <string name="global_settings_confirm_menu_mark_all_read">모든 메시지를 읽은 상태로 표시</string>
+    <string name="global_settings_confirm_menu_mark_all_read">모든 메시지를 읽음으로 표시</string>
     <string name="global_settings_confirm_action_delete_notif">삭제 (알림에서)</string>
     <!--Title of the screen to configure swipe actions-->
     <string name="general_settings_swipe_actions_title">스와이프 동작</string>
@@ -204,9 +204,9 @@
     <!--The list item users select to not use a swipe action for a particular direction-->
     <string name="general_settings_swipe_action_none">없음</string>
     <!--Name of the swipe action to select/deselect a message-->
-    <string name="general_settings_swipe_action_toggle_selection">선택으로 전환</string>
+    <string name="general_settings_swipe_action_toggle_selection">전환</string>
     <!--Name of the swipe action to mark as message as read/unread-->
-    <string name="general_settings_swipe_action_toggle_read">읽음/읽지 않음으로 바꾸기</string>
+    <string name="general_settings_swipe_action_toggle_read">읽음/읽지 않음으로 표시</string>
     <!--Name of the swipe action to add/remove a star-->
     <!--Name of the swipe action to archive a message-->
     <string name="general_settings_swipe_action_archive">보관</string>
@@ -218,9 +218,9 @@
     <string name="general_settings_swipe_action_move">이동</string>
     <!--Title of the setting to specify the density of the message list-->
     <string name="general_settings_ui_density_default">기본</string>
-    <string name="global_settings_privacy_hide_useragent">메일 클라이언트를 숨김</string>
-    <string name="global_settings_privacy_hide_useragent_detail">메일 헤더에서 K-9 User Agent 제거</string>
-    <string name="global_settings_privacy_hide_timezone">시간 구역을 숨기기</string>
+    <string name="global_settings_privacy_hide_useragent">메일 클라이언트 숨기기</string>
+    <string name="global_settings_privacy_hide_useragent_detail">메일 헤더에서 K-9 User-Agent를 제거합니다</string>
+    <string name="global_settings_privacy_hide_timezone">시간대 숨기기</string>
     <string name="global_settings_notification_quick_delete_title">\'삭제\' 버튼 보이기</string>
     <string name="global_settings_notification_quick_delete_never">하지 않음</string>
     <string name="global_settings_notification_quick_delete_when_single_msg">알림에 메시지가 하나뿐일 때만</string>
@@ -230,17 +230,17 @@
     <string name="global_settings_lock_screen_notification_visibility_app_name">앱 이름</string>
     <string name="global_settings_lock_screen_notification_visibility_senders">메세지 개수와 발신자</string>
     <string name="global_settings_lock_screen_notification_visibility_everything">화면이 잠금 해제되었을때와 동일</string>
-    <string name="quiet_time">무음 시간</string>
+    <string name="quiet_time">방해 금지 시간</string>
     <string name="quiet_time_description">밤에는 벨소리, 버저, 플래시를 비활성화합니다</string>
     <string name="quiet_time_notification">알림 비활성화</string>
-    <string name="quiet_time_starts">무음 시작 시간</string>
-    <string name="quiet_time_ends">무음 끝나는 시간</string>
+    <string name="quiet_time_starts">방해 금지 시작 시간</string>
+    <string name="quiet_time_ends">방해 금지 종료 시간</string>
     <string name="account_setup_basics_title">계정 추가</string>
     <string name="account_setup_incoming_delete_policy_label">메시지 삭제 시</string>
     <string name="account_setup_incoming_delete_policy_never_label">서버에는 메일을 삭제하지 않음</string>
     <string name="account_setup_incoming_delete_policy_delete_label">서버에도 메일 삭제</string>
     <string name="account_setup_incoming_delete_policy_markread_label">서버에 읽은 메일로 표시</string>
-    <string name="account_setup_expunge_policy_label">삭제된 메시지를 제거</string>
+    <string name="account_setup_expunge_policy_label">서버에서 삭제된 메시지 지우기</string>
     <string name="account_setup_expunge_policy_immediately">즉시</string>
     <string name="account_setup_expunge_policy_on_poll">수신 시</string>
     <string name="account_setup_expunge_policy_manual">항상 수동으로</string>
@@ -276,11 +276,11 @@
     <string name="account_setup_options_mail_display_count_250">250 메시지</string>
     <string name="account_setup_options_mail_display_count_500">500 메시지</string>
     <string name="account_setup_options_mail_display_count_1000">1000 메시지</string>
-    <string name="account_setup_options_mail_display_count_2500">2500개의 메세지</string>
-    <string name="account_setup_options_mail_display_count_5000">5000개의 메세지</string>
-    <string name="account_setup_options_mail_display_count_10000">10000개의 메세지</string>
+    <string name="account_setup_options_mail_display_count_2500">2500 메세지</string>
+    <string name="account_setup_options_mail_display_count_5000">5000 메세지</string>
+    <string name="account_setup_options_mail_display_count_10000">10000 메세지</string>
     <string name="account_setup_options_mail_display_count_all">모든 메시지</string>
-    <string name="move_copy_cannot_copy_unsynced_message">서버와 동기화되지 않은 메시지를 복사하거나 이동할 수 없습니다.</string>
+    <string name="move_copy_cannot_copy_unsynced_message">서버와 동기화되지 않은 메시지를 복사하거나 이동할 수 없습니다</string>
     <string name="account_settings_push_advanced_title">고급</string>
     <string name="account_settings_title_fmt">계정 설정</string>
     <string name="account_settings_notify_label">새 메일 알림</string>
@@ -291,16 +291,16 @@
     <string name="account_settings_folder_notify_new_mail_mode_not_second_class">제 2종 폴더 외 모두</string>
     <string name="account_settings_folder_notify_new_mail_mode_none">없음</string>
     <string name="account_settings_notify_sync_label">동기화 알림</string>
-    <string name="account_settings_email_label">당신의 이메일 주소</string>
-    <string name="account_settings_notify_summary">메일 도착시 상태 바에 알림</string>
-    <string name="account_settings_notify_sync_summary">동기화 중일 때 상태 바에 표시합니다</string>
+    <string name="account_settings_email_label">이메일 주소</string>
+    <string name="account_settings_notify_summary">메일이 도착하면 상태 표시줄에 알림 표시</string>
+    <string name="account_settings_notify_sync_summary">메일이 확인되면 상태 표시줄에 알림 표시</string>
     <string name="account_settings_notify_self_label">보낸 편지함 포함</string>
     <string name="account_settings_notify_self_summary">내가 보낸 메시지에 대해 알림 보기</string>
     <string name="account_notify_contacts_mail_only_label">연락처 만</string>
     <string name="account_notify_contacts_mail_only_summary">아는 사람이 보낸 메시지만 알림 보기</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">열어서 메시지를 읽은 것으로 표시</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">메시지를 열면 읽은 것으로 표시합니다</string>
-    <string name="account_settings_show_pictures_label">항상 그림 보기</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">열 때 읽음으로 표시</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">메시지를 열면 읽음으로 표시합니다</string>
+    <string name="account_settings_show_pictures_label">항상 사진 보기</string>
     <string name="account_settings_show_pictures_never">아니오</string>
     <string name="account_settings_show_pictures_only_from_contacts">등록된 메일 주소일 때</string>
     <string name="account_settings_show_pictures_always">누구의 메일이든</string>
@@ -319,14 +319,14 @@
     <string name="account_settings_message_read_receipt_label">읽음 확인</string>
     <string name="account_settings_message_read_receipt_summary">항상 읽음 확인을 요청합니다</string>
     <string name="account_settings_quote_style_label">회신시 인용문 위치</string>
-    <string name="account_settings_quote_style_prefix">Prefix (Gmail, Pine 처럼)</string>
+    <string name="account_settings_quote_style_prefix">Prefix (Gmail처럼)</string>
     <string name="account_settings_quote_style_header">Header (Outlook, Yahoo!, Hotmail 처럼)</string>
     <string name="account_settings_general_title">일반 설정</string>
     <string name="account_settings_reading_mail">메일 읽기</string>
     <string name="account_settings_sync">메일 가져오기</string>
     <string name="account_settings_folders">폴더</string>
     <string name="account_settings_quote_prefix_label">본문 인용 앞 표시</string>
-    <string name="account_settings_crypto">단-대-단 암호화</string>
+    <string name="account_settings_crypto">종단간 암호화</string>
     <string name="account_settings_crypto_app">OpenPGP 사용</string>
     <string name="account_settings_crypto_app_select_title">OpenPGP 앱 선택</string>
     <string name="account_settings_mail_check_frequency_label">폴더 수신 빈도</string>
@@ -390,10 +390,10 @@
     <string name="folder_settings_folder_notify_mode_second_class">제 2종</string>
     <string name="folder_settings_folder_notify_mode_inherited">푸시 클래스와 같음</string>
     <string name="folder_settings_clear_local_folder_action">로컬 메시지 삭제</string>
-    <string name="account_settings_incoming_label">받기 서버</string>
-    <string name="account_settings_incoming_summary">메일 받기 서버 수정</string>
-    <string name="account_settings_outgoing_label">보내기 서버</string>
-    <string name="account_settings_outgoing_summary">메일 보내기 서버 (SMTP) 수정</string>
+    <string name="account_settings_incoming_label">수신 서버</string>
+    <string name="account_settings_incoming_summary">메일 수신 서버 수정</string>
+    <string name="account_settings_outgoing_label">발신 서버</string>
+    <string name="account_settings_outgoing_summary">메일 발신 서버 (SMTP) 수정</string>
     <string name="account_settings_description_label">계정 이름</string>
     <string name="account_settings_name_label">당신의 이름</string>
     <string name="notifications_title">알림</string>
@@ -412,22 +412,22 @@
     <string name="edit_identity_title">신원 수정</string>
     <string name="edit_identity_save">저장</string>
     <string name="new_identity_action">새로운 신원</string>
-    <string name="account_settings_always_bcc_label">모든 메시지를 비밀 첨부 보냄</string>
+    <string name="account_settings_always_bcc_label">모든 메시지를 숨은 참조</string>
     <string name="manage_identities_edit_action">수정</string>
     <string name="manage_identities_move_up_action">위로 이동</string>
     <string name="manage_identities_move_down_action">아래로 이동</string>
     <string name="manage_identities_move_top_action">맨 위로 이동 / 기본값으로 함</string>
     <string name="manage_identities_remove_action">제거</string>
     <string name="edit_identity_description_label">이 신원 항목 설명</string>
-    <string name="edit_identity_description_hint">(옵션)</string>
+    <string name="edit_identity_description_hint">(선택 사항)</string>
     <string name="edit_identity_name_label">이름</string>
-    <string name="edit_identity_name_hint">(옵션)</string>
+    <string name="edit_identity_name_hint">(선택 사항)</string>
     <string name="edit_identity_email_label">이메일 주소</string>
     <string name="edit_identity_email_hint">(필수)</string>
     <string name="edit_identity_reply_to_label">회신 주소</string>
-    <string name="edit_identity_reply_to_hint">(옵션)</string>
+    <string name="edit_identity_reply_to_hint">(선택 사항)</string>
     <string name="edit_identity_signature_label">서명</string>
-    <string name="edit_identity_signature_hint">(옵션)</string>
+    <string name="edit_identity_signature_hint">(선택 사항)</string>
     <string name="account_settings_signature_use_label">서명 사용</string>
     <string name="account_settings_signature_label">서명</string>
     <string name="default_identity_description">초기 발신자</string>
@@ -512,13 +512,13 @@
     <string name="font_size_settings_description">글꼴 크기 수정</string>
     <string name="font_size_message_list">메시지 목록</string>
     <string name="font_size_message_list_subject">제목</string>
-    <string name="font_size_message_list_sender">보낸이</string>
+    <string name="font_size_message_list_sender">보낸 사람</string>
     <string name="font_size_message_list_date">날짜</string>
     <string name="font_size_message_list_preview">미리 보기</string>
     <string name="font_size_message_view">메시지</string>
     <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
     <string name="font_size_message_view_account">계정 이름</string>
-    <string name="font_size_message_view_sender">보낸이</string>
+    <string name="font_size_message_view_sender">보낸 사람</string>
     <string name="font_size_message_view_subject">제목</string>
     <string name="font_size_message_view_date">시간 및 날짜</string>
     <string name="font_size_message_view_content">내용</string>
@@ -532,9 +532,9 @@
     <string name="font_size_medium">중간</string>
     <string name="font_size_large">크게</string>
     <string name="font_size_larger">더 크게</string>
-    <string name="error_activity_not_found">이 작동에 대해 적절한 애플리케이션을 찾을 수 없습니다.</string>
+    <string name="error_activity_not_found">이 동작에 대해 적절한 애플리케이션을 찾을 수 없습니다.</string>
     <string name="send_failed_reason">전송 실패: %s</string>
-    <string name="save_or_discard_draft_message_dlg_title">임시 보관함에 저장합니까?</string>
+    <string name="save_or_discard_draft_message_dlg_title">임시 보관함에 저장할까요?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">이 메시지를 저장하거나 버리시겠습니까?</string>
     <string name="confirm_discard_draft_message_title">메시지 버림</string>
     <string name="confirm_discard_draft_message">메시지 작성을 취소하고 버리겠습니까?</string>
@@ -559,20 +559,20 @@
     <string name="settings_list_miscellaneous_category">기타 설정</string>
     <string name="settings_export_button">내보내기</string>
     <string name="settings_export_share_button">공유</string>
-    <string name="settings_export_progress_text">설정 내보내는 중…</string>
+    <string name="settings_export_progress_text">설정을 내보내는 중…</string>
     <string name="settings_export_failure">설정 내보내기 실패</string>
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
     <string name="webview_empty_message">내용 없음</string>
-    <string name="webview_contextmenu_link_view_action">열어 보기</string>
-    <string name="webview_contextmenu_link_share_action">주소 공유</string>
+    <string name="webview_contextmenu_link_view_action">링크 열기</string>
+    <string name="webview_contextmenu_link_share_action">링크 공유</string>
     <string name="webview_contextmenu_link_copy_action">클립보드에 주소 복사</string>
     <string name="webview_contextmenu_link_clipboard_label">주소</string>
-    <string name="webview_contextmenu_image_title">그림</string>
-    <string name="webview_contextmenu_image_view_action">그림 보기</string>
-    <string name="webview_contextmenu_image_save_action">그림 저장</string>
-    <string name="webview_contextmenu_image_download_action">그림 받기</string>
+    <string name="webview_contextmenu_image_title">이미지</string>
+    <string name="webview_contextmenu_image_view_action">이미지 보기</string>
+    <string name="webview_contextmenu_image_save_action">이미지 저장</string>
+    <string name="webview_contextmenu_image_download_action">이미지 다운로드</string>
     <string name="webview_contextmenu_image_copy_action">클립보드에 이미지 주소 복사</string>
     <string name="webview_contextmenu_image_clipboard_label">이미지 주소</string>
     <string name="webview_contextmenu_phone_call_action">전화 걸기</string>
@@ -605,8 +605,8 @@
     <string name="remote_search_unavailable_no_network">네트워크 연결이 없어 서버 검색을 할 수 없습니다.</string>
     <string name="global_settings_threaded_view_label">대화형 보기</string>
     <string name="global_settings_threaded_view_summary">같은 대화에 속하는 메시지들 접기</string>
-    <string name="upgrade_databases_title">DB 업그레이드</string>
-    <string name="upgrade_databases_unspecified">데이터베이스 업그레이드 중…</string>
+    <string name="upgrade_databases_title">데이터베이스 업그레이드</string>
+    <string name="upgrade_databases_unspecified">데이터베이스를 업그레이드하는 중…</string>
     <string name="upgrade_database_format">계정 \"<xliff:g id="account">%s</xliff:g>\"의 데이터베이스 업그레이드 중</string>
     <string name="global_settings_splitview_mode_label">분할된 화면 보기</string>
     <string name="global_settings_splitview_always">항상</string>
@@ -615,7 +615,7 @@
     <string name="message_view_empty">왼쪽에서 메시지를 선택하십시오.</string>
     <string name="global_settings_show_contact_picture_label">연락처 사진 표시</string>
     <string name="global_settings_show_contact_picture_summary">메시지 목록에서 연락처 사진을 보여 줍니다</string>
-    <string name="mark_all_as_read">모두 읽은 메시지로 표시</string>
+    <string name="mark_all_as_read">모두 읽음으로 표시</string>
     <string name="global_settings_colorize_missing_contact_pictures_label">모르는 연락처 색깔 표시</string>
     <string name="global_settings_colorize_missing_contact_pictures_summary">연락처 목록에 없는 메시지에는 색으로 표시합니다</string>
     <string name="global_settings_messageview_visible_refile_actions_title">메시지 조작 메뉴</string>
@@ -625,7 +625,7 @@
     <string name="fetching_attachment_dialog_title_save">임시 저장</string>
     <string name="fetching_attachment_dialog_message">첨부 파일 부치는 중…</string>
     <!--Note: This references message_view_download_remainder-->
-    <string name="preview_encrypted">\"암호화됨\"</string>
+    <string name="preview_encrypted">*암호화됨*</string>
     <string name="add_from_contacts">연락처 목록에서 추가하기</string>
     <string name="recipient_cc">참조</string>
     <string name="recipient_bcc">숨은 참조</string>
@@ -642,46 +642,46 @@
     <string name="enable_sign_only">PGP 서명만 활성화</string>
     <string name="disable_sign_only">PGP 서명만 비활성화</string>
     <string name="openpgp_inline_title">PGP/INLINE 모드</string>
-    <string name="openpgp_inline_plus_compat">몇몇 클라이언트는 오직 이 포멧만을 지원함</string>
-    <string name="openpgp_inline_minus_transit">유통 과정 중에 서명이 왜곡될 수 있음</string>
-    <string name="openpgp_inline_minus_attach">첨부는 지원하지 않음</string>
+    <string name="openpgp_inline_plus_compat">일부 클라이언트는 이 형식만 지원합니다</string>
+    <string name="openpgp_inline_minus_transit">전송 중에 서명이 깨질 수 있습니다</string>
+    <string name="openpgp_inline_minus_attach">첨부 파일은 지원되지 않습니다</string>
     <string name="openpgp_inline_ok">알았습니다!</string>
     <string name="openpgp_inline_keep_enabled">활성 상태 유지</string>
     <string name="openpgp_sign_only_ok">알았습니다!</string>
     <string name="openpgp_sign_only_keep_enabled">활성 상태 유지</string>
-    <string name="openpgp_dialog_sign_only_title">PGP 서명만의 형식</string>
+    <string name="openpgp_dialog_sign_only_title">PGP Sign-Only 모드</string>
     <string name="crypto_msg_title_plaintext">일반 글</string>
-    <string name="crypto_msg_unsupported_encrypted">지원되지 않은 형식으로 암호화된 메시지</string>
-    <string name="crypto_msg_title_unencrypted_signed_e2e">종단간적으로  서명된 일반 글</string>
+    <string name="crypto_msg_unsupported_encrypted">메시지가 암호화되었지만 지원되지 않는 형식입니다.</string>
+    <string name="crypto_msg_title_unencrypted_signed_e2e">종단간 서명된 일반 텍스트</string>
     <string name="crypto_msg_unencrypted_sign_verified">입증된 서명인에서 옴</string>
     <string name="crypto_msg_title_unencrypted_signed">서명된 일반 글</string>
-    <string name="crypto_msg_unencrypted_sign_mismatch">하지만 종단간의 키가 보낸 자에 맞지 않습니다</string>
-    <string name="crypto_msg_unencrypted_sign_expired">하지만 종단간의 키가 기한이 지났습니다.</string>
+    <string name="crypto_msg_unencrypted_sign_mismatch">하지만 종단간 키가 보낸 사람과 일치하지 않습니다</string>
+    <string name="crypto_msg_unencrypted_sign_expired">하지만 종단간 키가 만료되었습니다</string>
     <string name="crypto_msg_unencrypted_sign_unknown">미지 종단간 키</string>
     <string name="crypto_msg_title_encrypted_unknown">암호화됨</string>
-    <string name="crypto_msg_encrypted_error">하지만 해독 오류가 생겼습니다.</string>
+    <string name="crypto_msg_encrypted_error">복호화 오류가 발생했습니다</string>
     <string name="crypto_msg_title_encrypted_unsigned">암호화됨</string>
     <string name="crypto_msg_encrypted_unsigned">하지만 종단간 형식이 아닙니다.</string>
-    <string name="crypto_msg_title_encrypted_signed_e2e">종단간 암호</string>
+    <string name="crypto_msg_title_encrypted_signed_e2e">종단간 암호화됨</string>
     <string name="crypto_msg_title_encrypted_signed">암호화됨</string>
     <string name="crypto_msg_encrypted_sign_unknown">미지 키</string>
-    <string name="crypto_msg_encrypted_sign_mismatch">하지만 종단간의 키가 보낸 자에 맞지 않습니다</string>
-    <string name="crypto_msg_encrypted_sign_expired">하지만 종단간의 키가 기한이 지났습니다.</string>
-    <string name="locked_attach_title">보호되지 않은 부착 파일</string>
+    <string name="crypto_msg_encrypted_sign_mismatch">하지만 종단간 키가 보낸 사람과 일치하지 않습니다</string>
+    <string name="crypto_msg_encrypted_sign_expired">하지만 종단간 키가 만료되었습니다</string>
+    <string name="locked_attach_title">보호되지 않은 첨부 파일</string>
     <string name="message_progress_text">로딩 중…</string>
     <string name="messageview_decrypt_cancelled">복호화가 취소되었습니다.</string>
     <string name="messageview_decrypt_retry">재시도</string>
     <string name="messageview_crypto_error_title">해독에 오류</string>
     <string name="recipient_error_parse_failed">올바른 주소 형태가 아닙니다!</string>
-    <string name="account_settings_crypto_hide_sign_only">암호화된지 않은 서명을 숨기기</string>
-    <string name="account_settings_crypto_hide_sign_only_off">모든 서명이 보일 것입니다</string>
+    <string name="account_settings_crypto_hide_sign_only">암호화되지 않은 서명을 숨기기</string>
+    <string name="account_settings_crypto_hide_sign_only_off">모든 서명을 표시합니다</string>
     <string name="unsigned_text_divider_label">서명되지 않은 글</string>
-    <string name="crypto_no_provider_button">설정으로 움직이기</string>
+    <string name="crypto_no_provider_button">설정으로</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
-    <string name="openpgp_enabled_error_title">암호화가 불가능합니다</string>
-    <string name="openpgp_enabled_error_msg">선택된 몇몇 받는 사람들은 이 기능을 지원하지 않습니다!</string>
-    <string name="enable_encryption">암호화 사용</string>
+    <string name="openpgp_enabled_error_title">암호화할 수 없습니다</string>
+    <string name="openpgp_enabled_error_msg">선택한 받는 사람 중 일부는 이 기능을 지원하지 않습니다!</string>
+    <string name="enable_encryption">암호화 활성화</string>
     <string name="openpgp_enabled_error_gotit">알았습니다</string>
     <string name="openpgp_enabled_error_back">뒤로</string>
     <string name="openpgp_encryption">OpenPGP 암호화</string>
@@ -689,16 +689,16 @@
     <string name="dialog_openkeychain_info_title">OpenPGP 앱이 설치되지 않음</string>
     <string name="dialog_openkeychain_info_install">설치</string>
     <string name="encrypted_subject">암호화된 메시지</string>
-    <string name="account_settings_crypto_encrypt_subject">메시지 주제를 암호화시키기</string>
-    <string name="account_settings_crypto_encrypt_subject_subtitle">일부 수령인의 앱이 이것을 지원하지 않을 수 있습니다</string>
-    <string name="toast_openpgp_provider_error">%s에 접속에 문제가 생겼습니다</string>
+    <string name="account_settings_crypto_encrypt_subject">메시지 제목을 암호화하기</string>
+    <string name="account_settings_crypto_encrypt_subject_subtitle">일부 받는 사람에게는 지원되지 않을 수 있습니다</string>
+    <string name="toast_openpgp_provider_error">%s에 연결하는 동안 오류가 발생했습니다!</string>
     <string name="ac_transfer_title">오토크립트 설정의 메시지</string>
     <string name="ac_transfer_button_send">설정 메시지를 보내기</string>
     <string name="ac_transfer_generating">설정 메시지를 만드는 중</string>
     <string name="ac_transfer_show_code">설정코드를 보이기</string>
     <string name="ac_transfer_msg_subject">오토크립트 설정의 메시지</string>
-    <string name="switch_on">커져 있음</string>
-    <string name="switch_off">꺼 있음</string>
+    <string name="switch_on">켜기</string>
+    <string name="switch_off">끄기</string>
     <!--permissions-->
     <!--Name of the swipe action to select a message. Try to keep it short.-->
     <string name="swipe_action_select">선택</string>
@@ -706,11 +706,11 @@
     <string name="swipe_action_deselect">선택 해제</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">읽지 않은 메일로 표시</string>
+    <string name="swipe_action_mark_as_unread">읽지 않음으로 표시</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">별표하기</string>
+    <string name="swipe_action_add_star">별표 표시</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">별표 해제하기</string>
+    <string name="swipe_action_remove_star">별표 삭제</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
     <string name="swipe_action_archive">보관</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
@@ -726,7 +726,7 @@
     <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
     <string name="message_details_from_section_title">보낸 사람</string>
     <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
-    <string name="message_details_sender_section_title">보낸이</string>
+    <string name="message_details_sender_section_title">보낸 사람</string>
     <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
     <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
     <string name="message_details_to_section_title">받는 사람</string>
@@ -740,7 +740,7 @@
     <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
     <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
     <!--A user visible label for the email address copied to the clipboard-->
-    <string name="clipboard_label_email_address">전자우편 주소</string>
+    <string name="clipboard_label_email_address">이메일 주소</string>
     <!--A user visible label for the name and email address copied to the clipboard-->
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
@@ -752,4 +752,65 @@
     <string name="size_format_kilobytes">%.1f kB</string>
     <string name="notification_channel_miscellaneous_description">오류 같은 기타 알림.</string>
     <string name="version">버전</string>
+    <string name="dialog_openkeychain_info_text">종단 간 암호화를 활성화하려면 OpenKeychain 앱이 필요합니다.</string>
+    <string name="openpgp_enabled_error_disable">암호화 비활성화</string>
+    <string name="unsubscribe_action">구독 취소</string>
+    <string name="global_settings_privacy_hide_timezone_detail">메일 헤더와 답장 헤더에 현지 시간대 대신 UTC를 사용합니다</string>
+    <string name="account_settings_crypto_summary_off">OpenPGP 앱이 설정되지 않았습니다</string>
+    <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
+    <string name="account_settings_autodownload_message_size_32">32 KiB</string>
+    <string name="account_settings_vibrate_pattern_1">패턴 1</string>
+    <string name="account_settings_vibrate_pattern_2">패턴 2</string>
+    <string name="account_settings_vibrate_summary_disabled">비활성화</string>
+    <string name="account_settings_vibrate_pattern_4">패턴 4</string>
+    <string name="remove_attachment_action">첨부 파일 제거</string>
+    <string name="account_settings_mark_message_as_read_on_delete_label">삭제할 때 읽음으로 표시</string>
+    <string name="account_settings_mark_message_as_read_on_delete_summary">메시지를 삭제하면 읽음으로 표시합니다</string>
+    <string name="account_settings_notification_channels_label">알림 카테고리</string>
+    <string name="account_settings_autodownload_message_size_2">2 KiB</string>
+    <string name="account_settings_autodownload_message_size_4">4 KiB</string>
+    <string name="account_settings_autodownload_message_size_8">8 KiB</string>
+    <string name="account_settings_autodownload_message_size_16">16 KiB</string>
+    <string name="account_settings_autodownload_message_size_64">64 KiB</string>
+    <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
+    <string name="account_settings_vibration">진동</string>
+    <string name="account_settings_notification_light_disabled">비활성화</string>
+    <string name="account_settings_notification_light_default_color">시스템 기본 색깔</string>
+    <string name="account_settings_notification_light_green">초록색</string>
+    <string name="account_settings_notification_light_blue">파란색</string>
+    <string name="account_settings_notification_light_yellow">노란색</string>
+    <string name="settings_list_backup_category">백업</string>
+    <string name="locked_attach_unencrypted">이 부분은 암호화되지 않았으며, 안전하지 않을 수 있습니다.</string>
+    <string name="account_settings_crypto_hide_sign_only_on">암호화된 서명만 표시합니다</string>
+    <string name="general_settings_swipe_action_toggle_star">별표 표시/삭제</string>
+    <string name="account_settings_autodownload_message_size_1">1 KiB</string>
+    <string name="account_settings_autodownload_message_size_512">512 KiB</string>
+    <string name="setting_theme_follow_system">시스템 기본값 사용</string>
+    <string name="settings_export_success_generic">설정 내보내기를 성공했습니다</string>
+    <string name="openpgp_inline_disable">비활성화</string>
+    <string name="quiet_time_notification_description">방해 금지 시간 동안 알림을 완전히 비활성화합니다</string>
+    <string name="account_settings_autodownload_message_size_256">256 KiB</string>
+    <string name="account_settings_autodownload_message_size_128">128 KiB</string>
+    <string name="account_settings_autodownload_message_size_1024">1 MiB</string>
+    <string name="account_settings_notification_light_white">흰색</string>
+    <string name="account_settings_notification_light_red">빨간색</string>
+    <string name="account_settings_notification_light_cyan">시안</string>
+    <string name="account_settings_notification_light_magenta">마젠타</string>
+    <string name="settings_export_title">설정 내보내기</string>
+    <string name="openpgp_sign_only_disable">비활성화</string>
+    <string name="crypto_msg_cancelled">메시지가 암호화되었지만 복호화가 취소되었습니다.</string>
+    <string name="crypto_msg_encrypted_incomplete">복호화 하려면 메시지를 완전히 다운로드해야 합니다</string>
+    <string name="crypto_no_provider_title">이 이메일은 암호화되어 있습니다</string>
+    <string name="recipient_error_non_ascii">현재 특수 문자는 지원되지 않습니다!</string>
+    <string name="disable_encryption">암호화 비활성화</string>
+    <string name="swipe_action_mark_as_read">읽음으로 표시</string>
+    <string name="message_list_error_title">오류</string>
+    <string name="changelog_snackbar_button_text">보기</string>
+    <string name="account_settings_vibrate_pattern_label">진동 패턴</string>
+    <string name="locked_attach_unlock">잠금 해제</string>
+    <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
+    <string name="crypto_msg_encrypted_sign_verified">인증된 보낸 사람으로부터</string>
+    <string name="account_settings_vibrate_pattern_3">패턴 3</string>
+    <string name="account_settings_vibrate_pattern_5">패턴 5</string>
+    <string name="notification_notify_error_title">알림 오류</string>
 </resources>

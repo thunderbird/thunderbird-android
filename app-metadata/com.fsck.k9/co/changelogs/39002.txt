@@ -1,0 +1,8 @@
+- Cambiamenti numerosi di l’interni per a migrazione versu Material 3. Sappiate chì l’interfaccia grafica di Material 3 hè ancu in un statu precoce.
+- Cambiamentu di l’ordine di l’azzioni di a barra d’attrezzi nant’à a vista di i messaghji per ch’ellu currespondi à quellu di u mode di selezzione multiple
+- Cambiamentu à 128 Ko di u valore predefinitu di u parametru « Riguarà i messaghji fine à »
+- Currezzione d’un prublema quandu l’icone di barra d’attrezzi sò affissate cù un culore falsu dopu à l’esecuzione d’un azzione di spazzatura
+- Currezzione d’un accidente quandu si taglia un indirizzu elettronicu da un campu di destinatariu durante a redazzione d’un messaghju
+- Currezzione di a dimensione di a barra d’attrezzi quand’ella s’impiega una dimensione di grafia non predefinita
+- Aghjuntu di a traduzzione in lingua corsa, cureanua, è vietnamiana
+- Messa à livellu di e traduzzioni

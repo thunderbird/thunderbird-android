@@ -2,4 +2,4 @@
 - L’ozzione « Mandà l’ID di u cliente » si chjama avà « Mandà l’infurmazione di u cliente »
 - IMAP : Aghjuntu di l’attributu di risposta LIST « \NonExistent »
 - IMAP : Inviu di a cumanda EXPUNGE dopu à u dispiazzamentu senza l’estensione MOVE
-- Aghjuntu di a traduzzione in Ebreu è messe à livellu d’altre traduzzioni
+- Aghjuntu di a traduzzione in Ebreu è messa à livellu d’altre traduzzioni

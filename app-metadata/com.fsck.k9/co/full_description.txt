@@ -3,7 +3,7 @@ K-9 Mail hè un’appiecazione di messaghjeria à codice di fonte aperta chì fu
 <b>Caratteristiche</b>
 
 * Accetteghja parechji conti
-* Scatula di ricezzione unificata
+* Scatula di ricezzione cuncolta
 * Rispettosu di a vostra vita privata (senza spiunagiu, si cunnette solu à u vostru furnidore di messaghjeria elettronica)
 * Sincrunizazione autumatica in tacca di sfondulu o via nutificazioni di catapughjata
 * Ricerca lucale è di u latu di u servitore

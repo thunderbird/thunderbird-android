@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">시작하기</string>
     <string name="onboarding_welcome_import_button">설정 가져오기</string>
+    <string name="onboarding_welcome_message">강화된 보안, 쉬운 커스터마이징, 그리고 모든 이메일 계정의 원활한 관리를 위해 설계된 안드로이드 이메일 클라이언트인 <xliff:g id="app_name">%s</xliff:g>에 오신 것을 환영합니다.</string>
 </resources>

@@ -948,4 +948,5 @@
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Ritorna alla lista messaggi</string>
     <string name="push_notification_state_alarm_permission_missing">Autorizzazione mancante per pianificare gli allarmi</string>
     <string name="push_notification_grant_alarm_permission">Tocca per concedere l\'autorizzazione.</string>
+    <string name="dialog_openkeychain_info_text">L\'app OpenKeychain è richiesta per abilitare il supporto alla crittografia end-to-end.</string>
 </resources>

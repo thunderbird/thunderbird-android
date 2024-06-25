@@ -1,0 +1,8 @@
+- Foram mudados muito do interno para a migração ao Material 3. Note que a IU em Material 3 ainda está em fase inicial.
+- Foi mudado a ordem das ações da barra de ferramentas na visualização de mensagem, para combinar com a ordem no modo multi-seleção
+- Foi mudado o valor padrão de "Buscar mensagems com tamanho de até" para 128KiB
+- Foi corrigido um bug aonde os ícones da barra de ferramentas eram exibidos na cor errada após executar uma ação de deslizar
+- Foi corrigido um crash ao cortar endereços de e-mail do campo de destinatário ao compor uma mensagem 
+- Foi corrigido o tamanho da barra de ferramentas quando o tamanho da fonte não é o padrão
+- Adicionado traduções para Corsa, Coreano, Vietnamita
+- Traduções atualizadas

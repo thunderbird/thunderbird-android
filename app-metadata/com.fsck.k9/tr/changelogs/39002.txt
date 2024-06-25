@@ -1,0 +1,8 @@
+- Material 3'e geçmek için birçok dahili özellik değiştirildi. Material 3 kullanıcı arayüzünün hala erken bir aşamada olduğunu lütfen unutmayın.
+- Mesaj görünümündeki araç çubuğu eylemlerinin sırası, çoklu seçim modundaki sırayla eşleşecek şekilde değiştirildi
+- " Şu kadar ileti al" için öntanımlı değer 128KiB olarak değiştirildi
+- Kaydırma eylemi gerçekleştirildikten sonra araç çubuğu simgelerinin yanlış renkte görüntülenmesine neden olan hata düzeltildi
+- İleti oluştururken alıcı alanından e-posta adreslerini keserken oluşan çökme düzeltildi
+- Öntanımlı olmayan bir sistem yazı tipi boyutu kullanıldığında araç çubuğu boyutu düzeltildi
+- Korsikaca, Korece ve Vietnamca çeviriler eklendi
+- Çeviriler güncellendi

@@ -5,4 +5,21 @@
     <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
     <string name="settings_importing">설정 가져오는 중…</string>
     <string name="settings_import_general_settings_item">일반 설정</string>
+    <string name="settings_import_password_required">비밀번호를 입력하세요</string>
+    <string name="settings_import_failure">설정을 가져오지 못했습니다</string>
+    <string name="settings_import_read_failure">설정 파일을 읽지 못했습니다</string>
+    <string name="settings_import_partial_failure">일부 설정을 가져오지 못했습니다</string>
+    <string name="settings_import_status_success">성공적으로 가져왔습니다</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">발신 서버에 동일한 비밀번호 사용하기</string>
+    <string name="settings_import_server_name_format">서버 이름: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_oauth_description">이 이메일 계정을 사용하려면 로그인하고 앱에 액세스 권한을 부여해야 합니다.</string>
+    <string name="settings_import_oauth_sign_in">로그인</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">인증 취소됨</string>
+    <string name="settings_import_pick_document_button">파일 선택</string>
+    <string name="settings_import_success_generic">설정을 성공적으로 가져왔습니다</string>
+    <string name="settings_import_status_error">가져오기 실패</string>
+    <string name="settings_import_outgoing_server_password_hint">발신 서버 비밀번호</string>
+    <string name="settings_import_incoming_server_password_hint">수신 서버 비밀번호</string>
+    <string name="settings_import_oauth_sign_in_with_google">Google로 로그인</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">다음 오류로 인증에 실패했습니다: <xliff:g id="error">%s</xliff:g></string>
 </resources>
