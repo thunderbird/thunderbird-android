@@ -5,12 +5,12 @@ import app.k9mail.core.common.oauth.OAuthConfigurationFactory
 import app.k9mail.core.common.provider.AppNameProvider
 import app.k9mail.dev.developmentModuleAdditions
 import app.k9mail.feature.launcher.FeatureLauncherExternalContract.FeatureThemeProvider
+import app.k9mail.feature.widget.shortcut.LauncherShortcutActivity
 import app.k9mail.provider.K9AppNameProvider
 import app.k9mail.provider.K9FeatureThemeProvider
 import app.k9mail.widget.appWidgetModule
 import com.fsck.k9.AppConfig
 import com.fsck.k9.BuildConfig
-import com.fsck.k9.activity.LauncherShortcuts
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.provider.UnreadWidgetProvider
 import com.fsck.k9.widget.list.MessageListWidgetProvider
@@ -34,7 +34,7 @@ val appModule = module {
 val appConfig = AppConfig(
     componentsToDisable = listOf(
         MessageCompose::class.java,
-        LauncherShortcuts::class.java,
+        LauncherShortcutActivity::class.java,
         UnreadWidgetProvider::class.java,
         MessageListWidgetProvider::class.java,
     ),

@@ -4,7 +4,6 @@
 
     <!-- This should make it easier for forks to change the branding -->
 
-    <string name="shortcuts_title">K-9 Accounts</string>
     <string name="unread_widget_label">K-9 Unread</string>
 
     <!-- Used in the about dialog -->

@@ -3,7 +3,6 @@
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
-    <string name="shortcuts_title">K-9 கணக்குகள்</string>
     <string name="unread_widget_label">K-9 புதியவை</string>
     <!--Used in the about dialog-->
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->

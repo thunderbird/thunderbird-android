@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+
+        <!--
+        This component is disabled by default. It will be enabled programmatically after an account has been set up.
+        -->
+        <activity
+            android:name="app.k9mail.feature.widget.shortcut.LauncherShortcutActivity"
+            android:configChanges="locale"
+            android:label="@string/shortcut_widget_title"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+    </application>
+</manifest>

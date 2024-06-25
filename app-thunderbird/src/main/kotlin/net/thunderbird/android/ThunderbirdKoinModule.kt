@@ -3,8 +3,8 @@ package net.thunderbird.android
 import app.k9mail.core.common.oauth.OAuthConfigurationFactory
 import app.k9mail.core.common.provider.AppNameProvider
 import app.k9mail.feature.launcher.FeatureLauncherExternalContract.FeatureThemeProvider
+import app.k9mail.feature.widget.shortcut.LauncherShortcutActivity
 import com.fsck.k9.AppConfig
-import com.fsck.k9.activity.LauncherShortcuts
 import com.fsck.k9.activity.MessageCompose
 import net.thunderbird.android.auth.ThunderbirdOAuthConfigurationFactory
 import net.thunderbird.android.dev.developmentModuleAdditions
@@ -33,7 +33,7 @@ val appModule = module {
 val appConfig = AppConfig(
     componentsToDisable = listOf(
         MessageCompose::class.java,
-        LauncherShortcuts::class.java,
+        LauncherShortcutActivity::class.java,
         UnreadWidgetProvider::class.java,
         MessageListWidgetProvider::class.java,
     ),

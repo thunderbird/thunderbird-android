@@ -1,4 +1,4 @@
-package com.fsck.k9.activity
+package app.k9mail.feature.widget.shortcut
 
 import android.content.Intent
 import android.content.res.Resources.Theme
@@ -10,14 +10,16 @@ import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import com.fsck.k9.BaseAccount
+import com.fsck.k9.activity.AccountList
+import com.fsck.k9.activity.MessageList
 import com.fsck.k9.search.SearchAccount
-import com.fsck.k9.ui.R
 import app.k9mail.core.ui.legacy.theme2.common.R as CommonR
 
-class LauncherShortcuts : AccountList() {
+class LauncherShortcutActivity : AccountList() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTitle(R.string.shortcuts_title)
+        setTitle(R.string.shortcut_widget_title)
 
         // finish() immediately if we aren't supposed to be here
         if (intent.action != Intent.ACTION_CREATE_SHORTCUT) {

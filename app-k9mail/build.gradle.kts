@@ -19,6 +19,7 @@ dependencies {
     implementation(projects.app.ui.legacy)
 
     implementation(projects.feature.widget.messageList)
+    implementation(projects.feature.widget.shortcut)
     implementation(projects.feature.widget.unread)
 
     implementation(libs.androidx.work.runtime)

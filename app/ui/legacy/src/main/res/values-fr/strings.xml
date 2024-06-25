@@ -3,7 +3,6 @@
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
-    <string name="shortcuts_title">Comptes K-9</string>
     <string name="unread_widget_label">K-9 non lus</string>
     <!--Used in the about dialog-->
     <string name="app_authors">Les auteurs de Courriel K-9 Mail</string>
