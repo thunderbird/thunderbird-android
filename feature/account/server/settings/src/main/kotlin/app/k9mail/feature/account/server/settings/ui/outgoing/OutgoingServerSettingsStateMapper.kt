@@ -23,7 +23,11 @@ fun AccountState.toOutgoingServerSettingsState(): State {
 }
 
 private fun AccountState.getOutgoingServerPassword(): String {
-    return outgoingServerSettings?.password ?: incomingServerSettings?.password ?: ""
+    return if (outgoingServerSettings?.authenticationType?.toAuthenticationType()?.isPasswordRequired == false) {
+        ""
+    } else {
+        outgoingServerSettings?.password ?: incomingServerSettings?.password ?: ""
+    }
 }
 
 private fun ServerSettings.toOutgoingServerSettingsState(password: String): State {
