@@ -92,7 +92,6 @@
     <string name="accounts_title">Računi</string>
     <string name="compose_title_forward">Proslijedi</string>
     <string name="compose_title_forward_as_attachment">Proslijedi kao prilog</string>
-    <string name="choose_account_title">Odaberite račun</string>
     <string name="compose_title_reply_all">Odgovori svima</string>
     <string name="choose_folder_title">Odaberite direktorijum</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> odabrano</string>

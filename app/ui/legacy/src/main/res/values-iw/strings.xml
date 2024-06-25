@@ -26,7 +26,6 @@
     <string name="compose_title_reply_all">השב לכולם</string>
     <string name="compose_title_forward">העבר</string>
     <string name="compose_title_forward_as_attachment">העבר כצרופה</string>
-    <string name="choose_account_title">בחר חשבון</string>
     <string name="choose_folder_title">בחר תיקייה</string>
     <string name="choose_folder_move_title">העבר אל…</string>
     <string name="choose_folder_copy_title">העתק אל…</string>

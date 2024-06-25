@@ -31,7 +31,6 @@
     <string name="compose_title_reply_all">എല്ലാത്തിനും മറുപടി പറയുക</string>
     <string name="compose_title_forward">ഫോർവേഡ് ചെയ്യുക</string>
     <string name="compose_title_forward_as_attachment">അറ്റാച്ചുമെന്റായി ഫോർവേഡ് ചെയ്യുക</string>
-    <string name="choose_account_title">അക്കൗണ്ട് തിരഞ്ഞെടുക്കുക</string>
     <string name="choose_folder_title">ഫോൾഡർ തിരഞ്ഞെടുക്കുക</string>
     <string name="choose_folder_move_title">ഇതിലേക്ക് നീക്കുക…</string>
     <string name="choose_folder_copy_title">ഇതിലേക്ക് പകർത്തുക…</string>

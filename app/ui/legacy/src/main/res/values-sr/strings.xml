@@ -28,7 +28,6 @@
     <string name="compose_title_reply_all">Одговори свима</string>
     <string name="compose_title_forward">Проследи</string>
     <string name="compose_title_forward_as_attachment">Проследи као прилог</string>
-    <string name="choose_account_title">Избор налога</string>
     <string name="choose_folder_title">Избор фасцикле</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> изабрано</string>
     <string name="send_action">Пошаљи</string>

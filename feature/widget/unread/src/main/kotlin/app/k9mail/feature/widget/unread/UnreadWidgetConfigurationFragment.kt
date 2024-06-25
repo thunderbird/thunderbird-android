@@ -12,7 +12,6 @@ import androidx.core.os.bundleOf
 import androidx.preference.CheckBoxPreference
 import androidx.preference.Preference
 import com.fsck.k9.Preferences
-import com.fsck.k9.activity.ChooseAccount
 import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.takisoft.preferencex.PreferenceFragmentCompat
@@ -41,7 +40,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
 
         unreadAccount = findPreference(PREFERENCE_UNREAD_ACCOUNT)!!
         unreadAccount.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            val intent = Intent(requireContext(), ChooseAccount::class.java)
+            val intent = Intent(requireContext(), UnreadWidgetChooseAccountActivity::class.java)
             startActivityForResult(intent, REQUEST_CHOOSE_ACCOUNT)
             false
         }
@@ -94,7 +93,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
         if (resultCode == Activity.RESULT_OK && data != null) {
             when (requestCode) {
                 REQUEST_CHOOSE_ACCOUNT -> {
-                    val accountUuid = data.getStringExtra(ChooseAccount.EXTRA_ACCOUNT_UUID)!!
+                    val accountUuid = data.getStringExtra(UnreadWidgetChooseAccountActivity.EXTRA_ACCOUNT_UUID)!!
                     handleChooseAccount(accountUuid)
                 }
 

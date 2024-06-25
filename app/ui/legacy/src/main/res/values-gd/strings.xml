@@ -29,7 +29,6 @@
     <string name="compose_title_reply_all">Freagair na h-uile</string>
     <string name="compose_title_forward">Sìn air adhart</string>
     <string name="compose_title_forward_as_attachment">Sìn air adhart mar cheanglachan</string>
-    <string name="choose_account_title">Tagh cunntas</string>
     <string name="choose_folder_title">Tagh pasgan</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> air a thaghadh</string>
     <string name="send_action">Cuir</string>

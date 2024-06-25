@@ -21,7 +21,6 @@
     <string name="compose_title_reply_all">პასუხი ყველას</string>
     <string name="compose_title_forward">გადაგზავნა</string>
     <string name="compose_title_forward_as_attachment">გადაგზავნა დანართის სახით</string>
-    <string name="choose_account_title">აირჩიეთ ანგარიში</string>
     <string name="choose_folder_title">აირჩიეთ საქაღალდე</string>
     <string name="actionbar_selected">არჩეულია <xliff:g id="selection_count">%d</xliff:g></string>
     <string name="send_action">გაგზავნა</string>

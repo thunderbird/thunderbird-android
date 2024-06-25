@@ -33,7 +33,6 @@
     <string name="compose_title_reply_all">Tümünü Yanıtla</string>
     <string name="compose_title_forward">İlet</string>
     <string name="compose_title_forward_as_attachment">Ek olarak ilet</string>
-    <string name="choose_account_title">Hesap Seçin</string>
     <string name="choose_folder_title">Klasör Seç</string>
     <string name="choose_folder_move_title">Şuraya taşı…</string>
     <string name="choose_folder_copy_title">Şuraya kopyala…</string>

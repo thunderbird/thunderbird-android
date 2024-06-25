@@ -33,7 +33,6 @@
     <string name="compose_title_reply_all">Ateb i bawb</string>
     <string name="compose_title_forward">Anfon ymlaen</string>
     <string name="compose_title_forward_as_attachment">Anfon ymlaen fel atodiad</string>
-    <string name="choose_account_title">Dewis cyfrif</string>
     <string name="choose_folder_title">Dewis ffolder</string>
     <string name="choose_folder_move_title">Symud i…</string>
     <string name="choose_folder_copy_title">Copïo i…</string>

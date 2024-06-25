@@ -12,4 +12,5 @@
     <string name="unread_widget_title"><xliff:g id="nom_del_compte">%1$s</xliff:g> - <xliff:g id="nom_de_la_carpeta">%2$s</xliff:g></string>
     <string name="unread_widget_account_not_selected">No hi ha cap compte seleccionat</string>
     <string name="unread_widget_folder_not_selected">No hi ha cap carpeta seleccionada</string>
+    <string name="unread_widget_choose_account_title">Trieu un compte</string>
 </resources>

@@ -67,12 +67,6 @@
             android:label="@string/account_settings_composition_title" />
 
         <activity
-            android:name="com.fsck.k9.activity.ChooseAccount"
-            android:configChanges="locale"
-            android:label="@string/choose_account_title"
-            android:noHistory="true" />
-
-        <activity
             android:name="com.fsck.k9.ui.choosefolder.ChooseFolderActivity"
             android:configChanges="locale"
             android:label="@string/choose_folder_title"

@@ -42,7 +42,6 @@
     <string name="refile_action">रिकॉर्ड करें…</string>
     <string name="source_code">सोर्स कोड</string>
     <string name="changelog_snackbar_text">देखें इस रिलीज़ में नया क्या है</string>
-    <string name="choose_account_title">अकाउंट चुनें</string>
     <string name="flag_action">तारा जोड़ें</string>
     <string name="move_action">ले जाएं</string>
     <string name="compose_title_forward">फॉरवर्ड करें</string>

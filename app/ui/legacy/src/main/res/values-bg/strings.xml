@@ -31,7 +31,6 @@
     <string name="compose_title_reply_all">Отговори до всички</string>
     <string name="compose_title_forward">Препрати</string>
     <string name="compose_title_forward_as_attachment">Препрати като прикачен файл</string>
-    <string name="choose_account_title">Изберете Профил</string>
     <string name="choose_folder_title">Избери Папка</string>
     <string name="choose_folder_move_title">Премести в…</string>
     <string name="choose_folder_copy_title">Копирай в…</string>

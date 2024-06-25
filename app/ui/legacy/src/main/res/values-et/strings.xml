@@ -34,7 +34,6 @@
     <string name="compose_title_reply_all">Vasta kõigile</string>
     <string name="compose_title_forward">Saada edasi</string>
     <string name="compose_title_forward_as_attachment">Saada edasi manusena</string>
-    <string name="choose_account_title">Vali konto</string>
     <string name="choose_folder_title">Vali kaust</string>
     <string name="choose_folder_move_title">Teisalda…</string>
     <string name="choose_folder_copy_title">Kopeeri…</string>

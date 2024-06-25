@@ -35,7 +35,6 @@
     <string name="compose_title_reply_all">Allen antworten</string>
     <string name="compose_title_forward">Weiterleiten</string>
     <string name="compose_title_forward_as_attachment">Als Anhang weiterleiten</string>
-    <string name="choose_account_title">Konto auswählen</string>
     <string name="choose_folder_title">Ordner auswählen</string>
     <string name="choose_folder_move_title">Verschieben nach…</string>
     <string name="choose_folder_copy_title">Kopieren nach…</string>

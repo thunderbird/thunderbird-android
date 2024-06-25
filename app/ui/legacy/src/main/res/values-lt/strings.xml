@@ -33,7 +33,6 @@
     <string name="compose_title_reply_all">Atsakyti visiems</string>
     <string name="compose_title_forward">Persiųsti</string>
     <string name="compose_title_forward_as_attachment">Persiųsti kaip priedą</string>
-    <string name="choose_account_title">Pasirinkti Paskyrą</string>
     <string name="choose_folder_title">Pasirinkti aplanką</string>
     <string name="choose_folder_move_title">Perkelti į…</string>
     <string name="choose_folder_copy_title">Kopijuoti į…</string>

@@ -21,7 +21,6 @@
     <string name="compose_title_reply_all">Odgovori svima</string>
     <string name="compose_title_forward">Proslijedi</string>
     <string name="compose_title_forward_as_attachment">Proslijedi kao privitak</string>
-    <string name="choose_account_title">Odaberite račun</string>
     <string name="choose_folder_title">Odaberite Mapu</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> odabrano</string>
     <string name="send_action">Pošalji</string>

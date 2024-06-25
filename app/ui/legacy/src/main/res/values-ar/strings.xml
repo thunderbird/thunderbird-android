@@ -34,7 +34,6 @@
     <string name="compose_title_reply_all">رٌد على الكل</string>
     <string name="compose_title_forward">إعادة توجيه</string>
     <string name="compose_title_forward_as_attachment">إعادة توجيه كمُرفَقات</string>
-    <string name="choose_account_title">إختر حساب</string>
     <string name="choose_folder_title">إختر مجلد</string>
     <string name="choose_folder_move_title">نقل إلي</string>
     <string name="choose_folder_copy_title">نسخ إلي</string>

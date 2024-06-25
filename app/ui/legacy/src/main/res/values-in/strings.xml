@@ -31,7 +31,6 @@
     <string name="compose_title_reply_all">Balas semua</string>
     <string name="compose_title_forward">Teruskan</string>
     <string name="compose_title_forward_as_attachment">Teruskan sebagai lampiran</string>
-    <string name="choose_account_title">Pilih Akun</string>
     <string name="choose_folder_title">Pilih Folder</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> dipilih</string>
     <string name="send_action">Kirim</string>

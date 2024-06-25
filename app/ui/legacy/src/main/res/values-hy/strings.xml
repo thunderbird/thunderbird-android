@@ -16,7 +16,6 @@
     <string name="compose_title_reply_all">Պատասխանել բոլորին</string>
     <string name="compose_title_forward">Փոխանցել</string>
     <string name="compose_title_forward_as_attachment">Փոխանցել ինչպես կցորդ</string>
-    <string name="choose_account_title">Ընտրեք հաշիվ</string>
     <string name="choose_folder_title">Ընտրել պանակ</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> ընտրուած է</string>
     <string name="send_action">Ուղարկել</string>

@@ -17,7 +17,6 @@
     <string name="compose_title_reply_all">Svar alle</string>
     <string name="compose_title_forward">Send vidare</string>
     <string name="compose_title_forward_as_attachment">Vidaresend som vedlegg</string>
-    <string name="choose_account_title">Vel konto</string>
     <string name="choose_folder_title">Vel mappe</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> vald(e)</string>
     <string name="send_action">Send</string>

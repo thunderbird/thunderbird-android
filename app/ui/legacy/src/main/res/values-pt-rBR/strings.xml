@@ -34,7 +34,6 @@
     <string name="compose_title_reply_all">Responder a todos</string>
     <string name="compose_title_forward">Encaminhar</string>
     <string name="compose_title_forward_as_attachment">Encaminhar como anexo</string>
-    <string name="choose_account_title">Selecionar conta</string>
     <string name="choose_folder_title">Selecionar pasta</string>
     <string name="choose_folder_move_title">Mover para…</string>
     <string name="choose_folder_copy_title">Copiar para…</string>
