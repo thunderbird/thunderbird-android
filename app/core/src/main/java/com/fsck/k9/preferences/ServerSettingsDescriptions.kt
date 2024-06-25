@@ -6,6 +6,7 @@ import com.fsck.k9.preferences.Settings.SettingsUpgrader
 import com.fsck.k9.preferences.Settings.StringSetting
 import com.fsck.k9.preferences.upgrader.ServerSettingsUpgraderTo92
 import com.fsck.k9.preferences.upgrader.ServerSettingsUpgraderTo94
+import com.fsck.k9.preferences.upgrader.ServerSettingsUpgraderTo95
 import java.util.TreeMap
 
 /**
@@ -60,6 +61,15 @@ internal class ServerSettingsDescriptions {
                         "XOAUTH2",
                     ),
                 ),
+                95 to NoDefaultStringEnumSetting(
+                    values = setOf(
+                        "PLAIN",
+                        "CRAM_MD5",
+                        "EXTERNAL",
+                        "XOAUTH2",
+                        "NONE",
+                    ),
+                ),
             ),
             USERNAME to versions(
                 1 to StringSetting(""),
@@ -77,6 +87,7 @@ internal class ServerSettingsDescriptions {
         mapOf(
             92 to ServerSettingsUpgraderTo92(),
             94 to ServerSettingsUpgraderTo94(),
+            95 to ServerSettingsUpgraderTo95(),
         )
     }
 
