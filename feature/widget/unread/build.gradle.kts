@@ -10,6 +10,7 @@ dependencies {
     implementation(libs.timber)
 
     testImplementation(libs.robolectric)
+    testImplementation(libs.robolectric.shadows)
 }
 
 android {

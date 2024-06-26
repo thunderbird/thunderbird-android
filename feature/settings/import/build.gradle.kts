@@ -23,6 +23,7 @@ dependencies {
     implementation(libs.appauth)
 
     implementation(libs.androidx.fragment.compose)
+    implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.fastadapter)
 
