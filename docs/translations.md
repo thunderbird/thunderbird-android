@@ -26,10 +26,8 @@ exactly the languages that are included in the app.
 
 ## Things to note
 
-For some languages Android uses different language codes that typical translation tools, e.g. Hebrew's code is _he_ on
+For some languages Android uses different language codes than typical translation tools, e.g. Hebrew's code is _he_ on
 Weblate, but _iw_ on Android. When writing automation tools, there needs to be a mapping step involved.
 
-Weblate's code that might be relevant for this:
-https://github.com/WeblateOrg/weblate/blob/bdbc725b501e36681766ed3b9ffbb73beeab512d/weblate/formats/base.py
-
-More research and careful testing is necessary when automating any of these steps.
+See [translation-cli](https://github.com/thunderbird/thunderbird-android/blob/ed07da8be5513ac74aabb1c934a4545aaae4f5a3/cli/translation-cli/src/main/kotlin/net/thunderbird/cli/translation/LanguageCodeLoader.kt#L12-L13)
+for an example.
