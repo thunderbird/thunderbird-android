@@ -27,6 +27,10 @@ include(
 )
 
 include(
+    ":app-common",
+)
+
+include(
     ":app:common",
     ":app:ui:base",
     ":app:ui:legacy",
