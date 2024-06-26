@@ -130,7 +130,7 @@
     <string name="notification_bg_send_ticker">Đang gửi thư: <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">Đang gửi thư</string>
     <string name="notification_bg_title_separator">:</string>
-    <string name="notification_channel_push_title">Đồng bộ hóa (Đẩy thư)</string>
+    <string name="notification_channel_push_title">Đồng bộ hóa (Push)</string>
     <string name="notification_channel_push_description">Hiển thị khi chờ tin nhắn mới</string>
     <string name="notification_channel_messages_title">Tin nhắn</string>
     <string name="notification_channel_messages_description">Thông báo liên quan đến tin nhắn</string>
@@ -159,7 +159,7 @@
     <string name="message_compose_quote_header_subject">Chủ đề:</string>
     <string name="message_compose_quote_header_send_date">Đã gửi:</string>
     <string name="message_compose_quote_header_from">Từ:</string>
-    <string name="message_compose_quote_header_to">Đến:</string>
+    <string name="message_compose_quote_header_to">Tới:</string>
     <string name="message_compose_quote_header_cc">Cc:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> đã viết:</string>
     <string name="message_compose_reply_header_fmt_with_date">Vào <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> đã viết:</string>
@@ -172,7 +172,7 @@
     <string name="message_compose_description_delete_quoted_text">Loại bỏ văn bản được trích dẫn</string>
     <string name="message_compose_description_edit_quoted_text">Sửa nội dung trích dẫn</string>
     <string name="remove_attachment_action">Loại bỏ tệp đính kèm</string>
-    <string name="message_to_label">Đến:</string>
+    <string name="message_to_label">Tới:</string>
     <string name="message_view_cc_label">Cc:</string>
     <string name="message_view_bcc_label">Bcc:</string>
     <string name="message_view_status_attachment_not_saved">Không thể lưu tệp đính kèm.</string>
@@ -183,7 +183,7 @@
     <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
     <string name="message_view_show_remote_images_action">Hiển thị hình ảnh từ xa</string>
     <string name="message_view_no_viewer">Không tìm thấy trình hiển thị cho <xliff:g id="mimetype">%s</xliff:g>.</string>
-    <string name="message_view_download_remainder">Tài về toàn bộ thư</string>
+    <string name="message_view_download_remainder">Tải xuống tin nhắn hoàn chỉnh</string>
     <string name="message_view_sender_label">qua %1$s</string>
     <string name="from_same_sender">Nhiều hơn từ người gửi này</string>
     <string name="message_discarded_toast">Đã loại bỏ thư</string>
@@ -936,6 +936,12 @@
     <string name="openpgp_description_text2">Nhấn biểu tượng này để kích hoạt mã hóa.</string>
     <string name="openpgp_enabled_error_gotit">Đã rõ</string>
     <string name="generic_loading_error">Có lỗi xảy ra khi đang tải dữ liệu</string>
-    <string name="push_info_disable_push_text">Nếu bạn không cần thông báo tức thời về tin nhắn mới, bạn nên vô hiệu hóa Đẩy và sử dụng Kiểm tra theo đợt. Kiểm tra theo đợt kiểm tra ở những thời điểm nhất định và không cần thông báo.</string>
+    <string name="push_info_disable_push_text">Nếu bạn không cần thông báo tức thì về tin nhắn mới, bạn nên tắt tính năng Đẩy và sử dụng Thăm dò. Thăm dò kiểm tra thư mới theo định kỳ và không cần thông báo.</string>
     <string name="push_info_disable_push_action">Vô hiệu hóa Đẩy</string>
+    <string name="account_delete_dlg_instructions_fmt">Tài khoản \"<xliff:g id="account">%s</xliff:g>\" sẽ bị loại khỏi <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="dialog_openkeychain_info_text">Cần có ứng dụng OpenKeychain để hỗ trợ mã hóa đầu cuối.</string>
+    <string name="push_info_notification_explanation_text">Khi sử dụng Push, <xliff:g id="app_name">%1$s</xliff:g> duy trì kết nối với máy chủ thư. Android yêu cầu hiển thị thông báo liên tục trong khi ứng dụng đang hoạt động ở chế độ nền. <xliff:g id="Optional_extends_explanation">%2$s</xliff:g></string>
+    <string name="default_signature">--
+\nĐược gửi từ thiết bị Android của tôi bằng <xliff:g id="app_name">%s</xliff:g>. Thứ lỗi cho sự ngắn gọn của tôi.</string>
+    <string name="about_title">Giới thiệu về <xliff:g id="app_name">%s</xliff:g></string>
 </resources>

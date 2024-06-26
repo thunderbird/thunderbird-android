@@ -1,0 +1,1 @@
+- Crash verholpen wanneer een berichtenlijst-veegactie op ‘None’ was ingesteld

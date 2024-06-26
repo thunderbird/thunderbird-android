@@ -1,0 +1,8 @@
+- Zmieniono wiele elementów wewnętrznych w celu migracji do Material 3. Należy pamiętać, że interfejs użytkownika Material 3 jest wciąż na wczesnym etapie
+- Zmieniono kolejność działań na pasku narzędzi w widoku wiadomości, aby odpowiadała kolejności w trybie wielokrotnego wyboru
+- Zmieniono domyślną wartość opcji „Rozmiar pobieranych wiadomości” na 128KiB
+- Naprawiono błąd, w wyniku którego ikony paska narzędzi były wyświetlane w niewłaściwym kolorze po wykonaniu czynności przesunięcia
+- Naprawiono awarię podczas wycinania adresów e-mail z pola odbiorcy podczas tworzenia wiadomości
+- Naprawiono rozmiar paska narzędzi podczas używania innego niż domyślny rozmiaru czcionki systemowej
+- Dodano tłumaczenia korsykańskie, koreańskie i wietnamskie
+- Zaktualizowane tłumaczenia

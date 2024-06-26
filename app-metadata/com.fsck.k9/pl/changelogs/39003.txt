@@ -1,0 +1,1 @@
+- Naprawiono awarię, gdy działanie przesuwania listy wiadomości było ustawione na „Żadne”

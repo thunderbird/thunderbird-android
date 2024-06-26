@@ -47,7 +47,7 @@
     <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Avemu ricevutu a cunfigurazione per u vostru servitore di messaghjeria via una cunnessione chì ùn hè micca tantu sicura chì no a vuleriamu. Vole si dì chì ci hè una pussibilità chjuca chjuca chì qualchissia l’abbia alterata. Puderiate verificà torna a cunfigurazione pruvista per assicurassi ch’ella sia degna di cunfidenza ?</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Cunfigurà manualmente</string>
     <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Mudificà a cunfigurazione</string>
-    <string name="account_setup_special_folders_form_description_automatic">L’ozzione « Autumatica » seguiterà autumaticamente i cambiamenti fatti da u servitore. U valore attuale di u servitore hè affissatu trà parentesi.</string>
+    <string name="account_setup_special_folders_form_description_automatic">L’ozzione « Autumaticu » seguiterà autumaticamente i cambiamenti fatti da u servitore. U valore attuale di u servitore hè affissatu trà parentesi.</string>
     <string name="account_setup_special_folders_drafts_folder_label">Cartulare di e bruttacopie</string>
     <string name="account_setup_special_folders_spam_folder_label">Cartulare di i merzaghji (dispiacevule)</string>
     <string name="account_setup_special_folders_trash_folder_label">Cartulare di a curbella</string>

@@ -3,14 +3,15 @@
     <string name="account_server_certificate_button_back">뒤로 가기 (권장)</string>
     <string name="account_server_certificate_button_advanced">고급</string>
     <string name="account_server_certificate_section_title">서버 인증서</string>
-    <string name="account_server_certificate_subject_alternative_names">도메인</string>
+    <string name="account_server_certificate_subject_alternative_names">SAN</string>
     <string name="account_server_certificate_not_valid_before">시작 날짜</string>
     <string name="account_server_certificate_not_valid_after">만료 날짜</string>
     <string name="account_server_certificate_subject">서버</string>
     <string name="account_server_certificate_issuer">발급자</string>
     <string name="account_server_certificate_warning_title">경고</string>
-    <string name="account_server_certificate_unknown_error_description_format">앱이 잠재적인 보안 위협을 감지했으며<xliff:g id="serverName">%s</xliff:g>에 계속 연결하지 않았습니다.
-\n계속하면 공격자가 비밀번호나 이메일과 같은 정보를 도용하려고 시도할 수 있습니다.</string>
-    <string name="account_server_certificate_button_continue">위험 확인 후 계속 진행</string>
+    <string name="account_server_certificate_unknown_error_description_format">잠재적인 보안 위협을 감지하여 <xliff:g id="serverName">%s</xliff:g>에 연결하지 않았습니다.
+\n계속 진행할 경우, 공격자가 비밀번호나 이메일과 같은 정보를 탈취하려 할 수 있습니다.</string>
+    <string name="account_server_certificate_button_continue">위험을 감수하고 계속 진행</string>
     <string name="account_server_certificate_unknown_error_subtitle">인증서 오류</string>
+    <string name="account_server_certificate_fingerprints_section">지문</string>
 </resources>

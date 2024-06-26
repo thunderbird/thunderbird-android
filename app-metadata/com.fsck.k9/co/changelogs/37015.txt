@@ -7,4 +7,4 @@
 - Amendamentu UI/UX per a mudificazione di i parametri di u servitore
 - Currezzione di l’accidente cù AlarmManager nant’à Android 14
 - Cambiamenti interni
-- Messe à livellu di e traduzzioni
+- Messa à livellu di e traduzzioni

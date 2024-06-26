@@ -4,4 +4,4 @@
 - Currezzione di l’affissera di i messaghji di sbagliu OAuth 2.0
 - Currezzione d’un accidente scarsu durante u scaricamentu d’una pezza aghjunta
 - Aghjuntu di codice per impedisce salti di linea in i campi d’una linea unica
-- Messe à livellu di e traduzzioni
+- Messa à livellu di e traduzzioni

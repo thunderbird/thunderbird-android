@@ -80,7 +80,7 @@
     <string name="status_network_error">Sbagliu di cunnessione</string>
     <string name="status_invalid_id_error">Messaghju intruvevule</string>
     <string name="status_loading_error">Sbaglii di caricamentu di u messaghju</string>
-    <string name="load_more_messages_fmt">Caricà fine à <xliff:g id="messages_to_load">%d</xliff:g> more</string>
+    <string name="load_more_messages_fmt">Caricà fine à <xliff:g id="messages_to_load">%d</xliff:g> di più</string>
     <string name="size_format_gigabytes">%.1f Go</string>
     <string name="size_format_megabytes">%.1f Mo</string>
     <string name="size_format_kilobytes">%.1f ko</string>
@@ -341,10 +341,10 @@
     <string name="account_settings_sync">Riguarera di i messaghji</string>
     <string name="account_settings_folders">Cartulari</string>
     <string name="account_settings_quote_prefix_label">Prefissu di testu menziunatu</string>
-    <string name="account_settings_crypto">Cifratura da un capu à l\'altru</string>
+    <string name="account_settings_crypto">Cifratura da un capu à l’altru</string>
     <string name="account_settings_crypto_app">Attivà l’impiegu d’OpenPGP</string>
     <string name="account_settings_crypto_app_select_title">Selezziunà un’appiecazione OpenPGP</string>
-    <string name="account_settings_crypto_key">Cunfigurà a chjave da un capu à l\'altru</string>
+    <string name="account_settings_crypto_key">Cunfigurà a chjave da un capu à l’altru</string>
     <string name="account_settings_crypto_summary_off">Alcuna appiecazione OpenPGP ùn hè cunfigurata</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Cifrà e bruttacopie solu s’è a cifratura hè attivata</string>
     <string name="account_settings_mail_check_frequency_label">Frequenza di sullicitazione di i cartulari</string>
@@ -467,8 +467,8 @@
     <string name="account_settings_notification_light_account_color">Culore di u contu</string>
     <string name="account_settings_notification_light_yellow">Ghjallu</string>
     <string name="account_settings_notification_light_cyan">Cianu</string>
-    <string name="account_settings_composition_title">Ozzioni di cumpusizione di messaghju</string>
-    <string name="account_settings_composition_label">Valori predefiniti di cumpusizione</string>
+    <string name="account_settings_composition_title">Ozzioni di redazzione di messaghju</string>
+    <string name="account_settings_composition_label">Valori predefiniti di redazzione</string>
     <string name="account_settings_composition_summary">Definisce i valori predefiniti per Da, Cci è a segnatura</string>
     <string name="account_settings_identities_label">Amministrà l’identità</string>
     <string name="account_settings_identities_summary">Definisce d’altri indirizzi « Da » è d’altre segnature</string>
@@ -544,7 +544,7 @@
     <string name="debug_preferences">Spannatura</string>
     <string name="settings_theme_label">Tema</string>
     <string name="settings_message_theme_label">Tema di vista di i messaghji</string>
-    <string name="settings_compose_theme_label">Tema di cumpusizione</string>
+    <string name="settings_compose_theme_label">Tema di redazzione</string>
     <string name="preference_search_no_results">Nisunu parametru trovu</string>
     <string name="settings_message_theme_selection_summary_on">Impiegà un tema di vista di i messaghji fissu</string>
     <string name="account_setup_push_limit_5">5 cartulari</string>
@@ -556,11 +556,11 @@
     <string name="animations_title">Animazione</string>
     <string name="animations_summary">Impiegà l’effetti visuali esagerati</string>
     <string name="volume_navigation_title">Navigà cù u tastu di vulume nant’à a vista di i messaghji</string>
-    <string name="show_unified_inbox_title">Affissà a scatula di ricezzione unificata</string>
+    <string name="show_unified_inbox_title">Affissà a scatula di ricezzione cuncolta</string>
     <string name="show_starred_count_title">Affissà u numaru di stellati</string>
-    <string name="integrated_inbox_detail">Tutti i messaghji in i cartulari unificati</string>
+    <string name="integrated_inbox_detail">Tutti i messaghji in i cartulari cuncolti</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Unificà</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Tutti i messaghji sò affissati in a scatula di ricezzione unificata</string>
+    <string name="folder_settings_include_in_integrated_inbox_summary">Tutti i messaghji sò affissati in a scatula di ricezzione cuncolta</string>
     <string name="account_settings_searchable_label">Cartulari induve circà</string>
     <string name="account_settings_automatic_special_folder">Autumaticu (%s)</string>
     <string name="font_size_message_list_sender">Speditore</string>
@@ -592,7 +592,7 @@
     <string name="remote_search_error">Fiascu di a ricerca alluntanata</string>
     <string name="account_settings_search">Ricercà</string>
     <string name="action_remote_search">Ricercà i messaghji nant’à u servitore</string>
-    <string name="global_settings_background_as_unread_indicator_label">Cambià u culore quandu hè lettu</string>
+    <string name="global_settings_background_as_unread_indicator_label">Cambià u culore d’un messaghju lettu</string>
     <string name="global_settings_threaded_view_summary">Gruppà i messaghji da discursata</string>
     <string name="upgrade_databases_title">Messa à livellu di e base di dati</string>
     <string name="settings_message_theme_selection_label">Tema di messaghju fissu</string>
@@ -601,7 +601,7 @@
     <string name="font_size_message_view_account">Nome di u contu</string>
     <string name="font_size_message_list_preview">Fighjulata</string>
     <string name="font_size_message_view_date">Data è ora</string>
-    <string name="font_size_message_compose">Cumpusizione di messaghju</string>
+    <string name="font_size_message_compose">Redazzione di messaghju</string>
     <string name="font_size_default">Predefinita</string>
     <string name="font_size_smaller">Più chjucu</string>
     <string name="font_size_medium">Medianu</string>
@@ -620,7 +620,7 @@
     </plurals>
     <string name="settings_list_backup_category">Salvaguardia</string>
     <string name="dialog_confirm_delete_title">Cunfirmà a squassatura</string>
-    <string name="integrated_inbox_title">Scatula di ricezzione unificata</string>
+    <string name="integrated_inbox_title">Ricezzione cuncolta</string>
     <string name="font_size_message_list">Liste di i messaghji</string>
     <string name="font_size_message_list_subject">Sughjettu</string>
     <string name="font_size_settings_description">Cunfigurà a dimensione di e grafie</string>
@@ -718,7 +718,7 @@
     <string name="address_type_home">Casa</string>
     <string name="unknown_sender">&lt;U speditore hè scunnisciutu&gt;</string>
     <string name="compose_error_no_draft_folder">Alcunu cartulare Bruttacopia ùn hè cunfiguratu per stu contu !</string>
-    <string name="error_crypto_provider_ui_required">Ùn si pò micca inizià a cifratura da un capu à l\'altru, ci vole à vérificà i vostri parametri</string>
+    <string name="error_crypto_provider_ui_required">Ùn si pò micca inizià a cifratura da un capu à l’altru, ci vole à vérificà i vostri parametri</string>
     <string name="global_settings_splitview_mode_label">Affissà un screnu frazziunatu</string>
     <string name="message_view_empty">Selezziunate un messaghju à manu manca</string>
     <string name="global_settings_splitview_when_in_landscape">In modu paisagiu</string>
@@ -737,18 +737,18 @@
     <string name="openpgp_inline_keep_enabled">Cunservà attivatu</string>
     <string name="openpgp_sign_only_ok">Aghju capitu !</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">I messaghji cifrati cuntenenu sempre una segnatura.</string>
-    <string name="crypto_msg_unencrypted_sign_error">A segnatura da un capu à l\'altru cuntinia un sbagliu</string>
+    <string name="crypto_msg_unencrypted_sign_error">A segnatura da un capu à l’altru cuntinia un sbagliu</string>
     <string name="crypto_msg_cancelled">U messaghju hè cifratu, ma a dicifratura hè stata abbandunata.</string>
-    <string name="crypto_msg_title_unencrypted_signed_e2e">Testu in chjaru firmatu da un capu à l\'altru</string>
-    <string name="crypto_msg_unencrypted_sign_revoked">ma a chjave da un capu à l\'altru hè revucata</string>
-    <string name="crypto_msg_unencrypted_sign_unknown">da una chjave da un capu à l\'altru scunnisciuta</string>
+    <string name="crypto_msg_title_unencrypted_signed_e2e">Testu in chjaru firmatu da un capu à l’altru</string>
+    <string name="crypto_msg_unencrypted_sign_revoked">ma a chjave da un capu à l’altru hè revucata</string>
+    <string name="crypto_msg_unencrypted_sign_unknown">da una chjave da un capu à l’altru scunnisciuta</string>
     <string name="crypto_msg_title_encrypted_unknown">Cifratu</string>
     <string name="crypto_msg_encrypted_error">ma un sbagliu di dicifratura hè accadutu</string>
     <string name="crypto_msg_encrypted_incomplete">u messaghju deve esse scaricatu sanu sanu per dicifrallu</string>
     <string name="crypto_msg_title_encrypted_unsigned">Cifratu</string>
     <string name="crypto_msg_title_encrypted_signed">Cifratu</string>
-    <string name="crypto_msg_encrypted_sign_unknown">da una chjave da un capu à l\'altru scunnisciuta</string>
-    <string name="crypto_msg_encrypted_sign_revoked">ma a chjave da un capu à l\'altru hè revucata</string>
+    <string name="crypto_msg_encrypted_sign_unknown">da una chjave da un capu à l’altru scunnisciuta</string>
+    <string name="crypto_msg_encrypted_sign_revoked">ma a chjave da un capu à l’altru hè revucata</string>
     <string name="crypto_msg_encrypted_insecure">ma a cifratura ùn hè micca cunsiderata cum’è sicura</string>
     <string name="locked_attach_unencrypted">Sta parte ùn hè stata micca cifrata è puderia ùn esse sicura.</string>
     <string name="messageview_decrypt_cancelled">A dicifratura hè stata abbandunata.</string>
@@ -775,7 +775,7 @@
     <string name="push_notification_grant_alarm_permission">Tuccà per cunsente u permessu.</string>
     <string name="swipe_action_remove_star">Caccià a stella</string>
     <string name="swipe_action_move">Dispiazzà…</string>
-    <string name="general_settings_show_compose_button_title">Affissà un buttone undighjante di cumpusizione</string>
+    <string name="general_settings_show_compose_button_title">Affissà buttone undighjante per redige</string>
     <string name="message_details_missing_date">L’intestatura « Data » hè assente</string>
     <string name="message_details_bcc_section_title">Cci</string>
     <string name="message_details_loading_error">Un sbagliu hè accadutu durante u caricamentu di i detaglii di u messaghju.</string>
@@ -787,26 +787,26 @@
     <string name="openpgp_dialog_sign_only_text">In stu modu, a vostra chjave PGP serà impiegata per creà una segnatura crittografica di un messaghju micca cifratu.</string>
     <string name="openpgp_dialog_sign_only_minus_break">E segnature puderianu rompesi quand’elle sò mandate à e liste di diffusione.</string>
     <string name="crypto_msg_incomplete_signed">u messaghju deve esse scaricatu sanu sanu per trattà a segnatura</string>
-    <string name="crypto_msg_unsupported_signed">cuntene una segnatura da un capu à l\'altru chì ùn hè micca accettata</string>
+    <string name="crypto_msg_unsupported_signed">cuntene una segnatura da un capu à l’altru chì ùn hè micca accettata</string>
     <string name="crypto_msg_unsupported_encrypted">U messaghju hè cifratu, ma in un furmatu chì ùn hè micca accettatu.</string>
     <string name="crypto_msg_title_unencrypted_signed">Testu in chjaru firmatu</string>
-    <string name="crypto_msg_unencrypted_sign_mismatch">ma a chjave da un capu à l\'altru ùn currispundia micca à u speditore</string>
-    <string name="crypto_msg_unencrypted_sign_expired">ma a chjave da un capu à l\'altru hè scaduta</string>
-    <string name="crypto_msg_unencrypted_sign_insecure">ma a chjave da un capu à l\'altru ùn hè micca cunsiderata cum’è sicura</string>
-    <string name="crypto_msg_encrypted_unsigned">ma micca da un capu à l\'altru</string>
+    <string name="crypto_msg_unencrypted_sign_mismatch">ma a chjave da un capu à l’altru ùn currispundia micca à u speditore</string>
+    <string name="crypto_msg_unencrypted_sign_expired">ma a chjave da un capu à l’altru hè scaduta</string>
+    <string name="crypto_msg_unencrypted_sign_insecure">ma a chjave da un capu à l’altru ùn hè micca cunsiderata cum’è sicura</string>
+    <string name="crypto_msg_encrypted_unsigned">ma micca da un capu à l’altru</string>
     <string name="crypto_msg_encrypted_no_provider">ma alcuna appiecazione di crittografia ùn hè cunfigurata</string>
-    <string name="crypto_msg_title_encrypted_signed_e2e">Cifratu da un capu à l\'altru</string>
+    <string name="crypto_msg_title_encrypted_signed_e2e">Cifratu da un capu à l’altru</string>
     <string name="crypto_msg_encrypted_sign_verified">da un speditore verificatu</string>
-    <string name="crypto_msg_encrypted_sign_mismatch">ma a chjave da un capu à l\'altru ùn currispundia micca à u speditore</string>
-    <string name="crypto_msg_encrypted_sign_insecure">ma a chjave da un capu à l\'altru ùn hè micca cunsiderata cum’è sicura</string>
-    <string name="crypto_msg_encrypted_sign_error">ma i dati da un capu à l\'altru cuntenenu sbaglii</string>
+    <string name="crypto_msg_encrypted_sign_mismatch">ma a chjave da un capu à l’altru ùn currispundia micca à u speditore</string>
+    <string name="crypto_msg_encrypted_sign_insecure">ma a chjave da un capu à l’altru ùn hè micca cunsiderata cum’è sicura</string>
+    <string name="crypto_msg_encrypted_sign_error">ma i dati da un capu à l’altru cuntenenu sbaglii</string>
     <string name="messageview_decrypt_retry">Pruvà torna</string>
     <string name="messageview_decrypt_incomplete">U messaghju cifratu deve esse scaricatu per pudè esse dicifratu.</string>
     <string name="error_sign_only_no_encryption">A cifratura hè indispunibule in u modu « sign-only » !</string>
     <string name="account_settings_crypto_prefer_encrypt">Modu mutuale di cifratura autumatica</string>
     <string name="dialog_autocrypt_mutual_description_2">S’è u speditore è i destinatarii attivanu u modu mutuale, a cifratura serà attivata in modu predefinitu.</string>
     <string name="dialog_openkeychain_info_title">Alcuna appiecazione OpenPGP ùn hè installata</string>
-    <string name="ac_transfer_intro">Un messaghju di cunfigurazione Autocrypt sparte in modu sicuru a vostra cunfigurazione da un capu à l\'altru cù d’altri apparechji.</string>
+    <string name="ac_transfer_intro">Un messaghju di cunfigurazione Autocrypt sparte in modu sicuru a vostra cunfigurazione da un capu à l’altru cù d’altri apparechji.</string>
     <string name="ac_transfer_will_be_sent">U messaghju serà mandatu à u vostru indirizzu :</string>
     <string name="ac_transfer_msg_body">Stu messaghju cuntene tutte l’infurmazioni per trasferisce in modu sicuru i vostri parametri Autocrypt è a vostra chjave sicreta da u vostru apparechju d’origine. Per cunfigurà u vostru apparechju novu per Autocrypt, ci vole à seguità l’istruzzioni chì duverianu esse prisentate da u vostru apparechju novu. Pudete cunservà stu messaghju è impiegallu tale una salvaguardia di a vostra chjave sicreta. S’è vo vulete fà cusì, duveriate piglià nota di a parolla d’intesa è piazzalla in un locu sicuru.</string>
     <string name="push_info_title">Infurmazioni di a catapughjata</string>
@@ -826,7 +826,7 @@
     <string name="openpgp_dialog_sign_only_plus_verified">Stu modu ùn cifra micca u messaghju, ma verificheghja ch’ellu hè statu mandatu da a vostra chjave.</string>
     <string name="crypto_msg_title_plaintext">Testu in chjaru</string>
     <string name="crypto_msg_unencrypted_sign_verified">da un signatariu verificatu</string>
-    <string name="crypto_msg_encrypted_sign_expired">ma a chjave da un capu à l\'altru hè scaduta</string>
+    <string name="crypto_msg_encrypted_sign_expired">ma a chjave da un capu à l’altru hè scaduta</string>
     <string name="locked_attach_unlock">Spalancà</string>
     <string name="message_progress_text">Caricamentu…</string>
     <string name="recipient_error_parse_failed">Sbagliu durante l’analisa di l’indirizzu !</string>
@@ -849,7 +849,7 @@
     <string name="openpgp_enabled_error_back">Ritornu</string>
     <string name="encrypted_subject">Messaghju cifratu</string>
     <string name="toast_account_not_found">Sbagliu internu : u contu hè inaccettevule !</string>
-    <string name="ac_transfer_setting_summary">Sparte in modu sicuru a cunfigurazione da un capu à l\'altru cù d’altri apparechji</string>
+    <string name="ac_transfer_setting_summary">Sparte in modu sicuru a cunfigurazione da un capu à l’altru cù d’altri apparechji</string>
     <string name="ac_transfer_generating">Generazione di u messaghju di cunfigurazione…</string>
     <string name="ac_transfer_show_code">Affissà u codice di cunfigurazione</string>
     <string name="ac_transfer_msg_subject">Messaghju di cunfigurazione Autocrypt</string>
@@ -884,6 +884,6 @@
     <string name="push_info_notification_explanation_text">Quandu s’impiegheghja a catapughjata, <xliff:g id="app_name">%1$s</xliff:g> mantene una cunnessione à u servitore di messaghjeria. Android richiede l’affissera d’una nutificazione quandu l’appiecazione hè attiva in tacca di sfondulu. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="default_signature">--
 \nMandatu da u mo apparechju Android cù <xliff:g id="app_name">%s</xliff:g>. Scusate a mo curtezza.</string>
-    <string name="dialog_openkeychain_info_text">L’appiecazione OpenKeychain hè richiesta per permette l’adopru di a cifratura da un capu à l\'altru.</string>
+    <string name="dialog_openkeychain_info_text">L’appiecazione OpenKeychain hè richiesta per permette l’adopru di a cifratura da un capu à l’altru.</string>
     <string name="about_title">Apprupositu di <xliff:g id="app_name">%s</xliff:g></string>
 </resources>

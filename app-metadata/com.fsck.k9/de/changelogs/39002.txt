@@ -1,0 +1,8 @@
+- Viele interne Änderungen, um auf Material 3 umzusteigen. Bitte beachte, dass sich die Material 3-Oberfläche noch in einem frühen Stadium befindet.
+- Reihenfolge der Symbolleisten-Aktionen in der Nachrichtenansicht wurde geändert, damit sie mit der Reihenfolge im Mehrfachauswahlmodus übereinstimmt
+- Standardwert für "Nachrichten holen bis zu" wurde auf 128 KB geändert
+- Fehler behoben, bei dem die Symbolleistensymbole nach einer Wischaktion in der falschen Farbe angezeigt wurden
+- Absturz beim Ausschneiden von E-Mail-Adressen aus einem Empfängerfeld beim Verfassen einer Nachricht behoben
+- Größe der Symbolleiste bei Verwendung einer nicht standardmäßigen Systemschriftgröße wurde korrigiert
+- Korsische, koreanische und vietnamesische Übersetzungen hinzugefügt
+- Aktualisierte Übersetzungen
