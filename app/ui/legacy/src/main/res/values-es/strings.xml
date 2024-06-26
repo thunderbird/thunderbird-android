@@ -3,9 +3,8 @@
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
-    <string name="unread_widget_label">Mensaje K-9 no leído</string>
     <!--Used in the about dialog-->
-    <string name="app_authors">Los encargados del perrito K-9</string>
+    <string name="about_app_authors_k9">Los encargados del perrito K-9</string>
     <string name="source_code">Código fuente</string>
     <string name="app_license">Licencia Apache, versión 2.0</string>
     <string name="about_project_title">Proyecto de código abierto</string>
@@ -823,7 +822,6 @@
     <string name="crypto_no_provider_title">Este correo está cifrado</string>
     <string name="crypto_no_provider_message">Este correo ha sido cifrado con OpenPGP.\nPara leerlo es necesario instalar y configurar una aplicación compatible con OpenPGP.</string>
     <string name="crypto_no_provider_button">Ir a los ajustes</string>
-    <string name="mail_list_widget_text">Lista de correos de K-9</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">No es posible cifrar</string>

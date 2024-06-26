@@ -3,9 +3,8 @@
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
-    <string name="unread_widget_label">K-9 olästa</string>
     <!--Used in the about dialog-->
-    <string name="app_authors">The K-9 Dog Walkers</string>
+    <string name="about_app_authors_k9">The K-9 Dog Walkers</string>
     <string name="source_code">Källkod</string>
     <string name="app_license">Apachelicens, version 2.0</string>
     <string name="about_project_title">Projekt med öppen källkod</string>
@@ -818,7 +817,6 @@
     <string name="crypto_no_provider_title">Detta e-postmeddelande är krypterat</string>
     <string name="crypto_no_provider_message">Detta e-postmeddelande har krypterats med OpenPGP.\nFör att läsa det, måste du installera och konfigurera en kompatibel OpenPGP-app.</string>
     <string name="crypto_no_provider_button">Gå till inställningar</string>
-    <string name="mail_list_widget_text">K-9 Meddelandelista</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Kryptering inte möjligt</string>

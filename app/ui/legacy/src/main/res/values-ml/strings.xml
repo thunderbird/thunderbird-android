@@ -3,9 +3,8 @@
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
-    <string name="unread_widget_label">കെ-9 വായിക്കാത്തവ</string>
     <!--Used in the about dialog-->
-    <string name="app_authors">The K-9 Dog Walkers</string>
+    <string name="about_app_authors_k9">The K-9 Dog Walkers</string>
     <string name="source_code">സോഴ്സ് കോഡ്</string>
     <string name="app_license">അപ്പാച്ചെ ലൈസൻസ്, പതിപ്പ് 2.0</string>
     <string name="about_project_title">ഓപ്പൺ സോഴ്സ് പ്രോജക്റ്റ്</string>
@@ -777,7 +776,6 @@
     <string name="crypto_no_provider_title">ഈ ഇമെയിൽ എൻ‌ക്രിപ്റ്റ് ചെയ്തതാണ്</string>
     <string name="crypto_no_provider_message">ഈ ഇമെയിൽ ഓപ്പൺപിജിപി ഉപയോഗിച്ച് എൻക്രിപ്റ്റുചെയ്‌തതാണ്.\nഇത് വായിക്കാൻ, നിങ്ങൾ ഒരു അനുയോജ്യമായ ഓപ്പൺപിജിപി അപ്ലിക്കേഷൻ ഇൻസ്റ്റാളുചെയ്‌ത് ക്രമീകരിക്കേണ്ടതുണ്ട്. </string>
     <string name="crypto_no_provider_button">ക്രമീകരണങ്ങളിലേക്ക് പോകുക</string>
-    <string name="mail_list_widget_text">കെ-9 സന്ദേശ പട്ടിക</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">എൻക്രിപ്ഷൻ സാധ്യമല്ല</string>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="unread_widget_label">K-9 Nepročitano</string>
     <string name="source_code">Izvorni kod</string>
     <string name="app_license">Apache Licenca, Verzija 2.0</string>
     <string name="about_website_title">Veb-sajt</string>
@@ -81,7 +80,7 @@
     <string name="global_settings_show_correspondent_names_summary">Prikaži imena korespodenata umjesto njihove mejl-adrese</string>
     <string name="about_action">O nama</string>
     <string name="prefs_title">Postavke</string>
-    <string name="app_authors">K-9 razvojni tim</string>
+    <string name="about_app_authors_k9">K-9 razvojni tim</string>
     <string name="get_help_title">Zatražite pomoć</string>
     <string name="about_project_title">Projekat otvorenog koda</string>
     <string name="user_forum_title">Korisnički forum</string>

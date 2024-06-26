@@ -3,9 +3,8 @@
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
-    <string name="unread_widget_label">K-9 ulæst</string>
     <!--Used in the about dialog-->
-    <string name="app_authors">The K-9 Dog Walkers</string>
+    <string name="about_app_authors_k9">The K-9 Dog Walkers</string>
     <string name="source_code">Kildekode</string>
     <string name="app_license">Apache licens, version 2.0</string>
     <string name="about_project_title">Opensource Projekt</string>
@@ -813,7 +812,6 @@
     <string name="crypto_no_provider_title">Denne email er krypteret</string>
     <string name="crypto_no_provider_message">Denne email er krypteret med OpenPGP.\nFor at læse den skal du installere en kompatibel OpenPGP applikation.</string>
     <string name="crypto_no_provider_button">Gå til opsætning</string>
-    <string name="mail_list_widget_text">K-9 Meddelelsesliste</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Kryptering var ikke mulig</string>

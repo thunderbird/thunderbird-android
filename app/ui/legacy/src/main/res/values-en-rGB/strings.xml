@@ -3,7 +3,6 @@
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
-    <string name="unread_widget_label">K-9 Unread</string>
     <!--Used in the about dialog-->
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
@@ -142,7 +141,7 @@
     <string name="copy_action">Copy</string>
     <string name="choose_folder_copy_title">Copy to…</string>
     <string name="remove_account_action">Remove account</string>
-    <string name="app_authors">The K-9 Dog Walkers</string>
+    <string name="about_app_authors_k9">The K-9 Dog Walkers</string>
     <string name="reply_action">Reply</string>
     <string name="show_headers_action">Show headers</string>
     <string name="user_forum_title">User forum</string>
@@ -735,7 +734,6 @@
     <string name="global_settings_threaded_view_label">Threaded view</string>
     <string name="webview_contextmenu_email_copy_action">Copy address to clipboard</string>
     <string name="push_notification_state_initializing">Initialising…</string>
-    <string name="mail_list_widget_text">K-9 Message List</string>
     <string name="crypto_msg_title_encrypted_signed_e2e">End-to-End encrypted</string>
     <string name="message_list_content_description_unread_prefix">unread, %s</string>
     <string name="general_settings_title">General settings</string>

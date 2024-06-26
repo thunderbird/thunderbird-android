@@ -2,12 +2,9 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
 
-    <!-- This should make it easier for forks to change the branding -->
-
-    <string name="unread_widget_label">K-9 Unread</string>
-
     <!-- Used in the about dialog -->
-    <string name="app_authors">The K-9 Dog Walkers</string>
+    <string name="about_app_authors_k9">The K-9 Dog Walkers</string>
+    <string name="about_app_authors_thunderbird">Thunderbird Mobile Team</string>
     <string name="source_code">Source code</string>
     <string name="app_license">Apache License, Version 2.0</string>
     <string name="about_project_title">Open Source Project</string>
@@ -308,7 +305,7 @@
     <string name="general_settings_ui_density_relaxed">Relaxed</string>
 
     <string name="global_settings_privacy_hide_useragent">Hide mail client</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Remove K-9 User-Agent from mail headers</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Remove User-Agent from mail headers</string>
     <string name="global_settings_privacy_hide_timezone">Hide timezone</string>
     <string name="global_settings_privacy_hide_timezone_detail">Use UTC instead of local timezone in mail headers and reply header</string>
 
@@ -1003,8 +1000,6 @@
     <string name="crypto_no_provider_title">This email is encrypted</string>
     <string name="crypto_no_provider_message">This email has been encrypted with OpenPGP.\nTo read it, you need to install and configure a compatible OpenPGP App.</string>
     <string name="crypto_no_provider_button">Go to Settings</string>
-
-    <string name="mail_list_widget_text">K-9 Message List</string>
 
     <string name="openpgp_enabled_error_title">Encryption not possible</string>
     <string name="openpgp_enabled_error_msg">Some of the selected recipients don\'t support this feature!</string>

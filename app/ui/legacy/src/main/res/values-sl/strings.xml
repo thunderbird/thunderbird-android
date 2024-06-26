@@ -3,9 +3,8 @@
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
-    <string name="unread_widget_label">Neprebrano K-9</string>
     <!--Used in the about dialog-->
-    <string name="app_authors">Sprehajalci psov v skupini The K-9 Dog Walkers</string>
+    <string name="about_app_authors_k9">Sprehajalci psov v skupini The K-9 Dog Walkers</string>
     <string name="source_code">Izvorna koda</string>
     <string name="app_license">Dovoljenje Apache, različica 2.0</string>
     <string name="about_project_title">Odprtokodni projekt</string>
@@ -826,7 +825,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="crypto_no_provider_title">Sporočilo je šifrirano</string>
     <string name="crypto_no_provider_message">Sporočilo je šifrirano s programom OpenPGP.\nZa ogled vsebine je treba namestiti ustrezen podprt program OpenPGP.</string>
     <string name="crypto_no_provider_button">Pojdi v Nastavitve</string>
-    <string name="mail_list_widget_text">Seznami sporočil</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Šifriranje ni mogoče</string>

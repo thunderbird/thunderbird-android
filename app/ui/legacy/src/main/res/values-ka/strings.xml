@@ -3,9 +3,8 @@
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
-    <string name="unread_widget_label">K-9 წაუკითხავი</string>
     <!--Used in the about dialog-->
-    <string name="app_authors">The K-9 Dog Walkers</string>
+    <string name="about_app_authors_k9">The K-9 Dog Walkers</string>
     <string name="app_license">ლიცენზია: Apache, ვერსია 2.0</string>
     <string name="about_libraries">ბიბლიოთეკები</string>
     <string name="license">ლიცენზია</string>
@@ -489,7 +488,6 @@
     <string name="unsigned_text_divider_label">ხელმოუწერელი ტექსტი</string>
     <string name="crypto_no_provider_title">ეს წერილი დაშიფრულია</string>
     <string name="crypto_no_provider_button">პარამეტრებში შესვლა</string>
-    <string name="mail_list_widget_text">K-9 მესიჯების ნუსხა</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">შიფრაცია შეუძლებელია</string>

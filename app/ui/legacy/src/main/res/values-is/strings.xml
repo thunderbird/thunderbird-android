@@ -3,9 +3,8 @@
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
-    <string name="unread_widget_label">K-9 - Ólesið</string>
     <!--Used in the about dialog-->
-    <string name="app_authors">K-9 hundatemjararnir</string>
+    <string name="about_app_authors_k9">K-9 hundatemjararnir</string>
     <string name="source_code">Grunnkóði</string>
     <string name="app_license">Apache notkunarleyfi, útgáfa 2.0</string>
     <string name="about_project_title">Verkefni með opnum grunnkóða</string>
@@ -818,7 +817,6 @@
     <string name="crypto_no_provider_title">Þessi tölvupóstur er dulritaður</string>
     <string name="crypto_no_provider_message">Þessi tölvupóstur var dulritaður með OpenPGP.\nTil að lesa hann verður þú að setja upp og stilla samhæft OpenPGP-forrit.</string>
     <string name="crypto_no_provider_button">Fara í stillingar</string>
-    <string name="mail_list_widget_text">Skilaboðalisti K-9</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Dulritun er ekki möguleg</string>

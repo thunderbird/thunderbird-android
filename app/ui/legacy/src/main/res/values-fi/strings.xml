@@ -3,9 +3,8 @@
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
-    <string name="unread_widget_label">K-9-lukematon</string>
     <!--Used in the about dialog-->
-    <string name="app_authors">The K-9 Dog Walkers</string>
+    <string name="about_app_authors_k9">The K-9 Dog Walkers</string>
     <string name="source_code">Lähdekoodi</string>
     <string name="app_license">Apache-lisenssi, versio 2.0</string>
     <string name="about_project_title">Avoimen lähdekoodin projekti</string>
@@ -817,7 +816,6 @@
     <string name="crypto_no_provider_title">Tämä sähköpostiviesti on salattu</string>
     <string name="crypto_no_provider_message">Tämä viesti on salattu OpenPGP:llä.\nLukeaksesi viestin sinun tulee asentaa ja määrittää yhteensopiva OpenPGP-sovellus.</string>
     <string name="crypto_no_provider_button">Siirry asetuksiin</string>
-    <string name="mail_list_widget_text">K-9-viestiluettelo</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Salaus ei ole mahdollista</string>

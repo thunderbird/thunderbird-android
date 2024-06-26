@@ -3,9 +3,8 @@
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
-    <string name="unread_widget_label">Nieprzeczytane K-9</string>
     <!--Used in the about dialog-->
-    <string name="app_authors">Autorzy K-9 Mail</string>
+    <string name="about_app_authors_k9">Autorzy K-9 Mail</string>
     <string name="source_code">Kod źródłowy</string>
     <string name="app_license">Licencja Apache, wersja 2.0</string>
     <string name="about_project_title">Projekt otwartoźródłowy</string>
@@ -832,7 +831,6 @@
     <string name="crypto_no_provider_title">Ta wiadomość e-mail jest zaszyfrowana</string>
     <string name="crypto_no_provider_message">Ta wiadomość e-mail została zaszyfrowana z użyciem OpenPGP.\n Aby ją odczytać, należy zainstalować i skonfigurować zgodną aplikację OpenPGP.</string>
     <string name="crypto_no_provider_button">Przejdź do ustawień</string>
-    <string name="mail_list_widget_text">Lista wiadomości K-9</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Szyfrowanie nie jest możliwe</string>

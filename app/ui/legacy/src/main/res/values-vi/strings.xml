@@ -3,9 +3,8 @@
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
-    <string name="unread_widget_label">K-9 Chưa đọc</string>
     <!--Used in the about dialog-->
-    <string name="app_authors">Người dắt chó K-9</string>
+    <string name="about_app_authors_k9">Người dắt chó K-9</string>
     <string name="source_code">Mã nguồn</string>
     <string name="app_license">Giấy phép Apache, phiên bản 2.0</string>
     <string name="about_project_title">Dự án mã nguồn mở</string>
@@ -353,7 +352,6 @@
     <!--A user visible label for the email address copied to the clipboard-->
     <string name="clipboard_label_email_address">Địa chỉ email</string>
     <string name="account_setup_options_mail_check_frequency_30min">Mỗi 30 phút</string>
-    <string name="mail_list_widget_text">Danh sách tin nhắn K-9</string>
     <string name="account_setup_options_mail_check_frequency_1hour">Mỗi giờ</string>
     <string name="message_list_content_description_unread_prefix">chưa đọc, %s</string>
     <string name="account_setup_options_mail_check_frequency_12hour">Mỗi 12 giờ</string>

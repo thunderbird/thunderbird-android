@@ -3,7 +3,6 @@
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
-    <string name="unread_widget_label">K-9 - הודעות שלא נקראו</string>
     <!--Used in the about dialog-->
     <string name="source_code">קוד מקור</string>
     <string name="app_license">רישיון Apache, גירסה 2.0</string>
@@ -568,7 +567,7 @@
     <!--A user visible label for the name and email address copied to the clipboard-->
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
-<string name="app_authors">מוליכי הכלבים של K-9</string>
+<string name="about_app_authors_k9">מוליכי הכלבים של K-9</string>
     <string name="about_website_title">אתר אינטרנט</string>
     <string name="user_manual_title">מדריך משתמש</string>
     <string name="get_help_title">קבל עזרה</string>
@@ -754,7 +753,6 @@
     <string name="account_settings_crypto_hide_sign_only_off">כל החתימות יוצגו</string>
     <string name="crypto_no_provider_message">הדוא\"ל הזה הוצפן עם OpenPGP.
 \nעל מנת לקרוא אותו, עליך להתקין ולהגדיר יישומון OpenPGP תואם.</string>
-    <string name="mail_list_widget_text">רשימת הודעות K-9</string>
     <string name="openpgp_enabled_error_title">הצפנה לא אפשרית</string>
     <string name="openpgp_description_text3">הצפנה תופיע רק אם היא נתמכת ע\"י כל הנמענים, והם שלחו לך דוא\"ל בעבר.</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">הגדרת התראות שגיאה ומצב</string>

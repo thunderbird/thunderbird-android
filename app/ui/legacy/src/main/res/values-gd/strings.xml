@@ -3,9 +3,8 @@
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
-    <string name="unread_widget_label">Post gun leughadh</string>
     <!--Used in the about dialog-->
-    <string name="app_authors">Google, luchd-coiseachd nan con K-9.</string>
+    <string name="about_app_authors_k9">Google, luchd-coiseachd nan con K-9.</string>
     <string name="source_code">An còd tùsail</string>
     <string name="app_license">Fo cheadachas Apache, tionndadh 2.0.</string>
     <string name="about_project_title">Pròiseact le tùs fosgailte</string>
@@ -743,7 +742,6 @@
     <string name="crypto_no_provider_message">Chaidh am post-d seo a chrioptachadh le OpenPGP.
 \nFeumaidh tu aplacaid a tha comasach air OpenPGP a stàladh is a rèiteachadh mus urrainn dhut a leughadh.</string>
     <string name="crypto_no_provider_button">Tagh aplacaid OpenPGP</string>
-    <string name="mail_list_widget_text">Liosta theachdaireachdan puist</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Cha ghabh a chrioptachadh</string>

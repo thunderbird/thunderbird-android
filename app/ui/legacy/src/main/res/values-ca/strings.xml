@@ -3,9 +3,8 @@
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
-    <string name="unread_widget_label">K-9 no llegits</string>
     <!--Used in the about dialog-->
-    <string name="app_authors">Els passejadors de gossos K-9</string>
+    <string name="about_app_authors_k9">Els passejadors de gossos K-9</string>
     <string name="source_code">Codi font</string>
     <string name="app_license">Llicència d\'Apache, versió 2.0</string>
     <string name="about_project_title">Projecte de codi obert</string>
@@ -827,7 +826,6 @@
     <string name="crypto_no_provider_message">Aquest missatge ha estat encriptat amb OpenPGP.
 \nPer llegir-lo, us caldrà instal·lar i configurar una aplicació d\'OpenPGP compatible.</string>
     <string name="crypto_no_provider_button">Ves a la configuració</string>
-    <string name="mail_list_widget_text">Llista de missatges del K-9</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Encriptació no possible</string>

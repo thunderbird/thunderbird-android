@@ -3,9 +3,8 @@
     <!--=== App-specific strings =============================================================-->
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
-    <string name="unread_widget_label">K-9 Heb eu Darllen</string>
     <!--Used in the about dialog-->
-    <string name="app_authors">The K-9 Dog Walkers</string>
+    <string name="about_app_authors_k9">The K-9 Dog Walkers</string>
     <string name="source_code">Cod ffynhonnell</string>
     <string name="app_license">Trwydded Apache, Fersiwn 2.0</string>
     <string name="about_project_title">Prosiect Cod Agored</string>
@@ -815,7 +814,6 @@
     <string name="crypto_no_provider_title">Mae\'r neges e-bost hon wedi ei amgryptio.</string>
     <string name="crypto_no_provider_message">Mae\'r neges e-bost hon wedi ei amgryptio gydag OpenPGP.\nI\'w darllen, rhaid gosod a ffurfweddu ap OpenPGP sy\'n cydweddu.</string>
     <string name="crypto_no_provider_button">Mynd i Osodiadau</string>
-    <string name="mail_list_widget_text">Rhestr Negeseuon K-9</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Dyw amgryptiad ddim ar gael.</string>
