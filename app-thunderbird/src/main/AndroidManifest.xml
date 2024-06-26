@@ -6,7 +6,7 @@
     <application
         android:name=".ThunderbirdApp"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/tb_app_name" >
+        android:label="@string/app_name" >
 
         <provider
             android:name="androidx.startup.InitializationProvider"
