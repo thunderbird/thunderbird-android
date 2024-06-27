@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.appbar.MaterialToolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/toolbar"
+    style="?attr/toolbarStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:minHeight="?attr/actionBarSize"
+    tools:navigationIcon="@drawable/ic_arrow_back">
+
+    <!-- We're not using MaterialToolbar's title/subtitle support because it is broken when using large system
+         font sizes. See https://issuetracker.google.com/issues/135865267 -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/toolbarTitleMarginVertical"
+        android:orientation="vertical">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/toolbarTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
+            android:textColor="?attr/colorOnSurface"
+            tools:text="Inbox" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/toolbarSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:visibility="gone"
+            tools:text="demo@domain.example"
+            tools:visibility="visible" />
+
+    </LinearLayout>
+
+</com.google.android.material.appbar.MaterialToolbar>
