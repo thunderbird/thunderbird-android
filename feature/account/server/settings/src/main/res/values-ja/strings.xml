@@ -30,6 +30,6 @@
     <string name="account_server_settings_password_authentication_title">本人確認</string>
     <string name="account_server_settings_password_authentication_subtitle">ロック解除してパスワードを表示</string>
     <string name="account_server_settings_password_authentication_screen_lock_required">ここでパスワードを表示するには、端末に画面ロックを設定してください。</string>
-    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">IP またはホスト名が無効です</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">無効な IP アドレスまたはホスト名です</string>
     <string name="account_server_settings_incoming_imap_send_client_info_label">クライアントの情報を送信する</string>
 </resources>

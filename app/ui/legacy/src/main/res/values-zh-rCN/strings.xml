@@ -242,7 +242,7 @@
     <string name="general_settings_ui_density_default">默认</string>
     <string name="general_settings_ui_density_relaxed">宽松</string>
     <string name="global_settings_privacy_hide_useragent">隐藏邮件客户端</string>
-    <string name="global_settings_privacy_hide_useragent_detail">从邮件标头中移除 K-9 的 User-Agent</string>
+    <string name="global_settings_privacy_hide_useragent_detail">从邮件标头中移除 User-Agent</string>
     <string name="global_settings_privacy_hide_timezone">隐藏时区</string>
     <string name="global_settings_privacy_hide_timezone_detail">在邮件标头和回复标头中使用 UTC 而不是本地时区</string>
     <string name="global_settings_notification_quick_delete_title">显示“删除”按钮</string>
@@ -942,4 +942,5 @@
     <string name="push_info_notification_explanation_text">使用推送功能时，<xliff:g id="app_name">%1$s</xliff:g> 会保持与邮件服务器的连接。Android 要求在应用处于后台活动状态时显示持续通知。<xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="default_signature">--
 \n通过 <xliff:g id="app_name">%s</xliff:g> 从我的 Android 设备发送。请原谅我的简洁。</string>
+    <string name="about_app_authors_thunderbird">Thunderbird Mobile Team</string>
 </resources>

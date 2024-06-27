@@ -249,7 +249,7 @@
     <string name="general_settings_ui_density_default">Standardowa</string>
     <string name="general_settings_ui_density_relaxed">Rozluźniona</string>
     <string name="global_settings_privacy_hide_useragent">Ukryj klienta poczty</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Usuń User-Agent K-9 z nagłówka wiadomości</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Usuń identyfikator programu z nagłówka wiadomości</string>
     <string name="global_settings_privacy_hide_timezone">Ukryj strefę czasową</string>
     <string name="global_settings_privacy_hide_timezone_detail">Używaj czasu UTC zamiast czasu lokalnego w nagłówkach wiadomości i odpowiedzi</string>
     <string name="global_settings_notification_quick_delete_title">Pokaż przycisk „Usuń”</string>
@@ -605,7 +605,7 @@
     <string name="account_settings_automatic_special_folder">Automatyczny (%s)</string>
     <string name="font_size_settings_title">Rozmiar czcionki</string>
     <string name="font_size_settings_description"> Ustawienia rozmiaru czcionki</string>
-    <string name="font_size_message_list">Lista wiadomości</string>
+    <string name="font_size_message_list">Listy wiadomości</string>
     <string name="font_size_message_list_subject">Temat</string>
     <string name="font_size_message_list_sender">Nadawca</string>
     <string name="font_size_message_list_date">Data wiadomości</string>
@@ -960,4 +960,5 @@ Tą wiadomość można zachować i użyć w formie kopii zapasowej twojego klucz
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Wróć do listy wiadomości</string>
     <string name="push_notification_state_alarm_permission_missing">Brak uprawnień do planowania alarmów</string>
     <string name="push_notification_grant_alarm_permission">Stuknij, aby udzielić uprawnienia.</string>
+    <string name="about_app_authors_thunderbird">Zespół Thunderbird Mobile</string>
 </resources>

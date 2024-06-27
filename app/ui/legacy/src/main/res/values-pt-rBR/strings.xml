@@ -246,7 +246,7 @@
     <string name="general_settings_ui_density_default">Padrão</string>
     <string name="general_settings_ui_density_relaxed">Expandido</string>
     <string name="global_settings_privacy_hide_useragent">Ocultar o cliente de e-mail</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Remove o User-Agent do K-9 dos cabeçalhos das mensagens</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Remove o User-Agent dos cabeçalhos das mensagens</string>
     <string name="global_settings_privacy_hide_timezone">Ocultar o fuso horário</string>
     <string name="global_settings_privacy_hide_timezone_detail">Usar UTC ao invés do fuso horário local nos cabeçalhos das mensagens e das respostas</string>
     <string name="global_settings_notification_quick_delete_title">Exibir o botão \'Excluir\'</string>
@@ -957,4 +957,5 @@ Você pode guardar esta mensagem e usá-la como um backup da sua chave secreta. 
     <string name="default_signature">--
 \nEnviado de meu dispositivo Android com <xliff:g id="app_name">%s</xliff:g>. Por favor, desculpe minha brevidade.</string>
     <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\"será removida de <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="about_app_authors_thunderbird">Equipe do Thunderbird Mobile</string>
 </resources>

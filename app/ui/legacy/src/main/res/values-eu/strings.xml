@@ -942,4 +942,5 @@ Mezu hau gorde dezakezu eta zure gako sekretuaren babes-kopia gisa erabili. Hau 
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Itzuli mezu-zerrendara</string>
     <string name="push_notification_state_alarm_permission_missing">Alarmak programatzeko baimena falta da</string>
     <string name="push_notification_grant_alarm_permission">Sakatu baimena emateko.</string>
+    <string name="about_app_authors_thunderbird">Thunderbird Mobile Team</string>
 </resources>

@@ -13,4 +13,5 @@
     <string name="unread_widget_account_not_selected">Alcunu contu ùn hè selezziunatu</string>
     <string name="unread_widget_folder_not_selected">Alcunu cartulare ùn hè selezziunatu</string>
     <string name="unread_widget_choose_account_title">Sceglie un contu</string>
+    <string name="unread_widget_label">Numeru di à leghje</string>
 </resources>
