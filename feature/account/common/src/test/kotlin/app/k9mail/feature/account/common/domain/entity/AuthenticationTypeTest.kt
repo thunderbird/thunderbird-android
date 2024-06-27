@@ -20,7 +20,7 @@ class AuthenticationTypeTest {
                     AuthenticationType.PasswordEncrypted -> AuthType.CRAM_MD5
                     AuthenticationType.OAuth2 -> AuthType.XOAUTH2
                     AuthenticationType.ClientCertificate -> AuthType.EXTERNAL
-                    else -> AuthType.PLAIN
+                    AuthenticationType.None -> AuthType.NONE
                 },
             )
         }
@@ -39,7 +39,7 @@ class AuthenticationTypeTest {
                     AuthType.CRAM_MD5 -> AuthenticationType.PasswordEncrypted
                     AuthType.EXTERNAL -> AuthenticationType.ClientCertificate
                     AuthType.XOAUTH2 -> AuthenticationType.OAuth2
-                    else -> AuthenticationType.None
+                    AuthType.NONE -> AuthenticationType.None
                 },
             )
         }

@@ -147,49 +147,47 @@ class SmtpTransport(
             }
             parseOptionalSizeValue(extensions["SIZE"])
 
-            if (
-                username.isNotEmpty() &&
-                (!password.isNullOrEmpty() || AuthType.EXTERNAL == authType || AuthType.XOAUTH2 == authType)
-            ) {
-                when (authType) {
-                    AuthType.PLAIN -> {
-                        // try saslAuthPlain first, because it supports UTF-8 explicitly
-                        if (authPlainSupported) {
-                            saslAuthPlain()
-                        } else if (authLoginSupported) {
-                            saslAuthLogin()
-                        } else {
-                            throw MissingCapabilityException("AUTH PLAIN")
-                        }
+            when (authType) {
+                AuthType.NONE -> {
+                    // The outgoing server is configured to not use any authentication. So do nothing.
+                }
+                AuthType.PLAIN -> {
+                    // try saslAuthPlain first, because it supports UTF-8 explicitly
+                    if (authPlainSupported) {
+                        saslAuthPlain()
+                    } else if (authLoginSupported) {
+                        saslAuthLogin()
+                    } else {
+                        throw MissingCapabilityException("AUTH PLAIN")
                     }
-                    AuthType.CRAM_MD5 -> {
-                        if (authCramMD5Supported) {
-                            saslAuthCramMD5()
-                        } else {
-                            throw MissingCapabilityException("AUTH CRAM-MD5")
-                        }
+                }
+                AuthType.CRAM_MD5 -> {
+                    if (authCramMD5Supported) {
+                        saslAuthCramMD5()
+                    } else {
+                        throw MissingCapabilityException("AUTH CRAM-MD5")
                     }
-                    AuthType.XOAUTH2 -> {
-                        if (oauthTokenProvider == null) {
-                            throw MessagingException("No OAuth2TokenProvider available.")
-                        } else if (authOAuthBearerSupported) {
-                            saslOAuth(OAuthMethod.OAUTHBEARER)
-                        } else if (authXoauth2Supported) {
-                            saslOAuth(OAuthMethod.XOAUTH2)
-                        } else {
-                            throw MissingCapabilityException("AUTH OAUTHBEARER")
-                        }
+                }
+                AuthType.XOAUTH2 -> {
+                    if (oauthTokenProvider == null) {
+                        throw MessagingException("No OAuth2TokenProvider available.")
+                    } else if (authOAuthBearerSupported) {
+                        saslOAuth(OAuthMethod.OAUTHBEARER)
+                    } else if (authXoauth2Supported) {
+                        saslOAuth(OAuthMethod.XOAUTH2)
+                    } else {
+                        throw MissingCapabilityException("AUTH OAUTHBEARER")
                     }
-                    AuthType.EXTERNAL -> {
-                        if (authExternalSupported) {
-                            saslAuthExternal()
-                        } else {
-                            throw MissingCapabilityException("AUTH EXTERNAL")
-                        }
+                }
+                AuthType.EXTERNAL -> {
+                    if (authExternalSupported) {
+                        saslAuthExternal()
+                    } else {
+                        throw MissingCapabilityException("AUTH EXTERNAL")
                     }
-                    else -> {
-                        throw MessagingException("Unhandled authentication method found in server settings (bug).")
-                    }
+                }
+                else -> {
+                    throw MessagingException("Unhandled authentication method found in server settings (bug).")
                 }
             }
         } catch (e: MessagingException) {

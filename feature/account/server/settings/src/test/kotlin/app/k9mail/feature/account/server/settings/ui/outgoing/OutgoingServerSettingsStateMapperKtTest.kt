@@ -63,7 +63,7 @@ class OutgoingServerSettingsStateMapperKtTest {
     }
 
     @Test
-    fun `should use password from incomingServerSettings when outgoingServerSettings contains no password`() {
+    fun `should use password from incomingServerSettings when outgoingServerSettings is missing a password`() {
         val accountState = AccountState(
             incomingServerSettings = IMAP_SERVER_SETTINGS,
             outgoingServerSettings = SMTP_SERVER_SETTINGS.copy(password = null),

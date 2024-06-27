@@ -39,7 +39,7 @@ enum class AuthenticationType(
 
 fun AuthenticationType.toAuthType(): AuthType {
     return when (this) {
-        AuthenticationType.None -> AuthType.PLAIN
+        AuthenticationType.None -> AuthType.NONE
         AuthenticationType.PasswordCleartext -> AuthType.PLAIN
         AuthenticationType.PasswordEncrypted -> AuthType.CRAM_MD5
         AuthenticationType.ClientCertificate -> AuthType.EXTERNAL
@@ -53,6 +53,6 @@ fun AuthType.toAuthenticationType(): AuthenticationType {
         AuthType.CRAM_MD5 -> AuthenticationType.PasswordEncrypted
         AuthType.EXTERNAL -> AuthenticationType.ClientCertificate
         AuthType.XOAUTH2 -> AuthenticationType.OAuth2
-        else -> AuthenticationType.None
+        AuthType.NONE -> AuthenticationType.None
     }
 }

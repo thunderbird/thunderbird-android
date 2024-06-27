@@ -22,4 +22,5 @@ public enum AuthType {
      * https://developers.google.com/gmail/xoauth2_protocol#the_sasl_xoauth2_mechanism
      */
     XOAUTH2,
+    NONE,
 }
