@@ -56,19 +56,8 @@ class PushService : Service() {
             } catch (e: ForegroundServiceStartNotAllowedException) {
                 Timber.e(e, "Ignoring ForegroundServiceStartNotAllowedException during automatic restart.")
 
-                // There are quite a few crash reports where calling startForeground() throws
-                // ForegroundServiceStartNotAllowedException when the system is restarting the service. This shouldn't
-                // happen since the app was allowed to start a foreground service when it was originally started.
-                // We haven't been able to reliably reproduce this behavior. So it's not clear if and how we can work
-                // around this.
-                //
-                // Possible workarounds:
-                // - [X] Catch and ignore ForegroundServiceStartNotAllowedException.
-                // - [ ] Skip call to startForeground() when onStartCommand() is called with intent == null.
-                // - [ ] Catch ForegroundServiceStartNotAllowedException and stop the service. Create a notification
-                //       asking the user to tap it to restart the push service.
-                //
-                // See https://github.com/thunderbird/thunderbird-android/issues/7416
+                // This works around what seems to be a bug in at least Android 14.
+                // See https://github.com/thunderbird/thunderbird-android/issues/7416 for more details.
             }
         }
     }
