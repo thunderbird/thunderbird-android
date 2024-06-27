@@ -8,6 +8,6 @@ class TbAppNameProvider(
     context: Context,
 ) : AppNameProvider {
     override val appName: String by lazy {
-        context.getString(R.string.tb_app_name)
+        context.getString(R.string.app_name)
     }
 }
