@@ -1,0 +1,1 @@
+- Absturz behoben, wenn eine Wischaktion in der Nachrichtenliste auf "Keine" gesetzt wurde

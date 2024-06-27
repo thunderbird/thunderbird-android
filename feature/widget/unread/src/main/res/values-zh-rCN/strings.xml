@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="unread_widget_select_account">显示未读邮件数…</string>
     <string name="unread_widget_account_title">账号</string>
@@ -13,4 +13,5 @@
     <string name="unread_widget_account_not_selected">未选择账号</string>
     <string name="unread_widget_folder_not_selected">未选择文件夹</string>
     <string name="unread_widget_choose_account_title">选择账号</string>
+    <string name="unread_widget_label">未读邮件数</string>
 </resources>

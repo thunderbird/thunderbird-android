@@ -190,7 +190,7 @@
     <string name="general_settings_message_list_density_title">Densità</string>
     <string name="general_settings_ui_density_default">Predefinita</string>
     <string name="global_settings_privacy_hide_useragent">Piattà u nome di messaghjeria</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Caccià l’agente utilizatore K-9 da l’intestature di i messaghji</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Caccià l’agente utilizatore da l’intestature di i messaghji</string>
     <string name="global_settings_privacy_hide_timezone">Piattà u fusu orariu</string>
     <string name="global_settings_privacy_hide_timezone_detail">Impiegà UTC invece di u fusu orariu lucale in l’intestature di messaghju è di risposta</string>
     <string name="global_settings_notification_quick_delete_when_single_msg">Per a nutificazione d’un messaghju unicu</string>
@@ -886,4 +886,5 @@
 \nMandatu da u mo apparechju Android cù <xliff:g id="app_name">%s</xliff:g>. Scusate a mo curtezza.</string>
     <string name="dialog_openkeychain_info_text">L’appiecazione OpenKeychain hè richiesta per permette l’adopru di a cifratura da un capu à l’altru.</string>
     <string name="about_title">Apprupositu di <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="about_app_authors_thunderbird">Squadra Thunderbird Mobile</string>
 </resources>

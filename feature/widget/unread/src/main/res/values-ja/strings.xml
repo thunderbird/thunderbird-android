@@ -13,4 +13,5 @@
     <string name="unread_widget_account_not_selected">アカウントが選択されていません</string>
     <string name="unread_widget_folder_not_selected">フォルダーが選択されていません</string>
     <string name="unread_widget_choose_account_title">アカウントを選択</string>
+    <string name="unread_widget_label">未読件数</string>
 </resources>

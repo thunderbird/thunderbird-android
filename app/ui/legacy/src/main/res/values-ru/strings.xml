@@ -248,7 +248,7 @@
     <string name="general_settings_ui_density_default">По умолчанию</string>
     <string name="general_settings_ui_density_relaxed">Ослабленная</string>
     <string name="global_settings_privacy_hide_useragent">Скрыть почтовик</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Убрать \"K-9 User-Agent\" из заголовков сообщений</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Убрать \"User-Agent\" из заголовков сообщений</string>
     <string name="global_settings_privacy_hide_timezone">Скрыть временную зону</string>
     <string name="global_settings_privacy_hide_timezone_detail">Использовать UTC вместо местного времени в заголовках сообщений</string>
     <string name="global_settings_notification_quick_delete_title">Кнопка \"Удалить\"</string>

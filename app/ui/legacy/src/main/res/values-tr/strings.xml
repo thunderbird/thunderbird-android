@@ -232,7 +232,7 @@
     <!--Title of the setting to specify the density of the message list-->
     <string name="general_settings_ui_density_default">Varsayılan</string>
     <string name="global_settings_privacy_hide_useragent">Posta istemcisini gizle</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Posta başlığından K-9 Kullanıcı Aracısını kaldır</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Posta başlığından Kullanıcı Aracısını kaldır</string>
     <string name="global_settings_privacy_hide_timezone">Zaman dilimini gizle</string>
     <string name="global_settings_privacy_hide_timezone_detail">Posta ve yanıt başlıklarında yerel zaman dilimi yerine UTC kullan</string>
     <string name="global_settings_notification_quick_delete_title">\'Sil\' düğmesini göster</string>
@@ -947,4 +947,5 @@
     <string name="about_title"><xliff:g id="app_name">%s</xliff:g> hakkında</string>
     <string name="push_info_notification_explanation_text">İtme kullanılırken, <xliff:g id="app_name">%1$s</xliff:g> e-posta sunucusuyla bağlantıyı sürdürür. Android, uygulama arka planda etkin durumdayken devam eden bir bildirim görüntülenmesini gerektirir. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="dialog_openkeychain_info_text">Uçtan uca şifreleme desteğini etkinleştirmek için OpenKeychain uygulaması gereklidir.</string>
+    <string name="about_app_authors_thunderbird">Thunderbird Mobil Takımı</string>
 </resources>

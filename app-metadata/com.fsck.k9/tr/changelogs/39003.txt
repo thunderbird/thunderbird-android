@@ -1,0 +1,1 @@
+- İleti listesi kaydırma eylemi "Yok" olarak ayarlandığında oluşan çökme düzeltildi
