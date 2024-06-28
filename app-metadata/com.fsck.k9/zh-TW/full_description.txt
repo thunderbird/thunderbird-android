@@ -1,0 +1,24 @@
+K-9 Mail 是一個開放原始碼的電子郵件客戶端，幾乎可以與所有的電子郵件提供商配合使用。
+
+<b> 功能 </b>
+
+* 支援多個帳號
+* 統一收件匣
+* 隱私友好（完全沒有追蹤，只連接到您的電子郵件提供商）
+* 自動背景同步或推送通知
+* 本地和伺服器端搜尋
+* OpenPGP 電子郵件加密（PGP/MIME）
+
+安裝應用程式 <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain: Easy PGP</a> 來使用 OpenPGP 加密 / 解密您的電子郵件。
+
+
+<b> 支援 </b>
+
+如果您在使用 K-9 Mail 時遇到問題，請在我們的 <a href="https://forum.k9mail.app"> 支援論壇 </a> 尋求幫助。
+
+<b> 想要幫忙嗎？</b>
+
+
+K-9 Mail 是一個由社群開發的專案。如果您有興趣幫助改進這個應用程式，請加入我們！
+您可以在 <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a> 找到我們的問題追蹤器、原始碼和維基。
+我們隨時歡迎新的開發者、設計師、文件編寫者、翻譯者、錯誤排除者和朋友。

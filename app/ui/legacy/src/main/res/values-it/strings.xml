@@ -949,4 +949,10 @@
     <string name="push_notification_state_alarm_permission_missing">Autorizzazione mancante per pianificare gli allarmi</string>
     <string name="push_notification_grant_alarm_permission">Tocca per concedere l\'autorizzazione.</string>
     <string name="dialog_openkeychain_info_text">L\'app OpenKeychain è richiesta per abilitare il supporto alla crittografia end-to-end.</string>
+    <string name="about_app_authors_thunderbird">Team di Thunderbird mobile</string>
+    <string name="about_title">Informazioni su <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="push_info_notification_explanation_text">Quando si utilizza Push, <xliff:g id="app_name">%1$s</xliff:g> mantiene una connessione al server di posta. Android richiede la visualizzazione di una notifica in corso mentre l\'app è attiva in background. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="default_signature">--
+\nInviato dal mio dispositivo Android con <xliff:g id="app_name">%s</xliff:g>. Scusate la brevità.</string>
+    <string name="account_delete_dlg_instructions_fmt">L\'account \"<xliff:g id="account">%s</xliff:g>\" verrà rimosso da <xliff:g id="app_name">%s</xliff:g>.</string>
 </resources>

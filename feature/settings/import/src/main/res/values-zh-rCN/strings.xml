@@ -30,7 +30,7 @@
     <string name="settings_import_server_name_format">服务器名：<xliff:g id="hostname">%s</xliff:g></string>
     <string name="settings_import_oauth_description">要使用此电子邮件账号，您需要登录并授权应用访问您的电子邮件。</string>
     <string name="settings_import_oauth_sign_in">登录</string>
-    <string name="settings_import_oauth_sign_in_with_google">用 Google 登录</string>
+    <string name="settings_import_oauth_sign_in_with_google">使用 Google 登录</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">授权已取消</string>
     <string name="settings_import_oauth_error_oauth_flow_failed">授权失败，错误如下：<xliff:g id="error">%s</xliff:g></string>
     <string name="settings_import_oauth_error_oauth_not_supported">此提供者目前不支持 OAuth 2.0。</string>

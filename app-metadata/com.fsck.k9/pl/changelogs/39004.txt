@@ -1,0 +1,2 @@
+- Naprawiono awarię, gdy włączony jest tryb podzielonego ekranu
+- Zaktualizowane tłumaczenia

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_oauth_sign_in_button">로그인</string>
     <string name="account_oauth_sign_in_with_google_button">구글로 로그인하기</string>
-    <string name="account_oauth_loading_message">OAuth 를 사용하여 로그인</string>
+    <string name="account_oauth_loading_message">OAuth로 로그인</string>
     <string name="account_oauth_loading_error">OAuth 로그인 실패</string>
+    <string name="account_oauth_error_canceled">인증 취소됨</string>
+    <string name="account_oauth_error_failed">다음 오류로 인증에 실패했습니다: <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_error_browser_not_available">계정에 대한 액세스 권한을 부여하는 데 사용할 브라우저를 찾을 수 없습니다.</string>
 </resources>

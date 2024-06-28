@@ -30,4 +30,6 @@
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_validation_error_server_required">서버 이름이 필요합니다.</string>
     <string name="account_server_settings_password_authentication_title">본인 확인</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">클라이언트 정보 전송</string>
+    <string name="account_server_settings_authentication_password_cleartext">평문 비밀번호</string>
 </resources>

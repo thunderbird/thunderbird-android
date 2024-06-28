@@ -244,7 +244,7 @@
     <string name="general_settings_ui_density_default">Standaard</string>
     <string name="general_settings_ui_density_relaxed">Relaxt</string>
     <string name="global_settings_privacy_hide_useragent">E-mailclient verbergen</string>
-    <string name="global_settings_privacy_hide_useragent_detail">K-9-gebruikersagent van e-mailkoppen verwijderen</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Gebruikersagent van e-mailkoppen verwijderen</string>
     <string name="global_settings_privacy_hide_timezone">Tijdzone verbergen</string>
     <string name="global_settings_privacy_hide_timezone_detail">In de e-mailkopteksten en bij het antwoorden van e-mailberichten, UTC gebruiken in plaats van de lokale tijdzone</string>
     <string name="global_settings_notification_quick_delete_title">Knop ‘Verwijderen’ tonen</string>
@@ -948,4 +948,5 @@
     <string name="push_info_notification_explanation_text">Bij gebruik van Push onderhoudt <xliff:g id="app_name">%1$s</xliff:g> een verbinding met de mailserver. Android vereist het doorlopend weergeven van een melding als de app actief is op de achtergrond. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="default_signature">-- 
 \nVerzonden vanaf mijn Android-apparaat met <xliff:g id="app_name">%s</xliff:g>. Mijn excuses voor mijn beknoptheid.</string>
+    <string name="about_app_authors_thunderbird">Thunderbird Mobile Team</string>
 </resources>

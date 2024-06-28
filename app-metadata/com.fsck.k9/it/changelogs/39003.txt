@@ -1,0 +1,1 @@
+- Risolto un problema di arresto anomalo quando l'azione di scorrimento dell'elenco dei messaggi era impostata su "Nessuno"
