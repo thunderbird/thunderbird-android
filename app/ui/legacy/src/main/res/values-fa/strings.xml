@@ -242,7 +242,7 @@
     <string name="general_settings_ui_density_default">پیش‌فرض</string>
     <string name="general_settings_ui_density_relaxed">راحت</string>
     <string name="global_settings_privacy_hide_useragent">نهفتن کارخواه نامه</string>
-    <string name="global_settings_privacy_hide_useragent_detail">برداشتن شناسهٔ کارخواه کی۹ از سرایند نامه‌ها</string>
+    <string name="global_settings_privacy_hide_useragent_detail">برداشتن شناسهٔ کارخواه از سرایند نامه‌ها</string>
     <string name="global_settings_privacy_hide_timezone">منطقهٔ زمانی را مخفی کن</string>
     <string name="global_settings_privacy_hide_timezone_detail">استفاده از UTC به جای زمان محلی در سرایند نامه‌ها و پاسخ‌ها</string>
     <string name="global_settings_notification_quick_delete_title">نمایش دکمهٔ «حذف»</string>
@@ -949,4 +949,5 @@
     <string name="about_title">درباره<xliff:g id="app_name">%s</xliff:g></string>
     <string name="dialog_openkeychain_info_text">برنامه کاربردی OpenKeychain جهت فعال‌سازی رمزگذاری سرتاسری مورد نیاز است.</string>
     <string name="push_info_notification_explanation_text">در زمان استفاده از پیشرانی، <xliff:g id="app_name">%1$s</xliff:g> اتصال به کارساز را نگاه می‌دارد. اندروید نیازمند یک اعلان همیشگی جهت فعال ماندن برنامه در پس‌زمینه است. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="about_app_authors_thunderbird">گروه همراه تاندربرد</string>
 </resources>

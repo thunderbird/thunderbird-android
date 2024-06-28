@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="unread_widget_select_account">Mostra conteggio messaggi non letti per…</string>
     <string name="unread_widget_account_title">Account</string>
@@ -13,4 +13,5 @@
     <string name="unread_widget_account_not_selected">Nessun account selezionato</string>
     <string name="unread_widget_folder_not_selected">Nessuna cartella selezionata</string>
     <string name="unread_widget_choose_account_title">Scegli account</string>
+    <string name="unread_widget_label">Conteggio non letto</string>
 </resources>

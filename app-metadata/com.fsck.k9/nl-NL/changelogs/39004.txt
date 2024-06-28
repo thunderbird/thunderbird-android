@@ -1,0 +1,2 @@
+- Crash opgelost wanneer de modus voor gesplitst scherm is ingeschakeld
+- Bijgewerkte vertalingen
