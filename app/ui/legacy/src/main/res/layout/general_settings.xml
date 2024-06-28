@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context=".settings.general.GeneralSettingsActivity">
+    tools:context=".settings.general.GeneralSettingsActivity"
+    >
 
     <include layout="@layout/toolbar" />
 
@@ -12,6 +14,7 @@
         android:id="@+id/generalSettingsContainer"
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        />
 
 </LinearLayout>

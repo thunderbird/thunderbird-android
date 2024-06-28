@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
@@ -9,7 +10,8 @@
     android:paddingRight="10dp"
     android:paddingTop="14dp"
     android:paddingBottom="14dp"
-    tools:context="com.fsck.k9.activity.compose.PgpSignOnlyDialog">
+    tools:context="com.fsck.k9.activity.compose.PgpSignOnlyDialog"
+    >
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -24,7 +26,8 @@
             android:layout_gravity="center_vertical"
             app:srcCompat="@drawable/ic_check_circle"
             android:scaleType="fitCenter"
-            app:tint="@color/light_black" />
+            app:tint="@color/light_black"
+            />
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
@@ -51,7 +54,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        tools:ignore="UseCompoundDrawables">
+        tools:ignore="UseCompoundDrawables"
+        >
 
         <ImageView
             android:layout_width="wrap_content"
@@ -67,7 +71,7 @@
             android:layout_marginRight="4dp"
             android:textAppearance="?android:textAppearanceSmall"
             android:text="@string/openpgp_dialog_sign_only_plus_verified"
-        />
+            />
 
     </LinearLayout>
 
@@ -76,7 +80,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginBottom="4dp"
-        tools:ignore="UseCompoundDrawables">
+        tools:ignore="UseCompoundDrawables"
+        >
 
         <ImageView
             android:layout_width="wrap_content"
@@ -101,7 +106,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginBottom="4dp"
-        tools:ignore="UseCompoundDrawables">
+        tools:ignore="UseCompoundDrawables"
+        >
 
         <ImageView
             android:layout_width="wrap_content"
@@ -125,7 +131,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        tools:ignore="UseCompoundDrawables">
+        tools:ignore="UseCompoundDrawables"
+        >
 
         <ImageView
             android:layout_width="wrap_content"

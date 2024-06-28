@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context=".settings.account.AccountSettingsActivity">
+    tools:context=".settings.account.AccountSettingsActivity"
+    >
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -12,14 +14,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
-        tools:navigationIcon="@drawable/ic_arrow_back">
+        tools:navigationIcon="@drawable/ic_arrow_back"
+        >
 
         <com.fsck.k9.ui.settings.account.AccountSelectionSpinner
             android:id="@+id/accountSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/toolbarTitleMarginVertical"
-            tools:listitem="@layout/account_spinner_item"/>
+            tools:listitem="@layout/account_spinner_item"
+            />
 
     </com.google.android.material.appbar.MaterialToolbar>
 
@@ -27,6 +31,7 @@
         android:id="@+id/accountSettingsContainer"
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        />
 
 </LinearLayout>

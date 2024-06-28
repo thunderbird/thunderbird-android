@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.fsck.k9.ui.messageview.AttachmentView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.fsck.k9.ui.messageview.AttachmentView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/AttachmentView"
     android:layout_height="wrap_content"
     android:paddingBottom="4dp"
-    android:id="@+id/attachment">
+    android:id="@+id/attachment"
+    >
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/attachment_card"
@@ -17,11 +19,13 @@
         android:orientation="vertical"
         android:focusable="true"
         android:clickable="true"
-        app:cardElevation="1dp">
+        app:cardElevation="1dp"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
             <ImageView
                 android:id="@+id/attachment_preview"
@@ -33,7 +37,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:visibility="visible" />
+                tools:visibility="visible"
+                />
 
             <ImageView
                 android:id="@+id/attachment_type"
@@ -47,7 +52,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/attachment_preview"
-                app:tint="?attr/colorSecondary" />
+                app:tint="?attr/colorSecondary"
+                />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/attachment_name"
@@ -64,7 +70,8 @@
                 app:layout_constraintStart_toEndOf="@+id/attachment_type"
                 app:layout_constraintTop_toBottomOf="@+id/attachment_preview"
                 app:layout_constraintVertical_chainStyle="packed"
-                tools:text="filename.ext" />
+                tools:text="filename.ext"
+                />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/attachment_size"
@@ -79,7 +86,8 @@
                 app:layout_constraintStart_toStartOf="@+id/attachment_name"
                 app:layout_constraintTop_toBottomOf="@+id/attachment_name"
                 app:layout_constraintVertical_bias="0.0"
-                tools:text="99 KB" />
+                tools:text="99 KB"
+                />
 
             <ImageButton
                 android:id="@+id/save_button"
@@ -92,7 +100,8 @@
                 app:srcCompat="@drawable/ic_download"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/attachment_preview" />
+                app:layout_constraintTop_toBottomOf="@+id/attachment_preview"
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

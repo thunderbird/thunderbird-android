@@ -6,7 +6,8 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="?attr/colorSurfaceContainerLow"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +15,8 @@
         android:orientation="horizontal"
         android:layout_marginStart="12dp"
         android:minHeight="50dp"
-        android:animateLayoutChanges="true">
+        android:animateLayoutChanges="true"
+        >
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
@@ -52,7 +54,8 @@
             tools:visibility="visible"
             android:inAnimation="@anim/fade_in"
             android:outAnimation="@anim/fade_out"
-            app:previewInitialChild="1">
+            app:previewInitialChild="1"
+            >
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -61,7 +64,8 @@
                 android:layout_margin="8dp"
                 android:id="@+id/crypto_special_inline"
                 app:srcCompat="@drawable/ic_healing"
-                app:tint="@color/light_black" />
+                app:tint="@color/light_black"
+                />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -70,7 +74,8 @@
                 android:layout_margin="8dp"
                 android:id="@+id/crypto_special_sign_only"
                 app:srcCompat="@drawable/ic_check_circle"
-                app:tint="?attr/openpgp_blue" />
+                app:tint="?attr/openpgp_blue"
+                />
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -84,14 +89,16 @@
                     android:layout_gravity="center"
                     android:layout_margin="8dp"
                     app:srcCompat="@drawable/ic_check_circle"
-                    app:tint="?attr/openpgp_blue" />
+                    app:tint="?attr/openpgp_blue"
+                    />
 
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:layout_gravity="end|bottom"
                     app:srcCompat="@drawable/ic_healing"
-                    app:tint="@color/light_black" />
+                    app:tint="@color/light_black"
+                    />
             </FrameLayout>
 
         </com.fsck.k9.view.ToolableViewAnimator>
@@ -113,7 +120,8 @@
                 tools:visibility="visible"
                 android:inAnimation="@anim/fade_in"
                 android:outAnimation="@anim/fade_out"
-                app:previewInitialChild="0">
+                app:previewInitialChild="0"
+                >
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -121,7 +129,8 @@
                     android:layout_gravity="center"
                     android:id="@+id/crypto_status_disabled"
                     app:srcCompat="@drawable/ic_no_encryption"
-                    app:tint="?attr/openpgp_dark_grey" />
+                    app:tint="?attr/openpgp_dark_grey"
+                    />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -129,7 +138,8 @@
                     android:layout_gravity="center"
                     android:id="@+id/crypto_status_enabled"
                     app:srcCompat="@drawable/ic_lock"
-                    app:tint="?attr/openpgp_green" />
+                    app:tint="?attr/openpgp_green"
+                    />
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -142,14 +152,16 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="start|center_vertical"
                         app:srcCompat="@drawable/status_dots"
-                        app:tint="?attr/openpgp_grey" />
+                        app:tint="?attr/openpgp_grey"
+                        />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start|center_vertical"
                         app:srcCompat="@drawable/status_lock_dots_3"
-                        app:tint="?attr/openpgp_green" />
+                        app:tint="?attr/openpgp_green"
+                        />
 
                 </FrameLayout>
 
@@ -159,7 +171,8 @@
                     android:layout_gravity="center"
                     android:id="@+id/crypto_status_error"
                     app:srcCompat="@drawable/status_lock_error"
-                    app:tint="?attr/openpgp_red" />
+                    app:tint="?attr/openpgp_red"
+                    />
 
             </com.fsck.k9.view.ToolableViewAnimator>
 
@@ -172,7 +185,8 @@
             android:layout_gravity="center"
             android:layout_margin="12dp"
             android:inAnimation="@anim/fade_in"
-            android:outAnimation="@anim/fade_out">
+            android:outAnimation="@anim/fade_out"
+            >
 
             <ImageView
                 android:id="@+id/reply_to_expander"
@@ -180,11 +194,13 @@
                 android:layout_height="match_parent"
                 android:padding="6dp"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/ic_expand_more" />
+                app:srcCompat="@drawable/ic_expand_more"
+                />
 
             <Space
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                />
 
         </ViewAnimator>
 
@@ -196,7 +212,8 @@
         android:layout_height="1dp"
         android:visibility="gone"
         android:id="@+id/reply_to_divider"
-        android:background="?android:attr/listDivider" />
+        android:background="?android:attr/listDivider"
+        />
 
     <LinearLayout
         android:id="@+id/reply_to_wrapper"
@@ -207,7 +224,8 @@
         android:layout_marginRight="12dip"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:minHeight="50dp">
+        android:minHeight="50dp"
+        >
 
 
         <com.google.android.material.textview.MaterialTextView
@@ -221,7 +239,8 @@
             android:id="@+id/reply_to_label"
             android:labelFor="@+id/reply_to"
             android:text="@string/reply_to_label"
-            style="@style/ComposeTextLabel" />
+            style="@style/ComposeTextLabel"
+            />
 
         <com.fsck.k9.view.RecipientSelectView
             android:id="@+id/reply_to"
@@ -241,7 +260,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="?android:attr/listDivider" />
+        android:background="?android:attr/listDivider"
+        />
 
     <RelativeLayout
         android:id="@+id/to_wrapper"
@@ -249,7 +269,8 @@
         android:layout_width="match_parent"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
-        android:minHeight="50dp">
+        android:minHeight="50dp"
+        >
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
@@ -263,7 +284,8 @@
             android:labelFor="@+id/to"
             android:minWidth="50dp"
             android:text="@string/recipient_to"
-            style="@style/ComposeTextLabel" />
+            style="@style/ComposeTextLabel"
+            />
 
         <com.fsck.k9.view.RecipientSelectView
             android:id="@+id/to"
@@ -304,7 +326,8 @@
 
             <Space
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                />
 
         </ViewAnimator>
 
@@ -313,7 +336,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="?android:attr/listDivider" />
+        android:background="?android:attr/listDivider"
+        />
 
     <LinearLayout
         android:id="@+id/cc_wrapper"
@@ -324,7 +348,8 @@
         android:layout_marginRight="12dip"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:minHeight="50dp">
+        android:minHeight="50dp"
+        >
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
@@ -337,7 +362,8 @@
             android:id="@+id/cc_label"
             android:labelFor="@+id/cc"
             android:text="@string/recipient_cc"
-            style="@style/ComposeTextLabel" />
+            style="@style/ComposeTextLabel"
+            />
 
         <com.fsck.k9.view.RecipientSelectView
             android:id="@+id/cc"
@@ -360,7 +386,8 @@
         android:layout_height="1dp"
         android:visibility="gone"
         android:id="@+id/cc_divider"
-        android:background="?android:attr/listDivider" />
+        android:background="?android:attr/listDivider"
+        />
 
     <LinearLayout
         android:id="@+id/bcc_wrapper"
@@ -371,7 +398,8 @@
         android:layout_marginRight="12dip"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:minHeight="50dp">
+        android:minHeight="50dp"
+        >
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
@@ -384,7 +412,8 @@
             android:id="@+id/bcc_label"
             android:labelFor="@+id/bcc"
             android:text="@string/recipient_bcc"
-            style="@style/ComposeTextLabel" />
+            style="@style/ComposeTextLabel"
+            />
 
         <com.fsck.k9.view.RecipientSelectView
             android:id="@+id/bcc"
@@ -407,6 +436,7 @@
         android:layout_height="1dp"
         android:visibility="gone"
         android:id="@+id/bcc_divider"
-        android:background="?android:attr/listDivider" />
+        android:background="?android:attr/listDivider"
+        />
 
 </LinearLayout>

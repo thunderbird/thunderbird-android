@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/message_list_coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".messagelist.MessageListFragment">
+    tools:context=".messagelist.MessageListFragment"
+    >
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swiperefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/message_list"
@@ -21,7 +24,8 @@
             android:paddingBottom="@dimen/floatingActionButtonSpacing"
             android:scrollbarStyle="outsideOverlay"
             android:scrollbars="vertical"
-            tools:listitem="@layout/message_list_item" />
+            tools:listitem="@layout/message_list_item"
+            />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

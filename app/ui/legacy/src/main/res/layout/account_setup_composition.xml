@@ -1,125 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context="com.fsck.k9.activity.setup.AccountSetupComposition">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.fsck.k9.activity.setup.AccountSetupComposition"
+    >
 
-    <include layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar" />
 
     <ScrollView
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:fadingEdge="none"
-            android:scrollbarStyle="outsideInset">
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fadingEdge="none"
+        android:scrollbarStyle="outsideInset"
+        >
 
         <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <com.google.android.material.textview.MaterialTextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-            <com.google.android.material.textview.MaterialTextView
-                    android:text="@string/account_settings_name_label"
-                    android:layout_height="wrap_content"
-                    android:layout_width="fill_parent"
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                    />
+                android:text="@string/account_settings_name_label"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                />
 
             <EditText
-                    android:id="@+id/account_name"
-                    android:singleLine="true"
-                    android:inputType="textPersonName"
-                    android:layout_height="wrap_content"
-                    android:layout_width="fill_parent"
-                    android:contentDescription="@string/account_settings_name_label"
-                    />
+                android:id="@+id/account_name"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/account_settings_name_label"
+                android:inputType="textPersonName"
+                android:singleLine="true"
+                />
 
             <com.google.android.material.textview.MaterialTextView
-                    android:text="@string/account_settings_email_label"
-                    android:layout_height="wrap_content"
-                    android:layout_width="fill_parent"
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                    />
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/account_settings_email_label"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                />
 
             <EditText
-                    android:id="@+id/account_email"
-                    android:singleLine="true"
-                    android:inputType="textEmailAddress"
-                    android:layout_height="wrap_content"
-                    android:layout_width="fill_parent"
-                    android:contentDescription="@string/account_settings_email_label"
-                    />
+                android:id="@+id/account_email"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/account_settings_email_label"
+                android:inputType="textEmailAddress"
+                android:singleLine="true"
+                />
 
             <com.google.android.material.textview.MaterialTextView
-                    android:text="@string/account_settings_always_bcc_label"
-                    android:layout_height="wrap_content"
-                    android:layout_width="fill_parent"
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                    />
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/account_settings_always_bcc_label"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                />
 
             <EditText
-                    android:id="@+id/account_always_bcc"
-                    android:singleLine="true"
-                    android:inputType="textEmailAddress"
-                    android:layout_height="wrap_content"
-                    android:layout_width="fill_parent"
-                    android:contentDescription="@string/account_settings_always_bcc_label"/>
+                android:id="@+id/account_always_bcc"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/account_settings_always_bcc_label"
+                android:inputType="textEmailAddress"
+                android:singleLine="true"
+                />
 
             <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/account_signature_use"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/account_settings_signature_use_label"/>
+                android:id="@+id/account_signature_use"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/account_settings_signature_use_label"
+                />
 
             <LinearLayout
-                    android:id="@+id/account_signature_layout"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:orientation="vertical">
+                android:id="@+id/account_signature_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                >
 
                 <com.google.android.material.textview.MaterialTextView
-                        android:text="@string/account_settings_signature_label"
-                        android:layout_height="wrap_content"
-                        android:layout_width="fill_parent"
-                        android:textAppearance="?attr/textAppearanceBodyMedium"
-                        />
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account_settings_signature_label"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    />
 
                 <EditText
-                        android:id="@+id/account_signature"
-                        android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
-                        android:layout_height="wrap_content"
-                        android:layout_width="fill_parent"
-                        android:contentDescription="@string/account_settings_signature_label"/>
+                    android:id="@+id/account_signature"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/account_settings_signature_label"
+                    android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
+                    />
 
                 <com.google.android.material.textview.MaterialTextView
-                        android:text="@string/account_settings_signature__location_label"
-                        android:layout_height="wrap_content"
-                        android:layout_width="fill_parent"
-                        android:textAppearance="?attr/textAppearanceBodyMedium"
-                        />
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account_settings_signature__location_label"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    />
 
                 <RadioGroup
-                        android:id="@+id/account_signature_location"
-                        android:layout_height="wrap_content"
+                    android:id="@+id/account_signature_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/account_signature_location_before_quoted_text"
                         android:layout_width="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/account_settings_signature__location_label"
+                        android:text="@string/account_settings_signature__location_before_quoted_text"
+                        />
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
-                            android:id="@+id/account_signature_location_before_quoted_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/account_settings_signature__location_before_quoted_text"
-                            android:contentDescription="@string/account_settings_signature__location_label"/>
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                            android:id="@+id/account_signature_location_after_quoted_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/account_settings_signature__location_after_quoted_text"
-                            android:contentDescription="@string/account_settings_signature__location_label"/>
+                        android:id="@+id/account_signature_location_after_quoted_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/account_settings_signature__location_label"
+                        android:text="@string/account_settings_signature__location_after_quoted_text"
+                        />
                 </RadioGroup>
             </LinearLayout>
         </LinearLayout>

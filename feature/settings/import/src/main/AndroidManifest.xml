@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
 
     <application>
 
         <activity
             android:name="app.k9mail.feature.settings.import.ui.OAuthFlowActivity"
-            android:label="@string/settings_import_oauth_sign_in" />
+            android:label="@string/settings_import_oauth_sign_in"
+            />
 
         <!-- We remove this activity entry to avoid all modules depending on this one having to define an override for
              the manifest placeholder 'appAuthRedirectScheme'. The entry is added back in :app:common -->
         <activity
             android:name="net.openid.appauth.RedirectUriReceiverActivity"
-            tools:node="remove" />
+            tools:node="remove"
+            />
 
     </application>
 </manifest>

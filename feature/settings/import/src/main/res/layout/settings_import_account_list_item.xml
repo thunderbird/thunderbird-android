@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,7 +8,8 @@
     android:background="?attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
-    android:minHeight="?android:attr/listPreferredItemHeightSmall">
+    android:minHeight="?android:attr/listPreferredItemHeightSmall"
+    >
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/checkBox"
@@ -18,7 +20,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="&#x200B;" />
+        tools:text="&#x200B;"
+        />
 
     <ImageView
         android:id="@+id/statusIcon"
@@ -31,7 +34,8 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/accountDisplayName"
@@ -47,13 +51,15 @@
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        tools:text="@sample/accounts.json/data/name" />
+        tools:text="@sample/accounts.json/data/name"
+        />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="72dp" />
+        app:layout_constraintGuide_begin="72dp"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

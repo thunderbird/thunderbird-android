@@ -4,7 +4,8 @@ This is a copy of MaterialDrawer's @layout/material_drawer_item_primary with the
 @id/material_drawer_name TextView is changed to ellipsize in the middle. When updating MaterialDrawer check if changes
 to @layout/material_drawer_item_primary need to be applied here as well.
 -->
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,7 +13,8 @@ to @layout/material_drawer_item_primary need to be applied here as well.
     android:paddingStart="@dimen/material_drawer_vertical_padding"
     android:paddingLeft="@dimen/material_drawer_vertical_padding"
     android:paddingEnd="@dimen/material_drawer_vertical_padding"
-    android:paddingRight="@dimen/material_drawer_vertical_padding">
+    android:paddingRight="@dimen/material_drawer_vertical_padding"
+    >
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/material_drawer_icon"
@@ -24,7 +26,8 @@ to @layout/material_drawer_item_primary need to be applied here as well.
         android:paddingBottom="@dimen/material_drawer_item_primary_icon_padding"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/material_drawer_name"
@@ -42,7 +45,8 @@ to @layout/material_drawer_item_primary need to be applied here as well.
         app:layout_constraintStart_toEndOf="@id/material_drawer_icon"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        tools:text="Some drawer text" />
+        tools:text="Some drawer text"
+        />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/material_drawer_description"
@@ -59,14 +63,16 @@ to @layout/material_drawer_item_primary need to be applied here as well.
         app:layout_constraintEnd_toStartOf="@+id/material_drawer_barrier"
         app:layout_constraintStart_toEndOf="@id/material_drawer_icon"
         app:layout_constraintTop_toBottomOf="@id/material_drawer_name"
-        tools:text="Some drawer text" />
+        tools:text="Some drawer text"
+        />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/material_drawer_barrier"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="start"
-        app:constraint_referenced_ids="material_drawer_badge" />
+        app:constraint_referenced_ids="material_drawer_badge"
+        />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/material_drawer_badge"
@@ -88,6 +94,7 @@ to @layout/material_drawer_item_primary need to be applied here as well.
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/material_drawer_barrier"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="99" />
+        tools:text="99"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

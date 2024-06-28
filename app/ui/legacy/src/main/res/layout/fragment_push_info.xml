@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".push.PushInfoFragment">
+    tools:context=".push.PushInfoFragment"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="16dp"
+        >
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/notificationText"
@@ -20,7 +23,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/push_info_notification_explanation_text" />
+            tools:text="@string/push_info_notification_explanation_text"
+            />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/learnMoreButton"
@@ -33,7 +37,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/notificationText" />
+            app:layout_constraintTop_toBottomOf="@+id/notificationText"
+            />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/configureNotificationButton"
@@ -45,7 +50,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/learnMoreButton"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/disablePushText"
@@ -56,7 +62,8 @@
             android:textAppearance="?attr/textAppearanceBodyLarge"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/configureNotificationButton" />
+            app:layout_constraintTop_toBottomOf="@+id/configureNotificationButton"
+            />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/disablePushButton"
@@ -66,7 +73,8 @@
             android:text="@string/push_info_disable_push_action"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/disablePushText" />
+            app:layout_constraintTop_toBottomOf="@+id/disablePushText"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

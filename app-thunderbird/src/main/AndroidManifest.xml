@@ -1,24 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:installLocation="auto">
+    android:installLocation="auto"
+    >
 
     <application
         android:name=".ThunderbirdApp"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" >
+        android:label="@string/app_name"
+        >
 
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
-            tools:node="merge">
+            tools:node="merge"
+            >
 
             <!-- We're using on-demand initialization for WorkManager -->
             <meta-data
                 android:name="androidx.work.WorkManagerInitializer"
                 android:value="androidx.startup"
-                tools:node="remove" />
+                tools:node="remove"
+                />
 
         </provider>
 
@@ -29,13 +34,15 @@
             android:icon="@drawable/message_list_widget_preview"
             android:label="@string/message_list_widget_label"
             android:enabled="@bool/home_screen_widgets_enabled"
-            android:exported="false">
+            android:exported="false"
+            >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/message_list_widget_info" />
+                android:resource="@xml/message_list_widget_info"
+                />
         </receiver>
 
         <!-- This component is disabled by default (if possible). It will be enabled programmatically if necessary. -->
@@ -46,13 +53,15 @@
             android:name="net.thunderbird.android.widget.provider.UnreadWidgetProvider"
             android:label="@string/unread_widget_label"
             android:enabled="@bool/home_screen_widgets_enabled"
-            android:exported="false">
+            android:exported="false"
+            >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/unread_widget_info" />
+                android:resource="@xml/unread_widget_info"
+                />
         </receiver>
 
     </application>

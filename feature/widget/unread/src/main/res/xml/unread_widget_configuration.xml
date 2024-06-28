@@ -6,14 +6,16 @@
         android:persistent="false"
         android:singleLine="true"
         android:summary="@string/unread_widget_account_summary"
-        android:title="@string/unread_widget_account_title" />
+        android:title="@string/unread_widget_account_title"
+        />
 
     <CheckBoxPreference
         android:key="unread_folder_enabled"
         android:persistent="false"
         android:enabled="false"
         android:summary="@string/unread_widget_folder_enabled_summary"
-        android:title="@string/unread_widget_folder_enabled_title" />
+        android:title="@string/unread_widget_folder_enabled_title"
+        />
 
     <Preference
         android:dependency="unread_folder_enabled"
@@ -21,5 +23,6 @@
         android:persistent="false"
         android:singleLine="true"
         android:summary="@string/unread_widget_folder_summary"
-        android:title="@string/unread_widget_folder_title" />
+        android:title="@string/unread_widget_folder_title"
+        />
 </PreferenceScreen>

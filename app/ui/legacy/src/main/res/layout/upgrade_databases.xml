@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context="com.fsck.k9.activity.UpgradeDatabases">
+    tools:context="com.fsck.k9.activity.UpgradeDatabases"
+    >
 
     <include layout="@layout/toolbar" />
 
@@ -13,19 +15,22 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center_vertical|center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <ProgressBar
             android:id="@+id/databaseUpgradeProgress"
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/databaseUpgradeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/upgrade_databases_unspecified" />
+            android:text="@string/upgrade_databases_unspecified"
+            />
 
     </LinearLayout>
 

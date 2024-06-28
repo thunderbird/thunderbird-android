@@ -6,12 +6,15 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="?attr/colorSurfaceContainerHighest"
-    android:gravity="start|center_vertical">
+    android:gravity="start|center_vertical"
+    >
+
     <View
         android:id="@+id/chip"
         android:layout_height="fill_parent"
         android:layout_width="6dp"
-        tools:background="@sample/accounts.json/data/color"/>
+        tools:background="@sample/accounts.json/data/color"
+        />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/name"
@@ -24,6 +27,7 @@
         android:paddingEnd="4dp"
         android:paddingBottom="8dp"
         android:textAppearance="?attr/textAppearanceTitleMedium"
-        tools:text="@sample/accounts.json/data/name"/>
+        tools:text="@sample/accounts.json/data/name"
+        />
 
 </LinearLayout>

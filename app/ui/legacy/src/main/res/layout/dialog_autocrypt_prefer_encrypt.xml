@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    tools:context=".settings.account.AutocryptPreferEncryptDialogFragment">
+    tools:context=".settings.account.AutocryptPreferEncryptDialogFragment"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
@@ -18,14 +21,16 @@
             android:layout_marginTop="24dp"
             android:layout_marginBottom="20dp"
             android:text="@string/dialog_autocrypt_mutual_title"
-            style="?android:textAppearanceLarge" />
+            style="?android:textAppearanceLarge"
+            />
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
-            android:text="@string/dialog_autocrypt_mutual_description_1" />
+            android:text="@string/dialog_autocrypt_mutual_description_1"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,13 +41,15 @@
             android:minHeight="?android:listPreferredItemHeight"
             android:orientation="horizontal"
             android:background="?android:selectableItemBackground"
-            android:id="@+id/prefer_encrypt">
+            android:id="@+id/prefer_encrypt"
+            >
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/dialog_autocrypt_mutual_description_2" />
+                android:text="@string/dialog_autocrypt_mutual_description_2"
+                />
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:layout_width="wrap_content"
@@ -60,7 +67,8 @@
             android:layout_marginRight="24dp"
             android:layout_marginBottom="20dp"
             android:id="@+id/prefer_encrypt_learn_more"
-            android:text="@string/dialog_autocrypt_mutual_learn_more" />
+            android:text="@string/dialog_autocrypt_mutual_learn_more"
+            />
 
     </LinearLayout>
 

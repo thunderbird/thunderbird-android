@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:parentTag="LinearLayout"
-    tools:orientation="horizontal">
+    tools:orientation="horizontal"
+    >
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/recipient_names"
@@ -12,7 +14,8 @@
         android:maxLines="1"
         android:textAppearance="?attr/textAppearanceBodyMedium"
         android:textColor="?attr/colorSecondary"
-        tools:text="to me" />
+        tools:text="to me"
+        />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/recipient_count"
@@ -22,6 +25,7 @@
         android:singleLine="true"
         android:textAppearance="?attr/textAppearanceBodyMedium"
         android:textColor="?attr/colorSecondary"
-        tools:text="+2" />
+        tools:text="+2"
+        />
 
 </merge>

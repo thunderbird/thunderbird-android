@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.fsck.k9.activity.MessageList">
+    tools:context="com.fsck.k9.activity.MessageList"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <include
             android:id="@+id/toolbar"
             layout="@layout/message_list_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true" />
+            android:layout_alignParentTop="true"
+            />
 
         <ProgressBar
             android:id="@+id/message_list_progress"
@@ -27,30 +31,34 @@
             android:layout_marginTop="-6dp"
             android:elevation="8dp"
             android:max="10000"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            />
 
         <com.fsck.k9.view.ViewSwitcher
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/toolbar">
+            android:layout_below="@id/toolbar"
+            >
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/message_list_container"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                tools:layout="@layout/message_list_fragment" />
+                tools:layout="@layout/message_list_fragment"
+                />
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/message_view_container"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                tools:layout="@layout/message" />
+                tools:layout="@layout/message"
+                />
 
         </com.fsck.k9.view.ViewSwitcher>
 
     </RelativeLayout>
 
-    <include layout="@layout/drawer_contents"/>
+    <include layout="@layout/drawer_contents" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

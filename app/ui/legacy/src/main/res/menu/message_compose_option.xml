@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
     <item
         android:id="@+id/add_attachment"
         android:title="@string/add_attachment_action"
         android:icon="@drawable/ic_attachment"
         app:showAsAction="always"
-    />
+        />
     <item
         android:id="@+id/send"
         android:title="@string/send_action"
         android:icon="@drawable/ic_send"
         app:showAsAction="always"
-    />
+        />
     <item
         android:id="@+id/add_from_contacts"
         android:title="@string/add_from_contacts"
-    />
+        />
     <item
         android:id="@+id/save"
         android:title="@string/save_draft_action"
@@ -26,12 +28,12 @@
         android:id="@+id/discard"
         android:title="@string/discard_action"
         android:icon="@drawable/ic_close"
-    />
+        />
     <item
         android:id="@+id/read_receipt"
         android:title="@string/read_receipt"
         android:icon="@drawable/ic_action_request_read_receipt_light"
-    />
+        />
     <item
         android:id="@+id/openpgp_encrypt_enable"
         android:title="@string/enable_encryption"

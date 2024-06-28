@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!-- Copy the behavior of MaterialCardView -->
-<selector xmlns:tools="http://schemas.android.com/tools"
+<selector
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <item app:state_dragged="true">
         <set>
@@ -14,7 +16,8 @@
                 android:startDelay="@integer/mtrl_card_anim_delay_ms"
                 android:valueTo="@dimen/mtrl_card_dragged_z"
                 android:valueType="floatType"
-                tools:ignore="UnusedAttribute" />
+                tools:ignore="UnusedAttribute"
+                />
         </set>
     </item>
 
@@ -25,7 +28,8 @@
                 android:interpolator="@anim/mtrl_card_lowers_interpolator"
                 android:propertyName="translationZ"
                 android:valueTo="0dp"
-                android:valueType="floatType" />
+                android:valueType="floatType"
+                />
         </set>
     </item>
 

@@ -13,21 +13,24 @@ the 'message view theme' setting).
     android:orientation="vertical"
     android:layout_weight="1"
     android:background="?android:attr/windowBackground"
-    tools:context=".messageview.MessageViewFragment">
+    tools:context=".messageview.MessageViewFragment"
+    >
 
     <com.fsck.k9.view.NonLockingScrollView
         android:id="@+id/message_scrollview"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        >
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="fill_parent"
+            >
 
             <!-- Header area -->
-            <include layout="@layout/message_view_header"/>
+            <include layout="@layout/message_view_header" />
 
             <FrameLayout
                 android:id="@+id/extra_header_container"
@@ -35,7 +38,8 @@ the 'message view theme' setting).
                 android:layout_height="wrap_content"
                 android:paddingVertical="4dp"
                 android:visibility="gone"
-                tools:visibility="visible">
+                tools:visibility="visible"
+                >
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/show_pictures"
@@ -44,14 +48,16 @@ the 'message view theme' setting).
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:text="@string/message_view_show_remote_images_action"
-                    app:icon="@drawable/ic_image" />
+                    app:icon="@drawable/ic_image"
+                    />
 
             </FrameLayout>
 
             <Space
                 android:id="@+id/line_of_death"
                 android:layout_width="match_parent"
-                android:layout_height="8dp" />
+                android:layout_height="8dp"
+                />
 
             <com.fsck.k9.view.ToolableViewAnimator
                 android:id="@+id/message_layout_animator"
@@ -59,16 +65,19 @@ the 'message view theme' setting).
                 android:layout_height="match_parent"
                 android:inAnimation="@anim/fade_in"
                 android:outAnimation="@anim/fade_out"
-                app:previewInitialChild="1">
+                app:previewInitialChild="1"
+                >
 
                 <View
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="8dp">
+                    android:layout_margin="8dp"
+                    >
 
                     <ProgressBar
                         android:layout_width="match_parent"
@@ -97,7 +106,8 @@ the 'message view theme' setting).
                     android:orientation="vertical"
                     android:id="@+id/message_container"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    />
 
             </com.fsck.k9.view.ToolableViewAnimator>
 
@@ -113,6 +123,7 @@ the 'message view theme' setting).
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:layout_width="fill_parent"
-        tools:visibility="visible"/>
+        tools:visibility="visible"
+        />
 
 </com.fsck.k9.ui.messageview.MessageTopView>

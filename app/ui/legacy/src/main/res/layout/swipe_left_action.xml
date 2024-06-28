@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,7 +9,8 @@
     android:orientation="horizontal"
     tools:background="?attr/messageListSwipeSelectColor"
     tools:ignore="RtlHardcoded"
-    tools:layout_height="?android:listPreferredItemHeight">
+    tools:layout_height="?android:listPreferredItemHeight"
+    >
 
     <ImageView
         android:id="@+id/swipe_action_icon"
@@ -21,7 +23,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_mark_email_unread" />
+        tools:src="@drawable/ic_mark_email_unread"
+        />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/swipe_action_text"
@@ -41,6 +44,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/swipe_action_icon"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/swipe_action_mark_as_read" />
+        tools:text="@string/swipe_action_mark_as_read"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

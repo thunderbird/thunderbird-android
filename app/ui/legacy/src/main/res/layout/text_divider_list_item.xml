@@ -15,4 +15,5 @@
     android:singleLine="true"
     android:textAppearance="?attr/textAppearanceTitleSmall"
     android:textColor="?attr/colorSecondary"
-    tools:text="Divider" />
+    tools:text="Divider"
+    />

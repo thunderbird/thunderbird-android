@@ -11,7 +11,8 @@
             android:configChanges="locale"
             android:label="@string/shortcut_widget_title"
             android:enabled="false"
-            android:exported="true">
+            android:exported="true"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
                 <category android:name="android.intent.category.DEFAULT" />

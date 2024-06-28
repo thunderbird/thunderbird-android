@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="?android:listPreferredItemHeight"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,7 +32,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/alternate_header_name"
@@ -111,14 +114,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="13dp"
-            tools:visibility="gone">
+            tools:visibility="gone"
+            >
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|center_vertical"
                 app:srcCompat="@drawable/status_dots"
-                app:tint="?attr/openpgp_grey" />
+                app:tint="?attr/openpgp_grey"
+                />
 
             <ImageView
                 android:id="@+id/alternate_crypto_status_icon"
@@ -150,7 +155,8 @@
             android:scaleType="center"
             android:background="?attr/controlBackground"
             android:contentDescription="@string/copy_action"
-            app:srcCompat="@drawable/ic_content_copy" />
+            app:srcCompat="@drawable/ic_content_copy"
+            />
 
     </LinearLayout>
 

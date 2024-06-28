@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mail_list_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:background="#fff">
+    tools:background="#fff"
+    >
 
     <!-- A regular View breaks things for some reason, but a TextView does the job -->
     <TextView
@@ -12,12 +14,14 @@
         android:layout_width="8dip"
         android:layout_height="match_parent"
         tools:background="#0099CC"
-        android:visibility="visible" />
+        android:visibility="visible"
+        />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/widget_padding">
+        android:padding="@dimen/widget_padding"
+        >
 
         <TextView
             android:id="@+id/mail_date"
@@ -25,7 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="4dp"
-            tools:text="25 May" />
+            tools:text="25 May"
+            />
 
         <ImageView
             android:id="@+id/attachment"
@@ -37,7 +42,8 @@
             android:layout_toStartOf="@+id/mail_date"
             android:src="@drawable/ic_attachment"
             android:visibility="gone"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            />
 
         <TextView
             android:id="@+id/thread_count"
@@ -52,7 +58,8 @@
             android:textSize="16sp"
             android:textColor="?android:attr/colorBackground"
             android:background="@drawable/thread_count_box_light"
-            tools:text="3" />
+            tools:text="3"
+            />
 
         <TextView
             android:id="@+id/sender"
@@ -65,7 +72,8 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textSize="16sp"
-            tools:text="Kinda long subject that should be long enough to exceed the available display space" />
+            tools:text="Kinda long subject that should be long enough to exceed the available display space"
+            />
 
         <TextView
             android:id="@+id/mail_subject"
@@ -77,7 +85,8 @@
             android:maxLines="1"
             android:paddingBottom="2dp"
             android:textSize="15sp"
-            tools:text="Wikipedia" />
+            tools:text="Wikipedia"
+            />
 
         <TextView
             android:id="@+id/mail_preview"
@@ -87,7 +96,8 @@
             android:layout_alignParentStart="true"
             android:maxLines="1"
             android:textSize="13sp"
-            tools:text="Towel Day is celebrated every year on 25 May as a tribute to the author Douglas Adams by his fans." />
+            tools:text="Towel Day is celebrated every year on 25 May as a tribute to the author Douglas Adams by his fans."
+            />
 
     </RelativeLayout>
 </LinearLayout>

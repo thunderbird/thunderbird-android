@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.fsck.k9.ui.messageview.MessageContainerView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.fsck.k9.ui.messageview.MessageContainerView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <!-- Content area -->
     <com.fsck.k9.view.MessageWebView
         android:id="@+id/message_content"
         android:layout_height="wrap_content"
-        android:layout_width="fill_parent" />
+        android:layout_width="fill_parent"
+        />
 
     <!-- Unsigned content area -->
     <LinearLayout
@@ -51,7 +54,8 @@
                 android:layout_height="4dp"
                 android:layout_marginTop="1dp"
                 android:layout_gravity="center_vertical"
-                android:background="#d55" />
+                android:background="#d55"
+                />
 
         </LinearLayout>
 
@@ -70,6 +74,7 @@
         android:id="@+id/attachments_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" />
+        android:orientation="vertical"
+        />
 
 </com.fsck.k9.ui.messageview.MessageContainerView>

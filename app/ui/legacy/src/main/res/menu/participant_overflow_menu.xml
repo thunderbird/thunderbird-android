@@ -3,14 +3,17 @@
     <group android:id="@+id/group_main">
         <item
             android:id="@+id/compose_to"
-            android:title="@string/action_compose_message_to" />
+            android:title="@string/action_compose_message_to"
+            />
     </group>
     <group android:id="@+id/group_other">
         <item
             android:id="@+id/copy_email_address"
-            android:title="@string/action_copy_email_address" />
+            android:title="@string/action_copy_email_address"
+            />
         <item
             android:id="@+id/copy_name_and_email_address"
-            android:title="@string/action_copy_name_and_email_address" />
+            android:title="@string/action_copy_name_and_email_address"
+            />
     </group>
 </menu>

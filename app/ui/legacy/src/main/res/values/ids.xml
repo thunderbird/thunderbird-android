@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <item type="id" name="dialog_confirm_mark_all_as_read"/>
-    <item type="id" name="dialog_confirm_empty_trash"/>
-    <item type="id" name="dialog_confirm_delete"/>
-    <item type="id" name="dialog_confirm_spam"/>
-    <item type="id" name="dialog_attachment_progress"/>
+    <item type="id" name="dialog_confirm_mark_all_as_read" />
+    <item type="id" name="dialog_confirm_empty_trash" />
+    <item type="id" name="dialog_confirm_delete" />
+    <item type="id" name="dialog_confirm_spam" />
+    <item type="id" name="dialog_attachment_progress" />
 
-    <item type="id" name="settings_export_list_general_item"/>
-    <item type="id" name="settings_export_list_account_item"/>
-    <item type="id" name="settings_import_list_general_item"/>
-    <item type="id" name="settings_import_list_account_item"/>
+    <item type="id" name="settings_export_list_general_item" />
+    <item type="id" name="settings_export_list_account_item" />
+    <item type="id" name="settings_import_list_general_item" />
+    <item type="id" name="settings_import_list_account_item" />
 
-    <item type="id" name="settings_list_header_item"/>
-    <item type="id" name="settings_list_action_item"/>
-    <item type="id" name="settings_list_account_item"/>
-    <item type="id" name="settings_list_url_item"/>
+    <item type="id" name="settings_list_header_item" />
+    <item type="id" name="settings_list_action_item" />
+    <item type="id" name="settings_list_account_item" />
+    <item type="id" name="settings_list_url_item" />
 
-    <item type="id" name="drawer_list_folder_item"/>
+    <item type="id" name="drawer_list_folder_item" />
 
-    <item type="id" name="message_list_swipe_tag"/>
+    <item type="id" name="message_list_swipe_tag" />
 </resources>

@@ -9,7 +9,8 @@
         <receiver
             android:name=".locale.LocaleBroadcastReceiver"
             android:exported="false"
-            android:enabled="false">
+            android:enabled="false"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.LOCALE_CHANGED" />
             </intent-filter>

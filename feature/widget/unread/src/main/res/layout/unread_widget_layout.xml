@@ -8,17 +8,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    >
 
     <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="fitCenter"
-            android:src="@drawable/unread_widget_icon" />
+            android:src="@drawable/unread_widget_icon"
+            />
 
         <TextView
             android:id="@+id/unread_count"
@@ -33,7 +36,8 @@
             android:paddingRight="5dp"
             android:background="@drawable/unread_count_background"
             android:textColor="#ffffff"
-            tools:ignore="SpUsage"/>
+            tools:ignore="SpUsage"
+            />
 
     </FrameLayout>
 
@@ -50,6 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="3dp"
-        android:singleLine="true" />
+        android:singleLine="true"
+        />
 
 </LinearLayout>

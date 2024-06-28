@@ -1,93 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_settings"
-    app:startDestination="@id/settingsListScreen">
+    app:startDestination="@id/settingsListScreen"
+    >
 
     <fragment
         android:id="@+id/settingsListScreen"
         android:name="com.fsck.k9.ui.settings.SettingsListFragment"
         android:label="@string/prefs_title"
-        tools:layout="@layout/fragment_settings_list">
+        tools:layout="@layout/fragment_settings_list"
+        >
 
         <action
             android:id="@+id/action_settingsListScreen_to_aboutScreen"
-            app:destination="@id/aboutScreen" />
+            app:destination="@id/aboutScreen"
+            />
 
         <action
             android:id="@+id/action_settingsListScreen_to_generalSettingsScreen"
-            app:destination="@id/generalSettingsScreen" />
+            app:destination="@id/generalSettingsScreen"
+            />
 
         <action
             android:id="@+id/action_settingsListScreen_to_addAccountScreen"
-            app:destination="@id/addAccountScreen" />
+            app:destination="@id/addAccountScreen"
+            />
 
         <action
             android:id="@+id/action_settingsListScreen_to_settingsExportScreen"
-            app:destination="@id/settingsExportScreen" />
+            app:destination="@id/settingsExportScreen"
+            />
 
         <action
             android:id="@+id/action_settingsListScreen_to_settingsImportScreen"
-            app:destination="@id/settingsImportScreen" />
+            app:destination="@id/settingsImportScreen"
+            />
     </fragment>
 
     <fragment
         android:id="@+id/aboutScreen"
         android:name="com.fsck.k9.ui.settings.AboutFragment"
         android:label="@string/about_action"
-        tools:layout="@layout/fragment_about">
+        tools:layout="@layout/fragment_about"
+        >
 
         <action
             android:id="@+id/action_aboutScreen_to_changelogScreen"
-            app:destination="@id/changelogScreen" />
+            app:destination="@id/changelogScreen"
+            />
     </fragment>
 
     <activity
         android:id="@+id/generalSettingsScreen"
         android:name="com.fsck.k9.ui.settings.general.GeneralSettingsActivity"
-        android:label="@string/general_settings_title" />
+        android:label="@string/general_settings_title"
+        />
 
     <activity
         android:id="@+id/addAccountScreen"
         android:name="app.k9mail.feature.launcher.FeatureLauncherActivity"
         app:data="app://account/setup"
-        android:label="@string/account_setup_basics_title" />
+        android:label="@string/account_setup_basics_title"
+        />
 
     <fragment
         android:id="@+id/settingsExportScreen"
         android:name="com.fsck.k9.ui.settings.export.SettingsExportFragment"
         android:label="@string/settings_export_title"
-        tools:layout="@layout/fragment_settings_export"/>
+        tools:layout="@layout/fragment_settings_export"
+        />
 
     <fragment
         android:id="@+id/settingsImportScreen"
         android:name="app.k9mail.feature.settings.import.ui.SettingsImportFragment"
         android:label="@string/settings_import_title"
-        tools:layout="@layout/fragment_settings_import"/>
+        tools:layout="@layout/fragment_settings_import"
+        />
 
     <fragment
         android:id="@+id/changelogScreen"
         android:name="com.fsck.k9.ui.changelog.ChangelogFragment"
         android:label="@string/changelog_title"
-        tools:layout="@layout/fragment_changelog">
+        tools:layout="@layout/fragment_changelog"
+        >
 
         <argument
             android:name="mode"
             app:argType="com.fsck.k9.ui.changelog.ChangeLogMode"
-            android:defaultValue="CHANGE_LOG" />
+            android:defaultValue="CHANGE_LOG"
+            />
     </fragment>
 
     <fragment
         android:id="@+id/recentChangesScreen"
         android:name="com.fsck.k9.ui.changelog.ChangelogFragment"
         android:label="@string/changelog_recent_changes_title"
-        tools:layout="@layout/fragment_changelog">
+        tools:layout="@layout/fragment_changelog"
+        >
 
         <argument
             android:name="mode"
             app:argType="com.fsck.k9.ui.changelog.ChangeLogMode"
-            android:defaultValue="RECENT_CHANGES" />
+            android:defaultValue="RECENT_CHANGES"
+            />
     </fragment>
 
 </navigation>

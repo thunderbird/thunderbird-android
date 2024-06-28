@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    >
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/vibrationTimesValue"
@@ -14,7 +16,8 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="?attr/dialogPreferredPadding"
         android:textAppearance="?attr/textAppearanceBodyMedium"
-        tools:text="2" />
+        tools:text="2"
+        />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/vibrationTimesTitle"
@@ -42,6 +45,7 @@
         android:layout_marginEnd="?attr/dialogPreferredPadding"
         android:layout_marginBottom="20dp"
         android:max="9"
-        tools:progress="1" />
+        tools:progress="1"
+        />
 
 </RelativeLayout>

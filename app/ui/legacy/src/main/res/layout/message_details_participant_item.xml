@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/participants_container"
@@ -7,9 +8,10 @@
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
     android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    >
 
-<!--    TODO replace with ImageView-->
+    <!--    TODO replace with ImageView-->
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/contact_picture"
         android:layout_width="40dp"
@@ -17,7 +19,8 @@
         android:layout_marginStart="16dp"
         android:src="@drawable/ic_account_circle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/top_guideline" />
+        app:layout_constraintTop_toTopOf="@+id/top_guideline"
+        />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/name"
@@ -33,7 +36,8 @@
         app:layout_constraintTop_toTopOf="@+id/top_guideline"
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_goneMarginBottom="12dp"
-        tools:text="Alice" />
+        tools:text="Alice"
+        />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/email"
@@ -50,7 +54,8 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toEndOf="@id/contact_picture"
         app:layout_constraintTop_toBottomOf="@+id/name"
-        tools:text="alice@domain.example" />
+        tools:text="alice@domain.example"
+        />
 
     <ImageView
         android:id="@+id/menu_add_contact"
@@ -63,7 +68,8 @@
         android:paddingHorizontal="12dp"
         app:layout_constraintEnd_toStartOf="@id/menu_overflow"
         app:layout_constraintTop_toTopOf="@+id/menu_overflow"
-        app:srcCompat="@drawable/ic_person_add" />
+        app:srcCompat="@drawable/ic_person_add"
+        />
 
     <ImageView
         android:id="@+id/menu_overflow"
@@ -79,20 +85,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/ic_more_vert" />
+        app:srcCompat="@drawable/ic_more_vert"
+        />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/top_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="16dp" />
+        app:layout_constraintGuide_begin="16dp"
+        />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/bottom_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_end="16dp" />
+        app:layout_constraintGuide_end="16dp"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

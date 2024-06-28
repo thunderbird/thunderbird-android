@@ -7,11 +7,13 @@
             android:name=".UnreadWidgetChooseAccountActivity"
             android:configChanges="locale"
             android:label="@string/unread_widget_choose_account_title"
-            android:noHistory="true" />
+            android:noHistory="true"
+            />
 
         <activity
             android:name=".UnreadWidgetConfigurationActivity"
-            android:exported="false">
+            android:exported="false"
+            >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>

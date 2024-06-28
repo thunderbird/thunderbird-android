@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:installLocation="auto">
+    android:installLocation="auto"
+    >
 
     <uses-feature
         android:name="android.hardware.touchscreen"
-        android:required="false" />
+        android:required="false"
+        />
 
     <supports-screens
         android:anyDensity="true"
         android:largeScreens="true"
         android:normalScreens="true"
-        android:smallScreens="true" />
+        android:smallScreens="true"
+        />
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
@@ -36,73 +40,88 @@
         android:supportsRtl="true"
         android:hasFragileUserData="false"
         tools:replace="android:theme"
-        tools:ignore="UnusedAttribute">
+        tools:ignore="UnusedAttribute"
+        >
 
         <!-- TODO: Remove once minSdkVersion has been changed to 24+ -->
         <meta-data
             android:name="com.lge.support.SPLIT_WINDOW"
-            android:value="true" />
+            android:value="true"
+            />
         <uses-library
             android:name="com.sec.android.app.multiwindow"
-            android:required="false" />
+            android:required="false"
+            />
 
         <meta-data
             android:name="com.sec.android.support.multiwindow"
-            android:value="true" />
+            android:value="true"
+            />
         <meta-data
             android:name="com.samsung.android.sdk.multiwindow.penwindow.enable"
-            android:value="true" />
+            android:value="true"
+            />
         <meta-data
             android:name="android.webkit.WebView.MetricsOptOut"
-            android:value="true" />
+            android:value="true"
+            />
 
         <activity
             android:name="com.fsck.k9.ui.settings.account.OpenPgpAppSelectDialog"
             android:configChanges="locale"
-            android:theme="@style/Theme.K9.DayNight.Dialog.Translucent" />
+            android:theme="@style/Theme.K9.DayNight.Dialog.Translucent"
+            />
 
         <activity
             android:name="com.fsck.k9.activity.setup.AccountSetupComposition"
             android:configChanges="locale"
-            android:label="@string/account_settings_composition_title" />
+            android:label="@string/account_settings_composition_title"
+            />
 
         <activity
             android:name="com.fsck.k9.ui.choosefolder.ChooseFolderActivity"
             android:configChanges="locale"
             android:label="@string/choose_folder_title"
-            android:noHistory="true" />
+            android:noHistory="true"
+            />
 
         <activity
             android:name="com.fsck.k9.activity.ChooseIdentity"
             android:configChanges="locale"
-            android:label="@string/choose_identity_title" />
+            android:label="@string/choose_identity_title"
+            />
 
         <activity
             android:name="com.fsck.k9.activity.ManageIdentities"
             android:configChanges="locale"
-            android:label="@string/manage_identities_title" />
+            android:label="@string/manage_identities_title"
+            />
 
         <activity
             android:name="com.fsck.k9.activity.EditIdentity"
             android:configChanges="locale"
-            android:label="@string/edit_identity_title" />
+            android:label="@string/edit_identity_title"
+            />
 
         <activity
             android:name="com.fsck.k9.ui.notification.DeleteConfirmationActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleTop"
             android:taskAffinity=""
-            android:theme="@style/Theme.K9.DayNight.Dialog.Translucent" />
+            android:theme="@style/Theme.K9.DayNight.Dialog.Translucent"
+            />
 
         <activity
             android:name="com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity"
             android:configChanges="locale"
-            android:label="@string/ac_transfer_title" />
+            android:label="@string/ac_transfer_title"
+            />
 
         <activity
             android:name="com.fsck.k9.activity.MessageList"
             android:launchMode="singleTop"
-            android:exported="true">
+            android:exported="true"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -118,7 +137,8 @@
                 <action android:name="android.intent.action.VIEW" />
                 <data
                     android:host="messages"
-                    android:scheme="k9mail" />
+                    android:scheme="k9mail"
+                    />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -130,7 +150,8 @@
             android:name="com.fsck.k9.activity.MessageCompose"
             android:configChanges="locale"
             android:enabled="false"
-            android:exported="true">
+            android:exported="true"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.SENDTO" />
                 <data android:scheme="mailto" />
@@ -167,42 +188,51 @@
         <activity
             android:name="com.fsck.k9.activity.Search"
             android:label="@string/search_action"
-            android:exported="false" />
+            android:exported="false"
+            />
 
         <activity
             android:name="com.fsck.k9.activity.UpgradeDatabases"
-            android:label="@string/upgrade_databases_title" />
+            android:label="@string/upgrade_databases_title"
+            />
 
         <activity
             android:name="com.fsck.k9.ui.managefolders.ManageFoldersActivity"
-            android:label="@string/folders_action" />
+            android:label="@string/folders_action"
+            />
 
         <activity
             android:name="com.fsck.k9.ui.settings.SettingsActivity"
-            android:label="@string/prefs_title" />
+            android:label="@string/prefs_title"
+            />
 
         <activity
             android:name="com.fsck.k9.ui.settings.general.GeneralSettingsActivity"
-            android:label="@string/general_settings_title" />
+            android:label="@string/general_settings_title"
+            />
 
         <activity
             android:name="com.fsck.k9.ui.settings.account.AccountSettingsActivity"
-            android:label="@string/account_settings_title_fmt" />
+            android:label="@string/account_settings_title_fmt"
+            />
 
         <activity
             android:name="com.fsck.k9.ui.messagesource.MessageSourceActivity"
-            android:label="@string/show_headers_action" />
+            android:label="@string/show_headers_action"
+            />
 
         <activity
             android:name="com.fsck.k9.ui.changelog.RecentChangesActivity"
-            android:label="@string/changelog_recent_changes_title" />
+            android:label="@string/changelog_recent_changes_title"
+            />
 
         <activity
             android:name="com.fsck.k9.ui.push.PushInfoActivity"
             android:excludeFromRecents="true"
             android:exported="false"
             android:label="@string/push_info_title"
-            android:taskAffinity="${applicationId}.push_info">
+            android:taskAffinity="${applicationId}.push_info"
+            >
             <intent-filter>
                 <action android:name="app.k9mail.action.PUSH_INFO" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -213,7 +243,8 @@
         <receiver
             android:name="com.fsck.k9.controller.push.BootCompleteReceiver"
             android:exported="false"
-            android:enabled="false">
+            android:enabled="false"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -223,33 +254,39 @@
 
         <service
             android:name="com.fsck.k9.service.DatabaseUpgradeService"
-            android:exported="false" />
+            android:exported="false"
+            />
 
         <service
             android:name="com.fsck.k9.controller.push.PushService"
             android:exported="false"
-            android:foregroundServiceType="dataSync" />
+            android:foregroundServiceType="dataSync"
+            />
 
         <provider
             android:name="com.fsck.k9.provider.AttachmentProvider"
             android:authorities="${applicationId}.attachmentprovider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true"
+            >
 
             <meta-data
                 android:name="de.cketti.safecontentresolver.ALLOW_INTERNAL_ACCESS"
-                android:value="true" />
+                android:value="true"
+                />
 
         </provider>
 
         <provider
             android:name="com.fsck.k9.provider.RawMessageProvider"
             android:authorities="${applicationId}.rawmessageprovider"
-            android:exported="false">
+            android:exported="false"
+            >
 
             <meta-data
                 android:name="de.cketti.safecontentresolver.ALLOW_INTERNAL_ACCESS"
-                android:value="true" />
+                android:value="true"
+                />
 
         </provider>
 
@@ -257,31 +294,37 @@
             android:name="com.fsck.k9.provider.DecryptedFileProvider"
             android:authorities="${applicationId}.decryptedfileprovider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true"
+            >
 
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/decrypted_file_provider_paths" />
+                android:resource="@xml/decrypted_file_provider_paths"
+                />
         </provider>
 
         <provider
             android:name="com.fsck.k9.provider.AttachmentTempFileProvider"
             android:authorities="${applicationId}.tempfileprovider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true"
+            >
 
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/temp_file_provider_paths" />
+                android:resource="@xml/temp_file_provider_paths"
+                />
 
             <meta-data
                 android:name="de.cketti.safecontentresolver.ALLOW_INTERNAL_ACCESS"
-                android:value="true" />
+                android:value="true"
+                />
         </provider>
 
         <activity
             android:name="net.openid.appauth.RedirectUriReceiverActivity"
-            android:exported="true" >
+            android:exported="true"
+            >
 
             <!-- The library's default intent filter with `appAuthRedirectScheme` replaced by `applicationId` -->
             <intent-filter>
@@ -302,7 +345,8 @@
 
                 <data
                     android:scheme="msauth"
-                    android:host="${applicationId}" />
+                    android:host="${applicationId}"
+                    />
             </intent-filter>
         </activity>
 

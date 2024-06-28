@@ -1,5 +1,7 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
 
     <application>
         <!-- We're replacing this activity so we can run tests without the build tools complaining about a
@@ -7,7 +9,8 @@
         <activity
             android:name="net.openid.appauth.RedirectUriReceiverActivity"
             android:exported="true"
-            tools:node="replace">
+            tools:node="replace"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
