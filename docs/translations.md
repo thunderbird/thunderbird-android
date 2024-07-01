@@ -24,12 +24,30 @@ exactly the languages that are included in the app.
    2. Add the language code to `language_values` in `app/core/src/main/res/values/arrays_general_settings_values.xml`
       so that the index in the list matches that of the newly added entry in `language_entries`.
 
+## Adding a component on Weblate
+
+When adding a new code module that is including translatable strings, a new components needs to be added to Weblate.
+
+1. Go the the Weblate page to [add a component](https://hosted.weblate.org/create/component/?project=3696).
+2. Switch to the "From existing component" tab.
+3. Enter a name for the component.
+4. For "Component", select "K-9 Mail/Thunderbird/ui-legacy".
+5. Press the "Continue" button.
+6. Under "Choose translation files to import", select "Specify configuration manually".
+7. Press the "Continue" button.
+8. For "File format", select "Android String Resource".
+9. Under "File mask", enter the path to the string resource files with a wildcard,
+   e.g. `feature/account/common/src/main/res/values-*/strings.xml`.
+10. Under "Monolingual base language file", enter the path to the string source file,
+    e.g. `feature/account/common/src/main/res/values/strings.xml`.
+11. Uncheck "Edit base file".
+12. For "Translation license", select "Apache License 2.0".
+13. Press the "Save" button.
+
 ## Things to note
 
-For some languages Android uses different language codes that typical translation tools, e.g. Hebrew's code is _he_ on
+For some languages Android uses different language codes than typical translation tools, e.g. Hebrew's code is _he_ on
 Weblate, but _iw_ on Android. When writing automation tools, there needs to be a mapping step involved.
 
-Weblate's code that might be relevant for this:
-https://github.com/WeblateOrg/weblate/blob/bdbc725b501e36681766ed3b9ffbb73beeab512d/weblate/formats/base.py
-
-More research and careful testing is necessary when automating any of these steps.
+See [translation-cli](https://github.com/thunderbird/thunderbird-android/blob/ed07da8be5513ac74aabb1c934a4545aaae4f5a3/cli/translation-cli/src/main/kotlin/net/thunderbird/cli/translation/LanguageCodeLoader.kt#L12-L13)
+for an example.
