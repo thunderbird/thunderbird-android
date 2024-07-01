@@ -2,7 +2,6 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:installLocation="auto"
     >
 
     <uses-feature
@@ -32,13 +31,9 @@
 
     <application
         android:allowTaskReparenting="false"
-        android:usesCleartextTraffic="true"
-        android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/Theme.K9.Startup"
         android:resizeableActivity="true"
-        android:allowBackup="false"
         android:supportsRtl="true"
-        android:hasFragileUserData="false"
         tools:replace="android:theme"
         tools:ignore="UnusedAttribute"
         >
