@@ -3,8 +3,13 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.app.ui.legacy)
+    api(projects.app.ui.legacy)
+
     implementation(projects.app.core)
+    implementation(projects.core.ui.legacy.theme2.common)
+
+    implementation(libs.androidx.annotation)
+    implementation(libs.androidx.lifecycle.viewmodel)
 }
 
 android {

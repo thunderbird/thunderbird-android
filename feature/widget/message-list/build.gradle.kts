@@ -3,9 +3,13 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.app.ui.legacy)
-    implementation(projects.app.core)
+    api(projects.app.core)
 
+    implementation(projects.app.ui.legacy)
+    implementation(projects.core.ui.legacy.designsystem)
+    implementation(projects.mail.common)
+
+    implementation(libs.androidx.appcompat)
     implementation(libs.timber)
 }
 
