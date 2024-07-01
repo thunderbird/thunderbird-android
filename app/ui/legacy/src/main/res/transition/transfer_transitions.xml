@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<transitionSet xmlns:android="http://schemas.android.com/apk/res/android" android:transitionOrdering="sequential">
+<transitionSet
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:transitionOrdering="sequential"
+    >
     <autoTransition>
         <targets>
             <target android:excludeId="@+id/transferLayoutSending" />

@@ -3,19 +3,22 @@
 We explicitly set the background color in case this layout is inflated using a theme different from the app theme (via
 the 'composer theme' setting).
 -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:attr/windowBackground"
     android:scrollbarStyle="insideOverlay"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    >
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        >
 
         <include layout="@layout/message_compose_recipients" />
 
@@ -25,7 +28,8 @@ the 'composer theme' setting).
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:background="?attr/colorSurfaceContainerLow"
-            android:minHeight="50dp">
+            android:minHeight="50dp"
+            >
 
             <EditText
                 android:id="@+id/subject"
@@ -47,7 +51,8 @@ the 'composer theme' setting).
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="?android:attr/listDivider" />
+            android:background="?android:attr/listDivider"
+            />
 
         <!-- We have to use "wrap_content" (not "0dip") for "layout_height", otherwise the
              EditText won't properly grow in height while the user is typing the message -->
@@ -64,7 +69,8 @@ the 'composer theme' setting).
             android:paddingLeft="12dip"
             android:paddingRight="12dip"
             android:textAppearance="?attr/textAppearanceBodyLarge"
-            tools:ignore="InefficientWeight" />
+            tools:ignore="InefficientWeight"
+            />
 
         <EditText
             android:id="@+id/upper_signature"
@@ -75,7 +81,8 @@ the 'composer theme' setting).
             android:hint="@string/message_compose_signature_hint"
             android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
             android:imeOptions="flagNoExtractUi"
-            android:textAppearance="?attr/textAppearanceBodyLarge" />
+            android:textAppearance="?attr/textAppearanceBodyLarge"
+            />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/quoted_text_show"
@@ -83,13 +90,15 @@ the 'composer theme' setting).
             android:padding="0dip"
             android:layout_gravity="end"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"/>
+            android:layout_width="match_parent"
+            />
 
         <!-- Quoted text bar -->
         <RelativeLayout
             android:id="@+id/quoted_text_bar"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
             <EditText
                 android:id="@+id/quoted_text"
@@ -99,19 +108,22 @@ the 'composer theme' setting).
                 android:minLines="3"
                 android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
                 android:imeOptions="flagNoExtractUi"
-                android:textAppearance="?attr/textAppearanceBodyLarge" />
+                android:textAppearance="?attr/textAppearanceBodyLarge"
+                />
 
             <com.fsck.k9.view.MessageWebView
                 android:id="@+id/quoted_html"
                 android:layout_height="wrap_content"
-                android:layout_width="fill_parent" />
+                android:layout_width="fill_parent"
+                />
 
             <LinearLayout
                 android:id="@+id/quoted_text_buttons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true">
+                android:layout_alignParentEnd="true"
+                >
 
                 <com.google.android.material.button.MaterialButton
                     style="@style/Widget.Material3.Button.IconButton.Filled"
@@ -120,7 +132,8 @@ the 'composer theme' setting).
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    app:icon="@drawable/ic_edit" />
+                    app:icon="@drawable/ic_edit"
+                    />
 
                 <com.google.android.material.button.MaterialButton
                     style="@style/Widget.Material3.Button.IconButton.Filled"
@@ -128,7 +141,8 @@ the 'composer theme' setting).
                     android:contentDescription="@string/message_compose_description_delete_quoted_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:icon="@drawable/ic_close" />
+                    app:icon="@drawable/ic_close"
+                    />
 
             </LinearLayout>
 
@@ -143,7 +157,8 @@ the 'composer theme' setting).
             android:hint="@string/message_compose_signature_hint"
             android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
             android:imeOptions="flagNoExtractUi"
-            android:textAppearance="?attr/textAppearanceBodyLarge" />
+            android:textAppearance="?attr/textAppearanceBodyLarge"
+            />
 
         <!--
             Empty container for storing attachments. We'll stick
@@ -155,7 +170,8 @@ the 'composer theme' setting).
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:orientation="vertical" />
+            android:orientation="vertical"
+            />
 
     </LinearLayout>
 

@@ -5,7 +5,8 @@
 
     <application
         android:theme="@style/Theme.K9.Light"
-        android:supportsRtl="true">
+        android:supportsRtl="true"
+        >
 
     </application>
 
@@ -16,7 +17,8 @@
             <data
                 android:mimeType="*/*"
                 android:scheme="content"
-                android:host="com.android.contacts" />
+                android:host="com.android.contacts"
+                />
         </intent>
 
         <intent>
@@ -24,7 +26,8 @@
             <action android:name="android.intent.action.VIEW" />
             <data
                 android:mimeType="*/*"
-                android:scheme="content" />
+                android:scheme="content"
+                />
         </intent>
 
         <intent>
@@ -38,7 +41,8 @@
             <data
                 android:mimeType="*/*"
                 android:scheme="market"
-                android:host="details" />
+                android:host="details"
+                />
         </intent>
 
         <intent>

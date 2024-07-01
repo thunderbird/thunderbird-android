@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".settings.export.SettingsExportFragment">
+    tools:context=".settings.export.SettingsExportFragment"
+    >
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/settingsExportList"
@@ -15,7 +16,8 @@
         app:layout_constraintBottom_toTopOf="@+id/bottomBar"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/settings_export_account_list_item"
-        tools:itemCount="3"/>
+        tools:itemCount="3"
+        />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bottomBar"
@@ -24,7 +26,8 @@
         android:elevation="8dp"
         android:minHeight="56dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:ignore="UnusedAttribute">
+        tools:ignore="UnusedAttribute"
+        >
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/exportButton"
@@ -37,7 +40,8 @@
             android:text="@string/settings_export_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/shareButton"
@@ -50,14 +54,16 @@
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/buttonBarrier"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="left"
-            app:constraint_referenced_ids="exportButton,shareButton" />
+            app:constraint_referenced_ids="exportButton,shareButton"
+            />
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -69,7 +75,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/exportButton"
             app:layout_constraintEnd_toEndOf="@+id/exportButton"
             app:layout_constraintStart_toStartOf="@+id/exportButton"
-            app:layout_constraintTop_toTopOf="@+id/exportButton" />
+            app:layout_constraintTop_toTopOf="@+id/exportButton"
+            />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/statusText"
@@ -85,7 +92,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Exporting…"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

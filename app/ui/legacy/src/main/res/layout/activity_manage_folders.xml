@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".managefolders.ManageFoldersActivity">
+    tools:context=".managefolders.ManageFoldersActivity"
+    >
 
     <include layout="@layout/toolbar" />
 
@@ -17,6 +18,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         app:defaultNavHost="true"
-        tools:layout="@layout/fragment_manage_folders"/>
+        tools:layout="@layout/fragment_manage_folders"
+        />
 
 </LinearLayout>

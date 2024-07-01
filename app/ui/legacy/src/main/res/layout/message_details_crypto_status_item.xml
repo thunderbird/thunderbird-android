@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground">
+    android:background="?attr/selectableItemBackground"
+    >
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/keyline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="72dp" />
+        app:layout_constraintGuide_begin="72dp"
+        />
 
     <ImageView
         android:id="@+id/crypto_status_icon"
@@ -25,7 +28,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@drawable/status_lock_dots_3"
-        tools:tint="?attr/openpgp_green" />
+        tools:tint="?attr/openpgp_green"
+        />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/crypto_status_title"
@@ -41,7 +45,8 @@
         app:layout_constraintStart_toStartOf="@+id/keyline"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        tools:text="@string/crypto_msg_title_encrypted_signed_e2e" />
+        tools:text="@string/crypto_msg_title_encrypted_signed_e2e"
+        />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/crypto_status_description"
@@ -57,6 +62,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/keyline"
         app:layout_constraintTop_toBottomOf="@+id/crypto_status_title"
-        tools:text="@string/crypto_msg_encrypted_sign_verified" />
+        tools:text="@string/crypto_msg_encrypted_sign_verified"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

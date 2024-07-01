@@ -4,30 +4,35 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:key="main"
-    android:title="@string/account_settings_title_fmt">
+    android:title="@string/account_settings_title_fmt"
+    >
 
     <PreferenceScreen
         android:icon="@drawable/ic_settings"
         android:key="account_settings"
-        android:title="@string/account_settings_general_title">
+        android:title="@string/account_settings_general_title"
+        >
 
         <com.takisoft.preferencex.AutoSummaryEditTextPreference
             android:dialogTitle="@string/account_settings_description_label"
             android:key="account_description"
-            android:title="@string/account_settings_description_label" />
+            android:title="@string/account_settings_description_label"
+            />
 
         <com.takisoft.preferencex.ColorPickerPreference
             android:key="chip_color"
             android:summary="@string/account_settings_color_summary"
             android:title="@string/account_settings_color_label"
-            app:pref_colors="@array/account_colors" />
+            app:pref_colors="@array/account_colors"
+            />
 
     </PreferenceScreen>
 
     <PreferenceScreen
         android:icon="@drawable/ic_mark_email_read"
         android:key="reading_mail"
-        android:title="@string/account_settings_reading_mail">
+        android:title="@string/account_settings_reading_mail"
+        >
 
         <ListPreference
             android:dialogTitle="@string/account_settings_show_pictures_label"
@@ -35,19 +40,22 @@
             android:entryValues="@array/show_pictures_values"
             android:key="show_pictures_enum"
             app:useSimpleSummaryProvider="true"
-            android:title="@string/account_settings_show_pictures_label" />
+            android:title="@string/account_settings_show_pictures_label"
+            />
 
         <CheckBoxPreference
             android:key="mark_message_as_read_on_view"
             android:summary="@string/account_settings_mark_message_as_read_on_view_summary"
-            android:title="@string/account_settings_mark_message_as_read_on_view_label" />
+            android:title="@string/account_settings_mark_message_as_read_on_view_label"
+            />
 
     </PreferenceScreen>
 
     <PreferenceScreen
         android:icon="@drawable/ic_sync"
         android:key="incoming_prefs"
-        android:title="@string/account_settings_sync">
+        android:title="@string/account_settings_sync"
+        >
 
         <ListPreference
             android:dialogTitle="@string/account_settings_mail_display_count_label"
@@ -55,7 +63,8 @@
             android:entryValues="@array/display_count_values"
             android:key="account_display_count"
             app:useSimpleSummaryProvider="true"
-            android:title="@string/account_settings_mail_display_count_label" />
+            android:title="@string/account_settings_mail_display_count_label"
+            />
 
         <ListPreference
             android:dialogTitle="@string/account_settings_message_age_label"
@@ -63,7 +72,8 @@
             android:entryValues="@array/message_age_values"
             android:key="account_message_age"
             app:useSimpleSummaryProvider="true"
-            android:title="@string/account_settings_message_age_label" />
+            android:title="@string/account_settings_message_age_label"
+            />
 
         <ListPreference
             android:dialogTitle="@string/account_settings_autodownload_message_size_label"
@@ -71,7 +81,8 @@
             android:entryValues="@array/autodownload_message_size_values"
             android:key="account_autodownload_size"
             app:useSimpleSummaryProvider="true"
-            android:title="@string/account_settings_autodownload_message_size_label" />
+            android:title="@string/account_settings_autodownload_message_size_label"
+            />
 
         <ListPreference
             android:dialogTitle="@string/account_settings_mail_check_frequency_label"
@@ -79,7 +90,8 @@
             android:entryValues="@array/check_frequency_values"
             android:key="account_check_frequency"
             app:useSimpleSummaryProvider="true"
-            android:title="@string/account_settings_mail_check_frequency_label" />
+            android:title="@string/account_settings_mail_check_frequency_label"
+            />
 
         <ListPreference
             android:dialogTitle="@string/account_settings_folder_sync_mode_label"
@@ -87,7 +99,8 @@
             android:entryValues="@array/folder_sync_mode_values"
             android:key="folder_sync_mode"
             app:useSimpleSummaryProvider="true"
-            android:title="@string/account_settings_folder_sync_mode_label" />
+            android:title="@string/account_settings_folder_sync_mode_label"
+            />
 
         <ListPreference
             android:dialogTitle="@string/account_settings_folder_push_mode_label"
@@ -95,18 +108,21 @@
             android:entryValues="@array/folder_push_mode_values"
             android:key="folder_push_mode"
             app:useSimpleSummaryProvider="true"
-            android:title="@string/account_settings_folder_push_mode_label" />
+            android:title="@string/account_settings_folder_push_mode_label"
+            />
 
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="account_sync_remote_deletetions"
             android:summary="@string/account_settings_sync_remote_deletetions_summary"
-            android:title="@string/account_settings_sync_remote_deletetions_label" />
+            android:title="@string/account_settings_sync_remote_deletetions_label"
+            />
 
         <CheckBoxPreference
             android:key="mark_message_as_read_on_delete"
             android:summary="@string/account_settings_mark_message_as_read_on_delete_summary"
-            android:title="@string/account_settings_mark_message_as_read_on_delete_label" />
+            android:title="@string/account_settings_mark_message_as_read_on_delete_label"
+            />
 
         <ListPreference
             android:dialogTitle="@string/account_setup_incoming_delete_policy_label"
@@ -114,7 +130,8 @@
             android:entryValues="@array/delete_policy_values"
             android:key="delete_policy"
             app:useSimpleSummaryProvider="true"
-            android:title="@string/account_setup_incoming_delete_policy_label" />
+            android:title="@string/account_setup_incoming_delete_policy_label"
+            />
 
         <ListPreference
             android:dialogTitle="@string/account_setup_expunge_policy_label"
@@ -122,30 +139,35 @@
             android:entryValues="@array/expunge_policy_values"
             android:key="expunge_policy"
             app:useSimpleSummaryProvider="true"
-            android:title="@string/account_setup_expunge_policy_label" />
+            android:title="@string/account_setup_expunge_policy_label"
+            />
 
         <Preference
             android:key="incoming"
             android:summary="@string/account_settings_incoming_summary"
-            android:title="@string/account_settings_incoming_label" />
+            android:title="@string/account_settings_incoming_label"
+            />
 
         <PreferenceScreen
             android:key="push_advanced"
-            android:title="@string/account_settings_push_advanced_title">
+            android:title="@string/account_settings_push_advanced_title"
+            >
 
             <ListPreference
                 android:entries="@array/push_limit_entries"
                 android:entryValues="@array/push_limit_values"
                 android:key="max_push_folders"
                 app:useSimpleSummaryProvider="true"
-                android:title="@string/account_setup_push_limit_label" />
+                android:title="@string/account_setup_push_limit_label"
+                />
 
             <ListPreference
                 android:entries="@array/idle_refresh_period_entries"
                 android:entryValues="@array/idle_refresh_period_values"
                 android:key="idle_refresh_period"
                 app:useSimpleSummaryProvider="true"
-                android:title="@string/idle_refresh_period_label" />
+                android:title="@string/idle_refresh_period_label"
+                />
 
         </PreferenceScreen>
 
@@ -154,88 +176,103 @@
     <PreferenceScreen
         android:icon="@drawable/ic_edit"
         android:key="composing"
-        android:title="@string/account_settings_composition">
+        android:title="@string/account_settings_composition"
+        >
 
         <Preference
             android:key="composition"
             android:summary="@string/account_settings_composition_summary"
-            android:title="@string/account_settings_composition_label" />
+            android:title="@string/account_settings_composition_label"
+            />
 
         <Preference
             android:key="manage_identities"
             android:summary="@string/account_settings_identities_summary"
-            android:title="@string/account_settings_identities_label" />
+            android:title="@string/account_settings_identities_label"
+            />
 
         <ListPreference
             android:entries="@array/message_format_entries"
             android:entryValues="@array/message_format_values"
             android:key="message_format"
             app:useSimpleSummaryProvider="true"
-            android:title="@string/account_settings_message_format_label" />
+            android:title="@string/account_settings_message_format_label"
+            />
 
         <CheckBoxPreference
             android:key="always_show_cc_bcc"
-            android:title="@string/account_settings_always_show_cc_bcc_label" />
+            android:title="@string/account_settings_always_show_cc_bcc_label"
+            />
 
         <CheckBoxPreference
             android:key="message_read_receipt"
             android:summary="@string/account_settings_message_read_receipt_summary"
-            android:title="@string/account_settings_message_read_receipt_label" />
+            android:title="@string/account_settings_message_read_receipt_label"
+            />
 
         <ListPreference
             android:entries="@array/quote_style_entries"
             android:entryValues="@array/quote_style_values"
             android:key="quote_style"
             app:useSimpleSummaryProvider="true"
-            android:title="@string/account_settings_quote_style_label" />
+            android:title="@string/account_settings_quote_style_label"
+            />
 
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="default_quoted_text_shown"
             android:summary="@string/account_settings_default_quoted_text_shown_summary"
-            android:title="@string/account_settings_default_quoted_text_shown_label" />
+            android:title="@string/account_settings_default_quoted_text_shown_label"
+            />
 
         <CheckBoxPreference
             android:defaultValue="false"
             android:dependency="quote_style"
             android:key="reply_after_quote"
             android:summary="@string/account_settings_reply_after_quote_summary"
-            android:title="@string/account_settings_reply_after_quote_label" />
+            android:title="@string/account_settings_reply_after_quote_label"
+            />
 
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="strip_signature"
             android:summary="@string/account_settings_strip_signature_summary"
-            android:title="@string/account_settings_strip_signature_label" />
+            android:title="@string/account_settings_strip_signature_label"
+            />
 
         <com.takisoft.preferencex.AutoSummaryEditTextPreference
             android:dependency="quote_style"
             android:dialogTitle="@string/account_settings_quote_prefix_label"
             android:key="account_quote_prefix"
-            android:title="@string/account_settings_quote_prefix_label" />
+            android:title="@string/account_settings_quote_prefix_label"
+            />
 
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="upload_sent_messages"
             android:summary="@string/account_settings_upload_sent_messages_summary"
-            android:title="@string/account_settings_upload_sent_messages_label" />
+            android:title="@string/account_settings_upload_sent_messages_label"
+            />
 
         <PreferenceScreen
             android:key="outgoing"
             android:summary="@string/account_settings_outgoing_summary"
-            android:title="@string/account_settings_outgoing_label" />
+            android:title="@string/account_settings_outgoing_label"
+            />
 
     </PreferenceScreen>
 
     <PreferenceScreen
         android:icon="@drawable/ic_folder"
         android:key="folders"
-        android:title="@string/account_settings_folders">
+        android:title="@string/account_settings_folders"
+        >
 
         <com.fsck.k9.ui.settings.account.FolderListPreference
             android:key="account_setup_auto_expand_folder"
             app:useSimpleSummaryProvider="true"
-            android:title="@string/account_setup_auto_expand_folder" />
+            android:title="@string/account_setup_auto_expand_folder"
+            />
 
         <ListPreference
             android:dialogTitle="@string/account_settings_folder_display_mode_label"
@@ -243,11 +280,13 @@
             android:entryValues="@array/folder_display_mode_values"
             android:key="folder_display_mode"
             app:useSimpleSummaryProvider="true"
-            android:title="@string/account_settings_folder_display_mode_label" />
+            android:title="@string/account_settings_folder_display_mode_label"
+            />
 
         <CheckBoxPreference
             android:key="subscribed_folders_only"
-            android:title="@string/account_setup_incoming_subscribed_folders_only_label" />
+            android:title="@string/account_setup_incoming_subscribed_folders_only_label"
+            />
 
         <ListPreference
             android:dialogTitle="@string/account_settings_folder_target_mode_label"
@@ -255,7 +294,8 @@
             android:entryValues="@array/folder_target_mode_values"
             android:key="folder_target_mode"
             app:useSimpleSummaryProvider="true"
-            android:title="@string/account_settings_folder_target_mode_label" />
+            android:title="@string/account_settings_folder_target_mode_label"
+            />
 
         <ListPreference
             android:dialogTitle="@string/account_settings_searchable_label"
@@ -263,45 +303,53 @@
             android:entryValues="@array/searchable_values"
             android:key="searchable_folders"
             app:useSimpleSummaryProvider="true"
-            android:title="@string/account_settings_searchable_label" />
+            android:title="@string/account_settings_searchable_label"
+            />
 
         <com.fsck.k9.ui.settings.account.FolderListPreference
             android:key="archive_folder"
             app:useSimpleSummaryProvider="true"
-            android:title="@string/archive_folder_label" />
+            android:title="@string/archive_folder_label"
+            />
 
         <com.fsck.k9.ui.settings.account.FolderListPreference
             android:key="drafts_folder"
             app:useSimpleSummaryProvider="true"
-            android:title="@string/drafts_folder_label" />
+            android:title="@string/drafts_folder_label"
+            />
 
         <com.fsck.k9.ui.settings.account.FolderListPreference
             android:key="sent_folder"
             app:useSimpleSummaryProvider="true"
-            android:title="@string/sent_folder_label" />
+            android:title="@string/sent_folder_label"
+            />
 
         <com.fsck.k9.ui.settings.account.FolderListPreference
             android:key="spam_folder"
             app:useSimpleSummaryProvider="true"
-            android:title="@string/spam_folder_label" />
+            android:title="@string/spam_folder_label"
+            />
 
         <com.fsck.k9.ui.settings.account.FolderListPreference
             android:key="trash_folder"
             app:useSimpleSummaryProvider="true"
-            android:title="@string/trash_folder_label" />
+            android:title="@string/trash_folder_label"
+            />
 
     </PreferenceScreen>
 
     <PreferenceScreen
         android:icon="@drawable/ic_notifications"
         android:key="notifications"
-        android:title="@string/notifications_title">
+        android:title="@string/notifications_title"
+        >
 
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="account_notify"
             android:summary="@string/account_settings_notify_summary"
-            android:title="@string/account_settings_notify_label" />
+            android:title="@string/account_settings_notify_label"
+            />
 
         <ListPreference
             android:dependency="account_notify"
@@ -310,41 +358,47 @@
             android:entryValues="@array/folder_notify_new_mail_mode_values"
             android:key="folder_notify_new_mail_mode"
             app:useSimpleSummaryProvider="true"
-            android:title="@string/account_settings_folder_notify_new_mail_mode_label" />
+            android:title="@string/account_settings_folder_notify_new_mail_mode_label"
+            />
 
         <CheckBoxPreference
             android:defaultValue="true"
             android:dependency="account_notify"
             android:key="account_notify_self"
             android:summary="@string/account_settings_notify_self_summary"
-            android:title="@string/account_settings_notify_self_label" />
+            android:title="@string/account_settings_notify_self_label"
+            />
 
         <CheckBoxPreference
             android:defaultValue="false"
             android:dependency="account_notify"
             android:key="account_notify_contacts_mail_only"
             android:summary="@string/account_notify_contacts_mail_only_summary"
-            android:title="@string/account_notify_contacts_mail_only_label" />
+            android:title="@string/account_notify_contacts_mail_only_label"
+            />
 
         <CheckBoxPreference
             android:defaultValue="false"
             android:dependency="account_notify"
             android:key="ignore_chat_messages"
             android:summary="@string/account_settings_ignore_chat_messages_summary"
-            android:title="@string/account_settings_ignore_chat_messages_label" />
+            android:title="@string/account_settings_ignore_chat_messages_label"
+            />
 
         <com.fsck.k9.ui.settings.account.NotificationSoundPreference
             android:defaultValue="content://settings/system/notification_sound"
             android:dependency="account_notify"
             android:key="account_ringtone"
-            android:title="@string/account_settings_ringtone" />
+            android:title="@string/account_settings_ringtone"
+            />
 
         <com.fsck.k9.ui.settings.account.VibrationPreference
             android:dependency="account_notify"
             android:key="account_combined_vibration"
             android:title="@string/account_settings_vibration"
             android:entries="@array/vibrate_pattern_entries"
-            android:entryValues="@array/vibrate_pattern_values" />
+            android:entryValues="@array/vibrate_pattern_values"
+            />
 
         <ListPreference
             android:dependency="account_notify"
@@ -352,27 +406,32 @@
             android:title="@string/account_settings_notification_light_label"
             android:entries="@array/notification_light_entries"
             android:entryValues="@array/notification_light_values"
-            app:useSimpleSummaryProvider="true" />
+            app:useSimpleSummaryProvider="true"
+            />
 
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="account_notify_sync"
             android:summary="@string/account_settings_notify_sync_summary"
-            android:title="@string/account_settings_notify_sync_label" />
+            android:title="@string/account_settings_notify_sync_label"
+            />
 
         <PreferenceCategory
             android:key="notification_channels"
-            android:title="@string/account_settings_notification_channels_label">
+            android:title="@string/account_settings_notification_channels_label"
+            >
 
             <com.fsck.k9.ui.settings.account.NotificationsPreference
                 android:key="open_notification_settings_messages"
                 android:summary="@string/account_settings_open_notification_settings_messages_summary"
-                android:title="@string/notification_channel_messages_title" />
+                android:title="@string/notification_channel_messages_title"
+                />
 
             <com.fsck.k9.ui.settings.account.NotificationsPreference
                 android:key="open_notification_settings_miscellaneous"
                 android:summary="@string/account_settings_open_notification_settings_miscellaneous_summary"
-                android:title="@string/notification_channel_miscellaneous_title" />
+                android:title="@string/notification_channel_miscellaneous_title"
+                />
 
         </PreferenceCategory>
     </PreferenceScreen>
@@ -380,7 +439,8 @@
     <PreferenceScreen
         android:icon="@drawable/ic_search"
         android:key="search"
-        android:title="@string/account_settings_search">
+        android:title="@string/account_settings_search"
+        >
 
         <ListPreference
             android:dialogTitle="@string/account_settings_remote_search_num_label"
@@ -388,43 +448,50 @@
             android:entryValues="@array/remote_search_num_results_values"
             android:key="account_remote_search_num_results"
             app:useSimpleSummaryProvider="true"
-            android:title="@string/account_settings_remote_search_num_label" />
+            android:title="@string/account_settings_remote_search_num_label"
+            />
 
     </PreferenceScreen>
 
     <PreferenceScreen
         android:icon="@drawable/ic_lock"
         android:key="openpgp"
-        android:title="@string/account_settings_crypto">
+        android:title="@string/account_settings_crypto"
+        >
 
         <SwitchPreference
             android:key="openpgp_provider"
-            android:title="@string/account_settings_crypto_app" />
+            android:title="@string/account_settings_crypto_app"
+            />
 
         <org.openintents.openpgp.util.OpenPgpKeyPreference
             android:dependency="openpgp_provider"
             android:key="openpgp_key"
-            android:title="@string/account_settings_crypto_key" />
+            android:title="@string/account_settings_crypto_key"
+            />
 
         <com.fsck.k9.ui.settings.account.AutocryptPreferEncryptPreference
             android:dependency="openpgp_key"
             android:key="autocrypt_prefer_encrypt"
             android:title="@string/account_settings_crypto_prefer_encrypt"
             app:summaryOff="@string/switch_off"
-            app:summaryOn="@string/switch_on" />
+            app:summaryOn="@string/switch_on"
+            />
 
         <SwitchPreference
             android:dependency="openpgp_key"
             android:key="openpgp_hide_sign_only"
             android:summaryOff="@string/account_settings_crypto_hide_sign_only_off"
             android:summaryOn="@string/account_settings_crypto_hide_sign_only_on"
-            android:title="@string/account_settings_crypto_hide_sign_only" />
+            android:title="@string/account_settings_crypto_hide_sign_only"
+            />
 
         <SwitchPreference
             android:dependency="openpgp_key"
             android:key="openpgp_encrypt_subject"
             android:summary="@string/account_settings_crypto_encrypt_subject_subtitle"
-            android:title="@string/account_settings_crypto_encrypt_subject" />
+            android:title="@string/account_settings_crypto_encrypt_subject"
+            />
 
         <SwitchPreference
             android:dependency="openpgp_key"
@@ -438,7 +505,8 @@
             android:dependency="openpgp_key"
             android:key="autocrypt_transfer"
             android:summary="@string/ac_transfer_setting_summary"
-            android:title="@string/ac_transfer_setting_title" />
+            android:title="@string/ac_transfer_setting_title"
+            />
 
     </PreferenceScreen>
 

@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".endtoend.AutocryptKeyTransferActivity">
+    tools:context=".endtoend.AutocryptKeyTransferActivity"
+    >
 
     <include layout="@layout/toolbar" />
 
@@ -17,14 +18,16 @@
         android:layout_weight="1"
         android:orientation="vertical"
         android:paddingLeft="12dp"
-        android:paddingRight="12dp">
+        android:paddingRight="12dp"
+        >
 
         <com.google.android.material.textview.MaterialTextView
             style="?android:textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="@string/ac_transfer_intro" />
+            android:text="@string/ac_transfer_intro"
+            />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/transferSendButton"
@@ -40,7 +43,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <com.google.android.material.textview.MaterialTextView
                 style="?android:textAppearanceMedium"
@@ -67,7 +71,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:orientation="horizontal"
-            android:padding="8dp">
+            android:padding="8dp"
+            >
 
             <com.fsck.k9.view.StatusIndicator
                 android:id="@+id/transferProgressGenerating"
@@ -92,7 +97,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="8dp">
+            android:padding="8dp"
+            >
 
             <com.fsck.k9.view.StatusIndicator
                 android:id="@+id/transferProgressSending"
@@ -105,7 +111,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                >
 
                 <com.google.android.material.textview.MaterialTextView
                     style="?android:textAppearanceMedium"
@@ -133,7 +140,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="8dp">
+            android:padding="8dp"
+            >
 
             <com.fsck.k9.view.StatusIndicator
                 android:layout_width="24dp"

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+<appwidget-provider
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:initialKeyguardLayout="@layout/message_list_widget_loading"
     android:initialLayout="@layout/message_list_widget_loading"
     android:minHeight="180dp"
@@ -9,5 +10,5 @@
     android:previewImage="@drawable/message_list_widget_preview"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="86400000"
-    android:widgetCategory="home_screen|keyguard">
-</appwidget-provider>
+    android:widgetCategory="home_screen|keyguard"
+    />

@@ -8,7 +8,8 @@
     android:orientation="vertical"
     android:gravity="center_vertical"
     android:paddingStart="12dp"
-    android:paddingEnd="4dp">
+    android:paddingEnd="4dp"
+    >
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/name"
@@ -17,7 +18,8 @@
         android:singleLine="true"
         android:ellipsize="end"
         android:textAppearance="?attr/textAppearanceBodyLarge"
-        tools:text="Initial identity" />
+        tools:text="Initial identity"
+        />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/description"
@@ -27,6 +29,7 @@
         android:ellipsize="end"
         android:textColor="?attr/colorSecondary"
         android:textAppearance="?attr/textAppearanceBodyMedium"
-        tools:text="Firstname Lastname &lt;user@domain.example&gt;" />
+        tools:text="Firstname Lastname &lt;user@domain.example&gt;"
+        />
 
 </LinearLayout>

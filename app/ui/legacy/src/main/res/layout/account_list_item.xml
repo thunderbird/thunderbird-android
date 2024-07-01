@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.fsck.k9.view.DraggableFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.fsck.k9.view.DraggableFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/windowBackground"
     android:foreground="?attr/selectableItemBackground"
-    android:stateListAnimator="@animator/draggable_state_list_anim">
+    android:stateListAnimator="@animator/draggable_state_list_anim"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,14 +16,16 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingStart="8dp"
-        android:paddingEnd="0dp">
+        android:paddingEnd="0dp"
+        >
 
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:contentDescription="@string/account_settings_action"
             android:padding="8dp"
-            app:srcCompat="@drawable/ic_mail" />
+            app:srcCompat="@drawable/ic_mail"
+            />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -32,7 +36,8 @@
             android:gravity="center_vertical"
             android:paddingBottom="4dp"
             android:paddingStart="24dp"
-            android:paddingEnd="16dp">
+            android:paddingEnd="16dp"
+            >
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/name"
@@ -44,7 +49,8 @@
                 android:paddingBottom="4dp"
                 android:singleLine="true"
                 android:textAppearance="?attr/textAppearanceTitleMedium"
-                tools:text="Personal" />
+                tools:text="Personal"
+                />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/email"
@@ -54,7 +60,8 @@
                 android:paddingBottom="4dp"
                 android:singleLine="true"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
-                tools:text="test@example.org" />
+                tools:text="test@example.org"
+                />
 
         </LinearLayout>
 
@@ -65,7 +72,8 @@
             android:layout_height="match_parent"
             android:contentDescription="@null"
             android:padding="16dp"
-            app:srcCompat="@drawable/ic_drag_handle" />
+            app:srcCompat="@drawable/ic_drag_handle"
+            />
 
     </LinearLayout>
 

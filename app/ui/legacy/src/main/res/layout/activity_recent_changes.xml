@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".changelog.RecentChangesActivity">
+    tools:context=".changelog.RecentChangesActivity"
+    >
 
     <include layout="@layout/toolbar" />
 
@@ -14,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        tools:layout="@layout/fragment_changelog" />
+        tools:layout="@layout/fragment_changelog"
+        />
 
 </LinearLayout>

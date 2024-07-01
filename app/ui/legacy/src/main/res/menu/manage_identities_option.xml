@@ -4,5 +4,5 @@
         android:id="@+id/new_identity"
         android:title="@string/new_identity_action"
         android:icon="@drawable/ic_add"
-    />
+        />
 </menu>

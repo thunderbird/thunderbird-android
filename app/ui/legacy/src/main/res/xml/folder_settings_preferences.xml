@@ -14,16 +14,18 @@
      limitations under the License.
 -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
-    <PreferenceCategory
-        android:key="folder_settings">
+    <PreferenceCategory android:key="folder_settings">
 
         <CheckBoxPreference
             android:key="folder_settings_in_top_group"
             android:title="@string/folder_settings_in_top_group_label"
-            android:summary="@string/folder_settings_in_top_group_summary" />
+            android:summary="@string/folder_settings_in_top_group_summary"
+            />
 
         <ListPreference
             android:key="folder_settings_folder_display_mode"
@@ -31,7 +33,8 @@
             app:useSimpleSummaryProvider="true"
             android:entries="@array/folder_settings_folder_display_mode_entries"
             android:entryValues="@array/folder_settings_folder_display_mode_values"
-            android:dialogTitle="@string/folder_settings_folder_display_mode_label" />
+            android:dialogTitle="@string/folder_settings_folder_display_mode_label"
+            />
 
         <ListPreference
             android:key="folder_settings_folder_sync_mode"
@@ -39,7 +42,8 @@
             app:useSimpleSummaryProvider="true"
             android:entries="@array/folder_settings_folder_sync_mode_entries"
             android:entryValues="@array/folder_settings_folder_sync_mode_values"
-            android:dialogTitle="@string/folder_settings_folder_sync_mode_label" />
+            android:dialogTitle="@string/folder_settings_folder_sync_mode_label"
+            />
 
         <ListPreference
             android:key="folder_settings_folder_push_mode"
@@ -47,7 +51,8 @@
             app:useSimpleSummaryProvider="true"
             android:entries="@array/folder_settings_folder_push_mode_entries"
             android:entryValues="@array/folder_settings_folder_push_mode_values"
-            android:dialogTitle="@string/folder_settings_folder_push_mode_label" />
+            android:dialogTitle="@string/folder_settings_folder_push_mode_label"
+            />
 
         <ListPreference
             android:key="folder_settings_folder_notify_mode"
@@ -55,12 +60,14 @@
             app:useSimpleSummaryProvider="true"
             android:entries="@array/folder_settings_folder_notify_mode_entries"
             android:entryValues="@array/folder_settings_folder_notify_mode_values"
-            android:dialogTitle="@string/folder_settings_folder_notify_mode_label" />
+            android:dialogTitle="@string/folder_settings_folder_notify_mode_label"
+            />
 
         <CheckBoxPreference
             android:key="folder_settings_include_in_integrated_inbox"
             android:title="@string/folder_settings_include_in_integrated_inbox_label"
-            android:summary="@string/folder_settings_include_in_integrated_inbox_summary" />
+            android:summary="@string/folder_settings_include_in_integrated_inbox_summary"
+            />
 
     </PreferenceCategory>
 

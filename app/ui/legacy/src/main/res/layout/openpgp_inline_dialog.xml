@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="10dp"
-    tools:context="com.fsck.k9.activity.compose.PgpInlineDialog">
+    tools:context="com.fsck.k9.activity.compose.PgpInlineDialog"
+    >
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -49,7 +51,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        tools:ignore="UseCompoundDrawables">
+        tools:ignore="UseCompoundDrawables"
+        >
 
         <ImageView
             android:layout_width="wrap_content"
@@ -65,7 +68,7 @@
             android:layout_marginRight="4dp"
             android:textAppearance="?android:textAppearanceSmall"
             android:text="@string/openpgp_inline_plus_compat"
-        />
+            />
 
     </LinearLayout>
 
@@ -73,7 +76,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        tools:ignore="UseCompoundDrawables">
+        tools:ignore="UseCompoundDrawables"
+        >
 
         <ImageView
             android:layout_width="wrap_content"
@@ -98,7 +102,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginBottom="4dp"
-        tools:ignore="UseCompoundDrawables">
+        tools:ignore="UseCompoundDrawables"
+        >
 
         <ImageView
             android:layout_width="wrap_content"

@@ -7,7 +7,8 @@
     android:background="?attr/messageListRegularItemBackgroundColor"
     android:foreground="?attr/selectableItemBackground"
     android:gravity="center"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    >
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/main_text"

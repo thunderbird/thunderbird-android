@@ -5,17 +5,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:search="http://schemas.android.com/apk/com.bytehamster.lib.preferencesearch"
     android:title="@string/general_settings_title"
-    search:ignore="true">
+    search:ignore="true"
+    >
 
     <PreferenceScreen
         android:icon="@drawable/ic_monitor"
         android:key="display_preferences"
         android:title="@string/display_preferences"
-        search:ignore="true">
+        search:ignore="true"
+        >
 
         <PreferenceCategory
             android:key="global_preferences"
-            android:title="@string/global_preferences">
+            android:title="@string/global_preferences"
+            >
 
             <com.fsck.k9.ui.settings.general.LanguagePreference
                 android:dialogTitle="@string/settings_language_label"
@@ -23,7 +26,8 @@
                 android:entryValues="@array/language_values"
                 android:key="language"
                 app:useSimpleSummaryProvider="true"
-                android:title="@string/settings_language_label" />
+                android:title="@string/settings_language_label"
+                />
 
             <ListPreference
                 android:dialogTitle="@string/settings_theme_label"
@@ -31,14 +35,16 @@
                 android:entryValues="@array/theme_values"
                 android:key="theme"
                 app:useSimpleSummaryProvider="true"
-                android:title="@string/settings_theme_label" />
+                android:title="@string/settings_theme_label"
+                />
 
             <CheckBoxPreference
                 android:key="fixed_message_view_theme"
                 android:summaryOff="@string/settings_message_theme_selection_summary_off"
                 android:summaryOn="@string/settings_message_theme_selection_summary_on"
                 search:summary=""
-                android:title="@string/settings_message_theme_selection_label" />
+                android:title="@string/settings_message_theme_selection_label"
+                />
 
             <ListPreference
                 android:dependency="fixed_message_view_theme"
@@ -47,7 +53,8 @@
                 android:entryValues="@array/message_theme_values"
                 android:key="messageViewTheme"
                 app:useSimpleSummaryProvider="true"
-                android:title="@string/settings_message_theme_label" />
+                android:title="@string/settings_message_theme_label"
+                />
 
             <ListPreference
                 android:dialogTitle="@string/settings_compose_theme_label"
@@ -55,16 +62,19 @@
                 android:entryValues="@array/message_theme_values"
                 android:key="message_compose_theme"
                 app:useSimpleSummaryProvider="true"
-                android:title="@string/settings_compose_theme_label" />
+                android:title="@string/settings_compose_theme_label"
+                />
 
             <PreferenceScreen
                 android:key="font_size"
                 android:summary="@string/font_size_settings_description"
-                android:title="@string/font_size_settings_title">
+                android:title="@string/font_size_settings_title"
+                >
 
                 <PreferenceCategory
                     android:title="@string/font_size_message_list"
-                    android:key="message_list_fonts">
+                    android:key="message_list_fonts"
+                    >
 
                     <ListPreference
                         android:key="message_list_subject_font"
@@ -72,7 +82,8 @@
                         app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
-                        android:dialogTitle="@string/font_size_message_list_subject" />
+                        android:dialogTitle="@string/font_size_message_list_subject"
+                        />
 
                     <ListPreference
                         android:key="message_list_sender_font"
@@ -80,7 +91,8 @@
                         app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
-                        android:dialogTitle="@string/font_size_message_list_sender" />
+                        android:dialogTitle="@string/font_size_message_list_sender"
+                        />
 
                     <ListPreference
                         android:key="message_list_date_font"
@@ -88,7 +100,8 @@
                         app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
-                        android:dialogTitle="@string/font_size_message_list_date" />
+                        android:dialogTitle="@string/font_size_message_list_date"
+                        />
 
                     <ListPreference
                         android:key="message_list_preview_font"
@@ -96,13 +109,15 @@
                         app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
-                        android:dialogTitle="@string/font_size_message_list_preview" />
+                        android:dialogTitle="@string/font_size_message_list_preview"
+                        />
 
                 </PreferenceCategory>
 
                 <PreferenceCategory
                     android:title="@string/font_size_message_view"
-                    android:key="message_view_fonts">
+                    android:key="message_view_fonts"
+                    >
 
                     <ListPreference
                         android:key="message_view_account_name_font"
@@ -110,7 +125,8 @@
                         app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
-                        android:dialogTitle="@string/font_size_message_view_account" />
+                        android:dialogTitle="@string/font_size_message_view_account"
+                        />
 
                     <ListPreference
                         android:key="message_view_subject_font"
@@ -118,7 +134,8 @@
                         app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
-                        android:dialogTitle="@string/font_size_message_view_subject" />
+                        android:dialogTitle="@string/font_size_message_view_subject"
+                        />
 
                     <ListPreference
                         android:key="message_view_sender_font"
@@ -126,7 +143,8 @@
                         app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
-                        android:dialogTitle="@string/font_size_message_view_sender" />
+                        android:dialogTitle="@string/font_size_message_view_sender"
+                        />
 
                     <ListPreference
                         android:key="message_view_date_font"
@@ -134,7 +152,8 @@
                         app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
-                        android:dialogTitle="@string/font_size_message_view_date" />
+                        android:dialogTitle="@string/font_size_message_view_date"
+                        />
 
                     <ListPreference
                         android:key="message_view_recipients_font"
@@ -142,20 +161,23 @@
                         app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
-                        android:dialogTitle="@string/font_size_message_view_recipients" />
+                        android:dialogTitle="@string/font_size_message_view_recipients"
+                        />
 
                     <SeekBarPreference
                         android:key="message_view_content_font_slider"
                         android:title="@string/font_size_message_view_content"
                         app:showSeekBarValue="true"
                         app:min="40"
-                        android:max="250" />
+                        android:max="250"
+                        />
 
                 </PreferenceCategory>
 
                 <PreferenceCategory
                     android:title="@string/font_size_message_compose"
-                    android:key="message_compose_fonts">
+                    android:key="message_compose_fonts"
+                    >
 
                     <ListPreference
                         android:key="message_compose_input_font"
@@ -163,7 +185,8 @@
                         app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
-                        android:dialogTitle="@string/font_size_message_compose_input" />
+                        android:dialogTitle="@string/font_size_message_compose_input"
+                        />
 
                 </PreferenceCategory>
 
@@ -172,27 +195,32 @@
             <CheckBoxPreference
                 android:key="animations"
                 android:summary="@string/animations_summary"
-                android:title="@string/animations_title" />
+                android:title="@string/animations_title"
+                />
 
         </PreferenceCategory>
 
         <PreferenceCategory
             android:key="accountlist_preferences"
-            android:title="@string/accountlist_preferences">
+            android:title="@string/accountlist_preferences"
+            >
 
             <CheckBoxPreference
                 android:key="show_unified_inbox"
-                android:title="@string/show_unified_inbox_title" />
+                android:title="@string/show_unified_inbox_title"
+                />
 
             <CheckBoxPreference
                 android:key="show_starred_count"
-                android:title="@string/show_starred_count_title" />
+                android:title="@string/show_starred_count_title"
+                />
 
         </PreferenceCategory>
 
         <PreferenceCategory
             android:key="messagelist_preferences"
-            android:title="@string/messagelist_preferences">
+            android:title="@string/messagelist_preferences"
+            >
 
             <ListPreference
                 android:dialogTitle="@string/general_settings_message_list_density_title"
@@ -200,7 +228,8 @@
                 android:entryValues="@array/message_list_density_values"
                 android:key="message_list_density"
                 app:useSimpleSummaryProvider="true"
-                android:title="@string/general_settings_message_list_density_title" />
+                android:title="@string/general_settings_message_list_density_title"
+                />
 
             <ListPreference
                 android:dialogTitle="@string/global_settings_preview_lines_label"
@@ -208,65 +237,77 @@
                 android:entryValues="@array/preview_lines_values"
                 android:key="messagelist_preview_lines"
                 app:useSimpleSummaryProvider="true"
-                android:title="@string/global_settings_preview_lines_label" />
+                android:title="@string/global_settings_preview_lines_label"
+                />
 
             <CheckBoxPreference
                 android:key="messagelist_stars"
                 android:summary="@string/global_settings_flag_summary"
-                android:title="@string/global_settings_flag_label" />
+                android:title="@string/global_settings_flag_label"
+                />
 
             <CheckBoxPreference
                 android:key="messagelist_show_correspondent_names"
                 android:summary="@string/global_settings_show_correspondent_names_summary"
-                android:title="@string/global_settings_show_correspondent_names_label" />
+                android:title="@string/global_settings_show_correspondent_names_label"
+                />
 
             <CheckBoxPreference
                 android:key="messagelist_sender_above_subject"
                 android:summary="@string/global_settings_sender_above_subject_summary"
-                android:title="@string/global_settings_sender_above_subject_label" />
+                android:title="@string/global_settings_sender_above_subject_label"
+                />
 
             <CheckBoxPreference
                 android:dependency="messagelist_show_correspondent_names"
                 android:key="messagelist_show_contact_name"
                 android:summary="@string/global_settings_show_contact_name_summary"
-                android:title="@string/global_settings_show_contact_name_label" />
+                android:title="@string/global_settings_show_contact_name_label"
+                />
 
             <CheckBoxPreference
                 android:dependency="messagelist_show_contact_name"
                 android:key="messagelist_change_contact_name_color"
                 android:summary="@string/global_settings_registered_name_color_changed"
-                android:title="@string/global_settings_registered_name_color_label" />
+                android:title="@string/global_settings_registered_name_color_label"
+                />
 
             <com.takisoft.preferencex.ColorPickerPreference
                 android:dependency="messagelist_change_contact_name_color"
                 android:key="messagelist_contact_name_color"
                 android:title="@string/general_settings_contact_name_color_label"
-                android:defaultValue="#FF1093F5" />
+                android:defaultValue="#FF1093F5"
+                />
 
             <CheckBoxPreference
                 android:key="messagelist_show_contact_picture"
                 android:summary="@string/global_settings_show_contact_picture_summary"
-                android:title="@string/global_settings_show_contact_picture_label" />
+                android:title="@string/global_settings_show_contact_picture_label"
+                />
 
             <CheckBoxPreference
                 android:dependency="messagelist_show_contact_picture"
                 android:key="messagelist_colorize_missing_contact_pictures"
                 android:summary="@string/global_settings_colorize_missing_contact_pictures_summary"
-                android:title="@string/global_settings_colorize_missing_contact_pictures_label" />
+                android:title="@string/global_settings_colorize_missing_contact_pictures_label"
+                />
 
             <CheckBoxPreference
                 android:key="messagelist_background_as_unread_indicator"
                 android:summary="@string/global_settings_background_as_unread_indicator_summary"
-                android:title="@string/global_settings_background_as_unread_indicator_label" />
+                android:title="@string/global_settings_background_as_unread_indicator_label"
+                />
 
             <CheckBoxPreference
                 android:key="threaded_view"
                 android:summary="@string/global_settings_threaded_view_summary"
-                android:title="@string/global_settings_threaded_view_label" />
+                android:title="@string/global_settings_threaded_view_label"
+                />
 
             <CheckBoxPreference
                 android:key="show_compose_button"
-                android:title="@string/general_settings_show_compose_button_title" />
+                android:title="@string/general_settings_show_compose_button_title"
+                />
 
             <ListPreference
                 android:dialogTitle="@string/global_settings_splitview_mode_label"
@@ -274,18 +315,21 @@
                 android:entryValues="@array/splitview_mode_values"
                 android:key="splitview_mode"
                 app:useSimpleSummaryProvider="true"
-                android:title="@string/global_settings_splitview_mode_label" />
+                android:title="@string/global_settings_splitview_mode_label"
+                />
 
         </PreferenceCategory>
 
         <PreferenceCategory
             android:key="messageview_preferences"
-            android:title="@string/messageview_preferences">
+            android:title="@string/messageview_preferences"
+            >
 
             <CheckBoxPreference
                 android:key="messageview_fixedwidth_font"
                 android:summary="@string/global_settings_messageview_fixedwidth_summary"
-                android:title="@string/global_settings_messageview_fixedwidth_label" />
+                android:title="@string/global_settings_messageview_fixedwidth_label"
+                />
 
             <MultiSelectListPreference
                 android:dialogTitle="@string/global_settings_messageview_visible_refile_actions_title"
@@ -293,12 +337,14 @@
                 android:entryValues="@array/messageview_visible_refile_actions_values"
                 android:key="messageview_visible_refile_actions"
                 android:summary="@string/global_settings_messageview_visible_refile_actions_summary"
-                android:title="@string/global_settings_messageview_visible_refile_actions_title" />
+                android:title="@string/global_settings_messageview_visible_refile_actions_title"
+                />
 
             <CheckBoxPreference
                 android:key="messageview_autofit_width"
                 android:summary="@string/global_settings_messageview_autofit_width_summary"
-                android:title="@string/global_settings_messageview_autofit_width_label" />
+                android:title="@string/global_settings_messageview_autofit_width_label"
+                />
 
         </PreferenceCategory>
 
@@ -308,11 +354,13 @@
         android:icon="@drawable/ic_touch_app"
         android:key="interaction_preferences"
         android:title="@string/interaction_preferences"
-        search:ignore="true">
+        search:ignore="true"
+        >
 
         <CheckBoxPreference
             android:key="volume_navigation"
-            android:title="@string/volume_navigation_title" />
+            android:title="@string/volume_navigation_title"
+            />
 
         <ListPreference
             android:dialogTitle="@string/general_settings_post_remove_action_title"
@@ -320,7 +368,8 @@
             android:entryValues="@array/post_remove_navigation_values"
             android:key="post_remove_navigation"
             android:title="@string/general_settings_post_remove_action_title"
-            app:useSimpleSummaryProvider="true" />
+            app:useSimpleSummaryProvider="true"
+            />
 
         <ListPreference
             android:dialogTitle="@string/general_settings_post_mark_as_unread_action_title"
@@ -328,7 +377,8 @@
             android:entryValues="@array/post_mark_as_unread_navigation_values"
             android:key="post_mark_as_unread_navigation"
             android:title="@string/general_settings_post_mark_as_unread_action_title"
-            app:useSimpleSummaryProvider="true" />
+            app:useSimpleSummaryProvider="true"
+            />
 
         <MultiSelectListPreference
             android:dialogTitle="@string/global_settings_confirm_actions_title"
@@ -336,12 +386,14 @@
             android:entryValues="@array/confirm_action_values"
             android:key="confirm_actions"
             android:summary="@string/global_settings_confirm_actions_summary"
-            android:title="@string/global_settings_confirm_actions_title" />
+            android:title="@string/global_settings_confirm_actions_title"
+            />
 
         <PreferenceScreen
             android:key="swipe_actions"
             android:title="@string/general_settings_swipe_actions_title"
-            search:ignore="true">
+            search:ignore="true"
+            >
 
             <ListPreference
                 android:dialogTitle="@string/general_settings_right_swipe_title"
@@ -349,7 +401,8 @@
                 android:entryValues="@array/swipe_action_values"
                 android:key="swipe_action_right"
                 app:useSimpleSummaryProvider="true"
-                android:title="@string/general_settings_right_swipe_title" />
+                android:title="@string/general_settings_right_swipe_title"
+                />
 
             <ListPreference
                 android:dialogTitle="@string/general_settings_left_swipe_title"
@@ -357,7 +410,8 @@
                 android:entryValues="@array/swipe_action_values"
                 android:key="swipe_action_left"
                 app:useSimpleSummaryProvider="true"
-                android:title="@string/general_settings_left_swipe_title" />
+                android:title="@string/general_settings_left_swipe_title"
+                />
 
         </PreferenceScreen>
 
@@ -367,18 +421,21 @@
         android:icon="@drawable/ic_notifications"
         android:key="notification_preferences"
         android:title="@string/notifications_title"
-        search:ignore="true">
+        search:ignore="true"
+        >
 
         <CheckBoxPreference
             android:key="quiet_time_enabled"
             android:summary="@string/quiet_time_description"
-            android:title="@string/quiet_time" />
+            android:title="@string/quiet_time"
+            />
 
         <CheckBoxPreference
             android:dependency="quiet_time_enabled"
             android:key="disable_notifications_during_quiet_time"
             android:summary="@string/quiet_time_notification_description"
-            android:title="@string/quiet_time_notification" />
+            android:title="@string/quiet_time_notification"
+            />
 
         <com.takisoft.preferencex.TimePickerPreference
             android:dependency="quiet_time_enabled"
@@ -386,7 +443,8 @@
             android:title="@string/quiet_time_starts"
             app:pref_hourFormat="h24"
             search:summary=""
-            app:pref_summaryHasTime="%s" />
+            app:pref_summaryHasTime="%s"
+            />
 
         <com.takisoft.preferencex.TimePickerPreference
             android:dependency="quiet_time_enabled"
@@ -394,7 +452,8 @@
             android:title="@string/quiet_time_ends"
             app:pref_hourFormat="h24"
             search:summary=""
-            app:pref_summaryHasTime="%s" />
+            app:pref_summaryHasTime="%s"
+            />
 
         <ListPreference
             android:dialogTitle="@string/global_settings_notification_quick_delete_title"
@@ -402,7 +461,8 @@
             android:entryValues="@array/notification_quick_delete_values"
             android:key="notification_quick_delete"
             app:useSimpleSummaryProvider="true"
-            android:title="@string/global_settings_notification_quick_delete_title" />
+            android:title="@string/global_settings_notification_quick_delete_title"
+            />
 
         <ListPreference
             android:dialogTitle="@string/global_settings_lock_screen_notification_visibility_title"
@@ -410,7 +470,8 @@
             android:entryValues="@array/lock_screen_notification_visibility_values"
             android:key="lock_screen_notification_visibility"
             app:useSimpleSummaryProvider="true"
-            android:title="@string/global_settings_lock_screen_notification_visibility_title" />
+            android:title="@string/global_settings_lock_screen_notification_visibility_title"
+            />
 
     </PreferenceScreen>
 
@@ -418,7 +479,8 @@
         android:icon="@drawable/ic_swap_vert"
         android:key="network_preferences"
         android:title="@string/network_preferences"
-        search:ignore="true">
+        search:ignore="true"
+        >
 
         <ListPreference
             android:dialogTitle="@string/background_ops_label"
@@ -426,7 +488,8 @@
             android:entryValues="@array/background_ops_values"
             android:key="background_ops"
             app:useSimpleSummaryProvider="true"
-            android:title="@string/background_ops_label" />
+            android:title="@string/background_ops_label"
+            />
 
     </PreferenceScreen>
 
@@ -434,17 +497,20 @@
         android:icon="@drawable/ic_security"
         android:key="privacy_preferences"
         android:title="@string/privacy_preferences"
-        search:ignore="true">
+        search:ignore="true"
+        >
 
         <CheckBoxPreference
             android:key="privacy_hide_useragent"
             android:summary="@string/global_settings_privacy_hide_useragent_detail"
-            android:title="@string/global_settings_privacy_hide_useragent" />
+            android:title="@string/global_settings_privacy_hide_useragent"
+            />
 
         <CheckBoxPreference
             android:key="privacy_hide_timezone"
             android:summary="@string/global_settings_privacy_hide_timezone_detail"
-            android:title="@string/global_settings_privacy_hide_timezone" />
+            android:title="@string/global_settings_privacy_hide_timezone"
+            />
 
     </PreferenceScreen>
 
@@ -452,17 +518,20 @@
         android:icon="@drawable/ic_bug_report"
         android:key="debug_preferences"
         android:title="@string/debug_preferences"
-        search:ignore="true">
+        search:ignore="true"
+        >
 
         <CheckBoxPreference
             android:key="debug_logging"
             android:summary="@string/debug_enable_debug_logging_summary"
-            android:title="@string/debug_enable_debug_logging_title" />
+            android:title="@string/debug_enable_debug_logging_title"
+            />
 
         <CheckBoxPreference
             android:key="sensitive_logging"
             android:summary="@string/debug_enable_sensitive_logging_summary"
-            android:title="@string/debug_enable_sensitive_logging_title" />
+            android:title="@string/debug_enable_sensitive_logging_title"
+            />
 
     </PreferenceScreen>
 

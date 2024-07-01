@@ -4,25 +4,25 @@
     <declare-styleable name="K9Styles">
         <attr name="textColorPrimaryRecipientDropdown" format="reference" />
         <attr name="textColorSecondaryRecipientDropdown" format="reference" />
-        <attr name="messageListRegularItemBackgroundColor" format="reference|color"/>
-        <attr name="messageListReadItemBackgroundColor" format="reference|color"/>
-        <attr name="messageListUnreadItemBackgroundColor" format="reference|color"/>
-        <attr name="messageListActiveItemBackgroundColor" format="reference|color"/>
-        <attr name="messageListActiveItemBackgroundAlphaFraction" format="fraction"/>
-        <attr name="messageListActiveItemBackgroundAlphaBackground" format="reference|color"/>
-        <attr name="messageListSwipeSelectColor" format="reference|color"/>
-        <attr name="messageListSwipeToggleReadColor" format="reference|color"/>
-        <attr name="messageListSwipeToggleStarColor" format="reference|color"/>
-        <attr name="messageListSwipeArchiveColor" format="reference|color"/>
-        <attr name="messageListSwipeDeleteColor" format="reference|color"/>
-        <attr name="messageListSwipeSpamColor" format="reference|color"/>
-        <attr name="messageListSwipeMoveColor" format="reference|color"/>
-        <attr name="contactPictureFallbackDefaultBackgroundColor" format="reference|color"/>
-        <attr name="contactPictureFallbackBackgroundColors" format="reference"/>
-        <attr name="contactTokenBackgroundColor" format="reference|color"/>
-        <attr name="tintColorBulletPointPositive" format="reference|color"/>
-        <attr name="tintColorBulletPointNeutral" format="reference|color"/>
-        <attr name="tintColorBulletPointNegative" format="reference|color"/>
+        <attr name="messageListRegularItemBackgroundColor" format="reference|color" />
+        <attr name="messageListReadItemBackgroundColor" format="reference|color" />
+        <attr name="messageListUnreadItemBackgroundColor" format="reference|color" />
+        <attr name="messageListActiveItemBackgroundColor" format="reference|color" />
+        <attr name="messageListActiveItemBackgroundAlphaFraction" format="fraction" />
+        <attr name="messageListActiveItemBackgroundAlphaBackground" format="reference|color" />
+        <attr name="messageListSwipeSelectColor" format="reference|color" />
+        <attr name="messageListSwipeToggleReadColor" format="reference|color" />
+        <attr name="messageListSwipeToggleStarColor" format="reference|color" />
+        <attr name="messageListSwipeArchiveColor" format="reference|color" />
+        <attr name="messageListSwipeDeleteColor" format="reference|color" />
+        <attr name="messageListSwipeSpamColor" format="reference|color" />
+        <attr name="messageListSwipeMoveColor" format="reference|color" />
+        <attr name="contactPictureFallbackDefaultBackgroundColor" format="reference|color" />
+        <attr name="contactPictureFallbackBackgroundColors" format="reference" />
+        <attr name="contactTokenBackgroundColor" format="reference|color" />
+        <attr name="tintColorBulletPointPositive" format="reference|color" />
+        <attr name="tintColorBulletPointNeutral" format="reference|color" />
+        <attr name="tintColorBulletPointNegative" format="reference|color" />
 
         <attr name="openpgp_black" format="reference|color" />
         <attr name="openpgp_orange" format="reference|color" />
@@ -55,7 +55,7 @@
 
     <declare-styleable name="DraggableFrameView">
         <!-- State when a list item is being dragged. -->
-        <attr format="boolean" name="state_dragged"/>
+        <attr format="boolean" name="state_dragged" />
     </declare-styleable>
 
 </resources>

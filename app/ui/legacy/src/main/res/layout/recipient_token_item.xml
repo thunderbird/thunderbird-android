@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.fsck.k9.ui.compose.RecipientTokenConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.fsck.k9.ui.compose.RecipientTokenConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    >
 
     <View
         android:id="@+id/background"
@@ -13,7 +15,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/background_position_helper"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <com.fsck.k9.ui.compose.RecipientCircleImageView
         android:id="@+id/contact_photo"
@@ -25,7 +28,8 @@
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@android:id/text1"
-        tools:src="@drawable/ic_account_circle" />
+        tools:src="@drawable/ic_account_circle"
+        />
 
     <View
         android:id="@+id/background_position_helper"
@@ -35,7 +39,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/contact_photo"
         app:layout_constraintEnd_toEndOf="@+id/contact_photo"
         app:layout_constraintStart_toStartOf="@+id/contact_photo"
-        app:layout_constraintTop_toTopOf="@+id/contact_photo" />
+        app:layout_constraintTop_toTopOf="@+id/contact_photo"
+        />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@android:id/text1"
@@ -52,7 +57,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/contact_photo"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Jane Doe" />
+        tools:text="Jane Doe"
+        />
 
     <ImageView
         android:id="@+id/contact_crypto_status_icon_simple"
@@ -64,7 +70,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_status_corner"
         app:tint="?openpgp_black"
-        tools:visibility="gone" />
+        tools:visibility="gone"
+        />
 
     <ImageView
         android:id="@+id/contact_crypto_status_icon_simple_enabled"
@@ -76,7 +83,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_status_corner"
         app:tint="?openpgp_green"
-        tools:visibility="gone" />
+        tools:visibility="gone"
+        />
 
     <ImageView
         android:id="@+id/contact_crypto_status_icon_simple_error"
@@ -88,7 +96,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_status_corner"
         app:tint="?openpgp_red"
-        tools:visibility="gone" />
+        tools:visibility="gone"
+        />
 
     <ImageView
         android:id="@+id/contact_crypto_status_red"
@@ -103,7 +112,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/status_dots_1"
         app:tint="?attr/openpgp_red"
-        tools:visibility="gone" />
+        tools:visibility="gone"
+        />
 
     <ImageView
         android:id="@+id/contact_crypto_status_orange"
@@ -118,7 +128,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/status_dots_2"
         app:tint="?attr/openpgp_orange"
-        tools:visibility="gone" />
+        tools:visibility="gone"
+        />
 
     <ImageView
         android:id="@+id/contact_crypto_status_green"
@@ -131,6 +142,7 @@
         app:layout_constraintStart_toEndOf="@android:id/text1"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/status_dots_3"
-        app:tint="?attr/openpgp_green" />
+        app:tint="?attr/openpgp_green"
+        />
 
 </com.fsck.k9.ui.compose.RecipientTokenConstraintLayout>

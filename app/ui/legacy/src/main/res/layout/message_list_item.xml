@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:foreground="?attr/selectableItemBackground">
+    android:foreground="?attr/selectableItemBackground"
+    >
 
     <Space
         android:id="@+id/margin_start"
         android:layout_width="@dimen/messageListHorizontalPadding"
         android:layout_height="match_parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        />
 
     <ImageView
         android:id="@+id/selected"
@@ -27,7 +30,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/top_guideline"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/ic_check" />
+        app:srcCompat="@drawable/ic_check"
+        />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/contact_picture"
@@ -40,7 +44,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/top_guideline"
         app:layout_constraintVertical_bias="0.0"
-        tools:src="@drawable/ic_person" />
+        tools:src="@drawable/ic_person"
+        />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/preview"
@@ -59,7 +64,8 @@
         app:layout_constraintVertical_bias="0.0"
         app:layout_goneMarginEnd="@dimen/messageListHorizontalPadding"
         tools:maxLines="2"
-        tools:text="Sender – Message preview text that can span multiple lines. Users can specify in settings how much of that is displayed." />
+        tools:text="Sender – Message preview text that can span multiple lines. Users can specify in settings how much of that is displayed."
+        />
 
     <ImageView
         android:id="@+id/account_color_chip"
@@ -72,7 +78,8 @@
         app:layout_constraintStart_toEndOf="@+id/barrier_start"
         app:layout_constraintTop_toTopOf="@+id/subject"
         app:srcCompat="@drawable/ic_account_color"
-        tools:tint="@color/material_blue_700" />
+        tools:tint="@color/material_blue_700"
+        />
 
     <ImageView
         android:id="@+id/status"
@@ -83,7 +90,8 @@
         app:layout_constraintTop_toTopOf="@+id/top_guideline"
         app:layout_constraintBottom_toBottomOf="@+id/subject"
         app:srcCompat="@drawable/ic_reply"
-        tools:ignore="RtlSymmetry" />
+        tools:ignore="RtlSymmetry"
+        />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/subject"
@@ -99,7 +107,8 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toEndOf="@+id/status"
         app:layout_constraintTop_toTopOf="@+id/top_guideline"
-        tools:text="Subject" />
+        tools:text="Subject"
+        />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/thread_count"
@@ -114,7 +123,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/subject"
         app:layout_goneMarginEnd="8dp"
-        tools:text="3" />
+        tools:text="3"
+        />
 
     <ImageView
         android:id="@+id/attachment"
@@ -123,7 +133,8 @@
         android:layout_marginEnd="4dp"
         app:layout_constraintEnd_toStartOf="@+id/date"
         app:layout_constraintTop_toTopOf="@+id/top_guideline"
-        app:srcCompat="@drawable/ic_attachment" />
+        app:srcCompat="@drawable/ic_attachment"
+        />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/date"
@@ -135,7 +146,8 @@
         android:textColor="?attr/colorSecondary"
         app:layout_constraintBaseline_toBaselineOf="@+id/subject"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Oct 27" />
+        tools:text="Oct 27"
+        />
 
     <ImageView
         android:id="@+id/star"
@@ -147,42 +159,48 @@
         app:layout_constraintBottom_toBottomOf="@+id/bottom_guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/preview"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/start_keyline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="72dp" />
+        app:layout_constraintGuide_begin="72dp"
+        />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/top_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="@dimen/messageListDefaultVerticalPadding" />
+        app:layout_constraintGuide_begin="@dimen/messageListDefaultVerticalPadding"
+        />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/bottom_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_end="@dimen/messageListDefaultVerticalPadding" />
+        app:layout_constraintGuide_end="@dimen/messageListDefaultVerticalPadding"
+        />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier_first_line_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="subject,date,thread_count,status,attachment,account_color_chip" />
+        app:constraint_referenced_ids="subject,date,thread_count,status,attachment,account_color_chip"
+        />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="end"
-        app:constraint_referenced_ids="margin_start,contact_picture_click_area" />
+        app:constraint_referenced_ids="margin_start,contact_picture_click_area"
+        />
 
     <View
         android:id="@+id/divider"
@@ -191,7 +209,8 @@
         android:background="?android:attr/listDivider"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/contact_picture_click_area" />
+        app:layout_constraintStart_toEndOf="@+id/contact_picture_click_area"
+        />
 
     <View
         android:id="@+id/star_click_area"
@@ -199,7 +218,8 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <View
         android:id="@+id/contact_picture_click_area"
@@ -207,6 +227,7 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

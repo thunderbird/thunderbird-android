@@ -1,69 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
     <item
         android:id="@+id/delete"
         android:title="@string/delete_action"
         app:showAsAction="always"
         android:icon="@drawable/ic_delete"
-    />
+        />
     <item
         android:id="@+id/mark_as_read"
         android:title="@string/mark_as_read_action"
         app:showAsAction="always"
         android:icon="@drawable/ic_mark_email_read"
-    />
+        />
     <item
         android:id="@+id/mark_as_unread"
         android:title="@string/mark_as_unread_action"
         app:showAsAction="always"
         android:icon="@drawable/ic_mark_email_unread"
-    />
+        />
     <item
         android:id="@+id/archive"
         android:title="@string/archive_action"
         app:showAsAction="always"
         android:icon="@drawable/ic_archive"
-    />
+        />
     <item
         android:id="@+id/move"
         android:title="@string/move_action"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_drive_file_move"
-    />
+        />
     <item
         android:id="@+id/move_to_drafts"
         android:title="@string/move_to_drafts_action"
         app:showAsAction="never"
         android:visible="false"
-    />
+        />
     <item
         android:id="@+id/copy"
         android:title="@string/copy_action"
         android:icon="@drawable/ic_content_copy"
-    />
+        />
     <item
         android:id="@+id/flag"
         android:title="@string/flag_action"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_star_filled"
-    />
+        />
     <item
         android:id="@+id/unflag"
         android:title="@string/unflag_action"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_star"
-    />
+        />
     <item
         android:id="@+id/spam"
         android:title="@string/spam_action"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_report"
-    />
+        />
     <item
         android:id="@+id/select_all"
         android:icon="@drawable/ic_select_all"
         app:showAsAction="never"
         android:title="@string/batch_select_all"
-    />
+        />
 </menu>

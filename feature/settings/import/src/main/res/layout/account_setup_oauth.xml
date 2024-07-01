@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="app.k9mail.feature.settings.import.ui.OAuthFlowActivity"
-    tools:ignore="ResourceName">
+    tools:ignore="ResourceName"
+    >
 
     <include layout="@layout/toolbar" />
 
@@ -15,28 +17,32 @@
         android:layout_weight="1"
         android:fadingEdge="none"
         android:padding="16dp"
-        android:scrollbarStyle="outsideInset">
+        android:scrollbarStyle="outsideInset"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
                 android:text="@string/settings_import_oauth_description"
-                android:textAppearance="?attr/textAppearanceBodyLarge" />
+                android:textAppearance="?attr/textAppearanceBodyLarge"
+                />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/oauth_sign_in_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/settings_import_oauth_sign_in"
-                android:visibility="gone" />
+                android:visibility="gone"
+                />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/google_sign_in_button"
@@ -48,13 +54,15 @@
                 android:textColor="#ffffff"
                 android:textSize="14sp"
                 android:visibility="gone"
-                tools:visibility="visible" />
+                tools:visibility="visible"
+                />
 
             <ProgressBar
                 android:id="@+id/sign_in_progress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone" />
+                android:visibility="gone"
+                />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/error_text"
@@ -62,7 +70,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:textAppearance="?attr/textAppearanceBodyLarge"
-                tools:text="@string/settings_import_oauth_error_browser_not_found" />
+                tools:text="@string/settings_import_oauth_error_browser_not_found"
+                />
 
         </LinearLayout>
 

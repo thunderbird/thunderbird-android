@@ -3,21 +3,26 @@
     <item
         android:drawable="@drawable/ic_check_circle"
         android:maxLevel="0"
-        android:minLevel="0" />
+        android:minLevel="0"
+        />
     <item
         android:drawable="@drawable/ic_key"
         android:maxLevel="1"
-        android:minLevel="1" />
+        android:minLevel="1"
+        />
     <item
         android:drawable="@drawable/ic_login"
         android:maxLevel="2"
-        android:minLevel="2" />
+        android:minLevel="2"
+        />
     <item
         android:drawable="@drawable/ic_block"
         android:maxLevel="3"
-        android:minLevel="3" />
+        android:minLevel="3"
+        />
     <item
         android:drawable="@drawable/ic_error"
         android:maxLevel="4"
-        android:minLevel="4" />
+        android:minLevel="4"
+        />
 </level-list>

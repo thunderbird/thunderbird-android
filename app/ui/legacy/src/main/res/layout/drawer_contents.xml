@@ -4,11 +4,13 @@
     android:id="@+id/material_drawer_swipe_refresh"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:layout_gravity="start">
+    android:layout_gravity="start"
+    >
 
     <com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
         android:id="@+id/material_drawer_slider"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        />
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

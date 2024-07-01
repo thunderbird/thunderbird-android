@@ -1,3 +1,6 @@
 <paths>
-    <cache-path name="temp" path="temp" />
+    <cache-path
+        name="temp"
+        path="temp"
+        />
 </paths>

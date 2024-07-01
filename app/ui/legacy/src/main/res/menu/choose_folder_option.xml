@@ -1,28 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <item
         android:id="@+id/filter_folders"
         android:icon="@drawable/ic_filter_list"
         android:title="@string/filter_folders_action"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="collapseActionView|ifRoom" />
+        app:showAsAction="collapseActionView|ifRoom"
+        />
     <item
         android:id="@+id/display_all"
-        android:title="@string/folder_list_display_mode_all" />
+        android:title="@string/folder_list_display_mode_all"
+        />
     <item
         android:id="@+id/display_1st_class"
-        android:title="@string/folder_list_display_mode_first_class" />
+        android:title="@string/folder_list_display_mode_first_class"
+        />
     <item
         android:id="@+id/display_1st_and_2nd_class"
-        android:title="@string/folder_list_display_mode_first_and_second_class" />
+        android:title="@string/folder_list_display_mode_first_and_second_class"
+        />
     <item
         android:id="@+id/display_not_second_class"
-        android:title="@string/folder_list_display_mode_not_second_class" />
+        android:title="@string/folder_list_display_mode_not_second_class"
+        />
     <item
         android:id="@+id/list_folders"
         android:icon="@drawable/ic_refresh"
-        android:title="@string/refresh_folders_action" />
+        android:title="@string/refresh_folders_action"
+        />
 
 </menu>

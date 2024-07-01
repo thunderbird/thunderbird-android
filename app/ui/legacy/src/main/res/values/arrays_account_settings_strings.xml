@@ -178,7 +178,7 @@
     </string-array>
 
     <string-array name="remote_search_num_results_entries">
-        <item >@string/account_settings_remote_search_num_results_entries_10</item>
+        <item>@string/account_settings_remote_search_num_results_entries_10</item>
         <item>@string/account_settings_remote_search_num_results_entries_25</item>
         <item>@string/account_settings_remote_search_num_results_entries_50</item>
         <item>@string/account_settings_remote_search_num_results_entries_100</item>

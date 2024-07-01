@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <!--
     The comments preceding the (top level) menu items denote which part of the combined message
@@ -14,7 +16,8 @@
         android:icon="@drawable/ic_search"
         android:title="@string/search_action"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        />
 
     <!-- MessageList -->
     <item
@@ -22,7 +25,8 @@
         android:icon="@drawable/ic_search"
         android:title="@string/action_remote_search"
         android:visible="false"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        />
 
     <!-- MessageView -->
     <item
@@ -30,7 +34,8 @@
         android:icon="@drawable/ic_delete"
         android:title="@string/delete_action"
         android:visible="false"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        />
 
     <!-- MessageView -->
     <item
@@ -38,7 +43,8 @@
         android:icon="@drawable/ic_mark_email_unread"
         android:title="@string/mark_as_unread_action"
         android:visible="false"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        />
 
     <!-- MessageView -->
     <item
@@ -46,7 +52,8 @@
         android:icon="@drawable/ic_archive"
         android:title="@string/archive_action"
         android:visible="false"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        />
 
     <!-- MessageView -->
     <item
@@ -54,7 +61,8 @@
         android:icon="@drawable/ic_report"
         android:title="@string/spam_action"
         android:visible="false"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        />
 
     <!-- MessageView -->
     <item
@@ -62,7 +70,8 @@
         android:icon="@drawable/ic_drive_file_move"
         android:title="@string/move_action"
         android:visible="false"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        />
 
     <!-- MessageView -->
     <item
@@ -70,37 +79,44 @@
         android:icon="@drawable/ic_content_copy"
         android:title="@string/copy_action"
         android:visible="false"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        />
 
     <!-- MessageView -->
     <item
         android:id="@+id/move_to_drafts"
         android:title="@string/move_to_drafts_action"
         android:visible="false"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        />
 
     <!-- MessageView -->
     <item
         android:id="@+id/refile"
         android:title="@string/refile_action"
         android:visible="false"
-        app:showAsAction="never">
+        app:showAsAction="never"
+        >
         <menu>
             <item
                 android:id="@+id/refile_archive"
-                android:title="@string/archive_action" />
+                android:title="@string/archive_action"
+                />
 
             <item
                 android:id="@+id/refile_spam"
-                android:title="@string/spam_action" />
+                android:title="@string/spam_action"
+                />
 
             <item
                 android:id="@+id/refile_move"
-                android:title="@string/move_action" />
+                android:title="@string/move_action"
+                />
 
             <item
                 android:id="@+id/refile_copy"
-                android:title="@string/copy_action" />
+                android:title="@string/copy_action"
+                />
         </menu>
     </item>
 
@@ -109,50 +125,61 @@
         android:id="@+id/unsubscribe"
         android:title="@string/unsubscribe_action"
         android:visible="false"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        />
 
     <!-- MessageView -->
     <item
         android:id="@+id/show_headers"
         android:title="@string/show_headers_action"
         android:visible="false"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        />
 
     <!-- always -->
     <item
         android:id="@+id/compose"
         android:icon="@drawable/ic_edit"
         android:title="@string/compose_action"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        />
 
     <!-- MessageList -->
     <item
         android:id="@+id/set_sort"
         android:icon="@drawable/ic_sort"
         android:title="@string/sort_by"
-        app:showAsAction="ifRoom">
+        app:showAsAction="ifRoom"
+        >
         <menu>
             <item
                 android:id="@+id/set_sort_date"
-                android:title="@string/sort_by_date" />
+                android:title="@string/sort_by_date"
+                />
             <item
                 android:id="@+id/set_sort_arrival"
-                android:title="@string/sort_by_arrival" />
+                android:title="@string/sort_by_arrival"
+                />
             <item
                 android:id="@+id/set_sort_subject"
-                android:title="@string/sort_by_subject" />
+                android:title="@string/sort_by_subject"
+                />
             <item
                 android:id="@+id/set_sort_sender"
-                android:title="@string/sort_by_sender" />
+                android:title="@string/sort_by_sender"
+                />
             <item
                 android:id="@+id/set_sort_flag"
-                android:title="@string/sort_by_flag" />
+                android:title="@string/sort_by_flag"
+                />
             <item
                 android:id="@+id/set_sort_unread"
-                android:title="@string/sort_by_unread" />
+                android:title="@string/sort_by_unread"
+                />
             <item
                 android:id="@+id/set_sort_attach"
-                android:title="@string/sort_by_attach" />
+                android:title="@string/sort_by_attach"
+                />
         </menu>
     </item>
 
@@ -161,44 +188,51 @@
         android:id="@+id/select_all"
         android:icon="@drawable/ic_select_all"
         android:title="@string/batch_select_all"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        />
 
     <!-- MessageList -->
     <item
         android:id="@+id/mark_all_as_read"
         android:title="@string/mark_all_as_read"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        />
 
     <!-- MessageList -->
     <item
         android:id="@+id/send_messages"
         android:icon="@drawable/ic_upload"
         android:title="@string/send_messages_action"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        />
 
     <!-- MessageList -->
     <item
         android:id="@+id/empty_trash"
         android:title="@string/empty_trash_action"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        />
 
     <!-- MessageList -->
     <item
         android:id="@+id/expunge"
         android:title="@string/expunge_action"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        />
 
     <!-- MessageView -->
     <item
         android:id="@+id/toggle_message_view_theme"
         android:title="@string/message_view_theme_action_dark"
         android:visible="false"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        />
 
     <!-- MessageList -->
     <item
         android:id="@+id/search_everywhere"
         android:title="@string/search_everywhere_action"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        />
 
 </menu>

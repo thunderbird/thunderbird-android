@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/folder_list_item_layout"
     android:layout_width="match_parent"
@@ -9,7 +10,8 @@
     android:focusable="true"
     android:gravity="center_vertical"
     android:minHeight="56dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    >
 
     <ImageView
         android:id="@+id/folder_icon"
@@ -17,7 +19,8 @@
         android:layout_height="24dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="32dp"
-        tools:srcCompat="@drawable/ic_inbox"/>
+        tools:srcCompat="@drawable/ic_inbox"
+        />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/folder_name"
@@ -28,6 +31,7 @@
         android:paddingEnd="16dp"
         android:paddingBottom="12dp"
         android:textAppearance="?attr/textAppearanceTitleMedium"
-        tools:text="Inbox" />
+        tools:text="Inbox"
+        />
 
 </LinearLayout>

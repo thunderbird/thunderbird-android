@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".settings.AboutFragment">
+    tools:context=".settings.AboutFragment"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <ImageView
             android:layout_width="100dp"
@@ -17,7 +20,8 @@
             android:layout_gravity="center"
             android:layout_margin="16dp"
             android:contentDescription="@null"
-            app:srcCompat="@drawable/ic_app_logo" />
+            app:srcCompat="@drawable/ic_app_logo"
+            />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/about_title"
@@ -28,7 +32,8 @@
             android:paddingBottom="8dp"
             android:text="@string/about_title"
             android:textAppearance="?attr/textAppearanceTitleSmall"
-            android:textColor="?attr/colorSecondary" />
+            android:textColor="?attr/colorSecondary"
+            />
 
         <LinearLayout
             android:id="@+id/versionLayout"
@@ -41,34 +46,39 @@
             android:paddingLeft="16dp"
             android:paddingTop="8dp"
             android:paddingRight="16dp"
-            android:paddingBottom="8dp">
+            android:paddingBottom="8dp"
+            >
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"
                 android:contentDescription="@null"
-                app:srcCompat="@drawable/ic_info" />
+                app:srcCompat="@drawable/ic_info"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingStart="30dp"
-                android:paddingEnd="0dp">
+                android:paddingEnd="0dp"
+                >
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/version"
-                    android:textAppearance="?attr/textAppearanceTitleMedium" />
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/version"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
-                    tools:text="1.2.3" />
+                    tools:text="1.2.3"
+                    />
             </LinearLayout>
         </LinearLayout>
 
@@ -83,39 +93,45 @@
             android:paddingLeft="16dp"
             android:paddingTop="8dp"
             android:paddingRight="16dp"
-            android:paddingBottom="8dp">
+            android:paddingBottom="8dp"
+            >
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"
                 android:contentDescription="@null"
-                app:srcCompat="@drawable/ic_group" />
+                app:srcCompat="@drawable/ic_group"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingStart="30dp"
-                android:paddingEnd="0dp">
+                android:paddingEnd="0dp"
+                >
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/authors"
-                    android:textAppearance="?attr/textAppearanceTitleMedium" />
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/about_app_authors_k9"
-                    android:textAppearance="?attr/textAppearanceBodyMedium" />
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/about_app_authors_thunderbird"
-                    android:textAppearance="?attr/textAppearanceBodyMedium" />
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    />
             </LinearLayout>
         </LinearLayout>
 
@@ -130,33 +146,38 @@
             android:paddingLeft="16dp"
             android:paddingTop="8dp"
             android:paddingRight="16dp"
-            android:paddingBottom="8dp">
+            android:paddingBottom="8dp"
+            >
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"
                 android:contentDescription="@null"
-                app:srcCompat="@drawable/ic_code" />
+                app:srcCompat="@drawable/ic_code"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingStart="30dp"
-                android:paddingEnd="0dp">
+                android:paddingEnd="0dp"
+                >
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/source_code"
-                    android:textAppearance="?attr/textAppearanceTitleMedium" />
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/app_source_url"
-                    android:textAppearance="?attr/textAppearanceBodyMedium" />
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    />
             </LinearLayout>
         </LinearLayout>
 
@@ -171,33 +192,38 @@
             android:paddingLeft="16dp"
             android:paddingTop="8dp"
             android:paddingRight="16dp"
-            android:paddingBottom="8dp">
+            android:paddingBottom="8dp"
+            >
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"
                 android:contentDescription="@null"
-                app:srcCompat="@drawable/ic_description" />
+                app:srcCompat="@drawable/ic_description"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingStart="30dp"
-                android:paddingEnd="0dp">
+                android:paddingEnd="0dp"
+                >
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/license"
-                    android:textAppearance="?attr/textAppearanceTitleMedium" />
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/app_license"
-                    android:textAppearance="?attr/textAppearanceBodyMedium" />
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    />
             </LinearLayout>
         </LinearLayout>
 
@@ -209,7 +235,8 @@
             android:paddingBottom="8dp"
             android:text="@string/about_project_title"
             android:textAppearance="?attr/textAppearanceTitleSmall"
-            android:textColor="?attr/colorSecondary" />
+            android:textColor="?attr/colorSecondary"
+            />
 
         <LinearLayout
             android:id="@+id/websiteLayout"
@@ -222,33 +249,38 @@
             android:paddingLeft="16dp"
             android:paddingTop="8dp"
             android:paddingRight="16dp"
-            android:paddingBottom="8dp">
+            android:paddingBottom="8dp"
+            >
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"
                 android:contentDescription="@null"
-                app:srcCompat="@drawable/ic_link" />
+                app:srcCompat="@drawable/ic_link"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingStart="30dp"
-                android:paddingEnd="0dp">
+                android:paddingEnd="0dp"
+                >
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/about_website_title"
-                    android:textAppearance="?attr/textAppearanceTitleMedium" />
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/app_webpage_url"
-                    android:textAppearance="?attr/textAppearanceBodyMedium" />
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    />
             </LinearLayout>
         </LinearLayout>
 
@@ -263,33 +295,38 @@
             android:paddingLeft="16dp"
             android:paddingTop="8dp"
             android:paddingRight="16dp"
-            android:paddingBottom="8dp">
+            android:paddingBottom="8dp"
+            >
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"
                 android:contentDescription="@null"
-                app:srcCompat="@drawable/ic_forum" />
+                app:srcCompat="@drawable/ic_forum"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingStart="30dp"
-                android:paddingEnd="0dp">
+                android:paddingEnd="0dp"
+                >
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/user_forum_title"
-                    android:textAppearance="?attr/textAppearanceTitleMedium" />
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/user_forum_url"
-                    android:textAppearance="?attr/textAppearanceBodyMedium" />
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    />
             </LinearLayout>
         </LinearLayout>
 
@@ -302,12 +339,14 @@
             android:paddingBottom="8dp"
             android:text="@string/about_libraries"
             android:textAppearance="?attr/textAppearanceTitleSmall"
-            android:textColor="?attr/colorSecondary" />
+            android:textColor="?attr/colorSecondary"
+            />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/libraries"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<View xmlns:android="http://schemas.android.com/apk/res/android"
+<View
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="1px"
     android:layout_marginHorizontal="32dp"
     android:layout_marginVertical="8dp"
     android:background="?attr/colorOutlineVariant"
-    android:focusable="false" />
+    android:focusable="false"
+    />
