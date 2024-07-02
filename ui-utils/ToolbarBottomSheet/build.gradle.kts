@@ -8,7 +8,6 @@ dependencies {
     api(libs.androidx.coordinatorlayout)
 
     implementation(libs.androidx.annotation)
-    implementation(libs.androidx.fragment)
     implementation(libs.androidx.lifecycle.viewmodel)
 }
 
