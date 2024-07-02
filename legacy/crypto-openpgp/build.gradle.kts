@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.app.core)
+    implementation(projects.legacy.core)
 }
 
 android {

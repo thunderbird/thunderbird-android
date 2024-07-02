@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api(projects.app.common)
+    api(projects.legacy.common)
 }
 
 android {

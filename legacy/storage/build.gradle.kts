@@ -5,7 +5,7 @@ plugins {
 dependencies {
     api(libs.koin.core)
 
-    implementation(projects.app.core)
+    implementation(projects.legacy.core)
     implementation(libs.androidx.core.ktx)
     implementation(libs.timber)
     implementation(libs.mime4j.core)
@@ -13,7 +13,7 @@ dependencies {
     implementation(libs.moshi)
 
     testImplementation(projects.mail.testing)
-    testImplementation(projects.app.testing)
+    testImplementation(projects.legacy.testing)
     testImplementation(libs.robolectric)
     testImplementation(libs.commons.io)
 }

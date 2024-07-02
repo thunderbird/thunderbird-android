@@ -15,8 +15,8 @@ dependencies {
     implementation(projects.core.ui.legacy.theme2.k9mail)
     implementation(projects.feature.launcher)
 
-    implementation(projects.app.core)
-    implementation(projects.app.ui.legacy)
+    implementation(projects.legacy.core)
+    implementation(projects.legacy.ui.legacy)
 
     implementation(projects.feature.widget.messageList)
     implementation(projects.feature.widget.shortcut)

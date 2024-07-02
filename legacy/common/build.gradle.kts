@@ -3,10 +3,10 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.app.ui.legacy)
-    implementation(projects.app.core)
-    implementation(projects.app.storage)
-    implementation(projects.app.cryptoOpenpgp)
+    implementation(projects.legacy.ui.legacy)
+    implementation(projects.legacy.core)
+    implementation(projects.legacy.storage)
+    implementation(projects.legacy.cryptoOpenpgp)
     implementation(projects.backend.imap)
     implementation(projects.backend.pop3)
 

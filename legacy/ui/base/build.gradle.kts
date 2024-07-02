@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.app.core)
+    implementation(projects.legacy.core)
 
     api(libs.androidx.appcompat)
     api(libs.androidx.activity)

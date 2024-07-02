@@ -4,12 +4,12 @@ plugins {
 }
 
 dependencies {
-    api(projects.app.ui.base)
+    api(projects.legacy.ui.base)
     api(projects.core.ui.legacy.designsystem)
     // TODO: Remove once Theme2 is fully migrated
     api(projects.core.ui.legacy.theme2.k9mail)
 
-    implementation(projects.app.core)
+    implementation(projects.legacy.core)
     implementation(projects.mail.common)
     implementation(projects.uiUtils.toolbarBottomSheet)
 
@@ -60,11 +60,11 @@ dependencies {
     annotationProcessor(libs.glide.compiler)
 
     // This is necessary as RecipientPresenterTest fails to inject
-    testImplementation(projects.app.common)
+    testImplementation(projects.legacy.common)
     testImplementation(projects.core.testing)
     testImplementation(projects.mail.testing)
-    testImplementation(projects.app.storage)
-    testImplementation(projects.app.testing)
+    testImplementation(projects.legacy.storage)
+    testImplementation(projects.legacy.testing)
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.test.core)
     testImplementation(libs.kotlin.test)

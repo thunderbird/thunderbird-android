@@ -31,16 +31,6 @@ include(
 )
 
 include(
-    ":app:common",
-    ":app:ui:base",
-    ":app:ui:legacy",
-    ":app:core",
-    ":app:storage",
-    ":app:crypto-openpgp",
-    ":app:testing",
-)
-
-include(
     ":feature:launcher",
 )
 
@@ -94,6 +84,16 @@ include(
     ":core:ui:legacy:theme2:common",
     ":core:ui:legacy:theme2:k9mail",
     ":core:ui:legacy:theme2:thunderbird",
+)
+
+include(
+    ":legacy:common",
+    ":legacy:ui:base",
+    ":legacy:ui:legacy",
+    ":legacy:core",
+    ":legacy:storage",
+    ":legacy:crypto-openpgp",
+    ":legacy:testing",
 )
 
 include(
