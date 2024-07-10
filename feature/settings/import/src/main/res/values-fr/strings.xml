@@ -30,7 +30,7 @@
     <string name="settings_import_outgoing_server_password_hint">Mot de passe du serveur sortant</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Utiliser le même mot de passe pour le serveur sortant</string>
     <string name="settings_import_server_name_format">Nom du serveur : <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Pour utiliser ce compte de courriel avec Courriel K-9 Mail, vous devez vous connecter et accorder à l’appli l’accès à vos courriels.</string>
+    <string name="settings_import_oauth_description">Pour utiliser ce compte de courriel, vous devez vous connecter et accorder à l’appli l’accès à vos courriels.</string>
     <string name="settings_import_oauth_sign_in">Connexion</string>
     <string name="settings_import_oauth_sign_in_with_google">Connexion avec Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">L’autorisation a été annulée</string>

@@ -1,0 +1,2 @@
+– Correction d'un plantage si le mode d’écran partagé est activé.
+– Mise à jour des traductions.

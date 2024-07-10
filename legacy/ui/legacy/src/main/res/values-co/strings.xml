@@ -555,7 +555,7 @@
     <string name="account_setup_push_limit_1000">1000 cartulari</string>
     <string name="animations_title">Animazione</string>
     <string name="animations_summary">Impiegà l’effetti visuali esagerati</string>
-    <string name="volume_navigation_title">Navigà cù u tastu di vulume nant’à a vista di i messaghji</string>
+    <string name="volume_navigation_title">Navigà cù vulume in a vista di messaghji</string>
     <string name="show_unified_inbox_title">Affissà a scatula di ricezzione cuncolta</string>
     <string name="show_starred_count_title">Affissà u numaru di stellati</string>
     <string name="integrated_inbox_detail">Tutti i messaghji in i cartulari cuncolti</string>
@@ -886,5 +886,5 @@
 \nMandatu da u mo apparechju Android cù <xliff:g id="app_name">%s</xliff:g>. Scusate a mo curtezza.</string>
     <string name="dialog_openkeychain_info_text">L’appiecazione OpenKeychain hè richiesta per permette l’adopru di a cifratura da un capu à l’altru.</string>
     <string name="about_title">Apprupositu di <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="about_app_authors_thunderbird">Squadra Thunderbird Mobile</string>
+    <string name="about_app_authors_thunderbird">A squadra Thunderbird Mobile</string>
 </resources>

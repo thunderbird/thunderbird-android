@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="message_list_widget_compose_action">חבר</string>
     <string name="message_list_widget_list_item_loading">טוען…</string>
     <string name="message_list_widget_initializing">טוען…</string>
-    <string name="message_list_widget_inbox_title">תיבת דואר נכנס אחידה</string>
+    <string name="message_list_widget_inbox_title">תיבת דואר נכנס מאוחדת</string>
+    <string name="message_list_widget_label">רשימת הודעות</string>
 </resources>

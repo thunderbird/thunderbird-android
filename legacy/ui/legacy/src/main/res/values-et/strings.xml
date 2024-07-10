@@ -243,7 +243,7 @@
     <string name="general_settings_ui_density_default">Vaikimisi</string>
     <string name="general_settings_ui_density_relaxed">Hõre</string>
     <string name="global_settings_privacy_hide_useragent">Peida meiliklient</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Eemalda K-9 User-Agent meili päistest</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Eemalda rakenduse tunnus e-kirja päistest</string>
     <string name="global_settings_privacy_hide_timezone">Peida ajavöönd</string>
     <string name="global_settings_privacy_hide_timezone_detail">Kasuta UTCd kohaliku ajavööndi asemel meili päistes ja vastuse päises</string>
     <string name="global_settings_notification_quick_delete_title">Näita \"Kustuta\" nuppu</string>
@@ -950,4 +950,5 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="dialog_openkeychain_info_text">Läbiva krüptimise kasutamiseks on vajalik OpenKeychaini rakendus.</string>
     <string name="default_signature">-- 
 \nSaadetud minu Androidist <xliff:g id="app_name">%s</xliff:g>iga. Vabandust, et kirjutan nii napilt.</string>
+    <string name="about_app_authors_thunderbird">Thunderbirdi mobiilirakenduse arendustiim</string>
 </resources>

@@ -1,0 +1,1 @@
+– Correction d’un plantage si une action de balayage sur la liste des courriels était définie sur « Aucune ».

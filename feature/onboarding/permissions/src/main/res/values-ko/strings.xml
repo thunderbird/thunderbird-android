@@ -6,4 +6,5 @@
     <string name="onboarding_permissions_skip_button">건너뛰기</string>
     <string name="onboarding_permissions_contacts_title">연락처</string>
     <string name="onboarding_permissions_contacts_description">연락처 추천을 제공하고 이름과 사진을 표시할 수 있도록 액세스를 허용합니다.</string>
+    <string name="onboarding_permissions_screen_title">사용성 개선</string>
 </resources>

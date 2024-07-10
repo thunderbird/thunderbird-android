@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="message_list_widget_compose_action">작성</string>
     <string name="message_list_widget_list_item_loading">로딩 중…</string>
     <string name="message_list_widget_initializing">로딩 중…</string>
     <string name="message_list_widget_inbox_title">통합 편지함</string>
+    <string name="message_list_widget_label">메시지 목록</string>
 </resources>

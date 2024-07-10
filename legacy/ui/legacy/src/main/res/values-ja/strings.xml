@@ -106,7 +106,7 @@
     <string name="size_format_kilobytes">%.1f kB</string>
     <string name="size_format_bytes">%d B</string>
     <plurals name="notification_new_messages_title">
-        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> 通の新着メッセージ</item>
+        <item quantity="other">新着メッセージ <xliff:g id="new_message_count">%d</xliff:g> 通</item>
     </plurals>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> 続く <xliff:g id="account">%2$s</xliff:g></string>
     <string name="notification_action_reply">返信</string>
@@ -636,7 +636,7 @@
     <string name="dialog_confirm_delete_title">削除するか確認してください</string>
     <string name="dialog_confirm_delete_message">このメッセージを削除しますか？</string>
     <plurals name="dialog_confirm_delete_messages">
-        <item quantity="other">本当に <xliff:g id="message_count">%1$d</xliff:g> 通のメッセージを削除しますか？</item>
+        <item quantity="other">本当にメッセージ <xliff:g id="message_count">%1$d</xliff:g> 通を削除しますか？</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">はい</string>
     <string name="dialog_confirm_delete_cancel_button">いいえ</string>
@@ -648,7 +648,7 @@
     <string name="dialog_confirm_mark_all_as_read_cancel_button">いいえ</string>
     <string name="dialog_confirm_spam_title">迷惑メールフォルダーに移動するか確認してください</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="other">本当に <xliff:g id="message_count">%1$d</xliff:g> 通のメッセージを迷惑メールフォルダに移動しますか？</item>
+        <item quantity="other">本当にメッセージ <xliff:g id="message_count">%1$d</xliff:g> 通を迷惑メールフォルダに移動しますか？</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">はい</string>
     <string name="dialog_confirm_spam_cancel_button">いいえ</string>
@@ -763,7 +763,7 @@
     <string name="openpgp_sign_only_keep_enabled">このまま有効にする</string>
     <string name="openpgp_dialog_sign_only_title">PGP 署名のみモード</string>
     <string name="openpgp_dialog_sign_only_text">このモードでは、PGP 鍵を使用して暗号化されていないメールに署名を作成します。</string>
-    <string name="openpgp_dialog_sign_only_plus_verified">これはメールを暗号化せず、あなたの鍵から送信されたことを証明します。</string>
+    <string name="openpgp_dialog_sign_only_plus_verified">メールを暗号化しませんが、あなたの鍵から送信されたことを証明します。</string>
     <string name="openpgp_dialog_sign_only_minus_break">署名はメーリングリストへの送信時に破損する可能性があります。</string>
     <string name="openpgp_dialog_sign_only_minus_attach">一部のクライアントで、署名は \'signature.asc\' 添付ファイルとして表示されることがあります。</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">暗号化されたメッセージには常に署名が含まれます。</string>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="unread_widget_select_account">نمایش تعداد نخوانده‌ها برای…</string>
     <string name="unread_widget_account_title">حساب</string>
@@ -13,4 +13,5 @@
     <string name="unread_widget_account_not_selected">حسابی انتخاب نشده</string>
     <string name="unread_widget_folder_not_selected">پوشه‌ای انتخاب نشده</string>
     <string name="unread_widget_choose_account_title">انتخاب حساب</string>
+    <string name="unread_widget_label">شمار ناخوانده‌ها</string>
 </resources>

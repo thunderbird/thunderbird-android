@@ -18,14 +18,14 @@
     <string name="account_setup_options_account_name_label">帳號名稱</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">找到了配置</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">需要輸入電子郵件地址。</string>
-    <string name="account_setup_options_display_name_label">顯示名稱</string>
+    <string name="account_setup_options_display_name_label">您的名字</string>
     <string name="account_setup_auto_discovery_loading_error">載入電子郵件配置失敗</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">我信任此配置</string>
-    <string name="account_setup_options_display_name_error_required">需要輸入帳號名稱。</string>
+    <string name="account_setup_options_display_name_error_required">必須填寫您的名字。</string>
     <string name="account_setup_error_network">網路</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">輸入值未被識別為有效的電子郵件地址。</string>
     <string name="account_setup_options_email_check_frequency_never">從不</string>
-    <string name="account_setup_auto_discovery_loading_message">正在尋找電子郵件詳細資料</string>
+    <string name="account_setup_auto_discovery_loading_message">正在查找設定…</string>
     <string name="account_setup_options_section_sync_options">同步選項</string>
     <string name="account_setup_options_show_notifications_label">顯示通知</string>
     <string name="account_setup_options_section_display_options">顯示選項</string>
@@ -46,4 +46,14 @@
     <string name="account_setup_special_folders_archive_folder_label">存檔資料夾</string>
     <string name="account_setup_special_folders_spam_folder_label">垃圾郵件資料夾</string>
     <string name="account_setup_special_folders_form_description_automatic">“自動”條目將自動遵循伺服器所做的更改。 當前伺服器值顯示在括號中。</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">密碼為必填項。</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="other">每 %d 分鐘</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="other">每 %d 小時</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="other">%d 封郵件</item>
+    </plurals>
 </resources>

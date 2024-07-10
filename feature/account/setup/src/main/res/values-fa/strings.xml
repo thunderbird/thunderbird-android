@@ -41,12 +41,12 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">این نشانی رایانامه معتبر شناخته نشد.</string>
     <string name="account_setup_special_folders_spam_folder_label">پوشه هرزنامه</string>
     <string name="account_setup_options_email_check_frequency_never">هرگز</string>
-    <string name="account_setup_auto_discovery_loading_message">پیدا کردن پیکربندی</string>
+    <string name="account_setup_auto_discovery_loading_message">گشتن به دنبال پیکربندی…</string>
     <string name="account_setup_options_section_sync_options">گزینه‌های همگام‌سازی</string>
     <string name="account_setup_options_show_notifications_label">نمایش اعلان‌ها</string>
     <string name="account_setup_options_section_display_options">گزینه‌های نمایش</string>
     <string name="account_setup_special_folders_form_description_automatic">تنظیم \"خودکار\" تغییراتی که توسط سرور به طور خودکار انجام می شود را اعمال می‌کند. مقدار فعلی در داخل پرانتز نمایش داده می‌شود.</string>
-    <string name="account_setup_auto_discovery_validation_error_password_required">رمز عبور مورد نیاز است</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">گذرواژه لازم است.</string>
     <plurals name="account_setup_options_email_check_frequency_minutes">
         <item quantity="one">هر %d دقیقه</item>
         <item quantity="other">هر %d دقیقه</item>

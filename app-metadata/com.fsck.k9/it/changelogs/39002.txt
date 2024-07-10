@@ -1,4 +1,4 @@
-- Modificati molti aspetti interni per la migrazione a Material 3. Tieni presente che l'interfaccia utente di Material 3 è ancora in uno stato iniziale.
+- Modificati molti aspetti interni per la migrazione a Material 3. Tieni presente che l'interfaccia utente Material 3 è ancora in uno stato iniziale.
 - Modificato l'ordine delle azioni della barra degli strumenti nella visualizzazione dei messaggi in modo che corrisponda all'ordine nella modalità di selezione multipla
 - Modificato il valore predefinito per "Recupera messaggi fino a" a 128 KB
 - Risolto bug per cui le icone della barra degli strumenti venivano visualizzate nel colore sbagliato dopo aver eseguito un'azione di scorrimento

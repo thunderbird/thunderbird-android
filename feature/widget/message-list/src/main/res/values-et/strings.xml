@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="message_list_widget_compose_action">Koosta</string>
-    <string name="message_list_widget_list_item_loading">Laadib…</string>
-    <string name="message_list_widget_initializing">Laadib…</string>
+    <string name="message_list_widget_list_item_loading">Laadime…</string>
+    <string name="message_list_widget_initializing">Laadime…</string>
     <string name="message_list_widget_inbox_title">Koondsisendkaust</string>
+    <string name="message_list_widget_label">Kirjade loend</string>
 </resources>

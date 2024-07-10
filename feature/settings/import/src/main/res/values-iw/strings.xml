@@ -23,7 +23,7 @@
     <string name="settings_import_status_log_in_required">דרושה התחברות</string>
     <string name="settings_import_outgoing_server_password_hint">סיסמת שרת יוצא</string>
     <string name="settings_import_use_same_password_for_outgoing_server">השתמש באותה סיסמה לשרת יוצא</string>
-    <string name="settings_import_oauth_description">כדי להשתמש בחשבון הדוא\"ל הזה עם K-9, יש צורך להתחבר ולתת ליישומון גישה לדוא\"ל שלך.</string>
+    <string name="settings_import_oauth_description">כדי להשתמש בחשבון הדוא\"ל הזה, יש צורך להתחבר ולתת ליישומון גישה לדוא\"ל שלך.</string>
     <string name="settings_import_oauth_sign_in">התחבר</string>
     <string name="settings_import_oauth_error_oauth_flow_failed">תהליך האישור נכשל עם השגיאה שלהלן: <xliff:g id="error">%s</xliff:g></string>
     <string name="settings_import_status_not_imported">לא יובא</string>
