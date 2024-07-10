@@ -14,8 +14,8 @@ android {
 }
 
 dependencies {
-    implementation(projects.app.core)
-    implementation(projects.app.ui.base)
+    implementation(projects.legacy.core)
+    implementation(projects.legacy.ui.base)
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.ui.legacy.designsystem)
 
