@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="unread_widget_select_account">Afficher le nombre de non lus pour…</string>
     <string name="unread_widget_account_title">Compte</string>
@@ -13,4 +13,5 @@
     <string name="unread_widget_account_not_selected">Aucun compte n’est sélectionné</string>
     <string name="unread_widget_folder_not_selected">Aucun dossier n’est sélectionné</string>
     <string name="unread_widget_choose_account_title">Choisir un  compte</string>
+    <string name="unread_widget_label">Compte des non lus</string>
 </resources>

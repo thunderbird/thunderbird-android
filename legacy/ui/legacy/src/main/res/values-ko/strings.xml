@@ -66,7 +66,7 @@
     <string name="folders_action">폴더 관리</string>
     <string name="account_settings_action">계정 설정</string>
     <string name="remove_account_action">계정 삭제</string>
-    <string name="mark_as_read_action">읽은 메일로 표시</string>
+    <string name="mark_as_read_action">읽음으로 표시</string>
     <string name="send_alternate_action">공유</string>
     <string name="send_alternate_chooser_title">보낸 사람 선택</string>
     <string name="flag_action">별표 표시</string>
@@ -79,7 +79,7 @@
     <string name="copy_subject_to_clipboard">제목을 클립보드로 복사함</string>
     <string name="message_view_theme_action_dark">어두운 테마로 바꾸기</string>
     <string name="message_view_theme_action_light">밝은 테마로 바꾸기</string>
-    <string name="mark_as_unread_action">읽지 않은 메일로 표시</string>
+    <string name="mark_as_unread_action">읽지 않음으로 표시</string>
     <string name="read_receipt">읽음 확인</string>
     <string name="read_receipt_enabled">읽음 확인을 요청함</string>
     <string name="read_receipt_disabled">읽음 확인을 요청하지 않음</string>
@@ -97,7 +97,7 @@
     <string name="status_loading_error">메시지 로딩 오류</string>
     <string name="load_more_messages_fmt">최대 <xliff:g id="messages_to_load">%d</xliff:g>개 더 불러오기</string>
     <plurals name="notification_new_messages_title">
-        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> 새 메세지</item>
+        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> 새 메시지</item>
     </plurals>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> more on <xliff:g id="account">%2$s</xliff:g></string>
     <string name="notification_action_reply">답장</string>
@@ -128,11 +128,11 @@
     <string name="special_mailbox_name_drafts">임시 보관함</string>
     <string name="special_mailbox_name_trash">휴지통</string>
     <string name="special_mailbox_name_sent">보냄</string>
-    <string name="send_failure_subject">일부 메시지를 보내는 데 실패하였습니다</string>
+    <string name="send_failure_subject">일부 메시지를 보내는 데 실패했습니다</string>
     <string name="debug_enable_debug_logging_title">디버그 로깅 활성화</string>
     <string name="debug_enable_debug_logging_summary">추가적인 진단 정보를 기록합니다</string>
     <string name="debug_enable_sensitive_logging_title">중요 정보 기록</string>
-    <string name="debug_enable_sensitive_logging_summary">로그에 비밀번호를 남길 수도 있습니다</string>
+    <string name="debug_enable_sensitive_logging_summary">로그에 비밀번호가 포함될 수도 있습니다.</string>
     <string name="debug_export_logs_title">로그 내보내기</string>
     <string name="debug_export_logs_success">내보내기에 성공했습니다. 로그에 민감한 정보가 포함되어 있을 수 있습니다. 전송할 때 유의하세요.</string>
     <string name="debug_export_logs_failure">내보내기에 실패했습니다.</string>
@@ -154,10 +154,10 @@
     <string name="error_contact_address_not_found">이메일 주소를 찾을 수 없습니다.</string>
     <string name="message_compose_attachments_skipped_toast">일부 첨부 파일이 다운로드되지 않아 전달될 수 없습니다.</string>
     <string name="message_compose_attachments_forward_toast">일부 첨부 파일이 다운로드되지 않아 전달할 수 없습니다.</string>
-    <string name="message_compose_show_quoted_text_action">인용 메세지 포함</string>
+    <string name="message_compose_show_quoted_text_action">인용 메시지 포함</string>
     <string name="message_compose_description_delete_quoted_text">인용 메시지 제거</string>
     <string name="message_compose_description_edit_quoted_text">인용 메시지 편집</string>
-    <string name="message_to_label">수신자:</string>
+    <string name="message_to_label">받는 사람:</string>
     <string name="message_view_cc_label">참조:</string>
     <string name="message_view_bcc_label">숨은 참조:</string>
     <string name="message_view_status_attachment_not_saved">첨부 파일을 저장할 수 없습니다.</string>
@@ -174,10 +174,10 @@
     <string name="global_settings_flag_label">별표 보기</string>
     <string name="global_settings_flag_summary">메시지 목록에서 메시지에 별표할 수 있습니다</string>
     <string name="global_settings_preview_lines_label">미리 보기 줄</string>
-    <string name="global_settings_show_correspondent_names_label">발신자 이름을 보여 줌</string>
-    <string name="global_settings_show_correspondent_names_summary">이메일 주소 대신 발신자 이름을 보여 줍니다</string>
-    <string name="global_settings_sender_above_subject_label">발신자 다음 제목 표시</string>
-    <string name="global_settings_sender_above_subject_summary">제목 아래쪽 대신 위쪽 줄에 발신자를 표시합니다</string>
+    <string name="global_settings_show_correspondent_names_label">보낸 사람 이름을 표시</string>
+    <string name="global_settings_show_correspondent_names_summary">이메일 주소 대신 보낸 사람 이름을 보여 줍니다</string>
+    <string name="global_settings_sender_above_subject_label">보낸 사람 다음 제목 표시</string>
+    <string name="global_settings_sender_above_subject_summary">제목의 위쪽 줄에 보낸 사람을 표시합니다</string>
     <string name="global_settings_show_contact_name_label">연락처 이름 보기</string>
     <string name="global_settings_show_contact_name_summary">받는 사람 이름을 연락처에서 가져 옵니다</string>
     <string name="global_settings_registered_name_color_label">아는 연락처 색깔 표시</string>
@@ -187,10 +187,10 @@
     <string name="global_settings_messageview_fixedwidth_summary">평문 메시지를 보여줄때 고정폭 폰트를 사용합니다</string>
     <string name="global_settings_messageview_autofit_width_label">너비 자동 맞춤</string>
     <string name="global_settings_messageview_autofit_width_summary">화면에 맞도록 메시지를 줄입니다</string>
-    <string name="global_settings_confirm_actions_title">동작시 행동</string>
-    <string name="global_settings_confirm_actions_summary">설정한 행동을 할 경우 대화 상자를 보여 줍니다</string>
+    <string name="global_settings_confirm_actions_title">동작을 시작하기 전에 확인</string>
+    <string name="global_settings_confirm_actions_summary">설정한 동작을 실행하기 전에 대화 상자를 표시합니다</string>
     <string name="global_settings_confirm_action_delete">삭제</string>
-    <string name="global_settings_confirm_action_delete_starred">별표된 메시지 삭제 (메시지 보기에서만)</string>
+    <string name="global_settings_confirm_action_delete_starred">별표 표시한 메시지 삭제 (메시지 보기에서)</string>
     <string name="global_settings_confirm_action_spam">스팸</string>
     <string name="global_settings_confirm_menu_discard">메시지 버림</string>
     <string name="global_settings_confirm_menu_mark_all_read">모든 메시지를 읽음으로 표시</string>
@@ -223,12 +223,12 @@
     <string name="global_settings_privacy_hide_timezone">시간대 숨기기</string>
     <string name="global_settings_notification_quick_delete_title">\'삭제\' 버튼 보이기</string>
     <string name="global_settings_notification_quick_delete_never">하지 않음</string>
-    <string name="global_settings_notification_quick_delete_when_single_msg">알림에 메시지가 하나뿐일 때만</string>
+    <string name="global_settings_notification_quick_delete_when_single_msg">알림에 메시지가 하나 뿐일 때만</string>
     <string name="global_settings_notification_quick_delete_always">항상</string>
     <string name="global_settings_lock_screen_notification_visibility_title">잠금 화면 알림</string>
     <string name="global_settings_lock_screen_notification_visibility_nothing">잠금 화면 알림 없음</string>
     <string name="global_settings_lock_screen_notification_visibility_app_name">앱 이름</string>
-    <string name="global_settings_lock_screen_notification_visibility_senders">메세지 개수와 발신자</string>
+    <string name="global_settings_lock_screen_notification_visibility_senders">메시지 개수와 보낸 사람</string>
     <string name="global_settings_lock_screen_notification_visibility_everything">화면이 잠금 해제되었을때와 동일</string>
     <string name="quiet_time">방해 금지 시간</string>
     <string name="quiet_time_description">밤에는 벨소리, 버저, 플래시를 비활성화합니다</string>
@@ -276,9 +276,9 @@
     <string name="account_setup_options_mail_display_count_250">250 메시지</string>
     <string name="account_setup_options_mail_display_count_500">500 메시지</string>
     <string name="account_setup_options_mail_display_count_1000">1000 메시지</string>
-    <string name="account_setup_options_mail_display_count_2500">2500 메세지</string>
-    <string name="account_setup_options_mail_display_count_5000">5000 메세지</string>
-    <string name="account_setup_options_mail_display_count_10000">10000 메세지</string>
+    <string name="account_setup_options_mail_display_count_2500">2500 메시지</string>
+    <string name="account_setup_options_mail_display_count_5000">5000 메시지</string>
+    <string name="account_setup_options_mail_display_count_10000">10000 메시지</string>
     <string name="account_setup_options_mail_display_count_all">모든 메시지</string>
     <string name="move_copy_cannot_copy_unsynced_message">서버와 동기화되지 않은 메시지를 복사하거나 이동할 수 없습니다</string>
     <string name="account_settings_push_advanced_title">고급</string>
@@ -541,7 +541,7 @@
     <string name="dialog_confirm_delete_title">삭제 확인</string>
     <string name="dialog_confirm_delete_message">이 메시지를 삭제하시겠습니까?</string>
     <plurals name="dialog_confirm_delete_messages">
-        <item quantity="other">정말로 <xliff:g id="message_count">%1$d</xliff:g> 메세지를 삭제하시겠습니까?</item>
+        <item quantity="other">정말로 <xliff:g id="message_count">%1$d</xliff:g>개 메시지를 삭제하시겠습니까?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">삭제함</string>
     <string name="dialog_confirm_delete_cancel_button">삭제하지 않음</string>
@@ -551,7 +551,7 @@
     <string name="dialog_confirm_mark_all_as_read_cancel_button">아니오</string>
     <string name="dialog_confirm_spam_title">스팸폴더로 이동 확인</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="other">정말로 <xliff:g id="message_count">%1$d</xliff:g> 메세지를 스팸 폴더로 옮기시겠습니까?</item>
+        <item quantity="other">정말로 <xliff:g id="message_count">%1$d</xliff:g>개의 메시지를 스팸 폴더로 옮기시겠습니까?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">예</string>
     <string name="dialog_confirm_spam_cancel_button">아니오</string>
@@ -576,11 +576,11 @@
     <string name="webview_contextmenu_image_copy_action">클립보드에 이미지 주소 복사</string>
     <string name="webview_contextmenu_image_clipboard_label">이미지 주소</string>
     <string name="webview_contextmenu_phone_call_action">전화 걸기</string>
-    <string name="webview_contextmenu_phone_save_action">주소록에 저장</string>
+    <string name="webview_contextmenu_phone_save_action">연락처에 저장</string>
     <string name="webview_contextmenu_phone_copy_action">클립보드에 전화번호 복사</string>
     <string name="webview_contextmenu_phone_clipboard_label">전화번호</string>
     <string name="webview_contextmenu_email_send_action">메일 보내기</string>
-    <string name="webview_contextmenu_email_save_action">주소록에 저장</string>
+    <string name="webview_contextmenu_email_save_action">연락처에 저장</string>
     <string name="webview_contextmenu_email_copy_action">클립보드에 전자우편 주소 복사</string>
     <string name="webview_contextmenu_email_clipboard_label">전자우편 주소</string>
     <string name="account_settings_remote_search_num_results_entries_all">모두</string>
@@ -813,4 +813,20 @@
     <string name="account_settings_vibrate_pattern_3">패턴 3</string>
     <string name="account_settings_vibrate_pattern_5">패턴 5</string>
     <string name="notification_notify_error_title">알림 오류</string>
+    <string name="general_settings_post_remove_action_title">메시지를 이동하거나 삭제한 후에</string>
+    <string name="message_view_recipients_format"><xliff:g id="recipients">%s</xliff:g>에게</string>
+    <string name="message_view_me_text">나</string>
+    <string name="message_view_show_remote_images_action">외부 이미지 표시</string>
+    <string name="general_settings_post_remove_action_show_previous_message">이전 메시지 보기</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">현재 메시지에 머무르기</string>
+    <string name="about_app_authors_thunderbird">Thunderbird 모바일 팀</string>
+    <string name="general_settings_post_remove_action_return_to_list">메시지 목록으로 가기</string>
+    <string name="general_settings_post_mark_as_unread_action_title">메시지를 읽지 않음으로 표시한 후에</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">메시지 목록으로 가기</string>
+    <string name="message_view_additional_recipient_prefix">+</string>
+    <string name="about_title"><xliff:g id="app_name">%s</xliff:g> 정보</string>
+    <string name="general_settings_post_remove_action_show_next_message">다음 메시지 보기</string>
+    <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" 계정이 <xliff:g id="app_name">%s</xliff:g>에서 제거됩니다.</string>
+    <string name="default_signature">--
+\nAndroid 기기에서 <xliff:g id="app_name">%s</xliff:g>로 전송했습니다. 간결하게 작성했으니 양해 부탁드립니다.</string>
 </resources>

@@ -13,4 +13,5 @@
     <string name="unread_widget_account_not_selected">Gjin account selektearre</string>
     <string name="unread_widget_folder_not_selected">Gjin map selektearre</string>
     <string name="unread_widget_choose_account_title">Account kieze</string>
+    <string name="unread_widget_label">Oantal net-lêzen</string>
 </resources>

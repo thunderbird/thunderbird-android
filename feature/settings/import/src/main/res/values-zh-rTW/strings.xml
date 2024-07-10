@@ -28,7 +28,7 @@
     <string name="settings_import_outgoing_server_password_hint">外寄伺服器密碼</string>
     <string name="settings_import_use_same_password_for_outgoing_server">外寄伺服器使用相同的密碼</string>
     <string name="settings_import_server_name_format">伺服器名稱：<xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">如要透過 K-9 Mail 使用這個電子郵件帳號，您需要登入並授權應用程式取用您的電子郵件。</string>
+    <string name="settings_import_oauth_description">要使用此電子郵件帳戶，您需要登入並授權應用程式存取您的電子郵件。</string>
     <string name="settings_import_oauth_sign_in">登入</string>
     <string name="settings_import_oauth_sign_in_with_google">使用 Google 帳號登入</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">授權被取消</string>

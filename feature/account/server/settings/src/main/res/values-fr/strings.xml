@@ -20,7 +20,7 @@
     <string name="account_server_settings_incoming_imap_prefix_label">Préfixe du chemin IMAP</string>
     <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
     <string name="account_server_settings_protocol_type_label">Protocole</string>
-    <string name="account_server_settings_password_authentication_subtitle">Déverrouillez pour afficher votre mot de passe</string>
+    <string name="account_server_settings_password_authentication_subtitle">Déverrouiller pour afficher votre mot de passe</string>
     <string name="account_server_settings_username_label">Nom d’utilisateur</string>
     <string name="account_server_settings_validation_error_port_invalid">Le port est invalide (entre 1 et 65535).</string>
     <string name="account_server_settings_connection_security_start_tls">StartTLS</string>

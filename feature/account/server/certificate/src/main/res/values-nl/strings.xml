@@ -2,7 +2,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_server_certificate_warning_title">Waarschuwing</string>
     <string name="account_server_certificate_unknown_error_subtitle">Certificaatfout</string>
-    <string name="account_server_certificate_unknown_error_description_format">De app heeft een potentieel beveiligingsrisico gedetecteerd en is niet verder gegaan met verbinden naar <xliff:g id="serverName">%s</xliff:g>.
+    <string name="account_server_certificate_unknown_error_description_format">De app heeft een potentieel beveiligingsrisico gedetecteerd en is niet verder gegaan met verbinden naar <xliff:g id="serverName">%s</xliff:g>. 
 \nAls u doorgaat kunnen aanvallers proberen informatie zoals uw wachtwoord of e-mailberichten te stelen.</string>
     <string name="account_server_certificate_button_back">Terug (aanbevolen)</string>
     <string name="account_server_certificate_button_advanced">Geavanceerd</string>

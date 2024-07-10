@@ -22,4 +22,9 @@
     <string name="settings_import_incoming_server_password_hint">수신 서버 비밀번호</string>
     <string name="settings_import_oauth_sign_in_with_google">Google로 로그인</string>
     <string name="settings_import_oauth_error_oauth_flow_failed">다음 오류로 인증에 실패했습니다: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_status_password_required">비밀번호 필요함</string>
+    <string name="settings_import_later_button">나중에</string>
+    <string name="settings_import_oauth_error_oauth_not_supported">현재 이 제공자에서는 OAuth 2.0이 지원되지 않습니다.</string>
+    <string name="settings_import_status_log_in_required">로그인 필요함</string>
+    <string name="settings_import_oauth_error_browser_not_found">계정에 대한 액세스 권한을 부여하는 데 사용할 브라우저를 찾을 수 없습니다.</string>
 </resources>

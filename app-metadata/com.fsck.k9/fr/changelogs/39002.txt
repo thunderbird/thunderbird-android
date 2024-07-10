@@ -1,0 +1,8 @@
+– Beaucoup de changements internes pour migrer vers Material 3. Notez que l’IU Material 3 n’en est qu’à ses débuts.
+– Modification de l’ordre des actions de la barre d’outils dans la vue des courriels pour qu’il corresponde à l’ordre en mode multisélection.
+– Modification de la valeur par défaut de « Récupérer les courriels jusqu’à » à 128 Kio.
+– Correction d’un bogue d’affichage dans la mauvaise couleur des icônes de la barre d’outils après avoir effectué une action de balayage.
+– Correction d’un plantage après avoir coupé des adresses courriel du champ des destinataires lors de la rédaction d’un courriel.
+– Correction de la taille de la barre d’outils si une taille de police système autre que celle par défaut est utilisée.
+– Ajout de traductions en corse, coréen et vietnamien.
+– Mise à jour des traductions.

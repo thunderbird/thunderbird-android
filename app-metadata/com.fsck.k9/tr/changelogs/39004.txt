@@ -1,0 +1,2 @@
+- Bölünmüş ekran kipi etkinleştirildiğinde oluşan çökme düzeltildi
+- Çeviriler güncellendi

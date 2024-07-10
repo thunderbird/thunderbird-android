@@ -246,7 +246,7 @@
     <string name="general_settings_ui_density_default">Predefinita</string>
     <string name="general_settings_ui_density_relaxed">Rilassata</string>
     <string name="global_settings_privacy_hide_useragent">Nascondi client email</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Rimuovi lo User-Agent di K-9 dalle intestazioni dei messaggi</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Rimuovi lo User-Agent dalle intestazioni dei messaggi</string>
     <string name="global_settings_privacy_hide_timezone">Nascondi fuso orario</string>
     <string name="global_settings_privacy_hide_timezone_detail">Usa UTC invece del fuso orario locale nelle intestazioni di messaggi e risposte</string>
     <string name="global_settings_notification_quick_delete_title">Mostra il pulsante \'Elimina\'</string>

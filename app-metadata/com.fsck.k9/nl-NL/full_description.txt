@@ -3,7 +3,7 @@ K-9 Mail is een open source e-mailclient die met vrijwel elke e-mailprovider wer
 <b>Functies</b>
 
 * Ondersteuning voor meerdere accounts
-* Globaal Postvak In
+* Samengevoegd Postvak IN
 * Privacybewust (geen enkele tracering, maakt alleen verbinding met uw e-mailprovider)
 * Automatische achtergrondsynchronisatie en pushmeldingen
 * Lokaal en server-side zoeken

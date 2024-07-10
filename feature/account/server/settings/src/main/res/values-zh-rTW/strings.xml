@@ -31,4 +31,5 @@
     <string name="account_server_settings_server_label">伺服器</string>
     <string name="account_server_settings_security_label">安全性</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">IP或主機名無效</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">發送客戶資訊</string>
 </resources>

@@ -3,7 +3,7 @@
     <string name="unread_widget_select_account">Aantal ongelezen tonen voor…</string>
     <string name="unread_widget_account_title">Account</string>
     <string name="unread_widget_account_summary">De account waarvoor het aantal ongelezen berichten getoond moet worden</string>
-    <string name="unread_widget_unified_inbox_account_summary">Gecombineerd Postvak IN</string>
+    <string name="unread_widget_unified_inbox_account_summary">Samengevoegd Postvak IN</string>
     <string name="unread_widget_folder_enabled_title">Mapaantal</string>
     <string name="unread_widget_folder_enabled_summary">Het aantal ongelezen berichten van een enkele map tonen</string>
     <string name="unread_widget_folder_title">Map</string>

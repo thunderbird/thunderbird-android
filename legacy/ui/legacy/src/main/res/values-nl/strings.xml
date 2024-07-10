@@ -51,7 +51,7 @@
     <string name="move_to_drafts_action">Naar Concepten verplaatsen</string>
     <string name="refile_action">Opnieuw opslaan…</string>
     <string name="done_action">Klaar</string>
-    <string name="discard_action">Vergeten</string>
+    <string name="discard_action">Verwerpen</string>
     <string name="save_draft_action">Als concept opslaan</string>
     <string name="check_mail_action">Op e-mailberichten controleren</string>
     <string name="send_messages_action">Berichten versturen</string>
@@ -586,9 +586,9 @@
     <string name="animations_title">Animatie</string>
     <string name="animations_summary">Opzichtige visuele effecten gebruiken</string>
     <string name="volume_navigation_title">Volumetoetsnavigatie in berichtbeeld</string>
-    <string name="show_unified_inbox_title">Gecombineerde Postvak IN tonen</string>
+    <string name="show_unified_inbox_title">Samengevoegd Postvak IN tonen</string>
     <string name="show_starred_count_title">Het aantal berichten met een ster weergeven</string>
-    <string name="integrated_inbox_title">Samengevoegde Postvak IN</string>
+    <string name="integrated_inbox_title">Samengevoegd Postvak IN</string>
     <string name="integrated_inbox_detail">Alle berichten in gecombineerde mappen</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Combineer</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Alle berichten worden in het samengevoegde Postvak IN getoond</string>
@@ -946,7 +946,7 @@
     <string name="account_delete_dlg_instructions_fmt">De account \"<xliff:g id="account">%s</xliff:g>\" zal uit <xliff:g id="app_name">%s</xliff:g> worden verwijderd.</string>
     <string name="about_title">Over <xliff:g id="app_name">%s</xliff:g></string>
     <string name="push_info_notification_explanation_text">Bij gebruik van Push onderhoudt <xliff:g id="app_name">%1$s</xliff:g> een verbinding met de mailserver. Android vereist het doorlopend weergeven van een melding als de app actief is op de achtergrond. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
-    <string name="default_signature">-- 
+    <string name="default_signature">-- \u0020
 \nVerzonden vanaf mijn Android-apparaat met <xliff:g id="app_name">%s</xliff:g>. Mijn excuses voor mijn beknoptheid.</string>
-    <string name="about_app_authors_thunderbird">Thunderbird Mobile Team</string>
+    <string name="about_app_authors_thunderbird">Thunderbird Mobile-team</string>
 </resources>
