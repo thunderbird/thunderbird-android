@@ -47,6 +47,7 @@ import timber.log.Timber;
 
 public class PgpMessageBuilder extends MessageBuilder {
     private static final int REQUEST_USER_INTERACTION = 1;
+    private static final String REPLACEMENT_SUBJECT = "[...]";
 
 
     private final AutocryptOperations autocryptOperations;
@@ -220,7 +221,7 @@ public class PgpMessageBuilder extends MessageBuilder {
             messageContentBodyPart.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
                     messageContentBodyPart.getContentType() + "; protected-headers=\"v1\"");
             messageContentBodyPart.setHeader(MimeHeader.SUBJECT, subjects[0]);
-            currentProcessedMimeMessage.setSubject(resourceProvider.encryptedSubject());
+            currentProcessedMimeMessage.setSubject(REPLACEMENT_SUBJECT);
         }
     }
 

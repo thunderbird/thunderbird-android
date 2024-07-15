@@ -28,7 +28,6 @@ class K9CoreResourceProvider(
     override fun noSubject(): String = context.getString(R.string.general_no_subject)
 
     override fun userAgent(): String = context.getString(R.string.message_header_mua)
-    override fun encryptedSubject(): String = context.getString(R.string.encrypted_subject)
 
     override fun replyHeader(sender: String): String =
         context.getString(R.string.message_compose_reply_header_fmt, sender)

@@ -1025,7 +1025,6 @@
     <string name="dialog_openkeychain_info_install">Install</string>
     <string name="dialog_openkeychain_info_text">The app OpenKeychain is required to enable support for end-to-end encryption.</string>
 
-    <string name="encrypted_subject">"Encrypted Message"</string>
     <string name="account_settings_crypto_encrypt_subject">Encrypt message subjects</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">May not be supported by some recipients</string>
 
