@@ -60,10 +60,6 @@ class FakeCoreResourceProvider : CoreResourceProvider {
         throw UnsupportedOperationException("not implemented")
     }
 
-    override fun encryptedSubject(): String {
-        throw UnsupportedOperationException("not implemented")
-    }
-
     override fun replyHeader(sender: String): String {
         throw UnsupportedOperationException("not implemented")
     }
