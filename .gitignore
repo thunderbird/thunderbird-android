@@ -21,6 +21,10 @@ out/
 *.jks
 *.keystore
 
+# Signing files
+.signing/
+*.signing.properties
+
 # IDEA/Android Studio ignores
 *iml
 .idea/*
