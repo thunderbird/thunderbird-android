@@ -43,7 +43,7 @@ android {
         testApplicationId = "net.thunderbird.placeholder.tests"
 
         versionCode = 1
-        versionName = "0.1-SNAPSHOT"
+        versionName = "0.1"
 
         // Keep in sync with the resource string array "supported_languages"
         resourceConfigurations.addAll(
@@ -123,6 +123,8 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
+            versionNameSuffix = "-SNAPSHOT"
+
             isMinifyEnabled = false
         }
 
@@ -140,13 +142,19 @@ android {
 
         create("daily") {
             initWith(getByName("release"))
+
             applicationIdSuffix = ".daily"
+            versionNameSuffix = "a1"
+
             matchingFallbacks += listOf("release")
         }
 
         create("beta") {
             initWith(getByName("release"))
+
             applicationIdSuffix = ".beta"
+            versionNameSuffix = "b1"
+
             matchingFallbacks += listOf("release")
         }
     }
