@@ -1,33 +1,38 @@
-# Local per-repo rules can be added to the .git/info/exclude file in your
-# repo. These rules are not committed with the repo so they are not shared
-# with others. This method can be used for locally-generated files that you
-# don’t expect other users to generate, like files created by your editor.
-.DS_Store
-.settings
-.classpath
-.kotlin
-bin
-captures
-coverage
-coverage.ec
-coverage.em
-gen
-javadoc
-junit-report.xml
-lint-results.*ml
-lint-results_files
+# Gradle
+.gradle/
 local.properties
-monkey.txt
-*~
-*.iws
-atlassian-ide-plugin.xml
-target
-build
-.gradle
-out
-build.xml
-proguard-project.txt
-.idea/
-*.iml
-user-manual/screenshots
-user-manual/output
+
+# Kotlin
+.kotlin/
+
+# Generated folders
+bin/
+build/
+gen/
+out/
+
+# Generated files
+*.apk
+*.ap_
+*.class
+*.dex
+
+# Keystore files
+*.jks
+*.keystore
+
+# IDEA/Android Studio ignores
+*iml
+.idea/*
+
+# IDEA/Android Studio includes
+!.idea/icon.png
+!.idea/codeStyles/
+!.idea/inspectionProfiles/
+!.idea/fileTemplates/
+
+# Android Studio captures folder
+captures/
+
+# Mac thumbnail db
+.DS_Store
