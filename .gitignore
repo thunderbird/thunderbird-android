@@ -12,6 +12,7 @@ gen/
 out/
 
 # Generated files
+*.aab
 *.apk
 *.ap_
 *.class
