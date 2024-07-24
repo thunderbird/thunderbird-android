@@ -106,7 +106,7 @@ android {
     }
 
     signingConfigs {
-        createSigningConfig(project, SigningType.K9_RELEASE)
+        createSigningConfig(project, SigningType.K9_RELEASE, isUpload = false)
     }
 
     buildTypes {
