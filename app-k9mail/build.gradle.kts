@@ -106,23 +106,12 @@ android {
     }
 
     signingConfigs {
-        if (project.hasProperty("k9mail.keyAlias") &&
-            project.hasProperty("k9mail.keyPassword") &&
-            project.hasProperty("k9mail.storeFile") &&
-            project.hasProperty("k9mail.storePassword")
-        ) {
-            create("release") {
-                keyAlias = project.property("k9mail.keyAlias") as String
-                keyPassword = project.property("k9mail.keyPassword") as String
-                storeFile = file(project.property("k9mail.storeFile") as String)
-                storePassword = project.property("k9mail.storePassword") as String
-            }
-        }
+        createSigningConfig(project, SigningType.K9_RELEASE)
     }
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.findByName("release")
+            signingConfig = signingConfigs.getByType(SigningType.K9_RELEASE)
 
             isMinifyEnabled = true
             proguardFiles(

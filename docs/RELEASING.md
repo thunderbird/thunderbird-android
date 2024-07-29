@@ -2,14 +2,20 @@
 
 ## One-time setup
 
-1. Download `tb-android keystore` from 1Password and place it somewhere outside the root of the Git repository.
-2. Add the following to `~/.gradle/gradle.properties` (create the file if necessary)
-   ```
-   k9mail.storeFile=<path to keystore>
-   k9mail.storePassword=<password 'tb-android keystore' in 1Password>
-   k9mail.keyAlias=k9mail
-   k9mail.keyPassword=<password 'k9mail@tb-android' in 1Password>
-   ```
+1. Create a `.signing` folder in the root of the Git repository, if it doesn't exist yet.
+2. Download the `k9-release-signing.jks` and `k9.release.signing.properties` files from 1Password and place them in the `.signing` folder.
+
+Example `<app>.<realeaseType>.signing.properties` file:
+
+```
+<app>.<releaseType>.storeFile=<path to keystore '../.signing/k9mail.jks'>
+<app>.<releaseType>.storePassword=<storePassword>
+<app>.<releaseType>.keyAlias=<keyAlias>
+<app>.<releaseType>.keyPassword=<keyPassword>
+```
+
+- `<app>` is the short name of the app, e.g. `k9`
+- `<releaseType>` is the type of release, e.g. `release`
 
 ### One-time setup for F-Droid builds
 
