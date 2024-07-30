@@ -150,4 +150,19 @@ class UserInputEmailAddressParserTest {
 
         assertThat(addresses).containsExactly(Address("user@domain.example", "Firstname \"Nickname\" LastName"))
     }
+
+    // for invalid email addresses
+    @Test
+    fun `address with invalid ending character`() {
+        val addresses = parser.parse("user@domain.example/")
+
+        assertThat(addresses).isEmpty()
+    }
+
+    @Test
+    fun `address with invalid character in domain part`() {
+        val addresses = parser.parse("user@domain/example")
+
+        assertThat(addresses).isEmpty()
+    }
 }
