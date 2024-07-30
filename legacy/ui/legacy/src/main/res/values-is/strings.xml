@@ -63,7 +63,6 @@
     <string name="search_everywhere_action">Leita allsstaðar</string>
     <string name="search_results">Leitarniðurstöður</string>
     <string name="new_messages_title">Ný skilaboð</string>
-    <string name="preferences_action">Stillingar</string>
     <string name="folders_action">Sýsla með möppur</string>
     <string name="account_settings_action">Aðgangsstillingar</string>
     <string name="remove_account_action">Fjarlægja aðganginn</string>

@@ -45,7 +45,6 @@
     <string name="compose_action">Sastavi</string>
     <string name="search_action">Pretraži</string>
     <string name="search_results">Rezultati pretraživanja</string>
-    <string name="preferences_action">Podešenja</string>
     <string name="folders_action">Upravljanje mapama</string>
     <string name="account_settings_action">Postavke računa</string>
     <string name="remove_account_action">Obriši račun</string>

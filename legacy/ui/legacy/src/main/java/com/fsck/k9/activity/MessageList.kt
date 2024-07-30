@@ -68,6 +68,7 @@ import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
+import app.k9mail.feature.navigation.drawer.R as DrawerR
 
 /**
  * MessageList is the primary user interface for the program. This Activity shows a list of messages.
@@ -167,7 +168,7 @@ open class MessageList :
             }
         }
 
-        val swipeRefreshLayout = findViewById<View>(R.id.material_drawer_swipe_refresh)
+        val swipeRefreshLayout = findViewById<View>(DrawerR.id.material_drawer_swipe_refresh)
         swipeRefreshLayout.layoutParams.width = getOptimalDrawerWidth(this)
 
         initializeActionBar()

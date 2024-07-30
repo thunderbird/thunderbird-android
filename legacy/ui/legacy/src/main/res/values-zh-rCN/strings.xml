@@ -63,7 +63,6 @@
     <string name="search_everywhere_action">进行全面搜索</string>
     <string name="search_results">搜索结果</string>
     <string name="new_messages_title">新邮件</string>
-    <string name="preferences_action">设置</string>
     <string name="folders_action">管理文件夹</string>
     <string name="account_settings_action">账号设置</string>
     <string name="remove_account_action">移除账号</string>

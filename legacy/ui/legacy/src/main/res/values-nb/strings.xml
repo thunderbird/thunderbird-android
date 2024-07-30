@@ -52,7 +52,6 @@
     <string name="compose_action">Skriv</string>
     <string name="search_action">Søk</string>
     <string name="search_results">Søkeresultater</string>
-    <string name="preferences_action">Innstillinger</string>
     <string name="folders_action">Behandle mapper</string>
     <string name="account_settings_action">Kontoinnstillinger</string>
     <string name="remove_account_action">Fjern konto</string>

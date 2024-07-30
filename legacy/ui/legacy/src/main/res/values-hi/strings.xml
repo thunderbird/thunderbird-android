@@ -16,7 +16,6 @@
     <string name="compose_title_reply_all">सबका जवाब दें</string>
     <string name="compose_title_compose">बनाएं</string>
     <string name="search_action">खोजें</string>
-    <string name="preferences_action">सेटिंग</string>
     <string name="forward_action">फॉरवर्ड करें</string>
     <string name="move_to_drafts_action">ड्राफ्ट में ले जाएं</string>
     <string name="add_account_action">अकाउंट जोड़ें</string>

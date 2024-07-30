@@ -62,7 +62,6 @@
     <string name="search_everywhere_action">모든 곳에서 검색</string>
     <string name="search_results">검색 결과</string>
     <string name="new_messages_title">새 메시지</string>
-    <string name="preferences_action">설정</string>
     <string name="folders_action">폴더 관리</string>
     <string name="account_settings_action">계정 설정</string>
     <string name="remove_account_action">계정 삭제</string>

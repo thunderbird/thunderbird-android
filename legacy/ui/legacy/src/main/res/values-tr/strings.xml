@@ -62,7 +62,6 @@
     <string name="search_everywhere_action">Her yerde ara</string>
     <string name="search_results">Arama Sonuçları</string>
     <string name="new_messages_title">Yeni iletiler</string>
-    <string name="preferences_action">Ayarlar</string>
     <string name="folders_action">Klasörleri yönet</string>
     <string name="account_settings_action">Hesap Ayarları</string>
     <string name="remove_account_action">Hesabı kaldır</string>

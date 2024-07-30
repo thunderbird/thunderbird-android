@@ -63,7 +63,6 @@
     <string name="search_everywhere_action">Otsi kõikjalt</string>
     <string name="search_results">Otsingu tulemused</string>
     <string name="new_messages_title">Uued kirjad</string>
-    <string name="preferences_action">Sätted</string>
     <string name="folders_action">Halda kaustu</string>
     <string name="account_settings_action">Konto sätted</string>
     <string name="remove_account_action">Eemalda konto</string>

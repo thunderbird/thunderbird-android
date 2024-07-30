@@ -63,7 +63,6 @@
     <string name="search_everywhere_action">جستجو در همه پوشه‌ها</string>
     <string name="search_results">نتایج جستجو</string>
     <string name="new_messages_title">پیام‌های جدید</string>
-    <string name="preferences_action">تنظیمات</string>
     <string name="folders_action">مدیریت پوشه‌ها</string>
     <string name="account_settings_action">تنظیمات حساب</string>
     <string name="remove_account_action">حذف حساب</string>

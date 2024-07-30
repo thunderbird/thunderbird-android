@@ -63,7 +63,6 @@
     <string name="search_everywhere_action">在所有地方搜尋</string>
     <string name="search_results">搜尋結果</string>
     <string name="new_messages_title">新郵件</string>
-    <string name="preferences_action">設定</string>
     <string name="folders_action">整理信件匣</string>
     <string name="account_settings_action">帳號設定</string>
     <string name="remove_account_action">刪除帳號</string>

@@ -63,7 +63,6 @@
     <string name="search_everywhere_action">Cerca-ho per tot arreu</string>
     <string name="search_results">Cerca resultats</string>
     <string name="new_messages_title">Missatges nous</string>
-    <string name="preferences_action">Configuració</string>
     <string name="folders_action">Gestioneu les carpetes</string>
     <string name="account_settings_action">Configuració del compte</string>
     <string name="remove_account_action">Suprimeix el compte</string>

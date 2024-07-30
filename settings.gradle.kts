@@ -62,6 +62,10 @@ include(
 )
 
 include(
+    ":feature:navigation:drawer",
+)
+
+include(
     ":feature:widget:message-list",
     ":feature:widget:shortcut",
     ":feature:widget:unread",

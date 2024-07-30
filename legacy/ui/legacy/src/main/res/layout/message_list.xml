@@ -59,6 +59,6 @@
 
     </RelativeLayout>
 
-    <include layout="@layout/drawer_contents" />
+    <include layout="@layout/navigation_drawer_content" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

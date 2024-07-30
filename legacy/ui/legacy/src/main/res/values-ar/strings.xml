@@ -63,7 +63,6 @@
     <string name="search_everywhere_action">البحث في كل مكان</string>
     <string name="search_results">نتائج البحث</string>
     <string name="new_messages_title">الرسائل الجديدة</string>
-    <string name="preferences_action">الإعدادات</string>
     <string name="folders_action">إدارة المجلدات</string>
     <string name="account_settings_action">إعدادات الحساب</string>
     <string name="remove_account_action">احذف الحساب</string>

@@ -63,7 +63,6 @@
     <string name="search_everywhere_action">Søg overalt</string>
     <string name="search_results">Søgeresultater</string>
     <string name="new_messages_title">Nye meddelelser</string>
-    <string name="preferences_action">Indstillinger</string>
     <string name="folders_action">Håndtér mapper</string>
     <string name="account_settings_action">Kontoindstillinger</string>
     <string name="remove_account_action">Slet konto</string>

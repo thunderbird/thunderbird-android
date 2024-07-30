@@ -55,6 +55,7 @@ import com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import app.k9mail.feature.navigation.drawer.R as DrawerR
 import com.fsck.k9.core.R as CoreR
 import com.mikepenz.materialdrawer.R as MaterialDrawerR
 
@@ -74,7 +75,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private val folderIconProvider: FolderIconProvider by inject()
 
     private val drawer: DrawerLayout = parent.findViewById(R.id.drawerLayout)
-    private val sliderView: MaterialDrawerSliderView = parent.findViewById(R.id.material_drawer_slider)
+    private val sliderView: MaterialDrawerSliderView = parent.findViewById(DrawerR.id.material_drawer_slider)
     private val headerView: AccountHeaderView = AccountHeaderView(parent).apply {
         attachToSliderView(this@K9Drawer.sliderView)
         dividerBelowHeader = false
@@ -113,7 +114,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         sliderView.setSavedInstance(savedInstanceState)
         headerView.withSavedInstance(savedInstanceState)
 
-        swipeRefreshLayout = parent.findViewById(R.id.material_drawer_swipe_refresh)
+        swipeRefreshLayout = parent.findViewById(DrawerR.id.material_drawer_swipe_refresh)
         headerView.addOnLayoutChangeListener { view, _, _, _, _, _, _, _, _ ->
             val densityMultiplier = view.resources.displayMetrics.density
             val progressViewStart = view.measuredHeight
@@ -161,7 +162,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     }
 
     private fun configureAccountHeader() {
-        headerView.headerBackground = ImageHolder(R.drawable.drawer_header_background)
+        headerView.headerBackground = ImageHolder(DrawerR.drawable.navigation_drawer_header_background)
 
         headerView.onAccountHeaderListener = { _, profile, _ ->
             val account = (profile as ProfileDrawerItem).tag as Account
@@ -278,7 +279,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private fun addFooterItems() {
         sliderView.addStickyFooterItem(
             PrimaryDrawerItem().apply {
-                nameRes = R.string.folders_action
+                nameRes = DrawerR.string.navigation_drawer_action_folders
                 iconRes = Icons.Outlined.Folder
                 identifier = DRAWER_ID_FOLDERS
                 isSelectable = false
@@ -287,7 +288,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
         sliderView.addStickyFooterItem(
             PrimaryDrawerItem().apply {
-                nameRes = R.string.preferences_action
+                nameRes = DrawerR.string.navigation_drawer_action_settings
                 iconRes = Icons.Outlined.Settings
                 identifier = DRAWER_ID_PREFERENCES
                 isSelectable = false
@@ -554,6 +555,6 @@ private class FixedDividerDrawerItem(override var identifier: Long) : DividerDra
 
 // We ellipsize long folder names in the middle for better readability
 private class FolderDrawerItem : PrimaryDrawerItem() {
-    override val type: Int = R.id.drawer_list_folder_item
-    override val layoutRes: Int = R.layout.drawer_folder_list_item
+    override val type: Int = DrawerR.id.navigation_drawer_list_folder_item
+    override val layoutRes: Int = DrawerR.layout.navigation_drawer_folder_list_item
 }

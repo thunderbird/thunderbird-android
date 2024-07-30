@@ -63,7 +63,6 @@
     <string name="search_everywhere_action">Sök överallt</string>
     <string name="search_results">Sökresultat</string>
     <string name="new_messages_title">Nya meddelanden</string>
-    <string name="preferences_action">Inställningar</string>
     <string name="folders_action">Hantera mappar</string>
     <string name="account_settings_action">Kontoinställningar</string>
     <string name="remove_account_action">Ta bort konto</string>

@@ -63,7 +63,6 @@
     <string name="search_everywhere_action">Искать везде</string>
     <string name="search_results">Результаты поиска</string>
     <string name="new_messages_title">Новые сообщения</string>
-    <string name="preferences_action">Настройки</string>
     <string name="folders_action">Выбрать папки</string>
     <string name="account_settings_action">Настройки учётной записи</string>
     <string name="remove_account_action">Удалить учётную запись</string>

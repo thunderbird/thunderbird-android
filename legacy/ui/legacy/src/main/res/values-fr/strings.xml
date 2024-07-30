@@ -64,7 +64,6 @@
     <string name="search_everywhere_action">Chercher partout</string>
     <string name="search_results">Résultats de la recherche</string>
     <string name="new_messages_title">Nouveaux courriels</string>
-    <string name="preferences_action">Paramètres</string>
     <string name="folders_action">Gérer les dossiers</string>
     <string name="account_settings_action">Paramètres du compte</string>
     <string name="remove_account_action">Supprimer le compte</string>

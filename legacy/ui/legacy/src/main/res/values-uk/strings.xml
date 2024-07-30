@@ -63,7 +63,6 @@
     <string name="search_everywhere_action">Шукати всюди</string>
     <string name="search_results">Результати пошуку</string>
     <string name="new_messages_title">Нові повідомлення</string>
-    <string name="preferences_action">Налаштування</string>
     <string name="folders_action">Керування теками</string>
     <string name="account_settings_action">Налаштування облікового запису</string>
     <string name="remove_account_action">Видалити обліковий запис</string>

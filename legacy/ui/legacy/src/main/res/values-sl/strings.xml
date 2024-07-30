@@ -62,7 +62,6 @@
     <string name="search_everywhere_action">Poišči povsod</string>
     <string name="search_results">Rezultati iskanja</string>
     <string name="new_messages_title">Nova sporočila</string>
-    <string name="preferences_action">Nastavitve</string>
     <string name="folders_action">Upravljanje z mapami</string>
     <string name="account_settings_action">Nastavitve računa</string>
     <string name="remove_account_action">Odstrani račun</string>

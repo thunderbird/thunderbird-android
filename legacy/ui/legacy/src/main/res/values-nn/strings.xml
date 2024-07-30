@@ -38,7 +38,6 @@
     <string name="compose_action">Skriv</string>
     <string name="search_action">Søk</string>
     <string name="search_results">Søkjeresultat</string>
-    <string name="preferences_action">Innstillingar</string>
     <string name="account_settings_action">Kontoinnstillingar</string>
     <string name="remove_account_action">Fjern konto</string>
     <string name="mark_as_read_action">Merk som lesen/lesne</string>

@@ -38,7 +38,6 @@
     <string name="compose_action">Գրել</string>
     <string name="search_action">Փնտրել</string>
     <string name="search_results">Փնտրման արդիւնքները</string>
-    <string name="preferences_action">Կարգաւորումներ</string>
     <string name="account_settings_action">Հաշուի կագրաւորումներ</string>
     <string name="remove_account_action">Հեռացնել հաշիւը</string>
     <string name="mark_as_read_action">Նշել որպէս ընթերցուած</string>
