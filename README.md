@@ -38,6 +38,10 @@ Interested in helping to translate K-9 Mail? Contribute here:
 
 We welcome contributions from everyone. Please see the [CONTRIBUTING](docs/CONTRIBUTING.md) guide for more information.
 
+### Forking
+
+If you want to use a fork of this project please ensure that you replace the OAuth client setup in the `app-k9mail/src/{debug,release}/kotlin/app/k9mail/auth/K9OAuthConfigurationFactory.kt` and `app-thunderbird/src/{debug,daily,beta,release}/kotlin/net/thunderbird/android/auth/TbOAuthConfigurationFactory.kt` with your own OAuth client setup and ensure that the `redirectUri` is different to the one used in the main project. This is to prevent conflicts with the main app when both are installed on the same device.
+
 ### Architecture Decision Records (ADR)
 
 We use [Architecture Decision Records](https://adr.github.io/) to document the architectural decisions made in the
