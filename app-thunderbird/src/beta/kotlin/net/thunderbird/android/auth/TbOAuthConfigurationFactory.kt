@@ -9,6 +9,7 @@ class TbOAuthConfigurationFactory : OAuthConfigurationFactory {
     override fun createConfigurations(): Map<List<String>, OAuthConfiguration> {
         return mapOf(
             createAolConfiguration(),
+            createGmailConfiguration(),
             createYahooConfiguration(),
         )
     }
@@ -23,6 +24,21 @@ class TbOAuthConfigurationFactory : OAuthConfigurationFactory {
             authorizationEndpoint = "https://api.login.aol.com/oauth2/request_auth",
             tokenEndpoint = "https://api.login.aol.com/oauth2/get_token",
             redirectUri = "${BuildConfig.APPLICATION_ID}://oauth2redirect",
+        )
+    }
+
+    private fun createGmailConfiguration(): Pair<List<String>, OAuthConfiguration> {
+        return listOf(
+            "imap.gmail.com",
+            "imap.googlemail.com",
+            "smtp.gmail.com",
+            "smtp.googlemail.com",
+        ) to OAuthConfiguration(
+            clientId = "406964657835-c88sdh5fpqjhavlje1bs9ac9tf8qv5c2.apps.googleusercontent.com",
+            scopes = listOf("https://mail.google.com/"),
+            authorizationEndpoint = "https://accounts.google.com/o/oauth2/v2/auth",
+            tokenEndpoint = "https://oauth2.googleapis.com/token",
+            redirectUri = "${BuildConfig.APPLICATION_ID}:/oauth2redirect",
         )
     }
 
