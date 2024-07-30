@@ -10,6 +10,7 @@ class TbOAuthConfigurationFactory : OAuthConfigurationFactory {
         return mapOf(
             createAolConfiguration(),
             createGmailConfiguration(),
+            createMicrosoftConfiguration(),
             createYahooConfiguration(),
         )
     }
@@ -39,6 +40,23 @@ class TbOAuthConfigurationFactory : OAuthConfigurationFactory {
             authorizationEndpoint = "https://accounts.google.com/o/oauth2/v2/auth",
             tokenEndpoint = "https://oauth2.googleapis.com/token",
             redirectUri = "${BuildConfig.APPLICATION_ID}:/oauth2redirect",
+        )
+    }
+
+    private fun createMicrosoftConfiguration(): Pair<List<String>, OAuthConfiguration> {
+        return listOf(
+            "outlook.office365.com",
+            "smtp.office365.com",
+        ) to OAuthConfiguration(
+            clientId = "e6f8716e-299d-4ed9-bbf3-453f192f44e5",
+            scopes = listOf(
+                "https://outlook.office.com/IMAP.AccessAsUser.All",
+                "https://outlook.office.com/SMTP.Send",
+                "offline_access",
+            ),
+            authorizationEndpoint = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
+            tokenEndpoint = "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+            redirectUri = "msauth://net.thunderbird.android/S9nqeF27sTJcEfaInpC%2BDHzHuCY%3D",
         )
     }
 
