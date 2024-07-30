@@ -289,15 +289,6 @@
             />
 
         <ListPreference
-            android:dialogTitle="@string/account_settings_folder_target_mode_label"
-            android:entries="@array/folder_target_mode_entries"
-            android:entryValues="@array/folder_target_mode_values"
-            android:key="folder_target_mode"
-            app:useSimpleSummaryProvider="true"
-            android:title="@string/account_settings_folder_target_mode_label"
-            />
-
-        <ListPreference
             android:dialogTitle="@string/account_settings_searchable_label"
             android:entries="@array/searchable_entries"
             android:entryValues="@array/searchable_values"

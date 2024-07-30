@@ -186,10 +186,6 @@ class Account(override val uuid: String) : BaseAccount {
 
     @get:Synchronized
     @set:Synchronized
-    var folderTargetMode = FolderMode.NOT_SECOND_CLASS
-
-    @get:Synchronized
-    @set:Synchronized
     var accountNumber = 0
 
     @get:Synchronized

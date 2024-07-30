@@ -128,7 +128,6 @@ class AccountSettingsDataStore(
                 loadSpecialFolder(account.autoExpandFolderId, SpecialFolderSelection.MANUAL)
             }
             "folder_display_mode" -> account.folderDisplayMode.name
-            "folder_target_mode" -> account.folderTargetMode.name
             "searchable_folders" -> account.searchableFolders.name
             "archive_folder" -> loadSpecialFolder(account.archiveFolderId, account.archiveFolderSelection)
             "drafts_folder" -> loadSpecialFolder(account.draftsFolderId, account.draftsFolderSelection)
@@ -173,7 +172,6 @@ class AccountSettingsDataStore(
             "account_quote_prefix" -> account.quotePrefix = value
             "account_setup_auto_expand_folder" -> account.autoExpandFolderId = extractFolderId(value)
             "folder_display_mode" -> account.folderDisplayMode = Account.FolderMode.valueOf(value)
-            "folder_target_mode" -> account.folderTargetMode = Account.FolderMode.valueOf(value)
             "searchable_folders" -> account.searchableFolders = Account.Searchable.valueOf(value)
             "archive_folder" -> saveSpecialFolderSelection(value, account::setArchiveFolderId)
             "drafts_folder" -> saveSpecialFolderSelection(value, account::setDraftsFolderId)

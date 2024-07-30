@@ -1099,7 +1099,6 @@ class MessageListFragment :
             accountUuid = accountUuid,
             currentFolderId = sourceFolderId,
             scrollToFolderId = lastSelectedFolderId,
-            showDisplayableOnly = false,
             messageReference = null,
         )
 
