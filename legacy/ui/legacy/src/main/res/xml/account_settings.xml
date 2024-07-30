@@ -288,15 +288,6 @@
             android:title="@string/account_setup_incoming_subscribed_folders_only_label"
             />
 
-        <ListPreference
-            android:dialogTitle="@string/account_settings_searchable_label"
-            android:entries="@array/searchable_entries"
-            android:entryValues="@array/searchable_values"
-            android:key="searchable_folders"
-            app:useSimpleSummaryProvider="true"
-            android:title="@string/account_settings_searchable_label"
-            />
-
         <com.fsck.k9.ui.settings.account.FolderListPreference
             android:key="archive_folder"
             app:useSimpleSummaryProvider="true"

@@ -102,12 +102,6 @@
         <item>ALWAYS</item>
     </string-array>
 
-    <string-array name="searchable_values" translatable="false">
-        <item>ALL</item>
-        <item>DISPLAYABLE</item>
-        <item>NONE</item>
-    </string-array>
-
     <string-array name="folder_sync_mode_values" translatable="false">
         <item>ALL</item>
         <item>FIRST_CLASS</item>
