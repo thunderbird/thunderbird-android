@@ -39,11 +39,11 @@ android {
     namespace = "net.thunderbird.android"
 
     defaultConfig {
-        applicationId = "net.thunderbird.placeholder"
-        testApplicationId = "net.thunderbird.placeholder.tests"
+        applicationId = "net.thunderbird.android"
+        testApplicationId = "net.thunderbird.android.tests"
 
-        versionCode = 1
-        versionName = "0.1-SNAPSHOT"
+        versionCode = 2
+        versionName = "0.1"
 
         // Keep in sync with the resource string array "supported_languages"
         resourceConfigurations.addAll(
@@ -106,42 +106,68 @@ android {
     }
 
     signingConfigs {
-        if (project.hasProperty("thunderbird.keyAlias") &&
-            project.hasProperty("thunderbird.keyPassword") &&
-            project.hasProperty("thunderbird.storeFile") &&
-            project.hasProperty("thunderbird.storePassword")
-        ) {
-            create("release") {
-                keyAlias = project.property("thunderbird.keyAlias") as String
-                keyPassword = project.property("thunderbird.keyPassword") as String
-                storeFile = file(project.property("thunderbird.storeFile") as String)
-                storePassword = project.property("thunderbird.storePassword") as String
-            }
-        }
+        createSigningConfig(project, SigningType.TB_RELEASE)
+        createSigningConfig(project, SigningType.TB_BETA)
+        createSigningConfig(project, SigningType.TB_DAILY)
     }
 
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
+            versionNameSuffix = "-SNAPSHOT"
+
             isMinifyEnabled = false
+            isShrinkResources = false
+            isDebuggable = true
         }
 
         release {
-            signingConfig = signingConfigs.findByName("release")
+            signingConfig = signingConfigs.getByType(SigningType.TB_RELEASE)
+
             isMinifyEnabled = true
             isShrinkResources = true
-        }
+            isDebuggable = false
 
-        create("daily") {
-            initWith(getByName("release"))
-            applicationIdSuffix = ".daily"
-            matchingFallbacks += listOf("release")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android.txt"),
+                "proguard-rules.pro",
+            )
         }
 
         create("beta") {
-            initWith(getByName("release"))
+            signingConfig = signingConfigs.getByType(SigningType.TB_BETA)
+
             applicationIdSuffix = ".beta"
+            versionNameSuffix = "b1"
+
+            isMinifyEnabled = true
+            isShrinkResources = true
+            isDebuggable = false
+
             matchingFallbacks += listOf("release")
+
+            proguardFiles(
+                getDefaultProguardFile("proguard-android.txt"),
+                "proguard-rules.pro",
+            )
+        }
+
+        create("daily") {
+            signingConfig = signingConfigs.getByType(SigningType.TB_DAILY)
+
+            applicationIdSuffix = ".daily"
+            versionNameSuffix = "a1"
+
+            isMinifyEnabled = true
+            isShrinkResources = true
+            isDebuggable = false
+
+            matchingFallbacks += listOf("release")
+
+            proguardFiles(
+                getDefaultProguardFile("proguard-android.txt"),
+                "proguard-rules.pro",
+            )
         }
     }
 
