@@ -1,5 +1,6 @@
 package com.fsck.k9.view
 
+import app.k9mail.core.common.net.HostNameUtils
 import com.fsck.k9.mail.Address
 import org.apache.james.mime4j.util.CharsetUtil
 
@@ -18,6 +19,7 @@ internal class UserInputEmailAddressParser {
                 when {
                     address.isIncomplete() -> null
                     address.isNonAsciiAddress() -> throw NonAsciiEmailAddressException(address.address)
+                    address.isInvalidDomainPart() -> null
                     else -> Address.parse(address.toEncodedString()).firstOrNull()
                 }
             }
@@ -26,6 +28,8 @@ internal class UserInputEmailAddressParser {
     private fun Address.isIncomplete() = hostname.isNullOrBlank()
 
     private fun Address.isNonAsciiAddress() = !CharsetUtil.isASCII(address)
+
+    private fun Address.isInvalidDomainPart() = HostNameUtils.isLegalHostNameOrIP(hostname) == null
 }
 
 internal class NonAsciiEmailAddressException(message: String) : Exception(message)
