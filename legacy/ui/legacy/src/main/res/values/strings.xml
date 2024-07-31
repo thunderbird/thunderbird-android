@@ -721,11 +721,6 @@
     <string name="folder_settings_include_in_integrated_inbox_label">Unify</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">All messages are shown in Unified Inbox</string>
 
-    <string name="account_settings_searchable_label">Folders to search</string>
-    <string name="account_settings_searchable_all">All</string>
-    <string name="account_settings_searchable_displayable">Displayable</string>
-    <string name="account_settings_searchable_none">None</string>
-
     <string name="account_settings_no_folder_selected">None</string>
     <string name="account_settings_automatic_special_folder">Automatic (%s)</string>
 
