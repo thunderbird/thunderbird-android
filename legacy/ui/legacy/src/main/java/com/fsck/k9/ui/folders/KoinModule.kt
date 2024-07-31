@@ -1,5 +1,6 @@
 package com.fsck.k9.ui.folders
 
+import app.k9mail.legacy.ui.folder.FolderIconProvider
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

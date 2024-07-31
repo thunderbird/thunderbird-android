@@ -1,4 +1,4 @@
-package com.fsck.k9.ui.folders
+package app.k9mail.legacy.ui.folder
 
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.legacy.folder.FolderType
