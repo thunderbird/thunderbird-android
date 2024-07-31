@@ -1,6 +1,6 @@
 package com.fsck.k9.search
 
-import com.fsck.k9.BaseAccount
+import app.k9mail.legacy.account.BaseAccount
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.search.SearchSpecification.SearchField
 import org.koin.core.component.KoinComponent

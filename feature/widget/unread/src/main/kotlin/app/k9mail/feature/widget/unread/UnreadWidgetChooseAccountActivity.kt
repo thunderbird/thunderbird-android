@@ -2,7 +2,7 @@ package app.k9mail.feature.widget.unread
 
 import android.content.Intent
 import android.os.Bundle
-import com.fsck.k9.BaseAccount
+import app.k9mail.legacy.account.BaseAccount
 import com.fsck.k9.activity.AccountList
 
 class UnreadWidgetChooseAccountActivity : AccountList() {

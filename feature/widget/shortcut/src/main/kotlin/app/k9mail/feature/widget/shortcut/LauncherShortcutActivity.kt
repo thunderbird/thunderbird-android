@@ -9,7 +9,7 @@ import androidx.annotation.AttrRes
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
-import com.fsck.k9.BaseAccount
+import app.k9mail.legacy.account.BaseAccount
 import com.fsck.k9.activity.AccountList
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.search.SearchAccount

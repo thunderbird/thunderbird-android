@@ -87,6 +87,7 @@ include(
 )
 
 include(
+    ":legacy:account",
     ":legacy:common",
     ":legacy:ui:base",
     ":legacy:ui:legacy",

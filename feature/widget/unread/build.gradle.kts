@@ -5,6 +5,7 @@ plugins {
 dependencies {
     implementation(projects.legacy.ui.legacy)
     implementation(projects.legacy.core)
+    implementation(projects.legacy.account)
 
     implementation(libs.preferencex)
     implementation(libs.timber)
