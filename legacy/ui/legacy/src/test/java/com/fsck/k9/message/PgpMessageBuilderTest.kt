@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Parcelable
+import app.k9mail.legacy.account.Identity
 import assertk.Assert
 import assertk.all
 import assertk.assertThat
@@ -17,7 +18,6 @@ import assertk.assertions.isNull
 import assertk.assertions.isSameInstanceAs
 import com.fsck.k9.Account.QuoteStyle
 import com.fsck.k9.CoreResourceProvider
-import com.fsck.k9.Identity
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.activity.compose.ComposeCryptoStatus
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode

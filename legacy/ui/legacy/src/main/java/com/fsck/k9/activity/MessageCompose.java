@@ -52,7 +52,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.DI;
-import com.fsck.k9.Identity;
+import app.k9mail.legacy.account.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks;

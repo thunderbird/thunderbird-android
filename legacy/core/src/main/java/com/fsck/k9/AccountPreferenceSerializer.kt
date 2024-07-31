@@ -1,5 +1,6 @@
 package com.fsck.k9
 
+import app.k9mail.legacy.account.Identity
 import com.fsck.k9.Account.Companion.DEFAULT_SORT_ASCENDING
 import com.fsck.k9.Account.Companion.DEFAULT_SORT_TYPE
 import com.fsck.k9.Account.Companion.DEFAULT_SYNC_INTERVAL

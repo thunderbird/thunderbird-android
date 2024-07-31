@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.net.Uri.Builder;
 
 import com.fsck.k9.Account.QuoteStyle;
-import com.fsck.k9.Identity;
+import app.k9mail.legacy.account.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.mail.internet.TextBody;

@@ -2,12 +2,12 @@ package com.fsck.k9.message
 
 import android.net.Uri
 import app.k9mail.core.android.testing.RobolectricTest
+import app.k9mail.legacy.account.Identity
 import assertk.Assert
 import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isGreaterThan
 import com.fsck.k9.Account.QuoteStyle
-import com.fsck.k9.Identity
 import com.fsck.k9.mail.internet.MimeHeaderChecker
 import com.fsck.k9.mail.internet.TextBody
 import org.junit.Test

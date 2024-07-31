@@ -11,7 +11,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
-import com.fsck.k9.Identity;
+import app.k9mail.legacy.account.Identity;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.identity.IdentityFormatter;

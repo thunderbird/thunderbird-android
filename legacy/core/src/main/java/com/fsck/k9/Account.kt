@@ -1,6 +1,7 @@
 package com.fsck.k9
 
 import app.k9mail.legacy.account.BaseAccount
+import app.k9mail.legacy.account.Identity
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.ServerSettings
