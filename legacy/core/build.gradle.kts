@@ -11,6 +11,7 @@ dependencies {
 
     api(projects.legacy.account)
     api(projects.legacy.di)
+    api(projects.legacy.folder)
     api(projects.legacy.notification)
 
     implementation(projects.plugins.openpgpApiLib.openpgpApi)

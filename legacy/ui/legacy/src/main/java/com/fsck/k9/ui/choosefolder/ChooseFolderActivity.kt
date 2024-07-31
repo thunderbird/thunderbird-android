@@ -9,13 +9,13 @@ import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.RecyclerView
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
+import app.k9mail.legacy.folder.FolderType
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mailstore.DisplayFolder
-import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
 import com.fsck.k9.ui.folders.FolderIconProvider

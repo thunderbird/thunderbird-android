@@ -1,6 +1,7 @@
 package com.fsck.k9.mailstore
 
 import app.k9mail.legacy.di.DI
+import app.k9mail.legacy.folder.FolderType
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.controller.MessagingController
@@ -321,14 +322,3 @@ data class DisplayFolder(
     val unreadMessageCount: Int,
     val starredMessageCount: Int,
 )
-
-enum class FolderType {
-    REGULAR,
-    INBOX,
-    OUTBOX,
-    SENT,
-    TRASH,
-    DRAFTS,
-    ARCHIVE,
-    SPAM,
-}

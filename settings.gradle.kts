@@ -92,6 +92,7 @@ include(
     ":legacy:core",
     ":legacy:crypto-openpgp",
     ":legacy:di",
+    ":legacy:folder",
     ":legacy:notification",
     ":legacy:storage",
     ":legacy:testing",

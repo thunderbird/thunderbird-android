@@ -1,8 +1,8 @@
 package com.fsck.k9.ui.folders
 
 import android.content.res.Resources
+import app.k9mail.legacy.folder.FolderType
 import com.fsck.k9.mailstore.Folder
-import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.mailstore.RemoteFolder
 import com.fsck.k9.ui.R
 

@@ -1,5 +1,7 @@
 package com.fsck.k9.mailstore
 
+import app.k9mail.legacy.folder.FolderType
+
 /**
  * Implements the automatic special folder selection strategy.
  */
