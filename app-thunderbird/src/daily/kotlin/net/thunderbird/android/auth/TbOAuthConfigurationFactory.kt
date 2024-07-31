@@ -1,10 +1,11 @@
-package app.k9mail.auth
+package net.thunderbird.android.auth
 
 import app.k9mail.core.common.oauth.OAuthConfiguration
 import app.k9mail.core.common.oauth.OAuthConfigurationFactory
-import com.fsck.k9.BuildConfig
+import net.thunderbird.android.BuildConfig
 
-class K9OAuthConfigurationFactory : OAuthConfigurationFactory {
+@Suppress("ktlint:standard:max-line-length")
+class TbOAuthConfigurationFactory : OAuthConfigurationFactory {
     override fun createConfigurations(): Map<List<String>, OAuthConfiguration> {
         return mapOf(
             createAolConfiguration(),
@@ -15,8 +16,11 @@ class K9OAuthConfigurationFactory : OAuthConfigurationFactory {
     }
 
     private fun createAolConfiguration(): Pair<List<String>, OAuthConfiguration> {
-        return listOf("imap.aol.com", "smtp.aol.com") to OAuthConfiguration(
-            clientId = BuildConfig.OAUTH_AOL_CLIENT_ID,
+        return listOf(
+            "imap.aol.com",
+            "smtp.aol.com",
+        ) to OAuthConfiguration(
+            clientId = "dj0yJmk9Rk11R2pTTlF0TlZGJmQ9WVdrOVYxcElTMHBwWVZBbWNHbzlNQT09JnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWVm",
             scopes = listOf("mail-w"),
             authorizationEndpoint = "https://api.login.aol.com/oauth2/request_auth",
             tokenEndpoint = "https://api.login.aol.com/oauth2/get_token",
@@ -31,7 +35,7 @@ class K9OAuthConfigurationFactory : OAuthConfigurationFactory {
             "smtp.gmail.com",
             "smtp.googlemail.com",
         ) to OAuthConfiguration(
-            clientId = BuildConfig.OAUTH_GMAIL_CLIENT_ID,
+            clientId = "406964657835-2bpeeeb9mqlpg0mca8digjdv40m5ja8e.apps.googleusercontent.com",
             scopes = listOf("https://mail.google.com/"),
             authorizationEndpoint = "https://accounts.google.com/o/oauth2/v2/auth",
             tokenEndpoint = "https://oauth2.googleapis.com/token",
@@ -44,7 +48,7 @@ class K9OAuthConfigurationFactory : OAuthConfigurationFactory {
             "outlook.office365.com",
             "smtp.office365.com",
         ) to OAuthConfiguration(
-            clientId = BuildConfig.OAUTH_MICROSOFT_CLIENT_ID,
+            clientId = "e6f8716e-299d-4ed9-bbf3-453f192f44e5",
             scopes = listOf(
                 "https://outlook.office.com/IMAP.AccessAsUser.All",
                 "https://outlook.office.com/SMTP.Send",
@@ -52,7 +56,7 @@ class K9OAuthConfigurationFactory : OAuthConfigurationFactory {
             ),
             authorizationEndpoint = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
             tokenEndpoint = "https://login.microsoftonline.com/common/oauth2/v2.0/token",
-            redirectUri = BuildConfig.OAUTH_MICROSOFT_REDIRECT_URI,
+            redirectUri = "msauth://net.thunderbird.android.daily/KUkL9b7kcXs%2FtgmDCGD54ka8Bow%3D",
         )
     }
 
@@ -61,7 +65,7 @@ class K9OAuthConfigurationFactory : OAuthConfigurationFactory {
             "imap.mail.yahoo.com",
             "smtp.mail.yahoo.com",
         ) to OAuthConfiguration(
-            clientId = BuildConfig.OAUTH_YAHOO_CLIENT_ID,
+            clientId = "dj0yJmk9TTQ2U1JNTlBPQXdJJmQ9WVdrOWVIaHdkMFU0V0hZbWNHbzlNQT09JnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTBi",
             scopes = listOf("mail-w"),
             authorizationEndpoint = "https://api.login.yahoo.com/oauth2/request_auth",
             tokenEndpoint = "https://api.login.yahoo.com/oauth2/get_token",
