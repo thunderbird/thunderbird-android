@@ -9,6 +9,7 @@ dependencies {
     implementation(projects.legacy.cryptoOpenpgp)
     implementation(projects.backend.imap)
     implementation(projects.backend.pop3)
+    implementation(projects.backend.ddd)
 
     implementation(projects.core.featureflags)
     implementation(projects.feature.launcher)

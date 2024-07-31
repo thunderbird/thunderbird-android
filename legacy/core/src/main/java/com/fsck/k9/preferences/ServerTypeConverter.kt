@@ -11,6 +11,7 @@ object ServerTypeConverter {
         Protocols.IMAP -> "IMAP"
         Protocols.POP3 -> "POP3"
         Protocols.SMTP -> "SMTP"
+        Protocols.DDD -> "DDD"
         else -> throw AssertionError("Unsupported type: $serverSettingsType")
     }
 }

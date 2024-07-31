@@ -59,3 +59,12 @@ fun ConnectionSecurity.toPop3DefaultPort(): Long {
         TLS -> 995
     }
 }
+
+@Suppress("MagicNumber")
+fun ConnectionSecurity.toDddDefaultPort(): Long {
+    return when (this) {
+        None -> 110
+        StartTLS -> 110
+        TLS -> 995
+    }
+}

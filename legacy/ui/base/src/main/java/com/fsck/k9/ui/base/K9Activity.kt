@@ -35,6 +35,7 @@ abstract class K9Activity(private val themeType: ThemeType) : AppCompatActivity(
         initializeTheme()
         initializePushController()
         super.onCreate(savedInstanceState)
+        val resolver = contentResolver
 
         setLayoutDirection()
         listenForAppLanguageChanges()

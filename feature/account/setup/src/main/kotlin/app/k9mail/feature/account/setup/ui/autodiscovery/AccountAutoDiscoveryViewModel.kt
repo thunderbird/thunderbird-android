@@ -1,9 +1,12 @@
 package app.k9mail.feature.account.setup.ui.autodiscovery
 
+import android.content.Context
+import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.IncomingServerSettings
+import app.k9mail.autodiscovery.demo.DDDServerSettings
 import app.k9mail.autodiscovery.demo.DemoServerSettings
 import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
@@ -30,11 +33,18 @@ internal class AccountAutoDiscoveryViewModel(
     private val getAutoDiscovery: UseCase.GetAutoDiscovery,
     private val accountStateRepository: AccountDomainContract.AccountStateRepository,
     override val oAuthViewModel: AccountOAuthContract.ViewModel,
+    private val context: Context? = null,
 ) : BaseViewModel<State, Event, Effect>(initialState), AccountAutoDiscoveryContract.ViewModel {
 
+    init {
+        // Set the initial state with default email address if context is provided
+        initState(initialState)
+    }
+
     override fun initState(state: State) {
+        val email = context?.let { getEmailFromContentResolver() } ?: ""
         updateState {
-            state.copy()
+            state.copy(emailAddress = StringInputField(email))
         }
     }
 
@@ -52,6 +62,27 @@ internal class AccountAutoDiscoveryViewModel(
                 navigateNext(isAutomaticConfig = false)
             }
         }
+    }
+
+    private fun getEmailFromContentResolver(): String {
+        // Use ContentResolver to query for email address
+        var clientID = ""
+        var email = ""
+        val cursor = context?.contentResolver?.query(
+            Uri.parse("content://net.discdd.provider.datastoreprovider/mails"),
+            arrayOf("data"),
+            "clientId",
+            null,
+            null
+        )
+
+        cursor?.use {
+            if (it.moveToFirst()) {
+                clientID = it.getString(it.getColumnIndexOrThrow("data"))
+                email = "$clientID@ravlykmail.com"
+            }
+        }
+        return email
     }
 
     private fun changeEmailAddress(emailAddress: String) {
@@ -153,7 +184,7 @@ internal class AccountAutoDiscoveryViewModel(
     }
 
     private fun updateAutoDiscoverySettings(settings: AutoDiscoveryResult.Settings) {
-        if (settings.incomingServerSettings is DemoServerSettings) {
+        if (settings.incomingServerSettings is DemoServerSettings || settings.incomingServerSettings is DDDServerSettings) {
             updateState {
                 it.copy(
                     isLoading = false,

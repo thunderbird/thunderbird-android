@@ -24,7 +24,15 @@ class DemoAutoDiscovery : AutoDiscovery {
                         isTrusted = true,
                         source = "DemoAutoDiscovery",
                     )
-                } else {
+                } else if (domain.value  == "ravlykmail.com") {
+                    AutoDiscoveryResult.Settings(
+                        incomingServerSettings = DDDServerSettings,
+                        outgoingServerSettings = DDDServerSettings,
+                        isTrusted = true,
+                        source = "DemoAutoDiscovery",
+                    )
+                }
+                else {
                     AutoDiscoveryResult.NoUsableSettingsFound
                 }
             },
@@ -41,6 +49,19 @@ object DemoServerSettings : IncomingServerSettings, OutgoingServerSettings {
         authenticationType = AuthType.PLAIN,
         username = "irrelevant",
         password = "irrelevant",
+        clientCertificateAlias = null,
+    )
+}
+
+object DDDServerSettings : IncomingServerSettings, OutgoingServerSettings {
+    val serverSettings = ServerSettings(
+        type = "ddd",
+        host = "irrelevant",
+        port = 23,
+        connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
+        authenticationType = AuthType.PLAIN,
+        username = "TestUser",
+        password = "TestPwd",
         clientCertificateAlias = null,
     )
 }

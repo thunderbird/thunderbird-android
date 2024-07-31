@@ -8,6 +8,7 @@ enum class IncomingProtocolType(
 ) {
     IMAP("imap", ConnectionSecurity.TLS),
     POP3("pop3", ConnectionSecurity.TLS),
+    DDD("ddd", ConnectionSecurity.TLS),
     ;
 
     companion object {
@@ -25,5 +26,6 @@ fun IncomingProtocolType.toDefaultPort(connectionSecurity: ConnectionSecurity): 
     return when (this) {
         IncomingProtocolType.IMAP -> connectionSecurity.toImapDefaultPort()
         IncomingProtocolType.POP3 -> connectionSecurity.toPop3DefaultPort()
+        IncomingProtocolType.DDD -> connectionSecurity.toDddDefaultPort()
     }
 }

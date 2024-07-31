@@ -5,6 +5,7 @@ import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.autodiscovery.api.AutoDiscoveryService
 import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
+import app.k9mail.autodiscovery.demo.DDDServerSettings
 import app.k9mail.autodiscovery.demo.DemoServerSettings
 import app.k9mail.core.common.mail.toUserEmailAddress
 import app.k9mail.core.common.oauth.OAuthConfigurationProvider
@@ -20,7 +21,7 @@ internal class GetAutoDiscovery(
         val result = service.discover(email)
 
         return if (result is AutoDiscoveryResult.Settings) {
-            if (result.incomingServerSettings is DemoServerSettings) {
+            if (result.incomingServerSettings is DemoServerSettings || result.incomingServerSettings is DDDServerSettings) {
                 return result
             } else {
                 validateOAuthSupport(result)

@@ -29,4 +29,12 @@ internal val IncomingProtocolType.allowedAuthenticationTypes: List<Authenticatio
                 AuthenticationType.ClientCertificate,
             )
         }
+
+        IncomingProtocolType.DDD -> {
+            listOf(
+                AuthenticationType.PasswordCleartext,
+                AuthenticationType.PasswordEncrypted,
+                AuthenticationType.ClientCertificate,
+            )
+        }
     }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:installLocation="auto">
+    <uses-permission
+        android:name="net.discdd.bundleclient.permission.MESSAGE_PROVIDER_READ"
+        android:protectionLevel="normal" />
+    <uses-permission
+        android:name="net.discdd.bundleclient.permission.MESSAGE_PROVIDER_WRITE"
+        android:protectionLevel="normal" />
+
+    <queries>
+        <provider android:authorities="net.discdd.provider.datastoreprovider" />
+    </queries>
+
+    <application
+        android:allowBackup="true"
+        android:supportsRtl="true">
+    </application>
+</manifest>

@@ -1,0 +1,27 @@
+{
+  "trash": {
+    "name": "Trash",
+    "type": "TRASH",
+    "messageServerIds": []
+  },
+  "drafts": {
+    "name": "Drafts",
+    "type": "DRAFTS",
+    "messageServerIds": []
+  },
+  "sent": {
+    "name": "Sent",
+    "type": "SENT",
+    "messageServerIds": []
+  },
+  "archive": {
+    "name": "Archive",
+    "type": "ARCHIVE",
+    "messageServerIds": []
+  },
+  "spam": {
+    "name": "Spam",
+    "type": "SPAM",
+    "messageServerIds": []
+  }
+}

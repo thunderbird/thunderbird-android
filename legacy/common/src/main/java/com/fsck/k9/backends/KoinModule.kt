@@ -16,6 +16,7 @@ val backendsModule = module {
             mapOf(
                 "imap" to get<ImapBackendFactory>(),
                 "pop3" to get<Pop3BackendFactory>(),
+                "ddd" to get<DddBackendFactory>(),
             ) + developmentBackends,
         )
     }
@@ -34,5 +35,6 @@ val backendsModule = module {
     single<SystemAlarmManager> { AndroidAlarmManager(context = get(), alarmManager = get()) }
     single<IdleRefreshManager> { BackendIdleRefreshManager(alarmManager = get()) }
     single { Pop3BackendFactory(get(), get()) }
+    single { DddBackendFactory(context = get(), get()) }
     single<OAuth2TokenProviderFactory> { RealOAuth2TokenProviderFactory(context = get()) }
 }

@@ -117,6 +117,7 @@ include(
     ":backend:pop3",
     ":backend:jmap",
     ":backend:demo",
+    ":backend:ddd",
 )
 
 include(":plugins:openpgp-api-lib:openpgp-api")
@@ -131,3 +132,4 @@ include(
 include(
     ":library:html-cleaner",
 )
+include(":backend:ddd")

@@ -8,6 +8,7 @@ object DeletePolicyHelper {
         return when (type) {
             Protocols.IMAP -> Account.DeletePolicy.ON_DELETE
             Protocols.POP3 -> Account.DeletePolicy.NEVER
+            Protocols.DDD -> Account.DeletePolicy.NEVER
             "demo" -> Account.DeletePolicy.ON_DELETE
             else -> throw AssertionError("Unhandled case: $type")
         }
