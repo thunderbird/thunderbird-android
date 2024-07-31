@@ -2,6 +2,7 @@ package com.fsck.k9
 
 import androidx.annotation.GuardedBy
 import androidx.annotation.RestrictTo
+import app.k9mail.legacy.di.DI
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.preferences.AccountManager

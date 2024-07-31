@@ -18,7 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.DI;
+import app.k9mail.legacy.di.DI;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.mail.FetchProfile;

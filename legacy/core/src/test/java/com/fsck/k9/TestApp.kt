@@ -2,6 +2,7 @@ package com.fsck.k9
 
 import android.app.Application
 import androidx.work.WorkManager
+import app.k9mail.legacy.di.DI
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.controller.ControllerExtension
 import com.fsck.k9.crypto.EncryptionExtractor

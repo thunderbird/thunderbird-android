@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import app.k9mail.legacy.notification.NotificationLight;
-import com.fsck.k9.DI;
+import app.k9mail.legacy.di.DI;
 import com.fsck.k9.notification.NotificationLightDecoder;
 import com.fsck.k9.preferences.Settings.SettingsUpgrader;
 import kotlin.collections.SetsKt;

@@ -2,6 +2,9 @@ package com.fsck.k9
 
 import android.content.Context
 import android.content.SharedPreferences
+import app.k9mail.legacy.di.DI
+import app.k9mail.legacy.di.EarlyInit
+import app.k9mail.legacy.di.inject
 import com.fsck.k9.Account.SortType
 import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.mail.K9MailLib

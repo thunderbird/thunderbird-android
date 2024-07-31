@@ -5,7 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.fsck.k9.CoreResourceProvider;
-import com.fsck.k9.DI;
+import app.k9mail.legacy.di.DI;
 import timber.log.Timber;
 
 import com.fsck.k9.Account.QuoteStyle;
@@ -34,7 +34,7 @@ public class HtmlQuoteCreator {
     // Index of the start of the beginning of a String.
     private static final int FIND_INSERTION_POINT_START_OF_STRING = 0;
 
-    
+
     /**
      * Add quoting markup to a HTML message.
      * @param originalMessage Metadata for message being quoted.

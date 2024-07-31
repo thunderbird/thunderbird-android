@@ -10,11 +10,10 @@ dependencies {
     api(projects.core.android.common)
 
     api(projects.legacy.account)
+    api(projects.legacy.di)
     api(projects.legacy.notification)
 
     implementation(projects.plugins.openpgpApiLib.openpgpApi)
-
-    api(libs.koin.android)
 
     api(libs.androidx.annotation)
 

@@ -21,7 +21,7 @@ import com.fsck.k9.Account.ShowPictures;
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.Account.SpecialFolderSelection;
 import com.fsck.k9.AccountPreferenceSerializer;
-import com.fsck.k9.DI;
+import app.k9mail.legacy.di.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.core.R;
 import com.fsck.k9.mailstore.StorageManager;

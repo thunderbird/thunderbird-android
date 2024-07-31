@@ -8,7 +8,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
 
-import com.fsck.k9.DI;
+import app.k9mail.legacy.di.DI;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.helper.CrLfConverter;

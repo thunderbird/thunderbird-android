@@ -14,7 +14,7 @@ import android.os.ParcelFileDescriptor;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.fsck.k9.DI;
+import app.k9mail.legacy.di.DI;
 import com.fsck.k9.helper.MimeTypeUtil;
 import com.fsck.k9.mailstore.LocalStoreProvider;
 import timber.log.Timber;

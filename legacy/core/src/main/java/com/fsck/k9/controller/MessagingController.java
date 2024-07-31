@@ -29,7 +29,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.DeletePolicy;
-import com.fsck.k9.DI;
+import app.k9mail.legacy.di.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.backend.BackendManager;

@@ -1,8 +1,8 @@
 package com.fsck.k9.mailstore
 
+import app.k9mail.legacy.di.DI
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
-import com.fsck.k9.DI
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.controller.SimpleMessagingListener
 import com.fsck.k9.mail.FolderClass
