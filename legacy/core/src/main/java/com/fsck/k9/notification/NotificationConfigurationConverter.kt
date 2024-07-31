@@ -1,7 +1,7 @@
 package com.fsck.k9.notification
 
+import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.notification.NotificationSettings
-import com.fsck.k9.Account
 
 /**
  * Converts the [NotificationConfiguration] read from a `NotificationChannel` into a [NotificationSettings] instance.

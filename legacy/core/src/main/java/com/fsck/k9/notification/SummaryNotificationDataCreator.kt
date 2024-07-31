@@ -1,6 +1,6 @@
 package com.fsck.k9.notification
 
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.K9
 
 private const val MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION = 5

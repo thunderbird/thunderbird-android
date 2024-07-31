@@ -2,7 +2,7 @@ package com.fsck.k9.notification
 
 import android.text.SpannableStringBuilder
 import app.k9mail.core.android.common.contact.ContactRepository
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.K9
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Message

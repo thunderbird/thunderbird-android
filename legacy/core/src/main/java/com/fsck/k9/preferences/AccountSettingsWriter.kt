@@ -1,7 +1,7 @@
 package com.fsck.k9.preferences
 
 import android.content.Context
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.AccountPreferenceSerializer.Companion.ACCOUNT_DESCRIPTION_KEY
 import com.fsck.k9.AccountPreferenceSerializer.Companion.INCOMING_SERVER_SETTINGS_KEY
 import com.fsck.k9.AccountPreferenceSerializer.Companion.OUTGOING_SERVER_SETTINGS_KEY

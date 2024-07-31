@@ -2,7 +2,7 @@ package com.fsck.k9.notification
 
 import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.common.mail.toEmailAddressOrNull
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.K9
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.K9MailLib

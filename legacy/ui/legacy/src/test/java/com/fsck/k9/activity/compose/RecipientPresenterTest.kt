@@ -1,12 +1,12 @@
 package com.fsck.k9.activity.compose
 
 import androidx.test.core.app.ApplicationProvider
+import app.k9mail.legacy.account.Account
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
-import com.fsck.k9.Account
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoSpecialModeDisplayType
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType

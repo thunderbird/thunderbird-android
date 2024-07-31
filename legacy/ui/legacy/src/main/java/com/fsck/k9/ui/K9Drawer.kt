@@ -12,8 +12,8 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
+import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.folder.Folder
-import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.controller.MessagingController

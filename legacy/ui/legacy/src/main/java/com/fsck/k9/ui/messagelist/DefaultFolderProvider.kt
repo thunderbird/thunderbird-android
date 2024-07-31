@@ -1,6 +1,6 @@
 package com.fsck.k9.ui.messagelist
 
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 
 /**
  * Decides which folder to display when an account is selected.

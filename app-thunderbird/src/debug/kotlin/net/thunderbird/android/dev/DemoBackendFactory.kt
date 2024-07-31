@@ -1,7 +1,7 @@
 package net.thunderbird.android.dev
 
 import app.k9mail.backend.demo.DemoBackend
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.backend.BackendFactory
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.mailstore.K9BackendStorageFactory

@@ -8,5 +8,7 @@ android {
 }
 
 dependencies {
-
+    implementation(projects.legacy.notification)
+    implementation(projects.mail.common)
+    implementation(projects.backend.api)
 }

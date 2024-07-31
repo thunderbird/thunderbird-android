@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import app.k9mail.core.android.testing.RobolectricTest;
-import com.fsck.k9.Account.QuoteStyle;
+import app.k9mail.legacy.account.Account.QuoteStyle;
 import com.fsck.k9.CoreResourceProvider;
 import app.k9mail.legacy.account.Identity;
 import com.fsck.k9.TestCoreResourceProvider;

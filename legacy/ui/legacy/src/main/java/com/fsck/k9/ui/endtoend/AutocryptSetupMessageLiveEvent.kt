@@ -3,7 +3,7 @@ package com.fsck.k9.ui.endtoend
 import android.app.PendingIntent
 import android.content.Intent
 import androidx.core.content.IntentCompat
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.autocrypt.AutocryptTransferMessageCreator
 import com.fsck.k9.helper.SingleLiveEvent
 import com.fsck.k9.mail.Address

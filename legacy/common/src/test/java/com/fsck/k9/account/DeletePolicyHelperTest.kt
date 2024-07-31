@@ -1,11 +1,11 @@
 package com.fsck.k9.account
 
 import app.k9mail.core.common.mail.Protocols
+import app.k9mail.legacy.account.Account
 import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
-import com.fsck.k9.Account
 import org.junit.Test
 
 class DeletePolicyHelperTest {

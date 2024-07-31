@@ -12,12 +12,12 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import app.k9mail.core.android.testing.RobolectricTest
 import app.k9mail.core.testing.TestClock
+import app.k9mail.legacy.account.Account
 import assertk.Assert
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
 import assertk.assertions.support.expected
-import com.fsck.k9.Account
 import com.fsck.k9.FontSizes
 import com.fsck.k9.FontSizes.Companion.FONT_DEFAULT
 import com.fsck.k9.FontSizes.Companion.LARGE

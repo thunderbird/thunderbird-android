@@ -12,7 +12,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mailstore.DisplayFolder

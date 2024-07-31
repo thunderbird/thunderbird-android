@@ -27,8 +27,8 @@ import android.os.SystemClock;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
-import com.fsck.k9.Account;
-import com.fsck.k9.Account.DeletePolicy;
+import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.account.Account.DeletePolicy;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;

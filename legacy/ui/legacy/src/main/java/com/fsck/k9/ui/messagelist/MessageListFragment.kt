@@ -23,11 +23,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.Account.Expunge
+import app.k9mail.legacy.account.Account.SortType
 import app.k9mail.ui.utils.itemtouchhelper.ItemTouchHelper
 import app.k9mail.ui.utils.linearlayoutmanager.LinearLayoutManager
-import com.fsck.k9.Account
-import com.fsck.k9.Account.Expunge
-import com.fsck.k9.Account.SortType
 import com.fsck.k9.K9
 import com.fsck.k9.SwipeAction
 import com.fsck.k9.activity.FolderInfoHolder

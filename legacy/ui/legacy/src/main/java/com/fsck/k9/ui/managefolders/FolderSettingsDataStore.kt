@@ -1,7 +1,7 @@
 package com.fsck.k9.ui.managefolders
 
 import androidx.preference.PreferenceDataStore
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mailstore.FolderDetails
 import com.fsck.k9.mailstore.FolderRepository

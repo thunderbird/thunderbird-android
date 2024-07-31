@@ -9,8 +9,8 @@ import android.widget.ArrayAdapter
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.BaseAccount
-import com.fsck.k9.Account
 import com.fsck.k9.K9.isShowUnifiedInbox
 import com.fsck.k9.Preferences.Companion.getPreferences
 import com.fsck.k9.search.SearchAccount.Companion.createUnifiedInboxAccount

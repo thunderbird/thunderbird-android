@@ -1,7 +1,7 @@
 package com.fsck.k9.job
 
 import androidx.work.WorkManager
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.preferences.AccountManager
 import timber.log.Timber
 

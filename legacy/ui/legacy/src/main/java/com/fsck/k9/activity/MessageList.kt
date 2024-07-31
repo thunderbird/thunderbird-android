@@ -27,7 +27,7 @@ import app.k9mail.core.android.common.contact.CachingRepository
 import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.feature.launcher.FeatureLauncherActivity
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.K9
 import com.fsck.k9.K9.PostMarkAsUnreadNavigation
 import com.fsck.k9.K9.PostRemoveNavigation

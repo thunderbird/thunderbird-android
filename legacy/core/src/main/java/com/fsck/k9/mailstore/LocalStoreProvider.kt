@@ -1,8 +1,8 @@
 package com.fsck.k9.mailstore
 
 import android.content.Context
+import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.di.DI
-import com.fsck.k9.Account
 import com.fsck.k9.mail.MessagingException
 import java.util.concurrent.ConcurrentHashMap
 

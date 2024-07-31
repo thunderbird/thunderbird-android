@@ -1,6 +1,6 @@
 package com.fsck.k9.notification
 
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 
 internal object NotificationIds {
     const val PUSH_NOTIFICATION_ID = 1

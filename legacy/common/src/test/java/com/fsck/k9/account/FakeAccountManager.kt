@@ -1,6 +1,6 @@
 package com.fsck.k9.account
 
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.AccountRemovedListener
 import com.fsck.k9.AccountsChangeListener
 import com.fsck.k9.preferences.AccountManager

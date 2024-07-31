@@ -1,9 +1,9 @@
 package com.fsck.k9.message.quote
 
 import app.k9mail.core.android.testing.RobolectricTest
+import app.k9mail.legacy.account.Account.QuoteStyle
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.fsck.k9.Account.QuoteStyle
 import com.fsck.k9.TestCoreResourceProvider
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message

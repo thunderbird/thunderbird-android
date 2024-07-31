@@ -1,6 +1,6 @@
 package com.fsck.k9.backend
 
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.mail.ServerSettings
 import java.util.concurrent.CopyOnWriteArraySet

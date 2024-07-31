@@ -1,5 +1,6 @@
 package com.fsck.k9
 
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.mail.MailServerDirection
 import com.fsck.k9.mail.ssl.LocalKeyStore
 import java.security.cert.CertificateException

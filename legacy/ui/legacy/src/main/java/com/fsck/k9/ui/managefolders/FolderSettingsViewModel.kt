@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
+import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.folder.Folder
-import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.helper.SingleLiveEvent

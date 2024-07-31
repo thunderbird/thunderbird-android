@@ -1,7 +1,7 @@
 package com.fsck.k9.search
 
-import com.fsck.k9.Account
-import com.fsck.k9.Account.FolderMode
+import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.Account.FolderMode
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.search.SearchSpecification.Attribute
 import com.fsck.k9.search.SearchSpecification.SearchCondition

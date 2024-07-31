@@ -1,7 +1,5 @@
-package com.fsck.k9
+package app.k9mail.legacy.account
 
-import app.k9mail.legacy.account.BaseAccount
-import app.k9mail.legacy.account.Identity
 import app.k9mail.legacy.notification.NotificationSettings
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy
 import com.fsck.k9.mail.Address
@@ -15,6 +13,7 @@ const val DEFAULT_VISIBLE_LIMIT = 25
 /**
  * Account stores all of the settings for a single account defined by the user. Each account is defined by a UUID.
  */
+@Suppress("TooManyFunctions")
 class Account(
     override val uuid: String,
     private val isSensitiveDebugLoggingEnabled: () -> Boolean = { false },
@@ -539,6 +538,7 @@ class Account(
         }
     }
 
+    @Suppress("MagicNumber")
     val earliestPollDate: Date?
         get() {
             val age = maximumPolledMessageAge.takeIf { it >= 0 } ?: return null
@@ -651,6 +651,7 @@ class Account(
         }
     }
 
+    @Suppress("MagicNumber")
     enum class DeletePolicy(@JvmField val setting: Int) {
         NEVER(0),
         SEVEN_DAYS(1),

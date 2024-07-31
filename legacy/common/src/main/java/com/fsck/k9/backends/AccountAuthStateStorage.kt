@@ -1,6 +1,6 @@
 package com.fsck.k9.backends
 
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.mail.oauth.AuthStateStorage
 import com.fsck.k9.preferences.AccountManager
 

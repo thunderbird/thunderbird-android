@@ -1,6 +1,6 @@
 package app.k9mail.feature.widget.message.list
 
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mailstore.MessageDetailsAccessor

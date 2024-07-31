@@ -4,7 +4,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import app.k9mail.core.android.testing.RobolectricTest;
-import com.fsck.k9.Account;
+import app.k9mail.legacy.account.Account;
 import com.fsck.k9.helper.ReplyToParser.ReplyToAddresses;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;

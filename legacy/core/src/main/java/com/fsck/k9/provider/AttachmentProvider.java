@@ -19,7 +19,7 @@ import com.fsck.k9.helper.MimeTypeUtil;
 import com.fsck.k9.mailstore.LocalStoreProvider;
 import timber.log.Timber;
 
-import com.fsck.k9.Account;
+import app.k9mail.legacy.account.Account;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalStore;

@@ -2,7 +2,7 @@ package com.fsck.k9.account
 
 import android.content.Context
 import app.k9mail.feature.settings.import.SettingsImportExternalContract
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.Core
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController

@@ -7,7 +7,7 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.K9
 import java.util.concurrent.TimeUnit
 import kotlinx.datetime.Clock

@@ -1,7 +1,7 @@
 package com.fsck.k9.account
 
 import app.k9mail.core.common.mail.Protocols
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 
 object DeletePolicyHelper {
     fun getDefaultDeletePolicy(type: String): Account.DeletePolicy {

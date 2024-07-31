@@ -18,7 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.TooltipCompat;
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons;
-import com.fsck.k9.Account;
+import app.k9mail.legacy.account.Account;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;

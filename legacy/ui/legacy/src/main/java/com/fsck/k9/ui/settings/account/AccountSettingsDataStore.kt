@@ -1,10 +1,10 @@
 package com.fsck.k9.ui.settings.account
 
 import androidx.preference.PreferenceDataStore
+import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.Account.SpecialFolderSelection
 import app.k9mail.legacy.notification.NotificationLight
 import app.k9mail.legacy.notification.NotificationVibration
-import com.fsck.k9.Account
-import com.fsck.k9.Account.SpecialFolderSelection
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.job.K9JobManager

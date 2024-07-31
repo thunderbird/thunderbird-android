@@ -1,6 +1,6 @@
 package com.fsck.k9.ui.helper
 
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 
 object DisplayAddressHelper {
     fun shouldShowRecipients(account: Account, folderId: Long): Boolean {
