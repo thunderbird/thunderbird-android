@@ -4,8 +4,8 @@ package com.fsck.k9.preferences.upgrader;
 import java.util.Map;
 import java.util.Set;
 
+import app.k9mail.legacy.notification.NotificationLight;
 import com.fsck.k9.DI;
-import com.fsck.k9.NotificationLight;
 import com.fsck.k9.notification.NotificationLightDecoder;
 import com.fsck.k9.preferences.Settings.SettingsUpgrader;
 import kotlin.collections.SetsKt;

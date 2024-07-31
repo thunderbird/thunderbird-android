@@ -1,4 +1,4 @@
-package com.fsck.k9
+package app.k9mail.legacy.notification
 
 import android.app.Notification
 
@@ -15,10 +15,10 @@ enum class NotificationLight {
     Magenta,
     ;
 
-    fun toColor(account: Account): Int? {
+    fun toColor(accountColor: Int): Int? {
         return when (this) {
             Disabled -> null
-            AccountColor -> account.chipColor.toArgb()
+            AccountColor -> accountColor.toArgb()
             SystemDefaultColor -> Notification.COLOR_DEFAULT
             White -> 0xFFFFFF.toArgb()
             Red -> 0xFF0000.toArgb()

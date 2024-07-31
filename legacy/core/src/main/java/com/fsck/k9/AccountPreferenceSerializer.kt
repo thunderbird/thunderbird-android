@@ -1,6 +1,10 @@
 package com.fsck.k9
 
 import app.k9mail.legacy.account.Identity
+import app.k9mail.legacy.notification.NotificationLight
+import app.k9mail.legacy.notification.NotificationSettings
+import app.k9mail.legacy.notification.NotificationVibration
+import app.k9mail.legacy.notification.VibratePattern
 import com.fsck.k9.Account.Companion.DEFAULT_SORT_ASCENDING
 import com.fsck.k9.Account.Companion.DEFAULT_SORT_TYPE
 import com.fsck.k9.Account.Companion.DEFAULT_SYNC_INTERVAL

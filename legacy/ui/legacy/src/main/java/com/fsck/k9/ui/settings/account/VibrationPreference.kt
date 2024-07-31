@@ -5,7 +5,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.core.content.res.TypedArrayUtils
 import androidx.preference.ListPreference
-import com.fsck.k9.VibratePattern
+import app.k9mail.legacy.notification.VibratePattern
 import com.fsck.k9.ui.R
 import com.takisoft.preferencex.PreferenceFragmentCompat
 

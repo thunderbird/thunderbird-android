@@ -11,8 +11,8 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.appcompat.widget.SwitchCompat
 import androidx.preference.PreferenceDialogFragmentCompat
-import com.fsck.k9.NotificationVibration
-import com.fsck.k9.VibratePattern
+import app.k9mail.legacy.notification.NotificationVibration
+import app.k9mail.legacy.notification.VibratePattern
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.bundle.getEnum
 import com.fsck.k9.ui.base.bundle.putEnum

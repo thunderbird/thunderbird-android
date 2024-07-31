@@ -10,6 +10,7 @@ import java.util.TreeMap;
 
 import android.content.Context;
 
+import app.k9mail.legacy.notification.NotificationLight;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Account.Expunge;
@@ -22,7 +23,6 @@ import com.fsck.k9.Account.SpecialFolderSelection;
 import com.fsck.k9.AccountPreferenceSerializer;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
-import com.fsck.k9.NotificationLight;
 import com.fsck.k9.core.R;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.preferences.Settings.BooleanSetting;

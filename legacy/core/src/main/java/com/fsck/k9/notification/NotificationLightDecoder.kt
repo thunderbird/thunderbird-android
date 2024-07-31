@@ -1,6 +1,6 @@
 package com.fsck.k9.notification
 
-import com.fsck.k9.NotificationLight
+import app.k9mail.legacy.notification.NotificationLight
 
 /**
  * Converts the "blink lights" values read from a `NotificationChannel` into [NotificationLight].

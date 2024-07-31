@@ -8,9 +8,9 @@ import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
+import app.k9mail.legacy.notification.NotificationLight
+import app.k9mail.legacy.notification.NotificationSettings
 import com.fsck.k9.Account
-import com.fsck.k9.NotificationLight
-import com.fsck.k9.NotificationSettings
 import com.fsck.k9.preferences.AccountManager
 import java.util.concurrent.Executor
 import timber.log.Timber
@@ -244,7 +244,7 @@ class NotificationChannelManager(
             setSound(notificationSettings.ringtone?.toUri(), Notification.AUDIO_ATTRIBUTES_DEFAULT)
         }
 
-        notificationSettings.light.toColor(account)?.let { lightColor ->
+        notificationSettings.light.toColor(account.chipColor)?.let { lightColor ->
             this.lightColor = lightColor
         }
         val isLightEnabled = notificationSettings.light != NotificationLight.Disabled

@@ -89,12 +89,13 @@ include(
 include(
     ":legacy:account",
     ":legacy:common",
+    ":legacy:core",
+    ":legacy:crypto-openpgp",
+    ":legacy:notification",
+    ":legacy:storage",
+    ":legacy:testing",
     ":legacy:ui:base",
     ":legacy:ui:legacy",
-    ":legacy:core",
-    ":legacy:storage",
-    ":legacy:crypto-openpgp",
-    ":legacy:testing",
 )
 
 include(
