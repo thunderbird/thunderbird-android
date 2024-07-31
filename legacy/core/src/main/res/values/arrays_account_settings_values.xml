@@ -143,13 +143,6 @@
         <item>NONE</item>
     </string-array>
 
-    <string-array name="folder_target_mode_values" translatable="false">
-        <item>ALL</item>
-        <item>FIRST_CLASS</item>
-        <item>FIRST_AND_SECOND_CLASS</item>
-        <item>NOT_SECOND_CLASS</item>
-    </string-array>
-
     <string-array name="delete_policy_values" translatable="false">
         <item>NEVER</item>
         <item>ON_DELETE</item>

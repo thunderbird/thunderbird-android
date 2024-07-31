@@ -178,9 +178,6 @@ class AccountPreferenceSerializer(
 
             folderPushMode = getEnumStringPref<FolderMode>(storage, "$accountUuid.folderPushMode", FolderMode.NONE)
 
-            folderTargetMode =
-                getEnumStringPref<FolderMode>(storage, "$accountUuid.folderTargetMode", FolderMode.NOT_SECOND_CLASS)
-
             searchableFolders = getEnumStringPref<Searchable>(storage, "$accountUuid.searchableFolders", Searchable.ALL)
 
             isSignatureBeforeQuotedText = storage.getBoolean("$accountUuid.signatureBeforeQuotedText", false)
@@ -319,7 +316,6 @@ class AccountPreferenceSerializer(
             editor.putString("$accountUuid.folderDisplayMode", folderDisplayMode.name)
             editor.putString("$accountUuid.folderSyncMode", folderSyncMode.name)
             editor.putString("$accountUuid.folderPushMode", folderPushMode.name)
-            editor.putString("$accountUuid.folderTargetMode", folderTargetMode.name)
             editor.putBoolean("$accountUuid.signatureBeforeQuotedText", isSignatureBeforeQuotedText)
             editor.putString("$accountUuid.expungePolicy", expungePolicy.name)
             editor.putBoolean("$accountUuid.syncRemoteDeletions", isSyncRemoteDeletions)
@@ -432,7 +428,6 @@ class AccountPreferenceSerializer(
         editor.remove("$accountUuid.folderDisplayMode")
         editor.remove("$accountUuid.folderSyncMode")
         editor.remove("$accountUuid.folderPushMode")
-        editor.remove("$accountUuid.folderTargetMode")
         editor.remove("$accountUuid.signatureBeforeQuotedText")
         editor.remove("$accountUuid.expungePolicy")
         editor.remove("$accountUuid.syncRemoteDeletions")
@@ -589,7 +584,6 @@ class AccountPreferenceSerializer(
             folderDisplayMode = FolderMode.NOT_SECOND_CLASS
             folderSyncMode = FolderMode.FIRST_CLASS
             folderPushMode = FolderMode.NONE
-            folderTargetMode = FolderMode.NOT_SECOND_CLASS
             sortType = DEFAULT_SORT_TYPE
             setSortAscending(DEFAULT_SORT_TYPE, DEFAULT_SORT_ASCENDING)
             showPictures = ShowPictures.NEVER

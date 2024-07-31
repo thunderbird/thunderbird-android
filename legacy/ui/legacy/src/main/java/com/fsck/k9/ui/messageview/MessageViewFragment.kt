@@ -556,7 +556,6 @@ class MessageViewFragment :
             accountUuid = account.uuid,
             currentFolderId = messageReference.folderId,
             scrollToFolderId = account.lastSelectedFolderId,
-            showDisplayableOnly = false,
             messageReference = messageReference,
         )
 

@@ -520,12 +520,6 @@
     <string name="account_settings_folder_push_mode_not_second_class">All except 2nd Class folders</string>
     <string name="account_settings_folder_push_mode_none">None</string>
 
-    <string name="account_settings_folder_target_mode_label">Move/copy destination folders</string>
-    <string name="account_settings_folder_target_mode_all">All</string>
-    <string name="account_settings_folder_target_mode_first_class">Only 1st Class folders</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">1st and 2nd Class folders</string>
-    <string name="account_settings_folder_target_mode_not_second_class">All except 2nd Class folders</string>
-
     <string name="account_settings_sync_remote_deletetions_label">Sync server deletions</string>
     <string name="account_settings_sync_remote_deletetions_summary">Remove messages when deleted on server</string>
 
