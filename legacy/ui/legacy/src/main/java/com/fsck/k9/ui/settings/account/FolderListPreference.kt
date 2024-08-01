@@ -8,7 +8,7 @@ import android.text.style.StyleSpan
 import android.util.AttributeSet
 import androidx.core.content.res.TypedArrayUtils
 import androidx.preference.ListPreference
-import com.fsck.k9.mailstore.RemoteFolder
+import app.k9mail.legacy.folder.RemoteFolder
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.folders.FolderNameFormatter
 import org.koin.core.component.KoinComponent
