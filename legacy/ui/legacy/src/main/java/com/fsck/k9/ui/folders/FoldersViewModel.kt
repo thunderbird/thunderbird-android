@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.folder.DisplayFolder
 import com.fsck.k9.K9
 import com.fsck.k9.controller.MessageCountsProvider
-import com.fsck.k9.mailstore.DisplayFolder
 import com.fsck.k9.mailstore.FolderRepository
 import com.fsck.k9.search.SearchAccount
 import kotlinx.coroutines.CoroutineDispatcher
