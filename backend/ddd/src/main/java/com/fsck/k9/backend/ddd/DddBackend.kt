@@ -14,7 +14,6 @@ import com.fsck.k9.backend.api.SyncListener
 import com.fsck.k9.backend.api.updateFolders
 import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.Flag
-import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.Part
@@ -69,44 +68,25 @@ class DddBackend(
     }
     @OptIn(ExperimentalStdlibApi::class)
     private fun readMessageStoreInfo(): MessageStoreInfo {
-        val initialFolders: MessageStoreInfo = try {
-            getResourceAsStream("/contents_ddd.json").source().buffer().use { bufferedSource ->
-                val moshi = Moshi.Builder().build()
-                val adapter = moshi.adapter<MessageStoreInfo>()
-                adapter.fromJson(bufferedSource)
-            } ?: error("Couldn't read message store info")
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emptyMap()
-        }
-
-        val aduIdList = getAllPendingMailIds()
-        val inboxFolderData = FolderData(
-            name = "inbox",
-            type = FolderType.INBOX,
-            messageServerIds = aduIdList
-        )
-
-        val combinedFolders = initialFolders.toMutableMap()
-        combinedFolders["inbox"] = inboxFolderData
-
-        return combinedFolders
+        return getResourceAsStream("/contents_ddd.json").source().buffer().use { bufferedSource ->
+            val moshi = Moshi.Builder().build()
+            val adapter = moshi.adapter<MessageStoreInfo>()
+            adapter.fromJson(bufferedSource)
+        } ?: error("Couldn't read message store info for ddd")
     }
 
-    private fun getAllPendingMailIds(): List<String> {
+    private fun getAllPendingMailIds(): List<Long> {
         try {
             val resolver = context.contentResolver
             val cursor = resolver.query(CONTENT_URL, RESOLVER_COLUMNS, "aduIds", null, null)
 
             cursor ?: throw NullPointerException("Cursor is null")
-
-            val aduIds = mutableListOf<String>()
+            val aduIds = mutableListOf<Long>()
             if (cursor.moveToFirst()) {
-                val idsString = cursor.getString(cursor.getColumnIndexOrThrow(RESOLVER_COLUMNS[0]))
-                if (idsString.isNotEmpty()) {
-                    val ids = idsString.split(",")
-                    aduIds.addAll(ids)
-                }
+                do {
+                    val aduId = cursor.getLong(cursor.getColumnIndexOrThrow(RESOLVER_COLUMNS[0]))
+                    aduIds.add(aduId)
+                } while (cursor.moveToNext())
             }
 
             cursor.close()
@@ -126,31 +106,30 @@ class DddBackend(
 
     @Throws(NullPointerException::class)
     private fun loadMessage(folderServerId: String, messageServerId: String): Message {
-            val resolver = context.contentResolver
-            val cursor = resolver.query(CONTENT_URL, RESOLVER_COLUMNS, "aduData", arrayOf(messageServerId), null)
+        val resolver = context.contentResolver
+        val cursor = resolver.query(CONTENT_URL, RESOLVER_COLUMNS, "aduData", arrayOf(messageServerId), null)
 
-            cursor ?: throw NullPointerException("Cursor is null")
-            var messageBytes: ByteArray? = null
+        cursor ?: throw NullPointerException("Cursor is null")
+        var messageBytes: ByteArray? = null
 
-            if (cursor.moveToFirst()) {
-                messageBytes = cursor.getBlob(cursor.getColumnIndexOrThrow(RESOLVER_COLUMNS[0]))
-            }
+        if (cursor.moveToFirst()) {
+            messageBytes = cursor.getBlob(cursor.getColumnIndexOrThrow(RESOLVER_COLUMNS[0]))
+        }
 
-            cursor.close()
+        cursor.close()
 
-            if (messageBytes == null) {
-                throw NullPointerException("Message bytes are null")
-            }
+        if (messageBytes == null) {
+            throw NullPointerException("Message bytes are null")
+        }
 
-            val inputStream = messageBytes.inputStream()
-            val mimeMessage = MimeMessage.parseMimeMessage(inputStream, false).apply { uid = messageServerId }
+        val inputStream = messageBytes.inputStream()
+        val mimeMessage = MimeMessage.parseMimeMessage(inputStream, false).apply { uid = messageServerId }
 
-            return mimeMessage
+        return mimeMessage
     }
 
     override fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener) {
         listener.syncStarted(folderServerId)
-
         val folderData = messageStoreInfo["inbox"]
         if (folderData == null) {
             listener.syncFailed(folderServerId, "Folder $folderServerId doesn't exist", null)
@@ -160,15 +139,23 @@ class DddBackend(
         val backendFolder = backendStorage.getFolder(folderServerId)
 
         try {
-            readMessageStoreInfo()
-            for (messageServerId in folderData.messageServerIds) {
-                val message = loadMessage(folderServerId, messageServerId)
+            //TO-DO:
+            // we might need to delete mails one at a time, after calling the saveMessage.
+            // This implementation might process the same message multiple times
+            val mailIdsToSync = getAllPendingMailIds()
+            var lastMsgServerIdProcessed = 0L;
+            for (messageServerId in mailIdsToSync) {
+                val message = loadMessage(folderServerId, messageServerId.toString())
                 backendFolder.saveMessage(message, MessageDownloadState.FULL)
-                listener.syncNewMessage(folderServerId, messageServerId, isOldMessage = false)
+                listener.syncNewMessage(folderServerId, messageServerId.toString(), isOldMessage = false)
+                val msId = messageServerId
+                if (lastMsgServerIdProcessed < msId) {
+                    lastMsgServerIdProcessed = msId;
+                }
             }
 
+            context.contentResolver.delete(CONTENT_URL, "deleteAllADUsUpto", arrayOf(lastMsgServerIdProcessed.toString()))
             backendFolder.setMoreMessages(BackendFolder.MoreMessages.FALSE)
-
             listener.syncFinished(folderServerId)
         } catch (e: Exception) {
             e.printStackTrace()

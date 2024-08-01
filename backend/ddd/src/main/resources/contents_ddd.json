@@ -1,4 +1,9 @@
 {
+  "inbox": {
+    "name": "Inbox",
+    "type": "INBOX",
+    "messageServerIds": []
+  },
   "trash": {
     "name": "Trash",
     "type": "TRASH",
