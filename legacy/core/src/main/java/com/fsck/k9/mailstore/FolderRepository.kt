@@ -1,6 +1,7 @@
 package com.fsck.k9.mailstore
 
 import app.k9mail.legacy.di.DI
+import app.k9mail.legacy.folder.Folder
 import app.k9mail.legacy.folder.FolderType
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
@@ -291,8 +292,6 @@ private data class AccountContainer(
     val account: Account,
     val folderDisplayMode: FolderMode,
 )
-
-data class Folder(val id: Long, val name: String, val type: FolderType, val isLocalOnly: Boolean)
 
 data class RemoteFolder(val id: Long, val serverId: String, val name: String, val type: FolderType)
 

@@ -1,6 +1,7 @@
 package app.k9mail.feature.widget.unread
 
 import android.content.Context
+import app.k9mail.legacy.folder.Folder
 import app.k9mail.legacy.folder.FolderType
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -10,7 +11,6 @@ import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessageCounts
 import com.fsck.k9.controller.MessageCountsProvider
-import com.fsck.k9.mailstore.Folder
 import com.fsck.k9.mailstore.FolderRepository
 import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.ui.folders.FolderNameFormatter
