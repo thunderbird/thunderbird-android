@@ -1,4 +1,4 @@
-package com.fsck.k9.ui.account
+package app.k9mail.legacy.ui.account
 
 import app.k9mail.legacy.account.Account
 

@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     api(projects.legacy.ui.base)
+    api(projects.legacy.ui.account)
     api(projects.legacy.ui.folder)
     api(projects.core.ui.legacy.designsystem)
     // TODO: Remove once Theme2 is fully migrated

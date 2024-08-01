@@ -14,6 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.folder.Folder
+import app.k9mail.legacy.ui.account.DisplayAccount
 import app.k9mail.legacy.ui.folder.FolderIconProvider
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import com.fsck.k9.K9
@@ -23,7 +24,6 @@ import com.fsck.k9.controller.SimpleMessagingListener
 import com.fsck.k9.mailstore.DisplayFolder
 import com.fsck.k9.ui.account.AccountImageLoader
 import com.fsck.k9.ui.account.AccountsViewModel
-import com.fsck.k9.ui.account.DisplayAccount
 import com.fsck.k9.ui.base.Theme
 import com.fsck.k9.ui.base.ThemeManager
 import com.fsck.k9.ui.base.livedata.observeNotNull
