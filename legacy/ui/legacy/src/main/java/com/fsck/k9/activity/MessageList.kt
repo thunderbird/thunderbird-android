@@ -49,7 +49,7 @@ import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.helper.ParcelableUtil
 import com.fsck.k9.search.isUnifiedInbox
 import com.fsck.k9.ui.BuildConfig
-import com.fsck.k9.ui.K9Drawer
+import com.fsck.k9.ui.LegacyDrawer
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
 import com.fsck.k9.ui.managefolders.ManageFoldersActivity
@@ -97,7 +97,7 @@ open class MessageList :
     private var initialSearchViewQuery: String? = null
     private var initialSearchViewIconified: Boolean = true
 
-    private var drawer: K9Drawer? = null
+    private var drawer: LegacyDrawer? = null
     private var openFolderTransaction: FragmentTransaction? = null
     private var progressBar: ProgressBar? = null
     private var messageViewPlaceHolder: PlaceholderFragment? = null
@@ -577,7 +577,7 @@ open class MessageList :
             return
         }
 
-        drawer = K9Drawer(this, savedInstanceState)
+        drawer = LegacyDrawer(this, savedInstanceState)
     }
 
     fun createDrawerListener(): DrawerListener {

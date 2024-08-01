@@ -64,7 +64,7 @@ private const val STARRED_SYMBOL = "\u2605"
 private const val THIN_SPACE = "\u2009"
 private const val EN_SPACE = "\u2000"
 
-class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : KoinComponent {
+class LegacyDrawer(private val parent: MessageList, savedInstanceState: Bundle?) : KoinComponent {
     private val foldersViewModel: FoldersViewModel by parent.viewModel()
     private val accountsViewModel: AccountsViewModel by parent.viewModel()
     private val folderNameFormatter: FolderNameFormatter by inject()
@@ -77,7 +77,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private val drawer: DrawerLayout = parent.findViewById(R.id.drawerLayout)
     private val sliderView: MaterialDrawerSliderView = parent.findViewById(DrawerR.id.material_drawer_slider)
     private val headerView: AccountHeaderView = AccountHeaderView(parent).apply {
-        attachToSliderView(this@K9Drawer.sliderView)
+        attachToSliderView(this@LegacyDrawer.sliderView)
         dividerBelowHeader = false
         displayBadgesOnCurrentProfileImage = false
     }
