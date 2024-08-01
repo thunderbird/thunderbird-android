@@ -38,8 +38,6 @@ class K9CoreResourceProvider(
     override fun searchUnifiedInboxTitle(): String = context.getString(R.string.integrated_inbox_title)
     override fun searchUnifiedInboxDetail(): String = context.getString(R.string.integrated_inbox_detail)
 
-    override fun outboxFolderName(): String = context.getString(R.string.special_mailbox_name_outbox)
-
     override val iconPushNotification: Int = Icons.Outlined.Notifications
 
     override fun pushNotificationText(notificationState: PushNotificationState): String {

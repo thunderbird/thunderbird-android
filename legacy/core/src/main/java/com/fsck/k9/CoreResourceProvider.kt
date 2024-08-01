@@ -26,8 +26,6 @@ interface CoreResourceProvider {
     fun searchUnifiedInboxTitle(): String
     fun searchUnifiedInboxDetail(): String
 
-    fun outboxFolderName(): String
-
     val iconPushNotification: Int
     fun pushNotificationText(notificationState: PushNotificationState): String
     fun pushNotificationInfoText(): String
