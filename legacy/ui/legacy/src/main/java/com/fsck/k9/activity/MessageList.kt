@@ -60,6 +60,7 @@ import com.fsck.k9.ui.messageview.MessageViewContainerFragment
 import com.fsck.k9.ui.messageview.MessageViewContainerFragment.MessageViewContainerListener
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener
 import com.fsck.k9.ui.messageview.PlaceholderFragment
+import com.fsck.k9.ui.settings.SettingsActivity
 import com.fsck.k9.view.ViewSwitcher
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener
 import com.google.android.material.textview.MaterialTextView
@@ -577,10 +578,19 @@ open class MessageList :
             return
         }
 
-        drawer = LegacyDrawer(this, savedInstanceState)
+        drawer = LegacyDrawer(
+            parent = this,
+            savedInstanceState = savedInstanceState,
+            openFolders = { launchManageFoldersScreen() },
+            openUnifiedInbox = { openUnifiedInbox() },
+            openFolder = { folderId -> openFolder(folderId) },
+            openAccount = { account -> openRealAccount(account) },
+            openSettings = { SettingsActivity.launch(this) },
+            createDrawerListener = { createDrawerListener() },
+        )
     }
 
-    fun createDrawerListener(): DrawerListener {
+    private fun createDrawerListener(): DrawerListener {
         return object : DrawerListener {
             override fun onDrawerClosed(drawerView: View) {
                 if (openFolderTransaction != null) {
@@ -626,7 +636,7 @@ open class MessageList :
         onMessageListDisplayed()
     }
 
-    fun openUnifiedInbox() {
+    private fun openUnifiedInbox() {
         actionDisplaySearch(
             this,
             createSearchAccount().relatedSearch,
@@ -635,7 +645,7 @@ open class MessageList :
         )
     }
 
-    fun launchManageFoldersScreen() {
+    private fun launchManageFoldersScreen() {
         if (account == null) {
             Timber.e("Tried to open \"Manage folders\", but no account selected!")
             return

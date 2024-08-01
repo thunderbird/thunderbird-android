@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -28,9 +29,7 @@ import app.k9mail.legacy.ui.folder.FoldersViewModel
 import app.k9mail.legacy.ui.theme.Theme
 import app.k9mail.legacy.ui.theme.ThemeManager
 import com.fsck.k9.K9
-import com.fsck.k9.activity.MessageList
 import com.fsck.k9.ui.base.livedata.observeNotNull
-import com.fsck.k9.ui.settings.SettingsActivity
 import com.mikepenz.materialdrawer.holder.BadgeStyle
 import com.mikepenz.materialdrawer.holder.ImageHolder
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
@@ -55,7 +54,6 @@ import com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import app.k9mail.feature.navigation.drawer.R as DrawerR
 import com.fsck.k9.core.R as CoreR
 import com.mikepenz.materialdrawer.R as MaterialDrawerR
 
@@ -64,7 +62,17 @@ private const val STARRED_SYMBOL = "\u2605"
 private const val THIN_SPACE = "\u2009"
 private const val EN_SPACE = "\u2000"
 
-class LegacyDrawer(private val parent: MessageList, savedInstanceState: Bundle?) : KoinComponent {
+@Suppress("MagicNumber", "TooManyFunctions", "LongParameterList")
+class LegacyDrawer(
+    savedInstanceState: Bundle?,
+    parent: AppCompatActivity,
+    private val openFolders: () -> Unit,
+    private val openUnifiedInbox: () -> Unit,
+    private val openFolder: (folderId: Long) -> Unit,
+    private val openAccount: (account: Account) -> Boolean,
+    private val openSettings: () -> Unit,
+    createDrawerListener: () -> DrawerLayout.DrawerListener,
+) : KoinComponent {
     private val foldersViewModel: FoldersViewModel by parent.viewModel()
     private val accountsViewModel: AccountsViewModel by parent.viewModel()
     private val folderNameFormatter: FolderNameFormatter by inject()
@@ -105,7 +113,7 @@ class LegacyDrawer(private val parent: MessageList, savedInstanceState: Bundle?)
         initializeImageLoader()
         configureAccountHeader()
 
-        drawer.addDrawerListener(parent.createDrawerListener())
+        drawer.addDrawerListener(createDrawerListener())
         sliderView.tintStatusBar = true
         sliderView.onDrawerItemClickListener = { _, item, _ ->
             handleItemClickListener(item)
@@ -167,7 +175,7 @@ class LegacyDrawer(private val parent: MessageList, savedInstanceState: Bundle?)
         headerView.onAccountHeaderListener = { _, profile, _ ->
             val account = (profile as ProfileDrawerItem).tag as Account
             openedAccountUuid = account.uuid
-            val eventHandled = !parent.openRealAccount(account)
+            val eventHandled = openAccount(account)
             updateUserAccountsAndFolders(account)
 
             eventHandled
@@ -220,6 +228,7 @@ class LegacyDrawer(private val parent: MessageList, savedInstanceState: Bundle?)
         return if (unreadCount > 0) unreadCount.toString() else null
     }
 
+    @Suppress("SpreadOperator")
     private fun setAccounts(displayAccounts: List<DisplayAccount>) {
         val oldSelectedBackgroundColor = selectedBackgroundColor
 
@@ -340,12 +349,12 @@ class LegacyDrawer(private val parent: MessageList, savedInstanceState: Bundle?)
 
     private fun handleItemClickListener(drawerItem: IDrawerItem<*>) {
         when (drawerItem.identifier) {
-            DRAWER_ID_PREFERENCES -> SettingsActivity.launch(parent)
-            DRAWER_ID_FOLDERS -> parent.launchManageFoldersScreen()
-            DRAWER_ID_UNIFIED_INBOX -> parent.openUnifiedInbox()
+            DRAWER_ID_PREFERENCES -> openSettings()
+            DRAWER_ID_FOLDERS -> openFolders()
+            DRAWER_ID_UNIFIED_INBOX -> openUnifiedInbox()
             else -> {
                 val folder = drawerItem.tag as Folder
-                parent.openFolder(folder.id)
+                openFolder(folder.id)
             }
         }
     }
@@ -555,6 +564,6 @@ private class FixedDividerDrawerItem(override var identifier: Long) : DividerDra
 
 // We ellipsize long folder names in the middle for better readability
 private class FolderDrawerItem : PrimaryDrawerItem() {
-    override val type: Int = DrawerR.id.navigation_drawer_list_folder_item
-    override val layoutRes: Int = DrawerR.layout.navigation_drawer_folder_list_item
+    override val type: Int = R.id.navigation_drawer_legacy_list_folder_item
+    override val layoutRes: Int = R.layout.navigation_drawer_legacy_list_folder_item
 }
