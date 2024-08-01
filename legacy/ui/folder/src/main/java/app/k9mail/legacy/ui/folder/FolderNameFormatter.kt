@@ -1,10 +1,9 @@
-package com.fsck.k9.ui.folders
+package app.k9mail.legacy.ui.folder
 
 import android.content.res.Resources
 import app.k9mail.legacy.folder.Folder
 import app.k9mail.legacy.folder.FolderType
 import app.k9mail.legacy.folder.RemoteFolder
-import com.fsck.k9.ui.R
 
 class FolderNameFormatter(private val resources: Resources) {
     fun displayName(folder: Folder): String {

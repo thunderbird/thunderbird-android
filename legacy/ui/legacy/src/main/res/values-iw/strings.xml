@@ -125,11 +125,6 @@
     <string name="notification_channel_push_description">מוצג בעת המתנה להודעות חדשות</string>
     <string name="notification_channel_messages_title">הודעות</string>
     <string name="notification_channel_miscellaneous_title">שונות</string>
-    <string name="special_mailbox_name_inbox">דואר נכנס</string>
-    <string name="special_mailbox_name_outbox">דואר יוצא</string>
-    <string name="special_mailbox_name_drafts">טיוטות</string>
-    <string name="special_mailbox_name_trash">אשפה</string>
-    <string name="special_mailbox_name_sent">נשלחו</string>
     <string name="send_failure_subject">נכשל בשליחת חלק מההודעות</string>
     <string name="version">גירסא</string>
     <string name="debug_enable_debug_logging_title">אפשר רישום איתור באגים</string>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="special_mailbox_name_outbox">De trimis</string>
+    <string name="special_mailbox_name_drafts">Ciorne</string>
+    <string name="special_mailbox_name_sent">Trimise</string>
+    <string name="special_mailbox_name_trash">Coș de gunoi</string>
+    <string name="special_mailbox_name_inbox">Mesaje primite</string>
+</resources>

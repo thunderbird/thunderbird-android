@@ -139,11 +139,6 @@
     <string name="notification_channel_messages_description">Pranešimai susiję su laiškais</string>
     <string name="notification_channel_miscellaneous_title">Įvairūs</string>
     <string name="notification_channel_miscellaneous_description">Įvairūs pranešimai, pavyzdžiui, apie klaidas ir pan.</string>
-    <string name="special_mailbox_name_inbox">Gauti laiškai</string>
-    <string name="special_mailbox_name_outbox">Siunčiamieji</string>
-    <string name="special_mailbox_name_drafts">Juodraščiai</string>
-    <string name="special_mailbox_name_trash">Šiukšliadėžė</string>
-    <string name="special_mailbox_name_sent">Išsiųsti</string>
     <string name="send_failure_subject">Kai kurių laiškų išsiųsti nepavyko</string>
     <string name="version">Versija</string>
     <string name="debug_enable_debug_logging_title">Įjungti derinimo žurnalą</string>

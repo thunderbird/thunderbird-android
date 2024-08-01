@@ -138,11 +138,6 @@
     <string name="notification_channel_messages_description">Meldingen relatearre oan berjochten</string>
     <string name="notification_channel_miscellaneous_title">Diversken</string>
     <string name="notification_channel_miscellaneous_description">Oare meldingen, lykas flaters en soksawat.</string>
-    <string name="special_mailbox_name_inbox">Postfek YN</string>
-    <string name="special_mailbox_name_outbox">Postfek ÚT</string>
-    <string name="special_mailbox_name_drafts">Konsepten</string>
-    <string name="special_mailbox_name_trash">Jiskefet</string>
-    <string name="special_mailbox_name_sent">Ferstjoerd</string>
     <string name="send_failure_subject">Flater by ferstjoeren fan berjochten</string>
     <string name="version">Ferzje</string>
     <string name="debug_enable_debug_logging_title">Debuglochboek tastean</string>

@@ -139,11 +139,6 @@
     <string name="notification_channel_messages_description">Notificações relacionadas com mensagens</string>
     <string name="notification_channel_miscellaneous_title">Diversos</string>
     <string name="notification_channel_miscellaneous_description">Notificações várias como erros, etc.</string>
-    <string name="special_mailbox_name_inbox">Caixa de entrada</string>
-    <string name="special_mailbox_name_outbox">Caixa de saída</string>
-    <string name="special_mailbox_name_drafts">Rascunhos</string>
-    <string name="special_mailbox_name_trash">Lixo</string>
-    <string name="special_mailbox_name_sent">Enviados</string>
     <string name="send_failure_subject">Falha ao enviar algumas mensagens</string>
     <string name="version">Versão</string>
     <string name="debug_enable_debug_logging_title">Ativar registo de depuração</string>

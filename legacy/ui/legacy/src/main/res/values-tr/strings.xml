@@ -134,11 +134,6 @@
     <string name="notification_channel_messages_description">İletilerle ilgili bildirimler</string>
     <string name="notification_channel_miscellaneous_title">Çeşitli</string>
     <string name="notification_channel_miscellaneous_description">Hata vb. çeşitli bildirimler.</string>
-    <string name="special_mailbox_name_inbox">Gelen Kutusu</string>
-    <string name="special_mailbox_name_outbox">Giden Kutusu</string>
-    <string name="special_mailbox_name_drafts">Taslaklar</string>
-    <string name="special_mailbox_name_trash">Çöp</string>
-    <string name="special_mailbox_name_sent">Gönderilen</string>
     <string name="send_failure_subject">Bazı iletilerin gönderilmesi başarısız</string>
     <string name="version">Uyarlama</string>
     <string name="debug_enable_debug_logging_title">Onarma günlüğünü etkinleştir</string>

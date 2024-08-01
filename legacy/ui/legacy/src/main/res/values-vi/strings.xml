@@ -136,11 +136,6 @@
     <string name="notification_channel_messages_description">Thông báo liên quan đến tin nhắn</string>
     <string name="notification_channel_miscellaneous_title">Khác</string>
     <string name="notification_channel_miscellaneous_description">Thông báo khác như lỗi, v.v.</string>
-    <string name="special_mailbox_name_inbox">Thư đến</string>
-    <string name="special_mailbox_name_outbox">Thư gửi</string>
-    <string name="special_mailbox_name_drafts">Thư nháp</string>
-    <string name="special_mailbox_name_trash">Thùng rác</string>
-    <string name="special_mailbox_name_sent">Thư đã gửi</string>
     <string name="send_failure_subject">Không gửi được một số tin nhắn</string>
     <string name="version">Phiên bản</string>
     <string name="debug_enable_debug_logging_title">Bật tính năng lưu nhật ký sửa lỗi</string>

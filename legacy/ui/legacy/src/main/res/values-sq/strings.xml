@@ -138,11 +138,6 @@
     <string name="notification_channel_messages_description">Njoftime lidhur me mesazhe</string>
     <string name="notification_channel_miscellaneous_title">Të ndryshme</string>
     <string name="notification_channel_miscellaneous_description">Njoftime të ndryshme, si gabime, etj.</string>
-    <string name="special_mailbox_name_inbox">Kuti Poste</string>
-    <string name="special_mailbox_name_outbox">Për dërgim</string>
-    <string name="special_mailbox_name_drafts">Skica</string>
-    <string name="special_mailbox_name_trash">Hedhurina</string>
-    <string name="special_mailbox_name_sent">Të dërguar</string>
     <string name="send_failure_subject">Dështoi dërgimi i disa mesazhe</string>
     <string name="version">Version</string>
     <string name="debug_enable_debug_logging_title">Aktivizo regjistrim diagnostikimesh</string>

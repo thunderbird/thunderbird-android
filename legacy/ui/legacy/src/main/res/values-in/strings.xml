@@ -121,11 +121,6 @@
     <string name="notification_channel_messages_description">Notifikasi terkait dengan pesan</string>
     <string name="notification_channel_miscellaneous_title">Lain-lain</string>
     <string name="notification_channel_miscellaneous_description">Notifikasi lainnya seperti kesalahan, dll.</string>
-    <string name="special_mailbox_name_inbox">Kotak Masuk</string>
-    <string name="special_mailbox_name_outbox">Kotak Keluar</string>
-    <string name="special_mailbox_name_drafts">Draf</string>
-    <string name="special_mailbox_name_trash">Tong Sampah</string>
-    <string name="special_mailbox_name_sent">Terkirim</string>
     <string name="send_failure_subject">Gagal mengirim beberapa pesan</string>
     <string name="version">Versi</string>
     <string name="debug_enable_debug_logging_title">Fungsikan pencatatan awakutu</string>

@@ -3,13 +3,13 @@ package app.k9mail.feature.widget.unread
 import android.content.Context
 import android.content.Intent
 import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.controller.MessageCountsProvider
 import com.fsck.k9.mailstore.FolderRepository
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
-import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import timber.log.Timber
 

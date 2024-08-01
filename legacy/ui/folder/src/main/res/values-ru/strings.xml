@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="special_mailbox_name_outbox">Исходящие</string>
+    <string name="special_mailbox_name_drafts">Черновики</string>
+    <string name="special_mailbox_name_sent">Отправленные</string>
+    <string name="special_mailbox_name_trash">Корзина</string>
+    <string name="special_mailbox_name_inbox">Входящие</string>
+</resources>

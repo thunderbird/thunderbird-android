@@ -137,11 +137,6 @@
     <string name="notification_channel_messages_description">Benachrichtigungen zu Nachrichten</string>
     <string name="notification_channel_miscellaneous_title">Verschiedenes</string>
     <string name="notification_channel_miscellaneous_description">Diverse Benachrichtigungen wie Fehler etc.</string>
-    <string name="special_mailbox_name_inbox">Posteingang</string>
-    <string name="special_mailbox_name_outbox">Postausgang</string>
-    <string name="special_mailbox_name_drafts">Entwürfe</string>
-    <string name="special_mailbox_name_trash">Papierkorb</string>
-    <string name="special_mailbox_name_sent">Gesendet</string>
     <string name="send_failure_subject">Nachrichten konnten nicht gesendet werden</string>
     <string name="version">Version</string>
     <string name="debug_enable_debug_logging_title">Fehlerprotokoll aktivieren</string>

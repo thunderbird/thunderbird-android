@@ -92,11 +92,6 @@
     <string name="notification_bg_send_ticker">Ուղարկւում է՝ <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">Ուղարկւում է</string>
     <string name="notification_bg_title_separator">․</string>
-    <string name="special_mailbox_name_inbox">Մուտքային</string>
-    <string name="special_mailbox_name_outbox">Ելքային</string>
-    <string name="special_mailbox_name_drafts">Սեւագրեր</string>
-    <string name="special_mailbox_name_trash">Աղբարկղ</string>
-    <string name="special_mailbox_name_sent">Ուղարկուած</string>
     <string name="send_failure_subject">Որոշ հաղորդագրութիւնների ուղարկումը խափանուել է</string>
     <string name="debug_enable_debug_logging_title">Գրել վրիպազերծման տեղեկատւութիւնը մատեանում</string>
     <string name="debug_enable_debug_logging_summary">Պահել յաւելեալ ախտորոշման տեղեկատւութիւն</string>

@@ -140,11 +140,6 @@
     <string name="notification_channel_messages_description">Hysbysiadau yn ymwneud â negeseuon</string>
     <string name="notification_channel_miscellaneous_title">Amrywiol</string>
     <string name="notification_channel_miscellaneous_description">Hysbysiadau amryw, fel gwallau ayyb.</string>
-    <string name="special_mailbox_name_inbox">Blwch Derbyn</string>
-    <string name="special_mailbox_name_outbox">I\'w hanfon</string>
-    <string name="special_mailbox_name_drafts">Drafftiau</string>
-    <string name="special_mailbox_name_trash">Sbwriel</string>
-    <string name="special_mailbox_name_sent">Anfonwyd</string>
     <string name="send_failure_subject">Methwyd ag anfon rhai negeseuon</string>
     <string name="version">Fersiwn</string>
     <string name="debug_enable_debug_logging_title">Galluogi logio dadfygio</string>

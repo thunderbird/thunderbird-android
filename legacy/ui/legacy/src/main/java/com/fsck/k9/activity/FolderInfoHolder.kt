@@ -3,8 +3,8 @@ package com.fsck.k9.activity
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.folder.Folder
 import app.k9mail.legacy.folder.FolderType
+import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import com.fsck.k9.mailstore.LocalFolder
-import com.fsck.k9.ui.folders.FolderNameFormatter
 
 class FolderInfoHolder(
     private val folderNameFormatter: FolderNameFormatter,

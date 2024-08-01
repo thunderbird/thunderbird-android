@@ -141,11 +141,6 @@
     <string name="notification_channel_messages_description">Сповіщення, пов\'язані з повідомленнями</string>
     <string name="notification_channel_miscellaneous_title">Різне</string>
     <string name="notification_channel_miscellaneous_description">Різні сповіщення (про помилки тощо)</string>
-    <string name="special_mailbox_name_inbox">Вхідні</string>
-    <string name="special_mailbox_name_outbox">Вихідні</string>
-    <string name="special_mailbox_name_drafts">Чернетки</string>
-    <string name="special_mailbox_name_trash">Кошик</string>
-    <string name="special_mailbox_name_sent">Надіслані</string>
     <string name="send_failure_subject">Не вдалося надіслати деякі повідомлення</string>
     <string name="version">Версія</string>
     <string name="debug_enable_debug_logging_title">Увімкнути ведення журналу налагодження</string>

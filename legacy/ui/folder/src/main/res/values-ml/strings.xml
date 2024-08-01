@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="special_mailbox_name_outbox">ഔട്ട്ബോക്സ്</string>
+    <string name="special_mailbox_name_drafts">ഡ്രാഫ്റ്റുകൾ</string>
+    <string name="special_mailbox_name_sent">അയച്ചവ</string>
+    <string name="special_mailbox_name_trash">ചവറ്റുകുട്ട</string>
+    <string name="special_mailbox_name_inbox">ഇൻബോക്സ്</string>
+</resources>

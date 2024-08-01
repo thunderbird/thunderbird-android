@@ -125,11 +125,6 @@
     <string name="notification_channel_push_title">Sioncronaich (Put)</string>
     <string name="notification_channel_messages_title">Teachdaireachdan</string>
     <string name="notification_channel_miscellaneous_title">An corr</string>
-    <string name="special_mailbox_name_inbox">A-steach</string>
-    <string name="special_mailbox_name_outbox">A-mach</string>
-    <string name="special_mailbox_name_drafts">Dreachdan</string>
-    <string name="special_mailbox_name_trash">Sgudal</string>
-    <string name="special_mailbox_name_sent">Air a chur</string>
     <string name="send_failure_subject">Cha deach cuid dhe na teachdaireachdan a chur</string>
     <string name="debug_enable_debug_logging_title">Cuir an comas logadh airson dì-bhugachadh</string>
     <string name="debug_enable_debug_logging_summary">Logaich fiosrachadh diagnosachd a bharrachd</string>

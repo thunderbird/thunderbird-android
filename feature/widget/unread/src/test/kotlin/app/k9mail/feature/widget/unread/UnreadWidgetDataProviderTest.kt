@@ -4,6 +4,7 @@ import android.content.Context
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.folder.Folder
 import app.k9mail.legacy.folder.FolderType
+import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
@@ -13,7 +14,6 @@ import com.fsck.k9.controller.MessageCounts
 import com.fsck.k9.controller.MessageCountsProvider
 import com.fsck.k9.mailstore.FolderRepository
 import com.fsck.k9.search.SearchAccount
-import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import org.junit.Before
 import org.junit.Test

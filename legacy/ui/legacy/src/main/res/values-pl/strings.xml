@@ -143,11 +143,6 @@
     <string name="notification_channel_messages_description">Powiadomienia związane z wiadomościami</string>
     <string name="notification_channel_miscellaneous_title">Różne</string>
     <string name="notification_channel_miscellaneous_description">Dodatkowe powiadomienia jak błędy itp.</string>
-    <string name="special_mailbox_name_inbox">Odebrane</string>
-    <string name="special_mailbox_name_outbox">Wychodzące</string>
-    <string name="special_mailbox_name_drafts">Wersje robocze</string>
-    <string name="special_mailbox_name_trash">Kosz</string>
-    <string name="special_mailbox_name_sent">Wysłane</string>
     <string name="send_failure_subject">Niektóre wiadomości nie zostały wysłane</string>
     <string name="version">Wersja</string>
     <string name="debug_enable_debug_logging_title">Włącz rejestrowanie debugowania</string>

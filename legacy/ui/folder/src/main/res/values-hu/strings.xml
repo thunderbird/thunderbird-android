@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="special_mailbox_name_outbox">Kimenő üzenetek</string>
+    <string name="special_mailbox_name_drafts">Piszkozatok</string>
+    <string name="special_mailbox_name_sent">Elküldött</string>
+    <string name="special_mailbox_name_trash">Kuka</string>
+    <string name="special_mailbox_name_inbox">Beérkezett üzenetek</string>
+</resources>

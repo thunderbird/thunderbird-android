@@ -89,11 +89,6 @@
     <string name="notification_bg_title_separator">:</string>
     <string name="notification_channel_messages_title">Meldingar</string>
     <string name="notification_channel_miscellaneous_title">Ymse</string>
-    <string name="special_mailbox_name_inbox">Innboks</string>
-    <string name="special_mailbox_name_outbox">Utboks</string>
-    <string name="special_mailbox_name_drafts">Kladdar</string>
-    <string name="special_mailbox_name_trash">Boskorg</string>
-    <string name="special_mailbox_name_sent">Sendt</string>
     <string name="send_failure_subject">Klarte ikkje å senda enkelte meldingar</string>
     <string name="debug_enable_sensitive_logging_title">Loggfør kjenslevar informasjon</string>
     <string name="message_list_load_more_messages_action">Last inn fleire meldingar</string>

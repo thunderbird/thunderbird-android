@@ -136,11 +136,6 @@
     <string name="notification_channel_messages_description">Mezuekin erlazionatutako jakinarazpenak</string>
     <string name="notification_channel_miscellaneous_title">Denetarik</string>
     <string name="notification_channel_miscellaneous_description">Denetariko jakinarazpenak, esaterako erroreak.</string>
-    <string name="special_mailbox_name_inbox">Sarrerako ontzia</string>
-    <string name="special_mailbox_name_outbox">Irteerako ontzia</string>
-    <string name="special_mailbox_name_drafts">Zirriborroak</string>
-    <string name="special_mailbox_name_trash">Zakarrontzia</string>
-    <string name="special_mailbox_name_sent">Bidalitakoak</string>
     <string name="send_failure_subject">Ezin izan dira mezu batzuk bidali</string>
     <string name="version">Bertsioa</string>
     <string name="debug_enable_debug_logging_title">Gaitu arazketarako egunkaria</string>

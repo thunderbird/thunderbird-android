@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="special_mailbox_name_outbox">Boîte d’envoi</string>
+    <string name="special_mailbox_name_drafts">Brouillons</string>
+    <string name="special_mailbox_name_sent">Envoyés</string>
+    <string name="special_mailbox_name_trash">Corbeille</string>
+    <string name="special_mailbox_name_inbox">Boîte de réception</string>
+</resources>

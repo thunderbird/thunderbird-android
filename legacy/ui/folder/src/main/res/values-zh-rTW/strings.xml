@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="special_mailbox_name_outbox">寄件備份</string>
+    <string name="special_mailbox_name_drafts">草稿</string>
+    <string name="special_mailbox_name_sent">寄件備份</string>
+    <string name="special_mailbox_name_trash">垃圾桶</string>
+    <string name="special_mailbox_name_inbox">收件匣</string>
+</resources>

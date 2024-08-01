@@ -130,11 +130,6 @@
     <string name="notification_channel_messages_description">Известия свързани със съобщения</string>
     <string name="notification_channel_miscellaneous_title">Разни</string>
     <string name="notification_channel_miscellaneous_description">Разни известия като грешки и т.н.</string>
-    <string name="special_mailbox_name_inbox">Входяща поща</string>
-    <string name="special_mailbox_name_outbox">Изходяща поща</string>
-    <string name="special_mailbox_name_drafts">Чернови</string>
-    <string name="special_mailbox_name_trash">Кошче</string>
-    <string name="special_mailbox_name_sent">Изпратени</string>
     <string name="send_failure_subject">Грешка при изпращане на някой съобщения</string>
     <string name="version">Версия</string>
     <string name="debug_enable_debug_logging_title">Включете доклада за дебъгване</string>

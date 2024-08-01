@@ -123,11 +123,6 @@
     <string name="notification_channel_messages_description">Oznámenia súvisiace so správami</string>
     <string name="notification_channel_miscellaneous_title">Rôzne</string>
     <string name="notification_channel_miscellaneous_description">Rôzne oznámenia, napr. chyby atď.</string>
-    <string name="special_mailbox_name_inbox">Doručená</string>
-    <string name="special_mailbox_name_outbox">Pošta na odoslanie</string>
-    <string name="special_mailbox_name_drafts">Koncepty</string>
-    <string name="special_mailbox_name_trash">Kôš</string>
-    <string name="special_mailbox_name_sent">Odoslaná</string>
     <string name="send_failure_subject">Nepodarilo sa odoslať niektoré správy</string>
     <string name="version">Verzia</string>
     <string name="debug_enable_debug_logging_title">Povoliť vytváranie záznamov pre ladenie</string>

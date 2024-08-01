@@ -141,11 +141,6 @@
     <string name="notification_channel_messages_description">Апавяшчэнні пра лісты</string>
     <string name="notification_channel_miscellaneous_title">Рознае</string>
     <string name="notification_channel_miscellaneous_description">Іншыя апавяшчэнні.</string>
-    <string name="special_mailbox_name_inbox">Атрыманыя</string>
-    <string name="special_mailbox_name_outbox">Адпраўленыя</string>
-    <string name="special_mailbox_name_drafts">Чарнавікі</string>
-    <string name="special_mailbox_name_trash">Сметніца</string>
-    <string name="special_mailbox_name_sent">Адпраўлена</string>
     <string name="send_failure_subject">Не ўдалося адправіць лісты</string>
     <string name="version">Версія</string>
     <string name="debug_enable_debug_logging_title">Уключыць журнал адладжвання</string>

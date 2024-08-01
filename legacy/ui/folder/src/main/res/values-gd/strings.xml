@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="special_mailbox_name_outbox">A-mach</string>
+    <string name="special_mailbox_name_drafts">Dreachdan</string>
+    <string name="special_mailbox_name_sent">Air a chur</string>
+    <string name="special_mailbox_name_trash">Sgudal</string>
+    <string name="special_mailbox_name_inbox">A-steach</string>
+</resources>

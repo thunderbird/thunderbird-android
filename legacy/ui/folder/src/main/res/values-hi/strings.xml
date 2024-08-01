@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="special_mailbox_name_outbox">आउटबॉक्स</string>
+    <string name="special_mailbox_name_drafts">ड्राफ्ट</string>
+    <string name="special_mailbox_name_sent">भेजे गए</string>
+    <string name="special_mailbox_name_trash">कचरा</string>
+    <string name="special_mailbox_name_inbox">इंबॉक्स</string>
+</resources>

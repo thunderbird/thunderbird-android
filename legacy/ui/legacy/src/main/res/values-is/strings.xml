@@ -137,11 +137,6 @@
     <string name="notification_channel_messages_description">Tilkynning tengdar skilaboðum</string>
     <string name="notification_channel_miscellaneous_title">Ýmislegt</string>
     <string name="notification_channel_miscellaneous_description">Ýmsar tilkynningar, eins og villur o.s.frv.</string>
-    <string name="special_mailbox_name_inbox">Innhólf</string>
-    <string name="special_mailbox_name_outbox">Úthólf</string>
-    <string name="special_mailbox_name_drafts">Drög</string>
-    <string name="special_mailbox_name_trash">Rusl</string>
-    <string name="special_mailbox_name_sent">Sent</string>
     <string name="send_failure_subject">Náði ekki að senda einhver skilaboð</string>
     <string name="version">Útgáfa</string>
     <string name="debug_enable_debug_logging_title">Skrá upplýsingar fyrir villuleit</string>

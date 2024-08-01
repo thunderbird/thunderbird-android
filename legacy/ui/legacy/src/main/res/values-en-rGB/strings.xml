@@ -276,7 +276,6 @@
     <string name="dialog_confirm_delete_cancel_button">No</string>
     <string name="settings_message_theme_selection_label">Fixed message theme</string>
     <string name="edit_identity_reply_to_label">Reply-to address</string>
-    <string name="special_mailbox_name_sent">Sent</string>
     <string name="account_settings_vibrate_pattern_5">Pattern 5</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Mark a message as read when it is deleted</string>
     <string name="general_settings_swipe_action_toggle_star">Add/remove star</string>
@@ -290,7 +289,6 @@
     <string name="folder_settings_folder_notify_mode_normal">No Class</string>
     <string name="font_size_message_list_date">Date</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Encrypt drafts only if encryption is enabled</string>
-    <string name="special_mailbox_name_trash">Trash</string>
     <string name="account_settings_quote_style_prefix">Prefix (like Gmail)</string>
     <string name="account_settings_message_age_0">today</string>
     <string name="folder_settings_folder_display_mode_second_class">2nd Class</string>
@@ -324,7 +322,6 @@
     <string name="error_contact_address_not_found">No email address could be found for this contact.</string>
     <string name="folder_settings_folder_sync_mode_label">Folder poll class</string>
     <string name="account_settings_folder_notify_new_mail_mode_label">Notifications folders</string>
-    <string name="special_mailbox_name_inbox">Inbox</string>
     <string name="sort_flagged_first">Starred messages first</string>
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Do you really want to delete this message?</item>
@@ -619,7 +616,6 @@
     <string name="idle_refresh_period_3min">Every 3 minutes</string>
     <string name="messageview_preferences">Messages</string>
     <string name="sent_folder_label">Sent folder</string>
-    <string name="special_mailbox_name_outbox">Outbox</string>
     <string name="trash_folder_label">Trash folder</string>
     <string name="settings_message_theme_selection_summary_off">Select the message view theme while viewing the message</string>
     <string name="global_settings_confirm_menu_mark_all_read">Mark all messages as read</string>
@@ -642,7 +638,6 @@
     <string name="sort_unattached_first">Messages without attachments first</string>
     <string name="account_settings_message_age_any">any time (no limit)</string>
     <string name="account_settings_crypto_app">Enable OpenPGP support</string>
-    <string name="special_mailbox_name_drafts">Drafts</string>
     <string name="folder_settings_folder_notify_mode_inherited">Same as push class</string>
     <string name="sort_unread_last">Read messages first</string>
     <string name="global_settings_privacy_hide_useragent_detail">Remove K-9 User-Agent from mail headers</string>
