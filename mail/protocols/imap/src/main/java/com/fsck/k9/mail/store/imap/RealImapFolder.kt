@@ -41,7 +41,7 @@ internal class RealImapFolder(
     private var uidValidity: Long? = null
 
     /**
-     * Specifies whether the folder was opened in read-only or read-write mode based on the the tagged OK response to
+     * Specifies whether the folder was opened in read-only or read-write mode based on the tagged OK response to
      * the SELECT or EXAMINE command (READ-ONLY or READ-WRITE).
      *
      * Most of the time this will match the [mode] value. But it's possible for the SELECT command to open a folder in

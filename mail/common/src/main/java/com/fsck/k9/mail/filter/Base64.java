@@ -473,7 +473,7 @@ public class Base64 {
      *
      * @param octet
      *            The value to test
-     * @return <code>true</code> if the value is defined in the the base 64 alphabet, <code>false</code> otherwise.
+     * @return <code>true</code> if the value is defined in the base 64 alphabet, <code>false</code> otherwise.
      */
     public static boolean isBase64(byte octet) {
         return octet == PAD || (octet >= 0 && octet < base64ToInt.length && base64ToInt[octet] != -1);
