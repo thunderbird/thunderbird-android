@@ -32,7 +32,7 @@
     <string name="account_setup_create_account_creating">Membuat akun…</string>
     <string name="account_setup_create_account_error">Terjadi galat saat mencoba untuk membuat akun</string>
     <string name="account_setup_create_account_created">Akun berhasil dibuat</string>
-    <string name="account_setup_error_network">Jaringan</string>
+    <string name="account_setup_error_network">Silakan periksa status koneksi Anda dan coba lagi.</string>
     <string name="account_setup_error_unknown">Galat tak diketahui</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Alamat surel diperlukan.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Alamat surel ini tidak diperbolehkan.</string>
