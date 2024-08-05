@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.folder.DisplayFolder
 import app.k9mail.legacy.ui.folder.DisplayUnifiedInbox
+import app.k9mail.legacy.ui.folder.FolderList
 import com.fsck.k9.K9
 import com.fsck.k9.controller.MessageCountsProvider
 import com.fsck.k9.mailstore.FolderRepository
@@ -73,9 +73,3 @@ class FoldersViewModel(
         }
     }
 }
-
-data class FolderList(
-    val unifiedInbox: DisplayUnifiedInbox?,
-    val accountId: Int,
-    val folders: List<DisplayFolder>,
-)
