@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.ui.folder.DisplayUnifiedInbox
 import app.k9mail.legacy.ui.folder.FolderList
-import com.fsck.k9.K9
 import com.fsck.k9.controller.MessageCountsProvider
 import com.fsck.k9.mailstore.FolderRepository
 import com.fsck.k9.search.SearchAccount
@@ -25,6 +24,7 @@ import kotlinx.coroutines.launch
 class FoldersViewModel(
     private val folderRepository: FolderRepository,
     private val messageCountsProvider: MessageCountsProvider,
+    private val isShowUnifiedInbox: () -> Boolean,
     backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ViewModel() {
     private val inputFlow = MutableSharedFlow<Account?>(replay = 1)
@@ -56,7 +56,7 @@ class FoldersViewModel(
     }
 
     private fun getUnifiedInboxAccount(): SearchAccount? {
-        return if (K9.isShowUnifiedInbox) SearchAccount.createUnifiedInboxAccount() else null
+        return if (isShowUnifiedInbox()) SearchAccount.createUnifiedInboxAccount() else null
     }
 
     fun getFolderListLiveData(): LiveData<FolderList> {
