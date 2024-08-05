@@ -1,4 +1,4 @@
-name: "NowSecure GHAS"
+name: "NowSecure"
 
 on:
   schedule:
