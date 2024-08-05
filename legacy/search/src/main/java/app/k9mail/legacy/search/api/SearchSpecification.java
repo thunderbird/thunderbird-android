@@ -1,6 +1,9 @@
-package com.fsck.k9.search;
+package app.k9mail.legacy.search.api;
 
 import android.os.Parcelable;
+
+import app.k9mail.legacy.search.ConditionsTreeNode;
+
 
 public interface SearchSpecification extends Parcelable {
 

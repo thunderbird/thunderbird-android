@@ -1,6 +1,7 @@
 package com.fsck.k9.storage.messages
 
 import app.k9mail.legacy.account.Account.FolderMode
+import app.k9mail.legacy.search.LocalSearch
 import app.k9mail.legacy.search.api.SearchAttribute
 import app.k9mail.legacy.search.api.SearchField
 import assertk.assertFailure
@@ -17,7 +18,6 @@ import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mailstore.FolderNotFoundException
 import com.fsck.k9.mailstore.MoreMessages
 import com.fsck.k9.mailstore.toDatabaseFolderType
-import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.storage.RobolectricTest
 import org.junit.Test
 

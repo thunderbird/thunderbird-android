@@ -9,9 +9,9 @@ import android.widget.RemoteViews
 import android.widget.RemoteViewsService.RemoteViewsFactory
 import androidx.core.content.ContextCompat
 import app.k9mail.legacy.account.Account.SortType
+import app.k9mail.legacy.search.LocalSearch
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageList
-import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

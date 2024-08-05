@@ -26,6 +26,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Account.Expunge
 import app.k9mail.legacy.account.Account.SortType
+import app.k9mail.legacy.search.LocalSearch
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import app.k9mail.ui.utils.itemtouchhelper.ItemTouchHelper
 import app.k9mail.ui.utils.linearlayoutmanager.LinearLayoutManager
@@ -44,7 +45,6 @@ import com.fsck.k9.helper.mapToSet
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.preferences.AccountManager
-import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.search.getAccounts
 import com.fsck.k9.ui.R

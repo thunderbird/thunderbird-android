@@ -2,6 +2,7 @@ package com.fsck.k9.search
 
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Account.FolderMode
+import app.k9mail.legacy.search.LocalSearch
 import app.k9mail.legacy.search.api.SearchAttribute
 import app.k9mail.legacy.search.api.SearchCondition
 import app.k9mail.legacy.search.api.SearchField

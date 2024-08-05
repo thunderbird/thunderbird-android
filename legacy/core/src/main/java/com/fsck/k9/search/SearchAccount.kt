@@ -1,6 +1,7 @@
 package com.fsck.k9.search
 
 import app.k9mail.legacy.account.BaseAccount
+import app.k9mail.legacy.search.LocalSearch
 import app.k9mail.legacy.search.api.SearchAttribute
 import app.k9mail.legacy.search.api.SearchField
 import com.fsck.k9.CoreResourceProvider

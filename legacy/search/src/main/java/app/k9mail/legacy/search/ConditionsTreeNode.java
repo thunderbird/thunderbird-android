@@ -1,4 +1,4 @@
-package com.fsck.k9.search;
+package app.k9mail.legacy.search;
 
 import java.util.ArrayList;
 import java.util.HashSet;

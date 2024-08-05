@@ -2,6 +2,7 @@ package com.fsck.k9.search;
 
 import java.util.List;
 
+import app.k9mail.legacy.search.ConditionsTreeNode;
 import app.k9mail.legacy.search.api.SearchAttribute;
 import app.k9mail.legacy.search.api.SearchCondition;
 import app.k9mail.legacy.search.api.SearchField;

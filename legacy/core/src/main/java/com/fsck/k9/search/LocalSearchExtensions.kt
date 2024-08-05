@@ -3,6 +3,7 @@
 package com.fsck.k9.search
 
 import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.search.LocalSearch
 import com.fsck.k9.preferences.AccountManager
 
 val LocalSearch.isUnifiedInbox: Boolean

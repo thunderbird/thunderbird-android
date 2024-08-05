@@ -1,4 +1,4 @@
-package com.fsck.k9.search;
+package app.k9mail.legacy.search;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -11,6 +11,7 @@ import android.os.Parcelable;
 import app.k9mail.legacy.search.api.SearchAttribute;
 import app.k9mail.legacy.search.api.SearchCondition;
 import app.k9mail.legacy.search.api.SearchField;
+import app.k9mail.legacy.search.api.SearchSpecification;
 
 
 /**

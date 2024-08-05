@@ -28,9 +28,11 @@ import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.search.LocalSearch
 import app.k9mail.legacy.search.api.SearchAttribute
 import app.k9mail.legacy.search.api.SearchCondition
 import app.k9mail.legacy.search.api.SearchField
+import app.k9mail.legacy.search.api.SearchSpecification
 import com.fsck.k9.K9
 import com.fsck.k9.K9.PostMarkAsUnreadNavigation
 import com.fsck.k9.K9.PostRemoveNavigation
@@ -43,9 +45,7 @@ import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.helper.ParcelableUtil
 import com.fsck.k9.preferences.AccountManager
 import com.fsck.k9.preferences.GeneralSettingsManager
-import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
-import com.fsck.k9.search.SearchSpecification
 import com.fsck.k9.search.isUnifiedInbox
 import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.K9Drawer
