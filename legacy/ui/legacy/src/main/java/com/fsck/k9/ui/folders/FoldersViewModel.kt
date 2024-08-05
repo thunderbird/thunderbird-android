@@ -25,6 +25,8 @@ class FoldersViewModel(
     private val folderRepository: FolderRepository,
     private val messageCountsProvider: MessageCountsProvider,
     private val isShowUnifiedInbox: () -> Boolean,
+    private val getUnifiedInboxTitle: () -> String,
+    private val getUnifiedInboxDetail: () -> String,
     backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ViewModel() {
     private val inputFlow = MutableSharedFlow<Account?>(replay = 1)
@@ -56,7 +58,14 @@ class FoldersViewModel(
     }
 
     private fun getUnifiedInboxAccount(): SearchAccount? {
-        return if (isShowUnifiedInbox()) SearchAccount.createUnifiedInboxAccount() else null
+        return if (isShowUnifiedInbox()) {
+            SearchAccount.createUnifiedInboxAccount(
+                unifiedInboxTitle = getUnifiedInboxTitle(),
+                unifiedInboxDetail = getUnifiedInboxDetail(),
+            )
+        } else {
+            null
+        }
     }
 
     fun getFolderListLiveData(): LiveData<FolderList> {

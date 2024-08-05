@@ -4,9 +4,6 @@ import app.k9mail.legacy.account.BaseAccount
 import app.k9mail.legacy.search.LocalSearch
 import app.k9mail.legacy.search.api.SearchAttribute
 import app.k9mail.legacy.search.api.SearchField
-import com.fsck.k9.CoreResourceProvider
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
 /**
  * This class is basically a wrapper around a LocalSearch. It allows to expose it as an account.
@@ -31,14 +28,15 @@ class SearchAccount(
 
     val relatedSearch: LocalSearch = search
 
-    companion object : KoinComponent {
-        private val resourceProvider: CoreResourceProvider by inject()
-
+    companion object {
         const val UNIFIED_INBOX = "unified_inbox"
         const val NEW_MESSAGES = "new_messages"
 
         @JvmStatic
-        fun createUnifiedInboxAccount(): SearchAccount {
+        fun createUnifiedInboxAccount(
+            unifiedInboxTitle: String,
+            unifiedInboxDetail: String,
+        ): SearchAccount {
             val tmpSearch = LocalSearch().apply {
                 id = UNIFIED_INBOX
                 and(SearchField.INTEGRATE, "1", SearchAttribute.EQUALS)
@@ -47,8 +45,8 @@ class SearchAccount(
             return SearchAccount(
                 id = UNIFIED_INBOX,
                 search = tmpSearch,
-                name = resourceProvider.searchUnifiedInboxTitle(),
-                email = resourceProvider.searchUnifiedInboxDetail(),
+                name = unifiedInboxTitle,
+                email = unifiedInboxDetail,
             )
         }
     }

@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.BaseAccount
+import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9.isShowUnifiedInbox
 import com.fsck.k9.Preferences.Companion.getPreferences
 import com.fsck.k9.search.SearchAccount.Companion.createUnifiedInboxAccount
@@ -19,6 +20,7 @@ import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.android.ext.android.inject
 
 /**
  * Activity displaying the list of accounts.
@@ -27,6 +29,8 @@ import kotlinx.coroutines.withContext
  * method to perform an action when an account is selected.
  */
 abstract class AccountList : K9ListActivity(), OnItemClickListener {
+
+    private val coreResourceProvider: CoreResourceProvider by inject()
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,7 +75,10 @@ abstract class AccountList : K9ListActivity(), OnItemClickListener {
         val accounts: MutableList<BaseAccount> = ArrayList()
 
         if (isShowUnifiedInbox) {
-            val unifiedInboxAccount: BaseAccount = createUnifiedInboxAccount()
+            val unifiedInboxAccount: BaseAccount = createUnifiedInboxAccount(
+                unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
+                unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
+            )
             accounts.add(unifiedInboxAccount)
         }
 

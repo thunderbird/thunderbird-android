@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
 import androidx.core.app.PendingIntentCompat
+import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.activity.MessageList.Companion.intentDisplaySearch
@@ -16,6 +17,7 @@ import org.koin.core.component.inject
 
 abstract class BaseMessageListWidgetProvider : AppWidgetProvider(), KoinComponent {
     private val messageListWidgetManager: MessageListWidgetManager by inject()
+    private val coreResourceProvider: CoreResourceProvider by inject()
 
     override fun onEnabled(context: Context) {
         messageListWidgetManager.onWidgetAdded()
@@ -61,7 +63,10 @@ abstract class BaseMessageListWidgetProvider : AppWidgetProvider(), KoinComponen
     }
 
     private fun viewUnifiedInboxPendingIntent(context: Context): PendingIntent {
-        val unifiedInboxAccount = createUnifiedInboxAccount()
+        val unifiedInboxAccount = createUnifiedInboxAccount(
+            unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
+            unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
+        )
         val intent = intentDisplaySearch(
             context = context,
             search = unifiedInboxAccount.relatedSearch,
