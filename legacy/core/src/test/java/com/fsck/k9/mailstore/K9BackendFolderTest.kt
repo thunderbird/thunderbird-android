@@ -2,6 +2,7 @@ package com.fsck.k9.mailstore
 
 import android.database.sqlite.SQLiteDatabase
 import androidx.core.content.contentValuesOf
+import app.k9mail.legacy.account.Account
 import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.contains
@@ -9,7 +10,6 @@ import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isTrue
-import com.fsck.k9.Account
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.Preferences
 import com.fsck.k9.backend.api.BackendFolder

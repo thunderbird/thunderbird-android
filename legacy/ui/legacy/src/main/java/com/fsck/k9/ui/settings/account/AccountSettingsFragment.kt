@@ -15,7 +15,9 @@ import androidx.preference.PreferenceCategory
 import androidx.preference.SwitchPreference
 import app.k9mail.core.common.provider.AppNameProvider
 import app.k9mail.feature.launcher.FeatureLauncherActivity
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.folder.FolderType
+import app.k9mail.legacy.folder.RemoteFolder
 import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.activity.ManageIdentities
 import com.fsck.k9.activity.setup.AccountSetupComposition
@@ -23,8 +25,6 @@ import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.crypto.OpenPgpApiHelper
 import com.fsck.k9.fragment.ConfirmationDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
-import com.fsck.k9.mailstore.FolderType
-import com.fsck.k9.mailstore.RemoteFolder
 import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
 import com.fsck.k9.notification.NotificationSettingsUpdater

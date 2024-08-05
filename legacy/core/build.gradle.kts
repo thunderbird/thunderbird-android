@@ -9,9 +9,12 @@ dependencies {
     api(projects.library.htmlCleaner)
     api(projects.core.android.common)
 
-    implementation(projects.plugins.openpgpApiLib.openpgpApi)
+    api(projects.legacy.account)
+    api(projects.legacy.di)
+    api(projects.legacy.folder)
+    api(projects.legacy.notification)
 
-    api(libs.koin.android)
+    implementation(projects.plugins.openpgpApiLib.openpgpApi)
 
     api(libs.androidx.annotation)
 

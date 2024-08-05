@@ -11,7 +11,7 @@ import android.os.Bundle
 import android.view.Menu
 import androidx.core.content.ContextCompat
 import androidx.loader.app.LoaderManager
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.K9
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState

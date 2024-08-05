@@ -3,7 +3,7 @@ package com.fsck.k9.ui.account
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.controller.MessageCounts
 import com.fsck.k9.controller.MessageCountsProvider
 import com.fsck.k9.mailstore.MessageListChangedListener

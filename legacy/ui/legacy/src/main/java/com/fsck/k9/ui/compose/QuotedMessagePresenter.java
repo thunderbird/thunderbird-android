@@ -7,10 +7,10 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import app.k9mail.core.android.common.compat.BundleCompat;
-import com.fsck.k9.Account;
-import com.fsck.k9.Account.MessageFormat;
-import com.fsck.k9.Account.QuoteStyle;
-import com.fsck.k9.DI;
+import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.account.Account.MessageFormat;
+import app.k9mail.legacy.account.Account.QuoteStyle;
+import app.k9mail.legacy.di.DI;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageCompose.Action;
 import com.fsck.k9.mail.MessagingException;

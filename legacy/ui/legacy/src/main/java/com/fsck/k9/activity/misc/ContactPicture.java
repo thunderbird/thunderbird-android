@@ -1,7 +1,7 @@
 package com.fsck.k9.activity.misc;
 
 
-import com.fsck.k9.DI;
+import app.k9mail.legacy.di.DI;
 import com.fsck.k9.contacts.ContactPictureLoader;
 
 

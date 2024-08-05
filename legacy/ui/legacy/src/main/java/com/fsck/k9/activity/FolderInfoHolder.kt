@@ -1,8 +1,8 @@
 package com.fsck.k9.activity
 
-import com.fsck.k9.Account
-import com.fsck.k9.mailstore.Folder
-import com.fsck.k9.mailstore.FolderType
+import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.folder.Folder
+import app.k9mail.legacy.folder.FolderType
 import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.ui.folders.FolderNameFormatter
 

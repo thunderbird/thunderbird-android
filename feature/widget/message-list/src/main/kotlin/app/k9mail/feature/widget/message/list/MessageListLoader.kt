@@ -1,7 +1,7 @@
 package app.k9mail.feature.widget.message.list
 
-import com.fsck.k9.Account
-import com.fsck.k9.Account.SortType
+import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.Account.SortType
 import com.fsck.k9.Preferences
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mailstore.MessageColumns

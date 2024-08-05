@@ -1,10 +1,10 @@
 package com.fsck.k9.storage
 
 import android.app.Application
+import app.k9mail.legacy.di.DI
 import com.fsck.k9.AppConfig
 import com.fsck.k9.Core
 import com.fsck.k9.CoreResourceProvider
-import com.fsck.k9.DI
 import com.fsck.k9.K9
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.coreModules

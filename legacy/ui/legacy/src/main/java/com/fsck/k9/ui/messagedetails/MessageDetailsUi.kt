@@ -1,8 +1,8 @@
 package com.fsck.k9.ui.messagedetails
 
 import android.net.Uri
+import app.k9mail.legacy.folder.FolderType
 import com.fsck.k9.mail.Address
-import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.view.MessageCryptoDisplayStatus
 
 data class MessageDetailsUi(

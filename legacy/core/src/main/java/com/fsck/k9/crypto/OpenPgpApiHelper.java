@@ -1,7 +1,7 @@
 package com.fsck.k9.crypto;
 
 
-import com.fsck.k9.Identity;
+import app.k9mail.legacy.account.Identity;
 import com.fsck.k9.helper.StringHelper;
 
 

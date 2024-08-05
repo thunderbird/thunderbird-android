@@ -1,6 +1,6 @@
 package com.fsck.k9.controller
 
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 
 /**
  * Decides whether deleting a message in the app moves it to the trash folder or deletes it immediately.

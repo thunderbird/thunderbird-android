@@ -1,7 +1,6 @@
-package com.fsck.k9
+package app.k9mail.legacy.di
 
 import android.app.Application
-import com.fsck.k9.core.BuildConfig
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin

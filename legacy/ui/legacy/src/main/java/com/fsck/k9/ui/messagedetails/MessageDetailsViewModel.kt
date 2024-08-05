@@ -9,12 +9,12 @@ import app.k9mail.core.android.common.contact.CachingRepository
 import app.k9mail.core.android.common.contact.ContactPermissionResolver
 import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.common.mail.toEmailAddressOrNull
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.folder.Folder
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.helper.ClipboardManager
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.CryptoResultAnnotation
-import com.fsck.k9.mailstore.Folder
 import com.fsck.k9.mailstore.FolderRepository
 import com.fsck.k9.mailstore.MessageDate
 import com.fsck.k9.mailstore.MessageRepository

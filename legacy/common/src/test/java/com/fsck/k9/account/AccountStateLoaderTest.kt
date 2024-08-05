@@ -2,11 +2,11 @@ package com.fsck.k9.account
 
 import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
+import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.Identity
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
-import com.fsck.k9.Account
-import com.fsck.k9.Identity
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings

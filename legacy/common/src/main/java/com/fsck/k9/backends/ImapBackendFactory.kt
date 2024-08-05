@@ -1,8 +1,8 @@
 package com.fsck.k9.backends
 
 import android.content.Context
-import com.fsck.k9.Account
-import com.fsck.k9.Account.Expunge
+import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.Account.Expunge
 import com.fsck.k9.backend.BackendFactory
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.backend.imap.ImapBackend

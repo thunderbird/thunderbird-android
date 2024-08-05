@@ -23,7 +23,7 @@ import android.widget.ListAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
-import com.fsck.k9.Account;
+import app.k9mail.legacy.account.Account;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.base.K9Activity;

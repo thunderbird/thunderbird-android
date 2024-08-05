@@ -8,8 +8,8 @@ import android.content.Intent
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.PendingIntentCompat
-import com.fsck.k9.EarlyInit
-import com.fsck.k9.inject
+import app.k9mail.legacy.di.EarlyInit
+import app.k9mail.legacy.di.inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

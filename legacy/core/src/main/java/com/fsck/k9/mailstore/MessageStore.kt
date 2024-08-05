@@ -1,6 +1,6 @@
 package com.fsck.k9.mailstore
 
-import com.fsck.k9.Account.FolderMode
+import app.k9mail.legacy.account.Account.FolderMode
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType

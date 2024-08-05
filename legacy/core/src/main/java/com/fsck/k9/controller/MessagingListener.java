@@ -6,10 +6,9 @@ import java.util.List;
 
 import android.content.Context;
 
-import com.fsck.k9.Account;
+import app.k9mail.legacy.account.Account;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mailstore.LocalMessage;
 
 
 public interface MessagingListener {

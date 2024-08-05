@@ -15,8 +15,8 @@ import com.fsck.k9.mail.internet.AddressHeaderBuilder;
 import com.fsck.k9.mail.internet.Headers;
 import timber.log.Timber;
 
-import com.fsck.k9.Account.QuoteStyle;
-import com.fsck.k9.Identity;
+import app.k9mail.legacy.account.Account.QuoteStyle;
+import app.k9mail.legacy.account.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.mail.Address;

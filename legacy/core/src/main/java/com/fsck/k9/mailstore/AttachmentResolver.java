@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.annotation.WorkerThread;
 
-import com.fsck.k9.DI;
+import app.k9mail.legacy.di.DI;
 import timber.log.Timber;
 
 import com.fsck.k9.mail.Body;

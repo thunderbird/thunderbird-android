@@ -1,7 +1,7 @@
 package com.fsck.k9.ui.endtoend
 
 import android.app.PendingIntent
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.helper.SingleLiveEvent
 import kotlinx.coroutines.CoroutineScope

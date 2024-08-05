@@ -2,7 +2,7 @@ package com.fsck.k9.ui.endtoend
 
 import android.app.PendingIntent
 import androidx.lifecycle.LifecycleOwner
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.Preferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope

@@ -2,7 +2,7 @@ package app.k9mail.feature.widget.unread
 
 import android.content.Context
 import android.content.Intent
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.controller.MessageCountsProvider

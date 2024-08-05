@@ -1,6 +1,6 @@
 package com.fsck.k9.message
 
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.helper.ReplyToParser
 import com.fsck.k9.mail.Message
 

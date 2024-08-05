@@ -1,4 +1,4 @@
-package com.fsck.k9
+package app.k9mail.legacy.account
 
 interface BaseAccount {
     val uuid: String

@@ -14,7 +14,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import androidx.annotation.NonNull;
 
-import com.fsck.k9.DI;
+import app.k9mail.legacy.di.DI;
 import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.TestCoreResourceProvider;
 import com.fsck.k9.mail.Address;

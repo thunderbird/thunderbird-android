@@ -8,7 +8,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.core.app.PendingIntentCompat
 import app.k9mail.feature.launcher.FeatureLauncherActivity
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.activity.compose.MessageActions

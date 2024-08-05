@@ -1,8 +1,8 @@
 package com.fsck.k9.mailstore
 
+import app.k9mail.legacy.account.Account
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.fsck.k9.Account
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.Preferences
 import com.fsck.k9.backend.api.BackendStorage

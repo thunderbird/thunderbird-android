@@ -1,9 +1,9 @@
 package com.fsck.k9.controller
 
+import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.Account.FolderMode
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.fsck.k9.Account
-import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.Preferences
 import com.fsck.k9.mailstore.ListenableMessageStore
 import com.fsck.k9.mailstore.MessageStoreManager

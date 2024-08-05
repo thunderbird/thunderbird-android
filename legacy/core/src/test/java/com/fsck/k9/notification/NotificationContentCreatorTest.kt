@@ -2,9 +2,9 @@ package com.fsck.k9.notification
 
 import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.android.testing.RobolectricTest
+import app.k9mail.legacy.account.Account
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.fsck.k9.Account
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message.RecipientType

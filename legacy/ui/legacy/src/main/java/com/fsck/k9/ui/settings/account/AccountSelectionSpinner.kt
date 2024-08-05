@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.core.view.isVisible
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.ui.R
 import com.google.android.material.textview.MaterialTextView
 

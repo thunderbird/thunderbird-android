@@ -3,7 +3,7 @@ package com.fsck.k9.notification
 import android.app.Notification
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.mailstore.LocalFolder
 
 internal class SyncNotificationController(

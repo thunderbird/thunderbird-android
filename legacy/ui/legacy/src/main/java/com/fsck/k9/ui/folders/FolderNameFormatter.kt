@@ -1,9 +1,9 @@
 package com.fsck.k9.ui.folders
 
 import android.content.res.Resources
-import com.fsck.k9.mailstore.Folder
-import com.fsck.k9.mailstore.FolderType
-import com.fsck.k9.mailstore.RemoteFolder
+import app.k9mail.legacy.folder.Folder
+import app.k9mail.legacy.folder.FolderType
+import app.k9mail.legacy.folder.RemoteFolder
 import com.fsck.k9.ui.R
 
 class FolderNameFormatter(private val resources: Resources) {

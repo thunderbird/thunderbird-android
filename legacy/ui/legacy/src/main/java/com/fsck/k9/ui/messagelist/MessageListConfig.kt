@@ -1,6 +1,6 @@
 package com.fsck.k9.ui.messagelist
 
-import com.fsck.k9.Account.SortType
+import app.k9mail.legacy.account.Account.SortType
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.search.LocalSearch
 

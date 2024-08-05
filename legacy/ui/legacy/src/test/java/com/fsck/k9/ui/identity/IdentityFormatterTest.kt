@@ -1,8 +1,8 @@
 package com.fsck.k9.ui.identity
 
+import app.k9mail.legacy.account.Identity
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.fsck.k9.Identity
 import org.junit.Test
 
 private const val IDENTITY_NAME = "Identity Name"

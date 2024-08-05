@@ -3,7 +3,7 @@ package com.fsck.k9.storage.messages
 import android.database.Cursor
 import androidx.core.database.getLongOrNull
 import app.k9mail.core.android.common.database.map
-import com.fsck.k9.Account.FolderMode
+import app.k9mail.legacy.account.Account.FolderMode
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mailstore.FolderDetailsAccessor
@@ -73,16 +73,16 @@ internal class RetrieveFolderOperations(private val lockableDatabase: LockableDa
             val query =
                 """
 SELECT ${FOLDER_COLUMNS.joinToString()}, (
-  SELECT COUNT(messages.id) 
-  FROM messages 
-  WHERE messages.folder_id = folders.id 
-    AND messages.empty = 0 AND messages.deleted = 0 
+  SELECT COUNT(messages.id)
+  FROM messages
+  WHERE messages.folder_id = folders.id
+    AND messages.empty = 0 AND messages.deleted = 0
     AND (messages.read = 0 OR folders.id = ?)
 ), (
-  SELECT COUNT(messages.id) 
-  FROM messages 
-  WHERE messages.folder_id = folders.id 
-    AND messages.empty = 0 AND messages.deleted = 0 
+  SELECT COUNT(messages.id)
+  FROM messages
+  WHERE messages.folder_id = folders.id
+    AND messages.empty = 0 AND messages.deleted = 0
     AND messages.flagged = 1
 )
 FROM folders
@@ -190,9 +190,9 @@ $displayModeSelection
 
         val query =
             """
-SELECT COUNT(messages.id) 
-FROM messages 
-JOIN folders ON (folders.id = messages.folder_id) 
+SELECT COUNT(messages.id)
+FROM messages
+JOIN folders ON (folders.id = messages.folder_id)
 WHERE (messages.empty = 0 AND messages.deleted = 0 AND $condition) $where
             """
 

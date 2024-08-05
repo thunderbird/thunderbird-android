@@ -4,7 +4,7 @@ import android.app.Notification
 import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 
 internal open class CertificateErrorNotificationController(
     private val notificationHelper: NotificationHelper,

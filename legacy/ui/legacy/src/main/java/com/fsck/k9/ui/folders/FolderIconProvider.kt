@@ -1,7 +1,7 @@
 package com.fsck.k9.ui.folders
 
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
-import com.fsck.k9.mailstore.FolderType
+import app.k9mail.legacy.folder.FolderType
 
 class FolderIconProvider {
     fun getFolderIcon(type: FolderType): Int = when (type) {

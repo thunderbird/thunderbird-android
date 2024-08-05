@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.Registry;
 import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.module.LibraryGlideModule;
-import com.fsck.k9.DI;
+import app.k9mail.legacy.di.DI;
 import com.fsck.k9.ui.account.AccountImage;
 import com.fsck.k9.ui.account.AccountImageModelLoaderFactory;
 import org.jetbrains.annotations.NotNull;

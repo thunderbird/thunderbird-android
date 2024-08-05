@@ -1,9 +1,9 @@
 package com.fsck.k9.controller
 
+import app.k9mail.legacy.account.Account
 import assertk.assertThat
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
-import com.fsck.k9.Account
 import java.util.UUID
 import kotlin.test.Test
 

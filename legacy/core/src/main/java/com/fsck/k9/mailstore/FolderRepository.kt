@@ -1,8 +1,11 @@
 package com.fsck.k9.mailstore
 
-import com.fsck.k9.Account
-import com.fsck.k9.Account.FolderMode
-import com.fsck.k9.DI
+import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.Account.FolderMode
+import app.k9mail.legacy.di.DI
+import app.k9mail.legacy.folder.Folder
+import app.k9mail.legacy.folder.FolderType
+import app.k9mail.legacy.folder.RemoteFolder
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.controller.SimpleMessagingListener
 import com.fsck.k9.mail.FolderClass
@@ -291,10 +294,6 @@ private data class AccountContainer(
     val folderDisplayMode: FolderMode,
 )
 
-data class Folder(val id: Long, val name: String, val type: FolderType, val isLocalOnly: Boolean)
-
-data class RemoteFolder(val id: Long, val serverId: String, val name: String, val type: FolderType)
-
 data class FolderDetails(
     val folder: Folder,
     val isInTopGroup: Boolean,
@@ -321,14 +320,3 @@ data class DisplayFolder(
     val unreadMessageCount: Int,
     val starredMessageCount: Int,
 )
-
-enum class FolderType {
-    REGULAR,
-    INBOX,
-    OUTBOX,
-    SENT,
-    TRASH,
-    DRAFTS,
-    ARCHIVE,
-    SPAM,
-}

@@ -5,7 +5,7 @@ import android.content.Intent;
 import androidx.annotation.VisibleForTesting;
 
 import com.fsck.k9.CoreResourceProvider;
-import com.fsck.k9.DI;
+import app.k9mail.legacy.di.DI;
 import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MessageIdGenerator;

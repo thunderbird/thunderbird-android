@@ -4,7 +4,7 @@ import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import app.k9mail.core.android.common.database.map
 import app.k9mail.core.common.mail.Protocols
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.mailstore.MigrationsHelper
 import timber.log.Timber
 

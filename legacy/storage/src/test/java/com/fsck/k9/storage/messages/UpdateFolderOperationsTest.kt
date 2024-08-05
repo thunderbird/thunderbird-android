@@ -1,11 +1,11 @@
 package com.fsck.k9.storage.messages
 
+import app.k9mail.legacy.folder.Folder
+import app.k9mail.legacy.folder.FolderType
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.FolderClass
-import com.fsck.k9.mailstore.Folder
 import com.fsck.k9.mailstore.FolderDetails
-import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.mailstore.MoreMessages
 import com.fsck.k9.storage.RobolectricTest
 import org.junit.Test

@@ -1,12 +1,12 @@
 package com.fsck.k9.notification
 
+import app.k9mail.legacy.account.Account
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.containsNoDuplicates
 import assertk.assertions.doesNotContain
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
-import com.fsck.k9.Account
 import org.junit.Test
 
 class NotificationIdsTest {

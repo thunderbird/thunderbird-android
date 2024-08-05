@@ -26,8 +26,8 @@ import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import androidx.core.database.CursorKt;
-import com.fsck.k9.Account;
-import com.fsck.k9.DI;
+import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.di.DI;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingCommand;
 import com.fsck.k9.controller.PendingCommandSerializer;

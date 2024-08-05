@@ -5,8 +5,8 @@ import java.util.List;
 
 import android.text.TextUtils;
 
-import com.fsck.k9.Account;
-import com.fsck.k9.DI;
+import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.di.DI;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.MessagingException;

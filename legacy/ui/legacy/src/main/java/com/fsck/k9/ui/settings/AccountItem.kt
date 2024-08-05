@@ -6,7 +6,7 @@ import android.widget.ImageView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.ui.R
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter

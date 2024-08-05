@@ -1,4 +1,4 @@
-package com.fsck.k9
+package app.k9mail.legacy.notification
 
 data class NotificationVibration(
     val isEnabled: Boolean,
@@ -26,6 +26,7 @@ data class NotificationVibration(
     }
 }
 
+@Suppress("MagicNumber")
 enum class VibratePattern(
     /**
      * These are "off, on" patterns, specified in milliseconds.

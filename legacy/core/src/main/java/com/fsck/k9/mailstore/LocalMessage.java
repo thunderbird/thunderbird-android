@@ -12,7 +12,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import androidx.annotation.VisibleForTesting;
 
-import com.fsck.k9.Account;
+import app.k9mail.legacy.account.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.mail.Address;
@@ -134,7 +134,7 @@ public class LocalMessage extends MimeMessage {
         } else {
             Timber.d("No headers available for this message!");
         }
-        
+
         headerNeedsUpdating = false;
     }
 
@@ -389,7 +389,7 @@ public class LocalMessage extends MimeMessage {
         if (headerNeedsUpdating) {
             updateHeader();
         }
-        
+
         super.writeTo(out);
     }
 
@@ -408,7 +408,7 @@ public class LocalMessage extends MimeMessage {
         if (mMessageId != null) {
             super.setMessageId(mMessageId);
         }
-        
+
         headerNeedsUpdating = false;
     }
 

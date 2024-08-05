@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.fsck.k9.CoreResourceProvider;
-import com.fsck.k9.DI;
+import app.k9mail.legacy.di.DI;
 import com.fsck.k9.EmailAddressValidator;
 import com.fsck.k9.preferences.Settings.BooleanSetting;
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException;

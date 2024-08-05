@@ -3,7 +3,7 @@ package com.fsck.k9.notification
 import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.WearableExtender
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
 import timber.log.Timber
 import androidx.core.app.NotificationCompat.Builder as NotificationBuilder

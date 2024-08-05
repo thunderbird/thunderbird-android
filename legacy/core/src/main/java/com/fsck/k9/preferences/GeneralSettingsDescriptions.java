@@ -10,9 +10,9 @@ import java.util.TreeMap;
 
 import android.content.Context;
 
-import com.fsck.k9.Account;
-import com.fsck.k9.Account.SortType;
-import com.fsck.k9.DI;
+import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.account.Account.SortType;
+import app.k9mail.legacy.di.DI;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.BACKGROUND_OPS;

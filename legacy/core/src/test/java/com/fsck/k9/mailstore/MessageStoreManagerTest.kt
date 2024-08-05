@@ -1,8 +1,8 @@
 package com.fsck.k9.mailstore
 
+import app.k9mail.legacy.account.Account
 import assertk.assertThat
 import assertk.assertions.isSameInstanceAs
-import com.fsck.k9.Account
 import com.fsck.k9.AccountRemovedListener
 import com.fsck.k9.preferences.AccountManager
 import org.junit.Test

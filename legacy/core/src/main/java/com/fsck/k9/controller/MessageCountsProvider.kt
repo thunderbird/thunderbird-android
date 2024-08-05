@@ -1,6 +1,6 @@
 package com.fsck.k9.controller
 
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.mailstore.MessageStoreManager
 import com.fsck.k9.preferences.AccountManager
 import com.fsck.k9.search.ConditionsTreeNode

@@ -1,6 +1,6 @@
 package com.fsck.k9.notification
 
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.K9
 import com.fsck.k9.K9.LockScreenNotificationVisibility
 
@@ -42,7 +42,11 @@ internal class BaseNotificationDataCreator {
     private fun createNotificationAppearance(account: Account): NotificationAppearance {
         return with(account.notificationSettings) {
             val vibrationPattern = vibration.systemPattern.takeIf { vibration.isEnabled }
-            NotificationAppearance(ringtone, vibrationPattern, account.notificationSettings.light.toColor(account))
+            NotificationAppearance(
+                ringtone = ringtone,
+                vibrationPattern = vibrationPattern,
+                ledColor = account.notificationSettings.light.toColor(account.chipColor),
+            )
         }
     }
 }

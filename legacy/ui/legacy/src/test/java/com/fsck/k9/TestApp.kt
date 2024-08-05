@@ -1,6 +1,7 @@
 package com.fsck.k9
 
 import android.app.Application
+import app.k9mail.legacy.di.DI
 import com.fsck.k9.preferences.InMemoryStoragePersister
 import com.fsck.k9.preferences.StoragePersister
 import org.koin.dsl.module

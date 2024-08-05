@@ -1,7 +1,7 @@
 package com.fsck.k9.notification
 
-import com.fsck.k9.NotificationVibration
-import com.fsck.k9.VibratePattern
+import app.k9mail.legacy.notification.NotificationVibration
+import app.k9mail.legacy.notification.VibratePattern
 
 /**
  * Converts the vibration values read from a `NotificationChannel` into [NotificationVibration].

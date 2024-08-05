@@ -1,5 +1,6 @@
 package com.fsck.k9.storage.messages
 
+import app.k9mail.legacy.account.Account.FolderMode
 import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.hasSize
@@ -9,7 +10,6 @@ import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
-import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mailstore.FolderNotFoundException

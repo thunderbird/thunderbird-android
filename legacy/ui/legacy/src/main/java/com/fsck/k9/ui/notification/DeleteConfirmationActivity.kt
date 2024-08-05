@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessageReferenceHelper

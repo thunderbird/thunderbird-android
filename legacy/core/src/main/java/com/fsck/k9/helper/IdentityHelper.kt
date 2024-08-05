@@ -1,7 +1,7 @@
 package com.fsck.k9.helper
 
-import com.fsck.k9.Account
-import com.fsck.k9.Identity
+import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.Identity
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Message.RecipientType
 

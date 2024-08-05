@@ -3,7 +3,7 @@ package com.fsck.k9.preferences
 import android.content.ContentResolver
 import android.net.Uri
 import android.util.Xml
-import com.fsck.k9.Account
+import app.k9mail.legacy.account.Account
 import com.fsck.k9.AccountPreferenceSerializer.Companion.ACCOUNT_DESCRIPTION_KEY
 import com.fsck.k9.AccountPreferenceSerializer.Companion.IDENTITY_DESCRIPTION_KEY
 import com.fsck.k9.AccountPreferenceSerializer.Companion.IDENTITY_EMAIL_KEY

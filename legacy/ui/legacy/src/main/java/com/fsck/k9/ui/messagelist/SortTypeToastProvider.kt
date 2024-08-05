@@ -1,13 +1,13 @@
 package com.fsck.k9.ui.messagelist
 
-import com.fsck.k9.Account.SortType
-import com.fsck.k9.Account.SortType.SORT_ARRIVAL
-import com.fsck.k9.Account.SortType.SORT_ATTACHMENT
-import com.fsck.k9.Account.SortType.SORT_DATE
-import com.fsck.k9.Account.SortType.SORT_FLAGGED
-import com.fsck.k9.Account.SortType.SORT_SENDER
-import com.fsck.k9.Account.SortType.SORT_SUBJECT
-import com.fsck.k9.Account.SortType.SORT_UNREAD
+import app.k9mail.legacy.account.Account.SortType
+import app.k9mail.legacy.account.Account.SortType.SORT_ARRIVAL
+import app.k9mail.legacy.account.Account.SortType.SORT_ATTACHMENT
+import app.k9mail.legacy.account.Account.SortType.SORT_DATE
+import app.k9mail.legacy.account.Account.SortType.SORT_FLAGGED
+import app.k9mail.legacy.account.Account.SortType.SORT_SENDER
+import app.k9mail.legacy.account.Account.SortType.SORT_SUBJECT
+import app.k9mail.legacy.account.Account.SortType.SORT_UNREAD
 import com.fsck.k9.ui.R
 
 class SortTypeToastProvider {
