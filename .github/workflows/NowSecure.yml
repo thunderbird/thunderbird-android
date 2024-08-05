@@ -13,23 +13,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Install Java
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v4
         with:
           java-version: "11"
           distribution: "adopt"
           cache: "gradle"
 
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@v1
+        uses: gradle/wrapper-validation-action@v3
 
       - name: Build application
         run: ./gradlew assembleDebug --stacktrace --no-daemon
 
       - name: Upload application
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: app
           path: ./app/k9mail/build/outputs/apk/debug/k9mail-debug.apk
@@ -43,18 +43,18 @@ jobs:
     needs: build
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       # Replace with whatever pulls the application file before we upload.
       - name: Download application
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           # Generated in the "build" stage.
           name: app
 
       - id: upload
         name: NowSecure upload app
-        uses: nowsecure/nowsecure-action/upload-app@v3.2.0
+        uses: nowsecure/nowsecure-action/upload-app@v4
         with:
           platform_token: ${{ secrets.NS_TOKEN }}
           # TODO: Replace application path.
@@ -70,10 +70,10 @@ jobs:
     needs: scan
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: NowSecure download report
-        uses: nowsecure/nowsecure-action/convert-sarif@v3.2.0
+        uses: nowsecure/nowsecure-action/convert-sarif@v4
         timeout-minutes: 30
         with:
           report_id: ${{ needs.scan.outputs.report_id }}
@@ -82,14 +82,14 @@ jobs:
           group_id: "602abed9-4c66-453d-8431-da0195b682de"
           
       - name: Save SARIF File
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: NowSecure SARIF
           path: NowSecure.sarif
           retention-days: 14
 
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v1
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: NowSecure.sarif
     
