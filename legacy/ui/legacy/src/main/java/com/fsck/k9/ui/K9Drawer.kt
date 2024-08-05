@@ -27,7 +27,7 @@ import com.fsck.k9.ui.account.AccountsViewModel
 import com.fsck.k9.ui.base.Theme
 import com.fsck.k9.ui.base.ThemeManager
 import com.fsck.k9.ui.base.livedata.observeNotNull
-import com.fsck.k9.ui.folders.DisplayUnifiedInbox
+import app.k9mail.legacy.ui.folder.DisplayUnifiedInbox
 import com.fsck.k9.ui.folders.FolderList
 import com.fsck.k9.ui.folders.FoldersViewModel
 import com.fsck.k9.ui.settings.SettingsActivity
