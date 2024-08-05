@@ -384,11 +384,6 @@
     <string name="account_settings_folder_push_mode_first_and_second_class">фасцикле I и II класе</string>
     <string name="account_settings_folder_push_mode_not_second_class">све осим фасцикли II класе</string>
     <string name="account_settings_folder_push_mode_none">ништа</string>
-    <string name="account_settings_folder_target_mode_label">Одредишне фасцикле за премештање/копирање</string>
-    <string name="account_settings_folder_target_mode_all">све</string>
-    <string name="account_settings_folder_target_mode_first_class">само фасцикле I класе</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">фасцикле I и II класе</string>
-    <string name="account_settings_folder_target_mode_not_second_class">све осим фасцикли II класе</string>
     <string name="account_settings_sync_remote_deletetions_label">Синхронизуј серверска брисања</string>
     <string name="account_settings_sync_remote_deletetions_summary">Уклони поруке када су обрисане са сервера</string>
     <string name="account_settings_openpgp_missing">Нема ОпенПГП апликације. Да није деинсталирана? </string>
@@ -532,10 +527,6 @@
     <string name="integrated_inbox_detail">Све поруке у једном сандучету</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Обједини</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Све поруке се приказују у обједињеном сандучету</string>
-    <string name="account_settings_searchable_label">Фасцикле за претрагу</string>
-    <string name="account_settings_searchable_all">све</string>
-    <string name="account_settings_searchable_displayable">приказане</string>
-    <string name="account_settings_searchable_none">ниједна</string>
     <string name="account_settings_no_folder_selected">Ниједна</string>
     <string name="account_settings_automatic_special_folder">Аутоматски (%s) </string>
     <string name="font_size_settings_title">Величина фонта</string>
@@ -780,7 +771,6 @@
     <string name="general_settings_title">Опште поставке</string>
     <string name="dialog_openkeychain_info_title">ОпенПГП није инсталиран</string>
     <string name="dialog_openkeychain_info_install">Инсталирај</string>
-    <string name="encrypted_subject">Шифрована порука</string>
     <string name="account_settings_crypto_encrypt_subject">Шифруј тему поруке</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Неки примаоци можда не подржавају</string>
     <string name="toast_account_not_found">Интерна грешка: неисправан налог!</string>

@@ -247,7 +247,7 @@
     <string name="general_settings_ui_density_default">Standardní</string>
     <string name="general_settings_ui_density_relaxed">Volné</string>
     <string name="global_settings_privacy_hide_useragent">Skrýt e-mailového klienta</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Odstraňovat z hlaviček e-mailů informaci o K-9 (user agent)</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Odstraňovat z hlaviček e-mailů informaci o user agent</string>
     <string name="global_settings_privacy_hide_timezone">Skrýt časovou zónu</string>
     <string name="global_settings_privacy_hide_timezone_detail">Používat v hlavičkách e-mailů a odpovědí univerzální čas (UTC) namísto toho místního</string>
     <string name="global_settings_notification_quick_delete_title">Zobrazit tlačítko \'Smazat\'</string>
@@ -426,11 +426,6 @@
     <string name="account_settings_folder_push_mode_first_and_second_class">Složky 1. a 2. třídy</string>
     <string name="account_settings_folder_push_mode_not_second_class">Všechny vyjma složek 2. třídy</string>
     <string name="account_settings_folder_push_mode_none">Žádné</string>
-    <string name="account_settings_folder_target_mode_label">Cílové složky pro přesun/kopii</string>
-    <string name="account_settings_folder_target_mode_all">Všechny</string>
-    <string name="account_settings_folder_target_mode_first_class">Jen složky 1. třídy</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">Složky 1. a 2. třídy</string>
-    <string name="account_settings_folder_target_mode_not_second_class">Všechny vyjma složek 2. třídy</string>
     <string name="account_settings_sync_remote_deletetions_label">Synchronizace mazání serveru</string>
     <string name="account_settings_sync_remote_deletetions_summary">Odstranit zprávy, když je smaže server</string>
     <string name="account_settings_openpgp_missing">Chybí OpenPGP aplikace – byla odinstalována?</string>
@@ -595,10 +590,6 @@
     <string name="integrated_inbox_detail">Všechny zprávy v integrovaných složkách</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Integrovat</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Všechny zprávy jsou zobrazeny v Integrované doručené poště</string>
-    <string name="account_settings_searchable_label">Prohledávané složky</string>
-    <string name="account_settings_searchable_all">Všechny</string>
-    <string name="account_settings_searchable_displayable">Zobrazitelné</string>
-    <string name="account_settings_searchable_none">Žádné</string>
     <string name="account_settings_no_folder_selected">Žádné</string>
     <string name="account_settings_automatic_special_folder">Automaticky (%s)</string>
     <string name="font_size_settings_title">Velikost písma</string>
@@ -851,7 +842,6 @@
     <string name="general_settings_title">Hlavní nastavení</string>
     <string name="dialog_openkeychain_info_title">Není nainstalovaná žádná OpenPGP aplikace</string>
     <string name="dialog_openkeychain_info_install">Nainstalovat</string>
-    <string name="encrypted_subject">Zašifrovaná zpráva</string>
     <string name="account_settings_crypto_encrypt_subject">Šifrovat předměty e-mailů</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Nemusí být podporováno některými příjemci</string>
     <string name="toast_account_not_found">Vnitřní chyba: neplatný účet!</string>

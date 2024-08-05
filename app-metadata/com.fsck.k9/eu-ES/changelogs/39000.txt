@@ -1,0 +1,6 @@
+- Erabiltzailearen interfazea 3. Materialera bihurtzen hasi da
+- Mailto-rako euskarria gehitu da: URI NFC etiketan
+- Aplikazioa atzeko planoan huts egiteko konponbide esperimentala gehitu da
+- IMAP protokoloko elkarrekintza batzuk optimizatu ditu
+- Ez atzeratu jakinarazpena erakustea Push aktibo dagoenean
+- Itzulpen eguneratuak

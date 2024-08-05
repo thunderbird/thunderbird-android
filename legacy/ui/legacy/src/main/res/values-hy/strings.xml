@@ -312,11 +312,6 @@
     <string name="account_settings_folder_push_mode_first_and_second_class">1֊ին եւ 2֊րդ դասի պանակները</string>
     <string name="account_settings_folder_push_mode_not_second_class">Բոլորը, բացի 2֊րդ դասի պանակներից</string>
     <string name="account_settings_folder_push_mode_none">Ոչ մի</string>
-    <string name="account_settings_folder_target_mode_label">Տեղափոխել/պատճենել նշանակէտային պանակները</string>
-    <string name="account_settings_folder_target_mode_all">Բոլորը</string>
-    <string name="account_settings_folder_target_mode_first_class">Միայն 1֊ին դասի պանակները</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">1֊ին եւ 2֊րդ դասի պանակները</string>
-    <string name="account_settings_folder_target_mode_not_second_class">Բոլորը, բացի 2֊րդ դասի պանակներից</string>
     <string name="account_settings_sync_remote_deletetions_label">Սինխրոնացնել սերուերում հեռացածները</string>
     <string name="account_settings_sync_remote_deletetions_summary">Ջնջել նամակները, եթէ սերուերից ջնջուել են։</string>
     <string name="folder_settings_title">Պանակի կարգաւորումներ</string>
@@ -345,8 +340,6 @@
     <string name="sort_by_subject">Վերնագիր</string>
     <string name="background_ops_never">Երբեք</string>
     <string name="background_ops_always">Միշտ</string>
-    <string name="account_settings_searchable_all">Բոլորը</string>
-    <string name="account_settings_searchable_none">Ոչ մի</string>
     <string name="account_settings_no_folder_selected">Ոչ մի</string>
     <string name="font_size_message_list_subject">Վերնագիր</string>
     <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->

@@ -1,0 +1,8 @@
+- Elementu asko aldatu dira Material 3-ra migratzeko. Oraindik egoera goiztiar batean dago.
+- Mezuen ikuspegian tresna-barrako ekintzen ordena aldatu da
+- "Eskuratu mezuak arte" balio lehenetsia 128 KiB-ra aldatu da
+- Irristatu ekintza bat egin ondoren tresna-barraren ikonoak kolore okerrean bistaratzen ziren
+- Hartzaile-eremu batetik helbide elektronikoak moztean hutsegite konpondu da
+- Tresna-barraren tamaina konpondu da sistemaren letra-tamaina lehenetsia ez denean
+- Korsikera, koreera eta vietnamdar itzulpenak gehitu dira
+- Itzulpen eguneratuak

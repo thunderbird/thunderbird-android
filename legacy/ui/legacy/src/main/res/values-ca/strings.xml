@@ -4,7 +4,7 @@
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
     <!--Used in the about dialog-->
-    <string name="about_app_authors_k9">Els passejadors de gossos K-9</string>
+    <string name="about_app_authors_k9">Els passejadors del gos K-9</string>
     <string name="source_code">Codi font</string>
     <string name="app_license">Llicència d\'Apache, versió 2.0</string>
     <string name="about_project_title">Projecte de codi obert</string>
@@ -425,11 +425,6 @@
     <string name="account_settings_folder_push_mode_first_and_second_class">Carpetes de 1a i 2a Classe</string>
     <string name="account_settings_folder_push_mode_not_second_class">Tot excepte carpetes de 2a Classe</string>
     <string name="account_settings_folder_push_mode_none">Cap</string>
-    <string name="account_settings_folder_target_mode_label">Mou / copia carpetes de destinació</string>
-    <string name="account_settings_folder_target_mode_all">Tot</string>
-    <string name="account_settings_folder_target_mode_first_class">Només carpetes de 1a Classe</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">Carpetes de 1a i 2a Classe</string>
-    <string name="account_settings_folder_target_mode_not_second_class">Totes les carpetes excepte 2a Classe</string>
     <string name="account_settings_sync_remote_deletetions_label">Sincronitza els elements suprimits al servidor</string>
     <string name="account_settings_sync_remote_deletetions_summary">Elimina els missatges quan se suprimeixin al servidor</string>
     <string name="account_settings_openpgp_missing">Falta una aplicació d\'OpenPGP. S\'ha desinstal·lat\?</string>
@@ -594,10 +589,6 @@
     <string name="integrated_inbox_detail">Tots els missatges en carpetes unificades</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Unifica</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Tots els missatges es mostren a la bústia d\'entrada unificada</string>
-    <string name="account_settings_searchable_label">Carpetes per cercar</string>
-    <string name="account_settings_searchable_all">Tot</string>
-    <string name="account_settings_searchable_displayable">Mostrable</string>
-    <string name="account_settings_searchable_none">Cap</string>
     <string name="account_settings_no_folder_selected">Cap</string>
     <string name="account_settings_automatic_special_folder">Automàtic (%s)</string>
     <string name="font_size_settings_title">Mida de la lletra</string>
@@ -847,7 +838,6 @@
     <string name="general_settings_title">Configuració general</string>
     <string name="dialog_openkeychain_info_title">No hi ha cap aplicació OpenPGP instal·lada</string>
     <string name="dialog_openkeychain_info_install">Instal·la</string>
-    <string name="encrypted_subject">Missatge encriptat</string>
     <string name="account_settings_crypto_encrypt_subject">Encripta l\'assumpte dels missatges</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Pot no ser admès per alguns destinataris</string>
     <string name="toast_account_not_found">Error intern: compte no vàlid!</string>
@@ -948,4 +938,11 @@
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Torna a la llista de missatges</string>
     <string name="push_notification_state_alarm_permission_missing">Falta permís per a programar alarmes</string>
     <string name="push_notification_grant_alarm_permission">Toca per a concedir permís.</string>
+    <string name="about_app_authors_thunderbird">Equip de Thunderbird per al mòbil</string>
+    <string name="dialog_openkeychain_info_text">L\'aplicació OpenKeychain és necessària per habilitar el suport per a l\'encriptació d\'extrem a extrem.</string>
+    <string name="default_signature">--
+\nEnviat des del meu dispositiu Android amb <xliff:g id="app_name">%s</xliff:g>. Disculpeu la brevetat.</string>
+    <string name="about_title">Quant a <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="account_delete_dlg_instructions_fmt">El compte \"<xliff:g id="account">%s</xliff:g>\" s\'eliminarà de <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="push_info_notification_explanation_text">Quan s\'utilitza Push, <xliff:g id="app_name">%1$s</xliff:g> manté una connexió amb el servidor de correu. Android requereix que es mostri una notificació en curs mentre l\'aplicació està activa en segon pla. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
 </resources>

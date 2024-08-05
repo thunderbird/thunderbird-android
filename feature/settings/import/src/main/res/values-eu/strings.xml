@@ -29,7 +29,7 @@
     <string name="settings_import_outgoing_server_password_hint">Irteerako zerbitzariaren pasahitza</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Erabili pasahitz bera irteera zerbitzariarentzat</string>
     <string name="settings_import_server_name_format">Zerbitzari-izena: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Posta elektronikoko kontu hau K-9 Mail-ekin erabiltzeko, saioa hasi eta aplikazioari zure mezu elektronikoetarako sarbidea eman behar diozu.</string>
+    <string name="settings_import_oauth_description">Posta elektronikoko kontu hau erabiltzeko, saioa hasi eta aplikazioari zure mezu elektronikoetarako sarbidea eman behar diozu.</string>
     <string name="settings_import_oauth_sign_in">Saioa hasi</string>
     <string name="settings_import_oauth_sign_in_with_google">Saioa hasi Googlerekin</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">baimena bertan behera utzi da</string>

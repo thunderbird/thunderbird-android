@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="account_common_button_next">Próximo</string>
+    <string name="account_common_button_next">Seguinte</string>
     <string name="account_common_button_back">Anterior</string>
-    <string name="account_common_error_server_message">O servidor retornou a seguinte mensagem:
+    <string name="account_common_error_server_message">O servidor devolveu a seguinte mensagem:
 \n%s</string>
 </resources>

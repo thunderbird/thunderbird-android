@@ -1,5 +1,5 @@
 - Hiperesteken laster-menuan irudien kudeaketa gehitu da
-- Irekitako eranskinak mezu elektroniko berrietara birbidaltzeko gaitasuna gehitu da
+- Irekitako eranskinak mezu berrietara birbidaltzeko gaitasuna gehitu da
 - Ziurtagiriaren errore-pantaila hobetu da kontua konfiguratzean
 - Ezarpenen inportazioa hobetu da kontua konfiguratzean
 - Kontuaren konfigurazio UI/UX hobetua

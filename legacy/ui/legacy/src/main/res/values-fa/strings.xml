@@ -135,7 +135,7 @@
     <string name="notification_channel_messages_title">پیام‌ها</string>
     <string name="notification_channel_messages_description">اعلان‌های مربوط به پیام‌ها</string>
     <string name="notification_channel_miscellaneous_title">متفرقه</string>
-    <string name="notification_channel_miscellaneous_description">سایر اعلان‌ها مانند خطاها و …</string>
+    <string name="notification_channel_miscellaneous_description">سایر اعلان‌ها مانند خطاها و غیره.</string>
     <string name="special_mailbox_name_inbox">صندوق ورودی</string>
     <string name="special_mailbox_name_outbox">صندوق خروجی</string>
     <string name="special_mailbox_name_drafts">پیش‌نویس‌ها</string>
@@ -421,11 +421,6 @@
     <string name="account_settings_folder_push_mode_first_and_second_class">پوشه‌های سطح ۱ و ۲</string>
     <string name="account_settings_folder_push_mode_not_second_class">همه به‌جز پوشه‌های سطح ۲</string>
     <string name="account_settings_folder_push_mode_none">هیچ‌کدام</string>
-    <string name="account_settings_folder_target_mode_label">انتقال/کپی پوشه‌های مقصد</string>
-    <string name="account_settings_folder_target_mode_all">همه</string>
-    <string name="account_settings_folder_target_mode_first_class">فقط پوشه‌های سطح ۱</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">پوشه‌های سطح ۱ و ۲</string>
-    <string name="account_settings_folder_target_mode_not_second_class">همه به‌جز پوشه‌های سطح ۲</string>
     <string name="account_settings_sync_remote_deletetions_label">همگام‌سازی حذفیات کارساز</string>
     <string name="account_settings_sync_remote_deletetions_summary">وقتی پیام‌ها در کارساز پاک شدند از اینجا هم حذف شود</string>
     <string name="account_settings_openpgp_missing">برنامهٔ OpenPGP نیست - حذف شده؟</string>
@@ -590,10 +585,6 @@
     <string name="integrated_inbox_detail">همهٔ پیام‌های صندوق ورودی یکپارچه</string>
     <string name="folder_settings_include_in_integrated_inbox_label">یکپارچگی</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">همهٔ پیام‌ها در صندوق ورودی یکپارچه نشان داده می‌شوند</string>
-    <string name="account_settings_searchable_label">پوشه‌ها برای جستجو</string>
-    <string name="account_settings_searchable_all">همه</string>
-    <string name="account_settings_searchable_displayable">قابل‌نمایش</string>
-    <string name="account_settings_searchable_none">هیچ‌کدام</string>
     <string name="account_settings_no_folder_selected">هیچ‌کدام</string>
     <string name="account_settings_automatic_special_folder">خودکار (%s)</string>
     <string name="font_size_settings_title">اندازهٔ قلم</string>
@@ -837,7 +828,6 @@
     <string name="general_settings_title">تنظیمات کلی</string>
     <string name="dialog_openkeychain_info_title">برنامه‌ای برای OpenPGP نصب نیست</string>
     <string name="dialog_openkeychain_info_install">نصب</string>
-    <string name="encrypted_subject">پیام رمزنگاری‌شده</string>
     <string name="account_settings_crypto_encrypt_subject">موضوع پیام رمزنگاری شود</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">شاید برخی گیرندگان از آن پشتیبانی نکنند</string>
     <string name="toast_account_not_found">خطای داخلی: حساب نامعتبر است!</string>

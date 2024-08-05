@@ -326,8 +326,6 @@
     <string name="account_settings_folder_push_mode_label">דחף תיקיות</string>
     <string name="account_settings_folder_push_mode_all">הכל</string>
     <string name="account_settings_folder_push_mode_none">כלום</string>
-    <string name="account_settings_folder_target_mode_label">להעביר/להעתיק תיקיות יעד</string>
-    <string name="account_settings_folder_target_mode_all">הכל</string>
     <string name="account_settings_sync_remote_deletetions_label">לסנכרן מחיקות שרת</string>
     <string name="account_settings_sync_remote_deletetions_summary">הסר הודעות כאשר נמחק בשרת</string>
     <string name="folder_settings_title">הגדרות תיקייה</string>
@@ -445,10 +443,6 @@
     <string name="integrated_inbox_detail">כל ההודעות בתיקיות המאוחדות</string>
     <string name="folder_settings_include_in_integrated_inbox_label">לאחד</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">כל ההדועות מוצגות בתיבת דואר נכנס אחידה</string>
-    <string name="account_settings_searchable_label">תיקיות לחיפוש</string>
-    <string name="account_settings_searchable_all">הכל</string>
-    <string name="account_settings_searchable_displayable">ניתנות להצגה</string>
-    <string name="account_settings_searchable_none">כלום</string>
     <string name="account_settings_no_folder_selected">כלום</string>
     <string name="font_size_settings_title">גודל גופן</string>
     <string name="font_size_settings_description">הגדר גודל גופן</string>
@@ -844,8 +838,6 @@
     <string name="account_settings_folder_push_mode_first_class">רק תיקיות מחלקה ראשונה (1st Class)</string>
     <string name="account_settings_folder_sync_mode_not_second_class">הכל חוץ מתיקיות מחלקה שנייה (2nd Class)</string>
     <string name="account_settings_folder_push_mode_not_second_class">הכל חוץ מתיקיות מחלקה שנייה (2nd Class)</string>
-    <string name="account_settings_folder_target_mode_first_class">רק תיקיות מחלקה ראשונה (1st Class)</string>
-    <string name="account_settings_folder_target_mode_not_second_class">הכל חוץ מתיקיות מחלקה שנייה (2nd Class)</string>
     <string name="folder_settings_folder_display_mode_normal">ללא מחלקה</string>
     <string name="folder_settings_folder_display_mode_label">סוג מחלקת הצגת תיקיה (Folder display class)</string>
     <string name="folder_settings_folder_push_mode_normal">ללא מחלקה</string>
@@ -876,13 +868,11 @@
     <string name="message_progress_text">טוען…</string>
     <string name="openpgp_description_text1">הצפנת הודעות מוודאת שהן יוכלו להיקרא ע\"י הנמען, ולא ע\"י אף אחד אחר.</string>
     <string name="toast_openpgp_provider_error">שגיאה בחיבור אל %s!</string>
-    <string name="encrypted_subject">הודעה מוצפנת</string>
     <string name="folder_settings_folder_display_mode_second_class">מחלקה שנייה</string>
     <string name="account_settings_autodownload_message_size_1024">1 מ\"ב</string>
     <string name="account_settings_autodownload_message_size_2048">2 מ\"ב</string>
     <string name="account_settings_folder_sync_mode_first_class">רק תיקיות מחלקה ראשונה (1st Class)</string>
     <string name="account_settings_folder_sync_mode_first_and_second_class">תיקיות מחלקה ראשונה ושנייה (1st and 2nd Class)</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">תיקיות מחלקה ראשונה ושנייה (1st and 2nd Class)</string>
     <string name="account_settings_folder_push_mode_first_and_second_class">תיקיות מחלקה ראשונה ושנייה (1st and 2nd Class)</string>
     <string name="locked_attach_unencrypted">החלק הזה לא הוצפן, ויכול להיות לא בטוח.</string>
     <string name="messageview_decrypt_incomplete">חובה להוריד הודעה מוצפנת עבור פענוח.</string>

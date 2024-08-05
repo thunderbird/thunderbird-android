@@ -425,11 +425,6 @@
     <string name="account_settings_folder_push_mode_first_and_second_class">Pastas de 1ª e 2ª classe</string>
     <string name="account_settings_folder_push_mode_not_second_class">Todas, exceto as pastas de 2ª classe</string>
     <string name="account_settings_folder_push_mode_none">Nenhuma</string>
-    <string name="account_settings_folder_target_mode_label">Pastas de destino para mover/copiar</string>
-    <string name="account_settings_folder_target_mode_all">Todas</string>
-    <string name="account_settings_folder_target_mode_first_class">Apenas pastas de 1ª classe</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">Pastas de 1ª e 2ª classe</string>
-    <string name="account_settings_folder_target_mode_not_second_class">Todas, exceto as pastas de 2ª classe</string>
     <string name="account_settings_sync_remote_deletetions_label">Sincronizar exclusões no servidor</string>
     <string name="account_settings_sync_remote_deletetions_summary">Remove mensagens quando excluídas no servidor</string>
     <string name="account_settings_openpgp_missing">O aplicativo de OpenPGP não foi encontrado - ele foi desinstalado?</string>
@@ -594,10 +589,6 @@
     <string name="integrated_inbox_detail">Todas as mensagens nas pastas unificadas</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Unificar</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Todas as mensagens são exibidas na Caixa de Entrada Unificada</string>
-    <string name="account_settings_searchable_label">Pastas onde pesquisar</string>
-    <string name="account_settings_searchable_all">Todas</string>
-    <string name="account_settings_searchable_displayable">Exibíveis</string>
-    <string name="account_settings_searchable_none">Nenhuma</string>
     <string name="account_settings_no_folder_selected">Nenhuma</string>
     <string name="account_settings_automatic_special_folder">Automático (%s)</string>
     <string name="font_size_settings_title">Tamanho da fonte</string>
@@ -845,7 +836,6 @@
     <string name="general_settings_title">Configurações gerais</string>
     <string name="dialog_openkeychain_info_title">Nenhum app OpenPGP instalado</string>
     <string name="dialog_openkeychain_info_install">Instalar</string>
-    <string name="encrypted_subject">Mensagem criptografada</string>
     <string name="account_settings_crypto_encrypt_subject">Criptografar os assuntos das mensagens</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Pode não ser suportado por alguns destinatários</string>
     <string name="toast_account_not_found">Erro interno: conta inválida!</string>

@@ -30,7 +30,7 @@
     <string name="settings_import_outgoing_server_password_hint">Contraseña del servidor de correo saliente</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Usar la misma contraseña para el servidor de correo saliente</string>
     <string name="settings_import_server_name_format">Nombre del servidor: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Para poder utilizar esta cuenta de correo con K-9 Mail es necesario que inicies sesión y propones los permisos necesarios de acceso.</string>
+    <string name="settings_import_oauth_description">Para utilizar esta cuenta de correo electrónico, tienes que iniciar sesión y conceder a la aplicación acceso a tus correos electrónicos.</string>
     <string name="settings_import_oauth_sign_in">Iniciar sesión</string>
     <string name="settings_import_oauth_sign_in_with_google">Iniciar sesión con Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">See ha cancelado la autorización</string>

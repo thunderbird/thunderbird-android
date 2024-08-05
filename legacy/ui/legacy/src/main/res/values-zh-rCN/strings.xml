@@ -421,11 +421,6 @@
     <string name="account_settings_folder_push_mode_first_and_second_class">1 级与 2 级文件夹</string>
     <string name="account_settings_folder_push_mode_not_second_class">除 2 级文件夹外的所有文件夹</string>
     <string name="account_settings_folder_push_mode_none">无</string>
-    <string name="account_settings_folder_target_mode_label">移动/复制目标文件夹</string>
-    <string name="account_settings_folder_target_mode_all">全部</string>
-    <string name="account_settings_folder_target_mode_first_class">仅 1 级文件夹</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">1 级与 2 级文件夹</string>
-    <string name="account_settings_folder_target_mode_not_second_class">除 2 级文件夹外的所有文件夹</string>
     <string name="account_settings_sync_remote_deletetions_label">同步服务器的删除</string>
     <string name="account_settings_sync_remote_deletetions_summary">在服务器上删除邮件时移除邮件</string>
     <string name="account_settings_openpgp_missing">缺少 OpenPGP 应用 - 是否已卸载？</string>
@@ -590,10 +585,6 @@
     <string name="integrated_inbox_detail">统一文件夹中的所有邮件</string>
     <string name="folder_settings_include_in_integrated_inbox_label">统一</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">所有邮件都显示在统一收件箱中</string>
-    <string name="account_settings_searchable_label">要搜索的文件夹</string>
-    <string name="account_settings_searchable_all">全部</string>
-    <string name="account_settings_searchable_displayable">可显示</string>
-    <string name="account_settings_searchable_none">无</string>
     <string name="account_settings_no_folder_selected">无</string>
     <string name="account_settings_automatic_special_folder">自动（%s）</string>
     <string name="font_size_settings_title">字体大小</string>
@@ -835,7 +826,6 @@
     <string name="general_settings_title">常规设置</string>
     <string name="dialog_openkeychain_info_title">未安装 OpenPGP 应用</string>
     <string name="dialog_openkeychain_info_install">安装</string>
-    <string name="encrypted_subject">加密邮件</string>
     <string name="account_settings_crypto_encrypt_subject">加密邮件主题</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">某些收件人可能不支持</string>
     <string name="toast_account_not_found">内部错误：无效账号！</string>

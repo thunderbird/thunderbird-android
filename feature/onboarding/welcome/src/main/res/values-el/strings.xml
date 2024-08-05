@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">Start</string>
     <string name="onboarding_welcome_import_button">Ynstellingen ymportearje</string>
+    <string name="onboarding_welcome_message">Καλώς ήρθατε στο <xliff:g id="app_name">%s</xliff:g>, ο πελάτης ηλεκτρονικού ταχυδρομείου Android που σχεδιάστηκε για αυξημένη ασφάλεια, εύκολη προσαρμογή και απρόσκοπτη διαχείριση όλων των λογαριασμών ηλεκτρονικού ταχυδρομείου σας.</string>
 </resources>

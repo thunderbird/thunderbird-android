@@ -426,11 +426,6 @@
     <string name="account_settings_folder_push_mode_first_and_second_class">Теки 1-го та 2-го класу</string>
     <string name="account_settings_folder_push_mode_not_second_class">Усі, крім тек 2-го класу</string>
     <string name="account_settings_folder_push_mode_none">Нічого</string>
-    <string name="account_settings_folder_target_mode_label">Теки призначення при переміщенні / копіюванні</string>
-    <string name="account_settings_folder_target_mode_all">Усі</string>
-    <string name="account_settings_folder_target_mode_first_class">Тільки теки 1-го класу</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">Теки 1-го та 2-го класу</string>
-    <string name="account_settings_folder_target_mode_not_second_class">Усі, крім тек 2-го класу</string>
     <string name="account_settings_sync_remote_deletetions_label">Синхронізація видалень на сервері</string>
     <string name="account_settings_sync_remote_deletetions_summary">Видаляти повідомлення синхронно з видаленням на сервері</string>
     <string name="account_settings_openpgp_missing">Немає OpenPGP-додатка - він був видалений?</string>
@@ -595,10 +590,6 @@
     <string name="integrated_inbox_detail">Усі повідомлення в об\'єднаних теках</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Об’єднати</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Усі повідомлення показуються у теці \"Об\'єднані Вхідні\"</string>
-    <string name="account_settings_searchable_label">Теки для пошуку</string>
-    <string name="account_settings_searchable_all">Всі</string>
-    <string name="account_settings_searchable_displayable">Видимі</string>
-    <string name="account_settings_searchable_none">Жодна</string>
     <string name="account_settings_no_folder_selected">Жодної</string>
     <string name="account_settings_automatic_special_folder">Автоматично (%s)</string>
     <string name="font_size_settings_title">Розмір шрифту</string>
@@ -850,7 +841,6 @@
     <string name="general_settings_title">Загальні налаштування</string>
     <string name="dialog_openkeychain_info_title">Не встановлено додатка OpenPGP</string>
     <string name="dialog_openkeychain_info_install">Встановити</string>
-    <string name="encrypted_subject">Зашифроване повідомлення</string>
     <string name="account_settings_crypto_encrypt_subject">Шифрувати теми повідомлень</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Може не підтримуватися деякими адресатами</string>
     <string name="toast_account_not_found">Внутрішня помилка: Недійсний обліковий запис!</string>

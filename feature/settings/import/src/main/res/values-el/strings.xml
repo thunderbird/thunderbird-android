@@ -29,7 +29,7 @@
     <string name="settings_import_outgoing_server_password_hint">Κωδικός πρόσβασης εξυπηρετητή εξερχομένων</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Χρήση του ίδιου κωδικού πρόσβασης και για τον εξυπηρετητή εξερχομένων</string>
     <string name="settings_import_server_name_format">Όνομα εξυπηρετητή: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Αν θέλετε να χρησιμοποιήσετε αυτόν τον λογαριασμό ηλεκτρονικού ταχυδρομείου με το K-9 Mail πρέπει να συνδεθείτε και να παραχωρήσετε στην εφαρμογή πρόσβαση στα ηλεκτρονικά μηνύματά σας.</string>
+    <string name="settings_import_oauth_description">Για να χρησιμοποιήσετε αυτό τον λογαριασμό ηλεκτρονικού ταχυδρομείου, πρέπει να εγγραφείτε και να δώσετε πρόσβαση στα μηνύματα ηλεκτρονικού ταχυδρομείου σας στην εφαρμογή.</string>
     <string name="settings_import_oauth_sign_in">Σύνδεση</string>
     <string name="settings_import_oauth_sign_in_with_google">Σύνδεση μέσω Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Η εξακρίβωση ακυρώθηκε</string>

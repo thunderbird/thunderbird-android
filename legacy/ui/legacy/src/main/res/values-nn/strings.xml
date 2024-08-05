@@ -232,7 +232,6 @@
     <string name="account_settings_folder_sync_mode_none">Ingen</string>
     <string name="account_settings_folder_push_mode_all">Alle</string>
     <string name="account_settings_folder_push_mode_none">Ingen</string>
-    <string name="account_settings_folder_target_mode_all">Alle</string>
     <string name="folder_settings_title">Mappeinnstillingar</string>
     <string name="folder_settings_folder_sync_mode_normal">Ingen</string>
     <string name="folder_settings_clear_local_folder_action">Fjern lokale meldingar</string>
@@ -314,8 +313,6 @@
     <string name="account_setup_push_limit_250">250 mapper</string>
     <string name="account_setup_push_limit_500">500 mapper</string>
     <string name="account_setup_push_limit_1000">1000 mapper</string>
-    <string name="account_settings_searchable_all">Alle</string>
-    <string name="account_settings_searchable_none">Ingen</string>
     <string name="account_settings_no_folder_selected">Ingen</string>
     <string name="font_size_settings_title">Skriftstorleik</string>
     <string name="font_size_settings_description">Endra skriftstorleik</string>

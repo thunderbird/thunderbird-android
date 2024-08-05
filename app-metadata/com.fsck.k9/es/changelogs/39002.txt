@@ -1,0 +1,8 @@
+- Hemos cambiado muchos elementos internos para migrar a Material 3. Ten en cuenta que la interfaz de Material 3 aún se encuentra en un estado incipiente.
+- Se ha cambiado el orden de las acciones de la barra de herramientas en la vista de mensajes para que coincida con el orden en el modo de selección múltiple.
+- Se ha cambiado el valor predeterminado de «Recuperar mensajes hasta» 128 KB.
+- Se ha corregido un error por el que los iconos de la barra de herramientas se mostraban en el color incorrecto después de realizar una acción de barrido.
+- Se ha corregido un fallo al cortar direcciones de correo electrónico de un campo de destinatario al redactar un mensaje.
+- Se ha corregido el tamaño de la barra de herramientas cuando se utiliza un tamaño de fuente del sistema no predeterminado.
+- Se han añadido traducciones al corso, coreano y vietnamita.
+- Traducciones actualizadas

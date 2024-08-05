@@ -378,8 +378,6 @@
     <string name="account_settings_folder_push_mode_all">Tutti</string>
     <string name="account_settings_folder_push_mode_first_class">Solu i cartulari di 1a classa</string>
     <string name="account_settings_folder_push_mode_none">Nisunu</string>
-    <string name="account_settings_folder_target_mode_label">Cartulare di destinazione per dispiazzà è cupià</string>
-    <string name="account_settings_folder_target_mode_all">Tutti</string>
     <string name="folder_settings_in_top_group_summary">Affissà in a parte superiore di a lista di i cartulari</string>
     <string name="folder_settings_folder_display_mode_label">Classa d’affissera di u cartulare</string>
     <string name="folder_settings_folder_display_mode_normal">Nisuna classa</string>
@@ -433,9 +431,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">Cartulari di 1a è 2a classa</string>
     <string name="account_settings_folder_push_mode_first_and_second_class">Cartulari di 1a è 2a classa</string>
     <string name="account_settings_folder_push_mode_not_second_class">Tutti i cartulari fora di a 2a classa</string>
-    <string name="account_settings_folder_target_mode_first_class">Solu i cartulari di 1a classa</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">Cartulari di 1a è 2a classa</string>
-    <string name="account_settings_folder_target_mode_not_second_class">Tutti i cartulari fora di a 2a classa</string>
     <string name="account_settings_sync_remote_deletetions_label">Sincrunizà e squassature di u servitore</string>
     <string name="account_settings_sync_remote_deletetions_summary">Caccià i messaghji quand’elli sò squassati nant’à u servitore</string>
     <string name="account_settings_openpgp_missing">L’appiecazione OpenPGP hè assente ; seria desinstallata ?</string>
@@ -561,7 +556,6 @@
     <string name="integrated_inbox_detail">Tutti i messaghji in i cartulari cuncolti</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Unificà</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Tutti i messaghji sò affissati in a scatula di ricezzione cuncolta</string>
-    <string name="account_settings_searchable_label">Cartulari induve circà</string>
     <string name="account_settings_automatic_special_folder">Autumaticu (%s)</string>
     <string name="font_size_message_list_sender">Speditore</string>
     <string name="font_size_message_list_date">Data</string>
@@ -653,10 +647,7 @@
     <string name="account_setup_push_limit_label">Numeru massimu di cartulari à sincrunizà cù a catapughjata</string>
     <string name="batch_select_all">Tuttu selezziunà</string>
     <string name="account_setup_push_limit_25">25 cartulari</string>
-    <string name="account_settings_searchable_all">Tutti</string>
-    <string name="account_settings_searchable_none">Nisunu</string>
     <string name="account_settings_no_folder_selected">Nisunu</string>
-    <string name="account_settings_searchable_displayable">Affissevule</string>
     <string name="font_size_settings_title">Dimensione di grafia</string>
     <string name="error_activity_not_found">Nisuna appiecazione apprupiata ùn hè stata trova per st’azzione.</string>
     <plurals name="dialog_confirm_delete_messages">
@@ -847,7 +838,6 @@
     <string name="openpgp_description_text3">A cifratura ùn serà pruposta chì solu s’ella hè accettata da tutti i destinatarii, è ch’elli vi anu dighjà mandatu un messaghju prima.</string>
     <string name="openpgp_enabled_error_gotit">Aghju capitu</string>
     <string name="openpgp_enabled_error_back">Ritornu</string>
-    <string name="encrypted_subject">Messaghju cifratu</string>
     <string name="toast_account_not_found">Sbagliu internu : u contu hè inaccettevule !</string>
     <string name="ac_transfer_setting_summary">Sparte in modu sicuru a cunfigurazione da un capu à l’altru cù d’altri apparechji</string>
     <string name="ac_transfer_generating">Generazione di u messaghju di cunfigurazione…</string>

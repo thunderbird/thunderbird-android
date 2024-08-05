@@ -365,11 +365,6 @@
     <string name="account_settings_folder_push_mode_first_and_second_class">제 1종 및 2종</string>
     <string name="account_settings_folder_push_mode_not_second_class">제 2종 폴더 외 모두</string>
     <string name="account_settings_folder_push_mode_none">없음</string>
-    <string name="account_settings_folder_target_mode_label">이동/복사 메시지가 저장될 폴더</string>
-    <string name="account_settings_folder_target_mode_all">모든 폴더</string>
-    <string name="account_settings_folder_target_mode_first_class">제 1종 폴더만</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">제 1종 및 2종</string>
-    <string name="account_settings_folder_target_mode_not_second_class">제 2종 폴더 외 모두</string>
     <string name="account_settings_sync_remote_deletetions_label">서버 삭제 동기화</string>
     <string name="account_settings_sync_remote_deletetions_summary">서버에서 삭제된 메시지를 앱에서도 삭제합니다</string>
     <string name="folder_settings_title">폴더 설정</string>
@@ -503,10 +498,6 @@
     <string name="integrated_inbox_detail">통합된 폴더의 모든 이메일</string>
     <string name="folder_settings_include_in_integrated_inbox_label">통합</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">통합 편지함에서 모든 메시지를 볼 수 있습니다</string>
-    <string name="account_settings_searchable_label">찾을 폴더</string>
-    <string name="account_settings_searchable_all">모두</string>
-    <string name="account_settings_searchable_displayable">보이는 폴더</string>
-    <string name="account_settings_searchable_none">없음</string>
     <string name="account_settings_no_folder_selected">없음</string>
     <string name="font_size_settings_title">글꼴 크기</string>
     <string name="font_size_settings_description">글꼴 크기 수정</string>
@@ -688,7 +679,6 @@
     <string name="general_settings_title">일반 설정</string>
     <string name="dialog_openkeychain_info_title">OpenPGP 앱이 설치되지 않음</string>
     <string name="dialog_openkeychain_info_install">설치</string>
-    <string name="encrypted_subject">암호화된 메시지</string>
     <string name="account_settings_crypto_encrypt_subject">메시지 제목을 암호화하기</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">일부 받는 사람에게는 지원되지 않을 수 있습니다</string>
     <string name="toast_openpgp_provider_error">%s에 연결하는 동안 오류가 발생했습니다!</string>

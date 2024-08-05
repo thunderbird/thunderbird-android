@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_server_certificate_warning_title">Aviso</string>
-    <string name="account_server_certificate_unknown_error_subtitle">Erro no certificado</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Erro de certificado</string>
     <string name="account_server_certificate_button_back">Regressar (recomendado)</string>
     <string name="account_server_certificate_button_advanced">Avançado</string>
     <string name="account_server_certificate_button_continue">Aceitar risco e continuar</string>
