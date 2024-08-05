@@ -8,6 +8,11 @@ import java.util.Set;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import app.k9mail.legacy.search.api.SearchAttribute;
+import app.k9mail.legacy.search.api.SearchCondition;
+import app.k9mail.legacy.search.api.SearchField;
+
+
 /**
  * This class represents a local search.
  *
@@ -132,7 +137,7 @@ public class LocalSearch implements SearchSpecification {
      * @param value Value to look for.
      * @param attribute Attribute to use when matching.
      */
-    public void and(SearchField field, String value, Attribute attribute) {
+    public void and(SearchField field, String value, SearchAttribute attribute) {
         and(new SearchCondition(field, attribute, value));
     }
 
@@ -212,7 +217,7 @@ public class LocalSearch implements SearchSpecification {
          *          - do and on root of it & rest of search
          *          - do or between folder nodes
          */
-        mConditions = and(new SearchCondition(SearchField.FOLDER, Attribute.EQUALS, Long.toString(folderId)));
+        mConditions = and(new SearchCondition(SearchField.FOLDER, SearchAttribute.EQUALS, Long.toString(folderId)));
     }
 
     /*
@@ -224,7 +229,7 @@ public class LocalSearch implements SearchSpecification {
         List<Long> results = new ArrayList<>();
         for (ConditionsTreeNode node : mLeafSet) {
             if (node.mCondition.field == SearchField.FOLDER &&
-                    node.mCondition.attribute == Attribute.EQUALS) {
+                    node.mCondition.attribute == SearchAttribute.EQUALS) {
                 results.add(Long.valueOf(node.mCondition.value));
             }
         }

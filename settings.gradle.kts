@@ -94,6 +94,7 @@ include(
     ":legacy:di",
     ":legacy:folder",
     ":legacy:notification",
+    ":legacy:search",
     ":legacy:storage",
     ":legacy:testing",
     ":legacy:ui:base",

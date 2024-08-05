@@ -1,8 +1,9 @@
 package com.fsck.k9.search
 
 import app.k9mail.legacy.account.BaseAccount
+import app.k9mail.legacy.search.api.SearchAttribute
+import app.k9mail.legacy.search.api.SearchField
 import com.fsck.k9.CoreResourceProvider
-import com.fsck.k9.search.SearchSpecification.SearchField
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -39,7 +40,7 @@ class SearchAccount(
         fun createUnifiedInboxAccount(): SearchAccount {
             val tmpSearch = LocalSearch().apply {
                 id = UNIFIED_INBOX
-                and(SearchField.INTEGRATE, "1", SearchSpecification.Attribute.EQUALS)
+                and(SearchField.INTEGRATE, "1", SearchAttribute.EQUALS)
             }
 
             return SearchAccount(

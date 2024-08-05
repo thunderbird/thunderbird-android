@@ -28,6 +28,9 @@ import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.search.api.SearchAttribute
+import app.k9mail.legacy.search.api.SearchCondition
+import app.k9mail.legacy.search.api.SearchField
 import com.fsck.k9.K9
 import com.fsck.k9.K9.PostMarkAsUnreadNavigation
 import com.fsck.k9.K9.PostRemoveNavigation
@@ -43,8 +46,6 @@ import com.fsck.k9.preferences.GeneralSettingsManager
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.search.SearchSpecification
-import com.fsck.k9.search.SearchSpecification.SearchCondition
-import com.fsck.k9.search.SearchSpecification.SearchField
 import com.fsck.k9.search.isUnifiedInbox
 import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.K9Drawer
@@ -408,12 +409,48 @@ open class MessageList :
 
             val search = LocalSearch().apply {
                 isManualSearch = true
-                or(SearchCondition(SearchField.SENDER, SearchSpecification.Attribute.CONTAINS, query))
-                or(SearchCondition(SearchField.TO, SearchSpecification.Attribute.CONTAINS, query))
-                or(SearchCondition(SearchField.CC, SearchSpecification.Attribute.CONTAINS, query))
-                or(SearchCondition(SearchField.BCC, SearchSpecification.Attribute.CONTAINS, query))
-                or(SearchCondition(SearchField.SUBJECT, SearchSpecification.Attribute.CONTAINS, query))
-                or(SearchCondition(SearchField.MESSAGE_CONTENTS, SearchSpecification.Attribute.CONTAINS, query))
+                or(
+                    SearchCondition(
+                        SearchField.SENDER,
+                        SearchAttribute.CONTAINS,
+                        query,
+                    ),
+                )
+                or(
+                    SearchCondition(
+                        SearchField.TO,
+                        SearchAttribute.CONTAINS,
+                        query,
+                    ),
+                )
+                or(
+                    SearchCondition(
+                        SearchField.CC,
+                        SearchAttribute.CONTAINS,
+                        query,
+                    ),
+                )
+                or(
+                    SearchCondition(
+                        SearchField.BCC,
+                        SearchAttribute.CONTAINS,
+                        query,
+                    ),
+                )
+                or(
+                    SearchCondition(
+                        SearchField.SUBJECT,
+                        SearchAttribute.CONTAINS,
+                        query,
+                    ),
+                )
+                or(
+                    SearchCondition(
+                        SearchField.MESSAGE_CONTENTS,
+                        SearchAttribute.CONTAINS,
+                        query,
+                    ),
+                )
             }
 
             val appData = intent.getBundleExtra(SearchManager.APP_DATA)
@@ -1092,7 +1129,7 @@ open class MessageList :
         val tmpSearch = LocalSearch().apply {
             setId(search?.id)
             addAccountUuid(account.uuid)
-            and(SearchField.THREAD_ID, threadRootId.toString(), SearchSpecification.Attribute.EQUALS)
+            and(SearchField.THREAD_ID, threadRootId.toString(), SearchAttribute.EQUALS)
         }
 
         initializeFromLocalSearch(tmpSearch)
@@ -1429,7 +1466,7 @@ open class MessageList :
             val search = LocalSearch().apply {
                 id = SearchAccount.NEW_MESSAGES
                 addAccountUuid(account.uuid)
-                and(SearchField.NEW_MESSAGE, "1", SearchSpecification.Attribute.EQUALS)
+                and(SearchField.NEW_MESSAGE, "1", SearchAttribute.EQUALS)
             }
 
             return intentDisplaySearch(context, search, noThreading = false, newTask = true, clearTop = true)

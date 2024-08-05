@@ -10,9 +10,9 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.fsck.k9.search.SearchSpecification.Attribute;
-import com.fsck.k9.search.SearchSpecification.SearchCondition;
-import com.fsck.k9.search.SearchSpecification.SearchField;
+import app.k9mail.legacy.search.api.SearchAttribute;
+import app.k9mail.legacy.search.api.SearchCondition;
+import app.k9mail.legacy.search.api.SearchField;
 
 
 /**
@@ -98,7 +98,7 @@ public class ConditionsTreeNode implements Parcelable {
 
         if (tmpValue == Operator.CONDITION) {
             condition = new SearchCondition(SearchField.valueOf(cursor.getString(0)),
-                    Attribute.valueOf(cursor.getString(2)), cursor.getString(1));
+                    SearchAttribute.valueOf(cursor.getString(2)), cursor.getString(1));
         }
 
         result = new ConditionsTreeNode(condition);
