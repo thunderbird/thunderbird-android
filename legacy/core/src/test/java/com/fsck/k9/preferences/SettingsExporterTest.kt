@@ -1,12 +1,12 @@
 package com.fsck.k9.preferences
 
+import app.k9mail.legacy.mailstore.FolderRepository
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.Preferences
-import com.fsck.k9.mailstore.FolderRepository
 import java.io.ByteArrayOutputStream
 import org.jdom2.Document
 import org.jdom2.input.SAXBuilder

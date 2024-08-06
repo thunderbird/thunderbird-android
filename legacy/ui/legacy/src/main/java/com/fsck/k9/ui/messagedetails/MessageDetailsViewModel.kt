@@ -12,12 +12,12 @@ import app.k9mail.core.common.mail.toEmailAddressOrNull
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.folder.Folder
+import app.k9mail.legacy.mailstore.FolderRepository
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.helper.ClipboardManager
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.CryptoResultAnnotation
-import com.fsck.k9.mailstore.FolderRepository
 import com.fsck.k9.mailstore.MessageDate
 import com.fsck.k9.mailstore.MessageRepository
 import com.fsck.k9.ui.R
