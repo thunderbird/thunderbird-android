@@ -137,11 +137,6 @@
     <string name="notification_channel_messages_description">E-kirjadega seotud teated</string>
     <string name="notification_channel_miscellaneous_title">Muu</string>
     <string name="notification_channel_miscellaneous_description">Mitmesugused teated nagu vead jms.</string>
-    <string name="special_mailbox_name_inbox">Sisendkaust</string>
-    <string name="special_mailbox_name_outbox">Väljundkast</string>
-    <string name="special_mailbox_name_drafts">Mustandid</string>
-    <string name="special_mailbox_name_trash">Prügikast</string>
-    <string name="special_mailbox_name_sent">Saadetud</string>
     <string name="send_failure_subject">Mõne kirja saatmine ebaõnnestus</string>
     <string name="version">Versioon</string>
     <string name="debug_enable_debug_logging_title">Luba silumiste logimine</string>

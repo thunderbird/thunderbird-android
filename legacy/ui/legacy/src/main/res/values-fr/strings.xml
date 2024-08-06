@@ -139,11 +139,6 @@
     <string name="notification_channel_messages_description">Notifications relatives aux courriels</string>
     <string name="notification_channel_miscellaneous_title">Divers</string>
     <string name="notification_channel_miscellaneous_description">Notifications diverses telles que les erreurs, etc.</string>
-    <string name="special_mailbox_name_inbox">Boîte de réception</string>
-    <string name="special_mailbox_name_outbox">Boîte d’envoi</string>
-    <string name="special_mailbox_name_drafts">Brouillons</string>
-    <string name="special_mailbox_name_trash">Corbeille</string>
-    <string name="special_mailbox_name_sent">Envoyés</string>
     <string name="send_failure_subject">Échec d’envoi de certains courriels</string>
     <string name="version">Version</string>
     <string name="debug_enable_debug_logging_title">Activer le journal de débogage</string>

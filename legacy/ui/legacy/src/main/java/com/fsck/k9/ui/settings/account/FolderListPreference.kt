@@ -9,8 +9,8 @@ import android.util.AttributeSet
 import androidx.core.content.res.TypedArrayUtils
 import androidx.preference.ListPreference
 import app.k9mail.legacy.folder.RemoteFolder
+import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.folders.FolderNameFormatter
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf

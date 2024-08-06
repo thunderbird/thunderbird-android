@@ -7,11 +7,11 @@ import android.view.MenuItem
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
+import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import com.fsck.k9.fragment.ConfirmationDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.livedata.observeNotNull
-import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel

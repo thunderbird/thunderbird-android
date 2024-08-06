@@ -114,11 +114,6 @@
     <string name="notification_channel_messages_description">Nutificazioni relative à i messaghji</string>
     <string name="notification_channel_miscellaneous_title">Diversi</string>
     <string name="notification_channel_miscellaneous_description">Nutificazioni diverse tale chì sbaglii, ecc.</string>
-    <string name="special_mailbox_name_inbox">Scatula di ricezzione</string>
-    <string name="special_mailbox_name_outbox">Scatula d’inviu</string>
-    <string name="special_mailbox_name_drafts">Bruttacopie</string>
-    <string name="special_mailbox_name_trash">Curbella</string>
-    <string name="special_mailbox_name_sent">Mandati</string>
     <string name="send_failure_subject">Fiascu per mandà certi messaghji</string>
     <string name="version">Versione</string>
     <string name="debug_enable_debug_logging_title">Attivà u ghjurnale di spannatura</string>

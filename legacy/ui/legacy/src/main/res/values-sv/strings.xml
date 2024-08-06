@@ -137,11 +137,6 @@
     <string name="notification_channel_messages_description">Aviseringar relaterade till meddelanden</string>
     <string name="notification_channel_miscellaneous_title">Diverse</string>
     <string name="notification_channel_miscellaneous_description">Diverse aviseringar som fel m.m.</string>
-    <string name="special_mailbox_name_inbox">Inkorg</string>
-    <string name="special_mailbox_name_outbox">Utkorg</string>
-    <string name="special_mailbox_name_drafts">Utkast</string>
-    <string name="special_mailbox_name_trash">Papperskorg</string>
-    <string name="special_mailbox_name_sent">Skickat</string>
     <string name="send_failure_subject">Det gick inte att skicka några meddelanden</string>
     <string name="version">Version</string>
     <string name="debug_enable_debug_logging_title">Aktivera felsöksloggning</string>

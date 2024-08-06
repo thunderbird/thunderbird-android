@@ -136,11 +136,6 @@
     <string name="notification_channel_messages_description">与邮件相关的通知</string>
     <string name="notification_channel_miscellaneous_title">杂项</string>
     <string name="notification_channel_miscellaneous_description">错误等杂项通知。</string>
-    <string name="special_mailbox_name_inbox">收件箱</string>
-    <string name="special_mailbox_name_outbox">发件箱</string>
-    <string name="special_mailbox_name_drafts">草稿</string>
-    <string name="special_mailbox_name_trash">已删除邮件</string>
-    <string name="special_mailbox_name_sent">已发送邮件</string>
     <string name="send_failure_subject">无法发送某些邮件</string>
     <string name="version">版本</string>
     <string name="debug_enable_debug_logging_title">启用调试日志记录</string>

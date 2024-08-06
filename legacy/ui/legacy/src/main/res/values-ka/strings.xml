@@ -104,11 +104,6 @@
     <string name="notification_bg_send_title">წერილის გაგზავნა</string>
     <string name="notification_bg_title_separator">:</string>
     <string name="notification_channel_messages_title">მესიჯები</string>
-    <string name="special_mailbox_name_inbox">შემავალი</string>
-    <string name="special_mailbox_name_outbox">გამავალი</string>
-    <string name="special_mailbox_name_drafts">მონახაზები</string>
-    <string name="special_mailbox_name_trash">ნაგავი</string>
-    <string name="special_mailbox_name_sent">გაგზავნილი</string>
     <string name="version">ვერსია</string>
     <string name="debug_enable_debug_logging_summary">დამატებითი სადიაგნოსტიკო ინფორმაციის ლოგირება</string>
     <string name="debug_enable_sensitive_logging_title">მგრძნობიარე ინფორმაციის ლოგირება</string>

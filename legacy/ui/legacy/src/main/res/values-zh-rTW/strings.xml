@@ -134,11 +134,6 @@
     <string name="notification_channel_messages_description">與郵件相關的通知</string>
     <string name="notification_channel_miscellaneous_title">雜項設定</string>
     <string name="notification_channel_miscellaneous_description">其他通知，如錯誤通知等。</string>
-    <string name="special_mailbox_name_inbox">收件匣</string>
-    <string name="special_mailbox_name_outbox">寄件備份</string>
-    <string name="special_mailbox_name_drafts">草稿</string>
-    <string name="special_mailbox_name_trash">垃圾桶</string>
-    <string name="special_mailbox_name_sent">寄件備份</string>
     <string name="send_failure_subject">有些郵件沒有成功寄送</string>
     <string name="version">版本</string>
     <string name="debug_enable_debug_logging_title">啟用除錯日誌</string>

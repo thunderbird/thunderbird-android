@@ -140,11 +140,6 @@
     <string name="notification_channel_messages_description">Notificacions relacionades amb missatges</string>
     <string name="notification_channel_miscellaneous_title">Miscel·lània</string>
     <string name="notification_channel_miscellaneous_description">Notificacions diverses, com ara errors, etc.</string>
-    <string name="special_mailbox_name_inbox">Bústia d\'entrada</string>
-    <string name="special_mailbox_name_outbox">Bústia de sortida</string>
-    <string name="special_mailbox_name_drafts">Esborranys</string>
-    <string name="special_mailbox_name_trash">Paperera</string>
-    <string name="special_mailbox_name_sent">Enviat</string>
     <string name="send_failure_subject">La tramesa d\'alguns missatges ha fallat</string>
     <string name="version">Versió</string>
     <string name="debug_enable_debug_logging_title">Habilita la depuració del registre</string>

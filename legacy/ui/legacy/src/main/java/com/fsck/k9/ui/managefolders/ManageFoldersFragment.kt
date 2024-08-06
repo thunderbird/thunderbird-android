@@ -13,13 +13,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.folder.DisplayFolder
+import app.k9mail.legacy.ui.folder.FolderIconProvider
+import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.mailstore.DisplayFolder
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.livedata.observeNotNull
-import com.fsck.k9.ui.folders.FolderIconProvider
-import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import java.util.Locale

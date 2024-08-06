@@ -128,11 +128,6 @@
     <string name="notification_channel_messages_description">Sciigoj pri novaj mesaĝoj</string>
     <string name="notification_channel_miscellaneous_title">Diversaj</string>
     <string name="notification_channel_miscellaneous_description">Aliaj sciigoj, ekzemple pri eraroj</string>
-    <string name="special_mailbox_name_inbox">Ricevujo</string>
-    <string name="special_mailbox_name_outbox">Sendotujo</string>
-    <string name="special_mailbox_name_drafts">Malnetujo</string>
-    <string name="special_mailbox_name_trash">Rubujo</string>
-    <string name="special_mailbox_name_sent">Senditujo</string>
     <string name="send_failure_subject">Malsukcesis sendi iujn mesaĝojn</string>
     <string name="version">Versio</string>
     <string name="debug_enable_debug_logging_title">Aktivigi senerarigan protokoladon</string>

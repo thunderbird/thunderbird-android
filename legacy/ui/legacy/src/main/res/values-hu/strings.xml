@@ -136,11 +136,6 @@
     <string name="notification_channel_messages_description">Az üzenetekkel kapcsolatos értesítések</string>
     <string name="notification_channel_miscellaneous_title">Egyebek</string>
     <string name="notification_channel_miscellaneous_description">Egyéb értesítések, például hibák, stb.</string>
-    <string name="special_mailbox_name_inbox">Beérkezett üzenetek</string>
-    <string name="special_mailbox_name_outbox">Kimenő üzenetek</string>
-    <string name="special_mailbox_name_drafts">Piszkozatok</string>
-    <string name="special_mailbox_name_trash">Kuka</string>
-    <string name="special_mailbox_name_sent">Elküldött</string>
     <string name="send_failure_subject">Néhány üzenetet nem sikerült elküldeni</string>
     <string name="version">Verzió</string>
     <string name="debug_enable_debug_logging_title">Hibakeresési naplózás engedélyezése</string>

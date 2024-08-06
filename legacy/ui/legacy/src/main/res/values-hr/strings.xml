@@ -114,11 +114,6 @@
     <string name="notification_channel_messages_description">Obavijesti vezane za poruke</string>
     <string name="notification_channel_miscellaneous_title">Razna</string>
     <string name="notification_channel_miscellaneous_description">Raznovrsne obavijesti kao greške itd.</string>
-    <string name="special_mailbox_name_inbox">Dolazna pošta</string>
-    <string name="special_mailbox_name_outbox">Odlazna pošta</string>
-    <string name="special_mailbox_name_drafts">Skice</string>
-    <string name="special_mailbox_name_trash">Smeće</string>
-    <string name="special_mailbox_name_sent">Poslano</string>
     <string name="send_failure_subject">Slanje nekih poruka nije uspjelo</string>
     <string name="version">Verzija</string>
     <string name="debug_enable_debug_logging_title">Omogući zapisnik ispravljanja</string>

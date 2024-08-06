@@ -28,8 +28,6 @@ class TestCoreResourceProvider : CoreResourceProvider {
     override fun searchUnifiedInboxTitle() = throw UnsupportedOperationException("not implemented")
     override fun searchUnifiedInboxDetail() = throw UnsupportedOperationException("not implemented")
 
-    override fun outboxFolderName() = throw UnsupportedOperationException("not implemented")
-
     override val iconPushNotification: Int
         get() = throw UnsupportedOperationException("not implemented")
 

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="special_mailbox_name_outbox">보낸 편지함</string>
+    <string name="special_mailbox_name_drafts">임시 보관함</string>
+    <string name="special_mailbox_name_sent">보냄</string>
+    <string name="special_mailbox_name_trash">휴지통</string>
+    <string name="special_mailbox_name_inbox">받은 편지함</string>
+</resources>

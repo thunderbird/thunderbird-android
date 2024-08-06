@@ -142,11 +142,6 @@
     <string name="notification_channel_messages_description">Уведомления о сообщениях</string>
     <string name="notification_channel_miscellaneous_title">Разное</string>
     <string name="notification_channel_miscellaneous_description">Различные уведомления, например, об ошибках и т.д.</string>
-    <string name="special_mailbox_name_inbox">Входящие</string>
-    <string name="special_mailbox_name_outbox">Исходящие</string>
-    <string name="special_mailbox_name_drafts">Черновики</string>
-    <string name="special_mailbox_name_trash">Корзина</string>
-    <string name="special_mailbox_name_sent">Отправленные</string>
     <string name="send_failure_subject">Сбой отправки почты</string>
     <string name="version">Версия</string>
     <string name="debug_enable_debug_logging_title">Журнал отладки</string>

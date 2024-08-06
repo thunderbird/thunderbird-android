@@ -137,11 +137,6 @@
     <string name="notification_channel_messages_description">Ειδοποιήσεις που αφορούν μηνύματα</string>
     <string name="notification_channel_miscellaneous_title">Διάφορα</string>
     <string name="notification_channel_miscellaneous_description">Διάφορες ειδοποιήσεις όπως σφάλματα κ.τ.λ.</string>
-    <string name="special_mailbox_name_inbox">Εισερχόμενα</string>
-    <string name="special_mailbox_name_outbox">Εξερχόμενα</string>
-    <string name="special_mailbox_name_drafts">Πρόχειρα</string>
-    <string name="special_mailbox_name_trash">Διαγραμμένα</string>
-    <string name="special_mailbox_name_sent">Απεσταλμένα</string>
     <string name="send_failure_subject">Αποτυχία αποστολής μερικών μηνυμάτων</string>
     <string name="version">\'Εκδοση</string>
     <string name="debug_enable_debug_logging_title">Ενεργοποίηση καταγραφών αποσφαλμάτωσης</string>

@@ -78,11 +78,6 @@
     <string name="notification_bg_send_ticker">அஞ்சல் அனுப்புதல்: <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">அஞ்சல் அனுப்புதல்</string>
     <string name="notification_bg_title_separator">:</string>
-    <string name="special_mailbox_name_inbox">பெற்ற அஞ்சல்</string>
-    <string name="special_mailbox_name_outbox">அனுப்பப்படுகின்ற அஞ்சல்</string>
-    <string name="special_mailbox_name_drafts">வரைவுகள்</string>
-    <string name="special_mailbox_name_trash">குப்பை</string>
-    <string name="special_mailbox_name_sent">அனுப்பிய அஞ்சல்</string>
     <string name="send_failure_subject">அஞ்சல்கள் அனுப்புவதில் பிழை</string>
     <string name="debug_enable_debug_logging_title">பிழை பதிவு இயக்கு</string>
     <string name="debug_enable_debug_logging_summary">மேம்பட்ட பிழை பதிவு இயக்கு</string>

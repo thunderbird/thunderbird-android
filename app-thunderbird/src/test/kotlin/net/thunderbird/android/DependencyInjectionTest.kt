@@ -5,6 +5,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.work.WorkerParameters
 import app.k9mail.feature.account.server.validation.domain.ServerValidationDomainContract
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract
+import app.k9mail.legacy.ui.folder.FolderIconProvider
+import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import com.fsck.k9.account.AccountRemoverWorker
 import com.fsck.k9.job.MailSyncWorker
 import com.fsck.k9.mail.oauth.AuthStateStorage
@@ -13,8 +15,6 @@ import com.fsck.k9.ui.changelog.ChangeLogMode
 import com.fsck.k9.ui.changelog.ChangelogViewModel
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferPresenter
-import com.fsck.k9.ui.folders.FolderIconProvider
-import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.helper.SizeFormatter
 import org.junit.Test
 import org.junit.runner.RunWith

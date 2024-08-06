@@ -37,7 +37,6 @@
     <string name="notification_channel_push_description">Prikazano dok se čeka na nove poruke</string>
     <string name="notification_channel_messages_description">Obavještenja vezana za poruke</string>
     <string name="notification_channel_miscellaneous_title">Razno</string>
-    <string name="special_mailbox_name_inbox">Dolazna pošta</string>
     <string name="version">Verzija</string>
     <string name="debug_enable_debug_logging_title">Omogući dnevnik grešaka</string>
     <string name="debug_enable_debug_logging_summary">Zapisuj posebne dijagnostičke informacije</string>
@@ -168,10 +167,6 @@
     <string name="notification_channel_push_title">Sinhronizacija (Push)</string>
     <string name="notification_channel_messages_title">Poruke</string>
     <string name="notification_channel_miscellaneous_description">Raznovrsne obavijesti kao greške itd.</string>
-    <string name="special_mailbox_name_trash">Smeće</string>
-    <string name="special_mailbox_name_outbox">Odlazna pošta</string>
-    <string name="special_mailbox_name_drafts">Skice</string>
-    <string name="special_mailbox_name_sent">Poslano</string>
     <string name="send_failure_subject">Slanje nekih poruka nije uspjelo</string>
     <string name="message_compose_quote_header_separator">-------- Originalna Poruka --------</string>
     <string name="message_compose_quote_header_send_date">Poslano:</string>

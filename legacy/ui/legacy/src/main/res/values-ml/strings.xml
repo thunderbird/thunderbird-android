@@ -130,11 +130,6 @@
     <string name="notification_channel_messages_description">സന്ദേശങ്ങളുമായി ബന്ധപ്പെട്ട അറിയിപ്പുകൾ</string>
     <string name="notification_channel_miscellaneous_title">പലവക</string>
     <string name="notification_channel_miscellaneous_description">പിശകുകൾ പോലുള്ള പലവിധ അറിയിപ്പുകൾ.</string>
-    <string name="special_mailbox_name_inbox">ഇൻബോക്സ്</string>
-    <string name="special_mailbox_name_outbox">ഔട്ട്ബോക്സ്</string>
-    <string name="special_mailbox_name_drafts">ഡ്രാഫ്റ്റുകൾ</string>
-    <string name="special_mailbox_name_trash">ചവറ്റുകുട്ട</string>
-    <string name="special_mailbox_name_sent">അയച്ചവ</string>
     <string name="send_failure_subject">ചില സന്ദേശങ്ങൾ അയയ്ക്കുന്നതിൽ പരാജയപ്പെട്ടു</string>
     <string name="version">പതിപ്പ്</string>
     <string name="debug_enable_debug_logging_title">ഡീബഗ് ലോഗിംഗ് പ്രാപ്തമാക്കുക</string>

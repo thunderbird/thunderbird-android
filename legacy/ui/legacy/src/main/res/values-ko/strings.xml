@@ -123,11 +123,6 @@
     <string name="notification_channel_push_title">동기화하기 (푸시)</string>
     <string name="notification_channel_messages_title">메시지</string>
     <string name="notification_channel_miscellaneous_title">기타 설정</string>
-    <string name="special_mailbox_name_inbox">받은 편지함</string>
-    <string name="special_mailbox_name_outbox">보낸 편지함</string>
-    <string name="special_mailbox_name_drafts">임시 보관함</string>
-    <string name="special_mailbox_name_trash">휴지통</string>
-    <string name="special_mailbox_name_sent">보냄</string>
     <string name="send_failure_subject">일부 메시지를 보내는 데 실패했습니다</string>
     <string name="debug_enable_debug_logging_title">디버그 로깅 활성화</string>
     <string name="debug_enable_debug_logging_summary">추가적인 진단 정보를 기록합니다</string>

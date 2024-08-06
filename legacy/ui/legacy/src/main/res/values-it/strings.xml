@@ -140,11 +140,6 @@
     <string name="notification_channel_messages_description">Notifiche relative ai messaggi</string>
     <string name="notification_channel_miscellaneous_title">Varie</string>
     <string name="notification_channel_miscellaneous_description">Notifiche varie come errori ecc.</string>
-    <string name="special_mailbox_name_inbox">Posta in arrivo</string>
-    <string name="special_mailbox_name_outbox">Posta in uscita</string>
-    <string name="special_mailbox_name_drafts">Bozze</string>
-    <string name="special_mailbox_name_trash">Cestino</string>
-    <string name="special_mailbox_name_sent">Posta inviata</string>
     <string name="send_failure_subject">Impossibile inviare alcuni messaggi</string>
     <string name="version">Versione</string>
     <string name="debug_enable_debug_logging_title">Attiva la registrazione di debug</string>

@@ -3,6 +3,7 @@ package com.fsck.k9.mailstore
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Account.FolderMode
 import app.k9mail.legacy.di.DI
+import app.k9mail.legacy.folder.DisplayFolder
 import app.k9mail.legacy.folder.Folder
 import app.k9mail.legacy.folder.FolderType
 import app.k9mail.legacy.folder.RemoteFolder
@@ -312,11 +313,4 @@ data class RemoteFolderDetails(
     val displayClass: FolderClass,
     val notifyClass: FolderClass,
     val pushClass: FolderClass,
-)
-
-data class DisplayFolder(
-    val folder: Folder,
-    val isInTopGroup: Boolean,
-    val unreadMessageCount: Int,
-    val starredMessageCount: Int,
 )

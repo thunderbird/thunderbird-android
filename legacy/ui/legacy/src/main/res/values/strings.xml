@@ -166,11 +166,6 @@
     <string name="notification_channel_miscellaneous_title">Miscellaneous</string>
     <string name="notification_channel_miscellaneous_description">Miscellaneous notifications like errors etc.</string>
 
-    <string name="special_mailbox_name_inbox">Inbox</string>
-    <string name="special_mailbox_name_outbox">Outbox</string>
-    <string name="special_mailbox_name_drafts">Drafts</string>
-    <string name="special_mailbox_name_trash">Trash</string>
-    <string name="special_mailbox_name_sent">Sent</string>
 
     <string name="send_failure_subject">Failed to send some messages</string>
 

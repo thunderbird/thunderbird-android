@@ -100,14 +100,11 @@
     <string name="notification_channel_push_description">नए मैसेज का इंतज़ार करते टाइम दिखाया जाएगा</string>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> और <xliff:g id="account">%2$s</xliff:g> पे</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> ने लिखा:</string>
-    <string name="special_mailbox_name_sent">भेजे गए</string>
     <string name="send_failure_subject">कुछ मैसेज भेज नहीं सके</string>
-    <string name="special_mailbox_name_trash">कचरा</string>
     <string name="message_view_status_attachment_not_saved">अटैचमेंट सेव नहीं कर सके।</string>
     <string name="message_list_load_more_messages_action">और मैसेज लोड करें</string>
     <string name="notification_action_mark_all_as_read">सब पढ़ा मार्क करें</string>
     <string name="error_contact_address_not_found">इस ईमेल पते के लिए कोई कॉन्टैक्ट नहीं मिला।</string>
-    <string name="special_mailbox_name_inbox">इंबॉक्स</string>
     <string name="notification_action_spam">स्पैम</string>
     <string name="notification_action_reply">जवाब दें</string>
     <string name="message_compose_quote_header_cc">सीसी:</string>
@@ -158,8 +155,6 @@
     <string name="message_compose_quote_header_from">से:</string>
     <string name="message_to_label">को:</string>
     <string name="debug_enable_sensitive_logging_title">प्राइवेट जानकारी लॉग करें</string>
-    <string name="special_mailbox_name_outbox">आउटबॉक्स</string>
-    <string name="special_mailbox_name_drafts">ड्राफ्ट</string>
     <string name="message_compose_show_quoted_text_action">पहले लिखा मैसेज शामिल करें</string>
     <string name="notification_bg_send_title">मेल भेज रहे</string>
     <string name="message_view_bcc_label">बीसीसी:</string>

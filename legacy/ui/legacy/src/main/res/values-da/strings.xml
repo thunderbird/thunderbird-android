@@ -136,11 +136,6 @@
     <string name="notification_channel_messages_description">Påmindelser med forbindelse til beskeder</string>
     <string name="notification_channel_miscellaneous_title">Diverse</string>
     <string name="notification_channel_miscellaneous_description">Diverse påmindelser såsom fejl etc.</string>
-    <string name="special_mailbox_name_inbox">Indbakke</string>
-    <string name="special_mailbox_name_outbox">Udbakke</string>
-    <string name="special_mailbox_name_drafts">Kladder</string>
-    <string name="special_mailbox_name_trash">Papirkurv</string>
-    <string name="special_mailbox_name_sent">Sendt</string>
     <string name="send_failure_subject">Mislykkedes med at sende nogle beskeder</string>
     <string name="version">Version</string>
     <string name="debug_enable_debug_logging_title">Aktivér fejllogning</string>

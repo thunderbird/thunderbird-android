@@ -138,11 +138,6 @@
     <string name="notification_channel_messages_description">Meldingen gerelateerd aan berichten</string>
     <string name="notification_channel_miscellaneous_title">Diversen</string>
     <string name="notification_channel_miscellaneous_description">Overige meldingen, zoals fouten en dergelijke.</string>
-    <string name="special_mailbox_name_inbox">Postvak IN</string>
-    <string name="special_mailbox_name_outbox">Postvak UIT</string>
-    <string name="special_mailbox_name_drafts">Concepten</string>
-    <string name="special_mailbox_name_trash">Prullenbak</string>
-    <string name="special_mailbox_name_sent">Verzonden</string>
     <string name="send_failure_subject">Fout bij verzenden van berichten</string>
     <string name="version">Versie</string>
     <string name="debug_enable_debug_logging_title">Debuglogboek toestaan</string>

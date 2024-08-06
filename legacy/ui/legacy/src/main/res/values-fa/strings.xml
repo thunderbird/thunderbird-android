@@ -136,11 +136,6 @@
     <string name="notification_channel_messages_description">اعلان‌های مربوط به پیام‌ها</string>
     <string name="notification_channel_miscellaneous_title">متفرقه</string>
     <string name="notification_channel_miscellaneous_description">سایر اعلان‌ها مانند خطاها و غیره.</string>
-    <string name="special_mailbox_name_inbox">صندوق ورودی</string>
-    <string name="special_mailbox_name_outbox">صندوق خروجی</string>
-    <string name="special_mailbox_name_drafts">پیش‌نویس‌ها</string>
-    <string name="special_mailbox_name_trash">زباله‌دان</string>
-    <string name="special_mailbox_name_sent">ارسالی</string>
     <string name="send_failure_subject">ارسال برخی پیام‌ها ناموفق بود</string>
     <string name="version">نسخه</string>
     <string name="debug_enable_debug_logging_title">فعال‌سازی ثبت گزارش عیب‌یابی</string>

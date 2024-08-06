@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="special_mailbox_name_outbox">Odlazna pošta</string>
+    <string name="special_mailbox_name_drafts">Skice</string>
+    <string name="special_mailbox_name_sent">Poslano</string>
+    <string name="special_mailbox_name_trash">Smeće</string>
+    <string name="special_mailbox_name_inbox">Dolazna pošta</string>
+</resources>

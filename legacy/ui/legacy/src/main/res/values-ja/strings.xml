@@ -139,11 +139,6 @@
     <string name="notification_channel_messages_description">メッセージに関連した通知</string>
     <string name="notification_channel_miscellaneous_title">その他</string>
     <string name="notification_channel_miscellaneous_description">エラーなどその他さまざまな通知</string>
-    <string name="special_mailbox_name_inbox">受信トレイ</string>
-    <string name="special_mailbox_name_outbox">送信トレイ</string>
-    <string name="special_mailbox_name_drafts">下書き</string>
-    <string name="special_mailbox_name_trash">ごみ箱</string>
-    <string name="special_mailbox_name_sent">送信済みトレイ</string>
     <string name="send_failure_subject">メール送信に失敗しました</string>
     <string name="version">バージョン</string>
     <string name="debug_enable_debug_logging_title">デバッグログを有効にする</string>

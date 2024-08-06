@@ -97,6 +97,8 @@ include(
     ":legacy:storage",
     ":legacy:testing",
     ":legacy:ui:base",
+    ":legacy:ui:account",
+    ":legacy:ui:folder",
     ":legacy:ui:legacy",
 )
 

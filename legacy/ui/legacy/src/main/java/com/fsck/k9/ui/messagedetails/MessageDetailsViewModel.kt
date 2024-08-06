@@ -11,6 +11,7 @@ import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.common.mail.toEmailAddressOrNull
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.folder.Folder
+import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.helper.ClipboardManager
 import com.fsck.k9.mail.Address
@@ -20,7 +21,6 @@ import com.fsck.k9.mailstore.MessageDate
 import com.fsck.k9.mailstore.MessageRepository
 import com.fsck.k9.preferences.AccountManager
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.view.MessageCryptoDisplayStatus
 import java.text.DateFormat
 import java.util.Locale

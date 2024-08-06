@@ -113,11 +113,6 @@
     <string name="notification_channel_messages_description">Rebuzadurioù liammet da gemennadennoù</string>
     <string name="notification_channel_miscellaneous_title">Liesseurt</string>
     <string name="notification_channel_miscellaneous_description">Rebuzadurioù a-bep seurt evel fazioù hag all.</string>
-    <string name="special_mailbox_name_inbox">Boest degemer</string>
-    <string name="special_mailbox_name_outbox">Boest kas</string>
-    <string name="special_mailbox_name_drafts">Brouilhedoù</string>
-    <string name="special_mailbox_name_trash">Kest</string>
-    <string name="special_mailbox_name_sent">Kaset</string>
     <string name="send_failure_subject">C’hwitadenn en ur gas kemennadennoù ’zo</string>
     <string name="version">Handelv</string>
     <string name="debug_enable_debug_logging_title">Kerzhlevr diveugañ</string>

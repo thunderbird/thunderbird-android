@@ -136,11 +136,6 @@
     <string name="notification_channel_messages_description">Viesteihin liittyvät ilmoitukset</string>
     <string name="notification_channel_miscellaneous_title">Muut</string>
     <string name="notification_channel_miscellaneous_description">Virheet ja muut sekalaiset ilmoitukset</string>
-    <string name="special_mailbox_name_inbox">Saapuneet</string>
-    <string name="special_mailbox_name_outbox">Lähtevät</string>
-    <string name="special_mailbox_name_drafts">Luonnokset</string>
-    <string name="special_mailbox_name_trash">Roskakori</string>
-    <string name="special_mailbox_name_sent">Lähetetyt</string>
     <string name="send_failure_subject">Joidenkin viestien lähettäminen epäonnistui</string>
     <string name="version">Versio</string>
     <string name="debug_enable_debug_logging_title">Käytä virheenkorjaustietojen lokiinkirjausta</string>
