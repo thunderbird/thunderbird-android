@@ -1,4 +1,4 @@
-package com.fsck.k9.ui.base
+package app.k9mail.legacy.ui.theme
 
 import androidx.annotation.StyleRes
 

@@ -23,12 +23,12 @@ import app.k9mail.legacy.ui.folder.FolderIconProvider
 import app.k9mail.legacy.ui.folder.FolderList
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import app.k9mail.legacy.ui.folder.FoldersViewModel
+import app.k9mail.legacy.ui.theme.Theme
+import app.k9mail.legacy.ui.theme.ThemeManager
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.ui.account.AccountImageLoader
-import com.fsck.k9.ui.base.Theme
-import com.fsck.k9.ui.base.ThemeManager
 import com.fsck.k9.ui.base.livedata.observeNotNull
 import com.fsck.k9.ui.settings.SettingsActivity
 import com.mikepenz.materialdrawer.holder.BadgeStyle

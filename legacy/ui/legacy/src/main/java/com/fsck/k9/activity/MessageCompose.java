@@ -109,7 +109,7 @@ import com.fsck.k9.message.SimpleMessageFormat;
 import app.k9mail.legacy.search.LocalSearch;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.base.K9Activity;
-import com.fsck.k9.ui.base.ThemeManager;
+import app.k9mail.legacy.ui.theme.ThemeManager;
 import com.fsck.k9.ui.compose.QuotedMessageMvpView;
 import com.fsck.k9.ui.compose.QuotedMessagePresenter;
 import com.fsck.k9.ui.compose.WrapUriTextWatcher;

@@ -2,9 +2,9 @@ package com.fsck.k9.contacts
 
 import android.content.Context
 import android.view.ContextThemeWrapper
+import app.k9mail.legacy.ui.theme.ThemeManager
 import com.fsck.k9.K9
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.base.ThemeManager
 import com.fsck.k9.ui.getIntArray
 import com.fsck.k9.ui.resolveColorAttribute
 

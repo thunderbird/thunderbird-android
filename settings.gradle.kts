@@ -104,6 +104,7 @@ include(
     ":legacy:ui:account",
     ":legacy:ui:folder",
     ":legacy:ui:legacy",
+    ":legacy:ui:theme",
 )
 
 include(

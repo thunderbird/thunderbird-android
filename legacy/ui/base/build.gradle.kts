@@ -5,6 +5,8 @@ plugins {
 dependencies {
     implementation(projects.legacy.core)
 
+    api(projects.legacy.ui.theme)
+
     api(libs.androidx.appcompat)
     api(libs.androidx.activity)
     api(libs.android.material)

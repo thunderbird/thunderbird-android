@@ -1,7 +1,7 @@
 package com.fsck.k9.ui
 
 import android.content.Context
-import com.fsck.k9.ui.base.ThemeProvider
+import app.k9mail.legacy.ui.theme.ThemeProvider
 import com.fsck.k9.ui.helper.DisplayHtmlUiFactory
 import com.fsck.k9.ui.helper.HtmlSettingsProvider
 import com.fsck.k9.ui.helper.SizeFormatter

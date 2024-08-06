@@ -27,6 +27,8 @@ import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.message.controller.MessageReference
 import app.k9mail.legacy.preferences.GeneralSettingsManager
+import app.k9mail.legacy.ui.theme.Theme
+import app.k9mail.legacy.ui.theme.ThemeManager
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.activity.MessageLoaderHelper
@@ -44,8 +46,6 @@ import com.fsck.k9.mailstore.AttachmentViewInfo
 import com.fsck.k9.mailstore.LocalMessage
 import com.fsck.k9.mailstore.MessageViewInfo
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.base.Theme
-import com.fsck.k9.ui.base.ThemeManager
 import com.fsck.k9.ui.base.extensions.withArguments
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.messagedetails.MessageDetailsFragment

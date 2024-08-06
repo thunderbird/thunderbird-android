@@ -1,4 +1,4 @@
-package com.fsck.k9.ui.base
+package app.k9mail.legacy.ui.theme
 
 import android.content.Context
 import android.content.res.Configuration
@@ -31,7 +31,11 @@ class ThemeManager(
         get() = when (generalSettings.appTheme) {
             AppTheme.LIGHT -> Theme.LIGHT
             AppTheme.DARK -> Theme.DARK
-            AppTheme.FOLLOW_SYSTEM -> if (Build.VERSION.SDK_INT < 28) Theme.LIGHT else getSystemTheme()
+            AppTheme.FOLLOW_SYSTEM -> if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+                Theme.LIGHT
+            } else {
+                getSystemTheme()
+            }
         }
 
     val messageViewTheme: Theme
@@ -72,7 +76,7 @@ class ThemeManager(
             AppTheme.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
             AppTheme.DARK -> AppCompatDelegate.MODE_NIGHT_YES
             AppTheme.FOLLOW_SYSTEM -> {
-                if (Build.VERSION.SDK_INT < 28) {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
                     AppCompatDelegate.MODE_NIGHT_NO
                 } else {
                     AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
