@@ -1,5 +1,6 @@
 package com.fsck.k9.ui.account
 
+import app.k9mail.legacy.ui.account.AccountsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

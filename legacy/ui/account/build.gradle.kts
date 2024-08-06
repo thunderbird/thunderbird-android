@@ -8,4 +8,9 @@ android {
 
 dependencies {
     api(projects.legacy.account)
+
+    implementation(projects.legacy.mailstore)
+    implementation(projects.legacy.message)
+
+    implementation(libs.androidx.lifecycle.livedata.ktx)
 }
