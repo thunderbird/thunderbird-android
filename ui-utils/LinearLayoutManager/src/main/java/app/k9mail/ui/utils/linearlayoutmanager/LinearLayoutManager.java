@@ -1874,7 +1874,7 @@ public class LinearLayoutManager extends LayoutManager implements
      *                      (reverseLayout ^ stackFromEnd).
      * @param traverseChildrenInReverseOrder True if the children should be traversed in reverse
      *                                       order (stackFromEnd).
-     * @return A View that can be used an an anchor View.
+     * @return A View that can be used as an anchor View.
      */
     View findReferenceChild(RecyclerView.Recycler recycler, RecyclerView.State state,
             boolean layoutFromEnd, boolean traverseChildrenInReverseOrder) {

@@ -55,7 +55,7 @@ public class MimeUtility {
      * </p>
      * <p>
      * Note: Parsing header parameters is not a very cheap operation. Prefer using {@code MimeParameterDecoder}
-     * directly over calling this method multiple times for extracting different parameters from the the same header.
+     * directly over calling this method multiple times for extracting different parameters from the same header.
      * </p>
      *
      * @param headerBody The header body.
