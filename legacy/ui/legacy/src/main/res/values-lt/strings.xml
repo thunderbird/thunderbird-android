@@ -417,11 +417,6 @@
     <string name="account_settings_folder_push_mode_first_and_second_class">1 ir 2 klasės aplankai</string>
     <string name="account_settings_folder_push_mode_not_second_class">Visus išskyrus 2 klasės aplankus</string>
     <string name="account_settings_folder_push_mode_none">Jokie</string>
-    <string name="account_settings_folder_target_mode_label">Perkelti/kopijuoti paskirties aplankus</string>
-    <string name="account_settings_folder_target_mode_all">Visi</string>
-    <string name="account_settings_folder_target_mode_first_class">Tik 1 klasės aplankai</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">1 ir 2 klasės aplankai</string>
-    <string name="account_settings_folder_target_mode_not_second_class">Visus išskyrus 2 klasės aplankus</string>
     <string name="account_settings_sync_remote_deletetions_label">Sinchronizuoti serverio pašalinimus</string>
     <string name="account_settings_sync_remote_deletetions_summary">Pašalinti laiškus kai jie pašalinami serveryje</string>
     <string name="account_settings_openpgp_missing">Trūksta OpenPGP programos - ar ji buvo pašalinta?</string>
@@ -585,10 +580,6 @@
     <string name="integrated_inbox_detail">Visi laiškai suvestiniuose aplankuose</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Suvesti</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Visi laiškai rodomi suvestiniame gautųjų aplanke</string>
-    <string name="account_settings_searchable_label">Aplankai kuriuose ieškoti</string>
-    <string name="account_settings_searchable_all">Visi</string>
-    <string name="account_settings_searchable_displayable">Rodomas</string>
-    <string name="account_settings_searchable_none">Jokios</string>
     <string name="account_settings_no_folder_selected">Jokios</string>
     <string name="account_settings_automatic_special_folder">Automatinis (%s)</string>
     <string name="font_size_settings_title">Šrifto dydis</string>
@@ -840,7 +831,6 @@
     <string name="general_settings_title">Bendri nustatymai</string>
     <string name="dialog_openkeychain_info_title">Neįdiegta OpenPGP programa</string>
     <string name="dialog_openkeychain_info_install">Įdiegti</string>
-    <string name="encrypted_subject">Šifruotas laiškas</string>
     <string name="account_settings_crypto_encrypt_subject">Užšifruoti laiškų temas</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Gali būti nepalaikoma kai kurių gavėjų</string>
     <string name="toast_account_not_found">Vidinė klaida: Netinkama paskyra!</string>

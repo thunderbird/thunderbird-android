@@ -286,7 +286,6 @@
     <string name="messageview_preferences">Tin nhắn</string>
     <string name="background_ops_never">Không bao giờ</string>
     <string name="background_ops_always">Luôn luôn</string>
-    <string name="account_settings_searchable_none">Không thiết đặt</string>
     <string name="account_settings_no_folder_selected">Không thiết đặt</string>
     <string name="font_size_message_list_subject">Chủ đề</string>
     <string name="font_size_message_view">Tin nhắn</string>
@@ -451,7 +450,6 @@
     <string name="account_settings_message_format_text">Văn bản thuần túy (loại bỏ hình ảnh và định dạng)</string>
     <string name="account_settings_message_age_label">Đồng bộ tin nhắn từ</string>
     <string name="folder_settings_in_top_group_summary">Hiển thị gần đầu danh sách thư mục</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">Thư mục Hạng 1 và Hạng 2</string>
     <string name="account_settings_folder_push_mode_not_second_class">Tất cả ngoại trừ thư mục Hạng 2</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Chỉ mã hóa bản nháp nếu bật mã hóa</string>
     <string name="account_settings_quote_style_prefix">Tiền tố (như Gmail)</string>
@@ -468,12 +466,10 @@
     <string name="account_settings_crypto_summary_config">Đang định cấu hình…</string>
     <string name="account_settings_message_format_html">HTML (giữ hình ảnh và định dạng)</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">Tất cả các bản nháp sẽ được lưu trữ dưới dạng mã hóa</string>
-    <string name="account_settings_folder_target_mode_label">Di chuyển/sao chép thư mục đích</string>
     <string name="account_settings_message_read_receipt_summary">Luôn yêu cầu biên nhận đã đọc</string>
     <string name="account_settings_message_age_14">2 tuần qua</string>
     <string name="folder_settings_folder_push_mode_label">Lớp đẩy thư mục</string>
     <string name="account_settings_autodownload_message_size_any">mọi kích thước (không giới hạn)</string>
-    <string name="account_settings_folder_target_mode_first_class">Chỉ các thư mục Hạng 1</string>
     <string name="account_settings_folder_display_mode_not_second_class">Tất cả ngoại trừ thư mục Hạng 2</string>
     <string name="account_settings_always_show_cc_bcc_label">Luôn hiển thị Cc/Bcc</string>
     <string name="account_settings_folder_sync_mode_all">Tất cả</string>
@@ -487,7 +483,6 @@
     <string name="account_settings_openpgp_missing">Thiếu ứng dụng OpenPGP - nó đã được gỡ cài đặt chưa?</string>
     <string name="account_settings_message_age_6_months">6 tháng qua</string>
     <string name="account_settings_folder_sync_mode_first_class">Chỉ các thư mục Hạng 1</string>
-    <string name="account_settings_folder_target_mode_all">Tất cả</string>
     <string name="account_settings_autodownload_message_size_16">16 KiB</string>
     <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
     <string name="account_settings_message_format_label">Định dạng tin nhắn</string>
@@ -502,7 +497,6 @@
     <string name="account_settings_autodownload_message_size_128">128 KiB</string>
     <string name="account_settings_autodownload_message_size_4">4 KiB</string>
     <string name="account_settings_sync_remote_deletetions_summary">Loại bỏ tin nhắn khi bị xóa trên máy chủ</string>
-    <string name="account_settings_folder_target_mode_not_second_class">Tất cả ngoại trừ thư mục Hạng 2</string>
     <string name="account_settings_crypto">Mã hóa đầu cuối</string>
     <string name="account_settings_message_format_auto">Tự động</string>
     <string name="folder_settings_folder_display_mode_label">Lớp hiển thị thư mục</string>
@@ -547,7 +541,6 @@
     <string name="account_settings_crypto_encrypt_subject_subtitle">Có thể không được một số người nhận hỗ trợ</string>
     <string name="sort_subject_re_alpha">Chủ đề đảo ngược bảng chữ cái</string>
     <string name="sort_by_arrival">Đến</string>
-    <string name="encrypted_subject">Tin nhắn được mã hóa</string>
     <string name="ac_transfer_msg_subject">Tin nhắn thiết lập tự động mã hóa</string>
     <string name="font_size_message_list_sender">Người gửi</string>
     <string name="sort_by_unread">Đã đọc/chưa đọc</string>
@@ -637,8 +630,6 @@
     <string name="animations_summary">Sử dụng hiệu ứng hoa mỹ</string>
     <string name="show_unified_inbox_title">Hiển thị hộp thư đồng nhất</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Đồng nhất</string>
-    <string name="account_settings_searchable_label">Thư mục để tìm kiếm</string>
-    <string name="account_settings_searchable_all">Tất cả</string>
     <string name="font_size_settings_description">Phông chữ có thể tùy chỉnh</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Lưu hay Hủy tin nhắn này?</string>
     <string name="confirm_discard_draft_message_title">Hủy tin nhắn?</string>
@@ -819,7 +810,6 @@
     <string name="debug_preferences">Tìm lỗi</string>
     <string name="interaction_preferences">Tương tác</string>
     <string name="accountlist_preferences">Danh sách tài khoản</string>
-    <string name="account_settings_searchable_displayable">Có thể hiển thị</string>
     <string name="settings_language_label">Ngôn ngữ</string>
     <string name="preference_search_no_results">Không tìm thấy cài đặt</string>
     <string name="account_settings_automatic_special_folder">Tự động (%s)</string>

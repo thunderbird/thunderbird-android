@@ -272,7 +272,6 @@
     <string name="folder_settings_in_top_group_summary">Show near the top of the folder list</string>
     <string name="sort_by_flag">Star</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> wrote:</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">1st and 2nd Class folders</string>
     <string name="global_settings_privacy_hide_timezone">Hide timezone</string>
     <string name="dialog_confirm_delete_cancel_button">No</string>
     <string name="settings_message_theme_selection_label">Fixed message theme</string>
@@ -387,7 +386,6 @@
     <string name="setting_theme_dark">Dark</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">All drafts will be stored encrypted</string>
     <string name="integrated_inbox_detail">All messages in unified folders</string>
-    <string name="account_settings_folder_target_mode_label">Move/copy destination folders</string>
     <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>
     <string name="account_settings_default_quoted_text_shown_label">Quote message when replying</string>
     <string name="account_settings_message_age_14">the last 2 weeks</string>
@@ -398,7 +396,6 @@
     <string name="account_setup_options_mail_check_frequency_15min">Every 15 minutes</string>
     <string name="notification_channel_miscellaneous_description">Miscellaneous notifications like errors etc.</string>
     <string name="version">Version</string>
-    <string name="account_settings_searchable_label">Folders to search</string>
     <string name="global_settings_notification_quick_delete_never">Never</string>
     <string name="status_invalid_id_error">Message not found</string>
     <string name="message_compose_signature_hint">Signature</string>
@@ -418,7 +415,6 @@
     <string name="sort_by">Sort by…</string>
     <string name="message_view_download_remainder">Download complete message</string>
     <string name="account_settings_open_notification_settings_messages_summary">Configure notifications for new messages</string>
-    <string name="account_settings_folder_target_mode_first_class">Only 1st Class folders</string>
     <string name="account_settings_notification_light_green">Green</string>
     <string name="spam_folder_label">Spam folder</string>
     <string name="general_settings_ui_density_default">Default</string>
@@ -482,7 +478,6 @@
     <string name="notification_channel_messages_description">Notifications related to messages</string>
     <string name="account_settings_composition">Sending mail</string>
     <string name="account_settings_folder_sync_mode_first_class">Only 1st Class folders</string>
-    <string name="account_settings_searchable_none">None</string>
     <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>
     <string name="account_settings_composition_title">Message composition options</string>
     <string name="account_settings_notify_self_label">Include outgoing mail</string>
@@ -498,12 +493,10 @@
     <string name="general_settings_swipe_action_toggle_selection">Toggle selection</string>
     <string name="status_loading_error">Message loading error</string>
     <string name="debug_enable_sensitive_logging_summary">May show passwords in logs.</string>
-    <string name="account_settings_folder_target_mode_all">All</string>
     <string name="account_setup_options_mail_display_count_500">500 messages</string>
     <string name="account_setup_push_limit_50">50 folders</string>
     <string name="account_settings_autodownload_message_size_16">16 KiB</string>
     <string name="global_settings_lock_screen_notification_visibility_everything">Same as when screen unlocked</string>
-    <string name="account_settings_searchable_all">All</string>
     <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Mark as read when deleted</string>
     <string name="global_settings_confirm_actions_title">Confirm actions</string>
@@ -589,7 +582,6 @@
     <string name="account_setup_incoming_subscribed_folders_only_label">Show only subscribed folders</string>
     <string name="account_setup_options_mail_check_frequency_6hour">Every 6 hours</string>
     <string name="message_compose_quote_header_from">From:</string>
-    <string name="account_settings_folder_target_mode_not_second_class">All except 2nd Class folders</string>
     <string name="account_settings_notification_light_cyan">Cyan</string>
     <string name="account_setup_expunge_policy_on_poll">When polling</string>
     <string name="font_size_message_view_account">Account name</string>
@@ -697,7 +689,6 @@
     <string name="folder_settings_folder_sync_mode_inherited">Same as display class</string>
     <string name="debug_export_logs_failure">Export failed.</string>
     <string name="notification_action_delete_all">Delete All</string>
-    <string name="account_settings_searchable_displayable">Displayable</string>
     <string name="message_view_show_remote_images_action">Show remote images</string>
     <string name="privacy_preferences">Privacy</string>
     <string name="account_settings_autodownload_message_size_256">256 KiB</string>
@@ -823,7 +814,6 @@
     <string name="crypto_msg_unsupported_signed">contains unsupported end-to-end signature</string>
     <string name="openpgp_sign_only_disable">Disable</string>
     <string name="swipe_action_archive">Archive</string>
-    <string name="encrypted_subject">Encrypted Message</string>
     <string name="openpgp_dialog_sign_only_text">In this mode, your PGP key will be used to create a cryptographic signature of an unencrypted email.</string>
     <string name="crypto_msg_title_encrypted_unsigned">Encrypted</string>
     <string name="crypto_msg_title_encrypted_unknown">Encrypted</string>

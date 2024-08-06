@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="account_oauth_sign_in_with_google_button">Fazer login com Google</string>
-    <string name="account_oauth_loading_error">Login com OAuth falhou</string>
-    <string name="account_oauth_error_failed">Autorização falhou com o seguinte erro:<xliff:g id="error">%s</xliff:g></string>
-    <string name="account_oauth_error_browser_not_available">A aplicação não encontrou um browser que possa utilizar para permitir acesso à sua conta.</string>
-    <string name="account_oauth_error_not_supported">OAuth 2.0 não é atualmente suportado com este fornecedor.</string>
+    <string name="account_oauth_sign_in_with_google_button">Iniciar sessão com Google</string>
+    <string name="account_oauth_loading_error">Falha ao iniciar sessão via OAuth</string>
+    <string name="account_oauth_error_failed">A autorização falhou com o erro:<xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_error_browser_not_available">A aplicação não encontrou um navegador que possa utilizar para permitir o acesso à conta.</string>
+    <string name="account_oauth_error_not_supported">OAuth 2.0 não é, atualmente, suportado por este serviço.</string>
     <string name="account_oauth_error_canceled">Autorização cancelada</string>
-    <string name="account_oauth_loading_message">Fazer login utilizando OAuth</string>
-    <string name="account_oauth_sign_in_description">Iremos redireccioná-lo para o seu fornecedor de correio eletrónico para iniciar sessão. Tem de permitir à aplicação acesso à sua conta de correio eletrónico.</string>
-    <string name="account_oauth_sign_in_button">Fazer login</string>
+    <string name="account_oauth_loading_message">Iniciar sessão via OAuth</string>
+    <string name="account_oauth_sign_in_description">Iremos encaminhar para o seu fornecedor de e-mail para iniciar sessão. Tem de permitir à aplicação o acesso à sua conta.</string>
+    <string name="account_oauth_sign_in_button">Iniciar sessão</string>
 </resources>

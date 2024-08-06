@@ -376,11 +376,6 @@
     <string name="account_settings_folder_push_mode_first_and_second_class">Mape 1. i 2. Razreda</string>
     <string name="account_settings_folder_push_mode_not_second_class">Sve osim mapa 2. Razreda</string>
     <string name="account_settings_folder_push_mode_none">Nijedna</string>
-    <string name="account_settings_folder_target_mode_label">Mape destinacije Premještanja/kopiranja</string>
-    <string name="account_settings_folder_target_mode_all">Sve</string>
-    <string name="account_settings_folder_target_mode_first_class">Samo mape 1. Razreda</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">Mape 1. i 2. Razreda</string>
-    <string name="account_settings_folder_target_mode_not_second_class">Sve osim mapa 2. Razreda</string>
     <string name="account_settings_sync_remote_deletetions_label">Sinhronizacija brisanja poslužitelja</string>
     <string name="account_settings_sync_remote_deletetions_summary">Makni poruke prilikom brisanja sa poslužitelja</string>
     <string name="account_settings_openpgp_missing">OpenPGP aplikacija nedostaje - da li je deinstalirana?</string>
@@ -523,10 +518,6 @@
     <string name="integrated_inbox_detail">Sve poruke u objedinjenim mapama</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Objedini</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Sve poruke su prikazane u Objedinjenoj Dolaznoj Pošti</string>
-    <string name="account_settings_searchable_label">Mape za pretragu</string>
-    <string name="account_settings_searchable_all">Sve</string>
-    <string name="account_settings_searchable_displayable">Prikazane</string>
-    <string name="account_settings_searchable_none">Nijedna</string>
     <string name="account_settings_no_folder_selected">Nijedna</string>
     <string name="account_settings_automatic_special_folder">Automatski (%s)</string>
     <string name="font_size_settings_title">Veličina fonta</string>
@@ -752,7 +743,6 @@
     <string name="general_settings_title">Opća podešavanja</string>
     <string name="dialog_openkeychain_info_title">Nema intalirane OpenPGP aplikacije</string>
     <string name="dialog_openkeychain_info_install">Instaliraj</string>
-    <string name="encrypted_subject">Šifrirana poruka</string>
     <string name="account_settings_crypto_encrypt_subject">Šifriraj subjekte poruke</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Možda nije podržano od strane nekih primaoca</string>
     <string name="toast_account_not_found">Interna greška: Nevažeći račun!</string>

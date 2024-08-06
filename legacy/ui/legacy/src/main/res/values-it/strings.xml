@@ -425,11 +425,6 @@
     <string name="account_settings_folder_push_mode_first_and_second_class">Cartelle di 1a e 2a classe</string>
     <string name="account_settings_folder_push_mode_not_second_class">Tutte tranne cartelle di 2a classe</string>
     <string name="account_settings_folder_push_mode_none">Nessuna</string>
-    <string name="account_settings_folder_target_mode_label">Cartelle di destinazione per sposta/copia</string>
-    <string name="account_settings_folder_target_mode_all">Tutte</string>
-    <string name="account_settings_folder_target_mode_first_class">Solo cartelle di 1a classe</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">Cartelle di 1a e 2a classe</string>
-    <string name="account_settings_folder_target_mode_not_second_class">Tutte tranne cartelle di 2a classe</string>
     <string name="account_settings_sync_remote_deletetions_label">Sincronizza eliminazioni del server</string>
     <string name="account_settings_sync_remote_deletetions_summary">Rimuovi i messaggi eliminati dal server</string>
     <string name="account_settings_openpgp_missing">Applicazione OpenPGP non trovata, è stata disinstallata\?</string>
@@ -594,10 +589,6 @@
     <string name="integrated_inbox_detail">Tutti i messaggi in Posta combinata</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Combina</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Tutti i messaggi sono visualizzati in Posta combinata</string>
-    <string name="account_settings_searchable_label">Cartelle da analizzare</string>
-    <string name="account_settings_searchable_all">Tutte</string>
-    <string name="account_settings_searchable_displayable">Visibili</string>
-    <string name="account_settings_searchable_none">Nessuna</string>
     <string name="account_settings_no_folder_selected">Nessuna</string>
     <string name="account_settings_automatic_special_folder">Automatica (%s)</string>
     <string name="font_size_settings_title">Dimensione carattere</string>
@@ -847,7 +838,6 @@
     <string name="general_settings_title">Impostazioni generali</string>
     <string name="dialog_openkeychain_info_title">Nessuna applicazione OpenPGP installata</string>
     <string name="dialog_openkeychain_info_install">Installa</string>
-    <string name="encrypted_subject">Messaggio criptato</string>
     <string name="account_settings_crypto_encrypt_subject">Cripta l\'oggetto dei messaggi</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Potrebbe non essere supportato da alcuni destinatari</string>
     <string name="toast_account_not_found">Errore interno: account non valido!</string>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="unread_widget_select_account">Προβολή πλήθους μη αναγνωσμένων για…</string>
     <string name="unread_widget_account_title">Λογαριασμός</string>
@@ -13,4 +13,5 @@
     <string name="unread_widget_account_not_selected">Δεν έχει επιλεγεί λογαριασμός</string>
     <string name="unread_widget_folder_not_selected">Δεν έχει επιλεγεί φάκελος</string>
     <string name="unread_widget_choose_account_title">Επιλογή Λογαριασμού</string>
+    <string name="unread_widget_label">Πλήθος μη αναγνωσμένων</string>
 </resources>

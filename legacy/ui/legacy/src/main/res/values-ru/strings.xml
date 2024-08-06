@@ -427,11 +427,6 @@
     <string name="account_settings_folder_push_mode_first_and_second_class">Папки 1-го и 2-го классов</string>
     <string name="account_settings_folder_push_mode_not_second_class">Все, кроме папок 2-го класса</string>
     <string name="account_settings_folder_push_mode_none">Нет</string>
-    <string name="account_settings_folder_target_mode_label">Приёмник копирования</string>
-    <string name="account_settings_folder_target_mode_all">Все</string>
-    <string name="account_settings_folder_target_mode_first_class">Папки только 1-го класса</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">Папки 1-го и 2-го классов</string>
-    <string name="account_settings_folder_target_mode_not_second_class">Все, кроме папок 2-го класса</string>
     <string name="account_settings_sync_remote_deletetions_label">Синхронное удаление</string>
     <string name="account_settings_sync_remote_deletetions_summary">Удалять сообщения при удалении на сервере</string>
     <string name="account_settings_openpgp_missing">Отсутствует OpenPGP-приложение – было удалено?</string>
@@ -596,10 +591,6 @@
     <string name="integrated_inbox_detail">из всех ящиков</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Общие \"Входящие\"</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Показать почту в общих \"Входящих\"</string>
-    <string name="account_settings_searchable_label">Папки для поиска</string>
-    <string name="account_settings_searchable_all">Все</string>
-    <string name="account_settings_searchable_displayable">Видимые</string>
-    <string name="account_settings_searchable_none">Нет</string>
     <string name="account_settings_no_folder_selected">Нет</string>
     <string name="account_settings_automatic_special_folder">Автоматически (%s)</string>
     <string name="font_size_settings_title">Шрифт</string>
@@ -851,7 +842,6 @@
     <string name="general_settings_title">Основные</string>
     <string name="dialog_openkeychain_info_title">OpenPGP не установлен</string>
     <string name="dialog_openkeychain_info_install">Установить</string>
-    <string name="encrypted_subject">Зашифрованное сообщение</string>
     <string name="account_settings_crypto_encrypt_subject">Шифровать темы сообщений</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Может поддерживаться не всеми адресатами</string>
     <string name="toast_account_not_found">Внутренний сбой: неверная учётная запись!</string>

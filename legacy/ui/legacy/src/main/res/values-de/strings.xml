@@ -228,7 +228,7 @@
     <!--Name of the swipe action to mark as message as read/unread-->
     <string name="general_settings_swipe_action_toggle_read">Als gelesen/ungelesen markieren</string>
     <!--Name of the swipe action to add/remove a star-->
-    <string name="general_settings_swipe_action_toggle_star">Wichtig/unwichtig markieren</string>
+    <string name="general_settings_swipe_action_toggle_star">Als wichtig/unwichtig markieren</string>
     <!--Name of the swipe action to archive a message-->
     <string name="general_settings_swipe_action_archive">Archiv</string>
     <!--Name of the swipe action to delete a message-->
@@ -362,7 +362,7 @@
     <string name="account_settings_sync">E-Mails abrufen</string>
     <string name="account_settings_folders">Ordner</string>
     <string name="account_settings_quote_prefix_label">Zitat-Präfix</string>
-    <string name="account_settings_crypto">Ende-zu-Ende Verschlüsselung</string>
+    <string name="account_settings_crypto">Ende-zu-Ende-Verschlüsselung</string>
     <string name="account_settings_crypto_app">OpenPGP-Unterstützung aktivieren</string>
     <string name="account_settings_crypto_app_select_title">OpenPGP-App auswählen</string>
     <string name="account_settings_crypto_key">Ende-zu-Ende-Schlüssel konfigurieren</string>
@@ -422,14 +422,9 @@
     <string name="account_settings_folder_push_mode_first_and_second_class">Haupt- und Nebenordner</string>
     <string name="account_settings_folder_push_mode_not_second_class">Alle außer Nebenordner</string>
     <string name="account_settings_folder_push_mode_none">Keine Ordner</string>
-    <string name="account_settings_folder_target_mode_label">Zielordner für Kopieren/Verschieben</string>
-    <string name="account_settings_folder_target_mode_all">Alle</string>
-    <string name="account_settings_folder_target_mode_first_class">Nur Hauptordner</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">Haupt- und Nebenordner</string>
-    <string name="account_settings_folder_target_mode_not_second_class">Alle außer Nebenordner</string>
     <string name="account_settings_sync_remote_deletetions_label">Löschungen vom Server übernehmen</string>
     <string name="account_settings_sync_remote_deletetions_summary">Nachrichten löschen, wenn sie vom Server gelöscht wurden</string>
-    <string name="account_settings_openpgp_missing">Fehlende OpenPGP-App - wurde sie deinstalliert?</string>
+    <string name="account_settings_openpgp_missing">Fehlende OpenPGP-App – wurde sie deinstalliert?</string>
     <string name="folder_settings_title">Ordnereinstellungen</string>
     <string name="folder_settings_in_top_group_label">Oben anzeigen</string>
     <string name="folder_settings_in_top_group_summary">Ordner am Anfang der Ordnerliste anzeigen</string>
@@ -534,7 +529,7 @@
     <string name="sort_by_subject">Betreff</string>
     <string name="sort_by_sender">Absender</string>
     <string name="sort_by_flag">Wichtigkeit</string>
-    <string name="sort_by_unread">Gelesen/Ungelesen</string>
+    <string name="sort_by_unread">Gelesen/ungelesen</string>
     <string name="sort_by_attach">Anhang</string>
     <string name="account_delete_dlg_title">Konto entfernen</string>
     <string name="folder_list_filter_hint">Ordnername enthält</string>
@@ -571,7 +566,7 @@
     <string name="background_ops_label">Hintergrundsynchronisation</string>
     <string name="background_ops_never">Nie</string>
     <string name="background_ops_always">Immer</string>
-    <string name="background_ops_auto_sync_only">Wenn \'Automatische Synchronisation\' aktiviert ist</string>
+    <string name="background_ops_auto_sync_only">Wenn „automatische Synchronisation“ aktiviert ist</string>
     <string name="batch_select_all">Alle auswählen</string>
     <string name="account_setup_push_limit_label">Maximale Push-Ordneranzahl</string>
     <string name="account_setup_push_limit_5">5 Ordner</string>
@@ -591,10 +586,6 @@
     <string name="integrated_inbox_detail">Alle Nachrichten aus integrierten Ordnern</string>
     <string name="folder_settings_include_in_integrated_inbox_label">In gem. Posteingang integrieren</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Nachrichten im gemeinsamen Posteingang anzeigen</string>
-    <string name="account_settings_searchable_label">Durchsuchbare Ordner</string>
-    <string name="account_settings_searchable_all">Alle</string>
-    <string name="account_settings_searchable_displayable">Angezeigte</string>
-    <string name="account_settings_searchable_none">Keine</string>
     <string name="account_settings_no_folder_selected">Keine</string>
     <string name="account_settings_automatic_special_folder">Automatisch (%s)</string>
     <string name="font_size_settings_title">Schriftgröße</string>
@@ -704,7 +695,7 @@
     <string name="remote_search_error">Suche fehlgeschlagen</string>
     <string name="account_settings_search">Suche</string>
     <string name="action_remote_search">Nachrichten auf Server suchen</string>
-    <string name="remote_search_unavailable_no_network">Für die Suche auf dem Server ist eine Netzverbindung nötig.</string>
+    <string name="remote_search_unavailable_no_network">Für die Suche auf dem Server ist eine Netzwerkverbindung nötig.</string>
     <string name="global_settings_background_as_unread_indicator_label">Farbe ändern, wenn gelesen</string>
     <string name="global_settings_background_as_unread_indicator_summary">Ein anderer Hintergrund zeigt, dass die Nachricht gelesen wurde</string>
     <string name="global_settings_threaded_view_label">Nachrichten gruppieren</string>
@@ -750,8 +741,8 @@
     <string name="error_crypto_inline_attach">PGP/INLINE-Modus unterstützt keine Anhänge!</string>
     <string name="enable_inline_pgp">PGP/INLINE aktivieren</string>
     <string name="disable_inline_pgp">PGP/INLINE deaktivieren</string>
-    <string name="enable_sign_only">PGP Nur-Signieren aktivieren</string>
-    <string name="disable_sign_only">PGP Nur-Signieren deaktivieren</string>
+    <string name="enable_sign_only">PGP-nur-Signieren aktivieren</string>
+    <string name="disable_sign_only">PGP-nur-Signieren deaktivieren</string>
     <string name="openpgp_inline_title">PGP/INLINE-Modus</string>
     <string name="openpgp_inline_text">Die E-Mail wurde im PGP/INLINE-Format gesendet.\nDies sollte nur für die Kompatibilität verwendet werden:</string>
     <string name="openpgp_inline_plus_compat">Manche Clients unterstützen nur dieses Format</string>
@@ -767,7 +758,7 @@
     <string name="openpgp_dialog_sign_only_text">In diesem Modus wird dein PGP-Schlüssel verwendet, um eine kryptografische Signatur einer unverschlüsselten E-Mail zu erstellen.</string>
     <string name="openpgp_dialog_sign_only_plus_verified">Dadurch wird die E-Mail nicht verschlüsselt, sondern es wird überprüft, ob sie von deinem Schlüssel gesendet wurde.</string>
     <string name="openpgp_dialog_sign_only_minus_break">Signaturen können kaputtgehen, wenn sie an Mailinglisten gesendet werden.</string>
-    <string name="openpgp_dialog_sign_only_minus_attach">Signaturen können als \'signature.asc\'-Anhänge in einigen Clients angezeigt werden.</string>
+    <string name="openpgp_dialog_sign_only_minus_attach">Signaturen können als „signature.asc“-Anhänge in einigen Clients angezeigt werden.</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">Verschlüsselte Nachrichten enthalten immer eine Signatur.</string>
     <string name="crypto_msg_title_plaintext">Klartext</string>
     <string name="crypto_msg_unencrypted_sign_error">Ende-zu-Ende-Signatur enthielt einen Fehler</string>
@@ -775,7 +766,7 @@
     <string name="crypto_msg_unsupported_signed">enthält eine nicht unterstützte Ende-zu-Ende-Signatur</string>
     <string name="crypto_msg_unsupported_encrypted">Nachricht ist verschlüsselt, aber in einem nicht unterstützten Format.</string>
     <string name="crypto_msg_cancelled">Nachricht ist verschlüsselt, aber Entschlüsselung wurde abgebrochen.</string>
-    <string name="crypto_msg_title_unencrypted_signed_e2e">Ende-zu-Ende signierter Klartext</string>
+    <string name="crypto_msg_title_unencrypted_signed_e2e">Ende-zu-Ende-signierter Klartext</string>
     <string name="crypto_msg_unencrypted_sign_verified">von verifiziertem Signierer</string>
     <string name="crypto_msg_title_unencrypted_signed">Signierter Klartext</string>
     <string name="crypto_msg_unencrypted_sign_mismatch">aber der Ende-zu-Ende-Schlüssel stimmte nicht mit dem Absender überein</string>
@@ -789,7 +780,7 @@
     <string name="crypto_msg_encrypted_no_provider">aber keine Verschlüsselungs-App eingerichtet</string>
     <string name="crypto_msg_title_encrypted_unsigned">Verschlüsselt</string>
     <string name="crypto_msg_encrypted_unsigned">aber nicht Ende-zu-Ende</string>
-    <string name="crypto_msg_title_encrypted_signed_e2e">Ende-zu-Ende verschlüsselt</string>
+    <string name="crypto_msg_title_encrypted_signed_e2e">Ende-zu-Ende-verschlüsselt</string>
     <string name="crypto_msg_encrypted_sign_verified">von verifiziertem Absender</string>
     <string name="crypto_msg_title_encrypted_signed">Verschlüsselt</string>
     <string name="crypto_msg_encrypted_sign_unknown">von unbekanntem Ende-zu-Ende-Schlüssel</string>
@@ -797,7 +788,7 @@
     <string name="crypto_msg_encrypted_sign_expired">aber der Ende-zu-Ende-Schlüssel ist abgelaufen</string>
     <string name="crypto_msg_encrypted_sign_revoked">aber der Ende-zu-Ende-Schlüssel wurde widerrufen</string>
     <string name="crypto_msg_encrypted_sign_insecure">aber der Ende-zu-Ende-Schlüssel wird nicht als sicher angesehen</string>
-    <string name="crypto_msg_encrypted_sign_error">aber die Ende-zu-Ende Daten sind fehlerhaft</string>
+    <string name="crypto_msg_encrypted_sign_error">aber die Ende-zu-Ende-Daten sind fehlerhaft</string>
     <string name="crypto_msg_encrypted_insecure">aber die Verschlüsselung wird nicht als sicher angesehen</string>
     <string name="locked_attach_unlock">Entsperren</string>
     <string name="locked_attach_unencrypted">Dieser Teil wurde nicht verschlüsselt und könnte unsicher sein.</string>
@@ -812,7 +803,7 @@
     <string name="account_settings_crypto_hide_sign_only">Unverschlüsselte Signaturen ausblenden</string>
     <string name="account_settings_crypto_hide_sign_only_on">Nur verschlüsselte Signaturen werden angezeigt</string>
     <string name="account_settings_crypto_hide_sign_only_off">Alle Signaturen werden angezeigt</string>
-    <string name="error_sign_only_no_encryption">Verschlüsselung ist im Nur-Signieren-Modus nicht verfügbar!</string>
+    <string name="error_sign_only_no_encryption">Verschlüsselung ist im Nur-signieren-Modus nicht verfügbar!</string>
     <string name="unsigned_text_divider_label">Unsignierter Text</string>
     <string name="crypto_no_provider_title">Diese E-Mail ist verschlüsselt</string>
     <string name="crypto_no_provider_message">Diese E-Mail ist mit OpenPGP verschlüsselt.\nUm sie zu lesen, muss eine kompatible OpenPGP-App installiert und konfiguriert werden.</string>
@@ -830,15 +821,14 @@
     <string name="openpgp_enabled_error_back">Zurück</string>
     <string name="openpgp_enabled_error_disable">Verschlüsselung deaktivieren</string>
     <string name="openpgp_encryption">OpenPGP-Verschlüsselung</string>
-    <string name="account_settings_crypto_prefer_encrypt">Autocrypt wechselseitiger Modus</string>
-    <string name="dialog_autocrypt_mutual_title">Autocrypt wechselseitiger Modus</string>
+    <string name="account_settings_crypto_prefer_encrypt">Wechselseitiger Autocrypt-Modus</string>
+    <string name="dialog_autocrypt_mutual_title">Wechselseitiger Autocrypt-Modus</string>
     <string name="dialog_autocrypt_mutual_description_1">Nachrichten werden normalerweise auf Wunsch oder beim Antworten auf eine verschlüsselte Nachricht verschlüsselt.</string>
     <string name="dialog_autocrypt_mutual_description_2">Wenn sowohl Sender als auch Empfänger den wechselseitigen Modus aktiviert haben, wird die Verschlüsselung automatisch aktiviert.</string>
     <string name="dialog_autocrypt_mutual_learn_more">Du kannst <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">hier klicken</a>, um mehr zu erfahren.</string>
     <string name="general_settings_title">Allgemeine Einstellungen</string>
     <string name="dialog_openkeychain_info_title">Keine OpenPGP-App installiert</string>
     <string name="dialog_openkeychain_info_install">Installieren</string>
-    <string name="encrypted_subject">Verschlüsselte Nachricht</string>
     <string name="account_settings_crypto_encrypt_subject">Betreff der Nachricht verschlüsseln</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Möglicherweise nicht von allen Empfängern unterstützt</string>
     <string name="toast_account_not_found">Interner Fehler: Ungültiges Konto!</string>
@@ -904,7 +894,7 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
     <string name="message_details_toolbar_title">Nachrichtendetails</string>
     <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
-    <string name="message_details_missing_date">Kopfzeile enthält keinen \'Date\'-Eintrag</string>
+    <string name="message_details_missing_date">Kopfzeile enthält keinen „Date“-Eintrag</string>
     <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
     <string name="message_details_from_section_title">Von</string>
     <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->

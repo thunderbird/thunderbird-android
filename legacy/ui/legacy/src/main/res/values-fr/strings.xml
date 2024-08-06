@@ -424,11 +424,6 @@
     <string name="account_settings_folder_push_mode_first_and_second_class">Dossiers de 1re et 2e classes</string>
     <string name="account_settings_folder_push_mode_not_second_class">Tous sauf les dossiers de 2e classe</string>
     <string name="account_settings_folder_push_mode_none">Aucun</string>
-    <string name="account_settings_folder_target_mode_label">Dossiers de destination déplacer/copier</string>
-    <string name="account_settings_folder_target_mode_all">Tous</string>
-    <string name="account_settings_folder_target_mode_first_class">Seulement les dossiers de 1e classe</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">Les dossiers de 1e et 2e classes</string>
-    <string name="account_settings_folder_target_mode_not_second_class">Tous sauf les dossiers de 2e classe</string>
     <string name="account_settings_sync_remote_deletetions_label">Synchroniser les suppressions sur le serveur</string>
     <string name="account_settings_sync_remote_deletetions_summary">Supprimer les courriels quand ils sont supprimés sur le serveur</string>
     <string name="account_settings_openpgp_missing">L’appli OpenPGP est absente — A-t-elle été installée ?</string>
@@ -593,10 +588,6 @@
     <string name="integrated_inbox_detail">Tous les courriels dans les dossiers unifiés</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Unifier</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Tous les courriels sont affichés dans la boîte de réception unifiée</string>
-    <string name="account_settings_searchable_label">Dossiers dans lesquels chercher</string>
-    <string name="account_settings_searchable_all">Tous</string>
-    <string name="account_settings_searchable_displayable">Affichables</string>
-    <string name="account_settings_searchable_none">Aucun</string>
     <string name="account_settings_no_folder_selected">Aucun</string>
     <string name="account_settings_automatic_special_folder">Automatique (%s)</string>
     <string name="font_size_settings_title">Taille des polices</string>
@@ -844,7 +835,6 @@
     <string name="general_settings_title">Paramètres généraux</string>
     <string name="dialog_openkeychain_info_title">Aucune appli OpenPGP n’est installée</string>
     <string name="dialog_openkeychain_info_install">Installer</string>
-    <string name="encrypted_subject">Courriel chiffré</string>
     <string name="account_settings_crypto_encrypt_subject">Chiffrer l’objet des courriels</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Pourrait ne pas être pris en charge par certains destinataires</string>
     <string name="toast_account_not_found">Erreur interne : le compte est invalide !</string>

@@ -137,7 +137,7 @@
     <string name="notification_channel_messages_title">Correos</string>
     <string name="notification_channel_messages_description">Notificaciones relacionadas con los correos</string>
     <string name="notification_channel_miscellaneous_title">Varios</string>
-    <string name="notification_channel_miscellaneous_description">Otras notificaciones, como errores y otros mensajes</string>
+    <string name="notification_channel_miscellaneous_description">Notificaciones varias, como errores, etc.</string>
     <string name="special_mailbox_name_inbox">Bandeja de entrada</string>
     <string name="special_mailbox_name_outbox">Bandeja de salida</string>
     <string name="special_mailbox_name_drafts">Borradores</string>
@@ -148,7 +148,7 @@
     <string name="debug_enable_debug_logging_title">Habilitar registro de depuración</string>
     <string name="debug_enable_debug_logging_summary">Registrar el estado del programa con información adicional para diagnosticar posibles problemas</string>
     <string name="debug_enable_sensitive_logging_title">Incluir información sensible</string>
-    <string name="debug_enable_sensitive_logging_summary">Incluir información privada (como contraseñas) en texto plano en el registro de depuración</string>
+    <string name="debug_enable_sensitive_logging_summary">Las contraseñas pueden ser visibles en los registros.</string>
     <string name="debug_export_logs_title">Exportar registros de depuración</string>
     <string name="debug_export_logs_success">Se han exportado correctamente. Ten en cuenta que los registros pueden contener datos privados; así que ten cuidado y asegúrate de que te fias de las personas a las que se los mandas.</string>
     <string name="debug_export_logs_failure">No se han podido exportar los registros.</string>
@@ -166,7 +166,7 @@
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> escribió:</string>
     <string name="message_compose_reply_header_fmt_with_date">El <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> escribió:</string>
     <string name="message_compose_error_no_recipients">El mensaje necesita algún destinatario.</string>
-    <string name="compose_error_incomplete_recipient">El campo de destinatario está incompleto.</string>
+    <string name="compose_error_incomplete_recipient">¡El campo de destinatario está incompleto!</string>
     <string name="error_contact_address_not_found">No se encontró la dirección de correo electrónico de este contacto.</string>
     <string name="message_compose_attachments_skipped_toast">Algunos adjuntos no pueden reenviarse porque no se han descargado.</string>
     <string name="message_compose_attachments_forward_toast">El mensaje no puede ser reenviado porque algunos adjuntos no se han descargado.</string>
@@ -423,11 +423,6 @@
     <string name="account_settings_folder_push_mode_first_and_second_class">1ª y 2ª clase</string>
     <string name="account_settings_folder_push_mode_not_second_class">Todas excepto las de 2ª clase</string>
     <string name="account_settings_folder_push_mode_none">Ninguna</string>
-    <string name="account_settings_folder_target_mode_label">Mover/copiar carpetas destino</string>
-    <string name="account_settings_folder_target_mode_all">Todas</string>
-    <string name="account_settings_folder_target_mode_first_class">Sólo 1ª clase</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">1ª y 2ª clase</string>
-    <string name="account_settings_folder_target_mode_not_second_class">Todas excepto las de 2ª clase</string>
     <string name="account_settings_sync_remote_deletetions_label">Sincronizar con el borrado remoto</string>
     <string name="account_settings_sync_remote_deletetions_summary">Eliminar los correos cuando se borren del servidor</string>
     <string name="account_settings_openpgp_missing">Falta la aplicación OpenPGP, ¿se ha desinstalado?</string>
@@ -592,10 +587,6 @@
     <string name="integrated_inbox_detail">Todos los mensajes en la Entrada unificada</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Unificar</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Todos los mensajes se mostrarán en una bandeja unificada</string>
-    <string name="account_settings_searchable_label">Carpetas para buscar</string>
-    <string name="account_settings_searchable_all">Todas</string>
-    <string name="account_settings_searchable_displayable">Mostradas</string>
-    <string name="account_settings_searchable_none">Ninguna</string>
     <string name="account_settings_no_folder_selected">Ninguna</string>
     <string name="account_settings_automatic_special_folder">Automático (%s)</string>
     <string name="font_size_settings_title">Tamaño de letra</string>
@@ -747,12 +738,12 @@
     <string name="address_type_work">Trabajo</string>
     <string name="address_type_other">Otro</string>
     <string name="address_type_mobile">Móvil</string>
-    <string name="compose_error_no_draft_folder">Parece que no se ha configurado una carpeta de borradores para esta cuenta.</string>
+    <string name="compose_error_no_draft_folder">¡No se ha configurado ninguna carpeta de borradores para esta cuenta!</string>
     <string name="compose_error_no_key_configured">Parece que no hay ninguna clave configurada para esta cuenta, revisa los ajustes.</string>
-    <string name="error_crypto_provider_incompatible">Parece que el proveedor de cifrado utiliza una versión incompatible, revisa los ajustes.</string>
-    <string name="error_crypto_provider_connect">No se ha podido conectar con el proveedor de cifrado, revisa los ajustes o haz clic en el icono de cifrado para probar otra vez.</string>
-    <string name="error_crypto_provider_ui_required">No se ha podido establecer el cifrado de extremo a extremo, revisa los ajustes.</string>
-    <string name="error_crypto_inline_attach">El modo PGP/INLINE no soporta adjuntos.</string>
+    <string name="error_crypto_provider_incompatible">Parece que el proveedor de cifrado utiliza una versión incompatible. ¡Por favor, revisa los ajustes!</string>
+    <string name="error_crypto_provider_connect">No se pudo conectar con el proveedor de cifrado. ¡Verifique su configuración o toque el ícono de cifrado para volver a intentarlo!</string>
+    <string name="error_crypto_provider_ui_required">No se ha podido establecer el cifrado de extremo a extremo, revisa los ajustes</string>
+    <string name="error_crypto_inline_attach">¡El modo PGP/INLINE no soporta adjuntos!</string>
     <string name="enable_inline_pgp">Activar modo PGP/INLINE</string>
     <string name="disable_inline_pgp">Desactivar modo PGP/INLINE</string>
     <string name="enable_sign_only">Activar el modo de solo-firma PGP</string>
@@ -812,12 +803,12 @@
     <string name="messageview_decrypt_retry">Reintentar</string>
     <string name="messageview_decrypt_incomplete">El mensaje cifrado debe descargarse para descifrarlo.</string>
     <string name="messageview_crypto_error_title">Hubo un problema al descifrar el correo</string>
-    <string name="recipient_error_non_ascii">Los caracteres especiales, como palabras acentuadas, todavía no se muestran correctamente</string>
-    <string name="recipient_error_parse_failed">Hubo un error al analizar la dirección.</string>
+    <string name="recipient_error_non_ascii">¡Actualmente no se admiten caracteres especiales!</string>
+    <string name="recipient_error_parse_failed">¡Error al analizar la dirección!</string>
     <string name="account_settings_crypto_hide_sign_only">Ocultar firmas no cifradas</string>
     <string name="account_settings_crypto_hide_sign_only_on">Sólo se mostrarán firmas cifradas</string>
     <string name="account_settings_crypto_hide_sign_only_off">Se mostrarán todas las firmas</string>
-    <string name="error_sign_only_no_encryption">El cifrado no está disponible en el modo de solo-firma.</string>
+    <string name="error_sign_only_no_encryption">¡Cifrado no disponible en modo solo firma!</string>
     <string name="unsigned_text_divider_label">Texto sin firmar</string>
     <string name="crypto_no_provider_title">Este correo está cifrado</string>
     <string name="crypto_no_provider_message">Este correo ha sido cifrado con OpenPGP.\nPara leerlo es necesario instalar y configurar una aplicación compatible con OpenPGP.</string>
@@ -825,7 +816,7 @@
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">No es posible cifrar</string>
-    <string name="openpgp_enabled_error_msg">Alguno de los destinatarios no parece ser compatible con esta característica.</string>
+    <string name="openpgp_enabled_error_msg">¡Algunos de los destinatarios seleccionados no admiten esta función!</string>
     <string name="enable_encryption">Activar cifrado</string>
     <string name="disable_encryption">Desactivar cifrado</string>
     <string name="openpgp_description_text1">El cifrado de los mensajes asegura que solo el destinatario final pueda leer el contenido del correo.</string>
@@ -843,11 +834,10 @@
     <string name="general_settings_title">Ajustes generales</string>
     <string name="dialog_openkeychain_info_title">La aplicación de OpenPGP no está instalada</string>
     <string name="dialog_openkeychain_info_install">Instalar</string>
-    <string name="encrypted_subject">Mensaje cifrado</string>
     <string name="account_settings_crypto_encrypt_subject">Asunto del mensaje cifrado</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Puede que no esté disponible para algunos destinatarios</string>
-    <string name="toast_account_not_found">Error interno: la cuenta no existe.</string>
-    <string name="toast_openpgp_provider_error">Error al conectarse con %s</string>
+    <string name="toast_account_not_found">Error interno: ¡Cuenta no válida!</string>
+    <string name="toast_openpgp_provider_error">¡Error al conectarse con %s!</string>
     <string name="ac_transfer_setting_title">Enviar mensaje de configuración de Autocrypt</string>
     <string name="ac_transfer_setting_summary">Compartir configuración punto-a-punto con otros dispositivos de forma segura</string>
     <string name="ac_transfer_title">Mensaje de configuración Autocrypt</string>
@@ -949,4 +939,11 @@ Puedes guardar este mensaje y usarlo como copia de seguridad de tu clave secreta
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Volver al listado de correos</string>
     <string name="push_notification_state_alarm_permission_missing">Falta permiso para programar alarmas</string>
     <string name="push_notification_grant_alarm_permission">Pulse para conceder el permiso.</string>
+    <string name="about_app_authors_thunderbird">Equipo de Thunderbird Mobile</string>
+    <string name="default_signature">--
+\nEnviado desde mi dispositivo Android con <xliff:g id="app_name">%s</xliff:g>. Por favor, disculpe mi brevedad.</string>
+    <string name="about_title">Acerca de <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="dialog_openkeychain_info_text">La aplicación OpenKeychain es necesaria para permitir el cifrado de extremo a extremo.</string>
+    <string name="push_info_notification_explanation_text">Cuando se utiliza Push, <xliff:g id="app_name">%1$s</xliff:g> mantiene una conexión con el servidor de correo. Android requiere mostrar una notificación continua mientras la aplicación está activa en segundo plano. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="account_delete_dlg_instructions_fmt">La cuenta \"<xliff:g id="account">%s</xliff:g>\" se eliminará de <xliff:g id="app_name">%s</xliff:g>.</string>
 </resources>

@@ -147,7 +147,6 @@
     <string name="account_settings_folder_display_mode_all">அனைத்தும்</string>
     <string name="account_settings_folder_sync_mode_all">அனைத்தும்</string>
     <string name="account_settings_folder_push_mode_all">அனைத்தும்</string>
-    <string name="account_settings_folder_target_mode_all">அனைத்தும்</string>
     <string name="folder_settings_title">கோப்புறை அமைப்பு</string>
     <string name="folder_settings_clear_local_folder_action">தற்காலிக செய்திகள் நீக்கு</string>
     <string name="edit_identity_save">சேமி</string>
@@ -156,7 +155,6 @@
     <string name="sort_by_subject">பொருள்</string>
     <string name="background_ops_never">ஒருபொழுதும்</string>
     <string name="background_ops_always">எப்பொழுதும்</string>
-    <string name="account_settings_searchable_all">அனைத்தும்</string>
     <string name="font_size_message_list_subject">பொருள்</string>
     <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
     <string name="font_size_message_view_subject">பொருள்</string>

@@ -431,11 +431,6 @@
     <string name="account_settings_folder_push_mode_first_and_second_class">المجلدات من الفئة الأولى و الثانية</string>
     <string name="account_settings_folder_push_mode_not_second_class">الكل عدا مجلدات الفئة الثانية</string>
     <string name="account_settings_folder_push_mode_none">بدون</string>
-    <string name="account_settings_folder_target_mode_label">نقل / نسخ مجلدات الوجهة </string>
-    <string name="account_settings_folder_target_mode_all">الكل</string>
-    <string name="account_settings_folder_target_mode_first_class">المجلدات من الفئة الأولى فقط</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">المجلدات من الفئة الأولى و الثانية</string>
-    <string name="account_settings_folder_target_mode_not_second_class">الكل عدا مجلدات الفئة الثانية</string>
     <string name="account_settings_sync_remote_deletetions_label">مزامنة عمليات حذف الخادم </string>
     <string name="account_settings_sync_remote_deletetions_summary">احذف الرسائل عند حذفها على الخادم</string>
     <string name="account_settings_openpgp_missing">تطبيق OpenPGP مفقود - هل تم إلغاء تثبيته؟ </string>
@@ -600,10 +595,6 @@
     <string name="integrated_inbox_detail">كل الرسائل في مجلدات موحَّدة</string>
     <string name="folder_settings_include_in_integrated_inbox_label">التوحيد</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">يتم عرض جميع الرسائل في صندوق الوارد الموحد </string>
-    <string name="account_settings_searchable_label">حسابات البحث</string>
-    <string name="account_settings_searchable_all">الكل</string>
-    <string name="account_settings_searchable_displayable">للعرض </string>
-    <string name="account_settings_searchable_none">بدون</string>
     <string name="account_settings_no_folder_selected">بدون</string>
     <string name="account_settings_automatic_special_folder">تلقائي (%s)</string>
     <string name="font_size_settings_title">حجم الخط</string>
@@ -831,7 +822,6 @@
     <string name="general_settings_title">الإعدادات العامة</string>
     <string name="dialog_openkeychain_info_title">ليس هناك أي تطبيق أوبن بي جي بي مُثبّت</string>
     <string name="dialog_openkeychain_info_install">تثبيت</string>
-    <string name="encrypted_subject">رسالة مشفّرة</string>
     <string name="account_settings_crypto_encrypt_subject">تشفير مواضيع الرسالة </string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">قد لا تكون مدعومة من قبل بعض المستلمين </string>
     <string name="toast_account_not_found">خطأ داخلي: حساب غير صالح! </string>

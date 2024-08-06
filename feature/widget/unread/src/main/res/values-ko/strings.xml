@@ -7,4 +7,5 @@
     <string name="unread_widget_account_not_selected">계정이 선택되지 않았습니다</string>
     <string name="unread_widget_folder_not_selected">폴더가 선택되지 않았습니다</string>
     <string name="unread_widget_choose_account_title">계정 선택</string>
+    <string name="unread_widget_unified_inbox_account_summary">받은 편지함(전체)</string>
 </resources>

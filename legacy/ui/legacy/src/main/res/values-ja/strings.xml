@@ -423,11 +423,6 @@
     <string name="account_settings_folder_push_mode_first_and_second_class">1st および 2nd クラスフォルダー</string>
     <string name="account_settings_folder_push_mode_not_second_class">2nd クラスフォルダーを除くすべて</string>
     <string name="account_settings_folder_push_mode_none">なし</string>
-    <string name="account_settings_folder_target_mode_label">移動/コピー先のフォルダー</string>
-    <string name="account_settings_folder_target_mode_all">すべて</string>
-    <string name="account_settings_folder_target_mode_first_class">1st クラスフォルダーのみ</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">1st および 2nd クラスフォルダー</string>
-    <string name="account_settings_folder_target_mode_not_second_class">2nd クラスフォルダーを除くすべて</string>
     <string name="account_settings_sync_remote_deletetions_label">サーバーのメッセージ削除を同期する</string>
     <string name="account_settings_sync_remote_deletetions_summary">サーバーでメッセージが削除されたときにローカルのメッセージも削除します</string>
     <string name="account_settings_openpgp_missing">OpenPGP アプリが見つかりません - アンインストールしましたか？</string>
@@ -592,10 +587,6 @@
     <string name="integrated_inbox_detail">統合フォルダーのすべてのメッセージ</string>
     <string name="folder_settings_include_in_integrated_inbox_label">統合</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">すべてのメッセージを統合受信トレイに表示します</string>
-    <string name="account_settings_searchable_label">検索対象のフォルダー</string>
-    <string name="account_settings_searchable_all">すべて</string>
-    <string name="account_settings_searchable_displayable">表示可能範囲</string>
-    <string name="account_settings_searchable_none">設定しない</string>
     <string name="account_settings_no_folder_selected">なし</string>
     <string name="account_settings_automatic_special_folder">自動 (%s)</string>
     <string name="font_size_settings_title">フォントサイズ</string>
@@ -838,7 +829,6 @@
     <string name="dialog_openkeychain_info_title">OpenPGP アプリがインストールされていません</string>
     <string name="dialog_openkeychain_info_install">インストール</string>
     <string name="dialog_openkeychain_info_text">エンドツーエンド暗号化には OpenKeychain アプリが必要です。</string>
-    <string name="encrypted_subject">暗号化されたメッセージ</string>
     <string name="account_settings_crypto_encrypt_subject">メッセージの件名を暗号化する</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">一部の受信者は対応していない可能性があります</string>
     <string name="toast_account_not_found">内部エラー: アカウントが無効です！</string>

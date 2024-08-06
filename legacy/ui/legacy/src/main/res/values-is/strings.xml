@@ -422,11 +422,6 @@
     <string name="account_settings_folder_push_mode_first_and_second_class">1. og 2. flokks möppur</string>
     <string name="account_settings_folder_push_mode_not_second_class">Allt nema 2. flokks möppur</string>
     <string name="account_settings_folder_push_mode_none">Engin</string>
-    <string name="account_settings_folder_target_mode_label">Færa/afrita móttökumöppur</string>
-    <string name="account_settings_folder_target_mode_all">Allar</string>
-    <string name="account_settings_folder_target_mode_first_class">Einungis 1. flokks möppur</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">1. og 2. flokks möppur</string>
-    <string name="account_settings_folder_target_mode_not_second_class">Allt nema 2. flokks möppur</string>
     <string name="account_settings_sync_remote_deletetions_label">Eyðing á samstilltum póstþjóni</string>
     <string name="account_settings_sync_remote_deletetions_summary">Fjarlægja skilaboð þegar þeim er eytt á póstþjóni</string>
     <string name="account_settings_openpgp_missing">OpenPGP-forrit vantar - var það fjarlægt?</string>
@@ -591,10 +586,6 @@
     <string name="integrated_inbox_detail">Öll skilaboð í sameinuðum möppum</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Sameina</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Öll skilaboð eru birt í sameinuðu innhólfi</string>
-    <string name="account_settings_searchable_label">Möppur sem á að leita í</string>
-    <string name="account_settings_searchable_all">Allar</string>
-    <string name="account_settings_searchable_displayable">Birtanlegar</string>
-    <string name="account_settings_searchable_none">Engin</string>
     <string name="account_settings_no_folder_selected">Engin</string>
     <string name="account_settings_automatic_special_folder">Sjálfvirkt  (%s)</string>
     <string name="font_size_settings_title">Leturstærð</string>
@@ -838,7 +829,6 @@
     <string name="general_settings_title">Almennar stillingar</string>
     <string name="dialog_openkeychain_info_title">Ekkert OpenPGP-forrit er uppsett</string>
     <string name="dialog_openkeychain_info_install">Setja upp</string>
-    <string name="encrypted_subject">Dulrituð skilaboð</string>
     <string name="account_settings_crypto_encrypt_subject">Dulrita viðfangsefni skilaboða</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Er hugsanlega ekki stutt hjá sumum viðtakendum</string>
     <string name="toast_account_not_found">Innri villa: Ógildur aðgangur!</string>

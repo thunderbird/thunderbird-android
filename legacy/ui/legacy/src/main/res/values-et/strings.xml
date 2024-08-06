@@ -422,11 +422,6 @@
     <string name="account_settings_folder_push_mode_first_and_second_class">1. ja 2. klassi kaustad</string>
     <string name="account_settings_folder_push_mode_not_second_class">Kõik, v.a. 2 klassi kaustad</string>
     <string name="account_settings_folder_push_mode_none">Mitte ükski</string>
-    <string name="account_settings_folder_target_mode_label">Teisalda/kopeeri sihtkaustad</string>
-    <string name="account_settings_folder_target_mode_all">Kõik</string>
-    <string name="account_settings_folder_target_mode_first_class">Ainult 1. klassi kaustad</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">1. ja 2. klassi kaustad</string>
-    <string name="account_settings_folder_target_mode_not_second_class">Kõik, v.a 2. klassi kaustad</string>
     <string name="account_settings_sync_remote_deletetions_label">Süngi serveris kustutamised</string>
     <string name="account_settings_sync_remote_deletetions_summary">Eemalda kirjad kui need serveris kustutatud</string>
     <string name="account_settings_openpgp_missing">OpenPGP rakendus puudub - kas see on eemaldatud?</string>
@@ -591,10 +586,6 @@
     <string name="integrated_inbox_detail">Kõik kirjad koondkaustades</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Koonda</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Kõiki kirju näidatakse koondsisendkaustas</string>
-    <string name="account_settings_searchable_label">Otsitavad kaustad</string>
-    <string name="account_settings_searchable_all">Kõik</string>
-    <string name="account_settings_searchable_displayable">Kuvatavad</string>
-    <string name="account_settings_searchable_none">Mitte ükski</string>
     <string name="account_settings_no_folder_selected">Mitte ükski</string>
     <string name="account_settings_automatic_special_folder">Automaatne (%s)</string>
     <string name="font_size_settings_title">Fondi suurus</string>
@@ -838,7 +829,6 @@
     <string name="general_settings_title">Üldised sätted</string>
     <string name="dialog_openkeychain_info_title">OpenPGP rakendus paigaldamata</string>
     <string name="dialog_openkeychain_info_install">Paigalda</string>
-    <string name="encrypted_subject">Krüptitud kiri</string>
     <string name="account_settings_crypto_encrypt_subject">Krüpti ka kirja pealkiri</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Selline funktsionaalsus ei pruugi kõikide kirjasaajate puhul olla toetatud</string>
     <string name="toast_account_not_found">Sisemine viga: kõlbmatu konto!</string>

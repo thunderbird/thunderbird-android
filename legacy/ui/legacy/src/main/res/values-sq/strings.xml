@@ -422,11 +422,6 @@
     <string name="account_settings_folder_push_mode_first_and_second_class">Dosje të Klasës I dhe II</string>
     <string name="account_settings_folder_push_mode_not_second_class">Krejt, hiq dosje të Klasës II</string>
     <string name="account_settings_folder_push_mode_none">Asnjë</string>
-    <string name="account_settings_folder_target_mode_label">Lëvizni/kopjoni dosje destinacion</string>
-    <string name="account_settings_folder_target_mode_all">Krejt</string>
-    <string name="account_settings_folder_target_mode_first_class">Vetëm dosje të Klasës I</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">Dosje të Klasës I dhe II</string>
-    <string name="account_settings_folder_target_mode_not_second_class">Krejt, hiq dosje të Klasës II</string>
     <string name="account_settings_sync_remote_deletetions_label">Njëkohëso fshirje në shërbyes</string>
     <string name="account_settings_sync_remote_deletetions_summary">Hiqi mesazhet kur janë fshirë në shërbyes</string>
     <string name="account_settings_openpgp_missing">Mungon aplikacioni OpenPGP - mos është çinstaluar?</string>
@@ -591,10 +586,6 @@
     <string name="integrated_inbox_detail">Krejt mesazhet në dosje të njësuara</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Njësoji</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Krejt mesazhet shfaqen në Kuti Poste të Njësuar</string>
-    <string name="account_settings_searchable_label">Dosje ku të kërkohet</string>
-    <string name="account_settings_searchable_all">Krejt</string>
-    <string name="account_settings_searchable_displayable">Të shfaqshmet</string>
-    <string name="account_settings_searchable_none">Asnjë</string>
     <string name="account_settings_no_folder_selected">Asnjë</string>
     <string name="account_settings_automatic_special_folder">Automatik (%s)</string>
     <string name="font_size_settings_title">Madhësi shkronjash</string>
@@ -840,7 +831,6 @@
     <string name="general_settings_title">Rregullime të përgjithshme</string>
     <string name="dialog_openkeychain_info_title">Ska aplikacion OpenPGP të instaluar</string>
     <string name="dialog_openkeychain_info_install">Instaloje</string>
-    <string name="encrypted_subject">Mesazh i Fshehtëzuar</string>
     <string name="account_settings_crypto_encrypt_subject">Fshehtëzo subjekte mesazhesh</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Mund të mos mbulohet nga disa marrës</string>
     <string name="toast_account_not_found">Gabim i brendshëm: Llogari e pavlefshme!</string>

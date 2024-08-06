@@ -419,11 +419,6 @@
     <string name="account_settings_folder_push_mode_first_and_second_class">第一類與第二類信件匣</string>
     <string name="account_settings_folder_push_mode_not_second_class">不包括下層信件匣</string>
     <string name="account_settings_folder_push_mode_none">無</string>
-    <string name="account_settings_folder_target_mode_label">可以移動/複製到的文件匣</string>
-    <string name="account_settings_folder_target_mode_all">全部</string>
-    <string name="account_settings_folder_target_mode_first_class">僅第一類信件匣</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">第一類與第二類信件匣</string>
-    <string name="account_settings_folder_target_mode_not_second_class">不包括下層信件匣</string>
     <string name="account_settings_sync_remote_deletetions_label">同步伺服器上的刪除</string>
     <string name="account_settings_sync_remote_deletetions_summary">刪除在伺服器上被刪除的郵件的本地複製</string>
     <string name="account_settings_openpgp_missing">未發現 OpenPGP 應用程式 - 它已被解除安裝了嗎？</string>
@@ -588,10 +583,6 @@
     <string name="integrated_inbox_detail">將所有郵件集中到全域收件匣</string>
     <string name="folder_settings_include_in_integrated_inbox_label">全域</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">所有郵件都顯示在全域收件匣中</string>
-    <string name="account_settings_searchable_label">搜尋的信件匣</string>
-    <string name="account_settings_searchable_all">全部</string>
-    <string name="account_settings_searchable_displayable">可顯示的信件匣</string>
-    <string name="account_settings_searchable_none">無</string>
     <string name="account_settings_no_folder_selected">無</string>
     <string name="account_settings_automatic_special_folder">自動 (%s)</string>
     <string name="font_size_settings_title">字體大小</string>
@@ -831,7 +822,6 @@
     <string name="general_settings_title">一般設定</string>
     <string name="dialog_openkeychain_info_title">未安裝 OpenPGP 應用程式</string>
     <string name="dialog_openkeychain_info_install">安裝</string>
-    <string name="encrypted_subject">已加密的訊息</string>
     <string name="account_settings_crypto_encrypt_subject">加密訊息主題</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">有些收件人可能不支援加密</string>
     <string name="toast_account_not_found">内部錯誤：帳號無效！</string>

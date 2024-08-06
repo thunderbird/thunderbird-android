@@ -421,11 +421,6 @@
     <string name="account_settings_folder_push_mode_first_and_second_class">1. eta 2. klaseko karpetak</string>
     <string name="account_settings_folder_push_mode_not_second_class">Guztiak 2. klaseko karpetak izan ezik</string>
     <string name="account_settings_folder_push_mode_none">Bat ere ez</string>
-    <string name="account_settings_folder_target_mode_label">Mugitu/kopiatu helburu karpetak</string>
-    <string name="account_settings_folder_target_mode_all">Guztiak</string>
-    <string name="account_settings_folder_target_mode_first_class">1. klaseko karpetak bakarrik</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">1. eta 2. klaseko karpetak</string>
-    <string name="account_settings_folder_target_mode_not_second_class">Guztiak 2. klaseko karpetak izan ezik</string>
     <string name="account_settings_sync_remote_deletetions_label">sinkronizatu zerbitzariko ezabatzeak</string>
     <string name="account_settings_sync_remote_deletetions_summary">Kendu mezuak zerbitzarian ezabatzean</string>
     <string name="account_settings_openpgp_missing">OpenPGP aplikazioa falta da, desinstalatu da?</string>
@@ -590,10 +585,6 @@
     <string name="integrated_inbox_detail">Karpeta bateratuetako mezu guztiak</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Bateratu</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Mezu guztiak sarrerako ontzi bateratutan erakusten dira</string>
-    <string name="account_settings_searchable_label">Bilatzeko karpetak</string>
-    <string name="account_settings_searchable_all">Guztiak</string>
-    <string name="account_settings_searchable_displayable">Bistaratu daitezkeenak</string>
-    <string name="account_settings_searchable_none">Bat ere ez</string>
     <string name="account_settings_no_folder_selected">Bat ere ez</string>
     <string name="account_settings_automatic_special_folder">Automatikoa (%s)</string>
     <string name="font_size_settings_title">Letra-tamaina</string>
@@ -837,7 +828,6 @@
     <string name="general_settings_title">Ezarpen orokorrak</string>
     <string name="dialog_openkeychain_info_title">Ez dago OpenPGP aplikaziorik instalatuta</string>
     <string name="dialog_openkeychain_info_install">Instalatu</string>
-    <string name="encrypted_subject">Zifratu mezua</string>
     <string name="account_settings_crypto_encrypt_subject">Zifratu mezuen gaiak</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Hartzaile batzuk agian ez dute onartuko</string>
     <string name="toast_account_not_found">Barne errorea: kontu baliogabea!</string>
@@ -942,5 +932,11 @@ Mezu hau gorde dezakezu eta zure gako sekretuaren babes-kopia gisa erabili. Hau 
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Itzuli mezu-zerrendara</string>
     <string name="push_notification_state_alarm_permission_missing">Alarmak programatzeko baimena falta da</string>
     <string name="push_notification_grant_alarm_permission">Sakatu baimena emateko.</string>
-    <string name="about_app_authors_thunderbird">Thunderbird Mobile Team</string>
+    <string name="about_app_authors_thunderbird">Thunderbird Mobile taldea</string>
+    <string name="dialog_openkeychain_info_text">OpenKeychain aplikazioa beharrezkoa da muturretik muturrerako enkriptatzearen euskarria gaitzeko.</string>
+    <string name="about_title"><xliff:g id="app_name">%s</xliff:g>ri buruz</string>
+    <string name="default_signature">--
+\nNire Android gailutik bidali da <xliff:g id="app_name">%s</xliff:g>. Barkatu labur idatzi izana.</string>
+    <string name="push_info_notification_explanation_text">Push erabiltzean, <xliff:g id="app_name">%1$s</xliff:g>-k posta-zerbitzariarekin konexioa mantentzen du. Android-ek etengabeko jakinarazpena bistaratzea eskatzen du aplikazioa atzeko planoan aktibo dagoen bitartean. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" kontua <xliff:g id="app_name">%s</xliff:g>tik kenduko da.</string>
 </resources>

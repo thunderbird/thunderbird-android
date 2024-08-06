@@ -383,11 +383,6 @@
     <string name="account_settings_folder_push_mode_first_and_second_class">Hanya folder Kelas 2</string>
     <string name="account_settings_folder_push_mode_not_second_class">Semuanya kecuali folder Kelas 2</string>
     <string name="account_settings_folder_push_mode_none">Tidak ada</string>
-    <string name="account_settings_folder_target_mode_label">Pindahkan/salin folder tujuan</string>
-    <string name="account_settings_folder_target_mode_all">Semua</string>
-    <string name="account_settings_folder_target_mode_first_class">Hanya folder Kelas 1</string>
-    <string name="account_settings_folder_target_mode_first_and_second_class">Hanya folder Kelas 2</string>
-    <string name="account_settings_folder_target_mode_not_second_class">Semuanya kecuali folder Kelas 2</string>
     <string name="account_settings_sync_remote_deletetions_label">Sinkronkan penghapusan server</string>
     <string name="account_settings_sync_remote_deletetions_summary">Hapus pesan saat dihapus di server</string>
     <string name="account_settings_openpgp_missing">Aplikasi OpenPGP tidak ada - apakah sudah dihapus?</string>
@@ -531,10 +526,6 @@
     <string name="integrated_inbox_detail">Semua pesan dalam folder terpadu</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Satukan</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Semua pesan ditampilkan di Kotak Masuk Terpadu</string>
-    <string name="account_settings_searchable_label">Folder untuk pencarian</string>
-    <string name="account_settings_searchable_all">Semua</string>
-    <string name="account_settings_searchable_displayable">Bisa ditampilkan</string>
-    <string name="account_settings_searchable_none">Tidak ada</string>
     <string name="account_settings_no_folder_selected">Tidak ada</string>
     <string name="account_settings_automatic_special_folder">Otomatis (%s)</string>
     <string name="font_size_settings_title">Ukuran fon</string>
@@ -773,7 +764,6 @@
     <string name="general_settings_title">Pengaturan umum</string>
     <string name="dialog_openkeychain_info_title">Tidak ada aplikasi OpenPGP yang terpasang</string>
     <string name="dialog_openkeychain_info_install">Memasang</string>
-    <string name="encrypted_subject">Pesan terenkripsi</string>
     <string name="account_settings_crypto_encrypt_subject">Enkripsikan subjek pesan</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Mungkin tidak didukung oleh beberapa penerima</string>
     <string name="toast_account_not_found">Kesalahan internal: Akun tidak valid!</string>

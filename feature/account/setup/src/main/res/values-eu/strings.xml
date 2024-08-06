@@ -18,14 +18,14 @@
     <string name="account_setup_options_account_name_label">Kontu izena</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Ezarpenak aurkitu dira</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">E-mail helbidea nahitaezkoa da.</string>
-    <string name="account_setup_options_display_name_label">Bistaratzeko izena</string>
+    <string name="account_setup_options_display_name_label">Zure izena</string>
     <string name="account_setup_auto_discovery_loading_error">Akatsa e-mail konfigurazioa kargatzerakoan</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Konfigurazio honetan konfiantza dut</string>
-    <string name="account_setup_options_display_name_error_required">Bistaratzeko izena beharrezkoa da.</string>
+    <string name="account_setup_options_display_name_error_required">Zure izena beharrezkoa da.</string>
     <string name="account_setup_error_network">Sarea</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Helbide hau ez da helbide elektroniko zuzentzat jotzen.</string>
     <string name="account_setup_options_email_check_frequency_never">Inoiz ere ez</string>
-    <string name="account_setup_auto_discovery_loading_message">E-mail xehetasunak bilatzen</string>
+    <string name="account_setup_auto_discovery_loading_message">Konfigurazioa bilatzen…</string>
     <string name="account_setup_options_section_sync_options">Sinkronizazio ezarpenak</string>
     <string name="account_setup_options_show_notifications_label">Erakutsi jakinarazpenak</string>
     <string name="account_setup_options_section_display_options">Pantaila ezarpenak</string>
