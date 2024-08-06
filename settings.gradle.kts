@@ -94,6 +94,7 @@ include(
     ":legacy:di",
     ":legacy:folder",
     ":legacy:mailstore",
+    ":legacy:message",
     ":legacy:notification",
     ":legacy:search",
     ":legacy:storage",

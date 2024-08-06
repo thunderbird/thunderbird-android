@@ -1,7 +1,7 @@
 package com.fsck.k9.mailstore;
 
 
-import com.fsck.k9.message.extractors.PreviewResult.PreviewType;
+import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType;
 import org.jetbrains.annotations.NotNull;
 
 

@@ -1,8 +1,8 @@
 package com.fsck.k9.mailstore
 
+import app.k9mail.legacy.message.extractors.PreviewResult
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessageDownloadState
-import com.fsck.k9.message.extractors.PreviewResult
 
 data class SaveMessageData(
     val message: Message,

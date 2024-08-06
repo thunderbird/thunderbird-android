@@ -1,10 +1,11 @@
 package com.fsck.k9.message.extractors;
 
 
+import app.k9mail.legacy.message.extractors.PreviewResult;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeMessage;
-import com.fsck.k9.message.extractors.PreviewResult.PreviewType;
+import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType;
 import org.junit.Before;
 import org.junit.Test;
 

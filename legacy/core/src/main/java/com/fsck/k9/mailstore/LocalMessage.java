@@ -23,7 +23,7 @@ import com.fsck.k9.mail.internet.AddressHeaderBuilder;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
-import com.fsck.k9.message.extractors.PreviewResult.PreviewType;
+import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType;
 import timber.log.Timber;
 
 

@@ -1,7 +1,7 @@
 package com.fsck.k9.mailstore
 
+import app.k9mail.legacy.message.extractors.PreviewResult
 import com.fsck.k9.mail.Address
-import com.fsck.k9.message.extractors.PreviewResult
 
 fun interface MessageMapper<T> {
     fun map(message: MessageDetailsAccessor): T

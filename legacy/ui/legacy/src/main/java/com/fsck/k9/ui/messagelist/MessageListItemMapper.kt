@@ -1,10 +1,10 @@
 package com.fsck.k9.ui.messagelist
 
 import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mailstore.MessageDetailsAccessor
 import com.fsck.k9.mailstore.MessageMapper
-import com.fsck.k9.message.extractors.PreviewResult.PreviewType
 import com.fsck.k9.ui.helper.DisplayAddressHelper
 
 class MessageListItemMapper(

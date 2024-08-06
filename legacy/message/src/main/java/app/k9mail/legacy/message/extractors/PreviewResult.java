@@ -1,4 +1,4 @@
-package com.fsck.k9.message.extractors;
+package app.k9mail.legacy.message.extractors;
 
 
 import androidx.annotation.NonNull;
