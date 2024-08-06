@@ -1,6 +1,6 @@
 package com.fsck.k9.storage
 
-import com.fsck.k9.mailstore.MessageStoreFactory
+import app.k9mail.legacy.mailstore.MessageStoreFactory
 import com.fsck.k9.mailstore.SchemaDefinitionFactory
 import com.fsck.k9.notification.NotificationStoreProvider
 import com.fsck.k9.storage.messages.K9MessageStoreFactory

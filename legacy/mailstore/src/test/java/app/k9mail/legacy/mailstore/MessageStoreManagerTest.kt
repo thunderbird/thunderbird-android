@@ -1,4 +1,4 @@
-package com.fsck.k9.mailstore
+package app.k9mail.legacy.mailstore
 
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager

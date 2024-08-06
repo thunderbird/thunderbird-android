@@ -26,7 +26,7 @@ import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
-import com.fsck.k9.mailstore.MessageStoreManager;
+import app.k9mail.legacy.mailstore.MessageStoreManager;
 import com.fsck.k9.mailstore.OutboxState;
 import com.fsck.k9.mailstore.OutboxStateRepository;
 import com.fsck.k9.mailstore.SaveMessageDataCreator;

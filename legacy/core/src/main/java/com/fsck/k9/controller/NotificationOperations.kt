@@ -2,8 +2,8 @@ package com.fsck.k9.controller
 
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
+import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.search.LocalSearch
-import com.fsck.k9.mailstore.MessageStoreManager
 import com.fsck.k9.notification.NotificationController
 import com.fsck.k9.search.isNewMessages
 import com.fsck.k9.search.isSingleFolder

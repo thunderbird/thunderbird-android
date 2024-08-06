@@ -1,9 +1,9 @@
 package com.fsck.k9.storage.messages
 
 import app.k9mail.legacy.account.Account
-import com.fsck.k9.mailstore.ListenableMessageStore
+import app.k9mail.legacy.mailstore.ListenableMessageStore
+import app.k9mail.legacy.mailstore.MessageStoreFactory
 import com.fsck.k9.mailstore.LocalStoreProvider
-import com.fsck.k9.mailstore.MessageStoreFactory
 import com.fsck.k9.mailstore.NotifierMessageStore
 import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.message.extractors.BasicPartInfoExtractor

@@ -1,6 +1,7 @@
 package com.fsck.k9.controller
 
 import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.mailstore.SaveMessageData
 import com.fsck.k9.K9
 import com.fsck.k9.backend.api.Backend
@@ -12,7 +13,6 @@ import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.mailstore.LocalMessage
-import com.fsck.k9.mailstore.MessageStoreManager
 import com.fsck.k9.mailstore.SaveMessageDataCreator
 import org.jetbrains.annotations.NotNull
 import timber.log.Timber

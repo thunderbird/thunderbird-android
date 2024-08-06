@@ -1,10 +1,10 @@
 package com.fsck.k9.controller
 
 import android.content.Context
+import app.k9mail.legacy.mailstore.MessageStoreManager
 import com.fsck.k9.Preferences
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.mailstore.LocalStoreProvider
-import com.fsck.k9.mailstore.MessageStoreManager
 import com.fsck.k9.mailstore.SaveMessageDataCreator
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import com.fsck.k9.notification.NotificationController

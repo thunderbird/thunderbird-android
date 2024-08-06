@@ -2,6 +2,7 @@ package com.fsck.k9.mailstore
 
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.mailstore.FolderSettings
+import app.k9mail.legacy.mailstore.MessageStoreManager
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.fsck.k9.K9RobolectricTest

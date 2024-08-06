@@ -1,10 +1,10 @@
-package com.fsck.k9.mailstore
+package app.k9mail.legacy.mailstore
 
 import app.k9mail.legacy.folder.FolderDetails
-import app.k9mail.legacy.mailstore.CreateFolderInfo
 import com.fsck.k9.mail.FolderClass
 import java.util.concurrent.CopyOnWriteArraySet
 
+@Suppress("TooManyFunctions")
 class ListenableMessageStore(private val messageStore: MessageStore) : MessageStore by messageStore {
     private val folderSettingsListener = CopyOnWriteArraySet<FolderSettingsChangedListener>()
 

@@ -9,6 +9,8 @@ import app.k9mail.legacy.folder.Folder
 import app.k9mail.legacy.folder.FolderDetails
 import app.k9mail.legacy.folder.FolderType
 import app.k9mail.legacy.folder.RemoteFolder
+import app.k9mail.legacy.mailstore.FolderSettingsChangedListener
+import app.k9mail.legacy.mailstore.MessageStoreManager
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.controller.SimpleMessagingListener
 import com.fsck.k9.mail.FolderClass

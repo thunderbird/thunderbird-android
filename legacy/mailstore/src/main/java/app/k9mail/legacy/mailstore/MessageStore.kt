@@ -1,12 +1,7 @@
-package com.fsck.k9.mailstore
+package app.k9mail.legacy.mailstore
 
 import app.k9mail.legacy.account.Account.FolderMode
 import app.k9mail.legacy.folder.FolderDetails
-import app.k9mail.legacy.mailstore.CreateFolderInfo
-import app.k9mail.legacy.mailstore.FolderMapper
-import app.k9mail.legacy.mailstore.MessageMapper
-import app.k9mail.legacy.mailstore.MoreMessages
-import app.k9mail.legacy.mailstore.SaveMessageData
 import app.k9mail.legacy.search.ConditionsTreeNode
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderClass
@@ -20,6 +15,7 @@ import java.util.Date
  * The goal is for this to gradually replace [LocalStore]. Once complete, apps will be able to provide their own
  * storage implementation.
  */
+@Suppress("TooManyFunctions")
 interface MessageStore {
     /**
      * Save a remote message in this store.

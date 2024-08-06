@@ -5,6 +5,7 @@ import app.k9mail.legacy.folder.FolderDetails
 import app.k9mail.legacy.mailstore.CreateFolderInfo
 import app.k9mail.legacy.mailstore.FolderMapper
 import app.k9mail.legacy.mailstore.MessageMapper
+import app.k9mail.legacy.mailstore.MessageStore
 import app.k9mail.legacy.mailstore.MoreMessages
 import app.k9mail.legacy.mailstore.SaveMessageData
 import app.k9mail.legacy.search.ConditionsTreeNode
@@ -13,7 +14,6 @@ import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Header
 import com.fsck.k9.mailstore.LockableDatabase
-import com.fsck.k9.mailstore.MessageStore
 import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.message.extractors.BasicPartInfoExtractor
 import java.util.Date
