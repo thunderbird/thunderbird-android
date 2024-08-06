@@ -6,6 +6,7 @@ import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.di.DI
 import app.k9mail.legacy.folder.DisplayFolder
 import app.k9mail.legacy.folder.Folder
+import app.k9mail.legacy.folder.FolderDetails
 import app.k9mail.legacy.folder.FolderType
 import app.k9mail.legacy.folder.RemoteFolder
 import com.fsck.k9.controller.MessagingController
@@ -293,16 +294,6 @@ class FolderRepository(
 private data class AccountContainer(
     val account: Account,
     val folderDisplayMode: FolderMode,
-)
-
-data class FolderDetails(
-    val folder: Folder,
-    val isInTopGroup: Boolean,
-    val isIntegrate: Boolean,
-    val syncClass: FolderClass,
-    val displayClass: FolderClass,
-    val notifyClass: FolderClass,
-    val pushClass: FolderClass,
 )
 
 data class RemoteFolderDetails(
