@@ -63,7 +63,7 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.power.PowerManager;
 import com.fsck.k9.mail.power.WakeLock;
-import com.fsck.k9.mailstore.FolderDetailsAccessor;
+import app.k9mail.legacy.mailstore.FolderDetailsAccessor;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;

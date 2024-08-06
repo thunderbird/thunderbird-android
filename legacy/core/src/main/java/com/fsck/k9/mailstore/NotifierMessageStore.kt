@@ -1,5 +1,6 @@
 package com.fsck.k9.mailstore
 
+import app.k9mail.legacy.mailstore.MoreMessages
 import com.fsck.k9.mail.Flag
 
 /**

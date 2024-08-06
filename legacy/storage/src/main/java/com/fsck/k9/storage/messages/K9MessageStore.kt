@@ -1,6 +1,8 @@
 package com.fsck.k9.storage.messages
 
 import app.k9mail.legacy.account.Account.FolderMode
+import app.k9mail.legacy.mailstore.FolderMapper
+import app.k9mail.legacy.mailstore.MoreMessages
 import app.k9mail.legacy.search.ConditionsTreeNode
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderClass
@@ -8,11 +10,9 @@ import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Header
 import com.fsck.k9.mailstore.CreateFolderInfo
 import com.fsck.k9.mailstore.FolderDetails
-import com.fsck.k9.mailstore.FolderMapper
 import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.MessageMapper
 import com.fsck.k9.mailstore.MessageStore
-import com.fsck.k9.mailstore.MoreMessages
 import com.fsck.k9.mailstore.SaveMessageData
 import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.message.extractors.BasicPartInfoExtractor

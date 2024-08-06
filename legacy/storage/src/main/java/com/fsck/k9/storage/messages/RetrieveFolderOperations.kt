@@ -4,14 +4,14 @@ import android.database.Cursor
 import androidx.core.database.getLongOrNull
 import app.k9mail.core.android.common.database.map
 import app.k9mail.legacy.account.Account.FolderMode
+import app.k9mail.legacy.mailstore.FolderDetailsAccessor
+import app.k9mail.legacy.mailstore.FolderMapper
+import app.k9mail.legacy.mailstore.MoreMessages
 import app.k9mail.legacy.search.ConditionsTreeNode
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType
-import com.fsck.k9.mailstore.FolderDetailsAccessor
-import com.fsck.k9.mailstore.FolderMapper
 import com.fsck.k9.mailstore.FolderNotFoundException
 import com.fsck.k9.mailstore.LockableDatabase
-import com.fsck.k9.mailstore.MoreMessages
 import com.fsck.k9.mailstore.toFolderType
 import com.fsck.k9.search.SqlQueryBuilder
 

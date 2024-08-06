@@ -12,6 +12,7 @@ dependencies {
     api(projects.legacy.account)
     api(projects.legacy.di)
     api(projects.legacy.folder)
+    api(projects.legacy.mailstore)
     api(projects.legacy.notification)
     api(projects.legacy.search)
 
