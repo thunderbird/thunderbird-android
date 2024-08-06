@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.fsck.k9.controller.MessageReference
+import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.mail.Header
 import com.fsck.k9.mail.internet.MimeUtility
 import com.fsck.k9.ui.R

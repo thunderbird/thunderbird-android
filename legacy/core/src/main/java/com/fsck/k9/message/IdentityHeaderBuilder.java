@@ -9,7 +9,7 @@ import android.net.Uri.Builder;
 import app.k9mail.legacy.account.Account.QuoteStyle;
 import app.k9mail.legacy.account.Identity;
 import com.fsck.k9.K9;
-import com.fsck.k9.controller.MessageReference;
+import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.message.quote.InsertableHtmlContent;
 import timber.log.Timber;

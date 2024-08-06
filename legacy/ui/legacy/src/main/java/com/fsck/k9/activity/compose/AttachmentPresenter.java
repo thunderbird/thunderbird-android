@@ -22,7 +22,7 @@ import com.fsck.k9.activity.loader.AttachmentContentLoader;
 import com.fsck.k9.activity.loader.AttachmentInfoLoader;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.activity.misc.InlineAttachment;
-import com.fsck.k9.controller.MessageReference;
+import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.LocalMessage;

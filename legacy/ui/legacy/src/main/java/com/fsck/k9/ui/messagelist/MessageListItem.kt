@@ -1,7 +1,7 @@
 package com.fsck.k9.ui.messagelist
 
 import app.k9mail.legacy.account.Account
-import com.fsck.k9.controller.MessageReference
+import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.mail.Address
 
 data class MessageListItem(

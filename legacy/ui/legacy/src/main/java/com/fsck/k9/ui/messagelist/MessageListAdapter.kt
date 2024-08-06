@@ -25,10 +25,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
+import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.FontSizes
 import com.fsck.k9.UiDensity
 import com.fsck.k9.contacts.ContactPictureLoader
-import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter

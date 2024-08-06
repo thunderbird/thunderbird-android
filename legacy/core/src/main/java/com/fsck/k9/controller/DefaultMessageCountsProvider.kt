@@ -41,6 +41,7 @@ internal class DefaultMessageCountsProvider(
         return MessageCounts(unreadCount, starredCount)
     }
 
+    @Suppress("TooGenericExceptionCaught")
     override fun getUnreadMessageCount(account: Account, folderId: Long): Int {
         return try {
             val messageStore = messageStoreManager.getMessageStore(account)
@@ -55,6 +56,7 @@ internal class DefaultMessageCountsProvider(
         }
     }
 
+    @Suppress("TooGenericExceptionCaught")
     private fun getMessageCounts(account: Account, conditions: ConditionsTreeNode?): MessageCounts {
         return try {
             val messageStore = messageStoreManager.getMessageStore(account)

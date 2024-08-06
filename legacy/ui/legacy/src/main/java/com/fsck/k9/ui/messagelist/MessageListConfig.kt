@@ -1,8 +1,8 @@
 package com.fsck.k9.ui.messagelist
 
 import app.k9mail.legacy.account.Account.SortType
+import app.k9mail.legacy.message.controller.MessageReference
 import app.k9mail.legacy.search.LocalSearch
-import com.fsck.k9.controller.MessageReference
 
 data class MessageListConfig(
     val search: LocalSearch,

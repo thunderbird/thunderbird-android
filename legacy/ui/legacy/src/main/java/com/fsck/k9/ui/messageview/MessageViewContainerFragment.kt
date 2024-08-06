@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
-import com.fsck.k9.controller.MessageReference
+import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.extensions.withArguments
 import com.fsck.k9.ui.messagelist.MessageListItem

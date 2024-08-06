@@ -18,7 +18,7 @@ import timber.log.Timber;
 import app.k9mail.legacy.account.Account.QuoteStyle;
 import app.k9mail.legacy.account.Identity;
 import com.fsck.k9.K9;
-import com.fsck.k9.controller.MessageReference;
+import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BoundaryGenerator;

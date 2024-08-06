@@ -1,7 +1,7 @@
 package com.fsck.k9.storage.notifications
 
 import android.database.sqlite.SQLiteDatabase
-import com.fsck.k9.controller.MessageReference
+import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.notification.NotificationStore
 import com.fsck.k9.notification.NotificationStoreOperation

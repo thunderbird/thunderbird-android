@@ -30,6 +30,7 @@ import androidx.annotation.VisibleForTesting;
 import app.k9mail.legacy.account.Account;
 import app.k9mail.legacy.account.Account.DeletePolicy;
 import app.k9mail.legacy.di.DI;
+import app.k9mail.legacy.message.controller.MessageReference;
 import app.k9mail.legacy.message.controller.MessagingControllerRegistry;
 import app.k9mail.legacy.message.controller.MessagingListener;
 import app.k9mail.legacy.message.controller.SimpleMessagingListener;

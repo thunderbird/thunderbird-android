@@ -74,7 +74,7 @@ import com.fsck.k9.activity.compose.SaveMessageTask;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.autocrypt.AutocryptDraftStateHeaderParser;
 import com.fsck.k9.contact.ContactIntentHelper;
-import com.fsck.k9.controller.MessageReference;
+import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import app.k9mail.legacy.message.controller.MessagingListener;
 import app.k9mail.legacy.message.controller.SimpleMessagingListener;

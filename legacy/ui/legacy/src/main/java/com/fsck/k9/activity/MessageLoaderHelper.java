@@ -19,7 +19,7 @@ import androidx.loader.content.Loader;
 import app.k9mail.legacy.account.Account;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.autocrypt.AutocryptOperations;
-import com.fsck.k9.controller.MessageReference;
+import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import app.k9mail.legacy.message.controller.MessagingListener;
 import app.k9mail.legacy.message.controller.SimpleMessagingListener;

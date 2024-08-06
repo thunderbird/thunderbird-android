@@ -25,12 +25,12 @@ import androidx.fragment.app.setFragmentResultListener
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
+import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.activity.MessageLoaderHelper
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks
 import com.fsck.k9.activity.MessageLoaderHelperFactory
-import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.fragment.AttachmentDownloadDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment

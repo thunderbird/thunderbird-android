@@ -1,6 +1,6 @@
 package app.k9mail.feature.widget.message.list
 
-import com.fsck.k9.controller.MessageReference
+import app.k9mail.legacy.message.controller.MessageReference
 
 internal data class MessageListItem(
     val displayName: String,
