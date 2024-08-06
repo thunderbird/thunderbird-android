@@ -11,8 +11,8 @@ import app.k9mail.legacy.folder.FolderType
 import app.k9mail.legacy.folder.RemoteFolder
 import app.k9mail.legacy.mailstore.FolderSettingsChangedListener
 import app.k9mail.legacy.mailstore.MessageStoreManager
+import app.k9mail.legacy.message.controller.MessagingControllerRegistry
 import app.k9mail.legacy.message.controller.SimpleMessagingListener
-import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mail.FolderClass
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -63,7 +63,7 @@ class FolderRepository(
     }
 
     fun getDisplayFoldersFlow(account: Account, displayMode: FolderMode): Flow<List<DisplayFolder>> {
-        val messagingController = DI.get<MessagingController>()
+        val messagingController = DI.get<MessagingControllerRegistry>()
         val messageStore = messageStoreManager.getMessageStore(account)
 
         return callbackFlow {

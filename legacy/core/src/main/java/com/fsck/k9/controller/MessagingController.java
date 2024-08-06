@@ -30,6 +30,7 @@ import androidx.annotation.VisibleForTesting;
 import app.k9mail.legacy.account.Account;
 import app.k9mail.legacy.account.Account.DeletePolicy;
 import app.k9mail.legacy.di.DI;
+import app.k9mail.legacy.message.controller.MessagingControllerRegistry;
 import app.k9mail.legacy.message.controller.MessagingListener;
 import app.k9mail.legacy.message.controller.SimpleMessagingListener;
 import com.fsck.k9.K9;
@@ -104,7 +105,7 @@ import static com.fsck.k9.mail.Flag.X_REMOTE_COPY_STARTED;
  * it removes itself. Thus, any commands that that activity submitted are
  * removed from the queue once the activity is no longer active.
  */
-public class MessagingController {
+public class MessagingController implements MessagingControllerRegistry {
     public static final Set<Flag> SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
 
     private static final long FOLDER_LIST_STALENESS_THRESHOLD = 30 * 60 * 1000L;
@@ -285,7 +286,7 @@ public class MessagingController {
         return folderId;
     }
 
-    public void addListener(MessagingListener listener) {
+    public void addListener(@NonNull MessagingListener listener) {
         listeners.add(listener);
         refreshListener(listener);
     }
@@ -296,7 +297,7 @@ public class MessagingController {
         }
     }
 
-    public void removeListener(MessagingListener listener) {
+    public void removeListener(@NonNull MessagingListener listener) {
         listeners.remove(listener);
     }
 
