@@ -1,5 +1,6 @@
 package com.fsck.k9.controller
 
+import app.k9mail.legacy.message.controller.MessagingListener
 import com.fsck.k9.backend.BackendManager
 
 interface ControllerExtension {

@@ -27,6 +27,7 @@ import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Account.Expunge
 import app.k9mail.legacy.account.Account.SortType
 import app.k9mail.legacy.account.AccountManager
+import app.k9mail.legacy.message.controller.SimpleMessagingListener
 import app.k9mail.legacy.search.LocalSearch
 import app.k9mail.legacy.search.SearchAccount
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
@@ -39,7 +40,6 @@ import com.fsck.k9.activity.Search
 import com.fsck.k9.activity.misc.ContactPicture
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.controller.SimpleMessagingListener
 import com.fsck.k9.fragment.ConfirmationDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
 import com.fsck.k9.helper.Utility

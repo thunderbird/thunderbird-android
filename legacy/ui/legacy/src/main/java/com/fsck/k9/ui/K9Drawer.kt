@@ -15,6 +15,7 @@ import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.folder.DisplayFolder
 import app.k9mail.legacy.folder.Folder
+import app.k9mail.legacy.message.controller.SimpleMessagingListener
 import app.k9mail.legacy.ui.account.DisplayAccount
 import app.k9mail.legacy.ui.folder.DisplayUnifiedInbox
 import app.k9mail.legacy.ui.folder.FolderIconProvider
@@ -23,7 +24,6 @@ import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.controller.SimpleMessagingListener
 import com.fsck.k9.ui.account.AccountImageLoader
 import com.fsck.k9.ui.account.AccountsViewModel
 import com.fsck.k9.ui.base.Theme

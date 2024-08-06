@@ -1,5 +1,5 @@
 
-package com.fsck.k9.controller;
+package app.k9mail.legacy.message.controller;
 
 
 import java.util.List;

@@ -11,8 +11,8 @@ import app.k9mail.legacy.folder.FolderType
 import app.k9mail.legacy.folder.RemoteFolder
 import app.k9mail.legacy.mailstore.FolderSettingsChangedListener
 import app.k9mail.legacy.mailstore.MessageStoreManager
+import app.k9mail.legacy.message.controller.SimpleMessagingListener
 import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.controller.SimpleMessagingListener
 import com.fsck.k9.mail.FolderClass
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
