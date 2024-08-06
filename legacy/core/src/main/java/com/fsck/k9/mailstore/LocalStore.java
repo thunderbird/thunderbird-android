@@ -28,6 +28,7 @@ import android.text.TextUtils;
 import androidx.core.database.CursorKt;
 import app.k9mail.legacy.account.Account;
 import app.k9mail.legacy.di.DI;
+import app.k9mail.legacy.mailstore.MessageListRepository;
 import app.k9mail.legacy.mailstore.MoreMessages;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingCommand;

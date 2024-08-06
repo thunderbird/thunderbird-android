@@ -1,6 +1,7 @@
 package com.fsck.k9.mailstore
 
 import app.k9mail.legacy.mailstore.FolderRepository
+import app.k9mail.legacy.mailstore.MessageListRepository
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import com.fsck.k9.message.extractors.AttachmentCounter
 import com.fsck.k9.message.extractors.MessageFulltextCreator
@@ -35,5 +36,5 @@ val mailStoreModule = module {
             attachmentCounter = get(),
         )
     }
-    single { MessageListRepository(messageStoreManager = get()) }
+    single<MessageListRepository> { DefaultMessageListRepository(messageStoreManager = get()) }
 }

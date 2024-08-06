@@ -2,10 +2,10 @@ package app.k9mail.feature.widget.message.list
 
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Account.SortType
+import app.k9mail.legacy.mailstore.MessageListRepository
 import com.fsck.k9.Preferences
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mailstore.MessageColumns
-import com.fsck.k9.mailstore.MessageListRepository
 import com.fsck.k9.search.SqlQueryBuilder
 import com.fsck.k9.search.getAccounts
 import timber.log.Timber

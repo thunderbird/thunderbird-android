@@ -1,7 +1,7 @@
 package com.fsck.k9.ui.messagelist
 
+import app.k9mail.legacy.mailstore.MessageListRepository
 import com.fsck.k9.Preferences
-import com.fsck.k9.mailstore.MessageListRepository
 import kotlinx.coroutines.CoroutineScope
 
 class MessageListLiveDataFactory(

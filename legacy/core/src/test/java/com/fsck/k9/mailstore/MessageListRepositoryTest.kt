@@ -2,6 +2,8 @@ package com.fsck.k9.mailstore
 
 import app.k9mail.legacy.mailstore.ListenableMessageStore
 import app.k9mail.legacy.mailstore.MessageDetailsAccessor
+import app.k9mail.legacy.mailstore.MessageListChangedListener
+import app.k9mail.legacy.mailstore.MessageListRepository
 import app.k9mail.legacy.mailstore.MessageMapper
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.message.extractors.PreviewResult
@@ -44,7 +46,7 @@ class MessageListRepositoryTest {
         on { getMessageStore(accountUuid) } doReturn messageStore
     }
 
-    private val messageListRepository = MessageListRepository(messageStoreManager)
+    private val messageListRepository: MessageListRepository = DefaultMessageListRepository(messageStoreManager)
 
     @Before
     fun setUp() {

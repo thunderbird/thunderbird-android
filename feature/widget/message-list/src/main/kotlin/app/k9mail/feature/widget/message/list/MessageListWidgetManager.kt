@@ -4,9 +4,9 @@ import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import app.k9mail.legacy.mailstore.MessageListChangedListener
+import app.k9mail.legacy.mailstore.MessageListRepository
 import com.fsck.k9.core.BuildConfig
-import com.fsck.k9.mailstore.MessageListChangedListener
-import com.fsck.k9.mailstore.MessageListRepository
 import timber.log.Timber
 
 class MessageListWidgetManager(
