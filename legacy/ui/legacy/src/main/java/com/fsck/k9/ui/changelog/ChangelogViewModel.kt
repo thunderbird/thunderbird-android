@@ -3,7 +3,7 @@ package com.fsck.k9.ui.changelog
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import com.fsck.k9.preferences.GeneralSettingsManager
+import app.k9mail.legacy.preferences.GeneralSettingsManager
 import com.fsck.k9.ui.base.loader.LoaderState
 import com.fsck.k9.ui.base.loader.liveDataLoader
 import de.cketti.changelog.ReleaseItem

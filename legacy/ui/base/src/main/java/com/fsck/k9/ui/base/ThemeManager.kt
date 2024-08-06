@@ -5,10 +5,10 @@ import android.content.res.Configuration
 import android.os.Build
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatDelegate
-import com.fsck.k9.preferences.AppTheme
-import com.fsck.k9.preferences.GeneralSettings
-import com.fsck.k9.preferences.GeneralSettingsManager
-import com.fsck.k9.preferences.SubTheme
+import app.k9mail.legacy.preferences.AppTheme
+import app.k9mail.legacy.preferences.GeneralSettings
+import app.k9mail.legacy.preferences.GeneralSettingsManager
+import app.k9mail.legacy.preferences.SubTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChanged

@@ -2,7 +2,7 @@ package com.fsck.k9.ui.changelog
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import com.fsck.k9.preferences.GeneralSettingsManager
+import app.k9mail.legacy.preferences.GeneralSettingsManager
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged

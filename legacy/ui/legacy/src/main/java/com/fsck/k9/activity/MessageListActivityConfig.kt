@@ -1,11 +1,11 @@
 package com.fsck.k9.activity
 
+import app.k9mail.legacy.preferences.AppTheme
+import app.k9mail.legacy.preferences.GeneralSettingsManager
+import app.k9mail.legacy.preferences.SubTheme
 import com.fsck.k9.K9
 import com.fsck.k9.SwipeAction
 import com.fsck.k9.UiDensity
-import com.fsck.k9.preferences.AppTheme
-import com.fsck.k9.preferences.GeneralSettingsManager
-import com.fsck.k9.preferences.SubTheme
 
 data class MessageListActivityConfig(
     val appTheme: AppTheme,

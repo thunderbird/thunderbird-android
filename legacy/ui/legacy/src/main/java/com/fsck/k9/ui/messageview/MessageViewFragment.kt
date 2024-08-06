@@ -26,6 +26,7 @@ import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.message.controller.MessageReference
+import app.k9mail.legacy.preferences.GeneralSettingsManager
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.activity.MessageLoaderHelper
@@ -42,7 +43,6 @@ import com.fsck.k9.mail.Flag
 import com.fsck.k9.mailstore.AttachmentViewInfo
 import com.fsck.k9.mailstore.LocalMessage
 import com.fsck.k9.mailstore.MessageViewInfo
-import com.fsck.k9.preferences.GeneralSettingsManager
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.Theme
 import com.fsck.k9.ui.base.ThemeManager

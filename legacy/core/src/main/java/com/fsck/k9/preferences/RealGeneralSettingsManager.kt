@@ -2,6 +2,11 @@
 
 package com.fsck.k9.preferences
 
+import app.k9mail.legacy.preferences.AppTheme
+import app.k9mail.legacy.preferences.BackgroundSync
+import app.k9mail.legacy.preferences.GeneralSettings
+import app.k9mail.legacy.preferences.GeneralSettingsManager
+import app.k9mail.legacy.preferences.SubTheme
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import kotlinx.coroutines.CoroutineDispatcher

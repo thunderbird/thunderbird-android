@@ -1,4 +1,4 @@
-package com.fsck.k9.preferences
+package app.k9mail.legacy.preferences
 
 import kotlinx.coroutines.flow.Flow
 
