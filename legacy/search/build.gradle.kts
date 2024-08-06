@@ -6,3 +6,7 @@ plugins {
 android {
     namespace = "app.k9mail.legacy.search"
 }
+
+dependencies {
+    implementation(projects.legacy.account)
+}

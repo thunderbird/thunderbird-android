@@ -11,8 +11,8 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.preference.CheckBoxPreference
 import androidx.preference.Preference
+import app.k9mail.legacy.search.SearchAccount
 import com.fsck.k9.Preferences
-import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import org.koin.android.ext.android.inject

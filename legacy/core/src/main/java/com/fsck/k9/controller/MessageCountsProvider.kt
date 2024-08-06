@@ -3,9 +3,9 @@ package com.fsck.k9.controller
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.search.ConditionsTreeNode
 import app.k9mail.legacy.search.LocalSearch
+import app.k9mail.legacy.search.SearchAccount
 import com.fsck.k9.mailstore.MessageStoreManager
 import com.fsck.k9.preferences.AccountManager
-import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.search.excludeSpecialFolders
 import com.fsck.k9.search.getAccounts
 import com.fsck.k9.search.limitToDisplayableFolders
