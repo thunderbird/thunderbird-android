@@ -2,6 +2,7 @@ package com.fsck.k9.ui.folders
 
 import app.k9mail.legacy.ui.folder.FolderIconProvider
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
+import app.k9mail.legacy.ui.folder.FoldersViewModel
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9
 import org.koin.androidx.viewmodel.dsl.viewModel
