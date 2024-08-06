@@ -2,6 +2,7 @@ package com.fsck.k9.mailstore
 
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Account.FolderMode
+import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.di.DI
 import app.k9mail.legacy.folder.DisplayFolder
 import app.k9mail.legacy.folder.Folder
@@ -10,7 +11,6 @@ import app.k9mail.legacy.folder.RemoteFolder
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.controller.SimpleMessagingListener
 import com.fsck.k9.mail.FolderClass
-import com.fsck.k9.preferences.AccountManager
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

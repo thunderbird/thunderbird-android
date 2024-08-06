@@ -9,9 +9,9 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
 import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.notification.NotificationLight
 import app.k9mail.legacy.notification.NotificationSettings
-import com.fsck.k9.preferences.AccountManager
 import java.util.concurrent.Executor
 import timber.log.Timber
 

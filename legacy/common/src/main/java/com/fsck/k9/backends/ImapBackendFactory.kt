@@ -3,6 +3,7 @@ package com.fsck.k9.backends
 import android.content.Context
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Account.Expunge
+import app.k9mail.legacy.account.AccountManager
 import com.fsck.k9.backend.BackendFactory
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.backend.imap.ImapBackend
@@ -16,7 +17,6 @@ import com.fsck.k9.mail.store.imap.ImapStore
 import com.fsck.k9.mail.store.imap.ImapStoreConfig
 import com.fsck.k9.mail.transport.smtp.SmtpTransport
 import com.fsck.k9.mailstore.K9BackendStorageFactory
-import com.fsck.k9.preferences.AccountManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map

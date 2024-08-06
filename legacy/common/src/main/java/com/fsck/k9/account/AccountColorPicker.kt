@@ -1,8 +1,8 @@
 package com.fsck.k9.account
 
 import android.content.res.Resources
+import app.k9mail.legacy.account.AccountManager
 import com.fsck.k9.core.R
-import com.fsck.k9.preferences.AccountManager
 
 class AccountColorPicker(
     private val accountManager: AccountManager,

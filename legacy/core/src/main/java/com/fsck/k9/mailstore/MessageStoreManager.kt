@@ -1,7 +1,7 @@
 package com.fsck.k9.mailstore
 
 import app.k9mail.legacy.account.Account
-import com.fsck.k9.preferences.AccountManager
+import app.k9mail.legacy.account.AccountManager
 import java.util.concurrent.ConcurrentHashMap
 
 class MessageStoreManager(

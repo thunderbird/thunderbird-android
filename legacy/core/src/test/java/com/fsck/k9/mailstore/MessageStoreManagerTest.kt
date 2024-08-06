@@ -1,10 +1,10 @@
 package com.fsck.k9.mailstore
 
 import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.AccountManager
+import app.k9mail.legacy.account.AccountRemovedListener
 import assertk.assertThat
 import assertk.assertions.isSameInstanceAs
-import com.fsck.k9.AccountRemovedListener
-import com.fsck.k9.preferences.AccountManager
 import org.junit.Test
 import org.mockito.kotlin.KStubbing
 import org.mockito.kotlin.argumentCaptor

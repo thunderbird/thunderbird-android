@@ -1,8 +1,5 @@
-package com.fsck.k9.preferences
+package app.k9mail.legacy.account
 
-import app.k9mail.legacy.account.Account
-import com.fsck.k9.AccountRemovedListener
-import com.fsck.k9.AccountsChangeListener
 import kotlinx.coroutines.flow.Flow
 
 interface AccountManager {

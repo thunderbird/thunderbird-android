@@ -2,6 +2,7 @@ package com.fsck.k9.controller.push
 
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Account.FolderMode
+import app.k9mail.legacy.account.AccountManager
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.network.ConnectivityChangeListener
 import com.fsck.k9.network.ConnectivityManager
@@ -11,7 +12,6 @@ import com.fsck.k9.notification.PushNotificationState.ALARM_PERMISSION_MISSING
 import com.fsck.k9.notification.PushNotificationState.LISTENING
 import com.fsck.k9.notification.PushNotificationState.WAIT_BACKGROUND_SYNC
 import com.fsck.k9.notification.PushNotificationState.WAIT_NETWORK
-import com.fsck.k9.preferences.AccountManager
 import com.fsck.k9.preferences.BackgroundSync
 import com.fsck.k9.preferences.GeneralSettingsManager
 import java.util.concurrent.Executors
