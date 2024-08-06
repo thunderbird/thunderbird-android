@@ -1,10 +1,10 @@
-package com.fsck.k9.ui.account
+package app.k9mail.legacy.ui.account
 
 import android.content.Context
 import android.widget.ImageView
+import app.k9mail.core.android.common.activity.findActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.fsck.k9.ui.helper.findActivity
 
 /**
  * Load the account image into an [ImageView].

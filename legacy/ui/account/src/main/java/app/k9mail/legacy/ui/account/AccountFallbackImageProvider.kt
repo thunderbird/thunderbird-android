@@ -1,4 +1,4 @@
-package com.fsck.k9.ui.account
+package app.k9mail.legacy.ui.account
 
 import android.content.Context
 import android.graphics.drawable.ColorDrawable

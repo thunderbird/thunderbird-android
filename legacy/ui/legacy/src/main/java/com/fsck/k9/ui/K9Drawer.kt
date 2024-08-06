@@ -17,6 +17,7 @@ import app.k9mail.legacy.folder.DisplayFolder
 import app.k9mail.legacy.folder.Folder
 import app.k9mail.legacy.message.controller.MessagingControllerMailChecker
 import app.k9mail.legacy.message.controller.SimpleMessagingListener
+import app.k9mail.legacy.ui.account.AccountImageLoader
 import app.k9mail.legacy.ui.account.AccountsViewModel
 import app.k9mail.legacy.ui.account.DisplayAccount
 import app.k9mail.legacy.ui.folder.DisplayUnifiedInbox
@@ -28,7 +29,6 @@ import app.k9mail.legacy.ui.theme.Theme
 import app.k9mail.legacy.ui.theme.ThemeManager
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageList
-import com.fsck.k9.ui.account.AccountImageLoader
 import com.fsck.k9.ui.base.livedata.observeNotNull
 import com.fsck.k9.ui.settings.SettingsActivity
 import com.mikepenz.materialdrawer.holder.BadgeStyle
