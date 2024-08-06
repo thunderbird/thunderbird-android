@@ -1,4 +1,4 @@
-package com.fsck.k9.ui
+package app.k9mail.feature.navigation.drawer
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -83,7 +83,7 @@ class LegacyDrawer(
     private val folderIconProvider: FolderIconProvider by inject()
 
     private val drawer: DrawerLayout = parent.findViewById(R.id.drawerLayout)
-    private val sliderView: MaterialDrawerSliderView = parent.findViewById(DrawerR.id.material_drawer_slider)
+    private val sliderView: MaterialDrawerSliderView = parent.findViewById(R.id.material_drawer_slider)
     private val headerView: AccountHeaderView = AccountHeaderView(parent).apply {
         attachToSliderView(this@LegacyDrawer.sliderView)
         dividerBelowHeader = false
@@ -122,7 +122,7 @@ class LegacyDrawer(
         sliderView.setSavedInstance(savedInstanceState)
         headerView.withSavedInstance(savedInstanceState)
 
-        swipeRefreshLayout = parent.findViewById(DrawerR.id.material_drawer_swipe_refresh)
+        swipeRefreshLayout = parent.findViewById(R.id.material_drawer_swipe_refresh)
         headerView.addOnLayoutChangeListener { view, _, _, _, _, _, _, _, _ ->
             val densityMultiplier = view.resources.displayMetrics.density
             val progressViewStart = view.measuredHeight
@@ -170,7 +170,7 @@ class LegacyDrawer(
     }
 
     private fun configureAccountHeader() {
-        headerView.headerBackground = ImageHolder(DrawerR.drawable.navigation_drawer_header_background)
+        headerView.headerBackground = ImageHolder(R.drawable.navigation_drawer_header_background)
 
         headerView.onAccountHeaderListener = { _, profile, _ ->
             val account = (profile as ProfileDrawerItem).tag as Account
@@ -288,7 +288,7 @@ class LegacyDrawer(
     private fun addFooterItems() {
         sliderView.addStickyFooterItem(
             PrimaryDrawerItem().apply {
-                nameRes = DrawerR.string.navigation_drawer_action_folders
+                nameRes = R.string.navigation_drawer_action_folders
                 iconRes = Icons.Outlined.Folder
                 identifier = DRAWER_ID_FOLDERS
                 isSelectable = false
@@ -297,7 +297,7 @@ class LegacyDrawer(
 
         sliderView.addStickyFooterItem(
             PrimaryDrawerItem().apply {
-                nameRes = DrawerR.string.navigation_drawer_action_settings
+                nameRes = R.string.navigation_drawer_action_settings
                 iconRes = Icons.Outlined.Settings
                 identifier = DRAWER_ID_PREFERENCES
                 isSelectable = false

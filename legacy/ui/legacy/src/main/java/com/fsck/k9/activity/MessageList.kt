@@ -27,6 +27,7 @@ import app.k9mail.core.android.common.contact.CachingRepository
 import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.feature.launcher.FeatureLauncherActivity
+import app.k9mail.feature.navigation.drawer.LegacyDrawer
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.message.controller.MessageReference
@@ -49,7 +50,6 @@ import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.helper.ParcelableUtil
 import com.fsck.k9.search.isUnifiedInbox
 import com.fsck.k9.ui.BuildConfig
-import com.fsck.k9.ui.LegacyDrawer
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
 import com.fsck.k9.ui.managefolders.ManageFoldersActivity
