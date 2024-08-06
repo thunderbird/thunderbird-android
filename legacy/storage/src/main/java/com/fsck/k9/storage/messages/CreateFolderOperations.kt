@@ -1,7 +1,7 @@
 package com.fsck.k9.storage.messages
 
 import android.content.ContentValues
-import com.fsck.k9.mailstore.CreateFolderInfo
+import app.k9mail.legacy.mailstore.CreateFolderInfo
 import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.toDatabaseFolderType
 

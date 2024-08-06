@@ -7,5 +7,7 @@ android {
 }
 
 dependencies {
+    implementation(projects.legacy.message)
+
     implementation(projects.mail.common)
 }

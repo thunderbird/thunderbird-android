@@ -1,12 +1,12 @@
 package com.fsck.k9.storage.messages
 
 import android.database.Cursor
+import app.k9mail.legacy.mailstore.MessageDetailsAccessor
+import app.k9mail.legacy.mailstore.MessageMapper
 import app.k9mail.legacy.message.extractors.PreviewResult
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.DatabasePreviewType
 import com.fsck.k9.mailstore.LockableDatabase
-import com.fsck.k9.mailstore.MessageDetailsAccessor
-import com.fsck.k9.mailstore.MessageMapper
 import com.fsck.k9.search.SqlQueryBuilder
 
 internal class RetrieveMessageListOperations(private val lockableDatabase: LockableDatabase) {

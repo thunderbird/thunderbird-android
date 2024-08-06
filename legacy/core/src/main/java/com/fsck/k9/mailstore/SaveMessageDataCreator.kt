@@ -1,5 +1,6 @@
 package com.fsck.k9.mailstore
 
+import app.k9mail.legacy.mailstore.SaveMessageData
 import com.fsck.k9.crypto.EncryptionExtractor
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessageDownloadState

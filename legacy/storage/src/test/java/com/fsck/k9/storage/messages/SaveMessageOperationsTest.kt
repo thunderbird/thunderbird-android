@@ -1,5 +1,6 @@
 package com.fsck.k9.storage.messages
 
+import app.k9mail.legacy.mailstore.SaveMessageData
 import app.k9mail.legacy.message.extractors.PreviewResult
 import assertk.assertThat
 import assertk.assertions.hasSize
@@ -15,7 +16,6 @@ import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.Multipart
 import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.buildMessage
-import com.fsck.k9.mailstore.SaveMessageData
 import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.message.extractors.BasicPartInfoExtractor
 import com.fsck.k9.storage.RobolectricTest
