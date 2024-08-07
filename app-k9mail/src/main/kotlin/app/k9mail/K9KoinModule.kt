@@ -3,9 +3,11 @@ package app.k9mail
 import app.k9mail.auth.K9OAuthConfigurationFactory
 import app.k9mail.core.common.oauth.OAuthConfigurationFactory
 import app.k9mail.core.common.provider.AppNameProvider
+import app.k9mail.core.featureflag.FeatureFlagFactory
 import app.k9mail.dev.developmentModuleAdditions
 import app.k9mail.feature.launcher.FeatureLauncherExternalContract.FeatureThemeProvider
 import app.k9mail.feature.widget.shortcut.LauncherShortcutActivity
+import app.k9mail.featureflag.K9FeatureFlagFactory
 import app.k9mail.provider.K9AppNameProvider
 import app.k9mail.provider.K9FeatureThemeProvider
 import app.k9mail.widget.appWidgetModule
@@ -27,6 +29,7 @@ val appModule = module {
     single<OAuthConfigurationFactory> { K9OAuthConfigurationFactory() }
     single<AppNameProvider> { K9AppNameProvider(androidContext()) }
     single<FeatureThemeProvider> { K9FeatureThemeProvider() }
+    single<FeatureFlagFactory> { K9FeatureFlagFactory() }
 
     developmentModuleAdditions()
 }
