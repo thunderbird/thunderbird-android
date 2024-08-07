@@ -25,6 +25,8 @@ import androidx.fragment.app.commitNow
 import app.k9mail.core.android.common.compat.BundleCompat
 import app.k9mail.core.android.common.contact.CachingRepository
 import app.k9mail.core.android.common.contact.ContactRepository
+import app.k9mail.core.featureflag.FeatureFlagKey
+import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.navigation.drawer.LegacyDrawer
@@ -93,6 +95,7 @@ open class MessageList :
     private val messagingController: MessagingController by inject()
     private val contactRepository: ContactRepository by inject()
     private val coreResourceProvider: CoreResourceProvider by inject()
+    private val featureFlagProvider: FeatureFlagProvider by inject()
 
     private lateinit var actionBar: ActionBar
     private var searchView: SearchView? = null
@@ -579,6 +582,16 @@ open class MessageList :
             return
         }
 
+        featureFlagProvider.provide(FeatureFlagKey("material3_navigation_drawer"))
+            .onEnabled {
+                TODO()
+            }
+            .onDisabledOrUnavailable {
+                initializeLegacyDrawer(savedInstanceState)
+            }
+    }
+
+    private fun initializeLegacyDrawer(savedInstanceState: Bundle?) {
         navigationDrawer = LegacyDrawer(
             parent = this,
             savedInstanceState = savedInstanceState,
