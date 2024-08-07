@@ -941,4 +941,5 @@ Poți păstra acest mesaj și să îl folosești drept copie de siguranță a ch
 \nTrimis de pe dispozitivul meu Android cu <xliff:g id="app_name">%s</xliff:g>. Vă rog să-mi scuzați concizia.</string>
     <string name="account_delete_dlg_instructions_fmt">Contul „<xliff:g id="account">%s</xliff:g>” va fi eliminat din <xliff:g id="app_name">%s</xliff:g>.</string>
     <string name="about_title">Despre <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="about_app_authors_thunderbird">Echipa Thunderbird Mobile</string>
 </resources>
