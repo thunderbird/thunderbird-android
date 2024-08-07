@@ -2,4 +2,5 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="navigation_drawer_action_settings">Nastavitve</string>
     <string name="navigation_drawer_action_folders">Upravljanje z mapami</string>
+    <string name="navigation_drawer_unified_inbox_title">Skupna mapa prejetih sporočil</string>
 </resources>

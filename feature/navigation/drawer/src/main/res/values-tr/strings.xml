@@ -2,4 +2,5 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="navigation_drawer_action_settings">Ayarlar</string>
     <string name="navigation_drawer_action_folders">Klasörleri yönet</string>
+    <string name="navigation_drawer_unified_inbox_title">Birleşik Gelen Kutusu</string>
 </resources>

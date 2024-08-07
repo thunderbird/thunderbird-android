@@ -373,7 +373,7 @@ class LegacyDrawer(
             val unifiedInboxItem = PrimaryDrawerItem().apply {
                 iconRes = Icons.Outlined.AllInbox
                 identifier = DRAWER_ID_UNIFIED_INBOX
-                nameRes = R.string.integrated_inbox_title
+                nameRes = R.string.navigation_drawer_unified_inbox_title
                 selectedColorInt = selectedBackgroundColor
                 textColor = selectedTextColor
                 isSelected = unifiedInboxSelected

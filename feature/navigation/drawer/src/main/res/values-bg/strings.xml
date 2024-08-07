@@ -2,4 +2,5 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="navigation_drawer_action_settings">Настройки</string>
     <string name="navigation_drawer_action_folders">Управление на папки</string>
+    <string name="navigation_drawer_unified_inbox_title">Обща входяща кутия</string>
 </resources>

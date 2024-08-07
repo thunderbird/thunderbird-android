@@ -2,4 +2,5 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="navigation_drawer_action_settings">Gosodiadau</string>
     <string name="navigation_drawer_action_folders">Rheoli ffolderi</string>
+    <string name="navigation_drawer_unified_inbox_title">Mewnflwch Unedig</string>
 </resources>

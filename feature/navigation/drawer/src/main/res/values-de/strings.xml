@@ -2,4 +2,5 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="navigation_drawer_action_settings">Einstellungen</string>
     <string name="navigation_drawer_action_folders">Ordner verwalten</string>
+    <string name="navigation_drawer_unified_inbox_title">Gemeinsamer Posteingang</string>
 </resources>

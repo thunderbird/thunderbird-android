@@ -2,4 +2,5 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="navigation_drawer_action_settings">Agordoj</string>
     <string name="navigation_drawer_action_folders">Administri mesaĝujojn</string>
+    <string name="navigation_drawer_unified_inbox_title">Unuigita ricevujo</string>
 </resources>

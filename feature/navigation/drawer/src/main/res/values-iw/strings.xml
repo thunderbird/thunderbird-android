@@ -2,4 +2,5 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="navigation_drawer_action_settings">הגדרות</string>
     <string name="navigation_drawer_action_folders">נהל תיקיות</string>
+    <string name="navigation_drawer_unified_inbox_title">תיבת דואר נכנס אחידה</string>
 </resources>

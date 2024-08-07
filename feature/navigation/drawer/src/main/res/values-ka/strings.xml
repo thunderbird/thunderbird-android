@@ -2,4 +2,5 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="navigation_drawer_action_settings">პარამეტრები</string>
     <string name="navigation_drawer_action_folders">საკეცების მართვა</string>
+    <string name="navigation_drawer_unified_inbox_title">გაერთიანებული შემავალი</string>
 </resources>

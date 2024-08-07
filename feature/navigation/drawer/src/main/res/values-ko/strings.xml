@@ -2,4 +2,5 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="navigation_drawer_action_settings">설정</string>
     <string name="navigation_drawer_action_folders">폴더 관리</string>
+    <string name="navigation_drawer_unified_inbox_title">통합 편지함</string>
 </resources>
