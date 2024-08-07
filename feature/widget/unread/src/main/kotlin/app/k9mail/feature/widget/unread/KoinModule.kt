@@ -18,6 +18,7 @@ val unreadWidgetModule = module {
             defaultFolderProvider = get(),
             folderRepository = get(),
             folderNameFormatter = get(),
+            coreResourceProvider = get(),
         )
     }
     single {

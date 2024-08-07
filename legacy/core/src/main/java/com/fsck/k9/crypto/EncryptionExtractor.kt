@@ -1,8 +1,8 @@
 package com.fsck.k9.crypto
 
 import android.content.ContentValues
+import app.k9mail.legacy.message.extractors.PreviewResult
 import com.fsck.k9.mail.Message
-import com.fsck.k9.message.extractors.PreviewResult
 
 interface EncryptionExtractor {
     fun extractEncryption(message: Message): EncryptionResult?

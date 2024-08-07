@@ -1,5 +1,6 @@
 package com.fsck.k9.mailstore
 
+import app.k9mail.legacy.mailstore.MessageStoreManager
 import com.fsck.k9.message.extractors.AttachmentCounter
 import com.fsck.k9.message.extractors.MessageFulltextCreator
 import com.fsck.k9.message.extractors.MessagePreviewCreator

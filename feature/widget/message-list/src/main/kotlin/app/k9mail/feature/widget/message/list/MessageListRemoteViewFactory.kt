@@ -9,16 +9,18 @@ import android.widget.RemoteViews
 import android.widget.RemoteViewsService.RemoteViewsFactory
 import androidx.core.content.ContextCompat
 import app.k9mail.legacy.account.Account.SortType
+import app.k9mail.legacy.search.LocalSearch
+import app.k9mail.legacy.search.SearchAccount
+import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageList
-import com.fsck.k9.search.LocalSearch
-import com.fsck.k9.search.SearchAccount
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 @Suppress("TooManyFunctions")
 internal class MessageListRemoteViewFactory(private val context: Context) : RemoteViewsFactory, KoinComponent {
     private val messageListLoader: MessageListLoader by inject()
+    private val coreResourceProvider: CoreResourceProvider by inject()
 
     private lateinit var unifiedInboxSearch: LocalSearch
 
@@ -28,7 +30,10 @@ internal class MessageListRemoteViewFactory(private val context: Context) : Remo
     private var unreadTextColor = 0
 
     override fun onCreate() {
-        unifiedInboxSearch = SearchAccount.createUnifiedInboxAccount().relatedSearch
+        unifiedInboxSearch = SearchAccount.createUnifiedInboxAccount(
+            unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
+            unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
+        ).relatedSearch
 
         senderAboveSubject = K9.isMessageListSenderAboveSubject
         readTextColor = ContextCompat.getColor(context, R.color.message_list_widget_text_read)

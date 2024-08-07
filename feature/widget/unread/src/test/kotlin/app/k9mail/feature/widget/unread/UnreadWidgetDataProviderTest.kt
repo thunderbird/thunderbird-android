@@ -4,6 +4,7 @@ import android.content.Context
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.folder.Folder
 import app.k9mail.legacy.folder.FolderType
+import app.k9mail.legacy.search.SearchAccount
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -13,7 +14,6 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessageCounts
 import com.fsck.k9.controller.MessageCountsProvider
 import com.fsck.k9.mailstore.FolderRepository
-import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import org.junit.Before
 import org.junit.Test
@@ -35,6 +35,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
     private val defaultFolderStrategy = createDefaultFolderStrategy()
     private val folderRepository = createFolderRepository()
     private val folderNameFormatter = createFolderNameFormatter()
+    private val coreResourceProvider = createCoreResourceProvider()
     private val provider = UnreadWidgetDataProvider(
         context,
         preferences,
@@ -42,6 +43,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
         defaultFolderStrategy,
         folderRepository,
         folderNameFormatter,
+        coreResourceProvider,
     )
 
     @Before
@@ -153,6 +155,11 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
         on { displayName(FOLDER) } doReturn LOCALIZED_FOLDER_NAME
     }
 
+    private fun createCoreResourceProvider(): CoreResourceProvider = mock {
+        on { searchUnifiedInboxTitle() } doReturn UNIFIED_INBOX_NAME
+        on { searchUnifiedInboxDetail() } doReturn UNIFIED_INBOX_DETAIL
+    }
+
     companion object {
         const val ACCOUNT_UUID = "00000000-0000-0000-0000-000000000000"
         const val ACCOUNT_NAME = "Test account"
@@ -161,6 +168,8 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
         const val ACCOUNT_UNREAD_COUNT = 2
         const val FOLDER_UNREAD_COUNT = 3
         const val LOCALIZED_FOLDER_NAME = "Posteingang"
+        const val UNIFIED_INBOX_NAME = "Unified Inbox"
+        const val UNIFIED_INBOX_DETAIL = "All Messages"
         val FOLDER = Folder(
             id = FOLDER_ID,
             name = "INBOX",

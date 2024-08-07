@@ -1,12 +1,13 @@
 package com.fsck.k9.mailstore
 
+import app.k9mail.legacy.mailstore.MessageStore
 import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendFolder.MoreMessages
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessageDownloadState
 import java.util.Date
-import com.fsck.k9.mailstore.MoreMessages as StoreMoreMessages
+import app.k9mail.legacy.mailstore.MoreMessages as StoreMoreMessages
 
 class K9BackendFolder(
     private val messageStore: MessageStore,

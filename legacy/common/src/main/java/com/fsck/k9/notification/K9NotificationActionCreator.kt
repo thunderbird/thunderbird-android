@@ -9,12 +9,12 @@ import android.net.Uri
 import androidx.core.app.PendingIntentCompat
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.mailstore.MessageStoreManager
+import app.k9mail.legacy.search.LocalSearch
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.controller.MessageReference
-import com.fsck.k9.mailstore.MessageStoreManager
-import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import com.fsck.k9.ui.notification.DeleteConfirmationActivity
 

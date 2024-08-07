@@ -2,6 +2,8 @@ package com.fsck.k9.storage.messages
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
+import app.k9mail.legacy.mailstore.SaveMessageData
+import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType
 import com.fsck.k9.K9
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Body
@@ -19,9 +21,7 @@ import com.fsck.k9.mail.internet.MimeUtility
 import com.fsck.k9.mail.internet.SizeAware
 import com.fsck.k9.mailstore.DatabasePreviewType
 import com.fsck.k9.mailstore.LockableDatabase
-import com.fsck.k9.mailstore.SaveMessageData
 import com.fsck.k9.message.extractors.BasicPartInfoExtractor
-import com.fsck.k9.message.extractors.PreviewResult.PreviewType
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream

@@ -28,6 +28,14 @@ import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.AccountManager
+import app.k9mail.legacy.search.LocalSearch
+import app.k9mail.legacy.search.SearchAccount
+import app.k9mail.legacy.search.api.SearchAttribute
+import app.k9mail.legacy.search.api.SearchCondition
+import app.k9mail.legacy.search.api.SearchField
+import app.k9mail.legacy.search.api.SearchSpecification
+import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9
 import com.fsck.k9.K9.PostMarkAsUnreadNavigation
 import com.fsck.k9.K9.PostRemoveNavigation
@@ -38,13 +46,7 @@ import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.helper.ParcelableUtil
-import com.fsck.k9.preferences.AccountManager
 import com.fsck.k9.preferences.GeneralSettingsManager
-import com.fsck.k9.search.LocalSearch
-import com.fsck.k9.search.SearchAccount
-import com.fsck.k9.search.SearchSpecification
-import com.fsck.k9.search.SearchSpecification.SearchCondition
-import com.fsck.k9.search.SearchSpecification.SearchField
 import com.fsck.k9.search.isUnifiedInbox
 import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.K9Drawer
@@ -87,6 +89,7 @@ open class MessageList :
     private val generalSettingsManager: GeneralSettingsManager by inject()
     private val messagingController: MessagingController by inject()
     private val contactRepository: ContactRepository by inject()
+    private val coreResourceProvider: CoreResourceProvider by inject()
 
     private lateinit var actionBar: ActionBar
     private var searchView: SearchView? = null
@@ -383,7 +386,7 @@ open class MessageList :
             // Handle shortcut intents
             val specialFolder = intent.getStringExtra(EXTRA_SPECIAL_FOLDER)
             if (specialFolder == SearchAccount.UNIFIED_INBOX) {
-                return LaunchData(search = SearchAccount.createUnifiedInboxAccount().relatedSearch)
+                return LaunchData(search = createSearchAccount().relatedSearch)
             }
 
             val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT)
@@ -408,12 +411,48 @@ open class MessageList :
 
             val search = LocalSearch().apply {
                 isManualSearch = true
-                or(SearchCondition(SearchField.SENDER, SearchSpecification.Attribute.CONTAINS, query))
-                or(SearchCondition(SearchField.TO, SearchSpecification.Attribute.CONTAINS, query))
-                or(SearchCondition(SearchField.CC, SearchSpecification.Attribute.CONTAINS, query))
-                or(SearchCondition(SearchField.BCC, SearchSpecification.Attribute.CONTAINS, query))
-                or(SearchCondition(SearchField.SUBJECT, SearchSpecification.Attribute.CONTAINS, query))
-                or(SearchCondition(SearchField.MESSAGE_CONTENTS, SearchSpecification.Attribute.CONTAINS, query))
+                or(
+                    SearchCondition(
+                        SearchField.SENDER,
+                        SearchAttribute.CONTAINS,
+                        query,
+                    ),
+                )
+                or(
+                    SearchCondition(
+                        SearchField.TO,
+                        SearchAttribute.CONTAINS,
+                        query,
+                    ),
+                )
+                or(
+                    SearchCondition(
+                        SearchField.CC,
+                        SearchAttribute.CONTAINS,
+                        query,
+                    ),
+                )
+                or(
+                    SearchCondition(
+                        SearchField.BCC,
+                        SearchAttribute.CONTAINS,
+                        query,
+                    ),
+                )
+                or(
+                    SearchCondition(
+                        SearchField.SUBJECT,
+                        SearchAttribute.CONTAINS,
+                        query,
+                    ),
+                )
+                or(
+                    SearchCondition(
+                        SearchField.MESSAGE_CONTENTS,
+                        SearchAttribute.CONTAINS,
+                        query,
+                    ),
+                )
             }
 
             val appData = intent.getBundleExtra(SearchManager.APP_DATA)
@@ -465,7 +504,7 @@ open class MessageList :
 
         // Default action
         val search = if (K9.isShowUnifiedInbox) {
-            SearchAccount.createUnifiedInboxAccount().relatedSearch
+            createSearchAccount().relatedSearch
         } else {
             createDefaultLocalSearch()
         }
@@ -587,7 +626,12 @@ open class MessageList :
     }
 
     fun openUnifiedInbox() {
-        actionDisplaySearch(this, SearchAccount.createUnifiedInboxAccount().relatedSearch, false, false)
+        actionDisplaySearch(
+            this,
+            createSearchAccount().relatedSearch,
+            false,
+            false,
+        )
     }
 
     fun launchManageFoldersScreen() {
@@ -1092,7 +1136,7 @@ open class MessageList :
         val tmpSearch = LocalSearch().apply {
             setId(search?.id)
             addAccountUuid(account.uuid)
-            and(SearchField.THREAD_ID, threadRootId.toString(), SearchSpecification.Attribute.EQUALS)
+            and(SearchField.THREAD_ID, threadRootId.toString(), SearchAttribute.EQUALS)
         }
 
         initializeFromLocalSearch(tmpSearch)
@@ -1339,6 +1383,13 @@ open class MessageList :
         }
     }
 
+    private fun createSearchAccount(): SearchAccount {
+        return SearchAccount.createUnifiedInboxAccount(
+            unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
+            unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
+        )
+    }
+
     private enum class DisplayMode {
         MESSAGE_LIST,
         MESSAGE_VIEW,
@@ -1379,6 +1430,7 @@ open class MessageList :
         private const val FRAGMENT_TAG_PLACEHOLDER = "MessageViewPlaceholder"
 
         private val defaultFolderProvider: DefaultFolderProvider by inject()
+        private val coreResourceProvider: CoreResourceProvider by inject()
 
         @JvmStatic
         @JvmOverloads
@@ -1411,9 +1463,15 @@ open class MessageList :
             }
         }
 
-        fun createUnifiedInboxIntent(context: Context, account: Account): Intent {
+        fun createUnifiedInboxIntent(
+            context: Context,
+            account: Account,
+        ): Intent {
             return Intent(context, MessageList::class.java).apply {
-                val search = SearchAccount.createUnifiedInboxAccount().relatedSearch
+                val search = SearchAccount.createUnifiedInboxAccount(
+                    unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
+                    unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
+                ).relatedSearch
 
                 putExtra(EXTRA_ACCOUNT, account.uuid)
                 putExtra(EXTRA_SEARCH, ParcelableUtil.marshall(search))
@@ -1429,7 +1487,7 @@ open class MessageList :
             val search = LocalSearch().apply {
                 id = SearchAccount.NEW_MESSAGES
                 addAccountUuid(account.uuid)
-                and(SearchField.NEW_MESSAGE, "1", SearchSpecification.Attribute.EQUALS)
+                and(SearchField.NEW_MESSAGE, "1", SearchAttribute.EQUALS)
             }
 
             return intentDisplaySearch(context, search, noThreading = false, newTask = true, clearTop = true)
@@ -1477,7 +1535,10 @@ open class MessageList :
         ): Intent {
             return Intent(context, MessageList::class.java).apply {
                 if (openInUnifiedInbox) {
-                    val search = SearchAccount.createUnifiedInboxAccount().relatedSearch
+                    val search = SearchAccount.createUnifiedInboxAccount(
+                        unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
+                        unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
+                    ).relatedSearch
                     putExtra(EXTRA_SEARCH, ParcelableUtil.marshall(search))
                 }
 

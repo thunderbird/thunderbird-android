@@ -3,13 +3,14 @@ package app.k9mail.feature.widget.unread
 import android.content.Context
 import android.content.Intent
 import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.search.LocalSearch
+import app.k9mail.legacy.search.SearchAccount
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
+import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.controller.MessageCountsProvider
 import com.fsck.k9.mailstore.FolderRepository
-import com.fsck.k9.search.LocalSearch
-import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import timber.log.Timber
 
@@ -20,6 +21,7 @@ class UnreadWidgetDataProvider(
     private val defaultFolderProvider: DefaultFolderProvider,
     private val folderRepository: FolderRepository,
     private val folderNameFormatter: FolderNameFormatter,
+    private val coreResourceProvider: CoreResourceProvider,
 ) {
     fun loadUnreadWidgetData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? = with(configuration) {
         if (SearchAccount.UNIFIED_INBOX == accountUuid) {
@@ -41,7 +43,10 @@ class UnreadWidgetDataProvider(
     }
 
     private fun getSearchAccount(accountUuid: String): SearchAccount = when (accountUuid) {
-        SearchAccount.UNIFIED_INBOX -> SearchAccount.createUnifiedInboxAccount()
+        SearchAccount.UNIFIED_INBOX -> SearchAccount.createUnifiedInboxAccount(
+            unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
+            unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
+        )
         else -> throw AssertionError("SearchAccount expected")
     }
 

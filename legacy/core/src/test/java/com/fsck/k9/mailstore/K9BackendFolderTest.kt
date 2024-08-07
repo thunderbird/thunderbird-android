@@ -3,6 +3,7 @@ package com.fsck.k9.mailstore
 import android.database.sqlite.SQLiteDatabase
 import androidx.core.content.contentValuesOf
 import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.mailstore.MessageStoreManager
 import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.contains

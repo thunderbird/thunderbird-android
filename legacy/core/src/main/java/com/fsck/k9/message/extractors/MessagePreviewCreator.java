@@ -3,6 +3,7 @@ package com.fsck.k9.message.extractors;
 
 import androidx.annotation.NonNull;
 
+import app.k9mail.legacy.message.extractors.PreviewResult;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
 

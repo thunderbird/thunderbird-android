@@ -28,6 +28,7 @@ import android.text.TextUtils;
 import androidx.core.database.CursorKt;
 import app.k9mail.legacy.account.Account;
 import app.k9mail.legacy.di.DI;
+import app.k9mail.legacy.mailstore.MoreMessages;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingCommand;
 import com.fsck.k9.controller.PendingCommandSerializer;
@@ -47,9 +48,9 @@ import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.SchemaDefinition;
 import com.fsck.k9.mailstore.StorageManager.InternalStorageProvider;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
-import com.fsck.k9.search.LocalSearch;
-import com.fsck.k9.search.SearchSpecification.Attribute;
-import com.fsck.k9.search.SearchSpecification.SearchField;
+import app.k9mail.legacy.search.LocalSearch;
+import app.k9mail.legacy.search.api.SearchAttribute;
+import app.k9mail.legacy.search.api.SearchField;
 import com.fsck.k9.search.SqlQueryBuilder;
 import kotlinx.datetime.Clock;
 import org.apache.commons.io.IOUtils;
@@ -422,7 +423,7 @@ public class LocalStore {
         String rootIdString = Long.toString(rootId);
 
         LocalSearch search = new LocalSearch();
-        search.and(SearchField.THREAD_ID, rootIdString, Attribute.EQUALS);
+        search.and(SearchField.THREAD_ID, rootIdString, SearchAttribute.EQUALS);
 
         return searchForMessages(search);
     }

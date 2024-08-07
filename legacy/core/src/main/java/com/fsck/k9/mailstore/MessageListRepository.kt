@@ -1,5 +1,7 @@
 package com.fsck.k9.mailstore
 
+import app.k9mail.legacy.mailstore.MessageMapper
+import app.k9mail.legacy.mailstore.MessageStoreManager
 import java.util.concurrent.CopyOnWriteArraySet
 
 class MessageListRepository(

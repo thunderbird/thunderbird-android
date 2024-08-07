@@ -1,5 +1,7 @@
 package com.fsck.k9.storage.messages
 
+import app.k9mail.legacy.mailstore.MessageMapper
+import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEmpty
@@ -8,8 +10,6 @@ import assertk.assertions.isFalse
 import assertk.assertions.isTrue
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.DatabasePreviewType
-import com.fsck.k9.mailstore.MessageMapper
-import com.fsck.k9.message.extractors.PreviewResult.PreviewType
 import com.fsck.k9.storage.RobolectricTest
 import org.junit.Test
 

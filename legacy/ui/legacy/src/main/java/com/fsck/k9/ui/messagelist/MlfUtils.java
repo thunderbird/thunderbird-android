@@ -13,7 +13,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
-import com.fsck.k9.preferences.AccountManager;
+import app.k9mail.legacy.account.AccountManager;
 
 
 public class MlfUtils {

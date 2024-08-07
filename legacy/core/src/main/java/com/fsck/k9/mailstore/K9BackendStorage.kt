@@ -1,5 +1,7 @@
 package com.fsck.k9.mailstore
 
+import app.k9mail.legacy.mailstore.CreateFolderInfo
+import app.k9mail.legacy.mailstore.MessageStore
 import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendFolderUpdater
 import com.fsck.k9.backend.api.BackendStorage

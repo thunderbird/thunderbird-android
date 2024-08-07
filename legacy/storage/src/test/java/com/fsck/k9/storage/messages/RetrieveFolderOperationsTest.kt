@@ -1,6 +1,10 @@
 package com.fsck.k9.storage.messages
 
 import app.k9mail.legacy.account.Account.FolderMode
+import app.k9mail.legacy.mailstore.MoreMessages
+import app.k9mail.legacy.search.LocalSearch
+import app.k9mail.legacy.search.api.SearchAttribute
+import app.k9mail.legacy.search.api.SearchField
 import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.hasSize
@@ -13,10 +17,7 @@ import assertk.assertions.isTrue
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mailstore.FolderNotFoundException
-import com.fsck.k9.mailstore.MoreMessages
 import com.fsck.k9.mailstore.toDatabaseFolderType
-import com.fsck.k9.search.LocalSearch
-import com.fsck.k9.search.SearchSpecification
 import com.fsck.k9.storage.RobolectricTest
 import org.junit.Test
 
@@ -516,6 +517,6 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
     }
 
     private val unifiedInboxConditions = LocalSearch().apply {
-        and(SearchSpecification.SearchField.INTEGRATE, "1", SearchSpecification.Attribute.EQUALS)
+        and(SearchField.INTEGRATE, "1", SearchAttribute.EQUALS)
     }.conditions
 }

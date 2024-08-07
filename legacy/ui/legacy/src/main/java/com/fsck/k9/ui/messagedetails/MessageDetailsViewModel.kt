@@ -10,6 +10,7 @@ import app.k9mail.core.android.common.contact.ContactPermissionResolver
 import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.common.mail.toEmailAddressOrNull
 import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.folder.Folder
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import com.fsck.k9.controller.MessageReference
@@ -19,7 +20,6 @@ import com.fsck.k9.mailstore.CryptoResultAnnotation
 import com.fsck.k9.mailstore.FolderRepository
 import com.fsck.k9.mailstore.MessageDate
 import com.fsck.k9.mailstore.MessageRepository
-import com.fsck.k9.preferences.AccountManager
 import com.fsck.k9.ui.R
 import com.fsck.k9.view.MessageCryptoDisplayStatus
 import java.text.DateFormat
