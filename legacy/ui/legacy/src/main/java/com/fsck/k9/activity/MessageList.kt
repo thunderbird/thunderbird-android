@@ -573,7 +573,7 @@ open class MessageList :
 
     private fun initializeDrawer(savedInstanceState: Bundle?) {
         if (!isDrawerEnabled) {
-            val drawerLayout = findViewById<DrawerLayout>(R.id.drawerLayout)
+            val drawerLayout = findViewById<DrawerLayout>(R.id.navigation_drawer_layout)
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
             return
         }

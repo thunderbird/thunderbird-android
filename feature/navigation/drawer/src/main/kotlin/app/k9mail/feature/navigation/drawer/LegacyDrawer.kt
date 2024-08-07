@@ -82,7 +82,7 @@ class LegacyDrawer(
     private val accountImageLoader: AccountImageLoader by inject()
     private val folderIconProvider: FolderIconProvider by inject()
 
-    private val drawer: DrawerLayout = parent.findViewById(R.id.drawerLayout)
+    private val drawer: DrawerLayout = parent.findViewById(R.id.navigation_drawer_layout)
     private val sliderView: MaterialDrawerSliderView = parent.findViewById(R.id.material_drawer_slider)
     private val headerView: AccountHeaderView = AccountHeaderView(parent).apply {
         attachToSliderView(this@LegacyDrawer.sliderView)
