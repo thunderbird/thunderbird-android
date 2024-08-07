@@ -1,6 +1,6 @@
 package com.fsck.k9.notification
 
-import com.fsck.k9.controller.MessageReference
+import app.k9mail.legacy.message.controller.MessageReference
 
 sealed interface NotificationStoreOperation {
     data class Add(

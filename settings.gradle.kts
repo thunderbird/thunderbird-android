@@ -96,6 +96,7 @@ include(
     ":legacy:mailstore",
     ":legacy:message",
     ":legacy:notification",
+    ":legacy:preferences",
     ":legacy:search",
     ":legacy:storage",
     ":legacy:testing",
@@ -103,6 +104,7 @@ include(
     ":legacy:ui:account",
     ":legacy:ui:folder",
     ":legacy:ui:legacy",
+    ":legacy:ui:theme",
 )
 
 include(

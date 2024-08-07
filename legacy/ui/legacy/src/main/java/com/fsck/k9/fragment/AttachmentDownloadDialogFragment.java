@@ -9,8 +9,8 @@ import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
 
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.controller.MessagingListener;
-import com.fsck.k9.controller.SimpleMessagingListener;
+import app.k9mail.legacy.message.controller.MessagingListener;
+import app.k9mail.legacy.message.controller.SimpleMessagingListener;
 
 
 public class AttachmentDownloadDialogFragment extends DialogFragment {

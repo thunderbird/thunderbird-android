@@ -2,13 +2,13 @@ package com.fsck.k9.ui.messagelist
 
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Account.SortType
+import app.k9mail.legacy.mailstore.MessageListRepository
 import app.k9mail.legacy.search.LocalSearch
 import app.k9mail.legacy.search.api.SearchField
 import com.fsck.k9.Preferences
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.mailstore.MessageColumns
-import com.fsck.k9.mailstore.MessageListRepository
 import com.fsck.k9.search.SqlQueryBuilder
 import com.fsck.k9.search.getAccounts
 import timber.log.Timber

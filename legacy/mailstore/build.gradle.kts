@@ -8,6 +8,7 @@ android {
 
 dependencies {
     implementation(projects.legacy.account)
+    implementation(projects.legacy.di)
     implementation(projects.legacy.folder)
     implementation(projects.legacy.message)
     implementation(projects.legacy.search)

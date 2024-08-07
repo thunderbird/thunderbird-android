@@ -7,10 +7,10 @@ import androidx.lifecycle.viewModelScope
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.folder.Folder
 import app.k9mail.legacy.folder.FolderDetails
+import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.helper.SingleLiveEvent
-import com.fsck.k9.mailstore.FolderRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber

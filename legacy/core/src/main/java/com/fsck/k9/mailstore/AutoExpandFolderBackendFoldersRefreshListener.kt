@@ -1,6 +1,7 @@
 package com.fsck.k9.mailstore
 
 import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.Preferences
 
 /**

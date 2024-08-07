@@ -4,6 +4,7 @@ package com.fsck.k9.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.k9mail.legacy.message.controller.MessageReference;
 import timber.log.Timber;
 
 

@@ -1,15 +1,14 @@
-package com.fsck.k9.ui.account
+package app.k9mail.legacy.ui.account
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.ui.account.DisplayAccount
-import com.fsck.k9.controller.MessageCounts
-import com.fsck.k9.controller.MessageCountsProvider
-import com.fsck.k9.mailstore.MessageListChangedListener
-import com.fsck.k9.mailstore.MessageListRepository
+import app.k9mail.legacy.mailstore.MessageListChangedListener
+import app.k9mail.legacy.mailstore.MessageListRepository
+import app.k9mail.legacy.message.controller.MessageCounts
+import app.k9mail.legacy.message.controller.MessageCountsProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose

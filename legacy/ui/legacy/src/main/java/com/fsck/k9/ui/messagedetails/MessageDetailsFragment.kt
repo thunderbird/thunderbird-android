@@ -20,12 +20,12 @@ import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
+import app.k9mail.legacy.message.controller.MessageReference
 import app.k9mail.legacy.ui.folder.FolderIconProvider
 import app.k9mail.ui.utils.bottomsheet.ToolbarBottomSheetDialog
 import app.k9mail.ui.utils.bottomsheet.ToolbarBottomSheetDialogFragment
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.contacts.ContactPictureLoader
-import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.CryptoResultAnnotation
 import com.fsck.k9.ui.R

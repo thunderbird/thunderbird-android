@@ -2,6 +2,7 @@ package com.fsck.k9.notification
 
 import app.k9mail.core.android.testing.RobolectricTest
 import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.message.controller.MessageReference
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.hasSize
@@ -13,7 +14,6 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.isSameInstanceAs
 import assertk.assertions.isTrue
-import com.fsck.k9.controller.MessageReference
 import kotlin.test.assertNotNull
 import org.junit.Test
 

@@ -2,7 +2,7 @@ package com.fsck.k9.ui.messagesource
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.fsck.k9.controller.MessageReference
+import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.mail.Header
 import com.fsck.k9.mailstore.MessageRepository
 import com.fsck.k9.ui.base.loader.LoaderState

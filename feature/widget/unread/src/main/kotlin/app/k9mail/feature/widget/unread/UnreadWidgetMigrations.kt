@@ -4,8 +4,8 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import app.k9mail.feature.widget.unread.UnreadWidgetRepository.Companion.PREFS_VERSION
 import app.k9mail.feature.widget.unread.UnreadWidgetRepository.Companion.PREF_VERSION_KEY
+import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.Preferences
-import com.fsck.k9.mailstore.FolderRepository
 
 internal class UnreadWidgetMigrations(
     private val accountRepository: Preferences,

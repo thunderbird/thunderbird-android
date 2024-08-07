@@ -1,4 +1,4 @@
-package com.fsck.k9.controller
+package app.k9mail.legacy.message.controller
 
 import com.fsck.k9.mail.filter.Base64
 import java.util.StringTokenizer
@@ -32,6 +32,7 @@ data class MessageReference(
         private const val IDENTITY_VERSION_2 = '#'
         private const val IDENTITY_SEPARATOR = ":"
 
+        @Suppress("ReturnCount", "MagicNumber")
         @JvmStatic
         fun parse(identity: String?): MessageReference? {
             if (identity == null || identity.isEmpty() || identity[0] != IDENTITY_VERSION_2) {

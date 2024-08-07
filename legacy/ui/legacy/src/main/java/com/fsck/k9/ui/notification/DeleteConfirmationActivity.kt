@@ -5,8 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.Preferences
-import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessageReferenceHelper
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.fragment.ConfirmationDialogFragment

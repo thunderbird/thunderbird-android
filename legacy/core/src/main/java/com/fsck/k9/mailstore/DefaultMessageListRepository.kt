@@ -1,24 +1,26 @@
 package com.fsck.k9.mailstore
 
+import app.k9mail.legacy.mailstore.MessageListChangedListener
+import app.k9mail.legacy.mailstore.MessageListRepository
 import app.k9mail.legacy.mailstore.MessageMapper
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import java.util.concurrent.CopyOnWriteArraySet
 
-class MessageListRepository(
+class DefaultMessageListRepository(
     private val messageStoreManager: MessageStoreManager,
-) {
+) : MessageListRepository {
     private val globalListeners = CopyOnWriteArraySet<MessageListChangedListener>()
     private val accountListeners = CopyOnWriteArraySet<Pair<String, MessageListChangedListener>>()
 
-    fun addListener(listener: MessageListChangedListener) {
+    override fun addListener(listener: MessageListChangedListener) {
         globalListeners.add(listener)
     }
 
-    fun addListener(accountUuid: String, listener: MessageListChangedListener) {
+    override fun addListener(accountUuid: String, listener: MessageListChangedListener) {
         accountListeners.add(accountUuid to listener)
     }
 
-    fun removeListener(listener: MessageListChangedListener) {
+    override fun removeListener(listener: MessageListChangedListener) {
         globalListeners.remove(listener)
 
         val accountEntries = accountListeners.filter { it.second == listener }.toSet()
@@ -27,7 +29,7 @@ class MessageListRepository(
         }
     }
 
-    fun notifyMessageListChanged(accountUuid: String) {
+    override fun notifyMessageListChanged(accountUuid: String) {
         for (listener in globalListeners) {
             listener.onMessageListChanged()
         }
@@ -42,7 +44,7 @@ class MessageListRepository(
     /**
      * Retrieve list of messages from [MessageStore] but override values with data from [MessageListCache].
      */
-    fun <T> getMessages(
+    override fun <T> getMessages(
         accountUuid: String,
         selection: String,
         selectionArgs: Array<String>,
@@ -59,7 +61,7 @@ class MessageListRepository(
     /**
      * Retrieve threaded list of messages from [MessageStore] but override values with data from [MessageListCache].
      */
-    fun <T> getThreadedMessages(
+    override fun <T> getThreadedMessages(
         accountUuid: String,
         selection: String,
         selectionArgs: Array<String>,
@@ -76,7 +78,7 @@ class MessageListRepository(
     /**
      * Retrieve list of messages in a thread from [MessageStore] but override values with data from [MessageListCache].
      */
-    fun <T> getThread(
+    override fun <T> getThread(
         accountUuid: String,
         threadId: Long,
         sortOrder: String,
@@ -88,8 +90,4 @@ class MessageListRepository(
         val mapper = if (cache.isEmpty()) messageMapper else CacheAwareMessageMapper(cache, messageMapper)
         return messageStore.getThread(threadId, sortOrder, mapper)
     }
-}
-
-fun interface MessageListChangedListener {
-    fun onMessageListChanged()
 }

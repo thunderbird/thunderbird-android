@@ -1,5 +1,6 @@
 package com.fsck.k9.mailstore
 
+import app.k9mail.legacy.mailstore.MessageListRepository
 import assertk.assertThat
 import assertk.assertions.isFalse
 import assertk.assertions.isNotNull

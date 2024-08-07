@@ -1,4 +1,4 @@
-package com.fsck.k9.preferences
+package app.k9mail.legacy.preferences
 
 /**
  * Stores a snapshot of the app's general settings.

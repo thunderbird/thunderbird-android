@@ -1,15 +1,13 @@
-package com.fsck.k9.ui.folders
+package app.k9mail.legacy.ui.folder
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.mailstore.FolderRepository
+import app.k9mail.legacy.message.controller.MessageCountsProvider
 import app.k9mail.legacy.search.SearchAccount
-import app.k9mail.legacy.ui.folder.DisplayUnifiedInbox
-import app.k9mail.legacy.ui.folder.FolderList
-import com.fsck.k9.controller.MessageCountsProvider
-import com.fsck.k9.mailstore.FolderRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

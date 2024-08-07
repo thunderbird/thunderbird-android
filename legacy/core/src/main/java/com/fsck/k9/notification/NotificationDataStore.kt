@@ -1,7 +1,7 @@
 package com.fsck.k9.notification
 
 import app.k9mail.legacy.account.Account
-import com.fsck.k9.controller.MessageReference
+import app.k9mail.legacy.message.controller.MessageReference
 
 internal const val MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS = 9
 

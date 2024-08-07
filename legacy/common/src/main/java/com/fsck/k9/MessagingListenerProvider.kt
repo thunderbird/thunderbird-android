@@ -1,5 +1,5 @@
 package com.fsck.k9
 
-import com.fsck.k9.controller.MessagingListener
+import app.k9mail.legacy.message.controller.MessagingListener
 
 class MessagingListenerProvider(val listeners: List<MessagingListener>)

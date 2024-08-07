@@ -15,21 +15,21 @@ import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.folder.DisplayFolder
 import app.k9mail.legacy.folder.Folder
+import app.k9mail.legacy.message.controller.MessagingControllerMailChecker
+import app.k9mail.legacy.message.controller.SimpleMessagingListener
+import app.k9mail.legacy.ui.account.AccountImageLoader
+import app.k9mail.legacy.ui.account.AccountsViewModel
 import app.k9mail.legacy.ui.account.DisplayAccount
 import app.k9mail.legacy.ui.folder.DisplayUnifiedInbox
 import app.k9mail.legacy.ui.folder.FolderIconProvider
 import app.k9mail.legacy.ui.folder.FolderList
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
+import app.k9mail.legacy.ui.folder.FoldersViewModel
+import app.k9mail.legacy.ui.theme.Theme
+import app.k9mail.legacy.ui.theme.ThemeManager
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageList
-import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.controller.SimpleMessagingListener
-import com.fsck.k9.ui.account.AccountImageLoader
-import com.fsck.k9.ui.account.AccountsViewModel
-import com.fsck.k9.ui.base.Theme
-import com.fsck.k9.ui.base.ThemeManager
 import com.fsck.k9.ui.base.livedata.observeNotNull
-import com.fsck.k9.ui.folders.FoldersViewModel
 import com.fsck.k9.ui.settings.SettingsActivity
 import com.mikepenz.materialdrawer.holder.BadgeStyle
 import com.mikepenz.materialdrawer.holder.ImageHolder
@@ -69,7 +69,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private val folderNameFormatter: FolderNameFormatter by inject()
     private val themeManager: ThemeManager by inject()
     private val resources: Resources by inject()
-    private val messagingController: MessagingController by inject()
+    private val messagingController: MessagingControllerMailChecker by inject()
     private val accountImageLoader: AccountImageLoader by inject()
     private val folderIconProvider: FolderIconProvider by inject()
 
@@ -310,11 +310,11 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         swipeRefreshLayout.setOnRefreshListener {
             val accountToRefresh = if (headerView.selectionListShown) null else account
             messagingController.checkMail(
-                accountToRefresh,
-                true,
-                true,
-                true,
-                object : SimpleMessagingListener() {
+                account = accountToRefresh,
+                ignoreLastCheckedTime = true,
+                useManualWakeLock = true,
+                notify = true,
+                listener = object : SimpleMessagingListener() {
                     override fun checkMailFinished(context: Context?, account: Account?) {
                         swipeRefreshLayout.post {
                             swipeRefreshLayout.isRefreshing = false

@@ -9,6 +9,7 @@ import java.util.Set;
 import android.content.Context;
 
 import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.message.controller.SimpleMessagingListener;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.Preferences;

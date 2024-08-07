@@ -4,9 +4,9 @@ package com.fsck.k9.preferences.upgrader;
 import java.util.Map;
 import java.util.Set;
 
-import com.fsck.k9.preferences.AppTheme;
+import app.k9mail.legacy.preferences.AppTheme;
+import app.k9mail.legacy.preferences.SubTheme;
 import com.fsck.k9.preferences.Settings.SettingsUpgrader;
-import com.fsck.k9.preferences.SubTheme;
 
 
 /**

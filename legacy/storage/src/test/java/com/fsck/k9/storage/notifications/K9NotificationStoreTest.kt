@@ -1,11 +1,11 @@
 package com.fsck.k9.storage.notifications
 
+import app.k9mail.legacy.message.controller.MessageReference
 import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
-import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.notification.NotificationStoreOperation
 import com.fsck.k9.storage.RobolectricTest
 import com.fsck.k9.storage.messages.createDatabase

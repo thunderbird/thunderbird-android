@@ -9,7 +9,7 @@ import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.folder.FolderType
 import app.k9mail.legacy.folder.RemoteFolder
-import com.fsck.k9.mailstore.FolderRepository
+import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.mailstore.SpecialFolderSelectionStrategy
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
