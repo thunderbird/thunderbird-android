@@ -64,15 +64,15 @@ private const val EN_SPACE = "\u2000"
 
 @Suppress("MagicNumber", "TooManyFunctions", "LongParameterList")
 class LegacyDrawer(
-    savedInstanceState: Bundle?,
-    parent: AppCompatActivity,
+    override val parent: AppCompatActivity,
     private val openFolders: () -> Unit,
     private val openUnifiedInbox: () -> Unit,
     private val openFolder: (folderId: Long) -> Unit,
     private val openAccount: (account: Account) -> Boolean,
     private val openSettings: () -> Unit,
     createDrawerListener: () -> DrawerLayout.DrawerListener,
-) : KoinComponent {
+    savedInstanceState: Bundle?,
+) : NavigationDrawer, KoinComponent {
     private val foldersViewModel: FoldersViewModel by parent.viewModel()
     private val accountsViewModel: AccountsViewModel by parent.viewModel()
     private val folderNameFormatter: FolderNameFormatter by inject()
@@ -104,7 +104,7 @@ class LegacyDrawer(
     val layout: DrawerLayout
         get() = drawer
 
-    val isOpen: Boolean
+    override val isOpen: Boolean
         get() = drawer.isOpen
 
     init {
@@ -309,7 +309,7 @@ class LegacyDrawer(
         return folderNameFormatter.displayName(folder)
     }
 
-    fun updateUserAccountsAndFolders(account: Account?) {
+    override fun updateUserAccountsAndFolders(account: Account?) {
         if (account != null) {
             initializeWithAccountColor(account)
             headerView.setActiveProfile(account.drawerId)
@@ -428,14 +428,14 @@ class LegacyDrawer(
         userFolderDrawerIds.clear()
     }
 
-    fun selectAccount(accountUuid: String) {
+    override fun selectAccount(accountUuid: String) {
         openedAccountUuid = accountUuid
         headerView.profiles?.firstOrNull { it.accountUuid == accountUuid }?.let { profile ->
             headerView.activeProfile = profile
         }
     }
 
-    fun selectFolder(folderId: Long) {
+    override fun selectFolder(folderId: Long) {
         deselect()
         openedFolderId = folderId
         for (drawerId in userFolderDrawerIds) {
@@ -447,13 +447,13 @@ class LegacyDrawer(
         }
     }
 
-    fun deselect() {
+    override fun deselect() {
         unifiedInboxSelected = false
         openedFolderId = null
         sliderView.selectExtension.deselect()
     }
 
-    fun selectUnifiedInbox() {
+    override fun selectUnifiedInbox() {
         headerView.selectionListShown = false
         deselect()
         unifiedInboxSelected = true
@@ -484,19 +484,19 @@ class LegacyDrawer(
         return if (index == -1) color else darkColors[index]
     }
 
-    fun open() {
+    override fun open() {
         drawer.openDrawer(GravityCompat.START)
     }
 
-    fun close() {
+    override fun close() {
         drawer.closeDrawer(GravityCompat.START)
     }
 
-    fun lock() {
+    override fun lock() {
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
     }
 
-    fun unlock() {
+    override fun unlock() {
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
     }
 

@@ -28,6 +28,7 @@ import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.navigation.drawer.LegacyDrawer
+import app.k9mail.feature.navigation.drawer.NavigationDrawer
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.message.controller.MessageReference
@@ -98,7 +99,7 @@ open class MessageList :
     private var initialSearchViewQuery: String? = null
     private var initialSearchViewIconified: Boolean = true
 
-    private var drawer: LegacyDrawer? = null
+    private var navigationDrawer: NavigationDrawer? = null
     private var openFolderTransaction: FragmentTransaction? = null
     private var progressBar: ProgressBar? = null
     private var messageViewPlaceHolder: PlaceholderFragment? = null
@@ -181,7 +182,7 @@ open class MessageList :
 
         if (isDrawerEnabled) {
             configureDrawer()
-            drawer!!.updateUserAccountsAndFolders(account)
+            navigationDrawer!!.updateUserAccountsAndFolders(account)
         }
 
         findFragments()
@@ -224,7 +225,7 @@ open class MessageList :
 
         if (isDrawerEnabled) {
             configureDrawer()
-            drawer!!.updateUserAccountsAndFolders(account)
+            navigationDrawer!!.updateUserAccountsAndFolders(account)
         }
 
         initializeDisplayMode(null)
@@ -578,7 +579,7 @@ open class MessageList :
             return
         }
 
-        drawer = LegacyDrawer(
+        navigationDrawer = LegacyDrawer(
             parent = this,
             savedInstanceState = savedInstanceState,
             openFolders = { launchManageFoldersScreen() },
@@ -700,8 +701,8 @@ open class MessageList :
     }
 
     override fun onBackPressed() {
-        if (isDrawerEnabled && drawer!!.isOpen) {
-            drawer!!.close()
+        if (isDrawerEnabled && navigationDrawer!!.isOpen) {
+            navigationDrawer!!.close()
         } else if (displayMode == DisplayMode.MESSAGE_VIEW) {
             if (messageViewOnly) {
                 finish()
@@ -919,10 +920,10 @@ open class MessageList :
         if (id == android.R.id.home) {
             if (displayMode != DisplayMode.MESSAGE_VIEW && !isAdditionalMessageListDisplayed) {
                 if (isDrawerEnabled) {
-                    if (drawer!!.isOpen) {
-                        drawer!!.close()
+                    if (navigationDrawer!!.isOpen) {
+                        navigationDrawer!!.close()
                     } else {
-                        drawer!!.open()
+                        navigationDrawer!!.open()
                     }
                 } else {
                     finish()
@@ -1334,12 +1335,12 @@ open class MessageList :
         get() = supportFragmentManager.backStackEntryCount > 0
 
     private fun lockDrawer() {
-        drawer!!.lock()
+        navigationDrawer!!.lock()
         actionBar.setHomeAsUpIndicator(Icons.Outlined.ArrowBack)
     }
 
     private fun unlockDrawer() {
-        drawer!!.unlock()
+        navigationDrawer!!.unlock()
         actionBar.setHomeAsUpIndicator(Icons.Outlined.Menu)
     }
 
@@ -1383,7 +1384,7 @@ open class MessageList :
     }
 
     private fun configureDrawer() {
-        val drawer = drawer ?: return
+        val drawer = navigationDrawer ?: return
         drawer.selectAccount(account!!.uuid)
         when {
             singleFolderMode -> drawer.selectFolder(search!!.folderIds[0])
