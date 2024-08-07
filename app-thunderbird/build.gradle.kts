@@ -18,6 +18,8 @@ dependencies {
     implementation(projects.legacy.core)
     implementation(projects.legacy.ui.legacy)
 
+    implementation(projects.core.featureflags)
+
     implementation(projects.feature.widget.messageList)
     implementation(projects.feature.widget.shortcut)
     implementation(projects.feature.widget.unread)
