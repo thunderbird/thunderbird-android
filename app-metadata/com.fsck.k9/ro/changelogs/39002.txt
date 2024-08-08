@@ -1,0 +1,8 @@
+- Am schimbat o mulțime de elemente interne pentru a migra la Material 3. Rețineți că interfața de Material 3 este încă într-o stare incipientă.
+- A fost schimbată ordinea acțiunilor din bara de instrumente în vizualizarea mesajelor pentru a se potrivi cu ordinea din modul de selectare multiplă
+- A fost schimbată valoarea implicită pentru „Preluarea mesajelor de până la” la 128KiB
+- A fost rezolvată problema în care pictogramele din bara de instrumente erau afișate într-o culoare greșită după efectuarea unei acțiuni de glisare
+- A fost rezolvată problema blocării la tăierea adreselor de e-mail din câmpul destinatarului la compunerea unui mesaj
+- S-a rezolvat problema determinării corecte a dimensiunii barei de instrumente când se utilizează o dimens. a fontului de sistem diferită de cea implicită
+- Au fost adăugate traduceri în corsicană, coreeană și vietnameză
+- Traduceri actualizate

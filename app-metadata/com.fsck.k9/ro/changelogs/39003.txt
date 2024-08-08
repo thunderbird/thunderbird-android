@@ -1,0 +1,1 @@
+- S-a remediat o eroare atunci când o acțiune de glisare a listei de mesaje era stabilită la „Niciuna”
