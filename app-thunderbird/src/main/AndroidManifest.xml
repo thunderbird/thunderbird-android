@@ -9,7 +9,22 @@
         android:name=".ThunderbirdApp"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:theme="@style/Theme.Thunderbird.Startup"
         >
+
+        <activity
+            android:name="com.fsck.k9.ui.settings.account.OpenPgpAppSelectDialog"
+            android:configChanges="locale"
+            android:theme="@style/Theme.Thunderbird.DayNight.Dialog.Translucent"
+            />
+
+        <activity
+            android:name="com.fsck.k9.ui.notification.DeleteConfirmationActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTop"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Thunderbird.DayNight.Dialog.Translucent"
+            />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

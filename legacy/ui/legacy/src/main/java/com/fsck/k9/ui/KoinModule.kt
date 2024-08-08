@@ -2,7 +2,6 @@ package com.fsck.k9.ui
 
 import android.content.Context
 import app.k9mail.legacy.message.controller.MessagingControllerMailChecker
-import app.k9mail.legacy.ui.theme.ThemeProvider
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.ui.helper.DisplayHtmlUiFactory
 import com.fsck.k9.ui.helper.HtmlSettingsProvider
@@ -13,7 +12,6 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val uiModule = module {
-    single<ThemeProvider> { K9ThemeProvider() }
     single { HtmlSettingsProvider(get()) }
     single { DisplayHtmlUiFactory(get()) }
     single<MessagingControllerMailChecker> { get<MessagingController>() }

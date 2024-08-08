@@ -31,10 +31,8 @@
 
     <application
         android:allowTaskReparenting="false"
-        android:theme="@style/Theme.K9.Startup"
         android:resizeableActivity="true"
         android:supportsRtl="true"
-        tools:replace="android:theme"
         tools:ignore="UnusedAttribute"
         >
 
@@ -59,12 +57,6 @@
         <meta-data
             android:name="android.webkit.WebView.MetricsOptOut"
             android:value="true"
-            />
-
-        <activity
-            android:name="com.fsck.k9.ui.settings.account.OpenPgpAppSelectDialog"
-            android:configChanges="locale"
-            android:theme="@style/Theme.K9.DayNight.Dialog.Translucent"
             />
 
         <activity
@@ -96,14 +88,6 @@
             android:name="com.fsck.k9.activity.EditIdentity"
             android:configChanges="locale"
             android:label="@string/edit_identity_title"
-            />
-
-        <activity
-            android:name="com.fsck.k9.ui.notification.DeleteConfirmationActivity"
-            android:excludeFromRecents="true"
-            android:launchMode="singleTop"
-            android:taskAffinity=""
-            android:theme="@style/Theme.K9.DayNight.Dialog.Translucent"
             />
 
         <activity

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.Thunderbird.DayNight" parent="Theme.Thunderbird.Dark" />
+    <style name="Theme.Thunderbird.DayNight.Dialog" parent="Theme.Thunderbird.Dark.Dialog" />
+    <style name="Theme.Thunderbird.DayNight.Dialog.Translucent" parent="Theme.Thunderbird.Dark.Dialog.Translucent" />
+
+</resources>

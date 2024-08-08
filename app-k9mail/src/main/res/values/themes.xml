@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="Theme.K9.Startup" parent="Theme2.K9.Dark">
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+
+    <style name="Theme.K9.Light" parent="Theme2.K9.Light">
+        <item name="actionModeCloseDrawable">@drawable/ic_close</item>
+        <item name="actionBarPopupTheme">@style/Widget.App.ActionMode.PopupMenu</item>
+        <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
+
+        <!-- Legacy styles -->
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+
+        <item name="iconStarColor">#fbbc04</item>
+
+        <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_light</item>
+        <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_light</item>
+
+        <item name="messageListRegularItemBackgroundColor">?android:attr/windowBackground</item>
+        <item name="messageListReadItemBackgroundColor">#ffd8d8d8</item>
+        <item name="messageListUnreadItemBackgroundColor">?attr/messageListRegularItemBackgroundColor</item>
+        <item name="messageListActiveItemBackgroundColor">?attr/colorSecondaryVariant</item>
+        <item name="messageListActiveItemBackgroundAlphaFraction">60%</item>
+        <item name="messageListActiveItemBackgroundAlphaBackground">?attr/colorSurface</item>
+
+        <item name="messageListSwipeSelectColor">@color/material_blue_600</item>
+        <item name="messageListSwipeToggleReadColor">@color/material_blue_600</item>
+        <item name="messageListSwipeToggleStarColor">@color/material_orange_600</item>
+        <item name="messageListSwipeArchiveColor">@color/material_green_600</item>
+        <item name="messageListSwipeDeleteColor">@color/material_red_600</item>
+        <item name="messageListSwipeSpamColor">@color/material_red_700</item>
+        <item name="messageListSwipeMoveColor">@color/material_purple_500</item>
+
+        <item name="contactPictureFallbackDefaultBackgroundColor">#ffababab</item>
+        <item name="contactPictureFallbackBackgroundColors">@array/contact_picture_fallback_background_colors_light</item>
+        <item name="contactTokenBackgroundColor">#ccc</item>
+        <item name="tintColorBulletPointPositive">#77aa22</item>
+        <item name="tintColorBulletPointNegative">#dd2222</item>
+        <item name="tintColorBulletPointNeutral">#888</item>
+
+        <item name="openpgp_black">#000</item>
+        <item name="openpgp_orange">#FF8800</item>
+        <item name="openpgp_red">#CC0000</item>
+        <item name="openpgp_green">#669900</item>
+        <item name="openpgp_blue">#336699</item>
+        <item name="openpgp_grey">#bbb</item>
+        <item name="openpgp_dark_grey">#888</item>
+
+        <item name="materialDrawerStyle">@style/Widget.MaterialDrawerStyle.K9.Light</item>
+        <item name="materialDrawerHeaderStyle">@style/Widget.MaterialDrawerHeaderStyle.K9.Light</item>
+    </style>
+
+    <style name="Theme.K9.Dark" parent="Theme2.K9.Dark">
+        <item name="actionModeCloseDrawable">@drawable/ic_close</item>
+        <item name="actionBarPopupTheme">@style/Widget.App.ActionMode.PopupMenu</item>
+        <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
+
+        <!-- Legacy styles -->
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+
+        <item name="iconStarColor">#fdd663</item>
+
+        <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_dark</item>
+        <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_dark</item>
+
+        <item name="messageListRegularItemBackgroundColor">?android:attr/windowBackground</item>
+        <item name="messageListReadItemBackgroundColor">?attr/messageListRegularItemBackgroundColor</item>
+        <item name="messageListUnreadItemBackgroundColor">#ff505050</item>
+        <item name="messageListActiveItemBackgroundColor">?attr/colorSecondaryVariant</item>
+        <item name="messageListActiveItemBackgroundAlphaFraction">50%</item>
+        <item name="messageListActiveItemBackgroundAlphaBackground">?attr/colorSurface</item>
+
+        <item name="messageListSwipeSelectColor">@color/material_blue_700</item>
+        <item name="messageListSwipeToggleReadColor">@color/material_blue_700</item>
+        <item name="messageListSwipeToggleStarColor">@color/material_orange_700</item>
+        <item name="messageListSwipeArchiveColor">@color/material_green_700</item>
+        <item name="messageListSwipeDeleteColor">@color/material_red_700</item>
+        <item name="messageListSwipeSpamColor">@color/material_red_800</item>
+        <item name="messageListSwipeMoveColor">@color/material_purple_600</item>
+
+        <item name="contactTokenBackgroundColor">#313131</item>
+        <item name="contactPictureFallbackDefaultBackgroundColor">#ff606060</item>
+        <item name="contactPictureFallbackBackgroundColors">@array/contact_picture_fallback_background_colors_dark</item>
+        <item name="tintColorBulletPointPositive">#77aa22</item>
+        <item name="tintColorBulletPointNegative">#dd2222</item>
+        <item name="tintColorBulletPointNeutral">#bbb</item>
+
+        <item name="openpgp_black">#fff</item>
+        <item name="openpgp_orange">#ee7700</item>
+        <item name="openpgp_red">#CC0000</item>
+        <item name="openpgp_green">#77aa00</item>
+        <item name="openpgp_blue">#6699cc</item>
+        <item name="openpgp_grey">#888</item>
+        <item name="openpgp_dark_grey">#bbb</item>
+
+        <item name="materialDrawerStyle">@style/Widget.MaterialDrawerStyle.K9.Dark</item>
+        <item name="materialDrawerHeaderStyle">@style/Widget.MaterialDrawerHeaderStyle.K9.Dark</item>
+    </style>
+
+    <style name="Theme.K9.Light.Dialog.Translucent" parent="Theme.Material3.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+
+        <item name="tintColorBulletPointPositive">#77aa22</item>
+        <item name="tintColorBulletPointNegative">#dd2222</item>
+        <item name="tintColorBulletPointNeutral">#bbb</item>
+    </style>
+
+    <style name="Theme.K9.Light.Dialog" parent="Theme.K9.Light" />
+    <style name="Theme.K9.Dark.Dialog" parent="Theme.K9.Dark" />
+
+    <style name="Theme.K9.Dark.Dialog.Translucent" parent="Theme.Material3.Dark.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+
+        <item name="tintColorBulletPointPositive">#77aa22</item>
+        <item name="tintColorBulletPointNegative">#dd2222</item>
+        <item name="tintColorBulletPointNeutral">#bbb</item>
+    </style>
+
+    <style name="Theme.K9.DayNight" parent="Theme.K9.Light" />
+    <style name="Theme.K9.DayNight.Dialog" parent="Theme.K9.Light.Dialog" />
+    <style name="Theme.K9.DayNight.Dialog.Translucent" parent="Theme.K9.Light.Dialog.Translucent" />
+
+</resources>
