@@ -1,9 +1,9 @@
 package app.k9mail.core.featureflag
 
 sealed interface FeatureFlagResult {
-    object Enabled : FeatureFlagResult
-    object Disabled : FeatureFlagResult
-    object Unavailable : FeatureFlagResult
+    data object Enabled : FeatureFlagResult
+    data object Disabled : FeatureFlagResult
+    data object Unavailable : FeatureFlagResult
 
     fun onEnabled(action: () -> Unit): FeatureFlagResult {
         if (this is Enabled) {
@@ -23,6 +23,14 @@ sealed interface FeatureFlagResult {
 
     fun onUnavailable(action: () -> Unit): FeatureFlagResult {
         if (this is Unavailable) {
+            action()
+        }
+
+        return this
+    }
+
+    fun onDisabledOrUnavailable(action: () -> Unit): FeatureFlagResult {
+        if (this is Disabled || this is Unavailable) {
             action()
         }
 
