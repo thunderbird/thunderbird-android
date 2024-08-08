@@ -20,7 +20,8 @@
             android:layout_gravity="center"
             android:layout_margin="16dp"
             android:contentDescription="@null"
-            app:srcCompat="@drawable/ic_app_logo"
+            app:srcCompat="?attr/appLogo"
+            tools:src="@drawable/ic_inbox"
             />
 
         <com.google.android.material.textview.MaterialTextView

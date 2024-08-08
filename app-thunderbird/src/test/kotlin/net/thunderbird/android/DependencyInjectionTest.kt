@@ -10,7 +10,6 @@ import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import com.fsck.k9.account.AccountRemoverWorker
 import com.fsck.k9.job.MailSyncWorker
 import com.fsck.k9.mail.oauth.AuthStateStorage
-import com.fsck.k9.ui.R
 import com.fsck.k9.ui.changelog.ChangeLogMode
 import com.fsck.k9.ui.changelog.ChangelogViewModel
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
@@ -51,7 +50,7 @@ class DependencyInjectionTest : AutoCloseKoinTest() {
             withParameter<ChangelogViewModel> { ChangeLogMode.CHANGE_LOG }
             withParameter<MailSyncWorker> { mock<WorkerParameters>() }
             withParameter<FolderIconProvider> {
-                ContextThemeWrapper(RuntimeEnvironment.getApplication(), R.style.Theme_K9_DayNight).theme
+                ContextThemeWrapper(RuntimeEnvironment.getApplication(), R.style.Theme_Thunderbird_DayNight).theme
             }
             withParameters(clazz = Class.forName("com.fsck.k9.view.K9WebViewClient").kotlin) {
                 parametersOf(null, null)
