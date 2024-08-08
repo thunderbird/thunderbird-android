@@ -17,6 +17,7 @@ dependencies {
 
     implementation(projects.core.featureflags)
     implementation(projects.feature.launcher)
+    implementation(projects.feature.navigation.drawer)
     // TODO: Remove AccountOauth dependency
     implementation(projects.feature.account.oauth)
     implementation(projects.feature.settings.import)

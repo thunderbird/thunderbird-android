@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="navigation_drawer_action_settings">Sätted</string>
+    <string name="navigation_drawer_action_folders">Halda kaustu</string>
+    <string name="navigation_drawer_unified_inbox_title">Koondsisendkaust</string>
+</resources>

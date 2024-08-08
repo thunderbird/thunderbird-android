@@ -62,7 +62,6 @@
     <string name="search_everywhere_action">Ieškoti visur</string>
     <string name="search_results">Paieškos rezultatai</string>
     <string name="new_messages_title">Naujos žinutės</string>
-    <string name="preferences_action">Nustatymai</string>
     <string name="folders_action">Tvarkyti aplankus</string>
     <string name="account_settings_action">Paskyros nustatymai</string>
     <string name="remove_account_action">Pašalinti paskyrą</string>

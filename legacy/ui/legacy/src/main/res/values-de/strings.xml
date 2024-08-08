@@ -64,7 +64,6 @@
     <string name="search_everywhere_action">Überall suchen</string>
     <string name="search_results">Suchergebnisse</string>
     <string name="new_messages_title">Neue Nachrichten</string>
-    <string name="preferences_action">Einstellungen</string>
     <string name="folders_action">Ordner verwalten</string>
     <string name="account_settings_action">Kontoeinstellungen</string>
     <string name="remove_account_action">Konto entfernen</string>

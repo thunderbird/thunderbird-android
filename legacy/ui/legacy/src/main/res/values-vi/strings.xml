@@ -63,7 +63,6 @@
     <string name="search_everywhere_action">Tìm kiếm tất cả</string>
     <string name="search_results">Kiết quả tìm kiếm</string>
     <string name="new_messages_title">Tin nhắn mới</string>
-    <string name="preferences_action">Thiết đặt</string>
     <string name="folders_action">Quản lý thư mục</string>
     <string name="account_settings_action">Thiết đặt tài khoản thư</string>
     <string name="remove_account_action">Loại bỏ tài khoản</string>

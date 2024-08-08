@@ -63,7 +63,6 @@
     <string name="search_everywhere_action">Αναζήτηση παντού</string>
     <string name="search_results">Αποτελέσματα αναζήτησης</string>
     <string name="new_messages_title">Νέα μηνύματα</string>
-    <string name="preferences_action">Ρυθμίσεις</string>
     <string name="folders_action">Διαχείριση φακέλων</string>
     <string name="account_settings_action">Ρυθμίσεις λογαριασμού</string>
     <string name="remove_account_action">Διαγραφή λογαριασμού</string>

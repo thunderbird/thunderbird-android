@@ -60,7 +60,6 @@
     <string name="search_everywhere_action">Търси навсякъде</string>
     <string name="search_results">Резултати от търсенето</string>
     <string name="new_messages_title">Нови съобщения</string>
-    <string name="preferences_action">Настройки</string>
     <string name="folders_action">Управление на папки</string>
     <string name="account_settings_action">Настройки на профила</string>
     <string name="remove_account_action">Премахни профил</string>

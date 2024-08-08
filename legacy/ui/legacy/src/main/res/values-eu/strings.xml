@@ -63,7 +63,6 @@
     <string name="search_everywhere_action">Bilatu leku guztietan</string>
     <string name="search_results">Bilaketaren emaitzak</string>
     <string name="new_messages_title">Mezu berriak</string>
-    <string name="preferences_action">Ezarpenak</string>
     <string name="folders_action">Kudeatu karpetak</string>
     <string name="account_settings_action">Kontu ezarpenak</string>
     <string name="remove_account_action">Kendu kontua</string>

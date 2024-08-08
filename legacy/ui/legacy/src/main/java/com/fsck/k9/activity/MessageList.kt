@@ -27,6 +27,8 @@ import app.k9mail.core.android.common.contact.CachingRepository
 import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.feature.launcher.FeatureLauncherActivity
+import app.k9mail.feature.navigation.drawer.LegacyDrawer
+import app.k9mail.feature.navigation.drawer.NavigationDrawer
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.message.controller.MessageReference
@@ -49,7 +51,6 @@ import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.helper.ParcelableUtil
 import com.fsck.k9.search.isUnifiedInbox
 import com.fsck.k9.ui.BuildConfig
-import com.fsck.k9.ui.K9Drawer
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
 import com.fsck.k9.ui.managefolders.ManageFoldersActivity
@@ -60,6 +61,7 @@ import com.fsck.k9.ui.messageview.MessageViewContainerFragment
 import com.fsck.k9.ui.messageview.MessageViewContainerFragment.MessageViewContainerListener
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener
 import com.fsck.k9.ui.messageview.PlaceholderFragment
+import com.fsck.k9.ui.settings.SettingsActivity
 import com.fsck.k9.view.ViewSwitcher
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener
 import com.google.android.material.textview.MaterialTextView
@@ -68,6 +70,7 @@ import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
+import app.k9mail.feature.navigation.drawer.R as DrawerR
 
 /**
  * MessageList is the primary user interface for the program. This Activity shows a list of messages.
@@ -96,7 +99,7 @@ open class MessageList :
     private var initialSearchViewQuery: String? = null
     private var initialSearchViewIconified: Boolean = true
 
-    private var drawer: K9Drawer? = null
+    private var navigationDrawer: NavigationDrawer? = null
     private var openFolderTransaction: FragmentTransaction? = null
     private var progressBar: ProgressBar? = null
     private var messageViewPlaceHolder: PlaceholderFragment? = null
@@ -167,7 +170,7 @@ open class MessageList :
             }
         }
 
-        val swipeRefreshLayout = findViewById<View>(R.id.material_drawer_swipe_refresh)
+        val swipeRefreshLayout = findViewById<View>(DrawerR.id.material_drawer_swipe_refresh)
         swipeRefreshLayout.layoutParams.width = getOptimalDrawerWidth(this)
 
         initializeActionBar()
@@ -179,7 +182,7 @@ open class MessageList :
 
         if (isDrawerEnabled) {
             configureDrawer()
-            drawer!!.updateUserAccountsAndFolders(account)
+            navigationDrawer!!.updateUserAccountsAndFolders(account)
         }
 
         findFragments()
@@ -222,7 +225,7 @@ open class MessageList :
 
         if (isDrawerEnabled) {
             configureDrawer()
-            drawer!!.updateUserAccountsAndFolders(account)
+            navigationDrawer!!.updateUserAccountsAndFolders(account)
         }
 
         initializeDisplayMode(null)
@@ -571,15 +574,24 @@ open class MessageList :
 
     private fun initializeDrawer(savedInstanceState: Bundle?) {
         if (!isDrawerEnabled) {
-            val drawerLayout = findViewById<DrawerLayout>(R.id.drawerLayout)
+            val drawerLayout = findViewById<DrawerLayout>(R.id.navigation_drawer_layout)
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
             return
         }
 
-        drawer = K9Drawer(this, savedInstanceState)
+        navigationDrawer = LegacyDrawer(
+            parent = this,
+            savedInstanceState = savedInstanceState,
+            openFolders = { launchManageFoldersScreen() },
+            openUnifiedInbox = { openUnifiedInbox() },
+            openFolder = { folderId -> openFolder(folderId) },
+            openAccount = { account -> openRealAccount(account) },
+            openSettings = { SettingsActivity.launch(this) },
+            createDrawerListener = { createDrawerListener() },
+        )
     }
 
-    fun createDrawerListener(): DrawerListener {
+    private fun createDrawerListener(): DrawerListener {
         return object : DrawerListener {
             override fun onDrawerClosed(drawerView: View) {
                 if (openFolderTransaction != null) {
@@ -625,7 +637,7 @@ open class MessageList :
         onMessageListDisplayed()
     }
 
-    fun openUnifiedInbox() {
+    private fun openUnifiedInbox() {
         actionDisplaySearch(
             this,
             createSearchAccount().relatedSearch,
@@ -634,7 +646,7 @@ open class MessageList :
         )
     }
 
-    fun launchManageFoldersScreen() {
+    private fun launchManageFoldersScreen() {
         if (account == null) {
             Timber.e("Tried to open \"Manage folders\", but no account selected!")
             return
@@ -689,8 +701,8 @@ open class MessageList :
     }
 
     override fun onBackPressed() {
-        if (isDrawerEnabled && drawer!!.isOpen) {
-            drawer!!.close()
+        if (isDrawerEnabled && navigationDrawer!!.isOpen) {
+            navigationDrawer!!.close()
         } else if (displayMode == DisplayMode.MESSAGE_VIEW) {
             if (messageViewOnly) {
                 finish()
@@ -908,10 +920,10 @@ open class MessageList :
         if (id == android.R.id.home) {
             if (displayMode != DisplayMode.MESSAGE_VIEW && !isAdditionalMessageListDisplayed) {
                 if (isDrawerEnabled) {
-                    if (drawer!!.isOpen) {
-                        drawer!!.close()
+                    if (navigationDrawer!!.isOpen) {
+                        navigationDrawer!!.close()
                     } else {
-                        drawer!!.open()
+                        navigationDrawer!!.open()
                     }
                 } else {
                     finish()
@@ -1323,12 +1335,12 @@ open class MessageList :
         get() = supportFragmentManager.backStackEntryCount > 0
 
     private fun lockDrawer() {
-        drawer!!.lock()
+        navigationDrawer!!.lock()
         actionBar.setHomeAsUpIndicator(Icons.Outlined.ArrowBack)
     }
 
     private fun unlockDrawer() {
-        drawer!!.unlock()
+        navigationDrawer!!.unlock()
         actionBar.setHomeAsUpIndicator(Icons.Outlined.Menu)
     }
 
@@ -1372,7 +1384,7 @@ open class MessageList :
     }
 
     private fun configureDrawer() {
-        val drawer = drawer ?: return
+        val drawer = navigationDrawer ?: return
         drawer.selectAccount(account!!.uuid)
         when {
             singleFolderMode -> drawer.selectFolder(search!!.folderIds[0])

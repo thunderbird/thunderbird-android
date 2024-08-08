@@ -46,7 +46,6 @@
     <string name="compose_action">შექმნა</string>
     <string name="search_action">ძებნა</string>
     <string name="search_results">ძებნის შედეგი</string>
-    <string name="preferences_action">პარამეტრები</string>
     <string name="folders_action">საკეცების მართვა</string>
     <string name="account_settings_action">ანგარიშის პარამეტრები</string>
     <string name="remove_account_action">ანგარიშის წაშლა</string>

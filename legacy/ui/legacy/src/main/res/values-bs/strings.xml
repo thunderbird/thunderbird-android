@@ -102,7 +102,6 @@
     <string name="edit_as_new_message_action">Uređuj kao novu poruku</string>
     <string name="save_draft_action">Spremi kao skicu</string>
     <string name="send_messages_action">Pošalji poruke</string>
-    <string name="preferences_action">Postavke</string>
     <string name="add_account_action">Dodaj račun</string>
     <string name="compose_action">Sastavi</string>
     <string name="account_settings_action">Postavke računa</string>

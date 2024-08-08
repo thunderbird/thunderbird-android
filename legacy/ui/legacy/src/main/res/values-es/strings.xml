@@ -63,7 +63,6 @@
     <string name="search_everywhere_action">Buscar en todas partes</string>
     <string name="search_results">Resultados de búsqueda</string>
     <string name="new_messages_title">Correos nuevos</string>
-    <string name="preferences_action">Ajustes</string>
     <string name="folders_action">Administrar carpetas</string>
     <string name="account_settings_action">Ajustes de la cuenta</string>
     <string name="remove_account_action">Eliminar cuenta</string>

@@ -63,7 +63,6 @@
     <string name="search_everywhere_action">Keresés mindenhol</string>
     <string name="search_results">Keresési eredmények</string>
     <string name="new_messages_title">Új üzenetek</string>
-    <string name="preferences_action">Beállítások</string>
     <string name="folders_action">Mappák kezelése</string>
     <string name="account_settings_action">Fiók beállításai</string>
     <string name="remove_account_action">Fiók eltávolítása</string>

@@ -93,7 +93,6 @@
     <string name="compose_title_reply_all">Reply all</string>
     <string name="compose_title_compose">Compose</string>
     <string name="search_action">Search</string>
-    <string name="preferences_action">Settings</string>
     <string name="forward_action">Forward</string>
     <string name="move_to_drafts_action">Move to Drafts</string>
     <string name="add_account_action">Add account</string>

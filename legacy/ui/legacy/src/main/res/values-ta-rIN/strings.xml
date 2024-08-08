@@ -36,7 +36,6 @@
     <string name="compose_action">எழுது</string>
     <string name="search_action">தேடு</string>
     <string name="search_results">தேடல் முடிவுகள்</string>
-    <string name="preferences_action">அமைப்புகள்</string>
     <string name="account_settings_action">கணக்கு அமைப்புகள்</string>
     <string name="remove_account_action">கணக்கு நீக்கு</string>
     <string name="mark_as_read_action">படித்ததாக குறி</string>

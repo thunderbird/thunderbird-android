@@ -56,7 +56,6 @@
     <string name="compose_action">Menyusun</string>
     <string name="search_action">Cari</string>
     <string name="search_results">Hasil pencarian</string>
-    <string name="preferences_action">Pengaturan</string>
     <string name="folders_action">Kelola folder</string>
     <string name="account_settings_action">Pengaturan akun</string>
     <string name="remove_account_action">Hapus akun</string>

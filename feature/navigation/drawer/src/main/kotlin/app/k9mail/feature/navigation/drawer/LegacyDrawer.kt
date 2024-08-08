@@ -1,4 +1,4 @@
-package com.fsck.k9.ui
+package app.k9mail.feature.navigation.drawer
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -28,9 +29,7 @@ import app.k9mail.legacy.ui.folder.FoldersViewModel
 import app.k9mail.legacy.ui.theme.Theme
 import app.k9mail.legacy.ui.theme.ThemeManager
 import com.fsck.k9.K9
-import com.fsck.k9.activity.MessageList
 import com.fsck.k9.ui.base.livedata.observeNotNull
-import com.fsck.k9.ui.settings.SettingsActivity
 import com.mikepenz.materialdrawer.holder.BadgeStyle
 import com.mikepenz.materialdrawer.holder.ImageHolder
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
@@ -63,7 +62,17 @@ private const val STARRED_SYMBOL = "\u2605"
 private const val THIN_SPACE = "\u2009"
 private const val EN_SPACE = "\u2000"
 
-class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : KoinComponent {
+@Suppress("MagicNumber", "TooManyFunctions", "LongParameterList")
+class LegacyDrawer(
+    override val parent: AppCompatActivity,
+    private val openFolders: () -> Unit,
+    private val openUnifiedInbox: () -> Unit,
+    private val openFolder: (folderId: Long) -> Unit,
+    private val openAccount: (account: Account) -> Boolean,
+    private val openSettings: () -> Unit,
+    createDrawerListener: () -> DrawerLayout.DrawerListener,
+    savedInstanceState: Bundle?,
+) : NavigationDrawer, KoinComponent {
     private val foldersViewModel: FoldersViewModel by parent.viewModel()
     private val accountsViewModel: AccountsViewModel by parent.viewModel()
     private val folderNameFormatter: FolderNameFormatter by inject()
@@ -73,10 +82,10 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private val accountImageLoader: AccountImageLoader by inject()
     private val folderIconProvider: FolderIconProvider by inject()
 
-    private val drawer: DrawerLayout = parent.findViewById(R.id.drawerLayout)
+    private val drawer: DrawerLayout = parent.findViewById(R.id.navigation_drawer_layout)
     private val sliderView: MaterialDrawerSliderView = parent.findViewById(R.id.material_drawer_slider)
     private val headerView: AccountHeaderView = AccountHeaderView(parent).apply {
-        attachToSliderView(this@K9Drawer.sliderView)
+        attachToSliderView(this@LegacyDrawer.sliderView)
         dividerBelowHeader = false
         displayBadgesOnCurrentProfileImage = false
     }
@@ -95,7 +104,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     val layout: DrawerLayout
         get() = drawer
 
-    val isOpen: Boolean
+    override val isOpen: Boolean
         get() = drawer.isOpen
 
     init {
@@ -104,7 +113,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         initializeImageLoader()
         configureAccountHeader()
 
-        drawer.addDrawerListener(parent.createDrawerListener())
+        drawer.addDrawerListener(createDrawerListener())
         sliderView.tintStatusBar = true
         sliderView.onDrawerItemClickListener = { _, item, _ ->
             handleItemClickListener(item)
@@ -161,12 +170,12 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     }
 
     private fun configureAccountHeader() {
-        headerView.headerBackground = ImageHolder(R.drawable.drawer_header_background)
+        headerView.headerBackground = ImageHolder(R.drawable.navigation_drawer_header_background)
 
         headerView.onAccountHeaderListener = { _, profile, _ ->
             val account = (profile as ProfileDrawerItem).tag as Account
             openedAccountUuid = account.uuid
-            val eventHandled = !parent.openRealAccount(account)
+            val eventHandled = openAccount(account)
             updateUserAccountsAndFolders(account)
 
             eventHandled
@@ -219,6 +228,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         return if (unreadCount > 0) unreadCount.toString() else null
     }
 
+    @Suppress("SpreadOperator")
     private fun setAccounts(displayAccounts: List<DisplayAccount>) {
         val oldSelectedBackgroundColor = selectedBackgroundColor
 
@@ -278,7 +288,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private fun addFooterItems() {
         sliderView.addStickyFooterItem(
             PrimaryDrawerItem().apply {
-                nameRes = R.string.folders_action
+                nameRes = R.string.navigation_drawer_action_folders
                 iconRes = Icons.Outlined.Folder
                 identifier = DRAWER_ID_FOLDERS
                 isSelectable = false
@@ -287,7 +297,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
         sliderView.addStickyFooterItem(
             PrimaryDrawerItem().apply {
-                nameRes = R.string.preferences_action
+                nameRes = R.string.navigation_drawer_action_settings
                 iconRes = Icons.Outlined.Settings
                 identifier = DRAWER_ID_PREFERENCES
                 isSelectable = false
@@ -299,7 +309,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         return folderNameFormatter.displayName(folder)
     }
 
-    fun updateUserAccountsAndFolders(account: Account?) {
+    override fun updateUserAccountsAndFolders(account: Account?) {
         if (account != null) {
             initializeWithAccountColor(account)
             headerView.setActiveProfile(account.drawerId)
@@ -339,12 +349,12 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
     private fun handleItemClickListener(drawerItem: IDrawerItem<*>) {
         when (drawerItem.identifier) {
-            DRAWER_ID_PREFERENCES -> SettingsActivity.launch(parent)
-            DRAWER_ID_FOLDERS -> parent.launchManageFoldersScreen()
-            DRAWER_ID_UNIFIED_INBOX -> parent.openUnifiedInbox()
+            DRAWER_ID_PREFERENCES -> openSettings()
+            DRAWER_ID_FOLDERS -> openFolders()
+            DRAWER_ID_UNIFIED_INBOX -> openUnifiedInbox()
             else -> {
                 val folder = drawerItem.tag as Folder
-                parent.openFolder(folder.id)
+                openFolder(folder.id)
             }
         }
     }
@@ -363,7 +373,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
             val unifiedInboxItem = PrimaryDrawerItem().apply {
                 iconRes = Icons.Outlined.AllInbox
                 identifier = DRAWER_ID_UNIFIED_INBOX
-                nameRes = R.string.integrated_inbox_title
+                nameRes = R.string.navigation_drawer_unified_inbox_title
                 selectedColorInt = selectedBackgroundColor
                 textColor = selectedTextColor
                 isSelected = unifiedInboxSelected
@@ -418,14 +428,14 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         userFolderDrawerIds.clear()
     }
 
-    fun selectAccount(accountUuid: String) {
+    override fun selectAccount(accountUuid: String) {
         openedAccountUuid = accountUuid
         headerView.profiles?.firstOrNull { it.accountUuid == accountUuid }?.let { profile ->
             headerView.activeProfile = profile
         }
     }
 
-    fun selectFolder(folderId: Long) {
+    override fun selectFolder(folderId: Long) {
         deselect()
         openedFolderId = folderId
         for (drawerId in userFolderDrawerIds) {
@@ -437,13 +447,13 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         }
     }
 
-    fun deselect() {
+    override fun deselect() {
         unifiedInboxSelected = false
         openedFolderId = null
         sliderView.selectExtension.deselect()
     }
 
-    fun selectUnifiedInbox() {
+    override fun selectUnifiedInbox() {
         headerView.selectionListShown = false
         deselect()
         unifiedInboxSelected = true
@@ -474,19 +484,19 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         return if (index == -1) color else darkColors[index]
     }
 
-    fun open() {
+    override fun open() {
         drawer.openDrawer(GravityCompat.START)
     }
 
-    fun close() {
+    override fun close() {
         drawer.closeDrawer(GravityCompat.START)
     }
 
-    fun lock() {
+    override fun lock() {
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
     }
 
-    fun unlock() {
+    override fun unlock() {
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
     }
 
@@ -554,6 +564,6 @@ private class FixedDividerDrawerItem(override var identifier: Long) : DividerDra
 
 // We ellipsize long folder names in the middle for better readability
 private class FolderDrawerItem : PrimaryDrawerItem() {
-    override val type: Int = R.id.drawer_list_folder_item
-    override val layoutRes: Int = R.layout.drawer_folder_list_item
+    override val type: Int = R.id.navigation_drawer_legacy_list_folder_item
+    override val layoutRes: Int = R.layout.navigation_drawer_legacy_list_folder_item
 }

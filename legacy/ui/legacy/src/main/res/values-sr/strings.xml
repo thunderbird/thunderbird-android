@@ -53,7 +53,6 @@
     <string name="compose_action">Састави</string>
     <string name="search_action">Тражи</string>
     <string name="search_results">Резултати претраге</string>
-    <string name="preferences_action">Поставке</string>
     <string name="folders_action">Управљај фасциклама</string>
     <string name="account_settings_action">Поставке налога</string>
     <string name="remove_account_action">Уклони налог</string>

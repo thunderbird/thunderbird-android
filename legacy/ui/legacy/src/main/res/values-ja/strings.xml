@@ -66,7 +66,6 @@
     <string name="search_everywhere_action">全体を検索</string>
     <string name="search_results">検索結果</string>
     <string name="new_messages_title">新着メッセージ</string>
-    <string name="preferences_action">設定</string>
     <string name="folders_action">フォルダーを管理</string>
     <string name="account_settings_action">アカウント設定</string>
     <string name="remove_account_action">アカウントを削除</string>

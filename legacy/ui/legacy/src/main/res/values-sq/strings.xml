@@ -63,7 +63,6 @@
     <string name="search_everywhere_action">Kërko kudo</string>
     <string name="search_results">Përfundime kërkimi</string>
     <string name="new_messages_title">Mesazhe të rinj</string>
-    <string name="preferences_action">Rregullime</string>
     <string name="folders_action">Administroni dosje</string>
     <string name="account_settings_action">Rregullime llogarie</string>
     <string name="remove_account_action">Hiqe llogarinë</string>
