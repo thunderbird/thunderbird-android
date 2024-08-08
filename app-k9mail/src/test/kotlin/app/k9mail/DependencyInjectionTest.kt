@@ -7,10 +7,10 @@ import app.k9mail.feature.account.server.validation.domain.ServerValidationDomai
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract
 import app.k9mail.legacy.ui.folder.FolderIconProvider
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
+import com.fsck.k9.R
 import com.fsck.k9.account.AccountRemoverWorker
 import com.fsck.k9.job.MailSyncWorker
 import com.fsck.k9.mail.oauth.AuthStateStorage
-import com.fsck.k9.ui.R
 import com.fsck.k9.ui.changelog.ChangeLogMode
 import com.fsck.k9.ui.changelog.ChangelogViewModel
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity

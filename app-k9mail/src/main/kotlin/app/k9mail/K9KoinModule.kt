@@ -8,12 +8,14 @@ import app.k9mail.dev.developmentModuleAdditions
 import app.k9mail.feature.launcher.FeatureLauncherExternalContract.FeatureThemeProvider
 import app.k9mail.feature.widget.shortcut.LauncherShortcutActivity
 import app.k9mail.featureflag.K9FeatureFlagFactory
+import app.k9mail.legacy.ui.theme.ThemeProvider
 import app.k9mail.provider.K9AppNameProvider
 import app.k9mail.provider.K9FeatureThemeProvider
 import app.k9mail.widget.appWidgetModule
 import com.fsck.k9.AppConfig
 import com.fsck.k9.BuildConfig
 import com.fsck.k9.activity.MessageCompose
+import com.fsck.k9.provider.K9ThemeProvider
 import com.fsck.k9.provider.UnreadWidgetProvider
 import com.fsck.k9.widget.list.MessageListWidgetProvider
 import org.koin.android.ext.koin.androidContext
@@ -28,6 +30,7 @@ val appModule = module {
     single<AppConfig> { appConfig }
     single<OAuthConfigurationFactory> { K9OAuthConfigurationFactory() }
     single<AppNameProvider> { K9AppNameProvider(androidContext()) }
+    single<ThemeProvider> { K9ThemeProvider() }
     single<FeatureThemeProvider> { K9FeatureThemeProvider() }
     single<FeatureFlagFactory> { K9FeatureFlagFactory() }
 
