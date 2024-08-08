@@ -35,9 +35,12 @@ data class ThemeColorScheme(
     val errorContainer: Color,
     val onErrorContainer: Color,
 
+    val surfaceDim: Color,
     val surface: Color,
+    val surfaceBright: Color,
     val onSurface: Color,
     val onSurfaceVariant: Color,
+
     val surfaceContainerLowest: Color,
     val surfaceContainerLow: Color,
     val surfaceContainer: Color,
@@ -50,9 +53,6 @@ data class ThemeColorScheme(
 
     val outline: Color,
     val outlineVariant: Color,
-
-    val surfaceBright: Color,
-    val surfaceDim: Color,
 
     val scrim: Color,
 
@@ -100,7 +100,9 @@ internal fun ThemeColorScheme.toMaterial3ColorScheme(): ColorScheme {
         errorContainer = errorContainer,
         onErrorContainer = onErrorContainer,
 
+        surfaceDim = surfaceDim,
         surface = surface,
+        surfaceBright = surfaceBright,
         onSurface = onSurface,
         onSurfaceVariant = onSurfaceVariant,
 
@@ -116,9 +118,6 @@ internal fun ThemeColorScheme.toMaterial3ColorScheme(): ColorScheme {
 
         outline = outline,
         outlineVariant = outlineVariant,
-
-        surfaceBright = surfaceBright,
-        surfaceDim = surfaceDim,
 
         scrim = scrim,
 
