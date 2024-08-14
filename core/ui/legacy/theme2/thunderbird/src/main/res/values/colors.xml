@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Light Theme -->
+    <color name="lightPrimary">#004F9B</color>
+    <color name="lightOnPrimary">#FFFFFF</color>
+    <color name="lightPrimaryContainer">#1373D9</color>
+    <color name="lightOnPrimaryContainer">#FFFFFF</color>
+
+    <color name="lightSecondary">#003D75</color>
+    <color name="lightOnSecondary">#FFFFFF</color>
+    <color name="lightSecondaryContainer">#2E61A0</color>
+    <color name="lightOnSecondaryContainer">#FFFFFF</color>
+
+    <color name="lightTertiary">#54008E</color>
+    <color name="lightOnTertiary">#FFFFFF</color>
+    <color name="lightTertiaryContainer">#7B35B8</color>
+    <color name="lightOnTertiaryContainer">#FFFFFF</color>
+
+    <color name="lightError">#A0000E</color>
+    <color name="lightOnError">#FFFFFF</color>
+    <color name="lightErrorContainer">#DC2626</color>
+    <color name="lightOnErrorContainer">#FFFFFF</color>
+
+    <color name="lightSurfaceDim">#DCD9D9</color>
+    <color name="lightSurface">#FCF8F8</color>
+    <color name="lightSurfaceBright">#FCF8F8</color>
+    <color name="lightOnSurface">#1C1B1B</color>
+    <color name="lightOnSurfaceVariant">#45474A</color>
+
+    <color name="lightSurfaceContainerLowest">#FFFFFF</color>
+    <color name="lightSurfaceContainerLow">#F6F3F2</color>
+    <color name="lightSurfaceContainer">#F1EDEC</color>
+    <color name="lightSurfaceContainerHigh">#EBE7E7</color>
+    <color name="lightSurfaceContainerHighest">#E5E2E1</color>
+
+    <color name="lightSurfaceInverse">#313030</color>
+    <color name="lightOnSurfaceInverse">#F3F0EF</color>
+    <color name="lightPrimaryInverse">#A9C7FF</color>
+
+    <color name="lightOutline">#75777A</color>
+    <color name="lightOutlineVariant">#C5C6CA</color>
+
+    <color name="lightPrimaryFixed">#D6E3FF</color>
+    <color name="lightOnPrimaryFixed">#001B3D</color>
+    <color name="lightPrimaryFixedDim">#A9C7FF</color>
+    <color name="lightOnPrimaryFixedVariant">#00468B</color>
+
+    <color name="lightSecondaryFixed">#D5E3FF</color>
+    <color name="lightOnSecondaryFixed">#001C3B</color>
+    <color name="lightSecondaryFixedDim">#A6C8FF</color>
+    <color name="lightOnSecondaryFixedVariant">#054785</color>
+
+    <color name="lightTertiaryFixed">#F1DBFF</color>
+    <color name="lightOnTertiaryFixed">#2D0050</color>
+    <color name="lightTertiaryFixedDim">#DFB7FF</color>
+    <color name="lightOnTertiaryFixedVariant">#2D0050</color>
+
+    <!-- Dark Theme -->
+    <color name="darkPrimary">#BEE6FF</color>
+    <color name="darkOnPrimary">#003549</color>
+    <color name="darkPrimaryContainer">#50C2F8</color>
+    <color name="darkOnPrimaryContainer">#002E41</color>
+
+    <color name="darkSecondary">#96CDFF</color>
+    <color name="darkOnSecondary">#003352</color>
+    <color name="darkSecondaryContainer">#24A7F7</color>
+    <color name="darkOnSecondaryContainer">#001423</color>
+
+    <color name="darkTertiary">#FFFFFF</color>
+    <color name="darkOnTertiary">#352D3E</color>
+    <color name="darkTertiaryContainer">#DCD0E6</color>
+    <color name="darkOnTertiaryContainer">#443C4E</color>
+
+    <color name="darkError">#FFB4AB</color>
+    <color name="darkOnError">#690005</color>
+    <color name="darkErrorContainer">#93000A</color>
+    <color name="darkOnErrorContainer">#FFDAD6</color>
+
+    <color name="darkSurfaceDim">#131314</color>
+    <color name="darkSurface">#131314</color>
+    <color name="darkSurfaceBright">#39393A</color>
+    <color name="darkOnSurface">#E5E2E3</color>
+    <color name="darkOnSurfaceVariant">#C5C6CC</color>
+
+    <color name="darkSurfaceContainerLowest">#0E0E0F</color>
+    <color name="darkSurfaceContainerLow">#1B1B1C</color>
+    <color name="darkSurfaceContainer">#201F20</color>
+    <color name="darkSurfaceContainerHigh">#2A2A2B</color>
+    <color name="darkSurfaceContainerHighest">#353436</color>
+
+    <color name="darkSurfaceInverse">#E5E2E3</color>
+    <color name="darkOnSurfaceInverse">#313031</color>
+    <color name="darkPrimaryInverse">#006689</color>
+
+    <color name="darkOutline">#8F9096</color>
+    <color name="darkOutlineVariant">#44474C</color>
+
+    <color name="darkPrimaryFixed">#C3E8FF</color>
+    <color name="darkOnPrimaryFixed">#001E2C</color>
+    <color name="darkPrimaryFixedDim">#79D1FF</color>
+    <color name="darkOnPrimaryFixedVariant">#004C68</color>
+
+    <color name="darkSecondaryFixed">#CDE5FF</color>
+    <color name="darkOnSecondaryFixed">#001D32</color>
+    <color name="darkSecondaryFixedDim">#94CCFF</color>
+    <color name="darkOnSecondaryFixedVariant">#004B74</color>
+
+    <color name="darkTertiaryFixed">#EBDEF5</color>
+    <color name="darkOnTertiaryFixed">#1F1928</color>
+    <color name="darkTertiaryFixedDim">#CEC2D8</color>
+    <color name="darkOnTertiaryFixedVariant">#4C4355</color>
+
+</resources>

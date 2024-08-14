@@ -2,132 +2,132 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="Theme2.K9.Light" parent="Theme2.Main.Light">
-        <item name="colorPrimary">#5F303D</item>
-        <item name="colorOnPrimary">#FFFFFF</item>
-        <item name="colorPrimaryContainer">#875360</item>
-        <item name="colorOnPrimaryContainer">#FFFFFF</item>
+        <item name="colorPrimary">@color/lightPrimary</item>
+        <item name="colorOnPrimary">@color/lightOnPrimary</item>
+        <item name="colorPrimaryContainer">@color/lightPrimaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/lightOnPrimaryContainer</item>
 
-        <item name="colorSecondary">#422129</item>
-        <item name="colorOnSecondary">#FFFFFF</item>
-        <item name="colorSecondaryContainer">#68414B</item>
-        <item name="colorOnSecondaryContainer">#FFE2E7</item>
+        <item name="colorSecondary">@color/lightSecondary</item>
+        <item name="colorOnSecondary">@color/lightOnSecondary</item>
+        <item name="colorSecondaryContainer">@color/lightSecondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/lightOnSecondaryContainer</item>
 
-        <item name="colorTertiary">#443968</item>
-        <item name="colorOnTertiary">#FFFFFF</item>
-        <item name="colorTertiaryContainer">#685C8E</item>
-        <item name="colorOnTertiaryContainer">#FFFFFF</item>
+        <item name="colorTertiary">@color/lightTertiary</item>
+        <item name="colorOnTertiary">@color/lightOnTertiary</item>
+        <item name="colorTertiaryContainer">@color/lightTertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/lightOnTertiaryContainer</item>
 
-        <item name="colorError">#A0000E</item>
-        <item name="colorOnError">#FFFFFF</item>
-        <item name="colorErrorContainer">#DC2626</item>
-        <item name="colorOnErrorContainer">#FFFFFF</item>
+        <item name="colorError">@color/lightError</item>
+        <item name="colorOnError">@color/lightOnError</item>
+        <item name="colorErrorContainer">@color/lightErrorContainer</item>
+        <item name="colorOnErrorContainer">@color/lightOnErrorContainer</item>
 
-        <item name="colorSurfaceDim">#DCD9D9</item>
-        <item name="colorSurface">#FCF8F8</item>
-        <item name="colorSurfaceBright">#FCF8F8</item>
-        <item name="colorOnSurface">#1C1B1B</item>
-        <item name="colorOnSurfaceVariant">#45474A</item>
+        <item name="colorSurfaceDim">@color/lightSurfaceDim</item>
+        <item name="colorSurface">@color/lightSurface</item>
+        <item name="colorSurfaceBright">@color/lightSurfaceBright</item>
+        <item name="colorOnSurface">@color/lightOnSurface</item>
+        <item name="colorOnSurfaceVariant">@color/lightOnSurfaceVariant</item>
 
-        <item name="colorSurfaceContainerLowest">#FFFFFF</item>
-        <item name="colorSurfaceContainerLow">#F6F3F2</item>
-        <item name="colorSurfaceContainer">#F1EDEC</item>
-        <item name="colorSurfaceContainerHigh">#EBE7E7</item>
-        <item name="colorSurfaceContainerHighest">#E5E2E1</item>
+        <item name="colorSurfaceContainerLowest">@color/lightSurfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/lightSurfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/lightSurfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/lightSurfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/lightSurfaceContainerHighest</item>
 
-        <item name="colorSurfaceInverse">#313030</item>
-        <item name="colorOnSurfaceInverse">#F3F0EF</item>
-        <item name="colorPrimaryInverse">#F7B5C4</item>
+        <item name="colorSurfaceInverse">@color/lightSurfaceInverse</item>
+        <item name="colorOnSurfaceInverse">@color/lightOnSurfaceInverse</item>
+        <item name="colorPrimaryInverse">@color/lightPrimaryInverse</item>
 
-        <item name="colorOutline">#75777A</item>
-        <item name="colorOutlineVariant">#C5C6CA</item>
+        <item name="colorOutline">@color/lightOutline</item>
+        <item name="colorOutlineVariant">@color/lightOutlineVariant</item>
 
-        <item name="colorPrimaryFixed">#FFD9E0</item>
-        <item name="colorOnPrimaryFixed">#340E1A</item>
-        <item name="colorPrimaryFixedDim">#F7B5C4</item>
-        <item name="colorOnPrimaryFixedVariant">#683845</item>
+        <item name="colorPrimaryFixed">@color/lightPrimaryFixed</item>
+        <item name="colorOnPrimaryFixed">@color/lightOnPrimaryFixed</item>
+        <item name="colorPrimaryFixedDim">@color/lightPrimaryFixedDim</item>
+        <item name="colorOnPrimaryFixedVariant">@color/lightOnPrimaryFixedVariant</item>
 
-        <item name="colorSecondaryFixed">#FFD9E0</item>
-        <item name="colorOnSecondaryFixed">#30121A</item>
-        <item name="colorSecondaryFixedDim">#EDB9C4</item>
-        <item name="colorOnSecondaryFixedVariant">#613C45</item>
+        <item name="colorSecondaryFixed">@color/lightSecondaryFixed</item>
+        <item name="colorOnSecondaryFixed">@color/lightOnSecondaryFixed</item>
+        <item name="colorSecondaryFixedDim">@color/lightSecondaryFixedDim</item>
+        <item name="colorOnSecondaryFixedVariant">@color/lightOnSecondaryFixedVariant</item>
 
-        <item name="colorTertiaryFixed">#E8DDFF</item>
-        <item name="colorOnTertiaryFixed">#1F1341</item>
-        <item name="colorTertiaryFixedDim">#CDBEF7</item>
-        <item name="colorOnTertiaryFixedVariant">#4B3F6F</item>
+        <item name="colorTertiaryFixed">@color/lightTertiaryFixed</item>
+        <item name="colorOnTertiaryFixed">@color/lightOnTertiaryFixed</item>
+        <item name="colorTertiaryFixedDim">@color/lightTertiaryFixedDim</item>
+        <item name="colorOnTertiaryFixedVariant">@color/lightOnTertiaryFixedVariant</item>
 
         <!-- Remapping properties due to changes in Material 3 tone based surface colors
              https://material.io/blog/tone-based-surface-color-m3
              -->
-        <item name="android:colorBackground">#FCF8F8</item><!-- surface -->
-        <item name="colorOnBackground">#1C1B1B</item><!-- onSurface -->
-        <item name="colorSurfaceVariant">#E5E2E1</item><!-- surfaceContainerHighest -->
+        <item name="android:colorBackground">@color/lightSurface</item>
+        <item name="colorOnBackground">@color/lightOnSurface</item>
+        <item name="colorSurfaceVariant">@color/lightSurfaceContainerHighest</item>
 
         <!-- Custom attributes -->
         <item name="appLogo">@drawable/ic_app_logo</item>
     </style>
 
     <style name="Theme2.K9.Dark" parent="Theme2.Main.Dark">
-        <item name="colorPrimary">#F1E7FF</item>
-        <item name="colorOnPrimary">#37265D</item>
-        <item name="colorPrimaryContainer">#CBB7F9</item>
-        <item name="colorOnPrimaryContainer">#39285F</item>
+        <item name="colorPrimary">@color/darkPrimary</item>
+        <item name="colorOnPrimary">@color/darkOnPrimary</item>
+        <item name="colorPrimaryContainer">@color/darkPrimaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/darkOnPrimaryContainer</item>
 
-        <item name="colorSecondary">#F1E7FF</item>
-        <item name="colorOnSecondary">#332D41</item>
-        <item name="colorSecondaryContainer">#C7BDD7</item>
-        <item name="colorOnSecondaryContainer">#352F43</item>
+        <item name="colorSecondary">@color/darkSecondary</item>
+        <item name="colorOnSecondary">@color/darkOnSecondary</item>
+        <item name="colorSecondaryContainer">@color/darkSecondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/darkOnSecondaryContainer</item>
 
-        <item name="colorTertiary">#FFDBE5</item>
-        <item name="colorOnTertiary">#472732</item>
-        <item name="colorTertiaryContainer">#DDAEBC</item>
-        <item name="colorOnTertiaryContainer">#43242F</item>
+        <item name="colorTertiary">@color/darkTertiary</item>
+        <item name="colorOnTertiary">@color/darkOnTertiary</item>
+        <item name="colorTertiaryContainer">@color/darkTertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/darkOnTertiaryContainer</item>
 
-        <item name="colorError">#FFB3AD</item>
-        <item name="colorOnError">#68000A</item>
-        <item name="colorErrorContainer">#DA3437</item>
-        <item name="colorOnErrorContainer">#FFFFFF</item>
+        <item name="colorError">@color/darkError</item>
+        <item name="colorOnError">@color/darkOnError</item>
+        <item name="colorErrorContainer">@color/darkErrorContainer</item>
+        <item name="colorOnErrorContainer">@color/darkOnErrorContainer</item>
 
-        <item name="colorSurfaceDim">#131314</item>
-        <item name="colorSurface">#131314</item>
-        <item name="colorSurfaceBright">#39393A</item>
-        <item name="colorOnSurface">#E5E2E3</item>
-        <item name="colorOnSurfaceVariant">#C5C6CC</item>
+        <item name="colorSurfaceDim">@color/darkSurfaceDim</item>
+        <item name="colorSurface">@color/darkSurface</item>
+        <item name="colorSurfaceBright">@color/darkSurfaceBright</item>
+        <item name="colorOnSurface">@color/darkOnSurface</item>
+        <item name="colorOnSurfaceVariant">@color/darkOnSurfaceVariant</item>
 
-        <item name="colorSurfaceContainerLowest">#0E0E0F</item>
-        <item name="colorSurfaceContainerLow">#1B1B1C</item>
-        <item name="colorSurfaceContainer">#201F20</item>
-        <item name="colorSurfaceContainerHigh">#2A2A2B</item>
-        <item name="colorSurfaceContainerHighest">#353436</item>
+        <item name="colorSurfaceContainerLowest">@color/darkSurfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/darkSurfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/darkSurfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/darkSurfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/darkSurfaceContainerHighest</item>
 
-        <item name="colorSurfaceInverse">#E5E2E3</item>
-        <item name="colorOnSurfaceInverse">#313031</item>
-        <item name="colorPrimaryInverse">#66558F</item>
+        <item name="colorSurfaceInverse">@color/darkSurfaceInverse</item>
+        <item name="colorOnSurfaceInverse">@color/darkOnSurfaceInverse</item>
+        <item name="colorPrimaryInverse">@color/darkPrimaryInverse</item>
 
-        <item name="colorOutline">#8F9096</item>
-        <item name="colorOutlineVariant">#44474C</item>
+        <item name="colorOutline">@color/darkOutline</item>
+        <item name="colorOutlineVariant">@color/darkOutlineVariant</item>
 
-        <item name="colorPrimaryFixed">#E9DDFF</item>
-        <item name="colorOnPrimaryFixed">#210F47</item>
-        <item name="colorPrimaryFixedDim">#D0BCFE</item>
-        <item name="colorOnPrimaryFixedVariant">#4E3D75</item>
+        <item name="colorPrimaryFixed">@color/darkPrimaryFixed</item>
+        <item name="colorOnPrimaryFixed">@color/darkOnPrimaryFixed</item>
+        <item name="colorPrimaryFixedDim">@color/darkPrimaryFixedDim</item>
+        <item name="colorOnPrimaryFixedVariant">@color/darkOnPrimaryFixedVariant</item>
 
-        <item name="colorSecondaryFixed">#E9DEF9</item>
-        <item name="colorOnSecondaryFixed">#1E182B</item>
-        <item name="colorSecondaryFixedDim">#CCC2DC</item>
-        <item name="colorOnSecondaryFixedVariant">#4A4359</item>
+        <item name="colorSecondaryFixed">@color/darkSecondaryFixed</item>
+        <item name="colorOnSecondaryFixed">@color/darkOnSecondaryFixed</item>
+        <item name="colorSecondaryFixedDim">@color/darkSecondaryFixedDim</item>
+        <item name="colorOnSecondaryFixedVariant">@color/darkOnSecondaryFixedVariant</item>
 
-        <item name="colorTertiaryFixed">#FFD9E3</item>
-        <item name="colorOnTertiaryFixed">#2F121D</item>
-        <item name="colorTertiaryFixedDim">#EABAC8</item>
-        <item name="colorOnTertiaryFixedVariant">#603D48</item>
+        <item name="colorTertiaryFixed">@color/darkTertiaryFixed</item>
+        <item name="colorOnTertiaryFixed">@color/darkOnTertiaryFixed</item>
+        <item name="colorTertiaryFixedDim">@color/darkTertiaryFixedDim</item>
+        <item name="colorOnTertiaryFixedVariant">@color/darkOnTertiaryFixedVariant</item>
 
         <!-- Remapping properties due to changes in Material 3 tone based surface colors
              https://material.io/blog/tone-based-surface-color-m3
              -->
-        <item name="android:colorBackground">#131314</item><!-- surface -->
-        <item name="colorOnBackground">#E5E2E3</item><!-- onSurface -->
-        <item name="colorSurfaceVariant">#353436</item><!-- surfaceContainerHighest -->
+        <item name="android:colorBackground">@color/darkSurface</item>
+        <item name="colorOnBackground">@color/darkOnSurface</item>
+        <item name="colorSurfaceVariant">@color/darkSurfaceContainerHighest</item>
 
         <!-- Custom attributes -->
         <item name="appLogo">@drawable/ic_app_logo</item>
