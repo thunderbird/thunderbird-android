@@ -117,7 +117,7 @@ androidx.versionedparcelable:versionedparcelable:1.1.1
 androidx.viewpager2:viewpager2:1.1.0-beta02
 androidx.viewpager:viewpager:1.0.0
 androidx.window:window:1.0.0
-androidx.work:work-runtime:2.9.0
+androidx.work:work-runtime:2.9.1
 com.beetstra.jutf7:jutf7:1.0.0
 com.github.ByteHamster:SearchPreference:v2.3.0
 com.github.bumptech.glide:annotations:4.16.0
