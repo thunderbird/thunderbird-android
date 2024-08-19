@@ -3,7 +3,6 @@ package com.fsck.k9.preferences;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -109,31 +108,21 @@ public class Settings {
      * @param validatedSettingsMutable
      *         The settings as returned by {@link Settings#validate(int, Map, Map, boolean)}.
      *         This map is modified and contains the upgraded settings when this method returns.
-     *
-     * @return A set of setting names that were removed during the upgrade process or {@code null}
-     *         if none were removed.
      */
-    public static Set<String> upgrade(int version, Map<Integer, SettingsUpgrader> customUpgraders,
+    public static void upgrade(int version, Map<Integer, SettingsUpgrader> customUpgraders,
             Map<String, TreeMap<Integer, SettingsDescription>> settings, Map<String, Object> validatedSettingsMutable) {
-        Set<String> deletedSettings = null;
-
         for (int toVersion = version + 1; toVersion <= VERSION; toVersion++) {
             if (customUpgraders.containsKey(toVersion)) {
                 SettingsUpgrader upgrader = customUpgraders.get(toVersion);
-                Set<String> settingsToDelete = upgrader.upgrade(validatedSettingsMutable);
-                if (settingsToDelete != null) {
-                    deletedSettings = new HashSet<>(settingsToDelete);
-                }
+                upgrader.upgrade(validatedSettingsMutable);
             }
 
-            deletedSettings = upgradeSettingsGeneric(settings, validatedSettingsMutable, deletedSettings, toVersion);
+            upgradeSettingsGeneric(settings, validatedSettingsMutable, toVersion);
         }
-
-        return deletedSettings;
     }
 
-    private static Set<String> upgradeSettingsGeneric(Map<String, TreeMap<Integer, SettingsDescription>> settings,
-            Map<String, Object> validatedSettingsMutable, Set<String> deletedSettingsMutable, int toVersion) {
+    private static void upgradeSettingsGeneric(Map<String, TreeMap<Integer, SettingsDescription>> settings,
+            Map<String, Object> validatedSettingsMutable, int toVersion) {
         for (Entry<String, TreeMap<Integer, SettingsDescription>> versions : settings.entrySet()) {
             String settingName = versions.getKey();
             TreeMap<Integer, SettingsDescription> versionedSettings = versions.getValue();
@@ -155,13 +144,10 @@ public class Settings {
             Integer highestVersion = versionedSettings.lastKey();
             boolean isRemovedSetting = (highestVersion == toVersion && versionedSettings.get(highestVersion) == null);
             if (isRemovedSetting) {
-                if (deletedSettingsMutable == null) {
-                    deletedSettingsMutable = new HashSet<>();
-                }
-                upgradeSettingRemove(validatedSettingsMutable, deletedSettingsMutable, settingName);
+                validatedSettingsMutable.remove(settingName);
+                Timber.v("Removed setting \"%s\"", settingName);
             }
         }
-        return deletedSettingsMutable;
     }
 
     private static <T> void upgradeSettingInsertDefault(Map<String, Object> validatedSettingsMutable,
@@ -173,14 +159,6 @@ public class Settings {
             String prettyValue = setting.toPrettyString(defaultValue);
             Timber.v("Added new setting \"%s\" with default value \"%s\"", settingName, prettyValue);
         }
-    }
-
-    private static void upgradeSettingRemove(Map<String, Object> validatedSettingsMutable,
-            Set<String> deletedSettingsMutable, String settingName) {
-        validatedSettingsMutable.remove(settingName);
-        deletedSettingsMutable.add(settingName);
-
-        Timber.v("Removed setting \"%s\"", settingName);
     }
 
     /**
