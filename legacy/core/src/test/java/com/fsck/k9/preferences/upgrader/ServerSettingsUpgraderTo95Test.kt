@@ -1,7 +1,6 @@
 package com.fsck.k9.preferences.upgrader
 
 import assertk.assertThat
-import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
 
@@ -16,9 +15,8 @@ class ServerSettingsUpgraderTo95Test {
             "password" to "",
         )
 
-        val result = upgrader.upgrade(mutableSettings)
+        upgrader.upgrade(mutableSettings)
 
-        assertThat(result).isEmpty()
         assertThat(mutableSettings).isEqualTo(
             mapOf<String, Any?>(
                 "authenticationType" to "NONE",
@@ -37,9 +35,8 @@ class ServerSettingsUpgraderTo95Test {
         )
         val mutableSettings = settings.toMutableMap()
 
-        val result = upgrader.upgrade(mutableSettings)
+        upgrader.upgrade(mutableSettings)
 
-        assertThat(result).isEmpty()
         assertThat(mutableSettings).isEqualTo(settings)
     }
 }

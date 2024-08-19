@@ -2,7 +2,6 @@ package com.fsck.k9.preferences.upgrader;
 
 
 import java.util.Map;
-import java.util.Set;
 
 import app.k9mail.legacy.preferences.AppTheme;
 import app.k9mail.legacy.preferences.SubTheme;
@@ -16,14 +15,12 @@ import com.fsck.k9.preferences.Settings.SettingsUpgrader;
 public class GeneralSettingsUpgraderTo24 implements SettingsUpgrader {
 
     @Override
-    public Set<String> upgrade(Map<String, Object> settings) {
+    public void upgrade(Map<String, Object> settings) {
         SubTheme messageViewTheme = (SubTheme) settings.get("messageViewTheme");
         AppTheme theme = (AppTheme) settings.get("theme");
         if ((theme == AppTheme.LIGHT && messageViewTheme == SubTheme.LIGHT) ||
             (theme == AppTheme.DARK && messageViewTheme == SubTheme.DARK)) {
             settings.put("messageViewTheme", SubTheme.USE_GLOBAL);
         }
-
-        return null;
     }
 }

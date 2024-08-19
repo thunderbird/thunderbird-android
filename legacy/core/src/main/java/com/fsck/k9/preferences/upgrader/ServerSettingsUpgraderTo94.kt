@@ -11,7 +11,7 @@ import com.fsck.k9.preferences.Settings.SettingsUpgrader
  * Replaces the authentication value "LOGIN" with "PLAIN".
  */
 class ServerSettingsUpgraderTo94 : SettingsUpgrader {
-    override fun upgrade(settings: MutableMap<String, Any?>): Set<String> {
+    override fun upgrade(settings: MutableMap<String, Any?>) {
         val connectionSecurity = settings[CONNECTION_SECURITY] as? String
         val isSecure = connectionSecurity == "STARTTLS_REQUIRED" || connectionSecurity == "SSL_TLS_REQUIRED"
         val authenticationType = settings[AUTHENTICATION_TYPE] as? String
@@ -21,7 +21,5 @@ class ServerSettingsUpgraderTo94 : SettingsUpgrader {
             "LOGIN" -> "PLAIN"
             else -> authenticationType
         }
-
-        return emptySet()
     }
 }

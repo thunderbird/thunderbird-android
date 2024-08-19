@@ -4,7 +4,7 @@ import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.CONNECTION_S
 import com.fsck.k9.preferences.Settings.SettingsUpgrader
 
 class ServerSettingsUpgraderTo92 : SettingsUpgrader {
-    override fun upgrade(settings: MutableMap<String, Any?>): Set<String> {
+    override fun upgrade(settings: MutableMap<String, Any?>) {
         val oldConnectionSecurity = settings[CONNECTION_SECURITY] as? String
 
         settings[CONNECTION_SECURITY] = when (oldConnectionSecurity) {
@@ -15,7 +15,5 @@ class ServerSettingsUpgraderTo92 : SettingsUpgrader {
             "SSL_TLS_REQUIRED" -> "SSL_TLS_REQUIRED"
             else -> "SSL_TLS_REQUIRED"
         }
-
-        return emptySet()
     }
 }

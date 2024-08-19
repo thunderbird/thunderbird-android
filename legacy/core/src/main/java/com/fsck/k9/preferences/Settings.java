@@ -355,11 +355,8 @@ public class Settings {
          * @param settings
          *         The settings to upgrade.  This map is modified and contains the upgraded
          *         settings when this method returns.
-         *
-         * @return A set of setting names that were removed during the upgrade process or
-         *         {@code null} if none were removed.
          */
-        Set<String> upgrade(Map<String, Object> settings);
+        void upgrade(Map<String, Object> settings);
     }
 
 

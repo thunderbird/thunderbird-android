@@ -104,7 +104,6 @@ class SettingsTest {
         val upgraders = mapOf(
             Settings.VERSION to SettingsUpgrader {
                 upgraderCalled = true
-                emptySet()
             },
         )
         val settings = mapOf(

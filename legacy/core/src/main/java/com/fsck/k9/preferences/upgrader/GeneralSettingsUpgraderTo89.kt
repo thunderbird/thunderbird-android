@@ -6,7 +6,7 @@ import com.fsck.k9.preferences.Settings.SettingsUpgrader
  * Combine `messageViewReturnToList` and `messageViewShowNext` into `messageViewPostDeleteAction`.
  */
 class GeneralSettingsUpgraderTo89 : SettingsUpgrader {
-    override fun upgrade(settings: MutableMap<String, Any>): Set<String> {
+    override fun upgrade(settings: MutableMap<String, Any>) {
         val messageViewReturnToList = settings["messageViewReturnToList"] as? Boolean
         val messageViewShowNext = settings["messageViewShowNext"] as? Boolean
 
@@ -17,7 +17,5 @@ class GeneralSettingsUpgraderTo89 : SettingsUpgrader {
         } else {
             settings["messageViewPostDeleteAction"] = "ShowPreviousMessage"
         }
-
-        return setOf("messageViewReturnToList", "messageViewShowNext")
     }
 }

@@ -1,7 +1,6 @@
 package com.fsck.k9.preferences.upgrader
 
 import assertk.assertThat
-import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
 
@@ -15,9 +14,8 @@ class ServerSettingsUpgraderTo94Test {
             "connectionSecurity" to "STARTTLS_REQUIRED",
         )
 
-        val result = upgrader.upgrade(mutableSettings)
+        upgrader.upgrade(mutableSettings)
 
-        assertThat(result).isEmpty()
         assertThat(mutableSettings).isEqualTo(
             mapOf<String, Any?>(
                 "authenticationType" to "PLAIN",
@@ -33,9 +31,8 @@ class ServerSettingsUpgraderTo94Test {
             "connectionSecurity" to "SSL_TLS_REQUIRED",
         )
 
-        val result = upgrader.upgrade(mutableSettings)
+        upgrader.upgrade(mutableSettings)
 
-        assertThat(result).isEmpty()
         assertThat(mutableSettings).isEqualTo(
             mapOf<String, Any?>(
                 "authenticationType" to "PLAIN",
@@ -51,9 +48,8 @@ class ServerSettingsUpgraderTo94Test {
             "connectionSecurity" to "NONE",
         )
 
-        val result = upgrader.upgrade(mutableSettings)
+        upgrader.upgrade(mutableSettings)
 
-        assertThat(result).isEmpty()
         assertThat(mutableSettings).isEqualTo(
             mapOf<String, Any?>(
                 "authenticationType" to "CRAM_MD5",
@@ -69,9 +65,8 @@ class ServerSettingsUpgraderTo94Test {
             "connectionSecurity" to "SSL_TLS_REQUIRED",
         )
 
-        val result = upgrader.upgrade(mutableSettings)
+        upgrader.upgrade(mutableSettings)
 
-        assertThat(result).isEmpty()
         assertThat(mutableSettings).isEqualTo(
             mapOf<String, Any?>(
                 "authenticationType" to "PLAIN",
@@ -88,9 +83,8 @@ class ServerSettingsUpgraderTo94Test {
         )
         val mutableSettings = settings.toMutableMap()
 
-        val result = upgrader.upgrade(mutableSettings)
+        upgrader.upgrade(mutableSettings)
 
-        assertThat(result).isEmpty()
         assertThat(mutableSettings).isEqualTo(settings)
     }
 
@@ -102,9 +96,8 @@ class ServerSettingsUpgraderTo94Test {
         )
         val mutableSettings = settings.toMutableMap()
 
-        val result = upgrader.upgrade(mutableSettings)
+        upgrader.upgrade(mutableSettings)
 
-        assertThat(result).isEmpty()
         assertThat(mutableSettings).isEqualTo(settings)
     }
 
@@ -116,9 +109,8 @@ class ServerSettingsUpgraderTo94Test {
         )
         val mutableSettings = settings.toMutableMap()
 
-        val result = upgrader.upgrade(mutableSettings)
+        upgrader.upgrade(mutableSettings)
 
-        assertThat(result).isEmpty()
         assertThat(mutableSettings).isEqualTo(settings)
     }
 }

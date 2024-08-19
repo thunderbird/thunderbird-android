@@ -9,7 +9,7 @@ import com.fsck.k9.preferences.Settings.SettingsUpgrader
  * Updates server settings to use an authentication type value of "NONE" when appropriate.
  */
 class ServerSettingsUpgraderTo95 : SettingsUpgrader {
-    override fun upgrade(settings: MutableMap<String, Any?>): Set<String> {
+    override fun upgrade(settings: MutableMap<String, Any?>) {
         val username = settings[USERNAME] as? String
 
         if (username.isNullOrEmpty()) {
@@ -17,7 +17,5 @@ class ServerSettingsUpgraderTo95 : SettingsUpgrader {
             settings[USERNAME] = ""
             settings[PASSWORD] = null
         }
-
-        return emptySet()
     }
 }
