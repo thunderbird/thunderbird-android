@@ -6,13 +6,12 @@ internal class AccountSettingsUpgrader {
     private val serverSettingsUpgrader = ServerSettingsUpgrader()
 
     fun upgrade(contentVersion: Int, account: ValidatedSettings.Account): ValidatedSettings.Account {
-        val validatedSettings = account.settings.toMutableMap()
-        if (contentVersion != Settings.VERSION) {
-            AccountSettingsDescriptions.upgrade(contentVersion, validatedSettings)
+        if (contentVersion == Settings.VERSION) {
+            return account
         }
 
         return account.copy(
-            settings = validatedSettings.toMap(),
+            settings = AccountSettingsDescriptions.upgrade(contentVersion, account.settings),
             incoming = serverSettingsUpgrader.upgrade(contentVersion, account.incoming),
             outgoing = serverSettingsUpgrader.upgrade(contentVersion, account.outgoing),
             identities = upgradeIdentities(contentVersion, account.identities),

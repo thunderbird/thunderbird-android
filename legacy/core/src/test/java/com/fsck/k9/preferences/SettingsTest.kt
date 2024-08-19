@@ -18,7 +18,7 @@ class SettingsTest {
     fun `upgrade() with new setting being added`() {
         val version = 1
         val upgraders = emptyMap<Int, SettingsUpgrader>()
-        val settings = mapOf(
+        val settingsDescriptions = mapOf(
             "one" to versions(
                 1 to BooleanSetting(true),
             ),
@@ -26,13 +26,13 @@ class SettingsTest {
                 2 to StringSetting("default"),
             ),
         )
-        val validatedSettings = mutableMapOf<String, Any>(
+        val settings = mapOf<String, Any>(
             "one" to false,
         )
 
-        Settings.upgrade(version, upgraders, settings, validatedSettings)
+        val result = Settings.upgrade(version, upgraders, settingsDescriptions, settings)
 
-        assertThat(validatedSettings).isEqualTo(
+        assertThat(result).isEqualTo(
             mapOf(
                 "one" to false,
                 "two" to "default",
@@ -44,7 +44,7 @@ class SettingsTest {
     fun `upgrade() with setting being removed`() {
         val version = 1
         val upgraders = emptyMap<Int, SettingsUpgrader>()
-        val settings = mapOf(
+        val settingsDescriptions = mapOf(
             "one" to versions(
                 1 to BooleanSetting(true),
                 2 to null,
@@ -53,13 +53,13 @@ class SettingsTest {
                 2 to StringSetting("default"),
             ),
         )
-        val validatedSettings = mutableMapOf<String, Any>(
+        val settings = mapOf<String, Any>(
             "one" to false,
         )
 
-        Settings.upgrade(version, upgraders, settings, validatedSettings)
+        val result = Settings.upgrade(version, upgraders, settingsDescriptions, settings)
 
-        assertThat(validatedSettings).isEqualTo(
+        assertThat(result).isEqualTo(
             mapOf(
                 "two" to "default",
             ),
@@ -75,7 +75,7 @@ class SettingsTest {
                 setOf("one")
             },
         )
-        val settings = mapOf(
+        val settingsDescriptions = mapOf(
             "one" to versions(
                 1 to BooleanSetting(true),
                 2 to null,
@@ -84,13 +84,13 @@ class SettingsTest {
                 2 to BooleanSetting(true),
             ),
         )
-        val validatedSettings = mutableMapOf<String, Any>(
+        val settings = mutableMapOf<String, Any>(
             "one" to false,
         )
 
-        Settings.upgrade(version, upgraders, settings, validatedSettings)
+        val result = Settings.upgrade(version, upgraders, settingsDescriptions, settings)
 
-        assertThat(validatedSettings).isEqualTo(
+        assertThat(result).isEqualTo(
             mapOf(
                 "two" to false,
             ),
@@ -106,18 +106,18 @@ class SettingsTest {
                 upgraderCalled = true
             },
         )
-        val settings = mapOf(
+        val settingsDescriptions = mapOf(
             "setting" to versions(
                 1 to BooleanSetting(true),
             ),
         )
-        val validatedSettings = mutableMapOf<String, Any>(
+        val settings = mapOf<String, Any>(
             "setting" to false,
         )
 
-        Settings.upgrade(version, upgraders, settings, validatedSettings)
+        val result = Settings.upgrade(version, upgraders, settingsDescriptions, settings)
 
-        assertThat(validatedSettings).isEqualTo(
+        assertThat(result).isEqualTo(
             mapOf(
                 "setting" to false,
             ),
@@ -129,17 +129,17 @@ class SettingsTest {
     fun `upgrade() with first version of setting being null should throw`() {
         val version = 1
         val upgraders = emptyMap<Int, SettingsUpgrader>()
-        val settings = mapOf(
+        val settingsDescriptions = mapOf(
             "setting" to versions(
                 2 to null,
             ),
         )
-        val validatedSettings = mutableMapOf<String, Any>(
+        val settings = mapOf<String, Any>(
             "settings" to "1",
         )
 
         assertFailure {
-            Settings.upgrade(version, upgraders, settings, validatedSettings)
+            Settings.upgrade(version, upgraders, settingsDescriptions, settings)
         }.isInstanceOf<AssertionError>()
             .hasMessage("First version of a setting must be non-null!")
     }

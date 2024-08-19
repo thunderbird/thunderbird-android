@@ -8,15 +8,13 @@ internal class ServerSettingsUpgrader(
             return server
         }
 
-        val settings = server.settings.toMutableMap()
-
-        Settings.upgrade(
+        val upgradedSettings = Settings.upgrade(
             contentVersion,
             serverSettingsDescriptions.upgraders,
             serverSettingsDescriptions.settings,
-            settings,
+            server.settings,
         )
 
-        return server.copy(settings = settings.toMap())
+        return server.copy(settings = upgradedSettings)
     }
 }
