@@ -1,8 +1,8 @@
-package com.fsck.k9.ui
+package com.fsck.k9.provider
 
 import app.k9mail.legacy.ui.theme.ThemeProvider
+import com.fsck.k9.R
 
-// TODO: Move this class and the theme resources to the main app module
 class K9ThemeProvider : ThemeProvider {
     override val appThemeResourceId = R.style.Theme_K9_DayNight
     override val appLightThemeResourceId = R.style.Theme_K9_Light

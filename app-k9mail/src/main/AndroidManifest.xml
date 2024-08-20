@@ -9,7 +9,23 @@
         android:name="app.k9mail.K9App"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:theme="@style/Theme.K9.Startup"
+        tools:replace="android:theme"
         >
+
+        <activity
+            android:name="com.fsck.k9.ui.settings.account.OpenPgpAppSelectDialog"
+            android:configChanges="locale"
+            android:theme="@style/Theme.K9.DayNight.Dialog.Translucent"
+            />
+
+        <activity
+            android:name="com.fsck.k9.ui.notification.DeleteConfirmationActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTop"
+            android:taskAffinity=""
+            android:theme="@style/Theme.K9.DayNight.Dialog.Translucent"
+            />
 
         <provider
             android:name="androidx.startup.InitializationProvider"
