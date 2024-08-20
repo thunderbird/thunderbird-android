@@ -4,24 +4,20 @@ package com.fsck.k9.ui.messageview;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.List;
 
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
-import androidx.annotation.WorkerThread;
 import android.widget.Toast;
 
+import androidx.annotation.WorkerThread;
 import app.k9mail.legacy.account.Account;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessagingController;
 import app.k9mail.legacy.message.controller.SimpleMessagingListener;
-import com.fsck.k9.helper.MimeTypeUtil;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
@@ -38,6 +34,7 @@ public class AttachmentController {
     private final MessagingController controller;
     private final MessageViewFragment messageViewFragment;
     private final AttachmentViewInfo attachment;
+    private final ViewIntentFinder viewIntentFinder;
 
 
     AttachmentController(Context context, MessagingController controller, MessageViewFragment messageViewFragment,
@@ -46,6 +43,7 @@ public class AttachmentController {
         this.controller = controller;
         this.messageViewFragment = messageViewFragment;
         this.attachment = attachment;
+        viewIntentFinder = new ViewIntentFinder(context);
     }
 
     public void viewAttachment() {
@@ -131,64 +129,14 @@ public class AttachmentController {
 
     @WorkerThread
     private Intent getBestViewIntent() {
-        Uri intentDataUri;
         try {
-            intentDataUri = AttachmentTempFileProvider.createTempUriForContentUri(context, attachment.internalUri);
+            Uri intentDataUri = AttachmentTempFileProvider.createTempUriForContentUri(context, attachment.internalUri);
+
+            return viewIntentFinder.getBestViewIntent(intentDataUri, attachment.displayName, attachment.mimeType);
         } catch (IOException e) {
             Timber.e(e, "Error creating temp file for attachment!");
             return null;
         }
-
-        String displayName = attachment.displayName;
-        String inferredMimeType = MimeTypeUtil.getMimeTypeByExtension(displayName);
-
-        IntentAndResolvedActivitiesCount resolvedIntentInfo;
-        String mimeType = attachment.mimeType;
-        if (MimeTypeUtil.isDefaultMimeType(mimeType)) {
-            resolvedIntentInfo = getViewIntentForMimeType(intentDataUri, inferredMimeType);
-        } else {
-            resolvedIntentInfo = getViewIntentForMimeType(intentDataUri, mimeType);
-            if (!resolvedIntentInfo.hasResolvedActivities() && !inferredMimeType.equals(mimeType)) {
-                resolvedIntentInfo = getViewIntentForMimeType(intentDataUri, inferredMimeType);
-            }
-        }
-
-        if (!resolvedIntentInfo.hasResolvedActivities()) {
-            resolvedIntentInfo = getViewIntentForMimeType(intentDataUri, MimeTypeUtil.DEFAULT_ATTACHMENT_MIME_TYPE);
-        }
-
-        return resolvedIntentInfo.getIntent();
-    }
-
-    private IntentAndResolvedActivitiesCount getViewIntentForMimeType(Uri contentUri, String mimeType) {
-        Intent contentUriIntent = createViewIntentForAttachmentProviderUri(contentUri, mimeType);
-        int contentUriActivitiesCount = getResolvedIntentActivitiesCount(contentUriIntent);
-
-        return new IntentAndResolvedActivitiesCount(contentUriIntent, contentUriActivitiesCount);
-    }
-
-    private Intent createViewIntentForAttachmentProviderUri(Uri contentUri, String mimeType) {
-        Uri uri = AttachmentTempFileProvider.getMimeTypeUri(contentUri, mimeType);
-
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(uri, mimeType);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        addUiIntentFlags(intent);
-
-        return intent;
-    }
-
-    private void addUiIntentFlags(Intent intent) {
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-    }
-
-    private int getResolvedIntentActivitiesCount(Intent intent) {
-        PackageManager packageManager = context.getPackageManager();
-
-        List<ResolveInfo> resolveInfos =
-                packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-
-        return resolveInfos.size();
     }
 
     private void displayAttachmentNotSavedMessage() {
@@ -198,24 +146,6 @@ public class AttachmentController {
 
     private void displayMessageToUser(String message) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-    }
-
-    private static class IntentAndResolvedActivitiesCount {
-        private Intent intent;
-        private int activitiesCount;
-
-        IntentAndResolvedActivitiesCount(Intent intent, int activitiesCount) {
-            this.intent = intent;
-            this.activitiesCount = activitiesCount;
-        }
-
-        public Intent getIntent() {
-            return intent;
-        }
-
-        public boolean hasResolvedActivities() {
-            return activitiesCount > 0;
-        }
     }
 
     private class ViewAttachmentAsyncTask extends AsyncTask<Void, Void, Intent> {
