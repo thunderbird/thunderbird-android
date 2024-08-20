@@ -2,104 +2,132 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="Theme2.Thunderbird.Light" parent="Theme2.Main.Light">
-        <item name="colorPrimary">@color/thunderbird_primary_040</item>
-        <item name="colorOnPrimary">@color/thunderbird_primary_100</item>
-        <item name="colorPrimaryInverse">@color/thunderbird_primary_080</item>
-        <item name="colorPrimaryContainer">@color/thunderbird_primary_090</item>
-        <item name="colorOnPrimaryContainer">@color/thunderbird_primary_010</item>
-        <item name="colorPrimaryFixed">@color/thunderbird_primary_090</item>
-        <item name="colorPrimaryFixedDim">@color/thunderbird_primary_080</item>
-        <item name="colorOnPrimaryFixed">@color/thunderbird_primary_010</item>
-        <item name="colorOnPrimaryFixedVariant">@color/thunderbird_primary_030</item>
-        <item name="colorSecondary">@color/thunderbird_secondary_040</item>
-        <item name="colorOnSecondary">@color/thunderbird_secondary_100</item>
-        <item name="colorSecondaryContainer">@color/thunderbird_secondary_090</item>
-        <item name="colorOnSecondaryContainer">@color/thunderbird_secondary_010</item>
-        <item name="colorSecondaryFixed">@color/thunderbird_secondary_090</item>
-        <item name="colorSecondaryFixedDim">@color/thunderbird_secondary_080</item>
-        <item name="colorOnSecondaryFixed">@color/thunderbird_secondary_010</item>
-        <item name="colorOnSecondaryFixedVariant">@color/thunderbird_secondary_030</item>
-        <item name="colorTertiary">@color/thunderbird_tertiary_040</item>
-        <item name="colorOnTertiary">@color/thunderbird_tertiary_100</item>
-        <item name="colorTertiaryContainer">@color/thunderbird_tertiary_090</item>
-        <item name="colorOnTertiaryContainer">@color/thunderbird_tertiary_010</item>
-        <item name="colorTertiaryFixed">@color/thunderbird_tertiary_090</item>
-        <item name="colorTertiaryFixedDim">@color/thunderbird_tertiary_080</item>
-        <item name="colorOnTertiaryFixed">@color/thunderbird_tertiary_010</item>
-        <item name="colorOnTertiaryFixedVariant">@color/thunderbird_tertiary_030</item>
-        <item name="android:colorBackground">@color/thunderbird_neutral_099</item>
-        <item name="colorOnBackground">@color/thunderbird_neutral_010</item>
-        <item name="colorSurface">@color/thunderbird_neutral_098</item>
-        <item name="colorOnSurface">@color/thunderbird_neutral_010</item>
-        <item name="colorSurfaceVariant">@color/thunderbird_neutral_variant_090</item>
-        <item name="colorOnSurfaceVariant">@color/thunderbird_neutral_variant_030</item>
-        <item name="colorSurfaceInverse">@color/thunderbird_neutral_020</item>
-        <item name="colorOnSurfaceInverse">@color/thunderbird_neutral_095</item>
-        <item name="colorSurfaceBright">@color/thunderbird_neutral_098</item>
-        <item name="colorSurfaceDim">@color/thunderbird_neutral_087</item>
-        <item name="colorSurfaceContainer">@color/thunderbird_neutral_094</item>
-        <item name="colorSurfaceContainerLow">@color/thunderbird_neutral_096</item>
-        <item name="colorSurfaceContainerHigh">@color/thunderbird_neutral_092</item>
-        <item name="colorSurfaceContainerLowest">@color/thunderbird_neutral_100</item>
-        <item name="colorSurfaceContainerHighest">@color/thunderbird_neutral_090</item>
-        <item name="colorOutline">@color/thunderbird_neutral_variant_050</item>
-        <item name="colorOutlineVariant">@color/thunderbird_neutral_variant_080</item>
-        <item name="colorError">@color/thunderbird_error_040</item>
-        <item name="colorOnError">@color/thunderbird_error_100</item>
-        <item name="colorErrorContainer">@color/thunderbird_error_090</item>
-        <item name="colorOnErrorContainer">@color/thunderbird_error_010</item>
+        <item name="colorPrimary">@color/lightPrimary</item>
+        <item name="colorOnPrimary">@color/lightOnPrimary</item>
+        <item name="colorPrimaryContainer">@color/lightPrimaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/lightOnPrimaryContainer</item>
+
+        <item name="colorSecondary">@color/lightSecondary</item>
+        <item name="colorOnSecondary">@color/lightOnSecondary</item>
+        <item name="colorSecondaryContainer">@color/lightSecondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/lightOnSecondaryContainer</item>
+
+        <item name="colorTertiary">@color/lightTertiary</item>
+        <item name="colorOnTertiary">@color/lightOnTertiary</item>
+        <item name="colorTertiaryContainer">@color/lightTertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/lightOnTertiaryContainer</item>
+
+        <item name="colorError">@color/lightError</item>
+        <item name="colorOnError">@color/lightOnError</item>
+        <item name="colorErrorContainer">@color/lightErrorContainer</item>
+        <item name="colorOnErrorContainer">@color/lightOnErrorContainer</item>
+
+        <item name="colorSurfaceDim">@color/lightSurfaceDim</item>
+        <item name="colorSurface">@color/lightSurface</item>
+        <item name="colorSurfaceBright">@color/lightSurfaceBright</item>
+        <item name="colorOnSurface">@color/lightOnSurface</item>
+        <item name="colorOnSurfaceVariant">@color/lightOnSurfaceVariant</item>
+
+        <item name="colorSurfaceContainerLowest">@color/lightSurfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/lightSurfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/lightSurfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/lightSurfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/lightSurfaceContainerHighest</item>
+
+        <item name="colorSurfaceInverse">@color/lightSurfaceInverse</item>
+        <item name="colorOnSurfaceInverse">@color/lightOnSurfaceInverse</item>
+        <item name="colorPrimaryInverse">@color/lightPrimaryInverse</item>
+
+        <item name="colorOutline">@color/lightOutline</item>
+        <item name="colorOutlineVariant">@color/lightOutlineVariant</item>
+
+        <item name="colorPrimaryFixed">@color/lightPrimaryFixed</item>
+        <item name="colorOnPrimaryFixed">@color/lightOnPrimaryFixed</item>
+        <item name="colorPrimaryFixedDim">@color/lightPrimaryFixedDim</item>
+        <item name="colorOnPrimaryFixedVariant">@color/lightOnPrimaryFixedVariant</item>
+
+        <item name="colorSecondaryFixed">@color/lightSecondaryFixed</item>
+        <item name="colorOnSecondaryFixed">@color/lightOnSecondaryFixed</item>
+        <item name="colorSecondaryFixedDim">@color/lightSecondaryFixedDim</item>
+        <item name="colorOnSecondaryFixedVariant">@color/lightOnSecondaryFixedVariant</item>
+
+        <item name="colorTertiaryFixed">@color/lightTertiaryFixed</item>
+        <item name="colorOnTertiaryFixed">@color/lightOnTertiaryFixed</item>
+        <item name="colorTertiaryFixedDim">@color/lightTertiaryFixedDim</item>
+        <item name="colorOnTertiaryFixedVariant">@color/lightOnTertiaryFixedVariant</item>
+
+        <!-- Remapping properties due to changes in Material 3 tone based surface colors
+             https://material.io/blog/tone-based-surface-color-m3
+             -->
+        <item name="android:colorBackground">@color/lightSurface</item>
+        <item name="colorOnBackground">@color/lightOnSurface</item>
+        <item name="colorSurfaceVariant">@color/lightSurfaceContainerHighest</item>
 
         <!-- Custom attributes -->
         <item name="appLogo">@drawable/ic_app_logo</item>
     </style>
 
     <style name="Theme2.Thunderbird.Dark" parent="Theme2.Main.Dark">
-        <item name="colorPrimary">@color/thunderbird_primary_080</item>
-        <item name="colorOnPrimary">@color/thunderbird_primary_020</item>
-        <item name="colorPrimaryInverse">@color/thunderbird_primary_040</item>
-        <item name="colorPrimaryContainer">@color/thunderbird_primary_030</item>
-        <item name="colorOnPrimaryContainer">@color/thunderbird_primary_090</item>
-        <item name="colorPrimaryFixed">@color/thunderbird_primary_090</item>
-        <item name="colorPrimaryFixedDim">@color/thunderbird_primary_080</item>
-        <item name="colorOnPrimaryFixed">@color/thunderbird_primary_010</item>
-        <item name="colorOnPrimaryFixedVariant">@color/thunderbird_primary_030</item>
-        <item name="colorSecondary">@color/thunderbird_secondary_080</item>
-        <item name="colorOnSecondary">@color/thunderbird_secondary_020</item>
-        <item name="colorSecondaryContainer">@color/thunderbird_secondary_030</item>
-        <item name="colorOnSecondaryContainer">@color/thunderbird_secondary_090</item>
-        <item name="colorSecondaryFixed">@color/thunderbird_secondary_090</item>
-        <item name="colorSecondaryFixedDim">@color/thunderbird_secondary_080</item>
-        <item name="colorOnSecondaryFixed">@color/thunderbird_secondary_010</item>
-        <item name="colorOnSecondaryFixedVariant">@color/thunderbird_secondary_030</item>
-        <item name="colorTertiary">@color/thunderbird_tertiary_080</item>
-        <item name="colorOnTertiary">@color/thunderbird_tertiary_020</item>
-        <item name="colorTertiaryContainer">@color/thunderbird_tertiary_030</item>
-        <item name="colorOnTertiaryContainer">@color/thunderbird_tertiary_090</item>
-        <item name="colorTertiaryFixed">@color/thunderbird_tertiary_090</item>
-        <item name="colorTertiaryFixedDim">@color/thunderbird_tertiary_080</item>
-        <item name="colorOnTertiaryFixed">@color/thunderbird_tertiary_010</item>
-        <item name="colorOnTertiaryFixedVariant">@color/thunderbird_tertiary_030</item>
-        <item name="android:colorBackground">@color/thunderbird_neutral_010</item>
-        <item name="colorOnBackground">@color/thunderbird_neutral_090</item>
-        <item name="colorSurface">@color/thunderbird_neutral_006</item>
-        <item name="colorOnSurface">@color/thunderbird_neutral_090</item>
-        <item name="colorSurfaceVariant">@color/thunderbird_neutral_variant_030</item>
-        <item name="colorOnSurfaceVariant">@color/thunderbird_neutral_variant_080</item>
-        <item name="colorSurfaceInverse">@color/thunderbird_neutral_090</item>
-        <item name="colorOnSurfaceInverse">@color/thunderbird_neutral_020</item>
-        <item name="colorSurfaceBright">@color/thunderbird_neutral_024</item>
-        <item name="colorSurfaceDim">@color/thunderbird_neutral_006</item>
-        <item name="colorSurfaceContainer">@color/thunderbird_neutral_012</item>
-        <item name="colorSurfaceContainerLow">@color/thunderbird_neutral_010</item>
-        <item name="colorSurfaceContainerHigh">@color/thunderbird_neutral_017</item>
-        <item name="colorSurfaceContainerLowest">@color/thunderbird_neutral_004</item>
-        <item name="colorSurfaceContainerHighest">@color/thunderbird_neutral_022</item>
-        <item name="colorOutline">@color/thunderbird_neutral_variant_060</item>
-        <item name="colorOutlineVariant">@color/thunderbird_neutral_variant_030</item>
-        <item name="colorError">@color/thunderbird_error_080</item>
-        <item name="colorOnError">@color/thunderbird_error_020</item>
-        <item name="colorErrorContainer">@color/thunderbird_error_030</item>
-        <item name="colorOnErrorContainer">@color/thunderbird_error_090</item>
+        <item name="colorPrimary">@color/darkPrimary</item>
+        <item name="colorOnPrimary">@color/darkOnPrimary</item>
+        <item name="colorPrimaryContainer">@color/darkPrimaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/darkOnPrimaryContainer</item>
+
+        <item name="colorSecondary">@color/darkSecondary</item>
+        <item name="colorOnSecondary">@color/darkOnSecondary</item>
+        <item name="colorSecondaryContainer">@color/darkSecondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/darkOnSecondaryContainer</item>
+
+        <item name="colorTertiary">@color/darkTertiary</item>
+        <item name="colorOnTertiary">@color/darkOnTertiary</item>
+        <item name="colorTertiaryContainer">@color/darkTertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/darkOnTertiaryContainer</item>
+
+        <item name="colorError">@color/darkError</item>
+        <item name="colorOnError">@color/darkOnError</item>
+        <item name="colorErrorContainer">@color/darkErrorContainer</item>
+        <item name="colorOnErrorContainer">@color/darkOnErrorContainer</item>
+
+        <item name="colorSurfaceDim">@color/darkSurfaceDim</item>
+        <item name="colorSurface">@color/darkSurface</item>
+        <item name="colorSurfaceBright">@color/darkSurfaceBright</item>
+        <item name="colorOnSurface">@color/darkOnSurface</item>
+        <item name="colorOnSurfaceVariant">@color/darkOnSurfaceVariant</item>
+
+        <item name="colorSurfaceContainerLowest">@color/darkSurfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/darkSurfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/darkSurfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/darkSurfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/darkSurfaceContainerHighest</item>
+
+        <item name="colorSurfaceInverse">@color/darkSurfaceInverse</item>
+        <item name="colorOnSurfaceInverse">@color/darkOnSurfaceInverse</item>
+        <item name="colorPrimaryInverse">@color/darkPrimaryInverse</item>
+
+        <item name="colorOutline">@color/darkOutline</item>
+        <item name="colorOutlineVariant">@color/darkOutlineVariant</item>
+
+        <item name="colorPrimaryFixed">@color/darkPrimaryFixed</item>
+        <item name="colorOnPrimaryFixed">@color/darkOnPrimaryFixed</item>
+        <item name="colorPrimaryFixedDim">@color/darkPrimaryFixedDim</item>
+        <item name="colorOnPrimaryFixedVariant">@color/darkOnPrimaryFixedVariant</item>
+
+        <item name="colorSecondaryFixed">@color/darkSecondaryFixed</item>
+        <item name="colorOnSecondaryFixed">@color/darkOnSecondaryFixed</item>
+        <item name="colorSecondaryFixedDim">@color/darkSecondaryFixedDim</item>
+        <item name="colorOnSecondaryFixedVariant">@color/darkOnSecondaryFixedVariant</item>
+
+        <item name="colorTertiaryFixed">@color/darkTertiaryFixed</item>
+        <item name="colorOnTertiaryFixed">@color/darkOnTertiaryFixed</item>
+        <item name="colorTertiaryFixedDim">@color/darkTertiaryFixedDim</item>
+        <item name="colorOnTertiaryFixedVariant">@color/darkOnTertiaryFixedVariant</item>
+
+        <!-- Remapping properties due to changes in Material 3 tone based surface colors
+             https://material.io/blog/tone-based-surface-color-m3
+             -->
+        <item name="android:colorBackground">@color/darkSurface</item>
+        <item name="colorOnBackground">@color/darkOnSurface</item>
+        <item name="colorSurfaceVariant">@color/darkSurfaceContainerHighest</item>
 
         <!-- Custom attributes -->
         <item name="appLogo">@drawable/ic_app_logo</item>
