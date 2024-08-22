@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class MimeTypeUtil {
     public static final String DEFAULT_ATTACHMENT_MIME_TYPE = "application/octet-stream";
-    public static final String PLAIN_TEXT_MIME_TYPE = "text/plain";
     public static final String K9_SETTINGS_MIME_TYPE = "application/x-k9settings";
 
     /*
@@ -20,7 +19,7 @@ public class MimeTypeUtil {
             //* Do not delete the next three lines
             { "", DEFAULT_ATTACHMENT_MIME_TYPE },
             { "k9s", K9_SETTINGS_MIME_TYPE },
-            { "txt", PLAIN_TEXT_MIME_TYPE },
+            { "txt", "text/plain" },
             //* Do not delete the previous three lines
             { "123", "application/vnd.lotus-1-2-3" },
             { "323", "text/h323" },
@@ -69,7 +68,7 @@ public class MimeTypeUtil {
             { "azf", "application/vnd.airzip.filesecure.azf" },
             { "azs", "application/vnd.airzip.filesecure.azs" },
             { "azw", "application/vnd.amazon.ebook" },
-            { "bas", PLAIN_TEXT_MIME_TYPE },
+            { "bas", "text/plain" },
             { "bat", "application/x-msdownload" },
             { "bcpio", "application/x-bcpio" },
             { "bdf", "application/x-font-bdf" },
@@ -124,7 +123,7 @@ public class MimeTypeUtil {
             { "cmx", "image/x-cmx" },
             { "cod", "application/vnd.rim.cod" },
             { "com", "application/x-msdownload" },
-            { "conf", PLAIN_TEXT_MIME_TYPE },
+            { "conf", "text/plain" },
             { "cpio", "application/x-cpio" },
             { "cpp", "text/x-c" },
             { "cpt", "application/mac-compactpro" },
@@ -137,7 +136,7 @@ public class MimeTypeUtil {
             { "css", "text/css" },
             { "cst", "application/x-director" },
             { "csv", "text/csv" },
-            { "c", PLAIN_TEXT_MIME_TYPE },
+            { "c", "text/plain" },
             { "cu", "application/cu-seeme" },
             { "curl", "text/vnd.curl" },
             { "cww", "application/prs.cww" },
@@ -151,12 +150,12 @@ public class MimeTypeUtil {
             { "dd2", "application/vnd.oma.dd2+xml" },
             { "ddd", "application/vnd.fujixerox.ddd" },
             { "deb", "application/x-debian-package" },
-            { "def", PLAIN_TEXT_MIME_TYPE },
+            { "def", "text/plain" },
             { "deploy", "application/octet-stream" },
             { "der", "application/x-x509-ca-cert" },
             { "dfac", "application/vnd.dreamfactory" },
             { "dic", "text/x-c" },
-            { "diff", PLAIN_TEXT_MIME_TYPE },
+            { "diff", "text/plain" },
             { "dir", "application/x-director" },
             { "dis", "application/vnd.mobius.dis" },
             { "dist", "application/octet-stream" },
@@ -285,7 +284,7 @@ public class MimeTypeUtil {
             { "hqx", "application/mac-binhex40" },
             { "hta", "application/hta" },
             { "htc", "text/x-component" },
-            { "h", PLAIN_TEXT_MIME_TYPE },
+            { "h", "text/plain" },
             { "htke", "application/vnd.kenameaapp" },
             { "html", "text/html" },
             { "htm", "text/html" },
@@ -310,7 +309,7 @@ public class MimeTypeUtil {
             { "imp", "application/vnd.accpac.simply.imp" },
             { "ims", "application/vnd.ms-ims" },
             { "ins", "application/x-internet-signup" },
-            { "in", PLAIN_TEXT_MIME_TYPE },
+            { "in", "text/plain" },
             { "ipk", "application/vnd.shana.informed.package" },
             { "irm", "application/vnd.ibm.rights-management" },
             { "irp", "application/vnd.irepository.package+xml" },
@@ -348,7 +347,7 @@ public class MimeTypeUtil {
             { "kon", "application/vnd.kde.kontour" },
             { "kpr", "application/vnd.kde.kpresenter" },
             { "kpt", "application/vnd.kde.kpresenter" },
-            { "ksh", PLAIN_TEXT_MIME_TYPE },
+            { "ksh", "text/plain" },
             { "ksp", "application/vnd.kde.kspread" },
             { "ktr", "application/vnd.kahootz" },
             { "ktz", "application/vnd.kahootz" },
@@ -362,8 +361,8 @@ public class MimeTypeUtil {
             { "link66", "application/vnd.route66.link66+xml" },
             { "list3820", "application/vnd.ibm.modcap" },
             { "listafp", "application/vnd.ibm.modcap" },
-            { "list", PLAIN_TEXT_MIME_TYPE },
-            { "log", PLAIN_TEXT_MIME_TYPE },
+            { "list", "text/plain" },
+            { "log", "text/plain" },
             { "lostxml", "application/lost+xml" },
             { "lrf", "application/octet-stream" },
             { "lrm", "application/vnd.ms-lrm" },
@@ -543,7 +542,7 @@ public class MimeTypeUtil {
             { "plc", "application/vnd.mobius.plc" },
             { "plf", "application/vnd.pocketlearn" },
             { "pls", "application/pls+xml" },
-            { "pl", PLAIN_TEXT_MIME_TYPE },
+            { "pl", "text/plain" },
             { "pma", "application/x-perfmon" },
             { "pmc", "application/x-perfmon" },
             { "pml", "application/x-perfmon" },
@@ -728,7 +727,7 @@ public class MimeTypeUtil {
             { "tex", "application/x-tex" },
             { "texi", "application/x-texinfo" },
             { "texinfo", "application/x-texinfo" },
-            { "text", PLAIN_TEXT_MIME_TYPE },
+            { "text", "text/plain" },
             { "tfm", "application/x-tex-tfm" },
             { "tgz", "application/x-gzip" },
             { "tiff", "image/tiff" },
@@ -747,7 +746,7 @@ public class MimeTypeUtil {
             { "twds", "application/vnd.simtech-mindmapper" },
             { "txd", "application/vnd.genomatix.tuxedo" },
             { "txf", "application/vnd.mobius.txf" },
-            { "txt", PLAIN_TEXT_MIME_TYPE },
+            { "txt", "text/plain" },
             { "u32", "application/x-authorware-bin" },
             { "udeb", "application/x-debian-package" },
             { "ufd", "application/vnd.ufdl" },
@@ -873,8 +872,7 @@ public class MimeTypeUtil {
     };
 
     public static boolean isDefaultMimeType(String mimeType) {
-        return isSameMimeType(mimeType, DEFAULT_ATTACHMENT_MIME_TYPE) ||
-            isSameMimeType(mimeType, PLAIN_TEXT_MIME_TYPE);
+        return isSameMimeType(mimeType, DEFAULT_ATTACHMENT_MIME_TYPE);
     }
 
     public static String getMimeTypeByExtension(String filename) {
