@@ -4,6 +4,7 @@ import android.database.sqlite.SQLiteDatabase
 import androidx.core.content.contentValuesOf
 import app.k9mail.core.android.common.database.map
 import app.k9mail.legacy.account.Account
+import assertk.Assert
 import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.hasMessage
@@ -11,6 +12,8 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotEqualTo
 import assertk.assertions.isTrue
+import assertk.assertions.support.expected
+import assertk.assertions.support.show
 import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
@@ -78,13 +81,13 @@ class StoreSchemaDefinitionTest : RobolectricTest() {
     }
 
     @Test
-    fun `doDbUpgrade() from v61 database should result in same structure as fresh install`() {
+    fun `doDbUpgrade() from v61 database should result in structure compatible to a fresh install`() {
         val newDatabase = createNewDatabase()
         val upgradedDatabase = createV61Database()
 
         storeSchemaDefinition.doDbUpgrade(upgradedDatabase)
 
-        assertDatabaseTablesEquals(newDatabase, upgradedDatabase)
+        assertDatabaseTablesCompatible(newDatabase, upgradedDatabase)
         assertDatabaseTriggersEquals(newDatabase, upgradedDatabase)
         assertDatabaseIndexesEquals(newDatabase, upgradedDatabase)
     }
@@ -271,11 +274,39 @@ class StoreSchemaDefinitionTest : RobolectricTest() {
         }
     }
 
-    private fun assertDatabaseTablesEquals(expected: SQLiteDatabase, actual: SQLiteDatabase) {
-        val tablesInNewDatabase = tablesInDatabase(expected).sorted()
-        val tablesInUpgradedDatabase = tablesInDatabase(actual).sorted()
+    private fun assertDatabaseTablesCompatible(expected: SQLiteDatabase, actual: SQLiteDatabase) {
+        // Since not all supported Android versions ship with a SQLite version that supports dropping columns, we don't
+        // check for equivalence. Instead we make sure the columns that are present in a new database are also present
+        // in an upgraded database.
+        val tablesInNewDatabase = tablesInDatabase(expected)
+        val tablesInUpgradedDatabase = tablesInDatabase(actual)
 
-        assertThat(tablesInUpgradedDatabase).isEqualTo(tablesInNewDatabase)
+        assertThat(tablesInUpgradedDatabase.keys.sorted()).isEqualTo(tablesInNewDatabase.keys.sorted())
+
+        for ((tableName, newTable) in tablesInNewDatabase) {
+            val upgradedTable = tablesInUpgradedDatabase[tableName]!!
+
+            assertThat(upgradedTable).isCompatibleTo(newTable)
+        }
+    }
+
+    private fun Assert<DatabaseTableInfo>.isCompatibleTo(expected: DatabaseTableInfo) = given { actual ->
+        if (actual.isVirtualTable != expected.isVirtualTable) {
+            expected("table '${actual.tableName}' to be a virtual table")
+        }
+
+        if (actual.usingClause != expected.usingClause) {
+            expected("table '${actual.tableName}' to have USING clause: ${show(expected.usingClause)}")
+        }
+
+        for (newColumnDefinition in expected.columnDefinitions) {
+            if (newColumnDefinition !in actual.columnDefinitions) {
+                expected(
+                    "table '${actual.tableName}' to contain ${show(newColumnDefinition)} " +
+                        "but was ${show(actual.columnDefinitions)}",
+                )
+            }
+        }
     }
 
     private fun assertDatabaseTriggersEquals(expected: SQLiteDatabase, actual: SQLiteDatabase) {
@@ -292,8 +323,10 @@ class StoreSchemaDefinitionTest : RobolectricTest() {
         assertThat(indexesInUpgradedDatabase).isEqualTo(indexesInNewDatabase)
     }
 
-    private fun tablesInDatabase(db: SQLiteDatabase): List<String> {
+    private fun tablesInDatabase(db: SQLiteDatabase): Map<String, DatabaseTableInfo> {
         return objectsInDatabase(db, "table")
+            .map { extractColumns(it) }
+            .associateBy { it.tableName }
     }
 
     private fun triggersInDatabase(db: SQLiteDatabase): List<String> {
@@ -310,26 +343,25 @@ class StoreSchemaDefinitionTest : RobolectricTest() {
             arrayOf(type),
         ).use { cursor ->
             cursor.map {
-                val sql = cursor.getString(cursor.getColumnIndex("sql"))
-                val resortedSql = if (type == "table") sortTableColumns(sql) else sql
-
-                resortedSql
+                cursor.getString(cursor.getColumnIndex("sql"))
             }
         }
     }
 
-    private fun sortTableColumns(sql: String): String {
-        val positionOfColumnDefinitions = sql.indexOf('(')
-        val sqlPrefix = sql.substring(0, positionOfColumnDefinitions + 1)
+    private fun extractColumns(sql: String): DatabaseTableInfo {
+        val matchResult = """CREATE (VIRTUAL)?\s*TABLE\s*('[^']+'|[^ ]+)\s*(USING [^ ]+)?\s*\((.+)\)""".toRegex()
+            .matchEntire(sql) ?: error("Can't parse SQL: $sql")
 
-        val columnDefinitionsSql = sql.substring(positionOfColumnDefinitions + 1, sql.length - 1)
+        val isVirtualTable = matchResult.groups[1] != null
+        val tableName = matchResult.groups[2]!!.value.removeSurrounding("'")
+        val usingClause = matchResult.groups[3]?.value
+        val columnDefinitionsSql = matchResult.groups[4]!!.value
         val columnDefinitions = columnDefinitionsSql
             .split(" *, *(?![^(]*\\))".toRegex())
             .dropLastWhile { it.isEmpty() }
             .sorted()
-        val sortedColumnDefinitionsSql = columnDefinitions.joinToString()
 
-        return "$sqlPrefix$sortedColumnDefinitionsSql)"
+        return DatabaseTableInfo(tableName, isVirtualTable, usingClause, columnDefinitions)
     }
 
     private fun insertMessageWithSubject(database: SQLiteDatabase, subject: String) {
@@ -385,3 +417,10 @@ class StoreSchemaDefinitionTest : RobolectricTest() {
         }
     }
 }
+
+private data class DatabaseTableInfo(
+    val tableName: String,
+    val isVirtualTable: Boolean,
+    val usingClause: String?,
+    val columnDefinitions: List<String>,
+)
