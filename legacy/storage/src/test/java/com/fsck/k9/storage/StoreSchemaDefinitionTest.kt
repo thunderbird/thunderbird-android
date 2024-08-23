@@ -1,129 +1,101 @@
 package com.fsck.k9.storage
 
-import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
-import android.text.TextUtils
+import androidx.core.content.contentValuesOf
+import app.k9mail.core.android.common.database.map
 import app.k9mail.legacy.account.Account
+import assertk.assertFailure
+import assertk.assertThat
+import assertk.assertions.hasMessage
+import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotEqualTo
+import assertk.assertions.isTrue
 import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
-import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.ServerSettings
-import com.fsck.k9.mailstore.LocalStore
-import com.fsck.k9.mailstore.LockableDatabase
-import com.fsck.k9.mailstore.LockableDatabase.DbCallback
 import com.fsck.k9.mailstore.MigrationsHelper
-import com.fsck.k9.mailstore.StorageManager
-import java.util.Arrays
-import java.util.Collections
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentMatchers
-import org.mockito.Mockito
-import org.robolectric.RuntimeEnvironment
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
 import org.robolectric.shadows.ShadowLog
 
-class StoreSchemaDefinitionTest : K9RobolectricTest() {
-    private var storeSchemaDefinition: StoreSchemaDefinition? = null
+class StoreSchemaDefinitionTest : RobolectricTest() {
+    private val storeSchemaDefinition = createStoreSchemaDefinition()
 
     @Before
-    @Throws(MessagingException::class)
     fun setUp() {
         ShadowLog.stream = System.out
-
-        val application = RuntimeEnvironment.getApplication()
-        StorageManager.getInstance(application)
-
-        storeSchemaDefinition = createStoreSchemaDefinition()
     }
 
     @Test
-    fun getVersion_shouldReturnCurrentDatabaseVersion() {
-        val version = storeSchemaDefinition!!.version
-
-        Assert.assertEquals(StoreSchemaDefinition.DB_VERSION.toLong(), version.toLong())
+    fun `getVersion() should return current database version`() {
+        assertThat(storeSchemaDefinition.version).isEqualTo(StoreSchemaDefinition.DB_VERSION)
     }
 
     @Test
-    fun doDbUpgrade_withEmptyDatabase_shouldSetsDatabaseVersion() {
+    fun `doDbUpgrade() with empty database should set database version`() {
         val database = SQLiteDatabase.create(null)
 
-        storeSchemaDefinition!!.doDbUpgrade(database)
+        storeSchemaDefinition.doDbUpgrade(database)
 
-        Assert.assertEquals(StoreSchemaDefinition.DB_VERSION.toLong(), database.version.toLong())
+        assertThat(database.version).isEqualTo(StoreSchemaDefinition.DB_VERSION)
     }
 
     @Test
-    fun doDbUpgrade_withBadDatabase_shouldThrowInDebugBuild() {
+    fun `doDbUpgrade() with bad database should throw in debug build`() {
         if (BuildConfig.DEBUG) {
-            val database = SQLiteDatabase.create(null)
-            database.version = 61
-
-            try {
-                storeSchemaDefinition!!.doDbUpgrade(database)
-                Assert.fail("Expected Error")
-            } catch (e: Error) {
-                Assert.assertEquals("Exception while upgrading database", e.message)
+            val database = SQLiteDatabase.create(null).apply {
+                version = 61
             }
+
+            assertFailure {
+                storeSchemaDefinition.doDbUpgrade(database)
+            }.isInstanceOf<Error>()
+                .hasMessage("Exception while upgrading database")
         }
     }
 
     @Test
-    fun doDbUpgrade_withV61_shouldUpgradeDatabaseToLatestVersion() {
+    fun `doDbUpgrade() with v61 database should upgrade database to latest version`() {
         val database = createV61Database()
 
-        storeSchemaDefinition!!.doDbUpgrade(database)
+        storeSchemaDefinition.doDbUpgrade(database)
 
-        Assert.assertEquals(StoreSchemaDefinition.DB_VERSION.toLong(), database.version.toLong())
+        assertThat(database.version).isEqualTo(StoreSchemaDefinition.DB_VERSION)
     }
 
     @Test
-    fun doDbUpgrade_withV61() {
+    fun `doDbUpgrade() with v61 database containing a message`() {
         val database = createV61Database()
         insertMessageWithSubject(database, "Test Email")
 
-        storeSchemaDefinition!!.doDbUpgrade(database)
+        storeSchemaDefinition.doDbUpgrade(database)
 
         assertMessageWithSubjectExists(database, "Test Email")
     }
 
     @Test
-    fun doDbUpgrade_fromV61_shouldResultInSameTables() {
+    fun `doDbUpgrade() from v61 database should result in same structure as fresh install`() {
         val newDatabase = createNewDatabase()
         val upgradedDatabase = createV61Database()
 
-        storeSchemaDefinition!!.doDbUpgrade(upgradedDatabase)
+        storeSchemaDefinition.doDbUpgrade(upgradedDatabase)
 
         assertDatabaseTablesEquals(newDatabase, upgradedDatabase)
-    }
-
-    @Test
-    fun doDbUpgrade_fromV61_shouldResultInSameTriggers() {
-        val newDatabase = createNewDatabase()
-        val upgradedDatabase = createV61Database()
-
-        storeSchemaDefinition!!.doDbUpgrade(upgradedDatabase)
-
         assertDatabaseTriggersEquals(newDatabase, upgradedDatabase)
-    }
-
-    @Test
-    fun doDbUpgrade_fromV61_shouldResultInSameIndexes() {
-        val newDatabase = createNewDatabase()
-        val upgradedDatabase = createV61Database()
-
-        storeSchemaDefinition!!.doDbUpgrade(upgradedDatabase)
-
         assertDatabaseIndexesEquals(newDatabase, upgradedDatabase)
     }
 
     private fun createV61Database(): SQLiteDatabase {
-        val database = SQLiteDatabase.create(null)
-        initV61Database(database)
-        return database
+        return SQLiteDatabase.create(null).apply {
+            initV61Database(this)
+        }
     }
 
+    @Suppress("LongMethod")
     private fun initV61Database(db: SQLiteDatabase) {
         db.beginTransaction()
 
@@ -146,7 +118,7 @@ class StoreSchemaDefinitionTest : K9RobolectricTest() {
                 "display_class TEXT, " +
                 "notify_class TEXT default 'INHERITED', " +
                 "more_messages TEXT default \"unknown\"" +
-                ")"
+                ")",
         )
 
         db.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)")
@@ -178,7 +150,7 @@ class StoreSchemaDefinitionTest : K9RobolectricTest() {
                 "answered INTEGER default 0, " +
                 "forwarded INTEGER default 0, " +
                 "message_part_id INTEGER" +
-                ")"
+                ")",
         )
 
         db.execSQL("DROP TABLE IF EXISTS message_parts")
@@ -202,7 +174,7 @@ class StoreSchemaDefinitionTest : K9RobolectricTest() {
                 "boundary TEXT, " +
                 "content_id TEXT, " +
                 "server_extra TEXT" +
-                ")"
+                ")",
         )
 
         db.execSQL(
@@ -210,13 +182,15 @@ class StoreSchemaDefinitionTest : K9RobolectricTest() {
                 "AFTER INSERT ON message_parts " +
                 "BEGIN " +
                 "UPDATE message_parts SET root=id WHERE root IS NULL AND ROWID = NEW.ROWID; " +
-                "END"
+                "END",
         )
 
         db.execSQL("CREATE INDEX IF NOT EXISTS msg_uid ON messages (uid, folder_id)")
         db.execSQL("DROP INDEX IF EXISTS msg_folder_id")
         db.execSQL("DROP INDEX IF EXISTS msg_folder_id_date")
-        db.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)")
+        db.execSQL(
+            "CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)",
+        )
 
         db.execSQL("DROP INDEX IF EXISTS msg_empty")
         db.execSQL("CREATE INDEX IF NOT EXISTS msg_empty ON messages (empty)")
@@ -230,7 +204,6 @@ class StoreSchemaDefinitionTest : K9RobolectricTest() {
         db.execSQL("DROP INDEX IF EXISTS msg_composite")
         db.execSQL("CREATE INDEX IF NOT EXISTS msg_composite ON messages (deleted, empty,folder_id,flagged,read)")
 
-
         db.execSQL("DROP TABLE IF EXISTS threads")
         db.execSQL(
             "CREATE TABLE threads (" +
@@ -238,7 +211,7 @@ class StoreSchemaDefinitionTest : K9RobolectricTest() {
                 "message_id INTEGER, " +
                 "root INTEGER, " +
                 "parent INTEGER" +
-                ")"
+                ")",
         )
 
         db.execSQL("DROP INDEX IF EXISTS threads_message_id")
@@ -256,17 +229,21 @@ class StoreSchemaDefinitionTest : K9RobolectricTest() {
                 "AFTER INSERT ON threads " +
                 "BEGIN " +
                 "UPDATE threads SET root=id WHERE root IS NULL AND ROWID = NEW.ROWID; " +
-                "END"
+                "END",
         )
 
         db.execSQL("DROP TABLE IF EXISTS pending_commands")
         db.execSQL(
             "CREATE TABLE pending_commands " +
-                "(id INTEGER PRIMARY KEY, command TEXT, data TEXT)"
+                "(id INTEGER PRIMARY KEY, command TEXT, data TEXT)",
         )
 
         db.execSQL("DROP TRIGGER IF EXISTS delete_folder")
-        db.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN DELETE FROM messages WHERE old.id = folder_id; END;")
+        db.execSQL(
+            "CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN " +
+                "DELETE FROM messages WHERE old.id = folder_id; " +
+                "END;",
+        )
 
         db.execSQL("DROP TRIGGER IF EXISTS delete_message")
         db.execSQL(
@@ -275,7 +252,7 @@ class StoreSchemaDefinitionTest : K9RobolectricTest() {
                 "BEGIN " +
                 "DELETE FROM message_parts WHERE root = OLD.message_part_id; " +
                 "DELETE FROM messages_fulltext WHERE docid = OLD.id; " +
-                "END"
+                "END",
         )
 
         db.execSQL("DROP TABLE IF EXISTS messages_fulltext")
@@ -288,43 +265,31 @@ class StoreSchemaDefinitionTest : K9RobolectricTest() {
     }
 
     private fun assertMessageWithSubjectExists(database: SQLiteDatabase, subject: String) {
-        val cursor = database.query("messages", arrayOf("subject"), null, null, null, null, null)
-        try {
-            Assert.assertTrue(cursor.moveToFirst())
-            Assert.assertEquals(subject, cursor.getString(0))
-        } finally {
-            cursor.close()
+        database.query("messages", arrayOf("subject"), null, null, null, null, null).use { cursor ->
+            assertThat(cursor.moveToFirst()).isTrue()
+            assertThat(cursor.getString(0)).isEqualTo(subject)
         }
     }
 
     private fun assertDatabaseTablesEquals(expected: SQLiteDatabase, actual: SQLiteDatabase) {
-        val tablesInNewDatabase = tablesInDatabase(expected)
-        Collections.sort(tablesInNewDatabase)
+        val tablesInNewDatabase = tablesInDatabase(expected).sorted()
+        val tablesInUpgradedDatabase = tablesInDatabase(actual).sorted()
 
-        val tablesInUpgradedDatabase = tablesInDatabase(actual)
-        Collections.sort(tablesInUpgradedDatabase)
-
-        Assert.assertEquals(tablesInNewDatabase, tablesInUpgradedDatabase)
+        assertThat(tablesInUpgradedDatabase).isEqualTo(tablesInNewDatabase)
     }
 
     private fun assertDatabaseTriggersEquals(expected: SQLiteDatabase, actual: SQLiteDatabase) {
-        val triggersInNewDatabase = triggersInDatabase(expected)
-        Collections.sort(triggersInNewDatabase)
+        val triggersInNewDatabase = triggersInDatabase(expected).sorted()
+        val triggersInUpgradedDatabase = triggersInDatabase(actual).sorted()
 
-        val triggersInUpgradedDatabase = triggersInDatabase(actual)
-        Collections.sort(triggersInUpgradedDatabase)
-
-        Assert.assertEquals(triggersInNewDatabase, triggersInUpgradedDatabase)
+        assertThat(triggersInUpgradedDatabase).isEqualTo(triggersInNewDatabase)
     }
 
     private fun assertDatabaseIndexesEquals(expected: SQLiteDatabase, actual: SQLiteDatabase) {
-        val indexesInNewDatabase = indexesInDatabase(expected)
-        Collections.sort(indexesInNewDatabase)
+        val indexesInNewDatabase = indexesInDatabase(expected).sorted()
+        val indexesInUpgradedDatabase = indexesInDatabase(actual).sorted()
 
-        val indexesInUpgradedDatabase = indexesInDatabase(actual)
-        Collections.sort(indexesInUpgradedDatabase)
-
-        Assert.assertEquals(indexesInNewDatabase, indexesInUpgradedDatabase)
+        assertThat(indexesInUpgradedDatabase).isEqualTo(indexesInNewDatabase)
     }
 
     private fun tablesInDatabase(db: SQLiteDatabase): List<String> {
@@ -340,51 +305,46 @@ class StoreSchemaDefinitionTest : K9RobolectricTest() {
     }
 
     private fun objectsInDatabase(db: SQLiteDatabase, type: String): List<String> {
-        val databaseObjects: MutableList<String> = ArrayList()
-        val cursor = db.rawQuery(
+        return db.rawQuery(
             "SELECT sql FROM sqlite_master WHERE type = ? AND sql IS NOT NULL",
-            arrayOf(type)
-        )
-        try {
-            while (cursor.moveToNext()) {
+            arrayOf(type),
+        ).use { cursor ->
+            cursor.map {
                 val sql = cursor.getString(cursor.getColumnIndex("sql"))
-                val resortedSql = if ("table" == type) sortTableColumns(sql) else sql
-                databaseObjects.add(resortedSql)
-            }
-        } finally {
-            cursor.close()
-        }
+                val resortedSql = if (type == "table") sortTableColumns(sql) else sql
 
-        return databaseObjects
+                resortedSql
+            }
+        }
     }
 
     private fun sortTableColumns(sql: String): String {
         val positionOfColumnDefinitions = sql.indexOf('(')
-        val columnDefinitionsSql = sql.substring(positionOfColumnDefinitions + 1, sql.length - 1)
-        val columnDefinitions =
-            columnDefinitionsSql.split(" *, *(?![^(]*\\))".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        Arrays.sort(columnDefinitions)
-
         val sqlPrefix = sql.substring(0, positionOfColumnDefinitions + 1)
-        val sortedColumnDefinitionsSql = TextUtils.join(", ", columnDefinitions)
+
+        val columnDefinitionsSql = sql.substring(positionOfColumnDefinitions + 1, sql.length - 1)
+        val columnDefinitions = columnDefinitionsSql
+            .split(" *, *(?![^(]*\\))".toRegex())
+            .dropLastWhile { it.isEmpty() }
+            .sorted()
+        val sortedColumnDefinitionsSql = columnDefinitions.joinToString()
+
         return "$sqlPrefix$sortedColumnDefinitionsSql)"
     }
 
     private fun insertMessageWithSubject(database: SQLiteDatabase, subject: String) {
-        val data = ContentValues()
-        data.put("subject", subject)
+        val data = contentValuesOf(
+            "subject" to subject,
+        )
+
         val rowId = database.insert("messages", null, data)
-        Assert.assertNotEquals(-1, rowId)
+
+        assertThat(rowId).isNotEqualTo(-1L)
     }
 
-    @Throws(MessagingException::class)
     private fun createStoreSchemaDefinition(): StoreSchemaDefinition {
         val account = createAccount()
-        val lockableDatabase = createLockableDatabase()
-        val localStore = Mockito.mock(LocalStore::class.java)
-        Mockito.`when`(localStore.database).thenReturn(lockableDatabase)
-
-        val migrationsHelper: MigrationsHelper = object : MigrationsHelper {
+        val migrationsHelper = object : MigrationsHelper {
             override fun getAccount(): Account {
                 return account
             }
@@ -397,38 +357,31 @@ class StoreSchemaDefinitionTest : K9RobolectricTest() {
         return StoreSchemaDefinition(migrationsHelper)
     }
 
-    @Throws(MessagingException::class)
-    private fun createLockableDatabase(): LockableDatabase {
-        val lockableDatabase = Mockito.mock(LockableDatabase::class.java)
-        Mockito.`when`(
-            lockableDatabase.execute(
-                ArgumentMatchers.anyBoolean(), ArgumentMatchers.any<DbCallback<Any>>()
-            )
-        ).thenReturn(false)
-        return lockableDatabase
-    }
-
     private fun createAccount(): Account {
-        val account = Mockito.mock(Account::class.java)
-        Mockito.`when`(account.legacyInboxFolder).thenReturn("Inbox")
-        Mockito.`when`(account.importedTrashFolder).thenReturn("Trash")
-        Mockito.`when`(account.importedDraftsFolder).thenReturn("Drafts")
-        Mockito.`when`(account.importedSpamFolder).thenReturn("Spam")
-        Mockito.`when`(account.importedSentFolder).thenReturn("Sent")
-        Mockito.`when`(account.importedArchiveFolder).thenReturn(null)
-        Mockito.`when`(account.localStorageProviderId).thenReturn(StorageManager.InternalStorageProvider.ID)
+        return mock<Account> {
+            on { legacyInboxFolder } doReturn "Inbox"
+            on { importedTrashFolder } doReturn "Trash"
+            on { importedDraftsFolder } doReturn "Drafts"
+            on { importedSpamFolder } doReturn "Spam"
+            on { importedSentFolder } doReturn "Sent"
+            on { importedArchiveFolder } doReturn null
 
-        val incomingServerSettings = ServerSettings(
-            "dummy", "", -1, ConnectionSecurity.NONE,
-            AuthType.PLAIN, "", "", null
-        )
-        Mockito.`when`(account.incomingServerSettings).thenReturn(incomingServerSettings)
-        return account
+            on { incomingServerSettings } doReturn ServerSettings(
+                type = "dummy",
+                host = "",
+                port = -1,
+                connectionSecurity = ConnectionSecurity.NONE,
+                authenticationType = AuthType.PLAIN,
+                username = "",
+                password = "",
+                clientCertificateAlias = null,
+            )
+        }
     }
 
     private fun createNewDatabase(): SQLiteDatabase {
-        val database = SQLiteDatabase.create(null)
-        storeSchemaDefinition!!.doDbUpgrade(database)
-        return database
+        return SQLiteDatabase.create(null).also { database ->
+            storeSchemaDefinition.doDbUpgrade(database)
+        }
     }
 }
