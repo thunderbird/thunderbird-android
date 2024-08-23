@@ -221,8 +221,8 @@ class K9MessageStore(
         updateFolderOperations.setPushClass(folderId, folderClass)
     }
 
-    override fun setNotificationClass(folderId: Long, folderClass: FolderClass) {
-        updateFolderOperations.setNotificationClass(folderId, folderClass)
+    override fun setNotificationsEnabled(folderId: Long, enable: Boolean) {
+        updateFolderOperations.setNotificationsEnabled(folderId, enable)
     }
 
     override fun hasMoreMessages(folderId: Long): MoreMessages {

@@ -30,7 +30,8 @@ class FolderSettingsDescriptions {
                 new V(1, new EnumSetting<>(FolderClass.class, FolderClass.NO_CLASS))
         ));
         s.put("notifyMode", Settings.versions(
-                new V(34, new EnumSetting<>(FolderClass.class, FolderClass.INHERITED))
+                new V(34, new EnumSetting<>(FolderClass.class, FolderClass.INHERITED)),
+                new V(96, null)
         ));
         s.put("syncMode", Settings.versions(
                 new V(1, new EnumSetting<>(FolderClass.class, FolderClass.INHERITED))
@@ -44,6 +45,9 @@ class FolderSettingsDescriptions {
         ));
         s.put("integrate", Settings.versions(
                 new V(1, new BooleanSetting(false))
+        ));
+        s.put("notificationsEnabled", Settings.versions(
+            new V(96, new BooleanSetting(false))
         ));
 
         SETTINGS = Collections.unmodifiableMap(s);

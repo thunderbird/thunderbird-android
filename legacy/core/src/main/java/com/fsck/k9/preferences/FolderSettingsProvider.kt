@@ -17,7 +17,7 @@ class FolderSettingsProvider(private val folderRepository: FolderRepository) {
             isIntegrate == getDefaultValue("integrate") &&
             syncClass == getDefaultValue("syncMode") &&
             displayClass == getDefaultValue("displayMode") &&
-            notifyClass == getDefaultValue("notifyMode") &&
+            isNotificationsEnabled == getDefaultValue("notificationsEnabled") &&
             pushClass == getDefaultValue("pushMode")
     }
 
@@ -35,7 +35,7 @@ class FolderSettingsProvider(private val folderRepository: FolderRepository) {
             isIntegrate,
             syncClass,
             displayClass,
-            notifyClass,
+            isNotificationsEnabled,
             pushClass,
         )
     }
@@ -47,6 +47,6 @@ data class FolderSettings(
     val isIntegrate: Boolean,
     val syncClass: FolderClass,
     val displayClass: FolderClass,
-    val notifyClass: FolderClass,
+    val isNotificationsEnabled: Boolean,
     val pushClass: FolderClass,
 )

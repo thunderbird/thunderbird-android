@@ -27,7 +27,7 @@ internal class UpdateFolderOperations(private val lockableDatabase: LockableData
                 put("integrate", folderDetails.isIntegrate)
                 put("poll_class", folderDetails.syncClass.name)
                 put("display_class", folderDetails.displayClass.name)
-                put("notify_class", folderDetails.notifyClass.name)
+                put("notifications_enabled", folderDetails.isNotificationsEnabled)
                 put("push_class", folderDetails.pushClass.name)
             }
 
@@ -36,13 +36,7 @@ internal class UpdateFolderOperations(private val lockableDatabase: LockableData
     }
 
     fun setIncludeInUnifiedInbox(folderId: Long, includeInUnifiedInbox: Boolean) {
-        lockableDatabase.execute(false) { db ->
-            val contentValues = ContentValues().apply {
-                put("integrate", includeInUnifiedInbox)
-            }
-
-            db.update("folders", contentValues, "id = ?", arrayOf(folderId.toString()))
-        }
+        setBoolean(folderId, columnName = "integrate", value = includeInUnifiedInbox)
     }
 
     fun setDisplayClass(folderId: Long, folderClass: FolderClass) {
@@ -57,8 +51,8 @@ internal class UpdateFolderOperations(private val lockableDatabase: LockableData
         setString(folderId = folderId, columnName = "push_class", value = folderClass.name)
     }
 
-    fun setNotificationClass(folderId: Long, folderClass: FolderClass) {
-        setString(folderId = folderId, columnName = "notify_class", value = folderClass.name)
+    fun setNotificationsEnabled(folderId: Long, enable: Boolean) {
+        setBoolean(folderId, columnName = "notifications_enabled", value = enable)
     }
 
     fun setMoreMessages(folderId: Long, moreMessages: MoreMessages) {
@@ -97,6 +91,16 @@ internal class UpdateFolderOperations(private val lockableDatabase: LockableData
                 } else {
                     put(columnName, value)
                 }
+            }
+
+            db.update("folders", contentValues, "id = ?", arrayOf(folderId.toString()))
+        }
+    }
+
+    private fun setBoolean(folderId: Long, columnName: String, value: Boolean) {
+        lockableDatabase.execute(false) { db ->
+            val contentValues = ContentValues().apply {
+                put(columnName, value)
             }
 
             db.update("folders", contentValues, "id = ?", arrayOf(folderId.toString()))

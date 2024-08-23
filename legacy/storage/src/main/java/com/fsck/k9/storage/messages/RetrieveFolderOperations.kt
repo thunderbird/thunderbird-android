@@ -236,8 +236,8 @@ private class CursorFolderAccessor(val cursor: Cursor) : FolderDetailsAccessor {
     override val displayClass: FolderClass
         get() = cursor.getString(8).toFolderClass(FolderClass.NO_CLASS)
 
-    override val notifyClass: FolderClass
-        get() = cursor.getString(9).toFolderClass(FolderClass.INHERITED)
+    override val isNotificationsEnabled: Boolean
+        get() = cursor.getInt(9) == 1
 
     override val pushClass: FolderClass
         get() = cursor.getString(10).toFolderClass(FolderClass.SECOND_CLASS)
@@ -276,7 +276,7 @@ private val FOLDER_COLUMNS = arrayOf(
     "integrate",
     "poll_class",
     "display_class",
-    "notify_class",
+    "notifications_enabled",
     "push_class",
     "visible_limit",
     "more_messages",

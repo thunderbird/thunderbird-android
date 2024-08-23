@@ -12,7 +12,7 @@ import timber.log.Timber;
 
 
 class StoreSchemaDefinition implements SchemaDefinition {
-    static final int DB_VERSION = 84;
+    static final int DB_VERSION = 85;
 
     private final MigrationsHelper migrationsHelper;
 
@@ -94,7 +94,7 @@ class StoreSchemaDefinition implements SchemaDefinition {
                 "poll_class TEXT, " +
                 "push_class TEXT, " +
                 "display_class TEXT, " +
-                "notify_class TEXT default '"+ FolderClass.INHERITED.name() + "', " +
+                "notifications_enabled INTEGER DEFAULT 0, " +
                 "more_messages TEXT default \"unknown\", " +
                 "server_id TEXT, " +
                 "local_only INTEGER, " +

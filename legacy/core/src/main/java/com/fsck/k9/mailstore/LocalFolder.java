@@ -78,7 +78,7 @@ public class LocalFolder {
     private FolderClass displayClass = FolderClass.NO_CLASS;
     private FolderClass syncClass = FolderClass.INHERITED;
     private FolderClass pushClass = FolderClass.SECOND_CLASS;
-    private FolderClass notifyClass = FolderClass.INHERITED;
+    private boolean notificationsEnabled = false;
 
     private boolean isInTopGroup = false;
     private boolean isIntegrate = false;
@@ -177,8 +177,7 @@ public class LocalFolder {
         String noClass = FolderClass.NO_CLASS.toString();
         String displayClass = cursor.getString(LocalStore.FOLDER_DISPLAY_CLASS_INDEX);
         this.displayClass = FolderClass.valueOf((displayClass == null) ? noClass : displayClass);
-        String notifyClass = cursor.getString(LocalStore.FOLDER_NOTIFY_CLASS_INDEX);
-        this.notifyClass = FolderClass.valueOf((notifyClass == null) ? noClass : notifyClass);
+        this.notificationsEnabled = cursor.getInt(LocalStore.FOLDER_NOTIFICATIONS_ENABLED_INDEX) == 1;
         String pushClass = cursor.getString(LocalStore.FOLDER_PUSH_CLASS_INDEX);
         this.pushClass = FolderClass.valueOf((pushClass == null) ? noClass : pushClass);
         String syncClass = cursor.getString(LocalStore.FOLDER_SYNC_CLASS_INDEX);
@@ -308,10 +307,6 @@ public class LocalFolder {
         return (FolderClass.INHERITED == syncClass) ? getDisplayClass() : syncClass;
     }
 
-    public FolderClass getNotifyClass() {
-        return (FolderClass.INHERITED == notifyClass) ? getPushClass() : notifyClass;
-    }
-
     public FolderClass getPushClass() {
         return (FolderClass.INHERITED == pushClass) ? getSyncClass() : pushClass;
     }
@@ -331,9 +326,8 @@ public class LocalFolder {
         updateFolderColumn("push_class", this.pushClass.name());
     }
 
-    public void setNotifyClass(FolderClass notifyClass) throws MessagingException {
-        this.notifyClass = notifyClass;
-        updateFolderColumn("notify_class", this.notifyClass.name());
+    public boolean isNotificationsEnabled() {
+        return notificationsEnabled;
     }
 
     public boolean isIntegrate() {

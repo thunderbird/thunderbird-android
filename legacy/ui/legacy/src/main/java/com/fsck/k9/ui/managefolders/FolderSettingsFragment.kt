@@ -111,7 +111,7 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
         if (folderSettings.folder.isLocalOnly) {
             requirePreference<Preference>(PREFERENCE_POLL_CLASS).isVisible = false
             requirePreference<Preference>(PREFERENCE_PUSH_CLASS).isVisible = false
-            requirePreference<Preference>(PREFERENCE_NOTIFICATION_CLASS).isVisible = false
+            requirePreference<Preference>(PREFERENCE_NOTIFICATIONS).isVisible = false
         }
     }
 
@@ -142,6 +142,6 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
         private const val PREFERENCE_TOP_CATEGORY = "folder_settings"
         private const val PREFERENCE_POLL_CLASS = "folder_settings_folder_sync_mode"
         private const val PREFERENCE_PUSH_CLASS = "folder_settings_folder_push_mode"
-        private const val PREFERENCE_NOTIFICATION_CLASS = "folder_settings_folder_notify_mode"
+        private const val PREFERENCE_NOTIFICATIONS = "folder_settings_notifications"
     }
 }

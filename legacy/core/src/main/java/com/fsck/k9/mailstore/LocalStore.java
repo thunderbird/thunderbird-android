@@ -112,7 +112,7 @@ public class LocalStore {
 
     static final String GET_FOLDER_COLS =
         "folders.id, name, visible_limit, last_updated, status, " +
-        "integrate, top_group, poll_class, push_class, display_class, notify_class, more_messages, server_id, " +
+        "integrate, top_group, poll_class, push_class, display_class, notifications_enabled, more_messages, server_id, " +
         "local_only, type";
 
     static final int FOLDER_ID_INDEX = 0;
@@ -125,7 +125,7 @@ public class LocalStore {
     static final int FOLDER_SYNC_CLASS_INDEX = 7;
     static final int FOLDER_PUSH_CLASS_INDEX = 8;
     static final int FOLDER_DISPLAY_CLASS_INDEX = 9;
-    static final int FOLDER_NOTIFY_CLASS_INDEX = 10;
+    static final int FOLDER_NOTIFICATIONS_ENABLED_INDEX = 10;
     static final int MORE_MESSAGES_INDEX = 11;
     static final int FOLDER_SERVER_ID_INDEX = 12;
     static final int LOCAL_ONLY_INDEX = 13;

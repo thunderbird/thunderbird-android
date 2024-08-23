@@ -535,11 +535,7 @@
     <string name="folder_settings_folder_push_mode_second_class">2nd Class</string>
     <string name="folder_settings_folder_push_mode_inherited">Same as poll class</string>
 
-    <string name="folder_settings_folder_notify_mode_label">Folder notification class</string>
-    <string name="folder_settings_folder_notify_mode_normal">No Class</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1st Class</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2nd Class</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Same as push class</string>
+    <string name="folder_settings_notifications_label">Notifications</string>
     <string name="folder_settings_clear_local_folder_action">Clear local messages</string>
 
     <string name="account_settings_incoming_label">Incoming server</string>

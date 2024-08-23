@@ -35,7 +35,7 @@ class UpdateFolderOperationsTest : RobolectricTest() {
             integrate = false,
             displayClass = "NO_CLASS",
             syncClass = "NO_CLASS",
-            notifyClass = "NO_CLASS",
+            notificationsEnabled = false,
             pushClass = "NO_CLASS",
         )
 
@@ -51,7 +51,7 @@ class UpdateFolderOperationsTest : RobolectricTest() {
                 isIntegrate = true,
                 displayClass = FolderClass.FIRST_CLASS,
                 syncClass = FolderClass.FIRST_CLASS,
-                notifyClass = FolderClass.FIRST_CLASS,
+                isNotificationsEnabled = true,
                 pushClass = FolderClass.FIRST_CLASS,
             ),
         )
@@ -62,7 +62,7 @@ class UpdateFolderOperationsTest : RobolectricTest() {
         assertThat(folder.integrate).isEqualTo(1)
         assertThat(folder.displayClass).isEqualTo("FIRST_CLASS")
         assertThat(folder.syncClass).isEqualTo("FIRST_CLASS")
-        assertThat(folder.notifyClass).isEqualTo("FIRST_CLASS")
+        assertThat(folder.notificationsEnabled).isEqualTo(1)
         assertThat(folder.pushClass).isEqualTo("FIRST_CLASS")
     }
 
@@ -111,14 +111,14 @@ class UpdateFolderOperationsTest : RobolectricTest() {
     }
 
     @Test
-    fun `update notification class`() {
+    fun `update notifications setting`() {
         val folderId = sqliteDatabase.createFolder(syncClass = "FIRST_CLASS")
 
-        updateFolderOperations.setNotificationClass(folderId = folderId, folderClass = FolderClass.INHERITED)
+        updateFolderOperations.setNotificationsEnabled(folderId = folderId, enable = true)
 
         val folder = sqliteDatabase.readFolders().first()
         assertThat(folder.id).isEqualTo(folderId)
-        assertThat(folder.notifyClass).isEqualTo("INHERITED")
+        assertThat(folder.notificationsEnabled).isEqualTo(1)
     }
 
     @Test
