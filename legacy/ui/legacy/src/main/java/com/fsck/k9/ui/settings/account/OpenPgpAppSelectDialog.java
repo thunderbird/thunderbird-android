@@ -156,7 +156,7 @@ public class OpenPgpAppSelectDialog extends K9Activity {
         public void onStop() {
             super.onStop();
 
-            dismiss();
+            dismissAllowingStateLoss();
         }
 
         @NonNull
@@ -265,7 +265,7 @@ public class OpenPgpAppSelectDialog extends K9Activity {
         public void onStop() {
             super.onStop();
 
-            dismiss();
+            dismissAllowingStateLoss();
         }
 
         @Override
