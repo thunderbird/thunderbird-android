@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
     api(projects.legacy.common)
+    implementation(projects.feature.migration.provider)
 }
 
 android {
