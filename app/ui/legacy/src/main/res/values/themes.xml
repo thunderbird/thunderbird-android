@@ -146,7 +146,6 @@
         <item name="iconAboutLicense">@drawable/ic_description</item>
         <item name="iconAboutWebsite">@drawable/ic_link</item>
         <item name="iconUserForum">@drawable/ic_forum</item>
-        <item name="iconUserManual">@drawable/ic_open_book</item>
         <item name="iconHelp">@drawable/ic_help</item>
 
         <item name="unencryptedAttachmentUnlock">@drawable/ic_visibility</item>
@@ -310,7 +309,6 @@
         <item name="iconAboutLicense">@drawable/ic_description</item>
         <item name="iconAboutWebsite">@drawable/ic_link</item>
         <item name="iconUserForum">@drawable/ic_forum</item>
-        <item name="iconUserManual">@drawable/ic_open_book</item>
         <item name="iconHelp">@drawable/ic_help</item>
 
         <item name="unencryptedAttachmentUnlock">@drawable/ic_visibility</item>

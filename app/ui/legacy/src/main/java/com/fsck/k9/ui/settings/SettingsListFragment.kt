@@ -130,12 +130,6 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
                 )
 
                 addUrlAction(
-                    text = getString(R.string.user_manual_title),
-                    url = getString(R.string.user_manual_url),
-                    icon = R.attr.iconUserManual,
-                )
-
-                addUrlAction(
                     text = getString(R.string.get_help_title),
                     url = getString(R.string.user_forum_url),
                     icon = R.attr.iconHelp,

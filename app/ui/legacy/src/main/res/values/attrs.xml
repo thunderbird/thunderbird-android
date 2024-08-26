@@ -122,7 +122,6 @@
         <attr name="iconAboutLicense" format="reference"/>
         <attr name="iconAboutWebsite" format="reference"/>
         <attr name="iconUserForum" format="reference"/>
-        <attr name="iconUserManual" format="reference"/>
         <attr name="iconHelp" format="reference"/>
 
         <attr name="unencryptedAttachmentUnlock" format="reference|color" />

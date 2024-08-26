@@ -12,7 +12,6 @@
     <string name="app_license">Лицензия Apache версии 2.0</string>
     <string name="about_project_title">Проект с открытым исходным кодом</string>
     <string name="about_website_title">Сайт</string>
-    <string name="user_manual_title">Руководство пользователя</string>
     <string name="get_help_title">Получить помощь</string>
     <string name="user_forum_title">Форум пользователей</string>
     <string name="about_fediverse_title">Федеративная сеть</string>
