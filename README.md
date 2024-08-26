@@ -24,7 +24,6 @@ in each version of K-9 Mail. For a more up to date list of changes, see the XML 
 
 If the app is not behaving like it should, you might find these resources helpful:
 
-- [User Manual](https://docs.k9mail.app/)
 - [Frequently Asked Questions](https://forum.k9mail.app/c/faq)
 - [Support Forum](https://forum.k9mail.app/)
 

@@ -7,7 +7,6 @@ Welcome to the Thunderbird for Android project! We're excited to have you here a
 Before you start contributing, please take a moment to familiarize yourself with the following:
 
 - **Mozilla Community Participation Guidelines:** [https://www.mozilla.org/en-US/about/governance/policies/participation/](https://www.mozilla.org/en-US/about/governance/policies/participation/)
-- **User Manual:** [https://docs.k9mail.app/](https://docs.k9mail.app/)
 - **Frequently Asked Questions:** [https://forum.k9mail.app/c/faq](https://forum.k9mail.app/c/faq)
 - **Support Forum:** [https://forum.k9mail.app/](https://forum.k9mail.app/)
 
