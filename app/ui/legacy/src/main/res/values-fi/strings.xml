@@ -12,7 +12,6 @@
     <string name="app_license">Apache-lisenssi, versio 2.0</string>
     <string name="about_project_title">Avoimen lähdekoodin projekti</string>
     <string name="about_website_title">Verkkosivusto</string>
-    <string name="user_manual_title">Käyttäjäopas</string>
     <string name="get_help_title">Tuki</string>
     <string name="user_forum_title">Käyttäjäfoorumi</string>
     <string name="about_fediverse_title">Fediverse</string>

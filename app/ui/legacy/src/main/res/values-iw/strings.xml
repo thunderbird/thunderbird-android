@@ -582,7 +582,6 @@
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
 <string name="app_authors">מוליכי הכלבים של K-9</string>
     <string name="about_website_title">אתר אינטרנט</string>
-    <string name="user_manual_title">מדריך משתמש</string>
     <string name="get_help_title">קבל עזרה</string>
     <string name="user_forum_title">פורום משתמשים</string>
     <string name="about_fediverse_title">Fediverse</string>
