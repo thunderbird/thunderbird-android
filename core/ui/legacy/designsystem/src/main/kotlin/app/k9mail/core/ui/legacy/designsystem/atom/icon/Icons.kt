@@ -65,7 +65,6 @@ object Icons {
         val MarkEmailRead = R.drawable.ic_mark_email_read
         val MarkEmailUnread = R.drawable.ic_mark_email_unread
         val Menu = R.drawable.ic_menu
-        val MenuBook = R.drawable.ic_menu_book
         val Monitor = R.drawable.ic_monitor
         val MoreVert = R.drawable.ic_more_vert
         val NoEncryption = R.drawable.ic_no_encryption

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_webpage_url" translatable="false">https://k9mail.app/</string>
-    <string name="user_manual_url" translatable="false">https://docs.k9mail.app/</string>
     <string name="user_forum_url" translatable="false">https://forum.k9mail.app/</string>
     <string name="message_header_mua" translatable="false">K-9 Mail for Android</string>
     <string name="app_authors_url" translatable="false">https://github.com/thunderbird/thunderbird-android/graphs/contributors</string>
