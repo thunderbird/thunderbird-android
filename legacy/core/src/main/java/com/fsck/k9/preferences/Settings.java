@@ -3,10 +3,8 @@ package com.fsck.k9.preferences;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -100,87 +98,72 @@ public class Settings {
      * Upgrade settings using the settings structure and/or special upgrade code.
      *
      * @param version
-     *         The content version of the settings in {@code validatedSettingsMutable}.
-     * @param customUpgraders
+     *         The content version of the settings in {@code settings}.
+     * @param upgraders
      *         A map of {@link SettingsUpgrader}s for nontrivial settings upgrades.
+     * @param settingsDescriptions
+     *         The structure describing the different settings, possibly containing multiple versions.
      * @param settings
-     *         The structure describing the different settings, possibly containing multiple
-     *         versions.
-     * @param validatedSettingsMutable
-     *         The settings as returned by {@link Settings#validate(int, Map, Map, boolean)}.
-     *         This map is modified and contains the upgraded settings when this method returns.
+     *         The validated settings as returned by {@link Settings#validate(int, Map, Map, boolean)}.
      *
-     * @return A set of setting names that were removed during the upgrade process or {@code null}
-     *         if none were removed.
+     * @return The upgraded settings.
      */
-    public static Set<String> upgrade(int version, Map<Integer, SettingsUpgrader> customUpgraders,
-            Map<String, TreeMap<Integer, SettingsDescription>> settings, Map<String, Object> validatedSettingsMutable) {
-        Set<String> deletedSettings = null;
+    public static Map<String, Object> upgrade(int version, Map<Integer, SettingsUpgrader> upgraders,
+            Map<String, TreeMap<Integer, SettingsDescription>> settingsDescriptions, Map<String, Object> settings) {
 
+        Map<String, Object> upgradedSettings = new HashMap<>(settings);
         for (int toVersion = version + 1; toVersion <= VERSION; toVersion++) {
-            if (customUpgraders.containsKey(toVersion)) {
-                SettingsUpgrader upgrader = customUpgraders.get(toVersion);
-                Set<String> settingsToDelete = upgrader.upgrade(validatedSettingsMutable);
-                if (settingsToDelete != null) {
-                    deletedSettings = new HashSet<>(settingsToDelete);
-                }
+            if (upgraders.containsKey(toVersion)) {
+                SettingsUpgrader upgrader = upgraders.get(toVersion);
+                upgrader.upgrade(upgradedSettings);
             }
 
-            deletedSettings = upgradeSettingsGeneric(settings, validatedSettingsMutable, deletedSettings, toVersion);
+            upgradeSettingsGeneric(settingsDescriptions, upgradedSettings, toVersion);
         }
 
-        return deletedSettings;
+        return upgradedSettings;
     }
 
-    private static Set<String> upgradeSettingsGeneric(Map<String, TreeMap<Integer, SettingsDescription>> settings,
-            Map<String, Object> validatedSettingsMutable, Set<String> deletedSettingsMutable, int toVersion) {
-        for (Entry<String, TreeMap<Integer, SettingsDescription>> versions : settings.entrySet()) {
+    private static void upgradeSettingsGeneric(Map<String, TreeMap<Integer, SettingsDescription>> settingsDescriptions,
+            Map<String, Object> mutableSettings, int toVersion) {
+        for (Entry<String, TreeMap<Integer, SettingsDescription>> versions : settingsDescriptions.entrySet()) {
             String settingName = versions.getKey();
-            TreeMap<Integer, SettingsDescription> versionedSettings = versions.getValue();
+            TreeMap<Integer, SettingsDescription> versionedSettingsDescriptions = versions.getValue();
 
-            boolean isNewlyAddedSetting = versionedSettings.firstKey() == toVersion;
+            boolean isNewlyAddedSetting = versionedSettingsDescriptions.firstKey() == toVersion;
             if (isNewlyAddedSetting) {
-                boolean wasHandledByCustomUpgrader = validatedSettingsMutable.containsKey(settingName);
+                boolean wasHandledByCustomUpgrader = mutableSettings.containsKey(settingName);
                 if (wasHandledByCustomUpgrader) {
                     continue;
                 }
 
-                SettingsDescription setting = versionedSettings.get(toVersion);
-                if (setting == null) {
+                SettingsDescription settingDescription = versionedSettingsDescriptions.get(toVersion);
+                if (settingDescription == null) {
                     throw new AssertionError("First version of a setting must be non-null!");
                 }
-                upgradeSettingInsertDefault(validatedSettingsMutable, settingName, setting);
+                upgradeSettingInsertDefault(mutableSettings, settingName, settingDescription);
             }
 
-            Integer highestVersion = versionedSettings.lastKey();
-            boolean isRemovedSetting = (highestVersion == toVersion && versionedSettings.get(highestVersion) == null);
+            Integer highestVersion = versionedSettingsDescriptions.lastKey();
+            boolean isRemovedSetting = highestVersion == toVersion &&
+                versionedSettingsDescriptions.get(highestVersion) == null;
+
             if (isRemovedSetting) {
-                if (deletedSettingsMutable == null) {
-                    deletedSettingsMutable = new HashSet<>();
-                }
-                upgradeSettingRemove(validatedSettingsMutable, deletedSettingsMutable, settingName);
+                mutableSettings.remove(settingName);
+                Timber.v("Removed setting \"%s\"", settingName);
             }
         }
-        return deletedSettingsMutable;
     }
 
-    private static <T> void upgradeSettingInsertDefault(Map<String, Object> validatedSettingsMutable,
-            String settingName, SettingsDescription<T> setting) {
-        T defaultValue = setting.getDefaultValue();
-        validatedSettingsMutable.put(settingName, defaultValue);
+    private static <T> void upgradeSettingInsertDefault(Map<String, Object> mutableSettings,
+            String settingName, SettingsDescription<T> settingDescription) {
+        T defaultValue = settingDescription.getDefaultValue();
+        mutableSettings.put(settingName, defaultValue);
 
         if (K9.isDebugLoggingEnabled()) {
-            String prettyValue = setting.toPrettyString(defaultValue);
+            String prettyValue = settingDescription.toPrettyString(defaultValue);
             Timber.v("Added new setting \"%s\" with default value \"%s\"", settingName, prettyValue);
         }
-    }
-
-    private static void upgradeSettingRemove(Map<String, Object> validatedSettingsMutable,
-            Set<String> deletedSettingsMutable, String settingName) {
-        validatedSettingsMutable.remove(settingName);
-        deletedSettingsMutable.add(settingName);
-
-        Timber.v("Removed setting \"%s\"", settingName);
     }
 
     /**
@@ -377,11 +360,8 @@ public class Settings {
          * @param settings
          *         The settings to upgrade.  This map is modified and contains the upgraded
          *         settings when this method returns.
-         *
-         * @return A set of setting names that were removed during the upgrade process or
-         *         {@code null} if none were removed.
          */
-        Set<String> upgrade(Map<String, Object> settings);
+        void upgrade(Map<String, Object> settings);
     }
 
 

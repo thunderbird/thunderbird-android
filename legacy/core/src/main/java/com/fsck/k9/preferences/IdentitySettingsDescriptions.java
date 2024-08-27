@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 import com.fsck.k9.CoreResourceProvider;
@@ -52,7 +51,7 @@ class IdentitySettingsDescriptions {
         return Settings.validate(version, SETTINGS, importedSettings, useDefaultValues);
     }
 
-    public static Set<String> upgrade(int version, Map<String, Object> validatedSettings) {
+    public static Map<String, Object> upgrade(int version, Map<String, Object> validatedSettings) {
         return Settings.upgrade(version, UPGRADERS, SETTINGS, validatedSettings);
     }
 

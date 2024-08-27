@@ -303,7 +303,7 @@ public class AccountSettingsDescriptions {
         return Settings.validate(version, SETTINGS, importedSettings, useDefaultValues);
     }
 
-    public static Set<String> upgrade(int version, Map<String, Object> validatedSettings) {
+    public static Map<String, Object> upgrade(int version, Map<String, Object> validatedSettings) {
         return Settings.upgrade(version, UPGRADERS, SETTINGS, validatedSettings);
     }
 
