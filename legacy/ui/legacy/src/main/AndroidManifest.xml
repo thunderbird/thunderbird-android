@@ -21,7 +21,7 @@
         </intent>
 
         <intent>
-            <!-- Used by AttachmentController to find the best Intent to view an attachment -->
+            <!-- Used by ViewIntentFinder to find the best Intent to view an attachment -->
             <action android:name="android.intent.action.VIEW" />
             <data
                 android:mimeType="*/*"
