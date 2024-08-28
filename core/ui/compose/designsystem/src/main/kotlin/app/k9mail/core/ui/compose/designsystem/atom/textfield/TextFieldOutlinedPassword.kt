@@ -1,5 +1,6 @@
 package app.k9mail.core.ui.compose.designsystem.atom.textfield
 
+import android.os.Build
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -8,6 +9,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.password
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -34,7 +37,7 @@ fun TextFieldOutlinedPassword(
     Material3OutlinedTextField(
         value = value,
         onValueChange = stripLineBreaks(onValueChange),
-        modifier = modifier,
+        modifier = modifier.applyLegacyPasswordSemantics(),
         enabled = isEnabled,
         label = selectLabel(label, isRequired),
         trailingIcon = selectTrailingIcon(
@@ -69,7 +72,7 @@ fun TextFieldOutlinedPassword(
     Material3OutlinedTextField(
         value = value,
         onValueChange = stripLineBreaks(onValueChange),
-        modifier = modifier,
+        modifier = modifier.applyLegacyPasswordSemantics(),
         enabled = isEnabled,
         label = selectLabel(label, isRequired),
         trailingIcon = selectTrailingIcon(
@@ -129,3 +132,16 @@ private fun selectVisualTransformation(
 }
 
 private fun isShowPasswordAllowed(isEnabled: Boolean, isPasswordVisible: Boolean) = isEnabled && isPasswordVisible
+
+private fun Modifier.applyLegacyPasswordSemantics(): Modifier {
+    /*
+     * Workaround for a crash that can occur when the password visibility state changes
+     * while an accessibility service is enabled on devices running Android API level 25 or below.
+     * This approach mitigates the issue by applying password semantics only on affected versions.
+     */
+    return this.semantics {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N_MR1) {
+            password()
+        }
+    }
+}
