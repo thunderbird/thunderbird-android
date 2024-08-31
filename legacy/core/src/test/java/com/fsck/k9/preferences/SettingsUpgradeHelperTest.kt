@@ -6,6 +6,7 @@ import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
+import assertk.fail
 import com.fsck.k9.preferences.Settings.BooleanSetting
 import com.fsck.k9.preferences.Settings.SettingsDescription
 import com.fsck.k9.preferences.Settings.StringSetting
@@ -166,6 +167,83 @@ class SettingsUpgradeHelperTest {
             )
         }.isInstanceOf<AssertionError>()
             .hasMessage("First version of a setting must be non-null!")
+    }
+
+    @Test
+    fun `upgradeToVersion() to intermediate version`() {
+        val version = 1
+        val upgraders = emptyMap<Int, SettingsUpgrader>()
+        val settingsDescriptions = mapOf(
+            "one" to versions(
+                1 to BooleanSetting(true),
+            ),
+            "two" to versions(
+                2 to StringSetting("default"),
+            ),
+            "three" to versions(
+                3 to BooleanSetting(false),
+            ),
+        )
+        val settings = mapOf<String, Any>(
+            "one" to false,
+        )
+
+        val result = SettingsUpgradeHelper.upgradeToVersion(
+            targetVersion = 2,
+            version,
+            upgraders,
+            settingsDescriptions,
+            settings,
+        )
+
+        assertThat(result).isEqualTo(
+            mapOf(
+                "one" to false,
+                "two" to "default",
+            ),
+        )
+    }
+
+    @Test
+    fun `upgradeToVersion() with custom upgrader`() {
+        val version = 1
+        val upgraders = mapOf(
+            2 to SettingsUpgrader { settings ->
+                settings["two"] = "custom"
+            },
+            3 to SettingsUpgrader {
+                fail("SettingsUpgrader for version 3 should not be invoked")
+            },
+        )
+        val settingsDescriptions = mapOf(
+            "one" to versions(
+                1 to BooleanSetting(true),
+            ),
+            "two" to versions(
+                2 to StringSetting("default"),
+            ),
+            "three" to versions(
+                3 to BooleanSetting(false),
+            ),
+        )
+        val settings = mapOf<String, Any>(
+            "one" to false,
+        )
+
+        val result = SettingsUpgradeHelper.upgradeToVersion(
+            targetVersion = 2,
+            version,
+            upgraders,
+            settingsDescriptions,
+            settings,
+        )
+
+        assertThat(result).isEqualTo(
+            mapOf(
+                "one" to false,
+                "two" to "custom",
+            ),
+        )
     }
 
     private fun versions(

@@ -27,9 +27,19 @@ internal object SettingsUpgradeHelper {
         settingsDescriptions: Map<String, TreeMap<Int, SettingsDescription<*>?>>,
         settings: Map<String, Any?>,
     ): Map<String, Any?> {
+        return upgradeToVersion(Settings.VERSION, version, upgraders, settingsDescriptions, settings)
+    }
+
+    fun upgradeToVersion(
+        targetVersion: Int,
+        version: Int,
+        upgraders: Map<Int, SettingsUpgrader>,
+        settingsDescriptions: Map<String, TreeMap<Int, SettingsDescription<*>?>>,
+        settings: Map<String, Any?>,
+    ): Map<String, Any?> {
         val upgradedSettings = settings.toMutableMap()
 
-        for (toVersion in version + 1..Settings.VERSION) {
+        for (toVersion in version + 1..targetVersion) {
             upgraders[toVersion]?.upgrade(upgradedSettings)
 
             upgradeSettingsGeneric(settingsDescriptions, upgradedSettings, toVersion)
