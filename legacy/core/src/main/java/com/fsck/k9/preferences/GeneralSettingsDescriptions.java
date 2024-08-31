@@ -45,11 +45,11 @@ import static com.fsck.k9.K9.LockScreenNotificationVisibility;
 
 
 class GeneralSettingsDescriptions {
-    static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;
+    static final Map<String, TreeMap<Integer, SettingsDescription<?>>> SETTINGS;
     private static final Map<Integer, SettingsUpgrader> UPGRADERS;
 
     static {
-        Map<String, TreeMap<Integer, SettingsDescription>> s = new LinkedHashMap<>();
+        Map<String, TreeMap<Integer, SettingsDescription<?>>> s = new LinkedHashMap<>();
 
         /*
          * When adding new settings here, be sure to increment {@link Settings.VERSION}
@@ -285,7 +285,7 @@ class GeneralSettingsDescriptions {
             new V(85, new BooleanSetting(true))
         ));
         s.put("messageListDensity", Settings.versions(
-            new V(86, new EnumSetting(UiDensity.class, UiDensity.Default))
+            new V(86, new EnumSetting<>(UiDensity.class, UiDensity.Default))
         ));
         s.put("fontSizeMessageViewAccountName", Settings.versions(
             new V(87, new FontSizeSetting(FontSizes.FONT_DEFAULT))

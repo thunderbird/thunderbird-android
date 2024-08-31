@@ -15,11 +15,11 @@ import com.fsck.k9.preferences.Settings.V;
 
 
 class FolderSettingsDescriptions {
-    static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;
+    static final Map<String, TreeMap<Integer, SettingsDescription<?>>> SETTINGS;
     private static final Map<Integer, SettingsUpgrader> UPGRADERS;
 
     static {
-        Map<String, TreeMap<Integer, SettingsDescription>> s = new LinkedHashMap<>();
+        Map<String, TreeMap<Integer, SettingsDescription<?>>> s = new LinkedHashMap<>();
 
         /*
          * When adding new settings here, be sure to increment {@link Settings.VERSION}
