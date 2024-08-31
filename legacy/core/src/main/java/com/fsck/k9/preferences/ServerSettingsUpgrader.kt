@@ -8,7 +8,7 @@ internal class ServerSettingsUpgrader(
             return server
         }
 
-        val upgradedSettings = Settings.upgrade(
+        val upgradedSettings = SettingsUpgradeHelper.upgrade(
             contentVersion,
             serverSettingsDescriptions.upgraders,
             serverSettingsDescriptions.settings,

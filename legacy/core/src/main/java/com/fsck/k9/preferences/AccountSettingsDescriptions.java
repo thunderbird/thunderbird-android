@@ -303,7 +303,7 @@ class AccountSettingsDescriptions {
     }
 
     public static Map<String, Object> upgrade(int version, Map<String, Object> validatedSettings) {
-        return Settings.upgrade(version, UPGRADERS, SETTINGS, validatedSettings);
+        return SettingsUpgradeHelper.upgrade(version, UPGRADERS, SETTINGS, validatedSettings);
     }
 
     public static Map<String, String> convert(Map<String, Object> settings) {

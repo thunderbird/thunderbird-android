@@ -12,7 +12,7 @@ import com.fsck.k9.preferences.Settings.StringSetting
 import java.util.TreeMap
 import kotlin.test.Test
 
-class SettingsTest {
+class SettingsUpgradeHelperTest {
     @Test
     fun `upgrade() with new setting being added`() {
         val version = 1
@@ -29,7 +29,12 @@ class SettingsTest {
             "one" to false,
         )
 
-        val result = Settings.upgrade(version, upgraders, settingsDescriptions, settings)
+        val result = SettingsUpgradeHelper.upgrade(
+            version,
+            upgraders,
+            settingsDescriptions,
+            settings,
+        )
 
         assertThat(result).isEqualTo(
             mapOf(
@@ -56,7 +61,12 @@ class SettingsTest {
             "one" to false,
         )
 
-        val result = Settings.upgrade(version, upgraders, settingsDescriptions, settings)
+        val result = SettingsUpgradeHelper.upgrade(
+            version,
+            upgraders,
+            settingsDescriptions,
+            settings,
+        )
 
         assertThat(result).isEqualTo(
             mapOf(
@@ -87,7 +97,12 @@ class SettingsTest {
             "one" to false,
         )
 
-        val result = Settings.upgrade(version, upgraders, settingsDescriptions, settings)
+        val result = SettingsUpgradeHelper.upgrade(
+            version,
+            upgraders,
+            settingsDescriptions,
+            settings,
+        )
 
         assertThat(result).isEqualTo(
             mapOf(
@@ -114,7 +129,12 @@ class SettingsTest {
             "setting" to false,
         )
 
-        val result = Settings.upgrade(version, upgraders, settingsDescriptions, settings)
+        val result = SettingsUpgradeHelper.upgrade(
+            version,
+            upgraders,
+            settingsDescriptions,
+            settings,
+        )
 
         assertThat(result).isEqualTo(
             mapOf(
@@ -138,7 +158,12 @@ class SettingsTest {
         )
 
         assertFailure {
-            Settings.upgrade(version, upgraders, settingsDescriptions, settings)
+            SettingsUpgradeHelper.upgrade(
+                version,
+                upgraders,
+                settingsDescriptions,
+                settings,
+            )
         }.isInstanceOf<AssertionError>()
             .hasMessage("First version of a setting must be non-null!")
     }
