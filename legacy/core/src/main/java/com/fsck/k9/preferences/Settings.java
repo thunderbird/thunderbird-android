@@ -22,7 +22,7 @@ import com.fsck.k9.K9;
  * - add unit test that validates the default values are actually valid according to the validator
  */
 
-public class Settings {
+class Settings {
     /**
      * Version number of global and account settings.
      *
@@ -338,7 +338,7 @@ public class Settings {
         }
     }
 
-    public static class V {
+    static class V {
         public final Integer version;
         public final SettingsDescription description;
 

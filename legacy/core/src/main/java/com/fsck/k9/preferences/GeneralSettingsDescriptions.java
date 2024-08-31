@@ -44,7 +44,7 @@ import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo89;
 import static com.fsck.k9.K9.LockScreenNotificationVisibility;
 
 
-public class GeneralSettingsDescriptions {
+class GeneralSettingsDescriptions {
     static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;
     private static final Map<Integer, SettingsUpgrader> UPGRADERS;
 

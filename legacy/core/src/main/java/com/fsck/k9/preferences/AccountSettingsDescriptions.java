@@ -44,7 +44,7 @@ import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo91;
 import static com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo53.FOLDER_NONE;
 
 
-public class AccountSettingsDescriptions {
+class AccountSettingsDescriptions {
     static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;
     private static final Map<Integer, SettingsUpgrader> UPGRADERS;
 
