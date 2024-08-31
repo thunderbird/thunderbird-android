@@ -348,23 +348,6 @@ public class Settings {
         }
     }
 
-    /**
-     * Used for a nontrivial settings upgrade.
-     *
-     * @see Settings#upgrade(int, Map, Map, Map)
-     */
-    public interface SettingsUpgrader {
-        /**
-         * Upgrade the provided settings.
-         *
-         * @param settings
-         *         The settings to upgrade.  This map is modified and contains the upgraded
-         *         settings when this method returns.
-         */
-        void upgrade(Map<String, Object> settings);
-    }
-
-
     static class StringSetting extends SettingsDescription<String> {
         StringSetting(String defaultValue) {
             super(defaultValue);

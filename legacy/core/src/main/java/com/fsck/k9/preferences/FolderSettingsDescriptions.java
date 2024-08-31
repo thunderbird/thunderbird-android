@@ -11,7 +11,6 @@ import com.fsck.k9.mail.FolderClass;
 import com.fsck.k9.preferences.Settings.BooleanSetting;
 import com.fsck.k9.preferences.Settings.EnumSetting;
 import com.fsck.k9.preferences.Settings.SettingsDescription;
-import com.fsck.k9.preferences.Settings.SettingsUpgrader;
 import com.fsck.k9.preferences.Settings.V;
 
 

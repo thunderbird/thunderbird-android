@@ -3,7 +3,7 @@ package com.fsck.k9.preferences.upgrader
 import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.AUTHENTICATION_TYPE
 import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.PASSWORD
 import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.USERNAME
-import com.fsck.k9.preferences.Settings.SettingsUpgrader
+import com.fsck.k9.preferences.SettingsUpgrader
 
 /**
  * Updates server settings to use an authentication type value of "NONE" when appropriate.

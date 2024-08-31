@@ -2,7 +2,6 @@ package com.fsck.k9.preferences
 
 import com.fsck.k9.preferences.Settings.IntegerRangeSetting
 import com.fsck.k9.preferences.Settings.SettingsDescription
-import com.fsck.k9.preferences.Settings.SettingsUpgrader
 import com.fsck.k9.preferences.Settings.StringSetting
 import com.fsck.k9.preferences.upgrader.ServerSettingsUpgraderTo92
 import com.fsck.k9.preferences.upgrader.ServerSettingsUpgraderTo94

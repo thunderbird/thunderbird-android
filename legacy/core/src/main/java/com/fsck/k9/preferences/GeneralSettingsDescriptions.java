@@ -32,7 +32,6 @@ import com.fsck.k9.preferences.Settings.IntegerRangeSetting;
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
 import com.fsck.k9.preferences.Settings.PseudoEnumSetting;
 import com.fsck.k9.preferences.Settings.SettingsDescription;
-import com.fsck.k9.preferences.Settings.SettingsUpgrader;
 import com.fsck.k9.preferences.Settings.V;
 import com.fsck.k9.preferences.Settings.WebFontSizeSetting;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo24;
