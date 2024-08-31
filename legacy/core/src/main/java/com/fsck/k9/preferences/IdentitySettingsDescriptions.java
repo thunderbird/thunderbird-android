@@ -58,20 +58,6 @@ class IdentitySettingsDescriptions {
         return Settings.convert(settings, SETTINGS);
     }
 
-    static Map<String, String> getIdentitySettings(Storage storage, String uuid, int identityIndex) {
-        Map<String, String> result = new HashMap<>();
-        String prefix = uuid + ".";
-        String suffix = "." + Integer.toString(identityIndex);
-        for (String key : SETTINGS.keySet()) {
-            String value = storage.getString(prefix + key + suffix, null);
-            if (value != null) {
-                result.put(key, value);
-            }
-        }
-        return result;
-    }
-
-
     static boolean isEmailAddressValid(String email) {
         return new EmailAddressValidator().isValidAddressOnly(email);
     }

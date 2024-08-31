@@ -310,18 +310,6 @@ class AccountSettingsDescriptions {
         return Settings.convert(settings, SETTINGS);
     }
 
-    static Map<String, String> getAccountSettings(Storage storage, String uuid) {
-        Map<String, String> result = new HashMap<>();
-        String prefix = uuid + ".";
-        for (String key : SETTINGS.keySet()) {
-            String value = storage.getString(prefix + key, null);
-            if (value != null) {
-                result.put(key, value);
-            }
-        }
-        return result;
-    }
-
     private static class IntegerResourceSetting extends PseudoEnumSetting<Integer> {
         private final Context context = DI.get(Context.class);
         private final Map<Integer, String> mapping;

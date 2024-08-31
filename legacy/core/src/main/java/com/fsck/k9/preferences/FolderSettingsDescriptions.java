@@ -64,16 +64,4 @@ class FolderSettingsDescriptions {
     public static Map<String, String> convert(Map<String, Object> settings) {
         return Settings.convert(settings, SETTINGS);
     }
-
-    static Map<String, String> getFolderSettings(Storage storage, String uuid, String folderName) {
-        Map<String, String> result = new HashMap<>();
-        String prefix = uuid + "." + folderName + ".";
-        for (String key : SETTINGS.keySet()) {
-            String value = storage.getString(prefix + key, null);
-            if (value != null) {
-                result.put(key, value);
-            }
-        }
-        return result;
-    }
 }
