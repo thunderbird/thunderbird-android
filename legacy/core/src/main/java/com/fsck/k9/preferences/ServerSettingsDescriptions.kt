@@ -14,7 +14,7 @@ import java.util.TreeMap
  */
 @Suppress("MagicNumber")
 internal class ServerSettingsDescriptions {
-    val settings: Map<String, TreeMap<Int, SettingsDescription<*>>> by lazy {
+    val settings: Map<String, TreeMap<Int, SettingsDescription<*>?>> by lazy {
         mapOf(
             HOST to versions(
                 1 to StringSetting(null),
@@ -101,6 +101,6 @@ internal class ServerSettingsDescriptions {
     }
 }
 
-private fun versions(vararg versions: Pair<Int, SettingsDescription<*>>): TreeMap<Int, SettingsDescription<*>> {
+private fun versions(vararg versions: Pair<Int, SettingsDescription<*>?>): TreeMap<Int, SettingsDescription<*>?> {
     return TreeMap(versions.toMap())
 }

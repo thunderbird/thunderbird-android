@@ -1,87 +1,86 @@
-package com.fsck.k9.preferences;
+package com.fsck.k9.preferences
 
+import com.fsck.k9.K9
+import com.fsck.k9.preferences.Settings.SettingsDescription
+import java.util.TreeMap
+import timber.log.Timber
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.TreeMap;
-
-import com.fsck.k9.K9;
-import com.fsck.k9.preferences.Settings.SettingsDescription;
-import timber.log.Timber;
-
-
-class SettingsUpgradeHelper {
+internal object SettingsUpgradeHelper {
     /**
      * Upgrade settings using the settings structure and/or special upgrade code.
      *
      * @param version
-     *         The content version of the settings in {@code settings}.
+     *   The content version of the settings in `settings`.
      * @param upgraders
-     *         A map of {@link SettingsUpgrader}s for nontrivial settings upgrades.
+     *   A map of [SettingsUpgrader]s for nontrivial settings upgrades.
      * @param settingsDescriptions
-     *         The structure describing the different settings, possibly containing multiple versions.
+     *   The structure describing the different settings, possibly containing multiple versions.
      * @param settings
-     *         The validated settings as returned by {@link Settings#validate(int, Map, Map, boolean)}.
+     *   The validated settings as returned by [Settings.validate].
      *
      * @return The upgraded settings.
      */
-    public static Map<String, Object> upgrade(int version, Map<Integer, SettingsUpgrader> upgraders,
-        Map<String, TreeMap<Integer, SettingsDescription<?>>> settingsDescriptions, Map<String, Object> settings) {
-
-        Map<String, Object> upgradedSettings = new HashMap<>(settings);
-        for (int toVersion = version + 1; toVersion <= Settings.VERSION; toVersion++) {
+    @JvmStatic
+    fun upgrade(
+        version: Int,
+        upgraders: Map<Int, SettingsUpgrader>,
+        settingsDescriptions: Map<String, TreeMap<Int, SettingsDescription<*>?>>,
+        settings: Map<String, Any?>,
+    ): Map<String, Any?> {
+        val upgradedSettings: MutableMap<String, Any?> = HashMap(settings)
+        for (toVersion in version + 1..Settings.VERSION) {
             if (upgraders.containsKey(toVersion)) {
-                SettingsUpgrader upgrader = upgraders.get(toVersion);
-                upgrader.upgrade(upgradedSettings);
+                val upgrader = upgraders[toVersion]
+                upgrader!!.upgrade(upgradedSettings)
             }
 
-            upgradeSettingsGeneric(settingsDescriptions, upgradedSettings, toVersion);
+            upgradeSettingsGeneric(settingsDescriptions, upgradedSettings, toVersion)
         }
 
-        return upgradedSettings;
+        return upgradedSettings
     }
 
-    private static void upgradeSettingsGeneric(
-        Map<String, TreeMap<Integer, SettingsDescription<?>>> settingsDescriptions,
-        Map<String, Object> mutableSettings, int toVersion) {
-        for (Entry<String, TreeMap<Integer, SettingsDescription<?>>> versions : settingsDescriptions.entrySet()) {
-            String settingName = versions.getKey();
-            TreeMap<Integer, SettingsDescription<?>> versionedSettingsDescriptions = versions.getValue();
-
-            boolean isNewlyAddedSetting = versionedSettingsDescriptions.firstKey() == toVersion;
+    private fun upgradeSettingsGeneric(
+        settingsDescriptions: Map<String, TreeMap<Int, SettingsDescription<*>?>>,
+        mutableSettings: MutableMap<String, Any?>,
+        toVersion: Int,
+    ) {
+        for ((settingName, versionedSettingsDescriptions) in settingsDescriptions) {
+            val isNewlyAddedSetting = versionedSettingsDescriptions.firstKey() == toVersion
             if (isNewlyAddedSetting) {
-                boolean wasHandledByCustomUpgrader = mutableSettings.containsKey(settingName);
+                val wasHandledByCustomUpgrader = mutableSettings.containsKey(settingName)
                 if (wasHandledByCustomUpgrader) {
-                    continue;
+                    continue
                 }
 
-                SettingsDescription<?> settingDescription = versionedSettingsDescriptions.get(toVersion);
-                if (settingDescription == null) {
-                    throw new AssertionError("First version of a setting must be non-null!");
-                }
-                upgradeSettingInsertDefault(mutableSettings, settingName, settingDescription);
+                val settingDescription = versionedSettingsDescriptions[toVersion]
+                    ?: throw AssertionError("First version of a setting must be non-null!")
+
+                upgradeSettingInsertDefault(mutableSettings, settingName, settingDescription)
             }
 
-            Integer highestVersion = versionedSettingsDescriptions.lastKey();
-            boolean isRemovedSetting = highestVersion == toVersion &&
-                versionedSettingsDescriptions.get(highestVersion) == null;
+            val highestVersion = versionedSettingsDescriptions.lastKey()
+            val isRemovedSetting = highestVersion == toVersion &&
+                versionedSettingsDescriptions[highestVersion] == null
 
             if (isRemovedSetting) {
-                mutableSettings.remove(settingName);
-                Timber.v("Removed setting \"%s\"", settingName);
+                mutableSettings.remove(settingName)
+                Timber.v("Removed setting \"%s\"", settingName)
             }
         }
     }
 
-    private static <T> void upgradeSettingInsertDefault(Map<String, Object> mutableSettings,
-        String settingName, SettingsDescription<T> settingDescription) {
-        T defaultValue = settingDescription.getDefaultValue();
-        mutableSettings.put(settingName, defaultValue);
+    private fun <T> upgradeSettingInsertDefault(
+        mutableSettings: MutableMap<String, Any?>,
+        settingName: String,
+        settingDescription: SettingsDescription<T>,
+    ) {
+        val defaultValue = settingDescription.getDefaultValue()
+        mutableSettings[settingName] = defaultValue
 
-        if (K9.isDebugLoggingEnabled()) {
-            String prettyValue = settingDescription.toPrettyString(defaultValue);
-            Timber.v("Added new setting \"%s\" with default value \"%s\"", settingName, prettyValue);
+        if (K9.isDebugLoggingEnabled) {
+            val prettyValue = settingDescription.toPrettyString(defaultValue)
+            Timber.v("Added new setting \"%s\" with default value \"%s\"", settingName, prettyValue)
         }
     }
 }
