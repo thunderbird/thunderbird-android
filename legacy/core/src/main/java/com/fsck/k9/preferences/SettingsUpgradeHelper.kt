@@ -27,12 +27,10 @@ internal object SettingsUpgradeHelper {
         settingsDescriptions: Map<String, TreeMap<Int, SettingsDescription<*>?>>,
         settings: Map<String, Any?>,
     ): Map<String, Any?> {
-        val upgradedSettings: MutableMap<String, Any?> = HashMap(settings)
+        val upgradedSettings = settings.toMutableMap()
+
         for (toVersion in version + 1..Settings.VERSION) {
-            if (upgraders.containsKey(toVersion)) {
-                val upgrader = upgraders[toVersion]
-                upgrader!!.upgrade(upgradedSettings)
-            }
+            upgraders[toVersion]?.upgrade(upgradedSettings)
 
             upgradeSettingsGeneric(settingsDescriptions, upgradedSettings, toVersion)
         }
@@ -65,7 +63,7 @@ internal object SettingsUpgradeHelper {
 
             if (isRemovedSetting) {
                 mutableSettings.remove(settingName)
-                Timber.v("Removed setting \"%s\"", settingName)
+                Timber.v("Removed setting '%s'", settingName)
             }
         }
     }
@@ -80,7 +78,7 @@ internal object SettingsUpgradeHelper {
 
         if (K9.isDebugLoggingEnabled) {
             val prettyValue = settingDescription.toPrettyString(defaultValue)
-            Timber.v("Added new setting \"%s\" with default value \"%s\"", settingName, prettyValue)
+            Timber.v("Added new setting '%s' with default value '%s'", settingName, prettyValue)
         }
     }
 }
