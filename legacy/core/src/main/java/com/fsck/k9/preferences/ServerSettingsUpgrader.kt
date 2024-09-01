@@ -1,17 +1,19 @@
 package com.fsck.k9.preferences
 
 internal class ServerSettingsUpgrader(
-    private val serverSettingsDescriptions: ServerSettingsDescriptions = ServerSettingsDescriptions(),
+    private val latestVersion: Int = Settings.VERSION,
+    private val settingsDescriptions: SettingsDescriptions = ServerSettingsDescriptions.SETTINGS,
+    private val upgraders: Map<Int, SettingsUpgrader> = ServerSettingsDescriptions.UPGRADERS,
 ) {
     fun upgrade(contentVersion: Int, server: ValidatedSettings.Server): ValidatedSettings.Server {
-        if (contentVersion == Settings.VERSION) {
+        if (contentVersion == latestVersion) {
             return server
         }
 
         val upgradedSettings = SettingsUpgradeHelper.upgrade(
             contentVersion,
-            serverSettingsDescriptions.upgraders,
-            serverSettingsDescriptions.settings,
+            upgraders,
+            settingsDescriptions,
             server.settings,
         )
 

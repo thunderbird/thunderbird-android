@@ -1,6 +1,6 @@
 package com.fsck.k9.preferences.upgrader
 
-import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.CONNECTION_SECURITY
+import com.fsck.k9.preferences.ServerSettingsDescriptions.CONNECTION_SECURITY
 import com.fsck.k9.preferences.SettingsUpgrader
 
 class ServerSettingsUpgraderTo92 : SettingsUpgrader {

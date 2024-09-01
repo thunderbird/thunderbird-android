@@ -18,7 +18,7 @@ import com.fsck.k9.preferences.Settings.V;
 
 class IdentitySettingsDescriptions {
     static final Map<String, TreeMap<Integer, SettingsDescription<?>>> SETTINGS;
-    private static final Map<Integer, SettingsUpgrader> UPGRADERS;
+    static final Map<Integer, SettingsUpgrader> UPGRADERS;
 
     static {
         Map<String, TreeMap<Integer, SettingsDescription<?>>> s = new LinkedHashMap<>();
@@ -48,10 +48,6 @@ class IdentitySettingsDescriptions {
 
     static Map<String, Object> validate(int version, Map<String, String> importedSettings, boolean useDefaultValues) {
         return Settings.validate(version, SETTINGS, importedSettings, useDefaultValues);
-    }
-
-    public static Map<String, Object> upgrade(int version, Map<String, Object> validatedSettings) {
-        return SettingsUpgradeHelper.upgrade(version, UPGRADERS, SETTINGS, validatedSettings);
     }
 
     public static Map<String, String> convert(Map<String, Object> settings) {

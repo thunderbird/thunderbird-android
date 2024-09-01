@@ -8,9 +8,7 @@ import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.fail
 import com.fsck.k9.preferences.Settings.BooleanSetting
-import com.fsck.k9.preferences.Settings.SettingsDescription
 import com.fsck.k9.preferences.Settings.StringSetting
-import java.util.TreeMap
 import kotlin.test.Test
 
 class SettingsUpgradeHelperTest {
