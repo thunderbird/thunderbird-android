@@ -33,7 +33,19 @@ val preferencesModule = module {
     factory { GeneralSettingsWriter(preferences = get(), generalSettingsManager = get()) }
 
     factory { AccountSettingsValidator() }
-    factory { AccountSettingsUpgrader() }
+
+    factory { IdentitySettingsUpgrader() }
+    factory { FolderSettingsUpgrader() }
+    factory { ServerSettingsUpgrader() }
+
+    factory {
+        AccountSettingsUpgrader(
+            identitySettingsUpgrader = get(),
+            folderSettingsUpgrader = get(),
+            serverSettingsUpgrader = get(),
+        )
+    }
+
     factory {
         AccountSettingsWriter(
             preferences = get(),
