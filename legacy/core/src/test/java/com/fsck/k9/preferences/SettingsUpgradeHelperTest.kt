@@ -245,10 +245,4 @@ class SettingsUpgradeHelperTest {
             ),
         )
     }
-
-    private fun versions(
-        vararg pairs: Pair<Int, SettingsDescription<*>?>,
-    ): TreeMap<Int, SettingsDescription<*>?> {
-        return pairs.toMap(TreeMap<Int, SettingsDescription<*>?>())
-    }
 }

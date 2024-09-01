@@ -1,12 +1,10 @@
 package com.fsck.k9.preferences
 
 import com.fsck.k9.preferences.Settings.IntegerRangeSetting
-import com.fsck.k9.preferences.Settings.SettingsDescription
 import com.fsck.k9.preferences.Settings.StringSetting
 import com.fsck.k9.preferences.upgrader.ServerSettingsUpgraderTo92
 import com.fsck.k9.preferences.upgrader.ServerSettingsUpgraderTo94
 import com.fsck.k9.preferences.upgrader.ServerSettingsUpgraderTo95
-import java.util.TreeMap
 
 /**
  * Contains information to validate imported server settings with a given content version, and to upgrade those server
@@ -14,7 +12,7 @@ import java.util.TreeMap
  */
 @Suppress("MagicNumber")
 internal class ServerSettingsDescriptions {
-    val settings: Map<String, TreeMap<Int, SettingsDescription<*>?>> by lazy {
+    val settings: SettingsDescriptions by lazy {
         mapOf(
             HOST to versions(
                 1 to StringSetting(null),
@@ -99,8 +97,4 @@ internal class ServerSettingsDescriptions {
         const val PASSWORD = "password"
         const val CLIENT_CERTIFICATE_ALIAS = "clientCertificateAlias"
     }
-}
-
-private fun versions(vararg versions: Pair<Int, SettingsDescription<*>?>): TreeMap<Int, SettingsDescription<*>?> {
-    return TreeMap(versions.toMap())
 }
