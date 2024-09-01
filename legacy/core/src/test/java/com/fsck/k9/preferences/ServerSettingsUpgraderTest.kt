@@ -23,7 +23,7 @@ class ServerSettingsUpgraderTest {
             extras = emptyMap(),
         )
 
-        val upgradedServer = upgrader.upgrade(contentVersion = 1, server)
+        val upgradedServer = upgrader.upgrade(targetVersion = 92, contentVersion = 1, server)
 
         assertThat(upgradedServer).isEqualTo(
             server.copy(

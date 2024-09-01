@@ -1,16 +1,16 @@
 package com.fsck.k9.preferences
 
 internal class FolderSettingsUpgrader(
-    private val latestVersion: Int = Settings.VERSION,
     private val settingsDescriptions: SettingsDescriptions = FolderSettingsDescriptions.SETTINGS,
     private val upgraders: Map<Int, SettingsUpgrader> = FolderSettingsDescriptions.UPGRADERS,
 ) {
-    fun upgrade(contentVersion: Int, folder: ValidatedSettings.Folder): ValidatedSettings.Folder {
-        if (contentVersion == latestVersion) {
+    fun upgrade(targetVersion: Int, contentVersion: Int, folder: ValidatedSettings.Folder): ValidatedSettings.Folder {
+        if (contentVersion == targetVersion) {
             return folder
         }
 
-        val upgradedSettings = SettingsUpgradeHelper.upgrade(
+        val upgradedSettings = SettingsUpgradeHelper.upgradeToVersion(
+            targetVersion,
             contentVersion,
             upgraders,
             settingsDescriptions,
