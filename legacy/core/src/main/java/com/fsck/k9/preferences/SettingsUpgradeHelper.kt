@@ -2,7 +2,6 @@ package com.fsck.k9.preferences
 
 import com.fsck.k9.K9
 import com.fsck.k9.preferences.Settings.SettingsDescription
-import java.util.TreeMap
 import timber.log.Timber
 
 internal object SettingsUpgradeHelper {
@@ -24,12 +23,22 @@ internal object SettingsUpgradeHelper {
     fun upgrade(
         version: Int,
         upgraders: Map<Int, SettingsUpgrader>,
-        settingsDescriptions: Map<String, TreeMap<Int, SettingsDescription<*>?>>,
+        settingsDescriptions: SettingsDescriptions,
+        settings: Map<String, Any?>,
+    ): Map<String, Any?> {
+        return upgradeToVersion(Settings.VERSION, version, upgraders, settingsDescriptions, settings)
+    }
+
+    fun upgradeToVersion(
+        targetVersion: Int,
+        version: Int,
+        upgraders: Map<Int, SettingsUpgrader>,
+        settingsDescriptions: SettingsDescriptions,
         settings: Map<String, Any?>,
     ): Map<String, Any?> {
         val upgradedSettings = settings.toMutableMap()
 
-        for (toVersion in version + 1..Settings.VERSION) {
+        for (toVersion in version + 1..targetVersion) {
             upgraders[toVersion]?.upgrade(upgradedSettings)
 
             upgradeSettingsGeneric(settingsDescriptions, upgradedSettings, toVersion)
@@ -39,7 +48,7 @@ internal object SettingsUpgradeHelper {
     }
 
     private fun upgradeSettingsGeneric(
-        settingsDescriptions: Map<String, TreeMap<Int, SettingsDescription<*>?>>,
+        settingsDescriptions: SettingsDescriptions,
         mutableSettings: MutableMap<String, Any?>,
         toVersion: Int,
     ) {

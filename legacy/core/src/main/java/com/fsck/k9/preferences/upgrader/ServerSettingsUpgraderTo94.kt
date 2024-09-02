@@ -1,7 +1,7 @@
 package com.fsck.k9.preferences.upgrader
 
-import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.AUTHENTICATION_TYPE
-import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.CONNECTION_SECURITY
+import com.fsck.k9.preferences.ServerSettingsDescriptions.AUTHENTICATION_TYPE
+import com.fsck.k9.preferences.ServerSettingsDescriptions.CONNECTION_SECURITY
 import com.fsck.k9.preferences.SettingsUpgrader
 
 /**

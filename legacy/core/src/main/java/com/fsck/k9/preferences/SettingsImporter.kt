@@ -1,10 +1,10 @@
 package com.fsck.k9.preferences
 
 import com.fsck.k9.helper.mapCollectionToSet
-import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.AUTHENTICATION_TYPE
-import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.HOST
-import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.PASSWORD
-import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.USERNAME
+import com.fsck.k9.preferences.ServerSettingsDescriptions.AUTHENTICATION_TYPE
+import com.fsck.k9.preferences.ServerSettingsDescriptions.HOST
+import com.fsck.k9.preferences.ServerSettingsDescriptions.PASSWORD
+import com.fsck.k9.preferences.ServerSettingsDescriptions.USERNAME
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException
 import java.io.InputStream
 import timber.log.Timber
