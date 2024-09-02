@@ -1,6 +1,6 @@
 package com.fsck.k9.preferences.upgrader
 
-import com.fsck.k9.preferences.Settings.SettingsUpgrader
+import com.fsck.k9.preferences.SettingsUpgrader
 
 /**
  * Rewrite `sendClientId` to `sendClientInfo`

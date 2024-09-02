@@ -32,7 +32,6 @@ import com.fsck.k9.preferences.Settings.IntegerRangeSetting;
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
 import com.fsck.k9.preferences.Settings.PseudoEnumSetting;
 import com.fsck.k9.preferences.Settings.SettingsDescription;
-import com.fsck.k9.preferences.Settings.SettingsUpgrader;
 import com.fsck.k9.preferences.Settings.StringSetting;
 import com.fsck.k9.preferences.Settings.V;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo53;
@@ -45,12 +44,12 @@ import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo91;
 import static com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo53.FOLDER_NONE;
 
 
-public class AccountSettingsDescriptions {
-    static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;
+class AccountSettingsDescriptions {
+    static final Map<String, TreeMap<Integer, SettingsDescription<?>>> SETTINGS;
     private static final Map<Integer, SettingsUpgrader> UPGRADERS;
 
     static {
-        Map<String, TreeMap<Integer, SettingsDescription>> s = new LinkedHashMap<>();
+        Map<String, TreeMap<Integer, SettingsDescription<?>>> s = new LinkedHashMap<>();
 
         /*
          * When adding new settings here, be sure to increment {@link Settings.VERSION}
@@ -304,23 +303,11 @@ public class AccountSettingsDescriptions {
     }
 
     public static Map<String, Object> upgrade(int version, Map<String, Object> validatedSettings) {
-        return Settings.upgrade(version, UPGRADERS, SETTINGS, validatedSettings);
+        return SettingsUpgradeHelper.upgrade(version, UPGRADERS, SETTINGS, validatedSettings);
     }
 
     public static Map<String, String> convert(Map<String, Object> settings) {
         return Settings.convert(settings, SETTINGS);
-    }
-
-    static Map<String, String> getAccountSettings(Storage storage, String uuid) {
-        Map<String, String> result = new HashMap<>();
-        String prefix = uuid + ".";
-        for (String key : SETTINGS.keySet()) {
-            String value = storage.getString(prefix + key, null);
-            if (value != null) {
-                result.put(key, value);
-            }
-        }
-        return result;
     }
 
     private static class IntegerResourceSetting extends PseudoEnumSetting<Integer> {

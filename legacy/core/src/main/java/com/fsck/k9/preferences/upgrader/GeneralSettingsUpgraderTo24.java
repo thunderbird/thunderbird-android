@@ -5,7 +5,7 @@ import java.util.Map;
 
 import app.k9mail.legacy.preferences.AppTheme;
 import app.k9mail.legacy.preferences.SubTheme;
-import com.fsck.k9.preferences.Settings.SettingsUpgrader;
+import com.fsck.k9.preferences.SettingsUpgrader;
 
 
 /**

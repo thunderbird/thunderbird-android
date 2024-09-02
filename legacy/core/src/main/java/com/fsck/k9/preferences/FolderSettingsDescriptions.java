@@ -11,16 +11,15 @@ import com.fsck.k9.mail.FolderClass;
 import com.fsck.k9.preferences.Settings.BooleanSetting;
 import com.fsck.k9.preferences.Settings.EnumSetting;
 import com.fsck.k9.preferences.Settings.SettingsDescription;
-import com.fsck.k9.preferences.Settings.SettingsUpgrader;
 import com.fsck.k9.preferences.Settings.V;
 
 
 class FolderSettingsDescriptions {
-    static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;
+    static final Map<String, TreeMap<Integer, SettingsDescription<?>>> SETTINGS;
     private static final Map<Integer, SettingsUpgrader> UPGRADERS;
 
     static {
-        Map<String, TreeMap<Integer, SettingsDescription>> s = new LinkedHashMap<>();
+        Map<String, TreeMap<Integer, SettingsDescription<?>>> s = new LinkedHashMap<>();
 
         /*
          * When adding new settings here, be sure to increment {@link Settings.VERSION}
@@ -59,22 +58,10 @@ class FolderSettingsDescriptions {
     }
 
     public static Map<String, Object> upgrade(int version, Map<String, Object> validatedSettings) {
-        return Settings.upgrade(version, UPGRADERS, SETTINGS, validatedSettings);
+        return SettingsUpgradeHelper.upgrade(version, UPGRADERS, SETTINGS, validatedSettings);
     }
 
     public static Map<String, String> convert(Map<String, Object> settings) {
         return Settings.convert(settings, SETTINGS);
-    }
-
-    static Map<String, String> getFolderSettings(Storage storage, String uuid, String folderName) {
-        Map<String, String> result = new HashMap<>();
-        String prefix = uuid + "." + folderName + ".";
-        for (String key : SETTINGS.keySet()) {
-            String value = storage.getString(prefix + key, null);
-            if (value != null) {
-                result.put(key, value);
-            }
-        }
-        return result;
     }
 }
