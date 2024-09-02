@@ -30,8 +30,6 @@ class SettingsExporter(
 ) {
     @Throws(SettingsImportExportException::class)
     fun exportToUri(includeGlobals: Boolean, accountUuids: Set<String>, uri: Uri) {
-        updateNotificationSettings(accountUuids)
-
         try {
             contentResolver.openOutputStream(uri, "wt")!!.use { outputStream ->
                 exportPreferences(outputStream, includeGlobals, accountUuids)
@@ -41,18 +39,10 @@ class SettingsExporter(
         }
     }
 
-    private fun updateNotificationSettings(accountUuids: Set<String>) {
-        try {
-            notificationSettingsUpdater.updateNotificationSettings(accountUuids)
-        } catch (e: Exception) {
-            // An error here could mean we export notification settings that don't reflect the current configuration
-            // of the notification channels. But we prefer stale data over failing the export.
-            Timber.w(e, "Error while updating accounts with notification configuration from system")
-        }
-    }
-
     @Throws(SettingsImportExportException::class)
     fun exportPreferences(outputStream: OutputStream, includeGlobals: Boolean, accountUuids: Set<String>) {
+        updateNotificationSettings(accountUuids)
+
         try {
             val serializer = Xml.newSerializer()
             serializer.setOutput(outputStream, "UTF-8")
@@ -90,6 +80,16 @@ class SettingsExporter(
             serializer.flush()
         } catch (e: Exception) {
             throw SettingsImportExportException(e.localizedMessage, e)
+        }
+    }
+
+    private fun updateNotificationSettings(accountUuids: Set<String>) {
+        try {
+            notificationSettingsUpdater.updateNotificationSettings(accountUuids)
+        } catch (e: Exception) {
+            // An error here could mean we export notification settings that don't reflect the current configuration
+            // of the notification channels. But we prefer stale data over failing the export.
+            Timber.w(e, "Error while updating accounts with notification configuration from system")
         }
     }
 
