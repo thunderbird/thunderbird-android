@@ -39,8 +39,6 @@
     <ID>MagicNumber:ContactLetterBitmapCreator.kt$ContactLetterBitmapCreator$0.65f</ID>
     <ID>MagicNumber:ContactLetterBitmapCreator.kt$ContactLetterBitmapCreator$255</ID>
     <ID>MagicNumber:GeneralSettingsFragment.kt$GeneralSettingsFragment$28</ID>
-    <ID>MagicNumber:K9Drawer.kt$K9Drawer$0x22000000</ID>
-    <ID>MagicNumber:K9Drawer.kt$K9Drawer$0xffffff</ID>
     <ID>MagicNumber:MessageContainerView.kt$MessageContainerView$29</ID>
     <ID>MagicNumber:MessageListItemAnimator.kt$MessageListItemAnimator$120</ID>
     <ID>MagicNumber:MessageListItemMapper.kt$MessageListItemMapper$52</ID>
@@ -84,7 +82,6 @@
     <ID>ReturnCount:RecipientPresenter.kt$RecipientPresenter$private fun toggleEncryptionState(showGotIt: Boolean)</ID>
     <ID>ReturnCount:ShareIntentBuilder.kt$ShareIntentBuilder$private fun extractBodyText(message: LocalMessage): String</ID>
     <ID>ReturnCount:TouchInterceptView.kt$TouchInterceptView$private fun handleOnInterceptTouchEvent(event: MotionEvent)</ID>
-    <ID>SpreadOperator:K9Drawer.kt$K9Drawer$(*accountItems)</ID>
     <ID>SpreadOperator:RecipientPresenter.kt$RecipientPresenter$(*Address.parse(trustId))</ID>
     <ID>SpreadOperator:RecipientPresenter.kt$RecipientPresenter$(*bccAddresses)</ID>
     <ID>SpreadOperator:RecipientPresenter.kt$RecipientPresenter$(*ccAddresses)</ID>
@@ -132,7 +129,6 @@
     <ID>TooManyFunctions:FolderSettingsFragment.kt$FolderSettingsFragment : PreferenceFragmentCompatConfirmationDialogFragmentListener</ID>
     <ID>TooManyFunctions:GeneralSettingsDataStore.kt$GeneralSettingsDataStore : PreferenceDataStore</ID>
     <ID>TooManyFunctions:GeneralSettingsFragment.kt$GeneralSettingsFragment : PreferenceFragmentCompat</ID>
-    <ID>TooManyFunctions:K9Drawer.kt$K9Drawer : KoinComponent</ID>
     <ID>TooManyFunctions:ManageFoldersFragment.kt$ManageFoldersFragment : Fragment</ID>
     <ID>TooManyFunctions:MessageContainerView.kt$MessageContainerView : LinearLayoutOnCreateContextMenuListenerKoinComponent</ID>
     <ID>TooManyFunctions:MessageDetailsFragment.kt$MessageDetailsFragment : ToolbarBottomSheetDialogFragment</ID>

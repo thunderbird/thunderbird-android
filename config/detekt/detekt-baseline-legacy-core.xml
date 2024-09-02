@@ -4,7 +4,7 @@
   <CurrentIssues>
     <ID>CastToNullableType:SettingsExporter.kt$SettingsExporter$as</ID>
     <ID>CyclomaticComplexMethod:HttpUriParser.kt$HttpUriParser$private fun tryMatchIpv6Address(text: CharSequence, startPos: Int): Int</ID>
-    <ID>CyclomaticComplexMethod:SettingsExporter.kt$SettingsExporter$private fun writeAccount(serializer: XmlSerializer, account: Account, prefs: Map&lt;String, Any&gt;)</ID>
+    <ID>CyclomaticComplexMethod:SettingsExporter.kt$SettingsExporter$private fun writeAccount( serializer: XmlSerializer, account: Account, prefs: Map&lt;String, Any&gt;, includePasswords: Boolean, )</ID>
     <ID>ForbiddenComment:K9BackendFolderTest.kt$K9BackendFolderTest$// FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()</ID>
     <ID>ForbiddenComment:K9BackendStorageTest.kt$K9BackendStorageTest$// FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()</ID>
     <ID>FunctionOnlyReturningConstant:DisplayHtml.kt$DisplayHtml$private fun cssStyleSignature(): String</ID>
@@ -16,22 +16,12 @@
     <ID>LongMethod:K9.kt$K9$@JvmStatic fun loadPrefs(storage: Storage)</ID>
     <ID>LongMethod:MessageListRepositoryTest.kt$MessageListRepositoryTest$@Test fun `getThread() should use flag values from the cache`()</ID>
     <ID>LongMethod:NotificationDataStore.kt$NotificationDataStore$@Synchronized fun removeNotifications( account: Account, selector: (List&lt;MessageReference&gt;) -&gt; List&lt;MessageReference&gt;, ): RemoveNotificationsResult?</ID>
-    <ID>LongMethod:SettingsExporter.kt$SettingsExporter$private fun writeAccount(serializer: XmlSerializer, account: Account, prefs: Map&lt;String, Any&gt;)</ID>
+    <ID>LongMethod:SettingsExporter.kt$SettingsExporter$private fun writeAccount( serializer: XmlSerializer, account: Account, prefs: Map&lt;String, Any&gt;, includePasswords: Boolean, )</ID>
     <ID>LongMethod:TextBodyBuilderTest.kt$TextBodyBuilderTest.Companion$@JvmStatic @Parameterized.Parameters(name = "{index}: {0}") fun data(): Collection&lt;TestData&gt;</ID>
     <ID>LoopWithTooManyJumpStatements:HttpUriParser.kt$HttpUriParser$while</ID>
     <ID>LoopWithTooManyJumpStatements:SettingsExporter.kt$SettingsExporter$for</ID>
-    <ID>MagicNumber:Account.kt$Account$168</ID>
-    <ID>MagicNumber:Account.kt$Account$2</ID>
-    <ID>MagicNumber:Account.kt$Account$28</ID>
-    <ID>MagicNumber:Account.kt$Account$3</ID>
-    <ID>MagicNumber:Account.kt$Account$365</ID>
-    <ID>MagicNumber:Account.kt$Account$56</ID>
-    <ID>MagicNumber:Account.kt$Account$6</ID>
-    <ID>MagicNumber:Account.kt$Account$84</ID>
-    <ID>MagicNumber:Account.kt$Account.DeletePolicy.MARK_AS_READ$3</ID>
     <ID>MagicNumber:AccountPreferenceSerializer.kt$AccountPreferenceSerializer$10</ID>
     <ID>MagicNumber:AccountPreferenceSerializer.kt$AccountPreferenceSerializer$24</ID>
-    <ID>MagicNumber:AccountPreferenceSerializer.kt$AccountPreferenceSerializer$32768</ID>
     <ID>MagicNumber:AccountPreferenceSerializer.kt$AccountPreferenceSerializer$5</ID>
     <ID>MagicNumber:CollectionExtensions.kt$0.75F</ID>
     <ID>MagicNumber:CollectionExtensions.kt$3</ID>
@@ -50,7 +40,6 @@
     <ID>MagicNumber:HttpUriParser.kt$HttpUriParser$8</ID>
     <ID>MagicNumber:MailSyncWorkerManager.kt$MailSyncWorkerManager$1000L</ID>
     <ID>MagicNumber:MailSyncWorkerManager.kt$MailSyncWorkerManager$60L</ID>
-    <ID>MagicNumber:MessageReference.kt$MessageReference.Companion$3</ID>
     <ID>MagicNumber:NotificationLightDecoder.kt$NotificationLightDecoder$0x0000FF</ID>
     <ID>MagicNumber:NotificationLightDecoder.kt$NotificationLightDecoder$0x00FF00</ID>
     <ID>MagicNumber:NotificationLightDecoder.kt$NotificationLightDecoder$0x00FFFF</ID>
@@ -59,22 +48,6 @@
     <ID>MagicNumber:NotificationLightDecoder.kt$NotificationLightDecoder$0xFF00FF</ID>
     <ID>MagicNumber:NotificationLightDecoder.kt$NotificationLightDecoder$0xFFFF00</ID>
     <ID>MagicNumber:NotificationLightDecoder.kt$NotificationLightDecoder$0xFFFFFF</ID>
-    <ID>MagicNumber:NotificationVibration.kt$VibratePattern$3</ID>
-    <ID>MagicNumber:NotificationVibration.kt$VibratePattern$4</ID>
-    <ID>MagicNumber:NotificationVibration.kt$VibratePattern$5</ID>
-    <ID>MagicNumber:NotificationVibration.kt$VibratePattern.Companion$3</ID>
-    <ID>MagicNumber:NotificationVibration.kt$VibratePattern.Companion$4</ID>
-    <ID>MagicNumber:NotificationVibration.kt$VibratePattern.Companion$5</ID>
-    <ID>MagicNumber:NotificationVibration.kt$VibratePattern.Default$200</ID>
-    <ID>MagicNumber:NotificationVibration.kt$VibratePattern.Default$300</ID>
-    <ID>MagicNumber:NotificationVibration.kt$VibratePattern.Pattern1$100</ID>
-    <ID>MagicNumber:NotificationVibration.kt$VibratePattern.Pattern1$200</ID>
-    <ID>MagicNumber:NotificationVibration.kt$VibratePattern.Pattern2$100</ID>
-    <ID>MagicNumber:NotificationVibration.kt$VibratePattern.Pattern2$500</ID>
-    <ID>MagicNumber:NotificationVibration.kt$VibratePattern.Pattern3$200</ID>
-    <ID>MagicNumber:NotificationVibration.kt$VibratePattern.Pattern4$200</ID>
-    <ID>MagicNumber:NotificationVibration.kt$VibratePattern.Pattern4$500</ID>
-    <ID>MagicNumber:NotificationVibration.kt$VibratePattern.Pattern5$500</ID>
     <ID>MagicNumber:PushService.kt$PushService$29</ID>
     <ID>MagicNumber:ServerSettingsSerializer.kt$ServerSettingsAdapter$3</ID>
     <ID>MagicNumber:ServerSettingsSerializer.kt$ServerSettingsAdapter$4</ID>
@@ -86,7 +59,7 @@
     <ID>MayBeConst:SummaryNotificationDataCreatorTest.kt$private val TIMESTAMP = 0L</ID>
     <ID>MemberNameEqualsClassName:HtmlModification.kt$HtmlModification.Replace$abstract fun replace(textToHtml: TextToHtml)</ID>
     <ID>NestedBlockDepth:HttpUriParser.kt$HttpUriParser$private fun tryMatchIpv6Address(text: CharSequence, startPos: Int): Int</ID>
-    <ID>NestedBlockDepth:SettingsExporter.kt$SettingsExporter$private fun writeAccount(serializer: XmlSerializer, account: Account, prefs: Map&lt;String, Any&gt;)</ID>
+    <ID>NestedBlockDepth:SettingsExporter.kt$SettingsExporter$private fun writeAccount( serializer: XmlSerializer, account: Account, prefs: Map&lt;String, Any&gt;, includePasswords: Boolean, )</ID>
     <ID>NestedBlockDepth:SettingsExporter.kt$SettingsExporter$private fun writeIdentity( serializer: XmlSerializer, accountUuid: String, identity: String, prefs: Map&lt;String, Any&gt;, )</ID>
     <ID>NestedBlockDepth:SingleMessageNotificationCreator.kt$SingleMessageNotificationCreator$private fun NotificationBuilder.setWearActions(notificationData: SingleNotificationData)</ID>
     <ID>NestedBlockDepth:SummaryNotificationCreator.kt$SummaryNotificationCreator$private fun NotificationBuilder.setWearActions( account: Account, notificationData: SummaryInboxNotificationData, )</ID>
@@ -104,7 +77,6 @@
     <ID>ReturnCount:ListUnsubscribeHelper.kt$ListUnsubscribeHelper$private fun extractUri(headerValue: String?): Uri?</ID>
     <ID>ReturnCount:MailSyncWorker.kt$MailSyncWorker$override fun doWork(): Result</ID>
     <ID>ReturnCount:MessageHelper.kt$MessageHelper.Companion$@JvmStatic fun toFriendly( address: Address, contactRepository: ContactRepository?, showCorrespondentNames: Boolean, changeContactNameColor: Boolean, contactNameColor: Int, ): CharSequence</ID>
-    <ID>ReturnCount:MessageReference.kt$MessageReference.Companion$@JvmStatic fun parse(identity: String?): MessageReference?</ID>
     <ID>ReturnCount:MessageRepository.kt$MessageRepository$private fun List&lt;Header&gt;.parseDate(headerName: String): MessageDate</ID>
     <ID>ReturnCount:NotificationContentCreator.kt$NotificationContentCreator$private fun getMessageSender(account: Account, message: Message): String?</ID>
     <ID>ReturnCount:NotificationDataStore.kt$NotificationDataStore$@Synchronized fun removeNotifications( account: Account, selector: (List&lt;MessageReference&gt;) -&gt; List&lt;MessageReference&gt;, ): RemoveNotificationsResult?</ID>
@@ -117,21 +89,16 @@
     <ID>ThrowingExceptionsWithoutMessageOrCause:TimberLogger.kt$TimberLogger$Throwable()</ID>
     <ID>TooGenericExceptionCaught:BootCompleteReceiver.kt$BootCompleteManager$e: Exception</ID>
     <ID>TooGenericExceptionCaught:K9.kt$K9$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:MessageCountsProvider.kt$DefaultMessageCountsProvider$e: Exception</ID>
     <ID>TooGenericExceptionCaught:MessageRepository.kt$MessageRepository$e: Exception</ID>
     <ID>TooGenericExceptionCaught:PushServiceManager.kt$PushServiceManager$e: Exception</ID>
     <ID>TooGenericExceptionCaught:QuoteDateFormatter.kt$QuoteDateFormatter$e: Exception</ID>
     <ID>TooGenericExceptionCaught:RealGeneralSettingsManager.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:SettingsExporter.kt$SettingsExporter$e: Exception</ID>
-    <ID>TooManyFunctions:Account.kt$Account : BaseAccount</ID>
     <ID>TooManyFunctions:CoreResourceProvider.kt$CoreResourceProvider</ID>
-    <ID>TooManyFunctions:FolderRepository.kt$FolderRepository</ID>
     <ID>TooManyFunctions:HttpUriParser.kt$HttpUriParser : UriParser</ID>
     <ID>TooManyFunctions:K9.kt$K9 : EarlyInit</ID>
     <ID>TooManyFunctions:K9BackendFolder.kt$K9BackendFolder : BackendFolder</ID>
-    <ID>TooManyFunctions:ListenableMessageStore.kt$ListenableMessageStore : MessageStore</ID>
     <ID>TooManyFunctions:MessageListCache.kt$MessageListCache</ID>
-    <ID>TooManyFunctions:MessageStore.kt$MessageStore</ID>
     <ID>TooManyFunctions:NotificationActionCreator.kt$NotificationActionCreator</ID>
     <ID>TooManyFunctions:NotificationChannelManager.kt$NotificationChannelManager</ID>
     <ID>TooManyFunctions:NotificationController.kt$NotificationController</ID>
