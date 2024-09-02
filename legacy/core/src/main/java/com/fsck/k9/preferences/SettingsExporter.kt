@@ -32,7 +32,7 @@ class SettingsExporter(
     fun exportToUri(includeGlobals: Boolean, accountUuids: Set<String>, uri: Uri) {
         try {
             contentResolver.openOutputStream(uri, "wt")!!.use { outputStream ->
-                exportPreferences(outputStream, includeGlobals, accountUuids)
+                exportPreferences(outputStream, includeGlobals, accountUuids, includePasswords = false)
             }
         } catch (e: Exception) {
             throw SettingsImportExportException(e)
@@ -40,7 +40,12 @@ class SettingsExporter(
     }
 
     @Throws(SettingsImportExportException::class)
-    fun exportPreferences(outputStream: OutputStream, includeGlobals: Boolean, accountUuids: Set<String>) {
+    fun exportPreferences(
+        outputStream: OutputStream,
+        includeGlobals: Boolean,
+        accountUuids: Set<String>,
+        includePasswords: Boolean,
+    ) {
         updateNotificationSettings(accountUuids)
 
         try {
@@ -70,7 +75,7 @@ class SettingsExporter(
             serializer.startTag(null, ACCOUNTS_ELEMENT)
             for (accountUuid in accountUuids) {
                 preferences.getAccount(accountUuid)?.let { account ->
-                    writeAccount(serializer, account, prefs)
+                    writeAccount(serializer, account, prefs, includePasswords)
                 }
             }
             serializer.endTag(null, ACCOUNTS_ELEMENT)
@@ -116,7 +121,12 @@ class SettingsExporter(
         }
     }
 
-    private fun writeAccount(serializer: XmlSerializer, account: Account, prefs: Map<String, Any>) {
+    private fun writeAccount(
+        serializer: XmlSerializer,
+        account: Account,
+        prefs: Map<String, Any>,
+        includePasswords: Boolean,
+    ) {
         val identities = mutableSetOf<Int>()
         val accountUuid = account.uuid
 
@@ -143,8 +153,10 @@ class SettingsExporter(
         writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, incoming.authenticationType.name)
         writeElement(serializer, USERNAME_ELEMENT, incoming.username)
         writeElement(serializer, CLIENT_CERTIFICATE_ALIAS_ELEMENT, incoming.clientCertificateAlias)
-        // XXX For now we don't export the password
-        // writeElement(serializer, PASSWORD_ELEMENT, incoming.password);
+
+        if (includePasswords && !incoming.password.isNullOrEmpty()) {
+            writeElement(serializer, PASSWORD_ELEMENT, incoming.password)
+        }
 
         var extras = incoming.extra
         if (!extras.isNullOrEmpty()) {
@@ -169,8 +181,10 @@ class SettingsExporter(
         writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, outgoing.authenticationType.name)
         writeElement(serializer, USERNAME_ELEMENT, outgoing.username)
         writeElement(serializer, CLIENT_CERTIFICATE_ALIAS_ELEMENT, outgoing.clientCertificateAlias)
-        // XXX For now we don't export the password
-        // writeElement(serializer, PASSWORD_ELEMENT, outgoing.password);
+
+        if (includePasswords && !outgoing.password.isNullOrEmpty()) {
+            writeElement(serializer, PASSWORD_ELEMENT, outgoing.password)
+        }
 
         extras = outgoing.extra
         if (!extras.isNullOrEmpty()) {
