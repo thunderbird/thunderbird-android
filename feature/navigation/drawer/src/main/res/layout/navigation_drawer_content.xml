@@ -7,11 +7,24 @@
     android:layout_gravity="start"
     >
 
-    <com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
-        android:id="@+id/material_drawer_slider"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
+            android:id="@+id/material_drawer_slider"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            />
+
+        <androidx.compose.ui.platform.ComposeView
+            android:id="@+id/material_drawer_compose_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            />
+
+    </FrameLayout>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

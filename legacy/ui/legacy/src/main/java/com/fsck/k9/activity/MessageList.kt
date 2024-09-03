@@ -29,6 +29,7 @@ import app.k9mail.core.featureflag.FeatureFlagKey
 import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.feature.launcher.FeatureLauncherActivity
+import app.k9mail.feature.navigation.drawer.FolderDrawer
 import app.k9mail.feature.navigation.drawer.LegacyDrawer
 import app.k9mail.feature.navigation.drawer.NavigationDrawer
 import app.k9mail.legacy.account.Account
@@ -584,7 +585,7 @@ open class MessageList :
 
         featureFlagProvider.provide(FeatureFlagKey("material3_navigation_drawer"))
             .onEnabled {
-                TODO()
+                initializeFolderDrawer()
             }
             .onDisabledOrUnavailable {
                 initializeLegacyDrawer(savedInstanceState)
@@ -601,6 +602,12 @@ open class MessageList :
             openAccount = { account -> openRealAccount(account) },
             openSettings = { SettingsActivity.launch(this) },
             createDrawerListener = { createDrawerListener() },
+        )
+    }
+
+    private fun initializeFolderDrawer() {
+        navigationDrawer = FolderDrawer(
+            parent = this,
         )
     }
 

@@ -85,6 +85,7 @@ class LegacyDrawer(
 
     private val drawer: DrawerLayout = parent.findViewById(R.id.navigation_drawer_layout)
     private val sliderView: MaterialDrawerSliderView = parent.findViewById(R.id.material_drawer_slider)
+    private val composeView: View = parent.findViewById(R.id.material_drawer_compose_view)
     private val headerView: AccountHeaderView = AccountHeaderView(parent).apply {
         attachToSliderView(this@LegacyDrawer.sliderView)
         dividerBelowHeader = false
@@ -109,6 +110,7 @@ class LegacyDrawer(
         get() = drawer.isOpen
 
     init {
+        composeView.visibility = View.GONE
         sliderView.visibility = View.VISIBLE
 
         textColor = parent.obtainDrawerTextColor()
