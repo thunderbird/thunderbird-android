@@ -51,8 +51,10 @@ class K9NotificationStrategy(
                     return false
                 }
                 account.sentFolderId -> {
-                    Timber.v("No notification: Message is in Sent folder")
-                    return false
+                    if (!account.isShowSentMessages) {
+                        Timber.v("No notification: Message is in Sent folder")
+                        return false
+                    }
                 }
             }
         }
@@ -72,7 +74,7 @@ class K9NotificationStrategy(
             return false
         }
 
-        if (message.isSet(Flag.SEEN)) {
+        if (!account.isShowSeenMessages && message.isSet(Flag.SEEN)) {
             Timber.v("No notification: Message is marked as read")
             return false
         }

@@ -68,6 +68,8 @@ class AccountPreferenceSerializer(
             isNotifySelfNewMail = storage.getBoolean("$accountUuid.notifySelfNewMail", true)
             isNotifyContactsMailOnly = storage.getBoolean("$accountUuid.notifyContactsMailOnly", false)
             isIgnoreChatMessages = storage.getBoolean("$accountUuid.ignoreChatMessages", false)
+            isShowSentMessages = storage.getBoolean("$accountUuid.showSentMessages", false)
+            isShowSeenMessages = storage.getBoolean("$accountUuid.showSeenMessages", false)
             isNotifySync = storage.getBoolean("$accountUuid.notifyMailCheck", false)
             messagesNotificationChannelVersion = storage.getInt("$accountUuid.messagesNotificationChannelVersion", 0)
             deletePolicy = DeletePolicy.fromInt(storage.getInt("$accountUuid.deletePolicy", DeletePolicy.NEVER.setting))
@@ -289,6 +291,8 @@ class AccountPreferenceSerializer(
             editor.putBoolean("$accountUuid.notifySelfNewMail", isNotifySelfNewMail)
             editor.putBoolean("$accountUuid.notifyContactsMailOnly", isNotifyContactsMailOnly)
             editor.putBoolean("$accountUuid.ignoreChatMessages", isIgnoreChatMessages)
+            editor.putBoolean("$accountUuid.showSentMessages", isShowSeenMessages)
+            editor.putBoolean("$accountUuid.showSeenMessages", isShowSentMessages)
             editor.putBoolean("$accountUuid.notifyMailCheck", isNotifySync)
             editor.putInt("$accountUuid.messagesNotificationChannelVersion", messagesNotificationChannelVersion)
             editor.putInt("$accountUuid.deletePolicy", deletePolicy.setting)
@@ -408,6 +412,8 @@ class AccountPreferenceSerializer(
         editor.remove("$accountUuid.notifyNewMail")
         editor.remove("$accountUuid.notifySelfNewMail")
         editor.remove("$accountUuid.ignoreChatMessages")
+        editor.remove("$accountUuid.showSentMessages")
+        editor.remove("$accountUuid.showSeenMessages")
         editor.remove("$accountUuid.messagesNotificationChannelVersion")
         editor.remove("$accountUuid.deletePolicy")
         editor.remove("$accountUuid.draftsFolderName")
@@ -581,6 +587,8 @@ class AccountPreferenceSerializer(
             isNotifySelfNewMail = true
             isNotifyContactsMailOnly = false
             isIgnoreChatMessages = false
+            isShowSentMessages = false
+            isShowSeenMessages = false
             messagesNotificationChannelVersion = 0
             folderDisplayMode = FolderMode.NOT_SECOND_CLASS
             folderSyncMode = FolderMode.FIRST_CLASS

@@ -43,6 +43,8 @@ class AccountSettingsDataStore(
             "autocrypt_prefer_encrypt" -> account.autocryptPreferEncryptMutual
             "upload_sent_messages" -> account.isUploadSentMessages
             "ignore_chat_messages" -> account.isIgnoreChatMessages
+            "show_sent_messages" -> account.isShowSentMessages
+            "show_seen_messages" -> account.isShowSeenMessages
             "subscribed_folders_only" -> account.isSubscribedFoldersOnly
             else -> defValue
         }
@@ -68,6 +70,8 @@ class AccountSettingsDataStore(
             "autocrypt_prefer_encrypt" -> account.autocryptPreferEncryptMutual = value
             "upload_sent_messages" -> account.isUploadSentMessages = value
             "ignore_chat_messages" -> account.isIgnoreChatMessages = value
+            "show_sent_messages" -> account.isShowSentMessages = value
+            "show_seen_messages" -> account.isShowSeenMessages = value
             "subscribed_folders_only" -> updateSubscribedFoldersOnly(value)
             else -> return
         }

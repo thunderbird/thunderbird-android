@@ -107,6 +107,14 @@ class Account(
 
     @get:Synchronized
     @set:Synchronized
+    var isShowSentMessages = false
+
+    @get:Synchronized
+    @set:Synchronized
+    var isShowSeenMessages = true
+
+    @get:Synchronized
+    @set:Synchronized
     var legacyInboxFolder: String? = null
 
     @get:Synchronized

@@ -398,6 +398,10 @@
     <string name="account_notify_contacts_mail_only_summary">Show notifications only for messages from known contacts</string>
     <string name="account_settings_ignore_chat_messages_label">Ignore chat messages</string>
     <string name="account_settings_ignore_chat_messages_summary">Don\'t show notifications for messages belonging to an email chat</string>
+    <string name="account_settings_show_seen_messages_label">Show seen messages</string>
+    <string name="account_settings_show_seen_messages_summary">Show notifications for messages already read on the server side</string>
+    <string name="account_settings_show_sent_messages_label">Show sent messages</string>
+    <string name="account_settings_show_sent_messages_summary">Show notifications for messages in the Sent folder (if also configured in "Notifications folders")</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Mark as read when opened</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Mark as read when deleted</string>

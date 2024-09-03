@@ -267,7 +267,13 @@ class AccountSettingsDescriptions {
                 new V(54, new EnumSetting<>(SpecialFolderSelection.class, SpecialFolderSelection.AUTOMATIC))
         ));
         s.put("ignoreChatMessages", Settings.versions(
-                new V(76, new BooleanSetting(false))
+            new V(76, new BooleanSetting(false))
+        ));
+        s.put("showSentMessages", Settings.versions(
+            new V(96, new BooleanSetting(false))
+        ));
+        s.put("showSeenMessages", Settings.versions(
+            new V(96, new BooleanSetting(false))
         ));
         s.put("notificationLight", Settings.versions(
                 new V(80, new EnumSetting<>(NotificationLight.class, NotificationLight.Disabled))
