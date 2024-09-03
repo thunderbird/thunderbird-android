@@ -1,4 +1,4 @@
-package app.k9mail.legacy.ui.theme
+package app.k9mail.core.ui.theme.api
 
 import androidx.annotation.StyleRes
 

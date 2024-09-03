@@ -1,6 +1,6 @@
 package net.thunderbird.android.provider
 
-import app.k9mail.legacy.ui.theme.ThemeProvider
+import app.k9mail.core.ui.theme.api.ThemeProvider
 import net.thunderbird.android.R
 
 class TbThemeProvider : ThemeProvider {

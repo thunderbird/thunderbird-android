@@ -88,6 +88,7 @@ include(
     ":core:ui:legacy:theme2:common",
     ":core:ui:legacy:theme2:k9mail",
     ":core:ui:legacy:theme2:thunderbird",
+    ":core:ui:theme:api",
 )
 
 include(
