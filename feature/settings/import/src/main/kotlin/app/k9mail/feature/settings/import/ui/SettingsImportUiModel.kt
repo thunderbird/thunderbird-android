@@ -11,6 +11,9 @@ internal class SettingsImportUiModel {
     var closeButtonLabel: CloseButtonLabel = CloseButtonLabel.OK
     var isPickDocumentButtonVisible = true
     var isPickDocumentButtonEnabled = true
+    var isPickAppButtonVisible = true
+    var isPickAppButtonEnabled = false
+    var isPickAppButtonPermanentlyDisabled = true
     var isLoadingProgressVisible = false
     var isImportProgressVisible = false
     var statusText = StatusText.HIDDEN
@@ -24,13 +27,21 @@ internal class SettingsImportUiModel {
     val wasAccountImportSuccessful
         get() = hasImportStarted && settingsList.any { it !is GeneralSettings && it.importStatus.isSuccess }
 
-    fun enablePickDocumentButton() {
+    fun enablePickButtons() {
         isPickDocumentButtonEnabled = true
+        maybeEnablePickAppButton()
     }
 
-    fun disablePickDocumentButton() {
+    private fun maybeEnablePickAppButton() {
+        if (!isPickAppButtonPermanentlyDisabled) {
+            isPickAppButtonEnabled = true
+        }
+    }
+
+    fun disablePickButtons() {
         statusText = StatusText.HIDDEN
         isPickDocumentButtonEnabled = false
+        isPickAppButtonEnabled = false
     }
 
     private fun enableImportButton() {
@@ -47,6 +58,7 @@ internal class SettingsImportUiModel {
     fun showLoadingProgress() {
         isLoadingProgressVisible = true
         isPickDocumentButtonVisible = false
+        isPickAppButtonVisible = false
         isSettingsListEnabled = false
         statusText = StatusText.HIDDEN
     }
@@ -80,6 +92,8 @@ internal class SettingsImportUiModel {
         isLoadingProgressVisible = false
         isPickDocumentButtonVisible = true
         isPickDocumentButtonEnabled = true
+        isPickAppButtonVisible = true
+        maybeEnablePickAppButton()
         statusText = StatusText.IMPORT_READ_FAILURE
         importButton = ButtonState.DISABLED
     }
@@ -90,6 +104,8 @@ internal class SettingsImportUiModel {
         isSettingsListVisible = false
         isPickDocumentButtonVisible = true
         isPickDocumentButtonEnabled = true
+        isPickAppButtonVisible = true
+        maybeEnablePickAppButton()
         statusText = StatusText.IMPORT_FAILURE
         importButton = ButtonState.DISABLED
     }
@@ -108,6 +124,7 @@ internal class SettingsImportUiModel {
         isSettingsListVisible = true
         isLoadingProgressVisible = false
         isPickDocumentButtonVisible = false
+        isPickAppButtonVisible = false
         updateImportButtonFromSelection()
     }
 

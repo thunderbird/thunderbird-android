@@ -30,6 +30,18 @@ class SettingsImportFragment : Fragment() {
     private lateinit var itemAdapter: ItemAdapter<ImportListItem<*>>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        parentFragmentManager.setFragmentResultListener(
+            PickAppDialogFragment.FRAGMENT_RESULT_KEY,
+            viewLifecycleOwner,
+        ) { _, result: Bundle ->
+            val packageName = result.getString(PickAppDialogFragment.FRAGMENT_RESULT_APP)
+            if (packageName != null) {
+                viewModel.onAppPicked(packageName)
+            } else {
+                viewModel.onAppPickCanceled()
+            }
+        }
+
         return inflater.inflate(R.layout.fragment_settings_import, container, false)
     }
 
@@ -42,6 +54,7 @@ class SettingsImportFragment : Fragment() {
 
         initializeSettingsImportList(viewHolder.settingsImportList)
         viewHolder.pickDocumentButton.setOnClickListener { viewModel.onPickDocumentButtonClicked() }
+        viewHolder.pickAppButton.setOnClickListener { viewModel.onPickAppButtonClicked() }
         viewHolder.importButton.setOnClickListener { viewModel.onImportButtonClicked() }
         viewHolder.closeButton.setOnClickListener { viewModel.onCloseButtonClicked() }
 
@@ -92,6 +105,8 @@ class SettingsImportFragment : Fragment() {
         settingsImportList.isVisible = model.isSettingsListVisible
         pickDocumentButton.isInvisible = !model.isPickDocumentButtonVisible
         pickDocumentButton.isEnabled = model.isPickDocumentButtonEnabled
+        pickAppButton.isInvisible = !model.isPickAppButtonVisible
+        pickAppButton.isEnabled = model.isPickAppButtonEnabled
         loadingProgressBar.isVisible = model.isLoadingProgressVisible
         importProgressBar.isVisible = model.isImportProgressVisible
 
@@ -158,6 +173,7 @@ class SettingsImportFragment : Fragment() {
         when (action) {
             is Action.Close -> closeImportScreen(action)
             is Action.PickDocument -> pickDocument()
+            is Action.PickApp -> pickApp()
             is Action.PasswordPrompt -> showPasswordPrompt(action)
             is Action.StartAuthorization -> startAuthorization(action)
         }
@@ -180,6 +196,10 @@ class SettingsImportFragment : Fragment() {
             addCategory(Intent.CATEGORY_OPENABLE)
         }
         startActivityForResult(createDocumentIntent, REQUEST_PICK_DOCUMENT)
+    }
+
+    private fun pickApp() {
+        PickAppDialogFragment().show(parentFragmentManager, "pick_app")
     }
 
     private fun startAuthorization(action: Action.StartAuthorization) {
@@ -262,6 +282,7 @@ class SettingsImportFragment : Fragment() {
 
 private class ViewHolder(view: View) {
     val pickDocumentButton: View = view.findViewById(R.id.pickDocumentButton)
+    val pickAppButton: View = view.findViewById(R.id.pickAppButton)
     val importButton: View = view.findViewById(R.id.importButton)
     val closeButton: MaterialButton = view.findViewById(R.id.closeButton)
     val loadingProgressBar: View = view.findViewById(R.id.loadingProgressBar)

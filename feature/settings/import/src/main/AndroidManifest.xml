@@ -4,6 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
 
+    <queries>
+        <!-- Required to be able to access the SettingsProvider of another app -->
+        <package android:name="com.fsck.k9"/>
+        <package android:name="net.thunderbird.android"/>
+        <package android:name="net.thunderbird.android.beta"/>
+        <package android:name="net.thunderbird.android.daily"/>
+    </queries>
+
     <application>
 
         <activity
