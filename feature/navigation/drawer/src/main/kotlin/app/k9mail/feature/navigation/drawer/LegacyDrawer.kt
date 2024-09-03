@@ -7,6 +7,7 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -108,6 +109,8 @@ class LegacyDrawer(
         get() = drawer.isOpen
 
     init {
+        sliderView.visibility = View.VISIBLE
+
         textColor = parent.obtainDrawerTextColor()
 
         initializeImageLoader()
@@ -553,8 +556,10 @@ private fun Context.obtainDrawerTextColor(): Int {
         MaterialDrawerR.attr.materialDrawerStyle,
         MaterialDrawerR.style.Widget_MaterialDrawerStyle,
     )
-    val textColor =
-        styledAttributes.getColor(MaterialDrawerR.styleable.MaterialDrawerSliderView_materialDrawerPrimaryText, 0)
+    val textColor = styledAttributes.getColor(
+        MaterialDrawerR.styleable.MaterialDrawerSliderView_materialDrawerPrimaryText,
+        0,
+    )
     styledAttributes.recycle()
 
     return textColor

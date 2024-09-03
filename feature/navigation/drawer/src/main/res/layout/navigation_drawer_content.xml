@@ -11,6 +11,7 @@
         android:id="@+id/material_drawer_slider"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:visibility="gone"
         />
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
