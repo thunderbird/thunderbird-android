@@ -1,6 +1,5 @@
-package app.k9mail.legacy.account;
+package app.k9mail.legacy.account
 
-
-public interface AccountsChangeListener {
-    void onAccountsChanged();
+interface AccountsChangeListener {
+    fun onAccountsChanged()
 }
