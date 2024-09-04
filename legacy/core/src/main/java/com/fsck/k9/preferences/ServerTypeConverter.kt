@@ -2,7 +2,7 @@ package com.fsck.k9.preferences
 
 import app.k9mail.core.common.mail.Protocols
 
-object ServerTypeConverter {
+internal object ServerTypeConverter {
     @JvmStatic
     fun toServerSettingsType(exportType: String): String = exportType.lowercase()
 

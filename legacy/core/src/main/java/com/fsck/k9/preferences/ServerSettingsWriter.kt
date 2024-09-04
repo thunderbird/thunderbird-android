@@ -4,13 +4,13 @@ import com.fsck.k9.ServerSettingsSerializer
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
-import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.AUTHENTICATION_TYPE
-import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.CLIENT_CERTIFICATE_ALIAS
-import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.CONNECTION_SECURITY
-import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.HOST
-import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.PASSWORD
-import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.PORT
-import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.USERNAME
+import com.fsck.k9.preferences.ServerSettingsDescriptions.AUTHENTICATION_TYPE
+import com.fsck.k9.preferences.ServerSettingsDescriptions.CLIENT_CERTIFICATE_ALIAS
+import com.fsck.k9.preferences.ServerSettingsDescriptions.CONNECTION_SECURITY
+import com.fsck.k9.preferences.ServerSettingsDescriptions.HOST
+import com.fsck.k9.preferences.ServerSettingsDescriptions.PASSWORD
+import com.fsck.k9.preferences.ServerSettingsDescriptions.PORT
+import com.fsck.k9.preferences.ServerSettingsDescriptions.USERNAME
 
 internal class ServerSettingsWriter(
     private val serverSettingsSerializer: ServerSettingsSerializer,

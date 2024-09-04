@@ -3,7 +3,7 @@ package com.fsck.k9.preferences.upgrader;
 
 import java.util.Map;
 
-import com.fsck.k9.preferences.Settings.SettingsUpgrader;
+import com.fsck.k9.preferences.SettingsUpgrader;
 
 
 /**

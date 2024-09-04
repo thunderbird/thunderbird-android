@@ -32,7 +32,6 @@ import com.fsck.k9.preferences.Settings.IntegerRangeSetting;
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
 import com.fsck.k9.preferences.Settings.PseudoEnumSetting;
 import com.fsck.k9.preferences.Settings.SettingsDescription;
-import com.fsck.k9.preferences.Settings.SettingsUpgrader;
 import com.fsck.k9.preferences.Settings.V;
 import com.fsck.k9.preferences.Settings.WebFontSizeSetting;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo24;
@@ -45,12 +44,12 @@ import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo89;
 import static com.fsck.k9.K9.LockScreenNotificationVisibility;
 
 
-public class GeneralSettingsDescriptions {
-    static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;
+class GeneralSettingsDescriptions {
+    static final Map<String, TreeMap<Integer, SettingsDescription<?>>> SETTINGS;
     private static final Map<Integer, SettingsUpgrader> UPGRADERS;
 
     static {
-        Map<String, TreeMap<Integer, SettingsDescription>> s = new LinkedHashMap<>();
+        Map<String, TreeMap<Integer, SettingsDescription<?>>> s = new LinkedHashMap<>();
 
         /*
          * When adding new settings here, be sure to increment {@link Settings.VERSION}
@@ -286,7 +285,7 @@ public class GeneralSettingsDescriptions {
             new V(85, new BooleanSetting(true))
         ));
         s.put("messageListDensity", Settings.versions(
-            new V(86, new EnumSetting(UiDensity.class, UiDensity.Default))
+            new V(86, new EnumSetting<>(UiDensity.class, UiDensity.Default))
         ));
         s.put("fontSizeMessageViewAccountName", Settings.versions(
             new V(87, new FontSizeSetting(FontSizes.FONT_DEFAULT))
@@ -317,7 +316,7 @@ public class GeneralSettingsDescriptions {
     }
 
     public static Map<String, Object> upgrade(int version, Map<String, Object> validatedSettings) {
-        return Settings.upgrade(version, UPGRADERS, SETTINGS, validatedSettings);
+        return SettingsUpgradeHelper.upgrade(version, UPGRADERS, SETTINGS, validatedSettings);
     }
 
     public static Map<String, String> convert(Map<String, Object> settings) {

@@ -8,10 +8,9 @@ import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import timber.log.Timber;
-
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
+import timber.log.Timber;
 
 /*
  * TODO:
@@ -22,7 +21,7 @@ import com.fsck.k9.K9;
  * - add unit test that validates the default values are actually valid according to the validator
  */
 
-public class Settings {
+class Settings {
     /**
      * Version number of global and account settings.
      *
@@ -36,16 +35,16 @@ public class Settings {
      */
     public static final int VERSION = 95;
 
-    static Map<String, Object> validate(int version, Map<String, TreeMap<Integer, SettingsDescription>> settings,
+    static Map<String, Object> validate(int version, Map<String, TreeMap<Integer, SettingsDescription<?>>> settings,
             Map<String, String> importedSettings, boolean useDefaultValues) {
 
         Map<String, Object> validatedSettings = new HashMap<>();
-        for (Map.Entry<String, TreeMap<Integer, SettingsDescription>> versionedSetting : settings.entrySet()) {
+        for (Map.Entry<String, TreeMap<Integer, SettingsDescription<?>>> versionedSetting : settings.entrySet()) {
 
             // Get the setting description with the highest version lower than or equal to the
             // supplied content version.
-            TreeMap<Integer, SettingsDescription> versions = versionedSetting.getValue();
-            SortedMap<Integer, SettingsDescription> headMap = versions.headMap(version + 1);
+            TreeMap<Integer, SettingsDescription<?>> versions = versionedSetting.getValue();
+            SortedMap<Integer, SettingsDescription<?>> headMap = versions.headMap(version + 1);
 
             // Skip this setting if it was introduced after 'version'
             if (headMap.isEmpty()) {
@@ -53,7 +52,7 @@ public class Settings {
             }
 
             Integer settingVersion = headMap.lastKey();
-            SettingsDescription desc = versions.get(settingVersion);
+            SettingsDescription<?> desc = versions.get(settingVersion);
 
             // Skip this setting if it is no longer used in 'version'
             if (desc == null) {
@@ -95,78 +94,6 @@ public class Settings {
     }
 
     /**
-     * Upgrade settings using the settings structure and/or special upgrade code.
-     *
-     * @param version
-     *         The content version of the settings in {@code settings}.
-     * @param upgraders
-     *         A map of {@link SettingsUpgrader}s for nontrivial settings upgrades.
-     * @param settingsDescriptions
-     *         The structure describing the different settings, possibly containing multiple versions.
-     * @param settings
-     *         The validated settings as returned by {@link Settings#validate(int, Map, Map, boolean)}.
-     *
-     * @return The upgraded settings.
-     */
-    public static Map<String, Object> upgrade(int version, Map<Integer, SettingsUpgrader> upgraders,
-            Map<String, TreeMap<Integer, SettingsDescription>> settingsDescriptions, Map<String, Object> settings) {
-
-        Map<String, Object> upgradedSettings = new HashMap<>(settings);
-        for (int toVersion = version + 1; toVersion <= VERSION; toVersion++) {
-            if (upgraders.containsKey(toVersion)) {
-                SettingsUpgrader upgrader = upgraders.get(toVersion);
-                upgrader.upgrade(upgradedSettings);
-            }
-
-            upgradeSettingsGeneric(settingsDescriptions, upgradedSettings, toVersion);
-        }
-
-        return upgradedSettings;
-    }
-
-    private static void upgradeSettingsGeneric(Map<String, TreeMap<Integer, SettingsDescription>> settingsDescriptions,
-            Map<String, Object> mutableSettings, int toVersion) {
-        for (Entry<String, TreeMap<Integer, SettingsDescription>> versions : settingsDescriptions.entrySet()) {
-            String settingName = versions.getKey();
-            TreeMap<Integer, SettingsDescription> versionedSettingsDescriptions = versions.getValue();
-
-            boolean isNewlyAddedSetting = versionedSettingsDescriptions.firstKey() == toVersion;
-            if (isNewlyAddedSetting) {
-                boolean wasHandledByCustomUpgrader = mutableSettings.containsKey(settingName);
-                if (wasHandledByCustomUpgrader) {
-                    continue;
-                }
-
-                SettingsDescription settingDescription = versionedSettingsDescriptions.get(toVersion);
-                if (settingDescription == null) {
-                    throw new AssertionError("First version of a setting must be non-null!");
-                }
-                upgradeSettingInsertDefault(mutableSettings, settingName, settingDescription);
-            }
-
-            Integer highestVersion = versionedSettingsDescriptions.lastKey();
-            boolean isRemovedSetting = highestVersion == toVersion &&
-                versionedSettingsDescriptions.get(highestVersion) == null;
-
-            if (isRemovedSetting) {
-                mutableSettings.remove(settingName);
-                Timber.v("Removed setting \"%s\"", settingName);
-            }
-        }
-    }
-
-    private static <T> void upgradeSettingInsertDefault(Map<String, Object> mutableSettings,
-            String settingName, SettingsDescription<T> settingDescription) {
-        T defaultValue = settingDescription.getDefaultValue();
-        mutableSettings.put(settingName, defaultValue);
-
-        if (K9.isDebugLoggingEnabled()) {
-            String prettyValue = settingDescription.toPrettyString(defaultValue);
-            Timber.v("Added new setting \"%s\" with default value \"%s\"", settingName, prettyValue);
-        }
-    }
-
-    /**
      * Convert settings from the internal representation to the string representation used in the
      * preference storage.
      *
@@ -179,16 +106,19 @@ public class Settings {
      * @return The settings converted to the string representation used in the preference storage.
      */
     public static Map<String, String> convert(Map<String, Object> settings,
-            Map<String, TreeMap<Integer, SettingsDescription>> settingDescriptions) {
+            Map<String, TreeMap<Integer, SettingsDescription<?>>> settingDescriptions) {
         Map<String, String> serializedSettings = new HashMap<>();
 
         for (Entry<String, Object> setting : settings.entrySet()) {
             String settingName = setting.getKey();
             Object internalValue = setting.getValue();
 
-            TreeMap<Integer, SettingsDescription> versionedSetting = settingDescriptions.get(settingName);
+            TreeMap<Integer, SettingsDescription<?>> versionedSetting = settingDescriptions.get(settingName);
             Integer highestVersion = versionedSetting.lastKey();
-            SettingsDescription settingDesc = versionedSetting.get(highestVersion);
+
+            //noinspection unchecked
+            SettingsDescription<Object> settingDesc =
+                (SettingsDescription<Object>) versionedSetting.get(highestVersion);
 
             if (settingDesc != null) {
                 String stringValue = settingDesc.toString(internalValue);
@@ -218,8 +148,8 @@ public class Settings {
      * @return A {@code TreeMap} using the version number as key, the {@code SettingsDescription}
      *         as value.
      */
-    static TreeMap<Integer, SettingsDescription> versions(V... versionDescriptions) {
-        TreeMap<Integer, SettingsDescription> map = new TreeMap<>();
+    static TreeMap<Integer, SettingsDescription<?>> versions(V... versionDescriptions) {
+        TreeMap<Integer, SettingsDescription<?>> map = new TreeMap<>();
         for (V v : versionDescriptions) {
             map.put(v.version, v.description);
         }
@@ -338,32 +268,15 @@ public class Settings {
         }
     }
 
-    public static class V {
+    static class V {
         public final Integer version;
-        public final SettingsDescription description;
+        public final SettingsDescription<?> description;
 
-        V(Integer version, SettingsDescription description) {
+        V(Integer version, SettingsDescription<?> description) {
             this.version = version;
             this.description = description;
         }
     }
-
-    /**
-     * Used for a nontrivial settings upgrade.
-     *
-     * @see Settings#upgrade(int, Map, Map, Map)
-     */
-    public interface SettingsUpgrader {
-        /**
-         * Upgrade the provided settings.
-         *
-         * @param settings
-         *         The settings to upgrade.  This map is modified and contains the upgraded
-         *         settings when this method returns.
-         */
-        void upgrade(Map<String, Object> settings);
-    }
-
 
     static class StringSetting extends SettingsDescription<String> {
         StringSetting(String defaultValue) {

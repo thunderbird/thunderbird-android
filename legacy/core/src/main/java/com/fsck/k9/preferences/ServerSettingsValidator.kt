@@ -1,22 +1,22 @@
 package com.fsck.k9.preferences
 
-import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.AUTHENTICATION_TYPE
-import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.CLIENT_CERTIFICATE_ALIAS
-import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.CONNECTION_SECURITY
-import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.HOST
-import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.PASSWORD
-import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.PORT
-import com.fsck.k9.preferences.ServerSettingsDescriptions.Companion.USERNAME
+import com.fsck.k9.preferences.ServerSettingsDescriptions.AUTHENTICATION_TYPE
+import com.fsck.k9.preferences.ServerSettingsDescriptions.CLIENT_CERTIFICATE_ALIAS
+import com.fsck.k9.preferences.ServerSettingsDescriptions.CONNECTION_SECURITY
+import com.fsck.k9.preferences.ServerSettingsDescriptions.HOST
+import com.fsck.k9.preferences.ServerSettingsDescriptions.PASSWORD
+import com.fsck.k9.preferences.ServerSettingsDescriptions.PORT
+import com.fsck.k9.preferences.ServerSettingsDescriptions.USERNAME
 import com.fsck.k9.preferences.ServerTypeConverter.toServerSettingsType
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException
 
 internal class ServerSettingsValidator(
-    private val serverSettingsDescriptions: ServerSettingsDescriptions = ServerSettingsDescriptions(),
+    private val settingsDescriptions: SettingsDescriptions = ServerSettingsDescriptions.SETTINGS,
 ) {
     fun validate(contentVersion: Int, server: SettingsFile.Server): ValidatedSettings.Server {
         val settings = convertServerSettingsToMap(server)
 
-        val validatedSettings = Settings.validate(contentVersion, serverSettingsDescriptions.settings, settings, true)
+        val validatedSettings = Settings.validate(contentVersion, settingsDescriptions, settings, true)
 
         if (validatedSettings[AUTHENTICATION_TYPE] !is String) {
             throw InvalidSettingValueException("Missing '$AUTHENTICATION_TYPE' value")
