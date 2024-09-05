@@ -1,7 +1,6 @@
 package com.fsck.k9.resources
 
 import android.content.Context
-import app.k9mail.core.common.provider.AppNameProvider
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.notification.PushNotificationState
@@ -9,9 +8,7 @@ import com.fsck.k9.ui.R
 
 class K9CoreResourceProvider(
     private val context: Context,
-    private val appNameProvider: AppNameProvider,
 ) : CoreResourceProvider {
-    override fun defaultSignature(): String = context.getString(R.string.default_signature, appNameProvider.appName)
     override fun defaultIdentityDescription(): String = context.getString(R.string.default_identity_description)
 
     override fun contactDisplayNamePrefix(): String = context.getString(R.string.message_to_label)

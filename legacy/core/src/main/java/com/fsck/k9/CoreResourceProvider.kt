@@ -3,7 +3,6 @@ package com.fsck.k9
 import com.fsck.k9.notification.PushNotificationState
 
 interface CoreResourceProvider {
-    fun defaultSignature(): String
     fun defaultIdentityDescription(): String
 
     fun contactDisplayNamePrefix(): String

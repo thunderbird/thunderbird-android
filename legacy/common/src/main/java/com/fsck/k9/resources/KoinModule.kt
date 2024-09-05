@@ -8,7 +8,6 @@ val resourcesModule = module {
     single<CoreResourceProvider> {
         K9CoreResourceProvider(
             context = get(),
-            appNameProvider = get(),
         )
     }
     single<AutocryptStringProvider> {

@@ -626,7 +626,7 @@ class AccountPreferenceSerializer(
 
             val identity = Identity(
                 signatureUse = false,
-                signature = resourceProvider.defaultSignature(),
+                signature = null,
                 description = resourceProvider.defaultIdentityDescription(),
             )
             identities.add(identity)
