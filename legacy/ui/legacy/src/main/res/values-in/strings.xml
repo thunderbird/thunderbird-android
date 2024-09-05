@@ -9,7 +9,6 @@
     <string name="app_license">Lisensi Apache, Versi 2.0</string>
     <string name="about_project_title">Proyek Sumber Terbuka</string>
     <string name="about_website_title">Situs</string>
-    <string name="user_manual_title">Panduan pengguna</string>
     <string name="get_help_title">Dapatkan bantuan</string>
     <string name="user_forum_title">Forum Pengguna</string>
     <string name="about_libraries">Perpustakaan</string>
@@ -921,4 +920,11 @@
     <string name="general_settings_post_remove_action_show_previous_message">Tampilkan pesan yang sebelumnya</string>
     <string name="general_settings_post_remove_action_show_next_message">Tampilkan pesan selanjutnya</string>
     <string name="general_settings_post_remove_action_return_to_list">Kembali ke daftar pesan</string>
+    <string name="dialog_openkeychain_info_text">Aplikasi OpenKeychain diperlukan untuk mengaktifkan dukungan untuk enkripsi ujung-ke-ujung.</string>
+    <string name="push_info_notification_explanation_text">Saat menggunakan Dorongan, <xliff:g id="app_name">%1$s</xliff:g> mempertahankan koneksi ke server surel. Android memerlukan tampilan notifikasi yang sedang berlangsung saat aplikasi aktif di latar belakang. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="about_app_authors_thunderbird">Tim Thunderbird Mobile</string>
+    <string name="about_title">Tentang <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="account_delete_dlg_instructions_fmt">Akun \"<xliff:g id="account">%s</xliff:g>\" akan dihapus dari <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="default_signature">--
+\nDikirim dari perangkat Android saya dengan <xliff:g id="app_name">%s</xliff:g>. Mohon maaf atas singkatnya penjelasan saya.</string>
 </resources>

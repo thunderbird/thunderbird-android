@@ -9,7 +9,6 @@
     <string name="app_license">Apache-lisinsje, ferzje 2.0</string>
     <string name="about_project_title">Iepenboarnekoadeprojekt</string>
     <string name="about_website_title">Website</string>
-    <string name="user_manual_title">Brûkershantlieding</string>
     <string name="get_help_title">Help krije</string>
     <string name="user_forum_title">Brûkersfoarum</string>
     <string name="about_libraries">Biblioteken</string>
@@ -540,7 +539,7 @@
     <string name="setting_theme_dark">Donker</string>
     <string name="setting_theme_light">Ljocht</string>
     <string name="setting_theme_follow_system">Systeemstandert brûke</string>
-    <string name="display_preferences">Byld</string>
+    <string name="display_preferences">Werjefte</string>
     <string name="global_preferences">Algemien</string>
     <string name="debug_preferences">Debugge</string>
     <string name="privacy_preferences">Privacy</string>
@@ -573,7 +572,7 @@
     <string name="account_setup_push_limit_500">500 mappen</string>
     <string name="account_setup_push_limit_1000">1000 mappen</string>
     <string name="animations_title">Animaasje</string>
-    <string name="animations_summary">Opsichtige fisuele effekten brûke</string>
+    <string name="animations_summary">Fisuele effekten brûke</string>
     <string name="volume_navigation_title">Folumetoetsnavigaasje yn berjochtbyld</string>
     <string name="show_unified_inbox_title">Kombinearre Postfek YN toane</string>
     <string name="show_starred_count_title">It tal berjochten mei in stjer werjaan</string>

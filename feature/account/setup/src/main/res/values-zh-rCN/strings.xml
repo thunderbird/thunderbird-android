@@ -22,7 +22,7 @@
     <string name="account_setup_auto_discovery_loading_error">加载电子邮件配置失败</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">我信任此配置</string>
     <string name="account_setup_options_display_name_error_required">名称是必需的。</string>
-    <string name="account_setup_error_network">网络</string>
+    <string name="account_setup_error_network">网络错误。请检查你的连接状态并再次尝试。</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">这不是有效的电子邮件地址。</string>
     <string name="account_setup_options_email_check_frequency_never">从不</string>
     <string name="account_setup_auto_discovery_loading_message">正在查找配置…</string>

@@ -6,4 +6,30 @@
     <string name="account_setup_error_network">Reto</string>
     <string name="account_setup_error_unknown">Nekonata eraro</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_special_folders_sent_folder_label">Senditujo</string>
+    <string name="account_setup_special_folders_spam_folder_label">Trudmesaĝujo</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Malnetujo</string>
+    <string name="account_setup_special_folders_folder_automatic">Aŭtomate (%s)</string>
+    <string name="account_setup_options_account_name_label">Nomo de konto</string>
+    <string name="account_setup_options_display_name_label">Via nomo</string>
+    <string name="account_setup_create_account_creating">Kreante konton…</string>
+    <string name="account_setup_options_section_sync_options">Opcioj pri sinkronigado</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Ĉiuminute</item>
+        <item quantity="other">Po unu fojo en %d minutoj</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Ĉiuhore</item>
+        <item quantity="other">Po unu fojo en %d horoj</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">1 mesaĝo</item>
+        <item quantity="other">%d mesaĝoj</item>
+    </plurals>
+    <string name="account_setup_options_show_notifications_label">Montri sciigojn</string>
+    <string name="account_setup_special_folders_archive_folder_label">Arĥivo</string>
+    <string name="account_setup_special_folders_trash_folder_label">Rubujo</string>
+    <string name="account_setup_options_account_check_frequency_label">Ofto de kontrolado</string>
+    <string name="account_setup_options_email_check_frequency_never">Neniam</string>
+    <string name="account_setup_special_folders_folder_none">Nenio</string>
 </resources>

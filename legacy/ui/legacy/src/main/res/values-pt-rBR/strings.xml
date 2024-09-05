@@ -4,12 +4,11 @@
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
     <!--Used in the about dialog-->
-    <string name="about_app_authors_k9">Criadores do K-9</string>
+    <string name="about_app_authors_k9">Os cuidadores do K-9</string>
     <string name="source_code">Código-fonte</string>
     <string name="app_license">Licença Apache, Versão 2.0</string>
     <string name="about_project_title">Projeto de código aberto</string>
     <string name="about_website_title">Website</string>
-    <string name="user_manual_title">Manual do usuário</string>
     <string name="get_help_title">Obter ajuda</string>
     <string name="user_forum_title">Fórum de usuários</string>
     <string name="about_libraries">Bibliotecas</string>
@@ -240,7 +239,7 @@
     <string name="general_settings_ui_density_default">Padrão</string>
     <string name="general_settings_ui_density_relaxed">Expandido</string>
     <string name="global_settings_privacy_hide_useragent">Ocultar o cliente de e-mail</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Remove o User-Agent dos cabeçalhos das mensagens</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Remover o User-Agent dos cabeçalhos das mensagens</string>
     <string name="global_settings_privacy_hide_timezone">Ocultar o fuso horário</string>
     <string name="global_settings_privacy_hide_timezone_detail">Usar UTC ao invés do fuso horário local nos cabeçalhos das mensagens e das respostas</string>
     <string name="global_settings_notification_quick_delete_title">Exibir o botão \'Excluir\'</string>
@@ -304,10 +303,10 @@
     <string name="account_setup_options_mail_display_count_5000">5000 mensagens</string>
     <string name="account_setup_options_mail_display_count_10000">10000 mensagens</string>
     <string name="account_setup_options_mail_display_count_all">todas as mensagens</string>
-    <string name="move_copy_cannot_copy_unsynced_message">Não é possível copiar ou mover uma mensagem que não foi sincronizada com o servidor</string>
+    <string name="move_copy_cannot_copy_unsynced_message">Não é possível copiar ou mover uma mensagem que não esteja sincronizada com o servidor</string>
     <string name="account_settings_push_advanced_title">Avançado</string>
     <string name="account_settings_title_fmt">Configurações da conta</string>
-    <string name="account_settings_notify_label">Novas notificações de e-mail</string>
+    <string name="account_settings_notify_label">Notificações de novas mensagens</string>
     <string name="account_settings_folder_notify_new_mail_mode_label">Notificações de pastas</string>
     <string name="account_settings_folder_notify_new_mail_mode_all">Todas</string>
     <string name="account_settings_folder_notify_new_mail_mode_first_class">Apenas pastas de 1ª classe</string>
@@ -316,20 +315,20 @@
     <string name="account_settings_folder_notify_new_mail_mode_none">Nenhuma</string>
     <string name="account_settings_notify_sync_label">Notificações de sincronização</string>
     <string name="account_settings_email_label">Seu endereço de e-mail</string>
-    <string name="account_settings_notify_summary">Notifica, na barra de status, quando chegarem mensagens</string>
+    <string name="account_settings_notify_summary">Notifica, na barra de status, quando chegarem novas mensagens</string>
     <string name="account_settings_notify_sync_summary">Notifica, na barra de status, quando estiver checando por novas mensagens</string>
-    <string name="account_settings_notify_self_label">Incluir e-mail enviado</string>
+    <string name="account_settings_notify_self_label">Incluir e-mails enviados</string>
     <string name="account_settings_notify_self_summary">Exibe uma notificação de mensagens enviadas</string>
     <string name="account_notify_contacts_mail_only_label">Apenas contatos</string>
     <string name="account_notify_contacts_mail_only_summary">Exibe notificações somente de mensagens de contatos conhecidos</string>
     <string name="account_settings_ignore_chat_messages_label">Ignorar mensagens de bate-papo</string>
     <string name="account_settings_ignore_chat_messages_summary">Não exibe notificações para mensagens pertencentes a um bate-papo por e-mail</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Marcar como lida ao abrir</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">Marcar a mensagem como lida quando ela for aberta para visualização</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Marca a mensagem como lida quando ela for aberta para visualização</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Marcar como lida ao excluir</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Marca uma mensagem como lida quando ela for excluída</string>
     <string name="account_settings_notification_channels_label">Categorias de notificação</string>
-    <string name="account_settings_open_notification_settings_messages_summary">Configura as notificações para as novas mensagens</string>
+    <string name="account_settings_open_notification_settings_messages_summary">Configura as notificações para novas mensagens</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Configura as notificações de erros e status</string>
     <string name="account_settings_show_pictures_label">Sempre exibir imagens</string>
     <string name="account_settings_show_pictures_never">Não</string>
@@ -337,7 +336,7 @@
     <string name="account_settings_show_pictures_always">De qualquer um</string>
     <string name="account_settings_composition">Envio de mensagens</string>
     <string name="account_settings_default_quoted_text_shown_label">Citar a mensagem ao responder</string>
-    <string name="account_settings_default_quoted_text_shown_summary">Incluir a mensagem original em sua resposta.</string>
+    <string name="account_settings_default_quoted_text_shown_summary">Inclui a mensagem original em sua resposta.</string>
     <string name="account_settings_reply_after_quote_label">Resposta após o texto citado</string>
     <string name="account_settings_reply_after_quote_summary">A mensagem original aparecerá acima da sua resposta.</string>
     <string name="account_settings_strip_signature_label">Remover assinaturas nas respostas</string>
@@ -938,8 +937,8 @@ Você pode guardar esta mensagem e usá-la como um backup da sua chave secreta. 
     <string name="about_title">Sobre <xliff:g id="app_name">%s</xliff:g></string>
     <string name="push_info_notification_explanation_text">Ao usar o Push, <xliff:g id="app_name">%1$s</xliff:g> mantém uma conexão ao servidor de e-mail. O Android requer que uma notificação seja mostrada enquanto o app está rodando em segundo plano. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="dialog_openkeychain_info_text">O app OpenKeychain é necessário para ativar o suporte à criptografia de ponta a ponta.</string>
-    <string name="default_signature">--
-\nEnviado de meu dispositivo Android com <xliff:g id="app_name">%s</xliff:g>. Por favor, desculpe minha brevidade.</string>
+    <string name="default_signature">-- 
+\nEnviado do meu dispositivo Android pelo <xliff:g id="app_name">%s</xliff:g>. Por favor, desculpe-me pela brevidade.</string>
     <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\"será removida de <xliff:g id="app_name">%s</xliff:g>.</string>
     <string name="about_app_authors_thunderbird">Equipe do Thunderbird Mobile</string>
 </resources>

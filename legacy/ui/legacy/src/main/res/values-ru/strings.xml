@@ -9,7 +9,6 @@
     <string name="app_license">Лицензия Apache версии 2.0</string>
     <string name="about_project_title">Проект с открытым исходным кодом</string>
     <string name="about_website_title">Сайт</string>
-    <string name="user_manual_title">Руководство пользователя</string>
     <string name="get_help_title">Получить помощь</string>
     <string name="user_forum_title">Форум пользователей</string>
     <string name="about_libraries">Библиотеки</string>
@@ -532,7 +531,7 @@
     <string name="sort_by_attach">Вложение</string>
     <string name="account_delete_dlg_title">Удаление учётной записи</string>
     <string name="folder_list_filter_hint">Поиск папки</string>
-    <string name="folder_list_display_mode_label">Видимость папок</string>
+    <string name="folder_list_display_mode_label">Показать папки…</string>
     <string name="folder_list_display_mode_all">Все папки</string>
     <string name="folder_list_display_mode_first_class">Папки 1-го класса</string>
     <string name="folder_list_display_mode_first_and_second_class">Папки 1-го и 2-го классов</string>
@@ -559,8 +558,8 @@
     <string name="settings_language_label">Язык</string>
     <string name="preference_search_no_results">Настройки не найдены</string>
     <string name="settings_message_theme_selection_label">Тема для писем</string>
-    <string name="settings_message_theme_selection_summary_off">Разрешено выбрать тему сообщения независимо от темы приложения.</string>
-    <string name="settings_message_theme_selection_summary_on">Фиксированная тема для писем, зависит от выбранной темы приложения.</string>
+    <string name="settings_message_theme_selection_summary_off">Выберите тему отображения сообщений при просмотре сообщения</string>
+    <string name="settings_message_theme_selection_summary_on">Использовать фиксированную тему просмотра сообщений</string>
     <string name="setting_language_system">По умолчанию</string>
     <string name="background_ops_label">Фоновая синхронизация</string>
     <string name="background_ops_never">Никогда</string>
@@ -612,12 +611,12 @@
     <string name="font_size_medium">Большой</string>
     <string name="font_size_large">Огромный</string>
     <string name="font_size_larger">Громадный</string>
-    <string name="error_activity_not_found">Подходящее приложение не найдено</string>
+    <string name="error_activity_not_found">Не найдено подходящего приложения для выполнения этого действия.</string>
     <string name="send_failed_reason">Сбой отправки: %s</string>
-    <string name="save_or_discard_draft_message_dlg_title">Выберите действие</string>
+    <string name="save_or_discard_draft_message_dlg_title">Сохранить черновик сообщения?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Сохранить черновик или отменить сообщение?</string>
     <string name="save_or_discard_draft_message_changes">Сохранить или отменить изменения?</string>
-    <string name="confirm_discard_draft_message_title">Удаление</string>
+    <string name="confirm_discard_draft_message_title">Удалить сообщение?</string>
     <string name="confirm_discard_draft_message">Отменить сообщение?</string>
     <string name="dialog_confirm_clear_local_folder_title">Стереть локальные сообщения?</string>
     <string name="dialog_confirm_clear_local_folder_message">Это удалит все локальные сообщения из папки. Сообщения не будут удалены с сервера.</string>
@@ -702,7 +701,7 @@
     <string name="remote_search_error">Сбой поиска на сервере</string>
     <string name="account_settings_search">Поиск</string>
     <string name="action_remote_search">Поиск на сервере</string>
-    <string name="remote_search_unavailable_no_network">Для поиска на сервере необходимо подключение к сети</string>
+    <string name="remote_search_unavailable_no_network">Для поиска на сервере требуется подключение к сети.</string>
     <string name="global_settings_background_as_unread_indicator_label">Менять цвет при прочтении</string>
     <string name="global_settings_background_as_unread_indicator_summary">Другой фон для прочитанных сообщений</string>
     <string name="global_settings_threaded_view_label">Цепочки сообщений</string>
@@ -751,7 +750,8 @@
     <string name="enable_sign_only">Включить PGP \"Только подпись\"</string>
     <string name="disable_sign_only">Отключить PGP \"Только подпись\"</string>
     <string name="openpgp_inline_title">Режим PGP/INLINE</string>
-    <string name="openpgp_inline_text">Сообщение отправлено в формате PGP/INLINE.\nИспользуйте только для совместимости</string>
+    <string name="openpgp_inline_text">Сообщение отправлено в формате PGP/INLINE.
+\nИспользуйте только для совместимости:</string>
     <string name="openpgp_inline_plus_compat">Некоторые клиенты поддерживают только этот формат</string>
     <string name="openpgp_inline_minus_transit">Подписи могут повредиться при передаче</string>
     <string name="openpgp_inline_minus_attach">Вложения не поддерживаются</string>
@@ -762,7 +762,7 @@
     <string name="openpgp_sign_only_disable">Отключить</string>
     <string name="openpgp_sign_only_keep_enabled">Не отключать</string>
     <string name="openpgp_dialog_sign_only_title">Режим PGP \"Только подпись\"</string>
-    <string name="openpgp_dialog_sign_only_text">В этом режиме ключ PGP будет использоваться для создания криптографической подписи к незашифрованному сообщению</string>
+    <string name="openpgp_dialog_sign_only_text">В этом режиме ваш PGP-ключ будет использоваться для создания криптографической подписи нешифрованного электронного письма.</string>
     <string name="openpgp_dialog_sign_only_plus_verified">Адресат сможет убедиться, что сообщение подлинное и подписано Вашим ключом</string>
     <string name="openpgp_dialog_sign_only_minus_break">Подписи могут повредиться при отправке нескольким адресатам</string>
     <string name="openpgp_dialog_sign_only_minus_attach">Подписи могут отображаться как вложенные файлы \"signature.asc\"</string>

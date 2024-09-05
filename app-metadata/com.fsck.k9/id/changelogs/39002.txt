@@ -1,0 +1,8 @@
+- Mengubah bagian internal untuk bermigrasi ke Material 3. Perhatikan bahwa UI Material 3 masih dalam tahap awal.
+- Mengubah urutan aksi bilah alat dalam tampilan pesan agar sesuai dengan urutan dalam mode multipilihan
+- Mengubah nilai bawaan untuk "Ambil pesan hingga" menjadi 128KiB
+- Perbaikan kesalahan warna ikon bilah alat setelah melakukan tindakan gesek
+- Perbaikan kerusakan saat memotong alamat surel dari bidang penerima saat menulis pesan
+- Memperbaiki ukuran bilah alat saat menggunakan ukuran fon sistem non-bawaan
+- Menambahkan terjemahan bahasa Korsika, Korea, dan Vietnam
+- Memperbarui terjemahan

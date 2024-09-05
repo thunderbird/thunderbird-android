@@ -9,7 +9,6 @@
     <string name="app_license">Apache licenc, 2.0-s verzió</string>
     <string name="about_project_title">Nyílt forráskódú projekt</string>
     <string name="about_website_title">Webhely</string>
-    <string name="user_manual_title">Felhasználói kézikönyv</string>
     <string name="get_help_title">Segítségkérés</string>
     <string name="user_forum_title">Felhasználói fórum</string>
     <string name="about_libraries">Programkönyvtárak</string>
@@ -922,4 +921,8 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <string name="general_settings_post_remove_action_show_previous_message">Előző üzenet megjelenítése</string>
     <string name="general_settings_post_remove_action_show_next_message">Következő üzenet megjelenítése</string>
     <string name="general_settings_post_remove_action_title">Üzenet törlése vagy áthelyezése után</string>
+    <string name="about_app_authors_thunderbird">Thunderbird Mobile csapata</string>
+    <string name="default_signature">--
+\nAz Androidos készülékemről küldve <xliff:g id="app_name">%s</xliff:g>. Elnézést kérek a rövidségemért.</string>
+    <string name="account_delete_dlg_instructions_fmt">A „&lt;xliff:g id=”account„&gt;%s&lt;/xliff:g&gt;” fiók eltávolításra kerül a &lt;xliff:g id=„app_name”&gt;%s&lt;/xliff:g&gt; fiókból.</string>
 </resources>

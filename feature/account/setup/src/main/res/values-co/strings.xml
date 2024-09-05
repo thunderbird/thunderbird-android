@@ -37,7 +37,7 @@
     <string name="account_setup_create_account_creating">Creazione di contu…</string>
     <string name="account_setup_create_account_error">Un sbagliu hè accadutu durante a creazione di u contu</string>
     <string name="account_setup_create_account_created">U contu hè statu creatu currettamente</string>
-    <string name="account_setup_error_network">Reta</string>
+    <string name="account_setup_error_network">Sbagliu di a reta. Ci vole à verificà a vostra cunnessione è pruvà torna.</string>
     <string name="account_setup_error_unknown">Sbagliu scunnisciutu</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">St’indirizzu elettronicu ùn hè micca accettatu.</string>
     <string name="account_setup_auto_discovery_validation_error_password_required">A parolla d’intesa hè richiesta.</string>

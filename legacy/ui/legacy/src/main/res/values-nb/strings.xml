@@ -842,7 +842,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <string name="push_info_configure_notification_text">Dog gir Android deg også mulighet til å skjule merknaden.</string>
     <string name="general_settings_post_remove_action_show_previous_message">Vis forrige melding</string>
     <string name="account_settings_notification_light_default_color">Forvalgt systemfarge</string>
-    <string name="user_manual_title">Brukermanual</string>
     <string name="ac_transfer_button_send">Send oppsettsmelding</string>
     <string name="notification_notify_error_title">Merknadsfeil</string>
     <string name="swipe_action_move">Flytt …</string>

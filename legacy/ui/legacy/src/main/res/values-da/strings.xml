@@ -9,7 +9,6 @@
     <string name="app_license">Apache licens, version 2.0</string>
     <string name="about_project_title">Opensource Projekt</string>
     <string name="about_website_title">Websted</string>
-    <string name="user_manual_title">Bruger manual</string>
     <string name="get_help_title">Få hjælp</string>
     <string name="user_forum_title">Bruger forum</string>
     <string name="about_libraries">Biblioteker</string>
@@ -909,4 +908,7 @@ Beskeden kan beholdes og bruges som sikkerhedskopi til den hemmelige nøgle. Hvi
     <string name="clipboard_label_name_and_email_address">Navn og email-adresse</string>
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+<string name="general_settings_post_remove_action_show_next_message">Vis næste meddelelse</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Vis forrige meddelelse</string>
+    <string name="about_title">Om <xliff:g id="app_name">%s</xliff:g></string>
 </resources>

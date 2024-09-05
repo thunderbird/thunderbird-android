@@ -29,7 +29,7 @@
     <string name="settings_import_authorization_required">Silakan masuk</string>
     <string name="settings_import_authorization_and_password_required">Silakan masuk dan masukkan kata sandi</string>
     <string name="settings_import_status_log_in_required">Diperlukan proses masuk</string>
-    <string name="settings_import_oauth_description">Untuk menggunakan akun surel ini dengan K-9 Mail, Anda perlu masuk dan memberikan akses aplikasi ke surel Anda.</string>
+    <string name="settings_import_oauth_description">Untuk menggunakan akun surel ini, Anda perlu masuk dan memberikan akses aplikasi ke surel Anda.</string>
     <string name="settings_import_oauth_sign_in">Masuk</string>
     <string name="settings_import_oauth_sign_in_with_google">Masuk dengan Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Otorisasi dibatalkan</string>
