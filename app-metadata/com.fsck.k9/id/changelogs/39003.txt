@@ -1,0 +1,1 @@
+- Memperbaiki kerusakan saat tindakan gesek daftar pesan diatur ke "Tidak Ada"

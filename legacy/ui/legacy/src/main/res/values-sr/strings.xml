@@ -833,4 +833,8 @@
     <!--A user visible label for the name and email address copied to the clipboard-->
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+<string name="about_app_authors_thunderbird">Тхундербирд Мобиле Теам</string>
+    <string name="changelog_show_recent_changes">Прикажи недавне промене када је апликација ажурирана</string>
+    <string name="changelog_recent_changes_title">Шта има ново</string>
+    <string name="get_help_title">Потражите помоћ</string>
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="unread_widget_select_account">Счётчик непрочитанных</string>
+    <string name="unread_widget_select_account">Показывать количество непрочитанных для…</string>
     <string name="unread_widget_account_title">Учётная запись</string>
     <string name="unread_widget_account_summary">Учётная запись для отображения счётчика непрочитанных</string>
     <string name="unread_widget_unified_inbox_account_summary">Общие \"Входящие\"</string>

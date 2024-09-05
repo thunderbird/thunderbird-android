@@ -920,7 +920,6 @@ Podes conservar esta mensaxe e usala como copia de seguridade da túa chave secr
     <string name="font_size_message_view_recipients">Destinatarios</string>
     <string name="swipe_action_mark_as_read">Marcar como leído</string>
     <string name="clipboard_label_name_and_email_address">Nome e enderezo de correo electrónico</string>
-    <string name="user_manual_title">Manual de usuario</string>
     <string name="notification_notify_error_text">Produciuse un erro ao tentar crear unha notificación do sistema para unha mensaxe nova. O motivo é probablemente un son de notificación que falta.
 \n
 \nToca para abrir a configuración de notificacións.</string>

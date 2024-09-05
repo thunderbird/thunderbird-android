@@ -22,7 +22,7 @@
     <string name="account_setup_auto_discovery_loading_error">S’u arrit të ngarkohej formësimi i email-it</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">E besoj këtë formësim</string>
     <string name="account_setup_options_display_name_error_required">Emri juaj është i domosdoshëm.</string>
-    <string name="account_setup_error_network">Rrjeti</string>
+    <string name="account_setup_error_network">Gabim rrjeti. Ju lutemi, kontrolloni gjendjen e lidhjes tuaj dhe riprovoni.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Kjo nuk njihet si adresë email e vlefshme.</string>
     <string name="account_setup_options_email_check_frequency_never">Kurrë</string>
     <string name="account_setup_auto_discovery_loading_message">Po shihet për formësim…</string>

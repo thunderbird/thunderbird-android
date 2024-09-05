@@ -29,7 +29,7 @@
     <string name="settings_import_outgoing_server_password_hint">Fjalëkalim shërbyesi dërgimesh</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Përdor po atë fjalëkalim për shërbyes dërgimesh</string>
     <string name="settings_import_server_name_format">Emër shërbyesi: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Që të përdorni këtë llogari email, lypset të bëni hyrjen dhe ti akordoni aplikacionit hyrje te email-et tuaj.</string>
+    <string name="settings_import_oauth_description">Që të përdorni këtë llogari email, lypset të bëni hyrjen dhe t’i akordoni aplikacionit hyrje te email-et tuaj.</string>
     <string name="settings_import_oauth_sign_in">Hyni</string>
     <string name="settings_import_oauth_sign_in_with_google">Hyni me Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Autorizimi u anulua</string>

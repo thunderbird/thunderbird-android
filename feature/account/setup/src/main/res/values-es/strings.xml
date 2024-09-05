@@ -22,7 +22,7 @@
     <string name="account_setup_auto_discovery_loading_error">No se han podido encontrar ajustes para este servicio</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Me fío de los ajustes</string>
     <string name="account_setup_options_display_name_error_required">Su nombre es requerido.</string>
-    <string name="account_setup_error_network">Red</string>
+    <string name="account_setup_error_network">Error en la red. Comprueba el estado de tu conexión e inténtalo de nuevo.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">No se reconoce como una dirección de correo electrónico válida.</string>
     <string name="account_setup_options_email_check_frequency_never">Nunca</string>
     <string name="account_setup_auto_discovery_loading_message">Buscando la configuración…</string>

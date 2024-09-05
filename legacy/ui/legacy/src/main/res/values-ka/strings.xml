@@ -541,9 +541,5 @@
     <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
     <!--A user visible label for the email address copied to the clipboard-->
     <string name="clipboard_label_email_address">ელფოსტის მისამართი</string>
-    <!--A user visible label for the name and email address copied to the clipboard-->
-    <!--Might be displayed in a notification when deleting an account (in the background)-->
-    <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
-    <string name="user_manual_title">ინსტრუქცია</string>
     <string name="about_website_title">ვებსაიტი</string>
 </resources>

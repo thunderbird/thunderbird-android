@@ -107,7 +107,6 @@
     <string name="send_messages_action">Send messages</string>
     <string name="account_settings_notification_light_default_color">System default colour</string>
     <string name="save_draft_action">Save as draft</string>
-    <string name="user_manual_title">User manual</string>
     <string name="folders_action">Manage folders</string>
     <string name="mark_as_unread_action">Mark unread</string>
     <string name="choose_folder_title">Choose Folder</string>

@@ -2,4 +2,6 @@
 <resources>
     <string name="account_common_button_next">Következő</string>
     <string name="account_common_button_back">Vissza</string>
+    <string name="account_common_error_server_message">A kiszolgáló a következő üzenetet küldte vissza:
+\n%s</string>
 </resources>

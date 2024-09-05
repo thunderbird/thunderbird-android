@@ -22,7 +22,7 @@
     <string name="account_setup_auto_discovery_loading_error">Falha ao carregar configuração do email</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Eu confio nessa configuração</string>
     <string name="account_setup_options_display_name_error_required">Seu nome é obrigatório.</string>
-    <string name="account_setup_error_network">Rede</string>
+    <string name="account_setup_error_network">Erro de rede. Verifique sua conexão e tente novamente.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Este endereço eletrônico é inválido.</string>
     <string name="account_setup_options_email_check_frequency_never">Nunca</string>
     <string name="account_setup_auto_discovery_loading_message">Encontrando configuração do email…</string>

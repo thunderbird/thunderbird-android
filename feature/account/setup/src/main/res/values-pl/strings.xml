@@ -22,7 +22,7 @@
     <string name="account_setup_auto_discovery_loading_error">Nie udało się wczytać konfiguracji poczty e-mail</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Ufam tej konfiguracji</string>
     <string name="account_setup_options_display_name_error_required">Twoje imię i nazwisko jest wymagane.</string>
-    <string name="account_setup_error_network">Sieć</string>
+    <string name="account_setup_error_network">Błąd sieci. Sprawdź stan połączenia i spróbuj ponownie.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Nie jest rozpoznawany jako prawidłowy adres e-mail.</string>
     <string name="account_setup_options_email_check_frequency_never">Nigdy</string>
     <string name="account_setup_auto_discovery_loading_message">Sprawdzanie konfiguracji…</string>

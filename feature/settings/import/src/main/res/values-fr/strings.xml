@@ -3,17 +3,17 @@
     <string name="settings_import_title">Importer les paramètres</string>
     <string name="settings_import_pick_document_button">Sélectionner un fichier</string>
     <string name="settings_import_button">Importation</string>
-    <string name="settings_import_success_generic">Les paramètres ont été importés avec succès</string>
+    <string name="settings_import_success_generic">Les paramètres ont été importés</string>
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
     <string name="settings_import_password_required">Saisissez vos mots de passe</string>
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_required">Veuillez vous connecter</string>
+    <string name="settings_import_authorization_required">Connectez-vous</string>
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_and_password_required">Veuillez vous connecter et saisir les mots de passe</string>
+    <string name="settings_import_authorization_and_password_required">Connectez-vous et saisissez les mots de passe</string>
     <string name="settings_import_failure">Échec d’importation des paramètres</string>
     <string name="settings_import_read_failure">Échec de lecture du fichier de paramètres</string>
     <string name="settings_import_partial_failure">Échec d’importation de certains paramètres</string>
-    <string name="settings_import_status_success">A été importé avec succès</string>
+    <string name="settings_import_status_success">A été importé</string>
     <string name="settings_import_status_password_required">Le mot de passe est requis</string>
     <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
     <string name="settings_import_status_log_in_required">La connexion est requise</string>
@@ -29,13 +29,13 @@
     <string name="settings_import_incoming_server_password_hint">Mot de passe du serveur entrant</string>
     <string name="settings_import_outgoing_server_password_hint">Mot de passe du serveur sortant</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Utiliser le même mot de passe pour le serveur sortant</string>
-    <string name="settings_import_server_name_format">Nom du serveur : <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_server_name_format">Nom du serveur : <xliff:g id="hostname">%s</xliff:g></string>
     <string name="settings_import_oauth_description">Pour utiliser ce compte de courriel, vous devez vous connecter et accorder à l’appli l’accès à vos courriels.</string>
     <string name="settings_import_oauth_sign_in">Connexion</string>
     <string name="settings_import_oauth_sign_in_with_google">Connexion avec Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">L’autorisation a été annulée</string>
-    <string name="settings_import_oauth_error_oauth_flow_failed">Échec d’autorisation avec l’erreur suivante :<xliff:g id="error">%s</xliff:g></string>
-    <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 n’est actuellement pas pris en charge par ce fournisseur.</string>
-    <string name="settings_import_oauth_error_browser_not_found">L’appli n’a pas trouvé de navigateur à utiliser pour accorder l’accès à votre compte.</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Échec d’autorisation avec l’erreur suivante :<xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 n’est actuellement pas pris en charge par ce service.</string>
+    <string name="settings_import_oauth_error_browser_not_found">L’appli n’a pas trouvé de navigateur pour accorder l’accès à votre compte.</string>
     <string name="settings_import_general_settings_item">Paramètres généraux</string>
 </resources>

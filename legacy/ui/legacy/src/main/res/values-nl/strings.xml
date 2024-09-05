@@ -9,7 +9,6 @@
     <string name="app_license">Apache-licentie, versie 2.0</string>
     <string name="about_project_title">Openbroncodeproject</string>
     <string name="about_website_title">Website</string>
-    <string name="user_manual_title">Gebruikershandleiding</string>
     <string name="get_help_title">Hulp verkrijgen</string>
     <string name="user_forum_title">Gebruikersforum</string>
     <string name="about_libraries">Bibliotheken</string>
@@ -540,7 +539,7 @@
     <string name="setting_theme_dark">Donker</string>
     <string name="setting_theme_light">Licht</string>
     <string name="setting_theme_follow_system">Systeemstandaard gebruiken</string>
-    <string name="display_preferences">Beeld</string>
+    <string name="display_preferences">Weergave</string>
     <string name="global_preferences">Algemeen</string>
     <string name="debug_preferences">Debuggen</string>
     <string name="privacy_preferences">Privacy</string>
@@ -573,7 +572,7 @@
     <string name="account_setup_push_limit_500">500 mappen</string>
     <string name="account_setup_push_limit_1000">1000 mappen</string>
     <string name="animations_title">Animatie</string>
-    <string name="animations_summary">Opzichtige visuele effecten gebruiken</string>
+    <string name="animations_summary">Opvallende visuele effecten gebruiken</string>
     <string name="volume_navigation_title">Volumetoetsnavigatie in berichtbeeld</string>
     <string name="show_unified_inbox_title">Samengevoegd Postvak IN tonen</string>
     <string name="show_starred_count_title">Het aantal berichten met een ster weergeven</string>
@@ -930,7 +929,7 @@
     <string name="account_delete_dlg_instructions_fmt">De account \"<xliff:g id="account">%s</xliff:g>\" zal uit <xliff:g id="app_name">%s</xliff:g> worden verwijderd.</string>
     <string name="about_title">Over <xliff:g id="app_name">%s</xliff:g></string>
     <string name="push_info_notification_explanation_text">Bij gebruik van Push onderhoudt <xliff:g id="app_name">%1$s</xliff:g> een verbinding met de mailserver. Android vereist het doorlopend weergeven van een melding als de app actief is op de achtergrond. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
-    <string name="default_signature">--
+    <string name="default_signature">-- \u0020
 \nVerzonden vanaf mijn Android-apparaat met <xliff:g id="app_name">%s</xliff:g>. Excuses voor mijn beknoptheid.</string>
     <string name="about_app_authors_thunderbird">Thunderbird Mobile-team</string>
 </resources>
