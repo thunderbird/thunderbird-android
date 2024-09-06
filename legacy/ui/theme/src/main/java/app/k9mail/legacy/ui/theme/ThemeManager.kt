@@ -6,6 +6,7 @@ import android.os.Build
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatDelegate
 import app.k9mail.core.ui.theme.api.ThemeProvider
+import app.k9mail.core.ui.theme.api.Theme
 import app.k9mail.legacy.preferences.AppTheme
 import app.k9mail.legacy.preferences.GeneralSettings
 import app.k9mail.legacy.preferences.GeneralSettingsManager
@@ -116,7 +117,3 @@ class ThemeManager(
     }
 }
 
-enum class Theme {
-    LIGHT,
-    DARK,
-}

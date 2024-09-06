@@ -23,11 +23,11 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
+import app.k9mail.core.ui.theme.api.Theme
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.message.controller.MessageReference
 import app.k9mail.legacy.preferences.GeneralSettingsManager
-import app.k9mail.legacy.ui.theme.Theme
 import app.k9mail.legacy.ui.theme.ThemeManager
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageCompose
