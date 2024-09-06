@@ -3,8 +3,6 @@ package com.fsck.k9
 import com.fsck.k9.notification.PushNotificationState
 
 class TestCoreResourceProvider : CoreResourceProvider {
-    override fun defaultSignature() = throw UnsupportedOperationException("not implemented")
-
     override fun defaultIdentityDescription() = throw UnsupportedOperationException("not implemented")
 
     override fun contactDisplayNamePrefix() = throw UnsupportedOperationException("not implemented")

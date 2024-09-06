@@ -3,8 +3,6 @@ package com.fsck.k9
 import com.fsck.k9.notification.PushNotificationState
 
 class TestCoreResourceProvider : CoreResourceProvider {
-    override fun defaultSignature() = "\n--\nbrevity!"
-
     override fun defaultIdentityDescription() = "initial identity"
 
     override fun contactDisplayNamePrefix() = "To:"
