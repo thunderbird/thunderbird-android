@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import app.k9mail.core.ui.compose.common.activity.LocalActivity
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import app.k9mail.feature.launcher.FeatureLauncherExternalContract.FeatureThemeProvider
+import app.k9mail.core.ui.theme.api.FeatureThemeProvider
 import app.k9mail.feature.launcher.navigation.FeatureLauncherNavHost
 import org.koin.compose.koinInject
 

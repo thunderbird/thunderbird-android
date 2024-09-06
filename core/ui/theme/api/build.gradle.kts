@@ -1,5 +1,5 @@
 plugins {
-    id(ThunderbirdPlugins.Library.android)
+    id(ThunderbirdPlugins.Library.androidCompose)
 }
 
 android {
