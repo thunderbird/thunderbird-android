@@ -1,17 +1,13 @@
 package app.k9mail.feature.navigation.drawer
 
-import android.view.Surface
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.k9mail.core.ui.theme.api.FeatureThemeProvider
+import app.k9mail.feature.navigation.drawer.ui.DrawerView
 import app.k9mail.legacy.account.Account
 import com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
 import org.koin.core.component.KoinComponent
@@ -26,19 +22,16 @@ class FolderDrawer(
     private val drawer: DrawerLayout = parent.findViewById(R.id.navigation_drawer_layout)
     private val drawerView: ComposeView = parent.findViewById(R.id.material_drawer_compose_view)
     private val sliderView: MaterialDrawerSliderView = parent.findViewById(R.id.material_drawer_slider)
+    private val swipeRefreshLayout: SwipeRefreshLayout = parent.findViewById(R.id.material_drawer_swipe_refresh)
 
     init {
         sliderView.visibility = View.GONE
         drawerView.visibility = View.VISIBLE
+        swipeRefreshLayout.isEnabled = false
 
         drawerView.setContent {
             themeProvider.WithTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = Color.Red,
-                ) {
-                    TextBodyLarge("Folder Drawer")
-                }
+                DrawerView()
             }
         }
     }
