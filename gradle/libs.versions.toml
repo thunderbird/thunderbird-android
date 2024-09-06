@@ -11,12 +11,12 @@
 # 4. Run the app and check for any issues.
 
 [versions]
-androidDesugar = "2.1.1"
+androidDesugar = "2.1.2"
 androidMaterial = "1.12.0"
 # AGP and tools should be updated together
 androidGradlePlugin = "8.5.2"
 androidTools = "31.5.2"
-androidxActivity = "1.9.1"
+androidxActivity = "1.9.2"
 androidxAnnotation = "1.8.2"
 androidxAppCompat = "1.7.0"
 androidxBiometric = "1.1.0"
@@ -27,10 +27,10 @@ androidxCoordinatorLayout = "1.2.0"
 androidxCore = "1.13.1"
 androidxCoreSplashscreen = "1.0.1"
 androidxDrawerLayout = "1.1.1"
-androidxFragment = "1.8.2"
-androidxLifecycle = "2.8.4"
+androidxFragment = "1.8.3"
+androidxLifecycle = "2.8.5"
 androidxLocalBroadcastManager = "1.1.0"
-androidxNavigation = "2.7.7"
+androidxNavigation = "2.8.0"
 androidxRecyclerView = "1.3.2"
 androidxPreference = "1.2.1"
 androidxSwiperefreshlayout = "1.1.0"
