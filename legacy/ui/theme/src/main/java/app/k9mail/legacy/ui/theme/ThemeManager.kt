@@ -5,8 +5,9 @@ import android.content.res.Configuration
 import android.os.Build
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatDelegate
-import app.k9mail.core.ui.theme.api.ThemeProvider
 import app.k9mail.core.ui.theme.api.Theme
+import app.k9mail.core.ui.theme.api.ThemeManager
+import app.k9mail.core.ui.theme.api.ThemeProvider
 import app.k9mail.legacy.preferences.AppTheme
 import app.k9mail.legacy.preferences.GeneralSettings
 import app.k9mail.legacy.preferences.GeneralSettingsManager
@@ -24,12 +25,12 @@ class ThemeManager(
     private val themeProvider: ThemeProvider,
     private val generalSettingsManager: GeneralSettingsManager,
     private val appCoroutineScope: CoroutineScope,
-) {
+) : ThemeManager {
 
     private val generalSettings: GeneralSettings
         get() = generalSettingsManager.getSettings()
 
-    val appTheme: Theme
+    override val appTheme: Theme
         get() = when (generalSettings.appTheme) {
             AppTheme.LIGHT -> Theme.LIGHT
             AppTheme.DARK -> Theme.DARK
@@ -40,28 +41,28 @@ class ThemeManager(
             }
         }
 
-    val messageViewTheme: Theme
+    override val messageViewTheme: Theme
         get() = resolveTheme(generalSettings.messageViewTheme)
 
-    val messageComposeTheme: Theme
+    override val messageComposeTheme: Theme
         get() = resolveTheme(generalSettings.messageComposeTheme)
 
     @get:StyleRes
-    val appThemeResourceId: Int = themeProvider.appThemeResourceId
+    override val appThemeResourceId: Int = themeProvider.appThemeResourceId
 
     @get:StyleRes
-    val messageViewThemeResourceId: Int
+    override val messageViewThemeResourceId: Int
         get() = getSubThemeResourceId(generalSettings.messageViewTheme)
 
     @get:StyleRes
-    val messageComposeThemeResourceId: Int
+    override val messageComposeThemeResourceId: Int
         get() = getSubThemeResourceId(generalSettings.messageComposeTheme)
 
     @get:StyleRes
-    val dialogThemeResourceId: Int = themeProvider.dialogThemeResourceId
+    override val dialogThemeResourceId: Int = themeProvider.dialogThemeResourceId
 
     @get:StyleRes
-    val translucentDialogThemeResourceId: Int = themeProvider.translucentDialogThemeResourceId
+    override val translucentDialogThemeResourceId: Int = themeProvider.translucentDialogThemeResourceId
 
     fun init() {
         generalSettingsManager.getSettingsFlow()
@@ -116,4 +117,3 @@ class ThemeManager(
         }
     }
 }
-
