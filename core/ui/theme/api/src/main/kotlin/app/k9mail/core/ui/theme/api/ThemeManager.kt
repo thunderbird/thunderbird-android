@@ -1,16 +1,21 @@
-package app.k9mail.legacy.ui.theme
+package app.k9mail.core.ui.theme.api
 
 import androidx.annotation.StyleRes
 
-interface ThemeProvider {
+interface ThemeManager {
+
+    val appTheme: Theme
+    val messageViewTheme: Theme
+    val messageComposeTheme: Theme
+
     @get:StyleRes
     val appThemeResourceId: Int
 
     @get:StyleRes
-    val appLightThemeResourceId: Int
+    val messageViewThemeResourceId: Int
 
     @get:StyleRes
-    val appDarkThemeResourceId: Int
+    val messageComposeThemeResourceId: Int
 
     @get:StyleRes
     val dialogThemeResourceId: Int

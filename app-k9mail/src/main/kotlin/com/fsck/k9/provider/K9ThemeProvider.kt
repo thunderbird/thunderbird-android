@@ -1,6 +1,6 @@
 package com.fsck.k9.provider
 
-import app.k9mail.legacy.ui.theme.ThemeProvider
+import app.k9mail.core.ui.theme.api.ThemeProvider
 import com.fsck.k9.R
 
 class K9ThemeProvider : ThemeProvider {

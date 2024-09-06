@@ -1,6 +1,6 @@
 package com.fsck.k9.ui.helper
 
-import app.k9mail.legacy.ui.theme.Theme
+import app.k9mail.core.ui.theme.api.Theme
 import app.k9mail.legacy.ui.theme.ThemeManager
 import com.fsck.k9.K9
 import com.fsck.k9.message.html.HtmlSettings

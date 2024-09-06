@@ -3,9 +3,9 @@ package net.thunderbird.android
 import app.k9mail.core.common.oauth.OAuthConfigurationFactory
 import app.k9mail.core.common.provider.AppNameProvider
 import app.k9mail.core.featureflag.FeatureFlagFactory
-import app.k9mail.feature.launcher.FeatureLauncherExternalContract.FeatureThemeProvider
+import app.k9mail.core.ui.theme.api.FeatureThemeProvider
+import app.k9mail.core.ui.theme.api.ThemeProvider
 import app.k9mail.feature.widget.shortcut.LauncherShortcutActivity
-import app.k9mail.legacy.ui.theme.ThemeProvider
 import com.fsck.k9.AppConfig
 import com.fsck.k9.activity.MessageCompose
 import net.thunderbird.android.auth.TbOAuthConfigurationFactory

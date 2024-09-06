@@ -7,6 +7,8 @@ android {
 }
 
 dependencies {
+    api(projects.core.ui.theme.api)
+
     implementation(projects.core.ui.legacy.designsystem)
 
     implementation(projects.legacy.preferences)
