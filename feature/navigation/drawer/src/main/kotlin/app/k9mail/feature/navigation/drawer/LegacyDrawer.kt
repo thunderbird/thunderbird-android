@@ -103,9 +103,6 @@ class LegacyDrawer(
     private var openedFolderId: Long? = null
     private var latestFolderList: FolderList? = null
 
-    val layout: DrawerLayout
-        get() = drawer
-
     override val isOpen: Boolean
         get() = drawer.isOpen
 
