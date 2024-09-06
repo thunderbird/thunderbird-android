@@ -55,7 +55,7 @@ fastAdapter = "5.7.0"
 forkhandlesBom = "2.20.0.0"
 glide = "4.16.0"
 gradle = "8.10"
-http4kBom = "5.29.0.0"
+http4kBom = "5.30.0.0"
 icu4j = "72.1"
 javaDiffUtils = "4.12"
 jcipAnnotations = "1.0"
@@ -70,8 +70,9 @@ koinBom = "3.5.6"
 kotlinBom = "2.0.20"
 # Needs to match the version used by Gradle, just check with `./gradlew --version`
 kotlinGradleBom = "1.9.24"
+kotlinKsp = "2.0.20-1.0.25"
 kotlinxCoroutines = "1.8.1"
-kotlinKsp = "2.0.20-1.0.24"
+kotlinxCollectionsImmutable = "0.3.8"
 kotlinxDateTime = "0.6.1"
 ktlint = "1.2.1"
 kxml2 = "1.0"
@@ -85,7 +86,7 @@ moshi = "1.15.1"
 okhttp = "4.12.0"
 okio = "3.9.0"
 preferencesFix = "1.1.0"
-robolectric = "4.12.1"
+robolectric = "4.13"
 safeContentResolver = "1.0.0"
 searchPreference = "v2.3.0"
 spotlessPlugin = "6.25.0"
@@ -199,7 +200,7 @@ kotlin-gradle-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = 
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test" }
-kotlinx-collections-immutable = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.7"
+kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
