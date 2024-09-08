@@ -1,6 +1,7 @@
 package com.fsck.k9
 
 import android.app.Application
+import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
 import app.k9mail.feature.widget.message.list.MessageListWidgetManager
@@ -35,12 +36,16 @@ abstract class CommonApp : Application(), WorkManagerConfiguration.Provider {
     private val appCoroutineScope: CoroutineScope = MainScope()
     private var appLanguageManagerInitialized = false
 
-    override fun onCreate() {
+    override fun attachBaseContext(base: Context?) {
         Core.earlyInit()
+        super.attachBaseContext(base)
 
-        super.onCreate()
-
+        // Start Koin early so it is ready by the time content providers are initialized.
         DI.start(this, listOf(provideAppModule()) + coreModules + uiModules + commonAppModules)
+    }
+
+    override fun onCreate() {
+        super.onCreate()
 
         K9.init(this)
         Core.init(this)

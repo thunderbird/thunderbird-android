@@ -30,29 +30,24 @@ class SettingsExporter(
 ) {
     @Throws(SettingsImportExportException::class)
     fun exportToUri(includeGlobals: Boolean, accountUuids: Set<String>, uri: Uri) {
-        updateNotificationSettings(accountUuids)
-
         try {
             contentResolver.openOutputStream(uri, "wt")!!.use { outputStream ->
-                exportPreferences(outputStream, includeGlobals, accountUuids)
+                exportPreferences(outputStream, includeGlobals, accountUuids, includePasswords = false)
             }
         } catch (e: Exception) {
             throw SettingsImportExportException(e)
         }
     }
 
-    private fun updateNotificationSettings(accountUuids: Set<String>) {
-        try {
-            notificationSettingsUpdater.updateNotificationSettings(accountUuids)
-        } catch (e: Exception) {
-            // An error here could mean we export notification settings that don't reflect the current configuration
-            // of the notification channels. But we prefer stale data over failing the export.
-            Timber.w(e, "Error while updating accounts with notification configuration from system")
-        }
-    }
-
     @Throws(SettingsImportExportException::class)
-    fun exportPreferences(outputStream: OutputStream, includeGlobals: Boolean, accountUuids: Set<String>) {
+    fun exportPreferences(
+        outputStream: OutputStream,
+        includeGlobals: Boolean,
+        accountUuids: Set<String>,
+        includePasswords: Boolean,
+    ) {
+        updateNotificationSettings(accountUuids)
+
         try {
             val serializer = Xml.newSerializer()
             serializer.setOutput(outputStream, "UTF-8")
@@ -80,7 +75,7 @@ class SettingsExporter(
             serializer.startTag(null, ACCOUNTS_ELEMENT)
             for (accountUuid in accountUuids) {
                 preferences.getAccount(accountUuid)?.let { account ->
-                    writeAccount(serializer, account, prefs)
+                    writeAccount(serializer, account, prefs, includePasswords)
                 }
             }
             serializer.endTag(null, ACCOUNTS_ELEMENT)
@@ -90,6 +85,16 @@ class SettingsExporter(
             serializer.flush()
         } catch (e: Exception) {
             throw SettingsImportExportException(e.localizedMessage, e)
+        }
+    }
+
+    private fun updateNotificationSettings(accountUuids: Set<String>) {
+        try {
+            notificationSettingsUpdater.updateNotificationSettings(accountUuids)
+        } catch (e: Exception) {
+            // An error here could mean we export notification settings that don't reflect the current configuration
+            // of the notification channels. But we prefer stale data over failing the export.
+            Timber.w(e, "Error while updating accounts with notification configuration from system")
         }
     }
 
@@ -116,7 +121,12 @@ class SettingsExporter(
         }
     }
 
-    private fun writeAccount(serializer: XmlSerializer, account: Account, prefs: Map<String, Any>) {
+    private fun writeAccount(
+        serializer: XmlSerializer,
+        account: Account,
+        prefs: Map<String, Any>,
+        includePasswords: Boolean,
+    ) {
         val identities = mutableSetOf<Int>()
         val accountUuid = account.uuid
 
@@ -143,8 +153,10 @@ class SettingsExporter(
         writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, incoming.authenticationType.name)
         writeElement(serializer, USERNAME_ELEMENT, incoming.username)
         writeElement(serializer, CLIENT_CERTIFICATE_ALIAS_ELEMENT, incoming.clientCertificateAlias)
-        // XXX For now we don't export the password
-        // writeElement(serializer, PASSWORD_ELEMENT, incoming.password);
+
+        if (includePasswords && !incoming.password.isNullOrEmpty()) {
+            writeElement(serializer, PASSWORD_ELEMENT, incoming.password)
+        }
 
         var extras = incoming.extra
         if (!extras.isNullOrEmpty()) {
@@ -169,8 +181,10 @@ class SettingsExporter(
         writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, outgoing.authenticationType.name)
         writeElement(serializer, USERNAME_ELEMENT, outgoing.username)
         writeElement(serializer, CLIENT_CERTIFICATE_ALIAS_ELEMENT, outgoing.clientCertificateAlias)
-        // XXX For now we don't export the password
-        // writeElement(serializer, PASSWORD_ELEMENT, outgoing.password);
+
+        if (includePasswords && !outgoing.password.isNullOrEmpty()) {
+            writeElement(serializer, PASSWORD_ELEMENT, outgoing.password)
+        }
 
         extras = outgoing.extra
         if (!extras.isNullOrEmpty()) {

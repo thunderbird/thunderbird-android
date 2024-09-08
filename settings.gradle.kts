@@ -72,6 +72,10 @@ include(
 )
 
 include(
+    ":feature:migration:provider",
+)
+
+include(
     ":core:common",
     ":core:featureflags",
     ":core:testing",

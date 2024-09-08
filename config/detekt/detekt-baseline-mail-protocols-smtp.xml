@@ -26,7 +26,6 @@
     <ID>MagicNumber:SmtpTransport.kt$SmtpTransport$1024</ID>
     <ID>MagicNumber:StatusCodeClass.kt$StatusCodeClass.PERMANENT_FAILURE$5</ID>
     <ID>MagicNumber:StatusCodeClass.kt$StatusCodeClass.PERSISTENT_TRANSIENT_FAILURE$4</ID>
-    <ID>NestedBlockDepth:SmtpTransport.kt$SmtpTransport$@VisibleForTesting @Throws(MessagingException::class) internal fun open()</ID>
     <ID>ReturnCount:SmtpResponseParser.kt$SmtpResponseParser$fun readHelloResponse(): SmtpHelloResponse</ID>
     <ID>SwallowedException:SmtpTransport.kt$SmtpTransport$e: NegativeSmtpReplyException</ID>
     <ID>ThrowingExceptionsWithoutMessageOrCause:SmtpTransport.kt$SmtpTransport$RuntimeException()</ID>

@@ -65,7 +65,7 @@ class SettingsExporterTest : K9RobolectricTest() {
 
     private fun exportPreferences(globalSettings: Boolean, accounts: Set<String>): Document {
         return ByteArrayOutputStream().use { outputStream ->
-            settingsExporter.exportPreferences(outputStream, globalSettings, accounts)
+            settingsExporter.exportPreferences(outputStream, globalSettings, accounts, includePasswords = false)
             parseXml(outputStream.toByteArray())
         }
     }

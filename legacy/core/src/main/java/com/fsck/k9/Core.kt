@@ -22,8 +22,9 @@ object Core : EarlyInit {
     private val notificationController: NotificationController by inject()
 
     /**
-     * This needs to be called from [Application#onCreate][android.app.Application#onCreate] before calling through
-     * to the super class's `onCreate` implementation and before initializing the dependency injection library.
+     * This should be called from [Application.attachBaseContext()][android.app.Application.attachBaseContext] before
+     * calling through to the super class's `attachBaseContext()` implementation and before initializing the dependency
+     * injection library.
      */
     fun earlyInit() {
         if (K9.DEVELOPER_MODE) {
