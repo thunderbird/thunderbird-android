@@ -130,7 +130,7 @@ public class AttachmentController {
     @WorkerThread
     private Intent getBestViewIntent() {
         try {
-            Uri intentDataUri = AttachmentTempFileProvider.createTempUriForContentUri(context, attachment.internalUri);
+            Uri intentDataUri = AttachmentTempFileProvider.createTempUriForContentUri(context, attachment.internalUri, attachment.displayName);
 
             return viewIntentFinder.getBestViewIntent(intentDataUri, attachment.displayName, attachment.mimeType);
         } catch (IOException e) {
