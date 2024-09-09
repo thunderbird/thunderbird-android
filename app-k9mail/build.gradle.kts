@@ -23,6 +23,7 @@ dependencies {
     implementation(projects.feature.widget.messageList)
     implementation(projects.feature.widget.shortcut)
     implementation(projects.feature.widget.unread)
+    implementation(projects.feature.telemetry.api)
 
     implementation(libs.androidx.work.runtime)
 

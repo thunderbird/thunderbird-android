@@ -19,6 +19,7 @@ dependencies {
     api(projects.legacy.search)
 
     implementation(projects.plugins.openpgpApiLib.openpgpApi)
+    implementation(projects.feature.telemetry.api)
 
     api(libs.androidx.annotation)
 

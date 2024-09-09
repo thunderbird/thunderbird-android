@@ -2,6 +2,7 @@ package com.fsck.k9
 
 import android.content.Context
 import android.content.SharedPreferences
+import app.k9mail.feature.telemetry.api.TelemetryManager
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Account.SortType
 import app.k9mail.legacy.di.DI
@@ -20,6 +21,7 @@ import timber.log.Timber.DebugTree
 // TODO "Use GeneralSettingsManager and GeneralSettings instead"
 object K9 : EarlyInit {
     private val generalSettingsManager: RealGeneralSettingsManager by inject()
+    private val telemetryManager: TelemetryManager by inject()
 
     /**
      * If this is `true`, various development settings will be enabled.
@@ -267,6 +269,11 @@ object K9 : EarlyInit {
     @JvmStatic
     var swipeLeftAction: SwipeAction = SwipeAction.ToggleRead
 
+    // TODO: This is a feature-specific setting that doesn't need to be available to apps that don't include the
+    //  feature. Extract `Storage` and `StorageEditor` to a separate module so feature modules can retrieve and store
+    //  their own settings.
+    var isTelemetryEnabled = false
+
     val isQuietTime: Boolean
         get() {
             if (!isQuietTimeEnabled) {
@@ -384,6 +391,10 @@ object K9 : EarlyInit {
 
         swipeRightAction = storage.getEnum("swipeRightAction", SwipeAction.ToggleSelection)
         swipeLeftAction = storage.getEnum("swipeLeftAction", SwipeAction.ToggleRead)
+
+        if (telemetryManager.isTelemetryFeatureIncluded()) {
+            isTelemetryEnabled = storage.getBoolean("enableTelemetry", true)
+        }
     }
 
     internal fun save(editor: StorageEditor) {
@@ -447,6 +458,10 @@ object K9 : EarlyInit {
 
         editor.putEnum("swipeRightAction", swipeRightAction)
         editor.putEnum("swipeLeftAction", swipeLeftAction)
+
+        if (telemetryManager.isTelemetryFeatureIncluded()) {
+            editor.putBoolean("enableTelemetry", isTelemetryEnabled)
+        }
 
         fontSizes.save(editor)
     }

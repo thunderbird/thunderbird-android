@@ -19,6 +19,7 @@ dependencies {
     // TODO: Remove AccountOauth dependency
     implementation(projects.feature.account.oauth)
     implementation(projects.feature.settings.import)
+    implementation(projects.feature.telemetry.api)
 
     compileOnly(projects.mail.protocols.imap)
 

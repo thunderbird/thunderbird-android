@@ -515,6 +515,21 @@
     </PreferenceScreen>
 
     <PreferenceScreen
+        android:icon="@drawable/ic_analytics"
+        android:key="data_collection"
+        android:title="@string/settings_ui_data_collection"
+        search:ignore="true"
+        >
+
+        <SwitchPreference
+            android:key="enable_telemetry"
+            android:summary="@string/settings_ui_telemetry_description"
+            android:title="@string/settings_ui_telemetry_title"
+            />
+
+    </PreferenceScreen>
+
+    <PreferenceScreen
         android:icon="@drawable/ic_bug_report"
         android:key="debug_preferences"
         android:title="@string/debug_preferences"

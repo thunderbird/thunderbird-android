@@ -1114,4 +1114,11 @@ You can keep this message and use it as a backup for your secret key. If you wan
 
     <!-- For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers. -->
     <string name="message_list_content_description_unread_prefix">unread, %s</string>
+
+    <!-- Name of the "data collection" section in the general settings screen -->
+    <string name="settings_ui_data_collection">Data collection</string>
+    <!-- Title of the "Usage and technical data" setting used in the "data collection" section of the general settings screen -->
+    <string name="settings_ui_telemetry_title">Usage and technical data</string>
+    <!-- Description of the "Usage and technical data" setting used in the "data collection" section of the general settings screen -->
+    <string name="settings_ui_telemetry_description">Shares performance, usage, hardware and customization data about this app with Mozilla to help us make Thunderbird better</string>
 </resources>

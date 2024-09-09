@@ -1,6 +1,7 @@
 package com.fsck.k9.storage
 
 import android.app.Application
+import app.k9mail.feature.telemetry.api.TelemetryManager
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.AppConfig
 import com.fsck.k9.Core
@@ -32,4 +33,9 @@ val testModule = module {
     single { mock<EncryptionExtractor>() }
     single<StoragePersister> { K9StoragePersister(get()) }
     single { mock<BackendManager>() }
+    single<TelemetryManager> {
+        object : TelemetryManager {
+            override fun isTelemetryFeatureIncluded(): Boolean = true
+        }
+    }
 }
