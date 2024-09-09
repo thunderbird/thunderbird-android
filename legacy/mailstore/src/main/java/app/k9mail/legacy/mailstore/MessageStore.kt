@@ -275,9 +275,9 @@ interface MessageStore {
     fun setPushClass(folderId: Long, folderClass: FolderClass)
 
     /**
-     * Update the notification class of a folder.
+     * Update the notifications setting of a folder.
      */
-    fun setNotificationClass(folderId: Long, folderClass: FolderClass)
+    fun setNotificationsEnabled(folderId: Long, enable: Boolean)
 
     /**
      * Get the 'more messages' state of a folder.

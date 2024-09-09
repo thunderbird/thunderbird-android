@@ -21,6 +21,7 @@ class FolderSettingsDataStore(
         return when (key) {
             "folder_settings_in_top_group" -> folder.isInTopGroup
             "folder_settings_include_in_integrated_inbox" -> folder.isIntegrate
+            "folder_settings_notifications" -> folder.isNotificationsEnabled
             else -> error("Unknown key: $key")
         }
     }
@@ -29,6 +30,7 @@ class FolderSettingsDataStore(
         return when (key) {
             "folder_settings_in_top_group" -> updateFolder(folder.copy(isInTopGroup = value))
             "folder_settings_include_in_integrated_inbox" -> updateFolder(folder.copy(isIntegrate = value))
+            "folder_settings_notifications" -> updateFolder(folder.copy(isNotificationsEnabled = value))
             else -> error("Unknown key: $key")
         }
     }
@@ -37,7 +39,6 @@ class FolderSettingsDataStore(
         return when (key) {
             "folder_settings_folder_display_mode" -> folder.displayClass.name
             "folder_settings_folder_sync_mode" -> folder.syncClass.name
-            "folder_settings_folder_notify_mode" -> folder.notifyClass.name
             "folder_settings_folder_push_mode" -> folder.pushClass.name
             else -> error("Unknown key: $key")
         }
@@ -53,10 +54,6 @@ class FolderSettingsDataStore(
 
             "folder_settings_folder_sync_mode" -> {
                 updateFolder(folder.copy(syncClass = FolderClass.valueOf(newValue)))
-            }
-
-            "folder_settings_folder_notify_mode" -> {
-                updateFolder(folder.copy(notifyClass = FolderClass.valueOf(newValue)))
             }
 
             "folder_settings_folder_push_mode" -> {

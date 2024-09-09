@@ -32,38 +32,13 @@ class K9NotificationStrategy(
             return false
         }
 
-        val folder = message.folder
-        if (folder != null) {
-            when (folder.databaseId) {
-                account.inboxFolderId -> {
-                    // Don't skip notifications if the Inbox folder is also configured as another special folder
-                }
-                account.trashFolderId -> {
-                    Timber.v("No notification: Message is in Trash folder")
-                    return false
-                }
-                account.draftsFolderId -> {
-                    Timber.v("No notification: Message is in Drafts folder")
-                    return false
-                }
-                account.spamFolderId -> {
-                    Timber.v("No notification: Message is in Spam folder")
-                    return false
-                }
-                account.sentFolderId -> {
-                    Timber.v("No notification: Message is in Sent folder")
-                    return false
-                }
-            }
-        }
-
         if (isModeMismatch(account.folderDisplayMode, localFolder.displayClass)) {
             Timber.v("No notification: Message is in folder not being displayed")
             return false
         }
 
-        if (isModeMismatch(account.folderNotifyNewMailMode, localFolder.notifyClass)) {
-            Timber.v("No notification: Notifications are disabled for this folder class")
+        if (!localFolder.isNotificationsEnabled) {
+            Timber.v("No notification: Notifications are not enabled for this folder")
             return false
         }
 

@@ -84,7 +84,7 @@ internal fun createFolderSettingsProvider(): FolderSettingsProvider {
                 visibleLimit = 25,
                 displayClass = FolderClass.NO_CLASS,
                 syncClass = FolderClass.INHERITED,
-                notifyClass = FolderClass.INHERITED,
+                isNotificationsEnabled = false,
                 pushClass = FolderClass.SECOND_CLASS,
                 inTopGroup = false,
                 integrate = false,

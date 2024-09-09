@@ -3,6 +3,7 @@ package com.fsck.k9.storage.migrations
 import android.database.sqlite.SQLiteDatabase
 import com.fsck.k9.mailstore.MigrationsHelper
 
+@Suppress("MagicNumber")
 object Migrations {
     @JvmStatic
     fun upgradeDatabase(db: SQLiteDatabase, migrationsHelper: MigrationsHelper) {
@@ -30,5 +31,6 @@ object Migrations {
         if (oldVersion < 82) MigrationTo82(db).addNewMessageColumn()
         if (oldVersion < 83) MigrationTo83(db, migrationsHelper).rewriteHighestKnownUid()
         if (oldVersion < 84) MigrationTo84(db).rewriteAddresses()
+        if (oldVersion < 85) MigrationTo85(db, migrationsHelper).addFoldersNotificationsEnabledColumn()
     }
 }

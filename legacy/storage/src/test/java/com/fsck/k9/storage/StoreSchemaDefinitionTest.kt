@@ -4,6 +4,7 @@ import android.database.sqlite.SQLiteDatabase
 import androidx.core.content.contentValuesOf
 import app.k9mail.core.android.common.database.map
 import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.Account.FolderMode
 import assertk.Assert
 import assertk.assertFailure
 import assertk.assertThat
@@ -408,6 +409,8 @@ class StoreSchemaDefinitionTest : RobolectricTest() {
                 password = "",
                 clientCertificateAlias = null,
             )
+
+            on { folderNotifyNewMailMode } doReturn FolderMode.ALL
         }
     }
 

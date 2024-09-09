@@ -16,7 +16,7 @@ fun SQLiteDatabase.createFolder(
     inTopGroup: Boolean = false,
     displayClass: String = "NO_CLASS",
     syncClass: String? = "INHERITED",
-    notifyClass: String? = "INHERITED",
+    notificationsEnabled: Boolean = false,
     pushClass: String? = "SECOND_CLASS",
     lastUpdated: Long = 0L,
     unreadCount: Int = 0,
@@ -34,7 +34,7 @@ fun SQLiteDatabase.createFolder(
         put("top_group", inTopGroup)
         put("display_class", displayClass)
         put("poll_class", syncClass)
-        put("notify_class", notifyClass)
+        put("notifications_enabled", notificationsEnabled)
         put("push_class", pushClass)
         put("last_updated", lastUpdated)
         put("unread_count", unreadCount)
@@ -61,7 +61,7 @@ fun SQLiteDatabase.readFolders(): List<FolderEntry> {
                 inTopGroup = cursor.getIntOrNull("top_group"),
                 displayClass = cursor.getStringOrNull("display_class"),
                 syncClass = cursor.getStringOrNull("poll_class"),
-                notifyClass = cursor.getStringOrNull("notify_class"),
+                notificationsEnabled = cursor.getIntOrNull("notifications_enabled"),
                 pushClass = cursor.getStringOrNull("push_class"),
                 lastUpdated = cursor.getLongOrNull("last_updated"),
                 unreadCount = cursor.getIntOrNull("unread_count"),
@@ -84,7 +84,7 @@ data class FolderEntry(
     val inTopGroup: Int?,
     val displayClass: String?,
     val syncClass: String?,
-    val notifyClass: String?,
+    val notificationsEnabled: Int?,
     val pushClass: String?,
     val lastUpdated: Long?,
     val unreadCount: Int?,

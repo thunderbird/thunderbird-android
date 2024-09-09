@@ -43,8 +43,8 @@ class ListenableMessageStore(private val messageStore: MessageStore) : MessageSt
         notifyFolderSettingsChanged()
     }
 
-    override fun setNotificationClass(folderId: Long, folderClass: FolderClass) {
-        messageStore.setNotificationClass(folderId, folderClass)
+    override fun setNotificationsEnabled(folderId: Long, enable: Boolean) {
+        messageStore.setNotificationsEnabled(folderId, enable)
         notifyFolderSettingsChanged()
     }
 

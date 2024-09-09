@@ -128,7 +128,7 @@ class FolderRepository(
                 isIntegrate = folder.isIntegrate,
                 syncClass = folder.syncClass,
                 displayClass = folder.displayClass,
-                notifyClass = folder.notifyClass,
+                isNotificationsEnabled = folder.isNotificationsEnabled,
                 pushClass = folder.pushClass,
             )
         }
@@ -160,7 +160,7 @@ class FolderRepository(
                 isIntegrate = folder.isIntegrate,
                 syncClass = folder.syncClass,
                 displayClass = folder.displayClass,
-                notifyClass = folder.notifyClass,
+                isNotificationsEnabled = folder.isNotificationsEnabled,
                 pushClass = folder.pushClass,
             )
         }
@@ -254,9 +254,9 @@ class FolderRepository(
         messageStore.setPushClass(folderId, folderClass)
     }
 
-    fun setNotificationClass(account: Account, folderId: Long, folderClass: FolderClass) {
+    fun setNotificationsEnabled(account: Account, folderId: Long, enable: Boolean) {
         val messageStore = messageStoreManager.getMessageStore(account)
-        messageStore.setNotificationClass(folderId, folderClass)
+        messageStore.setNotificationsEnabled(folderId, enable)
     }
 
     private fun folderTypeOf(account: Account, folderId: Long) = when (folderId) {
@@ -303,6 +303,6 @@ data class RemoteFolderDetails(
     val isIntegrate: Boolean,
     val syncClass: FolderClass,
     val displayClass: FolderClass,
-    val notifyClass: FolderClass,
+    val isNotificationsEnabled: Boolean,
     val pushClass: FolderClass,
 )
