@@ -17,9 +17,11 @@ fun CatalogOrganismContent(
         pages = pages,
         initialPage = initialPage,
         modifier = modifier,
-    ) {
-        when (it) {
-            APP_BAR -> appBarItems()
-        }
-    }
+        onRenderPage = {
+            when (it) {
+                APP_BAR -> appBarItems()
+            }
+        },
+        onRenderFullScreenPage = {},
+    )
 }
