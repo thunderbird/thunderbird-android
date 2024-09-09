@@ -9,6 +9,6 @@ import app.k9mail.legacy.mailstore.FolderRepository
 
 class ManageFoldersViewModel(private val folderRepository: FolderRepository) : ViewModel() {
     fun getFolders(account: Account): LiveData<List<DisplayFolder>> {
-        return folderRepository.getDisplayFoldersFlow(account).asLiveData()
+        return folderRepository.getDisplayFoldersFlow(account.uuid).asLiveData()
     }
 }

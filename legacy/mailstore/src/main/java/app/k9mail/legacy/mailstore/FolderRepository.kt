@@ -91,8 +91,8 @@ class FolderRepository(
             .flowOn(ioDispatcher)
     }
 
-    fun getDisplayFoldersFlow(account: Account): Flow<List<DisplayFolder>> {
-        return accountManager.getAccountFlow(account.uuid)
+    fun getDisplayFoldersFlow(accountUuid: String): Flow<List<DisplayFolder>> {
+        return accountManager.getAccountFlow(accountUuid)
             .map { latestAccount ->
                 AccountContainer(latestAccount, latestAccount.folderDisplayMode)
             }

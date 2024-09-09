@@ -33,7 +33,7 @@ class FoldersViewModel(
             if (account == null) {
                 flowOf(0 to emptyList())
             } else {
-                folderRepository.getDisplayFoldersFlow(account)
+                folderRepository.getDisplayFoldersFlow(account.uuid)
                     .map { displayFolders ->
                         account.accountNumber to displayFolders
                     }
