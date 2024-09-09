@@ -1,9 +1,10 @@
 package app.k9mail.feature.settings.import.ui
 
-import android.content.Context
+import android.content.ContentResolver
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
+import androidx.core.net.toUri
 import androidx.core.os.BundleCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -17,8 +18,11 @@ import com.fsck.k9.preferences.ImportResults
 import com.fsck.k9.preferences.SettingsImporter
 import com.fsck.k9.ui.base.bundle.getEnum
 import com.fsck.k9.ui.base.bundle.putEnum
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -29,10 +33,13 @@ private typealias AccountUuid = String
 private typealias AccountNumber = Int
 
 internal class SettingsImportViewModel(
-    private val context: Context,
+    private val contentResolver: ContentResolver,
     private val settingsImporter: SettingsImporter,
     private val accountActivator: AccountActivator,
-) : ViewModel() {
+    private val importAppFetcher: ImportAppFetcher,
+    private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    viewModelScope: CoroutineScope = CoroutineScope(Dispatchers.Main.immediate + SupervisorJob()),
+) : ViewModel(viewModelScope) {
     private val uiModelLiveData = MutableLiveData<SettingsImportUiModel>()
     private val actionLiveData = SingleLiveEvent<Action>()
 
@@ -61,6 +68,25 @@ internal class SettingsImportViewModel(
                 }
                 .toSet()
         }
+
+    init {
+        checkForImportApps()
+    }
+
+    private fun checkForImportApps() {
+        viewModelScope.launch {
+            val isAtLeastOneAppInstalled = withContext(backgroundDispatcher) {
+                importAppFetcher.isAtLeastOneAppInstalled()
+            }
+
+            updateUiModel {
+                if (isAtLeastOneAppInstalled) {
+                    isPickAppButtonPermanentlyDisabled = false
+                    isPickAppButtonEnabled = isPickDocumentButtonEnabled
+                }
+            }
+        }
+    }
 
     fun getActionEvents(): LiveData<Action> = actionLiveData
 
@@ -169,15 +195,23 @@ internal class SettingsImportViewModel(
 
     fun onPickDocumentButtonClicked() {
         updateUiModel {
-            disablePickDocumentButton()
+            disablePickButtons()
         }
 
         sendActionEvent(Action.PickDocument)
     }
 
+    fun onPickAppButtonClicked() {
+        updateUiModel {
+            disablePickButtons()
+        }
+
+        sendActionEvent(Action.PickApp)
+    }
+
     fun onDocumentPickCanceled() {
         updateUiModel {
-            enablePickDocumentButton()
+            enablePickButtons()
         }
     }
 
@@ -187,6 +221,20 @@ internal class SettingsImportViewModel(
         }
 
         startReadSettingsFile(contentUri)
+    }
+
+    fun onAppPickCanceled() {
+        updateUiModel {
+            enablePickButtons()
+        }
+    }
+
+    fun onAppPicked(packageName: String) {
+        updateUiModel {
+            showLoadingProgress()
+        }
+
+        startReadSettingsFile("content://$packageName.settings/".toUri())
     }
 
     fun onImportButtonClicked() {
@@ -228,7 +276,7 @@ internal class SettingsImportViewModel(
             updateCloseButtonAndImportStatusText()
         }
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(backgroundDispatcher) {
             withContext(NonCancellable) {
                 with(result) {
                     accountActivator.enableAccount(accountUuid, incomingServerPassword, outgoingServerPassword)
@@ -246,7 +294,7 @@ internal class SettingsImportViewModel(
                 updateCloseButtonAndImportStatusText()
             }
 
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch(backgroundDispatcher) {
                 withContext(NonCancellable) {
                     accountActivator.enableAccount(accountUuid)
                 }
@@ -266,7 +314,7 @@ internal class SettingsImportViewModel(
         viewModelScope.launch {
             try {
                 val (elapsed, contents) = measureRealtimeMillisWithResult {
-                    withContext(Dispatchers.IO) {
+                    withContext(backgroundDispatcher) {
                         readSettings(contentUri)
                     }
                 }
@@ -310,7 +358,7 @@ internal class SettingsImportViewModel(
                 val importAccounts = selectedAccounts.toList()
 
                 val (elapsed, importResults) = measureRealtimeMillisWithResult {
-                    withContext(Dispatchers.IO) {
+                    withContext(backgroundDispatcher) {
                         importSettings(contentUri, importGeneralSettings, importAccounts)
                     }
                 }
@@ -387,7 +435,7 @@ internal class SettingsImportViewModel(
     }
 
     private fun readSettings(contentUri: Uri): ImportContents {
-        val inputStream = context.contentResolver.openInputStream(contentUri)
+        val inputStream = contentResolver.openInputStream(contentUri)
             ?: error("Failed to open settings file for reading: $contentUri")
 
         return inputStream.use {
@@ -396,7 +444,7 @@ internal class SettingsImportViewModel(
     }
 
     private fun importSettings(contentUri: Uri, generalSettings: Boolean, accounts: List<AccountUuid>): ImportResults {
-        val inputStream = context.contentResolver.openInputStream(contentUri)
+        val inputStream = contentResolver.openInputStream(contentUri)
             ?: error("Failed to open settings file for reading: $contentUri")
 
         return inputStream.use {
@@ -486,6 +534,7 @@ internal class SettingsImportViewModel(
 sealed class Action {
     class Close(val importSuccess: Boolean) : Action()
     object PickDocument : Action()
+    object PickApp : Action()
     class StartAuthorization(val accountUuid: String) : Action()
     class PasswordPrompt(
         val accountUuid: String,

@@ -2,6 +2,8 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="settings_import_title">Import settings</string>
     <string name="settings_import_pick_document_button">Select file</string>
+    <string name="settings_import_pick_app_button">Import from app</string>
+    <string name="settings_import_pick_app_dialog_title">Import from app</string>
     <string name="settings_import_button">Import</string>
     <string name="settings_import_success_generic">Settings successfully imported</string>
     <!-- Displayed after importing accounts when one or multiple accounts require entering a password -->
