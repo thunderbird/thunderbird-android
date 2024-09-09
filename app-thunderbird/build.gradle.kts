@@ -122,6 +122,8 @@ android {
             isMinifyEnabled = false
             isShrinkResources = false
             isDebuggable = true
+
+            buildConfigField("String", "RELEASE_CHANNEL", "null")
         }
 
         release {
@@ -135,6 +137,8 @@ android {
                 getDefaultProguardFile("proguard-android.txt"),
                 "proguard-rules.pro",
             )
+
+            buildConfigField("String", "RELEASE_CHANNEL", "\"release\"")
         }
 
         create("beta") {
@@ -153,6 +157,8 @@ android {
                 getDefaultProguardFile("proguard-android.txt"),
                 "proguard-rules.pro",
             )
+
+            buildConfigField("String", "RELEASE_CHANNEL", "\"beta\"")
         }
 
         create("daily") {
@@ -171,6 +177,8 @@ android {
                 getDefaultProguardFile("proguard-android.txt"),
                 "proguard-rules.pro",
             )
+
+            buildConfigField("String", "RELEASE_CHANNEL", "\"daily\"")
         }
     }
 
