@@ -113,4 +113,4 @@ private fun ColorScheme.toDynamicThemeColorScheme(
     )
 }
 
-private fun Color.toHarmonizedColor(target: Color) = Color(MaterialColors.harmonize(toArgb(), target.toArgb()))
+fun Color.toHarmonizedColor(target: Color) = Color(MaterialColors.harmonize(toArgb(), target.toArgb()))
