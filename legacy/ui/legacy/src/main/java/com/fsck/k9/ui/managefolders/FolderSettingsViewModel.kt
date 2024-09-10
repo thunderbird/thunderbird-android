@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
+import app.k9mail.core.mail.folder.api.Folder
+import app.k9mail.core.mail.folder.api.FolderDetails
 import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.folder.Folder
-import app.k9mail.legacy.folder.FolderDetails
 import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController

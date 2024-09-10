@@ -1,13 +1,13 @@
 package app.k9mail.legacy.mailstore
 
+import app.k9mail.core.mail.folder.api.Folder
+import app.k9mail.core.mail.folder.api.FolderDetails
+import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Account.FolderMode
 import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.di.DI
 import app.k9mail.legacy.folder.DisplayFolder
-import app.k9mail.legacy.folder.Folder
-import app.k9mail.legacy.folder.FolderDetails
-import app.k9mail.legacy.folder.FolderType
 import app.k9mail.legacy.folder.RemoteFolder
 import app.k9mail.legacy.message.controller.MessagingControllerRegistry
 import app.k9mail.legacy.message.controller.SimpleMessagingListener

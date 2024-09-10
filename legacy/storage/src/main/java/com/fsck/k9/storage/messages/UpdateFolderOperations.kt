@@ -1,7 +1,7 @@
 package com.fsck.k9.storage.messages
 
 import android.content.ContentValues
-import app.k9mail.legacy.folder.FolderDetails
+import app.k9mail.core.mail.folder.api.FolderDetails
 import app.k9mail.legacy.mailstore.MoreMessages
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType

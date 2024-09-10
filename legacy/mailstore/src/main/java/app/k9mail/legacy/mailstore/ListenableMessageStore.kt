@@ -1,6 +1,6 @@
 package app.k9mail.legacy.mailstore
 
-import app.k9mail.legacy.folder.FolderDetails
+import app.k9mail.core.mail.folder.api.FolderDetails
 import com.fsck.k9.mail.FolderClass
 import java.util.concurrent.CopyOnWriteArraySet
 

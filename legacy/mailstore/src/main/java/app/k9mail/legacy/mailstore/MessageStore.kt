@@ -1,7 +1,7 @@
 package app.k9mail.legacy.mailstore
 
+import app.k9mail.core.mail.folder.api.FolderDetails
 import app.k9mail.legacy.account.Account.FolderMode
-import app.k9mail.legacy.folder.FolderDetails
 import app.k9mail.legacy.search.ConditionsTreeNode
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderClass

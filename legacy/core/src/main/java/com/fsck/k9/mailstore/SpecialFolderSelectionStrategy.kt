@@ -1,6 +1,6 @@
 package com.fsck.k9.mailstore
 
-import app.k9mail.legacy.folder.FolderType
+import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.legacy.folder.RemoteFolder
 
 /**

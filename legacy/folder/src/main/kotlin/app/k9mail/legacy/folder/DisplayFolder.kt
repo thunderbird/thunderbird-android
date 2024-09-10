@@ -1,5 +1,7 @@
 package app.k9mail.legacy.folder
 
+import app.k9mail.core.mail.folder.api.Folder
+
 data class DisplayFolder(
     val folder: Folder,
     val isInTopGroup: Boolean,

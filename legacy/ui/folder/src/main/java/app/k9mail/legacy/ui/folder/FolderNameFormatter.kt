@@ -1,8 +1,8 @@
 package app.k9mail.legacy.ui.folder
 
 import android.content.res.Resources
-import app.k9mail.legacy.folder.Folder
-import app.k9mail.legacy.folder.FolderType
+import app.k9mail.core.mail.folder.api.Folder
+import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.legacy.folder.RemoteFolder
 
 class FolderNameFormatter(private val resources: Resources) {

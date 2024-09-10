@@ -1,9 +1,9 @@
 package app.k9mail.feature.widget.unread
 
 import android.content.Context
+import app.k9mail.core.mail.folder.api.Folder
+import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.folder.Folder
-import app.k9mail.legacy.folder.FolderType
 import app.k9mail.legacy.mailstore.FolderRepository
 import app.k9mail.legacy.message.controller.MessageCounts
 import app.k9mail.legacy.message.controller.MessageCountsProvider

@@ -14,4 +14,5 @@ dependencies {
     implementation(projects.legacy.search)
 
     implementation(projects.mail.common)
+    implementation(projects.core.mail.folder.api)
 }
