@@ -9,6 +9,7 @@ import java.util.TreeMap;
 
 import android.content.Context;
 
+import app.k9mail.feature.telemetry.api.TelemetryManager;
 import app.k9mail.legacy.account.Account;
 import app.k9mail.legacy.account.Account.SortType;
 import app.k9mail.legacy.di.DI;
@@ -47,6 +48,8 @@ import static com.fsck.k9.K9.LockScreenNotificationVisibility;
 class GeneralSettingsDescriptions {
     static final Map<String, TreeMap<Integer, SettingsDescription<?>>> SETTINGS;
     private static final Map<Integer, SettingsUpgrader> UPGRADERS;
+
+    private static final TelemetryManager telemetryManager = DI.get(TelemetryManager.class);
 
     static {
         Map<String, TreeMap<Integer, SettingsDescription<?>>> s = new LinkedHashMap<>();
@@ -297,6 +300,13 @@ class GeneralSettingsDescriptions {
             new V(90,
                 new EnumSetting<>(PostMarkAsUnreadNavigation.class, PostMarkAsUnreadNavigation.ReturnToMessageList))
         ));
+
+        // TODO: Add a way to properly support feature-specific settings.
+        if (telemetryManager.isTelemetryFeatureIncluded()) {
+            s.put("enableTelemetry", Settings.versions(
+                new V(97, new BooleanSetting(true))
+            ));
+        }
 
         SETTINGS = Collections.unmodifiableMap(s);
 

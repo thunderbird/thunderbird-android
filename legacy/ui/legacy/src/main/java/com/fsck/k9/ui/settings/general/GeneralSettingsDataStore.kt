@@ -45,6 +45,7 @@ class GeneralSettingsDataStore(
             "debug_logging" -> K9.isDebugLoggingEnabled
             "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled
             "volume_navigation" -> K9.isUseVolumeKeysForNavigation
+            "enable_telemetry" -> K9.isTelemetryEnabled
             else -> defValue
         }
     }
@@ -74,6 +75,7 @@ class GeneralSettingsDataStore(
             "debug_logging" -> K9.isDebugLoggingEnabled = value
             "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled = value
             "volume_navigation" -> K9.isUseVolumeKeysForNavigation = value
+            "enable_telemetry" -> K9.isTelemetryEnabled = value
             else -> return
         }
 

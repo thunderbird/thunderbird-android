@@ -76,6 +76,11 @@ include(
 )
 
 include(
+    ":feature:telemetry:api",
+    ":feature:telemetry:glean",
+)
+
+include(
     ":core:common",
     ":core:featureflags",
     ":core:testing",
