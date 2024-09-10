@@ -1,4 +1,4 @@
-package app.k9mail.legacy.ui.account
+package app.k9mail.feature.navigation.drawer.legacy
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +9,7 @@ import app.k9mail.legacy.mailstore.MessageListChangedListener
 import app.k9mail.legacy.mailstore.MessageListRepository
 import app.k9mail.legacy.message.controller.MessageCounts
 import app.k9mail.legacy.message.controller.MessageCountsProvider
+import app.k9mail.legacy.ui.account.DisplayAccount
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
