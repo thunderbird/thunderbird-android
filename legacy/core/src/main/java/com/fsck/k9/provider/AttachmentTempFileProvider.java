@@ -43,12 +43,12 @@ public class AttachmentTempFileProvider extends FileProvider {
     }
 
     @WorkerThread
-    public static Uri createTempUriForContentUri(Context context, Uri uri) throws IOException {
+    public static Uri createTempUriForContentUri(Context context, Uri uri, String displayName) throws IOException {
         Context applicationContext = context.getApplicationContext();
 
         File tempFile = getTempFileForUri(uri, applicationContext);
         writeUriContentToTempFileIfNotExists(context, uri, tempFile);
-        Uri tempFileUri = FileProvider.getUriForFile(context, AUTHORITY, tempFile);
+        Uri tempFileUri = FileProvider.getUriForFile(context, AUTHORITY, tempFile, displayName);
 
         registerFileCleanupReceiver(applicationContext);
 
