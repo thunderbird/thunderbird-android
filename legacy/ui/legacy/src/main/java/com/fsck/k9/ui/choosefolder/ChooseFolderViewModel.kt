@@ -7,14 +7,16 @@ import androidx.lifecycle.viewModelScope
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Account.FolderMode
 import app.k9mail.legacy.folder.DisplayFolder
-import app.k9mail.legacy.mailstore.FolderRepository
+import app.k9mail.legacy.mailstore.DisplayFolderRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class ChooseFolderViewModel(private val folderRepository: FolderRepository) : ViewModel() {
+class ChooseFolderViewModel(
+    private val folderRepository: DisplayFolderRepository,
+) : ViewModel() {
     private val inputFlow = MutableSharedFlow<DisplayMode>(replay = 1)
     private val foldersFlow = inputFlow
         .flatMapLatest { (account, displayMode) ->
