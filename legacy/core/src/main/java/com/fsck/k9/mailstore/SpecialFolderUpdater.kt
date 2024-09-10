@@ -52,7 +52,6 @@ class SpecialFolderUpdater(
             folderRepository.setIncludeInUnifiedInbox(account, newInboxId, true)
             folderRepository.setDisplayClass(account, newInboxId, FolderClass.FIRST_CLASS)
             folderRepository.setSyncClass(account, newInboxId, FolderClass.FIRST_CLASS)
-            folderRepository.setPushClass(account, newInboxId, FolderClass.FIRST_CLASS)
             folderRepository.setNotificationsEnabled(account, newInboxId, true)
         }
     }

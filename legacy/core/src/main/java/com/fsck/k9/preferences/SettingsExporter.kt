@@ -416,7 +416,7 @@ class SettingsExporter(
         writeFolderSetting(serializer, "syncMode", folder.syncClass.name)
         writeFolderSetting(serializer, "displayMode", folder.displayClass.name)
         writeFolderSetting(serializer, "notificationsEnabled", folder.isNotificationsEnabled.toString())
-        writeFolderSetting(serializer, "pushMode", folder.pushClass.name)
+        writeFolderSetting(serializer, "pushEnabled", folder.isPushEnabled.toString())
 
         serializer.endTag(null, FOLDER_ELEMENT)
     }

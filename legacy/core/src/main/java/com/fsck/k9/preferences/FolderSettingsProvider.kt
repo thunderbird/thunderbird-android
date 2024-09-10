@@ -18,7 +18,7 @@ class FolderSettingsProvider(private val folderRepository: FolderRepository) {
             syncClass == getDefaultValue("syncMode") &&
             displayClass == getDefaultValue("displayMode") &&
             isNotificationsEnabled == getDefaultValue("notificationsEnabled") &&
-            pushClass == getDefaultValue("pushMode")
+            isPushEnabled == getDefaultValue("pushEnabled")
     }
 
     private fun getDefaultValue(key: String): Any? {
@@ -36,7 +36,7 @@ class FolderSettingsProvider(private val folderRepository: FolderRepository) {
             syncClass,
             displayClass,
             isNotificationsEnabled,
-            pushClass,
+            isPushEnabled,
         )
     }
 }
@@ -48,5 +48,5 @@ data class FolderSettings(
     val syncClass: FolderClass,
     val displayClass: FolderClass,
     val isNotificationsEnabled: Boolean,
-    val pushClass: FolderClass,
+    val isPushEnabled: Boolean,
 )

@@ -501,13 +501,6 @@
     <string name="account_settings_folder_sync_mode_not_second_class">All except 2nd Class folders</string>
     <string name="account_settings_folder_sync_mode_none">None</string>
 
-    <string name="account_settings_folder_push_mode_label">Push folders</string>
-    <string name="account_settings_folder_push_mode_all">All</string>
-    <string name="account_settings_folder_push_mode_first_class">Only 1st Class folders</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">1st and 2nd Class folders</string>
-    <string name="account_settings_folder_push_mode_not_second_class">All except 2nd Class folders</string>
-    <string name="account_settings_folder_push_mode_none">None</string>
-
     <string name="account_settings_sync_remote_deletetions_label">Sync server deletions</string>
     <string name="account_settings_sync_remote_deletetions_summary">Remove messages when deleted on server</string>
 
@@ -529,12 +522,7 @@
     <string name="folder_settings_folder_sync_mode_second_class">2nd Class</string>
     <string name="folder_settings_folder_sync_mode_inherited">Same as display class</string>
 
-    <string name="folder_settings_folder_push_mode_label">Folder push class</string>
-    <string name="folder_settings_folder_push_mode_normal">No Class</string>
-    <string name="folder_settings_folder_push_mode_first_class">1st Class</string>
-    <string name="folder_settings_folder_push_mode_second_class">2nd Class</string>
-    <string name="folder_settings_folder_push_mode_inherited">Same as poll class</string>
-
+    <string name="folder_settings_push_label">Enable Push</string>
     <string name="folder_settings_notifications_label">Notifications</string>
     <string name="folder_settings_clear_local_folder_action">Clear local messages</string>
 

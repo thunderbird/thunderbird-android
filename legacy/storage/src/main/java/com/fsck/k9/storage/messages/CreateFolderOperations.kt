@@ -16,7 +16,7 @@ internal class CreateFolderOperations(private val lockableDatabase: LockableData
                     put("integrate", folderSettings.integrate)
                     put("top_group", folderSettings.inTopGroup)
                     put("poll_class", folderSettings.syncClass.name)
-                    put("push_class", folderSettings.pushClass.name)
+                    put("push_enabled", folderSettings.isPushEnabled)
                     put("display_class", folderSettings.displayClass.name)
                     put("notifications_enabled", folderSettings.isNotificationsEnabled)
                     put("server_id", folder.serverId)

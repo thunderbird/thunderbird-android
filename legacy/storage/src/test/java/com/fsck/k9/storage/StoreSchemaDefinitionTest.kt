@@ -411,6 +411,7 @@ class StoreSchemaDefinitionTest : RobolectricTest() {
             )
 
             on { folderNotifyNewMailMode } doReturn FolderMode.ALL
+            on { folderPushMode } doReturn FolderMode.ALL
         }
     }
 

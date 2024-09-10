@@ -45,13 +45,9 @@
             android:dialogTitle="@string/folder_settings_folder_sync_mode_label"
             />
 
-        <ListPreference
-            android:key="folder_settings_folder_push_mode"
-            android:title="@string/folder_settings_folder_push_mode_label"
-            app:useSimpleSummaryProvider="true"
-            android:entries="@array/folder_settings_folder_push_mode_entries"
-            android:entryValues="@array/folder_settings_folder_push_mode_values"
-            android:dialogTitle="@string/folder_settings_folder_push_mode_label"
+        <SwitchPreference
+            android:key="folder_settings_push"
+            android:title="@string/folder_settings_push_label"
             />
 
         <SwitchPreference

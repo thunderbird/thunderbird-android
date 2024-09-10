@@ -38,7 +38,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             displayClass = "FIRST_CLASS",
             syncClass = "FIRST_CLASS",
             notificationsEnabled = true,
-            pushClass = "NO_CLASS",
+            pushEnabled = true,
         )
 
         val result = retrieveFolderOperations.getFolder(folderId) { folder ->
@@ -52,7 +52,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             assertThat(folder.displayClass).isEqualTo(FolderClass.FIRST_CLASS)
             assertThat(folder.syncClass).isEqualTo(FolderClass.FIRST_CLASS)
             assertThat(folder.isNotificationsEnabled).isEqualTo(true)
-            assertThat(folder.pushClass).isEqualTo(FolderClass.NO_CLASS)
+            assertThat(folder.isPushEnabled).isEqualTo(true)
             true
         }
 
@@ -72,7 +72,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             displayClass = FolderClass.FIRST_CLASS.name,
             syncClass = null,
             notificationsEnabled = true,
-            pushClass = null,
+            pushEnabled = false,
         )
 
         val result = retrieveFolderOperations.getFolder(folderId) { folder ->
@@ -86,7 +86,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             assertThat(folder.displayClass).isEqualTo(FolderClass.FIRST_CLASS)
             assertThat(folder.syncClass).isEqualTo(FolderClass.INHERITED)
             assertThat(folder.isNotificationsEnabled).isEqualTo(true)
-            assertThat(folder.pushClass).isEqualTo(FolderClass.SECOND_CLASS)
+            assertThat(folder.isPushEnabled).isEqualTo(false)
             true
         }
 
@@ -112,7 +112,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             displayClass = "FIRST_CLASS",
             syncClass = "FIRST_CLASS",
             notificationsEnabled = true,
-            pushClass = "NO_CLASS",
+            pushEnabled = false,
         )
 
         val result = retrieveFolderOperations.getFolder("folder1") { folder ->
@@ -126,7 +126,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             assertThat(folder.displayClass).isEqualTo(FolderClass.FIRST_CLASS)
             assertThat(folder.syncClass).isEqualTo(FolderClass.FIRST_CLASS)
             assertThat(folder.isNotificationsEnabled).isEqualTo(true)
-            assertThat(folder.pushClass).isEqualTo(FolderClass.NO_CLASS)
+            assertThat(folder.isPushEnabled).isEqualTo(false)
             true
         }
 
@@ -152,7 +152,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             displayClass = "FIRST_CLASS",
             syncClass = "FIRST_CLASS",
             notificationsEnabled = true,
-            pushClass = "NO_CLASS",
+            pushEnabled = false,
         )
 
         val result = retrieveFolderOperations.getFolders { folder ->
@@ -166,7 +166,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             assertThat(folder.displayClass).isEqualTo(FolderClass.FIRST_CLASS)
             assertThat(folder.syncClass).isEqualTo(FolderClass.FIRST_CLASS)
             assertThat(folder.isNotificationsEnabled).isEqualTo(true)
-            assertThat(folder.pushClass).isEqualTo(FolderClass.NO_CLASS)
+            assertThat(folder.isPushEnabled).isEqualTo(false)
             true
         }
 

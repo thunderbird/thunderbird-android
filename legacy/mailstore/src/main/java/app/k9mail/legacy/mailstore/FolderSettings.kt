@@ -7,7 +7,7 @@ data class FolderSettings(
     val displayClass: FolderClass,
     val syncClass: FolderClass,
     val isNotificationsEnabled: Boolean,
-    val pushClass: FolderClass,
+    val isPushEnabled: Boolean,
     val inTopGroup: Boolean,
     val integrate: Boolean,
 )
