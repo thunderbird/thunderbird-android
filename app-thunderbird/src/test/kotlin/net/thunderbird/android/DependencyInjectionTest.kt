@@ -28,8 +28,10 @@ import org.mockito.kotlin.mock
 import org.openintents.openpgp.OpenPgpApiManager
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
+import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
+@Config(application = TestApp::class)
 class DependencyInjectionTest : AutoCloseKoinTest() {
     private val lifecycleOwner = mock<LifecycleOwner> {
         on { lifecycle } doReturn mock()

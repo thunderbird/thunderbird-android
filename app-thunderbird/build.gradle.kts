@@ -183,7 +183,11 @@ dependencies {
     implementation(projects.feature.widget.messageList)
     implementation(projects.feature.widget.shortcut)
     implementation(projects.feature.widget.unread)
-    implementation(projects.feature.telemetry.glean)
+
+    debugImplementation(projects.feature.telemetry.noop)
+    releaseImplementation(projects.feature.telemetry.glean)
+    "betaImplementation"(projects.feature.telemetry.glean)
+    "dailyImplementation"(projects.feature.telemetry.glean)
 
     implementation(libs.androidx.work.runtime)
 

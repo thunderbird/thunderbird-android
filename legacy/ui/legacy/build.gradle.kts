@@ -67,6 +67,7 @@ dependencies {
     testImplementation(projects.mail.testing)
     testImplementation(projects.legacy.storage)
     testImplementation(projects.legacy.testing)
+    testImplementation(projects.feature.telemetry.noop)
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.test.core)
     testImplementation(libs.kotlin.test)

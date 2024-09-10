@@ -2,7 +2,7 @@ package com.fsck.k9
 
 import android.app.Application
 import androidx.work.WorkManager
-import app.k9mail.feature.telemetry.api.TelemetryManager
+import app.k9mail.feature.telemetry.telemetryModule
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.controller.ControllerExtension
@@ -24,7 +24,7 @@ class TestApp : Application() {
         super.onCreate()
         DI.start(
             application = this,
-            modules = coreModules + storageModule + testModule,
+            modules = coreModules + storageModule + telemetryModule + testModule,
             allowOverride = true,
         )
 
@@ -44,9 +44,4 @@ val testModule = module {
     single { mock<NotificationStrategy>() }
     single(named("controllerExtensions")) { emptyList<ControllerExtension>() }
     single { mock<WorkManager>() }
-    single<TelemetryManager> {
-        object : TelemetryManager {
-            override fun isTelemetryFeatureIncluded(): Boolean = true
-        }
-    }
 }

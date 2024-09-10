@@ -37,6 +37,7 @@ dependencies {
 
     testApi(projects.core.testing)
     testApi(projects.core.android.testing)
+    testImplementation(projects.feature.telemetry.noop)
     testImplementation(projects.mail.testing)
     testImplementation(projects.backend.imap)
     testImplementation(projects.mail.protocols.smtp)

@@ -83,6 +83,7 @@ minidns = "1.0.5"
 mockito = "5.13.0"
 mockitoKotlin = "5.4.0"
 moshi = "1.15.1"
+mozillaAndroidComponents = "130.0"
 okhttp = "4.12.0"
 okio = "3.9.0"
 preferencesFix = "1.1.0"
@@ -215,6 +216,8 @@ mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
 moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
 moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
+mozilla-components-glean = { module = "org.mozilla.components:service-glean", version.ref = "mozillaAndroidComponents" }
+mozilla-components-fetch-okhttp = { module = "org.mozilla.components:lib-fetch-okhttp", version.ref = "mozillaAndroidComponents" }
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 okhttp-mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "okhttp" }
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
