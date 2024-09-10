@@ -1,6 +1,5 @@
 package app.k9mail.ui.catalog.ui.common
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,16 +19,17 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContentWithSurface
 import app.k9mail.core.ui.compose.theme2.MainTheme
+import app.k9mail.ui.catalog.ui.CatalogPage
 import app.k9mail.ui.catalog.ui.common.list.fullSpanItem
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun <T> PagedContent(
+fun <T : CatalogPage> PagedContent(
     pages: ImmutableList<T>,
     initialPage: T,
     modifier: Modifier = Modifier,
+    onRenderFullScreenPage: @Composable (T) -> Unit = {},
     onRenderPage: LazyGridScope.(T) -> Unit,
 ) {
     val pagerState = rememberPagerState(
@@ -63,17 +63,21 @@ fun <T> PagedContent(
                 state = pagerState,
                 modifier = Modifier
                     .fillMaxSize(),
-            ) { page ->
-                LazyVerticalGrid(
-                    columns = GridCells.Adaptive(MainTheme.sizes.larger),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .imePadding(),
-                    horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
-                    verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
-                ) {
-                    onRenderPage(pages[page])
-                    fullSpanItem { Spacer(modifier = Modifier.height(MainTheme.sizes.smaller)) }
+            ) { pageIndex ->
+                if (pages[pageIndex].isFullScreen) {
+                    onRenderFullScreenPage(pages[pageIndex])
+                } else {
+                    LazyVerticalGrid(
+                        columns = GridCells.Adaptive(MainTheme.sizes.larger),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .imePadding(),
+                        horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+                        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+                    ) {
+                        onRenderPage(pages[pageIndex])
+                        fullSpanItem { Spacer(modifier = Modifier.height(MainTheme.sizes.smaller)) }
+                    }
                 }
             }
         }

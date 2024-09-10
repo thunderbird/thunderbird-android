@@ -1,10 +1,12 @@
 package app.k9mail.ui.catalog.ui.atom
 
+import app.k9mail.ui.catalog.ui.CatalogPage
 import kotlinx.collections.immutable.toImmutableList
 
 enum class CatalogAtomPage(
-    private val displayName: String,
-) {
+    override val displayName: String,
+    override val isFullScreen: Boolean = false,
+) : CatalogPage {
     TYPOGRAPHY("Typography"),
     COLOR("Colors"),
     BUTTON("Buttons"),

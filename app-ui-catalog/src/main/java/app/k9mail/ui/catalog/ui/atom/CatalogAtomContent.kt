@@ -29,15 +29,17 @@ fun CatalogAtomContent(
         pages = pages,
         initialPage = initialPage,
         modifier = modifier,
-    ) {
-        when (it) {
-            TYPOGRAPHY -> typographyItems()
-            COLOR -> colorItems()
-            BUTTON -> buttonItems()
-            SELECTION_CONTROL -> selectionControlItems()
-            TEXT_FIELD -> textFieldItems()
-            ICON -> iconItems()
-            IMAGE -> imageItems()
-        }
-    }
+        onRenderPage = {
+            when (it) {
+                TYPOGRAPHY -> typographyItems()
+                COLOR -> colorItems()
+                BUTTON -> buttonItems()
+                SELECTION_CONTROL -> selectionControlItems()
+                TEXT_FIELD -> textFieldItems()
+                ICON -> iconItems()
+                IMAGE -> imageItems()
+            }
+        },
+        onRenderFullScreenPage = {},
+    )
 }
