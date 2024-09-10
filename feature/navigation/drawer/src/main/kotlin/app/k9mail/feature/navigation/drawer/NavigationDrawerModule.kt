@@ -1,5 +1,7 @@
 package app.k9mail.feature.navigation.drawer
 
+import app.k9mail.feature.navigation.drawer.domain.DomainContract.UseCase
+import app.k9mail.feature.navigation.drawer.domain.usecase.GetDisplayAccounts
 import app.k9mail.feature.navigation.drawer.legacy.AccountsViewModel
 import app.k9mail.feature.navigation.drawer.legacy.FoldersViewModel
 import app.k9mail.feature.navigation.drawer.ui.DrawerViewModel
@@ -11,13 +13,17 @@ import org.koin.dsl.module
 
 val navigationDrawerModule: Module = module {
 
-    viewModel { DrawerViewModel() }
-
-    viewModel {
-        AccountsViewModel(
+    single<UseCase.GetDisplayAccounts> {
+        GetDisplayAccounts(
             accountManager = get(),
             messageCountsProvider = get(),
             messageListRepository = get(),
+        )
+    }
+
+    viewModel {
+        AccountsViewModel(
+            getDisplayAccounts = get(),
         )
     }
 
@@ -32,4 +38,6 @@ val navigationDrawerModule: Module = module {
             getUnifiedInboxDetail = { coreResourceProvider.searchUnifiedInboxDetail() },
         )
     }
+
+    viewModel { DrawerViewModel() }
 }
