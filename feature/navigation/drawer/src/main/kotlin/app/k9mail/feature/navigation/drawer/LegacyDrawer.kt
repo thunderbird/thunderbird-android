@@ -22,10 +22,10 @@ import app.k9mail.feature.navigation.drawer.legacy.DisplayUnifiedInbox
 import app.k9mail.feature.navigation.drawer.legacy.FolderList
 import app.k9mail.feature.navigation.drawer.legacy.FoldersViewModel
 import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.folder.DisplayFolder
 import app.k9mail.legacy.message.controller.MessagingControllerMailChecker
 import app.k9mail.legacy.message.controller.SimpleMessagingListener
 import app.k9mail.legacy.ui.account.AccountImageLoader
+import app.k9mail.legacy.ui.folder.DisplayFolder
 import app.k9mail.legacy.ui.folder.FolderIconProvider
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import app.k9mail.legacy.ui.theme.ThemeManager

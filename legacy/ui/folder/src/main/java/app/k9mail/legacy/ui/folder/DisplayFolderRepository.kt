@@ -5,7 +5,6 @@ import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Account.FolderMode
 import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.folder.DisplayFolder
 import app.k9mail.legacy.mailstore.FolderSettingsChangedListener
 import app.k9mail.legacy.mailstore.FolderTypeMapper
 import app.k9mail.legacy.mailstore.MessageStoreManager
