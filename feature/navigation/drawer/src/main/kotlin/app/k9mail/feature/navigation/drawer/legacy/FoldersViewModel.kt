@@ -8,8 +8,6 @@ import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.message.controller.MessageCountsProvider
 import app.k9mail.legacy.search.SearchAccount
 import app.k9mail.legacy.ui.folder.DisplayFolderRepository
-import app.k9mail.legacy.ui.folder.DisplayUnifiedInbox
-import app.k9mail.legacy.ui.folder.FolderList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
