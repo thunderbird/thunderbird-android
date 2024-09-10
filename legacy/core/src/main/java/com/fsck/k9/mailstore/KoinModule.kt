@@ -1,6 +1,5 @@
 package com.fsck.k9.mailstore
 
-import app.k9mail.legacy.mailstore.DisplayFolderRepository
 import app.k9mail.legacy.mailstore.FolderRepository
 import app.k9mail.legacy.mailstore.MessageListRepository
 import app.k9mail.legacy.mailstore.MessageStoreManager
@@ -12,12 +11,6 @@ import org.koin.dsl.module
 val mailStoreModule = module {
     single {
         FolderRepository(
-            messageStoreManager = get(),
-            accountManager = get(),
-        )
-    }
-    single {
-        DisplayFolderRepository(
             messageStoreManager = get(),
             accountManager = get(),
         )

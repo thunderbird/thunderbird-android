@@ -2,6 +2,7 @@ package com.fsck.k9
 
 import app.k9mail.feature.account.oauth.featureAccountOAuthModule
 import app.k9mail.feature.launcher.di.featureLauncherModule
+import app.k9mail.legacy.ui.folder.uiFolderModule
 import com.fsck.k9.account.accountModule
 import com.fsck.k9.activity.activityModule
 import com.fsck.k9.contacts.contactsModule
@@ -26,6 +27,7 @@ val uiModules = listOf(
     uiBaseModule,
     activityModule,
     uiModule,
+    uiFolderModule,
     settingsUiModule,
     endToEndUiModule,
     foldersUiModule,

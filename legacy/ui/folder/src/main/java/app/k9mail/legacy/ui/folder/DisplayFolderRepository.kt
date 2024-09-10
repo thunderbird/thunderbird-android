@@ -1,17 +1,19 @@
-package app.k9mail.legacy.mailstore
+package app.k9mail.legacy.ui.folder
 
 import app.k9mail.core.mail.folder.api.Folder
 import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Account.FolderMode
 import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.di.DI
 import app.k9mail.legacy.folder.DisplayFolder
-import app.k9mail.legacy.mailstore.FolderTypeMapper.folderTypeOf
+import app.k9mail.legacy.mailstore.FolderSettingsChangedListener
+import app.k9mail.legacy.mailstore.FolderTypeMapper
+import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.message.controller.MessagingControllerRegistry
 import app.k9mail.legacy.message.controller.SimpleMessagingListener
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
@@ -24,8 +26,9 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 class DisplayFolderRepository(
-    private val messageStoreManager: MessageStoreManager,
     private val accountManager: AccountManager,
+    private val messagingController: MessagingControllerRegistry,
+    private val messageStoreManager: MessageStoreManager,
     private val coroutineContext: CoroutineContext = Dispatchers.IO,
 ) {
     private val sortForDisplay =
@@ -35,7 +38,7 @@ class DisplayFolderRepository(
             .thenByDescending { it.isInTopGroup }
             .thenBy(String.CASE_INSENSITIVE_ORDER) { it.folder.name }
 
-    private fun getDisplayFolders(account: Account, displayMode: FolderMode?): List<DisplayFolder> {
+    private fun getDisplayFolders(account: Account, displayMode: Account.FolderMode?): List<DisplayFolder> {
         val messageStore = messageStoreManager.getMessageStore(account.uuid)
         return messageStore.getDisplayFolders(
             displayMode = displayMode ?: account.folderDisplayMode,
@@ -45,7 +48,7 @@ class DisplayFolderRepository(
                 folder = Folder(
                     id = folder.id,
                     name = folder.name,
-                    type = folderTypeOf(account, folder.id),
+                    type = FolderTypeMapper.folderTypeOf(account, folder.id),
                     isLocalOnly = folder.isLocalOnly,
                 ),
                 isInTopGroup = folder.isInTopGroup,
@@ -55,8 +58,7 @@ class DisplayFolderRepository(
         }.sortedWith(sortForDisplay)
     }
 
-    fun getDisplayFoldersFlow(account: Account, displayMode: FolderMode): Flow<List<DisplayFolder>> {
-        val messagingController = DI.get<MessagingControllerRegistry>()
+    fun getDisplayFoldersFlow(account: Account, displayMode: Account.FolderMode): Flow<List<DisplayFolder>> {
         val messageStore = messageStoreManager.getMessageStore(account.uuid)
 
         return callbackFlow {
@@ -85,6 +87,7 @@ class DisplayFolderRepository(
             .flowOn(coroutineContext)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     fun getDisplayFoldersFlow(accountUuid: String): Flow<List<DisplayFolder>> {
         return accountManager.getAccountFlow(accountUuid)
             .map { latestAccount ->
