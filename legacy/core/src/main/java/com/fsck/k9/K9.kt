@@ -6,8 +6,6 @@ import app.k9mail.feature.telemetry.api.TelemetryManager
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Account.SortType
 import app.k9mail.legacy.di.DI
-import app.k9mail.legacy.di.EarlyInit
-import app.k9mail.legacy.di.inject
 import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mailstore.LocalStore
@@ -15,11 +13,13 @@ import com.fsck.k9.preferences.RealGeneralSettingsManager
 import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
 import kotlinx.datetime.Clock
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
 // TODO "Use GeneralSettingsManager and GeneralSettings instead"
-object K9 : EarlyInit {
+object K9 : KoinComponent {
     private val generalSettingsManager: RealGeneralSettingsManager by inject()
     private val telemetryManager: TelemetryManager by inject()
 

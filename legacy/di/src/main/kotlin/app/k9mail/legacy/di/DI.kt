@@ -5,9 +5,6 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
-import org.koin.core.parameter.ParametersDefinition
-import org.koin.core.qualifier.Qualifier
-import org.koin.java.KoinJavaComponent.getKoin
 import org.koin.java.KoinJavaComponent.get as koinGet
 
 object DI {
@@ -36,11 +33,3 @@ object DI {
         return koinGet(T::class.java)
     }
 }
-
-interface EarlyInit
-
-// Copied from ComponentCallbacks.inject()
-inline fun <reified T : Any> EarlyInit.inject(
-    qualifier: Qualifier? = null,
-    noinline parameters: ParametersDefinition? = null,
-) = lazy { getKoin().get<T>(qualifier, parameters) }

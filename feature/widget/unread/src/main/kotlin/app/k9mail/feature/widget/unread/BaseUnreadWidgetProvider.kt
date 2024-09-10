@@ -8,12 +8,12 @@ import android.content.Intent
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.PendingIntentCompat
-import app.k9mail.legacy.di.EarlyInit
-import app.k9mail.legacy.di.inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import timber.log.Timber
 
 /**
@@ -46,7 +46,7 @@ import timber.log.Timber
  *            qualified class name that can't ever be changed. Otherwise widgets created with older versions of the app
  *            will stop working.
  */
-abstract class BaseUnreadWidgetProvider : AppWidgetProvider(), EarlyInit {
+abstract class BaseUnreadWidgetProvider : AppWidgetProvider(), KoinComponent {
     private val repository: UnreadWidgetRepository by inject()
     private val widgetScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
