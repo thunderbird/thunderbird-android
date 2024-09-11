@@ -3,6 +3,9 @@ package app.k9mail.feature.navigation.drawer.ui.account
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
+import app.k9mail.feature.navigation.drawer.ui.account.FakeData.DISPLAY_NAME
+import app.k9mail.feature.navigation.drawer.ui.account.FakeData.EMAIL_ADDRESS
+import app.k9mail.feature.navigation.drawer.ui.account.FakeData.LONG_TEXT
 
 @Composable
 @Preview(showBackground = true)
@@ -51,10 +54,3 @@ internal fun AccountViewWithLongEmailPreview() {
         )
     }
 }
-
-private const val DISPLAY_NAME = "Account Name"
-
-private const val EMAIL_ADDRESS = "test@example.com"
-
-private const val LONG_TEXT = "loremipsumdolorsitametconsetetursadipscingelitr" +
-    "seddiamnonumyeirmodtemporinviduntutlaboreetdoloremagnaaliquyameratseddiamvoluptua"

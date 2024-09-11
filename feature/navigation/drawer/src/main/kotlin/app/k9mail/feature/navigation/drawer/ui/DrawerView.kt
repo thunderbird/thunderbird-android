@@ -15,6 +15,8 @@ fun DrawerView(
         isRefreshing = state.value.isLoading,
         onRefresh = { dispatch(DrawerContract.Event.OnRefresh) },
     ) {
-        DrawerContent()
+        DrawerContent(
+            state = state.value,
+        )
     }
 }
