@@ -74,6 +74,7 @@ include(
 
 include(
     ":feature:migration:provider",
+    ":feature:migration:qrcode",
 )
 
 include(
