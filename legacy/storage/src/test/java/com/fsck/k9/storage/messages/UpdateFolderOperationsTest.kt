@@ -1,8 +1,8 @@
 package com.fsck.k9.storage.messages
 
-import app.k9mail.legacy.folder.Folder
-import app.k9mail.legacy.folder.FolderDetails
-import app.k9mail.legacy.folder.FolderType
+import app.k9mail.core.mail.folder.api.Folder
+import app.k9mail.core.mail.folder.api.FolderDetails
+import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.legacy.mailstore.MoreMessages
 import assertk.assertThat
 import assertk.assertions.isEqualTo

@@ -8,4 +8,6 @@ android {
 
 dependencies {
     implementation(projects.mail.common)
+
+    implementation(projects.core.mail.folder.api)
 }

@@ -1,4 +1,4 @@
-package app.k9mail.legacy.ui.account
+package app.k9mail.feature.navigation.drawer.domain.entity
 
 import app.k9mail.legacy.account.Account
 

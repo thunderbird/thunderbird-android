@@ -9,7 +9,12 @@ import com.fsck.k9.message.extractors.MessagePreviewCreator
 import org.koin.dsl.module
 
 val mailStoreModule = module {
-    single { FolderRepository(messageStoreManager = get(), accountManager = get()) }
+    single {
+        FolderRepository(
+            messageStoreManager = get(),
+            accountManager = get(),
+        )
+    }
     single { MessageViewInfoExtractorFactory(get(), get(), get()) }
     single { StorageManager.getInstance(get()) }
     single { SpecialFolderSelectionStrategy() }

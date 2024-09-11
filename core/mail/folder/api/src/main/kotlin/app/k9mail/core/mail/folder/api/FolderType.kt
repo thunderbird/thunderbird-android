@@ -1,4 +1,4 @@
-package app.k9mail.legacy.folder
+package app.k9mail.core.mail.folder.api
 
 enum class FolderType {
     REGULAR,

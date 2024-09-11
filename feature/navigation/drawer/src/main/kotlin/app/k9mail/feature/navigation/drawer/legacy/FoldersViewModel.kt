@@ -1,13 +1,13 @@
-package app.k9mail.legacy.ui.folder
+package app.k9mail.feature.navigation.drawer.legacy
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.mailstore.FolderRepository
 import app.k9mail.legacy.message.controller.MessageCountsProvider
 import app.k9mail.legacy.search.SearchAccount
+import app.k9mail.legacy.ui.folder.DisplayFolderRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class FoldersViewModel(
-    private val folderRepository: FolderRepository,
+    private val folderRepository: DisplayFolderRepository,
     private val messageCountsProvider: MessageCountsProvider,
     private val isShowUnifiedInbox: () -> Boolean,
     private val getUnifiedInboxTitle: () -> String,
@@ -33,7 +33,7 @@ class FoldersViewModel(
             if (account == null) {
                 flowOf(0 to emptyList())
             } else {
-                folderRepository.getDisplayFoldersFlow(account)
+                folderRepository.getDisplayFoldersFlow(account.uuid)
                     .map { displayFolders ->
                         account.accountNumber to displayFolders
                     }

@@ -101,6 +101,10 @@ include(
 )
 
 include(
+    ":core:mail:folder:api",
+)
+
+include(
     ":legacy:account",
     ":legacy:common",
     ":legacy:core",

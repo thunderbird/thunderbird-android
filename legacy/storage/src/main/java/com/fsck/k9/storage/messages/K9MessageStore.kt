@@ -1,7 +1,7 @@
 package com.fsck.k9.storage.messages
 
+import app.k9mail.core.mail.folder.api.FolderDetails
 import app.k9mail.legacy.account.Account.FolderMode
-import app.k9mail.legacy.folder.FolderDetails
 import app.k9mail.legacy.mailstore.CreateFolderInfo
 import app.k9mail.legacy.mailstore.FolderMapper
 import app.k9mail.legacy.mailstore.MessageMapper
