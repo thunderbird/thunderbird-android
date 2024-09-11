@@ -27,7 +27,7 @@ class GetDisplayAccounts(
 ) : UseCase.GetDisplayAccounts {
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override fun execute(): Flow<List<DisplayAccount>> {
+    override fun invoke(): Flow<List<DisplayAccount>> {
         return accountManager.getAccountsFlow()
             .flatMapLatest { accounts ->
                 val messageCountsFlows: List<Flow<MessageCounts>> = accounts.map { account ->
