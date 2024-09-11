@@ -3,17 +3,17 @@ package com.fsck.k9
 import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
-import app.k9mail.legacy.di.EarlyInit
-import app.k9mail.legacy.di.inject
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.mail.internet.BinaryTempFileBody
 import com.fsck.k9.notification.NotificationController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 
-object Core : EarlyInit {
+object Core : KoinComponent {
     private val context: Context by inject()
     private val appConfig: AppConfig by inject()
     private val jobManager: K9JobManager by inject()

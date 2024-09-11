@@ -96,7 +96,7 @@
     <ID>TooGenericExceptionCaught:SettingsExporter.kt$SettingsExporter$e: Exception</ID>
     <ID>TooManyFunctions:CoreResourceProvider.kt$CoreResourceProvider</ID>
     <ID>TooManyFunctions:HttpUriParser.kt$HttpUriParser : UriParser</ID>
-    <ID>TooManyFunctions:K9.kt$K9 : EarlyInit</ID>
+    <ID>TooManyFunctions:K9.kt$K9 : KoinComponent</ID>
     <ID>TooManyFunctions:K9BackendFolder.kt$K9BackendFolder : BackendFolder</ID>
     <ID>TooManyFunctions:MessageListCache.kt$MessageListCache</ID>
     <ID>TooManyFunctions:NotificationActionCreator.kt$NotificationActionCreator</ID>
