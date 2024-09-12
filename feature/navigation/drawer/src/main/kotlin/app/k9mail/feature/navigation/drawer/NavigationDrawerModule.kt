@@ -2,6 +2,7 @@ package app.k9mail.feature.navigation.drawer
 
 import app.k9mail.feature.navigation.drawer.domain.DomainContract.UseCase
 import app.k9mail.feature.navigation.drawer.domain.usecase.GetDisplayAccounts
+import app.k9mail.feature.navigation.drawer.domain.usecase.GetDisplayFoldersForAccount
 import app.k9mail.feature.navigation.drawer.legacy.AccountsViewModel
 import app.k9mail.feature.navigation.drawer.legacy.FoldersViewModel
 import app.k9mail.feature.navigation.drawer.ui.DrawerViewModel
@@ -18,6 +19,12 @@ val navigationDrawerModule: Module = module {
             accountManager = get(),
             messageCountsProvider = get(),
             messageListRepository = get(),
+        )
+    }
+
+    single<UseCase.GetDisplayFoldersForAccount> {
+        GetDisplayFoldersForAccount(
+            repository = get(),
         )
     }
 
