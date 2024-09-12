@@ -12,6 +12,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven(url = "https://maven.mozilla.org/maven2")
         maven(url = "https://jitpack.io")
     }
 }
@@ -77,6 +78,7 @@ include(
 
 include(
     ":feature:telemetry:api",
+    ":feature:telemetry:noop",
     ":feature:telemetry:glean",
 )
 

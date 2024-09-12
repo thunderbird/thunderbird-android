@@ -1,6 +1,7 @@
 package com.fsck.k9.ui.settings.general
 
 import androidx.preference.PreferenceDataStore
+import app.k9mail.feature.telemetry.api.TelemetryManager
 import app.k9mail.legacy.preferences.AppTheme
 import app.k9mail.legacy.preferences.GeneralSettingsManager
 import app.k9mail.legacy.preferences.SubTheme
@@ -16,6 +17,7 @@ class GeneralSettingsDataStore(
     private val jobManager: K9JobManager,
     private val appLanguageManager: AppLanguageManager,
     private val generalSettingsManager: GeneralSettingsManager,
+    private val telemetryManager: TelemetryManager,
 ) : PreferenceDataStore() {
 
     private var skipSaveSettings = false
@@ -75,7 +77,7 @@ class GeneralSettingsDataStore(
             "debug_logging" -> K9.isDebugLoggingEnabled = value
             "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled = value
             "volume_navigation" -> K9.isUseVolumeKeysForNavigation = value
-            "enable_telemetry" -> K9.isTelemetryEnabled = value
+            "enable_telemetry" -> setTelemetryEnabled(value)
             else -> return
         }
 
@@ -306,5 +308,10 @@ class GeneralSettingsDataStore(
         "spam" -> SwipeAction.Spam
         "move" -> SwipeAction.Move
         else -> throw AssertionError()
+    }
+
+    private fun setTelemetryEnabled(enable: Boolean) {
+        K9.isTelemetryEnabled = enable
+        telemetryManager.setEnabled(enable)
     }
 }

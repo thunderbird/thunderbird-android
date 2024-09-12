@@ -7,12 +7,11 @@ import app.k9mail.core.featureflag.FeatureFlagFactory
 import app.k9mail.core.ui.theme.api.FeatureThemeProvider
 import app.k9mail.core.ui.theme.api.ThemeProvider
 import app.k9mail.dev.developmentModuleAdditions
-import app.k9mail.feature.telemetry.api.TelemetryManager
+import app.k9mail.feature.telemetry.telemetryModule
 import app.k9mail.feature.widget.shortcut.LauncherShortcutActivity
 import app.k9mail.featureflag.K9FeatureFlagFactory
 import app.k9mail.provider.K9AppNameProvider
 import app.k9mail.provider.K9FeatureThemeProvider
-import app.k9mail.telemetry.K9TelemetryManager
 import app.k9mail.widget.appWidgetModule
 import com.fsck.k9.AppConfig
 import com.fsck.k9.BuildConfig
@@ -26,6 +25,7 @@ import org.koin.dsl.module
 
 val appModule = module {
     includes(appWidgetModule)
+    includes(telemetryModule)
 
     single(named("ClientInfoAppName")) { BuildConfig.CLIENT_INFO_APP_NAME }
     single(named("ClientInfoAppVersion")) { BuildConfig.VERSION_NAME }
@@ -35,7 +35,6 @@ val appModule = module {
     single<ThemeProvider> { K9ThemeProvider() }
     single<FeatureThemeProvider> { K9FeatureThemeProvider() }
     single<FeatureFlagFactory> { K9FeatureFlagFactory() }
-    single<TelemetryManager> { K9TelemetryManager() }
 
     developmentModuleAdditions()
 }
