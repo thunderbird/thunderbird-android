@@ -49,6 +49,7 @@ val navigationDrawerModule: Module = module {
     viewModel {
         DrawerViewModel(
             getDisplayAccounts = get(),
+            getDisplayFoldersForAccount = get(),
         )
     }
 }

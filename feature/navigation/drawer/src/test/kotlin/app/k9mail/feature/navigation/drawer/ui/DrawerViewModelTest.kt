@@ -7,6 +7,7 @@ import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Event
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.State
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Identity
+import app.k9mail.legacy.ui.folder.DisplayFolder
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
@@ -91,9 +92,11 @@ class DrawerViewModelTest {
 
     private fun createTestSubject(
         getDisplayAccountsFlow: Flow<List<DisplayAccount>> = flow { emit(emptyList()) },
+        getDisplayFoldersForAccount: Flow<List<DisplayFolder>> = flow { emit(emptyList()) },
     ): DrawerViewModel {
         return DrawerViewModel(
             getDisplayAccounts = { getDisplayAccountsFlow },
+            getDisplayFoldersForAccount = { getDisplayFoldersForAccount },
         )
     }
 

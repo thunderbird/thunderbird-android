@@ -8,12 +8,18 @@ import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Effect
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Event
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.State
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.ViewModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @Suppress("MagicNumber")
 class DrawerViewModel(
     private val getDisplayAccounts: UseCase.GetDisplayAccounts,
+    private val getDisplayFoldersForAccount: UseCase.GetDisplayFoldersForAccount,
     initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(
     initialState = initialState,
@@ -22,7 +28,17 @@ class DrawerViewModel(
 
     init {
         viewModelScope.launch {
-            getDisplayAccounts().collect { accounts -> updateAccounts(accounts) }
+            loadAccounts()
+        }
+
+        viewModelScope.launch {
+            loadFolders()
+        }
+    }
+
+    private suspend fun loadAccounts() {
+        getDisplayAccounts().collectLatest { accounts ->
+            updateAccounts(accounts)
         }
     }
 
@@ -32,14 +48,28 @@ class DrawerViewModel(
 
         updateState {
             if (isCurrentAccountAvailable) {
-                it.copy(accounts = accounts)
+                it.copy(accounts = accounts.toImmutableList())
             } else {
                 it.copy(
+                    accounts = accounts.toImmutableList(),
                     currentAccount = accounts.firstOrNull(),
-                    accounts = accounts,
                 )
             }
         }
+    }
+
+    private suspend fun loadFolders() {
+        state.map { it.currentAccount }
+            .distinctUntilChanged()
+            .collectLatest { currentAccount ->
+                if (currentAccount != null) {
+                    getDisplayFoldersForAccount(currentAccount.account.uuid).collectLatest { folders ->
+                        updateState {
+                            it.copy(folders = folders.toImmutableList())
+                        }
+                    }
+                }
+            }
     }
 
     override fun event(event: Event) {
