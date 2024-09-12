@@ -3,6 +3,7 @@ package app.k9mail.ui.catalog.ui.atom.items
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,6 +25,28 @@ fun LazyGridScope.iconItems() {
     sectionHeaderItem(
         text = "Compose Icons",
     )
+    sectionSubtitleItem(text = "Sizes")
+    defaultItem {
+        IconItem(
+            name = "Small",
+            imageVector = Icons.Outlined.Info,
+            modifier = Modifier.size(MainTheme.sizes.iconSmall),
+        )
+    }
+    defaultItem {
+        IconItem(
+            name = "Default",
+            imageVector = Icons.Outlined.Info,
+            modifier = Modifier.size(MainTheme.sizes.icon),
+        )
+    }
+    defaultItem {
+        IconItem(
+            name = "Large",
+            imageVector = Icons.Outlined.Info,
+            modifier = Modifier.size(MainTheme.sizes.iconLarge),
+        )
+    }
     sectionSubtitleItem(text = "Filled")
     getIconsFor(Icons.Filled)
     sectionSubtitleItem(text = "Outlined")
@@ -81,13 +104,13 @@ private fun IconItem(
 ) {
     Column(
         modifier = Modifier
-            .padding(defaultItemPadding())
-            .then(modifier),
+            .padding(defaultItemPadding()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
     ) {
         Icon(
             imageVector = imageVector,
+            modifier = modifier,
         )
         TextBodySmall(text = name)
     }

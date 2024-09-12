@@ -4,6 +4,7 @@ import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Outbox
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Check
@@ -16,16 +17,23 @@ import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Security
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.ui.graphics.vector.ImageVector
+import app.k9mail.core.ui.compose.designsystem.atom.icon.filled.Dot
 import androidx.compose.material.icons.Icons as MaterialIcons
 
 // We're using getters so not all icons are loaded into memory as soon as one of the nested objects is accessed.
 object Icons {
     object Filled {
+        val Cancel: ImageVector
+            get() = MaterialIcons.Filled.Cancel
+
         val CheckCircle: ImageVector
             get() = MaterialIcons.Filled.CheckCircle
 
-        val Cancel: ImageVector
-            get() = MaterialIcons.Filled.Cancel
+        val Dot: ImageVector
+            get() = MaterialIcons.Filled.Dot
+
+        val Star: ImageVector
+            get() = MaterialIcons.Filled.Star
     }
 
     object Outlined {

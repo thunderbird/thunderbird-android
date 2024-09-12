@@ -85,7 +85,7 @@ private fun IconWithPermissionStateOverlay(
     permissionState: UiPermissionState,
 ) {
     Box {
-        val iconSize = MainTheme.sizes.largeIcon
+        val iconSize = MainTheme.sizes.iconLarge
         val overlayIconSize = iconSize / 2
         val overlayIconOffset = overlayIconSize / 2
         val scalingFactor = iconSize / icon.image.defaultHeight
