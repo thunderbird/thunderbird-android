@@ -39,5 +39,9 @@ val navigationDrawerModule: Module = module {
         )
     }
 
-    viewModel { DrawerViewModel() }
+    viewModel {
+        DrawerViewModel(
+            getDisplayAccounts = get(),
+        )
+    }
 }

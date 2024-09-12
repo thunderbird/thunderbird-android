@@ -7,7 +7,7 @@ interface DomainContract {
 
     interface UseCase {
         fun interface GetDisplayAccounts {
-            fun execute(): Flow<List<DisplayAccount>>
+            operator fun invoke(): Flow<List<DisplayAccount>>
         }
     }
 }
