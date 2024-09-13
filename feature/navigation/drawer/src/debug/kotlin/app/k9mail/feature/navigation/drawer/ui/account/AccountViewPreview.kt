@@ -15,6 +15,7 @@ internal fun AccountViewPreview() {
             displayName = DISPLAY_NAME,
             emailAddress = EMAIL_ADDRESS,
             accountColor = 0,
+            onClick = {},
         )
     }
 }
@@ -27,6 +28,7 @@ internal fun AccountViewWithColorPreview() {
             displayName = DISPLAY_NAME,
             emailAddress = EMAIL_ADDRESS,
             accountColor = 0xFF0000,
+            onClick = {},
         )
     }
 }
@@ -39,6 +41,7 @@ internal fun AccountViewWithLongDisplayName() {
             displayName = "$LONG_TEXT $DISPLAY_NAME",
             emailAddress = EMAIL_ADDRESS,
             accountColor = 0,
+            onClick = {},
         )
     }
 }
@@ -51,6 +54,7 @@ internal fun AccountViewWithLongEmailPreview() {
             displayName = DISPLAY_NAME,
             emailAddress = "$LONG_TEXT@example.com",
             accountColor = 0,
+            onClick = {},
         )
     }
 }

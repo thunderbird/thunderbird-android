@@ -10,6 +10,7 @@ import androidx.compose.ui.platform.testTag
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.theme2.MainTheme
+import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Event
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.State
 import app.k9mail.feature.navigation.drawer.ui.account.AccountView
 import app.k9mail.feature.navigation.drawer.ui.folder.FolderList
@@ -17,6 +18,7 @@ import app.k9mail.feature.navigation.drawer.ui.folder.FolderList
 @Composable
 fun DrawerContent(
     state: State,
+    onEvent: (Event) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Surface(
@@ -37,6 +39,7 @@ fun DrawerContent(
                     displayName = it.account.displayName,
                     emailAddress = it.account.email,
                     accountColor = it.account.chipColor,
+                    onClick = { onEvent(Event.OnAccountViewClick(it)) },
                 )
 
                 DividerHorizontal()

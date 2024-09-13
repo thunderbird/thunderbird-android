@@ -12,10 +12,11 @@ internal fun DrawerContentPreview() {
     PreviewWithTheme {
         DrawerContent(
             state = DrawerContract.State(
-                currentAccount = null,
                 accounts = persistentListOf(),
+                currentAccount = null,
                 folders = persistentListOf(),
             ),
+            onEvent = {},
         )
     }
 }
@@ -29,6 +30,7 @@ fun DrawerContentWithAccountPreview() {
                 accounts = persistentListOf(DISPLAY_ACCOUNT),
                 currentAccount = DISPLAY_ACCOUNT,
             ),
+            onEvent = {},
         )
     }
 }

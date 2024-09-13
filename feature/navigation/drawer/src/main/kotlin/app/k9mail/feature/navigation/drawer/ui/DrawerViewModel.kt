@@ -10,10 +10,12 @@ import app.k9mail.feature.navigation.drawer.ui.DrawerContract.State
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.ViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
 
 @Suppress("MagicNumber")
@@ -58,16 +60,15 @@ class DrawerViewModel(
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private suspend fun loadFolders() {
-        state.map { it.currentAccount }
+        state.mapNotNull { it.currentAccount?.account?.uuid }
             .distinctUntilChanged()
-            .collectLatest { currentAccount ->
-                if (currentAccount != null) {
-                    getDisplayFoldersForAccount(currentAccount.account.uuid).collectLatest { folders ->
-                        updateState {
-                            it.copy(folders = folders.toImmutableList())
-                        }
-                    }
+            .flatMapLatest { accountUuid ->
+                getDisplayFoldersForAccount(accountUuid)
+            }.collectLatest { folders ->
+                updateState {
+                    it.copy(folders = folders.toImmutableList())
                 }
             }
     }
@@ -75,6 +76,33 @@ class DrawerViewModel(
     override fun event(event: Event) {
         when (event) {
             Event.OnRefresh -> refresh()
+            is Event.OnAccountClick -> selectAccount(event.account)
+            is Event.OnAccountViewClick -> {
+                selectAccount(
+                    state.value.accounts.nextOrFirst(event.account)!!,
+                )
+            }
+        }
+    }
+
+    private fun selectAccount(account: DisplayAccount) {
+        viewModelScope.launch {
+            updateState {
+                it.copy(
+                    currentAccount = account,
+                )
+            }
+        }
+    }
+
+    private fun ImmutableList<DisplayAccount>.nextOrFirst(account: DisplayAccount): DisplayAccount? {
+        val index = indexOf(account)
+        return if (index == -1) {
+            null
+        } else if (index == size - 1) {
+            get(0)
+        } else {
+            get(index + 1)
         }
     }
 

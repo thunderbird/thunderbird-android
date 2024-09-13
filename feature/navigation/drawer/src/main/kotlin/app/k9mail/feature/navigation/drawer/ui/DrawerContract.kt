@@ -5,7 +5,6 @@ import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
 import app.k9mail.legacy.ui.folder.DisplayFolder
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.immutableListOf
 import kotlinx.collections.immutable.persistentListOf
 
 interface DrawerContract {
@@ -23,6 +22,8 @@ interface DrawerContract {
 
     sealed interface Event {
         data object OnRefresh : Event
+        data class OnAccountClick(val account: DisplayAccount) : Event
+        data class OnAccountViewClick(val account: DisplayAccount) : Event
     }
 
     sealed interface Effect
