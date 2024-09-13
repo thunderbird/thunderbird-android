@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.navigation.drawer.domain.DomainContract.UseCase
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
-import app.k9mail.feature.navigation.drawer.domain.usecase.GetDrawerConfig
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Effect
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Event
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.State
@@ -25,6 +24,7 @@ class DrawerViewModel(
     private val getDrawerConfig: UseCase.GetDrawerConfig,
     private val getDisplayAccounts: UseCase.GetDisplayAccounts,
     private val getDisplayFoldersForAccount: UseCase.GetDisplayFoldersForAccount,
+    private val syncMail: UseCase.SyncMail,
     initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(
     initialState = initialState,
@@ -138,8 +138,9 @@ class DrawerViewModel(
                 it.copy(isLoading = true)
             }
 
-            // TODO: replace with actual data loading
-            delay(500)
+            syncMail(state.value.currentAccount?.account).collect {
+                // nothing to do
+            }
 
             updateState {
                 it.copy(isLoading = false)

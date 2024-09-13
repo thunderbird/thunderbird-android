@@ -20,6 +20,7 @@ import kotlin.test.Test
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
@@ -56,7 +57,12 @@ class DrawerViewModelTest {
 
     @Test
     fun `should change loading state when OnRefresh event is received`() = runTest {
-        val testSubject = createTestSubject()
+        val testSubject = createTestSubject(
+            syncMailFlow = flow {
+                delay(25)
+                emit(Result.success(Unit))
+            },
+        )
 
         eventStateTest(
             viewModel = testSubject,
@@ -227,6 +233,7 @@ class DrawerViewModelTest {
         drawerConfigFlow: Flow<DrawerConfig> = flow { emit(createDrawerConfig()) },
         displayAccountsFlow: Flow<List<DisplayAccount>> = flow { emit(emptyList()) },
         displayFoldersMap: Map<String, List<DisplayFolder>> = emptyMap(),
+        syncMailFlow: Flow<Result<Unit>> = flow { emit(Result.success(Unit)) },
     ): DrawerViewModel {
         return DrawerViewModel(
             getDrawerConfig = { drawerConfigFlow },
@@ -234,6 +241,7 @@ class DrawerViewModelTest {
             getDisplayFoldersForAccount = { accountUuid ->
                 flow { emit(displayFoldersMap[accountUuid] ?: emptyList()) }
             },
+            syncMail = { syncMailFlow },
         )
     }
 
