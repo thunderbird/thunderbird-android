@@ -1,5 +1,6 @@
 package app.k9mail.feature.navigation.drawer.ui.account
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -21,11 +22,13 @@ fun AccountView(
     emailAddress: String,
     accountColor: Int,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit,
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .height(intrinsicSize = IntrinsicSize.Max)
+            .clickable(onClick = onClick)
             .padding(
                 top = MainTheme.spacings.default,
                 start = MainTheme.spacings.double,

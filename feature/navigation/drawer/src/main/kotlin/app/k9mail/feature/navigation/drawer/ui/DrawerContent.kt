@@ -4,20 +4,21 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import app.k9mail.core.ui.compose.designsystem.organism.drawer.NavigationDrawerItem
 import app.k9mail.core.ui.compose.theme2.MainTheme
+import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Event
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.State
 import app.k9mail.feature.navigation.drawer.ui.account.AccountView
+import app.k9mail.feature.navigation.drawer.ui.folder.FolderList
 
 @Composable
 fun DrawerContent(
     state: State,
+    onEvent: (Event) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Surface(
@@ -38,36 +39,17 @@ fun DrawerContent(
                     displayName = it.account.displayName,
                     emailAddress = it.account.email,
                     accountColor = it.account.chipColor,
+                    onClick = { onEvent(Event.OnAccountViewClick(it)) },
                 )
 
                 DividerHorizontal()
             }
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize(),
-            ) {
-                item {
-                    NavigationDrawerItem(
-                        label = "Folder1",
-                        selected = true,
-                        onClick = {},
-                    )
-                }
-                item {
-                    NavigationDrawerItem(
-                        label = "Folder2",
-                        selected = false,
-                        onClick = {},
-                    )
-                }
-                item {
-                    NavigationDrawerItem(
-                        label = "Folder3",
-                        selected = false,
-                        onClick = {},
-                    )
-                }
-            }
+            FolderList(
+                folders = state.folders,
+                selectedFolder = state.folders.firstOrNull(), // TODO Use selected folder from state
+                onFolderClick = { },
+                showStarredCount = state.showStarredCount,
+            )
         }
     }
 }

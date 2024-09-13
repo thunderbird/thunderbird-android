@@ -1,5 +1,7 @@
 package app.k9mail.feature.navigation.drawer.ui
 
+import app.k9mail.core.mail.folder.api.Folder
+import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
@@ -7,6 +9,7 @@ import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Event
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.State
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Identity
+import app.k9mail.legacy.ui.folder.DisplayFolder
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
@@ -46,7 +49,7 @@ class DrawerViewModelTest {
         val displayAccounts = createDisplayAccountList(3)
         val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
         val testSubject = createTestSubject(
-            getDisplayAccountsFlow = getDisplayAccountsFlow,
+            displayAccountsFlow = getDisplayAccountsFlow,
         )
 
         advanceUntilIdle()
@@ -61,7 +64,7 @@ class DrawerViewModelTest {
         val displayAccounts = createDisplayAccountList(3)
         val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
         val testSubject = createTestSubject(
-            getDisplayAccountsFlow = getDisplayAccountsFlow,
+            displayAccountsFlow = getDisplayAccountsFlow,
         )
 
         advanceUntilIdle()
@@ -80,7 +83,7 @@ class DrawerViewModelTest {
     fun `should set current account to null when no accounts are present`() = runTest {
         val getDisplayAccountsFlow = MutableStateFlow(emptyList<DisplayAccount>())
         val testSubject = createTestSubject(
-            getDisplayAccountsFlow = getDisplayAccountsFlow,
+            displayAccountsFlow = getDisplayAccountsFlow,
         )
 
         advanceUntilIdle()
@@ -89,11 +92,76 @@ class DrawerViewModelTest {
         assertThat(testSubject.state.value.currentAccount).isEqualTo(null)
     }
 
+    @Test
+    fun `should set current account when OnAccountClick event is received`() = runTest {
+        val displayAccounts = createDisplayAccountList(3)
+        val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
+        val testSubject = createTestSubject(
+            displayAccountsFlow = getDisplayAccountsFlow,
+        )
+
+        advanceUntilIdle()
+
+        testSubject.event(Event.OnAccountClick(displayAccounts[1]))
+
+        advanceUntilIdle()
+
+        assertThat(testSubject.state.value.currentAccount).isEqualTo(displayAccounts[1])
+    }
+
+    @Test
+    fun `should collect display folders for current account`() = runTest {
+        val displayAccounts = createDisplayAccountList(3)
+        val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
+        val displayFoldersMap = mapOf(
+            displayAccounts[0].account.uuid to createDisplayFolderList(3),
+        )
+        val testSubject = createTestSubject(
+            displayAccountsFlow = getDisplayAccountsFlow,
+            displayFoldersMap = displayFoldersMap,
+        )
+
+        advanceUntilIdle()
+
+        val displayFolders = displayFoldersMap[displayAccounts[0].account.uuid] ?: emptyList()
+        assertThat(testSubject.state.value.folders.size).isEqualTo(displayFolders.size)
+        assertThat(testSubject.state.value.folders).isEqualTo(displayFolders)
+    }
+
+    @Test
+    fun `should collect display folders when current account is changed`() = runTest {
+        val displayAccounts = createDisplayAccountList(3)
+        val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
+        val displayFoldersMap = mapOf(
+            displayAccounts[0].account.uuid to createDisplayFolderList(1),
+            displayAccounts[1].account.uuid to createDisplayFolderList(5),
+            displayAccounts[2].account.uuid to createDisplayFolderList(10),
+        )
+        val testSubject = createTestSubject(
+            displayAccountsFlow = getDisplayAccountsFlow,
+            displayFoldersMap = displayFoldersMap,
+        )
+
+        advanceUntilIdle()
+
+        testSubject.event(Event.OnAccountClick(displayAccounts[1]))
+
+        advanceUntilIdle()
+
+        val displayFolders = displayFoldersMap[displayAccounts[1].account.uuid] ?: emptyList()
+        assertThat(testSubject.state.value.folders.size).isEqualTo(displayFolders.size)
+        assertThat(testSubject.state.value.folders).isEqualTo(displayFolders)
+    }
+
     private fun createTestSubject(
-        getDisplayAccountsFlow: Flow<List<DisplayAccount>> = flow { emit(emptyList()) },
+        displayAccountsFlow: Flow<List<DisplayAccount>> = flow { emit(emptyList()) },
+        displayFoldersMap: Map<String, List<DisplayFolder>> = emptyMap(),
     ): DrawerViewModel {
         return DrawerViewModel(
-            getDisplayAccounts = { getDisplayAccountsFlow },
+            getDisplayAccounts = { displayAccountsFlow },
+            getDisplayFoldersForAccount = { accountUuid ->
+                flow { emit(displayFoldersMap[accountUuid] ?: emptyList()) }
+            },
         )
     }
 
@@ -131,6 +199,36 @@ class DrawerViewModelTest {
         return List(count) { index ->
             createDisplayAccount(
                 uuid = "uuid-$index",
+            )
+        }
+    }
+
+    private fun createDisplayFolder(
+        id: Long = 1234,
+        name: String = "name",
+        type: FolderType = FolderType.REGULAR,
+        unreadCount: Int = 0,
+        starredCount: Int = 0,
+    ): DisplayFolder {
+        val folder = Folder(
+            id = id,
+            name = name,
+            type = type,
+            isLocalOnly = false,
+        )
+
+        return DisplayFolder(
+            folder = folder,
+            isInTopGroup = false,
+            unreadMessageCount = unreadCount,
+            starredMessageCount = starredCount,
+        )
+    }
+
+    private fun createDisplayFolderList(count: Int): List<DisplayFolder> {
+        return List(count) { index ->
+            createDisplayFolder(
+                id = index.toLong() + 100,
             )
         }
     }
