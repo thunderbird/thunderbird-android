@@ -3,8 +3,12 @@ package app.k9mail.feature.navigation.drawer.ui
 import app.k9mail.core.mail.folder.api.Folder
 import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
+import app.k9mail.core.ui.compose.testing.mvi.assertThatAndEffectTurbineConsumed
 import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
+import app.k9mail.core.ui.compose.testing.mvi.turbines
+import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
+import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Effect
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Event
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.State
 import app.k9mail.legacy.account.Account
@@ -13,6 +17,8 @@ import app.k9mail.legacy.ui.folder.DisplayFolder
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -151,6 +157,38 @@ class DrawerViewModelTest {
         val displayFolders = displayFoldersMap[displayAccounts[1].account.uuid] ?: emptyList()
         assertThat(testSubject.state.value.folders.size).isEqualTo(displayFolders.size)
         assertThat(testSubject.state.value.folders).isEqualTo(displayFolders)
+    }
+
+    @Test
+    fun `should set selected folder when OnFolderClick event is received`() = runTest {
+        val displayAccounts = createDisplayAccountList(3)
+        val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
+        val displayFoldersMap = mapOf(
+            displayAccounts[0].account.uuid to createDisplayFolderList(3),
+        )
+        val initialState = State(
+            accounts = displayAccounts.toImmutableList(),
+            currentAccount = displayAccounts[0],
+            folders = displayFoldersMap[displayAccounts[0].account.uuid]?.toImmutableList() ?: persistentListOf(),
+        )
+        val testSubject = createTestSubject(
+            displayAccountsFlow = getDisplayAccountsFlow,
+            displayFoldersMap = displayFoldersMap,
+        )
+        val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
+
+        advanceUntilIdle()
+
+        val displayFolders = displayFoldersMap[displayAccounts[0].account.uuid] ?: emptyList()
+        testSubject.event(Event.OnFolderClick(displayFolders[1]))
+
+        assertThat(turbines.awaitStateItem().selectedFolder).isEqualTo(displayFolders[1])
+
+        assertThat(turbines.awaitEffectItem()).isEqualTo(Effect.OpenFolder(displayFolders[1].folder.id))
+
+        turbines.assertThatAndEffectTurbineConsumed {
+            isEqualTo(Effect.CloseDrawer)
+        }
     }
 
     private fun createTestSubject(

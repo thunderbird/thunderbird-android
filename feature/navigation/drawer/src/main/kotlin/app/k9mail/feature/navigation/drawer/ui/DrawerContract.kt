@@ -13,18 +13,23 @@ interface DrawerContract {
 
     @Stable
     data class State(
-        val currentAccount: DisplayAccount? = null,
         val accounts: ImmutableList<DisplayAccount> = persistentListOf(),
+        val currentAccount: DisplayAccount? = null,
         val folders: ImmutableList<DisplayFolder> = persistentListOf(),
+        val selectedFolder: DisplayFolder? = null,
         val showStarredCount: Boolean = false,
         val isLoading: Boolean = false,
     )
 
     sealed interface Event {
-        data object OnRefresh : Event
         data class OnAccountClick(val account: DisplayAccount) : Event
         data class OnAccountViewClick(val account: DisplayAccount) : Event
+        data class OnFolderClick(val folder: DisplayFolder) : Event
+        data object OnRefresh : Event
     }
 
-    sealed interface Effect
+    sealed interface Effect {
+        data class OpenFolder(val folderId: Long) : Effect
+        data object CloseDrawer : Effect
+    }
 }

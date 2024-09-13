@@ -15,6 +15,8 @@ import org.koin.core.component.inject
 
 class FolderDrawer(
     override val parent: AppCompatActivity,
+    private val openFolder: (folderId: Long) -> Unit,
+    createDrawerListener: () -> DrawerLayout.DrawerListener,
 ) : NavigationDrawer, KoinComponent {
 
     private val themeProvider: FeatureThemeProvider by inject()
@@ -28,10 +30,14 @@ class FolderDrawer(
         sliderView.visibility = View.GONE
         drawerView.visibility = View.VISIBLE
         swipeRefreshLayout.isEnabled = false
+        drawer.addDrawerListener(createDrawerListener())
 
         drawerView.setContent {
             themeProvider.WithTheme {
-                DrawerView()
+                DrawerView(
+                    openFolder = openFolder,
+                    closeDrawer = { close() },
+                )
             }
         }
     }

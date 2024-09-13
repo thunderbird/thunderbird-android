@@ -46,8 +46,10 @@ fun DrawerContent(
             }
             FolderList(
                 folders = state.folders,
-                selectedFolder = state.folders.firstOrNull(), // TODO Use selected folder from state
-                onFolderClick = { },
+                selectedFolder = state.selectedFolder,
+                onFolderClick = { folder ->
+                    onEvent(Event.OnFolderClick(folder))
+                },
                 showStarredCount = state.showStarredCount,
             )
         }

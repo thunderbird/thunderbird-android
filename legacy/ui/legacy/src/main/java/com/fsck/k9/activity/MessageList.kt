@@ -608,6 +608,8 @@ open class MessageList :
     private fun initializeFolderDrawer() {
         navigationDrawer = FolderDrawer(
             parent = this,
+            openFolder = { folderId -> openFolder(folderId) },
+            createDrawerListener = { createDrawerListener() },
         )
     }
 

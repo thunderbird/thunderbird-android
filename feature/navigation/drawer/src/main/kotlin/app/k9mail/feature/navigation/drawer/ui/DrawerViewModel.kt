@@ -8,6 +8,7 @@ import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Effect
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Event
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.State
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.ViewModel
+import app.k9mail.legacy.ui.folder.DisplayFolder
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -77,6 +78,7 @@ class DrawerViewModel(
         when (event) {
             Event.OnRefresh -> refresh()
             is Event.OnAccountClick -> selectAccount(event.account)
+            is Event.OnFolderClick -> selectFolder(event.folder)
             is Event.OnAccountViewClick -> {
                 selectAccount(
                     state.value.accounts.nextOrFirst(event.account)!!,
@@ -106,10 +108,19 @@ class DrawerViewModel(
         }
     }
 
-    private fun refresh() {
-        if (state.value.isLoading) {
-            return
+    private fun selectFolder(folder: DisplayFolder) {
+        updateState {
+            it.copy(selectedFolder = folder)
         }
+        emitEffect(Effect.OpenFolder(folder.folder.id))
+
+        viewModelScope.launch {
+            delay(DRAWER_CLOSE_DELAY)
+            emitEffect(Effect.CloseDrawer)
+        }
+    }
+
+    private fun refresh() {
         viewModelScope.launch {
             updateState {
                 it.copy(isLoading = true)
@@ -124,3 +135,9 @@ class DrawerViewModel(
         }
     }
 }
+
+/**
+ * Delay before closing the drawer to avoid the drawer being closed immediately and give time
+ * for the ripple effect to finish.
+ */
+private const val DRAWER_CLOSE_DELAY = 250L
