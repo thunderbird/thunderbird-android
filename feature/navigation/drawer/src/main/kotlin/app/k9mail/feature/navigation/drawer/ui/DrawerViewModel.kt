@@ -95,6 +95,8 @@ class DrawerViewModel(
                 )
             }
         }
+
+        emitEffect(Effect.OpenAccount(account.account))
     }
 
     private fun ImmutableList<DisplayAccount>.nextOrFirst(account: DisplayAccount): DisplayAccount? {

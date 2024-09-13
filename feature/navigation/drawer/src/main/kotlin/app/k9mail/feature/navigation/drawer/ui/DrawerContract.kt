@@ -3,6 +3,7 @@ package app.k9mail.feature.navigation.drawer.ui
 import androidx.compose.runtime.Stable
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
+import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.ui.folder.DisplayFolder
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -29,6 +30,7 @@ interface DrawerContract {
     }
 
     sealed interface Effect {
+        data class OpenAccount(val account: Account) : Effect
         data class OpenFolder(val folderId: Long) : Effect
         data object CloseDrawer : Effect
     }

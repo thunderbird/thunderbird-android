@@ -5,7 +5,6 @@ import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndEffectTurbineConsumed
 import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
-import app.k9mail.core.ui.compose.testing.mvi.turbines
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Effect
@@ -105,6 +104,13 @@ class DrawerViewModelTest {
         val testSubject = createTestSubject(
             displayAccountsFlow = getDisplayAccountsFlow,
         )
+        val turbines = turbinesWithInitialStateCheck(
+            testSubject,
+            State(
+                accounts = displayAccounts.toImmutableList(),
+                currentAccount = displayAccounts.first(),
+            ),
+        )
 
         advanceUntilIdle()
 
@@ -112,7 +118,11 @@ class DrawerViewModelTest {
 
         advanceUntilIdle()
 
-        assertThat(testSubject.state.value.currentAccount).isEqualTo(displayAccounts[1])
+        assertThat(turbines.awaitStateItem().currentAccount).isEqualTo(displayAccounts[1])
+
+        turbines.assertThatAndEffectTurbineConsumed {
+            isEqualTo(Effect.OpenAccount(displayAccounts[1].account))
+        }
     }
 
     @Test

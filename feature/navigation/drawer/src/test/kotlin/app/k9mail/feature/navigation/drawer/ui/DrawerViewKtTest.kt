@@ -18,27 +18,36 @@ class DrawerViewKtTest : ComposeTest() {
     fun `should delegate effects`() = runTest {
         val initialState = State()
         val viewModel = FakeDrawerViewModel(initialState)
+        var openAccountCounter = 0
         var openFolderCounter = 0
         var closeDrawerCounter = 0
 
         setContentWithTheme {
             DrawerView(
+                openAccount = { openAccountCounter++ },
                 openFolder = { openFolderCounter++ },
                 closeDrawer = { closeDrawerCounter++ },
                 viewModel = viewModel,
             )
         }
 
+        assertThat(openAccountCounter).isEqualTo(0)
         assertThat(openFolderCounter).isEqualTo(0)
         assertThat(closeDrawerCounter).isEqualTo(0)
 
+        viewModel.effect(Effect.OpenAccount(FakeData.ACCOUNT))
+
+        assertThat(openAccountCounter).isEqualTo(1)
+
         viewModel.effect(Effect.OpenFolder(1))
 
+        assertThat(openAccountCounter).isEqualTo(1)
         assertThat(openFolderCounter).isEqualTo(1)
         assertThat(closeDrawerCounter).isEqualTo(0)
 
         viewModel.effect(Effect.CloseDrawer)
 
+        assertThat(openAccountCounter).isEqualTo(1)
         assertThat(openFolderCounter).isEqualTo(1)
         assertThat(closeDrawerCounter).isEqualTo(1)
     }
@@ -52,6 +61,7 @@ class DrawerViewKtTest : ComposeTest() {
 
         setContentWithTheme {
             DrawerView(
+                openAccount = {},
                 openFolder = {},
                 closeDrawer = {},
                 viewModel = viewModel,
