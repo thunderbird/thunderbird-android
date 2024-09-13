@@ -1,5 +1,6 @@
 package app.k9mail.feature.navigation.drawer.ui
 
+import app.k9mail.feature.navigation.drawer.domain.entity.DrawerConfig
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.State
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -14,11 +15,14 @@ class DrawerStateTest {
 
         assertThat(state).isEqualTo(
             State(
+                config = DrawerConfig(
+                    showUnifiedInbox = false,
+                    showStarredCount = false,
+                ),
                 accounts = persistentListOf(),
                 currentAccount = null,
                 folders = persistentListOf(),
                 selectedFolder = null,
-                showStarredCount = false,
                 isLoading = false,
             ),
         )

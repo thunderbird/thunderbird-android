@@ -3,6 +3,7 @@ package app.k9mail.feature.navigation.drawer.ui
 import androidx.compose.runtime.Stable
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
+import app.k9mail.feature.navigation.drawer.domain.entity.DrawerConfig
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.ui.folder.DisplayFolder
 import kotlinx.collections.immutable.ImmutableList
@@ -14,11 +15,14 @@ interface DrawerContract {
 
     @Stable
     data class State(
+        val config: DrawerConfig = DrawerConfig(
+            showUnifiedInbox = false,
+            showStarredCount = false,
+        ),
         val accounts: ImmutableList<DisplayAccount> = persistentListOf(),
         val currentAccount: DisplayAccount? = null,
         val folders: ImmutableList<DisplayFolder> = persistentListOf(),
         val selectedFolder: DisplayFolder? = null,
-        val showStarredCount: Boolean = false,
         val isLoading: Boolean = false,
     )
 

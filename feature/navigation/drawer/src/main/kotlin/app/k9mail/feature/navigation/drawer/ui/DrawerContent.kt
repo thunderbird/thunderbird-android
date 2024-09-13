@@ -50,7 +50,7 @@ fun DrawerContent(
                 onFolderClick = { folder ->
                     onEvent(Event.OnFolderClick(folder))
                 },
-                showStarredCount = state.showStarredCount,
+                showStarredCount = state.config.showStarredCount,
             )
         }
     }

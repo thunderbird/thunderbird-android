@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.navigation.drawer.domain.DomainContract.UseCase
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
+import app.k9mail.feature.navigation.drawer.domain.usecase.GetDrawerConfig
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Effect
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Event
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.State
@@ -21,6 +22,7 @@ import kotlinx.coroutines.launch
 
 @Suppress("MagicNumber")
 class DrawerViewModel(
+    private val getDrawerConfig: UseCase.GetDrawerConfig,
     private val getDisplayAccounts: UseCase.GetDisplayAccounts,
     private val getDisplayFoldersForAccount: UseCase.GetDisplayFoldersForAccount,
     initialState: State = State(),
@@ -30,6 +32,14 @@ class DrawerViewModel(
     ViewModel {
 
     init {
+        viewModelScope.launch {
+            getDrawerConfig().collectLatest { config ->
+                updateState {
+                    it.copy(config = config)
+                }
+            }
+        }
+
         viewModelScope.launch {
             loadAccounts()
         }

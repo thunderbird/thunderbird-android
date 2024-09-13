@@ -7,6 +7,7 @@ import app.k9mail.core.ui.compose.testing.mvi.assertThatAndEffectTurbineConsumed
 import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
+import app.k9mail.feature.navigation.drawer.domain.entity.DrawerConfig
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Effect
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Event
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.State
@@ -33,6 +34,27 @@ class DrawerViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     @Test
+    fun `should collect drawer config`() = runTest {
+        val drawerConfig = createDrawerConfig()
+        val getDrawerConfigFlow = MutableStateFlow(drawerConfig)
+        val testSubject = createTestSubject(
+            drawerConfigFlow = getDrawerConfigFlow,
+        )
+
+        advanceUntilIdle()
+
+        assertThat(testSubject.state.value.config).isEqualTo(drawerConfig)
+
+        val newDrawerConfig = createDrawerConfig(showUnifiedInbox = true)
+
+        getDrawerConfigFlow.emit(newDrawerConfig)
+
+        advanceUntilIdle()
+
+        assertThat(testSubject.state.value.config).isEqualTo(newDrawerConfig)
+    }
+
+    @Test
     fun `should change loading state when OnRefresh event is received`() = runTest {
         val testSubject = createTestSubject()
 
@@ -51,7 +73,7 @@ class DrawerViewModelTest {
 
     @Test
     fun `should collect display accounts when created and select first as current`() = runTest {
-        val displayAccounts = createDisplayAccountList(3)
+        val displayAccounts = createDisplayAccountList(2)
         val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
         val testSubject = createTestSubject(
             displayAccountsFlow = getDisplayAccountsFlow,
@@ -202,14 +224,26 @@ class DrawerViewModelTest {
     }
 
     private fun createTestSubject(
+        drawerConfigFlow: Flow<DrawerConfig> = flow { emit(createDrawerConfig()) },
         displayAccountsFlow: Flow<List<DisplayAccount>> = flow { emit(emptyList()) },
         displayFoldersMap: Map<String, List<DisplayFolder>> = emptyMap(),
     ): DrawerViewModel {
         return DrawerViewModel(
+            getDrawerConfig = { drawerConfigFlow },
             getDisplayAccounts = { displayAccountsFlow },
             getDisplayFoldersForAccount = { accountUuid ->
                 flow { emit(displayFoldersMap[accountUuid] ?: emptyList()) }
             },
+        )
+    }
+
+    private fun createDrawerConfig(
+        showUnifiedInbox: Boolean = false,
+        showStarredCount: Boolean = false,
+    ): DrawerConfig {
+        return DrawerConfig(
+            showUnifiedInbox = showUnifiedInbox,
+            showStarredCount = showStarredCount,
         )
     }
 
