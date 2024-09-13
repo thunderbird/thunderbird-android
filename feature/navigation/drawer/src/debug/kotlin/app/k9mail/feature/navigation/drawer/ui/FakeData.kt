@@ -3,9 +3,9 @@ package app.k9mail.feature.navigation.drawer.ui
 import app.k9mail.core.mail.folder.api.Folder
 import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
+import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccountFolder
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Identity
-import app.k9mail.legacy.ui.folder.DisplayFolder
 
 internal object FakeData {
 
@@ -45,7 +45,8 @@ internal object FakeData {
         isLocalOnly = false,
     )
 
-    val DISPLAY_FOLDER = DisplayFolder(
+    val DISPLAY_FOLDER = DisplayAccountFolder(
+        accountUuid = ACCOUNT_UUID,
         folder = FOLDER,
         isInTopGroup = false,
         unreadMessageCount = 14,

@@ -10,6 +10,7 @@ class GetDrawerConfig(
     private val configProver: DrawerConfigLoader,
 ) : UseCase.GetDrawerConfig {
     override operator fun invoke(): Flow<DrawerConfig> {
+        // TODO This needs to be updated when the config changes
         return flow {
             emit(configProver.loadDrawerConfig())
         }

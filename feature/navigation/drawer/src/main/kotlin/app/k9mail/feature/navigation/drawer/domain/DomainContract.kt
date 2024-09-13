@@ -1,9 +1,9 @@
 package app.k9mail.feature.navigation.drawer.domain
 
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
+import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccountFolder
 import app.k9mail.feature.navigation.drawer.domain.entity.DrawerConfig
 import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.ui.folder.DisplayFolder
 import kotlinx.coroutines.flow.Flow
 
 interface DomainContract {
@@ -18,7 +18,7 @@ interface DomainContract {
         }
 
         fun interface GetDisplayFoldersForAccount {
-            operator fun invoke(accountUuid: String): Flow<List<DisplayFolder>>
+            operator fun invoke(accountUuid: String): Flow<List<DisplayAccountFolder>>
         }
 
         /**

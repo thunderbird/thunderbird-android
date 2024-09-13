@@ -3,9 +3,9 @@ package app.k9mail.feature.navigation.drawer.ui
 import androidx.compose.runtime.Stable
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
+import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccountFolder
 import app.k9mail.feature.navigation.drawer.domain.entity.DrawerConfig
 import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.ui.folder.DisplayFolder
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -20,16 +20,16 @@ interface DrawerContract {
             showStarredCount = false,
         ),
         val accounts: ImmutableList<DisplayAccount> = persistentListOf(),
-        val currentAccount: DisplayAccount? = null,
-        val folders: ImmutableList<DisplayFolder> = persistentListOf(),
-        val selectedFolder: DisplayFolder? = null,
+        val selectedAccount: DisplayAccount? = null,
+        val folders: ImmutableList<DisplayAccountFolder> = persistentListOf(),
+        val selectedFolder: DisplayAccountFolder? = null,
         val isLoading: Boolean = false,
     )
 
     sealed interface Event {
         data class OnAccountClick(val account: DisplayAccount) : Event
         data class OnAccountViewClick(val account: DisplayAccount) : Event
-        data class OnFolderClick(val folder: DisplayFolder) : Event
+        data class OnFolderClick(val folder: DisplayAccountFolder) : Event
         data object OnRefresh : Event
     }
 

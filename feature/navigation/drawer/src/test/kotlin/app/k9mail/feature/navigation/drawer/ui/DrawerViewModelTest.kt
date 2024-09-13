@@ -7,17 +7,16 @@ import app.k9mail.core.ui.compose.testing.mvi.assertThatAndEffectTurbineConsumed
 import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
+import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccountFolder
 import app.k9mail.feature.navigation.drawer.domain.entity.DrawerConfig
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Effect
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Event
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.State
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Identity
-import app.k9mail.legacy.ui.folder.DisplayFolder
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -78,7 +77,7 @@ class DrawerViewModelTest {
     }
 
     @Test
-    fun `should collect display accounts when created and select first as current`() = runTest {
+    fun `should collect display accounts when created and select first as selected`() = runTest {
         val displayAccounts = createDisplayAccountList(2)
         val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
         val testSubject = createTestSubject(
@@ -89,11 +88,11 @@ class DrawerViewModelTest {
 
         assertThat(testSubject.state.value.accounts.size).isEqualTo(displayAccounts.size)
         assertThat(testSubject.state.value.accounts).isEqualTo(displayAccounts)
-        assertThat(testSubject.state.value.currentAccount).isEqualTo(displayAccounts.first())
+        assertThat(testSubject.state.value.selectedAccount).isEqualTo(displayAccounts.first())
     }
 
     @Test
-    fun `should reselect current account when old not present anymore`() = runTest {
+    fun `should reselect selected account when old not present anymore`() = runTest {
         val displayAccounts = createDisplayAccountList(3)
         val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
         val testSubject = createTestSubject(
@@ -109,11 +108,11 @@ class DrawerViewModelTest {
 
         assertThat(testSubject.state.value.accounts.size).isEqualTo(newDisplayAccounts.size)
         assertThat(testSubject.state.value.accounts).isEqualTo(newDisplayAccounts)
-        assertThat(testSubject.state.value.currentAccount).isEqualTo(newDisplayAccounts.first())
+        assertThat(testSubject.state.value.selectedAccount).isEqualTo(newDisplayAccounts.first())
     }
 
     @Test
-    fun `should set current account to null when no accounts are present`() = runTest {
+    fun `should set selected account to null when no accounts are present`() = runTest {
         val getDisplayAccountsFlow = MutableStateFlow(emptyList<DisplayAccount>())
         val testSubject = createTestSubject(
             displayAccountsFlow = getDisplayAccountsFlow,
@@ -122,11 +121,11 @@ class DrawerViewModelTest {
         advanceUntilIdle()
 
         assertThat(testSubject.state.value.accounts.size).isEqualTo(0)
-        assertThat(testSubject.state.value.currentAccount).isEqualTo(null)
+        assertThat(testSubject.state.value.selectedAccount).isEqualTo(null)
     }
 
     @Test
-    fun `should set current account when OnAccountClick event is received`() = runTest {
+    fun `should set selected account when OnAccountClick event is received`() = runTest {
         val displayAccounts = createDisplayAccountList(3)
         val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
         val testSubject = createTestSubject(
@@ -136,7 +135,7 @@ class DrawerViewModelTest {
             testSubject,
             State(
                 accounts = displayAccounts.toImmutableList(),
-                currentAccount = displayAccounts.first(),
+                selectedAccount = displayAccounts.first(),
             ),
         )
 
@@ -146,7 +145,7 @@ class DrawerViewModelTest {
 
         advanceUntilIdle()
 
-        assertThat(turbines.awaitStateItem().currentAccount).isEqualTo(displayAccounts[1])
+        assertThat(turbines.awaitStateItem().selectedAccount).isEqualTo(displayAccounts[1])
 
         turbines.assertThatAndEffectTurbineConsumed {
             isEqualTo(Effect.OpenAccount(displayAccounts[1].account))
@@ -154,7 +153,7 @@ class DrawerViewModelTest {
     }
 
     @Test
-    fun `should collect display folders for current account`() = runTest {
+    fun `should collect display folders for selected account`() = runTest {
         val displayAccounts = createDisplayAccountList(3)
         val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
         val displayFoldersMap = mapOf(
@@ -173,7 +172,7 @@ class DrawerViewModelTest {
     }
 
     @Test
-    fun `should collect display folders when current account is changed`() = runTest {
+    fun `should collect display folders when selected account is changed`() = runTest {
         val displayAccounts = createDisplayAccountList(3)
         val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
         val displayFoldersMap = mapOf(
@@ -206,8 +205,9 @@ class DrawerViewModelTest {
         )
         val initialState = State(
             accounts = displayAccounts.toImmutableList(),
-            currentAccount = displayAccounts[0],
-            folders = displayFoldersMap[displayAccounts[0].account.uuid]?.toImmutableList() ?: persistentListOf(),
+            selectedAccount = displayAccounts[0],
+            folders = displayFoldersMap[displayAccounts[0].account.uuid]!!.toImmutableList(),
+            selectedFolder = displayFoldersMap[displayAccounts[0].account.uuid]!![0],
         )
         val testSubject = createTestSubject(
             displayAccountsFlow = getDisplayAccountsFlow,
@@ -232,7 +232,7 @@ class DrawerViewModelTest {
     private fun createTestSubject(
         drawerConfigFlow: Flow<DrawerConfig> = flow { emit(createDrawerConfig()) },
         displayAccountsFlow: Flow<List<DisplayAccount>> = flow { emit(emptyList()) },
-        displayFoldersMap: Map<String, List<DisplayFolder>> = emptyMap(),
+        displayFoldersMap: Map<String, List<DisplayAccountFolder>> = emptyMap(),
         syncMailFlow: Flow<Result<Unit>> = flow { emit(Result.success(Unit)) },
     ): DrawerViewModel {
         return DrawerViewModel(
@@ -294,12 +294,13 @@ class DrawerViewModelTest {
     }
 
     private fun createDisplayFolder(
+        accountUuid: String = "uuid",
         id: Long = 1234,
         name: String = "name",
         type: FolderType = FolderType.REGULAR,
         unreadCount: Int = 0,
         starredCount: Int = 0,
-    ): DisplayFolder {
+    ): DisplayAccountFolder {
         val folder = Folder(
             id = id,
             name = name,
@@ -307,7 +308,8 @@ class DrawerViewModelTest {
             isLocalOnly = false,
         )
 
-        return DisplayFolder(
+        return DisplayAccountFolder(
+            accountUuid = accountUuid,
             folder = folder,
             isInTopGroup = false,
             unreadMessageCount = unreadCount,
@@ -315,7 +317,7 @@ class DrawerViewModelTest {
         )
     }
 
-    private fun createDisplayFolderList(count: Int): List<DisplayFolder> {
+    private fun createDisplayFolderList(count: Int): List<DisplayAccountFolder> {
         return List(count) { index ->
             createDisplayFolder(
                 id = index.toLong() + 100,

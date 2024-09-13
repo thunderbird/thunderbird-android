@@ -34,7 +34,7 @@ fun DrawerContent(
                 ),
             verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
         ) {
-            state.currentAccount?.let {
+            state.selectedAccount?.let {
                 AccountView(
                     displayName = it.account.displayName,
                     emailAddress = it.account.email,

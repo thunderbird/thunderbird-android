@@ -7,14 +7,14 @@ import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.organism.drawer.NavigationDrawerItem
-import app.k9mail.legacy.ui.folder.DisplayFolder
+import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccountFolder
 
 @Composable
 fun FolderListItem(
-    displayFolder: DisplayFolder,
+    displayFolder: DisplayAccountFolder,
     selected: Boolean,
     showStarredCount: Boolean,
-    onClick: (DisplayFolder) -> Unit,
+    onClick: (DisplayAccountFolder) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     NavigationDrawerItem(

@@ -4,15 +4,16 @@ import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.navigation.drawer.domain.DomainContract.UseCase
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
+import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccountFolder
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Effect
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Event
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.State
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.ViewModel
-import app.k9mail.legacy.ui.folder.DisplayFolder
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
@@ -56,32 +57,38 @@ class DrawerViewModel(
     }
 
     private fun updateAccounts(accounts: List<DisplayAccount>) {
-        val currentAccountUuid = state.value.currentAccount?.account?.uuid
-        val isCurrentAccountAvailable = accounts.any { currentAccountUuid == it.account.uuid }
+        val selectedAccount = accounts.find { it.account.uuid == state.value.selectedAccount?.account?.uuid }
+            ?: accounts.firstOrNull()
 
         updateState {
-            if (isCurrentAccountAvailable) {
-                it.copy(accounts = accounts.toImmutableList())
-            } else {
-                it.copy(
-                    accounts = accounts.toImmutableList(),
-                    currentAccount = accounts.firstOrNull(),
-                )
-            }
+            it.copy(
+                accounts = accounts.toImmutableList(),
+                selectedAccount = selectedAccount,
+            )
         }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private suspend fun loadFolders() {
-        state.mapNotNull { it.currentAccount?.account?.uuid }
+        state.mapNotNull { it.selectedAccount?.account?.uuid }
             .distinctUntilChanged()
             .flatMapLatest { accountUuid ->
                 getDisplayFoldersForAccount(accountUuid)
             }.collectLatest { folders ->
-                updateState {
-                    it.copy(folders = folders.toImmutableList())
-                }
+                updateFolders(folders)
             }
+    }
+
+    private fun updateFolders(displayFolders: List<DisplayAccountFolder>) {
+        val selectedFolder = displayFolders.find { it == state.value.selectedFolder }
+            ?: displayFolders.firstOrNull()
+
+        updateState {
+            it.copy(
+                folders = displayFolders.toImmutableList(),
+                selectedFolder = selectedFolder,
+            )
+        }
     }
 
     override fun event(event: Event) {
@@ -101,7 +108,7 @@ class DrawerViewModel(
         viewModelScope.launch {
             updateState {
                 it.copy(
-                    currentAccount = account,
+                    selectedAccount = account,
                 )
             }
         }
@@ -120,7 +127,7 @@ class DrawerViewModel(
         }
     }
 
-    private fun selectFolder(folder: DisplayFolder) {
+    private fun selectFolder(folder: DisplayAccountFolder) {
         updateState {
             it.copy(selectedFolder = folder)
         }
@@ -138,9 +145,7 @@ class DrawerViewModel(
                 it.copy(isLoading = true)
             }
 
-            syncMail(state.value.currentAccount?.account).collect {
-                // nothing to do
-            }
+            syncMail(state.value.selectedAccount?.account).collect()
 
             updateState {
                 it.copy(isLoading = false)
