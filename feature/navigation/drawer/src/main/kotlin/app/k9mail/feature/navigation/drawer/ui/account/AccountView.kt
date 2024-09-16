@@ -30,10 +30,10 @@ fun AccountView(
             .height(intrinsicSize = IntrinsicSize.Max)
             .clickable(onClick = onClick)
             .padding(
-                top = MainTheme.spacings.default,
+                top = MainTheme.spacings.double,
                 start = MainTheme.spacings.double,
                 end = MainTheme.spacings.triple,
-                bottom = MainTheme.spacings.oneHalf,
+                bottom = MainTheme.spacings.double,
             ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -42,7 +42,7 @@ fun AccountView(
             modifier = Modifier
                 .fillMaxHeight()
                 .padding(
-                    end = MainTheme.spacings.default,
+                    end = MainTheme.spacings.oneHalf,
                 ),
         )
         Column(

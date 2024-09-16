@@ -1,10 +1,12 @@
 package app.k9mail.feature.navigation.drawer.ui.folder
 
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccountFolder
 import kotlinx.collections.immutable.ImmutableList
 
@@ -18,7 +20,8 @@ fun FolderList(
 ) {
     LazyColumn(
         modifier = modifier
-            .fillMaxSize(),
+            .fillMaxWidth(),
+        contentPadding = PaddingValues(vertical = MainTheme.spacings.default),
     ) {
         items(folders) { folder ->
             FolderListItem(
