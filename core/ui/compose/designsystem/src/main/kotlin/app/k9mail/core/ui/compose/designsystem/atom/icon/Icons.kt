@@ -10,6 +10,8 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Archive
 import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material.icons.outlined.ChevronLeft
+import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Drafts
 import androidx.compose.material.icons.outlined.ErrorOutline
@@ -21,10 +23,11 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Report
 import androidx.compose.material.icons.outlined.Security
-import androidx.compose.material.icons.outlined.Send
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.ui.graphics.vector.ImageVector
 import app.k9mail.core.ui.compose.designsystem.atom.icon.filled.Dot
+import app.k9mail.core.ui.compose.designsystem.atom.icon.outlined.FolderManaged
 import androidx.compose.material.icons.Icons as MaterialIcons
 
 // We're using getters so not all icons are loaded into memory as soon as one of the nested objects is accessed.
@@ -56,6 +59,12 @@ object Icons {
         val Check: ImageVector
             get() = MaterialIcons.Outlined.Check
 
+        val ChevronLeft: ImageVector
+            get() = MaterialIcons.Outlined.ChevronLeft
+
+        val ChevronRight: ImageVector
+            get() = MaterialIcons.Outlined.ChevronRight
+
         val Delete: ImageVector
             get() = MaterialIcons.Outlined.Delete
 
@@ -80,6 +89,9 @@ object Icons {
         val Info: ImageVector
             get() = MaterialIcons.Outlined.Info
 
+        val FolderManaged: ImageVector
+            get() = MaterialIcons.Outlined.FolderManaged
+
         val Menu: ImageVector
             get() = MaterialIcons.Outlined.Menu
 
@@ -91,6 +103,9 @@ object Icons {
 
         val Send: ImageVector
             get() = MaterialIcons.AutoMirrored.Outlined.Send
+
+        val Settings: ImageVector
+            get() = MaterialIcons.Outlined.Settings
 
         val Report: ImageVector
             get() = MaterialIcons.Outlined.Report
