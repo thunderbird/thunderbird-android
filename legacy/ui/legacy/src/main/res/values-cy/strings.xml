@@ -425,11 +425,6 @@
     <string name="folder_settings_folder_push_mode_first_class">Rhenc 1af</string>
     <string name="folder_settings_folder_push_mode_second_class">2ail renc</string>
     <string name="folder_settings_folder_push_mode_inherited">Fel rhenc gwirio</string>
-    <string name="folder_settings_folder_notify_mode_label">Rhenc hysbysiadau\'r ffolder</string>
-    <string name="folder_settings_folder_notify_mode_normal">Dim rhenc</string>
-    <string name="folder_settings_folder_notify_mode_first_class">Rhenc 1af</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2ail renc</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Fel ei rhenc gwthio</string>
     <string name="folder_settings_clear_local_folder_action">Clirio negeseuon lleol</string>
     <string name="account_settings_incoming_label">Gweinydd</string>
     <string name="account_settings_incoming_summary">Ffurfweddu\'r gweinydd derbyn</string>

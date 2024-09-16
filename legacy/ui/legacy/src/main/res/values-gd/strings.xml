@@ -388,11 +388,6 @@
     <string name="folder_settings_folder_push_mode_first_class">1ᵈ ìre</string>
     <string name="folder_settings_folder_push_mode_second_class">2ⁿᵃ ìre</string>
     <string name="folder_settings_folder_push_mode_inherited">Co-ionnann ris an ìre sioncronachaidh</string>
-    <string name="folder_settings_folder_notify_mode_label">Ìre brathan a’ phasgain</string>
-    <string name="folder_settings_folder_notify_mode_normal">Gun ìre</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1ᵈ ìre</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2ⁿᵃ ìre</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Co-ionnann ris an ìre putaidh</string>
     <string name="folder_settings_clear_local_folder_action">Falamhaich na teachdaireachdan ionadail</string>
     <string name="account_settings_incoming_label">Am frithealaiche a-steach</string>
     <string name="account_settings_incoming_summary">Rèitich frithealaiche a’ phuist a-steach</string>

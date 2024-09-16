@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="onboarding_welcome_message">Добродошли у <xliff:g id="app_name">%s</xliff:g>, Андроид имејл клијент дизајниран за побољшану безбедност, лаку прилагодљивост и беспрекорно управљање свим вашим имејл налозима.</string>
+    <string name="onboarding_welcome_start_button">Почетак</string>
+    <string name="onboarding_welcome_import_button">Увези подешавања</string>
+</resources>

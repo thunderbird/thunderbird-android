@@ -434,11 +434,6 @@
     <string name="folder_settings_folder_push_mode_first_class">1. osztály</string>
     <string name="folder_settings_folder_push_mode_second_class">2. osztály</string>
     <string name="folder_settings_folder_push_mode_inherited">Ugyanaz, mint a lekérés osztálya</string>
-    <string name="folder_settings_folder_notify_mode_label">Mappa értesítésének osztálya</string>
-    <string name="folder_settings_folder_notify_mode_normal">Nincs osztály</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1. osztály</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2. osztály</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Ugyanaz, mint a küldés osztálya</string>
     <string name="folder_settings_clear_local_folder_action">Helyi üzenetek törlése</string>
     <string name="account_settings_incoming_label">Bejövő kiszolgáló</string>
     <string name="account_settings_incoming_summary">A bejövő levelek kiszolgálójának beállítása</string>
@@ -922,7 +917,5 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <string name="general_settings_post_remove_action_show_next_message">Következő üzenet megjelenítése</string>
     <string name="general_settings_post_remove_action_title">Üzenet törlése vagy áthelyezése után</string>
     <string name="about_app_authors_thunderbird">Thunderbird Mobile csapata</string>
-    <string name="default_signature">--
-\nAz Androidos készülékemről küldve <xliff:g id="app_name">%s</xliff:g>. Elnézést kérek a rövidségemért.</string>
     <string name="account_delete_dlg_instructions_fmt">A „&lt;xliff:g id=”account„&gt;%s&lt;/xliff:g&gt;” fiók eltávolításra kerül a &lt;xliff:g id=„app_name”&gt;%s&lt;/xliff:g&gt; fiókból.</string>
 </resources>

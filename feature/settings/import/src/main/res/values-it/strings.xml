@@ -38,4 +38,6 @@
     <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 non è supportato da questo provider di posta.</string>
     <string name="settings_import_oauth_error_browser_not_found">L\' applicazione non trova un browser per richiedere l\'accesso al tuo account.</string>
     <string name="settings_import_general_settings_item">Impostazioni generali</string>
+    <string name="settings_import_pick_app_button">Importa dall\'applicazione</string>
+    <string name="settings_import_pick_app_dialog_title">Importa dall\'applicazione</string>
 </resources>

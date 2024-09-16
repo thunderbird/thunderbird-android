@@ -1,2 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Конфигурација пронађена</string>
+    <string name="account_setup_special_folders_folder_automatic">Аутоматски (%s)</string>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">1 порука</item>
+        <item quantity="few">%d поруке</item>
+        <item quantity="other">%d порука</item>
+    </plurals>
+    <string name="account_setup_options_email_display_count_label">Број порука за приказ</string>
+    <string name="account_setup_special_folders_form_description">Молимо наведите специјалне фасцикле за ваш налог.</string>
+    <string name="account_setup_special_folders_form_description_automatic">Унос \"Аутоматски\" ће аутоматски пратити промене које направи сервер. Тренутна вредност сервера је приказана у заградама.</string>
+    <string name="account_setup_special_folders_archive_folder_label">Архивска фасцикла</string>
+    <string name="account_setup_special_folders_success_message">Све специјалне фасцикле су аутоматски конфигурисане од стране сервера.</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Фасцикла нацрта</string>
+    <string name="account_setup_special_folders_sent_folder_label">Фасцикла послатих</string>
+    <string name="account_setup_special_folders_spam_folder_label">Фасцикла нежељене поште</string>
+    <string name="account_setup_special_folders_trash_folder_label">Фасцикла за смеће</string>
+    <string name="account_setup_options_section_display_options">Прикажи опције</string>
+    <string name="account_setup_options_account_name_label">Име налога</string>
+    <string name="account_setup_options_account_name_error_blank">Име налога не може бити празно.</string>
+    <string name="account_setup_options_display_name_label">Ваше име</string>
+    <string name="account_setup_options_display_name_error_required">Ваше име је потребно.</string>
+    <string name="account_setup_options_email_signature_label">Потпис е-поште</string>
+    <string name="account_setup_options_account_check_frequency_label">Учесталост провере</string>
+    <string name="account_setup_options_email_check_frequency_never">Никад</string>
+    <string name="account_setup_create_account_creating">Креирање налога…</string>
+    <string name="account_setup_create_account_error">Дошло је до грешке приликом покушаја креирања налога</string>
+    <string name="account_setup_create_account_created">Налог успешно креиран</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Ово није препознато као важећа адреса е-поште.</string>
+    <string name="account_setup_auto_discovery_loading_message">Тражим конфигурацију…</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Примили смо конфигурацију за ваш сервер е-поште преко везе која није толико сигурна колико бисмо желели. То значи да постоји мала шанса да је неко могао да је измени. Молимо вас да дупло проверите пружену конфигурацију како бисте били сигурни да је исправна.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Конфигуриши ручно</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Конфигуриши аутоматски</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Ова конфигурација није поуздана</string>
+    <string name="account_setup_auto_discovery_loading_error">Учитавање конфигурације е-поште није успело</string>
+    <string name="account_setup_special_folders_folder_none">Ниједна</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Конфигурација није пронађена</string>
+    <string name="account_setup_options_show_notifications_label">Прикажи обавештења</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Уреди конфигурацију</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Верујем овој конфигурацији</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Потребна је лозинка.</string>
+    <string name="account_setup_special_folders_loading_message">Преузимање листе фасцикли…</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Потребно је одобрити конфигурацију.</string>
+    <string name="account_setup_special_folders_error_message">Преузимање листе фасцикли са сервера није успело</string>
+    <string name="account_setup_error_network">Грешка у мрежи. Молимо проверите статус ваше везе и покушајте поново.</string>
+    <string name="account_setup_error_unknown">Непозната грешка</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">Потребна је адреса е-поште.</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Ова адреса е-поште није дозвољена.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Ова адреса е-поште није подржана.</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Сваког минута</item>
+        <item quantity="few">Свака %d минута</item>
+        <item quantity="other">Сваких %d минута</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Сваког сата</item>
+        <item quantity="few">Свака %d сата</item>
+        <item quantity="other">Сваких %d сати</item>
+    </plurals>
+    <string name="account_setup_options_email_signature_error_blank">Име потписа е-поште не може бити празно.</string>
+    <string name="account_setup_options_section_sync_options">Опције синхронизације</string>
+</resources>

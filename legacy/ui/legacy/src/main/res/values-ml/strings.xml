@@ -416,11 +416,6 @@
     <string name="folder_settings_folder_push_mode_first_class">1 ആം ക്ലാസ്</string>
     <string name="folder_settings_folder_push_mode_second_class">2 ആം ക്ലാസ്സ്</string>
     <string name="folder_settings_folder_push_mode_inherited">പോൾ ക്ലാസ് പോലെ തന്നെ</string>
-    <string name="folder_settings_folder_notify_mode_label">ഫോൾഡർ അറിയിപ്പ് ക്ലാസ്</string>
-    <string name="folder_settings_folder_notify_mode_normal">ക്ലാസ് ഇല്ല</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1 ആം ക്ലാസ്</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2 ആം ക്ലാസ്സ്</string>
-    <string name="folder_settings_folder_notify_mode_inherited">പുഷ് ക്ലാസ്സിന് സമാനമാണ്</string>
     <string name="folder_settings_clear_local_folder_action">പ്രാദേശിക സന്ദേശങ്ങൾ മായ്‌ക്കുക</string>
     <string name="account_settings_incoming_label">ഇൻകമിംഗ് സെർവർ</string>
     <string name="account_settings_incoming_summary">ഇൻകമിംഗ് മെയിൽ സെർവർ ക്രമീകരിക്കുക</string>

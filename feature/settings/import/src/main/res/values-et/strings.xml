@@ -37,4 +37,6 @@
     <string name="settings_import_oauth_error_oauth_not_supported">See teenusepakkuja ei võimalda OAuth 2.0 kasutamist.</string>
     <string name="settings_import_oauth_error_browser_not_found">Rakendus ei suutnud tuvastada veebibrauserit, mida saaks sinu kontole ligipääsu lubamiseks kasutada.</string>
     <string name="settings_import_general_settings_item">Üldised sätted</string>
+    <string name="settings_import_pick_app_button">Impordi rakendusest</string>
+    <string name="settings_import_pick_app_dialog_title">Impordi rakendusest</string>
 </resources>
