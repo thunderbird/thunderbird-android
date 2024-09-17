@@ -13,7 +13,7 @@ internal fun DrawerContentPreview() {
         DrawerContent(
             state = DrawerContract.State(
                 accounts = persistentListOf(),
-                currentAccount = null,
+                selectedAccount = null,
                 folders = persistentListOf(),
             ),
             onEvent = {},
@@ -28,7 +28,8 @@ fun DrawerContentWithAccountPreview() {
         DrawerContent(
             state = DrawerContract.State(
                 accounts = persistentListOf(DISPLAY_ACCOUNT),
-                currentAccount = DISPLAY_ACCOUNT,
+                selectedAccount = DISPLAY_ACCOUNT,
+                folders = persistentListOf(),
             ),
             onEvent = {},
         )

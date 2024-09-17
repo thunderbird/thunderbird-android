@@ -608,6 +608,9 @@ open class MessageList :
     private fun initializeFolderDrawer() {
         navigationDrawer = FolderDrawer(
             parent = this,
+            openAccount = { account -> openRealAccount(account) },
+            openFolder = { folderId -> openFolder(folderId) },
+            createDrawerListener = { createDrawerListener() },
         )
     }
 
@@ -630,7 +633,7 @@ open class MessageList :
         }
     }
 
-    fun openFolder(folderId: Long) {
+    private fun openFolder(folderId: Long) {
         if (displayMode == DisplayMode.SPLIT_VIEW) {
             removeMessageViewContainerFragment()
             showMessageViewPlaceHolder()

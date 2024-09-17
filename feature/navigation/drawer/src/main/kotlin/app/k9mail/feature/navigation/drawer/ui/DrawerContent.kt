@@ -34,7 +34,7 @@ fun DrawerContent(
                 ),
             verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
         ) {
-            state.currentAccount?.let {
+            state.selectedAccount?.let {
                 AccountView(
                     displayName = it.account.displayName,
                     emailAddress = it.account.email,
@@ -46,9 +46,11 @@ fun DrawerContent(
             }
             FolderList(
                 folders = state.folders,
-                selectedFolder = state.folders.firstOrNull(), // TODO Use selected folder from state
-                onFolderClick = { },
-                showStarredCount = state.showStarredCount,
+                selectedFolder = state.selectedFolder,
+                onFolderClick = { folder ->
+                    onEvent(Event.OnFolderClick(folder))
+                },
+                showStarredCount = state.config.showStarredCount,
             )
         }
     }
