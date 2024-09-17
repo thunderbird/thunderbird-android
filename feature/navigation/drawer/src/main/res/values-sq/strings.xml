@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="navigation_drawer_action_settings">Rregullime</string>
-    <string name="navigation_drawer_action_folders">Administroni dosje</string>
+    <string name="navigation_drawer_action_manage_folders">Administroni dosje</string>
     <string name="navigation_drawer_unified_inbox_title">Kuti Poste e Njësuar</string>
 </resources>

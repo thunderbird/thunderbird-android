@@ -290,7 +290,7 @@ class LegacyDrawer(
     private fun addFooterItems() {
         sliderView.addStickyFooterItem(
             PrimaryDrawerItem().apply {
-                nameRes = R.string.navigation_drawer_action_folders
+                nameRes = R.string.navigation_drawer_action_manage_folders
                 iconRes = Icons.Outlined.Folder
                 identifier = DRAWER_ID_FOLDERS
                 isSelectable = false
