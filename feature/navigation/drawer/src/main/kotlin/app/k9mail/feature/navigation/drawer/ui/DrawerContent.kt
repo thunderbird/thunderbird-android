@@ -33,10 +33,9 @@ fun DrawerContent(
         ) {
             state.selectedAccount?.let {
                 AccountView(
-                    displayName = it.account.displayName,
-                    emailAddress = it.account.email,
-                    accountColor = it.account.chipColor,
+                    account = it,
                     onClick = { onEvent(Event.OnAccountViewClick(it)) },
+                    showAvatar = state.showAccountSelector,
                 )
 
                 DividerHorizontal()

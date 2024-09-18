@@ -1,61 +1,87 @@
 package app.k9mail.feature.navigation.drawer.ui.account
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.theme2.MainTheme
+import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
 
 @Composable
 fun AccountView(
-    displayName: String,
-    emailAddress: String,
-    accountColor: Int,
-    modifier: Modifier = Modifier,
+    account: DisplayAccount,
     onClick: () -> Unit,
+    showAvatar: Boolean,
+    modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(intrinsicSize = IntrinsicSize.Max)
-            .clickable(onClick = onClick)
-            .padding(
-                top = MainTheme.spacings.double,
-                start = MainTheme.spacings.double,
-                end = MainTheme.spacings.triple,
-                bottom = MainTheme.spacings.double,
-            ),
+        modifier = Modifier.fillMaxWidth()
+            .height(intrinsicSize = IntrinsicSize.Max),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        AccountIndicator(
-            accountColor = accountColor,
-            modifier = Modifier
-                .fillMaxHeight()
+        AnimatedVisibility(visible = showAvatar) {
+            Surface(
+                color = MainTheme.colors.surfaceContainer,
+                modifier = Modifier.fillMaxHeight(),
+            ) {
+                Box(
+                    modifier = Modifier.width(MainTheme.sizes.large),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    AccountAvatar(
+                        account = account,
+                        onClick = { },
+                    )
+                }
+            }
+        }
+        Row(
+            modifier = modifier
+                .clickable(onClick = onClick)
+                .height(intrinsicSize = IntrinsicSize.Max)
+                .fillMaxWidth()
+                .defaultMinSize(minHeight = MainTheme.sizes.large)
                 .padding(
-                    end = MainTheme.spacings.oneHalf,
+                    top = MainTheme.spacings.double,
+                    start = MainTheme.spacings.double,
+                    end = MainTheme.spacings.triple,
+                    bottom = MainTheme.spacings.double,
                 ),
-        )
-        Column(
-            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            TextBodyLarge(
-                text = displayName,
-                color = MainTheme.colors.onSurface,
+            AccountIndicator(
+                accountColor = account.account.chipColor,
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(end = MainTheme.spacings.oneHalf),
             )
-            TextBodyMedium(
-                text = emailAddress,
-                color = MainTheme.colors.onSurfaceVariant,
-            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
+            ) {
+                TextBodyLarge(
+                    text = account.account.displayName,
+                    color = MainTheme.colors.onSurface,
+                )
+                TextBodyMedium(
+                    text = account.account.email,
+                    color = MainTheme.colors.onSurfaceVariant,
+                )
+            }
         }
     }
 }
