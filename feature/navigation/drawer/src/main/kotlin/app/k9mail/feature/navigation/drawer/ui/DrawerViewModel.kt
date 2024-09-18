@@ -101,6 +101,10 @@ class DrawerViewModel(
                     state.value.accounts.nextOrFirst(event.account)!!,
                 )
             }
+
+            Event.OnAccountSelectorClick -> updateState { it.copy(showAccountSelector = it.showAccountSelector.not()) }
+            Event.OnManageFoldersClick -> emitEffect(Effect.OpenManageFolders)
+            Event.OnSettingsClick -> emitEffect(Effect.OpenSettings)
         }
     }
 

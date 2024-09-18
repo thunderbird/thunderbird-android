@@ -1,5 +1,6 @@
 package app.k9mail.feature.navigation.drawer.domain.usecase
 
+import app.k9mail.feature.navigation.drawer.ui.FakeData
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.message.controller.MessagingControllerMailChecker
 import app.k9mail.legacy.message.controller.MessagingListener
@@ -23,6 +24,22 @@ class SyncMailTest {
         )
 
         val result = testSubject(null).first()
+
+        assertThat(result.isSuccess).isEqualTo(true)
+    }
+
+    @Test
+    fun `should sync mail with account`() = runTest {
+        val listenerExecutor: (MessagingListener?) -> Unit = { listener ->
+            listener?.checkMailFinished(null, null)
+        }
+        val testSubject = SyncMail(
+            messagingController = FakeMessagingControllerMailChecker(
+                listenerExecutor = listenerExecutor,
+            ),
+        )
+
+        val result = testSubject(FakeData.ACCOUNT).first()
 
         assertThat(result.isSuccess).isEqualTo(true)
     }

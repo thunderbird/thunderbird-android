@@ -20,12 +20,16 @@ class DrawerViewKtTest : ComposeTest() {
         val viewModel = FakeDrawerViewModel(initialState)
         var openAccountCounter = 0
         var openFolderCounter = 0
+        var openManageFoldersCounter = 0
+        var openSettingsCounter = 0
         var closeDrawerCounter = 0
 
         setContentWithTheme {
             DrawerView(
                 openAccount = { openAccountCounter++ },
                 openFolder = { openFolderCounter++ },
+                openManageFolders = { openManageFoldersCounter++ },
+                openSettings = { openSettingsCounter++ },
                 closeDrawer = { closeDrawerCounter++ },
                 viewModel = viewModel,
             )
@@ -33,22 +37,48 @@ class DrawerViewKtTest : ComposeTest() {
 
         assertThat(openAccountCounter).isEqualTo(0)
         assertThat(openFolderCounter).isEqualTo(0)
+        assertThat(openManageFoldersCounter).isEqualTo(0)
+        assertThat(openSettingsCounter).isEqualTo(0)
         assertThat(closeDrawerCounter).isEqualTo(0)
 
         viewModel.effect(Effect.OpenAccount(FakeData.ACCOUNT))
 
         assertThat(openAccountCounter).isEqualTo(1)
+        assertThat(openFolderCounter).isEqualTo(0)
+        assertThat(openManageFoldersCounter).isEqualTo(0)
+        assertThat(openSettingsCounter).isEqualTo(0)
+        assertThat(closeDrawerCounter).isEqualTo(0)
 
         viewModel.effect(Effect.OpenFolder(1))
 
         assertThat(openAccountCounter).isEqualTo(1)
         assertThat(openFolderCounter).isEqualTo(1)
+        assertThat(openManageFoldersCounter).isEqualTo(0)
+        assertThat(openSettingsCounter).isEqualTo(0)
+        assertThat(closeDrawerCounter).isEqualTo(0)
+
+        viewModel.effect(Effect.OpenManageFolders)
+
+        assertThat(openAccountCounter).isEqualTo(1)
+        assertThat(openFolderCounter).isEqualTo(1)
+        assertThat(openManageFoldersCounter).isEqualTo(1)
+        assertThat(openSettingsCounter).isEqualTo(0)
+        assertThat(closeDrawerCounter).isEqualTo(0)
+
+        viewModel.effect(Effect.OpenSettings)
+
+        assertThat(openAccountCounter).isEqualTo(1)
+        assertThat(openFolderCounter).isEqualTo(1)
+        assertThat(openManageFoldersCounter).isEqualTo(1)
+        assertThat(openSettingsCounter).isEqualTo(1)
         assertThat(closeDrawerCounter).isEqualTo(0)
 
         viewModel.effect(Effect.CloseDrawer)
 
         assertThat(openAccountCounter).isEqualTo(1)
         assertThat(openFolderCounter).isEqualTo(1)
+        assertThat(openManageFoldersCounter).isEqualTo(1)
+        assertThat(openSettingsCounter).isEqualTo(1)
         assertThat(closeDrawerCounter).isEqualTo(1)
     }
 
@@ -63,6 +93,8 @@ class DrawerViewKtTest : ComposeTest() {
             DrawerView(
                 openAccount = {},
                 openFolder = {},
+                openManageFolders = {},
+                openSettings = {},
                 closeDrawer = {},
                 viewModel = viewModel,
             )

@@ -4,6 +4,7 @@ import app.k9mail.core.mail.folder.api.Folder
 import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndEffectTurbineConsumed
+import app.k9mail.core.ui.compose.testing.mvi.assertThatAndStateTurbineConsumed
 import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
@@ -226,6 +227,46 @@ class DrawerViewModelTest {
 
         turbines.assertThatAndEffectTurbineConsumed {
             isEqualTo(Effect.CloseDrawer)
+        }
+    }
+
+    @Test
+    fun `should change state when OnAccountSelectorClick event is received`() = runTest {
+        val testSubject = createTestSubject()
+        val turbines = turbinesWithInitialStateCheck(testSubject, State())
+
+        testSubject.event(Event.OnAccountSelectorClick)
+
+        assertThat(turbines.awaitStateItem()).isEqualTo(State(showAccountSelector = true))
+
+        testSubject.event(Event.OnAccountSelectorClick)
+
+        turbines.assertThatAndStateTurbineConsumed {
+            isEqualTo(State(showAccountSelector = false))
+        }
+    }
+
+    @Test
+    fun `should emit OpenManageFolders effect when OnManageFoldersClick event is received`() = runTest {
+        val testSubject = createTestSubject()
+        val turbines = turbinesWithInitialStateCheck(testSubject, State())
+
+        testSubject.event(Event.OnManageFoldersClick)
+
+        turbines.assertThatAndEffectTurbineConsumed {
+            isEqualTo(Effect.OpenManageFolders)
+        }
+    }
+
+    @Test
+    fun `should emit OpenSettings effect when OnSettingsClick event is received`() = runTest {
+        val testSubject = createTestSubject()
+        val turbines = turbinesWithInitialStateCheck(testSubject, State())
+
+        testSubject.event(Event.OnSettingsClick)
+
+        turbines.assertThatAndEffectTurbineConsumed {
+            isEqualTo(Effect.OpenSettings)
         }
     }
 

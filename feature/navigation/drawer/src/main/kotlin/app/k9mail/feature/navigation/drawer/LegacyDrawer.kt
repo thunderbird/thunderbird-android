@@ -66,7 +66,7 @@ private const val EN_SPACE = "\u2000"
 @Suppress("MagicNumber", "TooManyFunctions", "LongParameterList")
 class LegacyDrawer(
     override val parent: AppCompatActivity,
-    private val openFolders: () -> Unit,
+    private val openManageFolders: () -> Unit,
     private val openUnifiedInbox: () -> Unit,
     private val openFolder: (folderId: Long) -> Unit,
     private val openAccount: (account: Account) -> Boolean,
@@ -290,7 +290,7 @@ class LegacyDrawer(
     private fun addFooterItems() {
         sliderView.addStickyFooterItem(
             PrimaryDrawerItem().apply {
-                nameRes = R.string.navigation_drawer_action_folders
+                nameRes = R.string.navigation_drawer_action_manage_folders
                 iconRes = Icons.Outlined.Folder
                 identifier = DRAWER_ID_FOLDERS
                 isSelectable = false
@@ -352,7 +352,7 @@ class LegacyDrawer(
     private fun handleItemClickListener(drawerItem: IDrawerItem<*>) {
         when (drawerItem.identifier) {
             DRAWER_ID_PREFERENCES -> openSettings()
-            DRAWER_ID_FOLDERS -> openFolders()
+            DRAWER_ID_FOLDERS -> openManageFolders()
             DRAWER_ID_UNIFIED_INBOX -> openUnifiedInbox()
             else -> {
                 val folder = drawerItem.tag as Folder

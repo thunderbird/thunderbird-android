@@ -13,15 +13,15 @@ import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccountFolder
 fun FolderListItem(
     displayFolder: DisplayAccountFolder,
     selected: Boolean,
-    showStarredCount: Boolean,
     onClick: (DisplayAccountFolder) -> Unit,
+    showStarredCount: Boolean,
     modifier: Modifier = Modifier,
 ) {
     NavigationDrawerItem(
         label = displayFolder.folder.name,
         selected = selected,
-        modifier = modifier,
         onClick = { onClick(displayFolder) },
+        modifier = modifier,
         icon = {
             Icon(
                 imageVector = mapFolderIcon(displayFolder.folder.type),

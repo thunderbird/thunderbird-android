@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="navigation_drawer_action_settings">Configurações</string>
-    <string name="navigation_drawer_action_folders">Gerenciar pastas</string>
+    <string name="navigation_drawer_action_manage_folders">Gerenciar pastas</string>
     <string name="navigation_drawer_unified_inbox_title">Caixa de Entrada Unificada</string>
 </resources>
