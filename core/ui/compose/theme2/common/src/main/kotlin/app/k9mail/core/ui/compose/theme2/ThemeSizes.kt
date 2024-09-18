@@ -17,6 +17,7 @@ data class ThemeSizes(
     val iconSmall: Dp,
     val icon: Dp,
     val iconLarge: Dp,
+    val iconAvatar: Dp,
 
     val topBarHeight: Dp,
     val bottomBarHeight: Dp,
