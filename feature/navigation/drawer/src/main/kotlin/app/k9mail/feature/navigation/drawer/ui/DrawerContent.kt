@@ -27,10 +27,7 @@ fun DrawerContent(
             .fillMaxSize()
             .testTag("DrawerContent"),
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-        ) {
+        Column {
             state.selectedAccount?.let {
                 AccountView(
                     account = it,
