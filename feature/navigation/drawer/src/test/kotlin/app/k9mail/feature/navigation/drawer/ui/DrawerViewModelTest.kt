@@ -24,6 +24,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -160,9 +161,10 @@ class DrawerViewModelTest {
         val displayFoldersMap = mapOf(
             displayAccounts[0].account.uuid to createDisplayFolderList(3),
         )
+        val displayFoldersFlow = MutableStateFlow(displayFoldersMap)
         val testSubject = createTestSubject(
             displayAccountsFlow = getDisplayAccountsFlow,
-            displayFoldersMap = displayFoldersMap,
+            displayFoldersFlow = displayFoldersFlow,
         )
 
         advanceUntilIdle()
@@ -181,9 +183,10 @@ class DrawerViewModelTest {
             displayAccounts[1].account.uuid to createDisplayFolderList(5),
             displayAccounts[2].account.uuid to createDisplayFolderList(10),
         )
+        val displayFoldersFlow = MutableStateFlow(displayFoldersMap)
         val testSubject = createTestSubject(
             displayAccountsFlow = getDisplayAccountsFlow,
-            displayFoldersMap = displayFoldersMap,
+            displayFoldersFlow = displayFoldersFlow,
         )
 
         advanceUntilIdle()
@@ -204,6 +207,7 @@ class DrawerViewModelTest {
         val displayFoldersMap = mapOf(
             displayAccounts[0].account.uuid to createDisplayFolderList(3),
         )
+        val displayFoldersFlow = MutableStateFlow(displayFoldersMap)
         val initialState = State(
             accounts = displayAccounts.toImmutableList(),
             selectedAccount = displayAccounts[0],
@@ -212,7 +216,7 @@ class DrawerViewModelTest {
         )
         val testSubject = createTestSubject(
             displayAccountsFlow = getDisplayAccountsFlow,
-            displayFoldersMap = displayFoldersMap,
+            displayFoldersFlow = displayFoldersFlow,
         )
         val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
 
@@ -273,14 +277,14 @@ class DrawerViewModelTest {
     private fun createTestSubject(
         drawerConfigFlow: Flow<DrawerConfig> = flow { emit(createDrawerConfig()) },
         displayAccountsFlow: Flow<List<DisplayAccount>> = flow { emit(emptyList()) },
-        displayFoldersMap: Map<String, List<DisplayAccountFolder>> = emptyMap(),
+        displayFoldersFlow: Flow<Map<String, List<DisplayAccountFolder>>> = flow { emit(emptyMap()) },
         syncMailFlow: Flow<Result<Unit>> = flow { emit(Result.success(Unit)) },
     ): DrawerViewModel {
         return DrawerViewModel(
             getDrawerConfig = { drawerConfigFlow },
             getDisplayAccounts = { displayAccountsFlow },
             getDisplayFoldersForAccount = { accountUuid ->
-                flow { emit(displayFoldersMap[accountUuid] ?: emptyList()) }
+                displayFoldersFlow.map { it[accountUuid] ?: emptyList() }
             },
             syncMail = { syncMailFlow },
         )
