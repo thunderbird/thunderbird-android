@@ -198,6 +198,11 @@ dependencies {
     debugImplementation(projects.backend.demo)
     debugImplementation(projects.feature.autodiscovery.demo)
 
+    debugImplementation(projects.feature.funding.noop)
+    add("dailyImplementation", projects.feature.funding.googleplay)
+    add("betaImplementation", projects.feature.funding.noop)
+    releaseImplementation(projects.feature.funding.noop)
+
     testImplementation(libs.robolectric)
 
     // Required for DependencyInjectionTest to be able to resolve OpenPgpApiManager

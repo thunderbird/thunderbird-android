@@ -24,6 +24,7 @@ dependencies {
     implementation(projects.feature.widget.shortcut)
     implementation(projects.feature.widget.unread)
     implementation(projects.feature.telemetry.noop)
+    implementation(projects.feature.funding.noop)
 
     implementation(libs.androidx.work.runtime)
 
