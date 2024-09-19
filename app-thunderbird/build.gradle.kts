@@ -94,7 +94,7 @@ android {
             isShrinkResources = false
             isDebuggable = true
 
-            buildConfigField("String", "RELEASE_CHANNEL", "null")
+            buildConfigField("String", "GLEAN_RELEASE_CHANNEL", "null")
         }
 
         release {
@@ -109,7 +109,7 @@ android {
                 "proguard-rules.pro",
             )
 
-            buildConfigField("String", "RELEASE_CHANNEL", "\"release\"")
+            buildConfigField("String", "GLEAN_RELEASE_CHANNEL", "\"release\"")
         }
 
         create("beta") {
@@ -129,7 +129,7 @@ android {
                 "proguard-rules.pro",
             )
 
-            buildConfigField("String", "RELEASE_CHANNEL", "\"beta\"")
+            buildConfigField("String", "GLEAN_RELEASE_CHANNEL", "\"beta\"")
         }
 
         create("daily") {
@@ -149,7 +149,8 @@ android {
                 "proguard-rules.pro",
             )
 
-            buildConfigField("String", "RELEASE_CHANNEL", "\"daily\"")
+            // See https://bugzilla.mozilla.org/show_bug.cgi?id=1918151
+            buildConfigField("String", "GLEAN_RELEASE_CHANNEL", "\"nightly\"")
         }
     }
 
