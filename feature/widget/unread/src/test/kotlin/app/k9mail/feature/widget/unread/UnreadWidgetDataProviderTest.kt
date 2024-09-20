@@ -7,6 +7,7 @@ import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.mailstore.FolderRepository
 import app.k9mail.legacy.message.controller.MessageCounts
 import app.k9mail.legacy.message.controller.MessageCountsProvider
+import app.k9mail.legacy.search.LocalSearch
 import app.k9mail.legacy.search.SearchAccount
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import assertk.assertThat
@@ -134,6 +135,10 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
 
         override fun getMessageCounts(searchAccount: SearchAccount): MessageCounts {
             return MessageCounts(unread = SEARCH_ACCOUNT_UNREAD_COUNT, starred = 0)
+        }
+
+        override fun getMessageCounts(search: LocalSearch): MessageCounts {
+            throw UnsupportedOperationException()
         }
 
         override fun getUnreadMessageCount(account: Account, folderId: Long): Int {
