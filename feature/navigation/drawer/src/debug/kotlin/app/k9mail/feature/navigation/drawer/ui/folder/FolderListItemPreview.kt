@@ -1,11 +1,13 @@
 package app.k9mail.feature.navigation.drawer.ui.folder
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
 import app.k9mail.feature.navigation.drawer.ui.FakeData.DISPLAY_FOLDER
 import app.k9mail.feature.navigation.drawer.ui.FakeData.UNIFIED_FOLDER
+import app.k9mail.legacy.ui.folder.FolderNameFormatter
 
 @Composable
 @Preview(showBackground = true)
@@ -16,6 +18,7 @@ internal fun FolderListItemPreview() {
             selected = false,
             showStarredCount = false,
             onClick = {},
+            folderNameFormatter = FolderNameFormatter(LocalContext.current.resources),
         )
     }
 }
@@ -29,6 +32,7 @@ internal fun FolderListItemSelectedPreview() {
             selected = true,
             showStarredCount = false,
             onClick = {},
+            folderNameFormatter = FolderNameFormatter(LocalContext.current.resources),
         )
     }
 }
@@ -42,6 +46,7 @@ internal fun FolderListItemWithStarredPreview() {
             selected = false,
             showStarredCount = true,
             onClick = {},
+            folderNameFormatter = FolderNameFormatter(LocalContext.current.resources),
         )
     }
 }
@@ -55,6 +60,7 @@ internal fun FolderListItemWithStarredSelectedPreview() {
             selected = true,
             showStarredCount = true,
             onClick = {},
+            folderNameFormatter = FolderNameFormatter(LocalContext.current.resources),
         )
     }
 }
@@ -72,6 +78,7 @@ internal fun FolderListItemWithInboxFolderPreview() {
             selected = false,
             showStarredCount = true,
             onClick = {},
+            folderNameFormatter = FolderNameFormatter(LocalContext.current.resources),
         )
     }
 }
@@ -85,6 +92,7 @@ internal fun FolderListItemWithUnifiedFolderPreview() {
             selected = false,
             showStarredCount = false,
             onClick = {},
+            folderNameFormatter = FolderNameFormatter(LocalContext.current.resources),
         )
     }
 }

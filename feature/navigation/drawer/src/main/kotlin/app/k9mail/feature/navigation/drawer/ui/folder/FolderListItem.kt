@@ -13,6 +13,7 @@ import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccountFolder
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayFolder
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayUnifiedFolder
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayUnifiedFolderType
+import app.k9mail.legacy.ui.folder.FolderNameFormatter
 
 @Composable
 fun FolderListItem(
@@ -20,10 +21,11 @@ fun FolderListItem(
     selected: Boolean,
     onClick: (DisplayFolder) -> Unit,
     showStarredCount: Boolean,
+    folderNameFormatter: FolderNameFormatter,
     modifier: Modifier = Modifier,
 ) {
     NavigationDrawerItem(
-        label = mapFolderName(displayFolder),
+        label = mapFolderName(displayFolder, folderNameFormatter),
         selected = selected,
         onClick = { onClick(displayFolder) },
         modifier = modifier,
@@ -43,11 +45,14 @@ fun FolderListItem(
 }
 
 @Composable
-private fun mapFolderName(folder: DisplayFolder): String {
-    return when (folder) {
-        is DisplayAccountFolder -> folder.folder.name
-        is DisplayUnifiedFolder -> mapUnifiedFolderName(folder)
-        else -> throw IllegalArgumentException("Unknown display folder type: $folder")
+private fun mapFolderName(
+    displayFolder: DisplayFolder,
+    folderNameFormatter: FolderNameFormatter,
+): String {
+    return when (displayFolder) {
+        is DisplayAccountFolder -> folderNameFormatter.displayName(displayFolder.folder)
+        is DisplayUnifiedFolder -> mapUnifiedFolderName(displayFolder)
+        else -> throw IllegalArgumentException("Unknown display folder: $displayFolder")
     }
 }
 
