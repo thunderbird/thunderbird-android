@@ -12,7 +12,7 @@ class GetDrawerConfigTest {
     @Test
     fun `should get drawer config`() = runTest {
         val drawerConfig = DrawerConfig(
-            showUnifiedInbox = true,
+            showUnifiedFolders = true,
             showStarredCount = true,
         )
 
@@ -24,7 +24,7 @@ class GetDrawerConfigTest {
 
         assertThat(result).isEqualTo(
             DrawerConfig(
-                showUnifiedInbox = true,
+                showUnifiedFolders = true,
                 showStarredCount = true,
             ),
         )

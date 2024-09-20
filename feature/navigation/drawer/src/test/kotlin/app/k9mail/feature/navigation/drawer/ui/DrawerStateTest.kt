@@ -16,7 +16,7 @@ class DrawerStateTest {
         assertThat(state).isEqualTo(
             State(
                 config = DrawerConfig(
-                    showUnifiedInbox = false,
+                    showUnifiedFolders = false,
                     showStarredCount = false,
                 ),
                 accounts = persistentListOf(),

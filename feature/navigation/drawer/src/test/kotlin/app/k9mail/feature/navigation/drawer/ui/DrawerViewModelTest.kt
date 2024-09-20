@@ -295,7 +295,7 @@ class DrawerViewModelTest {
         showStarredCount: Boolean = false,
     ): DrawerConfig {
         return DrawerConfig(
-            showUnifiedInbox = showUnifiedInbox,
+            showUnifiedFolders = showUnifiedInbox,
             showStarredCount = showStarredCount,
         )
     }

@@ -6,6 +6,8 @@ data class DisplayAccountFolder(
     val accountUuid: String,
     val folder: Folder,
     val isInTopGroup: Boolean,
-    val unreadMessageCount: Int,
-    val starredMessageCount: Int,
-)
+    override val unreadMessageCount: Int,
+    override val starredMessageCount: Int,
+) : DisplayFolder {
+    override val id: String = accountUuid + folder.id
+}

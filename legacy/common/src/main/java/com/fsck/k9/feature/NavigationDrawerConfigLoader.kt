@@ -7,7 +7,7 @@ import com.fsck.k9.K9
 class NavigationDrawerConfigLoader : DrawerConfigLoader {
     override fun loadDrawerConfig(): DrawerConfig {
         return DrawerConfig(
-            showUnifiedInbox = K9.isShowUnifiedInbox,
+            showUnifiedFolders = K9.isShowUnifiedInbox,
             showStarredCount = K9.isShowStarredCount,
         )
     }

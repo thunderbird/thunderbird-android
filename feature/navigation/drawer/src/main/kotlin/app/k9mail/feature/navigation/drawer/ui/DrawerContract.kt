@@ -16,7 +16,7 @@ interface DrawerContract {
     @Stable
     data class State(
         val config: DrawerConfig = DrawerConfig(
-            showUnifiedInbox = false,
+            showUnifiedFolders = false,
             showStarredCount = false,
         ),
         val accounts: ImmutableList<DisplayAccount> = persistentListOf(),
