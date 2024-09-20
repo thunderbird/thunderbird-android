@@ -84,6 +84,12 @@ include(
 )
 
 include(
+    ":feature:funding:api",
+    ":feature:funding:googleplay",
+    ":feature:funding:noop",
+)
+
+include(
     ":core:common",
     ":core:featureflags",
     ":core:testing",
