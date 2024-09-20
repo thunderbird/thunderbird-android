@@ -5,6 +5,8 @@ import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.navigation.drawer.domain.DomainContract.UseCase
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccountFolder
+import app.k9mail.feature.navigation.drawer.domain.entity.DisplayFolder
+import app.k9mail.feature.navigation.drawer.domain.entity.DisplayUnifiedFolder
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Effect
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Event
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.State
@@ -16,8 +18,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @Suppress("MagicNumber")
@@ -70,19 +73,22 @@ class DrawerViewModel(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private suspend fun loadFolders() {
-        state.mapNotNull { it.selectedAccount?.account?.uuid }
+        state.map {
+            it.selectedAccount?.let { selectAccount ->
+                Pair(selectAccount.account.uuid, it.config.showUnifiedFolders)
+            }
+        }.filterNotNull()
             .distinctUntilChanged()
-            .flatMapLatest { accountUuid ->
-                getDisplayFoldersForAccount(accountUuid)
+            .flatMapLatest { (accountUuid, showUnifiedInbox) ->
+                getDisplayFoldersForAccount(accountUuid, showUnifiedInbox)
             }.collectLatest { folders ->
                 updateFolders(folders)
             }
     }
 
-    private fun updateFolders(displayFolders: List<DisplayAccountFolder>) {
+    private fun updateFolders(displayFolders: List<DisplayFolder>) {
         val selectedFolder = displayFolders.find {
-            it.accountUuid == state.value.selectedAccount?.account?.uuid &&
-                it.folder.id == state.value.selectedFolder?.folder?.id
+            it.id == state.value.selectedFolder?.id
         } ?: displayFolders.firstOrNull()
 
         updateState {
@@ -133,11 +139,16 @@ class DrawerViewModel(
         }
     }
 
-    private fun selectFolder(folder: DisplayAccountFolder) {
+    private fun selectFolder(folder: DisplayFolder) {
         updateState {
             it.copy(selectedFolder = folder)
         }
-        emitEffect(Effect.OpenFolder(folder.folder.id))
+
+        if (folder is DisplayAccountFolder) {
+            emitEffect(Effect.OpenFolder(folder.folder.id))
+        } else if (folder is DisplayUnifiedFolder) {
+            emitEffect(Effect.OpenUnifiedFolder)
+        }
 
         viewModelScope.launch {
             delay(DRAWER_CLOSE_DELAY)

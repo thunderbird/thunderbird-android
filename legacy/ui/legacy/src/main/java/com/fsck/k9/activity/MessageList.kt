@@ -610,6 +610,7 @@ open class MessageList :
             parent = this,
             openAccount = { account -> openRealAccount(account) },
             openFolder = { folderId -> openFolder(folderId) },
+            openUnifiedFolder = { openUnifiedInbox() },
             openManageFolders = { launchManageFoldersScreen() },
             openSettings = { SettingsActivity.launch(this) },
             createDrawerListener = { createDrawerListener() },

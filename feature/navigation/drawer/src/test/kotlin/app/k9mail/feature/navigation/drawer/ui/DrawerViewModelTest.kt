@@ -9,6 +9,9 @@ import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccountFolder
+import app.k9mail.feature.navigation.drawer.domain.entity.DisplayFolder
+import app.k9mail.feature.navigation.drawer.domain.entity.DisplayUnifiedFolder
+import app.k9mail.feature.navigation.drawer.domain.entity.DisplayUnifiedFolderType
 import app.k9mail.feature.navigation.drawer.domain.entity.DrawerConfig
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Effect
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Event
@@ -201,7 +204,7 @@ class DrawerViewModelTest {
     }
 
     @Test
-    fun `should set selected folder when OnFolderClick event is received`() = runTest {
+    fun `should set selected folder and emit OpenFolder when OnFolderClick event is received`() = runTest {
         val displayAccounts = createDisplayAccountList(3)
         val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
         val displayFoldersMap = mapOf(
@@ -233,6 +236,42 @@ class DrawerViewModelTest {
             isEqualTo(Effect.CloseDrawer)
         }
     }
+
+    @Test
+    fun `should set selected folder emit OpenUnifiedFolder when OnFolderClick event for unified folder is received`() =
+        runTest {
+            val displayAccounts = createDisplayAccountList(1)
+            val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
+            val displayFoldersMap = mapOf(
+                displayAccounts[0].account.uuid to
+                    createDisplayFolderList(1) + listOf(createDisplayUnifiedFolder()),
+            )
+            val displayFoldersFlow = MutableStateFlow(displayFoldersMap)
+            val initialState = State(
+                accounts = displayAccounts.toImmutableList(),
+                selectedAccount = displayAccounts[0],
+                folders = displayFoldersMap[displayAccounts[0].account.uuid]!!.toImmutableList(),
+                selectedFolder = displayFoldersMap[displayAccounts[0].account.uuid]!![0],
+            )
+            val testSubject = createTestSubject(
+                displayAccountsFlow = getDisplayAccountsFlow,
+                displayFoldersFlow = displayFoldersFlow,
+            )
+            val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
+
+            advanceUntilIdle()
+
+            val displayFolders = displayFoldersMap[displayAccounts[0].account.uuid] ?: emptyList()
+            testSubject.event(Event.OnFolderClick(displayFolders[1]))
+
+            assertThat(turbines.awaitStateItem().selectedFolder).isEqualTo(displayFolders[1])
+
+            assertThat(turbines.awaitEffectItem()).isEqualTo(Effect.OpenUnifiedFolder)
+
+            turbines.assertThatAndEffectTurbineConsumed {
+                isEqualTo(Effect.CloseDrawer)
+            }
+        }
 
     @Test
     fun `should change state when OnAccountSelectorClick event is received`() = runTest {
@@ -277,13 +316,13 @@ class DrawerViewModelTest {
     private fun createTestSubject(
         drawerConfigFlow: Flow<DrawerConfig> = flow { emit(createDrawerConfig()) },
         displayAccountsFlow: Flow<List<DisplayAccount>> = flow { emit(emptyList()) },
-        displayFoldersFlow: Flow<Map<String, List<DisplayAccountFolder>>> = flow { emit(emptyMap()) },
+        displayFoldersFlow: Flow<Map<String, List<DisplayFolder>>> = flow { emit(emptyMap()) },
         syncMailFlow: Flow<Result<Unit>> = flow { emit(Result.success(Unit)) },
     ): DrawerViewModel {
         return DrawerViewModel(
             getDrawerConfig = { drawerConfigFlow },
             getDisplayAccounts = { displayAccountsFlow },
-            getDisplayFoldersForAccount = { accountUuid ->
+            getDisplayFoldersForAccount = { accountUuid, _ ->
                 displayFoldersFlow.map { it[accountUuid] ?: emptyList() }
             },
             syncMail = { syncMailFlow },
@@ -368,5 +407,19 @@ class DrawerViewModelTest {
                 id = index.toLong() + 100,
             )
         }
+    }
+
+    private fun createDisplayUnifiedFolder(
+        id: String = "unified_inbox",
+        unifiedType: DisplayUnifiedFolderType = DisplayUnifiedFolderType.INBOX,
+        unreadCount: Int = 0,
+        starredCount: Int = 0,
+    ): DisplayUnifiedFolder {
+        return DisplayUnifiedFolder(
+            id = id,
+            unifiedType = unifiedType,
+            unreadMessageCount = unreadCount,
+            starredMessageCount = starredCount,
+        )
     }
 }

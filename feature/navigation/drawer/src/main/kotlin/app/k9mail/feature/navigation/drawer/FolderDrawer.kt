@@ -17,6 +17,7 @@ class FolderDrawer(
     override val parent: AppCompatActivity,
     private val openAccount: (account: Account) -> Unit,
     private val openFolder: (folderId: Long) -> Unit,
+    private val openUnifiedFolder: () -> Unit,
     private val openManageFolders: () -> Unit,
     private val openSettings: () -> Unit,
     createDrawerListener: () -> DrawerLayout.DrawerListener,
@@ -40,6 +41,7 @@ class FolderDrawer(
                 DrawerView(
                     openAccount = openAccount,
                     openFolder = openFolder,
+                    openUnifiedFolder = openUnifiedFolder,
                     openManageFolders = openManageFolders,
                     openSettings = openSettings,
                     closeDrawer = { close() },

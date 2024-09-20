@@ -13,6 +13,7 @@ import org.koin.androidx.compose.koinViewModel
 fun DrawerView(
     openAccount: (account: Account) -> Unit,
     openFolder: (folderId: Long) -> Unit,
+    openUnifiedFolder: () -> Unit,
     openManageFolders: () -> Unit,
     openSettings: () -> Unit,
     closeDrawer: () -> Unit,
@@ -22,6 +23,7 @@ fun DrawerView(
         when (effect) {
             is Effect.OpenAccount -> openAccount(effect.account)
             is Effect.OpenFolder -> openFolder(effect.folderId)
+            Effect.OpenUnifiedFolder -> openUnifiedFolder()
             is Effect.OpenManageFolders -> openManageFolders()
             is Effect.OpenSettings -> openSettings()
             Effect.CloseDrawer -> closeDrawer()

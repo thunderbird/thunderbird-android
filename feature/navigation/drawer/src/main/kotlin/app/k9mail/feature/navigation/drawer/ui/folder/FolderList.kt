@@ -7,14 +7,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.theme2.MainTheme
-import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccountFolder
+import app.k9mail.feature.navigation.drawer.domain.entity.DisplayFolder
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun FolderList(
-    folders: ImmutableList<DisplayAccountFolder>,
-    selectedFolder: DisplayAccountFolder?,
-    onFolderClick: (DisplayAccountFolder) -> Unit,
+    folders: ImmutableList<DisplayFolder>,
+    selectedFolder: DisplayFolder?,
+    onFolderClick: (DisplayFolder) -> Unit,
     showStarredCount: Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -23,7 +23,10 @@ fun FolderList(
             .fillMaxWidth(),
         contentPadding = PaddingValues(vertical = MainTheme.spacings.default),
     ) {
-        items(folders) { folder ->
+        items(
+            items = folders,
+            key = { it.id },
+        ) { folder ->
             FolderListItem(
                 displayFolder = folder,
                 selected = folder == selectedFolder,

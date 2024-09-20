@@ -8,23 +8,24 @@ import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.organism.drawer.NavigationDrawerItem
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccountFolder
+import app.k9mail.feature.navigation.drawer.domain.entity.DisplayFolder
 
 @Composable
 fun FolderListItem(
-    displayFolder: DisplayAccountFolder,
+    displayFolder: DisplayFolder,
     selected: Boolean,
-    onClick: (DisplayAccountFolder) -> Unit,
+    onClick: (DisplayFolder) -> Unit,
     showStarredCount: Boolean,
     modifier: Modifier = Modifier,
 ) {
     NavigationDrawerItem(
-        label = displayFolder.folder.name,
+        label = mapFolderName(displayFolder),
         selected = selected,
         onClick = { onClick(displayFolder) },
         modifier = modifier,
         icon = {
             Icon(
-                imageVector = mapFolderIcon(displayFolder.folder.type),
+                imageVector = mapFolderIcon(displayFolder),
             )
         },
         badge = {
@@ -37,7 +38,21 @@ fun FolderListItem(
     )
 }
 
-private fun mapFolderIcon(type: FolderType): ImageVector {
+private fun mapFolderName(folder: DisplayFolder): String {
+    return when (folder) {
+        is DisplayAccountFolder -> folder.folder.name
+        else -> "Unknown folder" // TODO: Add more names for other folder types
+    }
+}
+
+private fun mapFolderIcon(folder: DisplayFolder): ImageVector {
+    return when (folder) {
+        is DisplayAccountFolder -> mapAccountFolderIcon(folder.folder.type)
+        else -> Icons.Outlined.Folder // TODO: Add more icons for other folder types
+    }
+}
+
+private fun mapAccountFolderIcon(type: FolderType): ImageVector {
     return when (type) {
         FolderType.INBOX -> Icons.Outlined.Inbox
         FolderType.OUTBOX -> Icons.Outlined.Outbox
