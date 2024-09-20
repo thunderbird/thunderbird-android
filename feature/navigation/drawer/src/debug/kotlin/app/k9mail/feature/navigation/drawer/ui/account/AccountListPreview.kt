@@ -8,7 +8,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 @Preview(showBackground = true)
-fun AccountListPreview() {
+internal fun AccountListPreview() {
     PreviewWithTheme {
         AccountList(
             accounts = persistentListOf(
@@ -23,7 +23,7 @@ fun AccountListPreview() {
 
 @Composable
 @Preview(showBackground = true)
-fun AccountListWithSelectedPreview() {
+internal fun AccountListWithSelectedPreview() {
     PreviewWithTheme {
         AccountList(
             accounts = persistentListOf(

@@ -7,7 +7,7 @@ import app.k9mail.feature.navigation.drawer.ui.FakeData.DISPLAY_ACCOUNT
 
 @Composable
 @Preview(showBackground = true)
-fun AccountListItemPreview() {
+internal fun AccountListItemPreview() {
     PreviewWithThemes {
         AccountListItem(
             account = DISPLAY_ACCOUNT,

@@ -7,7 +7,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 
 @Composable
 @Preview(showBackground = true)
-fun SettingListItemPreview() {
+internal fun SettingListItemPreview() {
     PreviewWithThemes {
         SettingListItem(
             label = "Settings",
