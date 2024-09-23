@@ -11,11 +11,12 @@ import androidx.compose.material3.LocalContentColor as Material3LocalContentColo
 fun Icon(
     imageVector: ImageVector,
     modifier: Modifier = Modifier,
+    contentDescription: String? = null,
     tint: Color? = null,
 ) {
     Material3Icon(
         imageVector = imageVector,
-        contentDescription = null,
+        contentDescription = contentDescription,
         modifier = modifier,
         tint = tint ?: Material3LocalContentColor.current,
     )

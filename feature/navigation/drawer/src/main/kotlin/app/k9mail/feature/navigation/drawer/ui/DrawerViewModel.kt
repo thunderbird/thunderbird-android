@@ -80,8 +80,10 @@ class DrawerViewModel(
     }
 
     private fun updateFolders(displayFolders: List<DisplayAccountFolder>) {
-        val selectedFolder = displayFolders.find { it == state.value.selectedFolder }
-            ?: displayFolders.firstOrNull()
+        val selectedFolder = displayFolders.find {
+            it.accountUuid == state.value.selectedAccount?.account?.uuid &&
+                it.folder.id == state.value.selectedFolder?.folder?.id
+        } ?: displayFolders.firstOrNull()
 
         updateState {
             it.copy(
