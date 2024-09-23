@@ -1,0 +1,25 @@
+---
+name: Remove needinfo label
+
+on:
+  issue_comment:
+    types:
+      - created
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: |
+      github.event.comment.author_association != 'OWNER' &&
+      github.event.comment.author_association != 'COLLABORATOR'
+    steps:
+      - name: Remove needinfo label
+        uses: octokit/request-action@v2.x
+        continue-on-error: true
+        with:
+          route: DELETE /repos/:repository/issues/:issue/labels/:label
+          repository: ${{ github.repository }}
+          issue: ${{ github.event.issue.number }}
+          label: "status: needs information"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
