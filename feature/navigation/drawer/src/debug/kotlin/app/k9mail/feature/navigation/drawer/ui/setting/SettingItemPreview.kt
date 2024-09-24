@@ -6,7 +6,7 @@ import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
 
 @Composable
 @Preview(showBackground = true)
-fun SettingItemPreview() {
+internal fun SettingItemPreview() {
     PreviewWithThemes {
         SettingItem(
             label = "Setting",

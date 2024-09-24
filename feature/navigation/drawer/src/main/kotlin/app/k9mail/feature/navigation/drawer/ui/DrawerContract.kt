@@ -3,7 +3,7 @@ package app.k9mail.feature.navigation.drawer.ui
 import androidx.compose.runtime.Stable
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
-import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccountFolder
+import app.k9mail.feature.navigation.drawer.domain.entity.DisplayFolder
 import app.k9mail.feature.navigation.drawer.domain.entity.DrawerConfig
 import app.k9mail.legacy.account.Account
 import kotlinx.collections.immutable.ImmutableList
@@ -16,13 +16,13 @@ interface DrawerContract {
     @Stable
     data class State(
         val config: DrawerConfig = DrawerConfig(
-            showUnifiedInbox = false,
+            showUnifiedFolders = false,
             showStarredCount = false,
         ),
         val accounts: ImmutableList<DisplayAccount> = persistentListOf(),
         val selectedAccount: DisplayAccount? = null,
-        val folders: ImmutableList<DisplayAccountFolder> = persistentListOf(),
-        val selectedFolder: DisplayAccountFolder? = null,
+        val folders: ImmutableList<DisplayFolder> = persistentListOf(),
+        val selectedFolder: DisplayFolder? = null,
         val showAccountSelector: Boolean = false,
         val isLoading: Boolean = false,
     )
@@ -30,7 +30,7 @@ interface DrawerContract {
     sealed interface Event {
         data class OnAccountClick(val account: DisplayAccount) : Event
         data class OnAccountViewClick(val account: DisplayAccount) : Event
-        data class OnFolderClick(val folder: DisplayAccountFolder) : Event
+        data class OnFolderClick(val folder: DisplayFolder) : Event
         data object OnAccountSelectorClick : Event
         data object OnManageFoldersClick : Event
         data object OnSettingsClick : Event
@@ -40,6 +40,7 @@ interface DrawerContract {
     sealed interface Effect {
         data class OpenAccount(val account: Account) : Effect
         data class OpenFolder(val folderId: Long) : Effect
+        data object OpenUnifiedFolder : Effect
         data object OpenManageFolders : Effect
         data object OpenSettings : Effect
         data object CloseDrawer : Effect

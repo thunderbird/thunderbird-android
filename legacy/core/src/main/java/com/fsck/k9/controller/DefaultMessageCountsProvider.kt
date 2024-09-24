@@ -27,7 +27,10 @@ internal class DefaultMessageCountsProvider(
     }
 
     override fun getMessageCounts(searchAccount: SearchAccount): MessageCounts {
-        val search = searchAccount.relatedSearch
+        return getMessageCounts(searchAccount.relatedSearch)
+    }
+
+    override fun getMessageCounts(search: LocalSearch): MessageCounts {
         val accounts = search.getAccounts(accountManager)
 
         var unreadCount = 0
