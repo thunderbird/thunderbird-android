@@ -27,6 +27,12 @@ internal interface DomainContract {
         fun interface SyncAccount {
             operator fun invoke(account: Account): Flow<Result<Unit>>
         }
+
+        /**
+         * Synchronize all accounts.
+         */
+        fun interface SyncAllAccounts {
+            operator fun invoke(): Flow<Result<Unit>>
         }
     }
 }
