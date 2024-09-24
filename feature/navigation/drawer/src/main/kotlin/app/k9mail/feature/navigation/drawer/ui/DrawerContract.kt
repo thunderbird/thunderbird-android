@@ -9,7 +9,7 @@ import app.k9mail.legacy.account.Account
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-interface DrawerContract {
+internal interface DrawerContract {
 
     interface ViewModel : UnidirectionalViewModel<State, Event, Effect>
 

@@ -16,7 +16,7 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
 
 @Composable
-fun AccountAvatar(
+internal fun AccountAvatar(
     account: DisplayAccount,
     onClick: (DisplayAccount) -> Unit,
     modifier: Modifier = Modifier,

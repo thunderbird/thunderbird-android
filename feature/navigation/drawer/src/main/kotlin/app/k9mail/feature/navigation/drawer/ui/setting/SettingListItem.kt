@@ -7,7 +7,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
 import app.k9mail.core.ui.compose.designsystem.organism.drawer.NavigationDrawerItem
 
 @Composable
-fun SettingListItem(
+internal fun SettingListItem(
     label: String,
     onClick: () -> Unit,
     imageVector: ImageVector,

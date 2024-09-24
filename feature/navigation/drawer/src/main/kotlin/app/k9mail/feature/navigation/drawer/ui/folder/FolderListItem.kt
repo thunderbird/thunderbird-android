@@ -16,7 +16,7 @@ import app.k9mail.feature.navigation.drawer.domain.entity.DisplayUnifiedFolderTy
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
 
 @Composable
-fun FolderListItem(
+internal fun FolderListItem(
     displayFolder: DisplayFolder,
     selected: Boolean,
     onClick: (DisplayFolder) -> Unit,

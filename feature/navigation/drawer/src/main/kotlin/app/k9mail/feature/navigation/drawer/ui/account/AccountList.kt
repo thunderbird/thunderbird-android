@@ -17,7 +17,7 @@ import app.k9mail.feature.navigation.drawer.ui.setting.SettingItem
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
-fun AccountList(
+internal fun AccountList(
     accounts: ImmutableList<DisplayAccount>,
     selectedAccount: DisplayAccount?,
     onAccountClick: (DisplayAccount) -> Unit,

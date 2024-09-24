@@ -6,7 +6,7 @@ import app.k9mail.feature.navigation.drawer.domain.entity.DrawerConfig
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class GetDrawerConfig(
+internal class GetDrawerConfig(
     private val configProver: DrawerConfigLoader,
 ) : UseCase.GetDrawerConfig {
     override operator fun invoke(): Flow<DrawerConfig> {

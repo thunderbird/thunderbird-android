@@ -10,7 +10,7 @@ import app.k9mail.legacy.account.Account
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun DrawerView(
+internal fun DrawerView(
     openAccount: (account: Account) -> Unit,
     openFolder: (folderId: Long) -> Unit,
     openUnifiedFolder: () -> Unit,
