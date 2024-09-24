@@ -28,7 +28,7 @@ internal class DrawerViewModel(
     private val getDrawerConfig: UseCase.GetDrawerConfig,
     private val getDisplayAccounts: UseCase.GetDisplayAccounts,
     private val getDisplayFoldersForAccount: UseCase.GetDisplayFoldersForAccount,
-    private val syncMail: UseCase.SyncMail,
+    private val syncAccount: UseCase.SyncAccount,
     initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(
     initialState = initialState,
@@ -157,15 +157,17 @@ internal class DrawerViewModel(
     }
 
     private fun refresh() {
-        viewModelScope.launch {
-            updateState {
-                it.copy(isLoading = true)
-            }
+        if (state.value.selectedAccount != null) {
+            viewModelScope.launch {
+                updateState {
+                    it.copy(isLoading = true)
+                }
 
-            syncMail(state.value.selectedAccount?.account).collect()
+                state.value.selectedAccount?.account?.let { syncAccount(it).collect() }
 
-            updateState {
-                it.copy(isLoading = false)
+                updateState {
+                    it.copy(isLoading = false)
+                }
             }
         }
     }

@@ -325,7 +325,7 @@ class DrawerViewModelTest {
             getDisplayFoldersForAccount = { accountUuid, _ ->
                 displayFoldersFlow.map { it[accountUuid] ?: emptyList() }
             },
-            syncMail = { syncMailFlow },
+            syncAccount = { syncMailFlow },
         )
     }
 
