@@ -2,9 +2,9 @@ package app.k9mail.feature.navigation.drawer.ui
 
 import androidx.compose.runtime.Stable
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
+import app.k9mail.feature.navigation.drawer.NavigationDrawerExternalContract.DrawerConfig
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayFolder
-import app.k9mail.feature.navigation.drawer.domain.entity.DrawerConfig
 import app.k9mail.legacy.account.Account
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
