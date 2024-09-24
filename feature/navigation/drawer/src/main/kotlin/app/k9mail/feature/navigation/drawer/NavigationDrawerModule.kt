@@ -74,6 +74,7 @@ val navigationDrawerModule: Module = module {
             getDisplayAccounts = get(),
             getDisplayFoldersForAccount = get(),
             syncAccount = get(),
+            syncAllAccounts = get(),
         )
     }
 }

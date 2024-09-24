@@ -17,6 +17,7 @@ internal fun AccountListPreview() {
             selectedAccount = null,
             onAccountClick = { },
             onSettingsClick = { },
+            onSyncAllAccountsClick = { },
         )
     }
 }
@@ -32,6 +33,7 @@ internal fun AccountListWithSelectedPreview() {
             selectedAccount = DISPLAY_ACCOUNT,
             onAccountClick = { },
             onSettingsClick = { },
+            onSyncAllAccountsClick = { },
         )
     }
 }

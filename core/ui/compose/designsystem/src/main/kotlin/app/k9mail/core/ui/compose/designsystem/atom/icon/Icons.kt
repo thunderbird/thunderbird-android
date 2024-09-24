@@ -25,6 +25,7 @@ import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Report
 import androidx.compose.material.icons.outlined.Security
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Sync
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.ui.graphics.vector.ImageVector
 import app.k9mail.core.ui.compose.designsystem.atom.icon.filled.Dot
@@ -110,6 +111,9 @@ object Icons {
 
         val Settings: ImageVector
             get() = MaterialIcons.Outlined.Settings
+
+        val Sync: ImageVector
+            get() = MaterialIcons.Outlined.Sync
 
         val Report: ImageVector
             get() = MaterialIcons.Outlined.Report

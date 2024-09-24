@@ -29,6 +29,7 @@ internal class DrawerViewModel(
     private val getDisplayAccounts: UseCase.GetDisplayAccounts,
     private val getDisplayFoldersForAccount: UseCase.GetDisplayFoldersForAccount,
     private val syncAccount: UseCase.SyncAccount,
+    private val syncAllAccounts: UseCase.SyncAllAccounts,
     initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(
     initialState = initialState,
@@ -101,7 +102,6 @@ internal class DrawerViewModel(
 
     override fun event(event: Event) {
         when (event) {
-            Event.OnRefresh -> refresh()
             is Event.OnAccountClick -> selectAccount(event.account)
             is Event.OnFolderClick -> selectFolder(event.folder)
             is Event.OnAccountViewClick -> {
@@ -113,6 +113,8 @@ internal class DrawerViewModel(
             Event.OnAccountSelectorClick -> updateState { it.copy(showAccountSelector = it.showAccountSelector.not()) }
             Event.OnManageFoldersClick -> emitEffect(Effect.OpenManageFolders)
             Event.OnSettingsClick -> emitEffect(Effect.OpenSettings)
+            Event.OnSyncAccount -> onSyncAccount()
+            Event.OnSyncAllAccounts -> onSyncAllAccounts()
         }
     }
 
@@ -156,18 +158,34 @@ internal class DrawerViewModel(
         }
     }
 
-    private fun refresh() {
-        if (state.value.selectedAccount != null) {
-            viewModelScope.launch {
-                updateState {
-                    it.copy(isLoading = true)
-                }
+    private fun onSyncAccount() {
+        if (state.value.isLoading || state.value.selectedAccount == null) return
 
-                state.value.selectedAccount?.account?.let { syncAccount(it).collect() }
+        viewModelScope.launch {
+            updateState {
+                it.copy(isLoading = true)
+            }
 
-                updateState {
-                    it.copy(isLoading = false)
-                }
+            state.value.selectedAccount?.account?.let { syncAccount(it).collect() }
+
+            updateState {
+                it.copy(isLoading = false)
+            }
+        }
+    }
+
+    private fun onSyncAllAccounts() {
+        if (state.value.isLoading) return
+
+        viewModelScope.launch {
+            updateState {
+                it.copy(isLoading = true)
+            }
+
+            syncAllAccounts().collect()
+
+            updateState {
+                it.copy(isLoading = false)
             }
         }
     }

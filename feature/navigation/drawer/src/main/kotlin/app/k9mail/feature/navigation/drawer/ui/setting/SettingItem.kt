@@ -8,13 +8,14 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.theme2.MainTheme
 
 @Composable
 internal fun SettingItem(
+    icon: ImageVector,
     label: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -24,12 +25,11 @@ internal fun SettingItem(
         contentAlignment = Alignment.Center,
     ) {
         Surface(
-            modifier = Modifier.padding(vertical = MainTheme.spacings.oneHalf),
             color = MainTheme.colors.surfaceContainer,
             shape = CircleShape,
         ) {
             Icon(
-                imageVector = Icons.Outlined.Settings,
+                imageVector = icon,
                 contentDescription = label,
                 modifier = Modifier
                     .clickable(onClick = onClick)
