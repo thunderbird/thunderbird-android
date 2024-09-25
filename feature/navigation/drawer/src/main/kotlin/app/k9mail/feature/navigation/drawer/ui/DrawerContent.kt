@@ -17,7 +17,7 @@ import app.k9mail.feature.navigation.drawer.ui.folder.FolderList
 import app.k9mail.feature.navigation.drawer.ui.setting.SettingList
 
 @Composable
-fun DrawerContent(
+internal fun DrawerContent(
     state: State,
     onEvent: (Event) -> Unit,
     modifier: Modifier = Modifier,

@@ -17,7 +17,7 @@ import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
-fun FolderList(
+internal fun FolderList(
     folders: ImmutableList<DisplayFolder>,
     selectedFolder: DisplayFolder?,
     onFolderClick: (DisplayFolder) -> Unit,

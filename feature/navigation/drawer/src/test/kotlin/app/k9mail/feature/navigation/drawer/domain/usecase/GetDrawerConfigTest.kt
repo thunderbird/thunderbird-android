@@ -1,6 +1,6 @@
 package app.k9mail.feature.navigation.drawer.domain.usecase
 
-import app.k9mail.feature.navigation.drawer.domain.entity.DrawerConfig
+import app.k9mail.feature.navigation.drawer.NavigationDrawerExternalContract.DrawerConfig
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlin.test.Test

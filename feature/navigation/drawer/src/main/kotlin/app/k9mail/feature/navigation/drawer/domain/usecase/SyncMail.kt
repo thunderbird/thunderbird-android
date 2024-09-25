@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOn
 
-class SyncMail(
+internal class SyncMail(
     private val messagingController: MessagingControllerMailChecker,
     private val coroutineContext: CoroutineContext = Dispatchers.IO,
 ) : UseCase.SyncMail {

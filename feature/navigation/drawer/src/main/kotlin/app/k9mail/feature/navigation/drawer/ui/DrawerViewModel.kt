@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @Suppress("MagicNumber")
-class DrawerViewModel(
+internal class DrawerViewModel(
     private val getDrawerConfig: UseCase.GetDrawerConfig,
     private val getDisplayAccounts: UseCase.GetDisplayAccounts,
     private val getDisplayFoldersForAccount: UseCase.GetDisplayFoldersForAccount,

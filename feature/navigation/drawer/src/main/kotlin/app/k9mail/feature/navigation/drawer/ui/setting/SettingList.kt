@@ -11,7 +11,7 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.navigation.drawer.R
 
 @Composable
-fun SettingList(
+internal fun SettingList(
     onAccountSelectorClick: () -> Unit,
     onManageFoldersClick: () -> Unit,
     showAccountSelector: Boolean,

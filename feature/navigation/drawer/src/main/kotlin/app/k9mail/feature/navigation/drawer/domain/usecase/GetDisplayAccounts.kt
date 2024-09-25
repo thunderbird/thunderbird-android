@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
-class GetDisplayAccounts(
+internal class GetDisplayAccounts(
     private val accountManager: AccountManager,
     private val messageCountsProvider: MessageCountsProvider,
     private val messageListRepository: MessageListRepository,

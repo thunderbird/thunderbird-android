@@ -1,12 +1,12 @@
 package app.k9mail.feature.navigation.drawer.domain
 
+import app.k9mail.feature.navigation.drawer.NavigationDrawerExternalContract.DrawerConfig
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayFolder
-import app.k9mail.feature.navigation.drawer.domain.entity.DrawerConfig
 import app.k9mail.legacy.account.Account
 import kotlinx.coroutines.flow.Flow
 
-interface DomainContract {
+internal interface DomainContract {
 
     interface UseCase {
         fun interface GetDrawerConfig {

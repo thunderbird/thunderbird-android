@@ -7,12 +7,12 @@ import app.k9mail.core.ui.compose.testing.mvi.assertThatAndEffectTurbineConsumed
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndStateTurbineConsumed
 import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
+import app.k9mail.feature.navigation.drawer.NavigationDrawerExternalContract.DrawerConfig
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccountFolder
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayFolder
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayUnifiedFolder
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayUnifiedFolderType
-import app.k9mail.feature.navigation.drawer.domain.entity.DrawerConfig
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Effect
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Event
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.State

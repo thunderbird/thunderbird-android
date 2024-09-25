@@ -13,7 +13,7 @@ import app.k9mail.legacy.ui.folder.DisplayFolderRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class GetDisplayFoldersForAccount(
+internal class GetDisplayFoldersForAccount(
     private val repository: DisplayFolderRepository,
     private val messageCountsProvider: MessageCountsProvider,
 ) : UseCase.GetDisplayFoldersForAccount {
