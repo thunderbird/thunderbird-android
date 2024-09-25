@@ -9,5 +9,5 @@ data class FolderDetails(
     val syncClass: FolderClass,
     val displayClass: FolderClass,
     val isNotificationsEnabled: Boolean,
-    val pushClass: FolderClass,
+    val isPushEnabled: Boolean,
 )

@@ -62,4 +62,24 @@ class CheckFolderOperationsTest : RobolectricTest() {
 
         assertThat(result).isFalse()
     }
+
+    @Test
+    fun `hasPushEnabledFolder() with one folder enabled for push`() {
+        sqliteDatabase.createFolder(pushEnabled = true)
+        sqliteDatabase.createFolder(pushEnabled = false)
+
+        val result = checkFolderOperations.hasPushEnabledFolder()
+
+        assertThat(result).isTrue()
+    }
+
+    @Test
+    fun `hasPushEnabledFolder() with no folder enabled for push`() {
+        sqliteDatabase.createFolder(pushEnabled = false)
+        sqliteDatabase.createFolder(pushEnabled = false)
+
+        val result = checkFolderOperations.hasPushEnabledFolder()
+
+        assertThat(result).isFalse()
+    }
 }

@@ -1,9 +1,7 @@
 package com.fsck.k9.controller.push
 
 import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.account.Account.FolderMode
 import app.k9mail.legacy.mailstore.FolderRepository
-import com.fsck.k9.Preferences
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.backend.api.BackendPusher
 import com.fsck.k9.backend.api.BackendPusherCallback
@@ -18,7 +16,6 @@ import timber.log.Timber
 internal class AccountPushController(
     private val backendManager: BackendManager,
     private val messagingController: MessagingController,
-    private val preferences: Preferences,
     private val folderRepository: FolderRepository,
     backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val account: Account,
@@ -96,7 +93,6 @@ internal class AccountPushController(
     }
 
     private fun disablePush() {
-        account.folderPushMode = FolderMode.NONE
-        preferences.saveAccount(account)
+        folderRepository.setPushDisabled(account)
     }
 }

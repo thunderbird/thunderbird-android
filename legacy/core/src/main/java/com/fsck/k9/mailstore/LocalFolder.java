@@ -77,7 +77,6 @@ public class LocalFolder {
 
     private FolderClass displayClass = FolderClass.NO_CLASS;
     private FolderClass syncClass = FolderClass.INHERITED;
-    private FolderClass pushClass = FolderClass.SECOND_CLASS;
     private boolean notificationsEnabled = false;
 
     private boolean isInTopGroup = false;
@@ -178,8 +177,6 @@ public class LocalFolder {
         String displayClass = cursor.getString(LocalStore.FOLDER_DISPLAY_CLASS_INDEX);
         this.displayClass = FolderClass.valueOf((displayClass == null) ? noClass : displayClass);
         this.notificationsEnabled = cursor.getInt(LocalStore.FOLDER_NOTIFICATIONS_ENABLED_INDEX) == 1;
-        String pushClass = cursor.getString(LocalStore.FOLDER_PUSH_CLASS_INDEX);
-        this.pushClass = FolderClass.valueOf((pushClass == null) ? noClass : pushClass);
         String syncClass = cursor.getString(LocalStore.FOLDER_SYNC_CLASS_INDEX);
         this.syncClass = FolderClass.valueOf((syncClass == null) ? noClass : syncClass);
         String moreMessagesValue = cursor.getString(LocalStore.MORE_MESSAGES_INDEX);
@@ -307,10 +304,6 @@ public class LocalFolder {
         return (FolderClass.INHERITED == syncClass) ? getDisplayClass() : syncClass;
     }
 
-    public FolderClass getPushClass() {
-        return (FolderClass.INHERITED == pushClass) ? getSyncClass() : pushClass;
-    }
-
     public void setDisplayClass(FolderClass displayClass) throws MessagingException {
         this.displayClass = displayClass;
         updateFolderColumn("display_class", this.displayClass.name());
@@ -319,11 +312,6 @@ public class LocalFolder {
     public void setSyncClass(FolderClass syncClass) throws MessagingException {
         this.syncClass = syncClass;
         updateFolderColumn("poll_class", this.syncClass.name());
-    }
-
-    public void setPushClass(FolderClass pushClass) throws MessagingException {
-        this.pushClass = pushClass;
-        updateFolderColumn("push_class", this.pushClass.name());
     }
 
     public boolean isNotificationsEnabled() {

@@ -81,14 +81,6 @@
         <item>@string/account_settings_folder_sync_mode_none</item>
     </string-array>
 
-    <string-array name="folder_push_mode_entries">
-        <item>@string/account_settings_folder_push_mode_all</item>
-        <item>@string/account_settings_folder_push_mode_first_class</item>
-        <item>@string/account_settings_folder_push_mode_first_and_second_class</item>
-        <item>@string/account_settings_folder_push_mode_not_second_class</item>
-        <item>@string/account_settings_folder_push_mode_none</item>
-    </string-array>
-
     <string-array name="push_limit_entries">
         <item>@string/account_setup_push_limit_5</item>
         <item>@string/account_setup_push_limit_10</item>

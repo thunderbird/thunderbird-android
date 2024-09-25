@@ -217,8 +217,8 @@ class K9MessageStore(
         updateFolderOperations.setSyncClass(folderId, folderClass)
     }
 
-    override fun setPushClass(folderId: Long, folderClass: FolderClass) {
-        updateFolderOperations.setPushClass(folderId, folderClass)
+    override fun setPushEnabled(folderId: Long, enable: Boolean) {
+        updateFolderOperations.setPushEnabled(folderId, enable)
     }
 
     override fun setNotificationsEnabled(folderId: Long, enable: Boolean) {
@@ -243,6 +243,14 @@ class K9MessageStore(
 
     override fun setVisibleLimit(folderId: Long, visibleLimit: Int) {
         updateFolderOperations.setVisibleLimit(folderId, visibleLimit)
+    }
+
+    override fun setPushDisabled() {
+        updateFolderOperations.setPushDisabled()
+    }
+
+    override fun hasPushEnabledFolder(): Boolean {
+        return checkFolderOperations.hasPushEnabledFolder()
     }
 
     override fun deleteFolders(folderServerIds: List<String>) {

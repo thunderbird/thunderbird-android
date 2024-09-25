@@ -38,13 +38,18 @@ class ListenableMessageStore(private val messageStore: MessageStore) : MessageSt
         notifyFolderSettingsChanged()
     }
 
-    override fun setPushClass(folderId: Long, folderClass: FolderClass) {
-        messageStore.setPushClass(folderId, folderClass)
+    override fun setPushEnabled(folderId: Long, enable: Boolean) {
+        messageStore.setPushEnabled(folderId, enable)
         notifyFolderSettingsChanged()
     }
 
     override fun setNotificationsEnabled(folderId: Long, enable: Boolean) {
         messageStore.setNotificationsEnabled(folderId, enable)
+        notifyFolderSettingsChanged()
+    }
+
+    override fun setPushDisabled() {
+        messageStore.setPushDisabled()
         notifyFolderSettingsChanged()
     }
 

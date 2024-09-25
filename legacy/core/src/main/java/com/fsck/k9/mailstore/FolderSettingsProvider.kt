@@ -18,7 +18,7 @@ class FolderSettingsProvider(val preferences: Preferences, val account: Account)
             displayClass = storage.getString("$prefix.displayMode", null).toFolderClass(FolderClass.NO_CLASS),
             syncClass = storage.getString("$prefix.syncMode", null).toFolderClass(FolderClass.INHERITED),
             isNotificationsEnabled = storage.getBoolean("$prefix.notificationsEnabled", false),
-            pushClass = storage.getString("$prefix.pushMode", null).toFolderClass(FolderClass.SECOND_CLASS),
+            isPushEnabled = storage.getBoolean("$prefix.pushEnabled", false),
             inTopGroup = storage.getBoolean("$prefix.inTopGroup", false),
             integrate = storage.getBoolean("$prefix.integrate", false),
         ).also {
@@ -32,7 +32,7 @@ class FolderSettingsProvider(val preferences: Preferences, val account: Account)
         editor.remove("$prefix.displayMode")
         editor.remove("$prefix.syncMode")
         editor.remove("$prefix.notificationsEnabled")
-        editor.remove("$prefix.pushMode")
+        editor.remove("$prefix.pushEnabled")
         editor.remove("$prefix.inTopGroup")
         editor.remove("$prefix.integrate")
 

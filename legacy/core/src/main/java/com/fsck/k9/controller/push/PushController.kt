@@ -1,11 +1,12 @@
 package com.fsck.k9.controller.push
 
 import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.account.Account.FolderMode
 import app.k9mail.legacy.account.AccountManager
+import app.k9mail.legacy.mailstore.FolderRepository
 import app.k9mail.legacy.preferences.BackgroundSync
 import app.k9mail.legacy.preferences.GeneralSettingsManager
 import com.fsck.k9.backend.BackendManager
+import com.fsck.k9.helper.mapToSet
 import com.fsck.k9.network.ConnectivityChangeListener
 import com.fsck.k9.network.ConnectivityManager
 import com.fsck.k9.notification.PushNotificationManager
@@ -18,6 +19,7 @@ import java.util.concurrent.Executors
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
@@ -41,12 +43,15 @@ class PushController internal constructor(
     private val pushNotificationManager: PushNotificationManager,
     private val connectivityManager: ConnectivityManager,
     private val accountPushControllerFactory: AccountPushControllerFactory,
+    private val folderRepository: FolderRepository,
     private val coroutineScope: CoroutineScope = GlobalScope,
     private val coroutineDispatcher: CoroutineDispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher(),
 ) {
     private val lock = Any()
     private var initializationStarted = false
     private val pushers = mutableMapOf<String, AccountPushController>()
+
+    private val pushEnabledCollectorJobs = mutableMapOf<String, Job>()
 
     private val autoSyncListener = AutoSyncListener(::onAutoSyncChanged)
     private val connectivityChangeListener = object : ConnectivityChangeListener {
@@ -79,8 +84,7 @@ class PushController internal constructor(
 
         coroutineScope.launch(coroutineDispatcher) {
             for (account in accountManager.getAccounts()) {
-                account.folderPushMode = FolderMode.NONE
-                accountManager.saveAccount(account)
+                folderRepository.setPushDisabled(account)
             }
         }
     }
@@ -202,6 +206,13 @@ class PushController internal constructor(
             pushers.isNotEmpty()
         }
 
+        val potentialPushAccounts = if (shouldDisablePushAccounts) {
+            emptySet()
+        } else {
+            getPushCapableAccounts()
+        }
+        updatePushEnabledListeners(potentialPushAccounts)
+
         when {
             realPushAccounts.isEmpty() -> {
                 stopServices()
@@ -233,10 +244,18 @@ class PushController internal constructor(
         }
     }
 
-    private fun getPushAccounts(): List<Account> {
-        return accountManager.getAccounts().filter { account ->
-            account.folderPushMode != FolderMode.NONE && backendManager.getBackend(account).isPushCapable
-        }
+    private fun getPushCapableAccounts(): Set<Account> {
+        return accountManager.getAccounts()
+            .asSequence()
+            .filter { account -> backendManager.getBackend(account).isPushCapable }
+            .toSet()
+    }
+
+    private fun getPushAccounts(): Set<Account> {
+        return getPushCapableAccounts()
+            .asSequence()
+            .filter { account -> folderRepository.hasPushEnabledFolder(account) }
+            .toSet()
     }
 
     private fun setPushNotificationState(notificationState: PushNotificationState) {
@@ -280,6 +299,32 @@ class PushController internal constructor(
     private fun registerAlarmPermissionListener() {
         if (!alarmPermissionManager.canScheduleExactAlarms()) {
             alarmPermissionManager.registerListener(alarmPermissionListener)
+        }
+    }
+
+    private fun updatePushEnabledListeners(accounts: Set<Account>) {
+        synchronized(lock) {
+            // Stop listening to push enabled changes in accounts we no longer monitor
+            val accountUuids = accounts.mapToSet { it.uuid }
+            for (accountUuid in pushEnabledCollectorJobs.keys) {
+                if (accountUuid !in accountUuids) {
+                    Timber.v("..Stopping to listen for push enabled changes in account: %s", accountUuid)
+                    val collectorJob = pushEnabledCollectorJobs.remove(accountUuid)
+                    collectorJob?.cancel()
+                }
+            }
+
+            // Start "push enabled" state collector jobs for new accounts to monitor
+            val newAccounts = accounts.filterNot { account -> pushEnabledCollectorJobs.containsKey(account.uuid) }
+            for (account in newAccounts) {
+                pushEnabledCollectorJobs[account.uuid] = coroutineScope.launch(coroutineDispatcher) {
+                    Timber.v("..Starting to listen for push enabled changes in account: %s", account.uuid)
+                    folderRepository.hasPushEnabledFolderFlow(account)
+                        .collect {
+                            updatePushers()
+                        }
+                }
+            }
         }
     }
 }

@@ -270,9 +270,9 @@ interface MessageStore {
     fun setSyncClass(folderId: Long, folderClass: FolderClass)
 
     /**
-     * Update the push class of a folder.
+     * Update the push setting of a folder.
      */
-    fun setPushClass(folderId: Long, folderClass: FolderClass)
+    fun setPushEnabled(folderId: Long, enable: Boolean)
 
     /**
      * Update the notifications setting of a folder.
@@ -303,6 +303,16 @@ interface MessageStore {
      * Update a folder's "visible limit" value.
      */
     fun setVisibleLimit(folderId: Long, visibleLimit: Int)
+
+    /**
+     * Disable the push setting of all folders.
+     */
+    fun setPushDisabled()
+
+    /**
+     * Returns `true` if there is at least one folder with the push setting enabled.
+     */
+    fun hasPushEnabledFolder(): Boolean
 
     /**
      * Delete folders.

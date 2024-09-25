@@ -18,7 +18,7 @@ interface FolderDetailsAccessor {
     val syncClass: FolderClass
     val displayClass: FolderClass
     val isNotificationsEnabled: Boolean
-    val pushClass: FolderClass
+    val isPushEnabled: Boolean
     val visibleLimit: Int
     val moreMessages: MoreMessages
     val lastChecked: Long?
