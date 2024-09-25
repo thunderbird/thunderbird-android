@@ -5,7 +5,7 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
-    <release version="0.1b1" versioncode="2" date="2024-09-25">
+    <release version="8.0b0" versioncode="3" date="2024-09-25">
         <change>Initial build</change>
     </release>
 </changelog>
