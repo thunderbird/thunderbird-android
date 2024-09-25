@@ -56,7 +56,7 @@ jobs:
         with:
           platform_token: ${{ secrets.NS_TOKEN }}
           # TODO: Replace application path.
-          app_file:  "k9mail-debug.apk"	
+          app_file:  "app-k9mail-debug.apk"	
           # TODO: Replace the Group ID.
           group_id: "602abed9-4c66-453d-8431-da0195b682de"	  
   process:
