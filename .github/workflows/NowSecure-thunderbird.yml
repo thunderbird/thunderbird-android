@@ -1,4 +1,4 @@
-name: "NowSecure"
+name: "NowSecure-thunderbird"
 
 on:
   pull_request:
