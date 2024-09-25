@@ -22,12 +22,17 @@ internal interface DomainContract {
         }
 
         /**
-         * Synchronize mail for the given account.
-         *
-         * Account can be null to synchronize unified inbox or account list.
+         * Synchronize the given account.
          */
-        fun interface SyncMail {
-            operator fun invoke(account: Account?): Flow<Result<Unit>>
+        fun interface SyncAccount {
+            operator fun invoke(account: Account): Flow<Result<Unit>>
+        }
+
+        /**
+         * Synchronize all accounts.
+         */
+        fun interface SyncAllAccounts {
+            operator fun invoke(): Flow<Result<Unit>>
         }
     }
 }

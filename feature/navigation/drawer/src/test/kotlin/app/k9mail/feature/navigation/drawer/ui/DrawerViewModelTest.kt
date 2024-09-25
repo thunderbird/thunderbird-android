@@ -16,6 +16,7 @@ import app.k9mail.feature.navigation.drawer.domain.entity.DisplayUnifiedFolderTy
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Effect
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Event
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.State
+import app.k9mail.feature.navigation.drawer.ui.FakeData.DISPLAY_ACCOUNT
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Identity
 import assertk.assertThat
@@ -60,9 +61,87 @@ class DrawerViewModelTest {
     }
 
     @Test
-    fun `should change loading state when OnRefresh event is received`() = runTest {
+    fun `should change loading state when OnSyncAccount event is received`() = runTest {
+        val initialState = State(
+            accounts = listOf(DISPLAY_ACCOUNT).toImmutableList(),
+            selectedAccount = DISPLAY_ACCOUNT,
+        )
         val testSubject = createTestSubject(
-            syncMailFlow = flow {
+            initialState = initialState,
+            displayAccountsFlow = flow { emit(listOf(DISPLAY_ACCOUNT)) },
+            syncAccountFlow = flow {
+                delay(25)
+                emit(Result.success(Unit))
+            },
+        )
+
+        eventStateTest(
+            viewModel = testSubject,
+            initialState = initialState,
+            event = Event.OnSyncAccount,
+            expectedState = initialState.copy(isLoading = true),
+            coroutineScope = backgroundScope,
+        )
+
+        advanceUntilIdle()
+
+        assertThat(testSubject.state.value.isLoading).isEqualTo(false)
+    }
+
+    @Test
+    fun `should skip loading when no account is selected and OnSyncAccount event is received`() = runTest {
+        val initialState = State(selectedAccount = null)
+        var counter = 0
+        val testSubject = createTestSubject(
+            initialState = initialState,
+            syncAccountFlow = flow {
+                delay(25)
+                emit(Result.success(Unit))
+            },
+        )
+
+        val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
+
+        testSubject.event(Event.OnSyncAccount)
+
+        advanceUntilIdle()
+
+        assertThat(testSubject.state.value.isLoading).isEqualTo(false)
+        assertThat(counter).isEqualTo(0)
+
+        turbines.stateTurbine.ensureAllEventsConsumed()
+        turbines.effectTurbine.ensureAllEventsConsumed()
+    }
+
+    @Test
+    fun `should skip loading when already loading and OnSyncAccount event received`() = runTest {
+        val initialState = State(isLoading = true)
+        var counter = 0
+        val testSubject = createTestSubject(
+            initialState = initialState,
+            syncAccountFlow = flow {
+                counter++
+                delay(25)
+                emit(Result.success(Unit))
+            },
+        )
+        val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
+
+        testSubject.event(Event.OnSyncAccount)
+
+        advanceUntilIdle()
+
+        assertThat(testSubject.state.value.isLoading).isEqualTo(true)
+        assertThat(counter).isEqualTo(0)
+
+        turbines.stateTurbine.ensureAllEventsConsumed()
+        turbines.effectTurbine.ensureAllEventsConsumed()
+    }
+
+    @Test
+    fun `should change loading state when OnSyncAllAccounts event is received`() = runTest {
+        val testSubject = createTestSubject(
+            syncAllAccounts = flow {
                 delay(25)
                 emit(Result.success(Unit))
             },
@@ -71,7 +150,7 @@ class DrawerViewModelTest {
         eventStateTest(
             viewModel = testSubject,
             initialState = State(isLoading = false),
-            event = Event.OnRefresh,
+            event = Event.OnSyncAllAccounts,
             expectedState = State(isLoading = true),
             coroutineScope = backgroundScope,
         )
@@ -79,6 +158,31 @@ class DrawerViewModelTest {
         advanceUntilIdle()
 
         assertThat(testSubject.state.value.isLoading).isEqualTo(false)
+    }
+
+    @Test
+    fun `should skip loading when already loading and OnSyncAllAccounts event received`() = runTest {
+        val initialState = State(isLoading = true)
+        var counter = 0
+        val testSubject = createTestSubject(
+            initialState = initialState,
+            syncAccountFlow = flow {
+                counter++
+                delay(25)
+                emit(Result.success(Unit))
+            },
+        )
+        val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
+
+        testSubject.event(Event.OnSyncAllAccounts)
+
+        advanceUntilIdle()
+
+        assertThat(testSubject.state.value.isLoading).isEqualTo(true)
+        assertThat(counter).isEqualTo(0)
+
+        turbines.stateTurbine.ensureAllEventsConsumed()
+        turbines.effectTurbine.ensureAllEventsConsumed()
     }
 
     @Test
@@ -314,18 +418,22 @@ class DrawerViewModelTest {
     }
 
     private fun createTestSubject(
+        initialState: State = State(),
         drawerConfigFlow: Flow<DrawerConfig> = flow { emit(createDrawerConfig()) },
         displayAccountsFlow: Flow<List<DisplayAccount>> = flow { emit(emptyList()) },
         displayFoldersFlow: Flow<Map<String, List<DisplayFolder>>> = flow { emit(emptyMap()) },
-        syncMailFlow: Flow<Result<Unit>> = flow { emit(Result.success(Unit)) },
+        syncAccountFlow: Flow<Result<Unit>> = flow { emit(Result.success(Unit)) },
+        syncAllAccounts: Flow<Result<Unit>> = flow { emit(Result.success(Unit)) },
     ): DrawerViewModel {
         return DrawerViewModel(
+            initialState = initialState,
             getDrawerConfig = { drawerConfigFlow },
             getDisplayAccounts = { displayAccountsFlow },
             getDisplayFoldersForAccount = { accountUuid, _ ->
                 displayFoldersFlow.map { it[accountUuid] ?: emptyList() }
             },
-            syncMail = { syncMailFlow },
+            syncAccount = { syncAccountFlow },
+            syncAllAccounts = { syncAllAccounts },
         )
     }
 

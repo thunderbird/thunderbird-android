@@ -34,7 +34,8 @@ internal interface DrawerContract {
         data object OnAccountSelectorClick : Event
         data object OnManageFoldersClick : Event
         data object OnSettingsClick : Event
-        data object OnRefresh : Event
+        data object OnSyncAccount : Event
+        data object OnSyncAllAccounts : Event
     }
 
     sealed interface Effect {

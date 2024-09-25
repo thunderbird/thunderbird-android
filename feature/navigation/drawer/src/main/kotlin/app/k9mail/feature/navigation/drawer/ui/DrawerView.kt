@@ -32,7 +32,7 @@ internal fun DrawerView(
 
     PullToRefreshBox(
         isRefreshing = state.value.isLoading,
-        onRefresh = { dispatch(Event.OnRefresh) },
+        onRefresh = { dispatch(Event.OnSyncAccount) },
     ) {
         DrawerContent(
             state = state.value,

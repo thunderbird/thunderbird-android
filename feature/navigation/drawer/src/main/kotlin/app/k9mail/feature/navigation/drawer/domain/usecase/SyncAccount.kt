@@ -12,11 +12,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOn
 
-internal class SyncMail(
+internal class SyncAccount(
     private val messagingController: MessagingControllerMailChecker,
     private val coroutineContext: CoroutineContext = Dispatchers.IO,
-) : UseCase.SyncMail {
-    override fun invoke(account: Account?): Flow<Result<Unit>> = callbackFlow {
+) : UseCase.SyncAccount {
+    override fun invoke(account: Account): Flow<Result<Unit>> = callbackFlow {
         val listener = object : SimpleMessagingListener() {
             override fun checkMailFinished(context: Context?, account: Account?) {
                 trySend(Result.success(Unit))

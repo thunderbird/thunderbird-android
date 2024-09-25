@@ -4,7 +4,8 @@ import app.k9mail.feature.navigation.drawer.domain.DomainContract.UseCase
 import app.k9mail.feature.navigation.drawer.domain.usecase.GetDisplayAccounts
 import app.k9mail.feature.navigation.drawer.domain.usecase.GetDisplayFoldersForAccount
 import app.k9mail.feature.navigation.drawer.domain.usecase.GetDrawerConfig
-import app.k9mail.feature.navigation.drawer.domain.usecase.SyncMail
+import app.k9mail.feature.navigation.drawer.domain.usecase.SyncAccount
+import app.k9mail.feature.navigation.drawer.domain.usecase.SyncAllAccounts
 import app.k9mail.feature.navigation.drawer.legacy.AccountsViewModel
 import app.k9mail.feature.navigation.drawer.legacy.FoldersViewModel
 import app.k9mail.feature.navigation.drawer.ui.DrawerViewModel
@@ -37,8 +38,14 @@ val navigationDrawerModule: Module = module {
         )
     }
 
-    single<UseCase.SyncMail> {
-        SyncMail(
+    single<UseCase.SyncAccount> {
+        SyncAccount(
+            messagingController = get(),
+        )
+    }
+
+    single<UseCase.SyncAllAccounts> {
+        SyncAllAccounts(
             messagingController = get(),
         )
     }
@@ -66,7 +73,8 @@ val navigationDrawerModule: Module = module {
             getDrawerConfig = get(),
             getDisplayAccounts = get(),
             getDisplayFoldersForAccount = get(),
-            syncMail = get(),
+            syncAccount = get(),
+            syncAllAccounts = get(),
         )
     }
 }

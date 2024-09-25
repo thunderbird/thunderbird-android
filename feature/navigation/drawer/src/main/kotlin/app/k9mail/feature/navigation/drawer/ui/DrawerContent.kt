@@ -45,6 +45,7 @@ internal fun DrawerContent(
                         accounts = state.accounts,
                         selectedAccount = state.selectedAccount,
                         onAccountClick = { onEvent(Event.OnAccountClick(it)) },
+                        onSyncAllAccountsClick = { onEvent(Event.OnSyncAllAccounts) },
                         onSettingsClick = { onEvent(Event.OnSettingsClick) },
                     )
                 }
