@@ -30,7 +30,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: app
-          path: ./app/k9mail/build/outputs/apk/debug/k9mail-debug.apk
+          path: ./app-k9mail/build/outputs/apk/debug/app-k9mail-debug.apk
           retention-days: 3
 
   scan:
