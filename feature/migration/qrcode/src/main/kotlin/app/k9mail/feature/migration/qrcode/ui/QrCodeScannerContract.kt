@@ -1,12 +1,17 @@
 package app.k9mail.feature.migration.qrcode.ui
 
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
+import app.k9mail.feature.migration.qrcode.domain.QrCodeDomainContract.UseCase
 
-interface QrCodeScannerContract {
-    interface ViewModel : UnidirectionalViewModel<State, Event, Effect>
+internal interface QrCodeScannerContract {
+    interface ViewModel : UnidirectionalViewModel<State, Event, Effect> {
+        val cameraUseCasesProvider: UseCase.CameraUseCasesProvider
+    }
 
     data class State(
         val cameraPermissionState: UiPermissionState = UiPermissionState.Unknown,
+        val scannedCount: Int = 0,
+        val totalCount: Int = 0,
     )
 
     sealed interface Event {
@@ -14,6 +19,7 @@ interface QrCodeScannerContract {
         data class CameraPermissionResult(val success: Boolean) : Event
         data object GoToSettingsClicked : Event
         data object ReturnedFromAppInfoScreen : Event
+        data object DoneClicked : Event
     }
 
     sealed interface Effect {

@@ -19,7 +19,9 @@ dependencies {
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.camera.view)
     implementation(libs.moshi)
+    implementation(libs.okio)
     implementation(libs.timber)
+    implementation(libs.zxing)
 
     testImplementation(projects.core.ui.compose.testing)
     testImplementation(projects.core.ui.compose.theme2.k9mail)

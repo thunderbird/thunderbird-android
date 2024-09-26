@@ -3,6 +3,7 @@ package app.k9mail.feature.migration.qrcode.ui
 import android.content.Context
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.Preview
+import androidx.camera.core.UseCase
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.background
@@ -18,11 +19,16 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
+import app.k9mail.feature.migration.qrcode.domain.QrCodeDomainContract.UseCase.CameraUseCasesProvider
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
+/**
+ * Displays a camera preview and includes the provided CameraX [UseCase]s.
+ */
 @Composable
 internal fun CameraPreviewView(
+    cameraUseCasesProvider: CameraUseCasesProvider,
     modifier: Modifier = Modifier,
 ) {
     if (LocalInspectionMode.current) {
@@ -50,9 +56,12 @@ internal fun CameraPreviewView(
 
         val cameraxSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
         val preview = Preview.Builder().build()
+        val cameraUseCases = cameraUseCasesProvider.getUseCases()
 
         cameraProvider.unbindAll()
-        cameraProvider.bindToLifecycle(lifecycleOwner, cameraxSelector, preview)
+
+        @Suppress("SpreadOperator")
+        cameraProvider.bindToLifecycle(lifecycleOwner, cameraxSelector, preview, *cameraUseCases.toTypedArray())
 
         preview.setSurfaceProvider(previewView.surfaceProvider)
     }
