@@ -31,6 +31,7 @@ fun SettingsImportScreen(
                     ButtonIcon(
                         onClick = onBack,
                         imageVector = Icons.Outlined.ArrowBack,
+                        contentDescription = stringResource(androidx.appcompat.R.string.abc_action_bar_up_description),
                     )
                 },
             )
