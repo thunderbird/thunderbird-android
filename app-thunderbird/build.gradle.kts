@@ -156,6 +156,19 @@ android {
         }
     }
 
+    flavorDimensions += listOf("app")
+    productFlavors {
+        create("foss") {
+            dimension = "app"
+            buildConfigField("String", "PRODUCT_FLAVOR_APP", "\"foss\"")
+        }
+
+        create("full") {
+            dimension = "app"
+            buildConfigField("String", "PRODUCT_FLAVOR_APP", "\"full\"")
+        }
+    }
+
     packaging {
         jniLibs {
             excludes += listOf("kotlin/**")
@@ -211,5 +224,11 @@ dependencies {
 }
 
 dependencyGuard {
-    configuration("releaseRuntimeClasspath")
+    configuration("fossDailyRuntimeClasspath")
+    configuration("fossBetaRuntimeClasspath")
+    configuration("fossReleaseRuntimeClasspath")
+
+    configuration("fullDailyRuntimeClasspath")
+    configuration("fullBetaRuntimeClasspath")
+    configuration("fullReleaseRuntimeClasspath")
 }
