@@ -121,10 +121,6 @@ class ManageFoldersFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.list_folders -> refreshFolderList()
-            R.id.display_1st_class -> setDisplayMode(Account.FolderMode.FIRST_CLASS)
-            R.id.display_1st_and_2nd_class -> setDisplayMode(Account.FolderMode.FIRST_AND_SECOND_CLASS)
-            R.id.display_not_second_class -> setDisplayMode(Account.FolderMode.NOT_SECOND_CLASS)
-            R.id.display_all -> setDisplayMode(Account.FolderMode.ALL)
             else -> return super.onOptionsItemSelected(item)
         }
 
@@ -133,13 +129,6 @@ class ManageFoldersFragment : Fragment() {
 
     private fun refreshFolderList() {
         messagingController.refreshFolderList(account)
-    }
-
-    private fun setDisplayMode(newMode: Account.FolderMode) {
-        account.folderDisplayMode = newMode
-        preferences.saveAccount(account)
-
-        itemAdapter.filter(null)
     }
 
     private fun folderListFilter(item: FolderListItem, constraint: CharSequence?): Boolean {
