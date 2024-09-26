@@ -213,8 +213,8 @@ class K9MessageStore(
         updateFolderOperations.setDisplayClass(folderId, folderClass)
     }
 
-    override fun setSyncClass(folderId: Long, folderClass: FolderClass) {
-        updateFolderOperations.setSyncClass(folderId, folderClass)
+    override fun setSyncEnabled(folderId: Long, enable: Boolean) {
+        updateFolderOperations.setSyncEnabled(folderId, enable)
     }
 
     override fun setPushEnabled(folderId: Long, enable: Boolean) {

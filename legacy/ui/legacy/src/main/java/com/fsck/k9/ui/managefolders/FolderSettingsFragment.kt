@@ -109,7 +109,7 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
 
     private fun setPreferenceVisibility(folderSettings: FolderSettingsData) {
         if (folderSettings.folder.isLocalOnly) {
-            requirePreference<Preference>(PREFERENCE_POLL_CLASS).isVisible = false
+            requirePreference<Preference>(PREFERENCE_SYNC).isVisible = false
             requirePreference<Preference>(PREFERENCE_PUSH).isVisible = false
             requirePreference<Preference>(PREFERENCE_NOTIFICATIONS).isVisible = false
         }
@@ -140,7 +140,7 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
         private const val TAG_CLEAR_FOLDER_CONFIRMATION = "clear_folder_confirmation"
 
         private const val PREFERENCE_TOP_CATEGORY = "folder_settings"
-        private const val PREFERENCE_POLL_CLASS = "folder_settings_folder_sync_mode"
+        private const val PREFERENCE_SYNC = "folder_settings_sync"
         private const val PREFERENCE_PUSH = "folder_settings_push"
         private const val PREFERENCE_NOTIFICATIONS = "folder_settings_notifications"
     }

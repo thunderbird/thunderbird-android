@@ -47,7 +47,7 @@ class FolderRepository(
                 ),
                 isInTopGroup = folder.isInTopGroup,
                 isIntegrate = folder.isIntegrate,
-                syncClass = folder.syncClass,
+                isSyncEnabled = folder.isSyncEnabled,
                 displayClass = folder.displayClass,
                 isNotificationsEnabled = folder.isNotificationsEnabled,
                 isPushEnabled = folder.isPushEnabled,
@@ -79,7 +79,7 @@ class FolderRepository(
                 ),
                 isInTopGroup = folder.isInTopGroup,
                 isIntegrate = folder.isIntegrate,
-                syncClass = folder.syncClass,
+                isSyncEnabled = folder.isSyncEnabled,
                 displayClass = folder.displayClass,
                 isNotificationsEnabled = folder.isNotificationsEnabled,
                 isPushEnabled = folder.isPushEnabled,
@@ -145,9 +145,9 @@ class FolderRepository(
         messageStore.setDisplayClass(folderId, folderClass)
     }
 
-    fun setSyncClass(account: Account, folderId: Long, folderClass: FolderClass) {
+    fun setSyncEnabled(account: Account, folderId: Long, enable: Boolean) {
         val messageStore = messageStoreManager.getMessageStore(account)
-        messageStore.setSyncClass(folderId, folderClass)
+        messageStore.setSyncEnabled(folderId, enable)
     }
 
     fun setNotificationsEnabled(account: Account, folderId: Long, enable: Boolean) {
@@ -188,7 +188,7 @@ data class RemoteFolderDetails(
     val folder: RemoteFolder,
     val isInTopGroup: Boolean,
     val isIntegrate: Boolean,
-    val syncClass: FolderClass,
+    val isSyncEnabled: Boolean,
     val displayClass: FolderClass,
     val isNotificationsEnabled: Boolean,
     val isPushEnabled: Boolean,

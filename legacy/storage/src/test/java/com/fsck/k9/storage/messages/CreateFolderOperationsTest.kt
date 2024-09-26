@@ -26,7 +26,7 @@ class CreateFolderOperationsTest : RobolectricTest() {
                     settings = FolderSettings(
                         visibleLimit = 10,
                         displayClass = FolderClass.FIRST_CLASS,
-                        syncClass = FolderClass.SECOND_CLASS,
+                        isSyncEnabled = false,
                         isNotificationsEnabled = true,
                         isPushEnabled = false,
                         inTopGroup = true,
@@ -44,7 +44,7 @@ class CreateFolderOperationsTest : RobolectricTest() {
         assertThat(folder.type).isEqualTo("archive")
         assertThat(folder.visibleLimit).isEqualTo(10)
         assertThat(folder.displayClass).isEqualTo("FIRST_CLASS")
-        assertThat(folder.syncClass).isEqualTo("SECOND_CLASS")
+        assertThat(folder.syncEnabled).isEqualTo(0)
         assertThat(folder.notificationsEnabled).isEqualTo(1)
         assertThat(folder.pushEnabled).isEqualTo(0)
         assertThat(folder.inTopGroup).isEqualTo(1)
@@ -80,7 +80,7 @@ class CreateFolderOperationsTest : RobolectricTest() {
             settings = FolderSettings(
                 visibleLimit = 25,
                 displayClass = FolderClass.NO_CLASS,
-                syncClass = FolderClass.INHERITED,
+                isSyncEnabled = false,
                 isNotificationsEnabled = false,
                 isPushEnabled = false,
                 inTopGroup = false,

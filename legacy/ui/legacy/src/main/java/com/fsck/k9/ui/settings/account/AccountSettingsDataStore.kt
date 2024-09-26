@@ -115,7 +115,6 @@ class AccountSettingsDataStore(
             "account_message_age" -> account.maximumPolledMessageAge.toString()
             "account_autodownload_size" -> account.maximumAutoDownloadMessageSize.toString()
             "account_check_frequency" -> account.automaticCheckIntervalMinutes.toString()
-            "folder_sync_mode" -> account.folderSyncMode.name
             "delete_policy" -> account.deletePolicy.name
             "expunge_policy" -> account.expungePolicy.name
             "max_push_folders" -> account.maxPushFolders.toString()
@@ -152,11 +151,6 @@ class AccountSettingsDataStore(
             "account_autodownload_size" -> account.maximumAutoDownloadMessageSize = value.toInt()
             "account_check_frequency" -> {
                 if (account.updateAutomaticCheckIntervalMinutes(value.toInt())) {
-                    reschedulePoll()
-                }
-            }
-            "folder_sync_mode" -> {
-                if (account.updateFolderSyncMode(Account.FolderMode.valueOf(value))) {
                     reschedulePoll()
                 }
             }

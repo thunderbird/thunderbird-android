@@ -76,7 +76,7 @@ public class LocalFolder {
     private int visibleLimit = -1;
 
     private FolderClass displayClass = FolderClass.NO_CLASS;
-    private FolderClass syncClass = FolderClass.INHERITED;
+    private boolean syncEnabled = false;
     private boolean notificationsEnabled = false;
 
     private boolean isInTopGroup = false;
@@ -177,8 +177,7 @@ public class LocalFolder {
         String displayClass = cursor.getString(LocalStore.FOLDER_DISPLAY_CLASS_INDEX);
         this.displayClass = FolderClass.valueOf((displayClass == null) ? noClass : displayClass);
         this.notificationsEnabled = cursor.getInt(LocalStore.FOLDER_NOTIFICATIONS_ENABLED_INDEX) == 1;
-        String syncClass = cursor.getString(LocalStore.FOLDER_SYNC_CLASS_INDEX);
-        this.syncClass = FolderClass.valueOf((syncClass == null) ? noClass : syncClass);
+        syncEnabled = cursor.getInt(LocalStore.FOLDER_SYNC_ENABLED_INDEX) == 1;
         String moreMessagesValue = cursor.getString(LocalStore.MORE_MESSAGES_INDEX);
         moreMessages = MoreMessages.fromDatabaseName(moreMessagesValue);
         name = cursor.getString(LocalStore.FOLDER_NAME_INDEX);
@@ -300,18 +299,13 @@ public class LocalFolder {
         return displayClass;
     }
 
-    public FolderClass getSyncClass() {
-        return (FolderClass.INHERITED == syncClass) ? getDisplayClass() : syncClass;
-    }
-
     public void setDisplayClass(FolderClass displayClass) throws MessagingException {
         this.displayClass = displayClass;
         updateFolderColumn("display_class", this.displayClass.name());
     }
 
-    public void setSyncClass(FolderClass syncClass) throws MessagingException {
-        this.syncClass = syncClass;
-        updateFolderColumn("poll_class", this.syncClass.name());
+    public boolean isSyncEnabled() {
+        return syncEnabled;
     }
 
     public boolean isNotificationsEnabled() {

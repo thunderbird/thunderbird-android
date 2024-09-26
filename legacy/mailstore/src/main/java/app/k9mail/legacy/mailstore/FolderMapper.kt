@@ -15,7 +15,7 @@ interface FolderDetailsAccessor {
     val isLocalOnly: Boolean
     val isInTopGroup: Boolean
     val isIntegrate: Boolean
-    val syncClass: FolderClass
+    val isSyncEnabled: Boolean
     val displayClass: FolderClass
     val isNotificationsEnabled: Boolean
     val isPushEnabled: Boolean
