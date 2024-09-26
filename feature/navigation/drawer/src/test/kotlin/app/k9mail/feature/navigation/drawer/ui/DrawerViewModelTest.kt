@@ -320,7 +320,7 @@ class DrawerViewModelTest {
             accounts = displayAccounts.toImmutableList(),
             selectedAccountUuid = displayAccounts[0].uuid,
             folders = displayFoldersMap[displayAccounts[0].account.uuid]!!.toImmutableList(),
-            selectedFolder = displayFoldersMap[displayAccounts[0].account.uuid]!![0],
+            selectedFolderId = displayFoldersMap[displayAccounts[0].account.uuid]!![0].id,
         )
         val testSubject = createTestSubject(
             displayAccountsFlow = getDisplayAccountsFlow,
@@ -333,7 +333,7 @@ class DrawerViewModelTest {
         val displayFolders = displayFoldersMap[displayAccounts[0].account.uuid] ?: emptyList()
         testSubject.event(Event.OnFolderClick(displayFolders[1]))
 
-        assertThat(turbines.awaitStateItem().selectedFolder).isEqualTo(displayFolders[1])
+        assertThat(turbines.awaitStateItem().selectedFolderId).isEqualTo(displayFolders[1].id)
 
         assertThat(turbines.awaitEffectItem()).isEqualTo(Effect.OpenFolder(displayFolders[1].folder.id))
 
@@ -356,7 +356,7 @@ class DrawerViewModelTest {
                 accounts = displayAccounts.toImmutableList(),
                 selectedAccountUuid = displayAccounts[0].account.uuid,
                 folders = displayFoldersMap[displayAccounts[0].account.uuid]!!.toImmutableList(),
-                selectedFolder = displayFoldersMap[displayAccounts[0].account.uuid]!![0],
+                selectedFolderId = displayFoldersMap[displayAccounts[0].account.uuid]!![0].id,
             )
             val testSubject = createTestSubject(
                 displayAccountsFlow = getDisplayAccountsFlow,
@@ -369,7 +369,7 @@ class DrawerViewModelTest {
             val displayFolders = displayFoldersMap[displayAccounts[0].account.uuid] ?: emptyList()
             testSubject.event(Event.OnFolderClick(displayFolders[1]))
 
-            assertThat(turbines.awaitStateItem().selectedFolder).isEqualTo(displayFolders[1])
+            assertThat(turbines.awaitStateItem().selectedFolderId).isEqualTo(displayFolders[1].id)
 
             assertThat(turbines.awaitEffectItem()).isEqualTo(Effect.OpenUnifiedFolder)
 

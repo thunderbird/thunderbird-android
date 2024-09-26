@@ -89,13 +89,13 @@ internal class DrawerViewModel(
 
     private fun updateFolders(displayFolders: List<DisplayFolder>) {
         val selectedFolder = displayFolders.find {
-            it.id == state.value.selectedFolder?.id
+            it.id == state.value.selectedFolderId
         } ?: displayFolders.firstOrNull()
 
         updateState {
             it.copy(
                 folders = displayFolders.toImmutableList(),
-                selectedFolder = selectedFolder,
+                selectedFolderId = selectedFolder?.id,
             )
         }
     }
@@ -145,7 +145,7 @@ internal class DrawerViewModel(
 
     private fun selectFolder(folder: DisplayFolder) {
         updateState {
-            it.copy(selectedFolder = folder)
+            it.copy(selectedFolderId = folder.id)
         }
 
         if (folder is DisplayAccountFolder) {

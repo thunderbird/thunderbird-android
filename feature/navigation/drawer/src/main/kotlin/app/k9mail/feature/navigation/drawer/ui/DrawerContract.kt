@@ -22,7 +22,7 @@ internal interface DrawerContract {
         val accounts: ImmutableList<DisplayAccount> = persistentListOf(),
         val selectedAccountUuid: String? = null,
         val folders: ImmutableList<DisplayFolder> = persistentListOf(),
-        val selectedFolder: DisplayFolder? = null,
+        val selectedFolderId: String? = null,
         val showAccountSelector: Boolean = false,
         val isLoading: Boolean = false,
     )

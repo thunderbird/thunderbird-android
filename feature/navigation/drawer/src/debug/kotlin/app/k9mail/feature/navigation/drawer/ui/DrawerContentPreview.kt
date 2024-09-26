@@ -72,7 +72,28 @@ internal fun DrawerContentWithSelectedFolderPreview() {
                     UNIFIED_FOLDER,
                     DISPLAY_FOLDER,
                 ),
-                selectedFolder = DISPLAY_FOLDER,
+                selectedFolderId = DISPLAY_FOLDER.id,
+            ),
+            onEvent = {},
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun DrawerContentWithSelectedUnifiedFolderPreview() {
+    PreviewWithTheme {
+        DrawerContent(
+            state = DrawerContract.State(
+                accounts = persistentListOf(
+                    DISPLAY_ACCOUNT,
+                ),
+                selectedAccountUuid = DISPLAY_ACCOUNT.uuid,
+                folders = persistentListOf(
+                    UNIFIED_FOLDER,
+                    DISPLAY_FOLDER,
+                ),
+                selectedFolderId = UNIFIED_FOLDER.id,
             ),
             onEvent = {},
         )
