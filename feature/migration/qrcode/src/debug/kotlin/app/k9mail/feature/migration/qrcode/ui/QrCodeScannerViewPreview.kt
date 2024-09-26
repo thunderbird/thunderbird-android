@@ -8,7 +8,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.Surface
 @Preview
 @Composable
 fun QrCodeScannerViewPreview_initial() {
-    PreviewWithTheme {
+    PreviewWithTheme(isDarkTheme = true) {
         Surface {
             QrCodeScannerView(
                 cameraUseCasesProvider = { emptyList() },
@@ -23,7 +23,7 @@ fun QrCodeScannerViewPreview_initial() {
 @Preview
 @Composable
 fun QrCodeScannerViewPreview_one_qr_code_scanned() {
-    PreviewWithTheme {
+    PreviewWithTheme(isDarkTheme = true) {
         Surface {
             QrCodeScannerView(
                 cameraUseCasesProvider = { emptyList() },

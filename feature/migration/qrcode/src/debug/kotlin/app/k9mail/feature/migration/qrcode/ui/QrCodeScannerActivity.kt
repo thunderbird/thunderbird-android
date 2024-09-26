@@ -14,7 +14,7 @@ class QrCodeScannerActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setActivityContent {
-            K9MailTheme2 {
+            K9MailTheme2(darkTheme = true) {
                 QrCodeScannerScreen()
             }
         }

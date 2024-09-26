@@ -35,7 +35,7 @@ internal fun CameraPreviewView(
         TextTitleLarge(
             text = "Camera preview",
             textAlign = TextAlign.Center,
-            modifier = modifier.background(Color.Cyan),
+            modifier = modifier.background(Color.DarkGray),
         )
         return
     }
