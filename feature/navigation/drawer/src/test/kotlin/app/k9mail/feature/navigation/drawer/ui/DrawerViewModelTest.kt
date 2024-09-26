@@ -64,7 +64,7 @@ class DrawerViewModelTest {
     fun `should change loading state when OnSyncAccount event is received`() = runTest {
         val initialState = State(
             accounts = listOf(DISPLAY_ACCOUNT).toImmutableList(),
-            selectedAccount = DISPLAY_ACCOUNT,
+            selectedAccountUuid = DISPLAY_ACCOUNT.uuid,
         )
         val testSubject = createTestSubject(
             initialState = initialState,
@@ -90,12 +90,13 @@ class DrawerViewModelTest {
 
     @Test
     fun `should skip loading when no account is selected and OnSyncAccount event is received`() = runTest {
-        val initialState = State(selectedAccount = null)
+        val initialState = State(selectedAccountUuid = null)
         var counter = 0
         val testSubject = createTestSubject(
             initialState = initialState,
             syncAccountFlow = flow {
                 delay(25)
+                counter++
                 emit(Result.success(Unit))
             },
         )
@@ -197,7 +198,7 @@ class DrawerViewModelTest {
 
         assertThat(testSubject.state.value.accounts.size).isEqualTo(displayAccounts.size)
         assertThat(testSubject.state.value.accounts).isEqualTo(displayAccounts)
-        assertThat(testSubject.state.value.selectedAccount).isEqualTo(displayAccounts.first())
+        assertThat(testSubject.state.value.selectedAccountUuid).isEqualTo(displayAccounts.first().uuid)
     }
 
     @Test
@@ -217,7 +218,7 @@ class DrawerViewModelTest {
 
         assertThat(testSubject.state.value.accounts.size).isEqualTo(newDisplayAccounts.size)
         assertThat(testSubject.state.value.accounts).isEqualTo(newDisplayAccounts)
-        assertThat(testSubject.state.value.selectedAccount).isEqualTo(newDisplayAccounts.first())
+        assertThat(testSubject.state.value.selectedAccountUuid).isEqualTo(newDisplayAccounts.first().uuid)
     }
 
     @Test
@@ -230,7 +231,7 @@ class DrawerViewModelTest {
         advanceUntilIdle()
 
         assertThat(testSubject.state.value.accounts.size).isEqualTo(0)
-        assertThat(testSubject.state.value.selectedAccount).isEqualTo(null)
+        assertThat(testSubject.state.value.selectedAccountUuid).isEqualTo(null)
     }
 
     @Test
@@ -244,7 +245,7 @@ class DrawerViewModelTest {
             testSubject,
             State(
                 accounts = displayAccounts.toImmutableList(),
-                selectedAccount = displayAccounts.first(),
+                selectedAccountUuid = displayAccounts.first().uuid,
             ),
         )
 
@@ -254,7 +255,7 @@ class DrawerViewModelTest {
 
         advanceUntilIdle()
 
-        assertThat(turbines.awaitStateItem().selectedAccount).isEqualTo(displayAccounts[1])
+        assertThat(turbines.awaitStateItem().selectedAccountUuid).isEqualTo(displayAccounts[1].uuid)
 
         turbines.assertThatAndEffectTurbineConsumed {
             isEqualTo(Effect.OpenAccount(displayAccounts[1].account))
@@ -266,7 +267,7 @@ class DrawerViewModelTest {
         val displayAccounts = createDisplayAccountList(3)
         val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
         val displayFoldersMap = mapOf(
-            displayAccounts[0].account.uuid to createDisplayFolderList(3),
+            displayAccounts[0].uuid to createDisplayFolderList(3),
         )
         val displayFoldersFlow = MutableStateFlow(displayFoldersMap)
         val testSubject = createTestSubject(
@@ -276,7 +277,7 @@ class DrawerViewModelTest {
 
         advanceUntilIdle()
 
-        val displayFolders = displayFoldersMap[displayAccounts[0].account.uuid] ?: emptyList()
+        val displayFolders = displayFoldersMap[displayAccounts[0].uuid] ?: emptyList()
         assertThat(testSubject.state.value.folders.size).isEqualTo(displayFolders.size)
         assertThat(testSubject.state.value.folders).isEqualTo(displayFolders)
     }
@@ -286,9 +287,9 @@ class DrawerViewModelTest {
         val displayAccounts = createDisplayAccountList(3)
         val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
         val displayFoldersMap = mapOf(
-            displayAccounts[0].account.uuid to createDisplayFolderList(1),
-            displayAccounts[1].account.uuid to createDisplayFolderList(5),
-            displayAccounts[2].account.uuid to createDisplayFolderList(10),
+            displayAccounts[0].uuid to createDisplayFolderList(1),
+            displayAccounts[1].uuid to createDisplayFolderList(5),
+            displayAccounts[2].uuid to createDisplayFolderList(10),
         )
         val displayFoldersFlow = MutableStateFlow(displayFoldersMap)
         val testSubject = createTestSubject(
@@ -317,7 +318,7 @@ class DrawerViewModelTest {
         val displayFoldersFlow = MutableStateFlow(displayFoldersMap)
         val initialState = State(
             accounts = displayAccounts.toImmutableList(),
-            selectedAccount = displayAccounts[0],
+            selectedAccountUuid = displayAccounts[0].uuid,
             folders = displayFoldersMap[displayAccounts[0].account.uuid]!!.toImmutableList(),
             selectedFolder = displayFoldersMap[displayAccounts[0].account.uuid]!![0],
         )
@@ -353,7 +354,7 @@ class DrawerViewModelTest {
             val displayFoldersFlow = MutableStateFlow(displayFoldersMap)
             val initialState = State(
                 accounts = displayAccounts.toImmutableList(),
-                selectedAccount = displayAccounts[0],
+                selectedAccountUuid = displayAccounts[0].account.uuid,
                 folders = displayFoldersMap[displayAccounts[0].account.uuid]!!.toImmutableList(),
                 selectedFolder = displayFoldersMap[displayAccounts[0].account.uuid]!![0],
             )

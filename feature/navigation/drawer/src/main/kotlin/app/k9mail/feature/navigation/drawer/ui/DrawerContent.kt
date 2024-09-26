@@ -27,11 +27,12 @@ internal fun DrawerContent(
             .fillMaxSize()
             .testTag("DrawerContent"),
     ) {
+        val selectedAccount = state.accounts.firstOrNull { it.uuid == state.selectedAccountUuid }
         Column {
-            state.selectedAccount?.let {
+            selectedAccount?.let {
                 AccountView(
-                    account = it,
-                    onClick = { onEvent(Event.OnAccountViewClick(it)) },
+                    account = selectedAccount,
+                    onClick = { onEvent(Event.OnAccountViewClick(selectedAccount)) },
                     showAvatar = state.showAccountSelector,
                 )
 
@@ -43,7 +44,7 @@ internal fun DrawerContent(
                 ) {
                     AccountList(
                         accounts = state.accounts,
-                        selectedAccount = state.selectedAccount,
+                        selectedAccount = selectedAccount,
                         onAccountClick = { onEvent(Event.OnAccountClick(it)) },
                         onSyncAllAccountsClick = { onEvent(Event.OnSyncAllAccounts) },
                         onSettingsClick = { onEvent(Event.OnSettingsClick) },

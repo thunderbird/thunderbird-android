@@ -61,13 +61,13 @@ internal class DrawerViewModel(
     }
 
     private fun updateAccounts(accounts: List<DisplayAccount>) {
-        val selectedAccount = accounts.find { it.account.uuid == state.value.selectedAccount?.account?.uuid }
+        val selectedAccount = accounts.find { it.uuid == state.value.selectedAccountUuid }
             ?: accounts.firstOrNull()
 
         updateState {
             it.copy(
                 accounts = accounts.toImmutableList(),
-                selectedAccount = selectedAccount,
+                selectedAccountUuid = selectedAccount?.uuid,
             )
         }
     }
@@ -75,8 +75,8 @@ internal class DrawerViewModel(
     @OptIn(ExperimentalCoroutinesApi::class)
     private suspend fun loadFolders() {
         state.map {
-            it.selectedAccount?.let { selectAccount ->
-                Pair(selectAccount.account.uuid, it.config.showUnifiedFolders)
+            it.selectedAccountUuid?.let { accountUuid ->
+                Pair(accountUuid, it.config.showUnifiedFolders)
             }
         }.filterNotNull()
             .distinctUntilChanged()
@@ -106,7 +106,7 @@ internal class DrawerViewModel(
             is Event.OnFolderClick -> selectFolder(event.folder)
             is Event.OnAccountViewClick -> {
                 selectAccount(
-                    state.value.accounts.nextOrFirst(event.account)!!,
+                    state.value.accounts.nextOrFirst(event.account),
                 )
             }
 
@@ -118,16 +118,18 @@ internal class DrawerViewModel(
         }
     }
 
-    private fun selectAccount(account: DisplayAccount) {
+    private fun selectAccount(account: DisplayAccount?) {
         viewModelScope.launch {
             updateState {
                 it.copy(
-                    selectedAccount = account,
+                    selectedAccountUuid = account?.uuid,
                 )
             }
         }
 
-        emitEffect(Effect.OpenAccount(account.account))
+        if (account != null) {
+            emitEffect(Effect.OpenAccount(account.account))
+        }
     }
 
     private fun ImmutableList<DisplayAccount>.nextOrFirst(account: DisplayAccount): DisplayAccount? {
@@ -159,14 +161,14 @@ internal class DrawerViewModel(
     }
 
     private fun onSyncAccount() {
-        if (state.value.isLoading || state.value.selectedAccount == null) return
+        if (state.value.isLoading || state.value.selectedAccountUuid == null) return
 
         viewModelScope.launch {
             updateState {
                 it.copy(isLoading = true)
             }
 
-            state.value.selectedAccount?.account?.let { syncAccount(it).collect() }
+            state.value.selectedAccountUuid?.let { syncAccount(it).collect() }
 
             updateState {
                 it.copy(isLoading = false)

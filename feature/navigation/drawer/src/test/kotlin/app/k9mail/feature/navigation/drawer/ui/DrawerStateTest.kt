@@ -20,7 +20,7 @@ class DrawerStateTest {
                     showStarredCount = false,
                 ),
                 accounts = persistentListOf(),
-                selectedAccount = null,
+                selectedAccountUuid = null,
                 folders = persistentListOf(),
                 selectedFolder = null,
                 showAccountSelector = false,
