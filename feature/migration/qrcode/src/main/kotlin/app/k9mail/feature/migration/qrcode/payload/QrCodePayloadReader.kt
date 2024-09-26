@@ -1,4 +1,4 @@
-package app.k9mail.feature.migration.qrcode
+package app.k9mail.feature.migration.qrcode.payload
 
 internal class QrCodePayloadReader(
     private val parser: QrCodePayloadParser = QrCodePayloadParser(),

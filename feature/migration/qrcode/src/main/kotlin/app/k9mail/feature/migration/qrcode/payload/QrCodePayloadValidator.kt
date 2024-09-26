@@ -1,4 +1,4 @@
-package app.k9mail.feature.migration.qrcode
+package app.k9mail.feature.migration.qrcode.payload
 
 import app.k9mail.core.common.mail.EmailAddressParserException
 import app.k9mail.core.common.mail.toUserEmailAddress
