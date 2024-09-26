@@ -12,6 +12,9 @@ jobs:
     if: |
       github.event.comment.author_association != 'OWNER' &&
       github.event.comment.author_association != 'COLLABORATOR'
+    permissions:
+      issues: write
+      pull-requests: write
     steps:
       - name: Remove needinfo label
         uses: octokit/request-action@v2.x
