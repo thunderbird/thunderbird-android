@@ -34,7 +34,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class DrawerViewModelTest {
+internal class DrawerViewModelTest {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
@@ -235,7 +235,7 @@ class DrawerViewModelTest {
     }
 
     @Test
-    fun `should set selected account when OnAccountClick event is received`() = runTest {
+    fun `should send OpenAccount effect when OnAccountClick event is received`() = runTest {
         val displayAccounts = createDisplayAccountList(3)
         val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
         val testSubject = createTestSubject(
@@ -254,8 +254,6 @@ class DrawerViewModelTest {
         testSubject.event(Event.OnAccountClick(displayAccounts[1]))
 
         advanceUntilIdle()
-
-        assertThat(turbines.awaitStateItem().selectedAccountUuid).isEqualTo(displayAccounts[1].uuid)
 
         turbines.assertThatAndEffectTurbineConsumed {
             isEqualTo(Effect.OpenAccount(displayAccounts[1].account))
@@ -299,7 +297,7 @@ class DrawerViewModelTest {
 
         advanceUntilIdle()
 
-        testSubject.event(Event.OnAccountClick(displayAccounts[1]))
+        testSubject.event(Event.SelectAccount(displayAccounts[1].uuid))
 
         advanceUntilIdle()
 
@@ -309,7 +307,7 @@ class DrawerViewModelTest {
     }
 
     @Test
-    fun `should set selected folder and emit OpenFolder when OnFolderClick event is received`() = runTest {
+    fun `should emit OpenFolder effect when OnFolderClick event is received`() = runTest {
         val displayAccounts = createDisplayAccountList(3)
         val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
         val displayFoldersMap = mapOf(
@@ -333,8 +331,6 @@ class DrawerViewModelTest {
         val displayFolders = displayFoldersMap[displayAccounts[0].account.uuid] ?: emptyList()
         testSubject.event(Event.OnFolderClick(displayFolders[1]))
 
-        assertThat(turbines.awaitStateItem().selectedFolderId).isEqualTo(displayFolders[1].id)
-
         assertThat(turbines.awaitEffectItem()).isEqualTo(Effect.OpenFolder(displayFolders[1].folder.id))
 
         turbines.assertThatAndEffectTurbineConsumed {
@@ -343,7 +339,7 @@ class DrawerViewModelTest {
     }
 
     @Test
-    fun `should set selected folder emit OpenUnifiedFolder when OnFolderClick event for unified folder is received`() =
+    fun `should emit OpenUnifiedFolder when OnFolderClick event for unified folder is received`() =
         runTest {
             val displayAccounts = createDisplayAccountList(1)
             val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
@@ -368,8 +364,6 @@ class DrawerViewModelTest {
 
             val displayFolders = displayFoldersMap[displayAccounts[0].account.uuid] ?: emptyList()
             testSubject.event(Event.OnFolderClick(displayFolders[1]))
-
-            assertThat(turbines.awaitStateItem().selectedFolderId).isEqualTo(displayFolders[1].id)
 
             assertThat(turbines.awaitEffectItem()).isEqualTo(Effect.OpenUnifiedFolder)
 

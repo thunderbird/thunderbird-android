@@ -437,7 +437,7 @@ class LegacyDrawer(
         }
     }
 
-    override fun selectFolder(folderId: Long) {
+    override fun selectFolder(accountUuid: String, folderId: Long) {
         deselect()
         openedFolderId = folderId
         for (drawerId in userFolderDrawerIds) {

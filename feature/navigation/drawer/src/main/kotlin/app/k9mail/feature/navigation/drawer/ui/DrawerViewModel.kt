@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-@Suppress("MagicNumber")
+@Suppress("MagicNumber", "TooManyFunctions")
 internal class DrawerViewModel(
     private val getDrawerConfig: UseCase.GetDrawerConfig,
     private val getDisplayAccounts: UseCase.GetDisplayAccounts,
@@ -102,10 +102,13 @@ internal class DrawerViewModel(
 
     override fun event(event: Event) {
         when (event) {
-            is Event.OnAccountClick -> selectAccount(event.account)
-            is Event.OnFolderClick -> selectFolder(event.folder)
+            is Event.SelectAccount -> selectAccount(event.accountUuid)
+            is Event.SelectFolder -> selectFolder(event.folderId)
+
+            is Event.OnAccountClick -> openAccount(event.account)
+            is Event.OnFolderClick -> openFolder(event.folder)
             is Event.OnAccountViewClick -> {
-                selectAccount(
+                openAccount(
                     state.value.accounts.nextOrFirst(event.account),
                 )
             }
@@ -118,15 +121,23 @@ internal class DrawerViewModel(
         }
     }
 
-    private fun selectAccount(account: DisplayAccount?) {
-        viewModelScope.launch {
-            updateState {
-                it.copy(
-                    selectedAccountUuid = account?.uuid,
-                )
-            }
+    private fun selectAccount(accountUuid: String?) {
+        updateState {
+            it.copy(
+                selectedAccountUuid = accountUuid,
+            )
         }
+    }
 
+    private fun selectFolder(folderId: String?) {
+        updateState {
+            it.copy(
+                selectedFolderId = folderId,
+            )
+        }
+    }
+
+    private fun openAccount(account: DisplayAccount?) {
         if (account != null) {
             emitEffect(Effect.OpenAccount(account.account))
         }
@@ -143,11 +154,7 @@ internal class DrawerViewModel(
         }
     }
 
-    private fun selectFolder(folder: DisplayFolder) {
-        updateState {
-            it.copy(selectedFolderId = folder.id)
-        }
-
+    private fun openFolder(folder: DisplayFolder) {
         if (folder is DisplayAccountFolder) {
             emitEffect(Effect.OpenFolder(folder.folder.id))
         } else if (folder is DisplayUnifiedFolder) {

@@ -1413,7 +1413,7 @@ open class MessageList :
         val drawer = navigationDrawer ?: return
         drawer.selectAccount(account!!.uuid)
         when {
-            singleFolderMode -> drawer.selectFolder(search!!.folderIds[0])
+            singleFolderMode -> drawer.selectFolder(search!!.accountUuids[0], search!!.folderIds[0])
             // Don't select any item in the drawer because the Unified Inbox is displayed, but not listed in the drawer
             search!!.id == SearchAccount.UNIFIED_INBOX && !K9.isShowUnifiedInbox -> drawer.deselect()
             search!!.id == SearchAccount.UNIFIED_INBOX -> drawer.selectUnifiedInbox()

@@ -6,7 +6,7 @@ import app.k9mail.legacy.account.AccountRemovedListener
 import app.k9mail.legacy.account.AccountsChangeListener
 import kotlinx.coroutines.flow.Flow
 
-class FakeAccountManager(
+internal class FakeAccountManager(
     val recordedParameters: MutableList<String> = mutableListOf(),
     private val accounts: List<Account> = emptyList(),
 ) : AccountManager {

@@ -28,6 +28,8 @@ internal interface DrawerContract {
     )
 
     sealed interface Event {
+        data class SelectAccount(val accountUuid: String?) : Event
+        data class SelectFolder(val folderId: String?) : Event
         data class OnAccountClick(val account: DisplayAccount) : Event
         data class OnAccountViewClick(val account: DisplayAccount) : Event
         data class OnFolderClick(val folder: DisplayFolder) : Event

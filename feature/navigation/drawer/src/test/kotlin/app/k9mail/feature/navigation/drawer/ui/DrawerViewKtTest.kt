@@ -2,17 +2,21 @@ package app.k9mail.feature.navigation.drawer.ui
 
 import androidx.compose.ui.test.onChildAt
 import androidx.compose.ui.test.printToString
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.onNodeWithTag
 import app.k9mail.core.ui.compose.testing.setContentWithTheme
+import app.k9mail.feature.navigation.drawer.FolderDrawerState
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Effect
+import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Event
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.State
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 
-class DrawerViewKtTest : ComposeTest() {
+internal class DrawerViewKtTest : ComposeTest() {
 
     @Test
     fun `should delegate effects`() = runTest {
@@ -23,6 +27,7 @@ class DrawerViewKtTest : ComposeTest() {
 
         setContentWithTheme {
             DrawerView(
+                drawerState = FolderDrawerState(),
                 openAccount = { counter.openAccountCount++ },
                 openFolder = { counter.openFolderCount++ },
                 openUnifiedFolder = { counter.openUnifiedFolderCount++ },
@@ -57,6 +62,45 @@ class DrawerViewKtTest : ComposeTest() {
     }
 
     @Test
+    fun `should register to drawer state and send events to view model`() = runTest {
+        val initialState = State()
+        val viewModel = FakeDrawerViewModel(initialState)
+        val initialDrawerState = FolderDrawerState()
+        val drawerStateFlow = MutableStateFlow(initialDrawerState)
+
+        setContentWithTheme {
+            val state = drawerStateFlow.collectAsStateWithLifecycle()
+
+            DrawerView(
+                drawerState = state.value,
+                openAccount = { },
+                openFolder = { },
+                openUnifiedFolder = { },
+                openManageFolders = { },
+                openSettings = { },
+                closeDrawer = { },
+                viewModel = viewModel,
+            )
+        }
+
+        drawerStateFlow.emit(initialDrawerState.copy(selectedAccountUuid = FakeData.ACCOUNT.uuid))
+
+        viewModel.events.contains(Event.SelectAccount(FakeData.ACCOUNT.uuid))
+
+        drawerStateFlow.emit(initialDrawerState.copy(selectedAccountUuid = null))
+
+        viewModel.events.contains(Event.SelectAccount(null))
+
+        drawerStateFlow.emit(initialDrawerState.copy(selectedFolderId = "1"))
+
+        viewModel.events.contains(Event.SelectFolder("1"))
+
+        drawerStateFlow.emit(initialDrawerState.copy(selectedFolderId = null))
+
+        viewModel.events.contains(Event.SelectFolder(null))
+    }
+
+    @Test
     fun `pull refresh should listen to view model state`() = runTest {
         val initialState = State(
             isLoading = false,
@@ -65,6 +109,7 @@ class DrawerViewKtTest : ComposeTest() {
 
         setContentWithTheme {
             DrawerView(
+                drawerState = FolderDrawerState(),
                 openAccount = {},
                 openFolder = {},
                 openUnifiedFolder = {},

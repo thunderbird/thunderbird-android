@@ -8,7 +8,7 @@ import kotlin.test.Test
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 
-class SyncAccountTest {
+internal class SyncAccountTest {
 
     @Test
     fun `should sync mail with account`() = runTest {
