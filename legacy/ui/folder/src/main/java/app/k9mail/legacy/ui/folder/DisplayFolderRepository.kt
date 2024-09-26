@@ -65,7 +65,7 @@ class DisplayFolderRepository(
         }
     }
 
-    fun getDisplayFoldersFlow(account: Account, displayMode: Account.FolderMode): Flow<List<DisplayFolder>> {
+    private fun getDisplayFoldersFlow(account: Account, displayMode: Account.FolderMode): Flow<List<DisplayFolder>> {
         val messageStore = messageStoreManager.getMessageStore(account.uuid)
 
         return callbackFlow {
