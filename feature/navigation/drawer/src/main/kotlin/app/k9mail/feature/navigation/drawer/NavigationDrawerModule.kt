@@ -16,7 +16,7 @@ val navigationDrawerModule: Module = module {
 
     single<UseCase.GetDrawerConfig> {
         GetDrawerConfig(
-            configProver = get(),
+            configLoader = get(),
         )
     }
     single<UseCase.SaveDrawerConfig> {
