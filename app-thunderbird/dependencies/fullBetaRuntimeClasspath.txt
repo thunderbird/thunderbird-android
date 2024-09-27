@@ -134,6 +134,7 @@ co.touchlab:stately-concurrent-collections-jvm:2.0.6
 co.touchlab:stately-concurrent-collections:2.0.6
 co.touchlab:stately-strict-jvm:2.0.6
 co.touchlab:stately-strict:2.0.6
+com.android.billingclient:billing-ktx:7.0.0
 com.android.billingclient:billing:7.0.0
 com.beetstra.jutf7:jutf7:1.0.0
 com.github.ByteHamster:SearchPreference:v2.3.0
