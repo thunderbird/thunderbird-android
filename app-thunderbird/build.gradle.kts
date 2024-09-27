@@ -185,6 +185,13 @@ android {
     }
 }
 
+// Initialize placeholders for the product flavor and build type combinations needed for dependency declarations.
+// They are required to avoid "Unresolved configuration" errors.
+val fullDebugImplementation by configurations.creating
+val fullDailyImplementation by configurations.creating
+val fullBetaImplementation by configurations.creating
+val fullReleaseImplementation by configurations.creating
+
 dependencies {
     implementation(projects.appCommon)
     implementation(projects.core.ui.compose.theme2.thunderbird)
@@ -201,9 +208,9 @@ dependencies {
     implementation(projects.feature.widget.unread)
 
     debugImplementation(projects.feature.telemetry.noop)
-    releaseImplementation(projects.feature.telemetry.glean)
-    "betaImplementation"(projects.feature.telemetry.glean)
     "dailyImplementation"(projects.feature.telemetry.glean)
+    "betaImplementation"(projects.feature.telemetry.glean)
+    releaseImplementation(projects.feature.telemetry.glean)
 
     implementation(libs.androidx.work.runtime)
 
@@ -211,10 +218,12 @@ dependencies {
     debugImplementation(projects.backend.demo)
     debugImplementation(projects.feature.autodiscovery.demo)
 
-    debugImplementation(projects.feature.funding.noop)
-    add("dailyImplementation", projects.feature.funding.googleplay)
-    add("betaImplementation", projects.feature.funding.noop)
-    releaseImplementation(projects.feature.funding.noop)
+    "fossImplementation"(projects.feature.funding.noop)
+
+    fullDebugImplementation(projects.feature.funding.noop)
+    fullDailyImplementation(projects.feature.funding.googleplay)
+    fullBetaImplementation(projects.feature.funding.googleplay)
+    fullReleaseImplementation(projects.feature.funding.googleplay)
 
     testImplementation(libs.robolectric)
 
@@ -231,4 +240,15 @@ dependencyGuard {
     configuration("fullDailyRuntimeClasspath")
     configuration("fullBetaRuntimeClasspath")
     configuration("fullReleaseRuntimeClasspath")
+}
+
+tasks.create("printConfigurations") {
+    doLast {
+        configurations.forEach { configuration ->
+            println("Configuration: ${configuration.name}")
+            configuration.dependencies.forEach { dependency ->
+                println("  - ${dependency.group}:${dependency.name}:${dependency.version}")
+            }
+        }
+    }
 }
