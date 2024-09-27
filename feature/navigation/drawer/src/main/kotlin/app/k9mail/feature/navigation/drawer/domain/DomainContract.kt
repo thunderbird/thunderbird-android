@@ -3,7 +3,6 @@ package app.k9mail.feature.navigation.drawer.domain
 import app.k9mail.feature.navigation.drawer.NavigationDrawerExternalContract.DrawerConfig
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayFolder
-import app.k9mail.legacy.account.Account
 import kotlinx.coroutines.flow.Flow
 
 internal interface DomainContract {
@@ -22,10 +21,10 @@ internal interface DomainContract {
         }
 
         /**
-         * Synchronize the given account.
+         * Synchronize the given account uuid.
          */
         fun interface SyncAccount {
-            operator fun invoke(account: Account): Flow<Result<Unit>>
+            operator fun invoke(accountUuid: String): Flow<Result<Unit>>
         }
 
         /**

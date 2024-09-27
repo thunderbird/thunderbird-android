@@ -9,5 +9,9 @@ internal data class DisplayAccountFolder(
     override val unreadMessageCount: Int,
     override val starredMessageCount: Int,
 ) : DisplayFolder {
-    override val id: String = accountUuid + folder.id
+    override val id: String = createDisplayAccountFolderId(accountUuid, folder.id)
+}
+
+fun createDisplayAccountFolderId(accountUuid: String, folderId: Long): String {
+    return "${accountUuid}_$folderId"
 }

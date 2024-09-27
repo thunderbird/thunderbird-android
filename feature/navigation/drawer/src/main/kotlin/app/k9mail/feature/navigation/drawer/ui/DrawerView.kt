@@ -1,8 +1,10 @@
 package app.k9mail.feature.navigation.drawer.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.core.ui.compose.designsystem.molecule.PullToRefreshBox
+import app.k9mail.feature.navigation.drawer.FolderDrawerState
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Effect
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Event
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.ViewModel
@@ -11,6 +13,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun DrawerView(
+    drawerState: FolderDrawerState,
     openAccount: (account: Account) -> Unit,
     openFolder: (folderId: Long) -> Unit,
     openUnifiedFolder: () -> Unit,
@@ -28,6 +31,14 @@ internal fun DrawerView(
             is Effect.OpenSettings -> openSettings()
             Effect.CloseDrawer -> closeDrawer()
         }
+    }
+
+    LaunchedEffect(drawerState.selectedAccountUuid) {
+        dispatch(Event.SelectAccount(drawerState.selectedAccountUuid))
+    }
+
+    LaunchedEffect(drawerState.selectedFolderId) {
+        dispatch(Event.SelectFolder(drawerState.selectedFolderId))
     }
 
     PullToRefreshBox(

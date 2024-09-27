@@ -7,7 +7,7 @@ import assertk.assertions.isEqualTo
 import kotlinx.collections.immutable.persistentListOf
 import org.junit.Test
 
-class DrawerStateTest {
+internal class DrawerStateTest {
 
     @Test
     fun `should set default values`() {
@@ -20,9 +20,9 @@ class DrawerStateTest {
                     showStarredCount = false,
                 ),
                 accounts = persistentListOf(),
-                selectedAccount = null,
+                selectedAccountUuid = null,
                 folders = persistentListOf(),
-                selectedFolder = null,
+                selectedFolderId = null,
                 showAccountSelector = false,
                 isLoading = false,
             ),

@@ -7,7 +7,7 @@ import kotlin.test.Test
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 
-class GetDrawerConfigTest {
+internal class GetDrawerConfigTest {
 
     @Test
     fun `should get drawer config`() = runTest {

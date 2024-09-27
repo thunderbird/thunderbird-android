@@ -6,6 +6,6 @@ import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Event
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.State
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.ViewModel
 
-class FakeDrawerViewModel(
+internal class FakeDrawerViewModel(
     initialState: State = State(),
 ) : BaseFakeViewModel<State, Event, Effect>(initialState), ViewModel
