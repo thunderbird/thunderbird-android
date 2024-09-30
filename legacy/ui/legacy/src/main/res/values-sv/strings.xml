@@ -435,11 +435,6 @@
     <string name="folder_settings_folder_push_mode_first_class">1:a klass</string>
     <string name="folder_settings_folder_push_mode_second_class">2:a klass</string>
     <string name="folder_settings_folder_push_mode_inherited">Samma som push-klass</string>
-    <string name="folder_settings_folder_notify_mode_label">Aviseringsklass för mapp</string>
-    <string name="folder_settings_folder_notify_mode_normal">Ingen klassning</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1:a klass</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2:a klass</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Samma som push-klass</string>
     <string name="folder_settings_clear_local_folder_action">Rensa lokalt lagrade meddelanden</string>
     <string name="account_settings_incoming_label">Inkommande server</string>
     <string name="account_settings_incoming_summary">Konfigurera servern för inkommande e-post</string>
@@ -928,8 +923,6 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="push_notification_state_alarm_permission_missing">Saknar behörigheter för att schemalägga larm</string>
     <string name="push_notification_grant_alarm_permission">Tryck för att ge behörigheter.</string>
     <string name="dialog_openkeychain_info_text">Appen OpenKeychain krävs för att möjliggöra stöd för end-to-end-kryptering.</string>
-    <string name="default_signature">--
-\nSkickat från min Android enhet med <xliff:g id="app_name">%s</xliff:g>. Ursäkta min korthet.</string>
     <string name="account_delete_dlg_instructions_fmt">Kontot \"<xliff:g id="account">%s</xliff:g>\" kommer att tas bort ifrån <xliff:g id="app_name">%s</xliff:g>.</string>
     <string name="about_title">Om <xliff:g id="app_name">%s</xliff:g></string>
 </resources>

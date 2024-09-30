@@ -284,7 +284,6 @@
     <string name="general_settings_right_swipe_title">Right swipe</string>
     <string name="global_settings_messageview_autofit_width_label">Auto-fit messages</string>
     <string name="account_settings_folder_push_mode_not_second_class">All except 2nd Class folders</string>
-    <string name="folder_settings_folder_notify_mode_normal">No Class</string>
     <string name="font_size_message_list_date">Date</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Encrypt drafts only if encryption is enabled</string>
     <string name="account_settings_quote_style_prefix">Prefix (like Gmail)</string>
@@ -539,7 +538,6 @@
     <string name="debug_enable_debug_logging_title">Enable debug logging</string>
     <string name="font_size_message_compose_input">Text input fields</string>
     <string name="dialog_confirm_clear_local_folder_title">Clear local messages?</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1st Class</string>
     <string name="global_settings_preview_lines_label">Preview lines</string>
     <string name="confirm_discard_draft_message">Are you sure you want to discard this message?</string>
     <string name="settings_list_miscellaneous_category">Miscellaneous</string>
@@ -623,7 +621,6 @@
     <string name="folder_settings_folder_push_mode_second_class">2nd Class</string>
     <string name="settings_export_failure">Failed to export settings</string>
     <string name="account_setup_options_mail_display_count_1000">1000 messages</string>
-    <string name="folder_settings_folder_notify_mode_label">Folder notification class</string>
     <string name="batch_select_all">Select all</string>
     <string name="dialog_confirm_delete_message">Do you want to delete this message?</string>
     <string name="account_settings_message_age_1_month">the last month</string>
@@ -636,7 +633,6 @@
     <string name="sort_unattached_first">Messages without attachments first</string>
     <string name="account_settings_message_age_any">any time (no limit)</string>
     <string name="account_settings_crypto_app">Enable OpenPGP support</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Same as push class</string>
     <string name="sort_unread_last">Read messages first</string>
     <string name="global_settings_privacy_hide_useragent_detail">Remove K-9 User-Agent from mail headers</string>
     <string name="edit_identity_title">Edit identity</string>
@@ -685,7 +681,6 @@
     <string name="message_view_show_remote_images_action">Show remote images</string>
     <string name="privacy_preferences">Privacy</string>
     <string name="account_settings_autodownload_message_size_256">256 KiB</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2nd Class</string>
     <string name="settings_export_share_button">Share</string>
     <string name="folder_list_display_mode_all">All folders</string>
     <string name="font_size_smaller">Smaller</string>

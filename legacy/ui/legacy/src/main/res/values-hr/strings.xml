@@ -389,11 +389,6 @@
     <string name="folder_settings_folder_push_mode_normal">Bez razreda</string>
     <string name="folder_settings_folder_push_mode_first_class">1. Ratreda</string>
     <string name="folder_settings_folder_push_mode_second_class">2. Razreda</string>
-    <string name="folder_settings_folder_notify_mode_label">razred obavijesti mape</string>
-    <string name="folder_settings_folder_notify_mode_normal">Bez razreda</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1. Razreda</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2. Razreda</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Isto kao i razred guranja</string>
     <string name="folder_settings_clear_local_folder_action">Očistiti lokalne poruke</string>
     <string name="account_settings_incoming_label">Dolazni poslužitelj</string>
     <string name="account_settings_incoming_summary">Postavite dolazni poslužitelj e-pošte</string>

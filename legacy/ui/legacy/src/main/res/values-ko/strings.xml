@@ -373,10 +373,6 @@
     <string name="folder_settings_folder_push_mode_label">폴더의 푸시 클래스</string>
     <string name="folder_settings_folder_push_mode_first_class">제 1종</string>
     <string name="folder_settings_folder_push_mode_second_class">제 2종</string>
-    <string name="folder_settings_folder_notify_mode_label">폴더 알림 클래스</string>
-    <string name="folder_settings_folder_notify_mode_first_class">제 1종</string>
-    <string name="folder_settings_folder_notify_mode_second_class">제 2종</string>
-    <string name="folder_settings_folder_notify_mode_inherited">푸시 클래스와 같음</string>
     <string name="folder_settings_clear_local_folder_action">로컬 메시지 삭제</string>
     <string name="account_settings_incoming_label">수신 서버</string>
     <string name="account_settings_incoming_summary">메일 수신 서버 수정</string>
@@ -728,7 +724,7 @@
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
 <string name="size_format_bytes">%d B</string>
-    <string name="notification_channel_push_description">새 메시지 받는 중</string>
+    <string name="notification_channel_push_description">새 메시지 받는 동안 표시됨</string>
     <string name="notification_certificate_error_public">인증 요류</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
@@ -810,6 +806,4 @@
     <string name="about_title"><xliff:g id="app_name">%s</xliff:g> 정보</string>
     <string name="general_settings_post_remove_action_show_next_message">다음 메시지 보기</string>
     <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" 계정이 <xliff:g id="app_name">%s</xliff:g>에서 제거됩니다.</string>
-    <string name="default_signature">--
-\nAndroid 기기에서 <xliff:g id="app_name">%s</xliff:g>로 전송했습니다. 간결하게 작성했으니 양해 부탁드립니다.</string>
 </resources>

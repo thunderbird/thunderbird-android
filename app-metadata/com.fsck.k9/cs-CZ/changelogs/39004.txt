@@ -1,0 +1,2 @@
+- Fixed crash when split screen mode is enabled
+- Updated translations

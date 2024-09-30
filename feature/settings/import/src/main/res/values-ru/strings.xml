@@ -39,4 +39,6 @@
     <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 в настоящее время не поддерживается этим поставщиком.</string>
     <string name="settings_import_oauth_error_browser_not_found">Приложению не удалось найти браузер, чтобы дать доступ к вашей учётной записи.</string>
     <string name="settings_import_general_settings_item">Основные</string>
+    <string name="settings_import_pick_app_button">Импорт из приложения</string>
+    <string name="settings_import_pick_app_dialog_title">Импорт из приложения</string>
 </resources>

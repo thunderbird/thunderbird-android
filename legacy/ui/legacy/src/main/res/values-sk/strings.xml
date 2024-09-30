@@ -398,11 +398,6 @@
     <string name="folder_settings_folder_push_mode_normal">Žiadna trieda</string>
     <string name="folder_settings_folder_push_mode_first_class">1. trieda</string>
     <string name="folder_settings_folder_push_mode_second_class">2. trieda</string>
-    <string name="folder_settings_folder_notify_mode_label">Trieda oznámení priečinkov</string>
-    <string name="folder_settings_folder_notify_mode_normal">Žiadna trieda</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1. trieda</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2. trieda</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Rovnaká ako push trieda</string>
     <string name="folder_settings_clear_local_folder_action">Vymazať správy</string>
     <string name="account_settings_incoming_label">Server prichádzajúcej pošty</string>
     <string name="account_settings_incoming_summary">Nastaviť server prichádzajúcej pošty</string>

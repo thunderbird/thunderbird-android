@@ -318,9 +318,6 @@
     <string name="folder_settings_folder_push_mode_normal">Առանց Դասի</string>
     <string name="folder_settings_folder_push_mode_first_class">1ին Դաս</string>
     <string name="folder_settings_folder_push_mode_second_class">2րդ Դաս</string>
-    <string name="folder_settings_folder_notify_mode_normal">Առանց Դասի</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1ին Դաս</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2րդ Դաս</string>
     <string name="folder_settings_clear_local_folder_action">Մաքրել լոկալ հաղորդագրութիւնները</string>
     <string name="account_settings_outgoing_label">Դուրս տանող բանավար</string>
     <string name="account_settings_description_label">Հաշվի անունը</string>

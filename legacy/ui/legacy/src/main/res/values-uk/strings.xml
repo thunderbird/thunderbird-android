@@ -439,11 +439,6 @@
     <string name="folder_settings_folder_push_mode_first_class">1-ий клас</string>
     <string name="folder_settings_folder_push_mode_second_class">2-ий клас</string>
     <string name="folder_settings_folder_push_mode_inherited">Такий як і клас розкладу (poll)</string>
-    <string name="folder_settings_folder_notify_mode_label">Клас сповіщення теки</string>
-    <string name="folder_settings_folder_notify_mode_normal">Без класу</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1-й клас</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2-й клас</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Такий самий, як і клас надсилання</string>
     <string name="folder_settings_clear_local_folder_action">Видалити локальні повідомлення</string>
     <string name="account_settings_incoming_label">Сервер вхідної пошти</string>
     <string name="account_settings_incoming_summary">Налаштувати сервер вхідної пошти</string>

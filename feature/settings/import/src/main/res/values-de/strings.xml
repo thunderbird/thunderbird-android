@@ -37,4 +37,6 @@
     <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 wird von diesem Anbieter derzeit nicht unterstützt.</string>
     <string name="settings_import_oauth_error_browser_not_found">Die App konnte keinen Browser finden, der für den Zugriff auf dein Konto verwendet werden kann.</string>
     <string name="settings_import_general_settings_item">Allgemeine Einstellungen</string>
+    <string name="settings_import_pick_app_button">Aus App importieren</string>
+    <string name="settings_import_pick_app_dialog_title">Aus App importieren</string>
 </resources>

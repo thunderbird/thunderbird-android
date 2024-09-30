@@ -1,0 +1,8 @@
+- Materjalile 3 üleminekuks muudeti palju sisemisi elemente. Pange tähele, et Material 3 kasutajaliides on veel varases olekus.
+- Muutis sõnumivaates tööriistariba toimingute järjekorda, et see vastaks järjestusele mitmikvaliku režiimis
+- „Kuni sõnumite toomine” vaikeväärtuseks muudeti 128KiB
+- Parandatud viga, mille korral tööriistariba ikoone kuvati pärast pühkimistoimingu sooritamist vale värviga
+- Parandatud krahh e-posti aadresside lõikamisel kirja koostamisel adressaadiväljalt
+- Fikseeritud tööriistariba suurus, kui kasutate süsteemi vaikimisi erinevat fondi suurust
+- Lisatud tõlked korsika, korea ja vietnami keelde
+- Uuendatud tõlked

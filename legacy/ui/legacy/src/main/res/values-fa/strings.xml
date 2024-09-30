@@ -434,11 +434,6 @@
     <string name="folder_settings_folder_push_mode_first_class">سطح ۱</string>
     <string name="folder_settings_folder_push_mode_second_class">سطح ۲</string>
     <string name="folder_settings_folder_push_mode_inherited">همانند سطح سرکشی</string>
-    <string name="folder_settings_folder_notify_mode_label">سطح اعلان پوشه</string>
-    <string name="folder_settings_folder_notify_mode_normal">بدون سطح</string>
-    <string name="folder_settings_folder_notify_mode_first_class">سطح ۱</string>
-    <string name="folder_settings_folder_notify_mode_second_class">سطح ۲</string>
-    <string name="folder_settings_folder_notify_mode_inherited">همانند سطح پیشرانی (Push)</string>
     <string name="folder_settings_clear_local_folder_action">پاک‌کردن پیام‌ها از روی دستگاه</string>
     <string name="account_settings_incoming_label">کارساز ورودی</string>
     <string name="account_settings_incoming_summary">کارساز ورودی رایانامه را پیکربندی کنید</string>
@@ -927,8 +922,6 @@
     <string name="push_notification_state_alarm_permission_missing">اجازهٔ زمان‌بندی هشدارها وجود نداره</string>
     <string name="push_notification_grant_alarm_permission">زدن برای اعطای اجازه.</string>
     <string name="account_delete_dlg_instructions_fmt">حساب کاربری \"<xliff:g id="account">%s</xliff:g>\" از <xliff:g id="app_name">%s</xliff:g> حذف خواهد شد.</string>
-    <string name="default_signature">--
-\nاز دستگاه اندرویدی‌ام و به‌وسیلهٔ <xliff:g id="app_name">%s</xliff:g> ارسال شد. لطفا کوتاهی بنده را ببخشید.</string>
     <string name="about_title">درباره<xliff:g id="app_name">%s</xliff:g></string>
     <string name="dialog_openkeychain_info_text">برنامه کاربردی OpenKeychain جهت فعال‌سازی رمزگذاری سرتاسری مورد نیاز است.</string>
     <string name="push_info_notification_explanation_text">در زمان استفاده از پیشرانی، <xliff:g id="app_name">%1$s</xliff:g> اتصال به کارساز را نگاه می‌دارد. اندروید نیازمند یک اعلان همیشگی جهت فعال ماندن برنامه در پس‌زمینه است. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
