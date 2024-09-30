@@ -5,6 +5,14 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="8.0b1" versioncode="39005" date="2024-09-30">
+        <change>Updated subject encryption</change>
+        <change>Removed outdated folder settings</change>
+        <change>Improved maintainability</change>
+        <change>Added domain validation for email input</change>
+        <change>Fixed TalkBack and crypto dialog crashes</change>
+        <change>Updated Material 3 colors</change>
+    </release>
     <release version="6.904" versioncode="39004" date="2024-06-27">
         <change>Fixed crash when split screen mode is enabled</change>
         <change>Updated translations</change>

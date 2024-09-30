@@ -1,0 +1,6 @@
+- Updated subject encryption
+- Removed outdated folder settings
+- Improved maintainability
+- Added domain validation for email input
+- Fixed TalkBack and crypto dialog crashes
+- Updated Material 3 colors
