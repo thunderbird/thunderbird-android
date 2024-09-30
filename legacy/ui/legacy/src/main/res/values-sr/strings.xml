@@ -372,12 +372,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">фасцикле I и II класе</string>
     <string name="account_settings_folder_sync_mode_not_second_class">све осим фасцикли II класе</string>
     <string name="account_settings_folder_sync_mode_none">ништа</string>
-    <string name="account_settings_folder_push_mode_label">Фасцикле за гурање</string>
-    <string name="account_settings_folder_push_mode_all">све</string>
-    <string name="account_settings_folder_push_mode_first_class">само фасцикле I класе</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">фасцикле I и II класе</string>
-    <string name="account_settings_folder_push_mode_not_second_class">све осим фасцикли II класе</string>
-    <string name="account_settings_folder_push_mode_none">ништа</string>
     <string name="account_settings_sync_remote_deletetions_label">Синхронизуј серверска брисања</string>
     <string name="account_settings_sync_remote_deletetions_summary">Уклони поруке када су обрисане са сервера</string>
     <string name="account_settings_openpgp_missing">Нема ОпенПГП апликације. Да није деинсталирана? </string>
@@ -393,10 +387,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">I класа</string>
     <string name="folder_settings_folder_sync_mode_second_class">II класа</string>
     <string name="folder_settings_folder_sync_mode_inherited">иста као класа приказа</string>
-    <string name="folder_settings_folder_push_mode_label">Класа гурања фасцикле</string>
-    <string name="folder_settings_folder_push_mode_normal">без класе</string>
-    <string name="folder_settings_folder_push_mode_first_class">I класа</string>
-    <string name="folder_settings_folder_push_mode_second_class">II класа</string>
     <string name="folder_settings_clear_local_folder_action">Очисти локалне поруке</string>
     <string name="account_settings_incoming_label">Долазни сервер</string>
     <string name="account_settings_incoming_summary">Подешавања долазног сервера поште</string>
@@ -838,7 +828,6 @@
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Врати се на листу порука</string>
     <string name="general_settings_ui_density_compact">Компактно</string>
     <string name="account_settings_notification_channels_label">Категорије обавештења</string>
-    <string name="folder_settings_folder_push_mode_inherited">Исто као класа анкете</string>
     <string name="account_settings_vibrate_pattern_1">Шаблон 1</string>
     <string name="account_settings_vibrate_pattern_2">Шаблон 2</string>
     <string name="account_settings_notification_light_red">Црвена</string>

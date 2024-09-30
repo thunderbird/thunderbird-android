@@ -3,7 +3,7 @@
     <string name="account_server_certificate_warning_title">警告</string>
     <string name="account_server_certificate_unknown_error_subtitle">憑證錯誤</string>
     <string name="account_server_certificate_button_advanced">進階</string>
-    <string name="account_server_certificate_unknown_error_description_format">應用程式偵測到潛在的安全威脅，並未繼續連接到 &lt;xliffid=\"serverName\"&gt;%s&lt;/xliff&gt;。
+    <string name="account_server_certificate_unknown_error_description_format">應用程式偵測到潛在的安全威脅，並未繼續連接到 <xliff:g id="serverName">%s</xliff:g>。
 \n如果您繼續，攻擊者可能會試圖竊取您的密碼或電子郵件等資訊。</string>
     <string name="account_server_certificate_button_back">返回（推薦）</string>
     <string name="account_server_certificate_button_continue">接受風險並繼續</string>

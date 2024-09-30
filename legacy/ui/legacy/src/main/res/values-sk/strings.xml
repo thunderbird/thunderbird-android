@@ -373,12 +373,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">Priečinky 1. a 2. triedy</string>
     <string name="account_settings_folder_sync_mode_not_second_class">Všetky okrem priečinkov 2. triedy</string>
     <string name="account_settings_folder_sync_mode_none">Žiadne</string>
-    <string name="account_settings_folder_push_mode_label">Push priečinky</string>
-    <string name="account_settings_folder_push_mode_all">Všetky</string>
-    <string name="account_settings_folder_push_mode_first_class">Len priečinky 1. triedy</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">Priečinky 1. a 2. triedy</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Všetky okrem priečinkov 2. triedy</string>
-    <string name="account_settings_folder_push_mode_none">Žiadne</string>
     <string name="account_settings_sync_remote_deletetions_label">Synchronizácia mazaní na serveri</string>
     <string name="account_settings_sync_remote_deletetions_summary">Odstrániť správy, ktoré boli odstránené na serveri</string>
     <string name="account_settings_openpgp_missing">Aplikácia pre OpenPGP chýba - bola odinštalovaná?</string>
@@ -394,10 +388,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">1. trieda</string>
     <string name="folder_settings_folder_sync_mode_second_class">2. trieda</string>
     <string name="folder_settings_folder_sync_mode_inherited">Rovnaká ako trieda zobrazenia</string>
-    <string name="folder_settings_folder_push_mode_label">Trieda push priečinka</string>
-    <string name="folder_settings_folder_push_mode_normal">Žiadna trieda</string>
-    <string name="folder_settings_folder_push_mode_first_class">1. trieda</string>
-    <string name="folder_settings_folder_push_mode_second_class">2. trieda</string>
     <string name="folder_settings_clear_local_folder_action">Vymazať správy</string>
     <string name="account_settings_incoming_label">Server prichádzajúcej pošty</string>
     <string name="account_settings_incoming_summary">Nastaviť server prichádzajúcej pošty</string>

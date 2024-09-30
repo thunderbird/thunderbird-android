@@ -410,12 +410,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">1ª y 2ª clase</string>
     <string name="account_settings_folder_sync_mode_not_second_class">Todas excepto las de 2ª clase</string>
     <string name="account_settings_folder_sync_mode_none">Ninguna</string>
-    <string name="account_settings_folder_push_mode_label">Carpetas de comprobaciones «push»</string>
-    <string name="account_settings_folder_push_mode_all">Todas</string>
-    <string name="account_settings_folder_push_mode_first_class">Sólo 1ª clase</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">1ª y 2ª clase</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Todas excepto las de 2ª clase</string>
-    <string name="account_settings_folder_push_mode_none">Ninguna</string>
     <string name="account_settings_sync_remote_deletetions_label">Sincronizar con el borrado remoto</string>
     <string name="account_settings_sync_remote_deletetions_summary">Eliminar los correos cuando se borren del servidor</string>
     <string name="account_settings_openpgp_missing">Falta la aplicación OpenPGP, ¿se ha desinstalado?</string>
@@ -431,11 +425,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">1ª clase</string>
     <string name="folder_settings_folder_sync_mode_second_class">2ª clase</string>
     <string name="folder_settings_folder_sync_mode_inherited">La misma que la de visualización</string>
-    <string name="folder_settings_folder_push_mode_label">Tipos de carpeta con sincronización rápida («push»)</string>
-    <string name="folder_settings_folder_push_mode_normal">Sin clase</string>
-    <string name="folder_settings_folder_push_mode_first_class">1ª clase</string>
-    <string name="folder_settings_folder_push_mode_second_class">2ª clase</string>
-    <string name="folder_settings_folder_push_mode_inherited">La misma que con sincronización lenta («poll»)</string>
     <string name="folder_settings_clear_local_folder_action">Borrar correos locales</string>
     <string name="account_settings_incoming_label">Servidor de entrada</string>
     <string name="account_settings_incoming_summary">Configurar servidor de entrada</string>
