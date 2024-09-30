@@ -410,11 +410,6 @@
     <string name="folder_settings_folder_push_mode_first_class">Klaso 1</string>
     <string name="folder_settings_folder_push_mode_second_class">Klaso 2</string>
     <string name="folder_settings_folder_push_mode_inherited">Sama kiel samtempig-klaso</string>
-    <string name="folder_settings_folder_notify_mode_label">Sciig-klaso de mesaĝujo</string>
-    <string name="folder_settings_folder_notify_mode_normal">Neniu klaso</string>
-    <string name="folder_settings_folder_notify_mode_first_class">Klaso 1</string>
-    <string name="folder_settings_folder_notify_mode_second_class">Klaso 2</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Sama kiel puŝ-kontrol-klaso</string>
     <string name="folder_settings_clear_local_folder_action">Forviŝi lokajn mesaĝojn</string>
     <string name="account_settings_incoming_label">Enira servilo</string>
     <string name="account_settings_incoming_summary">Agordoj de enira retpoŝta servilo</string>

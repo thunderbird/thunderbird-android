@@ -1,2 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_error_client_certificate_expired">Клијентски сертификат више није важећи</string>
+    <string name="account_server_validation_error_details">Детаљи:
+\n%s</string>
+    <string name="account_server_validation_incoming_loading_message">Провера подешавања долазног сервера…</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">Клијентском сертификату није могуће приступити</string>
+    <string name="account_server_validation_outgoing_loading_message">Провера подешавања одлазног сервера…</string>
+    <string name="account_server_validation_outgoing_loading_error">Провера подешавања одлазног сервера није успела</string>
+    <string name="account_server_validation_error_authentication">Грешка при аутентификацији</string>
+    <string name="account_server_validation_incoming_loading_error">Провера подешавања долазног сервера није успела</string>
+    <string name="account_server_validation_incoming_success">Подешавања долазног сервера су потврђена</string>
+    <string name="account_server_validation_sign_in">Молимо вас да се пријавите</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Серверу недостаје ова могућност:
+\n%s</string>
+    <string name="account_server_validation_error_missing_server_capability">Недостаје могућност сервера</string>
+    <string name="account_server_validation_outgoing_success">Подешавања одлазног сервера су потврђена</string>
+    <string name="account_server_validation_error_network">Грешка у мрежи</string>
+    <string name="account_server_validation_error_server">Грешка на серверу</string>
+    <string name="account_server_validation_error_unknown">Непозната грешка</string>
+</resources>

@@ -434,11 +434,6 @@
     <string name="folder_settings_folder_push_mode_first_class">1. luokka</string>
     <string name="folder_settings_folder_push_mode_second_class">2. luokka</string>
     <string name="folder_settings_folder_push_mode_inherited">Sama kuin poll-luokka</string>
-    <string name="folder_settings_folder_notify_mode_label">Kansion ilmoitusluokka</string>
-    <string name="folder_settings_folder_notify_mode_normal">Ei luokkaa</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1. luokka</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2. luokka</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Sama kuin push-luokka</string>
     <string name="folder_settings_clear_local_folder_action">Poista paikalliset viestit</string>
     <string name="account_settings_incoming_label">Saapuvan postin palvelin</string>
     <string name="account_settings_incoming_summary">Määritä saapuvan postin palvelin</string>

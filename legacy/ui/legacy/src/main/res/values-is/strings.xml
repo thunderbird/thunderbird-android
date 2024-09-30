@@ -435,11 +435,6 @@
     <string name="folder_settings_folder_push_mode_first_class">1. flokkur</string>
     <string name="folder_settings_folder_push_mode_second_class">2. flokkur</string>
     <string name="folder_settings_folder_push_mode_inherited">Sama og flokkur möppuvöktunar</string>
-    <string name="folder_settings_folder_notify_mode_label">Tilkynningaflokkur möppu</string>
-    <string name="folder_settings_folder_notify_mode_normal">Enginn flokkur</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1. flokkur</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2. flokkur</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Sama og ýtingarflokkur</string>
     <string name="folder_settings_clear_local_folder_action">Hreinsa staðvær skilaboð</string>
     <string name="account_settings_incoming_label">Inn-póstþjónn</string>
     <string name="account_settings_incoming_summary">Stilla móttöku-póstþjón</string>
@@ -928,8 +923,6 @@ Til að setja Autocrypt upp á nýju tæki, farðu þá eftir leiðbeiningunum s
     <string name="push_notification_state_alarm_permission_missing">Vantar heimild til að setja áminningar á áætlun</string>
     <string name="push_notification_grant_alarm_permission">Ýttu til að veita heimild.</string>
     <string name="about_title">Um <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="default_signature">--
-\nSent úr Android-tækinu mínu með <xliff:g id="app_name">%s</xliff:g>. Afsakaðu hvað ég er stuttorður.</string>
     <string name="dialog_openkeychain_info_text">Forritið OpenKeychain er nauðsynlegt til að virkja stuðning við enda-í-enda dulritun.</string>
     <string name="account_delete_dlg_instructions_fmt">Reikningurinn \"<xliff:g id="account">%s</xliff:g>\" verður fjarlægður úr <xliff:g id="app_name">%s</xliff:g>.</string>
     <string name="push_info_notification_explanation_text">Þegar ýti-tilkynningar eru notaðar, viðheldur <xliff:g id="app_name">%1$s</xliff:g> tengingu við póstþjóninn. Android krefst þess að birta tilkynningu um það á meðan forritið er enn virkt í bakgrunni. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>

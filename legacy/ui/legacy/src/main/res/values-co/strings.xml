@@ -381,8 +381,6 @@
     <string name="folder_settings_folder_sync_mode_inherited">Cum’è a classa d’affissera</string>
     <string name="folder_settings_folder_push_mode_second_class">2a classa</string>
     <string name="folder_settings_folder_push_mode_inherited">Cum’è a classa di sullicitazione</string>
-    <string name="folder_settings_folder_notify_mode_label">Classa di nutificazione di u cartulare</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2a classa</string>
     <string name="folder_settings_clear_local_folder_action">Squassà i messaghji lucale</string>
     <string name="account_settings_outgoing_summary">Cunfigurà u servitore d’esciuta (SMTP) di i messaghji</string>
     <string name="account_settings_vibration">Vibrazione</string>
@@ -439,9 +437,6 @@
     <string name="folder_settings_folder_push_mode_normal">Nisuna classa</string>
     <string name="account_settings_vibrate_pattern_2">Mudellu 2</string>
     <string name="account_settings_vibrate_pattern_5">Mudellu 5</string>
-    <string name="folder_settings_folder_notify_mode_normal">Nisuna classa</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1a classa</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Cum’è a classa Catapughjà</string>
     <string name="folder_settings_folder_display_mode_first_class">1a classa</string>
     <string name="account_settings_incoming_label">Servitore d’entrata</string>
     <string name="account_settings_incoming_summary">Cunfigurà u servitore d’entrata di i messaghji</string>
@@ -865,8 +860,6 @@
     <string name="background_work_notification_remove_account">Cacciatura di u contu…</string>
     <string name="account_delete_dlg_instructions_fmt">U contu \"<xliff:g id="account">%s</xliff:g>\" serà cacciatu da <xliff:g id="app_name">%s</xliff:g>.</string>
     <string name="push_info_notification_explanation_text">Quandu s’impiegheghja a catapughjata, <xliff:g id="app_name">%1$s</xliff:g> mantene una cunnessione à u servitore di messaghjeria. Android richiede l’affissera d’una nutificazione quandu l’appiecazione hè attiva in tacca di sfondulu. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
-    <string name="default_signature">--
-\nMandatu da u mo apparechju Android cù <xliff:g id="app_name">%s</xliff:g>. Scusate a mo curtezza.</string>
     <string name="dialog_openkeychain_info_text">L’appiecazione OpenKeychain hè richiesta per permette l’adopru di a cifratura da un capu à l’altru.</string>
     <string name="about_title">Apprupositu di <xliff:g id="app_name">%s</xliff:g></string>
     <string name="about_app_authors_thunderbird">A squadra Thunderbird Mobile</string>

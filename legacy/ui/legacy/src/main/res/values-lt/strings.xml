@@ -430,11 +430,6 @@
     <string name="folder_settings_folder_push_mode_first_class">1 klasė</string>
     <string name="folder_settings_folder_push_mode_second_class">2 klasė</string>
     <string name="folder_settings_folder_push_mode_inherited">Ta pati kaip ir poll klasė</string>
-    <string name="folder_settings_folder_notify_mode_label">Aplanko pranešimų klasė</string>
-    <string name="folder_settings_folder_notify_mode_normal">Be klasės</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1 klasė</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2 klasė</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Ta pati kaip ir push klasė</string>
     <string name="folder_settings_clear_local_folder_action">Išvalyti vietinius laiškus</string>
     <string name="account_settings_incoming_label">Laiškų gavimo serveris</string>
     <string name="account_settings_incoming_summary">Konfigūruoti gaunamųjų laiškų serverį</string>

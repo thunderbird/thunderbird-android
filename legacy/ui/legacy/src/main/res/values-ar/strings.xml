@@ -444,11 +444,6 @@
     <string name="folder_settings_folder_push_mode_first_class">الفئة الأولى</string>
     <string name="folder_settings_folder_push_mode_second_class">الفئة الثانية</string>
     <string name="folder_settings_folder_push_mode_inherited">نفس فئة الاستطلاع </string>
-    <string name="folder_settings_folder_notify_mode_label">فئة تنبيهات المجلد</string>
-    <string name="folder_settings_folder_notify_mode_normal">دون تصنيف</string>
-    <string name="folder_settings_folder_notify_mode_first_class">الفئة الأولى</string>
-    <string name="folder_settings_folder_notify_mode_second_class">الفئة الثانية</string>
-    <string name="folder_settings_folder_notify_mode_inherited">نفس فئة الدفع </string>
     <string name="folder_settings_clear_local_folder_action">امحوا الرسائل المحلية</string>
     <string name="account_settings_incoming_label">خادم الوارد</string>
     <string name="account_settings_incoming_summary">إعداد خادم البريد الوارد</string>

@@ -37,4 +37,6 @@
     <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 une honetan ez dago hornitzaile honekin onartuta.</string>
     <string name="settings_import_oauth_error_browser_not_found">Aplikazioak ezin izan du zure konturako sarbidea erabiltzeko arakatzailerik aurkitu.</string>
     <string name="settings_import_general_settings_item">Ezarpen orokorrak</string>
+    <string name="settings_import_pick_app_button">Inportatu aplikaziotik</string>
+    <string name="settings_import_pick_app_dialog_title">Inportatu aplikaziotik</string>
 </resources>

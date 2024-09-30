@@ -594,7 +594,6 @@
     <string name="manage_identities_title">Quản lý danh tính</string>
     <string name="folder_settings_folder_sync_mode_first_class">Hạng 1</string>
     <string name="folder_settings_folder_push_mode_first_class">Hạng 1</string>
-    <string name="folder_settings_folder_notify_mode_label">Hạng thư mục thông báo</string>
     <string name="account_settings_vibrate_pattern_2">Kiểu mẫu 2</string>
     <string name="edit_identity_description_hint">(Không bắt buộc)</string>
     <string name="edit_identity_name_label">Tên của bạn</string>
@@ -698,9 +697,6 @@
     <string name="folder_settings_folder_push_mode_normal">Không hạng</string>
     <string name="folder_settings_folder_sync_mode_second_class">Hạng 2</string>
     <string name="folder_settings_folder_push_mode_second_class">Hạng 2</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Tương tự như hạng đẩy</string>
-    <string name="folder_settings_folder_notify_mode_first_class">Hạng 1</string>
-    <string name="folder_settings_folder_notify_mode_second_class">Hạng 2</string>
     <string name="account_settings_outgoing_label">Máy chủ thư đi</string>
     <string name="account_settings_vibrate_pattern_1">Kiểu mẫu 1</string>
     <string name="account_settings_vibrate_pattern_4">Kiểu mẫu 4</string>
@@ -797,7 +793,6 @@
     <string name="message_details_cc_section_title">Cc</string>
     <string name="message_details_bcc_section_title">Người nhận ẩn</string>
     <string name="general_settings_post_mark_as_unread_action_stay">Ở lại tin nhắn hiện tại</string>
-    <string name="folder_settings_folder_notify_mode_normal">Không hạng</string>
     <string name="account_settings_vibrate_pattern_3">Kiểu mẫu 3</string>
     <string name="folder_list_display_mode_first_and_second_class">Thư mục Hạng 1 &amp; 2</string>
     <string name="debug_preferences">Tìm lỗi</string>
@@ -924,7 +919,5 @@
     <string name="account_delete_dlg_instructions_fmt">Tài khoản \"<xliff:g id="account">%s</xliff:g>\" sẽ bị loại khỏi <xliff:g id="app_name">%s</xliff:g>.</string>
     <string name="dialog_openkeychain_info_text">Cần có ứng dụng OpenKeychain để hỗ trợ mã hóa đầu cuối.</string>
     <string name="push_info_notification_explanation_text">Khi sử dụng Push, <xliff:g id="app_name">%1$s</xliff:g> duy trì kết nối với máy chủ thư. Android yêu cầu hiển thị thông báo liên tục trong khi ứng dụng đang hoạt động ở chế độ nền. <xliff:g id="Optional_extends_explanation">%2$s</xliff:g></string>
-    <string name="default_signature">--
-\nĐược gửi từ thiết bị Android của tôi bằng <xliff:g id="app_name">%s</xliff:g>. Thứ lỗi cho sự ngắn gọn của tôi.</string>
     <string name="about_title">Giới thiệu về <xliff:g id="app_name">%s</xliff:g></string>
 </resources>

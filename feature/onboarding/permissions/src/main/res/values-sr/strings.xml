@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="onboarding_permissions_screen_title">Побољшајте искуство</string>
+    <string name="onboarding_permissions_contacts_title">Контакти</string>
+    <string name="onboarding_permissions_contacts_description">Дозволите приступ како бисте могли да добијете предлоге контаката и приказ имена и фотографија контаката.</string>
+    <string name="onboarding_permissions_notifications_title">Обавештења</string>
+    <string name="onboarding_permissions_notifications_description">Укључите обавештења како не бисте пропустили ниједан имејл.</string>
+    <string name="onboarding_permissions_allow_button">Дозволи</string>
+    <string name="onboarding_permissions_skip_button">Прескочи</string>
+</resources>

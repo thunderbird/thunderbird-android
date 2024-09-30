@@ -395,11 +395,6 @@
     <string name="folder_settings_folder_push_mode_normal">Tak ada kelas</string>
     <string name="folder_settings_folder_push_mode_first_class">Kelas 1</string>
     <string name="folder_settings_folder_push_mode_second_class">Kelas 2</string>
-    <string name="folder_settings_folder_notify_mode_label">Kelas notifikasi folder</string>
-    <string name="folder_settings_folder_notify_mode_normal">Tak ada kelas</string>
-    <string name="folder_settings_folder_notify_mode_first_class">Kelas 1</string>
-    <string name="folder_settings_folder_notify_mode_second_class">Kelas 2</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Sama seperti kelas dorong</string>
     <string name="folder_settings_clear_local_folder_action">Bersihkan pesan lokal</string>
     <string name="account_settings_incoming_label">Server masuk</string>
     <string name="account_settings_incoming_summary">Konfigurasikan server surat masuk</string>
@@ -925,6 +920,4 @@
     <string name="about_app_authors_thunderbird">Tim Thunderbird Mobile</string>
     <string name="about_title">Tentang <xliff:g id="app_name">%s</xliff:g></string>
     <string name="account_delete_dlg_instructions_fmt">Akun \"<xliff:g id="account">%s</xliff:g>\" akan dihapus dari <xliff:g id="app_name">%s</xliff:g>.</string>
-    <string name="default_signature">--
-\nDikirim dari perangkat Android saya dengan <xliff:g id="app_name">%s</xliff:g>. Mohon maaf atas singkatnya penjelasan saya.</string>
 </resources>

@@ -435,11 +435,6 @@
     <string name="folder_settings_folder_push_mode_first_class">1. klass</string>
     <string name="folder_settings_folder_push_mode_second_class">2. klass</string>
     <string name="folder_settings_folder_push_mode_inherited">Sana kui pollimise klass</string>
-    <string name="folder_settings_folder_notify_mode_label">Kausta teatiste klass</string>
-    <string name="folder_settings_folder_notify_mode_normal">Klassita</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1. klass</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2. klass</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Sama mis tõukekausta klass</string>
     <string name="folder_settings_clear_local_folder_action">Puhasta kohalikud kirjad</string>
     <string name="account_settings_incoming_label">Sissetuleva meili server</string>
     <string name="account_settings_incoming_summary">Konfigureeri sisse tuleva meili server</string>
@@ -931,7 +926,9 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="push_info_notification_explanation_text">Tõuketeenuste kasutamisel xliff:g id=\"app_name\"&gt;%1$s&lt;/xliff:g&gt; hoiab töös ühendust e-posti serveriga. Kui rakendus on taustal pidevalt aktiivne, siis Android eeldab, et selle kohta kuvatakse pidevat teavitust. Lisateave: &lt;xliff:g id=\"optional_extended_explanation\"&gt;%2$s&lt;/xliff:g&gt;</string>
     <string name="about_title">Teave <xliff:g id="app_name">%s</xliff:g>i kohta</string>
     <string name="dialog_openkeychain_info_text">Läbiva krüptimise kasutamiseks on vajalik OpenKeychaini rakendus.</string>
-    <string name="default_signature">-- 
-\nSaadetud minu Androidist <xliff:g id="app_name">%s</xliff:g>iga. Vabandust, et kirjutan nii napilt.</string>
     <string name="about_app_authors_thunderbird">Thunderbirdi mobiilirakenduse arendustiim</string>
+    <string name="folder_settings_notifications_label">Teavitused</string>
+    <string name="settings_ui_data_collection">Andmete kogumine</string>
+    <string name="settings_ui_telemetry_title">Üldine kasutus ja tehnilised andmed</string>
+    <string name="settings_ui_telemetry_description">Eesmärgiga muuta Thunderbirdi paremaks kogub rakenduse arendaja Mozilla andmeid jõudluse, kasutuse, raudvara ja tehtud kohenduste kohta</string>
 </resources>

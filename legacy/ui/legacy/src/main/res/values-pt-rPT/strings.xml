@@ -437,11 +437,6 @@
     <string name="folder_settings_folder_push_mode_first_class">1ª classe</string>
     <string name="folder_settings_folder_push_mode_second_class">2ª classe</string>
     <string name="folder_settings_folder_push_mode_inherited">Igual à classe de sondagem</string>
-    <string name="folder_settings_folder_notify_mode_label">Classe de notificação da pasta</string>
-    <string name="folder_settings_folder_notify_mode_normal">Sem Classe</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1ª classe</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2ª classe</string>
-    <string name="folder_settings_folder_notify_mode_inherited">A mesma que a classe de push</string>
     <string name="folder_settings_clear_local_folder_action">Apagar mensagens locais</string>
     <string name="account_settings_incoming_label">Servidor de entrada</string>
     <string name="account_settings_incoming_summary">Configure o servidor de email de entrada</string>
@@ -933,8 +928,6 @@ Pode manter esta mensagem e usá-la como uma cópia de segurança para a sua cha
     <string name="background_work_notification_remove_account">A remover conta…</string>
     <string name="about_app_authors_thunderbird">Equipa do Thunderbird Mobile</string>
     <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\"será removida de <xliff:g id="app_name">%s</xliff:g>.</string>
-    <string name="default_signature">-- 
-\nEnviado do meu Android com <xliff:g id="app_name">%s</xliff:g>. Por favor, desculpe a minha brevidade.</string>
     <string name="push_notification_state_alarm_permission_missing">Falta a permissão para agendar alarmes</string>
     <string name="push_notification_grant_alarm_permission">Toque para conceder a permissão.</string>
     <string name="about_title">Acerca de <xliff:g id="app_name">%s</xliff:g></string>

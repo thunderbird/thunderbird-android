@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="settings_import_title">Setări importare</string>
+    <string name="settings_import_title">Importare parametri</string>
     <string name="settings_import_pick_document_button">Selectează fișier</string>
     <string name="settings_import_button">Importă</string>
-    <string name="settings_import_success_generic">Setările au fost importate cu succes</string>
+    <string name="settings_import_success_generic">Parametrii au fost importați cu succes</string>
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
     <string name="settings_import_password_required">Introdu parolele</string>
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
     <string name="settings_import_authorization_required">Conectează-te</string>
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
     <string name="settings_import_authorization_and_password_required">Conectează-te și introdu parolele</string>
-    <string name="settings_import_failure">Importarea setărilor a eșuat</string>
+    <string name="settings_import_failure">Importarea parametrilor a eșuat</string>
     <string name="settings_import_read_failure">Citirea fișierului cu setări a eșuat</string>
-    <string name="settings_import_partial_failure">Importarea unor setări a eșuat</string>
+    <string name="settings_import_partial_failure">Importarea unor parametri a eșuat</string>
     <string name="settings_import_status_success">Importat cu succes</string>
-    <string name="settings_import_status_password_required">Parola necesară</string>
+    <string name="settings_import_status_password_required">Parola este necesară</string>
     <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import_status_log_in_required">Înregistrare necesară</string>
+    <string name="settings_import_status_log_in_required">Înregistrarea este necesară</string>
     <string name="settings_import_status_not_imported">Nu a fost importat</string>
-    <string name="settings_import_status_error">Eșuare la import</string>
+    <string name="settings_import_status_error">Eșec la import</string>
     <string name="settings_import_later_button">Mai târziu</string>
-    <string name="settings_importing">Se importă setările…</string>
+    <string name="settings_importing">Se importă parametrii…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">Pentru a putea folosi contul \"<xliff:g id="account">%s</xliff:g>\" trebuie să specifici parola de server.</item>
         <item quantity="few">Pentru a putea folosi contul \"<xliff:g id="account">%s</xliff:g>\" trebuie să specifici parolele de server.</item>
@@ -36,6 +36,8 @@
     <string name="settings_import_oauth_error_oauth_flow_canceled">Autorizație anulată</string>
     <string name="settings_import_oauth_error_oauth_flow_failed">Autorizarea a eșuat cu următoarea eroare: <xliff:g id="error">%s</xliff:g></string>
     <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 nu este acceptat în prezent cu acest furnizor.</string>
-    <string name="settings_import_oauth_error_browser_not_found">Aplicația nu a putut găsi un browser pe care să îl folosească pentru a acorda acces la cont.</string>
+    <string name="settings_import_oauth_error_browser_not_found">Aplicația nu a putut găsi un navigator web pe care să îl folosească pentru a acorda acces la cont.</string>
     <string name="settings_import_general_settings_item">Preferințe generale</string>
+    <string name="settings_import_pick_app_button">Import din aplicație</string>
+    <string name="settings_import_pick_app_dialog_title">Import din aplicație</string>
 </resources>

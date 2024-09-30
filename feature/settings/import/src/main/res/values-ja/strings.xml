@@ -36,4 +36,6 @@
     <string name="settings_import_oauth_error_oauth_not_supported">現在、このプロバイダーは OAuth 2.0 に対応していません。</string>
     <string name="settings_import_oauth_error_browser_not_found">アカウントへのアクセス権付与に必要なブラウザーアプリが見つかりませんでした。</string>
     <string name="settings_import_general_settings_item">一般設定</string>
+    <string name="settings_import_pick_app_button">アプリからインポート</string>
+    <string name="settings_import_pick_app_dialog_title">アプリからインポート</string>
 </resources>

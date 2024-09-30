@@ -316,9 +316,6 @@
     <string name="folder_settings_folder_push_mode_normal">კლასის გარეშე</string>
     <string name="folder_settings_folder_push_mode_first_class">1-ლი კლასი</string>
     <string name="folder_settings_folder_push_mode_second_class">მე-2 კლასი</string>
-    <string name="folder_settings_folder_notify_mode_normal">კლასის გარეშე</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1-ლი კლასი</string>
-    <string name="folder_settings_folder_notify_mode_second_class">მე-2 კლასი</string>
     <string name="account_settings_incoming_label">შემავალი სერვერი</string>
     <string name="account_settings_incoming_summary">შემავალი საფოსტო სერვერის გამართვა</string>
     <string name="account_settings_outgoing_label">გამავალი სერვერი</string>

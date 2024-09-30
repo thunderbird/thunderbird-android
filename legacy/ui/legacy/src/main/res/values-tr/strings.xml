@@ -423,11 +423,6 @@
     <string name="folder_settings_folder_push_mode_first_class">1. Sınıf</string>
     <string name="folder_settings_folder_push_mode_second_class">2. Sınıf</string>
     <string name="folder_settings_folder_push_mode_inherited">Bilgi çekme sınıfı ile aynı</string>
-    <string name="folder_settings_folder_notify_mode_label">Klasör bildirim sınıfı</string>
-    <string name="folder_settings_folder_notify_mode_normal">Sınıflama yok</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1. Sınıf</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2. Sınıf</string>
-    <string name="folder_settings_folder_notify_mode_inherited">İtme sınıfıyla aynı</string>
     <string name="folder_settings_clear_local_folder_action">Yerel iletileri temizle</string>
     <string name="account_settings_incoming_label">Gelen Sunucu</string>
     <string name="account_settings_incoming_summary">Gelen posta sunucusunu yapılandır</string>
@@ -924,11 +919,13 @@
     <string name="general_settings_post_mark_as_unread_action_return_to_list">İleti listesine dön</string>
     <string name="push_notification_state_alarm_permission_missing">Alarmları zamanlamak için izin eksik</string>
     <string name="push_notification_grant_alarm_permission">İzin vermek için dokunun.</string>
-    <string name="default_signature">--
-\nAndroid aygıtımdan <xliff:g id="app_name">%s</xliff:g> ile gönderildi. Lütfen kısa tuttuğum için kusura bakmayın.</string>
     <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" hesabı <xliff:g id="app_name">%s</xliff:g>\'den kaldırılacak.</string>
     <string name="about_title"><xliff:g id="app_name">%s</xliff:g> hakkında</string>
     <string name="push_info_notification_explanation_text">İtme kullanılırken, <xliff:g id="app_name">%1$s</xliff:g> e-posta sunucusuyla bağlantıyı sürdürür. Android, uygulama arka planda etkin durumdayken devam eden bir bildirim görüntülenmesini gerektirir. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="dialog_openkeychain_info_text">Uçtan uca şifreleme desteğini etkinleştirmek için OpenKeychain uygulaması gereklidir.</string>
     <string name="about_app_authors_thunderbird">Thunderbird Mobil Takımı</string>
+    <string name="folder_settings_notifications_label">Bildirimler</string>
+    <string name="settings_ui_telemetry_title">Kullanım verileri ve teknik veriler</string>
+    <string name="settings_ui_data_collection">Veri toplama</string>
+    <string name="settings_ui_telemetry_description">Thunderbird\'ü daha iyi hale getirmemize yardımcı olmak için bu uygulama hakkındaki performans, kullanım, donanım ve özelleştirme verilerini Mozilla ile paylaşır</string>
 </resources>

@@ -755,7 +755,6 @@
     <string name="account_settings_autodownload_message_size_64">64 ק\"ב</string>
     <string name="account_settings_autodownload_message_size_128">128 ק\"ב</string>
     <string name="account_settings_folder_sync_mode_label">תיקיות הזמנה לשידור (poll)</string>
-    <string name="folder_settings_folder_notify_mode_label">סוג מחלקת התראת תיקייה (Folder notification class)</string>
     <string name="folder_list_display_mode_first_and_second_class">תיקיות מחלקה ראשונה ושנייה</string>
     <string name="setting_theme_follow_system">השתמש בברירת מחדל המערכת</string>
     <string name="interaction_preferences">אינטראקציה</string>
@@ -838,9 +837,7 @@
     <string name="folder_settings_folder_sync_mode_label">סוג מחלקה של תיקיית הזמנה לשידור (Folder poll class)</string>
     <string name="folder_settings_folder_sync_mode_first_class">מחלקה ראשונה</string>
     <string name="folder_settings_folder_push_mode_inherited">כמו מחלקת הזמנה לשידור (poll class)</string>
-    <string name="folder_settings_folder_notify_mode_normal">ללא מחלקה</string>
     <string name="folder_settings_folder_push_mode_first_class">מחלקה ראשונה</string>
-    <string name="folder_settings_folder_notify_mode_inherited">כמו מחלקת דחיפת התיקייה</string>
     <string name="account_settings_vibrate_pattern_4">תבנית 4</string>
     <string name="sort_by_arrival">זמן הגעה</string>
     <string name="folder_list_display_mode_first_class">תיקיות מחלקה ראשונה</string>
@@ -874,8 +871,6 @@
     <string name="crypto_msg_title_encrypted_unsigned">מוצפן</string>
     <string name="folder_settings_folder_sync_mode_second_class">מחלקה שנייה</string>
     <string name="folder_settings_folder_push_mode_second_class">מחלקה שנייה</string>
-    <string name="folder_settings_folder_notify_mode_first_class">מחלקה ראשונה</string>
-    <string name="folder_settings_folder_notify_mode_second_class">מחלקה שנייה</string>
     <string name="account_settings_vibrate_pattern_label">תבנית רטט</string>
     <string name="account_settings_strip_signature_label">הסר חתימות בתשובה</string>
     <string name="account_settings_vibrate_pattern_5">תבנית 5</string>
@@ -945,6 +940,4 @@
     <string name="account_delete_dlg_instructions_fmt">החשבון \"<xliff:g id="account">%s</xliff:g>\" יוסר מ <xliff:g id="app_name">%s</xliff:g>.</string>
     <string name="push_info_notification_explanation_text">כאשר משתמשים בדחיפה, <xliff:g id="app_name">%1$s</xliff:g> שומר על קשר עם שרת הדואר. אנדרואיד צורך הצגת התראה מתמשכת בזמן שהאפליקציה פועלת ברקע. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="about_title">אודות <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="default_signature">--
-\nנשלח ממכשיר האנדרואיד שלי ע\"י <xliff:g id="app_name">%s</xliff:g>. אנא סילחו לקצרנות שלי.</string>
 </resources>

@@ -437,11 +437,6 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
     <string name="folder_settings_folder_push_mode_first_class">Nivel 1</string>
     <string name="folder_settings_folder_push_mode_second_class">Nivel 2</string>
     <string name="folder_settings_folder_push_mode_inherited">La fel ca clasa de sondaj</string>
-    <string name="folder_settings_folder_notify_mode_label">Nivel notificare dosar</string>
-    <string name="folder_settings_folder_notify_mode_normal">Nicio clasă</string>
-    <string name="folder_settings_folder_notify_mode_first_class">Nivel 1</string>
-    <string name="folder_settings_folder_notify_mode_second_class">Nivel 2</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Același cu nivelul Push</string>
     <string name="folder_settings_clear_local_folder_action">Curăță mesajele locale</string>
     <string name="account_settings_incoming_label">Server primire</string>
     <string name="account_settings_incoming_summary">Configurare server primire</string>
@@ -935,9 +930,11 @@ Poți păstra acest mesaj și să îl folosești drept copie de siguranță a ch
     <string name="push_notification_grant_alarm_permission">Atinge pentru a acorda permisiunea.</string>
     <string name="dialog_openkeychain_info_text">Aplicația OpenKeychain este necesară pentru a activa suportul pentru criptarea end-to-end.</string>
     <string name="push_info_notification_explanation_text">Când utilizezi Push, <xliff:g id="app_name">%1$s</xliff:g> menține o conexiune la serverul de e-mail. Android necesită afișarea unei notificări în curs de desfășurare în timp ce aplicația este activă în fundal. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
-    <string name="default_signature">--
-\nTrimis de pe dispozitivul meu Android cu <xliff:g id="app_name">%s</xliff:g>. Vă rog să-mi scuzați concizia.</string>
     <string name="account_delete_dlg_instructions_fmt">Contul „<xliff:g id="account">%s</xliff:g>” va fi eliminat din <xliff:g id="app_name">%s</xliff:g>.</string>
     <string name="about_title">Despre <xliff:g id="app_name">%s</xliff:g></string>
     <string name="about_app_authors_thunderbird">Echipa Thunderbird Mobile</string>
+    <string name="folder_settings_notifications_label">Notificări</string>
+    <string name="settings_ui_data_collection">Colectarea datelor</string>
+    <string name="settings_ui_telemetry_title">Date tehnice și de utilizare</string>
+    <string name="settings_ui_telemetry_description">Partajează cu Mozilla date de performanță, utilizare, hardware și personalizare despre această aplicație pentru a ne ajuta să îmbunătățim Thunderbird</string>
 </resources>
