@@ -4,6 +4,7 @@ import app.k9mail.core.common.mail.toUserEmailAddress
 import app.k9mail.core.common.net.toHostname
 import app.k9mail.core.common.net.toPort
 import app.k9mail.feature.migration.qrcode.domain.entity.AccountData
+import app.k9mail.feature.migration.qrcode.domain.entity.AccountData.ConnectionSecurity
 import assertk.assertThat
 import assertk.assertions.first
 import assertk.assertions.isEqualTo
@@ -47,6 +48,21 @@ class QrCodePayloadMapperTest {
         assertThat(result).isNotNull()
             .prop(AccountData::accounts).first()
             .prop(AccountData.Account::accountName).isEqualTo("user@domain.example")
+    }
+
+    @Test
+    fun `TryStartTls should be mapped to AlwaysStartTls`() {
+        val input = INPUT.updateIncomingServer { server ->
+            server.copy(connectionSecurity = 1)
+        }
+
+        val result = mapper.toAccountData(input)
+
+        assertThat(result).isNotNull()
+            .prop(AccountData::accounts).first()
+            .prop(AccountData.Account::incomingServer)
+            .prop(AccountData.IncomingServer::connectionSecurity)
+            .isEqualTo(ConnectionSecurity.AlwaysStartTls)
     }
 
     companion object {
@@ -99,7 +115,7 @@ class QrCodePayloadMapperTest {
                         protocol = AccountData.IncomingServerProtocol.Imap,
                         hostname = "imap.domain.example".toHostname(),
                         port = 993.toPort(),
-                        connectionSecurity = AccountData.ConnectionSecurity.Tls,
+                        connectionSecurity = ConnectionSecurity.Tls,
                         authenticationType = AccountData.AuthenticationType.PasswordCleartext,
                         username = "user@domain.example",
                         password = "password",
@@ -110,7 +126,7 @@ class QrCodePayloadMapperTest {
                                 protocol = AccountData.OutgoingServerProtocol.Smtp,
                                 hostname = "smtp.domain.example".toHostname(),
                                 port = 465.toPort(),
-                                connectionSecurity = AccountData.ConnectionSecurity.Tls,
+                                connectionSecurity = ConnectionSecurity.Tls,
                                 authenticationType = AccountData.AuthenticationType.PasswordCleartext,
                                 username = "user@domain.example",
                                 password = "password",

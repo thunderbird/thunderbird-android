@@ -4,7 +4,6 @@ import app.k9mail.core.common.mail.EmailAddressParserException
 import app.k9mail.core.common.mail.toUserEmailAddress
 import app.k9mail.core.common.net.toHostname
 import app.k9mail.core.common.net.toPort
-import app.k9mail.feature.migration.qrcode.domain.entity.AccountData
 import timber.log.Timber
 
 @Suppress("TooManyFunctions")
@@ -86,11 +85,11 @@ internal class QrCodePayloadValidator {
     }
 
     private fun validateIncomingServerProtocol(protocol: Int) {
-        AccountData.IncomingServerProtocol.fromInt(protocol)
+        protocol.toIncomingServerProtocol()
     }
 
     private fun validateOutgoingServerProtocol(protocol: Int) {
-        AccountData.OutgoingServerProtocol.fromInt(protocol)
+        protocol.toOutgoingServerProtocol()
     }
 
     private fun validateHostname(hostname: String) {
@@ -102,11 +101,11 @@ internal class QrCodePayloadValidator {
     }
 
     private fun validateConnectionSecurity(value: Int) {
-        AccountData.ConnectionSecurity.fromInt(value)
+        value.toConnectionSecurity()
     }
 
     private fun validateAuthenticationType(value: Int) {
-        AccountData.AuthenticationType.fromInt(value)
+        value.toAuthenticationType()
     }
 
     private fun validateUsername(username: String) {

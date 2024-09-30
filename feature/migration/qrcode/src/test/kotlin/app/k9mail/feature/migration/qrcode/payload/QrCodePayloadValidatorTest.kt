@@ -152,6 +152,28 @@ class QrCodePayloadValidatorTest {
     }
 
     @Test
+    fun `unsupported incoming server authentication type Gssapi`() {
+        val input = INPUT.updateIncomingServer { server ->
+            server.copy(authenticationType = 3)
+        }
+
+        val result = validator.isValid(input)
+
+        assertThat(result).isFalse()
+    }
+
+    @Test
+    fun `unsupported incoming server authentication type Ntlm`() {
+        val input = INPUT.updateIncomingServer { server ->
+            server.copy(authenticationType = 4)
+        }
+
+        val result = validator.isValid(input)
+
+        assertThat(result).isFalse()
+    }
+
+    @Test
     fun `invalid incoming server username`() {
         val input = INPUT.updateIncomingServer { server ->
             server.copy(username = "contains\nline break")
@@ -221,6 +243,28 @@ class QrCodePayloadValidatorTest {
     fun `invalid outgoing server authentication type`() {
         val input = INPUT.updateOutgoingServer { server ->
             server.copy(authenticationType = 100)
+        }
+
+        val result = validator.isValid(input)
+
+        assertThat(result).isFalse()
+    }
+
+    @Test
+    fun `unsupported outgoing server authentication type Gssapi`() {
+        val input = INPUT.updateOutgoingServer { server ->
+            server.copy(authenticationType = 3)
+        }
+
+        val result = validator.isValid(input)
+
+        assertThat(result).isFalse()
+    }
+
+    @Test
+    fun `unsupported outgoing server authentication type Ntlm`() {
+        val input = INPUT.updateOutgoingServer { server ->
+            server.copy(authenticationType = 4)
         }
 
         val result = validator.isValid(input)
