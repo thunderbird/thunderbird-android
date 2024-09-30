@@ -1,0 +1,8 @@
+First public beta of Thunderbird for Android 8.0, based on K-9 Mail. Changes include:
+- Updated subject encryption
+- Removed outdated folder settings
+- Improved maintainability
+- Added domain validation for email input
+- Fixed TalkBack and crypto dialog crashes
+- New Material 3 navigation &amp; updated colors
+- Migrate settings from K-9 or Thunderbird
