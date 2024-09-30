@@ -384,12 +384,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">Mesaĝujoj de klasoj 1 kaj 2</string>
     <string name="account_settings_folder_sync_mode_not_second_class">Ĉiuj escepte de klaso 2</string>
     <string name="account_settings_folder_sync_mode_none">Neniuj</string>
-    <string name="account_settings_folder_push_mode_label">Puŝ-kontroli mesaĝujojn</string>
-    <string name="account_settings_folder_push_mode_all">Ĉiuj</string>
-    <string name="account_settings_folder_push_mode_first_class">Nur mesaĝujoj de klaso 1</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">Mesaĝujoj de klasoj 1 kaj 2</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Ĉiuj escepte de klaso 2</string>
-    <string name="account_settings_folder_push_mode_none">Neniuj</string>
     <string name="account_settings_sync_remote_deletetions_label">Samtempigo de forigadoj kun servilo</string>
     <string name="account_settings_sync_remote_deletetions_summary">Forigi mesaĝojn kiam forigitaj el servilo</string>
     <string name="account_settings_openpgp_missing">Mankas OpenPGP-aplikaĵo - eble malinstalita?</string>
@@ -405,11 +399,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">Klaso 1</string>
     <string name="folder_settings_folder_sync_mode_second_class">Klaso 2</string>
     <string name="folder_settings_folder_sync_mode_inherited">Sama kiel montr-klaso</string>
-    <string name="folder_settings_folder_push_mode_label">Puŝ-kontrol-klaso de mesaĝujo</string>
-    <string name="folder_settings_folder_push_mode_normal">Neniu klaso</string>
-    <string name="folder_settings_folder_push_mode_first_class">Klaso 1</string>
-    <string name="folder_settings_folder_push_mode_second_class">Klaso 2</string>
-    <string name="folder_settings_folder_push_mode_inherited">Sama kiel samtempig-klaso</string>
     <string name="folder_settings_clear_local_folder_action">Forviŝi lokajn mesaĝojn</string>
     <string name="account_settings_incoming_label">Enira servilo</string>
     <string name="account_settings_incoming_summary">Agordoj de enira retpoŝta servilo</string>

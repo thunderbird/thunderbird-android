@@ -370,12 +370,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">Hanya folder Kelas 2</string>
     <string name="account_settings_folder_sync_mode_not_second_class">Semuanya kecuali folder Kelas 2</string>
     <string name="account_settings_folder_sync_mode_none">Tidak ada</string>
-    <string name="account_settings_folder_push_mode_label">Folder dorongan</string>
-    <string name="account_settings_folder_push_mode_all">Semua</string>
-    <string name="account_settings_folder_push_mode_first_class">Hanya folder Kelas 1</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">Hanya folder Kelas 2</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Semuanya kecuali folder Kelas 2</string>
-    <string name="account_settings_folder_push_mode_none">Tidak ada</string>
     <string name="account_settings_sync_remote_deletetions_label">Sinkronkan penghapusan server</string>
     <string name="account_settings_sync_remote_deletetions_summary">Hapus pesan saat dihapus di server</string>
     <string name="account_settings_openpgp_missing">Aplikasi OpenPGP tidak ada - apakah sudah dihapus?</string>
@@ -391,10 +385,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">Kelas 1</string>
     <string name="folder_settings_folder_sync_mode_second_class">Kelas 2</string>
     <string name="folder_settings_folder_sync_mode_inherited">Sama dengan kelas tampilan</string>
-    <string name="folder_settings_folder_push_mode_label">Kelas dorong folder</string>
-    <string name="folder_settings_folder_push_mode_normal">Tak ada kelas</string>
-    <string name="folder_settings_folder_push_mode_first_class">Kelas 1</string>
-    <string name="folder_settings_folder_push_mode_second_class">Kelas 2</string>
     <string name="folder_settings_clear_local_folder_action">Bersihkan pesan lokal</string>
     <string name="account_settings_incoming_label">Server masuk</string>
     <string name="account_settings_incoming_summary">Konfigurasikan server surat masuk</string>
@@ -855,7 +845,6 @@
     <string name="account_settings_notification_channels_label">Kategori notifikasi</string>
     <string name="account_settings_open_notification_settings_messages_summary">Atur notifikasi untuk pesan baru</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Atur pemberitahuan kesalahan dan status</string>
-    <string name="folder_settings_folder_push_mode_inherited">Sama seperti kelas polling</string>
     <string name="account_settings_vibration">Getaran</string>
     <string name="account_settings_vibrate_pattern_1">Pola 1</string>
     <string name="account_settings_vibrate_pattern_2">Pola 2</string>

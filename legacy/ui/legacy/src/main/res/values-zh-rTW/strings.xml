@@ -406,12 +406,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">第一類與第二類信件匣</string>
     <string name="account_settings_folder_sync_mode_not_second_class">不包括下層信件匣</string>
     <string name="account_settings_folder_sync_mode_none">無</string>
-    <string name="account_settings_folder_push_mode_label">推送信件匣</string>
-    <string name="account_settings_folder_push_mode_all">全部</string>
-    <string name="account_settings_folder_push_mode_first_class">僅第一類信件匣</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">第一類與第二類信件匣</string>
-    <string name="account_settings_folder_push_mode_not_second_class">不包括下層信件匣</string>
-    <string name="account_settings_folder_push_mode_none">無</string>
     <string name="account_settings_sync_remote_deletetions_label">同步伺服器上的刪除</string>
     <string name="account_settings_sync_remote_deletetions_summary">刪除在伺服器上被刪除的郵件的本地複製</string>
     <string name="account_settings_openpgp_missing">未發現 OpenPGP 應用程式 - 它已被解除安裝了嗎？</string>
@@ -427,11 +421,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">第一類</string>
     <string name="folder_settings_folder_sync_mode_second_class">下層</string>
     <string name="folder_settings_folder_sync_mode_inherited">使用與顯示層別相同的層別</string>
-    <string name="folder_settings_folder_push_mode_label">信件匣推送層別</string>
-    <string name="folder_settings_folder_push_mode_normal">不分類</string>
-    <string name="folder_settings_folder_push_mode_first_class">第一類</string>
-    <string name="folder_settings_folder_push_mode_second_class">下層</string>
-    <string name="folder_settings_folder_push_mode_inherited">與分類層別相同</string>
     <string name="folder_settings_clear_local_folder_action">清除本地郵件</string>
     <string name="account_settings_incoming_label">內送伺服器</string>
     <string name="account_settings_incoming_summary">設定內送伺服器</string>

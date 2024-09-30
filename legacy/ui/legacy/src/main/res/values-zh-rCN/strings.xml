@@ -408,12 +408,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">1 级与 2 级文件夹</string>
     <string name="account_settings_folder_sync_mode_not_second_class">除 2 级文件夹外的所有文件夹</string>
     <string name="account_settings_folder_sync_mode_none">无</string>
-    <string name="account_settings_folder_push_mode_label">推送文件夹</string>
-    <string name="account_settings_folder_push_mode_all">全部</string>
-    <string name="account_settings_folder_push_mode_first_class">仅 1 级文件夹</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">1 级与 2 级文件夹</string>
-    <string name="account_settings_folder_push_mode_not_second_class">除 2 级文件夹外的所有文件夹</string>
-    <string name="account_settings_folder_push_mode_none">无</string>
     <string name="account_settings_sync_remote_deletetions_label">同步服务器的删除</string>
     <string name="account_settings_sync_remote_deletetions_summary">在服务器上删除邮件时移除邮件</string>
     <string name="account_settings_openpgp_missing">缺少 OpenPGP 应用 - 是否已卸载？</string>
@@ -429,11 +423,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">1 级</string>
     <string name="folder_settings_folder_sync_mode_second_class">2 级</string>
     <string name="folder_settings_folder_sync_mode_inherited">与显示级别相同</string>
-    <string name="folder_settings_folder_push_mode_label">文件夹推送级别</string>
-    <string name="folder_settings_folder_push_mode_normal">无级别</string>
-    <string name="folder_settings_folder_push_mode_first_class">1 级</string>
-    <string name="folder_settings_folder_push_mode_second_class">2 级</string>
-    <string name="folder_settings_folder_push_mode_inherited">与轮询级别相同</string>
     <string name="folder_settings_clear_local_folder_action">清空本地邮件</string>
     <string name="account_settings_incoming_label">收件服务器</string>
     <string name="account_settings_incoming_summary">配置收件服务器</string>

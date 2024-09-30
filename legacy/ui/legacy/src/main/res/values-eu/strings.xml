@@ -408,12 +408,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">1. eta 2. klaseko karpetak</string>
     <string name="account_settings_folder_sync_mode_not_second_class">Guztiak 2. klaseko karpetak izan ezik</string>
     <string name="account_settings_folder_sync_mode_none">Bat ere ez</string>
-    <string name="account_settings_folder_push_mode_label">Karpeten \"Push\"a</string>
-    <string name="account_settings_folder_push_mode_all">Guztiak</string>
-    <string name="account_settings_folder_push_mode_first_class">1. klaseko karpetak bakarrik</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">1. eta 2. klaseko karpetak</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Guztiak 2. klaseko karpetak izan ezik</string>
-    <string name="account_settings_folder_push_mode_none">Bat ere ez</string>
     <string name="account_settings_sync_remote_deletetions_label">sinkronizatu zerbitzariko ezabatzeak</string>
     <string name="account_settings_sync_remote_deletetions_summary">Kendu mezuak zerbitzarian ezabatzean</string>
     <string name="account_settings_openpgp_missing">OpenPGP aplikazioa falta da, desinstalatu da?</string>
@@ -429,11 +423,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">1. klasea</string>
     <string name="folder_settings_folder_sync_mode_second_class">2. klasea</string>
     <string name="folder_settings_folder_sync_mode_inherited">Bistaratzeko klasearen berdina</string>
-    <string name="folder_settings_folder_push_mode_label">\"Push\" duten karpeta klaseak</string>
-    <string name="folder_settings_folder_push_mode_normal">Klaserik ez</string>
-    <string name="folder_settings_folder_push_mode_first_class">1. klasea</string>
-    <string name="folder_settings_folder_push_mode_second_class">2. klasea</string>
-    <string name="folder_settings_folder_push_mode_inherited">Inkesta moduaren araberakoak</string>
     <string name="folder_settings_clear_local_folder_action">Garbitu mezu lokalak</string>
     <string name="account_settings_incoming_label">Sarrerako zerbitzaria</string>
     <string name="account_settings_incoming_summary">Konfiguratu sarrerako posta zerbitzaria</string>

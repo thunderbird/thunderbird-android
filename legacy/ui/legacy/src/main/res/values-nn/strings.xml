@@ -224,8 +224,6 @@
     <string name="account_settings_folder_display_mode_all">Alle</string>
     <string name="account_settings_folder_sync_mode_all">Alle</string>
     <string name="account_settings_folder_sync_mode_none">Ingen</string>
-    <string name="account_settings_folder_push_mode_all">Alle</string>
-    <string name="account_settings_folder_push_mode_none">Ingen</string>
     <string name="folder_settings_title">Mappeinnstillingar</string>
     <string name="folder_settings_folder_sync_mode_normal">Ingen</string>
     <string name="folder_settings_clear_local_folder_action">Fjern lokale meldingar</string>

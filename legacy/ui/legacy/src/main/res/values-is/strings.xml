@@ -409,12 +409,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">1. og 2. flokks möppur</string>
     <string name="account_settings_folder_sync_mode_not_second_class">Allt nema 2. flokks möppur</string>
     <string name="account_settings_folder_sync_mode_none">Engin</string>
-    <string name="account_settings_folder_push_mode_label">Ýta möppum</string>
-    <string name="account_settings_folder_push_mode_all">Allar</string>
-    <string name="account_settings_folder_push_mode_first_class">Einungis 1. flokks möppur</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">1. og 2. flokks möppur</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Allt nema 2. flokks möppur</string>
-    <string name="account_settings_folder_push_mode_none">Engin</string>
     <string name="account_settings_sync_remote_deletetions_label">Eyðing á samstilltum póstþjóni</string>
     <string name="account_settings_sync_remote_deletetions_summary">Fjarlægja skilaboð þegar þeim er eytt á póstþjóni</string>
     <string name="account_settings_openpgp_missing">OpenPGP-forrit vantar - var það fjarlægt?</string>
@@ -430,11 +424,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">1. flokkur</string>
     <string name="folder_settings_folder_sync_mode_second_class">2. flokkur</string>
     <string name="folder_settings_folder_sync_mode_inherited">Sama og birtingarflokkur</string>
-    <string name="folder_settings_folder_push_mode_label">Ýtingarflokkur möppu</string>
-    <string name="folder_settings_folder_push_mode_normal">Enginn flokkur</string>
-    <string name="folder_settings_folder_push_mode_first_class">1. flokkur</string>
-    <string name="folder_settings_folder_push_mode_second_class">2. flokkur</string>
-    <string name="folder_settings_folder_push_mode_inherited">Sama og flokkur möppuvöktunar</string>
     <string name="folder_settings_clear_local_folder_action">Hreinsa staðvær skilaboð</string>
     <string name="account_settings_incoming_label">Inn-póstþjónn</string>
     <string name="account_settings_incoming_summary">Stilla móttöku-póstþjón</string>

@@ -37,7 +37,7 @@
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">من به این پیکربندی اعتماد دارم</string>
     <string name="account_setup_options_display_name_error_required">نام نمایشی شما اجباری است.</string>
     <string name="account_setup_create_account_error">در هنگام تلاش برای ایجاد حساب خطا رخ داده است</string>
-    <string name="account_setup_error_network">شبکه</string>
+    <string name="account_setup_error_network">خطای شبکه. لطفا وضعیت اتصال را بررسی کنید و دوباره تلاش کنید.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">این نشانی رایانامه معتبر شناخته نشد.</string>
     <string name="account_setup_special_folders_spam_folder_label">پوشه هرزنامه</string>
     <string name="account_setup_options_email_check_frequency_never">هرگز</string>

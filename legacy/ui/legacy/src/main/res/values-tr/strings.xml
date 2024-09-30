@@ -397,12 +397,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">1. ve 2. Sınıf klasörler</string>
     <string name="account_settings_folder_sync_mode_not_second_class">2. Sınıf klasörler dışında tümü</string>
     <string name="account_settings_folder_sync_mode_none">Hiçbiri</string>
-    <string name="account_settings_folder_push_mode_label">Gönderme klasörleri</string>
-    <string name="account_settings_folder_push_mode_all">Tümü</string>
-    <string name="account_settings_folder_push_mode_first_class">Yalnızca 1. Sınıf klasörler</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">1. ve 2. Sınıf klasörler</string>
-    <string name="account_settings_folder_push_mode_not_second_class">2. Sınıf klasörler dışında tümü</string>
-    <string name="account_settings_folder_push_mode_none">Hiçbiri</string>
     <string name="account_settings_sync_remote_deletetions_label">Eşzamanlama sunucusu silme işlemleri</string>
     <string name="account_settings_sync_remote_deletetions_summary">Sunucudan silinen iletileri kaldır</string>
     <string name="account_settings_openpgp_missing">OpenPGP uygulaması eksik - kaldırıldı mı?</string>
@@ -418,11 +412,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">1. Sınıf</string>
     <string name="folder_settings_folder_sync_mode_second_class">2. Sınıf</string>
     <string name="folder_settings_folder_sync_mode_inherited">Aynı görünüleme sınıfı</string>
-    <string name="folder_settings_folder_push_mode_label">Klasör itme sınıfı</string>
-    <string name="folder_settings_folder_push_mode_normal">Sınıflama yok</string>
-    <string name="folder_settings_folder_push_mode_first_class">1. Sınıf</string>
-    <string name="folder_settings_folder_push_mode_second_class">2. Sınıf</string>
-    <string name="folder_settings_folder_push_mode_inherited">Bilgi çekme sınıfı ile aynı</string>
     <string name="folder_settings_clear_local_folder_action">Yerel iletileri temizle</string>
     <string name="account_settings_incoming_label">Gelen Sunucu</string>
     <string name="account_settings_incoming_summary">Gelen posta sunucusunu yapılandır</string>

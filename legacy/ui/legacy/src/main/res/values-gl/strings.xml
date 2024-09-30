@@ -388,12 +388,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">1a e 2a Clase</string>
     <string name="account_settings_folder_sync_mode_not_second_class">Todas agás 1a e 2a clase</string>
     <string name="account_settings_folder_sync_mode_none">ningunha</string>
-    <string name="account_settings_folder_push_mode_label">Subscripción de carpetas</string>
-    <string name="account_settings_folder_push_mode_all">Todas</string>
-    <string name="account_settings_folder_push_mode_first_class">Sólo 1a clase</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">1a e 2a Clase</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Todas agás 1a e 2a clase</string>
-    <string name="account_settings_folder_push_mode_none">ningunha</string>
     <string name="account_settings_sync_remote_deletetions_label">Sincronizar eliminacións</string>
     <string name="account_settings_sync_remote_deletetions_summary">Eliminar as mensaxes cando se borren d servidor</string>
     <string name="account_settings_openpgp_missing">Falta o aplicativo OpenPGP - foi desinstalado?</string>
@@ -409,11 +403,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">1a Clase</string>
     <string name="folder_settings_folder_sync_mode_second_class">2a Clase</string>
     <string name="folder_settings_folder_sync_mode_inherited">Aa mesma que a de visualización</string>
-    <string name="folder_settings_folder_push_mode_label">Clase en subscripción</string>
-    <string name="folder_settings_folder_push_mode_normal">Sen Clase</string>
-    <string name="folder_settings_folder_push_mode_first_class">1a Clase</string>
-    <string name="folder_settings_folder_push_mode_second_class">2a Clase</string>
-    <string name="folder_settings_folder_push_mode_inherited">Igual que a clase de enquisa</string>
     <string name="folder_settings_clear_local_folder_action">Borrar mensaxes locais</string>
     <string name="account_settings_incoming_label">Servidor de entrada</string>
     <string name="account_settings_incoming_summary">Configurar servidor de entrada</string>

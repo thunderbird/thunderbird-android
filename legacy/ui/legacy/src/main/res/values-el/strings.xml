@@ -409,12 +409,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">Φάκελοι 1ου και 2ου επιπέδου</string>
     <string name="account_settings_folder_sync_mode_not_second_class">Όλοι εκτός από του 2ου επιπέδου</string>
     <string name="account_settings_folder_sync_mode_none">Κανένας</string>
-    <string name="account_settings_folder_push_mode_label">Φάκελοι που σπρώχνονται</string>
-    <string name="account_settings_folder_push_mode_all">Όλοι</string>
-    <string name="account_settings_folder_push_mode_first_class">Μόνο φάκελοι 1ου επιπέδου</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">Φάκελοι 1ου και 2ου επιπέδου</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Όλοι εκτός από του 2ου επιπέδου</string>
-    <string name="account_settings_folder_push_mode_none">Κανένας</string>
     <string name="account_settings_sync_remote_deletetions_label">Συγχρονισμός διαγραφών εξυπηρετητή</string>
     <string name="account_settings_sync_remote_deletetions_summary">Αφαίρεση των μηνυμάτων που διαγράφονται στον εξυπηρετητή.</string>
     <string name="account_settings_openpgp_missing">Λείπει η εφαρμογή OpenPGP - απεγκαταστήθηκε;</string>
@@ -430,11 +424,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">Πρώτο επίπεδο</string>
     <string name="folder_settings_folder_sync_mode_second_class">Δεύτερο επίπεδο</string>
     <string name="folder_settings_folder_sync_mode_inherited">Όπως το επίπεδο προβολής</string>
-    <string name="folder_settings_folder_push_mode_label">Επίπεδο σπρωξίματος φακέλου</string>
-    <string name="folder_settings_folder_push_mode_normal">Χωρίς Επίπεδο</string>
-    <string name="folder_settings_folder_push_mode_first_class">Πρώτο επίπεδο</string>
-    <string name="folder_settings_folder_push_mode_second_class">Δεύτερο επίπεδο</string>
-    <string name="folder_settings_folder_push_mode_inherited">Όπως το επίπεδο ενημέρωσης</string>
     <string name="folder_settings_clear_local_folder_action">Καθαρισμός τοπικών μηνυμάτων</string>
     <string name="account_settings_incoming_label">Ρυθμίσεις εισερχομένων</string>
     <string name="account_settings_incoming_summary">Ρύθμιση εξυπηρετητή εισερχόμενης αλληλογραφίας</string>

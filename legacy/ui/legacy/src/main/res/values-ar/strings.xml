@@ -418,12 +418,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">المجلدات من الفئة الأولى و الثانية</string>
     <string name="account_settings_folder_sync_mode_not_second_class">الكل عدا مجلدات الفئة الثانية</string>
     <string name="account_settings_folder_sync_mode_none">بدون</string>
-    <string name="account_settings_folder_push_mode_label">دفع المجلدات </string>
-    <string name="account_settings_folder_push_mode_all">الكل</string>
-    <string name="account_settings_folder_push_mode_first_class">المجلدات من الفئة الأولى فقط</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">المجلدات من الفئة الأولى و الثانية</string>
-    <string name="account_settings_folder_push_mode_not_second_class">الكل عدا مجلدات الفئة الثانية</string>
-    <string name="account_settings_folder_push_mode_none">بدون</string>
     <string name="account_settings_sync_remote_deletetions_label">مزامنة عمليات حذف الخادم </string>
     <string name="account_settings_sync_remote_deletetions_summary">احذف الرسائل عند حذفها على الخادم</string>
     <string name="account_settings_openpgp_missing">تطبيق OpenPGP مفقود - هل تم إلغاء تثبيته؟ </string>
@@ -439,11 +433,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">الفئة الأولى</string>
     <string name="folder_settings_folder_sync_mode_second_class">الفئة الثانية</string>
     <string name="folder_settings_folder_sync_mode_inherited">نفس فئة العرض </string>
-    <string name="folder_settings_folder_push_mode_label">فئة دفع المجلد </string>
-    <string name="folder_settings_folder_push_mode_normal">دون تصنيف</string>
-    <string name="folder_settings_folder_push_mode_first_class">الفئة الأولى</string>
-    <string name="folder_settings_folder_push_mode_second_class">الفئة الثانية</string>
-    <string name="folder_settings_folder_push_mode_inherited">نفس فئة الاستطلاع </string>
     <string name="folder_settings_clear_local_folder_action">امحوا الرسائل المحلية</string>
     <string name="account_settings_incoming_label">خادم الوارد</string>
     <string name="account_settings_incoming_summary">إعداد خادم البريد الوارد</string>

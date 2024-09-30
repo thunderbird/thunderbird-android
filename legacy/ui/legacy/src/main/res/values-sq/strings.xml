@@ -409,12 +409,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">Dosje të Klasës I dhe II</string>
     <string name="account_settings_folder_sync_mode_not_second_class">Krejt, hiq dosje të Klasës II</string>
     <string name="account_settings_folder_sync_mode_none">Asnjë</string>
-    <string name="account_settings_folder_push_mode_label">Dosje push</string>
-    <string name="account_settings_folder_push_mode_all">Krejt</string>
-    <string name="account_settings_folder_push_mode_first_class">Vetëm dosje të Klasës I</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">Dosje të Klasës I dhe II</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Krejt, hiq dosje të Klasës II</string>
-    <string name="account_settings_folder_push_mode_none">Asnjë</string>
     <string name="account_settings_sync_remote_deletetions_label">Njëkohëso fshirje në shërbyes</string>
     <string name="account_settings_sync_remote_deletetions_summary">Hiqi mesazhet kur janë fshirë në shërbyes</string>
     <string name="account_settings_openpgp_missing">Mungon aplikacioni OpenPGP - mos është çinstaluar?</string>
@@ -430,11 +424,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">Klasa I</string>
     <string name="folder_settings_folder_sync_mode_second_class">Klasa II</string>
     <string name="folder_settings_folder_sync_mode_inherited">Njësoj si klasa e shfaqjes</string>
-    <string name="folder_settings_folder_push_mode_label">Klasë dosjeje push</string>
-    <string name="folder_settings_folder_push_mode_normal">Pa Klasë</string>
-    <string name="folder_settings_folder_push_mode_first_class">Klasa I</string>
-    <string name="folder_settings_folder_push_mode_second_class">Klasa II</string>
-    <string name="folder_settings_folder_push_mode_inherited">Njësoj si klasa për “poll”</string>
     <string name="folder_settings_clear_local_folder_action">Pastro mesazhet vendore</string>
     <string name="account_settings_incoming_label">Shërbyes për marrje</string>
     <string name="account_settings_incoming_summary">Formësoni shërbyesin për marrje</string>

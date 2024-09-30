@@ -414,12 +414,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">Папки 1-го и 2-го классов</string>
     <string name="account_settings_folder_sync_mode_not_second_class">Все, кроме папок 2-го класса</string>
     <string name="account_settings_folder_sync_mode_none">Нет</string>
-    <string name="account_settings_folder_push_mode_label">Push</string>
-    <string name="account_settings_folder_push_mode_all">Все</string>
-    <string name="account_settings_folder_push_mode_first_class">Папки только 1-го класса</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">Папки 1-го и 2-го классов</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Все, кроме папок 2-го класса</string>
-    <string name="account_settings_folder_push_mode_none">Нет</string>
     <string name="account_settings_sync_remote_deletetions_label">Синхронное удаление</string>
     <string name="account_settings_sync_remote_deletetions_summary">Удалять сообщения при удалении на сервере</string>
     <string name="account_settings_openpgp_missing">Отсутствует OpenPGP-приложение – было удалено?</string>
@@ -435,11 +429,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">1-й класс</string>
     <string name="folder_settings_folder_sync_mode_second_class">2-й класс</string>
     <string name="folder_settings_folder_sync_mode_inherited">Как видимости</string>
-    <string name="folder_settings_folder_push_mode_label">Push</string>
-    <string name="folder_settings_folder_push_mode_normal">Нет класса</string>
-    <string name="folder_settings_folder_push_mode_first_class">1-й класс</string>
-    <string name="folder_settings_folder_push_mode_second_class">2-й класс</string>
-    <string name="folder_settings_folder_push_mode_inherited">То же, что и класс опроса</string>
     <string name="folder_settings_clear_local_folder_action">Стереть локальные</string>
     <string name="account_settings_incoming_label">Сервер входящих</string>
     <string name="account_settings_incoming_summary">Настройки сервера входящей почты</string>
