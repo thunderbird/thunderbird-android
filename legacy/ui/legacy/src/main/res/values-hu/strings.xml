@@ -408,12 +408,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">1. és 2. osztályú mappák</string>
     <string name="account_settings_folder_sync_mode_not_second_class">Összes, kivéve a 2. osztályú mappákat</string>
     <string name="account_settings_folder_sync_mode_none">Nincs</string>
-    <string name="account_settings_folder_push_mode_label">Mappák küldése</string>
-    <string name="account_settings_folder_push_mode_all">Összes</string>
-    <string name="account_settings_folder_push_mode_first_class">Csak 1. osztályú mappák</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">1. és 2. osztályú mappák</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Összes, kivéve a 2. osztályú mappákat</string>
-    <string name="account_settings_folder_push_mode_none">Nincs</string>
     <string name="account_settings_sync_remote_deletetions_label">Kiszolgáló törléseinek szinkronizálása</string>
     <string name="account_settings_sync_remote_deletetions_summary">Üzenetek eltávolítása a kiszolgálóról törléskor</string>
     <string name="account_settings_openpgp_missing">Hiányzó OpenPGP alkalmazás – talán eltávolításra került\?</string>
@@ -429,16 +423,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">1. osztály</string>
     <string name="folder_settings_folder_sync_mode_second_class">2. osztály</string>
     <string name="folder_settings_folder_sync_mode_inherited">Ugyanaz, mint a megjelenítési osztály</string>
-    <string name="folder_settings_folder_push_mode_label">Mappa küldésének osztálya</string>
-    <string name="folder_settings_folder_push_mode_normal">Nincs osztály</string>
-    <string name="folder_settings_folder_push_mode_first_class">1. osztály</string>
-    <string name="folder_settings_folder_push_mode_second_class">2. osztály</string>
-    <string name="folder_settings_folder_push_mode_inherited">Ugyanaz, mint a lekérés osztálya</string>
-    <string name="folder_settings_folder_notify_mode_label">Mappa értesítésének osztálya</string>
-    <string name="folder_settings_folder_notify_mode_normal">Nincs osztály</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1. osztály</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2. osztály</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Ugyanaz, mint a küldés osztálya</string>
     <string name="folder_settings_clear_local_folder_action">Helyi üzenetek törlése</string>
     <string name="account_settings_incoming_label">Bejövő kiszolgáló</string>
     <string name="account_settings_incoming_summary">A bejövő levelek kiszolgálójának beállítása</string>
@@ -922,7 +906,5 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <string name="general_settings_post_remove_action_show_next_message">Következő üzenet megjelenítése</string>
     <string name="general_settings_post_remove_action_title">Üzenet törlése vagy áthelyezése után</string>
     <string name="about_app_authors_thunderbird">Thunderbird Mobile csapata</string>
-    <string name="default_signature">--
-\nAz Androidos készülékemről küldve <xliff:g id="app_name">%s</xliff:g>. Elnézést kérek a rövidségemért.</string>
     <string name="account_delete_dlg_instructions_fmt">A „&lt;xliff:g id=”account„&gt;%s&lt;/xliff:g&gt;” fiók eltávolításra kerül a &lt;xliff:g id=„app_name”&gt;%s&lt;/xliff:g&gt; fiókból.</string>
 </resources>

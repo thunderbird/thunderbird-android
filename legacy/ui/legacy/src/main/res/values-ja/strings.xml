@@ -22,8 +22,6 @@
     <string name="changelog_snackbar_text">このリリースの新着情報を確認してください</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">表示</string>
-    <!--Default signature-->
-    <string name="default_signature">-- \nAndroid 端末から <xliff:g id="app_name">%s</xliff:g> で送信しました。簡単ではありますが、ご挨拶とさせていただきます。</string>
     <!--General strings that include the app name-->
     <string name="account_delete_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" は <xliff:g id="app_name">%s</xliff:g> から削除されます。</string>
     <!--=== General strings ==================================================================-->
@@ -410,12 +408,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">1st および 2nd クラスフォルダー</string>
     <string name="account_settings_folder_sync_mode_not_second_class">2nd クラスフォルダーを除くすべて</string>
     <string name="account_settings_folder_sync_mode_none">なし</string>
-    <string name="account_settings_folder_push_mode_label">プッシュフォルダー</string>
-    <string name="account_settings_folder_push_mode_all">すべて</string>
-    <string name="account_settings_folder_push_mode_first_class">1st クラスフォルダーのみ</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">1st および 2nd クラスフォルダー</string>
-    <string name="account_settings_folder_push_mode_not_second_class">2nd クラスフォルダーを除くすべて</string>
-    <string name="account_settings_folder_push_mode_none">なし</string>
     <string name="account_settings_sync_remote_deletetions_label">サーバーのメッセージ削除を同期する</string>
     <string name="account_settings_sync_remote_deletetions_summary">サーバーでメッセージが削除されたときにローカルのメッセージも削除します</string>
     <string name="account_settings_openpgp_missing">OpenPGP アプリが見つかりません - アンインストールしましたか？</string>
@@ -431,16 +423,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">1st クラス</string>
     <string name="folder_settings_folder_sync_mode_second_class">2nd クラス</string>
     <string name="folder_settings_folder_sync_mode_inherited">表示クラスと同一設定</string>
-    <string name="folder_settings_folder_push_mode_label">フォルダープッシュクラス</string>
-    <string name="folder_settings_folder_push_mode_normal">クラスなし</string>
-    <string name="folder_settings_folder_push_mode_first_class">1st クラス</string>
-    <string name="folder_settings_folder_push_mode_second_class">2nd クラス</string>
-    <string name="folder_settings_folder_push_mode_inherited">受信クラスと同一設定</string>
-    <string name="folder_settings_folder_notify_mode_label">フォルダー通知クラス</string>
-    <string name="folder_settings_folder_notify_mode_normal">クラスなし</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1st クラス</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2nd クラス</string>
-    <string name="folder_settings_folder_notify_mode_inherited">プッシュクラスと同一設定</string>
     <string name="folder_settings_clear_local_folder_action">ローカルのメッセージをクリア</string>
     <string name="account_settings_incoming_label">受信メールサーバー設定</string>
     <string name="account_settings_incoming_summary">受信メールサーバーを設定します</string>
@@ -925,4 +907,8 @@
     <string name="push_notification_grant_alarm_permission">タップして権限を付与してください。</string>
     <string name="push_notification_state_alarm_permission_missing">アラームを設定する権限がありません</string>
     <string name="about_app_authors_thunderbird">Thunderbird Mobile Team</string>
+    <string name="folder_settings_notifications_label">通知</string>
+    <string name="settings_ui_data_collection">データ収集</string>
+    <string name="settings_ui_telemetry_title">使用状況と技術データ</string>
+    <string name="settings_ui_telemetry_description">このアプリのパフォーマンス情報、使用状況、ハードウェア情報、設定を Mozilla に共有して Thunderbird の改善に協力します</string>
 </resources>

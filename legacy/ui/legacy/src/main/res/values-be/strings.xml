@@ -413,12 +413,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">1 і 2 класы</string>
     <string name="account_settings_folder_sync_mode_not_second_class">Апроч 1 і 2 класаў</string>
     <string name="account_settings_folder_sync_mode_none">Няма</string>
-    <string name="account_settings_folder_push_mode_label">Каталогі прымусовага правярання</string>
-    <string name="account_settings_folder_push_mode_all">Усе</string>
-    <string name="account_settings_folder_push_mode_first_class">1 клас</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">1 і 2 класы</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Апроч 1 і 2 класаў</string>
-    <string name="account_settings_folder_push_mode_none">Няма</string>
     <string name="account_settings_sync_remote_deletetions_label">Сінхроннае выдаленне</string>
     <string name="account_settings_sync_remote_deletetions_summary">Выдаляць лісты пры выдаленні з сервера</string>
     <string name="account_settings_openpgp_missing">Праграма OpenPGP адсутнічае. Яна была выдаленая?</string>
@@ -434,16 +428,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">1 клас</string>
     <string name="folder_settings_folder_sync_mode_second_class">2 клас</string>
     <string name="folder_settings_folder_sync_mode_inherited">Як клас бачнасці</string>
-    <string name="folder_settings_folder_push_mode_label">Клас прымусовага правярання каталога</string>
-    <string name="folder_settings_folder_push_mode_normal">Без класа</string>
-    <string name="folder_settings_folder_push_mode_first_class">1 клас</string>
-    <string name="folder_settings_folder_push_mode_second_class">2 клас</string>
-    <string name="folder_settings_folder_push_mode_inherited">Тое самае, што і клас апытання</string>
-    <string name="folder_settings_folder_notify_mode_label">Апавяшчэнне пра каталог</string>
-    <string name="folder_settings_folder_notify_mode_normal">Без класа</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1 клас</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2 клас</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Тое самае, што і клас прымусовага правярання</string>
     <string name="folder_settings_clear_local_folder_action">Выдаліць лакальныя лісты</string>
     <string name="account_settings_incoming_label">Сервер уваходных лістоў</string>
     <string name="account_settings_incoming_summary">Наладжванне сервера ўваходнай пошты</string>
@@ -933,7 +917,5 @@
     <string name="general_settings_post_remove_action_return_to_list">Вярнуцца да спіса паведамленняў</string>
     <string name="about_app_authors_thunderbird">Каманда Thunderbird Mobile</string>
     <string name="about_title">Аб дадатке <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="default_signature">-- 
-\nАдпраўлена з маёй Android прылады з <xliff:g id="app_name">%s</xliff:g>. Прашу прабачэння за сцісласць.</string>
     <string name="account_delete_dlg_instructions_fmt">Уліковый запіс \"<xliff:g id="account">%s</xliff:g>\" будзе выдален з дадатка <xliff:g id="app_name">%s</xliff:g>.</string>
 </resources>

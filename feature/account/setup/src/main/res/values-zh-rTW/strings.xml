@@ -22,7 +22,7 @@
     <string name="account_setup_auto_discovery_loading_error">載入電子郵件配置失敗</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">我信任此配置</string>
     <string name="account_setup_options_display_name_error_required">必須填寫您的名字。</string>
-    <string name="account_setup_error_network">網路</string>
+    <string name="account_setup_error_network">網路錯誤。請檢查您的連線狀態並重試。</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">輸入值未被識別為有效的電子郵件地址。</string>
     <string name="account_setup_options_email_check_frequency_never">從不</string>
     <string name="account_setup_auto_discovery_loading_message">正在查找設定…</string>
@@ -45,7 +45,7 @@
     <string name="account_setup_special_folders_trash_folder_label">垃圾資料夾</string>
     <string name="account_setup_special_folders_archive_folder_label">存檔資料夾</string>
     <string name="account_setup_special_folders_spam_folder_label">垃圾郵件資料夾</string>
-    <string name="account_setup_special_folders_form_description_automatic">“自動”條目將自動遵循伺服器所做的更改。 當前伺服器值顯示在括號中。</string>
+    <string name="account_setup_special_folders_form_description_automatic">「自動」項目會自動跟隨伺服器所做的變更。目前的伺服器值會顯示在括號內。</string>
     <string name="account_setup_auto_discovery_validation_error_password_required">密碼為必填項。</string>
     <plurals name="account_setup_options_email_check_frequency_minutes">
         <item quantity="other">每 %d 分鐘</item>

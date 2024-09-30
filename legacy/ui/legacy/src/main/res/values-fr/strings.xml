@@ -411,12 +411,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">Les dossiers de 1re et 2e classes</string>
     <string name="account_settings_folder_sync_mode_not_second_class">Tous sauf les dossiers de 2e classe</string>
     <string name="account_settings_folder_sync_mode_none">Aucun</string>
-    <string name="account_settings_folder_push_mode_label">Dossiers à pousser</string>
-    <string name="account_settings_folder_push_mode_all">Tous</string>
-    <string name="account_settings_folder_push_mode_first_class">Seulement les dossiers de 1re classe</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">Dossiers de 1re et 2e classes</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Tous sauf les dossiers de 2e classe</string>
-    <string name="account_settings_folder_push_mode_none">Aucun</string>
     <string name="account_settings_sync_remote_deletetions_label">Synchroniser les suppressions sur le serveur</string>
     <string name="account_settings_sync_remote_deletetions_summary">Supprimer les courriels quand ils sont supprimés sur le serveur</string>
     <string name="account_settings_openpgp_missing">L’appli OpenPGP est absente — A-t-elle été installée ?</string>
@@ -432,16 +426,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">1re classe</string>
     <string name="folder_settings_folder_sync_mode_second_class">2e classe</string>
     <string name="folder_settings_folder_sync_mode_inherited">Identique à la classe d’affichage</string>
-    <string name="folder_settings_folder_push_mode_label">Classe de pousser du dossier</string>
-    <string name="folder_settings_folder_push_mode_normal">Aucune classe</string>
-    <string name="folder_settings_folder_push_mode_first_class">1re classe</string>
-    <string name="folder_settings_folder_push_mode_second_class">2e classe</string>
-    <string name="folder_settings_folder_push_mode_inherited">Identique à la classe de scrutation</string>
-    <string name="folder_settings_folder_notify_mode_label">Classe de notification de dossier</string>
-    <string name="folder_settings_folder_notify_mode_normal">Aucune classe</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1re classe</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2e classe</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Identique à la classe de pousser</string>
     <string name="folder_settings_clear_local_folder_action">Effacer les courriels locaux</string>
     <string name="account_settings_incoming_label">Serveur entrant</string>
     <string name="account_settings_incoming_summary">Configurer le serveur de courriel entrant</string>
@@ -933,6 +917,8 @@
     <string name="account_delete_dlg_instructions_fmt">Le compte « <xliff:g id="account">%s</xliff:g> » sera supprimé de <xliff:g id="app_name">%s</xliff:g>.</string>
     <string name="push_info_notification_explanation_text">Si le pousser est utilisé, <xliff:g id="app_name">%1$s</xliff:g> maintient une connexion vers le serveur de courriel. Android exige d’afficher une notification continue quand l’appli est active en arrière-plan. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="dialog_openkeychain_info_text">L’appli OpenKeychain est nécessaire pour prendre en charge le chiffrement de bout en bout.</string>
-    <string name="default_signature">--
-\nEnvoyé de mon appareil Android avec <xliff:g id="app_name">%s</xliff:g>. Excusez ma brièveté.</string>
+    <string name="folder_settings_notifications_label">notifications</string>
+    <string name="settings_ui_data_collection">base de données</string>
+    <string name="settings_ui_telemetry_title">Utilisation et données techniques</string>
+    <string name="settings_ui_telemetry_description">Partage les données de performances, d\'utilisation, de matériel et de personnalisation de cette application avec Mozilla pour nous aider à améliorer Thunderbird</string>
 </resources>

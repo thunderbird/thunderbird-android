@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-@Suppress("MagicNumber")
+@Suppress("MagicNumber", "TooManyFunctions")
 internal class DrawerViewModel(
     private val getDrawerConfig: UseCase.GetDrawerConfig,
     private val getDisplayAccounts: UseCase.GetDisplayAccounts,
@@ -61,13 +61,13 @@ internal class DrawerViewModel(
     }
 
     private fun updateAccounts(accounts: List<DisplayAccount>) {
-        val selectedAccount = accounts.find { it.account.uuid == state.value.selectedAccount?.account?.uuid }
+        val selectedAccount = accounts.find { it.uuid == state.value.selectedAccountUuid }
             ?: accounts.firstOrNull()
 
         updateState {
             it.copy(
                 accounts = accounts.toImmutableList(),
-                selectedAccount = selectedAccount,
+                selectedAccountUuid = selectedAccount?.uuid,
             )
         }
     }
@@ -75,8 +75,8 @@ internal class DrawerViewModel(
     @OptIn(ExperimentalCoroutinesApi::class)
     private suspend fun loadFolders() {
         state.map {
-            it.selectedAccount?.let { selectAccount ->
-                Pair(selectAccount.account.uuid, it.config.showUnifiedFolders)
+            it.selectedAccountUuid?.let { accountUuid ->
+                Pair(accountUuid, it.config.showUnifiedFolders)
             }
         }.filterNotNull()
             .distinctUntilChanged()
@@ -89,24 +89,27 @@ internal class DrawerViewModel(
 
     private fun updateFolders(displayFolders: List<DisplayFolder>) {
         val selectedFolder = displayFolders.find {
-            it.id == state.value.selectedFolder?.id
+            it.id == state.value.selectedFolderId
         } ?: displayFolders.firstOrNull()
 
         updateState {
             it.copy(
                 folders = displayFolders.toImmutableList(),
-                selectedFolder = selectedFolder,
+                selectedFolderId = selectedFolder?.id,
             )
         }
     }
 
     override fun event(event: Event) {
         when (event) {
-            is Event.OnAccountClick -> selectAccount(event.account)
-            is Event.OnFolderClick -> selectFolder(event.folder)
+            is Event.SelectAccount -> selectAccount(event.accountUuid)
+            is Event.SelectFolder -> selectFolder(event.folderId)
+
+            is Event.OnAccountClick -> openAccount(event.account)
+            is Event.OnFolderClick -> openFolder(event.folder)
             is Event.OnAccountViewClick -> {
-                selectAccount(
-                    state.value.accounts.nextOrFirst(event.account)!!,
+                openAccount(
+                    state.value.accounts.nextOrFirst(event.account),
                 )
             }
 
@@ -118,16 +121,26 @@ internal class DrawerViewModel(
         }
     }
 
-    private fun selectAccount(account: DisplayAccount) {
-        viewModelScope.launch {
-            updateState {
-                it.copy(
-                    selectedAccount = account,
-                )
-            }
+    private fun selectAccount(accountUuid: String?) {
+        updateState {
+            it.copy(
+                selectedAccountUuid = accountUuid,
+            )
         }
+    }
 
-        emitEffect(Effect.OpenAccount(account.account))
+    private fun selectFolder(folderId: String?) {
+        updateState {
+            it.copy(
+                selectedFolderId = folderId,
+            )
+        }
+    }
+
+    private fun openAccount(account: DisplayAccount?) {
+        if (account != null) {
+            emitEffect(Effect.OpenAccount(account.account))
+        }
     }
 
     private fun ImmutableList<DisplayAccount>.nextOrFirst(account: DisplayAccount): DisplayAccount? {
@@ -141,11 +154,7 @@ internal class DrawerViewModel(
         }
     }
 
-    private fun selectFolder(folder: DisplayFolder) {
-        updateState {
-            it.copy(selectedFolder = folder)
-        }
-
+    private fun openFolder(folder: DisplayFolder) {
         if (folder is DisplayAccountFolder) {
             emitEffect(Effect.OpenFolder(folder.folder.id))
         } else if (folder is DisplayUnifiedFolder) {
@@ -159,14 +168,14 @@ internal class DrawerViewModel(
     }
 
     private fun onSyncAccount() {
-        if (state.value.isLoading || state.value.selectedAccount == null) return
+        if (state.value.isLoading || state.value.selectedAccountUuid == null) return
 
         viewModelScope.launch {
             updateState {
                 it.copy(isLoading = true)
             }
 
-            state.value.selectedAccount?.account?.let { syncAccount(it).collect() }
+            state.value.selectedAccountUuid?.let { syncAccount(it).collect() }
 
             updateState {
                 it.copy(isLoading = false)

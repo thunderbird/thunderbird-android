@@ -410,12 +410,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">1e- en 2e-klassemappen</string>
     <string name="account_settings_folder_sync_mode_not_second_class">Alle behalve 2e-klassemappen</string>
     <string name="account_settings_folder_sync_mode_none">Geen</string>
-    <string name="account_settings_folder_push_mode_label">Push-mappen</string>
-    <string name="account_settings_folder_push_mode_all">Alle</string>
-    <string name="account_settings_folder_push_mode_first_class">Alleen 1e-klassemappen</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">1e- en 2e-klassemappen</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Alle behalve 2e-klassemappen</string>
-    <string name="account_settings_folder_push_mode_none">Geen</string>
     <string name="account_settings_sync_remote_deletetions_label">Verwijderingen op server synchroniseren</string>
     <string name="account_settings_sync_remote_deletetions_summary">Berichten verwijderen wanneer verwijderd van server</string>
     <string name="account_settings_openpgp_missing">OpenPGP-app niet aanwezig – is de app verwijderd?</string>
@@ -431,16 +425,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">1e klasse</string>
     <string name="folder_settings_folder_sync_mode_second_class">2e klasse</string>
     <string name="folder_settings_folder_sync_mode_inherited">Zelfde als weergaveklasse</string>
-    <string name="folder_settings_folder_push_mode_label">Push-klassemap</string>
-    <string name="folder_settings_folder_push_mode_normal">Geen klasse</string>
-    <string name="folder_settings_folder_push_mode_first_class">1e klasse</string>
-    <string name="folder_settings_folder_push_mode_second_class">2e klasse</string>
-    <string name="folder_settings_folder_push_mode_inherited">Zelfde als peilingklasse</string>
-    <string name="folder_settings_folder_notify_mode_label">Mapmeldingsklasse</string>
-    <string name="folder_settings_folder_notify_mode_normal">Geen klasse</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1e klasse</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2e klasse</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Zelfde als push-klasse</string>
     <string name="folder_settings_clear_local_folder_action">Lokale berichten wissen</string>
     <string name="account_settings_incoming_label">Inkomende server</string>
     <string name="account_settings_incoming_summary">Inkomende mailserver instellen</string>
@@ -929,7 +913,9 @@
     <string name="account_delete_dlg_instructions_fmt">De account \"<xliff:g id="account">%s</xliff:g>\" zal uit <xliff:g id="app_name">%s</xliff:g> worden verwijderd.</string>
     <string name="about_title">Over <xliff:g id="app_name">%s</xliff:g></string>
     <string name="push_info_notification_explanation_text">Bij gebruik van Push onderhoudt <xliff:g id="app_name">%1$s</xliff:g> een verbinding met de mailserver. Android vereist het doorlopend weergeven van een melding als de app actief is op de achtergrond. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
-    <string name="default_signature">-- \u0020
-\nVerzonden vanaf mijn Android-apparaat met <xliff:g id="app_name">%s</xliff:g>. Excuses voor mijn beknoptheid.</string>
     <string name="about_app_authors_thunderbird">Thunderbird Mobile-team</string>
+    <string name="folder_settings_notifications_label">Meldingen</string>
+    <string name="settings_ui_telemetry_title">Gebruik en technische gegevens</string>
+    <string name="settings_ui_data_collection">Gegevensverzameling</string>
+    <string name="settings_ui_telemetry_description">Om te helpen Thunderbird te verbeteren, worden gegevens over prestaties, hardware en gebruik, gedeeld met Mozilla</string>
 </resources>

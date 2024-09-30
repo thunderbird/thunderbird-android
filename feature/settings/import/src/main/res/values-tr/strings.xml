@@ -38,4 +38,6 @@
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="settings_import_oauth_error_browser_not_found">Uygulama, hesabınıza erişim izni vermek için kullanılacak bir tarayıcı bulamadı.</string>
     <string name="settings_import_general_settings_item">Genel Ayarlar</string>
+    <string name="settings_import_pick_app_button">Uygulamadan içe aktar</string>
+    <string name="settings_import_pick_app_dialog_title">Uygulamadan içe aktar</string>
 </resources>

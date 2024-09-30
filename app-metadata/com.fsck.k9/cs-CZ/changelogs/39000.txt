@@ -1,0 +1,6 @@
+- Started converting the user interface to Material 3
+- Added support for mailto: URI on NFC tag
+- Added experimental workaround for the app crashing in the background
+- Optimized some of the IMAP protocol interactions
+- Don't delay showing the notification when Push is active
+- Updated translations

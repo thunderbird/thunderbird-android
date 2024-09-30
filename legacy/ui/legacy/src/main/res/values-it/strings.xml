@@ -412,12 +412,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">Cartelle di 1a e 2a classe</string>
     <string name="account_settings_folder_sync_mode_not_second_class">Tutte tranne cartelle di 2a classe</string>
     <string name="account_settings_folder_sync_mode_none">Nessuna</string>
-    <string name="account_settings_folder_push_mode_label">Cartelle push</string>
-    <string name="account_settings_folder_push_mode_all">Tutte</string>
-    <string name="account_settings_folder_push_mode_first_class">Solo cartelle di 1a classe</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">Cartelle di 1a e 2a classe</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Tutte tranne cartelle di 2a classe</string>
-    <string name="account_settings_folder_push_mode_none">Nessuna</string>
     <string name="account_settings_sync_remote_deletetions_label">Sincronizza eliminazioni del server</string>
     <string name="account_settings_sync_remote_deletetions_summary">Rimuovi i messaggi eliminati dal server</string>
     <string name="account_settings_openpgp_missing">Applicazione OpenPGP non trovata, è stata disinstallata\?</string>
@@ -433,16 +427,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">1a classe</string>
     <string name="folder_settings_folder_sync_mode_second_class">2a classe</string>
     <string name="folder_settings_folder_sync_mode_inherited">Come la classe di visualizzazione</string>
-    <string name="folder_settings_folder_push_mode_label">Classe cartelle push</string>
-    <string name="folder_settings_folder_push_mode_normal">Nessuna classe</string>
-    <string name="folder_settings_folder_push_mode_first_class">1a classe</string>
-    <string name="folder_settings_folder_push_mode_second_class">2a classe</string>
-    <string name="folder_settings_folder_push_mode_inherited">Come la classe di sincronizzazione</string>
-    <string name="folder_settings_folder_notify_mode_label">Classe cartelle notificate</string>
-    <string name="folder_settings_folder_notify_mode_normal">Nessuna classe</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1a classe</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2a classe</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Come la classe push</string>
     <string name="folder_settings_clear_local_folder_action">Pulisci messaggi locali</string>
     <string name="account_settings_incoming_label">Server posta in arrivo</string>
     <string name="account_settings_incoming_summary">Configura server della posta in arrivo</string>
@@ -935,7 +919,8 @@
     <string name="about_app_authors_thunderbird">Team di Thunderbird mobile</string>
     <string name="about_title">Informazioni su <xliff:g id="app_name">%s</xliff:g></string>
     <string name="push_info_notification_explanation_text">Quando si utilizza Push, <xliff:g id="app_name">%1$s</xliff:g> mantiene una connessione al server di posta. Android richiede la visualizzazione di una notifica in corso mentre l\'app è attiva in background. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
-    <string name="default_signature">--
-\nInviato dal mio dispositivo Android con <xliff:g id="app_name">%s</xliff:g>. Scusate la brevità.</string>
     <string name="account_delete_dlg_instructions_fmt">L\'account \"<xliff:g id="account">%s</xliff:g>\" verrà rimosso da <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="folder_settings_notifications_label">Notifiche</string>
+    <string name="settings_ui_telemetry_title">Utilizzo e dati tecnici</string>
+    <string name="settings_ui_telemetry_description">Condividi dati sulle prestazioni, sull\'utilizzo, sull\'hardware e sulla personalizzazione di questa app con Mozilla per aiutarci a migliorare Thunderbird</string>
 </resources>

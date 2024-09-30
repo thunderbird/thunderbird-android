@@ -266,7 +266,6 @@
     <string name="account_settings_message_read_receipt_label">Xác nhận đã đọc</string>
     <string name="account_settings_folders">Thư mục</string>
     <string name="account_settings_folder_sync_mode_none">Không thiết đặt</string>
-    <string name="account_settings_folder_push_mode_none">Không thiết đặt</string>
     <string name="folder_settings_title">Cấu hình thư mục</string>
     <string name="folder_settings_folder_sync_mode_normal">Không thiết đặt</string>
     <string name="folder_settings_clear_local_folder_action">Xóa sạch thư lưu cục bộ</string>
@@ -423,14 +422,12 @@
     <string name="account_settings_notify_sync_label">Đồng bộ hóa thông báo</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Định cấu hình thông báo lỗi và trạng thái</string>
     <string name="account_notify_contacts_mail_only_label">Chỉ các liên hệ</string>
-    <string name="account_settings_folder_push_mode_first_class">Chỉ các thư mục Hạng 1</string>
     <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
     <string name="action_compose_message_to">Soạn tin nhắn tới</string>
     <string name="account_settings_autodownload_message_size_512">512 KiB</string>
     <string name="account_settings_message_age_1_year">năm ngoái</string>
     <string name="account_settings_autodownload_message_size_1024">1 MiB</string>
     <string name="account_settings_folder_display_mode_first_class">Chỉ các thư mục Hạng 1</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">Thư mục Hạng 1 và Hạng 2</string>
     <string name="folder_settings_in_top_group_label">Hiển thị ở nhóm trên cùng</string>
     <string name="account_settings_reply_after_quote_summary">Tin nhắn gốc sẽ xuất hiện phía trên thư trả lời của bạn.</string>
     <string name="account_settings_general_title">Thiết lập tổng quan</string>
@@ -443,7 +440,6 @@
     <string name="account_settings_message_format_text">Văn bản thuần túy (loại bỏ hình ảnh và định dạng)</string>
     <string name="account_settings_message_age_label">Đồng bộ tin nhắn từ</string>
     <string name="folder_settings_in_top_group_summary">Hiển thị gần đầu danh sách thư mục</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Tất cả ngoại trừ thư mục Hạng 2</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Chỉ mã hóa bản nháp nếu bật mã hóa</string>
     <string name="account_settings_quote_style_prefix">Tiền tố (như Gmail)</string>
     <string name="account_settings_message_age_0">hôm nay</string>
@@ -461,7 +457,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Tất cả các bản nháp sẽ được lưu trữ dưới dạng mã hóa</string>
     <string name="account_settings_message_read_receipt_summary">Luôn yêu cầu biên nhận đã đọc</string>
     <string name="account_settings_message_age_14">2 tuần qua</string>
-    <string name="folder_settings_folder_push_mode_label">Lớp đẩy thư mục</string>
     <string name="account_settings_autodownload_message_size_any">mọi kích thước (không giới hạn)</string>
     <string name="account_settings_folder_display_mode_not_second_class">Tất cả ngoại trừ thư mục Hạng 2</string>
     <string name="account_settings_always_show_cc_bcc_label">Luôn hiển thị Cc/Bcc</string>
@@ -485,8 +480,6 @@
     <string name="account_settings_message_age_2_months">2 tháng qua</string>
     <string name="account_settings_folder_display_mode_label">Thư mục để hiển thị</string>
     <string name="account_settings_mail_check_frequency_label">Tần suất thăm dò thư mục</string>
-    <string name="account_settings_folder_push_mode_all">Tất cả</string>
-    <string name="folder_settings_folder_push_mode_inherited">Giống như lớp thăm dò ý kiến</string>
     <string name="account_settings_autodownload_message_size_128">128 KiB</string>
     <string name="account_settings_autodownload_message_size_4">4 KiB</string>
     <string name="account_settings_sync_remote_deletetions_summary">Loại bỏ tin nhắn khi bị xóa trên máy chủ</string>
@@ -508,7 +501,6 @@
     <string name="account_settings_quote_style_label">Trả lời kiểu trích dẫn</string>
     <string name="account_settings_strip_signature_summary">Chữ ký sẽ bị xóa khỏi tin nhắn được trích dẫn</string>
     <string name="account_settings_autodownload_message_size_64">64 KiB</string>
-    <string name="account_settings_folder_push_mode_label">Thư mục đẩy</string>
     <string name="account_settings_mail_display_count_label">Kích thước thư mục cục bộ</string>
     <string name="account_settings_crypto_key">Định cấu hình khóa đầu cuối</string>
     <string name="account_settings_reply_after_quote_label">Trả lời sau văn bản được trích dẫn</string>
@@ -593,8 +585,6 @@
     <string name="account_settings_vibrate_summary_disabled">Đã tắt</string>
     <string name="manage_identities_title">Quản lý danh tính</string>
     <string name="folder_settings_folder_sync_mode_first_class">Hạng 1</string>
-    <string name="folder_settings_folder_push_mode_first_class">Hạng 1</string>
-    <string name="folder_settings_folder_notify_mode_label">Hạng thư mục thông báo</string>
     <string name="account_settings_vibrate_pattern_2">Kiểu mẫu 2</string>
     <string name="edit_identity_description_hint">(Không bắt buộc)</string>
     <string name="edit_identity_name_label">Tên của bạn</string>
@@ -695,12 +685,7 @@
     <string name="push_info_title">Thông tin Đẩy</string>
     <string name="folder_settings_folder_display_mode_first_class">Hạng 1</string>
     <string name="folder_settings_folder_display_mode_second_class">Hạng 2</string>
-    <string name="folder_settings_folder_push_mode_normal">Không hạng</string>
     <string name="folder_settings_folder_sync_mode_second_class">Hạng 2</string>
-    <string name="folder_settings_folder_push_mode_second_class">Hạng 2</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Tương tự như hạng đẩy</string>
-    <string name="folder_settings_folder_notify_mode_first_class">Hạng 1</string>
-    <string name="folder_settings_folder_notify_mode_second_class">Hạng 2</string>
     <string name="account_settings_outgoing_label">Máy chủ thư đi</string>
     <string name="account_settings_vibrate_pattern_1">Kiểu mẫu 1</string>
     <string name="account_settings_vibrate_pattern_4">Kiểu mẫu 4</string>
@@ -797,7 +782,6 @@
     <string name="message_details_cc_section_title">Cc</string>
     <string name="message_details_bcc_section_title">Người nhận ẩn</string>
     <string name="general_settings_post_mark_as_unread_action_stay">Ở lại tin nhắn hiện tại</string>
-    <string name="folder_settings_folder_notify_mode_normal">Không hạng</string>
     <string name="account_settings_vibrate_pattern_3">Kiểu mẫu 3</string>
     <string name="folder_list_display_mode_first_and_second_class">Thư mục Hạng 1 &amp; 2</string>
     <string name="debug_preferences">Tìm lỗi</string>
@@ -924,7 +908,5 @@
     <string name="account_delete_dlg_instructions_fmt">Tài khoản \"<xliff:g id="account">%s</xliff:g>\" sẽ bị loại khỏi <xliff:g id="app_name">%s</xliff:g>.</string>
     <string name="dialog_openkeychain_info_text">Cần có ứng dụng OpenKeychain để hỗ trợ mã hóa đầu cuối.</string>
     <string name="push_info_notification_explanation_text">Khi sử dụng Push, <xliff:g id="app_name">%1$s</xliff:g> duy trì kết nối với máy chủ thư. Android yêu cầu hiển thị thông báo liên tục trong khi ứng dụng đang hoạt động ở chế độ nền. <xliff:g id="Optional_extends_explanation">%2$s</xliff:g></string>
-    <string name="default_signature">--
-\nĐược gửi từ thiết bị Android của tôi bằng <xliff:g id="app_name">%s</xliff:g>. Thứ lỗi cho sự ngắn gọn của tôi.</string>
     <string name="about_title">Giới thiệu về <xliff:g id="app_name">%s</xliff:g></string>
 </resources>

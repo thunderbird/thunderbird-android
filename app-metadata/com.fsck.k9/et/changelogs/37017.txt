@@ -1,0 +1,5 @@
+- Automaatse konfiguratsiooni avastamise sammude fikseeritud järjekord
+- Vaikekuvarite arv muudeti 100-ks
+- Uute kontode teavitused on vaikimisi lubatud
+- Ennistati muudatus mailto käitlemisel: URI-d võeti kasutusele K-9 Mail 6.716 soovimatute kõrvalmõjude tõttu
+- Parandatud viga, et "kontaktide värvimine" sõnumivaates uuesti tööle hakkaks

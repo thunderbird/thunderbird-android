@@ -20,14 +20,16 @@ internal interface DrawerContract {
             showStarredCount = false,
         ),
         val accounts: ImmutableList<DisplayAccount> = persistentListOf(),
-        val selectedAccount: DisplayAccount? = null,
+        val selectedAccountUuid: String? = null,
         val folders: ImmutableList<DisplayFolder> = persistentListOf(),
-        val selectedFolder: DisplayFolder? = null,
+        val selectedFolderId: String? = null,
         val showAccountSelector: Boolean = false,
         val isLoading: Boolean = false,
     )
 
     sealed interface Event {
+        data class SelectAccount(val accountUuid: String?) : Event
+        data class SelectFolder(val folderId: String?) : Event
         data class OnAccountClick(val account: DisplayAccount) : Event
         data class OnAccountViewClick(val account: DisplayAccount) : Event
         data class OnFolderClick(val folder: DisplayFolder) : Event

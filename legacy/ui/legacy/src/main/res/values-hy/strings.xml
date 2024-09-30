@@ -301,11 +301,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">1֊ին եւ 2֊րդ դասի պանակները</string>
     <string name="account_settings_folder_sync_mode_not_second_class">Բոլորը բացի 2֊րդ դասի պանակներից</string>
     <string name="account_settings_folder_sync_mode_none">Ոչ մէկը</string>
-    <string name="account_settings_folder_push_mode_all">Բոլորը</string>
-    <string name="account_settings_folder_push_mode_first_class">Միայն 1֊ին դասի պանակները</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">1֊ին եւ 2֊րդ դասի պանակները</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Բոլորը, բացի 2֊րդ դասի պանակներից</string>
-    <string name="account_settings_folder_push_mode_none">Ոչ մի</string>
     <string name="account_settings_sync_remote_deletetions_label">Սինխրոնացնել սերուերում հեռացածները</string>
     <string name="account_settings_sync_remote_deletetions_summary">Ջնջել նամակները, եթէ սերուերից ջնջուել են։</string>
     <string name="folder_settings_title">Պանակի կարգաւորումներ</string>
@@ -315,12 +310,6 @@
     <string name="folder_settings_folder_sync_mode_normal">Ոչ մի</string>
     <string name="folder_settings_folder_sync_mode_first_class">1ին Դաս</string>
     <string name="folder_settings_folder_sync_mode_second_class">2րդ Դաս</string>
-    <string name="folder_settings_folder_push_mode_normal">Առանց Դասի</string>
-    <string name="folder_settings_folder_push_mode_first_class">1ին Դաս</string>
-    <string name="folder_settings_folder_push_mode_second_class">2րդ Դաս</string>
-    <string name="folder_settings_folder_notify_mode_normal">Առանց Դասի</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1ին Դաս</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2րդ Դաս</string>
     <string name="folder_settings_clear_local_folder_action">Մաքրել լոկալ հաղորդագրութիւնները</string>
     <string name="account_settings_outgoing_label">Դուրս տանող բանավար</string>
     <string name="account_settings_description_label">Հաշվի անունը</string>

@@ -16,7 +16,7 @@ android {
         applicationId = "net.thunderbird.android"
         testApplicationId = "net.thunderbird.android.tests"
 
-        versionCode = 3
+        versionCode = 4
         versionName = "8.0"
 
         // Keep in sync with the resource string array "supported_languages"
@@ -118,7 +118,7 @@ android {
             signingConfig = signingConfigs.getByType(SigningType.TB_BETA)
 
             applicationIdSuffix = ".beta"
-            versionNameSuffix = "b0"
+            versionNameSuffix = "b1"
 
             isMinifyEnabled = true
             isShrinkResources = true
@@ -156,6 +156,19 @@ android {
         }
     }
 
+    flavorDimensions += listOf("app")
+    productFlavors {
+        create("foss") {
+            dimension = "app"
+            buildConfigField("String", "PRODUCT_FLAVOR_APP", "\"foss\"")
+        }
+
+        create("full") {
+            dimension = "app"
+            buildConfigField("String", "PRODUCT_FLAVOR_APP", "\"full\"")
+        }
+    }
+
     packaging {
         jniLibs {
             excludes += listOf("kotlin/**")
@@ -171,6 +184,13 @@ android {
         }
     }
 }
+
+// Initialize placeholders for the product flavor and build type combinations needed for dependency declarations.
+// They are required to avoid "Unresolved configuration" errors.
+val fullDebugImplementation by configurations.creating
+val fullDailyImplementation by configurations.creating
+val fullBetaImplementation by configurations.creating
+val fullReleaseImplementation by configurations.creating
 
 dependencies {
     implementation(projects.appCommon)
@@ -188,9 +208,9 @@ dependencies {
     implementation(projects.feature.widget.unread)
 
     debugImplementation(projects.feature.telemetry.noop)
-    releaseImplementation(projects.feature.telemetry.glean)
-    "betaImplementation"(projects.feature.telemetry.glean)
     "dailyImplementation"(projects.feature.telemetry.glean)
+    "betaImplementation"(projects.feature.telemetry.glean)
+    releaseImplementation(projects.feature.telemetry.glean)
 
     implementation(libs.androidx.work.runtime)
 
@@ -198,10 +218,12 @@ dependencies {
     debugImplementation(projects.backend.demo)
     debugImplementation(projects.feature.autodiscovery.demo)
 
-    debugImplementation(projects.feature.funding.noop)
-    add("dailyImplementation", projects.feature.funding.googleplay)
-    add("betaImplementation", projects.feature.funding.noop)
-    releaseImplementation(projects.feature.funding.noop)
+    "fossImplementation"(projects.feature.funding.noop)
+
+    fullDebugImplementation(projects.feature.funding.noop)
+    fullDailyImplementation(projects.feature.funding.googleplay)
+    fullBetaImplementation(projects.feature.funding.googleplay)
+    fullReleaseImplementation(projects.feature.funding.googleplay)
 
     testImplementation(libs.robolectric)
 
@@ -211,5 +233,22 @@ dependencies {
 }
 
 dependencyGuard {
-    configuration("releaseRuntimeClasspath")
+    configuration("fossDailyRuntimeClasspath")
+    configuration("fossBetaRuntimeClasspath")
+    configuration("fossReleaseRuntimeClasspath")
+
+    configuration("fullDailyRuntimeClasspath")
+    configuration("fullBetaRuntimeClasspath")
+    configuration("fullReleaseRuntimeClasspath")
+}
+
+tasks.create("printConfigurations") {
+    doLast {
+        configurations.forEach { configuration ->
+            println("Configuration: ${configuration.name}")
+            configuration.dependencies.forEach { dependency ->
+                println("  - ${dependency.group}:${dependency.name}:${dependency.version}")
+            }
+        }
+    }
 }

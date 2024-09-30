@@ -1,6 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="navigation_drawer_action_settings">Ustawienia</string>
     <string name="navigation_drawer_action_manage_folders">Zarządzaj folderami</string>
     <string name="navigation_drawer_unified_inbox_title">Zintegrowana odbiorcza</string>
+    <string name="navigation_drawer_folder_item_badge_count_greater_than_99">&gt;99</string>
+    <string name="navigation_drawer_folder_item_badge_count_greater_than_1_000">&gt;1000</string>
+    <string name="navigation_drawer_action_sync_all_accounts">Synchronizuj wszystkie konta</string>
+    <string name="navigation_drawer_action_hide_accounts">Ukryj konta</string>
+    <string name="navigation_drawer_action_show_accounts">Pokaż konta</string>
 </resources>

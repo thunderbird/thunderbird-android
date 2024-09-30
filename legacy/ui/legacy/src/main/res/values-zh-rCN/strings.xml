@@ -408,12 +408,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">1 级与 2 级文件夹</string>
     <string name="account_settings_folder_sync_mode_not_second_class">除 2 级文件夹外的所有文件夹</string>
     <string name="account_settings_folder_sync_mode_none">无</string>
-    <string name="account_settings_folder_push_mode_label">推送文件夹</string>
-    <string name="account_settings_folder_push_mode_all">全部</string>
-    <string name="account_settings_folder_push_mode_first_class">仅 1 级文件夹</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">1 级与 2 级文件夹</string>
-    <string name="account_settings_folder_push_mode_not_second_class">除 2 级文件夹外的所有文件夹</string>
-    <string name="account_settings_folder_push_mode_none">无</string>
     <string name="account_settings_sync_remote_deletetions_label">同步服务器的删除</string>
     <string name="account_settings_sync_remote_deletetions_summary">在服务器上删除邮件时移除邮件</string>
     <string name="account_settings_openpgp_missing">缺少 OpenPGP 应用 - 是否已卸载？</string>
@@ -429,16 +423,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">1 级</string>
     <string name="folder_settings_folder_sync_mode_second_class">2 级</string>
     <string name="folder_settings_folder_sync_mode_inherited">与显示级别相同</string>
-    <string name="folder_settings_folder_push_mode_label">文件夹推送级别</string>
-    <string name="folder_settings_folder_push_mode_normal">无级别</string>
-    <string name="folder_settings_folder_push_mode_first_class">1 级</string>
-    <string name="folder_settings_folder_push_mode_second_class">2 级</string>
-    <string name="folder_settings_folder_push_mode_inherited">与轮询级别相同</string>
-    <string name="folder_settings_folder_notify_mode_label">文件夹提醒级别</string>
-    <string name="folder_settings_folder_notify_mode_normal">无级别</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1 级</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2 级</string>
-    <string name="folder_settings_folder_notify_mode_inherited">与推送级别相同</string>
     <string name="folder_settings_clear_local_folder_action">清空本地邮件</string>
     <string name="account_settings_incoming_label">收件服务器</string>
     <string name="account_settings_incoming_summary">配置收件服务器</string>
@@ -923,7 +907,9 @@
     <string name="about_title">关于 <xliff:g id="app_name">%s</xliff:g></string>
     <string name="dialog_openkeychain_info_text">启用对端到端加密的支持需要使用 OpenKeychain。</string>
     <string name="push_info_notification_explanation_text">使用推送功能时，<xliff:g id="app_name">%1$s</xliff:g> 会保持与邮件服务器的连接。Android 要求在应用处于后台活动状态时显示持续通知。<xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
-    <string name="default_signature">--
-\n通过 <xliff:g id="app_name">%s</xliff:g> 从我的 Android 设备发送。请原谅我的简洁。</string>
     <string name="about_app_authors_thunderbird">Thunderbird Mobile Team</string>
+    <string name="folder_settings_notifications_label">通知</string>
+    <string name="settings_ui_data_collection">数据收集</string>
+    <string name="settings_ui_telemetry_title">使用情况和技术数据</string>
+    <string name="settings_ui_telemetry_description">与 Mozilla 分享此应用的性能、使用情况、硬件和自定义数据，以帮助我们改进 Thunderbird</string>
 </resources>

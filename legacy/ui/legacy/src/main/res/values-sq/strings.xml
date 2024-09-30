@@ -409,12 +409,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">Dosje të Klasës I dhe II</string>
     <string name="account_settings_folder_sync_mode_not_second_class">Krejt, hiq dosje të Klasës II</string>
     <string name="account_settings_folder_sync_mode_none">Asnjë</string>
-    <string name="account_settings_folder_push_mode_label">Dosje push</string>
-    <string name="account_settings_folder_push_mode_all">Krejt</string>
-    <string name="account_settings_folder_push_mode_first_class">Vetëm dosje të Klasës I</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">Dosje të Klasës I dhe II</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Krejt, hiq dosje të Klasës II</string>
-    <string name="account_settings_folder_push_mode_none">Asnjë</string>
     <string name="account_settings_sync_remote_deletetions_label">Njëkohëso fshirje në shërbyes</string>
     <string name="account_settings_sync_remote_deletetions_summary">Hiqi mesazhet kur janë fshirë në shërbyes</string>
     <string name="account_settings_openpgp_missing">Mungon aplikacioni OpenPGP - mos është çinstaluar?</string>
@@ -430,16 +424,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">Klasa I</string>
     <string name="folder_settings_folder_sync_mode_second_class">Klasa II</string>
     <string name="folder_settings_folder_sync_mode_inherited">Njësoj si klasa e shfaqjes</string>
-    <string name="folder_settings_folder_push_mode_label">Klasë dosjeje push</string>
-    <string name="folder_settings_folder_push_mode_normal">Pa Klasë</string>
-    <string name="folder_settings_folder_push_mode_first_class">Klasa I</string>
-    <string name="folder_settings_folder_push_mode_second_class">Klasa II</string>
-    <string name="folder_settings_folder_push_mode_inherited">Njësoj si klasa për “poll”</string>
-    <string name="folder_settings_folder_notify_mode_label">Klasë njoftimesh dosjeje</string>
-    <string name="folder_settings_folder_notify_mode_normal">Pa Klasë</string>
-    <string name="folder_settings_folder_notify_mode_first_class">Klasa I</string>
-    <string name="folder_settings_folder_notify_mode_second_class">Klasa II</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Njësoj si klasa për “push”</string>
     <string name="folder_settings_clear_local_folder_action">Pastro mesazhet vendore</string>
     <string name="account_settings_incoming_label">Shërbyes për marrje</string>
     <string name="account_settings_incoming_summary">Formësoni shërbyesin për marrje</string>
@@ -926,8 +910,6 @@
     <string name="push_notification_grant_alarm_permission">Për të akorduar leje, prekeni.</string>
     <string name="push_notification_state_alarm_permission_missing">Mungojnë leje për të planifikuar alarme</string>
     <string name="dialog_openkeychain_info_text">Aplikacioni OpenKeychain është i domosdoshëm për të aktivizuar mbulim fshehtëzimi skaj-më-skaj.</string>
-    <string name="default_signature">-- 
-\nDërguar nga pajisja ime Android, me <xliff:g id="app_name">%s</xliff:g>. Më ndjeni që i rashë shkurt.</string>
     <string name="about_title">Mbi <xliff:g id="app_name">%s</xliff:g></string>
     <string name="account_delete_dlg_instructions_fmt">Llogaria \"<xliff:g id="account">%s</xliff:g>\" do të hiqet nga <xliff:g id="app_name">%s</xliff:g>.</string>
     <string name="push_info_notification_explanation_text">Kur përdoret Push, <xliff:g id="app_name">%1$s</xliff:g> mban një lidhje me shërbyesin e postës. Android-i lyp shfaqjen e vazhdueshme të një njoftimi, teksa aplikacioni është aktiv në prapaskenë. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>

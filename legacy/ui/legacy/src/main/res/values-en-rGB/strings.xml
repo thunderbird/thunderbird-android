@@ -161,7 +161,6 @@
     <string name="notification_certificate_error_public">Certificate error</string>
     <string name="account_settings_incoming_label">Incoming server</string>
     <string name="account_notify_contacts_mail_only_summary">Show notifications only for messages from known contacts</string>
-    <string name="account_settings_folder_push_mode_first_class">Only 1st Class folders</string>
     <string name="message_compose_error_no_recipients">You must add at least one recipient.</string>
     <string name="notification_channel_messages_title">Messages</string>
     <string name="quiet_time_description">Disable ringing, buzzing and flashing at night</string>
@@ -169,7 +168,6 @@
     <string name="general_settings_post_mark_as_unread_action_stay">Stay on current message</string>
     <string name="account_settings_composition_summary">Set your default From, Bcc and signature</string>
     <string name="manage_identities_move_down_action">Move down</string>
-    <string name="folder_settings_folder_push_mode_normal">No Class</string>
     <string name="message_to_fmt">To:<xliff:g id="counterParty">%s</xliff:g></string>
     <string name="from_same_sender">More from this sender</string>
     <string name="notification_channel_miscellaneous_title">Miscellaneous</string>
@@ -211,7 +209,6 @@
     <string name="account_setup_options_mail_check_frequency_1hour">Every hour</string>
     <string name="folder_settings_folder_sync_mode_normal">None</string>
     <string name="folder_settings_folder_sync_mode_first_class">1st Class</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">1st and 2nd Class folders</string>
     <string name="folder_settings_in_top_group_label">Show in top group</string>
     <string name="account_settings_reply_after_quote_summary">The original message will appear above your reply.</string>
     <string name="account_settings_notification_light_disabled">Disabled</string>
@@ -283,8 +280,6 @@
     <string name="account_settings_notify_label">New mail notifications</string>
     <string name="general_settings_right_swipe_title">Right swipe</string>
     <string name="global_settings_messageview_autofit_width_label">Auto-fit messages</string>
-    <string name="account_settings_folder_push_mode_not_second_class">All except 2nd Class folders</string>
-    <string name="folder_settings_folder_notify_mode_normal">No Class</string>
     <string name="font_size_message_list_date">Date</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Encrypt drafts only if encryption is enabled</string>
     <string name="account_settings_quote_style_prefix">Prefix (like Gmail)</string>
@@ -367,7 +362,6 @@
     <string name="edit_identity_signature_hint">(Optional)</string>
     <string name="notification_bg_send_ticker">Sending mail: <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Check your server settings</string>
-    <string name="account_settings_folder_push_mode_none">None</string>
     <string name="account_setup_expunge_policy_label">Erase deleted messages on server</string>
     <string name="account_settings_incoming_summary">Configure the incoming mail server</string>
     <string name="edit_identity_reply_to_hint">(Optional)</string>
@@ -384,7 +378,6 @@
     <string name="account_settings_message_read_receipt_summary">Always request a read receipt</string>
     <string name="account_settings_default_quoted_text_shown_label">Quote message when replying</string>
     <string name="account_settings_message_age_14">the last 2 weeks</string>
-    <string name="folder_settings_folder_push_mode_label">Folder push class</string>
     <string name="notification_action_archive">Archive</string>
     <string name="font_size_message_view_content">Message body</string>
     <string name="account_setup_push_limit_1000">1000 folders</string>
@@ -539,7 +532,6 @@
     <string name="debug_enable_debug_logging_title">Enable debug logging</string>
     <string name="font_size_message_compose_input">Text input fields</string>
     <string name="dialog_confirm_clear_local_folder_title">Clear local messages?</string>
-    <string name="folder_settings_folder_notify_mode_first_class">1st Class</string>
     <string name="global_settings_preview_lines_label">Preview lines</string>
     <string name="confirm_discard_draft_message">Are you sure you want to discard this message?</string>
     <string name="settings_list_miscellaneous_category">Miscellaneous</string>
@@ -561,10 +553,8 @@
     <string name="message_saved_toast">Message saved as draft</string>
     <string name="no_removable_identity">You can\'t remove your only identity</string>
     <string name="general_settings_swipe_actions_title">Swipe actions</string>
-    <string name="account_settings_folder_push_mode_all">All</string>
     <string name="drafts_folder_label">Drafts folder</string>
     <string name="account_settings_name_label">Your name</string>
-    <string name="folder_settings_folder_push_mode_inherited">Same as poll class</string>
     <string name="edit_identity_name_label">Your name</string>
     <string name="account_settings_autodownload_message_size_128">128 KiB</string>
     <string name="font_size_message_view_sender">Sender</string>
@@ -620,23 +610,19 @@
     <string name="account_setup_options_mail_display_count_50">50 messages</string>
     <string name="dialog_confirm_mark_all_as_read_confirm_button">Yes</string>
     <string name="account_settings_notification_light_blue">Blue</string>
-    <string name="folder_settings_folder_push_mode_second_class">2nd Class</string>
     <string name="settings_export_failure">Failed to export settings</string>
     <string name="account_setup_options_mail_display_count_1000">1000 messages</string>
-    <string name="folder_settings_folder_notify_mode_label">Folder notification class</string>
     <string name="batch_select_all">Select all</string>
     <string name="dialog_confirm_delete_message">Do you want to delete this message?</string>
     <string name="account_settings_message_age_1_month">the last month</string>
     <string name="global_settings_privacy_hide_useragent">Hide mail client</string>
     <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
     <string name="font_size_message_list">Message lists</string>
-    <string name="folder_settings_folder_push_mode_first_class">1st Class</string>
     <string name="general_settings_post_remove_action_show_next_message">Show next message</string>
     <string name="general_settings_post_remove_action_title">After deleting or moving a message</string>
     <string name="sort_unattached_first">Messages without attachments first</string>
     <string name="account_settings_message_age_any">any time (no limit)</string>
     <string name="account_settings_crypto_app">Enable OpenPGP support</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Same as push class</string>
     <string name="sort_unread_last">Read messages first</string>
     <string name="global_settings_privacy_hide_useragent_detail">Remove K-9 User-Agent from mail headers</string>
     <string name="edit_identity_title">Edit identity</string>
@@ -666,7 +652,6 @@
     <string name="save_or_discard_draft_message_instructions_fmt">Save or Discard this message?</string>
     <string name="account_settings_strip_signature_summary">Signatures will be removed from quoted messages</string>
     <string name="account_settings_autodownload_message_size_64">64 KiB</string>
-    <string name="account_settings_folder_push_mode_label">Push folders</string>
     <string name="account_settings_push_advanced_title">Advanced</string>
     <string name="settings_compose_theme_label">Composer theme</string>
     <string name="account_notify_contacts_mail_only_label">Contacts only</string>
@@ -685,7 +670,6 @@
     <string name="message_view_show_remote_images_action">Show remote images</string>
     <string name="privacy_preferences">Privacy</string>
     <string name="account_settings_autodownload_message_size_256">256 KiB</string>
-    <string name="folder_settings_folder_notify_mode_second_class">2nd Class</string>
     <string name="settings_export_share_button">Share</string>
     <string name="folder_list_display_mode_all">All folders</string>
     <string name="font_size_smaller">Smaller</string>

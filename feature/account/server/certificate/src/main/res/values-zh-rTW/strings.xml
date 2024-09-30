@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_server_certificate_warning_title">警告</string>
     <string name="account_server_certificate_unknown_error_subtitle">憑證錯誤</string>
     <string name="account_server_certificate_button_advanced">進階</string>
+    <string name="account_server_certificate_unknown_error_description_format">應用程式偵測到潛在的安全威脅，並未繼續連接到 <xliff:g id="serverName">%s</xliff:g>。
+\n如果您繼續，攻擊者可能會試圖竊取您的密碼或電子郵件等資訊。</string>
+    <string name="account_server_certificate_button_back">返回（推薦）</string>
+    <string name="account_server_certificate_button_continue">接受風險並繼續</string>
+    <string name="account_server_certificate_section_title">伺服器憑證</string>
+    <string name="account_server_certificate_not_valid_before">有效期開始時間</string>
+    <string name="account_server_certificate_not_valid_after">有效期結束時間</string>
+    <string name="account_server_certificate_fingerprints_section">指紋</string>
+    <string name="account_server_certificate_issuer">發行者</string>
+    <string name="account_server_certificate_subject_alternative_names">主體替代名稱</string>
+    <string name="account_server_certificate_subject">主體</string>
 </resources>

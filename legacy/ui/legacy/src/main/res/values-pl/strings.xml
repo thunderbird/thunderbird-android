@@ -22,8 +22,6 @@
     <string name="changelog_snackbar_text">Dowiedz się, co nowego w tej wersji</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Wyświetl</string>
-    <!--Default signature-->
-    <string name="default_signature">-- \nWysłane z urządzenia Android za pomocą <xliff:g id="app_name">%s</xliff:g>. Proszę wybaczyć moją zwięzłość.</string>
     <!--General strings that include the app name-->
     <string name="account_delete_dlg_instructions_fmt">Konto \"<xliff:g id="account">%s</xliff:g>\" zostanie usunięte z <xliff:g id="app_name">%s</xliff:g>.</string>
     <!--=== General strings ==================================================================-->
@@ -415,12 +413,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">Foldery klasy 1 oraz 2</string>
     <string name="account_settings_folder_sync_mode_not_second_class">Wszystkie poza klasą 2</string>
     <string name="account_settings_folder_sync_mode_none">Żadne</string>
-    <string name="account_settings_folder_push_mode_label">Sprawdzaj przez push</string>
-    <string name="account_settings_folder_push_mode_all">Wszystkie foldery</string>
-    <string name="account_settings_folder_push_mode_first_class">Tylko foldery klasy 1</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">Foldery klasy 1 oraz 2</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Wszystkie poza klasą 2</string>
-    <string name="account_settings_folder_push_mode_none">Żadne</string>
     <string name="account_settings_sync_remote_deletetions_label">Synchronizacja usunięć</string>
     <string name="account_settings_sync_remote_deletetions_summary">Usuwaj wiadomości również z serwera poczty</string>
     <string name="account_settings_openpgp_missing">Brakuje aplikacji OpenPGP. Czy została odinstalowana\?</string>
@@ -436,16 +428,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">Klasa 1</string>
     <string name="folder_settings_folder_sync_mode_second_class">Klasa 2</string>
     <string name="folder_settings_folder_sync_mode_inherited">Taka sama jak klasa wyświetlania</string>
-    <string name="folder_settings_folder_push_mode_label">Klasa sprawdzania push</string>
-    <string name="folder_settings_folder_push_mode_normal">Bez klasy</string>
-    <string name="folder_settings_folder_push_mode_first_class">Klasa 1</string>
-    <string name="folder_settings_folder_push_mode_second_class">Klasa 2</string>
-    <string name="folder_settings_folder_push_mode_inherited">Taka sama jak klasa ankiety</string>
-    <string name="folder_settings_folder_notify_mode_label">Klasa powiadamiania</string>
-    <string name="folder_settings_folder_notify_mode_normal">Bez klasy</string>
-    <string name="folder_settings_folder_notify_mode_first_class">Klasa 1</string>
-    <string name="folder_settings_folder_notify_mode_second_class">Klasa 2</string>
-    <string name="folder_settings_folder_notify_mode_inherited">Taka jak klasa push</string>
     <string name="folder_settings_clear_local_folder_action">Wyczyść wiadomości lokalne</string>
     <string name="account_settings_incoming_label">Serwer poczty przychodzącej</string>
     <string name="account_settings_incoming_summary">Ustawienia serwera poczty przychodzącej</string>
@@ -873,7 +855,7 @@ Tą wiadomość można zachować i użyć w formie kopii zapasowej twojego klucz
     <string name="push_info_learn_more_text">Dowiedz się więcej</string>
     <string name="push_info_configure_notification_action">Skonfiguruj powiadomienie</string>
     <string name="push_info_disable_push_text">Jeśli nie potrzebujesz natychmiastowych powiadomień o nowych wiadomościach, wyłącz funkcję push i użyj regularnego sprawdzania. Sprawdzanie w regularnych odstępach czasu sprawdza nową pocztę i nie wymaga powiadomienia.</string>
-    <string name="push_info_disable_push_action">Wyłącz push</string>
+    <string name="push_info_disable_push_action">Wyłącz funkcję push</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
     <string name="swipe_action_select">Zaznacz</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
@@ -944,4 +926,9 @@ Tą wiadomość można zachować i użyć w formie kopii zapasowej twojego klucz
     <string name="push_notification_state_alarm_permission_missing">Brak uprawnień do planowania alarmów</string>
     <string name="push_notification_grant_alarm_permission">Stuknij, aby udzielić uprawnienia.</string>
     <string name="about_app_authors_thunderbird">Zespół Thunderbird Mobile</string>
+    <string name="folder_settings_notifications_label">Powiadomienia</string>
+    <string name="settings_ui_telemetry_title">Dane techniczne i dotyczące użytkowania</string>
+    <string name="settings_ui_data_collection">Zbieranie danych</string>
+    <string name="settings_ui_telemetry_description">Udostępnia firmie Mozilla dane dotyczące wydajności, użytkowania, sprzętu i dostosowywania tej aplikacji, aby pomóc nam udoskonalić Thunderbirda</string>
+    <string name="folder_settings_push_label">Włącz funkcję push</string>
 </resources>
