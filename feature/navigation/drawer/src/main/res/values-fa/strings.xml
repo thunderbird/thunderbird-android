@@ -7,5 +7,5 @@
     <string name="navigation_drawer_action_sync_all_accounts">هم‌گام سازی همهٔ آشنایان</string>
     <string name="navigation_drawer_action_show_accounts">نمایش حساب‌ها</string>
     <string name="navigation_drawer_folder_item_badge_count_greater_than_99">۹۹+</string>
-    <string name="navigation_drawer_folder_item_badge_count_greater_than_1_000">۱ه+</string>
+    <string name="navigation_drawer_folder_item_badge_count_greater_than_1_000">ه+</string>
 </resources>
