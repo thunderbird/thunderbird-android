@@ -932,4 +932,5 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <string name="settings_ui_data_collection">Sběr dat</string>
     <string name="folder_settings_notifications_label">Oznámení</string>
     <string name="settings_ui_telemetry_description">Sdílí data o výkonu, používání, hardwaru a přizpůsobení této aplikace se společností Mozilla. Umožňuje nám zlepšovat Thunderbird</string>
+    <string name="folder_settings_push_label">Povolit oznámení</string>
 </resources>
