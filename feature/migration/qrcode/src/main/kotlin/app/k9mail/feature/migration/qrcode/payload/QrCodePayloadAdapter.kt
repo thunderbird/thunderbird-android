@@ -1,4 +1,4 @@
-package app.k9mail.feature.migration.qrcode
+package app.k9mail.feature.migration.qrcode.payload
 
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader

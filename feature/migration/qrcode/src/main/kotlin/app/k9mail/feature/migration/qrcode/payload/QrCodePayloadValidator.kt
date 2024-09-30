@@ -1,9 +1,10 @@
-package app.k9mail.feature.migration.qrcode
+package app.k9mail.feature.migration.qrcode.payload
 
 import app.k9mail.core.common.mail.EmailAddressParserException
 import app.k9mail.core.common.mail.toUserEmailAddress
 import app.k9mail.core.common.net.toHostname
 import app.k9mail.core.common.net.toPort
+import app.k9mail.feature.migration.qrcode.domain.entity.AccountData
 import timber.log.Timber
 
 @Suppress("TooManyFunctions")

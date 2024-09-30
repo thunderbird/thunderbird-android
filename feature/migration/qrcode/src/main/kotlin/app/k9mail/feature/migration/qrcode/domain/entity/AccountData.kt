@@ -1,4 +1,4 @@
-package app.k9mail.feature.migration.qrcode
+package app.k9mail.feature.migration.qrcode.domain.entity
 
 import app.k9mail.core.common.mail.EmailAddress
 import app.k9mail.core.common.net.Hostname

@@ -9,7 +9,7 @@ import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.UiPermission
 @Preview
 @Composable
 fun QrCodeScannerScreenPreview_permission_unknown() {
-    PreviewWithTheme {
+    PreviewWithTheme(isDarkTheme = true) {
         QrCodeScannerScreen(
             viewModel = NoOpQrCodeScannerViewModel(
                 initialState = State(cameraPermissionState = UiPermissionState.Unknown),
@@ -21,7 +21,7 @@ fun QrCodeScannerScreenPreview_permission_unknown() {
 @Preview
 @Composable
 fun QrCodeScannerScreenPreview_permission_granted() {
-    PreviewWithTheme {
+    PreviewWithTheme(isDarkTheme = true) {
         QrCodeScannerScreen(
             viewModel = NoOpQrCodeScannerViewModel(
                 initialState = State(cameraPermissionState = UiPermissionState.Granted),
@@ -33,7 +33,7 @@ fun QrCodeScannerScreenPreview_permission_granted() {
 @Preview
 @Composable
 fun QrCodeScannerScreenPreview_permission_denied() {
-    PreviewWithTheme {
+    PreviewWithTheme(isDarkTheme = true) {
         QrCodeScannerScreen(
             viewModel = NoOpQrCodeScannerViewModel(
                 initialState = State(cameraPermissionState = UiPermissionState.Denied),
