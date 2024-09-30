@@ -1,0 +1,156 @@
+name: Shippable Build & Signing
+on:
+  workflow_dispatch:
+    inputs:
+      gh_environment:
+        description: Github environment name
+        required: true
+        default: ''
+        type: choice
+        options:
+          - thunderbird_beta
+          - thunderbird_daily
+          - thunderbird_release
+          - thunderbird_debug
+
+jobs:
+  dump_config:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.gh_environment }}
+    outputs:
+      matrixInclude: ${{ vars.MATRIX_INCLUDE }}
+      appName: ${{ vars.APP_NAME }}
+      releaseType: ${{ vars.RELEASE_TYPE }}
+    steps:
+      - name: Dump Vars context
+        id: variables
+        env:
+          VARS_CONTEXT: ${{ toJSON(vars) }}
+          MATRIX_INCLUDE: ${{ vars.MATRIX_INCLUDE }}
+        run: |
+          echo "$VARS_CONTEXT"
+          echo "$MATRIX_INCLUDE"
+          ## echo "$MATRIX_INCLUDE" >> $GITHUB_OUTPUT
+
+
+  build_unsigned:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    needs: [dump_config]
+    strategy:
+      matrix:
+        include: "${{ fromJSON(needs.dump_config.outputs.matrixInclude) }}"
+    environment: ${{ inputs.gh_environment }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Copy CI gradle.properties
+        shell: bash
+        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build It
+        shell: bash
+        env:
+          PACKAGE_FORMAT: ${{ matrix.packageFormat }}
+          PACKAGE_FLAVOR: ${{ matrix.packageFlavor }}
+          APP_NAME: ${{ vars.APP_NAME }}
+          RELEASE_TYPE: ${{ vars.RELEASE_TYPE }}
+        run: |
+          BUILD_CMD="${PACKAGE_FORMAT}"
+          if [[ "$PACKAGE_FORMAT" = "apk" ]]; then
+            BUILD_CMD="assemble"
+          fi
+          # ^ upper-case first character of bash string
+          BUILD_COMMAND="${BUILD_CMD}${PACKAGE_FLAVOR^}${RELEASE_TYPE^}"
+          echo "BUILDING: :${APP_NAME}:${BUILD_COMMAND}"
+          ./gradlew clean :${APP_NAME}:${BUILD_COMMAND} --no-build-cache --no-configuration-cache
+          echo "Status: $?"
+
+      - name: Move apps to upload directory
+        shell: bash
+        env:
+          PACKAGE_FORMAT: ${{ matrix.packageFormat }}
+          PACKAGE_FLAVOR: ${{ matrix.packageFlavor }}
+          APP_NAME: ${{ vars.APP_NAME }}
+          RELEASE_TYPE: ${{ vars.RELEASE_TYPE }}
+          OUT_BASE: ${{ vars.APP_NAME }}/build/outputs/${{ matrix.packageFormat }}
+          UPLOAD_PATH: "uploads"
+        run: |
+          mkdir -p "${UPLOAD_PATH}"
+          if [[ "${PACKAGE_FORMAT}" = "apk" ]]; then
+            OUT_PATH="${OUT_BASE}/${PACKAGE_FLAVOR}/${RELEASE_TYPE}"
+            OUT_FILE="${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}-unsigned.apk"
+            RENAMED_FILE="${OUT_FILE/-unsigned/}"
+          elif [[ "${PACKAGE_FORMAT}" = "bundle" ]]; then
+            OUT_PATH="${OUT_BASE}/${PACKAGE_FLAVOR}${RELEASE_TYPE^}"
+            OUT_FILE="${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}.aab"
+            RENAMED_FILE="${OUT_FILE}"
+          else
+            echo "PACKAGE_FORMAT $PACKAGE_FORMAT is unknown. Exiting."
+            exit 23
+          fi
+          if [[ -f "${OUT_PATH}/${OUT_FILE}" ]]; then
+            mv -f "${OUT_PATH}/${OUT_FILE}" "${UPLOAD_PATH}/${RENAMED_FILE}"
+          else
+            echo "Build file ${OUT_PATH}/${OUT_FILE} not found. Exiting."
+            ls -l ${OUT_PATH}
+            exit 24
+          fi
+          echo "Upload contents:"
+          ls -l ${UPLOAD_PATH}/
+
+      - name: Upload unsigned
+        uses: actions/upload-artifact@v4
+        env:
+          UPLOAD_PATH: "uploads"
+        with:
+          name: unsigned-${{ vars.APP_NAME}}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor }}
+          path: ${{ env.UPLOAD_PATH }}/
+          if-no-files-found: error
+
+  sign_mobile:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include: "${{ fromJSON(needs.dump_config.outputs.matrixInclude) }}"
+    environment: ${{ needs.dump_config.outputs.appName }}_${{ needs.dump_config.outputs.releaseType }}_${{ matrix.packageFlavor }}
+    needs: [build_unsigned, dump_config]
+    env:
+      APP_NAME: ${{ needs.dump_config.outputs.appName }}
+      RELEASE_TYPE: ${{ needs.dump_config.outputs.releaseType }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: unsigned-${{ env.APP_NAME }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor }}
+          path: uploads/
+
+      - uses: noriban/sign-android-release@5f144321d3c7c2233266e78b42360345d8bbe403   # v5.1
+        name: Sign package
+        with:
+          releaseDirectory: uploads/
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.KEY_ALIAS }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+
+      - name: Remove JKS file
+        shell: bash
+        run: |
+          rm -f uploads/*.jks
+
+      - name: Upload signed
+        uses: actions/upload-artifact@v4
+        with:
+          name: signed-${{ env.APP_NAME}}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor }}
+          if-no-files-found: error
+          path: |
+            uploads/*-signed.apk
+            uploads/*.aab
