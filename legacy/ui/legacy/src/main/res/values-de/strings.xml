@@ -407,12 +407,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">Haupt- und Nebenordner</string>
     <string name="account_settings_folder_sync_mode_not_second_class">Alle außer Nebenordner</string>
     <string name="account_settings_folder_sync_mode_none">Keine</string>
-    <string name="account_settings_folder_push_mode_label">Push-Ordner</string>
-    <string name="account_settings_folder_push_mode_all">Alle Ordner</string>
-    <string name="account_settings_folder_push_mode_first_class">Nur Hauptordner</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">Haupt- und Nebenordner</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Alle außer Nebenordner</string>
-    <string name="account_settings_folder_push_mode_none">Keine Ordner</string>
     <string name="account_settings_sync_remote_deletetions_label">Löschungen vom Server übernehmen</string>
     <string name="account_settings_sync_remote_deletetions_summary">Nachrichten löschen, wenn sie vom Server gelöscht wurden</string>
     <string name="account_settings_openpgp_missing">Fehlende OpenPGP-App – wurde sie deinstalliert?</string>
@@ -428,11 +422,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">Hauptordner</string>
     <string name="folder_settings_folder_sync_mode_second_class">Nebenordner</string>
     <string name="folder_settings_folder_sync_mode_inherited">Wie Anzeigeklasse</string>
-    <string name="folder_settings_folder_push_mode_label">Push-Klasse</string>
-    <string name="folder_settings_folder_push_mode_normal">Keine Klasse</string>
-    <string name="folder_settings_folder_push_mode_first_class">Hauptordner</string>
-    <string name="folder_settings_folder_push_mode_second_class">Nebenordner</string>
-    <string name="folder_settings_folder_push_mode_inherited">Wie Abfrageklasse</string>
     <string name="folder_settings_clear_local_folder_action">Lokale Nachrichten löschen</string>
     <string name="account_settings_incoming_label">Posteingangsserver</string>
     <string name="account_settings_incoming_summary">Einstellungen des Posteingangsservers bearbeiten</string>

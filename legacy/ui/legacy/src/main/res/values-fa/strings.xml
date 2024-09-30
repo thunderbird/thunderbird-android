@@ -408,12 +408,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">پوشه‌های سطح ۱ و ۲</string>
     <string name="account_settings_folder_sync_mode_not_second_class">همه به‌جز پوشه‌های سطح ۲</string>
     <string name="account_settings_folder_sync_mode_none">هیچ‌کدام</string>
-    <string name="account_settings_folder_push_mode_label">پوشه‌ها برای پیشرانی (Push)</string>
-    <string name="account_settings_folder_push_mode_all">همه</string>
-    <string name="account_settings_folder_push_mode_first_class">فقط پوشه‌های سطح ۱</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">پوشه‌های سطح ۱ و ۲</string>
-    <string name="account_settings_folder_push_mode_not_second_class">همه به‌جز پوشه‌های سطح ۲</string>
-    <string name="account_settings_folder_push_mode_none">هیچ‌کدام</string>
     <string name="account_settings_sync_remote_deletetions_label">همگام‌سازی حذفیات کارساز</string>
     <string name="account_settings_sync_remote_deletetions_summary">وقتی پیام‌ها در کارساز پاک شدند از اینجا هم حذف شود</string>
     <string name="account_settings_openpgp_missing">برنامهٔ OpenPGP نیست - حذف شده؟</string>
@@ -429,11 +423,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">سطح ۱</string>
     <string name="folder_settings_folder_sync_mode_second_class">سطح ۲</string>
     <string name="folder_settings_folder_sync_mode_inherited">همانند سطح نمایش</string>
-    <string name="folder_settings_folder_push_mode_label">سطح پیشرانی پوشه (Push)</string>
-    <string name="folder_settings_folder_push_mode_normal">بدون سطح</string>
-    <string name="folder_settings_folder_push_mode_first_class">سطح ۱</string>
-    <string name="folder_settings_folder_push_mode_second_class">سطح ۲</string>
-    <string name="folder_settings_folder_push_mode_inherited">همانند سطح سرکشی</string>
     <string name="folder_settings_clear_local_folder_action">پاک‌کردن پیام‌ها از روی دستگاه</string>
     <string name="account_settings_incoming_label">کارساز ورودی</string>
     <string name="account_settings_incoming_summary">کارساز ورودی رایانامه را پیکربندی کنید</string>
@@ -926,4 +915,9 @@
     <string name="dialog_openkeychain_info_text">برنامه کاربردی OpenKeychain جهت فعال‌سازی رمزگذاری سرتاسری مورد نیاز است.</string>
     <string name="push_info_notification_explanation_text">در زمان استفاده از پیشرانی، <xliff:g id="app_name">%1$s</xliff:g> اتصال به کارساز را نگاه می‌دارد. اندروید نیازمند یک اعلان همیشگی جهت فعال ماندن برنامه در پس‌زمینه است. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="about_app_authors_thunderbird">گروه همراه تاندربرد</string>
+    <string name="folder_settings_push_label">به کار انداختن ارسال</string>
+    <string name="folder_settings_notifications_label">آگاهی‌ها</string>
+    <string name="settings_ui_telemetry_title">داده‌های فنی و استفاده</string>
+    <string name="settings_ui_telemetry_description">هم‌رسانی داده‌های کارایی، استفاده، سخت‌افزار و شخصی‌سازی این کاره با موزیلا برای کمک به بهتر کردن تاندربرد</string>
+    <string name="settings_ui_data_collection">جمع‌آوری داده</string>
 </resources>

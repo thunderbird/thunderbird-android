@@ -410,12 +410,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">1e- en 2e-klassemappen</string>
     <string name="account_settings_folder_sync_mode_not_second_class">Alle útsein 2e-klassemappen</string>
     <string name="account_settings_folder_sync_mode_none">Gjin</string>
-    <string name="account_settings_folder_push_mode_label">Push-mappen</string>
-    <string name="account_settings_folder_push_mode_all">Alle</string>
-    <string name="account_settings_folder_push_mode_first_class">Allinnich 1e-klassemappen</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">1e- en 2e-klassemappen</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Alle útsein 2e-klassemappen</string>
-    <string name="account_settings_folder_push_mode_none">Gjin</string>
     <string name="account_settings_sync_remote_deletetions_label">Ferwideringen op server syngronisearje</string>
     <string name="account_settings_sync_remote_deletetions_summary">Berjochten fuortsmite as fuortsmiten fan server</string>
     <string name="account_settings_openpgp_missing">OpenPGP-app net oanwêzich – is de app fuortsmiten?</string>
@@ -431,11 +425,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">1e klasse</string>
     <string name="folder_settings_folder_sync_mode_second_class">2e klasse</string>
     <string name="folder_settings_folder_sync_mode_inherited">Selde as werjefteklasse</string>
-    <string name="folder_settings_folder_push_mode_label">Push-klassemap</string>
-    <string name="folder_settings_folder_push_mode_normal">Gjin klasse</string>
-    <string name="folder_settings_folder_push_mode_first_class">1e klasse</string>
-    <string name="folder_settings_folder_push_mode_second_class">2e klasse</string>
-    <string name="folder_settings_folder_push_mode_inherited">Selde as peilingklasse</string>
     <string name="folder_settings_clear_local_folder_action">Lokale berjochten wiskje</string>
     <string name="account_settings_incoming_label">Ynkommende server</string>
     <string name="account_settings_incoming_summary">Ynkommende mailserver ynstelle</string>

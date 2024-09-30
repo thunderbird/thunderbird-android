@@ -411,12 +411,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">Les dossiers de 1re et 2e classes</string>
     <string name="account_settings_folder_sync_mode_not_second_class">Tous sauf les dossiers de 2e classe</string>
     <string name="account_settings_folder_sync_mode_none">Aucun</string>
-    <string name="account_settings_folder_push_mode_label">Dossiers à pousser</string>
-    <string name="account_settings_folder_push_mode_all">Tous</string>
-    <string name="account_settings_folder_push_mode_first_class">Seulement les dossiers de 1re classe</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">Dossiers de 1re et 2e classes</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Tous sauf les dossiers de 2e classe</string>
-    <string name="account_settings_folder_push_mode_none">Aucun</string>
     <string name="account_settings_sync_remote_deletetions_label">Synchroniser les suppressions sur le serveur</string>
     <string name="account_settings_sync_remote_deletetions_summary">Supprimer les courriels quand ils sont supprimés sur le serveur</string>
     <string name="account_settings_openpgp_missing">L’appli OpenPGP est absente — A-t-elle été installée ?</string>
@@ -432,11 +426,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">1re classe</string>
     <string name="folder_settings_folder_sync_mode_second_class">2e classe</string>
     <string name="folder_settings_folder_sync_mode_inherited">Identique à la classe d’affichage</string>
-    <string name="folder_settings_folder_push_mode_label">Classe de pousser du dossier</string>
-    <string name="folder_settings_folder_push_mode_normal">Aucune classe</string>
-    <string name="folder_settings_folder_push_mode_first_class">1re classe</string>
-    <string name="folder_settings_folder_push_mode_second_class">2e classe</string>
-    <string name="folder_settings_folder_push_mode_inherited">Identique à la classe de scrutation</string>
     <string name="folder_settings_clear_local_folder_action">Effacer les courriels locaux</string>
     <string name="account_settings_incoming_label">Serveur entrant</string>
     <string name="account_settings_incoming_summary">Configurer le serveur de courriel entrant</string>

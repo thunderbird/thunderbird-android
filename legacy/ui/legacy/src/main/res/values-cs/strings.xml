@@ -413,12 +413,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">Složky 1. a 2. třídy</string>
     <string name="account_settings_folder_sync_mode_not_second_class">Všechny vyjma složek 2. třídy</string>
     <string name="account_settings_folder_sync_mode_none">Žádné</string>
-    <string name="account_settings_folder_push_mode_label">Složky řízené serverem (PUSH)</string>
-    <string name="account_settings_folder_push_mode_all">Všechny</string>
-    <string name="account_settings_folder_push_mode_first_class">Jen složky 1. třídy</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">Složky 1. a 2. třídy</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Všechny vyjma složek 2. třídy</string>
-    <string name="account_settings_folder_push_mode_none">Žádné</string>
     <string name="account_settings_sync_remote_deletetions_label">Synchronizace mazání serveru</string>
     <string name="account_settings_sync_remote_deletetions_summary">Odstranit zprávy, když je smaže server</string>
     <string name="account_settings_openpgp_missing">Chybí OpenPGP aplikace – byla odinstalována?</string>
@@ -434,11 +428,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">1. třída</string>
     <string name="folder_settings_folder_sync_mode_second_class">2. třída</string>
     <string name="folder_settings_folder_sync_mode_inherited">Stejná jako třída zobrazení</string>
-    <string name="folder_settings_folder_push_mode_label">Třída složky rozšíření PUSH</string>
-    <string name="folder_settings_folder_push_mode_normal">Žádná třída</string>
-    <string name="folder_settings_folder_push_mode_first_class">1. třída</string>
-    <string name="folder_settings_folder_push_mode_second_class">2. třída</string>
-    <string name="folder_settings_folder_push_mode_inherited">Stejné jako třída fondu</string>
     <string name="folder_settings_clear_local_folder_action">Vyčistit místní zprávy</string>
     <string name="account_settings_incoming_label">Server příchozí pošty</string>
     <string name="account_settings_incoming_summary">Nastavení serveru příchozí pošty</string>

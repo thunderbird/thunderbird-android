@@ -299,11 +299,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">1-ლი და მე-2 კლასის საკეცები</string>
     <string name="account_settings_folder_sync_mode_not_second_class">ყველა, გარდა მე-2 კლასის საკეცებისა</string>
     <string name="account_settings_folder_sync_mode_none">არც ერთი</string>
-    <string name="account_settings_folder_push_mode_all">ყველა</string>
-    <string name="account_settings_folder_push_mode_first_class">მხოლოდ 1-ლი კლასის საკეცები</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">1-ლი და მე-2 კლასის საკეცები</string>
-    <string name="account_settings_folder_push_mode_not_second_class">ყველა, გარდა მე-2 კლასის საკეცებისა</string>
-    <string name="account_settings_folder_push_mode_none">არც ერთი</string>
     <string name="account_settings_sync_remote_deletetions_label">წაშლის სინქრონიზაცია სერვერთან</string>
     <string name="account_settings_sync_remote_deletetions_summary">მესიჯების წაშლა სერვერზე წაშლის შემთხვევაში</string>
     <string name="folder_settings_folder_display_mode_normal">კლასის გარეშე</string>
@@ -313,9 +308,6 @@
     <string name="folder_settings_folder_sync_mode_normal">არც ერთი</string>
     <string name="folder_settings_folder_sync_mode_first_class">1-ლი კლასი</string>
     <string name="folder_settings_folder_sync_mode_second_class">მე-2 კლასი</string>
-    <string name="folder_settings_folder_push_mode_normal">კლასის გარეშე</string>
-    <string name="folder_settings_folder_push_mode_first_class">1-ლი კლასი</string>
-    <string name="folder_settings_folder_push_mode_second_class">მე-2 კლასი</string>
     <string name="account_settings_incoming_label">შემავალი სერვერი</string>
     <string name="account_settings_incoming_summary">შემავალი საფოსტო სერვერის გამართვა</string>
     <string name="account_settings_outgoing_label">გამავალი სერვერი</string>

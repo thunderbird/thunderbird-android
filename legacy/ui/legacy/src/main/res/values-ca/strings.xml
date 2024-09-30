@@ -412,12 +412,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">Carpetes de 1a i 2a Classe</string>
     <string name="account_settings_folder_sync_mode_not_second_class">Tot excepte carpetes de 2a Classe</string>
     <string name="account_settings_folder_sync_mode_none">Cap</string>
-    <string name="account_settings_folder_push_mode_label">Tramet carpetes</string>
-    <string name="account_settings_folder_push_mode_all">Tot</string>
-    <string name="account_settings_folder_push_mode_first_class">Només carpetes de 1a Classe</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">Carpetes de 1a i 2a Classe</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Tot excepte carpetes de 2a Classe</string>
-    <string name="account_settings_folder_push_mode_none">Cap</string>
     <string name="account_settings_sync_remote_deletetions_label">Sincronitza els elements suprimits al servidor</string>
     <string name="account_settings_sync_remote_deletetions_summary">Elimina els missatges quan se suprimeixin al servidor</string>
     <string name="account_settings_openpgp_missing">Falta una aplicació d\'OpenPGP. S\'ha desinstal·lat\?</string>
@@ -433,11 +427,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">1a Classe</string>
     <string name="folder_settings_folder_sync_mode_second_class">2a Classe</string>
     <string name="folder_settings_folder_sync_mode_inherited">El mateix que a la forma de vista</string>
-    <string name="folder_settings_folder_push_mode_label">Classe de tramesa de la carpeta</string>
-    <string name="folder_settings_folder_push_mode_normal">Sense Classe</string>
-    <string name="folder_settings_folder_push_mode_first_class">1a Classe</string>
-    <string name="folder_settings_folder_push_mode_second_class">2a Classe</string>
-    <string name="folder_settings_folder_push_mode_inherited">Igual que la classe de comprovació</string>
     <string name="folder_settings_clear_local_folder_action">Neteja els missatges locals</string>
     <string name="account_settings_incoming_label">Servidor d\'entrada</string>
     <string name="account_settings_incoming_summary">Configura el servidor d\'entrada</string>

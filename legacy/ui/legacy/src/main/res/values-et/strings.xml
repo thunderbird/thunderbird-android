@@ -409,12 +409,6 @@
     <string name="account_settings_folder_sync_mode_first_and_second_class">1. ja 2. klassi kaustad</string>
     <string name="account_settings_folder_sync_mode_not_second_class">Kõik, v.a 2. klassi kaustad</string>
     <string name="account_settings_folder_sync_mode_none">Mitte ükski</string>
-    <string name="account_settings_folder_push_mode_label">Tõukemeilide kaustad</string>
-    <string name="account_settings_folder_push_mode_all">Kõik</string>
-    <string name="account_settings_folder_push_mode_first_class">Ainult 1. klassi kaustad</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">1. ja 2. klassi kaustad</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Kõik, v.a. 2 klassi kaustad</string>
-    <string name="account_settings_folder_push_mode_none">Mitte ükski</string>
     <string name="account_settings_sync_remote_deletetions_label">Süngi serveris kustutamised</string>
     <string name="account_settings_sync_remote_deletetions_summary">Eemalda kirjad kui need serveris kustutatud</string>
     <string name="account_settings_openpgp_missing">OpenPGP rakendus puudub - kas see on eemaldatud?</string>
@@ -430,11 +424,6 @@
     <string name="folder_settings_folder_sync_mode_first_class">1. klass</string>
     <string name="folder_settings_folder_sync_mode_second_class">2. klass</string>
     <string name="folder_settings_folder_sync_mode_inherited">Sama mis kuvamise klass</string>
-    <string name="folder_settings_folder_push_mode_label">Tõukekausta klass</string>
-    <string name="folder_settings_folder_push_mode_normal">Klassita</string>
-    <string name="folder_settings_folder_push_mode_first_class">1. klass</string>
-    <string name="folder_settings_folder_push_mode_second_class">2. klass</string>
-    <string name="folder_settings_folder_push_mode_inherited">Sana kui pollimise klass</string>
     <string name="folder_settings_clear_local_folder_action">Puhasta kohalikud kirjad</string>
     <string name="account_settings_incoming_label">Sissetuleva meili server</string>
     <string name="account_settings_incoming_summary">Konfigureeri sisse tuleva meili server</string>

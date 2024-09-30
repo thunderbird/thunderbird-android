@@ -367,10 +367,6 @@
     <string name="account_settings_folder_sync_mode_all">Tutti</string>
     <string name="account_settings_folder_sync_mode_not_second_class">Tutti i cartulari fora di a 2a classa</string>
     <string name="account_settings_folder_sync_mode_none">Nisunu</string>
-    <string name="account_settings_folder_push_mode_label">Cartulari Catapughjà</string>
-    <string name="account_settings_folder_push_mode_all">Tutti</string>
-    <string name="account_settings_folder_push_mode_first_class">Solu i cartulari di 1a classa</string>
-    <string name="account_settings_folder_push_mode_none">Nisunu</string>
     <string name="folder_settings_in_top_group_summary">Affissà in a parte superiore di a lista di i cartulari</string>
     <string name="folder_settings_folder_display_mode_label">Classa d’affissera di u cartulare</string>
     <string name="folder_settings_folder_display_mode_normal">Nisuna classa</string>
@@ -379,8 +375,6 @@
     <string name="folder_settings_folder_sync_mode_normal">Nisuna</string>
     <string name="folder_settings_folder_sync_mode_second_class">2a classa</string>
     <string name="folder_settings_folder_sync_mode_inherited">Cum’è a classa d’affissera</string>
-    <string name="folder_settings_folder_push_mode_second_class">2a classa</string>
-    <string name="folder_settings_folder_push_mode_inherited">Cum’è a classa di sullicitazione</string>
     <string name="folder_settings_clear_local_folder_action">Squassà i messaghji lucale</string>
     <string name="account_settings_outgoing_summary">Cunfigurà u servitore d’esciuta (SMTP) di i messaghji</string>
     <string name="account_settings_vibration">Vibrazione</string>
@@ -420,8 +414,6 @@
     <string name="account_settings_message_age_21">e 3 ultime settimane</string>
     <string name="account_settings_folder_sync_mode_first_class">Solu i cartulari di 1a classa</string>
     <string name="account_settings_folder_sync_mode_first_and_second_class">Cartulari di 1a è 2a classa</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">Cartulari di 1a è 2a classa</string>
-    <string name="account_settings_folder_push_mode_not_second_class">Tutti i cartulari fora di a 2a classa</string>
     <string name="account_settings_sync_remote_deletetions_label">Sincrunizà e squassature di u servitore</string>
     <string name="account_settings_sync_remote_deletetions_summary">Caccià i messaghji quand’elli sò squassati nant’à u servitore</string>
     <string name="account_settings_openpgp_missing">L’appiecazione OpenPGP hè assente ; seria desinstallata ?</string>
@@ -432,9 +424,6 @@
     <string name="account_settings_vibrate_pattern_default">Predefinitu</string>
     <string name="account_settings_vibrate_pattern_1">Mudellu 1</string>
     <string name="account_settings_vibrate_pattern_4">Mudellu 4</string>
-    <string name="folder_settings_folder_push_mode_label">Classa Catapughjà di u cartulare</string>
-    <string name="folder_settings_folder_push_mode_first_class">1a classa</string>
-    <string name="folder_settings_folder_push_mode_normal">Nisuna classa</string>
     <string name="account_settings_vibrate_pattern_2">Mudellu 2</string>
     <string name="account_settings_vibrate_pattern_5">Mudellu 5</string>
     <string name="folder_settings_folder_display_mode_first_class">1a classa</string>
