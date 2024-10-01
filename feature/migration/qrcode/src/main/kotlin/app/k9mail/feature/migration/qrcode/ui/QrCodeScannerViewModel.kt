@@ -4,22 +4,29 @@ import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.migration.qrcode.domain.QrCodeDomainContract.UseCase
 import app.k9mail.feature.migration.qrcode.domain.entity.AccountData
+import app.k9mail.feature.migration.qrcode.domain.entity.AccountData.Account
 import app.k9mail.feature.migration.qrcode.domain.usecase.QrCodeImageAnalysisProvider
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.Effect
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.Event
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.State
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.UiPermissionState
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okio.ByteString
 import okio.ByteString.Companion.encodeUtf8
 
 private typealias PayloadCallback = (String) -> Unit
 private typealias CameraUseCaseProviderFactory = (PayloadCallback) -> UseCase.CameraUseCasesProvider
 
+@Suppress("TooManyFunctions")
 internal class QrCodeScannerViewModel(
     private val qrCodePayloadReader: UseCase.QrCodePayloadReader,
+    private val qrCodeSettingsWriter: UseCase.QrCodeSettingsWriter,
     createCameraUseCaseProvider: CameraUseCaseProviderFactory = { callback -> QrCodeImageAnalysisProvider(callback) },
+    private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
     initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(initialState), QrCodeScannerContract.ViewModel {
     private val supportedPayloadHashes = mutableSetOf<ByteString>()
@@ -125,7 +132,20 @@ internal class QrCodeScannerViewModel(
     }
 
     private fun startAccountImport() {
-        // TODO: Start importing accounts.
+        viewModelScope.launch {
+            val accounts = mergeAccounts(accountDataList)
+
+            @Suppress("UnusedPrivateProperty")
+            val contentUri = withContext(backgroundDispatcher) {
+                qrCodeSettingsWriter.write(accounts)
+            }
+
+            // TODO: Start importing accounts by returning `contentUri` to `SettingsImportFragment`
+        }
+    }
+
+    private fun mergeAccounts(accountDataList: List<AccountData>): List<Account> {
+        return accountDataList.flatMap { it.accounts }
     }
 
     private val String.sha1: ByteString
