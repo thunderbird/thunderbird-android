@@ -1,4 +1,4 @@
-package: name='net.thunderbird.android.daily' versionCode='2' versionName='0.1a1' platformBuildVersionName='14' platformBuildVersionCode='34' compileSdkVersion='34' compileSdkVersionCodename='14'
+package: name='net.thunderbird.android.daily' platformBuildVersionName='14' platformBuildVersionCode='34' compileSdkVersion='34' compileSdkVersionCodename='14'
 install-location:'auto'
 sdkVersion:'21'
 targetSdkVersion:'34'
