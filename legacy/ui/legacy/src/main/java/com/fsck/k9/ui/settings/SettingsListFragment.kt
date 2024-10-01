@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.feature.launcher.FeatureLauncherActivity
+import app.k9mail.feature.launcher.FeatureLauncherTarget
 import app.k9mail.legacy.account.Account
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.livedata.observeNotNull
@@ -158,7 +159,7 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
     }
 
     private fun launchOnboarding() {
-        FeatureLauncherActivity.launchOnboarding(requireActivity())
+        FeatureLauncherActivity.launch(requireActivity(), FeatureLauncherTarget.Onboarding)
 
         requireActivity().finishAffinity()
     }

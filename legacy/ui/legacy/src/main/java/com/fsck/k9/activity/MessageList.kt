@@ -29,6 +29,7 @@ import app.k9mail.core.featureflag.FeatureFlagKey
 import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.feature.launcher.FeatureLauncherActivity
+import app.k9mail.feature.launcher.FeatureLauncherTarget
 import app.k9mail.feature.navigation.drawer.FolderDrawer
 import app.k9mail.feature.navigation.drawer.LegacyDrawer
 import app.k9mail.feature.navigation.drawer.NavigationDrawer
@@ -151,7 +152,7 @@ open class MessageList :
         deleteIncompleteAccounts(accounts)
         val hasAccountSetup = accounts.any { it.isFinishedSetup }
         if (!hasAccountSetup) {
-            FeatureLauncherActivity.launchOnboarding(this)
+            FeatureLauncherActivity.launch(this, FeatureLauncherTarget.Onboarding)
             finish()
             return
         }
