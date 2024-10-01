@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_webpage_url" translatable="false">https://k9mail.app/</string>
+    <string name="user_forum_url" translatable="false">https://support.mozilla.org/products/thunderbird-android</string>
+    <string name="message_header_mua" translatable="false">Thunderbird for Android</string>
+    <string name="app_authors_url" translatable="false">https://github.com/thunderbird/thunderbird-android/graphs/contributors</string>
+    <string name="app_source_url" translatable="false">https://github.com/thunderbird/thunderbird-android</string>
+    <string name="app_license_url" translatable="false">https://www.apache.org/licenses/LICENSE-2.0</string>
+</resources>
