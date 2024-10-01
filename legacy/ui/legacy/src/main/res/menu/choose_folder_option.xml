@@ -12,20 +12,9 @@
         app:showAsAction="collapseActionView|ifRoom"
         />
     <item
-        android:id="@+id/display_all"
-        android:title="@string/folder_list_display_mode_all"
-        />
-    <item
-        android:id="@+id/display_1st_class"
-        android:title="@string/folder_list_display_mode_first_class"
-        />
-    <item
-        android:id="@+id/display_1st_and_2nd_class"
-        android:title="@string/folder_list_display_mode_first_and_second_class"
-        />
-    <item
-        android:id="@+id/display_not_second_class"
-        android:title="@string/folder_list_display_mode_not_second_class"
+        android:id="@+id/toggle_hidden_folders"
+        android:checkable="true"
+        android:title="@string/folder_list_show_hidden_folders"
         />
     <item
         android:id="@+id/list_folders"

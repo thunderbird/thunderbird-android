@@ -621,12 +621,7 @@
     <string name="account_delete_dlg_title">Remove Account</string>
 
     <string name="folder_list_filter_hint">Folder name contains</string>
-
-    <string name="folder_list_display_mode_label">Show folders…</string>
-    <string name="folder_list_display_mode_all">All folders</string>
-    <string name="folder_list_display_mode_first_class">1st Class folders</string>
-    <string name="folder_list_display_mode_first_and_second_class">1st &amp; 2nd Class folders</string>
-    <string name="folder_list_display_mode_not_second_class">Hide 2nd Class folders</string>
+    <string name="folder_list_show_hidden_folders">Show hidden folders</string>
 
     <string name="account_settings_signature__location_label">Signature position</string>
     <string name="account_settings_signature__location_before_quoted_text">Before quoted message</string>

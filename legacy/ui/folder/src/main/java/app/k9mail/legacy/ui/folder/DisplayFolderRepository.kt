@@ -57,7 +57,15 @@ class DisplayFolderRepository(
         }.sortedWith(sortForDisplay)
     }
 
-    fun getDisplayFoldersFlow(account: Account, displayMode: Account.FolderMode): Flow<List<DisplayFolder>> {
+    fun getDisplayFoldersFlow(account: Account, includeHiddenFolders: Boolean): Flow<List<DisplayFolder>> {
+        return if (includeHiddenFolders) {
+            getDisplayFoldersFlow(account, FolderMode.ALL)
+        } else {
+            getDisplayFoldersFlow(account.uuid)
+        }
+    }
+
+    private fun getDisplayFoldersFlow(account: Account, displayMode: Account.FolderMode): Flow<List<DisplayFolder>> {
         val messageStore = messageStoreManager.getMessageStore(account.uuid)
 
         return callbackFlow {
