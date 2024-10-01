@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
@@ -112,11 +113,12 @@ private fun WelcomeTitle(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier.padding(horizontal = MainTheme.spacings.quadruple),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         TextDisplayMedium(
             text = title,
+            textAlign = TextAlign.Center,
         )
     }
 }
@@ -128,7 +130,7 @@ private fun WelcomeMessage(
 ) {
     Column(
         modifier = Modifier
-            .padding(start = MainTheme.spacings.quadruple, end = MainTheme.spacings.quadruple)
+            .padding(horizontal = MainTheme.spacings.quadruple)
             .then(modifier),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
