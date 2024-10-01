@@ -49,11 +49,11 @@ internal class QrCodePayloadMapper(
 
     private fun mapIncomingServer(incomingServer: QrCodeData.IncomingServer): AccountData.IncomingServer {
         return AccountData.IncomingServer(
-            protocol = AccountData.IncomingServerProtocol.fromInt(incomingServer.protocol),
+            protocol = incomingServer.protocol.toIncomingServerProtocol(),
             hostname = incomingServer.hostname.toHostname(),
             port = incomingServer.port.toPort(),
-            connectionSecurity = AccountData.ConnectionSecurity.fromInt(incomingServer.connectionSecurity),
-            authenticationType = AccountData.AuthenticationType.fromInt(incomingServer.authenticationType),
+            connectionSecurity = incomingServer.connectionSecurity.toConnectionSecurity(),
+            authenticationType = incomingServer.authenticationType.toAuthenticationType(),
             username = incomingServer.username,
             password = incomingServer.password,
         )
@@ -72,11 +72,11 @@ internal class QrCodePayloadMapper(
 
     private fun mapOutgoingServer(outgoingServer: QrCodeData.OutgoingServer): AccountData.OutgoingServer {
         return AccountData.OutgoingServer(
-            protocol = AccountData.OutgoingServerProtocol.fromInt(outgoingServer.protocol),
+            protocol = outgoingServer.protocol.toOutgoingServerProtocol(),
             hostname = outgoingServer.hostname.toHostname(),
             port = outgoingServer.port.toPort(),
-            connectionSecurity = AccountData.ConnectionSecurity.fromInt(outgoingServer.connectionSecurity),
-            authenticationType = AccountData.AuthenticationType.fromInt(outgoingServer.authenticationType),
+            connectionSecurity = outgoingServer.connectionSecurity.toConnectionSecurity(),
+            authenticationType = outgoingServer.authenticationType.toAuthenticationType(),
             username = outgoingServer.username,
             password = outgoingServer.password,
         )

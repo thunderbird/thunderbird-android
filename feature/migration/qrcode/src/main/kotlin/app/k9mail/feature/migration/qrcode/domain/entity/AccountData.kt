@@ -45,61 +45,26 @@ internal data class AccountData(
         val displayName: String,
     )
 
-    @Suppress("MagicNumber")
-    enum class IncomingServerProtocol(val intValue: Int) {
-        Imap(0),
-        Pop3(1),
-        ;
-
-        companion object {
-            fun fromInt(value: Int): IncomingServerProtocol {
-                return requireNotNull(entries.find { it.intValue == value }) { "Unsupported value: $value" }
-            }
-        }
+    enum class IncomingServerProtocol {
+        Imap,
+        Pop3,
     }
 
-    @Suppress("MagicNumber")
-    enum class OutgoingServerProtocol(val intValue: Int) {
-        Smtp(0),
-        ;
-
-        companion object {
-            fun fromInt(value: Int): OutgoingServerProtocol {
-                return requireNotNull(entries.find { it.intValue == value }) { "Unsupported value: $value" }
-            }
-        }
+    enum class OutgoingServerProtocol {
+        Smtp,
     }
 
-    @Suppress("MagicNumber")
-    enum class ConnectionSecurity(val intValue: Int) {
-        Plain(0),
-        TryStartTls(1),
-        AlwaysStartTls(2),
-        Tls(3),
-        ;
-
-        companion object {
-            fun fromInt(value: Int): ConnectionSecurity {
-                return requireNotNull(entries.find { it.intValue == value }) { "Unsupported value: $value" }
-            }
-        }
+    enum class ConnectionSecurity {
+        Plain,
+        AlwaysStartTls,
+        Tls,
     }
 
-    @Suppress("MagicNumber")
-    enum class AuthenticationType(val intValue: Int) {
-        None(0),
-        PasswordCleartext(1),
-        PasswordEncrypted(2),
-        Gssapi(3),
-        Ntlm(4),
-        TlsCertificate(5),
-        OAuth2(6),
-        ;
-
-        companion object {
-            fun fromInt(value: Int): AuthenticationType {
-                return requireNotNull(entries.find { it.intValue == value }) { "Unsupported value: $value" }
-            }
-        }
+    enum class AuthenticationType {
+        None,
+        PasswordCleartext,
+        PasswordEncrypted,
+        TlsCertificate,
+        OAuth2,
     }
 }
