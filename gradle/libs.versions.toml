@@ -76,6 +76,7 @@ kotlinKsp = "2.0.20-1.0.25"
 kotlinxCoroutines = "1.8.1"
 kotlinxCollectionsImmutable = "0.3.8"
 kotlinxDateTime = "0.6.1"
+kotlinxSerialization = "1.7.3"
 ktlint = "1.2.1"
 kxml2 = "1.0"
 leakcanary = "2.13"
@@ -111,11 +112,13 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detektPlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinBom" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinBom" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlinBom" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinBom" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "kotlinKsp" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotlessPlugin" }
 
 [libraries]
 android-billing = { module = "com.android.billingclient:billing", version.ref = "androidBilling" }
+android-billing-ktx = { module = "com.android.billingclient:billing-ktx", version.ref = "androidBilling" }
 android-desugar = { module = "com.android.tools:desugar_jdk_libs", version.ref = "androidDesugar" }
 android-material = { module = "com.google.android.material:material", version.ref = "androidMaterial" }
 android-tools-common = { module = "com.android.tools:common", version.ref = "androidTools" }
@@ -214,6 +217,7 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDateTime" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 kxml2 = { module = "com.github.cketti:kxml2-extracted-from-android", version.ref = "kxml2" }
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
 materialdrawer = { module = "com.mikepenz:materialdrawer", version.ref = "materialDrawer" }
@@ -265,6 +269,7 @@ shared-jvm-android-compose = [
   "androidx-navigation-compose",
   "koin-androidx-compose",
   "kotlinx-collections-immutable",
+  "kotlinx-serialization-json",
 ]
 shared-jvm-android-compose-debug = [
   "androidx-compose-ui-test-manifest",

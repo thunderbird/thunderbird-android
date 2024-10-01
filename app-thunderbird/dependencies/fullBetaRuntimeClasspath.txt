@@ -134,6 +134,7 @@ co.touchlab:stately-concurrent-collections-jvm:2.0.6
 co.touchlab:stately-concurrent-collections:2.0.6
 co.touchlab:stately-strict-jvm:2.0.6
 co.touchlab:stately-strict:2.0.6
+com.android.billingclient:billing-ktx:7.0.0
 com.android.billingclient:billing:7.0.0
 com.beetstra.jutf7:jutf7:1.0.0
 com.github.ByteHamster:SearchPreference:v2.3.0
@@ -213,11 +214,11 @@ org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.8.1
 org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1
 org.jetbrains.kotlinx:kotlinx-datetime-jvm:0.6.1
 org.jetbrains.kotlinx:kotlinx-datetime:0.6.1
-org.jetbrains.kotlinx:kotlinx-serialization-bom:1.6.3
-org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.6.3
-org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.3
-org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.6.3
-org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3
+org.jetbrains.kotlinx:kotlinx-serialization-bom:1.7.3
+org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.7.3
+org.jetbrains.kotlinx:kotlinx-serialization-core:1.7.3
+org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.7.3
+org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3
 org.jetbrains:annotations:24.1.0
 org.jsoup:jsoup:1.17.2
 org.minidns:minidns-client:1.0.5
