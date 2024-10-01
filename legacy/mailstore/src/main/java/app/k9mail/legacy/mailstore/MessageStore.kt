@@ -267,7 +267,7 @@ interface MessageStore {
     /**
      * Update the sync class of a folder.
      */
-    fun setSyncClass(folderId: Long, folderClass: FolderClass)
+    fun setSyncEnabled(folderId: Long, enable: Boolean)
 
     /**
      * Update the push setting of a folder.

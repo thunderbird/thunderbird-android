@@ -2284,22 +2284,19 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
         try {
             Account.FolderMode aDisplayMode = account.getFolderDisplayMode();
-            Account.FolderMode aSyncMode = account.getFolderSyncMode();
 
             LocalStore localStore = localStoreProvider.getInstance(account);
             for (final LocalFolder folder : localStore.getPersonalNamespaces(false)) {
                 folder.open();
 
                 FolderClass fDisplayClass = folder.getDisplayClass();
-                FolderClass fSyncClass = folder.getSyncClass();
-
                 if (LocalFolder.isModeMismatch(aDisplayMode, fDisplayClass)) {
                     // Never sync a folder that isn't displayed
                     continue;
                 }
 
-                if (LocalFolder.isModeMismatch(aSyncMode, fSyncClass)) {
-                    // Do not sync folders in the wrong class
+                if (!folder.isSyncEnabled()) {
+                    // Do not sync folders that are not enabled for sync.
                     continue;
                 }
                 synchronizeFolder(account, folder, ignoreLastCheckedTime, notify, listener, notificationState);

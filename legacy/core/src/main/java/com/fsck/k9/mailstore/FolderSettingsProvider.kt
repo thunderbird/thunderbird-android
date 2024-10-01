@@ -16,7 +16,7 @@ class FolderSettingsProvider(val preferences: Preferences, val account: Account)
         return FolderSettings(
             visibleLimit = account.displayCount,
             displayClass = storage.getString("$prefix.displayMode", null).toFolderClass(FolderClass.NO_CLASS),
-            syncClass = storage.getString("$prefix.syncMode", null).toFolderClass(FolderClass.INHERITED),
+            isSyncEnabled = storage.getBoolean("$prefix.syncEnabled", false),
             isNotificationsEnabled = storage.getBoolean("$prefix.notificationsEnabled", false),
             isPushEnabled = storage.getBoolean("$prefix.pushEnabled", false),
             inTopGroup = storage.getBoolean("$prefix.inTopGroup", false),
@@ -30,7 +30,7 @@ class FolderSettingsProvider(val preferences: Preferences, val account: Account)
         val editor = preferences.createStorageEditor()
 
         editor.remove("$prefix.displayMode")
-        editor.remove("$prefix.syncMode")
+        editor.remove("$prefix.syncEnabled")
         editor.remove("$prefix.notificationsEnabled")
         editor.remove("$prefix.pushEnabled")
         editor.remove("$prefix.inTopGroup")

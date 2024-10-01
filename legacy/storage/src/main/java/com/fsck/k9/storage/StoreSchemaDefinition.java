@@ -4,7 +4,6 @@ package com.fsck.k9.storage;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.fsck.k9.K9;
-import com.fsck.k9.mail.FolderClass;
 import com.fsck.k9.mailstore.LockableDatabase.SchemaDefinition;
 import com.fsck.k9.mailstore.MigrationsHelper;
 import com.fsck.k9.storage.migrations.Migrations;
@@ -12,7 +11,7 @@ import timber.log.Timber;
 
 
 class StoreSchemaDefinition implements SchemaDefinition {
-    static final int DB_VERSION = 86;
+    static final int DB_VERSION = 87;
 
     private final MigrationsHelper migrationsHelper;
 
@@ -91,7 +90,7 @@ class StoreSchemaDefinition implements SchemaDefinition {
                 "flagged_count INTEGER default 0, " +
                 "integrate INTEGER, " +
                 "top_group INTEGER, " +
-                "poll_class TEXT, " +
+                "sync_enabled INTEGER DEFAULT 0, " +
                 "push_enabled INTEGER DEFAULT 0, " +
                 "display_class TEXT, " +
                 "notifications_enabled INTEGER DEFAULT 0, " +

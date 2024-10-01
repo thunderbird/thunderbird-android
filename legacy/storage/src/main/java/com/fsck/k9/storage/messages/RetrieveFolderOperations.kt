@@ -230,8 +230,8 @@ private class CursorFolderAccessor(val cursor: Cursor) : FolderDetailsAccessor {
     override val isIntegrate: Boolean
         get() = cursor.getInt(6) == 1
 
-    override val syncClass: FolderClass
-        get() = cursor.getString(7).toFolderClass(FolderClass.INHERITED)
+    override val isSyncEnabled: Boolean
+        get() = cursor.getInt(7) == 1
 
     override val displayClass: FolderClass
         get() = cursor.getString(8).toFolderClass(FolderClass.NO_CLASS)
@@ -274,7 +274,7 @@ private val FOLDER_COLUMNS = arrayOf(
     "local_only",
     "top_group",
     "integrate",
-    "poll_class",
+    "sync_enabled",
     "display_class",
     "notifications_enabled",
     "push_enabled",

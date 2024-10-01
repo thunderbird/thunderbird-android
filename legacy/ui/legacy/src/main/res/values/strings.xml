@@ -516,12 +516,7 @@
     <string name="folder_settings_folder_display_mode_first_class">1st Class</string>
     <string name="folder_settings_folder_display_mode_second_class">2nd Class</string>
 
-    <string name="folder_settings_folder_sync_mode_label">Folder poll class</string>
-    <string name="folder_settings_folder_sync_mode_normal">None</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1st Class</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2nd Class</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Same as display class</string>
-
+    <string name="folder_settings_sync_label">Enable sync</string>
     <string name="folder_settings_push_label">Enable Push</string>
     <string name="folder_settings_notifications_label">Notifications</string>
     <string name="folder_settings_clear_local_folder_action">Clear local messages</string>

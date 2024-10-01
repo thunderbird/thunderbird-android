@@ -25,7 +25,7 @@ internal class UpdateFolderOperations(private val lockableDatabase: LockableData
             val contentValues = ContentValues().apply {
                 put("top_group", folderDetails.isInTopGroup)
                 put("integrate", folderDetails.isIntegrate)
-                put("poll_class", folderDetails.syncClass.name)
+                put("sync_enabled", folderDetails.isSyncEnabled)
                 put("display_class", folderDetails.displayClass.name)
                 put("notifications_enabled", folderDetails.isNotificationsEnabled)
                 put("push_enabled", folderDetails.isPushEnabled)
@@ -43,8 +43,8 @@ internal class UpdateFolderOperations(private val lockableDatabase: LockableData
         setString(folderId = folderId, columnName = "display_class", value = folderClass.name)
     }
 
-    fun setSyncClass(folderId: Long, folderClass: FolderClass) {
-        setString(folderId = folderId, columnName = "poll_class", value = folderClass.name)
+    fun setSyncEnabled(folderId: Long, enable: Boolean) {
+        setBoolean(folderId = folderId, columnName = "sync_enabled", value = enable)
     }
 
     fun setPushEnabled(folderId: Long, enable: Boolean) {
