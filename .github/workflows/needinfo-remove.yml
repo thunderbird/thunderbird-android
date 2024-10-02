@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       github.event.comment.author_association != 'OWNER' &&
+      github.event.comment.author_association != 'MEMBER' &&
       github.event.comment.author_association != 'COLLABORATOR'
     permissions:
       issues: write
