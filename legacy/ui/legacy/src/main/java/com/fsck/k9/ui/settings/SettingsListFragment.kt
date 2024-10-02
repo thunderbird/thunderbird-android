@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import app.k9mail.core.common.provider.AppNameProvider
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.feature.funding.api.FundingManager
+import app.k9mail.feature.funding.api.FundingType
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
 import app.k9mail.legacy.account.Account
@@ -137,18 +138,22 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
                     icon = Icons.Outlined.Help,
                 )
 
-                if (fundingManager.isFundingFeatureIncluded()) {
-                    addIntent(
-                        text = getString(R.string.settings_list_action_support, appNameProvider.appName),
-                        icon = Icons.Outlined.Favorite,
-                        intent = FeatureLauncherActivity.getIntent(requireActivity(), FeatureLauncherTarget.Funding),
-                    )
-                } else {
-                    addUrlAction(
-                        text = getString(R.string.settings_list_action_support, appNameProvider.appName),
-                        url = getString(R.string.donate_url),
-                        icon = Icons.Outlined.Favorite,
-                    )
+                when (fundingManager.getFundingType()) {
+                    FundingType.GOOGLE_PLAY -> {
+                        // TODO add funding action
+                    }
+
+                    FundingType.LINK -> {
+                        addUrlAction(
+                            text = getString(R.string.settings_list_action_support, appNameProvider.appName),
+                            url = getString(R.string.donate_url),
+                            icon = Icons.Outlined.Favorite,
+                        )
+                    }
+
+                    FundingType.NO_FUNDING -> {
+                        // no-op
+                    }
                 }
             }
         }

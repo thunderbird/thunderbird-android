@@ -1,10 +1,10 @@
-package app.k9mail.feature.funding.noop
+package app.k9mail.feature.funding.link
 
 import app.k9mail.feature.funding.api.FundingManager
 import app.k9mail.feature.funding.api.FundingType
 
-class NoOpFundingManager : FundingManager {
+class LinkFundingManager : FundingManager {
     override fun getFundingType(): FundingType {
-        return FundingType.NO_FUNDING
+        return FundingType.LINK
     }
 }
