@@ -20,6 +20,8 @@ import timber.log.Timber
 
 @Composable
 internal fun QrCodeScannerScreen(
+    finishWithResult: (Uri) -> Unit,
+    finish: () -> Unit,
     viewModel: QrCodeScannerContract.ViewModel = koinViewModel<QrCodeScannerViewModel>(),
 ) {
     val cameraPermissionLauncher = rememberLauncherForActivityResult(RequestPermission()) { success ->
@@ -32,6 +34,8 @@ internal fun QrCodeScannerScreen(
         when (effect) {
             Effect.RequestCameraPermission -> cameraPermissionLauncher.requestCameraPermission()
             Effect.GoToAppInfoScreen -> context.goToAppInfoScreen()
+            is Effect.ReturnResult -> finishWithResult(effect.contentUri)
+            Effect.Cancel -> finish()
         }
     }
 

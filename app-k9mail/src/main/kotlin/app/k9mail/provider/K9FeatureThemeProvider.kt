@@ -11,4 +11,11 @@ class K9FeatureThemeProvider : FeatureThemeProvider {
             content()
         }
     }
+
+    @Composable
+    override fun WithTheme(darkTheme: Boolean, content: @Composable () -> Unit) {
+        K9MailTheme2(darkTheme = darkTheme) {
+            content()
+        }
+    }
 }
