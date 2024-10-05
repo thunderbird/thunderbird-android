@@ -18,6 +18,7 @@ accessible by the branch they are associated with
 The variables set in these environments are non-sensitive and are used by the build job.
 
 - APP_NAME: app-thunderbird | app-k9
+- TAG_PREFIX: THUNDERBIRD | K9MAIL
 - RELEASE_TYPE: debug | daily | beta | release
 - MATRIX_INCLUDE:
   - This is a JSON string used to create the jobs matrix. For example, for

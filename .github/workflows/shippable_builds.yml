@@ -1,26 +1,51 @@
 name: Shippable Build & Signing
 on:
   workflow_dispatch:
-    inputs:
-      gh_environment:
-        description: Github environment name
-        required: true
-        default: ''
-        type: choice
-        options:
-          - thunderbird_beta
-          - thunderbird_daily
-          - thunderbird_release
-          - thunderbird_debug
 
 jobs:
+  get_environment:
+    runs-on: ubuntu-latest
+    outputs:
+      releaseEnv: ${{ steps.getReleaseEnv.outputs.result }}
+    steps:
+      - uses: actions/github-script@v7
+        id: getReleaseEnv
+        with:
+          result-encoding: string
+          script: |
+            const RELEASE_ENVS = {
+              "main": "thunderbird_daily",
+              "^TB_BETA_.*$": "thunderbird_beta",
+              "^TB_RELEASE_.*$": "thunderbird_release"
+            }
+            const ReleaseEnvs = new Proxy(RELEASE_ENVS, {
+                get(target, prop, receiver) {
+                    if (target.hasOwnProperty(prop)) {
+                        return target[prop]
+                    }
+                    const search = Object.keys(target).filter((key) => new RegExp(key).test(prop))
+                    if (search.length === 1) {
+                        return target[search[0]]
+                    }
+                    return undefined
+                }
+            })
+            const branch = context.ref.replace(/^refs\/heads\//, "")
+            const release_env = ReleaseEnvs[branch]
+            if (!release_env) {
+                core.setFailed(`Unknown branch for shippable builds! ${branch}`)
+            }
+            return release_env
+
   dump_config:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.gh_environment }}
+    needs: get_environment
+    environment: ${{ needs.get_environment.outputs.releaseEnv }}
     outputs:
       matrixInclude: ${{ vars.MATRIX_INCLUDE }}
       appName: ${{ vars.APP_NAME }}
       releaseType: ${{ vars.RELEASE_TYPE }}
+      tagPrefix: ${{ vars.TAG_PREFIX }}
     steps:
       - name: Dump Vars context
         id: variables
@@ -30,17 +55,16 @@ jobs:
         run: |
           echo "$VARS_CONTEXT"
           echo "$MATRIX_INCLUDE"
-          ## echo "$MATRIX_INCLUDE" >> $GITHUB_OUTPUT
 
 
   build_unsigned:
     runs-on: ubuntu-latest
     timeout-minutes: 90
-    needs: [dump_config]
+    needs: [dump_config, get_environment]
     strategy:
       matrix:
         include: "${{ fromJSON(needs.dump_config.outputs.matrixInclude) }}"
-    environment: ${{ inputs.gh_environment }}
+    environment: ${{ needs.get_environment.outputs.releaseEnv }}
     steps:
       - uses: actions/checkout@v4
 
@@ -175,6 +199,7 @@ jobs:
     env:
       APP_NAME: ${{ needs.dump_config.outputs.appName }}
       RELEASE_TYPE: ${{ needs.dump_config.outputs.releaseType }}
+      TAG_PREFIX: ${{ needs.dump_config.outputs.tagPrefix }}
       PACKAGE_FORMAT: "apk"
       PACKAGE_FLAVOR: "foss"
       UPLOADS: "uploads"
@@ -185,14 +210,16 @@ jobs:
           name: signed-${{ env.APP_NAME }}-${{ env.PACKAGE_FORMAT }}-${{ env.PACKAGE_FLAVOR }}
           path: ${{ env.UPLOADS }}/
 
-      - name: Get Version -> Tag Name
+      - name: Get Tag Name
         ## This obviously is quite incorrect. Need a way to extract versionName from gradle
         shell: bash
         run: |
           APKANALYZER="${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/apkanalyzer"
           APK_FILE="${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}-signed.apk"
           _version=$(${APKANALYZER} manifest version-name "${UPLOADS}/${APK_FILE}")
-          _tag="${APP_NAME}-${_version}"
+          _tag="${TAG_PREFIX}_${_version//./_}"
+          echo "Tag Name: ${_tag}"
+          echo "Apk File: ${APK_FILE}"
           echo "TAG_NAME=${_tag}" >> $GITHUB_ENV
           echo "APK_FILE=${APK_FILE}" >> $GITHUB_ENV
 
