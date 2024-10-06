@@ -488,12 +488,6 @@
     <string name="account_settings_message_age_6_months">the last 6 months</string>
     <string name="account_settings_message_age_1_year">the last year</string>
 
-    <string name="account_settings_folder_display_mode_label">Folders to display</string>
-    <string name="account_settings_folder_display_mode_all">All</string>
-    <string name="account_settings_folder_display_mode_first_class">Only 1st Class folders</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">1st and 2nd Class folders</string>
-    <string name="account_settings_folder_display_mode_not_second_class">All except 2nd Class folders</string>
-
     <string name="account_settings_folder_sync_mode_label">Poll folders</string>
     <string name="account_settings_folder_sync_mode_all">All</string>
     <string name="account_settings_folder_sync_mode_first_class">Only 1st Class folders</string>
@@ -511,11 +505,7 @@
     <string name="folder_settings_in_top_group_label">Show in top group</string>
     <string name="folder_settings_in_top_group_summary">Show near the top of the folder list</string>
 
-    <string name="folder_settings_folder_display_mode_label">Folder display class</string>
-    <string name="folder_settings_folder_display_mode_normal">No Class</string>
-    <string name="folder_settings_folder_display_mode_first_class">1st Class</string>
-    <string name="folder_settings_folder_display_mode_second_class">2nd Class</string>
-
+    <string name="folder_settings_visible_label">Show folder</string>
     <string name="folder_settings_sync_label">Enable sync</string>
     <string name="folder_settings_push_label">Enable Push</string>
     <string name="folder_settings_notifications_label">Notifications</string>

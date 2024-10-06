@@ -122,8 +122,8 @@ public class SqlQueryBuilder {
                 columnName = "flagged";
                 break;
             }
-            case DISPLAY_CLASS: {
-                columnName = "display_class";
+            case VISIBLE: {
+                columnName = "visible";
                 break;
             }
             case THREAD_ID: {
@@ -213,6 +213,7 @@ public class SqlQueryBuilder {
             case NEW_MESSAGE:
             case THREAD_ID:
             case READ:
+            case VISIBLE:
             case FLAGGED: {
                 return true;
             }

@@ -11,7 +11,7 @@ import timber.log.Timber;
 
 
 class StoreSchemaDefinition implements SchemaDefinition {
-    static final int DB_VERSION = 87;
+    static final int DB_VERSION = 88;
 
     private final MigrationsHelper migrationsHelper;
 
@@ -92,7 +92,7 @@ class StoreSchemaDefinition implements SchemaDefinition {
                 "top_group INTEGER, " +
                 "sync_enabled INTEGER DEFAULT 0, " +
                 "push_enabled INTEGER DEFAULT 0, " +
-                "display_class TEXT, " +
+                "visible INTEGER DEFAULT 1, " +
                 "notifications_enabled INTEGER DEFAULT 0, " +
                 "more_messages TEXT default \"unknown\", " +
                 "server_id TEXT, " +

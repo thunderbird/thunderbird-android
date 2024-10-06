@@ -265,15 +265,6 @@
             android:title="@string/account_setup_auto_expand_folder"
             />
 
-        <ListPreference
-            android:dialogTitle="@string/account_settings_folder_display_mode_label"
-            android:entries="@array/folder_display_mode_entries"
-            android:entryValues="@array/folder_display_mode_values"
-            android:key="folder_display_mode"
-            app:useSimpleSummaryProvider="true"
-            android:title="@string/account_settings_folder_display_mode_label"
-            />
-
         <CheckBoxPreference
             android:key="subscribed_folders_only"
             android:title="@string/account_setup_incoming_subscribed_folders_only_label"

@@ -36,5 +36,5 @@ public enum SearchField {
     NEW_MESSAGE,
     READ,
     FLAGGED,
-    DISPLAY_CLASS
+    VISIBLE
 }

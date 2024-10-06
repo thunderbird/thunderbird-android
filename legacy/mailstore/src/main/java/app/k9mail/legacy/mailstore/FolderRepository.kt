@@ -6,7 +6,6 @@ import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.folder.RemoteFolder
 import app.k9mail.legacy.mailstore.FolderTypeMapper.folderTypeOf
 import app.k9mail.legacy.mailstore.RemoteFolderTypeMapper.toFolderType
-import com.fsck.k9.mail.FolderClass
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -48,7 +47,7 @@ class FolderRepository(
                 isInTopGroup = folder.isInTopGroup,
                 isIntegrate = folder.isIntegrate,
                 isSyncEnabled = folder.isSyncEnabled,
-                displayClass = folder.displayClass,
+                isVisible = folder.isVisible,
                 isNotificationsEnabled = folder.isNotificationsEnabled,
                 isPushEnabled = folder.isPushEnabled,
             )
@@ -80,7 +79,7 @@ class FolderRepository(
                 isInTopGroup = folder.isInTopGroup,
                 isIntegrate = folder.isIntegrate,
                 isSyncEnabled = folder.isSyncEnabled,
-                displayClass = folder.displayClass,
+                isVisible = folder.isVisible,
                 isNotificationsEnabled = folder.isNotificationsEnabled,
                 isPushEnabled = folder.isPushEnabled,
             )
@@ -140,9 +139,9 @@ class FolderRepository(
         messageStore.setIncludeInUnifiedInbox(folderId, includeInUnifiedInbox)
     }
 
-    fun setDisplayClass(account: Account, folderId: Long, folderClass: FolderClass) {
+    fun setVisible(account: Account, folderId: Long, visible: Boolean) {
         val messageStore = messageStoreManager.getMessageStore(account)
-        messageStore.setDisplayClass(folderId, folderClass)
+        messageStore.setVisible(folderId, visible)
     }
 
     fun setSyncEnabled(account: Account, folderId: Long, enable: Boolean) {
@@ -189,7 +188,7 @@ data class RemoteFolderDetails(
     val isInTopGroup: Boolean,
     val isIntegrate: Boolean,
     val isSyncEnabled: Boolean,
-    val displayClass: FolderClass,
+    val isVisible: Boolean,
     val isNotificationsEnabled: Boolean,
     val isPushEnabled: Boolean,
 )

@@ -96,7 +96,8 @@ class AccountSettingsDescriptions {
                         R.array.expunge_policy_values))
         ));
         s.put("folderDisplayMode", Settings.versions(
-                new V(1, new EnumSetting<>(FolderMode.class, FolderMode.NOT_SECOND_CLASS))
+                new V(1, new EnumSetting<>(FolderMode.class, FolderMode.NOT_SECOND_CLASS)),
+                new V(100, null)
         ));
         s.put("folderPushMode", Settings.versions(
                 new V(1, new EnumSetting<>(FolderMode.class, FolderMode.FIRST_CLASS)),

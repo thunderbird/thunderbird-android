@@ -27,7 +27,8 @@ class FolderSettingsDescriptions {
          */
 
         s.put("displayMode", Settings.versions(
-                new V(1, new EnumSetting<>(FolderClass.class, FolderClass.NO_CLASS))
+                new V(1, new EnumSetting<>(FolderClass.class, FolderClass.NO_CLASS)),
+                new V(100, null)
         ));
         s.put("notifyMode", Settings.versions(
                 new V(34, new EnumSetting<>(FolderClass.class, FolderClass.INHERITED)),
@@ -56,6 +57,9 @@ class FolderSettingsDescriptions {
         ));
         s.put("syncEnabled", Settings.versions(
             new V(99, new BooleanSetting(false))
+        ));
+        s.put("visible", Settings.versions(
+            new V(100, new BooleanSetting(true))
         ));
 
         SETTINGS = Collections.unmodifiableMap(s);

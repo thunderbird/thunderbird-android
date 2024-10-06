@@ -125,7 +125,6 @@ class AccountSettingsDataStore(
             "account_setup_auto_expand_folder" -> {
                 loadSpecialFolder(account.autoExpandFolderId, SpecialFolderSelection.MANUAL)
             }
-            "folder_display_mode" -> account.folderDisplayMode.name
             "archive_folder" -> loadSpecialFolder(account.archiveFolderId, account.archiveFolderSelection)
             "drafts_folder" -> loadSpecialFolder(account.draftsFolderId, account.draftsFolderSelection)
             "sent_folder" -> loadSpecialFolder(account.sentFolderId, account.sentFolderSelection)
@@ -162,7 +161,6 @@ class AccountSettingsDataStore(
             "quote_style" -> account.quoteStyle = Account.QuoteStyle.valueOf(value)
             "account_quote_prefix" -> account.quotePrefix = value
             "account_setup_auto_expand_folder" -> account.autoExpandFolderId = extractFolderId(value)
-            "folder_display_mode" -> account.folderDisplayMode = Account.FolderMode.valueOf(value)
             "archive_folder" -> saveSpecialFolderSelection(value, account::setArchiveFolderId)
             "drafts_folder" -> saveSpecialFolderSelection(value, account::setDraftsFolderId)
             "sent_folder" -> saveSpecialFolderSelection(value, account::setSentFolderId)
