@@ -7,7 +7,6 @@ import app.k9mail.legacy.account.Account.SpecialFolderSelection
 import app.k9mail.legacy.folder.RemoteFolder
 import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.Preferences
-import com.fsck.k9.mail.FolderClass
 
 /**
  * Updates special folders in [Account] if they are marked as [SpecialFolderSelection.AUTOMATIC] or if they are marked
@@ -50,7 +49,7 @@ class SpecialFolderUpdater(
 
         if (newInboxId != null) {
             folderRepository.setIncludeInUnifiedInbox(account, newInboxId, true)
-            folderRepository.setDisplayClass(account, newInboxId, FolderClass.FIRST_CLASS)
+            folderRepository.setVisible(account, newInboxId, true)
             folderRepository.setSyncEnabled(account, newInboxId, true)
             folderRepository.setNotificationsEnabled(account, newInboxId, true)
         }
@@ -119,7 +118,7 @@ class SpecialFolderUpdater(
         }
 
         if (folderId != null) {
-            folderRepository.setDisplayClass(account, folderId, FolderClass.FIRST_CLASS)
+            folderRepository.setVisible(account, folderId, true)
         }
     }
 

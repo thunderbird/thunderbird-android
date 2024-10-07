@@ -3,7 +3,6 @@ package com.fsck.k9.mailstore
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.mailstore.FolderSettings
 import com.fsck.k9.Preferences
-import com.fsck.k9.mail.FolderClass
 
 /**
  * Provides imported folder settings if available, otherwise default values.
@@ -15,7 +14,7 @@ class FolderSettingsProvider(val preferences: Preferences, val account: Account)
 
         return FolderSettings(
             visibleLimit = account.displayCount,
-            displayClass = storage.getString("$prefix.displayMode", null).toFolderClass(FolderClass.NO_CLASS),
+            isVisible = storage.getBoolean("$prefix.visible", true),
             isSyncEnabled = storage.getBoolean("$prefix.syncEnabled", false),
             isNotificationsEnabled = storage.getBoolean("$prefix.notificationsEnabled", false),
             isPushEnabled = storage.getBoolean("$prefix.pushEnabled", false),
@@ -29,7 +28,7 @@ class FolderSettingsProvider(val preferences: Preferences, val account: Account)
     private fun removeImportedFolderSettings(prefix: String) {
         val editor = preferences.createStorageEditor()
 
-        editor.remove("$prefix.displayMode")
+        editor.remove("$prefix.visible")
         editor.remove("$prefix.syncEnabled")
         editor.remove("$prefix.notificationsEnabled")
         editor.remove("$prefix.pushEnabled")
@@ -37,9 +36,5 @@ class FolderSettingsProvider(val preferences: Preferences, val account: Account)
         editor.remove("$prefix.integrate")
 
         editor.commit()
-    }
-
-    private fun String?.toFolderClass(defaultValue: FolderClass): FolderClass {
-        return if (this == null) defaultValue else FolderClass.valueOf(this)
     }
 }

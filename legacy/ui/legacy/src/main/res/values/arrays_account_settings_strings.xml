@@ -60,13 +60,6 @@
         <item>@string/account_settings_autodownload_message_size_any</item>
     </string-array>
 
-    <string-array name="folder_display_mode_entries">
-        <item>@string/account_settings_folder_display_mode_all</item>
-        <item>@string/account_settings_folder_display_mode_first_class</item>
-        <item>@string/account_settings_folder_display_mode_first_and_second_class</item>
-        <item>@string/account_settings_folder_display_mode_not_second_class</item>
-    </string-array>
-
     <string-array name="show_pictures_entries">
         <item>@string/account_settings_show_pictures_never</item>
         <item>@string/account_settings_show_pictures_only_from_contacts</item>
