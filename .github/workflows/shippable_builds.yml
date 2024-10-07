@@ -14,28 +14,17 @@ jobs:
           result-encoding: string
           script: |
             const RELEASE_ENVS = {
-              "main": "thunderbird_daily",
-              "^TB_BETA_.*$": "thunderbird_beta",
-              "^TB_RELEASE_.*$": "thunderbird_release"
+              "refs/heads/main": "thunderbird_daily",
+              "refs/heads/beta": "thunderbird_beta",
+              "refs/heads/release": "thunderbird_release",
+            };
+
+            if (context.ref in RELEASE_ENVS) {
+              return RELEASE_ENVS[context.ref];
+            } else {
+              core.setFailed(`Unknown branch ${context.ref} for shippable builds!`)
+              return "";
             }
-            const ReleaseEnvs = new Proxy(RELEASE_ENVS, {
-                get(target, prop, receiver) {
-                    if (target.hasOwnProperty(prop)) {
-                        return target[prop]
-                    }
-                    const search = Object.keys(target).filter((key) => new RegExp(key).test(prop))
-                    if (search.length === 1) {
-                        return target[search[0]]
-                    }
-                    return undefined
-                }
-            })
-            const branch = context.ref.replace(/^refs\/heads\//, "")
-            const release_env = ReleaseEnvs[branch]
-            if (!release_env) {
-                core.setFailed(`Unknown branch for shippable builds! ${branch}`)
-            }
-            return release_env
 
   dump_config:
     runs-on: ubuntu-latest
