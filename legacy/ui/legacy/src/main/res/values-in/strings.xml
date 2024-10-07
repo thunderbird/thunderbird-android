@@ -380,11 +380,6 @@
     <string name="folder_settings_folder_display_mode_normal">Tak ada kelas</string>
     <string name="folder_settings_folder_display_mode_first_class">Kelas 1</string>
     <string name="folder_settings_folder_display_mode_second_class">Kelas 2</string>
-    <string name="folder_settings_folder_sync_mode_label">Kelas polling folder</string>
-    <string name="folder_settings_folder_sync_mode_normal">Tidak ada</string>
-    <string name="folder_settings_folder_sync_mode_first_class">Kelas 1</string>
-    <string name="folder_settings_folder_sync_mode_second_class">Kelas 2</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Sama dengan kelas tampilan</string>
     <string name="folder_settings_clear_local_folder_action">Bersihkan pesan lokal</string>
     <string name="account_settings_incoming_label">Server masuk</string>
     <string name="account_settings_incoming_summary">Konfigurasikan server surat masuk</string>
@@ -453,11 +448,6 @@
     <string name="sort_by_attach">Lampiran</string>
     <string name="account_delete_dlg_title">Hapus akun</string>
     <string name="folder_list_filter_hint">Nama folder mengandung</string>
-    <string name="folder_list_display_mode_label">Perlihatkan folder…</string>
-    <string name="folder_list_display_mode_all">Semua folder</string>
-    <string name="folder_list_display_mode_first_class">Folder kelas 1</string>
-    <string name="folder_list_display_mode_first_and_second_class">Folder kelas 1 &amp; 2</string>
-    <string name="folder_list_display_mode_not_second_class">Sembunyikan folder kelas 2</string>
     <string name="account_settings_signature__location_label">Posisi tanda tangan</string>
     <string name="account_settings_signature__location_before_quoted_text">Sebelum kutipan pesan</string>
     <string name="account_settings_signature__location_after_quoted_text">Setelah kutipan pesan</string>

@@ -418,11 +418,6 @@
     <string name="folder_settings_folder_display_mode_normal">无级别</string>
     <string name="folder_settings_folder_display_mode_first_class">1 级</string>
     <string name="folder_settings_folder_display_mode_second_class">2 级</string>
-    <string name="folder_settings_folder_sync_mode_label">文件夹轮询级别</string>
-    <string name="folder_settings_folder_sync_mode_normal">无</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1 级</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2 级</string>
-    <string name="folder_settings_folder_sync_mode_inherited">与显示级别相同</string>
     <string name="folder_settings_clear_local_folder_action">清空本地邮件</string>
     <string name="account_settings_incoming_label">收件服务器</string>
     <string name="account_settings_incoming_summary">配置收件服务器</string>
@@ -509,11 +504,6 @@
     <string name="sort_by_attach">附件</string>
     <string name="account_delete_dlg_title">移除账号</string>
     <string name="folder_list_filter_hint">文件夹名称包含</string>
-    <string name="folder_list_display_mode_label">显示文件夹…</string>
-    <string name="folder_list_display_mode_all">全部文件夹</string>
-    <string name="folder_list_display_mode_first_class">1 级文件夹</string>
-    <string name="folder_list_display_mode_first_and_second_class">1 级和 2 级文件夹</string>
-    <string name="folder_list_display_mode_not_second_class">隐藏 2 级文件夹</string>
     <string name="account_settings_signature__location_label">签名位置</string>
     <string name="account_settings_signature__location_before_quoted_text">在引用的邮件前</string>
     <string name="account_settings_signature__location_after_quoted_text">在引用的邮件后</string>
@@ -912,4 +902,7 @@
     <string name="settings_ui_data_collection">数据收集</string>
     <string name="settings_ui_telemetry_title">使用情况和技术数据</string>
     <string name="settings_ui_telemetry_description">与 Mozilla 分享此应用的性能、使用情况、硬件和自定义数据，以帮助我们改进 Thunderbird</string>
+    <string name="folder_settings_push_label">启用推送</string>
+    <string name="folder_settings_sync_label">启用同步</string>
+    <string name="folder_list_show_hidden_folders">显示隐藏的文件夹</string>
 </resources>

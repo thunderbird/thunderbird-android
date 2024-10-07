@@ -87,7 +87,7 @@
     <string name="add_attachment_action">添付ファイルを追加</string>
     <string name="empty_trash_action">ごみ箱を空にする</string>
     <string name="expunge_action">完全削除 (Expunge)</string>
-    <string name="about_action">K-9 Mail について</string>
+    <string name="about_action">製品情報</string>
     <string name="prefs_title">設定</string>
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(件名なし)</string>
@@ -116,7 +116,7 @@
     <string name="notification_certificate_error_public">証明書エラー</string>
     <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g> の証明書エラー</string>
     <string name="notification_certificate_error_text">サーバーの設定を確認してください</string>
-    <string name="notification_authentication_error_title">認証に失敗</string>
+    <string name="notification_authentication_error_title">認証に失敗しました</string>
     <string name="notification_authentication_error_text"><xliff:g id="account">%s</xliff:g> の認証に失敗しました。サーバーの設定を更新してください。</string>
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">通知エラー</string>
@@ -314,7 +314,7 @@
     <string name="account_settings_notify_summary">メールの受信時はステータスバーに通知します</string>
     <string name="account_settings_notify_sync_summary">メールの同期中はステータスバーに通知します</string>
     <string name="account_settings_notify_self_label">自分が送信したメールも通知する</string>
-    <string name="account_settings_notify_self_summary">このアカウントからのメールも通知する</string>
+    <string name="account_settings_notify_self_summary">このアカウントから送信したメールも通知します</string>
     <string name="account_notify_contacts_mail_only_label">連絡先のみ</string>
     <string name="account_notify_contacts_mail_only_summary">既知の連絡先からのメッセージのみ通知を表示します</string>
     <string name="account_settings_ignore_chat_messages_label">チャットメッセージを無視する</string>
@@ -412,17 +412,12 @@
     <string name="account_settings_sync_remote_deletetions_summary">サーバーでメッセージが削除されたときにローカルのメッセージも削除します</string>
     <string name="account_settings_openpgp_missing">OpenPGP アプリが見つかりません - アンインストールしましたか？</string>
     <string name="folder_settings_title">フォルダー設定</string>
-    <string name="folder_settings_in_top_group_label">一覧の先頭グループに表示</string>
+    <string name="folder_settings_in_top_group_label">一覧の先頭グループに表示する</string>
     <string name="folder_settings_in_top_group_summary">フォルダー一覧の先頭に表示します</string>
     <string name="folder_settings_folder_display_mode_label">フォルダー表示クラス</string>
     <string name="folder_settings_folder_display_mode_normal">クラスなし</string>
     <string name="folder_settings_folder_display_mode_first_class">1st クラス</string>
     <string name="folder_settings_folder_display_mode_second_class">2nd クラス</string>
-    <string name="folder_settings_folder_sync_mode_label">フォルダー同期クラス</string>
-    <string name="folder_settings_folder_sync_mode_normal">なし</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1st クラス</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2nd クラス</string>
-    <string name="folder_settings_folder_sync_mode_inherited">表示クラスと同一設定</string>
     <string name="folder_settings_clear_local_folder_action">ローカルのメッセージをクリア</string>
     <string name="account_settings_incoming_label">受信メールサーバー設定</string>
     <string name="account_settings_incoming_summary">受信メールサーバーを設定します</string>
@@ -457,20 +452,20 @@
     <string name="account_settings_composition_title">メッセージ作成オプション</string>
     <string name="account_settings_composition_label">作成時の既定</string>
     <string name="account_settings_composition_summary">既定の差出人、Bcc、署名を設定します</string>
-    <string name="account_settings_identities_label">名義を管理</string>
+    <string name="account_settings_identities_label">差出人情報を管理</string>
     <string name="account_settings_identities_summary">別の差出人アドレスと署名をセットアップします</string>
-    <string name="manage_identities_title">名義を管理</string>
-    <string name="manage_identities_context_menu_title">名義を管理</string>
-    <string name="edit_identity_title">名義を編集</string>
+    <string name="manage_identities_title">差出人情報を管理</string>
+    <string name="manage_identities_context_menu_title">差出人情報を管理</string>
+    <string name="edit_identity_title">差出人情報を編集</string>
     <string name="edit_identity_save">保存</string>
-    <string name="new_identity_action">新しい名義</string>
+    <string name="new_identity_action">新しい差出人情報</string>
     <string name="account_settings_always_bcc_label">すべてのメッセージの Bcc 先</string>
     <string name="manage_identities_edit_action">編集</string>
     <string name="manage_identities_move_up_action">上に移動</string>
     <string name="manage_identities_move_down_action">下に移動</string>
     <string name="manage_identities_move_top_action">先頭へ移動 / 既定に設定</string>
     <string name="manage_identities_remove_action">削除</string>
-    <string name="edit_identity_description_label">名義の説明</string>
+    <string name="edit_identity_description_label">差出人情報の説明</string>
     <string name="edit_identity_description_hint">(オプション)</string>
     <string name="edit_identity_name_label">あなたのお名前</string>
     <string name="edit_identity_name_hint">(オプション)</string>
@@ -482,11 +477,11 @@
     <string name="edit_identity_signature_hint">(オプション)</string>
     <string name="account_settings_signature_use_label">署名を付ける</string>
     <string name="account_settings_signature_label">署名</string>
-    <string name="default_identity_description">初期設定の名義</string>
-    <string name="choose_identity_title">名義を選択</string>
-    <string name="send_as">送信の名義</string>
-    <string name="no_removable_identity">他の名義がない場合は削除できません</string>
-    <string name="identity_has_no_email">メールアドレスがない名義は使用できません</string>
+    <string name="default_identity_description">初期設定の差出人情報</string>
+    <string name="choose_identity_title">差出人情報を選択</string>
+    <string name="send_as">送信に使用する差出人情報</string>
+    <string name="no_removable_identity">他の差出人情報がない場合は削除できません</string>
+    <string name="identity_has_no_email">メールアドレスがない差出人情報は使用できません</string>
     <string name="sort_earliest_first">日付が古いメッセージから降順で表示します</string>
     <string name="sort_latest_first">日付が新しいメッセージから昇順で表示します</string>
     <string name="sort_subject_alpha">件名順で表示します</string>
@@ -508,12 +503,7 @@
     <string name="sort_by_unread">既読/未読</string>
     <string name="sort_by_attach">添付ファイル</string>
     <string name="account_delete_dlg_title">アカウント削除</string>
-    <string name="folder_list_filter_hint">フォルダー名が含む</string>
-    <string name="folder_list_display_mode_label">フォルダーを表示…</string>
-    <string name="folder_list_display_mode_all">すべてのフォルダー</string>
-    <string name="folder_list_display_mode_first_class">1st クラスフォルダー</string>
-    <string name="folder_list_display_mode_first_and_second_class">1st と 2nd クラスフォルダー</string>
-    <string name="folder_list_display_mode_not_second_class">2nd クラスフォルダーを隠す</string>
+    <string name="folder_list_filter_hint">フォルダー名を検索</string>
     <string name="account_settings_signature__location_label">署名の位置</string>
     <string name="account_settings_signature__location_before_quoted_text">引用メッセージの前に挿入する</string>
     <string name="account_settings_signature__location_after_quoted_text">引用メッセージの後に挿入する</string>
@@ -692,7 +682,7 @@
     <string name="fetching_attachment_dialog_title_save">下書きを保存中</string>
     <string name="fetching_attachment_dialog_message">添付ファイルを取得中…</string>
     <!--Note: This references message_view_download_remainder-->
-    <string name="preview_encrypted">*暗号化*</string>
+    <string name="preview_encrypted">*暗号化されています*</string>
     <string name="add_from_contacts">連絡先から追加</string>
     <string name="recipient_cc">Cc</string>
     <string name="recipient_bcc">Bcc</string>
@@ -828,7 +818,7 @@
     <string name="push_notification_state_listening">新着メッセージ待機中</string>
     <string name="push_notification_state_wait_background_sync">バックグラウンド同期が許可されるまでスリープ中</string>
     <string name="push_notification_state_wait_network">ネットワークが利用できるようになるまでスリープ中</string>
-    <string name="push_notification_info">タップして詳細を表示。</string>
+    <string name="push_notification_info">タップすると詳細を表示します。</string>
     <string name="push_info_title">プッシュ情報</string>
     <string name="push_info_notification_explanation_text">プッシュを使用する場合、<xliff:g id="app_name">%1$s</xliff:g> はメールサーバへの接続を維持します。Android では、アプリがバックグラウンドで動作している間、継続して通知を表示する必要があります。<xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="push_info_configure_notification_text">しかし、Android では、通知を隠すこともできます。</string>
@@ -911,4 +901,7 @@
     <string name="settings_ui_data_collection">データ収集</string>
     <string name="settings_ui_telemetry_title">使用状況と技術データ</string>
     <string name="settings_ui_telemetry_description">このアプリのパフォーマンス情報、使用状況、ハードウェア情報、設定を Mozilla に共有して Thunderbird の改善に協力します</string>
+    <string name="folder_settings_push_label">プッシュを有効にする</string>
+    <string name="folder_list_show_hidden_folders">隠しフォルダーを表示</string>
+    <string name="folder_settings_sync_label">同期を有効にする</string>
 </resources>

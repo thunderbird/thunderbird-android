@@ -5,4 +5,7 @@
     <string name="navigation_drawer_unified_inbox_title">Entrada unificada</string>
     <string name="navigation_drawer_folder_item_badge_count_greater_than_99">&gt;99</string>
     <string name="navigation_drawer_folder_item_badge_count_greater_than_1_000">&gt;1000</string>
+    <string name="navigation_drawer_action_sync_all_accounts">Sincronizar todas las cuentas</string>
+    <string name="navigation_drawer_action_show_accounts">Mostrar cuentas</string>
+    <string name="navigation_drawer_action_hide_accounts">Ocultar cuentas</string>
 </resources>

@@ -360,10 +360,6 @@
     <string name="folder_settings_folder_display_mode_label">폴더의 보이기 클래스</string>
     <string name="folder_settings_folder_display_mode_first_class">제 1종</string>
     <string name="folder_settings_folder_display_mode_second_class">제 2종</string>
-    <string name="folder_settings_folder_sync_mode_normal">없음</string>
-    <string name="folder_settings_folder_sync_mode_first_class">제 1종</string>
-    <string name="folder_settings_folder_sync_mode_second_class">제 2종</string>
-    <string name="folder_settings_folder_sync_mode_inherited">보이기 클래스와 같음</string>
     <string name="folder_settings_clear_local_folder_action">로컬 메시지 삭제</string>
     <string name="account_settings_incoming_label">수신 서버</string>
     <string name="account_settings_incoming_summary">메일 수신 서버 수정</string>
@@ -431,11 +427,6 @@
     <string name="sort_by_unread">읽음/읽지 않음</string>
     <string name="sort_by_attach">첨부</string>
     <string name="account_delete_dlg_title">계정 삭제</string>
-    <string name="folder_list_display_mode_label">폴더</string>
-    <string name="folder_list_display_mode_all">모든 폴더 표시</string>
-    <string name="folder_list_display_mode_first_class">제 1종 폴더만 표시</string>
-    <string name="folder_list_display_mode_first_and_second_class">제 1종 및 2종 폴더 표시</string>
-    <string name="folder_list_display_mode_not_second_class">제 2종 폴더 외 모두 표시</string>
     <string name="account_settings_signature__location_label">서명 위치</string>
     <string name="account_settings_signature__location_before_quoted_text">본문 앞에</string>
     <string name="account_settings_signature__location_after_quoted_text">본문 뒤에</string>

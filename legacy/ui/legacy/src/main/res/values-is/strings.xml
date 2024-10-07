@@ -419,11 +419,6 @@
     <string name="folder_settings_folder_display_mode_normal">Enginn flokkur</string>
     <string name="folder_settings_folder_display_mode_first_class">1. flokkur</string>
     <string name="folder_settings_folder_display_mode_second_class">2. flokkur</string>
-    <string name="folder_settings_folder_sync_mode_label">Flokkur möppuvöktunar</string>
-    <string name="folder_settings_folder_sync_mode_normal">Engin</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1. flokkur</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2. flokkur</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Sama og birtingarflokkur</string>
     <string name="folder_settings_clear_local_folder_action">Hreinsa staðvær skilaboð</string>
     <string name="account_settings_incoming_label">Inn-póstþjónn</string>
     <string name="account_settings_incoming_summary">Stilla móttöku-póstþjón</string>
@@ -510,11 +505,6 @@
     <string name="sort_by_attach">Viðhengi</string>
     <string name="account_delete_dlg_title">Fjarlægja aðganginn</string>
     <string name="folder_list_filter_hint">Nafn möppu inniheldur</string>
-    <string name="folder_list_display_mode_label">Birta möppur…</string>
-    <string name="folder_list_display_mode_all">Allar möppur</string>
-    <string name="folder_list_display_mode_first_class">1. flokks möppur</string>
-    <string name="folder_list_display_mode_first_and_second_class">1. og 2. flokks möppur</string>
-    <string name="folder_list_display_mode_not_second_class">Fela 2. flokks möppur</string>
     <string name="account_settings_signature__location_label">Staðsetning undirskriftar</string>
     <string name="account_settings_signature__location_before_quoted_text">Á undan tilvitnun</string>
     <string name="account_settings_signature__location_after_quoted_text">Á eftir tilvitnun</string>

@@ -418,11 +418,6 @@
     <string name="folder_settings_folder_display_mode_normal">Klaserik ez</string>
     <string name="folder_settings_folder_display_mode_first_class">1. klasea</string>
     <string name="folder_settings_folder_display_mode_second_class">2. klasea</string>
-    <string name="folder_settings_folder_sync_mode_label">Karpeta atzitze klasea</string>
-    <string name="folder_settings_folder_sync_mode_normal">Bat ere ez</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1. klasea</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2. klasea</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Bistaratzeko klasearen berdina</string>
     <string name="folder_settings_clear_local_folder_action">Garbitu mezu lokalak</string>
     <string name="account_settings_incoming_label">Sarrerako zerbitzaria</string>
     <string name="account_settings_incoming_summary">Konfiguratu sarrerako posta zerbitzaria</string>
@@ -509,11 +504,6 @@
     <string name="sort_by_attach">Eranskinak</string>
     <string name="account_delete_dlg_title">Kendu Kontua</string>
     <string name="folder_list_filter_hint">Karpetaren izenak dauka</string>
-    <string name="folder_list_display_mode_label">Erakutsi karpetak…</string>
-    <string name="folder_list_display_mode_all">Karpeta guztiak</string>
-    <string name="folder_list_display_mode_first_class">1. klaseko karpetak</string>
-    <string name="folder_list_display_mode_first_and_second_class">1. eta 2. klaseko karpetak</string>
-    <string name="folder_list_display_mode_not_second_class">Ezkutatu 2. klaseko karpetak</string>
     <string name="account_settings_signature__location_label">Sinaduraren kokapena</string>
     <string name="account_settings_signature__location_before_quoted_text">Aipua baino lehen</string>
     <string name="account_settings_signature__location_after_quoted_text">Aipuaren ondoren</string>

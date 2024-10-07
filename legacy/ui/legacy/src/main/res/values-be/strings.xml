@@ -423,11 +423,6 @@
     <string name="folder_settings_folder_display_mode_normal">Без класа</string>
     <string name="folder_settings_folder_display_mode_first_class">1 клас</string>
     <string name="folder_settings_folder_display_mode_second_class">2 клас</string>
-    <string name="folder_settings_folder_sync_mode_label">Клас апытання каталогаў</string>
-    <string name="folder_settings_folder_sync_mode_normal">Няма</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1 клас</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2 клас</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Як клас бачнасці</string>
     <string name="folder_settings_clear_local_folder_action">Выдаліць лакальныя лісты</string>
     <string name="account_settings_incoming_label">Сервер уваходных лістоў</string>
     <string name="account_settings_incoming_summary">Наладжванне сервера ўваходнай пошты</string>
@@ -514,11 +509,6 @@
     <string name="sort_by_attach">Далучаныя файлы</string>
     <string name="account_delete_dlg_title">Выдаліць акаўнт</string>
     <string name="folder_list_filter_hint">Пошук каталога</string>
-    <string name="folder_list_display_mode_label">Паказваць каталогі…</string>
-    <string name="folder_list_display_mode_all">Усе каталогі</string>
-    <string name="folder_list_display_mode_first_class">1 клас</string>
-    <string name="folder_list_display_mode_first_and_second_class">1 і 2 класы</string>
-    <string name="folder_list_display_mode_not_second_class">Схаваць 2 клас</string>
     <string name="account_settings_signature__location_label">Пазіцыя подпісу</string>
     <string name="account_settings_signature__location_before_quoted_text">Перад цытатай</string>
     <string name="account_settings_signature__location_after_quoted_text">Пасля цытаты</string>

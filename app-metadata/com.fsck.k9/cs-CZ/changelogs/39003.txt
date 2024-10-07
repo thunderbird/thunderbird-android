@@ -1,1 +1,1 @@
-- Fixed a crash when a message list swipe action was set to "None"
+- Opraven pád, pokud byla akce při přejetí zprávy nastavena na "Žádná"

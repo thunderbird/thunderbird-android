@@ -423,11 +423,6 @@
     <string name="folder_settings_folder_display_mode_normal">Žádná třída</string>
     <string name="folder_settings_folder_display_mode_first_class">1. třída</string>
     <string name="folder_settings_folder_display_mode_second_class">2. třída</string>
-    <string name="folder_settings_folder_sync_mode_label">Třída fondu složky</string>
-    <string name="folder_settings_folder_sync_mode_normal">Žádné</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1. třída</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2. třída</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Stejná jako třída zobrazení</string>
     <string name="folder_settings_clear_local_folder_action">Vyčistit místní zprávy</string>
     <string name="account_settings_incoming_label">Server příchozí pošty</string>
     <string name="account_settings_incoming_summary">Nastavení serveru příchozí pošty</string>
@@ -514,11 +509,6 @@
     <string name="sort_by_attach">Příloha</string>
     <string name="account_delete_dlg_title">Odstranit účet</string>
     <string name="folder_list_filter_hint">Název složky obsahuje</string>
-    <string name="folder_list_display_mode_label">Zobrazit složky…</string>
-    <string name="folder_list_display_mode_all">Všechny složky</string>
-    <string name="folder_list_display_mode_first_class">Složky 1. třídy</string>
-    <string name="folder_list_display_mode_first_and_second_class">Složky 1. &amp; 2. třídy</string>
-    <string name="folder_list_display_mode_not_second_class">Skrýt složky 2. třídy</string>
     <string name="account_settings_signature__location_label">Umístění podpisu</string>
     <string name="account_settings_signature__location_before_quoted_text">Před citovanými textem</string>
     <string name="account_settings_signature__location_after_quoted_text">Za citovanými textem</string>
@@ -933,4 +923,6 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <string name="folder_settings_notifications_label">Oznámení</string>
     <string name="settings_ui_telemetry_description">Sdílí data o výkonu, používání, hardwaru a přizpůsobení této aplikace se společností Mozilla. Umožňuje nám zlepšovat Thunderbird</string>
     <string name="folder_settings_push_label">Povolit oznámení</string>
+    <string name="folder_settings_sync_label">Zapnout synchronizaci</string>
+    <string name="folder_list_show_hidden_folders">Zobrazit skryté složky</string>
 </resources>

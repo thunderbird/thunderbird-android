@@ -304,10 +304,6 @@
     <string name="folder_settings_folder_display_mode_normal">კლასის გარეშე</string>
     <string name="folder_settings_folder_display_mode_first_class">1-ლი კლასი</string>
     <string name="folder_settings_folder_display_mode_second_class">მე-2 კლასი</string>
-    <string name="folder_settings_folder_sync_mode_label">საკეცის გამოკითხვის კლასი</string>
-    <string name="folder_settings_folder_sync_mode_normal">არც ერთი</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1-ლი კლასი</string>
-    <string name="folder_settings_folder_sync_mode_second_class">მე-2 კლასი</string>
     <string name="account_settings_incoming_label">შემავალი სერვერი</string>
     <string name="account_settings_incoming_summary">შემავალი საფოსტო სერვერის გამართვა</string>
     <string name="account_settings_outgoing_label">გამავალი სერვერი</string>
@@ -331,10 +327,6 @@
     <string name="sort_by_flag">ვარსკვლავი</string>
     <string name="sort_by_attach">დანართები</string>
     <string name="folder_list_filter_hint">საკეცის სახელი შეიცავს</string>
-    <string name="folder_list_display_mode_all">ყველა საკეცი</string>
-    <string name="folder_list_display_mode_first_class">1-ლი კლასის საკეცი</string>
-    <string name="folder_list_display_mode_first_and_second_class">1-ლი &amp; მე-2 კლასის საკეცები</string>
-    <string name="folder_list_display_mode_not_second_class">მე-2 კლასის საკეცების დამალვა</string>
     <string name="account_settings_signature__location_label">ხელმოწერის მდებარეობა</string>
     <string name="setting_theme_dark">მუქი</string>
     <string name="setting_theme_light">ნათელი</string>

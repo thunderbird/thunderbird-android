@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="settings_import_title">İçe aktarım ayarları</string>
+    <string name="settings_import_title">Ayarları içe aktar</string>
     <string name="settings_import_pick_document_button">Dosya seç</string>
     <string name="settings_import_button">İçe Aktar</string>
     <string name="settings_import_success_generic">Ayarlar başarıyla içe aktarıldı</string>
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
     <string name="settings_import_password_required">Lütfen parolaları girin</string>
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_required">Lütfen giriş yapın</string>
+    <string name="settings_import_authorization_required">Lütfen oturum açın</string>
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_and_password_required">Lütfen giriş yapın ve parolaları girin</string>
+    <string name="settings_import_authorization_and_password_required">Lütfen oturum açın ve parolaları girin</string>
     <string name="settings_import_failure">Ayarlar içe aktarılamadı</string>
     <string name="settings_import_read_failure">Ayarlar dosyası okunamadı</string>
     <string name="settings_import_partial_failure">Bazı ayarlar içe aktarılamadı</string>
     <string name="settings_import_status_success">Başarıyla içe aktarıldı</string>
     <string name="settings_import_status_password_required">Parola gerekli</string>
-    <string name="settings_import_status_log_in_required">Oturum açma gerekli</string>
+    <string name="settings_import_status_log_in_required">Oturum açmalısınız</string>
     <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
     <string name="settings_import_status_not_imported">İçe aktarılmadı</string>
     <string name="settings_import_status_error">İçe aktarma hatası</string>
     <string name="settings_import_later_button">Daha sonra</string>
-    <string name="settings_importing">İçe aktarma ayarları…</string>
+    <string name="settings_importing">Ayarlar içe aktarılıyor…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">\"<xliff:g id="account">%s</xliff:g>\" hesabını kullanabilmek için sunucu parolasını sağlamanız gerekir.</item>
-        <item quantity="other">\"<xliff:g id="account">%s</xliff:g>\" hesaplarını kullanabilmek için sunucu parolalarını sağlamanız gerekir.</item>
+        <item quantity="other">\"<xliff:g id="account">%s</xliff:g>\" hesabını kullanabilmek için sunucu parolalarını sağlamanız gerekir.</item>
     </plurals>
     <string name="settings_import_incoming_server_password_hint">Gelen sunucusu parolası</string>
     <string name="settings_import_outgoing_server_password_hint">Giden sunucusu parolası</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Giden sunucusu için de aynı parolayı kullan</string>
     <string name="settings_import_server_name_format">Sunucu adı: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Bu e-posta hesabını kullanmak için oturum açmanız ve uygulamaya e-postalarınıza erişim izni vermeniz gerekir.</string>
-    <string name="settings_import_oauth_sign_in">Giriş yap</string>
-    <string name="settings_import_oauth_sign_in_with_google">Google ile giriş yap</string>
-    <string name="settings_import_oauth_error_oauth_flow_canceled">Yetkilendirme iptal edildi</string>
-    <string name="settings_import_oauth_error_oauth_flow_failed">Yetkilendirme şu hatayla başarısız oldu: <xliff:g id="error">%s</xliff:g></string>
-    <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 şu anda bu sağlayıcı ile desteklenmiyor.</string>
+    <string name="settings_import_oauth_description">Bu e-posta hesabını kullanmak için oturum açmanız ve uygulamanın e-postalarınıza erişmesine izin vermeniz gerekir.</string>
+    <string name="settings_import_oauth_sign_in">Oturum aç</string>
+    <string name="settings_import_oauth_sign_in_with_google">Google ile oturum aç</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">Kimlik doğrulama iptal edildi</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Kimlik doğrulama şu hatayla başarısız oldu: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_not_supported">Bu sağlayıcıda şu anda OAuth 2.0 desteklenmiyor.</string>
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="settings_import_oauth_error_browser_not_found">Uygulama, hesabınıza erişim izni vermek için kullanılacak bir tarayıcı bulamadı.</string>
-    <string name="settings_import_general_settings_item">Genel Ayarlar</string>
+    <string name="settings_import_general_settings_item">Genel ayarlar</string>
     <string name="settings_import_pick_app_button">Uygulamadan içe aktar</string>
     <string name="settings_import_pick_app_dialog_title">Uygulamadan içe aktar</string>
 </resources>

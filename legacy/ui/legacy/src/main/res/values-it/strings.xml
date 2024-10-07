@@ -97,7 +97,7 @@
     <string name="status_network_error">Errore di connessione</string>
     <string name="status_invalid_id_error">Messaggio non trovato</string>
     <string name="status_loading_error">Errore caricamento messaggio</string>
-    <string name="load_more_messages_fmt">Scarica fino a<xliff:g id="messages_to_load">%d</xliff:g> altri messaggi</string>
+    <string name="load_more_messages_fmt">Scarica fino a <xliff:g id="messages_to_load">%d</xliff:g> altri messaggi</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
@@ -358,7 +358,7 @@
     <string name="account_settings_sync">Recupero messaggi</string>
     <string name="account_settings_folders">Cartelle</string>
     <string name="account_settings_quote_prefix_label">Prefisso testo citato</string>
-    <string name="account_settings_crypto">Criptatura end-to-end</string>
+    <string name="account_settings_crypto">Crittografia end-to-end</string>
     <string name="account_settings_crypto_app">Abilita supporto OpenPGP</string>
     <string name="account_settings_crypto_app_select_title">Seleziona app OpenPGP</string>
     <string name="account_settings_crypto_key">Configura chiave end-to-end</string>
@@ -367,7 +367,7 @@
     <string name="account_settings_crypto_summary_config">Configurazione…</string>
     <string name="account_settings_crypto_encrypt_all_drafts">Salva tutte le bozze criptate</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">Tutte le bozze saranno memorizzate criptate</string>
-    <string name="account_settings_crypto_encrypt_all_drafts_off">Cripta le bozze solo se la criptatura è abilitata</string>
+    <string name="account_settings_crypto_encrypt_all_drafts_off">Cripta le bozze solo se la crittografia è abilitata</string>
     <string name="account_settings_mail_check_frequency_label">Frequenza sincronizzazione cartella</string>
     <string name="account_settings_color_label">Colore account</string>
     <string name="account_settings_color_summary">Colore account usato in lista account e cartelle</string>
@@ -422,11 +422,6 @@
     <string name="folder_settings_folder_display_mode_normal">Nessuna classe</string>
     <string name="folder_settings_folder_display_mode_first_class">1a classe</string>
     <string name="folder_settings_folder_display_mode_second_class">2a classe</string>
-    <string name="folder_settings_folder_sync_mode_label">Classe cartelle sincronizzate</string>
-    <string name="folder_settings_folder_sync_mode_normal">Nessuna</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1a classe</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2a classe</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Come la classe di visualizzazione</string>
     <string name="folder_settings_clear_local_folder_action">Pulisci messaggi locali</string>
     <string name="account_settings_incoming_label">Server posta in arrivo</string>
     <string name="account_settings_incoming_summary">Configura server della posta in arrivo</string>
@@ -513,11 +508,6 @@
     <string name="sort_by_attach">Allegati</string>
     <string name="account_delete_dlg_title">Rimuovi account</string>
     <string name="folder_list_filter_hint">Nome cartella contiene</string>
-    <string name="folder_list_display_mode_label">Mostra cartelle…</string>
-    <string name="folder_list_display_mode_all">Tutte le cartelle</string>
-    <string name="folder_list_display_mode_first_class">Cartelle di 1a classe</string>
-    <string name="folder_list_display_mode_first_and_second_class">Cartelle di 1a e 2a classe</string>
-    <string name="folder_list_display_mode_not_second_class">Nascondi cartelle di 2a classe</string>
     <string name="account_settings_signature__location_label">Posizione firma</string>
     <string name="account_settings_signature__location_before_quoted_text">Prima del testo citato</string>
     <string name="account_settings_signature__location_after_quoted_text">Dopo il testo citato</string>
@@ -719,9 +709,9 @@
     <string name="address_type_mobile">Cellulare</string>
     <string name="compose_error_no_draft_folder">Cartella Bozze non configurata per questo account!</string>
     <string name="compose_error_no_key_configured">Nessuna chiave configurata per questo account! Controlla le impostazioni.</string>
-    <string name="error_crypto_provider_incompatible">Il fornitore della criptatura utilizza una versione incompatibile. Controlla le impostazioni!</string>
-    <string name="error_crypto_provider_connect">Impossibile connettersi al fornitore di crittografia, controlla le impostazioni oppure tocca l\'icona di criptatura per riprovare!</string>
-    <string name="error_crypto_provider_ui_required">Inizializzazione della criptatura end-to-end non riuscita, controlla le impostazioni</string>
+    <string name="error_crypto_provider_incompatible">Il fornitore della crittografia utilizza una versione incompatibile. Controlla le impostazioni!</string>
+    <string name="error_crypto_provider_connect">Impossibile connettersi al fornitore di crittografia, controlla le impostazioni oppure tocca l\'icona di crittografia per riprovare!</string>
+    <string name="error_crypto_provider_ui_required">Inizializzazione della crittografia end-to-end non riuscita, controlla le impostazioni</string>
     <string name="error_crypto_inline_attach">La modalità PGP/INLINE non supporta gli allegati!</string>
     <string name="enable_inline_pgp">Abilita PGP/INLINE</string>
     <string name="disable_inline_pgp">Disabilita PGP/INLINE</string>
@@ -750,7 +740,7 @@
     <string name="crypto_msg_incomplete_signed">scaricare completamente il messaggio per processare la firma</string>
     <string name="crypto_msg_unsupported_signed">contiene una firma end-to-end non supportata</string>
     <string name="crypto_msg_unsupported_encrypted">Il messaggio è criptato, ma in un formato non supportato</string>
-    <string name="crypto_msg_cancelled">Il messaggio è criptato, ma la decriptatura è stata annullata</string>
+    <string name="crypto_msg_cancelled">Il messaggio è criptato, ma la decrittografia è stata annullata</string>
     <string name="crypto_msg_title_unencrypted_signed_e2e">Testo semplice firmato end-to-end</string>
     <string name="crypto_msg_unencrypted_sign_verified">da firmatario verificato</string>
     <string name="crypto_msg_title_unencrypted_signed">Testo semplice firmato</string>
@@ -760,9 +750,9 @@
     <string name="crypto_msg_unencrypted_sign_insecure">ma la chiave end-to-end non è considerata sicura</string>
     <string name="crypto_msg_unencrypted_sign_unknown">da una chiave end-to-end sconosciuta</string>
     <string name="crypto_msg_title_encrypted_unknown">Criptato</string>
-    <string name="crypto_msg_encrypted_error">ma si è verificato un errore di decriptatura</string>
+    <string name="crypto_msg_encrypted_error">ma si è verificato un errore di decrittografia</string>
     <string name="crypto_msg_encrypted_incomplete">devi scaricare completamente il messaggio per decriptarlo</string>
-    <string name="crypto_msg_encrypted_no_provider">ma nessuna app di criptatura è configurata</string>
+    <string name="crypto_msg_encrypted_no_provider">ma nessuna app di crittografia è configurata</string>
     <string name="crypto_msg_title_encrypted_unsigned">Criptato</string>
     <string name="crypto_msg_encrypted_unsigned">ma non end-to-end</string>
     <string name="crypto_msg_title_encrypted_signed_e2e">Criptato end-to-end</string>
@@ -774,21 +764,21 @@
     <string name="crypto_msg_encrypted_sign_revoked">ma la chiave end-to-end è revocata</string>
     <string name="crypto_msg_encrypted_sign_insecure">ma la chiave end-to-end non è considerata sicura</string>
     <string name="crypto_msg_encrypted_sign_error">ma i dati end-to-end presentano errori</string>
-    <string name="crypto_msg_encrypted_insecure">ma la criptatura non è considerata sicura</string>
+    <string name="crypto_msg_encrypted_insecure">ma la crittografia non è considerata sicura</string>
     <string name="locked_attach_unlock">Sblocca</string>
     <string name="locked_attach_unencrypted">Questa parte non è criptata e potrebbe non essere sicura</string>
     <string name="locked_attach_title">Allegato non protetto</string>
     <string name="message_progress_text">Caricamento…</string>
-    <string name="messageview_decrypt_cancelled">La decriptatura è stata annullata</string>
+    <string name="messageview_decrypt_cancelled">La decrittografia è stata annullata</string>
     <string name="messageview_decrypt_retry">Riprova</string>
-    <string name="messageview_decrypt_incomplete">Il messaggio criptato deve essere scaricato per la decriptatura</string>
-    <string name="messageview_crypto_error_title">Errore durante la decriptatura del messaggio</string>
+    <string name="messageview_decrypt_incomplete">Il messaggio criptato deve essere scaricato per la decrittografia</string>
+    <string name="messageview_crypto_error_title">Errore durante la decrittografia del messaggio</string>
     <string name="recipient_error_non_ascii">I caratteri speciali non sono supportati!</string>
     <string name="recipient_error_parse_failed">Errore durante l\'analisi dell\'indirizzo!</string>
     <string name="account_settings_crypto_hide_sign_only">Nascondi le firme non criptate</string>
     <string name="account_settings_crypto_hide_sign_only_on">Saranno visualizzate solo le firme criptate</string>
     <string name="account_settings_crypto_hide_sign_only_off">Tutte le firme saranno visualizzate</string>
-    <string name="error_sign_only_no_encryption">Criptatura non disponibile in modalità solo firma!</string>
+    <string name="error_sign_only_no_encryption">Crittografia non disponibile in modalità solo firma!</string>
     <string name="unsigned_text_divider_label">Testo non firmato</string>
     <string name="crypto_no_provider_title">Questo messaggio è criptato</string>
     <string name="crypto_no_provider_message">Questo messaggio è stato criptato con OpenPGP.
@@ -796,21 +786,21 @@
     <string name="crypto_no_provider_button">Vai alle impostazioni</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
-    <string name="openpgp_enabled_error_title">Criptatura non possibile</string>
+    <string name="openpgp_enabled_error_title">Crittografia non possibile</string>
     <string name="openpgp_enabled_error_msg">Alcuni dei destinatari selezionati non supportano questa funzionalità!</string>
-    <string name="enable_encryption">Abilita criptatura</string>
-    <string name="disable_encryption">Disabilita criptatura</string>
-    <string name="openpgp_description_text1">La criptatura dei messaggi assicura che possano essere letti solo dal destinatario</string>
-    <string name="openpgp_description_text3">La criptatura sarà mostrata solo se supportata da tutti i destinatari, che devono averti inviato un\'email in precedenza</string>
-    <string name="openpgp_description_text2">Abilita/disabilita la criptatura toccando questa icona</string>
+    <string name="enable_encryption">Abilita crittografia</string>
+    <string name="disable_encryption">Disabilita crittografia</string>
+    <string name="openpgp_description_text1">La crittografia dei messaggi assicura che possano essere letti solo dal destinatario</string>
+    <string name="openpgp_description_text3">La crittografia sarà mostrata solo se supportata da tutti i destinatari, che devono averti inviato un\'email in precedenza</string>
+    <string name="openpgp_description_text2">Abilita/disabilita la crittografia toccando questa icona</string>
     <string name="openpgp_enabled_error_gotit">Ricevuto</string>
     <string name="openpgp_enabled_error_back">Indietro</string>
-    <string name="openpgp_enabled_error_disable">Disabilita criptatura</string>
-    <string name="openpgp_encryption">Criptatura OpenPGP</string>
-    <string name="account_settings_crypto_prefer_encrypt">Modalità di criptatura reciproca automatica</string>
-    <string name="dialog_autocrypt_mutual_title">Modalità di criptatura reciproca automatica</string>
+    <string name="openpgp_enabled_error_disable">Disabilita crittografia</string>
+    <string name="openpgp_encryption">Crittografia OpenPGP</string>
+    <string name="account_settings_crypto_prefer_encrypt">Modalità di crittografia reciproca automatica</string>
+    <string name="dialog_autocrypt_mutual_title">Modalità di crittografia reciproca automatica</string>
     <string name="dialog_autocrypt_mutual_description_1">I messaggi saranno criptati per scelta o quando si risponde a un messaggio criptato</string>
-    <string name="dialog_autocrypt_mutual_description_2">Se il mittente e i destinatari abilitano la modalità reciproca, la criptatura sarà abilitata in modo predefinito</string>
+    <string name="dialog_autocrypt_mutual_description_2">Se il mittente e i destinatari abilitano la modalità reciproca, la crittografia sarà abilitata in modo predefinito</string>
     <string name="dialog_autocrypt_mutual_learn_more"><a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">Tocca qui</a> per ulteriori informazioni.</string>
     <string name="general_settings_title">Impostazioni generali</string>
     <string name="dialog_openkeychain_info_title">Nessuna applicazione OpenPGP installata</string>
@@ -922,5 +912,9 @@
     <string name="account_delete_dlg_instructions_fmt">L\'account \"<xliff:g id="account">%s</xliff:g>\" verrà rimosso da <xliff:g id="app_name">%s</xliff:g>.</string>
     <string name="folder_settings_notifications_label">Notifiche</string>
     <string name="settings_ui_telemetry_title">Utilizzo e dati tecnici</string>
-    <string name="settings_ui_telemetry_description">Condividi dati sulle prestazioni, sull\'utilizzo, sull\'hardware e sulla personalizzazione di questa app con Mozilla per aiutarci a migliorare Thunderbird</string>
+    <string name="settings_ui_telemetry_description">Condividi dati su prestazioni, utilizzo, hardware e personalizzazioni di questa app con Mozilla per aiutarci a migliorare Thunderbird</string>
+    <string name="folder_settings_push_label">Abilita Push</string>
+    <string name="settings_ui_data_collection">Raccolta dati</string>
+    <string name="folder_list_show_hidden_folders">Mostra cartelle nascoste</string>
+    <string name="folder_settings_sync_label">Attiva sincronizzazione</string>
 </resources>

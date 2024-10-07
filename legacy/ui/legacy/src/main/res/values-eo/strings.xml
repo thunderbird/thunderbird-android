@@ -394,11 +394,6 @@
     <string name="folder_settings_folder_display_mode_normal">Neniu klaso</string>
     <string name="folder_settings_folder_display_mode_first_class">Klaso 1</string>
     <string name="folder_settings_folder_display_mode_second_class">Klaso 2</string>
-    <string name="folder_settings_folder_sync_mode_label">Samtempig-klaso de mesaĝujo</string>
-    <string name="folder_settings_folder_sync_mode_normal">Nenia</string>
-    <string name="folder_settings_folder_sync_mode_first_class">Klaso 1</string>
-    <string name="folder_settings_folder_sync_mode_second_class">Klaso 2</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Sama kiel montr-klaso</string>
     <string name="folder_settings_clear_local_folder_action">Forviŝi lokajn mesaĝojn</string>
     <string name="account_settings_incoming_label">Enira servilo</string>
     <string name="account_settings_incoming_summary">Agordoj de enira retpoŝta servilo</string>
@@ -467,11 +462,6 @@
     <string name="sort_by_attach">Kunsendaĵoj</string>
     <string name="account_delete_dlg_title">Forigi konton</string>
     <string name="folder_list_filter_hint">Nomo de mesaĝujo enhavas</string>
-    <string name="folder_list_display_mode_label">Montri mesaĝujojn…</string>
-    <string name="folder_list_display_mode_all">Ĉiuj mesaĝujoj</string>
-    <string name="folder_list_display_mode_first_class">Mesaĝujoj de klaso 1</string>
-    <string name="folder_list_display_mode_first_and_second_class">Mesaĝujoj de klasoj 1 kaj 2</string>
-    <string name="folder_list_display_mode_not_second_class">Kaŝi mesaĝujojn de klaso 2</string>
     <string name="account_settings_signature__location_label">Pozicio de subskribo</string>
     <string name="account_settings_signature__location_before_quoted_text">Antaŭ citata mesaĝo</string>
     <string name="account_settings_signature__location_after_quoted_text">Post citata mesaĝo</string>

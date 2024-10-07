@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="unread_widget_select_account">Mostra conteggio messaggi non letti per…</string>
+    <string name="unread_widget_select_account">Mostra numero messaggi non letti per…</string>
     <string name="unread_widget_account_title">Account</string>
-    <string name="unread_widget_account_summary">Account per i quali visualizzare il contatore non letti</string>
+    <string name="unread_widget_account_summary">Account per i quali visualizzare il numero messaggi non letti</string>
     <string name="unread_widget_unified_inbox_account_summary">Posta combinata</string>
-    <string name="unread_widget_folder_enabled_title">Conteggio cartella</string>
-    <string name="unread_widget_folder_enabled_summary">Visualizza il conteggio non letti per singola cartella</string>
+    <string name="unread_widget_folder_enabled_title">Numero cartelle</string>
+    <string name="unread_widget_folder_enabled_summary">Visualizza numero messaggi non letti per una sola cartella</string>
     <string name="unread_widget_folder_title">Cartella</string>
-    <string name="unread_widget_folder_summary">Cartelle per le quali visualizzare il conteggio non letti</string>
+    <string name="unread_widget_folder_summary">Cartella per la quale visualizzare il conteggio messaggio non letti</string>
     <string name="unread_widget_action_done">Fatto</string>
     <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
     <string name="unread_widget_account_not_selected">Nessun account selezionato</string>
     <string name="unread_widget_folder_not_selected">Nessuna cartella selezionata</string>
     <string name="unread_widget_choose_account_title">Scegli account</string>
-    <string name="unread_widget_label">Conteggio non letto</string>
+    <string name="unread_widget_label">Numero non letti</string>
 </resources>

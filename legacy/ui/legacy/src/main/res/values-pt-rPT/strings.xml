@@ -421,11 +421,6 @@
     <string name="folder_settings_folder_display_mode_normal">Sem Classe</string>
     <string name="folder_settings_folder_display_mode_first_class">1ª classe</string>
     <string name="folder_settings_folder_display_mode_second_class">2ª classe</string>
-    <string name="folder_settings_folder_sync_mode_label">Classe de verificação de pasta</string>
-    <string name="folder_settings_folder_sync_mode_normal">Nenhuma</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1ª classe</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2ª classe</string>
-    <string name="folder_settings_folder_sync_mode_inherited">A mesma que a classe de exibição</string>
     <string name="folder_settings_clear_local_folder_action">Apagar mensagens locais</string>
     <string name="account_settings_incoming_label">Servidor de entrada</string>
     <string name="account_settings_incoming_summary">Configure o servidor de email de entrada</string>
@@ -512,11 +507,6 @@
     <string name="sort_by_attach">Anexos</string>
     <string name="account_delete_dlg_title">Remover conta</string>
     <string name="folder_list_filter_hint">Nome da pasta contém</string>
-    <string name="folder_list_display_mode_label">Mostrar pastas…</string>
-    <string name="folder_list_display_mode_all">Todas as pastas</string>
-    <string name="folder_list_display_mode_first_class">Pastas de 1ª classe</string>
-    <string name="folder_list_display_mode_first_and_second_class">Pastas de 1ª &amp; 2ª classe</string>
-    <string name="folder_list_display_mode_not_second_class">Ocultar pastas de 2ª classe</string>
     <string name="account_settings_signature__location_label">Posição da assinatura</string>
     <string name="account_settings_signature__location_before_quoted_text">Antes da mensagem citada</string>
     <string name="account_settings_signature__location_after_quoted_text">Depois da mensagem citada</string>

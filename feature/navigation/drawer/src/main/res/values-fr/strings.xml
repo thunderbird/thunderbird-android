@@ -3,4 +3,9 @@
     <string name="navigation_drawer_action_settings">Paramètres</string>
     <string name="navigation_drawer_action_manage_folders">Gérer les dossiers</string>
     <string name="navigation_drawer_unified_inbox_title">Boîte de réception unifiée</string>
+    <string name="navigation_drawer_action_hide_accounts">Cacher les comptes</string>
+    <string name="navigation_drawer_folder_item_badge_count_greater_than_99">Plus de 99</string>
+    <string name="navigation_drawer_folder_item_badge_count_greater_than_1_000">Plus de 1 000</string>
+    <string name="navigation_drawer_action_show_accounts">Afficher les comptes</string>
+    <string name="navigation_drawer_action_sync_all_accounts">Synchroniser tous les comptes</string>
 </resources>

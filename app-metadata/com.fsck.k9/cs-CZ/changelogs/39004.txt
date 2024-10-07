@@ -1,2 +1,2 @@
-- Fixed crash when split screen mode is enabled
-- Updated translations
+- Opraven pád, pokud byl povolený režim rozdělené obrazovky
+- Aktualizovány překlady
