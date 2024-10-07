@@ -371,10 +371,6 @@
     <string name="folder_settings_folder_display_mode_label">Classa d’affissera di u cartulare</string>
     <string name="folder_settings_folder_display_mode_normal">Nisuna classa</string>
     <string name="folder_settings_folder_display_mode_second_class">2a classa</string>
-    <string name="folder_settings_folder_sync_mode_label">Classa di sullicitazione di u cartulare</string>
-    <string name="folder_settings_folder_sync_mode_normal">Nisuna</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2a classa</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Cum’è a classa d’affissera</string>
     <string name="folder_settings_clear_local_folder_action">Squassà i messaghji lucale</string>
     <string name="account_settings_outgoing_summary">Cunfigurà u servitore d’esciuta (SMTP) di i messaghji</string>
     <string name="account_settings_vibration">Vibrazione</string>
@@ -420,7 +416,6 @@
     <string name="folder_settings_title">Parametri di u cartulare</string>
     <string name="folder_settings_in_top_group_label">Affissà in u gruppu superiore</string>
     <string name="account_settings_vibrate_enable">Vibrà</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1a classa</string>
     <string name="account_settings_vibrate_pattern_default">Predefinitu</string>
     <string name="account_settings_vibrate_pattern_1">Mudellu 1</string>
     <string name="account_settings_vibrate_pattern_4">Mudellu 4</string>
@@ -486,10 +481,6 @@
     <string name="sort_by_unread">Lettu/à leghje</string>
     <string name="account_delete_dlg_title">Caccià u contu</string>
     <string name="folder_list_filter_hint">U nome di cartulare cuntene</string>
-    <string name="folder_list_display_mode_label">Affissà i cartulari…</string>
-    <string name="folder_list_display_mode_first_class">Cartulari di 1a classa</string>
-    <string name="folder_list_display_mode_first_and_second_class">Cartulari di 1a è 2a classa</string>
-    <string name="folder_list_display_mode_not_second_class">Piattà i cartulari di 2a classa</string>
     <string name="account_settings_signature__location_label">Pusizione di a segnatura</string>
     <string name="account_settings_signature__location_before_quoted_text">Nanzu à u messaghju menziunatu</string>
     <string name="account_settings_signature__location_after_quoted_text">Dopu à u messaghju menziunatu</string>
@@ -511,7 +502,6 @@
     <string name="sort_sender_alpha">Speditore in l’ordine alfabeticu</string>
     <string name="edit_identity_signature_label">Segnatura</string>
     <string name="edit_identity_signature_hint">(Ozzionale)</string>
-    <string name="folder_list_display_mode_all">Tutti i cartulari</string>
     <string name="setting_theme_light">Chjaru</string>
     <string name="debug_preferences">Spannatura</string>
     <string name="settings_theme_label">Tema</string>

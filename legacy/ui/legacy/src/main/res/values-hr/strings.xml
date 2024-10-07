@@ -374,11 +374,6 @@
     <string name="folder_settings_folder_display_mode_normal">Bez razreda</string>
     <string name="folder_settings_folder_display_mode_first_class">1. Razreda</string>
     <string name="folder_settings_folder_display_mode_second_class">2. Razreda</string>
-    <string name="folder_settings_folder_sync_mode_label">Razred za provjeru mape</string>
-    <string name="folder_settings_folder_sync_mode_normal">Nijedna</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1. Razreda</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2. Razreda</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Isto kao razred prikaza</string>
     <string name="folder_settings_clear_local_folder_action">Očistiti lokalne poruke</string>
     <string name="account_settings_incoming_label">Dolazni poslužitelj</string>
     <string name="account_settings_incoming_summary">Postavite dolazni poslužitelj e-pošte</string>
@@ -447,11 +442,6 @@
     <string name="sort_by_attach">Privicima</string>
     <string name="account_delete_dlg_title">Obriši Račun</string>
     <string name="folder_list_filter_hint">Naziv mape sadrži</string>
-    <string name="folder_list_display_mode_label">Prikaži mape…</string>
-    <string name="folder_list_display_mode_all">Sve mape</string>
-    <string name="folder_list_display_mode_first_class">Mape 1. Razreda</string>
-    <string name="folder_list_display_mode_first_and_second_class">Mape 1. &amp; 2. Razreda</string>
-    <string name="folder_list_display_mode_not_second_class">Sakrij mape 2. Razreda</string>
     <string name="account_settings_signature__location_label">Pozicija potpisa</string>
     <string name="account_settings_signature__location_before_quoted_text">Poruke prije citiranja</string>
     <string name="account_settings_signature__location_after_quoted_text">Poruke nakon citiranja</string>

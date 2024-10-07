@@ -356,11 +356,6 @@
     <string name="folder_settings_folder_display_mode_normal">Rummad ebet</string>
     <string name="folder_settings_folder_display_mode_first_class">1añ rummad</string>
     <string name="folder_settings_folder_display_mode_second_class">Eil rummad</string>
-    <string name="folder_settings_folder_sync_mode_label">Rummad kerc’hat an teuliad</string>
-    <string name="folder_settings_folder_sync_mode_normal">Netra</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1añ rummad</string>
-    <string name="folder_settings_folder_sync_mode_second_class">Eil rummad</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Ar memes hini hag ar rummad skrammañ</string>
     <string name="folder_settings_clear_local_folder_action">Skarzhañ ar c’hemennadennoù lec’hel</string>
     <string name="account_settings_incoming_label">Dafariad degemer</string>
     <string name="account_settings_incoming_summary">Kefluniañ an dafariad postel degemer</string>
@@ -429,11 +424,6 @@
     <string name="sort_by_attach">Stagadennoù</string>
     <string name="account_delete_dlg_title">Dilemel ar gont</string>
     <string name="folder_list_filter_hint">Anv an teuliad a endalc’h</string>
-    <string name="folder_list_display_mode_label">Diskouez an teuliadoù</string>
-    <string name="folder_list_display_mode_all">An holl deuliadoù</string>
-    <string name="folder_list_display_mode_first_class">Teuliadoù ar rummad 1añ</string>
-    <string name="folder_list_display_mode_first_and_second_class">Teuliadoù 1añ hag eil rummadoù </string>
-    <string name="folder_list_display_mode_not_second_class">Kuzhat teuliadoù an eil rummad</string>
     <string name="account_settings_signature__location_label">Lec’hiadur ar sinadur</string>
     <string name="account_settings_signature__location_before_quoted_text">A-raok ar gemennadenn orin</string>
     <string name="account_settings_signature__location_after_quoted_text">Goude ar gemennadenn orin</string>

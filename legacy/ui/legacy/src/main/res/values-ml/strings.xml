@@ -400,11 +400,6 @@
     <string name="folder_settings_folder_display_mode_normal">ക്ലാസ് ഇല്ല</string>
     <string name="folder_settings_folder_display_mode_first_class">1 ആം ക്ലാസ്</string>
     <string name="folder_settings_folder_display_mode_second_class">2 ആം ക്ലാസ്സ്</string>
-    <string name="folder_settings_folder_sync_mode_label">ഫോൾഡർ പോൾ ക്ലാസ്</string>
-    <string name="folder_settings_folder_sync_mode_normal">ഒന്നുമില്ല</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1 ആം ക്ലാസ്</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2 ആം ക്ലാസ്സ്</string>
-    <string name="folder_settings_folder_sync_mode_inherited">ഡിസ്പ്ലേ ക്ലാസ്സിന് സമാനമാണ്</string>
     <string name="folder_settings_clear_local_folder_action">പ്രാദേശിക സന്ദേശങ്ങൾ മായ്‌ക്കുക</string>
     <string name="account_settings_incoming_label">ഇൻകമിംഗ് സെർവർ</string>
     <string name="account_settings_incoming_summary">ഇൻകമിംഗ് മെയിൽ സെർവർ ക്രമീകരിക്കുക</string>
@@ -475,11 +470,6 @@
     <string name="sort_by_attach">അറ്റാച്ചുമെന്റുകൾ</string>
     <string name="account_delete_dlg_title">അക്കൗണ്ട് നീക്കംചെയ്യൂ</string>
     <string name="folder_list_filter_hint">ഫോൾഡറിന്റെ പേരിൽ അടങ്ങിയിരിക്കുന്നു</string>
-    <string name="folder_list_display_mode_label">ഫോൾഡറുകൾ കാണിക്കൂ…</string>
-    <string name="folder_list_display_mode_all">എല്ലാ ഫോൾഡറുകളും</string>
-    <string name="folder_list_display_mode_first_class">1 ആം ക്ലാസ് ഫോൾഡറുകൾ</string>
-    <string name="folder_list_display_mode_first_and_second_class">1ആം &amp; 2ആം ക്ലാസ് ഫോൾഡറുകൾ</string>
-    <string name="folder_list_display_mode_not_second_class">2 ആം ക്ലാസ്സ് ഫോൾഡറുകൾ മറയ്ക്കുക</string>
     <string name="account_settings_signature__location_label">ഒപ്പ് സ്ഥാനം</string>
     <string name="account_settings_signature__location_before_quoted_text">ഉദ്ധരിച്ച സന്ദേശത്തിന് മുമ്പ്</string>
     <string name="account_settings_signature__location_after_quoted_text">ഉദ്ധരിച്ച സന്ദേശത്തിന് ശേഷം</string>

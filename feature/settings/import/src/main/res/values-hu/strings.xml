@@ -11,7 +11,7 @@
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
     <string name="settings_import_authorization_and_password_required">Jelentkezzen be, és adja meg a jelszavakat</string>
     <string name="settings_import_failure">Nem sikerült importálni a beállításokat</string>
-    <string name="settings_import_read_failure">Nem sikerült beolvasni a beállítások fájlt</string>
+    <string name="settings_import_read_failure">Nem sikerült beolvasni a beállítási fájlt</string>
     <string name="settings_import_partial_failure">Nem sikerült importálni néhány beállítást</string>
     <string name="settings_import_status_success">Sikeresen importálva</string>
     <string name="settings_import_status_password_required">Jelszó szükséges</string>
@@ -29,12 +29,14 @@
     <string name="settings_import_outgoing_server_password_hint">Kimenő kiszolgáló jelszava</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Ugyanazon jelszó használata a kimenő kiszolgálónál</string>
     <string name="settings_import_server_name_format">Kiszolgáló neve: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Ezen e-mail-fiók K-9 Maillel történő használatához be kell jelentkeznie, és hozzáférést kell adnia az alkalmazásnak az e-mailjeihez.</string>
+    <string name="settings_import_oauth_description">Ezen e-mail-fiók használatához be kell jelentkeznie, és hozzáférést kell adnia az alkalmazásnak az e-mailjeihez.</string>
     <string name="settings_import_oauth_sign_in">Bejelentkezés</string>
     <string name="settings_import_oauth_sign_in_with_google">Bejelentkezés Google használatával</string>
-    <string name="settings_import_oauth_error_oauth_flow_canceled">A felhatalmazás megszakítva</string>
-    <string name="settings_import_oauth_error_oauth_flow_failed">A felhatalmazás meghiúsult a következő hibával: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">A jogosultság-ellenőrzés megszakítva</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">A jogosultság-ellenőrzés a következő hibával sikertelen: <xliff:g id="error">%s</xliff:g></string>
     <string name="settings_import_oauth_error_oauth_not_supported">Az OAuth 2.0 jelenleg nem támogatott ezzel a szolgáltatóval.</string>
     <string name="settings_import_oauth_error_browser_not_found">Az alkalmazás nem talált böngészőt a fiókhoz történő hozzáférés megadásához való használathoz.</string>
     <string name="settings_import_general_settings_item">Általános beállítások</string>
+    <string name="settings_import_pick_app_button">Importálás alkalmazásból</string>
+    <string name="settings_import_pick_app_dialog_title">Importálás alkalmazásból</string>
 </resources>

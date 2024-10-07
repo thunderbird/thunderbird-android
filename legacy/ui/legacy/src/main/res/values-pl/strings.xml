@@ -423,11 +423,6 @@
     <string name="folder_settings_folder_display_mode_normal">Bez klasy</string>
     <string name="folder_settings_folder_display_mode_first_class">Klasa 1</string>
     <string name="folder_settings_folder_display_mode_second_class">Klasa 2</string>
-    <string name="folder_settings_folder_sync_mode_label">Klasa sprawdzania folderów</string>
-    <string name="folder_settings_folder_sync_mode_normal">Żadna</string>
-    <string name="folder_settings_folder_sync_mode_first_class">Klasa 1</string>
-    <string name="folder_settings_folder_sync_mode_second_class">Klasa 2</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Taka sama jak klasa wyświetlania</string>
     <string name="folder_settings_clear_local_folder_action">Wyczyść wiadomości lokalne</string>
     <string name="account_settings_incoming_label">Serwer poczty przychodzącej</string>
     <string name="account_settings_incoming_summary">Ustawienia serwera poczty przychodzącej</string>
@@ -514,11 +509,6 @@
     <string name="sort_by_attach">Załączniki</string>
     <string name="account_delete_dlg_title">Usuwanie</string>
     <string name="folder_list_filter_hint">Nazwa folderu zawiera</string>
-    <string name="folder_list_display_mode_label">Wyświetlanie folderów…</string>
-    <string name="folder_list_display_mode_all">Wszystkie</string>
-    <string name="folder_list_display_mode_first_class">Tylko klasy 1</string>
-    <string name="folder_list_display_mode_first_and_second_class">Klasy 1 oraz 2</string>
-    <string name="folder_list_display_mode_not_second_class">Wszystkie poza klasą 2</string>
     <string name="account_settings_signature__location_label">Pozycja podpisu</string>
     <string name="account_settings_signature__location_before_quoted_text">Przed cytowaną wiadomością</string>
     <string name="account_settings_signature__location_after_quoted_text">Pod cytowaną wiadomością</string>
@@ -931,4 +921,6 @@ Tą wiadomość można zachować i użyć w formie kopii zapasowej twojego klucz
     <string name="settings_ui_data_collection">Zbieranie danych</string>
     <string name="settings_ui_telemetry_description">Udostępnia firmie Mozilla dane dotyczące wydajności, użytkowania, sprzętu i dostosowywania tej aplikacji, aby pomóc nam udoskonalić Thunderbirda</string>
     <string name="folder_settings_push_label">Włącz funkcję push</string>
+    <string name="folder_settings_sync_label">Włącz synchronizację</string>
+    <string name="folder_list_show_hidden_folders">Pokaż ukryte foldery</string>
 </resources>

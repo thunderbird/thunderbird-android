@@ -1,8 +1,8 @@
-- Přidáno zpracování obrázků v kontextové nabídce pro hypertextové odkazy
+- Přidáno zpracování obrázků v kontext. nabídce pro hypertextové odkazy
 - Přidána možnost přeposílání otevřených příloh do nových e-mailů
-- Vylepšená obrazovka s chybou certifikátu při nastavení účtu
-- Vylepšený import nastavení během nastavení účtu
-- Vylepšené uživatelské rozhraní nastavení účtu
+- Vylepšená obrazovka s chybou certifikátu při nast. účtu
+- Vylepšený import nast. během nastavení účtu
+- Vylepšené už. rozhraní nastavení účtu
 - Vylepšené vykreslování nastavení účtu na malých obrazovkách
 - Vylepšené uživatelské rozhraní pro úpravu nastavení serveru účtu
 - Opravený pád AlarmManageru na Androidu 14

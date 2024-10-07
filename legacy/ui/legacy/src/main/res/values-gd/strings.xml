@@ -372,11 +372,6 @@
     <string name="folder_settings_folder_display_mode_normal">Gun ìre</string>
     <string name="folder_settings_folder_display_mode_first_class">1ᵈ ìre</string>
     <string name="folder_settings_folder_display_mode_second_class">2ⁿᵃ ìre</string>
-    <string name="folder_settings_folder_sync_mode_label">Ìre nam pasgan a thèid a cheasnachadh</string>
-    <string name="folder_settings_folder_sync_mode_normal">Chan eil gin</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1ᵈ ìre</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2ⁿᵃ ìre</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Co-ionnann ris an ìre taisbeanaidh</string>
     <string name="folder_settings_clear_local_folder_action">Falamhaich na teachdaireachdan ionadail</string>
     <string name="account_settings_incoming_label">Am frithealaiche a-steach</string>
     <string name="account_settings_incoming_summary">Rèitich frithealaiche a’ phuist a-steach</string>
@@ -445,11 +440,6 @@
     <string name="sort_by_attach">Ceanglachain</string>
     <string name="account_delete_dlg_title">Thoir an cunntas air falbh</string>
     <string name="folder_list_filter_hint">Ainm a’ phasgain anns a bheil</string>
-    <string name="folder_list_display_mode_label">Seall pasganan…</string>
-    <string name="folder_list_display_mode_all">Na h-uile pasgan</string>
-    <string name="folder_list_display_mode_first_class">Pasganan na 1ᵈ ìre</string>
-    <string name="folder_list_display_mode_first_and_second_class">Pasganan na 1ᵈ ⁊ na 2ⁿᵃ ìre</string>
-    <string name="folder_list_display_mode_not_second_class">Falaich pasganan na 2ⁿᵃ ìre</string>
     <string name="account_settings_signature__location_label">Ionad an eàrr-sgrìobhaidh</string>
     <string name="account_settings_signature__location_before_quoted_text">Ron às-earrann dhen teachdaireachd</string>
     <string name="account_settings_signature__location_after_quoted_text">Às dèidh às-earrann dhen teachdaireachd</string>

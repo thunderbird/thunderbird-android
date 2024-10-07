@@ -424,11 +424,6 @@
     <string name="folder_settings_folder_display_mode_normal">Нет класса</string>
     <string name="folder_settings_folder_display_mode_first_class">1-й класс</string>
     <string name="folder_settings_folder_display_mode_second_class">2-й класс</string>
-    <string name="folder_settings_folder_sync_mode_label">Проверка папок</string>
-    <string name="folder_settings_folder_sync_mode_normal">Нет</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1-й класс</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2-й класс</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Как видимости</string>
     <string name="folder_settings_clear_local_folder_action">Стереть локальные</string>
     <string name="account_settings_incoming_label">Сервер входящих</string>
     <string name="account_settings_incoming_summary">Настройки сервера входящей почты</string>
@@ -515,11 +510,6 @@
     <string name="sort_by_attach">Вложение</string>
     <string name="account_delete_dlg_title">Удаление учётной записи</string>
     <string name="folder_list_filter_hint">Поиск папки</string>
-    <string name="folder_list_display_mode_label">Показать папки…</string>
-    <string name="folder_list_display_mode_all">Все папки</string>
-    <string name="folder_list_display_mode_first_class">Папки 1-го класса</string>
-    <string name="folder_list_display_mode_first_and_second_class">Папки 1-го и 2-го классов</string>
-    <string name="folder_list_display_mode_not_second_class">Кроме 2-го класса</string>
     <string name="account_settings_signature__location_label">Размещение подписи</string>
     <string name="account_settings_signature__location_before_quoted_text">Перед цитатой</string>
     <string name="account_settings_signature__location_after_quoted_text">После цитаты</string>
@@ -934,4 +924,7 @@
     <string name="settings_ui_data_collection">Сбор данных</string>
     <string name="settings_ui_telemetry_title">Данные об использовании и технические</string>
     <string name="settings_ui_telemetry_description">Делится данными о производительности, использовании, оборудовании и настройках этого приложения с Mozilla, чтобы помочь сделать Thunderbird лучше</string>
+    <string name="folder_settings_push_label">Включить push</string>
+    <string name="folder_list_show_hidden_folders">Показать скрытые папки</string>
+    <string name="folder_settings_sync_label">Включить синхронизацию</string>
 </resources>

@@ -422,11 +422,6 @@
     <string name="folder_settings_folder_display_mode_normal">Nenhuma classe</string>
     <string name="folder_settings_folder_display_mode_first_class">1ª classe</string>
     <string name="folder_settings_folder_display_mode_second_class">2ª classe</string>
-    <string name="folder_settings_folder_sync_mode_label">Classe de verificação de pasta</string>
-    <string name="folder_settings_folder_sync_mode_normal">Nenhuma</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1ª classe</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2ª classe</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Igual à classe de exibição</string>
     <string name="folder_settings_clear_local_folder_action">Limpar mensagens locais</string>
     <string name="account_settings_incoming_label">Servidor de recebimento</string>
     <string name="account_settings_incoming_summary">Configure o servidor recebimento de mensagens</string>
@@ -513,11 +508,6 @@
     <string name="sort_by_attach">Anexo</string>
     <string name="account_delete_dlg_title">Remover conta</string>
     <string name="folder_list_filter_hint">O nome da pasta contém</string>
-    <string name="folder_list_display_mode_label">Exibir pastas…</string>
-    <string name="folder_list_display_mode_all">Todas as pastas</string>
-    <string name="folder_list_display_mode_first_class">Pastas de 1ª classe</string>
-    <string name="folder_list_display_mode_first_and_second_class">Pastas de 1ª e 2ª classes</string>
-    <string name="folder_list_display_mode_not_second_class">Ocultar pastas de 2ª classe</string>
     <string name="account_settings_signature__location_label">Posição da assinatura</string>
     <string name="account_settings_signature__location_before_quoted_text">Antes do texto citado</string>
     <string name="account_settings_signature__location_after_quoted_text">Depois do texto citado</string>
@@ -928,4 +918,6 @@ Você pode guardar esta mensagem e usá-la como um backup da sua chave secreta. 
     <string name="settings_ui_telemetry_title">Dados de uso e técnicos</string>
     <string name="settings_ui_telemetry_description">Compartilha dados sobre performance, uso, hardware, e customização deste app com a Mozilla para nos ajudar a fazer o Thunderbird melhor</string>
     <string name="folder_settings_push_label">Ativar Pusg</string>
+    <string name="folder_settings_sync_label">Ativar sincronização</string>
+    <string name="folder_list_show_hidden_folders">Mostrar pastas escondidas</string>
 </resources>

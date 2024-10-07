@@ -420,11 +420,6 @@
     <string name="folder_settings_folder_display_mode_normal">بدون سطح</string>
     <string name="folder_settings_folder_display_mode_first_class">سطح ۱</string>
     <string name="folder_settings_folder_display_mode_second_class">سطح ۲</string>
-    <string name="folder_settings_folder_sync_mode_label">سطح سرکشی (Poll) به پوشه</string>
-    <string name="folder_settings_folder_sync_mode_normal">هیچ‌کدام</string>
-    <string name="folder_settings_folder_sync_mode_first_class">سطح ۱</string>
-    <string name="folder_settings_folder_sync_mode_second_class">سطح ۲</string>
-    <string name="folder_settings_folder_sync_mode_inherited">همانند سطح نمایش</string>
     <string name="folder_settings_clear_local_folder_action">پاک‌کردن پیام‌ها از روی دستگاه</string>
     <string name="account_settings_incoming_label">کارساز ورودی</string>
     <string name="account_settings_incoming_summary">کارساز ورودی رایانامه را پیکربندی کنید</string>
@@ -511,11 +506,6 @@
     <string name="sort_by_attach">پیوست‌ها</string>
     <string name="account_delete_dlg_title">حذف حساب</string>
     <string name="folder_list_filter_hint">بخشی از نام پوشه</string>
-    <string name="folder_list_display_mode_label">نمایش کدام پوشه‌ها…</string>
-    <string name="folder_list_display_mode_all">همهٔ پوشه‌ها</string>
-    <string name="folder_list_display_mode_first_class">پوشه‌های سطح ۱</string>
-    <string name="folder_list_display_mode_first_and_second_class">پوشه‌های سطح ۱ و ۲</string>
-    <string name="folder_list_display_mode_not_second_class">پنهان‌کردن پوشه‌های سطح ۲</string>
     <string name="account_settings_signature__location_label">جای امضا</string>
     <string name="account_settings_signature__location_before_quoted_text">قبل از نقل‌قول</string>
     <string name="account_settings_signature__location_after_quoted_text">بعد از نقل‌قول</string>
@@ -922,4 +912,6 @@
     <string name="settings_ui_telemetry_title">داده‌های فنی و استفاده</string>
     <string name="settings_ui_telemetry_description">هم‌رسانی داده‌های کارایی، استفاده، سخت‌افزار و شخصی‌سازی این کاره با موزیلا برای کمک به بهتر کردن تاندربرد</string>
     <string name="settings_ui_data_collection">جمع‌آوری داده</string>
+    <string name="folder_settings_sync_label">فعال‌سازی همگام‌سازی</string>
+    <string name="folder_list_show_hidden_folders">نمایش پوشه‌های مخفی</string>
 </resources>

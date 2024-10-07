@@ -1,8 +1,8 @@
-- Changed a lot of internals to migrate to Material 3. Please note that the Material 3 UI is still in an early state.
-- Changed the order of toolbar actions in the message view to match the order in multi-select mode
-- Changed default value for "Fetch messages up to" to 128KiB
-- Fixed bug where toolbar icons were displayed in the wrong color after performing a swipe action
-- Fixed crash when cutting email addresses from a recipient field when composing a message
-- Fixed toolbar size when using a non-default system font size
-- Added Corsican, Korean, and Vietnamese translations
-- Updated translations
+- Mnoho interních změn pro migraci na Material 3. Mějte na paměti, že uživatelské rozhraní Material 3 je stále v počátečním stadiu.
+- Změněno pořadí akcí na panelu nástrojů v zobrazení zprávy tak, aby odpovídalo pořadí v režimu vícenásobného výběru
+- Změněna výchozí hodnota pro "Stahovat zprávy až do" na 128KiB
+- Opravena chyba, kdy se ikony na panelu nástrojů zobrazily v nesprávné barvě poté, co byla provedena akce přejetí
+- Opraven pád při vyjmutí e-mailových adres z pole příjemce při vytváření zprávy
+- Opravena velikost panelu nástrojů při použití jiné než výchozí velikosti systémového fontu
+- Přidán překlad do korsičtiny, korejštiny a vietnamštiny
+- Aktualizovány překlady

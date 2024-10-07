@@ -417,11 +417,6 @@
     <string name="folder_settings_folder_display_mode_normal">Keine Klasse</string>
     <string name="folder_settings_folder_display_mode_first_class">Hauptordner</string>
     <string name="folder_settings_folder_display_mode_second_class">Nebenordner</string>
-    <string name="folder_settings_folder_sync_mode_label">Abfrageklasse</string>
-    <string name="folder_settings_folder_sync_mode_normal">Keine</string>
-    <string name="folder_settings_folder_sync_mode_first_class">Hauptordner</string>
-    <string name="folder_settings_folder_sync_mode_second_class">Nebenordner</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Wie Anzeigeklasse</string>
     <string name="folder_settings_clear_local_folder_action">Lokale Nachrichten löschen</string>
     <string name="account_settings_incoming_label">Posteingangsserver</string>
     <string name="account_settings_incoming_summary">Einstellungen des Posteingangsservers bearbeiten</string>
@@ -508,11 +503,6 @@
     <string name="sort_by_attach">Anhang</string>
     <string name="account_delete_dlg_title">Konto entfernen</string>
     <string name="folder_list_filter_hint">Ordnername enthält</string>
-    <string name="folder_list_display_mode_label">Ordner anzeigen…</string>
-    <string name="folder_list_display_mode_all">Alle Ordner anzeigen</string>
-    <string name="folder_list_display_mode_first_class">Nur Hauptordner anzeigen</string>
-    <string name="folder_list_display_mode_first_and_second_class">Haupt- und Nebenordner anzeigen</string>
-    <string name="folder_list_display_mode_not_second_class">Alle außer Nebenordner anzeigen</string>
     <string name="account_settings_signature__location_label">Position der Signatur</string>
     <string name="account_settings_signature__location_before_quoted_text">Vor zitierter Nachricht</string>
     <string name="account_settings_signature__location_after_quoted_text">Nach zitierter Nachricht</string>
@@ -918,4 +908,7 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="settings_ui_telemetry_description">Leistungs-, Nutzungs-, Hardware- und Individualisierungsdaten über diese App mit Mozilla teilen, um uns zu helfen, Thunderbird zu verbessern</string>
     <string name="settings_ui_data_collection">Datenerfassung</string>
     <string name="settings_ui_telemetry_title">Nutzung und technische Daten</string>
+    <string name="folder_settings_push_label">Push aktivieren</string>
+    <string name="folder_settings_sync_label">Synchronisation aktivieren</string>
+    <string name="folder_list_show_hidden_folders">Ausgeblendete Ordner anzeigen</string>
 </resources>

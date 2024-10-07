@@ -322,7 +322,6 @@
     <string name="folder_settings_title">הגדרות תיקייה</string>
     <string name="folder_settings_in_top_group_label">הצג בקבוצה העליונה</string>
     <string name="folder_settings_in_top_group_summary">הצג בחלק העליון של רשימת התיקיות</string>
-    <string name="folder_settings_folder_sync_mode_normal">כלום</string>
     <string name="folder_settings_clear_local_folder_action">נקה הודעות מקומיות</string>
     <string name="account_settings_incoming_label">שרת הודעות נכנסות</string>
     <string name="account_settings_incoming_summary">הגדר את שרת הדואר הנכנס</string>
@@ -397,8 +396,6 @@
     <string name="sort_by_unread">נקרא/לא נקרא</string>
     <string name="sort_by_attach">קבצים מצורפים</string>
     <string name="account_delete_dlg_title">מחק חשבון</string>
-    <string name="folder_list_display_mode_label">הצג תיקיות…</string>
-    <string name="folder_list_display_mode_all">הצג את כל התיקיות</string>
     <string name="account_settings_signature__location_label">מיקום חתימה</string>
     <string name="account_settings_signature__location_before_quoted_text">לפני טקסט מצוטט</string>
     <string name="account_settings_signature__location_after_quoted_text">אחרי טקסט מצוטט</string>
@@ -752,7 +749,6 @@
     <string name="account_settings_autodownload_message_size_64">64 ק\"ב</string>
     <string name="account_settings_autodownload_message_size_128">128 ק\"ב</string>
     <string name="account_settings_folder_sync_mode_label">תיקיות הזמנה לשידור (poll)</string>
-    <string name="folder_list_display_mode_first_and_second_class">תיקיות מחלקה ראשונה ושנייה</string>
     <string name="setting_theme_follow_system">השתמש בברירת מחדל המערכת</string>
     <string name="interaction_preferences">אינטראקציה</string>
     <string name="settings_message_theme_label">תמת (theme) הצגת הודעות</string>
@@ -828,11 +824,8 @@
     <string name="folder_settings_folder_display_mode_normal">ללא מחלקה</string>
     <string name="folder_settings_folder_display_mode_label">סוג מחלקת הצגת תיקיה (Folder display class)</string>
     <string name="folder_settings_folder_display_mode_first_class">מחלקה ראשונה</string>
-    <string name="folder_settings_folder_sync_mode_label">סוג מחלקה של תיקיית הזמנה לשידור (Folder poll class)</string>
-    <string name="folder_settings_folder_sync_mode_first_class">מחלקה ראשונה</string>
     <string name="account_settings_vibrate_pattern_4">תבנית 4</string>
     <string name="sort_by_arrival">זמן הגעה</string>
-    <string name="folder_list_display_mode_first_class">תיקיות מחלקה ראשונה</string>
     <string name="crypto_msg_encrypted_incomplete">חובה להוריד הודעה בשלמותה עבור פענוח</string>
     <string name="crypto_msg_encrypted_sign_unknown">ממפתח קצה לקצה לא מוכר</string>
     <string name="crypto_msg_encrypted_no_provider">אך לא מוגדר אף יישומון הצפנה (crypto app)</string>
@@ -843,7 +836,6 @@
     <string name="openpgp_description_text2">להפעיל או לכבות הצפנה בלחיצה על האיקון הזה.</string>
     <string name="openpgp_enabled_error_gotit">הבנתי</string>
     <string name="account_settings_reading_mail">קריאת דואר</string>
-    <string name="folder_settings_folder_sync_mode_inherited">כמו מחלקת הצגת התיקייה</string>
     <string name="locked_attach_unlock">פתח נעילה</string>
     <string name="locked_attach_title">צרופה לא מוגנת</string>
     <string name="message_progress_text">טוען…</string>
@@ -859,14 +851,12 @@
     <string name="messageview_decrypt_cancelled">פענוח בוטל.</string>
     <string name="account_settings_openpgp_missing">חסר יישומון OpenPGP - האם הוא הוסר?</string>
     <string name="crypto_msg_title_encrypted_unsigned">מוצפן</string>
-    <string name="folder_settings_folder_sync_mode_second_class">מחלקה שנייה</string>
     <string name="account_settings_vibrate_pattern_label">תבנית רטט</string>
     <string name="account_settings_strip_signature_label">הסר חתימות בתשובה</string>
     <string name="account_settings_vibrate_pattern_5">תבנית 5</string>
     <string name="crypto_msg_title_encrypted_signed">מוצפן</string>
     <string name="account_settings_notification_light_magenta">מג\'נטה</string>
     <string name="folder_list_filter_hint">שם התיקייה מכיל</string>
-    <string name="folder_list_display_mode_not_second_class">הסתר תיקיות מחלקה שנייה</string>
     <string name="crypto_msg_encrypted_sign_insecure">אך מפתח קצה לקצה לא נחשב מאובטח</string>
     <string name="preference_search_no_results">לא נמצאו הגדרות</string>
     <string name="settings_message_theme_selection_summary_off">בחר את תמת הצגת ההודעות בזמן הצגת ההודעה</string>

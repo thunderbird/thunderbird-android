@@ -423,11 +423,6 @@
     <string name="folder_settings_folder_display_mode_normal">Без класу</string>
     <string name="folder_settings_folder_display_mode_first_class">1-ий клас</string>
     <string name="folder_settings_folder_display_mode_second_class">2-ий клас</string>
-    <string name="folder_settings_folder_sync_mode_label">Клас опитування теки</string>
-    <string name="folder_settings_folder_sync_mode_normal">Немає</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1-ий клас</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2-ий клас</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Такий самий, як і клас відображення</string>
     <string name="folder_settings_clear_local_folder_action">Видалити локальні повідомлення</string>
     <string name="account_settings_incoming_label">Сервер вхідної пошти</string>
     <string name="account_settings_incoming_summary">Налаштувати сервер вхідної пошти</string>
@@ -514,11 +509,6 @@
     <string name="sort_by_attach">наявністю вкладень</string>
     <string name="account_delete_dlg_title">Видалити обліковий запис</string>
     <string name="folder_list_filter_hint">Назва теки містить</string>
-    <string name="folder_list_display_mode_label">Показати теки…</string>
-    <string name="folder_list_display_mode_all">Відображати усі теки</string>
-    <string name="folder_list_display_mode_first_class">Відображати тільки теки 1-го класу</string>
-    <string name="folder_list_display_mode_first_and_second_class">Відображати теки 1-го і 2-го класу</string>
-    <string name="folder_list_display_mode_not_second_class">Відображати усі, крім тек 2-го класу</string>
     <string name="account_settings_signature__location_label">Розташування підпису</string>
     <string name="account_settings_signature__location_before_quoted_text">перед цитованим повідомленням</string>
     <string name="account_settings_signature__location_after_quoted_text">після цитованого повідомлення</string>
