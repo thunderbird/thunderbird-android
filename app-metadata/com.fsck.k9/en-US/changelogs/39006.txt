@@ -1,0 +1,6 @@
+- Removed folder display classes
+- Always show all folders in the Manage Folders screen
+- Fixed top crash when removing accounts
+- Properly aligned welcome text
+- Updated support link to support.mozilla.org
+- Accessibility fixes

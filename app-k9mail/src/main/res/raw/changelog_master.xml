@@ -5,6 +5,14 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="8.0b2" versioncode="39006" date="2024-10-07">
+        <change>Removed folder display classes</change>
+        <change>Always show all folders in the Manage Folders screen</change>
+        <change>Fixed top crash when removing accounts</change>
+        <change>Properly aligned welcome text</change>
+        <change>Updated support link to support.mozilla.org</change>
+        <change>Accessibility fixes</change>
+    </release>
     <release version="8.0b1" versioncode="39005" date="2024-09-30">
         <change>Updated subject encryption</change>
         <change>Removed outdated folder settings</change>
