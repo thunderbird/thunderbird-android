@@ -306,11 +306,13 @@ class PushController internal constructor(
         synchronized(lock) {
             // Stop listening to push enabled changes in accounts we no longer monitor
             val accountUuids = accounts.mapToSet { it.uuid }
-            for (accountUuid in pushEnabledCollectorJobs.keys) {
+            val iterator = pushEnabledCollectorJobs.iterator()
+            while (iterator.hasNext()) {
+                val (accountUuid, collectorJob) = iterator.next()
                 if (accountUuid !in accountUuids) {
                     Timber.v("..Stopping to listen for push enabled changes in account: %s", accountUuid)
-                    val collectorJob = pushEnabledCollectorJobs.remove(accountUuid)
-                    collectorJob?.cancel()
+                    iterator.remove()
+                    collectorJob.cancel()
                 }
             }
 
