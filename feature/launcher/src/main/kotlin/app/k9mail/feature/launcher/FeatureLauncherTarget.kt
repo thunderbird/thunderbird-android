@@ -28,6 +28,10 @@ sealed class FeatureLauncherTarget(
         route = NAVIGATION_ROUTE_ACCOUNT_SETUP,
     )
 
+    data object Funding : FeatureLauncherTarget(
+        route = "TODO",
+    )
+
     fun toDeepLinkUri(): Uri {
         return when (this) {
             is AccountEditIncomingSettings -> route.withAccountUuid(accountUuid).toDeepLinkUri()

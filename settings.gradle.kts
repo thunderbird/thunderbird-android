@@ -86,6 +86,7 @@ include(
 include(
     ":feature:funding:api",
     ":feature:funding:googleplay",
+    ":feature:funding:link",
     ":feature:funding:noop",
 )
 

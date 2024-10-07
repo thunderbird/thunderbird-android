@@ -218,9 +218,9 @@ dependencies {
     debugImplementation(projects.backend.demo)
     debugImplementation(projects.feature.autodiscovery.demo)
 
-    "fossImplementation"(projects.feature.funding.noop)
+    "fossImplementation"(projects.feature.funding.link)
 
-    fullDebugImplementation(projects.feature.funding.noop)
+    fullDebugImplementation(projects.feature.funding.link)
     fullDailyImplementation(projects.feature.funding.googleplay)
     fullBetaImplementation(projects.feature.funding.googleplay)
     fullReleaseImplementation(projects.feature.funding.googleplay)

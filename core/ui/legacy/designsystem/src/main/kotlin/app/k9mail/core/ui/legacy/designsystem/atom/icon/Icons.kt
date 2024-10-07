@@ -45,6 +45,7 @@ object Icons {
         val Error = R.drawable.ic_error
         val ExpandLess = R.drawable.ic_expand_less
         val ExpandMore = R.drawable.ic_expand_more
+        val Favorite = R.drawable.ic_favorite
         val FilterList = R.drawable.ic_filter_list
         val Folder = R.drawable.ic_folder
         val Forum = R.drawable.ic_forum

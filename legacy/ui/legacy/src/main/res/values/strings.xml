@@ -751,6 +751,7 @@
 
     <string name="settings_list_backup_category">Backup</string>
     <string name="settings_list_miscellaneous_category">Miscellaneous</string>
+    <string name="settings_list_action_support">Support <xliff:g id="app_name">%s</xliff:g></string>
 
     <string name="settings_export_title">Export settings</string>
     <string name="settings_export_button">Export</string>
