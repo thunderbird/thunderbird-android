@@ -1,5 +1,6 @@
 package app.k9mail.feature.migration.qrcode.ui
 
+import android.app.Application
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.MviTurbines
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
@@ -10,12 +11,22 @@ import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.Event
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.State
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.UiPermissionState
 import assertk.assertThat
+import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
+import assertk.assertions.isNotNull
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
+@RunWith(RobolectricTestRunner::class)
+@Config(application = Application::class)
 class QrCodeScannerViewModelTest {
 
     @get:Rule
@@ -67,6 +78,8 @@ class QrCodeScannerViewModelTest {
             userScansQrCode(sequenceNumber = 2, sequenceEnd = 2)
             assertScannedStatus(expectedScannedCount = 2, expectedScannedTotal = 2)
 
+            assertSettingsWritten(expectedNumberOfAccounts = 2)
+
             ensureThatAllEventsAreConsumed()
         }
     }
@@ -75,12 +88,15 @@ class QrCodeScannerViewModelTest {
 private class QrCodeScannerScreenRobot(
     private val testScope: TestScope,
 ) {
+    private val qrCodeSettingsWriter = FakeQrCodeSettingsWriter()
     private val viewModel = QrCodeScannerViewModel(
         qrCodePayloadReader = QrCodePayloadReader(),
+        qrCodeSettingsWriter = qrCodeSettingsWriter,
         createCameraUseCaseProvider = { listener ->
             qrCodeListener = listener
             UseCase.CameraUseCasesProvider { emptyList() }
         },
+        backgroundDispatcher = Dispatchers.Unconfined,
     )
     private lateinit var qrCodeListener: (String) -> Unit
     private lateinit var turbines: MviTurbines<State, Effect>
@@ -154,6 +170,13 @@ private class QrCodeScannerScreenRobot(
                 totalCount = expectedScannedTotal,
             ),
         )
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun assertSettingsWritten(expectedNumberOfAccounts: Int) {
+        testScope.advanceUntilIdle()
+
+        assertThat(qrCodeSettingsWriter.arguments).isNotNull().hasSize(expectedNumberOfAccounts)
     }
 
     fun ensureThatAllEventsAreConsumed() {
