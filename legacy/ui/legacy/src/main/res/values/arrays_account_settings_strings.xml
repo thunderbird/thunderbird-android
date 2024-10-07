@@ -77,14 +77,6 @@
         <item>@string/account_setup_push_limit_1000</item>
     </string-array>
 
-    <string-array name="folder_notify_new_mail_mode_entries">
-        <item>@string/account_settings_folder_notify_new_mail_mode_all</item>
-        <item>@string/account_settings_folder_notify_new_mail_mode_first_class</item>
-        <item>@string/account_settings_folder_notify_new_mail_mode_first_and_second_class</item>
-        <item>@string/account_settings_folder_notify_new_mail_mode_not_second_class</item>
-        <item>@string/account_settings_folder_notify_new_mail_mode_none</item>
-    </string-array>
-
     <string-array name="delete_policy_entries">
         <item>@string/account_setup_incoming_delete_policy_never_label</item>
         <item>@string/account_setup_incoming_delete_policy_delete_label</item>

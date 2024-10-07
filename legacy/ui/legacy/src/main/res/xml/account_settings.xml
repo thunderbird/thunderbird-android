@@ -306,16 +306,6 @@
             android:title="@string/account_settings_notify_label"
             />
 
-        <ListPreference
-            android:dependency="account_notify"
-            android:dialogTitle="@string/account_settings_folder_notify_new_mail_mode_label"
-            android:entries="@array/folder_notify_new_mail_mode_entries"
-            android:entryValues="@array/folder_notify_new_mail_mode_values"
-            android:key="folder_notify_new_mail_mode"
-            app:useSimpleSummaryProvider="true"
-            android:title="@string/account_settings_folder_notify_new_mail_mode_label"
-            />
-
         <CheckBoxPreference
             android:defaultValue="true"
             android:dependency="account_notify"
