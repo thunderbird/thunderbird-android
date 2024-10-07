@@ -13,11 +13,11 @@ import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.UiPermission
 import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
+import assertk.assertions.isNull
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
@@ -67,7 +67,22 @@ class QrCodeScannerViewModelTest {
     }
 
     @Test
-    fun `user scans QR code`() = runTest {
+    fun `user successfully scans one QR code`() = runTest {
+        with(QrCodeScannerScreenRobot(testScope = this)) {
+            startScreen()
+            systemGrantsCameraPermission()
+
+            userScansQrCode(sequenceNumber = 1, sequenceEnd = 1)
+            assertScannedStatus(expectedScannedCount = 1, expectedScannedTotal = 1)
+
+            assertScanResult(expectedNumberOfAccounts = 1)
+
+            ensureThatAllEventsAreConsumed()
+        }
+    }
+
+    @Test
+    fun `user successfully scans two QR codes`() = runTest {
         with(QrCodeScannerScreenRobot(testScope = this)) {
             startScreen()
             systemGrantsCameraPermission()
@@ -78,7 +93,36 @@ class QrCodeScannerViewModelTest {
             userScansQrCode(sequenceNumber = 2, sequenceEnd = 2)
             assertScannedStatus(expectedScannedCount = 2, expectedScannedTotal = 2)
 
-            assertSettingsWritten(expectedNumberOfAccounts = 2)
+            assertScanResult(expectedNumberOfAccounts = 2)
+
+            ensureThatAllEventsAreConsumed()
+        }
+    }
+
+    @Test
+    fun `user clicks Done button after one of two QR codes was scanned`() = runTest {
+        with(QrCodeScannerScreenRobot(testScope = this)) {
+            startScreen()
+            systemGrantsCameraPermission()
+
+            userScansQrCode(sequenceNumber = 1, sequenceEnd = 2)
+            assertScannedStatus(expectedScannedCount = 1, expectedScannedTotal = 2)
+
+            userClicksDoneButton()
+            assertScanResult(expectedNumberOfAccounts = 1)
+
+            ensureThatAllEventsAreConsumed()
+        }
+    }
+
+    @Test
+    fun `user clicks Done button without any QR codes having been successfully scanned`() = runTest {
+        with(QrCodeScannerScreenRobot(testScope = this)) {
+            startScreen()
+            systemGrantsCameraPermission()
+
+            userClicksDoneButton()
+            assertScanCancel()
 
             ensureThatAllEventsAreConsumed()
         }
@@ -162,6 +206,10 @@ private class QrCodeScannerScreenRobot(
         qrCodeListener.invoke(payload)
     }
 
+    fun userClicksDoneButton() {
+        viewModel.event(Event.DoneClicked)
+    }
+
     suspend fun assertScannedStatus(expectedScannedCount: Int, expectedScannedTotal: Int) {
         assertThat(turbines.awaitStateItem()).isEqualTo(
             State(
@@ -172,11 +220,14 @@ private class QrCodeScannerScreenRobot(
         )
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    fun assertSettingsWritten(expectedNumberOfAccounts: Int) {
-        testScope.advanceUntilIdle()
-
+    suspend fun assertScanResult(expectedNumberOfAccounts: Int) {
+        assertThat(turbines.awaitEffectItem()).isInstanceOf<Effect.ReturnResult>()
         assertThat(qrCodeSettingsWriter.arguments).isNotNull().hasSize(expectedNumberOfAccounts)
+    }
+
+    suspend fun assertScanCancel() {
+        assertThat(turbines.awaitEffectItem()).isInstanceOf<Effect.Cancel>()
+        assertThat(qrCodeSettingsWriter.arguments).isNull()
     }
 
     fun ensureThatAllEventsAreConsumed() {

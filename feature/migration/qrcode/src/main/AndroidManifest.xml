@@ -7,6 +7,12 @@
     <uses-permission android:name="android.permission.CAMERA"/>
 
     <application tools:ignore="MissingApplicationIcon">
+        <activity
+            android:name=".ui.QrCodeScannerActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Material3.Dark.NoActionBar"
+            />
+
         <provider
             android:name=".settings.QrCodeSettingsFileProvider"
             android:authorities="${applicationId}.qrcode.settings"

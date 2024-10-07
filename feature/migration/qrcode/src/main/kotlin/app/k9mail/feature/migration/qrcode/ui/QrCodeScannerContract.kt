@@ -1,5 +1,6 @@
 package app.k9mail.feature.migration.qrcode.ui
 
+import android.net.Uri
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.feature.migration.qrcode.domain.QrCodeDomainContract.UseCase
 
@@ -25,6 +26,8 @@ internal interface QrCodeScannerContract {
     sealed interface Effect {
         data object RequestCameraPermission : Effect
         data object GoToAppInfoScreen : Effect
+        data class ReturnResult(val contentUri: Uri) : Effect
+        data object Cancel : Effect
     }
 
     enum class UiPermissionState {

@@ -132,15 +132,18 @@ internal class QrCodeScannerViewModel(
     }
 
     private fun startAccountImport() {
-        viewModelScope.launch {
-            val accounts = mergeAccounts(accountDataList)
+        val accounts = mergeAccounts(accountDataList)
+        if (accounts.isEmpty()) {
+            emitEffect(Effect.Cancel)
+            return
+        }
 
-            @Suppress("UnusedPrivateProperty")
+        viewModelScope.launch {
             val contentUri = withContext(backgroundDispatcher) {
                 qrCodeSettingsWriter.write(accounts)
             }
 
-            // TODO: Start importing accounts by returning `contentUri` to `SettingsImportFragment`
+            emitEffect(Effect.ReturnResult(contentUri))
         }
     }
 
