@@ -208,9 +208,9 @@ dependencies {
     implementation(projects.feature.widget.unread)
 
     debugImplementation(projects.feature.telemetry.noop)
-    "dailyImplementation"(projects.feature.telemetry.glean)
-    "betaImplementation"(projects.feature.telemetry.glean)
-    releaseImplementation(projects.feature.telemetry.glean)
+    "dailyImplementation"(projects.feature.telemetry.noop)
+    "betaImplementation"(projects.feature.telemetry.noop)
+    releaseImplementation(projects.feature.telemetry.noop)
 
     implementation(libs.androidx.work.runtime)
 
