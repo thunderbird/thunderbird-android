@@ -10,6 +10,8 @@ import app.k9mail.core.common.mail.toEmailAddressOrThrow
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
+import com.fsck.k9.CoreResourceProvider
+import com.fsck.k9.TestCoreResourceProvider
 import com.fsck.k9.helper.MessageHelper.Companion.toFriendly
 import com.fsck.k9.mail.Address
 import org.junit.Test
@@ -20,6 +22,8 @@ import org.mockito.kotlin.stub
 class MessageHelperTest : RobolectricTest() {
 
     private val contactRepository: ContactRepository = mock()
+    private val resourceProvider: CoreResourceProvider = TestCoreResourceProvider()
+    private val messageHelper: MessageHelper = MessageHelper(resourceProvider, contactRepository)
 
     @Test
     fun testToFriendlyShowsPersonalPartIfItExists() {
@@ -114,6 +118,32 @@ class MessageHelperTest : RobolectricTest() {
             contactNameColor = 0,
         )
         assertThat(friendly).isEqualTo("Tim@Testor")
+    }
+
+    @Test
+    fun testGetSenderDisplayNameWithShowContactNameShouldReturnCorrectOutput() {
+        val address1 = Address("test@testor.com", "Tim Testor")
+        val address2 = Address("foo@bar.com", "Foo Bar")
+        val addresses = arrayOf(address1, address2)
+        setupContactRepositoryWithFakeContact(EMAIL_ADDRESS)
+        val displayName = messageHelper.getRecipientDisplayNames(addresses)
+        assertThat(displayName.toString()).isEqualTo("To: Tim Testor,Foo Bar")
+    }
+
+    @Test
+    fun testGetSenderDisplayNameWithoutShowContactNameShouldReturnCorrectOutput() {
+        val address1 = Address("test@testor.com")
+        val address2 = Address("foo@bar.com")
+        val addresses = arrayOf(address1, address2)
+
+        val displayName = messageHelper.getRecipientDisplayNames(addresses)
+        assertThat(displayName.toString()).isEqualTo("To: test@testor.com,foo@bar.com")
+    }
+
+    @Test
+    fun testGetSenderDisplayNameWithoutInputReturnCorrectOutput() {
+        val displayName = messageHelper.getRecipientDisplayNames(null)
+        assertThat(displayName.toString()).isEqualTo(resourceProvider.contactUnknownRecipient())
     }
 
     private fun setupContactRepositoryWithFakeContact(emailAddress: EmailAddress) {

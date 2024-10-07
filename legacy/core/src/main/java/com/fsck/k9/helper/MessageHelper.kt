@@ -34,7 +34,7 @@ class MessageHelper(
         }
         val repository = if (isShowContactName) contactRepository else null
         val recipients = toFriendly(addresses, repository)
-        return SpannableStringBuilder(resourceProvider.contactDisplayNamePrefix()).append(recipients)
+        return SpannableStringBuilder(resourceProvider.contactDisplayNamePrefix()).append(' ').append(recipients)
     }
 
     companion object {
