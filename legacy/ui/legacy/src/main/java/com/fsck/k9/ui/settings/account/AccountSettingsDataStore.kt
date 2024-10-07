@@ -115,7 +115,6 @@ class AccountSettingsDataStore(
             "account_message_age" -> account.maximumPolledMessageAge.toString()
             "account_autodownload_size" -> account.maximumAutoDownloadMessageSize.toString()
             "account_check_frequency" -> account.automaticCheckIntervalMinutes.toString()
-            "folder_sync_mode" -> account.folderSyncMode.name
             "delete_policy" -> account.deletePolicy.name
             "expunge_policy" -> account.expungePolicy.name
             "max_push_folders" -> account.maxPushFolders.toString()
@@ -126,7 +125,6 @@ class AccountSettingsDataStore(
             "account_setup_auto_expand_folder" -> {
                 loadSpecialFolder(account.autoExpandFolderId, SpecialFolderSelection.MANUAL)
             }
-            "folder_display_mode" -> account.folderDisplayMode.name
             "archive_folder" -> loadSpecialFolder(account.archiveFolderId, account.archiveFolderSelection)
             "drafts_folder" -> loadSpecialFolder(account.draftsFolderId, account.draftsFolderSelection)
             "sent_folder" -> loadSpecialFolder(account.sentFolderId, account.sentFolderSelection)
@@ -155,11 +153,6 @@ class AccountSettingsDataStore(
                     reschedulePoll()
                 }
             }
-            "folder_sync_mode" -> {
-                if (account.updateFolderSyncMode(Account.FolderMode.valueOf(value))) {
-                    reschedulePoll()
-                }
-            }
             "delete_policy" -> account.deletePolicy = Account.DeletePolicy.valueOf(value)
             "expunge_policy" -> account.expungePolicy = Account.Expunge.valueOf(value)
             "max_push_folders" -> account.maxPushFolders = value.toInt()
@@ -168,7 +161,6 @@ class AccountSettingsDataStore(
             "quote_style" -> account.quoteStyle = Account.QuoteStyle.valueOf(value)
             "account_quote_prefix" -> account.quotePrefix = value
             "account_setup_auto_expand_folder" -> account.autoExpandFolderId = extractFolderId(value)
-            "folder_display_mode" -> account.folderDisplayMode = Account.FolderMode.valueOf(value)
             "archive_folder" -> saveSpecialFolderSelection(value, account::setArchiveFolderId)
             "drafts_folder" -> saveSpecialFolderSelection(value, account::setDraftsFolderId)
             "sent_folder" -> saveSpecialFolderSelection(value, account::setSentFolderId)

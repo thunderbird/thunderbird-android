@@ -15,3 +15,15 @@ internal fun WelcomeContentPreview() {
         )
     }
 }
+
+@Composable
+@PreviewDevices
+internal fun WelcomeContentWithLongTitlePreview() {
+    PreviewWithTheme {
+        WelcomeContent(
+            onStartClick = {},
+            onImportClick = {},
+            appName = "Thunderbird Debug",
+        )
+    }
+}

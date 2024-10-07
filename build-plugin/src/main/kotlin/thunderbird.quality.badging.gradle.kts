@@ -2,6 +2,8 @@ import com.android.SdkConstants
 import com.android.build.api.artifact.SingleArtifact
 import com.github.difflib.text.DiffRow
 import com.github.difflib.text.DiffRowGenerator
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 
 /**
  * This is a Gradle plugin that adds a task to generate the badging of the APKs and a task to check that the
@@ -92,6 +94,7 @@ abstract class GenerateBadgingTask : DefaultTask() {
 
     @TaskAction
     fun taskAction() {
+        val outputStream = ByteArrayOutputStream()
         execOperations.exec {
             commandLine(
                 aapt2Executable.get().asFile.absolutePath,
@@ -99,7 +102,28 @@ abstract class GenerateBadgingTask : DefaultTask() {
                 "badging",
                 apk.get().asFile.absolutePath,
             )
-            standardOutput = badging.asFile.get().outputStream()
+            standardOutput = outputStream
+        }
+
+        badging.asFile.get().writeText(cleanBadgingContent(outputStream) + "\n")
+    }
+
+    private fun cleanBadgingContent(outputStream: ByteArrayOutputStream): String {
+        return ByteArrayInputStream(outputStream.toByteArray()).bufferedReader().use { reader ->
+            reader.lineSequence().map { line ->
+                line.cleanBadgingLine()
+            }.joinToString("\n")
+        }
+    }
+
+    private fun String.cleanBadgingLine(): String {
+        return if (startsWith("package:")) {
+            replace(Regex("versionName='[^']*'"), "")
+                .replace(Regex("versionCode='[^']*'"), "")
+                .replace(Regex("\\s+"), " ")
+                .trim()
+        } else {
+            this
         }
     }
 }

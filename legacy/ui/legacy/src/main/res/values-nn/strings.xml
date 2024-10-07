@@ -66,7 +66,7 @@
     <string name="general_no_sender">Ingen avsendar</string>
     <string name="status_loading_more">Lastar meldingar\u2026</string>
     <string name="status_network_error">Tilkoplingsfeil</string>
-    <string name="status_invalid_id_error">Meldinga er ikkje funnen</string>
+    <string name="status_invalid_id_error">Fann ikkje meldinga</string>
     <string name="status_loading_error">Feil ved meldingsinnlasting</string>
     <string name="notification_action_reply">Svar</string>
     <string name="notification_action_mark_as_read">Merk som lesen</string>
@@ -148,8 +148,8 @@
     <string name="account_setup_incoming_delete_policy_label">Når eg slettar ei melding</string>
     <string name="account_setup_incoming_delete_policy_never_label">Ikkje slett på tenaren</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Slett på tenaren</string>
-    <string name="account_setup_incoming_delete_policy_markread_label">Merk som lesen på tenaren</string>
-    <string name="account_setup_expunge_policy_immediately">Brennkvikt</string>
+    <string name="account_setup_incoming_delete_policy_markread_label">Merk som lesen på serveren</string>
+    <string name="account_setup_expunge_policy_immediately">Med ein gong</string>
     <string name="account_setup_expunge_policy_manual">Manuelt</string>
     <string name="drafts_folder_label">Kladdemappa</string>
     <string name="sent_folder_label">Sendt-mappa</string>
@@ -225,7 +225,6 @@
     <string name="account_settings_folder_sync_mode_all">Alle</string>
     <string name="account_settings_folder_sync_mode_none">Ingen</string>
     <string name="folder_settings_title">Mappeinnstillingar</string>
-    <string name="folder_settings_folder_sync_mode_normal">Ingen</string>
     <string name="folder_settings_clear_local_folder_action">Fjern lokale meldingar</string>
     <string name="account_settings_description_label">Kontonamn</string>
     <string name="account_settings_name_label">Namnet ditt</string>
@@ -278,8 +277,6 @@
     <string name="sort_by_unread">Lesen/ulesen</string>
     <string name="sort_by_attach">Vedlegg</string>
     <string name="account_delete_dlg_title">Fjern konto</string>
-    <string name="folder_list_display_mode_label">Syn mapper …</string>
-    <string name="folder_list_display_mode_all">Alle mappene</string>
     <string name="account_settings_signature__location_label">Signaturplassering</string>
     <string name="account_settings_signature__location_before_quoted_text">Før sitert melding</string>
     <string name="account_settings_signature__location_after_quoted_text">Etter sitert melding</string>
@@ -478,4 +475,115 @@
     <!--A user visible label for the name and email address copied to the clipboard-->
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+<string name="spam_action">Spam</string>
+    <string name="account_settings_vibrate_pattern_default">Standard</string>
+    <string name="swipe_action_spam">Spam</string>
+    <string name="choose_folder_move_title">Flytt til…</string>
+    <string name="choose_folder_copy_title">Kopier til…</string>
+    <string name="general_settings_post_remove_action_title">Etter sletting eller flytting av melding</string>
+    <string name="swipe_action_move">Flytt…</string>
+    <string name="message_list_error_title">Feil</string>
+    <string name="unsubscribe_action">Avslutt abonnement</string>
+    <string name="notification_action_spam">Spam</string>
+    <string name="global_settings_messageview_autofit_width_summary">Tilpass meldingar til skjermstørrelse</string>
+    <string name="setting_language_system">Systemstandard</string>
+    <string name="account_setup_push_limit_5">5 mapper</string>
+    <string name="about_title">Om <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="account_setup_expunge_policy_label">Fjern sletta meldingar på server</string>
+    <string name="general_settings_show_compose_button_title">Vis flytande «Skriv»-knapp</string>
+    <string name="changelog_snackbar_text">Finn ut kva som er nytt i denne utgåva</string>
+    <string name="size_format_gigabytes">%.1f GB</string>
+    <string name="message_view_bcc_label">Blindkopi:</string>
+    <string name="authors">Utviklarar</string>
+    <string name="new_messages_title">Nye meldingar</string>
+    <string name="general_settings_post_remove_action_return_to_list">Tilbake til meldingsliste</string>
+    <string name="message_view_status_attachment_not_saved">Klarte ikkje å lagre vedlegget.</string>
+    <string name="global_settings_messageview_autofit_width_label">Autojuster meldingar</string>
+    <string name="font_size_default">Standard</string>
+    <string name="about_libraries">Bibliotek</string>
+    <string name="license">Lisens</string>
+    <string name="changelog_title">Endringslogg</string>
+    <string name="changelog_loading_error">Klarte ikkje å laste endringsloggen.</string>
+    <string name="changelog_version_title">Versjon %s</string>
+    <string name="changelog_recent_changes_title">Kva er nytt</string>
+    <string name="changelog_snackbar_button_text">Vis</string>
+    <string name="changelog_show_recent_changes">Vis nylege endringar etter at appen har blitt oppdatert</string>
+    <string name="search_everywhere_action">Søk overalt</string>
+    <string name="get_help_title">Få hjelp</string>
+    <string name="user_forum_title">Brukarforum</string>
+    <string name="source_code">kjeldekode</string>
+    <string name="app_license">Apache-lisens, versjon 2.0</string>
+    <string name="about_project_title">Open kjeldekode-prosjekt</string>
+    <string name="about_website_title">Nettstad</string>
+    <string name="remove_attachment_action">Fjern vedlegg</string>
+    <string name="edit_as_new_message_action">Rediger som ny melding</string>
+    <string name="global_settings_registered_name_color_label">Fargelegg kontaktar</string>
+    <string name="message_compose_show_quoted_text_action">Inkluder sitert melding</string>
+    <string name="size_format_megabytes">%.1f MB</string>
+    <string name="size_format_kilobytes">%.1f kB</string>
+    <string name="notification_notify_error_title">Varslingsfeil</string>
+    <string name="general_settings_contact_name_color_label">Kontaktnamnfarge</string>
+    <string name="global_settings_messageview_fixedwidth_label">Fastbreiddeskrifter</string>
+    <string name="global_settings_confirm_menu_mark_all_read">Merk alle meldingar som lesne</string>
+    <string name="global_settings_confirm_action_delete_notif">Slett (frå varsel)</string>
+    <string name="general_settings_swipe_actions_title">Sveipehandlingar</string>
+    <string name="general_settings_swipe_action_toggle_read">Marker som lesen/ulesen</string>
+    <string name="move_to_drafts_action">Flyt til kladdar</string>
+    <string name="refile_action">Omorganiser…</string>
+    <string name="folders_action">Handsam mapper</string>
+    <string name="copy_subject_to_clipboard">Emnetekst kopiert til utklippstavla</string>
+    <string name="expunge_action">Fjern</string>
+    <string name="size_format_bytes">%d B</string>
+    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> fleire på <xliff:g id="account">%2$s</xliff:g></string>
+    <string name="notification_certificate_error_public">Sertifikatfeil</string>
+    <string name="message_view_additional_recipient_prefix">+</string>
+    <string name="global_settings_confirm_action_spam">Søppelpost</string>
+    <string name="general_settings_right_swipe_title">Høgresveip</string>
+    <string name="general_settings_left_swipe_title">Venstresveip</string>
+    <string name="general_settings_swipe_action_toggle_selection">Veksle markering</string>
+    <string name="load_more_messages_fmt">Last opp til <xliff:g id="messages_to_load">%d</xliff:g> fleire</string>
+    <string name="global_settings_confirm_menu_discard">Forkast meldinga</string>
+    <string name="general_settings_swipe_action_toggle_star">Legg til/fjern stjerne</string>
+    <string name="global_settings_show_contact_name_summary">Bruk mottakarnamn frå Kontakter når det er tilgjengeleg</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> ny melding</item>
+        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nye meldingar</item>
+    </plurals>
+    <string name="debug_enable_debug_logging_summary">Logg ekstra diagnoseinformasjon</string>
+    <string name="global_settings_registered_name_color_changed">Fargelegg namn i kontaktlista</string>
+    <string name="global_settings_show_contact_name_label">Vis kontaktnamn</string>
+    <string name="message_view_show_remote_images_action">Vis eksterne bilete</string>
+    <string name="message_compose_attachments_forward_toast">Meldinga kan ikkje vidaresendast fordi nokre av vedlegga ikkje har vorte lasta ned.</string>
+    <string name="about_app_authors_thunderbird">Thunderbird Mobile Team</string>
+    <string name="debug_export_logs_title">Eksporter loggar</string>
+    <string name="compose_error_incomplete_recipient">Mottakarfelt inneheld ufullstendig inndata!</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Etter markering av melding som ulest</string>
+    <string name="notification_channel_push_title">Synkroniser (Push)</string>
+    <string name="notification_channel_push_description">Vist under venting på nye meldingar</string>
+    <string name="notification_channel_miscellaneous_description">Diverse notifikasjonar, som feil, osb.</string>
+    <string name="version">Versjon</string>
+    <string name="debug_export_logs_success">Vellykka eksport. Loggar kan innehalde sensitiv informasjon. Ver forsiktig med kven du sender dei til.</string>
+    <string name="message_view_no_viewer">Finn ikkje framvisar for <xliff:g id="mimetype">%s</xliff:g>.</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Vis forrige melding</string>
+    <string name="account_delete_dlg_instructions_fmt">Kontoen \"<xliff:g id="account">%s</xliff:g>\" vil bli fjerna frå <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Bruk skifttype med fast breidd under visning av rein tekst</string>
+    <string name="message_view_sender_label">via %1$s</string>
+    <string name="debug_export_logs_failure">Eksport feila.</string>
+    <string name="debug_enable_debug_logging_title">Skru på feilsøkingslogg</string>
+    <string name="global_settings_sender_above_subject_summary">Vis korrespondentnamn over emnelinje, i staden for under</string>
+    <string name="notification_notify_error_text">Ein feil har oppstått under oppretting av systemnotifikasjon for ny melding. Grunnen er sannsynlegvis på grunn av manglande notifikasjonslyd.\n\nKlikk for å opne notifikasjonsinnstillingar.</string>
+    <string name="notification_channel_messages_description">Notifikasjonar relatert til meldingar</string>
+    <string name="debug_enable_sensitive_logging_summary">Kan vise passord i loggar.</string>
+    <string name="global_settings_show_correspondent_names_label">Vis korrespondentnamn</string>
+    <string name="message_view_me_text">meg</string>
+    <string name="global_settings_flag_summary">Stjerner indikerer meldingar med flag</string>
+    <string name="global_settings_preview_lines_label">Forhandsvis linjer</string>
+    <string name="global_settings_show_correspondent_names_summary">Vis korrespondentnamn i staden for email-adresser</string>
+    <string name="global_settings_sender_above_subject_label">Korrespondent over emne</string>
+    <string name="general_settings_post_remove_action_show_next_message">Vis neste melding</string>
+    <string name="message_view_recipients_format">til <xliff:g id="recipients">%s</xliff:g></string>
+    <string name="global_settings_privacy_hide_useragent">Skjul e-postklient</string>
+    <string name="general_settings_ui_density_default">Standard</string>
+    <string name="quiet_time_notification">Skru av varslingar</string>
+    <string name="general_settings_ui_density_relaxed">Avslappa</string>
 </resources>

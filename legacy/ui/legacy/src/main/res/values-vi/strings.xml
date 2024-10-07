@@ -267,7 +267,6 @@
     <string name="account_settings_folders">Thư mục</string>
     <string name="account_settings_folder_sync_mode_none">Không thiết đặt</string>
     <string name="folder_settings_title">Cấu hình thư mục</string>
-    <string name="folder_settings_folder_sync_mode_normal">Không thiết đặt</string>
     <string name="folder_settings_clear_local_folder_action">Xóa sạch thư lưu cục bộ</string>
     <string name="account_settings_vibrate_pattern_default">Mặc định</string>
     <string name="edit_identity_save">Lưu lại</string>
@@ -445,7 +444,6 @@
     <string name="account_settings_message_age_0">hôm nay</string>
     <string name="account_settings_upload_sent_messages_summary">Tải tin nhắn lên thư mục Đã gửi sau khi gửi</string>
     <string name="account_settings_sync_remote_deletetions_label">Đồng bộ hóa việc xóa máy chủ</string>
-    <string name="folder_settings_folder_sync_mode_label">Lớp thăm dò thư mục</string>
     <string name="account_settings_color_summary">Màu nhấn của tài khoản này được sử dụng trong danh sách thư mục và tài khoản</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
     <string name="account_settings_autodownload_message_size_8">8 KiB</string>
@@ -504,7 +502,6 @@
     <string name="account_settings_mail_display_count_label">Kích thước thư mục cục bộ</string>
     <string name="account_settings_crypto_key">Định cấu hình khóa đầu cuối</string>
     <string name="account_settings_reply_after_quote_label">Trả lời sau văn bản được trích dẫn</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Giống như lớp hiển thị</string>
     <string name="account_settings_autodownload_message_size_256">256 KiB</string>
     <string name="dialog_autocrypt_mutual_description_2">Nếu cả người gửi và người nhận đều bật chế độ chung thì mã hóa sẽ được bật theo mặc định.</string>
     <string name="crypto_msg_unencrypted_sign_mismatch">nhưng khóa đầu cuối không khớp với người gửi</string>
@@ -584,7 +581,6 @@
     <string name="account_settings_notification_light_yellow">Vàng</string>
     <string name="account_settings_vibrate_summary_disabled">Đã tắt</string>
     <string name="manage_identities_title">Quản lý danh tính</string>
-    <string name="folder_settings_folder_sync_mode_first_class">Hạng 1</string>
     <string name="account_settings_vibrate_pattern_2">Kiểu mẫu 2</string>
     <string name="edit_identity_description_hint">(Không bắt buộc)</string>
     <string name="edit_identity_name_label">Tên của bạn</string>
@@ -685,7 +681,6 @@
     <string name="push_info_title">Thông tin Đẩy</string>
     <string name="folder_settings_folder_display_mode_first_class">Hạng 1</string>
     <string name="folder_settings_folder_display_mode_second_class">Hạng 2</string>
-    <string name="folder_settings_folder_sync_mode_second_class">Hạng 2</string>
     <string name="account_settings_outgoing_label">Máy chủ thư đi</string>
     <string name="account_settings_vibrate_pattern_1">Kiểu mẫu 1</string>
     <string name="account_settings_vibrate_pattern_4">Kiểu mẫu 4</string>
@@ -704,11 +699,7 @@
     <string name="choose_identity_title">Chọn bản sắc</string>
     <string name="send_as">Gửi dưới dạng</string>
     <string name="identity_has_no_email">Bạn không thể sử dụng bản sắc nếu không có địa chỉ email</string>
-    <string name="folder_list_display_mode_all">Tất cả thư mục</string>
     <string name="folder_list_filter_hint">Tên thư mục có chứa</string>
-    <string name="folder_list_display_mode_label">Hiển thị thư mục…</string>
-    <string name="folder_list_display_mode_first_class">Thư mục hạng 1</string>
-    <string name="folder_list_display_mode_not_second_class">Ẩn thư mục Hạng 2</string>
     <string name="setting_theme_global">Sử dụng giao diện ứng dụng</string>
     <string name="setting_theme_dark">Tối</string>
     <string name="privacy_preferences">Riêng tư</string>
@@ -783,7 +774,6 @@
     <string name="message_details_bcc_section_title">Người nhận ẩn</string>
     <string name="general_settings_post_mark_as_unread_action_stay">Ở lại tin nhắn hiện tại</string>
     <string name="account_settings_vibrate_pattern_3">Kiểu mẫu 3</string>
-    <string name="folder_list_display_mode_first_and_second_class">Thư mục Hạng 1 &amp; 2</string>
     <string name="debug_preferences">Tìm lỗi</string>
     <string name="interaction_preferences">Tương tác</string>
     <string name="accountlist_preferences">Danh sách tài khoản</string>

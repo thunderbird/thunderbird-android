@@ -421,11 +421,6 @@
     <string name="folder_settings_folder_display_mode_normal">Aucune classe</string>
     <string name="folder_settings_folder_display_mode_first_class">1re classe</string>
     <string name="folder_settings_folder_display_mode_second_class">2e classe</string>
-    <string name="folder_settings_folder_sync_mode_label">Classe de scrutation du dossier</string>
-    <string name="folder_settings_folder_sync_mode_normal">Aucune</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1re classe</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2e classe</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Identique à la classe d’affichage</string>
     <string name="folder_settings_clear_local_folder_action">Effacer les courriels locaux</string>
     <string name="account_settings_incoming_label">Serveur entrant</string>
     <string name="account_settings_incoming_summary">Configurer le serveur de courriel entrant</string>
@@ -512,11 +507,6 @@
     <string name="sort_by_attach">Fichiers joints</string>
     <string name="account_delete_dlg_title">Retirer le compte</string>
     <string name="folder_list_filter_hint">Le nom de dossier comprend</string>
-    <string name="folder_list_display_mode_label">Afficher les dossiers…</string>
-    <string name="folder_list_display_mode_all">Tous les dossiers</string>
-    <string name="folder_list_display_mode_first_class">Les dossiers de 1re classe</string>
-    <string name="folder_list_display_mode_first_and_second_class">Les dossiers de 1re et 2e classes</string>
-    <string name="folder_list_display_mode_not_second_class">Cacher les dossiers de 2e classe</string>
     <string name="account_settings_signature__location_label">Position de la signature</string>
     <string name="account_settings_signature__location_before_quoted_text">Avant le courriel cité</string>
     <string name="account_settings_signature__location_after_quoted_text">Après le courriel cité</string>
@@ -837,7 +827,7 @@
     <string name="push_notification_state_wait_background_sync">Inactif tant que la synchronisation en arrière-plan n’est pas autorisée</string>
     <string name="push_notification_state_wait_network">Inactif tant que le réseau n’est pas disponible</string>
     <string name="push_notification_info">Touchez pour en apprendre davantage.</string>
-    <string name="push_info_title">Renseignements du pousser</string>
+    <string name="push_info_title">Renseignements sur le pousser</string>
     <string name="push_info_configure_notification_text">Cependant, Android vous permet aussi de cacher la notification.</string>
     <string name="push_info_learn_more_text">En apprendre davantage</string>
     <string name="push_info_configure_notification_action">Configurer la notification</string>
@@ -917,8 +907,11 @@
     <string name="account_delete_dlg_instructions_fmt">Le compte « <xliff:g id="account">%s</xliff:g> » sera supprimé de <xliff:g id="app_name">%s</xliff:g>.</string>
     <string name="push_info_notification_explanation_text">Si le pousser est utilisé, <xliff:g id="app_name">%1$s</xliff:g> maintient une connexion vers le serveur de courriel. Android exige d’afficher une notification continue quand l’appli est active en arrière-plan. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="dialog_openkeychain_info_text">L’appli OpenKeychain est nécessaire pour prendre en charge le chiffrement de bout en bout.</string>
-    <string name="folder_settings_notifications_label">notifications</string>
-    <string name="settings_ui_data_collection">base de données</string>
-    <string name="settings_ui_telemetry_title">Utilisation et données techniques</string>
-    <string name="settings_ui_telemetry_description">Partage les données de performances, d\'utilisation, de matériel et de personnalisation de cette application avec Mozilla pour nous aider à améliorer Thunderbird</string>
+    <string name="folder_settings_notifications_label">Notifications</string>
+    <string name="settings_ui_data_collection">Collecte de données</string>
+    <string name="settings_ui_telemetry_title">Données d’utilisation et techniques</string>
+    <string name="settings_ui_telemetry_description">Partage les données de performance, d’utilisation, de matériel et de personnalisation de cette appli avec Mozilla pour nous aider à améliorer Thunderbird</string>
+    <string name="folder_settings_push_label">Activer le pousser</string>
+    <string name="folder_list_show_hidden_folders">Afficher les dossiers cachés</string>
+    <string name="folder_settings_sync_label">Activer la synchronisation</string>
 </resources>

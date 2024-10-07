@@ -15,8 +15,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import app.k9mail.core.common.provider.AppNameProvider
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
+import app.k9mail.feature.funding.api.FundingManager
+import app.k9mail.feature.funding.api.FundingType
 import app.k9mail.feature.launcher.FeatureLauncherActivity
+import app.k9mail.feature.launcher.FeatureLauncherTarget
 import app.k9mail.legacy.account.Account
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.livedata.observeNotNull
@@ -28,11 +32,14 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.drag.ItemTouchCallback
 import com.mikepenz.fastadapter.drag.SimpleDragCallback
 import com.mikepenz.fastadapter.utils.DragDropUtil
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import app.k9mail.feature.settings.importing.R as SettingsImportR
 
 class SettingsListFragment : Fragment(), ItemTouchCallback {
     private val viewModel: SettingsViewModel by viewModel()
+    private val fundingManager: FundingManager by inject()
+    private val appNameProvider: AppNameProvider by inject()
 
     private lateinit var itemAdapter: ItemAdapter<GenericItem>
 
@@ -130,6 +137,24 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
                     url = getString(R.string.user_forum_url),
                     icon = Icons.Outlined.Help,
                 )
+
+                when (fundingManager.getFundingType()) {
+                    FundingType.GOOGLE_PLAY -> {
+                        // TODO add funding action
+                    }
+
+                    FundingType.LINK -> {
+                        addUrlAction(
+                            text = getString(R.string.settings_list_action_support, appNameProvider.appName),
+                            url = getString(R.string.donate_url),
+                            icon = Icons.Outlined.Favorite,
+                        )
+                    }
+
+                    FundingType.NO_FUNDING -> {
+                        // no-op
+                    }
+                }
             }
         }
 
@@ -139,8 +164,9 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
     private fun handleItemClick(item: GenericItem) {
         when (item) {
             is AccountItem -> launchAccountSettings(item.account)
-            is UrlActionItem -> openUrl(item.url)
+            is IntentItem -> startActivity(item.intent)
             is SettingsActionItem -> findNavController().navigate(item.navigationAction)
+            is UrlActionItem -> openUrl(item.url)
         }
     }
 
@@ -158,7 +184,7 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
     }
 
     private fun launchOnboarding() {
-        FeatureLauncherActivity.launchOnboarding(requireActivity())
+        FeatureLauncherActivity.launch(requireActivity(), FeatureLauncherTarget.Onboarding)
 
         requireActivity().finishAffinity()
     }
@@ -183,6 +209,11 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
 
         fun addAccount(account: Account, isDraggable: Boolean) {
             settingsList.add(AccountItem(account, isDraggable))
+        }
+
+        fun addIntent(text: String, @DrawableRes icon: Int, intent: Intent) {
+            itemId++
+            settingsList.add(IntentItem(itemId, text, icon, intent))
         }
 
         fun addSection(title: String, block: SettingsListBuilder.() -> Unit) {

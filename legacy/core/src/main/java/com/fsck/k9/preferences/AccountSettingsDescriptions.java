@@ -96,7 +96,8 @@ class AccountSettingsDescriptions {
                         R.array.expunge_policy_values))
         ));
         s.put("folderDisplayMode", Settings.versions(
-                new V(1, new EnumSetting<>(FolderMode.class, FolderMode.NOT_SECOND_CLASS))
+                new V(1, new EnumSetting<>(FolderMode.class, FolderMode.NOT_SECOND_CLASS)),
+                new V(100, null)
         ));
         s.put("folderPushMode", Settings.versions(
                 new V(1, new EnumSetting<>(FolderMode.class, FolderMode.FIRST_CLASS)),
@@ -104,7 +105,8 @@ class AccountSettingsDescriptions {
                 new V(98, null)
         ));
         s.put("folderSyncMode", Settings.versions(
-                new V(1, new EnumSetting<>(FolderMode.class, FolderMode.FIRST_CLASS))
+                new V(1, new EnumSetting<>(FolderMode.class, FolderMode.FIRST_CLASS)),
+                new V(99, null)
         ));
         s.put("idleRefreshMinutes", Settings.versions(
                 new V(1, new IntegerArraySetting(24, new int[] { 1, 2, 3, 6, 12, 24, 36, 48, 60 })),

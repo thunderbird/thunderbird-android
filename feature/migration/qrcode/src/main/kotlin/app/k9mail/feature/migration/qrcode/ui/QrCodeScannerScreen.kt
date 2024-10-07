@@ -19,7 +19,9 @@ import org.koin.androidx.compose.koinViewModel
 import timber.log.Timber
 
 @Composable
-fun QrCodeScannerScreen(
+internal fun QrCodeScannerScreen(
+    finishWithResult: (Uri) -> Unit,
+    finish: () -> Unit,
     viewModel: QrCodeScannerContract.ViewModel = koinViewModel<QrCodeScannerViewModel>(),
 ) {
     val cameraPermissionLauncher = rememberLauncherForActivityResult(RequestPermission()) { success ->
@@ -32,6 +34,8 @@ fun QrCodeScannerScreen(
         when (effect) {
             Effect.RequestCameraPermission -> cameraPermissionLauncher.requestCameraPermission()
             Effect.GoToAppInfoScreen -> context.goToAppInfoScreen()
+            is Effect.ReturnResult -> finishWithResult(effect.contentUri)
+            Effect.Cancel -> finish()
         }
     }
 
@@ -40,6 +44,7 @@ fun QrCodeScannerScreen(
     }
 
     QrCodeScannerContent(
+        cameraUseCasesProvider = viewModel.cameraUseCasesProvider,
         state = state.value,
         onEvent = dispatch,
     )

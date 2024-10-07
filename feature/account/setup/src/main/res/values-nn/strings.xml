@@ -1,2 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_loading_message">Slår opp konfigurasjon…</string>
+    <string name="account_setup_options_account_name_label">Kontonamn</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Automatisk konfigurering</string>
+    <string name="account_setup_options_section_sync_options">Synkroniseringsalternativ</string>
+    <string name="account_setup_options_email_check_frequency_never">Aldri</string>
+    <string name="account_setup_options_show_notifications_label">Vis merknader</string>
+    <string name="account_setup_special_folders_sent_folder_label">«Sendt»-mappe</string>
+    <string name="account_setup_create_account_error">Ein feil oppstod under oppretting av kontoen</string>
+    <string name="account_setup_create_account_creating">Opprettar konto…</string>
+    <string name="account_setup_create_account_created">Konto oppretta</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Kvart minutt</item>
+        <item quantity="other">Kvart %d. minutt</item>
+    </plurals>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Fann konfigurasjonen</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Fann ikkje konfigurasjonen</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Passord er påkravd.</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Manuell konfigurasjon</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Rediger konfigurasjon</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Det er påkravd for å godkjenne konfigurasjonen.</string>
+    <string name="account_setup_special_folders_archive_folder_label">Arkivmappe</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Kladdemappe</string>
+    <string name="account_setup_special_folders_spam_folder_label">Spam-mappe</string>
+    <string name="account_setup_special_folders_trash_folder_label">Papirkorgmappe</string>
+    <string name="account_setup_special_folders_folder_none">Ingen</string>
+    <string name="account_setup_special_folders_folder_automatic">Automatisk (%s)</string>
+    <string name="account_setup_options_section_display_options">Visingsalternativ</string>
+    <string name="account_setup_options_display_name_error_required">Namnet ditt er påkravd.</string>
+    <string name="account_setup_options_display_name_label">Ditt namn</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Denne e-postadressa er ikkje støtta.</string>
+    <string name="account_setup_options_email_signature_error_blank">E-postsignatur må fyllast ut.</string>
+    <string name="account_setup_error_unknown">Ukjend feil</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">E-postadresse påkravd.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Denne e-postadressa er ikkje tillaten.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Dette blir ikkje gjenkjent som ei gyldig e-postadresse.</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_loading_error">Klarte ikkje å laste inn e-postkonfigurasjonen</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Denne konfigurasjonen er ikkje tiltrudd</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Eg stolar på denne konfigurasjonen</string>
+    <string name="account_setup_options_account_name_error_blank">Kontonamn må fyllast ut.</string>
+    <string name="account_setup_options_email_signature_label">E-postsignatur</string>
+    <string name="account_setup_options_email_display_count_label">Antal meldingar å vise</string>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Kvar time</item>
+        <item quantity="other">Kvar %d. time</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">1 melding</item>
+        <item quantity="other">%d meldingar</item>
+    </plurals>
+</resources>

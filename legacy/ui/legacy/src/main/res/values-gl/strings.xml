@@ -398,11 +398,6 @@
     <string name="folder_settings_folder_display_mode_normal">Sen Clase</string>
     <string name="folder_settings_folder_display_mode_first_class">1a Clase</string>
     <string name="folder_settings_folder_display_mode_second_class">2a Clase</string>
-    <string name="folder_settings_folder_sync_mode_label">Clase de consulta de cartafol</string>
-    <string name="folder_settings_folder_sync_mode_normal">ningunha</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1a Clase</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2a Clase</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Aa mesma que a de visualización</string>
     <string name="folder_settings_clear_local_folder_action">Borrar mensaxes locais</string>
     <string name="account_settings_incoming_label">Servidor de entrada</string>
     <string name="account_settings_incoming_summary">Configurar servidor de entrada</string>
@@ -471,11 +466,6 @@
     <string name="sort_by_attach">Adxuntos</string>
     <string name="account_delete_dlg_title">Eliminar conta</string>
     <string name="folder_list_filter_hint">Nome do cartafol contén</string>
-    <string name="folder_list_display_mode_label">Carpetas…</string>
-    <string name="folder_list_display_mode_all">Ver todas as carpetas</string>
-    <string name="folder_list_display_mode_first_class">Ver só carpetas de 1a Clase</string>
-    <string name="folder_list_display_mode_first_and_second_class">Ver carpetas de 1a e 2a Clase</string>
-    <string name="folder_list_display_mode_not_second_class">Ver todas agás as de 2a Clase</string>
     <string name="account_settings_signature__location_label">Posición da sinatura</string>
     <string name="account_settings_signature__location_before_quoted_text">Antes do texto citado</string>
     <string name="account_settings_signature__location_after_quoted_text">Despois do texto citado</string>
@@ -913,4 +903,9 @@ Podes conservar esta mensaxe e usala como copia de seguridade da túa chave secr
     <string name="message_list_content_description_unread_prefix">sen ler, %s</string>
     <string name="push_notification_grant_alarm_permission">Toque para garantir o permiso.</string>
     <string name="push_notification_state_alarm_permission_missing">Faltan permisos para programar alarmas</string>
+    <string name="about_app_authors_thunderbird">Equipo Thunderbird Mobile</string>
+    <string name="folder_settings_notifications_label">Notificacións</string>
+    <string name="folder_settings_push_label">Activar Push</string>
+    <string name="about_title">Acerca de <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\" eliminarase de <xliff:g id="app_name">%s</xliff:g>.</string>
 </resources>

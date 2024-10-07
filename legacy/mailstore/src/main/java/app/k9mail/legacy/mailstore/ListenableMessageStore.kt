@@ -1,7 +1,6 @@
 package app.k9mail.legacy.mailstore
 
 import app.k9mail.core.mail.folder.api.FolderDetails
-import com.fsck.k9.mail.FolderClass
 import java.util.concurrent.CopyOnWriteArraySet
 
 @Suppress("TooManyFunctions")
@@ -28,13 +27,13 @@ class ListenableMessageStore(private val messageStore: MessageStore) : MessageSt
         notifyFolderSettingsChanged()
     }
 
-    override fun setDisplayClass(folderId: Long, folderClass: FolderClass) {
-        messageStore.setDisplayClass(folderId, folderClass)
+    override fun setVisible(folderId: Long, visible: Boolean) {
+        messageStore.setVisible(folderId, visible)
         notifyFolderSettingsChanged()
     }
 
-    override fun setSyncClass(folderId: Long, folderClass: FolderClass) {
-        messageStore.setSyncClass(folderId, folderClass)
+    override fun setSyncEnabled(folderId: Long, enable: Boolean) {
+        messageStore.setSyncEnabled(folderId, enable)
         notifyFolderSettingsChanged()
     }
 

@@ -8,7 +8,6 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.none
 import assertk.assertions.prop
-import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.storage.RobolectricTest
 import org.junit.Test
 import com.fsck.k9.mail.FolderType as RemoteFolderType
@@ -35,8 +34,8 @@ class UpdateFolderOperationsTest : RobolectricTest() {
         val folderId = sqliteDatabase.createFolder(
             inTopGroup = false,
             integrate = false,
-            displayClass = "NO_CLASS",
-            syncClass = "NO_CLASS",
+            visible = false,
+            syncEnabled = false,
             notificationsEnabled = false,
             pushEnabled = false,
         )
@@ -51,8 +50,8 @@ class UpdateFolderOperationsTest : RobolectricTest() {
                 ),
                 isInTopGroup = true,
                 isIntegrate = true,
-                displayClass = FolderClass.FIRST_CLASS,
-                syncClass = FolderClass.FIRST_CLASS,
+                isVisible = true,
+                isSyncEnabled = true,
                 isNotificationsEnabled = true,
                 isPushEnabled = true,
             ),
@@ -62,8 +61,8 @@ class UpdateFolderOperationsTest : RobolectricTest() {
         assertThat(folder.id).isEqualTo(folderId)
         assertThat(folder.inTopGroup).isEqualTo(1)
         assertThat(folder.integrate).isEqualTo(1)
-        assertThat(folder.displayClass).isEqualTo("FIRST_CLASS")
-        assertThat(folder.syncClass).isEqualTo("FIRST_CLASS")
+        assertThat(folder.visible).isEqualTo(1)
+        assertThat(folder.syncEnabled).isEqualTo(1)
         assertThat(folder.notificationsEnabled).isEqualTo(1)
         assertThat(folder.pushEnabled).isEqualTo(1)
     }
@@ -80,25 +79,25 @@ class UpdateFolderOperationsTest : RobolectricTest() {
     }
 
     @Test
-    fun `update display class`() {
-        val folderId = sqliteDatabase.createFolder(displayClass = "FIRST_CLASS")
+    fun `update visible setting`() {
+        val folderId = sqliteDatabase.createFolder(visible = true)
 
-        updateFolderOperations.setDisplayClass(folderId = folderId, folderClass = FolderClass.SECOND_CLASS)
+        updateFolderOperations.setVisible(folderId = folderId, visible = false)
 
         val folder = sqliteDatabase.readFolders().first()
         assertThat(folder.id).isEqualTo(folderId)
-        assertThat(folder.displayClass).isEqualTo("SECOND_CLASS")
+        assertThat(folder.visible).isEqualTo(0)
     }
 
     @Test
-    fun `update sync class`() {
-        val folderId = sqliteDatabase.createFolder(syncClass = "FIRST_CLASS")
+    fun `update sync setting`() {
+        val folderId = sqliteDatabase.createFolder(syncEnabled = true)
 
-        updateFolderOperations.setSyncClass(folderId = folderId, folderClass = FolderClass.NO_CLASS)
+        updateFolderOperations.setSyncEnabled(folderId = folderId, enable = false)
 
         val folder = sqliteDatabase.readFolders().first()
         assertThat(folder.id).isEqualTo(folderId)
-        assertThat(folder.syncClass).isEqualTo("NO_CLASS")
+        assertThat(folder.syncEnabled).isEqualTo(0)
     }
 
     @Test
@@ -114,7 +113,7 @@ class UpdateFolderOperationsTest : RobolectricTest() {
 
     @Test
     fun `update notifications setting`() {
-        val folderId = sqliteDatabase.createFolder(syncClass = "FIRST_CLASS")
+        val folderId = sqliteDatabase.createFolder(notificationsEnabled = false)
 
         updateFolderOperations.setNotificationsEnabled(folderId = folderId, enable = true)
 

@@ -422,11 +422,6 @@
     <string name="folder_settings_folder_display_mode_normal">Sense Classe</string>
     <string name="folder_settings_folder_display_mode_first_class">1a Classe</string>
     <string name="folder_settings_folder_display_mode_second_class">2a Classe</string>
-    <string name="folder_settings_folder_sync_mode_label">Classe de comprovació de la carpeta</string>
-    <string name="folder_settings_folder_sync_mode_normal">Cap</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1a Classe</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2a Classe</string>
-    <string name="folder_settings_folder_sync_mode_inherited">El mateix que a la forma de vista</string>
     <string name="folder_settings_clear_local_folder_action">Neteja els missatges locals</string>
     <string name="account_settings_incoming_label">Servidor d\'entrada</string>
     <string name="account_settings_incoming_summary">Configura el servidor d\'entrada</string>
@@ -513,11 +508,6 @@
     <string name="sort_by_attach">Adjunts</string>
     <string name="account_delete_dlg_title">Elimina el compte</string>
     <string name="folder_list_filter_hint">El nom de la carpeta conté</string>
-    <string name="folder_list_display_mode_label">Mostra carpetes…</string>
-    <string name="folder_list_display_mode_all">Totes les carpetes</string>
-    <string name="folder_list_display_mode_first_class">Carpetes de 1a Classe</string>
-    <string name="folder_list_display_mode_first_and_second_class">Carpetes de 1a i 2a Classe</string>
-    <string name="folder_list_display_mode_not_second_class">Amaga carpetes de 2a Classe</string>
     <string name="account_settings_signature__location_label">Posició de la signatura</string>
     <string name="account_settings_signature__location_before_quoted_text">Abans del text citat</string>
     <string name="account_settings_signature__location_after_quoted_text">Després del text citat</string>
@@ -920,4 +910,11 @@
     <string name="about_title">Quant a <xliff:g id="app_name">%s</xliff:g></string>
     <string name="account_delete_dlg_instructions_fmt">El compte \"<xliff:g id="account">%s</xliff:g>\" s\'eliminarà de <xliff:g id="app_name">%s</xliff:g>.</string>
     <string name="push_info_notification_explanation_text">Quan s\'utilitza Push, <xliff:g id="app_name">%1$s</xliff:g> manté una connexió amb el servidor de correu. Android requereix que es mostri una notificació en curs mentre l\'aplicació està activa en segon pla. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="folder_settings_notifications_label">Notificacions</string>
+    <string name="settings_ui_data_collection">Recollida de dades</string>
+    <string name="folder_settings_sync_label">Activa la sincronització</string>
+    <string name="folder_settings_push_label">Activa push</string>
+    <string name="folder_list_show_hidden_folders">Mostra les carpetes ocultes</string>
+    <string name="settings_ui_telemetry_description">Comparteix dades de rendiment, ús, maquinari i personalització d\'aquesta aplicació amb Mozilla per ajudar-nos a millorar el Thunderbird</string>
+    <string name="settings_ui_telemetry_title">Dades tècniques i d\'ús</string>
 </resources>

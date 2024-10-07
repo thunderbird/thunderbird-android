@@ -16,32 +16,6 @@
 
 <resources>
 
-    <string-array name="folder_settings_folder_display_mode_entries">
-        <item>@string/folder_settings_folder_display_mode_normal</item>
-        <item>@string/folder_settings_folder_display_mode_first_class</item>
-        <item>@string/folder_settings_folder_display_mode_second_class</item>
-    </string-array>
-
-    <string-array name="folder_settings_folder_display_mode_values" translatable="false">
-        <item>NO_CLASS</item>
-        <item>FIRST_CLASS</item>
-        <item>SECOND_CLASS</item>
-    </string-array>
-
-    <string-array name="folder_settings_folder_sync_mode_entries">
-        <item>@string/folder_settings_folder_sync_mode_normal</item>
-        <item>@string/folder_settings_folder_sync_mode_first_class</item>
-        <item>@string/folder_settings_folder_sync_mode_second_class</item>
-        <item>@string/folder_settings_folder_sync_mode_inherited</item>
-    </string-array>
-
-    <string-array name="folder_settings_folder_sync_mode_values" translatable="false">
-        <item>NO_CLASS</item>
-        <item>FIRST_CLASS</item>
-        <item>SECOND_CLASS</item>
-        <item>INHERITED</item>
-    </string-array>
-
     <string-array name="font_entries">
         <item>@string/font_size_default</item>
         <item>@string/font_size_tiniest</item>

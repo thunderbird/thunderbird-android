@@ -1,0 +1,24 @@
+A K-9 Mail egy nyílt forráskódú levelezőprogram, amely szinte bármilyen e-mail-szolgáltatással működik.
+
+<b>Funkciók</b>
+
+* Több fiók támogatása
+* Egyesített beérkezett üzenetek
+* Adatvédelem-barát (nincs semmilyen nyomkövetés, csak az e-mail-szolgáltatójához kapcsolódik)
+* Automatikus szinkronizálás a háttérben, vagy leküldéses értesítések
+* Helyi és kiszolgálóoldali keresés
+* OpenPGP e-mail-titkosítás (PGP/MIME)
+
+Telepítse az <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain: Easy PGP</a> alkalmazást a levelei OpenPGP-vel való titkosításához/visszafejtéséhez.
+
+
+<b>Támogatás</b>
+
+Ha problémája akad a K-9 Mail használatával, kérjen segítséget a <a href="https://forum.k9mail.app">támogatási fórumunkban</a>.
+
+
+<b>Segítene?</b>
+
+A K-9 Mail egy közösségi fejlesztésű projekt. Ha segítene az alkalmazás tökéletesítésében, akkor csatlakozzon hozzánk!
+A hibakövetőnket, a forráskódunkat és a wikinket megtalálja a <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a> oldalon.
+Mindig örömmel várjuk az új fejlesztőket, dizájnereket, dokumentálókat, fordítókat, hibakezelőket és barátokat.

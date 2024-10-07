@@ -418,11 +418,6 @@
     <string name="folder_settings_folder_display_mode_normal">Ei luokkaa</string>
     <string name="folder_settings_folder_display_mode_first_class">1. luokka</string>
     <string name="folder_settings_folder_display_mode_second_class">2. luokka</string>
-    <string name="folder_settings_folder_sync_mode_label">Poll-luokka</string>
-    <string name="folder_settings_folder_sync_mode_normal">Ei mitään</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1. luokka</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2. luokka</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Sama kuin näytettävällä kansiolla</string>
     <string name="folder_settings_clear_local_folder_action">Poista paikalliset viestit</string>
     <string name="account_settings_incoming_label">Saapuvan postin palvelin</string>
     <string name="account_settings_incoming_summary">Määritä saapuvan postin palvelin</string>
@@ -509,11 +504,6 @@
     <string name="sort_by_attach">Liitteiden mukaan</string>
     <string name="account_delete_dlg_title">Poista tili</string>
     <string name="folder_list_filter_hint">Kansion nimi sisältää</string>
-    <string name="folder_list_display_mode_label">Kansiot</string>
-    <string name="folder_list_display_mode_all">Näytä kaikki</string>
-    <string name="folder_list_display_mode_first_class">Näytä vain 1. luokan kansiot</string>
-    <string name="folder_list_display_mode_first_and_second_class">Näytä 1. ja 2. luokan kansiot</string>
-    <string name="folder_list_display_mode_not_second_class">Näytä kaikki paitsi 2. luokan kansiot</string>
     <string name="account_settings_signature__location_label">Allekirjoituksen sijainti</string>
     <string name="account_settings_signature__location_before_quoted_text">Ennen lainattua viestiä</string>
     <string name="account_settings_signature__location_after_quoted_text">Lainatun viestin jälkeen</string>

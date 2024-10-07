@@ -8,7 +8,6 @@ import assertk.assertions.isEqualTo
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.Preferences
 import com.fsck.k9.backend.api.BackendStorage
-import com.fsck.k9.mail.FolderClass
 import org.junit.After
 import org.junit.Test
 import org.koin.core.component.inject
@@ -82,8 +81,8 @@ internal fun createFolderSettingsProvider(): FolderSettingsProvider {
         on { getFolderSettings(any()) } doReturn
             FolderSettings(
                 visibleLimit = 25,
-                displayClass = FolderClass.NO_CLASS,
-                syncClass = FolderClass.INHERITED,
+                isVisible = true,
+                isSyncEnabled = false,
                 isNotificationsEnabled = false,
                 isPushEnabled = false,
                 inTopGroup = false,

@@ -1,7 +1,6 @@
 package com.fsck.k9.storage.messages
 
 import app.k9mail.core.mail.folder.api.FolderDetails
-import app.k9mail.legacy.account.Account.FolderMode
 import app.k9mail.legacy.mailstore.CreateFolderInfo
 import app.k9mail.legacy.mailstore.FolderMapper
 import app.k9mail.legacy.mailstore.MessageMapper
@@ -10,7 +9,6 @@ import app.k9mail.legacy.mailstore.MoreMessages
 import app.k9mail.legacy.mailstore.SaveMessageData
 import app.k9mail.legacy.search.ConditionsTreeNode
 import com.fsck.k9.mail.Flag
-import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Header
 import com.fsck.k9.mailstore.LockableDatabase
@@ -158,11 +156,11 @@ class K9MessageStore(
     }
 
     override fun <T> getDisplayFolders(
-        displayMode: FolderMode,
+        includeHiddenFolders: Boolean,
         outboxFolderId: Long?,
         mapper: FolderMapper<T>,
     ): List<T> {
-        return retrieveFolderOperations.getDisplayFolders(displayMode, outboxFolderId, mapper)
+        return retrieveFolderOperations.getDisplayFolders(includeHiddenFolders, outboxFolderId, mapper)
     }
 
     override fun areAllIncludedInUnifiedInbox(folderIds: Collection<Long>): Boolean {
@@ -209,12 +207,12 @@ class K9MessageStore(
         updateFolderOperations.setIncludeInUnifiedInbox(folderId, includeInUnifiedInbox)
     }
 
-    override fun setDisplayClass(folderId: Long, folderClass: FolderClass) {
-        updateFolderOperations.setDisplayClass(folderId, folderClass)
+    override fun setVisible(folderId: Long, visible: Boolean) {
+        updateFolderOperations.setVisible(folderId, visible)
     }
 
-    override fun setSyncClass(folderId: Long, folderClass: FolderClass) {
-        updateFolderOperations.setSyncClass(folderId, folderClass)
+    override fun setSyncEnabled(folderId: Long, enable: Boolean) {
+        updateFolderOperations.setSyncEnabled(folderId, enable)
     }
 
     override fun setPushEnabled(folderId: Long, enable: Boolean) {

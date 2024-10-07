@@ -416,11 +416,6 @@
     <string name="folder_settings_folder_display_mode_normal">不分類</string>
     <string name="folder_settings_folder_display_mode_first_class">第一類</string>
     <string name="folder_settings_folder_display_mode_second_class">下層</string>
-    <string name="folder_settings_folder_sync_mode_label">提取分類信件匣</string>
-    <string name="folder_settings_folder_sync_mode_normal">無</string>
-    <string name="folder_settings_folder_sync_mode_first_class">第一類</string>
-    <string name="folder_settings_folder_sync_mode_second_class">下層</string>
-    <string name="folder_settings_folder_sync_mode_inherited">使用與顯示層別相同的層別</string>
     <string name="folder_settings_clear_local_folder_action">清除本地郵件</string>
     <string name="account_settings_incoming_label">內送伺服器</string>
     <string name="account_settings_incoming_summary">設定內送伺服器</string>
@@ -507,11 +502,6 @@
     <string name="sort_by_attach">附件</string>
     <string name="account_delete_dlg_title">刪除帳號</string>
     <string name="folder_list_filter_hint">信件匣名稱包括</string>
-    <string name="folder_list_display_mode_label">顯示資料夾…</string>
-    <string name="folder_list_display_mode_all">顯示全部信件匣</string>
-    <string name="folder_list_display_mode_first_class">只顯示第一類信件匣</string>
-    <string name="folder_list_display_mode_first_and_second_class">顯示第一類和第二類信件匣</string>
-    <string name="folder_list_display_mode_not_second_class">不包括下層信件匣</string>
     <string name="account_settings_signature__location_label">簽名位置</string>
     <string name="account_settings_signature__location_before_quoted_text">在引用的本文之前</string>
     <string name="account_settings_signature__location_after_quoted_text">在引用的本文之後</string>

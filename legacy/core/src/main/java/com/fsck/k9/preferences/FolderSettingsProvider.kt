@@ -3,7 +3,6 @@ package com.fsck.k9.preferences
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.mailstore.FolderRepository
 import app.k9mail.legacy.mailstore.RemoteFolderDetails
-import com.fsck.k9.mail.FolderClass
 
 class FolderSettingsProvider(private val folderRepository: FolderRepository) {
     fun getFolderSettings(account: Account): List<FolderSettings> {
@@ -15,8 +14,8 @@ class FolderSettingsProvider(private val folderRepository: FolderRepository) {
     private fun RemoteFolderDetails.containsOnlyDefaultValues(): Boolean {
         return isInTopGroup == getDefaultValue("inTopGroup") &&
             isIntegrate == getDefaultValue("integrate") &&
-            syncClass == getDefaultValue("syncMode") &&
-            displayClass == getDefaultValue("displayMode") &&
+            isSyncEnabled == getDefaultValue("syncEnabled") &&
+            isVisible == getDefaultValue("visible") &&
             isNotificationsEnabled == getDefaultValue("notificationsEnabled") &&
             isPushEnabled == getDefaultValue("pushEnabled")
     }
@@ -33,8 +32,8 @@ class FolderSettingsProvider(private val folderRepository: FolderRepository) {
             folder.serverId,
             isInTopGroup,
             isIntegrate,
-            syncClass,
-            displayClass,
+            isSyncEnabled,
+            isVisible,
             isNotificationsEnabled,
             isPushEnabled,
         )
@@ -45,8 +44,8 @@ data class FolderSettings(
     val serverId: String,
     val isInTopGroup: Boolean,
     val isIntegrate: Boolean,
-    val syncClass: FolderClass,
-    val displayClass: FolderClass,
+    val isSyncEnabled: Boolean,
+    val isVisible: Boolean,
     val isNotificationsEnabled: Boolean,
     val isPushEnabled: Boolean,
 )

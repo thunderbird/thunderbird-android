@@ -414,11 +414,6 @@
     <string name="folder_settings_folder_display_mode_normal">Be klasės</string>
     <string name="folder_settings_folder_display_mode_first_class">1 klasė</string>
     <string name="folder_settings_folder_display_mode_second_class">2 klasė</string>
-    <string name="folder_settings_folder_sync_mode_label">Aplanko poll klasė</string>
-    <string name="folder_settings_folder_sync_mode_normal">Jokios</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1 klasė</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2 klasė</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Tos pačios kaip ir rodymo klasės</string>
     <string name="folder_settings_clear_local_folder_action">Išvalyti vietinius laiškus</string>
     <string name="account_settings_incoming_label">Laiškų gavimo serveris</string>
     <string name="account_settings_incoming_summary">Konfigūruoti gaunamųjų laiškų serverį</string>
@@ -505,11 +500,6 @@
     <string name="sort_by_attach">Priedai</string>
     <string name="account_delete_dlg_title">Pašalinti paskyrą</string>
     <string name="folder_list_filter_hint">Aplanko pavadinime yra</string>
-    <string name="folder_list_display_mode_label">Rodyti aplankus…</string>
-    <string name="folder_list_display_mode_all">Visus aplankus</string>
-    <string name="folder_list_display_mode_first_class">1 klasės aplankus</string>
-    <string name="folder_list_display_mode_first_and_second_class">1 ir 2 klasės aplankus</string>
-    <string name="folder_list_display_mode_not_second_class">Slėpti 2 klasės aplankus</string>
     <string name="account_settings_signature__location_label">Parašo vieta</string>
     <string name="account_settings_signature__location_before_quoted_text">Prieš cituojamą laišką</string>
     <string name="account_settings_signature__location_after_quoted_text">Po cituojamu laišku</string>

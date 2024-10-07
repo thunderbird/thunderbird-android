@@ -8,7 +8,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.Surface
 @PreviewScreenSizes
 @Composable
 fun PermissionDeniedContentPreview() {
-    PreviewWithTheme {
+    PreviewWithTheme(isDarkTheme = true) {
         Surface {
             PermissionDeniedContent(
                 onGoToSettingsClick = {},

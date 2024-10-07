@@ -419,11 +419,6 @@
     <string name="folder_settings_folder_display_mode_normal">Ingen klassning</string>
     <string name="folder_settings_folder_display_mode_first_class">1:a klass</string>
     <string name="folder_settings_folder_display_mode_second_class">2:a klass</string>
-    <string name="folder_settings_folder_sync_mode_label">Mappkontrolleringsklass</string>
-    <string name="folder_settings_folder_sync_mode_normal">Inga</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1:a klass</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2:a klass</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Samma som visningsklass</string>
     <string name="folder_settings_clear_local_folder_action">Rensa lokalt lagrade meddelanden</string>
     <string name="account_settings_incoming_label">Inkommande server</string>
     <string name="account_settings_incoming_summary">Konfigurera servern för inkommande e-post</string>
@@ -510,11 +505,6 @@
     <string name="sort_by_attach">Bilagor</string>
     <string name="account_delete_dlg_title">Ta bort konto</string>
     <string name="folder_list_filter_hint">Mappnamn innehåller</string>
-    <string name="folder_list_display_mode_label">Visa mappar…</string>
-    <string name="folder_list_display_mode_all">Alla mappar</string>
-    <string name="folder_list_display_mode_first_class">Endast 1:a klassens mappar</string>
-    <string name="folder_list_display_mode_first_and_second_class">1:a och 2:a klassens mappar</string>
-    <string name="folder_list_display_mode_not_second_class">Dölj 2:a klassens mappar</string>
     <string name="account_settings_signature__location_label">Placering av signatur</string>
     <string name="account_settings_signature__location_before_quoted_text">Före citerat meddelande </string>
     <string name="account_settings_signature__location_after_quoted_text">Efter citerat meddelande</string>
@@ -914,4 +904,12 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="dialog_openkeychain_info_text">Appen OpenKeychain krävs för att möjliggöra stöd för end-to-end-kryptering.</string>
     <string name="account_delete_dlg_instructions_fmt">Kontot \"<xliff:g id="account">%s</xliff:g>\" kommer att tas bort ifrån <xliff:g id="app_name">%s</xliff:g>.</string>
     <string name="about_title">Om <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="about_app_authors_thunderbird">Thunderbird mobilteam</string>
+    <string name="folder_settings_push_label">Aktivera pushnotiser</string>
+    <string name="folder_settings_notifications_label">Aviseringar</string>
+    <string name="folder_settings_sync_label">Aktivera synkronisering</string>
+    <string name="folder_list_show_hidden_folders">Visa dolda mappar</string>
+    <string name="settings_ui_data_collection">Datainsamling</string>
+    <string name="settings_ui_telemetry_title">Användning och teknisk data</string>
+    <string name="settings_ui_telemetry_description">Delar prestanda, användning, hårdvara och anpassningsdata om denna app med Mozilla för att hjälpa oss att göra Thunderbird bättre</string>
 </resources>

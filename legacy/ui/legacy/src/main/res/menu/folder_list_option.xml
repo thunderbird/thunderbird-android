@@ -11,29 +11,6 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         />
     <item
-        android:icon="@drawable/ic_inbox"
-        android:title="@string/folder_list_display_mode_label"
-        >
-        <menu>
-            <item
-                android:id="@+id/display_all"
-                android:title="@string/folder_list_display_mode_all"
-                />
-            <item
-                android:id="@+id/display_1st_class"
-                android:title="@string/folder_list_display_mode_first_class"
-                />
-            <item
-                android:id="@+id/display_1st_and_2nd_class"
-                android:title="@string/folder_list_display_mode_first_and_second_class"
-                />
-            <item
-                android:id="@+id/display_not_second_class"
-                android:title="@string/folder_list_display_mode_not_second_class"
-                />
-        </menu>
-    </item>
-    <item
         android:id="@+id/list_folders"
         android:icon="@drawable/ic_refresh"
         android:title="@string/refresh_folders_action"

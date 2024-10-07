@@ -383,11 +383,6 @@
     <string name="folder_settings_folder_display_mode_normal">Žiadna trieda</string>
     <string name="folder_settings_folder_display_mode_first_class">1. trieda</string>
     <string name="folder_settings_folder_display_mode_second_class">2. trieda</string>
-    <string name="folder_settings_folder_sync_mode_label">Trieda fondu priečinka</string>
-    <string name="folder_settings_folder_sync_mode_normal">Žiadna</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1. trieda</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2. trieda</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Rovnaká ako trieda zobrazenia</string>
     <string name="folder_settings_clear_local_folder_action">Vymazať správy</string>
     <string name="account_settings_incoming_label">Server prichádzajúcej pošty</string>
     <string name="account_settings_incoming_summary">Nastaviť server prichádzajúcej pošty</string>
@@ -456,11 +451,6 @@
     <string name="sort_by_attach">Prílohy</string>
     <string name="account_delete_dlg_title">Odstrániť účet</string>
     <string name="folder_list_filter_hint">Názov priečinku obsahuje</string>
-    <string name="folder_list_display_mode_label">Zobraziť priečinky…</string>
-    <string name="folder_list_display_mode_all">Všetky priečinky</string>
-    <string name="folder_list_display_mode_first_class">Priečinky 1. triedy</string>
-    <string name="folder_list_display_mode_first_and_second_class">Priečinky 1. a 2. triedy</string>
-    <string name="folder_list_display_mode_not_second_class">Skryť priečinky 2. triedy</string>
     <string name="account_settings_signature__location_label">Umiestnenie podpisu</string>
     <string name="account_settings_signature__location_before_quoted_text">Pred citovanú správu</string>
     <string name="account_settings_signature__location_after_quoted_text">Za citovanú správu</string>

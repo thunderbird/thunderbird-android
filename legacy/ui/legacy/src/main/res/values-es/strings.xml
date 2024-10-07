@@ -420,11 +420,6 @@
     <string name="folder_settings_folder_display_mode_normal">Sin clase</string>
     <string name="folder_settings_folder_display_mode_first_class">1ª clase</string>
     <string name="folder_settings_folder_display_mode_second_class">2ª clase</string>
-    <string name="folder_settings_folder_sync_mode_label">Tipos de carpeta con sincronización lenta («poll»)</string>
-    <string name="folder_settings_folder_sync_mode_normal">Ninguna</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1ª clase</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2ª clase</string>
-    <string name="folder_settings_folder_sync_mode_inherited">La misma que la de visualización</string>
     <string name="folder_settings_clear_local_folder_action">Borrar correos locales</string>
     <string name="account_settings_incoming_label">Servidor de entrada</string>
     <string name="account_settings_incoming_summary">Configurar servidor de entrada</string>
@@ -511,11 +506,6 @@
     <string name="sort_by_attach">Adjuntos</string>
     <string name="account_delete_dlg_title">Eliminar cuenta</string>
     <string name="folder_list_filter_hint">El nombre de la carpeta contiene</string>
-    <string name="folder_list_display_mode_label">Mostrar carpetas…</string>
-    <string name="folder_list_display_mode_all">Ver todas las carpetas</string>
-    <string name="folder_list_display_mode_first_class">Ver sólo carpetas de 1ª clase</string>
-    <string name="folder_list_display_mode_first_and_second_class">Ver carpetas de 1ª y 2ª clase</string>
-    <string name="folder_list_display_mode_not_second_class">Ver todas excepto las de 2ª clase</string>
     <string name="account_settings_signature__location_label">Posición de la firma</string>
     <string name="account_settings_signature__location_before_quoted_text">Antes del mensaje original</string>
     <string name="account_settings_signature__location_after_quoted_text">Después del mensaje original</string>
@@ -925,4 +915,5 @@ Puedes guardar este mensaje y usarlo como copia de seguridad de tu clave secreta
     <string name="settings_ui_telemetry_title">Datos técnicos y de uso</string>
     <string name="settings_ui_data_collection">Recopilación de datos</string>
     <string name="settings_ui_telemetry_description">Comparte datos de rendimiento, uso, hardware y personalización sobre esta aplicación con Mozilla para ayudarnos a mejorar Thunderbird</string>
+    <string name="folder_settings_push_label">Activar push</string>
 </resources>

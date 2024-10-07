@@ -11,18 +11,15 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       github.event.comment.author_association != 'OWNER' &&
+      github.event.comment.author_association != 'MEMBER' &&
       github.event.comment.author_association != 'COLLABORATOR'
     permissions:
       issues: write
       pull-requests: write
     steps:
+      # https://github.com/octokit/request-action/issues/118
       - name: Remove needinfo label
-        uses: octokit/request-action@v2.x
-        continue-on-error: true
-        with:
-          route: DELETE /repos/:repository/issues/:issue/labels/:label
-          repository: ${{ github.repository }}
-          issue: ${{ github.event.issue.number }}
-          label: "status: needs information"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          curl --request DELETE \
+            --url 'https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels/status%3A%20needs%20information' \
+            --header 'Authorization: token ${{ secrets.GITHUB_TOKEN }}'

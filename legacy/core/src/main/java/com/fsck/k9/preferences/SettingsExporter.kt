@@ -413,8 +413,8 @@ class SettingsExporter(
         // Write folder settings
         writeFolderSetting(serializer, "integrate", folder.isIntegrate.toString())
         writeFolderSetting(serializer, "inTopGroup", folder.isInTopGroup.toString())
-        writeFolderSetting(serializer, "syncMode", folder.syncClass.name)
-        writeFolderSetting(serializer, "displayMode", folder.displayClass.name)
+        writeFolderSetting(serializer, "syncEnabled", folder.isSyncEnabled.toString())
+        writeFolderSetting(serializer, "visible", folder.isVisible.toString())
         writeFolderSetting(serializer, "notificationsEnabled", folder.isNotificationsEnabled.toString())
         writeFolderSetting(serializer, "pushEnabled", folder.isPushEnabled.toString())
 

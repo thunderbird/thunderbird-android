@@ -4,7 +4,7 @@
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
     <!--Used in the about dialog-->
-    <string name="about_app_authors_k9">A K-9 Kutyasétáltatók</string>
+    <string name="about_app_authors_k9">A K-9 kutyasétáltatók</string>
     <string name="source_code">Forráskód</string>
     <string name="app_license">Apache licenc, 2.0-s verzió</string>
     <string name="about_project_title">Nyílt forráskódú projekt</string>
@@ -32,7 +32,7 @@
     <string name="compose_title_reply_all">Válasz mindenkinek</string>
     <string name="compose_title_forward">Továbbítás</string>
     <string name="compose_title_forward_as_attachment">Továbbítás mellékletként</string>
-    <string name="choose_folder_title">Mappa választása</string>
+    <string name="choose_folder_title">Mappa kiválasztása</string>
     <string name="choose_folder_move_title">Áthelyezés…</string>
     <string name="choose_folder_copy_title">Másolás…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> kiválasztva</string>
@@ -47,7 +47,7 @@
     <string name="forward_as_attachment_action">Továbbítás mellékletként</string>
     <string name="edit_as_new_message_action">Szerkesztés új üzenetként</string>
     <string name="move_action">Áthelyezés</string>
-    <string name="move_to_drafts_action">Áthelyezés a Piszkozatokhoz</string>
+    <string name="move_to_drafts_action">Áthelyezés a Piszkozatokba</string>
     <string name="refile_action">Iktatás…</string>
     <string name="done_action">Kész</string>
     <string name="discard_action">Elvetés</string>
@@ -74,8 +74,8 @@
     <string name="unsubscribe_action">Leiratkozás</string>
     <string name="show_headers_action">Fejlécek megjelenítése</string>
     <plurals name="copy_address_to_clipboard">
-        <item quantity="one">A cím a vágólapra került.</item>
-        <item quantity="other">A címek a vágólapra kerültek.</item>
+        <item quantity="one">A cím a vágólapra lett másolva</item>
+        <item quantity="other">A címek a vágólapra lettek másolva</item>
     </plurals>
     <string name="copy_subject_to_clipboard">Tárgy szöveg a vágólapra másolva</string>
     <string name="message_view_theme_action_dark">Váltás sötét témára</string>
@@ -85,7 +85,7 @@
     <string name="read_receipt_enabled">Olvasási visszaigazolás lesz kérve</string>
     <string name="read_receipt_disabled">Nem lesz olvasási visszaigazolás kérve</string>
     <string name="add_attachment_action">Melléklet hozzáadása</string>
-    <string name="empty_trash_action">Lomtár ürítése</string>
+    <string name="empty_trash_action">Kuka ürítése</string>
     <string name="expunge_action">Végleges törlés</string>
     <string name="about_action">Névjegy</string>
     <string name="prefs_title">Beállítások</string>
@@ -116,7 +116,7 @@
     <string name="notification_action_spam">Levélszemét</string>
     <string name="notification_certificate_error_public">Tanúsítványhiba</string>
     <string name="notification_certificate_error_title">Tanúsítványhiba: <xliff:g id="account">%s</xliff:g></string>
-    <string name="notification_certificate_error_text">Kiszolgáló beállítások ellenőrzése</string>
+    <string name="notification_certificate_error_text">Kiszolgálóbeállítások ellenőrzése</string>
     <string name="notification_authentication_error_title">A hitelesítés sikertelen</string>
     <string name="notification_authentication_error_text">A hitelesítés sikertelen: <xliff:g id="account">%s</xliff:g>. Frissítse a kiszolgálóbeállításokat.</string>
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
@@ -128,7 +128,7 @@
     <string name="notification_bg_send_ticker">Levél küldése: <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">Levél küldése</string>
     <string name="notification_bg_title_separator">:</string>
-    <string name="notification_channel_push_title">Szinkronizálás (Leküldés)</string>
+    <string name="notification_channel_push_title">Szinkronizálás (leküldés)</string>
     <string name="notification_channel_push_description">Az új levelekre várakozáskor jelenik meg</string>
     <string name="notification_channel_messages_title">Üzenetek</string>
     <string name="notification_channel_messages_description">Az üzenetekkel kapcsolatos értesítések</string>
@@ -181,8 +181,8 @@
     <string name="message_view_download_remainder">Teljes üzenet letöltése</string>
     <string name="message_view_sender_label">ezen keresztül: %1$s</string>
     <string name="from_same_sender">Továbbiak ettől a feladótól</string>
-    <string name="message_discarded_toast">Az üzenet elvetésre került.</string>
-    <string name="message_saved_toast">Az üzenet vázlatként lett elmentve.</string>
+    <string name="message_discarded_toast">Az üzenet el lett vetve</string>
+    <string name="message_saved_toast">Az üzenet vázlatként lett mentve</string>
     <string name="global_settings_flag_label">Csillagok megjelenítése</string>
     <string name="global_settings_flag_summary">Csillagok jelzik a megjelölt üzeneteket</string>
     <string name="global_settings_preview_lines_label">Előnézeti sorok</string>
@@ -208,11 +208,11 @@
     <string name="global_settings_confirm_menu_mark_all_read">Összes üzenet megjelölése olvasottként</string>
     <string name="global_settings_confirm_action_delete_notif">Törlés (az értesítésekből)</string>
     <!--Title of the screen to configure swipe actions-->
-    <string name="general_settings_swipe_actions_title">Húzási műveletek</string>
+    <string name="general_settings_swipe_actions_title">Csúsztatási műveletek</string>
     <!--Name of the setting to configure the right swipe action-->
-    <string name="general_settings_right_swipe_title">Jobbra húzás</string>
+    <string name="general_settings_right_swipe_title">Jobbra csúsztatás</string>
     <!--Name of the setting to configure the left swipe action-->
-    <string name="general_settings_left_swipe_title">Balra húzás</string>
+    <string name="general_settings_left_swipe_title">Balra csúsztatás</string>
     <!--The list item users select to not use a swipe action for a particular direction-->
     <string name="general_settings_swipe_action_none">Nincs</string>
     <!--Name of the swipe action to select/deselect a message-->
@@ -242,12 +242,12 @@
     <string name="global_settings_notification_quick_delete_never">Soha</string>
     <string name="global_settings_notification_quick_delete_when_single_msg">Önálló üzenet értesítésénél</string>
     <string name="global_settings_notification_quick_delete_always">Mindig</string>
-    <string name="global_settings_lock_screen_notification_visibility_title">Képernyőzár értesítések</string>
-    <string name="global_settings_lock_screen_notification_visibility_nothing">Nincsenek képernyőzár értesítések</string>
+    <string name="global_settings_lock_screen_notification_visibility_title">Képernyőzár-értesítések</string>
+    <string name="global_settings_lock_screen_notification_visibility_nothing">Nincsenek képernyőzár-értesítések</string>
     <string name="global_settings_lock_screen_notification_visibility_app_name">Alkalmazás neve</string>
     <string name="global_settings_lock_screen_notification_visibility_message_count">Új üzenetek száma</string>
     <string name="global_settings_lock_screen_notification_visibility_senders">Üzenetszámlálók és feladók</string>
-    <string name="global_settings_lock_screen_notification_visibility_everything">Ugyanaz, mint feloldott képernyőnél</string>
+    <string name="global_settings_lock_screen_notification_visibility_everything">Feloldott képernyővel megegyező</string>
     <string name="quiet_time">Csendes idő</string>
     <string name="quiet_time_description">Csörgés, rezgés és villogás letiltása éjszakára</string>
     <string name="quiet_time_notification">Értesítések letiltása</string>
@@ -263,9 +263,9 @@
     <string name="account_setup_expunge_policy_immediately">Azonnal</string>
     <string name="account_setup_expunge_policy_on_poll">Lekérdezéskor</string>
     <string name="account_setup_expunge_policy_manual">Kézileg</string>
-    <string name="drafts_folder_label">Vázlatok mappa</string>
+    <string name="drafts_folder_label">Piszkozatok mappa</string>
     <string name="sent_folder_label">Elküldöttek mappa</string>
-    <string name="trash_folder_label">Lomtár mappa</string>
+    <string name="trash_folder_label">Kuka mappa</string>
     <string name="archive_folder_label">Archívum mappa</string>
     <string name="spam_folder_label">Levélszemét mappa</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Csak feliratkozott mappák megjelenítése</string>
@@ -299,7 +299,7 @@
     <string name="account_setup_options_mail_display_count_5000">5000 üzenet</string>
     <string name="account_setup_options_mail_display_count_10000">10000 üzenet</string>
     <string name="account_setup_options_mail_display_count_all">összes üzenet</string>
-    <string name="move_copy_cannot_copy_unsynced_message">Nem lehet másolni vagy áthelyezni a kiszolgálóval nem szinkronizált üzenetet.</string>
+    <string name="move_copy_cannot_copy_unsynced_message">A kiszolgálóval nem szinkronizált üzenetet nem lehet másolni vagy áthelyezni</string>
     <string name="account_settings_push_advanced_title">Bővített</string>
     <string name="account_settings_title_fmt">Fiók beállításai</string>
     <string name="account_settings_notify_label">Új levél értesítések</string>
@@ -361,9 +361,9 @@
     <string name="account_settings_crypto_summary_off">Nincs OpenPGP alkalmazás beállítva</string>
     <string name="account_settings_crypto_summary_on">Kapcsolódva: %s</string>
     <string name="account_settings_crypto_summary_config">Beállítás…</string>
-    <string name="account_settings_crypto_encrypt_all_drafts">Az összes vázlat tárolása titkosítottan</string>
-    <string name="account_settings_crypto_encrypt_all_drafts_on">Az összes vázlat titkosítva lesz tárolva</string>
-    <string name="account_settings_crypto_encrypt_all_drafts_off">A vázlatok titkosítása csak a titkosítás engedélyezésekor</string>
+    <string name="account_settings_crypto_encrypt_all_drafts">Az összes piszkozat titkosított tárolása</string>
+    <string name="account_settings_crypto_encrypt_all_drafts_on">Az összes piszkozat titkosítva lesz tárolva</string>
+    <string name="account_settings_crypto_encrypt_all_drafts_off">A piszkozatok titkosítása csak a titkosítás engedélyezésekor</string>
     <string name="account_settings_mail_check_frequency_label">Mappa lekérdezésének gyakorisága</string>
     <string name="account_settings_color_label">Fiókszín</string>
     <string name="account_settings_color_summary">A fiókban és a fióklistában használt fiók kiemelt színe</string>
@@ -418,11 +418,6 @@
     <string name="folder_settings_folder_display_mode_normal">Nincs osztály</string>
     <string name="folder_settings_folder_display_mode_first_class">1. osztály</string>
     <string name="folder_settings_folder_display_mode_second_class">2. osztály</string>
-    <string name="folder_settings_folder_sync_mode_label">Mappa lekérésének osztálya</string>
-    <string name="folder_settings_folder_sync_mode_normal">Nincs</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1. osztály</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2. osztály</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Ugyanaz, mint a megjelenítési osztály</string>
     <string name="folder_settings_clear_local_folder_action">Helyi üzenetek törlése</string>
     <string name="account_settings_incoming_label">Bejövő kiszolgáló</string>
     <string name="account_settings_incoming_summary">A bejövő levelek kiszolgálójának beállítása</string>
@@ -448,14 +443,14 @@
     <string name="account_settings_notification_light_account_color">Fiókszín</string>
     <string name="account_settings_notification_light_default_color">Rendszer alapértelmezett színe</string>
     <string name="account_settings_notification_light_white">Fehér</string>
-    <string name="account_settings_notification_light_red">Piros</string>
+    <string name="account_settings_notification_light_red">Vörös</string>
     <string name="account_settings_notification_light_green">Zöld</string>
     <string name="account_settings_notification_light_blue">Kék</string>
     <string name="account_settings_notification_light_yellow">Sárga</string>
     <string name="account_settings_notification_light_cyan">Ciánkék</string>
     <string name="account_settings_notification_light_magenta">Bíbor</string>
     <string name="account_settings_composition_title">Üzenet írásának beállításai</string>
-    <string name="account_settings_composition_label">Írási alapbeállítások</string>
+    <string name="account_settings_composition_label">Írási alapbeállításai</string>
     <string name="account_settings_composition_summary">Alapértelmezett feladó, titkos másolat és aláírás beállítása</string>
     <string name="account_settings_identities_label">Személyazonosságok kezelése</string>
     <string name="account_settings_identities_summary">Alternatív „feladó” címek és aláírások beállítása</string>
@@ -509,11 +504,6 @@
     <string name="sort_by_attach">Mellékletek</string>
     <string name="account_delete_dlg_title">Fiók eltávolítása</string>
     <string name="folder_list_filter_hint">Mappa neve tartalmazza</string>
-    <string name="folder_list_display_mode_label">Mappák megjelenítése…</string>
-    <string name="folder_list_display_mode_all">Összes mappa</string>
-    <string name="folder_list_display_mode_first_class">1. osztályú mappák</string>
-    <string name="folder_list_display_mode_first_and_second_class">1. és 2. osztályú mappák</string>
-    <string name="folder_list_display_mode_not_second_class">2, osztályú mappák elrejtése</string>
     <string name="account_settings_signature__location_label">Aláírás helyzete</string>
     <string name="account_settings_signature__location_before_quoted_text">Idézett üzenet előtt</string>
     <string name="account_settings_signature__location_after_quoted_text">Idézett üzenet után</string>
@@ -600,10 +590,10 @@
     <string name="dialog_confirm_clear_local_folder_message">Ez eltávolítja az összes helyi üzenetet mappából.  Az üzenetek nem kerülnek törlésre a szerverről.</string>
     <string name="dialog_confirm_clear_local_folder_action">Üzenetek kiürítése</string>
     <string name="dialog_confirm_delete_title">Törlés megerősítése</string>
-    <string name="dialog_confirm_delete_message">Biztosan törölni szeretné ezt az üzenetet?</string>
+    <string name="dialog_confirm_delete_message">Valóban törölni szeretné ezt az üzenetet?</string>
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Valóban törölni szeretné ezt az üzenetet?</item>
-        <item quantity="other">Biztosan törölni szeretne <xliff:g id="message_count">%1$d</xliff:g> üzenetet?</item>
+        <item quantity="other">Valóban törölni szeretne <xliff:g id="message_count">%1$d</xliff:g> üzenetet?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Igen</string>
     <string name="dialog_confirm_delete_cancel_button">Nem</string>
@@ -640,8 +630,8 @@
     <string name="webview_contextmenu_image_view_action">Kép megtekintése</string>
     <string name="webview_contextmenu_image_save_action">Kép mentése</string>
     <string name="webview_contextmenu_image_download_action">Kép letöltése</string>
-    <string name="webview_contextmenu_image_copy_action">Kép URL-jének másolása a vágólapra</string>
-    <string name="webview_contextmenu_image_clipboard_label">Kép URL</string>
+    <string name="webview_contextmenu_image_copy_action">Kép webcímének másolása a vágólapra</string>
+    <string name="webview_contextmenu_image_clipboard_label">Kép webcíme</string>
     <string name="webview_contextmenu_phone_call_action">Szám hívása</string>
     <string name="webview_contextmenu_phone_save_action">Mentés a címjegyzékbe</string>
     <string name="webview_contextmenu_phone_copy_action">Szám másolása a vágólapra</string>
@@ -730,9 +720,9 @@
     <string name="openpgp_sign_only_ok">Értem!</string>
     <string name="openpgp_sign_only_disable">Letiltás</string>
     <string name="openpgp_sign_only_keep_enabled">Engedélyezve tartás</string>
-    <string name="openpgp_dialog_sign_only_title">Csak PGP aláírás mód</string>
+    <string name="openpgp_dialog_sign_only_title">Csak PGP aláírási mód</string>
     <string name="openpgp_dialog_sign_only_text">Ebben a módban a PGP kulcs lesz használva egy titkosítatlan e-mail kriptográfiai aláírásának létrehozásához.</string>
-    <string name="openpgp_dialog_sign_only_plus_verified">Ez nem titkosítja az e-mailt, de ellenőrzi, hogy az ön kulcsából lett elküldve.</string>
+    <string name="openpgp_dialog_sign_only_plus_verified">Ez nem titkosítja az e-mailt, de ellenőrzi, hogy az ön kulcsából lett-e elküldve.</string>
     <string name="openpgp_dialog_sign_only_minus_break">Az aláírások sérülhetnek, ha levelezőlistákra küldi.</string>
     <string name="openpgp_dialog_sign_only_minus_attach">Az aláírások „signature.asc” mellékletekként lehetnek megjelenítve néhány kliensprogramban.</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">A titkosított üzenetek mindig tartalmaznak aláírást.</string>
@@ -837,7 +827,7 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <string name="push_notification_info">Koppintson ide a további tudnivalókért.</string>
     <string name="push_info_title">Leküldési információk</string>
     <string name="push_info_configure_notification_text">Viszont az Android azt is lehetővé teszi, hogy elrejtse az értesítést.</string>
-    <string name="push_info_learn_more_text">További tudnivaló</string>
+    <string name="push_info_learn_more_text">További tudnivalók</string>
     <string name="push_info_configure_notification_action">Értesítés beállítása</string>
     <string name="push_info_disable_push_text">Ha nincs szüksége azonnali értesítésekre az új levelekről, akkor letilthatja a leküldést, és használhat lekérést. A lekérés rendszeres időközönként ellenőrzi, hogy vannak-e új levelek, és nincs szüksége értesítés megjelenítésére.</string>
     <string name="push_info_disable_push_action">Leküldés letiltása</string>
@@ -888,15 +878,15 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
     <string name="action_add_to_contacts">Hozzáadás a Kapcsolatokhoz</string>
     <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-    <string name="action_compose_message_to">Üzenet írása, címzett:</string>
+    <string name="action_compose_message_to">Üzenet írása, címzett</string>
     <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
     <string name="action_copy_email_address">E-mail cím másolása</string>
     <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-    <string name="action_copy_name_and_email_address">Név és e-mail cím másolása</string>
+    <string name="action_copy_name_and_email_address">Név és e-mail-cím másolása</string>
     <!--A user visible label for the email address copied to the clipboard-->
     <string name="clipboard_label_email_address">E-mail-cím</string>
     <!--A user visible label for the name and email address copied to the clipboard-->
-    <string name="clipboard_label_name_and_email_address">Név és e-mail cím</string>
+    <string name="clipboard_label_name_and_email_address">Név és e-mail-cím</string>
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <string name="background_work_notification_remove_account">Fiók eltávolítása…</string>
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
@@ -905,6 +895,21 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <string name="general_settings_post_remove_action_show_previous_message">Előző üzenet megjelenítése</string>
     <string name="general_settings_post_remove_action_show_next_message">Következő üzenet megjelenítése</string>
     <string name="general_settings_post_remove_action_title">Üzenet törlése vagy áthelyezése után</string>
-    <string name="about_app_authors_thunderbird">Thunderbird Mobile csapata</string>
-    <string name="account_delete_dlg_instructions_fmt">A „&lt;xliff:g id=”account„&gt;%s&lt;/xliff:g&gt;” fiók eltávolításra kerül a &lt;xliff:g id=„app_name”&gt;%s&lt;/xliff:g&gt; fiókból.</string>
+    <string name="about_app_authors_thunderbird">A Thunderbird Mobile csapata</string>
+    <string name="account_delete_dlg_instructions_fmt">A „<xliff:g id="account">%s</xliff:g>” fiók eltávolításra kerül a <xliff:g id="app_name">%s</xliff:g> fiókból.</string>
+    <string name="push_notification_state_alarm_permission_missing">Hiányzó engedély a riasztások ütemezéséhez</string>
+    <string name="push_notification_grant_alarm_permission">Koppintson az engedély megadásához.</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">Vissza az üzenetekhez</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">Maradás a jelenlegi üzenetnél</string>
+    <string name="settings_ui_data_collection">Adatgyűjtés</string>
+    <string name="settings_ui_telemetry_title">Felhasználási és műszaki adatok</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Üzenet olvashatatlannak jelölése után</string>
+    <string name="folder_settings_push_label">Leküldések engedélyezése</string>
+    <string name="folder_settings_notifications_label">Értesítések</string>
+    <string name="settings_ui_telemetry_description">Megosztja az alkalmazás teljesítmény-, használati-, hardver- és testreszabási adatait a Mozillával, hogy segítsen nekünk a Thunderbird jobbá tételében</string>
+    <string name="about_title">A <xliff:g id="app_name">%s</xliff:g> névjegye</string>
+    <string name="dialog_openkeychain_info_text">A végpontok közötti titkosítás támogatásához az OpenKeychain alkalmazás szükséges.</string>
+    <string name="push_info_notification_explanation_text">Lekérdezések használatakor a <xliff:g id="app_name">%1$s</xliff:g> kapcsolatot tart fenn a levelezőkiszolgálóval. Az Android megköveteli a folyamatos értesítés megjelenítését, amíg az alkalmazás aktív a háttérben. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="folder_settings_sync_label">Szinkronizálás engedélyezése</string>
+    <string name="folder_list_show_hidden_folders">Rejtett mappák megjelenítése</string>
 </resources>

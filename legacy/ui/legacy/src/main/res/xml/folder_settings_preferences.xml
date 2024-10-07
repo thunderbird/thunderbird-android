@@ -16,7 +16,6 @@
 
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
     <PreferenceCategory android:key="folder_settings">
@@ -27,22 +26,14 @@
             android:summary="@string/folder_settings_in_top_group_summary"
             />
 
-        <ListPreference
-            android:key="folder_settings_folder_display_mode"
-            android:title="@string/folder_settings_folder_display_mode_label"
-            app:useSimpleSummaryProvider="true"
-            android:entries="@array/folder_settings_folder_display_mode_entries"
-            android:entryValues="@array/folder_settings_folder_display_mode_values"
-            android:dialogTitle="@string/folder_settings_folder_display_mode_label"
+        <SwitchPreference
+            android:key="folder_settings_visible"
+            android:title="@string/folder_settings_visible_label"
             />
 
-        <ListPreference
-            android:key="folder_settings_folder_sync_mode"
-            android:title="@string/folder_settings_folder_sync_mode_label"
-            app:useSimpleSummaryProvider="true"
-            android:entries="@array/folder_settings_folder_sync_mode_entries"
-            android:entryValues="@array/folder_settings_folder_sync_mode_values"
-            android:dialogTitle="@string/folder_settings_folder_sync_mode_label"
+        <SwitchPreference
+            android:key="folder_settings_sync"
+            android:title="@string/folder_settings_sync_label"
             />
 
         <SwitchPreference

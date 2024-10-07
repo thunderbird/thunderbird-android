@@ -19,7 +19,6 @@ import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.FolderClass;
 import com.fsck.k9.mail.FolderType;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
@@ -75,8 +74,8 @@ public class LocalFolder {
     private long databaseId = -1L;
     private int visibleLimit = -1;
 
-    private FolderClass displayClass = FolderClass.NO_CLASS;
-    private FolderClass syncClass = FolderClass.INHERITED;
+    private boolean visible = true;
+    private boolean syncEnabled = false;
     private boolean notificationsEnabled = false;
 
     private boolean isInTopGroup = false;
@@ -173,12 +172,9 @@ public class LocalFolder {
         lastChecked = cursor.getLong(LocalStore.FOLDER_LAST_CHECKED_INDEX);
         isInTopGroup = cursor.getInt(LocalStore.FOLDER_TOP_GROUP_INDEX) == 1;
         isIntegrate = cursor.getInt(LocalStore.FOLDER_INTEGRATE_INDEX) == 1;
-        String noClass = FolderClass.NO_CLASS.toString();
-        String displayClass = cursor.getString(LocalStore.FOLDER_DISPLAY_CLASS_INDEX);
-        this.displayClass = FolderClass.valueOf((displayClass == null) ? noClass : displayClass);
-        this.notificationsEnabled = cursor.getInt(LocalStore.FOLDER_NOTIFICATIONS_ENABLED_INDEX) == 1;
-        String syncClass = cursor.getString(LocalStore.FOLDER_SYNC_CLASS_INDEX);
-        this.syncClass = FolderClass.valueOf((syncClass == null) ? noClass : syncClass);
+        visible = cursor.getInt(LocalStore.FOLDER_VISIBLE_INDEX) == 1;
+        notificationsEnabled = cursor.getInt(LocalStore.FOLDER_NOTIFICATIONS_ENABLED_INDEX) == 1;
+        syncEnabled = cursor.getInt(LocalStore.FOLDER_SYNC_ENABLED_INDEX) == 1;
         String moreMessagesValue = cursor.getString(LocalStore.MORE_MESSAGES_INDEX);
         moreMessages = MoreMessages.fromDatabaseName(moreMessagesValue);
         name = cursor.getString(LocalStore.FOLDER_NAME_INDEX);
@@ -296,22 +292,12 @@ public class LocalFolder {
         });
     }
 
-    public FolderClass getDisplayClass() {
-        return displayClass;
+    public boolean isVisible() {
+        return visible;
     }
 
-    public FolderClass getSyncClass() {
-        return (FolderClass.INHERITED == syncClass) ? getDisplayClass() : syncClass;
-    }
-
-    public void setDisplayClass(FolderClass displayClass) throws MessagingException {
-        this.displayClass = displayClass;
-        updateFolderColumn("display_class", this.displayClass.name());
-    }
-
-    public void setSyncClass(FolderClass syncClass) throws MessagingException {
-        this.syncClass = syncClass;
-        updateFolderColumn("poll_class", this.syncClass.name());
+    public boolean isSyncEnabled() {
+        return syncEnabled;
     }
 
     public boolean isNotificationsEnabled() {
@@ -1228,16 +1214,5 @@ public class LocalFolder {
         static final int IN_DATABASE = 1;
         static final int ON_DISK = 2;
         static final int CHILD_PART_CONTAINS_DATA = 3;
-    }
-
-    public static boolean isModeMismatch(Account.FolderMode aMode, FolderClass fMode) {
-        return aMode == Account.FolderMode.NONE
-                || (aMode == Account.FolderMode.FIRST_CLASS &&
-                fMode != FolderClass.FIRST_CLASS)
-                || (aMode == Account.FolderMode.FIRST_AND_SECOND_CLASS &&
-                fMode != FolderClass.FIRST_CLASS &&
-                fMode != FolderClass.SECOND_CLASS)
-                || (aMode == Account.FolderMode.NOT_SECOND_CLASS &&
-                fMode == FolderClass.SECOND_CLASS);
     }
 }

@@ -1,10 +1,8 @@
 package app.k9mail.legacy.mailstore
 
 import app.k9mail.core.mail.folder.api.FolderDetails
-import app.k9mail.legacy.account.Account.FolderMode
 import app.k9mail.legacy.search.ConditionsTreeNode
 import com.fsck.k9.mail.Flag
-import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Header
 import java.util.Date
@@ -203,11 +201,11 @@ interface MessageStore {
     fun <T> getFolders(excludeLocalOnly: Boolean, mapper: FolderMapper<T>): List<T>
 
     /**
-     * Retrieve folders for the given display mode along with their unread count.
+     * Retrieve folders with their unread count.
      *
      * For the Outbox the total number of messages will be returned.
      */
-    fun <T> getDisplayFolders(displayMode: FolderMode, outboxFolderId: Long?, mapper: FolderMapper<T>): List<T>
+    fun <T> getDisplayFolders(includeHiddenFolders: Boolean, outboxFolderId: Long?, mapper: FolderMapper<T>): List<T>
 
     /**
      * Check if all given folders are included in the Unified Inbox.
@@ -260,14 +258,14 @@ interface MessageStore {
     fun setIncludeInUnifiedInbox(folderId: Long, includeInUnifiedInbox: Boolean)
 
     /**
-     * Update the display class of a folder.
+     * Update the "visible" setting of a folder.
      */
-    fun setDisplayClass(folderId: Long, folderClass: FolderClass)
+    fun setVisible(folderId: Long, visible: Boolean)
 
     /**
-     * Update the sync class of a folder.
+     * Update the sync setting of a folder.
      */
-    fun setSyncClass(folderId: Long, folderClass: FolderClass)
+    fun setSyncEnabled(folderId: Long, enable: Boolean)
 
     /**
      * Update the push setting of a folder.

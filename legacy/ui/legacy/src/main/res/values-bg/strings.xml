@@ -381,11 +381,6 @@
     <string name="folder_settings_folder_display_mode_normal">Без клас</string>
     <string name="folder_settings_folder_display_mode_first_class">1-ви Клас</string>
     <string name="folder_settings_folder_display_mode_second_class">2-ри Клас</string>
-    <string name="folder_settings_folder_sync_mode_label">Класът на проверяваните папки</string>
-    <string name="folder_settings_folder_sync_mode_normal">Никой</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1-ви Клас</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2-ри Клас</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Същия като класа на показване</string>
     <string name="folder_settings_clear_local_folder_action">Изчисти локалните съобщения</string>
     <string name="account_settings_incoming_label">Сървър за входяща поща</string>
     <string name="account_settings_incoming_summary">Конфигуриране на сървър за входяща поща</string>
@@ -454,11 +449,6 @@
     <string name="sort_by_attach">Файлове</string>
     <string name="account_delete_dlg_title">Премахни профила</string>
     <string name="folder_list_filter_hint">Името на папката съдържа</string>
-    <string name="folder_list_display_mode_label">Покажи папките…</string>
-    <string name="folder_list_display_mode_all">Всички папки</string>
-    <string name="folder_list_display_mode_first_class">1-ви Клас папки</string>
-    <string name="folder_list_display_mode_first_and_second_class">1-ви &amp; 2-ри Клас папки</string>
-    <string name="folder_list_display_mode_not_second_class">Скрий 2-ри клас папки</string>
     <string name="account_settings_signature__location_label">Позиция на подписа</string>
     <string name="account_settings_signature__location_before_quoted_text">Преди цитираното съобщение</string>
     <string name="account_settings_signature__location_after_quoted_text">След цитираното съобщение</string>

@@ -419,11 +419,6 @@
     <string name="folder_settings_folder_display_mode_normal">Klassita</string>
     <string name="folder_settings_folder_display_mode_first_class">1. klass</string>
     <string name="folder_settings_folder_display_mode_second_class">2. klass</string>
-    <string name="folder_settings_folder_sync_mode_label">Kausta pollimise klass</string>
-    <string name="folder_settings_folder_sync_mode_normal">Mitte ükski</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1. klass</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2. klass</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Sama mis kuvamise klass</string>
     <string name="folder_settings_clear_local_folder_action">Puhasta kohalikud kirjad</string>
     <string name="account_settings_incoming_label">Sissetuleva meili server</string>
     <string name="account_settings_incoming_summary">Konfigureeri sisse tuleva meili server</string>
@@ -510,11 +505,6 @@
     <string name="sort_by_attach">Manused</string>
     <string name="account_delete_dlg_title">Eemalda konto</string>
     <string name="folder_list_filter_hint">Kausta nimi sisaldab</string>
-    <string name="folder_list_display_mode_label">Näita kaustu…</string>
-    <string name="folder_list_display_mode_all">Kõik kaustad</string>
-    <string name="folder_list_display_mode_first_class">1. klassi kaustad</string>
-    <string name="folder_list_display_mode_first_and_second_class">1. ja 2. klassi kaustad</string>
-    <string name="folder_list_display_mode_not_second_class">Peida 2. klassi kaustad</string>
     <string name="account_settings_signature__location_label">Allkirja paiknemine</string>
     <string name="account_settings_signature__location_before_quoted_text">Enne osundatud kirja</string>
     <string name="account_settings_signature__location_after_quoted_text">Peale osundatud kirja</string>
@@ -920,4 +910,7 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="settings_ui_data_collection">Andmete kogumine</string>
     <string name="settings_ui_telemetry_title">Üldine kasutus ja tehnilised andmed</string>
     <string name="settings_ui_telemetry_description">Eesmärgiga muuta Thunderbirdi paremaks kogub rakenduse arendaja Mozilla andmeid jõudluse, kasutuse, raudvara ja tehtud kohenduste kohta</string>
+    <string name="folder_settings_push_label">Kasuta tõuketeenuseid</string>
+    <string name="folder_settings_sync_label">Kasuta sünkroniseerimist</string>
+    <string name="folder_list_show_hidden_folders">Näita peidetud kaustu</string>
 </resources>

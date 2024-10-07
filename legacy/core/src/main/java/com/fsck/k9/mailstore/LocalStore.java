@@ -39,7 +39,6 @@ import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.FolderClass;
 import com.fsck.k9.mail.FolderType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
@@ -112,7 +111,7 @@ public class LocalStore {
 
     static final String GET_FOLDER_COLS =
         "folders.id, name, visible_limit, last_updated, status, " +
-        "integrate, top_group, poll_class, display_class, notifications_enabled, more_messages, server_id, " +
+        "integrate, top_group, sync_enabled, visible, notifications_enabled, more_messages, server_id, " +
         "local_only, type";
 
     static final int FOLDER_ID_INDEX = 0;
@@ -122,8 +121,8 @@ public class LocalStore {
     static final int FOLDER_STATUS_INDEX = 4;
     static final int FOLDER_INTEGRATE_INDEX = 5;
     static final int FOLDER_TOP_GROUP_INDEX = 6;
-    static final int FOLDER_SYNC_CLASS_INDEX = 7;
-    static final int FOLDER_DISPLAY_CLASS_INDEX = 8;
+    static final int FOLDER_SYNC_ENABLED_INDEX = 7;
+    static final int FOLDER_VISIBLE_INDEX = 8;
     static final int FOLDER_NOTIFICATIONS_ENABLED_INDEX = 9;
     static final int MORE_MESSAGES_INDEX = 10;
     static final int FOLDER_SERVER_ID_INDEX = 11;
@@ -687,7 +686,7 @@ public class LocalStore {
             values.put("type", FolderTypeConverter.toDatabaseFolderType(type));
             values.put("visible_limit", 0);
             values.put("more_messages", MoreMessages.FALSE.getDatabaseName());
-            values.put("display_class", FolderClass.FIRST_CLASS.name());
+            values.put("visible", true);
 
             return db.insert("folders", null, values);
         });

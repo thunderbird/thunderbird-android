@@ -11,4 +11,5 @@ dependencies {
     api(projects.feature.funding.api)
 
     implementation(libs.android.billing)
+    implementation(libs.android.billing.ktx)
 }

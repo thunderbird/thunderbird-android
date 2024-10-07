@@ -382,11 +382,6 @@
     <string name="folder_settings_folder_display_mode_normal">без класе</string>
     <string name="folder_settings_folder_display_mode_first_class">I класа</string>
     <string name="folder_settings_folder_display_mode_second_class">II класа</string>
-    <string name="folder_settings_folder_sync_mode_label">Класа провераваних фасцикли</string>
-    <string name="folder_settings_folder_sync_mode_normal">ништа</string>
-    <string name="folder_settings_folder_sync_mode_first_class">I класа</string>
-    <string name="folder_settings_folder_sync_mode_second_class">II класа</string>
-    <string name="folder_settings_folder_sync_mode_inherited">иста као класа приказа</string>
     <string name="folder_settings_clear_local_folder_action">Очисти локалне поруке</string>
     <string name="account_settings_incoming_label">Долазни сервер</string>
     <string name="account_settings_incoming_summary">Подешавања долазног сервера поште</string>
@@ -455,11 +450,6 @@
     <string name="sort_by_attach">прилозима</string>
     <string name="account_delete_dlg_title">Уклони налог</string>
     <string name="folder_list_filter_hint">Назив фасцикле садржи</string>
-    <string name="folder_list_display_mode_label">Прикажи фасцикле…</string>
-    <string name="folder_list_display_mode_all">све фасцикле</string>
-    <string name="folder_list_display_mode_first_class">фасцикле I класе</string>
-    <string name="folder_list_display_mode_first_and_second_class">фасцикле I и II класе</string>
-    <string name="folder_list_display_mode_not_second_class">сакриј фасцикле II класе</string>
     <string name="account_settings_signature__location_label">Позиција потписа</string>
     <string name="account_settings_signature__location_before_quoted_text">изнад цитиране поруке</string>
     <string name="account_settings_signature__location_after_quoted_text">испод цитиране поруке</string>

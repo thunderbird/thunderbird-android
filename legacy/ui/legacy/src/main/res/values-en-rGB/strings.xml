@@ -207,8 +207,6 @@
     <string name="account_settings_folder_display_mode_first_class">Only 1st Class folders</string>
     <string name="account_settings_vibrate_pattern_label">Vibration pattern</string>
     <string name="account_setup_options_mail_check_frequency_1hour">Every hour</string>
-    <string name="folder_settings_folder_sync_mode_normal">None</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1st Class</string>
     <string name="folder_settings_in_top_group_label">Show in top group</string>
     <string name="account_settings_reply_after_quote_summary">The original message will appear above your reply.</string>
     <string name="account_settings_notification_light_disabled">Disabled</string>
@@ -313,7 +311,6 @@
     <string name="notification_action_mark_all_as_read">Mark All Read</string>
     <string name="font_size_message_list_preview">Preview</string>
     <string name="error_contact_address_not_found">No email address could be found for this contact.</string>
-    <string name="folder_settings_folder_sync_mode_label">Folder poll class</string>
     <string name="account_settings_folder_notify_new_mail_mode_label">Notifications folders</string>
     <string name="sort_flagged_first">Starred messages first</string>
     <plurals name="dialog_confirm_delete_messages">
@@ -417,7 +414,6 @@
     <string name="account_setup_options_mail_check_frequency_never">Never</string>
     <string name="global_settings_sender_above_subject_summary">Show correspondent names above the subject line, rather than below it</string>
     <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2nd Class</string>
     <string name="font_size_medium">Medium</string>
     <string name="message_compose_attachments_skipped_toast">Some attachments cannot be forwarded because they have not been downloaded.</string>
     <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>
@@ -435,7 +431,6 @@
     <string name="account_settings_vibrate_pattern_1">Pattern 1</string>
     <string name="general_no_subject">(No subject)</string>
     <string name="account_setup_incoming_delete_policy_never_label">Do not delete on server</string>
-    <string name="folder_list_display_mode_not_second_class">Hide 2nd Class folders</string>
     <string name="account_settings_notify_self_summary">Show a notification for messages I sent</string>
     <string name="prefs_title">Settings</string>
     <string name="notification_authentication_error_text">Authentication failed for <xliff:g id="account">%s</xliff:g>. Update your server settings.</string>
@@ -445,7 +440,6 @@
     <string name="quiet_time_starts">Quiet Time starts</string>
     <string name="account_setup_options_mail_display_count_10">10 messages</string>
     <string name="account_settings_crypto_summary_off">No OpenPGP app configured</string>
-    <string name="folder_list_display_mode_first_class">1st Class folders</string>
     <string name="account_settings_message_read_receipt_label">Read receipt</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Mark as read when opened</string>
     <string name="choose_identity_title">Choose identity</string>
@@ -523,7 +517,6 @@
     <string name="account_settings_signature__location_after_quoted_text">After quoted message</string>
     <string name="edit_identity_email_label">Email address</string>
     <string name="size_format_bytes">%d B</string>
-    <string name="folder_list_display_mode_first_and_second_class">1st &amp; 2nd Class folders</string>
     <string name="animations_title">Animation</string>
     <string name="account_settings_message_age_7">the last week</string>
     <string name="account_settings_folder_sync_mode_not_second_class">All except 2nd Class folders</string>
@@ -664,14 +657,12 @@
     <string name="general_settings_swipe_action_none">None</string>
     <string name="volume_navigation_title">Volume key navigation in message view</string>
     <string name="size_format_gigabytes">%.1f GB</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Same as display class</string>
     <string name="debug_export_logs_failure">Export failed.</string>
     <string name="notification_action_delete_all">Delete All</string>
     <string name="message_view_show_remote_images_action">Show remote images</string>
     <string name="privacy_preferences">Privacy</string>
     <string name="account_settings_autodownload_message_size_256">256 KiB</string>
     <string name="settings_export_share_button">Share</string>
-    <string name="folder_list_display_mode_all">All folders</string>
     <string name="font_size_smaller">Smaller</string>
     <string name="manage_identities_title">Manage identities</string>
     <string name="settings_message_theme_label">Message view theme</string>
@@ -679,7 +670,6 @@
     <string name="global_settings_confirm_actions_summary">Show a dialog whenever you perform selected actions</string>
     <string name="default_identity_description">Initial identity</string>
     <string name="account_settings_title_fmt">Account settings</string>
-    <string name="folder_list_display_mode_label">Show folders…</string>
     <string name="webview_contextmenu_phone_save_action">Save to Contacts</string>
     <string name="account_settings_remote_search_num_label">Server search limit</string>
     <string name="account_settings_search">Search</string>

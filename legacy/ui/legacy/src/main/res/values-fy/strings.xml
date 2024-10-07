@@ -420,11 +420,6 @@
     <string name="folder_settings_folder_display_mode_normal">Gjin klasse</string>
     <string name="folder_settings_folder_display_mode_first_class">1e klasse</string>
     <string name="folder_settings_folder_display_mode_second_class">2e klasse</string>
-    <string name="folder_settings_folder_sync_mode_label">Mappeilingklasse</string>
-    <string name="folder_settings_folder_sync_mode_normal">Gjin</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1e klasse</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2e klasse</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Selde as werjefteklasse</string>
     <string name="folder_settings_clear_local_folder_action">Lokale berjochten wiskje</string>
     <string name="account_settings_incoming_label">Ynkommende server</string>
     <string name="account_settings_incoming_summary">Ynkommende mailserver ynstelle</string>
@@ -511,11 +506,6 @@
     <string name="sort_by_attach">Bylagen</string>
     <string name="account_delete_dlg_title">Account fuortsmite</string>
     <string name="folder_list_filter_hint">Mapnamme befettet</string>
-    <string name="folder_list_display_mode_label">Mappen toane…</string>
-    <string name="folder_list_display_mode_all">Alle mappen</string>
-    <string name="folder_list_display_mode_first_class">1e-klassemappen</string>
-    <string name="folder_list_display_mode_first_and_second_class">1e- &amp; 2e-klassemappen</string>
-    <string name="folder_list_display_mode_not_second_class">2e-klassemappen ferstopje</string>
     <string name="account_settings_signature__location_label">Posysje hantekening</string>
     <string name="account_settings_signature__location_before_quoted_text">Foar sitearre berjocht</string>
     <string name="account_settings_signature__location_after_quoted_text">Nei sitearre berjocht</string>
@@ -918,4 +908,7 @@
     <string name="settings_ui_telemetry_title">Gebrûk en technyske gegevens</string>
     <string name="folder_settings_notifications_label">Meldingen</string>
     <string name="settings_ui_telemetry_description">Om te helpen Thunderbird te ferbetterjen, wurde gegevens oer prestaasjes, hardware en gebrûk, dield mei Mozilla</string>
+    <string name="folder_settings_push_label">Push aktivearje</string>
+    <string name="folder_list_show_hidden_folders">Ferstoppe mappen toane</string>
+    <string name="folder_settings_sync_label">Syngronisaasje ynskeakelje</string>
 </resources>

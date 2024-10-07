@@ -3,7 +3,6 @@ package com.fsck.k9.storage.messages
 import android.content.ContentValues
 import app.k9mail.core.mail.folder.api.FolderDetails
 import app.k9mail.legacy.mailstore.MoreMessages
-import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.toDatabaseFolderType
@@ -25,8 +24,8 @@ internal class UpdateFolderOperations(private val lockableDatabase: LockableData
             val contentValues = ContentValues().apply {
                 put("top_group", folderDetails.isInTopGroup)
                 put("integrate", folderDetails.isIntegrate)
-                put("poll_class", folderDetails.syncClass.name)
-                put("display_class", folderDetails.displayClass.name)
+                put("sync_enabled", folderDetails.isSyncEnabled)
+                put("visible", folderDetails.isVisible)
                 put("notifications_enabled", folderDetails.isNotificationsEnabled)
                 put("push_enabled", folderDetails.isPushEnabled)
             }
@@ -39,12 +38,12 @@ internal class UpdateFolderOperations(private val lockableDatabase: LockableData
         setBoolean(folderId, columnName = "integrate", value = includeInUnifiedInbox)
     }
 
-    fun setDisplayClass(folderId: Long, folderClass: FolderClass) {
-        setString(folderId = folderId, columnName = "display_class", value = folderClass.name)
+    fun setVisible(folderId: Long, visible: Boolean) {
+        setBoolean(folderId = folderId, columnName = "visible", value = visible)
     }
 
-    fun setSyncClass(folderId: Long, folderClass: FolderClass) {
-        setString(folderId = folderId, columnName = "poll_class", value = folderClass.name)
+    fun setSyncEnabled(folderId: Long, enable: Boolean) {
+        setBoolean(folderId = folderId, columnName = "sync_enabled", value = enable)
     }
 
     fun setPushEnabled(folderId: Long, enable: Boolean) {

@@ -409,11 +409,6 @@
     <string name="folder_settings_folder_display_mode_normal">Dim Rhenc</string>
     <string name="folder_settings_folder_display_mode_first_class">Rhenc 1af</string>
     <string name="folder_settings_folder_display_mode_second_class">2ail renc</string>
-    <string name="folder_settings_folder_sync_mode_label">Rhenc gwirio\'r ffolder</string>
-    <string name="folder_settings_folder_sync_mode_normal">Dim</string>
-    <string name="folder_settings_folder_sync_mode_first_class">Rhenc 1af</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2ail renc</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Fel ei rhenc dangos</string>
     <string name="folder_settings_clear_local_folder_action">Clirio negeseuon lleol</string>
     <string name="account_settings_incoming_label">Gweinydd</string>
     <string name="account_settings_incoming_summary">Ffurfweddu\'r gweinydd derbyn</string>
@@ -500,11 +495,6 @@
     <string name="sort_by_attach">Atodiadau</string>
     <string name="account_delete_dlg_title">Tynnu Cyfrif</string>
     <string name="folder_list_filter_hint">Enw ffolder yn cynnwys</string>
-    <string name="folder_list_display_mode_label">Dangos ffolderi…</string>
-    <string name="folder_list_display_mode_all">Pob ffolder</string>
-    <string name="folder_list_display_mode_first_class">Ffolderi Rhenc 1af</string>
-    <string name="folder_list_display_mode_first_and_second_class">Ffolderi Rhenc 1af ac 2ail</string>
-    <string name="folder_list_display_mode_not_second_class">Cuddio ffolderi 2ail renc</string>
     <string name="account_settings_signature__location_label">Lleoliad llofnod</string>
     <string name="account_settings_signature__location_before_quoted_text">Cyn neges wedi ei dyfynnu</string>
     <string name="account_settings_signature__location_after_quoted_text">Ar ôl neges wedi ei dyfynnu</string>

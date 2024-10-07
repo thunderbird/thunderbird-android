@@ -428,11 +428,6 @@
     <string name="folder_settings_folder_display_mode_normal">دون تصنيف</string>
     <string name="folder_settings_folder_display_mode_first_class">الفئة الأولى</string>
     <string name="folder_settings_folder_display_mode_second_class">الفئة الثانية</string>
-    <string name="folder_settings_folder_sync_mode_label">Folder poll class</string>
-    <string name="folder_settings_folder_sync_mode_normal">بدون</string>
-    <string name="folder_settings_folder_sync_mode_first_class">الفئة الأولى</string>
-    <string name="folder_settings_folder_sync_mode_second_class">الفئة الثانية</string>
-    <string name="folder_settings_folder_sync_mode_inherited">نفس فئة العرض </string>
     <string name="folder_settings_clear_local_folder_action">امحوا الرسائل المحلية</string>
     <string name="account_settings_incoming_label">خادم الوارد</string>
     <string name="account_settings_incoming_summary">إعداد خادم البريد الوارد</string>
@@ -519,11 +514,6 @@
     <string name="sort_by_attach">المُرفَقات</string>
     <string name="account_delete_dlg_title">احذف الحساب</string>
     <string name="folder_list_filter_hint">إسم المجلد يحتوي</string>
-    <string name="folder_list_display_mode_label">اظهر المجلدات…</string>
-    <string name="folder_list_display_mode_all">كل المجلدات</string>
-    <string name="folder_list_display_mode_first_class">المجلدات من الفئة الأولى فقط</string>
-    <string name="folder_list_display_mode_first_and_second_class">المجلدات من الفئة الأولى و الثانية</string>
-    <string name="folder_list_display_mode_not_second_class">اخفي المجلدات من الفئة الثانية</string>
     <string name="account_settings_signature__location_label">وضعية التوقيع</string>
     <string name="account_settings_signature__location_before_quoted_text">قبل النص المُقتبَس</string>
     <string name="account_settings_signature__location_after_quoted_text">بعدَ النص المُقتبَس</string>

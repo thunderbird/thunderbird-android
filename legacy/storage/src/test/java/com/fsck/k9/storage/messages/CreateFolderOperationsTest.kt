@@ -5,7 +5,6 @@ import app.k9mail.legacy.mailstore.FolderSettings
 import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
-import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.storage.RobolectricTest
 import org.junit.Test
@@ -25,8 +24,8 @@ class CreateFolderOperationsTest : RobolectricTest() {
                     type = FolderType.ARCHIVE,
                     settings = FolderSettings(
                         visibleLimit = 10,
-                        displayClass = FolderClass.FIRST_CLASS,
-                        syncClass = FolderClass.SECOND_CLASS,
+                        isVisible = true,
+                        isSyncEnabled = false,
                         isNotificationsEnabled = true,
                         isPushEnabled = false,
                         inTopGroup = true,
@@ -43,8 +42,8 @@ class CreateFolderOperationsTest : RobolectricTest() {
         assertThat(folder.name).isEqualTo("Archive")
         assertThat(folder.type).isEqualTo("archive")
         assertThat(folder.visibleLimit).isEqualTo(10)
-        assertThat(folder.displayClass).isEqualTo("FIRST_CLASS")
-        assertThat(folder.syncClass).isEqualTo("SECOND_CLASS")
+        assertThat(folder.visible).isEqualTo(1)
+        assertThat(folder.syncEnabled).isEqualTo(0)
         assertThat(folder.notificationsEnabled).isEqualTo(1)
         assertThat(folder.pushEnabled).isEqualTo(0)
         assertThat(folder.inTopGroup).isEqualTo(1)
@@ -79,8 +78,8 @@ class CreateFolderOperationsTest : RobolectricTest() {
             type = FolderType.REGULAR,
             settings = FolderSettings(
                 visibleLimit = 25,
-                displayClass = FolderClass.NO_CLASS,
-                syncClass = FolderClass.INHERITED,
+                isVisible = true,
+                isSyncEnabled = false,
                 isNotificationsEnabled = false,
                 isPushEnabled = false,
                 inTopGroup = false,

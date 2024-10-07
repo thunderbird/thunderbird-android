@@ -1,0 +1,229 @@
+name: Shippable Build & Signing
+on:
+  workflow_dispatch:
+
+jobs:
+  get_environment:
+    runs-on: ubuntu-latest
+    outputs:
+      releaseEnv: ${{ steps.getReleaseEnv.outputs.result }}
+    steps:
+      - uses: actions/github-script@v7
+        id: getReleaseEnv
+        with:
+          result-encoding: string
+          script: |
+            const RELEASE_ENVS = {
+              "refs/heads/main": "thunderbird_daily",
+              "refs/heads/beta": "thunderbird_beta",
+              "refs/heads/release": "thunderbird_release",
+            };
+
+            if (context.ref in RELEASE_ENVS) {
+              return RELEASE_ENVS[context.ref];
+            } else {
+              core.setFailed(`Unknown branch ${context.ref} for shippable builds!`)
+              return "";
+            }
+
+  dump_config:
+    runs-on: ubuntu-latest
+    needs: get_environment
+    environment: ${{ needs.get_environment.outputs.releaseEnv }}
+    outputs:
+      matrixInclude: ${{ vars.MATRIX_INCLUDE }}
+      appName: ${{ vars.APP_NAME }}
+      releaseType: ${{ vars.RELEASE_TYPE }}
+      tagPrefix: ${{ vars.TAG_PREFIX }}
+    steps:
+      - name: Dump Vars context
+        id: variables
+        env:
+          VARS_CONTEXT: ${{ toJSON(vars) }}
+          MATRIX_INCLUDE: ${{ vars.MATRIX_INCLUDE }}
+        run: |
+          echo "$VARS_CONTEXT"
+          echo "$MATRIX_INCLUDE"
+
+
+  build_unsigned:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    needs: [dump_config, get_environment]
+    strategy:
+      matrix:
+        include: "${{ fromJSON(needs.dump_config.outputs.matrixInclude) }}"
+    environment: ${{ needs.get_environment.outputs.releaseEnv }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Copy CI gradle.properties
+        shell: bash
+        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build It
+        shell: bash
+        env:
+          PACKAGE_FORMAT: ${{ matrix.packageFormat }}
+          PACKAGE_FLAVOR: ${{ matrix.packageFlavor }}
+          APP_NAME: ${{ vars.APP_NAME }}
+          RELEASE_TYPE: ${{ vars.RELEASE_TYPE }}
+        run: |
+          BUILD_CMD="${PACKAGE_FORMAT}"
+          if [[ "$PACKAGE_FORMAT" = "apk" ]]; then
+            BUILD_CMD="assemble"
+          fi
+          # ^ upper-case first character of bash string
+          BUILD_COMMAND="${BUILD_CMD}${PACKAGE_FLAVOR^}${RELEASE_TYPE^}"
+          echo "BUILDING: :${APP_NAME}:${BUILD_COMMAND}"
+          ./gradlew clean :${APP_NAME}:${BUILD_COMMAND} --no-build-cache --no-configuration-cache
+          echo "Status: $?"
+
+      - name: Move apps to upload directory
+        shell: bash
+        env:
+          PACKAGE_FORMAT: ${{ matrix.packageFormat }}
+          PACKAGE_FLAVOR: ${{ matrix.packageFlavor }}
+          APP_NAME: ${{ vars.APP_NAME }}
+          RELEASE_TYPE: ${{ vars.RELEASE_TYPE }}
+          OUT_BASE: ${{ vars.APP_NAME }}/build/outputs/${{ matrix.packageFormat }}
+          UPLOAD_PATH: "uploads"
+        run: |
+          mkdir -p "${UPLOAD_PATH}"
+          if [[ "${PACKAGE_FORMAT}" = "apk" ]]; then
+            OUT_PATH="${OUT_BASE}/${PACKAGE_FLAVOR}/${RELEASE_TYPE}"
+            OUT_FILE="${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}-unsigned.apk"
+            RENAMED_FILE="${OUT_FILE/-unsigned/}"
+          elif [[ "${PACKAGE_FORMAT}" = "bundle" ]]; then
+            OUT_PATH="${OUT_BASE}/${PACKAGE_FLAVOR}${RELEASE_TYPE^}"
+            OUT_FILE="${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}.aab"
+            RENAMED_FILE="${OUT_FILE}"
+          else
+            echo "PACKAGE_FORMAT $PACKAGE_FORMAT is unknown. Exiting."
+            exit 23
+          fi
+          if [[ -f "${OUT_PATH}/${OUT_FILE}" ]]; then
+            mv -f "${OUT_PATH}/${OUT_FILE}" "${UPLOAD_PATH}/${RENAMED_FILE}"
+          else
+            echo "Build file ${OUT_PATH}/${OUT_FILE} not found. Exiting."
+            ls -l ${OUT_PATH}
+            exit 24
+          fi
+          echo "Upload contents:"
+          ls -l ${UPLOAD_PATH}/
+
+      - name: Upload unsigned
+        uses: actions/upload-artifact@v4
+        env:
+          UPLOAD_PATH: "uploads"
+        with:
+          name: unsigned-${{ vars.APP_NAME}}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor }}
+          path: ${{ env.UPLOAD_PATH }}/
+          if-no-files-found: error
+
+  sign_mobile:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include: "${{ fromJSON(needs.dump_config.outputs.matrixInclude) }}"
+    environment: ${{ needs.dump_config.outputs.appName }}_${{ needs.dump_config.outputs.releaseType }}_${{ matrix.packageFlavor }}
+    needs: [build_unsigned, dump_config]
+    env:
+      APP_NAME: ${{ needs.dump_config.outputs.appName }}
+      RELEASE_TYPE: ${{ needs.dump_config.outputs.releaseType }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: unsigned-${{ env.APP_NAME }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor }}
+          path: uploads/
+
+      - uses: noriban/sign-android-release@5f144321d3c7c2233266e78b42360345d8bbe403   # v5.1
+        name: Sign package
+        with:
+          releaseDirectory: uploads/
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.KEY_ALIAS }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+
+      - name: Remove JKS file
+        shell: bash
+        run: |
+          rm -f uploads/*.jks
+
+      - name: Upload signed
+        uses: actions/upload-artifact@v4
+        with:
+          name: signed-${{ env.APP_NAME}}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor }}
+          if-no-files-found: error
+          path: |
+            uploads/*-signed.apk
+            uploads/*.aab
+
+  pre_publish:
+    # This is a holding job meant to require approval before proceeding with the publishing jobs below
+    # The environment has a deployment protection rule requiring approval from a set of named reviewers
+    # before proceeding.
+    environment: publish_hold
+    needs: [sign_mobile]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Approval
+        shell: bash
+        run: |
+          true
+
+  github_release:
+    runs-on: ubuntu-latest
+    needs: [ pre_publish, dump_config ]
+    environment: gh-releases
+    env:
+      APP_NAME: ${{ needs.dump_config.outputs.appName }}
+      RELEASE_TYPE: ${{ needs.dump_config.outputs.releaseType }}
+      TAG_PREFIX: ${{ needs.dump_config.outputs.tagPrefix }}
+      PACKAGE_FORMAT: "apk"
+      PACKAGE_FLAVOR: "foss"
+      UPLOADS: "uploads"
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          # We need to extract the version name from only one of the packages, use the foss apk
+          name: signed-${{ env.APP_NAME }}-${{ env.PACKAGE_FORMAT }}-${{ env.PACKAGE_FLAVOR }}
+          path: ${{ env.UPLOADS }}/
+
+      - name: Get Tag Name
+        shell: bash
+        run: |
+          APKANALYZER="${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/apkanalyzer"
+          APK_FILE="${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}-signed.apk"
+          _version=$(${APKANALYZER} manifest version-name "${UPLOADS}/${APK_FILE}")
+          _tag="${TAG_PREFIX}_${_version//./_}"
+          echo "Tag Name: ${_tag}"
+          echo "Apk File: ${APK_FILE}"
+          echo "TAG_NAME=${_tag}" >> $GITHUB_ENV
+          echo "APK_FILE=${APK_FILE}" >> $GITHUB_ENV
+
+      - name: App Token Generate
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ vars.RELEASER_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASER_APP_PRIVATE_KEY }}
+
+      - name: Publish
+        uses: softprops/action-gh-release@v2
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          target_commitish: ${{ github.sha }}
+          tag_name: ${{ env.TAG_NAME }}
+          fail_on_unmatched_files: true
+          files: |
+            ${{ env.UPLOADS }}/${{ env.APK_FILE }}

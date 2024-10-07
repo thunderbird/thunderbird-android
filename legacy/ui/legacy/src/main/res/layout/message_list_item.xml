@@ -156,6 +156,7 @@
         android:layout_marginTop="@dimen/fakeAlignImageTopToTextTopPadding"
         android:layout_marginEnd="@dimen/messageListHorizontalPadding"
         android:src="@drawable/btn_select_star"
+        android:contentDescription="@string/star_button_description" 
         app:layout_constraintBottom_toBottomOf="@+id/bottom_guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/preview"

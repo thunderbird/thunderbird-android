@@ -1,1 +1,1 @@
-- Fixed a crash when opening the screen to compose a message
+- Opraven pád aplikaci při otevření okna pro vytvoření zprávy

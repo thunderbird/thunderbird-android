@@ -11,6 +11,8 @@ internal class SettingsImportUiModel {
     var closeButtonLabel: CloseButtonLabel = CloseButtonLabel.OK
     var isPickDocumentButtonVisible = true
     var isPickDocumentButtonEnabled = true
+    var isScanQrCodeButtonVisible = true
+    var isScanQrCodeButtonEnabled = true
     var isPickAppButtonVisible = true
     var isPickAppButtonEnabled = false
     var isPickAppButtonPermanentlyDisabled = true
@@ -29,6 +31,7 @@ internal class SettingsImportUiModel {
 
     fun enablePickButtons() {
         isPickDocumentButtonEnabled = true
+        isScanQrCodeButtonEnabled = true
         maybeEnablePickAppButton()
     }
 
@@ -41,6 +44,7 @@ internal class SettingsImportUiModel {
     fun disablePickButtons() {
         statusText = StatusText.HIDDEN
         isPickDocumentButtonEnabled = false
+        isScanQrCodeButtonEnabled = false
         isPickAppButtonEnabled = false
     }
 
@@ -58,6 +62,7 @@ internal class SettingsImportUiModel {
     fun showLoadingProgress() {
         isLoadingProgressVisible = true
         isPickDocumentButtonVisible = false
+        isScanQrCodeButtonVisible = false
         isPickAppButtonVisible = false
         isSettingsListEnabled = false
         statusText = StatusText.HIDDEN
@@ -92,6 +97,8 @@ internal class SettingsImportUiModel {
         isLoadingProgressVisible = false
         isPickDocumentButtonVisible = true
         isPickDocumentButtonEnabled = true
+        isScanQrCodeButtonVisible = true
+        isScanQrCodeButtonEnabled = true
         isPickAppButtonVisible = true
         maybeEnablePickAppButton()
         statusText = StatusText.IMPORT_READ_FAILURE
@@ -104,6 +111,8 @@ internal class SettingsImportUiModel {
         isSettingsListVisible = false
         isPickDocumentButtonVisible = true
         isPickDocumentButtonEnabled = true
+        isScanQrCodeButtonVisible = true
+        isScanQrCodeButtonEnabled = true
         isPickAppButtonVisible = true
         maybeEnablePickAppButton()
         statusText = StatusText.IMPORT_FAILURE
@@ -124,6 +133,7 @@ internal class SettingsImportUiModel {
         isSettingsListVisible = true
         isLoadingProgressVisible = false
         isPickDocumentButtonVisible = false
+        isScanQrCodeButtonVisible = false
         isPickAppButtonVisible = false
         updateImportButtonFromSelection()
     }
