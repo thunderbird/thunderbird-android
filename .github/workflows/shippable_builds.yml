@@ -195,12 +195,11 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          # The artifact name is the APK FOSS package for Github releases
+          # We need to extract the version name from only one of the packages, use the foss apk
           name: signed-${{ env.APP_NAME }}-${{ env.PACKAGE_FORMAT }}-${{ env.PACKAGE_FLAVOR }}
           path: ${{ env.UPLOADS }}/
 
       - name: Get Tag Name
-        ## This obviously is quite incorrect. Need a way to extract versionName from gradle
         shell: bash
         run: |
           APKANALYZER="${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/apkanalyzer"
