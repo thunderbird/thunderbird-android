@@ -66,14 +66,6 @@
         <item>@string/account_settings_show_pictures_always</item>
     </string-array>
 
-    <string-array name="folder_sync_mode_entries">
-        <item>@string/account_settings_folder_sync_mode_all</item>
-        <item>@string/account_settings_folder_sync_mode_first_class</item>
-        <item>@string/account_settings_folder_sync_mode_first_and_second_class</item>
-        <item>@string/account_settings_folder_sync_mode_not_second_class</item>
-        <item>@string/account_settings_folder_sync_mode_none</item>
-    </string-array>
-
     <string-array name="push_limit_entries">
         <item>@string/account_setup_push_limit_5</item>
         <item>@string/account_setup_push_limit_10</item>

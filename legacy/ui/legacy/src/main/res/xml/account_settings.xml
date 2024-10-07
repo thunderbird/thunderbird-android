@@ -93,15 +93,6 @@
             android:title="@string/account_settings_mail_check_frequency_label"
             />
 
-        <ListPreference
-            android:dialogTitle="@string/account_settings_folder_sync_mode_label"
-            android:entries="@array/folder_sync_mode_entries"
-            android:entryValues="@array/folder_sync_mode_values"
-            android:key="folder_sync_mode"
-            app:useSimpleSummaryProvider="true"
-            android:title="@string/account_settings_folder_sync_mode_label"
-            />
-
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="account_sync_remote_deletetions"
