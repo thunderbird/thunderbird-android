@@ -103,6 +103,7 @@ class AboutFragment : Fragment() {
             ),
             Library("AppAuth for Android", "https://github.com/openid/AppAuth-Android", "Apache License, Version 2.0"),
             Library("Apache HttpComponents", "https://hc.apache.org/", "Apache License, Version 2.0"),
+            Library("AutoValue", "https://github.com/google/auto", "Apache License, Version 2.0"),
             Library("CircleImageView", "https://github.com/hdodenhof/CircleImageView", "Apache License, Version 2.0"),
             Library("ckChangeLog", "https://github.com/cketti/ckChangeLog", "Apache License, Version 2.0"),
             Library("Commons IO", "https://commons.apache.org/io/", "Apache License, Version 2.0"),
@@ -127,26 +128,31 @@ class AboutFragment : Fragment() {
                 "Apache License, Version 2.0",
             ),
             Library("Koin", "https://insert-koin.io/", "Apache License, Version 2.0"),
-            Library("Kotlin Parcelize Runtime", "https://github.com/JetBrains/kotlin", "Apache License, Version 2.0"),
             Library(
-                "KotlinX Coroutines",
-                "https://github.com/Kotlin/kotlinx.coroutines",
+                "Kotlin Android Extensions Runtime",
+                "https://github.com/JetBrains/kotlin/tree/master/plugins/android-extensions/android-extensions-runtime",
                 "Apache License, Version 2.0",
             ),
+            Library("Kotlin Parcelize Runtime", "https://github.com/JetBrains/kotlin", "Apache License, Version 2.0"),
             Library(
                 "Kotlin Standard Library",
                 "https://kotlinlang.org/api/latest/jvm/stdlib/",
                 "Apache License, Version 2.0",
             ),
             Library(
-                "KotlinX Immutable Collections",
-                "https://github.com/Kotlin/kotlinx.collections.immutable",
+                "KotlinX Coroutines",
+                "https://github.com/Kotlin/kotlinx.coroutines",
                 "Apache License, Version 2.0",
             ),
             Library("KotlinX DateTime", "https://github.com/Kotlin/kotlinx-datetime", "Apache License, Version 2.0"),
             Library(
-                "Kotlin Android Extensions Runtime",
-                "https://github.com/JetBrains/kotlin/tree/master/plugins/android-extensions/android-extensions-runtime",
+                "KotlinX Immutable Collections",
+                "https://github.com/Kotlin/kotlinx.collections.immutable",
+                "Apache License, Version 2.0",
+            ),
+            Library(
+                "KotlinX Serialization",
+                "https://github.com/Kotlin/kotlinx.serialization",
                 "Apache License, Version 2.0",
             ),
             Library(
@@ -172,12 +178,14 @@ class AboutFragment : Fragment() {
             ),
             Library("SearchPreference", "https://github.com/ByteHamster/SearchPreference", "MIT License"),
             Library("SLF4J", "https://www.slf4j.org/", "MIT License"),
+            Library("Stately", "https://github.com/touchlab/Stately", "Apache License, Version 2.0"),
             Library("Timber", "https://github.com/JakeWharton/timber", "Apache License, Version 2.0"),
             Library(
                 "TokenAutoComplete",
                 "https://github.com/splitwise/TokenAutoComplete/",
                 "Apache License, Version 2.0",
             ),
+            Library("ZXing", "https://github.com/zxing/zxing", "Apache License, Version 2.0"),
         )
     }
 }
