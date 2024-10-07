@@ -1,0 +1,12 @@
+Second public beta of Thunderbird for Android 8.0, based on K-9 Mail. Changes include:
+
+- Import accounts from Desktop via QR codes
+- Removed folder display classes
+- Always show all folders in the Manage Folders screen
+- Fixed top crash when removing accounts
+- Properly aligned welcome text
+- Updated support link to support.mozilla.org
+- Accessibility fixes
+- Temporarily removed telemetry
+
+More details: https://github.com/thunderbird/thunderbird-android/releases/tag/THUNDERBIRD_8_0b2

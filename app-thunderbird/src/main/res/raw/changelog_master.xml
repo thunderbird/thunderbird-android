@@ -5,6 +5,17 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="8.0b2" versioncode="5" date="2024-10-07">
+        <change>Second public beta of Thunderbird for Android 8.0, based on K-9 Mail</change>
+        <change>Import accounts from Desktop via QR codes</change>
+        <change>Removed folder display classes</change>
+        <change>Always show all folders in the Manage Folders screen</change>
+        <change>Fixed top crash when removing accounts</change>
+        <change>Properly aligned welcome text</change>
+        <change>Updated support link to support.mozilla.org</change>
+        <change>Accessibility fixes</change>
+        <change>Temporarily removed telemetry</change>
+    </release>
     <release version="8.0b1" versioncode="4" date="2024-09-30">
         <change>First public beta of Thunderbird for Android 8.0, based on K-9 Mail.</change>
         <change>Updated subject encryption</change>
