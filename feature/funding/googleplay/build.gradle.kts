@@ -14,4 +14,6 @@ dependencies {
 
     implementation(libs.android.billing)
     implementation(libs.android.billing.ktx)
+
+    testImplementation(projects.core.ui.compose.testing)
 }
