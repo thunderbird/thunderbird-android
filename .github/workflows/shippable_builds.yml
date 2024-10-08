@@ -199,17 +199,36 @@ jobs:
           name: signed-${{ env.APP_NAME }}-${{ env.PACKAGE_FORMAT }}-${{ env.PACKAGE_FLAVOR }}
           path: ${{ env.UPLOADS }}/
 
-      - name: Get Tag Name
+
+      - name: Get APK Info
+        id: apkinfo
         shell: bash
         run: |
-          APKANALYZER="${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/apkanalyzer"
           APK_FILE="${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}-signed.apk"
-          _version=$(${APKANALYZER} manifest version-name "${UPLOADS}/${APK_FILE}")
-          _tag="${TAG_PREFIX}_${_version//./_}"
-          echo "Tag Name: ${_tag}"
-          echo "Apk File: ${APK_FILE}"
-          echo "TAG_NAME=${_tag}" >> $GITHUB_ENV
-          echo "APK_FILE=${APK_FILE}" >> $GITHUB_ENV
+          LATEST_BUILD_TOOLS=$(ls -d ${ANDROID_SDK_ROOT}/build-tools/* | sort -V | tail -n1)
+          AAPT=${LATEST_BUILD_TOOLS}/aapt
+
+          NAME=$(${AAPT} dump badging $APK_FILE | sed -n "s/.*application-label:'\([^']*\)'.*/\1/p")
+          VERSION=$(${AAPT} dump badging $APK_FILE | sed -n "s/.*versionName='\([^']*\)'.*/\1/p")
+
+          echo "TAG_NAME=${TAG_PREFIX}_${VERSION//./_}" >> $GITHUB_OUTPUT
+          echo "FULL_VERSION_NAME=${NAME} ${VERSION}" >> $GITHUB_OUTPUT
+          echo "VERSION_NAME=${VERSION}" >> $GITHUB_OUTPUT
+
+          cat $GITHUB_OUTPUT
+
+      - name: Rename release asset
+        id: rename
+        shell: bash
+        env:
+          VERSION_NAME=${{ steps.apkinfo.outputs.VERSION_NAME }}
+        run: |
+          APK_FILE="${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}-signed.apk"
+          APK_FILE_PRETTY="${APP_NAME/app-/}-${VERSION_NAME}.apk"
+          mv ${UPLOADS}/${APK_FILE} ${UPLOADS}/${APK_FILE_PRETTY}
+
+          echo "APK_FILE=${APK_FILE_PRETTY}" >> $GITHUB_OUTPUT
+          ls -l ${UPLOADS}/${APK_FILE_PRETTY}
 
       - name: App Token Generate
         uses: actions/create-github-app-token@v1
@@ -219,11 +238,13 @@ jobs:
           private-key: ${{ secrets.RELEASER_APP_PRIVATE_KEY }}
 
       - name: Publish
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@c062e08bd532815e2082a85e87e3ef29c3e6d191 # v2.0.8
         with:
           token: ${{ steps.app-token.outputs.token }}
           target_commitish: ${{ github.sha }}
-          tag_name: ${{ env.TAG_NAME }}
+          tag_name: ${{ steps.apkinfo.outputs.TAG_NAME }}
+          name: ${{ steps.apkinfo.outputs.FULL_VERSION_NAME }}
+          prelease: ${{ env.RELEASE_TYPE != "release" }}
           fail_on_unmatched_files: true
           files: |
-            ${{ env.UPLOADS }}/${{ env.APK_FILE }}
+            ${{ env.UPLOADS }}/${{ steps.rename.outputs.APK_FILE }}
