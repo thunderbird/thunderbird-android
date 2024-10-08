@@ -95,14 +95,6 @@
         <item>ALWAYS</item>
     </string-array>
 
-    <string-array name="folder_sync_mode_values" translatable="false">
-        <item>ALL</item>
-        <item>FIRST_CLASS</item>
-        <item>FIRST_AND_SECOND_CLASS</item>
-        <item>NOT_SECOND_CLASS</item>
-        <item>NONE</item>
-    </string-array>
-
     <string-array name="push_limit_values" translatable="false">
         <item>5</item>
         <item>10</item>
@@ -112,14 +104,6 @@
         <item>250</item>
         <item>500</item>
         <item>1000</item>
-    </string-array>
-
-    <string-array name="folder_notify_new_mail_mode_values" translatable="false">
-        <item>ALL</item>
-        <item>FIRST_CLASS</item>
-        <item>FIRST_AND_SECOND_CLASS</item>
-        <item>NOT_SECOND_CLASS</item>
-        <item>NONE</item>
     </string-array>
 
     <string-array name="delete_policy_values" translatable="false">

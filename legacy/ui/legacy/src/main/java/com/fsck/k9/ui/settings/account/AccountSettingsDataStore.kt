@@ -130,7 +130,6 @@ class AccountSettingsDataStore(
             "sent_folder" -> loadSpecialFolder(account.sentFolderId, account.sentFolderSelection)
             "spam_folder" -> loadSpecialFolder(account.spamFolderId, account.spamFolderSelection)
             "trash_folder" -> loadSpecialFolder(account.trashFolderId, account.trashFolderSelection)
-            "folder_notify_new_mail_mode" -> account.folderNotifyNewMailMode.name
             "account_combined_vibration" -> getCombinedVibrationValue()
             "account_remote_search_num_results" -> account.remoteSearchNumResults.toString()
             "account_ringtone" -> account.notificationSettings.ringtone
@@ -166,7 +165,6 @@ class AccountSettingsDataStore(
             "sent_folder" -> saveSpecialFolderSelection(value, account::setSentFolderId)
             "spam_folder" -> saveSpecialFolderSelection(value, account::setSpamFolderId)
             "trash_folder" -> saveSpecialFolderSelection(value, account::setTrashFolderId)
-            "folder_notify_new_mail_mode" -> account.folderNotifyNewMailMode = Account.FolderMode.valueOf(value)
             "account_combined_vibration" -> setCombinedVibrationValue(value)
             "account_remote_search_num_results" -> account.remoteSearchNumResults = value.toInt()
             "account_ringtone" -> setNotificationSound(value)

@@ -376,13 +376,6 @@
     <string name="account_settings_title_fmt">Account settings</string>
     <string name="account_settings_notify_label">New mail notifications</string>
 
-    <string name="account_settings_folder_notify_new_mail_mode_label">Notifications folders</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">All</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Only 1st Class folders</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1st and 2nd Class folders</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">All except 2nd Class folders</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">None</string>
-
     <string name="account_settings_notify_sync_label">Sync notifications</string>
     <string name="account_settings_email_label">Your email address</string>
     <string name="account_settings_notify_summary">Notify in status bar when mail arrives</string>
@@ -487,13 +480,6 @@
     <string name="account_settings_message_age_3_months">the last 3 months</string>
     <string name="account_settings_message_age_6_months">the last 6 months</string>
     <string name="account_settings_message_age_1_year">the last year</string>
-
-    <string name="account_settings_folder_sync_mode_label">Poll folders</string>
-    <string name="account_settings_folder_sync_mode_all">All</string>
-    <string name="account_settings_folder_sync_mode_first_class">Only 1st Class folders</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">1st and 2nd Class folders</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">All except 2nd Class folders</string>
-    <string name="account_settings_folder_sync_mode_none">None</string>
 
     <string name="account_settings_sync_remote_deletetions_label">Sync server deletions</string>
     <string name="account_settings_sync_remote_deletetions_summary">Remove messages when deleted on server</string>
