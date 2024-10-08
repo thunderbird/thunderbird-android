@@ -1,4 +1,4 @@
-package app.k9mail.feature.funding.googleplay.ui.overview
+package app.k9mail.feature.funding.googleplay.ui.contribution
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
 
 @Composable
-internal fun FundingOverviewScreen(
+internal fun ContributionScreen(
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -21,6 +21,6 @@ internal fun FundingOverviewScreen(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
-        TextTitleLarge(text = "Funding Overview")
+        TextTitleLarge(text = "ContributionScreen")
     }
 }

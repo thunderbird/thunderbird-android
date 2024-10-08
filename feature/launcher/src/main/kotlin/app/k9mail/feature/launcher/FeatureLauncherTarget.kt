@@ -34,6 +34,6 @@ sealed class FeatureLauncherTarget(
     )
 
     data object Funding : FeatureLauncherTarget(
-        deepLinkUri = FundingRoute.Overview.toDeepLinkUri(),
+        deepLinkUri = FundingRoute.Contribution.toDeepLinkUri(),
     )
 }
