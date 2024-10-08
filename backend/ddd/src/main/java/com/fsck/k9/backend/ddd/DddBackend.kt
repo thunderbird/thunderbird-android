@@ -37,7 +37,7 @@ class DddBackend(
     private val backendStorage = backendStorage
 
     companion object {
-        val CONTENT_URL: Uri = Uri.parse("content://net.discdd.provider.datastoreprovider/mails")
+        val CONTENT_URL: Uri = Uri.parse("content://net.discdd.provider.datastoreprovider/messages")
     }
     override val supportsFlags = false
     override val supportsExpunge = false
