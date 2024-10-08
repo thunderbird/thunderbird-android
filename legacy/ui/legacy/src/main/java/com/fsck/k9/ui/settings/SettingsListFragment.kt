@@ -138,27 +138,38 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
                     icon = Icons.Outlined.Help,
                 )
 
-                when (fundingManager.getFundingType()) {
-                    FundingType.GOOGLE_PLAY -> {
-                        // TODO add funding action
-                    }
-
-                    FundingType.LINK -> {
-                        addUrlAction(
-                            text = getString(R.string.settings_list_action_support, appNameProvider.appName),
-                            url = getString(R.string.donate_url),
-                            icon = Icons.Outlined.Favorite,
-                        )
-                    }
-
-                    FundingType.NO_FUNDING -> {
-                        // no-op
-                    }
-                }
+                addFunding()
             }
         }
 
         itemAdapter.setNewList(listItems)
+    }
+
+    private fun SettingsListBuilder.addFunding() {
+        when (fundingManager.getFundingType()) {
+            FundingType.GOOGLE_PLAY -> {
+                addIntent(
+                    text = getString(R.string.settings_list_action_support, appNameProvider.appName),
+                    icon = Icons.Outlined.Favorite,
+                    intent = FeatureLauncherActivity.getIntent(
+                        context = requireActivity(),
+                        target = FeatureLauncherTarget.Funding,
+                    ),
+                )
+            }
+
+            FundingType.LINK -> {
+                addUrlAction(
+                    text = getString(R.string.settings_list_action_support, appNameProvider.appName),
+                    url = getString(R.string.donate_url),
+                    icon = Icons.Outlined.Favorite,
+                )
+            }
+
+            FundingType.NO_FUNDING -> {
+                // no-op
+            }
+        }
     }
 
     private fun handleItemClick(item: GenericItem) {

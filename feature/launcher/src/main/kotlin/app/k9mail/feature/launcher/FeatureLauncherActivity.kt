@@ -30,7 +30,7 @@ class FeatureLauncherActivity : K9Activity() {
         @JvmStatic
         fun getIntent(context: Context, target: FeatureLauncherTarget): Intent {
             return Intent(context, FeatureLauncherActivity::class.java).apply {
-                data = target.toDeepLinkUri()
+                data = target.deepLinkUri
                 if (target.flags != null) {
                     flags = target.flags
                 }
