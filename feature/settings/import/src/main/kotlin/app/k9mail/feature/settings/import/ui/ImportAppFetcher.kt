@@ -83,7 +83,4 @@ internal data class AppInfo(
     val packageName: String,
     val appName: String,
     val isImportSupported: Boolean,
-) {
-    // ArrayAdapter is using `toString()` when rendering list items. See PickAppDialogFragment.
-    override fun toString() = appName
-}
+)
