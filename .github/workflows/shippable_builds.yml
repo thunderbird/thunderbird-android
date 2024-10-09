@@ -61,6 +61,10 @@ jobs:
             let skipThunderbird = process.env.skipThunderbird == "true";
             let skipK9Mail = process.env.skipK9Mail == "true";
 
+            if (!matrix.every(item => !!item.appName && !!item.packageFormat)) {
+              core.setFailed("MATRIX_INCLUDE is missing appName or packageFormat");
+            }
+
             let matrixFull = matrix.filter(item => {
               return !((item.appName == "k9mail" && skipK9Mail) ||
                        (item.appName == "thunderbird" && skipThunderbird));
