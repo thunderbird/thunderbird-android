@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="funding_googleplay_contribution_list_title">Secure donation</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">Give once</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">Monthly</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">Contributions are not tax-deductible as charitable donations.</string>
+</resources>
