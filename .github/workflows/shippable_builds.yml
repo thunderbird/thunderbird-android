@@ -1,6 +1,7 @@
 ---
 name: Shippable Build & Signing
 on:
+  workflow_call:
   workflow_dispatch:
     inputs:
       skipThunderbird:
