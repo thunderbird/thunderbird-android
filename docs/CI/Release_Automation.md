@@ -5,6 +5,7 @@ workflow. GitHub environments are used to set configuration variables and secret
 application and release type.
 
 ## Automatic setup
+
 There is a script available for automatic setup, which is helpful if you want to replicate this on
 your own repository for devlopment. Please see /scripts/setup_release_automation.
 
