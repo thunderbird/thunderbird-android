@@ -231,12 +231,13 @@ jobs:
             uploads/*.aab
 
   pre_publish:
-    name: Wait for Approval
     # This is a holding job meant to require approval before proceeding with the publishing jobs below
     # The environment has a deployment protection rule requiring approval from a set of named reviewers
     # before proceeding.
+    name: Wait for Approval
+    needs: [dump_config, sign_mobile]
+    if: ${{ needs.dump_config.outputs.releaseType == 'beta' || needs.dump_config.outputs.releaseType == 'release' }}
     environment: publish_hold
-    needs: [sign_mobile]
     runs-on: ubuntu-latest
     steps:
       - name: Approval
@@ -246,8 +247,9 @@ jobs:
 
   github_release:
     name: GitHub Release
-    runs-on: ubuntu-latest
     needs: [pre_publish, dump_config]
+    if: ${{ needs.dump_config.outputs.releaseType == 'beta' || needs.dump_config.outputs.releaseType == 'release' }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         include: "${{ fromJSON(needs.dump_config.outputs.matrixIncludeApk) }}"
