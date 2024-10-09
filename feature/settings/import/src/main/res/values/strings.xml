@@ -40,4 +40,6 @@
     <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 is currently not supported with this provider.</string>
     <string name="settings_import_oauth_error_browser_not_found">The app couldn\'t find a browser to use for granting access to your account.</string>
     <string name="settings_import_general_settings_item">General settings</string>
+    <!-- Displayed below the app name in the list of apps from which settings can be imported when the app is too old and doesn't support exporting settings to another app. -->
+    <string name="settings_import_app_version_not_supported">App version not supported.</string>
 </resources>
