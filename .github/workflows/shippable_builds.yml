@@ -2,6 +2,14 @@
 name: Shippable Build & Signing
 on:
   workflow_dispatch:
+    inputs:
+      skipThunderbird:
+        type: boolean
+        description: Skip building Thunderbird
+      skipK9Mail:
+        type: boolean
+        description: Skip building K-9 Mail
+
 
 jobs:
   get_environment:
@@ -34,7 +42,7 @@ jobs:
     needs: get_environment
     environment: ${{ needs.get_environment.outputs.releaseEnv }}
     outputs:
-      matrixInclude: ${{ vars.MATRIX_INCLUDE }}
+      matrixInclude: ${{ steps.dump.outputs.matrixInclude }}
       matrixIncludeApk: ${{ steps.dump.outputs.matrixIncludeApk }}
       releaseType: ${{ vars.RELEASE_TYPE }}
     steps:
@@ -44,11 +52,27 @@ jobs:
         env:
           matrixInclude: ${{ vars.MATRIX_INCLUDE }}
           releaseType: ${{ vars.RELEASE_TYPE }}
+          skipThunderbird: ${{ github.event.inputs.skipThunderbird }}
+          skipK9Mail: ${{ github.event.inputs.skipK9Mail }}
         with:
           script: |
-            const matrix = JSON.parse(process.env.matrixInclude);
-            const matrixApk = matrix.filter(item => item.packageFormat == "apk");
+            let matrix = JSON.parse(process.env.matrixInclude);
+            let skipThunderbird = process.env.skipThunderbird == "true";
+            let skipK9Mail = process.env.skipK9Mail == "true";
+
+            let matrixFull = matrix.filter(item => {
+              return !((item.appName == "k9mail" && skipK9Mail) ||
+                       (item.appName == "thunderbird" && skipThunderbird));
+            });
+
+            if (!matrixFull.length) {
+              core.setFailed("There are no builds to run");
+              return;
+            }
+
+            const matrixApk = matrixFull.filter(item => item.packageFormat == "apk");
             core.setOutput("matrixIncludeApk", matrixApk);
+            core.setOutput("matrixInclude", matrixFull);
 
             await core.summary
               .addRaw(`Beginning a ${process.env.releaseType} build with the following configurations:`, true)
@@ -58,7 +82,7 @@ jobs:
                   { data: "Flavor", header: true },
                   { data: "Format", header: true },
                 ],
-                ...matrix.map(item => [
+                ...matrixFull.map(item => [
                   { data: item.appName },
                   { data: item.packageFlavor || "default" },
                   { data: item.packageFormat },
@@ -66,6 +90,13 @@ jobs:
               ])
               .write();
 
+              if (skipThunderbird) {
+                await core.summary.addList(["Thunderbird is being skipped in this build"]).write();
+              }
+
+              if (skipK9Mail) {
+                await core.summary.addList(["K-9 Mail is being skipped in this build"]).write();
+              }
 
   build_unsigned:
     name: Build Unsigned
