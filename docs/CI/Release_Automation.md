@@ -1,51 +1,61 @@
 # Release Automation Setup
 
 Release automation is triggered by the workflow_dispatch event on the "Shippable Build & Signing"
-workflow.
+workflow. GitHub environments are used to set configuration variables and secrets for each
+application and release type.
 
-GitHub environments are used to set configuration variables for each application
-and release type. The environment is selected when triggering the workflow. You must
-also select the appropriate branch to run the workflow on. The environments are only
-accessible by the branch they are associated with
+## Automatic setup
+
+There is a script available for automatic setup, which is helpful if you want to replicate this on
+your own repository for devlopment. Please see /scripts/setup_release_automation.
 
 ## Build Environments
+
+Build environments determine the configuration for the respective release channel. The following are
+available:
 
 - thunderbird_beta
 - thunderbird_daily
 - thunderbird_release
-- thunderbird_debug
 
-The variables set in these environments are non-sensitive and are used by the build job.
+The following (non-sensitive) variables have been set:
 
-- APP_NAME: app-thunderbird | app-k9
-- TAG_PREFIX: THUNDERBIRD | K9MAIL
-- RELEASE_TYPE: debug | daily | beta | release
-- MATRIX_INCLUDE:
-  - This is a JSON string used to create the jobs matrix. For example, for
-    Thunderbird beta, the (YAML) value would be:
-  ```yaml
-  - packageFormat: bundle
-    packageFlavor: full
-  - packageFormat: apk
-    packageFlavor: foss
-  ```
-  That would build `bundleFullBeta` and `assembleFossBeta`.
+- RELEASE_TYPE: daily | beta | release
+- MATRIX_INCLUDES: A JSON string to determine the packages to be built
+
+The following MATRIX_INCLUDES would build an apk and aab for Thunderbird, and an apk for K-9 Mail.
+
+```json
+[
+  { "appName": "thunderbird", "packageFormat": "apk", "packageFlavor": "foss" },
+  {
+    "appName": "thunderbird",
+    "packageFormat": "bundle",
+    "packageFlavor": "full"
+  },
+  { "appName": "k9mail", "packageFormat": "apk" }
+]
+```
+
+The environments are locked to the respective branch they belong to.
 
 ## Signing Environments
 
-There are also "secret" environments that are used by the signing job.
+These environments contain the secrets for signing. Their names follow this pattern:
 
-An "upload" secret environment and a "signing" secret environment are needed. Currently the environment names are based
-on the appName, releaseType, and packageFlavor. So `app-thunderbird_beta_full` which would have the upload
-signing configuration for Thunderbird Beta set up. This could be improved.
-The secrets themselves are from https://github.com/noriban/sign-android-release:
+    <appName>_<releaseType>_<packageFlavor>
+    thunderbird_beta_full
+    thunderbird_beta_foss
+    k9mail_beta_default
 
-```yaml
-signingKey: ${{ secrets.SIGNING_KEY }}
-alias: ${{ secrets.KEY_ALIAS }}
-keyPassword: ${{ secrets.KEY_PASSWORD }}
-keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-```
+The following secrets are needed:
+
+- SIGNING_KEY: The base64 encoded signing key, see https://github.com/noriban/sign-android-release for details
+- KEY_ALIAS: The alias of your signing key
+- KEY_PASSWORD: The private key password for your signing keystore
+- KEY_STORE_PASSWORD: The password to your signing keystore
+
+The environments are locked to the respective branch they belong to.
 
 ## Publishing Hold Environment
 
@@ -58,14 +68,10 @@ manually.
 
 ## Github Releases Environment
 
-"gh_releases" contains the Client Id and Private Key for a Github App that's used by the "actions/create-github-app-token'
-to generate a token with the appropriate permissions to create and tag a Github release.
+This environment will create the github release. It uses [actions/create-github-app-token](https://github.com/actions/create-github-app-token)
+to upload the release with limited permissions.
 
-|          | Name                     | Description                     |
-| -------- | ------------------------ | ------------------------------- |
-| Variable | RELEASER_APP_CLIENT_ID   | The Client ID of the github app |
-| Secret   | RELEASER_APP_PRIVATE_KEY | The private key of the app      |
+- RELEASER_APP_CLIENT_ID: Environment variable with the OAuth Client ID of the GitHub app
+- RELEASER_APP_PRIVATE_KEY: Secret with the private key of the app
 
-### App Permissions
-
-**TODO**
+The releases environment is locked to the release, beta and main branches.
