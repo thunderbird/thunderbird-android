@@ -21,9 +21,9 @@ internal class ContributionContract {
     )
 
     sealed interface Event {
-        data object OnOneTimeContributionClicked : Event
-        data object OnRecurringContributionClicked : Event
-        data class OnContributionClicked(val item: Contribution) : Event
+        data object OnOneTimeContributionSelected : Event
+        data object OnRecurringContributionSelected : Event
+        data class OnContributionItemClicked(val item: Contribution) : Event
         data object OnPurchaseClicked : Event
     }
 }
