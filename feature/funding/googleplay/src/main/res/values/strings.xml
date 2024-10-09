@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="funding_googleplay_contribution_header_title">Support Thunderbird</string>
+    <string name="funding_googleplay_contribution_header_description">Our mission is to provide an open source email app that is secure, private and free for users around the world. Your contribution supports this work. Will you give today?</string>
+    <string name="funding_googleplay_contribution_header_logo_content_description">Image of a hearth emitting sunbursts</string>
+
     <string name="funding_googleplay_contribution_list_title">Secure donation</string>
     <string name="funding_googleplay_contribution_list_type_one_time">Give once</string>
     <string name="funding_googleplay_contribution_list_type_recurring">Monthly</string>
