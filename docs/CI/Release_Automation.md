@@ -4,6 +4,10 @@ Release automation is triggered by the workflow_dispatch event on the "Shippable
 workflow. GitHub environments are used to set configuration variables and secrets for each
 application and release type.
 
+## Automatic setup
+There is a script available for automatic setup, which is helpful if you want to replicate this on
+your own repository for devlopment. Please see /scripts/setup_release_automation.
+
 ## Build Environments
 
 Build environments determine the configuration for the respective release channel. The following are
@@ -14,6 +18,7 @@ available:
 - thunderbird_release
 
 The following (non-sensitive) variables have been set:
+
 - RELEASE_TYPE: daily | beta | release
 - MATRIX_INCLUDES: A JSON string to determine the packages to be built
 
@@ -21,11 +26,16 @@ The following MATRIX_INCLUDES would build an apk and aab for Thunderbird, and an
 
 ```json
 [
-  { appName: "thunderbird", packageFormat: "apk", "packageFlavor": "foss" },
-  { appName: "thunderbird", packageFormat: "bundle", "packageFlavor": "full" },
-  { appName: "k9mail", packageFormat: "apk" }
+  { "appName": "thunderbird", "packageFormat": "apk", "packageFlavor": "foss" },
+  {
+    "appName": "thunderbird",
+    "packageFormat": "bundle",
+    "packageFlavor": "full"
+  },
+  { "appName": "k9mail", "packageFormat": "apk" }
 ]
 ```
+
 The environments are locked to the respective branch they belong to.
 
 ## Signing Environments
@@ -37,16 +47,14 @@ These environments contain the secrets for signing. Their names follow this patt
     thunderbird_beta_foss
     k9mail_beta_default
 
-
 The following secrets are needed:
 
-* SIGNING_KEY: The base64 encoded signing key, see https://github.com/noriban/sign-android-release for details
-* KEY_ALIAS: The alias of your signing key
-* KEY_PASSWORD: The private key password for your signing keystore
-* KEY_STORE_PASSWORD: The password to your signing keystore
+- SIGNING_KEY: The base64 encoded signing key, see https://github.com/noriban/sign-android-release for details
+- KEY_ALIAS: The alias of your signing key
+- KEY_PASSWORD: The private key password for your signing keystore
+- KEY_STORE_PASSWORD: The password to your signing keystore
 
 The environments are locked to the respective branch they belong to.
-
 
 ## Publishing Hold Environment
 
@@ -62,7 +70,7 @@ manually.
 This environment will create the github release. It uses [actions/create-github-app-token](https://github.com/actions/create-github-app-token)
 to upload the release with limited permissions.
 
-* RELEASER_APP_CLIENT_ID: Environment variable with the OAuth Client ID of the GitHub app
-* RELEASER_APP_PRIVATE_KEY: Secret with the private key of the app
+- RELEASER_APP_CLIENT_ID: Environment variable with the OAuth Client ID of the GitHub app
+- RELEASER_APP_PRIVATE_KEY: Secret with the private key of the app
 
 The releases environment is locked to the release, beta and main branches.

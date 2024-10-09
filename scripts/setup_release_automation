@@ -1,0 +1,454 @@
+#!/usr/bin/env python
+
+# See docs/CI/Release_Automation.md for more details
+
+# python -m venv venv; source venv/bin/activate; pip install requests, pynacl
+
+import os
+import json
+import base64
+import argparse
+import requests
+import nacl.encoding
+import nacl.public
+
+PUBLISH_APPROVERS = ["kewisch", "cketti", "wmontwe"]
+
+CHANNEL_ENVIRONMENTS = {
+    "thunderbird_release": {
+        "branch": "release",
+        "variables": {
+            "RELEASE_TYPE": "release",
+            "MATRIX_INCLUDE": [
+                {
+                    "appName": "thunderbird",
+                    "packageFormat": "apk",
+                    "packageFlavor": "foss",
+                },
+                {
+                    "appName": "thunderbird",
+                    "packageFormat": "bundle",
+                    "packageFlavor": "full",
+                },
+                {"appName": "k9mail", "packageFormat": "apk"},
+            ],
+        },
+    },
+    "thunderbird_beta": {
+        "branch": "beta",
+        "variables": {
+            "RELEASE_TYPE": "beta",
+            "MATRIX_INCLUDE": [
+                {
+                    "appName": "thunderbird",
+                    "packageFormat": "apk",
+                    "packageFlavor": "foss",
+                },
+                {
+                    "appName": "thunderbird",
+                    "packageFormat": "bundle",
+                    "packageFlavor": "full",
+                },
+                {"appName": "k9mail", "packageFormat": "apk"},
+            ],
+        },
+    },
+    "thunderbird_daily": {
+        "branch": "main",
+        "variables": {
+            "RELEASE_TYPE": "daily",
+            "MATRIX_INCLUDE": [
+                {
+                    "appName": "thunderbird",
+                    "packageFormat": "apk",
+                    "packageFlavor": "foss",
+                },
+                {
+                    "appName": "thunderbird",
+                    "packageFormat": "bundle",
+                    "packageFlavor": "full",
+                },
+            ],
+        },
+    },
+}
+
+
+SIGNING_ENVIRONMENTS = {
+    "k9mail_release_default": [
+        "k9.release.signing.properties",
+        "k9-release-signing.jks",
+        "release",
+    ],
+    "k9mail_beta_default": [
+        "k9.release.signing.properties",
+        "k9-release-signing.jks",
+        "beta",
+    ],
+    "thunderbird_daily_foss": [
+        "tb.daily.signing.properties",
+        "tb-daily-signing.jks",
+        "daily",
+    ],
+    "thunderbird_daily_full": [
+        "tb.daily.upload.properties",
+        "tb-daily-upload-01.jks",
+        "daily",
+    ],
+    "thunderbird_beta_foss": [
+        "tb.beta.signing.properties",
+        "tb-beta-signing.jks",
+        "beta",
+    ],
+    "thunderbird_beta_full": [
+        "tb.beta.upload.properties",
+        "tb-beta-upload-01.jks",
+        "beta",
+    ],
+    "thunderbird_release_foss": [
+        "tb.release.signing.properties",
+        "tb-release-signing.jks",
+        "release",
+    ],
+    "thunderbird_release_full": [
+        "tb.release.upload.properties",
+        "tb-release-upload-01.jks",
+        "release",
+    ],
+}
+
+
+# Function to read the key properties file
+def read_key_properties(file_path):
+    key_properties = {}
+    with open(file_path, "r") as file:
+        for line in file:
+            if "=" in line:
+                key, value = line.strip().split("=", 1)
+                final_key = key.split(".")[-1]
+                key_properties[final_key] = value
+    return key_properties
+
+
+# Function to base64 encode the .jks file
+def encode_jks_file(jks_file_path):
+    with open(jks_file_path, "rb") as file:
+        encoded_key = base64.b64encode(file.read()).decode("utf-8")
+    return encoded_key
+
+
+# Function to get the public key from GitHub for encryption
+def get_github_public_key(repo, environment_name):
+    url = f"https://api.github.com/repos/{repo}/environments/{environment_name}/secrets/public-key"
+    headers = {
+        "Authorization": f"token {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github.v3+json",
+    }
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        raise Exception(
+            f"Failed to fetch public key from GitHub. Response: {response.status_code}, {response.text}"
+        )
+
+
+# Function to encrypt a secret using the GitHub public key
+def encrypt_secret(public_key: str, secret_value: str):
+    public_key_bytes = base64.b64decode(public_key)
+    sealed_box = nacl.public.SealedBox(nacl.public.PublicKey(public_key_bytes))
+    encrypted_secret = sealed_box.encrypt(secret_value.encode("utf-8"))
+    return base64.b64encode(encrypted_secret).decode("utf-8")
+
+
+# Function to set encrypted secret in GitHub environment
+def set_github_environment_secret(
+    repo, secret_name, encrypted_value, key_id, environment_name
+):
+    url = f"https://api.github.com/repos/{repo}/environments/{environment_name}/secrets/{secret_name}"
+    headers = {
+        "Authorization": f"token {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github.v3+json",
+    }
+    data = {"encrypted_value": encrypted_value, "key_id": key_id}
+    response = requests.put(url, headers=headers, json=data)
+    if response.status_code == 201:
+        print(f"\tSecret {secret_name} created successfully in {environment_name}.")
+    elif response.status_code == 204:
+        print(f"\tSecret {secret_name} updated successfully in {environment_name}.")
+    else:
+        raise Exception(
+            f"Failed to create secret {secret_name} in {environment_name}. Response: {response.status_code}, {response.text}"
+        )
+
+
+def set_github_environment_variable(repo, name, value, environment_name):
+    url = (
+        f"https://api.github.com/repos/{repo}/environments/{environment_name}/variables"
+    )
+    headers = {
+        "Authorization": f"token {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github.v3+json",
+    }
+    data = {"name": name, "value": value}
+    response = requests.post(url, headers=headers, json=data)
+    if response.status_code == 201:
+        print(f"\tVariable {name} created successfully in {environment_name}.")
+    elif response.status_code == 409:
+        url = f"https://api.github.com/repos/{repo}/environments/{environment_name}/variables/{name}"
+        response = requests.patch(url, headers=headers, json=data)
+        if response.status_code == 204:
+            print(f"\tVariable {name} updated successfully in {environment_name}.")
+        else:
+            raise Exception(
+                f"Failed to update variable {name} in {environment_name}. Response: {response.status_code}, {response.text}"
+            )
+    else:
+        raise Exception(
+            f"Failed to create variable {name} in {environment_name}. Response: {response.status_code}, {response.text}"
+        )
+
+
+# Function to create GitHub environment if it doesn't exist
+def create_github_environment(repo, environment_name, branch=None, approvers=None):
+    url = f"https://api.github.com/repos/{repo}/environments/{environment_name}"
+    headers = {
+        "Authorization": f"token {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github.v3+json",
+    }
+    data = {}
+    if branch:
+        data["deployment_branch_policy"] = {
+            "custom_branch_policies": True,
+            "protected_branches": False,
+        }
+
+    if approvers:
+        reviewers = map(
+            lambda approver: {
+                "type": "User",
+                "id": get_user_id_from_username(approver),
+            },
+            approvers,
+        )
+        data["reviewers"] = list(reviewers)
+
+    response = requests.put(url, headers=headers, json=data)
+    if response.status_code == 200:
+        print(f"Environment {environment_name} created successfully.")
+    elif response.status_code == 409:
+        print(f"Environment {environment_name} already exists.")
+    else:
+        raise Exception(
+            f"Failed to create environment {environment_name}. Response: {response.status_code}, {response.text}"
+        )
+
+    if branch:
+        url = f"https://api.github.com/repos/{repo}/environments/{environment_name}/deployment-branch-policies"
+        data = {"name": branch, "type": "branch"}
+        response = requests.post(url, headers=headers, json=data)
+
+        if response.status_code == 200:
+            print(
+                f"\tEnvironment branch protection for {environment_name} created successfully."
+            )
+        elif response.status_code == 409:
+            print(
+                f"\tEnvironment branch protection for {environment_name} already exists."
+            )
+        else:
+            raise Exception(
+                f"Failed to create environment {environment_name}. Response: {response.status_code}, {response.text}"
+            )
+
+
+# Function to get the GitHub user ID from a username
+def get_user_id_from_username(username):
+    url = f"https://api.github.com/users/{username}"
+    headers = {
+        "Authorization": f"token {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github.v3+json",
+    }
+
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        user_data = response.json()
+        return user_data["id"]
+    else:
+        print(
+            f"Failed to fetch user ID for username '{username}'. Response: {response.status_code}, {response.text}"
+        )
+        return None
+
+
+def create_approver_environment(repo, environment_name, approvers):
+
+    reviewers = map(
+        lambda approver: {"type": "User", "id": get_user_id_from_username(approver)},
+        approvers,
+    )
+
+    url = f"https://api.github.com/repos/{repo}/environments/{environment_name}"
+    headers = {
+        "Authorization": f"token {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github.v3+json",
+    }
+    data = {"reviewers": list(reviewers)}
+    response = requests.put(url, headers=headers, json=data)
+    if response.status_code == 200:
+        print(f"Environment {environment_name} created successfully.")
+    elif response.status_code == 409:
+        print(f"Environment {environment_name} already exists.")
+    else:
+        raise Exception(
+            f"Failed to create environment {environment_name}. Response: {response.status_code}, {response.text}"
+        )
+
+
+def create_signing_environment(repo, environment, branch, props_file, jks_file):
+    # Read the key.properties file
+    key_props = read_key_properties(props_file)
+
+    KEY_ALIAS = key_props.get("keyAlias")
+    KEY_PASSWORD = key_props.get("keyPassword")
+    KEY_STORE_PASSWORD = key_props.get("storePassword")
+
+    if not all([KEY_ALIAS, KEY_PASSWORD, KEY_STORE_PASSWORD]):
+        print(
+            "Missing values in key.properties file. Please ensure all fields are present."
+        )
+        return
+
+    # Base64 encode the JKS file to create SIGNING_KEY
+    SIGNING_KEY = encode_jks_file(jks_file)
+
+    # Create the environment if it doesn't exist
+    create_github_environment(repo, environment, branch=branch)
+
+    # Fetch the public key from GitHub for the specific environment
+    public_key_data = get_github_public_key(repo, environment)
+    public_key = public_key_data["key"]
+    key_id = public_key_data["key_id"]
+
+    # Encrypt the secrets using the public key
+    encrypted_signing_key = encrypt_secret(public_key, SIGNING_KEY)
+    encrypted_key_alias = encrypt_secret(public_key, KEY_ALIAS)
+    encrypted_key_password = encrypt_secret(public_key, KEY_PASSWORD)
+    encrypted_key_store_password = encrypt_secret(public_key, KEY_STORE_PASSWORD)
+
+    # Set the encrypted secrets in the GitHub environment
+    secrets_to_set = {
+        "SIGNING_KEY": encrypted_signing_key,
+        "KEY_ALIAS": encrypted_key_alias,
+        "KEY_PASSWORD": encrypted_key_password,
+        "KEY_STORE_PASSWORD": encrypted_key_store_password,
+    }
+
+    for secret_name, encrypted_value in secrets_to_set.items():
+        set_github_environment_secret(
+            repo, secret_name, encrypted_value, key_id, environment
+        )
+
+
+def main():
+    # Argument parsing for positional inputs and repo flag
+    parser = argparse.ArgumentParser(
+        description="Set GitHub environment secrets for specific or all environments."
+    )
+    parser.add_argument(
+        "--props",
+        "-p",
+        help="Path to the key.properties file (for single environment).",
+    )
+    parser.add_argument(
+        "--jks", "-j", help="Path to the .jks keystore file (for single environment)."
+    )
+    parser.add_argument(
+        "--environment", "-e", help="GitHub environment name (for single environment)."
+    )
+    parser.add_argument(
+        "--repo",
+        "-r",
+        required=True,
+        help="GitHub repository in the format 'owner/repo'.",
+    )
+    parser.add_argument(
+        "--all-environments",
+        "-a",
+        action="store_true",
+        help="Create all environments based on predefined paths and rules.",
+    )
+    parser.add_argument("--branch", "-b", help="Branch to limit the environment to")
+    parser.add_argument(
+        "--skip", "-s", action="append", help="In all mode, skip this environment"
+    )
+
+    args = parser.parse_args()
+
+    global GITHUB_TOKEN
+    GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+    if not GITHUB_TOKEN:
+        raise Exception(
+            "GITHUB_TOKEN environment variable is not set. Please set it before running the script."
+        )
+
+    if args.all_environments:
+        skipset = set(args.skip)
+        # All environments creation mode
+        if "publish_hold" in skipset:
+            print("Skipping environment publish_hold")
+        else:
+            create_github_environment(
+                args.repo, "publish_hold", approvers=PUBLISH_APPROVERS
+            )
+
+        # Channel environments
+        for environment_name, data in CHANNEL_ENVIRONMENTS.items():
+            if environment_name in skipset:
+                print(f"Skipping channel environment {environment_name}")
+                continue
+
+            create_github_environment(
+                args.repo, environment_name, branch=data["branch"]
+            )
+
+            for name, value in data["variables"].items():
+                if isinstance(value, dict) or isinstance(value, list):
+                    value = json.dumps(value)
+                set_github_environment_variable(
+                    args.repo, name, value, environment_name
+                )
+
+        # Signing environments
+        for environment_name, paths in SIGNING_ENVIRONMENTS.items():
+            if environment_name in skipset:
+                print(f"Skipping signing environment {environment_name}")
+                continue
+
+            props_file, jks_file, branch = paths
+
+            if not os.path.exists(props_file) or not os.path.exists(jks_file):
+                print(
+                    f"Skipping {environment_name}: Missing key.properties or .jks file."
+                )
+                continue
+
+            create_signing_environment(
+                args.repo, environment_name, branch, props_file, jks_file
+            )
+    else:
+        # Single environment creation mode
+        if not all([args.props, args.jks, args.environment, args.branch]):
+            print(
+                "Error: You must provide --props, --jks, and --environment for single environment creation."
+            )
+            return
+
+        create_signing_environment(
+            args.repo, args.environment, args.branch, args.props, args.jks
+        )
+
+
+if __name__ == "__main__":
+    main()
