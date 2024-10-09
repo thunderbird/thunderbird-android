@@ -61,7 +61,7 @@ enum class PreviewThemeType {
 
 @Composable
 fun PreviewWithTheme(
-    themeType: PreviewThemeType = PreviewThemeType.K9MAIL,
+    themeType: PreviewThemeType = PreviewThemeType.THUNDERBIRD,
     isDarkTheme: Boolean = false,
     content: @Composable () -> Unit,
 ) {
