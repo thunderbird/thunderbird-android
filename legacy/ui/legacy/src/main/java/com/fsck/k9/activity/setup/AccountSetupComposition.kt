@@ -1,59 +1,43 @@
-package com.fsck.k9.activity.setup;
+package com.fsck.k9.activity.setup
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.app.Activity
+import android.content.Intent
+import android.os.Bundle
+import android.view.MenuItem
+import android.view.View
+import android.widget.CompoundButton
+import android.widget.EditText
+import android.widget.LinearLayout
+import app.k9mail.legacy.account.Account
+import com.fsck.k9.Preferences.Companion.getPreferences
+import com.fsck.k9.ui.R
+import com.fsck.k9.ui.base.K9Activity
+import com.google.android.material.checkbox.MaterialCheckBox
+import com.google.android.material.radiobutton.MaterialRadioButton
 
-import androidx.annotation.NonNull;
-import app.k9mail.legacy.account.Account;
-import com.fsck.k9.Preferences;
-import com.fsck.k9.ui.R;
-import com.fsck.k9.ui.base.K9Activity;
-import com.google.android.material.checkbox.MaterialCheckBox;
-import com.google.android.material.radiobutton.MaterialRadioButton;
+class AccountSetupComposition : K9Activity() {
+    private var account: Account? = null
 
+    private lateinit var accountSignature: EditText
+    private lateinit var accountEmail: EditText
+    private lateinit var accountAlwaysBcc: EditText
+    private lateinit var accountName: EditText
+    private lateinit var accountSignatureUse: MaterialCheckBox
+    private lateinit var accountSignatureBeforeLocation: MaterialRadioButton
+    private lateinit var accountSignatureAfterLocation: MaterialRadioButton
+    private lateinit var accountSignatureLayout: LinearLayout
 
-public class AccountSetupComposition extends K9Activity {
+    public override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    private static final String EXTRA_ACCOUNT = "account";
+        var accountUuid = intent.getStringExtra(EXTRA_ACCOUNT)
+        account = getPreferences().getAccount(accountUuid!!)
 
-    private Account mAccount;
+        setLayout(R.layout.account_setup_composition)
+        setTitle(R.string.account_settings_composition_title)
 
-    private EditText mAccountSignature;
-    private EditText mAccountEmail;
-    private EditText mAccountAlwaysBcc;
-    private EditText mAccountName;
-    private MaterialCheckBox mAccountSignatureUse;
-    private MaterialRadioButton mAccountSignatureBeforeLocation;
-    private MaterialRadioButton mAccountSignatureAfterLocation;
-    private LinearLayout mAccountSignatureLayout;
-
-
-    public static void actionEditCompositionSettings(Activity context, String accountUuid) {
-        Intent intent = new Intent(context, AccountSetupComposition.class);
-        intent.setAction(Intent.ACTION_EDIT);
-        intent.putExtra(EXTRA_ACCOUNT, accountUuid);
-        context.startActivity(intent);
-    }
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
-        mAccount = Preferences.getPreferences().getAccount(accountUuid);
-
-        setLayout(R.layout.account_setup_composition);
-        setTitle(R.string.account_settings_composition_title);
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (supportActionBar != null) {
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         }
 
         /*
@@ -61,89 +45,95 @@ public class AccountSetupComposition extends K9Activity {
          * we saved
          */
         if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT)) {
-            accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
-            mAccount = Preferences.getPreferences().getAccount(accountUuid);
+            accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT)
+            account = getPreferences().getAccount(accountUuid!!)
         }
 
-        mAccountName = findViewById(R.id.account_name);
-        mAccountName.setText(mAccount.getSenderName());
+        accountName = findViewById(R.id.account_name)
+        accountName.setText(account!!.senderName)
 
-        mAccountEmail = findViewById(R.id.account_email);
-        mAccountEmail.setText(mAccount.getEmail());
+        accountEmail = findViewById(R.id.account_email)
+        accountEmail.setText(account!!.email)
 
-        mAccountAlwaysBcc = findViewById(R.id.account_always_bcc);
-        mAccountAlwaysBcc.setText(mAccount.getAlwaysBcc());
+        accountAlwaysBcc = findViewById(R.id.account_always_bcc)
+        accountAlwaysBcc.setText(account!!.alwaysBcc)
 
-        mAccountSignatureLayout = findViewById(R.id.account_signature_layout);
+        accountSignatureLayout = findViewById(R.id.account_signature_layout)
 
-        mAccountSignatureUse = findViewById(R.id.account_signature_use);
-        boolean useSignature = mAccount.getSignatureUse();
-        mAccountSignatureUse.setChecked(useSignature);
-        mAccountSignatureUse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    mAccountSignatureLayout.setVisibility(View.VISIBLE);
-                    mAccountSignature.setText(mAccount.getSignature());
-                    boolean isSignatureBeforeQuotedText = mAccount.isSignatureBeforeQuotedText();
-                    mAccountSignatureBeforeLocation.setChecked(isSignatureBeforeQuotedText);
-                    mAccountSignatureAfterLocation.setChecked(!isSignatureBeforeQuotedText);
-                } else {
-                    mAccountSignatureLayout.setVisibility(View.GONE);
-                }
+        accountSignatureUse = findViewById(R.id.account_signature_use)
+        val useSignature = account!!.signatureUse
+        accountSignatureUse.setChecked(useSignature)
+        accountSignatureUse.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                accountSignatureLayout.setVisibility(View.VISIBLE)
+                accountSignature.setText(account!!.signature)
+                val isSignatureBeforeQuotedText = account!!.isSignatureBeforeQuotedText
+                accountSignatureBeforeLocation.isChecked = isSignatureBeforeQuotedText
+                accountSignatureAfterLocation.isChecked = !isSignatureBeforeQuotedText
+            } else {
+                accountSignatureLayout.setVisibility(View.GONE)
             }
-        });
+        })
 
-        mAccountSignature = findViewById(R.id.account_signature);
+        accountSignature = findViewById(R.id.account_signature)
 
-        mAccountSignatureBeforeLocation = findViewById(R.id.account_signature_location_before_quoted_text);
-        mAccountSignatureAfterLocation = findViewById(R.id.account_signature_location_after_quoted_text);
+        accountSignatureBeforeLocation = findViewById(R.id.account_signature_location_before_quoted_text)
+        accountSignatureAfterLocation = findViewById(R.id.account_signature_location_after_quoted_text)
 
         if (useSignature) {
-            mAccountSignature.setText(mAccount.getSignature());
+            accountSignature.setText(account!!.signature)
 
-            boolean isSignatureBeforeQuotedText = mAccount.isSignatureBeforeQuotedText();
-            mAccountSignatureBeforeLocation.setChecked(isSignatureBeforeQuotedText);
-            mAccountSignatureAfterLocation.setChecked(!isSignatureBeforeQuotedText);
+            val isSignatureBeforeQuotedText = account!!.isSignatureBeforeQuotedText
+            accountSignatureBeforeLocation.setChecked(isSignatureBeforeQuotedText)
+            accountSignatureAfterLocation.setChecked(!isSignatureBeforeQuotedText)
         } else {
-            mAccountSignatureLayout.setVisibility(View.GONE);
+            accountSignatureLayout.setVisibility(View.GONE)
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            finish()
+            return true
         }
 
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item)
     }
 
-    private void saveSettings() {
-        mAccount.setEmail(mAccountEmail.getText().toString());
-        mAccount.setAlwaysBcc(mAccountAlwaysBcc.getText().toString());
-        mAccount.setSenderName(mAccountName.getText().toString());
-        mAccount.setSignatureUse(mAccountSignatureUse.isChecked());
-        if (mAccountSignatureUse.isChecked()) {
-            mAccount.setSignature(mAccountSignature.getText().toString());
-            boolean isSignatureBeforeQuotedText = mAccountSignatureBeforeLocation.isChecked();
-            mAccount.setSignatureBeforeQuotedText(isSignatureBeforeQuotedText);
+    private fun saveSettings() {
+        account!!.email = accountEmail.text.toString()
+        account!!.alwaysBcc = accountAlwaysBcc.text.toString()
+        account!!.senderName = accountName.text.toString()
+        account!!.signatureUse = accountSignatureUse.isChecked
+        if (accountSignatureUse.isChecked) {
+            account!!.signature = accountSignature.text.toString()
+            val isSignatureBeforeQuotedText = accountSignatureBeforeLocation.isChecked
+            account!!.isSignatureBeforeQuotedText = isSignatureBeforeQuotedText
         }
 
-        Preferences.getPreferences().saveAccount(mAccount);
+        getPreferences().saveAccount(account!!)
     }
 
-    @Override
-    public void onStop() {
+    public override fun onStop() {
         // TODO: Instead of saving the changes when the activity is stopped, add buttons to explicitly save or discard
         //  changes.
-        saveSettings();
-        super.onStop();
+        saveSettings()
+        super.onStop()
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable(EXTRA_ACCOUNT, mAccount.getUuid());
+    public override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putSerializable(EXTRA_ACCOUNT, account!!.uuid)
+    }
+
+    companion object {
+        private const val EXTRA_ACCOUNT = "account"
+
+        fun actionEditCompositionSettings(context: Activity, accountUuid: String?) {
+            val intent = Intent(context, AccountSetupComposition::class.java)
+            intent.setAction(Intent.ACTION_EDIT)
+            intent.putExtra(EXTRA_ACCOUNT, accountUuid)
+            context.startActivity(intent)
+        }
     }
 }
