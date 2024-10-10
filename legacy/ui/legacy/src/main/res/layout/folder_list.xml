@@ -11,6 +11,27 @@
 
     <include layout="@layout/toolbar" />
 
+    <!-- Horizontal layout for label and spinner -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="16dp">
+
+        <!-- TODO consider using a dedicated string instead of reusing @string/account_settings_description_label -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/account_settings_description_label"
+            android:layout_marginEnd="8dp" />
+
+        <Spinner
+            android:id="@+id/accountSpinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/folderList"
         android:layout_width="match_parent"

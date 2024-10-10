@@ -24,8 +24,9 @@ class ChooseFolderViewModel(
 // TODO MBAL remove this commented code
 //        .flatMapLatest { (account, showHiddenFolders) ->
 //            folderRepository.getDisplayFoldersFlow(account, showHiddenFolders)
-        .flatMapLatest { (accounts, showHiddenFolders) ->
-            getCombinedFoldersFlow(accounts, showHiddenFolders)
+        .flatMapLatest { (accounts, account, showHiddenFolders) ->
+//            getCombinedFoldersFlow(accounts, showHiddenFolders)
+            folderRepository.getDisplayFoldersFlow(account, showHiddenFolders)
         }
 
     var isShowHiddenFolders: Boolean = false
@@ -53,14 +54,13 @@ class ChooseFolderViewModel(
         }
     }
     */
-
-    fun setDisplayMode(accounts: List<Account>, showHiddenFolders: Boolean) {
+    fun setDisplayMode(accounts: List<Account>, account: Account, showHiddenFolders: Boolean) {
         isShowHiddenFolders = showHiddenFolders
         viewModelScope.launch {
-            inputFlow.emit(DisplayMode(accounts, showHiddenFolders))
+            inputFlow.emit(DisplayMode(accounts, account, showHiddenFolders))
         }
     }}
 
 // TODO MBAL remove this class
 //private data class DisplayMode(val account: Account, val showHiddenFolders: Boolean)
-private data class DisplayMode(val accounts: List<Account>, val showHiddenFolders: Boolean)
+private data class DisplayMode(val accounts: List<Account>, val account: Account, val showHiddenFolders: Boolean)

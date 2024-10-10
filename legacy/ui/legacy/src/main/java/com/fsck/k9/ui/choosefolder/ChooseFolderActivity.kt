@@ -6,6 +6,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.RecyclerView
 import app.k9mail.core.mail.folder.api.FolderType
@@ -59,6 +63,7 @@ class ChooseFolderActivity : K9Activity() {
         }
 
         initializeActionBar()
+        initializeSpinner()
         initializeFolderList()
 
         viewModel.getFolders().observe(this) { folders ->
@@ -72,7 +77,7 @@ class ChooseFolderActivity : K9Activity() {
 // TODO MBAL remove this commented code
 //        viewModel.setDisplayMode(account, showHiddenFolders)
         val accounts = preferences.getAccounts()
-        viewModel.setDisplayMode(accounts, showHiddenFolders)
+        viewModel.setDisplayMode(accounts, account, showHiddenFolders)
     }
 
     private fun decodeArguments(savedInstanceState: Bundle?): Boolean {
@@ -91,6 +96,31 @@ class ChooseFolderActivity : K9Activity() {
         }
 
         return true
+    }
+
+    private fun initializeSpinner() {
+        val spinner: Spinner = findViewById(R.id.accountSpinner)
+        val accounts = preferences.getAccounts()
+        val options = accounts.map { it.name + " (" + it.email + ")"}
+        val adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item,
+            options
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = adapter
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                val selectedAccount = accounts[position]
+                val showHiddenFolders = viewModel.isShowHiddenFolders
+                viewModel.setDisplayMode(accounts, selectedAccount, showHiddenFolders)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Do nothing
+            }
+        }
     }
 
     private fun initializeActionBar() {
@@ -213,7 +243,7 @@ class ChooseFolderActivity : K9Activity() {
 // TODO MBAL remove this commented code
 //        viewModel.setDisplayMode(account, enabled)
         val accounts = preferences.getAccounts()
-        viewModel.setDisplayMode(accounts, enabled)
+        viewModel.setDisplayMode(accounts, account, enabled)
     }
 
     private fun returnResult(folderId: Long, displayName: String) {
