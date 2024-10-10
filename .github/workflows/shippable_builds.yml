@@ -122,6 +122,8 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-disabled: ${{ needs.dump_config.outputs.releaseType == 'beta' || needs.dump_config.outputs.releaseType == 'release' }}
 
       - name: Build It
         shell: bash
