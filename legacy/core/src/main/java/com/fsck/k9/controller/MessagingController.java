@@ -91,6 +91,7 @@ import timber.log.Timber;
 import static com.fsck.k9.K9.MAX_SEND_ATTEMPTS;
 import static com.fsck.k9.controller.Preconditions.requireNotNull;
 import static com.fsck.k9.helper.ExceptionHelper.getRootCauseMessage;
+import static com.fsck.k9.logging.Timber.d;
 import static com.fsck.k9.mail.Flag.X_REMOTE_COPY_STARTED;
 
 
@@ -388,6 +389,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
     void refreshFolderListSynchronous(Account account) {
         try {
+            d("MBAL: in MessagingController.refreshFolderListSynchronous");
             if (isAuthenticationProblem(account, true)) {
                 Timber.d("Authentication will fail. Skip refreshing the folder list.");
                 handleAuthenticationFailure(account, true);
@@ -395,7 +397,9 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
             }
 
             Backend backend = getBackend(account);
+            d("MBAL: in MessagingController.refreshFolderListSynchronous before backend.refreshFolderList()");
             backend.refreshFolderList();
+            d("MBAL: in MessagingController.refreshFolderListSynchronous after backend.refreshFolderList()");
 
             long now = System.currentTimeMillis();
             Timber.d("Folder list successfully refreshed @ %tc", now);

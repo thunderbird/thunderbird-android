@@ -3,6 +3,7 @@ package com.fsck.k9.backend.imap
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.backend.api.updateFolders
+import com.fsck.k9.logging.Timber.d
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.store.imap.FolderListItem
 import com.fsck.k9.mail.store.imap.ImapStore
@@ -12,6 +13,7 @@ internal class CommandRefreshFolderList(
     private val imapStore: ImapStore,
 ) {
     fun refreshFolderList() {
+        d("In CommandRefreshFolderList.refreshFolderList()")
         // TODO: Start using the proper server ID.
         //  For now we still use the old server ID format (decoded, with prefix removed).
         val foldersOnServer = imapStore.getFolders().toLegacyFolderList()
@@ -19,6 +21,7 @@ internal class CommandRefreshFolderList(
 
         backendStorage.updateFolders {
             val foldersToCreate = mutableListOf<FolderInfo>()
+            d("MBAL: in CommandRefreshFolderList.refreshFolderList() - foldersOnServer size: ${foldersOnServer.size}")
             for (folder in foldersOnServer) {
                 if (folder.serverId !in oldFolderServerIds) {
                     foldersToCreate.add(FolderInfo(folder.serverId, folder.name, folder.type))

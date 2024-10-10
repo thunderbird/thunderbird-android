@@ -17,6 +17,7 @@ import app.k9mail.legacy.ui.folder.FolderIconProvider
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
+import com.fsck.k9.logging.Timber.d
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
 import com.mikepenz.fastadapter.FastAdapter
@@ -43,6 +44,7 @@ class ChooseFolderActivity : K9Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        d("MBAL: in ChooseFolderActivity.onCreate()")
         setLayout(R.layout.folder_list)
 
         if (!decodeArguments(savedInstanceState)) {
@@ -60,13 +62,17 @@ class ChooseFolderActivity : K9Activity() {
         initializeFolderList()
 
         viewModel.getFolders().observe(this) { folders ->
+            d("MBAL: in ChooseFolderActivity.onCreate(); got folders from viewModel; n folders=${folders.size}")
             updateFolderList(folders)
         }
 
         val savedShowHiddenFolders = savedInstanceState?.getBoolean(STATE_SHOW_HIDDEN_FOLDERS)
         val showHiddenFolders = savedShowHiddenFolders ?: false
 
-        viewModel.setDisplayMode(account, showHiddenFolders)
+// TODO MBAL remove this commented code
+//        viewModel.setDisplayMode(account, showHiddenFolders)
+        val accounts = preferences.getAccounts()
+        viewModel.setDisplayMode(accounts, showHiddenFolders)
     }
 
     private fun decodeArguments(savedInstanceState: Bundle?): Boolean {
@@ -94,6 +100,7 @@ class ChooseFolderActivity : K9Activity() {
     }
 
     private fun initializeFolderList() {
+        d("MBAL: in ChooseFolderActivity.initializeFolderList()")
         itemAdapter = ItemAdapter()
         itemAdapter.itemFilter.filterPredicate = ::folderListFilter
 
@@ -110,6 +117,7 @@ class ChooseFolderActivity : K9Activity() {
     }
 
     private fun updateFolderList(displayFolders: List<DisplayFolder>) {
+        d("MBAL: in ChooseFolderActivity.updateFolderList(); n displayFolders=${displayFolders.size}")
         val folderListItems = displayFolders.asSequence()
             .filterNot { it.folder.type == FolderType.OUTBOX }
             .filterNot { it.folder.id == currentFolderId }
@@ -176,10 +184,12 @@ class ChooseFolderActivity : K9Activity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        d("MBAL: in ChooseFolderActivity.onOptionsItemSelected()")
         when (item.itemId) {
             android.R.id.home -> finish()
             R.id.toggle_hidden_folders -> setShowHiddenFolders(item.isChecked.not())
-            R.id.list_folders -> refreshFolderList()
+            R.id.list_folders -> refreshFolderListForAllAccounts() // MBAL -- listing folders for all accounts
+//            R.id.list_folders -> refreshFolderList()
             else -> return super.onOptionsItemSelected(item)
         }
         return true
@@ -189,8 +199,21 @@ class ChooseFolderActivity : K9Activity() {
         messagingController.refreshFolderList(account)
     }
 
+    // MBAL -- listing folders for all accounts
+    private fun refreshFolderListForAllAccounts() {
+        d("MBAL: in refreshFolderListForAllAcconts")
+        val accounts = preferences.getAccounts()
+        d("MBAL: in refreshFolderListForAllAcconts; n accounts="+accounts.size)
+        for (account in accounts) {
+            d("MBAL: in refreshFolderListForAllAcconts; refreshing list for one account; account="+account.email)
+            messagingController.refreshFolderList(account)
+        }
+    }
     private fun setShowHiddenFolders(enabled: Boolean) {
-        viewModel.setDisplayMode(account, enabled)
+// TODO MBAL remove this commented code
+//        viewModel.setDisplayMode(account, enabled)
+        val accounts = preferences.getAccounts()
+        viewModel.setDisplayMode(accounts, enabled)
     }
 
     private fun returnResult(folderId: Long, displayName: String) {
