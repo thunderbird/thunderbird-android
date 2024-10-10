@@ -21,7 +21,6 @@ internal class CommandRefreshFolderList(
 
         backendStorage.updateFolders {
             val foldersToCreate = mutableListOf<FolderInfo>()
-            d("MBAL: in CommandRefreshFolderList.refreshFolderList() - foldersOnServer size: ${foldersOnServer.size}")
             for (folder in foldersOnServer) {
                 if (folder.serverId !in oldFolderServerIds) {
                     foldersToCreate.add(FolderInfo(folder.serverId, folder.name, folder.type))

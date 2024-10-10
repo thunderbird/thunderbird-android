@@ -389,7 +389,6 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
     void refreshFolderListSynchronous(Account account) {
         try {
-            d("MBAL: in MessagingController.refreshFolderListSynchronous");
             if (isAuthenticationProblem(account, true)) {
                 Timber.d("Authentication will fail. Skip refreshing the folder list.");
                 handleAuthenticationFailure(account, true);
@@ -397,9 +396,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
             }
 
             Backend backend = getBackend(account);
-            d("MBAL: in MessagingController.refreshFolderListSynchronous before backend.refreshFolderList()");
             backend.refreshFolderList();
-            d("MBAL: in MessagingController.refreshFolderListSynchronous after backend.refreshFolderList()");
 
             long now = System.currentTimeMillis();
             Timber.d("Folder list successfully refreshed @ %tc", now);

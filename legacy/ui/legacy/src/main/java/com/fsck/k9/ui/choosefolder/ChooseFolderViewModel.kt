@@ -21,46 +21,23 @@ class ChooseFolderViewModel(
 ) : ViewModel() {
     private val inputFlow = MutableSharedFlow<DisplayMode>(replay = 1)
     private val foldersFlow = inputFlow
-// TODO MBAL remove this commented code
-//        .flatMapLatest { (account, showHiddenFolders) ->
-//            folderRepository.getDisplayFoldersFlow(account, showHiddenFolders)
-        .flatMapLatest { (accounts, account, showHiddenFolders) ->
-//            getCombinedFoldersFlow(accounts, showHiddenFolders)
+        .flatMapLatest { (account, showHiddenFolders) ->
             folderRepository.getDisplayFoldersFlow(account, showHiddenFolders)
         }
 
     var isShowHiddenFolders: Boolean = false
         private set
 
-    // MBAL -- get the combined folders from all accounts
-    fun getCombinedFoldersFlow(accounts: List<Account>, showHiddenFolders: Boolean): Flow<List<DisplayFolder>> {
-        val folderFlows = accounts.map { account ->
-            folderRepository.getDisplayFoldersFlow(account, showHiddenFolders)
-        }
-        return combine(folderFlows) { folderLists: Array<List<DisplayFolder>> ->
-            folderLists.toList().flatten()
-        }
-    }
     fun getFolders(): LiveData<List<DisplayFolder>> {
         return foldersFlow.asLiveData()
     }
 
-    // TODO MBAL remove this function
-    /*
     fun setDisplayMode(account: Account, showHiddenFolders: Boolean) {
         isShowHiddenFolders = showHiddenFolders
         viewModelScope.launch {
             inputFlow.emit(DisplayMode(account, showHiddenFolders))
         }
     }
-    */
-    fun setDisplayMode(accounts: List<Account>, account: Account, showHiddenFolders: Boolean) {
-        isShowHiddenFolders = showHiddenFolders
-        viewModelScope.launch {
-            inputFlow.emit(DisplayMode(accounts, account, showHiddenFolders))
-        }
-    }}
+}
 
-// TODO MBAL remove this class
-//private data class DisplayMode(val account: Account, val showHiddenFolders: Boolean)
-private data class DisplayMode(val accounts: List<Account>, val account: Account, val showHiddenFolders: Boolean)
+private data class DisplayMode(val account: Account, val showHiddenFolders: Boolean)
