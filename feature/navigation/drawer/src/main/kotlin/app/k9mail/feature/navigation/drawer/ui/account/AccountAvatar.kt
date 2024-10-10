@@ -51,9 +51,17 @@ private fun Placeholder(
     modifier: Modifier = Modifier,
 ) {
     TextTitleMedium(
-        text = extractDomainInitials(email).uppercase(),
+        text = extractInitials(email).uppercase(),
         modifier = modifier,
     )
+}
+
+private fun extractInitials(email: String): String {
+    if (email.contains("@")) {
+        return extractDomainInitials(email)
+    } else {
+        return email.take(2)
+    }
 }
 
 private fun extractDomainInitials(email: String): String {
