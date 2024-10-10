@@ -5,6 +5,7 @@ import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndEffectTurbineConsumed
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndStateTurbineConsumed
+import app.k9mail.core.ui.compose.testing.mvi.runMviTest
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.account.common.data.InMemoryAccountStateRepository
 import app.k9mail.feature.account.common.domain.AccountDomainContract
@@ -25,7 +26,6 @@ import com.fsck.k9.mail.folders.FolderFetcherException
 import com.fsck.k9.mail.folders.FolderServerId
 import com.fsck.k9.mail.folders.RemoteFolder
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
@@ -36,7 +36,7 @@ class SpecialFoldersViewModelTest {
 
     @Test
     fun `should load folders, validate and save successfully when LoadSpecialFolders event received and setup valid`() =
-        runTest {
+        runMviTest {
             val accountStateRepository = InMemoryAccountStateRepository()
             val initialState = State(
                 isLoading = true,
@@ -91,7 +91,7 @@ class SpecialFoldersViewModelTest {
         }
 
     @Test
-    fun `should load folders and validate unsuccessful when LoadSpecialFolders event received`() = runTest {
+    fun `should load folders and validate unsuccessful when LoadSpecialFolders event received`() = runMviTest {
         val accountStateRepository = InMemoryAccountStateRepository()
         val initialState = State(
             isLoading = true,
@@ -135,7 +135,7 @@ class SpecialFoldersViewModelTest {
     }
 
     @Test
-    fun `should change to error state when LoadSpecialFolders fails with loading folder failure`() = runTest {
+    fun `should change to error state when LoadSpecialFolders fails with loading folder failure`() = runMviTest {
         val initialState = State(
             isLoading = true,
         )
@@ -164,7 +164,7 @@ class SpecialFoldersViewModelTest {
     }
 
     @Test
-    fun `should delegate form events to form view model`() = runTest {
+    fun `should delegate form events to form view model`() = runMviTest {
         val formUiModel = FakeSpecialFoldersFormUiModel()
         val testSubject = createTestSubject(
             formUiModel = formUiModel,
@@ -186,7 +186,7 @@ class SpecialFoldersViewModelTest {
     }
 
     @Test
-    fun `should save form data and emit NavigateNext effect when OnNextClicked event received`() = runTest {
+    fun `should save form data and emit NavigateNext effect when OnNextClicked event received`() = runMviTest {
         val initialState = State(isManualSetup = true)
         val accountStateRepository = InMemoryAccountStateRepository()
         val testSubject = createTestSubject(
@@ -217,7 +217,7 @@ class SpecialFoldersViewModelTest {
     }
 
     @Test
-    fun `should emit NavigateBack effect when OnBackClicked event received`() = runTest {
+    fun `should emit NavigateBack effect when OnBackClicked event received`() = runMviTest {
         val testSubject = createTestSubject()
         val turbines = turbinesWithInitialStateCheck(testSubject, State())
 
@@ -229,7 +229,7 @@ class SpecialFoldersViewModelTest {
     }
 
     @Test
-    fun `should show form when OnRetryClicked event received`() = runTest {
+    fun `should show form when OnRetryClicked event received`() = runMviTest {
         val initialState = State(error = SpecialFoldersContract.Failure.LoadFoldersFailed("irrelevant"))
         val testSubject = createTestSubject(initialState = initialState)
         val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
