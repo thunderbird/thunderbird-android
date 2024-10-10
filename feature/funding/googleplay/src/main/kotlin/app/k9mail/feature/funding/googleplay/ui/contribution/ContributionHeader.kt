@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import app.k9mail.core.ui.compose.designsystem.atom.image.FixedScaleImage
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadlineSmall
@@ -43,6 +44,7 @@ internal fun ContributionHeader(
         TextHeadlineSmall(
             text = stringResource(R.string.funding_googleplay_contribution_header_title),
             color = MainTheme.colors.primary,
+            textAlign = TextAlign.Center,
         )
 
         TextBodyMedium(
