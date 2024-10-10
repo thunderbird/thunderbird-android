@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="funding_googleplay_contribution_title">Settings</string>
+
     <string name="funding_googleplay_contribution_header_title">Support Thunderbird</string>
     <string name="funding_googleplay_contribution_header_description">We never show advertisements or sell your data. We are fully funded by financial contributions from our users. If you’re enjoying Thunderbird, please help support it.  We can’t do this without you!</string>
 
