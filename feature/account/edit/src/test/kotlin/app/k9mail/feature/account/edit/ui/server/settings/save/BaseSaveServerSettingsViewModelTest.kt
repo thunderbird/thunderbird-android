@@ -3,6 +3,7 @@ package app.k9mail.feature.account.edit.ui.server.settings.save
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndEffectTurbineConsumed
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndStateTurbineConsumed
+import app.k9mail.core.ui.compose.testing.mvi.runMviTest
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.account.edit.domain.AccountEditDomainContract
 import app.k9mail.feature.account.edit.ui.server.settings.save.SaveServerSettingsContract.Effect
@@ -12,7 +13,6 @@ import app.k9mail.feature.account.edit.ui.server.settings.save.SaveServerSetting
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
-import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
@@ -22,7 +22,7 @@ class BaseSaveServerSettingsViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     @Test
-    fun `should save server settings when SaveServerSettings event received and emit NavigateNext`() = runTest {
+    fun `should save server settings when SaveServerSettings event received and emit NavigateNext`() = runMviTest {
         var recordedAccountUuid: String? = null
         var recordedIsIncoming: Boolean? = null
         val testSubject = TestSaveServerSettingsViewModel(
@@ -49,7 +49,7 @@ class BaseSaveServerSettingsViewModelTest {
     }
 
     @Test
-    fun `should set error state when save settings failed`() = runTest {
+    fun `should set error state when save settings failed`() = runMviTest {
         val testSubject = TestSaveServerSettingsViewModel(
             accountUuid = ACCOUNT_UUID,
             saveServerSettings = { _, _ ->
@@ -71,7 +71,7 @@ class BaseSaveServerSettingsViewModelTest {
     }
 
     @Test
-    fun `should allow NavigateBack when error and not loading`() = runTest {
+    fun `should allow NavigateBack when error and not loading`() = runMviTest {
         val failure = Failure.SaveServerSettingsFailed("Test exception")
         val testSubject = TestSaveServerSettingsViewModel(
             accountUuid = ACCOUNT_UUID,
