@@ -34,9 +34,7 @@ internal fun ContributionHeader(
         ) {
             FixedScaleImage(
                 imageVector = HearthSunburst,
-                contentDescription = stringResource(
-                    R.string.funding_googleplay_contribution_header_logo_content_description,
-                ),
+                contentDescription = null,
                 alignment = Alignment.TopCenter,
                 allowOverflow = true,
             )
