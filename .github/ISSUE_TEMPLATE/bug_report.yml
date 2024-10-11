@@ -14,6 +14,16 @@ body:
           required: true
         - label: I will describe the problem with as much detail as possible.
           required: true
+  - type: dropdown
+    id: app
+    attributes:
+      label: App
+      multiple: false
+      options:
+        - Thunderbird for Android
+        - K-9 Mail
+    validations:
+      required: true
   - type: input
     id: version
     attributes:
@@ -21,7 +31,7 @@ body:
       description: |
         What's the "latest version" changes all the time, so we need the exact version number. You can find it 
         inside the app under *Settings → About*.
-      placeholder: x.yyy
+      placeholder: x.y
     validations:
       required: true
   - type: dropdown
