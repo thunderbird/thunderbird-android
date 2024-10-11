@@ -381,7 +381,7 @@ def main():
     )
     parser.add_argument("--branch", "-b", help="Branch to limit the environment to")
     parser.add_argument(
-        "--skip", "-s", action="append", help="In all mode, skip this environment"
+        "--skip", "-s", action="append", help="In all mode, skip this environment", default=[]
     )
 
     args = parser.parse_args()
