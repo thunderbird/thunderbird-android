@@ -4,6 +4,10 @@ on:
   workflow_call:
   workflow_dispatch:
     inputs:
+      releaseVersion:
+        description: "Release version to build"
+        required: true
+        default: "8.0b3"
       skipThunderbird:
         type: boolean
         description: Skip building Thunderbird
@@ -46,6 +50,7 @@ jobs:
       matrixInclude: ${{ steps.dump.outputs.matrixInclude }}
       matrixIncludeApk: ${{ steps.dump.outputs.matrixIncludeApk }}
       releaseType: ${{ vars.RELEASE_TYPE }}
+      releaseVersion: ${{ steps.dump.outputs.releaseVersion }}
     steps:
       - name: Show Environment
         uses: actions/github-script@v7
@@ -53,11 +58,13 @@ jobs:
         env:
           matrixInclude: ${{ vars.MATRIX_INCLUDE }}
           releaseType: ${{ vars.RELEASE_TYPE }}
+          releaseVersion: ${{ github.event.inputs.releaseVersion }}
           skipThunderbird: ${{ github.event.inputs.skipThunderbird }}
           skipK9Mail: ${{ github.event.inputs.skipK9Mail }}
         with:
           script: |
             let matrix = JSON.parse(process.env.matrixInclude);
+            let releaseVersion = process.env.releaseVersion;
             let skipThunderbird = process.env.skipThunderbird == "true";
             let skipK9Mail = process.env.skipK9Mail == "true";
 
@@ -74,17 +81,20 @@ jobs:
             const matrixApk = matrixFull.filter(item => item.packageFormat == "apk");
             core.setOutput("matrixIncludeApk", matrixApk);
             core.setOutput("matrixInclude", matrixFull);
+            core.setOutput("releaseVersion", releaseVersion);
 
             await core.summary
               .addRaw(`Beginning a ${process.env.releaseType} build with the following configurations:`, true)
               .addTable([
                 [
                   { data: "App Name", header: true },
+                  { data: "Release Version", header: true},
                   { data: "Flavor", header: true },
                   { data: "Format", header: true },
                 ],
                 ...matrixFull.map(item => [
                   { data: item.appName },
+                  { data: releaseVersion },
                   { data: item.packageFlavor || "default" },
                   { data: item.packageFormat },
                 ])
@@ -99,17 +109,81 @@ jobs:
                 await core.summary.addList(["K-9 Mail is being skipped in this build"]).write();
               }
 
+  commit_thunderbird:
+    name: Commit Thunderbird
+    runs-on: ubuntu-latest
+    needs: [dump_config, get_environment]
+    strategy:
+      matrix:
+        include: "${{ fromJSON(needs.dump_config.outputs.matrixInclude) }}"
+    outputs:
+      thunderbird_sha: ${{ steps.commit_thunderbird.outputs.thunderbird_sha }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Release Commit Thunderbird
+        id: commit_thunderbird
+        shell: bash
+        env:
+          APP_NAME: ${{ matrix.appName }}
+          PACKAGE_FORMAT: ${{ matrix.packageFormat }}
+          RELEASE_VERSION: ${{ needs.dump_config.outputs.releaseVersion }}
+          RELEASE_TYPE: ${{ needs.dump_config.outputs.releaseType }}
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [[ "$APP_NAME" = "thunderbird" && "$PACKAGE_FORMAT" = "apk" ]]; then
+              ./scripts/render-notes.py ${RELEASE_VERSION} ${APP_NAME}
+              # TODO(coreycb): enable once this path is used
+              # git add ./app-metadata/net.thunderbird.android/en-US/changelogs/*
+              git add ./app-metadata/net.thunderbird.android.beta/en-US/changelogs/*
+              git commit -a -m "Release: Thunderbird for Android ${RELEASE_VERSION}"
+              echo "thunderbird_sha=$(git rev-parse HEAD)" | tee >> $GITHUB_OUTPUT
+              git push
+          fi
+
+  commit_k9mail:
+    name: Commit K-9Mail
+    runs-on: ubuntu-latest
+    needs: [commit_thunderbird, dump_config, get_environment]
+    strategy:
+      matrix:
+        include: "${{ fromJSON(needs.dump_config.outputs.matrixInclude) }}"
+    outputs:
+      k9mail_sha: ${{ steps.commit_k9mail.outputs.k9mail_sha }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Release Commit K-9Mail
+        id: commit_k9mail
+        shell: bash
+        env:
+          APP_NAME: ${{ matrix.appName }}
+          RELEASE_VERSION: ${{ needs.dump_config.outputs.releaseVersion }}
+          RELEASE_TYPE: ${{ needs.dump_config.outputs.releaseType }}
+        run: |
+          if [[ "$APP_NAME" = "k9mail" && "$PACKAGE_FORMAT" = "apk" ]]; then
+              ./scripts/render-notes.py ${RELEASE_VERSION} ${APP_NAME}
+              git add ./app-metadata/com.fsck.k9/en-US/changelogs/*
+              git commit -a -m "Release: K-9 Mail ${RELEASE_VERSION}"
+              echo "k9mail_sha=$(git rev-parse HEAD)" | tee >> $GITHUB_OUTPUT
+              git push
+          fi
+
   build_unsigned:
     name: Build Unsigned
     runs-on: ubuntu-latest
     timeout-minutes: 90
-    needs: [dump_config, get_environment]
+    needs: [commit_k9mail, commit_thunderbird, dump_config, get_environment]
     strategy:
       matrix:
         include: "${{ fromJSON(needs.dump_config.outputs.matrixInclude) }}"
     environment: ${{ needs.get_environment.outputs.releaseEnv }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Copy CI gradle.properties
         shell: bash
@@ -131,17 +205,26 @@ jobs:
           PACKAGE_FORMAT: ${{ matrix.packageFormat }}
           PACKAGE_FLAVOR: ${{ matrix.packageFlavor }}
           APP_NAME: ${{ matrix.appName }}
-          RELEASE_TYPE: ${{ vars.RELEASE_TYPE }}
+          RELEASE_TYPE: ${{ needs.dump_config.outputs.releaseType }}
+          THUNDERBIRD_SHA: ${{ needs.commit_thunderbird.outputs.thunderbird_sha }}
+          K9MAIL_SHA: ${{ needs.commit_k9mail.outputs.k9mail_sha }}
         run: |
+          git pull
           if [[ "$APP_NAME" = "thunderbird" && "$PACKAGE_FORMAT" = "apk" ]]; then
-            BUILD_COMMAND="assemble${PACKAGE_FLAVOR^}${RELEASE_TYPE^}"
-          elif [[ "$APP_NAME" = "thunderbird" && "${PACKAGE_FORMAT}" = "bundle" ]]; then
-            BUILD_COMMAND="bundle${PACKAGE_FLAVOR^}${RELEASE_TYPE^}"
-          elif [[ "$APP_NAME" = "k9mail" ]]; then
-            BUILD_COMMAND="assembleRelease"
+              git_sha="$THUNDERBIRD_SHA"
+              BUILD_COMMAND="assemble${PACKAGE_FLAVOR^}${RELEASE_TYPE^}"
+          elif [[ "$APP_NAME" = "thunderbird" && "$PACKAGE_FORMAT" = "bundle" ]]; then
+              git_sha="$THUNDERBIRD_SHA"
+              BUILD_COMMAND="bundle${PACKAGE_FLAVOR^}${RELEASE_TYPE^}"
+          elif [[ "$APP_NAME" = "k9mail" && "$PACKAGE_FORMAT" = "apk" ]]; then
+              git_sha="$K9MAIL_SHA"
+              BUILD_COMMAND="assembleRelease"
+          fi
+          if [[ -n "$git_sha" ]]; then
+              git checkout "$git_sha"
           fi
 
-          echo "BUILDING: :app-${APP_NAME}:${BUILD_COMMAND}"
+          echo "BUILDING: :app-${APP_NAME}:${BUILD_COMMAND} from git SHA ${git_sha:-HEAD}"
           ./gradlew clean :app-${APP_NAME}:${BUILD_COMMAND} --no-build-cache --no-configuration-cache
           echo "Status: $?"
 
@@ -203,7 +286,9 @@ jobs:
     environment: ${{ matrix.appName }}_${{ needs.dump_config.outputs.releaseType }}_${{ matrix.packageFlavor || 'default' }}
     needs: [build_unsigned, dump_config]
     env:
+      APP_NAME: ${{ matrix.appName }}
       RELEASE_TYPE: ${{ needs.dump_config.outputs.releaseType }}
+      RELEASE_VERSION: ${{ needs.dump_config.outputs.releaseVersion }}
     steps:
       - uses: actions/download-artifact@v4
         with:
@@ -250,7 +335,7 @@ jobs:
 
   github_release:
     name: GitHub Release
-    needs: [pre_publish, dump_config]
+    needs: [commit_k9mail, commit_thunderbird, pre_publish, dump_config]
     if: ${{ needs.dump_config.outputs.releaseType == 'beta' || needs.dump_config.outputs.releaseType == 'release' }}
     runs-on: ubuntu-latest
     strategy:
@@ -261,7 +346,26 @@ jobs:
       RELEASE_TYPE: ${{ needs.dump_config.outputs.releaseType }}
       APP_NAME: ${{ matrix.appName }}
       PACKAGE_FLAVOR: ${{ matrix.packageFlavor || 'default' }}
+      THUNDERBIRD_SHA: ${{ needs.commit_thunderbird.outputs.thunderbird_sha }}
+      K9MAIL_SHA: ${{ needs.commit_k9mail.outputs.k9mail_sha }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Checkout SHA
+        shell: bash
+        run: |
+          git pull
+          if [[ "$APP_NAME" = "thunderbird" ]]; then
+            git_sha="$THUNDERBIRD_SHA"
+          elif [[ "$APP_NAME" = "k9mail" ]]; then
+            git_sha="$K9MAIL_SHA"
+          fi
+          echo "Checking out git SHA ${git_sha:-HEAD}"
+          if [[ -n "$git_sha" ]]; then
+              git checkout "$git_sha"
+          fi
+
       - uses: actions/download-artifact@v4
         with:
           name: signed-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor || 'default' }}
