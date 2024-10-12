@@ -28,6 +28,7 @@ import androidx.core.view.isVisible
 import com.fsck.k9.contact.ContactIntentHelper
 import com.fsck.k9.helper.ClipboardManager
 import com.fsck.k9.helper.Utility
+import com.fsck.k9.logging.Timber.d
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.AttachmentResolver
 import com.fsck.k9.mailstore.AttachmentViewInfo
@@ -421,6 +422,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
         renderAttachments(messageViewInfo)
 
         val messageText = messageViewInfo.text
+        d("MBAL: MessageContainerView: displayMessageViewContainer: messageText=$messageText")
         if (messageText != null && !isShowingPictures) {
             if (Utility.hasExternalImages(messageText)) {
                 if (loadPictures) {

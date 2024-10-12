@@ -45,6 +45,7 @@ class ChooseFolderActivity : K9Activity() {
     private var currentFolderId: Long? = null
     private var scrollToFolderId: Long? = null
     private var messageReference: String? = null
+    private var currentAccount: Account? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,9 +106,18 @@ class ChooseFolderActivity : K9Activity() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
 
+        // Set the initial item
+        val initialAccount = account
+        val initialPosition = accounts.indexOf(initialAccount)
+        if (initialPosition != -1) {
+            spinner.setSelection(initialPosition)
+        }
+
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 val selectedAccount = accounts[position]
+                // TODO combine with previous statement
+                currentAccount = selectedAccount
                 val showHiddenFolders = viewModel.isShowHiddenFolders
                 viewModel.setDisplayMode(selectedAccount, showHiddenFolders)
             }
@@ -229,6 +239,7 @@ class ChooseFolderActivity : K9Activity() {
             putExtra(RESULT_SELECTED_FOLDER_ID, folderId)
             putExtra(RESULT_FOLDER_DISPLAY_NAME, displayName)
             putExtra(RESULT_MESSAGE_REFERENCE, messageReference)
+            putExtra(RESULT_SELECTED_ACCOUNT_ID, currentAccount!!.uuid)
         }
 
         setResult(Activity.RESULT_OK, result)
@@ -275,6 +286,7 @@ class ChooseFolderActivity : K9Activity() {
         const val RESULT_SELECTED_FOLDER_ID = "selectedFolderId"
         const val RESULT_FOLDER_DISPLAY_NAME = "folderDisplayName"
         const val RESULT_MESSAGE_REFERENCE = "messageReference"
+        const val RESULT_SELECTED_ACCOUNT_ID = "selectedAccountId" // MBAL
 
         @JvmStatic
         fun buildLaunchIntent(

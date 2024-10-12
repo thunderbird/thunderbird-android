@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase
 import app.k9mail.legacy.mailstore.SaveMessageData
 import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType
 import com.fsck.k9.K9
+import com.fsck.k9.logging.Timber.d
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Body
 import com.fsck.k9.mail.BoundaryGenerator
@@ -44,10 +45,12 @@ internal class SaveMessageOperations(
     private val threadMessageOperations: ThreadMessageOperations,
 ) {
     fun saveRemoteMessage(folderId: Long, messageServerId: String, messageData: SaveMessageData) {
+        d("MBAL: SaveMessageOperations.saveRemoteMessage $folderId:$messageServerId; messageData=$messageData")
         saveMessage(folderId, messageServerId, messageData)
     }
 
     fun saveLocalMessage(folderId: Long, messageData: SaveMessageData, existingMessageId: Long?): Long {
+        d("MBAL: SaveMessageOperations.saveLocalMessage $folderId:$existingMessageId; messageData=$messageData; existingMessageId=$existingMessageId")
         return if (existingMessageId == null) {
             saveLocalMessage(folderId, messageData)
         } else {
@@ -56,6 +59,7 @@ internal class SaveMessageOperations(
     }
 
     private fun saveLocalMessage(folderId: Long, messageData: SaveMessageData): Long {
+        d("MBAL: SaveMessageOperations.saveLocalMessage $folderId; messageData=$messageData")
         val fakeServerId = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString()
         return saveMessage(folderId, fakeServerId, messageData)
     }

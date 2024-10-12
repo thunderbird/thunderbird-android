@@ -1,6 +1,7 @@
 package com.fsck.k9.controller;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -65,6 +66,8 @@ import com.fsck.k9.mail.MessageDownloadState;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.power.PowerManager;
 import com.fsck.k9.mail.power.WakeLock;
 import app.k9mail.legacy.mailstore.FolderDetailsAccessor;
@@ -93,7 +96,8 @@ import static com.fsck.k9.controller.Preconditions.requireNotNull;
 import static com.fsck.k9.helper.ExceptionHelper.getRootCauseMessage;
 import static com.fsck.k9.logging.Timber.d;
 import static com.fsck.k9.mail.Flag.X_REMOTE_COPY_STARTED;
-
+import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
 
 /**
  * Starts a long running (application) Thread that will run through commands
@@ -1723,10 +1727,15 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     public void copyMessages(Account srcAccount, long srcFolderId,
-            List<MessageReference> messageReferences, long destFolderId) {
+        List<MessageReference> messageReferences, long destFolderId) {
+        copyMessages(srcAccount,srcFolderId,messageReferences,srcAccount,destFolderId);
+    }
+
+    public void copyMessages(Account srcAccount, long srcFolderId,
+            List<MessageReference> messageReferences, Account destAccount, long destFolderId) {
         actOnMessageGroup(srcAccount, srcFolderId, messageReferences, (account, messageFolder, messages) -> {
             putBackground("copyMessages", null, () ->
-                    moveOrCopyMessageSynchronous(srcAccount, srcFolderId, messages, destFolderId, MoveOrCopyFlavor.COPY)
+                    moveOrCopyMessageSynchronous(srcAccount, srcFolderId, messages, destAccount, destFolderId, MoveOrCopyFlavor.COPY)
             );
         });
     }
@@ -1750,9 +1759,68 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         copyMessages(account, srcFolderId, Collections.singletonList(message), destFolderId);
     }
 
-    private void moveOrCopyMessageSynchronous(Account account, long srcFolderId, List<LocalMessage> inMessages,
-            long destFolderId, MoveOrCopyFlavor operation) {
+    public void copyMessageToAccount(Account srcAccount, long srcFolderId, LocalMessage lmessage, MessageReference message, Account destAccount, long destFolderId) {
+        copyMessages(srcAccount, srcFolderId, Collections.singletonList(message), destAccount, destFolderId);
+        putBackground("copyMessages", null, () ->
+            moveOrCopyMessageSynchronous(srcAccount, srcFolderId, Collections.singletonList(lmessage), destAccount, destFolderId, MoveOrCopyFlavor.COPY)
+        );
+    }
 
+    private void moveOrCopyMessageSynchronous(Account account, long srcFolderId, List<LocalMessage> inMessages,
+        long destFolderId, MoveOrCopyFlavor operation) {
+        moveOrCopyMessageSynchronous(account, srcFolderId, inMessages, account, destFolderId, operation);
+    }
+
+    private void moveOrCopyMessageSynchronous(Account account, long srcFolderId, List<LocalMessage> inMessages,
+            Account destAccount, long destFolderId, MoveOrCopyFlavor operation) {
+
+        { // MBAL
+            Timber.d("MBAL: moveOrCopyMessageSynchronous(%s, %s, %s, %s, %s, size=%s)", account, srcFolderId, inMessages,
+                destFolderId, operation, inMessages.size());
+            if (inMessages.size() == 1) {
+                Timber.d("MBAL: moveOrCopyMessageSynchronous: only one message!!");
+                Timber.d("MBAL: moveOrCopyMessageSynchronous: message toString="+inMessages.get(0));
+                Timber.d("MBAL: moveOrCopyMessageSynchronous: message subject="+inMessages.get(0).getSubject());
+                Timber.d("MBAL: moveOrCopyMessageSynchronous: message body="+inMessages.get(0).getBody());
+                Timber.d("MBAL: moveOrCopyMessageSynchronous: destAccount.name="+destAccount.getName()+"; srcAccount.name="+account.getName());
+                MessageStore messageStore = messageStoreManager.getMessageStore(destAccount);
+                // TODO maybe we should NOT specify "FULL" for download state
+                ByteArrayOutputStream memoryStream = new ByteArrayOutputStream();
+                try {
+                    inMessages.get(0).writeTo(memoryStream);
+                    /*ByteArrayInputStream inputStream = new ByteArrayInputStream(memoryStream.toByteArray());
+                    MimeMessage newMessage=MimeMessage.parseMimeMessage(inputStream, true);
+                    */
+                    MimeMessage message = new MimeMessage();
+                    MimeMessage newMessage=message;
+                    //message.setSubject("MYTEST from "+account.getName());
+                    message.setBody(inMessages.get(0).getBody());
+                    message.setSubject("MYTEST: "+inMessages.get(0).getSubject());
+                    if (inMessages.get(0).getContentType() != null) {
+                        message.setHeader("Content-Type", inMessages.get(0).getContentType());
+                    }
+                    SaveMessageData messageData = saveMessageDataCreator.createSaveMessageData(newMessage, MessageDownloadState.FULL, null);
+                    Timber.d("MBAL: moveOrCopyMessageSynchronous: message saveMessageData="+messageData);
+                    // TODO text for search is not getting set
+                    long messageId = messageStore.saveLocalMessage(destFolderId, messageData, null);
+                    Timber.d("MBAL: moveOrCopyMessageSynchronous: new message ID="+messageId);
+                    String fakeMessageServerId = messageStore.getMessageServerId(messageId);
+                    if (fakeMessageServerId != null) {
+                        PendingAppend command = PendingAppend.create(destFolderId, fakeMessageServerId);
+                        queuePendingCommand(destAccount, command);
+                    }
+                    processPendingCommands(destAccount);
+                } catch (IOException e) {
+                    Timber.d("MBAL: moveOrCopyMessageSynchronous: IOException: "+e);
+                    throw new RuntimeException(e);
+                } catch (MessagingException e) {
+                    Timber.d("MBAL: moveOrCopyMessageSynchronous: MessagingException: "+e);
+                    throw new RuntimeException(e);
+                }
+                Timber.d("MBAL: moveOrCopyMessageSynchronous: Aborting the copy!");
+                return;
+            }
+        }
         if (operation == MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ) {
             throw new UnsupportedOperationException("MOVE_AND_MARK_AS_READ unsupported");
         }
