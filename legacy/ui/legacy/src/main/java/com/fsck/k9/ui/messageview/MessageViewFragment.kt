@@ -637,7 +637,7 @@ class MessageViewFragment :
         }
         Timber.d("MBAL: onChooseFolderCopyResult: destAccountUuID: "+destAccountUuID)
         Timber.d("MBAL: onChooseFolderCopyResult: using copyMessageToAccount instead of copyMessage!!!")
-        messagingController.copyMessageToAccount(account, messageReference.folderId, message, messageReference, accountManager.getAccount(destAccountUuID), destinationFolderId)
+        messagingController.copyMessageToAccount(account, messageReference.folderId, messageReference, accountManager.getAccount(destAccountUuID), destinationFolderId)
         // TODO remove or restore
         //copyMessage(messageReference, destinationFolderId)
     }

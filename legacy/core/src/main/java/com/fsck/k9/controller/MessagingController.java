@@ -1759,11 +1759,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         copyMessages(account, srcFolderId, Collections.singletonList(message), destFolderId);
     }
 
-    public void copyMessageToAccount(Account srcAccount, long srcFolderId, LocalMessage lmessage, MessageReference message, Account destAccount, long destFolderId) {
+    public void copyMessageToAccount(Account srcAccount, long srcFolderId, MessageReference message, Account destAccount, long destFolderId) {
         copyMessages(srcAccount, srcFolderId, Collections.singletonList(message), destAccount, destFolderId);
-        putBackground("copyMessages", null, () ->
-            moveOrCopyMessageSynchronous(srcAccount, srcFolderId, Collections.singletonList(lmessage), destAccount, destFolderId, MoveOrCopyFlavor.COPY)
-        );
     }
 
     private void moveOrCopyMessageSynchronous(Account account, long srcFolderId, List<LocalMessage> inMessages,
@@ -1777,46 +1774,36 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         { // MBAL
             Timber.d("MBAL: moveOrCopyMessageSynchronous(%s, %s, %s, %s, %s, size=%s)", account, srcFolderId, inMessages,
                 destFolderId, operation, inMessages.size());
-            if (inMessages.size() == 1) {
-                Timber.d("MBAL: moveOrCopyMessageSynchronous: only one message!!");
-                Timber.d("MBAL: moveOrCopyMessageSynchronous: message toString="+inMessages.get(0));
-                Timber.d("MBAL: moveOrCopyMessageSynchronous: message subject="+inMessages.get(0).getSubject());
-                Timber.d("MBAL: moveOrCopyMessageSynchronous: message body="+inMessages.get(0).getBody());
-                Timber.d("MBAL: moveOrCopyMessageSynchronous: destAccount.name="+destAccount.getName()+"; srcAccount.name="+account.getName());
-                MessageStore messageStore = messageStoreManager.getMessageStore(destAccount);
-                // TODO maybe we should NOT specify "FULL" for download state
-                ByteArrayOutputStream memoryStream = new ByteArrayOutputStream();
-                try {
-                    inMessages.get(0).writeTo(memoryStream);
-                    /*ByteArrayInputStream inputStream = new ByteArrayInputStream(memoryStream.toByteArray());
-                    MimeMessage newMessage=MimeMessage.parseMimeMessage(inputStream, true);
-                    */
-                    MimeMessage message = new MimeMessage();
-                    MimeMessage newMessage=message;
-                    //message.setSubject("MYTEST from "+account.getName());
-                    message.setBody(inMessages.get(0).getBody());
-                    message.setSubject("MYTEST: "+inMessages.get(0).getSubject());
-                    if (inMessages.get(0).getContentType() != null) {
-                        message.setHeader("Content-Type", inMessages.get(0).getContentType());
-                    }
-                    SaveMessageData messageData = saveMessageDataCreator.createSaveMessageData(newMessage, MessageDownloadState.FULL, null);
-                    Timber.d("MBAL: moveOrCopyMessageSynchronous: message saveMessageData="+messageData);
-                    // TODO text for search is not getting set
-                    long messageId = messageStore.saveLocalMessage(destFolderId, messageData, null);
-                    Timber.d("MBAL: moveOrCopyMessageSynchronous: new message ID="+messageId);
-                    String fakeMessageServerId = messageStore.getMessageServerId(messageId);
-                    if (fakeMessageServerId != null) {
-                        PendingAppend command = PendingAppend.create(destFolderId, fakeMessageServerId);
-                        queuePendingCommand(destAccount, command);
-                    }
-                    processPendingCommands(destAccount);
-                } catch (IOException e) {
-                    Timber.d("MBAL: moveOrCopyMessageSynchronous: IOException: "+e);
-                    throw new RuntimeException(e);
-                } catch (MessagingException e) {
-                    Timber.d("MBAL: moveOrCopyMessageSynchronous: MessagingException: "+e);
-                    throw new RuntimeException(e);
+            // for copying/moving between accounts, we need to load the messages first
+            List<LocalMessage> loadedMessages = new ArrayList<>();
+            try {
+                for (LocalMessage m : inMessages) {
+                    LocalMessage loadedMessage = loadMessage(account, srcFolderId, m.getUid());
+                    loadedMessages.add(loadedMessage);
                 }
+            }
+            catch (MessagingException e) {
+                Timber.e(e, "Exception while loading messages");
+                return;
+            }
+            inMessages=loadedMessages;
+            if (inMessages.size() == 1) {
+                MessageStore messageStore = messageStoreManager.getMessageStore(destAccount);
+                LocalMessage message=inMessages.get(0);
+                Timber.d("MBAL: moveOrCopyMessageSynchronous: only one message!!");
+                Timber.d("MBAL: moveOrCopyMessageSynchronous: message subject="+message.getSubject());
+                Timber.d("MBAL: moveOrCopyMessageSynchronous: message body="+message.getBody());
+                Timber.d("MBAL: moveOrCopyMessageSynchronous: destAccount.name="+destAccount.getName()+"; srcAccount.name="+account.getName());
+                SaveMessageData messageData = saveMessageDataCreator.createSaveMessageData(message, MessageDownloadState.FULL, null);
+                // TODO text for search is not getting set
+                long messageId = messageStore.saveLocalMessage(destFolderId, messageData, null);
+                // update destination account and folder
+                String fakeMessageServerId = messageStore.getMessageServerId(messageId);
+                if (fakeMessageServerId != null) {
+                    PendingAppend command = PendingAppend.create(destFolderId, fakeMessageServerId);
+                    queuePendingCommand(destAccount, command);
+                }
+                processPendingCommands(destAccount);
                 Timber.d("MBAL: moveOrCopyMessageSynchronous: Aborting the copy!");
                 return;
             }
