@@ -16,8 +16,8 @@ android {
         applicationId = "net.thunderbird.android"
         testApplicationId = "net.thunderbird.android.tests"
 
-        versionCode = 2
-        versionName = "0.1"
+        versionCode = 4
+        versionName = "8.0"
 
         // Keep in sync with the resource string array "supported_languages"
         resourceConfigurations.addAll(
@@ -80,9 +80,11 @@ android {
     }
 
     signingConfigs {
-        createSigningConfig(project, SigningType.TB_RELEASE)
-        createSigningConfig(project, SigningType.TB_BETA)
-        createSigningConfig(project, SigningType.TB_DAILY)
+        val useUploadKey = properties.getOrDefault("tb.useUploadKey", "true") == "true"
+
+        createSigningConfig(project, SigningType.TB_RELEASE, isUpload = useUploadKey)
+        createSigningConfig(project, SigningType.TB_BETA, isUpload = useUploadKey)
+        createSigningConfig(project, SigningType.TB_DAILY, isUpload = useUploadKey)
     }
 
     buildTypes {
@@ -94,7 +96,7 @@ android {
             isShrinkResources = false
             isDebuggable = true
 
-            buildConfigField("String", "RELEASE_CHANNEL", "null")
+            buildConfigField("String", "GLEAN_RELEASE_CHANNEL", "null")
         }
 
         release {
@@ -109,7 +111,7 @@ android {
                 "proguard-rules.pro",
             )
 
-            buildConfigField("String", "RELEASE_CHANNEL", "\"release\"")
+            buildConfigField("String", "GLEAN_RELEASE_CHANNEL", "\"release\"")
         }
 
         create("beta") {
@@ -129,7 +131,7 @@ android {
                 "proguard-rules.pro",
             )
 
-            buildConfigField("String", "RELEASE_CHANNEL", "\"beta\"")
+            buildConfigField("String", "GLEAN_RELEASE_CHANNEL", "\"beta\"")
         }
 
         create("daily") {
@@ -149,7 +151,21 @@ android {
                 "proguard-rules.pro",
             )
 
-            buildConfigField("String", "RELEASE_CHANNEL", "\"daily\"")
+            // See https://bugzilla.mozilla.org/show_bug.cgi?id=1918151
+            buildConfigField("String", "GLEAN_RELEASE_CHANNEL", "\"nightly\"")
+        }
+    }
+
+    flavorDimensions += listOf("app")
+    productFlavors {
+        create("foss") {
+            dimension = "app"
+            buildConfigField("String", "PRODUCT_FLAVOR_APP", "\"foss\"")
+        }
+
+        create("full") {
+            dimension = "app"
+            buildConfigField("String", "PRODUCT_FLAVOR_APP", "\"full\"")
         }
     }
 
@@ -169,6 +185,13 @@ android {
     }
 }
 
+// Initialize placeholders for the product flavor and build type combinations needed for dependency declarations.
+// They are required to avoid "Unresolved configuration" errors.
+val fullDebugImplementation by configurations.creating
+val fullDailyImplementation by configurations.creating
+val fullBetaImplementation by configurations.creating
+val fullReleaseImplementation by configurations.creating
+
 dependencies {
     implementation(projects.appCommon)
     implementation(projects.core.ui.compose.theme2.thunderbird)
@@ -185,15 +208,22 @@ dependencies {
     implementation(projects.feature.widget.unread)
 
     debugImplementation(projects.feature.telemetry.noop)
-    releaseImplementation(projects.feature.telemetry.glean)
-    "betaImplementation"(projects.feature.telemetry.glean)
-    "dailyImplementation"(projects.feature.telemetry.glean)
+    "dailyImplementation"(projects.feature.telemetry.noop)
+    "betaImplementation"(projects.feature.telemetry.noop)
+    releaseImplementation(projects.feature.telemetry.noop)
 
     implementation(libs.androidx.work.runtime)
 
     implementation(projects.feature.autodiscovery.api)
     debugImplementation(projects.backend.demo)
     debugImplementation(projects.feature.autodiscovery.demo)
+
+    "fossImplementation"(projects.feature.funding.link)
+
+    fullDebugImplementation(projects.feature.funding.link)
+    fullDailyImplementation(projects.feature.funding.googleplay)
+    fullBetaImplementation(projects.feature.funding.googleplay)
+    fullReleaseImplementation(projects.feature.funding.googleplay)
 
     testImplementation(libs.robolectric)
 
@@ -203,5 +233,22 @@ dependencies {
 }
 
 dependencyGuard {
-    configuration("releaseRuntimeClasspath")
+    configuration("fossDailyRuntimeClasspath")
+    configuration("fossBetaRuntimeClasspath")
+    configuration("fossReleaseRuntimeClasspath")
+
+    configuration("fullDailyRuntimeClasspath")
+    configuration("fullBetaRuntimeClasspath")
+    configuration("fullReleaseRuntimeClasspath")
+}
+
+tasks.create("printConfigurations") {
+    doLast {
+        configurations.forEach { configuration ->
+            println("Configuration: ${configuration.name}")
+            configuration.dependencies.forEach { dependency ->
+                println("  - ${dependency.group}:${dependency.name}:${dependency.version}")
+            }
+        }
+    }
 }

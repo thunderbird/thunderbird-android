@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.account.Account.FolderMode
 import app.k9mail.legacy.ui.folder.DisplayFolder
 import app.k9mail.legacy.ui.folder.DisplayFolderRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,23 +18,23 @@ class ChooseFolderViewModel(
 ) : ViewModel() {
     private val inputFlow = MutableSharedFlow<DisplayMode>(replay = 1)
     private val foldersFlow = inputFlow
-        .flatMapLatest { (account, displayMode) ->
-            folderRepository.getDisplayFoldersFlow(account, displayMode)
+        .flatMapLatest { (account, showHiddenFolders) ->
+            folderRepository.getDisplayFoldersFlow(account, showHiddenFolders)
         }
 
-    var currentDisplayMode: FolderMode? = null
+    var isShowHiddenFolders: Boolean = false
         private set
 
     fun getFolders(): LiveData<List<DisplayFolder>> {
         return foldersFlow.asLiveData()
     }
 
-    fun setDisplayMode(account: Account, displayMode: FolderMode) {
-        currentDisplayMode = displayMode
+    fun setDisplayMode(account: Account, showHiddenFolders: Boolean) {
+        isShowHiddenFolders = showHiddenFolders
         viewModelScope.launch {
-            inputFlow.emit(DisplayMode(account, displayMode))
+            inputFlow.emit(DisplayMode(account, showHiddenFolders))
         }
     }
 }
 
-private data class DisplayMode(val account: Account, val displayMode: FolderMode)
+private data class DisplayMode(val account: Account, val showHiddenFolders: Boolean)

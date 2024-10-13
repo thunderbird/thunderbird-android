@@ -39,4 +39,6 @@
     <string name="settings_import_oauth_error_oauth_not_supported">Ten dostawca nie obsługuje obecnie protokołu OAuth 2.0.</string>
     <string name="settings_import_oauth_error_browser_not_found">Aplikacja nie mogła znaleźć przeglądarki, za pomocą której można uzyskać dostęp do Twojego konta.</string>
     <string name="settings_import_general_settings_item">Ustawienia ogólne</string>
+    <string name="settings_import_pick_app_button">Importuj z aplikacji</string>
+    <string name="settings_import_pick_app_dialog_title">Importuj z aplikacji</string>
 </resources>

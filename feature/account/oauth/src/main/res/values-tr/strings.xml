@@ -2,11 +2,11 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_oauth_sign_in_with_google_button">Google ile oturum aç</string>
     <string name="account_oauth_loading_error">OAuth ile oturum açılamadı</string>
-    <string name="account_oauth_error_failed">Yetkilendirme şu hatayla başarısız oldu: <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_error_failed">Kimlik doğrulama şu hatayla başarısız oldu: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_browser_not_available">Uygulama, hesabınıza erişim izni vermek için kullanılacak bir tarayıcı bulamadı.</string>
-    <string name="account_oauth_error_not_supported">OAuth 2.0 şu anda bu sağlayıcı ile desteklenmiyor.</string>
-    <string name="account_oauth_error_canceled">Yetkilendirme iptal edildi</string>
+    <string name="account_oauth_error_not_supported">Bu sağlayıcıda şu anda OAuth 2.0 desteklenmiyor.</string>
+    <string name="account_oauth_error_canceled">Kimlik doğrulama iptal edildi</string>
     <string name="account_oauth_loading_message">OAuth ile oturum aç</string>
-    <string name="account_oauth_sign_in_description">Oturum açmanız için sizi e-posta sağlayıcınıza yönlendireceğiz. Uygulamaya e-posta hesabınıza erişim izni vermeniz gerekir.</string>
+    <string name="account_oauth_sign_in_description">Oturum açmanız için sizi e-posta sağlayıcınıza yönlendireceğiz. Uygulamanın e-posta hesabınıza erişmesine izin vermelisiniz.</string>
     <string name="account_oauth_sign_in_button">Oturum aç</string>
 </resources>

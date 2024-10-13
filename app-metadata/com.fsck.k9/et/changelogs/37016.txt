@@ -1,0 +1,5 @@
+- Väikesed veaparandused ja kasutajaliidese/UX-i lihvimine konto seadistamisel
+- Parandatud on OpenKeychain 6.0.0 interaktsioonist põhjustatud krahh
+- Koostamiskuva avamisel mailto: URI kaudu keskenduge teema või keha sisestusväljadele
+- Eemaldati heebrea ja korea tõlked, kuna tõlgiti vähem kui 70% stringidest. Vabatahtlikud tõlkeid uuendama on alati oodatud!
+- Värskendatud ülejäänud tõlked

@@ -20,7 +20,7 @@ class ThunderbirdApp : CommonApp() {
     private fun initializeTelemetry() {
         telemetryManager.init(
             uploadEnabled = K9.isTelemetryEnabled,
-            releaseChannel = BuildConfig.RELEASE_CHANNEL,
+            releaseChannel = BuildConfig.GLEAN_RELEASE_CHANNEL,
             versionCode = BuildConfig.VERSION_CODE,
             versionName = BuildConfig.VERSION_NAME,
         )

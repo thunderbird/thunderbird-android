@@ -11,6 +11,6 @@ class ManageFoldersViewModel(
     private val folderRepository: DisplayFolderRepository,
 ) : ViewModel() {
     fun getFolders(account: Account): LiveData<List<DisplayFolder>> {
-        return folderRepository.getDisplayFoldersFlow(account.uuid).asLiveData()
+        return folderRepository.getDisplayFoldersFlow(account, includeHiddenFolders = true).asLiveData()
     }
 }

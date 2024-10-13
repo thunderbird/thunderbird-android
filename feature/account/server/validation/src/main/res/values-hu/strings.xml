@@ -4,11 +4,18 @@
     <string name="account_server_validation_error_authentication">Hitelesítési hiba</string>
     <string name="account_server_validation_outgoing_loading_message">A kimenő kiszolgáló beállítások ellenőrzése…</string>
     <string name="account_server_validation_error_network">Hálózati hiba</string>
-    <string name="account_server_validation_outgoing_success">A kijövő kiszolgáló beállítások érvényesek</string>
+    <string name="account_server_validation_outgoing_success">A kimenő kiszolgáló beállításai érvényesek</string>
     <string name="account_server_validation_error_unknown">Ismeretlen hiba</string>
     <string name="account_server_validation_sign_in">Bejelentkezés</string>
     <string name="account_server_validation_outgoing_loading_error">A kimenő kiszolgáló beállítások ellenőrzése sikertelen volt</string>
-    <string name="account_server_validation_incoming_success">A bejövő kiszolgáló beállítások érvényesek</string>
+    <string name="account_server_validation_incoming_success">A bejövő kiszolgáló beállításai érvényesek</string>
     <string name="account_server_validation_incoming_loading_error">A bejövő kiszolgáló beállítások ellenőrzése sikertelen volt</string>
-    <string name="account_server_validation_error_server">Kiszolgáló hiba</string>
+    <string name="account_server_validation_error_server">Kiszolgálóhiba</string>
+    <string name="account_server_validation_error_client_certificate_expired">A klienstanúsítvány már nem érvényes</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">A klienstanúsítvány nem érhető el</string>
+    <string name="account_server_validation_error_missing_server_capability">Hiányzó kiszolgálófunkció</string>
+    <string name="account_server_validation_error_details">Részletek:
+\n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">A kiszolgálóból hiányzik ez a funkció:
+\n%s</string>
 </resources>

@@ -1,0 +1,7 @@
+- Lisatud DNSSEC-i tugi serveri seadete otsimisel seadistamise ajal
+- Tegi muudatuse, mis takistab mõnel tarkvaraklaviatuuril konto seadistustes e-posti aadresse suurtähtedega kirjutamast/automaatset parandamist
+- Parandatud krahh, kui kasutati väga pikka objekti
+- Parandatud OAuth 2.0 veateadete kuvamine
+- Parandatud haruldane krahh manuse allalaadimisel
+- Lisatud kood reavahede keelamiseks üherealises tekstisisestuses
+- Uuendatud tõlked

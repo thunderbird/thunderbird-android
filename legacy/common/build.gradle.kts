@@ -15,6 +15,7 @@ dependencies {
 
     implementation(projects.feature.account.setup)
     implementation(projects.feature.account.edit)
+    implementation(projects.feature.navigation.drawer)
     implementation(projects.feature.settings.import)
 
     implementation(projects.feature.widget.unread)

@@ -1,35 +1,21 @@
 package app.k9mail.core.ui.compose.testing.mvi
 
-import app.cash.turbine.testIn
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
-import assertk.assertions.assertThatAndTurbinesConsumed
+import assertk.assertThat
 import assertk.assertions.isEqualTo
-import kotlinx.coroutines.CoroutineScope
 
-suspend fun <STATE, EVENT, EFFECT> eventStateTest(
+/**
+ * Tests that the state of the [viewModel] changes as expected when the [event] is sent.
+ */
+suspend inline fun <reified STATE, EVENT, EFFECT> MviContext.eventStateTest(
     viewModel: UnidirectionalViewModel<STATE, EVENT, EFFECT>,
     initialState: STATE,
     event: EVENT,
     expectedState: STATE,
-    coroutineScope: CoroutineScope,
 ) {
-    val stateTurbine = viewModel.state.testIn(coroutineScope)
-    val effectTurbine = viewModel.effect.testIn(coroutineScope)
-    val turbines = listOf(stateTurbine, effectTurbine)
-
-    assertThatAndTurbinesConsumed(
-        actual = stateTurbine.awaitItem(),
-        turbines = turbines,
-    ) {
-        isEqualTo(initialState)
-    }
+    val turbines = turbinesWithInitialStateCheck(viewModel, initialState)
 
     viewModel.event(event)
 
-    assertThatAndTurbinesConsumed(
-        actual = stateTurbine.awaitItem(),
-        turbines = turbines,
-    ) {
-        isEqualTo(expectedState)
-    }
+    assertThat(turbines.stateTurbine.awaitItem()).isEqualTo(expectedState)
 }

@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.content.DialogInterface.OnClickListener
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
@@ -29,11 +28,7 @@ internal class PickAppDialogFragment : DialogFragment() {
     private var selectedPackageName: String? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val adapter = ArrayAdapter<AppInfo>(
-            requireContext(),
-            R.layout.settings_import_pick_app_list_item,
-            R.id.settings_import_app_name,
-        )
+        val adapter = PickAppAdapter(requireContext())
 
         viewModel.appInfoFlow.observe(this) { appInfoList ->
             adapter.clear()

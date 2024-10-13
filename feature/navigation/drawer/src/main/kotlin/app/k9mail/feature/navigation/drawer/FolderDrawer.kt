@@ -5,16 +5,32 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.k9mail.core.ui.theme.api.FeatureThemeProvider
+import app.k9mail.feature.navigation.drawer.domain.entity.DisplayUnifiedFolderType
+import app.k9mail.feature.navigation.drawer.domain.entity.createDisplayAccountFolderId
 import app.k9mail.feature.navigation.drawer.ui.DrawerView
 import app.k9mail.legacy.account.Account
 import com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
+internal data class FolderDrawerState(
+    val selectedAccountUuid: String? = null,
+    val selectedFolderId: String? = null,
+)
+
 class FolderDrawer(
     override val parent: AppCompatActivity,
+    private val openAccount: (account: Account) -> Unit,
+    private val openFolder: (folderId: Long) -> Unit,
+    private val openUnifiedFolder: () -> Unit,
+    private val openManageFolders: () -> Unit,
+    private val openSettings: () -> Unit,
+    createDrawerListener: () -> DrawerLayout.DrawerListener,
 ) : NavigationDrawer, KoinComponent {
 
     private val themeProvider: FeatureThemeProvider by inject()
@@ -24,14 +40,27 @@ class FolderDrawer(
     private val sliderView: MaterialDrawerSliderView = parent.findViewById(R.id.material_drawer_slider)
     private val swipeRefreshLayout: SwipeRefreshLayout = parent.findViewById(R.id.material_drawer_swipe_refresh)
 
+    private val drawerState = MutableStateFlow(FolderDrawerState())
+
     init {
         sliderView.visibility = View.GONE
         drawerView.visibility = View.VISIBLE
         swipeRefreshLayout.isEnabled = false
+        drawer.addDrawerListener(createDrawerListener())
 
         drawerView.setContent {
             themeProvider.WithTheme {
-                DrawerView()
+                val state = drawerState.collectAsStateWithLifecycle()
+
+                DrawerView(
+                    drawerState = state.value,
+                    openAccount = openAccount,
+                    openFolder = openFolder,
+                    openUnifiedFolder = openUnifiedFolder,
+                    openManageFolders = openManageFolders,
+                    openSettings = openSettings,
+                    closeDrawer = { close() },
+                )
             }
         }
     }
@@ -40,23 +69,38 @@ class FolderDrawer(
         get() = drawer.isOpen
 
     override fun updateUserAccountsAndFolders(account: Account?) {
-        // TODO("Not yet implemented")
+        // no-op
     }
 
     override fun selectAccount(accountUuid: String) {
-        // TODO("Not yet implemented")
+        drawerState.update {
+            it.copy(selectedAccountUuid = accountUuid)
+        }
     }
 
-    override fun selectFolder(folderId: Long) {
-        // TODO("Not yet implemented")
+    override fun selectFolder(accountUuid: String, folderId: Long) {
+        drawerState.update {
+            it.copy(
+                selectedAccountUuid = accountUuid,
+                selectedFolderId = createDisplayAccountFolderId(accountUuid, folderId),
+            )
+        }
     }
 
     override fun selectUnifiedInbox() {
-        // TODO("Not yet implemented")
+        drawerState.update {
+            it.copy(
+                selectedFolderId = DisplayUnifiedFolderType.INBOX.id,
+            )
+        }
     }
 
     override fun deselect() {
-        // TODO("Not yet implemented")
+        drawerState.update {
+            it.copy(
+                selectedFolderId = null,
+            )
+        }
     }
 
     override fun open() {

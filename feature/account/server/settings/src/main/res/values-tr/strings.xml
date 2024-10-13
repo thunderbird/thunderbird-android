@@ -2,25 +2,25 @@
 <resources>
     <string name="account_server_settings_validation_error_server_required">Sunucu adı zorunludur.</string>
     <string name="account_server_settings_validation_error_username_required">Kullanıcı adı zorunludur.</string>
-    <string name="account_server_settings_outgoing_top_bar_title">Giden sunucu ayarları</string>
+    <string name="account_server_settings_outgoing_top_bar_title">Giden sunucusu ayarları</string>
     <string name="account_server_settings_validation_error_password_required">Parola zorunludur.</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_authentication_none">Yok</string>
     <string name="account_server_settings_authentication_password_encrypted">Şifreli parola</string>
-    <string name="account_server_settings_incoming_imap_namespace_label">IMAP ad alanını otomatik algıla</string>
-    <string name="account_server_settings_incoming_top_bar_title">Gelen sunucu ayarları</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">IMAP isim uzayını otomatik algıla</string>
+    <string name="account_server_settings_incoming_top_bar_title">Gelen sunucusu ayarları</string>
     <string name="account_server_settings_authentication_password_cleartext">Normal parola</string>
     <string name="account_server_settings_authentication_label">Kimlik doğrulama</string>
     <string name="account_server_settings_connection_security_none">Yok</string>
-    <string name="account_server_settings_port_label">Bağlantı noktası</string>
+    <string name="account_server_settings_port_label">Port</string>
     <string name="account_server_settings_incoming_imap_compression_label">Sıkıştırma kullan</string>
-    <string name="account_server_settings_validation_error_port_required">Bağlantı noktası zorunludur.</string>
+    <string name="account_server_settings_validation_error_port_required">Port zorunludur.</string>
     <string name="account_server_settings_authentication_client_certificate">İstemci sertifikası</string>
     <string name="account_server_settings_incoming_imap_prefix_label">IMAP yolu ön eki</string>
     <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
-    <string name="account_server_settings_protocol_type_label">İletişim kuralı</string>
+    <string name="account_server_settings_protocol_type_label">Protokol</string>
     <string name="account_server_settings_username_label">Kullanıcı adı</string>
-    <string name="account_server_settings_validation_error_port_invalid">Bağlantı noktası geçersiz (1 ile 65535 arasında olmalıdır).</string>
+    <string name="account_server_settings_validation_error_port_invalid">Port geçersiz (1 ile 65535 arasında olmalıdır).</string>
     <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
     <string name="account_server_settings_client_certificate_label">İstemci sertifikası</string>
     <string name="account_server_settings_validation_error_imap_prefix_blank">IMAP ön eki boş olamaz.</string>
@@ -29,7 +29,7 @@
     <string name="account_server_settings_security_label">Güvenlik</string>
     <string name="account_server_settings_password_authentication_title">Kimliğinizi doğrulayın</string>
     <string name="account_server_settings_password_authentication_subtitle">Parolanızı görmek için kilidi açın</string>
-    <string name="account_server_settings_password_authentication_screen_lock_required">Parolanızı burada görmek için ekran kilidini etkinleştirin.</string>
-    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Geçersiz IP veya sunucu adı</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">Parolanızı burada görmek için cihazınızda ekran kilidini etkinleştirin.</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Geçersiz IP veya ana makine adı</string>
     <string name="account_server_settings_incoming_imap_send_client_info_label">İstemci bilgilerini gönder</string>
 </resources>

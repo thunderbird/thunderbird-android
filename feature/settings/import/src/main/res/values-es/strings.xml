@@ -38,4 +38,6 @@
     <string name="settings_import_oauth_error_oauth_not_supported">El servidor no parece que sea compatible con OAuth 2.0.</string>
     <string name="settings_import_oauth_error_browser_not_found">La aplicación no ha encontrado ningún navegador que se pueda utilizar para iniciar sesión en tu cuenta.</string>
     <string name="settings_import_general_settings_item">Ajustes generales</string>
+    <string name="settings_import_pick_app_button">Importar desde la aplicación</string>
+    <string name="settings_import_pick_app_dialog_title">Importar desde la aplicación</string>
 </resources>

@@ -36,4 +36,6 @@
     <string name="settings_import_oauth_error_oauth_not_supported">此供應商目前不支援 OAuth 2.0。</string>
     <string name="settings_import_oauth_error_browser_not_found">應用程式找不到瀏覽器以授予取用您賬戶的權限。</string>
     <string name="settings_import_general_settings_item">一般設定</string>
+    <string name="settings_import_pick_app_button">從應用程式匯入</string>
+    <string name="settings_import_pick_app_dialog_title">從應用程式匯入</string>
 </resources>

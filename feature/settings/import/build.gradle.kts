@@ -19,6 +19,7 @@ dependencies {
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.ui.legacy.designsystem)
 
+    implementation(projects.feature.migration.qrcode)
     implementation(projects.feature.account.oauth)
     implementation(libs.appauth)
 

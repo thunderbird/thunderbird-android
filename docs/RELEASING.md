@@ -48,7 +48,7 @@ Example `<app>.<realeaseType>.signing.properties` file:
 
 1. Update versionCode and versionName in `app-k9mail/build.gradle.kts`
 2. Create change log entries in
-   - `app/ui/legacy/src/main/res/raw/changelog_master.xml`
+   - `app-k9mail/src/main/res/raw/changelog_master.xml`
    - `app-metadata/com.fsck.k9/en-US/changelogs/${versionCode}.txt`
      Use past tense. Try to keep them high level. Focus on the user (experience).
 3. Update the metadata link to point to K-9 Mail's data:
@@ -142,7 +142,7 @@ That way the new release won't contain any changes that weren't exposed to user 
 2. Update versionCode and versionName in `app-k9mail/build.gradle.kts` (stable releases use an even digit after the
    dot, e.g. `5.400`, `6.603`)
 3. Create change log entries in
-   - `app/ui/legacy/src/main/res/raw/changelog_master.xml`
+   - `app-k9mail/src/main/res/raw/changelog_master.xml`
    - `app-k9mail/fastlane/metadata/android/en-US/changelogs/${versionCode}.txt`
      Use past tense. Try to keep them high level. Focus on the user (experience).
 4. Update the metadata link to point to K-9 Mail's data:

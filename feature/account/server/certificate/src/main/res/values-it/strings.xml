@@ -4,7 +4,7 @@
     <string name="account_server_certificate_section_title">Certificato del server</string>
     <string name="account_server_certificate_warning_title">Avviso</string>
     <string name="account_server_certificate_unknown_error_subtitle">Errore di certificato</string>
-    <string name="account_server_certificate_unknown_error_description_format">L\'applicazione ha rilevato una potenziale minaccia alla sicurezza ed ha impedito la connessione a <xliff:g id="Nome del server">%s</xliff:g>.
+    <string name="account_server_certificate_unknown_error_description_format">L\'applicazione ha rilevato una potenziale minaccia alla sicurezza ed ha impedito la connessione a <xliff:g id="Nome del server">%s</xliff:g>. 
 \nSe prosegui, gli aggressori potrebbero tentare di rubare informazioni come la password o i tuoi indirizzi email.</string>
     <string name="account_server_certificate_button_back">Torna indietro (raccomandato)</string>
     <string name="account_server_certificate_button_advanced">Avanzato</string>

@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.account.Account.FolderMode
 import app.k9mail.legacy.message.controller.MessageReference
 import app.k9mail.legacy.ui.folder.DisplayFolder
 import app.k9mail.legacy.ui.folder.FolderIconProvider
@@ -64,10 +63,10 @@ class ChooseFolderActivity : K9Activity() {
             updateFolderList(folders)
         }
 
-        val savedDisplayMode = savedInstanceState?.getString(STATE_DISPLAY_MODE)?.let { FolderMode.valueOf(it) }
-        val displayMode = savedDisplayMode ?: getInitialDisplayMode()
+        val savedShowHiddenFolders = savedInstanceState?.getBoolean(STATE_SHOW_HIDDEN_FOLDERS)
+        val showHiddenFolders = savedShowHiddenFolders ?: false
 
-        viewModel.setDisplayMode(account, displayMode)
+        viewModel.setDisplayMode(account, showHiddenFolders)
     }
 
     private fun decodeArguments(savedInstanceState: Bundle?): Boolean {
@@ -86,10 +85,6 @@ class ChooseFolderActivity : K9Activity() {
         }
 
         return true
-    }
-
-    private fun getInitialDisplayMode(): FolderMode {
-        return account.folderDisplayMode
     }
 
     private fun initializeActionBar() {
@@ -146,7 +141,7 @@ class ChooseFolderActivity : K9Activity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         scrollToFolderId?.let { folderId -> outState.putLong(STATE_SCROLL_TO_FOLDER_ID, folderId) }
-        outState.putString(STATE_DISPLAY_MODE, viewModel.currentDisplayMode?.name)
+        outState.putBoolean(STATE_SHOW_HIDDEN_FOLDERS, viewModel.isShowHiddenFolders)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -154,6 +149,11 @@ class ChooseFolderActivity : K9Activity() {
         menuInflater.inflate(R.menu.choose_folder_option, menu)
         configureFolderSearchView(menu)
         return true
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menu?.findItem(R.id.toggle_hidden_folders)?.setChecked(viewModel.isShowHiddenFolders)
+        return super.onPrepareOptionsMenu(menu)
     }
 
     private fun configureFolderSearchView(menu: Menu) {
@@ -178,10 +178,7 @@ class ChooseFolderActivity : K9Activity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> finish()
-            R.id.display_1st_class -> setDisplayMode(FolderMode.FIRST_CLASS)
-            R.id.display_1st_and_2nd_class -> setDisplayMode(FolderMode.FIRST_AND_SECOND_CLASS)
-            R.id.display_not_second_class -> setDisplayMode(FolderMode.NOT_SECOND_CLASS)
-            R.id.display_all -> setDisplayMode(FolderMode.ALL)
+            R.id.toggle_hidden_folders -> setShowHiddenFolders(item.isChecked.not())
             R.id.list_folders -> refreshFolderList()
             else -> return super.onOptionsItemSelected(item)
         }
@@ -192,8 +189,8 @@ class ChooseFolderActivity : K9Activity() {
         messagingController.refreshFolderList(account)
     }
 
-    private fun setDisplayMode(displayMode: FolderMode) {
-        viewModel.setDisplayMode(account, displayMode)
+    private fun setShowHiddenFolders(enabled: Boolean) {
+        viewModel.setDisplayMode(account, enabled)
     }
 
     private fun returnResult(folderId: Long, displayName: String) {
@@ -239,7 +236,7 @@ class ChooseFolderActivity : K9Activity() {
 
     companion object {
         private const val STATE_SCROLL_TO_FOLDER_ID = "scrollToFolderId"
-        private const val STATE_DISPLAY_MODE = "displayMode"
+        private const val STATE_SHOW_HIDDEN_FOLDERS = "showHiddenFolders"
         private const val EXTRA_ACCOUNT = "accountUuid"
         private const val EXTRA_CURRENT_FOLDER_ID = "currentFolderId"
         private const val EXTRA_SCROLL_TO_FOLDER_ID = "scrollToFolderId"

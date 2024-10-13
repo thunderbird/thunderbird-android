@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="onboarding_permissions_contacts_description">Kişi önerileri sunabilmek ve kişi adlarını ve fotoğraflarını görüntüleyebilmek için erişime izin verin.</string>
+    <string name="onboarding_permissions_contacts_description">Kişi önerileri almak, kişi adlarını ve fotoğraflarını görmek için erişim izni verin.</string>
     <string name="onboarding_permissions_notifications_description">Hiçbir e-postayı kaçırmamak için bildirimleri açın.</string>
     <string name="onboarding_permissions_notifications_title">Bildirimler</string>
-    <string name="onboarding_permissions_screen_title">Deneyimi iyileştirin</string>
+    <string name="onboarding_permissions_screen_title">Deneyiminizi iyileştirin</string>
     <string name="onboarding_permissions_contacts_title">Kişiler</string>
     <string name="onboarding_permissions_allow_button">İzin ver</string>
     <string name="onboarding_permissions_skip_button">Atla</string>

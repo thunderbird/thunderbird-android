@@ -9,4 +9,13 @@
     <string name="account_server_validation_error_unknown">알수 없는 오류</string>
     <string name="account_server_validation_error_authentication">인증 오류</string>
     <string name="account_server_validation_error_network">네트워크 오류</string>
+    <string name="account_server_validation_sign_in">로그인이 필요합니다</string>
+    <string name="account_server_validation_outgoing_loading_error">발신 서버 설정을 확인하는데 실패했습니다</string>
+    <string name="account_server_validation_incoming_loading_error">수신 서버 설정을 확인하는데 실패했습니다</string>
+    <string name="account_server_validation_error_missing_server_capability_details">서버에 누락된 기능이 있습니다:
+\n%s</string>
+    <string name="account_server_validation_outgoing_success">발신 서버 설정이 확인되었습니다</string>
+    <string name="account_server_validation_incoming_success">수신 서버 설정이 확인되었습니다</string>
+    <string name="account_server_validation_incoming_loading_message">수신 서버 설정을 확인하는 중…</string>
+    <string name="account_server_validation_outgoing_loading_message">발신 서버 설정을 확인하는 중…</string>
 </resources>

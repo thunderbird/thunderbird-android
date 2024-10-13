@@ -8,6 +8,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.core.app.PendingIntentCompat
 import app.k9mail.feature.launcher.FeatureLauncherActivity
+import app.k9mail.feature.launcher.FeatureLauncherTarget
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.message.controller.MessageReference
@@ -110,12 +111,18 @@ internal class K9NotificationActionCreator(
     }
 
     override fun getEditIncomingServerSettingsIntent(account: Account): PendingIntent {
-        val intent = FeatureLauncherActivity.getEditIncomingSettingsIntent(context, account.uuid)
+        val intent = FeatureLauncherActivity.getIntent(
+            context = context,
+            target = FeatureLauncherTarget.AccountEditIncomingSettings(account.uuid),
+        )
         return PendingIntentCompat.getActivity(context, account.accountNumber, intent, FLAG_UPDATE_CURRENT, false)!!
     }
 
     override fun getEditOutgoingServerSettingsIntent(account: Account): PendingIntent {
-        val intent = FeatureLauncherActivity.getEditOutgoingSettingsIntent(context, account.uuid)
+        val intent = FeatureLauncherActivity.getIntent(
+            context = context,
+            target = FeatureLauncherTarget.AccountEditOutgoingSettings(account.uuid),
+        )
         return PendingIntentCompat.getActivity(context, account.accountNumber, intent, FLAG_UPDATE_CURRENT, false)!!
     }
 

@@ -60,7 +60,6 @@ import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.FolderClass;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageDownloadState;
 import com.fsck.k9.mail.MessagingException;
@@ -2283,23 +2282,17 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         refreshFolderListIfStale(account);
 
         try {
-            Account.FolderMode aDisplayMode = account.getFolderDisplayMode();
-            Account.FolderMode aSyncMode = account.getFolderSyncMode();
-
             LocalStore localStore = localStoreProvider.getInstance(account);
             for (final LocalFolder folder : localStore.getPersonalNamespaces(false)) {
                 folder.open();
 
-                FolderClass fDisplayClass = folder.getDisplayClass();
-                FolderClass fSyncClass = folder.getSyncClass();
-
-                if (LocalFolder.isModeMismatch(aDisplayMode, fDisplayClass)) {
+                if (!folder.isVisible()) {
                     // Never sync a folder that isn't displayed
                     continue;
                 }
 
-                if (LocalFolder.isModeMismatch(aSyncMode, fSyncClass)) {
-                    // Do not sync folders in the wrong class
+                if (!folder.isSyncEnabled()) {
+                    // Do not sync folders that are not enabled for sync.
                     continue;
                 }
                 synchronizeFolder(account, folder, ignoreLastCheckedTime, notify, listener, notificationState);

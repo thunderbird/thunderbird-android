@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="navigation_drawer_action_settings">Arventennoù</string>
-    <string name="navigation_drawer_action_folders">Merañ an teuliadoù</string>
+    <string name="navigation_drawer_action_manage_folders">Merañ an teuliadoù</string>
     <string name="navigation_drawer_unified_inbox_title">Boest degemer unanet</string>
 </resources>

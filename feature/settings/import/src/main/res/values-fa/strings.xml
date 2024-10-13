@@ -37,4 +37,6 @@
     <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 فعلا توسط این ارائه دهنده پشتیبانی نمی‌شود.</string>
     <string name="settings_import_oauth_error_browser_not_found">برنامه نمی تواند مرورگری را پیدا کند تا دسترسی به حسابتان را بگیرد.</string>
     <string name="settings_import_general_settings_item">تنظیمات کلی</string>
+    <string name="settings_import_pick_app_button">درون‌ریزی از کاره</string>
+    <string name="settings_import_pick_app_dialog_title">درون‌ریزی از کاره</string>
 </resources>

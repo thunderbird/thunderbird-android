@@ -6,7 +6,6 @@ import androidx.compose.runtime.State
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 
 /**
  * Interface for a unidirectional view model with side-effects ([EFFECT]). It has a [STATE] and can handle [EVENT]'s.
@@ -92,7 +91,7 @@ inline fun <reified STATE, EVENT, EFFECT> UnidirectionalViewModel<STATE, EVENT, 
     val dispatch: (EVENT) -> Unit = { event(it) }
 
     LaunchedEffect(key1 = effect) {
-        effect.collectLatest {
+        effect.collect {
             handleEffect(it)
         }
     }

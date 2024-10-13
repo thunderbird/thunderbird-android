@@ -1,0 +1,6 @@
+- Zahájena konverze uživatelského rozhraní na Material 3
+- Přidána podpora mailto: URI na NFC tagu
+- Přidáno experimentální ošetření pádu aplikace na pozadí
+- Optimalizovány některé interakce protokolu IMAP
+- Pokud je Push aktivní, zobrazení oznámení není pozdrženo
+- Aktualizovány překlady

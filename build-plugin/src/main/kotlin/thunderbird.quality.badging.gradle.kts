@@ -2,7 +2,8 @@ import com.android.SdkConstants
 import com.android.build.api.artifact.SingleArtifact
 import com.github.difflib.text.DiffRow
 import com.github.difflib.text.DiffRowGenerator
-import org.gradle.configurationcache.extensions.capitalized
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 
 /**
  * This is a Gradle plugin that adds a task to generate the badging of the APKs and a task to check that the
@@ -17,49 +18,61 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+val variantsToCheck = listOf("release", "beta", "daily")
+
 androidComponents {
     onVariants { variant ->
-        val capitalizedVariantName = variant.name.capitalized()
-        val generateBadgingTaskName = "generate${capitalizedVariantName}Badging"
-        val generateBadging = tasks.register<GenerateBadgingTask>(generateBadgingTaskName) {
-            apk.set(variant.artifacts.get(SingleArtifact.APK_FROM_BUNDLE))
-            aapt2Executable.set(
-                File(
-                    android.sdkDirectory,
-                    "${SdkConstants.FD_BUILD_TOOLS}/" +
-                        "${android.buildToolsVersion}/" +
-                        SdkConstants.FN_AAPT2,
-                ),
-            )
-            badging.set(
-                project.layout.buildDirectory.file(
-                    "outputs/apk_from_bundle/${variant.name}/${variant.name}-badging.txt",
-                ),
-            )
-        }
-
-        val updateBadgingTaskName = "update${capitalizedVariantName}Badging"
-        tasks.register<Copy>(updateBadgingTaskName) {
-            from(generateBadging.get().badging)
-            into(project.layout.projectDirectory.dir("badging"))
-        }
-
-        val checkBadgingTaskName = "check${capitalizedVariantName}Badging"
-        val goldenBadgingPath = project.layout.projectDirectory.file("badging/${variant.name}-badging.txt")
-        tasks.register<CheckBadgingTask>(checkBadgingTaskName) {
-            if (goldenBadgingPath.asFile.exists()) {
-                goldenBadging.set(goldenBadgingPath)
+        if (variantsToCheck.any { variant.name.contains(it, ignoreCase = true) }) {
+            val capitalizedVariantName = variant.name.capitalized()
+            val generateBadgingTaskName = "generate${capitalizedVariantName}Badging"
+            val generateBadging = tasks.register<GenerateBadgingTask>(generateBadgingTaskName) {
+                apk.set(variant.artifacts.get(SingleArtifact.APK_FROM_BUNDLE))
+                aapt2Executable.set(
+                    File(
+                        android.sdkDirectory,
+                        "${SdkConstants.FD_BUILD_TOOLS}/" +
+                            "${android.buildToolsVersion}/" +
+                            SdkConstants.FN_AAPT2,
+                    ),
+                )
+                badging.set(
+                    project.layout.buildDirectory.file(
+                        "outputs/apk_from_bundle/${variant.name}/${variant.name}-badging.txt",
+                    ),
+                )
             }
-            generatedBadging.set(
-                generateBadging.get().badging,
-            )
-            this.updateBadgingTaskName.set(updateBadgingTaskName)
 
-            output.set(
-                project.layout.buildDirectory.dir("intermediates/$checkBadgingTaskName"),
-            )
+            val updateBadgingTaskName = "update${capitalizedVariantName}Badging"
+            tasks.register<Copy>(updateBadgingTaskName) {
+                from(generateBadging.get().badging)
+                into(project.layout.projectDirectory.dir("badging"))
+            }
+
+            val checkBadgingTaskName = "check${capitalizedVariantName}Badging"
+            val goldenBadgingPath = project.layout.projectDirectory.file("badging/${variant.name}-badging.txt")
+            tasks.register<CheckBadgingTask>(checkBadgingTaskName) {
+                if (goldenBadgingPath.asFile.exists()) {
+                    goldenBadging.set(goldenBadgingPath)
+                }
+                generatedBadging.set(
+                    generateBadging.get().badging,
+                )
+                this.updateBadgingTaskName.set(updateBadgingTaskName)
+
+                output.set(
+                    project.layout.buildDirectory.dir("intermediates/$checkBadgingTaskName"),
+                )
+            }
+
+            tasks.named("build") {
+                dependsOn(checkBadgingTaskName)
+            }
         }
     }
+}
+
+private fun String.capitalized() = replaceFirstChar {
+    if (it.isLowerCase()) it.titlecase() else it.toString()
 }
 
 @CacheableTask
@@ -81,6 +94,7 @@ abstract class GenerateBadgingTask : DefaultTask() {
 
     @TaskAction
     fun taskAction() {
+        val outputStream = ByteArrayOutputStream()
         execOperations.exec {
             commandLine(
                 aapt2Executable.get().asFile.absolutePath,
@@ -88,7 +102,28 @@ abstract class GenerateBadgingTask : DefaultTask() {
                 "badging",
                 apk.get().asFile.absolutePath,
             )
-            standardOutput = badging.asFile.get().outputStream()
+            standardOutput = outputStream
+        }
+
+        badging.asFile.get().writeText(cleanBadgingContent(outputStream) + "\n")
+    }
+
+    private fun cleanBadgingContent(outputStream: ByteArrayOutputStream): String {
+        return ByteArrayInputStream(outputStream.toByteArray()).bufferedReader().use { reader ->
+            reader.lineSequence().map { line ->
+                line.cleanBadgingLine()
+            }.joinToString("\n")
+        }
+    }
+
+    private fun String.cleanBadgingLine(): String {
+        return if (startsWith("package:")) {
+            replace(Regex("versionName='[^']*'"), "")
+                .replace(Regex("versionCode='[^']*'"), "")
+                .replace(Regex("\\s+"), " ")
+                .trim()
+        } else {
+            this
         }
     }
 }

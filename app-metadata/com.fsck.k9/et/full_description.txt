@@ -1,0 +1,24 @@
+K-9 Mail on avatud lähtekoodiga meiliklient, mis töötab põhimõtteliselt kõigi e-postiteenuste pakkujatega.
+
+<b>Funktsioonid</b>
+
+* Toetab mitut kontot
+* Ühtne postkast
+* Privaatsussõbralik (pole mingit jälgimist, ühendub ainult sinu e-postiteenuse pakkujaga)
+* Automaatne taustal sünkroonimine või tõuketeavitused
+* Kohalik ja serveripoolne otsing
+* OpenPGP e-posti krüptimine (PGP/MIME)
+
+Paigalda rakendus <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain: Easy PGP</a>, et krüptida/dekrüptida oma e-kirjad OpenPGP abil.
+
+
+<b>Tugi</b>
+
+Kui sul on K-9 Mailiga probleeme, küsi abi meie <a href="https://forum.k9mail.app">kasutajatoe foorumist</a>.
+
+
+<b>Kas soovid aidata?</b>
+
+K-9 Mail on kogukonna arendatud projekt. Kui oled huvitatud rakenduse täiustamisest, liitu meiega!
+Meie veahalduse, lähtekoodi ja viki leiad aadressilt <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a> .
+Meil on alati hea meel tervitada uusi arendajaid, disainereid, dokumenteerijaid, tõlkijaid, vigade otsijaid ja sõpru.

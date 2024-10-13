@@ -1,0 +1,10 @@
+- U shtua trajtim figurash brenda menuje kontekstit për hiperlidhje
+- U shtua aftësia për përcjellje në email-e të rinj bashkëngjitje të hapura
+- U përmirësua skena e gabimeve në dëshmi, gjatë ujdisjes së llogarisë
+- U përmirësua importim rregullimesh, gjatë ujdisjes së llogarisë
+- U përmirësua UI/UX ujdisjeje llogarie
+- U përmirësua shfaqja e ujdisjes së llogarisë në ekrane të vegjël
+- U përmirësua UI/UX për përpunim rregullimesh shërbyesi llogarish 
+- U ndreq vithisje AlarmManager në Android 14
+- Ndryshime të brendshme
+- Përditësim përkthimesh

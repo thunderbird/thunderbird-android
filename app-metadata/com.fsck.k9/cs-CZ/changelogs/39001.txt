@@ -1,0 +1,1 @@
+- Opraven pád aplikaci při otevření okna pro vytvoření zprávy

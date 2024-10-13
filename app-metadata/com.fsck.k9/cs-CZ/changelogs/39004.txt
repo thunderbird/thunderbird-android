@@ -1,0 +1,2 @@
+- Opraven pád, pokud byl povolený režim rozdělené obrazovky
+- Aktualizovány překlady

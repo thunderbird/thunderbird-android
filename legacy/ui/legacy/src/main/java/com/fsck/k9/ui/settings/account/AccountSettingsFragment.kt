@@ -16,6 +16,7 @@ import androidx.preference.SwitchPreference
 import app.k9mail.core.common.provider.AppNameProvider
 import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.feature.launcher.FeatureLauncherActivity
+import app.k9mail.feature.launcher.FeatureLauncherTarget
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.folder.RemoteFolder
 import com.fsck.k9.account.BackgroundAccountRemover
@@ -132,7 +133,10 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
     private fun initializeIncomingServer() {
         findPreference<Preference>(PREFERENCE_INCOMING_SERVER)?.onClick {
-            FeatureLauncherActivity.launchEditIncomingSettings(requireActivity(), accountUuid)
+            FeatureLauncherActivity.launch(
+                context = requireActivity(),
+                target = FeatureLauncherTarget.AccountEditIncomingSettings(accountUuid),
+            )
         }
     }
 
@@ -158,7 +162,10 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
     private fun initializeOutgoingServer() {
         findPreference<Preference>(PREFERENCE_OUTGOING_SERVER)?.onClick {
-            FeatureLauncherActivity.launchEditOutgoingSettings(requireActivity(), accountUuid)
+            FeatureLauncherActivity.launch(
+                context = requireActivity(),
+                target = FeatureLauncherTarget.AccountEditOutgoingSettings(accountUuid),
+            )
         }
     }
 
@@ -198,7 +205,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
     private fun initializeAdvancedPushSettings(account: Account) {
         if (!messagingController.isPushCapable(account)) {
-            findPreference<Preference>(PREFERENCE_PUSH_MODE)?.remove()
             findPreference<Preference>(PREFERENCE_ADVANCED_PUSH_SETTINGS)?.remove()
         }
     }
@@ -445,7 +451,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_DELETE_POLICY = "delete_policy"
         private const val PREFERENCE_EXPUNGE_POLICY = "expunge_policy"
         private const val PREFERENCE_MESSAGE_AGE = "account_message_age"
-        private const val PREFERENCE_PUSH_MODE = "folder_push_mode"
         private const val PREFERENCE_ADVANCED_PUSH_SETTINGS = "push_advanced"
         private const val PREFERENCE_OPENPGP_ENABLE = "openpgp_provider"
         private const val PREFERENCE_OPENPGP_KEY = "openpgp_key"

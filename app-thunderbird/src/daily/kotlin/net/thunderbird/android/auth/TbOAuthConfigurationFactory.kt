@@ -10,6 +10,7 @@ class TbOAuthConfigurationFactory : OAuthConfigurationFactory {
         return mapOf(
             createAolConfiguration(),
             createGmailConfiguration(),
+            createFastmailConfiguration(),
             createMicrosoftConfiguration(),
             createYahooConfiguration(),
         )
@@ -24,6 +25,19 @@ class TbOAuthConfigurationFactory : OAuthConfigurationFactory {
             scopes = listOf("mail-w"),
             authorizationEndpoint = "https://api.login.aol.com/oauth2/request_auth",
             tokenEndpoint = "https://api.login.aol.com/oauth2/get_token",
+            redirectUri = "${BuildConfig.APPLICATION_ID}://oauth2redirect",
+        )
+    }
+
+    private fun createFastmailConfiguration(): Pair<List<String>, OAuthConfiguration> {
+        return listOf(
+            "imap.fastmail.com",
+            "smtp.fastmail.com",
+        ) to OAuthConfiguration(
+            clientId = "353e41ae",
+            scopes = listOf("https://www.fastmail.com/dev/protocol-imap", "https://www.fastmail.com/dev/protocol-smtp"),
+            authorizationEndpoint = "https://api.fastmail.com/oauth/authorize",
+            tokenEndpoint = "https://api.fastmail.com/oauth/refresh",
             redirectUri = "${BuildConfig.APPLICATION_ID}://oauth2redirect",
         )
     }

@@ -1,0 +1,10 @@
+- Lisatud hüperlinkide kontekstimenüüsse pilditöötlus
+- Lisatud võimalus edastada avatud manuseid uutele meilidele
+- Konto seadistamise ajal täiustatud sertifikaadi veaekraan
+- Konto seadistamise ajal täiustatud seadete importimine
+- Täiustatud konto seadistamise kasutajaliides/UX
+- Täiustatud konto seadistuse renderdamine väikestel ekraanidel
+- Täiustatud kontoserveri sätete muutmise kasutajaliides/UX
+- Parandatud AlarmManageri krahh operatsioonisüsteemis Android 14
+- Sisemised muutused
+- Uuendatud tõlked

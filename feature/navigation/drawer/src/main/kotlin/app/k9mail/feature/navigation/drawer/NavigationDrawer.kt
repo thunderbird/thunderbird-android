@@ -7,11 +7,12 @@ interface NavigationDrawer {
     val parent: AppCompatActivity
     val isOpen: Boolean
 
+    // TODO: remove once LegacyDrawer is removed
     fun updateUserAccountsAndFolders(account: Account?)
 
     fun selectAccount(accountUuid: String)
 
-    fun selectFolder(folderId: Long)
+    fun selectFolder(accountUuid: String, folderId: Long)
 
     fun selectUnifiedInbox()
 

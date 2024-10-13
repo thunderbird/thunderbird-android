@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_warning_title">Åtvaring</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Sertifikatsfeil</string>
+    <string name="account_server_certificate_button_back">Gå tilbake (tilrådd)</string>
+    <string name="account_server_certificate_section_title">Tenersertifikat</string>
+    <string name="account_server_certificate_subject_alternative_names">Alternative emnenamn</string>
+    <string name="account_server_certificate_issuer">utferdar</string>
+    <string name="account_server_certificate_fingerprints_section">Fingeravtrykk</string>
+    <string name="account_server_certificate_subject">Emne</string>
+    <string name="account_server_certificate_unknown_error_description_format">Appen oppdaga ein potensiell sikkerheitsrisiko og gjekk ikkje vidare til å kople til <xliff:g id="serverName">%s</xliff:g>. \nViss du held fram kan angriparar prøve å stele info som t.d. passord eller e-postar.</string>
+    <string name="account_server_certificate_button_advanced">Avansert</string>
+    <string name="account_server_certificate_button_continue">Godta risiko og hald fram</string>
+    <string name="account_server_certificate_not_valid_after">Ikkje gyldig etter</string>
+    <string name="account_server_certificate_not_valid_before">Ikkje gyldig før</string>
+</resources>

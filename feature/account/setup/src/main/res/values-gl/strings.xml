@@ -1,2 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Non se recoñece como unha dirección de correo electrónico válida.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Esta dirección de correo electrónico non é compatible.</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Configuración atopada</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Configurar automaticamente</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Editar configuración</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Confío nesta configuración</string>
+    <string name="account_setup_special_folders_loading_message">Obtención da lista de cartafoles…</string>
+    <string name="account_setup_special_folders_archive_folder_label">Arquivar cartafol</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Cartafol de borradores</string>
+    <string name="account_setup_special_folders_sent_folder_label">Cartafol de enviados</string>
+    <string name="account_setup_options_display_name_label">O teu nome</string>
+    <string name="account_setup_options_email_signature_error_blank">O nome da firma de correo electrónico non pode estar en branco.</string>
+    <string name="account_setup_special_folders_folder_automatic">Automático (%s)</string>
+    <string name="account_setup_create_account_created">Conta creada correctamente</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Esta dirección de correo electrónico non está permitida.</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Esta configuración non é de confianza</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Recibimos a configuración do teu servidor de correo electrónico a través dunha conexión que non é tan segura como nos gustaría. Isto significa que existe unha pequena posibilidade de que alguén a alterou. Por favor, poderías volver comprobar a configuración proporcionada para asegurarche de que é como debería ser?</string>
+    <string name="account_setup_special_folders_form_description_automatic">A entrada «Automático» seguirá automaticamente os cambios realizados polo servidor. O valor actual do servidor móstrase entre paréntese.</string>
+    <string name="account_setup_special_folders_folder_none">Ningún</string>
+    <string name="account_setup_options_account_name_error_blank">O nome da conta non pode estar en branco.</string>
+    <string name="account_setup_options_account_check_frequency_label">Comprobar frecuencia</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Requírese contrasinal.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_loading_message">Buscando configuración…</string>
+    <string name="account_setup_auto_discovery_loading_error">Erro ao cargar a configuración de correo electrónico</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Configuración non atopada</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">É necesario para aprobar a configuración.</string>
+    <string name="account_setup_special_folders_form_description">Especifique os cartafoles especiais da súa conta.</string>
+    <string name="account_setup_error_network">Erro de rede. Comprobe o estado da súa conexión e ténteo de novo.</string>
+    <string name="account_setup_error_unknown">Erro descoñecido</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">A dirección de correo electrónico é obrigatoria.</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Configurar manualmente</string>
+    <string name="account_setup_special_folders_error_message">Erro ao recuperar a lista de cartafoles do servidor</string>
+    <string name="account_setup_special_folders_success_message">Todos os cartafoles especiais foron configuradas automaticamente polo servidor.</string>
+    <string name="account_setup_special_folders_spam_folder_label">Cartafol de correo non desexado</string>
+    <string name="account_setup_special_folders_trash_folder_label">Cartafol da papeleira</string>
+    <string name="account_setup_options_section_display_options">Mostrar opcións</string>
+    <string name="account_setup_options_account_name_label">Nome da conta</string>
+    <string name="account_setup_options_display_name_error_required">O teu nome é obrigatorio.</string>
+    <string name="account_setup_options_email_signature_label">Firma de correo electrónico</string>
+    <string name="account_setup_options_section_sync_options">Opcións de sincronización</string>
+    <string name="account_setup_options_email_check_frequency_never">Nunca</string>
+</resources>

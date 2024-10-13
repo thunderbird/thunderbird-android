@@ -28,4 +28,16 @@
     <string name="settings_import_use_same_password_for_outgoing_server">Користи исту лозинку за одлазни сервер </string>
     <string name="settings_import_server_name_format">Назив сервера: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="settings_import_general_settings_item">Опште поставке</string>
+    <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 тренутно није подржан код овог провајдера.</string>
+    <string name="settings_import_authorization_required">Молимо вас да се пријавите</string>
+    <string name="settings_import_authorization_and_password_required">Молимо вас да се пријавите и унесете лозинке</string>
+    <string name="settings_import_status_log_in_required">Потребна је пријава</string>
+    <string name="settings_import_oauth_description">Да бисте користили овај имејл налог, потребно је да се пријавите и дате апликацији приступ вашим имејловима.</string>
+    <string name="settings_import_oauth_sign_in">Пријавите се</string>
+    <string name="settings_import_oauth_sign_in_with_google">Пријавите се преко Google-а</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">Овлашћење је отказано</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Овлашћење није успело са следећом грешком: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_browser_not_found">Апликација није могла да пронађе прегледач за коришћење у процесу давања приступа вашем налогу.</string>
+    <string name="settings_import_pick_app_button">Увези из апликације</string>
+    <string name="settings_import_pick_app_dialog_title">Увези из апликације</string>
 </resources>

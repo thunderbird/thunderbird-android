@@ -18,6 +18,7 @@ dependencies {
     implementation(projects.feature.navigation.drawer)
     // TODO: Remove AccountOauth dependency
     implementation(projects.feature.account.oauth)
+    implementation(projects.feature.funding.api)
     implementation(projects.feature.settings.import)
     implementation(projects.feature.telemetry.api)
 

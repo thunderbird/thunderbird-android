@@ -32,5 +32,8 @@ object Migrations {
         if (oldVersion < 83) MigrationTo83(db, migrationsHelper).rewriteHighestKnownUid()
         if (oldVersion < 84) MigrationTo84(db).rewriteAddresses()
         if (oldVersion < 85) MigrationTo85(db, migrationsHelper).addFoldersNotificationsEnabledColumn()
+        if (oldVersion < 86) MigrationTo86(db, migrationsHelper).addFoldersPushEnabledColumn()
+        if (oldVersion < 87) MigrationTo87(db, migrationsHelper).addFoldersSyncEnabledColumn()
+        if (oldVersion < 88) MigrationTo88(db, migrationsHelper).addFoldersVisibleColumn()
     }
 }

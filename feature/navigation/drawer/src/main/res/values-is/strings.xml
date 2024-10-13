@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="navigation_drawer_action_settings">Stillingar</string>
-    <string name="navigation_drawer_action_folders">Sýsla með möppur</string>
+    <string name="navigation_drawer_action_manage_folders">Sýsla með möppur</string>
     <string name="navigation_drawer_unified_inbox_title">Sameinað innhólf</string>
 </resources>

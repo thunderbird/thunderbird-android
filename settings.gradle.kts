@@ -74,12 +74,20 @@ include(
 
 include(
     ":feature:migration:provider",
+    ":feature:migration:qrcode",
 )
 
 include(
     ":feature:telemetry:api",
     ":feature:telemetry:noop",
     ":feature:telemetry:glean",
+)
+
+include(
+    ":feature:funding:api",
+    ":feature:funding:googleplay",
+    ":feature:funding:link",
+    ":feature:funding:noop",
 )
 
 include(
@@ -91,6 +99,7 @@ include(
     ":core:android:testing",
     ":core:ui:compose:common",
     ":core:ui:compose:designsystem",
+    ":core:ui:compose:navigation",
     ":core:ui:compose:theme2:common",
     ":core:ui:compose:theme2:k9mail",
     ":core:ui:compose:theme2:thunderbird",

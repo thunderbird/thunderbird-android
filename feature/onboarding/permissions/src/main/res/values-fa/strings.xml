@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="onboarding_permissions_contacts_description">برای ارایه پیشنهاد مخاطب و نمایش نام و عکس‌های آن‌ها این دسترسی را تایید نمایید</string>
-    <string name="onboarding_permissions_notifications_description">با فعال کردن اعلان‌ها، هیچ رایانامه‌ای را از دست نمی‌دهید.</string>
-    <string name="onboarding_permissions_notifications_title">اعلان‌ها</string>
+    <string name="onboarding_permissions_contacts_description">اجازهٔ دسترسی برای دادن پیشنهاد مخاطب و نمایش نام و عکس آشنایان.</string>
+    <string name="onboarding_permissions_notifications_description">روشن کردن آگاهی‌ها برای از دست ندادن هیچ رایانامه‌ای.</string>
+    <string name="onboarding_permissions_notifications_title">آگاهی‌ها</string>
     <string name="onboarding_permissions_screen_title">بهبود تجربه</string>
-    <string name="onboarding_permissions_contacts_title">مخاطبین</string>
-    <string name="onboarding_permissions_allow_button">اجازه دادن</string>
-    <string name="onboarding_permissions_skip_button">رد کردن</string>
+    <string name="onboarding_permissions_contacts_title">آشنایان</string>
+    <string name="onboarding_permissions_allow_button">اجازه</string>
+    <string name="onboarding_permissions_skip_button">پرش</string>
 </resources>

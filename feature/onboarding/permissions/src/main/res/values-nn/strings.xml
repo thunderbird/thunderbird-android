@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="onboarding_permissions_screen_title">Tilpass opplevinga</string>
+    <string name="onboarding_permissions_contacts_title">Kontaktar</string>
+    <string name="onboarding_permissions_allow_button">Tillat</string>
+    <string name="onboarding_permissions_skip_button">Hopp over</string>
+</resources>

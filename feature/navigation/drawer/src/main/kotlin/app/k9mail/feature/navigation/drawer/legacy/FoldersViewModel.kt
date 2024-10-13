@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class FoldersViewModel(
+internal class FoldersViewModel(
     private val folderRepository: DisplayFolderRepository,
     private val messageCountsProvider: MessageCountsProvider,
     private val isShowUnifiedInbox: () -> Boolean,

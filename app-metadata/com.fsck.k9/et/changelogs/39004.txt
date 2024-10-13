@@ -1,0 +1,2 @@
+- Parandatud krahh, kui jagatud ekraani režiim on lubatud
+- Uuendatud tõlked

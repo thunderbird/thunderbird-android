@@ -1,7 +1,6 @@
 package com.fsck.k9.controller
 
 import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.account.Account.FolderMode
 import app.k9mail.legacy.mailstore.ListenableMessageStore
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.search.ConditionsTreeNode
@@ -31,14 +30,13 @@ class DefaultMessageCountsProviderTest {
     private val messageCountsProvider = DefaultMessageCountsProvider(preferences, messageStoreManager)
 
     @Test
-    fun `getMessageCounts() without any special folders and displayMode = ALL`() {
+    fun `getMessageCounts() without any special folders`() {
         account.inboxFolderId = null
         account.trashFolderId = null
         account.draftsFolderId = null
         account.spamFolderId = null
         account.outboxFolderId = null
         account.sentFolderId = null
-        account.folderDisplayMode = FolderMode.ALL
 
         val messageCounts = messageCountsProvider.getMessageCounts(account)
 

@@ -1,0 +1,5 @@
+- Push: teavitage kasutajat, kui puudub luba täpsete häirete ajastamiseks
+- Seade "Saada kliendi ID" nimetati ümber "Kliendi teabe saatmiseks"
+- IMAP: lisatud tugi atribuudile \NonExistent LIST
+- IMAP: pärast liigutamist ilma MOVE-laiendita väljastage käsk EXPUNGE
+- Uuendatud tõlked; lisatud heebrea tõlge

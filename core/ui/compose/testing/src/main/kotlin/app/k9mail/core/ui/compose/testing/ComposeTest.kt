@@ -13,6 +13,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
+import androidx.test.espresso.Espresso
 import app.k9mail.core.ui.compose.theme2.k9mail.K9MailTheme2
 import org.junit.Rule
 import org.junit.runner.RunWith
@@ -104,3 +105,5 @@ fun ComposeTest.onAllNodesWithContentDescription(
 ) = composeTestRule.onAllNodesWithContentDescription(label, substring, ignoreCase, useUnmergedTree)
 
 fun ComposeTest.onRoot(useUnmergedTree: Boolean = false) = composeTestRule.onRoot(useUnmergedTree)
+
+fun ComposeTest.pressBack() = Espresso.pressBack()

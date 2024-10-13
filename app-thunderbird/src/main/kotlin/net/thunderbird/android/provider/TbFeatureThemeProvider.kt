@@ -11,4 +11,11 @@ class TbFeatureThemeProvider : FeatureThemeProvider {
             content()
         }
     }
+
+    @Composable
+    override fun WithTheme(darkTheme: Boolean, content: @Composable () -> Unit) {
+        ThunderbirdTheme2(darkTheme = darkTheme) {
+            content()
+        }
+    }
 }

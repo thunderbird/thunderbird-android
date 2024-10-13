@@ -1,2 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_unknown_error_description_format">Az alkalmazás lehetséges biztonsági fenyegetést észlelt, és nem folytatta a kapcsolódást a(z) <xliff:g id="serverName">%s</xliff:g> felé.
+\nHa folytatja, akkor támadók olyan információkat próbálhatnak ellopni, mint a jelszava vagy az e-mailjei.</string>
+    <string name="account_server_certificate_fingerprints_section">Ujjlenyomatok</string>
+    <string name="account_server_certificate_warning_title">Figyelmeztetés</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Tanúsítványhiba</string>
+    <string name="account_server_certificate_button_back">Ugrás vissza (ajánlott)</string>
+    <string name="account_server_certificate_button_advanced">Speciális</string>
+    <string name="account_server_certificate_button_continue">Kockázat elfogadása és folytatás</string>
+    <string name="account_server_certificate_section_title">Kiszolgálótanúsítvány</string>
+    <string name="account_server_certificate_subject_alternative_names">Tárgy alternatív nevei</string>
+    <string name="account_server_certificate_not_valid_before">Eddig nem érvényes</string>
+    <string name="account_server_certificate_not_valid_after">Ezután nem érvényes</string>
+    <string name="account_server_certificate_subject">Tárgy</string>
+    <string name="account_server_certificate_issuer">Kibocsátó</string>
+</resources>

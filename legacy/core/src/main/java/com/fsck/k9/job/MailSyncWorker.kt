@@ -11,6 +11,7 @@ import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mail.AuthType
 import timber.log.Timber
 
+// IMPORTANT: Update K9WorkerFactory when moving this class and the FQCN no longer starts with "com.fsck.k9".
 class MailSyncWorker(
     private val messagingController: MessagingController,
     private val preferences: Preferences,

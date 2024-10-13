@@ -491,15 +491,6 @@ class Account(
     }
 
     @Synchronized
-    fun updateFolderSyncMode(syncMode: FolderMode): Boolean {
-        val oldSyncMode = folderSyncMode
-        folderSyncMode = syncMode
-
-        return (oldSyncMode == FolderMode.NONE && syncMode != FolderMode.NONE) ||
-            (oldSyncMode != FolderMode.NONE && syncMode == FolderMode.NONE)
-    }
-
-    @Synchronized
     fun isSortAscending(sortType: SortType): Boolean {
         return sortAscending.getOrPut(sortType) { sortType.isDefaultAscending }
     }

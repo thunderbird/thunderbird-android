@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="account_server_validation_incoming_loading_message">Gelen sunucu ayarları denetleniyor…</string>
+    <string name="account_server_validation_incoming_loading_message">Gelen sunucusu ayarları denetleniyor…</string>
     <string name="account_server_validation_error_authentication">Kimlik doğrulama hatası</string>
-    <string name="account_server_validation_outgoing_loading_message">Giden sunucu ayarları denetleniyor…</string>
+    <string name="account_server_validation_outgoing_loading_message">Giden sunucusu ayarları denetleniyor…</string>
     <string name="account_server_validation_error_network">Ağ hatası</string>
-    <string name="account_server_validation_outgoing_success">Giden sunucu ayarları doğrulandı</string>
+    <string name="account_server_validation_outgoing_success">Giden sunucusu ayarları doğrulandı</string>
     <string name="account_server_validation_error_unknown">Bilinmeyen hata</string>
     <string name="account_server_validation_sign_in">Lütfen oturum açın</string>
-    <string name="account_server_validation_outgoing_loading_error">Giden sunucu ayarlarının denetlenmesi başarısız oldu</string>
-    <string name="account_server_validation_incoming_success">Gelen sunucu ayarları doğrulandı</string>
-    <string name="account_server_validation_incoming_loading_error">Gelen sunucu ayarlarının denetlenmesi başarısız oldu</string>
+    <string name="account_server_validation_outgoing_loading_error">Giden sunucusu ayarlarının denetlenmesi başarısız oldu</string>
+    <string name="account_server_validation_incoming_success">Gelen sunucusu ayarları doğrulandı</string>
+    <string name="account_server_validation_incoming_loading_error">Gelen sunucusu ayarlarının denetlenmesi başarısız oldu</string>
     <string name="account_server_validation_error_server">Sunucu hatası</string>
     <string name="account_server_validation_error_missing_server_capability">Eksik sunucu özelliği</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">İstemci sertifikasına erişilemedi</string>

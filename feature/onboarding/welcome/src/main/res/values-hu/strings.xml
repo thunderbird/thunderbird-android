@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">Indulás</string>
     <string name="onboarding_welcome_import_button">Beállítások importálása</string>
+    <string name="onboarding_welcome_message">Üdvözli a <xliff:g id="app_name">%s</xliff:g>, az androidos levelezőkliens, amely a fokozott biztonságot, a könnyű testreszabhatóságot és az összes fiókja zökkenőmentés kezelését figyelembe véve lett tervezve.</string>
 </resources>

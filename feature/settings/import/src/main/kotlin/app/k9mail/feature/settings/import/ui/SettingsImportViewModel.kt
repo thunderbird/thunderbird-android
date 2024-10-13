@@ -110,6 +110,8 @@ internal class SettingsImportViewModel(
             closeButtonLabel = savedInstanceState.getEnum(STATE_CLOSE_BUTTON_LABEL, CloseButtonLabel.OK)
             isPickDocumentButtonVisible = savedInstanceState.getBoolean(STATE_PICK_DOCUMENT_BUTTON_VISIBLE)
             isPickDocumentButtonEnabled = savedInstanceState.getBoolean(STATE_PICK_DOCUMENT_BUTTON_ENABLED)
+            isScanQrCodeButtonVisible = savedInstanceState.getBoolean(STATE_SCAN_QR_CODE_BUTTON_VISIBLE)
+            isScanQrCodeButtonEnabled = savedInstanceState.getBoolean(STATE_SCAN_QR_CODE_BUTTON_ENABLED)
 
             isLoadingProgressVisible = savedInstanceState.getBoolean(STATE_LOADING_PROGRESS_VISIBLE)
             isImportProgressVisible = savedInstanceState.getBoolean(STATE_IMPORT_PROGRESS_VISIBLE)
@@ -174,6 +176,8 @@ internal class SettingsImportViewModel(
             outState.putEnum(STATE_CLOSE_BUTTON_LABEL, closeButtonLabel)
             outState.putBoolean(STATE_PICK_DOCUMENT_BUTTON_VISIBLE, isPickDocumentButtonVisible)
             outState.putBoolean(STATE_PICK_DOCUMENT_BUTTON_ENABLED, isPickDocumentButtonEnabled)
+            outState.putBoolean(STATE_SCAN_QR_CODE_BUTTON_VISIBLE, isScanQrCodeButtonVisible)
+            outState.putBoolean(STATE_SCAN_QR_CODE_BUTTON_ENABLED, isScanQrCodeButtonEnabled)
             outState.putBoolean(STATE_LOADING_PROGRESS_VISIBLE, isLoadingProgressVisible)
             outState.putBoolean(STATE_IMPORT_PROGRESS_VISIBLE, isImportProgressVisible)
             outState.putEnum(STATE_STATUS_TEXT, statusText)
@@ -199,6 +203,14 @@ internal class SettingsImportViewModel(
         }
 
         sendActionEvent(Action.PickDocument)
+    }
+
+    fun onScanQrCodeButtonClicked() {
+        updateUiModel {
+            disablePickButtons()
+        }
+
+        sendActionEvent(Action.ScanQrCode)
     }
 
     fun onPickAppButtonClicked() {
@@ -519,6 +531,8 @@ internal class SettingsImportViewModel(
         private const val STATE_CLOSE_BUTTON_LABEL = "closeButtonLabel"
         private const val STATE_PICK_DOCUMENT_BUTTON_VISIBLE = "pickDocumentButtonVisible"
         private const val STATE_PICK_DOCUMENT_BUTTON_ENABLED = "pickDocumentButtonEnabled"
+        private const val STATE_SCAN_QR_CODE_BUTTON_VISIBLE = "scanQrCodeButtonVisible"
+        private const val STATE_SCAN_QR_CODE_BUTTON_ENABLED = "scanQrCodeButtonEnabled"
         private const val STATE_LOADING_PROGRESS_VISIBLE = "loadingProgressVisible"
         private const val STATE_IMPORT_PROGRESS_VISIBLE = "importProgressVisible"
         private const val STATE_STATUS_TEXT = "statusText"
@@ -534,6 +548,7 @@ internal class SettingsImportViewModel(
 sealed class Action {
     class Close(val importSuccess: Boolean) : Action()
     object PickDocument : Action()
+    object ScanQrCode : Action()
     object PickApp : Action()
     class StartAuthorization(val accountUuid: String) : Action()
     class PasswordPrompt(

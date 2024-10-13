@@ -14,10 +14,10 @@ fun SQLiteDatabase.createFolder(
     isLocalOnly: Boolean = true,
     integrate: Boolean = false,
     inTopGroup: Boolean = false,
-    displayClass: String = "NO_CLASS",
-    syncClass: String? = "INHERITED",
+    visible: Boolean = true,
+    syncEnabled: Boolean = false,
     notificationsEnabled: Boolean = false,
-    pushClass: String? = "SECOND_CLASS",
+    pushEnabled: Boolean = false,
     lastUpdated: Long = 0L,
     unreadCount: Int = 0,
     visibleLimit: Int = 25,
@@ -32,10 +32,10 @@ fun SQLiteDatabase.createFolder(
         put("local_only", isLocalOnly)
         put("integrate", integrate)
         put("top_group", inTopGroup)
-        put("display_class", displayClass)
-        put("poll_class", syncClass)
+        put("visible", visible)
+        put("sync_enabled", syncEnabled)
         put("notifications_enabled", notificationsEnabled)
-        put("push_class", pushClass)
+        put("push_enabled", pushEnabled)
         put("last_updated", lastUpdated)
         put("unread_count", unreadCount)
         put("visible_limit", visibleLimit)
@@ -59,10 +59,10 @@ fun SQLiteDatabase.readFolders(): List<FolderEntry> {
                 isLocalOnly = cursor.getIntOrNull("local_only"),
                 integrate = cursor.getIntOrNull("integrate"),
                 inTopGroup = cursor.getIntOrNull("top_group"),
-                displayClass = cursor.getStringOrNull("display_class"),
-                syncClass = cursor.getStringOrNull("poll_class"),
+                visible = cursor.getIntOrNull("visible"),
+                syncEnabled = cursor.getIntOrNull("sync_enabled"),
                 notificationsEnabled = cursor.getIntOrNull("notifications_enabled"),
-                pushClass = cursor.getStringOrNull("push_class"),
+                pushEnabled = cursor.getIntOrNull("push_enabled"),
                 lastUpdated = cursor.getLongOrNull("last_updated"),
                 unreadCount = cursor.getIntOrNull("unread_count"),
                 visibleLimit = cursor.getIntOrNull("visible_limit"),
@@ -82,10 +82,10 @@ data class FolderEntry(
     val isLocalOnly: Int?,
     val integrate: Int?,
     val inTopGroup: Int?,
-    val displayClass: String?,
-    val syncClass: String?,
+    val visible: Int?,
+    val syncEnabled: Int?,
     val notificationsEnabled: Int?,
-    val pushClass: String?,
+    val pushEnabled: Int?,
     val lastUpdated: Long?,
     val unreadCount: Int?,
     val visibleLimit: Int?,

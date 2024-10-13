@@ -2,7 +2,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="settings_import_title">Importa la configuració</string>
     <string name="settings_import_pick_document_button">Seleccioneu un fitxer</string>
-    <string name="settings_import_button">Importa</string>
+    <string name="settings_import_button">Importar</string>
     <string name="settings_import_success_generic">La configuració s\'ha importat correctament</string>
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
     <string name="settings_import_password_required">Si us plau, escriviu les contrasenyes</string>
@@ -10,7 +10,7 @@
     <string name="settings_import_authorization_required">Si us plau, inicieu la sessió</string>
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
     <string name="settings_import_authorization_and_password_required">Si us plau, inicieu la sessió i proporcioneu les contrasenyes</string>
-    <string name="settings_import_failure">Ha fallat importar la configuració</string>
+    <string name="settings_import_failure">Ha fallat la importació de la configuració</string>
     <string name="settings_import_read_failure">Ha fallat llegir els fitxer de configuració</string>
     <string name="settings_import_partial_failure">Ha fallat importar alguns paràmetres</string>
     <string name="settings_import_status_success">Importació correcta</string>
@@ -30,7 +30,7 @@
     <string name="settings_import_outgoing_server_password_hint">Contrasenya del servidor de sortida</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Feu servir la mateixa contrasenya per al servidor de sortida</string>
     <string name="settings_import_server_name_format">Nom del servidor: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Per fer servir aquest compte de correu electrònic amb el K-9 Mail, heu d\'iniciar-hi la sessió i concedir a l\'aplicació accés als vostres correus electrònics.</string>
+    <string name="settings_import_oauth_description">Per fer servir aquest compte de correu electrònic, heu d\'iniciar-hi la sessió i concedir a l\'aplicació accés als vostres correus electrònics.</string>
     <string name="settings_import_oauth_sign_in">Inicia la sessió</string>
     <string name="settings_import_oauth_sign_in_with_google">Inicia la sessió amb Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Autorització cancel·lada</string>
@@ -38,4 +38,6 @@
     <string name="settings_import_oauth_error_oauth_not_supported">Actualment, OAuth 2.0 no és compatible amb aquest proveïdor.</string>
     <string name="settings_import_oauth_error_browser_not_found">L\'aplicació no ha trobat cap navegador per utilitzar-lo per concedir accés al compte.</string>
     <string name="settings_import_general_settings_item">Configuració general</string>
+    <string name="settings_import_pick_app_button">Importar des de l\'aplicació</string>
+    <string name="settings_import_pick_app_dialog_title">Importar des de l\'aplicació</string>
 </resources>

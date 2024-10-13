@@ -376,13 +376,6 @@
     <string name="account_settings_title_fmt">Account settings</string>
     <string name="account_settings_notify_label">New mail notifications</string>
 
-    <string name="account_settings_folder_notify_new_mail_mode_label">Notifications folders</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">All</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Only 1st Class folders</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1st and 2nd Class folders</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">All except 2nd Class folders</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">None</string>
-
     <string name="account_settings_notify_sync_label">Sync notifications</string>
     <string name="account_settings_email_label">Your email address</string>
     <string name="account_settings_notify_summary">Notify in status bar when mail arrives</string>
@@ -488,26 +481,6 @@
     <string name="account_settings_message_age_6_months">the last 6 months</string>
     <string name="account_settings_message_age_1_year">the last year</string>
 
-    <string name="account_settings_folder_display_mode_label">Folders to display</string>
-    <string name="account_settings_folder_display_mode_all">All</string>
-    <string name="account_settings_folder_display_mode_first_class">Only 1st Class folders</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">1st and 2nd Class folders</string>
-    <string name="account_settings_folder_display_mode_not_second_class">All except 2nd Class folders</string>
-
-    <string name="account_settings_folder_sync_mode_label">Poll folders</string>
-    <string name="account_settings_folder_sync_mode_all">All</string>
-    <string name="account_settings_folder_sync_mode_first_class">Only 1st Class folders</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">1st and 2nd Class folders</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">All except 2nd Class folders</string>
-    <string name="account_settings_folder_sync_mode_none">None</string>
-
-    <string name="account_settings_folder_push_mode_label">Push folders</string>
-    <string name="account_settings_folder_push_mode_all">All</string>
-    <string name="account_settings_folder_push_mode_first_class">Only 1st Class folders</string>
-    <string name="account_settings_folder_push_mode_first_and_second_class">1st and 2nd Class folders</string>
-    <string name="account_settings_folder_push_mode_not_second_class">All except 2nd Class folders</string>
-    <string name="account_settings_folder_push_mode_none">None</string>
-
     <string name="account_settings_sync_remote_deletetions_label">Sync server deletions</string>
     <string name="account_settings_sync_remote_deletetions_summary">Remove messages when deleted on server</string>
 
@@ -518,23 +491,9 @@
     <string name="folder_settings_in_top_group_label">Show in top group</string>
     <string name="folder_settings_in_top_group_summary">Show near the top of the folder list</string>
 
-    <string name="folder_settings_folder_display_mode_label">Folder display class</string>
-    <string name="folder_settings_folder_display_mode_normal">No Class</string>
-    <string name="folder_settings_folder_display_mode_first_class">1st Class</string>
-    <string name="folder_settings_folder_display_mode_second_class">2nd Class</string>
-
-    <string name="folder_settings_folder_sync_mode_label">Folder poll class</string>
-    <string name="folder_settings_folder_sync_mode_normal">None</string>
-    <string name="folder_settings_folder_sync_mode_first_class">1st Class</string>
-    <string name="folder_settings_folder_sync_mode_second_class">2nd Class</string>
-    <string name="folder_settings_folder_sync_mode_inherited">Same as display class</string>
-
-    <string name="folder_settings_folder_push_mode_label">Folder push class</string>
-    <string name="folder_settings_folder_push_mode_normal">No Class</string>
-    <string name="folder_settings_folder_push_mode_first_class">1st Class</string>
-    <string name="folder_settings_folder_push_mode_second_class">2nd Class</string>
-    <string name="folder_settings_folder_push_mode_inherited">Same as poll class</string>
-
+    <string name="folder_settings_visible_label">Show folder</string>
+    <string name="folder_settings_sync_label">Enable sync</string>
+    <string name="folder_settings_push_label">Enable Push</string>
     <string name="folder_settings_notifications_label">Notifications</string>
     <string name="folder_settings_clear_local_folder_action">Clear local messages</string>
 
@@ -638,12 +597,7 @@
     <string name="account_delete_dlg_title">Remove Account</string>
 
     <string name="folder_list_filter_hint">Folder name contains</string>
-
-    <string name="folder_list_display_mode_label">Show folders…</string>
-    <string name="folder_list_display_mode_all">All folders</string>
-    <string name="folder_list_display_mode_first_class">1st Class folders</string>
-    <string name="folder_list_display_mode_first_and_second_class">1st &amp; 2nd Class folders</string>
-    <string name="folder_list_display_mode_not_second_class">Hide 2nd Class folders</string>
+    <string name="folder_list_show_hidden_folders">Show hidden folders</string>
 
     <string name="account_settings_signature__location_label">Signature position</string>
     <string name="account_settings_signature__location_before_quoted_text">Before quoted message</string>
@@ -783,6 +737,7 @@
 
     <string name="settings_list_backup_category">Backup</string>
     <string name="settings_list_miscellaneous_category">Miscellaneous</string>
+    <string name="settings_list_action_support">Support <xliff:g id="app_name">%s</xliff:g></string>
 
     <string name="settings_export_title">Export settings</string>
     <string name="settings_export_button">Export</string>

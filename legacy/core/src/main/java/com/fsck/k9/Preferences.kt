@@ -81,11 +81,12 @@ class Preferences internal constructor(
             val accountUuids = storage.getString("accountUuids", null)
             if (!accountUuids.isNullOrEmpty()) {
                 accountUuids.split(",").forEach { uuid ->
-                    val newAccount = Account(uuid, K9::isSensitiveDebugLoggingEnabled)
-                    accountPreferenceSerializer.loadAccount(newAccount, storage)
+                    val existingAccount = accountsMap?.get(uuid)
+                    val account = existingAccount ?: Account(uuid, K9::isSensitiveDebugLoggingEnabled)
+                    accountPreferenceSerializer.loadAccount(account, storage)
 
-                    accounts[uuid] = newAccount
-                    accountsInOrder.add(newAccount)
+                    accounts[uuid] = account
+                    accountsInOrder.add(account)
                 }
             }
 

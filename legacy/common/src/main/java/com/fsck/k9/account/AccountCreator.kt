@@ -7,7 +7,6 @@ import app.k9mail.feature.account.common.domain.entity.SpecialFolderOption
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderSettings
 import app.k9mail.feature.account.setup.AccountSetupExternalContract
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
-import app.k9mail.legacy.account.Account.FolderMode
 import app.k9mail.legacy.account.Account.SpecialFolderSelection
 import com.fsck.k9.Core
 import com.fsck.k9.Preferences
@@ -67,7 +66,6 @@ class AccountCreator(
         newAccount.automaticCheckIntervalMinutes = account.options.checkFrequencyInMinutes
         newAccount.displayCount = account.options.messageDisplayCount
 
-        newAccount.folderPushMode = FolderMode.NONE
         newAccount.deletePolicy = DeletePolicyHelper.getDefaultDeletePolicy(newAccount.incomingServerSettings.type)
         newAccount.chipColor = accountColorPicker.pickColor()
 

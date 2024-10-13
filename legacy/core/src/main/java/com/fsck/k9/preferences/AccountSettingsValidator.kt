@@ -8,7 +8,7 @@ internal class AccountSettingsValidator {
     private val serverSettingsValidator = ServerSettingsValidator()
 
     fun validate(contentVersion: Int, account: SettingsFile.Account): ValidatedSettings.Account {
-        val validatedSettings = AccountSettingsDescriptions.validate(contentVersion, account.settings!!, true)
+        val validatedSettings = AccountSettingsDescriptions.validate(contentVersion, account.settings.orEmpty(), true)
 
         val incomingServer = validateIncomingServer(contentVersion, account.incoming)
         val outgoingServer = validateOutgoingServer(contentVersion, account.outgoing)

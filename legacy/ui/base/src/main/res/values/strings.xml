@@ -4,4 +4,6 @@
     <string name="okay_action">OK</string>
     <!-- Text of the cancel button in dialogs -->
     <string name="cancel_action">Cancel</string>
+    <!-- Accessible name for the star button -->
+    <string name="star_button_description">Star</string>
 </resources>

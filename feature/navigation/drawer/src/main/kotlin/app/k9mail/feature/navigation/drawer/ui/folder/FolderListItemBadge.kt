@@ -13,7 +13,7 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.navigation.drawer.R
 
 @Composable
-fun FolderListItemBadge(
+internal fun FolderListItemBadge(
     unreadCount: Int,
     starredCount: Int,
     showStarredCount: Boolean,

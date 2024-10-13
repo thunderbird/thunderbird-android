@@ -2,16 +2,15 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_server_certificate_unknown_error_subtitle">Sertifika hatası</string>
     <string name="account_server_certificate_button_advanced">Gelişmiş</string>
-    <string name="account_server_certificate_button_continue">Riski kabul et ve ilerle</string>
+    <string name="account_server_certificate_button_continue">Riski kabul ederek devam et</string>
     <string name="account_server_certificate_section_title">Sunucu sertifikası</string>
-    <string name="account_server_certificate_subject_alternative_names">Konu alternatif adları</string>
+    <string name="account_server_certificate_subject_alternative_names">Özne alternatif adları</string>
     <string name="account_server_certificate_not_valid_before">Geçerlilik başlangıcı</string>
     <string name="account_server_certificate_not_valid_after">Geçerlilik bitişi</string>
-    <string name="account_server_certificate_subject">Konu</string>
-    <string name="account_server_certificate_issuer">Veren</string>
+    <string name="account_server_certificate_subject">Özne</string>
+    <string name="account_server_certificate_issuer">Düzenleyen</string>
     <string name="account_server_certificate_fingerprints_section">Parmak izleri</string>
     <string name="account_server_certificate_warning_title">Uyarı</string>
-    <string name="account_server_certificate_unknown_error_description_format">Uygulama olası bir güvenlik tehdidi algıladı ve <xliff:g id="serverName">%s</xliff:g> adresine bağlanmaya devam etmedi.
-\nDevam ederseniz, saldırganlar parolanız veya e-postalarınız gibi bilgileri çalmaya çalışabilir.</string>
-    <string name="account_server_certificate_button_back">Geri dön (tavsiye edilir)</string>
+    <string name="account_server_certificate_unknown_error_description_format">Uygulama olası bir güvenlik tehdidi algıladı ve <xliff:g id="serverName">%s</xliff:g> sunucusuna bağlanmaya devam etmedi.\nDevam ederseniz saldırganlar parolanız veya e-postalarınız gibi bilgileri çalmaya çalışabilir.</string>
+    <string name="account_server_certificate_button_back">Geri dön (önerilir)</string>
 </resources>

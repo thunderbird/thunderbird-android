@@ -1,0 +1,336 @@
+---
+name: Shippable Build & Signing
+on:
+  workflow_call:
+  workflow_dispatch:
+    inputs:
+      skipThunderbird:
+        type: boolean
+        description: Skip building Thunderbird
+      skipK9Mail:
+        type: boolean
+        description: Skip building K-9 Mail
+
+
+jobs:
+  get_environment:
+    name: Determine Release Environment
+    runs-on: ubuntu-latest
+    outputs:
+      releaseEnv: ${{ steps.releaseEnv.outputs.result }}
+    steps:
+      - uses: actions/github-script@v7
+        id: releaseEnv
+        with:
+          result-encoding: string
+          script: |
+            const RELEASE_ENVS = {
+              "refs/heads/main": "thunderbird_daily",
+              "refs/heads/beta": "thunderbird_beta",
+              "refs/heads/release": "thunderbird_release",
+            };
+
+            if (context.ref in RELEASE_ENVS) {
+              return RELEASE_ENVS[context.ref];
+            } else {
+              core.setFailed(`Unknown branch ${context.ref} for shippable builds!`)
+              return "";
+            }
+
+  dump_config:
+    name: Show Release Environment
+    runs-on: ubuntu-latest
+    needs: get_environment
+    environment: ${{ needs.get_environment.outputs.releaseEnv }}
+    outputs:
+      matrixInclude: ${{ steps.dump.outputs.matrixInclude }}
+      matrixIncludeApk: ${{ steps.dump.outputs.matrixIncludeApk }}
+      releaseType: ${{ vars.RELEASE_TYPE }}
+    steps:
+      - name: Show Environment
+        uses: actions/github-script@v7
+        id: dump
+        env:
+          matrixInclude: ${{ vars.MATRIX_INCLUDE }}
+          releaseType: ${{ vars.RELEASE_TYPE }}
+          skipThunderbird: ${{ github.event.inputs.skipThunderbird }}
+          skipK9Mail: ${{ github.event.inputs.skipK9Mail }}
+        with:
+          script: |
+            let matrix = JSON.parse(process.env.matrixInclude);
+            let skipThunderbird = process.env.skipThunderbird == "true";
+            let skipK9Mail = process.env.skipK9Mail == "true";
+
+            let matrixFull = matrix.filter(item => {
+              return !((item.appName == "k9mail" && skipK9Mail) ||
+                       (item.appName == "thunderbird" && skipThunderbird));
+            });
+
+            if (!matrixFull.length) {
+              core.setFailed("There are no builds to run");
+              return;
+            }
+
+            const matrixApk = matrixFull.filter(item => item.packageFormat == "apk");
+            core.setOutput("matrixIncludeApk", matrixApk);
+            core.setOutput("matrixInclude", matrixFull);
+
+            await core.summary
+              .addRaw(`Beginning a ${process.env.releaseType} build with the following configurations:`, true)
+              .addTable([
+                [
+                  { data: "App Name", header: true },
+                  { data: "Flavor", header: true },
+                  { data: "Format", header: true },
+                ],
+                ...matrixFull.map(item => [
+                  { data: item.appName },
+                  { data: item.packageFlavor || "default" },
+                  { data: item.packageFormat },
+                ])
+              ])
+              .write();
+
+              if (skipThunderbird) {
+                await core.summary.addList(["Thunderbird is being skipped in this build"]).write();
+              }
+
+              if (skipK9Mail) {
+                await core.summary.addList(["K-9 Mail is being skipped in this build"]).write();
+              }
+
+  build_unsigned:
+    name: Build Unsigned
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    needs: [dump_config, get_environment]
+    strategy:
+      matrix:
+        include: "${{ fromJSON(needs.dump_config.outputs.matrixInclude) }}"
+    environment: ${{ needs.get_environment.outputs.releaseEnv }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Copy CI gradle.properties
+        shell: bash
+        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-disabled: ${{ needs.dump_config.outputs.releaseType == 'beta' || needs.dump_config.outputs.releaseType == 'release' }}
+
+      - name: Build It
+        shell: bash
+        env:
+          PACKAGE_FORMAT: ${{ matrix.packageFormat }}
+          PACKAGE_FLAVOR: ${{ matrix.packageFlavor }}
+          APP_NAME: ${{ matrix.appName }}
+          RELEASE_TYPE: ${{ vars.RELEASE_TYPE }}
+        run: |
+          if [[ "$APP_NAME" = "thunderbird" && "$PACKAGE_FORMAT" = "apk" ]]; then
+            BUILD_COMMAND="assemble${PACKAGE_FLAVOR^}${RELEASE_TYPE^}"
+          elif [[ "$APP_NAME" = "thunderbird" && "${PACKAGE_FORMAT}" = "bundle" ]]; then
+            BUILD_COMMAND="bundle${PACKAGE_FLAVOR^}${RELEASE_TYPE^}"
+          elif [[ "$APP_NAME" = "k9mail" ]]; then
+            BUILD_COMMAND="assembleRelease"
+          fi
+
+          echo "BUILDING: :app-${APP_NAME}:${BUILD_COMMAND}"
+          ./gradlew clean :app-${APP_NAME}:${BUILD_COMMAND} --no-build-cache --no-configuration-cache
+          echo "Status: $?"
+
+      - name: Move apps to upload directory
+        shell: bash
+        env:
+          PACKAGE_FORMAT: ${{ matrix.packageFormat }}
+          PACKAGE_FLAVOR: ${{ matrix.packageFlavor }}
+          APP_NAME: ${{ matrix.appName }}
+          RELEASE_TYPE: ${{ vars.RELEASE_TYPE }}
+          UPLOAD_PATH: "uploads"
+        run: |
+          OUT_BASE=app-${APP_NAME}/build/outputs/${PACKAGE_FORMAT}
+
+          if [[ "$APP_NAME" = "thunderbird" && "$PACKAGE_FORMAT" = "apk" ]]; then
+            OUT_PATH="${OUT_BASE}/${PACKAGE_FLAVOR}/${RELEASE_TYPE}"
+            OUT_FILE="app-${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}-unsigned.apk"
+            UPLOAD_FILE="${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}.apk"
+          elif [[ "$APP_NAME" = "thunderbird" && "${PACKAGE_FORMAT}" = "bundle" ]]; then
+            OUT_PATH="${OUT_BASE}/${PACKAGE_FLAVOR}${RELEASE_TYPE^}"
+            OUT_FILE="app-${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}.aab"
+            UPLOAD_FILE="${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}.aab"
+          elif [[ "$APP_NAME" = "k9mail" ]]; then
+            OUT_PATH="${OUT_BASE}/release"
+            OUT_FILE="app-${APP_NAME}-release-unsigned.apk"
+            UPLOAD_FILE="${APP_NAME}-default-${RELEASE_TYPE}.apk"
+          else
+            echo "PACKAGE_FORMAT $PACKAGE_FORMAT is unknown. Exiting."
+            exit 23
+          fi
+
+          mkdir -p "${UPLOAD_PATH}"
+
+          if [[ -f "${OUT_PATH}/${OUT_FILE}" ]]; then
+            mv -f "${OUT_PATH}/${OUT_FILE}" "${UPLOAD_PATH}/${UPLOAD_FILE}"
+          else
+            echo "Build file ${OUT_PATH}/${OUT_FILE} not found. Exiting."
+            ls -l ${OUT_PATH}
+            exit 24
+          fi
+          echo "Upload contents:"
+          ls -l ${UPLOAD_PATH}/
+
+      - name: Upload unsigned
+        uses: actions/upload-artifact@v4
+        env:
+          UPLOAD_PATH: "uploads"
+        with:
+          name: unsigned-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor || 'default' }}
+          path: ${{ env.UPLOAD_PATH }}/
+          if-no-files-found: error
+
+  sign_mobile:
+    name: Sign Packages
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include: "${{ fromJSON(needs.dump_config.outputs.matrixInclude) }}"
+    environment: ${{ matrix.appName }}_${{ needs.dump_config.outputs.releaseType }}_${{ matrix.packageFlavor || 'default' }}
+    needs: [build_unsigned, dump_config]
+    env:
+      RELEASE_TYPE: ${{ needs.dump_config.outputs.releaseType }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: unsigned-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor || 'default' }}
+          path: uploads/
+
+      - uses: noriban/sign-android-release@5f144321d3c7c2233266e78b42360345d8bbe403   # v5.1
+        name: Sign package
+        with:
+          releaseDirectory: uploads/
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.KEY_ALIAS }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+
+      - name: Remove JKS file
+        shell: bash
+        run: |
+          rm -f uploads/*.jks
+
+      - name: Upload signed
+        uses: actions/upload-artifact@v4
+        with:
+          name: signed-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor || 'default' }}
+          if-no-files-found: error
+          path: |
+            uploads/*-signed.apk
+            uploads/*.aab
+
+  pre_publish:
+    # This is a holding job meant to require approval before proceeding with the publishing jobs below
+    # The environment has a deployment protection rule requiring approval from a set of named reviewers
+    # before proceeding.
+    name: Wait for Approval
+    needs: [dump_config, sign_mobile]
+    if: ${{ needs.dump_config.outputs.releaseType == 'beta' || needs.dump_config.outputs.releaseType == 'release' }}
+    environment: publish_hold
+    runs-on: ubuntu-latest
+    steps:
+      - name: Approval
+        shell: bash
+        run: |
+          true
+
+  github_release:
+    name: GitHub Release
+    needs: [pre_publish, dump_config]
+    if: ${{ needs.dump_config.outputs.releaseType == 'beta' || needs.dump_config.outputs.releaseType == 'release' }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include: "${{ fromJSON(needs.dump_config.outputs.matrixIncludeApk) }}"
+    environment: gh-releases
+    env:
+      RELEASE_TYPE: ${{ needs.dump_config.outputs.releaseType }}
+      APP_NAME: ${{ matrix.appName }}
+      PACKAGE_FLAVOR: ${{ matrix.packageFlavor || 'default' }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: signed-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor || 'default' }}
+          path: "uploads/"
+
+      - name: Get APK Info
+        id: apkinfo
+        shell: bash
+        run: |
+          APK_FILE="uploads/${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}-signed.apk"
+          LATEST_BUILD_TOOLS=$(ls -d ${ANDROID_SDK_ROOT}/build-tools/* | sort -V | tail -n1)
+          AAPT=${LATEST_BUILD_TOOLS}/aapt
+
+          NAME=$(${AAPT} dump badging $APK_FILE | sed -n "s/.*application-label:'\([^']*\)'.*/\1/p")
+          VERSION=$(${AAPT} dump badging $APK_FILE | sed -n "s/.*versionName='\([^']*\)'.*/\1/p")
+
+          echo "TAG_NAME=${APP_NAME^^}_${VERSION//./_}" >> $GITHUB_OUTPUT
+          echo "FULL_VERSION_NAME=${NAME} ${VERSION}" >> $GITHUB_OUTPUT
+          echo "VERSION_NAME=${VERSION}" >> $GITHUB_OUTPUT
+
+          cat $GITHUB_OUTPUT
+
+      - name: Rename release assets
+        id: rename
+        shell: bash
+        env:
+          VERSION_NAME: ${{ steps.apkinfo.outputs.VERSION_NAME }}
+        run: |
+          APK_FILE="${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}-signed.apk"
+          APK_FILE_PRETTY="${APP_NAME}-${VERSION_NAME}.apk"
+          mv uploads/${APK_FILE} uploads/${APK_FILE_PRETTY}
+
+          echo "APK_FILE=${APK_FILE_PRETTY}" >> $GITHUB_OUTPUT
+          ls -l uploads/${APK_FILE_PRETTY}
+
+      - name: App Token Generate
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ vars.RELEASER_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASER_APP_PRIVATE_KEY }}
+
+      - name: Publish
+        id: publish
+        uses: softprops/action-gh-release@c062e08bd532815e2082a85e87e3ef29c3e6d191  # v2.0.8
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          target_commitish: ${{ github.sha }}
+          tag_name: ${{ steps.apkinfo.outputs.TAG_NAME }}
+          name: ${{ steps.apkinfo.outputs.FULL_VERSION_NAME }}
+          prerelease: ${{ env.RELEASE_TYPE != 'release' }}
+          fail_on_unmatched_files: true
+          files: |
+            uploads/${{ steps.rename.outputs.APK_FILE }}
+
+      - name: Summary
+        uses: actions/github-script@v7
+        env:
+          tagName: ${{ steps.apkinfo.outputs.TAG_NAME }}
+          fullVersionName: ${{ steps.apkinfo.outputs.FULL_VERSION_NAME }}
+          releaseUrl: ${{ steps.publish.outputs.url }}
+          assets: ${{ steps.publish.outputs.assets }}
+        with:
+          script: |
+            let assets = JSON.parse(process.env.assets);
+
+            await core.summary
+              .addRaw(`Release `)
+              .addLink(process.env.fullVersionName, process.env.releaseUrl)
+              .addRaw(`Tag ${process.env.tagName} at `)
+              .addLink(context.sha, `${context.server_url}/${context.repository}/commit/${context.sha}`)
+              .write();

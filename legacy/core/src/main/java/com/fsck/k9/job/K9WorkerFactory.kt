@@ -13,6 +13,11 @@ class K9WorkerFactory : WorkerFactory() {
         workerClassName: String,
         workerParameters: WorkerParameters,
     ): ListenableWorker? {
+        // Don't attempt to load classes outside of our namespace.
+        if (!workerClassName.startsWith("com.fsck.k9")) {
+            return null
+        }
+
         val workerClass = Class.forName(workerClassName).kotlin
         return getKoin().getOrNull(workerClass) { parametersOf(workerParameters) }
     }

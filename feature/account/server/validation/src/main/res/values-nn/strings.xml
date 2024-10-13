@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_error_client_certificate_expired">Klientsertifikatet er ikkje lenger gyldig</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">Klarte ikkje å få tilgang til klientsertifikatet</string>
+    <string name="account_server_validation_error_missing_server_capability">Manglande serverkapasitet</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Serveren manglar denne eigenskapen:\n%s</string>
+    <string name="account_server_validation_sign_in">Logg inn</string>
+    <string name="account_server_validation_error_unknown">Ukjend feil</string>
+    <string name="account_server_validation_error_network">Nettverksfeil</string>
+    <string name="account_server_validation_error_server">Tenarfeil</string>
+    <string name="account_server_validation_error_details">Detaljar:\n%s</string>
+</resources>

@@ -3,15 +3,11 @@ package app.k9mail.legacy.mailstore
 import app.k9mail.core.mail.folder.api.Folder
 import app.k9mail.core.mail.folder.api.FolderDetails
 import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.account.Account.FolderMode
-import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.folder.RemoteFolder
 import app.k9mail.legacy.mailstore.FolderTypeMapper.folderTypeOf
 import app.k9mail.legacy.mailstore.RemoteFolderTypeMapper.toFolderType
-import com.fsck.k9.mail.FolderClass
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
@@ -19,15 +15,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 
 @Suppress("TooManyFunctions")
-@OptIn(ExperimentalCoroutinesApi::class)
 class FolderRepository(
     private val messageStoreManager: MessageStoreManager,
-    private val accountManager: AccountManager,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
     fun getFolder(account: Account, folderId: Long): Folder? {
@@ -54,10 +46,10 @@ class FolderRepository(
                 ),
                 isInTopGroup = folder.isInTopGroup,
                 isIntegrate = folder.isIntegrate,
-                syncClass = folder.syncClass,
-                displayClass = folder.displayClass,
+                isSyncEnabled = folder.isSyncEnabled,
+                isVisible = folder.isVisible,
                 isNotificationsEnabled = folder.isNotificationsEnabled,
-                pushClass = folder.pushClass,
+                isPushEnabled = folder.isPushEnabled,
             )
         }
     }
@@ -86,28 +78,21 @@ class FolderRepository(
                 ),
                 isInTopGroup = folder.isInTopGroup,
                 isIntegrate = folder.isIntegrate,
-                syncClass = folder.syncClass,
-                displayClass = folder.displayClass,
+                isSyncEnabled = folder.isSyncEnabled,
+                isVisible = folder.isVisible,
                 isNotificationsEnabled = folder.isNotificationsEnabled,
-                pushClass = folder.pushClass,
+                isPushEnabled = folder.isPushEnabled,
             )
         }
     }
 
     fun getPushFoldersFlow(account: Account): Flow<List<RemoteFolder>> {
-        return account.getFolderPushModeFlow()
-            .flatMapLatest { pushMode ->
-                getPushFoldersFlow(account, pushMode)
-            }
-    }
-
-    private fun getPushFoldersFlow(account: Account, folderMode: FolderMode): Flow<List<RemoteFolder>> {
         val messageStore = messageStoreManager.getMessageStore(account)
         return callbackFlow {
-            send(getPushFolders(account, folderMode))
+            send(getPushFolders(account))
 
             val listener = FolderSettingsChangedListener {
-                trySendBlocking(getPushFolders(account, folderMode))
+                trySendBlocking(getPushFolders(account))
             }
             messageStore.addFolderSettingsChangedListener(listener)
 
@@ -119,23 +104,10 @@ class FolderRepository(
             .flowOn(ioDispatcher)
     }
 
-    private fun getPushFolders(account: Account, folderMode: FolderMode): List<RemoteFolder> {
-        if (folderMode == FolderMode.NONE) return emptyList()
-
+    private fun getPushFolders(account: Account): List<RemoteFolder> {
         return getRemoteFolderDetails(account)
             .asSequence()
-            .filter { folderDetails ->
-                val pushClass = folderDetails.effectivePushClass
-                when (folderMode) {
-                    FolderMode.NONE -> false
-                    FolderMode.ALL -> true
-                    FolderMode.FIRST_CLASS -> pushClass == FolderClass.FIRST_CLASS
-                    FolderMode.FIRST_AND_SECOND_CLASS -> {
-                        pushClass == FolderClass.FIRST_CLASS || pushClass == FolderClass.SECOND_CLASS
-                    }
-                    FolderMode.NOT_SECOND_CLASS -> pushClass != FolderClass.SECOND_CLASS
-                }
-            }
+            .filter { folderDetails -> folderDetails.isPushEnabled }
             .map { folderDetails -> folderDetails.folder }
             .toList()
     }
@@ -167,19 +139,14 @@ class FolderRepository(
         messageStore.setIncludeInUnifiedInbox(folderId, includeInUnifiedInbox)
     }
 
-    fun setDisplayClass(account: Account, folderId: Long, folderClass: FolderClass) {
+    fun setVisible(account: Account, folderId: Long, visible: Boolean) {
         val messageStore = messageStoreManager.getMessageStore(account)
-        messageStore.setDisplayClass(folderId, folderClass)
+        messageStore.setVisible(folderId, visible)
     }
 
-    fun setSyncClass(account: Account, folderId: Long, folderClass: FolderClass) {
+    fun setSyncEnabled(account: Account, folderId: Long, enable: Boolean) {
         val messageStore = messageStoreManager.getMessageStore(account)
-        messageStore.setSyncClass(folderId, folderClass)
-    }
-
-    fun setPushClass(account: Account, folderId: Long, folderClass: FolderClass) {
-        val messageStore = messageStoreManager.getMessageStore(account)
-        messageStore.setPushClass(folderId, folderClass)
+        messageStore.setSyncEnabled(folderId, enable)
     }
 
     fun setNotificationsEnabled(account: Account, folderId: Long, enable: Boolean) {
@@ -187,23 +154,41 @@ class FolderRepository(
         messageStore.setNotificationsEnabled(folderId, enable)
     }
 
-    private fun Account.getFolderPushModeFlow(): Flow<FolderMode> {
-        return accountManager.getAccountFlow(uuid).map { it.folderPushMode }
+    fun setPushDisabled(account: Account) {
+        val messageStore = messageStoreManager.getMessageStore(account)
+        messageStore.setPushDisabled()
     }
 
-    private val RemoteFolderDetails.effectivePushClass: FolderClass
-        get() = if (pushClass == FolderClass.INHERITED) effectiveSyncClass else pushClass
+    fun hasPushEnabledFolder(account: Account): Boolean {
+        val messageStore = messageStoreManager.getMessageStore(account)
+        return messageStore.hasPushEnabledFolder()
+    }
 
-    private val RemoteFolderDetails.effectiveSyncClass: FolderClass
-        get() = if (syncClass == FolderClass.INHERITED) displayClass else syncClass
+    fun hasPushEnabledFolderFlow(account: Account): Flow<Boolean> {
+        val messageStore = messageStoreManager.getMessageStore(account)
+        return callbackFlow {
+            send(hasPushEnabledFolder(account))
+
+            val listener = FolderSettingsChangedListener {
+                trySendBlocking(hasPushEnabledFolder(account))
+            }
+            messageStore.addFolderSettingsChangedListener(listener)
+
+            awaitClose {
+                messageStore.removeFolderSettingsChangedListener(listener)
+            }
+        }.buffer(capacity = Channel.CONFLATED)
+            .distinctUntilChanged()
+            .flowOn(ioDispatcher)
+    }
 }
 
 data class RemoteFolderDetails(
     val folder: RemoteFolder,
     val isInTopGroup: Boolean,
     val isIntegrate: Boolean,
-    val syncClass: FolderClass,
-    val displayClass: FolderClass,
+    val isSyncEnabled: Boolean,
+    val isVisible: Boolean,
     val isNotificationsEnabled: Boolean,
-    val pushClass: FolderClass,
+    val isPushEnabled: Boolean,
 )

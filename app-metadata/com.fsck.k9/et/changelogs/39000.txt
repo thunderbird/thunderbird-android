@@ -1,0 +1,6 @@
+- Alustati kasutajaliidese konverteerimist materjaliks 3
+- Lisatud on mailto tugi: URI NFC-sildil
+- Lisatud eksperimentaalne lahendus taustal jooksva rakenduse jaoks
+- Optimeeritud mõned IMAP-protokolli interaktsioonid
+- Ärge viivitage teatise kuvamisega, kui Push on aktiivne
+- Uuendatud tõlked

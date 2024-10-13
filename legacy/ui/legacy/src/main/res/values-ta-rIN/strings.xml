@@ -140,7 +140,6 @@
     <string name="account_settings_folders">கோப்புறைகள்</string>
     <string name="account_settings_folder_display_mode_all">அனைத்தும்</string>
     <string name="account_settings_folder_sync_mode_all">அனைத்தும்</string>
-    <string name="account_settings_folder_push_mode_all">அனைத்தும்</string>
     <string name="folder_settings_title">கோப்புறை அமைப்பு</string>
     <string name="folder_settings_clear_local_folder_action">தற்காலிக செய்திகள் நீக்கு</string>
     <string name="edit_identity_save">சேமி</string>

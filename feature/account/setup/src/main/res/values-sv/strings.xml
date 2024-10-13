@@ -19,7 +19,7 @@
     <string name="account_setup_auto_discovery_loading_error">Misslyckades att ladda e-postkonfiguration</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Jag litar på denna konfiguration</string>
     <string name="account_setup_options_display_name_error_required">Ditt namn krävs.</string>
-    <string name="account_setup_error_network">Nätverk</string>
+    <string name="account_setup_error_network">Nätverksfel. Vänligen kontrollera din anslutningsstatus och försök igen.</string>
     <string name="account_setup_options_email_check_frequency_never">Aldrig</string>
     <string name="account_setup_auto_discovery_loading_message">Söker upp konfiguration…</string>
     <string name="account_setup_options_section_sync_options">Synkroniseringsinställningar</string>
