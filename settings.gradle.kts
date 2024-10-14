@@ -39,6 +39,9 @@ include(
     ":feature:onboarding:main",
     ":feature:onboarding:welcome",
     ":feature:onboarding:permissions",
+    ":feature:onboarding:migration:api",
+    ":feature:onboarding:migration:thunderbird",
+    ":feature:onboarding:migration:noop",
 )
 
 include(

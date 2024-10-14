@@ -8,6 +8,7 @@ import app.k9mail.core.ui.theme.api.FeatureThemeProvider
 import app.k9mail.core.ui.theme.api.ThemeProvider
 import app.k9mail.dev.developmentModuleAdditions
 import app.k9mail.feature.funding.featureFundingModule
+import app.k9mail.feature.onboarding.migration.onboardingMigrationModule
 import app.k9mail.feature.telemetry.telemetryModule
 import app.k9mail.feature.widget.shortcut.LauncherShortcutActivity
 import app.k9mail.featureflag.K9FeatureFlagFactory
@@ -28,6 +29,7 @@ val appModule = module {
     includes(appWidgetModule)
     includes(telemetryModule)
     includes(featureFundingModule)
+    includes(onboardingMigrationModule)
 
     single(named("ClientInfoAppName")) { BuildConfig.CLIENT_INFO_APP_NAME }
     single(named("ClientInfoAppVersion")) { BuildConfig.VERSION_NAME }

@@ -43,6 +43,9 @@ internal class SettingsImportViewModel(
     private val uiModelLiveData = MutableLiveData<SettingsImportUiModel>()
     private val actionLiveData = SingleLiveEvent<Action>()
 
+    private var action = SettingsImportAction.Overview
+    private var wasActionHandled = false
+
     private val uiModel = SettingsImportUiModel()
     private var accountsMap: MutableMap<AccountNumber, AccountUuid> = mutableMapOf()
     private val accountStateMap: MutableMap<AccountNumber, AccountState> = mutableMapOf()
@@ -98,7 +101,9 @@ internal class SettingsImportViewModel(
         return uiModelLiveData
     }
 
+    @Suppress("LongMethod")
     fun initializeFromSavedState(savedInstanceState: Bundle) {
+        wasActionHandled = true
         contentUri = BundleCompat.getParcelable(savedInstanceState, STATE_CONTENT_URI, Uri::class.java)
         currentlyAuthorizingAccountUuid = savedInstanceState.getString(STATE_CURRENTLY_AUTHORIZING_ACCOUNT_UUID)
 
@@ -197,6 +202,19 @@ internal class SettingsImportViewModel(
         outState.putParcelable(STATE_CONTENT_URI, contentUri)
     }
 
+    fun setAction(action: SettingsImportAction) {
+        this.action = action
+
+        if (!wasActionHandled) {
+            wasActionHandled = true
+
+            when (action) {
+                SettingsImportAction.Overview -> Unit
+                SettingsImportAction.ScanQrCode -> onScanQrCodeButtonClicked()
+            }
+        }
+    }
+
     fun onPickDocumentButtonClicked() {
         updateUiModel {
             disablePickButtons()
@@ -222,8 +240,12 @@ internal class SettingsImportViewModel(
     }
 
     fun onDocumentPickCanceled() {
-        updateUiModel {
-            enablePickButtons()
+        if (action == SettingsImportAction.ScanQrCode) {
+            sendActionEvent(Action.Close(importSuccess = false))
+        } else {
+            updateUiModel {
+                enablePickButtons()
+            }
         }
     }
 
