@@ -11,11 +11,14 @@ from jinja2 import Template
 def render_notes(version, versioncode, application, applicationid):
     """Update changelog files based on release notes from thunderbird-notes."""
     tb_notes_filename = f"{version}.yml"
+    tb_notes_directory = "android_release"
     if "0b" in version:
         tb_notes_filename = f"{version[0:-1]}eta.yml"
+        tb_notes_directory = "android_beta"
     tb_notes_url = os.path.join(
-        "https://raw.githubusercontent.com/coreycb/thunderbird-notes/"
-        "refs/heads/master/android_beta/",
+        "https://raw.githubusercontent.com/coreycb/thunderbird-notes/",
+        "refs/heads/master/",
+        tb_notes_directory,
         tb_notes_filename,
     )
 
@@ -33,7 +36,10 @@ def render_notes(version, versioncode, application, applicationid):
         render_data["releases"][vers]["date"] = release["release_date"]
         render_data["releases"][vers]["changes"] = []
         for note in yaml_content["notes"]:
-            if note["group"] == int(vers[-1]):
+            if "0b" in version:
+                if note["group"] == int(vers[-1]):
+                    render_data["releases"][vers]["changes"].append(note["note"])
+            else:
                 render_data["releases"][vers]["changes"].append(note["note"])
 
     render_files = {
