@@ -16,12 +16,14 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.funding.googleplay.R
 import app.k9mail.feature.funding.googleplay.domain.entity.Contribution
+import app.k9mail.feature.funding.googleplay.domain.entity.OneTimeContribution
+import app.k9mail.feature.funding.googleplay.domain.entity.RecurringContribution
 import kotlinx.collections.immutable.ImmutableList
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun ContributionList(
-    contributions: ImmutableList<Contribution>,
+    oneTimeContributions: ImmutableList<OneTimeContribution>,
+    recurringContributions: ImmutableList<RecurringContribution>,
     selectedItem: Contribution?,
     isRecurringContributionSelected: Boolean,
     onOneTimeContributionTypeClick: () -> Unit,
@@ -42,18 +44,61 @@ internal fun ContributionList(
             TextLabelLarge(
                 text = stringResource(R.string.funding_googleplay_contribution_list_title),
             )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = MainTheme.spacings.default),
-                horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
-            ) {
+
+            TypeSelectionRow(
+                oneTimeContributions = oneTimeContributions,
+                recurringContributions = recurringContributions,
+                isRecurringContributionSelected = isRecurringContributionSelected,
+                onOneTimeContributionTypeClick = onOneTimeContributionTypeClick,
+                onRecurringContributionTypeClick = onRecurringContributionTypeClick,
+            )
+
+            ChoicesRow(
+                contributions = if (isRecurringContributionSelected) recurringContributions else oneTimeContributions,
+                selectedItem = selectedItem,
+                onItemClick = onItemClick,
+            )
+
+            TextBodyMedium(
+                text = stringResource(R.string.funding_googleplay_contribution_list_disclaimer),
+                modifier = Modifier.padding(top = MainTheme.spacings.default),
+            )
+        }
+    }
+}
+
+@Composable
+private fun TypeSelectionRow(
+    oneTimeContributions: ImmutableList<OneTimeContribution>,
+    recurringContributions: ImmutableList<RecurringContribution>,
+    isRecurringContributionSelected: Boolean,
+    onOneTimeContributionTypeClick: () -> Unit,
+    onRecurringContributionTypeClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = MainTheme.spacings.default),
+        horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+    ) {
+        if (oneTimeContributions.isEmpty() && recurringContributions.isEmpty()) {
+            ContributionListItem(
+                text = stringResource(R.string.funding_googleplay_contribution_list_type_none_available),
+                onClick = {},
+                isSelected = true,
+                modifier = Modifier.weight(1f),
+            )
+        } else {
+            if (oneTimeContributions.isNotEmpty()) {
                 ContributionListItem(
                     text = stringResource(R.string.funding_googleplay_contribution_list_type_one_time),
                     onClick = onOneTimeContributionTypeClick,
                     isSelected = !isRecurringContributionSelected,
                     modifier = Modifier.weight(1f),
                 )
+            }
+            if (recurringContributions.isNotEmpty()) {
                 ContributionListItem(
                     text = stringResource(R.string.funding_googleplay_contribution_list_type_recurring),
                     onClick = onRecurringContributionTypeClick,
@@ -61,24 +106,29 @@ internal fun ContributionList(
                     modifier = Modifier.weight(1f),
                 )
             }
+        }
+    }
+}
 
-            FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
-                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
-            ) {
-                contributions.forEach {
-                    ContributionListItem(
-                        text = it.price,
-                        onClick = { onItemClick(it) },
-                        isSelected = it == selectedItem,
-                        modifier = Modifier.weight(1f),
-                    )
-                }
-            }
-
-            TextBodyMedium(
-                text = stringResource(R.string.funding_googleplay_contribution_list_disclaimer),
-                modifier = Modifier.padding(top = MainTheme.spacings.default),
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun ChoicesRow(
+    contributions: ImmutableList<Contribution>,
+    onItemClick: (Contribution) -> Unit,
+    selectedItem: Contribution?,
+    modifier: Modifier = Modifier,
+) {
+    FlowRow(
+        horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+        modifier = modifier,
+    ) {
+        contributions.forEach {
+            ContributionListItem(
+                text = it.priceFormatted,
+                onClick = { onItemClick(it) },
+                isSelected = it == selectedItem,
+                modifier = Modifier.weight(1f),
             )
         }
     }

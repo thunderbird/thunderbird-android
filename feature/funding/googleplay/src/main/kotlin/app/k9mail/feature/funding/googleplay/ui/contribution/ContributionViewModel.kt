@@ -1,5 +1,6 @@
 package app.k9mail.feature.funding.googleplay.ui.contribution
 
+import android.app.Activity
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.funding.googleplay.domain.entity.Contribution
 import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionContract.Event
@@ -16,7 +17,8 @@ internal class ContributionViewModel(
             Event.OnOneTimeContributionSelected -> onOneTimeContributionSelected()
             Event.OnRecurringContributionSelected -> onRecurringContributionSelected()
             is Event.OnContributionItemClicked -> onContributionItemClicked(event.item)
-            Event.OnPurchaseClicked -> onPurchaseClicked()
+            is Event.OnPurchaseClicked -> onPurchaseClicked(event.activity)
+            is Event.OnManagePurchaseClicked -> onManagePurchaseClicked(event.contribution)
         }
     }
 
@@ -46,7 +48,13 @@ internal class ContributionViewModel(
         }
     }
 
-    private fun onPurchaseClicked() {
+    @Suppress("UnusedParameter")
+    private fun onPurchaseClicked(activity: Activity) {
         // TODO: Implement purchase logic
+    }
+
+    @Suppress("UnusedParameter")
+    private fun onManagePurchaseClicked(contribution: Contribution) {
+        // TODO: Implement manage purchase logic
     }
 }

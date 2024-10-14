@@ -1,5 +1,6 @@
 package app.k9mail.feature.funding.googleplay.ui.contribution
 
+import android.app.Activity
 import androidx.compose.runtime.Stable
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.feature.funding.googleplay.domain.entity.Contribution
@@ -14,8 +15,9 @@ internal class ContributionContract {
 
     @Stable
     data class State(
-        val recurringContributions: ImmutableList<RecurringContribution> = persistentListOf(),
         val oneTimeContributions: ImmutableList<OneTimeContribution> = persistentListOf(),
+        val recurringContributions: ImmutableList<RecurringContribution> = persistentListOf(),
+        val purchasedContribution: Contribution? = null,
         val selectedContribution: Contribution? = null,
         val isRecurringContributionSelected: Boolean = false,
     )
@@ -23,7 +25,17 @@ internal class ContributionContract {
     sealed interface Event {
         data object OnOneTimeContributionSelected : Event
         data object OnRecurringContributionSelected : Event
-        data class OnContributionItemClicked(val item: Contribution) : Event
-        data object OnPurchaseClicked : Event
+
+        data class OnContributionItemClicked(
+            val item: Contribution,
+        ) : Event
+
+        data class OnPurchaseClicked(
+            val activity: Activity,
+        ) : Event
+
+        data class OnManagePurchaseClicked(
+            val contribution: Contribution,
+        ) : Event
     }
 }

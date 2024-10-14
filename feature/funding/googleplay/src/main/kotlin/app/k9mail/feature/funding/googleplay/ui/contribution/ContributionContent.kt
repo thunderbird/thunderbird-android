@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import app.k9mail.core.ui.compose.common.activity.LocalActivity
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionContract.Event
@@ -28,6 +29,7 @@ internal fun ContributionContent(
             .testTag("ContributionContent")
             .padding(contentPadding),
     ) {
+        val activity = LocalActivity.current
         val scrollState = rememberScrollState()
 
         Column(
@@ -38,14 +40,13 @@ internal fun ContributionContent(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.triple),
         ) {
-            ContributionHeader()
+            ContributionHeader(
+                purchasedContribution = state.purchasedContribution,
+            )
 
             ContributionList(
-                contributions = if (state.isRecurringContributionSelected) {
-                    state.recurringContributions
-                } else {
-                    state.oneTimeContributions
-                },
+                oneTimeContributions = state.oneTimeContributions,
+                recurringContributions = state.recurringContributions,
                 selectedItem = state.selectedContribution,
                 isRecurringContributionSelected = state.isRecurringContributionSelected,
                 onOneTimeContributionTypeClick = {
@@ -60,7 +61,9 @@ internal fun ContributionContent(
             )
 
             ContributionFooter(
-                onClick = { onEvent(Event.OnPurchaseClicked) },
+                onPurchaseClick = { onEvent(Event.OnPurchaseClicked(activity)) },
+                onManagePurchaseClick = { onEvent(Event.OnManagePurchaseClicked(it)) },
+                purchasedContribution = state.purchasedContribution,
                 isPurchaseEnabled = state.selectedContribution != null,
             )
         }
