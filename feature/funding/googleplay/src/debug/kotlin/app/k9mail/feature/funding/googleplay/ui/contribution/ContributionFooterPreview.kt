@@ -11,8 +11,10 @@ fun ContributionFooterPreview() {
         ContributionFooter(
             onPurchaseClick = {},
             onManagePurchaseClick = {},
+            onShowContributionListClick = {},
             purchasedContribution = null,
             isPurchaseEnabled = true,
+            isContributionListShown = true,
         )
     }
 }
@@ -22,9 +24,11 @@ fun ContributionFooterPreview() {
 fun ContributionFooterDisabledPreview() {
     PreviewWithTheme {
         ContributionFooter(
+            purchasedContribution = null,
             onPurchaseClick = {},
             onManagePurchaseClick = {},
-            purchasedContribution = null,
+            onShowContributionListClick = {},
+            isContributionListShown = false,
             isPurchaseEnabled = false,
         )
     }
@@ -35,10 +39,42 @@ fun ContributionFooterDisabledPreview() {
 fun ContributionFooterWithRecurringContributionPreview() {
     PreviewWithTheme {
         ContributionFooter(
+            purchasedContribution = FakeData.recurringContribution,
             onPurchaseClick = {},
             onManagePurchaseClick = {},
-            purchasedContribution = FakeData.recurringContribution,
+            onShowContributionListClick = {},
             isPurchaseEnabled = true,
+            isContributionListShown = false,
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun ContributionFooterWithOneTimeContributionPreview() {
+    PreviewWithTheme {
+        ContributionFooter(
+            purchasedContribution = FakeData.oneTimeContribution,
+            onPurchaseClick = {},
+            onManagePurchaseClick = {},
+            onShowContributionListClick = {},
+            isPurchaseEnabled = true,
+            isContributionListShown = false,
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun ContributionFooterWithOneTimeContributionAndListPreview() {
+    PreviewWithTheme {
+        ContributionFooter(
+            purchasedContribution = FakeData.oneTimeContribution,
+            onPurchaseClick = {},
+            onManagePurchaseClick = {},
+            onShowContributionListClick = {},
+            isPurchaseEnabled = true,
+            isContributionListShown = true,
         )
     }
 }
