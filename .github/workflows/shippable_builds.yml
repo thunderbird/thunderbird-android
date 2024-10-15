@@ -10,7 +10,12 @@ on:
       skipK9Mail:
         type: boolean
         description: Skip building K-9 Mail
-
+      skipGooglePlay:
+        type: boolean
+        description: Skip Google Play Publish
+      draftGooglePlay:
+        type: boolean
+        description: Don't send changes for review (Google Play)
 
 jobs:
   get_environment:
@@ -44,7 +49,6 @@ jobs:
     environment: ${{ needs.get_environment.outputs.releaseEnv }}
     outputs:
       matrixInclude: ${{ steps.dump.outputs.matrixInclude }}
-      matrixIncludeApk: ${{ steps.dump.outputs.matrixIncludeApk }}
       releaseType: ${{ vars.RELEASE_TYPE }}
     steps:
       - name: Show Environment
@@ -75,12 +79,10 @@ jobs:
               return;
             }
 
-            const matrixApk = matrixFull.filter(item => item.packageFormat == "apk");
-            core.setOutput("matrixIncludeApk", matrixApk);
             core.setOutput("matrixInclude", matrixFull);
 
             await core.summary
-              .addRaw(`Beginning a ${process.env.releaseType} build with the following configurations:`, true)
+              .addRaw(`Beginning a <b>${process.env.releaseType}</b> build with the following configurations:`, true)
               .addTable([
                 [
                   { data: "App Name", header: true },
@@ -139,7 +141,7 @@ jobs:
         run: |
           if [[ "$APP_NAME" = "thunderbird" && "$PACKAGE_FORMAT" = "apk" ]]; then
             BUILD_COMMAND="assemble${PACKAGE_FLAVOR^}${RELEASE_TYPE^}"
-          elif [[ "$APP_NAME" = "thunderbird" && "${PACKAGE_FORMAT}" = "bundle" ]]; then
+          elif [[ "$APP_NAME" = "thunderbird" && "${PACKAGE_FORMAT}" = "aab" ]]; then
             BUILD_COMMAND="bundle${PACKAGE_FLAVOR^}${RELEASE_TYPE^}"
           elif [[ "$APP_NAME" = "k9mail" ]]; then
             BUILD_COMMAND="assembleRelease"
@@ -158,18 +160,18 @@ jobs:
           RELEASE_TYPE: ${{ vars.RELEASE_TYPE }}
           UPLOAD_PATH: "uploads"
         run: |
-          OUT_BASE=app-${APP_NAME}/build/outputs/${PACKAGE_FORMAT}
+          OUT_BASE=app-${APP_NAME}/build/outputs/
 
           if [[ "$APP_NAME" = "thunderbird" && "$PACKAGE_FORMAT" = "apk" ]]; then
-            OUT_PATH="${OUT_BASE}/${PACKAGE_FLAVOR}/${RELEASE_TYPE}"
+            OUT_PATH="${OUT_BASE}/apk/${PACKAGE_FLAVOR}/${RELEASE_TYPE}"
             OUT_FILE="app-${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}-unsigned.apk"
             UPLOAD_FILE="${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}.apk"
-          elif [[ "$APP_NAME" = "thunderbird" && "${PACKAGE_FORMAT}" = "bundle" ]]; then
-            OUT_PATH="${OUT_BASE}/${PACKAGE_FLAVOR}${RELEASE_TYPE^}"
+          elif [[ "$APP_NAME" = "thunderbird" && "${PACKAGE_FORMAT}" = "aab" ]]; then
+            OUT_PATH="${OUT_BASE}/bundle/${PACKAGE_FLAVOR}${RELEASE_TYPE^}"
             OUT_FILE="app-${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}.aab"
             UPLOAD_FILE="${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}.aab"
           elif [[ "$APP_NAME" = "k9mail" ]]; then
-            OUT_PATH="${OUT_BASE}/release"
+            OUT_PATH="${OUT_BASE}/apk/release"
             OUT_FILE="app-${APP_NAME}-release-unsigned.apk"
             UPLOAD_FILE="${APP_NAME}-default-${RELEASE_TYPE}.apk"
           else
@@ -223,6 +225,15 @@ jobs:
           keyPassword: ${{ secrets.KEY_PASSWORD }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
 
+      - name: Rename assets
+        if: ${{ matrix.packageFormat == 'apk' }}
+        env:
+          APP_NAME: ${{ matrix.appName }}
+          PACKAGE_FLAVOR: ${{ matrix.packageFlavor || 'default' }}
+        run: |
+          mv uploads/${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}-signed.apk uploads/${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}.apk
+          rm uploads/*-aligned.apk
+
       - name: Remove JKS file
         shell: bash
         run: |
@@ -234,7 +245,7 @@ jobs:
           name: signed-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor || 'default' }}
           if-no-files-found: error
           path: |
-            uploads/*-signed.apk
+            uploads/*.apk
             uploads/*.aab
 
   pre_publish:
@@ -252,39 +263,63 @@ jobs:
         run: |
           true
 
-  github_release:
-    name: GitHub Release
+  publish_release:
+    name: Publish Release
     needs: [pre_publish, dump_config]
-    if: ${{ needs.dump_config.outputs.releaseType == 'beta' || needs.dump_config.outputs.releaseType == 'release' }}
+    if: ${{ !failure() && !cancelled() }} # Run if previous step is skipped
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        include: "${{ fromJSON(needs.dump_config.outputs.matrixIncludeApk) }}"
-    environment: gh-releases
+        include: "${{ fromJSON(needs.dump_config.outputs.matrixInclude) }}"
+    environment: publish_release
     env:
       RELEASE_TYPE: ${{ needs.dump_config.outputs.releaseType }}
       APP_NAME: ${{ matrix.appName }}
       PACKAGE_FLAVOR: ${{ matrix.packageFlavor || 'default' }}
+      PACKAGE_FORMAT: ${{ matrix.packageFormat }}
     steps:
       - uses: actions/download-artifact@v4
         with:
           name: signed-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor || 'default' }}
           path: "uploads/"
 
-      - name: Get APK Info
-        id: apkinfo
+      - name: Get Package Info
+        id: pkginfo
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          APK_FILE="uploads/${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}-signed.apk"
-          LATEST_BUILD_TOOLS=$(ls -d ${ANDROID_SDK_ROOT}/build-tools/* | sort -V | tail -n1)
-          AAPT=${LATEST_BUILD_TOOLS}/aapt
+          PKG_FILE="uploads/${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}.${PACKAGE_FORMAT}"
+          if [[ "${PACKAGE_FORMAT}" == "apk" ]]; then
+            LATEST_BUILD_TOOLS=$(ls -d ${ANDROID_SDK_ROOT}/build-tools/* | sort -V | tail -n1)
+            AAPT=${LATEST_BUILD_TOOLS}/aapt
 
-          NAME=$(${AAPT} dump badging $APK_FILE | sed -n "s/.*application-label:'\([^']*\)'.*/\1/p")
-          VERSION=$(${AAPT} dump badging $APK_FILE | sed -n "s/.*versionName='\([^']*\)'.*/\1/p")
+            NAME=$(${AAPT} dump badging $PKG_FILE | sed -n "s/^application-label:'\([^']*\)'.*$/\1/p")
+            VERSION=$(${AAPT} dump badging $PKG_FILE | sed -n "s/^package:.*versionName='\([^']*\)'.*$/\1/p")
+            PACKAGE_ID=$(${AAPT} dump badging $PKG_FILE | sed -n "s/^package: name='\([^']*\)'.*$/\1/p")
+          elif [[ "${PACKAGE_FORMAT}" == "aab" ]]; then
+            if [ ! -f bundletool.jar ]; then
+              gh release download -R google/bundletool -p 'bundletool-all-*.jar' -O bundletool.jar
+            fi
+            BUNDLETOOL="java -jar bundletool.jar"
+
+            VERSION=$(${BUNDLETOOL} dump manifest --bundle ${PKG_FILE} --xpath '/manifest/@android:versionName')
+            PACKAGE_ID=$(${BUNDLETOOL} dump manifest --bundle ${PKG_FILE} --xpath '/manifest/@package')
+
+            # Unfortunately no application label in the bundle
+            case "$PACKAGE_ID" in
+              net.thunderbird.android) NAME="Thunderbird" ;;
+              net.thunderbird.android.beta) NAME="Thunderbird Beta" ;;
+              net.thunderbird.android.daily) NAME="Thunderbird Daily" ;;
+              wtf.says.test) NAME="Test" ;;
+              com.fsck.k9) NAME="K-9 Mail" ;;
+            esac
+          fi
 
           echo "TAG_NAME=${APP_NAME^^}_${VERSION//./_}" >> $GITHUB_OUTPUT
           echo "FULL_VERSION_NAME=${NAME} ${VERSION}" >> $GITHUB_OUTPUT
           echo "VERSION_NAME=${VERSION}" >> $GITHUB_OUTPUT
+          echo "PACKAGE_ID=${PACKAGE_ID}" >> $GITHUB_OUTPUT
 
           cat $GITHUB_OUTPUT
 
@@ -292,49 +327,77 @@ jobs:
         id: rename
         shell: bash
         env:
-          VERSION_NAME: ${{ steps.apkinfo.outputs.VERSION_NAME }}
+          VERSION_NAME: ${{ steps.pkginfo.outputs.VERSION_NAME }}
         run: |
-          APK_FILE="${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}-signed.apk"
-          APK_FILE_PRETTY="${APP_NAME}-${VERSION_NAME}.apk"
-          mv uploads/${APK_FILE} uploads/${APK_FILE_PRETTY}
+          PKG_FILE="${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}.${PACKAGE_FORMAT}"
+          PKG_FILE_PRETTY="${APP_NAME}-${VERSION_NAME}.${PACKAGE_FORMAT}"
+          mv uploads/${PKG_FILE} uploads/${PKG_FILE_PRETTY}
 
-          echo "APK_FILE=${APK_FILE_PRETTY}" >> $GITHUB_OUTPUT
-          ls -l uploads/${APK_FILE_PRETTY}
+          echo "PKG_FILE=${PKG_FILE_PRETTY}" >> $GITHUB_OUTPUT
+          ls -l uploads/${PKG_FILE_PRETTY}
 
       - name: App Token Generate
         uses: actions/create-github-app-token@v1
+        if: ${{ contains(matrix.releaseTarget, 'github') && vars.RELEASER_APP_CLIENT_ID }}
         id: app-token
         with:
           app-id: ${{ vars.RELEASER_APP_CLIENT_ID }}
           private-key: ${{ secrets.RELEASER_APP_PRIVATE_KEY }}
 
-      - name: Publish
-        id: publish
+      - name: Publish to GitHub Releases
+        id: publish_gh
+        if: ${{ contains(matrix.releaseTarget, 'github') }}
         uses: softprops/action-gh-release@c062e08bd532815e2082a85e87e3ef29c3e6d191  # v2.0.8
         with:
-          token: ${{ steps.app-token.outputs.token }}
+          token: ${{ steps.app-token.outputs.token || github.token }}
           target_commitish: ${{ github.sha }}
-          tag_name: ${{ steps.apkinfo.outputs.TAG_NAME }}
-          name: ${{ steps.apkinfo.outputs.FULL_VERSION_NAME }}
+          tag_name: ${{ steps.pkginfo.outputs.TAG_NAME }}
+          name: ${{ steps.pkginfo.outputs.FULL_VERSION_NAME }}
           prerelease: ${{ env.RELEASE_TYPE != 'release' }}
           fail_on_unmatched_files: true
           files: |
-            uploads/${{ steps.rename.outputs.APK_FILE }}
+            uploads/${{ steps.rename.outputs.PKG_FILE }}
+
+      - name: Publish to Google Play
+        id: publish_play
+        uses: r0adkll/upload-google-play@v1
+        if: ${{ github.events.inputs.skipGooglePlay != 'true' && contains(matrix.releaseTarget, 'play') && matrix.playTargetTrack }}
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_STORE_ACCOUNT }}
+          packageName: ${{ steps.pkginfo.outputs.PACKAGE_ID }}
+          track: ${{ matrix.playTargetTrack }}
+          releaseName: ${{ steps.pkginfo.outputs.VERSION_NAME }}
+          status: completed
+          changesNotSentForReview: ${{ github.event.inputs.draftGooglePlay == 'true' }}
+          #whatsNewDirectory: TODO
+          releaseFiles: |
+            uploads/${{ steps.rename.outputs.PKG_FILE }}
 
       - name: Summary
         uses: actions/github-script@v7
         env:
-          tagName: ${{ steps.apkinfo.outputs.TAG_NAME }}
-          fullVersionName: ${{ steps.apkinfo.outputs.FULL_VERSION_NAME }}
-          releaseUrl: ${{ steps.publish.outputs.url }}
-          assets: ${{ steps.publish.outputs.assets }}
+          tagName: ${{ steps.pkginfo.outputs.TAG_NAME }}
+          fullVersionName: ${{ steps.pkginfo.outputs.FULL_VERSION_NAME }}
+          ghReleaseUrl: ${{ steps.publish_gh.outputs.url }}
+          playTargetTrack: ${{ matrix.playTargetTrack }}
+          packageId: ${{ steps.pkginfo.outputs.PACKAGE_ID }}
         with:
           script: |
-            let assets = JSON.parse(process.env.assets);
-
             await core.summary
-              .addRaw(`Release `)
-              .addLink(process.env.fullVersionName, process.env.releaseUrl)
+              .addHeading(`${process.env.fullVersionName} (${process.env.packageId})`)
               .addRaw(`Tag ${process.env.tagName} at `)
-              .addLink(context.sha, `${context.server_url}/${context.repository}/commit/${context.sha}`)
+              .addLink(context.sha, `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/commit/${context.sha}`)
+              .addEOL()
               .write();
+
+            if (process.env.ghReleaseUrl) {
+              await core.summary
+                .addRaw(`Released to Github at `)
+                .addLink(process.env.ghReleaseUrl, process.env.ghReleaseUrl)
+                .addEOL()
+                .write();
+            }
+
+            if (process.env.playTargetTrack) {
+              await core.summary.addRaw(`Released to the <b>${process.env.playTargetTrack}</b> track on Google Play`, true).write();
+            }
