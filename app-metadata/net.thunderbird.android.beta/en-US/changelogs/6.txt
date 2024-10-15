@@ -1,0 +1,6 @@
+Thunderbird for Android version 8.0b3, based on K-9 Mail. Changes include:
+- Support Thunderbird with our new in-app financial contribution feature (work in progress)
+- OAuth support now available for Fastmail
+- Better guidance when using the import from app feature
+- Fixed account update issues, crashes, and improved message list spacing
+- Enforced email validation for better identity management

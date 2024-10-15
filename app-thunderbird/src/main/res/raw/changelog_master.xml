@@ -5,6 +5,13 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="8.0b3" versioncode="6" date="2024-10-15">
+        <change>Support Thunderbird with our new in-app financial contribution feature (work in progress)</change>
+        <change>OAuth support now available for Fastmail</change>
+        <change>Better guidance when using the import from app feature</change>
+        <change>Fixed account update issues, crashes, and improved message list spacing</change>
+        <change>Enforced email validation for better identity management</change>
+    </release>
     <release version="8.0b2" versioncode="5" date="2024-10-07">
         <change>Second public beta of Thunderbird for Android 8.0, based on K-9 Mail</change>
         <change>Import accounts from Desktop via QR codes</change>
