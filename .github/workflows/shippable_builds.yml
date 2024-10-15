@@ -438,7 +438,6 @@ jobs:
             uploads/*.aab
 
   pre_publish:
-    name: Wait for Approval
     # This is a holding job meant to require approval before proceeding with the publishing jobs below
     # The environment has a deployment protection rule requiring approval from a set of named reviewers
     # before proceeding.
