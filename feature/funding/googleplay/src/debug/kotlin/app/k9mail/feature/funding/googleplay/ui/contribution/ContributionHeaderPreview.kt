@@ -8,6 +8,26 @@ import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 @Preview(showBackground = true)
 internal fun ContributionHeaderPreview() {
     PreviewWithTheme {
-        ContributionHeader()
+        ContributionHeader(purchasedContribution = null)
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun ContributionHeaderWithPurchasedOneTimeContributionPreview() {
+    PreviewWithTheme {
+        ContributionHeader(
+            purchasedContribution = FakeData.oneTimeContribution,
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun ContributionHeaderWithPurchasedRecurringContributionPreview() {
+    PreviewWithTheme {
+        ContributionHeader(
+            purchasedContribution = FakeData.recurringContribution,
+        )
     }
 }

@@ -1,29 +1,43 @@
 package app.k9mail.feature.funding.googleplay.ui.contribution
 
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.feature.funding.googleplay.R
+import app.k9mail.feature.funding.googleplay.domain.entity.Contribution
+import app.k9mail.feature.funding.googleplay.domain.entity.RecurringContribution
 
 @Composable
 internal fun ContributionFooter(
-    onClick: () -> Unit,
+    purchasedContribution: Contribution?,
+    onPurchaseClick: () -> Unit,
+    onManagePurchaseClick: (Contribution) -> Unit,
     isPurchaseEnabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    Row(
+    Column(
         modifier = modifier,
     ) {
-        ButtonFilled(
-            text = stringResource(
-                R.string.funding_googleplay_contribution_footer_payment_button,
-            ),
-            onClick = onClick,
-            enabled = isPurchaseEnabled,
-            modifier = Modifier.fillMaxWidth(),
-        )
+        if (purchasedContribution != null && purchasedContribution is RecurringContribution) {
+            ButtonFilled(
+                text = stringResource(
+                    R.string.funding_googleplay_contribution_footer_manage_button,
+                ),
+                onClick = { onManagePurchaseClick(purchasedContribution) },
+                modifier = Modifier.fillMaxWidth(),
+            )
+        } else {
+            ButtonFilled(
+                text = stringResource(
+                    R.string.funding_googleplay_contribution_footer_payment_button,
+                ),
+                onClick = onPurchaseClick,
+                enabled = isPurchaseEnabled,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
     }
 }

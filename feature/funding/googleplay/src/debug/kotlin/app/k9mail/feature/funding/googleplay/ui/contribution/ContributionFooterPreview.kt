@@ -9,7 +9,9 @@ import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 fun ContributionFooterPreview() {
     PreviewWithTheme {
         ContributionFooter(
-            onClick = {},
+            onPurchaseClick = {},
+            onManagePurchaseClick = {},
+            purchasedContribution = null,
             isPurchaseEnabled = true,
         )
     }
@@ -20,8 +22,23 @@ fun ContributionFooterPreview() {
 fun ContributionFooterDisabledPreview() {
     PreviewWithTheme {
         ContributionFooter(
-            onClick = {},
+            onPurchaseClick = {},
+            onManagePurchaseClick = {},
+            purchasedContribution = null,
             isPurchaseEnabled = false,
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun ContributionFooterWithRecurringContributionPreview() {
+    PreviewWithTheme {
+        ContributionFooter(
+            onPurchaseClick = {},
+            onManagePurchaseClick = {},
+            purchasedContribution = FakeData.recurringContribution,
+            isPurchaseEnabled = true,
         )
     }
 }
