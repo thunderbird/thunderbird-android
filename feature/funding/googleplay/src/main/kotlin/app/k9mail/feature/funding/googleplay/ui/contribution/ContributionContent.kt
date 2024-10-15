@@ -44,27 +44,31 @@ internal fun ContributionContent(
                 purchasedContribution = state.purchasedContribution,
             )
 
-            ContributionList(
-                oneTimeContributions = state.oneTimeContributions,
-                recurringContributions = state.recurringContributions,
-                selectedItem = state.selectedContribution,
-                isRecurringContributionSelected = state.isRecurringContributionSelected,
-                onOneTimeContributionTypeClick = {
-                    onEvent(Event.OnOneTimeContributionSelected)
-                },
-                onRecurringContributionTypeClick = {
-                    onEvent(Event.OnRecurringContributionSelected)
-                },
-                onItemClick = {
-                    onEvent(Event.OnContributionItemClicked(it))
-                },
-            )
+            if (state.showContributionList) {
+                ContributionList(
+                    oneTimeContributions = state.oneTimeContributions,
+                    recurringContributions = state.recurringContributions,
+                    selectedItem = state.selectedContribution,
+                    isRecurringContributionSelected = state.isRecurringContributionSelected,
+                    onOneTimeContributionTypeClick = {
+                        onEvent(Event.OnOneTimeContributionSelected)
+                    },
+                    onRecurringContributionTypeClick = {
+                        onEvent(Event.OnRecurringContributionSelected)
+                    },
+                    onItemClick = {
+                        onEvent(Event.OnContributionItemClicked(it))
+                    },
+                )
+            }
 
             ContributionFooter(
+                purchasedContribution = state.purchasedContribution,
                 onPurchaseClick = { onEvent(Event.OnPurchaseClicked(activity)) },
                 onManagePurchaseClick = { onEvent(Event.OnManagePurchaseClicked(it)) },
-                purchasedContribution = state.purchasedContribution,
+                onShowContributionListClick = { onEvent(Event.OnShowContributionListClicked) },
                 isPurchaseEnabled = state.selectedContribution != null,
+                isContributionListShown = state.showContributionList,
             )
         }
     }

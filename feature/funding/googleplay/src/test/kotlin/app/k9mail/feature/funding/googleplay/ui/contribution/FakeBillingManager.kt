@@ -16,7 +16,8 @@ class FakeBillingManager : DomainContract.BillingManager {
         )
     }
 
-    override suspend fun purchaseContribution(activity: Activity, contribution: Contribution) = Unit
+    override suspend fun purchaseContribution(activity: Activity, contribution: Contribution) =
+        FakeData.oneTimeContributions.first()
 
     override fun clear() = Unit
 }

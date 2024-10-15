@@ -69,6 +69,7 @@ internal class ContributionViewModel(
         updateState { state ->
             state.copy(
                 purchasedContribution = purchasedContribution,
+                showContributionList = purchasedContribution == null,
             )
         }
     }
@@ -89,6 +90,7 @@ internal class ContributionViewModel(
             is Event.OnContributionItemClicked -> onContributionItemClicked(event.item)
             is Event.OnPurchaseClicked -> onPurchaseClicked(event.activity)
             is Event.OnManagePurchaseClicked -> onManagePurchaseClicked(event.contribution)
+            Event.OnShowContributionListClicked -> onShowContributionListClicked()
         }
     }
 
@@ -134,6 +136,7 @@ internal class ContributionViewModel(
                 updateState {
                     it.copy(
                         purchasedContribution = result,
+                        showContributionList = false,
                     )
                 }
             }
@@ -143,6 +146,14 @@ internal class ContributionViewModel(
     @Suppress("UnusedParameter")
     private fun onManagePurchaseClicked(contribution: Contribution) {
         // TODO: Implement manage purchase logic
+    }
+
+    private fun onShowContributionListClicked() {
+        updateState {
+            it.copy(
+                showContributionList = true,
+            )
+        }
     }
 
     override fun onCleared() {
