@@ -23,15 +23,25 @@ CHANNEL_ENVIRONMENTS = {
             "MATRIX_INCLUDE": [
                 {
                     "appName": "thunderbird",
+                    "releaseTarget": "github",
                     "packageFormat": "apk",
                     "packageFlavor": "foss",
                 },
                 {
                     "appName": "thunderbird",
-                    "packageFormat": "bundle",
+                    "releaseTarget": "play",
+                    "playTargetTrack": "internal", # TODO change this to alpha once ready, final promotion should happen in web ui
+                    "packageFormat": "aab",
                     "packageFlavor": "full",
                 },
-                {"appName": "k9mail", "packageFormat": "apk"},
+                {
+                    "appName": "k9mail",
+                    "releaseTarget": "github|play",
+                    # TODO enable this when ready to publish
+                    #"packageId": "com.fsck.k9",
+                    #"playTargetTrack": "production",
+                    "packageFormat": "apk"
+                },
             ],
         },
     },
@@ -42,15 +52,24 @@ CHANNEL_ENVIRONMENTS = {
             "MATRIX_INCLUDE": [
                 {
                     "appName": "thunderbird",
+                    "releaseTarget": "github",
                     "packageFormat": "apk",
                     "packageFlavor": "foss",
                 },
                 {
                     "appName": "thunderbird",
-                    "packageFormat": "bundle",
+                    "releaseTarget": "play",
+                    "playTargetTrack": "internal", # TODO change this to production once ready
+                    "packageFormat": "aab",
                     "packageFlavor": "full",
                 },
-                {"appName": "k9mail", "packageFormat": "apk"},
+                {
+                    "appName": "k9mail",
+                    "releaseTarget": "github|play",
+                    # TODO enable this when ready to publish
+                    #"playTargetTrack": "beta",
+                    "packageFormat": "apk"
+                },
             ],
         },
     },
@@ -66,7 +85,9 @@ CHANNEL_ENVIRONMENTS = {
                 },
                 {
                     "appName": "thunderbird",
-                    "packageFormat": "bundle",
+                    "releaseTarget": "play",
+                    "packageFormat": "aab",
+                    "playTargetTrack": "internal",
                     "packageFlavor": "full",
                 },
             ],
@@ -203,14 +224,14 @@ def set_github_environment_variable(repo, name, value, environment_name):
 
 
 # Function to create GitHub environment if it doesn't exist
-def create_github_environment(repo, environment_name, branch=None, approvers=None):
+def create_github_environment(repo, environment_name, branches=None, approvers=None):
     url = f"https://api.github.com/repos/{repo}/environments/{environment_name}"
     headers = {
         "Authorization": f"token {GITHUB_TOKEN}",
         "Accept": "application/vnd.github.v3+json",
     }
     data = {}
-    if branch:
+    if branches:
         data["deployment_branch_policy"] = {
             "custom_branch_policies": True,
             "protected_branches": False,
@@ -236,22 +257,22 @@ def create_github_environment(repo, environment_name, branch=None, approvers=Non
             f"Failed to create environment {environment_name}. Response: {response.status_code}, {response.text}"
         )
 
-    if branch:
+    for branch in (branches or []):
         url = f"https://api.github.com/repos/{repo}/environments/{environment_name}/deployment-branch-policies"
         data = {"name": branch, "type": "branch"}
         response = requests.post(url, headers=headers, json=data)
 
         if response.status_code == 200:
             print(
-                f"\tEnvironment branch protection for {environment_name} created successfully."
+                f"\tBranch protection on {branch} for {environment_name} created successfully."
             )
         elif response.status_code == 409:
             print(
-                f"\tEnvironment branch protection for {environment_name} already exists."
+                f"\tBranch protection on {branch} for {environment_name} already exists."
             )
         else:
             raise Exception(
-                f"Failed to create environment {environment_name}. Response: {response.status_code}, {response.text}"
+                f"Failed to create branch protection for {branch} on {environment_name}. Response: {response.status_code}, {response.text}"
             )
 
 
@@ -317,7 +338,7 @@ def create_signing_environment(repo, environment, branch, props_file):
     SIGNING_KEY = encode_jks_file(key_props.get("storeFile"))
 
     # Create the environment if it doesn't exist
-    create_github_environment(repo, environment, branch=branch)
+    create_github_environment(repo, environment, branches=[branch])
 
     # Fetch the public key from GitHub for the specific environment
     public_key_data = get_github_public_key(repo, environment)
@@ -343,6 +364,21 @@ def create_signing_environment(repo, environment, branch, props_file):
             repo, secret_name, encrypted_value, key_id, environment
         )
 
+def create_release_environment(repo, branches):
+    environment = "publish_release"
+
+    create_github_environment(repo, environment, branches=branches)
+
+    public_key_data = get_github_public_key(repo, environment)
+    public_key = public_key_data["key"]
+    key_id = public_key_data["key_id"]
+
+    with open("play-store-account.json") as fp:
+      encrypted_play_account = encrypt_secret(public_key, fp.read())
+
+    set_github_environment_secret(
+      repo, "PLAY_STORE_ACCOUNT", encrypted_play_account, key_id, environment
+    )
 
 def main():
     # Argument parsing for positional inputs and repo flag
@@ -378,9 +414,10 @@ def main():
     includeset = set(
         list(CHANNEL_ENVIRONMENTS.keys())
         + list(SIGNING_ENVIRONMENTS.keys())
-        + list(
+        + [
             "publish_hold",
-        )
+            "publish_release",
+        ]
     )
     if args.skip:
         for skip in args.skip:
@@ -400,7 +437,7 @@ def main():
         if environment_name not in includeset:
             continue
 
-        create_github_environment(args.repo, environment_name, branch=data["branch"])
+        create_github_environment(args.repo, environment_name, branches=[data["branch"]])
 
         for name, value in data["variables"].items():
             if isinstance(value, dict) or isinstance(value, list):
@@ -420,6 +457,9 @@ def main():
             args.repo, environment_name, data["branch"], data["props"]
         )
 
+    # Publish environment
+    if "publish_release" in includeset:
+        create_release_environment(args.repo, ["main", "beta", "release"])
 
 if __name__ == "__main__":
     main()
