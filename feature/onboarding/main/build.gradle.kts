@@ -14,4 +14,5 @@ dependencies {
     implementation(projects.feature.account.setup)
     implementation(projects.feature.settings.import)
     implementation(projects.feature.onboarding.permissions)
+    implementation(projects.feature.onboarding.migration.api)
 }

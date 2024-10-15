@@ -225,6 +225,8 @@ dependencies {
     fullBetaImplementation(projects.feature.funding.googleplay)
     fullReleaseImplementation(projects.feature.funding.googleplay)
 
+    implementation(projects.feature.onboarding.migration.thunderbird)
+
     testImplementation(libs.robolectric)
 
     // Required for DependencyInjectionTest to be able to resolve OpenPgpApiManager

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">Already using Thunderbird on desktop?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_description">You can easily import your account settings.\n\nIn your Thunderbird desktop client, go to the top menu bar, click on ‘Settings’, and select ‘Export for Mobile’.\n\nA new tab with QR codes will appear. Use your Android device to scan the codes.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Import settings</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">New to Thunderbird?</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Add an email account now</string>
+</resources>
