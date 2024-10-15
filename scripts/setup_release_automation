@@ -30,7 +30,7 @@ CHANNEL_ENVIRONMENTS = {
                 {
                     "appName": "thunderbird",
                     "releaseTarget": "play",
-                    "playTargetTrack": "internal", # TODO change this to alpha once ready, final promotion should happen in web ui
+                    "playTargetTrack": "internal",  # TODO change this to alpha once ready, final promotion should happen in web ui
                     "packageFormat": "aab",
                     "packageFlavor": "full",
                 },
@@ -38,8 +38,8 @@ CHANNEL_ENVIRONMENTS = {
                     "appName": "k9mail",
                     "releaseTarget": "github|play",
                     # TODO enable this when ready to publish
-                    #"playTargetTrack": "production",
-                    "packageFormat": "apk"
+                    # "playTargetTrack": "production",
+                    "packageFormat": "apk",
                 },
             ],
         },
@@ -58,7 +58,7 @@ CHANNEL_ENVIRONMENTS = {
                 {
                     "appName": "thunderbird",
                     "releaseTarget": "play",
-                    "playTargetTrack": "internal", # TODO change this to production once ready
+                    "playTargetTrack": "internal",  # TODO change this to production once ready
                     "packageFormat": "aab",
                     "packageFlavor": "full",
                 },
@@ -66,8 +66,8 @@ CHANNEL_ENVIRONMENTS = {
                     "appName": "k9mail",
                     "releaseTarget": "github|play",
                     # TODO enable this when ready to publish
-                    #"playTargetTrack": "beta",
-                    "packageFormat": "apk"
+                    # "playTargetTrack": "beta",
+                    "packageFormat": "apk",
                 },
             ],
         },
@@ -256,7 +256,7 @@ def create_github_environment(repo, environment_name, branches=None, approvers=N
             f"Failed to create environment {environment_name}. Response: {response.status_code}, {response.text}"
         )
 
-    for branch in (branches or []):
+    for branch in branches or []:
         url = f"https://api.github.com/repos/{repo}/environments/{environment_name}/deployment-branch-policies"
         data = {"name": branch, "type": "branch"}
         response = requests.post(url, headers=headers, json=data)
@@ -363,6 +363,7 @@ def create_signing_environment(repo, environment, branch, props_file):
             repo, secret_name, encrypted_value, key_id, environment
         )
 
+
 def create_release_environment(repo, branches):
     environment = "publish_release"
 
@@ -373,11 +374,25 @@ def create_release_environment(repo, branches):
     key_id = public_key_data["key_id"]
 
     with open("play-store-account.json") as fp:
-      encrypted_play_account = encrypt_secret(public_key, fp.read())
+        encrypted_play_account = encrypt_secret(public_key, fp.read())
 
     set_github_environment_secret(
-      repo, "PLAY_STORE_ACCOUNT", encrypted_play_account, key_id, environment
+        repo, "PLAY_STORE_ACCOUNT", encrypted_play_account, key_id, environment
     )
+
+    with open("thunderbird-mobile-gh-releaser-bot.pem") as fp:
+        encrypted_releaser_key = encrypt_secret(public_key, fp.read())
+    with open("thunderbird-mobile-gh-releaser-bot.clientid.txt") as fp:
+        releaser_client_id = fp.read().strip()
+
+    set_github_environment_secret(
+        repo, "RELEASER_APP_PRIVATE_KEY", encrypted_releaser_key, key_id, environment
+    )
+
+    set_github_environment_variable(
+        repo, "RELEASER_APP_CLIENT_ID", releaser_client_id, environment
+    )
+
 
 def main():
     # Argument parsing for positional inputs and repo flag
@@ -436,7 +451,9 @@ def main():
         if environment_name not in includeset:
             continue
 
-        create_github_environment(args.repo, environment_name, branches=[data["branch"]])
+        create_github_environment(
+            args.repo, environment_name, branches=[data["branch"]]
+        )
 
         for name, value in data["variables"].items():
             if isinstance(value, dict) or isinstance(value, list):
@@ -459,6 +476,7 @@ def main():
     # Publish environment
     if "publish_release" in includeset:
         create_release_environment(args.repo, ["main", "beta", "release"])
+
 
 if __name__ == "__main__":
     main()
