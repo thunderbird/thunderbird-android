@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+
+        <meta-data
+            android:name="com.google.android.play.largest_release_audience.NONPRODUCTION"
+            android:value=""
+            />
+        <meta-data
+            android:name="com.google.android.play.billingclient.enableBillingOverridesTesting"
+            android:value="true"
+            />
+
+    </application>
+
+</manifest>

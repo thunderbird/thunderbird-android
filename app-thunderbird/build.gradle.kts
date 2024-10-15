@@ -220,7 +220,7 @@ dependencies {
 
     "fossImplementation"(projects.feature.funding.link)
 
-    fullDebugImplementation(projects.feature.funding.link)
+    fullDebugImplementation(projects.feature.funding.googleplay)
     fullDailyImplementation(projects.feature.funding.googleplay)
     fullBetaImplementation(projects.feature.funding.googleplay)
     fullReleaseImplementation(projects.feature.funding.googleplay)
