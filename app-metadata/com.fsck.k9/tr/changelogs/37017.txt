@@ -1,5 +1,5 @@
 - Otomatik yapılandırma keşif adımlarının sırası düzeltildi
-- Öntanımlı gösterim sayısı 100 olarak değiştirildi
-- Yeni hesaplar için bildirimler öntanımlı olarak etkinleştirildi
+- Varsayılan gösterim sayısı 100 olarak değiştirildi
+- Yeni hesaplar için bildirimler varsayılan olarak etkinleştirildi
 - İstenmeyen yan etkiler nedeniyle K-9 Mail 6.716'da tanıtılan mailto: URI'leri işleme değişikliği geri alındı
 - İleti görünümünde "kişileri renklendir" özelliğinin tekrar çalışması için hata düzeltildi

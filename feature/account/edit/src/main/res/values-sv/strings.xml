@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_edit_save_server_settings_loading_message">Sparar serverinställningar…</string>
+    <string name="account_edit_save_server_settings_error_message">Det gick inte att spara serverinställningarna</string>
+    <string name="account_edit_save_server_settings_success_message">Serverinställningar sparade</string>
+</resources>

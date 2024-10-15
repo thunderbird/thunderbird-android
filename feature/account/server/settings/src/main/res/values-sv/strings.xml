@@ -13,15 +13,15 @@
     <string name="account_server_settings_password_authentication_title">Verifiera din identitet</string>
     <string name="account_server_settings_incoming_imap_compression_label">Använd kompression</string>
     <string name="account_server_settings_validation_error_port_required">Port krävs.</string>
-    <string name="account_server_settings_authentication_client_certificate">Klient certifikat</string>
-    <string name="account_server_settings_incoming_imap_prefix_label">IMAP sökväg prefix</string>
+    <string name="account_server_settings_authentication_client_certificate">Klientcertifikat</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">IMAP-sökvägsprefix</string>
     <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
     <string name="account_server_settings_protocol_type_label">Protokoll</string>
     <string name="account_server_settings_password_authentication_subtitle">Lås upp för att visa ditt lösenord</string>
     <string name="account_server_settings_validation_error_port_invalid">Port är ogiltig (måste vara 1-65535).</string>
     <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
-    <string name="account_server_settings_client_certificate_label">Klient certifikat</string>
-    <string name="account_server_settings_validation_error_imap_prefix_blank">IMAP prefix får inte vara tomt.</string>
+    <string name="account_server_settings_client_certificate_label">Klientcertifikat</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">IMAP-prefixet får inte vara tomt.</string>
     <string name="account_server_settings_client_certificate_none_selected">Ingen</string>
     <string name="account_server_settings_password_authentication_screen_lock_required">För att se ditt lösenord här, aktivera skärmlås på den här enheten.</string>
     <string name="account_server_settings_server_label">Server</string>
@@ -31,5 +31,5 @@
     <string name="account_server_settings_port_label">Port</string>
     <string name="account_server_settings_username_label">Användarnamn</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Ogiltig IP eller värdnamn</string>
-    <string name="account_server_settings_incoming_imap_send_client_info_label">Skicka klient information</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">Skicka klientinformation</string>
 </resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="migration_qrcode_permission_denied_title">نیازمند دسترسی دوربین</string>
+    <string name="migration_qrcode_permission_denied_message">رفتن به تنظیمات اندروید، زدن روی اجازه‌ها و اجازه به دسترسی به دوربین.</string>
+    <string name="migration_qrcode_go_to_settings_button_text">رفتن به تنظیمات</string>
+    <string name="migration_qrcode_scanning_progress">%1$s از %2$s پوییده</string>
+    <string name="migration_qrcode_done_button_text">انجام شد</string>
+</resources>

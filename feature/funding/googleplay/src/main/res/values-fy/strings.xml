@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="funding_googleplay_contribution_footer_payment_button">Trochgean nei ôfrekkenjen</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">Moanliks</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">Bydragen binne net ôflûkber as donaasjes foar goede doelen.</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">Moanlikse betelling oanpasse</string>
+    <string name="funding_googleplay_contribution_title">Ynstellingen</string>
+    <string name="funding_googleplay_contribution_header_title">Stypje Thunderbird</string>
+    <string name="funding_googleplay_contribution_header_description">Wy toane jo nea advertinsjes en ferkeapje nea jo gegevens. Wy wurde folslein finansiere troch finansjele bydragen fan ús brûkers. As jo genietsje fan Thunderbird, stypje it dan. Wy kinne dit net sûnder jo!</string>
+    <string name="funding_googleplay_contribution_list_title">Feilige bydrage</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">Donearje ien kear</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">Neat beskikber</string>
+</resources>

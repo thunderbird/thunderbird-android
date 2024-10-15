@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">Başlat</string>
     <string name="onboarding_welcome_import_button">Tənzimləmələri idxal et</string>
+    <string name="onboarding_welcome_message"><xliff:g id="app_name"> %s</xliff:g> -ə Xoş Gəlmisiniz, yüksəldilmiş təhlükəsizlik, asan fərdiləşdirmə və bütün e-poçt hesablarınızın qüsursuz idarə edilməsi üçün hazırlanmış Android e-poçt müştərisi.</string>
 </resources>

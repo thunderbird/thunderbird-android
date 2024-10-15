@@ -264,12 +264,6 @@
     <string name="account_settings_push_advanced_title">Napredno</string>
     <string name="account_settings_title_fmt">Postavke računa</string>
     <string name="account_settings_notify_label">Nova obavijest pošte</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">Mapa obavijesti</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">Svi</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Samo mape 1. Razreda</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Mape 1. i 2. Razreda</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Sve osim mapa 2. Razreda</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">Ništa</string>
     <string name="account_settings_notify_sync_label">Obavijesti sinhronitzacije</string>
     <string name="account_settings_email_label">Vaša adresa e-pošte</string>
     <string name="account_settings_notify_summary">Obavijesti me u traci stanja o pristigloj pošti</string>
@@ -353,27 +347,12 @@
     <string name="account_settings_message_age_3_months">posljednja 3 mjeseca</string>
     <string name="account_settings_message_age_6_months">posljednjih 6 mjeseci</string>
     <string name="account_settings_message_age_1_year">posljednjih godinu dana</string>
-    <string name="account_settings_folder_display_mode_label">Mape za prikaz</string>
-    <string name="account_settings_folder_display_mode_all">Sve</string>
-    <string name="account_settings_folder_display_mode_first_class">Samo mape 1. Razreda</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">Mape 1. i 2. Razreda</string>
-    <string name="account_settings_folder_display_mode_not_second_class">Sve osim mapa 2. Razreda</string>
-    <string name="account_settings_folder_sync_mode_label">Provjera mapa</string>
-    <string name="account_settings_folder_sync_mode_all">Sve</string>
-    <string name="account_settings_folder_sync_mode_first_class">Samo mape 1. Razreda</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">Mape 1. i 2. Razreda</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">Sve osim mapa 2. Razreda</string>
-    <string name="account_settings_folder_sync_mode_none">Nijedna</string>
     <string name="account_settings_sync_remote_deletetions_label">Sinhronizacija brisanja poslužitelja</string>
     <string name="account_settings_sync_remote_deletetions_summary">Makni poruke prilikom brisanja sa poslužitelja</string>
     <string name="account_settings_openpgp_missing">OpenPGP aplikacija nedostaje - da li je deinstalirana?</string>
     <string name="folder_settings_title">Postavke mape</string>
     <string name="folder_settings_in_top_group_label">Prikaži na vrhu grupe</string>
     <string name="folder_settings_in_top_group_summary">Prikaži blizu vrha na popisu mapa</string>
-    <string name="folder_settings_folder_display_mode_label">Razred prikaza mape</string>
-    <string name="folder_settings_folder_display_mode_normal">Bez razreda</string>
-    <string name="folder_settings_folder_display_mode_first_class">1. Razreda</string>
-    <string name="folder_settings_folder_display_mode_second_class">2. Razreda</string>
     <string name="folder_settings_clear_local_folder_action">Očistiti lokalne poruke</string>
     <string name="account_settings_incoming_label">Dolazni poslužitelj</string>
     <string name="account_settings_incoming_summary">Postavite dolazni poslužitelj e-pošte</string>
@@ -770,4 +749,55 @@
     <!--A user visible label for the name and email address copied to the clipboard-->
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+<string name="search_everywhere_action">Pretraži svugdje</string>
+    <string name="new_messages_title">Nove poruke</string>
+    <string name="notification_channel_push_title">Sinkroniziraj (Slanje)</string>
+    <string name="debug_export_logs_title">Izvezi zapise</string>
+    <string name="debug_export_logs_failure">Izvoz nije uspio.</string>
+    <string name="general_settings_contact_name_color_label">Boja imena kontakata</string>
+    <string name="general_settings_post_remove_action_return_to_list">Vrati se na popis poruka</string>
+    <string name="move_to_drafts_action">Premjesti u skice</string>
+    <string name="unsubscribe_action">Odjavite se</string>
+    <string name="copy_subject_to_clipboard">Tekst predmeta kopiran u međuspremnik</string>
+    <string name="message_view_recipients_format">za <xliff:g id="recipients">%s</xliff:g></string>
+    <string name="general_settings_post_remove_action_title">Nakon brisanja ili premještanja poruke</string>
+    <string name="general_settings_post_remove_action_show_next_message">Prikaži sljedeću poruku</string>
+    <string name="about_app_authors_thunderbird">Thunderbird mobilni tim</string>
+    <string name="choose_folder_copy_title">Kopiraj u…</string>
+    <string name="notification_certificate_error_public">Greška certifikata</string>
+    <string name="notification_notify_error_title">Greška u obavijesti</string>
+    <string name="message_view_show_remote_images_action">Prikaži slike s udaljenog poslužitelja</string>
+    <string name="message_view_additional_recipient_prefix">+</string>
+    <string name="message_view_me_text">mene</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Prikaži prethodnu poruku</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Nakon označavanja poruke kao nepročitane</string>
+    <string name="general_settings_swipe_actions_title">Akcije povlačenja</string>
+    <string name="general_settings_swipe_action_toggle_read">Označi kao pročitano/nepročitano</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">Vrati se na popis poruka</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">Ostani na trenutnoj poruci</string>
+    <string name="general_settings_right_swipe_title">Povlačenje udesno</string>
+    <string name="general_settings_left_swipe_title">Povlačenje ulijevo</string>
+    <string name="general_settings_swipe_action_toggle_star">Dodaj/ukloni zvjezdicu</string>
+    <string name="general_settings_message_list_density_title">Gustoća</string>
+    <string name="general_settings_ui_density_compact">Kompaktno</string>
+    <string name="general_settings_ui_density_relaxed">Opušteno</string>
+    <string name="global_settings_lock_screen_notification_visibility_message_count">Broj novih poruka</string>
+    <string name="changelog_snackbar_button_text">Pregledaj</string>
+    <string name="changelog_snackbar_text">Saznajte što je novo u ovom izdanju</string>
+    <string name="changelog_version_title">Verzija %s</string>
+    <string name="about_title">O aplikaciji <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="changelog_recent_changes_title">Što je novo</string>
+    <string name="changelog_show_recent_changes">Prikaži nedavne promjene kada je aplikacija ažurirana</string>
+    <string name="account_delete_dlg_instructions_fmt">Račun \"<xliff:g id="account">%s</xliff:g>\" biti će uklonjen iz <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="choose_folder_move_title">Premjesti u…</string>
+    <string name="notification_notify_error_text">Došlo je do greške prilikom pokušaja stvaranja sistemske obavijesti za novu poruku. Razlog je najvjerojatnije nedostatak zvuka obavijesti.\n\nDodirnite za otvaranje postavki obavijesti.</string>
+    <string name="notification_channel_push_description">Prikazano dok čekate nove poruke</string>
+    <string name="debug_export_logs_success">Izvoz uspješan. Zapisi mogu sadržavati osjetljive informacije. Budite oprezni kome ih šaljete.</string>
+    <string name="changelog_title">Zapis izmjena</string>
+    <string name="changelog_loading_error">Nije moguće učitati zapis izmjena.</string>
+    <string name="source_code">Izvorni kod</string>
+    <string name="about_project_title">Projekt otvorenog koda</string>
+    <string name="about_website_title">Web stranica</string>
+    <string name="get_help_title">Zatraži pomoć</string>
+    <string name="user_forum_title">Korisnički forum</string>
 </resources>

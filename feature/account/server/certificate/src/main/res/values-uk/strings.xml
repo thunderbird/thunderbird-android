@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_warning_title">Попередження</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Помилка сертифіката</string>
+    <string name="account_server_certificate_button_advanced">Додатково</string>
+    <string name="account_server_certificate_button_continue">Погодитися на ризик і продовжити</string>
+    <string name="account_server_certificate_subject_alternative_names">Альтернативні імена суб\'єктів</string>
+    <string name="account_server_certificate_not_valid_before">Недійсний до</string>
+    <string name="account_server_certificate_not_valid_after">Недійсний після</string>
+    <string name="account_server_certificate_subject">Суб\'єкт</string>
+    <string name="account_server_certificate_fingerprints_section">Цифрові відбитки</string>
+    <string name="account_server_certificate_unknown_error_description_format">Застосунок виявив потенційну загрозу безпеці та припинив з\'єднання з <xliff:g id="serverName">%s</xliff:g>.\nЯкщо ви продовжите, зловмисники можуть спробувати викрасти вашу інформацію, наприклад, пароль або електронну пошту.</string>
+    <string name="account_server_certificate_button_back">Повернутися (рекомендовано)</string>
+    <string name="account_server_certificate_section_title">Сертифікат сервера</string>
+    <string name="account_server_certificate_issuer">Видавець</string>
+</resources>

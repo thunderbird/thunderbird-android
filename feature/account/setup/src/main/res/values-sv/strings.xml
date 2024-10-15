@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_setup_options_account_name_error_blank">Kontonamn kan inte vara tomt.</string>
-    <string name="account_setup_options_account_check_frequency_label">Kolla efter ny e-post frekvens</string>
+    <string name="account_setup_options_account_check_frequency_label">Frekvenskontroll</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Konfigurera automatiskt</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Denna konfiguration är inte pålitlig</string>
     <string name="account_setup_options_email_signature_label">E-postsignatur</string>
@@ -19,7 +19,7 @@
     <string name="account_setup_auto_discovery_loading_error">Misslyckades att ladda e-postkonfiguration</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Jag litar på denna konfiguration</string>
     <string name="account_setup_options_display_name_error_required">Ditt namn krävs.</string>
-    <string name="account_setup_error_network">Nätverksfel. Vänligen kontrollera din anslutningsstatus och försök igen.</string>
+    <string name="account_setup_error_network">Nätverksfel. Vänligen se över din uppkoppling och försök igen.</string>
     <string name="account_setup_options_email_check_frequency_never">Aldrig</string>
     <string name="account_setup_auto_discovery_loading_message">Söker upp konfiguration…</string>
     <string name="account_setup_options_section_sync_options">Synkroniseringsinställningar</string>
@@ -45,7 +45,7 @@
     <string name="account_setup_special_folders_trash_folder_label">Papperskorgen mapp</string>
     <string name="account_setup_special_folders_archive_folder_label">Arkiv mapp</string>
     <string name="account_setup_special_folders_spam_folder_label">Spam mapp</string>
-    <string name="account_setup_special_folders_form_description_automatic">Den \"Automatiska\" Inmatningen följer automatiskt ändringar som görs av servern. Det aktuella servervärdet visas inom parentes.</string>
+    <string name="account_setup_special_folders_form_description_automatic">Inmatningen \"Automatisk\" följer automatiskt ändringar som görs av servern. Det aktuella servervärdet visas inom parentes.</string>
     <string name="account_setup_auto_discovery_validation_error_password_required">Lösenord krävs.</string>
     <plurals name="account_setup_options_email_display_count_messages">
         <item quantity="one">1 meddelande</item>
@@ -53,10 +53,10 @@
     </plurals>
     <plurals name="account_setup_options_email_check_frequency_minutes">
         <item quantity="one">Varje minut</item>
-        <item quantity="other">Var %d minuter</item>
+        <item quantity="other">Var %d minut</item>
     </plurals>
     <plurals name="account_setup_options_email_check_frequency_hours">
         <item quantity="one">Varje timme</item>
-        <item quantity="other">Var %d timmar</item>
+        <item quantity="other">Var %d timme</item>
     </plurals>
 </resources>

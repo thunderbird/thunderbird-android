@@ -1,0 +1,7 @@
+- Nytt og forbetra konto-oppsett
+- La til moglegheit for å returnere til meldingsliste etter å ha markert ein melding som ulesen i meldingsvisinga
+- Gjorde det vanskelegare å feilaktig utløse ei sveip-handling i meldingslista
+- Forbetra skjermlesar oppleving eit par stader
+- IMAP: La til stønad for å sende ID-kommandoen (påkravd av nokre e-postleverandørar)
+- Fleire andre feilrettingar og forbetringar; se endringar for versjonane 6.7xx
+- Fjerna hebraisk og koreanske omsetjingar på grunn av kor ukomplette dei var; frivillige omsetjarar er velkomne!

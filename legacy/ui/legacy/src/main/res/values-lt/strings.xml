@@ -4,7 +4,7 @@
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
     <!--Used in the about dialog-->
-    <string name="about_app_authors_k9">K-9 šunų vedžiotojai</string>
+    <string name="about_app_authors_k9">„K-9“ šunų vedžiotojai</string>
     <string name="source_code">Šaltinio kodas</string>
     <string name="app_license">Apache licencija, versija 2.0</string>
     <string name="about_project_title">Atvirojo kodo projektas</string>
@@ -15,11 +15,11 @@
     <string name="license">Licencija</string>
     <string name="changelog_title">Pakeitimų sąrašas</string>
     <string name="changelog_loading_error">Nepavyko įkelti pakeitimų žurnalo.</string>
-    <string name="changelog_version_title">Versija %s</string>
+    <string name="changelog_version_title">%s versija</string>
     <string name="changelog_recent_changes_title">Kas naujo</string>
     <string name="changelog_show_recent_changes">Rodyti naujausius pakeitimus, kai programa buvo atnaujinta</string>
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
-    <string name="changelog_snackbar_text">Sužinokite, kas naujo šioje versijoje</string>
+    <string name="changelog_snackbar_text">Sužinokite, kas naujo šioje laidoje</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
     <!--General strings that include the app name-->
@@ -36,35 +36,35 @@
     <string name="choose_folder_copy_title">Kopijuoti į…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> pasirinkta</string>
     <string name="send_action">Siųsti</string>
-    <string name="empty_subject">Tema yra tuščia, spustelėkite dar kartą, kad vis tiek išsiųstumėte</string>
+    <string name="empty_subject">Tema yra tuščia. Spustelėkite dar kartą, kad vis tiek išsiųstumėte</string>
     <string name="reply_action">Atsakyti</string>
     <string name="reply_all_action">Atsakyti visiems</string>
-    <string name="delete_action">Šalinti</string>
+    <string name="delete_action">Ištrinti</string>
     <string name="archive_action">Archyvuoti</string>
     <string name="spam_action">Brukalas</string>
     <string name="forward_action">Persiųsti</string>
     <string name="forward_as_attachment_action">Persiųsti kaip priedą</string>
-    <string name="edit_as_new_message_action">Redaguoti kaip naują žinutę</string>
+    <string name="edit_as_new_message_action">Redaguoti kaip naują laišką</string>
     <string name="move_action">Perkelti</string>
     <string name="move_to_drafts_action">Perkelti į Juodraščius</string>
     <string name="refile_action">Pertvarkyti…</string>
     <string name="done_action">Atlikta</string>
     <string name="discard_action">Atmesti</string>
     <string name="save_draft_action">Išsaugoti kaip juodraštį</string>
-    <string name="check_mail_action">Ieškoti naujų laiškų</string>
+    <string name="check_mail_action">Tikrinti paštą</string>
     <string name="send_messages_action">Siųsti laiškus</string>
     <string name="refresh_folders_action">Atnaujinti aplankų sąrašus</string>
-    <string name="filter_folders_action">Ieškoti aplanko</string>
+    <string name="filter_folders_action">Rasti aplanko</string>
     <string name="add_account_action">Pridėti paskyrą</string>
     <string name="compose_action">Sukurti</string>
     <string name="search_action">Ieškoti</string>
     <string name="search_everywhere_action">Ieškoti visur</string>
     <string name="search_results">Paieškos rezultatai</string>
-    <string name="new_messages_title">Naujos žinutės</string>
+    <string name="new_messages_title">Naujas laiškas</string>
     <string name="folders_action">Tvarkyti aplankus</string>
     <string name="account_settings_action">Paskyros nustatymai</string>
     <string name="remove_account_action">Pašalinti paskyrą</string>
-    <string name="mark_as_read_action">Pažymėti kaip skaitytą</string>
+    <string name="mark_as_read_action">Žymėti kaip skaitytą</string>
     <string name="send_alternate_action">Bendrinti</string>
     <string name="send_alternate_chooser_title">Pasirinkti siuntėją</string>
     <string name="flag_action">Pridėti žvaigždutę</string>
@@ -73,32 +73,30 @@
     <string name="unsubscribe_action">Atsisakyti prenumeratos</string>
     <string name="show_headers_action">Rodyti antraštes</string>
     <plurals name="copy_address_to_clipboard">
-        <item quantity="one">Adresas nukopijuotas į iškarpinę</item>
-        <item quantity="few">Adresai nukopijuoti į iškarpinę</item>
-        <item quantity="many">Adresai nukopijuoti į iškarpinę</item>
-        <item quantity="other">Adresai nukopijuoti į iškarpinę</item>
+        <item quantity="one">Nukopijuotas adresas į iškarpinę</item>
+        <item quantity="few">Nukopijuoti adresai į iškarpinę</item>
+        <item quantity="other">Nukopijuota adresų į iškarpinę</item>
     </plurals>
-    <string name="copy_subject_to_clipboard">Temos tekstas nukopijuotas į iškarpinę</string>
-    <string name="message_view_theme_action_dark">Persijungti į tamsią temą</string>
-    <string name="message_view_theme_action_light">Persijungti į šviesią temą</string>
-    <string name="mark_as_unread_action">Pažymėti kaip neskaitytą</string>
-    <string name="read_receipt">Skaitymo patvirtinimas</string>
-    <string name="read_receipt_enabled">Prašys perskaitymo patvirtinimo</string>
-    <string name="read_receipt_disabled">Neprašys perskaitymo patvirtinimo</string>
+    <string name="copy_subject_to_clipboard">Nukopijuotas temos tekstas į iškarpinę</string>
+    <string name="message_view_theme_action_dark">Perjungti į tamsią temą</string>
+    <string name="message_view_theme_action_light">Perjungti į šviesią temą</string>
+    <string name="mark_as_unread_action">Žymėti kaip neskaitytą</string>
+    <string name="read_receipt">Skaitymo pranešimas</string>
+    <string name="read_receipt_enabled">Prašys skaitymo pranešimą</string>
+    <string name="read_receipt_disabled">Neprašys skaitymo pranešimo</string>
     <string name="add_attachment_action">Pridėti priedą</string>
-    <string name="empty_trash_action">Išvalyti šiukšliadėžę</string>
-    <string name="expunge_action">Išvalyti</string>
+    <string name="empty_trash_action">Valyti šiukšlinę</string>
+    <string name="expunge_action">Valyti</string>
     <string name="about_action">Apie</string>
     <string name="prefs_title">Nustatymai</string>
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Nėra temos)</string>
     <string name="general_no_sender">Nėra siuntėjo</string>
     <string name="status_loading_more">Įkeliami laiškai\u2026</string>
-    <string name="status_network_error">Prisijungimo klaida</string>
-    <string name="status_invalid_id_error">Laiškas nerastas</string>
-    <string name="status_loading_error">Laiško įkėlimo klaida</string>
-    <string name="load_more_messages_fmt">Įkelti dar
-  iki <xliff:g id="messages_to_load">%d</xliff:g> laiškų</string>
+    <string name="status_network_error">Ryšio klaida.</string>
+    <string name="status_invalid_id_error">Laiškas nerastas.</string>
+    <string name="status_loading_error">Laiško įkėlimo klaida.</string>
+    <string name="load_more_messages_fmt">Įkelti  iki <xliff:g id="messages_to_load">%d</xliff:g> daugiau</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
@@ -106,19 +104,18 @@
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> naujas laiškas</item>
         <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> nauji laiškai</item>
-        <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> nauji laiškai</item>
-        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nauji laiškai</item>
+        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> naujų laiškų</item>
     </plurals>
-    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> daugiau ant <xliff:g id="account">%2$s</xliff:g></string>
+    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> daugiau paskyroje <xliff:g id="account">%2$s</xliff:g></string>
     <string name="notification_action_reply">Atsakyti</string>
-    <string name="notification_action_mark_as_read">Pažymėti kaip skaitytą</string>
-    <string name="notification_action_mark_all_as_read">Pažymėti viską kaip skaitytą</string>
-    <string name="notification_action_delete">Šalinti</string>
-    <string name="notification_action_delete_all">Šalinti Visus</string>
+    <string name="notification_action_mark_as_read">Žymėti kaip skaitytą</string>
+    <string name="notification_action_mark_all_as_read">Žymėti viską kaip skaitytą</string>
+    <string name="notification_action_delete">Ištrinti</string>
+    <string name="notification_action_delete_all">Ištrinti viską</string>
     <string name="notification_action_archive">Archyvuoti</string>
     <string name="notification_action_archive_all">Archyvuoti viską</string>
     <string name="notification_action_spam">Brukalas</string>
-    <string name="notification_certificate_error_public">Sertifikato klaida</string>
+    <string name="notification_certificate_error_public">Sertifikato klaida.</string>
     <string name="notification_certificate_error_title">Sertifikato klaida <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Patikrinkite serverio nustatymus</string>
     <string name="notification_authentication_error_title">Autentifikavimas nepavyko</string>
@@ -299,12 +296,6 @@
     <string name="account_settings_push_advanced_title">Išplėstinis</string>
     <string name="account_settings_title_fmt">Aplanko nustatymai</string>
     <string name="account_settings_notify_label">Pranešimai apie naujus laiškus</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">Pranešimų aplankai</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">Visi</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Tik 1 klasės aplankai</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1 ir 2 klasės aplankai</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Visus išskyrus 2 klasės aplankus</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">Jokios</string>
     <string name="account_settings_notify_sync_label">Sinchronizuoti pranešimus</string>
     <string name="account_settings_email_label">Jūsų el. pašto adresas</string>
     <string name="account_settings_notify_summary">Gavus laišką pranešti apie tai būsenos juostoje</string>
@@ -393,27 +384,12 @@
     <string name="account_settings_message_age_3_months">paskutinių 3 mėnesių</string>
     <string name="account_settings_message_age_6_months">paskutinių 6 mėnesių</string>
     <string name="account_settings_message_age_1_year">praėjusių metų</string>
-    <string name="account_settings_folder_display_mode_label">Rodomi aplankai</string>
-    <string name="account_settings_folder_display_mode_all">Visi</string>
-    <string name="account_settings_folder_display_mode_first_class">Tik 1 klasės aplankai</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">1 ir 2 klasės aplankai</string>
-    <string name="account_settings_folder_display_mode_not_second_class">Visi išskyrus 2 klasės aplankus</string>
-    <string name="account_settings_folder_sync_mode_label">Stebimi aplankai</string>
-    <string name="account_settings_folder_sync_mode_all">Visi</string>
-    <string name="account_settings_folder_sync_mode_first_class">Tik 1 klasės aplankai</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">1 ir 2 klasės aplankai</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">Visi išskyrus 2 klasės aplankus</string>
-    <string name="account_settings_folder_sync_mode_none">Jokie</string>
     <string name="account_settings_sync_remote_deletetions_label">Sinchronizuoti serverio pašalinimus</string>
     <string name="account_settings_sync_remote_deletetions_summary">Pašalinti laiškus kai jie pašalinami serveryje</string>
     <string name="account_settings_openpgp_missing">Trūksta OpenPGP programos - ar ji buvo pašalinta?</string>
     <string name="folder_settings_title">Aplanko nustatymai</string>
     <string name="folder_settings_in_top_group_label">Rodyti viršutinėje grupėje</string>
     <string name="folder_settings_in_top_group_summary">Rodyti aplankų sąrašo viršuje</string>
-    <string name="folder_settings_folder_display_mode_label">Rodomos aplankų klasės</string>
-    <string name="folder_settings_folder_display_mode_normal">Be klasės</string>
-    <string name="folder_settings_folder_display_mode_first_class">1 klasė</string>
-    <string name="folder_settings_folder_display_mode_second_class">2 klasė</string>
     <string name="folder_settings_clear_local_folder_action">Išvalyti vietinius laiškus</string>
     <string name="account_settings_incoming_label">Laiškų gavimo serveris</string>
     <string name="account_settings_incoming_summary">Konfigūruoti gaunamųjų laiškų serverį</string>
@@ -913,5 +889,9 @@ Norėdami nustatyti automatinį šifravimą naujajame prietaise, vadovaukitės i
     <string name="action_compose_message_to">Rašyti laišką</string>
     <string name="background_work_notification_remove_account">Šalinama paskyra…</string>
     <string name="message_list_content_description_unread_prefix">neskaityti, %s</string>
-    <string name="changelog_snackbar_button_text">Rodyti</string>
+    <string name="changelog_snackbar_button_text">Peržiūrėti</string>
+    <string name="about_app_authors_thunderbird">„Thunderbird Mobile“ komanda</string>
+    <string name="settings_ui_telemetry_description">Bendrina su „Mozilla“ šios programos veikimo, naudojimo, aparatinės įrangos ir tinkinimo duomenis, kad padėtų mums tobulinti „Thunderbird“</string>
+    <string name="account_delete_dlg_instructions_fmt">Paskyra \"<xliff:g id="account">%s</xliff:g>\" bus pašalinta iš „<xliff:g id="app_name">%s</xliff:g>“.</string>
+    <string name="about_title">Apie „<xliff:g id="app_name">%s</xliff:g>“</string>
 </resources>

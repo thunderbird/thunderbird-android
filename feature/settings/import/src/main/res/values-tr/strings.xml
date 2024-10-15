@@ -40,4 +40,6 @@
     <string name="settings_import_general_settings_item">Genel ayarlar</string>
     <string name="settings_import_pick_app_button">Uygulamadan içe aktar</string>
     <string name="settings_import_pick_app_dialog_title">Uygulamadan içe aktar</string>
+    <string name="settings_import_scan_qr_code_button">QR kodu okut</string>
+    <string name="settings_import_app_version_not_supported">Uygulama sürümü desteklenmiyor.</string>
 </resources>

@@ -1,0 +1,5 @@
+- Fixade ordning på steg för upptäckt av autokonfiguration
+- Ändrad standardvisningsantal till 100
+- Aktiverade aviseringar för nya konton som standard
+- Återställde ändringen till hantering av mailto: URI:er infördes i K-9 Mail 6.716 på grund av oavsiktliga biverkningar
+- Fixat bugg för att få "färglägga kontakter" att fungera igen i meddelandevyn
