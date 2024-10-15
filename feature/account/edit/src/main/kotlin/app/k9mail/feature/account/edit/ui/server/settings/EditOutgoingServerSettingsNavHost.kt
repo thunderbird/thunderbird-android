@@ -14,7 +14,6 @@ import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSett
 import app.k9mail.feature.account.server.validation.ui.OutgoingServerValidationViewModel
 import app.k9mail.feature.account.server.validation.ui.ServerValidationScreen
 import org.koin.androidx.compose.koinViewModel
-import org.koin.compose.koinInject
 import org.koin.core.parameter.parametersOf
 
 private const val NESTED_NAVIGATION_ROUTE_MODIFY = "modify"
@@ -58,7 +57,6 @@ fun EditOutgoingServerSettingsNavHost(
                 viewModel = koinViewModel<OutgoingServerValidationViewModel> {
                     parametersOf(accountUuid)
                 },
-                appNameProvider = koinInject(),
             )
         }
         composable(route = NESTED_NAVIGATION_ROUTE_SAVE) {

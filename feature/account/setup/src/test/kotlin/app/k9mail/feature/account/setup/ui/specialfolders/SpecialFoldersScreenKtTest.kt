@@ -1,8 +1,6 @@
 package app.k9mail.feature.account.setup.ui.specialfolders
 
-import app.k9mail.core.ui.compose.testing.ComposeTest
-import app.k9mail.core.ui.compose.testing.setContentWithTheme
-import app.k9mail.feature.account.setup.ui.FakeAppNameProvider
+import app.k9mail.feature.account.setup.AccountSetupComposeTest
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.Effect
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.State
 import app.k9mail.feature.account.setup.ui.specialfolders.fake.FakeSpecialFoldersViewModel
@@ -11,7 +9,7 @@ import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
-class SpecialFoldersScreenKtTest : ComposeTest() {
+class SpecialFoldersScreenKtTest : AccountSetupComposeTest() {
 
     @Test
     fun `should delegate navigation effects`() = runTest {
@@ -25,7 +23,6 @@ class SpecialFoldersScreenKtTest : ComposeTest() {
                 onNext = { onNextCounter++ },
                 onBack = { onBackCounter++ },
                 viewModel = viewModel,
-                appNameProvider = FakeAppNameProvider,
             )
         }
 

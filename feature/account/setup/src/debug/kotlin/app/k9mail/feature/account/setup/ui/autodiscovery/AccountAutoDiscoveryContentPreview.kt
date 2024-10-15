@@ -2,20 +2,19 @@ package app.k9mail.feature.account.setup.ui.autodiscovery
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import app.k9mail.feature.account.common.domain.input.StringInputField
+import app.k9mail.feature.account.common.ui.PreviewWithThemeAndKoin
 import app.k9mail.feature.account.server.validation.ui.fake.FakeAccountOAuthViewModel
 import app.k9mail.feature.account.setup.ui.autodiscovery.fake.fakeAutoDiscoveryResultSettings
 
 @Composable
 @Preview(showBackground = true)
 internal fun AccountAutoDiscoveryContentPreview() {
-    PreviewWithTheme {
+    PreviewWithThemeAndKoin {
         AccountAutoDiscoveryContent(
             state = AccountAutoDiscoveryContract.State(),
             onEvent = {},
             oAuthViewModel = FakeAccountOAuthViewModel(),
-            appName = "AppName",
         )
     }
 }
@@ -23,14 +22,13 @@ internal fun AccountAutoDiscoveryContentPreview() {
 @Composable
 @Preview(showBackground = true)
 internal fun AccountAutoDiscoveryContentEmailPreview() {
-    PreviewWithTheme {
+    PreviewWithThemeAndKoin {
         AccountAutoDiscoveryContent(
             state = AccountAutoDiscoveryContract.State(
                 emailAddress = StringInputField(value = "test@example.com"),
             ),
             onEvent = {},
             oAuthViewModel = FakeAccountOAuthViewModel(),
-            appName = "AppName",
         )
     }
 }
@@ -38,7 +36,7 @@ internal fun AccountAutoDiscoveryContentEmailPreview() {
 @Composable
 @Preview(showBackground = true)
 internal fun AccountAutoDiscoveryContentPasswordPreview() {
-    PreviewWithTheme {
+    PreviewWithThemeAndKoin {
         AccountAutoDiscoveryContent(
             state = AccountAutoDiscoveryContract.State(
                 configStep = AccountAutoDiscoveryContract.ConfigStep.PASSWORD,
@@ -47,7 +45,6 @@ internal fun AccountAutoDiscoveryContentPasswordPreview() {
             ),
             onEvent = {},
             oAuthViewModel = FakeAccountOAuthViewModel(),
-            appName = "AppName",
         )
     }
 }
@@ -55,7 +52,7 @@ internal fun AccountAutoDiscoveryContentPasswordPreview() {
 @Composable
 @Preview(showBackground = true)
 internal fun AccountAutoDiscoveryContentPasswordUntrustedSettingsPreview() {
-    PreviewWithTheme {
+    PreviewWithThemeAndKoin {
         AccountAutoDiscoveryContent(
             state = AccountAutoDiscoveryContract.State(
                 configStep = AccountAutoDiscoveryContract.ConfigStep.PASSWORD,
@@ -64,7 +61,6 @@ internal fun AccountAutoDiscoveryContentPasswordUntrustedSettingsPreview() {
             ),
             onEvent = {},
             oAuthViewModel = FakeAccountOAuthViewModel(),
-            appName = "AppName",
         )
     }
 }
@@ -72,7 +68,7 @@ internal fun AccountAutoDiscoveryContentPasswordUntrustedSettingsPreview() {
 @Composable
 @Preview(showBackground = true)
 internal fun AccountAutoDiscoveryContentPasswordNoSettingsPreview() {
-    PreviewWithTheme {
+    PreviewWithThemeAndKoin {
         AccountAutoDiscoveryContent(
             state = AccountAutoDiscoveryContract.State(
                 configStep = AccountAutoDiscoveryContract.ConfigStep.PASSWORD,
@@ -80,7 +76,6 @@ internal fun AccountAutoDiscoveryContentPasswordNoSettingsPreview() {
             ),
             onEvent = {},
             oAuthViewModel = FakeAccountOAuthViewModel(),
-            appName = "AppName",
         )
     }
 }
@@ -88,7 +83,7 @@ internal fun AccountAutoDiscoveryContentPasswordNoSettingsPreview() {
 @Composable
 @Preview(showBackground = true)
 internal fun AccountAutoDiscoveryContentOAuthPreview() {
-    PreviewWithTheme {
+    PreviewWithThemeAndKoin {
         AccountAutoDiscoveryContent(
             state = AccountAutoDiscoveryContract.State(
                 configStep = AccountAutoDiscoveryContract.ConfigStep.OAUTH,
@@ -97,7 +92,6 @@ internal fun AccountAutoDiscoveryContentOAuthPreview() {
             ),
             onEvent = {},
             oAuthViewModel = FakeAccountOAuthViewModel(),
-            appName = "AppName",
         )
     }
 }

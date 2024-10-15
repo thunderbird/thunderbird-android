@@ -1,8 +1,7 @@
 package app.k9mail.feature.account.setup.ui.options.display
 
-import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContentWithTheme
-import app.k9mail.feature.account.setup.ui.FakeAppNameProvider
+import app.k9mail.feature.account.setup.AccountSetupComposeTest
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Effect
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.State
 import assertk.assertThat
@@ -10,7 +9,7 @@ import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
-class DisplayOptionsScreenKtTest : ComposeTest() {
+class DisplayOptionsScreenKtTest : AccountSetupComposeTest() {
 
     @Test
     fun `should delegate navigation effects`() = runTest {
@@ -24,7 +23,6 @@ class DisplayOptionsScreenKtTest : ComposeTest() {
                 onNext = { onNextCounter++ },
                 onBack = { onBackCounter++ },
                 viewModel = viewModel,
-                appNameProvider = FakeAppNameProvider,
             )
         }
 

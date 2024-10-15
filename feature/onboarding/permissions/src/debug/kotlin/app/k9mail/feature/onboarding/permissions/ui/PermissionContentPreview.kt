@@ -2,12 +2,12 @@ package app.k9mail.feature.onboarding.permissions.ui
 
 import androidx.compose.runtime.Composable
 import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
-import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
+import app.k9mail.feature.account.common.ui.PreviewWithThemeAndKoin
 
 @Composable
 @PreviewDevices
 internal fun PermissionContentPreview() {
-    PreviewWithTheme {
+    PreviewWithThemeAndKoin {
         PermissionsContent(
             state = PermissionsContract.State(
                 isLoading = false,
@@ -17,7 +17,6 @@ internal fun PermissionContentPreview() {
                 isNextButtonVisible = false,
             ),
             onEvent = {},
-            appName = "AppName",
         )
     }
 }

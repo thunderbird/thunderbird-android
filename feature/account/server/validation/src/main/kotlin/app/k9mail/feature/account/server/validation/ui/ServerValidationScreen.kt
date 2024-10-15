@@ -4,7 +4,6 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import app.k9mail.core.common.provider.AppNameProvider
 import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorScreen
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Effect
@@ -17,7 +16,6 @@ fun ServerValidationScreen(
     onNext: () -> Unit,
     onBack: () -> Unit,
     viewModel: ViewModel,
-    appNameProvider: AppNameProvider,
     modifier: Modifier = Modifier,
     title: String? = null,
 ) {
@@ -52,7 +50,6 @@ fun ServerValidationScreen(
         } else {
             ServerValidationMainScreen(
                 viewModel = viewModel,
-                appNameProvider = appNameProvider,
                 modifier = modifier,
             )
         }

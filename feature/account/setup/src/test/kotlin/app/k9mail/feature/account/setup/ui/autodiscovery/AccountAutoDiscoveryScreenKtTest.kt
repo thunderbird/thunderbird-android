@@ -1,9 +1,8 @@
 package app.k9mail.feature.account.setup.ui.autodiscovery
 
-import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContentWithTheme
 import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
-import app.k9mail.feature.account.setup.ui.FakeAppNameProvider
+import app.k9mail.feature.account.setup.AccountSetupComposeTest
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Effect
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.State
 import assertk.assertThat
@@ -11,7 +10,7 @@ import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
-class AccountAutoDiscoveryScreenKtTest : ComposeTest() {
+class AccountAutoDiscoveryScreenKtTest : AccountSetupComposeTest() {
 
     @Test
     fun `should delegate navigation effects`() = runTest {
@@ -25,7 +24,6 @@ class AccountAutoDiscoveryScreenKtTest : ComposeTest() {
                 onNext = { onNextCounter++ },
                 onBack = { onBackCounter++ },
                 viewModel = viewModel,
-                appNameProvider = FakeAppNameProvider,
             )
         }
 

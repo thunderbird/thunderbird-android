@@ -39,7 +39,6 @@ internal fun AccountAutoDiscoveryContent(
     state: State,
     onEvent: (Event) -> Unit,
     oAuthViewModel: AccountOAuthContract.ViewModel,
-    appName: String,
     modifier: Modifier = Modifier,
 ) {
     val scrollState = rememberScrollState()
@@ -59,9 +58,7 @@ internal fun AccountAutoDiscoveryContent(
                     .verticalScroll(scrollState)
                     .imePadding(),
             ) {
-                AppTitleTopHeader(
-                    title = appName,
-                )
+                AppTitleTopHeader()
                 Spacer(modifier = Modifier.weight(1f))
                 AutoDiscoveryContent(
                     state = state,

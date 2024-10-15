@@ -11,16 +11,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import app.k9mail.core.common.provider.BrandNameProvider
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextDisplayMedium
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme2.MainTheme
+import org.koin.compose.koinInject
 
 private const val TITLE_ICON_SIZE_DP = 56
 
 @Composable
 fun AppTitleTopHeader(
-    title: String,
     modifier: Modifier = Modifier,
+    brandNameProvider: BrandNameProvider = koinInject(),
 ) {
     ResponsiveWidthContainer(
         modifier = Modifier
@@ -51,7 +53,7 @@ fun AppTitleTopHeader(
                 contentDescription = null,
             )
 
-            TextDisplayMedium(text = title)
+            TextDisplayMedium(text = brandNameProvider.brandName)
         }
     }
 }

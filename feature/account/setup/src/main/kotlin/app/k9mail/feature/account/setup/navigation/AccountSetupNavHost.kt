@@ -27,7 +27,6 @@ import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsViewModel
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersScreen
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersViewModel
 import org.koin.androidx.compose.koinViewModel
-import org.koin.compose.koinInject
 
 private const val NESTED_NAVIGATION_AUTO_CONFIG = "autoconfig"
 private const val NESTED_NAVIGATION_INCOMING_SERVER_CONFIG = "incoming-server/config"
@@ -66,7 +65,6 @@ fun AccountSetupNavHost(
                 },
                 onBack = onBack,
                 viewModel = koinViewModel<AccountAutoDiscoveryViewModel>(),
-                appNameProvider = koinInject(),
             )
         }
 
@@ -96,7 +94,6 @@ fun AccountSetupNavHost(
                 },
                 onBack = { navController.popBackStack() },
                 viewModel = koinViewModel<IncomingServerValidationViewModel>(),
-                appNameProvider = koinInject(),
             )
         }
 
@@ -127,7 +124,6 @@ fun AccountSetupNavHost(
                 },
                 onBack = { navController.popBackStack() },
                 viewModel = koinViewModel<OutgoingServerValidationViewModel>(),
-                appNameProvider = koinInject(),
             )
         }
 
@@ -148,7 +144,6 @@ fun AccountSetupNavHost(
                 },
                 onBack = { navController.popBackStack() },
                 viewModel = koinViewModel<SpecialFoldersViewModel>(),
-                appNameProvider = koinInject(),
             )
         }
 
@@ -157,7 +152,6 @@ fun AccountSetupNavHost(
                 onNext = { navController.navigate(NESTED_NAVIGATION_SYNC_OPTIONS) },
                 onBack = { navController.popBackStack() },
                 viewModel = koinViewModel<DisplayOptionsViewModel>(),
-                appNameProvider = koinInject(),
             )
         }
 
@@ -166,7 +160,6 @@ fun AccountSetupNavHost(
                 onNext = { navController.navigate(NESTED_NAVIGATION_CREATE_ACCOUNT) },
                 onBack = { navController.popBackStack() },
                 viewModel = koinViewModel<SyncOptionsViewModel>(),
-                appNameProvider = koinInject(),
             )
         }
 
@@ -175,7 +168,6 @@ fun AccountSetupNavHost(
                 onNext = { accountUuid -> onFinish(accountUuid.value) },
                 onBack = { navController.popBackStack() },
                 viewModel = koinViewModel<CreateAccountViewModel>(),
-                appNameProvider = koinInject(),
             )
         }
     }

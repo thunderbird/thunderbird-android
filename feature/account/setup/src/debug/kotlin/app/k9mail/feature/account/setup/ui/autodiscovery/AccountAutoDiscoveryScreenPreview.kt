@@ -6,7 +6,6 @@ import app.k9mail.core.ui.compose.common.annotation.PreviewDevicesWithBackground
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import app.k9mail.feature.account.common.ui.fake.FakeAccountStateRepository
 import app.k9mail.feature.account.server.validation.ui.fake.FakeAccountOAuthViewModel
-import app.k9mail.feature.account.setup.ui.fake.FakeAppNameProvider
 
 @Composable
 @PreviewDevicesWithBackground
@@ -21,7 +20,6 @@ internal fun AccountAutoDiscoveryScreenPreview() {
                 accountStateRepository = FakeAccountStateRepository(),
                 oAuthViewModel = FakeAccountOAuthViewModel(),
             ),
-            appNameProvider = FakeAppNameProvider,
         )
     }
 }

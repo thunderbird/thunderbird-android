@@ -1,9 +1,8 @@
 package app.k9mail.feature.account.setup.ui.createaccount
 
-import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContentWithTheme
+import app.k9mail.feature.account.setup.AccountSetupComposeTest
 import app.k9mail.feature.account.setup.domain.entity.AccountUuid
-import app.k9mail.feature.account.setup.ui.FakeAppNameProvider
 import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountContract.Effect
 import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountContract.State
 import assertk.assertThat
@@ -13,7 +12,7 @@ import assertk.assertions.isEqualTo
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
 
-class CreateAccountScreenTest : ComposeTest() {
+class CreateAccountScreenTest : AccountSetupComposeTest() {
 
     @Test
     fun `should delegate navigation effects`() = runTest {
@@ -31,7 +30,6 @@ class CreateAccountScreenTest : ComposeTest() {
                 onNext = { accountUuid -> navigateNextArguments.add(accountUuid) },
                 onBack = { navigateBackCounter++ },
                 viewModel = viewModel,
-                appNameProvider = FakeAppNameProvider,
             )
         }
 

@@ -1,6 +1,6 @@
 package app.k9mail.feature.account.server.validation.ui
 
-import app.k9mail.core.common.provider.AppNameProvider
+import app.k9mail.core.common.provider.BrandNameProvider
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContentWithTheme
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Effect
@@ -8,9 +8,30 @@ import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.dsl.module
 
 class ServerValidationScreenKtTest : ComposeTest() {
+
+    @Before
+    fun setUp() {
+        startKoin {
+            modules(
+                module {
+                    single<BrandNameProvider> { FakeBrandNameProvider }
+                },
+            )
+        }
+    }
+
+    @After
+    fun tearDown() {
+        stopKoin()
+    }
 
     @Test
     fun `should delegate navigation effects`() = runTest {
@@ -24,7 +45,6 @@ class ServerValidationScreenKtTest : ComposeTest() {
                 onNext = { onNextCounter++ },
                 onBack = { onBackCounter++ },
                 viewModel = viewModel,
-                appNameProvider = FakeAppNameProvider,
             )
         }
 
@@ -42,7 +62,7 @@ class ServerValidationScreenKtTest : ComposeTest() {
         assertThat(onBackCounter).isEqualTo(1)
     }
 
-    private object FakeAppNameProvider : AppNameProvider {
-        override val appName: String = "K-9 Mail"
+    private object FakeBrandNameProvider : BrandNameProvider {
+        override val brandName: String = "K-9 Mail"
     }
 }

@@ -1,8 +1,7 @@
 package app.k9mail.feature.account.setup.ui.options.sync
 
-import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContentWithTheme
-import app.k9mail.feature.account.setup.ui.FakeAppNameProvider
+import app.k9mail.feature.account.setup.AccountSetupComposeTest
 import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsContract.Effect
 import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsContract.State
 import assertk.assertThat
@@ -10,7 +9,7 @@ import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
-class SyncOptionsScreenKtTest : ComposeTest() {
+class SyncOptionsScreenKtTest : AccountSetupComposeTest() {
 
     @Test
     fun `should delegate navigation effects`() = runTest {
@@ -24,7 +23,6 @@ class SyncOptionsScreenKtTest : ComposeTest() {
                 onNext = { onNextCounter++ },
                 onBack = { onBackCounter++ },
                 viewModel = viewModel,
-                appNameProvider = FakeAppNameProvider,
             )
         }
 
