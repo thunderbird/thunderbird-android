@@ -26,6 +26,7 @@ class ContributionViewModelTest {
             recurringContributions = FakeData.recurringContributions,
             purchasedContribution = FakeData.oneTimeContributions.first(),
             selectedContribution = FakeData.recurringContributions[FakeData.recurringContributions.size - 2],
+            showContributionList = true,
         )
 
         contributionRobot(initialState) {
@@ -42,6 +43,7 @@ class ContributionViewModelTest {
             recurringContributions = FakeData.recurringContributions,
             purchasedContribution = FakeData.oneTimeContributions.first(),
             selectedContribution = FakeData.oneTimeContributions[FakeData.oneTimeContributions.size - 2],
+            showContributionList = true,
         )
 
         contributionRobot(initialState) {
@@ -58,6 +60,7 @@ class ContributionViewModelTest {
             recurringContributions = FakeData.recurringContributions,
             purchasedContribution = FakeData.oneTimeContributions.first(),
             selectedContribution = FakeData.recurringContributions[FakeData.oneTimeContributions.size - 2],
+            showContributionList = true,
         )
         val selectedContribution = FakeData.recurringContributions[2]
 
@@ -99,6 +102,7 @@ private class ContributionRobot(
             initialState.copy(
                 isRecurringContributionSelected = false,
                 selectedContribution = initialState.oneTimeContributions[initialState.oneTimeContributions.size - 2],
+                showContributionList = true,
             ),
         )
     }
@@ -113,6 +117,7 @@ private class ContributionRobot(
                 isRecurringContributionSelected = true,
                 selectedContribution = initialState
                     .recurringContributions[initialState.recurringContributions.size - 2],
+                showContributionList = true,
             ),
         )
     }

@@ -99,6 +99,7 @@ internal class ContributionViewModel(
             it.copy(
                 isRecurringContributionSelected = false,
                 selectedContribution = it.oneTimeContributions.getSecondLowestOrNull(),
+                showContributionList = true,
             )
         }
     }
@@ -108,6 +109,7 @@ internal class ContributionViewModel(
             it.copy(
                 isRecurringContributionSelected = true,
                 selectedContribution = it.recurringContributions.getSecondLowestOrNull(),
+                showContributionList = true,
             )
         }
     }
