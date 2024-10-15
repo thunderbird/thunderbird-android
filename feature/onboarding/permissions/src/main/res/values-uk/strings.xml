@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="onboarding_permissions_screen_title">Зробіть користування зручнішим</string>
+    <string name="onboarding_permissions_contacts_title">Контакти</string>
+    <string name="onboarding_permissions_contacts_description">Дозвольте доступ, щоб з\'явилася можливість пропонувати контакти та показувати імена та світлини контактів.</string>
+    <string name="onboarding_permissions_notifications_title">Сповіщення</string>
+    <string name="onboarding_permissions_notifications_description">Увімкніть сповіщення, щоб не пропустити жодного листа.</string>
+    <string name="onboarding_permissions_allow_button">Дозволити</string>
+    <string name="onboarding_permissions_skip_button">Пропустити</string>
+</resources>

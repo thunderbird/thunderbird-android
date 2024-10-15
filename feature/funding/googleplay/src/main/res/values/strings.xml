@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="funding_googleplay_contribution_title">Support Thunderbird</string>
+
+    <string name="funding_googleplay_contribution_header_title">Support Thunderbird</string>
+    <string name="funding_googleplay_contribution_header_description">We never show advertisements or sell your data. We are fully funded by financial contributions from our users. If you’re enjoying Thunderbird, please help support it.  We can’t do this without you!</string>
+
+    <string name="funding_googleplay_contribution_list_title">Secure contribution</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">Give once</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">Monthly</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">None available</string>
+    <!-- The disclaimer could be found at https://www.thunderbird.net/donate/mobile/?form=tfa for other languages -->
+    <string name="funding_googleplay_contribution_list_disclaimer">Contributions are not tax-deductible as charitable donations.</string>
+
+    <string name="funding_googleplay_contribution_footer_payment_button">Continue to payment</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">Modify monthly payment</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Help keep Thunderbird alive</string>
+</resources>

@@ -39,6 +39,9 @@ include(
     ":feature:onboarding:main",
     ":feature:onboarding:welcome",
     ":feature:onboarding:permissions",
+    ":feature:onboarding:migration:api",
+    ":feature:onboarding:migration:thunderbird",
+    ":feature:onboarding:migration:noop",
 )
 
 include(
@@ -99,6 +102,7 @@ include(
     ":core:android:testing",
     ":core:ui:compose:common",
     ":core:ui:compose:designsystem",
+    ":core:ui:compose:navigation",
     ":core:ui:compose:theme2:common",
     ":core:ui:compose:theme2:k9mail",
     ":core:ui:compose:theme2:thunderbird",

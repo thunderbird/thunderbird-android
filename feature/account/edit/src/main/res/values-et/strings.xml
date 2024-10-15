@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_edit_save_server_settings_error_message">Serveri seadistuste salvestamine ei õnnestunud</string>
+    <string name="account_edit_save_server_settings_loading_message">Salvestame serveri seadistusi…</string>
+    <string name="account_edit_save_server_settings_success_message">Serveri seadistused on salvestatud</string>
+</resources>

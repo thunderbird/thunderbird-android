@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="migration_qrcode_permission_denied_title">Kamerához való hozzáférés szükséges</string>
+    <string name="migration_qrcode_done_button_text">Kész</string>
+    <string name="migration_qrcode_permission_denied_message">Menjen az Android beállításaihoz, koppintson az engedélyekre, és engedélyezze a kamerához való hozzáférést.</string>
+    <string name="migration_qrcode_go_to_settings_button_text">Menjen a beállításokhoz</string>
+    <string name="migration_qrcode_scanning_progress">%1$s %2$s beolvasása</string>
+</resources>

@@ -15,5 +15,7 @@ dependencies {
     implementation(projects.feature.account.setup)
     implementation(projects.feature.account.edit)
 
+    implementation(projects.feature.funding.api)
+
     testImplementation(projects.core.ui.compose.testing)
 }

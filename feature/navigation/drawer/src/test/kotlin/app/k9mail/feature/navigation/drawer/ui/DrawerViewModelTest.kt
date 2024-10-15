@@ -3,9 +3,9 @@ package app.k9mail.feature.navigation.drawer.ui
 import app.k9mail.core.mail.folder.api.Folder
 import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
+import app.k9mail.core.ui.compose.testing.mvi.advanceUntilIdle
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndEffectTurbineConsumed
-import app.k9mail.core.ui.compose.testing.mvi.assertThatAndStateTurbineConsumed
-import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
+import app.k9mail.core.ui.compose.testing.mvi.runMviTest
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.navigation.drawer.NavigationDrawerExternalContract.DrawerConfig
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
@@ -61,7 +61,7 @@ internal class DrawerViewModelTest {
     }
 
     @Test
-    fun `should change loading state when OnSyncAccount event is received`() = runTest {
+    fun `should change loading state when OnSyncAccount event is received`() = runMviTest {
         val initialState = State(
             accounts = listOf(DISPLAY_ACCOUNT).toImmutableList(),
             selectedAccountUuid = DISPLAY_ACCOUNT.uuid,
@@ -74,22 +74,16 @@ internal class DrawerViewModelTest {
                 emit(Result.success(Unit))
             },
         )
+        val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
 
-        eventStateTest(
-            viewModel = testSubject,
-            initialState = initialState,
-            event = Event.OnSyncAccount,
-            expectedState = initialState.copy(isLoading = true),
-            coroutineScope = backgroundScope,
-        )
+        testSubject.event(Event.OnSyncAccount)
 
-        advanceUntilIdle()
-
-        assertThat(testSubject.state.value.isLoading).isEqualTo(false)
+        assertThat(turbines.stateTurbine.awaitItem()).isEqualTo(initialState.copy(isLoading = true))
+        assertThat(turbines.stateTurbine.awaitItem()).isEqualTo(initialState.copy(isLoading = false))
     }
 
     @Test
-    fun `should skip loading when no account is selected and OnSyncAccount event is received`() = runTest {
+    fun `should skip loading when no account is selected and OnSyncAccount event is received`() = runMviTest {
         val initialState = State(selectedAccountUuid = null)
         var counter = 0
         val testSubject = createTestSubject(
@@ -115,7 +109,7 @@ internal class DrawerViewModelTest {
     }
 
     @Test
-    fun `should skip loading when already loading and OnSyncAccount event received`() = runTest {
+    fun `should skip loading when already loading and OnSyncAccount event received`() = runMviTest {
         val initialState = State(isLoading = true)
         var counter = 0
         val testSubject = createTestSubject(
@@ -140,29 +134,24 @@ internal class DrawerViewModelTest {
     }
 
     @Test
-    fun `should change loading state when OnSyncAllAccounts event is received`() = runTest {
+    fun `should change loading state when OnSyncAllAccounts event is received`() = runMviTest {
         val testSubject = createTestSubject(
             syncAllAccounts = flow {
                 delay(25)
                 emit(Result.success(Unit))
             },
         )
+        val initialState = State(isLoading = false)
+        val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
 
-        eventStateTest(
-            viewModel = testSubject,
-            initialState = State(isLoading = false),
-            event = Event.OnSyncAllAccounts,
-            expectedState = State(isLoading = true),
-            coroutineScope = backgroundScope,
-        )
+        testSubject.event(Event.OnSyncAllAccounts)
 
-        advanceUntilIdle()
-
-        assertThat(testSubject.state.value.isLoading).isEqualTo(false)
+        assertThat(turbines.stateTurbine.awaitItem()).isEqualTo(State(isLoading = true))
+        assertThat(turbines.stateTurbine.awaitItem()).isEqualTo(State(isLoading = false))
     }
 
     @Test
-    fun `should skip loading when already loading and OnSyncAllAccounts event received`() = runTest {
+    fun `should skip loading when already loading and OnSyncAllAccounts event received`() = runMviTest {
         val initialState = State(isLoading = true)
         var counter = 0
         val testSubject = createTestSubject(
@@ -235,7 +224,7 @@ internal class DrawerViewModelTest {
     }
 
     @Test
-    fun `should send OpenAccount effect when OnAccountClick event is received`() = runTest {
+    fun `should send OpenAccount effect when OnAccountClick event is received`() = runMviTest {
         val displayAccounts = createDisplayAccountList(3)
         val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
         val testSubject = createTestSubject(
@@ -307,7 +296,7 @@ internal class DrawerViewModelTest {
     }
 
     @Test
-    fun `should emit OpenFolder effect when OnFolderClick event is received`() = runTest {
+    fun `should emit OpenFolder effect when OnFolderClick event is received`() = runMviTest {
         val displayAccounts = createDisplayAccountList(3)
         val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
         val displayFoldersMap = mapOf(
@@ -340,7 +329,7 @@ internal class DrawerViewModelTest {
 
     @Test
     fun `should emit OpenUnifiedFolder when OnFolderClick event for unified folder is received`() =
-        runTest {
+        runMviTest {
             val displayAccounts = createDisplayAccountList(1)
             val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
             val displayFoldersMap = mapOf(
@@ -373,7 +362,7 @@ internal class DrawerViewModelTest {
         }
 
     @Test
-    fun `should change state when OnAccountSelectorClick event is received`() = runTest {
+    fun `should change state when OnAccountSelectorClick event is received`() = runMviTest {
         val testSubject = createTestSubject()
         val turbines = turbinesWithInitialStateCheck(testSubject, State())
 
@@ -383,13 +372,11 @@ internal class DrawerViewModelTest {
 
         testSubject.event(Event.OnAccountSelectorClick)
 
-        turbines.assertThatAndStateTurbineConsumed {
-            isEqualTo(State(showAccountSelector = false))
-        }
+        assertThat(turbines.awaitStateItem()).isEqualTo(State(showAccountSelector = false))
     }
 
     @Test
-    fun `should emit OpenManageFolders effect when OnManageFoldersClick event is received`() = runTest {
+    fun `should emit OpenManageFolders effect when OnManageFoldersClick event is received`() = runMviTest {
         val testSubject = createTestSubject()
         val turbines = turbinesWithInitialStateCheck(testSubject, State())
 
@@ -401,7 +388,7 @@ internal class DrawerViewModelTest {
     }
 
     @Test
-    fun `should emit OpenSettings effect when OnSettingsClick event is received`() = runTest {
+    fun `should emit OpenSettings effect when OnSettingsClick event is received`() = runMviTest {
         val testSubject = createTestSubject()
         val turbines = turbinesWithInitialStateCheck(testSubject, State())
 

@@ -70,6 +70,11 @@ class SettingsImportFragment : Fragment() {
 
         viewModel.getUiModel().observeNotNull(this) { viewHolder.updateUi(it) }
         viewModel.getActionEvents().observeNotNull(this) { handleActionEvents(it) }
+
+        arguments?.let { arguments ->
+            val action = SettingsImportAction.fromBundle(arguments)
+            viewModel.setAction(action)
+        }
     }
 
     private fun initializeSettingsImportList(recyclerView: RecyclerView) {

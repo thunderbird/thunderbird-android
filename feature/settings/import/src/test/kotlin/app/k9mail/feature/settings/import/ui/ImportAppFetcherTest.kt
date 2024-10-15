@@ -50,28 +50,39 @@ class ImportAppFetcherTest {
     }
 
     @Test
-    fun `getAppInfoList() with another app installed`() {
-        installPackage("com.fsck.k9", "K-9 Mail")
+    fun `getAppInfoList() with another supported app installed`() {
+        installPackage("com.fsck.k9", "K-9 Mail", versionCode = 40000)
 
         val result = importAppFetcher.getAppInfoList()
 
         assertThat(result).containsExactly(
-            AppInfo("com.fsck.k9", "K-9 Mail"),
+            AppInfo("com.fsck.k9", "K-9 Mail", isImportSupported = true),
         )
     }
 
     @Test
-    fun `getAppInfoList() with multiple other apps installed`() {
-        installPackage("com.fsck.k9", "K-9 Mail")
-        installPackage("net.thunderbird.android.beta", "Thunderbird Beta")
-        installPackage("net.thunderbird.android.daily", "Thunderbird Daily")
+    fun `getAppInfoList() with another unsupported app installed`() {
+        installPackage("com.fsck.k9", "K-9 Mail", versionCode = 39004)
+
+        val result = importAppFetcher.getAppInfoList()
+
+        assertThat(result).containsExactly(
+            AppInfo("com.fsck.k9", "K-9 Mail", isImportSupported = false),
+        )
+    }
+
+    @Test
+    fun `getAppInfoList() with multiple other supported apps installed`() {
+        installPackage("com.fsck.k9", "K-9 Mail", versionCode = 39005)
+        installPackage("net.thunderbird.android.beta", "Thunderbird Beta", versionCode = 4)
+        installPackage("net.thunderbird.android.daily", "Thunderbird Daily", versionCode = 1)
 
         val result = importAppFetcher.getAppInfoList()
 
         assertThat(result).containsExactlyInAnyOrder(
-            AppInfo("com.fsck.k9", "K-9 Mail"),
-            AppInfo("net.thunderbird.android.beta", "Thunderbird Beta"),
-            AppInfo("net.thunderbird.android.daily", "Thunderbird Daily"),
+            AppInfo("com.fsck.k9", "K-9 Mail", isImportSupported = true),
+            AppInfo("net.thunderbird.android.beta", "Thunderbird Beta", isImportSupported = true),
+            AppInfo("net.thunderbird.android.daily", "Thunderbird Daily", isImportSupported = true),
         )
     }
 
@@ -82,7 +93,7 @@ class ImportAppFetcherTest {
         return appContext.createPackageContext(MY_PACKAGE_NAME, 0)
     }
 
-    private fun installPackage(packageName: String, name: String = "irrelevant") {
+    private fun installPackage(packageName: String, name: String = "irrelevant", versionCode: Int = 1) {
         val packageManager = shadowOf(appContext.packageManager)
 
         packageManager.installPackage(
@@ -91,6 +102,7 @@ class ImportAppFetcherTest {
                 this.applicationInfo = ApplicationInfo().apply {
                     this.name = name
                 }
+                this.versionCode = versionCode
             },
         )
     }

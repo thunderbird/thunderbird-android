@@ -1,0 +1,11 @@
+---
+name: Daily Builds
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '8 20 * * *'
+
+jobs:
+  trigger_daily_build:
+    uses: ./.github/workflows/shippable_builds.yml
+    secrets: inherit

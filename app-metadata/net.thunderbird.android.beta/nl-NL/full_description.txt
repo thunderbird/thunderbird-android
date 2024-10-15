@@ -1,0 +1,37 @@
+Help mee om de volgende Thunderbird-uitgave zo geweldig als mogelijk te maken door Thunderbird Beta te downloaden en al vroeg toegang te krijgen tot de laatste functies en bugfixes, voordat ze officieel wordt uitgegeven. Uw testen en feedback zijn belangrijk, dus rapporteer bugs, scherpe randjes, en deel uw gedachten met ons!
+
+Bekijk onze bugtracker, broncode, en wiki op <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
+
+We willen altijd graag nieuwe ontwikkelaars, ontwerpers, documentalisten, vertalers, bugonderzoekers en vrienden welkom heten. Bezoek ons op <a href="https://thunderbird.net/participate">https://thunderbird.net/participate</a> om te starten.
+
+Thunderbird is een krachtig, op privacy gerichte e-mail-app. Beheer gemakkelijk meerdere accounts vanuit één app, met een optie voor een Samengevoegd Postvak IN voor maximale productiviteit. Gebouwd op opensourcetechnologie en ondersteund door een toegewijd team van ontwikkelaars samen met een wereldwijde gemeenschap van vrijwilligers, behandelt Thunderbird uw privégegevens nooit als een product. Omdat wij volledig ondersteund worden door financiële donaties van onze gebruikers, hoeft u nooit meer advertenties te zien tussen uw e-mailberichten.
+
+<b>Wat kunt u doen</b>
+<ul>
+  <li>Stoppen met het gebruik van meerdere apps en webmail. Gebruik één app, met een optioneel Samengevoegd Postvak IN, om u door de dag te helpen.</li>
+  <li>Geniet van een privacyvriendelijke e-mailclient die nooit uw persoonlijke gegevens verzameld of verkoopt. We verbinden rechtstreeks met uw e-mailprovider. Dat is het!</li>
+  <li>Breng uw privacy naar een nog hoger niveau door gebruik te maken van OpenPGP e-mailencryptie (PGP/MIME) met de ‘OpenKeychain’-app, om uw berichten te versleutelen en ontcijferen.</li>
+  <li>Kies ervoor uw e-mailberichten direct te synchroniseren, op gezette tijden, of wanneer u maar wilt. Hoe u uw e-mail ook wilt controleren, dat is helemaal aan u!</li>
+  <li>Vind uw belangrijke berichten met behulp van zowel lokaal als op de server zoeken.</li>
+</ul>
+
+<b>Compatibiliteit</b>
+<ul>
+  <li>Thunderbird werkt met IMAP- en POP3-protocollen, ondersteunt een breed scala aan e-mailproviders, inclusief Gmail, Outlook, Yahoo Mail, iCloud, en meer.</li>
+</ul>
+
+<b>Waarom Thunderbird gebruiken</b>
+<ul>
+  <li>De vertrouwde naam in e-mail voor meer dan 20 jaar – nu op Android.</li>
+  <li>Thunderbird is volledig gefinancierd door vrijwillige bijdragen van onze gebruikers. We verzamelen uw persoonlijke gegevens niet. U bent nooit het product.</li>
+  <li>Gemaakt door een team dat net zo denkt over efficiency als u. We willen dat u zo weinig mogelijk tijd spendeert aan het gebruik van de app, terwijl u het maximale terugkrijgt.</li>
+  <li>Met medewerkers van over de hele wereld, wordt Thunderbird voor Android vertaald in meer dan 20 talen.</li>
+  <li>Ondersteund door MZLA Technologies Corporation, een volledige dochteronderneming van de Mozilla Foundation.</li>
+</ul>
+
+<b>Open Source en Gemeenschap</b>
+<ul>
+  <li>Thunderbird is gratis en open source, wat betekent dat de code beschikbaar is om te bekijken, bewerken, gebruiken en vrij te delen. De licentie garandeert ook dat het altijd vrij zal blijven. U kunt Thunderbird beschouwen als een gift aan u van duizenden medewerkers.</li>
+  <li>We ontwikkelen in de openheid met reguliere, transparante updates op ons blog en mailinglijsten.</li>
+  <li>Onze gebruikersondersteuning wordt mogelijk gemaakt door onze wereldwijde gemeenschap. Vind de antwoorden die u nodig hebt, of stap in de rol van een medewerker – of het nu het beantwoorden is van vragen, het vertalen van de app, of uw vrienden en familie vertellen over Thunderbird.</li>
+</ul>

@@ -1,0 +1,8 @@
+- Ändrade många interna funktioner för att migrera till Material 3. Observera att Material 3-gränssnittet fortfarande är i ett tidigt tillstånd.
+- Ändrade ordningen på verktygsfältsåtgärder i meddelandevyn för att matcha ordningen i flervalsläge
+- Ändrade standardvärde för "Hämta meddelanden upp till" till 128KiB
+- Fixat bugg där verktygsfältsikoner visades i fel färg efter att ha utfört en svepåtgärd
+- Fixat krasch när du klippte ut e-postadresser från ett mottagarfält när du skrev ett meddelande
+- Fixade verktygsfältsstorlek när du använder en icke-standardtypsnittsstorlek för systemet
+- Lagt till korsikanska, koreanska och vietnamesiska översättningar
+- Uppdaterade översättningar

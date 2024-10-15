@@ -5,6 +5,7 @@ import androidx.camera.core.ImageProxy
 import com.google.zxing.BinaryBitmap
 import com.google.zxing.DecodeHintType
 import com.google.zxing.LuminanceSource
+import com.google.zxing.NotFoundException
 import com.google.zxing.PlanarYUVLuminanceSource
 import com.google.zxing.common.HybridBinarizer
 import com.google.zxing.multi.qrcode.QRCodeMultiReader
@@ -36,13 +37,15 @@ internal class QrCodeAnalyzer(
         image.close()
     }
 
-    @Suppress("TooGenericExceptionCaught")
+    @Suppress("TooGenericExceptionCaught", "SwallowedException")
     private fun decodeSource(source: LuminanceSource): List<String> {
         return try {
             val bitmap = createBinaryBitmap(source)
             val results = qrCodeReader.decodeMultiple(bitmap, DECODER_HINTS)
 
             results.map { it.text }
+        } catch (e: NotFoundException) {
+            emptyList()
         } catch (e: Exception) {
             Timber.e(e, "Error while trying to read QR code")
             emptyList()

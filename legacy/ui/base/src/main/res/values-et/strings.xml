@@ -3,4 +3,5 @@
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">Ok</string>
     <string name="cancel_action">Tühista</string>
+    <string name="star_button_description">Märgi tähega</string>
 </resources>

@@ -309,12 +309,6 @@
     <string name="account_settings_push_advanced_title">Дополнительно</string>
     <string name="account_settings_title_fmt">Настройки учётной записи</string>
     <string name="account_settings_notify_label">Уведомить о почте</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">Уведомления папок</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">Все</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Папки только 1-го класса</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Папки 1-го и 2-го классов</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Все, кроме папок 2-го класса</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">Нет</string>
     <string name="account_settings_notify_sync_label">Уведомить о проверке</string>
     <string name="account_settings_email_label">Ваш адрес эл. почты</string>
     <string name="account_settings_notify_summary">Показать уведомление о новой почте</string>
@@ -403,27 +397,12 @@
     <string name="account_settings_message_age_3_months">3 месяца</string>
     <string name="account_settings_message_age_6_months">6 месяцев</string>
     <string name="account_settings_message_age_1_year">1 год</string>
-    <string name="account_settings_folder_display_mode_label">Видимость папок</string>
-    <string name="account_settings_folder_display_mode_all">Все</string>
-    <string name="account_settings_folder_display_mode_first_class">Папки только 1-го класса</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">Папки 1-го и 2-го классов</string>
-    <string name="account_settings_folder_display_mode_not_second_class">Все, кроме папок 2-го класса</string>
-    <string name="account_settings_folder_sync_mode_label">Проверка папок</string>
-    <string name="account_settings_folder_sync_mode_all">Все</string>
-    <string name="account_settings_folder_sync_mode_first_class">Папки только 1-го класса</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">Папки 1-го и 2-го классов</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">Все, кроме папок 2-го класса</string>
-    <string name="account_settings_folder_sync_mode_none">Нет</string>
     <string name="account_settings_sync_remote_deletetions_label">Синхронное удаление</string>
     <string name="account_settings_sync_remote_deletetions_summary">Удалять сообщения при удалении на сервере</string>
     <string name="account_settings_openpgp_missing">Отсутствует OpenPGP-приложение – было удалено?</string>
     <string name="folder_settings_title">Настройки папки</string>
     <string name="folder_settings_in_top_group_label">Начало списка</string>
     <string name="folder_settings_in_top_group_summary">Отображать ближе к началу списка папок</string>
-    <string name="folder_settings_folder_display_mode_label">Видимость</string>
-    <string name="folder_settings_folder_display_mode_normal">Нет класса</string>
-    <string name="folder_settings_folder_display_mode_first_class">1-й класс</string>
-    <string name="folder_settings_folder_display_mode_second_class">2-й класс</string>
     <string name="folder_settings_clear_local_folder_action">Стереть локальные</string>
     <string name="account_settings_incoming_label">Сервер входящих</string>
     <string name="account_settings_incoming_summary">Настройки сервера входящей почты</string>
@@ -737,7 +716,7 @@
     <string name="openpgp_sign_only_keep_enabled">Не отключать</string>
     <string name="openpgp_dialog_sign_only_title">Режим PGP \"Только подпись\"</string>
     <string name="openpgp_dialog_sign_only_text">В этом режиме ваш PGP-ключ будет использоваться для создания криптографической подписи нешифрованного электронного письма.</string>
-    <string name="openpgp_dialog_sign_only_plus_verified">Адресат сможет убедиться, что сообщение подлинное и подписано Вашим ключом</string>
+    <string name="openpgp_dialog_sign_only_plus_verified">Адресат сможет убедиться, что сообщение подлинное и подписано вашим ключом</string>
     <string name="openpgp_dialog_sign_only_minus_break">Подписи могут повредиться при отправке нескольким адресатам</string>
     <string name="openpgp_dialog_sign_only_minus_attach">Подписи могут отображаться как вложенные файлы \"signature.asc\"</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">Всегда добавлять подпись к шифрованным сообщениям</string>
@@ -927,4 +906,6 @@
     <string name="folder_settings_push_label">Включить push</string>
     <string name="folder_list_show_hidden_folders">Показать скрытые папки</string>
     <string name="folder_settings_sync_label">Включить синхронизацию</string>
+    <string name="folder_settings_visible_label">Показать папку</string>
+    <string name="settings_list_action_support">Поддержка <xliff:g id="app_name">%s</xliff:g></string>
 </resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_edit_save_server_settings_loading_message">Збереження налаштувань сервера…</string>
+    <string name="account_edit_save_server_settings_error_message">Не вдалося зберегти налаштування сервера</string>
+    <string name="account_edit_save_server_settings_success_message">Налаштування сервера збережено</string>
+</resources>

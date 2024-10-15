@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="migration_qrcode_permission_denied_title">Kamera-tilgjenge er påkravd</string>
+    <string name="migration_qrcode_permission_denied_message">Gå til Android-innstillingar, trykk på løyve, og tillat tilgjenge til kameraet.</string>
+    <string name="migration_qrcode_go_to_settings_button_text">Gå til innstillingar</string>
+    <string name="migration_qrcode_scanning_progress">Skanna %1$s av %2$s</string>
+    <string name="migration_qrcode_done_button_text">Ferdig</string>
+</resources>

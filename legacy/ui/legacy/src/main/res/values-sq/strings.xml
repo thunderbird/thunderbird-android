@@ -304,12 +304,6 @@
     <string name="account_settings_push_advanced_title">Të mëtejshme</string>
     <string name="account_settings_title_fmt">Rregullime llogarie</string>
     <string name="account_settings_notify_label">Njoftime email-i të ri</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">Dosje njoftimesh</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">Krejt</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Vetëm dosje të Klasës I</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Dosje të Klasës I dhe II</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Krejt, hiq dosje të Klasës II</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">Asnjë</string>
     <string name="account_settings_notify_sync_label">Njoftime njëkohësimesh</string>
     <string name="account_settings_email_label">Adresa juaj email</string>
     <string name="account_settings_notify_summary">Njofto në shtyllë gjendjeje kur mbërrin postë</string>
@@ -398,27 +392,12 @@
     <string name="account_settings_message_age_3_months">3 muajt e shkuar</string>
     <string name="account_settings_message_age_6_months">6 muajt e shkuar</string>
     <string name="account_settings_message_age_1_year">vitin e shkuar</string>
-    <string name="account_settings_folder_display_mode_label">Dosje për tu shfaqur</string>
-    <string name="account_settings_folder_display_mode_all">Krejt</string>
-    <string name="account_settings_folder_display_mode_first_class">Vetëm dosje të Klasës I</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">Dosje të Klasës I dhe II</string>
-    <string name="account_settings_folder_display_mode_not_second_class">Krejt, hiq dosje të Klasës II</string>
-    <string name="account_settings_folder_sync_mode_label">Vili dosjet</string>
-    <string name="account_settings_folder_sync_mode_all">Krejt</string>
-    <string name="account_settings_folder_sync_mode_first_class">Vetëm dosje të Klasës I</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">Dosje të Klasës I dhe II</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">Krejt, hiq dosje të Klasës II</string>
-    <string name="account_settings_folder_sync_mode_none">Asnjë</string>
     <string name="account_settings_sync_remote_deletetions_label">Njëkohëso fshirje në shërbyes</string>
     <string name="account_settings_sync_remote_deletetions_summary">Hiqi mesazhet kur janë fshirë në shërbyes</string>
     <string name="account_settings_openpgp_missing">Mungon aplikacioni OpenPGP - mos është çinstaluar?</string>
     <string name="folder_settings_title">Rregullime dosjeje</string>
     <string name="folder_settings_in_top_group_label">Shfaqe në grupin e epërm</string>
     <string name="folder_settings_in_top_group_summary">Shfaqe pranë kreut të listës së dosjeve</string>
-    <string name="folder_settings_folder_display_mode_label">Klasë shfaqjeje dosjesh</string>
-    <string name="folder_settings_folder_display_mode_normal">Pa Klasë</string>
-    <string name="folder_settings_folder_display_mode_first_class">Klasa I</string>
-    <string name="folder_settings_folder_display_mode_second_class">Klasa II</string>
     <string name="folder_settings_clear_local_folder_action">Pastro mesazhet vendore</string>
     <string name="account_settings_incoming_label">Shërbyes për marrje</string>
     <string name="account_settings_incoming_summary">Formësoni shërbyesin për marrje</string>
@@ -904,4 +883,12 @@
     <string name="account_delete_dlg_instructions_fmt">Llogaria \"<xliff:g id="account">%s</xliff:g>\" do të hiqet nga <xliff:g id="app_name">%s</xliff:g>.</string>
     <string name="push_info_notification_explanation_text">Kur përdoret Push, <xliff:g id="app_name">%1$s</xliff:g> mban një lidhje me shërbyesin e postës. Android-i lyp shfaqjen e vazhdueshme të një njoftimi, teksa aplikacioni është aktiv në prapaskenë. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="about_app_authors_thunderbird">Ekipi i Thunderbird-it Për Celular</string>
+    <string name="settings_ui_data_collection">Grumbullim të dhënash</string>
+    <string name="settings_ui_telemetry_title">Të dhëna përdorimi dhe teknike</string>
+    <string name="settings_ui_telemetry_description">I jepen Mozilla-s të dhëna funksionimi, rreth hardware-it dhe përshtatjesh për këtë aplikacion, për të ndihmuar të bëhet më i mirë Thunderbird</string>
+    <string name="folder_settings_sync_label">Aktivizo njëkohësim</string>
+    <string name="folder_settings_notifications_label">Njoftime</string>
+    <string name="folder_settings_visible_label">Shfaq dosjen</string>
+    <string name="settings_list_action_support">Përkrahni <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="folder_list_show_hidden_folders">Shfaq dosje të fshehura</string>
 </resources>

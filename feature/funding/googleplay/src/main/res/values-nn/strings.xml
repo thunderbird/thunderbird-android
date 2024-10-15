@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="funding_googleplay_contribution_header_title">Støtt Thunderbird</string>
+    <string name="funding_googleplay_contribution_header_description">Me viser aldri reklamar eller sel dataen din. Me er fullstendig finansiert av økonomiske bidrag frå brukarane våre. Om du likar Thunderbird, ver vennleg og støtt det. Me kan ikkje gjere dette utan deg!</string>
+    <string name="funding_googleplay_contribution_footer_payment_button">Gå vidare til betaling</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">Bidrag er ikkje skattefrie som velgjerdsdonasjonar.</string>
+    <string name="funding_googleplay_contribution_list_title">Sikkert bidrag</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">Gje ein gong</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">Månadleg</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">Ingen tilgjengelege</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">Endre månadleg betaling</string>
+    <string name="funding_googleplay_contribution_title">Innstillingar</string>
+</resources>

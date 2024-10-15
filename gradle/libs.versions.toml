@@ -11,7 +11,7 @@
 # 4. Run the app and check for any issues.
 
 [versions]
-androidBilling = "7.0.0"
+androidBilling = "7.1.1"
 androidDesugar = "2.1.2"
 androidMaterial = "1.12.0"
 # AGP and tools should be updated together
@@ -96,7 +96,7 @@ searchPreference = "v2.3.0"
 spotlessPlugin = "6.25.0"
 timber = "5.0.1"
 tokenautocomplete = "4.0.0-beta01-k9mail02"
-turbine = "0.13.0"
+turbine = "1.1.0"
 xmlpull = "1.0"
 zxing = "3.5.3"
 

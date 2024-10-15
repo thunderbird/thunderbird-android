@@ -307,12 +307,6 @@
     <string name="account_settings_push_advanced_title">Avançado</string>
     <string name="account_settings_title_fmt">Configurações da conta</string>
     <string name="account_settings_notify_label">Notificações de novas mensagens</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">Notificações de pastas</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">Todas</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Apenas pastas de 1ª classe</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Pastas de 1ª e 2ª classe</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Todas, exceto as pastas de 2ª classe</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">Nenhuma</string>
     <string name="account_settings_notify_sync_label">Notificações de sincronização</string>
     <string name="account_settings_email_label">Seu endereço de e-mail</string>
     <string name="account_settings_notify_summary">Notifica, na barra de status, quando chegarem novas mensagens</string>
@@ -401,27 +395,12 @@
     <string name="account_settings_message_age_3_months">dos últimos 3 meses</string>
     <string name="account_settings_message_age_6_months">dos últimos 6 meses</string>
     <string name="account_settings_message_age_1_year">do último ano</string>
-    <string name="account_settings_folder_display_mode_label">Pastas a serem exibidas</string>
-    <string name="account_settings_folder_display_mode_all">Todas</string>
-    <string name="account_settings_folder_display_mode_first_class">Apenas pastas de 1ª classe</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">Pastas de 1ª e 2ª classe</string>
-    <string name="account_settings_folder_display_mode_not_second_class">Todas, exceto as pastas de 2ª classe</string>
-    <string name="account_settings_folder_sync_mode_label">Verificar pastas</string>
-    <string name="account_settings_folder_sync_mode_all">Todas</string>
-    <string name="account_settings_folder_sync_mode_first_class">Apenas pastas de 1ª classe</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">Pastas de 1ª e 2ª classe</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">Todas, exceto as pastas de 2ª classe</string>
-    <string name="account_settings_folder_sync_mode_none">Nenhuma</string>
     <string name="account_settings_sync_remote_deletetions_label">Sincronizar exclusões no servidor</string>
     <string name="account_settings_sync_remote_deletetions_summary">Remove mensagens quando excluídas no servidor</string>
     <string name="account_settings_openpgp_missing">O aplicativo de OpenPGP não foi encontrado - ele foi desinstalado?</string>
     <string name="folder_settings_title">Configurações da pasta</string>
     <string name="folder_settings_in_top_group_label">Exibir no grupo superior</string>
     <string name="folder_settings_in_top_group_summary">Exibe perto do topo da lista de pastas</string>
-    <string name="folder_settings_folder_display_mode_label">Classe de exibição da pasta</string>
-    <string name="folder_settings_folder_display_mode_normal">Nenhuma classe</string>
-    <string name="folder_settings_folder_display_mode_first_class">1ª classe</string>
-    <string name="folder_settings_folder_display_mode_second_class">2ª classe</string>
     <string name="folder_settings_clear_local_folder_action">Limpar mensagens locais</string>
     <string name="account_settings_incoming_label">Servidor de recebimento</string>
     <string name="account_settings_incoming_summary">Configure o servidor recebimento de mensagens</string>
@@ -917,7 +896,9 @@ Você pode guardar esta mensagem e usá-la como um backup da sua chave secreta. 
     <string name="settings_ui_data_collection">Coleta de dados</string>
     <string name="settings_ui_telemetry_title">Dados de uso e técnicos</string>
     <string name="settings_ui_telemetry_description">Compartilha dados sobre performance, uso, hardware, e customização deste app com a Mozilla para nos ajudar a fazer o Thunderbird melhor</string>
-    <string name="folder_settings_push_label">Ativar Pusg</string>
+    <string name="folder_settings_push_label">Ativar Push</string>
     <string name="folder_settings_sync_label">Ativar sincronização</string>
     <string name="folder_list_show_hidden_folders">Mostrar pastas escondidas</string>
+    <string name="folder_settings_visible_label">Mostrar pasta</string>
+    <string name="settings_list_action_support">Apoie o <xliff:g id="app_name">%s</xliff:g></string>
 </resources>

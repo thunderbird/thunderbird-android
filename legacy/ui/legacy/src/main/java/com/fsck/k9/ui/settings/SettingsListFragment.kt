@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.k9mail.core.common.provider.AppNameProvider
+import app.k9mail.core.featureflag.FeatureFlagKey
+import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.feature.funding.api.FundingManager
 import app.k9mail.feature.funding.api.FundingType
@@ -40,6 +42,7 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
     private val viewModel: SettingsViewModel by viewModel()
     private val fundingManager: FundingManager by inject()
     private val appNameProvider: AppNameProvider by inject()
+    private val featureFlagProvider: FeatureFlagProvider by inject()
 
     private lateinit var itemAdapter: ItemAdapter<GenericItem>
 
@@ -138,27 +141,41 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
                     icon = Icons.Outlined.Help,
                 )
 
-                when (fundingManager.getFundingType()) {
-                    FundingType.GOOGLE_PLAY -> {
-                        // TODO add funding action
-                    }
-
-                    FundingType.LINK -> {
-                        addUrlAction(
-                            text = getString(R.string.settings_list_action_support, appNameProvider.appName),
-                            url = getString(R.string.donate_url),
-                            icon = Icons.Outlined.Favorite,
-                        )
-                    }
-
-                    FundingType.NO_FUNDING -> {
-                        // no-op
-                    }
-                }
+                addFunding()
             }
         }
 
         itemAdapter.setNewList(listItems)
+    }
+
+    private fun SettingsListBuilder.addFunding() {
+        when (fundingManager.getFundingType()) {
+            FundingType.GOOGLE_PLAY -> {
+                featureFlagProvider.provide(FeatureFlagKey("funding_google_play"))
+                    .onEnabled {
+                        addIntent(
+                            text = getString(R.string.settings_list_action_support, appNameProvider.appName),
+                            icon = Icons.Outlined.Favorite,
+                            intent = FeatureLauncherActivity.getIntent(
+                                context = requireActivity(),
+                                target = FeatureLauncherTarget.Funding,
+                            ),
+                        )
+                    }
+            }
+
+            FundingType.LINK -> {
+                addUrlAction(
+                    text = getString(R.string.settings_list_action_support, appNameProvider.appName),
+                    url = getString(R.string.funding_url),
+                    icon = Icons.Outlined.Favorite,
+                )
+            }
+
+            FundingType.NO_FUNDING -> {
+                // no-op
+            }
+        }
     }
 
     private fun handleItemClick(item: GenericItem) {

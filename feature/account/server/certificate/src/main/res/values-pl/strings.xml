@@ -2,7 +2,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_server_certificate_button_back">Wróć (zalecane)</string>
     <string name="account_server_certificate_button_advanced">Zaawansowane</string>
-    <string name="account_server_certificate_button_continue">Zaakceptuj ryzyko i kontynuuj</string>
+    <string name="account_server_certificate_button_continue">Zaakceptuj ryzyko i kontynuuj</string>
     <string name="account_server_certificate_section_title">Certyfikat serwera</string>
     <string name="account_server_certificate_subject_alternative_names">Alternatywne nazwy podmiotu</string>
     <string name="account_server_certificate_not_valid_before">Nieważny przed</string>
@@ -12,6 +12,5 @@
     <string name="account_server_certificate_warning_title">Ostrzeżenie</string>
     <string name="account_server_certificate_unknown_error_subtitle">Błąd certyfikatu</string>
     <string name="account_server_certificate_subject">Podmiot</string>
-    <string name="account_server_certificate_unknown_error_description_format">Aplikacja wykryła potencjalne zagrożenie bezpieczeństwa i nie nawiązała dalszego połączenia z <xliff:g id="serverName">%s</xliff:g>.
-\nJeśli będziesz kontynuować, osoby atakujące mogą spróbować ukraść informacje, takie jak Twoje hasło lub adresy e-mail.</string>
+    <string name="account_server_certificate_unknown_error_description_format">Aplikacja wykryła potencjalne zagrożenie bezpieczeństwa i nie nawiązała dalszego połączenia z <xliff:g id="serverName">%s</xliff:g>. \nJeśli będziesz kontynuować, osoby atakujące mogą spróbować ukraść informacje, takie jak Twoje hasło lub adresy e-mail.</string>
 </resources>

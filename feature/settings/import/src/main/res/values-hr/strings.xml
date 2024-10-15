@@ -2,7 +2,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="settings_import_title">Uvoz postavki</string>
     <string name="settings_import_pick_document_button">Odaberi datoteku</string>
-    <string name="settings_import_button">Uvoz</string>
+    <string name="settings_import_button">Uvezi</string>
     <string name="settings_import_success_generic">Postavke su uspješno uvezene</string>
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
     <string name="settings_import_password_required">Molimo unesite lozinke</string>
@@ -17,15 +17,28 @@
     <string name="settings_import_status_not_imported">Nije uvezeno</string>
     <string name="settings_import_status_error">Uvoz nije uspio</string>
     <string name="settings_import_later_button">Kasnije</string>
-    <string name="settings_importing">Uvozim postavke…</string>
+    <string name="settings_importing">Uvoz postavki…</string>
     <plurals name="settings_import_password_prompt">
-        <item quantity="one">Da bi bili u mogućnosti da koristite račun \"<xliff:g id="account">%s</xliff:g>\" potrebno je da unesete lozinku za server.</item>
-        <item quantity="few">Da bi bili u mogućnosti da koristite račun \"<xliff:g id="account">%s</xliff:g>\" potrebno je da unesete lozinke za server.</item>
-        <item quantity="other">Da bi bili u mogućnosti da koristite račun \"<xliff:g id="account">%s</xliff:g>\" potrebno je da unesete lozinke za server.</item>
+        <item quantity="one">Da biste mogli koristiti račun \"<xliff:g id="account">%s</xliff:g>\" trebate unijeti lozinku za poslužitelj.</item>
+        <item quantity="few">Da biste mogli koristiti račun\"<xliff:g id="account">%s</xliff:g>\" trebate unijeti lozinke za poslužitelj.</item>
+        <item quantity="other">Da biste mogli koristiti račun \"<xliff:g id="account">%s</xliff:g>\" trebate unijeti lozinke za poslužitelj.</item>
     </plurals>
     <string name="settings_import_incoming_server_password_hint">Lozinka dolaznog poslužitelja</string>
     <string name="settings_import_outgoing_server_password_hint">Lozinka odlaznog poslužitelja</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Koristi istu loziku za odlazni poslužitelj</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Koristi istu lozinku za odlazni poslužitelj</string>
     <string name="settings_import_server_name_format">Naziv servera: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_general_settings_item">Opća podešavanja</string>
+    <string name="settings_import_general_settings_item">Opće postavke</string>
+    <string name="settings_import_oauth_sign_in">Prijavite se</string>
+    <string name="settings_import_pick_app_button">Uvezi iz aplikacije</string>
+    <string name="settings_import_status_log_in_required">Prijava je obavezna</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Autorizacija nije uspjela sa sljedećom pogreškom: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_authorization_required">Molimo Vas prijavite se</string>
+    <string name="settings_import_pick_app_dialog_title">Uvezi iz aplikacije</string>
+    <string name="settings_import_oauth_description">Za korištenje ovog računa e-pošte trebate se prijaviti i omogućiti aplikaciji pristup vašim emailovima.</string>
+    <string name="settings_import_oauth_sign_in_with_google">Prijavite se s Googleom</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">Autorizacija poništena</string>
+    <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 trenutačno nije podržan kod ovog pružatelja usluga e-pošte.</string>
+    <string name="settings_import_oauth_error_browser_not_found">Aplikacija nije mogla pronaći preglednik za davanje pristupa vašem računu.</string>
+    <string name="settings_import_scan_qr_code_button">Skeniraj QR kod</string>
+    <string name="settings_import_authorization_and_password_required">Molimo Vas prijavite se i unesite lozinke</string>
 </resources>

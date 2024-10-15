@@ -19,6 +19,7 @@ import app.k9mail.feature.settings.importing.R
 
 @Composable
 fun SettingsImportScreen(
+    action: SettingsImportAction,
     onImportSuccess: () -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
@@ -38,12 +39,13 @@ fun SettingsImportScreen(
         },
         modifier = modifier,
     ) { innerPadding ->
-        SettingsImportContent(onImportSuccess, onBack, innerPadding)
+        SettingsImportContent(action, onImportSuccess, onBack, innerPadding)
     }
 }
 
 @Composable
 private fun SettingsImportContent(
+    action: SettingsImportAction,
     onImportSuccess: () -> Unit,
     onBack: () -> Unit,
     paddingValues: PaddingValues,
@@ -62,6 +64,7 @@ private fun SettingsImportContent(
     }
 
     AndroidFragment<SettingsImportFragment>(
+        arguments = action.toBundle(),
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues),
