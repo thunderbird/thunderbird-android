@@ -2,6 +2,7 @@ package net.thunderbird.android
 
 import app.k9mail.core.common.oauth.OAuthConfigurationFactory
 import app.k9mail.core.common.provider.AppNameProvider
+import app.k9mail.core.common.provider.BrandNameProvider
 import app.k9mail.core.featureflag.FeatureFlagFactory
 import app.k9mail.core.ui.theme.api.FeatureThemeProvider
 import app.k9mail.core.ui.theme.api.ThemeProvider
@@ -22,6 +23,7 @@ import net.thunderbird.android.widget.provider.MessageListWidgetProvider
 import net.thunderbird.android.widget.provider.UnreadWidgetProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
+import org.koin.dsl.binds
 import org.koin.dsl.module
 
 val appModule = module {
@@ -34,7 +36,7 @@ val appModule = module {
     single(named("ClientInfoAppVersion")) { BuildConfig.VERSION_NAME }
     single<AppConfig> { appConfig }
     single<OAuthConfigurationFactory> { TbOAuthConfigurationFactory() }
-    single<AppNameProvider> { TbAppNameProvider(androidContext()) }
+    single { TbAppNameProvider(androidContext()) } binds arrayOf(AppNameProvider::class, BrandNameProvider::class)
     single<ThemeProvider> { TbThemeProvider() }
     single<FeatureThemeProvider> { TbFeatureThemeProvider() }
     single<FeatureFlagFactory> { TbFeatureFlagFactory() }
