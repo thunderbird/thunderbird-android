@@ -21,7 +21,8 @@ internal class ContributionViewModel(
     init {
         viewModelScope.launch {
             loadOneTimeContributions()
-            loadRecurringContributions()
+            // TODO load recurring contributions
+            // loadRecurringContributions()
             loadPurchasedContribution()
             selectDefaultContribution()
         }

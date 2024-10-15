@@ -94,7 +94,8 @@ class GoogleBillingClient(
 
     override fun disconnect() {
         productCache.clear()
-        billingClient.endConnection()
+        // TODO: this is not working as expected and leads to crashes: SERVICE_DISCONNECTED
+//        billingClient.endConnection()
     }
 
     override suspend fun loadOneTimeContributions(productIds: List<String>): List<OneTimeContribution> {
