@@ -577,7 +577,7 @@ jobs:
           # r0adkll/upload-google-play expects the release notes in a different structure
           FILEPATH=app-metadata/${APPLICATION_ID}/en-US/changelogs/${VERSION_CODE}.txt
           mkdir whatsnew
-          wget -O whatsnew/whatsnew-en-US.txt https://raw.githubusercontent.com/${REPO}/${APP_SHA}/${FILEPATH}
+          wget -O whatsnew/whatsnew-en-US https://raw.githubusercontent.com/${REPO}/${APP_SHA}/${FILEPATH}
 
       - name: Publish to Google Play
         id: publish_play
