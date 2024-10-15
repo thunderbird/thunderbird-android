@@ -1,3 +1,7 @@
+import javax.xml.parsers.DocumentBuilderFactory
+import javax.xml.xpath.XPathConstants
+import javax.xml.xpath.XPathFactory
+
 plugins {
     id(ThunderbirdPlugins.App.androidCompose)
     alias(libs.plugins.dependency.guard)
@@ -251,6 +255,48 @@ tasks.create("printConfigurations") {
             configuration.dependencies.forEach { dependency ->
                 println("  - ${dependency.group}:${dependency.name}:${dependency.version}")
             }
+        }
+    }
+}
+
+tasks.create("printVersionInfo") {
+    val targetBuildType = project.findProperty("buildType") ?: "debug"
+    val targetFlavorName = project.findProperty("flavorName") ?: "full"
+
+    doLast {
+        android.applicationVariants.all { variant ->
+            if (variant.buildType.name == targetBuildType && variant.flavorName == targetFlavorName) {
+                val flavor = variant.mergedFlavor
+
+                var buildTypeSource = android.sourceSets.getByName(targetBuildType).res.srcDirs.first()
+                var stringsXmlFile = File(buildTypeSource, "values/strings.xml")
+                if (!stringsXmlFile.exists()) {
+                    buildTypeSource = android.sourceSets.getByName("main").res.srcDirs.first()
+                    stringsXmlFile = File(buildTypeSource, "values/strings.xml")
+                }
+
+                val xmlDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(stringsXmlFile)
+                val xPath = XPathFactory.newInstance().newXPath()
+                val expression = "/resources/string[@name='app_name']/text()"
+                val appName = xPath.evaluate(expression, xmlDocument, XPathConstants.STRING) as String
+
+                val output = """
+                    APPLICATION_ID=${variant.applicationId}
+                    APPLICATION_LABEL=$appName
+                    VERSION_CODE=${flavor.versionCode}
+                    VERSION_NAME=${flavor.versionName}
+                    VERSION_NAME_SUFFIX=${variant.buildType.versionNameSuffix ?: ""}
+                    FULL_VERSION_NAME=${flavor.versionName}${variant.buildType.versionNameSuffix ?: ""}
+                """.trimIndent()
+
+                println(output)
+                val githubOutput = System.getenv("GITHUB_OUTPUT")
+                if (githubOutput != null) {
+                    val outputFile = File(githubOutput)
+                    outputFile.writeText(output + "\n")
+                }
+            }
+            true
         }
     }
 }

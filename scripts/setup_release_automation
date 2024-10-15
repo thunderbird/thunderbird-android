@@ -38,7 +38,6 @@ CHANNEL_ENVIRONMENTS = {
                     "appName": "k9mail",
                     "releaseTarget": "github|play",
                     # TODO enable this when ready to publish
-                    #"packageId": "com.fsck.k9",
                     #"playTargetTrack": "production",
                     "packageFormat": "apk"
                 },
