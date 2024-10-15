@@ -95,7 +95,7 @@ internal class ContributionViewModel(
         updateState {
             it.copy(
                 isRecurringContributionSelected = false,
-                selectedContribution = it.oneTimeContributions.firstOrNull(),
+                selectedContribution = it.oneTimeContributions.getSecondLowestOrNull(),
             )
         }
     }
@@ -104,8 +104,16 @@ internal class ContributionViewModel(
         updateState {
             it.copy(
                 isRecurringContributionSelected = true,
-                selectedContribution = it.recurringContributions.firstOrNull(),
+                selectedContribution = it.recurringContributions.getSecondLowestOrNull(),
             )
+        }
+    }
+
+    private fun List<Contribution>.getSecondLowestOrNull(): Contribution? {
+        return when {
+            this.size > 1 -> this.sortedBy { it.price }[1]
+            this.size == 1 -> this[0]
+            else -> null
         }
     }
 

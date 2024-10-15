@@ -25,7 +25,7 @@ class ContributionViewModelTest {
             oneTimeContributions = FakeData.oneTimeContributions,
             recurringContributions = FakeData.recurringContributions,
             purchasedContribution = FakeData.oneTimeContributions.first(),
-            selectedContribution = FakeData.recurringContributions.first(),
+            selectedContribution = FakeData.recurringContributions[FakeData.recurringContributions.size - 2],
         )
 
         contributionRobot(initialState) {
@@ -41,7 +41,7 @@ class ContributionViewModelTest {
             oneTimeContributions = FakeData.oneTimeContributions,
             recurringContributions = FakeData.recurringContributions,
             purchasedContribution = FakeData.oneTimeContributions.first(),
-            selectedContribution = FakeData.oneTimeContributions.first(),
+            selectedContribution = FakeData.oneTimeContributions[FakeData.oneTimeContributions.size - 2],
         )
 
         contributionRobot(initialState) {
@@ -57,7 +57,7 @@ class ContributionViewModelTest {
             oneTimeContributions = FakeData.oneTimeContributions,
             recurringContributions = FakeData.recurringContributions,
             purchasedContribution = FakeData.oneTimeContributions.first(),
-            selectedContribution = FakeData.recurringContributions.first(),
+            selectedContribution = FakeData.recurringContributions[FakeData.oneTimeContributions.size - 2],
         )
         val selectedContribution = FakeData.recurringContributions[2]
 
@@ -98,7 +98,7 @@ private class ContributionRobot(
         assertThat(turbines.awaitStateItem()).isEqualTo(
             initialState.copy(
                 isRecurringContributionSelected = false,
-                selectedContribution = initialState.oneTimeContributions.first(),
+                selectedContribution = initialState.oneTimeContributions[initialState.oneTimeContributions.size - 2],
             ),
         )
     }
@@ -111,7 +111,8 @@ private class ContributionRobot(
         assertThat(turbines.awaitStateItem()).isEqualTo(
             initialState.copy(
                 isRecurringContributionSelected = true,
-                selectedContribution = initialState.recurringContributions.first(),
+                selectedContribution = initialState
+                    .recurringContributions[initialState.recurringContributions.size - 2],
             ),
         )
     }
