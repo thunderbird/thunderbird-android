@@ -39,4 +39,6 @@
     <string name="settings_import_general_settings_item">Általános beállítások</string>
     <string name="settings_import_pick_app_button">Importálás alkalmazásból</string>
     <string name="settings_import_pick_app_dialog_title">Importálás alkalmazásból</string>
+    <string name="settings_import_scan_qr_code_button">QR-kód beolvasása</string>
+    <string name="settings_import_app_version_not_supported">Nem támogatott alkalmazásverzió.</string>
 </resources>

@@ -1,5 +1,5 @@
 - Lytse bugfixes en UI/UX oppoetse by it ynstellen fan in account
 - In crash ferholpen dy’t feroarsake waard troch in ynteraksje mei OpenKeychain 6.0.0
 - Fokus op ûnderwerp- of lichemsynfierfjilden by it iepenjen fan it opstelskerm fia in mailto: URI
-- Hebriuwske en Koreaanske oersettingen ferwijdere, omdat minder as 70% fan de strings oerset wie. Frijwilligers om de oersettingen by te wurkjen binne altyd wolkom!
+- Hebriuwske en Koreaanske oersettingen ferwidere, omdat minder as 70% fan de strings oerset wie. Frijwilligers om de oersettingen by te wurkjen binne altyd wolkom!
 - Restearjende oersettingen bywurke

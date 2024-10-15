@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="onboarding_welcome_start_button">Розпочати</string>
+    <string name="onboarding_welcome_message">Вітаємо в <xliff:g id="app_name">%s</xliff:g>, поштовому клієнті для Android, створеному для посилення безпеки, легкого налаштування та безперешкодного керування всіма вашими поштовими обліковими записами.</string>
+    <string name="onboarding_welcome_import_button">Імпорт налаштувань</string>
+</resources>

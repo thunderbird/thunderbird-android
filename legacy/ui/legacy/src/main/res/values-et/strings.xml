@@ -49,7 +49,7 @@
     <string name="move_action">Teisalda</string>
     <string name="move_to_drafts_action">Teisalda mustanditesse</string>
     <string name="refile_action">Paiguta ümber…</string>
-    <string name="done_action">Tehtud</string>
+    <string name="done_action">Valmis</string>
     <string name="discard_action">Loobu</string>
     <string name="save_draft_action">Salvesta mustandina</string>
     <string name="check_mail_action">Kontrolli e-kirju</string>
@@ -304,12 +304,6 @@
     <string name="account_settings_push_advanced_title">Täpsemalt</string>
     <string name="account_settings_title_fmt">Konto sätted</string>
     <string name="account_settings_notify_label">Uue sõnumi teated</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">Teadete kaust</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">Kõik</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Ainult 1. klassi kaustad</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1. ja 2. klassi kaustad</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Kõik, v.a 2. klassi kaustad</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">Mitte ükski</string>
     <string name="account_settings_notify_sync_label">Sünkroniseerimise teated</string>
     <string name="account_settings_email_label">Sinu e-posti aadress</string>
     <string name="account_settings_notify_summary">Teata uue sõnumi saabumisest olekuribal</string>
@@ -398,27 +392,12 @@
     <string name="account_settings_message_age_3_months">viimased 3 kuud</string>
     <string name="account_settings_message_age_6_months">viimased 6 kuud</string>
     <string name="account_settings_message_age_1_year">viimane aasta</string>
-    <string name="account_settings_folder_display_mode_label">Kuvatavad kaustad</string>
-    <string name="account_settings_folder_display_mode_all">Kõik</string>
-    <string name="account_settings_folder_display_mode_first_class">Ainult 1. klassi kaustad</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">1. ja 2. klassi kaustad</string>
-    <string name="account_settings_folder_display_mode_not_second_class">Kõik, v.a 2. klassi kaustad</string>
-    <string name="account_settings_folder_sync_mode_label">Kontrolli kaustu</string>
-    <string name="account_settings_folder_sync_mode_all">Kõik</string>
-    <string name="account_settings_folder_sync_mode_first_class">Ainult 1. klassi kaustad</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">1. ja 2. klassi kaustad</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">Kõik, v.a 2. klassi kaustad</string>
-    <string name="account_settings_folder_sync_mode_none">Mitte ükski</string>
     <string name="account_settings_sync_remote_deletetions_label">Süngi serveris kustutamised</string>
     <string name="account_settings_sync_remote_deletetions_summary">Eemalda kirjad kui need serveris kustutatud</string>
     <string name="account_settings_openpgp_missing">OpenPGP rakendus puudub - kas see on eemaldatud?</string>
     <string name="folder_settings_title">Kausta sätted</string>
     <string name="folder_settings_in_top_group_label">Näita tipp grupis</string>
     <string name="folder_settings_in_top_group_summary">Näita kaustade loendi tippu lähedal</string>
-    <string name="folder_settings_folder_display_mode_label">Kausta kuvamise klass</string>
-    <string name="folder_settings_folder_display_mode_normal">Klassita</string>
-    <string name="folder_settings_folder_display_mode_first_class">1. klass</string>
-    <string name="folder_settings_folder_display_mode_second_class">2. klass</string>
     <string name="folder_settings_clear_local_folder_action">Puhasta kohalikud kirjad</string>
     <string name="account_settings_incoming_label">Sissetuleva meili server</string>
     <string name="account_settings_incoming_summary">Konfigureeri sisse tuleva meili server</string>
@@ -913,4 +892,6 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="folder_settings_push_label">Kasuta tõuketeenuseid</string>
     <string name="folder_settings_sync_label">Kasuta sünkroniseerimist</string>
     <string name="folder_list_show_hidden_folders">Näita peidetud kaustu</string>
+    <string name="folder_settings_visible_label">Näita kausta</string>
+    <string name="settings_list_action_support">Toeta <xliff:g id="app_name">%s</xliff:g></string>
 </resources>

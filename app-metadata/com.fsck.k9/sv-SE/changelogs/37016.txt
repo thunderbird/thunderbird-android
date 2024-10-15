@@ -1,0 +1,5 @@
+- Små buggfixar och UI/UX-putsning i kontoinställningar
+- Fixade en krasch orsakad av en interaktion med OpenKeychain 6.0.0
+- Fokusera på ämnes- eller bodyinmatningsfält när du öppnar skrivskärmen via en mailto: URI
+- Tog bort hebreiska och koreanska översättningar eftersom mindre än 70 % av strängarna översattes. Volontärer för att uppdatera översättningarna är alltid välkomna!
+- Uppdaterade återstående översättningar

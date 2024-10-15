@@ -1,0 +1,5 @@
+- Push: Meddela användaren om behörighet att schemalägga exakta larm saknas
+- Omdöpt inställningen "Skicka klient-ID" till "Skicka klientinformation"
+- IMAP: Lade till stöd för svarsattributet \NonExistent LIST
+- IMAP: Utfärda EXPUNGE-kommandot efter flyttning utan MOVE-tillägg
+- Uppdaterade översättningar; lagt till hebreisk översättning

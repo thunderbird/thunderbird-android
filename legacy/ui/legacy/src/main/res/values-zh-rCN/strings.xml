@@ -303,12 +303,6 @@
     <string name="account_settings_push_advanced_title">高级</string>
     <string name="account_settings_title_fmt">账号设置</string>
     <string name="account_settings_notify_label">新邮件通知</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">通知文件夹</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">全部</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">仅 1 级文件夹</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1 级和 2 级文件夹</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">除 2 级文件夹外的所有文件夹</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">无</string>
     <string name="account_settings_notify_sync_label">同步通知</string>
     <string name="account_settings_email_label">您的电子邮件地址</string>
     <string name="account_settings_notify_summary">邮件到达时在状态栏中通知</string>
@@ -397,27 +391,12 @@
     <string name="account_settings_message_age_3_months">最近 3 个月</string>
     <string name="account_settings_message_age_6_months">最近 6 个月</string>
     <string name="account_settings_message_age_1_year">最近 1 年</string>
-    <string name="account_settings_folder_display_mode_label">要显示的文件夹</string>
-    <string name="account_settings_folder_display_mode_all">全部</string>
-    <string name="account_settings_folder_display_mode_first_class">仅 1 级文件夹</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">1 级与 2 级文件夹</string>
-    <string name="account_settings_folder_display_mode_not_second_class">除 2 级文件夹外的所有文件夹</string>
-    <string name="account_settings_folder_sync_mode_label">轮询文件夹</string>
-    <string name="account_settings_folder_sync_mode_all">全部</string>
-    <string name="account_settings_folder_sync_mode_first_class">仅 1 级文件夹</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">1 级与 2 级文件夹</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">除 2 级文件夹外的所有文件夹</string>
-    <string name="account_settings_folder_sync_mode_none">无</string>
     <string name="account_settings_sync_remote_deletetions_label">同步服务器的删除</string>
     <string name="account_settings_sync_remote_deletetions_summary">在服务器上删除邮件时移除邮件</string>
     <string name="account_settings_openpgp_missing">缺少 OpenPGP 应用 - 是否已卸载？</string>
     <string name="folder_settings_title">文件夹设置</string>
     <string name="folder_settings_in_top_group_label">显示在置顶的组中</string>
     <string name="folder_settings_in_top_group_summary">显示在文件夹列表的顶部附近</string>
-    <string name="folder_settings_folder_display_mode_label">文件夹显示级别</string>
-    <string name="folder_settings_folder_display_mode_normal">无级别</string>
-    <string name="folder_settings_folder_display_mode_first_class">1 级</string>
-    <string name="folder_settings_folder_display_mode_second_class">2 级</string>
     <string name="folder_settings_clear_local_folder_action">清空本地邮件</string>
     <string name="account_settings_incoming_label">收件服务器</string>
     <string name="account_settings_incoming_summary">配置收件服务器</string>
@@ -905,4 +884,6 @@
     <string name="folder_settings_push_label">启用推送</string>
     <string name="folder_settings_sync_label">启用同步</string>
     <string name="folder_list_show_hidden_folders">显示隐藏的文件夹</string>
+    <string name="folder_settings_visible_label">显示文件夹</string>
+    <string name="settings_list_action_support">支持 <xliff:g id="app_name">%s</xliff:g></string>
 </resources>

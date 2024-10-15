@@ -1,6 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="navigation_drawer_action_settings">Opțiuni</string>
     <string name="navigation_drawer_action_manage_folders">Gestionează dosarele</string>
     <string name="navigation_drawer_unified_inbox_title">Căsuță poștală unificată</string>
+    <string name="navigation_drawer_action_sync_all_accounts">Sincronizează toate conturile</string>
+    <string name="navigation_drawer_action_show_accounts">Arată conturile</string>
+    <string name="navigation_drawer_action_hide_accounts">Ascunde conturile</string>
+    <string name="navigation_drawer_folder_item_badge_count_greater_than_99">99+</string>
+    <string name="navigation_drawer_folder_item_badge_count_greater_than_1_000">1k+</string>
 </resources>

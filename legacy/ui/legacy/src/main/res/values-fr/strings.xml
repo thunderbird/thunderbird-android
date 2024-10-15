@@ -306,12 +306,6 @@
     <string name="account_settings_push_advanced_title">Avancé</string>
     <string name="account_settings_title_fmt">Paramètres du compte</string>
     <string name="account_settings_notify_label">Notifications de nouveaux courriels</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">Dossiers des notifications</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">Tous</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Seulement les dossiers de 1re classe</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Dossiers de 1re et 2e classes</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Tous sauf les dossiers de 2e classe</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">Aucun</string>
     <string name="account_settings_notify_sync_label">Notifications de synchronisation</string>
     <string name="account_settings_email_label">Votre adresse courriel</string>
     <string name="account_settings_notify_summary">Notification dans la barre d’état dès réception d’un courriel</string>
@@ -400,27 +394,12 @@
     <string name="account_settings_message_age_3_months">des 3 dernières mois</string>
     <string name="account_settings_message_age_6_months">des 6 dernières mois</string>
     <string name="account_settings_message_age_1_year">de la dernière année</string>
-    <string name="account_settings_folder_display_mode_label">Dossiers à afficher</string>
-    <string name="account_settings_folder_display_mode_all">Tous</string>
-    <string name="account_settings_folder_display_mode_first_class">Seulement les dossiers de 1re classe</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">Dossiers de 1re et 2e classes</string>
-    <string name="account_settings_folder_display_mode_not_second_class">Tous sauf les dossiers de 2e classe</string>
-    <string name="account_settings_folder_sync_mode_label">Dossiers à scruter</string>
-    <string name="account_settings_folder_sync_mode_all">Tous</string>
-    <string name="account_settings_folder_sync_mode_first_class">Seulement les dossiers de 1re classe</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">Les dossiers de 1re et 2e classes</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">Tous sauf les dossiers de 2e classe</string>
-    <string name="account_settings_folder_sync_mode_none">Aucun</string>
     <string name="account_settings_sync_remote_deletetions_label">Synchroniser les suppressions sur le serveur</string>
     <string name="account_settings_sync_remote_deletetions_summary">Supprimer les courriels quand ils sont supprimés sur le serveur</string>
     <string name="account_settings_openpgp_missing">L’appli OpenPGP est absente — A-t-elle été installée ?</string>
     <string name="folder_settings_title">Paramètres du dossier</string>
     <string name="folder_settings_in_top_group_label">Afficher dans le groupe principal</string>
     <string name="folder_settings_in_top_group_summary">Afficher dans le haut de la liste des dossiers</string>
-    <string name="folder_settings_folder_display_mode_label">Classe d’affichage du dossier</string>
-    <string name="folder_settings_folder_display_mode_normal">Aucune classe</string>
-    <string name="folder_settings_folder_display_mode_first_class">1re classe</string>
-    <string name="folder_settings_folder_display_mode_second_class">2e classe</string>
     <string name="folder_settings_clear_local_folder_action">Effacer les courriels locaux</string>
     <string name="account_settings_incoming_label">Serveur entrant</string>
     <string name="account_settings_incoming_summary">Configurer le serveur de courriel entrant</string>
@@ -914,4 +893,6 @@
     <string name="folder_settings_push_label">Activer le pousser</string>
     <string name="folder_list_show_hidden_folders">Afficher les dossiers cachés</string>
     <string name="folder_settings_sync_label">Activer la synchronisation</string>
+    <string name="folder_settings_visible_label">Afficher le dossier</string>
+    <string name="settings_list_action_support">Soutenir <xliff:g id="app_name">%s</xliff:g></string>
 </resources>

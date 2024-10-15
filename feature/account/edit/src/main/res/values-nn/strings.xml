@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_edit_save_server_settings_loading_message">Lagrar tenar-innstillingar…</string>
+    <string name="account_edit_save_server_settings_error_message">Klarte ikkje lagre tenar-innstillingar</string>
+    <string name="account_edit_save_server_settings_success_message">Tenar-innstillingar lagra</string>
+</resources>

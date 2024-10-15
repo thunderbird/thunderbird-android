@@ -1,0 +1,1 @@
+- Fixade en krasch när en svepåtgärd för meddelandelistan var inställd på "Ingen"

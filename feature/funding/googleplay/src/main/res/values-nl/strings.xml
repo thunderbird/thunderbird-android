@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="funding_googleplay_contribution_header_title">Steun Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_title">Veilige bijdrage</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">Doneer eenmalig</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">Maandelijks</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">Bijdragen zijn niet aftrekbaar als charitatieve donaties.</string>
+    <string name="funding_googleplay_contribution_header_description">We tonen u nooit advertenties en verkopen nooit uw gegevens. We worden volledig gefinancierd door financiële bijdragen van onze gebruikers. Als u geniet van Thunderbird, ondersteun het dan. We kunnen dit niet zonder u!</string>
+    <string name="funding_googleplay_contribution_footer_payment_button">Doorgaan naar afrekenen</string>
+    <string name="funding_googleplay_contribution_title">Instellingen</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">Niets beschikbaar</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">Maandelijkse betaling aanpassen</string>
+</resources>

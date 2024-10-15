@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="unread_widget_select_account">Tal net-lêzen werjaan foar…</string>
+    <string name="unread_widget_select_account">Tal net-lêzen toane foar…</string>
     <string name="unread_widget_account_title">Account</string>
     <string name="unread_widget_account_summary">De account wêrfoar it tal net-lêzen berjochten toand wurde moat</string>
     <string name="unread_widget_unified_inbox_account_summary">Kombinearre Postfek YN</string>
     <string name="unread_widget_folder_enabled_title">Mapoantal</string>
-    <string name="unread_widget_folder_enabled_summary">It tal net-lêzen berjochten fan in inkelde map toane</string>
+    <string name="unread_widget_folder_enabled_summary">Tal net-lêzen berjochten fan in inkelde map toane</string>
     <string name="unread_widget_folder_title">Map</string>
     <string name="unread_widget_folder_summary">De map wêrfoar it tal net-lêzen berjochten toand wurde moat</string>
     <string name="unread_widget_action_done">Dien</string>
