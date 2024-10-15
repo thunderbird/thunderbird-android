@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 # See docs/CI/Release_Automation.md for more details
+# Run this from the .signing directory with all the keys and properties files in it.
 
 # python -m venv venv; source venv/bin/activate; pip install requests, pynacl
 
@@ -75,46 +76,38 @@ CHANNEL_ENVIRONMENTS = {
 
 
 SIGNING_ENVIRONMENTS = {
-    "k9mail_release_default": [
-        "k9.release.signing.properties",
-        "k9-release-signing.jks",
-        "release",
-    ],
-    "k9mail_beta_default": [
-        "k9.release.signing.properties",
-        "k9-release-signing.jks",
-        "beta",
-    ],
-    "thunderbird_daily_foss": [
-        "tb.daily.signing.properties",
-        "tb-daily-signing.jks",
-        "daily",
-    ],
-    "thunderbird_daily_full": [
-        "tb.daily.upload.properties",
-        "tb-daily-upload-01.jks",
-        "daily",
-    ],
-    "thunderbird_beta_foss": [
-        "tb.beta.signing.properties",
-        "tb-beta-signing.jks",
-        "beta",
-    ],
-    "thunderbird_beta_full": [
-        "tb.beta.upload.properties",
-        "tb-beta-upload-01.jks",
-        "beta",
-    ],
-    "thunderbird_release_foss": [
-        "tb.release.signing.properties",
-        "tb-release-signing.jks",
-        "release",
-    ],
-    "thunderbird_release_full": [
-        "tb.release.upload.properties",
-        "tb-release-upload-01.jks",
-        "release",
-    ],
+    "k9mail_release_default": {
+        "props": "k9.release.signing.properties",
+        "branch": "release",
+    },
+    "k9mail_beta_default": {
+        "props": "k9.release.signing.properties",
+        "branch": "beta",
+    },
+    "thunderbird_daily_foss": {
+        "props": "tb.daily.signing.properties",
+        "branch": "main",
+    },
+    "thunderbird_daily_full": {
+        "props": "tb.daily.upload.properties",
+        "branch": "main",
+    },
+    "thunderbird_beta_foss": {
+        "props": "tb.beta.signing.properties",
+        "branch": "beta",
+    },
+    "thunderbird_beta_full": {
+        "props": "tb.beta.upload.properties",
+        "branch": "beta",
+    },
+    "thunderbird_release_foss": {
+        "props": "tb.release.signing.properties",
+        "branch": "release",
+    },
+    "thunderbird_release_full": {
+        "props": "tb.release.upload.properties",
+        "branch": "release",
+    },
 }
 
 
@@ -306,7 +299,7 @@ def create_approver_environment(repo, environment_name, approvers):
         )
 
 
-def create_signing_environment(repo, environment, branch, props_file, jks_file):
+def create_signing_environment(repo, environment, branch, props_file):
     # Read the key.properties file
     key_props = read_key_properties(props_file)
 
@@ -321,7 +314,7 @@ def create_signing_environment(repo, environment, branch, props_file, jks_file):
         return
 
     # Base64 encode the JKS file to create SIGNING_KEY
-    SIGNING_KEY = encode_jks_file(jks_file)
+    SIGNING_KEY = encode_jks_file(key_props.get("storeFile"))
 
     # Create the environment if it doesn't exist
     create_github_environment(repo, environment, branch=branch)
@@ -357,31 +350,16 @@ def main():
         description="Set GitHub environment secrets for specific or all environments."
     )
     parser.add_argument(
-        "--props",
-        "-p",
-        help="Path to the key.properties file (for single environment).",
-    )
-    parser.add_argument(
-        "--jks", "-j", help="Path to the .jks keystore file (for single environment)."
-    )
-    parser.add_argument(
-        "--environment", "-e", help="GitHub environment name (for single environment)."
-    )
-    parser.add_argument(
         "--repo",
         "-r",
         required=True,
         help="GitHub repository in the format 'owner/repo'.",
     )
     parser.add_argument(
-        "--all-environments",
-        "-a",
-        action="store_true",
-        help="Create all environments based on predefined paths and rules.",
+        "--skip", "-s", action="append", help="Skip this named environment"
     )
-    parser.add_argument("--branch", "-b", help="Branch to limit the environment to")
     parser.add_argument(
-        "--skip", "-s", action="append", help="In all mode, skip this environment", default=[]
+        "--only", "-o", action="append", help="Only include this named environment"
     )
 
     args = parser.parse_args()
@@ -393,60 +371,53 @@ def main():
             "GITHUB_TOKEN environment variable is not set. Please set it before running the script."
         )
 
-    if args.all_environments:
-        skipset = set(args.skip)
-        # All environments creation mode
-        if "publish_hold" in skipset:
-            print("Skipping environment publish_hold")
-        else:
-            create_github_environment(
-                args.repo, "publish_hold", approvers=PUBLISH_APPROVERS
-            )
+    if args.skip and args.only:
+        print("Error: Cannot supply both skip and only")
+        return
 
-        # Channel environments
-        for environment_name, data in CHANNEL_ENVIRONMENTS.items():
-            if environment_name in skipset:
-                print(f"Skipping channel environment {environment_name}")
-                continue
+    includeset = set(
+        list(CHANNEL_ENVIRONMENTS.keys())
+        + list(SIGNING_ENVIRONMENTS.keys())
+        + list(
+            "publish_hold",
+        )
+    )
+    if args.skip:
+        for skip in args.skip:
+            includeset.remove(skip)
 
-            create_github_environment(
-                args.repo, environment_name, branch=data["branch"]
-            )
+    if args.only:
+        includeset = set(args.only)
 
-            for name, value in data["variables"].items():
-                if isinstance(value, dict) or isinstance(value, list):
-                    value = json.dumps(value)
-                set_github_environment_variable(
-                    args.repo, name, value, environment_name
-                )
+    # Publish hold environment
+    if "publish_hold" in includeset:
+        create_github_environment(
+            args.repo, "publish_hold", approvers=PUBLISH_APPROVERS
+        )
 
-        # Signing environments
-        for environment_name, paths in SIGNING_ENVIRONMENTS.items():
-            if environment_name in skipset:
-                print(f"Skipping signing environment {environment_name}")
-                continue
+    # Channel environments
+    for environment_name, data in CHANNEL_ENVIRONMENTS.items():
+        if environment_name not in includeset:
+            continue
 
-            props_file, jks_file, branch = paths
+        create_github_environment(args.repo, environment_name, branch=data["branch"])
 
-            if not os.path.exists(props_file) or not os.path.exists(jks_file):
-                print(
-                    f"Skipping {environment_name}: Missing key.properties or .jks file."
-                )
-                continue
+        for name, value in data["variables"].items():
+            if isinstance(value, dict) or isinstance(value, list):
+                value = json.dumps(value)
+            set_github_environment_variable(args.repo, name, value, environment_name)
 
-            create_signing_environment(
-                args.repo, environment_name, branch, props_file, jks_file
-            )
-    else:
-        # Single environment creation mode
-        if not all([args.props, args.jks, args.environment, args.branch]):
-            print(
-                "Error: You must provide --props, --jks, and --environment for single environment creation."
-            )
-            return
+    # Signing environments
+    for environment_name, data in SIGNING_ENVIRONMENTS.items():
+        if environment_name not in includeset:
+            continue
+
+        if not os.path.exists(data["props"]):
+            print(f"Skipping {environment_name}: Missing key .properties file")
+            continue
 
         create_signing_environment(
-            args.repo, args.environment, args.branch, args.props, args.jks
+            args.repo, environment_name, data["branch"], data["props"]
         )
 
 
