@@ -80,7 +80,6 @@ kotlinxSerialization = "1.7.3"
 ktlint = "1.2.1"
 kxml2 = "1.0"
 leakcanary = "2.13"
-materialDrawer = "9.0.2"
 mime4j = "0.8.9"
 minidns = "1.0.5"
 mockito = "5.13.0"
@@ -220,7 +219,6 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 kxml2 = { module = "com.github.cketti:kxml2-extracted-from-android", version.ref = "kxml2" }
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
-materialdrawer = { module = "com.mikepenz:materialdrawer", version.ref = "materialDrawer" }
 mime4j-core = { module = "org.apache.james:apache-mime4j-core", version.ref = "mime4j" }
 mime4j-dom = { module = "org.apache.james:apache-mime4j-dom", version.ref = "mime4j" }
 minidns-hla = { module = "org.minidns:minidns-hla", version.ref = "minidns" }
