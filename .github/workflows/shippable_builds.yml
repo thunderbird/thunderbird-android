@@ -60,8 +60,8 @@ jobs:
         env:
           matrixInclude: ${{ vars.MATRIX_INCLUDE }}
           releaseType: ${{ vars.RELEASE_TYPE }}
-          skipThunderbird: ${{ github.event.inputs.skipThunderbird }}
-          skipK9Mail: ${{ github.event.inputs.skipK9Mail }}
+          skipThunderbird: ${{ inputs.skipThunderbird }}
+          skipK9Mail: ${{ inputs.skipK9Mail }}
         with:
           script: |
             let matrix = JSON.parse(process.env.matrixInclude);
@@ -186,7 +186,7 @@ jobs:
 
       - name: Bump version suffix
         id: bump_version_suffix
-        if: ${{ github.events.inputs.skipBetaBump != 'true' && contains(matrix.releaseTarget, 'github') && vars.RELEASE_TYPE == 'beta' }}
+        if: ${{ !inputs.skipBetaBump && contains(matrix.releaseTarget, 'github') && vars.RELEASE_TYPE == 'beta' }}
         shell: bash
         env:
           APP_NAME: ${{ matrix.appName }}
@@ -566,7 +566,7 @@ jobs:
             uploads/${{ steps.rename.outputs.PKG_FILE }}
 
       - name: Adjust release notes for play store upload
-        if: ${{ github.events.inputs.skipGooglePlay != 'true' && contains(matrix.releaseTarget, 'play') && matrix.playTargetTrack }}
+        if: ${{ !inputs.skipGooglePlay && contains(matrix.releaseTarget, 'play') && matrix.playTargetTrack }}
         shell: bash
         env:
           VERSION_CODE: ${{ steps.pkginfo.outputs.VERSION_CODE }}
@@ -582,14 +582,14 @@ jobs:
       - name: Publish to Google Play
         id: publish_play
         uses: r0adkll/upload-google-play@v1
-        if: ${{ github.events.inputs.skipGooglePlay != 'true' && contains(matrix.releaseTarget, 'play') && matrix.playTargetTrack }}
+        if: ${{ !inputs.skipGooglePlay && contains(matrix.releaseTarget, 'play') && matrix.playTargetTrack }}
         with:
           serviceAccountJsonPlainText: ${{ secrets.PLAY_STORE_ACCOUNT }}
           packageName: ${{ steps.pkginfo.outputs.APPLICATION_ID }}
           track: ${{ matrix.playTargetTrack }}
           releaseName: ${{ steps.pkginfo.outputs.VERSION_NAME }}
           status: completed
-          changesNotSentForReview: ${{ github.event.inputs.draftGooglePlay == 'true' }}
+          changesNotSentForReview: ${{ inputs.draftGooglePlay }}
           whatsNewDirectory: whatsnew
           releaseFiles: |
             uploads/${{ steps.rename.outputs.PKG_FILE }}
