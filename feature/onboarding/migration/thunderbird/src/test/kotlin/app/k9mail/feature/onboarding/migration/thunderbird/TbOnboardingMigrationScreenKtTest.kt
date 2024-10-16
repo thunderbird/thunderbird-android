@@ -3,7 +3,7 @@ package app.k9mail.feature.onboarding.migration.thunderbird
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
-import app.k9mail.core.common.provider.AppNameProvider
+import app.k9mail.core.common.provider.BrandNameProvider
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContentWithTheme
 import assertk.assertThat
@@ -19,7 +19,7 @@ class TbOnboardingMigrationScreenKtTest : ComposeTest() {
             TbOnboardingMigrationScreen(
                 onQrCodeScanClick = { qrCodeScanClickCounter++ },
                 onAddAccountClick = { addAccountClickCounter++ },
-                appNameProvider = FakeAppNameProvider(),
+                brandNameProvider = FakeBrandNameProvider,
             )
         }
 
@@ -39,7 +39,7 @@ class TbOnboardingMigrationScreenKtTest : ComposeTest() {
             TbOnboardingMigrationScreen(
                 onQrCodeScanClick = { qrCodeScanClickCounter++ },
                 onAddAccountClick = { addAccountClickCounter++ },
-                appNameProvider = FakeAppNameProvider(),
+                brandNameProvider = FakeBrandNameProvider,
             )
         }
 
@@ -52,6 +52,6 @@ class TbOnboardingMigrationScreenKtTest : ComposeTest() {
     }
 }
 
-private class FakeAppNameProvider : AppNameProvider {
-    override val appName = "Thunderbird"
+private object FakeBrandNameProvider : BrandNameProvider {
+    override val brandName = "Thunderbird"
 }
