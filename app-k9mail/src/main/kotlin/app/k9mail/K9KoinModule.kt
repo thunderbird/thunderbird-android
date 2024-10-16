@@ -3,6 +3,7 @@ package app.k9mail
 import app.k9mail.auth.K9OAuthConfigurationFactory
 import app.k9mail.core.common.oauth.OAuthConfigurationFactory
 import app.k9mail.core.common.provider.AppNameProvider
+import app.k9mail.core.common.provider.BrandNameProvider
 import app.k9mail.core.featureflag.FeatureFlagFactory
 import app.k9mail.core.ui.theme.api.FeatureThemeProvider
 import app.k9mail.core.ui.theme.api.ThemeProvider
@@ -23,6 +24,7 @@ import com.fsck.k9.provider.UnreadWidgetProvider
 import com.fsck.k9.widget.list.MessageListWidgetProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
+import org.koin.dsl.binds
 import org.koin.dsl.module
 
 val appModule = module {
@@ -35,7 +37,7 @@ val appModule = module {
     single(named("ClientInfoAppVersion")) { BuildConfig.VERSION_NAME }
     single<AppConfig> { appConfig }
     single<OAuthConfigurationFactory> { K9OAuthConfigurationFactory() }
-    single<AppNameProvider> { K9AppNameProvider(androidContext()) }
+    single { K9AppNameProvider(androidContext()) } binds arrayOf(AppNameProvider::class, BrandNameProvider::class)
     single<ThemeProvider> { K9ThemeProvider() }
     single<FeatureThemeProvider> { K9FeatureThemeProvider() }
     single<FeatureFlagFactory> { K9FeatureFlagFactory() }

@@ -15,7 +15,7 @@ internal fun SpecialFoldersContentLoadingPreview() {
             ),
             onEvent = {},
             contentPadding = PaddingValues(),
-            appName = "AppName",
+            brandName = "BrandName",
         )
     }
 }
@@ -30,7 +30,7 @@ internal fun SpecialFoldersContentFormPreview() {
             ),
             onEvent = {},
             contentPadding = PaddingValues(),
-            appName = "AppName",
+            brandName = "BrandName",
         )
     }
 }
@@ -46,7 +46,7 @@ internal fun SpecialFoldersContentSuccessPreview() {
             ),
             onEvent = {},
             contentPadding = PaddingValues(),
-            appName = "AppName",
+            brandName = "BrandName",
         )
     }
 }
@@ -62,7 +62,7 @@ internal fun SpecialFoldersContentErrorPreview() {
             ),
             onEvent = {},
             contentPadding = PaddingValues(),
-            appName = "AppName",
+            brandName = "BrandName",
         )
     }
 }

@@ -14,7 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.common.provider.AppNameProvider
+import app.k9mail.core.common.provider.BrandNameProvider
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.card.CardFilled
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
@@ -29,7 +29,7 @@ internal fun TbOnboardingMigrationScreen(
     onQrCodeScanClick: () -> Unit,
     onAddAccountClick: () -> Unit,
     modifier: Modifier = Modifier,
-    appNameProvider: AppNameProvider = koinInject(),
+    brandNameProvider: BrandNameProvider = koinInject(),
 ) {
     val scrollState = rememberScrollState()
 
@@ -44,7 +44,7 @@ internal fun TbOnboardingMigrationScreen(
                 .verticalScroll(scrollState),
         ) {
             AppTitleTopHeader(
-                title = appNameProvider.appName,
+                title = brandNameProvider.brandName,
             )
 
             Spacer(modifier = Modifier.height(MainTheme.spacings.double))

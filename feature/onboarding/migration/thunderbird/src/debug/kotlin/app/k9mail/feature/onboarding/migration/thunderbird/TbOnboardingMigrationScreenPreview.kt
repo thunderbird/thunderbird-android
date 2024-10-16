@@ -1,7 +1,7 @@
 package app.k9mail.feature.onboarding.migration.thunderbird
 
 import androidx.compose.runtime.Composable
-import app.k9mail.core.common.provider.AppNameProvider
+import app.k9mail.core.common.provider.BrandNameProvider
 import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.theme2.thunderbird.ThunderbirdTheme2
@@ -14,8 +14,8 @@ internal fun TbOnboardingMigrationScreenPreview() {
             TbOnboardingMigrationScreen(
                 onQrCodeScanClick = {},
                 onAddAccountClick = {},
-                appNameProvider = object : AppNameProvider {
-                    override val appName: String = "Thunderbird"
+                brandNameProvider = object : BrandNameProvider {
+                    override val brandName: String = "Thunderbird"
                 },
             )
         }
