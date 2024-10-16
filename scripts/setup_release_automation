@@ -30,15 +30,14 @@ CHANNEL_ENVIRONMENTS = {
                 {
                     "appName": "thunderbird",
                     "releaseTarget": "play",
-                    "playTargetTrack": "internal",  # TODO change this to alpha once ready, final promotion should happen in web ui
+                    "playTargetTrack": "internal",
                     "packageFormat": "aab",
                     "packageFlavor": "full",
                 },
                 {
                     "appName": "k9mail",
                     "releaseTarget": "github|play",
-                    # TODO enable this when ready to publish
-                    # "playTargetTrack": "production",
+                    "playTargetTrack": "internal",
                     "packageFormat": "apk",
                 },
             ],
@@ -58,15 +57,14 @@ CHANNEL_ENVIRONMENTS = {
                 {
                     "appName": "thunderbird",
                     "releaseTarget": "play",
-                    "playTargetTrack": "internal",  # TODO change this to production once ready
+                    "playTargetTrack": "internal",
                     "packageFormat": "aab",
                     "packageFlavor": "full",
                 },
                 {
                     "appName": "k9mail",
                     "releaseTarget": "github|play",
-                    # TODO enable this when ready to publish
-                    # "playTargetTrack": "beta",
+                    "playTargetTrack": "internal",
                     "packageFormat": "apk",
                 },
             ],
