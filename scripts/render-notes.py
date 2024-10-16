@@ -8,7 +8,15 @@ import yaml
 from jinja2 import Template
 
 
-def render_notes(version, versioncode, application, applicationid):
+def render_notes(
+    version,
+    versioncode,
+    application,
+    applicationid,
+    printonly=False,
+    notesrepo="thunderbird/thunderbird-notes",
+    notesbranch="master",
+):
     """Update changelog files based on release notes from thunderbird-notes."""
     tb_notes_filename = f"{version}.yml"
     tb_notes_directory = "android_release"
@@ -16,8 +24,8 @@ def render_notes(version, versioncode, application, applicationid):
         tb_notes_filename = f"{version[0:-1]}eta.yml"
         tb_notes_directory = "android_beta"
     tb_notes_url = os.path.join(
-        "https://raw.githubusercontent.com/thunderbird/thunderbird-notes/",
-        "refs/heads/master/",
+        f"https://raw.githubusercontent.com/{notesrepo}/",
+        f"refs/heads/{notesbranch}",
         tb_notes_directory,
         tb_notes_filename,
     )
@@ -69,17 +77,37 @@ def render_notes(version, versioncode, application, applicationid):
                             break
                         lines.insert(index + 1, rendered)
                         break
-            with open(render_files[render_file]["outfile"], "w") as file:
-                file.writelines(lines)
+            if not printonly:
+                with open(render_files[render_file]["outfile"], "w") as file:
+                    file.writelines(lines)
         elif render_file == "changelog.txt":
             stripped = rendered.lstrip()
-            with open(render_files[render_file]["outfile"], "w") as file:
-                file.write(stripped)
+            if not printonly:
+                with open(render_files[render_file]["outfile"], "x") as file:
+                    file.write(stripped)
             print(stripped)
 
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--print",
+        "-p",
+        action="store_true",
+        help="Only print the processed release notes",
+    )
+    parser.add_argument(
+        "--repository",
+        "-r",
+        default="thunderbird/thunderbird-notes",
+        help="Repository to retrieve thunderbird-notes from",
+    )
+    parser.add_argument(
+        "--branch",
+        "-b",
+        default="master",
+        help="Branch to retrieve thunderbird-notes from",
+    )
     parser.add_argument(
         "applicationid",
         type=str,
@@ -99,7 +127,15 @@ def main():
     else:
         application = "thunderbird"
 
-    render_notes(args.version, args.versioncode, application, args.applicationid)
+    render_notes(
+        args.version,
+        args.versioncode,
+        application,
+        args.applicationid,
+        printonly=args.print,
+        notesrepo=args.repository,
+        notesbranch=args.branch,
+    )
 
 
 if __name__ == "__main__":
