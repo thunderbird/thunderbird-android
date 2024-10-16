@@ -126,7 +126,7 @@ class AccountSetupComposition : K9Activity() {
 
     private fun saveSettings() {
         account.email = accountEmail.text.toString().trim()
-        account.alwaysBcc = accountAlwaysBcc.text.toString().takeUnless { it.isNotBlank() }
+        account.alwaysBcc = accountAlwaysBcc.text.toString().takeUnless { it.isBlank() }
         account.senderName = accountSenderName.text.toString().takeUnless { it.isBlank() }
         account.signatureUse = accountSignatureUse.isChecked
         if (accountSignatureUse.isChecked) {
