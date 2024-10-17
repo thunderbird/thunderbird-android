@@ -30,8 +30,7 @@ internal fun QrCodeScannerContent(
             UiPermissionState.Granted -> {
                 QrCodeScannerView(
                     cameraUseCasesProvider = cameraUseCasesProvider,
-                    scannedCount = state.scannedCount,
-                    totalCount = state.totalCount,
+                    displayText = state.displayText,
                     onDoneClick = { onEvent(Event.DoneClicked) },
                 )
             }

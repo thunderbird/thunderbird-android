@@ -8,6 +8,7 @@ import app.k9mail.core.ui.compose.testing.mvi.runMviTest
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.migration.qrcode.domain.QrCodeDomainContract.UseCase
 import app.k9mail.feature.migration.qrcode.domain.usecase.QrCodePayloadReader
+import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.DisplayText
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.Effect
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.Event
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.State
@@ -214,8 +215,10 @@ private class QrCodeScannerScreenRobot(
         assertThat(turbines.awaitStateItem()).isEqualTo(
             State(
                 cameraPermissionState = UiPermissionState.Granted,
-                scannedCount = expectedScannedCount,
-                totalCount = expectedScannedTotal,
+                displayText = DisplayText.ProgressText(
+                    scannedCount = expectedScannedCount,
+                    totalCount = expectedScannedTotal,
+                ),
             ),
         )
     }
