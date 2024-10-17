@@ -20,7 +20,6 @@ object Icons {
         val Add = R.drawable.ic_add
         val AddCircle = R.drawable.ic_add_circle
         val Adjust = R.drawable.ic_adjust
-        val AllInbox = R.drawable.ic_all_inbox
         val Archive = R.drawable.ic_archive
         val ArrowBack = R.drawable.ic_arrow_back
         val Attachment = R.drawable.ic_attachment

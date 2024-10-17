@@ -165,7 +165,6 @@ class AboutFragment : Fragment() {
                 "https://github.com/material-components/material-components-android",
                 "Apache License, Version 2.0",
             ),
-            Library("Material Drawer", "https://github.com/mikepenz/MaterialDrawer", "Apache License, Version 2.0"),
             Library("Mime4j", "https://james.apache.org/mime4j/", "Apache License, Version 2.0"),
             Library("MiniDNS", "https://github.com/MiniDNS/minidns", "Multiple, Apache License, Version 2.0"),
             Library("Moshi", "https://github.com/square/moshi", "Apache License, Version 2.0"),
