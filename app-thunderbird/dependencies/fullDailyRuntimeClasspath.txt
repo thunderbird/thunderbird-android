@@ -210,10 +210,10 @@ org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.21
 org.jetbrains.kotlin:kotlin-stdlib:2.0.21
 org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.3.8
 org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.8
-org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1
-org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.8.1
-org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.8.1
-org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1
+org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0
+org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.9.0
+org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0
+org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0
 org.jetbrains.kotlinx:kotlinx-datetime-jvm:0.6.1
 org.jetbrains.kotlinx:kotlinx-datetime:0.6.1
 org.jetbrains.kotlinx:kotlinx-serialization-bom:1.7.3
@@ -221,7 +221,7 @@ org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.7.3
 org.jetbrains.kotlinx:kotlinx-serialization-core:1.7.3
 org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.7.3
 org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3
-org.jetbrains:annotations:24.1.0
+org.jetbrains:annotations:26.0.1
 org.jsoup:jsoup:1.17.2
 org.minidns:minidns-client:1.0.5
 org.minidns:minidns-core:1.0.5
