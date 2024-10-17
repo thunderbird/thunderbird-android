@@ -14,7 +14,9 @@ import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
+import app.k9mail.core.ui.compose.theme2.ColorRoles
 import app.k9mail.core.ui.compose.theme2.MainTheme
+import app.k9mail.core.ui.compose.theme2.toColorRoles
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
 import app.k9mail.feature.navigation.drawer.ui.common.labelForCount
 
@@ -24,8 +26,9 @@ internal fun AccountAvatar(
     onClick: (DisplayAccount) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
     val accountColor = calculateAccountColor(account.account.chipColor)
-    val accountColorRoles = ColorRoles.from(accountColor)
+    val accountColorRoles = accountColor.toColorRoles(context)
 
     Box(
         modifier = modifier,
