@@ -12,13 +12,13 @@ import org.junit.Test
 
 class TbOnboardingMigrationScreenKtTest : ComposeTest() {
     @Test
-    fun `pressing QrCodeImportButton should call onQrCodeScanClick`() = runComposeTest {
+    fun `pressing QrCodeImportButton should call onQrCodeScan`() = runComposeTest {
         var qrCodeScanClickCounter = 0
-        var addAccountClickCounter = 0
         setContentWithTheme {
             TbOnboardingMigrationScreen(
-                onQrCodeScanClick = { qrCodeScanClickCounter++ },
-                onAddAccountClick = { addAccountClickCounter++ },
+                onQrCodeScan = { qrCodeScanClickCounter++ },
+                onAddAccount = { error("Should not be called") },
+                onImport = { error("Should not be called") },
                 brandNameProvider = FakeBrandNameProvider,
             )
         }
@@ -28,17 +28,16 @@ class TbOnboardingMigrationScreenKtTest : ComposeTest() {
             .performClick()
 
         assertThat(qrCodeScanClickCounter).isEqualTo(1)
-        assertThat(addAccountClickCounter).isEqualTo(0)
     }
 
     @Test
-    fun `pressing AddAccountButton button should call onAddAccountClick`() = runComposeTest {
-        var qrCodeScanClickCounter = 0
+    fun `pressing AddAccountButton button should call onAddAccount`() = runComposeTest {
         var addAccountClickCounter = 0
         setContentWithTheme {
             TbOnboardingMigrationScreen(
-                onQrCodeScanClick = { qrCodeScanClickCounter++ },
-                onAddAccountClick = { addAccountClickCounter++ },
+                onQrCodeScan = { error("Should not be called") },
+                onAddAccount = { addAccountClickCounter++ },
+                onImport = { error("Should not be called") },
                 brandNameProvider = FakeBrandNameProvider,
             )
         }
@@ -48,7 +47,25 @@ class TbOnboardingMigrationScreenKtTest : ComposeTest() {
             .performClick()
 
         assertThat(addAccountClickCounter).isEqualTo(1)
-        assertThat(qrCodeScanClickCounter).isEqualTo(0)
+    }
+
+    @Test
+    fun `pressing ImportButton button should call onImport`() = runComposeTest {
+        var importClickCounter = 0
+        setContentWithTheme {
+            TbOnboardingMigrationScreen(
+                onQrCodeScan = { error("Should not be called") },
+                onAddAccount = { error("Should not be called") },
+                onImport = { importClickCounter++ },
+                brandNameProvider = FakeBrandNameProvider,
+            )
+        }
+
+        composeTestRule.onNodeWithTag("ImportButton")
+            .performScrollTo()
+            .performClick()
+
+        assertThat(importClickCounter).isEqualTo(1)
     }
 }
 

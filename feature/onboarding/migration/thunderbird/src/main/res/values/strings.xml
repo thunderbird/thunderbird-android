@@ -5,4 +5,6 @@
     <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Import settings</string>
     <string name="onboarding_migration_thunderbird_new_account_title">New to Thunderbird?</string>
     <string name="onboarding_migration_thunderbird_new_account_button_text">Add an email account now</string>
+    <string name="onboarding_migration_thunderbird_import_title">Moving from another app or device?</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">Import your account settings now</string>
 </resources>

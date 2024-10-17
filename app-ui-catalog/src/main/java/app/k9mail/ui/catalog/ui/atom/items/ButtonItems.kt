@@ -9,6 +9,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilledTonal
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonOutlined
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
+import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonTextUnderlined
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.ui.catalog.ui.common.list.defaultItem
 import app.k9mail.ui.catalog.ui.common.list.defaultItemPadding
@@ -94,6 +95,23 @@ fun LazyGridScope.buttonItems() {
     }
     defaultItem {
         ButtonText(
+            text = "Disabled",
+            onClick = { },
+            enabled = false,
+            modifier = Modifier.padding(defaultItemPadding()),
+        )
+    }
+
+    sectionHeaderItem(text = "Button - Text Underlined")
+    defaultItem {
+        ButtonTextUnderlined(
+            text = "Enabled",
+            onClick = { },
+            modifier = Modifier.padding(defaultItemPadding()),
+        )
+    }
+    defaultItem {
+        ButtonTextUnderlined(
             text = "Disabled",
             onClick = { },
             enabled = false,

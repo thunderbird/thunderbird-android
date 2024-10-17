@@ -8,7 +8,8 @@ class NoOpOnboardingMigrationManager : OnboardingMigrationManager {
 
     @Composable
     override fun OnboardingMigrationScreen(
-        onQrCodeScanClick: () -> Unit,
-        onAddAccountClick: () -> Unit,
+        onQrCodeScan: () -> Unit,
+        onAddAccount: () -> Unit,
+        onImport: () -> Unit,
     ) = Unit
 }
