@@ -82,6 +82,7 @@ fun OnboardingNavHost(
                 },
                 onImportClick = { navController.navigateToSettingsImport() },
                 appNameProvider = koinInject(),
+                onboardingMigrationManager = koinInject(),
             )
         }
 
