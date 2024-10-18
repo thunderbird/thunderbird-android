@@ -14,28 +14,37 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerActivityContract
+import app.k9mail.feature.migration.launcher.api.MigrationManager
 import app.k9mail.feature.settings.importing.R
 import com.fsck.k9.ui.base.livedata.observeNotNull
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.fsck.k9.ui.base.R as BaseR
 
 class SettingsImportFragment : Fragment() {
     private val viewModel: SettingsImportViewModel by viewModel()
+    private val migrationManager: MigrationManager by inject()
 
     private lateinit var settingsImportAdapter: FastAdapter<ImportListItem<*>>
     private lateinit var itemAdapter: ItemAdapter<ImportListItem<*>>
 
-    private val qrCodeScannerResultContract = registerForActivityResult(QrCodeScannerActivityContract()) { contentUri ->
+    private val qrCodeScannerResultContract = registerForActivityResult(
+        migrationManager.getQrCodeActivityResultContract(),
+    ) { contentUri ->
         if (contentUri != null) {
             viewModel.onDocumentPicked(contentUri)
         } else {
             viewModel.onDocumentPickCanceled()
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.initialize()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

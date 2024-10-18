@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.k9mail.feature.migration.launcher.api.MigrationManager
 import app.k9mail.feature.settings.import.SettingsImportExternalContract.AccountActivator
 import com.fsck.k9.helper.SingleLiveEvent
 import com.fsck.k9.helper.measureRealtimeMillisWithResult
@@ -36,6 +37,7 @@ internal class SettingsImportViewModel(
     private val contentResolver: ContentResolver,
     private val settingsImporter: SettingsImporter,
     private val accountActivator: AccountActivator,
+    private val migrationManager: MigrationManager,
     private val importAppFetcher: ImportAppFetcher,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
     viewModelScope: CoroutineScope = CoroutineScope(Dispatchers.Main.immediate + SupervisorJob()),
@@ -43,6 +45,7 @@ internal class SettingsImportViewModel(
     private val uiModelLiveData = MutableLiveData<SettingsImportUiModel>()
     private val actionLiveData = SingleLiveEvent<Action>()
 
+    private var isInitialized = false
     private var action = SettingsImportAction.Overview
     private var wasActionHandled = false
 
@@ -72,8 +75,18 @@ internal class SettingsImportViewModel(
                 .toSet()
         }
 
-    init {
-        checkForImportApps()
+    fun initialize() {
+        if (isInitialized) return
+
+        if (migrationManager.isFeatureIncluded()) {
+            updateUiModel {
+                showMigrationActions()
+            }
+
+            checkForImportApps()
+        }
+
+        isInitialized = true
     }
 
     private fun checkForImportApps() {

@@ -78,6 +78,9 @@ include(
 include(
     ":feature:migration:provider",
     ":feature:migration:qrcode",
+    ":feature:migration:launcher:api",
+    ":feature:migration:launcher:noop",
+    ":feature:migration:launcher:thunderbird",
 )
 
 include(

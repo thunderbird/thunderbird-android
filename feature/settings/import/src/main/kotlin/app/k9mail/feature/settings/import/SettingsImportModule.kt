@@ -1,6 +1,5 @@
 package app.k9mail.feature.settings.import
 
-import app.k9mail.feature.migration.qrcode.qrCodeModule
 import app.k9mail.feature.settings.import.ui.AuthViewModel
 import app.k9mail.feature.settings.import.ui.ImportAppFetcher
 import app.k9mail.feature.settings.import.ui.PickAppViewModel
@@ -9,8 +8,6 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val featureSettingsImportModule = module {
-    includes(qrCodeModule)
-
     factory { ImportAppFetcher(context = get()) }
 
     viewModel {
@@ -18,6 +15,7 @@ val featureSettingsImportModule = module {
             contentResolver = get(),
             settingsImporter = get(),
             accountActivator = get(),
+            migrationManager = get(),
             importAppFetcher = get(),
         )
     }
