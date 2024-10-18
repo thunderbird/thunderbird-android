@@ -10,7 +10,7 @@ import com.fsck.k9.backends.backendsModule
 import com.fsck.k9.controller.ControllerExtension
 import com.fsck.k9.crypto.EncryptionExtractor
 import com.fsck.k9.crypto.openpgp.OpenPgpEncryptionExtractor
-import com.fsck.k9.feature.featureModule
+import com.fsck.k9.feature.featureLauncherModule
 import com.fsck.k9.notification.notificationModule
 import com.fsck.k9.preferences.K9StoragePersister
 import com.fsck.k9.preferences.StoragePersister
@@ -46,5 +46,5 @@ val commonAppModules = listOf(
     backendsModule,
     storageModule,
     newAccountModule,
-    featureModule,
+    featureLauncherModule,
 )

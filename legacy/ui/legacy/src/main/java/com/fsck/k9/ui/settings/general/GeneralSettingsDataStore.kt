@@ -102,6 +102,22 @@ class GeneralSettingsDataStore(
         saveSettings()
     }
 
+    override fun getLong(key: String, defValue: Long): Long {
+        return when (key) {
+            "fundingReminderShownTimestamp" -> K9.fundingReminderShownTimestamp
+            else -> defValue
+        }
+    }
+
+    override fun putLong(key: String?, value: Long) {
+        when (key) {
+            "fundingReminderShownTimestamp" -> K9.fundingReminderShownTimestamp = value
+            else -> return
+        }
+
+        saveSettings()
+    }
+
     override fun getString(key: String, defValue: String?): String? {
         return when (key) {
             "language" -> appLanguageManager.getAppLanguage()

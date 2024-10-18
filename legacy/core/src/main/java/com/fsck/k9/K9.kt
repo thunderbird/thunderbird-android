@@ -274,6 +274,10 @@ object K9 : KoinComponent {
     //  their own settings.
     var isTelemetryEnabled = false
 
+    // TODO: This is a feature-specific setting that doesn't need to be available to apps that don't include the
+    //  feature.
+    var fundingReminderShownTimestamp: Long = 0
+
     val isQuietTime: Boolean
         get() {
             if (!isQuietTimeEnabled) {
@@ -395,6 +399,8 @@ object K9 : KoinComponent {
         if (telemetryManager.isTelemetryFeatureIncluded()) {
             isTelemetryEnabled = storage.getBoolean("enableTelemetry", true)
         }
+
+        fundingReminderShownTimestamp = storage.getLong("fundingReminderShownTimestamp", 0)
     }
 
     internal fun save(editor: StorageEditor) {
@@ -462,6 +468,8 @@ object K9 : KoinComponent {
         if (telemetryManager.isTelemetryFeatureIncluded()) {
             editor.putBoolean("enableTelemetry", isTelemetryEnabled)
         }
+
+        editor.putLong("fundingReminderShownTimestamp", fundingReminderShownTimestamp)
 
         fontSizes.save(editor)
     }
