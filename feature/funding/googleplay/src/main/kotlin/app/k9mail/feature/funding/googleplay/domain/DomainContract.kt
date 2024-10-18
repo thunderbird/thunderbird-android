@@ -46,4 +46,16 @@ interface DomainContract {
          */
         fun clear()
     }
+
+    sealed interface BillingError {
+        val message: String
+
+        data class BillingServiceDisconnected(
+            override val message: String,
+        ) : BillingError
+
+        data class BillingUnknownError(
+            override val message: String,
+        ) : BillingError
+    }
 }

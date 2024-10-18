@@ -7,6 +7,7 @@ import app.k9mail.feature.funding.googleplay.GooglePlayFundingManager
 import app.k9mail.feature.funding.googleplay.GooglePlayFundingNavigation
 import app.k9mail.feature.funding.googleplay.data.DataContract
 import app.k9mail.feature.funding.googleplay.data.GoogleBillingClient
+import app.k9mail.feature.funding.googleplay.data.mapper.BillingResultMapper
 import app.k9mail.feature.funding.googleplay.data.mapper.ProductDetailsMapper
 import app.k9mail.feature.funding.googleplay.domain.BillingManager
 import app.k9mail.feature.funding.googleplay.domain.ContributionIdProvider
@@ -23,10 +24,15 @@ val featureFundingModule = module {
         ProductDetailsMapper()
     }
 
+    single<DataContract.Mapper.BillingResult> {
+        BillingResultMapper()
+    }
+
     single<DataContract.BillingClient> {
         GoogleBillingClient(
             context = get(),
             productMapper = get(),
+            resultMapper = get(),
             productCache = InMemoryCache(),
         )
     }

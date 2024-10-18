@@ -41,6 +41,7 @@ import timber.log.Timber
 class GoogleBillingClient(
     private val context: Context,
     private val productMapper: DataContract.Mapper.Product,
+    private val resultMapper: DataContract.Mapper.BillingResult,
     private val productCache: Cache<String, ProductDetails>,
     backgroundDispatcher: CoroutineContext = Dispatchers.IO,
 ) : DataContract.BillingClient, PurchasesUpdatedListener {

@@ -1,10 +1,13 @@
 package app.k9mail.feature.funding.googleplay.data
 
 import android.app.Activity
+import app.k9mail.feature.funding.googleplay.domain.DomainContract.BillingError
+import app.k9mail.feature.funding.googleplay.domain.Outcome
 import app.k9mail.feature.funding.googleplay.domain.entity.Contribution
 import app.k9mail.feature.funding.googleplay.domain.entity.OneTimeContribution
 import app.k9mail.feature.funding.googleplay.domain.entity.RecurringContribution
 import com.android.billingclient.api.ProductDetails
+import com.android.billingclient.api.BillingResult as GoogleBillingResult
 
 interface DataContract {
 
@@ -14,6 +17,13 @@ interface DataContract {
 
             fun mapToOneTimeContribution(product: ProductDetails): OneTimeContribution
             fun mapToRecurringContribution(product: ProductDetails): RecurringContribution
+        }
+
+        interface BillingResult {
+            fun <T> mapToOutcome(
+                billingResult: GoogleBillingResult,
+                transformSuccess: () -> T,
+            ): Outcome<T, BillingError>
         }
     }
 
