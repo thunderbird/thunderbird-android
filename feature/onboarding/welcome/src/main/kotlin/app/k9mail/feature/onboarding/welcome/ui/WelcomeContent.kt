@@ -24,6 +24,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextDisplayMedium
 import app.k9mail.core.ui.compose.designsystem.template.LazyColumnWithHeaderFooter
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContent
@@ -76,7 +77,6 @@ internal fun WelcomeContent(
                 item {
                     WelcomeMessage(
                         modifier = Modifier.defaultItemModifier(),
-                        appName = appName,
                     )
                 }
             }
@@ -127,7 +127,6 @@ private fun WelcomeTitle(
 
 @Composable
 private fun WelcomeMessage(
-    appName: String,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -137,7 +136,8 @@ private fun WelcomeMessage(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         TextBodyLarge(
-            text = stringResource(id = R.string.onboarding_welcome_message, appName),
+            text = stringResource(id = R.string.onboarding_welcome_text),
+            textAlign = TextAlign.Center,
         )
     }
 }
@@ -164,6 +164,13 @@ private fun WelcomeFooter(
                 onClick = onImportClick,
             )
         }
+
+        TextBodySmall(
+            text = stringResource(R.string.onboarding_welcome_developed_by),
+            modifier = Modifier
+                .padding(top = MainTheme.spacings.quadruple)
+                .padding(horizontal = MainTheme.spacings.double),
+        )
     }
 }
 
