@@ -1767,49 +1767,177 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         long destFolderId, MoveOrCopyFlavor operation) {
         moveOrCopyMessageSynchronous(account, srcFolderId, inMessages, account, destFolderId, operation);
     }
+    private void moveOrCopyMessageSynchronousSameAccount(Account account, long srcFolderId, List<LocalMessage> inMessages,
+        long destFolderId, MoveOrCopyFlavor operation) {
+
+        if (operation == MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ) {
+            throw new UnsupportedOperationException("MOVE_AND_MARK_AS_READ unsupported");
+        }
+
+        try {
+            LocalStore localStore = localStoreProvider.getInstance(account);
+            if (operation == MoveOrCopyFlavor.MOVE && !isMoveCapable(account)) {
+                return;
+            }
+            if (operation == MoveOrCopyFlavor.COPY && !isCopyCapable(account)) {
+                return;
+            }
+
+            LocalFolder localSrcFolder = localStore.getFolder(srcFolderId);
+            localSrcFolder.open();
+
+            LocalFolder localDestFolder = localStore.getFolder(destFolderId);
+            localDestFolder.open();
+
+            boolean unreadCountAffected = false;
+            List<String> uids = new LinkedList<>();
+            for (Message message : inMessages) {
+                String uid = message.getUid();
+                if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
+                    uids.add(uid);
+                }
+
+                if (!unreadCountAffected && !message.isSet(Flag.SEEN)) {
+                    unreadCountAffected = true;
+                }
+            }
+
+            List<LocalMessage> messages = localSrcFolder.getMessagesByUids(uids);
+            if (messages.size() > 0) {
+                Timber.i("moveOrCopyMessageSynchronous: source folder = %s, %d messages, destination folder = %s, " +
+                    "operation = %s", srcFolderId, messages.size(), destFolderId, operation.name());
+
+                MessageStore messageStore = messageStoreManager.getMessageStore(account);
+
+                List<Long> messageIds = new ArrayList<>();
+                Map<Long, String> messageIdToUidMapping = new HashMap<>();
+                for (LocalMessage message : messages) {
+                    long messageId = message.getDatabaseId();
+                    messageIds.add(messageId);
+                    messageIdToUidMapping.put(messageId, message.getUid());
+                }
+
+                Map<Long, Long> resultIdMapping;
+                if (operation == MoveOrCopyFlavor.COPY) {
+                    resultIdMapping = messageStore.copyMessages(messageIds, destFolderId);
+
+                    if (unreadCountAffected) {
+                        // If this copy operation changes the unread count in the destination
+                        // folder, notify the listeners.
+                        for (MessagingListener l : getListeners()) {
+                            l.folderStatusChanged(account, destFolderId);
+                        }
+                    }
+                } else {
+                    resultIdMapping = messageStore.moveMessages(messageIds, destFolderId);
+
+                    unsuppressMessages(account, messages);
+
+                    if (unreadCountAffected) {
+                        // If this move operation changes the unread count, notify the listeners
+                        // that the unread count changed in both the source and destination folder.
+                        for (MessagingListener l : getListeners()) {
+                            l.folderStatusChanged(account, srcFolderId);
+                            l.folderStatusChanged(account, destFolderId);
+                        }
+                    }
+                }
+
+                Map<Long, String> destinationMapping = messageStore.getMessageServerIds(resultIdMapping.values());
+
+                Map<String, String> uidMap = new HashMap<>();
+                for (Entry<Long, Long> entry : resultIdMapping.entrySet()) {
+                    long sourceMessageId = entry.getKey();
+                    long destinationMessageId = entry.getValue();
+
+                    String sourceUid = messageIdToUidMapping.get(sourceMessageId);
+                    String destinationUid = destinationMapping.get(destinationMessageId);
+                    uidMap.put(sourceUid, destinationUid);
+                }
+
+                queueMoveOrCopy(account, localSrcFolder.getDatabaseId(), localDestFolder.getDatabaseId(),
+                    operation, uidMap);
+            }
+
+            processPendingCommands(account);
+        } catch (MessagingException me) {
+            throw new RuntimeException("Error moving message", me);
+        }
+    }
 
     private void moveOrCopyMessageSynchronous(Account account, long srcFolderId, List<LocalMessage> inMessages,
             Account destAccount, long destFolderId, MoveOrCopyFlavor operation) {
 
-        { // MBAL
-            Timber.d("MBAL: moveOrCopyMessageSynchronous(%s, %s, %s, %s, %s, size=%s)", account, srcFolderId, inMessages,
-                destFolderId, operation, inMessages.size());
-            // for copying/moving between accounts, we need to load the messages first
-            List<LocalMessage> loadedMessages = new ArrayList<>();
-            try {
-                for (LocalMessage m : inMessages) {
-                    LocalMessage loadedMessage = loadMessage(account, srcFolderId, m.getUid());
-                    loadedMessages.add(loadedMessage);
-                }
-            }
-            catch (MessagingException e) {
-                Timber.e(e, "Exception while loading messages");
-                return;
-            }
-            inMessages=loadedMessages;
-            if (inMessages.size() == 1) {
-                MessageStore messageStore = messageStoreManager.getMessageStore(destAccount);
-                LocalMessage message=inMessages.get(0);
-                Timber.d("MBAL: moveOrCopyMessageSynchronous: only one message!!");
-                Timber.d("MBAL: moveOrCopyMessageSynchronous: message subject="+message.getSubject());
-                Timber.d("MBAL: moveOrCopyMessageSynchronous: message body="+message.getBody());
-                Timber.d("MBAL: moveOrCopyMessageSynchronous: destAccount.name="+destAccount.getName()+"; srcAccount.name="+account.getName());
-                SaveMessageData messageData = saveMessageDataCreator.createSaveMessageData(message, MessageDownloadState.FULL, null);
-                // TODO text for search is not getting set
-                long messageId = messageStore.saveLocalMessage(destFolderId, messageData, null);
-                // update destination account and folder
-                String fakeMessageServerId = messageStore.getMessageServerId(messageId);
-                if (fakeMessageServerId != null) {
-                    PendingAppend command = PendingAppend.create(destFolderId, fakeMessageServerId);
-                    queuePendingCommand(destAccount, command);
-                }
-                processPendingCommands(destAccount);
-                Timber.d("MBAL: moveOrCopyMessageSynchronous: Aborting the copy!");
-                return;
-            }
-        }
         if (operation == MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ) {
             throw new UnsupportedOperationException("MOVE_AND_MARK_AS_READ unsupported");
+        }
+
+        if (account.equals(destAccount)) {
+            moveOrCopyMessageSynchronousSameAccount(account, srcFolderId, inMessages, destFolderId, operation);
+        }
+        else { // MBAL
+            Timber.d("MBAL: moveOrCopyMessageSynchronous(%s, %s, %s, %s, %s, size=%s)", account, srcFolderId, inMessages,
+                destFolderId, operation, inMessages.size());
+            try {
+                LocalStore localStore = localStoreProvider.getInstance(account);
+                LocalFolder localSrcFolder = localStore.getFolder(srcFolderId);
+                localSrcFolder.open();
+                boolean unreadCountAffected = false;
+                for (Message message : inMessages) {
+                    if (!message.isSet(Flag.SEEN)) {
+                        unreadCountAffected = true;
+                        break;
+                    }
+                }
+                MessageStore messageStoreDest = messageStoreManager.getMessageStore(destAccount);
+//            List<LocalMessage> loadedMessages = new ArrayList<>();
+                for (LocalMessage m : inMessages) {
+                    try {
+                        // for copying/moving between accounts, we need to load the messages first
+                        LocalMessage message = loadMessage(account, srcFolderId, m.getUid());
+    //                    loadedMessages.add(loadedMessage);
+                        Timber.d("MBAL: moveOrCopyMessageSynchronous: message subject="+message.getSubject());
+                        Timber.d("MBAL: moveOrCopyMessageSynchronous: message body="+message.getBody());
+                        Timber.d("MBAL: moveOrCopyMessageSynchronous: destAccount.name="+destAccount.getName()+"; srcAccount.name="+account.getName());
+                        SaveMessageData messageData = saveMessageDataCreator.createSaveMessageData(message, MessageDownloadState.FULL, null);
+                        // TODO text for search is not getting set
+                        long messageId = messageStoreDest.saveLocalMessage(destFolderId, messageData, null);
+                        // update destination account and folder
+                        String fakeMessageServerId = messageStoreDest.getMessageServerId(messageId);
+                        if (fakeMessageServerId != null) {
+                            PendingAppend command = PendingAppend.create(destFolderId, fakeMessageServerId);
+                            queuePendingCommand(destAccount, command);
+                        }
+
+                        if (operation == MoveOrCopyFlavor.MOVE) {
+                            MessageStore messageStore = messageStoreManager.getMessageStore(account);
+                            long srcMessageId = getId(message);
+                            String messageServerId = messageStore.getMessageServerId(srcMessageId);
+                            if (messageServerId != null) {
+                                MessageReference messageReference = new MessageReference(account.getUuid(), srcFolderId, messageServerId);
+                                deleteMessages(Collections.singletonList(messageReference));
+                            }
+                        }
+                    }
+                    catch (MessagingException e) {
+                        Timber.e(e, "Exception while loading message");
+                    }
+                }
+                if (unreadCountAffected) {
+                    // If this copy operation changes the unread count in the destination
+                    // folder, notify the listeners.
+                    // If this move operation changes the unread count, notify the listeners
+                    // that the unread count changed in both the source and destination folder.
+                    for (MessagingListener l : getListeners()) {
+                        if (operation == MoveOrCopyFlavor.MOVE)
+                            l.folderStatusChanged(account, srcFolderId);
+                        l.folderStatusChanged(destAccount, destFolderId);
+                    }
+                }
+                processPendingCommands(destAccount);
+            } catch (MessagingException me) {
+                throw new RuntimeException("Error moving message", me);
+            }
         }
 
         try {

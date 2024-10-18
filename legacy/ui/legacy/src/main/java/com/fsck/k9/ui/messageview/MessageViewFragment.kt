@@ -637,9 +637,8 @@ class MessageViewFragment :
         }
         Timber.d("MBAL: onChooseFolderCopyResult: destAccountUuID: "+destAccountUuID)
         Timber.d("MBAL: onChooseFolderCopyResult: using copyMessageToAccount instead of copyMessage!!!")
-        messagingController.copyMessageToAccount(account, messageReference.folderId, messageReference, accountManager.getAccount(destAccountUuID), destinationFolderId)
-        // TODO remove or restore
-        //copyMessage(messageReference, destinationFolderId)
+        // MBAL remove messagingController.copyMessageToAccount(account, messageReference.folderId, messageReference, accountManager.getAccount(destAccountUuID), destinationFolderId)
+        copyMessage(messageReference, destinationFolderId, destAccountUuID, destinationFolderId)
     }
 
     private fun onSendAlternate() {
@@ -683,8 +682,9 @@ class MessageViewFragment :
         messagingController.moveMessage(account, messageReference.folderId, reference, folderId)
     }
 
-    private fun copyMessage(reference: MessageReference?, folderId: Long) {
-        messagingController.copyMessage(account, messageReference.folderId, reference, folderId)
+    private fun copyMessage(reference: MessageReference?, folderId: Long, destAccountUuID: String, destinationFolderId: Long) {
+        // MBAL remove messagingController.copyMessage(account, messageReference.folderId, reference, folderId)
+        messagingController.copyMessageToAccount(account, folderId, reference, accountManager.getAccount(destAccountUuID), destinationFolderId)
     }
 
     private fun showDialog(dialogId: Int) {
