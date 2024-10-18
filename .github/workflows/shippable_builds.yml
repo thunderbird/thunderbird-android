@@ -10,6 +10,9 @@ on:
       skipK9Mail:
         type: boolean
         description: Skip building K-9 Mail
+      skipTests:
+        type: boolean
+        description: Skip running tests
       skipBetaBump:
         type: boolean
         description: Skip version bump (beta)
@@ -361,6 +364,11 @@ jobs:
           echo "BUILDING: :app-${APP_NAME}:${BUILD_COMMAND}"
           ./gradlew clean :app-${APP_NAME}:${BUILD_COMMAND} --no-build-cache --no-configuration-cache
           echo "Status: $?"
+
+      - name: Test It
+        if: ${{ !inputs.skipTests }}
+        shell: bash
+        run: ./gradlew testsOnCi
 
       - name: Move apps to upload directory
         shell: bash
