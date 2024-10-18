@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.common.provider.BrandNameProvider
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
+import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonOutlined
 import app.k9mail.core.ui.compose.designsystem.atom.card.CardFilled
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
@@ -26,8 +27,9 @@ import org.koin.compose.koinInject
 
 @Composable
 internal fun TbOnboardingMigrationScreen(
-    onQrCodeScanClick: () -> Unit,
-    onAddAccountClick: () -> Unit,
+    onQrCodeScan: () -> Unit,
+    onAddAccount: () -> Unit,
+    onImport: () -> Unit,
     modifier: Modifier = Modifier,
     brandNameProvider: BrandNameProvider = koinInject(),
 ) {
@@ -47,7 +49,11 @@ internal fun TbOnboardingMigrationScreen(
                 title = brandNameProvider.brandName,
             )
 
-            Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+            Spacer(
+                modifier = Modifier
+                    .height(MainTheme.spacings.double)
+                    .weight(1f),
+            )
 
             TextCard(title = stringResource(R.string.onboarding_migration_thunderbird_qr_code_import_title)) {
                 TextBodyMedium(
@@ -58,26 +64,36 @@ internal fun TbOnboardingMigrationScreen(
 
                 ButtonFilled(
                     text = stringResource(R.string.onboarding_migration_thunderbird_qr_code_import_button_text),
-                    onClick = onQrCodeScanClick,
+                    onClick = onQrCodeScan,
                     modifier = Modifier
                         .testTag("QrCodeImportButton")
                         .align(Alignment.CenterHorizontally),
                 )
             }
 
-            Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+            Spacer(modifier = Modifier.height(MainTheme.spacings.triple))
 
-            TextCard(title = stringResource(R.string.onboarding_migration_thunderbird_new_account_title)) {
-                ButtonFilled(
+            TextGroup(title = stringResource(R.string.onboarding_migration_thunderbird_new_account_title)) {
+                ButtonOutlined(
                     text = stringResource(R.string.onboarding_migration_thunderbird_new_account_button_text),
-                    onClick = onAddAccountClick,
-                    modifier = Modifier
-                        .testTag("AddAccountButton")
-                        .align(Alignment.CenterHorizontally),
+                    onClick = onAddAccount,
+                    modifier = Modifier.testTag("AddAccountButton"),
                 )
             }
 
-            Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+            TextGroup(title = stringResource(R.string.onboarding_migration_thunderbird_import_title)) {
+                ButtonOutlined(
+                    text = stringResource(R.string.onboarding_migration_thunderbird_import_button_text),
+                    onClick = onImport,
+                    modifier = Modifier.testTag("ImportButton"),
+                )
+            }
+
+            Spacer(
+                modifier = Modifier
+                    .height(MainTheme.spacings.double)
+                    .weight(1f),
+            )
         }
     }
 }
@@ -106,5 +122,27 @@ private fun TextCard(
 
             content()
         }
+    }
+}
+
+@Composable
+private fun TextGroup(
+    title: String,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(MainTheme.spacings.double),
+    ) {
+        TextTitleMedium(
+            text = title,
+            color = MainTheme.colors.primary,
+            modifier = Modifier
+                .padding(bottom = MainTheme.spacings.default),
+        )
+
+        content()
     }
 }

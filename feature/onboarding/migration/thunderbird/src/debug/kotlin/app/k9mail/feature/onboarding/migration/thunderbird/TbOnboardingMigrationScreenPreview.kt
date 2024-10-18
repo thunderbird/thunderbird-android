@@ -12,8 +12,9 @@ internal fun TbOnboardingMigrationScreenPreview() {
     ThunderbirdTheme2 {
         Surface {
             TbOnboardingMigrationScreen(
-                onQrCodeScanClick = {},
-                onAddAccountClick = {},
+                onQrCodeScan = {},
+                onAddAccount = {},
+                onImport = {},
                 brandNameProvider = object : BrandNameProvider {
                     override val brandName: String = "Thunderbird"
                 },
