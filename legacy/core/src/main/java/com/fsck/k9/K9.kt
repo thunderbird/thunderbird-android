@@ -274,6 +274,12 @@ object K9 : KoinComponent {
     //  their own settings.
     var isTelemetryEnabled = false
 
+    // TODO: These are feature-specific settings that don't need to be available to apps that don't include the
+    //  feature.
+    var fundingReminderReferenceTimestamp: Long = 0
+    var fundingReminderShownTimestamp: Long = 0
+    var fundingActivityCounterInMillis: Long = 0
+
     val isQuietTime: Boolean
         get() {
             if (!isQuietTimeEnabled) {
@@ -316,6 +322,7 @@ object K9 : KoinComponent {
     }
 
     @JvmStatic
+    @Suppress("LongMethod")
     fun loadPrefs(storage: Storage) {
         isDebugLoggingEnabled = storage.getBoolean("enableDebugLogging", DEVELOPER_MODE)
         isSensitiveDebugLoggingEnabled = storage.getBoolean("enableSensitiveLogging", false)
@@ -395,8 +402,13 @@ object K9 : KoinComponent {
         if (telemetryManager.isTelemetryFeatureIncluded()) {
             isTelemetryEnabled = storage.getBoolean("enableTelemetry", true)
         }
+
+        fundingReminderReferenceTimestamp = storage.getLong("fundingReminderReferenceTimestamp", 0)
+        fundingReminderShownTimestamp = storage.getLong("fundingReminderShownTimestamp", 0)
+        fundingActivityCounterInMillis = storage.getLong("fundingActivityCounterInMillis", 0)
     }
 
+    @Suppress("LongMethod")
     internal fun save(editor: StorageEditor) {
         editor.putBoolean("enableDebugLogging", isDebugLoggingEnabled)
         editor.putBoolean("enableSensitiveLogging", isSensitiveDebugLoggingEnabled)
@@ -462,6 +474,10 @@ object K9 : KoinComponent {
         if (telemetryManager.isTelemetryFeatureIncluded()) {
             editor.putBoolean("enableTelemetry", isTelemetryEnabled)
         }
+
+        editor.putLong("fundingReminderReferenceTimestamp", fundingReminderReferenceTimestamp)
+        editor.putLong("fundingReminderShownTimestamp", fundingReminderShownTimestamp)
+        editor.putLong("fundingActivityCounterInMillis", fundingActivityCounterInMillis)
 
         fontSizes.save(editor)
     }

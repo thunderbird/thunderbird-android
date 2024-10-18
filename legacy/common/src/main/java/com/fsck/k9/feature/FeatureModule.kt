@@ -5,7 +5,7 @@ import app.k9mail.feature.navigation.drawer.NavigationDrawerExternalContract
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
-val featureModule = module {
+val featureLauncherModule = module {
     factory<FeatureLauncherExternalContract.AccountSetupFinishedLauncher> {
         AccountSetupFinishedLauncher(
             context = androidContext(),
