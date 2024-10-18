@@ -8,11 +8,9 @@ import androidx.compose.material3.Card as Material3Card
 @Composable
 fun CardFilled(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = {},
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Material3Card(
-        onClick = onClick,
         modifier = modifier,
         content = content,
     )
