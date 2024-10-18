@@ -7,7 +7,8 @@ interface OnboardingMigrationManager {
 
     @Composable
     fun OnboardingMigrationScreen(
-        onQrCodeScanClick: () -> Unit,
-        onAddAccountClick: () -> Unit,
+        onQrCodeScan: () -> Unit,
+        onAddAccount: () -> Unit,
+        onImport: () -> Unit,
     )
 }
