@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="onboarding_welcome_message">Welcome to <xliff:g id="app_name">%s</xliff:g>, the Android email client designed for enhanced security, easy customization, and seamless management of all your email accounts.</string>
+    <string name="onboarding_welcome_text">An open source, privacy-focused and ad-free email app for Android.</string>
     <string name="onboarding_welcome_start_button">Get started</string>
     <string name="onboarding_welcome_import_button">Import settings</string>
     <!-- Small note at the bottom of the welcome screen. "MZLA Technologies" and "Mozilla" are company/brand names that shouldn't be translated. -->

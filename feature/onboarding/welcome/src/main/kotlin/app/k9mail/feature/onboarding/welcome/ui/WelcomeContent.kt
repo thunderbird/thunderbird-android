@@ -77,7 +77,6 @@ internal fun WelcomeContent(
                 item {
                     WelcomeMessage(
                         modifier = Modifier.defaultItemModifier(),
-                        appName = appName,
                     )
                 }
             }
@@ -128,7 +127,6 @@ private fun WelcomeTitle(
 
 @Composable
 private fun WelcomeMessage(
-    appName: String,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -138,7 +136,8 @@ private fun WelcomeMessage(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         TextBodyLarge(
-            text = stringResource(id = R.string.onboarding_welcome_message, appName),
+            text = stringResource(id = R.string.onboarding_welcome_text),
+            textAlign = TextAlign.Center,
         )
     }
 }
