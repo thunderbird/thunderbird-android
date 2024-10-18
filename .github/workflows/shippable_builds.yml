@@ -126,6 +126,7 @@ jobs:
     outputs:
       k9mail_sha: ${{ steps.commit.outputs.k9mail_sha }}
       thunderbird_sha: ${{ steps.commit.outputs.thunderbird_sha }}
+      thunderbird_github_notes: ${{ steps.render_notes.outputs.thunderbird_github_notes }}
     steps:
       - name: Checkout repository
         if: ${{ contains(matrix.releaseTarget, 'github') }}
@@ -204,8 +205,10 @@ jobs:
 
       - name: Render Release Notes
         if: ${{ contains(matrix.releaseTarget, 'github') }}
+        id: render_notes
         shell: bash
         env:
+          APP_NAME: ${{ matrix.appName }}
           APPLICATION_ID: ${{ steps.appinfo.outputs.APPLICATION_ID }}
           APPLICATION_LABEL: ${{ steps.appinfo.outputs.APPLICATION_LABEL }}
           VERSION_CODE: ${{ steps.bump_version_code.outputs.CODE }}
@@ -213,8 +216,14 @@ jobs:
         run: |
           echo "<h2>${APPLICATION_LABEL} ${FULL_VERSION_NAME} Release Notes (${VERSION_CODE})</h2><pre>" | tee -a $GITHUB_STEP_SUMMARY
           mkdir -p ./app-metadata/${APPLICATION_ID}/en-US/changelogs
-          python ./scripts/render-notes.py ${APPLICATION_ID} ${FULL_VERSION_NAME} ${VERSION_CODE} | tee -a $GITHUB_STEP_SUMMARY
+          GITHUB_NOTES_FILE="$(mktemp -d)/long-notes.txt"
+          python ./scripts/render-notes.py -p changelog -- ${APPLICATION_ID} ${FULL_VERSION_NAME} ${VERSION_CODE} ${GITHUB_NOTES_FILE} | tee -a $GITHUB_STEP_SUMMARY
           echo "</pre>" | tee -a $GITHUB_STEP_SUMMARY
+          if [[ "$APP_NAME" == "thunderbird" ]]; then
+            echo "thunderbird_github_notes<<EOF" >> $GITHUB_OUTPUT
+            cat $GITHUB_NOTES_FILE >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
 
       - name: Validate Release Notes Length
         if: ${{ contains(matrix.releaseTarget, 'github') }}
@@ -571,6 +580,21 @@ jobs:
 
           echo "app_sha=$APP_SHA" >> $GITHUB_OUTPUT
           cat $GITHUB_OUTPUT
+
+      - name: Display GitHub Draft Notes
+        if: ${{ contains(matrix.releaseTarget, 'github') }}
+        shell: bash
+        env:
+          APPLICATION_LABEL: ${{ steps.pkginfo.outputs.APPLICATION_LABEL }}
+          FULL_VERSION_NAME: ${{ steps.pkginfo.outputs.FULL_VERSION_NAME }}
+          VERSION_CODE: ${{ steps.pkginfo.outputs.VERSION_CODE }}
+          THUNDERBIRD_GITHUB_NOTES: ${{ needs.release_commit.outputs.thunderbird_github_notes }}
+        run: |
+          if [[ "$APP_NAME" == "thunderbird" ]]; then
+            echo "<h2>${APPLICATION_LABEL} ${FULL_VERSION_NAME} GitHub Draft Release Notes (${VERSION_CODE})</h2><pre>" | tee $GITHUB_STEP_SUMMARY
+            echo "${THUNDERBIRD_GITHUB_NOTES}" | sed -z 's/\n\n/\n/g' | tee -a $GITHUB_STEP_SUMMARY
+            echo "</pre>" | tee -a $GITHUB_STEP_SUMMARY
+          fi
 
       - name: Publish to GitHub Releases
         id: publish_gh
