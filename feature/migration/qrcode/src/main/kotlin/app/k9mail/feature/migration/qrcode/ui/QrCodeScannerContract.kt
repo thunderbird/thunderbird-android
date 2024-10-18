@@ -11,8 +11,7 @@ internal interface QrCodeScannerContract {
 
     data class State(
         val cameraPermissionState: UiPermissionState = UiPermissionState.Unknown,
-        val scannedCount: Int = 0,
-        val totalCount: Int = 0,
+        val displayText: DisplayText = DisplayText.HelpText,
     )
 
     sealed interface Event {
@@ -35,5 +34,10 @@ internal interface QrCodeScannerContract {
         Granted,
         Denied,
         Waiting,
+    }
+
+    sealed interface DisplayText {
+        data object HelpText : DisplayText
+        data class ProgressText(val scannedCount: Int, val totalCount: Int) : DisplayText
     }
 }
