@@ -26,7 +26,9 @@ import org.koin.dsl.module
 val featureFundingModule = module {
 
     single<FundingReminderContract.Reminder> {
-        FundingReminder()
+        FundingReminder(
+            settings = get(),
+        )
     }
 
     single<FundingManager> {
