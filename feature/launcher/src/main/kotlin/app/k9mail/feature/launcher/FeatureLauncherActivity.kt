@@ -28,6 +28,11 @@ class FeatureLauncherActivity : K9Activity() {
         }
 
         @JvmStatic
+        fun getBaseIntent(context: Context): Intent {
+            return Intent(context, FeatureLauncherActivity::class.java)
+        }
+
+        @JvmStatic
         fun getIntent(context: Context, target: FeatureLauncherTarget): Intent {
             return Intent(context, FeatureLauncherActivity::class.java).apply {
                 data = target.deepLinkUri

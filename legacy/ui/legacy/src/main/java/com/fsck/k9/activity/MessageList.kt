@@ -26,6 +26,7 @@ import app.k9mail.core.android.common.compat.BundleCompat
 import app.k9mail.core.android.common.contact.CachingRepository
 import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
+import app.k9mail.feature.funding.api.FundingManager
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
 import app.k9mail.feature.navigation.drawer.FolderDrawer
@@ -92,6 +93,7 @@ open class MessageList :
     private val messagingController: MessagingController by inject()
     private val contactRepository: ContactRepository by inject()
     private val coreResourceProvider: CoreResourceProvider by inject()
+    private val fundingManager: FundingManager by inject()
 
     private lateinit var actionBar: ActionBar
     private var searchView: SearchView? = null
@@ -186,6 +188,11 @@ open class MessageList :
         initializeLayout()
         initializeFragments()
         displayViews()
+        initializeFunding()
+    }
+
+    private fun initializeFunding() {
+        fundingManager.addFundingReminder(this, FeatureLauncherActivity.getBaseIntent(this))
     }
 
     public override fun onNewIntent(intent: Intent) {
