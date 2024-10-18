@@ -90,4 +90,9 @@
         <item>Make our boldest ideas a reality</item>
         <item>Contributions are not tax-deductible</item>
     </array>
+
+    <string name="funding_googleplay_contribution_reminder_title">Support Thunderbird</string>
+    <string name="funding_googleplay_contribution_reminder_message">Our mission is to provide an open source email app that is secure, private and free for users around the world. Your financial contribution supports this work. Will you give today?</string>
+    <string name="funding_googleplay_contribution_reminder_positive_button">Yes</string>
+    <string name="funding_googleplay_contribution_reminder_negative_button">Not now</string>
 </resources>
