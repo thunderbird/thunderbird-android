@@ -615,7 +615,16 @@ class MessageViewFragment :
 
         fragmentListener.performNavigationAfterMessageRemoval()
 
-        moveMessage(messageReference, destinationFolderId)
+        Timber.d("MBAL: onChooseFolderCopyResult: calling moveMessageToAccount instead of moveMessage")
+        val destAccountUuID = data.getStringExtra(ChooseFolderActivity.RESULT_SELECTED_ACCOUNT_ID)
+        if (destAccountUuID==null) {
+            Timber.d("MBAL: onChooseFolderCopyResult: destAccountUuID is null")
+            return;
+        }
+        Timber.d("MBAL: onChooseFolderCopyResult: destAccountUuID: "+destAccountUuID)
+        Timber.d("MBAL: onChooseFolderCopyResult: using moveMessageToAccount instead of moveMessage!!!")
+        moveMessage(messageReference, messageReference.folderId, destAccountUuID, destinationFolderId)
+// TODO remove        moveMessage(messageReference, destinationFolderId)
     }
 
     private fun onChooseFolderCopyResult(data: Intent?) {
@@ -638,7 +647,7 @@ class MessageViewFragment :
         Timber.d("MBAL: onChooseFolderCopyResult: destAccountUuID: "+destAccountUuID)
         Timber.d("MBAL: onChooseFolderCopyResult: using copyMessageToAccount instead of copyMessage!!!")
         // MBAL remove messagingController.copyMessageToAccount(account, messageReference.folderId, messageReference, accountManager.getAccount(destAccountUuID), destinationFolderId)
-        copyMessage(messageReference, destinationFolderId, destAccountUuID, destinationFolderId)
+        copyMessage(messageReference, messageReference.folderId, destAccountUuID, destinationFolderId)
     }
 
     private fun onSendAlternate() {
@@ -678,8 +687,9 @@ class MessageViewFragment :
         invalidateMenu()
     }
 
-    private fun moveMessage(reference: MessageReference?, folderId: Long) {
-        messagingController.moveMessage(account, messageReference.folderId, reference, folderId)
+    private fun moveMessage(reference: MessageReference?, folderId: Long, destAccountUuID: String, destinationFolderId: Long) {
+        // MBAL remove messagingController.moveMessage(account, messageReference.folderId, reference, folderId)
+        messagingController.moveMessageToAccount(account, folderId, reference, accountManager.getAccount(destAccountUuID), destinationFolderId)
     }
 
     private fun copyMessage(reference: MessageReference?, folderId: Long, destAccountUuID: String, destinationFolderId: Long) {

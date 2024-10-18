@@ -1695,12 +1695,17 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     public void moveMessages(Account srcAccount, long srcFolderId,
-            List<MessageReference> messageReferences, long destFolderId) {
+        List<MessageReference> messageReferences, long destFolderId) {
+        moveMessages(srcAccount,srcFolderId,messageReferences,srcAccount,destFolderId);
+    }
+
+    public void moveMessages(Account srcAccount, long srcFolderId,
+            List<MessageReference> messageReferences, Account destAccount, long destFolderId) {
         actOnMessageGroup(srcAccount, srcFolderId, messageReferences, (account, messageFolder, messages) -> {
             suppressMessages(account, messages);
 
             putBackground("moveMessages", null, () ->
-                    moveOrCopyMessageSynchronous(account, srcFolderId, messages, destFolderId, MoveOrCopyFlavor.MOVE)
+                    moveOrCopyMessageSynchronous(account, srcFolderId, messages, destAccount, destFolderId, MoveOrCopyFlavor.MOVE)
             );
         });
     }
@@ -1724,6 +1729,9 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
     public void moveMessage(Account account, long srcFolderId, MessageReference message, long destFolderId) {
         moveMessages(account, srcFolderId, Collections.singletonList(message), destFolderId);
+    }
+    public void moveMessageToAccount(Account account, long srcFolderId, MessageReference message, Account destAccount, long destFolderId) {
+        moveMessages(account, srcFolderId, Collections.singletonList(message), destAccount, destFolderId);
     }
 
     public void copyMessages(Account srcAccount, long srcFolderId,
