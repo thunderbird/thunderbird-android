@@ -9,3 +9,5 @@ jobs:
   trigger_daily_build:
     uses: ./.github/workflows/shippable_builds.yml
     secrets: inherit
+    permissions:
+      contents: write

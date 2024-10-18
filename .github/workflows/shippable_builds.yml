@@ -296,6 +296,7 @@ jobs:
               .write();
 
   build_unsigned:
+    if: ${{ !failure() && !cancelled() }} # Run if release_commit is skipped
     name: Build Unsigned
     runs-on: ubuntu-latest
     timeout-minutes: 90
