@@ -391,6 +391,33 @@ def create_release_environment(repo, branches):
         repo, "RELEASER_APP_CLIENT_ID", releaser_client_id, environment
     )
 
+def create_matrix_environment(repo, branches):
+    environment = "notify_matrix"
+
+    create_github_environment(repo, environment, branches=branches)
+
+    public_key_data = get_github_public_key(repo, environment)
+    public_key = public_key_data["key"]
+    key_id = public_key_data["key_id"]
+
+    with open("matrix-account.json") as fp:
+        mxdata = json.load(fp)
+        encrypted_token = encrypt_secret(public_key, mxdata["token"])
+
+    set_github_environment_secret(
+        repo, "MATRIX_NOTIFY_TOKEN", encrypted_token, key_id, environment
+    )
+
+    set_github_environment_variable(
+        repo, "MATRIX_NOTIFY_HOMESERVER", mxdata["homeserver"], environment
+    )
+    set_github_environment_variable(
+        repo, "MATRIX_NOTIFY_ROOM", mxdata["room"], environment
+    )
+    set_github_environment_variable(
+        repo, "MATRIX_NOTIFY_USER_MAP", json.dumps(mxdata["userMap"]), environment
+    )
+
 
 def main():
     # Argument parsing for positional inputs and repo flag
@@ -474,6 +501,10 @@ def main():
     # Publish environment
     if "publish_release" in includeset:
         create_release_environment(args.repo, ["main", "beta", "release"])
+
+    # Notify
+    if "notify_matrix" in includeset:
+        create_matrix_environment(args.repo, ["main", "beta", "release"])
 
 
 if __name__ == "__main__":
