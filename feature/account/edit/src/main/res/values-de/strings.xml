@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_edit_save_server_settings_loading_message">Servereinstellungen werden gespeichert…</string>
+    <string name="account_edit_save_server_settings_success_message">Servereinstellungen gespeichert</string>
+    <string name="account_edit_save_server_settings_error_message">Servereinstellungen konnten nicht gespeichert werden</string>
+</resources>

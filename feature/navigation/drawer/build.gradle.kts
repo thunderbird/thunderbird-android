@@ -8,16 +8,16 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.mail.folder.api)
+
+    implementation(projects.core.ui.theme.api)
     implementation(projects.core.ui.compose.designsystem)
 
-    implementation(projects.legacy.core)
-    implementation(projects.legacy.ui.base)
-    implementation(projects.legacy.ui.account)
+    implementation(projects.legacy.account)
+    implementation(projects.legacy.mailstore)
+    implementation(projects.legacy.message)
+    implementation(projects.legacy.search)
     implementation(projects.legacy.ui.folder)
-    implementation(projects.core.ui.legacy.designsystem)
-
-    implementation(libs.materialdrawer)
-    implementation(libs.androidx.swiperefreshlayout)
 
     testImplementation(projects.core.ui.compose.testing)
 }

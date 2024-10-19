@@ -50,7 +50,7 @@
     <string name="move_to_drafts_action">Flytta till utkast</string>
     <string name="refile_action">Återarkivera…</string>
     <string name="done_action">Klar</string>
-    <string name="discard_action">Kassera</string>
+    <string name="discard_action">Släng</string>
     <string name="save_draft_action">Spara som utkast</string>
     <string name="check_mail_action">Kontrollera e-post</string>
     <string name="send_messages_action">Skicka meddelanden</string>
@@ -156,7 +156,7 @@
     <string name="message_compose_quote_header_to">Till:</string>
     <string name="message_compose_quote_header_cc">Kopia:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> skrev:</string>
-    <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sender">%2$s</xliff:g> skrev: (<xliff:g id="sent_date">%1$s</xliff:g>)</string>
+    <string name="message_compose_reply_header_fmt_with_date">Den <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> skrev:</string>
     <string name="message_compose_error_no_recipients">Du måste ange minst en mottagare.</string>
     <string name="compose_error_incomplete_recipient">Mottagarfältet innehåller ofullständig inmatning!</string>
     <string name="error_contact_address_not_found">Hittar ingen e-postadress för denna kontakt.</string>
@@ -182,7 +182,7 @@
     <string name="message_view_download_remainder">Hämta hela meddelandet</string>
     <string name="message_view_sender_label">via %1$s</string>
     <string name="from_same_sender">Mer från denna avsändare</string>
-    <string name="message_discarded_toast">Meddelandet kasserades</string>
+    <string name="message_discarded_toast">Meddelandet har slängts</string>
     <string name="message_saved_toast">Meddelandet sparat som utkast</string>
     <string name="global_settings_flag_label">Visa stjärnor</string>
     <string name="global_settings_flag_summary">Stjärnor indikerar flaggade meddelanden</string>
@@ -205,7 +205,7 @@
     <string name="global_settings_confirm_action_delete">Ta bort</string>
     <string name="global_settings_confirm_action_delete_starred">Ta bort stjärnmarkerade (i meddelandevyn)</string>
     <string name="global_settings_confirm_action_spam">Skräppost</string>
-    <string name="global_settings_confirm_menu_discard">Kassera meddelandet</string>
+    <string name="global_settings_confirm_menu_discard">Släng meddelande</string>
     <string name="global_settings_confirm_menu_mark_all_read">Markera alla meddelanden som lästa</string>
     <string name="global_settings_confirm_action_delete_notif">Ta bort (från avisering)</string>
     <!--Title of the screen to configure swipe actions-->
@@ -304,12 +304,6 @@
     <string name="account_settings_push_advanced_title">Avancerat</string>
     <string name="account_settings_title_fmt">Kontoinställningar</string>
     <string name="account_settings_notify_label">Aviseringar vid ny e-post</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">Aviseringsmappar</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">Alla</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Endast första klassens mappar</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Första och 2:a klassens mappar</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Alla utom 2:a klassens mappar</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">Inga</string>
     <string name="account_settings_notify_sync_label">Avisering vid synkronisering</string>
     <string name="account_settings_email_label">Din e-postadress</string>
     <string name="account_settings_notify_summary">Visa avisering i statusraden vid ankomst av e-post</string>
@@ -398,27 +392,12 @@
     <string name="account_settings_message_age_3_months">senaste 3 månaderna</string>
     <string name="account_settings_message_age_6_months">senaste 6 månaderna</string>
     <string name="account_settings_message_age_1_year">senaste året</string>
-    <string name="account_settings_folder_display_mode_label">Mappar att visa</string>
-    <string name="account_settings_folder_display_mode_all">Alla</string>
-    <string name="account_settings_folder_display_mode_first_class">Endast 1:a klassens mappar</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">1:a och 2:a klassens mappar</string>
-    <string name="account_settings_folder_display_mode_not_second_class">Alla utom 2:a klassens mappar</string>
-    <string name="account_settings_folder_sync_mode_label">Mappar att kontrollera</string>
-    <string name="account_settings_folder_sync_mode_all">Alla</string>
-    <string name="account_settings_folder_sync_mode_first_class">Endast 1:a klassens mappar</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">1:a och 2:a klassens mappar</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">Alla utom 2:a klassens mappar</string>
-    <string name="account_settings_folder_sync_mode_none">Inga</string>
     <string name="account_settings_sync_remote_deletetions_label">Synkronisera fjärrborttagning</string>
     <string name="account_settings_sync_remote_deletetions_summary">Ta bort meddelanden när de tas bort från servern</string>
     <string name="account_settings_openpgp_missing">Saknade OpenPGP-app - har den avinstallerats?</string>
     <string name="folder_settings_title">Mappinställningar</string>
     <string name="folder_settings_in_top_group_label">Visa i toppgruppen</string>
     <string name="folder_settings_in_top_group_summary">Visa nära toppen av mapplistan</string>
-    <string name="folder_settings_folder_display_mode_label">Visningsklass för mapp</string>
-    <string name="folder_settings_folder_display_mode_normal">Ingen klassning</string>
-    <string name="folder_settings_folder_display_mode_first_class">1:a klass</string>
-    <string name="folder_settings_folder_display_mode_second_class">2:a klass</string>
     <string name="folder_settings_clear_local_folder_action">Rensa lokalt lagrade meddelanden</string>
     <string name="account_settings_incoming_label">Inkommande server</string>
     <string name="account_settings_incoming_summary">Konfigurera servern för inkommande e-post</string>
@@ -582,11 +561,11 @@
     <string name="font_size_larger">Störst</string>
     <string name="error_activity_not_found">Hittade ingen passande applikation för denna åtgärd.</string>
     <string name="send_failed_reason">Det gick inte att skicka: %s</string>
-    <string name="save_or_discard_draft_message_dlg_title">Spara utkast?</string>
-    <string name="save_or_discard_draft_message_instructions_fmt">Spara eller kassera detta meddelande?</string>
-    <string name="save_or_discard_draft_message_changes">Spara eller kassera ändringar?</string>
-    <string name="confirm_discard_draft_message_title">Kassera meddelandet?</string>
-    <string name="confirm_discard_draft_message">Är du säker på att du vill kassera detta meddelande?</string>
+    <string name="save_or_discard_draft_message_dlg_title">Spara meddelandeutkast?</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">Spara eller släng detta meddelande?</string>
+    <string name="save_or_discard_draft_message_changes">Spara eller släng ändringar?</string>
+    <string name="confirm_discard_draft_message_title">Släng meddelande?</string>
+    <string name="confirm_discard_draft_message">Är du säker på att du vill slänga detta meddelande?</string>
     <string name="dialog_confirm_clear_local_folder_title">Rensa lokala meddelanden?</string>
     <string name="dialog_confirm_clear_local_folder_message">Detta tar bort alla lokala meddelanden från mappen. Inga meddelanden tas bort från servern.</string>
     <string name="dialog_confirm_clear_local_folder_action">Rensa meddelanden</string>
@@ -700,10 +679,10 @@
     <string name="address_type_work">Arbete</string>
     <string name="address_type_other">Annat</string>
     <string name="address_type_mobile">Mobil</string>
-    <string name="compose_error_no_draft_folder">Ingen Utkast mapp konfigurerad för detta konto!</string>
+    <string name="compose_error_no_draft_folder">Ingen mapp för utkast inställd för detta konto!</string>
     <string name="compose_error_no_key_configured">Ingen nyckel konfigurerad för detta konto! Kontrollera dina inställningar.</string>
     <string name="error_crypto_provider_incompatible">Kryptoleverantören använder inkompatibel version. Kontrollera dina inställningar!</string>
-    <string name="error_crypto_provider_connect">Kan inte ansluta till kryptoleverantör, granska dina inställningar eller klicka på kryptoikonen för nytt försök.</string>
+    <string name="error_crypto_provider_connect">Kan inte ansluta till kryptoleverantör, kontrollera dina inställningar eller klicka på kryptoikonen för att försöka igen!</string>
     <string name="error_crypto_provider_ui_required">Det gick inte att initiera ände-till-ände-kryptering, kontrollera dina inställningar</string>
     <string name="error_crypto_inline_attach">PGP/INLINE läge stöder inte bilagor!</string>
     <string name="enable_inline_pgp">Aktivera PGP/INLINE</string>
@@ -765,7 +744,7 @@
     <string name="messageview_decrypt_retry">Försök igen</string>
     <string name="messageview_decrypt_incomplete">Krypterat meddelande måste hämtas för dekryptering.</string>
     <string name="messageview_crypto_error_title">Fel vid dekryptering av e-post</string>
-    <string name="recipient_error_non_ascii">Symboler stöds för närvarande inte.</string>
+    <string name="recipient_error_non_ascii">Specialtecken stöds för närvarande inte!</string>
     <string name="recipient_error_parse_failed">Kan inte tolka adressen!</string>
     <string name="account_settings_crypto_hide_sign_only">Dölj okrypterade signaturer</string>
     <string name="account_settings_crypto_hide_sign_only_on">Endast krypterade signaturer visas</string>
@@ -827,10 +806,10 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="push_notification_state_wait_network">Sover tills nätverket är tillgängligt</string>
     <string name="push_notification_info">Tryck för att läsa mer.</string>
     <string name="push_info_title">Push-info</string>
-    <string name="push_info_configure_notification_text">Men Android låter dig också dölja aviseringen.</string>
+    <string name="push_info_configure_notification_text">Däremot ger Android också möjligheten att dölja den aviseringen.</string>
     <string name="push_info_learn_more_text">Lär dig mer</string>
     <string name="push_info_configure_notification_action">Anpassa avisering</string>
-    <string name="push_info_disable_push_text">Om du inte behöver omedelbara meddelanden om nya meddelanden bör du inaktivera Push och använda Polling. Polling kontrollerar regelbundet efter ny post och behöver inte meddelandet.</string>
+    <string name="push_info_disable_push_text">Om du inte behöver omedelbara aviseringar om nya meddelanden bör du inaktivera Push och använda Polling. Polling kontrollerar regelbundet efter nya mejl och behöver inte en ständig avisering.</string>
     <string name="push_info_disable_push_action">Inaktivera Push</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
     <string name="swipe_action_select">Välj</string>
@@ -912,4 +891,7 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="settings_ui_data_collection">Datainsamling</string>
     <string name="settings_ui_telemetry_title">Användning och teknisk data</string>
     <string name="settings_ui_telemetry_description">Delar prestanda, användning, hårdvara och anpassningsdata om denna app med Mozilla för att hjälpa oss att göra Thunderbird bättre</string>
+    <string name="folder_settings_visible_label">Visa mapp</string>
+    <string name="settings_list_action_support">Stötta <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="push_info_notification_explanation_text">När Push-notiser används har <xliff:g id="app_name">%1$s</xliff:g> en kontinuerlig anslutning till mejlservern. Android kräver då att en ständig avisering visas medan appen är aktiv i bakgrunden. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
 </resources>

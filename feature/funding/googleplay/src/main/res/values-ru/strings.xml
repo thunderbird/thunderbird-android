@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="funding_googleplay_contribution_header_title">Поддержка Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">Один раз</string>
+    <string name="funding_googleplay_contribution_title">Настройки</string>
+    <string name="funding_googleplay_contribution_header_description">Мы никогда не показываем рекламу и не продаём ваши данные. Мы полностью финансируемся за счёт пожертвований наших пользователей. Если вам нравится Thunderbird, поддержите его. Мы не можем обойтись без вас!</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">Ежемесячно</string>
+    <string name="funding_googleplay_contribution_footer_payment_button">Перейти к платежу</string>
+    <string name="funding_googleplay_contribution_list_title">Безопасное пожертвование</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">Недоступно</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">Пожертвования не подлежат налогообложению как благотворительность.</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">Изменить ежемесячный платёж</string>
+</resources>

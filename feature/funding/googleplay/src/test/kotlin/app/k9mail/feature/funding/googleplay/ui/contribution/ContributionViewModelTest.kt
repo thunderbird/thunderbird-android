@@ -23,6 +23,10 @@ class ContributionViewModelTest {
         val initialState = State(
             isRecurringContributionSelected = true,
             oneTimeContributions = FakeData.oneTimeContributions,
+            recurringContributions = FakeData.recurringContributions,
+            purchasedContribution = FakeData.oneTimeContributions.first(),
+            selectedContribution = FakeData.recurringContributions[FakeData.recurringContributions.size - 2],
+            showContributionList = true,
         )
 
         contributionRobot(initialState) {
@@ -35,7 +39,11 @@ class ContributionViewModelTest {
     fun `should change selected contribution and selected type when recurring contribution selected`() = runMviTest {
         val initialState = State(
             isRecurringContributionSelected = false,
+            oneTimeContributions = FakeData.oneTimeContributions,
             recurringContributions = FakeData.recurringContributions,
+            purchasedContribution = FakeData.oneTimeContributions.first(),
+            selectedContribution = FakeData.oneTimeContributions[FakeData.oneTimeContributions.size - 2],
+            showContributionList = true,
         )
 
         contributionRobot(initialState) {
@@ -48,7 +56,11 @@ class ContributionViewModelTest {
     fun `should change selected contribution when contribution item clicked`() = runMviTest {
         val initialState = State(
             isRecurringContributionSelected = true,
+            oneTimeContributions = FakeData.oneTimeContributions,
             recurringContributions = FakeData.recurringContributions,
+            purchasedContribution = FakeData.oneTimeContributions.first(),
+            selectedContribution = FakeData.recurringContributions[FakeData.oneTimeContributions.size - 2],
+            showContributionList = true,
         )
         val selectedContribution = FakeData.recurringContributions[2]
 
@@ -71,7 +83,10 @@ private class ContributionRobot(
     private val mviContext: MviContext,
     private val initialState: State = State(),
 ) {
-    private val viewModel = ContributionViewModel(initialState)
+    private val viewModel: ContributionContract.ViewModel = ContributionViewModel(
+        initialState = initialState,
+        billingManager = FakeBillingManager(),
+    )
     private lateinit var turbines: MviTurbines<State, Nothing>
 
     suspend fun initialize() {
@@ -86,7 +101,8 @@ private class ContributionRobot(
         assertThat(turbines.awaitStateItem()).isEqualTo(
             initialState.copy(
                 isRecurringContributionSelected = false,
-                selectedContribution = initialState.oneTimeContributions.first(),
+                selectedContribution = initialState.oneTimeContributions[initialState.oneTimeContributions.size - 2],
+                showContributionList = true,
             ),
         )
     }
@@ -99,7 +115,9 @@ private class ContributionRobot(
         assertThat(turbines.awaitStateItem()).isEqualTo(
             initialState.copy(
                 isRecurringContributionSelected = true,
-                selectedContribution = initialState.recurringContributions.first(),
+                selectedContribution = initialState
+                    .recurringContributions[initialState.recurringContributions.size - 2],
+                showContributionList = true,
             ),
         )
     }

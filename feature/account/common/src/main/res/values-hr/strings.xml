@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_common_button_next">Sljedeće</string>
+    <string name="account_common_button_back">Natrag</string>
+    <string name="account_common_error_server_message">Poslužitelj je vratio sljedeću poruku:\n%s</string>
+</resources>

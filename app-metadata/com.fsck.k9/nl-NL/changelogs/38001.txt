@@ -1,7 +1,7 @@
 - DNSSEC-ondersteuning toegevoegd bij het zoeken naar serverinstellingen tijdens de installatie
 - Er is een wijziging aangebracht om te voorkomen dat sommige softwaretoetsenborden e-mailadressen met een hoofdletter schrijven/automatisch corrigeren bij het instellen van een account
 - Een crash verholpen wanneer een zeer lang onderwerp werd gebruikt
-- Probleem opgelost met het weergeven van OAuth 2.0-foutmeldingen
+- Probleem opgelost met het tonen van OAuth 2.0-foutmeldingen
 - Zeldzame crash verholpen bij het downloaden van een bijlage
 - Code toegevoegd om regeleinden in tekstinvoer van één regel niet toe te staan
 - Bijgewerkte vertalingen

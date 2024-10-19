@@ -1,2 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_warning_title">Upozorenje</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Greška certifikata</string>
+    <string name="account_server_certificate_unknown_error_description_format">Aplikacija je otkrila potencijalnu sigurnosnu prijetnju i nije nastavila s povezivanjem na <xliff:g id="serverName">%s</xliff:g>.\nAko nastavite, napadači bi mogli ukrasti vaše osobne podatke poput lozinke ili e-mailove.</string>
+    <string name="account_server_certificate_button_back">Vrati se (preporučeno)</string>
+    <string name="account_server_certificate_button_continue">Potvrdi rizik i nastavi</string>
+    <string name="account_server_certificate_section_title">Certifikat servera</string>
+    <string name="account_server_certificate_not_valid_before">Nije valjano prije</string>
+    <string name="account_server_certificate_not_valid_after">Nije valjano nakon</string>
+    <string name="account_server_certificate_button_advanced">Napredno</string>
+    <string name="account_server_certificate_issuer">Izdavatelj</string>
+</resources>

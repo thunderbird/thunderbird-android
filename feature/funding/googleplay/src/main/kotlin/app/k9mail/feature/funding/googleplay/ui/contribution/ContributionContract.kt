@@ -17,14 +17,17 @@ internal class ContributionContract {
     data class State(
         val oneTimeContributions: ImmutableList<OneTimeContribution> = persistentListOf(),
         val recurringContributions: ImmutableList<RecurringContribution> = persistentListOf(),
-        val purchasedContribution: Contribution? = null,
         val selectedContribution: Contribution? = null,
+        val purchasedContribution: Contribution? = null,
+        val showContributionList: Boolean = true,
         val isRecurringContributionSelected: Boolean = false,
     )
 
     sealed interface Event {
         data object OnOneTimeContributionSelected : Event
         data object OnRecurringContributionSelected : Event
+
+        data object OnShowContributionListClicked : Event
 
         data class OnContributionItemClicked(
             val item: Contribution,

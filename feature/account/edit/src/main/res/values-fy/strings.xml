@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_edit_save_server_settings_loading_message">Serverynstellingen bewarje…</string>
+    <string name="account_edit_save_server_settings_error_message">Serverynstellingen net bewarre</string>
+    <string name="account_edit_save_server_settings_success_message">Serverynstellingen bewarre</string>
+</resources>

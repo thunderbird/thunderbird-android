@@ -3,4 +3,5 @@
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">Oldu</string>
     <string name="cancel_action">Ləğv et</string>
+    <string name="star_button_description">Ulduz</string>
 </resources>

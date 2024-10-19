@@ -1,8 +1,8 @@
-- Köprüler için içerik menüsüne resim kullanım özelliği eklendi
+- Bağlantılar için bağlam menüsüne resim kullanım özelliği eklendi
 - Açılan ekleri yeni e-postalara iletme özelliği eklendi
 - Hesap kurulumu sırasında sertifika hata ekranı iyileştirildi
 - Hesap kurulumu sırasında ayarların içe aktarılması iyileştirildi
-- Hesap kurulum kullanıcı arayüzü/deneyimi iyileştirildi
+- Hesap kurulumu kullanıcı arayüzü/deneyimi iyileştirildi
 - Küçük ekranlarda hesap kurulumunun görüntülenmesi iyileştirildi
 - Hesap sunucu ayarlarını düzenleme kullanıcı arayüzü/deneyimi iyileştirildi
 - Android 14'te AlarmManager çökmesi düzeltildi

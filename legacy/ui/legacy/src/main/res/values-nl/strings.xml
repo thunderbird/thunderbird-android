@@ -198,7 +198,7 @@
     <string name="global_settings_registered_name_color_changed">Namen in uw adreslijst inkleuren</string>
     <string name="general_settings_contact_name_color_label">Kleur voor namen van contactpersonen</string>
     <string name="global_settings_messageview_fixedwidth_label">Vaste breedte lettertypen</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Gebruik een lettertype met vaste breedte bij het weergeven van platte-tekstberichten</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Gebruik een lettertype met vaste breedte bij het tonen van platte-tekstberichten</string>
     <string name="global_settings_messageview_autofit_width_label">Berichten auto-passen</string>
     <string name="global_settings_messageview_autofit_width_summary">Berichten passend maken op het scherm</string>
     <string name="global_settings_confirm_actions_title">Acties bevestigen</string>
@@ -305,12 +305,6 @@
     <string name="account_settings_push_advanced_title">Geavanceerd</string>
     <string name="account_settings_title_fmt">Accountinstellingen</string>
     <string name="account_settings_notify_label">Nieuwe e-mailmelding</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">Meldingsmappen</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">Alle</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Alleen 1e-klassemappen</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1e- en 2e-klassemappen</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Alle behalve 2e-klassemappen</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">Geen</string>
     <string name="account_settings_notify_sync_label">Synchronisatiemeldingen</string>
     <string name="account_settings_email_label">Uw e-mailadres</string>
     <string name="account_settings_notify_summary">Melding in statusbalk bij een nieuw e-mailbericht</string>
@@ -318,7 +312,7 @@
     <string name="account_settings_notify_self_label">Melding voor e-mailbericht welke ik verstuur</string>
     <string name="account_settings_notify_self_summary">Melding ook voor e-mailbericht verzonden vanaf een identiteit</string>
     <string name="account_notify_contacts_mail_only_label">Alleen contacten</string>
-    <string name="account_notify_contacts_mail_only_summary">Meldingen alleen weergeven voor bekende contacten</string>
+    <string name="account_notify_contacts_mail_only_summary">Meldingen alleen tonen voor bekende contacten</string>
     <string name="account_settings_ignore_chat_messages_label">Chatberichten negeren</string>
     <string name="account_settings_ignore_chat_messages_summary">Geen meldingen tonen voor berichten die onderdeel zijn van een e-mail-chat</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Als gelezen markeren na openen</string>
@@ -399,27 +393,12 @@
     <string name="account_settings_message_age_3_months">afgelopen 3 maanden</string>
     <string name="account_settings_message_age_6_months">afgelopen 6 maanden</string>
     <string name="account_settings_message_age_1_year">afgelopen jaar</string>
-    <string name="account_settings_folder_display_mode_label">Mappen om te tonen</string>
-    <string name="account_settings_folder_display_mode_all">Alle</string>
-    <string name="account_settings_folder_display_mode_first_class">Alleen 1e-klassemappen</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">1e- en 2e-klassemappen</string>
-    <string name="account_settings_folder_display_mode_not_second_class">Alle behalve 2e-klassemappen</string>
-    <string name="account_settings_folder_sync_mode_label">Peiling mappen</string>
-    <string name="account_settings_folder_sync_mode_all">Alle</string>
-    <string name="account_settings_folder_sync_mode_first_class">Alleen 1e-klassemappen</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">1e- en 2e-klassemappen</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">Alle behalve 2e-klassemappen</string>
-    <string name="account_settings_folder_sync_mode_none">Geen</string>
     <string name="account_settings_sync_remote_deletetions_label">Verwijderingen op server synchroniseren</string>
     <string name="account_settings_sync_remote_deletetions_summary">Berichten verwijderen wanneer verwijderd van server</string>
     <string name="account_settings_openpgp_missing">OpenPGP-app niet aanwezig – is de app verwijderd?</string>
     <string name="folder_settings_title">Mapinstellingen</string>
     <string name="folder_settings_in_top_group_label">In topgroep tonen</string>
     <string name="folder_settings_in_top_group_summary">Bij de top van de maplijst tonen</string>
-    <string name="folder_settings_folder_display_mode_label">Mapweergaveklasse</string>
-    <string name="folder_settings_folder_display_mode_normal">Geen klasse</string>
-    <string name="folder_settings_folder_display_mode_first_class">1e klasse</string>
-    <string name="folder_settings_folder_display_mode_second_class">2e klasse</string>
     <string name="folder_settings_clear_local_folder_action">Lokale berichten wissen</string>
     <string name="account_settings_incoming_label">Inkomende server</string>
     <string name="account_settings_incoming_summary">Inkomende mailserver instellen</string>
@@ -549,7 +528,7 @@
     <string name="animations_summary">Opvallende visuele effecten gebruiken</string>
     <string name="volume_navigation_title">Volumetoetsnavigatie in berichtbeeld</string>
     <string name="show_unified_inbox_title">Samengevoegd Postvak IN tonen</string>
-    <string name="show_starred_count_title">Het aantal berichten met een ster weergeven</string>
+    <string name="show_starred_count_title">Aantal berichten met een ster tonen</string>
     <string name="integrated_inbox_title">Samengevoegd Postvak IN</string>
     <string name="integrated_inbox_detail">Alle berichten in gecombineerde mappen</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Combineer</string>
@@ -727,7 +706,7 @@
     <string name="openpgp_dialog_sign_only_text">In deze modus wordt de PGP-sleutel gebruikt voor een cryptografische handtekening of een ongecodeerd e-mailbericht.</string>
     <string name="openpgp_dialog_sign_only_plus_verified">Dit versleutelt niet het e-mailbericht, maar controleert of het is verstuurd met uw sleutel.</string>
     <string name="openpgp_dialog_sign_only_minus_break">Handtekening kan bij versturing naar verzendlijst beschadigd raken.</string>
-    <string name="openpgp_dialog_sign_only_minus_attach">Handtekening kan bij sommige programma’s als ‘signature.asc’-bijlage worden weergegeven.</string>
+    <string name="openpgp_dialog_sign_only_minus_attach">Handtekening kan bij sommige programma’s als ‘signature.asc’-bijlage worden getoond.</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">Versleutelde berichten bevatten altijd een handtekening.</string>
     <string name="crypto_msg_title_plaintext">Platte tekst</string>
     <string name="crypto_msg_unencrypted_sign_error">end-to-end-handtekening bevat een fout</string>
@@ -828,7 +807,7 @@
     <string name="push_info_configure_notification_text">Android maakt het echter ook mogelijk om meldingen te verbergen.</string>
     <string name="push_info_learn_more_text">Meer info</string>
     <string name="push_info_configure_notification_action">Melding instellen</string>
-    <string name="push_info_disable_push_text">Als u het niet nodig vindt om per direct meldingen van nieuwe berichten te ontvangen, dan kunt u beter push uitschakelen en in plaats daarvan kiezen voor peilen. Met peilen wordt er om de zoveel tijd gekeken of er nieuwe e-mailberichten zijn binnengekomen. Daarvoor is het weergeven van een melding niet continu nodig.</string>
+    <string name="push_info_disable_push_text">Als u het niet nodig vindt om per direct meldingen van nieuwe berichten te ontvangen, dan kunt u beter push uitschakelen en in plaats daarvan kiezen voor peilen. Met peilen wordt er om de zoveel tijd gekeken of er nieuwe e-mailberichten zijn binnengekomen. Daarvoor is het tonen van een melding niet continu nodig.</string>
     <string name="push_info_disable_push_action">Push uitschakelen</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
     <string name="swipe_action_select">Selecteren</string>
@@ -902,7 +881,7 @@
     <string name="dialog_openkeychain_info_text">De app OpenKeychain is vereist om ondersteuning voor end-to-end-encryptie mogelijk te maken.</string>
     <string name="account_delete_dlg_instructions_fmt">De account \"<xliff:g id="account">%s</xliff:g>\" zal uit <xliff:g id="app_name">%s</xliff:g> worden verwijderd.</string>
     <string name="about_title">Over <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="push_info_notification_explanation_text">Bij gebruik van Push onderhoudt <xliff:g id="app_name">%1$s</xliff:g> een verbinding met de mailserver. Android vereist het doorlopend weergeven van een melding als de app actief is op de achtergrond. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="push_info_notification_explanation_text">Bij gebruik van Push onderhoudt <xliff:g id="app_name">%1$s</xliff:g> een verbinding met de mailserver. Android vereist het doorlopend tonen van een melding als de app actief is op de achtergrond. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="about_app_authors_thunderbird">Thunderbird Mobile-team</string>
     <string name="folder_settings_notifications_label">Meldingen</string>
     <string name="settings_ui_telemetry_title">Gebruik en technische gegevens</string>
@@ -911,4 +890,6 @@
     <string name="folder_settings_push_label">Push activeren</string>
     <string name="folder_settings_sync_label">Synchronisatie inschakelen</string>
     <string name="folder_list_show_hidden_folders">Verborgen mappen tonen</string>
+    <string name="folder_settings_visible_label">Map tonen</string>
+    <string name="settings_list_action_support"><xliff:g id="app_name">%s</xliff:g> steunen</string>
 </resources>

@@ -39,4 +39,6 @@
     <string name="settings_import_general_settings_item">تنظیمات کلی</string>
     <string name="settings_import_pick_app_button">درون‌ریزی از کاره</string>
     <string name="settings_import_pick_app_dialog_title">درون‌ریزی از کاره</string>
+    <string name="settings_import_app_version_not_supported">نگارش کاره پشتیبانی نمی‌شود.</string>
+    <string name="settings_import_scan_qr_code_button">پویش کد پاس</string>
 </resources>

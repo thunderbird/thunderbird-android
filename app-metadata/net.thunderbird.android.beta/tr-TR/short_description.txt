@@ -1,0 +1,1 @@
+Thunderbird %100 açık kaynaklı, gizlilik odaklı bir e-posta uygulamasıdır.

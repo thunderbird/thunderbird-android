@@ -41,4 +41,6 @@
     <string name="settings_import_general_settings_item">Основные</string>
     <string name="settings_import_pick_app_button">Импорт из приложения</string>
     <string name="settings_import_pick_app_dialog_title">Импорт из приложения</string>
+    <string name="settings_import_scan_qr_code_button">Сканировать QR-код</string>
+    <string name="settings_import_app_version_not_supported">Версия приложения не поддерживается.</string>
 </resources>

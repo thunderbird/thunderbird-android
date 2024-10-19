@@ -26,7 +26,7 @@ fun SpecialFoldersContent(
     state: State,
     onEvent: (Event) -> Unit,
     contentPadding: PaddingValues,
-    appName: String,
+    brandName: String,
     modifier: Modifier = Modifier,
 ) {
     ResponsiveWidthContainer(
@@ -37,7 +37,7 @@ fun SpecialFoldersContent(
     ) {
         Column {
             AppTitleTopHeader(
-                title = appName,
+                title = brandName,
             )
 
             ContentLoadingErrorView(

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="funding_googleplay_contribution_list_title">Bezpečné přispění</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">Jednou</string>
+    <string name="funding_googleplay_contribution_footer_payment_button">Pokračovat k platbě</string>
+    <string name="funding_googleplay_contribution_header_description">Nikdy nezobrazujeme reklamy ani neprodáváme vaše údaje. Jsme plně financováni z finančních příspěvků našich uživatelů. Pokud se vám Thunderbird líbí, pomozte jej podpořit. Bez vás to nedokážeme!</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">Příspěvky nelze odečíst z daní jako charitativní dary.</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">Měsíčně</string>
+    <string name="funding_googleplay_contribution_header_title">Podpořte Thunderbird</string>
+</resources>

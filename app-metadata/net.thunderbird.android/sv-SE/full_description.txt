@@ -1,0 +1,31 @@
+Thunderbird är en kraftfull, integritetsfokuserad e-postapp. Hantera flera e-postkonton enkelt från en app, med en samlad inkorg för maximal produktivitet. Byggd på teknologi med öppen källkod och stöds av ett dedikerat team av utvecklare tillsammans med en global gemenskap av frivilliga, Thunderbird behandlar aldrig din privata data som en produkt. Stöds enbart av ekonomiska bidrag från våra användare, så att du aldrig behöver se annonser blandade med dina e-postmeddelanden igen.
+
+<b>Vad du kan göra</b>
+<ul>
+ <li>Skippa flera appar och webbmail. Använd en app, med en valfri samlad inkorg, för att klara din dag.</li>
+ <li>Njut av en integritetsvänlig e-postklient som aldrig samlar in eller säljer dina personuppgifter. Vi kopplar dig direkt till din e-postleverantör. Det är det!</li>
+ <li>Ta din integritet till nästa nivå genom att använda OpenPGP-e-postkryptering (PGP/MIME) med appen "OpenKeychain" för att kryptera och dekryptera dina meddelanden.</li>
+ <li>Välj att synkronisera din e-post direkt, med bestämda intervaller eller på begäran. Hur du än vill kontrollera din e-post så är det upp till dig!</li>
+ <li>Hitta dina viktiga meddelanden med hjälp av både lokal sökning och sökning på serversidan.</li>
+</ul>
+
+<b>Kompatibilitet</b>
+<ul>
+ <li>Thunderbird fungerar med IMAP- och POP3-protokoll och stöder ett brett utbud av e-postleverantörer, inklusive Gmail, Outlook, Yahoo Mail, iCloud och mer.</li>
+</ul>
+
+<b>Varför använda Thunderbird</b>
+<ul>
+ <li>Det betrodda namnet inom e-post i över 20 år – nu på Android.</li>
+ <li>Thunderbird finansieras helt av frivilliga bidrag från våra användare. Vi delar inte dina personuppgifter. Du är aldrig produkten.</li>
+ <li>Gjord av ett team som är lika effektivitetsinriktat som du. Vi vill att du ska spendera minimal tid med att använda appen samtidigt som du får maximalt i gengäld.</li>
+ <li>Med bidragsgivare från hela världen har Thunderbird för Android översatts till mer än 20 språk.</li>
+ <li>Stöds av MZLA Technologies Corporation, ett helägt dotterbolag till Mozilla Foundation.</li>
+</ul>
+
+<b>Öppen källkod och community</b>
+<ul>
+ <li>Thunderbird är gratis och öppen källkod, vilket innebär att dess kod är tillgänglig för att se, ändra, använda och dela fritt. Dess licens säkerställer också att den kommer att vara gratis för alltid. Du kan tänka på Thunderbird som en gåva från tusentals bidragsgivare till dig.</li>
+ <li>Vi utvecklas i det fria med regelbundna, transparenta uppdateringar på vår blogg och e-postlistor.</li>
+ <li>Vår användarsupport drivs av vårt globala community. Hitta svaren du behöver, eller gå in i rollen som en bidragsgivare – oavsett om det är att svara på frågor, översätta appen eller berätta för dina vänner och familj om Thunderbird.</li>
+</ul>

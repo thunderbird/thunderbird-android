@@ -1,0 +1,2 @@
+- Fiksa ein krasj når delt skjerm er aktivert
+- Oppdaterte omsetjingar

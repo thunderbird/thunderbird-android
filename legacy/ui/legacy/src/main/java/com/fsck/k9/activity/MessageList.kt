@@ -25,13 +25,10 @@ import androidx.fragment.app.commitNow
 import app.k9mail.core.android.common.compat.BundleCompat
 import app.k9mail.core.android.common.contact.CachingRepository
 import app.k9mail.core.android.common.contact.ContactRepository
-import app.k9mail.core.featureflag.FeatureFlagKey
-import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
 import app.k9mail.feature.navigation.drawer.FolderDrawer
-import app.k9mail.feature.navigation.drawer.LegacyDrawer
 import app.k9mail.feature.navigation.drawer.NavigationDrawer
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
@@ -69,12 +66,10 @@ import com.fsck.k9.ui.settings.SettingsActivity
 import com.fsck.k9.view.ViewSwitcher
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener
 import com.google.android.material.textview.MaterialTextView
-import com.mikepenz.materialdrawer.util.getOptimalDrawerWidth
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
-import app.k9mail.feature.navigation.drawer.R as DrawerR
 
 /**
  * MessageList is the primary user interface for the program. This Activity shows a list of messages.
@@ -97,7 +92,6 @@ open class MessageList :
     private val messagingController: MessagingController by inject()
     private val contactRepository: ContactRepository by inject()
     private val coreResourceProvider: CoreResourceProvider by inject()
-    private val featureFlagProvider: FeatureFlagProvider by inject()
 
     private lateinit var actionBar: ActionBar
     private var searchView: SearchView? = null
@@ -175,11 +169,8 @@ open class MessageList :
             }
         }
 
-        val swipeRefreshLayout = findViewById<View>(DrawerR.id.material_drawer_swipe_refresh)
-        swipeRefreshLayout.layoutParams.width = getOptimalDrawerWidth(this)
-
         initializeActionBar()
-        initializeDrawer(savedInstanceState)
+        initializeDrawer()
 
         if (!decodeExtras(intent)) {
             return
@@ -577,33 +568,14 @@ open class MessageList :
         actionBar.setDisplayShowTitleEnabled(false)
     }
 
-    private fun initializeDrawer(savedInstanceState: Bundle?) {
+    private fun initializeDrawer() {
         if (!isDrawerEnabled) {
             val drawerLayout = findViewById<DrawerLayout>(R.id.navigation_drawer_layout)
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
             return
         }
 
-        featureFlagProvider.provide(FeatureFlagKey("material3_navigation_drawer"))
-            .onEnabled {
-                initializeFolderDrawer()
-            }
-            .onDisabledOrUnavailable {
-                initializeLegacyDrawer(savedInstanceState)
-            }
-    }
-
-    private fun initializeLegacyDrawer(savedInstanceState: Bundle?) {
-        navigationDrawer = LegacyDrawer(
-            parent = this,
-            savedInstanceState = savedInstanceState,
-            openManageFolders = { launchManageFoldersScreen() },
-            openUnifiedInbox = { openUnifiedInbox() },
-            openFolder = { folderId -> openFolder(folderId) },
-            openAccount = { account -> openRealAccount(account) },
-            openSettings = { SettingsActivity.launch(this) },
-            createDrawerListener = { createDrawerListener() },
-        )
+        initializeFolderDrawer()
     }
 
     private fun initializeFolderDrawer() {

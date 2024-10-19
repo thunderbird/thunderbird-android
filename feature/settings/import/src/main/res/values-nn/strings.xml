@@ -5,4 +5,37 @@
     <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
     <string name="settings_importing">Importerer innstillingar …</string>
     <string name="settings_import_general_settings_item">Generelle innstilingar</string>
+    <string name="settings_import_pick_document_button">Vel fil</string>
+    <string name="settings_import_scan_qr_code_button">Skann QR-kode</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Bruk same passord for utgåande tenar</string>
+    <string name="settings_import_outgoing_server_password_hint">Utgåande tenar-passord</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Autorisering mislukka med følgjande feil: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_success_generic">Vellykka import av innstillingar</string>
+    <string name="settings_import_pick_app_button">Importer frå app</string>
+    <string name="settings_import_pick_app_dialog_title">Importer frå app</string>
+    <string name="settings_import_authorization_required">Ver vennleg og logg inn</string>
+    <string name="settings_import_authorization_and_password_required">Logg inn, og fyll inn passord</string>
+    <string name="settings_import_status_success">Vellukka import</string>
+    <string name="settings_import_later_button">Seinare</string>
+    <string name="settings_import_server_name_format">Servernamn: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_oauth_sign_in">Logg inn</string>
+    <string name="settings_import_oauth_sign_in_with_google">Logg inn med Google</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">Autorisering kansellert</string>
+    <string name="settings_import_oauth_error_browser_not_found">Appen kunne ikkje finne ein nettlesar for å gje tilgjenge til kontoen din.</string>
+    <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 er ikkje støtta med denne tilbydaren enno.</string>
+    <string name="settings_import_password_required">Ver vennleg og skriv inn passord</string>
+    <string name="settings_import_failure">Importering av innstillingar feila</string>
+    <string name="settings_import_read_failure">Kunne ikkje lese innstillingsfil</string>
+    <string name="settings_import_partial_failure">Kunne ikkje importere nokre innstillingar</string>
+    <string name="settings_import_status_password_required">Passord påkravd</string>
+    <string name="settings_import_status_log_in_required">Innlogging påkravd</string>
+    <string name="settings_import_status_not_imported">Ikkje importert</string>
+    <string name="settings_import_status_error">Feil under import</string>
+    <string name="settings_import_incoming_server_password_hint">Innkommande tenar-passord</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">For å vere i stand til å bruke kontoen \"<xliff:g id="account">%s</xliff:g>\" må du angje tenar-passordet.</item>
+        <item quantity="other">For å vere i stand til å bruke kontoen \"<xliff:g id="account">%s</xliff:g>\" må du angje tenar-passorda.</item>
+    </plurals>
+    <string name="settings_import_oauth_description">For å bruke denne e-postkontoen, må du logge inn, og gje tilgjenge til e-postane dine.</string>
+    <string name="settings_import_app_version_not_supported">App-versjon er ikkje støtta.</string>
 </resources>

@@ -58,7 +58,7 @@ fun EditIncomingServerSettingsNavHost(
                 viewModel = koinViewModel<IncomingServerValidationViewModel> {
                     parametersOf(accountUuid)
                 },
-                appNameProvider = koinInject(),
+                brandNameProvider = koinInject(),
             )
         }
         composable(route = NESTED_NAVIGATION_ROUTE_SAVE) {

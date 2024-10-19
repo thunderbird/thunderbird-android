@@ -1,0 +1,10 @@
+- Lagt till bildhantering i snabbmenyn för hyperlänkar
+- Lagt till möjlighet att vidarebefordra öppnade bilagor till nya e-postmeddelanden
+- Förbättrad skärm för certifikatfel under kontoinställning
+- Förbättrad import av inställningar under kontoinställning
+- Förbättrat kontoinställningar UI/UX
+- Förbättrad rendering av kontoinställningar på små skärmar
+- Förbättrat gränssnitt för redigering av kontoserverinställningar UI/UX
+- Fixat AlarmManager-krasch på Android 14
+- Interna förändringar
+- Uppdaterade översättningar

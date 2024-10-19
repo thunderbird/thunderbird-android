@@ -1,16 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="unread_widget_select_account">Показати кількість непрочитаних для…</string>
     <string name="unread_widget_account_title">Обліковий запис</string>
-    <string name="unread_widget_account_summary">Обліковий запис, для якого має відображатися кількість непрочитаних листів</string>
+    <string name="unread_widget_account_summary">Обліковий запис, для якого має показуватись кількість непрочитаних</string>
     <string name="unread_widget_unified_inbox_account_summary">Об\'єднані Вхідні</string>
     <string name="unread_widget_folder_enabled_title">Кількість тек</string>
-    <string name="unread_widget_folder_enabled_summary">Показати кількість непрочитаних листів тільки однієї теки</string>
+    <string name="unread_widget_folder_enabled_summary">Показати кількість непрочитаних лише однієї теки</string>
     <string name="unread_widget_folder_title">Тека</string>
-    <string name="unread_widget_folder_summary">Тека, для якої має відображатися кількість непрочитаних листів</string>
+    <string name="unread_widget_folder_summary">Тека, для якої має показуватись кількість непрочитаних</string>
     <string name="unread_widget_action_done">Готово</string>
     <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
-    <string name="unread_widget_account_not_selected">Не вибрано жодного облікового запису</string>
-    <string name="unread_widget_folder_not_selected">Не вибрано жодної теки</string>
+    <string name="unread_widget_account_not_selected">Обліковий запис не вибрано</string>
+    <string name="unread_widget_folder_not_selected">Теку не вибрано</string>
     <string name="unread_widget_choose_account_title">Вибрати обліковий запис</string>
+    <string name="unread_widget_label">Кількість непрочитаних</string>
 </resources>

@@ -1,0 +1,37 @@
+Pomozte nám, aby bylo další vydání Thunderbirdu co nejúžasnější stažením Thunderbird Beta a získáním předběžného přístupu k nejnovějším funkcím a oprpavám chyb před jejich oficiálním vydáním. Vaše testování a zpětná vazba jsou důležité, proto nám prosím hlaste chyby, nedodělky a podělte se s námi o své názory!
+
+Náš systém sledování chyb, zdrojový kód a wiki najdete na stránce <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
+
+Vždy rádi přivítáme nové vývojáře, designéry, dokumentátory, překladatele, řešitele chyb a přátele. Navštivte nás na webu <a href="https://thunderbird.net/participate">https://thunderbird.net/participate</a> a začněte.
+
+Thunderbird je výkonná e-mailová aplikace zaměřená na ochranu soukromí. Snadno spravujte několik e-mailových účtů z jedné aplikace s možností jednotné schránky pro maximální produktivitu. Aplikace je postavena na open-source technologii a je podporována specializovaným týmem vývojářů spolu s celosvětovou komunitou dobrovolníků, a proto s vašimi soukromými údaji nikdy nezachází jako s produktem. Je podporována výhradně finančními příspěvky našich uživatelů, takže už nikdy neuvidíte reklamy přimíchané do svých e-mailů.
+
+<b>Co aplikace umí</b>
+<ul>
+  <li>Zbavte se více aplikací a webové pošty. Používejte jednu aplikaci s volitelnou jednotnou schránkou, která vám pomůže zvládnout celý den.</li>
+  <li>Užijte si e-mailový klient zaměřený na ochranu soukromí, který nikdy nesbírá ani neprodává vaše osobní údaje. Přímo vás propojíme s vaším poskytovatelem e-mailu. Nic víc!</li>
+  <li>Posuňte své soukromí na vyšší úroveň pomocí šifrování e-mailů pomocí OpenPGP (PGP/MIME) s aplikací „OpenKeychain“, která šifruje a dešifruje vaše zprávy.</li>
+  <li>Nastavte si, zda chcete synchronizovat svou poštu ihned, v nastavených intervalech nebo na vyžádání. Jak chcete kontrolovat svůj e-mail je jen na vás!</li>
+  <li>Najděte své důležité zprávy s lokálním i serverovým vyhledáváním.</li>
+</ul>
+
+<b>Kompatibilita</b>
+<ul>
+  <li>Thunderbird pracuje s protokoly IMAP a POP3 a podporuje širokou škálu poskytovatelů e-mailových služeb, včetně Gmailu, Outlooku, Yahoo Mailu, iCloudu a dalších.</li>
+</ul>
+
+<b>Proč používat Thunderbird</b>
+<ul>
+  <li>Důvěryhodné jméno v e-mailu již více než 20 let - nyní i pro Android.</li>
+  <li>Thunderbird je plně financován z dobrovolných příspěvků našich uživatelů. Vaše osobní údaje s nikým nesdílíme. Nikdy nejste produktem.</li>
+  <li>Vytvořeno týmem, který má rád efektivitu stejně, jako vy. Chceme, abyste používáním aplikace strávili co nejméně času a přitom získali maximum.</li>
+  <li>Díky přispěvatelům z celého světa byl Thunderbird pro Android přeložen do více než 20 jazyků.</li>
+  <li>Thunderbird je součástí MZLA Technologies Corporation, dceřiné společnosti plně vlastněné Mozilla Foundation.</li>
+</ul>
+
+<b>Open-source a komunitní</b>
+<ul>
+  <li>Thunderbird je zdarma a open-source, což znamená, že jeho kód je k dispozici k nahlédnutí, úpravám, používání a volnému sdílení. Jeho licence také zaručuje, že bude zdarma navždy. Thunderbird můžete považovat za dar tisíců přispěvatelů pro vás.</li>
+  <li>Vyvíjíme se otevřeně, s pravidelnými a transparentními aktualizacemi na našem blogu a v e-mailových zpravodajích.</li>
+  <li>Naši uživatelskou podporu zajišťuje globální komunita. Najděte odpovědi, které potřebujete, nebo se zapojte do role přispěvatele – ať už jde o zodpovídání otázek, překládání aplikace nebo vyprávění přátelům a rodině o Thunderbirdu.</li>
+</ul>

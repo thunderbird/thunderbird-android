@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="onboarding_welcome_import_button">Uvozi nastavitve</string>
+    <string name="onboarding_welcome_start_button">Začni</string>
+    <string name="onboarding_welcome_message">Dobrodošli v <xliff:g id="app_name">%s</xliff:g>, e-poštnem odjemalcu za Android, ki je zasnovan za večjo varnost, enostavno prilagajanje in nemoteno upravljanje vseh e-poštnih računov.</string>
+</resources>

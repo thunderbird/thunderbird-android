@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_edit_save_server_settings_loading_message">Guardando los ajustes del servidor…</string>
+    <string name="account_edit_save_server_settings_error_message">Error al guardar la configuración del servidor</string>
+    <string name="account_edit_save_server_settings_success_message">Configuración del servidor guardada</string>
+</resources>

@@ -1,24 +1,24 @@
-K-9 Posta, her e-posta sağlayıcısı ile çalışan açık kaynaklı bir e-posta istemcisidir.
+K-9 Posta, her e-posta sağlayıcısıyla çalışan açık kaynaklı bir e-posta istemcisidir.
 
 <b>Özellikler</b>
 
 * Çoklu hesap desteği
 * Birleşik gelen kutusu
-* Gizlilik dostu (hiçbir şekilde izleme yok, yalnızca e-posta sağlayıcınıza bağlanır)
-* Otomatik arka planda eşzamanlama veya anlık bildirimler
-* Yerel ve sunucu tarafında arama
+* Gizlilik dostu (Hiçbir şekilde sizi izlemez, yalnızca e-posta sağlayıcınıza bağlanır)
+* Arka planda otomatik senkronizasyon veya anlık bildirimler
+* Yerel ve sunucuda arama
 * OpenPGP e-posta şifrelemesi (PGP/MIME)
 
-E-postalarınızı OpenPGP kullanarak şifrelemek/şifresini çözmek için <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain: Kolay PGP</a> uygulamasını kurun.
+E-postalarınızı OpenPGP kullanarak şifrelemek ve çözmek isterseniz <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain: Kolay PGP</a> uygulamasını yüklemelisiniz.
 
 
 <b>Destek</b>
 
-K-9 Mail ile ilgili sorun yaşıyorsanız, <a href="https://forum.k9mail.app">destek forumumuzda</a> yardım isteyin.
+K-9 Posta ile ilgili sorun yaşıyorsanız <a href="https://forum.k9mail.app">destek forumumuzda</a> yardım isteyebilirsiniz.
 
 
 <b>Yardım etmek ister misiniz?</b>
 
-K-9 Posta topluluk tarafından geliştirilen bir projedir. Uygulamayı geliştirmeye yardım etmekle ilgileniyorsanız, lütfen bize katılın!
-Hata izleyicimizi, kaynak kodumuzu ve wiki sayfamızı <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a> adresinde bulabilirsiniz.
-Yeni geliştiricileri, tasarımcıları, belgeleyicileri, çevirmenleri, hata takipçilerini ve arkadaşlarımızı ağırlamaktan her zaman mutluluk duyarız.
+K-9 Posta topluluk tarafından geliştirilen bir projedir. Uygulamayı geliştirmemizew yardım etmek isterseniz lütfen aramıza katılın!
+Hata izleyicimizi, kaynak kodlarımızı ve wiki sayfamızı <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a> adresinde bulabilirsiniz.
+Yeni geliştiricileri, tasarımcıları, belgeleyicileri, çevirmenleri, hata takipçilerini ve arkadaşlarımızı aramızda görmekten her zaman mutluluk duyarız.

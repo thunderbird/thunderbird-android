@@ -4,4 +4,7 @@
     <string name="onboarding_permissions_contacts_title">Kontaktar</string>
     <string name="onboarding_permissions_allow_button">Tillat</string>
     <string name="onboarding_permissions_skip_button">Hopp over</string>
+    <string name="onboarding_permissions_contacts_description">Tillat tilgjenge for å vere i stand til å føreslå kontaktar og for å vise kontaktnamn og bilete.</string>
+    <string name="onboarding_permissions_notifications_title">Notifikasjonar</string>
+    <string name="onboarding_permissions_notifications_description">Skru på notifikasjonar så du ikkje går glipp av nokon e-postar.</string>
 </resources>

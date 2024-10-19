@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="funding_googleplay_contribution_header_title">Thunderbird を支援する</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">一度だけ</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">毎月</string>
+    <string name="funding_googleplay_contribution_list_title">寄付する</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">慈善活動への寄付として税控除の対象にはなりません。</string>
+    <string name="funding_googleplay_contribution_footer_payment_button">お支払いへ進む</string>
+    <string name="funding_googleplay_contribution_header_description">私たちは広告を表示したりあなたのデータを販売したりしません。資金はすべてユーザーから寄付されています。もし Thunderbird に満足していただけたら、支援にご協力ください。あなたの支援が必要です！</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">毎月のお支払いを変更</string>
+    <string name="funding_googleplay_contribution_title">設定</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">利用できません</string>
+</resources>

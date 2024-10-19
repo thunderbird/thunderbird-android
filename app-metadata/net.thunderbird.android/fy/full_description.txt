@@ -1,0 +1,31 @@
+Thunderbird is in krêftich, op privacy rjochte e-mail-app. Behear maklik meardere accounts fan ien app út, mei in opsje foar in Gearfoege Postfek YN foar maksimale produktiviteit. Boud op iepenboarnetechnology en stipe troch in tawijd team fan ûntwikkelers tegearre mei in wrâldwide mienskip fan frijwilligers, behannelet Thunderbird jo priveegegevens nea as in produkt. Omdat wy folslein stipe wurde troch finansjele donaasjes fan ús brûkers, hoege jo nea mear advertinsjes te sjen tusken jo e-mailberjochten.
+
+<b>Wat kinne jo dwaan</b>
+<ul>
+  <li>Stopje mei it gebrûk fan meardere apps en webmail. Brûk ien app, mei opsjoneel in Gearfoege Postfek YN, om jo troch de dei te helpen.</li>
+  <li>Genietsje fan in privacyfreonlike e-mailclient dy’t nea jo persoanlike gegevens sammelet of ferkeapet. Wy ferbine streekrjocht mei jo e-mailprovider. Dat is it!</li>
+  <li>Bring jo privacy nei in noch heger nivo troch gebrûk te meitsjen fan OpenPGP e-mailfersifering (PGP/MIME) mei de ‘OpenKeychain’-app, om jo berjochten te fersiferjen en ûntsiferjen.</li>
+  <li>Kies derfoar jo e-mailberjochten daliks te syngronisearjen, op fêste tiden, of wannear’t jo mar wolle. Hoe’t jo jo e-mail ek kontrolearje wolle, dat is hielendal oan jo!</li>
+  <li>Fyn jo wichtige berjochten mei help fan sawol lokaal as op de server sykje.</li>
+</ul>
+
+<b>Komptabiliteit</b>
+<ul>
+  <li>Thunderbird wurket mei IMAP- en POP3-protokollen, stipet in breed skala oan e-mailproviders, ynklusyf Gmail, Outlook, Yahoo Mail, iCloud, en mear.</li>
+</ul>
+
+<b>Wêrom Thunderbird brûke</b>
+<ul>
+  <li>De fertroude namme yn e-mail foar mear as 20 jier – no op Android.</li>
+  <li>Thunderbird is folslein finansiere troch frijwillige bydragen fan ús brûkers. Wy sammelje jo persoanlike gegevens net. Jo binne nea it produkt.</li>
+  <li>Makke troch in team dat krekt sa tinkt oer effisjinsje as jo. Wy wolle dat jo sa min mooglik tiid spandearje oan it gebrûk fan de app, wylst jo it maksimale werom krije.</li>
+  <li>Mei meiwurkers fan oer de hiele wrâld, wurdt Thunderbird foar Android oerset yn mear as 20 talen.</li>
+  <li>Stipe troch MZLA Technologies Corporation, in folsleine dochterûndernimming fan de Mozilla Foundation.</li>
+</ul>
+
+<b>Iepen Boarne en Mienskip</b>
+<ul>
+  <li>Thunderbird is fergees en iepen boarne, wat betsjut dat de koade beskikber is om te besjen, bewurkjen, brûken en frij te dielen. De lisinsje garandearret ek dat it altyd frij bliuwe sil. Jo kinne Thunderbird beskôgje as in kado oan jo fan tûzenen meiwurkers.</li>
+  <li>Wy ûntwikkelje yn de iepenheid mei reguliere, transparante fernijingen op ús blog en mailinglisten.</li>
+  <li>Us brûkersstipe wurdt mooglik makke troch ús wrâldwide mienskip. Fyn de antwurden dy’t jo nedich hawwe, of stap yn de rol fan in meiwurker – oft it no it beäntwurdzjen is fan fragen, it oersetten fan de app, of jo freonen en famylje fertelle oer Thunderbird.</li>
+</ul>

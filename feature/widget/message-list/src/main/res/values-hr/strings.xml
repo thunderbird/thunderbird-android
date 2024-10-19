@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="message_list_widget_compose_action">Sastavi</string>
-    <string name="message_list_widget_list_item_loading">Učitavam…</string>
-    <string name="message_list_widget_initializing">Učitavam…</string>
-    <string name="message_list_widget_inbox_title">Objedinjena Dolazna Pošta</string>
+    <string name="message_list_widget_compose_action">Nova poruka</string>
+    <string name="message_list_widget_list_item_loading">Učitavanje…</string>
+    <string name="message_list_widget_initializing">Učitavanje…</string>
+    <string name="message_list_widget_inbox_title">Objedinjena dolazna pošta</string>
+    <string name="message_list_widget_label">Popis poruka</string>
 </resources>

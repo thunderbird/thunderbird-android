@@ -1,0 +1,7 @@
+- La til DNSSEC stønad når det leitast etter tenar-innstillingar under oppsett
+- Gjorde ei endring som forhindra nokre programvare-tastatur frå å kapitalisere/auto-korrigere e-postadresser i konto-oppsett
+- Fiksa ein krasj når eit veldig langt emne var brukt
+- Fiksa vising av OAuth 2.0 feilmeldingar
+- Fiksa ein sjeldan krasj under nedlasting av vedlegg
+- La til kode for å forhindre linjebrot i enkeltlinje tekstfelt
+- Oppdaterte omsetjingar

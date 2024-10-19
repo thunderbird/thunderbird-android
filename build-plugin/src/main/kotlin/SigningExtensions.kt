@@ -44,7 +44,7 @@ fun NamedDomainObjectContainer<out ApkSigningConfig>.createSigningConfig(
             keyPassword = properties.getSigningProperty(signingType, PROPERTY_KEY_PASSWORD)
         }
     } else {
-        println("Signing config not created for ${signingType.type}")
+        project.logger.warn("Signing config not created for ${signingType.type}")
     }
 }
 
@@ -69,7 +69,7 @@ private fun Project.readSigningProperties(signingType: SigningType, isUpload: Bo
             load(inputStream)
         }
     } else {
-        println("Signing properties file not found: $signingPropertiesFile")
+        logger.warn("Signing properties file not found: $signingPropertiesFile")
     }
 }
 

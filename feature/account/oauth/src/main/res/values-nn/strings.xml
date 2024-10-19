@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_oauth_sign_in_button">Logg inn</string>
     <string name="account_oauth_sign_in_with_google_button">Logg in med Google</string>
     <string name="account_oauth_sign_in_description">Du vil bli sendt til e-posttilbydaren din for innlogging. Du må gje programmet tilgang til e-postkontoen din.</string>
     <string name="account_oauth_loading_message">Loggar inn med OAuth</string>
+    <string name="account_oauth_loading_error">Mislykka innlogging med OAuth</string>
+    <string name="account_oauth_error_canceled">Godkjenning avbroten</string>
+    <string name="account_oauth_error_failed">Mislykka godkjenning med følgjande feil: <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_error_not_supported">OAuth 2.0 er ikkje støtta med denne tilbydaren.</string>
+    <string name="account_oauth_error_browser_not_available">Appen klarte ikkje å finne nokon nettlesar å bruke for å innvilge tilgang til kontoen din.</string>
 </resources>

@@ -1,18 +1,15 @@
 package app.k9mail.feature.navigation.drawer
 
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.k9mail.core.ui.theme.api.FeatureThemeProvider
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayUnifiedFolderType
 import app.k9mail.feature.navigation.drawer.domain.entity.createDisplayAccountFolderId
 import app.k9mail.feature.navigation.drawer.ui.DrawerView
 import app.k9mail.legacy.account.Account
-import com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import org.koin.core.component.KoinComponent
@@ -36,19 +33,14 @@ class FolderDrawer(
     private val themeProvider: FeatureThemeProvider by inject()
 
     private val drawer: DrawerLayout = parent.findViewById(R.id.navigation_drawer_layout)
-    private val drawerView: ComposeView = parent.findViewById(R.id.material_drawer_compose_view)
-    private val sliderView: MaterialDrawerSliderView = parent.findViewById(R.id.material_drawer_slider)
-    private val swipeRefreshLayout: SwipeRefreshLayout = parent.findViewById(R.id.material_drawer_swipe_refresh)
+    private val drawerContent: ComposeView = parent.findViewById(R.id.navigation_drawer_content)
 
     private val drawerState = MutableStateFlow(FolderDrawerState())
 
     init {
-        sliderView.visibility = View.GONE
-        drawerView.visibility = View.VISIBLE
-        swipeRefreshLayout.isEnabled = false
         drawer.addDrawerListener(createDrawerListener())
 
-        drawerView.setContent {
+        drawerContent.setContent {
             themeProvider.WithTheme {
                 val state = drawerState.collectAsStateWithLifecycle()
 

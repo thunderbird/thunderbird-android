@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="funding_googleplay_contribution_list_title">Bezpieczny wkład</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">Datki nie podlegają odliczeniu od podatku jako darowizny na cele charytatywne.</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">Przekaż raz</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">Miesięcznie</string>
+    <string name="funding_googleplay_contribution_footer_payment_button">Przejdź do płatności</string>
+    <string name="funding_googleplay_contribution_header_title">Wspieraj Thunderbirda</string>
+    <string name="funding_googleplay_contribution_header_description">Nigdy nie pokazujemy reklam ani nie sprzedajemy Twoich danych. Jesteśmy w pełni finansowani ze składek finansowych od naszych użytkowników. Jeśli podoba Ci się Thunderbird, pomóż nam go wesprzeć. Nie możemy tego zrobić bez Ciebie!</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">Zmodyfikuj płatność miesięczną</string>
+    <string name="funding_googleplay_contribution_title">Ustawienia</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">Brak dostępnych</string>
+</resources>

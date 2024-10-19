@@ -39,4 +39,6 @@
     <string name="settings_import_general_settings_item">Allmänna inställningar</string>
     <string name="settings_import_pick_app_button">Importera från app</string>
     <string name="settings_import_pick_app_dialog_title">Importera från app</string>
+    <string name="settings_import_scan_qr_code_button">Skanna QR-kod</string>
+    <string name="settings_import_app_version_not_supported">Appversionen stöds inte.</string>
 </resources>

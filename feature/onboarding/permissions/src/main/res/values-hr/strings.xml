@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="onboarding_permissions_screen_title">Poboljšajte iskustvo</string>
+    <string name="onboarding_permissions_contacts_title">Kontakti</string>
+    <string name="onboarding_permissions_notifications_title">Obavijesti</string>
+    <string name="onboarding_permissions_contacts_description">Omogućite pristup kako biste mogli dobivati prijedloge kontakata i prikazivati imena i fotografije kontakata.</string>
+    <string name="onboarding_permissions_notifications_description">Uključite obavijesti kako ne biste propustili nijednu email poruku.</string>
+    <string name="onboarding_permissions_allow_button">Dopusti</string>
+    <string name="onboarding_permissions_skip_button">Preskoči</string>
+</resources>

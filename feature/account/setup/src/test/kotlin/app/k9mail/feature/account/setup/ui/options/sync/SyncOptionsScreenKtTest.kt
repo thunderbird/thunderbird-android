@@ -2,7 +2,7 @@ package app.k9mail.feature.account.setup.ui.options.sync
 
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContentWithTheme
-import app.k9mail.feature.account.setup.ui.FakeAppNameProvider
+import app.k9mail.feature.account.setup.ui.FakeBrandNameProvider
 import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsContract.Effect
 import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsContract.State
 import assertk.assertThat
@@ -24,7 +24,7 @@ class SyncOptionsScreenKtTest : ComposeTest() {
                 onNext = { onNextCounter++ },
                 onBack = { onBackCounter++ },
                 viewModel = viewModel,
-                appNameProvider = FakeAppNameProvider,
+                brandNameProvider = FakeBrandNameProvider,
             )
         }
 

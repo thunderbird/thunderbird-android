@@ -28,4 +28,8 @@
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Ugyldig IP eller vertsnamn</string>
     <string name="account_server_settings_validation_error_username_required">Brukarnamn påkravd.</string>
     <string name="account_server_settings_password_authentication_screen_lock_required">For å sjå passordet ditt her, aktiver skjermlås på denne eininga.</string>
+    <string name="account_server_settings_password_authentication_title">Verifiser din identitet</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">IMAP prefiks kan ikkje vere tom.</string>
+    <string name="account_server_settings_authentication_label">Autentisering</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">IMAP-sti prefiks</string>
 </resources>

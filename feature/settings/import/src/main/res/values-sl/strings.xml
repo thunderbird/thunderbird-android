@@ -39,4 +39,6 @@
     <string name="settings_import_oauth_error_oauth_not_supported">S tem ponudnikom šifriranje OAuth 2.0 podprto.</string>
     <string name="settings_import_oauth_error_browser_not_found">Brskalnik nima dostopa do brskalnika za odobritev prijavnih podatkov računa.</string>
     <string name="settings_import_general_settings_item">Splošne nastavitve</string>
+    <string name="settings_import_pick_app_button">Uvoz iz aplikacije</string>
+    <string name="settings_import_pick_app_dialog_title">Uvoz iz aplikacije</string>
 </resources>

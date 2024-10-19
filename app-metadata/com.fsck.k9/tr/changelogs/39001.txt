@@ -1,1 +1,1 @@
-- Mesaj oluşturmak için ekran açıldığında oluşan çökme düzeltildi
+- İleti oluşturmak için ekran açıldığında oluşan çökme düzeltildi

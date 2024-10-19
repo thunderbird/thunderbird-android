@@ -1,7 +1,7 @@
 - DNSSEC-stipe tafoege by it sykjen nei serverynstellingen wylst de ynstallaasje
 - Der is in wiziging oanbrocht om foar te kommen dat guon softwaretoetseboerden e-mailadressen mei in haadletter skriuwe/automatysk korrizjearje by it ynstellen fan in account
 - In crash ferholpen wannear’t in hiel lang ûnderwerp brûkt waard
-- Probleem oplost mei it werjaan fan OAuth 2.0-flatermeldingen
+- Probleem oplost mei it toanen fan OAuth 2.0-flatermeldingen
 - Seldsume crash ferholpen by it downloaden fan in bylage
 - Koade tafoege om regeleinen yn tekstynfier fan ien regel net ta te stean
 - Bywurke oersettingen

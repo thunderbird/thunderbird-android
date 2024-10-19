@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="funding_googleplay_contribution_list_type_one_time">پرداخت یک باره</string>
+    <string name="funding_googleplay_contribution_header_title">حمایت از تاندربرد</string>
+    <string name="funding_googleplay_contribution_list_title">مشارکت امن</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">ماهانه</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">مشارکت‌ها به عنوان اعانه‌های خیریه شامل مالیات نمی‌شوند.</string>
+    <string name="funding_googleplay_contribution_footer_payment_button">ادامه به پرداخت</string>
+    <string name="funding_googleplay_contribution_header_description">ما هرگز تبلیغات نشان نداده یا داده‌هایتان را نمی‌فروشیم و کاملاً به دست مشارکت‌های مالی کاربرانمان تأمین می‌شویم. اگر از تاندربرد لذت می برید، لطفاُ در حمایت از آن کمک کنید. ما نمی توانیم این کار را بدون شما انجام دهیم!</string>
+</resources>

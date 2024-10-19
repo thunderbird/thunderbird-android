@@ -198,7 +198,7 @@
     <string name="global_settings_registered_name_color_changed">Nammen yn jo kontaktelist ynkleurje</string>
     <string name="general_settings_contact_name_color_label">Kleur foar nammen fan kontakten</string>
     <string name="global_settings_messageview_fixedwidth_label">Fêste breedte lettertypen</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Brûk in lettertype mei fêste breedte by it werjaan fan platte-tekstberjochten</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Brûk in lettertype mei fêste breedte by it toanen fan platte-tekstberjochten</string>
     <string name="global_settings_messageview_autofit_width_label">Berjochten auto-passe</string>
     <string name="global_settings_messageview_autofit_width_summary">Berjochten passend meitsje op it skerm</string>
     <string name="global_settings_confirm_actions_title">Aksjes befêstigje</string>
@@ -305,20 +305,14 @@
     <string name="account_settings_push_advanced_title">Avansearre</string>
     <string name="account_settings_title_fmt">Accountynstellingen</string>
     <string name="account_settings_notify_label">Nije e-mailmelding</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">Meldingsmappen</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">Alle</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Allinnich 1e-klassemappen</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1e- en 2e-klassemappen</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Alle útsein 2e-klassemappen</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">Gjin</string>
     <string name="account_settings_notify_sync_label">Syngronisaasjemeldingen</string>
     <string name="account_settings_email_label">Jo e-mailadres</string>
     <string name="account_settings_notify_summary">Melding yn steatbalke by in nij e-mailberjocht</string>
-    <string name="account_settings_notify_sync_summary">Melding yn steatbalke werjaan wannear’t op nije e-mailberjochten kontrolearre wurdt</string>
+    <string name="account_settings_notify_sync_summary">Melding yn steatbalke toane wannear’t op nije e-mailberjochten kontrolearre wurdt</string>
     <string name="account_settings_notify_self_label">Melding foar e-mailberjocht hokker ik ferstjoer</string>
     <string name="account_settings_notify_self_summary">Melding ek foar e-mailberjocht ferstjoerd fan in identiteit ôf</string>
     <string name="account_notify_contacts_mail_only_label">Allinnich kontakten</string>
-    <string name="account_notify_contacts_mail_only_summary">Meldingen allinnich werjaan foar bekende kontakten</string>
+    <string name="account_notify_contacts_mail_only_summary">Meldingen allinnich toane foar bekende kontakten</string>
     <string name="account_settings_ignore_chat_messages_label">Petearberjochten negearje</string>
     <string name="account_settings_ignore_chat_messages_summary">Gjin meldingen toane foar berjochten dy’t ûnderdiel binne fan in e-mailpetear</string>
     <string name="account_settings_mark_message_as_read_on_view_label">As lêzen markearje nei iepenjen</string>
@@ -399,27 +393,12 @@
     <string name="account_settings_message_age_3_months">ôfrûne 3 moannen</string>
     <string name="account_settings_message_age_6_months">ôfrûne 6 moannen</string>
     <string name="account_settings_message_age_1_year">ôfrûne jier</string>
-    <string name="account_settings_folder_display_mode_label">Mappen om te toanen</string>
-    <string name="account_settings_folder_display_mode_all">Alle</string>
-    <string name="account_settings_folder_display_mode_first_class">Allinnich 1e-klassemappen</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">1e- en 2e-klassemappen</string>
-    <string name="account_settings_folder_display_mode_not_second_class">Alle útsein 2e-klassemappen</string>
-    <string name="account_settings_folder_sync_mode_label">Peiling mappen</string>
-    <string name="account_settings_folder_sync_mode_all">Alle</string>
-    <string name="account_settings_folder_sync_mode_first_class">Allinnich 1e-klassemappen</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">1e- en 2e-klassemappen</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">Alle útsein 2e-klassemappen</string>
-    <string name="account_settings_folder_sync_mode_none">Gjin</string>
     <string name="account_settings_sync_remote_deletetions_label">Ferwideringen op server syngronisearje</string>
     <string name="account_settings_sync_remote_deletetions_summary">Berjochten fuortsmite as fuortsmiten fan server</string>
     <string name="account_settings_openpgp_missing">OpenPGP-app net oanwêzich – is de app fuortsmiten?</string>
     <string name="folder_settings_title">Mapynstellingen</string>
     <string name="folder_settings_in_top_group_label">Yn topgroep toane</string>
     <string name="folder_settings_in_top_group_summary">By top fan de maplist toane</string>
-    <string name="folder_settings_folder_display_mode_label">Mapwerjefteklasse</string>
-    <string name="folder_settings_folder_display_mode_normal">Gjin klasse</string>
-    <string name="folder_settings_folder_display_mode_first_class">1e klasse</string>
-    <string name="folder_settings_folder_display_mode_second_class">2e klasse</string>
     <string name="folder_settings_clear_local_folder_action">Lokale berjochten wiskje</string>
     <string name="account_settings_incoming_label">Ynkommende server</string>
     <string name="account_settings_incoming_summary">Ynkommende mailserver ynstelle</string>
@@ -549,7 +528,7 @@
     <string name="animations_summary">Fisuele effekten brûke</string>
     <string name="volume_navigation_title">Folumetoetsnavigaasje yn berjochtbyld</string>
     <string name="show_unified_inbox_title">Kombinearre Postfek YN toane</string>
-    <string name="show_starred_count_title">It tal berjochten mei in stjer werjaan</string>
+    <string name="show_starred_count_title">Tal berjochten mei in stjer toane</string>
     <string name="integrated_inbox_title">Kombinearre Postfek YN</string>
     <string name="integrated_inbox_detail">Alle berjochten yn kombinearre mappen</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Kombinearje</string>
@@ -727,7 +706,7 @@
     <string name="openpgp_dialog_sign_only_text">Yn dizze modus wurdt dyn PGP-kaai brûkt foar in kryptografyske hantekening of in net-kodearre e-mailberjocht.</string>
     <string name="openpgp_dialog_sign_only_plus_verified">Dit fersiferet net it e-mailberjocht, mar kontrolearret oft it ferstjoerd is mei jo kaai.</string>
     <string name="openpgp_dialog_sign_only_minus_break">Hantekeningen kinne by ferstjoeren nei ferstjoerlist skansearre reitsje.</string>
-    <string name="openpgp_dialog_sign_only_minus_attach">Hantekeningen kinne by guon programma’s as ‘signature.asc’-bylage werjûn wurde.</string>
+    <string name="openpgp_dialog_sign_only_minus_attach">Hantekeningen kinne by guon programma’s as ‘signature.asc’-bylage toand wurde.</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">Fersifere berjochten befetsje altyd in hantekening.</string>
     <string name="crypto_msg_title_plaintext">Platte tekst</string>
     <string name="crypto_msg_unencrypted_sign_error">ein-ta-einhantekening befettet in flater</string>
@@ -770,8 +749,8 @@
     <string name="recipient_error_non_ascii">Spesjale lêstekens wurde noch net stipe!</string>
     <string name="recipient_error_parse_failed">Flater by ferwurkjen fan adres!</string>
     <string name="account_settings_crypto_hide_sign_only">Net-fersifere hantekeningen ferstopje</string>
-    <string name="account_settings_crypto_hide_sign_only_on">Allinnich fersifere hantekeningen wurde werjûn</string>
-    <string name="account_settings_crypto_hide_sign_only_off">Alle hantekeningen wurde werjûn</string>
+    <string name="account_settings_crypto_hide_sign_only_on">Allinnich fersifere hantekeningen wurde toand</string>
+    <string name="account_settings_crypto_hide_sign_only_off">Alle hantekeningen wurde toand</string>
     <string name="error_sign_only_no_encryption">Fersifering net mooglik yn sign-only-modus!</string>
     <string name="unsigned_text_divider_label">net ûndertekene tekst</string>
     <string name="crypto_no_provider_title">Dit e-mailberjocht is fersifere</string>
@@ -812,7 +791,7 @@
     <string name="ac_transfer_generating">Ynstelberjocht oan it generearjen…</string>
     <string name="ac_transfer_sending_to">Berjocht stjoere nei:</string>
     <string name="ac_transfer_finish">Om te foltôgjen, iepenje it berjocht op jo oare apparaat en fier de ynstelkoade yn.</string>
-    <string name="ac_transfer_show_code">Ynstelkoade werjaan</string>
+    <string name="ac_transfer_show_code">Ynstelkoade toane</string>
     <string name="ac_transfer_msg_subject">Autocrypt-ynstelberjocht</string>
     <string name="ac_transfer_msg_body">Dit berjocht befettet alle ynformaasje om jo Autocrypt-ynstellingen mei geheime kaai befeilige oer te bringen fan jo oarspronklike apparaat ôf. Folgje de ynstruksjes op jo nije apparaat om dêrop Autocrypt yn te stellen. Jo kinne dit berjocht bewarje as reservekopy foar jo geheime kaai. As jo dit dwaan wolle, skriuw dan it wachtwurd op en bewarje it op in feilich plak.</string>
     <string name="ac_transfer_error_send">Der is in flater bard wylst it ferstjoeren fan it berjocht. Kontrolearje de netwurkferbining en útgeande-serverkonfiguraasje.</string>
@@ -828,7 +807,7 @@
     <string name="push_info_configure_notification_text">Android makket it echter ek mooglik om meldingen te ferstopjen.</string>
     <string name="push_info_learn_more_text">Mear ynfo</string>
     <string name="push_info_configure_notification_action">Melding ynstelle</string>
-    <string name="push_info_disable_push_text">As jo it net nedich fine om daliks meldingen te ûntfangen fan nije berjochten, dan kinne jo better push útskeakelje en yn stee dêrfan kieze foar peilen. Mei peilen wurdt der om de sa folle tiid kontrolearre oft der nije e-mailberjochten ynkommen binne. Dêrfoar is it werjaan fan in melding net kontinu nedich.</string>
+    <string name="push_info_disable_push_text">As jo it net nedich fine om daliks meldingen te ûntfangen fan nije berjochten, dan kinne jo better push útskeakelje en yn stee dêrfan kieze foar peilen. Mei peilen wurdt der om de sa folle tiid kontrolearre oft der nije e-mailberjochten ynkommen binne. Dêrfoar is it toanen fan in melding net kontinu nedich.</string>
     <string name="push_info_disable_push_action">Push útskeakelje</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
     <string name="swipe_action_select">Selektearje</string>
@@ -900,7 +879,7 @@
     <string name="push_notification_state_alarm_permission_missing">Tastimming om alarms te plannen ûntbrekt</string>
     <string name="push_notification_grant_alarm_permission">Tik om tastimming te jaan.</string>
     <string name="account_delete_dlg_instructions_fmt">De account \"<xliff:g id="account">%s</xliff:g>\" sil út <xliff:g id="app_name">%s</xliff:g> fuortsmiten wurde.</string>
-    <string name="push_info_notification_explanation_text">By gebrûk fan Push ûnderhâldt <xliff:g id="app_name">%1$s</xliff:g> in ferbining mei de mailserver. Android fereasket it trochrinnend werjaan fan in melding as de app aktyf is op de eftergrûn. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="push_info_notification_explanation_text">By gebrûk fan Push ûnderhâldt <xliff:g id="app_name">%1$s</xliff:g> in ferbining mei de mailserver. Android fereasket it trochrinnend toanen fan in melding as de app aktyf is op de eftergrûn. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="dialog_openkeychain_info_text">De app OpenKeychain is fereaske om stipe foar end-to-end-fersifering mooglik te meitsjen.</string>
     <string name="about_title">Oer <xliff:g id="app_name">%s</xliff:g></string>
     <string name="about_app_authors_thunderbird">Thunderbird Mobile-team</string>
@@ -911,4 +890,6 @@
     <string name="folder_settings_push_label">Push aktivearje</string>
     <string name="folder_list_show_hidden_folders">Ferstoppe mappen toane</string>
     <string name="folder_settings_sync_label">Syngronisaasje ynskeakelje</string>
+    <string name="folder_settings_visible_label">Map toane</string>
+    <string name="settings_list_action_support"><xliff:g id="app_name">%s</xliff:g> stypje</string>
 </resources>

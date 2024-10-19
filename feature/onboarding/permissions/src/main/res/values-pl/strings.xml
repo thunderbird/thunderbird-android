@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="onboarding_permissions_contacts_description">Zezwól na dostęp, aby móc sugerować kontakty oraz wyświetlać ich imiona, nazwiska i zdjęcia.</string>
+    <string name="onboarding_permissions_contacts_description">Zezwól na dostęp, aby móc sugerować kontakty oraz wyświetlać ich imiona, nazwiska i zdjęcia.</string>
     <string name="onboarding_permissions_notifications_description">Włącz powiadomienia, aby nie przegapić żadnych e-maili.</string>
     <string name="onboarding_permissions_notifications_title">Powiadomienia</string>
     <string name="onboarding_permissions_screen_title">Popraw doświadczenie</string>

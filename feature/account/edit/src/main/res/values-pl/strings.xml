@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_edit_save_server_settings_loading_message">Zapisywanie ustawień serwera…</string>
+    <string name="account_edit_save_server_settings_error_message">Nie udało się zapisać ustawień serwera</string>
+    <string name="account_edit_save_server_settings_success_message">Zapisano ustawienia serwera</string>
+</resources>

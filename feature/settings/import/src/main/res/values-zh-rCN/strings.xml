@@ -19,7 +19,7 @@
     <string name="settings_import_status_log_in_required">需要登录</string>
     <string name="settings_import_status_not_imported">没有导入</string>
     <string name="settings_import_status_error">导入失败</string>
-    <string name="settings_import_later_button">之后</string>
+    <string name="settings_import_later_button">稍后</string>
     <string name="settings_importing">正在导入设置…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="other">您需要提供服务器密码才能使用此账号 \"<xliff:g id="account">%s</xliff:g>\"。</item>
@@ -38,4 +38,6 @@
     <string name="settings_import_general_settings_item">常规设置</string>
     <string name="settings_import_pick_app_button">从应用导入</string>
     <string name="settings_import_pick_app_dialog_title">从应用导入</string>
+    <string name="settings_import_scan_qr_code_button">扫描二维码</string>
+    <string name="settings_import_app_version_not_supported">应用版本不支持。</string>
 </resources>

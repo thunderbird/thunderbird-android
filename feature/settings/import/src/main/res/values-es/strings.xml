@@ -40,4 +40,6 @@
     <string name="settings_import_general_settings_item">Ajustes generales</string>
     <string name="settings_import_pick_app_button">Importar desde la aplicación</string>
     <string name="settings_import_pick_app_dialog_title">Importar desde la aplicación</string>
+    <string name="settings_import_scan_qr_code_button">Escanear el código QR</string>
+    <string name="settings_import_app_version_not_supported">Versión de la aplicación no compatible.</string>
 </resources>

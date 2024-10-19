@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_edit_save_server_settings_loading_message">ذخیره کردن تنظیمات کارساز…</string>
+    <string name="account_edit_save_server_settings_error_message">شکست در ذخیرهٔ تنظیمات کارساز</string>
+    <string name="account_edit_save_server_settings_success_message">تنظیمات کارساز ذخیره شد</string>
+</resources>

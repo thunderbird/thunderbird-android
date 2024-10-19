@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="onboarding_welcome_start_button">Započni</string>
+    <string name="onboarding_welcome_import_button">Uvoz postavki</string>
+    <string name="onboarding_welcome_message">Dobrodošli u <xliff:g id="app_name">%s</xliff:g>, Android email klijent dizajniran za poboljšanu sigurnost, jednostavnu prilagodbu i besprijekorno upravljanje svim vašim računima e-pošte.</string>
+</resources>

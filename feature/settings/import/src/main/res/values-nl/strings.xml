@@ -39,4 +39,6 @@
     <string name="settings_import_general_settings_item">Algemene instellingen</string>
     <string name="settings_import_pick_app_button">Importeren vanuit app</string>
     <string name="settings_import_pick_app_dialog_title">Importeren vanuit app</string>
+    <string name="settings_import_scan_qr_code_button">QR-code scannen</string>
+    <string name="settings_import_app_version_not_supported">App-versie niet ondersteund.</string>
 </resources>

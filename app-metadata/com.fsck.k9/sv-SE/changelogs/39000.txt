@@ -1,0 +1,6 @@
+- Började konvertera användargränssnittet till Material 3
+- Lagt till stöd för mailto: URI på NFC-tagg
+- Lade till experimentell lösning för appen som kraschar i bakgrunden
+- Optimerade några av IMAP-protokollets interaktioner
+- Dröj inte med att visa meddelandet när Push är aktivt
+- Uppdaterade översättningar

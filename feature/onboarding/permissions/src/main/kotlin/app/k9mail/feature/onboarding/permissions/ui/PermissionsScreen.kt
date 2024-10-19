@@ -8,7 +8,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import app.k9mail.core.common.provider.AppNameProvider
+import app.k9mail.core.common.provider.BrandNameProvider
 import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsContract.Effect
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsContract.Event
@@ -18,7 +18,7 @@ import org.koin.compose.koinInject
 @Composable
 fun PermissionsScreen(
     viewModel: PermissionsContract.ViewModel = koinViewModel<PermissionsViewModel>(),
-    appNameProvider: AppNameProvider = koinInject(),
+    brandNameProvider: BrandNameProvider = koinInject(),
     onNext: () -> Unit,
 ) {
     val contactsPermissionLauncher = rememberLauncherForActivityResult(RequestPermission()) { success ->
@@ -48,7 +48,7 @@ fun PermissionsScreen(
     PermissionsContent(
         state = state.value,
         onEvent = dispatch,
-        appName = appNameProvider.appName,
+        brandName = brandNameProvider.brandName,
     )
 }
 

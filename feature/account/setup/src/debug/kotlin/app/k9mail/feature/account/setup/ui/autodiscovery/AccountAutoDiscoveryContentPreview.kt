@@ -15,7 +15,7 @@ internal fun AccountAutoDiscoveryContentPreview() {
             state = AccountAutoDiscoveryContract.State(),
             onEvent = {},
             oAuthViewModel = FakeAccountOAuthViewModel(),
-            appName = "AppName",
+            brandName = "BrandName",
         )
     }
 }
@@ -30,7 +30,7 @@ internal fun AccountAutoDiscoveryContentEmailPreview() {
             ),
             onEvent = {},
             oAuthViewModel = FakeAccountOAuthViewModel(),
-            appName = "AppName",
+            brandName = "BrandName",
         )
     }
 }
@@ -47,7 +47,7 @@ internal fun AccountAutoDiscoveryContentPasswordPreview() {
             ),
             onEvent = {},
             oAuthViewModel = FakeAccountOAuthViewModel(),
-            appName = "AppName",
+            brandName = "BrandName",
         )
     }
 }
@@ -64,7 +64,7 @@ internal fun AccountAutoDiscoveryContentPasswordUntrustedSettingsPreview() {
             ),
             onEvent = {},
             oAuthViewModel = FakeAccountOAuthViewModel(),
-            appName = "AppName",
+            brandName = "BrandName",
         )
     }
 }
@@ -80,7 +80,7 @@ internal fun AccountAutoDiscoveryContentPasswordNoSettingsPreview() {
             ),
             onEvent = {},
             oAuthViewModel = FakeAccountOAuthViewModel(),
-            appName = "AppName",
+            brandName = "BrandName",
         )
     }
 }
@@ -97,7 +97,7 @@ internal fun AccountAutoDiscoveryContentOAuthPreview() {
             ),
             onEvent = {},
             oAuthViewModel = FakeAccountOAuthViewModel(),
-            appName = "AppName",
+            brandName = "BrandName",
         )
     }
 }

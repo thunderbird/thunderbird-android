@@ -39,6 +39,7 @@ internal fun WelcomeContent(
     onStartClick: () -> Unit,
     onImportClick: () -> Unit,
     appName: String,
+    showImportButton: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Surface(
@@ -49,11 +50,12 @@ internal fun WelcomeContent(
                 modifier = Modifier.fillMaxSize(),
                 footer = {
                     WelcomeFooter(
+                        showImportButton = showImportButton,
+                        onStartClick = onStartClick,
+                        onImportClick = onImportClick,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = MainTheme.spacings.quadruple),
-                        onStartClick = onStartClick,
-                        onImportClick = onImportClick,
                     )
                 },
                 verticalArrangement = Arrangement.SpaceEvenly,
@@ -142,6 +144,7 @@ private fun WelcomeMessage(
 
 @Composable
 private fun WelcomeFooter(
+    showImportButton: Boolean,
     onStartClick: () -> Unit,
     onImportClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -155,10 +158,12 @@ private fun WelcomeFooter(
             text = stringResource(id = R.string.onboarding_welcome_start_button),
             onClick = onStartClick,
         )
-        ButtonText(
-            text = stringResource(id = R.string.onboarding_welcome_import_button),
-            onClick = onImportClick,
-        )
+        if (showImportButton) {
+            ButtonText(
+                text = stringResource(id = R.string.onboarding_welcome_import_button),
+                onClick = onImportClick,
+            )
+        }
     }
 }
 

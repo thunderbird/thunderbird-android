@@ -10,7 +10,7 @@
     <string name="about_project_title">Açıq Mənbə Layihəsi</string>
     <string name="about_website_title">Veb sayt</string>
     <string name="get_help_title">Kömək al</string>
-    <string name="user_forum_title">İstifadəçi forumu</string>
+    <string name="user_forum_title">İstifadəçi mərkəzi</string>
     <string name="about_libraries">Kitabxanalar</string>
     <string name="license">Lisenziya</string>
     <string name="changelog_title">Dəyişiklik jurnalı</string>
@@ -19,7 +19,7 @@
     <string name="changelog_recent_changes_title">Nə yenidir</string>
     <string name="changelog_show_recent_changes">Tətbiq yeniləndisə son dəyişiklikləri göstər</string>
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
-    <string name="changelog_snackbar_text">Bu buraxılışda nə yenidir oxu</string>
+    <string name="changelog_snackbar_text">Bu buraxılışda nə yenidir bil</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
     <!--General strings that include the app name-->
@@ -30,13 +30,13 @@
     <string name="compose_title_reply">Cavab ver</string>
     <string name="compose_title_reply_all">Hamısın cavabla</string>
     <string name="compose_title_forward">Göndər</string>
-    <string name="compose_title_forward_as_attachment">Birləşmə kimi göndər</string>
+    <string name="compose_title_forward_as_attachment">Əlavə kimi göndər</string>
     <string name="choose_folder_title">Qovluq seç</string>
     <string name="choose_folder_move_title">Bura Köçür…</string>
     <string name="choose_folder_copy_title">Bura Yapışdır…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seçildi</string>
     <string name="send_action">Göndər</string>
-    <string name="empty_subject">Mövzu boşdur, necəsə göndərmək üçün təkrar kliklə</string>
+    <string name="empty_subject">Mövzu boşdur, yenə də göndərmək üçün təkrar kliklə</string>
     <string name="reply_action">Cavab ver</string>
     <string name="reply_all_action">Hamısına cavab ver</string>
     <string name="delete_action">Sil</string>
@@ -126,42 +126,42 @@
     <string name="send_alternate_action">Paylaş</string>
     <string name="send_alternate_chooser_title">Göndəricini seç</string>
     <string name="flag_action">Ulduz əlavə et</string>
-    <string name="about_app_authors_thunderbird">Thunderbird Mobile komandası</string>
-    <string name="move_action">Yerini dəyiş</string>
+    <string name="about_app_authors_thunderbird">Thunderbird Mobile Komandası</string>
+    <string name="move_action">Köçür</string>
     <string name="move_to_drafts_action">Qaralamalara köçür</string>
     <string name="refresh_folders_action">Qovluq siyahısını yenilə</string>
     <string name="add_account_action">Hesab əlavə et</string>
     <string name="filter_folders_action">Qovluğu tap</string>
-    <string name="copy_subject_to_clipboard">Mövzu mətni kopyalandı</string>
-    <string name="save_draft_action">Qaralama olaraq yadda saxla</string>
+    <string name="copy_subject_to_clipboard">Mövzu mətni buferə köçürüldü</string>
+    <string name="save_draft_action">Qaralama olaraq saxla</string>
     <string name="discard_action">İmtina</string>
     <string name="folders_action">Qovluqları idarə et</string>
-    <string name="account_settings_action">Hesab parametrləri</string>
-    <string name="copy_action">Kopyala</string>
+    <string name="account_settings_action">Hesab tənzimləmələri</string>
+    <string name="copy_action">Köçür</string>
     <string name="unflag_action">Ulduzu sil</string>
     <string name="unsubscribe_action">Abunəlikdən çıx</string>
-    <string name="read_receipt_enabled">Oxunma bildirişi tələb et</string>
+    <string name="read_receipt_enabled">Oxunma bildirişi alınacaq</string>
     <string name="mark_as_unread_action">Oxunmamış olaraq işarələ</string>
     <string name="read_receipt">Oxunma bildirişləri</string>
     <string name="add_attachment_action">Fayl əlavə et</string>
-    <string name="read_receipt_disabled">Oxunma bildirişi tələb etmə</string>
+    <string name="read_receipt_disabled">Oxunma bildirişi alınmayacaq</string>
     <string name="empty_trash_action">Zibil qutusunu boşalt</string>
-    <string name="expunge_action">Sil</string>
+    <string name="expunge_action">Təmizlə</string>
     <plurals name="copy_address_to_clipboard">
-        <item quantity="one">Ünvan kopyalandı</item>
-        <item quantity="other">Ünvanlar kopyalandı</item>
+        <item quantity="one">Ünvan buferə köçürüldü</item>
+        <item quantity="other">Ünvanlar buferə köçürüldü</item>
     </plurals>
     <string name="general_no_subject">(Mövzu yoxdur)</string>
     <string name="status_loading_more">Mesajlar yüklənir…</string>
     <string name="general_no_sender">Göndərən yoxdur</string>
     <string name="status_network_error">Bağlantı xətası</string>
-    <string name="edit_as_new_message_action">Yeni mesaj olaraq redaktə et</string>
+    <string name="edit_as_new_message_action">Yeni mesaj ikən düzəliş et</string>
     <string name="show_headers_action">Başlıqları göstər</string>
     <string name="status_loading_error">Mesaj yükləmə xətası</string>
     <string name="about_title"><xliff:g id="app_name">%s</xliff:g> haqqında</string>
     <string name="search_action">Axtar</string>
     <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" hesabı <xliff:g id="app_name">%s</xliff:g>-dan silinəcək.</string>
-    <string name="done_action">Oldu</string>
-    <string name="check_mail_action">E-poçtu yoxla</string>
-    <string name="send_messages_action">Mesaj göndər</string>
+    <string name="done_action">Bitir</string>
+    <string name="check_mail_action">Poçtu yoxla</string>
+    <string name="send_messages_action">Mesajları göndər</string>
 </resources>

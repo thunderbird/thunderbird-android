@@ -20,5 +20,5 @@ K-9 Mail を使用していて問題に遭遇した場合、<a href="https://for
 <b>Want to help?</b>
 
 K-9 Mail はコミュニティが開発するプロジェクトです。このアプリの改善に関わってみたい方は、ぜひご参加ください！
-バグトラッカー、ソースコード、Wiki は <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a> です。
+<a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a> でバグトラッカーやソースコード、Wiki を確認できます。。
 開発者、デザイナー、ドキュメントライター、翻訳者、バグハンターと新しい友達はいつでも大歓迎です。

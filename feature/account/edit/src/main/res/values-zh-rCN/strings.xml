@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_edit_save_server_settings_loading_message">正在保存服务器设置…</string>
+    <string name="account_edit_save_server_settings_error_message">保存服务器设置失败</string>
+    <string name="account_edit_save_server_settings_success_message">服务器设置已保存</string>
+</resources>

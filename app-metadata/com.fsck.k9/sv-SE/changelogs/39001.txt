@@ -1,0 +1,1 @@
+- Fixade en krasch när skärmen öppnades för att skriva ett meddelande

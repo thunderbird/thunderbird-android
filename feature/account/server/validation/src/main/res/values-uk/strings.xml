@@ -1,2 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_error_client_certificate_expired">Сертифікат клієнта більше недійсний</string>
+    <string name="account_server_validation_error_details">Подробиці:\n%s</string>
+    <string name="account_server_validation_incoming_loading_message">Перевірка налаштувань вхідного сервера…</string>
+    <string name="account_server_validation_incoming_loading_error">Не вдалося перевірити вхідні налаштування сервера</string>
+    <string name="account_server_validation_incoming_success">Налаштування вхідного сервера підтверджено</string>
+    <string name="account_server_validation_outgoing_loading_message">Перевірка налаштувань вихідного сервера…</string>
+    <string name="account_server_validation_outgoing_success">Налаштування вихідного сервера підтверджено</string>
+    <string name="account_server_validation_sign_in">Будь ласка, увійдіть</string>
+    <string name="account_server_validation_outgoing_loading_error">Не вдалося перевірити налаштування вихідного сервера</string>
+    <string name="account_server_validation_error_authentication">Помилка автентифікації</string>
+    <string name="account_server_validation_error_network">Помилка мережі</string>
+    <string name="account_server_validation_error_server">Помилка сервера</string>
+    <string name="account_server_validation_error_unknown">Невідома помилка</string>
+    <string name="account_server_validation_error_missing_server_capability">Відсутня можливість сервера</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">Не вдалося отримати доступ до сертифіката клієнта</string>
+    <string name="account_server_validation_error_missing_server_capability_details">На сервері відсутня ця можливість:\n%s</string>
+</resources>

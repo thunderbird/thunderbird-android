@@ -1,0 +1,6 @@
+    <release version="{{ version }}" versioncode="{{ versioncode }}" date="{{ date }}">
+{%- for note in changes %}
+        <change>{{ note }}</change>
+{%- endfor %}
+    </release>
+

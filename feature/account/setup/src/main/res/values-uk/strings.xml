@@ -1,2 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_special_folders_error_message">Не вдалося отримати список тек із сервера</string>
+    <string name="account_setup_special_folders_form_description">Вкажіть спеціальні теки для вашого облікового запису.</string>
+    <string name="account_setup_special_folders_form_description_automatic">Запис «Автоматично» буде автоматично слідувати за змінами, зробленими сервером. Поточне значення сервера показано в круглих дужках.</string>
+    <string name="account_setup_special_folders_loading_message">Отримання списку тек…</string>
+    <string name="account_setup_special_folders_success_message">Усі спеціальні теки налаштовані сервером автоматично.</string>
+    <string name="account_setup_special_folders_archive_folder_label">Тека «Архів»</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Тека «Чернетки»</string>
+    <string name="account_setup_special_folders_sent_folder_label">Тека «Надіслані»</string>
+    <string name="account_setup_special_folders_trash_folder_label">Тека «Кошик»</string>
+    <string name="account_setup_special_folders_spam_folder_label">Тека «Спам»</string>
+    <string name="account_setup_special_folders_folder_automatic">Автоматично (%s)</string>
+    <string name="account_setup_options_email_check_frequency_never">Ніколи</string>
+    <string name="account_setup_options_email_display_count_label">Кількість показуваних повідомлень</string>
+    <string name="account_setup_options_show_notifications_label">Показувати сповіщення</string>
+    <string name="account_setup_create_account_error">Виникла помилка під час спроби створити обліковий запис</string>
+    <string name="account_setup_create_account_created">Обліковий запис створено</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Пароль обов\'язковий.</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Це не довірена конфігурація</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Ми отримали конфігурацію вашого поштового сервера через з\'єднання, яке недостатньо захищене. Це означає, що існує незначна ймовірність, що хтось міг його видозмінити. Чи могли б ви ще раз перевірити надану конфігурацію, щоб переконатися, що вона правильна?</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Налаштувати вручну</string>
+    <string name="account_setup_options_section_display_options">Опції показу</string>
+    <string name="account_setup_options_account_name_label">Ім\'я облікового запису</string>
+    <string name="account_setup_options_email_signature_label">Підпис е-пошти</string>
+    <string name="account_setup_create_account_creating">Створення облікового запису…</string>
+    <string name="account_setup_options_account_name_error_blank">Ім\'я облікового запису не може бути порожнім.</string>
+    <string name="account_setup_options_display_name_label">Ваше ім\'я</string>
+    <string name="account_setup_options_display_name_error_required">Потрібно вказати ім\'я.</string>
+    <string name="account_setup_error_network">Помилка в мережі. Перевірте стан вашого з\'єднання та повторіть спробу.</string>
+    <string name="account_setup_error_unknown">Невідома помилка</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">Адреса е-пошти обов\'язкова.</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Конфігурація знайдена</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Налаштувати автоматично</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Ця адреса е-пошти не підтримується.</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Конфігурація не знайдена</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Я довіряю цій конфігурації</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Ця адреса е-пошти не дозволена.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Ця адреса е-пошти не розпізнана дійсною.</string>
+    <string name="account_setup_auto_discovery_loading_message">Пошук конфігурації…</string>
+    <string name="account_setup_auto_discovery_loading_error">Не вдалося завантажити конфігурацію е-пошти</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Змінити конфігурацію</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Підтвердження конфігурації обовʼязкове.</string>
+    <string name="account_setup_special_folders_folder_none">Немає</string>
+    <string name="account_setup_options_email_signature_error_blank">Підпис е-пошти не може бути порожнім.</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Щохвилини</item>
+        <item quantity="few">Що %d хвилини</item>
+        <item quantity="many">Що %d хвилин</item>
+        <item quantity="other">Що %d хвилин</item>
+    </plurals>
+    <string name="account_setup_options_section_sync_options">Параметри синхронізації</string>
+    <string name="account_setup_options_account_check_frequency_label">Частота перевірки</string>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Щогодини</item>
+        <item quantity="few">Що %d години</item>
+        <item quantity="many">Що %d годин</item>
+        <item quantity="other">Що %d годин</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">1 повідомлення</item>
+        <item quantity="few">%d повідомлення</item>
+        <item quantity="many">%d повідомлень</item>
+        <item quantity="other">%d повідомлень</item>
+    </plurals>
+</resources>

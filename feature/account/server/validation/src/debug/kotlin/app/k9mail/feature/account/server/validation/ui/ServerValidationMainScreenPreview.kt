@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import app.k9mail.feature.account.server.validation.ui.fake.FakeAccountOAuthViewModel
-import app.k9mail.feature.account.server.validation.ui.fake.FakeAppNameProvider
+import app.k9mail.feature.account.server.validation.ui.fake.FakeBrandNameProvider
 import app.k9mail.feature.account.server.validation.ui.fake.FakeIncomingServerValidationViewModel
 import app.k9mail.feature.account.server.validation.ui.fake.FakeOutgoingServerValidationViewModel
 
@@ -16,7 +16,7 @@ internal fun IncomingServerValidationMainScreenPreview() {
             viewModel = FakeIncomingServerValidationViewModel(
                 oAuthViewModel = FakeAccountOAuthViewModel(),
             ),
-            appNameProvider = FakeAppNameProvider,
+            brandNameProvider = FakeBrandNameProvider,
         )
     }
 }
@@ -29,7 +29,7 @@ internal fun OutgoingServerValidationMainScreenPreview() {
             viewModel = FakeOutgoingServerValidationViewModel(
                 oAuthViewModel = FakeAccountOAuthViewModel(),
             ),
-            appNameProvider = FakeAppNameProvider,
+            brandNameProvider = FakeBrandNameProvider,
         )
     }
 }

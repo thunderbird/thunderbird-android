@@ -134,12 +134,9 @@
     <string name="account_setup_options_mail_check_frequency_never">ஒருபொழுதும்</string>
     <string name="account_settings_push_advanced_title">மேம்பட்ட</string>
     <string name="account_settings_title_fmt">கணக்கு அமைப்புகள்</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">அனைத்தும்</string>
     <string name="account_settings_composition">அஞ்சல் அனுப்புதல்</string>
     <string name="account_settings_message_read_receipt_label">படித்த இரசீது</string>
     <string name="account_settings_folders">கோப்புறைகள்</string>
-    <string name="account_settings_folder_display_mode_all">அனைத்தும்</string>
-    <string name="account_settings_folder_sync_mode_all">அனைத்தும்</string>
     <string name="folder_settings_title">கோப்புறை அமைப்பு</string>
     <string name="folder_settings_clear_local_folder_action">தற்காலிக செய்திகள் நீக்கு</string>
     <string name="edit_identity_save">சேமி</string>

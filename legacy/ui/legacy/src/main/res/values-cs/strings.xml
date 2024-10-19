@@ -308,12 +308,6 @@
     <string name="account_settings_push_advanced_title">Rozšířené</string>
     <string name="account_settings_title_fmt">Nastavení účtu</string>
     <string name="account_settings_notify_label">Oznamování nové pošty</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">Složky oznámení</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">Všechny</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Jen složky 1. třídy</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Složky 1. a 2. třídy</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Všechny vyjma složek 2. třídy</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">Žádné</string>
     <string name="account_settings_notify_sync_label">Synchronizovat oznámení</string>
     <string name="account_settings_email_label">Vaše e-mailová adresa</string>
     <string name="account_settings_notify_summary">Oznamovat došlou poštu ve stavovém řádku</string>
@@ -402,27 +396,12 @@
     <string name="account_settings_message_age_3_months">za poslední 3 měsíce</string>
     <string name="account_settings_message_age_6_months">za posledních 6 měsíců</string>
     <string name="account_settings_message_age_1_year">za poslední rok</string>
-    <string name="account_settings_folder_display_mode_label">Zobrazované složky</string>
-    <string name="account_settings_folder_display_mode_all">Všechny</string>
-    <string name="account_settings_folder_display_mode_first_class">Jen složky 1. třídy</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">Složky 1. a 2. třídy</string>
-    <string name="account_settings_folder_display_mode_not_second_class">Všechny vyjma složek 2. třídy</string>
-    <string name="account_settings_folder_sync_mode_label">Složky řízené dotazováním</string>
-    <string name="account_settings_folder_sync_mode_all">Všechny</string>
-    <string name="account_settings_folder_sync_mode_first_class">Jen složky 1. třídy</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">Složky 1. a 2. třídy</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">Všechny vyjma složek 2. třídy</string>
-    <string name="account_settings_folder_sync_mode_none">Žádné</string>
     <string name="account_settings_sync_remote_deletetions_label">Synchronizace mazání serveru</string>
     <string name="account_settings_sync_remote_deletetions_summary">Odstranit zprávy, když je smaže server</string>
     <string name="account_settings_openpgp_missing">Chybí OpenPGP aplikace – byla odinstalována?</string>
     <string name="folder_settings_title">Nastavení složky</string>
     <string name="folder_settings_in_top_group_label">Zobrazit v nejvyšší skupině</string>
     <string name="folder_settings_in_top_group_summary">Zobrazit blízko špičky seznamu složek</string>
-    <string name="folder_settings_folder_display_mode_label">Třída zobrazování složky</string>
-    <string name="folder_settings_folder_display_mode_normal">Žádná třída</string>
-    <string name="folder_settings_folder_display_mode_first_class">1. třída</string>
-    <string name="folder_settings_folder_display_mode_second_class">2. třída</string>
     <string name="folder_settings_clear_local_folder_action">Vyčistit místní zprávy</string>
     <string name="account_settings_incoming_label">Server příchozí pošty</string>
     <string name="account_settings_incoming_summary">Nastavení serveru příchozí pošty</string>
@@ -553,7 +532,7 @@
     <string name="volume_navigation_title">Navigace v zobrazení mailů pomocí tlačítek hlasitosti</string>
     <string name="show_unified_inbox_title">Ukázat sjednocený pohled na doručenou poštu</string>
     <string name="show_starred_count_title">Zobrazit počet označených hvězdičkou</string>
-    <string name="integrated_inbox_title">Integrovaná doručená pošta</string>
+    <string name="integrated_inbox_title">Jednotná schránka</string>
     <string name="integrated_inbox_detail">Všechny zprávy v integrovaných složkách</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Integrovat</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Všechny zprávy jsou zobrazeny v Integrované doručené poště</string>
@@ -925,4 +904,6 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <string name="folder_settings_push_label">Povolit oznámení</string>
     <string name="folder_settings_sync_label">Zapnout synchronizaci</string>
     <string name="folder_list_show_hidden_folders">Zobrazit skryté složky</string>
+    <string name="folder_settings_visible_label">Zobrazit složku</string>
+    <string name="settings_list_action_support">Podpora <xliff:g id="app_name">%s</xliff:g></string>
 </resources>

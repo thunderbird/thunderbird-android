@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_oauth_sign_in_description">Preusmjerit ćemo Vas vašem davatelju usluga e-pošte da se prijavite. Morate aplikaciji odobriti pristup vašem računu e-pošte.</string>
+    <string name="account_oauth_sign_in_button">Prijavite se</string>
+    <string name="account_oauth_sign_in_with_google_button">Prijavite se s Googleom</string>
+    <string name="account_oauth_loading_message">Prijavite se koristeći OAuth</string>
+    <string name="account_oauth_loading_error">OAuth prijava nije uspjela</string>
+    <string name="account_oauth_error_canceled">Autorizacija poništena</string>
+    <string name="account_oauth_error_not_supported">OAuth 2.0 trenutačno nije podržan kod ovog pružatelja usluga e-pošte.</string>
+    <string name="account_oauth_error_browser_not_available">Aplikacija nije mogla pronaći preglednik za davanje pristupa vašem računu.</string>
+    <string name="account_oauth_error_failed">Autorizacija nije uspjela sa sljedećom pogreškom: <xliff:g id="error">%s</xliff:g></string>
+</resources>

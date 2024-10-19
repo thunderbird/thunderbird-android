@@ -1,0 +1,7 @@
+- Ny och förbättrad kontokonfiguration
+- Lagt till alternativ för att återgå till meddelandelistan efter att ha markerat ett meddelande som oläst i meddelandevyn
+- Gjorde det svårare att av misstag utlösa svepåtgärder på skärmen med meddelandelistan
+- Förbättrad skärmläsarupplevelse på olika platser
+- IMAP: Tillagt stöd för att skicka ID-kommandot (som krävs av vissa e-postleverantörer)
+- Diverse andra buggfixar och förbättringar; se ändringar för version 6.7xx
+- Tog bort hebreiska och koreanska översättningar på grund av hur ofullständiga de var; frivilliga översättare välkomna!

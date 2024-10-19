@@ -1,6 +1,5 @@
 package app.k9mail.feature.navigation.drawer.ui.folder
 
-import android.content.res.Resources
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
@@ -10,7 +9,7 @@ import androidx.compose.ui.platform.LocalContext
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.organism.drawer.NavigationDrawerItemBadge
 import app.k9mail.core.ui.compose.theme2.MainTheme
-import app.k9mail.feature.navigation.drawer.R
+import app.k9mail.feature.navigation.drawer.ui.common.labelForCount
 
 @Composable
 internal fun FolderListItemBadge(
@@ -86,22 +85,4 @@ private fun FolderCountAndStarredBadge(
             }
         }
     }
-}
-
-@Suppress("MagicNumber")
-private fun labelForCount(
-    count: Int,
-    resources: Resources,
-) = when {
-    count in 1..99 -> "$count"
-
-    count in 100..1000 -> resources.getString(
-        R.string.navigation_drawer_folder_item_badge_count_greater_than_99,
-    )
-
-    count > 1000 -> resources.getString(
-        R.string.navigation_drawer_folder_item_badge_count_greater_than_1_000,
-    )
-
-    else -> ""
 }

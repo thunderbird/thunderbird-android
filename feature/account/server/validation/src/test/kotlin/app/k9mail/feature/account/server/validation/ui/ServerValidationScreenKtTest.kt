@@ -1,6 +1,6 @@
 package app.k9mail.feature.account.server.validation.ui
 
-import app.k9mail.core.common.provider.AppNameProvider
+import app.k9mail.core.common.provider.BrandNameProvider
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContentWithTheme
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Effect
@@ -24,7 +24,7 @@ class ServerValidationScreenKtTest : ComposeTest() {
                 onNext = { onNextCounter++ },
                 onBack = { onBackCounter++ },
                 viewModel = viewModel,
-                appNameProvider = FakeAppNameProvider,
+                brandNameProvider = FakeBrandNameProvider,
             )
         }
 
@@ -42,7 +42,7 @@ class ServerValidationScreenKtTest : ComposeTest() {
         assertThat(onBackCounter).isEqualTo(1)
     }
 
-    private object FakeAppNameProvider : AppNameProvider {
-        override val appName: String = "K-9 Mail"
+    private object FakeBrandNameProvider : BrandNameProvider {
+        override val brandName: String = "K-9 Mail"
     }
 }

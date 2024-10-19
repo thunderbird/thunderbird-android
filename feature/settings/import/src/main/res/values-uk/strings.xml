@@ -1,42 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="settings_import_title">Імпортувати налаштування</string>
+    <string name="settings_import_title">Імпорт налаштувань</string>
     <string name="settings_import_pick_document_button">Вибрати файл</string>
     <string name="settings_import_button">Імпорт</string>
-    <string name="settings_import_success_generic">Налаштування успішно імпортовано</string>
+    <string name="settings_import_success_generic">Налаштування імпортовано</string>
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
     <string name="settings_import_password_required">Введіть паролі</string>
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_required">Увійдіть, будь ласка</string>
+    <string name="settings_import_authorization_required">Будь ласка, увійдіть</string>
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_and_password_required">Будь ласка, увійдіть та наберіть паролі</string>
+    <string name="settings_import_authorization_and_password_required">Будь ласка, увійдіть та введіть паролі</string>
     <string name="settings_import_failure">Не вдалося імпортувати налаштування</string>
     <string name="settings_import_read_failure">Не вдалося прочитати файл з налаштуваннями</string>
     <string name="settings_import_partial_failure">Не вдалося імпортувати деякі налаштування</string>
-    <string name="settings_import_status_success">Успішно імпортовано</string>
+    <string name="settings_import_status_success">Імпортовано</string>
     <string name="settings_import_status_password_required">Потрібен пароль</string>
     <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import_status_log_in_required">Потрібно увійти</string>
+    <string name="settings_import_status_log_in_required">Потрібно ввійти</string>
     <string name="settings_import_status_not_imported">Не імпортовано</string>
-    <string name="settings_import_status_error">Збій імпортування</string>
+    <string name="settings_import_status_error">Збій імпорту</string>
     <string name="settings_import_later_button">Пізніше</string>
-    <string name="settings_importing">Імпортуються налаштування…</string>
+    <string name="settings_importing">Налаштування імпортуються…</string>
     <plurals name="settings_import_password_prompt">
-        <item quantity="one">Щоб користуватися обліковим записом <xliff:g id="account">%s</xliff:g>, потрібно надати пароль сервера.</item>
-        <item quantity="few">Щоб користуватися обліковим записом <xliff:g id="account">%s</xliff:g>, потрібно надати паролі сервера.</item>
-        <item quantity="many">Щоб користуватися обліковим записом <xliff:g id="account">%s</xliff:g>, потрібно надати паролі сервера.</item>
-        <item quantity="other">Щоб користуватися обліковим записом <xliff:g id="account">%s</xliff:g>, потрібно надати паролі сервера.</item>
+        <item quantity="one">Щоб користуватися обліковим записом <xliff:g id="account">%s</xliff:g>, потрібно вказати пароль сервера.</item>
+        <item quantity="few">Щоб користуватися обліковим записом <xliff:g id="account">%s</xliff:g>, потрібно вказати паролі сервера.</item>
+        <item quantity="many">Щоб користуватися обліковим записом <xliff:g id="account">%s</xliff:g>, потрібно вказати паролі сервера.</item>
+        <item quantity="other">Щоб користуватися обліковим записом <xliff:g id="account">%s</xliff:g>, потрібно вказати паролі сервера.</item>
     </plurals>
     <string name="settings_import_incoming_server_password_hint">Пароль сервера вхідної пошти</string>
     <string name="settings_import_outgoing_server_password_hint">Пароль сервера вихідної пошти</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Використовувати той же пароль для сервера вихідної пошти</string>
     <string name="settings_import_server_name_format">Ім\'я сервера: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Для використання цього поштового облікового запису у K-9 Mail Вам потрібно увійти в обліковий запис та надати доступ до ел.листів.</string>
+    <string name="settings_import_oauth_description">Для користування цим обліковим записом е-пошти потрібно ввійти та надати застосунку доступ до е-пошти.</string>
     <string name="settings_import_oauth_sign_in">Увійти</string>
-    <string name="settings_import_oauth_sign_in_with_google">Увійти з Google</string>
+    <string name="settings_import_oauth_sign_in_with_google">Увійти за допомогою Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled"> Авторизація скасована</string>
-    <string name="settings_import_oauth_error_oauth_flow_failed">Авторизація на вдалася з таких причин: <xliff:g id="error">%s</xliff:g></string>
-    <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 наразі цим провайдером не підтримується.</string>
-    <string name="settings_import_oauth_error_browser_not_found">Програма не може знайти браузер для надання доступу до Вашого облікового запису.</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Не вдалося авторизувати через цю помилку: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_not_supported">Цей постачальник наразі не підтримує OAuth 2.0.</string>
+    <string name="settings_import_oauth_error_browser_not_found">Застосунок не може знайти браузер для надання доступу до вашого облікового запису.</string>
     <string name="settings_import_general_settings_item">Загальні налаштування</string>
+    <string name="settings_import_pick_app_button">Імпорт із застосунку</string>
+    <string name="settings_import_pick_app_dialog_title">Імпорт із застосунку</string>
+    <string name="settings_import_scan_qr_code_button">Сканувати QR-код</string>
+    <string name="settings_import_app_version_not_supported">Версія застосунку не підтримується.</string>
 </resources>

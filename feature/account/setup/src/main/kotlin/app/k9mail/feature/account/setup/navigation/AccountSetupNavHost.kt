@@ -66,7 +66,7 @@ fun AccountSetupNavHost(
                 },
                 onBack = onBack,
                 viewModel = koinViewModel<AccountAutoDiscoveryViewModel>(),
-                appNameProvider = koinInject(),
+                brandNameProvider = koinInject(),
             )
         }
 
@@ -96,7 +96,7 @@ fun AccountSetupNavHost(
                 },
                 onBack = { navController.popBackStack() },
                 viewModel = koinViewModel<IncomingServerValidationViewModel>(),
-                appNameProvider = koinInject(),
+                brandNameProvider = koinInject(),
             )
         }
 
@@ -127,7 +127,7 @@ fun AccountSetupNavHost(
                 },
                 onBack = { navController.popBackStack() },
                 viewModel = koinViewModel<OutgoingServerValidationViewModel>(),
-                appNameProvider = koinInject(),
+                brandNameProvider = koinInject(),
             )
         }
 
@@ -148,7 +148,7 @@ fun AccountSetupNavHost(
                 },
                 onBack = { navController.popBackStack() },
                 viewModel = koinViewModel<SpecialFoldersViewModel>(),
-                appNameProvider = koinInject(),
+                brandNameProvider = koinInject(),
             )
         }
 
@@ -157,7 +157,7 @@ fun AccountSetupNavHost(
                 onNext = { navController.navigate(NESTED_NAVIGATION_SYNC_OPTIONS) },
                 onBack = { navController.popBackStack() },
                 viewModel = koinViewModel<DisplayOptionsViewModel>(),
-                appNameProvider = koinInject(),
+                brandNameProvider = koinInject(),
             )
         }
 
@@ -166,7 +166,7 @@ fun AccountSetupNavHost(
                 onNext = { navController.navigate(NESTED_NAVIGATION_CREATE_ACCOUNT) },
                 onBack = { navController.popBackStack() },
                 viewModel = koinViewModel<SyncOptionsViewModel>(),
-                appNameProvider = koinInject(),
+                brandNameProvider = koinInject(),
             )
         }
 
@@ -175,7 +175,7 @@ fun AccountSetupNavHost(
                 onNext = { accountUuid -> onFinish(accountUuid.value) },
                 onBack = { navController.popBackStack() },
                 viewModel = koinViewModel<CreateAccountViewModel>(),
-                appNameProvider = koinInject(),
+                brandNameProvider = koinInject(),
             )
         }
     }
