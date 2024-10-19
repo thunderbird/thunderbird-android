@@ -40,7 +40,7 @@ class ChooseFolderActivity : K9Activity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var itemAdapter: ItemAdapter<FolderListItem>
-    private lateinit var account: Account
+    private lateinit var account: Account // initial account
     private lateinit var action: Action
     private var currentFolderId: Long? = null
     private var scrollToFolderId: Long? = null
@@ -107,8 +107,7 @@ class ChooseFolderActivity : K9Activity() {
         spinner.adapter = adapter
 
         // Set the initial item
-        val initialAccount = account
-        val initialPosition = accounts.indexOf(initialAccount)
+        val initialPosition = accounts.indexOf(account)
         if (initialPosition != -1) {
             spinner.setSelection(initialPosition)
         }
@@ -119,7 +118,7 @@ class ChooseFolderActivity : K9Activity() {
                 // TODO combine with previous statement
                 currentAccount = selectedAccount
                 val showHiddenFolders = viewModel.isShowHiddenFolders
-                viewModel.setDisplayMode(selectedAccount, showHiddenFolders)
+                viewModel.setDisplayMode(currentAccount!!, showHiddenFolders)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -153,7 +152,7 @@ class ChooseFolderActivity : K9Activity() {
     private fun updateFolderList(displayFolders: List<DisplayFolder>) {
         val folderListItems = displayFolders.asSequence()
             .filterNot { it.folder.type == FolderType.OUTBOX }
-            .filterNot { it.folder.id == currentFolderId }
+            .filterNot { currentAccount==account && it.folder.id == currentFolderId }
             .map { displayFolder ->
                 val databaseId = displayFolder.folder.id
                 val folderIconResource = folderIconProvider.getFolderIcon(displayFolder.folder.type)
@@ -170,6 +169,7 @@ class ChooseFolderActivity : K9Activity() {
 
     private fun scrollToFolder(folders: List<FolderListItem>) {
         if (scrollToFolderId == null) return
+        if (currentAccount!=account) return
 
         val index = folders.indexOfFirst { it.databaseId == scrollToFolderId }
         if (index != -1) {
@@ -227,11 +227,11 @@ class ChooseFolderActivity : K9Activity() {
     }
 
     private fun refreshFolderList() {
-        messagingController.refreshFolderList(account)
+        messagingController.refreshFolderList(currentAccount)
     }
 
     private fun setShowHiddenFolders(enabled: Boolean) {
-        viewModel.setDisplayMode(account, enabled)
+        viewModel.setDisplayMode(currentAccount!!, enabled)
     }
 
     private fun returnResult(folderId: Long, displayName: String) {
