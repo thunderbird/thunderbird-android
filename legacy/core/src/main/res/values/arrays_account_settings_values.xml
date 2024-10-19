@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Must be kept in sync with arrays_drawer.xml/drawer_account_accent_color_dark_theme -->
     <integer-array name="account_colors">
         <item>@color/material_amber_600</item>
         <item>@color/material_orange_600</item>
