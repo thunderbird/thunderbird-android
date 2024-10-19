@@ -130,6 +130,42 @@ jobs:
                 await core.summary.addList(["Play Store upload is being kept in the draft state"]).write();
               }
 
+  notify_build_start:
+    name: Notify Build Start
+    runs-on: ubuntu-latest
+    needs: [dump_config]
+    if: ${{ needs.dump_config.outputs.releaseType == 'beta' || needs.dump_config.outputs.releaseType == 'release' }}
+    environment: notify_matrix
+    outputs:
+      actorLink: ${{ steps.actorLink.outputs.actorLink }}
+    steps:
+      - name: Triggering Actor Link
+        id: actorLink
+        uses: actions/github-script@v7
+        env:
+          userMap: ${{ vars.MATRIX_NOTIFY_USER_MAP }}
+        with:
+          script: |
+            let userMap = JSON.parse(process.env.userMap || "{}");
+            if (Object.hasOwn(userMap, context.actor)) {
+              let mxid = userMap[context.actor];
+              core.setOutput("actorLink", `[${mxid}](https://matrix.to/#/${mxid})`);
+            } else {
+              core.setOutput("actorLink", `[@${context.actor}](https://github.com/${context.actor})`);
+            }
+
+      - name: Notify Build Start
+        if: ${{ vars.MATRIX_NOTIFY_ROOM }}
+        uses: kewisch/action-matrix-notify@v1
+        with:
+          matrixHomeserver: ${{ vars.MATRIX_NOTIFY_HOMESERVER }}
+          matrixRoomId: ${{ vars.MATRIX_NOTIFY_ROOM }}
+          matrixToken: ${{ secrets.MATRIX_NOTIFY_TOKEN }}
+          message: >-
+            🔵 [${{ vars.RELEASE_TYPE }} build ${{ github.run_number}}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            was started by ${{ steps.actorLink.outputs.actorLink }}
+
+
   release_commit:
     name: Release Bumps
     runs-on: ubuntu-latest
@@ -314,10 +350,10 @@ jobs:
               .write();
 
   build_unsigned:
-    if: ${{ !failure() && !cancelled() }} # Run if release_commit is skipped
     name: Build Unsigned
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    if: ${{ !failure() && !cancelled() }} # Run if release_commit is skipped
     needs: [dump_config, get_environment, release_commit]
     strategy:
       matrix:
@@ -438,11 +474,12 @@ jobs:
   sign_mobile:
     name: Sign Packages
     runs-on: ubuntu-latest
+    if: ${{ !failure() && !cancelled() }} # Run if previous step is skipped
+    needs: [build_unsigned, dump_config]
     strategy:
       matrix:
         include: "${{ fromJSON(needs.dump_config.outputs.matrixInclude) }}"
     environment: ${{ matrix.appName }}_${{ needs.dump_config.outputs.releaseType }}_${{ matrix.packageFlavor || 'default' }}
-    needs: [build_unsigned, dump_config]
     env:
       RELEASE_TYPE: ${{ needs.dump_config.outputs.releaseType }}
     steps:
@@ -483,6 +520,22 @@ jobs:
             uploads/*.apk
             uploads/*.aab
 
+  notify_pre_publish:
+    name: Notify Publish Approval
+    needs: [dump_config, sign_mobile, notify_build_start]
+    if: ${{ needs.dump_config.outputs.releaseType == 'beta' || needs.dump_config.outputs.releaseType == 'release' }}
+    runs-on: ubuntu-latest
+    environment: notify_matrix
+    steps:
+      - uses: kewisch/action-matrix-notify@v1
+        with:
+          matrixHomeserver: ${{ vars.MATRIX_NOTIFY_HOMESERVER }}
+          matrixRoomId: ${{ vars.MATRIX_NOTIFY_ROOM }}
+          matrixToken: ${{ secrets.MATRIX_NOTIFY_TOKEN }}
+          message: >-
+            🟡 [${{ needs.dump_config.outputs.releaseType }} build ${{ github.run_number}}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            waiting for publish approval (triggered by ${{ needs.notify_build_start.outputs.actorLink }})
+
   pre_publish:
     # This is a holding job meant to require approval before proceeding with the publishing jobs below
     # The environment has a deployment protection rule requiring approval from a set of named reviewers
@@ -507,6 +560,11 @@ jobs:
       matrix:
         include: "${{ fromJSON(needs.dump_config.outputs.matrixInclude) }}"
     environment: publish_release
+    outputs:
+      thunderbird_release_url: ${{ steps.summary.outputs.thunderbird_release_url }}
+      k9mail_release_url: ${{ steps.summary.outputs.k9mail_release_url }}
+      thunderbird_full_version_name: ${{ steps.summary.outputs.thunderbird_full_version_name }}
+      k9mail_full_version_name: ${{ steps.summary.outputs.k9mail_full_version_name }}
     env:
       RELEASE_TYPE: ${{ needs.dump_config.outputs.releaseType }}
       APP_NAME: ${{ matrix.appName }}
@@ -642,6 +700,7 @@ jobs:
 
       - name: Summary
         uses: actions/github-script@v7
+        id: summary
         env:
           tagName: ${{ steps.pkginfo.outputs.TAG_NAME }}
           fullVersionName: ${{ steps.pkginfo.outputs.FULL_VERSION_NAME }}
@@ -649,30 +708,127 @@ jobs:
           playTargetTrack: ${{ matrix.playTargetTrack }}
           applicationId: ${{ steps.pkginfo.outputs.APPLICATION_ID }}
           releaseTarget: ${{ matrix.releaseTarget }}
-          app_sha: ${{ steps.sha.outputs.app_sha }}
+          appSha: ${{ steps.sha.outputs.app_sha }}
+          appName: ${{ matrix.appName }}
         with:
           script: |
             await core.summary
               .addHeading(`${process.env.fullVersionName} (${process.env.applicationId})`, 2)
               .write();
+            core.setOutput(`${process.env.appName}_full_version_name`, process.env.fullVersionName);
 
             if (!process.env.releaseTarget) {
               await core.summary
                 .addRaw(`Artifact-only build at `)
-                .addLink(process.env.app_sha, `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/commit/${process.env.app_sha}`)
+                .addLink(process.env.appSha, `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/commit/${process.env.appSha}`)
                 .addEOL()
                 .write();
             } else if (process.env.ghReleaseUrl) {
               await core.summary
                 .addRaw(`Tag ${process.env.tagName} at `)
-                .addLink(process.env.app_sha, `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/commit/${process.env.app_sha}`)
+                .addLink(process.env.appSha, `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/commit/${process.env.appSha}`)
                 .addEOL()
                 .addRaw(`Released to Github at `)
                 .addLink(process.env.ghReleaseUrl, process.env.ghReleaseUrl)
                 .addEOL()
                 .write();
+
+              core.setOutput(`${process.env.appName}_release_url`, process.env.ghReleaseUrl);
             }
 
             if (process.env.playTargetTrack) {
               await core.summary.addRaw(`Released to the <b>${process.env.playTargetTrack}</b> track on Google Play`, true).write();
             }
+
+  notify_build_result:
+    name: Notify Build Result
+    if: ${{ always() }}
+    needs: [dump_config, release_commit, build_unsigned, sign_mobile, publish_release, notify_build_start]
+    runs-on: ubuntu-latest
+    environment: notify_matrix
+    steps:
+      - name: Get previous workflow status
+        uses: Mercymeilya/last-workflow-status@3418710aefe8556d73b6f173a0564d38bcfd9a43
+        id: last_status
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Info
+        uses: actions/github-script@v7
+        id: info
+        env:
+          needs: ${{ toJSON(needs) }}
+        with:
+          script: |
+            let needs = JSON.parse(process.env.needs);
+            let failures = [];
+            for (let [job, need] of Object.entries(needs)) {
+              if (need.result == 'failure') {
+                failures.push(job.replace(/([-_])/g, "\\$1"));
+              }
+            }
+            core.setOutput("fail_steps", failures.join(`, `));
+
+      - name: Notify Failure
+        if: ${{ vars.MATRIX_NOTIFY_ROOM && contains(needs.*.result, 'failure') }}
+        uses: kewisch/action-matrix-notify@v1
+        with:
+          matrixHomeserver: ${{ vars.MATRIX_NOTIFY_HOMESERVER }}
+          matrixRoomId: ${{ vars.MATRIX_NOTIFY_ROOM }}
+          matrixToken: ${{ secrets.MATRIX_NOTIFY_TOKEN }}
+          message: >-
+            🔴 [${{ needs.dump_config.outputs.releaseType }} build ${{ github.run_number}}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            has failed at step ${{ steps.info.outputs.fail_steps }} (triggered by ${{ needs.notify_build_start.outputs.actorLink }})
+
+      - name: Notify Cancelled
+        if: ${{ vars.MATRIX_NOTIFY_ROOM && !contains(needs.*.result, 'failure') && contains(needs.*.result, 'cancelled')  }}
+        uses: kewisch/action-matrix-notify@v1
+        with:
+          matrixHomeserver: ${{ vars.MATRIX_NOTIFY_HOMESERVER }}
+          matrixRoomId: ${{ vars.MATRIX_NOTIFY_ROOM }}
+          matrixToken: ${{ secrets.MATRIX_NOTIFY_TOKEN }}
+          message: >-
+            ⚪ [${{ needs.dump_config.outputs.releaseType }} build ${{ github.run_number}}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            was cancelled
+
+      - name: Notify Success (Beta/Release)
+        if: ${{ vars.MATRIX_NOTIFY_ROOM && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') && (needs.dump_config.outputs.releaseType == 'beta' || needs.dump_config.outputs.releaseType == 'release')   }}
+        uses: kewisch/action-matrix-notify@v1
+        with:
+          matrixHomeserver: ${{ vars.MATRIX_NOTIFY_HOMESERVER }}
+          matrixRoomId: ${{ vars.MATRIX_NOTIFY_ROOM }}
+          matrixToken: ${{ secrets.MATRIX_NOTIFY_TOKEN }}
+          message: >-
+            🟢 [${{ needs.dump_config.outputs.releaseType }} build ${{ github.run_number}}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            has succeeded (triggered by ${{ needs.notify_build_start.outputs.actorLink }})
+
+      - name: Thunderbird Publish URL (Beta/Release)
+        if: ${{ vars.MATRIX_NOTIFY_ROOM && needs.publish_release.outputs.thunderbird_release_url && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') }}
+        uses: kewisch/action-matrix-notify@v1
+        with:
+          matrixHomeserver: ${{ vars.MATRIX_NOTIFY_HOMESERVER }}
+          matrixRoomId: ${{ vars.MATRIX_NOTIFY_ROOM }}
+          matrixToken: ${{ secrets.MATRIX_NOTIFY_TOKEN }}
+          message: >-
+            ${{ needs.publish_release.outputs.thunderbird_full_version_name }} [is available](${{ needs.publish_release.outputs.thunderbird_release_url }})
+
+      - name: K-9 Mail Publish URL (Beta/Release)
+        if: ${{ vars.MATRIX_NOTIFY_ROOM && needs.publish_release.outputs.k9mail_release_url && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') }}
+        uses: kewisch/action-matrix-notify@v1
+        with:
+          matrixHomeserver: ${{ vars.MATRIX_NOTIFY_HOMESERVER }}
+          matrixRoomId: ${{ vars.MATRIX_NOTIFY_ROOM }}
+          matrixToken: ${{ secrets.MATRIX_NOTIFY_TOKEN }}
+          message: >-
+            ${{ needs.publish_release.k9mail_full_version_name }} [is available](${{ needs.publish_release.outputs.k9mail_release_url }})
+
+      - name: Notify Success (Daily)
+        if: ${{ vars.MATRIX_NOTIFY_ROOM && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') && needs.dump_config.outputs.releaseType == 'daily' && steps.last_status.outputs.last_status == 'failure' }}
+        uses: kewisch/action-matrix-notify@v1
+        with:
+          matrixHomeserver: ${{ vars.MATRIX_NOTIFY_HOMESERVER }}
+          matrixRoomId: ${{ vars.MATRIX_NOTIFY_ROOM }}
+          matrixToken: ${{ secrets.MATRIX_NOTIFY_TOKEN }}
+          message: >-
+            🟢 [${{ needs.dump_config.outputs.releaseType }} build ${{ github.run_number}}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            has recovered
