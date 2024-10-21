@@ -5,7 +5,11 @@ import app.k9mail.core.ui.compose.testing.mvi.MviContext
 import app.k9mail.core.ui.compose.testing.mvi.MviTurbines
 import app.k9mail.core.ui.compose.testing.mvi.runMviTest
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
+import app.k9mail.feature.funding.googleplay.domain.Outcome
+import app.k9mail.feature.funding.googleplay.domain.entity.AvailableContributions
 import app.k9mail.feature.funding.googleplay.domain.entity.Contribution
+import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionContract.ContributionListState
+import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionContract.Effect
 import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionContract.Event
 import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionContract.State
 import assertk.assertThat
@@ -19,13 +23,16 @@ class ContributionViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     @Test
-    fun `should change selected contribution and selected type when on time contribution selected`() = runMviTest {
+    fun `should change selected contribution and selected type when one time contribution selected`() = runMviTest {
         val initialState = State(
-            isRecurringContributionSelected = true,
-            oneTimeContributions = FakeData.oneTimeContributions,
-            recurringContributions = FakeData.recurringContributions,
-            purchasedContribution = FakeData.oneTimeContributions.first(),
-            selectedContribution = FakeData.recurringContributions[FakeData.recurringContributions.size - 2],
+            listState = ContributionListState(
+                oneTimeContributions = FakeData.oneTimeContributions,
+                recurringContributions = FakeData.recurringContributions,
+                selectedContribution = FakeData.recurringContributions[FakeData.recurringContributions.size - 2],
+                isRecurringContributionSelected = true,
+                isLoading = false,
+            ),
+            purchasedContribution = null,
             showContributionList = true,
         )
 
@@ -38,11 +45,14 @@ class ContributionViewModelTest {
     @Test
     fun `should change selected contribution and selected type when recurring contribution selected`() = runMviTest {
         val initialState = State(
-            isRecurringContributionSelected = false,
-            oneTimeContributions = FakeData.oneTimeContributions,
-            recurringContributions = FakeData.recurringContributions,
-            purchasedContribution = FakeData.oneTimeContributions.first(),
-            selectedContribution = FakeData.oneTimeContributions[FakeData.oneTimeContributions.size - 2],
+            listState = ContributionListState(
+                oneTimeContributions = FakeData.oneTimeContributions,
+                recurringContributions = FakeData.recurringContributions,
+                selectedContribution = FakeData.oneTimeContributions[FakeData.oneTimeContributions.size - 2],
+                isRecurringContributionSelected = false,
+                isLoading = false,
+            ),
+            purchasedContribution = null,
             showContributionList = true,
         )
 
@@ -55,11 +65,14 @@ class ContributionViewModelTest {
     @Test
     fun `should change selected contribution when contribution item clicked`() = runMviTest {
         val initialState = State(
-            isRecurringContributionSelected = true,
-            oneTimeContributions = FakeData.oneTimeContributions,
-            recurringContributions = FakeData.recurringContributions,
-            purchasedContribution = FakeData.oneTimeContributions.first(),
-            selectedContribution = FakeData.recurringContributions[FakeData.oneTimeContributions.size - 2],
+            listState = ContributionListState(
+                oneTimeContributions = FakeData.oneTimeContributions,
+                recurringContributions = FakeData.recurringContributions,
+                selectedContribution = FakeData.recurringContributions[FakeData.recurringContributions.size - 2],
+                isRecurringContributionSelected = true,
+                isLoading = false,
+            ),
+            purchasedContribution = null,
             showContributionList = true,
         )
         val selectedContribution = FakeData.recurringContributions[2]
@@ -83,11 +96,21 @@ private class ContributionRobot(
     private val mviContext: MviContext,
     private val initialState: State = State(),
 ) {
+    // FIX use case
     private val viewModel: ContributionContract.ViewModel = ContributionViewModel(
-        initialState = initialState,
+        getAvailableContributions = {
+            Outcome.success(
+                AvailableContributions(
+                    oneTimeContributions = FakeData.oneTimeContributions,
+                    recurringContributions = FakeData.recurringContributions,
+                    purchasedContribution = FakeData.oneTimeContributions.first(),
+                ),
+            )
+        },
         billingManager = FakeBillingManager(),
+        initialState = initialState,
     )
-    private lateinit var turbines: MviTurbines<State, Nothing>
+    private lateinit var turbines: MviTurbines<State, Effect>
 
     suspend fun initialize() {
         turbines = mviContext.turbinesWithInitialStateCheck(viewModel, initialState)
@@ -98,10 +121,15 @@ private class ContributionRobot(
     }
 
     suspend fun verifyOneTimeContributionSelected() {
+        val oneTimeContributions = initialState.listState.oneTimeContributions
+
         assertThat(turbines.awaitStateItem()).isEqualTo(
+
             initialState.copy(
-                isRecurringContributionSelected = false,
-                selectedContribution = initialState.oneTimeContributions[initialState.oneTimeContributions.size - 2],
+                listState = initialState.listState.copy(
+                    isRecurringContributionSelected = false,
+                    selectedContribution = oneTimeContributions[oneTimeContributions.size - 2],
+                ),
                 showContributionList = true,
             ),
         )
@@ -112,11 +140,14 @@ private class ContributionRobot(
     }
 
     suspend fun verifyRecurringContributionSelected() {
+        val recurringContributions = initialState.listState.recurringContributions
+
         assertThat(turbines.awaitStateItem()).isEqualTo(
             initialState.copy(
-                isRecurringContributionSelected = true,
-                selectedContribution = initialState
-                    .recurringContributions[initialState.recurringContributions.size - 2],
+                listState = initialState.listState.copy(
+                    isRecurringContributionSelected = true,
+                    selectedContribution = recurringContributions[recurringContributions.size - 2],
+                ),
                 showContributionList = true,
             ),
         )
@@ -129,7 +160,9 @@ private class ContributionRobot(
     suspend fun verifyContributionItemSelected(item: Contribution) {
         assertThat(turbines.awaitStateItem()).isEqualTo(
             initialState.copy(
-                selectedContribution = item,
+                listState = initialState.listState.copy(
+                    selectedContribution = item,
+                ),
             ),
         )
     }

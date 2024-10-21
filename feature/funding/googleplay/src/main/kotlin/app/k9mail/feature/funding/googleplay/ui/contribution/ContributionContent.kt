@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import app.k9mail.core.ui.compose.common.activity.LocalActivity
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionContract.Event
@@ -29,7 +28,6 @@ internal fun ContributionContent(
             .testTag("ContributionContent")
             .padding(contentPadding),
     ) {
-        val activity = LocalActivity.current
         val scrollState = rememberScrollState()
 
         Column(
@@ -46,10 +44,7 @@ internal fun ContributionContent(
 
             if (state.showContributionList) {
                 ContributionList(
-                    oneTimeContributions = state.oneTimeContributions,
-                    recurringContributions = state.recurringContributions,
-                    selectedItem = state.selectedContribution,
-                    isRecurringContributionSelected = state.isRecurringContributionSelected,
+                    state = state.listState,
                     onOneTimeContributionTypeClick = {
                         onEvent(Event.OnOneTimeContributionSelected)
                     },
@@ -59,15 +54,25 @@ internal fun ContributionContent(
                     onItemClick = {
                         onEvent(Event.OnContributionItemClicked(it))
                     },
+                    onRetryClick = {
+                        onEvent(Event.OnRetryClicked)
+                    },
+                )
+            }
+
+            if (state.purchaseError != null) {
+                ContributionError(
+                    error = state.purchaseError,
+                    onDismissClick = { onEvent(Event.OnDismissPurchaseErrorClicked) },
                 )
             }
 
             ContributionFooter(
                 purchasedContribution = state.purchasedContribution,
-                onPurchaseClick = { onEvent(Event.OnPurchaseClicked(activity)) },
+                onPurchaseClick = { onEvent(Event.OnPurchaseClicked) },
                 onManagePurchaseClick = { onEvent(Event.OnManagePurchaseClicked(it)) },
                 onShowContributionListClick = { onEvent(Event.OnShowContributionListClicked) },
-                isPurchaseEnabled = state.selectedContribution != null,
+                isPurchaseEnabled = state.listState.selectedContribution != null,
                 isContributionListShown = state.showContributionList,
             )
         }

@@ -1,5 +1,6 @@
 package app.k9mail.feature.funding.googleplay.ui.contribution
 
+import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionContract.ContributionListState
 import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionContract.State
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -14,10 +15,18 @@ internal class ContributionStateTest {
 
         assertThat(state).isEqualTo(
             State(
-                recurringContributions = persistentListOf(),
-                oneTimeContributions = persistentListOf(),
-                selectedContribution = null,
-                isRecurringContributionSelected = false,
+                listState = ContributionListState(
+                    recurringContributions = persistentListOf(),
+                    oneTimeContributions = persistentListOf(),
+                    selectedContribution = null,
+                    isRecurringContributionSelected = false,
+                    error = null,
+                    isLoading = true,
+                ),
+                purchasedContribution = null,
+                showContributionList = true,
+                showRecurringContributions = false,
+                purchaseError = null,
             ),
         )
     }
