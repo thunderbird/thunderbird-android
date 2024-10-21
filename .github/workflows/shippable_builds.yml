@@ -320,6 +320,7 @@ jobs:
           case "${APP_NAME}" in
             thunderbird) APP_SHA=$THUNDERBIRD_SHA ;;
             k9mail) APP_SHA=$K9MAIL_SHA ;;
+            *) APP_SHA=$GITHUB_SHA ;;
           esac
 
           echo "app_sha=$APP_SHA" >> $GITHUB_OUTPUT
@@ -632,18 +633,25 @@ jobs:
           ghReleaseUrl: ${{ steps.publish_gh.outputs.url }}
           playTargetTrack: ${{ matrix.playTargetTrack }}
           applicationId: ${{ steps.pkginfo.outputs.APPLICATION_ID }}
+          releaseTarget: ${{ matrix.releaseTarget }}
           app_sha: ${{ steps.sha.outputs.app_sha }}
         with:
           script: |
             await core.summary
               .addHeading(`${process.env.fullVersionName} (${process.env.applicationId})`, 2)
-              .addRaw(`Tag ${process.env.tagName} at `)
-              .addLink(process.env.app_sha, `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/commit/${process.env.app_sha}`)
-              .addEOL()
               .write();
 
-            if (process.env.ghReleaseUrl) {
+            if (!process.env.releaseTarget) {
               await core.summary
+                .addRaw(`Artifact-only build at `)
+                .addLink(process.env.app_sha, `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/commit/${process.env.app_sha}`)
+                .addEOL()
+                .write();
+            } else if (process.env.ghReleaseUrl) {
+              await core.summary
+                .addRaw(`Tag ${process.env.tagName} at `)
+                .addLink(process.env.app_sha, `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/commit/${process.env.app_sha}`)
+                .addEOL()
                 .addRaw(`Released to Github at `)
                 .addLink(process.env.ghReleaseUrl, process.env.ghReleaseUrl)
                 .addEOL()
