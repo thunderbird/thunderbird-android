@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.designsystem.atom.text.AutoResizeableTextDisplayMedium
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextDisplayMediumAutoResize
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme2.MainTheme
 
@@ -51,7 +51,7 @@ fun AppTitleTopHeader(
                 contentDescription = null,
             )
 
-            AutoResizeableTextDisplayMedium(text = title)
+            TextDisplayMediumAutoResize(text = title)
         }
     }
 }

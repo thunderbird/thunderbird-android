@@ -11,7 +11,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.isUnspecified
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import androidx.compose.material3.Text as Material3Text
 
@@ -48,16 +47,15 @@ fun TextDisplayMedium(
 }
 
 @Composable
-fun AutoResizeableTextDisplayMedium(
+fun TextDisplayMediumAutoResize(
     text: String,
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified,
     textAlign: TextAlign? = null,
-    style: TextStyle = MainTheme.typography.displayMedium,
 ) {
+    val style: TextStyle = MainTheme.typography.displayMedium
     var shouldDraw by remember { mutableStateOf(false) }
     var resizedTextStyle by remember { mutableStateOf(style) }
-    val defaultFontSize = style.fontSize
 
     Material3Text(
         text = text,
@@ -72,11 +70,6 @@ fun AutoResizeableTextDisplayMedium(
         style = resizedTextStyle,
         onTextLayout = { result ->
             if (result.didOverflowWidth) {
-                if (style.fontSize.isUnspecified) {
-                    resizedTextStyle = resizedTextStyle.copy(
-                        fontSize = defaultFontSize,
-                    )
-                }
                 resizedTextStyle = resizedTextStyle.copy(
                     fontSize = resizedTextStyle.fontSize * 0.95,
                 )
