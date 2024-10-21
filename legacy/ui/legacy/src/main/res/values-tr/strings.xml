@@ -232,7 +232,7 @@
     <string name="global_settings_notification_quick_delete_never">Hiçbir zaman</string>
     <string name="global_settings_notification_quick_delete_when_single_msg">Tek ileti bildirimi için</string>
     <string name="global_settings_notification_quick_delete_always">Her zaman</string>
-    <string name="global_settings_lock_screen_notification_visibility_title">Kilit Ekranı Bildirimleri</string>
+    <string name="global_settings_lock_screen_notification_visibility_title">Kilit ekranı bildirimleri</string>
     <string name="global_settings_lock_screen_notification_visibility_nothing">Kilit ekranı bildirimi yok</string>
     <string name="global_settings_lock_screen_notification_visibility_app_name">Uygulama adı</string>
     <string name="global_settings_lock_screen_notification_visibility_message_count">Yeni ileti sayısı</string>
@@ -320,7 +320,7 @@
     <string name="account_settings_reply_after_quote_summary">Asıl ileti, yanıtınızın üzerinde görünecektir.</string>
     <string name="account_settings_strip_signature_label">Yanıtta imzaları kaldır</string>
     <string name="account_settings_strip_signature_summary">Alıntılanan iletilerdeki imzalar kaldırılacaktır</string>
-    <string name="account_settings_message_format_label">İleti Biçimi</string>
+    <string name="account_settings_message_format_label">İleti biçimi</string>
     <string name="account_settings_message_format_text">Düz metin (resimleri ve biçimlendirmeyi kaldır)</string>
     <string name="account_settings_message_format_html">HTML (resimleri ve biçimlendirmeyi koru)</string>
     <string name="account_settings_message_format_auto">Otomatik</string>
@@ -487,7 +487,7 @@
     <string name="messagelist_preferences">İleti listeleri</string>
     <string name="messageview_preferences">İletiler</string>
     <string name="settings_theme_label">Tema</string>
-    <string name="settings_message_theme_label">İleti görünümü teması</string>
+    <string name="settings_message_theme_label">İleti görünüm teması</string>
     <string name="settings_compose_theme_label">Oluşturucu teması</string>
     <string name="settings_language_label">Dil</string>
     <string name="preference_search_no_results">Ayar bulunamadı</string>
@@ -519,7 +519,7 @@
     <string name="folder_settings_include_in_integrated_inbox_summary">Tüm iletiler Birleşik Gelen Kutusu\'nda gösterilir</string>
     <string name="account_settings_no_folder_selected">Hiçbiri</string>
     <string name="account_settings_automatic_special_folder">Otomatik (%s)</string>
-    <string name="font_size_settings_title">Yazı tipi noyutu</string>
+    <string name="font_size_settings_title">Yazı tipi boyutu</string>
     <string name="font_size_settings_description">Yazı tipi boyutunu yapılandır</string>
     <string name="font_size_message_list">İleti listeleri</string>
     <string name="font_size_message_list_subject">Konu</string>
@@ -623,7 +623,7 @@
         <item quantity="other">%2$d sonuçtan %1$d tanesi alınıyor</item>
     </plurals>
     <string name="remote_search_error">Uzaktan arama başarısız</string>
-    <string name="account_settings_search">Ara</string>
+    <string name="account_settings_search">Arama</string>
     <string name="action_remote_search">Sunucuda ileti ara</string>
     <string name="remote_search_unavailable_no_network">Sunucuda arama için ağ bağlantısı gereklidir.</string>
     <string name="global_settings_background_as_unread_indicator_label">Okunduğunda rengi değiştir</string>
@@ -721,13 +721,13 @@
     <string name="crypto_msg_encrypted_sign_error">ama uçtan uca veri hataları var</string>
     <string name="crypto_msg_encrypted_insecure">ama şifreleme güvenli olarak değerlendirilmedi</string>
     <string name="locked_attach_unlock">Kilidi aç</string>
-    <string name="locked_attach_unencrypted">Bu bölüm şifreli değil, güvensiz olabilir.</string>
-    <string name="locked_attach_title">Korunmasız Eklenti</string>
+    <string name="locked_attach_unencrypted">Bu kısım şifrelenmemiş ve güvensiz olabilir.</string>
+    <string name="locked_attach_title">Korunmasız Ek</string>
     <string name="message_progress_text">Yükleniyor…</string>
     <string name="messageview_decrypt_cancelled">Şifre çözme iptal edildi.</string>
     <string name="messageview_decrypt_retry">Yeniden dene</string>
     <string name="messageview_decrypt_incomplete">Şifre çözümü için şifreli iletiler indirilmelidir.</string>
-    <string name="messageview_crypto_error_title">E-posta şifre çözme hatası</string>
+    <string name="messageview_crypto_error_title">E-posta deşifre hatası</string>
     <string name="recipient_error_non_ascii">Özel karakterler henüz desteklenmiyor!</string>
     <string name="recipient_error_parse_failed">Adres çözümleme hatası!</string>
     <string name="account_settings_crypto_hide_sign_only">Şifrelenmemiş imzaları gizle</string>
@@ -740,16 +740,16 @@
     <string name="crypto_no_provider_button">Ayarlara git</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
-    <string name="openpgp_enabled_error_title">Şifreleme yapılamaz</string>
+    <string name="openpgp_enabled_error_title">Şifreleme yapılamıyor</string>
     <string name="openpgp_enabled_error_msg">Seçilen bazı alıcılar bu özelliği desteklemiyor!</string>
-    <string name="enable_encryption">Şifreleme etkin</string>
-    <string name="disable_encryption">şifreleme devre dışı</string>
-    <string name="openpgp_description_text1">İletileri şifrelemek , alıcıdan başkası tarafından okunmamasını sağlar.</string>
-    <string name="openpgp_description_text3">Şifreleme, yalnızca tüm alıcılar tarafından destekleniyorsa görünür ve size daha önce bir e-posta göndermiş olmalıdır.</string>
-    <string name="openpgp_description_text2">Bu simgeye tıklayarak şifrelemeyi açıp kapatın.</string>
+    <string name="enable_encryption">Şifrelemeyi etkinleştir</string>
+    <string name="disable_encryption">Şifrelemeyi devre dışı bırak</string>
+    <string name="openpgp_description_text1">İletileri şifrelemeniz, alıcıdan başkası tarafından okunamamalarını sağlar.</string>
+    <string name="openpgp_description_text3">Şifreleme, yalnızca tüm alıcılar tarafından destekleniyorsa ve size daha önce e-posta göndermişlerse kullanılabilir.</string>
+    <string name="openpgp_description_text2">Bu simgeye tıklayarak şifrelemeyi açıp kapatabilirsiniz.</string>
     <string name="openpgp_enabled_error_gotit">Anladım</string>
     <string name="openpgp_enabled_error_back">Geri</string>
-    <string name="openpgp_enabled_error_disable">şifreleme devre dışı</string>
+    <string name="openpgp_enabled_error_disable">Şifrelemeyi devre dışı bırak</string>
     <string name="openpgp_encryption">OpenPGP Şifreleme</string>
     <string name="account_settings_crypto_prefer_encrypt">Autocrypt karşılıklı kipi</string>
     <string name="dialog_autocrypt_mutual_title">Autocrypt karşılıklı kipi</string>

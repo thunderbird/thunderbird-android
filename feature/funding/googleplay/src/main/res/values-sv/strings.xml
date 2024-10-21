@@ -7,7 +7,17 @@
     <string name="funding_googleplay_contribution_header_description">Vi visar aldrig annonser eller säljer din data. Vi är helt finansierade av ekonomiska bidrag från våra användare. Om du gillar Thunderbird, vänligen hjälp till att stödja det. Vi kan inte göra detta utan dig!</string>
     <string name="funding_googleplay_contribution_list_title">Säkert bidrag</string>
     <string name="funding_googleplay_contribution_list_type_one_time">Donera en gång</string>
-    <string name="funding_googleplay_contribution_title">Inställningar</string>
+    <string name="funding_googleplay_contribution_title">Stöd Thunderbird</string>
     <string name="funding_googleplay_contribution_footer_manage_button">Ändra den månatliga betalningen</string>
     <string name="funding_googleplay_contribution_list_type_none_available">Inga tillgängliga</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Hjälp till att hålla Thunderbird vid liv</string>
+    <string name="funding_googleplay_contribution_list_error_retry_button">Försök igen</string>
+    <string name="funding_googleplay_contribution_error_purchase_failed">Köpet misslyckades.</string>
+    <string name="funding_googleplay_contribution_list_empty_title">Bidrag i appen är för närvarande inte tillgängliga.</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Besök www.thunderbird.net för fler sätt att stödja Thunderbird</string>
+    <string name="funding_googleplay_contribution_error_show_more">Visa fler detaljer</string>
+    <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Betalning är inte tillgänglig för närvarande</string>
+    <string name="funding_googleplay_contribution_error_dismiss_button">Ignorera felet</string>
+    <string name="funding_googleplay_contribution_error_unknown">Okänt fel</string>
+    <string name="funding_googleplay_contribution_error_service_disconnected">Bidrag är för närvarande inte tillgängliga.</string>
 </resources>

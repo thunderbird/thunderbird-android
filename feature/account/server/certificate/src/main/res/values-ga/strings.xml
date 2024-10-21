@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_warning_title">Rabhadh</string>
+    <string name="account_server_certificate_button_back">Téigh ar ais (molta)</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Earráid deimhnithe</string>
+    <string name="account_server_certificate_unknown_error_description_format">Bhraith an aip go bhféadfadh bagairt shlándála a bheith ann agus níor leanadh de nascadh le <xliff:g id="serverName">%s</xliff:g>.\nMá leanann tú ar aghaidh, d’fhéadfadh ionsaitheoirí iarracht faisnéis a ghoid amhail do phasfhocal nó ríomhphoist.</string>
+    <string name="account_server_certificate_button_advanced">Roghanna Ard</string>
+    <string name="account_server_certificate_button_continue">Glac le riosca agus lean ar aghaidh</string>
+    <string name="account_server_certificate_fingerprints_section">Méarloirg</string>
+    <string name="account_server_certificate_section_title">Deimhniú freastalaí</string>
+    <string name="account_server_certificate_subject_alternative_names">Ainmneacha malartacha ábhair</string>
+    <string name="account_server_certificate_not_valid_before">Gan bailí roimhe seo</string>
+    <string name="account_server_certificate_not_valid_after">Gan bailí tar éis</string>
+    <string name="account_server_certificate_subject">Ábhar</string>
+    <string name="account_server_certificate_issuer">Eisitheoir</string>
+</resources>

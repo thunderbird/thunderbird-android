@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_edit_save_server_settings_loading_message">Shranjevanje nastavitev strežnika …</string>
+    <string name="account_edit_save_server_settings_error_message">Shranjevanje nastavitev strežnika je spodletelo.</string>
+    <string name="account_edit_save_server_settings_success_message">Nastavitve strežnika so bile shranjene.</string>
+</resources>

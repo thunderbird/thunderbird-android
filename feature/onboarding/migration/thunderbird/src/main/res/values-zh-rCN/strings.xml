@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">已经在使用桌面版 Thunderbird？</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">导入设置</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">第一次使用 Thunderbird？</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">立即添加电子邮件账号</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">通过扫描二维码轻松导入您的账号设置。</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">在 Thunderbird 桌面版中，转到：</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">空间工具栏中的“设置”（左下角）</string>
+    <string name="onboarding_migration_thunderbird_import_title">从其他应用或设备迁移？</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">立即导入您的账号设置</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2">选择“导出到移动设备”并按照说明操作</string>
+</resources>

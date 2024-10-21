@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="star_button_description">Réalta</string>
+    <string name="okay_action">Ceart go leor</string>
+    <string name="cancel_action">Cealaigh</string>
+</resources>

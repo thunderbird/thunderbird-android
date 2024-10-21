@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_edit_save_server_settings_loading_message">Po ruhen rregullime shërbyesi…</string>
+    <string name="account_edit_save_server_settings_error_message">S’u arrit të ruhen rregullime shërbyesi</string>
+    <string name="account_edit_save_server_settings_success_message">Rregullimet e shërbyesit u ruajtën</string>
+</resources>

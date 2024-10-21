@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="unread_widget_select_account">Taispeáin comhaireamh neamhléite le haghaidh…</string>
+    <string name="unread_widget_account_title">Cuntas</string>
+    <string name="unread_widget_account_summary">Ba cheart an cuntas a bhfuil an líon neamhléite ina leith a thaispeáint</string>
+    <string name="unread_widget_unified_inbox_account_summary">Bosca Isteach Aontaithe</string>
+    <string name="unread_widget_action_done">Déanta</string>
+    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+    <string name="unread_widget_choose_account_title">Roghnaigh Cuntas</string>
+    <string name="unread_widget_label">Comhaireamh gan léamh</string>
+    <string name="unread_widget_folder_enabled_title">Comhaireamh fillteáin</string>
+    <string name="unread_widget_folder_enabled_summary">Taispeáin an comhaireamh neamhléite d\'fhillteán amháin</string>
+    <string name="unread_widget_folder_title">Fillteán</string>
+    <string name="unread_widget_folder_summary">Ba cheart an fillteán a bhfuil an comhaireamh neamhléite ina leith a thaispeáint</string>
+    <string name="unread_widget_account_not_selected">Níl aon chuntas roghnaithe</string>
+    <string name="unread_widget_folder_not_selected">Níor roghnaíodh aon fhillteán</string>
+</resources>

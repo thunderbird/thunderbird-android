@@ -1,0 +1,6 @@
+- Cuireadh tús leis an gcomhéadan úsáideora a thiontú go Ábhar 3
+- Tacaíocht bhreise do mailto: URI ar chlib NFC
+- Cur chuige turgnamhach breise don aip ag tuairteáil sa chúlra
+- Optamaigh cuid d'idirghníomhaíochtaí prótacail IMAP
+- Ná cuir moill ar an bhfógra a thaispeáint nuair a bhíonn Push gníomhach
+- Aistriúcháin nuashonraithe

@@ -1,1 +1,1 @@
-Thunderbird es una aplicación de correo electrónico 100% de código abierto y centrada en la privacidad.
+Thunderbird es una aplicación de correo libre, privada y de código abierto.

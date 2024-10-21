@@ -905,5 +905,5 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <string name="folder_settings_sync_label">Zapnout synchronizaci</string>
     <string name="folder_list_show_hidden_folders">Zobrazit skryté složky</string>
     <string name="folder_settings_visible_label">Zobrazit složku</string>
-    <string name="settings_list_action_support">Podpora <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="settings_list_action_support">Podpořte <xliff:g id="app_name">%s</xliff:g></string>
 </resources>

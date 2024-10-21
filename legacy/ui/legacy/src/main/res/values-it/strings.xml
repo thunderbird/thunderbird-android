@@ -896,4 +896,5 @@
     <string name="settings_ui_data_collection">Raccolta dati</string>
     <string name="folder_list_show_hidden_folders">Mostra cartelle nascoste</string>
     <string name="folder_settings_sync_label">Attiva sincronizzazione</string>
+    <string name="folder_settings_visible_label">Mostra cartella</string>
 </resources>

@@ -2,5 +2,4 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">Los</string>
     <string name="onboarding_welcome_import_button">Einstellungen importieren</string>
-    <string name="onboarding_welcome_message">Willkommen bei <xliff:g id="app_name">%s</xliff:g>, der Android-E-Mail-App, die für mehr Sicherheit, einfache Anpassung und nahtlose Verwaltung aller deiner E-Mail-Konten entwickelt wurde.</string>
 </resources>

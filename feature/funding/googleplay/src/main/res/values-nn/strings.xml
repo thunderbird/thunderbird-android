@@ -9,5 +9,6 @@
     <string name="funding_googleplay_contribution_list_type_recurring">Månadleg</string>
     <string name="funding_googleplay_contribution_list_type_none_available">Ingen tilgjengelege</string>
     <string name="funding_googleplay_contribution_footer_manage_button">Endre månadleg betaling</string>
-    <string name="funding_googleplay_contribution_title">Innstillingar</string>
+    <string name="funding_googleplay_contribution_title">Støtt Thunderbird</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Hjelp oss å halde Thunderbird i live</string>
 </resources>

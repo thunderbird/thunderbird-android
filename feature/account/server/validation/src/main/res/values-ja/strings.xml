@@ -6,7 +6,7 @@
     <string name="account_server_validation_error_network">ネットワークエラー</string>
     <string name="account_server_validation_outgoing_success">送信サーバーの設定を確認できました</string>
     <string name="account_server_validation_error_unknown">不明なエラー</string>
-    <string name="account_server_validation_sign_in">サインインしてください</string>
+    <string name="account_server_validation_sign_in">ログインしてください</string>
     <string name="account_server_validation_outgoing_loading_error">送信サーバーの設定の確認に失敗しました</string>
     <string name="account_server_validation_incoming_success">受信サーバーの設定を確認できました</string>
     <string name="account_server_validation_incoming_loading_error">受信サーバーの設定の確認に失敗しました</string>

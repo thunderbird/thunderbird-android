@@ -2,5 +2,4 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">Ek</string>
     <string name="onboarding_welcome_import_button">Enporti agordojn</string>
-    <string name="onboarding_welcome_message">Bonvenon al <xliff:g id="app_name">%s</xliff:g>, la retpoŝta kliento sur Android pli sekura, facile adaptebla, kaj optimumigita por administri ĉiujn viajn retpoŝtajn kontojn.</string>
 </resources>

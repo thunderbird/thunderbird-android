@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_server_validation_error_client_certificate_expired">Níl teastas an chliaint bailí a thuilleadh</string>
+    <string name="account_server_validation_error_missing_server_capability">Cumas freastalaí in easnamh</string>
+    <string name="account_server_validation_error_details">Sonraí:\n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Tá an cumas seo in easnamh ar an bhfreastalaí:\n%s</string>
+    <string name="account_server_validation_outgoing_loading_message">Socruithe freastalaí amach á seiceáil…</string>
+    <string name="account_server_validation_error_authentication">Earráid fhíordheimhnithe</string>
+    <string name="account_server_validation_error_network">Earráid líonra</string>
+    <string name="account_server_validation_error_server">Earráid freastalaí</string>
+    <string name="account_server_validation_incoming_loading_error">Theip ar shocruithe an fhreastalaí isteach a sheiceáil</string>
+    <string name="account_server_validation_error_unknown">Earráid anaithnid</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">Níorbh fhéidir teastas an chliaint a rochtain</string>
+    <string name="account_server_validation_incoming_success">Fíoraíodh socruithe freastalaí isteach</string>
+    <string name="account_server_validation_incoming_loading_message">Ag seiceáil socruithe freastalaí isteach…</string>
+    <string name="account_server_validation_outgoing_loading_error">Theip ar shocruithe an fhreastalaí amach a sheiceáil</string>
+    <string name="account_server_validation_outgoing_success">Fíoraíodh socruithe an fhreastalaí amach</string>
+    <string name="account_server_validation_sign_in">Sínigh isteach le do thoil</string>
+</resources>

@@ -2,5 +2,4 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">Hasi</string>
     <string name="onboarding_welcome_import_button">Ezarpenak inportatu</string>
-    <string name="onboarding_welcome_message">Ongi etorri <xliff:g id="app_name">%s</xliff:g>ra, zure posta-kontu guztien segurtasuna hobetzeko, pertsonalizazioa eta kudeaketa errazteko diseinatutako Android posta-bezerora.</string>
 </resources>

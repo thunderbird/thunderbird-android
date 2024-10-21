@@ -1,2 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="funding_googleplay_contribution_list_title">Contribució segura</string>
+    <string name="funding_googleplay_contribution_title">Dóna suport a Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">Donació única</string>
+    <string name="funding_googleplay_contribution_footer_payment_button">Continua amb el pagament</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Ajuda a mantenir viu el Thunderbird</string>
+    <string name="funding_googleplay_contribution_header_title">Dóna suport a Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">Mensual</string>
+    <string name="funding_googleplay_contribution_header_description">Mai mostrem anuncis ni venem les vostres dades. Estem totalment finançats amb les contribucions econòmiques dels nostres usuaris. Si us agrada Thunderbird, si us plau, ajudeu a donar-li suport. No podem fer això sense vostès!</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">Cap disponible</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">Les contribucions no són deduïbles fiscalment com a donacions benèfiques.</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">Modifica el pagament mensual</string>
+</resources>

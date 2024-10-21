@@ -2,5 +2,4 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">Nisjani</string>
     <string name="onboarding_welcome_import_button">Importo rregullime</string>
-    <string name="onboarding_welcome_message">Mirë se vini në <xliff:g id="app_name">%s</xliff:g>, klienti email për Android i hartuar për siguri të thelluar, përshtatje të lehtë dhe administrim pa të metë të krejt llogarive tuaja email.</string>
 </resources>

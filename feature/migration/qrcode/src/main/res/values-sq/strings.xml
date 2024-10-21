@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="migration_qrcode_permission_denied_title">Lypset leje përdorimi kamere</string>
+    <string name="migration_qrcode_permission_denied_message">Kaloni te rregullime Android-i, prekni mbi lejet dhe lejoni përdorim të kamerës.</string>
+    <string name="migration_qrcode_go_to_settings_button_text">Kaloni te rregullimet</string>
+    <string name="migration_qrcode_scanning_progress">Është skanuar %1$s nga %2$s</string>
+    <string name="migration_qrcode_done_button_text">U bë</string>
+</resources>

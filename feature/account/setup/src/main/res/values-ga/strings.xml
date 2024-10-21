@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Ní chuirtear muinín sa chumraíocht seo</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Cumraigh de láimh</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Cuir cumraíocht in eagar</string>
+    <string name="account_setup_special_folders_loading_message">Liosta fillteán á fháil…</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Dréachtaí fillteán</string>
+    <string name="account_setup_special_folders_trash_folder_label">Fillteán bruscar</string>
+    <string name="account_setup_special_folders_folder_none">Dada</string>
+    <string name="account_setup_special_folders_folder_automatic">Uathoibríoch (%s)</string>
+    <string name="account_setup_options_section_display_options">Roghanna taispeána</string>
+    <string name="account_setup_options_display_name_label">Do ainm</string>
+    <string name="account_setup_options_display_name_error_required">Tá d’ainm ag teastáil.</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Gach nóiméad</item>
+        <item quantity="two">Gach %d nóiméad</item>
+        <item quantity="few">Gach %d nóiméad</item>
+        <item quantity="many">Gach %d nóiméad</item>
+        <item quantity="other">Gach %d nóiméad</item>
+    </plurals>
+    <string name="account_setup_options_email_display_count_label">Líon na dteachtaireachtaí le taispeáint</string>
+    <string name="account_setup_auto_discovery_loading_message">Cumraíocht á lorg…</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Ní thacaítear leis an seoladh ríomhphoist seo.</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Tá pasfhocal ag teastáil.</string>
+    <string name="account_setup_error_network">Earráid líonra. Seiceáil stádas do cheangail agus bain triail eile as.</string>
+    <string name="account_setup_error_unknown">Earráid anaithnid</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">Tá seoladh ríomhphoist ag teastáil.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Ní cheadaítear an seoladh ríomhphoist seo.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Ní aithnítear é seo mar sheoladh ríomhphoist bailí.</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Níor aimsíodh an chumraíocht</string>
+    <string name="account_setup_auto_discovery_loading_error">Theip ar chumraíocht ríomhphoist a lódáil</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Aimsíodh an chumraíocht</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Cumraigh go huathoibríoch</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Tá muinín agam as an gcumraíocht seo</string>
+    <string name="account_setup_special_folders_form_description">Sonraigh na fillteáin speisialta le do chuntas.</string>
+    <string name="account_setup_special_folders_sent_folder_label">Fillteán seolta</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Tá sé riachtanach an chumraíocht a cheadú.</string>
+    <string name="account_setup_special_folders_spam_folder_label">Fillteán spam</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Fuaireamar cumraíocht do fhreastalaí ríomhphoist thar nasc nach bhfuil chomh slán agus ba mhaith linn. Ciallaíonn sé seo go bhfuil seans beag ann go bhféadfadh duine éigin é a athrú. An bhféadfá seiceáil faoi dhó ar an gcumraíocht a cuireadh ar fáil le cinntiú go bhfuil sé mar ba chóir?</string>
+    <string name="account_setup_special_folders_form_description_automatic">Leanfaidh an iontráil \"Uathoibríoch\" athruithe a rinne an freastalaí go huathoibríoch. Taispeántar luach reatha an fhreastalaí i lúibíní.</string>
+    <string name="account_setup_special_folders_error_message">Theip ar liosta na bhfillteán a fháil ón bhfreastalaí</string>
+    <string name="account_setup_special_folders_success_message">Tá gach fillteán speisialta cumraithe go huathoibríoch ag an bhfreastalaí.</string>
+    <string name="account_setup_special_folders_archive_folder_label">Fillteán cartlainne</string>
+    <string name="account_setup_options_account_name_label">Ainm an chuntais</string>
+    <string name="account_setup_options_account_name_error_blank">Ní féidir ainm an chuntais a bheith bán.</string>
+    <string name="account_setup_options_email_signature_error_blank">Ní féidir ainm sínithe ríomhphoist a bheith bán.</string>
+    <string name="account_setup_options_email_signature_label">Síniú ríomhphoist</string>
+    <string name="account_setup_options_section_sync_options">Roghanna sioncronaithe</string>
+    <string name="account_setup_options_account_check_frequency_label">Seiceáil minicíocht</string>
+    <string name="account_setup_options_show_notifications_label">Taispeáin fógraí</string>
+    <string name="account_setup_create_account_created">D\'éirigh leis an gcuntas a chruthú</string>
+    <string name="account_setup_options_email_check_frequency_never">Riamh</string>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Gach uair an chloig</item>
+        <item quantity="two">Gach %d uair an chloig</item>
+        <item quantity="few">Gach %d uair an chloig</item>
+        <item quantity="many">Gach %d uair an chloig</item>
+        <item quantity="other">Gach %d uair an chloig</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">1 teachtaireacht</item>
+        <item quantity="two">%d teachtaireacht</item>
+        <item quantity="few">%d teachtaireacht</item>
+        <item quantity="many">%d teachtaireacht</item>
+        <item quantity="other">%d teachtaireacht</item>
+    </plurals>
+    <string name="account_setup_create_account_creating">Cuntas á chruthú…</string>
+    <string name="account_setup_create_account_error">Tharla earráid agus an cuntas a chruthú</string>
+</resources>

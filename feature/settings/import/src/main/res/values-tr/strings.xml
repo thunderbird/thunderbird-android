@@ -2,7 +2,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="settings_import_title">Ayarları içe aktar</string>
     <string name="settings_import_pick_document_button">Dosya seç</string>
-    <string name="settings_import_button">İçe Aktar</string>
+    <string name="settings_import_button">İçe aktar</string>
     <string name="settings_import_success_generic">Ayarlar başarıyla içe aktarıldı</string>
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
     <string name="settings_import_password_required">Lütfen parolaları girin</string>

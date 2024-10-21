@@ -1,2 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="funding_googleplay_contribution_header_title">Apoie o Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">Contribuições não são deduzíveis em impostos como doações de caridade.</string>
+    <string name="funding_googleplay_contribution_footer_payment_button">Continuar para o pagamento</string>
+    <string name="funding_googleplay_contribution_title">Apoie o Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_title">Contribuição segura</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">Mensalmente</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">Nenhum disponível</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">Modificar pagamento mensal</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Ajude a manter o Thunderbird vivo</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">Dar uma vez</string>
+    <string name="funding_googleplay_contribution_header_description">Não mostramos anúncios ou vendemos seus dados. Somos totalmente suportados por doações de nossos usuários. Se você está gostando do Thunderbird, por favor nos ajude à suportá-lo. Não podemos fazer isso sem você!</string>
+</resources>
