@@ -180,6 +180,8 @@ jobs:
     outputs:
       k9mail_sha: ${{ steps.commit.outputs.k9mail_sha }}
       thunderbird_sha: ${{ steps.commit.outputs.thunderbird_sha }}
+      k9mail_github_notes: ${{ steps.render_notes.outputs.k9mail_github_notes }}
+      thunderbird_github_notes: ${{ steps.render_notes.outputs.thunderbird_github_notes }}
     steps:
       - name: Checkout repository
         if: ${{ contains(matrix.releaseTarget, 'github') }}
@@ -257,18 +259,30 @@ jobs:
           cat $GITHUB_OUTPUT
 
       - name: Render Release Notes
+        id: render_notes
         if: ${{ contains(matrix.releaseTarget, 'github') }}
         shell: bash
         env:
+          APP_NAME: ${{ matrix.appName }}
           APPLICATION_ID: ${{ steps.appinfo.outputs.APPLICATION_ID }}
           APPLICATION_LABEL: ${{ steps.appinfo.outputs.APPLICATION_LABEL }}
           VERSION_CODE: ${{ steps.bump_version_code.outputs.CODE }}
           FULL_VERSION_NAME: ${{ steps.appinfo.outputs.VERSION_NAME }}${{ steps.bump_version_suffix.outputs.SUFFIX || steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
         run: |
-          echo "<h2>${APPLICATION_LABEL} ${FULL_VERSION_NAME} Release Notes (${VERSION_CODE})</h2><pre>" | tee -a $GITHUB_STEP_SUMMARY
           mkdir -p ./app-metadata/${APPLICATION_ID}/en-US/changelogs
-          python ./scripts/render-notes.py ${APPLICATION_ID} ${FULL_VERSION_NAME} ${VERSION_CODE} | tee -a $GITHUB_STEP_SUMMARY
-          echo "</pre>" | tee -a $GITHUB_STEP_SUMMARY
+          GITHUB_NOTES_FILE="$(mktemp -d)/long-notes.txt"
+          python ./scripts/render-notes.py ${APPLICATION_ID} ${FULL_VERSION_NAME} ${VERSION_CODE} ${GITHUB_NOTES_FILE}
+
+          echo "${APP_NAME}_github_notes<<EOF" >> $GITHUB_OUTPUT
+          cat $GITHUB_NOTES_FILE >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          echo "<h2>${APPLICATION_LABEL} ${FULL_VERSION_NAME} Release Notes (${VERSION_CODE})</h2>" | tee -a $GITHUB_STEP_SUMMARY
+          echo -e "Summarized Version Notes\n\n\`\`\`" | tee -a $GITHUB_STEP_SUMMARY
+          cat ./app-metadata/${APPLICATION_ID}/en-US/changelogs/${VERSION_CODE}.txt | tee -a $GITHUB_STEP_SUMMARY
+          echo -e "\n\`\`\`\n\nLong Version Notes\n\n\`\`\`" | tee -a $GITHUB_STEP_SUMMARY
+          cat $GITHUB_NOTES_FILE | tee -a $GITHUB_STEP_SUMMARY
+          echo -e "\`\`\`" | tee -a $GITHUB_STEP_SUMMARY
 
       - name: Validate Release Notes Length
         if: ${{ contains(matrix.releaseTarget, 'github') }}
@@ -639,20 +653,24 @@ jobs:
           app-id: ${{ vars.RELEASER_APP_CLIENT_ID }}
           private-key: ${{ secrets.RELEASER_APP_PRIVATE_KEY }}
 
-      - name: Get release sha
-        id: sha
+      - name: Get release sha and notes
+        id: shanotes
         shell: bash
         env:
+          THUNDERBIRD_GITHUB_NOTES: ${{ needs.release_commit.outputs.thunderbird_github_notes }}
+          K9MAIL_GITHUB_NOTES: ${{ needs.release_commit.outputs.k9mail_github_notes }}
           THUNDERBIRD_SHA: ${{ needs.release_commit.outputs.thunderbird_sha }}
           K9MAIL_SHA: ${{ needs.release_commit.outputs.k9mail_sha }}
           APP_NAME: ${{ matrix.appName }}
         run: |
-          case "${APP_NAME}" in
-            thunderbird) APP_SHA=$THUNDERBIRD_SHA ;;
-            k9mail) APP_SHA=$K9MAIL_SHA ;;
-          esac
+          app_sha_name=${APP_NAME^^}_SHA
+          echo "app_sha=${!app_sha_name}" >> $GITHUB_OUTPUT
 
-          echo "app_sha=$APP_SHA" >> $GITHUB_OUTPUT
+          app_relnotes_name=${APP_NAME^^}_GITHUB_NOTES
+          echo "app_github_notes<<EOF" >> $GITHUB_OUTPUT
+          echo "${!app_relnotes_name}" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
           cat $GITHUB_OUTPUT
 
       - name: Publish to GitHub Releases
@@ -661,9 +679,10 @@ jobs:
         uses: softprops/action-gh-release@c062e08bd532815e2082a85e87e3ef29c3e6d191  # v2.0.8
         with:
           token: ${{ steps.app-token.outputs.token || github.token }}
-          target_commitish: ${{ steps.sha.outputs.app_sha }}
+          target_commitish: ${{ steps.shanotes.outputs.app_sha }}
           tag_name: ${{ steps.pkginfo.outputs.TAG_NAME }}
           name: ${{ steps.pkginfo.outputs.FULL_VERSION_NAME }}
+          body: ${{ steps.shanotes.outputs.app_github_notes }}
           prerelease: ${{ env.RELEASE_TYPE != 'release' }}
           fail_on_unmatched_files: true
           files: |
@@ -676,7 +695,7 @@ jobs:
           VERSION_CODE: ${{ steps.pkginfo.outputs.VERSION_CODE }}
           APPLICATION_ID: ${{ steps.pkginfo.outputs.APPLICATION_ID }}
           REPO: ${{ github.repository }}
-          APP_SHA: ${{ steps.sha.outputs.app_sha }}
+          APP_SHA: ${{ steps.shanotes.outputs.app_sha }}
         run: |
           # r0adkll/upload-google-play expects the release notes in a different structure
           FILEPATH=app-metadata/${APPLICATION_ID}/en-US/changelogs/${VERSION_CODE}.txt
@@ -708,7 +727,7 @@ jobs:
           playTargetTrack: ${{ matrix.playTargetTrack }}
           applicationId: ${{ steps.pkginfo.outputs.APPLICATION_ID }}
           releaseTarget: ${{ matrix.releaseTarget }}
-          appSha: ${{ steps.sha.outputs.app_sha }}
+          appSha: ${{ steps.shanotes.outputs.app_sha }}
           appName: ${{ matrix.appName }}
         with:
           script: |
