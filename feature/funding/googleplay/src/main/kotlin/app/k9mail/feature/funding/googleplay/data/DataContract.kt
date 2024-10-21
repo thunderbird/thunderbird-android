@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import com.android.billingclient.api.BillingClient as GoogleBillingClient
 import com.android.billingclient.api.BillingResult as GoogleBillingResult
 
-interface DataContract {
+internal interface DataContract {
 
     interface Mapper {
         interface Product {
@@ -24,9 +24,9 @@ interface DataContract {
         }
 
         interface BillingResult {
-            fun <T> mapToOutcome(
+            suspend fun <T> mapToOutcome(
                 billingResult: GoogleBillingResult,
-                transformSuccess: () -> T,
+                transformSuccess: suspend () -> T,
             ): Outcome<T, BillingError>
         }
     }
@@ -51,6 +51,16 @@ interface DataContract {
                 clientProvider: GoogleBillingClientProvider,
                 purchases: List<Purchase>,
             ): List<Contribution>
+
+            suspend fun handleOneTimePurchases(
+                clientProvider: GoogleBillingClientProvider,
+                purchases: List<Purchase>,
+            ): List<OneTimeContribution>
+
+            suspend fun handleRecurringPurchases(
+                clientProvider: GoogleBillingClientProvider,
+                purchases: List<Purchase>,
+            ): List<RecurringContribution>
         }
     }
 
@@ -66,7 +76,7 @@ interface DataContract {
          *
          * @param onConnected Callback to be invoked when the billing service is connected.
          */
-        suspend fun <T> connect(onConnected: suspend () -> T): T
+        suspend fun <T> connect(onConnected: suspend () -> Outcome<T, BillingError>): Outcome<T, BillingError>
 
         /**
          * Disconnect from the billing service.
@@ -78,19 +88,29 @@ interface DataContract {
          */
         suspend fun loadOneTimeContributions(
             productIds: List<String>,
-        ): List<OneTimeContribution>
+        ): Outcome<List<OneTimeContribution>, BillingError>
 
         /**
          * Load recurring contributions.
          */
         suspend fun loadRecurringContributions(
             productIds: List<String>,
-        ): List<RecurringContribution>
+        ): Outcome<List<RecurringContribution>, BillingError>
 
         /**
-         * Load purchased contributions.
+         * Load purchased one-time contributions.
          */
-        suspend fun loadPurchasedContributions(): List<Contribution>
+        suspend fun loadPurchasedOneTimeContributions(): Outcome<List<OneTimeContribution>, BillingError>
+
+        /**
+         *  Load purchased recurring contributions.
+         */
+        suspend fun loadPurchasedRecurringContributions(): Outcome<List<RecurringContribution>, BillingError>
+
+        /**
+         * Load the most recent one-time contribution.
+         */
+        suspend fun loadPurchasedOneTimeContributionHistory(): Outcome<OneTimeContribution?, BillingError>
 
         /**
          * Purchase a contribution.

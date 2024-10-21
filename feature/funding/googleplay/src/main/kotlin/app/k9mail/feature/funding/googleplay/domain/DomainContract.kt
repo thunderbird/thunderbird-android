@@ -23,17 +23,17 @@ interface DomainContract {
         /**
          * Load contributions.
          */
-        suspend fun loadOneTimeContributions(): List<OneTimeContribution>
+        suspend fun loadOneTimeContributions(): Outcome<List<OneTimeContribution>, BillingError>
 
         /**
          * Load recurring contributions.
          */
-        suspend fun loadRecurringContributions(): List<RecurringContribution>
+        suspend fun loadRecurringContributions(): Outcome<List<RecurringContribution>, BillingError>
 
         /**
          * Load purchased contributions.
          */
-        suspend fun loadPurchasedContributions(): List<Contribution>
+        suspend fun loadPurchasedContributions(): Outcome<List<Contribution>, BillingError>
 
         /**
          * Purchase a contribution.

@@ -3,16 +3,15 @@ package app.k9mail.feature.funding.googleplay.data
 import android.app.Activity
 import app.k9mail.core.common.cache.Cache
 import app.k9mail.feature.funding.googleplay.data.DataContract.Remote
+import app.k9mail.feature.funding.googleplay.data.remote.startConnection
 import app.k9mail.feature.funding.googleplay.domain.DomainContract.BillingError
 import app.k9mail.feature.funding.googleplay.domain.Outcome
 import app.k9mail.feature.funding.googleplay.domain.entity.Contribution
 import app.k9mail.feature.funding.googleplay.domain.entity.OneTimeContribution
 import app.k9mail.feature.funding.googleplay.domain.entity.RecurringContribution
-import app.k9mail.feature.funding.googleplay.domain.handle
+import app.k9mail.feature.funding.googleplay.domain.handleAsync
 import app.k9mail.feature.funding.googleplay.domain.mapFailure
-import com.android.billingclient.api.BillingClient.BillingResponseCode
 import com.android.billingclient.api.BillingClient.ProductType
-import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingFlowParams
 import com.android.billingclient.api.BillingFlowParams.ProductDetailsParams
 import com.android.billingclient.api.BillingResult
@@ -34,8 +33,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.suspendCancellableCoroutine
 import timber.log.Timber
 
 @Suppress("TooManyFunctions")
@@ -60,37 +57,16 @@ internal class GoogleBillingClient(
     override val purchasedContribution: StateFlow<Outcome<Contribution?, BillingError>> =
         _purchasedContribution.asStateFlow()
 
-    override suspend fun <T> connect(onConnected: suspend () -> T): T {
-        return suspendCancellableCoroutine { continuation ->
-            clientProvider.current.startConnection(
-                object : BillingClientStateListener {
-                    override fun onBillingSetupFinished(billingResult: BillingResult) {
-                        if (billingResult.responseCode == BillingResponseCode.OK) {
-                            continuation.resumeWith(
-                                Result.runCatching {
-                                    runBlocking { onConnected() }
-                                },
-                            )
-                        } else {
-                            continuation.resumeWith(
-                                Result.failure(
-                                    IllegalStateException(
-                                        "Error connecting to billing service: ${billingResult.responseCode}",
-                                    ),
-                                ),
-                            )
-                        }
-                    }
+    override suspend fun <T> connect(onConnected: suspend () -> Outcome<T, BillingError>): Outcome<T, BillingError> {
+        val connectionResult = clientProvider.current.startConnection()
+        val result = resultMapper.mapToOutcome(connectionResult) {}
 
-                    override fun onBillingServiceDisconnected() {
-                        continuation.resumeWith(
-                            Result.failure(
-                                IllegalStateException("Billing service disconnected"),
-                            ),
-                        )
-                    }
-                },
-            )
+        return when (result) {
+            is Outcome.Success -> {
+                onConnected()
+            }
+
+            is Outcome.Failure -> result
         }
     }
 
@@ -100,79 +76,80 @@ internal class GoogleBillingClient(
         clientProvider.clear()
     }
 
-    override suspend fun loadOneTimeContributions(productIds: List<String>): List<OneTimeContribution> {
+    override suspend fun loadOneTimeContributions(
+        productIds: List<String>,
+    ): Outcome<List<OneTimeContribution>, BillingError> {
         val oneTimeProductsResult = queryProducts(ProductType.INAPP, productIds)
-        return if (oneTimeProductsResult.billingResult.responseCode == BillingResponseCode.OK) {
+        return resultMapper.mapToOutcome(oneTimeProductsResult.billingResult) {
             oneTimeProductsResult.productDetailsList.orEmpty().map {
                 val contribution = productMapper.mapToOneTimeContribution(it)
                 productCache[it.productId] = it
                 contribution
             }
-        } else {
-            Timber.e(
-                "Error loading one-time products: ${oneTimeProductsResult.billingResult.responseCode}",
-            )
-            emptyList()
+        }.mapFailure { billingError, _ ->
+            Timber.e("Error loading one-time products: ${oneTimeProductsResult.billingResult.debugMessage}")
+            billingError
         }
     }
 
-    override suspend fun loadRecurringContributions(productIds: List<String>): List<RecurringContribution> {
+    override suspend fun loadRecurringContributions(
+        productIds: List<String>,
+    ): Outcome<List<RecurringContribution>, BillingError> {
         val recurringProductsResult = queryProducts(ProductType.SUBS, productIds)
-        return if (recurringProductsResult.billingResult.responseCode == BillingResponseCode.OK) {
+        return resultMapper.mapToOutcome(recurringProductsResult.billingResult) {
             recurringProductsResult.productDetailsList.orEmpty().map {
                 val contribution = productMapper.mapToRecurringContribution(it)
                 productCache[it.productId] = it
                 contribution
             }
-        } else {
-            Timber.e(
-                "Error querying recurring products: ${recurringProductsResult.billingResult.debugMessage}",
-            )
-            emptyList()
+        }.mapFailure { billingError, _ ->
+            Timber.e("Error loading recurring products: ${recurringProductsResult.billingResult.debugMessage}")
+            billingError
         }
     }
 
-    override suspend fun loadPurchasedContributions(): List<Contribution> {
-        val inAppPurchases = queryPurchase(ProductType.INAPP)
-        val subscriptionPurchases = queryPurchase(ProductType.SUBS)
-        val contributions = purchaseHandler.handlePurchases(
-            clientProvider = clientProvider,
-            purchases = inAppPurchases.purchasesList + subscriptionPurchases.purchasesList,
-        )
-        val recentContribution = if (inAppPurchases.purchasesList.isEmpty()) {
-            loadInAppPurchaseHistory()
-        } else {
-            null
-        }
-
-        return if (recentContribution != null) {
-            contributions + recentContribution
-        } else {
-            contributions
+    override suspend fun loadPurchasedOneTimeContributions(): Outcome<List<OneTimeContribution>, BillingError> {
+        val purchasesResult = queryPurchase(ProductType.INAPP)
+        return resultMapper.mapToOutcome(purchasesResult.billingResult) {
+            purchaseHandler.handleOneTimePurchases(clientProvider, purchasesResult.purchasesList)
+        }.mapFailure { billingError, _ ->
+            Timber.e("Error loading one-time purchases: ${purchasesResult.billingResult.debugMessage}")
+            billingError
         }
     }
 
-    private suspend fun loadInAppPurchaseHistory(): Contribution? {
+    override suspend fun loadPurchasedRecurringContributions(): Outcome<List<RecurringContribution>, BillingError> {
+        val purchasesResult = queryPurchase(ProductType.INAPP)
+        return resultMapper.mapToOutcome(purchasesResult.billingResult) {
+            purchaseHandler.handleRecurringPurchases(clientProvider, purchasesResult.purchasesList)
+        }.mapFailure { billingError, _ ->
+            Timber.e("Error loading recurring purchases: ${purchasesResult.billingResult.debugMessage}")
+            billingError
+        }
+    }
+
+    override suspend fun loadPurchasedOneTimeContributionHistory(): Outcome<OneTimeContribution?, BillingError> {
         val queryPurchaseHistoryParams = QueryPurchaseHistoryParams.newBuilder()
             .setProductType(ProductType.INAPP)
             .build()
 
-        val result = clientProvider.current.queryPurchaseHistory(queryPurchaseHistoryParams)
-        return if (result.billingResult.responseCode == BillingResponseCode.OK) {
-            val recentPurchaseId = result.purchaseHistoryRecordList.orEmpty().firstOrNull()?.products?.filter {
-                productCache.hasKey(it)
-            }?.firstOrNull()
+        val purchasesResult = clientProvider.current.queryPurchaseHistory(queryPurchaseHistoryParams)
+        return resultMapper.mapToOutcome(purchasesResult.billingResult) {
+            val recentPurchaseId =
+                purchasesResult.purchaseHistoryRecordList.orEmpty().firstOrNull()?.products?.firstOrNull {
+                    productCache.hasKey(it)
+                }
 
             if (recentPurchaseId != null) {
                 val recentPurchase = productCache[recentPurchaseId]
-                productMapper.mapToContribution(recentPurchase!!)
+                productMapper.mapToOneTimeContribution(recentPurchase!!)
             } else {
-                Timber.e("No recent purchase found: ${result.billingResult.debugMessage}")
+                Timber.e("No recent purchase found: ${purchasesResult.billingResult.debugMessage}")
                 null
             }
-        } else {
-            Timber.e("Error querying purchase history: ${result.billingResult.debugMessage}")
-            null
+        }.mapFailure { billingError, _ ->
+            Timber.e("Error loading one-time purchase history: ${purchasesResult.billingResult.debugMessage}")
+            billingError
         }
     }
 
@@ -211,9 +188,8 @@ internal class GoogleBillingClient(
         activity: Activity,
         contribution: Contribution,
     ): Outcome<Unit, BillingError> {
-        val productDetails = productCache[contribution.id] ?: return Outcome.failure(
-            BillingError.PurchaseFailed("Product details not found for ${contribution.id}"),
-        )
+        val productDetails = productCache[contribution.id]
+            ?: return Outcome.failure(BillingError.PurchaseFailed("ProductDetails not found: ${contribution.id}"))
         val offerToken = productDetails.subscriptionOfferDetails?.firstOrNull()?.offerToken
 
         val productDetailsParamsList = listOf(
@@ -241,10 +217,10 @@ internal class GoogleBillingClient(
     }
 
     override fun onPurchasesUpdated(billingResult: BillingResult, purchases: MutableList<Purchase>?) {
-        resultMapper.mapToOutcome(billingResult) { }.handle(
-            onSuccess = {
-                if (purchases != null) {
-                    coroutineScope.launch {
+        coroutineScope.launch {
+            resultMapper.mapToOutcome(billingResult) { }.handleAsync(
+                onSuccess = {
+                    if (purchases != null) {
                         val contributions = purchaseHandler.handlePurchases(clientProvider, purchases)
                         if (contributions.isNotEmpty()) {
                             _purchasedContribution.emit(
@@ -254,15 +230,15 @@ internal class GoogleBillingClient(
                             )
                         }
                     }
-                }
-            },
-            onFailure = { error ->
-                Timber.e(
-                    "Error onPurchasesUpdated: " +
-                        "${billingResult.responseCode}: ${billingResult.debugMessage}",
-                )
-                _purchasedContribution.value = Outcome.failure(error)
-            },
-        )
+                },
+                onFailure = { error ->
+                    Timber.e(
+                        "Error onPurchasesUpdated: " +
+                            "${billingResult.responseCode}: ${billingResult.debugMessage}",
+                    )
+                    _purchasedContribution.value = Outcome.failure(error)
+                },
+            )
+        }
     }
 }

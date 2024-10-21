@@ -8,9 +8,9 @@ import com.android.billingclient.api.BillingResult
 
 class BillingResultMapper : Mapper.BillingResult {
 
-    override fun <T> mapToOutcome(
+    override suspend fun <T> mapToOutcome(
         billingResult: BillingResult,
-        transformSuccess: () -> T,
+        transformSuccess: suspend () -> T,
     ): Outcome<T, BillingError> {
         return when (billingResult.responseCode) {
             BillingResponseCode.OK -> {

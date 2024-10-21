@@ -14,13 +14,15 @@ class FakeBillingManager : DomainContract.BillingManager {
         Outcome.success(null),
     )
 
-    override suspend fun loadOneTimeContributions() = FakeData.oneTimeContributions
+    override suspend fun loadOneTimeContributions() = Outcome.success(FakeData.oneTimeContributions)
 
-    override suspend fun loadRecurringContributions() = FakeData.recurringContributions
+    override suspend fun loadRecurringContributions() = Outcome.success(FakeData.recurringContributions)
 
-    override suspend fun loadPurchasedContributions(): List<Contribution> {
-        return listOf(
-            FakeData.oneTimeContributions.first(),
+    override suspend fun loadPurchasedContributions(): Outcome<List<Contribution>, BillingError> {
+        return Outcome.success(
+            listOf(
+                FakeData.oneTimeContributions.first(),
+            ),
         )
     }
 

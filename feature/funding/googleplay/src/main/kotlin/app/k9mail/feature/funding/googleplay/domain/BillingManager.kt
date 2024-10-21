@@ -8,7 +8,7 @@ import app.k9mail.feature.funding.googleplay.domain.entity.OneTimeContribution
 import app.k9mail.feature.funding.googleplay.domain.entity.RecurringContribution
 import kotlinx.coroutines.flow.StateFlow
 
-class BillingManager(
+internal class BillingManager(
     private val billingClient: DataContract.BillingClient,
     private val contributionIdProvider: DomainContract.ContributionIdProvider,
 ) : DomainContract.BillingManager {
@@ -16,24 +16,41 @@ class BillingManager(
     override val purchasedContribution: StateFlow<Outcome<Contribution?, BillingError>> =
         billingClient.purchasedContribution
 
-    override suspend fun loadOneTimeContributions(): List<OneTimeContribution> {
+    override suspend fun loadOneTimeContributions(): Outcome<List<OneTimeContribution>, BillingError> {
         return billingClient.connect {
-            billingClient.loadOneTimeContributions(contributionIdProvider.oneTimeContributionIds)
-                .sortedByDescending { it.price }
+            billingClient.loadOneTimeContributions(
+                productIds = contributionIdProvider.oneTimeContributionIds,
+            ).mapSuccess { contributions ->
+                contributions.sortedByDescending { it.price }
+            }
         }
     }
 
-    override suspend fun loadRecurringContributions(): List<RecurringContribution> {
+    override suspend fun loadRecurringContributions(): Outcome<List<RecurringContribution>, BillingError> {
         return billingClient.connect {
-            billingClient.loadRecurringContributions(contributionIdProvider.recurringContributionIds)
-                .sortedByDescending { it.price }
+            billingClient.loadRecurringContributions(
+                productIds = contributionIdProvider.recurringContributionIds,
+            ).mapSuccess { contributions ->
+                contributions.sortedByDescending { it.price }
+            }
         }
     }
 
-    override suspend fun loadPurchasedContributions(): List<Contribution> {
+    override suspend fun loadPurchasedContributions(): Outcome<List<Contribution>, BillingError> {
         return billingClient.connect {
-            billingClient.loadPurchasedContributions()
-                .sortedByDescending { it.price }
+            billingClient.loadPurchasedRecurringContributions().flatMapSuccess { recurringContributions ->
+                if (recurringContributions.isEmpty()) {
+                    billingClient.loadPurchasedOneTimeContributionHistory().flatMapSuccess { contribution ->
+                        if (contribution != null) {
+                            Outcome.success(listOf(contribution))
+                        } else {
+                            Outcome.success(emptyList())
+                        }
+                    }
+                } else {
+                    Outcome.success(recurringContributions.sortedByDescending { it.price })
+                }
+            }
         }
     }
 

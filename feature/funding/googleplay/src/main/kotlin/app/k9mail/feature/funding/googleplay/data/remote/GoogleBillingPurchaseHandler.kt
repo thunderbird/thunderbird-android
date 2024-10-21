@@ -4,6 +4,8 @@ import app.k9mail.core.common.cache.Cache
 import app.k9mail.feature.funding.googleplay.data.DataContract
 import app.k9mail.feature.funding.googleplay.data.DataContract.Remote
 import app.k9mail.feature.funding.googleplay.domain.entity.Contribution
+import app.k9mail.feature.funding.googleplay.domain.entity.OneTimeContribution
+import app.k9mail.feature.funding.googleplay.domain.entity.RecurringContribution
 import com.android.billingclient.api.AcknowledgePurchaseParams
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClient.BillingResponseCode
@@ -16,7 +18,10 @@ import com.android.billingclient.api.acknowledgePurchase
 import com.android.billingclient.api.consumePurchase
 import timber.log.Timber
 
-class GoogleBillingPurchaseHandler(
+// TODO propagate errors via Outcome
+// TODO optimize purchase handling and reduce duplicate code
+@Suppress("TooManyFunctions")
+internal class GoogleBillingPurchaseHandler(
     private val productCache: Cache<String, ProductDetails>,
     private val productMapper: DataContract.Mapper.Product,
 ) : Remote.GoogleBillingPurchaseHandler {
@@ -30,6 +35,24 @@ class GoogleBillingPurchaseHandler(
         }
     }
 
+    override suspend fun handleOneTimePurchases(
+        clientProvider: Remote.GoogleBillingClientProvider,
+        purchases: List<Purchase>,
+    ): List<OneTimeContribution> {
+        return purchases.flatMap { purchase ->
+            handleOneTimePurchase(clientProvider.current, purchase)
+        }
+    }
+
+    override suspend fun handleRecurringPurchases(
+        clientProvider: Remote.GoogleBillingClientProvider,
+        purchases: List<Purchase>
+    ): List<RecurringContribution> {
+        return purchases.flatMap { purchase ->
+            handleRecurringPurchase(clientProvider.current, purchase)
+        }
+    }
+
     private suspend fun handlePurchase(
         billingClient: BillingClient,
         purchase: Purchase,
@@ -39,6 +62,26 @@ class GoogleBillingPurchaseHandler(
         acknowledgePurchase(billingClient, purchase)
 
         return extractContributions(purchase)
+    }
+
+    private suspend fun handleOneTimePurchase(
+        billingClient: BillingClient,
+        purchase: Purchase,
+    ): List<OneTimeContribution> {
+        // TODO verify purchase with public key
+        consumePurchase(billingClient, purchase)
+
+        return extractOneTimeContributions(purchase)
+    }
+
+    private suspend fun handleRecurringPurchase(
+        billingClient: BillingClient,
+        purchase: Purchase,
+    ): List<RecurringContribution> {
+        // TODO verify purchase with public key
+        acknowledgePurchase(billingClient, purchase)
+
+        return extractRecurringContributions(purchase)
     }
 
     private suspend fun acknowledgePurchase(
@@ -85,9 +128,29 @@ class GoogleBillingPurchaseHandler(
             return emptyList()
         }
 
+        return extractOneTimeContributions(purchase) + extractRecurringContributions(purchase)
+    }
+
+
+    private fun extractOneTimeContributions(purchase: Purchase): List<OneTimeContribution> {
+        if (purchase.purchaseState != Purchase.PurchaseState.PURCHASED) {
+            return emptyList()
+        }
+
+        return purchase.products.mapNotNull { product ->
+            productCache[product]
+        }.filter { it.productType == ProductType.INAPP }
+            .map { productMapper.mapToOneTimeContribution(it) }
+    }
+
+    private fun extractRecurringContributions(purchase: Purchase): List<RecurringContribution> {
+        if (purchase.purchaseState != Purchase.PurchaseState.PURCHASED) {
+            return emptyList()
+        }
+
         return purchase.products.mapNotNull { product ->
             productCache[product]
         }.filter { it.productType == ProductType.SUBS }
-            .map { productMapper.mapToContribution(it) }
+            .map { productMapper.mapToRecurringContribution(it) }
     }
 }

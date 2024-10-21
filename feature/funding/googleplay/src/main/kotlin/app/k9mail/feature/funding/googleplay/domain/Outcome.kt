@@ -90,3 +90,19 @@ fun <SUCCESS, FAILURE> Outcome<SUCCESS, FAILURE>.handle(
         is Outcome.Failure -> onFailure(error)
     }
 }
+
+/**
+ * Handle the value of an [Outcome] and execute the given function.
+ *
+ * @param onSuccess The function to execute if the outcome is a [Success].
+ * @param onFailure The function to execute if the outcome is a [Failure].
+ */
+suspend fun <SUCCESS, FAILURE> Outcome<SUCCESS, FAILURE>.handleAsync(
+    onSuccess: suspend (SUCCESS) -> Unit,
+    onFailure: suspend (FAILURE) -> Unit,
+) {
+    when (this) {
+        is Outcome.Success -> onSuccess(data)
+        is Outcome.Failure -> onFailure(error)
+    }
+}
