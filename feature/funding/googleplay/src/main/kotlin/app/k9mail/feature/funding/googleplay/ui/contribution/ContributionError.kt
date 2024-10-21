@@ -79,7 +79,7 @@ private fun ContributionErrorView(
                 if (description.isNotEmpty()) {
                     Icon(
                         imageVector = if (showDetails.value) Icons.Outlined.ExpandLess else Icons.Outlined.ExpandMore,
-                        contentDescription = "Show more details",
+                        contentDescription = stringResource(R.string.funding_googleplay_contribution_error_show_more),
                         modifier = Modifier
                             .clickable { showDetails.value = !showDetails.value }
                             .padding(MainTheme.spacings.quarter),
@@ -87,7 +87,7 @@ private fun ContributionErrorView(
                 }
                 Icon(
                     imageVector = Icons.Outlined.Close,
-                    contentDescription = "Dismiss error",
+                    contentDescription = stringResource(R.string.funding_googleplay_contribution_error_dismiss_button),
                     modifier = Modifier
                         .clickable { onDismissClick() }
                         .padding(MainTheme.spacings.quarter),
@@ -105,7 +105,7 @@ private fun ContributionErrorView(
 }
 
 @Composable
-private fun mapErrorToTitle(error: BillingError): String {
+internal fun mapErrorToTitle(error: BillingError): String {
     return when (error) {
         is BillingError.PurchaseFailed -> {
             stringResource(R.string.funding_googleplay_contribution_error_purchase_failed)

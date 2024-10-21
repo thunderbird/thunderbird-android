@@ -46,7 +46,7 @@ internal class GoogleBillingPurchaseHandler(
 
     override suspend fun handleRecurringPurchases(
         clientProvider: Remote.GoogleBillingClientProvider,
-        purchases: List<Purchase>
+        purchases: List<Purchase>,
     ): List<RecurringContribution> {
         return purchases.flatMap { purchase ->
             handleRecurringPurchase(clientProvider.current, purchase)
@@ -130,7 +130,6 @@ internal class GoogleBillingPurchaseHandler(
 
         return extractOneTimeContributions(purchase) + extractRecurringContributions(purchase)
     }
-
 
     private fun extractOneTimeContributions(purchase: Purchase): List<OneTimeContribution> {
         if (purchase.purchaseState != Purchase.PurchaseState.PURCHASED) {

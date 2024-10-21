@@ -15,6 +15,7 @@ import app.k9mail.feature.funding.googleplay.data.remote.GoogleBillingPurchaseHa
 import app.k9mail.feature.funding.googleplay.domain.BillingManager
 import app.k9mail.feature.funding.googleplay.domain.ContributionIdProvider
 import app.k9mail.feature.funding.googleplay.domain.DomainContract
+import app.k9mail.feature.funding.googleplay.domain.usecase.GetAvailableContributions
 import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionViewModel
 import com.android.billingclient.api.ProductDetails
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -70,9 +71,16 @@ val featureFundingModule = module {
         )
     }
 
+    single<DomainContract.UseCase.GetAvailableContributions> {
+        GetAvailableContributions(
+            billingManager = get(),
+        )
+    }
+
     viewModel {
         ContributionViewModel(
             billingManager = get(),
+            getAvailableContributions = get(),
         )
     }
 }

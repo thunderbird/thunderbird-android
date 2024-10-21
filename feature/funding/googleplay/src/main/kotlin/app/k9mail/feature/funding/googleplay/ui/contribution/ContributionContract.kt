@@ -12,18 +12,28 @@ import kotlinx.collections.immutable.persistentListOf
 
 internal class ContributionContract {
 
-    interface ViewModel : UnidirectionalViewModel<State, Event, Nothing>
+    interface ViewModel : UnidirectionalViewModel<State, Event, Effect>
 
     @Stable
     data class State(
+        val listState: ContributionListState = ContributionListState(),
+        val purchasedContribution: Contribution? = null,
+
+        val showContributionList: Boolean = true,
+        val showRecurringContributions: Boolean = false,
+
+        val purchaseError: BillingError? = null,
+    )
+
+    @Stable
+    data class ContributionListState(
         val oneTimeContributions: ImmutableList<OneTimeContribution> = persistentListOf(),
         val recurringContributions: ImmutableList<RecurringContribution> = persistentListOf(),
         val selectedContribution: Contribution? = null,
-        val purchasedContribution: Contribution? = null,
-        val showContributionList: Boolean = true,
         val isRecurringContributionSelected: Boolean = false,
 
-        val purchaseError: BillingError? = null,
+        val error: BillingError? = null,
+        val isLoading: Boolean = true,
     )
 
     sealed interface Event {
@@ -36,14 +46,24 @@ internal class ContributionContract {
             val item: Contribution,
         ) : Event
 
-        data class OnPurchaseClicked(
-            val activity: Activity,
-        ) : Event
+        data object OnPurchaseClicked : Event
 
         data class OnManagePurchaseClicked(
             val contribution: Contribution,
         ) : Event
 
         data object OnDismissPurchaseErrorClicked : Event
+
+        data object OnRetryClicked : Event
+    }
+
+    sealed interface Effect {
+        data class PurchaseContribution(
+            val startPurchaseFlow: (Activity) -> Unit,
+        ) : Effect
+
+        data class ManageSubscription(
+            val productId: String,
+        ) : Effect
     }
 }

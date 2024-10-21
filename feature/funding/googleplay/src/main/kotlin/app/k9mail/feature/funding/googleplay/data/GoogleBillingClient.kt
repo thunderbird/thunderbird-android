@@ -119,7 +119,7 @@ internal class GoogleBillingClient(
     }
 
     override suspend fun loadPurchasedRecurringContributions(): Outcome<List<RecurringContribution>, BillingError> {
-        val purchasesResult = queryPurchase(ProductType.INAPP)
+        val purchasesResult = queryPurchase(ProductType.SUBS)
         return resultMapper.mapToOutcome(purchasesResult.billingResult) {
             purchaseHandler.handleRecurringPurchases(clientProvider, purchasesResult.purchasesList)
         }.mapFailure { billingError, _ ->

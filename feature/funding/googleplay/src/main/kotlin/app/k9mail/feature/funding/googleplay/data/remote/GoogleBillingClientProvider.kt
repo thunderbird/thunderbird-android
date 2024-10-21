@@ -9,7 +9,7 @@ import com.android.billingclient.api.PurchasesUpdatedListener
 /**
  * Google Billing client provider.
  *
- *  * It is responsible for creating and managing the billing client instance
+ * It is responsible for creating and managing the billing client instance
  */
 class GoogleBillingClientProvider(
     private val context: Context,
@@ -18,12 +18,7 @@ class GoogleBillingClientProvider(
     private var clientInstance: BillingClient? = null
 
     override val current: BillingClient
-        get() = if (clientInstance != null) {
-            clientInstance!!
-        } else {
-            clientInstance = createBillingClient()
-            clientInstance!!
-        }
+        get() = clientInstance ?: createBillingClient().also { clientInstance = it }
 
     private var listener: PurchasesUpdatedListener? = null
 

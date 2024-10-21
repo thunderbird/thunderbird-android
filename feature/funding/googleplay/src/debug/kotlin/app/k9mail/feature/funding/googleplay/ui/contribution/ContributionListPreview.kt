@@ -3,6 +3,8 @@ package app.k9mail.feature.funding.googleplay.ui.contribution
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
+import app.k9mail.feature.funding.googleplay.domain.DomainContract
+import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionContract.ContributionListState
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
@@ -10,13 +12,17 @@ import kotlinx.collections.immutable.persistentListOf
 internal fun ContributionListPreview() {
     PreviewWithTheme {
         ContributionList(
-            oneTimeContributions = FakeData.oneTimeContributions,
-            recurringContributions = FakeData.recurringContributions,
-            isRecurringContributionSelected = true,
-            selectedItem = FakeData.recurringContributions.first(),
+            state = ContributionListState(
+                oneTimeContributions = FakeData.oneTimeContributions,
+                recurringContributions = FakeData.recurringContributions,
+                selectedContribution = FakeData.recurringContributions.first(),
+                isRecurringContributionSelected = true,
+                isLoading = false,
+            ),
             onOneTimeContributionTypeClick = {},
             onRecurringContributionTypeClick = {},
             onItemClick = {},
+            onRetryClick = {},
         )
     }
 }
@@ -26,13 +32,17 @@ internal fun ContributionListPreview() {
 internal fun ContributionListRecurringPreview() {
     PreviewWithTheme {
         ContributionList(
-            oneTimeContributions = FakeData.oneTimeContributions,
-            recurringContributions = FakeData.recurringContributions,
-            selectedItem = FakeData.oneTimeContributions.last(),
-            isRecurringContributionSelected = false,
+            state = ContributionListState(
+                oneTimeContributions = FakeData.oneTimeContributions,
+                recurringContributions = FakeData.recurringContributions,
+                selectedContribution = FakeData.oneTimeContributions.last(),
+                isRecurringContributionSelected = false,
+                isLoading = false,
+            ),
             onOneTimeContributionTypeClick = {},
             onRecurringContributionTypeClick = {},
             onItemClick = {},
+            onRetryClick = {},
         )
     }
 }
@@ -42,13 +52,17 @@ internal fun ContributionListRecurringPreview() {
 internal fun ContributionListOneTimeOnlyPreview() {
     PreviewWithTheme {
         ContributionList(
-            oneTimeContributions = FakeData.oneTimeContributions,
-            recurringContributions = persistentListOf(),
-            selectedItem = null,
-            isRecurringContributionSelected = false,
+            state = ContributionListState(
+                oneTimeContributions = FakeData.oneTimeContributions,
+                recurringContributions = persistentListOf(),
+                selectedContribution = null,
+                isRecurringContributionSelected = false,
+                isLoading = false,
+            ),
             onOneTimeContributionTypeClick = {},
             onRecurringContributionTypeClick = {},
             onItemClick = {},
+            onRetryClick = {},
         )
     }
 }
@@ -58,13 +72,17 @@ internal fun ContributionListOneTimeOnlyPreview() {
 internal fun ContributionListRecurringOnlyPreview() {
     PreviewWithTheme {
         ContributionList(
-            oneTimeContributions = persistentListOf(),
-            recurringContributions = FakeData.recurringContributions,
-            selectedItem = null,
-            isRecurringContributionSelected = true,
+            state = ContributionListState(
+                oneTimeContributions = persistentListOf(),
+                recurringContributions = FakeData.recurringContributions,
+                selectedContribution = null,
+                isRecurringContributionSelected = true,
+                isLoading = false,
+            ),
             onOneTimeContributionTypeClick = {},
             onRecurringContributionTypeClick = {},
             onItemClick = {},
+            onRetryClick = {},
         )
     }
 }
@@ -74,13 +92,60 @@ internal fun ContributionListRecurringOnlyPreview() {
 internal fun ContributionListEmptyPreview() {
     PreviewWithTheme {
         ContributionList(
-            oneTimeContributions = persistentListOf(),
-            recurringContributions = persistentListOf(),
-            selectedItem = null,
-            isRecurringContributionSelected = false,
+            state = ContributionListState(
+                oneTimeContributions = persistentListOf(),
+                recurringContributions = persistentListOf(),
+                selectedContribution = null,
+                isRecurringContributionSelected = false,
+                isLoading = false,
+            ),
             onOneTimeContributionTypeClick = {},
             onRecurringContributionTypeClick = {},
             onItemClick = {},
+            onRetryClick = {},
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun ContributionListLoadingPreview() {
+    PreviewWithTheme {
+        ContributionList(
+            state = ContributionListState(
+                oneTimeContributions = persistentListOf(),
+                recurringContributions = persistentListOf(),
+                selectedContribution = null,
+                isRecurringContributionSelected = false,
+                isLoading = true,
+            ),
+            onOneTimeContributionTypeClick = {},
+            onRecurringContributionTypeClick = {},
+            onItemClick = {},
+            onRetryClick = {},
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun ContributionListErrorPreview() {
+    PreviewWithTheme {
+        ContributionList(
+            state = ContributionListState(
+                oneTimeContributions = persistentListOf(),
+                recurringContributions = persistentListOf(),
+                selectedContribution = null,
+                isRecurringContributionSelected = false,
+                isLoading = false,
+                error = DomainContract.BillingError.UnknownError(
+                    "An error occurred",
+                ),
+            ),
+            onOneTimeContributionTypeClick = {},
+            onRecurringContributionTypeClick = {},
+            onItemClick = {},
+            onRetryClick = {},
         )
     }
 }

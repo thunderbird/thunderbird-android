@@ -1,6 +1,7 @@
 package app.k9mail.feature.funding.googleplay.domain
 
 import android.app.Activity
+import app.k9mail.feature.funding.googleplay.domain.entity.AvailableContributions
 import app.k9mail.feature.funding.googleplay.domain.entity.Contribution
 import app.k9mail.feature.funding.googleplay.domain.entity.OneTimeContribution
 import app.k9mail.feature.funding.googleplay.domain.entity.RecurringContribution
@@ -8,6 +9,12 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.StateFlow
 
 interface DomainContract {
+
+    interface UseCase {
+        fun interface GetAvailableContributions {
+            suspend operator fun invoke(): Outcome<AvailableContributions, BillingError>
+        }
+    }
 
     interface ContributionIdProvider {
         val oneTimeContributionIds: ImmutableList<String>
