@@ -65,6 +65,10 @@ jobs:
           releaseType: ${{ vars.RELEASE_TYPE }}
           skipThunderbird: ${{ inputs.skipThunderbird }}
           skipK9Mail: ${{ inputs.skipK9Mail }}
+          skipTests: ${{ inputs.skipTests }}
+          skipBetaBump: ${{ inputs.skipBetaBump }}
+          skipGooglePlay: ${{ inputs.skipGooglePlay }}
+          draftGooglePlay: ${{ inputs.draftGooglePlay }}
         with:
           script: |
             let matrix = JSON.parse(process.env.matrixInclude);
@@ -108,11 +112,22 @@ jobs:
               .write();
 
               if (skipThunderbird) {
-                await core.summary.addList(["Thunderbird is being skipped in this build"]).write();
+                await core.summary.addList(["Thunderbird build is being skipped"]).write();
               }
-
               if (skipK9Mail) {
-                await core.summary.addList(["K-9 Mail is being skipped in this build"]).write();
+                await core.summary.addList(["K-9 Mail build is being skipped"]).write();
+              }
+              if (process.env.skipTests == "true") {
+                await core.summary.addList(["Tests are being skipped"]).write();
+              }
+              if (process.env.skipBetaBump == "true" && process.env.releaseType == "beta") {
+                await core.summary.addList(["Beta bump is being skipped"]).write();
+              }
+              if (process.env.skipGooglePlay == "true") {
+                await core.summary.addList(["Play Store upload is being skipped"]).write();
+              }
+              if (process.env.skipGooglePlay != "true" && process.env.draftGooglePlay == "true") {
+                await core.summary.addList(["Play Store upload is being kept in the draft state"]).write();
               }
 
   release_commit:
