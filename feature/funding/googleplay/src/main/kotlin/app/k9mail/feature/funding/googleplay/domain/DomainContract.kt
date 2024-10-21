@@ -50,11 +50,23 @@ interface DomainContract {
     sealed interface BillingError {
         val message: String
 
-        data class BillingServiceDisconnected(
+        data class UserCancelled(
             override val message: String,
         ) : BillingError
 
-        data class BillingUnknownError(
+        data class PurchaseFailed(
+            override val message: String,
+        ) : BillingError
+
+        data class ServiceDisconnected(
+            override val message: String,
+        ) : BillingError
+
+        data class DeveloperError(
+            override val message: String,
+        ) : BillingError
+
+        data class UnknownError(
             override val message: String,
         ) : BillingError
     }
